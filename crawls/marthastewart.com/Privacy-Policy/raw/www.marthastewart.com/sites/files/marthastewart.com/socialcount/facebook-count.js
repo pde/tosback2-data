@@ -1,0 +1,1 @@
+document.write("445,252 Likes");

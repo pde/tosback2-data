@@ -1,0 +1,1621 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+/** 
+ *assign indexOf to the array object if using IE <9
+ */
+ 
+if(!Array.indexOf){
+    Array.prototype.indexOf = function(obj){
+        for(var i=0; i<this.length; i++){
+            if(this[i]==obj){
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+window.TWC = window.TWC || {};
+TWC.Events = TWC.Events || {};
+
+//SET up local storage for hard Declarations
+var appsToHardDeclarations = {
+		"achesandpains":"aches",
+		"airquality":"airq",
+		"allergies":"algy",
+		"boatandbeach":"bnb",
+		"businesstravel":"btrav",
+		"climate":"clim",
+		"coldandflu":"cold",
+		"driving":"driv",
+		"events":"undc",
+		"fishing":"fish",
+		"fitness":"fit",
+		"flightstatus":"flt",
+		"garden":"gdn",
+		"golf":"golf",
+		"health":"hlth",
+		"home":"home",
+		"homeimp":"himp",
+		"homeplanner":"hmpl",
+		"lawn":"lawn",
+		"livingsmart":"live",
+		"marine":"mar",
+		"momsplanner":"mp",
+		"news":"news",
+		"outdooractivity":"odact",
+		"outdoors":"outd",
+		"petcare":"pcare",
+		"pets":"pets",
+		"pollen":"plln",
+		"schoolday":"schd",
+		"ski":"ski",
+		"sportingevents":"undc",
+		"sports":"spts",
+		"sunsafety":"sun",
+		"traffic":"traff",
+		"travel":"trvl",
+		"vacationplanner":"vac",
+		"weddings":"wed",
+//		"undeclared":"undc",
+		"flight-status":"flt",
+        "traffic":"traff",
+        "fitness":"fit",
+        "golf":"golf",
+        "home-imp":"himp",
+        "pet-care":"pcare",
+        "moms-planner":"mp"
+       };
+
+// Create global setEvent function that creates a Deferred Object if an only if it is not already there.
+TWC.Events.setEvent = function(eventname) {
+	var _parent = TWC.Events;
+	// check for dots in the string
+	var _dot = eventname.split(/\./);
+	// if you have a dot in your string
+	if (_dot.length > 1) {
+		// grab the first value as your new parent
+		var n = _dot.shift();
+		// check if your new parent exists
+		_parent[n] = _parent[n] || {};
+		var newObj = _parent[n];
+		for(var i = 0,l = _dot.length - 1;i<l;i++){
+			newObj[_dot[i]] = newObj[_dot[i]] || {};
+			newObj = newObj[_dot[i]];
+		}
+		newObj[_dot[_dot.length-1]] = newObj[_dot[_dot.length-1]] || jQuery.Deferred();
+	} else {
+		// return right away, quick match
+		_parent[eventname] = _parent[eventname] || jQuery.Deferred();
+	}
+}
+TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
+
+	/**
+	 * Define placeholders for service call deferred events 
+	 */
+	var wxLocDfrdEvent,adDfrdEvent;
+	
+	
+	/**
+	 * Assign server side pcoObject if it exists
+	 */ 
+	var PCO = pcoObject || {};
+	
+	
+	//Set the adKeywordsReady event
+	TWC.Events.setEvent("adKeywordsReady");
+
+	// Create locations_changed event if not already present
+	TWC.Events.setEvent("locations_changed");
+		
+	// Create pcoReady event if not already present
+	TWC.Events.setEvent("pcoReady");
+		
+	// Create pcoRefresh event if not already present
+	TWC.Events.setEvent("pcoRefresh");
+				
+	TWC.Events.setEvent("userDeviceevent");
+	 
+	/**
+	 * Add a page property to PCO if it doesn't exist
+	 * Needed for static pages
+	 */
+	 
+	if($.isEmptyObject(pcoObject) && pageId){
+		PCO.page = PCO.page || {};
+		PCO.page.pageId = PCO.page.pageId || pageId;
+		PCO.page.locale = "en_US";
+		PCO.page.lang="en";
+	}
+
+
+	/**
+	 *  If the page is an Intellicast, estreet, static or blue marble page
+	 *  the pcoObject will be null. For this case make two service calls 
+	 *  to populate a minimal pco with the ad object and weather object
+	 */
+	
+	if(null === pcoObject || !pcoObject.currloc || $.isEmptyObject(pcoObject.currloc)){
+		
+		// if pcoObject exists, but there is no pcoObject.currloc
+		// check localstoragefor preferredLocation, if it exists 
+		// make the /service/wx.
+		
+		// If there is no pcoObject, but there is a currlocId 
+		// use it to call /service/wx and add location obj
+		// as currloc and wx object to pco.
+		
+		// Finally if there is no pcoObject and no currlocId
+		// check localstoragefor preferredLocation, if it exists 
+		// make the /service/wx call.
+		
+		var locid = null;
+		if(currlocId){
+			locid = currlocId;
+		}else{
+			var user = $.jStorage.get("user");
+			locid = (user && user.preferredLocation) ? user.preferredLocation.locid : undefined;
+		}
+		
+		var sdynhost = "d.imwx.com" || "d.imwx.com";
+		
+		if(locid){
+			// Request wx data and loc data
+			wxLocDfrdEvent = $.ajax({
+				url: ["http://",sdynhost,"/services/wx/",locid].join(""),
+				dataType: "jsonp",
+				type:"GET",
+				success: function(data) {
+					PCO.wx = data.wx;
+					PCO.currloc = data.loc;
+				}
+			});
+		}
+		
+		if(pageId && siteId && !pcoObject){
+			
+			// If there is a pageId and siteId and there is
+			// not already a pcoObject, request ad data
+			adDfrdEvent = $.ajax({
+				url: ["http://",sdynhost,"/services/ad/",pageId].join(""),
+				dataType: "jsonp",
+				data:{
+					mode:mode || "default",
+					siteId:siteId
+				},
+				type:"GET",
+				success: function(data) {
+					if(data){
+						PCO.ad = data;
+					}
+				}
+			});
+			
+		}
+		
+	}
+	
+	/***
+	 **
+	 ** Private data and methods
+	 **/
+	 
+	
+	
+	var undeclaredDec = "undc";
+
+	var getNodeAndKeyFromString = function(nod,pn){
+		// fail instantly if node value is not a string
+		if (typeof nod !== "string") {
+			return [undefined,undefined];
+		}
+		// start with the PCO as your parent unless explicitly told otherwise
+		var _parent = pn || PCO;
+		// check for dots in the string
+		var _dot = nod.split(/\./);
+		// if you have a dot in your string
+		if (_dot.length > 1) {
+			// grab the first value as your new parent
+			var n = _dot.shift();
+			// if your new parent exists
+			if (_parent[n]) {
+				// recurse
+				return getNodeAndKeyFromString(_dot.join('.'),_parent[n]);
+			} else {
+				// fail quickly
+				return [undefined,undefined];
+			}
+		} else {
+			// return right away, quick match
+			return [_parent,nod];
+		}
+	};
+	
+	var getVal = function(nod){
+		// get node and key
+		var nkArray = getNodeAndKeyFromString(nod);
+		// if you have a valid parent node, return the value from the parent node's key
+		if (nkArray[0]) {
+			return nkArray[0][nkArray[1]];
+		// if you don't have a valid parent node, return js type undefined (falsy)
+		} else {
+			return undefined;
+		}
+	};
+	var setVal = function(nod,val){
+		// get node and key
+		var nkArray = getNodeAndKeyFromString(nod);
+		// if you have a valid parent node, return the value from the parent node's key
+		if (nkArray[0]) {
+			return (nkArray[0][nkArray[1]] = val);
+		// if you don't have a valid parent node, return js type undefined (falsy)
+		} else {
+			return undefined;
+		}
+	};
+	
+	var persistValue= function( key, val, ttl){
+					
+		ttl = ttl || 0;
+		if(!key){
+			
+			return;
+		}
+		$.jStorage.set(key, val);
+		if(ttl>0){
+		    $.jStorage.setTTL(key, ttl);
+		}
+	};
+	
+	var getPersistedValue=function(key){
+		return $.jStorage.get(key);
+	};
+
+	var removePersistedValue=function(key){
+		return  $.jStorage.deleteKey(key);
+	};
+	
+	var isPersistedKey=function(key){
+		if (getPersistedValue(key)=="undefined" || getPersistedValue(key)==null){
+			return false;
+		}
+		return true;
+	};
+	
+	var initAllLocations=function(loc){
+		prvlgd.set("user.savedLocations",loc.savedLocations);
+		prvlgd.set("user.recentSearchLocations",loc.recentSearchLocations);
+	};
+	
+	var setSavedLocations=function(loc){
+		var savedLocs=prvlgd.get("user.savedLocations") || [],
+			alreadySaved = false;
+		for(var i = 0,l=savedLocs.length;i<l;i++){
+			if(isLocEqual(loc,savedLocs[i])){
+				alreadySaved = true;
+				break;
+			}
+		}
+		if(!alreadySaved){
+			savedLocs.unshift(loc);
+			// Limit savedLocs array to 10
+			savedLocs = savedLocs.slice(0,10);
+		}
+		return savedLocs;
+	};
+	
+	
+	var modifySavedLocations = function(indx,loc){
+		var savedLocs = prvlgd.get("user.savedLocations");
+		if(null != savedLocs && savedLocs[indx]){
+			if(loc){
+				savedLocs.splice(indx,1,loc);
+			}else{
+				savedLocs.splice(indx,1);
+			}
+		}
+		return savedLocs;
+	};
+	
+	var setPreferredLocation=function(){
+		var savedLocs = prvlgd.get("user.savedLocations");
+		var recentSearchLocs=prvlgd.get("user.recentSearchLocations");
+		if(savedLocs){
+			prvlgd.setUser("preferredLocation", savedLocs[0]);
+		}else if (recentSearchLocs){
+			prvlgd.setUser("preferredLocation", recentSearchLocs[0]);
+			
+		}
+		
+	};
+	
+	var setRecentSearchLocations=function(loc){
+		var recentSearchLocs=prvlgd.get("user.recentSearchLocations") || [],
+			alreadySaved = false,
+			rsLength = recentSearchLocs.length;
+		if(rsLength !== 0){
+			for(var i = 0;i<rsLength;i++){
+				if(isLocEqual(loc,recentSearchLocs[i])){
+					alreadySaved = true;
+					break;
+				}
+			}
+		}
+		if(!alreadySaved){
+			recentSearchLocs.unshift(loc);
+			// Limit saved recentSearchLocations array to 10
+			recentSearchLocs = recentSearchLocs.slice(0,10)
+		}
+		return recentSearchLocs;
+	};
+	
+	var modifyRecentSearchLocations = function(indx,loc){
+		var rsLocs = prvlgd.get("user.recentSearchLocations");
+		if(rsLocs && rsLocs[indx]){
+			if(loc){
+				rsLocs.splice(indx,1,loc);
+			}else{
+				rsLocs.splice(indx,1);
+			}
+		}
+		return rsLocs;
+	};
+
+	//convenience methods to access core declarations functions
+	
+	var setSoftDeclaration=function(val,oper){
+		if (oper && oper === 'd')
+		{
+			prvlgd.removeSoftDeclaration(val);
+		}
+		else
+		{
+			prvlgd.addSoftDeclaration(val);
+			prvlgd.removeSuppressedDeclaration(val);
+		}
+	
+	};
+	
+	var setHardDeclaration=function(val,oper){
+		if (val && val.length <=0) return;
+		if (val == 'Undeclared' || val == 'null') return;
+
+		if (oper && oper === 'd')
+		{
+			prvlgd.removeHardDeclaration(val);
+			prvlgd.removeSoftDeclaration(val);			
+		}
+		else
+		{
+			prvlgd.addHardDeclaration(val);
+			prvlgd.removeSuppressedDeclaration(val);
+		}
+		
+	};
+	
+	var setSuppressedDeclaration=function(val,oper){
+		if (oper && oper ==='d')
+		{
+			prvlgd.removeSuppressedDeclaration(val);
+		}
+		else
+		{
+			prvlgd.addSuppressedDeclaration(val);
+			prvlgd.removeHardDeclaration(val);
+			prvlgd.removeSoftDeclaration(val);
+		}
+	};
+	
+	var isLocEqual = function(loc1, loc2){
+		var isEqual = (loc1 && loc2 && !loc1.lon || !loc1.lat) ? (loc1 && loc2 && loc1.locid == loc2.locid && loc1.loctype == loc2.loctype) : loc1 && loc2 && loc1.locid == loc2.locid && loc1.loctype == loc2.loctype && loc1.lat == loc2.lat && loc1.lon == loc2.lon;
+		return isEqual;
+	};
+
+	
+
+	var manageSuppressedDeclarations = function(){
+		if (!prvlgd) return null;
+		{
+			var suppressdecl=prvlgd.getSuppressedDeclarations();
+			var hasChanged = false;
+			for(var key in suppressdecl) 
+	        {
+		        var expDate = new Date(suppressdecl[key]);
+		        var now = new Date();
+		        if ( now.getTime() - expDate.getTime() > 90*24*60*60*1000)
+		        {
+		        	delete suppressdecl[key];
+		        	hasChanged = true;
+		        }
+				
+	        }
+			//save new entryset			
+			if(hasChanged == true)prvlgd.set("user.suppressedDeclarations",suppressdecl);
+	       
+		}
+		
+	};
+	
+	var initUserPrefBasedCookies=function(userpref){
+		
+		function getUPSlot(slotNo){
+			var str="";
+			if(userpref.indexOf("%7C")>0) {
+				str = userpref.split("%7C")[slotNo];  
+			} else {
+	     		str = userpref.split("|")[slotNo];
+	     	}
+	     	str = unescape(str);
+	     	str = str.replace(/\+/g," ");
+	        str = str.match(/[a-zA-Z0-9]/) ? str : null;
+			return str;
+	    }
+		     
+		function convertAge(dob) {
+			if(dob != null){
+		    	dob = dob.replace("+","");
+		    	var d = new Date();
+		    	var curr_year = d.getFullYear();
+		    	return curr_year-dob;
+			}else{
+				return " ";
+		   	}
+		};
+		
+	    function findAgeRange(age) {
+	    	if(age == " ")return [""];
+	        var ageRange = [];
+	        age = parseInt(age, 10);
+	        if (isNaN(age)) {
+	            return '';
+	        }
+	        if (age >= 18 && age <= 24) {
+	            ageRange.push('1824');
+	        }
+	        if (age >= 18 && age <= 34) {
+	            ageRange.push('1834');
+	        }
+	        if (age >= 18 && age <= 49) {
+	            ageRange.push('1849');
+	        }
+	        if (age >= 21 && age <= 34) {
+	            ageRange.push('2134');
+	        }
+	        if (age >= 25 && age <= 49) {
+	            ageRange.push('2549');
+	        }
+	        if (age >= 25 && age <= 54) {
+	            ageRange.push('2554');
+	        }
+	        if (age >= 35 && age <= 54) {
+	            ageRange.push('3554');
+	        }
+	        if (age >= 18 && age <= 99) {
+	            ageRange.push('18u');
+	        }
+	        if (age >= 25 && age <= 99) {
+	            ageRange.push('25u');
+	        }
+	        if (age >= 35 && age <= 99) {
+	            ageRange.push('35u');
+	        }
+	        if (age >= 45 && age <= 99) {
+	            ageRange.push('45u');
+	        }
+	        if (age >= 50 && age <= 99) {
+	            ageRange.push('50u');
+	        }
+	        if (age >= 55 && age <= 99) {
+	            ageRange.push('55u');
+	        }
+	        if (age >= 65 && age <= 99) {
+	            ageRange.push('65u');
+	        }
+	        if (age >= 45 && age <= 65) {
+	            ageRange.push('bybm');
+	        }
+	        if (age >= 30 && age <= 44) {
+	            ageRange.push('genx');
+	        }
+	        if (age >= 21 && age <= 29) {
+	            ageRange.push('geny');
+	        }
+	        if(ageRange.length <= 0){
+	        	return [];
+	        }
+	        return ageRange;
+	        
+	    };
+	    
+	    function getGender() {
+	        //var tempSex = "nl";
+	        if(getUPSlot(14) != null) {
+	        	tempSex = getUPSlot(14).toLowerCase();
+	        	tempSex = tempSex.replace("+", "");
+		        if(tempSex==="f" || tempSex==="m") {
+		        	return tempSex;
+		        } else {
+		        	return "nl";
+		        }
+	        } else {
+	        	return "nl";
+	        }
+	    };      
+	      
+		prvlgd.setUser("gender", getUPSlot(14)?getGender():"nl");
+		prvlgd.setUser("age", getUPSlot(13)?findAgeRange(convertAge(getUPSlot(13))):"nl");
+		prvlgd.setUser("claritas", getUPSlot(33)?"nl":getUPSlot(33));
+		prvlgd.setUser("ursId", getUPSlot(2)?getUPSlot(2):"nl");
+		prvlgd.setUser("dwInstallId", getUPSlot(25) ? getUPSlot(25).replace(/^\s*/, "").replace(/\s*$/, ""):"");
+	     
+	};
+	
+	var init= function(){
+		
+		// IMPORTANT!! - Retrieve localstorage and insert it into pco before doing anything else
+		// to pco otherwise the contents of the user object in localstorage will be overwritten by 
+		// any prvlgd.setUser method.
+
+		// Check to see if localStorage is present for user
+		// If it is, set pco.user and resolve locations_changed
+		// otherwise retrieve information from cookies.
+		var user= $.jStorage.get("user");
+		if (user){ 
+			prvlgd.set("user", user);
+			TWC.Events.locations_changed.notify();
+		}else{
+			// Retrieve user declaration information from "a" cookie and delete
+			var oldDeclarations = $.cookie("a"),
+				oldDeclareArray = [];
+			if(null != oldDeclarations){
+				oldDeclareArray = oldDeclarations.split("^");
+			}else{
+				oldDeclarations = $.cookie("UserPreferences");
+				if(null != oldDeclarations){
+					oldDeclSlots = oldDeclarations.split("|");
+					oldDeclareArray = [oldDeclSlots[16]];
+				}
+			}
+
+			prvlgd.setUser("initDeclarations",oldDeclareArray);
+		
+			$.cookie("a",null,{path:"/",domain:"weather.com"});
+			
+			
+		
+			
+		}
+		
+		var fv = $.cookie('fv');
+		
+		if(null!=fv)
+		{
+			if (fv==1 || fv==2){
+				fv++;
+			}
+			else if( fv==3) {
+				fv = "-1";
+			
+			}
+		}
+		else{
+			fv = "1";
+			
+		}
+		$.cookie('fv', fv, {path:'/',domain:'weather.com'});
+		
+		// Set flash object
+		prvlgd.setUser("flash", $.browser);
+		
+		prvlgd.set("page.fv", fv);
+		var partner=$.cookie("partner");
+		if (partner!=null && typeof(partner)!="undefined"){
+			prvlgd.setUser("cobrand", partner);
+		}
+		
+		//Set page environment
+		var serverEnv = "";
+		var replEnvStr = location.host.replace(".weather.com","");
+		
+		if (location.href.match(/preview/)) {
+			serverEnv = ["preview:",replEnvStr].join(""); 
+		} else if (location.href.match(/beta/)) {
+			serverEnv = ["beta:",replEnvStr].join(""); 
+		} else {
+			 serverEnv = ["live:",replEnvStr].join("");
+		}
+		prvlgd.set("page.env", serverEnv);
+
+		
+		
+		var userpref=$.cookie("UserPreferences");
+	
+		if (typeof(userpref)!="undefined" && null!=userpref){
+			initUserPrefBasedCookies(userpref);
+		}
+		var signedIn = $.cookie('Ticket_web');		
+		prvlgd.setUser("signedIn", signedIn);
+					
+		// Set user's date and time when page loaded
+		var dt = new Date(),
+			yy = dt.getFullYear(),
+			mt = dt.getMonth() + 1,
+			date = dt.getDate(),
+			dow = dt.getDay(),
+			mh = dt.getHours(),
+			hh = (mh > 12) ? mh - 12 : (mh == 0) ? 12 : mh,
+			ampm = (mh < 12) ? "AM" : "PM",
+			mm = dt.getMinutes(),
+			ss = dt.getSeconds() + "",
+			ss = (ss.length > 1) ? ss : "0" + ss,
+			tm = dt.getTime(),
+			day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dow],
+			tzOffset = dt.getTimezoneOffset()/60;
+		prvlgd.set("user.date",[mt,"/",date,"/",yy].join(""));
+		prvlgd.set("user.time",[hh,":",mm,":",ss].join(""));
+		prvlgd.set("user.day",day);
+		prvlgd.set("user.tzOffset",tzOffset);
+		
+		prvlgd.setUser("preferredDeclaration",prvlgd.getPreferredDeclaration());
+		prvlgd.setUser("suppressedDeclarations",manageSuppressedDeclarations());
+		
+		
+		//populate soft declaration from page declaration if on dynamic page and not home page
+		
+		if ("false" == prvlgd.get("ad.dynamic") && "home" != prvlgd.get("ad.pageIdCode"))
+		{
+			var pageDeclValue = prvlgd.get("ad.pageDeclaration");
+			setSoftDeclaration (pageDeclValue);
+			var harddecl=prvlgd.getHardDeclarations();
+			if (harddecl.indexOf(pageDeclValue) >= 0 )
+			{
+				setHardDeclaration(pageDeclValue);
+			}
+		}
+		
+
+		// Set user's unit prefs from cookie
+		var units = $.cookie("u") || "e";
+		prvlgd.set("user.unit",units);
+		
+		// Set fromStr from either cookie or query param
+		// Read the cookie from the fromStr cookie and set it in the
+		// page node of PCO, then delete the cookie.
+		var fromStr = $.cookie("fromStr");
+		$.cookie("fromStr",null,{path:"/",domain:"weather.com"});
+		if(!fromStr){
+			var params = window.location.search.substring(1);
+			paramArray = params.split("&");
+			for(var i=0,l=paramArray.length;i<l;i++){
+				if(paramArray[i].match(/from/)){
+					fromStr = paramArray[i].split("=")[1];
+					break;
+				}
+			}
+		}
+		prvlgd.set("page.fromStr",fromStr);
+		
+		
+		
+		prvlgd.setRMID();
+	
+
+
+
+try{console.log()}catch(e){}
+		if(wxLocDfrdEvent && adDfrdEvent){
+			// If wxloc and/or ad are retrieved by a service 
+			// call wait until the service call is complete
+			// otherwise assume the data was in pcoObject.
+			$.when(wxLocDfrdEvent,adDfrdEvent).then(function(){
+				prvlgd.setRsisegs();
+				prvlgd.setORD();
+				prvlgd.initAdKeywords();
+			});
+		}else if(wxLocDfrdEvent){
+			// Just wxLoc service called
+			$.when(wxLocDfrdEvent).then(function(){
+				prvlgd.setRsisegs();
+				prvlgd.setORD();
+				prvlgd.initAdKeywords();
+			});
+		}else if(adDfrdEvent){
+			// Just ad service called
+			$.when(adDfrdEvent).then(function(){
+				prvlgd.setRsisegs();
+				prvlgd.setORD();
+				prvlgd.initAdKeywords();
+			});
+		}else{
+			// No services called
+			prvlgd.setRsisegs();
+			prvlgd.setORD();
+			prvlgd.initAdKeywords();
+		}
+
+		TWC.Events.adKeywordsReady.progress(function(){
+			// Fire pcoReady Event when ad keywords are ready
+			TWC.Events.pcoReady.resolve();
+			TWC.Events.pcoRefresh.notify();
+		});
+
+		
+		// if there is a currloc in pco set cookie LocID
+		// Eventually this will be removed.
+		var currloc = prvlgd.get("currloc");
+		if(currloc){
+			$.cookie("LocID",currloc.locid,{path:"/",domain:"weather.com",expires:3650});
+		}
+		
+	};
+	
+
+	/***
+	 **
+	 ** Privileged methods
+	 **/
+	 
+	var prvlgd = {};
+	
+	prvlgd.getAd = function(){
+		
+	};
+	
+	prvlgd.get = function(n){
+	
+		// will return a value or undefined
+		return getVal(n);
+	};
+	
+	prvlgd.set = function(n,v){
+		// will return the value you attempted to set, or undefined
+		// will not create any missing intervening nodes
+		
+			return setVal(n,v);
+		
+	};
+
+	//declarations methods
+	prvlgd.getSoftDeclarations=function()
+	{
+		return (prvlgd.get("user.softDeclarations") || []);
+	};
+
+	prvlgd.removeSoftDeclaration=function(val)
+	{
+		var softdecl=prvlgd.getSoftDeclarations();
+		var idx = softdecl.indexOf(val);
+		//delete from soft
+		if(idx >=0)
+		{
+			softdecl.splice(idx,1);
+			prvlgd.set("user.softDeclarations",softdecl);
+		}	
+		
+	};
+
+	prvlgd.addSoftDeclaration=function(val)
+	{
+		prvlgd.removeSoftDeclaration(val);
+		var softdecl=prvlgd.getSoftDeclarations();
+		softdecl.unshift(val);
+		prvlgd.set("user.softDeclarations",softdecl);
+	};
+
+	prvlgd.getHardDeclarations=function()
+	{
+		return (prvlgd.get("user.hardDeclarations") || []);
+	};
+
+	prvlgd.removeHardDeclaration=function(val)
+	{
+		var harddecl=prvlgd.getHardDeclarations();
+		var idx = harddecl.indexOf(val);
+		//delete from hard
+		if(idx >=0)
+		{
+			harddecl.splice(idx,1);
+			prvlgd.set("user.hardDeclarations",harddecl);
+		}	
+	};
+
+	prvlgd.addHardDeclaration=function(val)
+	{
+		prvlgd.removeHardDeclaration(val);
+		var harddecl=prvlgd.getHardDeclarations();
+		harddecl.unshift(val);
+		prvlgd.set("user.hardDeclarations",harddecl);
+	};
+	
+	/*
+	prvlgd.updateHardDeclaration=function(val)
+	{		
+		var harddecl=prvlgd.getHardDeclarations();
+		if (harddecl contains val)
+		{
+			prvlgd.removeHardDeclaration(val);
+			harddecl.unshift(val);
+			prvlgd.set("user.hardDeclarations",harddecl);
+		}
+	};
+	*/
+
+	prvlgd.getSuppressedDeclarations=function()
+	{
+		return prvlgd.get("user.suppressedDeclarations") || {};
+	};
+
+	prvlgd.addSuppressedDeclaration=function(val)
+	{
+		var suppressdecl=prvlgd.getSuppressedDeclarations();
+		if (!suppressdecl[val]){				
+			//this is removing value from hash
+			//testing - suppressdecl[val] = new Date(2011,10,8,0,0,0);
+			suppressdecl[val] = new Date();
+			prvlgd.set("user.suppressedDeclarations",suppressdecl);
+		}
+	};
+	
+	prvlgd.removeSuppressedDeclaration=function(val)
+	{
+		var suppressdecl=prvlgd.getSuppressedDeclarations();
+		//adding to hard, so need to remove suppressed here
+		if (suppressdecl[val]){				
+			delete suppressdecl[val];
+			prvlgd.set("user.suppressedDeclarations",suppressdecl);
+		}
+		
+	};
+
+	prvlgd.getPreferredDeclaration = function(){
+		
+		var hards = prvlgd.getHardDeclarations();
+		if (hards && hards[0] && hards[0] !== undeclaredDec )
+		{
+			return hards[0];
+		}
+		var softs = prvlgd.getSoftDeclarations();
+		if (softs && softs[0])
+		{
+			return softs[0];
+		}
+		
+		return undeclaredDec;
+		
+	};
+	
+	initUserNode = function(node){
+		if(!prvlgd.get("user")){
+			var user = {};
+			user[node] = {};
+			persistValue("user",user);
+		}
+	}
+	
+	prvlgd.setUser = function(node,val,oper){
+		if(!prvlgd.get("user")){
+			PCO.user = {};
+			persistValue("user",PCO.user);
+		}
+		if(node == "measurements") {
+			if(val)
+			{
+				$.ajax({
+					url: '/pagelet/userprefset?u='+val,
+					dataType: 'html',
+					type:'POST',
+					success: function () {
+						prvlgd.set("user.unit", val);	
+						setTimeout(function ()
+						{
+							if((typeof(isMobileSite) != 'undefined') && isMobileSite==1){
+								var currloc = TWC.pco.get('currloc');
+								var additionalParams =  currloc.zip + ":" + currloc.loctype + ":" + (currloc.country).toUpperCase();
+								document.location.href = TWC.pco.get("page").defaultCmd + "/"+additionalParams+"?"+ new Date().getTime();	
+							}else{
+								window.location.reload();
+							}
+						}, 0); 									
+					},
+					error: function (a,b,c) {
+	
+					}
+		  	 	});
+	  	 	}
+		
+		}else if (node=="rmid"){
+			prvlgd.set("user.rmid", val);
+		}else if (node=="cobrand"){
+			prvlgd.set("user.cobrand", val);
+		}else if (node==="age"){
+			prvlgd.set("user.age", val);
+		}else if (node==="gender"){
+			prvlgd.set("user.gender", val);
+		}else if (node==="gender"){
+			prvlgd.set("user.gender", val);
+		}else if (node==="claritas"){
+			prvlgd.set("user.claritas", val);
+		}else if (node==="dwInstallId"){
+			prvlgd.set("user.dwInstallId",val);
+		}else if (node==="ursId"){
+			prvlgd.set("user.ursId",val);
+		}else if (node=="asi"){
+			prvlgd.set("user.asi", val);
+		}else if (node=="preferredLocation"){
+			prvlgd.set("user.preferredLocation", val);
+		}else if(node == "lastResolvedLoc") {
+			prvlgd.set("user.lastResolvedLoc", prvlgd.get("currloc"));
+		}else if(node.match(/Locations/)){
+			if(node=="initAllLocations"){
+				initAllLocations(val);
+			}else if(node=="savedLocations" && !oper){
+				prvlgd.set("user.savedLocations",setSavedLocations(val));
+			}else if(node=="savedLocations" && oper){
+				prvlgd.set("user.savedLocations",modifySavedLocations(oper,val));
+			}else if(node=="recentSearchLocations" && !oper){
+				prvlgd.set("user.recentSearchLocations",setRecentSearchLocations(val));
+			}else if(node=="recentSearchLocations" && oper){
+				prvlgd.set("user.recentSearchLocations",modifyRecentSearchLocations(oper,val));
+			}
+			setPreferredLocation();
+			TWC.Events.locations_changed.notify();
+		}else if(node.match(/Declaration/)){
+			if (node=="initDeclarations"){
+				if (val instanceof Array)
+				{
+					for (i=0;i<val.length;i++)
+					{					
+						setHardDeclaration(appsToHardDeclarations[val[i].toLowerCase()]);
+					}
+				}
+				prvlgd.set("user.preferredDeclaration",prvlgd.getPreferredDeclaration());
+			}else if (node=="hardDeclaration"){
+				setHardDeclaration(val,oper);
+				prvlgd.set("user.preferredDeclaration",prvlgd.getPreferredDeclaration());
+			}else if (node=="softDeclaration"){
+				setSoftDeclaration(val,oper);
+				prvlgd.set("user.preferredDeclaration",prvlgd.getPreferredDeclaration());
+			}else if (node=="suppressedDeclaration"){
+				setSuppressedDeclaration(val,oper);
+				prvlgd.set("user.preferredDeclaration",prvlgd.getPreferredDeclaration());
+			}else if (node=="preferredDeclaration"){
+				prvlgd.set("user.preferredDeclaration",val);
+			}
+		}else if(node=="mapPrefs" && !oper) {
+			if(val)
+			{
+				prvlgd.set("user.mapPrefs", val);
+	  	 	}
+		}else if(node=="video" && !oper) {
+			if(val)
+			{
+				prvlgd.set("user.video", val);
+	  	 	}
+		}
+		// 4/2/2012: TODO, Need to look into refactor this code, shouldn't have to add this every time something new is added to user storage
+		else if(node=="flash" && !oper) {
+			if(val)
+			{
+				prvlgd.set("user.flash", val);
+	  	 	}
+		} else if (node=="signedIn"){			
+			prvlgd.set("user.signedIn", val);
+		}
+		else if (node =="imap") {
+			prvlgd.set("user.imap", val);
+		}else if (node=="device"){
+			prvlgd.set("user.device", val);
+		}
+		
+		persistValue("user",prvlgd.get("user"));
+		
+	};
+
+	prvlgd.setRMID=function(){
+		
+		//read rmid from local storage
+		var rmid = prvlgd.get("user.rmid");
+		if(!rmid)
+			rmid=genRMID();
+		
+		prvlgd.setUser("rmid", rmid);
+				
+	};
+	
+	
+	prvlgd.setORD=function(){
+		var ord = genORD();
+		prvlgd.set("ad.ord",ord);
+		
+	};
+	
+	prvlgd.initAdKeywords=function(){
+		var adkeywords={};
+		var cust_params="";
+		
+		function addContentModuleKeyword(){
+			if(TWC && TWC.pcoinjector && (null != TWC.pcoinjector.ad_cmdl_keyword && typeof(TWC.pcoinjector.ad_cmdl_keyword) != 'undefined')) {
+				var cmdlKeywords = TWC.pcoinjector.ad_cmdl_keyword;
+				buildkw("cmdl",cmdlKeywords);
+			}
+		}
+		
+		function addTweetKeywords(){
+			if(TWC && TWC.pcoinjector && (null != TWC.pcoinjector.ad_tweet_keyword && typeof(TWC.pcoinjector.ad_tweet_keyword) != 'undefined')) {
+				var tweetKeywords = TWC.pcoinjector.ad_tweet_keyword;
+				var tweetArr=[];
+					var tweet = tweetKeywords.split(";");
+					for (i=0;i<tweet.length;i++) {
+							var tweetVal = tweet[i].split("=");
+							var len = tweetVal.length;
+							if(len >0 && len==2){
+								tweetArr.push(tweetVal[1]);
+							}
+						}
+			
+				buildkw("tweet",tweetArr,tweetArr.join('&tweet='));
+				}
+		}
+		
+		function getKeywordValues(keymap, keywords){
+			
+			jQuery.each(keymap, function (key, value)
+			{
+				buildkw(key,keywords[value]);
+			});
+		}
+		
+		
+		function debugMode()
+		{
+			return !!$.cookie("adstest");
+		}
+		
+		
+		function addAdstest(){
+			var isDebug=debugMode();
+			var debugKeyword     = isDebug ?  $.cookie('adstest') : '';
+			if (isDebug){
+				buildkw("adstest",debugKeyword);
+				prvlgd.set("ad.debug",true);
+			}
+		}
+		
+	function getKeywordNulls(keymap){
+		
+		jQuery.each(keymap, function (key, value)
+		{
+			buildkw(key, "nl");
+		});
+	}
+		
+		function addGPR(loc)
+		{
+			if (loc && loc.gpr){
+				buildkw("intl",loc.gpr,loc.gpr.join("&intl="));
+			}else{
+				buildkw("intl","nl");
+			}
+		}
+			
+		function addLayoutKeywords(){
+			var layoutArr=[],layoutValue=[];
+			var layoutKeywords=prvlgd.get("ad.layout");
+			if("undefined" != typeof(layoutKeywords)){
+				var layout = layoutKeywords.split(";");
+				for (i=0;i<layout.length;i++) {
+					var layout2 = layout[i];
+					layoutValue = layout2.split("=");
+					if(layoutValue.length>0 && layoutValue.length==2){
+						layoutArr.push(layoutValue[1]);
+					}
+				}
+				
+				buildkw("lo",layoutArr,layoutArr.join('&lo='));
+			}
+		
+		}
+		
+		function addFV(){
+			var vw =prvlgd.get("page.fv") || 'nl';
+			vw = vw + ""; //convert to String
+			buildkw("vw",vw);
+		}
+		
+		function addScatter(){
+            var currloc = prvlgd.get("currloc");
+            
+            if(currloc){
+                var tScat = currloc.scatter;
+              	var zcs=[];
+                if (typeof(tScat) != "undefined" && tScat!="nl"){
+                  
+                    for (var count=0; count < tScat.length; count++){
+                          if( count<50) {
+                              if (typeof(tScat[count])!="undefined"){
+                                 zcs.push(tScat[count]);
+                             }
+                          }
+                    }
+                    buildkw("zcs",zcs,zcs.join('&zcs='));
+                   
+                }else{
+                	buildkw("zcs","nl");
+                }
+            }else{
+                buildkw("zcs","nl");                
+            }
+        }
+		
+		function addORD(){
+			if (prvlgd.get("ad.ord")){
+				buildkw("ord",prvlgd.get("ad.ord"));
+			}else{
+				buildkw("ord","nl");
+			}
+		}
+		
+		function addASI(){
+			var asiCookie = $.cookie("rsi_segs");
+			
+			var segments, asiArray, asi = [];
+			var i, len;
+
+			if (asiCookie)
+			{
+				segments = asiCookie.split('|');
+				len = segments.length;
+
+				if (len > 0)
+				{
+					/**
+					 * Inserted by: ssherwood
+					 * ATP-486, Cap asiCookies to no more than 40
+					 * Note: asi codes are added and then sorted by
+					 * audience science, so the most recently visited
+					 * may get cut when we cap. Slicing at 40 caps
+					 * segments to no more than 40.  Less than 40,
+					 * the slice doesn't alter the array. 
+					 */
+					segments = segments.slice(0,20);
+					len = segments.length;
+					
+					for (i = 0; i < len; i++)
+					{
+						asiArray = segments[i].split('_');
+						asi.push(asiArray[1]);
+					}
+			   
+					prvlgd.setUser("asi", asi);
+					buildkw("asi",asi, asi.join('&asi='));
+				}
+			}else{
+			
+				buildkw("asi","nl");
+			}
+			
+		}
+		
+		function addWxKeywords() {
+			var wx = prvlgd.get("wx");
+
+			if(wx){
+				var wxkeymap =
+				{
+					tmp  : 'temp',
+					tmpr : 'tempR',
+					plln : 'pollen',
+					wind : 'wind',
+					uv   : 'uv',
+					hmid : 'hum',
+					sev  : 'severe',
+					cnd  : 'cond',
+					snw  : 'snw',
+					baro : 'baroTendency'
+				};
+				
+				 var fcstKeymap = {
+						    fhi : "tempH",
+						    fli : "tempL",
+						    fhr : "tempHR",
+						    flr : "tempLR",
+						    fsnw: "fsnw",
+						    cwsh: "cwsh",
+						    cwsl: "cwsl"
+						  };
+	
+				var fcstCondKeymap={
+						  	fc1 : "fc1",
+						    fc2 : "fc2",
+						    fc3 : "fc3"
+				}
+	
+				
+				
+				if (wx.temp || wx.tempR){
+					getKeywordValues(wxkeymap, wx);
+					if (wx.fcast){
+						getKeywordValues(fcstKeymap, wx.fcast);
+					}else{
+						getKeywordNulls(fcstKeymap);
+					}
+					if (wx.fcast.cond){
+						getKeywordValues(fcstCondKeymap, wx.fcast.cond);
+					}else{
+						getKeywordNulls(fcstCondKeymap);
+					}
+				}
+				else{
+					getKeywordNulls(wxkeymap);
+					getKeywordNulls(fcstKeymap);
+					getKeywordNulls(fcstCondKeymap);
+				}
+			}
+		}
+		
+		
+		function addUserKeywords(){
+			
+			var user = prvlgd.get("user");
+			if (user){
+				buildkw("age",user.age);
+				buildkw("gender",user.gender);
+				buildkw("rmid",user.rmid);
+				
+				var cobrand=user.cobrand;
+				buildkw("cobr",cobrand);
+				buildkw("!c",cobrand);
+				
+			}else{
+				buildkw("age","nl");
+				buildkw("gender","nl");
+				buildkw("rmid","nl");
+				buildkw("cobr","nl");
+				buildkw("!c","nl");
+			}
+			
+		}
+		
+		function addDeclKeywords(){
+			if (prvlgd.get("user") && prvlgd.get("ad") ) {
+	    		
+	    		var	isdynamic=false;
+	    		var fam="nl";
+	    		var ch="nl";
+	    		var primaryDeclaration = prvlgd.get("user").preferredDeclaration;
+				
+				var isUndecl= (primaryDeclaration=="undc"?true:false);
+				var pageDeclaration = prvlgd.get("ad").pageDeclaration;
+				
+	    		isdynamic = (prvlgd.get("ad").dynamic=="true")?true:false;
+	    		var adcontents=prvlgd.get("ad").adContents;
+	    		var contentTypeMap="";
+	    		if (!isdynamic && null!=pageDeclaration){
+	    			 contentTypeMap=adcontents[pageDeclaration];
+	    			
+	    		}else if (isdynamic && isUndecl && typeof(businessDeclaration)!="undefined"){
+	    			 contentTypeMap=adcontents[businessDeclaration];
+	    		
+	    			 buildkw("contentType",businessDeclaration);
+	    		}else if (isdynamic && null!=primaryDeclaration){
+	    			contentTypeMap=adcontents[primaryDeclaration];
+	    			 buildkw("contentType",primaryDeclaration);
+	    			        		
+	    		}
+	    		
+	    		
+	    	 	//if the page has a declaration use that to pass fam/channel keywords
+	    		
+	    		if (isdynamic && typeof(contentTypeMap)!="undefined"){
+					fam=contentTypeMap.family;
+					ch=contentTypeMap.channel;
+					buildkw("fam",fam);
+					buildkw("ch",ch);
+		    	}else if (!isdynamic && typeof(contentTypeMap)!="undefined"){
+					//do not populate fam/ch for pages that do not have decl
+					prvlgd.setUser("preferredDeclarationFamily", contentTypeMap.family);
+					
+				}
+			
+			}else{
+				buildkw("fam","nl");
+				buildkw("ch","nl");
+			}
+			
+			if (typeof(businessDeclaration)!="undefined" && prvlgd.get("page")){
+			  prvlgd.set("page.businessVertical",businessDeclaration);
+			}
+			
+		}
+		
+		function addForecastKeywords(){
+		if (prvlgd.get("page") && prvlgd.get("currloc")) {			 
+		        
+		        if(prvlgd.get("currloc").loctype == "4") {		        			
+			       buildkw("ent","zip");
+			    } else if(prvlgd.get("currloc").loctype == "1") {		        			
+			        	buildkw("ent","city");
+			       }
+		    }
+	}	
+		function addAdKeywords(){
+			var ad=prvlgd.get("ad");
+			 if (ad && ad.keywords) {
+				 var kw=ad.keywords;
+				  for (var i=0; i< kw.length; i++){
+					  var kwarr=kw[i].split("=");
+					  if (kwarr[0] && kwarr[1]){
+						  buildkw(kwarr[0],kwarr[1]);
+					  }
+				  }
+			 }
+			 if(ad && ad.ord){
+				 buildkw("ord",ad.ord);
+			 }
+			
+		}
+		
+		function buildkw(name, value,asStr){
+			var val =value || "nl";
+			adkeywords[name]=val;
+			if (!asStr){
+				cust_params=cust_params+name+"="+val+"&";
+			}else{
+				cust_params=cust_params+name+"=" +asStr+"&";
+			}
+			
+		}
+		
+		function addLocaleKeywords(){
+			var locale ='nl';
+			var page = prvlgd.get("page");
+			if(page && page.locale){
+				locale = page.locale;
+			}
+			buildkw('locale', (locale ||'nl') );
+		}
+		
+		
+		function addLocKeywords(){
+				var cid= 'nl';
+				var currloc=prvlgd.get("currloc");
+
+				var loc, dma, stateCd, city, countryCd,zip;
+				
+				// Test to see if currloc is an empty object,
+				// since it may have been initialized as an 
+				// empty object. If it was not initialized
+				// and is undefined, this test will also fail.
+				if ($.isEmptyObject(currloc)){
+					currloc=prvlgd.get("user.preferredLocation");
+				}
+				
+				// Only need to test if currloc is truthy since,
+				// At this point it will only be undefined (falsy) 
+				// if there was no user.preferredLocation
+				if(currloc){
+						
+						if (currloc.locid){
+							loc=currloc.locid;
+							zip=currloc.zip;
+						}else if(currloc.zip){
+							loc=currloc.zip;
+							zip=currloc.zip;
+						}
+				  
+						if(loc && loc.indexOf(":") !=-1){
+							loc = loc.replace(":","$");
+						} 
+						
+						dma=currloc.dma || 'nl';
+						stateCd=currloc.state || 'nl';
+						countryCd=currloc.country || 'nl';
+						cid=currloc.claritas || 'nl';
+						
+						buildkw('loc',(loc ||  'nl'));
+						buildkw('dma', dma);
+						buildkw('st', stateCd.toLowerCase());
+						buildkw('cc',countryCd.toLowerCase());
+						buildkw('cid',cid);
+						buildkw("zip",zip);
+						addGPR(currloc);
+				}else{
+					buildkw('loc','nl');
+					buildkw('dma', 'nl');
+					buildkw('st', 'nl');
+					buildkw('cc','nl');
+					buildkw('cid','nl');
+					buildkw('intl','nl');
+				}
+					
+					
+			
+				
+		}
+		addLayoutKeywords();
+		addLocKeywords();
+		addLocaleKeywords();
+		addWxKeywords();
+		addAdKeywords();
+		addForecastKeywords();
+		addDeclKeywords();
+		addUserKeywords();
+		addASI();
+		addFV();
+		addScatter();
+		addAdstest();
+		addTweetKeywords();
+		addContentModuleKeyword();
+		prvlgd.set("ad.pageKeywords", adkeywords);
+		prvlgd.set("ad.cust_params",cust_params);
+		TWC.Events.adKeywordsReady.notify();
+		
+	};
+	
+	function genRandStr(inlen,inchars)
+	{
+		var chars=inchars?inchars:"0123456789";
+		var len=inlen?inlen:16;
+		var ret="";
+		for(var i=0;i<len;i++)
+		{
+			ret+=chars.charAt(Math.floor(Math.random()*chars.length)%chars.length);
+		}
+		return ret;
+	}
+	function genRMID()
+	{
+		return genRandStr(16,"0123456789");
+	}
+	function genORD()
+	{
+		return genRandStr(16,"0123456789");
+	}
+
+	prvlgd.setDevice=function(){
+		var usr=prvlgd.get("user");
+		if (!usr || typeof(usr.device)=="undefined"){
+			jQuery.ajax({
+						url: '/pagelet/wurfl',
+						dataType: 'json',
+						
+						success: function (data) {
+							prvlgd.setUser("device", data);
+							TWC.Events.userDeviceevent.resolve();
+											
+						}
+			  	 	});
+		
+		}else{
+			TWC.Events.userDeviceevent.resolve();
+		}
+	};
+	
+	prvlgd.updateClassName = function(className) {
+		jQuery(".mw-wx-triggered").addClass(className);
+	};
+
+	prvlgd.setClassName=function(){
+		var usr=prvlgd.get("user");
+		var recentSearchLocs=prvlgd.get("user.recentSearchLocations") || [],
+			rsLength = recentSearchLocs.length;
+		if (rsLength > 0){
+				jQuery.ajax({
+					url: '/pagelet/wxtrigger/'+recentSearchLocs[0].locid,
+					dataType: 'json',
+					type:'GET',
+					success: function (data) {
+						window[data.functionName](data.className);	
+					}
+					
+			   	});
+		}
+	};
+	
+	prvlgd.setRsisegs=function(){
+		var loc=	prvlgd.get("currloc");
+		var asiCountry="US";
+		var asiState="";
+		var asiDMA="";
+		var asiCat = "";
+		var asiObj=new Array();
+		var asiCategory="";
+		
+		if (typeof(loc)=="undefined")
+		{
+			loc=prvlgd.get("user.preferredLocation");
+		}
+		
+		if (loc){
+			asiCountry = loc.country;
+			asiState = loc.state;
+			asiDMA=loc.dma;
+			if(window.K06578){
+				K06578.DM_addToLoc("country",asiCountry);
+				K06578.DM_addToLoc("state",asiState);
+				K06578.DM_addToLoc("dma",asiDMA);
+			}
+		}
+		
+		var omn=prvlgd.get("metrics");
+		if (typeof(omn)!="undefined"){
+			var level1=omn.level1;
+			var level2=omn.level2;
+			var level3=omn.level3;
+			var level4=omn.level4;
+			
+			if (level1) asiCat=level1;
+			if (level2) asiCat=asiCat+"-"+level2;
+			var primaryDeclaration;
+			if (prvlgd.get("user")){
+				primaryDeclaration=prvlgd.get("user").preferredDeclaration;
+			}
+			var  isdynamic = (prvlgd.get("ad").dynamic=="true")?true:false;
+			
+			
+			if (isdynamic && typeof(primaryDeclaration)!="undefined"){
+				var isUndecl= (primaryDeclaration=="undc"?true:false);
+				
+				var adcontents=prvlgd.get("ad").adContents;
+				var contentTypeMap="";
+				
+				 if(isUndecl && typeof(businessDeclaration)!="undefined"){
+					 contentTypeMap=adcontents[businessDeclaration];
+				}else if (null!=primaryDeclaration){
+					contentTypeMap=adcontents[primaryDeclaration];	
+				}
+				if (typeof(contentTypeMap)!="undefined"){			 	
+						level3=contentTypeMap.metricLevel3;
+						level4=contentTypeMap.metricLevel4;
+				}
+			}
+			if (level3) asiCat=asiCat+"-"+level3;
+			if (level4) asiCat=asiCat+"-"+level4;
+			
+			
+			if(asiCat != undefined && asiCat != ""){
+				var asiStr=asiCat;var asiSplitUP = asiStr.split("-");
+				for (var i=0; asiSplitUP && i < asiSplitUP.length; i++){
+					asiObj[i] = asiSplitUP[i];
+				}
+				asiCategory = asiObj.join(" > ");asiCategory = asiCategory+" > ";
+				if(window.K06578){
+					K06578.DM_addToLoc("beh_cat",asiCat);
+					K06578.DM_cat(asiCategory);
+				}
+			}
+			
+		}
+	
+		
+		
+		if(window.K06578){
+	
+			K06578.DM_tag();
+		}
+		
+	};
+	
+	
+	
+	
+	// Initialize PCO
+	init();
+	
+	/***
+	 **
+	 ** Return a reference to the privileged object
+	 **/
+	return prvlgd;
+};

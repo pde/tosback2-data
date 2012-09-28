@@ -18,6 +18,29 @@ if (!isIE6Up && menuIsIE) {
     MENU_HEIGHT = MENU_HEIGHT_IE5;
     MENU_PADDING = MENU_PADDING_IE5;
 }
+function setLanguageCookie() {
+    var urlSegments = location.pathname;
+    if (urlSegments != null && urlSegments.length > 3 && urlSegments.substring(0, 4).toLowerCase() == "/es/") {
+        var existingCookie = getCookieVal("Language");
+        if (existingCookie != "es") {
+            setLanguage("es");
+        }
+    }
+}
+if (document.addEventListener) {   
+    document.addEventListener("DOMContentLoaded", function () {
+        document.removeEventListener("DOMContentLoaded", arguments.callee, false);
+        setLanguageCookie();
+    }, false);
+}
+else if (document.attachEvent) {   
+    document.attachEvent("onreadystatechange", function () {
+        if (document.readyState === "complete") {
+            document.detachEvent("onreadystatechange", arguments.callee);
+            setLanguageCookie();
+        }
+    });
+}
 
 var LOC_NAME_LENGTH = 42;
 
@@ -717,5 +740,5 @@ function RedirectToAuthenticatedUserOptionsPage() {
     location.href = '/localization/authenticate.cspx';
 }
 function RedirectToSignOut() {
-    location.href = '/localization/logout.aspx';
+    location.href = '/shop/buyflow2/logout.aspx';
 }

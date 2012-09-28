@@ -8,7 +8,7 @@ if($.cookie("tmg_pid")) {
 //Track the navigation click on the delivery page (and not in the referrer page)
 if($.cookie("tmg_navPos")) {
 	$("head").append($("<meta />").attr("name","DCSext.navigation").attr("content",$.cookie("tmg_navPos")));
-	$.cookie('tmg_navPos', "", { expires: -1, path: '/' });
+	$.cookie('tmg_navPos', "", { expires: -1, path: '/',domain:'telegraph.co.uk'});
 }
 
 //*NEW - apply a persistent Telegraph.co.uk cookie to user's browsers to indicate they have registered and/or logged in (DIGI-893)

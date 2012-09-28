@@ -105,6 +105,12 @@ $.validator.setDefaults({
             var width = $('#modalFrame').width();
             $('#modal-iframe', window.parent.document).attr({'style': 'height:auto; min-height:'+height+'px; width:'+width+'px;'});
         }
+        if ( $('#premiumFrame').length && ( window.location !== top.location.href) )
+        {
+            var height = $('#premiumFrame').height() + 23;
+            var width = $('#premiumFrame').width();
+            $('#premium-iframe', window.parent.document).attr({'style': 'height:auto; min-height:'+height+'px; width:'+width+'px;'});
+        }
     }
 });
 

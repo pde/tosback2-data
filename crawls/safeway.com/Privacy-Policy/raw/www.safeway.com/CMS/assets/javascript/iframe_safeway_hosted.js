@@ -61,11 +61,17 @@ function getViewName() {
 	function loadintoIframe(iframeid, url, viewName, hostname) {
   // Reverting back to R0 solution for where2getit and cellfire.com and emarketinginc.com.  
   // It's not easy to get the correct height on this site with middle iframe solution.
-  if(url.indexOf('where2getit.com') > -1 || url.indexOf('locator.safeway.com') > -1 || url.indexOf('locator.vons.com') > -1 || url.indexOf('locator.pavilions.com') > -1 || url.indexOf('locator.genuardis.com') > -1 || url.indexOf('locator.dominicks.com') > -1 || url.indexOf('locator.randalls.com') > -1 || url.indexOf('locator.tomthumb.com') > -1 || url.indexOf('locator.carrsqc.com') > -1 || url.indexOf('cellfire.com') > -1 || url.indexOf('e-centives.com') > -1 || url.indexOf('foursquare.com') > -1 || url.indexOf('emarketinginc.com') > -1 || url.indexOf('chtah.com') > -1 || url.indexOf('redreview.net') > -1) {
+  if(url.indexOf('where2getit.com') > -1 || url.indexOf('shop.safeway.com') > -1 || url.indexOf('corporate.safeway.com') > -1 || url.indexOf('locator.safeway.com') > -1 || url.indexOf('locator.vons.com') > -1 || url.indexOf('locator.pavilions.com') > -1 || url.indexOf('locator.genuardis.com') > -1 || url.indexOf('locator.dominicks.com') > -1 || url.indexOf('locator.randalls.com') > -1 || url.indexOf('locator.tomthumb.com') > -1 || url.indexOf('locator.carrsqc.com') > -1 || url.indexOf('cellfire.com') > -1 || url.indexOf('e-centives.com') > -1 || url.indexOf('foursquare.com') > -1 || url.indexOf('emarketinginc.com') > -1 || url.indexOf('chtah.com') > -1 || url.indexOf('redreview.net') > -1 || url.indexOf('safeway1.inserts2online.com') > -1) {
    var ifrm = document.getElementById(iframeid);
    url = URLDecode(url);
    if(url.indexOf('hostname') < 0) {
-    	url = url + 'hostname=' + hostname + '&banner=' + banner + '&env=' + environ;
+    	if( url.indexOf('shop.safeway.com') > -1 || url.indexOf('corporate.safeway.com') > -1 ) {
+			url = url + '?hostname=' + hostname + '&banner=' + banner + '&env=' + environ;
+		} else if (url.indexOf('safeway1.inserts2online.com') > -1) {
+			url = url + '&hostname=' + hostname + '&banner=' + banner + '&env=' + environ;
+		} else {
+			url = url + 'hostname=' + hostname + '&banner=' + banner + '&env=' + environ;
+		}
    }
    ifrm.src = url;
    if(url.indexOf('where2getit.com') > -1) {
@@ -81,6 +87,12 @@ function getViewName() {
    } else if (url.indexOf('cellfire.com') > -1) {
      	ifrm.height = '1400';
      	ifrm.width = '970';
+   } else if (url.indexOf('shop.safeway.com') > -1) {
+     	ifrm.height = '1198';
+     	ifrm.width = '745';
+   } else if (url.indexOf('corporate.safeway.com') > -1) {
+     	ifrm.height = '1198';
+     	ifrm.width = '745';
    } else if (url.indexOf('emarketinginc.com') > -1) {
      	ifrm.height = '750';
      	ifrm.width = '970';
@@ -116,6 +128,9 @@ function getViewName() {
      	ifrm.width = '970';
    } else if (url.indexOf('locator.tomthumb.com') > -1) {
      	ifrm.height = '1225';
+     	ifrm.width = '970';
+   } else if (url.indexOf('safeway1.inserts2online.com') > -1) {
+     	ifrm.height = '850';
      	ifrm.width = '970';
    } else if (url.indexOf('redreview.net') > -1) {
      	ifrm.width = '985';
@@ -346,6 +361,7 @@ function getFilePath(domain)
 	pathArray[79] = 'https://corporate.safeway.com/safeway/rxrefill/middleiframeNEW.html?extraHeight=20&';
 	pathArray[80] = 'https://corporate.safeway.com/safeway/middleiframeNEW.html?extraHeight=20&';
 	pathArray[81] = 'https://corporate.safeway.com/middleiframeNEW.html?extraHeight=20&';
+	pathArray[82] = 'http://safeway1.inserts2online.com/middleiframeNEW.html?extraHeight=20&';
 
 	/// DO NOT EDIT BELOW
 	for (var i=0; i<pathArray.length; i++) {

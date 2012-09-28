@@ -26,7 +26,9 @@ $(document).ready(function(){
 	});
 	
 	$("#shipSame").click( function(){
+		$("#SHprefixId").val($("#prefixId").val())
 		$("#SHname").val( $("#name").val() );
+		$("#SHcompanyName").val( $("#companyName").val() );
 		$("#SHstreetAddress").val( $("#streetAddress").val() );
 		$("#SHapt").val( $("#apt").val() );
 		$("#SHzip").val( $("#zip").val() );
@@ -61,12 +63,20 @@ $(document).ready(function(){
 			formatResult: function(theOpt){
 				var d=theOpt.text.split('|'),
 				    output='';
-				output = d[0]+'<br />'+d[1]+' '+d[2]+'<br />'+d[3]+', '+d[4]+' '+d[5];
+				output = d[1]+'<br />'+d[2]+' '+d[3]+'<br />'+d[4]+', '+d[5]+' '+d[6];
+				if (d[0]) {
+					output = d[0]+' '+output;
+				}
 				return output;
 			},
 			formatSelection: function(theOpt) {
-				var d=theOpt.text.split('|');
-				return d[0];
+				var d=theOpt.text.split('|'),
+				    output='';
+				output = d[1];
+				if (d[0]) {
+					output = d[0]+' '+output;
+				}
+				return output;
 			}
 		});
 	}
@@ -211,6 +221,8 @@ $(document).ready(function(){
 		} else {
 			theSelId = 'GCpaymentTypeId';
 		}
+		prepPaymentFormFor('stopPayment', document.getElementById('paymentForm'));
+		prepPaymentFormFor('droptopayment', document.getElementById('paymentForm'));
 		$('#'+theSelId).val('').change();
 		return false;
 	});
@@ -273,6 +285,12 @@ ajaxCustomerForm = function(){
 //submits form or focuses on the item quantity
 	function updateCart(field, forceUpdate){
 		focusedForm=field.form;
+		
+		// Only execute this if the paymentpage is present
+		if ($("#paymentForm").length>0) {
+			prepPaymentFormFor('stopPayment', focusedForm);
+		}
+		
 		if (forceUpdate == true) {
 			focusedForm.submit();
 			return;
@@ -317,6 +335,7 @@ function confirmItemRemoval() {
 			window.location.replace(site+"checkout/shipTo.php?from="+from+"&cartId="+cartId[1]);
 		}
 		else{
+			prepPaymentFormFor('stopPayment', field.form);
 			field.form.submit();
 		}
 	}//end updateShipTo()
@@ -347,10 +366,13 @@ function confirmItemRemoval() {
 //empies the payment fields and submits the form
 //called when changing the type of payment method
 	function changePaymentMethod(otherField){
-		$("#paymentChoices input").val("");
+		var theForm = $("#paymentForm");
+		//$("#paymentChoices input").val("");
 		$("#"+otherField).val("");
 		$("#nextPage").val("-1");
-		$("#paymentForm").submit();
+		prepPaymentFormFor('removePrevPaymentType',theForm[0]);
+		prepPaymentFormFor('droptopayment',theForm[0]);
+		theForm.submit();
 		
 		//if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
 		//field.form.submit();
@@ -562,6 +584,18 @@ function confirmItemRemoval() {
 			$paymentTypeId.val('');
 		}
 		$('#payRecord').val('');
+		prepPaymentFormFor('droptopayment',$theForm[0]);
+		$theForm.submit();
+	}
+	
+	function updatePayments() {
+		var $theForm = $('#paymentForm'),
+		$paymentTypeId = $('#paymentTypeId');
+		if ($paymentTypeId.length>0) {
+			$paymentTypeId.val('');
+		}
+		$('#payRecord').val('');
+		prepPaymentFormFor('droptopayment',$theForm[0]);
 		$theForm.submit();
 	}
 	
@@ -575,3 +609,110 @@ function confirmItemRemoval() {
 		if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
 		field.form.submit();
 	}//end changeMyAccountPaymentMethod()
+	
+	function checkPromoCode(theForm) {
+	var $cMsg = 'Are you sure you want to replace this discount?\nOnly one discount per order is allowed.',
+	newEle = theForm.promoCodeTemp,
+	oldEle = theForm.promoCode,	
+	nVal = theForm.promoCodeTemp.value;
+	oVal = theForm.promoCode.value,
+	retVal = true;
+	
+	// Only work if we have a something in the temp promo code
+	if (nVal != '' && oVal !='') {
+		// Now check to see if promo codes match.
+		if (nVal != oVal) {
+			// So they are different, now confirm that the user wants to change them.
+			if (!confirm($cMsg)) {
+				retVal = false;
+			}
+		} // They do, stop processing
+	}
+	if (retVal) {
+		oldEle.value = nVal;
+	} else {
+		newEle.value = oVal;
+	}
+	return retVal;
+}
+
+function applyCatalogKeyCode(theForm){
+		prepPaymentFormFor('stopPayment',theForm);
+		prepPaymentFormFor('droptopayment',theForm);
+		$("#paymentForm").submit();
+}
+
+function applyPromoCode(theForm){
+	if (theForm.promoCodeTemp.value !="" && checkPromoCode(theForm)) {
+		prepPaymentFormFor('stopPayment',theForm);
+		prepPaymentFormFor('droptopayment',theForm);
+		$("#paymentForm").submit();
+	}
+}
+
+
+/**
+ * used to clear the payment form of fields that will produce
+ * results unrelated to the user's action (applying a payment on qty change etc)
+ *
+ * @param str action The user's desired action. Used to determine which fields to clear.
+ * @param HTMLElement theForm The HTML element form (NOT jQuery Object)
+ * @returns null
+ */
+function prepPaymentFormFor(action, theForm) {
+	var fields=[],selects=[],cbs=[],proceed=true,clearExtra=false;
+	switch (action) {
+		case 'stopPayment':
+			clearExtra = true;
+			fields = ['savedAmount','IdNumberpayment','Amountpayment','PINpayment','paymentTypeId'];
+			selects = ['monthExpDatepayment','yearExpDatepayment','CCpaymentTypeId','GCpaymentTypeId'];
+			cbs = ['saveCC','tcAccept','ignore'];
+			break;
+		
+		case 'droptopayment':
+			var frmAction = theForm.action;
+			if (!frmAction.match(/#payment/)) {
+				theForm.action = theForm.action+'#payment';
+			}
+			proceed = false;
+			break;
+
+		case 'removePrevPaymentType':
+			clearExtra = false;
+			fields = ['paymentTypeId','Amountpayment'];
+			proceed = true;
+			break;
+		
+		default:
+			// Prevent this code from doing anything
+			proceed = false;
+			break;
+	}
+	
+	if (proceed == true) {
+		
+		if (clearExtra == true) {
+			$("#payRecord").val("");
+			$("#GCpaymentTypeId").val("");
+			$("#CCpaymentTypeId").val("");
+			$("#nextPage").val("-1");
+		}
+
+		// handle fields
+		for (var i=fields.length; i>-1 ; --i) {
+			var ele = theForm[fields[i]];
+			if (ele) { ele.value=""; }
+		}
+		
+		for (var i=selects.length; i>-1 ; --i) {
+			var ele = theForm[selects[i]];
+			if (ele) { ele.selectedIndex=0; }
+		}
+		
+		for (var i=cbs.length; i>-1 ; --i) {
+			var ele = theForm[cbs[i]];
+			if (ele) { ele.checked=false; }
+		}		
+
+	}
+}

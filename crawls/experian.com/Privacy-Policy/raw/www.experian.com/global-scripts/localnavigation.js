@@ -399,3 +399,8 @@ function concatElqParamToGoLinks(){
 var pageUrl = new UrlObj(); // create pageUrl instance
 var referUrl = new ReferUrlObj(); // create refer url instance
 
+//left nav script for redefined pages
+$(document).ready(function() {
+if ( $('#redefinedcontent').is(':visible')){
+$("#leftnav200content_inc").css("background-color","transparent");
+}});

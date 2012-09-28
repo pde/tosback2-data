@@ -7,7 +7,6 @@
  * Licensed under the MIT License:
  *   http://www.opensource.org/licenses/mit-license.php
  */  
-
 // on page load call TB_init
 window.addEvent('domready', TB_init);
 
@@ -24,16 +23,20 @@ var MAX_OVERLAY_HEIGHT = 500;
 var MAX_ATTRIBUTES_WIDTH = 525;
 var MAX_OVERLAY_WIDTH = 580;
 var IS_CHOOSEMORE_OVERLAY = false;
+var IS_CART_IN_OVERLAY = false;
+var IS_AD_CONFIRM_OVERLAY = false;
+var IS_WL_CONFIRM_OVERLAY = false;
+
 var IS_SEARCH_OVERLAY = false;
+var IS_ZOOM_OVERLAY = false;
+var IS_PLAYER = false;
 var POPUP_SPACE = 20;
+var POPUP_OVERLAY_CLOSE = 'Close';
 
 // add smoothbox to href elements that have a class of .smoothbox
 function TB_init(){
-    $$("a.smoothbox").each(function(el){
-        el.onclick = TB_bind
-    });
+    $$("a.smoothbox").each(function(el){el.onclick = TB_bind});
 }
-
 function TB_bind(event){
     var event = new Event(event);
     // stop default behaviour
@@ -52,9 +55,16 @@ function TB_bind(event){
 
 // called when the user clicks on a smoothbox link
 function TB_show(caption, url, rel){
-
+	var queryString = url.match(/\?(.+)/)[1];
+    var params = TB_parseQuery(queryString);
+    
 	IS_CHOOSEMORE_OVERLAY = false; // default to false for each TB_show function call
 	IS_SEARCH_OVERLAY = false;
+	IS_CART_IN_OVERLAY = false;
+	IS_AD_CONFIRM_OVERLAY = false;
+	IS_WL_CONFIRM_OVERLAY = false;
+	IS_ZOOM_OVERLAY = false;
+	IS_PLAYER = false;
     // create iframe, overlay and box if non-existent
     
     if (!$("TB_overlay")) {
@@ -64,7 +74,7 @@ function TB_show(caption, url, rel){
         $('TB_overlay').setOpacity(0);
         TB_overlaySize();
         new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='/images/loading.gif' />";
+        $('TB_load').innerHTML = "<img src='wcsstore/images/loading.gif' />";
         TB_load_position();
         
         $('TB_overlay').set('tween', {
@@ -76,17 +86,20 @@ function TB_show(caption, url, rel){
     
     if (!$("TB_load")) {
         new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='/images/loading.gif' />";
+        $('TB_load').innerHTML = "<img src='wcsstore/images/loading.gif' />";
         TB_load_position();
     }
     
     if (!$("TB_window")) {
         new Element('div').setProperty('id', 'TB_window').injectInside(document.body);
         $('TB_window').setOpacity(0);
+        if(url.indexOf('player')!= -1){
+	        IS_PLAYER= true;
+	        $('TB_window').addClass('TB_'+params['player']);
+        }
     }
     
     $("TB_overlay").onclick = TB_remove;
-    window.onscroll = TB_position;
     
     //check if print button needed
     var printbtn="";
@@ -188,7 +201,7 @@ function TB_show(caption, url, rel){
             
             // TODO empty window content instead
             $("TB_window").innerHTML += "<a href='' id='TB_ImageOff' title='" + POPUP_CLOSE + "'><img id='TB_Image' src='" + url + "' width='" + imageWidth + "' height='" + imageHeight + "' alt='" + caption + "'/></a>" + "<div id='TB_caption'>" + caption + "<div id='TB_secondLine'>" + imageCount + prev.html + next.html + "</div></div><div id='TB_closeWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div>";
-            $("TB_window").innerHTML += '<link type="text/css" media="print" href="/US/content/css/printoverlay.css" rel="stylesheet"/>';
+            $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
             $("TB_closeWindowButton").onclick = TB_remove;
             
             function buildClickHandler(image){
@@ -240,8 +253,6 @@ function TB_show(caption, url, rel){
         
     }
     else { //code to show html pages
-        var queryString = url.match(/\?(.+)/)[1];
-        var params = TB_parseQuery(queryString);
         
         TB_WIDTH = (params['width'] * 1) + 30;
         TB_HEIGHT = (params['height'] * 1) + 40;
@@ -252,11 +263,27 @@ function TB_show(caption, url, rel){
 	       IS_CHOOSEMORE_OVERLAY = true;
 		}
 		
+		if(params['cartOverlay'] == 'true'){
+			IS_CART_IN_OVERLAY = true;
+		}
+		if(params['cartWLConfirm'] == 'true'){
+			IS_WL_CONFIRM_OVERLAY = true;
+		}
+		
+		if(params['cartADConfirm'] == 'true'){
+			IS_AD_CONFIRM_OVERLAY = true;
+		}
+		if(params['TB_zoomOverlay'] == 'true'){
+			IS_ZOOM_OVERLAY = true;
+		}
 		if(params['keyword'] != null && params['keyword'] != ''){
 			IS_SEARCH_OVERLAY = true;
 		}
-        
-        if (url.indexOf('TB_iframe') != -1) {
+        if(IS_PLAYER){ 
+            $("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a id='TB_closeWindowButton' href='#'  title='" + POPUP_CLOSE + "' >" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + url+ "' id='TB_iframeContent' name='TB_iframeContent' style='margin-top:0px;width:" + (ajaxContentW+5) + "px;height:" + (ajaxContentH+10) + "px;' onload='TB_showWindow()'> </iframe>";            
+        }else if(IS_ZOOM_OVERLAY){ 
+            $("TB_window").innerHTML += "<div id='TB_title' class='hidden'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a id='TB_closeWindowButton' href='#'  title='" + POPUP_CLOSE + "' >" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + url+ "' id='TB_iframeContent' name='TB_iframeContent' style='margin-top:0px;width:" + (ajaxContentW+5) + "px;height:" + (ajaxContentH+10) + "px;' onload='TB_showWindow()'> </iframe>";            
+        }else if (url.indexOf('TB_iframe') != -1) {
             urlNoQuery = url.split('TB_');
             //$("TB_window").innerHTML += "<div id='TB_title'><div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + urlNoQuery[0] + "' id='TB_iframeContent' name='TB_iframeContent' style='width:" + (ajaxContentW + 29) + "px;height:" + (ajaxContentH + 17) + "px;' onload='TB_showWindow()'> </iframe>"; 
             // Start Defect 9149
@@ -269,11 +296,20 @@ function TB_show(caption, url, rel){
             // End of Defect 9149          
          } 
         else {
-            $("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>" + POPUP_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";
+        	if(IS_CART_IN_OVERLAY){
+			$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' style='font-weight:normal !important;'>" + POPUP_OVERLAY_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";        	        		        		
+		}else{			        
+            		$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>" + POPUP_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";
+            	}
         }
-        $("TB_window").innerHTML += '<link type="text/css" media="print" href="/US/content/css/printoverlay.css" rel="stylesheet"/>';
-        $("TB_closeWindowButton").onclick = TB_remove;
-        
+        $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
+	    
+	if(IS_CART_IN_OVERLAY){
+        	 $("TB_closeWindowButton").onclick = CloseSecureOverlay;
+        }else{        
+        	 $("TB_closeWindowButton").onclick = TB_remove;
+        }
+                        
         if (url.indexOf('TB_inline') != -1) {
             $("TB_ajaxContent").innerHTML = ($(params['inlineId']).innerHTML);
             TB_position();
@@ -307,13 +343,6 @@ function TB_show(caption, url, rel){
                 }).get(url);
             }
     }
-    
-    window.onresize = function(){
-        TB_position();
-        TB_load_position();
-        TB_overlaySize();
-    }
-    
     document.onkeyup = function(event){
         var event = new Event(event);
         if (event.code == 27) { // close
@@ -355,7 +384,6 @@ function TB_show_overlay(caption, url, rel){
     }
     
     $("TB_overlay").onclick = TB_remove;
-    window.onscroll = TB_position;
     
     // check if a query string is involved
     var baseURL = url.match(/(.+)?/)[1] || url;
@@ -453,7 +481,7 @@ function TB_show_overlay(caption, url, rel){
             
             // TODO empty window content instead
             $("TB_window").innerHTML += "<a href='' id='TB_ImageOff' title='" + POPUP_CLOSE + "'><img id='TB_Image' src='" + url + "' width='" + imageWidth + "' height='" + imageHeight + "' alt='" + caption + "'/></a>" + "<div id='TB_caption'>" + caption + "<div id='TB_secondLine'>" + imageCount + prev.html + next.html + "</div></div><div id='TB_closeWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div>";
-            $("TB_window").innerHTML += '<link type="text/css" media="print" href="/US/content/css/printoverlay.css" rel="stylesheet"/>';
+            $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
             $("TB_closeWindowButton").onclick = TB_remove;
             
             function buildClickHandler(image){
@@ -555,14 +583,7 @@ function TB_show_overlay(caption, url, rel){
                     onComplete: handlerFunc
                 }).get(url);
             }
-    }
-    
-    window.onresize = function(){
-        TB_position();
-        TB_load_position();
-        TB_overlaySize();
-    }
-    
+    }    
     document.onkeyup = function(event){
         var event = new Event(event);
         if (event.code == 27) { // close
@@ -597,6 +618,15 @@ function TB_showWindow(){
             $('TB_load').dispose();
         }
     }
+     if($('TB_iframeContent')!=null){       	 
+    	if($('TB_iframeContent').src!=null){
+    		if($('TB_iframeContent').src.indexOf("cartOverlay=true")>-1){	    		
+	    		if($('TB_title')!=null){
+	    			$('TB_title').setStyle('display', 'none');      		
+	    		}
+ 			}     	
+   		 }
+   	 }	    
 }
 
 function TB_remove(){
@@ -662,7 +692,7 @@ function TB_remove(){
     // what issue this addressed; however, by commenting out this call, it will prohibit new defects from being open when closing overlays (javascript errors).
     //resumePlayer();
     //Defect 8197
-    if(video && video.status == 'expandPause'){
+    if(typeof video !="undefined" && video.status == 'expandPause'){
     	video.play();
     }
     
@@ -701,8 +731,14 @@ function TB_position(){
 
 			var top = window.getScrollTop() + (window.getHeight() - h) / 2;			
 			var left = window.getScrollLeft() + (window.getWidth() - TB_WIDTH) / 2;
-
-			return {'top':top,'left':left, 'width': TB_WIDTH, 'height': h};
+			if(IS_CART_IN_OVERLAY){
+				var top = window.getScrollTop() + (window.getHeight() - TB_HEIGHT) / 2;			
+				return {'top':top,'left':left, 'width': TB_WIDTH, 'height': TB_HEIGHT};
+			}else{
+				var top = window.getScrollTop() + (window.getHeight() - h) / 2;			
+				return {'top':top,'left':left, 'width': TB_WIDTH, 'height': h};
+			}
+			
 		}
 	}
     $('TB_window').set('morph', {
@@ -795,7 +831,7 @@ function TB_position(){
 		});	
 		
 		// Defect 9909
-		if($('TB_iframeContent')){
+		if($('TB_iframeContent')&&!IS_PLAYER){
 			$('TB_iframeContent').morph({
 				height: (pos.height - borderWidth) + 'px',
 				width: pos.width + 'px',
@@ -803,6 +839,84 @@ function TB_position(){
 				left: pos.left + 'px'
 			});
 		}
+		
+	//	if($('cartOverlayFrame')!=null || $('cartADConfirmOverlayFrame')!=null || $('cartSpeedBuyOverlayFrame')!=null || $('cartWLConfirmOverlayFrame')!=null){           
+                       // if($('cartWLConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartADConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartSpeedBuyOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartWLConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1){
+                        if(IS_AD_CONFIRM_OVERLAY  || IS_WL_CONFIRM_OVERLAY ){
+                                      $('TB_ajaxContent').setStyles({                                                                     
+                                                  "padding-left": 0 + 'px',
+                                                  "padding-right": 0 + 'px',
+                                                  height:(pos.height - borderWidth) + 'px',    
+                                                  width: pos.width + 'px',                     
+                                                   overflow: 'hidden'
+                                      }); 
+                                      parent.$('TB_window').setStyles({ 
+                                            "padding-bottom": 0 + 'px'
+                                      });                                                                                                                                
+                        }
+        //}		
+		 							 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	}
 }
 
@@ -874,3 +988,106 @@ function TB_changeDivContent(newUrl, targetDiv){
 		update: targetDiv
 	}).send();
 }     
+
+/*
+Needs to be in a submit event or the form handler, it fires a fireEvent for the same
+To submit  a form to a specicifc DIV with div name 
+*/
+function TB_formSubmitToDiv(formName, targetDiv){
+	TB_formSubmitToDivContent($(formName),targetDiv);
+}
+
+//With form object
+function TB_formSubmitToDivContent(form, targetDiv){
+
+	new Request.HTML({
+		url: form.action,
+		update: targetDiv
+	}).post($(form.id));
+}
+
+function TB_secureSubmitToDivContent(form, targetDiv){
+	var secureURI = new URI(form.action);
+		secureURI.set('scheme', 'https');
+	new Request.HTML({
+		url: secureURI.toString(),
+		update: targetDiv
+	}).post($(form.id));
+}
+
+
+function getCartOverlayPos(){ 
+		var H_SPACE = 20;
+		var MIN_HEIGHT = 300;
+		
+		var popWidth = $('TB_window').getWidth();
+		var popHeight = $('TB_window').getHeight();
+		
+		var winWidth = window.getWidth();
+		var winHeight = window.getHeight();
+		
+		if(winHeight < MIN_HEIGHT + 2 * H_SPACE){
+			// viewport height smaller than to display min overlay(height=300) and the top space is 20, width should be keep
+			var h = MIN_HEIGHT;
+
+			var top = window.getScrollTop() + H_SPACE;
+			var left = window.getScrollLeft() + (window.getWidth() - TB_WIDTH) / 2;
+			
+			return {'top':top,'left':left, 'width': TB_WIDTH, 'height': h};
+		}else if(winHeight >= popHeight + 2 * H_SPACE){
+			// viewport height is enough large to display overlay(include space at both top and bottom)
+			var top = window.getScrollTop() + (window.getHeight() - TB_HEIGHT) / 2;
+			var left = window.getScrollLeft() + (window.getWidth() - TB_WIDTH) / 2;
+			
+			return {'top':top,'left':left, 'width': TB_WIDTH, 'height': TB_HEIGHT};
+		}else{
+			// resize overlay in order to it can be displayed into the viewport, width should be keepped
+			var h = winHeight - 2 * H_SPACE;
+
+			var top = window.getScrollTop() + (window.getHeight() - h) / 2;			
+			var left = window.getScrollLeft() + (window.getWidth() - TB_WIDTH) / 2;
+
+			return {'top':top,'left':left, 'width': TB_WIDTH, 'height': h};
+		}
+}
+function resizeIframe(iframeObj,iframeHeight,iframeWidth){  
+	if($(iframeObj+'') != null){	
+		$(iframeObj+'').height = iframeHeight+'px';  	
+		$(iframeObj+'').style.height = iframeHeight+'px';  
+		if(document.getElementsByTagName("body")[0] != null){  
+			document.getElementsByTagName("body")[0].style.height = iframeHeight+'px';   
+		}  
+	}else if(parent.$(iframeObj+'') != null){	
+		parent.$(iframeObj+'').height = iframeHeight+'px';  	
+		parent.$(iframeObj+'').style.height = iframeHeight+'px';  
+			if(document.getElementsByTagName("body")[0] != null){  
+				document.getElementsByTagName("body")[0].style.height = iframeHeight+'px';   
+			}else if(parent.document.getElementsByTagName("body")[0] != null){
+				parent.document.getElementsByTagName("body")[0].style.height = iframeHeight+'px';   
+			}  
+	}	
+}  
+function displayOverlayCloseButton(){
+	if($('TB_closeWindowNew')!=null){
+		$('TB_closeWindowNew').style.display = 'none';
+	}
+	if(parent.$('TB_title')!=null){
+		parent.$('TB_title').style.display = 'block';					
+	} 				
+}																							                  
+function CloseSecureOverlay(){	
+	var secureOverlayCookie = Cookie.read('secureOverlay');  	
+	if(secureOverlayCookie == 'SpeedBuyVerification'){	
+		if(typeof SpeedBuyOverlayURL != 'undefined'){
+		  cmCreateManualLinkClickTag(SpeedBuyOverlayURL+'&manual_cm_sp=CARTOVERLAY-_-SPEEDBUY-_-CLOSEWINDOW','Close Window from Speed Buy Verification Page','SPEED BUY OVERLAY: LOGIN','P0042');	
+		  Cookie.dispose('secureOverlay',{path:"/"});	
+		}
+	}else if(secureOverlayCookie == 'OrderConfirmation'){
+		if(typeof SpeedBuyOverlayURL != 'undefined'){
+		  cmCreateManualLinkClickTag(OrderOKOverlayURL+'&manual_cm_sp=CARTOVERLAY-_-ORDERCONFIRM-_-CLOSEWINDOW','Close Window from Order Confirmation Page','SPEED BUY OVERLAY: ORDER CONFIRMATION','P0004');			
+		  Cookie.dispose('secureOverlay',{path:"/"});	
+		}		
+	}
+	TB_remove();
+	return false;
+}

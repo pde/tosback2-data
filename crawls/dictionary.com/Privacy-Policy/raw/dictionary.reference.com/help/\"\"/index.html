@@ -296,6 +296,13 @@
 
 
 
+
+    
+        
+    
+    
+
+
     
         
     
@@ -312,7 +319,7 @@
     appCoreUserid = "";
     appCoreUsername = "";
     gslFormatV3 = '';
-    dictionaryConsolidatedCookieList=new Array('dTlb','fC','rh','translangpair','regHP','dyn','freqcp');
+    dictionaryConsolidatedCookieList=new Array('dTlb','fC','rh','translangpair','regHP','dyn','freqcp','adblk');
     dictionaryConsolidatedCookieName='dcc';
     
     
@@ -384,6 +391,8 @@
     
     
     
+    
+    
 
 
 
@@ -403,7 +412,7 @@
     
 
 
-
+    
     <title>
 
 
@@ -412,6 +421,7 @@
 
 
 
+    
     
     
     
@@ -726,7 +736,7 @@
 
 
     
-        <link rel="stylesheet" href="../../../static.sfdict.com/dictionary/homepage/css/dic_header.css%3Fver=148.css" type="text/css"/>
+        <link rel="stylesheet" href="../../../static.sfdict.com/dictionary/homepage/css/dic_headerNew.css%3Fver=148.css" type="text/css"/>
     
     
 
@@ -755,6 +765,13 @@
    #tpnv #fvlp{border-left:none;}
 </style>
 
+
+ <style type="text/css">
+     #tpnv a, #tpnv span{
+         font-weight:normal;
+     }
+     
+ </style>
 
 
 
@@ -844,6 +861,7 @@
 
 
 
+
     
         
     
@@ -862,14 +880,15 @@
 <script type="text/javascript">
     var _daisyClickTrackingEnabled =  'true';
     var _daisyClickTrackingStatus =  'on';
+    var _adBlockStatus = 'false';
 
      // Daisy Click Event Object
     
     
     var DaisyInfo = window.DaisyInfo || {};
     DaisyInfo.clickURL = "app.reference.com";
-    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=9EB444019538AFB3083C419F5F988BF5&clkpage=dictionaryproxy&clkimpr=UC6Mz0LreWxpZLRy&clkld=0&clkorgn=0&clkref=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
-    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=9EB444019538AFB3083C419F5F988BF5&pageName=dictionaryproxy&impressionId=UC6Mz0LreWxpZLRy&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
+    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=FB8D0B03C03D181754651AACFD4D9762&clkpage=dictionaryproxy&clkimpr=UGYxrUCTvAgFuqOx&clkld=0&clkorgn=0&clkref=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
+    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=FB8D0B03C03D181754651AACFD4D9762&pageName=dictionaryproxy&impressionId=UGYxrUCTvAgFuqOx&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
 </script>
 
 
@@ -924,7 +943,7 @@
 
 
 
-    <script src="../../inc/js/dictionary/v4/dicMain_c.r89218.js" type="text/javascript"></script>
+    <script src="../../inc/js/dictionary/v4/dicMain_c.r89486.js" type="text/javascript"></script>
     <script type="text/javascript">if(typeof($.noConflict) == 'function'){$.noConflict();}var $j=jQuery;</script>
 
 
@@ -964,11 +983,31 @@ top:0;
 </style>
 <script type="text/javascript">	
 fancybox_init = function() {};
- if(daisyPageName.indexOf('wordoftheday')!=-1 || daisyPageName.indexOf('fun')!=-1 || daisyPageName.indexOf('crossword')!=-1){
+ if(daisyPageName.indexOf('wordoftheday')!=-1 || daisyPageName.indexOf('fun')!=-1 || daisyPageName.indexOf('crossword')!=-1 || daisyPageName.indexOf('enc')!=-1 || daisyPageName.indexOf('dic')!=-1){
 	if(navigator.userAgent.indexOf('iPad')!=-1){
 		document.write('<script src="http://dictionary.reference.com/help/%5C%22%5C%22/\&quot;http://code.jquery.com/ui/1.8.22/jquery-ui.min.js\&quot;"><\/script>');
 	}
    }
+   
+        function getTrackID(trackid){
+		    var trackid = trackid.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+            var regexS = "[\\?&]"+trackid+"=([^&#]*)";
+            var regex = new RegExp( regexS );
+            var results = regex.exec(window.location.href);
+            if( results == null )
+                return "";
+            else
+                return results[1];
+        }
+        function updateHref(){
+            var trackTestid= getTrackID('trackid').toUpperCase();
+            var urlArr=['DICT1','DICT2','DICT3','DICT4','DICT5'];
+            var url="http://media.dictionary.com/media/toolbar/supertoolbar/profile-dictionary/PIP/DICT5/Dictionary.com Toolbar_DICT5_InstallerV1.exe";          
+            if($j.inArray(trackTestid,urlArr)!=-1) {
+                url='http://media.dictionary.com/media/toolbar/supertoolbar/profile-dictionary/PIP/'+trackTestid+'/Dictionary.com Toolbar_'+trackTestid+'_InstallerV1.exe';
+            }
+            $j('.downloadbtn').attr('href',url);
+        }
 </script>
 
     
@@ -977,11 +1016,84 @@ fancybox_init = function() {};
 
 
 
+    
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+        
+        
+    
+    
+    
+
+
+ 
+    
+    
+    
+    
+         
+         
+    
+
+
+   <script type="text/javascript">
+       var _gaq = _gaq || [];
+       _gaq.push(['_setAccount', 'UA-4036279-9']);
+       _gaq.push(['_setDomainName','.reference.com']);
+       _gaq.push(['_setAllowHash',false]);
+       _gaq.push(['_setAllowLinker',true]);
+       
+       
+       _gaq.push(['_setSiteSpeedSampleRate', 5]);//Sample rate is set to 5%(5% of users sitespeed is measuresd)
+       _gaq.push(['_trackPageview']);
+       if(false){
+           if(false){
+               _gaq.push(['_trackEvent','midSerpAd','triggered']);
+           }else {
+               _gaq.push(['_trackEvent','midSerpAd','not triggered']);
+           }
+       }
+       (function() {
+           var ga = document.createElement('script');
+           ga.type = 'text/javascript'; ga.async = true;
+           ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com'+ '/ga.js';
+           var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+       })();
+   </script>
+       
+       
+
+
+
+
+
+
+
+
+    
+
      
-    <script type="text/javascript">
-        var _qevents = _qevents || [];
-    </script>
-</head>
 
 <body id="promo_serpTo" class="dic_serpto" onload="initpage();">
 
@@ -1096,9 +1208,13 @@ fancybox_init = function() {};
             
                 
                 
+                    <a id="loginHeaderLink" rel="nofollow" href="http://app.dictionary.com/login/core?source=header_dict&logindest=">Log In</a>
                     <a id="regLink" rel="nofollow" href="http://app.dictionary.com/signup/core?source=header_dict&logindest=">Sign Up</a>
                     
-                    <a id="loginHeaderLink" rel="nofollow" href="http://app.dictionary.com/login/core?source=header_dict&logindest=">Log In</a>
+
+                   
+                    <span class="bar"></span><span class="prmsbl"></span><a onmousedown="return pk(this,{en:'hrdprem',io:0,b:'prem',tp:'rr1',m:'hrdprem',ec:1,lk:'bz0r8y'})" href="http://app.reference.com/signup/premium?mp_source=bz0r8y&logindest=http%3A%2F%2Fdictionary.reference.com%2Fdictionaryproxy">Premium </a>
+                    
                 
             
         </div>
@@ -1107,8 +1223,11 @@ fancybox_init = function() {};
             
             
                 
+                    
+                    
+                        <a href="http://dictionary.reference.com" class="diclogo" onmousedown="return pk(this,{lk:'yg487x',en:'dkscr',io:'0',b:'dtop',tp:'hdr',m:'dkscr'})"><img alt="Dictionary.com" src="../../../static.sfdict.com/dictionary/homepage/ImagesNew/dic_logo.png" style="margin-top:4px"  height="42px" width="180px" /></a>
+                    
                 
-                <a href="http://dictionary.reference.com" class="diclogo" onmousedown="return pk(this,{lk:'yg487x',en:'dkscr',io:'0',b:'dtop',tp:'hdr',m:'dkscr'})"><img alt="Dictionary.com" src="../../../static.sfdict.com/dictionary/homepage/ImagesNew/dic_logo.png" style="margin-top:4px"  height="42px" width="180px" /></a>
             
         
 
@@ -1122,6 +1241,7 @@ fancybox_init = function() {};
 
          
         
+                
             
             
             
@@ -1148,17 +1268,17 @@ fancybox_init = function() {};
     <div id="cwrp">
         <div id="hlin">
             
-            <a class="sel" href="http://dictionary.reference.com/" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'tqks0v',en:'dtab',io:'0',b:'nav',tp:'hdr',m:'dtab'})">Dictionary</a>
-            <a href="http://thesaurus.com/" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'qxnxzj',en:'ttab',io:'0',b:'nav',tp:'hdr',m:'ttab'})">Thesaurus</a>
+            <a class="sel" href="http://dictionary.reference.com/" style="width:138px;" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'tqks0v',en:'dtab',io:'0',b:'nav',tp:'hdr',m:'dtab'})">Dictionary</a>
+            <a href="http://thesaurus.com/" style="width:134px" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'qxnxzj',en:'ttab',io:'0',b:'nav',tp:'hdr',m:'ttab'})">Thesaurus</a>
             
                 
-                <a id="dyn" href="http://dynamo.dictionary.com/?mp_source=ihzyvr" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'ihzyvr',en:'dytab',io:'0',b:'nav',tp:'hdr',m:'dytab'})">Word Dynamo</a>
+                <a id="dyn" style="width:164px" href="http://dynamo.dictionary.com/?mp_source=ihzyvr" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'ihzyvr',en:'dytab',io:'0',b:'nav',tp:'hdr',m:'dytab'})">Word Dynamo</a>
             
-            <a href="http://quotes.dictionary.com/" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'wtcrk4',en:'qtab',io:'0',b:'nav',tp:'hdr',m:'qtab'})">Quotes</a>
-            <a href="http://www.reference.com/" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'rn6y6h',en:'rtab',io:'0',b:'nav',tp:'hdr',m:'rtab'})">Reference</a>
-            <a href="http://translate.reference.com/translate" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'s6ljc3',en:'trtab',io:'0',b:'nav',tp:'hdr',m:'trtab'})">Translator</a>
+            <a href="http://quotes.dictionary.com/" style="width:108px" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'wtcrk4',en:'qtab',io:'0',b:'nav',tp:'hdr',m:'qtab'})">Quotes</a>
+            <a href="http://www.reference.com/" style="width:133px" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'rn6y6h',en:'rtab',io:'0',b:'nav',tp:'hdr',m:'rtab'})">Reference</a>
+            <a href="http://translate.reference.com/translate" style="width:128px" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'s6ljc3',en:'trtab',io:'0',b:'nav',tp:'hdr',m:'trtab'})">Translator</a>
             
-            <a href="http://spanish.dictionary.com/" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'kun0fl',en:'sptab',io:'0',b:'nav',tp:'hdr',m:'sptab'})" style="border:none">Spanish</a>
+            <a href="http://spanish.dictionary.com/" style="width:116px" onmousedown="ask.dict.updateQuery(this,true);daisyTabPK(this,{lk:'kun0fl',en:'sptab',io:'0',b:'nav',tp:'hdr',m:'sptab'})" style="border:none">Spanish</a>
             
          </div>
         <div id="snv">
@@ -1190,7 +1310,7 @@ fancybox_init = function() {};
 
 
 <script type="text/javascript">
-var _todaysDate= "August 17, 2012";
+var _todaysDate= "September 28, 2012";
 
 ask.dict.loggedIn=false;
 
@@ -1211,6 +1331,10 @@ var takeOverEnabled = false;
 
 </script>
 
+    <script type="text/javascript">
+        var _qevents = _qevents || [];
+           
+    </script>
 
 
 
@@ -1490,7 +1614,6 @@ var takeOverEnabled = false;
 
 
 
-
     
     
 
@@ -1541,6 +1664,7 @@ var takeOverEnabled = false;
     
     
     
+
 
 
 
@@ -1676,23 +1800,9 @@ var takeOverEnabled = false;
 
 
 
+
 <span style="display:none">
     
-        
-             
-            <script type="text/javascript">
-                _qoptions = {
-                    qacct:"p-51zXP5Cc9sxvQ"
-                };
-            </script>
-            <script type="text/javascript">
-            (function() {
-                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                po.src = 'http://pixel.quantserve.com/seg/p-51zXP5Cc9sxvQ.js';
-                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-            })();
-            </script>
-             
         
         
              
@@ -1813,92 +1923,6 @@ var takeOverEnabled = false;
     </script>
 
 
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-        
-        
-    
-    
-    
-
-
- 
-    
-    
-    
-    
-         
-         
-    
-
-   <div id="gaJS" style="display:none"> </div>
-    <script>
-   if(typeof(jQuery) != 'undefined'){
-    var $j = jQuery.noConflict();
-   $j(document).ready(function(){
-            ghostwriter(
-                    "gaJS",
-            {
-                insertType: "append",
-                script: { text: "var ga = document.createElement('script');ga.type = 'text/javascript'; ga.async = true;ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com'+ '/ga.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);" },
-                done: ghostwriter.flushloadhandlers
-            }
-            );
-          });
-       }
-    </script>
-   <script type="text/javascript">
-       var _gaq = _gaq || [];
-       _gaq.push(['_setAccount', 'UA-4036279-9']);
-       _gaq.push(['_setDomainName','.reference.com']);
-       _gaq.push(['_setAllowHash',false]);
-       _gaq.push(['_setAllowLinker',true]);
-       
-       
-       _gaq.push(['_setSiteSpeedSampleRate', 5]);//Sample rate is set to 5%(5% of users sitespeed is measuresd)
-       _gaq.push(['_trackPageview']);
-       if(false){
-           if(false){
-               _gaq.push(['_trackEvent','midSerpAd','triggered']);
-           }else {
-               _gaq.push(['_trackEvent','midSerpAd','not triggered']);
-           }
-       }
-   </script>
-       
-       
-
-
-
-
-
-
-
-
-    
-    
 
     
         <script>
@@ -2263,7 +2287,19 @@ var takeOverEnabled = false;
 
 
 
-      <script type="text/javascript"> var d = new Image(1, 1); d.onerror = d.onload = function () { d.onerror = d.onload = null; }; d.src = ["http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-805928h&cg=0&cc=1&si=", escape(window.location.href), "&rp=", escape(document.referrer), "&ts=compact&rnd=", (new Date()).getTime()].join(''); </script>
+        <div id="neilsen" style="display:none"> </div>
+        <script>
+            $j(document).ready(function(){
+             var url ="http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-805928h&cg=0&cc=1&si="+escape(window.location.href)+"&rp="+escape(document.referrer)+"&ts=compact&rnd="+(new Date()).getTime();
+            ghostwriter(
+                    "neilsen",
+            {
+                insertType: "append",
+                script: { text:"document.write('<img src="http://dictionary.reference.com/help/%5C%22%5C%22/+url+"/>')"}
+            }
+            );
+          });
+        </script>
 
 
 
@@ -2310,7 +2346,7 @@ var takeOverEnabled = false;
 <![endif]-->
 
 <script type="text/javascript"> 
-	
+	var adbackgroundImage =undefined;
    function slideshowevent(){
         var img = new Image();
         var url = "http://app.reference.com/track/close?site=dict&pageName="+daisyPageName;
@@ -2344,6 +2380,7 @@ if(typeof $j != 'undefined'){
         }
     }   
     updateRecentCookie();	 
+	
 	</script>
 <script type="text/javascript">
 var loc=window.location.toString();
@@ -2353,6 +2390,7 @@ if(askinformationhp){
 askinformationhp.style.position="relative";
 askinformationhp.style.left="-8px";
 }
+
 </script>
 <script type="text/javascript"> 
 var loc=window.location.toString();
@@ -2405,12 +2443,28 @@ d.src = ["http://secure-us.imrworldwide.com/cgi-bin/m?ci=us-805928h&cg=0&cc=1&si
 <div id="logger" style="display:none"></div>
     <script type="text/javascript">
         function logAdBlock() {
+            setDictionaryConsolidatedCookie('adblk',$j('#ad').is(':hidden'));
             if($j("#ad").length > 0 && $j('#ad').is(':hidden') ) {
             
                 var ldvalue=0;
                 if(_limitedDeployID!=""){
                     ldvalue = _limitedDeployID;
                 }
+                
+                if($j('#top').hasClass('dic_bk')) {                    
+					$j('.dic_bk').css('padding-bottom','3px');
+					$j('.dic_bk').css('padding-top','3px');
+                    
+                    $j('.dic_bk').css('border-top','1px solid #E4E4E4');
+                    $j('.dic_bk').css('position','static');
+                }else if($j('#top').hasClass('dic_bk_NC')){
+                    $j('.dic_bk_NC').css('padding-bottom','3px');
+					$j('.dic_bk_NC').css('padding-top','3px');
+                    
+                    $j('.dic_bk_NC').css('border-top','1px solid #E4E4E4');
+                    $j('.dic_bk_NC').css('position','static');
+                }
+
                 var url = 'http://app.dictionary.com/track/adBlockerDetected?site=dict&page=dictionaryproxy&ldid=0&ord='+Math.round(Math.random() * 1000000000);
                 var img = new Image();
                 img.src = url;

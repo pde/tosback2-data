@@ -39,7 +39,7 @@
   </script>
 
   <!-- enables HTML5 elements & feature detects -->
-  <script src="js/libs/modernizr.custom.js"></script>
+  <script src="js/vendor/modernizr.custom.js"></script>
 
   <!-- set Scripps variables used in AdLib1.js, and fetch their script -->
   <script>
@@ -63,23 +63,27 @@
     <div id="leaderboard-1"><script>RRAd('LEADERBOARD','1','');</script></div>
     <div id="fb-root"></div>
 <script>
-	window.fbAsyncInit = function() {
-		FB.init({
-			appId: '206102669413016',
-			xfbml: true,
-			oauth: true,
-			channelUrl: document.location.protocol + '//www.rachaelray.com/fb/channel.html'
-		});
-	};
+  /*
+   * http://searchengineland.com/a-solution-to-the-facebook-fb-xd-fragment-problem-77387
+   * https://developers.facebook.com/blog/post/530/
+   */
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: '206102669413016',
+      xfbml: true,
+      oauth: true,
+      channelUrl: document.location.protocol + '//www.rachaelray.com/fb/channel.php'
+    });
+  };
 
-	(function (d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) { return }
-		js = d.createElement(s);
-		js.id = id;
-		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-		fjs.parentNode.insertBefore(js, fjs);
-	})(document, 'script', 'facebook-jssdk');
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) { return }
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  })(document, 'script', 'facebook-jssdk');
 </script>
 
 	<!--sphider_noindex-->
@@ -176,6 +180,7 @@
 			--><li class="blogs last-child"><a href="http://rachaelray.com/blogs/">Blogs</a>
 				 <ul class="subnav">
   <li><a href="http://rachaelray.com/blogs/index.php">Blogs Home</a></li>
+  <li><a href="http://rachaelray.com/blogs/index.php/author/the-accidental-housewife/">The Accidental Housewife</a></li>
   <li><a href="http://rachaelray.com/blogs/index.php/author/cheryl/">Cheryl</a></li>
   <li><a href="http://rachaelray.com/blogs/index.php/author/christina/">Christina</a></li>
   <li><a href="http://rachaelray.com/blogs/index.php/author/the-cleaning-lady/">The Cleaning Lady</a></li>
@@ -238,13 +243,13 @@
 		<h2 id="fixie" class="png_bg">home</h2>
 
 <section class="unit bd size2of3">
-	<div class="mod info featured">
-		<header>
-			<h3>PRIVACY POLICY</h3>
-		</header>
-		<div class="bd">
-			
-			<p><em><strong>Last modified on March 13, 2008<br />
+  <div class="mod info featured">
+    <header>
+      <h3>PRIVACY POLICY</h3>
+    </header>
+    <div class="bd">
+      
+      <p><em><strong>Last modified on March 13, 2008<br />
 </strong></em></p>
 <p><br />
 <strong>Privacy Policy</strong></p>
@@ -305,17 +310,19 @@ Governing Law<br />
 This Privacy Policy shall be governed by the laws of the State of New York, without regard to its conflict of law provisions.&nbsp; Any dispute concerning this Privacy Policy or your use of this Site shall be submitted to binding arbitration in New York within one (1) year from the date that the cause of action arose (or, if multiple cause of actions are involved, from the date that the first cause of action arose), with such arbitration conducted pursuant to the then prevailing rules of the American Arbitration Association.&nbsp; To the fullest extent permitted by law, no arbitration brought pursuant hereto shall be joined to any other action or any other arbitration initiated pursuant hereto.&nbsp; If any portion of this Privacy Policy is deemed unenforceable, unlawful or void by a Court of competent jurisdiction, then that portion of the Privacy Policy will be deemed severable and will not affect the enforceability or validity of the remaining portions of this Privacy Policy.<br />
 <br />
 &trade; and &copy; 2007 - 2011 Rachael Ray Digital LLC.&nbsp; All rights reserved.&nbsp;</p>
-					</div>
-	</div>
+          </div>
+  </div>
 </section>
 
 <div class="unit size1of3">
-	<!--sphider_noindex-->
+  <!--sphider_noindex-->
 <aside class="rail">
 	<!-- scripps ad container -->
 	<div id="sponsorRR1"></div>
 
-	<div class="mod social"><div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><span class="st_sharethis" displayText="ShareThis"></span></div><div class="scripps-ad">
+	<div class="mod social">
+  <div class="fb-like" data-send="false" data-layout="button_count" data-show-faces="false"></div><a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><span class="st_sharethis" displayText="ShareThis"></span></div>
+<div class="scripps-ad">
   <div class="advertising">
     <div class="heading">Advertisement</div>
     <script>RRAd('BIGBOX','5','')</script>
@@ -469,57 +476,22 @@ This Privacy Policy shall be governed by the laws of the State of New York, with
 <!--/sphider_noindex-->
 
 <!-- Grab Google CDN's jQuery;
-     fall back to local if necessary;
-     invoke noConflict mode -->
+     fall back to local if necessary; -->
 <script src="../ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-<script>window.jQuery || document.write("<script src='js/libs/jquery-1.6.1.min.js'>\x3C/script>")</script>
-<script>jQuery.noConflict();</script>
-<!-- jQuery plugins -->
-<script src="js/libs/jquery.placeholder.min.js"></script>
-<script src="js/libs/jquery.simplemodal.1.4.1.min.js"></script>
-<script src="js/libs/jquery.tweet.min.js"></script>
-<script src="js/libs/jquery.tweetsearch.js"></script>
+<script>window.jQuery || document.write("<script src='js/vendor/jquery-1.6.1.min.js'>\x3C/script>")</script>
+<script src="js/plugins.min.js"></script>
 
-<!-- RR.com scripts, these should get concatenated and minified
-     for production -->
-<script>var current = "";</script>
-<script src="js/RR.js"></script>
-<script>RR.set('section', 'home');</script>
-<script src='js/RR.loadEvents.js'></script>
-<script src="js/RR.extend.js"></script>
-<script src="js/RR.chimp.js"></script>
-
-<!-- GA code, could probably be handled in RR.loadEvents.js, later -->
-<!-- mathiasbynens.be/notes/async-analytics-snippet -->
-<script>
-	var _gaq = [['_setAccount', 'UA-3396227-1'], ['_trackPageview']];
-	(function (d,t) {
-		var g = d.createElement(t),
-		    s = d.getElementsByTagName(t)[0];
-		g.async = 1;
-		g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
-		s.parentNode.insertBefore(g,s);
-	}(document,'script'));
-</script>
-
-<!-- twitter -->
-<script type="text/javascript" src="../platform.twitter.com/widgets.js"></script>
-<!-- share this -->
+<!-- twitter, sharethis -->
+<script src="../platform.twitter.com/widgets.js"></script>
 <script src="../w.sharethis.com/button/buttons.js"></script>
-<script>stLight.options({publisher:'5f831ab6-44c3-4206-be59-76267d2145d7', onhover:false});</script>
-<!-- pinterest -->
+
+<script src="js/global.min.js"></script>
+
 <script>
-	(function(d,t) {
-		var s = d.createElement(t),
-		    x = d.getElementsByTagName(t)[0];
-		s.async = 1;
-		s.src = '//assets.pinterest.com/js/pinit.js';
-		x.parentNode.insertBefore(s,x);
-	})(document,'script');
+  // current section in collections, etc.
+  RR.current = '';
 </script>
 
-<!-- scripps superstitial ads -->
-<script>RRAd('SUPERSTITIAL','3','')</script>
 </div><!-- closes the #container div opened in HTMLhead.html -->
 </body>
 </html>

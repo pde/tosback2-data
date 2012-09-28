@@ -238,14 +238,7 @@ TSC.reporting.config=function(o){
 		}
         //s.eVar23=TSC.util.getCookiePuc();
         s.prop42=s.eVar23;
-        if(TSC.util.isDefined(document)){
-			s.prop27=document.URL;
-			try{
-					if (top.location != self.location){
-			    	 s.prop27=document.referrer;
-	 			  }
-		  }catch(e){}
-		}
+        
 		var firstPipe=s.hier1.indexOf("|");
 		if (firstPipe==-1){
 	 		 firstPipe=s.hier1.length;
@@ -709,7 +702,7 @@ un,pg,ss)}
 					//repObj.authorId = TSC.util.isDefined(story.authorIds[0]) ? story.authorIds[0] : "";
 					repObj.pi = story.site + "|" + story.authors + " - " + story.headline + " (" + story.storyid + ") " + story.pagination;
 					repObj.puc = TSC.util.getPuc();
-					repObj.tickers = TSC.util.isDefined(story.primaryTickers) ? story.primaryTickers : "";
+				//	repObj.tickers = TSC.util.isDefined(story.primaryTickers) ? story.primaryTickers : "";
 					repObj.keywords = TSC.util.isDefined(story.keywords) ? story.keywords.toString() : "";
 					repObj.printedPages = TSC.util.isDefined(story.isPrint) && story.isPrint == "true" && TSC.util.isDefined(story.headline) ? story.headline : "";
 					//repObj.audioDownloads=TSC.util.isDefined(story.audioDownloads)?pRepObj.audioDownloads:"";

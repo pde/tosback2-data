@@ -98,7 +98,7 @@
     var is_vms   = ((agt.indexOf("vax")!=-1) || (agt.indexOf("openvms")!=-1));
 
 function newWindow(URL) {
-       window.open(URL,"EmailToFriend","width=650,height=600,scrollbars=yes,resizable=yes,status=yes");
+       window.open(URL,"EmailToFriend","width=650,height=530,scrollbars=yes,resizable=yes,status=yes");
 }
 
 function newInvisibleWindow(URL) {
@@ -284,4 +284,4 @@ function readTheCookie2(name) {
 
 checkCookieNemours2();
 
-document.write(unescape("%3Cscript src=\"/misc/foresee/foresee-trigger.js\" %3E%3C/script%3E"));
+//document.write(unescape("%3Cscript src=\"/misc/foresee/foresee-trigger.js\" %3E%3C/script%3E"));

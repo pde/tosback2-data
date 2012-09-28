@@ -582,3 +582,18 @@ function f_makeUrlParamsFromObj( inObj ) {
 	}
 	return retStr;
 }
+
+//dynamic product ratings display
+function dynamicRatings(){
+	var obj = $('.reviews .stars');
+	$(obj).each(function (i){
+			var avgRating = $(this).attr('rel');
+			var RatingNumber = avgRating * 20;
+			if(avgRating == 'noRating' || RatingNumber == "0.0"){						
+					$(this).parent().css('background-position','0px -62px');
+					$(this).width('0px');
+			} else{
+			  $(this).css('width', RatingNumber+"%" );
+			}
+	});
+};

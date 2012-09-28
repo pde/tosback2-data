@@ -794,14 +794,11 @@ if (typeof Sys != "undefined" && typeof Sys.Browser != "undefined") {
 	}
 }
 });
-AddEventHandlerElement(window, 'load', function () {
-	if (new Date() < new Date(2012, 9, 10) && window.location.href.toLowerCase().indexOf("/web/en-us/") > -1 && GetValue("hdnPOS").toLowerCase() == "us") {
-		var oFooter = document.getElementById("footer");
-		var oLnkFull = document.getElementById("ctl00_CustomerFooter_lnkFull");
-		if (oFooter && !oLnkFull) {
-			var oDiv = document.createElement("div");
-			oDiv.innerHTML = '<a href="http://ad.doubleclick.net/clk;259900089;84124210;d" target="_blank"><img src="/web/format/img/footer/logo-usa-rings-tag-2012.gif" width="276" height="43" style="margin-bottom:-.3333em" alt="Proud to fly Team USA for over 30 years."/></a>';
-			oFooter.insertBefore(oDiv, oFooter.childNodes[0]);
-		}
-	}
-});
+
+fixResMenu = function () {
+    var objElement = GetElement("ctl00_HyperLink1");
+    if (objElement != null) {
+        ShowDiv('', 'ctl00_HyperLink1');
+    }
+}
+AddEventHandlerElement(window, 'load', fixResMenu);

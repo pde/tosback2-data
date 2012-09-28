@@ -1,0 +1,191 @@
+/*global escape:true */
+
+function BikeEXIF() {
+
+	/**
+	 * Bind up necessary events
+	 */
+	this.bindEvents = function() {
+
+		$(".archive-post-list, .exif-post-list").delegate("li", "hover", function(e) {
+			if (e.type === "mouseenter"){
+				$(this).find(".post-title a").animate({paddingBottom:20}, 100,'swing');
+			}
+			else {
+				$(this).find(".post-title a").animate({paddingBottom:10}, 100,'swing');
+			}
+		});
+
+		$("#subscription_box, #footer-newsletter").on("click", ".button", function(e) {
+			e.preventDefault();
+			window.open( "http://feedburner.google.com/fb/a/mailverify?uri=Bikeexif&email=" + escape( $(this).closest(".field").find("input[type=text]").val() ), 'popupwindow', 'scrollbars=yes,width=550,height=520' );
+		});
+
+		$("#subscription_box, #footer-newsletter").on("keydown", ".field", function(e) {
+			if (e.keyCode === 13) {
+				$(this).closest(".field").find(".button").trigger("click");
+			}
+		});
+
+	};
+
+	/**
+	 * Add quick sort functionality
+	 */
+	this.searchForm = function() {
+
+		var $searchSortForm = $("#search-results").find("#searchform-sort");
+		$searchSortForm.find("#btn-go").hide();
+		$searchSortForm.find("select").change(function() {
+			$(this).closest("form").submit();
+		});
+
+	};
+
+
+
+
+	/**
+	 * Add tooltip helper for social media icons
+	 */
+	this.socialMediaTooltips = function() {
+
+		$("#followBE li").each(function() {
+			var $this = $(this);
+			$this.append("<div class='tooltip'>"+ $this.find("a").text() +"</div>");
+		});
+
+	};
+
+	/**
+	 * Sidebar promo builder
+	 * Will pick a random promo type and build the HTML for it.
+	 * Once the HTML is injected, will begin to rotate through the images.
+	 */
+	this.sidebarPromo = function() {
+		var types, $widget, promo, template;
+
+		types = [
+			{
+				"slug": "archives",
+				"title": "Introducing the new Archives",
+				"url": "/archives",
+				"images": [1, 2, 3, 4]
+			},
+			{
+				"slug": "wallpapers",
+				"title": "Download your free Wallpapers",
+				"url": "/category/motorcycle-wallpaper",
+				"images": [1, 2, 3, 4]
+			}
+		];
+
+		promo = types[ Math.floor(Math.random() * types.length) ];
+
+		$widget = $("#sidebar-promo");
+
+		template = $("#sidebar-promo-template").html();
+
+		$widget.addClass(promo.slug);
+		$widget.html( Mustache.render(template, promo) );
+		$widget.find("li:not(:first)").fadeOut(100).end().find("li:first").addClass("active");
+
+		/**
+		 * Fade in the next image
+		 */
+		function fadeInNext() {
+
+			setTimeout(function() {
+				var $currentEl = $widget.find("li.active"),
+					$nextEl = $currentEl.next();
+
+				if ($nextEl.length === 0) {
+					$nextEl = $widget.find("li:first");
+				}
+
+				$currentEl.fadeOut(2500, function() {
+					$(this).removeClass("active");
+				});
+
+				$nextEl.fadeIn(2500, function(){
+					$(this).addClass("active");
+					//recurse so we can loop our animation
+					fadeInNext();
+				});
+			}, 6000);
+
+		}
+
+		fadeInNext();
+
+	};
+
+	/**
+	 * Sets up Clean Archives Revolutions front-end
+	 *
+	 */
+	this.cleanArchivesRevolutions = function() {
+		var $car;
+
+		$car = $("#clean-archives-revolutions");
+
+		if ( ! $car.length) {
+			return;
+		}
+
+		if ($car.find(".active").length < 1) {
+			$car.find(".archives-year:first").addClass("active");
+		}
+
+		function setParentHeight(){
+			//get the height
+			var h = $(".archives-year.active").height() + $(".archives-year.active ul").outerHeight();
+			//we only need to do this on regular pages.
+			$("#content .archives-list-container").height(h);
+		}
+
+		//replace the year links with tabby goodness
+		$car.delegate(".archives-year h3 a", "click", function(e) {
+			e.preventDefault();
+
+			$car.find(".archives-year.active").removeClass("active");
+			$(this).closest(".archives-year").addClass("active");
+
+			setParentHeight();
+
+			return false;
+		});
+
+		setParentHeight();
+
+	};
+
+
+	/**
+	 * Initalization time!
+	 */
+	this.init = function() {
+
+		this.bindEvents();
+		this.cleanArchivesRevolutions();
+		this.searchForm();
+		//this.sidebarPromo();
+		this.socialMediaTooltips();
+
+	};
+
+	this.init();
+
+
+}
+
+$(document).ready(function() {
+	new BikeEXIF();
+});
+
+
+/*!
+ * mustache.js - Logic-less {{mustache}} templates with JavaScript
+ * http://github.com/janl/mustache.js
+ */
+var Mustache;(function(a){if(typeof module!=="undefined"){module.exports=a;}else{if(typeof define==="function"){define(a);}else{Mustache=a;}}}(function(){var A={};A.name="mustache.js";A.version="0.5.1-dev";A.tags=["{{","}}"];A.parse=o;A.clearCache=y;A.compile=h;A.compilePartial=k;A.render=z;A.Scanner=v;A.Context=s;A.Renderer=t;A.to_html=function(F,D,E,G){var C=z(F,D,E);if(typeof G==="function"){G(C);}else{return C;}};var c=/\s*/;var m=/\s+/;var i=/\S/;var g=/\s*=/;var p=/\s*\}/;var u=/#|\^|\/|>|\{|&|=|!/;function q(D,C){return RegExp.prototype.test.call(D,C);}function f(C){return !q(i,C);}var j=Array.isArray||function(C){return Object.prototype.toString.call(C)==="[object Array]";};var l=/[\x00-\x2F\x3A-\x40\x5B-\x60\x7B-\xFF\u2028\u2029]/gm;function x(D){var C=D.replace(l,function(E){return"\\u"+("0000"+E.charCodeAt(0).toString(16)).slice(-4);});return'"'+C+'"';}function e(C){return C.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g,"\\$&");}var b={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;","/":"&#x2F;"};function n(C){return String(C).replace(/[&<>"'\/]/g,function(D){return b[D];});}A.isWhitespace=f;A.isArray=j;A.quote=x;A.escapeRe=e;A.escapeHtml=n;function v(C){this.string=C;this.tail=C;this.pos=0;}v.prototype.eos=function(){return this.tail==="";};v.prototype.scan=function(D){var C=this.tail.match(D);if(C&&C.index===0){this.tail=this.tail.substring(C[0].length);this.pos+=C[0].length;return C[0];}return null;};v.prototype.scanUntil=function(D){var C,E=this.tail.search(D);switch(E){case -1:C=this.tail;this.pos+=this.tail.length;this.tail="";break;case 0:C=null;break;default:C=this.tail.substring(0,E);this.tail=this.tail.substring(E);this.pos+=E;}return C;};function s(C,D){this.view=C;this.parent=D;this.clearCache();}s.make=function(C){return(C instanceof s)?C:new s(C);};s.prototype.clearCache=function(){this._cache={};};s.prototype.push=function(C){return new s(C,this);};s.prototype.lookup=function(C){var F=this._cache[C];if(!F){if(C==="."){F=this.view;}else{var E=this;while(E){if(C.indexOf(".")>0){var G=C.split("."),D=0;F=E.view;while(F&&D<G.length){F=F[G[D++]];}}else{F=E.view[C];}if(F!=null){break;}E=E.parent;}}this._cache[C]=F;}if(typeof F==="function"){F=F.call(this.view);}return F;};function t(){this.clearCache();}t.prototype.clearCache=function(){this._cache={};this._partialCache={};};t.prototype.compile=function(F,D){if(typeof F==="string"){F=o(F,D);}var E=d(F),C=this;return function(G){return E(s.make(G),C);};};t.prototype.compilePartial=function(D,E,C){this._partialCache[D]=this.compile(E,C);return this._partialCache[D];};t.prototype.render=function(E,C){var D=this._cache[E];if(!D){D=this.compile(E);this._cache[E]=D;}return D(C);};t.prototype._section=function(C,D,K){var J=D.lookup(C);switch(typeof J){case"object":if(j(J)){var F="";for(var G=0,I=J.length;G<I;++G){F+=K(D.push(J[G]),this);}return F;}return J?K(D.push(J),this):"";case"function":var E=K(D,this),L=this;var H=function(M){return L.render(M,D);};return J.call(D.view,E,H)||"";default:if(J){return K(D,this);}}return"";};t.prototype._inverted=function(C,D,F){var E=D.lookup(C);if(E==null||E===false||(j(E)&&E.length===0)){return F(D,this);}return"";};t.prototype._partial=function(C,D){var E=this._partialCache[C];if(E){return E(D,this);}return"";};t.prototype._name=function(D,E,F){var G=E.lookup(D);if(typeof G==="function"){G=G.call(E.view);}var C=(G==null)?"":String(G);if(F){return n(C);}return C;};function d(H,I){var D=['""'];var F,J,G;for(var E=0,C=H.length;E<C;++E){F=H[E];switch(F.type){case"#":case"^":J=(F.type==="#")?"_section":"_inverted";D.push("r."+J+"("+x(F.value)+", c, function (c, r) {\n  "+d(F.tokens,true)+"\n})");break;case"{":case"&":case"name":G=F.type==="name"?"true":"false";D.push("r._name("+x(F.value)+", c, "+G+")");break;case">":D.push("r._partial("+x(F.value)+", c)");break;case"text":D.push(x(F.value));break;}}D="return "+D.join(" + ")+";";if(I){return D;}return new Function("c, r",D);}function r(C){if(C.length===2){return[new RegExp(e(C[0])+"\\s*"),new RegExp("\\s*"+e(C[1]))];}throw new Error("Invalid tags: "+C.join(" "));}function B(H){var C=[];var G=C;var I=[];var E,F;for(var D=0;D<H.length;++D){E=H[D];switch(E.type){case"#":case"^":E.tokens=[];I.push(E);G.push(E);G=E.tokens;break;case"/":if(I.length===0){throw new Error("Unopened section: "+E.value);}F=I.pop();if(F.value!==E.value){throw new Error("Unclosed section: "+F.value);}if(I.length>0){G=I[I.length-1].tokens;}else{G=C;}break;default:G.push(E);}}F=I.pop();if(F){throw new Error("Unclosed section: "+F.value);}return C;}function a(F){var C;for(var E=0;E<F.length;++E){var D=F[E];if(C&&C.type==="text"&&D.type==="text"){C.value+=D.value;F.splice(E--,1);}else{C=D;}}}function o(N,P){P=P||A.tags;var O=r(P);var E=new v(N);var L=[],J=[],H=false,Q=false;var C=function(){if(H&&!Q){while(J.length){L.splice(J.pop(),1);}}else{J=[];}H=false;Q=false;};var K,M,F;while(!E.eos()){M=E.scanUntil(O[0]);if(M){for(var G=0,I=M.length;G<I;++G){F=M.charAt(G);if(f(F)){J.push(L.length);}else{Q=true;}L.push({type:"text",value:F});if(F==="\n"){C();}}}if(!E.scan(O[0])){break;}H=true;K=E.scan(u)||"name";E.scan(c);if(K==="="){M=E.scanUntil(g);E.scan(g);E.scanUntil(O[1]);}else{if(K==="{"){var D=new RegExp("\\s*"+e("}"+P[1]));M=E.scanUntil(D);E.scan(p);E.scanUntil(O[1]);}else{M=E.scanUntil(O[1]);}}if(!E.scan(O[1])){throw new Error("Unclosed tag at "+E.pos);}L.push({type:K,value:M});if(K==="name"||K==="{"||K==="&"){Q=true;}if(K==="="){P=M.split(m);O=r(P);}}a(L);return B(L);}var w=new t();function y(){w.clearCache();}function h(D,C){return w.compile(D,C);}function k(D,E,C){return w.compilePartial(D,E,C);}function z(F,C,E){if(E){for(var D in E){k(D,E[D]);}}return w.render(F,C);}return A;}()));

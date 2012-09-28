@@ -1368,7 +1368,7 @@ Event.observe(window,"load",setPersistantCat);
 					sku: val.productCatalogInformationCustomProperty.value.id,
 					price: val.priceInfo.value.amount,
 					quantity: val.quantity,
-					index: counter,
+					index: counter
 				};
 
 				obj.price = obj.price / obj.quantity;

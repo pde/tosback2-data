@@ -1,8 +1,21 @@
 // don't do any of this in edit mode
 if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
-
+	var currentURL = window.location + "";
+	if (typeof(echo_path) != "undefined") {
+		currentURL = echo_path;
+	} else if (typeof(post_path) != "undefined") {
+		currentURL = post_path + ".html"
+	}
+	if (currentURL.substring(0,1) == '/') {
+		currentURL = slate_public_url + currentURL;
+	}
+	var showAllQuery = "childrenof:" + currentURL + " type:comment -source:Twitter " +
+	"source:slate.com (state:ModeratorApproved OR (state:Untouched " +
+	"-user.state:ModeratorBanned,ModeratorDeleted)) sortOrder:reverseChronological" +
+	" children:3 (state:ModeratorApproved OR (state:Untouched " +
+	"-user.state:ModeratorBanned,ModeratorDeleted)) itemsPerPage:10 " +
+	"childrenSortOrder:chronological childrenItemsPerPage:3";
 	(function($) {
-
 	    var plugin = Echo.createPlugin({
 		"name": "WaPoAuth",
 		"applications": ["Submit"],
@@ -19,30 +32,50 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 		    	this.config.set("submissionProxyURL", "http://bunsen.wapolabs.com/identity/1.5.1/js/wapo_jskit_login_redirect.js");
 			}
 		};
+
+		var showAllPlugin = Echo.createPlugin({
+			"name": "ShowAllComments",
+			"applications": ["Stream"],
+			"init": function(showAllPlugin, application) {
+					showAllPlugin.extendRenderer("Stream", "showall",
+							showAllPlugin.showAllRenderer);
+					showAllPlugin.extendTemplate("Stream", showAllPlugin.showAllTpl
+                    , "insertBefore", "echo-stream-header");
+			}
+	    });
+		showAllPlugin.showAllTpl = '<div class="echo-application-message echo-stream-showall-container" style="margin-top:10px">' +
+                '<input class="echo-stream-showall" type="button" value="Show All Comments" ' +
+                'style="border:0;background:none;font-weight:bold;" /></div>';
+		showAllPlugin.showAllRenderer = function(element, dom) {
+            var application = this;
+            element.one("click", function() {
+                application.disablePlugin("ShowAllComments");
+                application.config.set("query", showAllQuery);
+				application.refresh();
+            });
+        };
 	})(jQuery); 
 	
 		Backplane.init({
 		"serverBaseURL" : "http://api.echoenabled.com/v1",
 		"busName": "slate.com" <!-- will always be WaPo -->
 		});
-		
-		var currentURL = window.location + "";
-		if (typeof(echo_path) != "undefined") {
-			currentURL = echo_path;
-		} else if (typeof(post_path) != "undefined") {
-			currentURL = post_path + ".html"
-		}
-		if (currentURL.substring(0,1) == '/') {
-			currentURL = slate_public_url + currentURL;
-		}
-		
+		var echoQuery = showAllQuery;
 		var streamTarget = document.getElementById("echo-stream");
+		var enableShowAll = false;
 		function loadEcho() {
+			var singleCommentId = s.getQueryParam('commentId');
+			if (singleCommentId.length > 0) {
+				echoQuery = "url:" + singleCommentId + " children source:slate.com " +
+						"(state:ModeratorApproved OR (state:Untouched " +
+				"-user.state:ModeratorBanned,ModeratorDeleted)) sortOrder:reverseChronological";
+				enableShowAll = true;
+			}
 			new Echo.Stream({
 			"target": this,
 			"appkey": appkey, //Mandatory. Request your own Echo appkey.
 			//query can also show top commenter
-			"query": "childrenof:" + currentURL + " type:comment -source:Twitter (state:ModeratorApproved OR (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted)) sortOrder:reverseChronological children:3 (state:ModeratorApproved OR (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted)) itemsPerPage:10 childrenSortOrder:chronological childrenItemsPerPage:3",
+			"query": echoQuery,
 			"children": {
 				"additionalItemsPerPage": 10,
 				"moreButtonSlideTimeout": 400,
@@ -71,12 +104,14 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 				{"name": "CommunityFlag"},
 				{"name": "Curation"},
 				{"name": "UserBan"},
-				{"name": "Edit"}
+				{"name": "Edit"},
+				{"name": "ShowAllComments",
+				 "enabled": enableShowAll}
 			],
 			"reTag": false,
 			"maxBodyCharacters": 10000,
 			"aggressiveSanitization": true,
-			"openLinksInNewWindow": false //No comma after the last parameter. For available Presentation Parameters, consult the documentation.
+			"openLinksInNewWindow": false //No comma after the last parameter.
 		    });
 		}
 	
@@ -118,11 +153,18 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 			if(loginStatus === "logout" || wapoIdentity.isMemberOfCommentingGroup() === false) {
 				var origRenderer = Echo.Submit.prototype.post;
 				//console.log("registering function with postButton");
-				Echo.Submit.prototype.post = function() {
-					//console.log("postButton triggered");
-					this.config.set("submissionProxyURL", "http://bunsen.wapolabs.com/identity/1.5.1/js/wapo_jskit_login_redirect.js");
-					origRenderer.call(this); 
-				};
+                //save the original echo submit function
+                var origEchoSubmitFunction = Echo.Submit.prototype.post;
+                Echo.Submit.prototype.post = function() {
+                    //if user is not logged in
+                   if ($wpjQ('#wapolabs_wrapperLoginStatus a .lnk_login').text() == 'Log in')  {
+                        this.config.set("submissionProxyURL","http://bunsen.wapolabs.com/identity/1.5.1/js/wapo_jskit_login_redirect.js");
+                        origRenderer.call(this);
+                    } else {
+                        //if they are logged in, set the echo button to behave normally
+                        origEchoSubmitFunction.call(this);
+                  }
+                };
 				//console.log("Echo.Submit.prototype.renderers.postButton = "+Echo.Submit.prototype.renderers.postButton);
  
 				new Echo.Submit(target,
@@ -164,7 +206,7 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 					{
 						"name": "slateStreamer"
 					}
-				  ]
+				  ] 
 			});
 		}		
 		
@@ -183,8 +225,11 @@ $(document).ready(function() {
 			} else {
 				domain = 'id.slate.com';
 			}
-			$(".echo-ui .echo-button").html('<a class="thickbox" href="http://' + domain + '/identity/public/login/options?next_url=' + escape(window.location + '#article_comment_box') + '&target=comment&KeepThis=true&TB_iframe=true&height=464&width=undefined&modal=true"><div class="ui-button">Post</div></a>');
-			tb_remove();
+			$(".echo-ui .echo-button").html('<a class="thickbox" href="http://' + 
+					domain + '/identity/public/login/options?next_url=' + 
+					escape(window.location + '#article_comment_box') + 
+					'&target=comment&KeepThis=true&TB_iframe=true&height=464&width=undefined&modal=true"><div class="ui-button">Post</div></a>');
+			//tb_remove();
 			tb_init('a.thickbox, area.thickbox, input.thickbox', function() { });
 		}
 	}, 2000);

@@ -18,4 +18,9 @@ function getSREDID(){
    var end = cookies.indexOf(";", start);
    if (end == -1){ end = cookies.length }
    return cookies.substring(start, end);
-}
+}
+
+// Now that this is being loaded asynchronously, we need to include the call to storeSREDID() in
+// this .js file. The old method of including it in a following inline script element cannot guarantee
+// that it will be called after this file has been loaded.
+storeSREDID();

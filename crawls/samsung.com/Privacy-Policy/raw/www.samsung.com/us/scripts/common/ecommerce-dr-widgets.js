@@ -7,8 +7,9 @@ $(document).ready (function () {
 
 	$(function() {
 		var jversion = jQuery.fn.jquery;
-		if (jversion != '1.5.2') {
-			$('head').append('<script type="text/javascript" src="/us/scripts/jquery-1.5.2.min.js"></script>');
+		if (jversion < '1.5.2') {
+			// var $jquery132 = $('head').find('script[src="/us/scripts/jquery-1.3.2.js"]').remove();
+			$('head').append('<script type="text/javascript" src="/us/scripts/jquery-1.7.2.min.js"></script>');
 		}
 	});
 
@@ -92,7 +93,7 @@ function callbackDRCartSummary(cartSummaryData) {
 								productString = productString + externalReferenceID + ' ';
 								var qty = scItem.quantity;
 								var displayName = scItem.lineItemProductInfo.baseFields.displayName;
-								var price = scItem.lineItemProductInfo.pricing.formattedTotalPriceWithoutDiscount;
+								var price = scItem.lineItemProductInfo.pricing.formattedTotalPriceWithDiscount;
 								var imageSrc = '';
 								if (scItem.lineItemProductInfo.attributes.name == 'thumbnail') {
 									imageSrc = scItem.lineItemProductInfo.attributes.value;
@@ -109,7 +110,7 @@ function callbackDRCartSummary(cartSummaryData) {
 									+ '</div>';
 								outputHtml = outputHtml + row;
 							}
-							var subTotal = shoppingCartData["ns1:GetShoppingCartResponse"].reqLevelPricing.formattedSubTotalPriceWithoutDiscount;
+							var subTotal = shoppingCartData["ns1:GetShoppingCartResponse"].reqLevelPricing.formattedSubTotalPriceWithDiscount;
 							outputHtml = outputHtml + '<div class="purchase-container" style="clear: both;">'
 								+ '<span class="cart-total">Subtotal: ' + subTotal + '</span>'
 								+ '<a class="view-cart-link link-style" href="'+ dr_store_domain +'/store/samsung/cart" onclick="javascript:ss_link_click_track_2(\'\',\'\',\'\',\'\', \'cart_flyout\', \'o\', \'view_cart\');">View Product Cart'
@@ -128,7 +129,7 @@ function callbackDRCartSummary(cartSummaryData) {
 		var timestamp = new Date().getTime();
 		$.ajax({
 			url: dr_store_domain +'/integration/job/request/ShoppingCartService/defaults/site/?%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%0A%3CGet%20siteID%3D%22samsung%22%20locale%3D%22en_US%22%3E%3CbaseFields%3E%3CdisplayName/%3E%3C/baseFields%3E%3Cattributes%3E%3Cthumbnail/%3E%3C/attributes%3E%3C/Get%3E%3C%21--jsonp=ShoppingCartService.callback--%3E%3C%21--' +timestamp+ '--%3E',
-			dataType: 'json',
+			dataType: 'jsonp',
 			jsonp: false,
 			cache: true
 		});

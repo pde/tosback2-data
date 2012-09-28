@@ -158,7 +158,7 @@
 			//initialize the "pn_sku" & "tx_u" & "mc_id":
 			for (N in WT){
 				if (WT[N]) {
-					if (N == "pn_sku" || N == "tx_u" || "mc_id"){
+					if (N == "pn_sku" || N == "tx_u" || N == "mc_id"){
 						WT[N]="";
 					} 
 				}

@@ -408,6 +408,24 @@ mboxLoadSCPlugin(s);
 //TNT
 s.tnt=s.trackTNT();
 
+	/* Mobile A/B Test - Read Akamai cookies and pass to s.tnt */
+	
+	var userOptedForFullSite = Boolean($.cookie("akm_opt_out")),
+		shouldRouteToMobileSite  = Boolean($.cookie("akm_mbl")),
+		shouldRouteToFullSite = Boolean($.cookie("akm_full_site"));
+	
+	if (userOptedForFullSite) {
+		s.tnt += "Mobile Experience Test:Mobile User Opted for Full Site,";
+	}
+	else if(shouldRouteToMobileSite ) {
+		s.tnt += "Mobile Experience Test:Mobile User Routed to Mobile Site,";
+	}
+	else if(shouldRouteToFullSite) {
+		s.tnt += "Mobile Experience Test:Mobile User Routed to Full Site,";
+	}
+	
+	/* END: Mobile A/B Test */
+
 }
 
 /************************** PLUGINS SECTION *************************/

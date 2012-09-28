@@ -89,9 +89,86 @@ else {
 		}
 	}	
 
-	// Get Insite Data If Available
-	mistats.insiteid = getMIcookie(mistats.regcookie,'user');
-	mistats.segments = getMIcookie(mistats.segcookie,'segment');
+   // Track PressPlus users - 2012-09-12 JG
+   mistats.pressPlus =
+   {
+      PP_COOKIE: 'ppUser',
+      MI_COOKIE: 'mi_pptkid',
+
+      readCookie: function (pKey)
+      {
+         var dc;
+         var i;
+
+         dc = document.cookie.split('; ');
+         for (i = 0; i < dc.length; i++)
+            if (dc[i].indexOf(pKey + '=') === 0)
+               return unescape(dc[i].substring(dc[i].indexOf('=') + 1));
+         return null;
+      },
+
+      writeCookie: function (pKey, pVal, pDays)
+      {
+         var date;
+         var h;
+
+         date = new Date();
+         date.setTime(date.getTime() + (86400000 * pDays));
+         h = location.hostname.toLowerCase().split('.');
+         h.splice(0, (h.length > 2) ? h.length - 2 : 0);
+
+         document.cookie = [pKey + '=' + escape(pVal), 'expires=' + date.toGMTString(), 'path=/', 'domain=' + h.join('.')].join('; ');
+
+         return null;
+      },
+
+      getToken: function ()
+      {
+         var i;
+         var pp;
+         var sd;
+         var token;
+
+         sd = mistats.staffDomains || [];
+         sd.push('mcclatchyinteractive.com', 'mcclatchy.com');
+
+         pp = this.readCookie(this.PP_COOKIE);
+         if (pp)
+         {
+            email = pp.match(/email=.*[&|$]/);
+            if (email)
+            {
+               email = email[0].substring(6).replace(/&$/, '');
+               for (i = 0; i < sd.length; i++)
+                  if (email.match(sd[i]))
+                     return this.writeCookie(this.MI_COOKIE, '', -1);
+            }
+         }
+
+         token = this.readCookie(this.MI_COOKIE);
+         if (!token && pp)
+         {
+            token = pp.match(/token=.+/);
+            if (token)
+               token = token[0].substring(6).replace(/&.*$/, '');
+         }
+
+         if (token)
+         {
+            this.writeCookie(this.MI_COOKIE, token, 14);
+            return ['PressPlus', (mistats.bizunit || 'XXX'), token].join(': ');
+         }
+
+         return null;
+      }
+   };
+
+   mistats.insiteid = mistats.pressPlus.getToken();
+   if (!mistats.insiteid)
+   {
+      mistats.insiteid = getMIcookie(mistats.regcookie,'user');
+      mistats.segments = getMIcookie(mistats.segcookie,'segment');
+   }
 
 	// Error Checking and Code Enhancements
 	///////////////////////////////////////////////////////////////
@@ -128,11 +205,11 @@ else {
 	mistats.pagelevel = "*" + mistats.pagelevel;
 
 	// Catch pages improperly labeled as homepage
-	if(window.location.pathname.length > 1 && mistats.taxonomy === '_Homepage||||') {
+	if(window.location.pathname.length > 1 && mistats.taxonomy.match(/^_Homepage\|/i)) {
 		mistats.taxonomy = 'BadTaxonomy||||';
 	}
 
-	if(window.location.pathname.length > 1 && mistats.pagelevel === '*Home') {
+	if(window.location.pathname.length > 1 && mistats.pagelevel.match(/^\*Home/i)) {
     		mistats.pagelevel = 'Bad Page Level';
 	}
 
@@ -358,28 +435,6 @@ else {
          }, 1000);
    };
 
-   // Yahoo! Text Ads Tracking
-   mistats.hasYTA = function ()
-   {
-      var a;
-      var b;
-
-      a = document.getElementsByTagName('iframe');
-
-      if (a.length)
-      {
-         for (b = 0; b < a.length; b++)
-            if (a[b].src.match('http://cm.npc-mcclatchy.overture.com/'))
-               return 'YTextAd: ' + ([mistats.pagelevel, mistats.server, mistats.channel]).join(':');
-               
-         return 'NoTextAd: ' + ([mistats.pagelevel, mistats.server, mistats.channel]).join(':');
-      }
-
-      return null;
-   };
-
-	s.prop48 = mistats.hasYTA();
-
    // Check and report iframe usage -- 2011/11/22 JG
    mistats.iframes =
    {
@@ -576,8 +631,11 @@ else {
    }
 */
 	// Call quantserve .js file - Added 7/22/2008 - JJ Ticket # 727-5945439
-	var _qoptions = { qacct:"p-50B2Fi6bBqYto", labels: mistats.bizunit };
-	document.write("\n<" + "script type='text/javascript' src='http://edge.quantserve.com/quant.js'>" + "</" + "script>");
+   if (!location.hostname.match(/dealsaver/i))
+   {
+      var _qoptions = { qacct:"p-50B2Fi6bBqYto", labels: mistats.bizunit };
+      document.write("\n<" + "script type='text/javascript' src='http://edge.quantserve.com/quant.js'>" + "</" + "script>");
+   }
 
    // Inject content tracking script -- 2011/12/19 JG
    if (typeof mistats.tyntid !== 'undefined')        

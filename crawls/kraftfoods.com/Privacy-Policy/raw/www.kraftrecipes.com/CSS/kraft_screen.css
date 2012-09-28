@@ -2,6 +2,8 @@
 /* Blackwell Update: Site Search Updates - V02 - 08/26/10 */
 /* Blackwell Update: SEO Updates - V02 - 05/24/10 */
 /* Blackwell Update: SEO Updates - V03 - 01/02/2012 */
+/* Last Updated 9/05/12 */
+/*  mml 9/11/2012 - Adjustments made for Pre-Brightcove */
 
 	
 body {  float:none; width:970px;  background-color: transparent; font-family:Trebuchet MS, Arial; font-size: 14px; color:#035642; margin: 0 auto; }
@@ -34,6 +36,9 @@ span.arial { font-family: Arial, Helvetica, sans-serif; }
 span.red { color:red; font-weight:bold; font-style:italic; font-size:14px;}
 
 b, strong {font-family:Trebuchet MS,Arial; }
+
+/*Sharepoint window*/
+TD#MSOTlPn_MainTD {position:absolute;}
 
 /* TestCoupons CSS */
 
@@ -138,8 +143,13 @@ div#hdrLinks ul li { display:inline;border:0px; padding:0px; margin-right:12px; 
 #hdr_buttons {float:right;margin:0;padding:0; text-transform:lowercase; width:470px;}
 #hdr_buttons ul {float:right;margin:0;padding:0;position:relative;top:6px; list-style-type:none;}
 #hdr_buttons li {float:left;display:inline;border:0px; padding:0; margin:4px 4px 0 8px;margin:7px 4px 0 0\9; text-align:center;}
+#hdr_buttons li.email {background:url(http://www.kraftrecipes.com/assets/images/header/hdr_submit_bg.png) no-repeat 95px center #FFE3AA;width:270px;margin:0;margin:5px 0 0 0\9;*margin:5px 0 0 0;padding:0;height:26px;-moz-border-radius:13px;-webkit-border-radius:30px;border-radius:20px;}
+#hdr_buttons li.email span {float:left;font-size:11px;position:relative;top:6px;left:4px;}
+#hdr_buttons li.email input {background-color:transparent;width:150px;border:none;}
+#hdr_buttons li.email input.emailText {float:left;clear:none;margin:6px 0 0 15px;padding:0;width:100px;font-size:11px;}
+#hdr_buttons li.email input.hdr_email_button {position:relative;right:0px;top:3px;margin:0;padding:0;width:65px;height:21px;}
 	
-#hdr_buttons ul.signedIn {background-color:#FFE6AD;top:6px; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;font-size:13px;width:100%;}
+#hdr_buttons ul.signedIn {background-color:#FFE6AD;top:6px; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;font-size:13px;}
 #hdr_buttons ul.signedIn li {/*margin-left:8px;*/margin-right:0;margin-left:2px;margin-top:2px \0/;margin-bottom:2px \0/;}
 #hdr_buttons ul.signedIn li span {font-weight:bold;}
 
@@ -150,10 +160,11 @@ div#hdrLinks ul li { display:inline;border:0px; padding:0px; margin-right:12px; 
 	#hdr_buttons li {margin:0 4px 0 0 \0/;}
 	#hdr_buttons ul.signedIn {padding:3px \0/;top:6px \0/;}
 	#hdr_buttons ul.signedIn li {/*margin-left:8px \0/;*/}
+	#hdr_buttons li.email {margin:0 0 0 0 \0/;}
 }
 /* CHROME */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
-    #hdr_buttons ul.signedIn {margin:0 0 0 5px;padding:2px 0;}
+    #hdr_buttons ul.signedIn {margin:-2px 0 0 5px;padding:2px 0;}
 }
 
 /* TOOLBAR, SEARCH AND MY KRAFT FOODS */
@@ -1305,8 +1316,8 @@ div.bannerBottom_hp {float:left;width:940px;margin:15px 20px 0px 0;padding-top:3
 .RtRailList {background-color:#ffe3aa;color:#035642;border:none; clear:both;width:269px;padding:15px;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;margin-bottom:20px; text-transform:lowercase;}
 .RtRailList h2 {margin-top:0;}
 .RtRailList ul {margin:0;padding:0; list-style-type:none;}
-.RtRailList li {margin:5px 0; border-top:1px solid #ffcd5b;font-size:12px;background:url(../assets/images/button/green_arrow.png) no-repeat 0 4px;padding:5px 0 5px 25px;}
-.RtRailList li a {font-weight:bold;}
+.RtRailList li {margin:5px 0; border-bottom:1px solid #ffcd5b;font-size:12px;background:url(../assets/images/button/green_arrow.png) no-repeat 0 4px;padding:5px 0 5px 25px;}
+.RtRailList li a, .RtRailList li span {font-weight:bold; text-transform:none !important;}
 
 .RtRailListNoBullet {background-color:#ffe3aa;color:#035642;border:none; clear:both;width:269px;padding:15px;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;margin-bottom:20px; text-transform:lowercase;}
 .RtRailListNoBullet h2 {margin-top:0;}
@@ -1323,7 +1334,7 @@ div.smallFocusItem_promo h2 {width:280px !important;color:#035642;margin-top:15p
 
 .largeFocusItem .hrLinkBtn {float:right;width:44%;}
 
-.yellow_header {float:left; width:100%;border-right:1px solid #ffe3aa;height:50px;margin:30px 0 15px 0;}
+.yellow_header {float:left; width:100%;border-right:1px solid #ffe3aa;height:50px;margin:30px 0 5px 0;}
 .yellow_header .inner {background-color:#ffcd5b;-moz-border-radius:5px 0 0 5px;-webkit-border-top-left-radius:5px;-webkit-border-bottom-left-radius:5px;border-radius:5px 0 0 5px;font-size:24px;color:#ffffff;height:34px;margin-top:7px;padding:2px 0 0 15px;}
 
 .yellow_header_recipe {float:left;border-left:1px solid #ffe3aa;padding:2px 0 8px 0;margin:30px 0 15px 0;}
@@ -1935,6 +1946,7 @@ div#newSearchBox div.bottomSearchform div#NewRecipeSearch .selectedLabel3 span {
 
 #searchResultsCallout {float:right;width:743px;}
 div#DivSearchResults #searchResultsCallout {width:422px;}
+.searchResult div#DivSearchResults #searchResultsCallout {width:400px;}
 div#searchResultsCallout img {float:left; border-right:1px solid #CFD3D4; width:104px; height: 78px;}
 div#searchResultsCallout div.copy {float:left; width: 278px; padding:10px 7px 10px 7px;}
 div#searchResultsCallout a { text-decoration:underline; color:#f47820; }
@@ -1943,11 +1955,31 @@ div#searchResultsCallout table {float:left;margin-bottom:4px;width:682px;}
 
 .resultsPage div#searchResultsCallout {_margin-top:-65px;}
 
-.sponsorAd {float:left;padding-bottom:12px;_padding-bottom:0;width:300px; }
-.sponsorAd div#searchResultsCallout {_margin-top:0px;width:300px;}
-.sponsorAd div#searchResultsCallout table {float:left;width:300px;margin-right:0px;border:none;}
-.sponsorAd div#searchResultsCallout table td {padding-right:15px;}
-.sponsorAd div#searchResultsCallout table td a {color:#035642;}
+#boxPagingTop .sponsorAd {float:left;margin:50px 0 15px 15px;padding:10px 10px 0 0;_padding-bottom:0;width:400px;border-bottom:1px solid #E2E2E2;}
+#boxPagingTop .sponsorAd div#searchResultsCallout {_margin-top:0px;width:400px;}
+#boxPagingTop .sponsorAd div#searchResultsCallout table {float:left;width:400px;margin-right:0px;border:none !important;}
+#boxPagingTop .sponsorAd div#searchResultsCallout table td {padding-right:10px;padding-left:0;}
+#boxPagingTop .sponsorAd div#searchResultsCallout table td a {color:#035642;}
+#boxPagingTop .sponsorAd div#searchResultsCallout table td b {font-size:20px; font-weight:normal;}
+#boxPagingTop .sponsorAd div#searchResultsCallout table td b font {color:#035642 !important; }
+#boxPagingTop .sponsorAd div#searchResultsCallout img { border:none;}
+
+.searchResult .sponsorAd {float:left;margin:0 0 15px 0;padding:10px 10px 0 0;_padding-bottom:0;width:400px;border:none;}
+.searchResult .sponsorAd div#searchResultsCallout {_margin-top:0px;width:400px;}
+.searchResult .sponsorAd div#searchResultsCallout table {float:left;width:400px;margin-right:0px;border:none !important;}
+.searchResult .sponsorAd div#searchResultsCallout table td {padding-right:10px;padding-left:0;}
+.searchResult .sponsorAd div#searchResultsCallout table td a {color:#035642;}
+.searchResult .sponsorAd div#searchResultsCallout table td b {font-size:20px; font-weight:normal;}
+.searchResult .sponsorAd div#searchResultsCallout table td b font {color:#035642 !important; }
+.searchResult .sponsorAd div#searchResultsCallout img { border:none;}
+
+.contentRight .sponsorAd {float:left;margin:0;padding:0 0 12px 0;_padding-bottom:0;width:300px;border:none;}
+.contentRight .sponsorAd div#searchResultsCallout {_margin-top:0px;width:300px;}
+.contentRight .sponsorAd div#searchResultsCallout table {float:left;width:300px;margin-right:0px;border:none;}
+.contentRight .sponsorAd div#searchResultsCallout table td {padding-right:15px;}
+.contentRight .sponsorAd div#searchResultsCallout table td a {color:#035642;}
+
+#resultsControls .sponsorAd {width:370px; padding:0 10px 0 0;}
 
 div.searchResultsTitleAndDescription {width:608px; float:left; margin-top:20px; margin-bottom:10px; padding-top:10px;} 
 div.searchResultsTitle {float:left;margin:0px 0 0 0;font-size:14px;}
@@ -2608,11 +2640,11 @@ div#ingredients { float:left; width:338px; margin-bottom:12px; line-height:21px;
 	/*div#ingredients div.table-row-gray  div.column1 .ingredientNode { margin-bottom: 0; display:block }text-indent: -1.75em; margin-left: 1.75em;*/
 	
 	#ingredients .column1 .textarea .amount {float:left; width:40px; }
-	#ingredients .column1 .textarea .desc {float:left; width:240px; padding-left:4px; }
+	#ingredients .column1 .textarea .desc {float:left; width:260px; padding-left:4px; }
 	
-.recipe_flowerTip {float:left;width:24px;margin:0 0 0 58px;}	
-.recipeTip {float:left; width:199px; margin-left:70px; padding: 10px 0;border-left:1px solid #FFCD5B;}
-	.recipeTip .body {float:left; width:180px; padding:5px; margin:0px; background-color:#FFCD5B;   -moz-border-radius:0 5px 5px 0;-webkit-border-top-right-radius:5px;-webkit-border-bottom-right-radius:5px;border-radius:0 5px 5px 0; text-align:center;  }
+.recipe_flowerTip {float:left;width:24px;margin:0 0 0 4px;}	
+.recipeTip {float:left; width:254px; margin-left:15px; padding: 10px 0;border-left:1px solid #FFCD5B;}
+	.recipeTip .body {float:left; width:230px; padding:10px 10px 10px 15px; margin:0px; background-color:#FFCD5B;   -moz-border-radius:0 5px 5px 0;-webkit-border-top-right-radius:5px;-webkit-border-bottom-right-radius:5px;border-radius:0 5px 5px 0;font-weight:bold;}
 	
 div#recipeGradHeading { float:left; width:100%; margin:10px 0 12px 0;_margin-right:-3px;clear:both;border-bottom:1px solid #FFCD5B; }
 	div#recipeGradHeading div.head { float:left; width:397px; margin: 0px; padding: 0px; border:none; }	
@@ -2729,13 +2761,15 @@ div#resultsBottom  div.paging ul li.on a {color:#000000; font-weight:bold;  padd
 div#resultsBottom  div.paging ul li.on a:hover {cursor:default; text-decoration:none;}
 		
 		#resultsCenterCol {position:relative; float:right; width:440px;}
-		#resultsCenterCol div#boxPagingTop {position: absolute;right: 12px;top:15px;} 
+		#resultsCenterCol div#boxPagingTop {position: absolute;right: 12px;top:15px;}
+		.searchResult #resultsCenterCol div#boxPagingTop {position: relative;}
 		#resultsCenterCol div#resultsBottom, .prodSearch div#resultsBottom {bottom:-13px;width:100%;}
 		#resultsCenterCol .paging, .prodSearch .paging {float:right;
     font-weight:bold; 
     font-size: 12px;
     margin-bottom: 10px;
     padding: 0 5px 0 0;}
+	.searchResult #resultsCenterCol .paging {width:450px;text-align:right;}
 	
 	/* IE7 Only */
 *:first-child+html #resultsCenterCol .paging {margin-top:-7px;}
@@ -2977,7 +3011,13 @@ ul.YMAE_container:hover, #thisOneGetsFocus { background-color:#fff2d6; text-deco
 .YMAE_right_container div.thumbcontainer a.thumbnail img.thumb { /*CSS for enlarged image*/ border-width: 0; width:200px; height:132px;/*height:86px;*/}
 .YMAE_right_container div.thumbcontainer a.thumbnail img.noThumb { /*CSS for enlarged image*/ border-width: 0; width:200px; height:132px;/*height:86px;*/}
 .YMAE_right_container ul li span {font-weight:normal; color:#5B9184;}
-
+ #YMAE_parentGrid {height:100%; width:268px;  padding: 24px 16px 24px 16px; margin-bottom:0px;background-color:#FFE6AD; -webkit-border-radius: 12px; -moz-border-radius: 12px; border-radius: 12px;  position:relative; overflow:hidden; }
+.ymaeBoxInnerGrid h3{color: #035642; font-size: 22px; font-weight: bold; margin-bottom: 12px; padding-left: 5px;display:block;}
+.YMAE_grid_col{width:120px; margin:-3px 8px 10px 6px; padding:0px;display:inline-block; *display:inline; zoom:1;vertical-align:top;}	
+.YMAE_grid_Image {}	
+.YMAE_grid_Link {display:block;font-size:11px;}					
+ div#YMAE_parentGrid div.YMAE_grid_col div.YMAE_grid_Image img {width:120px; height:86px; }
+ 
 /* IE7 Only */
 *:first-child+html .YMAE_right_container ul	{margin-top:-40px;}		
 			
@@ -3760,18 +3800,18 @@ VIDEO PAGES
 	.recipeVideoHeader h1 { float:left; clear:both;color: #035642; font-size: 16px; padding: 0px; margin-bottom:12px; }
 	
 	
-#recipeFeatureHTVideo { float:left; width:426px; padding-bottom:12px;height:70px;}
+#recipeFeatureHTVideo { float:none; width:426px; padding-bottom:12px;margin-bottom:-90px;}
 
 #recipeFeatureHTVideo div#prepItemsEN {float:left; width:426px;border-top: 1px solid #FFCD5B;padding-top: 5px;}
 
 #recipeFeatureHTVideo div#prepItemsEN .prepTimeLabel {float: left; background:url("../assets/images/icon/icon_clock.png") no-repeat; height:34px;padding:0 10px 0 35px; font-size:12px; text-transform: lowercase;}
-#recipeFeatureHTVideo div#prepItemsEN .totalTimeLabel {position:relative;top:-54px;*top:-21px;top:-59px\9;left:120px;*left:30px;padding-right:10px; font-size:12px; text-transform: lowercase;}
-#recipeFeatureHTVideo div#prepItemsEN .makesLabel {background:url("../assets/images/icon/icon_PlaceSetting.png") no-repeat;height:35px; padding-left:55px; font-size:12px; text-transform: lowercase;position:relative;top:-88px;*top:-58px;top:-98px\9;left:225px;}
+#recipeFeatureHTVideo div#prepItemsEN .totalTimeLabel {position:relative;top:-54px;top:-59px\9;*top:-24px;left:120px;*left:30px;padding-right:10px; font-size:12px; text-transform: lowercase;}
+#recipeFeatureHTVideo div#prepItemsEN .makesLabel {background:url("../assets/images/icon/icon_PlaceSetting.png") no-repeat;height:35px; padding-left:55px; font-size:12px; text-transform: lowercase;position:relative;top:-88px;top:-98px\9;*top:-65px;left:225px;}
 #recipeFeatureHTVideo div#prepItemsEN .prepTimeLabel strong,#recipeFeatureHTVideo div#prepItemsEN .totalTimeLabel strong,#recipeFeatureHTVideo div#prepItemsEN .makesLabel strong { font-weight:normal;}
 
 #recipeFeatureHTVideo div#prepItemsEN .prepTime {float:none;background:none;padding-left:0;font-weight:bold; font-size:12px;position:relative;top:-18px;top:-15px\9;*top:15px;left:33px;*left:-60px;width:90px;}
-#recipeFeatureHTVideo div#prepItemsEN .totalTime {float: none;background:none; padding-left:0;font-weight:bold;  font-size:12px;position:relative;top:-53px;*top:-21px;top:-58px\9;left:120px;*left:130px;min-height:0;width:90px;} 
-#recipeFeatureHTVideo div#prepItemsEN .makes  {float: none;background:none;font-weight:bold;  font-size:12px;position:relative;left:278px;top:-107px;*top:-77px;top:-117px\9;width:150px;}
+#recipeFeatureHTVideo div#prepItemsEN .totalTime {float: none;background:none; padding-left:0;font-weight:bold;  font-size:12px;position:relative;top:-53px;top:-58px\9;*top:-28px;left:120px;*left:130px;min-height:0;width:90px;} 
+#recipeFeatureHTVideo div#prepItemsEN .makes  {float: none;background:none;font-weight:bold;  font-size:12px;position:relative;left:278px;top:-107px;top:-117px\9;*top:-88px;width:150px;}
 
 /* IE9 ONLY*/
 @media all and (min-width:0) {
@@ -5116,6 +5156,12 @@ FOOTER
 #footer_top {float:left;background:url(../assets/images/footer/yellow_curve_footer.png) no-repeat; width:940px; height:104px;margin-top:0px;}
 #footer_top .backtotop {float:right;position:relative;top:-20px;}
 #footer_top .footerLogo {float:left;position:relative;top:20px;left:0;}
+#footer_top .email {float:right;position:relative;top:60px;right:-35px;background:url(http://www.kraftrecipes.com/assets/images/header/hdr_submit_bg.png) no-repeat 95px center #FFE3AA;width:270px;margin:0;margin:5px 0 0 0\9;*margin:5px 0 0 0;padding:0;height:26px;-moz-border-radius:13px;-webkit-border-radius:30px;border-radius:20px;}
+#footer_top .email span {float:left;font-size:11px;position:relative;top:6px;left:4px;}
+#footer_top .email input {background-color:transparent;width:150px;border:none;}
+#footer_top .email input.emailText {float:left;clear:none;margin:6px 0 0 15px;padding:0;width:100px;font-size:11px;}
+#footer_top .email input.hdr_email_button {position:relative;right:0px;top:3px;margin:0;padding:0;width:65px;height:21px;}
+
 
 #footer_container {float:left;width:888px; margin-left:0px; padding-left:50px; padding-top:20px;}
 
@@ -5150,8 +5196,21 @@ div#footer_container .column ul li a:hover {color:#035642; text-decoration:under
 	
 
 
-/* YOU MAY ALSO ENJOY - Infosys */
 
+/* YOU MAY ALSO ENJOY - Infosys */ 
+/*Undim for Brightcove
+#youmayalsoenjoy_box { float:left;position:relative; width:400px;margin:5px 0 12px 0; background-color:#FFCD5B;color:#035642;clear:both;padding:3px 15px 3px 10px;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;}
+div#youmayalsoenjoy_box h2 {position:absolute;top:50%;width:70px; color:#035642; font-size:14px; margin:-15px auto 0;font-weight:bold;}
+div#youmayalsoenjoy_box div.ymaeBoxInner {float:right;font-size: 12px;margin:0;background:none #ffffff;width:323px;}
+
+div#youmayalsoenjoy_box div.ymaeBoxInner .videoYMAE {float:left;width:90px; margin-left:13px; display:block;}
+div#youmayalsoenjoy_box div.ymaeBoxInner div.vdlink {float:left; margin:0 0 3px 0;width:90px;font-size:10px;}
+div#youmayalsoenjoy_box div.ymaeBoxInner div.photo {float:left;padding:3px 0;}
+div#youmayalsoenjoy_box div.ymaeBoxInner div.photo img{ float:left;height:70px;width:90px;}
+div#youmayalsoenjoy_box div.ymaeBoxInner div.vdlink img {width: 10px;}
+*/
+/* YOU MAY ALSO ENJOY - Infosys */
+/*Pre-Brightcove*/
 #youmayalsoenjoy_box { float:left; width:294px;margin-bottom:12px; background-color:#ffe3aa;color:#035642;clear:both;width:269px;padding:15px;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;}
 
 div#youmayalsoenjoy_box div.ymaeBoxInner {float:left;font-size: 12px;margin:0;background:none !important;width:284px; }
@@ -5161,9 +5220,16 @@ div#youmayalsoenjoy_box div.ymaeBoxInner div.vdlink{float:left; margin:0 0 0 10p
 div#youmayalsoenjoy_box div.ymaeBoxInner div.photo {border-top: 1px solid #FFCD5B;padding:7px 0 5px 0;margin-top:7px;}
 div#youmayalsoenjoy_box div.ymaeBoxInner div.photo img{ float:left;height:50px;width:70px;}
 
+
 div.FBLike{clear:left; height: 25px;margin-bottom: 5px;}
 
 div.ratings a.allRatings{display:none}
+
+/* Recipe - Related Content */
+.relatedContent {float:left;width:608px;margin:0;padding:0;}
+.relatedContent ul {margin:0;padding:0; width:100%;}
+.relatedContent li {float:left;width:260px;margin:0 15px 0 0; font-size:12px;background:url(../assets/images/button/green_arrow.png) no-repeat 0 4px;padding:5px 0 5px 25px;}
+
 
 
 /* from form_100.css */

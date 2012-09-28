@@ -1,0 +1,727 @@
+var ObjBrowserDetect={agent:navigator.userAgent,browser:navigator.appName,ver:navigator.appVersion,isIE:false,IEVer:"undefined",IEMode:"undefined",_create:function(){this._init();},_init:function(){this.isBrowserIE();},isBrowserIE:function(){this.isIE=(parseFloat(this.ver.indexOf("MSIE"))+1)>0?true:false;
+if(this.isIE){this.getIEVer();}},getIEVer:function(){var a,b="undefined";if(this.agent.indexOf("Trident/5.0")>-1){a="9";if(this.agent.indexOf("MSIE 7.0")>-1){b="Compatibility";}}else{if(this.agent.indexOf("Trident/4.0")>-1){a="8";if(this.agent.indexOf("MSIE 7.0")>-1){b="Compatibility";}}else{a="7";}}this.IEVer=a;
+this.IEMode=b;},isIE7:function(){if(this.isIE&&this.IEVer!="undefined"&&(this.IEVer<8||this.IEMode=="Compatibility")){return true;}else{return false;}},isIE8:function(){if(this.isIE&&this.IEVer!="undefined"&&(this.IEVer==8)){return true;}else{return false;}}};ObjBrowserDetect._create();
+/**
+* hoverIntent is similar to jQuery's built-in "hover" function except that
+* instead of firing the onMouseOver event immediately, hoverIntent checks
+* to see if the user's mouse has slowed down (beneath the sensitivity
+* threshold) before firing the onMouseOver event.
+* 
+* hoverIntent r5 // 2007.03.27 // jQuery 1.1.2+
+* <http://cherne.net/brian/resources/jquery.hoverIntent.html>
+* 
+* hoverIntent is currently available for use in all personal or commercial 
+* projects under both MIT and GPL licenses. This means that you can choose 
+* the license that best suits your project, and use it accordingly.
+* 
+* // basic usage (just like .hover) receives onMouseOver and onMouseOut functions
+* $("ul li").hoverIntent( showNav , hideNav );
+* 
+* // advanced usage receives configuration object only
+* $("ul li").hoverIntent({
+*	sensitivity: 7, // number = sensitivity threshold (must be 1 or higher)
+*	interval: 100,   // number = milliseconds of polling interval
+*	over: showNav,  // function = onMouseOver callback (required)
+*	timeout: 0,   // number = milliseconds delay before onMouseOut function call
+*	out: hideNav    // function = onMouseOut callback (required)
+* });
+* 
+* @param  f  onMouseOver function || An object with configuration options
+* @param  g  onMouseOut function  || Nothing (use configuration options object)
+* @author    Brian Cherne <brian@cherne.net>
+*/
+(function($) {
+	$.fn.hoverIntent = function(f,g) {
+		// default configuration options
+		var cfg = {
+			sensitivity: 7,
+			interval: 100,
+			timeout: 0
+		};
+		// override configuration options with user supplied object
+		cfg = $.extend(cfg, g ? { over: f, out: g } : f );
+
+		// instantiate variables
+		// cX, cY = current X and Y position of mouse, updated by mousemove event
+		// pX, pY = previous X and Y position of mouse, set by mouseover and polling interval
+		var cX, cY, pX, pY;
+
+		// A private function for getting mouse position
+		var track = function(ev) {
+			cX = ev.pageX;
+			cY = ev.pageY;
+		};
+
+		// A private function for comparing current and previous mouse position
+		var compare = function(ev,ob) {
+			ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t);
+			// compare mouse positions to see if they've crossed the threshold
+			if ( ( Math.abs(pX-cX) + Math.abs(pY-cY) ) < cfg.sensitivity ) {
+				$(ob).unbind("mousemove",track);
+				// set hoverIntent state to true (so mouseOut can be called)
+				ob.hoverIntent_s = 1;
+				return cfg.over.apply(ob,[ev]);
+			} else {
+				// set previous coordinates for next time
+				pX = cX; pY = cY;
+				// use self-calling timeout, guarantees intervals are spaced out properly (avoids JavaScript timer bugs)
+				ob.hoverIntent_t = setTimeout( function(){compare(ev, ob);} , cfg.interval );
+			}
+		};
+
+		// A private function for delaying the mouseOut function
+		var delay = function(ev,ob) {
+			ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t);
+			ob.hoverIntent_s = 0;
+			return cfg.out.apply(ob,[ev]);
+		};
+
+		// A private function for handling mouse 'hovering'
+		var handleHover = function(e) {
+			// next three lines copied from jQuery.hover, ignore children onMouseOver/onMouseOut
+			var p = (e.type == "mouseover" ? e.fromElement : e.toElement) || e.relatedTarget;
+			while ( p && p != this ) { try { p = p.parentNode; } catch(e) { p = this; } }
+			if ( p == this ) { return false; }
+
+			// copy objects to be passed into t (required for event object to be passed in IE)
+			var ev = jQuery.extend({},e);
+			var ob = this;
+
+			// cancel hoverIntent timer if it exists
+			if (ob.hoverIntent_t) { ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t); }
+
+			// else e.type == "onmouseover"
+			if (e.type == "mouseover") {
+				// set "previous" X and Y position based on initial entry point
+				pX = ev.pageX; pY = ev.pageY;
+				// update "current" X and Y position based on mousemove
+				$(ob).bind("mousemove",track);
+				// start polling interval (self-calling timeout) to compare mouse coordinates over time
+				if (ob.hoverIntent_s != 1) { ob.hoverIntent_t = setTimeout( function(){compare(ev,ob);} , cfg.interval );}
+
+			// else e.type == "onmouseout"
+			} else {
+				// unbind expensive mousemove event
+				$(ob).unbind("mousemove",track);
+				// if hoverIntent state is true, then call the mouseOut function after the specified delay
+				if (ob.hoverIntent_s == 1) { ob.hoverIntent_t = setTimeout( function(){delay(ev,ob);} , cfg.timeout );}
+			}
+		};
+
+		// bind the function to the two event listeners
+		return this.mouseover(handleHover).mouseout(handleHover);
+	};
+})(jQuery);
+(function(m){var o,r,k=1,u,t=this,p=!1,n="postMessage",q="addEventListener",s,l=t[n]&&!m.browser.opera;m[n]=function(c,b,a){if(!b){return;}c=typeof c==="string"?c:m.param(c);a=a||parent;if(l){a[n](c,b.replace(/([^:]+:\/\/[^\/]+).*/,"$1"));}else{if(b){a.location=b.replace(/#.*$/,"")+"#"+(+new Date)+(k++)+"&"+c;
+}}};m.receiveMessage=s=function(b,a,c){if(l){if(b){u&&s();u=function(d){if((typeof a==="string"&&d.origin!==a)||(m.isFunction(a)&&a(d.origin)===p)){return p;}b(d);};}if(t[q]){t[b?q:"removeEventListener"]("message",u,p);}else{t[b?"attachEvent":"detachEvent"]("onmessage",u);}}else{o&&clearInterval(o);o=null;
+if(b){c=typeof a==="number"?a:typeof c==="number"?c:100;o=setInterval(function(){var d=document.location.hash,e=/^#?\d+&/;if(d!==r&&e.test(d)){r=d;b({data:d.replace(e,"")});}},c);}}};})(jQuery);
+function getSpecificUrlValue(b){var e=[],d;var a=window.location.href.slice(window.location.href.indexOf("?")+1).split("&");for(var c=0;c<a.length;c++){d=a[c].split("=");e.push(d[0]);if(d[0]==b){return d[1];}}return false;}function getGlobalEarlyAccessCodeFromURL(e){var b="";var d=e.indexOf("gseeac");
+if(d>0){var c=e.substring(d+6);if(c.charAt(0)=="/"){var g=c.split("/");b=g[1];}else{if(c.charAt(0)=="="){b=getSpecificUrlValue("gseeac");}}var a=b.indexOf("?");if(a>=0){b=b.substring(0,a);}var f=b.indexOf("#");if(f>0){b=b.substring(0,f);}}return b;}function getEarlyAccessCodeFromURL(e){var b="";var d=e.indexOf("seeac");
+if(d>0){var c=e.substring(d+5);if(c.charAt(0)=="/"){var g=c.split("/");b=g[1];if(b=="gseeac"){b="";}}else{if(c.charAt(0)=="="){b=getSpecificUrlValue("seeac");}}var a=b.indexOf("?");if(a>0){b=b.substring(0,a);}var f=b.indexOf("#");if(f>0){b=b.substring(0,f);}}return b;}var GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME="GlobalModSEAC";
+var INDIVIDUAL_EARLY_ACCES_CODE_COOKIE_PREFIX="modSEAC";function grantEarlyAccessOnSalesEvent(){var h=getModniqueCookie(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME);var a=$("#upcoming_sales");var j=new Array();if(document.cookie.length>0){var e=document.cookie.split(";");var f="";var b="";var c="";for(i=0;i<e.length;
+i++){f=e[i].split("=");b=f[0].replace(/^\s+|\s+$/g,"");if(b.indexOf(INDIVIDUAL_EARLY_ACCES_CODE_COOKIE_PREFIX)>=0&&b!=GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME){if(f.length>1){var g=b.split(INDIVIDUAL_EARLY_ACCES_CODE_COOKIE_PREFIX);var d="";if(g.length>1){c=unescape(f[1].replace(/^\s+|\s+$/g,""));d=g[1];j[d]=c;
+}}}f=null;b="";}}if(window.timeBeforeEA_inHours==null){window.timeBeforeEA_inHours=1;}$("#upcoming_sales").find("a.visitSaleLink").each(function(){var o=$(this);var k=o.attr("href");var m=o.attr("id");var p=o.attr("rel");if(p<window.timeBeforeEA_inHours*60*60){if(j[m]){var n=k.indexOf("/gseeac");var l=k.substring(0,n)+"/"+j[m]+k.substring(n,k.length);
+o.attr("href",l).removeClass("noCursor");}else{if(h){var l=k+"/"+h;o.attr("href",l).removeClass("noCursor");}else{o.removeAttr("href");}}}else{o.removeAttr("href");}});}function grantEarlyAccessOnSalesEventItem(e){var f=INDIVIDUAL_EARLY_ACCES_CODE_COOKIE_PREFIX+e;var c=getModniqueCookie(f);if(c){var d=function(){var h=$(this).attr("href");
+var j=h.indexOf("/gseeac");var g=h.substring(0,j)+"/"+c+h.substring(j+7,h.length);$(this).attr("href",g);};var a=$("div#items");$("a.item_link , a.item_link_plain",a).each(d);$("a#productBackToEventsLink").each(d);}else{var b=getModniqueCookie(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME);if(b){var a=$("div#items");
+$("a.item_link, a.item_link_plain",a).each(function(){var g=$(this).attr("href");$(this).attr("href",g+"/"+b);});$("a#productBackToEventsLink").each(function(){existingHref=$(this).attr("href");newHref=existingHref+"/"+b;$(this).attr("href",newHref);});}}}function createEarlyAccessCookie(a){var b=getEarlyAccessCodeFromURL(window.location.href);
+if(b){var c=INDIVIDUAL_EARLY_ACCES_CODE_COOKIE_PREFIX+a;setBidzCookieWithDomain(c,b,1,".modnique.com");}}function createGlobalEarlyAccessCookie(){var a=getGlobalEarlyAccessCodeFromURL(window.location.href);if(a){setBidzCookieWithDomain(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME,a,1,".modnique.com");}}function createGlobalEarlyAccessCookieOnAllSalesPage(){var d=getSpecificUrlValue("gseeac");
+if(d){setBidzCookieWithDomain(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME,d,1,".modnique.com");}else{var b=document.location.href;var e=b.indexOf("/saleevents/");var c=b.indexOf("/all-sale-events/");if(e>0){var a=b.substring(e+12,b.length);setBidzCookieWithDomain(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME,a,1,".modnique.com");
+}else{if(c>0){var a=b.substring(c+17,b.length);setBidzCookieWithDomain(GLOBAL_EARLY_ACCES_CODE_COOKIE_NAME,a,1,".modnique.com");}}}}function loadjscssfile(b,d,g,c,a,e){if(d=="js"){var f=document.createElement("script");f.setAttribute("type","text/javascript");f.setAttribute("src",b);if(g!=""){f.setAttribute("title",g);
+}}else{if(d=="css"){var f=document.createElement("link");f.setAttribute("rel","stylesheet");f.setAttribute("type","text/css");f.setAttribute("href",b);if(g!=""){f.setAttribute("title",g);}}else{if(d=="img"){var f=document.createElement("img");f.setAttribute("src",b);f.setAttribute("alt","");f.setAttribute("border",c);
+f.setAttribute("height",a);f.setAttribute("width",e);}}}if(typeof f!="undefined"){document.getElementsByTagName("head")[0].appendChild(f);}}function checkUserRegistrationDays(a){var d=new Date();var b=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),d.getUTCHours(),d.getUTCMinutes(),d.getUTCSeconds());
+var c=b-a;return(parseInt(c/86400000));}function goToShoppingCart(a){$(location).attr("href",a);}function getExpireItemsTime(a){var d=new Date();var b=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),d.getUTCHours(),d.getUTCMinutes(),d.getUTCSeconds());var c=a-b;return(parseInt(c/60000));}function getExpireItemsTimemilliseconds(a){var d=new Date();
+var b=Date.UTC(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate(),d.getUTCHours(),d.getUTCMinutes(),d.getUTCSeconds());var c=a-b;return(parseInt(c/1000));}
+function getCookie(a){if(document.cookie.length>0){c_start=document.cookie.indexOf(a+"=");if(c_start!=-1){c_start=c_start+a.length+1;c_end=document.cookie.indexOf(";",c_start);if(c_end==-1){c_end=document.cookie.length;}return unescape(document.cookie.substring(c_start,c_end));}}return"";}function getModniqueCookie(a){if(document.cookie.length>0){c_start=document.cookie.indexOf(a+"=");
+if(c_start!=-1){c_start=c_start+a.length+1;c_end=document.cookie.indexOf(";",c_start);if(c_end==-1){c_end=document.cookie.length;}return unescape(document.cookie.substring(c_start,c_end));}}return"";}function addJumpParam(a,b){promo=getCookie("promo");if(promo!=""){atag=document.getElementById(a);atag.href=b+promo.replace("%0a","").replace("%0d","").replace("%0A","").replace("%0D","");
+}}function updateHrefAddPromo(a){promo=getCookie("promo");if(promo!=""){ampOrQuest="?";if(a.href.indexOf("?")>0){ampOrQuest="&";}a.href=a.href+ampOrQuest+"promo="+promo.replace("%0a","").replace("%0d","").replace("%0A","").replace("%0D","");}return true;}function isDefined(a){return(typeof(a)=="undefined")?false:true;
+}function setBidzCookie(f,e,c){var b=new Date();var a=new Date();var d="/";if(c==null||c==0){c=1;}a.setTime(b.getTime()+3600000*24*c);document.cookie=escape(f)+"="+escape(e)+";expires="+a.toGMTString()+";path="+d;}function setBidzCookieWithDomain(g,a,e,d){var f=new Date();var b=new Date();var i="/";if(e==null||e==0){e=1;
+}b.setTime(f.getTime()+3600000*24*e);var h=escape(g)+"="+escape(a)+" ;expires="+b.toGMTString()+" ;path="+i+" ;domain="+d;var c=getCookie(g);if(c!=null&&c!=""){document.cookie=escape(g)+"="+escape(a)+" ;expires="+b.toGMTString()+" ;path="+i+" ;domain="+d;}else{document.cookie=escape(g)+"="+escape(a)+" ;expires="+b.toGMTString()+" ;path="+i+" ;domain="+d;
+}}function setCookie(b,c,a){document.cookie=b+"="+c+";path=/"+((a==null)?"":";expires="+a.toGMTString());}var usernameCookie="usernamecookie";function isCustomerLoggedIn(){if(getCookie(usernameCookie)&&getCookie(usernameCookie)!=""&&getCookie(usernameCookie)!='""'){return true;}else{return false;}}function isCoRegiCookieCreated(){if(getCookie("CoRegistration")&&getCookie("CoRegistration")!=""&&getCookie("CoRegistration")!='""'){return true;
+}else{return false;}}function loadUsernameFromCookie(){var a=getCookie("rememberUser");$("#username").val(a);if(document.cookie.indexOf("rememberUser"+"=")>0){if(a==""){$("#rememberusernamecb").attr("checked",false);}else{$("#rememberusernamecb").attr("checked",true);}}else{$("#rememberusernamecb").attr("checked",true);
+}}
+var lp=getSpecificUrlValue("lp");function signupDialog(){if(lp=="show"&&(getModniqueCookie("customer")==""||getModniqueCookie("customer").length<14)){$("div#signup_dialog").dialog({bgiframe:true,background:"none",width:695,height:530,modal:true,draggable:false,position:"center",autoOpen:false,zindex:1003,show:"fade",hide:"fade",resizable:false,open:function(){$(".ui-dialog").css({background:"none",border:"none",position:"absolute",top:"15%"});
+$(".ui-dialog-titlebar-close").css("right","13px");},beforeclose:function(){}});var b=escape(document.location.href);var a=securePrefix+"/bzJApp/ViewDialog.action?sid="+SiteID+"&tid="+TenantID+"&pageName=signup_iframe&returnURL='"+b;$("<iframe />").attr({name:"signup_link",src:a,width:695,height:530,scrolling:"no",allowTransparency:true,frameborder:0,border:0}).appendTo("#signup_dialog");
+$("div#signup_dialog").dialog("open");$("div#signup_error_message").text("");}}
+function NumberFormat(a,b){this.VERSION="Number Format v1.5.4";this.COMMA=",";this.PERIOD=".";this.DASH="-";this.LEFT_PAREN="(";this.RIGHT_PAREN=")";this.LEFT_OUTSIDE=0;this.LEFT_INSIDE=1;this.RIGHT_INSIDE=2;this.RIGHT_OUTSIDE=3;this.LEFT_DASH=0;this.RIGHT_DASH=1;this.PARENTHESIS=2;this.NO_ROUNDING=-1;
+this.num;this.numOriginal;this.hasSeparators=false;this.separatorValue;this.inputDecimalValue;this.decimalValue;this.negativeFormat;this.negativeRed;this.hasCurrency;this.currencyPosition;this.currencyValue;this.places;this.roundToPlaces;this.truncate;this.setNumber=setNumberNF;this.toUnformatted=toUnformattedNF;
+this.setInputDecimal=setInputDecimalNF;this.setSeparators=setSeparatorsNF;this.setCommas=setCommasNF;this.setNegativeFormat=setNegativeFormatNF;this.setNegativeRed=setNegativeRedNF;this.setCurrency=setCurrencyNF;this.setCurrencyPrefix=setCurrencyPrefixNF;this.setCurrencyValue=setCurrencyValueNF;this.setCurrencyPosition=setCurrencyPositionNF;
+this.setPlaces=setPlacesNF;this.toFormatted=toFormattedNF;this.toCurrency=toCurrency;this.toPercentage=toPercentageNF;this.getOriginal=getOriginalNF;this.moveDecimalRight=moveDecimalRightNF;this.moveDecimalLeft=moveDecimalLeftNF;this.getRounded=getRoundedNF;this.preserveZeros=preserveZerosNF;this.justNumber=justNumberNF;
+this.expandExponential=expandExponentialNF;this.getZeros=getZerosNF;this.moveDecimalAsString=moveDecimalAsStringNF;this.moveDecimal=moveDecimalNF;this.addSeparators=addSeparatorsNF;if(b==null){this.setNumber(a,this.PERIOD);}else{this.setNumber(a,b);}this.setCommas(true);this.setNegativeFormat(this.LEFT_DASH);
+this.setNegativeRed(false);this.setCurrency(false);this.setCurrencyPrefix("$");this.setPlaces(2);}function setInputDecimalNF(a){this.inputDecimalValue=a;}function setNumberNF(a,b){if(b!=null){this.setInputDecimal(b);}this.numOriginal=a;this.num=this.justNumber(a);}function toUnformattedNF(){return(this.num);
+}function getOriginalNF(){return(this.numOriginal);}function setNegativeFormatNF(a){this.negativeFormat=a;}function setNegativeRedNF(a){this.negativeRed=a;}function setSeparatorsNF(b,c,a){this.hasSeparators=b;if(c==null){c=this.COMMA;}if(a==null){a=this.PERIOD;}if(c==a){this.decimalValue=(a==this.PERIOD)?this.COMMA:this.PERIOD;
+}else{this.decimalValue=a;}this.separatorValue=c;}function setCommasNF(a){this.setSeparators(a,this.COMMA,this.PERIOD);}function setCurrencyNF(a){this.hasCurrency=a;}function setCurrencyValueNF(a){this.currencyValue=a;}function setCurrencyPrefixNF(a){this.setCurrencyValue(a);this.setCurrencyPosition(this.LEFT_OUTSIDE);
+}function setCurrencyPositionNF(a){this.currencyPosition=a;}function setPlacesNF(b,a){this.roundToPlaces=!(b==this.NO_ROUNDING);this.truncate=(a!=null&&a);this.places=(b<0)?0:b;}function addSeparatorsNF(d,e,a,c){d+="";var f=d.indexOf(e);var g="";if(f!=-1){g=a+d.substring(f+1,d.length);d=d.substring(0,f);
+}var b=/(\d+)(\d{3})/;while(b.test(d)){d=d.replace(b,"$1"+c+"$2");}return d+g;}function toFormattedNF(){var l;var m=this.num;var a;var b=new Array(2);if(this.roundToPlaces){m=this.getRounded(m);a=this.preserveZeros(Math.abs(m));}else{a=this.expandExponential(Math.abs(m));}if(this.hasSeparators){a=this.addSeparators(a,this.PERIOD,this.decimalValue,this.separatorValue);
+}else{a=a.replace(new RegExp("\\"+this.PERIOD),this.decimalValue);}var f="";var k="";var e="";var j="";var h="";var d="";var g="";var c="";var n=(this.negativeFormat==this.PARENTHESIS)?this.LEFT_PAREN:this.DASH;var i=(this.negativeFormat==this.PARENTHESIS)?this.RIGHT_PAREN:this.DASH;if(this.currencyPosition==this.LEFT_OUTSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){j=n;
+}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){h=i;}}if(this.hasCurrency){f=this.currencyValue;}}else{if(this.currencyPosition==this.LEFT_INSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){k=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){g=i;
+}}if(this.hasCurrency){e=this.currencyValue;}}else{if(this.currencyPosition==this.RIGHT_INSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){k=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){g=i;}}if(this.hasCurrency){d=this.currencyValue;
+}}else{if(this.currencyPosition==this.RIGHT_OUTSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){j=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){h=i;}}if(this.hasCurrency){c=this.currencyValue;}}}}}a=f+k+e+j+a+h+d+g+c;if(this.negativeRed&&m<0){a='<font color="red">'+a+"</font>";
+}return(a);}function toCurrency(){var l;var m=this.num;var a;var b=new Array(2);if(this.roundToPlaces){m=this.getRounded(m);a=this.preserveZeros(Math.abs(m));}else{a=this.expandExponential(Math.abs(m));}if(this.hasSeparators){a=this.addSeparators(a,this.PERIOD,this.decimalValue,this.separatorValue);}else{a=a.replace(new RegExp("\\"+this.PERIOD),this.decimalValue);
+}var f="";var k="";var e="";var j="";var h="";var d="";var g="";var c="";var n=(this.negativeFormat==this.PARENTHESIS)?this.LEFT_PAREN:this.DASH;var i=(this.negativeFormat==this.PARENTHESIS)?this.RIGHT_PAREN:this.DASH;if(this.currencyPosition==this.LEFT_OUTSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){j=n;
+}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){h=i;}}if(this.hasCurrency){f=this.currencyValue;}}else{if(this.currencyPosition==this.LEFT_INSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){k=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){g=i;
+}}if(this.hasCurrency){e=this.currencyValue;}}else{if(this.currencyPosition==this.RIGHT_INSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){k=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){g=i;}}if(this.hasCurrency){d=this.currencyValue;
+}}else{if(this.currencyPosition==this.RIGHT_OUTSIDE){if(m<0){if(this.negativeFormat==this.LEFT_DASH||this.negativeFormat==this.PARENTHESIS){j=n;}if(this.negativeFormat==this.RIGHT_DASH||this.negativeFormat==this.PARENTHESIS){h=i;}}if(this.hasCurrency){c=this.currencyValue;}}}}}a=k+j+a+h+g;if(this.negativeRed&&m<0){a='<font color="red">'+a+"</font>";
+}return(a);}function toPercentageNF(){nNum=this.num*100;nNum=this.getRounded(nNum);return nNum+"%";}function getZerosNF(a){var c="";var b;for(b=0;b<a;b++){c+="0";}return c;}function expandExponentialNF(b){if(isNaN(b)){return b;}var d=parseFloat(b)+"";var g=d.toLowerCase().indexOf("e");if(g!=-1){var a=d.toLowerCase().indexOf("+");
+var e=d.toLowerCase().indexOf("-",g);var f=d.substring(0,g);if(e!=-1){var c=d.substring(e+1,d.length);f=this.moveDecimalAsString(f,true,parseInt(c));}else{if(a==-1){a=g;}var c=d.substring(a+1,d.length);f=this.moveDecimalAsString(f,false,parseInt(c));}d=f;}return d;}function moveDecimalRightNF(c,b){var a="";
+if(b==null){a=this.moveDecimal(c,false);}else{a=this.moveDecimal(c,false,b);}return a;}function moveDecimalLeftNF(c,b){var a="";if(b==null){a=this.moveDecimal(c,true);}else{a=this.moveDecimal(c,true,b);}return a;}function moveDecimalAsStringNF(d,e,a){var i=(arguments.length<3)?this.places:a;if(i<=0){return d;
+}var b=d+"";var f=this.getZeros(i);var h=new RegExp("([0-9.]+)");if(e){b=b.replace(h,f+"$1");var g=new RegExp("(-?)([0-9]*)([0-9]{"+i+"})(\\.?)");b=b.replace(g,"$1$2.$3");}else{var c=h.exec(b);if(c!=null){b=b.substring(0,c.index)+c[1]+f+b.substring(c.index+c[0].length);}var g=new RegExp("(-?)([0-9]*)(\\.?)([0-9]{"+i+"})");
+b=b.replace(g,"$1$2$4.");}b=b.replace(/\.$/,"");return b;}function moveDecimalNF(d,c,b){var a="";if(b==null){a=this.moveDecimalAsString(d,c);}else{a=this.moveDecimalAsString(d,c,b);}return parseFloat(a);}function getRoundedNF(a){a=this.moveDecimalRight(a);if(this.truncate){a=a>=0?Math.floor(a):Math.ceil(a);
+}else{a=Math.round(a);}a=this.moveDecimalLeft(a);return a;}function preserveZerosNF(c){var b;c=this.expandExponential(c);if(this.places<=0){return c;}var a=c.indexOf(".");if(a==-1){c+=".";for(b=0;b<this.places;b++){c+="0";}}else{var e=(c.length-1)-a;var d=this.places-e;for(b=0;b<d;b++){c+="0";}}return c;
+}function justNumberNF(e){newVal=e+"";var d=false;if(newVal.indexOf("%")!=-1){newVal=newVal.replace(/\%/g,"");d=true;}var b=new RegExp("[^\\"+this.inputDecimalValue+"\\d\\-\\+\\(\\)eE]","g");newVal=newVal.replace(b,"");var f=new RegExp("["+this.inputDecimalValue+"]","g");var c=f.exec(newVal);if(c!=null){var a=newVal.substring(c.index+c[0].length);
+newVal=newVal.substring(0,c.index)+this.PERIOD+a.replace(f,"");}if(newVal.charAt(newVal.length-1)==this.DASH){newVal=newVal.substring(0,newVal.length-1);newVal="-"+newVal;}else{if(newVal.charAt(0)==this.LEFT_PAREN&&newVal.charAt(newVal.length-1)==this.RIGHT_PAREN){newVal=newVal.substring(1,newVal.length-1);
+newVal="-"+newVal;}}newVal=parseFloat(newVal);if(!isFinite(newVal)){newVal=0;}if(d){newVal=this.moveDecimalLeft(newVal,2);}return newVal;}
+jQuery(document).ready(function(a){var k="$!redirectUrl";a("div#invite_dialog").dialog({bgiframe:true,width:675,height:400,modal:true,draggable:false,position:"center",autoOpen:false,zindex:1003,show:"fade",hide:"fade",resizable:false,open:function(){a(".ui-dialog-titlebar-close").css({"right":"3px","top":"8px"});
+a(".ui-dialog").css({overflow:"hidden",position:"fixed",top:"25%"});a("#invite_dialog").css({overflow:"hidden"});},beforeclose:function(){}});function c(){var m=encodeURIComponent(document.location.href.replace("&invite=true","").replace("&sent=true",""));var l=securePrefix+"/bzJApp/ViewDialog.action?sid="+SiteID+"&tid="+TenantID+"&pageName=invite&versionID=2012&returnURL="+m;
+a("<iframe />").attr({name:"invite_dialog",src:l,width:675,height:400,scrolling:"no",allowTransparency:true,frameborder:0,border:0}).appendTo("#invite_dialog");a("div#invite_dialog").dialog("open");a("div#invite_error_message").text("");}function j(){a("div#dialog_confirmation").dialog({width:320,height:100,modal:true,draggable:false,position:"center",autoOpen:false,resizable:false});
+a("div#dialog_confirmation").dialog("open");a(".ui-dialog-titlebar-close").click(function(){var l=document.location.href.replace("&sent=true","");window.parent.location.replace(l);});}var i=getSpecificUrlValue("invite");if(i=="true"&&(getModniqueCookie("cookie")&&getModniqueCookie("cookie")!=""&&getModniqueCookie("cookie")!='""')){c();
+}var e=getSpecificUrlValue("sent");if(e=="true"&&(getModniqueCookie("cookie")&&getModniqueCookie("cookie")!=""&&getModniqueCookie("cookie")!='""')){j();}a("a#nav_invite").click(function(l){l.preventDefault();if(usePersistentLoginCookie=="Y"){if(!getModniqueCookie(checkoutCookieName)){l.preventDefault();
+a("a#usernav_login").trigger("click",[secureProtocol+"://"+checkoutHost+"/taf/invitefriends"]);}else{c();}}});a("a#nav_invite, a.nav_invite").click(function(l){l.preventDefault();c();});jQuery.fn.center=function(l){this.css("position","absolute");this.css("top",((a(window).height()-this.outerHeight())/2)+a(window).scrollTop()+"px");
+this.css("left",((a(window).width()-a("#"+l).outerWidth())/2)+a(window).scrollLeft()+"px");return this;};function d(){a("<div />").attr({id:"preloaderWrapper"}).appendTo("body");var l=a("div#preloaderWrapper");l.overlay({speed:200,fixed:false,mask:{color:"#000",loadSpeed:0,opacity:0.3}});l.center("preloaderWrapper");
+l.html('<div id="preloaderSpinner"><img src="/bzJApp/views/'+fileVersion+'site/modnique2012/images/cssImages/modnique2012/placeholder/processSpinner.gif" /></div>');l.data("overlay").load();l.center("preloaderWrapper").css({"margin-top":"50px"});}function b(l){errorCode=l.errorCode;returnURL=l.returnURL;
+if(errorCode==0){a("div#emailsent").show();a("div#errormessage").hide();a("#inviteFormHeader").hide();}else{errorMessage=l.errorMessage;a("div#errormessage").html(errorMessage).show();a("#inviteFormHeader").hide();a("div#preloaderWrapper").overlay().close();}}var h=0;var g=3;function f(l){h=h+1;if(h>=g){errorMessage=l.errorMessage;
+a("div#preloaderWrapper").overlay().close();a("div#errormessage").html("There was an unexpected error.  Please try again.").show();a("#inviteFormHeader").hide();h=0;}else{a("input#send_invitation, a#send_invitation").click();}}a("input#send_invitation, a#send_invitation").click(function(m){m.preventDefault();
+l=securePrefix+"/bzJApp/InviteArbitraryUserJson.action";param="?sid="+SiteID+"&tid="+TenantID;var l=l+param+"&inviteeEmailAddress= "+a("textarea#inviteeEmailAddress").val()+"&inviteeFirstName="+a("input#inviteeFirstName").val()+"&returnURL="+a("input#returnUrl").val()+"&cb="+Math.random()+"&callback=?";
+jQuery.ajax({url:l,jsonp:true,dataType:"jsonp",type:"GET",crossDomain:true,beforeSend:d,success:b,error:f,complete:function(){a("div#preloaderWrapper").overlay().close();a("div#preloaderWrapper").hide();}});});a("a#emailsent_close").click(function(){window.top.location.href=returnURL;});});function updatePersonalizedLink(d){var a=getModniqueCookie(myInviteSourceCookie);
+var c=$("p#personalizedLink");var b=c.text();if(a!=null&&a!=""){c.text(b+a);}else{c.text(b+d);}}
+var loginsuccessflag;function ajaxLogin(g,a,b,e){if(b){b="300";}if(e){e="100";}if(!g){return false;}if(!a){return false;}var f="?sid="+b+"&tid="+e+"&loginname="+g+"&loginpwd="+a+"&cb="+Math.random();var c="/bzJApp/XMLLogon.action"+f;var d=new Ajax.Request(c,{method:"get",onSuccess:this.loginSuccess,onFailure:this.loginFailure,onComplete:this.loginComplete,onException:this.loginException});
+return true;}function loginSuccess(b){if(b.responseText=="true"){this.loginsuccessflag="t";}else{this.loginsuccessflag="f";var a=document.getElementById("loginMessageDiv");if(a){a.innerHTML="Invalid username or password. Please try again.";}}}function loginFailure(a){}function loginComplete(a){if(this.loginsuccessflag=="t"){location.reload(true);
+}}function loginException(a){}
+function getStoreCreditValue(b,c,e){var d=null;if(window.XMLHttpRequest){d=new XMLHttpRequest();}else{d=new ActiveXObject("Microsoft.XMLHTTP");}var g=Math.floor(Math.random()*1001);var a="/bzJApp/Proxy.action?"+"actionName="+c+"&dest=c"+"&method=g"+"&pageload="+g+"&"+e+"&params="+escape(e);d.open("GET",a,false);
+d.send();var f=d.responseText;return f;}function updateStoreCreditDiv(a){alert("updateStoreCreditDiv "+a);}function getStoreCreditValueWithJQuery(b,c,e,d){var g=Math.floor(Math.random()*1001);var a=b+"/bzJApp/ShowStoreCashCreditJson.action?"+e+"&callback=?";var f=$.ajax({type:"GET",url:a+"&cb="+Math.random(),cache:false,jsonp:true,crossDomain:true,dataType:"jsonp",success:function(h){setSpans(h,d);
+}});}function setSpans(e,c){var f=c.split("#and#");var b=e.storeCashCredit;var d=e.firstName;$(f[0]).html("$"+b.toFixed(2));if(f.length>1){var a=15;if(d!=null&&d!=""&&d.length>a){$(f[1]).html("Welcome, "+d.substring(0,a)+"...!");}else{if(d!=null&&d!=""&&d.length<=a){$(f[1]).html("Welcome, "+d+"!");}else{$(f[1]).html("Welcome!");
+}}}}
+/**
+ * Cookie plugin
+ *
+ * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
+
+/**
+ * Create a cookie with the given name and value and other optional parameters.
+ *
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Set the value of a cookie.
+ * @example $.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
+ * @desc Create a cookie with all available options.
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Create a session cookie.
+ * @example $.cookie('the_cookie', null);
+ * @desc Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
+ *       used when the cookie was set.
+ *
+ * @param String name The name of the cookie.
+ * @param String value The value of the cookie.
+ * @param Object options An object literal containing key/value pairs to provide optional cookie attributes.
+ * @option Number|Date expires Either an integer specifying the expiration date from now on in days or a Date object.
+ *                             If a negative value is specified (e.g. a date in the past), the cookie will be deleted.
+ *                             If set to null or omitted, the cookie will be a session cookie and will not be retained
+ *                             when the the browser exits.
+ * @option String path The value of the path atribute of the cookie (default: path of page that created the cookie).
+ * @option String domain The value of the domain attribute of the cookie (default: domain of page that created the cookie).
+ * @option Boolean secure If true, the secure attribute of the cookie will be set and the cookie transmission will
+ *                        require a secure protocol (like HTTPS).
+ * @type undefined
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+
+/**
+ * Get the value of a cookie with the given name.
+ *
+ * @example $.cookie('the_cookie');
+ * @desc Get the value of a cookie.
+ *
+ * @param String name The name of the cookie.
+ * @return The value of the cookie.
+ * @type String
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        options = options || {};
+        if (value === null) {
+            value = '';
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        // CAUTION: Needed to parenthesize options.path and options.domain
+        // in the following expressions, otherwise they evaluate to undefined
+        // in the packed version for some reason...
+        var path = options.path ? '; path=' + (options.path) : '';
+        var domain = options.domain ? '; domain=' + (options.domain) : '';
+        var secure = options.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+};
+function emailLinkDialog(e,d){if($("#email_link").length==0){$("<div />").attr({id:"dialogWrapper"}).appendTo("body");$("div#dialogWrapper").overlay({speed:200,mask:{color:"#000",loadSpeed:0,opacity:0.6},onBeforeClose:function(){$(".error").hide();$("div#dialog_error_message").hide();},onLoad:function(){$("input#ajax_username").focus();
+}});}var c=encodeURI(document.location.href);var a=hostPrefix+"/bzJApp/ViewDialog.action?sid="+SiteID+"&tid="+TenantID+"&versionID="+VersionID+"&pageName=gigya_email_link"+"&gigyaUID="+encodeURIComponent(e)+"&email="+d+"&returnURL="+escape(c);var b={divId:"linkAccount",title:"<h2 class='tal fspx18 fc1'>Link Account</h2>",frameSrc:a,frameWidth:340,wrapper:"dialogWrapper",positionFromTop:"15"};
+displayDialog.setParameters(b);displayDialog.buildFramelessDialog();displayDialog.displayDialog();$("div#dialogWrapper").css({"width":"340px"});$("div#email_link_error_message").text("");}
+function getCountryToDisplayForEstimatedDeliveryTime(){var a=getCountryFromCookie();getCountryToDisplay(a);}function getCountryToDisplay(a){if(a!=null&&a!=""){displayByCountryForEstimatedDeliveryTime(a);}else{a=getCountryFromServerForEstimatedDeliveryTime();if(a==""){displayByCountryForEstimatedDeliveryTime("US");
+}}}function getCountryFromServerForEstimatedDeliveryTime(){var a="";querystring="/bzJApp/GetCountryByIp.action?sid=300&tid=100";jQuery.ajax({type:"GET",url:querystring,success:function(b){a=b;displayByCountryForEstimatedDeliveryTime(b);}});return a;}function displayByCountryForEstimatedDeliveryTime(c){var d=$("#us_delivery");
+var b=$("#ca_delivery");if(b.size()<=0){c="us";}var a=$("#au_delivery");if(a.size()<=0){c="us";}switch(c.toUpperCase()){case"CA":d.css("display","none");b.css("display","block");a.css("display","none");break;case"AU":d.css("display","none");b.css("display","none");a.css("display","block");break;default:d.css("display","block");
+b.css("display","none");a.css("display","none");}}function getCountryFromCookie(){var a=getModniqueCookie("userCountryCookie");if(a!=null&&a!=""&&(a.length==2)&&a.toUpperCase().charCodeAt(0)>=65&&a.toUpperCase().charCodeAt(0)<=90&&a.toUpperCase().charCodeAt(1)>=65&&a.toUpperCase().charCodeAt(1)<=90){return a;
+}return"";}var ObjCountryByIp={updatePageByCountry:function(b){var a=getCountryFromCookie();if(a!=""){b(a);}else{this.getCountryFromServer(b,true);}},updatePageByCountrySync:function(b){var a=getCountryFromCookie();if(a!=""){b(a);}else{this.getCountryFromServer(b,false);}},getCountryFromServer:function(b,a){querystring="/bzJApp/GetCountryByIp.action?sid=300&tid=100";
+jQuery.ajax({type:"GET",url:querystring,async:a,success:function(c){b(c);}});},doDisplayForShippingBanner:function(a){var c=$("div#us_shipping");var e=$("div#ca_shipping");var b=$("div#au_shipping");var d=$("div#international_shipping");if(!a&&a.length!=2){return;}a=a.toUpperCase();if(a=="US"){c.css("display","block");
+e.css("display","none");b.css("display","none");d.css("display","none");}else{if(a=="CA"){c.css("display","none");e.css("display","block");b.css("display","none");d.css("display","none");}else{if(a=="AU"){c.css("display","none");e.css("display","none");b.css("display","block");d.css("display","none");
+}else{c.css("display","none");e.css("display","none");b.css("display","none");d.css("display","block");}}}},isEventVisible:function(b,a){b=b.toLowerCase();a=a.toLowerCase();var c=b.substring(0,4)!="non-";return !(b.indexOf("non-"+a)!=-1||(c&&b.indexOf(a)==-1));},hideSaleEventsByCountry:function(a){if(a==null||a.length!=2){a="US";
+}$("a[data-country-carousel]").each(function(){var b=$(this).data("country-carousel");if(!ObjCountryByIp.isEventVisible(b,a)){$(this).remove();}else{$(this).show();}});$("div[data-country],a[data-country],ul[data-country]").each(function(){var b=$(this).data("country");if(!ObjCountryByIp.isEventVisible(b,a)){var d=$(this).parent();
+$(this).remove();if(d.parent().hasClass("subnav")){d.remove();}if($(".ui-mobile").length==0){if(d.prop("tagName")=="DIV"){var c=d.children("div:visible").length;if(c==0){d.hide();}}}}});}};
+// version 1.5.0
+// http://welcome.totheinter.net/columnizer-jquery-plugin/
+// created by: Adam Wulf @adamwulf, adam.wulf@gmail.com
+
+(function($){
+
+ $.fn.columnize = function(options) {
+
+
+	var defaults = {
+		// default width of columns
+		width: 400,
+		// optional # of columns instead of width
+		columns : false,
+		// true to build columns once regardless of window resize
+		// false to rebuild when content box changes bounds
+		buildOnce : false,
+		// an object with options if the text should overflow
+		// it's container if it can't fit within a specified height
+		overflow : false,
+		// this function is called after content is columnized
+		doneFunc : function(){},
+		// if the content should be columnized into a 
+		// container node other than it's own node
+		target : false,
+		// re-columnizing when images reload might make things
+		// run slow. so flip this to true if it's causing delays
+		ignoreImageLoading : true,
+		// should columns float left or right
+		columnFloat : "left",
+		// ensure the last column is never the tallest column
+		lastNeverTallest : false,
+		// (int) the minimum number of characters to jump when splitting
+		// text nodes. smaller numbers will result in higher accuracy
+		// column widths, but will take slightly longer
+		accuracy : false
+	};
+	var options = $.extend(defaults, options);
+	
+	if(typeof(options.width) == "string"){
+		options.width = parseInt(options.width);
+		if(isNaN(options.width)){
+			options.width = defaults.width;
+		}
+	}
+
+    return this.each(function() {
+	    var $inBox = options.target ? $(options.target) : $(this);
+		var maxHeight = $(this).height();
+		var $cache = $('<div></div>'); // this is where we'll put the real content
+		var lastWidth = 0;
+		var columnizing = false;
+		
+		var adjustment = 0;
+		
+		$cache.append($(this).contents().clone(true));
+	    
+	    // images loading after dom load
+	    // can screw up the column heights,
+	    // so recolumnize after images load
+	    if(!options.ignoreImageLoading && !options.target){
+	    	if(!$inBox.data("imageLoaded")){
+		    	$inBox.data("imageLoaded", true);
+		    	if($(this).find("img").length > 0){
+		    		// only bother if there are
+		    		// actually images...
+			    	var func = function($inBox,$cache){ return function(){
+				    	if(!$inBox.data("firstImageLoaded")){
+				    		$inBox.data("firstImageLoaded", "true");
+					    	$inBox.empty().append($cache.children().clone(true));
+					    	$inBox.columnize(options);
+				    	}
+			    	}}($(this), $cache);
+				    $(this).find("img").one("load", func);
+				    $(this).find("img").one("abort", func);
+				    return;
+		    	}
+	    	}
+	    }
+	    
+		$inBox.empty();
+		
+		columnizeIt();
+		
+		if(!options.buildOnce){
+			$(window).resize(function() {
+				if(!options.buildOnce && $.browser.msie){
+					if($inBox.data("timeout")){
+						clearTimeout($inBox.data("timeout"));
+					}
+					$inBox.data("timeout", setTimeout(columnizeIt, 200));
+				}else if(!options.buildOnce){
+					columnizeIt();
+				}else{
+					// don't rebuild
+				}
+			});
+		}
+		
+		/**
+		 * return a node that has a height
+		 * less than or equal to height
+		 *
+		 * @param putInHere, a dom element
+		 * @$pullOutHere, a jQuery element
+		 */
+		function columnize($putInHere, $pullOutHere, $parentColumn, height){
+			while($parentColumn.height() < height &&
+				  $pullOutHere[0].childNodes.length){
+				$putInHere.append($pullOutHere[0].childNodes[0]);
+			}
+			if($putInHere[0].childNodes.length == 0) return;
+			
+			// now we're too tall, undo the last one
+			var kids = $putInHere[0].childNodes;
+			var lastKid = kids[kids.length-1];
+			$putInHere[0].removeChild(lastKid);
+			var $item = $(lastKid);
+			
+			
+			if($item[0].nodeType == 3){
+				// it's a text node, split it up
+				var oText = $item[0].nodeValue;
+				var counter2 = options.width / 18;
+				if(options.accuracy)
+				counter2 = options.accuracy;
+				var columnText;
+				var latestTextNode = null;
+				while($parentColumn.height() < height && oText.length){
+					if (oText.indexOf(' ', counter2) != '-1') {
+						columnText = oText.substring(0, oText.indexOf(' ', counter2));
+					} else {
+						columnText = oText;
+					}
+					latestTextNode = document.createTextNode(columnText);
+					$putInHere.append(latestTextNode);
+					
+					if(oText.length > counter2){
+						oText = oText.substring(oText.indexOf(' ', counter2));
+					}else{
+						oText = "";
+					}
+				}
+				if($parentColumn.height() >= height && latestTextNode != null){
+					// too tall :(
+					$putInHere[0].removeChild(latestTextNode);
+					oText = latestTextNode.nodeValue + oText;
+				}
+				if(oText.length){
+					$item[0].nodeValue = oText;
+				}else{
+					return false; // we ate the whole text node, move on to the next node
+				}
+			}
+			
+			if($pullOutHere.children().length){
+				$pullOutHere.prepend($item);
+			}else{
+				$pullOutHere.append($item);
+			}
+			
+			return $item[0].nodeType == 3;
+		}
+		
+		function split($putInHere, $pullOutHere, $parentColumn, height){
+			if($pullOutHere.children().length){
+				$cloneMe = $pullOutHere.children(":first");
+				$clone = $cloneMe.clone(true);
+				if($clone.prop("nodeType") == 1 && !$clone.hasClass("dontend")){ 
+					$putInHere.append($clone);
+					if($clone.is("img") && $parentColumn.height() < height + 20){
+						$cloneMe.remove();
+					}else if(!$cloneMe.hasClass("dontsplit") && $parentColumn.height() < height + 20){
+						$cloneMe.remove();
+					}else if($clone.is("img") || $cloneMe.hasClass("dontsplit")){
+						$clone.remove();
+					}else{
+						$clone.empty();
+						if(!columnize($clone, $cloneMe, $parentColumn, height)){
+							if($cloneMe.children().length){
+								split($clone, $cloneMe, $parentColumn, height);
+							}
+						}
+						if($clone.get(0).childNodes.length == 0){
+							// it was split, but nothing is in it :(
+							$clone.remove();
+						}
+					}
+				}
+			}
+		}
+		
+		
+		function singleColumnizeIt() {
+			if ($inBox.data("columnized") && $inBox.children().length == 1) {
+				return;
+			}
+			$inBox.data("columnized", true);
+			$inBox.data("columnizing", true);
+			
+			$inBox.empty();
+			$inBox.append($("<div class='first last column' style='width:100%; float: " + options.columnFloat + ";'></div>")); //"
+			$col = $inBox.children().eq($inBox.children().length-1);
+			$destroyable = $cache.clone(true);
+			if(options.overflow){
+				targetHeight = options.overflow.height;
+				columnize($col, $destroyable, $col, targetHeight);
+				// make sure that the last item in the column isn't a "dontend"
+				if(!$destroyable.contents().find(":first-child").hasClass("dontend")){
+					split($col, $destroyable, $col, targetHeight);
+				}
+				
+				while(checkDontEndColumn($col.children(":last").length && $col.children(":last").get(0))){
+					var $lastKid = $col.children(":last");
+					$lastKid.remove();
+					$destroyable.prepend($lastKid);
+				}
+
+				var html = "";
+				var div = document.createElement('DIV');
+				while($destroyable[0].childNodes.length > 0){
+					var kid = $destroyable[0].childNodes[0];
+					for(var i=0;i<kid.attributes.length;i++){
+						if(kid.attributes[i].nodeName.indexOf("jQuery") == 0){
+							kid.removeAttribute(kid.attributes[i].nodeName);
+						}
+					}
+					div.innerHTML = "";
+					div.appendChild($destroyable[0].childNodes[0]);
+					html += div.innerHTML;
+				}
+				var overflow = $(options.overflow.id)[0];
+				overflow.innerHTML = html;
+
+			}else{
+				$col.append($destroyable);
+			}
+			$inBox.data("columnizing", false);
+			
+			if(options.overflow){
+				options.overflow.doneFunc();
+			}
+			
+		}
+		
+		function checkDontEndColumn(dom){
+			if(dom.nodeType != 1) return false;
+			if($(dom).hasClass("dontend")) return true;
+			if(dom.childNodes.length == 0) return false;
+			return checkDontEndColumn(dom.childNodes[dom.childNodes.length-1]);
+		}
+		
+		function columnizeIt() {
+			if(lastWidth == $inBox.width()) return;
+			lastWidth = $inBox.width();
+			
+			var numCols = Math.round($inBox.width() / options.width);
+			if(options.columns) numCols = options.columns;
+//			if ($inBox.data("columnized") && numCols == $inBox.children().length) {
+//				return;
+//			}
+			if(numCols <= 1){
+				return singleColumnizeIt();
+			}
+			if($inBox.data("columnizing")) return;
+			$inBox.data("columnized", true);
+			$inBox.data("columnizing", true);
+			
+			$inBox.empty();
+			$inBox.append($("<div style='width:" + (Math.floor(100 / numCols))+ "%; float: " + options.columnFloat + ";'></div>")); //"
+			$col = $inBox.children(":last");
+			$col.append($cache.clone());
+			maxHeight = $col.height();
+			$inBox.empty();
+			
+			var targetHeight = maxHeight / numCols;
+			var firstTime = true;
+			var maxLoops = 3;
+			var scrollHorizontally = false;
+			if(options.overflow){
+				maxLoops = 1;
+				targetHeight = options.overflow.height;
+			}else if(options.height && options.width){
+				maxLoops = 1;
+				targetHeight = options.height;
+				scrollHorizontally = true;
+			}
+			
+			for(var loopCount=0;loopCount<maxLoops;loopCount++){
+				$inBox.empty();
+				var $destroyable;
+				try{
+					$destroyable = $cache.clone(true);
+				}catch(e){
+					// jquery in ie6 can't clone with true
+					$destroyable = $cache.clone();
+				}
+				$destroyable.css("visibility", "hidden");
+				// create the columns
+				for (var i = 0; i < numCols; i++) {
+					/* create column */
+					var className = (i == 0) ? "first column" : "column";
+					var className = (i == numCols - 1) ? ("last " + className) : className;
+					$inBox.append($("<div class='" + className + "' style='width:" + (Math.floor(100 / numCols))+ "%; float: " + options.columnFloat + ";'></div>")); //"
+				}
+				
+				// fill all but the last column (unless overflowing)
+				var i = 0;
+				while(i < numCols - (options.overflow ? 0 : 1) || scrollHorizontally && $destroyable.contents().length){
+					if($inBox.children().length <= i){
+						// we ran out of columns, make another
+						$inBox.append($("<div class='" + className + "' style='width:" + (Math.floor(100 / numCols))+ "%; float: " + options.columnFloat + ";'></div>")); //"
+					}
+					var $col = $inBox.children().eq(i);
+					columnize($col, $destroyable, $col, targetHeight);
+					// make sure that the last item in the column isn't a "dontend"
+					if(!$destroyable.contents().find(":first-child").hasClass("dontend")){
+						split($col, $destroyable, $col, targetHeight);
+					}else{
+//						alert("not splitting a dontend");
+					}
+					
+					while(checkDontEndColumn($col.children(":last").length && $col.children(":last").get(0))){
+						var $lastKid = $col.children(":last");
+						$lastKid.remove();
+						$destroyable.prepend($lastKid);
+					}
+					i++;
+				}
+				if(options.overflow && !scrollHorizontally){
+					var IE6 = false /*@cc_on || @_jscript_version < 5.7 @*/;
+					var IE7 = (document.all) && (navigator.appVersion.indexOf("MSIE 7.") != -1);
+					if(IE6 || IE7){
+						var html = "";
+						var div = document.createElement('DIV');
+						while($destroyable[0].childNodes.length > 0){
+							var kid = $destroyable[0].childNodes[0];
+							for(var i=0;i<kid.attributes.length;i++){
+								if(kid.attributes[i].nodeName.indexOf("jQuery") == 0){
+									kid.removeAttribute(kid.attributes[i].nodeName);
+								}
+							}
+							div.innerHTML = "";
+							div.appendChild($destroyable[0].childNodes[0]);
+							html += div.innerHTML;
+						}
+						var overflow = $(options.overflow.id)[0];
+						overflow.innerHTML = html;
+					}else{
+						$(options.overflow.id).empty().append($destroyable.contents().clone(true));
+					}
+				}else if(!scrollHorizontally){
+					// the last column in the series
+					$col = $inBox.children().eq($inBox.children().length-1);
+					while($destroyable.contents().length) $col.append($destroyable.contents(":first"));
+					var afterH = $col.height();
+					var diff = afterH - targetHeight;
+					var totalH = 0;
+					var min = 10000000;
+					var max = 0;
+					var lastIsMax = false;
+					$inBox.children().each(function($inBox){ return function($item){
+						var h = $inBox.children().eq($item).height();
+						lastIsMax = false;
+						totalH += h;
+						if(h > max) {
+							max = h;
+							lastIsMax = true;
+						}
+						if(h < min) min = h;
+					}}($inBox));
+
+					var avgH = totalH / numCols;
+					if(options.lastNeverTallest && lastIsMax){
+						// the last column is the tallest
+						// so allow columns to be taller
+						// and retry
+						adjustment += 30;
+						if(adjustment < 100){
+							targetHeight = targetHeight + 30;
+							if(loopCount == maxLoops-1) maxLoops++;
+						}else{
+							debugger;
+							loopCount = maxLoops;
+						}
+					}else if(max - min > 30){
+						// too much variation, try again
+						targetHeight = avgH + 30;
+					}else if(Math.abs(avgH-targetHeight) > 20){
+						// too much variation, try again
+						targetHeight = avgH;
+					}else {
+						// solid, we're done
+						loopCount = maxLoops;
+					}
+				}else{
+					// it's scrolling horizontally, fix the width/classes of the columns
+					$inBox.children().each(function(i){
+						$col = $inBox.children().eq(i);
+						$col.width(options.width + "px");
+						if(i==0){
+							$col.addClass("first");
+						}else if(i==$inBox.children().length-1){
+							$col.addClass("last");
+						}else{
+							$col.removeClass("first");
+							$col.removeClass("last");
+						}
+					});
+					$inBox.width($inBox.children().length * options.width + "px");
+				}
+				$inBox.append($("<br style='clear:both;'>"));
+			}
+			$inBox.find('.column').find(':first.removeiffirst').remove();
+			$inBox.find('.column').find(':last.removeiflast').remove();
+			$inBox.data("columnizing", false);
+
+			if(options.overflow){
+				options.overflow.doneFunc();
+			}
+			options.doneFunc();
+		}
+    });
+ };
+})(jQuery);
+

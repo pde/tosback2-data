@@ -5,6 +5,8 @@ version: 5.0.3
 var _sr_config = "broker-config.js";
 var _sr_builder = "builder.js";
 var _sr_sql08_URL = false;
+var qI_flag=false;
+var qI_loaded=true; 
 var SR_url = window.location.toString().toLowerCase();
 var URLrange= [/\/\/[\w\.]+\/[a-k]/i, /\/\/[\w\.]+\/[l-z]/i];
 
@@ -18,14 +20,11 @@ for (var i=0; i < URLrange.length; i++)
 
 if(SR_url.search(/www\.microsoft\.com\/windows\/pc-selector/i) !== -1 || SR_url.search(/(www|js|i3)\.microsoft\.com\/library\/svy\/int_cle\.htm/i) !== -1) {
 		_sr_config = "broker-config_cle.js";
+}else if(/[\w\.]+\/windowsphone\/en-us/i.test(SR_url)) {
+	_sr_config = "broker-config_wp.js";	
+}else if(/[\w\.]+\/en-us\/bi\//i.test(SR_url)) {
+	_sr_builder = "builder_Qbi.js";	
 }
-
-if(/[\w\.]+\/windowsphone\/en-us/i.test(SR_url)) {
-	
-	_sr_config = "broker-config_wp.js";
-	
-}
-
 if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('cleflag2') == -1){
 	var c = 'cleflag2=1; path=/; domain=.microsoft.com';
 	document.cookie = c;	
@@ -1124,6 +1123,10 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 			loadBuilder: function() {
 				// prefix pageconfig url if it's supplied
 				var url = _sr.executingPath + _sr.builderUrl;
+				if(_sr_builder == "builder_Qbi.js"){
+					var _s = "http://js.microsoft.com/library/svy/qinvite-config.js";
+					_utils.loadScript(_s);
+				}
 				/*
 				var p = this.config.prefixUrl;
 						
@@ -1132,7 +1135,6 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				}
 				*/
 				_utils.loadScript(url);
-				
 			}
 		};
 	} )();

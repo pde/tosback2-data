@@ -202,9 +202,36 @@
 	 
 
 
- 
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 
+
+
+
+
+
+
+
+
+
+
 
 
 	 
@@ -303,7 +330,7 @@
 						
 					
 					var v_contextRoot = '/u-verse';
-					var v_mediaContextRoot = '/media/en_US';
+					var v_mediaContextRoot = 'http://2.ecom.attccc.com/media/en_US';
 					var v_timeOut_id = null;
 					function setTimeOutPopup() {
 						if (v_timeOut_id != null) clearTimeout(v_timeOut_id);
@@ -313,6 +340,7 @@
 					}
 					function sessionTimeOutPopup() {
 						closePopup();
+						closePopup();//Fix for PROD11-865
 						showPopup('sessionTimeOut',true,false);
 					}
 					var timeOutWarning_id = null;
@@ -376,7 +404,7 @@
 					}									
 					function showPopOfferDetails(){
 				        var vDecisionStr = ShoppingCart.AjaxRequest('/global/cms/u-verse/en_US/popups/offerdetails.jsp');
-				        var vButton = '<table border="0" width="100%"><tr><td align="right" valign="middle"><a href="index.jsp.html"><img src="../../media/en_US/images/btn/btn_ShopUverse_blue_123x26.gif" /></a></td></tr></table>';
+				        var vButton = '<table border="0" width="100%"><tr><td align="right" valign="middle"><a href="index.jsp.html"><img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ShopUverse_blue_123x26.gif" /></a></td></tr></table>';
 				        showPopupByStr(vDecisionStr, "Offer Details", true, false, vButton);
 				        
 				    }
@@ -391,41 +419,6 @@
 					}
 			</script>
 			
-			
-			
-			
-			
-			
-			
-			 
-
-
-
-
-
-
-	<script src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>
-	
-	
-	
-	
-	
-		
-		
-		
-		
-			
-			
-				<script type="text/javascript">ForeSee.CPPS.fsr$set('u-verse_avail','unknown')</script>
-			
-		
-	
-	
-	
-	
-	
-
-
 			
 			
 			
@@ -458,9 +451,9 @@ body				{background: transparent url("http://www.att.com/images/global/backgroun
 html				{background: transparent url("http://www.att.com/images/global/background_left.jpg") 0 0 no-repeat !important; background-attachment: scroll; opacity: 1;}
 </style>
 
-<script src="http://www.att.com/scripts/jquery.min.js" type="text/javascript" ></script>
+<script src="../../../3.ecom.attccc.com/scripts/jquery.min.js"></script>
 <script src="../../scripts/skatools.js" type="text/javascript"></script>
-<script src="http://www.att.com/scripts/gbl.js" type="text/javascript"></script>
+<script src="../../../2.ecom.attccc.com/scripts/gbl.js" type="text/javascript"></script>
 <script src="http://www.att.com/scripts/reporting.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -622,7 +615,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155" />
+<meta NAME="DCSext.sessionid" 				CONTENT="99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
@@ -699,7 +692,15 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
+
+
+
+
+		
+		
+			<meta NAME="DCSext.wtBuyFlowType" CONTENT="PROVIDE" />
+		
+
 <meta NAME="DCSext.Referral_app_id" CONTENT="" />
 
 
@@ -749,7 +750,9 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		DCSext$wtEmailAddr : 				'',
 		DCSext$wtAddSkuQty : 				'',
 		DCSext$wtPaperlessBill :			'',	
-		DCSext$wtAutoPay :			        ''	
+		DCSext$wtAutoPay :			        '',
+		DCSext$wtBuyFlowType :	 			'PROVIDE',
+		DCSext$flowtype :	 				'UVERSE'
 	}
 	
 	reporting.capture([
@@ -767,12 +770,20 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			}
 		},
 		//Bug fix ECOM 1108 - 254 
+		//Modified as part of ECOM1207-167
 		{selector: '.wt', type: 'wtevent', 
 			name: function() {
 			 var v_eventName = ((this.className.match(/\bwt\s(.+)(\s|$)/)||[])[1]||'')
 					.replace(/__serv__/g, ((window.showModal||{}).curServ||'').capitalize())
-					.replace(/__step__/g, ((window.showModal||{}).curStep||''));
-			 var v_stepNumber = '';
+					.replace(/__step__/g, ((window.showModal||{}).curStep||''));				 
+				if(v_eventName == 'Uverse_Voip_Step1_Submit'){	
+					var phoneLinesList = Modal.Details.phoneLinesList||[];
+					if (phoneLinesList.error) {
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Complete Phone Number Check Pg','DCSext.wtNoHit','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','');
+					webTrendTag('Uverse_Voip_Step2_Submit',0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					}
+				}
+				var v_stepNumber = '';
 				if (v_eventName == 'Hub_Voip_config_Initated'){
 					v_stepNumber = 'Step1';
 					v_eventName = 'Uverse_Voip_Step1_Submit';}
@@ -780,13 +791,32 @@ jQuery.when(reporting_ready).then(function (reporting) {
 					v_stepNumber = 'Step2';
 				else if (v_eventName == 'Uverse_Voip_Step3_Submit')
 					v_stepNumber = 'Step3';
-					
-				if (v_eventName == 'Uverse_Voip_Step1_Submit' || v_eventName == 'Uverse_Voip_Step2_Submit' || v_eventName == 'Uverse_Voip_Step3_Submit'){
-					webTrendTag(v_eventName,0,'User','DCSext.wtPN','Uverse Spoke IPVOIP '+v_stepNumber+' Config Pg','wtBuyFlowType','PROVIDE');
+				else if (v_eventName == 'Uverse_Voip_Step1_Submit')
+					v_eventName = '';				
+				if(this.className == "wt voip"){
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					v_eventName = '';
+				}
+				if (v_eventName == 'Uverse_Voip_Step1_Submit'){					
+					webTrendTag(v_eventName,0,'User','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
 					return "";
+				}	else if (v_eventName == 'Uverse_Voip_Step2_Submit' ){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step2 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep2.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";
+				}else if ( v_eventName == 'Uverse_Voip_Step3_Submit'){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step3 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep3.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";	
 				}else {
 					return v_eventName;
 				}
+
 			}
 		},
 		{selector: '[action*=checkout] :input', type: 'wtparam', name: 'wtLastFieldInteracted', 
@@ -796,7 +826,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		},
 		{selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkLoc', 
 			value: function() {
-				return 'Uverse' + '__' + 'Body';
+				return 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body';
 			}
 		},
         {selector: '#paperlessBillingCheck:page(creditcard-information)', type: 'wtparam', name: 'wtPaperlessBill', 
@@ -869,7 +899,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		
 		//shop page build your own button link name and link location
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkName', value: 'Build_Your_Own'},
-		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '__' + 'Body'},
+		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body'},
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc'},
 		
 		//voip.jsp adding 2nd line user response
@@ -996,6 +1026,7 @@ function handleLastFieldInteracted(e) {
 			
 				
 				
+				
 					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/availability.css?" />
 					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/uverse.css?" />
 					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/uverse2.css?" />
@@ -1031,10 +1062,13 @@ function handleLastFieldInteracted(e) {
 <script src="/global/scripts/menu.js" type="text/javascript"></script>
 <![endif]-->
 
+
+
+
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = '67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155';
+			var pSessionId = '99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475';
 			return pSessionId;
 		};
 
@@ -1074,7 +1108,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1345228266547;
+		var servertime = 1348874970925;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -1470,8 +1504,7 @@ function handleLastFieldInteracted(e) {
 												
 											
 										
-									
-									
+																		
 								</ul>
 							</div>
 						</li>
@@ -2226,7 +2259,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../buy-connectech.att.com/ctcomm/home/index.jsp.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
+																				<li><a href="../../../buy-connectech.att.com/ctcomm/catalog/index.jsp%3FcatId=cat30030.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
 																			
 																		</ul>
 																	</div>
@@ -2420,23 +2453,18 @@ function handleLastFieldInteracted(e) {
 										
 									
 								
-								
-									
-									
-										<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
-											<fieldset>
-												
-												
-												<input type="hidden" name="App_ID" value="HOME"/>
-												<input type="hidden" name="autoSuggest" value=""/>
-												<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
-												<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
-												<button type="button">Submit</button>
-												<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
-											</fieldset>
-										</form>
-									
-								
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
+									<fieldset>
+										
+										
+										<input type="hidden" name="App_ID" value="HOME"/>
+										<input type="hidden" name="autoSuggest" value=""/>
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
+										<button type="button">Submit</button>
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
+									</fieldset>
+								</form>
 							</li>
 						</ul>
 					</div>
@@ -2598,7 +2626,7 @@ function handleLastFieldInteracted(e) {
 						
 							
 						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp">Retrieve Cart</a></li>
-						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"><img src="../../global/images/cart_icon.jpg" height="15" width="20" border="0" alt="" /></a></li>
+						<li class="last"><a class="shop_cart_img shop_cart_padding" rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"></a></li>
 						
 						
 						
@@ -2754,11 +2782,9 @@ function handleLastFieldInteracted(e) {
 										
 											
 											
+											
 												<a target="_blank" href="http://www.att.com/u-verse/att-terms-of-service.jsp">AT&amp;T U-verse Terms of Service</a> |
 												<a target="_blank" href="http://www.att.com/u-verse/explore/offer-details.jsp">AT&amp;T U-verse&reg; Offer Details</a>
-												
-													
-												
 											
 										
 									
@@ -3076,17 +3102,17 @@ function handleLastFieldInteracted(e) {
 
         
         <div id="mainPopupDiv" style="position:absolute; visibility:hidden; left:100px; top:100px; width:400px; z-index:100; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
-            <div style="height:37px; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div style="height:37px; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
                 <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitle"></h1></div>
-					<div style="text-align:right;" id="popCloseButton">
+					<div style="text-align:right;float:right;" id="popCloseButton">
 						
 							
 							
 								<span id="popCloseButtonSpan" onClick="closePopup();">
-									<a href="javascript:void(0);">
+									<a class="fl" href="javascript:void(0);">
 										Close
-									</a> <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/>
+									</a> <span class="shop_popup_close_button fl"> </span>
 								</span>
 							
 						
@@ -3099,10 +3125,10 @@ function handleLastFieldInteracted(e) {
 
 		
         <div id="mainPopupDiv2" style="position:absolute; visibility:hidden; left:100px; top:100px; width:400px; z-index:110; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
-            <div style="min-height:68px;height:37px;background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div style="min-height:68px;height:37px;background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
                 <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitle2"></h1></div>
-                    <div style="text-align:right;" id="popCloseButton2"><span onClick="closePopup('2')"><a href="javascript:void(0);">Close</a> <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
+                    <div style="text-align:right;float:right;" id="popCloseButton2"><span onClick="closePopup('2')"><a class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span></span></div>
                 </div>
             </div>
             <div id="mainPopupBody2" style="padding:10px; border:#CCCCCC solid 1px; margin:10px;"></div>
@@ -3110,22 +3136,25 @@ function handleLastFieldInteracted(e) {
         </div>
 	
 
+	
 		<div id="mainPopupDivChannelLineup" style="position:absolute; visibility:hidden; left:18px; top:168px; width:400px; z-index:110; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
             <div style="min-height:45px;height:37px;background-image:url(../../media/att/2011/shop/u-verse/channel-lineup/bkd-filter-tab.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
 	          <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopupTitleChannelLineup"></h1></div>
-					<div style="font-size:1.1em;*font-size:1.3em;text-align:center;width:77px;float:right" id="popCloseButton2"><div style="*margin-top:4px;margin-left:-15px;*height:20px;" onClick="closePopup('2')"><a href="javascript:void(0);">Close</a>&nbsp;&nbsp;</div><div style="margin-top:-18px;*margin-top:-25px;margin-left:43px;" onClick="closePopup('2')"><a href="javascript:void(0);"><img alt="Close Disabled" style="cursor: pointer; cursor: hand;" src="../../media/att/2011/global/btn/btn_close.gif"/></a></div></div>
+					<div style="font-size:1.1em;*font-size:1.3em;text-align:center;width:77px;float:right" id="popCloseButton2"><div style="*margin-top:4px;margin-left:-15px;*height:20px;" onClick="closePopup('2')"><a href="javascript:void(0);">Close</a>&nbsp;&nbsp;</div><div style="margin-top:-18px;*margin-top:-25px;margin-left:43px;" onClick="closePopup('2')"><a href="javascript:void(0);"><img alt="Close Disabled" style="cursor: pointer; cursor: hand;" src="../../../3.ecom.attccc.com/media/att/2011/global/btn/btn_close.gif"/></a></div></div>
 					
-					<div id="printChannelLineup" style="font-size:1.1em;*font-size:1.3em;width:77px;border-right:1px solid #CCC;text-align:center; float:right;display:none;"><div style="margin-right:-17px;*margin-top:3px;*height:0px;" onclick="printChannels()"><a href="javascript:void(0);">Print</a></div><div style="margin-top:-15px;*margin-top:-1px;margin-right:37px;" onclick="printChannels()"><a href="javascript:void(0);"><img alt="Print" src="../../media/att/2011/global/ico/ico_print.gif" style="cursor: pointer;"/></a></div></div>
+					<div id="printChannelLineup" style="font-size:1.1em;*font-size:1.3em;width:77px;border-right:1px solid #CCC;text-align:center; float:right;display:none;"><div style="margin-right:-17px;*margin-top:3px;*height:0px;" onclick="printChannels()"><a href="javascript:void(0);">Print</a></div><div style="margin-top:-15px;*margin-top:-1px;margin-right:37px;" onclick="printChannels()"><a href="javascript:void(0);"><img alt="Print" src="../../../2.ecom.attccc.com/media/att/2011/global/ico/ico_print.gif" style="cursor: pointer;"/></a></div></div>
                 </div>
             </div>
 			<div id="mainPopupBodyChannelLineup"  ></div>
 			<div id="mainPopupButtonChannelLineup" style="padding-right:10px;padding-bottom:8px;"></div>
         </div>
+	
 
 				
         <div id="mainPopupDivIDM" style="position: absolute; visibility: hidden; width: 840px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-            <div id="mainPopupHeaderIDM" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div id="mainPopupHeaderIDM" style="height:37px; overflow: hidden; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+		
             	 
 
 
@@ -3147,18 +3176,20 @@ function handleLastFieldInteracted(e) {
 				<span class="modal-header-subtitle">Customize your digital home phone service in 3 steps</span>
 			</div>	
     	</div>
-        <div style="text-align: right; padding-top: 10px;">
-	        <span onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
-	        <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
+        <div style="text-align: right; padding-top: 10px;float:right;">
+	        <span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
+	     </span></div>
     	<div id="mainPopUpTitleIDM" style="display: none;"></div>
     </div>
         
 
 
+			
             </div>
 			<div style="clear:both;"></div>
             <div id="mainPopupBodyIDM" style="width: 837px; height: 478px; float: left; overflow: hidden; margin: 0px;"></div>
             <div id="mainPopupFooterIDM" style="width: 834px; height: 44px; overflow: hidden; border: 1px solid #CCCCCC; margin: 0px 2px 2px 2px;">
+			
             	 
 
 
@@ -3173,47 +3204,47 @@ function handleLastFieldInteracted(e) {
 	
 		
 		
-			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
+			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-							<img src="../../media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
 						</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart"><img id="addToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
 					
 					
 					
 					
 					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><img id="addToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
 					
 					
 					
 					
 						
 					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
 					<div title="Return to Cart"><img id="returnToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="if (!portPhoneLineslist()) cancelModal(null);" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
 					
 					
 					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
 				
 					
 					
 					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><img id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
 						</div>
 						
 					
 					
 					
 						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<img src="../../media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
 						</div>
 						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<img src="../../media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
 						</div>
 					</div>
 				
@@ -3221,6 +3252,7 @@ function handleLastFieldInteracted(e) {
         
 
 
+			
             </div>
 		</div>
 		
@@ -3233,12 +3265,11 @@ function handleLastFieldInteracted(e) {
 		</div>
 		
         <div id="mainPopupDivIDM2" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-            <div id="mainPopupHeaderIDM2" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div id="mainPopupHeaderIDM2" style="height:37px; overflow: hidden; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
 				<div style="height: 37px;">
 					<div style="padding:10px;">
 						<div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitleIDM2" style="display: none;"></h1></div>
-						<div style="text-align:right;"><span onClick="if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
-							<img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/>
+						<div style="text-align:right;float:right;"><span class="shop_popup_close_button fl" onClick="if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
 						</span></div>
 					</div>
 				</div>
@@ -3246,6 +3277,7 @@ function handleLastFieldInteracted(e) {
 			<div style="clear:both;"></div>
             <div id="mainPopupBodyIDM2" style="width: 928px; height: 472px; float: left; overflow: hidden; margin: 0px;"></div>
             <div id="mainPopupFooterIDM2" style="width: 928px; height: 44px; overflow: hidden;border: 1px solid #CCCCCC;margin: 0px 2px 2px 2px;">
+			
             	
 					
 				 
@@ -3262,47 +3294,47 @@ function handleLastFieldInteracted(e) {
 	
 		
 		
-			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
+			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-							<img src="../../media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
 						</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart"><img id="addToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
 					
 					
 					
 					
 					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><img id="addToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
 					
 					
 					
 					
 						
 					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
 					<div title="Return to Cart"><img id="returnToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="if (!portPhoneLineslist()) cancelModal(null);" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
 					
 					
 					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
 				
 					
 					
 					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><img id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
 						</div>
 						
 					
 					
 					
 						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<img src="../../media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
 						</div>
 						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<img src="../../media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
 						</div>
 					</div>
 				
@@ -3310,19 +3342,20 @@ function handleLastFieldInteracted(e) {
         
 
 
+			
             </div>
 		</div>
 		
 		
 		<div id="sessionTimeOut" style="width:450px;display:none;" title="Session Time Out">
 			<table border="0" cellspacing="10"><tr>
-			<td valign="top"><img src="../../media/en_US/images/ico/ico_alert_AA0009QS.gif" alt="Alert"/></td>
+			<td valign="top"><div class="icon_alert"></div></td>
 			<td valign="top">Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity. Select Continue to return to the AT&T U-verse Home page.</td>
 			</tr></table>
 		</div>
 		<div id="sessionTimeOutButton" style="width:450px;display:none;" >
 			<table border="0" width="100%">
-				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="location.href='/u-verse/shop/'" alt="Continue"></img></td></tr>
+				<tr><td align="right"><a class="btn_cont" onclick="location.href='/u-verse/shop/'"></a></td></tr>
 			</table>
 		</div>
 
@@ -3336,27 +3369,27 @@ function handleLastFieldInteracted(e) {
  		
         
             
-            <div id="iframeprogressbar" style="position:absolute; width:277px; height:82px; z-index:110; top:0px; left:0px; visibility:visible;"><img onLoad="showOverLayCenterDiv();" id="processImage" alt="Loading..." src="../../media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
+            <div id="iframeprogressbar" style="position:absolute; width:277px; height:82px; z-index:110; top:0px; left:0px; visibility:visible;"><img onLoad="showOverLayCenterDiv();" id="processImage" alt="Loading..." src="../../../2.ecom.attccc.com/media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
         
 		<div id="sessionTimeOutWarning" style="width:450px;display:none;" title="Session Time Out" uri="timeoutwarning.jsp">
 			<table border="0" cellspacing="10"><tr>
-			<td valign="top"><img src="../../media/en_US/images/ico/ico_alert_AA0009QS.gif" alt="Alert"/></td>
+			<td valign="top"><div class="icon_alert"/></td>
 			<td valign="top"><p>As a security measure, your session will expire after 30 minutes of inactivity.</p> 
 <p>If you would like more time, click Continue.</p></td>
 			</tr></table>
-			<img class="wtpn Uverse_Session_Time_Out_Warning_Modal_Pg" src="../../global/images/transparent.gif" alt="" width="1" height="1" />
+			<img class="wtpn Uverse_Session_Time_Out_Warning_Modal_Pg" src="../../../2.ecom.attccc.com/global/images/transparent.gif" alt="" width="1" height="1" />
 		</div>
 		<div id="sessionTimeOutWarningButton" style="width:450px;display:none;" >
 			<table border="0" width="100%">
-				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="closePopup();keepBackAlive();setTimeOutWarning();" alt="Continue"></img></td></tr>
+				<tr><td align="right"><a class="btn_cont" onclick="closePopup();keepBackAlive();setTimeOutWarning();"></a></td></tr>
 			</table>
 		</div>
 
         
-        <div id="availabilityprogressbar" style="position:absolute;width:427px;height:78px;z-index:100;top:0px;left:0px; visibility:hidden;"><img id="availabilityImage" alt="Loading..." src="../../media/en_US/images/ani/ani_progress_Check-availability_AA0009X8.gif" /></div>
+        <div id="availabilityprogressbar" style="position:absolute;width:427px;height:78px;z-index:100;top:0px;left:0px; visibility:hidden;"><img id="availabilityImage" alt="Loading..." src="../../../3.ecom.attccc.com/media/en_US/images/ani/ani_progress_Check-availability_AA0009X8.gif" /></div>
 
         
-        <div id="checkoutprogressbar" style="position:absolute;width:277px;height:82px;z-index:110;top:0px;left:0px; visibility:hidden;"><img id="processImage" alt="Loading..." src="../../media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
+        <div id="checkoutprogressbar" style="position:absolute;width:277px;height:82px;z-index:110;top:0px;left:0px; visibility:hidden;"><img id="processImage" alt="Loading..." src="../../../2.ecom.attccc.com/media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
         
 		
 <!--[if lte IE 7]></div><![endif]-->
@@ -3584,8 +3617,40 @@ function handleLastFieldInteracted(e) {
 			<script type="text/javascript" src="http://www.att.com/u-verse/dwr/interface/DWRRequestManager.js?"></script>
 			<script type="text/javascript" src="../dwr/engine.js"></script>
 			<script type="text/javascript" src="../dwr/util.js"></script>
-			<script type="text/javascript" src="../scripts/hoverTooltip.js"></script>
 			<script type="text/javascript" src="../../webtrends/scripts/dcs_tag_TOP.js"></script>
+
+        
+		 
+
+
+
+
+
+
+	<script src="../../scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>
+	
+	
+	
+	
+	
+		
+		
+		
+		
+			
+			
+				<script type="text/javascript">ForeSee.CPPS.fsr$set('u-verse_avail','unknown')</script>
+			
+		
+	
+	
+	
+	
+	
+
+
+		
+		
 		
 		 
 

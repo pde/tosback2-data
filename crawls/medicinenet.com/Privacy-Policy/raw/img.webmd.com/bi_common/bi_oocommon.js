@@ -1,4 +1,4 @@
-var s_ver='|oocommon|20120621',_ud="undefined",s_live=false,ntc="ntc";
+var s_ver='|oocommon|20120911',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -298,8 +298,7 @@ if(qecd!=""){
 
 if (qctr!=""){s_ctr_loc = qctr;}
 
-var _haiq=_readC("HAIQ");
-if (_haiq=="") {_readC("haiq");}
+var _haiq=_readC("haiq");
 _haiq=unescape(_haiq).split("|")[0];
 
 var uPermC=String(_readC("WBMD_PERM"));

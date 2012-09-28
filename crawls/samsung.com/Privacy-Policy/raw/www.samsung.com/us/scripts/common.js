@@ -1769,12 +1769,40 @@ $(document).ready(function(){
 	
 });
 
+$(document).ready(function(){
+	//Marketo Tagging on Business Pages
+	if( (urlValueSplit[4].match('business') && urlValueSplit[5].match('monitors')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('laptops')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('printers')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('commercial-display-solutions')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('tablet-pcs')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('galaxy-tab')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('tablet-pcs')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('why_samsung.html')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('contact_us.html')) || 
+		(urlValueSplit[4].match('business') && urlValueSplit[5].match('index.html')) ||
+		(urlValueSplit[4].match('it_solutions') && urlValueSplit[5].match('business') && urlValueSplit[6].match('business.html')) || 
+		(urlValueSplit[4].match('it_solutions') && urlValueSplit[5].match('healthcare') && urlValueSplit[6].match('healthcare.html')) || 
+		(urlValueSplit[4].match('it_solutions') && urlValueSplit[5].match('education') && urlValueSplit[6].match('education.html')) || 
+		(urlValueSplit[4].match('it_solutions') && urlValueSplit[5].match('government') && urlValueSplit[6].match('government.html')) || 
+		(urlValueSplit[4].match('it_solutions') && urlValueSplit[5].match('government') && urlValueSplit[6].match('stateandlocal.html')) ){
+			$.ajax({
+			  url: document.location.protocol + '//munchkin.marketo.net/munchkin.js',
+			  dataType: 'script',
+			  cache: true,
+			  success: function() {
+			    Munchkin.init('924-VOH-759');
+  				}
+			});
+	}
+});
+
 //smart tv bundle topic page disclaimer injection 
 $(document).ready(function(){
 
 if(urlValueSplit[4].match('topic') && urlValueSplit[5].match('samsung-smart-tv-bundles')){
 
-	$("#container").append('<p style="font-size:12px;color:#666;margin: 20px auto;">*Participation may vary and is limited to only participating <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailers</a> (at their sole discretion). Bonus products may vary and will be based on retailer in-stock inventory. Offer valid (subject to retailer participation) for purchases made after 12 a.m. EST on July 22nd 2012 through August 18th, 2012, 11:59pm EST or while supplies last. No rainchecks. Additional restrictions and limitations may apply so Samsung advises consumers to verify if and when an <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailer</a> is participating in the promotion, and if a particular TV and/or bonus product is eligible before completing a purchase.</p>');
+	$("#container").append('<p style="font-size:12px;color:#666;margin: 20px auto;">*Participation may vary and is limited to only participating <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailers</a> (at their sole discretion). Bonus products may vary and will be based on retailer in-stock inventory. Offer valid (subject to retailer participation) for purchases made after 12 a.m. EST on August 26th 2012 through September 8th, 2012, 11:59pm EST or while supplies last. No rain checks. Additional restrictions and limitations may apply so Samsung advises consumers to verify if and when an <a href="http://stgwebus.samsung.com/us/peaceofmind/authorized_resellers.html">authorized retailer</a> is participating in the promotion, and if a particular TV and/or bonus product is eligible before completing a purchase.</p>');
 }
 });
 
@@ -1796,13 +1824,13 @@ $(document).ready(function(){
 
 
 	//inject shop buttons for developer GS3 phones
-	// if(urlValueSplit[6].match('SCH-I535MBCVZW')){
-	// 	$('.flagship-cta').append('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBCVZW\',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBCVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
-	// }
+	if(urlValueSplit[6].match('SCH-I535MBCVZW')){
+		$('.flagship-cta').html('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBCVZW\',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBCVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
+	}
 
-	// if(urlValueSplit[6].match('SCH-I535MBDVZW')){
-	// 	$('.flagship-cta').append('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBDVZW \',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBDVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
-	// }
+	if(urlValueSplit[6].match('SCH-I535MBDVZW')){
+		$('.flagship-cta').html('<a onclick="ss_link_click_track_2(\'\',\'event20\',\'Cell Phones;SCH-I535MBDVZW \',\'\',\'product header\',\'o\',\'shop\');" class="lg-btn" href="https://mobile.samsung.com/accessories/addtocart.do?productid=ETC-I535MBDVZW&returnurl=http://www.samsung.com/us/mobile/cell-phones-accessories"><span>Shop</span></a>');
+	}
 
 
 

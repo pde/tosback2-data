@@ -1,0 +1,39 @@
+Drupal.behaviors.mun2searchppl = function(context) {
+  $('.people-search span.close').click(function () {
+    $('.people-search').hide()
+  })
+  $('span.openppl').click(function () {
+    $('.people-search').show()
+  })
+  $('.people-search .name').change(function () {
+    $('.people-search form').attr('action', mun2SearchGetAction());
+  })
+  $('#ppl-button').click(
+     function (){
+       var filters = 'filters=type:profile';
+       var query = '';
+       if ($('#ppl-username').val()) {
+       	query = $('#ppl-username').val()
+       }
+       if ($('#ppl-gender').val() != 'all') {
+       	filters += '%20ss_gender:' + $('#ppl-gender').val()
+       }
+       if ($('#ppl-zip').val()) {
+       	filters += '%20ss_zipcode:' + $('#ppl-zip').val()
+       }
+       if ($('input[name=relationship]:checked').val()) {
+       	 filters += '%20ss_relstatus:' + $('input[name=relationship]:checked').val()
+       }
+       window.location = '/search/apachesolr_search/' + query + '?' + filters
+     }
+  );
+}
+
+function mun2SearchGetAction () {
+  var action = '';
+  var base = '/search/apachesolr_search';
+  var query = $('.people-search .name').val();
+  var action = base + '/' + query;
+
+  return action;
+}

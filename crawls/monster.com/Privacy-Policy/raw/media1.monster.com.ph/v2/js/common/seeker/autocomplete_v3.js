@@ -162,6 +162,8 @@ function callHttp(KeyID)
 			str = str.replace(regExp, '%23');
 			var regExp = new RegExp('\\+');
 			str = str.replace(regExp, '%2B');
+			// Overwriting rand because of day caching usage of browser.
+			rand= (new Date()).getYear()+'-'+(new Date()).getMonth()+'-'+(new Date()).getDate();
 			if(txtBox.id == 'lmy')				
 				var url ="http://monsterindia.com/suggest.html?q="+str+"&type=loc&myrnd="+rand+"&JSONP=allSuggestions";
 			else				
@@ -217,7 +219,7 @@ function seprateContent(str)
 	for(sg in tempArray)
 	{
 		tempStr = refineText(tempArray[sg])
-		if(tempStr.match(new RegExp('^'+txtData,"i")))
+		if(tempStr.match(new RegExp(''+txtData,"i")))
 		{
 			freshContent+=tempArray[sg]+"|";
 			countsg++;

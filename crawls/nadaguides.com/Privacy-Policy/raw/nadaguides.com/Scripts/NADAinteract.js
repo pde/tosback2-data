@@ -457,6 +457,56 @@ var NADAjs = {
         this.addNewOption = addOption;
         this.removeNewOption = removeOption;
     },
+
+    RVsNewOptions: new function() {
+        var toggleOption = function(trim, option, config, configInputId, cbSelector, isAdd) {
+            var togType = 'remove';
+            if (isAdd)
+                togType = 'add';
+            $('.opt-working').modal({ opacity: 0, overlayCss: { backgroundColor: '#fff' }, containerId: 'opt-modal' });
+            $.ajax({
+                type: 'POST',
+                url: '/RVs/Async/ToggleNewOption',
+                dataType: 'json',
+                data: {
+                    trimId: trim,
+                    optionId: option,
+                    currentConfig: config,
+                    toggleType: togType
+                },
+                error: function(data) { $.modal.close(); },
+                success: function(data) {
+                    $('#' + configInputId).val(data.optstate);
+                    $('#' + cbSelector).each(function() {
+                        $(this).attr('checked', false);
+                    });
+                    $(data.list).each(function() {
+                        //uncheck all
+                        if (this.state == 'SELECTED') {
+                            $('#' + this.id).attr('checked', true);
+                        }
+                        else if (this.state == 'EXCLUDED') {
+                            //do something
+                        }
+                    });
+                    $.modal.close();
+                }
+            });
+        }
+
+        var addOption = function(trim, option, config, configInputId, cbSelector) {
+            toggleOption(trim, option, config, configInputId, cbSelector, true);
+        }
+        var removeOption = function(trim, option, config, configInputId, cbSelector) {
+            toggleOption(trim, option, config, configInputId, cbSelector, false);
+        }
+
+        //public
+        this.addNewOption = addOption;
+        this.removeNewOption = removeOption;
+    },
+
+
     VDPVehicleInfo: new function() {
         var toggleInfoOptions = function() { //maybe rewrite to be a little more modular...?
             $('#optionlist').css('overflow', 'visible').css('display', 'block');
@@ -838,7 +888,21 @@ var NADAjs = {
 
         this.Init = init;
         this.TrackExtLink = trackExtLink;
+    },
+
+    Marketing: new function() {
+
+        var boldMakeLinks = function() {
+            $("#makelist a:contains('Hyundai')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Jaguar')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Land Rover')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Scion')").css({ 'font-weight': 'bold' });
+        }
+
+
+        this.BoldMakeLinks = boldMakeLinks;
     }
+
 };
 
 

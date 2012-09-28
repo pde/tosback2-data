@@ -239,9 +239,36 @@
 	 
 
 
- 
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 
+
+
+
+
+
+
+
+
+
+
 
 
 	 
@@ -340,7 +367,7 @@
 						
 					
 					var v_contextRoot = '/u-verse';
-					var v_mediaContextRoot = '/media/en_US';
+					var v_mediaContextRoot = 'http://2.ecom.attccc.com/media/en_US';
 					var v_timeOut_id = null;
 					function setTimeOutPopup() {
 						if (v_timeOut_id != null) clearTimeout(v_timeOut_id);
@@ -350,6 +377,7 @@
 					}
 					function sessionTimeOutPopup() {
 						closePopup();
+						closePopup();//Fix for PROD11-865
 						showPopup('sessionTimeOut',true,false);
 					}
 					var timeOutWarning_id = null;
@@ -413,7 +441,7 @@
 					}									
 					function showPopOfferDetails(){
 				        var vDecisionStr = ShoppingCart.AjaxRequest('/global/cms/u-verse/en_US/popups/offerdetails.jsp');
-				        var vButton = '<table border="0" width="100%"><tr><td align="right" valign="middle"><a href="index.jsp.html"><img src="../../media/en_US/images/btn/btn_ShopUverse_blue_123x26.gif" /></a></td></tr></table>';
+				        var vButton = '<table border="0" width="100%"><tr><td align="right" valign="middle"><a href="index.jsp.html"><img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ShopUverse_blue_123x26.gif" /></a></td></tr></table>';
 				        showPopupByStr(vDecisionStr, "Offer Details", true, false, vButton);
 				        
 				    }
@@ -488,41 +516,6 @@
 			
 			
 			
-			
-			 
-
-
-
-
-
-
-	<script src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>
-	
-	
-	
-	
-	
-		
-		
-		
-		
-			
-			
-				<script type="text/javascript">ForeSee.CPPS.fsr$set('u-verse_avail','unknown')</script>
-			
-		
-	
-	
-	
-	
-	
-
-
-			
-			
-			
-			
-			
 				
 					<script type='text/javascript' src='../liveperson/uverse-residential-english_mtagconfig.js'></script>
 				
@@ -550,9 +543,9 @@ body				{background: transparent url("http://www.att.com/images/global/backgroun
 html				{background: transparent url("http://www.att.com/images/global/background_left.jpg") 0 0 no-repeat !important; background-attachment: scroll; opacity: 1;}
 </style>
 
-<script src="http://www.att.com/scripts/jquery.min.js" type="text/javascript" ></script>
+<script src="../../../3.ecom.attccc.com/scripts/jquery.min.js"></script>
 <script src="../../scripts/skatools.js" type="text/javascript"></script>
-<script src="http://www.att.com/scripts/gbl.js" type="text/javascript"></script>
+<script src="../../../2.ecom.attccc.com/scripts/gbl.js" type="text/javascript"></script>
 <script src="http://www.att.com/scripts/reporting.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -714,7 +707,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155" />
+<meta NAME="DCSext.sessionid" 				CONTENT="99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="Residential" />
@@ -798,7 +791,15 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
+
+
+
+
+		
+		
+			<meta NAME="DCSext.wtBuyFlowType" CONTENT="PROVIDE" />
+		
+
 <meta NAME="DCSext.Referral_app_id" CONTENT="" />
 
 
@@ -848,7 +849,9 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		DCSext$wtEmailAddr : 				'',
 		DCSext$wtAddSkuQty : 				'',
 		DCSext$wtPaperlessBill :			'',	
-		DCSext$wtAutoPay :			        ''	
+		DCSext$wtAutoPay :			        '',
+		DCSext$wtBuyFlowType :	 			'PROVIDE',
+		DCSext$flowtype :	 				'UVERSE'
 	}
 	
 	reporting.capture([
@@ -866,12 +869,20 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			}
 		},
 		//Bug fix ECOM 1108 - 254 
+		//Modified as part of ECOM1207-167
 		{selector: '.wt', type: 'wtevent', 
 			name: function() {
 			 var v_eventName = ((this.className.match(/\bwt\s(.+)(\s|$)/)||[])[1]||'')
 					.replace(/__serv__/g, ((window.showModal||{}).curServ||'').capitalize())
-					.replace(/__step__/g, ((window.showModal||{}).curStep||''));
-			 var v_stepNumber = '';
+					.replace(/__step__/g, ((window.showModal||{}).curStep||''));				 
+				if(v_eventName == 'Uverse_Voip_Step1_Submit'){	
+					var phoneLinesList = Modal.Details.phoneLinesList||[];
+					if (phoneLinesList.error) {
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Complete Phone Number Check Pg','DCSext.wtNoHit','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','');
+					webTrendTag('Uverse_Voip_Step2_Submit',0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					}
+				}
+				var v_stepNumber = '';
 				if (v_eventName == 'Hub_Voip_config_Initated'){
 					v_stepNumber = 'Step1';
 					v_eventName = 'Uverse_Voip_Step1_Submit';}
@@ -879,13 +890,32 @@ jQuery.when(reporting_ready).then(function (reporting) {
 					v_stepNumber = 'Step2';
 				else if (v_eventName == 'Uverse_Voip_Step3_Submit')
 					v_stepNumber = 'Step3';
-					
-				if (v_eventName == 'Uverse_Voip_Step1_Submit' || v_eventName == 'Uverse_Voip_Step2_Submit' || v_eventName == 'Uverse_Voip_Step3_Submit'){
-					webTrendTag(v_eventName,0,'User','DCSext.wtPN','Uverse Spoke IPVOIP '+v_stepNumber+' Config Pg','wtBuyFlowType','PROVIDE');
+				else if (v_eventName == 'Uverse_Voip_Step1_Submit')
+					v_eventName = '';				
+				if(this.className == "wt voip"){
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					v_eventName = '';
+				}
+				if (v_eventName == 'Uverse_Voip_Step1_Submit'){					
+					webTrendTag(v_eventName,0,'User','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
 					return "";
+				}	else if (v_eventName == 'Uverse_Voip_Step2_Submit' ){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step2 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep2.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";
+				}else if ( v_eventName == 'Uverse_Voip_Step3_Submit'){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step3 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep3.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";	
 				}else {
 					return v_eventName;
 				}
+
 			}
 		},
 		{selector: '[action*=checkout] :input', type: 'wtparam', name: 'wtLastFieldInteracted', 
@@ -895,7 +925,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		},
 		{selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkLoc', 
 			value: function() {
-				return 'Uverse' + '__' + 'Body';
+				return 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body';
 			}
 		},
         {selector: '#paperlessBillingCheck:page(creditcard-information)', type: 'wtparam', name: 'wtPaperlessBill', 
@@ -968,7 +998,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		
 		//shop page build your own button link name and link location
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkName', value: 'Build_Your_Own'},
-		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '__' + 'Body'},
+		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body'},
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc'},
 		
 		//voip.jsp adding 2nd line user response
@@ -1255,10 +1285,9 @@ function handleLastFieldInteracted(e) {
 			
 				
 				
-					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/availability.css?" />
+					<link rel="stylesheet" type="text/css" href="../styles/shop.css" />
 					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/uverse.css?" />
-					<link rel="stylesheet" type="text/css" href="http://www.att.com/u-verse/styles/uverse2.css?" />
-					<link rel="stylesheet" type="text/css" href="http://www.att.com/global/styles/grids.css?" />
+				
 				
 			
 			
@@ -1290,10 +1319,13 @@ function handleLastFieldInteracted(e) {
 <script src="/global/scripts/menu.js" type="text/javascript"></script>
 <![endif]-->
 
+
+
+
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = '67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155';
+			var pSessionId = '99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475';
 			return pSessionId;
 		};
 
@@ -1333,7 +1365,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1345228262556;
+		var servertime = 1348874953130;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -1743,8 +1775,7 @@ function handleLastFieldInteracted(e) {
 												
 											
 										
-									
-									
+																		
 								</ul>
 							</div>
 						</li>
@@ -2499,7 +2530,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../buy-connectech.att.com/ctcomm/home/index.jsp.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
+																				<li><a href="../../../buy-connectech.att.com/ctcomm/catalog/index.jsp%3FcatId=cat30030.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
 																			
 																		</ul>
 																	</div>
@@ -2693,23 +2724,18 @@ function handleLastFieldInteracted(e) {
 										
 									
 								
-								
-									
-									
-										<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
-											<fieldset>
-												
-												
-												<input type="hidden" name="App_ID" value="HOME"/>
-												<input type="hidden" name="autoSuggest" value=""/>
-												<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
-												<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
-												<button type="button">Submit</button>
-												<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
-											</fieldset>
-										</form>
-									
-								
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
+									<fieldset>
+										
+										
+										<input type="hidden" name="App_ID" value="HOME"/>
+										<input type="hidden" name="autoSuggest" value=""/>
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
+										<button type="button">Submit</button>
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
+									</fieldset>
+								</form>
 							</li>
 						</ul>
 					</div>
@@ -2867,7 +2893,7 @@ function handleLastFieldInteracted(e) {
 							
 						
 						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp">Retrieve Cart</a></li>
-						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"><img src="../../global/images/cart_icon.jpg" height="15" width="20" border="0" alt="" /></a></li>
+						<li class="last"><a class="shop_cart_img shop_cart_padding" rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"></a></li>
 						
 						
 						
@@ -2972,7 +2998,7 @@ function handleLastFieldInteracted(e) {
             
                
             
-				<div style="position: absolute; top: 20px; width: 390px; right: 0px; "> <img alt="" src="../../media/en_US/images/ico/ico_link_uverse_address.jpg"/><span style="font-size: 12px;">Already have AT&T U-verse? <a target="_blank" href="https://www.att.com/olam/dashboardAction.olamexecute">Sign in for Exclusive Offers</a></span> </div>
+				<div style="position: absolute; top: 20px; width: 390px; right: 0px; "> <img alt="" src="../../../0.ecom.attccc.com/media/en_US/images/ico/ico_link_uverse_address.jpg"/><span style="font-size: 12px;">Already have AT&T U-verse? <a target="_blank" href="https://www.att.com/olam/dashboardAction.olamexecute">Sign in for Exclusive Offers</a></span> </div>
 			
 			
 			
@@ -3095,7 +3121,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	<script type="text/javascript" src="../../global/scripts/scriptaculous-1.8.3/src/dragdrop.js"></script>
 	<script type='text/javascript' src='../scripts/accordion2.js'></script>
 	<script type='text/javascript' src='../scripts/accordion-listener2.js'></script>
-	<script type='text/javascript' src='../scripts/uverse2.js'></script>
+	
 	<script type="text/javascript" src="../scripts/flash.js"></script>
 	<script src="../../global/scripts/flashPanelTracker.js" type="text/javascript"></script>
 	<script type="text/javascript" src="../scripts/cleverButtons.js"></script>
@@ -3204,13 +3230,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	<div id="content">
 		<div id="primary-content">
 			<div style="width:710px; float:left;">
-				<div style="float:left;width:270px;"><h1 class="padLft">Shop Popular Bundles</h1></div>
+				<div style="float:left;width:270px;"><h1 class="padLft">Shop Our Best Offers</h1></div>
 				<div style="float:left;width:300px; padding-top: 3px;">
-					<div style="float:left;">
-						<iframe src="../../../www.facebook.com/plugins/like.php%3Fhref=http:%252F%252Fbzzabout.it%252F71&amp;layout=button_count&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=light.html" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:85px; height:21px;" allowTransparency="true" title="Facebook"></iframe>
+					<div style="float:left;" id="facebookLikePlugin">
+						
 					</div>
 					<div style="float:left;">
-						<g:plusone size="medium" href="/u-verse/shop/index.jsp"></g:plusone>
+					
+					<g:plusone size="medium" href="/u-verse/shop/index.jsp"></g:plusone> 
 					</div> <br /><br /><br />
 				</div>
 			</div>
@@ -3327,13 +3354,13 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	
 	
 		   	
-			<div id="wtContentID2" style="display:none">007KCJ!900430</div>
+			<div id="wtContentID2" style="display:none">007LK5!900430</div>
 		
 
 	
 	
 		   	
-			<div id="wtContentID3" style="display:none">007KH6!900430</div>
+			<div id="wtContentID3" style="display:none">007LAY!900430</div>
 		
 
 <!-- googleon: all -->
@@ -3539,21 +3566,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-						<div id="shopFilters" style="border: 1px solid #CCCCCC; padding-top: 10px; margin-bottom: 2px;">
-							<div style="position: relative; display: table-cell; vertical-align: middle; width: 951px; height: 42px;">	
-			
-								<div style="width: 220; float: left; margin-top: 8px;">
-									<span style="margin-left: 12px; float: left;" title="Compare">
+						<div id="shopFilters" class="shop_filters">
+								<div class="shop_filters_compare">
+									<span class="fl" title="Compare">
 										<input alt="Compare" name="/att/ecom/uverse/view/CompareFormHandler.compare" onclick="var chkd = 0; var phC = $$('.phCompare'); for (var i=0; i < phC.length; ++i) chkd += phC[i].checked;
 												if (chkd == 0) {alert('Please select two or three bundles for comparison.'); return false;}
 												else if (chkd < 2) {alert('Please select at least one more bundle for comparison.'); return false;}
-												else if (chkd > 3) {alert('No more than three bundles can be compared at a time.'); return false;}" src="/global/images/en/btn_compare.gif" type="image"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.compare" value=" " type="hidden"></span>
-									<span style="margin-left: 10px; float: left;">Select up to 3 bundles below for comparison</span>
+												else if (chkd > 3) {alert('No more than three bundles can be compared at a time.'); return false;}" src="http://2.ecom.attccc.com//global/images/en/btn_compare.gif" type="image"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.compare" value=" " type="hidden"></span>
+									<span class="shop_filters_compare1">Select up to 3 bundles below for comparison</span>
 								</div>
-								<div style="width: 1px; height: 32px; background-color: #666666; margin-left: 8px; margin-right: 8px; float: left;"></div>
-								<div style="width: 320; font-size: 10px; font-family: Verdana; color: #666666; float: left; margin-top: 8px;">
-									<span style="margin-right: 3px; float: left;">Filter by:</span>
-									<select id="shopFilter" onchange="submitFliter();" title="Filter By" style="margin-right: 6px; float: left; width: 170px; z-index: 5;">
+								<div class="shop_filters_divider"></div>
+								<div class="shop_filter_by">
+									<span class="shop_filter_by1">Filter by:</span>
+									<select id="shopFilter" class="shop_filter_dropdown" onchange="submitFliter();" title="Filter By">
 										
 											
 											
@@ -3662,12 +3687,11 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 												
 											
 										
-									</select> 
+									</select>
 									<a id="shopFiltersButton" href="javascript:location.search='shopFilterId=' + $('shopFilter').value; void(0);" 
-										ontrigger="wtUverse_ShopPgFilter_Option=$('shopFilter')[$('shopFilter').selectedIndex].text.replace(/\W/g,'')" class="wt wtUverse_ShopPgFilter_Submit"><img src="../../global/images/transparent.gif" style="margin-right: 12px; float: left;" border="0" alt="" /></a>
+										ontrigger="wtUverse_ShopPgFilter_Option=$('shopFilter')[$('shopFilter').selectedIndex].text.replace(/\W/g,'')" class="wt wtUverse_ShopPgFilter_Submit"><img src="http://2.ecom.attccc.com//global/images/transparent.gif" style="margin-right: 12px; float: left;" border="0" alt="" /></a>
 									<span id="shopFiltersText" style="margin-right: 12px; float: left;">Filter for other available offers.</span>
 								</div>
-							</div>
 						</div>
 		
 				
@@ -3828,40 +3852,36 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	
 	
 		
-			<div class="mod_h" style="width:138px; height:180px; vertical-align:bottom; background:url(../../media/en_US/images/clo/clo_uverse_offers_buildYourOwn_short_img_AA000CHD.jpg)  bottom no-repeat;">
-				<div style="height:102px; padding:11px;">
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px;">Build Your Own Bundle</h2>
-					<div>
+			<div class="mod_h shop_build_bundle">
+					<h2 class="shop_build_bundle_text">Build Your Own Bundle</h2>
 						
 						
 							
 							
 								
 									
-										<div style="padding-bottom:0px; font-size:10px; height: 14px;">TV plans with DVR</div>
+										<div class="fl">TV plans with DVR</div>
 									 
 									
 								
 								
 									 
 									
-										<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 150px; height: 38px; vertical-align:top;">
-											<div style="font-size:20px; float: left;">$</div>
+										<div class="shop_cb_rate">
+											<div class="shop_cb_rate1">$</div>
 											
 											
-											<div style="font-size:32px; padding-top:4px; float: left; line-height:32px;">29</div>
-											<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+											<div class="shop_cb_rate2">29</div>
+											<div class="shop_cb_rate3">
 												&nbsp;
-												<div style="font-size:10px; padding-top:5px;">/month</div>
+												<div class="shop_cb_rate4">/month</div>
 											</div>
 										</div>
-										<div style="clear: both; ">for 6 months</div>
+										<div class="shop_no_of_months">for 6 months</div>
 									
 								
 							
 						
-					</div>
-				</div>
 				
 					
 					
@@ -3907,11 +3927,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="padding-left:11px; padding-bottom:8px;"> 
-								<a href="javascript:void(0);" onclick="callPackageChangeAlert('smartify');captureWebTrendTags();">
-									<img src="../../media/en_US/images/btn/btn_BuildYourOwn_blue_3dot0.jpg" alt="Build Your Own" align="bottom" />
-								</a>
-							</div>
+						<a class="shop_build_your_own" href="javascript:void(0);" onclick="callPackageChangeAlert('smartify');
+									dcsMultiTrack(
+									'DCSext.wtLinkName','Build_And_Price_uv80007',
+									'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_1_top',
+									'DCSext.wtNoHit','1',
+									'DCSext.wtBuyFlowType','PROVIDE');
+								">
+						</a>
 						
 					
 
@@ -4003,12 +4026,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								</div>
 								<div style="clear:both;"></div>
 								<div style="margin:10px 0px 10px 0px;height:45px;">
-									Get additional savings on   U-verse TV, Internet, and Home Phone when you have an existing AT&amp;T wireless plan. 1 year service agreement required.
+									Get additional savings on U-verse TV, Internet, and Home Phone when you have an existing AT&amp;T wireless plan. 1 year service agreement required.
 								</div>
 								<hr style="border:none;border-bottom:1px dotted #ccc;" />
 								<div style="padding-top:10px;">
 									<strong><b>Minimum Requirements</b></strong><br/>
-									Order U300 TV and Max internet or higher plans with an existing Nation 450 or higher plan and get $46 off per month for 12 months.
+									Order U300 or higher TV and Max or higher Internet with an existing Nation 450 or higher Wireless plan and get $46 off per month for 12 months.
 								</div>
 								<div style="clear:both;"></div>
 							</div>
@@ -4059,23 +4082,23 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	<p>
 		Offers will display in your Cart when minimum requirements are met.<br/>
 	</p>
-	<img class="wtpn Uverse_Special_Offers_Selection_Modal_Pg" alt="" src="../../global/images/transparent.gif" border="0" width="1" height="1" />
+	<img class="wtpn Uverse_Special_Offers_Selection_Modal_Pg" alt="" src="../../../2.ecom.attccc.com/global/images/transparent.gif" border="0" width="1" height="1" />
 </div>
 <div id="savingSelectionsPopupButton" style="display:none;" uri="specialoffersselection.jsp">
 	
 		<div style="padding-left:10px;">
 			<div style="float:right;">
-				<img alt="Continue Disabled" src="../../media/en_US/images/btn/btn_Cont_disabled.gif" title="Please select a savings option to continue" class="clever-button-disabled" >
+				<img alt="Continue Disabled" src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Cont_disabled.gif" title="Please select a savings option to continue" class="clever-button-disabled" >
 				<a id="continueLink" class="wtx Uverse_SelectSpecialOffersSubmit" onclick="getDefaultRadio(this, 'uv80007');savingSelectionContinue();" onmousedown="window.wtUserResp=$('selText' + formFunc.getSelectedRadio('savingsSelection').value).innerHTML" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_1&amp;q_usedOffer=uv80007&amp;wtLinkName=Build_Your_Own_uv80007">
 					
 					
 					
-					<img class="clever-button" src="../../media/en_US/images/btn/btn_Continue_enabled.gif" alt="Continue" />
+					<img class="clever-button" src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Continue_enabled.gif" alt="Continue" />
 				</a>
 			</div>
 			<div style="float:left;">
 				<a href="index.jsp%3FshopFilterId=100003.html#" onclick="closePopup()">
-					<img src="../../media/en_US/images/btn/btn_Cancel_white.gif" alt="Cancel" />
+					<img src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_Cancel_white.gif" alt="Cancel" />
 				</a>
 			</div>
 			<div style="clear:both;"></div>
@@ -4121,82 +4144,58 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 												
 												
 												
-													<div class="mod_h" style="width: 144px;border:0px none;margin-bottom:0px; position: absolute; margin-left: 3px;">
-														<div id="iptv_icon_main" style="height:68px;padding-left:10px;border-bottom:1px solid #CCCCCC;
-															
-															background-image:url(../../media/en_US/images/img/img_LtTop-EndCap_gradient_AA000EPK.gif); background-repeat:repeat-x;">
-															<div style="padding-top:5px; ">
+													<div class="mod_h shop_tv_internet_shop">
+														<div id="iptv_icon_main" class="shop_iptv_main shop_iptv_main_bg">
 																<div id="iptv_icon" style="display: none;">
-																	<div style="height:45px;width: 100px;">
-																		<div style="float:left;width:45px;"><img alt="" src="../../media/en_US/images/ico/ico_TV_med_AA0009PK.gif" /></div>
-																		<div class="uverse_purple" style="float:left;padding-left:8px;padding-top:10px;font-weight:bold;font-size:12px;">
-																			<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_tv.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse TV', true, 700, 500); return false;"><span style="color:#0099FF;cursor:hand; cursor:pointer;">TV</span></a>
-																		</div>
+																	<div class="shop_iptv_icon1">
+																		<div class="shop_iptv_icon"></div>
+																			<a class="shop_uverse_purple" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_tv.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse TV', true, 700, 500); return false;">TV</a>
 																	</div>
-																	<div style="float:left;width:144px;border-top:1px dotted #ccc;">
-																		<img alt="" src="../../media/en_US/images/btn/btn_preview_AA0005XY.gif" />
-																		<a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp','video_resources/xml/gvp_Surreal-U-verse-Why-Switch_640x360.xml&gvpLgFormat'); return false;">Why switch?</a>
+																	<div class="shop_preview_icon_box">
+																		<div class="shop_preview_icon mt3 fl"></div>
+																		<a class="shop_preview_text fl" href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp','video_resources/xml/gvp_Surreal-U-verse-Why-Switch_640x360.xml&gvpLgFormat'); return false;">Why switch?</a>
+																		
 																	</div>
 																</div>
 																<div id="iptv_icon_disabled">
-																	<div style="float:left;padding-left:10px;"><img alt="" src="../../media/en_US/images/ico/ico_TV_med_disable_AA0009PM.gif" /></div>
-																	<div class="uverse_purple" style="float:left;padding-left:8px;padding-top:10px;font-weight:bold;font-size:12px;">
-																		<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_tv.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse TV', true, 700, 500); return false;"><span style="color:#999999;cursor:hand; cursor:pointer;">TV</span></a>
-																	</div>
+																	<div class="shop_iptv_icon_dis"></div>
+																		<a class="shop_disable_text" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_tv.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse TV', true, 700, 500); return false;">TV</a>
 																</div>
-															</div>
 														</div>
 														
+														
 															
 															
-																
-																	
-																	
-																	<div style="height:104px;padding-left:10px;border-bottom:1px solid #CCCCCC ;">
-																	
-																
-																<div style="padding-top:0px;">
-																	<div id="hsia_icon" style="display: none;">
-																		<div style="height:45px;width: 110px;">
-																			<div style="float:left;width:45px;"><img alt="" src="../../media/en_US/images/ico/ico_internet_med_AA0009P8.gif" /></div>
-																			<div class="uverse_blue" style="float:left;padding-left:8px;padding-top:15px;font-weight:bold;font-size:12px;">
-																				<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_internet.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse High Speed Internet', true, 700, 500); return false;"><span style="color:#0099FF;cursor:hand; cursor:pointer;">Internet</span></a>
-																			</div>
-																		</div>
+																<div class="shop_internet_main">
+																	<div id="hsia_icon" class="shop_ipinternet" style="display: none;">
+																			<div class="shop_internet_icon"></div>
+																				<a class="shop_uverse_purple" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_internet.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse High Speed Internet', true, 700, 500); return false;">Internet</a>
 																	</div>
 																	<div id="hsia_icon_disabled">
-																		<div style="float:left;width:45px;height:45px;"><img alt="" src="../../media/en_US/images/ico/ico_internet_med_disable_AA0009PA.gif" /></div>
-																		<div class="uverse_blue" style="float:left;padding-top:15px;font-weight:bold;font-size:12px;">
-																			<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_internet.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse High Speed Internet', true, 700, 500); return false;"><span style="color:#999999;cursor:hand; cursor:pointer;">Internet</span></a>
-																		</div>
+																		<div class="shop_internet_icon_dis"></div>
+																			<a class="shop_disable_text" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_internet.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse High Speed Internet', true, 700, 500); return false;">Internet
+																			</a>
 																	</div>
-																</div>
 																</div>
 															
 														
-														<div id="voip_icon_main" style="height:61px;padding-left:10px;border-bottom:1px solid #CCCCCC ;">
-															<div style="padding-top:0px;">
+														<div id="voip_icon_main" class="shop_phone_main">
 																<div id="voip_icon" style="display: none;">
-																	<div style="height:45px;width: 100px;">
-																		<div style="float:left;width:45px;"><img alt="" src="../../media/en_US/images/ico/ico_phone_med_AA0009PE.gif" /></div>
-																		<div class="uverse_green" style="float:left;padding-left:8px;padding-top:10px;font-weight:bold;font-size:12px;">
-																			<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_phone.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse Voice', true, 700, 500); return false;"><span style="color:#0099FF;cursor:hand; cursor:pointer;">Phone</span></a>		
-																		</div>
+																	<div class="shop_ipphone_icon1">
+																		<div class="shop_phone_icon"></div>
+																			<a class="shop_uverse_purple" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_phone.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse Voice', true, 700, 500); return false;">Phone</a>		
 																	</div>
-																	<div style="width:144px;float:left;border-top:1px dotted #ccc;">
-																		<img alt="" src="../../media/en_US/images/btn/btn_preview_AA0005XY.gif" />
-																		<a href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp','video_resources/xml/gvp_Uverse-Voice-VoIP_640x360.xml&gvpLgFormat'); return false;">Watch a video</a>
+																	<div class="shop_preview_icon_box">
+																		<div class="shop_preview_icon mt3 fl"></div>
+																		<a class="shop_preview_text fl" href="javascript:void(0);" onclick="gvp.showPopUp('', true, true, 'gvp','video_resources/xml/gvp_Uverse-Voice-VoIP_640x360.xml&gvpLgFormat'); return false;">Watch a video</a>
 																	</div>
 																</div>
 																<div id="voip_icon_disabled">
-																	<div style="float:left;"><img alt="" src="../../media/en_US/images/ico/ico_phone_med_disable_AA0009PG.gif" /></div>
-																	<div class="uverse_green" style="float:left;padding-left:8px;padding-top:10px;font-weight:bold;font-size:12px;">
-																		<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_phone.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse Voice', true, 700, 500); return false;"><span style="color:#999999;cursor:hand; cursor:pointer;">Phone</span></a>		
-																	</div>
+																	<div class="shop_phone_icon_dis"></div>
+																		<a class="shop_disable_text" href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_phone.jsp" onclick="showPopupByUrl(this.href, 'AT&T U-verse Voice', true, 700, 500); return false;">Phone</a>		
 																</div>
-															</div>
 														</div>
-														<div class="slot0" style="height:327px;padding-left:10px;margin-bottom: 7px;">
+														<div class="slot0 shop_slot0">
 															<div style="padding-top:15px;">						
 															</div>
 														</div>
@@ -4331,30 +4330,28 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 			
 
-			<div class="mod_s" style="width:153px; height:191px; vertical-align:bottom;">
-				<div style="position:relative; height:102px; padding:11px; padding-right:0px;">
-					<div style="float: right; text-align: right; margin-top: -11px; margin-right: 0px;">
+			<div class="mod_s shop_cb_box">
+					<h2 class="shop_box_text">
+						TV & Internet
+					</h2>
+					<div>
 						
 						
 						
 						
 							<img alt="" src="../../images/Wireless/Promotions/Bubbles/ur_1118787_pink_save36mo_AA001PTK.jpg" />
-							<div style="font-size: 8px; font-weight: bold; width: 44px; text-align: right; overflow: hidden; margin-top: -4px;">
+							<div style="font-size: 10px;text-align: right; overflow: hidden; margin-top:-5px;margin-right:10px;">
 								<a href="javascript:showPopup('prod5040256Pop',true)">Details</a></div>
-                               
+                              
 						<div id="prod5040256Pop" title="Offer Details" style="display: none">Offer ends 11/3/12. New residential U-verse customers with minimum purchase of U-family TV and U-verse Internet Pro online at att.com receive $36 off for 12 months. One year term required for bundled U-verse services. After 12 months, U-verse service will be billed at then existing standard rate unless cancelled by customer.</div>
 					</div> 
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px; ">
-						TV & Internet
-					</h2>
-					<div style="position:absolute; bottom:5px; left:10px;">
-						<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-							<div style="font-size:20px; float: left;">$</div>
+					<div class="shop_cb_rate" style="margin-top:-5px;">
+							<div class="shop_cb_rate1">$</div>
 							
 							
 								
 									
-										<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+										<div class="shop_cb_rate2">
 											59
 										</div>
 									
@@ -4364,18 +4361,16 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								
 									
 									
-										<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+										<div class="shop_cb_rate3">
 											&nbsp;
-											<div style="font-size:10px; padding-top:5px;">/month</div>
+											<div class="shop_cb_rate4">/month</div>
 										</div>
 									
 								
 							
-							
-						</div>
 						
 							
-								<div style="clear: both; ">
+								<div class="shop_no_of_months">
 									
 									for 12 months									
 								</div>
@@ -4383,43 +4378,39 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 						
 					</div>
-				</div>
-				<div style="padding-left:11px; padding-bottom:8px; ">
-					<a onclick="getHiddenVar(this, 'cpp_prod5040256'); return callPackageChangeAlert(this.href); " rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_2_top&amp;q_usedOffer=prod5040256&amp;wtLinkName=Build_And_Price_prod5040256&amp;wtNoHit=1">
+					<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040256'); 
+						dcsMultiTrack(
+						'DCSext.wtLinkName','Build_And_Price_prod5040256',
+						'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_2_top',
+						'DCSext.wtNoHit','1',
+						'DCSext.wtBuyFlowType','PROVIDE');
+						return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040256">
 						
-						
-						
-						
-						<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 					</a>
-				</div>
 				
-					<div style="padding-left:9px; padding-top:4px; padding-bottom:12px;"><input id="prod5040256;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040256" onclick="$('prod5040256;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040256;top">Select to compare</label></div>
+					<div class="shop_compare"><input id="prod5040256;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040256" onclick="$('prod5040256;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040256;top">Select to compare</label></div>
 				
 			</div>
 			
 				
 				
-					<div class="mod_h" style="width:153px;margin-top:0px;border-top:0px;border-bottom:0px;margin-bottom:0px;">
+					<div class="mod_h shop_plan_details">
 				
 				 			
 			
 						
-					<div style="height:68px;padding-left:5px;border-bottom:1px solid #CCCCCC;						
-						background-image:url(../../media/en_US/images/img/img_div-point_gradient_AA000EPI.gif); background-repeat:repeat-x;">
+					<div class="shop_channel_lineup">
+						<div class="shop_channel_lineup_arrow"></div>
 						<div style="">
-							
-							<div style="vertical-align:text-top;padding-top:10px;padding-left:4px;">
 								
 								
-								<a href="javascript:void(0);" onclick="callPopupTV('U-family');" class="call-to-action tooltip shopPageAlert" style="position:relative;" title="Up to 130 of the best family-oriented digital channels including local channels and 1 HD-ready receiver. ">
-								<span class="bold">U-family</span></a>
-							</div>
+								<a href="javascript:void(0);" onclick="callPopupTV('U-family');" class="shop_tv_plan tooltip shopPageAlert" title="Up to 130 of the best family-oriented digital channels including local channels and 1 HD-ready receiver. ">
+								<span class="bold shop_tv_plan1">U-family</span></a>
 							
 							    
-							<div style="vertical-align:text-top;padding-left:4px;">Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U-family&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">130 channels</a></div>
+							<div>Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U-family&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">130 channels</a></div>
 			             	 
-			             	<img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+			             	<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
 			            		onload="if ($('iptv_icon') && $('iptv_icon_disabled')) {$('iptv_icon_disabled').style.display='none'; $('iptv_icon').style.display='block';}" />
 						</div>
 					</div>
@@ -4432,25 +4423,18 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 					<div id='Pro' style="width:550px;display:none;" title="Pro">Recommended for its low price and great speed! Designed for simultaneous web surfing, email, animation-rich commerce, audio and video streaming, gaming on demand, uploading and downloading large files, and other bandwidth intensive applications. In addition, you&#39;ll also enjoy: online photo and video storage, up to 10 additional email accounts, pop-up blocker, and much more from AT&amp;T.</div>
-					<div style="height:104px;padding-left:5px;border-bottom:1px solid #CCCCCC ;text-align:center;padding-right:5px;">
+					<div class="shop_channel_lineup1">
 						
-						
-						<div style="vertical-align:text-top;font-weight:bold;padding-top:2px;padding-left:2px;float:left;width:100%">
-							<a href="javascript:void(0);" onclick="callPopuphsia('Pro');" class="call-to-action" style="position:relative;float:left">
-								<span class="bold">Pro &nbsp;</span>
+							<a href="javascript:void(0);" onclick="callPopuphsia('Pro');" class="call-to-action shop_tv_plan fl">
+								<span class="bold shop_tv_plan1">Pro &nbsp;</span>
 							</a>
-						</div>
-						<div >
 							
-							
-							<!--<img onerror="if (this.lowsrc) {this.src=this.lowsrc; this.lowsrc=''}; this.onerror='';" id="AT&T U-verse High Speed Internet Pro_image" height="54" alt="AT&T U-verse High Speed Internet Pro" width="91" src="http://www.wireless.att.com/catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png" border="0" lowsrc="/catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png"></img>-->
-							<div style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png) no-repeat center bottom;height:54px;width:91px;padding-left:50px;padding-top:15px;*padding-top:0px;" ></div>
-
-						
-						</div>
+							<div class="shop_product_image" style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png) no-repeat;" ></div>        
                         
+                                 
+        	                 
 	                        
-		                        <div style="padding-right:5px;padding-left:5px;">Downstream speeds up to 3Mbps</div>									
+		                        <div class="shop_product_text">Downstream speeds up to 3Mbps</div>									
         	                    
                           	 
                             
@@ -4459,7 +4443,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							 									
                             
                         
-                        <img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+                        <img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
             			onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').style.display='none'; $('hsia_icon').style.display='block';}" />    
 					</div>
 				
@@ -4472,7 +4456,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="height:60px;padding-left: 8px; padding-right: 50px;">
+							<div class="shop_free_time">
 								
 									
 										
@@ -4517,10 +4501,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 				
 			
-			<div class="mod_s slots" style="width:153px; margin-top:0px; border-top:0px; border-left:0px;">
-				<div style="height:330px; line-height:15px;padding-top:15px;background-image: url(../../media/en_US/images/img/img_RtTop-EndCap_gradient_AA000EPL.gif); background-repeat: repeat-x;">
-					<span class="uverse_orange bold" style="padding-left: 8px;">Special Offers</span>
-					<div class="unordered-list" style="padding-right: 3px;"><ul>
+			<div class="mod_s slots shop_offers">
+					<span class="uverse_orange bold">Special Offers</span>
+					<div class="unordered-list"><ul>
 					
 						
 							
@@ -4545,7 +4528,10 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							 
 							
-								<div style="float: right; padding-right: 2px;"><img alt="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."  src="../../global/images/en/btn_info.gif" class="tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."/></div>
+								<div style="float: right; padding-right: 2px;">
+								<a class="info_button tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."></a>
+								
+								</div>
 								<li>
 									Get $36 off per month for 12 months with 1 year service agreement.
 									<input type="hidden" name="cpp_prod5040256" id="cpp_prod5040256" value="prod6110308" />
@@ -4585,7 +4571,6 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 
 					</ul></div>
-				</div>
 			</div>
 			
 			<div style="clear:both;"></div>
@@ -4730,30 +4715,28 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 			
 
-			<div class="mod_s" style="width:153px; height:191px; vertical-align:bottom;">
-				<div style="position:relative; height:102px; padding:11px; padding-right:0px;">
-					<div style="float: right; text-align: right; margin-top: -11px; margin-right: 0px;">
+			<div class="mod_s shop_cb_box">
+					<h2 class="shop_box_text">
+						TV & Internet
+					</h2>
+					<div>
 						
 						
 						
 						
 							<img alt="" src="../../images/Wireless/Promotions/Bubbles/ur_1118787_pink_save36mo_AA001PTK.jpg" />
-							<div style="font-size: 8px; font-weight: bold; width: 44px; text-align: right; overflow: hidden; margin-top: -4px;">
+							<div style="font-size: 10px;text-align: right; overflow: hidden; margin-top:-5px;margin-right:10px;">
 								<a href="javascript:showPopup('prod5040257Pop',true)">Details</a></div>
-                               
+                              
 						<div id="prod5040257Pop" title="Offer Details" style="display: none">Offer ends 11/3/12. New residential U-verse customers with minimum purchase of U-family TV and U-verse Internet Pro online at att.com receive $36 off for 12 months. One year term required for bundled U-verse services. After 12 months, U-verse service will be billed at then existing standard rate unless cancelled by customer.</div>
 					</div> 
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px; ">
-						TV & Internet
-					</h2>
-					<div style="position:absolute; bottom:5px; left:10px;">
-						<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-							<div style="font-size:20px; float: left;">$</div>
+					<div class="shop_cb_rate" style="margin-top:-5px;">
+							<div class="shop_cb_rate1">$</div>
 							
 							
 								
 									
-										<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+										<div class="shop_cb_rate2">
 											74
 										</div>
 									
@@ -4763,18 +4746,16 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								
 									
 									
-										<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+										<div class="shop_cb_rate3">
 											&nbsp;
-											<div style="font-size:10px; padding-top:5px;">/month</div>
+											<div class="shop_cb_rate4">/month</div>
 										</div>
 									
 								
 							
-							
-						</div>
 						
 							
-								<div style="clear: both; ">
+								<div class="shop_no_of_months">
 									
 									for 12 months									
 								</div>
@@ -4782,43 +4763,39 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 						
 					</div>
-				</div>
-				<div style="padding-left:11px; padding-bottom:8px; ">
-					<a onclick="getHiddenVar(this, 'cpp_prod5040257'); return callPackageChangeAlert(this.href); " rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_3_top&amp;q_usedOffer=prod5040257&amp;wtLinkName=Build_And_Price_prod5040257&amp;wtNoHit=1">
+					<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040257'); 
+						dcsMultiTrack(
+						'DCSext.wtLinkName','Build_And_Price_prod5040257',
+						'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_3_top',
+						'DCSext.wtNoHit','1',
+						'DCSext.wtBuyFlowType','PROVIDE');
+						return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040257">
 						
-						
-						
-						
-						<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 					</a>
-				</div>
 				
-					<div style="padding-left:9px; padding-top:4px; padding-bottom:12px;"><input id="prod5040257;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040257" onclick="$('prod5040257;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040257;top">Select to compare</label></div>
+					<div class="shop_compare"><input id="prod5040257;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040257" onclick="$('prod5040257;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040257;top">Select to compare</label></div>
 				
 			</div>
 			
 				
 				
-					<div class="mod_h" style="width:153px;margin-top:0px;border-top:0px;border-bottom:0px;margin-bottom:0px;">
+					<div class="mod_h shop_plan_details">
 				
 				 			
 			
 						
-					<div style="height:68px;padding-left:5px;border-bottom:1px solid #CCCCCC;						
-						background-image:url(../../media/en_US/images/img/img_div-point_gradient_AA000EPI.gif); background-repeat:repeat-x;">
+					<div class="shop_channel_lineup">
+						<div class="shop_channel_lineup_arrow"></div>
 						<div style="">
-							
-							<div style="vertical-align:text-top;padding-top:10px;padding-left:4px;">
 								
 								
-								<a href="javascript:void(0);" onclick="callPopupTV('U200');" class="call-to-action tooltip shopPageAlert" style="position:relative;" title="Up to 270 of the most popular digital channels including local and music channels and 1 HD-ready receiver. ">
-								<span class="bold">U200</span></a>
-							</div>
+								<a href="javascript:void(0);" onclick="callPopupTV('U200');" class="shop_tv_plan tooltip shopPageAlert" title="Up to 270 of the most popular digital channels including local and music channels and 1 HD-ready receiver. ">
+								<span class="bold shop_tv_plan1">U200</span></a>
 							
 							    
-							<div style="vertical-align:text-top;padding-left:4px;">Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U200&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">270 channels</a></div>
+							<div>Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U200&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">270 channels</a></div>
 			             	 
-			             	<img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+			             	<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
 			            		onload="if ($('iptv_icon') && $('iptv_icon_disabled')) {$('iptv_icon_disabled').style.display='none'; $('iptv_icon').style.display='block';}" />
 						</div>
 					</div>
@@ -4831,25 +4808,18 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 					<div id='Pro' style="width:550px;display:none;" title="Pro">Recommended for its low price and great speed! Designed for simultaneous web surfing, email, animation-rich commerce, audio and video streaming, gaming on demand, uploading and downloading large files, and other bandwidth intensive applications. In addition, you&#39;ll also enjoy: online photo and video storage, up to 10 additional email accounts, pop-up blocker, and much more from AT&amp;T.</div>
-					<div style="height:104px;padding-left:5px;border-bottom:1px solid #CCCCCC ;text-align:center;padding-right:5px;">
+					<div class="shop_channel_lineup1">
 						
-						
-						<div style="vertical-align:text-top;font-weight:bold;padding-top:2px;padding-left:2px;float:left;width:100%">
-							<a href="javascript:void(0);" onclick="callPopuphsia('Pro');" class="call-to-action" style="position:relative;float:left">
-								<span class="bold">Pro &nbsp;</span>
+							<a href="javascript:void(0);" onclick="callPopuphsia('Pro');" class="call-to-action shop_tv_plan fl">
+								<span class="bold shop_tv_plan1">Pro &nbsp;</span>
 							</a>
-						</div>
-						<div >
 							
-							
-							<!--<img onerror="if (this.lowsrc) {this.src=this.lowsrc; this.lowsrc=''}; this.onerror='';" id="AT&T U-verse High Speed Internet Pro_image" height="54" alt="AT&T U-verse High Speed Internet Pro" width="91" src="http://www.wireless.att.com/catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png" border="0" lowsrc="/catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png"></img>-->
-							<div style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png) no-repeat center bottom;height:54px;width:91px;padding-left:50px;padding-top:15px;*padding-top:0px;" ></div>
-
-						
-						</div>
+							<div class="shop_product_image" style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-pro-91x54.png) no-repeat;" ></div>        
                         
+                                 
+        	                 
 	                        
-		                        <div style="padding-right:5px;padding-left:5px;">Downstream speeds up to 3Mbps</div>									
+		                        <div class="shop_product_text">Downstream speeds up to 3Mbps</div>									
         	                    
                           	 
                             
@@ -4858,7 +4828,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							 									
                             
                         
-                        <img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+                        <img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
             			onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').style.display='none'; $('hsia_icon').style.display='block';}" />    
 					</div>
 				
@@ -4871,7 +4841,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="height:60px;padding-left: 8px; padding-right: 50px;">
+							<div class="shop_free_time">
 								
 									
 										
@@ -4916,10 +4886,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 				
 			
-			<div class="mod_s slots" style="width:153px; margin-top:0px; border-top:0px; border-left:0px;">
-				<div style="height:330px; line-height:15px;padding-top:15px;background-image: url(../../media/en_US/images/img/img_RtTop-EndCap_gradient_AA000EPL.gif); background-repeat: repeat-x;">
-					<span class="uverse_orange bold" style="padding-left: 8px;">Special Offers</span>
-					<div class="unordered-list" style="padding-right: 3px;"><ul>
+			<div class="mod_s slots shop_offers">
+					<span class="uverse_orange bold">Special Offers</span>
+					<div class="unordered-list"><ul>
 					
 						
 							
@@ -4944,7 +4913,10 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							 
 							
-								<div style="float: right; padding-right: 2px;"><img alt="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."  src="../../global/images/en/btn_info.gif" class="tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."/></div>
+								<div style="float: right; padding-right: 2px;">
+								<a class="info_button tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."></a>
+								
+								</div>
 								<li>
 									Get $36 off per month for 12 months with 1 year service agreement.
 									<input type="hidden" name="cpp_prod5040257" id="cpp_prod5040257" value="prod6110308" />
@@ -4984,7 +4956,6 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 
 					</ul></div>
-				</div>
 			</div>
 			
 			<div style="clear:both;"></div>
@@ -5129,30 +5100,28 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 			
 
-			<div class="mod_s" style="width:153px; height:191px; vertical-align:bottom;">
-				<div style="position:relative; height:102px; padding:11px; padding-right:0px;">
-					<div style="float: right; text-align: right; margin-top: -11px; margin-right: 0px;">
+			<div class="mod_s shop_cb_box">
+					<h2 class="shop_box_text">
+						TV & Internet
+					</h2>
+					<div>
 						
 						
 						
 						
 							<img alt="" src="../../images/Wireless/Promotions/Bubbles/ur_1118787_pink_save36mo_AA001PTK.jpg" />
-							<div style="font-size: 8px; font-weight: bold; width: 44px; text-align: right; overflow: hidden; margin-top: -4px;">
+							<div style="font-size: 10px;text-align: right; overflow: hidden; margin-top:-5px;margin-right:10px;">
 								<a href="javascript:showPopup('prod5040258Pop',true)">Details</a></div>
-                               
+                              
 						<div id="prod5040258Pop" title="Offer Details" style="display: none">Offer ends 11/3/12. New residential U-verse customers with minimum purchase of U300 TV and U-verse Internet Elite online at att.com receive $36 off for 12 months. One year term required for bundled U-verse services. After 12 months, U-verse service will be billed at then existing standard rate unless cancelled by customer.</div>
 					</div> 
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px; ">
-						TV & Internet
-					</h2>
-					<div style="position:absolute; bottom:5px; left:10px;">
-						<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-							<div style="font-size:20px; float: left;">$</div>
+					<div class="shop_cb_rate" style="margin-top:-5px;">
+							<div class="shop_cb_rate1">$</div>
 							
 							
 								
 									
-										<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+										<div class="shop_cb_rate2">
 											79
 										</div>
 									
@@ -5162,18 +5131,16 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								
 									
 									
-										<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+										<div class="shop_cb_rate3">
 											&nbsp;
-											<div style="font-size:10px; padding-top:5px;">/month</div>
+											<div class="shop_cb_rate4">/month</div>
 										</div>
 									
 								
 							
-							
-						</div>
 						
 							
-								<div style="clear: both; ">
+								<div class="shop_no_of_months">
 									
 									for 12 months									
 								</div>
@@ -5181,43 +5148,39 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 						
 					</div>
-				</div>
-				<div style="padding-left:11px; padding-bottom:8px; ">
-					<a onclick="getHiddenVar(this, 'cpp_prod5040258'); return callPackageChangeAlert(this.href); " rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_4_top&amp;q_usedOffer=prod5040258&amp;wtLinkName=Build_And_Price_prod5040258&amp;wtNoHit=1">
+					<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040258'); 
+						dcsMultiTrack(
+						'DCSext.wtLinkName','Build_And_Price_prod5040258',
+						'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_4_top',
+						'DCSext.wtNoHit','1',
+						'DCSext.wtBuyFlowType','PROVIDE');
+						return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040258">
 						
-						
-						
-						
-						<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 					</a>
-				</div>
 				
-					<div style="padding-left:9px; padding-top:4px; padding-bottom:12px;"><input id="prod5040258;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040258" onclick="$('prod5040258;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040258;top">Select to compare</label></div>
+					<div class="shop_compare"><input id="prod5040258;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040258" onclick="$('prod5040258;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040258;top">Select to compare</label></div>
 				
 			</div>
 			
 				
 				
-					<div class="mod_h" style="width:153px;margin-top:0px;border-top:0px;border-bottom:0px;margin-bottom:0px;">
+					<div class="mod_h shop_plan_details">
 				
 				 			
 			
 						
-					<div style="height:68px;padding-left:5px;border-bottom:1px solid #CCCCCC;						
-						background-image:url(../../media/en_US/images/img/img_div-point_gradient_AA000EPI.gif); background-repeat:repeat-x;">
+					<div class="shop_channel_lineup">
+						<div class="shop_channel_lineup_arrow"></div>
 						<div style="">
-							
-							<div style="vertical-align:text-top;padding-top:10px;padding-left:4px;">
 								
 								
-								<a href="javascript:void(0);" onclick="callPopupTV('U200');" class="call-to-action tooltip shopPageAlert" style="position:relative;" title="Up to 270 of the most popular digital channels including local and music channels and 1 HD-ready receiver. ">
-								<span class="bold">U200</span></a>
-							</div>
+								<a href="javascript:void(0);" onclick="callPopupTV('U200');" class="shop_tv_plan tooltip shopPageAlert" title="Up to 270 of the most popular digital channels including local and music channels and 1 HD-ready receiver. ">
+								<span class="bold shop_tv_plan1">U200</span></a>
 							
 							    
-							<div style="vertical-align:text-top;padding-left:4px;">Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U200&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">270 channels</a></div>
+							<div>Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U200&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">270 channels</a></div>
 			             	 
-			             	<img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+			             	<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
 			            		onload="if ($('iptv_icon') && $('iptv_icon_disabled')) {$('iptv_icon_disabled').style.display='none'; $('iptv_icon').style.display='block';}" />
 						</div>
 					</div>
@@ -5230,26 +5193,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 					<div id='Elite' style="width:550px;display:none;" title="Elite">Elite is super fast with one dynamic IP address at up to 6.0 Mbps download.  Whether you&#39;re a gamer or a business owner, it&#39;s perfect for you, supporting multiple-users, high-resolution graphics, large attachment uploads, desktop video, and even hosting a website! No matter where you want to go with your Internet connection, Elite will get you there faster. In addition, you&#39;ll also enjoy: online photo and video storage, up to 10 additional email accounts, pop-up blocker, and much more from AT&amp;T.</div>
-					<div style="height:104px;padding-left:5px;border-bottom:1px solid #CCCCCC ;text-align:center;padding-right:5px;">
+					<div class="shop_channel_lineup1">
 						
-						
-						<div style="vertical-align:text-top;font-weight:bold;padding-top:2px;padding-left:2px;float:left;width:100%">
-							<a href="javascript:void(0);" onclick="callPopuphsia('Elite');" class="call-to-action" style="position:relative;float:left">
-								<span class="bold">Elite &nbsp;</span>
+							<a href="javascript:void(0);" onclick="callPopuphsia('Elite');" class="call-to-action shop_tv_plan fl">
+								<span class="bold shop_tv_plan1">Elite &nbsp;</span>
 							</a>
-						</div>
-						<div >
 							
-							
-							<!--<img onerror="if (this.lowsrc) {this.src=this.lowsrc; this.lowsrc=''}; this.onerror='';" id="AT&T U-verse High Speed Internet Elite_image" height="54" alt="AT&T U-verse High Speed Internet Elite" width="91" src="http://www.wireless.att.com/catalog/en/skus/images/att-uverse-high-speed-internet-elite-91x54.png" border="0" lowsrc="/catalog/en/skus/images/att-uverse-high-speed-internet-elite-91x54.png"></img>-->
-							<div style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-elite-91x54.png) no-repeat center bottom;height:54px;width:91px;padding-left:50px;padding-top:15px;*padding-top:0px;" ></div>
-
-						
-						</div>
+							<div class="shop_product_image" style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-elite-91x54.png) no-repeat;" ></div>        
                         
+                                 
+        	                 
 	                            
                           	
-		                        <div style="padding-right:5px;padding-left:5px;">Downstream speeds up to 6Mbps</div>									
+		                        <div class="shop_product_text">Downstream speeds up to 6Mbps</div>									
         	                 
                             
         	                
@@ -5257,7 +5213,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							 									
                             
                         
-                        <img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+                        <img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
             			onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').style.display='none'; $('hsia_icon').style.display='block';}" />    
 					</div>
 				
@@ -5270,7 +5226,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="height:60px;padding-left: 8px; padding-right: 50px;">
+							<div class="shop_free_time">
 								
 									
 										
@@ -5315,10 +5271,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 				
 			
-			<div class="mod_s slots" style="width:153px; margin-top:0px; border-top:0px; border-left:0px;">
-				<div style="height:330px; line-height:15px;padding-top:15px;background-image: url(../../media/en_US/images/img/img_RtTop-EndCap_gradient_AA000EPL.gif); background-repeat: repeat-x;">
-					<span class="uverse_orange bold" style="padding-left: 8px;">Special Offers</span>
-					<div class="unordered-list" style="padding-right: 3px;"><ul>
+			<div class="mod_s slots shop_offers">
+					<span class="uverse_orange bold">Special Offers</span>
+					<div class="unordered-list"><ul>
 					
 						
 							
@@ -5343,7 +5298,10 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							 
 							
-								<div style="float: right; padding-right: 2px;"><img alt="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."  src="../../global/images/en/btn_info.gif" class="tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."/></div>
+								<div style="float: right; padding-right: 2px;">
+								<a class="info_button tooltip shopPageAlert" title="Get $36 off your monthly price for 12 months when you order Ufam TV or higher, Pro Internet or higher and Voice 250 or higher. 1 year service agreement required."></a>
+								
+								</div>
 								<li>
 									Get $36 off per month for 12 months with 1 year service agreement.
 									<input type="hidden" name="cpp_prod5040258" id="cpp_prod5040258" value="prod6110308" />
@@ -5383,7 +5341,6 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 
 					</ul></div>
-				</div>
 			</div>
 			
 			<div style="clear:both;"></div>
@@ -5528,30 +5485,28 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 			
 
-			<div class="mod_s" style="width:153px; height:191px; vertical-align:bottom;">
-				<div style="position:relative; height:102px; padding:11px; padding-right:0px;">
-					<div style="float: right; text-align: right; margin-top: -11px; margin-right: 0px;">
+			<div class="mod_s shop_cb_box">
+					<h2 class="shop_box_text">
+						TV & Internet
+					</h2>
+					<div>
 						
 						
 						
 						
 							<img alt="" src="../../images/Wireless/Promotions/Bubbles/ur_pink_41permo_AA001FSI.jpg" />
-							<div style="font-size: 8px; font-weight: bold; width: 44px; text-align: right; overflow: hidden; margin-top: -4px;">
+							<div style="font-size: 10px;text-align: right; overflow: hidden; margin-top:-5px;margin-right:10px;">
 								<a href="javascript:showPopup('prod5040259Pop',true)">Details</a></div>
-                               
+                              
 						<div id="prod5040259Pop" title="Offer Details" style="display: none">Offer ends 11/3/12. New residential U-verse customers with minimum purchase of U300 TV and U-verse Internet Max online at att.com receive $41 off for 12 months. One year term required for bundled U-verse services. After 12 months, U-verse service will be billed at then existing standard rate unless cancelled by customer.</div>
 					</div> 
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px; ">
-						TV & Internet
-					</h2>
-					<div style="position:absolute; bottom:5px; left:10px;">
-						<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-							<div style="font-size:20px; float: left;">$</div>
+					<div class="shop_cb_rate" style="margin-top:-5px;">
+							<div class="shop_cb_rate1">$</div>
 							
 							
 								
 									
-										<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+										<div class="shop_cb_rate2">
 											94
 										</div>
 									
@@ -5561,18 +5516,16 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								
 									
 									
-										<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+										<div class="shop_cb_rate3">
 											&nbsp;
-											<div style="font-size:10px; padding-top:5px;">/month</div>
+											<div class="shop_cb_rate4">/month</div>
 										</div>
 									
 								
 							
-							
-						</div>
 						
 							
-								<div style="clear: both; ">
+								<div class="shop_no_of_months">
 									
 									for 12 months									
 								</div>
@@ -5580,43 +5533,39 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 						
 					</div>
-				</div>
-				<div style="padding-left:11px; padding-bottom:8px; ">
-					<a onclick="getHiddenVar(this, 'cpp_prod5040259'); return callPackageChangeAlert(this.href); " rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_5_top&amp;q_usedOffer=prod5040259&amp;wtLinkName=Build_And_Price_prod5040259&amp;wtNoHit=1">
+					<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040259'); 
+						dcsMultiTrack(
+						'DCSext.wtLinkName','Build_And_Price_prod5040259',
+						'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_5_top',
+						'DCSext.wtNoHit','1',
+						'DCSext.wtBuyFlowType','PROVIDE');
+						return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040259">
 						
-						
-						
-						
-						<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 					</a>
-				</div>
 				
-					<div style="padding-left:9px; padding-top:4px; padding-bottom:12px;"><input id="prod5040259;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040259" onclick="$('prod5040259;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040259;top">Select to compare</label></div>
+					<div class="shop_compare"><input id="prod5040259;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040259" onclick="$('prod5040259;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040259;top">Select to compare</label></div>
 				
 			</div>
 			
 				
 				
-					<div class="mod_h" style="width:153px;margin-top:0px;border-top:0px;border-bottom:0px;margin-bottom:0px;">
+					<div class="mod_h shop_plan_details">
 				
 				 			
 			
 						
-					<div style="height:68px;padding-left:5px;border-bottom:1px solid #CCCCCC;						
-						background-image:url(../../media/en_US/images/img/img_div-point_gradient_AA000EPI.gif); background-repeat:repeat-x;">
+					<div class="shop_channel_lineup">
+						<div class="shop_channel_lineup_arrow"></div>
 						<div style="">
-							
-							<div style="vertical-align:text-top;padding-top:10px;padding-left:4px;">
 								
 								
-								<a href="javascript:void(0);" onclick="callPopupTV('U300');" class="call-to-action tooltip shopPageAlert" style="position:relative;" title="Up to 360 of the best digital channels including 53 premium movie channels, local and music channels, 1 Total Home DVR&reg; and 1 wireless HD-ready receiver.">
-								<span class="bold">U300</span></a>
-							</div>
+								<a href="javascript:void(0);" onclick="callPopupTV('U300');" class="shop_tv_plan tooltip shopPageAlert" title="Up to 360 of the best digital channels including 53 premium movie channels, local and music channels, 1 Total Home DVR&reg; and 1 wireless HD-ready receiver.">
+								<span class="bold shop_tv_plan1">U300</span></a>
 							
 							    
-							<div style="vertical-align:text-top;padding-left:4px;">Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U300&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">360 channels</a></div>
+							<div>Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U300&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">360 channels</a></div>
 			             	 
-			             	<img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+			             	<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
 			            		onload="if ($('iptv_icon') && $('iptv_icon_disabled')) {$('iptv_icon_disabled').style.display='none'; $('iptv_icon').style.display='block';}" />
 						</div>
 					</div>
@@ -5629,34 +5578,27 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 					<div id='Max' style="width:550px;display:none;" title="Max">Max is ideal for active Internet users. One dynamic IP address at up to 12.0 Mbps download. Max is perfect for active gamers, people who share photos, music lovers and other sophisticated Internet users who need speed. In addition, you&#39;ll also enjoy: online photo and video storage, up to 10 additional email accounts, pop-up blocker, and much more.</div>
-					<div style="height:104px;padding-left:5px;border-bottom:1px solid #CCCCCC ;text-align:center;padding-right:5px;">
+					<div class="shop_channel_lineup1">
 						
-						
-						<div style="vertical-align:text-top;font-weight:bold;padding-top:2px;padding-left:2px;float:left;width:100%">
-							<a href="javascript:void(0);" onclick="callPopuphsia('Max');" class="call-to-action" style="position:relative;float:left">
-								<span class="bold">Max &nbsp;</span>
+							<a href="javascript:void(0);" onclick="callPopuphsia('Max');" class="call-to-action shop_tv_plan fl">
+								<span class="bold shop_tv_plan1">Max &nbsp;</span>
 							</a>
-						</div>
-						<div >
 							
-							
-							<!--<img onerror="if (this.lowsrc) {this.src=this.lowsrc; this.lowsrc=''}; this.onerror='';" id="AT&T U-verse High Speed Internet Max_image" height="54" alt="AT&T U-verse High Speed Internet Max" width="91" src="http://www.wireless.att.com/catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png" border="0" lowsrc="/catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png"></img>-->
-							<div style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png) no-repeat center bottom;height:54px;width:91px;padding-left:50px;padding-top:15px;*padding-top:0px;" ></div>
-
-						
-						</div>
+							<div class="shop_product_image" style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png) no-repeat;" ></div>        
                         
+                                 
+        	                 
 	                            
                           	 
                             
-		                        <div style="padding-right:5px;padding-left:5px;">Downstream speeds up to 12Mbps</div>									
+		                        <div class="shop_product_text">Downstream speeds up to 12Mbps</div>									
         	                
         	                
         	                  
 							 									
                             
                         
-                        <img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+                        <img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
             			onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').style.display='none'; $('hsia_icon').style.display='block';}" />    
 					</div>
 				
@@ -5669,7 +5611,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="height:60px;padding-left: 8px; padding-right: 50px;">
+							<div class="shop_free_time">
 								
 									
 										
@@ -5714,10 +5656,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 				
 			
-			<div class="mod_s slots" style="width:153px; margin-top:0px; border-top:0px; border-left:0px;">
-				<div style="height:330px; line-height:15px;padding-top:15px;background-image: url(../../media/en_US/images/img/img_RtTop-EndCap_gradient_AA000EPL.gif); background-repeat: repeat-x;">
-					<span class="uverse_orange bold" style="padding-left: 8px;">Special Offers</span>
-					<div class="unordered-list" style="padding-right: 3px;"><ul>
+			<div class="mod_s slots shop_offers">
+					<span class="uverse_orange bold">Special Offers</span>
+					<div class="unordered-list"><ul>
 					
 						
 							
@@ -5742,7 +5683,10 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							 
 							
-								<div style="float: right; padding-right: 2px;"><img alt="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."  src="../../global/images/en/btn_info.gif" class="tooltip shopPageAlert" title="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."/></div>
+								<div style="float: right; padding-right: 2px;">
+								<a class="info_button tooltip shopPageAlert" title="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."></a>
+								
+								</div>
 								<li>
 									Get $41 off per month for 12 months with 1 year service agreement.
 									<input type="hidden" name="cpp_prod5040259" id="cpp_prod5040259" value="prod6110307" />
@@ -5782,7 +5726,6 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 
 					</ul></div>
-				</div>
 			</div>
 			
 			<div style="clear:both;"></div>
@@ -5927,30 +5870,28 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 			
 
-			<div class="mod_s" style="width:153px; height:191px; vertical-align:bottom;">
-				<div style="position:relative; height:102px; padding:11px; padding-right:0px;">
-					<div style="float: right; text-align: right; margin-top: -11px; margin-right: 0px;">
+			<div class="mod_s shop_cb_box">
+					<h2 class="shop_box_text">
+						TV & Internet
+					</h2>
+					<div>
 						
 						
 						
 						
 							<img alt="" src="../../images/Wireless/Promotions/Bubbles/ur_pink_41permo_AA001FSI.jpg" />
-							<div style="font-size: 8px; font-weight: bold; width: 44px; text-align: right; overflow: hidden; margin-top: -4px;">
+							<div style="font-size: 10px;text-align: right; overflow: hidden; margin-top:-5px;margin-right:10px;">
 								<a href="javascript:showPopup('prod5040260Pop',true)">Details</a></div>
-                               
+                              
 						<div id="prod5040260Pop" title="Offer Details" style="display: none">Offer ends 11/3/12. New residential U-verse customers with minimum purchase of U300 TV and U-verse Internet Max online at att.com receive $41 off for 12 months. One year term required for bundled U-verse services. After 12 months, U-verse service will be billed at then existing standard rate unless cancelled by customer.</div>
 					</div> 
-					<h2 style="font-weight:bold; font-size:15px; color:#333; padding-bottom:4px; height:37px; ">
-						TV & Internet
-					</h2>
-					<div style="position:absolute; bottom:5px; left:10px;">
-						<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-							<div style="font-size:20px; float: left;">$</div>
+					<div class="shop_cb_rate" style="margin-top:-5px;">
+							<div class="shop_cb_rate1">$</div>
 							
 							
 								
 									
-										<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+										<div class="shop_cb_rate2">
 											126
 										</div>
 									
@@ -5960,18 +5901,16 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 								
 									
 									
-										<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+										<div class="shop_cb_rate3">
 											&nbsp;
-											<div style="font-size:10px; padding-top:5px;">/month</div>
+											<div class="shop_cb_rate4">/month</div>
 										</div>
 									
 								
 							
-							
-						</div>
 						
 							
-								<div style="clear: both; ">
+								<div class="shop_no_of_months">
 									
 									for 12 months									
 								</div>
@@ -5979,43 +5918,39 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 						
 					</div>
-				</div>
-				<div style="padding-left:11px; padding-bottom:8px; ">
-					<a onclick="getHiddenVar(this, 'cpp_prod5040260'); return callPackageChangeAlert(this.href); " rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_6_top&amp;q_usedOffer=prod5040260&amp;wtLinkName=Build_And_Price_prod5040260&amp;wtNoHit=1">
+					<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040260'); 
+						dcsMultiTrack(
+						'DCSext.wtLinkName','Build_And_Price_prod5040260',
+						'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_6_top',
+						'DCSext.wtNoHit','1',
+						'DCSext.wtBuyFlowType','PROVIDE');
+						return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040260">
 						
-						
-						
-						
-						<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 					</a>
-				</div>
 				
-					<div style="padding-left:9px; padding-top:4px; padding-bottom:12px;"><input id="prod5040260;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040260" onclick="$('prod5040260;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040260;top">Select to compare</label></div>
+					<div class="shop_compare"><input id="prod5040260;top" name="/att/ecom/uverse/view/CompareFormHandler.productCompareList" value="prod5040260" onclick="$('prod5040260;bottom').checked = this.checked;" type="checkbox"><input name="_D:/att/ecom/uverse/view/CompareFormHandler.productCompareList" value=" " type="hidden">&nbsp;<label for="prod5040260;top">Select to compare</label></div>
 				
 			</div>
 			
 				
 				
-					<div class="mod_h" style="width:153px;margin-top:0px;border-top:0px;border-bottom:0px;margin-bottom:0px;">
+					<div class="mod_h shop_plan_details">
 				
 				 			
 			
 						
-					<div style="height:68px;padding-left:5px;border-bottom:1px solid #CCCCCC;						
-						background-image:url(../../media/en_US/images/img/img_div-point_gradient_AA000EPI.gif); background-repeat:repeat-x;">
+					<div class="shop_channel_lineup">
+						<div class="shop_channel_lineup_arrow"></div>
 						<div style="">
-							
-							<div style="vertical-align:text-top;padding-top:10px;padding-left:4px;">
 								
 								
-								<a href="javascript:void(0);" onclick="callPopupTV('U450');" class="call-to-action tooltip shopPageAlert" style="position:relative;" title="An extensive lineup of up to 430 digital channels including 105 premium movie channels, local and music channels, and over 145 HD channels. Also includes 1 Total Home DVR&reg; and 1 wireless HD-ready receiver.">
-								<span class="bold">U450</span></a>
-							</div>
+								<a href="javascript:void(0);" onclick="callPopupTV('U450');" class="shop_tv_plan tooltip shopPageAlert" title="An extensive lineup of up to 430 digital channels including 105 premium movie channels, local and music channels, and over 145 HD channels. Also includes 1 Total Home DVR&reg; and 1 wireless HD-ready receiver.">
+								<span class="bold shop_tv_plan1">U450</span></a>
 							
 							    
-							<div style="vertical-align:text-top;padding-left:4px;">Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U450&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">430 channels</a></div>
+							<div>Up to <a href="http://www.att.com/u-verse/shop/channellineupPopup.jsp?pkgId=U450&amp;locale=" onclick="dotComPopUp(this.href, 1030, 780);return false;" target="_blank">430 channels</a></div>
 			             	 
-			             	<img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+			             	<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
 			            		onload="if ($('iptv_icon') && $('iptv_icon_disabled')) {$('iptv_icon_disabled').style.display='none'; $('iptv_icon').style.display='block';}" />
 						</div>
 					</div>
@@ -6028,34 +5963,27 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 					<div id='Max' style="width:550px;display:none;" title="Max">Max is ideal for active Internet users. One dynamic IP address at up to 12.0 Mbps download. Max is perfect for active gamers, people who share photos, music lovers and other sophisticated Internet users who need speed. In addition, you&#39;ll also enjoy: online photo and video storage, up to 10 additional email accounts, pop-up blocker, and much more.</div>
-					<div style="height:104px;padding-left:5px;border-bottom:1px solid #CCCCCC ;text-align:center;padding-right:5px;">
+					<div class="shop_channel_lineup1">
 						
-						
-						<div style="vertical-align:text-top;font-weight:bold;padding-top:2px;padding-left:2px;float:left;width:100%">
-							<a href="javascript:void(0);" onclick="callPopuphsia('Max');" class="call-to-action" style="position:relative;float:left">
-								<span class="bold">Max &nbsp;</span>
+							<a href="javascript:void(0);" onclick="callPopuphsia('Max');" class="call-to-action shop_tv_plan fl">
+								<span class="bold shop_tv_plan1">Max &nbsp;</span>
 							</a>
-						</div>
-						<div >
 							
-							
-							<!--<img onerror="if (this.lowsrc) {this.src=this.lowsrc; this.lowsrc=''}; this.onerror='';" id="AT&T U-verse High Speed Internet Max_image" height="54" alt="AT&T U-verse High Speed Internet Max" width="91" src="http://www.wireless.att.com/catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png" border="0" lowsrc="/catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png"></img>-->
-							<div style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png) no-repeat center bottom;height:54px;width:91px;padding-left:50px;padding-top:15px;*padding-top:0px;" ></div>
-
-						
-						</div>
+							<div class="shop_product_image" style="background:url(../../catalog/en/skus/images/att-uverse-high-speed-internet-max-91x54.png) no-repeat;" ></div>        
                         
+                                 
+        	                 
 	                            
                           	 
                             
-		                        <div style="padding-right:5px;padding-left:5px;">Downstream speeds up to 12Mbps</div>									
+		                        <div class="shop_product_text">Downstream speeds up to 12Mbps</div>									
         	                
         	                
         	                  
 							 									
                             
                         
-                        <img alt="" src='../../global/images/transparent.gif' width='1' height='1'
+                        <img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1'
             			onload="if ($('hsia_icon') && $('hsia_icon_disabled')) {$('hsia_icon_disabled').style.display='none'; $('hsia_icon').style.display='block';}" />    
 					</div>
 				
@@ -6068,7 +5996,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 						
 						
-							<div style="height:60px;padding-left: 8px; padding-right: 50px;">
+							<div class="shop_free_time">
 								
 									
 										
@@ -6113,10 +6041,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 				
 			
-			<div class="mod_s slots" style="width:153px; margin-top:0px; border-top:0px; border-left:0px;">
-				<div style="height:330px; line-height:15px;padding-top:15px;background-image: url(../../media/en_US/images/img/img_RtTop-EndCap_gradient_AA000EPL.gif); background-repeat: repeat-x;">
-					<span class="uverse_orange bold" style="padding-left: 8px;">Special Offers</span>
-					<div class="unordered-list" style="padding-right: 3px;"><ul>
+			<div class="mod_s slots shop_offers">
+					<span class="uverse_orange bold">Special Offers</span>
+					<div class="unordered-list"><ul>
 					
 						
 							
@@ -6141,7 +6068,10 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							 
 							
-								<div style="float: right; padding-right: 2px;"><img alt="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."  src="../../global/images/en/btn_info.gif" class="tooltip shopPageAlert" title="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."/></div>
+								<div style="float: right; padding-right: 2px;">
+								<a class="info_button tooltip shopPageAlert" title="Get $41 off your monthly price for 12 months when you order U300 TV or higher, Max Internet or higher and Voice 250 or higher. 1 year service agreement required."></a>
+								
+								</div>
 								<li>
 									Get $41 off per month for 12 months with 1 year service agreement.
 									<input type="hidden" name="cpp_prod5040260" id="cpp_prod5040260" value="prod6110307" />
@@ -6181,7 +6111,6 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 
 					</ul></div>
-				</div>
 			</div>
 			
 			<div style="clear:both;"></div>
@@ -6232,12 +6161,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 											
 						<tr>
 							<td colspan="6">
-								<div style="height: 30px; padding-bottom:1px; background: url(../../media/en_US/images/img/img_BgTop-gradient-point_AA000F4W.gif);
+								<div style="height: 30px; padding-bottom:1px; background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_BgTop-gradient-point_AA000F4W.gif);
 									">					
-									<div style="background: url(../../media/en_US/images/img/img_BgTop-gradient-point_AA000F4W.gif) 100% 0%;
+									<div style="background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_BgTop-gradient-point_AA000F4W.gif) 100% 0%;
 										height: 30px; width: 775px; float: right;"></div>
 								</div>
-								<div  style="position: absolute; width: 140px; height: 30px; padding-left:10px;padding-top:1px;margin-top:-20px;
+								<div class="uverse_purple" style="position: absolute; width: 140px; height: 30px; padding-left:10px;padding-top:1px;margin-top:-20px;
 									">
 									<h2 class="uverse_purple" >TV Package Details</h2></div>
 							</td>
@@ -6257,20 +6186,15 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							
 								<td valign="top" width="138">
-									<div class="mod_h" style="width:144px;border:0px none;position:absolute; margin-left: 3px;
-										">
-										<div style="height:42px;border-top:1px solid #CCCCCC ;border-bottom:1px solid #CCCCCC ;padding-left:8px;text-align:right;">
-											<div style="padding:10px;">
-												<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_local_channels.jsp" onclick="showPopup('LocalChannels', true); return false;"><span style="color:#0099FF;float:right; cursor:hand; cursor:pointer;">Local Channels</span></a>
-											</div>
+									<div class="mod_h" class="tv_package_det" style="">
+										<div class="tv_package_det1">
+												<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse_local_channels.jsp" onclick="showPopup('LocalChannels', true); return false;">Local Channels</a>
 											<div id="LocalChannels" style="width:450px;display:none;" title="Local Channels">
 												Your local channels are included in all U-verse TV packages at no additional cost.
 											</div>
 										</div>
-										<div style="height:42px;border-bottom:1px solid #CCCCCC ;padding-left:8px;text-align:right;">
-											<div style="padding: 10px; padding-bottom: 0px;"> 
-												
-												<a class="pre" href="javascript:showPopup('Total Home DVR (HD-ready)', true);"><span style="color:#0099FF;">Total Home DVR (HD-ready)</span></a>
+										<div class="tv_package_det1">
+												<a class="pre" href="javascript:showPopup('Total Home DVR (HD-ready)', true);">Total Home DVR (HD-ready)</a>
 												
 													
 												
@@ -6336,20 +6260,15 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 														<b>Here's what you get with the Total Home DVR:</b><ul><li>Record up to 4 shows at the same time on a single DVR*</li><li>Play back your shows from any room in your home with a U-verse receiver</li><li>Pause, fast-forward, and rewind any recorded show from any U-verse receiver in your home</li><li>1 DVR that works for your entire household</li><li>Store up to 233 hours of standard definition or 65 hours of high definition television**</li></ul><br/>*The ability to simultaneously view and/or record multiple channels of live HD programming can vary by geographical location.<br/><br/>**New AT&T U-verse TV customers ordering U450 or U300 are guaranteed the new DVR with larger capacity. DVR with 133 hours of SD or 37 hours of HD storage capacity furnished otherwise.<br/><br/>Upgrades for existing customers are subject to availability and additional fees.
 													</div>
 												</div>
-											</div>
 										</div>
-										<div style="height:42px;border-bottom:1px solid #CCCCCC ;padding-left:8px;text-align:right;">
-											<div style="padding:10px; padding-bottom: 0px;">
+										<div class="tv_package_det1">
 												<a href="http://www.att.com/global/cms/u-verse/en_US/popups/uverse-high-def-tv.jsp" onclick="showPopupByUrl(this.href, 'What is HD?', true, 700, 500); return false;"><span style="color:#0099FF;float:right; cursor:hand; cursor:pointer;">High Definition (HD) Service</span></a>
-											</div>
 										</div>
-										<div style="height:110px;border-bottom:1px solid #CCCCCC ;padding-left:8px;text-align:right;">
-											<div style="padding:10px; padding-bottom: 0px;">
+										<div class="tv_package_det2">
 												<a href="javascript:showPopupByUrl('/global/cms/u-verse/en_US/popups/programming-packages.html', 'Programming Packages',  true, 692);">
 												<span style="color: rgb(0, 153, 255); cursor:hand; cursor:pointer;">
 													View all Premium Channels</span>
 												</a>
-											</div>
 										</div>
 									</div>
 								</td>
@@ -6420,15 +6339,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;
-					">
+				<div class="mod_h" style="">
 			
 		
 		
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
-				<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />	
+			<div class="shop_check_green1">
+				<div class="shop_check_green"></div>	
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_check_green1">
 				
 					
 						
@@ -6436,12 +6354,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 						
-							<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+							<div class="shop_check_green"></div>
 						
 						
 				
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_high_definition">
 				
 					
 					
@@ -6535,7 +6453,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 												
 			</div>
-			<div style="height:110px;padding-left:5px;border-bottom:0px;">
+			<div class="shop_view_all_premium">
 				
 					
 					
@@ -6544,10 +6462,8 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 					
 					
-						<div style="padding-top:11px;">
 							
 							
-						</div>
 					
 				
 			</div>
@@ -6557,29 +6473,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;">
+				<div class="mod_h shop_cb_box">
 			
 		
 			
-			
-				
-				
-					<div style="height:150px;padding:8px;border-bottom:0px none;">
-				
-			
-			<div style="height:102px; padding:11px; padding-right:0px; ">
-				<div class="offerTitle" >
+				<div class="shop_box_text1">
 					TV & Internet
 				</div>
-				<div>
-					
-					<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-						<div style="font-size:20px; float: left;">$</div>
-					
+					<div class="shop_cb_rate">
+						<div class="shop_cb_rate1">$</div>
 						
 							
 								
-									<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+									<div class="shop_cb_rate2">
 										59
 									</div>
 								
@@ -6589,9 +6495,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 								
 								
-									<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+									<div class="shop_cb_rate3">
 										&nbsp;
-										<div style="font-size:10px; padding-top:5px;">/month</div>
+										<div class="shop_cb_rate4">/month</div>
 									</div>
 								
 							
@@ -6599,25 +6505,22 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 					</div>
 					
-						<span style="clear: both; ">for 12 months</span>
+						<div class="shop_no_of_months">for 12 months</div>
 					
-				</div>
-			</div>
-			<div style="padding-top:8px; vertical-align:top;">
-				<a onclick="getHiddenVar(this, 'cpp_prod5040256'); return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_2_bottom&amp;q_usedOffer=prod5040256&amp;wtLinkName=Build_And_Price_prod5040256&amp;wtNoHit=1">
+				<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040256'); 
+					dcsMultiTrack(
+					'DCSext.wtLinkName','Build_And_Price_prod5040256',
+					'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_2_bottom',
+					'DCSext.wtNoHit','1',
+					'DCSext.wtBuyFlowType','PROVIDE');
+					return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040256">
 					
-					
-					
-					
-					<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 				</a>
-			</div>
 			
-				<div style="clear:both; height: 45px; padding-top: 12px;"><input type="checkbox" id="prod5040256;bottom" value="prod5040256" 
+				<div class="shop_compare"><input type="checkbox" id="prod5040256;bottom" value="prod5040256" 
 					class="phCompare" onclick="$('prod5040256;top').checked = this.checked;"/>&nbsp;<label for="prod5040256;bottom">Select to compare</label>
 				</div>
 			
-			</div>
 		
 	
 
@@ -6692,15 +6595,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;
-					">
+				<div class="mod_h" style="">
 			
 		
 		
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
-				<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />	
+			<div class="shop_check_green1">
+				<div class="shop_check_green"></div>	
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_check_green1">
 				
 					
 						
@@ -6708,12 +6610,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 						
-							<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+							<div class="shop_check_green"></div>
 						
 						
 				
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_high_definition">
 				
 					
 					
@@ -6807,7 +6709,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 												
 			</div>
-			<div style="height:110px;padding-left:5px;border-bottom:0px;">
+			<div class="shop_view_all_premium">
 				
 					
 					
@@ -6816,10 +6718,8 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 					
 					
-						<div style="padding-top:11px;">
 							
 							
-						</div>
 					
 				
 			</div>
@@ -6829,29 +6729,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;">
+				<div class="mod_h shop_cb_box">
 			
 		
 			
-			
-				
-				
-					<div style="height:150px;padding:8px;border-bottom:0px none;">
-				
-			
-			<div style="height:102px; padding:11px; padding-right:0px; ">
-				<div class="offerTitle" >
+				<div class="shop_box_text1">
 					TV & Internet
 				</div>
-				<div>
-					
-					<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-						<div style="font-size:20px; float: left;">$</div>
-					
+					<div class="shop_cb_rate">
+						<div class="shop_cb_rate1">$</div>
 						
 							
 								
-									<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+									<div class="shop_cb_rate2">
 										74
 									</div>
 								
@@ -6861,9 +6751,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 								
 								
-									<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+									<div class="shop_cb_rate3">
 										&nbsp;
-										<div style="font-size:10px; padding-top:5px;">/month</div>
+										<div class="shop_cb_rate4">/month</div>
 									</div>
 								
 							
@@ -6871,25 +6761,22 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 					</div>
 					
-						<span style="clear: both; ">for 12 months</span>
+						<div class="shop_no_of_months">for 12 months</div>
 					
-				</div>
-			</div>
-			<div style="padding-top:8px; vertical-align:top;">
-				<a onclick="getHiddenVar(this, 'cpp_prod5040257'); return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_3_bottom&amp;q_usedOffer=prod5040257&amp;wtLinkName=Build_And_Price_prod5040257&amp;wtNoHit=1">
+				<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040257'); 
+					dcsMultiTrack(
+					'DCSext.wtLinkName','Build_And_Price_prod5040257',
+					'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_3_bottom',
+					'DCSext.wtNoHit','1',
+					'DCSext.wtBuyFlowType','PROVIDE');
+					return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040257">
 					
-					
-					
-					
-					<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 				</a>
-			</div>
 			
-				<div style="clear:both; height: 45px; padding-top: 12px;"><input type="checkbox" id="prod5040257;bottom" value="prod5040257" 
+				<div class="shop_compare"><input type="checkbox" id="prod5040257;bottom" value="prod5040257" 
 					class="phCompare" onclick="$('prod5040257;top').checked = this.checked;"/>&nbsp;<label for="prod5040257;bottom">Select to compare</label>
 				</div>
 			
-			</div>
 		
 	
 
@@ -6964,15 +6851,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;
-					">
+				<div class="mod_h" style="">
 			
 		
 		
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
-				<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />	
+			<div class="shop_check_green1">
+				<div class="shop_check_green"></div>	
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_check_green1">
 				
 					
 						
@@ -6980,12 +6866,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 						
-							<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+							<div class="shop_check_green"></div>
 						
 						
 				
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_high_definition">
 				
 					
 					
@@ -7079,7 +6965,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 												
 			</div>
-			<div style="height:110px;padding-left:5px;border-bottom:0px;">
+			<div class="shop_view_all_premium">
 				
 					
 					
@@ -7088,10 +6974,8 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 					
 					
-						<div style="padding-top:11px;">
 							
 							
-						</div>
 					
 				
 			</div>
@@ -7101,29 +6985,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;">
+				<div class="mod_h shop_cb_box">
 			
 		
 			
-			
-				
-				
-					<div style="height:150px;padding:8px;border-bottom:0px none;">
-				
-			
-			<div style="height:102px; padding:11px; padding-right:0px; ">
-				<div class="offerTitle" >
+				<div class="shop_box_text1">
 					TV & Internet
 				</div>
-				<div>
-					
-					<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-						<div style="font-size:20px; float: left;">$</div>
-					
+					<div class="shop_cb_rate">
+						<div class="shop_cb_rate1">$</div>
 						
 							
 								
-									<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+									<div class="shop_cb_rate2">
 										79
 									</div>
 								
@@ -7133,9 +7007,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 								
 								
-									<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+									<div class="shop_cb_rate3">
 										&nbsp;
-										<div style="font-size:10px; padding-top:5px;">/month</div>
+										<div class="shop_cb_rate4">/month</div>
 									</div>
 								
 							
@@ -7143,25 +7017,22 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 					</div>
 					
-						<span style="clear: both; ">for 12 months</span>
+						<div class="shop_no_of_months">for 12 months</div>
 					
-				</div>
-			</div>
-			<div style="padding-top:8px; vertical-align:top;">
-				<a onclick="getHiddenVar(this, 'cpp_prod5040258'); return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_4_bottom&amp;q_usedOffer=prod5040258&amp;wtLinkName=Build_And_Price_prod5040258&amp;wtNoHit=1">
+				<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040258'); 
+					dcsMultiTrack(
+					'DCSext.wtLinkName','Build_And_Price_prod5040258',
+					'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_4_bottom',
+					'DCSext.wtNoHit','1',
+					'DCSext.wtBuyFlowType','PROVIDE');
+					return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040258">
 					
-					
-					
-					
-					<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 				</a>
-			</div>
 			
-				<div style="clear:both; height: 45px; padding-top: 12px;"><input type="checkbox" id="prod5040258;bottom" value="prod5040258" 
+				<div class="shop_compare"><input type="checkbox" id="prod5040258;bottom" value="prod5040258" 
 					class="phCompare" onclick="$('prod5040258;top').checked = this.checked;"/>&nbsp;<label for="prod5040258;bottom">Select to compare</label>
 				</div>
 			
-			</div>
 		
 	
 
@@ -7236,15 +7107,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;
-					">
+				<div class="mod_h" style="">
 			
 		
 		
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
-				<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />	
+			<div class="shop_check_green1">
+				<div class="shop_check_green"></div>	
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_check_green1">
 				
 					
 						
@@ -7252,12 +7122,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 						
-							<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+							<div class="shop_check_green"></div>
 						
 						
 				
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_high_definition">
 				
 					
 					
@@ -7351,7 +7221,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 												
 			</div>
-			<div style="height:110px;padding-left:5px;border-bottom:0px;">
+			<div class="shop_view_all_premium">
 				
 					
 					
@@ -7369,7 +7239,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							
 								
-								<div class="unordered-list" style="padding-top:8px; font-size: 11px; line-height: 11px;">
+								<div class="unordered-list">
 									<ul>
 										<li>
 											The Movie Package
@@ -7388,29 +7258,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;">
+				<div class="mod_h shop_cb_box">
 			
 		
 			
-			
-				
-				
-					<div style="height:150px;padding:8px;border-bottom:0px none;">
-				
-			
-			<div style="height:102px; padding:11px; padding-right:0px; ">
-				<div class="offerTitle" >
+				<div class="shop_box_text1">
 					TV & Internet
 				</div>
-				<div>
-					
-					<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-						<div style="font-size:20px; float: left;">$</div>
-					
+					<div class="shop_cb_rate">
+						<div class="shop_cb_rate1">$</div>
 						
 							
 								
-									<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+									<div class="shop_cb_rate2">
 										94
 									</div>
 								
@@ -7420,9 +7280,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 								
 								
-									<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+									<div class="shop_cb_rate3">
 										&nbsp;
-										<div style="font-size:10px; padding-top:5px;">/month</div>
+										<div class="shop_cb_rate4">/month</div>
 									</div>
 								
 							
@@ -7430,25 +7290,22 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 					</div>
 					
-						<span style="clear: both; ">for 12 months</span>
+						<div class="shop_no_of_months">for 12 months</div>
 					
-				</div>
-			</div>
-			<div style="padding-top:8px; vertical-align:top;">
-				<a onclick="getHiddenVar(this, 'cpp_prod5040259'); return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_5_bottom&amp;q_usedOffer=prod5040259&amp;wtLinkName=Build_And_Price_prod5040259&amp;wtNoHit=1">
+				<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040259'); 
+					dcsMultiTrack(
+					'DCSext.wtLinkName','Build_And_Price_prod5040259',
+					'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_5_bottom',
+					'DCSext.wtNoHit','1',
+					'DCSext.wtBuyFlowType','PROVIDE');
+					return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040259">
 					
-					
-					
-					
-					<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 				</a>
-			</div>
 			
-				<div style="clear:both; height: 45px; padding-top: 12px;"><input type="checkbox" id="prod5040259;bottom" value="prod5040259" 
+				<div class="shop_compare"><input type="checkbox" id="prod5040259;bottom" value="prod5040259" 
 					class="phCompare" onclick="$('prod5040259;top').checked = this.checked;"/>&nbsp;<label for="prod5040259;bottom">Select to compare</label>
 				</div>
 			
-			</div>
 		
 	
 
@@ -7523,15 +7380,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;
-					">
+				<div class="mod_h" style="">
 			
 		
 		
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
-				<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />	
+			<div class="shop_check_green1">
+				<div class="shop_check_green"></div>	
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_check_green1">
 				
 					
 						
@@ -7539,12 +7395,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				
 					
 						
-							<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+							<div class="shop_check_green"></div>
 						
 						
 				
 			</div>
-			<div style="height:42px;padding-left:5px;border-bottom:1px solid #CCCCCC ;">
+			<div class="shop_high_definition">
 				
 					
 					
@@ -7556,12 +7412,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					
 					
 					
-						<br /><img src="../../media/en_US/images/ico/ico_check_grn_AA0005UE.gif" alt="Included in bundle" align="bottom" hspace="0" vspace="0" />
+						<div class="shop_check_green"></div>
 					
 					
 												
 			</div>
-			<div style="height:110px;padding-left:5px;border-bottom:0px;">
+			<div class="shop_view_all_premium">
 				
 					
 					
@@ -7579,7 +7435,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							
 								
-								<div class="unordered-list" style="padding-top:8px; font-size: 11px; line-height: 11px;">
+								<div class="unordered-list">
 									<ul>
 										<li>
 											HBO® / Cinemax®
@@ -7592,7 +7448,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							
 								
-								<div class="unordered-list" style="padding-top:8px; font-size: 11px; line-height: 11px;">
+								<div class="unordered-list">
 									<ul>
 										<li>
 											The Sports Package
@@ -7605,7 +7461,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 							
 								
-								<div class="unordered-list" style="padding-top:8px; font-size: 11px; line-height: 11px;">
+								<div class="unordered-list">
 									<ul>
 										<li>
 											The Movie Package
@@ -7624,29 +7480,19 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 		
 			
 			
-				<div class="mod_h" style="float:left; width:153px;margin-top:0px;border-top:1px solid #CCCCCC;">
+				<div class="mod_h shop_cb_box">
 			
 		
 			
-			
-				
-				
-					<div style="height:150px;padding:8px;border-bottom:0px none;">
-				
-			
-			<div style="height:102px; padding:11px; padding-right:0px; ">
-				<div class="offerTitle" >
+				<div class="shop_box_text1">
 					TV & Internet
 				</div>
-				<div>
-					
-					<div style="font-family:Verdana; color:#60bf1b; line-height:25px; position: relative; width: 114px; height: 38px; vertical-align:top;">
-						<div style="font-size:20px; float: left;">$</div>
-					
+					<div class="shop_cb_rate">
+						<div class="shop_cb_rate1">$</div>
 						
 							
 								
-									<div style="font-size:32px; padding-top:4px; float: left; line-height:32px; letter-spacing:-2px;">
+									<div class="shop_cb_rate2">
 										126
 									</div>
 								
@@ -7656,9 +7502,9 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 							
 								
 								
-									<div style="font-size:16px; padding-top:10px; float: left; line-height:10px;">
+									<div class="shop_cb_rate3">
 										&nbsp;
-										<div style="font-size:10px; padding-top:5px;">/month</div>
+										<div class="shop_cb_rate4">/month</div>
 									</div>
 								
 							
@@ -7666,25 +7512,22 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 						
 					</div>
 					
-						<span style="clear: both; ">for 12 months</span>
+						<div class="shop_no_of_months">for 12 months</div>
 					
-				</div>
-			</div>
-			<div style="padding-top:8px; vertical-align:top;">
-				<a onclick="getHiddenVar(this, 'cpp_prod5040260'); return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_6_bottom&amp;q_usedOffer=prod5040260&amp;wtLinkName=Build_And_Price_prod5040260&amp;wtNoHit=1">
+				<a class="shop_get_started" onclick="getHiddenVar(this, 'cpp_prod5040260'); 
+					dcsMultiTrack(
+					'DCSext.wtLinkName','Build_And_Price_prod5040260',
+					'DCSext.wtLinkLoc','UverseShopPg_TVInternet_Domino_6_bottom',
+					'DCSext.wtNoHit','1',
+					'DCSext.wtBuyFlowType','PROVIDE');
+					return callPackageChangeAlert(this.href);" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?q_usedOffer=prod5040260">
 					
-					
-					
-					
-					<img src="../../media/en_US/images/btn/btn_getStarted_blue_3dot0.jpg" alt="Get Started" align="bottom" />
 				</a>
-			</div>
 			
-				<div style="clear:both; height: 45px; padding-top: 12px;"><input type="checkbox" id="prod5040260;bottom" value="prod5040260" 
+				<div class="shop_compare"><input type="checkbox" id="prod5040260;bottom" value="prod5040260" 
 					class="phCompare" onclick="$('prod5040260;top').checked = this.checked;"/>&nbsp;<label for="prod5040260;bottom">Select to compare</label>
 				</div>
 			
-			</div>
 		
 	
 
@@ -7781,9 +7624,14 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	 
 
 
- 
 
-	
+
+
+
+
+
+
+
 
 
 	 
@@ -7824,11 +7672,11 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	
 			if(ele.style.display == "block") {
 				ele.style.display = "none";
-				text.innerHTML = "<img src='../../media/en_US/images/ico/ico_MiniCart_arrow_rt_7x7_AA000E13.gif'  />&nbsp;View details";			
+				text.innerHTML = "<img src='../../../1.ecom.attccc.com/media/en_US/images/ico/ico_MiniCart_arrow_rt_7x7_AA000E13.gif'  />&nbsp;View details";			
 			}
 			else {
 				ele.style.display = "block";
-				text.innerHTML = "<img src='../../media/en_US/images/ico/ico_MiniCart_arrow_dwn_7x7_AA000E12.gif'  />&nbsp;Hide details";			
+				text.innerHTML = "<img src='../../../2.ecom.attccc.com/media/en_US/images/ico/ico_MiniCart_arrow_dwn_7x7_AA000E12.gif'  />&nbsp;Hide details";			
 			}	
 	}
 	
@@ -7860,12 +7708,12 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	<div style="padding:1px; height: 490px;" uri="shopminicart.jsp">
 	
 		
-		<div id="cartHandle" class="mod_a_uverse" style="height: 22px; width: 100%; overflow: hidden; background-image:url(../../media/en_US/images/img/img_minicart_header_bkd_grad_1x33_AA000E7U.gif);background-repeat:repeat-x;">
+		<div id="cartHandle" class="mod_a_uverse" style="height: 22px; width: 100%; overflow: hidden; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_minicart_header_bkd_grad_1x33_AA000E7U.gif);background-repeat:repeat-x;">
 			<div style="float:left; text-align:middle;">
-				<img alt="Empty cart" src="../../media/en_US/images/ico/ico_CartEmpty_AA00017Q.gif" border="0"/>
+				<img alt="Empty cart" src="../../../1.ecom.attccc.com/media/en_US/images/ico/ico_CartEmpty_AA00017Q.gif" border="0"/>
 				<span align="top" style="font-size:11px;text-transform:uppercase;"><b>Cart in Progress</b></span>
-				<div style="text-align:right; margin-top: -20px; margin-left: 250px;" onclick="$('shopMicroCart').style.display='none';"><a href="javascript:void(0);">Close</a> <img alt="Close" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif" /></div>
-           		<img alt="" class="wtpn Uverse_Shop_Cart_Pg" src="../../global/images/transparent.gif" width="1" height="1" style="border: 1px solid green;"/>
+				<div style="text-align:right; margin-top: -20px; margin-left: 250px;" onclick="$('shopMicroCart').style.display='none';"><a href="javascript:void(0);">Close</a> <img alt="Close" src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif" /></div>
+           		<img alt="" class="wtpn Uverse_Shop_Cart_Pg" src="../../../2.ecom.attccc.com/global/images/transparent.gif" width="1" height="1" style="border: 1px solid green;"/>
 			</div>
 		</div>
 		
@@ -7977,7 +7825,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 				</div>
 				<div style="clear:both;"></div>
 				<div style="padding-left:23px; background-color:#F8F8F8; padding-bottom:10px; font-size: 10px; font-weight: normal; line-height: 12px;" uri="learnaboutcharges.jsp"> 
-					<img alt="" src="../../media/en_US/images/btn/btn_preview_AA0005XY.gif" />&nbsp;<a class="wtpn Uverse_Learn_About_Charges_Modal_Pg" href="javascript:showPopupByUrl('/global/cms/u-verse/en_US/popups/mini-cart-learn-more.jsp', 'Learn more about charges', true);">Learn more about charges</a>
+					<img alt="" src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_preview_AA0005XY.gif" />&nbsp;<a class="wtpn Uverse_Learn_About_Charges_Modal_Pg" href="javascript:showPopupByUrl('/global/cms/u-verse/en_US/popups/mini-cart-learn-more.jsp', 'Learn more about charges', true);">Learn more about charges</a>
 				</div>
 			</div> 
 						
@@ -7997,7 +7845,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 					</center>
 					<div class="horizDash3" style="background-color:#F8F8F8; border:0px; padding:0px; margin:0px; "></div>
 
-					<div id="prog" style="display:none;position:relative;z-index:2; text-align:center;"><img src="../../media/en_US/images/ani/ani_miniCart_UpdateDetails_AA0009WX.gif" alt="Loading..." /></div>
+					<div id="prog" style="display:none;position:relative;z-index:2; text-align:center;"><img src="../../../2.ecom.attccc.com/media/en_US/images/ani/ani_miniCart_UpdateDetails_AA0009WX.gif" alt="Loading..." /></div>
 				
 				
 			
@@ -8027,7 +7875,7 @@ h2.uverse_purple{font-weight:bold;font-size:12px;color:#81017E !important}
 	</div>
 
 
-		<img alt="" src='../../global/images/transparent.gif' width='1' height='1' onload="new Draggable('shopMicroCart', {handle: $('cartHandle'), starteffect: null, endeffect: null});" />
+		<img alt="" src='../../../2.ecom.attccc.com/global/images/transparent.gif' width='1' height='1' onload="new Draggable('shopMicroCart', {handle: $('cartHandle'), starteffect: null, endeffect: null});" />
 	</div>
 
 	<div id="shopPageAlert" class="rounded" style="position: absolute; display: none; z-index: 100; width: 172px;">
@@ -8046,9 +7894,9 @@ Select OK if you want to continue with the selection you've just made.
 Select Cancel to keep what's already in your Cart.</td>
 			</tr>
 		</table>
-		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
+		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
 		
-		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" onclick="setFlag();closePopup(); location.href=window.url+parFlag;" alt="OK" title="OK" /></div>
+		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" onclick="setFlag();closePopup(); location.href=window.url+parFlag;" alt="OK" title="OK" /></div>
 		<div style="clear:both;"></div>
 	</div>
     <div id="packageChangeAlertSmartify" style="width:450px;display:none;" title="Selections Will Update Cart">
@@ -8063,8 +7911,8 @@ Select OK if you want to continue with the selection you've just made.
 Select Cancel to keep what's already in your Cart.</td>
 			</tr>
 		</table>
-		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
-		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" onclick="closePopup();smartify();" alt="OK" title="OK" /></div>
+		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
+		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" onclick="closePopup();smartify();" alt="OK" title="OK" /></div>
 		<div style="clear:both;"></div>
 	</div>
 	<div id="packageChangeHubPage" style="width:450px;display:none;" title="Selections Will Update Cart">
@@ -8079,13 +7927,13 @@ Select OK if you want to continue with the selection you've just made.
 Select Cancel to keep what's already in your Cart.</td>
 			</tr>
 		</table>
-		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
+		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;"><img src="../../../3.ecom.attccc.com/media/en_US/images/btn/btn_cancel_wht_AA000CNO.gif" onclick="closePopup(); location.href='/u-verse/shop/customize.jsp';" alt="Cancel" title="Cancel" /></div>
 		<div style="float:right; padding-left:8px; cursor: pointer; cursor: hand;">
 				<a id="continueLink" class="wtx Uverse_SelectSpecialOffersSubmit" onclick="getDefaultRadio(this, '')" rel="nofollow" href="http://www.att.com/u-verse/shop/customize.jsp?wtLinkLoc=UverseShopPg_TVInternet_Domino_1&amp;q_usedOffer=&amp;wtLinkName=Build_Your_Own_">
 					
 					
 					
-					<img src="../../media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" alt="OK" title="OK" />
+					<img src="../../../1.ecom.attccc.com/media/en_US/images/btn/btn_Ok_blu_AA00015N.gif" alt="OK" title="OK" />
 				</a>
 		</div>
 		<div style="clear:both;"></div>
@@ -8105,9 +7953,7 @@ Select Cancel to keep what's already in your Cart.</td>
 	
 	
 	
-	<img alt="" src="../../global/images/transparent.gif" width="1" height="1" onload="var slots=$$('.slots .unordered-list'); window.h=50; for(var i=0; i<slots.length; ++i) h = [slots[i].offsetHeight, h].max(); slots=$$('.slots'); for(var i=0; i<slots.length; ++i) {if (slots[i].innerHTML.length > 771) slots[i].style.height=h+75+'px'; else slots[i].style.height='0px'}; var slot0 = $$('.slot0')[0]; if(slot0){ slot0.style.height = h+57+'px'; }" />
-	<script type="text/javascript" src="../../../apis.google.com/js/plusone.js">
-	</script>
+	<img alt="" src="../../../2.ecom.attccc.com/global/images/transparent.gif" width="1" height="1" onload="var slots=$$('.slots .unordered-list'); window.h=50; for(var i=0; i<slots.length; ++i) h = [slots[i].offsetHeight, h].max(); slots=$$('.slots'); for(var i=0; i<slots.length; ++i) {if (slots[i].innerHTML.length > 771) slots[i].style.height=h+75+'px'; else slots[i].style.height='0px'}; var slot0 = $$('.slot0')[0]; if(slot0){ slot0.style.height = h+57+'px'; }" />
 	<input type="hidden" id="newFlag" value=""/>
  
                 
@@ -8145,12 +7991,9 @@ Select Cancel to keep what's already in your Cart.</td>
 											
 											
 												<a target="_blank" href="http://www.att.com/u-verse/att-terms-of-service.jsp">AT&amp;T U-verse Terms of Service</a> |
-												<a target="_blank" href="http://www.att.com/u-verse/explore/offer-details.jsp">AT&amp;T U-verse&reg; Offer Details</a>
-												
-													
-														| Geographic and Service restrictions apply to AT&amp;T U-verse Services
-													
-												
+												<a target="_blank" href="http://www.att.com/u-verse/explore/offer-details.jsp">AT&amp;T U-verse&reg; Offer Details</a> |
+												Geographic and Service restrictions apply to AT&amp;T U-verse Services
+											
 											
 										
 									
@@ -8468,17 +8311,17 @@ Select Cancel to keep what's already in your Cart.</td>
 
         
         <div id="mainPopupDiv" style="position:absolute; visibility:hidden; left:100px; top:100px; width:400px; z-index:100; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
-            <div style="height:37px; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div style="height:37px; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
                 <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitle"></h1></div>
-					<div style="text-align:right;" id="popCloseButton">
+					<div style="text-align:right;float:right;" id="popCloseButton">
 						
 							
 							
 								<span id="popCloseButtonSpan" onClick="closePopup();">
-									<a href="javascript:void(0);">
+									<a class="fl" href="javascript:void(0);">
 										Close
-									</a> <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/>
+									</a> <span class="shop_popup_close_button fl"> </span>
 								</span>
 							
 						
@@ -8491,10 +8334,10 @@ Select Cancel to keep what's already in your Cart.</td>
 
 		
         <div id="mainPopupDiv2" style="position:absolute; visibility:hidden; left:100px; top:100px; width:400px; z-index:110; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
-            <div style="min-height:68px;height:37px;background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div style="min-height:68px;height:37px;background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
                 <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitle2"></h1></div>
-                    <div style="text-align:right;" id="popCloseButton2"><span onClick="closePopup('2')"><a href="javascript:void(0);">Close</a> <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
+                    <div style="text-align:right;float:right;" id="popCloseButton2"><span onClick="closePopup('2')"><a class="fl" href="javascript:void(0);">Close</a><span class="shop_popup_close_button fl"></span></span></div>
                 </div>
             </div>
             <div id="mainPopupBody2" style="padding:10px; border:#CCCCCC solid 1px; margin:10px;"></div>
@@ -8502,22 +8345,25 @@ Select Cancel to keep what's already in your Cart.</td>
         </div>
 	
 
+	
 		<div id="mainPopupDivChannelLineup" style="position:absolute; visibility:hidden; left:18px; top:168px; width:400px; z-index:110; border:#CCCCCC solid 2px;  background-color:#FFFFFF;">
             <div style="min-height:45px;height:37px;background-image:url(../../media/att/2011/shop/u-verse/channel-lineup/bkd-filter-tab.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
 	          <div style="padding:10px;">
                     <div style="float:left; padding-left:10px; "><h1 id="mainPopupTitleChannelLineup"></h1></div>
-					<div style="font-size:1.1em;*font-size:1.3em;text-align:center;width:77px;float:right" id="popCloseButton2"><div style="*margin-top:4px;margin-left:-15px;*height:20px;" onClick="closePopup('2')"><a href="javascript:void(0);">Close</a>&nbsp;&nbsp;</div><div style="margin-top:-18px;*margin-top:-25px;margin-left:43px;" onClick="closePopup('2')"><a href="javascript:void(0);"><img alt="Close Disabled" style="cursor: pointer; cursor: hand;" src="../../media/att/2011/global/btn/btn_close.gif"/></a></div></div>
+					<div style="font-size:1.1em;*font-size:1.3em;text-align:center;width:77px;float:right" id="popCloseButton2"><div style="*margin-top:4px;margin-left:-15px;*height:20px;" onClick="closePopup('2')"><a href="javascript:void(0);">Close</a>&nbsp;&nbsp;</div><div style="margin-top:-18px;*margin-top:-25px;margin-left:43px;" onClick="closePopup('2')"><a href="javascript:void(0);"><img alt="Close Disabled" style="cursor: pointer; cursor: hand;" src="../../../3.ecom.attccc.com/media/att/2011/global/btn/btn_close.gif"/></a></div></div>
 					
-					<div id="printChannelLineup" style="font-size:1.1em;*font-size:1.3em;width:77px;border-right:1px solid #CCC;text-align:center; float:right;display:none;"><div style="margin-right:-17px;*margin-top:3px;*height:0px;" onclick="printChannels()"><a href="javascript:void(0);">Print</a></div><div style="margin-top:-15px;*margin-top:-1px;margin-right:37px;" onclick="printChannels()"><a href="javascript:void(0);"><img alt="Print" src="../../media/att/2011/global/ico/ico_print.gif" style="cursor: pointer;"/></a></div></div>
+					<div id="printChannelLineup" style="font-size:1.1em;*font-size:1.3em;width:77px;border-right:1px solid #CCC;text-align:center; float:right;display:none;"><div style="margin-right:-17px;*margin-top:3px;*height:0px;" onclick="printChannels()"><a href="javascript:void(0);">Print</a></div><div style="margin-top:-15px;*margin-top:-1px;margin-right:37px;" onclick="printChannels()"><a href="javascript:void(0);"><img alt="Print" src="../../../2.ecom.attccc.com/media/att/2011/global/ico/ico_print.gif" style="cursor: pointer;"/></a></div></div>
                 </div>
             </div>
 			<div id="mainPopupBodyChannelLineup"  ></div>
 			<div id="mainPopupButtonChannelLineup" style="padding-right:10px;padding-bottom:8px;"></div>
         </div>
+	
 
 				
         <div id="mainPopupDivIDM" style="position: absolute; visibility: hidden; width: 840px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-            <div id="mainPopupHeaderIDM" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div id="mainPopupHeaderIDM" style="height:37px; overflow: hidden; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+		
             	 
 
 
@@ -8539,18 +8385,20 @@ Select Cancel to keep what's already in your Cart.</td>
 				<span class="modal-header-subtitle">Customize your digital home phone service in 3 steps</span>
 			</div>	
     	</div>
-        <div style="text-align: right; padding-top: 10px;">
-	        <span onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
-	        <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
+        <div style="text-align: right; padding-top: 10px;float:right;">
+	        <span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
+	     </span></div>
     	<div id="mainPopUpTitleIDM" style="display: none;"></div>
     </div>
         
 
 
+			
             </div>
 			<div style="clear:both;"></div>
             <div id="mainPopupBodyIDM" style="width: 837px; height: 478px; float: left; overflow: hidden; margin: 0px;"></div>
             <div id="mainPopupFooterIDM" style="width: 834px; height: 44px; overflow: hidden; border: 1px solid #CCCCCC; margin: 0px 2px 2px 2px;">
+			
             	 
 
 
@@ -8565,47 +8413,47 @@ Select Cancel to keep what's already in your Cart.</td>
 	
 		
 		
-			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
+			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-							<img src="../../media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
 						</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart"><img id="addToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
 					
 					
 					
 					
 					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><img id="addToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
 					
 					
 					
 					
 						
 					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
 					<div title="Return to Cart"><img id="returnToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="if (!portPhoneLineslist()) cancelModal(null);" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
 					
 					
 					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
 				
 					
 					
 					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><img id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
 						</div>
 						
 					
 					
 					
 						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<img src="../../media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
 						</div>
 						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<img src="../../media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
 						</div>
 					</div>
 				
@@ -8613,6 +8461,7 @@ Select Cancel to keep what's already in your Cart.</td>
         
 
 
+			
             </div>
 		</div>
 		
@@ -8625,12 +8474,11 @@ Select Cancel to keep what's already in your Cart.</td>
 		</div>
 		
         <div id="mainPopupDivIDM2" style="position: absolute; visibility: hidden; width: 934px; top:0px; left:0px; margin: auto; z-index: 92; border: 2px solid #CCCCCC; background-color: #FFFFFF;">
-            <div id="mainPopupHeaderIDM2" style="height:37px; overflow: hidden; background-image:url(../../media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
+            <div id="mainPopupHeaderIDM2" style="height:37px; overflow: hidden; background-image:url(../../../0.ecom.attccc.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;">
 				<div style="height: 37px;">
 					<div style="padding:10px;">
 						<div style="float:left; padding-left:10px; "><h1 id="mainPopUpTitleIDM2" style="display: none;"></h1></div>
-						<div style="text-align:right;"><span onClick="if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
-							<img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/>
+						<div style="text-align:right;float:right;"><span class="shop_popup_close_button fl" onClick="if ($('modalFooterCancel2')) $('modalFooterCancel2').onclick();">
 						</span></div>
 					</div>
 				</div>
@@ -8638,6 +8486,7 @@ Select Cancel to keep what's already in your Cart.</td>
 			<div style="clear:both;"></div>
             <div id="mainPopupBodyIDM2" style="width: 928px; height: 472px; float: left; overflow: hidden; margin: 0px;"></div>
             <div id="mainPopupFooterIDM2" style="width: 928px; height: 44px; overflow: hidden;border: 1px solid #CCCCCC;margin: 0px 2px 2px 2px;">
+			
             	
 					
 				 
@@ -8654,47 +8503,47 @@ Select Cancel to keep what's already in your Cart.</td>
 	
 		
 		
-			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
+			<div id="modalFooter" style="width:98%; height:25px; padding:10px; background: url(../../../0.ecom.attccc.com/media/en_US/images/img/img_grad_modal_bottom_bkd_1x48_AA000E1B.gif) 0px -1px repeat-x;">
 						<div id="modalFooterCancel" style="float: left; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Cancel" onclick="cancelModal(undefined);" title="Cancel">
-							<img src="../../media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_cancel_wht_AA000E18.gif" alt="Cancel" />
 						</div>
 				<div id="modalFooterSave" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;">
 					<div title="Add to Cart"><img id="addToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_disabled_AA000IWR.gif" alt="Save Disabled"></div>
 					
 					
 					
 					
 					<div title="Add to Cart" class="wt Uverse_Cart_Add___serv___Submit"><img id="addToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_Save_green_enabled_AA000IWP.gif" alt="Save" ></div>
 					
 					
 					
 					
 						
 					<div title="Return to Cart"><img id="returnToCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_dis.gif" alt="Return to Cart Disabled"></div>
 					<div title="Return to Cart"><img id="returnToCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="if (!portPhoneLineslist()) cancelModal(null);" 
-						src="../../media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_ReturnToCart_grn.gif" alt=""></div>
 					
 					
 					<div title="Update Cart"><img id="updateCartDis" style="display:none; margin-bottom: 20px;" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_dis.gif" alt="Update Cart Disabled"></div>
 				
 					
 					
 					<div title="Update Cart" class="wt Uverse_Cart_Update___serv___Submit"><img id="updateCartEna" style="cursor: pointer; cursor: hand; display:none; margin-bottom: 20px;" class="modal submit" onclick="var v_continue=showXPPBoltOns($(v_defaultIPTV_Name + ';Receivers')); if (!v_continue) return false; Modal.Details(); Modal.Details.submitOptions();" 
-						src="../../media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
+						src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_UpdateCart_grn.gif" alt="Update Cart"></div>
 						</div>
 						
 					
 					
 					
 						<div id="modalFooterNext" style="float:right; padding-left:10px; cursor: pointer; cursor: hand;" class="wt Uverse___serv___Step__step___Submit" onclick="showModal(undefined, -2);portPhoneLineslist();" title="Next">
-							<img src="../../media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_next_blu_AA000E19.gif" alt="Next" />
 						</div>
 						<div id="modalFooterBack" style="float:right; cursor: pointer; cursor: hand;" onclick="if (showModal.curStep > 1) showModal(undefined, -1); else $('modalFooterCancel').onclick();" title="Back">
-							<img src="../../media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
+							<img src="../../../0.ecom.attccc.com/media/en_US/images/btn/btn_mrq_back_wht_AA000E17.gif" alt="Back" />
 						</div>
 					</div>
 				
@@ -8702,19 +8551,20 @@ Select Cancel to keep what's already in your Cart.</td>
         
 
 
+			
             </div>
 		</div>
 		
 		
 		<div id="sessionTimeOut" style="width:450px;display:none;" title="Session Time Out">
 			<table border="0" cellspacing="10"><tr>
-			<td valign="top"><img src="../../media/en_US/images/ico/ico_alert_AA0009QS.gif" alt="Alert"/></td>
+			<td valign="top"><div class="icon_alert"></div></td>
 			<td valign="top">Your session has timed out. As a security measure, your session ends after 30 minutes of inactivity. Select Continue to return to the AT&T U-verse Home page.</td>
 			</tr></table>
 		</div>
 		<div id="sessionTimeOutButton" style="width:450px;display:none;" >
 			<table border="0" width="100%">
-				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="location.href='/u-verse/shop/'" alt="Continue"></img></td></tr>
+				<tr><td align="right"><a class="btn_cont" onclick="location.href='/u-verse/shop/'"></a></td></tr>
 			</table>
 		</div>
 
@@ -8729,23 +8579,23 @@ Select Cancel to keep what's already in your Cart.</td>
         
 		<div id="sessionTimeOutWarning" style="width:450px;display:none;" title="Session Time Out" uri="timeoutwarning.jsp">
 			<table border="0" cellspacing="10"><tr>
-			<td valign="top"><img src="../../media/en_US/images/ico/ico_alert_AA0009QS.gif" alt="Alert"/></td>
+			<td valign="top"><div class="icon_alert"/></td>
 			<td valign="top"><p>As a security measure, your session will expire after 30 minutes of inactivity.</p> 
 <p>If you would like more time, click Continue.</p></td>
 			</tr></table>
-			<img class="wtpn Uverse_Session_Time_Out_Warning_Modal_Pg" src="../../global/images/transparent.gif" alt="" width="1" height="1" />
+			<img class="wtpn Uverse_Session_Time_Out_Warning_Modal_Pg" src="../../../2.ecom.attccc.com/global/images/transparent.gif" alt="" width="1" height="1" />
 		</div>
 		<div id="sessionTimeOutWarningButton" style="width:450px;display:none;" >
 			<table border="0" width="100%">
-				<tr><td align="right"><img src="../../media/en_US/images/btn/btn_continue_AA0009Q1.gif" onclick="closePopup();keepBackAlive();setTimeOutWarning();" alt="Continue"></img></td></tr>
+				<tr><td align="right"><a class="btn_cont" onclick="closePopup();keepBackAlive();setTimeOutWarning();"></a></td></tr>
 			</table>
 		</div>
 
         
-        <div id="availabilityprogressbar" style="position:absolute;width:427px;height:78px;z-index:100;top:0px;left:0px; visibility:hidden;"><img id="availabilityImage" alt="Loading..." src="../../media/en_US/images/ani/ani_progress_Check-availability_AA0009X8.gif" /></div>
+        <div id="availabilityprogressbar" style="position:absolute;width:427px;height:78px;z-index:100;top:0px;left:0px; visibility:hidden;"><img id="availabilityImage" alt="Loading..." src="../../../3.ecom.attccc.com/media/en_US/images/ani/ani_progress_Check-availability_AA0009X8.gif" /></div>
 
         
-        <div id="checkoutprogressbar" style="position:absolute;width:277px;height:82px;z-index:110;top:0px;left:0px; visibility:hidden;"><img id="processImage" alt="Loading..." src="../../media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
+        <div id="checkoutprogressbar" style="position:absolute;width:277px;height:82px;z-index:110;top:0px;left:0px; visibility:hidden;"><img id="processImage" alt="Loading..." src="../../../2.ecom.attccc.com/media/en_US/images/ani/ani_progress_Checkout_AA0009Z5.gif" /></div>
         
 		
 <!--[if lte IE 7]></div><![endif]-->
@@ -8985,8 +8835,40 @@ Select Cancel to keep what's already in your Cart.</td>
 			<script type="text/javascript" src="http://www.att.com/u-verse/dwr/interface/DWRRequestManager.js?"></script>
 			<script type="text/javascript" src="../dwr/engine.js"></script>
 			<script type="text/javascript" src="../dwr/util.js"></script>
-			<script type="text/javascript" src="../scripts/hoverTooltip.js"></script>
 			<script type="text/javascript" src="../../webtrends/scripts/dcs_tag_TOP.js"></script>
+
+        
+		 
+
+
+
+
+
+
+	<script src="../../scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>
+	
+	
+	
+	
+	
+		
+		
+		
+		
+			
+			
+				<script type="text/javascript">ForeSee.CPPS.fsr$set('u-verse_avail','unknown')</script>
+			
+		
+	
+	
+	
+	
+	
+
+
+		
+		
 		
 		 
 

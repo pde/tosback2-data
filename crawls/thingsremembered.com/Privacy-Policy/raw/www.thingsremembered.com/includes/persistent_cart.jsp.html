@@ -41,11 +41,11 @@ var persistentCartCommands = new Array(9);
 var csrfTokens = new Array(9);
 csrfTokens[0] = ''; // JSP
 csrfTokens[1] = '';
-csrfTokens[2] = 'AlGYr8cjoqbHmcXXZnCdFJuzjbc=Tx0s14x/Omw=';
-csrfTokens[3] = 'WbQZphBmj8my6tL5hz2KbvfTf5Y=VAX7zVCW2xI=';
-csrfTokens[4] = 'B67qWe08iC1iCO0x3NelqQ0fDqI=IBGH/5DpL20=';
-csrfTokens[5] = '2pixwz0tQ0sgs6Ql0uZYJ0p0BtE=oNrNtkYizNI=';
-csrfTokens[6] = 'tlHpxeNv4DH+OPvkYFduHYalaPE=UEj5atZ/eTM=';
+csrfTokens[2] = '';
+csrfTokens[3] = '';
+csrfTokens[4] = '';
+csrfTokens[5] = '';
+csrfTokens[6] = '';
 csrfTokens[7] = ''; // JSP
 csrfTokens[8] = '';
 csrfTokens[9] = '';
@@ -322,13 +322,17 @@ function savePersonalization(prefix, nextAction, changedElement, refreshPage, re
 			||  nextAction == "updateZone" || nextAction == "switchZone" || (nextAction == "saveInfo" && $("input[@name=itemGUID]", scope).val() != "") ){
 		var success = validateForm(prefix);
 		if (success == false){
-			return false;
-		}else{
+			return false;			
+		}else{		
          if ($("select[@name=messageSku]", scope).val() != ""){
 				s.eVar17 = messageTxt;
          }
+         
 		}
+
 	}
+	
+	
 
 	var dataType = "html";
 	if (nextAction == "updateCost" || nextAction == "updateImage" || nextAction == "updateCostAndImage" ||
@@ -488,12 +492,20 @@ function validateForm(prefix){
 	if ($("select[@name=occasionCode]", scope).val() == ""){
 		$("#error-occasionCode").html("Please select an occasion <br/>");
 		success = false;
+		document.location.hash = "#error-occasionCode";
+		if(history.pushState) {
+    		history.pushState(null, null, '#');
+		}
 	}else{
 		if ($("input[@name=isDesignAvailable]", scope).val() == "Y"){
 			var $radios = $('input:radio[name=designLocation]');
          if (($("input[@name=designSku]", scope).val() == "" || ($radios.is(':checked') === false)) && ($("select[@name=designCat1]").val() != "noDesign") && (!$("div.design-body").is(":empty"))){
 				$("#error-generic").html("You have not completed your design selection. Please select a design and location or select 'No Thanks' in order to continue.<br/>");
-				success = false;
+				success = false;				
+				document.location.hash = "#error-generic";
+				if(history.pushState) {
+    				history.pushState(null, null, '#');
+				}
 			}
 		}
 	   if ($("select[@name=messageSku]", scope).val() != ""){
@@ -502,6 +514,10 @@ function validateForm(prefix){
 				if ($.trim($("textarea[@name=myOwnMessage]", scope).val()) == "" || $('#defaultTextareaMessage').val() == 'Enter your message here.'){
 					//$("#error-myOwnMessage").html("Please enter a personal message <br/>");
 					$("#error-generic").html("You have not entered a message. Please enter your message in the fields provided or choose the 'Do Not Personalize this Area' option from the Personal Message drop down menu. <br/>");
+					document.location.hash = "#error-generic";
+					if(history.pushState) {
+    					history.pushState(null, null, '#');
+					}
 					success = false;
 				}
 			}else{
@@ -556,6 +572,10 @@ function validateForm(prefix){
 				}else if (noMessageEntered && !noMessagePresent){
 					success = false;
 					$("#error-generic").html("You have not entered a message. Please enter your message in the fields provided or choose the 'Do Not Personalize this Area' option from the Personal Message drop down menu. <br/>");
+					document.location.hash = "#error-generic";
+					if(history.pushState) {
+    					history.pushState(null, null, '#');
+					}
 				}
 			}
 		}

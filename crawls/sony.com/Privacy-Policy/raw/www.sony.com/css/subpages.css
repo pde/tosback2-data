@@ -193,7 +193,7 @@ body {
   width: 887px !important;
 }
 
-#topnav .template_search {
+#topnav .template_1124 {
   background: url(images/bg-search.jpg) no-repeat scroll 100% 50%;
   width: 157px;
 }
@@ -571,17 +571,17 @@ body {
 		.header .relief {
 			display: none;
 		}
-		.header .search {
+		.header #search {
 			position: absolute;
 			top: 74px;
 			right: 14px;
 			width: 190px;
 		}
-		.m .header .search {
+		.m .header #search {
 			right: 1px;
 			width: 164px;
 		}
-			.header .search #search-input {
+			.header #search #search-input {
 				float: left;
 				width: 156px;
 				height: 22px;
@@ -594,10 +594,11 @@ body {
 				line-height: normal;
 				vertical-align: baseline;
 			}
-			.m .header .search #search-input {
+			.m .header #search #search-input {
 				width: 131px;
 			}
-			.header .search-btn {
+			.m .header #search-btn ,
+			.l .header #search-btn {
 				float: left;
 				display: block;
 				width: 24px;
@@ -655,6 +656,9 @@ body {
 				#social-media .foursquare a{
 					background-image:url(img/icon-foursquare-sml.gif);
 				}
+				#social-media .google-plus a{
+					background-image: url(img/icon-google-plus-sml.gif);
+				}
 				#social-media .rss {
 					display: none;
 				}
@@ -689,13 +693,17 @@ body {
 	width: 23px;
 	height: 23px;
 }
+.m #search-button ,
+.l #search-button {
+	display: none;
+}
 
 /* #nav 
 	========================================================================== */
 	.l #menu-btn {
 		display: none;
 	}
-	#nav {
+	.l #nav {
 		position: absolute;
 		left: -9999px;
 	}
@@ -1206,10 +1214,11 @@ body {
 		margin: 0 auto;
 	}
 	.s .header {
-		height: 145px;
+		height: 123px;
 		background: url(img/s/header-bg.gif) repeat-x;
 		position: relative;
 		z-index: 10;
+		zoom:1;
 	}
 		.s .header .content {
 			width: auto;
@@ -1219,20 +1228,45 @@ body {
 			left: 20px;
 			top: 21px;
 		}
-		.s #social-media ul{
+		.s #search-button {
+			position: absolute;
+			top: 16px;
+			right: 0;
+			margin: 0;
+		}
+			.s #search-button a {
+				display: block;
+				width: 73px;
+				height: 50px;
+				background: url(img/s/btn-search.png) no-repeat;
+				text-indent: -9999px;
+			}
+			.s #search-button.open a {
+				background-position: left bottom;
+			}
+
+		.s #search {
+			margin: 0;
+			padding: 0 0 0 0;
+			position: absolute;
+			top: 66px;
+			background: #343434;
+			width: 100%;
+			z-index: 11;
 			display: none;
+			right: 0;
 		}
-		.s .header .search {
-			margin: 0 93px 0 20px;
-			padding: 93px 0 0 0;
-			position: static;
-			width: auto;
+		.s #search.show {
+			display: block;
 		}
-			.s .header #search-input-wrapper {
+			.s #search-form {
+				padding: 15px 20px;
+			}
+			.s #search-input-wrapper {
 				overflow: hidden;
 				margin: 0 36px 0 0;
 			}
-				.s .header .search #search-input {
+				.s #search #search-input {
 					height: 29px;
 					font-size: 13px;
 					font-weight: bold;
@@ -1241,33 +1275,96 @@ body {
 					padding: 4px 0 0 9px;
 					color: #fff;
 					width: 100%;
-					float: none;
 				}
-			.s .header #search-btn-wrapper {
+			.s #search-btn-wrapper {
 				float: right;
 				margin: -33px 0 0 0;
 			}
-				.s .header #search-btn {
-					background: url(img/s/btn-search.gif) no-repeat;
-					width: 36px;
-					height: 33px;
+				.s #search-btn {
+					
 				}
-		.s #social-media {
-			
+		/*#social-media {
+			float: right;
+			padding: 97px 0 0 0;
 			width: 75px;
+		}*/
+			
+		.s #social-media {
 			position: absolute;
-			right: 20px;
-			top: 97px;
+			top: 85px;
+			width: 100%;
+			overflow: hidden;
+			z-index: 9;
+			right: 0;
 		}
+			.s #social-media ul {
+				margin: 0 80px 0 0;
+				padding: 0 0 0 20px;
+				float: none;
+			}
+				.s #social-media ul li {
+					float: left;
+					display: inline;
+					list-style: none;
+					margin: 0 5% 0 0;
+				}
+					.s #social-media a:link,
+					.s #social-media a:visited {
+						display: block;
+						width: 27px;
+						height: 27px;
+						background-repeat: no-repeat;
+						text-indent: -9999px;
+						background: url(img/sprite-vertical.gif) left -1425px;
+					}
+					.s #social-media .facebook a {
+						background-position: left -1425px;
+					}
+					.s #social-media .facebook a:hover {
+						background-position: left -1452px;
+					}
+					.s #social-media .twitter a {
+						background-position: -27px -1425px;
+					}
+					.s #social-media .twitter a:hover {
+						background-position: -27px -1452px;
+					}
+					.s #social-media .google-plus a {
+						background-position: -54px -1425px;
+					}
+					.s #social-media .google-plus a:hover {
+						background-position: -54px -1452px;
+					}
+					.s #social-media .youtube a {
+						background-position: -81px -1425px;
+					}
+					.s #social-media .youtube a:hover {
+						background-position: -81px -1452px;
+					}
+					.s #social-media .foursquare a {
+						background-position: -108px -1425px;
+					}
+					.s #social-media .foursquare a:hover {
+						background-position: -108px -1452px;
+					}
+			/*#social-media .usa {
+				float: right;
+				font-weight: 600;
+				color: #fff;
+				margin: 0;
+				font-size: 16px;
+				padding: 4px 0 0 0;
+			}*/
 			.s #social-media .usa {
 				font-weight: 600;
 				height: 24px;
 				line-height: 26px;
 				color: #fff;
 				font-size: 16px;
-				padding:0 0 0 20px;
+				padding:0 20px 0 20px;
 				margin: 0;
 				border-left: 1px solid #2f2f2f;
+				float: right;
 			}
 
 	/* Nav
@@ -1275,15 +1372,14 @@ body {
 	.s #menu-btn {
 		position: absolute;
 		top: 16px;
-		right: 0;
+		right: 53px;
 		margin: 0;
-		display: block;
 	}
 		.s #menu-btn a {
 			display: block;
 			width: 114px;
 			height: 50px;
-			background: url(img/s/btn-menu.png) no-repeat;
+			background: url(../../cdn.www.sony.com/css/img/s/btn-menu.png) no-repeat;
 			text-indent: -9999px;
 		}
 		.s #menu-btn.open a {
@@ -1292,8 +1388,8 @@ body {
 	.s #nav {
 		position: absolute;
 		top: 66px;
-		left: auto;
-		padding: 0;
+		z-index: 10;
+		padding-top:0 ;
 	}
 		.s #nav .content {
 			position: absolute;
@@ -1315,42 +1411,48 @@ body {
 					background: #414141;
 					padding-top: 0;
 				}
-				.s nav ul li ul,
-				.s nav ul li.current ul li ul,
-				.s nav ul li.current ul li.current ul li ul
-				.s nav ul li.current ul li.current ul li.current ul li ul,
-				.s nav ul li.current ul li.current ul li.current ul li.current ul li ul,
-				.s nav ul li.current ul li.current ul li.current ul li.current ul li.current ul li ul {
+				.s #nav ul li ul,
+				.s #nav ul li.current ul li ul,
+				.s #nav ul li.current ul li.current ul li ul
+				.s #nav ul li.current ul li.current ul li.current ul li ul,
+				.s #nav ul li.current ul li.current ul li.current ul li.current ul li ul,
+				.s #nav ul li.current ul li.current ul li.current ul li.current ul li.current ul li ul {
 					display: none;
 				}
-				.s nav ul li.current > ul,
-				.s nav ul li.current ul li.current > ul,
-				.s nav ul li.current ul li.current ul li.current > ul,
-				.s nav ul li.current ul li.current ul li.current ul li.current > ul,
-				.s nav ul li.current ul li.current ul li.current ul li.current ul li.current > ul,
-				.s nav ul li.current ul li.current ul li.current ul li.current ul li.current ul li.current > ul {
+				.s #nav ul li.current > ul,
+				.s #nav ul li.current ul li.current > ul,
+				.s #nav ul li.current ul li.current ul li.current > ul,
+				.s #nav ul li.current ul li.current ul li.current ul li.current > ul,
+				.s #nav ul li.current ul li.current ul li.current ul li.current ul li.current > ul,
+				.s #nav ul li.current ul li.current ul li.current ul li.current ul li.current ul li.current > ul {
 					display: block;
 				}
 				
 					.s #nav li.sub > a {
-						background: url(img/icon-plus-blue-white.gif) no-repeat 24px 16px;
+						background: url(../../cdn.www.sony.com/css/img/icon-plus-blue-white.gif) no-repeat 24px 16px;
 					}
 					.s #nav li a {
 						display: block;
 						font-size: 16px;
 						padding: 12px 20px 12px 42px;
-						background: url(img/icon-arrow-gray-white.gif) no-repeat 24px 16px;
+						background: url(../../cdn.www.sony.com/css/img/icon-arrow-gray-white.gif) no-repeat 24px 16px;
 						color: #fff;
 						text-decoration: none;
 						font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 						font-weight: bold;
 					}
+						
 					.s #nav li a:hover {
 						
 					}				
 					
+					.s #nav li.sub a {
+						
+						color: #fff;
+					}
 					.s #nav li.sub a:hover {
 						background-position: 24px -77px;
+						color: #fff;
 					}
 					.s #nav li.top > a:hover {
 						
@@ -1358,7 +1460,7 @@ body {
 					.s #nav li.title a {
 						text-transform: uppercase;
 						text-align: center;
-						background:#353535 url(img/s/icon-circle-arrow.gif) no-repeat 18px 11px;
+						background:#353535 url(../../cdn.www.sony.com/css/img/s/icon-circle-arrow.gif) no-repeat 18px 11px;
 						padding: 14px 20px 14px 42px;
 					}
 					.s #nav li.title a:hover {
@@ -1454,6 +1556,7 @@ body {
 	margin: 0;
 	top: 32px;
 	right: 24px;
+	padding: 0;
 }
 	.s #footer a.btn {
 		display: block;

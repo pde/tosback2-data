@@ -1,4 +1,5 @@
 var enabledFeature = false;
+window.console = window.console || { log: function(){}};
 
 function alertkey(e) {
   if( !e ) {

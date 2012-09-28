@@ -30,7 +30,7 @@ var ucartSimpleHTML = 	'<div id="minicart_container"></div>';
 ucartSimpleHTML = '';
   				  		
 /* Function(s) to Show the Basket Layer */
-function showBasket(action,params,refreshPage,refreshDelayTime) {
+function showBasket(action,params,refreshPage,refreshDelayTime, keepActive) {
 	if( (action == "show") || (action == "showFromQuickview") )
 	{ showloading(ucartLoadingHTML); requestURL = persistentCartCommands[0]; }
 	else if(action == "addProduct")
@@ -64,7 +64,17 @@ function showBasket(action,params,refreshPage,refreshDelayTime) {
             if (refreshPage != undefined && refreshPage) {
             	setTimeout( function() { location.reload(true); }, refreshDelayTime != undefined? refreshDelayTime : 0);
             } else {
-                setTimeout(hideBasket,5000);
+                if (keepActive != undefined && keepActive) {
+                
+                var container = $('#minicart');
+
+                container.mouseleave(function() {
+                    setTimeout(hideBasket,5000);
+                });
+                } else {
+                    setTimeout(hideBasket,5000);
+                }
+
             }
             persistentCartIsShowing = true;
 			return true;
@@ -74,7 +84,7 @@ function showBasket(action,params,refreshPage,refreshDelayTime) {
 			return false;
 		}
 	});
-    window.scrollTo(0,0);
+    //window.scrollTo(0,0);
 }
 
 // When the Universal Cart layer opens it will close if the user clicks on anything in the main browser window
@@ -96,7 +106,7 @@ $(document).click(function(event) {
 $(function(){
    var minicartTimer;
    $(persistentCartLinkClass).hover(function(){
-      minicartTimer = showBasket('show', '', false, '5000');
+      minicartTimer = showBasket('show', '', false, '5000', true);
    },function(ev) {
       if( typeof minicartTimer != undefined ) { clearTimeout(minicartTimer); }
    });

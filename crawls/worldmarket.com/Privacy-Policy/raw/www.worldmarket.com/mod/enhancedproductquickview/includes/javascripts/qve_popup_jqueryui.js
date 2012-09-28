@@ -48,7 +48,7 @@ Quick View Enhancement Modal Window by jQueryUI
 		
 		// always show modal dialog in the center
 		if (showInCenter){
-			$(window).unbind('resize').unbind('scroll').bind('resize scroll', function(){
+			$(window).unbind('resize').bind('resize scroll', function(){
 				var obj = $(this);
 				winWidth = obj.width();
 				winHeight = obj.height();
@@ -65,6 +65,7 @@ Quick View Enhancement Modal Window by jQueryUI
 					left = scrollLeft;
 				var dialog = $('#popup-content').parent(".ui-dialog");
 				dialog.css("top",Math.floor(top));
+				$('.ui-widget-overlay').css('height', document.body.scrollHeight);
 				//dialog.css("left",Math.floor(left));
 				if (winWidth > 1000) {
 					dialog.css("left",(winWidth-width)/2);

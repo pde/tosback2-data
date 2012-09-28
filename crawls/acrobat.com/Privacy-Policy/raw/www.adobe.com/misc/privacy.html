@@ -24,7 +24,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xml:lang="EN" xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
-	
+    
+
 
 
 
@@ -46,12 +47,33 @@
 	
 		
 	
-   
-
-
 
 <script type="text/javascript">
-       
+    var locales = {"us":true,"at":true,"en_xx":true,"africa":true,"ap":true,"au":true,"be_en":true,"be_fr":true,"be_nl":true,"bg":true,"br":true,"ca":true,"ca_fr":true,"ch_de":true,"ch_fr":true,"ch_it":true,"cn":true,"cz":true,"de":true,"dk":true,"ee":true,"eeurope":true,"es":true,"fi":true,"fr":true,"hk_en":true,"hk_zh":true,"hr":true,"hu":true,"ie":true,"il_en":true,"in":true,"it":true,"kr":true,"la":true,"lt":true,"lu_de":true,"lu_en":true,"lu_fr":true,"lv":true,"mena_en":true,"mena_fr":true,"mx":true,"nl":true,"no":true,"nz":true,"pl":true,"pt":true,"ro":true,"rs":true,"ru":true,"se":true,"sea":true,"si":true,"sk":true,"tr":true,"tw":true,"ua":true,"uk":true,"il_he":true,"mena_ar":true,"jp":true};
+    var tokens = document.location.pathname.split('/');
+    var locale = ((tokens.length < 2) || ((locales[tokens[1]] == undefined) && tokens[1]!='content')) ? 'us' : tokens[1];
+    var geoCook = 'international=';
+    var cookies = document.cookie.split(';');
+    for(var i=0;i < cookies.length;i++) {
+        var c = cookies[i];
+        if ((c.indexOf(geoCook) >= 0) && !(locale=='content') ){
+            var preferredLocale = c.substring(c.indexOf(geoCook) + geoCook.length,c.length);
+            if ((preferredLocale != locale)&&(locales[preferredLocale])){
+                var url = document.location.pathname + document.location.search;
+                if (locale == 'us'){
+                    url = '/' + preferredLocale + url;
+                } else {
+                    var suffix = url.substring(locale.length + 1);
+                    if (preferredLocale != 'us'){
+                        url = '/' + preferredLocale + suffix;
+                    } else {
+                        url = suffix;
+                    }
+                }
+                window.location.replace(url);
+            }
+        }
+    }
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="Content-Language" content="en" />
@@ -109,6 +131,7 @@
 	Adobe.PageInfo.productKey = "";
 	Adobe.PageInfo.catalogName = "";
 	Adobe.PageInfo.countryCode = "US";
+    Adobe.PageInfo.localeString = "en_us";
 	Adobe.PageInfo.marketSegment = "COM";
 	Adobe.PageInfo.akamaiURLPrefix = "http://wwwimages.adobe.com/www.adobe.com";
 	Adobe.PageInfo.pageLevel = "4";
@@ -129,7 +152,7 @@
 
 
 <script type="text/javascript" src="../../wwwimages.adobe.com/www.adobe.com/include/script/typekit-compressed.js"></script>
-					<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+        <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
     <!--[if IE 6]>
     <script type="text/jscript">
         try{
@@ -190,8 +213,10 @@
 	</script>
 
     <link rel="canonical" href="privacy.html"/>
-<link rel="stylesheet" type="text/css" media="only screen" href="../etc/pagetables/reflowtypes/adobe.css"/>
+<!--[if (gte IE 9)|(IEMobile)]><!-->
+    <link rel="stylesheet" type="text/css" media="only screen" href="../etc/pagetables/reflowtypes/adobe.css"/>
     <script type="text/javascript" src="../etc/pagetables/reflowtypes/adobe.js"></script>
+    <!--<![endif]-->
 </head>
 
 
@@ -281,7 +306,7 @@
 
 
 <!--googleoff: index-->
-<!-- $Id: //depot/projects/dylan/releases/rc_12_8/ubi/globalnav/en_us/globalnav_ssi.html#3 $ -->
+<!-- $Id: //depot/projects/dylan/releases/rc_12_10/ubi/globalnav/en_us/globalnav_ssi.html#3 $ -->
 <form id="globalnav-search" class="searchbuddy LayoutSlimHidden" name="globalnav-search" method="get" action="http://www.adobe.com/go/gnav_search" accept-charset="utf-8">
     <div id="SiteHeader" class="SiteHeader Text TextSmall">
         <span id="globalnav"></span>
@@ -290,112 +315,224 @@
             <div class="SiteHeaderDropdownLink SiteHeaderBarItem SiteHeaderBarItemFirst" id="shProducts">
                 <a href="http://www.adobe.com/products/catalog.html" id="shProductsLink" class="SiteHeaderBarLink">Products</a>
                 <div class="SiteHeaderDropPanel" id="ProductsPanel">
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts3">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsAcrobat">
                         <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/acrobat.html?promoid=JOLIR">Acrobat</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts9">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsCreativeCloud">
                         <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/creativecloud.html?promoid=JQPEQ">Creative Cloud</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts1">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsCreativeSuite">
                         <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/creativesuite.html?promoid=JOLIS">Creative Suite</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts5">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/digital-marketing-suite.html?promoid=JOLIT">Digital Marketing Suite</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsDMS">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/marketing?promoid=JOLIT">Digital Marketing Suite</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts7">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsDP">
                         <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/digital-publishing-suite-family.html?promoid=JOLIU">Digital Publishing Suite</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts6">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/elements-family.html?promoid=JOLIV">Elements</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsEdge">
+                        <span class="SiteHeaderPanelHeader"><a href="http://html.adobe.com/edge/?promoid=KAGMS">Edge Tools &amp; Services</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts2">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsPhotoshop">
                         <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/photoshopfamily.html?promoid=JOLIW">Photoshop</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts4">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/touchapps.html?promoid=JOLIQ">Touch Apps</a></span>
+                    <hr />
+                                        
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProductsEdu">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/education/students.edu.html?showEduReq=no&amp;promoid=JUTMG">For students and teachers</a></span>
                     </div>
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shProducts10">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/education/students.edu.html?showEduReq=no&amp;promoid=JUTMG">Student and Teacher Editions</a></span>
-                    </div>
+                    <hr />
                     
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shProducts8">
-                        <a href="http://www.adobe.com/products/catalog.html?promoid=JOOTH">More products</a>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shProductsAll">
+                        <a href="http://www.adobe.com/products/catalog.html?promoid=JOOTH">See all products &rsaquo;</a>
                     </div>
                 </div>
             </div>
-            <div class="SiteHeaderDropdownLink SiteHeaderBarItem SiteHeaderBarItemFirst" id="shSolutions">
+            <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shSolutions">
                 <a href="http://www.adobe.com/solutions.html" id="shSolutionsLink" class="SiteHeaderBarLink">Solutions</a>
                 <div class="SiteHeaderDropPanel" id="SolutionsPanel">
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions8">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/creativesuite/companies.html?promoid=JZVVU">Creative tools for business</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsAdvertising">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/solutions/advertising.html?promoid=JOLIX">Advertising</a></span>
                     </div>
 
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions5">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/marketing/?promoid=JOLIX">Digital marketing</a></span>
-                    </div>
-
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions1">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/digital-media/?promoid=JOLIY">Digital media</a></span>
-                    </div>
-                    
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions2">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/education.html?promoid=JOLIZ">Education</a></span>
-                    </div>
-                    
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions3">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_solutions_financialservices_en_us">Financial services</a></span>
-                    </div>
-                    
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions4">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_solutions_government_en_us">Government</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsBroadcasting">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/solutions/broadcasting.html?promoid=JOLIY">Broadcasting</a></span>
                     </div>
                                         
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutions7">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/solutions/customer-experience/web-experience-management.html?promoid=JOOYM">Web Experience Management</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsCSCompanies">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/creativesuite/companies.html?promoid=JZVVU">Creative tools for business</a></span>
+                    </div>
+                                        
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsEducation">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/education.html?promoid=JOLIZ">Education</a></span>
                     </div>
                                                             
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shSolutions6">
-                        <a href="http://www.adobe.com/solutions.html?promoid=JOOTI">More solutions</a>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsPersonalization">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/solutions/digital-marketing/personalization.html?promoid=JZPNP">Personalization</a></span>
+                    </div>
+                                                            
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsPublishing">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/digitalpublishing/?promoid=JOLJA">Publishing</a></span>
+                    </div>
+                                                            
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsSocialMarketing">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/social.html?promoid=JZPNO">Social marketing</a></span>
+                    </div>
+                                                            
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsWebAnalytics">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/sitecatalyst.html?promoid=JOLJB">Web analytics</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSolutionsContentManagement">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/solutions/customer-experience/web-experience-management.html?promoid=JOOYM">Web content management</a></span>
+                    </div>
+                                                            
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shSolutionsAll">
+                        <a href="http://www.adobe.com/solutions.html?promoid=JOOTI">See all solutions &rsaquo;</a>
                     </div>
                 </div>
             </div>
-            <a href="http://www.adobe.com/go/gnav_learning_en_us" id="shLearning" class="SiteHeaderBarItem SiteHeaderBarLink">Learning</a>
-            <a href="http://www.adobe.com/go/gnav_help_en_us" id="shHelp" class="SiteHeaderBarItem SiteHeaderBarLink">Help</a>
-            <a href="http://www.adobe.com/go/gnav_downloads_en_us" id="shDownloads" class="SiteHeaderBarItem SiteHeaderBarLink">Downloads</a>
-            <a href="http://www.adobe.com/go/gnav_company_en_us" id="shCompany" class="SiteHeaderBarItem SiteHeaderBarLink">Company</a>
+            <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shLearning">
+            	<a href="http://www.adobe.com/go/gnav_learning_en_us" id="shLearningLink" class="SiteHeaderBarLink">Learning</a>
+                <div class="SiteHeaderDropPanel" id="LearningPanel">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningTutorials">
+                        <span class="SiteHeaderPanelHeader"><a href="http://tv.adobe.com/?promoid=JZEFJ" target="_blank">Watch tutorials</a></span>
+                    </div>
+
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningForums">
+                        <span class="SiteHeaderPanelHeader"><a href="http://forums.adobe.com/index.jspa?promoid=JZEFH" target="_blank">Adobe Forums</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningClasses">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/cfusion/partnerportal/index.cfm?event=partnerfinder&amp;showtab=training&amp;promoid=JZEFL">Take a class</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningCertification">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/support/certification/?promoid=JZEFK">Get certified</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningADC">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/devnet.html?promoid=JZEFG">Adobe Developer Connection</a></span>
+                    </div>
+                                        
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shLearningDesignCenter">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/designcenter.html?promoid=JZEFI">Design Center</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shHelp">
+            	<a href="http://www.adobe.com/go/gnav_help_en_us" id="shHelpLink" class="SiteHeaderBarLink">Help</a>
+                <div class="SiteHeaderDropPanel" id="HelpPanel">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpProducts">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/support/?promoid=JZEFM">Product help</a></span>
+                    </div>
+
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpDownloadInstall">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/support/download-install?promoid=JZEFN">Download and installation</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpMembershipSubs">
+                        <span class="SiteHeaderPanelHeader"><a href="http://helpx.adobe.com/x-productkb/policy-pricing/membership-subscription-troubleshooting-creative-cloud.html?promoid=JZEFO">Membership and subscriptions</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpForums">
+                        <span class="SiteHeaderPanelHeader"><a href="http://forums.adobe.com/index.jspa?promoid=JZEFP" target="_blank">Adobe Forums</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpAccount">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/account.html?promoid=JZEFQ">My account</a></span>
+                    </div>
+                                        
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shHelpContact">
+                        <span class="SiteHeaderPanelHeader"><a href="http://helpx.adobe.com/contact/index.html?promoid=JZEFR">Contact us</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shDownloads">
+            	<a href="http://www.adobe.com/go/gnav_downloads_en_us" id="shDownloadsLink" class="SiteHeaderBarLink">Downloads</a>
+                <div class="SiteHeaderDropPanel" id="DownloadsPanel">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shDownloadsTrials">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnav_downloads_en_us?promoid=JZEFS">Product trials</a></span>
+                    </div>
+
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shDownloadsFlashPlayer">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/getflashplayer?promoid=JZEFT">Adobe Flash Player</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shDownloadsReader">
+                        <span class="SiteHeaderPanelHeader"><a href="http://get.adobe.com/reader/?promoid=JZEFU">Adobe Reader</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shDownloadsAIR">
+                        <span class="SiteHeaderPanelHeader"><a href="http://get.adobe.com/air/?promoid=JZEFV">Adobe AIR</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shDownloadsAll">
+                        <a href="http://www.adobe.com/go/gnav_downloads_en_us?promoid=JZEFW">See all downloads &rsaquo;</a>
+                    </div>
+                </div>
+            </div>            
+            <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shCompany">
+            	<a href="http://www.adobe.com/go/gnav_company_en_us" id="shCompanyLink" class="SiteHeaderBarLink">Company</a>
+                <div class="SiteHeaderDropPanel" id="CompanyPanel">
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyCareers">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/careers.html?promoid=JZEFX">Careers at Adobe</a></span>
+                    </div>
+
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyIR">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/aboutadobe/invrelations/?promoid=JZEFZ">Investor relations</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyNewsroom">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/aboutadobe/pressroom/?promoid=JZEGA">News room</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyPrivacy">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/privacy.html?promoid=JZEGB">Privacy</a></span>
+                    </div>
+                                        
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyCorpSocial">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/corporate-responsibility.html?promoid=JZEFY">Social responsibility</a></span>
+                    </div>
+                    
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shCompanyContact">
+                        <span class="SiteHeaderPanelHeader"><a href="http://helpx.adobe.com/contact/index.html?promoid=JZEGC">Contact us</a></span>
+                    </div>
+                                                            
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLinkNoBar" id="shCompanyMore">
+                        <a href="http://www.adobe.com/aboutadobe/?promoid=JZPLK">More company info &rsaquo;</a>
+                    </div>
+                </div>
+            </div> 
             <div class="SiteHeaderDropdownLink SiteHeaderBarItem" id="shStore">
-                <a href="http://www.adobe.com/go/gnav_store_en_us" class="SiteHeaderBarLink" id="shStoreLink">Buy</a>
+                <a href="http://www.adobe.com/go/gnav_store_en_us" id="shStoreLink" class="SiteHeaderBarLink">Buy</a>
                 <div class="SiteHeaderDropPanel" id="StorePanel">
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStore1">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_store_homeuse_en_us">Home use</a></span>
-                        for personal and home office
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStoreHome">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/content/dotcom/en/products/catalog/software._sl_id-contentfilter_sl_catalog_sl_software_sl_allsoftware.html?promoid=JOLJC">Home use<span class="SiteHeaderPanelLinkDescription">For personal use and small business</span></a></span>
                     </div>
 
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStore2">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_store_education_en_us">Education</a></span>
-                        for students, educators, and staff
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStoreEdu">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/content/dotcom/en/products/catalog/software._sl_id-contentfilter_sl_catalog_sl_software_sl_mostpopular.html?marketSegment=EDU&amp;showEduReq=no&amp;promoid=JOLJD">Education<span class="SiteHeaderPanelLinkDescription">For students, educators, and staff</span></a></span>
                     </div>
 
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStore3">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_store_business_en_us">Business</a></span>
-                        for small and medium businesses
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStoreBusiness">
+                        <span class="SiteHeaderPanelHeader"><a href="http://volumelicensing.adobe.com/store/adbevlus/DisplayHomePage?promoid=JOLJE">Business<span class="SiteHeaderPanelLinkDescription">For businesses needing licensing management</span></a></span>
                     </div>
 
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStore4">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_store_licensingprograms_en_us">Licensing programs</a></span>
-                        for businesses, schools, and government
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStoreLicensingPrograms">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/aboutadobe/volumelicensing/?promoid=JOLJF">Licensing programs<span class="SiteHeaderPanelLinkDescription">Other programs for schools, government, or other industries</span></a></span>
                     </div>
 
-                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStore5">
-                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/go/gnavtray_store_specialoffers_en_us">Special offers</a></span>
+                    <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shStoreSpecialOffers">
+                        <span class="SiteHeaderPanelHeader"><a href="http://www.adobe.com/products/discount-software-coupons.html?promoid=JOLJG">Special offers</a></span>
                     </div>
                 </div>
             </div>
@@ -410,42 +547,46 @@
         <div class="SiteHeaderUser">
             <div id="shSignInBlock" class="Link">
                 <a id="shInfo" class="SiteHeaderUserItem SiteHeaderInfo">Info</a>
-                <a href="http://www.adobe.com/cfusion/membership/index.cfm?loc=en_us&amp;nl=1" id="shSignIn" class="SiteHeaderUserItem LinkStrong">Sign in</a>
+                <a href="http://www.adobe.com/account/sign-in.adobedotcom.html" id="shSignIn" class="SiteHeaderUserItem LinkStrong">Sign in</a>
+                <div class="SiteHeaderPopPanelShadow width-250" id="InfoPanelShadow" style="display: none;"></div>
+                <div class="SiteHeaderPopPanel width-250" id="InfoPanel" style="display: none;">
+                    <div class="SiteHeaderPanelRow">
+                        <span class="SiteHeaderPanelHeader">Why sign in?</span>
+                        Sign in to manage your account and access trial downloads, product extensions, community areas, and more.
+                    </div>
+                </div>
             </div>
-            <a href="http://www.adobe.com/cfusion/membership/index.cfm?loc=en_us&amp;nl=1" id="shWelcome" class="SiteHeaderUserItem SiteHeaderArrow LinkStrong" style="display: none;">Welcome, <span id="screenName"></span></a>
+            
+            <a href="http://www.adobe.com/account.html" id="shWelcome" class="SiteHeaderUserItem SiteHeaderArrow LinkStrong" style="display: none;">Welcome, <span id="screenName"></span></a>
+            
+            <div class="SiteHeaderPopPanelShadow" id="WelcomePanelShadow" style="display: none;"></div>
+            <div class="SiteHeaderPopPanel" id="WelcomePanel" style="display: none;">
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyAccount">
+                    <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_en_us">My Adobe</a>
+                </div>
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyOrders">
+                    <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myorders_en_us">My orders</a>
+                </div>
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyInformation">
+                    <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myinformation_en_us">My information</a>
+                </div>
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyPreferences">
+                    <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_mypreferences_en_us">My preferences</a>
+                </div>
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyProductsServices">
+                    <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myproducts_services_en_us">My products and services</a>
+                </div>
+                <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSignOut">
+                    <a class="SiteHeaderPanelHeader" id="shSignOutLink" href="http://www.adobe.com/cfusion/membership/logout.cfm">Sign out</a>
+                </div>
+            </div>
+                    
             <div id="MyCartLinkContainer">
                 <a href="http://www.adobe.com/go/gnav_mycart_en_us" id="shMyCart" class="SiteHeaderUserItem SiteHeaderCart">My cart<span id="cartQuantity"></span></a>
             </div>
-            <a href="http://www.adobe.com/go/gnav_myorders_en_us" id="shMyOrders" class="SiteHeaderUserItem">My orders</a>
+            
+            <a href="privacy.html" id="shPrivacy" class="SiteHeaderUserItem">Privacy</a>
             <a href="http://www.adobe.com/go/gnav_myadobe_en_us" id="shMyAdobe" class="SiteHeaderUserItem">My Adobe</a>
-        </div>
-        <div class="SiteHeaderPopPanelShadow" id="WelcomePanelShadow" style="display: none;"></div>
-        <div class="SiteHeaderPopPanel" id="WelcomePanel" style="display: none;">
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyAccount">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_en_us">My Adobe</a>
-            </div>
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyOrders2">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myorders_en_us">My orders</a>
-            </div>
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyInformation">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myinformation_en_us">My information</a>
-            </div>
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyPreferences">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_mypreferences_en_us">My preferences</a>
-            </div>
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shMyProductsServices">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/go/gnavtray_myadobe_myproducts_services_en_us">My products and services</a>
-            </div>
-            <div class="SiteHeaderPanelRow SiteHeaderPanelLink" id="shSignOut">
-                <a class="SiteHeaderPanelHeader" href="http://www.adobe.com/cfusion/membership/logout.cfm">Sign out</a>
-            </div>
-        </div>
-        <div class="SiteHeaderPopPanelShadow width-250" id="InfoPanelShadow" style="display: none;"></div>
-        <div class="SiteHeaderPopPanel width-250" id="InfoPanel" style="display: none;">
-            <div class="SiteHeaderPanelRow">
-                <span class="SiteHeaderPanelHeader">Why sign in?</span>
-                Sign in to manage your account and access trial downloads, product extensions, community areas, and more.
-            </div>
         </div>
     </div>
 </form>
@@ -480,9 +621,9 @@
         </div>
     </div>
     <div class="SiteHeaderUser">
-		<a href="http://www.adobe.com/cfusion/membership/index.cfm?loc=en_us&amp;nl=1" id="shSignInMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile LinkStrong">Sign in</a>
+		<a href="http://www.adobe.com/account/sign-in.adobedotcom.html" id="shSignInMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile LinkStrong">Sign in</a>
         <a href="http://www.adobe.com/cfusion/membership/logout.cfm" id="shSignOutMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile LinkStrong" style="display: none;">Sign out</a>
-        <a href="http://www.adobe.com/go/gnav_myorders_en_us" id="shMyOrdersMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile">My orders</a>
+        <a href="privacy.html" id="shPrivacyMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile">Privacy</a>
         <a href="http://www.adobe.com/go/gnav_myadobe_en_us" id="shMyAdobeMobile" class="SiteHeaderUserItem SiteHeaderUserItemMobile">My Adobe</a>
     </div>
 </div>
@@ -519,6 +660,10 @@
 
 
 	
+
+
+
+
 
 
 
@@ -581,7 +726,7 @@
 							</span>
 						</div>
 					</div>
-					<div class="HoverCart-3">
+                    <div class="HoverCart-3 LayoutRight">
 						<div class="CheckoutCostDark LayoutRight">
 							<span id="HoverCartPricexyz"> 
 							
@@ -593,7 +738,11 @@
 							<span id="HoverCartSubscriptionxyz" class="CheckoutSubscription"> 
 								 
 							</span>						
-						</div>
+                            <div id="HoverCartVatPercentageLabelxyz" class="TextEm TextSmall" style="display:none; max-width: 100px;">
+                                    <span id="HoverCartVatPercentagePreTextxyz"></span>
+                                    <span id="HoverCartVatPercentagexyz"></span>
+                            </div>                  
+                        </div>
 					</div>
 					
 				</div>
@@ -605,6 +754,7 @@
 				<div class="HoverCart-2-3 LayoutRight LayoutSmallRow LayoutBreakAfter">
 					<div class="HoverCart-2">
 						<div class="TextRight HoverCartSubTotal">Subtotal</div>
+                        <div id="ExVatLabel" style="display:none" class="TextEm TextSmall TextRight"></div>
 					</div>
 					<div class="HoverCart-3 LayoutRight">
 						<div class="LayoutRight TextRight">
@@ -616,10 +766,85 @@
 										</span>
 									
 								
+                            </div>
+                        </div>
 							</div>
+                </div>      
+                <div class="HoverCart-2-3 LayoutRight LayoutSmallRow LayoutBreakAfter" id="HoverCartPromotionsRow">
+                    <div class="HoverCart-2">
+                        <div class="TextRight HoverCartPromotionsLabel HoverCartSubTotal">Promotions</div>
 						</div>
+                    <div class="HoverCart-3 LayoutRight">
+                        <div class="LayoutRight TextRight">
+                            <div class="CheckoutCostDark">
+                                <span id="HoverCartPromotions">
+                                
+                                    
+                                    
+                                        </span>
+                                    
+                                
+                            </div>
+                        </div>
 					</div>
+                </div>      
+                <div class="HoverCart-2-3 LayoutRight LayoutSmallRow LayoutBreakAfter" id="HoverCartShippingRow">
+                    <div class="HoverCart-2">
+                        <div class="TextRight HoverCartShippingLabel HoverCartSubTotal">Estimated shipping</div>
 				</div>		
+                    <div class="HoverCart-3 LayoutRight">
+                        <div class="LayoutRight TextRight">
+                            <div class="CheckoutCostDark">
+                                <span id="HoverCartShipping">
+                                
+                                    
+                                    
+                                        </span>
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>      
+                <div class="HoverCart-2-3 LayoutRight LayoutSmallRow LayoutBreakAfter" id="HoverCartVATRow">
+                    <div class="HoverCart-2">
+                        <div class="TextRight HoverCartVATLabel HoverCartSubTotal">Tax</div>
+                    </div>
+                    <div class="HoverCart-3 LayoutRight">
+                        <div class="LayoutRight TextRight">
+                            <div class="CheckoutCostDark">
+                                <span id="HoverCartVat">
+                                
+                                    
+                                    
+                                        </span>
+                                    
+                                
+                            </div>
+                            <div id="CartTaxHeader">
+                                Calculated at checkout
+                            </div>                            
+                        </div>
+                    </div>
+                </div>      
+                <div class="RuleH HoverCart-2-3 LayoutRight LayoutSmallRow LayoutBreakAfter" id="HoverCartTotalRow">
+                    <div class="HoverCart-2">
+                        <div class="TextRight HoverCartTotalLabel HoverCartSubTotal">Total</div>
+                    </div>
+                    <div class="HoverCart-3 LayoutRight">
+                        <div class="LayoutRight TextRight">
+                            <div class="CheckoutCostDark">
+                                <span id="HoverCartTotal">
+                                
+                                    
+                                    
+                                        </span>
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>      
 				
 				<div class="LayoutBreak"></div>		
 				
@@ -650,7 +875,11 @@
 		MonthToMonthText: "per month",
 
 		YearlyText: "per year"
-			
+    };
+
+    Adobe.Cart.TaxLabels = {
+            TaxInclusiveText    : "",
+            TaxNotApplicable    : ""
 	};
 
 	Adobe.Cart.ShoppingCart.GlobalVars = {
@@ -2601,10 +2830,6 @@
 
 
 
-
-
-
-
 	
 	
 		
@@ -2612,8 +2837,9 @@
 
 
 <script type="text/javascript">
+	//<![CDATA[
 	var hideEvidon = false;
-	
+
     $(document).ready(function() {
 		adobe.fn.initGlobalFooter();
 		adobe.fn.evidon('_bapw-link');
@@ -2621,14 +2847,14 @@
 		adobe.fn.initGeorouting();
 	});
     changeRegion = adobe.fn.changeRegionFooter;
-
+    //]]>
 </script>
 
 
 
 
 <!--googleoff: index-->
-<!-- $Id: //depot/projects/dylan/releases/rc_12_8/ubi/footer/en_us/globalfooter_ssi.html#1 $ -->
+<!-- $Id: //depot/projects/dylan/releases/rc_12_10/ubi/footer/en_us/globalfooter_ssi.html#1 $ -->
 <div id="SiteFooter" class="SiteFooter Text TextSmall TextInvert Link LayoutBreak">
 	<span id="Georouting"></span>
     <div class="LayoutBreakAfter">
@@ -2645,7 +2871,7 @@
                     <li><a class="icon Icon SiteFooterMenuItemIconProducts SiteFooterMenuItemIconMobile" href="http://www.adobe.com/products/mobileapps/?promoid=JOPCA">Mobile Apps</a></li>
                     <li><a class="icon Icon SiteFooterMenuItemIconProducts SiteFooterMenuItemIconPS" href="http://www.adobe.com/products/photoshopfamily.html?promoid=JOPCB">Photoshop</a></li>
                     <li><a class="icon Icon SiteFooterMenuItemIconProducts SiteFooterMenuItemIconMobile" href="http://www.adobe.com/products/touchapps.html?promoid=JOPBU">Touch Apps</a></li>
-                    <li><a class="icon Icon SiteFooterMenuItemIconProducts" href="http://www.adobe.com/education/students.edu.html?showEduReq=no&amp;promoid=JUTMH">Student and Teacher Editions</a></li>
+                    <li><a class="icon Icon SiteFooterMenuItemIconProducts" href="http://www.adobe.com/education/students.html?promoid=JUTMH">Student and Teacher Editions</a></li>
                 </ul>
             </div>
         </div>
@@ -2841,7 +3067,7 @@
         <div class="LayoutGrid-1-4 LayoutSlimGrid-1-2 LinkInvert LinkStrong">
         	<div class="LayoutCellSides LayoutCellBottom LinkInvert">
                 <p class="SiteFooterRow TextSmall">Copyright &copy; 2012 Adobe Systems Incorporated.  All rights reserved.</p>
-                <p class="SiteFooterRow TextSmall"><a href="http://www.adobe.com/go/gffooter_terms_of_use">Terms of Use</a> | <a href="http://www.adobe.com/go/gffooter_online_privacy_policy">Privacy Policy and Cookies</a> <span class="TextWarning">(Updated)</span></p>
+                <p class="SiteFooterRow TextSmall"><a href="http://www.adobe.com/go/gffooter_terms_of_use">Terms of Use</a> | <a href="http://www.adobe.com/go/gffooter_online_privacy_policy">Privacy Policy and Cookies</a></p>
                 <p class="SiteFooterRow SiteFooterRowTop"><a href="privacy.html#" id="_bapw-link" class="TextSmall icon Icon SiteFooterMenuItemIconEvidon" style="display:none;">Ad Choices</a></p>
             </div>
         </div>

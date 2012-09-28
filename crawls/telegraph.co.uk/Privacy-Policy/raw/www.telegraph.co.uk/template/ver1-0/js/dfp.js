@@ -1,38 +1,20 @@
-// LATEST AMENDS
-// 1.01 - moved sz & tile to end of each tag for best performance - http://www.google.com/support/dfp/bin/answer.py?hl=en&answer=165714
-// 1.02 - fixed bug: only sz and kw can take comma delimited lists of values
-// 1.03 - fixed bug: comma delimited vars - 'at'
-// 1.04 - fixed bug: 'as' tags now unique per value max 20 values
-// 1.05 - added support for; adj,adi,adx responses
-// 1.06 - fix bug: 55 char limit on values of KVPs, amended thos that would exceed this.
-// 1.07 - added id tags to iframe, script and enclsoing div tags naming convention - tmgAd_adType_tilevalue
-// 1.10 - Main UAT 20011-03
-// 1.11 - 2011-04-04 - keyword removal, fix AS cookies
-// 2.00 - 2011-05-20 - adds Audience Science non TMG Segment
-// 3.00 - 2011-07-11 - adds Audience Science Connect support        
-// 4.00 - 2011-10-13 - added grapeshot code
-// 4.01 - 2011-10-13 - Removed any if statements when building each tag KVP, these checked if vars existed, we now declare  all vars first
-// 4.02 - 2011-10-13 - Cleaned up some logic on reading/writign cookies 
-// 4.03 - 2011-10-13 - added dom= domainname of where ad is served
-// 4.04 - 2011-10-19 - added ability to deal with multiple Grapehsot values of gs_channels eg gs_channels=var1,var2,var3
-// 4.05 - 2012-01-25 - added Yieldex logging to 'u' KVP // bugfix - not passing 'aso' cookie data // added KVP 'sl' to monitor string length of the tag
-// 4.10 - 2012-01-26 - added all non TMG AS values to Yieldex tag (asc aso) // bugfix - gs value extra '|' 
-// 4.11 - 2012-02-03 - bugfix - cleaned up 'u' Yieldex logging param, removed empty values, reduced ad-url-string length
-// 4.12 - 2012-02-20 - added cookie function tmgAdsSetCookie
-// 4.13 - 2012-02-22 - bugfix - fix extra sz values on Yieldex u= tag
-////////////////////////////////////////////////////////////////////////////////////
-// DETECT FLASH VERSION http://www.featureblend.com/flash_detect_1-0-4 - http://www.featureblend.com/license.txt
-var FlashDetect=new function(){var self=this;self.installed=false;self.raw="";self.major=-1;self.minor=-1;self.revision=-1;self.revisionStr="";var activeXDetectRules=[{"name":"ShockwaveFlash.ShockwaveFlash.7","version":function(obj){return getActiveXVersion(obj);}},{"name":"ShockwaveFlash.ShockwaveFlash.6","version":function(obj){var version="6,0,21";try{obj.AllowScriptAccess="always";version=getActiveXVersion(obj);}catch(err){}
-return version;}},{"name":"ShockwaveFlash.ShockwaveFlash","version":function(obj){return getActiveXVersion(obj);}}];var getActiveXVersion=function(activeXObj){var version=-1;try{version=activeXObj.GetVariable("$version");}catch(err){}
-return version;};var getActiveXObject=function(name){var obj=-1;try{obj=new ActiveXObject(name);}catch(err){obj={activeXError:true};}
-return obj;};var parseActiveXVersion=function(str){var versionArray=str.split(",");return{"raw":str,"major":parseInt(versionArray[0].split(" ")[1],10),"minor":parseInt(versionArray[1],10),"revision":parseInt(versionArray[2],10),"revisionStr":versionArray[2]};};var parseStandardVersion=function(str){var descParts=str.split(/ +/);var majorMinor=descParts[2].split(/\./);var revisionStr=descParts[3];return{"raw":str,"major":parseInt(majorMinor[0],10),"minor":parseInt(majorMinor[1],10),"revisionStr":revisionStr,"revision":parseRevisionStrToInt(revisionStr)};};var parseRevisionStrToInt=function(str){return parseInt(str.replace(/[a-zA-Z]/g,""),10)||self.revision;};self.majorAtLeast=function(version){return self.major>=version;};self.minorAtLeast=function(version){return self.minor>=version;};self.revisionAtLeast=function(version){return self.revision>=version;};self.versionAtLeast=function(major){var properties=[self.major,self.minor,self.revision];var len=Math.min(properties.length,arguments.length);for(i=0;i<len;i++){if(properties[i]>=arguments[i]){if(i+1<len&&properties[i]==arguments[i]){continue;}else{return true;}}else{return false;}}};self.FlashDetect=function(){if(navigator.plugins&&navigator.plugins.length>0){var type='application/x-shockwave-flash';var mimeTypes=navigator.mimeTypes;if(mimeTypes&&mimeTypes[type]&&mimeTypes[type].enabledPlugin&&mimeTypes[type].enabledPlugin.description){var version=mimeTypes[type].enabledPlugin.description;var versionObj=parseStandardVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revisionStr=versionObj.revisionStr;self.revision=versionObj.revision;self.installed=true;}}else if(navigator.appVersion.indexOf("Mac")==-1&&window.execScript){var version=-1;for(var i=0;i<activeXDetectRules.length&&version==-1;i++){var obj=getActiveXObject(activeXDetectRules[i].name);if(!obj.activeXError){self.installed=true;version=activeXDetectRules[i].version(obj);if(version!=-1){var versionObj=parseActiveXVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revision=versionObj.revision;self.revisionStr=versionObj.revisionStr;}}}}}();};
-
-
-////////////////////////////////////////////////////////////////////////////////////
+// 5.00 - 2012-08-31 - BUG: Fixed the reg bar not showing when adkill is activated
+// 5.01 - 2012-08-31 - Cleaned up code 
+// INITIALISE tmgAds object
+var tmgAds = new tmgAdsInitAdsData();
+///////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 function tmgAdsInitAdsData(){
-  this.tags     = new Array();
-  this.domain   = window.location.hostname;
+  this.dfpjsver = 5.01;
+  this.ads      = new Array();
+  this.renderTime = new Array();
+  this.renderTime['total'] = 0;
+  this.renderTime['avg']   = 0;
+  this.page             = new Array();
+  this.page['url']      = window.location.href;
+  this.page['referrer'] = document.referrer;
+  this.page['domain']   = window.location.hostname;
+  this.page['search']   = window.location.search;
   this.protocol = window.location.protocol+"//";
   this.adserver = "ad-emea.doubleclick.net";
   this.site     = tmgAdsGetMetaTag("tmgads.channel");
@@ -44,6 +26,7 @@ function tmgAdsInitAdsData(){
   this.section  = tmgAdsGetMetaTag("tmgads.section");
   this.pagetype = tmgAdsGetMetaTag("tmgads.pagetype");
   this.level    = tmgAdsGetMetaTag("tmgads.level");
+  this.articleid= tmgAdsGetMetaTag("tmgads.articleid");
   this.tile     = 0;
   if(document.all){
     this.biw = document.documentElement.offsetWidth;
@@ -52,15 +35,22 @@ function tmgAdsInitAdsData(){
     this.biw = window.innerWidth;
     this.bih = window.innerHeight;
   }
+  // Add Flash info, create and add emtpy vars first, in case Flash not installed, fixeds bug in Opera
+  // DETECT FLASH VERSION http://www.featureblend.com/flash_detect_1-0-4 - http://www.featureblend.com/license.txt
+  var FlashDetect=new function(){var self=this;self.installed=false;self.raw="";self.major=-1;self.minor=-1;self.revision=-1;self.revisionStr="";var activeXDetectRules=[{"name":"ShockwaveFlash.ShockwaveFlash.7","version":function(obj){return getActiveXVersion(obj);}},{"name":"ShockwaveFlash.ShockwaveFlash.6","version":function(obj){var version="6,0,21";try{obj.AllowScriptAccess="always";version=getActiveXVersion(obj);}catch(err){} return version;}},{"name":"ShockwaveFlash.ShockwaveFlash","version":function(obj){return getActiveXVersion(obj);}}];var getActiveXVersion=function(activeXObj){var version=-1;try{version=activeXObj.GetVariable("$version");}catch(err){}return version;};var getActiveXObject=function(name){var obj=-1;try{obj=new ActiveXObject(name);}catch(err){obj={activeXError:true};} return obj;};var parseActiveXVersion=function(str){var versionArray=str.split(",");return{"raw":str,"major":parseInt(versionArray[0].split(" ")[1],10),"minor":parseInt(versionArray[1],10),"revision":parseInt(versionArray[2],10),"revisionStr":versionArray[2]};};var parseStandardVersion=function(str){var descParts=str.split(/ +/);var majorMinor=descParts[2].split(/\./);var revisionStr=descParts[3];return{"raw":str,"major":parseInt(majorMinor[0],10),"minor":parseInt(majorMinor[1],10),"revisionStr":revisionStr,"revision":parseRevisionStrToInt(revisionStr)};};var parseRevisionStrToInt=function(str){return parseInt(str.replace(/[a-zA-Z]/g,""),10)||self.revision;};self.majorAtLeast=function(version){return self.major>=version;};self.minorAtLeast=function(version){return self.minor>=version;};self.revisionAtLeast=function(version){return self.revision>=version;};self.versionAtLeast=function(major){var properties=[self.major,self.minor,self.revision];var len=Math.min(properties.length,arguments.length);for(i=0;i<len;i++){if(properties[i]>=arguments[i]){if(i+1<len&&properties[i]==arguments[i]){continue;}else{return true;}}else{return false;}}};self.FlashDetect=function(){if(navigator.plugins&&navigator.plugins.length>0){var type='application/x-shockwave-flash';var mimeTypes=navigator.mimeTypes;if(mimeTypes&&mimeTypes[type]&&mimeTypes[type].enabledPlugin&&mimeTypes[type].enabledPlugin.description){var version=mimeTypes[type].enabledPlugin.description;var versionObj=parseStandardVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revisionStr=versionObj.revisionStr;self.revision=versionObj.revision;self.installed=true;}}else if(navigator.appVersion.indexOf("Mac")==-1&&window.execScript){var version=-1;for(var i=0;i<activeXDetectRules.length&&version==-1;i++){var obj=getActiveXObject(activeXDetectRules[i].name);if(!obj.activeXError){self.installed=true;version=activeXDetectRules[i].version(obj);if(version!=-1){var versionObj=parseActiveXVersion(version);self.raw=versionObj.raw;self.major=versionObj.major;self.minor=versionObj.minor;self.revision=versionObj.revision;self.revisionStr=versionObj.revisionStr;}}}}}();};
+  this.flash = new Array();
+  this.flash['versionMaj'] = 0;
+  this.flash['versionMin'] = 0;
+  this.flash['versionRev'] = 0;
+  this.flash['versionRaw'] = "none";
   if(FlashDetect.installed){
-    this.flashversion = FlashDetect.major;     	
-  }
-  this.articleid   = tmgAdsGetMetaTag("tmgads.articleid");
-  // KEYWORDS
+    this.flash['versionMaj'] = FlashDetect.major;     	
+    this.flash['versionMin'] = FlashDetect.minor;     	
+    this.flash['versionRev'] = FlashDetect.revision;     	
+    this.flash['versionRaw'] = FlashDetect.raw;     	
+  }     	
+  // KEYWORDS - not currentl importing these.
   this.keywords = "";
-  // GET SEARCH ENGINE KEYWORDS
-  // removed for brevity
-
   // ADD AudienceScience, TMG cookies -  naming convention XYYYYY_NNNNN only pass NNNNN to tags
   this.asCookies  = "";
   this.asoCookies = "";
@@ -83,7 +73,6 @@ function tmgAdsInitAdsData(){
       }
     }
   }
- 
   // AUDIENCE SCIENCE CONNECT DATA
   // These are set per page, only two values per page though so no major impact on only need top pass the 5 digit number though to keep url brevity
   this.asConnect="";
@@ -95,7 +84,6 @@ function tmgAdsInitAdsData(){
       this.asConnect += ";asc="+asConnectArray[i].substring(2,7);
     }
   }
-
   // ADD GRAPESHOT DATA
   this.gsSegments = "";
   if(typeof window.gs_channels != 'undefined'){
@@ -105,7 +93,6 @@ function tmgAdsInitAdsData(){
     }
     //this.gsSegments = ";gs="+window.gs_channels.toLowerCase();
   }
-
   // GENERAL telegraph.co.uk COOKIES - only cookienames starting tmgads* passed to DFP via the ck=xnxnxn KVP
   this.tmgCookies= "";
   this.ppCookies = "";
@@ -126,13 +113,28 @@ function tmgAdsInitAdsData(){
       this.ppCookies += ";ck_pp_sub=null";
     }
   }
-
+  // Get any relevant url params and populate the array with them, this means jot having to look them up on every ad call.
+  this.urlParams = new Array();
+  this.urlParams['adtest']    = tmgAdsGetURLParam("adtest",window.location.href);
+  this.urlParams['addebug']   = tmgAdsGetURLParam("addebug",window.location.href);
+  this.urlParams['adconsole'] = tmgAdsGetURLParam("adconsole",window.location.href);
+  this.urlParams['adkill']    = tmgAdsGetURLParam("adkill",window.location.href);
+  this.urlParams['adstyle']   = tmgAdsGetURLParam("adstyle",window.location.href);
   // Add adtest url param if present
-  this.tmgURLTestVar = tmgAdsGetURLParam("adtest",window.location.href);
+  //if(typeof this.URLparams['adtest'] != 'undefined'){
+  //  this.URLTestVar = ";test="+this.URLparams['adtest'];
+  //}
+  // add oreitnation if it exists
+  if(typeof window.orientation=="number"){
+    this.orientation = Math.abs(window.orientation);
+  }
   // Add 'ord' cachebuster
   this.ord   = Number(new Date());
 }
-
+///////////////////////////////////////////////////////////////////////////////////
+function tmgAdsSerializeArray(a){var b=function(a){var b=0,c=0,d=a.length,e="";for(c=0;c<d;c++){e=a.charCodeAt(c);if(e<128){b+=1}else if(e<2048){b+=2}else{b+=3}}return b};var c=function(a){var b=typeof a,c;var d;if(b==="object"&&!a){return"null"}if(b==="object"){if(!a.constructor){return"object"}var e=a.constructor.toString();c=e.match(/(\w+)\(/);if(c){e=c[1].toLowerCase()}var f=["boolean","number","string","array"];for(d in f){if(e==f[d]){b=f[d];break}}}return b};var d=c(a);var e,f="";switch(d){case"function":e="";break;case"boolean":e="b:"+(a?"1":"0");break;case"number":e=(Math.round(a)==a?"i":"d")+":"+a;break;case"string":e="s:"+b(a)+':"'+a+'"';break;case"array":case"object":e="a";var g=0;var h="";var i;var j;for(j in a){if(a.hasOwnProperty(j)){f=c(a[j]);if(f==="function"){continue}i=j.match(/^[0-9]+$/)?parseInt(j,10):j;h+=this.tmgAdsSerializeArray(i)+this.tmgAdsSerializeArray(a[j]);g++}}e+=":"+g+":{"+h+"}";break;case"undefined":default:e="N";break}if(d!=="object"&&d!=="array"){e+=";"}return e;
+}
+///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsGetMetaTag(tagname){
   var output = "null";
   if(document.getElementsByName(tagname)[0] != null){
@@ -140,7 +142,7 @@ function tmgAdsGetMetaTag(tagname){
   }
   return output.toLowerCase();
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsGetURLParam(strParamName,URL){
   var strReturn = "";
   var strHref = URL;
@@ -150,7 +152,7 @@ function tmgAdsGetURLParam(strParamName,URL){
     for ( var iParam = 0; iParam < aQueryString.length; iParam++ ){
       if (aQueryString[iParam].indexOf(strParamName.toLowerCase() + "=") > -1 ){
         var aParam = aQueryString[iParam].split("=");
-        strReturn = ";test="+aParam[1];
+        strReturn = aParam[1];
         break;
       }
     }
@@ -159,7 +161,7 @@ function tmgAdsGetURLParam(strParamName,URL){
   }
   return unescape(strReturn);
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsGetCookie(name){
   var i,x,y,ARRcookies=document.cookie.split(";");
   for (i=0;i<ARRcookies.length;i++){
@@ -171,7 +173,7 @@ function tmgAdsGetCookie(name){
     }
   }
 }
-
+///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsSetCookie(name,val,ttlhrs,dom){
   var data = name+"="+escape(val);
   if(ttlhrs){
@@ -192,114 +194,288 @@ function tmgAdsSetCookie(name,val,ttlhrs,dom){
   var cookiestr = data+expires+path+domain;
   document.cookie = cookiestr;
 }
-
+///////////////////////////////////////////////////////////////////////////////////
+function tmgAdsTimer(){
+  var tmgAdsTime = new Date();
+  //return tmgAdsTime.getMilliseconds();
+  return Number(tmgAdsTime);
+}
+///////////////////////////////////////////////////////////////////////////////////
+function tmgAdsGetAdPos(obj) {
+  var curleft = curtop = 0;
+  if (obj.offsetParent) {
+   curleft = obj.offsetLeft
+   curtop = obj.offsetTop
+   while (obj = obj.offsetParent) {
+     curleft += obj.offsetLeft
+     curtop += obj.offsetTop
+    }
+  }
+  return [curleft,curtop];
+}
+///////////////////////////////////////////////////////////////////////////////////
+function tmgGetAdVisibility(i){
+  if(((tmgAds.ads[i]['posX']+tmgAds.ads[i]['szW']) < tmgAds.biw) && tmgAds.ads[i]['posY'] < tmgAds.bih){
+    tmgAds.ads[i]['visibilityW'] = tmgAds.ads[i]['szW'];
+  } else {
+    tmgAds.ads[i]['visibilityW'] = tmgAds.biw - tmgAds.ads[i]['posX'];
+  }
+  if((tmgAds.ads[i]['posY']+tmgAds.ads[i]['szH']) < tmgAds.bih){
+    tmgAds.ads[i]['visibilityH'] = tmgAds.ads[i]['szH'];
+  } else {
+    tmgAds.ads[i]['visibilityH'] = tmgAds.bih - tmgAds.ads[i]['posY'];
+  }
+  var tmp = (tmgAds.ads[i]['visibilityH']*tmgAds.ads[i]['visibilityW']) / (tmgAds.ads[i]['szH']*tmgAds.ads[i]['szW']);
+  if(tmp<0){
+    return 0;
+  } else {
+    return (tmgAds.ads[i]['visibilityH']*tmgAds.ads[i]['visibilityW']) / (tmgAds.ads[i]['szH']*tmgAds.ads[i]['szW']);
+  }
+}
+///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   ++tmgAds.tile;
+  tmgAds.renderTime[tmgAds.tile]      = new Array(); // hold details of ad renderingtimes etc
+  //force an ad invocation type, adi or adj only
+  if(tmgAds.urlParams['adstyle'].length >0){
+    adScriptType = tmgAds.urlParams['adstyle'];
+  }
+  tmgAds.ads[tmgAds.tile]             = new Array(); // create array for this tag
+  tmgAds.ads[tmgAds.tile]['dfp']      = new Array(); // holds the DFP sepcific data for this tag
+  tmgAds.ads[tmgAds.tile]['dfp']['adv']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['aid']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['buy']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['cid']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['sid']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['pid']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['rid']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['site'] = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['env']  = "-";
+  tmgAds.ads[tmgAds.tile]['dfp']['geo']  = "-";
+  tmgAds.ads[tmgAds.tile]['func']        = new Array(); // records data from the function invocation
+  tmgAds.ads[tmgAds.tile]['func']['type']  = adType;
+  tmgAds.ads[tmgAds.tile]['func']['size']  = adSize;
+  tmgAds.ads[tmgAds.tile]['func']['invoc'] = adScriptType;
+  tmgAds.ads[tmgAds.tile]['func']['extra'] = adExtraTags;
+  tmgAds.ads[tmgAds.tile]['func']['style'] = adStyle;
+  tmgAds.ads[tmgAds.tile]['id']        = adType.replace(/\,/g,"").substring(0,3);
+  tmgAds.ads[tmgAds.tile]['id_iframe'] = "tmgAd_iframe_"+tmgAds.ads[tmgAds.tile]['id']+"_"+tmgAds.tile;
+  tmgAds.ads[tmgAds.tile]['id_script'] = "tmgAd_script_"+tmgAds.ads[tmgAds.tile]['id']+"_"+tmgAds.tile;
+  tmgAds.ads[tmgAds.tile]['id_div']    = "tmgAd_div_"+tmgAds.ads[tmgAds.tile]['id']+"_"+tmgAds.tile;
   // Adtypes can be >1, create all needed here.
-  this.kvps = "";
-  this.dfpLogging = "at=";
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps']    = "";
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] = "at=";
   var adTypes = adType.split(",");
   for(var i=0;i<=adTypes.length-1;i++){
-    this.kvps       += ";at="+adTypes[i];
-    this.dfpLogging += adTypes[i]+",";
+    tmgAds.ads[tmgAds.tile]['dfp']['kvps']       += ";at="+adTypes[i];
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += adTypes[i]+",";
   }
-  this.dfpLogging = this.dfpLogging.substr(0,this.dfpLogging.length-1);
-  //
-  this.kvps += ";pos=" + tmgAds.tile;  
-  this.kvps += ";sc="  + tmgAds.section;
-  this.kvps += ";pt="  + tmgAds.pagetype;
-  this.kvps += ";pg="  + tmgAds.articleid;
-  this.kvps += ";lvl=" + tmgAds.level;
-  this.kvps += ";biw=" + tmgAds.biw;
-  this.kvps += ";bih=" + tmgAds.bih;
-  this.kvps += ";fv="  + tmgAds.flashversion;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pos=" + tmgAds.tile;  
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sc="  + tmgAds.section;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pt="  + tmgAds.pagetype;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pg="  + tmgAds.articleid;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";lvl=" + tmgAds.level;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";biw=" + tmgAds.biw;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";bih=" + tmgAds.bih;
+  if(typeof tmgAds.orientation === "number"){
+    tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";orn=" + tmgAds.orientation;
+  }
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";fv="  + tmgAds.flash['versionMaj'];
   // Add dynamic data eg;  AudienceScience, Cookies, Grapeshot, domain
-  this.kvps += adExtraTags;
-  this.kvps += tmgAds.tmgURLTestVar;
-  this.kvps += tmgAds.asCookies;
-  this.kvps += tmgAds.asoCookies;
-  this.kvps += tmgAds.asConnect;
-  this.kvps += tmgAds.tmgCookies;
-  this.kvps += tmgAds.gsSegments;
-  this.kvps += tmgAds.keywords;
-  this.kvps += tmgAds.ppCookies;
-  this.kvps += ";dom=" + tmgAds.domain;
+  if(adExtraTags.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += adExtraTags;
+  }
+  if(typeof tmgAds.urlParams['adtest'] != 'undefined'){
+    tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";test="+tmgAds.urlParams['adtest'];
+  }
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.asCookies;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.asoCookies;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.asConnect;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.tmgCookies;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.gsSegments;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.keywords;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.ppCookies;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dom=" + tmgAds.page['domain'];
   // Add Yeidlex u= targeting here; NB: the adtype has already been ascertained at the top of this function
-    this.dfpLogging += "|sz="  + adSize;
-    this.dfpLogging += "|sc="  + tmgAds.section;
-    this.dfpLogging += "|pt="  + tmgAds.pagetype;
-    if(tmgAds.articleid != "null"){
-      this.dfpLogging += "|pg="  + tmgAds.articleid;
-    }
-    this.dfpLogging += "|lvl=" + tmgAds.level;
-    this.dfpLogging += "|biw=" + tmgAds.biw;
-    this.dfpLogging += "|bih=" + tmgAds.bih;
-    this.dfpLogging += "|fv="  + tmgAds.flashversion;
-    if(tmgAds.asCookies.length>0){
-      this.dfpLogging += "|as="  + tmgAds.asCookies.substr(1).replace(/\;/g,",").replace(/as\=/g,"");
-    }
-    if(tmgAds.asoCookies.length>0){
-      this.dfpLogging += "|aso=" + tmgAds.asoCookies.substr(1).replace(/\;/g,",").replace(/aso\=/g,"");
-    }
-    if(tmgAds.asConnect.length>0){
-      this.dfpLogging += "|asc=" + tmgAds.asConnect.substr(1).replace(/\;/g,",").replace(/asc\=/g,"");
-    }
-    if(tmgAds.ppCookies.length>0){
-      this.dfpLogging += "|"     + tmgAds.ppCookies.replace(/\;/g,"");   
-    }
-    if(tmgAds.gsSegments.length>0){
-      this.dfpLogging += "|"     + tmgAds.gsSegments.replace(/\;/g,"");   
-    }
-  this.kvps += ";u=" + this.dfpLogging;  
-  // Best practice/performance to place these values at end of url.
-  this.kvps += ";sz="  + adSize;
-  this.kvps += ";tile="+ tmgAds.tile;
-  this.kvps += ";sl="  + (this.kvps.length+1);  // sets the length of string includes +19 for the ord=...
-  this.kvps += ";ord=" + tmgAds.ord + "?";
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] = tmgAds.ads[tmgAds.tile]['dfp']['logging'].substr(0,tmgAds.ads[tmgAds.tile]['dfp']['logging'].length-1);
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|sz="  + adSize;
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|sc="  + tmgAds.section;
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|pt="  + tmgAds.pagetype;
+  if(tmgAds.articleid != "null"){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|pg="  + tmgAds.articleid;
+  }
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|lvl=" + tmgAds.level;
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|biw=" + tmgAds.biw;
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|bih=" + tmgAds.bih;
+  if(typeof tmgAds.orientation === "number"){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|orn=" + tmgAds.orientation;
+  }
+  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|fv="  + tmgAds.flash['versionMaj'];
+  if(tmgAds.asCookies.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|as="  + tmgAds.asCookies.substr(1).replace(/\;/g,",").replace(/as\=/g,"");
+  }
+  if(tmgAds.asoCookies.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|aso=" + tmgAds.asoCookies.substr(1).replace(/\;/g,",").replace(/aso\=/g,"");
+  }
+  if(tmgAds.asConnect.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|asc=" + tmgAds.asConnect.substr(1).replace(/\;/g,",").replace(/asc\=/g,"");
+  }
+  if(tmgAds.ppCookies.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|"     + tmgAds.ppCookies.replace(/\;/g,"");   
+  }
+  if(tmgAds.gsSegments.length>0){
+    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|"     + tmgAds.gsSegments.replace(/\;/g,"");   
+  }
+  // add logging lien to adtag
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";u=" + tmgAds.ads[tmgAds.tile]['dfp']['logging'];  
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sz="  + adSize;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";tile="+ tmgAds.tile;
+  // sets the stringlength +19 for the ord=...
+  tmgAds.ads[tmgAds.tile]['dfp']['urllen'] = tmgAds.ads[tmgAds.tile]['dfp']['kvps'].length+1;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sl="  + tmgAds.ads[tmgAds.tile]['dfp']['urllen'];
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";ord=" + tmgAds.ord;
   // Add this to the window.tmgAds.tags array
-  tmgAds.tags[tmgAds.tile] = tmgAds.protocol+tmgAds.adserver+"/"+adScriptType+"/"+tmgAds.sitezone+this.kvps;
-  // BUILD THE TAG TYPE
+  tmgAds.ads[tmgAds.tile]['url'] = tmgAds.protocol + tmgAds.adserver + "/"+adScriptType+"/" + tmgAds.sitezone + tmgAds.ads[tmgAds.tile]['dfp']['kvps'] + "?";
+  // GET MAX SIZE OF SZ VALUES TO CREATE IFRAME IF CALLED - calculate by getting area of the various sizes sent.
+  var tmgAdSizes = adSize.split(",");
+  var tmgAdArea=0;
+  for(i in tmgAdSizes){
+    tmgAdTmpSize  = tmgAdSizes[i].split("x");
+    if(tmgAdTmpSize[0]*tmgAdTmpSize[1]>tmgAdArea){
+      tmgAdArea=tmgAdTmpSize[0]*tmgAdTmpSize[1];
+      tmgAdDims=i;
+    }
+  }
+  tmgAds.ads[tmgAds.tile]['tmgAdMaxSize'] = tmgAdSizes[tmgAdDims].split("x");
+  tmgAds.ads[tmgAds.tile]['szW'] = parseInt(tmgAds.ads[tmgAds.tile]['tmgAdMaxSize'][0]);
+  tmgAds.ads[tmgAds.tile]['szH'] = parseInt(tmgAds.ads[tmgAds.tile]['tmgAdMaxSize'][1]);
+  tmgAds.ads[tmgAds.tile]['sz']  = tmgAds.ads[tmgAds.tile]['tmgAdMaxSize'][0]+"x"+tmgAds.ads[tmgAds.tile]['tmgAdMaxSize'][1];
+  // Build the adtag and container div styles if needed.
   switch(adScriptType){
     case "adi":
-      // GET MAX SIZE OF SZ VALUES TO CREATE IFRAME IF CALLED
-      var tmgAdSizes = adSize.split(",");
-      if(tmgAdSizes.length>=2){
-        tmgAdHeight = 0;
-        tmgAdWidth  = 0;
-      } else {
-        tmgAdWidth  = adSize.split("x")[0];
-        tmgAdHeight = adSize.split("x")[1];
-      }
-      tmgAds.output = "<ifr"+"ame id=\"tmgAd_iframe_"+adType.replace(/\,/g,"")+"_"+tmgAds.tile+"\" src=\""+tmgAds.tags[tmgAds.tile]+"\" width=\""+tmgAdWidth+"\" height=\""+tmgAdHeight+"\" marginwidth=\"0\" marginheight=\"0\" hspace=\"0\" vspace=\"0\" frameborder=\"0\" scrolling=\"no\" bordercolor=\"#000000\"><\/ifr"+"ame>"; 
+      tmgAds.ads[tmgAds.tile]['tag'] = "<ifr"+"ame id=\""+tmgAds.ads[tmgAds.tile]['id_iframe']+"\" src=\""+tmgAds.ads[tmgAds.tile]['url']+"\" width=\""+tmgAds.ads[tmgAds.tile]['szW']+"\" height=\""+tmgAds.ads[tmgAds.tile]['szH']+"\" marginwidth=\"0\" marginheight=\"0\" hspace=\"0\" vspace=\"0\" frameborder=\"0\" scrolling=\"no\" bordercolor=\"#000000\"><\/ifr"+"ame>"; 
       break
     case "adj":
-      tmgAds.output = "<scr"+"ipt type=\"text/javascript\" id=\"tmgAd_script_"+adType.replace(/\,/g,"")+"_"+tmgAds.tile+"\" src=\""+tmgAds.tags[tmgAds.tile]+"\"><\/scr"+"ipt>"; 
+      tmgAds.ads[tmgAds.tile]['tag'] = "<scr"+"ipt type=\"text/javascript\" id=\""+tmgAds.ads[tmgAds.tile]['id_script']+"\" src=\""+tmgAds.ads[tmgAds.tile]['url']+"\"><\/scr"+"ipt>"; 
       break
     case "adx":
-      tmgAds.output = tmgAds.tags[tmgAds.tile]; 
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url']; 
+      break
+    default:
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url']; 
       break
   }
+  // store the base tag for use later
+  tmgAds.ads[tmgAds.tile]['tagBase'] = tmgAds.ads[tmgAds.tile]['tag'];
   switch(adStyle){
     case 0: // URL ONLY
-      tmgAds.output = tmgAds.tags[tmgAds.tile]; 
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url']; 
       break;
-    case 1: // FULL FORMED TAG
-      tmgAds.output = tmgAds.output; 
+    case 1: // FULL FORMED TAG - NO CONTAINER DIV
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['tag']; 
       break;
     case 2: // FULL FORMED TAG + DIV
-      tmgAds.output = "<div id=\"tmgAd_"+adType.replace(/\,/g,"")+"_"+tmgAds.tile+"\">"+tmgAds.output+"</div>"; 
+      tmgAds.ads[tmgAds.tile]['tag']  = "<div id=\""+tmgAds.ads[tmgAds.tile]['id_div']+"\" style=\"width:"+tmgAds.ads[tmgAds.tile]['szW']+"px\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>"; 
       break;
     case 3: // v2.0 Ooyala player returns url without trailing ?
-        tmgAds.output = tmgAds.tags[tmgAds.tile].substring(0,tmgAds.tags[tmgAds.tile].length-1);
-        break;
+      tmgAds.ads[tmgAds.tile]['tag'] = "<div id=\"tmgAd_"+tmgAds.ads[tmgAds.tile]['id_div']+"\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>";
+      break;
     default: // FULL FORMED TAG + DIV
-      tmgAds.output = "<div id=\"tmgAd_"+adType.replace(/\,/g,"")+"_"+tmgAds.tile+"\">"+tmgAds.output+"</div>"; 
+      tmgAds.ads[tmgAds.tile]['tag'] = "<div id=\"tmgAd_"+tmgAds.ads[tmgAds.tile]['id_div']+"\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>";
       break;
   }
-  // return the output
-  return tmgAds.output
+  // Produce Debug info, this is turned on as default - add Firebug console logging for ad executions - ads our adtimer function for reporting/logging slow ads etc.
+  tmgAds.ads[tmgAds.tile]['tagPreScript']   = "tmgAds.renderTime["+tmgAds.tile+"]['start'] = tmgAdsTimer();";
+  tmgAds.ads[tmgAds.tile]['tagPostScript']  = "tmgAds.renderTime["+tmgAds.tile+"]['end']   = tmgAdsTimer();";  
+  tmgAds.ads[tmgAds.tile]['tagPostScript'] += "tmgAds.renderTime["+tmgAds.tile+"]['time']  = tmgAds.renderTime["+tmgAds.tile+"]['end'] - tmgAds.renderTime["+tmgAds.tile+"]['start'];";
+  tmgAds.ads[tmgAds.tile]['tagPostScript'] += "tmgAds.renderTime['total']                 += tmgAds.renderTime["+tmgAds.tile+"]['time'];";
+  tmgAds.ads[tmgAds.tile]['tagPostScript'] += "tmgAds.renderTime['avg']                    = tmgAds.renderTime['total']/"+tmgAds.tile+";";
+  // optional params for debugging & testing
+  if(tmgAds.urlParams['adconsole']==="on"){
+    tmgAds.ads[tmgAds.tile]['tagPreScript'] += "console.profile('TMG.AdOps.Firebug.Profile["+adType+"]:');"; 
+    tmgAds.ads[tmgAds.tile]['tagPostScript'] = tmgAds.ads[tmgAds.tile]['tagPostScript']+"console.profileEnd('TMG.AdOps.Firebug.Profile["+adType+"]:');";     
+  } 
+  // kills ads in page, wraps them in comment tags, used to ascertain if ads are causing problems on page or isiolate other issues without ads confusing debugging.
+  if(tmgAds.urlParams['adkill']==="on"){
+    tmgAds.ads[tmgAds.tile]['tag'] = "<!--// Ad ["+adType+"] removed due to killswitch //-->";;
+    tmgAds.ads[tmgAds.tile]['tagPreScript'] += "console.profile('TMG.AdOps.Kill.Ad["+adType+"]: Ad removed due to killswitch adkill=on');";
+  }
+  // make this a bit more logical, only write out the script tags if they need to do something
+  tmgAds.ads[tmgAds.tile]['tagPreScript'] = "<scr"+"ipt type=\"text/javascript\">" + tmgAds.ads[tmgAds.tile]['tagPreScript'] + "</scr"+"ipt>";
+  tmgAds.ads[tmgAds.tile]['tagPostScript']= "<scr"+"ipt type=\"text/javascript\">" + tmgAds.ads[tmgAds.tile]['tagPostScript']+ "</scr"+"ipt>";
+  // build the final taga and return this, for adx calls make sure the response is ONLY a url otherwise will break apps
+  if(adScriptType==="adx"){
+    tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url'];
+  } else {
+    // Fix Fashion gallries, only return IFRAME tag, don't wrap with timer tags sc=fashion-galleries and iframe adi call
+    // this returns the normal unaltered/unwrapped tag IF fashion galleries using iframes by not wrappign the tag
+    if(tmgAds.section!="fashion-galleries" && adScriptType!="adi"){
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['tagPreScript'] + tmgAds.ads[tmgAds.tile]['tag'] + tmgAds.ads[tmgAds.tile]['tagPostScript'];
+    }
+  } 
+  return tmgAds.ads[tmgAds.tile]['tag'];
 }
-////////////////////////////////////////////////////////////////////////////////////////////
-// INITIALISE tmgAds object
-var tmgAds = new tmgAdsInitAdsData();
+///////////////////////////////////////////////////////////////////////////////////
+function tmgAdsGetAdSlotInfo(i){
+    // some ads don't have this, eg; video adx calls, use else rather than set vars default first as quicker/less steps.
+    if(tmgAds.ads[i]['func']['invoc']!="adx" && tmgAds.urlParams['adkill']!="on" && tmgAds.pagetype!="gallery"){
+      tmgAds.ads[i]['divW']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetWidth;    
+      tmgAds.ads[i]['divH']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetHeight;   
+      tmgAds.ads[i]['pos']    = tmgAdsGetAdPos(document.getElementById(tmgAds.ads[i]['id_div']));
+      tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
+      tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
+      tmgAds.ads[i]['innerHTML']     = unescape(document.getElementById(tmgAds.ads[i]['id_div']).innerHTML);
+    } else {
+      tmgAds.ads[i]['divW']   = 0;
+      tmgAds.ads[i]['divH']   = 0;
+      tmgAds.ads[i]['pos']    = [0,0];
+      tmgAds.ads[i]['posX']   = tmgAds.ads[i]['pos'][0];
+      tmgAds.ads[i]['posY']   = tmgAds.ads[i]['pos'][1];
+      tmgAds.ads[i]['innerHTML']     = "";
+      tmgAds.renderTime[i]['start']  = "N/A";
+      tmgAds.renderTime[i]['end']    = "N/A";
+      tmgAds.renderTime[i]['time']   = "N/A";
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////
+function tmgAdsDebugShowWindow(){
+  // easily add this as a bookmarklet: javascript:tmgAdsDebugShowWindow();
+  // if the url param has been set fire up the debugging console automatically
+  var tmgAdsDebugRequest = $.ajax({
+    type: "POST",
+    url: "http://adtools.telegraph.co.uk/tmg/debug/submit.php",
+    data: {tmgAds:tmgAdsSerializeArray(tmgAds)}
+  }).done(function(data){
+    // data is the url of the results window
+    tmgAdsDebugDisplay = window.open(data,'tmgAdsDebugWindow','location=1,status=1,scrollbars=1,resizable=1,width=800,height=600');
+    tmgAdsDebugDisplay.focus();
+    tmgAds['debugUrl'] = data;
+  });
+}
+///////////////////////////////////////////////////////////////////////////////////////////
+// DEBUG ads, do these after page has loaded so add to the window.ready event.
+$(document).ready(function() {
+  tmgAds['jquery'] = $().jquery;
+  // amend tmgAds with post window.ready data
+  for(var i=1;i<=tmgAds.ads.length-1;i++){
+    tmgAdsGetAdSlotInfo(i);
+  } 
 
+  // add other required data 
+  tmgAds['navigator']    = new Array(); 
+  for(var property in navigator){ 
+    var str = navigator[property];
+    if(typeof navigator[property] != "object"){
+      tmgAds['navigator'][property] = str; 
+    }
+  } 
+  if(typeof window.performance != "undefined"){
+    tmgAds['performance']  = new Array();
+    for(var property in performance['timing']){ 
+      var str = performance['timing'][property];
+      if(typeof performance['timing'][property] != "object"){
+        tmgAds['performance'][property] = str;
+      }
+    }  
+  }
+});

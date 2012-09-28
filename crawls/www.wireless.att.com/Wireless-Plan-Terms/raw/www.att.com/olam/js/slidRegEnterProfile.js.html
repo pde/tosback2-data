@@ -1,0 +1,1097 @@
+var handleAvailable = "unknown";
+var checkAvailabilityError = false;
+var authenticatedFlow ;
+var CHAR_SPECIAL_HANDLE="*|,\":<>[]{}`\';()@&$#%";
+var isForeignEmail = true;
+var loggedInProfileEmailAddress;
+//70.7	Create javascript variable “authenticatedFlow” and set its value to “true” 
+//or "false" depending on the InfoVO.authenticatedFlow variable.
+if(document.getElementById("flowType")!=null){
+	authenticatedFlow=document.getElementById("flowType").value;
+	//alert(authenticatedFlow);
+}
+
+//70.6	Retrieve the configuration variable SLID_REGISTRATION_NON_FOREIGN_DOMAINS and 
+//store this value as a javascript string named nonForeignDomains on the page.
+//var nonForeignDomains=document.getElementById("nonForeignDomains").value;
+//alert(nonForeignDomains);
+//70.3Create a javascript variable on the page named loggedInProfileEmailAddress. 
+//For the authenticated flow store the email address from the logged in account in it.  
+if(authenticatedFlow==false){
+	loggedInProfileEmailAddress=document.getElementById("loginMailID").value;
+}
+//70.4Compare the value of the email address field to that of loggedInProfileEmailAddress
+/*function emailAddressBlur(){
+	var flag = true;
+	var slidvalue = trim(document.getElementById("slid").value);
+	var slidAsMail = trim(document.getElementById("emailAddress").value);
+	if((document.getElementById("flowType").value=='true' || document.getElementById("flowType").value==true) && isForeignEmail==false ){
+	if(slidvalue!=null){
+		if(slidvalue==slidAsMail){
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["LegacyMemberIdAsContactEmailAddress"]+"</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			//flag= false;	
+			}
+		}
+	}
+	return flag;
+}*/
+function cancelDiv(){
+    document.getElementById("popup").style.display="block";
+    document.getElementById("popupBg").style.display="block";
+    return false;
+}
+function setHandleValue() {
+	handleAvailable = "yes";
+	document.getElementById("slid").value = "";
+	/*alert("opted= "+opted);
+	
+		if(document.getElementById("option1") && opted=='1'){
+			document.getElementById("slid").value = document.getElementById("option1").value;
+			document.getElementById("option1").checked= false;
+			//alert("option1 ="+document.getElementById("option1").value);
+		}else if(document.getElementById("option2") && opted=='2'){
+			document.getElementById("slid").value = document.getElementById("option2").value;
+			document.getElementById("option2").checked= false;
+			//alert("option2 ="+document.getElementById("option2").value);
+		}else if (document.getElementById("option3") && opted=='3'){
+			document.getElementById("slid").value = document.getElementById("option3").value;
+			document.getElementById("option3").checked= false;
+			//alert("option3 ="+document.getElementById("option3").value);
+		}	
+			//document.getElementById("suggestedHandleDiv").style.display = "none";
+			//document.getElementById("forCheckAvailability_1").style.display = "none";
+			//document.getElementById("forCheckAvailability_2").style.display = "none";
+			//document.getElementById("forCheckAvailability_3").style.display = "none";
+	//}*/
+}
+var handlessuggest = null;
+function clearSuggestion(){
+	
+	if ( optionSelected() ) {
+		for (var i=1;i<=3;i++) {
+			var opt = document.getElementById("option"+i);
+			if ( opt.checked ) {
+				opt.checked=false;
+				// Clicking the checkbox adds this checked class to the span around it
+				jQuery(opt.parentNode).removeClass("checked");
+			}
+		}
+	}
+}
+
+
+function optionSelected(){
+	var flag_OS = false;
+	var slidvalue = "";
+	if(document.getElementById("option1") && document.getElementById("option1").checked){		
+		flag_OS= true;
+		document.getElementById("slidChecked").value  = document.getElementById("option1").value ;
+	}else if(document.getElementById("option2") && document.getElementById("option2").checked){	
+		flag_OS= true;
+		document.getElementById("slidChecked").value  = document.getElementById("option2").value ;
+	}else if (document.getElementById("option3") && document.getElementById("option3").checked){
+		flag_OS= true;
+		document.getElementById("slidChecked").value  = document.getElementById("option3").value ;
+		//alert("option3 ="+document.getElementById("option3").value);
+	}else{
+		flag_OS= false;
+	}
+	return flag_OS;
+}
+
+/*function added for the password strength */
+
+function checkStrengthWithVerifyslidreg(passwordField, formName, tip) {
+	//alert("passwordValue 0=="+passwordValue);
+	var passwordValue ="";
+	var idValue ="";
+	
+	if(formName == 'slidRegistrationActionForm' ){
+		passwordValue = document.forms[formName].elements[passwordField].value;
+		//alert("passwordValue 1=="+passwordValue);
+		
+		if(optionSelected()){
+			idValue = document.getElementById("slidChecked").value ;
+		}else{
+			idValue = trim(document.getElementById("slid").value);
+		}
+	}
+		
+		
+	
+	
+	//var passwordValue = document.forms[formName].elements[passwordField].value;
+	//var idValue = document.forms[formName].elements[idFieldName].value;
+	
+	var acceptablePassword = true;
+	if ( passwordValue.length < 6 || passwordValue.length > 24 )
+		acceptablePassword = false;
+
+	if ( passwordValue.toLowerCase() == idValue.toLowerCase() ){
+		//alert("slid id is same as pwd");
+		acceptablePassword = false;
+	}
+	
+	if ( passwordValue.match("[^a-zA-Z0-9_-]") ){ 	
+		//alert("invalid character");
+		acceptablePassword = false;
+	}
+
+
+	// Run strength meter if password is acceptable, otherwise show unacceptable message
+	if ( acceptablePassword ) {
+		//alert("passwordValue 2=="+passwordValue);
+		return checkStrength(passwordField, formName, tip);
+	} else {
+		//alert("passwordValue 4=="+passwordValue);
+		var tipElement = ( tip!=null ? document.getElementById(tip) : null );
+		var unacceptablePasswordText = "";
+		if ( document.forms[formName].elements['unacceptablePasswordText'] ) {
+			unacceptablePasswordText = document.forms[formName].elements['unacceptablePasswordText'].value;
+		}
+		var unacceptablePasswordDescription = "";
+		if ( document.forms[formName].elements['unacceptablePasswordDescription'] ) {
+			unacceptablePasswordDescription = document.forms[formName].elements['unacceptablePasswordDescription'].value;
+		}
+		if(formName == 'slidRegistrationActionForm'){
+			 var noPasswordImage = "<div class=\"graphBorder\"><div class=\"graphBkgrd\" style=\"width: 0%\"><img src="https://www.att.com/olam/js/\&quot;/olam/images/transparent.gif\&quot;"></div></div><dd class=\"strengthText\">" + unacceptablePasswordText + "</dd>";
+	         var unacceptablePasswordImage = noPasswordImage;
+		}
+		
+		
+		var unacceptablePasswordImage = noPasswordImage;
+
+		document.getElementById("passwordStrengthImage").innerHTML = unacceptablePasswordImage;
+		if (tipElement != null) {
+			tipElement.innerHTML = unacceptablePasswordDescription;
+		}
+		return 0;
+	}
+}
+
+/*function added for the password strength */
+
+function doPrint() {
+	var w = window.open("/olam/jsp/login/paperlessBillingDisclosurePopUp.jsp",
+			"moreinfo", "width=600, height=330, resizable=yes, scrollbars=yes");
+}
+function trim(str) {
+	return str.replace(/^\s*|\s*$/g, "");
+}
+
+function isEmpty(myString) {
+
+	if (myString == 'null') {
+		return true;
+	}
+	if (myString == null) {
+		return true;
+	}
+	if (myString == '') {
+		return true;
+	}
+	if (myString.length == 0) {
+		return true;
+	}
+	return false;
+}
+
+var hasBeenSubmitted=false;
+function checkValues(form, map) {
+	var valid = "0123456789";
+	var memberId = trim(document.getElementById("slid").value); // trim(form.slid.value);
+	var password = trim(document.getElementById("password").value); // trim(form.password.value);
+	var passwordVerify = trim(document.getElementById("passwordVerify").value); // trim(form.passwordVerify.value);
+	var firstName = trim(document.getElementById("firstName").value); // trim(form.firstName.value);
+	var lastName = trim(document.getElementById("lastName").value); // trim(form.lastName.value);
+	var emailAddress = trim(document.getElementById("emailAddress").value); // trim(form.emailAddress.value);
+	var emailAddressVerify = trim(document.getElementById("emailAddressVerify").value); // trim(form.emailAddressVerify.value);
+	var securityQuestion1 = trim(document.getElementById("securityQuestion1").value); // trim(form.securityQuestion1.value);
+	var securityAnswer1 = trim(document.getElementById("securityAnswer1").value); // trim(form.securityAnswer1.value);
+	var securityQuestion2 = trim(document.getElementById("securityQuestion2").value); // trim(form.securityQuestion2.value);
+	var securityAnswer2 =  trim(document.getElementById("securityAnswer2").value); // trim(form.securityAnswer2.value);
+	var acceptTerms =  document.getElementById("acceptTerms").checked;
+	
+	var fieldIsMemberIdValidateSuccess = document.getElementById("isMemberIdValidateSucess");
+	var isMemberIdValidateSucess = false;
+	if ( fieldIsMemberIdValidateSuccess != null ) {
+		var v = fieldIsMemberIdValidateSuccess.value;
+		isMemberIdValidateSucess = ( v == true || v == "true" );
+	}
+	
+	/*for clearing front end  error message*/
+	if(document.getElementById("jsErrMsg")){
+		
+		document.getElementById("jsErrMsg").style.display = "none";
+	}	
+	/*for clearing backend  error message*/
+	if(document.getElementById("errorDiv")){		
+		document.getElementById("errorDiv").style.display = "none";
+	}	
+	
+	
+	if (handleAvailable == "no") {
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+		return false;
+
+	} else {
+		if(handleAvailable == "unknown"){
+			document.getElementById("checkAvailabilityStatus").value = "unknown";	
+		}
+		if(handleAvailable == "yes"){
+			document.getElementById("checkAvailabilityStatus").value = "yes";	
+		}
+		
+		function checkvalidChars(fields) {
+			var validChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-";
+			var temp = "";
+			var field = fields;
+			for ( var i = 0; i < field.length; i++) {
+				temp = "" + field.substring(i, i + 1);
+				if (validChars.indexOf(temp) == "-1") {
+					//alert("Your have entered invalid character for password.");
+					passwordField.value = "";
+					return false;
+				}
+			}
+		}
+
+		if ( !optionSelected() ) { 
+			var isValidHandle = isValidAccessIdFormat(memberId);
+			if ( !isValidHandle ) return false;
+		}
+		//alert("isMemberIdValidateSucess::"+isMemberIdValidateSucess);
+		if ( !isMemberIdValidateSucess ) { // Means we have password fields
+			if (isEmpty(password)) {
+
+				//document.getElementById("clrBoth").style.display="block";
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgPleaseEnterYourPassword"] + "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+
+			} else {
+
+				if (password.length < 6 || password.length > 24) {
+					// alert("length");
+					// msg =
+					// map['ThePasswordEnteredMustBeAtleast6CharacterAndNotMoreThan24CharactersLong'];
+					// If ( !msg ) msg = "The password entered must contain between
+					// 6 and 24 characters.";
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+			
+					document.getElementById("jsErrMsg").style.display="block";
+					map['ThePasswordEnteredMustBeAtleast6CharacterAndNotMoreThan24CharactersLong'] = "The password entered must contain between 6 and 24 characters.";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ThePasswordEnteredMustBeAtleast6CharacterAndNotMoreThan24CharactersLong"]
+						      + "</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}
+			
+				if (memberId !="" && memberId == password) {
+					
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+
+					document.getElementById("jsErrMsg").style.display="block";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgYourPasswordCanNotBeTheSameAsYourMemberId"]+ "</b>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}else if(memberId == "" &&  optionSelected()){
+					/*if option selected is same as password */	
+					if(document.getElementById("slidChecked").value == password){
+						
+						if(document.getElementById("password")){
+							document.getElementById("password").value ="";
+						}
+						if(document.getElementById("passwordVerify")){
+							document.getElementById("passwordVerify").value ="";
+						}
+						
+						document.getElementById("jsErrMsg").style.display="block";
+						document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgYourPasswordCanNotBeTheSameAsYourMemberId"]+ "</b>";
+						document.getElementById("jsErrMsg").className = "errorMsg box";
+						if ( window.scrollTo ) window.scrollTo( 0, 0 );
+						return false;
+					}
+					
+				}
+
+				if ( password.match("[^a-zA-Z0-9_-]") )  {
+					
+
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+
+					document.getElementById("jsErrMsg").style.display="block";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ThePasswordEnteredIsNotAValidPasswordFormat"]
+						      + "</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}
+			
+			/*
+			if(!password.match("[0-9]") || !password.match("[a-zA-Z]")){
+				 alert("invalid format");
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ErrorMsgYourPasswordMustContainAtLeast1NumberAnd1Letter"]
+						+ "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}*/
+
+				if (password == 'password' || password == 'admin'
+					|| password == 'pa$$w0rd' ) {
+
+
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+
+
+
+
+					document.getElementById("jsErrMsg").style.display="block";
+					map['NotValidPassword'] = "The password entered is not valid.";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ThePasswordEnteredIsNotAValidPasswordFormat"] + "</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}
+			
+				if( checkStrength('password', 'slidRegistrationActionForm', null) < 31  ){
+					//alert("unacceptable");
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+					//alert("password is not n valid format");
+					document.getElementById("jsErrMsg").style.display="block";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"	+ map["ThePasswordEnteredIsNotAValidPasswordFormat"] + "</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}
+			
+
+				if ( passwordVerify != password ) {
+
+
+					if(document.getElementById("password")){
+						document.getElementById("password").value ="";
+					}
+					if(document.getElementById("passwordVerify")){
+						document.getElementById("passwordVerify").value ="";
+					}
+
+					//document.getElementById("clrBoth").style.display="none";
+					document.getElementById("jsErrMsg").style.display="block";
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ErrorMsgPleaseMakeSureThatThePasswordAndPasswordConfirmationMatch"]
+						      + "</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+				}
+			}
+		}
+
+		if (!isEmpty(firstName)) {
+			if (firstName.length < 1 || firstName.length > 50) {
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgTheFirstNameEnteredMustBeAtLeast1CharacterAndNotMoreThan50CharactersLong"] + "</p>";
+				//document.getElementById("jsErrMsg").innerHTML = "<p><Error>The first name entered must contain between 1 and 50 characters</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+			
+			if(IsNumeric(firstName)==true){	
+				
+				//alert("firstName is numeric");
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgInvalidCharacterInFirstName"] + "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+			
+			
+			
+			//if(firstName.match("[^a-zA-Z0-9.-]")) {
+			
+			if(firstName.match("[^a-zA-Z.-]")){
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgInvalidCharacterInFirstName"] + "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+		} else {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgPleaseEnterYourFirstName"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+
+		if (!isEmpty(lastName)) {
+
+			if (lastName.length < 1 || lastName.length > 50) {
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgTheLastNameEnteredMustBeAtLeast1CharacterAndNotMoreThan50CharactersLong"] + "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+			
+			
+			if(IsNumeric(lastName)==true){	
+				//alert("lastName is numeric");
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgInvalidCharacterInLastName"] + "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+			
+			//if(lastName.match("[^a-zA-Z0-9.-]")) {
+			
+			if(lastName.match("[^a-zA-Z.-]")){
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgInvalidCharacterInLastName"]+ "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+		} else {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+					+ map["ErrorMsgPleaseEnterYourLastName"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+		if( !isEmpty(emailAddress)  ){
+		  if(emailAddress.length >64 ){	
+				  document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["UserNameOfEmailAddressIsInvalidOrTooLong"]+"</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			  }
+			  
+			  var filter = /^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/
+			  //var filter =  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+			  if(!filter.test(emailAddress)){
+				
+				  document.getElementById("jsErrMsg").style.display="block";
+				    document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["ErrorMsgValuesNotInRequiredFormat"]+"</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+					return false;
+			  }
+			}else{
+				
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["ErrorMsgPleaseEnterYourEmailAddress"]+"</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}	
+			if(!isEmpty(emailAddressVerify) ){
+			if(emailAddressVerify != emailAddress){
+						document.getElementById("jsErrMsg").style.display="block";
+						document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["ErrorMsgTheEmailAddressDoesNotMatch"]+"</p>";
+						document.getElementById("jsErrMsg").className = "errorMsg box";
+						if ( window.scrollTo ) window.scrollTo( 0, 0 );
+						return false;
+					}
+			}
+			else
+			{
+		    	document.getElementById("jsErrMsg").style.display="block";
+		    	document.getElementById("jsErrMsg").innerHTML= "<p><Error>"+ map["ErrorMsgEnterConfirmEmail"]+"</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+		    }	
+			
+		/*if (securityQuestion1=="0") {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+					+ map["ErrorMsgPleaseSelectAnOnlineSecurityQuestion1"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}*/
+		if (!isEmpty(securityAnswer1)) {
+			if (securityAnswer1.length < 4 || securityAnswer1.length > 80) {
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ErrorMsgYourAnswerMustBeAtLeast4AndNotMoreThan80CharactersLong"]
+						+ "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+		} else {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+					+ map["ErrorMsgPleaseEnterAnAnswerForSecurityQuestion1"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+		/*
+		if(securityAnswer1.match("[^a-zA-Z .-]")) {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>Secuity answers cannot be numeric</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+	*/
+		if (!isEmpty(securityAnswer2)) {
+			if (securityAnswer2.length < 4 || securityAnswer2.length > 80) {
+				document.getElementById("jsErrMsg").style.display="block";
+				document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+						+ map["ErrorMsgYourAnswerMustBeAtLeast4AndNotMoreThan80CharactersLong"]
+						+ "</p>";
+				document.getElementById("jsErrMsg").className = "errorMsg box";
+				if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				return false;
+			}
+		} else {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+					+ map["ErrorMsgPleaseEnterYourAnswerToSecretQuestion2"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+		/*
+		if(securityAnswer2.match("[^a-zA-Z .-]")) {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>Secuity answers cannot be numeric</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}*/
+		if (document.getElementById("acceptTerms").checked == false){
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+				+ map["AgreeToAccessIDTnC"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+		if(document.getElementById("captchaField")){
+		if (document.getElementById("captchaField").value.length<=0){
+			document.getElementById("jsErrMsg").style.display="block";
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+				+ "Code word should not empty "
+				+ "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );        
+		return false;
+		}
+		}
+	
+		if(hasBeenSubmitted==true){
+			//alert("Page already submitted");
+			return false;
+		}
+		if((!isMemberIdValidateSucess)|| ((isMemberIdValidateSucess)&&(memberId != emailAddress))){
+			setupSubmit(form);
+			return true;
+		}
+		else if((isMemberIdValidateSucess)&&(memberId == emailAddress)){
+			clickedOpen(5);
+			return false;
+		}
+		
+		// XXXX DO NOT USE 
+		//   form.submit();
+		// inside an onsubmit handler! use return true
+		return true;
+	}
+}	
+
+function checkAvailability(){
+	var slidValue=trim(document.getElementById("slid").value);
+	var temSlid=slidValue;
+	if (isEmpty(slidValue)) {
+		if ( !optionSelected() ) {
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+			+ map["ErrorMsgPleaseEnterUserID"] + "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+		}
+	} else {
+		checkAvailability1();
+	}
+}
+
+function checkAvailability1() {
+	//document.getElementById("jsErrMsg").style.display = "none";
+	var slidValue=trim(document.getElementById("slid").value);	
+	document.getElementById("handleIsAvailabileDiv").style.display = "none";
+	document.getElementById("suggestedHandleDiv").style.display = "none";
+	var memberId = slidValue; // trim(form.slid.value);
+	var slidIdvalue = null;
+	var flag_CID = false;
+	handleAvailable = "unknown";
+	
+	var validAccessId = isValidAccessIdFormat( memberId );
+	if ( !validAccessId ) return false;
+	
+	if (slidValue.length > 0) {
+		//alert("slidValue:::"+slidValue);
+		flag_CID = true;
+		var obj = {};
+		obj.actionEvent = "checkAvailability";
+		obj.slid = slidValue.toLowerCase();
+		obj.memberIdEmailAddress  = document.getElementById("memberIdEmailAddress").value;
+		remoteAJAXCall('/olam/slidRegistrationAction.olamexecute', obj,checkAvailabilityCallback);
+	} else {
+		flag_CID = false;
+	}
+	return flag_CID;
+}
+
+/**
+ * Check the handle on  onsubmit
+ */
+
+function checkAvailabilityOnLoad() {
+	document.getElementById("handleIsAvailabileDiv").style.display = "none";
+	document.getElementById("suggestedHandleDiv").style.display = "none";
+	var memberId = document.getElementById("slid").value; // trim(form.slid.value);
+	var slidIdvalue = null;
+	var flag_CID = false;
+	if (document.getElementById("slid").length != 0) {
+		flag_CID = true;
+		var obj = {};
+		obj.actionEvent = "checkAvailability";
+		obj.slid = document.getElementById("slid").value;
+		remoteAJAXCall('/olam/slidRegistrationAction.olamexecute', obj,
+				checkAvailabilityCallback);
+	} else {
+		flag_CID = false;
+	}
+	return flag_CID;
+}
+
+
+function checkAvailabilityCallback(request) {
+	if (request.status == 200) {
+		var response = request.responseText;
+		var loginLabel = document.getElementById("loginLabel").value;
+		if (response == " ") {
+			document.getElementById("checkAvailability").disable = false;
+			return;
+		} else {
+
+			var result = JSON.parse(response);
+		
+			if (result == null || result.status == "ERROR") {
+				// member_id=document.userProfile.memberID.value;
+				checkAvailabilityError = true;
+				return;
+			} else {
+				
+				
+				if (result.status == 'AlreadyVERIFIED'){
+					//no action need to be taken Member id already verified
+					setPasswordFieldsEnabled( false ); // disabled
+				} else {
+					setPasswordFieldsEnabled( true ); // enabled
+				}
+				
+				var slidvalue = document.getElementById("slid").value;
+				if (result.status == 'AVAILABLE') {
+					document.getElementById("handleIsAvailabileDiv").style.display = "block";
+					document.getElementById("isAvailableHandleSpan").innerHTML = slidvalue.toLowerCase();
+					handleAvailable = "yes";
+					document.getElementById("suggestedHandleDiv").style.display = "none";
+					document.getElementById("jsErrMsg").style.display = "none";
+				} else if (result.status == 'UNAVAILABLE') {
+					//var errorShow =document.getElementById("flowType").value;
+					cont = result.suggestions;	
+					document.getElementById("suggestedHandleDiv").style.display = "block";
+					handleAvailable = "no";
+					document.getElementById("isNotAvailableHandleSpan").innerHTML = slidvalue.toLowerCase();
+					// document.getElementById("slid").value="";
+					document.getElementById("forCheckAvailability_1").style.display = "block";
+					document.getElementById("forCheckAvailability_2").style.display = "block";
+					document.getElementById("forCheckAvailability_3").style.display = "block";
+					document.getElementById("handleIsAvailabileDiv").style.display = "none";
+//					if(errorShow=="false"){
+//						document.getElementById("jsErrMsg").style.display="block";
+//	    				document.getElementById("jsErrMsg").innerHTML = "<p><Error>Member Id is not avaliable please <a href='../../accounts/index.html%3Fsource=IC4425j4900s2000.html'>click to login</a>.</p>";
+//	    				document.getElementById("jsErrMsg").className = "errorMsg box";	
+//					}else{
+					document.getElementById("jsErrMsg").style.display = "none";
+					//}
+					var k = 1;
+					for (i = 0; i < cont.length; i++) {
+						document.getElementById("option" + k).value = cont[i];
+						document.getElementById('radio' + k + "_label").innerHTML = cont[i];
+						k++;
+					}
+				}else  if(result.status == 'RESERVED'){
+					document.getElementById("validateMemberId").style.display ="block";
+					document.getElementById("jsErrMsg").style.display = "none";
+					clickedOpen(3);
+				}	
+				else if(result.status == 'ONLYLOGGEDINMID'){
+					//document.getElementById("slid").value="";
+					document.getElementById("jsErrMsg").style.display="block";
+					//document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["LegacyMemberIdAsContactEmailAddress"]+"</p>";
+					var messageSLID_MID = result.messageSLID_MID;
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ messageSLID_MID+"</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					document.getElementById("slid").focus();
+					if ( window.scrollTo ) window.scrollTo( 0, 0 );
+				}
+				else if(result.status == 'UNAVAILABLE_DB'){
+					var errorShow =document.getElementById("flowType").value;
+					cont = result.suggestions;	
+					document.getElementById("suggestedHandleDiv").style.display = "block";
+					handleAvailable = "no";
+					document.getElementById("isNotAvailableHandleSpan").innerHTML = slidvalue.toLowerCase();
+					// document.getElementById("slid").value="";
+					document.getElementById("forCheckAvailability_1").style.display = "block";
+					document.getElementById("forCheckAvailability_2").style.display = "block";
+					document.getElementById("forCheckAvailability_3").style.display = "block";
+					document.getElementById("handleIsAvailabileDiv").style.display = "none";
+					if(errorShow=="false"){	
+						/*WUP00700952 need to show backend error message when net Member ID already exists as SLID  */
+						document.getElementById("jsErrMsg").style.display="block";
+						var messageforMISasSLID = result.messageforMIDasSLIDerror;
+						document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ messageforMISasSLID+"</p>";
+						document.getElementById("jsErrMsg").className = "errorMsg box";
+						/*document.getElementById("jsErrMsg").style.display="block";
+	    				document.getElementById("jsErrMsg").innerHTML = "<p><Error><a href='../../accounts/index.html%3Fsource=IC4425j4900s2000.html'>"+loginLabel+"</a>.</p>";
+	    				document.getElementById("jsErrMsg").className = "errorMsg box";
+	    				*/	
+					}else{
+						document.getElementById("jsErrMsg").style.display = "none";
+					}
+					var k = 1;
+					for (i = 0; i < cont.length; i++) {
+						document.getElementById("option" + k).value = cont[i];
+						document.getElementById('radio' + k + "_label").innerHTML = cont[i];
+						k++;
+					}	
+					
+				}
+				//Added to Check for profanity WUP00673287
+				else if(result.status == 'IS_PROFANE'){
+					document.getElementById("jsErrMsg").style.display="block";
+					var messageforprofane = result.messageforprofane;
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ messageforprofane+"</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					document.getElementById("slid").focus();
+				} 
+				else if(result.status == 'IS_XSS'){
+					document.getElementById("jsErrMsg").style.display="block";
+					var messageforxss = result.messageforxss;
+					document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ messageforxss+"</p>";
+					document.getElementById("jsErrMsg").className = "errorMsg box";
+					document.getElementById("slid").focus();
+				} 
+			}
+		}
+
+	} else {
+		document.getElementById("checkAvailability").disable = false;
+		return;
+	}
+}
+function IsNumeric(sText)
+{
+   var ValidChars = "0123456789";
+   var IsNumber=true;
+   var Char;
+   for (i = 0; i < sText.length && IsNumber == true; i++) 
+      { 
+      Char = sText.charAt(i); 
+      if (ValidChars.indexOf(Char) == -1) 
+         {
+    	  
+          IsNumber = false;
+          break;
+         }
+      }
+   return IsNumber;
+ }
+
+function sym(text){
+	for(value=0 ; value < text.length ; value++){
+		if(text.charAt(value)=='@'){
+			return true;
+		}
+	}
+}
+
+function checkSymCount(text){
+	var count=0;
+	for(value=0;value<text.length;value++){
+		if(text.charAt(value)=='@'){
+			count=count+1;
+			if(count>1){
+				return true;
+			}
+		}
+	}
+}
+
+function isSplAllowedHandle(myString){
+for (var i = 0; i < myString.length; i++){
+	var myLetter = myString.charAt(i); //substr(i, 1);
+	if (CHAR_SPECIAL_HANDLE.indexOf(myLetter)!= -1) {
+	if(CHAR_SPECIAL_HANDLE.indexOf(myString.charAt(i+1))!= -1){ return false; } //,1))!= -1){ return false; }
+		}
+	}
+return true;
+}
+
+
+
+function isValidAccessIdFormat(memberId){
+	//alert("isValidAccessIdFormat=="+memberId);
+
+	if (isEmpty(memberId)) {
+		//alert("field not filled");
+		document.getElementById("jsErrMsg").style.display="block";
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+			+ map["ErrorMsgPleaseEnterUserID"] + "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+
+		return false;
+	}
+
+//	Length
+	if ((memberId.length < 5 || memberId.length > 127)) {
+		document.getElementById("jsErrMsg").style.display="block";
+		//alert("TheUserIDEnteredIsNotAValidUserID");
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+			+ map["ErrorMsgAccessIDNotInRequiredFormat"] + "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+		return false;
+	}
+
+
+//	Check for allowed characters
+	if (memberId.match("[^a-zA-Z0-9._@-]")) {
+		document.getElementById("jsErrMsg").style.display="block";
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"
+			+ map["ErrorMsgAccessIDNotInRequiredFormat"] + "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		//document.getElementById("handleIsAvailabileDiv").style.display = "none";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+		return false;
+	}
+
+//	Single Login IDs cannot contain two consecutive special characters
+	if(memberId.indexOf("..") > -1 || memberId.indexOf("__") > -1
+			|| memberId.indexOf("--") > -1 || memberId.indexOf("@@") > -1 
+			|| memberId.indexOf(".@") > -1 || memberId.indexOf("@.") > -1
+			|| memberId.indexOf("._") > -1 || memberId.indexOf("_.") > -1
+			|| memberId.indexOf(".-") > -1 || memberId.indexOf("-.") > -1
+			|| memberId.indexOf("_-") > -1 || memberId.indexOf("-_") > -1
+			|| memberId.indexOf("_@") > -1 || memberId.indexOf("@_") > -1
+			|| memberId.indexOf("-@") > -1 || memberId.indexOf("@-") > -1
+	){
+
+		document.getElementById("jsErrMsg").style.display="block";
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ConsecutiveSpecialCharactersNotAllowed"]+ "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+		return false;
+	}
+
+
+	/*to check the slid is in Email address format*/
+	var isEmailFormat =false;  	 
+//	var filter =  /^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/  	 
+//	var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,6})+$/
+//	var filter =  /^\w+([\+\.-]?\w+)*\w+@\w+([\.-]?\w+)*(\.\w{2,6})+$/;
+	var filter = /^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,6})+$/  
+		
+	if(!filter.test(memberId)){
+		isEmailFormat = false;
+	}else{
+		//alert("email address format true 1");
+		isEmailFormat = true;
+	}
+
+	var invalidDomain = false;
+	if(isEmailFormat==true){
+		//alert("email address format true 2");
+		var nonForeignDomainsList = document.getElementById("slidInavlidDomains").value;
+		var bar = nonForeignDomainsList.split(",");
+		var index=memberId.indexOf("@");
+		//get the domain of slid or access Id
+		var domAccesID=memberId.substr((index+1));
+		for(var i = 0;i<bar.length;i++){
+			chDomain=bar[i];
+			if(chDomain == domAccesID){
+				invalidDomain=true ;         
+				break;
+			}
+		}
+	}
+
+	if(invalidDomain==true){
+		document.getElementById("jsErrMsg").style.display="block";  
+		map["InvalidDomain"] = "Inavalid Domain";
+		document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["InvalidDomain"]+ "</p>";
+		document.getElementById("jsErrMsg").className = "errorMsg box";
+		if ( window.scrollTo ) window.scrollTo( 0, 0 );
+		return false;
+	}
+
+	var isForeignEmail = true;
+	if(isEmailFormat==true){
+		//alert("email address format true 2");
+		var nonForeignDomainsList = document.getElementById("nonForeignDomains").value;
+		var bar = nonForeignDomainsList.split(",");
+		var index=memberId.indexOf("@");
+		//get the domain of slid or access Id
+		var domAccesID=memberId.substr((index+1));
+		for(var i = 0;i<bar.length;i++){
+			nonForeigndoamin =bar[i];
+			if(nonForeigndoamin == domAccesID){
+				isForeignEmail =false;         
+				break;
+			}
+		}
+	}
+
+	if(isEmailFormat==true && isForeignEmail==false){
+		document.getElementById("memberIdEmailAddress").value="true";
+	} else { 
+		document.getElementById("memberIdEmailAddress").value="false";
+	}
+
+	if(isEmailFormat){
+
+		if(checkSymCount(memberId)==true){
+			document.getElementById("jsErrMsg").style.display="block";    				
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ThereMustBeOnlyOneAtTheRateSign"]+ "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+
+	} else {
+
+		if(IsNumeric(memberId)==true){
+			//alert("access id is numeric");
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["AccessIDShouldNotBeAllNumeric"]+ "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+
+		// First char is alpha
+		if(!memberId.charAt(0).match("[a-zA-Z]")){
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgAccessIDNotInRequiredFormat"] +"</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+
+		// Make sure doesn't have an @
+		if(sym(memberId)==true){
+			document.getElementById("jsErrMsg").style.display="block";
+			document.getElementById("jsErrMsg").innerHTML = "<p><Error>"+ map["ErrorMsgMemberIDCannotBeUsed"]+ "</p>";
+			document.getElementById("jsErrMsg").className = "errorMsg box";
+			if ( window.scrollTo ) window.scrollTo( 0, 0 );
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function setPasswordFieldsEnabled( enabled ) {
+	
+	var value = ( enabled ? "" : "******" );
+	var disabled = !enabled;
+	
+	var password = document.getElementById("password");
+	if ( password && password.disabled != disabled ) {
+		password.value= value;
+		password.disabled = disabled;
+	}
+	
+	var passwordVerified = document.getElementById("passwordVerify");
+	if ( passwordVerified && passwordVerified.disabled != disabled) {
+		passwordVerified.value=value;
+		passwordVerified.disabled = disabled;
+	}
+		
+	var isMemberIdValidateSucess = document.getElementById("isMemberIdValidateSucess");
+	if ( isMemberIdValidateSucess ) {
+		isMemberIdValidateSucess.value = (enabled ? "false" : "true");
+	}
+	
+	var passwordNoteField = document.getElementById("passwordNoteField");
+	if (passwordNoteField) {
+		passwordNoteField.style.display = ( enabled ? "none" : "block");
+	}
+}
+
+function triggerSubmit() {
+//	alert("in triggerSubmit");
+//	parent.jQuery.colorbox.close();
+	setupSubmit();
+	window.parent.document.forms["slidRegistrationActionForm"].submit();
+}
+
+function setupSubmit(form) {
+//	alert("in setupSubmit");
+//	document.getElementById("showSubmit").style.display="none";
+//	document.getElementById("blockSubmit").style.display="block";
+	window.parent.document.getElementById("showSubmit").style.display="none";
+	window.parent.document.getElementById("blockSubmit").style.display="block";
+	hasBeenSubmitted=true;		
+	window.parent.clickedOpen(4);
+}

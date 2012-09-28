@@ -557,6 +557,26 @@ document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
 document.write('<div class="rc-release-box">'); 
+document.write('<p>20 de septiembre de 2012<br />');
+document.write('<a href="/newsroom/news_releases/att_company_of_year_9-20-12.html?id=' + state + '" title="AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.">AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
+document.write('<p>19 de septiembre de 2012<br />');
+document.write('<a href="/newsroom/news_releases/it_can_wait_9-19-12.html?id=' + state + '" title="El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir">El DoT y la FCC se unen a AT&amp;T en el llamado a un movimiento nacional que ponga fin al h&aacute;bito de textear al conducir</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
+document.write('<p>17 de septiembre de 2012<br />');
+document.write('<a href="/newsroom/news_releases/iphone5_preorder_release_9-17-12.html?id=' + state + '" title="AT&amp;T bate record de ventas con el iPhone 5">AT&amp;T bate record de ventas con el iPhone 5</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
+document.write('<p>12 de septiembre de 2012<br />');
+document.write('<a href="/newsroom/news_releases/iphone5_release_9-12-12.html?id=' + state + '" title="AT&amp;T ofrecer&aacute; el iPhone 5 en la red 4G m&aacute;s grande del pa&iacute;s a partir del 21 de septiembre">AT&amp;T ofrecer&aacute; el iPhone 5 en la red 4G m&aacute;s grande del pa&iacute;s a partir del 21 de septiembre</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>15 de agosto	 de 2012<br />');
 document.write('<a href="/newsroom/news_releases/twd_8-15-12.html?id=' + state + '" title="Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir">Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir</a></p>');
 document.write('</div>');
@@ -566,25 +586,6 @@ document.write('<p>27 de julio de 2012<br />');
 document.write('<a href="/newsroom/news_releases/dallas_olympics_mj_7_30_12.html?id=' + state + '" title="AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres">AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres</a></p>');
 document.write('</div>');
 
-document.write('<div class="rc-release-box">');
-document.write('<p>26 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/miami_4g_lte_7_24_12.html?id=' + state + '" title="4G LTE de AT&amp;T ahora en Miami">4G LTE de AT&amp;T ahora en Miami</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>18 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/shared_data_7_18_12.html?id=' + state + '" title="AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil">AT&#38;T ofrece m&#225;s opciones con los nuevos planes de datos compartidos del servicio m&#243;vil</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">'); 
-document.write('<p>11 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/philly_network_excellence_7_2_12.html?id=' + state + '" title="Aumentan las mejoras al servicio m&#243;vil de AT&#38;T gracias a nuevas torres en Filadelfia">Las inversiones de AT&#38;T en el &#225;rea metropolitana de Filadelfia redundan en mejor rendimiento de los servicios de voz y datos</a></p>');
-document.write('</div>');
-
-document.write('<div class="rc-release-box">');
-document.write('<p>2 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/tampa_network_upgrade_7_2_12.html?id=' + state + '" title="AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay">AT&#38;T ampl&#237;a sus servicios de internet m&#243;vil en el &#225;rea de Tampa Bay</a></p>');
-document.write('</div>');
 
 
  

@@ -518,4 +518,4 @@ if (bodyId === 'category' || bodyId === 'thumbnail' || bodyId === 'search' ){
     });
 }
 
-
+$('.recentlyViewedContainer').css('position','absolute');

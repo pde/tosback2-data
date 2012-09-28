@@ -196,8 +196,34 @@ if (!JobGo) {
 }
 
 $(document).ready(function(){
-    JobGo.Notice.getContainer().fadeOut(5000);
+    JobGo.Notice.getContainer().delay(5000).fadeOut(5000);
 });
+
+JobGo.attachmentRemoveHandler = function() {
+    var removedFile = this;
+    $(removedFile.parentNode.parentNode).remove();
+    $.getJSON('/file/remove/id/'+this.id, function(data)
+    {
+        if (data.count)
+        {
+            if(data.count != 'undefined')
+            {
+                if (typeof(swfu) != 'undefined') {
+                    swfu.setFileUploadLimit(10 - data.count);
+                }
+
+                totalUploadNum = data.count;
+                $('#attachments .header-center').text("Attachments (" + totalUploadNum + ")");
+                $('#attachmentContent div.progressWrapper:visible ').each(function (i){
+                    var className = "progressWrapper";
+                    className += (i % 2)?' odd':' even';
+                    this.className = className;
+                });
+            }
+        }
+    });
+    return false;
+}
 
 JobGo.isNewWindow = function() {
     if ($.browser.mozilla) {
@@ -1531,6 +1557,41 @@ JobGo.Form = {
         }
     },
     Happening: {
+        attachmentSettings: function(params) {
+            return {
+                upload_url : params.upload_url,
+                flash_url : '/flash/swfupload.swf?PHPSESSID=' + params.PHPSESSID,
+                button_placeholder_id : params.button_placeholder_id,
+                button_text: params.button_text,
+                button_text_top_padding : 2,
+                button_image_url : '/images/btn_pic_upload.png',
+                button_width: 124,
+                button_height: 24,
+                button_cursor : SWFUpload.CURSOR.HAND,
+                button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
+                file_size_limit : '4 MB',
+                file_types : '*.jpg;*.jpeg;*.png;*.gif;*.txt;*.doc;*.docx;*.pdf',
+                file_types_description : 'JPEG PNG GIF Images DOC DOCX PDF files',
+                file_queue_limit : 5,
+                requeue_on_error : false,
+                custom_settings : {
+                    progressTarget : 'attachmentItems',
+                    cancelButtonId : 'btnCancelUpload'
+                },
+                button_text_style: '.upload {text-align: center; text-decoration: none; color: #000000; font-family: Trebuchet MS, Verdana, sans-serif; font-weight: bold; font-size: 12px;}',
+                file_upload_limit: params.file_upload_limit,
+                debug: false,
+                file_queued_handler : fileQueued,
+                file_queue_error_handler : fileQueueError,
+                file_dialog_complete_handler : fileDialogComplete,
+                upload_start_handler : uploadStart,
+                upload_progress_handler : uploadProgress,
+                upload_error_handler : uploadError,
+                upload_success_handler : uploadSuccess,
+                upload_complete_handler : uploadComplete,
+                queue_complete_handler : queueComplete
+            };
+        },
         Edit: {
             originalPicture: '',
             picture: '',
@@ -1566,6 +1627,15 @@ JobGo.Form = {
             }
         },
         Participants: {
+            Edit: {
+                init: function() {
+                    $('#happening_participant_save').click(function(evt){
+                        $(evt.target).closest('form').attr('action', '').submit();
+                        return false;
+                    });
+                    $("#happening_participant_cancel").click(JobGo.Nav.goBack);
+                }
+            },
             init: function() {
                 $('#happening_save').click(function(evt){
                     $(evt.target).closest('form').attr('action', '').submit();
@@ -2817,7 +2887,7 @@ JobGo.Translate = {
         if (this.overlay) {
             return true;
         }
-        this.area = new JobGo.Dialog.Modal($('<div class="TranslationArea" id="TranslationArea"></div>'), false, {width:'700px'});
+        this.area = new JobGo.Dialog.Modal($('<div class="TranslationArea" id="TranslationArea"></div>'), false, {width:'700px', resizable:true, draggable:true});
         this.overlay = this.area.overlay;
     },
     show: function(btn, label) {
@@ -3083,35 +3153,41 @@ $.extend(JobGo.Happening.Widget.Join.prototype, {
 
 JobGo.Happening.Meeting = {
     Cancel: function() {
-                $('.btn-happening-meeting-cancel').click(function(e){
-                    e.preventDefault();
-                    $this = $(this);
-                    var meetingId = $this.attr("id").substr(29);
-                    $.post('/happening/cancelmeeting/id/' + meetingId, {}, function(data){
-                        if (data.error) {
+        $('.btn-happening-meeting-cancel').click(function(e){
+            e.preventDefault();
+
+            $this = $(this);
+            var meetingId = $this.attr("id").substr(29);
+
+            JobGo.DefaultConfirmDialog.confirm(null, function() {
+                $.post('/happening/cancelmeeting/id/' + meetingId, {}, function(data){
+                    if (data.error) {
+                        var msg = '';
+                        if (data.message.join) {
+                            msg = data.message.join(' ');
+                        } else {
+                            msg = data.message;
+                        }
+                        JobGo.Notice.setError(msg);
+                    } else {
+                        if (data.message) {
                             var msg = '';
                             if (data.message.join) {
                                 msg = data.message.join(' ');
                             } else {
                                 msg = data.message;
                             }
-                            JobGo.Notice.setError(msg);
-                        } else {
-                            if (data.message) {
-                                var msg = '';
-                                if (data.message.join) {
-                                    msg = data.message.join(' ');
-                                } else {
-                                    msg = data.message;
-                                }
-                                JobGo.Notice.setNotice(msg);
-                            }
-                            $this.hide();
-                            $this.parent().prev().html('');
+                            JobGo.Notice.setNotice(msg);
                         }
-                    });
+                        $this.hide();
+                        $this.parent().prev().html('');
+                    }
                 });
-            },
+            });
+
+
+        });
+    },
     Widget:{}
 }
 JobGo.Happening.Meeting.Widget.Request = function($widget, $openButtons, success, failure, params) {
@@ -3382,9 +3458,9 @@ $.extend(JobGo.Widget.FormDialog.prototype, {
                     self.handleJsonResponse(data);
 
                     if (!data.error) {
-                        self.eventSubmitSuccess.trigger([self, data]);
+                        self.eventSubmitSuccess.trigger([self, data, $form]);
                     } else {
-                        self.eventSubmitFailure.trigger([self, data]);
+                        self.eventSubmitFailure.trigger([self, data, $form]);
                     }
 
                 }
@@ -3437,6 +3513,9 @@ $.extend(JobGo.Widget.FormDialog.prototype, {
                 JobGo.Notice.setNotice(msg);
             }
         }
+    },
+    setTitle: function(title) {
+        $('#ui-dialog-title-'+this.getWidget().attr('id')).html(title);
     }
 });
 
@@ -3445,9 +3524,7 @@ JobGo.Widget.ConfirmDialog = function($widget, $openButtons, params) {
     this.openButtons = $openButtons;
     this.openButton = null;
 
-    this.eventBeforeOpen = new Talentor.Event('beforeOpen');
-    this.eventAfterOpen = new Talentor.Event('afterOpen');
-    this.eventBeforeSubmit = new Talentor.Event('beforeSubmit');
+    var self = this;
 
     if (!params) {
         params = {};
@@ -3458,35 +3535,37 @@ JobGo.Widget.ConfirmDialog = function($widget, $openButtons, params) {
 
 $.extend(JobGo.Widget.ConfirmDialog.prototype, {
     init: function (params) {
-
-        if (params.eventBeforeOpen) {
-            this.eventBeforeOpen.bind(params.eventBeforeOpen);
-        }
-
-        if (params.eventAfterOpen) {
-            this.eventAfterOpen.bind(params.eventAfterOpen);
-        }
-
         var self = this;
         this.getOpenButtons().each(function(i, e){
-
-            $(this).click(function(e){
-                self.openButton = $(this);
-                self.event = e;
-
-                if (self.getOpenButton().data('isConfirming')) return;
-
-                e.preventDefault();
-
-
-                self.getWidget().find('.confirm-dialog-content').html(self.getOpenButton().attr('title'));
-
-                self.eventBeforeOpen.trigger([self]);
-                self.getWidget().dialog('open');
-                self.eventAfterOpen.trigger([self]);
-
-            });
+            self.addOpenButton($(this));
         });
+    },
+    addOpenButton: function ($element) {
+        var self = this;
+        $element.click(function(e){
+
+            self.openButton = $(this);
+            self.event = e;
+
+            if (self.getOpenButton().data('isConfirming')) return;
+
+            e.preventDefault();
+
+            self.setMessage(self.getOpenButton().attr('title'));
+
+            self.open();
+        });
+    },
+    open: function () {
+        this.getWidget().dialog('open');
+    },
+    setMessage: function (message) {
+        this.getWidget().find('.confirm-dialog-content').html(message);
+    },
+    confirm: function (message, allowAction) {
+        if (message) this.setMessage(message);
+        this._allowAction = allowAction;
+        this.open();
     },
     getWidget: function() {
         return this.widget;
@@ -3503,12 +3582,16 @@ $.extend(JobGo.Widget.ConfirmDialog.prototype, {
         this.getOpenButton().data('isConfirming', true);
         this.getOpenButton().data('isConfirmed', true);
 
-        console.log(this.getOpenButton());
         this.getOpenButton().click();
         if (this.getOpenButton().hasClass('jobgo-confirm-follow-link') && this.getOpenButton().attr('href')) {
             JobGo.Nav.goToUrl(this.getOpenButton().attr('href'));
         }
         this.getOpenButton().data('isConfirming', null);
+
+        if (this._allowAction) {
+            this._allowAction();
+        }
+        this._allowAction = null;
     }
 });
 

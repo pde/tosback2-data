@@ -614,4 +614,63 @@ var mboxFactoryDefault=new mboxFactory("apollogroupinc.tt.omtrdc.net","apollogro
 }if(mboxGetPageParameter("mboxDebug")!=null||mboxFactoryDefault.getCookieManager().getCookie("debug")!=null){setTimeout(function(){if(typeof mboxDebugLoaded=="undefined"){alert("Could not load the remote debug.\nPlease check your connection to Test&amp;Target servers")
 }},60*60);
 document.write('<script language="Javascript1.2" src="http://admin6.testandtarget.omniture.com/admin/mbox/mbox_debug.jsp?mboxServerHost=apollogroupinc.tt.omtrdc.net&clientCode=apollogroupinc"><\/script>')
+}mboxScPluginFetcher=function(a,c){this.b=a;
+this.Cc=c
 };
+mboxScPluginFetcher.prototype.Dc=function(a){a.setBasePath("/m2/"+this.b+"/sc/standard");
+this.Ec(a);
+var b=a.buildUrl();
+b+="&scPluginVersion=1";
+return b
+};
+mboxScPluginFetcher.prototype.Ec=function(a){var c=["dynamicVariablePrefix","visitorID","vmk","ppu","charSet","visitorNamespace","cookieDomainPeriods","cookieLifetime","pageName","currencyCode","variableProvider","channel","server","pageType","transactionID","purchaseID","campaign","state","zip","events","products","linkName","linkType","resolution","colorDepth","javascriptVersion","javaEnabled","cookiesEnabled","browserWidth","browserHeight","connectionType","homepage","pe","pev1","pev2","pev3","visitorSampling","visitorSamplingGroup","dynamicAccountSelection","dynamicAccountList","dynamicAccountMatch","trackDownloadLinks","trackExternalLinks","trackInlineStats","linkLeaveQueryString","linkDownloadFileTypes","linkExternalFilters","linkInternalFilters","linkTrackVars","linkTrackEvents","linkNames","lnk","eo"];
+for(var b=0;
+b<c.length;
+b++){this.Gc(c[b],a)
+}for(var b=1;
+b<=75;
+b++){this.Gc("prop"+b,a);
+this.Gc("eVar"+b,a);
+this.Gc("hier"+b,a)
+}};
+mboxScPluginFetcher.prototype.Gc=function(c,a){var b=this.Cc[c];
+if(typeof(b)==="undefined"||b===null||b===""){return
+}a.addParameter(c,b)
+};
+mboxScPluginFetcher.prototype.cancel=function(){};
+mboxScPluginFetcher.prototype.fetch=function(a){a.setServerType(this.getType());
+var b=this.Dc(a);
+this.x=document.createElement("script");
+this.x.src=b;
+document.body.appendChild(this.x)
+};
+mboxScPluginFetcher.prototype.getType=function(){return"ajax"
+};
+function mboxLoadSCPlugin(a){if(!a){return null
+}a.m_tt=function(c){var b=c.m_i("tt");
+b.H=true;
+b.b="apollogroupinc";
+b._t=function(){if(!this.isEnabled()){return
+}var e=this.Jc();
+if(e){var d=new mboxScPluginFetcher(this.b,this.s);
+e.setFetcher(d);
+e.load()
+}};
+b.isEnabled=function(){return this.H&&mboxFactoryDefault.isEnabled()
+};
+b.Jc=function(){var d=this.Kc();
+var e=document.createElement("DIV");
+return mboxFactoryDefault.create(d,new Array(),e)
+};
+b.Kc=function(){var d=this.s.events&&this.s.events.indexOf("purchase")!=-1;
+return"SiteCatalyst: "+(d?"purchase":"event")
+}
+};
+return a.loadModule("tt")
+}function tnt_fireSCIntegration(){s.tl("TnT","o","TnT")
+}function addLoadEvent(a){var b=window.onload;
+if(typeof b!="function"){window.onload=a
+}else{window.onload=function(){b();
+a()
+}
+}}addLoadEvent(tnt_fireSCIntegration);

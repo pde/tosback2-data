@@ -26,17 +26,22 @@ function getAccount() {
 			"magazine.nature.org"	:"tncglobalprod1",
 			"magazinestage.nature.org" :"tncoucmtest",
 			"my.nature.org"		:"tncglobalprod1",
+			"natureaustralia.org.au"   :"tncglobalprod1",
 			"plantabillion.org"	:"tncglobalprod1",
+			"photocontest.nature.org"	:"tncglobalprod1",
  			"portugues.tnc.org"	:"tncglobalprod1",
 			"prod.nature.org"	:"tncoucmtest",
+			"secure.artezpacific.com"   :"tncglobalprod1",
 			"shop.nature.org"	:"tncoucmtest",
 			"stage.nature.org"	:"tncoucmtest",
 			"support.nature.org"	:"tncglobalprod1",
 			"voice.nature.org"	:"tncglobalprod1",
 			"vote.nature.org"	:"tncoucmtest",
 			"www.adoptanacre.org"	:"tncglobalprod1",
+			"www.conserveca.org"	:"tncconserveca",
 			"www.greatriverspartnership.org"   : "tncgreatrivers",
-			"www.natureconservancy.planyourlegacy.org" :"tncoucmtest",
+			"www.natureaustralia.org.au"   :"tncglobalprod1",
+			"www.natureconservancy.planyourlegacy.org" :"tncglobalprod1",
 			"www.plantabillion.org"	:"tncglobalprod1",
 			"www.nature.org"	:"tncglobalprod1"};
 	var curr_host = window.location.host;
@@ -62,7 +67,7 @@ s.trackingServer="thenatureconservancy.112.2o7.net"
 /* Dynamically select report suite */
 s.dynamicAccountSelection=false;
 s.dynamicAccountMatch=window.location.hostname;
-s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org";
+s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,conserveca.org";
 
 s.charSet="UTF-8"
 /* Conversion Config */
@@ -72,7 +77,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,docx,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org"
+s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,conserveca.org"
 /* tncfire.org no longer in use -- now in Gateway.     */
 /* nature.planyourlegacy.org no longer in use     */
 

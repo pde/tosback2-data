@@ -339,6 +339,8 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
   var formatPrice = function(priceValue, currency) {
     if (currency == 'AUD') {
       return '$' + priceValue.toFixed(2);
+    } else if (currency == 'CNY') {
+      return '\u00A5' + priceValue.toFixed(2);
     } else if (currency == 'EUR') {
       return '\u20ac' + priceValue.toFixed(2);
     } else if (currency == 'GBP') {
@@ -387,6 +389,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
   var language = saytParams['language'];
   var useCase = saytParams['use_case'] || 'CommerceSearchUseCase';
   var currency = saytParams['currency'];
+  var app = saytParams['from_preview'] ? 'pfe_preview:sayt' : 'sayt';
 
   thumbSize = saytParams['sayt_thumb_size'] || DEF_THUMB_SIZE_;
   maxResults = saytParams['sayt_max_results'] || DEF_MAX_RESULTS_;
@@ -423,10 +426,8 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
     includedAttributes.push(saytIncludeAttributes[i]);
   }
 
-  // Default value to ask for no attributes from Shopping API.  It does not
-  // hurt to ask for non existing attributes.  Attribute filter cannot be empty.
-  var attributeFilter = includedAttributes.length > 0 ?
-      includedAttributes.join(',') : 'want_nothing(text)';
+  // Default value to ask for no attributes from Shopping API.
+  var attributeFilter = includedAttributes.join(',');
 
   // If we are asked to use data URIs for thumbnails, check the browser
   // version to make sure it supports this.
@@ -495,7 +496,7 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
       'sayt.useGcsConfig': thumbnailAsData,
       'useCase': useCase,
       'attributeFilter': attributeFilter,
-      'app': 'sayt',
+      'app': app,
       // We always want the following default top level fields.
       'productFields': 'title,description,link,inventories,images'
     };
@@ -639,28 +640,149 @@ var saytInitialize = function(cx, apiKey, opt_saytParams) {
  *
  * @param {string} cx Commerce search engine identifier.
  * @param {string} apiKey Search API For Shopping Key.
- * @param {Array} googleAnalyticsQueue The Google Analytics tracking queue.
  * @param {string} searchText The Id of the search box input.
  * @param {string} searchForm The Id of the search box form.
+ * @param {Function} opt_saytInitializedCallback The callback function to call
+ *     when the sayt object is initialized.
  * @param {Object} opt_styleOptions Style options of the search box.
  * @param {Object} opt_saytParams parameters for SAYT, which will be passed
  * to sayInitialize.
  */
 var setupSayt = function(cx,
                          apiKey,
-                         googleAnalyticsQueue,
                          searchText,
                          searchForm,
+                         opt_saytInitializedCallback,
                          opt_styleOptions,
                          opt_saytParams) {
-  sayt = saytInitialize(cx, key, opt_saytParams);
-  var opt_options = {
-    saytActor: sayt.saytSubmit,
-    styleOptions: opt_styleOptions
-  };
+  var emitSaytEvent = function(action, label, nonInteraction) {
+    if (window['_gaq']) {
+      window['_gaq'].push(
+          ['_trackEvent', 'GCS', action, label, null, null, nonInteraction]);
+    }
+  }
+
+  // Setup tracking for user input in the search box.
+  var hasSearchBoxInput = false;
+  var searchBoxInputListener = function() {
+    if (hasSearchBoxInput) {
+      return;
+    }
+    hasSearchBoxInput = true;
+    emitSaytEvent('SearchBox', 'hasInput', false);
+  }
+
+  var input = document.getElementById(searchText);
+  if (input.addEventListener) {
+    input.addEventListener('keydown', searchBoxInputListener, true);
+  } else if (input.attachEvent) {
+    input.attachEvent('onkeydown', searchBoxInputListener);
+  }
+
+  var getCookie = function(cookieName) {
+    var nameeq = cookieName + '=';
+    var cookie = String(document.cookie);
+    for (var pos = -1; (pos = cookie.indexOf(nameeq, pos + 1)) >= 0;) {
+      var i = pos;
+      while (--i >= 0) {
+        var ch = cookie.charAt(i);
+        if (ch == ';') {
+          i = -1;  // indicate success
+          break;
+        } else if (' \t'.indexOf(ch) < 0) {
+          break;
+        }
+      }
+      if (-1 === i) {  // first cookie in the string or we found a ;
+        var end = cookie.indexOf(';', pos);
+        if (end < 0) { end = cookie.length; }
+        return cookie.substring(pos + nameeq.length, end);
+      }
+    }
+    return '';
+  }
+
+  var getSessionStartTime = function(utmaCookie) {
+    var ids = utmaCookie.split('.');
+    if (ids.length < 6) return null;
+    return parseInt(ids[4], 10);
+  }
+
+  var onloadCompleted = false;
+  var experimentConfigResponse = null;
+
+  var getExperimentConfigs = function() {
+    if (!window['gapi'] || !gapi.client) {
+      emitSaytEvent('Sayt', 'Unknown', true);
+      initializeSayt();
+      return;
+    }
+
+    gapi.client.setApiKey(apiKey);
+    gapi.client.request({
+      'path': '/shopping/search/v1/customers/cx:' + cx
+    }).execute(function(response) {
+      experimentConfigResponse = response;
+      if (onloadCompleted) {
+        initializeSaytWithExperimentSettings(experimentConfigResponse);
+      }
+    });
+  }
+
+  var loadScript = function(url) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+    script.async = true;
+
+    document.body.appendChild(script);
+  }
+
+  window['__sayt_gapi_callback'] = getExperimentConfigs;
+  loadScript(
+      'https://apis.google.com/js/client.js?onload=__sayt_gapi_callback');
+
+  var initializeSayt = function() {
+    var saytParams = opt_saytParams || {};
+    saytParams['extra_params'] = saytParams['extra_params'] || {};
+    saytParams['extra_params']['clickTracking'] = 'true';
+    var sayt = saytInitialize(cx, apiKey, saytParams);
+    var opt_options = {
+      saytActor: sayt.saytSubmit,
+      styleOptions: opt_styleOptions
+    };
+
+    google.search.CustomSearchControl.attachAutoCompletionWithOptions(
+        cx, document.getElementById(searchText), searchForm, opt_options);
+    opt_saytInitializedCallback && opt_saytInitializedCallback(sayt);
+  }
+
+  var initializeSaytWithExperimentSettings = function(response) {
+    var sessionStartTime = getSessionStartTime(getCookie('__utma'));
+    if (!sessionStartTime) {
+      emitSaytEvent('Wait', 'Cookie', true);
+    }
+    if (sessionStartTime && response.saytExperiment &&
+        response.saytExperiment == 'SPLIT_TRAFFIC' &&
+        response.saytDisabledPercent &&
+        sessionStartTime % 100 < response.saytDisabledPercent) {
+      emitSaytEvent('Sayt', 'Disabled', true);
+      return;
+    }
+
+    if (!response || response.error) {
+      emitSaytEvent('Sayt', 'Failed', true);
+    } else {
+      emitSaytEvent('Sayt', 'Enabled', true);
+    }
+    initializeSayt();
+  }
+
   google.load('search', '1');
   google.setOnLoadCallback(function() {
-    google.search.CustomSearchControl.attachAutoCompletionWithOptions(
-      cx, document.getElementById(searchText), searchForm, opt_options);
+    onloadCompleted = true;
+    if (experimentConfigResponse) {
+      initializeSaytWithExperimentSettings(experimentConfigResponse);
+    }
   });
 };

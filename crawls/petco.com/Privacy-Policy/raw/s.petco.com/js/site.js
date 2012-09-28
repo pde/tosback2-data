@@ -80,7 +80,7 @@ $j(".qv-tabs li a").click(function(e){var rel=jQuery(this).attr("rel");jQuery(".
 jQuery("#qv-tabs .tab-content").hide();jQuery(this).addClass("active");jQuery("#"+rel).show();
 return false;});jQuery("#qv-revtab").hide();jQuery("#qv-desctab").show();$j("#qv-fbLike").prepend($j('<fb:like href="'+jsonResult.ProductDetailURL+'" layout="button_count" width="150" font="arial"></fb:like>'));
 $pfblike.setAsyncInit("qv-fb-root",jsonResult.ProductDetailURL,"LIVEQV");$j("#qv-revtab-trigger").click(function(){cmMakeTag(["tid","15","eid","ReadReview","ecat","Ratings and Reviews","ul",jsonResult.ProductDetailURL]);
-});eval(jsonResult.CoremetricsProductViewScript);$j("#qv-shell").show();},createSKUDiv:function(skuJson,isBowlable,familyID,jsonResultLength){var html="";
+});eval(jsonResult.CoremetricsProductViewScript);$j("#qv-shell").show();},createSKUDiv:function(skuJson,isBowlable,familyID,jsonResultLength){if(skuJson.ProductStatus==100||skuJson.ProductStatus==93){var html="";
 html+='<div class="qv-sku">';if(skuJson.Attributes!=null&&skuJson.Attributes.length>0){html+='   <div class="qv-sku-attr">'+skuJson.Attributes+"</div>";
 }html+='   <div class="qv-sku-info">';if(skuJson.IsOnSale){html+='   <span class="qv-sku-price-strike">'+skuJson.FormattedOriginalPrice+"</span>";
 html+="   &nbsp;&nbsp;";}html+='       <span class="qv-sku-price">'+skuJson.FormattedSalePrice+"</span>";
@@ -92,7 +92,7 @@ html+="   </div>";}var qtyDisabled=(!skuJson.IsInStock?' disabled="disabled" ':"
 var defaultQty=(jsonResultLength==1?"1":"");html+="   </div>";html+='   <div class="qv-sku-qty">';
 html+='       Qty: <input type="text" '+qtyDisabled+' id="qv-sku-qty-text_'+skuJson.SKU+'" data-sku="'+skuJson.SKU+'" class="qv-sku-qty-input" maxlength="2" value="'+defaultQty+'" />';
 html+="   </div>";html+='   <div style="clear: both; height: 1px; font-size: 1px;">&nbsp;</div>';
-html+="</div>";return $j(html);},makeDialog:function(fid){if($j("#qvDialog").length>0){$j("#qvDialog").remove();
+html+="</div>";return $j(html);}},makeDialog:function(fid){if($j("#qvDialog").length>0){$j("#qvDialog").remove();
 }var html="";html+='<div id="qvDialog" class="qv-shell-loading">';html+='   <div id="qv-shell" style="display: none;">';
 html+='       <div id="qv-leftpane">';html+='           <img id="qv-img" src="/Assets/pixel.gif" alt="" width="200" height="200" />';
 html+='           <div id="qv-prodinfo">';html+='               <div id="qv-fbLike">';
@@ -223,7 +223,7 @@ $j(this).html("+ More");$j(this).attr("data-refine-toggle-mode","hide");}});});}
 var $pnav={injectTopNav:function(root){$j(["/assets/layout/dropmenu-top-sm-animal.png","/assets/layout/dropmenu-top-ferret.png","/assets/layout/dropmenu-top-ferret.png","/assets/layout/dropmenu-top-right.png","/assets/layout/dropmenu-top-oral-health2.png","/assets/layout/dropmenu-btm.png","/assets/layout/dropmenu-top-left.png","/assets/layout/dropmenu-bg.png"]).preload();
 var url="/Handlers/Navigation/MegaMenuHandler.ashx?a=getall&d="+new Date().toString();
 var menuJson=null;$j.ajax({url:url,async:false,success:function(response){menuJson=$j.parseJSON(response);
-}});var targets=[{navid:1,text:"dog",url:"Dog-Home.aspx"},{navid:2,text:"cat",url:"Cat-Home.aspx"},{navid:3,text:"fish",url:"Fish-Home.aspx"},{navid:4,text:"small animal",url:"Small-Animal-Home.aspx"},{navid:8,text:"ferret",url:"Ferrets-Home.aspx"},{navid:5,text:"reptile",url:"Reptile-Home.aspx"},{navid:6,text:"bird",url:"Bird-Home.aspx"},{navid:949,text:"flea & tick",url:"petco_page_PC_fleatickhome.aspx"},{navid:null,text:"dog boutique",url:"petco_Page_PC_dogboutique.aspx?CoreCat=MegaDogBoutique"},{navid:null,text:"pond",url:"Pond-Home.aspx?CoreCat=MegaPond"},{navid:null,text:"Sale",url:"petco_page_pc_shoppinghome.aspx"}];
+}});var targets=[{navid:1,text:"dog",url:"Dog-Home.aspx"},{navid:2,text:"cat",url:"Cat-Home.aspx"},{navid:3,text:"fish",url:"Fish-Home.aspx"},{navid:4,text:"small animal",url:"Small-Animal-Home.aspx"},{navid:8,text:"ferret",url:"Ferrets-Home.aspx"},{navid:5,text:"reptile",url:"Reptile-Home.aspx"},{navid:6,text:"bird",url:"Bird-Home.aspx"},{navid:949,text:"flea & tick",url:"petco_page_PC_fleatickhome.aspx"},{navid:null,text:"dog boutique",url:"petco_Page_PC_dogboutique.aspx?CoreCat=MegaDogBoutique"},{navid:null,text:"Halloween",url:"petco_page_PC_halloween.aspx?CoreCat=MegaHalloween"},{navid:null,text:"Sale",url:"petco_page_pc_shoppinghome.aspx"}];
 var markup='<ul id="ptco-nav" class="clearfix">';for(var i=0;i<targets.length;i++){var content=null;
 for(var x=0;x<menuJson.length;x++){if(menuJson[x].ParentNavElementID==targets[i].navid){content=menuJson[x].Content;
 break;}}if(i==7){markup+='<li id="ptco-nav-fleatick">';}else{markup+='<li id="ptco-nav-'+targets[i].text.replace(/ /gi,"-")+'">';

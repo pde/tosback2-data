@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "si.158.904.20120629",
+	version: "si.179.904.20120912",
 	release: "0",
 	dictionary: {
 		init: {
@@ -185,7 +185,8 @@ var _jsmd_default={
 				dynamic_actions: {
 					"video":                    { ignore: true },
 					"gallery-click":			{ ignore: true },
-					"social-click":				{ ignore: true }
+					"social-click":				{ ignore: true },
+					"livefyre-click":			{ ignore: true }
 				}
 
 			}
@@ -263,7 +264,9 @@ var _jsmd_default={
 				"m:page.type":						["pageType"]
 			},
 			eventmap: {
-				"app.init":							["event15"]
+				"app.init":							["event15"],
+				"social.interaction":				["event24"],
+				"social.comment_submit":			["event25"]
 			},
 			premap: function() { },
 			postmap: function() {
@@ -307,11 +310,19 @@ var _jsmd_default={
 				if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("social-click") > -1){
 					this.v.linkTrackVars = "prop24,eVar24";
 				};
+
+				/* livefyre click tracking */
+				if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("livefyre-click") > -1){
+					this.v.eVar26 = this.v.pageName;
+					this.v.pageName = "";
+					this.v.events = "event24,event25";
+				};
 			}
 		},
 		adbp: {
 			filters: {
-				"mlbtab-click":		{ include: ["nothing"] }
+				"mlbtab-click":		{ include: ["nothing"] },
+				"livefyre-click":	{ include: ["page.name","code.version"] }
 			},
 			settings: {
 				"trackInlineStats":				true,
@@ -1454,6 +1465,14 @@ cookie: {
 			this.set("business.si.game.name",data.tab_name);	//prop12,eVar12
 			this.set("action","link");
 			this.set("link",{name: "mlbtab-click: " + data.tab_name, type: "o"});
+			this.send();
+		},
+		"livefyre-click": function(data) {
+			this.push("page.events","social.interaction");		//event24
+			this.push("page.events","social.comment_submit");	//event25
+			this.set("business.si.social_type","social: livefyre comment");	//prop24,eVar24
+			this.set("action","link");
+			this.set("link",{name: "livefyre-click", type: "o"});
 			this.send();
 		},
 		"gallery-click": function(data) {

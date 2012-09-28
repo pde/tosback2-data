@@ -180,9 +180,12 @@ $(function() {
     placement: 'right',
     selector: "a[rel=tooltip]"    
   });
-  $('.carousel').carousel({
+  $('#promoImageSlide').carousel({
     interval: 7500
   });
+  $('#trialImageSlide').carousel({
+    interval: 3500
+  })
   $('.more-info').popover({
     placement: 'bottom',
     delay: { show: 300, hide: 100 }
@@ -191,7 +194,6 @@ $(function() {
   // REMOVE for production 
   $('#storyBody p span, #storyBody p').removeAttr('style');
   // timer
-  
   /* rain gauge sticky sidebar 
   // var topBrowser = $('.sticky-wrapper').offset().top - parseFloat($('.sticky-wrapper').css('margin-top').replace(/auto/, 0));
   var $stickyWrapper = $('.sticky-wrapper'),

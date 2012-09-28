@@ -1126,7 +1126,7 @@
 		var nonRegisteredTHDMyAcctURL = THDLogonCmd + "URL=UserAccountView&";
 		goToLinkFromJS(nonRegisteredTHDMyAcctURL,nonRegisteredTHDMyAcctURL);
 	}
-		
+
 	function goToOrderStatusFromJS() {
 		var nonRegisteredURL = 'http://' + getHostNameNonSecure() + '/webapp/wcs/stores/servlet/OrderTrackingForm?langId=-1&storeId=10051&catalogId=10053';
 		var registeredURL = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/OrderSummaryJSONView?storeId=10051&langId=-1&catalogId=10053&orderType=online&ParentPageName=OnlineOrdersPage';
@@ -1140,7 +1140,7 @@
 		var CreditCenterURL = THDContentViewCmd + "pn=Credit_Center&";
 		goToLinkFromJS(CreditCenterURL,CreditCenterURL);
 	}
-
+	
 	function goToTHDMyListFromJS(){
 		goToLinkFromJS(THDInterestItemVerifyCmd,InterestItemDisplayCmd);
 	}
@@ -1160,7 +1160,7 @@
 		}else if(nonRegisteredURL.indexOf('THDInterestItemVerify') != -1){
 			var splitIndex = nonRegisteredURL.indexOf('?');
 			//var ajaxURL = nonRegisteredURL.slice(0, splitIndex);
-			var ajaxURL = '/webapp/wcs/stores/servlet/THDInterestItemListOperation';
+			var ajaxURL =  '/webapp/wcs/stores/servlet/THDInterestItemListOperation';
 			var postData =nonRegisteredURL.slice(splitIndex+1) ;
 
 			postData = postData + '&opCode=13'+ '&requestType=ajax';
@@ -1186,25 +1186,30 @@
 					  });
 				 
 				loadPopup('popupSignIn'); 
-				$("#signIn").click(function(){	
+				$("#signIn").click(function(e){
+					e.preventDefault();	
 					var e = $("#email_id").attr('value');
 					var f = $(".backgroundPopup #password").attr('value'); 
 					var atpos=e.indexOf("@");
 					var dotpos=e.lastIndexOf(".");
-					$("#email_id, .backgroundPopup #password").css('border','1px solid gray');
-					if (atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) {
+					 $("#email_id, .backgroundPopup #password").css('border','1px solid gray');
+					  if ((e.length==0 && f.length==0) ||((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) && f.length==0)) {
 						$(".signInError").css('display','none');
 						$("#email_id, .backgroundPopup #password").css('border','1px solid red');
 						$(".signInError").css({display:'block', color:'red'});
 						$(".signInError").html("The following field(s) are required: E-mail Address, Password.");
-					} 
-					
-					else if(f.length==0){
-						$(".backgroundPopup #password").css('border','1px solid red'); 
+					  }
+					  else if ((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) || e.length==0) {
+						$(".signInError").css('display','none');
+						$("#email_id").css('border','1px solid red');
 						$(".signInError").css({display:'block', color:'red'});
-						$(".signInError").html("The following field(s) are required: Password.");
+						$(".signInError").html("The following field(s) are required: E-mail Address.");
+					  }
+							else if(f.length==0){
+							$(".backgroundPopup #password").css('border','1px solid red'); 
+							$(".signInError").css({display:'block', color:'red'});
+							$(".signInError").html("The following field(s) are required: Password.");
 					}
-					
 					else {
 						$("#email_id").css('border','1px solid gray');
 						$(".signInError").css('display','none');
@@ -1215,7 +1220,6 @@
 
 			},
 			error: function(data){
-				document.location.href="http://www.homedepot.com/webapp/wcs/stores/servlet/THDInterestItemListOperation";
 			}});	
 
 		}else{
@@ -1232,6 +1236,102 @@
 		}
 		document.location.href = url;
 	}
+	
+	/*MyAccount Rel2 - New method Added : Start*/
+	function displayModalWindow() {
+		// readCookie is located in utils.js file 
+		var isLoggedOn = readCookie("THD_USERSTATUS") == '1'; 
+		if(isLoggedOn) { 
+		fromPage = getURLParam('qv_frompage'); 
+		if(fromPage =='undefined' || fromPage ==''){ 
+		if(document.getElementById("fromPage") != null) 
+		var fromPage = document.getElementById("fromPage").value; 
+		if (fromPage == 'quickview'){
+		fromPage = 'quickView';
+		}
+		document.getElementById("fromPage").value = fromPage;
+		} 
+		if(document.getElementById("clickAddToListButton")){ 
+		var click = document.getElementById("clickAddToListButton").value; 
+		} 
+		if(click =='undefined' || click ==''){ 
+		click = getURLParam('clickaddtolistbutton'); 
+		document.getElementById("clickAddToListButton").value = click;
+
+		} 
+		if(click !='' && click != 'false'){ 
+		// Set the variable to false so that the ajaxcall doesnot run everytime on refresh 
+		$("#clickAddToListButton").val(false);
+		if(fromPage !='undefined' && fromPage !='' && fromPage == "shoppingCart") { 
+		if(document.getElementById("matchIndex") != null){ 
+		var matchIndex = document.getElementById("matchIndex").value; 
+		} 
+		var catEntryId = document.getElementById("productId_" + matchIndex).value; 
+		makeAjaxCall('',9,'',catEntryId,'','','',matchIndex); 
+		} 
+		else if(fromPage !='undefined' && fromPage !='' && fromPage == 'productDetail'){ 
+		var catEntryId = $('input[name="productId"]').val(); 
+		var catEntFromURL = getURLParam('catentryid');
+		//Setting the supersku value that is fetched from url
+		if(catEntryId != catEntFromURL){
+			catEntryId = catEntFromURL;
+			$('input[name="productId"]').val(catEntryId);
+		}
+		makeAjaxCall('',9,'',catEntryId,'','','',1); 
+		} 
+		else if(fromPage !='undefined' && fromPage !='' && (fromPage == 'quickView' || fromPage == 'quickview')) { 
+		var catEntryId = getURLParam('qv_login_productid'); 
+		//var catEntryId = document.getElementById("QV_Login_ProductId").value;
+		if(catEntryId == '' || catEntryId == 'undefined'){ 
+			if(document.getElementById("productId_1"))
+			document.getElementById("productId_1").value = catEntryId;
+			if(document.getElementById("QV_Login_ProductId"))
+			document.getElementById("QV_Login_ProductId").value = catEntryId;
+		} 
+		
+		//For Create Account, Even if CatEntryId is empty, set the catEntryId from url.
+		if(catEntryId == '' || catEntryId == 'undefined'){ 
+			catEntryId = getURLParam('catentryid');
+			document.getElementById("QV_Login_ProductId").value = catEntryId;
+			
+		}
+		var quantity = getURLParam('qv_login_quantiyid');
+		//var quantity = document.getElementById("QV_Login_QuantiyId").value; 
+		if(quantity == '' || quantity == 'undefined'){ 
+		if(document.getElementById("QV_Login_QuantiyId"))
+		document.getElementById("QV_Login_QuantiyId").value = quantity;
+		} 
+			
+		//For Create Account, Even if quantity is empty, set the quantity as 1.
+		if(quantity == '' || quantity == 'undefined'){ 
+			document.getElementById("QV_Login_QuantiyId").value = 1;
+		}
+		
+		var iFrame = 'http://' + getHostNameNonSecure() + '/webapp/wcs/stores/servlet/QuickViewService?storeId=';
+
+		var langId, catalogId, storeId;
+		if (document.getElementById("langId"))
+		langId = document.getElementById("langId").value;
+		else
+		langId = getURLParam('langid');
+		if (document.getElementById("catalogId"))
+		catalogId = document.getElementById("catalogId").value;
+		else
+		catalogId = getURLParam('catalogid');
+
+		if (document.getElementById("storeId"))
+		storeId = document.getElementById("storeId").value;
+		else
+		storeId = getURLParam('storeid');
+		
+		
+		if(document.getElementById("iFrame"))
+		document.getElementById("iFrame").value = iFrame+ storeId +'&langId='+langId+'&catalogId='+catalogId+'&R='+catEntryId+'&catEntryId='+catEntryId;
+		makeAjaxCall('',9,'',catEntryId,quantity,'','',1); 
+		} 
+		} 
+		} 
+		} 
 	
 	function setUserstatusCookieTo2() {
 		createCookie("THD_USERSTATUS","1");
@@ -1669,6 +1769,7 @@
 				var regex = /_hero/i;// This will ignore the case of the hero letters.
 				var largeImgURL = t.thumbs[t.current].href.replace(regex,'_large');
 				window.open(largeImgURL,'ViewLarger', 'status = 1, height = 438, width = 670, resizable = 0');
+
 				return false;
 			};
 			// Previous

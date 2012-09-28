@@ -1,0 +1,321 @@
+var Prefetch = Prefetch || {};
+Prefetch.varLookUP = {
+		attDotComPrefetchUrl : "https://www.att.com/olam/unauth/executePrefetchFromAttDotCom.myworld",
+		loginPrefetchUrl : "/olam/unauth/executePrefetch.myworld",
+		listOfDomainsNotSupport : "att.net,att.world",
+		cookieName : "colam_ctn",
+		attDotComUserid : "userid",
+		useridElementID : "userID",
+		defaultEngTxtBox : "User ID",
+		defaultSpanishTxtBox : "Identificacion de usuario",
+		prefetchUserID : "prefetchUserID",
+		noOfPrefetchAttempts : 5,
+		listOfInvokedUserID : new Array(),
+		isReferredFromMYATT : false
+};
+
+//This function will fetch the QueryParameter value from the URL 
+function getQueryParameter(key, default_)
+{
+  key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regex = new RegExp("[\\?&]"+key+"=([^&#]*)");
+  var qs = regex.exec(window.location.href); // window.location.href
+  if(qs === null)
+  {
+    return default_;
+  }
+  else
+  {	  
+    return qs[1];
+  }
+}
+
+// name - name of the desired cookie
+// return string containing value of specified cookie or null if cookie does not exist
+function getColamCookieValue()
+{
+	var dc = document.cookie;
+	var prefix = Prefetch.varLookUP.cookieName + "=";
+	var begin = dc.indexOf("; " + prefix);
+	if (begin === -1) 
+	{
+		begin = dc.indexOf(prefix);
+		if (begin !== 0) 
+		{
+			return null;
+		}
+	}
+	else
+	{
+		begin += 2;
+	}
+	var end = document.cookie.indexOf(";", begin);
+	if (end === -1)
+	{
+	   end = dc.length;
+	}
+	return unescape(dc.substring(begin + prefix.length, end));
+}
+
+// This Function will return the 
+// Cookie Value Array format.
+// For Example - If we need fetch User ID from COLAM_CTN
+// We need to User getCookieAsArray()[uid]
+function getCookieAsArray()
+{
+	var ctnCookie = getColamCookieValue();
+	var cookieArray = new Array();	  
+	if (ctnCookie!==null) 
+	{
+	    if (ctnCookie.indexOf(";") !== -1) 
+		{
+		   var tmpArray = ctnCookie.split(";");
+		   for (var i = 0; i < tmpArray.length; i++) 
+		   {
+			  var keyValuePair = tmpArray[i].split("=");
+			  cookieArray[keyValuePair[0]] = keyValuePair[1];
+		   }			  
+		}
+		else if (ctnCookie.indexOf("=") !== -1) 
+		{
+		     keyValuePair = ctnCookie.split("=");
+			 cookieArray[keyValuePair[0]] = keyValuePair[1];
+		}
+	 }	  
+	 return cookieArray; 
+}
+
+
+
+// This function will perfom the email validation
+
+function isValidEmail(emailAddress) 
+{
+	// Since one of the Prod Account has abcded..o@sbcglobal.net
+	//  Hence removing the dots before validation.
+    if(emailAddress !==null && emailAddress.indexOf("@")!==-1)
+    {
+        var temp = new Array();
+        temp = emailAddress.split("@");
+        if(temp.length===2)
+        {
+        	emailAddress = temp [0].split('.').join('') + "@" + temp [1];
+        } 
+    }
+	return (/^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(emailAddress));
+}
+
+// This function will check if the domain exist in the user Name.
+// If exists will check if the domain is valid for pre-fetch. 
+function isValidDomainForPrefetch(domain)
+{
+	if (domain === null || jQuery.trim(domain)=== "" || Prefetch.varLookUP.listOfDomainsNotSupport === null || jQuery.trim(Prefetch.varLookUP.listOfDomainsNotSupport)=== "")
+	{
+		return true;
+	}
+	else if(domain !== null && Prefetch.varLookUP.listOfDomainsNotSupport !== null && Prefetch.varLookUP.listOfDomainsNotSupport.indexOf(domain) === -1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+//This function will have the 
+//Massaged User Name, i.e. will massage the 
+//values as per backend system needs.
+function getMassagedUserName(userID)
+{
+	if(userID !== null && userID !== Prefetch.varLookUP.defaultEngTxtBox && userID !== Prefetch.varLookUP.defaultSpanishTxtBox)
+	{
+		userID = userID.split(' ').join('');
+		if(userID.indexOf('@')===-1)
+		{
+			userID = userID.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+			var userIDtemp = userID.split('-').join('');
+			if(!isNaN(userIDtemp))
+			{
+				if(userIDtemp.length === 10)
+				{
+					userID = userIDtemp;
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+		if(userID.indexOf("@")!==-1)
+		{
+			if(isValidEmail(userID))
+			{
+				return jQuery.trim(userID);
+			}
+			else
+			{
+				return null;
+			}
+		}
+		else
+		{
+			return jQuery.trim(userID);
+		}
+	}
+	return null;
+}
+
+// This function will perform the AJax Call
+// if the call is not been made for the user ID earlier.
+function invokeAjax(userID)
+{
+	
+	if(userID === null  || jQuery.trim(userID) === "")
+	{
+		return;
+	}
+	if(Prefetch.varLookUP.listOfInvokedUserID.length >= Prefetch.varLookUP.noOfPrefetchAttempts)
+	{
+		return;
+	}
+	for(var i = 0 ; i < Prefetch.varLookUP.listOfInvokedUserID.length  ; i++)
+	{
+		if(Prefetch.varLookUP.listOfInvokedUserID[i] === userID)
+		{
+			return;
+		}
+	}
+	Prefetch.varLookUP.listOfInvokedUserID.push(userID);
+	
+	// Set the Right URL to Prefetch
+	var prefetchURL = Prefetch.varLookUP.loginPrefetchUrl;
+	if(!Prefetch.varLookUP.isReferredFromMYATT)
+	{
+		prefetchURL = Prefetch.varLookUP.attDotComPrefetchUrl;
+	}
+	// This is the function which will take care of making JSONP call
+	// Using JQuery
+	jQuery.ajax( 
+	{
+		type : 'POST',
+		url : prefetchURL,
+		async : true,
+		cache: false,
+		crossDomain:true,
+		dataType: 'jsonp text',
+		data : Prefetch.varLookUP.prefetchUserID+ "=" + userID
+	});
+}
+
+//This function forms the user ID with domain and 
+//pass it on to the main invokeAjax Function
+function performPrefetch(userID , domain)
+{
+	var newUserID = "";
+	if(domain === null)
+	{
+		domain = "";
+	}
+	
+	if(domain === null  || jQuery.trim(domain) === "")
+	{
+		newUserID = userID;
+	}
+	else if (userID.indexOf(domain)===-1)
+	{
+		newUserID = userID + "@" + domain;
+	}
+	invokeAjax(newUserID);
+}
+
+
+//This is the function will be triggered when the customer blurs out 
+//the User ID field.
+function invokePrefetchOnBlur()
+{
+	var userID = "";
+	var domain = "";
+	if(Prefetch.varLookUP.isReferredFromMYATT)
+	{
+		userID = getMassagedUserName(jQuery("#"+Prefetch.varLookUP.useridElementID).val());
+	}
+	else
+	{
+		userID = getMassagedUserName(jQuery("#"+Prefetch.varLookUP.attDotComUserid).val());
+	}
+	if(userID!== null && userID.indexOf("@") !== -1)
+	{
+		domain = userID.split('@') [1];
+		userID = userID.split('@') [0];	
+	}
+
+	if(userID!== null && isValidDomainForPrefetch(domain))
+	{	
+		performPrefetch(userID , domain);
+	}
+}
+
+//This function is invoked when the cookie for 
+//customer is present and the remember_me value was checked during last login.
+function invokePrefetchForCookie()
+{
+	var userID = "";
+	var domain = "";
+	if(getCookieAsArray()!== null && getCookieAsArray()['uid'] !== null && getCookieAsArray()['rme'] !== null && getCookieAsArray()['rme'] === 'Y')
+	{
+		userID = getCookieAsArray()['uid'];
+		domain = getCookieAsArray()['d'];
+		
+		if(isValidDomainForPrefetch(domain))
+		{
+			if(jQuery.trim(userID) !== Prefetch.varLookUP.defaultSpanishTxtBox || jQuery.trim(userID) !== Prefetch.varLookUP.defaultEngTxtBox)
+			{	
+				performPrefetch(userID , domain);
+			}
+		}	
+	}
+}
+
+//This function will execute the sequence of Pre-fetch 
+function validateAndExecutePrefetch()
+{
+	if(jQuery('#isMyATTLoginPage')!== null && jQuery('#isMyATTLoginPage').val() === "Y")
+	{
+		Prefetch.varLookUP.isReferredFromMYATT = true;
+	}
+	
+	if(Prefetch.varLookUP.isReferredFromMYATT)
+	{
+		invokePrefetchForCookie();
+		// From myATT Login Page OnBlur
+		jQuery('#'+Prefetch.varLookUP.useridElementID).blur(function() 
+		{
+			invokePrefetchOnBlur();
+		});
+	}
+	else
+	{
+		// From ATT.Com Login Page OnBlur
+		jQuery('#'+Prefetch.varLookUP.attDotComUserid).blur(function() 
+		{
+			invokePrefetchOnBlur();
+		});
+	}
+}
+
+//Load Function On DOM Ready 
+//to evaluate if valid for pre-fetch 
+/*
+* fromDLOM == null || fromDLOM == "false"  - to check if it is due to log out
+* jQuery("#errorListValue").val() == null || jQuery("#errorListValue").val() != "true" - to check if any error displayed on login page
+*/
+
+jQuery(document).ready(function() 
+{
+	var fromDLOM = getQueryParameter("fromdlom",null);
+	
+	if((fromDLOM === null || fromDLOM === "false" ) && (jQuery("#errorListValue").val() === null || jQuery("#errorListValue").val() !== "true"))  
+	{
+		validateAndExecutePrefetch();
+	}
+});

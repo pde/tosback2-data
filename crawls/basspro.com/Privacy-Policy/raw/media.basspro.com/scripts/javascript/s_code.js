@@ -229,7 +229,7 @@ function s_doPlugins(s)
 				s.eVar42=s.eVar44='Other Natural Referrers: '+s._referringDomain;
 				break;
 			default:
-				s.eVar42=s.eVar44=s_channel+': '+s._campaignID!='n/a'?s._campaignID:s._referringDomain;
+				s.eVar42=s.eVar44=s._channel+': '+s._campaignID!='n/a'?s._campaignID:s._referringDomain;
 		}
 		//cross visit participation
 		s.eVar45=s.crossVisitParticipation(s.eVar41,'s_ev41','90','5',' > ','',1);

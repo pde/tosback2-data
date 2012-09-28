@@ -1,6 +1,6 @@
 ﻿// Date last modified =  20101201
 // Modified by =  DS
-
+// Modified by gopinath  to set lpLanguage is english
 var lpMTagConfig = {
     'lpServer': 'sales.liveperson.net',
     'lpNumber': '46281118',
@@ -8,7 +8,8 @@ var lpMTagConfig = {
     'lpTagLoaded': false,
     'lpTagSrv': 'sales.liveperson.net',
     'pageStartTime': (new Date()).getTime(), //pageStartTime is set with a timestamp as soon as the page starts loading
-    'defaultUnit': 'sales-petco'
+    'defaultUnit': 'sales-petco',
+    'lpLanguage': 'english'
 };
 
 
@@ -83,6 +84,8 @@ function lpSendData(varscope, varname, varvalue) {
 // The unit variable purpose is to route the chat or call to the designated skill. <LOB> should be replaced with the skill name, i.e. : sales
 try {
     if (typeof (lpUnit) == 'undefined') { var lpUnit = lpMTagConfig.defaultUnit; }
+    var lpLanguage = lpMTagConfig.lpLanguage;
+    if (typeof (lpLanguage) == 'undefined') { lpLanguage = lpMTagConfig.lpLanguage;}
     lpMTagConfig.deploymentID = lpUnit;
     if (typeof (lpAddVars) != 'undefined') {
         lpAddVars('page', 'unit', lpUnit);

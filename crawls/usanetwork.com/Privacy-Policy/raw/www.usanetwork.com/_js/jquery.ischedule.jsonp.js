@@ -5,7 +5,6 @@ http://www.iconico.com
 */
 
 (function () {
-
     var opts;
     var iBox;
     var animated = false;
@@ -85,7 +84,6 @@ http://www.iconico.com
             var time;
             out.push('<div>');
             for (var h = 0; h < 24; h++) {
-
                 //build matching time string
                 time = hour + ':00 ' + (am ? 'A' : 'P') + 'M';
 
@@ -101,7 +99,7 @@ http://www.iconico.com
                 }
             }
             out.push('</div>');
-
+			var dayCount = 0;
             //loop over each day
             $.each(json.data, function (iDate, itemDate) {
                 //set up row
@@ -111,17 +109,20 @@ http://www.iconico.com
                 } else {
                     out.push('<div>');
                 }
-
+				dayCount++;
                 //set tracking hours
                 var amSuffix = true;
+				var amTimeSuffix = true;	
+				
                 var hour = 6;
                 var time = '';
                 var prevItemTime;
                 var thisItemTime;
 				var nextItem = false;
 				var showLength = 4;
-				var thisItemStartHour = '';
-				var thisItemStartMin = '';
+				var thisItemStartHour = 0;
+				var thisItemStartMin = 0;
+				
 
                 for (var h = 0; h < 25; h++) 
 				{
@@ -143,25 +144,56 @@ http://www.iconico.com
 						
 						var iTimeExactMin = (Math.round(iTimeApproxMin/15) * 15);
 						iTime = iTimeHours  + (iTimeExactMin < 10 ? '0' + iTimeExactMin : iTimeExactMin) + iTimeSuffix;	
-								
+						
 							//use last good time if one not present
 							if (iTime == time) 
 							{
+					
 								if (nextItem) 
 								{
 									nextItemStartHour = parseInt(trimNumber(iTimeHours));
+
 									nextItemStartMin = parseInt(iTimeExactMin);
-									hourDiff = nextItemStartHour - thisItemStartHour;
-									minDiff = ((nextItemStartHour*60) + nextItemStartMin) - ((thisItemStartHour*60) + thisItemStartMin);
+									
+									hourDiff = Math.abs(nextItemStartHour - thisItemStartHour);
+
+										if(((amTimeSuffix && !amSuffix) || (!amTimeSuffix && amSuffix)) && nextItemStartHour != 12){
+											minDiff = Math.abs(((nextItemStartHour*60) + nextItemStartMin) - ((thisItemStartHour*60) + thisItemStartMin));	
+											minDiff = 720 - minDiff;	
+										}
+									else {								
+									minDiff = Math.abs(((nextItemStartHour*60) + nextItemStartMin) - ((thisItemStartHour*60) + thisItemStartMin));									
+									}									
+									
+
+									
 									showLength = parseInt(minDiff/15);
+									
 									nextItem = false;
 									var index = $.inArray('style = "width:auto"',out); 
 									out[index] = 'style = "width:'+((showLength*73)-1)+'px"';
-
+									/*if(dayCount == 1) {
+											//if(iTimeSuffix == "AM"){console.log('in if condition:'+iTimeSuffix);}
+										
+											console.log('time:'+time);
+											console.log('amSuffix:'+amSuffix);
+											console.log('amTimeSuffix:'+amTimeSuffix);
+											
+											console.log('thisItemStartHour:'+thisItemStartHour);
+											console.log('nextItemStartHour:'+nextItemStartHour);
+											console.log('thisItemStartMin:'+thisItemStartMin);
+											console.log('nextItemStartMin:'+nextItemStartMin);
+											
+											console.log('hourDiff:'+hourDiff);
+											console.log('minDiff:'+minDiff);	
+											console.log('showLength:'+showLength);	
+											console.log('out[index] :'+out[index]);	
+										}*/
 								}							
 								thisItemTime = itemTime;
 								thisItemStartHour =(parseInt(trimNumber(iTimeHours)) == 12 ) ? 0 : parseInt(trimNumber(iTimeHours));
 								thisItemStartMin = parseInt(iTimeExactMin);
+								amTimeSuffix = (iTimeSuffix == "AM")? true:false;
 								nextItem = true;
 							    return false;
 							   
@@ -296,6 +328,7 @@ http://www.iconico.com
 
             //set up events
             iBox.find('.iScheduleNext').click(function () {
+			
                 if (!animated) {
                     animated = true;
                     var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'));
@@ -324,6 +357,7 @@ http://www.iconico.com
             });
 
             iBox.find('.iSchedulePrev').click(function () {
+			
                 if (!animated) {
                     animated = true;
                     var left = parseInt(iBox.find('.iScheduleShows #tblData').css('marginLeft'));

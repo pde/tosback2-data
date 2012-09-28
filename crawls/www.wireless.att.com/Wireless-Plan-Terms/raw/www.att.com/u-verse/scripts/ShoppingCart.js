@@ -31,7 +31,7 @@ var ShoppingCart = new function() {
 		head.appendChild(script)
 	} // end of incJS
 	
-	if (typeof commonFunc == 'undefined') { incJS("commonFunc.js"); }
+	if (typeof commonFunc == 'undefined') { incJS("/u-verse/scripts/commonFunc.js"); }
 	
 	function getLOSGId () {
 		return this.mLOSGId;

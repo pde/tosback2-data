@@ -1,0 +1,35 @@
+// Facebook social tracking
+$Halo.bigbro.subscribe('Facebook_ApiReady', function() {
+	if (FB && FB.Event && FB.Event.subscribe) {
+		FB.Event.subscribe('edge.create', function(targetUrl) {
+			_haq.push(['_trackSocial', 'facebook', 'like']);
+		});
+		
+		FB.Event.subscribe('edge.remove', function(targetUrl) {
+			_haq.push(['_trackSocial', 'facebook', 'unlike']);
+		});
+		
+		FB.Event.subscribe('message.send', function(href, widget) {
+			_haq.push(['_trackSocial', 'facebook', 'send']);
+		});
+		
+		FB.XFBML.parse();
+	}
+});
+
+
+// Twitter social tracking
+twttr.ready(function(twttr) {
+	
+	twttr.events.bind('tweet', function() {
+		_haq.push(['_trackSocial', 'twitter', 'tweet']);
+	});
+	
+	twttr.events.bind('follow', function(intent_event) {
+		if (intent_event) {
+			var label = intent_event.data.user_id + " (" + intent_event.data.screen_name + ")";
+			_haq.push(['_trackEvent', 'twitter', 'follow', label]);
+		}
+	});
+	
+});

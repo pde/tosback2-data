@@ -1,0 +1,218 @@
+var req;
+var elementToUpdate;
+
+function retrieveURL(url, nameOfFormToPost, elementId) {
+	//get the (form based) params to push up as part of the get request
+    //url = url + getFormAsString(nameOfFormToPost);
+	//Modified as part of implementing CR 22. 
+	
+	 var requestParams=null;
+	 if(nameOfFormToPost!=null)
+	 {
+		requestParams= getFormAsString(nameOfFormToPost);
+	 }
+    elementToUpdate = elementId;
+
+    //Do the Ajax call
+    if (window.XMLHttpRequest) { // Non-IE browsers
+        req = new XMLHttpRequest();
+        req.onreadystatechange = processStateChange;
+        try {
+            req.open("POST", url, true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        } catch (e) {
+            alert("Problem Communicating with Server\n" + e);
+        }
+        req.send(requestParams);
+    } else if (window.ActiveXObject) { // IE
+
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+        if (req) {
+            req.onreadystatechange = processStateChange;
+            req.open("POST", url, true);
+            req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            req.send(requestParams);
+        }
+    }
+}
+
+function processStateChange() {	
+    if (req.readyState == 4) { // Complete
+        if (req.status == 200) { // OK response
+        	replaceExistingWithNewHtml(req.responseText);
+        } else {
+            alert("Problem with server response:\n " + req.statusText);
+        }
+    }
+}
+
+function getFormAsString(formName) {
+    //Setup the return String
+    returnString = "";
+
+    //Get the form values
+    var form = document.forms[formName];
+    
+    var formElements;
+    
+    if (form != null){
+    	formElements = form.elements;
+	}
+	
+	if (formElements != null) {
+	    for (var i = formElements.length - 1; i >= 0; --i) {
+	        //we escape (encode) each value
+	        returnString = returnString + "&" + escape(formElements[i].name) + "=" + escape(formElements[i].value);
+	    }
+	}
+    //return the values
+    return returnString;
+}
+
+
+function replaceExistingWithNewHtml(newTextElement) {
+	if (newTextElement != null && trim(newTextElement).length > 0) {
+        document.getElementById(elementToUpdate).innerHTML = newTextElement;
+    }
+	//Added as part of CR 22. Anytime targeter is invoked after the pending rate plan call is done
+    if(elementToUpdate=="pendingRatePlan")
+    {
+    	//Sometimes Ajax call gets executed before the dashboard is loaded.To avoid that 1 sec delay is added. 
+    	sleep(1000); 
+    	retrieveURL("/olam/jsp/minutes/content/unbilledAnytimePromotion.jsp",null, "targeter1")
+    }
+}
+
+function trim(stringToTrim) {
+    return stringToTrim.replace(/^\s+|\s+$/g, "");
+}
+
+function isAjaxSupported() {
+    var req;
+
+    try {
+        //NON-IE
+        req = new XMLHttpRequest();
+    } catch (e) {
+        try {
+            //IE 6.0+
+            req = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                //IE 5.5+
+                req = new ActiveXObject("Microsoft.XMLHTTP");
+            } catch (e) {
+                //alert('outdated browser');
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// code for bedrock health check
+var AJAX;
+function isAlive(url) {
+	try{
+		  if (window.XMLHttpRequest) {              
+		    AJAX=new XMLHttpRequest();              
+		  } else {                                  
+		    AJAX=new ActiveXObject("Microsoft.XMLHTTP");
+		  }
+		  if (AJAX) {
+		 	 //alert('here1 '+AJAX +" "+url);
+		  if(url.indexOf('^M')!=-1){
+		  	url = url.substring(0,url.indexOf('^'));
+		 		//alert("overDriveUrl: " + url);
+		  }
+		     AJAX.open("GET", url, false);                             
+		     AJAX.send(null);
+		  	    //alert('here2');
+		     return AJAX.responseText;                                         
+		  } else {
+		 	  //alert('here3');
+		     return false;
+		  }    
+	  }catch(e){
+	  	return false;
+	  }                                         
+}
+
+function checkResponse(overDrvurl,respFromOD){
+	//setTimeout('ajaxTimeout()',5000);
+	var response = isAlive(overDrvurl);
+	if(response==null || response=='undefined')
+		return false;
+	try{
+		//alert(response);
+		//alert(respFromOD);
+		if(response.indexOf(respFromOD)!=-1){
+			return true;
+		}else{
+			return false;
+		}
+	}catch(e){
+	  	return false;
+	}
+}
+
+
+function sleep(ms)
+{
+	var dt = new Date();
+	dt.setTime(dt.getTime() + ms);
+	while (new Date().getTime() < dt.getTime());
+}
+
+//SLID AJAX CALL 
+function remoteAJAXCall(url, formdata, callback) {
+// alert("formdata"+formdata);
+ //alert(formdata.actionEvent);
+	var requestParams = null;
+	var request = null;
+	if (formdata != null) {
+		requestParams = getObjectAsParameterString(formdata);
+		//alert("requestParams:"+requestParams);
+	}
+// Do the Ajax call
+	if (window.XMLHttpRequest) { // Non-IE browsers
+		request = new XMLHttpRequest();
+	} else if (window.ActiveXObject) { // IE
+		request = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	//alert("request --"+request);
+		
+	if (callback) {
+		//alert("3");
+			request.onreadystatechange = function() {
+				//alert("request.readyState===="+request.readyState);
+				if (request.readyState == 4) {
+					//alert("Before Callback");
+					callback(request)
+					//alert("after  Callback");
+				}
+			}
+
+		}
+	//alert("4: "+url);
+		request.open("POST", url, true);	
+		request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+		request.send(requestParams);
+	}
+
+
+function getObjectAsParameterString(formdata) {
+	//alert("formdata ==="+formdata);
+	var build = [];
+	var params=null;
+	for (i in formdata) {
+		build[build.length] = encodeURI(i) + "=" + encodeURI(formdata[i]);
+	}
+	params = build.join("&");
+	return params;
+}
+
+
+
+

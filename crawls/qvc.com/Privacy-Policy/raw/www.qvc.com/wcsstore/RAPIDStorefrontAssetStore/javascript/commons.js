@@ -1529,6 +1529,107 @@ if (window.location.search) {
 		query_params[qp[0]] = qp[1];
 	}
 }
+
+/* Default values for user attributes */
+var defaultFirstPurchaseDate = "0";
+var defaultLastPurchaseDate = "0";
+var defaultMerchPreference = "NA";
+var defaultMBS = "0";
+var defaultCustType = "NV";
+var defaultCustSeg = "NULL";
+var uattrSeparator = "|";
+
+/* As part of the CT/MBS enhancement, obtain the user attributes to used in the registration tag
+   Cookie will contain first purchase date, last purchase date, and merch performance as pipe delimited list */
+function getUserAttrCookie()  {
+	var userAttr = Cookie.read("uattr");
+	if (userAttr == null || userAttr.length == 0)  {
+		userAttr = defaultCustType + uattrSeparator 
+				 + defaultMBS + uattrSeparator 
+				 + defaultCustSeg + uattrSeparator 
+				 + defaultFirstPurchaseDate + uattrSeparator 
+				 + defaultLastPurchaseDate + uattrSeparator 
+				 + defaultMerchPreference;
+	}
+	return userAttr;
+}
+
+	
+/* For the CT/MBS enhancement, obtain the CT attribute used in registration and page view tagging
+   Look into javacode (constants) for meaning of cookie and value */
+function getCTCoreMetricAttribute()  {
+
+	var ct = defaultCustType;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		ct = attributes[0];
+	}
+	return ct;
+					
+}
+
+/* For the CT/MBS enhancement, form the MB attribute used in registration and page view tagging
+   Look into javacode (constants) for meaning of cookie and value */
+function getMBCoreMetricAttribute()  {
+
+	var mb = defaultMBS;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		mb = attributes[1];
+	}
+
+	return mb;
+}
+
+/* For the CT/MBS enhancement, form the CS attribute used in registration and page view tagging
+   Look into javacode (constants) for meaning of cookie and value */
+function getCSCoreMetricAttribute()  {
+
+	var cs = defaultCustSeg;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		cs = attributes[2];
+	}
+
+	return cs;
+}
+
+/* Obtain the first purchase date for the user logged into the site.  Index 0 of the uattr cookie */
+function getUserFirstPurchaseDate()  {
+	var firstPurchaseDate = defaultFirstPurchaseDate;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		firstPurchaseDate = attributes[3];
+	}
+	return firstPurchaseDate;
+}
+
+/* Obtain the last purchase date for the user logged into the site.  Index 1 of the uattr cookie */
+function getUserLastPurchaseDate()  {
+	var lastPurchaseDate = defaultLastPurchaseDate;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		lastPurchaseDate = attributes[4];
+	}
+	return lastPurchaseDate;
+}
+
+/* Obtain the merch preference for the user logged into the site.  Index 2 of the uattr cookie */
+function getUserMerchPreference()  {
+	var merchPreference = defaultMerchPreference;
+	var userAttr = getUserAttrCookie();
+	var attributes = userAttr.split(uattrSeparator);
+	if (attributes.length >= 6) {
+		merchPreference = attributes[5];
+	}
+	return merchPreference;
+}
+
 	
 /*******************************************
 /* 	For Coremetrics
@@ -1583,8 +1684,21 @@ function makeCoremetricsCalls() {
 				if(new RegExp(/^0\d+$/).test(trimAll(regTemp))){
 					Cookie.dispose('cmReg',{path:"/"});	
 					var customerID = regTemp;
-					var memberID= regTemp;			
-					cmCreateRegistrationTag(customerID,memberID); 
+					var memberID= regTemp;
+					
+					// Take defaults if CT and/or MB cookie not present; They should be there thou
+					var ct = getCTCoreMetricAttribute();
+					var mb = getMBCoreMetricAttribute();
+					var cs = getCSCoreMetricAttribute();
+					
+					// Obtain the user attributes firstPurchaseDate, lastPurchaseDate, and Merch Performance
+					var firstPurchaseDate = getUserFirstPurchaseDate();
+					var lastPurchaseDate = getUserLastPurchaseDate();
+					var merchPreference = getUserMerchPreference();
+									
+					// First 3 attributes are set in community section of site (start date, nickname, total community posts)
+					var attributes = "-_--_--_-" + ct + "-_-" + mb + "-_-" + firstPurchaseDate + "-_-" + lastPurchaseDate + "-_-" + merchPreference + "-_-" + cs;
+					cmCreateRegistrationTag(customerID,memberID,'','','','','',attributes); 
 				}
 				//End fix defect 9654
 			}

@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.154.1870.20120731",
+	version: "tbs.170.1870.20120911",
 	release: "0",
 	dictionary: {
 		init: {
@@ -40,27 +40,10 @@ var _jsmd_default={
 				}
 			},
 			/* TVE Definitions */
-			"tve.page.name":				"",//pageName
 			"tve.brand":					"tbs",//prop1,eVar1
-			"tve.host_location":			"",//prop2,eVar2
 			"tve.syndication_channel":	    "tve",//prop4,eVar4
-			"tve.content_id":				"",//prop5,eVar5
-			"tve.publication_date":	    	"",//prop6,eVar6
-			"tve.days_since_publication":	"",//prop7,eVar7
-			"tve.mode":						"",//prop8,eVar8
-			"tve.franchise":				"",//prop9,eVar9
-			"tve.full_episode_length":		"",//prop10,eVar10
-			"tve.video_title":				"",//prop12
-			"tve.products":					"",//products
-			"tve.video.exact_length":		"",
 			"tve.player_location":			"onsite",//prop11,eVar11
 			"tve.video.progress":			"0",
-			"tve.video.c3.marker":			"0:content",//prop13,eVar13
-			"tve.video.live.stream":		"",//prop14,eVar14
-			"tve.video.adload":				"",//prop15,eVar15
-			"tve.video.authentication":		"",//prop16,eVar16
-			"tve.user_id":					"Unspecified UserId",//prop19,eVar19
-			"tve.video.c4.marker":			"0:content",//prop20,eVar20
 			"tve.page.full_url":			window.location.href,//prop21
 			"tve.dev_string":				"gTVEDevString|",//used in rsid
 			"tve.promo.external.id":		"gQueryOnce|o_cid"//campaign
@@ -221,7 +204,11 @@ var _jsmd_default={
 						"tve": 				{
 							variablemap:	["tve"],
 							eventmap:		["tve"]
-						 }
+						},
+						"game": {
+							variablemap:	["tbs","adbp"],
+							eventmap:		["tbs","adbp"]
+						}
 					},
 					prevendor: function() { },
 					postvendor: function() { }
@@ -231,7 +218,8 @@ var _jsmd_default={
 					account:		                		"standard_nielsen",
 					dynamic_actions: {
 						"video":                        	{ ignore: true },
-						"social-click":						{ ignore: true }
+						"social-click":						{ ignore: true },
+						"game-click":						{ ignore: true }
 					}
 				}
 			],
@@ -300,10 +288,6 @@ var _jsmd_default={
 				},
 				premap: function() { },
 				postmap: function() {
-					if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("social-click") > -1){
-						this.v.events = "event1";
-						this.v.linkTrackVars = "events,prop10,eVar10";
-					};
 					/* eCommerce */
 					try {
 						var shop_events = this.plugin.gJObj("tbs_metadata","events");
@@ -337,28 +321,35 @@ var _jsmd_default={
 						this.v.eVar32 = "D=c32";
 					}
 
-					/* Enable and Disable necessary video variables * /
-					/*  */ if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("preroll") > -1) {
-						this.v.eVar2 = this.v.prop2;
-						this.v.eVar6 = this.v.prop6;
-						this.v.eVar41 = this.v.prop29;
-						this.v.eVar31 = this.v.prop31;
-						this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar29,eVar30,eVar31,eVar41,eVar42";
-					} else if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("progress") > -1) {
-						this.v.linkTrackVars = "events,products";
-					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1)) {
-						this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
-						this.v.linkTrackVars = "events,products,prop1,prop2,prop5,prop6,prop8,prop29,prop33,prop35,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
-					} else if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("complete") > -1) {
-						this.v.eVar1 = this.v.prop1; this.v.prop1 = "";
-						this.v.eVar2 = this.v.prop2; this.v.prop2 = "";
-						this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
-						this.v.eVar6 = this.v.prop6; this.v.prop6 = "";
-						this.v.eVar8 = this.v.prop8; this.v.prop8 = "";
-						this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
-						this.v.eVar33 = this.v.prop33; this.v.prop33 = "";
-						this.v.eVar41 = this.v.prop29; this.v.prop29 = "";
-						this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
+					/* Enable and disable necessary variables for dynamic actions */
+					if ((this.config.map.isDynamic != null) && (typeof(this.config.map.isDynamic) === "string") && (this.config.map.isDynamic.indexOf("tve-") == -1)) {
+						if(this.config.map.isDynamic.indexOf("preroll") > -1) {
+							this.v.eVar2 = this.v.prop2;
+							this.v.eVar6 = this.v.prop6;
+							this.v.eVar41 = this.v.prop29;
+							this.v.eVar31 = this.v.prop31;
+							this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar29,eVar30,eVar31,eVar41,eVar42";
+						} else if(this.config.map.isDynamic.indexOf("progress") > -1) {
+							this.v.linkTrackVars = "events,products";
+						} else if(this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1) {
+							this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
+							this.v.linkTrackVars = "events,products,prop1,prop2,prop5,prop6,prop8,prop29,prop33,prop35,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
+						} else if(this.config.map.isDynamic.indexOf("complete") > -1) {
+							this.v.eVar1 = this.v.prop1; this.v.prop1 = "";
+							this.v.eVar2 = this.v.prop2; this.v.prop2 = "";
+							this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
+							this.v.eVar6 = this.v.prop6; this.v.prop6 = "";
+							this.v.eVar8 = this.v.prop8; this.v.prop8 = "";
+							this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
+							this.v.eVar33 = this.v.prop33; this.v.prop33 = "";
+							this.v.eVar41 = this.v.prop29; this.v.prop29 = "";
+							this.v.linkTrackVars = "events,products,eVar1,eVar2,eVar5,eVar6,eVar8,eVar27,eVar29,eVar30,eVar31,eVar32,eVar33,eVar41,eVar42";
+						} else if(this.config.map.isDynamic.indexOf("social-click") > -1){
+							this.v.events = "event1";
+							this.v.linkTrackVars = "events,prop10,eVar10";
+						} else if(this.config.map.isDynamic.indexOf("game-click") > -1){
+							this.v.linkTrackVars = "prop13,prop14,eVar13,eVar14";
+						}
 					}
 
 					/* Dynamic Omniture variable set or overrides */
@@ -417,7 +408,6 @@ var _jsmd_default={
 					if (_w.cnnad_transactionID) { this.v.prop46 = _w.cnnad_transactionID; this.v.eVar46 = "D=c46"; }
 					var guid = _jsmd.plugin.gCookie("ug");
 					if (guid) { this.v.prop47 = guid; this.v.eVar47 = "D=c47"; }
-					if(this.config.map.isDynamic != null){ this.v.linkTrackVars = this.v.linkTrackVars+",prop35,prop46,prop47,eVar46,eVar47";}
 				}
 			},
 			adbp: {
@@ -582,7 +572,7 @@ var _jsmd_default={
 			var pathname = _w.location.pathname;
 			var domain = document.domain;
 			var url = _w.location.href;
-			if (window.location.hostname.indexOf("coco") != -1) {
+			if (window.location.hostname.indexOf("coco") > -1 || window.location.hostname.indexOf("conan.xxx") > -1) {
 				microsite = "team coco";
 			}else if (window.location.hostname.indexOf("lopeztonight.com") != -1) {
 				microsite = "lopez tonight";
@@ -1762,37 +1752,116 @@ var _jsmd_default={
 				this.send();
 			},
 			/* TVE Dyanmic Actions */
-			"tve-C4_video-start": function(data, map) {
+			"tve-ad-start": function(data, map) {
+				if(setinterval_id != ""){
+					clearInterval(setinterval_id);
+				}
+
+				jsmd.TVE.isAdPlayTimeSet = false;
+				jsmd.TVE.isAdStart = true;
+				jsmd.TVE.adDuration = Math.round(data.duration*1);
+				jsmd.TVE.totalAdDurations += Math.round(data.duration*1);
 
 				var MSO = jsmd.tveMSO;
+				this.set("tve.page.name", data.franchise+":"+data.title);
+				jsmd.TVE.pageName = this.get("tve.page.name");
+				this.set("tve.video_title", data.title);//prop12
+				jsmd.TVE.videoTitle = this.get("tve.video_title");
+				jsmd.TVE.brand = this.get("tve.brand");
+				var distribName = MSO;
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						jsmd.TVE.authState = "not authenticated";
+				}
+				this.set("tve.host_location", distribName+":"+jsmd.TVE.brand);//prop2,eVar2
+				jsmd.TVE.host = this.get("tve.host_location");
+				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				jsmd.TVE.vidID = this.get("tve.content_id");
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				jsmd.TVE.lastAirDate = this.get("tve.publication_date");
+				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				jsmd.TVE.dayssince = this.get("tve.days_since_publication");
+				this.set("tve.mode", data.tveMode);//prop8,eVar8
+				jsmd.TVE.mode = this.get("tve.mode");
+				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				jsmd.TVE.videoFranchise = this.get("tve.franchise");
+				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
+				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
+				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
+				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
+				this.set("tve.full_episode_length", data.franchise+":"+data.title+":"+grossLength);//prop10,eVar10
+				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
+
+				this.set("action","link");
+				this.set("link",{name: "ad start", type: "o"});
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event1",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
+
+				this.send();
+			},
+			"tve-C4_video-start": function(data, map) {
+				if(setinterval_id != ""){
+					clearInterval(setinterval_id);
+				}
+
 				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
 				if(!jsmd.TVE.isAdStart){
 					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
 				}
-				this.push("page.events","tve.video.c4.video_start");
+
+
+				var MSO = jsmd.tveMSO;
 				this.set("tve.page.name", data.franchise+":"+data.title);
+				jsmd.TVE.pageName = this.get("tve.page.name");
 				this.set("tve.video_title", data.title);//prop12
-				var brand = this.get("tve.brand");
+				jsmd.TVE.videoTitle = this.get("tve.video_title");
+				jsmd.TVE.brand = this.get("tve.brand");
 				var distribName = MSO;
-				var authState = "authenticated";
 				if (MSO == "Unauthorized")
 				{
 						distribName = "unspecified mvpd";
-						authState = "not authenticated";
+						jsmd.TVE.authState = "not authenticated";
 				}
-				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
+				this.set("tve.host_location", distribName+":"+jsmd.TVE.brand);//prop2,eVar2
+				jsmd.TVE.host = this.get("tve.host_location");
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				jsmd.TVE.vidID = this.get("tve.content_id");
 				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				jsmd.TVE.lastAirDate = this.get("tve.publication_date");
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				jsmd.TVE.dayssince = this.get("tve.days_since_publication");
 				this.set("tve.mode", data.tveMode);//prop8,eVar8
+				jsmd.TVE.mode = this.get("tve.mode");
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
-				this.set("tve.video.authentication", authState);//prop16,eVar16
-
-
+				jsmd.TVE.videoFranchise = this.get("tve.franchise");
+				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
+				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
+				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
 				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
-
 				this.set("tve.full_episode_length", data.franchise+":"+data.title+":"+grossLength);//prop10,eVar10
-
+				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -1810,15 +1879,48 @@ var _jsmd_default={
 				}else {
 					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event23="+data.trt+"|event21="+adTotal))//products
 				}
-				var userID = jsmd.TVE.userID;
-				this.set("tve.user_id", userID);// prop19,eVar19
-				var playerLocation = jsmd.get("tve.player_location");
+
 				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop20:"0:content", eVar20:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop16,eVar16,eVar19,prop19,prop20,eVar20"};
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event13,event15,event23,event21",
+							prop1:jsmd.TVE.brand,
+							eVar1:jsmd.TVE.brand,
+							prop2:jsmd.TVE.host,
+							eVar2:jsmd.TVE.host,
+							prop4:jsmd.TVE.channel,
+							eVar4:jsmd.TVE.channel,
+							prop5:jsmd.TVE.vidID,
+							eVar5:jsmd.TVE.vidID,
+							prop6:jsmd.TVE.lastAirDate,
+							eVar6:jsmd.TVE.lastAirDate,
+							prop7:jsmd.TVE.dayssince,
+							eVar7:jsmd.TVE.dayssince,
+							prop8:jsmd.TVE.mode,
+							eVar8:jsmd.TVE.mode,
+							prop9:jsmd.TVE.videoFranchise,
+							eVar9:jsmd.TVE.videoFranchise,
+							prop10:jsmd.TVE.fullEpisode,
+							eVar10:jsmd.TVE.fullEpisode,
+							prop11:jsmd.TVE.playerLocation,
+							eVar11:jsmd.TVE.playerLocation,
+							prop14:jsmd.TVE.liveStreamName,
+							eVar14:jsmd.TVE.liveStreamName,
+							prop16:jsmd.TVE.authState,
+							eVar16:jsmd.TVE.authState,
+							prop19:jsmd.TVE.userID,
+							eVar19:jsmd.TVE.userID,
+							prop20:"0:content",
+							eVar20:"0:content",
+							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
 	            	if(adTotal){
 	            		s_data["linkTrackEvents"] = "event13,event15,event23,event21";
-	            	}else { s_data["linkTrackEvents"] = "event13,event15,event23"; }
+	            		s_data["events"] = "event13,event15,event23,event21";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event13,event15,event23";
+            			s_data["events"] = "event13,event15,event23";
+	            	}
 
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
@@ -1828,73 +1930,64 @@ var _jsmd_default={
 				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
 			},
-			"tve-C3_video-start": function(data, map) {
-
-				var MSO = jsmd.tveMSO;
-				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
-				if(!jsmd.TVE.isAdStart){
-					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
-				}
-				this.push("page.events","tve.video.c3.video_start");
-				this.set("tve.page.name", data.franchise+":"+data.title);
-				this.set("tve.video_title", data.title);
-				var brand = this.get("tve.brand");
-				var distribName = MSO;
-				var authState = "authenticated";
-				if (MSO == "Unauthorized")
-				{
-						distribName = "unspecified mvpd";
-						authState = "not authenticated";
-				}
-				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
-				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
-				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
-				this.set("tve.mode", data.tveMode);//prop8,eVar8
-				this.set("tve.franchise", data.franchise);//prop9,eVar9
-				this.set("tve.video.authentication", authState);//prop16,eVar16
+			"tve-C4_video-progress": function(data, map) {
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
 				var prodTitle = data.title+"";
 				prodTitle = prodTitle.replace(/\,|\;/gi, "");
 
-				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
+				var event22cal = (Math.round(jsmd.TVE.totalAdDurations) - Math.round(jsmd.TVE.prevAdEvent22)) - (jsmd.TVE.adIntervalsCount*60);
 
-				this.set("tve.full_episode_length", prodFranchise+":"+prodTitle+":"+grossLength);//prop10,eVar10
-
-				var adTotal = null;
-				if (data.grossLength && data.duration){
-					adTotal = ((data.grossLength*1) - (data.duration*1))
+				if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
+					jsmd.TVE.prevAdEvent22 += event22cal;
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"60"+"|event22="+event22cal));
+				} else {
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"60"));
 				}
 
-				if (!adTotal){
-					ad_duration = "";
-					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event8="+data.trt))//products
-				}else {
-					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event8="+data.trt+"|event21="+adTotal))//products
-				}
+				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
 
-				var userID = jsmd.TVE.userID;
-				this.set("tve.user_id", userID);// prop19,eVar19
-				var playerLocation = jsmd.get("tve.player_location");
+				this.set("action","link");
+				this.set("link",{name: "video progress", type: "o"});
+
 				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
-	            	if(adTotal){
-	            		s_data["linkTrackEvents"] = "event8,event13,event15,event21";
-	            	}else { s_data["linkTrackEvents"] = "event8,event13,event15"; }
-	            	this.set("business.vendor.sitecatalyst", s_data);
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event7,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar20:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					this.set("business.vendor.sitecatalyst", s_data);
+
+	            	if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
+	            		jsmd.TVE.isAdPlayTimeSet = true;
+	            		jsmd.TVE.event22cal = event22cal;
+	            		s_data["linkTrackEvents"] = "event7,event20,event22";
+	            		s_data["events"] = "event7,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event7,event20";
+	            		s_data["events"] = "event7,event20";
+	            	}
+
 				}catch(e){}
 
 				this.send();
-
-				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
 			},
 			"tve-C4_video-complete": function(data, map) {
-				this.push("page.events","tve.video.c4.video_complete");
-
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -1905,7 +1998,6 @@ var _jsmd_default={
 				if(!jsmd.TVE.isAdStart){
 					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
 				}
-
 
 				var event22cal = Math.round((jsmd.TVE.totalAdDurations)) - (jsmd.TVE.adIntervalsCount*60);
 
@@ -1919,13 +2011,34 @@ var _jsmd_default={
 				this.set("link",{name: "video complete", type: "o"});
 
 				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop20:progressMarker, eVar20:progressMarker, linkTrackVars:"events,products,prop20,eVar20"};
-	            	if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event7,event14,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar20:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
 	            		jsmd.TVE.isAdPlayTimeSet = true;
 	            		jsmd.TVE.event22cal = event22cal;
 	            		s_data["linkTrackEvents"] = "event7,event14,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event7,event14,event20"; }
+	            		s_data["events"] = "event7,event14,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event7,event14,event20";
+	            		s_data["events"] = "event7,event14,event20";
+	            	}
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
 
@@ -1933,9 +2046,465 @@ var _jsmd_default={
 
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",data.contentId,data.title,data.trt);
 			},
-			"tve-C3_video-complete": function(data, map) {
-				this.push("page.events","tve.video.c3.video_complete");
+			"tve-C4_ad-progress": function(data, map){
+				jsmd.TVE.isAdPlayTimeSet = false;
+				jsmd.TVE.isAdStart = true;
 
+				this.set("action","link");
+				this.set("link",{name: "ad progress", type: "o"});
+
+				var totalPlayTime = "";
+				if (data.totalPlayTime){
+					totalPlayTime = (jsmd.TVE.prevTotalPlayTime != 0)?((data.totalPlayTime*1) - jsmd.TVE.prevTotalPlayTime)+"":data.totalPlayTime;
+					jsmd.TVE.prevTotalPlayTime = (data.totalPlayTime*1);
+				} else {
+					totalPlayTime = "60";
+				}
+				jsmd.TVE.adIntervalsCount += 1;
+
+				var grossProgressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":ad":"";
+
+				var prodFranchise = jsmd.TVE.videoFranchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = jsmd.TVE.videoTitle+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"0"+"|event22="+"60"));
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event7,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar20:grossProgressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
+				this.send();
+			},
+			"tve-C3A_video-start": function(data, map) {
+				if(setinterval_id != ""){
+					clearInterval(setinterval_id);
+				}
+
+				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
+				if(!jsmd.TVE.isAdStart){
+					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
+				}
+
+
+				var MSO = jsmd.tveMSO;
+				this.set("tve.page.name", data.franchise+":"+data.title);
+				jsmd.TVE.pageName = this.get("tve.page.name");
+				this.set("tve.video_title", data.title);//prop12
+				jsmd.TVE.videoTitle = this.get("tve.video_title");
+				jsmd.TVE.brand = this.get("tve.brand");
+				var distribName = MSO;
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						jsmd.TVE.authState = "not authenticated";
+				}
+				this.set("tve.host_location", distribName+":"+jsmd.TVE.brand);//prop2,eVar2
+				jsmd.TVE.host = this.get("tve.host_location");
+				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				jsmd.TVE.vidID = this.get("tve.content_id");
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				jsmd.TVE.lastAirDate = this.get("tve.publication_date");
+				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				jsmd.TVE.dayssince = this.get("tve.days_since_publication");
+				this.set("tve.mode", "C3A");//prop8,eVar8
+				jsmd.TVE.mode = "C3A";
+				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				jsmd.TVE.videoFranchise = this.get("tve.franchise");
+				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
+				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
+				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
+				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
+				this.set("tve.full_episode_length", data.franchise+":"+data.title+":"+grossLength);//prop10,eVar10
+				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
+
+				var prodFranchise = data.franchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = data.title+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				var adTotal = null;
+				if (data.grossLength && data.duration){
+					adTotal = ((data.grossLength*1) - (data.duration*1))
+				}
+
+				if (!adTotal){
+					ad_duration = "";
+					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event9="+data.trt))//products
+				}else {
+					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event9="+data.trt+"|event21="+adTotal))//products
+				}
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event9,event13,event15,event21",
+							prop1:jsmd.TVE.brand,
+							eVar1:jsmd.TVE.brand,
+							prop2:jsmd.TVE.host,
+							eVar2:jsmd.TVE.host,
+							prop4:jsmd.TVE.channel,
+							eVar4:jsmd.TVE.channel,
+							prop5:jsmd.TVE.vidID,
+							eVar5:jsmd.TVE.vidID,
+							prop6:jsmd.TVE.lastAirDate,
+							eVar6:jsmd.TVE.lastAirDate,
+							prop7:jsmd.TVE.dayssince,
+							eVar7:jsmd.TVE.dayssince,
+							prop8:jsmd.TVE.mode,
+							eVar8:jsmd.TVE.mode,
+							prop9:jsmd.TVE.videoFranchise,
+							eVar9:jsmd.TVE.videoFranchise,
+							prop10:jsmd.TVE.fullEpisode,
+							eVar10:jsmd.TVE.fullEpisode,
+							prop11:jsmd.TVE.playerLocation,
+							eVar11:jsmd.TVE.playerLocation,
+							prop14:jsmd.TVE.liveStreamName,
+							eVar14:jsmd.TVE.liveStreamName,
+							prop16:jsmd.TVE.authState,
+							eVar16:jsmd.TVE.authState,
+							prop19:jsmd.TVE.userID,
+							eVar19:jsmd.TVE.userID,
+							prop13:"0:content",
+							eVar13:"0:content",
+							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(adTotal){
+	            		s_data["linkTrackEvents"] = "event9,event13,event15,event21";
+	            		s_data["events"] = "event9,event13,event15,event21";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event9,event13,event15";
+	            		s_data["events"] = "event9,event13,event15";
+	            	}
+
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
+
+				this.send();
+
+				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
+			},
+			"tve-C3A_video-progress": function(data, map) {
+
+				var prodFranchise = data.franchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = data.title+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
+				if(!jsmd.TVE.isAdStart){
+					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
+				}
+
+				var adPlayTime = (data.playheadTime)?(data.playheadTime*1) - (jsmd.TVE.lastPlayHeadTime*1):0; //playheadTime
+				adPlayTime = (adPlayTime<=0)?data.playheadTime:adPlayTime;
+				jsmd.TVE.lastPlayHeadTime = (adPlayTime <= 0)?data.playheadTime:adPlayTime;
+
+				var lastAdPlayTime = ((adTotalPlayTime*1)-(jsmd.TVE.nonC3C4adNum*1) - (jsmd.TVE.allAdIntervlNum*1));
+				if (lastAdPlayTime <0){ lastAdPlayTime = lastAdPlayTime*(-1); }
+
+				if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"+"|event22="+lastAdPlayTime));
+				} else {
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"));
+				}
+
+				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
+
+				this.set("action","link");
+				this.set("link",{name: "video progress", type: "o"});
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event5,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar13:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+
+					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
+	            		jsmd.TVE.isAdPlayTimeSet = true;
+	            		s_data["linkTrackEvents"] = "event5,event20,event22";
+	            		s_data["events"] = "event5,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event5,event20";
+	            		s_data["events"] = "event5,event20";
+	            	}
+
+					this.set("business.vendor.sitecatalyst", s_data);
+
+				}catch(e){}
+
+				this.send();
+			},
+			"tve-C3A_video-complete": function(data, map) {
+
+				var prodFranchise = data.franchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = data.title+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
+				if(!jsmd.TVE.isAdStart){
+					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
+				}
+
+				var event22cal = Math.round((jsmd.TVE.totalAdDurations)) - (jsmd.TVE.adIntervalsCount*60);
+
+				if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"+"|event22="+event22cal));
+				} else {
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"));
+				}
+				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
+				this.set("action","link");
+				this.set("link",{name: "video complete", type: "o"});
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event5,event14,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar13:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
+	            		jsmd.TVE.isAdPlayTimeSet = true;
+	            		jsmd.TVE.event22cal = event22cal;
+	            		s_data["linkTrackEvents"] = "event5,event14,event20,event22";
+	            		s_data["events"] = "event5,event14,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event5,event14,event20";
+	            		s_data["events"] = "event5,event14,event20";
+	            	}
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
+
+				this.send();
+
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",data.contentId,data.title,data.trt);
+			},
+			"tve-C3_video-start": function(data, map) {
+				if(setinterval_id != ""){
+					clearInterval(setinterval_id);
+				}
+
+				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
+				if(!jsmd.TVE.isAdStart){
+					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
+				}
+
+
+				var MSO = jsmd.tveMSO;
+				this.set("tve.page.name", data.franchise+":"+data.title);
+				jsmd.TVE.pageName = this.get("tve.page.name");
+				this.set("tve.video_title", data.title);//prop12
+				jsmd.TVE.videoTitle = this.get("tve.video_title");
+				jsmd.TVE.brand = this.get("tve.brand");
+				var distribName = MSO;
+				if (MSO == "Unauthorized")
+				{
+						distribName = "unspecified mvpd";
+						jsmd.TVE.authState = "not authenticated";
+				}
+				this.set("tve.host_location", distribName+":"+jsmd.TVE.brand);//prop2,eVar2
+				jsmd.TVE.host = this.get("tve.host_location");
+				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				jsmd.TVE.vidID = this.get("tve.content_id");
+				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				jsmd.TVE.lastAirDate = this.get("tve.publication_date");
+				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				jsmd.TVE.dayssince = this.get("tve.days_since_publication");
+				this.set("tve.mode", data.tveMode);//prop8,eVar8
+				jsmd.TVE.mode = this.get("tve.mode");
+				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				jsmd.TVE.videoFranchise = this.get("tve.franchise");
+				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
+				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
+				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
+				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
+				this.set("tve.full_episode_length", data.franchise+":"+data.title+":"+grossLength);//prop10,eVar10
+				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
+
+				var prodFranchise = data.franchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = data.title+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				var adTotal = null;
+				if (data.grossLength && data.duration){
+					adTotal = ((data.grossLength*1) - (data.duration*1))
+				}
+
+				if (!adTotal){
+					ad_duration = "";
+					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event8="+data.trt))//products
+				}else {
+					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event8="+data.trt+"|event21="+adTotal))//products
+				}
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event8,event13,event15,event21",
+							prop1:jsmd.TVE.brand,
+							eVar1:jsmd.TVE.brand,
+							prop2:jsmd.TVE.host,
+							eVar2:jsmd.TVE.host,
+							prop4:jsmd.TVE.channel,
+							eVar4:jsmd.TVE.channel,
+							prop5:jsmd.TVE.vidID,
+							eVar5:jsmd.TVE.vidID,
+							prop6:jsmd.TVE.lastAirDate,
+							eVar6:jsmd.TVE.lastAirDate,
+							prop7:jsmd.TVE.dayssince,
+							eVar7:jsmd.TVE.dayssince,
+							prop8:jsmd.TVE.mode,
+							eVar8:jsmd.TVE.mode,
+							prop9:jsmd.TVE.videoFranchise,
+							eVar9:jsmd.TVE.videoFranchise,
+							prop10:jsmd.TVE.fullEpisode,
+							eVar10:jsmd.TVE.fullEpisode,
+							prop11:jsmd.TVE.playerLocation,
+							eVar11:jsmd.TVE.playerLocation,
+							prop14:jsmd.TVE.liveStreamName,
+							eVar14:jsmd.TVE.liveStreamName,
+							prop16:jsmd.TVE.authState,
+							eVar16:jsmd.TVE.authState,
+							prop19:jsmd.TVE.userID,
+							eVar19:jsmd.TVE.userID,
+							prop13:"0:content",
+							eVar13:"0:content",
+							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(adTotal){
+	            		s_data["linkTrackEvents"] = "event8,event13,event15,event21";
+	            		s_data["events"] = "event8,event13,event15,event21";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event8,event13,event15";
+	            		s_data["events"] = "event8,event13,event15";
+	            	}
+
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
+
+				this.send();
+
+				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
+			},
+			"tve-C3_video-progress": function(data, map) {
+
+				var prodFranchise = data.franchise+"";
+				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
+				var prodTitle = data.title+"";
+				prodTitle = prodTitle.replace(/\,|\;/gi, "");
+
+				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
+				if(!jsmd.TVE.isAdStart){
+					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
+				}
+
+				var adPlayTime = (data.playheadTime)?(data.playheadTime*1) - (jsmd.TVE.lastPlayHeadTime*1):0; //playheadTime
+				adPlayTime = (adPlayTime<=0)?data.playheadTime:adPlayTime;
+				jsmd.TVE.lastPlayHeadTime = (adPlayTime <= 0)?data.playheadTime:adPlayTime;
+
+				var lastAdPlayTime = ((adTotalPlayTime*1)-(jsmd.TVE.nonC3C4adNum*1) - (jsmd.TVE.allAdIntervlNum*1));
+				if (lastAdPlayTime <0){ lastAdPlayTime = lastAdPlayTime*(-1); }
+
+				if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6="+"60"+"|event22="+lastAdPlayTime));
+				} else {
+					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6="+"60"));
+				}
+
+				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
+
+				this.set("action","link");
+				this.set("link",{name: "video progress", type: "o"});
+
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event6,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar13:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+
+					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
+	            		jsmd.TVE.isAdPlayTimeSet = true;
+	            		s_data["linkTrackEvents"] = "event6,event20,event22";
+	            		s_data["events"] = "event6,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event6,event20";
+	            		s_data["events"] = "event6,event20";
+	            	}
+
+
+					this.set("business.vendor.sitecatalyst", s_data);
+
+				}catch(e){}
+
+				this.send();
+			},
+			"tve-C3_video-complete": function(data, map) {
 
 				var prodFranchise = data.franchise+"";
 				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
@@ -1960,16 +2529,38 @@ var _jsmd_default={
 					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6=60"));
 				}
 				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
+
 				this.set("action","link");
 				this.set("link",{name: "video complete", type: "o"});
 
 				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop13:progressMarker, eVar13:progressMarker, linkTrackVars:"events,products,prop13,eVar13"};
-	            	if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event6,event14,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar13:progressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
 	            		jsmd.TVE.isAdPlayTimeSet = true;
 	            		s_data["linkTrackEvents"] = "event6,event14,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event6,event14,event20"; }
+	            		s_data["events"] = "event6,event14,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event6,event14,event20";
+	            		s_data["events"] = "event6,event14,event20";
+	            	}
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
 
@@ -1977,176 +2568,10 @@ var _jsmd_default={
 
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",data.contentId,data.title,data.trt);
 			},
-			"tve-C3_video-progress": function(data, map) {
-				this.push("page.events","tve.video.c3.video_progress");
-
-
-				var prodFranchise = data.franchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = data.title+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
-				if(!jsmd.TVE.isAdStart){
-					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
-				}
-
-				var adPlayTime = (data.playheadTime)?(data.playheadTime*1) - (jsmd.TVE.lastPlayHeadTime*1):0; //playheadTime
-				adPlayTime = (adPlayTime<=0)?data.playheadTime:adPlayTime;
-				jsmd.TVE.lastPlayHeadTime = (adPlayTime <= 0)?data.playheadTime:adPlayTime;
-
-				var lastAdPlayTime = ((adTotalPlayTime*1)-(jsmd.TVE.nonC3C4adNum*1) - (jsmd.TVE.allAdIntervlNum*1));
-				if (lastAdPlayTime <0){ lastAdPlayTime = lastAdPlayTime*(-1); }
-
-				/*if (data.totalPlayTime){
-					totalPlayTime = (jsmd.TVE.prevTotalPlayTime != 0)?((data.totalPlayTime*1) - jsmd.TVE.prevTotalPlayTime)+"":data.totalPlayTime;
-					jsmd.TVE.prevTotalPlayTime = (data.totalPlayTime*1);
-				} else {
-					totalPlayTime = "60";
-				}*/
-
-				if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6="+"60"+"|event22="+lastAdPlayTime));
-				} else {
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6="+"60"));
-				}
-
-				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
-				this.set("action","link");
-				this.set("link",{name: "video progress", type: "o"});
-
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop13:progressMarker, eVar13:progressMarker, linkTrackVars:"events,products,prop13,eVar13"};
-
-	            	if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
-	            		jsmd.TVE.isAdPlayTimeSet = true;
-	            		s_data["linkTrackEvents"] = "event6,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event6,event20"; }
-
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-
-				this.send();
-			},
-			"tve-C4_video-progress": function(data, map) {
-				this.push("page.events","tve.video.c4.video_progress");
-
-
-				var prodFranchise = data.franchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = data.title+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-
-
-
-				/*if (data.totalPlayTime){
-					totalPlayTime = (jsmd.TVE.prevTotalPlayTime != 0)?((data.totalPlayTime*1) - jsmd.TVE.prevTotalPlayTime)+"":data.totalPlayTime;
-					jsmd.TVE.prevTotalPlayTime = (data.totalPlayTime*1);
-				} else {
-					totalPlayTime = "60";
-				}*/
-
-				var event22cal = (Math.round(jsmd.TVE.totalAdDurations) - Math.round(jsmd.TVE.prevAdEvent22)) - (jsmd.TVE.adIntervalsCount*60);
-
-				if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
-					jsmd.TVE.prevAdEvent22 += event22cal;
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"60"+"|event22="+event22cal));
-				} else {
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"60"));
-				}
-
-				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
-
-				this.set("action","link");
-				this.set("link",{name: "video progress", type: "o"});
-
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop20:progressMarker, eVar20:progressMarker, linkTrackVars:"events,products,prop20,eVar20"};
-	            	this.set("business.vendor.sitecatalyst", s_data);
-
-	            	if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
-	            		jsmd.TVE.isAdPlayTimeSet = true;
-	            		jsmd.TVE.event22cal = event22cal;
-	            		s_data["linkTrackEvents"] = "event7,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event7,event20"; }
-
-				}catch(e){}
-
-				this.send();
-			},
-			"tve_video-pause": function(data, map) {
-			},
-			"tve-C4_ad-start": function(data, map){
-					clearInterval(setinterval_id);
-
-				jsmd.TVE.isAdPlayTimeSet = false;
-				jsmd.TVE.isAdStart = true;
-				jsmd.TVE.adDuration = Math.round(data.duration*1);
-				jsmd.TVE.totalAdDurations += Math.round(data.duration*1);
-				this.set("action","link");
-				this.set("link",{name: "ad start", type: "o"});
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, events:"event1", linkTrackVars:"events", linkTrackEvents:"event1"};
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-				this.send();
-			},
-			"tve-C3_ad-start": function(data, map){
-				clearInterval(setinterval_id);
-
-				jsmd.TVE.isAdPlayTimeSet = false;
-				jsmd.TVE.isAdStart = true;
-				this.set("action","link");
-				this.set("link",{name: "ad start", type: "o"});
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, events:"event1", linkTrackVars:"events", linkTrackEvents:"event1"};
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-				this.send();
-			},
-			"tve-C4_ad-progress": function(data, map){
-				jsmd.TVE.isAdPlayTimeSet = false;
-				jsmd.TVE.isAdStart = true;
-				this.set("action","link");
-				this.set("link",{name: "ad progress", type: "o"});
-
-				var totalPlayTime = "";
-				if (data.totalPlayTime){
-					totalPlayTime = (jsmd.TVE.prevTotalPlayTime != 0)?((data.totalPlayTime*1) - jsmd.TVE.prevTotalPlayTime)+"":data.totalPlayTime;
-					jsmd.TVE.prevTotalPlayTime = (data.totalPlayTime*1);
-				} else {
-					totalPlayTime = "60";
-				}
-
-
-				jsmd.TVE.adIntervalsCount += 1;
-
-				var grossProgressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":ad":"";
-
-				var prodFranchise = jsmd.TVE.videoFranchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = jsmd.TVE.videoTitle+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event7="+"0"+"|event22="+"60"));
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, events:"event7,event20,event22", prop20:grossProgressMarker, eVar20:grossProgressMarker, linkTrackVars:"events,products,prop20,eVar20"};
-
-	            		s_data["linkTrackEvents"] = "event7,event20,event22";
-
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-				this.send();
-			},
 			"tve-C3_ad-progress": function(data, map){
 				jsmd.TVE.isAdPlayTimeSet = false;
 				jsmd.TVE.isAdStart = true;
+
 				this.set("action","link");
 				this.set("link",{name: "ad progress", type: "o"});
 
@@ -2175,223 +2600,157 @@ var _jsmd_default={
 				}else{
 					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event6="+"60"));
 				}
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, events:"event6,event20,event22", prop13:grossProgressMarker, eVar13:grossProgressMarker, linkTrackVars:"events,products,prop13,eVar13"};
 
-	            	if(adPlayTime != "" && adPlayTime > 0){
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event6,event20,event22",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							eVar13:grossProgressMarker,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					if(adPlayTime != "" && adPlayTime > 0){
 	            		s_data["linkTrackEvents"] = "event6,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event6,event20"; }
-
+	            		s_data["events"] = "event6,event20,event22";
+	            	}else {
+	            		s_data["linkTrackEvents"] = "event6,event20";
+	            		s_data["events"] = "event6,event20";
+	            	}
 	            	this.set("business.vendor.sitecatalyst", s_data);
 				}catch(e){}
 				this.send();
-			},
-			"mso_picker-open": function() {
-				var s_data = {pageName:"TVE MVPD Picker"};
-				this.set("business.vendor.sitecatalyst", s_data);
-				this.send();
-			},
-			"tve-C3A_video-start": function(data, map) {
-
-				var MSO = jsmd.tveMSO;
-				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
-				if(!jsmd.TVE.isAdStart){
-					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
-				}
-				this.push("page.events","tve.video.c3a.video_start");
-				this.set("tve.page.name", data.franchise+":"+data.title);
-				this.set("tve.video_title", data.title);
-				var brand = this.get("tve.brand");
-				var distribName = MSO;
-				var authState = "authenticated";
-				if (MSO == "Unauthorized")
-				{
-						distribName = "unspecified mvpd";
-						authState = "not authenticated";
-				}
-				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
-				this.set("tve.content_id", data.contentId);//prop5,eVar5
-				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
-				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
-				this.set("tve.mode", "C3A");//prop8,eVar8
-				this.set("tve.franchise", data.franchise);//prop9,eVar9
-				this.set("tve.video.authentication", authState);//prop16,eVar16
-
-				var prodFranchise = data.franchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = data.title+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-				var grossLength = (data.grossLength)?data.grossLength:(data.trt)?data.trt:"";
-
-				this.set("tve.full_episode_length", prodFranchise+":"+prodTitle+":"+grossLength);//prop10,eVar10
-
-				var adTotal = null;
-				if (data.grossLength && data.duration){
-					adTotal = ((data.grossLength*1) - (data.duration*1))
-				}
-
-				if (!adTotal){
-					ad_duration = "";
-					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event9="+data.trt))//products
-				}else {
-					this.set("tve.products", (";"+prodFranchise+":"+prodTitle+";;;event9="+data.trt+"|event21="+adTotal))//products
-				}
-
-				var userID = jsmd.TVE.userID;
-				this.set("tve.user_id", userID);// prop19,eVar19
-				var playerLocation = jsmd.get("tve.player_location");
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, prop13:"0:content", eVar13:"0:content", linkTrackVars:"events,products,pageName,prop12,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop13,eVar13,prop16,eVar16,eVar19,prop19"};
-	            	if(adTotal){
-	            		s_data["linkTrackEvents"] = "event9,event13,event15,event21";
-	            	}else { s_data["linkTrackEvents"] = "event9,event13,event15"; }
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-
-				this.send();
-
-				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.title);
-			},
-			"tve-C3A_video-progress": function(data, map) {
-				this.push("page.events","tve.video.c3a.video_progress");
-
-				var prodFranchise = data.franchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = data.title+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
-				if(!jsmd.TVE.isAdStart){
-					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
-				}
-
-				var adPlayTime = (data.playheadTime)?(data.playheadTime*1) - (jsmd.TVE.lastPlayHeadTime*1):0; //playheadTime
-				adPlayTime = (adPlayTime<=0)?data.playheadTime:adPlayTime;
-				jsmd.TVE.lastPlayHeadTime = (adPlayTime <= 0)?data.playheadTime:adPlayTime;
-
-				var lastAdPlayTime = ((adTotalPlayTime*1)-(jsmd.TVE.nonC3C4adNum*1) - (jsmd.TVE.allAdIntervlNum*1));
-				if (lastAdPlayTime <0){ lastAdPlayTime = lastAdPlayTime*(-1); }
-
-				if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"+"|event22="+lastAdPlayTime));
-				} else {
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"));
-				}
-
-				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
-				this.set("action","link");
-				this.set("link",{name: "video progress", type: "o"});
-
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop13:progressMarker, eVar13:progressMarker, linkTrackVars:"events,products,prop13,eVar13"};
-
-	            	if(!jsmd.TVE.isAdPlayTimeSet && adTotalPlayTime>0 && lastAdPlayTime >0){
-	            		jsmd.TVE.isAdPlayTimeSet = true;
-	            		s_data["linkTrackEvents"] = "event5,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event5,event20"; }
-
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-
-				this.send();
-			},
-			"tve-C3A_video-complete": function(data, map) {
-				this.push("page.events","tve.video.c3a.video_complete");
-
-
-				var prodFranchise = data.franchise+"";
-				prodFranchise = prodFranchise.replace(/\,|\;/gi, "");
-				var prodTitle = data.title+"";
-				prodTitle = prodTitle.replace(/\,|\;/gi, "");
-
-				var adTotalPlayTime = (data.adTotalPlayTime)?data.adTotalPlayTime:0;
-				if(!jsmd.TVE.isAdStart){
-					jsmd.TVE.nonC3C4adNum = adTotalPlayTime*1;
-				}
-
-
-				var event22cal = Math.round((jsmd.TVE.totalAdDurations)) - (jsmd.TVE.adIntervalsCount*60);
-
-				if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"+"|event22="+event22cal));
-				} else {
-					this.set("tve.products",(";"+prodFranchise+":"+prodTitle+";;;event5="+"60"));
-				}
-
-				var progressMarker = (data.grossProgressMarker)?data.grossProgressMarker+":content":"";
-				this.set("action","link");
-				this.set("link",{name: "video complete", type: "o"});
-
-				try {
-					var act_rsid = jsmd.tveRSID;
-					var s_data = {account:act_rsid, prop13:progressMarker, eVar13:progressMarker, linkTrackVars:"events,products,prop13,eVar13"};
-	            	if(!jsmd.TVE.isAdPlayTimeSet && event22cal > jsmd.TVE.event22cal){
-	            		jsmd.TVE.isAdPlayTimeSet = true;
-	            		jsmd.TVE.event22cal = event22cal;
-	            		s_data["linkTrackEvents"] = "event5,event14,event20,event22";
-	            	}else { s_data["linkTrackEvents"] = "event5,event14,event20"; }
-	            	this.set("business.vendor.sitecatalyst", s_data);
-				}catch(e){}
-
-
-				this.send();
-
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",data.contentId,data.title,data.trt);
 			},
 			"tve-live_video-start": function(data, map) {
+				if(setinterval_id != ""){
+					clearInterval(setinterval_id);
+				}
+
+
 				var MSO = jsmd.tveMSO;
-				this.push("page.events","tve.video.live.video_start");
-				this.set("tve.page.name", data.sPageName);//"tve.brand" prop1,eVar1
-				var brand = this.get("tve.brand");
+				this.set("tve.page.name", data.sPageName);
+				jsmd.TVE.pageName = this.get("tve.page.name");
+				this.set("tve.video_title", data.title);//prop12
+				jsmd.TVE.videoTitle = this.get("tve.video_title");
+				jsmd.TVE.brand = this.get("tve.brand");
 				var distribName = MSO;
-				var authState = "authenticated";
 				if (MSO == "Unauthorized")
 				{
 						distribName = "unspecified mvpd";
-						authState = "not authenticated";
+						jsmd.TVE.authState = "not authenticated";
 				}
-				this.set("tve.host_location", distribName+":"+brand);//prop2,eVar2
+				this.set("tve.host_location", distribName+":"+jsmd.TVE.brand);//prop2,eVar2
+				jsmd.TVE.host = this.get("tve.host_location");
 				this.set("tve.content_id", data.contentId);//prop5,eVar5
+				jsmd.TVE.vidID = this.get("tve.content_id");
 				this.set("tve.publication_date", data.lastAirDate);//prop6,eVar6
+				jsmd.TVE.lastAirDate = this.get("tve.publication_date");
 				this.set("tve.days_since_publication", data.dayssince);//prop7,eVar7
+				jsmd.TVE.dayssince = this.get("tve.days_since_publication");
 				this.set("tve.mode", "live");//prop8,eVar8
+				jsmd.TVE.mode = "live";
 				this.set("tve.franchise", data.franchise);//prop9,eVar9
+				jsmd.TVE.videoFranchise = this.get("tve.franchise");
+				jsmd.TVE.playerLocation = jsmd.get("tve.player_location");
 				this.set("tve.video.live.stream", data.omnitureVideoName);//prop14,eVar14
-				this.set("tve.video.authentication", authState);//prop16,eVar16
-
+				jsmd.TVE.liveStreamName = jsmd.get("tve.video.live.stream");
+				this.set("tve.video.authentication", jsmd.TVE.authState);//prop16,eVar16
+				this.set("tve.user_id", jsmd.TVE.userID);// prop19,eVar19
+				jsmd.TVE.fullEpisode = this.get("tve.full_episode_length");
 
 				this.set("tve.products", (";"+data.sPageName));
-				var playerLocation = jsmd.get("tve.player_location");
 
-				var act_rsid = jsmd.tveRSID;
-				var s_data = {account:act_rsid, prop11:playerLocation, eVar11:playerLocation,prop16:authState, eVar16:authState, eVar26:"", linkTrackVars:"pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop11,eVar11,prop14,eVar14,prop16,eVar16,products,events", linkTrackEvents:"event13,event25"};
-	            this.set("business.vendor.sitecatalyst", s_data);
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event13,event25",
+							prop1:jsmd.TVE.brand,
+							eVar1:jsmd.TVE.brand,
+							prop2:jsmd.TVE.host,
+							eVar2:jsmd.TVE.host,
+							prop4:jsmd.TVE.channel,
+							eVar4:jsmd.TVE.channel,
+							prop5:jsmd.TVE.vidID,
+							eVar5:jsmd.TVE.vidID,
+							prop6:jsmd.TVE.lastAirDate,
+							eVar6:jsmd.TVE.lastAirDate,
+							prop7:jsmd.TVE.dayssince,
+							eVar7:jsmd.TVE.dayssince,
+							prop8:jsmd.TVE.mode,
+							eVar8:jsmd.TVE.mode,
+							prop9:jsmd.TVE.videoFranchise,
+							eVar9:jsmd.TVE.videoFranchise,
+							prop10:jsmd.TVE.fullEpisode,
+							eVar10:jsmd.TVE.fullEpisode,
+							prop11:jsmd.TVE.playerLocation,
+							eVar11:jsmd.TVE.playerLocation,
+							prop14:jsmd.TVE.liveStreamName,
+							eVar14:jsmd.TVE.liveStreamName,
+							prop16:jsmd.TVE.authState,
+							eVar16:jsmd.TVE.authState,
+							prop19:jsmd.TVE.userID,
+							eVar19:jsmd.TVE.userID,
+							linkTrackVars:"events,products,pageName,prop1,eVar1,prop2,eVar2,prop4,eVar4,prop5,eVar5,prop6,eVar6,prop7,eVar7,prop8,eVar8,prop9,eVar9,prop10,eVar10,prop11,eVar11,prop13,eVar13,prop14,eVar14,prop16,eVar16,prop19,eVar19,prop20,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+	            	this.set("business.vendor.sitecatalyst", s_data);
+				}catch(e){}
 
 				this.send();
 
 				sendComscoreVideoMetrixBeacon(data.contentId,1);	//content-related comscore call
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",data.contentId,data.sPageName);
 			},
-			"tve-live_video-complete": function(data, map) {
-			},
 			"tve-live_video-progress": function(data, map) {
-				var MSO = jsmd.tveMSO;
-				this.push("page.events","tve.video.live.video_progress");
+
 				this.set("tve.products", (";"+data.sPageName+";;;event16=60"));
 
 				this.set("action","link");
 				this.set("link",{name: "video progress", type: "o"});
 
-				var act_rsid = jsmd.tveRSID;
-				var s_data = {account:act_rsid, linkTrackVars:"products,events", linkTrackEvents:"event16,event20"};
-	            this.set("business.vendor.sitecatalyst", s_data);
+				try {
+					var s_data = {
+							account:jsmd.tveRSID,
+							events:"event16,event20",
+							eVar1:jsmd.TVE.brand,
+							eVar2:jsmd.TVE.host,
+							eVar4:jsmd.TVE.channel,
+							eVar5:jsmd.TVE.vidID,
+							eVar6:jsmd.TVE.lastAirDate,
+							eVar7:jsmd.TVE.dayssince,
+							eVar8:jsmd.TVE.mode,
+							eVar9:jsmd.TVE.videoFranchise,
+							eVar10:jsmd.TVE.fullEpisode,
+							eVar11:jsmd.TVE.playerLocation,
+							eVar14:jsmd.TVE.liveStreamName,
+							eVar16:jsmd.TVE.authState,
+							eVar19:jsmd.TVE.userID,
+							linkTrackVars:"events,products,pageName,eVar1,eVar2,eVar4,eVar5,eVar6,eVar7,eVar8,eVar9,eVar10,eVar11,eVar13,eVar14,eVar16,eVar19,eVar20,prop35,eVar35,prop46,eVar46,prop47,eVar47"
+					};
+					this.set("business.vendor.sitecatalyst", s_data);
+
+				}catch(e){}
 
 				this.send();
+			},
+			"tve-live_video-complete": function(data, map) {
+			},
+			"mso_picker-open": function() {
+				var s_data = {pageName:"TVE MVPD Picker"};
+				this.set("business.vendor.sitecatalyst", s_data);
+				this.send();
+			},
+			"tve_video-pause": function(data, map) {
 			}
 		}
 
@@ -3267,16 +3626,27 @@ function sendGameEvent(gameData, event){
 }
 */
 
-function sendComscoreVideoMetrixBeacon(videoId,contentFlag) {
-	_jsmd.doImageBeacon("http://b.scorecardresearch.com/p?c1=${c1}&c2=${c2}&c3=${c3}&c4=${c4}&c5=${c5}&rn=${random}", {
-			c1:'1', 		// Video metrix tag identifier
-			c2:'8586818', 	// Turner Specific Tag
-			c3:'00014', 	// Report-suite numeric identifier for comparisons to Omniture
-			c4:'6035711',	// Site Specific Tag
-			c5:(contentFlag==1?'020000':'010000')
-		}
-	);
+function sendComscoreVideoMetrixBeacon(videoId, contentFlag) {
+	if(window.location.hostname.indexOf("teamcoco") > -1){
+		_jsmd.doImageBeacon("http://b.scorecardresearch.com/p?c1=${c1}&c2=${c2}&c3=${c3}&c4=${c4}&c5=${c5}&c6=${c6}&rn=${random}", {
+			c1: '1',
+			c2: '8586818',
+			c3: '00014',
+			c4: '14775759',
+			c5: (contentFlag == 1 ? '020000' : '010000'),
+			c6: 'Team Coco'
+		});
+	} else {
+		_jsmd.doImageBeacon("http://b.scorecardresearch.com/p?c1=${c1}&c2=${c2}&c3=${c3}&c4=${c4}&c5=${c5}&rn=${random}", {
+			c1: '1',
+			c2: '8586818',
+			c3: '00014',
+			c4: '6035711',
+			c5: (contentFlag == 1 ? '020000' : '010000')
+		});
+	}
 }
+
 function sendNielsenVideoCensusBeacon(config,state,videoId,videoTitle,duration) {
 	var url = "http://secure-${sfcode}.imrworldwide.com/cgi-bin/m?ci=${clientid}&c6=${prod},${vcid}&cc=1&tl=${state}-${videoId}&rnd=${random}";
 	var nVC = (!config ? null : config["video-census"]);
@@ -3386,8 +3756,7 @@ function TVE_VideoEvent(_data, _event){
         	else if(action == "C4"){ action = "tve-C4_video-start";
         	}else if (action == "C3"){ action = "tve-C3_video-start";}
         }else if (_event === "ad-start") {
-        	if(action == "C4"){ action = "tve-C4_ad-start";
-        	}else if (action == "C3"){ action = "tve-C3_ad-start";}
+        	action = "tve-ad-start";
         }else if (_event === "ad-progress") {
         	if(action == "C4"){ action = "tve-C4_ad-progress";
         	}else if (action == "C3"){ action = "tve-C3_ad-progress";}
@@ -3448,7 +3817,7 @@ _jsmd.JSMD.prototype.tveRSIDList = {
     }
 };
 
-_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.tbs.com")?"tveglobal,tvenotauthtbs":"tveglobaldev,tvenotauthtbsdev";
+_jsmd.JSMD.prototype.tveRSID = (window.location.host === "www.tbs.com")?"tveglobal,tvetbs,tvenotauthtbs":"tveglobaldev,tvetbsdev,tvenotauthtbsdev";
 
 _jsmd.JSMD.prototype.sTVE_MSO = function(_MSO){
 	var MSO = _MSO;
@@ -3457,37 +3826,52 @@ _jsmd.JSMD.prototype.sTVE_MSO = function(_MSO){
 	this.sTVE_RSID();
 };
 
+
 _jsmd.JSMD.prototype.sTVE_RSID = function(_category){
-	var gval = null, nval = null;
-	try{
-		gval = "tveglobal";
-		nval = (gval)?(this.tveRSIDList[(this.tveMSO)].tve_network):null;
-	}catch(e){}
-	var globalRSID = (gval)? gval : ("tve" + (this.tveMSO) + "global");
-	var networkRSID = (nval)? nval : ("tve" + (this.tveMSO) + "tbs");
+	var globalRSID = "tveglobal";
+	var brandRSID = "tvetbs";
+	var networkRSID = "tve" + (this.tveMSO) + "tbs";
+	if(networkRSID.indexOf("dtv") > -1){
+		networkRSID = networkRSID.replace("dtv","directtv");
+	}
 
 	var devStng = (window.location.host === "www.tbs.com")?"":"dev"
-	this.tveRSID = (this.tveMSO != "google" && this.tveMSO != "Unauthorized")? (globalRSID+devStng+","+networkRSID+devStng) : this.tveRSIDList[this.tveMSO]+devStng;
+		if (this.tveMSO != "Unauthorized"){
+			this.tveRSID =  globalRSID+devStng+","+brandRSID+devStng+","+networkRSID+devStng;
+		}
 }
 
 /*TVE Objects*/
 _jsmd.JSMD.prototype.TVE = {
-	video_progress: "0",
-	userID: "Unspecified UserId",
-	isAdPlayTimeSet: true,
-	prevTotalPlayTime: 0,
-	videoFranchise: "",
-	videoTitle: "",
-	lastPlayHeadTime: 0,
-	nonC3C4adNum:0,
-	allAdIntervlNum:0,
-	isAdStart:false,
-	adDuration:0,
-	totalAdDurations:0,
-	event22cal: 0,
-	prevAdEvent22:0,
-	adIntervalsCount:0,
-	progressMarker:0
+		video_progress: "0",
+		userID: "Unspecified UserId",
+		isAdPlayTimeSet: true,
+		prevTotalPlayTime: 0,
+		videoFranchise: "",
+		videoTitle: "",
+		lastPlayHeadTime: 0,
+		nonC3C4adNum:0,
+		allAdIntervlNum:0,
+		isAdStart:false,
+		adDuration:0,
+		totalAdDurations:0,
+		event22cal: 0,
+		prevAdEvent22:0,
+		adIntervalsCount:0,
+		progressMarker:0,
+		pageName:"",
+		brand:"",
+		host:"",
+		channel:"",
+		vidID:"",
+		lastAirDate:"",
+		dayssince:"",
+		mode:"",
+		videoFranchise:"",
+		fullEpisode:"",
+		playerLocation:"",
+		liveStreamName: "",
+		authState :"authenticated"
 };
 
 function trackAuthenticationStart(_trackingData) {

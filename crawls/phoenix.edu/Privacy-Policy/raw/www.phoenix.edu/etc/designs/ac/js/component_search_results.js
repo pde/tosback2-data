@@ -164,9 +164,9 @@ if($.browser&&$.browser.mozilla){F+='&fq=subcategory:"'+I+'"'
 }else{window.location.href="javascript:UPX.searchResults.followFacetLink('searchResultsFacet_"+I+"','"+F+"', "+G[0].substr(1)+")"
 }},checkAnchorHash:function(){var F=document.location.hash;
 if((F.indexOf(s)>=0)&&(c!==F)){UPX.searchResults.followNavigationalAnchorLink(F)
-}},followEventBoundLink:function(G){var F="#0"+s+UPX.searchResults.escapeUrlForSearch(G)+s+"null"+s+"null";
+}},followEventBoundLink:function(G){if(G!==""&&!G.match(/search/i)){var F="#0"+s+UPX.searchResults.escapeUrlForSearch(G)+s+"null"+s+"null";
 window.location.href="/search.html?solr_q="+escape("&q="+UPX.searchResults.escapeUrlForSearch(G))+F
-},getDimAutoFilters:function(){var F="";
+}},getDimAutoFilters:function(){var F="";
 if(m.enableLocationDim!=="false"){UPX_userDefaultValue.ready(function(){y=UPX_userDefaultValue.getOrga();
 x=UPX_userDefaultValue.getState();
 f=UPX_userDefaultValue.getPostalCode()

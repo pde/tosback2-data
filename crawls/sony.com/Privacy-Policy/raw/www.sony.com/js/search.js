@@ -1,16 +1,44 @@
 var search = (function(){
-	var $search;
+	var $search,
+		$searchContainer,
+		$searchBtn;
 	
 	/****** public methods ******/
 	return{
 		init:function(){
 			$search = $('#search-input');
+			$searchContainer = $('#search');
+			$searchBtn = $('#search-button');
+			search.btn = $searchBtn;
 			setSearch();
+		},
+		open:function(){
+			$searchBtn.removeClass('closed').addClass('open');
+			$searchContainer.addClass('show');
+		},
+		close: function(){
+			$searchBtn.removeClass('open').addClass('closed');
+			$searchContainer.removeClass('show');
 		}
 	}
 	/****** private methods ******/
 	function setSearch(){		
 		$search.addClass('empty').attr('value', 'Search');
+
+		$searchBtn.children('a').click(function() {
+			var $this = $(this),
+				$parent = $this.parent();
+
+			nav.animateMenu("hide");
+
+			if($searchBtn.hasClass('closed')){
+				search.open();
+			} else {
+				search.close();
+			}
+
+			return false;
+		});
 		
 		$search.focus(function(){
 			if($search.attr('value') == "Search"){

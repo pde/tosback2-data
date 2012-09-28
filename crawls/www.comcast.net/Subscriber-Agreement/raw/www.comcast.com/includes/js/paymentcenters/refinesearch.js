@@ -47,6 +47,7 @@ RefineSearch.prototype.OnSubmit = function(postback) {
     var isValid = Page_ClientValidate("RefineSearchVGrp");
     if (!isValid) {
         errorDiplayElement.className = "ErrorDisplay";
+        errorMessagesElement.className = "Error";
         SetRequiredFieldStyle();
         return false;
     }

@@ -403,8 +403,8 @@ function cmMakeTag(__v) {
 				break;
 		}		
 		var attrNum=cm.cm_exAttr.length;
-		if (attrNum>15){
-			attrNum=15;
+		if (attrNum>50){
+			attrNum=50;
 		}
 		for (i=0;i<attrNum;i++){
 			if (cm.tid=="2"){

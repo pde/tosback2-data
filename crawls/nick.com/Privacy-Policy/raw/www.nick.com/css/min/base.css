@@ -53,7 +53,7 @@ ul#nick-footer-menu{padding-bottom:10px;}
 ul#nick-footer-menu li,.nick-footer-menu li{float:left;border-right:1px solid #555;}
 div.nick-footer-center a{border-right:1px solid #555;}
 div.nick-footer-center a.last{border-right:0;}
-ul#nick-footer-menu li a,.nick-footer-menu a{padding:0 5px;color:#555;font-weight:bold;font-size:11px;text-decoration:none;text-transform:uppercase;}
+ul#nick-footer-menu li a,.nick-footer-menu a{padding:0 5px;color:#555;font-weight:bold;line-height:15px;font-size:11px;text-decoration:none;text-transform:uppercase;}
 div#nick-footer .nick-footer-menu li a.privacy-policy{font-size:13px;color:#FF7F00;}
 ul#nick-footer-menu li a:hover,.nick-footer-menu a:hover{text-decoration:underline;}
 ul#nick-footer-menu li.last,ul.nick-footer-menu li.last{border-right:0;}
@@ -513,6 +513,10 @@ div.info-list-container-large{width:959px;padding:12px;background:transparent ur
 #tray #button-bar li#nicklike iframe{position:relative;top:10px;*top:0;}
 #tray #button-bar ul.buttons li .icon{background-position:0 0;display:inline-block;height:19px;margin:10px 0;outline:none;text-indent:-9999px;vertical-align:middle;*display:block;}
 #tray #button-bar .icon.icon-share{background:url(../../assets/icons/icon_share.gif) no-repeat;width:52px;}
+#tray #button-bar span.icon.icon-favorite.favorite-button-module{width:67px;height:19px;background:url(../../nick-assets/generic/buttons/favorite-module-button.png) no-repeat;cursor:pointer;}
+#tray #button-bar span.icon.icon-favorite.favorite-button-module:hover{background-position:0 -19px;}
+#tray #button-bar span.icon.icon-favorite.favorite-button-module.isFavorite{background-position:0 -38px;width:78px;cursor:auto;}
+#tray #button-bar span.icon.icon-favorite.favorite-button-module.isFavorite:hover{background-position:0 -38px;}
 #tray #button-bar .icon.icon-favorite{background:url(../../assets/icons/icon_favorite.gif) no-repeat;width:66px;}
 #tray #button-bar ul.buttons .icon:hover{background-position:0 -19px;}
 #urlCopyButton:hover,#urlCopyButton.hover,#embedCopyButton:hover,#embedCopyButton.hover{cursor:pointer;background-position:0 -19px;}
@@ -707,8 +711,10 @@ a:hover.na-sm-right{background-position:-12px -64px;}
 .icon{display:block;background-repeat:no-repeat;background-position:0 0;text-decoration:none;text-indent:-999999px;cursor:pointer;}
 .icon-submit{height:20px;width:55px;background-image:url(../../assets/icons/icon_submit.gif);}
 .icon-login{height:20px;width:46px;background-image:url(../../assets/icons/icon_login.gif);}
+div.o_popup_login .icon-login{width:94px;height:31px;background-image:url(../../nick-assets/generic/buttons/login.png);}
 .icon-back{height:20px;width:51px;background-image:url(../../assets/icons/icon_back.gif);}
-.icon-back:hover,.icon-login:hover,.icon-submit:hover{background-position:0 -20px;}
+.icon-back:hover,.icon-submit:hover,.icon-login:hover{background-position:0 -20px;}
+div.o_popup_login .icon-login:hover{background-position:0 -31px;}
 .clearfix:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0;}
 .clearfix{display:inline-block;}
 html[xmlns] .clearfix{display:block;}
@@ -743,7 +749,7 @@ html[xmlns] .clearfix{display:block;}
 .o_popup_borderless .o_popup_header,.o_popup_borderless .o_popup_square_borders,.o_popup_borderless .o_popup_tl,.o_popup_borderless .o_popup_tr,.o_popup_borderless .o_popup_bl,.o_popup_borderless .o_popup_br,.o_popup_borderless .o_popup_hs,.o_popup_borderless .o_popup_vs{display:none;}
 .o_popup_borderless .o_popup_wrapper{-moz-border-radius:0;-webkit-border-radius:0;border:0;}
 .o_popup_borderless .o_popup_content{padding:0;}
-.o_popup .o_popup_content h3,.o_popup .o_popup_content label{font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;color:#000;text-transform:uppercase;}
+.o_popup .o_popup_content h3,.o_popup .o_popup_content label{font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#444;text-transform:uppercase;}
 .o_popup .o_popup_content label.small{text-transform:none;color:#565555;}
 .o_popup .o_popup_content .error label span{text-transform:none;color:#000;}
 .o_popup .o_popup_content .error label{color:#f00;}
@@ -805,15 +811,33 @@ html[xmlns] .clearfix{display:block;}
 #fRegistrationParentEmail .agree-line span{float:left;color:#666;font-size:11px;font-weight:bold;}
 #fRegistrationParentEmail .icon-submit{clear:both;margin-top:15px;}
 .o_popup_registration .reg-column1 .UAContainer{margin:0 auto;}
-.o_popup_login{width:158px;padding-left:150px;background:transparent url(../../assets/Backgrounds/spongebob_login.jpg) no-repeat top left;}
-.o_popup_login .icon-login{float:right;}
-.o_popup_login .login-options{clear:both;padding-top:10px;width:100%;}
-.o_popup_login .login-options li{padding-bottom:5px;}
-.o_popup_login .login-options li a.hlink{text-transform:none!important;cursor:pointer;}
-.o_popup_forgot{width:158px;height:150px;padding-left:150px;background:transparent url(../../assets/Backgrounds/spongebob_login.jpg) no-repeat center left;}
-.o_popup_forgot .actions{width:100%;margin-top:5px;}
-.o_popup_forgot .icon-back{float:left;}
+.o_popup_login{width:580px;padding-left:5px;}
+.o_popup_login div.login-left{float:left;display:block;width:220px;height:200px;}
+.o_popup_login div.login-sponge{width:145px;height:170px;display:block;float:left;margin:10px 15px;border-left:1px solid #e6e6e6;background:transparent url(../../nick-assets/generic/backgrounds/bob.jpg) no-repeat 25px 0;}
+.o_popup_login .icon-login{float:right;margin:10px 0;}
+.o_popup_login form{float:left;width:220px;padding:0;}
+.o_popup .o_popup_content .o_popup_login input.medium{width:212px;height:20px;-moz-box-shadow:inset 2px 2px 2px 2px rgba(153,153,153,0.31);-webkit-box-shadow:inset 2px 2px 2px 2px rgba(153,153,153,0.31);}
+.o_popup .o_popup_content .o_popup_login label{font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#444;text-transform:uppercase;}
+.o_popup .o_popup_login .login-forgot-password{font-size:14px;display:block;color:#f60;width:220px;text-align:right;background:transparent;padding:10px 0 0 0;text-transform:none!important;float:left;cursor:pointer;}
+.o_popup .o_popup_login .login-forgot-password:hover{text-decoration:underline;color:#C1272D;background-image:none;}
+.o_popup_login div.login-register{display:block;padding:50px 0 0 0;width:155px;float:left;text-align:center;color:#444;}
+.o_popup_login div.login-register a.register-btn{display:block;float:left;width:155px;height:31px;background:transparent url(../../nick-assets/generic/buttons/join-club.png) no-repeat 0 0;text-indent:-99999px;margin:10px 0;}
+.o_popup_login div.login-register a.register-btn:hover{background-position:0 -31px;}
+.o_popup_forgot{width:225px;height:170px;padding-left:165px;background:transparent url(../../nick-assets/generic/backgrounds/bob.jpg) no-repeat center left;}
+.o_popup .o_popup_content .o_popup_forgot input.medium{width:193px;height:20px;-moz-box-shadow:inset 2px 2px 2px 2px rgba(153,153,153,0.31);-webkit-box-shadow:inset 2px 2px 2px 2px rgba(153,153,153,0.31);}
+.o_popup .o_popup_content .o_popup_forgot label{text-transform:none;font-size:13px;}
+.o_popup_forgot .actions{width:205px;margin-top:15px;}
+.o_popup .o_popup_forgot .icon-submit{height:31px;width:94px;background-image:url(../../nick-assets/generic/buttons/submit_btn.png);}
+.o_popup_forgot .icon-submit:hover{background-position:0 -31px;}
+.o_popup_forgot .icon-back{float:left;font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:16px;background:transparent url(../../nick-assets/generic/buttons/arrow.png) no-repeat 0 4px;color:#FD6F01;padding:0 0 0 10px;margin:10px 0 0 0;cursor:pointer;text-decoration:underline;}
+.o_popup_forgot .icon-back:hover{color:#c1272d;}
 .o_popup_forgot .icon-submit{float:right;}
+#secretQuestion{margin-top:20px;}
+#yourPassword label{text-transform:uppercase;}
+#yourPassword{width:203px;}
+#yourPassword label.password{width:192px;height:20px;background-color:#E8E8E8;padding:5px;margin:20px 0 0 0;text-transform:none;}
+#yourPassword a.login-now{width:144px;height:31px;background:transparent url(../../nick-assets/generic/buttons/forget-password_btn.png) no-repeat 0 0;display:block;text-indent:-999999px;margin:20px 0 0 0;float:right;}
+#yourPassword a.login-now:hover{background-position:0 -31px;}
 .o_popup_geturl{width:460px;}
 .o_popup_embed{width:460px;}
 .o_popup_newsletter{width:615px;min-height:360px;height:auto;background:transparent url(../../assets/Backgrounds/overlay_newsletter_avatar.jpg) no-repeat bottom right;}
@@ -842,6 +866,7 @@ ul.confirm-options li{float:left;display:inline;margin-left:10px;}
 * html .o_popup_report_concern{height:180px;}
 .o_popup_report_concern .icon-submit{float:right;margin-top:15px;}
 .newsletter-state-selection{display:none;}
+.o_popup_content div.popupMessage{font-size:17px;color:#333;text-align:center;padding-bottom:2px;margin-bottom:10px;border-bottom:1px solid #E6E6E6;}
 .pagination{position:relative;text-align:center;width:100%;}
 .pagination .pagination-previous{position:absolute;left:5px;top:7px;}
 .pagination .pagination-next{float:left;position:absolute;right:5px;top:7px;}

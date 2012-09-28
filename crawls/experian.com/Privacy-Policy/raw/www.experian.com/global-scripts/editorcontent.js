@@ -760,11 +760,11 @@ $("img.dynamicClose").click(function () {
 });
 
 // for eloqua test
-if(location.host == "www.experian.com"){
-	$.getScript('/global-scripts/marketing-operations/elqCfg.js');
-	$.getScript('/global-scripts/marketing-operations/elqImg.js');
-}	
-
+//if(location.host == "www.experian.com"){
+	//$.getScript('/global-scripts/marketing-operations/elqCfg.js');
+	//$.getScript('/global-scripts/marketing-operations/elqImg.js');
+//}
+	
 // init carousels
 if($(".slidebox").length > 0){
 	var carousel = $(".slidebox").parent("div").attr("id");
@@ -803,3 +803,80 @@ if($(".slidebox").length > 0){
 }
 });
 
+// Mobile Redirect Function
+
+function mobile(mobileurl)
+					{
+					var classicView = getUrlVars()["classic"];
+
+								function getUrlVars() {
+									var vars = {};
+									var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+										vars[key] = value
+									});
+									return vars
+								}
+
+								var exp_agent = navigator.userAgent.toLowerCase();
+								var exp_scrHeight = screen.height;
+								var exp_iOS = (exp_agent.indexOf("iphone") != -1) || (exp_agent.indexOf("ipod") != -1) ? true : false;
+								var exp_otherBrowser = (exp_agent.indexOf("series60") != -1) || (exp_agent.indexOf("symbian") != -1) || (exp_agent.indexOf("windows ce") != -1) || (exp_agent.indexOf("blackberry") != -1) || (exp_agent.indexOf('sonyericsson') != -1) || (exp_agent.indexOf('webos') != -1) || (exp_agent.indexOf('wap') != -1) || (exp_agent.indexOf('motor') != -1) || (exp_agent.indexOf('samsung') != -1) || (exp_agent.indexOf('nokia') != -1) ? true : false;
+								var exp_tablet = (exp_agent.indexOf("xoom") != -1) || (exp_agent.indexOf("pad") != -1) || (exp_agent.indexOf("tab") != -1) || (exp_agent.indexOf("nextbook") != -1) || (exp_agent.indexOf("kindle") != -1) || (exp_agent.indexOf("picasso") != -1) || (exp_agent.indexOf("playbook") != -1) || (exp_agent.indexOf("touchpad") != -1) || (exp_agent.indexOf("flyer") != -1) ? true : false;
+								var exp_mobileOS = typeof orientation != 'undefined' ? true : false;
+								var exp_touchOS = ('ontouchstart' in document.documentElement) ? true : false;
+								var exp_android = (exp_agent.indexOf("android") != -1) || (!exp_iOS && !exp_otherBrowser && exp_touchOS && exp_mobileOS) ? true : false;
+								if (exp_scrHeight >= 480 && exp_tablet == false && (exp_iOS == true || exp_otherBrowser == true || exp_android == true) && classicView == null) {
+									window.location = mobileurl
+									};
+					}
+					
+// Dynamic Content
+
+function getDynamicElement(srcUrl,srcId,destId,fetchtype){
+	function filterPageData(data){
+		var data = $(data).find("#"+srcId);
+		return data.html();
+	}
+	// check if cross domain
+	if((! srcUrl.match(/^\//)) && (srcUrl.indexOf(location.hostname) < 0 || location.protocol == 'https:' || fetchtype == 1)){
+	// call YQL to get cross domain html
+	$.getJSON("http://query.yahooapis.com/v1/public/yql?"+"q=select%20*%20from%20html%20where%20url%3D%22"+encodeURIComponent(srcUrl)+"%22&format=xml'&callback=?",
+	// this function gets the data from the successful JSON-P call
+	function(data){
+	if(data.results[0]){
+		data = filterPageData(data.results[0]);
+		$("#"+destId).html(data);
+	
+		try{
+			getDynamicElementSuccess(srcId); // defined locally as needed
+		}
+		catch(e){}
+	} 
+	else {}
+	}
+	);
+	// if not cross domain
+	} 
+	else {
+			if(destId.indexOf("_ajax") < 0){
+				//$("#"+destId).fadeOut(5000);
+				$("#"+destId).wrap('<div id="'+destId+'_ajax"></div>');
+				$("#"+destId+"_ajax").fadeOut('slow').load(srcUrl + " #" + srcId, function(){
+				$(this).fadeIn(2000);
+					//try{
+						//getDynamicElementSuccess(srcId); // defined locally as needed
+					//}
+					//catch(e){}	 
+				});
+			}
+			else{
+				$("#"+destId).fadeOut('slow').load(srcUrl + " #" + srcId, function(){
+				$(this).fadeIn(2000);
+					//try{
+					//	getDynamicElementSuccess(srcId); // defined locally as needed
+					//}
+					//catch(e){}	 
+				});
+			}
+	}
+}

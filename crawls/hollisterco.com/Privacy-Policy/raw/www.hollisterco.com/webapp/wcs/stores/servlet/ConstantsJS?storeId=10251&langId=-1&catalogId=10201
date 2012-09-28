@@ -1,6 +1,5 @@
 
 
-
 var ANF = {
 	// constructor to reference ANF global functions
 	fn : function (){}, 
@@ -39,14 +38,16 @@ ANF.params = {
 	},
 	urls : {
 	    "SCENE7URL" : "//anf.scene7.com/is/image/",
-		"COLLECTION_URL" : "/hol/49524/img/collection/",
+		"COLLECTION_URL" : "/hol/51590/img/collection/",
 		"STATIC_DIR" : 	"hol",
-		"VERSIONNUMBER" : "49524",
-		"VERSIONPATH" : "hol/49524",
+		"VERSIONNUMBER" : "51590",
+		"VERSIONPATH" : "hol/51590",
 		"SELECT_SIZE" : "Select Size", 
 		"SUBSCRIBE" : "Subscribe?storeId=10251&catalogId=10201&langId=-1"
 	},
 	storeAttributes : {
+		"certonaAppId" : "HollisterUS",
+		"hasCertonaRecommendationEnabled" : false,
 		"accountCreationDefaultTickSubscribe" : true,
 		"country" : "US",
 		"countryFromIP" : "US",
@@ -58,6 +59,7 @@ ANF.params = {
 		"ghPasId" : "13557",
 		"storeId" : 10251,
 		"catalogId" : "10201",
+		"userId" 	: "-1002",
 		"langId" : "-1",
 		"lang" : "en",
 		"QUERY_STR" : "storeId=10251&catalogId=10201&langId=-1",
@@ -83,28 +85,36 @@ ANF.params = {
 		"facebookLikeUrl" : "http%3A%2F%2Fwww.facebook.com%2Fhollister%3Fref%3Dts",
 		"promoCodeCountryWhitelist": "US,CA,PR,VI,AS,FM,GU,MH,MP,PW".split(","),
 		"isEUSite" : false,
-		"isUKSite" : false
+		"isUKSite" : false,
+		"hasClickToChat" : true
 	},
 	env : {
 		"type" : ""
 	}
 }
-ANF.s7 = { 
-	presetsNewProductPage : { 
-		"product" : "ProductImage$", 
-		"model" : "ProductImageModel$" 
-	}, 
-	presets : { 
-		"product" : "Product$", 
-		"model" : "ProductModel$" 
-	} 
-} 
+ANF.s7 = {
+	presetsNewProductPage : {
+		"suffix" : "?$hol",
+		"product" : "ProductImage$",
+		"model" : "ProductImageModel$",
+		"thumbnail" : "Thumbnail$",
+		"modelThumbnail" : "PDPModelThumbnail$"
+	},
+	presets : {
+		"product" : "Product$",
+		"model" : "ProductModel$"
+	}
+}
 
 ANF.messaging = {
 	account : {
 		"WISHLISTSENT" : "Your wish list has been sent.",
 		"ACCOUNTGREETING": "Hey, {0}",
 		"WELCOMEBACK": "Welcome back!"
+	},
+	orderdetail: {
+		"GLB_YOURCONFIRMATIONEMAILSENT": "Your confirmation email has been sent",
+		"ACT_CONFIRMATIONEMAILRESENDFAILURE":	"Your confirmation email was not able to be successfully sent"
 	},
 	status : {
 		"PROCESSING" : "Processing...",
@@ -147,6 +157,7 @@ ANF.messaging = {
 			"phoneprimary" : "Please enter a phone number.",
 			"phonesecondary" : "Please enter a phone number.",
 			"email" : "Please enter an email address.",
+			"ordernumber": "Please enter the order number.",
 			"phoneprimaryoptionsanf": "Please select an option.",
 			"phoneprimaryoptionshol": "Please select an option.",
 			"phoneprimaryoptionskids": "Please select an option.",
@@ -172,6 +183,7 @@ ANF.messaging = {
 			"phonesecondaryconfirm": "Please enter a valid phone number.",
 			"email" : "Please use a valid email format.",
 			"emailconfirm" : "Please use a valid email format.",
+			"ordernumber" : "Please enter a valid order number.",
 			"loginpasswordfield" : "Please enter a valid password.",
 			"loginpasswordfieldconfirm" : "Please enter a valid password."
 		}, 
@@ -182,8 +194,8 @@ ANF.messaging = {
 			"phonesecondary": "Phone and phone confirmation must match.",
 			"emailconfirm": 'Please correct the highlighted fields.',
 			"email": 'Please correct the highlighted fields.',
-			"loginpasswordfield": "Password and password confirmation must match.",
-			"loginpasswordfieldconfirm": "Password and password confirmation must match."
+			"loginpasswordfield": 'The passwords must match in both password fields.',
+			"loginpasswordfieldconfirm": 'The passwords must match in both password fields.'
 		},
 		"REQUIRED" : "This field is required.",
 		"REQUIRED_ALL" : "Please make sure all required information is provided.",
@@ -228,11 +240,14 @@ ANF.messaging = {
 		"ERROR_03" : "We cannot process your request."
 	},
 	catalog: {
-		"GLB_SANDHANDOTHERCHARGES" : '<a class="shipping-link" href="CustomerService?storeId=10251&catalogId=10201&langId=-1&amp;textKey=HELP_SHIPPINGANDHANDLING&amp;pageName=shipping-handling">Shipping & Handling</a> rates and other charges may apply',
+		"GLB_SANDHANDOTHERCHARGES" : '<a class="shipping-link" href="CustomerService?storeId=10251&catalogId=10201&langId=-1&amp;textKey=HELP_SHIPPINGANDHANDLING&amp;pageName=shipping-handling">Shipping & Handling</a>',
 		"ITEMADDEDTOWISHLIST" : "This item has been added to your wish list",
 		"QUICKSHOP" : "Quick View",
 		"VIEWFULLPRODUCT" : "View Full Product Information",
-		"EDIT_WISHLIST" : "Edit Wish List"
+		"EDIT_WISHLIST" : "Edit Wish List",
+		"STOCK_URGENCY_MESSAGE" : "HURRY! ONLY <span></span> LEFT IN STOCK!",
+		"GETTHISLOOK" : "Get this look"
+		
 	},
 	storelocator: {
 		"SL_ERROR01" : "We&#39;re sorry. There were no locations found.",

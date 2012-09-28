@@ -1,0 +1,141 @@
+
+/* Dynamic Tooltip */
+jQuery(window).load(function(){
+
+	if(jQuery('.tooltipsDynamic').length != 0 && !jQuery.browser.opera){
+		jQuery.getScript('/scripts/jquery.poshytip.js', function(){
+			jQuery(".tooltipsDynamic").each(function(){	
+				var hrefTemp = jQuery(this).attr('href');				
+				var anchorIndexId = hrefTemp.indexOf("#");			
+				var aHref = hrefTemp.slice(anchorIndexId ,hrefTemp.length);
+				jQuery(this).poshytip({
+					content: jQuery(aHref).html(),				  
+					className: 'tip-white',
+					showTimeout: 0.2,
+					alignTo: 'target',
+					alignX: 'center',
+					offsetX: 10,
+					allowTipHover: false,
+					bgImageFrameSize: 6,
+					backgroundGradient: '//www.att.com/images/global/tooltip/tip-white/backgroundwhite.gif',
+					fade: true,
+					slide: false
+				});	
+				jQuery(this).hover(function(){
+					var hrefTemp = jQuery(this).attr('href');				
+					var anchorIndexId = hrefTemp.indexOf("#");			
+					var aHref = hrefTemp.slice(anchorIndexId ,hrefTemp.length);
+					var tipObject = jQuery(this).data('poshytip');
+					tipObject.opts.content = jQuery(aHref).html();
+					tipObject.update(jQuery(aHref).html());
+				
+				});			
+			});
+		}, true);
+	}
+});
+
+
+
+/* USAGE METERS */
+	function initMeters1(){	
+		jQuery('.meterwrapper1').each(function(){
+							
+			var minutesUsed = jQuery(this).find('.minutes-used1').html();
+			
+			var totalMinutes = jQuery(this).find('.total-minutes1').html();
+			
+			var minutesPercent = (minutesUsed/totalMinutes) * 100;
+			var percentVal = "width:" + minutesPercent + "%";
+			var leftForUsed;
+			if(percentVal == 0){
+			leftForUsed	=-110;	
+			leftForWord	=-110;
+			}	
+			
+			leftForUsed	=0-(110-minutesPercent);
+			leftForWord	=-(110-minutesPercent);			
+			
+			var x='left:'+leftForUsed+'px';
+			var y='left:'+leftForWord+'px';
+			jQuery(this).find('.minutes-used1').attr('style',x);
+			jQuery(this).find('.wordSub').attr('style',y);
+			if(minutesPercent < 6 && minutesPercent > 0){
+				jQuery(this).find('.meter-value1').attr('style','width:18px');
+			}
+			else if(minutesPercent == 0 || isNaN(minutesPercent)){
+				jQuery(this).find('.meter-value1').attr('style','visibility:hidden');		
+			}
+			else if(minutesPercent > 100){
+				jQuery(this).find('.meter-value1').attr('style','width:100%');
+			}
+			else{
+				jQuery(this).find('.meter-value1').attr('style',percentVal);			
+			}
+			
+			
+			/* IE fix */
+			var pixVal = (jQuery(this).find('.meter-value1').width() - 8) + "px";
+			if(jQuery.browser.msie && jQuery.browser.version < 9){
+				jQuery(this).find('.meter-value1').html('<div></div>');	
+				jQuery(this).find('.meter-value1').children().css('width',pixVal);
+			}
+		});
+	}
+	
+	/*Table Sorter*/
+	function sortTable(){
+							
+							jQuery('.sortable').each(function(){
+								if( jQuery(this).hasClass('striped') ){
+									jQuery(this).tablesorter( {sortList: [[0,0],[0,0]], widgets: ['zebra']} );
+									
+								}
+								else{
+									jQuery(this).tablesorter( {sortList: [[0,0]] } ); 
+								}
+							});
+									
+						}
+						
+						
+	/*Table Sorter*/
+
+	
+	/*Add Box function*/	
+	function funAddBoxGen(boxContent){
+	jQuery("#"+boxContent).addClass("box");
+	}
+	
+	/*Remove Box function*/	
+	function funRemoveBoxGen(boxContent){
+	jQuery("#"+boxContent).removeClass("box");
+	}
+	
+	/*Hide Users Details Content*/
+	function funHideFilterGen(contentid,hidelinkid,viewlinkid){
+		document.getElementById(contentid).style.display='none';
+		document.getElementById(hidelinkid).style.display='none';
+		document.getElementById(viewlinkid).style.display='block';
+		//document.getElementById('HideAlert').style.display='none';
+	}
+	
+	/*Show Users Details Content*/
+	function funDisplayFilterGen(contentid,hidelinkid,viewlinkid)
+	{
+		document.getElementById(contentid).style.display='block';
+		document.getElementById(hidelinkid).style.display='block';
+		document.getElementById(viewlinkid).style.display='none';	
+	}
+	
+	/*Red alert message toggle*/
+	function fnHideAlert(hide){
+	jQuery("#"+hide).toggle();	
+	}	
+	function fnHideAlertGen(hide){
+	jQuery("#"+hide).toggle();	
+	}
+	
+	
+	
+	

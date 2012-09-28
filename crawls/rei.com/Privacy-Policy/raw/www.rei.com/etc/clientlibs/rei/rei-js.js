@@ -233,6 +233,82 @@ $(document).ready(function() {
 		$('.'+target).addClass('active');
 	});
 });
+/* $Id: versiona.js 3823 2012-07-03 18:18:05Z rray $ */
+
+$(window).load(function() {
+	loadPanels('customer picksPanel');
+	
+	// Tab Control
+	$('.homepageshopping .tabs li').click(function() {
+		// Tabs
+		$(this).siblings().removeClass('active');
+		$(this).addClass('active');
+		
+		//used for authoring experience; check rel tag on li, if not undefined; reload page with current location plus rel attribute 
+		if ($(this).attr('rel') !== undefined) {
+			window.location = window.location.pathname + $(this).attr('rel');
+		}
+		
+		// Panels
+		var target = $(this).attr('target');
+		$('.'+target).siblings().removeClass('active');
+		$('.'+target).addClass('active');
+		
+		// get panel id and pass to panel load handler
+		var targetid = $(this).attr('id');
+		targetid = targetid.replace('Tab','Panel');
+		loadPanels(targetid);
+		
+	});
+	
+
+	
+});
+
+function loadPanels(panelID) {
+	switch(panelID)
+		{
+		case 'customer picksPanel':
+		  if ($('.homepageTabs #mboxCarouselRegion').css('top') === '-9000px') 
+		  {
+			  $('.homepageTabs #mboxCarouselRegion').after('<div class="loader"><img src="http://www.rei.com/pix/common/ajaxloader_transparent.gif" alt="loading" />Loading...</div>');
+			  setTimeout(function() {
+				$('.loader').remove();
+				$('.homepageTabs #mboxCarouselRegion').css('top','0');
+				},2500);
+			}
+		  break;
+		case 'rei staff picksPanel':
+		  
+		  break;
+		case 'by activityPanel':
+		  
+		  break;
+		case 'by brandPanel':
+		  
+		  if ($('#byBrandCarousel').children('div').hasClass('parsys'))
+			{
+				var tempDOM = $('#byBrandCarousel .parbase.bybrandsitem li');
+				prepAuthorDom(tempDOM);
+			}
+		  break;
+		}
+}
+
+function prepAuthorDom(domBlock) {
+	$('#byBrandCarousel par.parsys').remove();
+	$('#byBrandCarousel').html(domBlock);
+	addCarousel();
+}
+
+function addCarousel() {
+	$('#byBrandCarousel').jcarousel({
+		scroll: 5,
+		buttonNextHTML: '<div id="jcarousel-next" class="carousel-btn" title="Next"></div>',
+		buttonPrevHTML: '<div id="jcarousel-prev" class="carousel-btn"></div>'
+	}); 
+	$('.jcarousel-container').addClass('mbox recommendations5');
+}
 // set a cookie for a particular name
 function setCookie(name, value) {
    var docLocation = document.URL;
@@ -1639,7 +1715,7 @@ $(document).ready(function() {
 	});
 	
 });
-/* $Id: questionform.js 4373 2012-08-02 19:04:40Z sfleshe $ */
+/* $Id: questionform.js 4805 2012-08-17 17:37:05Z sfleshe $ */
 
 /**
  * @(#)questionform.js
@@ -1657,10 +1733,10 @@ $(document).ready(function() {
 		if (REI_SESSION_ID) {
 			var userId = REI_SESSION_ID.split(',')[0];
 			var userScreenName = Get_Cookie('REI_USERNAME');
-			var userProfileHref = '/share/socialprofile/profile.html/' + userId;
-			var userImgSrc = '/socialprofile.socialprofileimage.jpg/' + userId;
-			$('#questionform-user-img-link').attr('href', userProfileHref);
-			$('#questionform-user-name-link').attr('href', userProfileHref);
+			var userProfileHref = '/share/userprofile.html/' + userId;
+			var userImgSrc = '/socialprofile.socialprofileimage.medium.jpg/' + userId;
+            $('#questionform-user-img-link').attr( 'href', userProfileHref );
+            $('#questionform-user-name-link').attr( 'href', userProfileHref );
 			$('#questionform-user-name-link').text(userScreenName);
 			$('#questionform-user-img').attr('src', userImgSrc);
 			$('#questionform-user-img').attr('title', userScreenName);
@@ -1731,7 +1807,7 @@ $(document).ready(function() {
 	});
 	
 });
-/* $Id: postedquestion.js 4087 2012-07-18 21:54:16Z rray $ */
+/* $Id: postedquestion.js 4805 2012-08-17 17:37:05Z sfleshe $ */
 
 /**
  * @(#)postedquestion.js
@@ -1749,10 +1825,8 @@ $(document).ready(function() {
 		if (REI_SESSION_ID) {
 			var userId = REI_SESSION_ID.split(',')[0];
 			var userScreenName = Get_Cookie('REI_USERNAME');
-			var userProfileHref = '/share/socialprofile/profile.html/' + userId;
-			var userImgSrc = '/socialprofile.socialprofileimage.jpg/' + userId;
-			$('#postedquestion-user-img-link').attr('href', userProfileHref);
-			$('#postedquestion-user-name-link').attr('href', userProfileHref);
+			var userProfileHref = '/share/userprofile.html/' + userId;
+			var userImgSrc = '/socialprofile.socialprofileimage.medium.jpg/' + userId;
 			$('#postedquestion-user-name-link').text(userScreenName);
 			$('#postedquestion-user-img').attr('src', userImgSrc);
 			$('#postedquestion-user-img').attr('title', userScreenName);
@@ -2155,7 +2229,7 @@ $( document ).ready( function () {
             type: "POST",
             data: formData,
             success: function( data ) {
-                $( "#" + originalLinkId ).replaceWith( "<span>comment flagged</span>" );
+                $( "#" + originalLinkId ).replaceWith( "<span>Content flagged</span>" );
                 $.fancybox.close();
             }
         } );
@@ -2375,7 +2449,7 @@ $( function() {
 
         $.ajax( {
             url: action,
-            type: "GET",
+            type: "POST",
             data: data,
             success: function( result ) {
                 $( _form ).closest( ".rei-postcommentform" ).slideUp( 'fast', function() {
@@ -2519,6 +2593,18 @@ REIFunctions.setActiveTab = function(el){
 }
 
 $(document).ready(function() {
+	$('a[href*="climbing.html#"]').each(function(index){
+		$(this).bind('click', function(){
+			try{
+				var hash = '#' + $(this).attr('href').split('#')[1];
+				REIFunctions.setActiveTab(hash);
+			}
+			catch(e){				
+			}
+		});
+	});
+	//end activate correct tab
+	
 	if(window.location.hash){
 		REIFunctions.setActiveTab(window.location.hash)
 	}

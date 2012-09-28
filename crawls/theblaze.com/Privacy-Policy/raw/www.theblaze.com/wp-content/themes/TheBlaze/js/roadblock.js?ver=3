@@ -1,0 +1,77 @@
+function getCookie (name){
+	var name_equals = name + "=";
+	var doc_cookies = document.cookie.split(';');
+	for(var i=0;i < doc_cookies.length;i++) {
+		var tmps = doc_cookies[i];
+		if (tmps.charAt(0)==' ') tmps = tmps.replace(/^\s+/,'');
+		if (tmps.indexOf(name_equals) == 0) return tmps.substring(name_equals.length,tmps.length);
+	}
+	return null;
+};
+jQuery(document).ready(function($) {
+	var bu = decodeURIComponent(getCookie("theblaze_user"));
+	if( (bu == null || bu == 'null' || bu == "" || roadblock_cookie_name == 'theblaze_roadblock_magazine') &&  (!isMobile()  && !isBot()) ) {
+		var dtobj = new Date();
+		var rdblck_ck = getCookie(roadblock_cookie_name),
+		this_visit = Math.round(dtobj.getTime() / 1000),
+		visit_count = 1,
+		show_popup_at = 2,
+		reset_popup_at = 2000,
+		ckkie_exp = {expires:30, path: '/', domain: document.location.hostname.replace('www.','')};
+		if(rdblck_ck == null || rdblck_ck == 'hide' ){ // remove rdblck_ck == 'hide' after a few weeks to allow for previews saved cookies to be clear;
+			$.cookie(roadblock_cookie_name, visit_count + '|' + this_visit, ckkie_exp); //create cookie first visit
+		}else{
+			var cookie = rdblck_ck.split('|'),
+			visit_count = parseInt(cookie[0],10) + 1 ;
+			if(visit_count >= reset_popup_at){ visit_count = 1;}
+			$.cookie(roadblock_cookie_name, visit_count + '|' + this_visit, ckkie_exp);
+		}
+		if(visit_count == show_popup_at ){
+			tb_show( '', '#TB_inline?width=730&height=475&modal=true' );
+			$('#TB_ajaxContent').css('overflow', 'hidden');
+			$.get(roadblock.ajax_url, {action: 'register'}, function(data) {
+				var res = wpAjax.parseAjaxResponse(data);
+				$.each(res.responses, function() {
+					$('#TB_ajaxContent').html(this.data);
+				});
+			});
+			function newsletter_actions(){
+				$('body').delegate('#newsletter_subscription_form', 'submit', function(event) {
+					$.post($(this).attr('action'), $(this).serialize(), function(data) {
+						var res = wpAjax.parseAjaxResponse(data);
+						$.each(res.responses, function() {
+							$('#TB_ajaxContent')
+							.html(this.data)
+							.height($('#TB_ajaxContent').children().outerHeight());
+							if (this.supplemental.result == 'success') {
+								setTimeout('tb_remove()', 3000);
+							}
+						});
+					});
+					event.preventDefault();
+					return false;
+				});
+				$('body').delegate('#newsletter_cancel','click', function() {
+					tb_remove();
+					return false;
+				});
+				$('body').delegate('.close_modal', 'click', function() {
+					tb_remove();
+					return false;
+				});
+			}
+			var nwl_counter = 0;
+			function setup_newsletter_actions(){
+				if($("#newsletter_subscription_form").length) {
+					newsletter_actions();
+					return true;
+				}else if(nwl_counter < 100 ){
+					nwl_counter++;
+					setTimeout(setup_newsletter_actions, 250);
+				}
+				else{ return false;}
+			}
+			setup_newsletter_actions();
+		}
+	}
+});

@@ -1,7 +1,7 @@
-﻿/*
+/*
  * jQuery Autocomplete plugin 1.1
  *
- * Copyright (c) 2009 Jörn Zaefferer
+ * Copyright (c) 2009 J�rn Zaefferer
  *
  * Dual licensed under the MIT and GPL licenses:
  *   http://www.opensource.org/licenses/mit-license.php
@@ -395,7 +395,7 @@ $.Autocompleter = function(input, options) {
 						port: "autocomplete" + input.name,
 						dataType: options.dataType,
 						url: "/office/supplies/StaplesB2CPAS/cat/autocompletedata.jsp",
-						//url:"/sbd/js/prodresults.txt",
+						//url:"/sbdpas/js/prodresults.txt",
 						data: $.extend({
 							limit: options.max
 						}, extraParams),

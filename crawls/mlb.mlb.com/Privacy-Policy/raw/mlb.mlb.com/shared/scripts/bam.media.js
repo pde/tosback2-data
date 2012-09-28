@@ -53,8 +53,8 @@ bam.extend({
                         return;
                     }
 					
-					// don't launch for android (except on GBTV)
-					if((props.source !== "GBTV") && bam.env.client.isAndroid) {
+					// don't launch for android (except on GBTV or THEBLAZE)
+					if((props.source !== "GBTV" && props.source !== "THEBLAZE") && bam.env.client.isAndroid) {
 						location.href = "/mobile/android/unsupported.jsp";
 						return;
 					}
@@ -101,7 +101,7 @@ bam.extend({
                 // flat drill check //////////////////////
                 _flatMode = false;
 
-                if (props.source !== "GBTV") {
+                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
                     $.ajax({
                         type: "GET",
                         async: false,
@@ -128,7 +128,7 @@ bam.extend({
                 
                 /*
                 //COMMENT OUT FOR OFFSEASON
-                if (props.source !== "GBTV") {
+                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
                     /////////////////////////////////////////
                     // MLB.TV vs. PostSeason.TV mini-interstitial //////////////
                     var _calIdArr = props.calendar_event_id.split("-"),
@@ -186,7 +186,7 @@ bam.extend({
 
                 /////////////////////////////////////////
                 // if content_id and media_type are not set, try to find content_id for HD stream
-                if (props.source !== "GBTV") {
+                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
                     if (!props.content_id) {
                         if (typeof props.media_type === "undefined") {
                             props.media_type = "";

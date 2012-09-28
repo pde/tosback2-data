@@ -1,0 +1,73 @@
+PPF090412 = false;					// Global toggle for error checking prior to the test command execution
+PPF090412_ACTIVE = true;			// Global toggle to quickly turn off test
+
+le.uxd.ui.abtest.manager.execute('PPF090412', {
+	allocation: [50,50,0],					// Pull from the test plan document
+	eVar: 'eVar40',								// Pull from the test plan document
+	eVarFormat: function(testName, group){		
+		return testName + "-_-" + group;		// Formatting function in case the value needs to be manipulated before being sent to omniture
+	},
+	kioskGroup: 'C',							// Pull from the test plan document.  The ordinal positions of the allocation correspond to the groups allocation[0] = group a
+	duration: 45,								// length of cookie lifespan
+	command: function(group){
+		
+		// No errors in the site prior to the ab-test loading
+		// If we made it here, the ab-test error handling should take over
+		PPF090412 = true;
+		
+		$(document).ready(function(){
+			
+			// If the test is not active, execute the default condition
+			if(!PPF090412_ACTIVE){
+				
+				$('#whole-page').addClass('PPF090412-A');
+				
+				return;
+			}
+			
+			// Execute the A group, first check if the test is active
+			if (group == 'A' && PPF090412_ACTIVE){
+				
+				$('#whole-page').addClass('PPF090412-A');
+				
+				return;
+			}
+			
+			// Execute the B group, first check if the test is active
+			if (group == 'B' && PPF090412_ACTIVE){
+				
+				$('#whole-page').addClass('PPF090412-B');
+				
+				return;
+			}
+			
+			// Execute the B group, first check if the test is active
+			if (group == 'C' && PPF090412_ACTIVE){
+				
+				$('#whole-page').addClass('PPF090412-A');
+				
+				return;
+			}
+			
+			// If the group is not defined for some reason, execute the default condition
+			$('#whole-page').addClass('PPF090412-A');
+
+			
+		});
+		
+	},
+	error: function(){
+		// add error functionality here
+	}
+});
+
+// if error anywhere on the page show dropdowns
+$(window).error(function(){
+	setTimeout(function(){
+		if (!PPF090412) {
+			// If there is a global error not affiliated with the AB test, execute the default condition
+			
+			$('#whole-page').addClass('PPF090412-A');
+		}
+	},5000);
+});

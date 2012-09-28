@@ -2,18 +2,14 @@
 * Invoked on the gift card
 * page to check the balance
 ****************************/
-  // onload methods BEGIN
- var CalculateGiftCardTotal = null;
- var ExpiryDate = null;
+var CalculateGiftCardTotal = null;
+var ExpiryDate = null;
 var FillGCInfo = null;
 var CheckForGCBalanceError = null;
 var AdjustCheckoutUI = null; 
- var AdjustGCError = null;
+var AdjustGCError = null;
 var LoadStaticErrorMsgsFromPage = null;
 var CheckForKiosk = null;
-  // onload methods END
- 
-  // Constants BEGIN
 var ONLOAD_VAL = 'onLoad';
 var CLEAR_ALL = 'ClearAll';
 var CLEAR_PIN = 'ClearPIN';
@@ -22,33 +18,27 @@ var PLUS_IMG_VAL = '/wcsstore/hdus/en_US/images/layout/btn_+.jpg'
 var MINUS_IMG_VAL = '/wcsstore/hdus/en_US/images/layout/btn_-.jpg'
 var NETSCAPE_VAL = 'Netscape';  //FireFox
 var IE_VAL  = 'Microsoft Internet Explorer';
- var OMNITURE_CAPTCHA_ERR_VAL = 'giftcard balance check - captcha error';
+var OMNITURE_CAPTCHA_ERR_VAL = 'giftcard balance check - captcha error';
 var OMNITURE_SYSTEM_ERR_VAL  = 'giftcard balance check - system error';
 var OMNITURE_USER_ERR_VAL    = 'giftcard balance check - user error'; 
- var GIFT_CARD_BALANCE_FORM_NAME    = 'OrderItemAddForm'; 
- var CHECKOUT_FORM_NAME    = 'PaymentMethodForm';
- //WCS 7UP 4.6 merge1-Start
+var GIFT_CARD_BALANCE_FORM_NAME    = 'OrderItemAddForm'; 
+var CHECKOUT_FORM_NAME    = 'PaymentMethodForm';
 var KEEP_GC_PIN = 'KeepGCandPin';
-//WCS 7UP 4.6 merge1-End
 // KIOSK BEGIN
 var UNSUPPORTED_CARD = 'Unsupported Card';
 var UNKNOWN_CARD     = 'Unknown Card';
 var deletedCookiesCount = 0;
-// KIOSK END
-  // Constants END
- 
- // Global Variables BEGIN
+// Global Variables BEGIN
 var debugVal = 'false';
 var groupCache = {};
 var browserAppName = navigator.appName.toLowerCase();
- var isGiftCardSectionCurrentlyVisible = false;
+var isGiftCardSectionCurrentlyVisible = false;
 var isGiftCardTenderActiveValue = 'false';
- var formName = '0';
+var formName = '0';
 var omnitureMsg = '';
 var omnitureLinkTrackingObject = null;
 var focusOn = null;
 var focusOnAppliedTable = 'false';
- 
 // Error Messages
 var gcUserErrorMsg = null;
 var gcSystemErrorMsg = null;
@@ -57,11 +47,15 @@ var gcBalanceErrorMsg = null;
 var duplicateGCErrorMsg = null;
 var nonUSGiftCardErrorMsg = null;
 var gcZeroBalanceErrorMsg = null;
- 
 // Global Variables END
  
  
- 
+ //Hide the gift card as soon as script is loaded - qc-21438
+ $(function(){ $("#giftCard").css({"display":"none"}); });
+ if(document.getElementById("taxId")){
+     document.getElementById("taxIdNum").style.display = "none";
+     document.getElementById("taxId").style.display = "none";
+}
  
 /*************************************************************************************************
 *  Function:  expiryDate
@@ -596,7 +590,12 @@ function applyGiftCardCallBack(text, whichBtn)
                    if(totalCC <= 0){                          
                               document.getElementById("opInformationDisplay").style.display = "none";
                                   document.getElementById("opInformationForm").style.display = "block";
-                       $('.noBalanceDue').show();
+                                  if($('#cardBrandContainer').is(':visible')){
+                                	  $('.noBalanceDue').show();
+                                	  $("#noBalanceDueSaved").css('display','none');
+                                  }else{
+                                	  $('.noBalanceDue').show();  
+                                  }
                    }
                }
               
@@ -1349,7 +1348,22 @@ function adjustCheckoutUI(callingMethod)
 	if((document.getElementById('applied-cards-table').rows.length != 0)&& (taxExemptIdValue != null)) {
 	}
 	else{
-         ChangeDropdowns(document.PaymentMethodForm.cardBrand.value);
+		var registerType = document.getElementById("registerType").value;
+		var profilesListTotal = document.getElementById("profilesListTotal").value;
+          var cardBrandValue = document.PaymentMethodForm.cardBrand.value;
+
+		if( (document.forms[formName].cardBrand.selectedIndex == 0) && (registerType != 'G'  &&  profilesListTotal >0 )){
+		 document.PaymentMethodForm.cardBrand.value=document.getElementById('selectedCardBrand').value;
+		 document.PaymentMethodForm.cardHolderName.value=document.getElementById('selectedCardHoldername').value;
+		 document.PaymentMethodForm.cardNumberDisplayValue.value=document.getElementById('selectedCardNumberDisplayValue').value;
+		 document.PaymentMethodForm.cardNumberOriginalDisplayValue.value=document.getElementById('selectedCardNumberOriginalDisplayValue').value;
+		 document.PaymentMethodForm.cardNumber.value=document.getElementById('selectedCardNumber').value;
+		 document.PaymentMethodForm.cardExpiryMonth.selectedIndex=document.getElementById('selectedCardExpMonth').value;
+		 document.PaymentMethodForm.cardExpiryYear.value=document.getElementById('selectedCardExpYear').value;
+		 document.PaymentMethodForm.cardVerificationCode.value=document.getElementById('selectedCardVerificationCodeValue').value;
+		 document.PaymentMethodForm.poNumber.value=document.getElementById('selectedPoNumberValue').value;
+		}
+         ChangeDropdowns(cardBrandValue);
          $('.noBalanceDue').hide();
 	}
   }  // end  if (totalCC > 0) 
@@ -1362,7 +1376,7 @@ function adjustCheckoutUI(callingMethod)
 	if((document.getElementById('applied-cards-table').rows.length != 0)&& (taxExemptIdValue != null)) {
 	}
 	else{
-               ChangeDropdowns(document.PaymentMethodForm.cardBrand.value);
+               ChangeDropdowns(cardBrandValue);
 			   }
     document.getElementById('giftCardForm').style.display='NONE';
     document.getElementById('showGCForm').value="false";
@@ -3024,79 +3038,153 @@ function confirmShipAddressEdit(url)
                }
  
 }
- 
-function resubmitForDisplayorEdit(frmName,selectOrEdit) {
-                              var currentForm = document.getElementById(frmName);
-              
-                              var buttonX;
-                              try {
-                              if(selectOrEdit == 'edit'){
-                                                            buttonX = document.createElement("<input name='addrEdit.x' type='hidden' value='1' />");
-                                             }else{
-                                                            buttonX = document.createElement("<input name='addrSelect.x' type='hidden' value='1' />");
-                                             }
-                              }
-                              catch(e) {
-                                             buttonX = document.createElement("input");
-                                             buttonX.type  = "hidden";
-                                             if(selectOrEdit == 'edit'){
-                                                            buttonX.name = "addrEdit.x";
-                                             }else{
-                                                            buttonX.name = "addrSelect.x";
-                                             }
-                                             buttonX.value = "1";
-                              }
-                              currentForm.appendChild(buttonX);
-                              var buttonY;
-                              try {
-                                             if(selectOrEdit == 'edit'){
-                                                            buttonY = document.createElement("<input name='addrEdit.y' type='hidden' value='1' />");
-                                             }else{
-                                                            buttonY = document.createElement("<input name='addrSelect.y' type='hidden' value='1' />");
-                                             }
-                              }
-                              catch(e) {
-                                             buttonY = document.createElement("input");
-                                             buttonY.type = "hidden";
-                                             if(selectOrEdit == 'edit'){
-                                                            buttonY.name = "addrEdit.y";
-                                             }else{
-                                                            buttonY.name = "addrSelect.y";
-                                             }
-                                             buttonY.value = "1";
-                              }
-                              currentForm.appendChild(buttonY);
-                                            
-                              if( !$('#opInformationForm').is(':visible')){                         
-			       document.PaymentMethodForm.cardVerificationCode.value = document.getElementById("cardVerificationCodeDisp").value;                                    
-			       document.PaymentMethodForm.paymentEditForm.value = "false";
-			       // changes added to show PO number as part of Checkout redesign
-			       if( document.getElementById("poNumberDisp") != undefined) {
-				    document.getElementById("poNumber").value = document.getElementById("poNumberDisp").value;          	
-			       }
-        }     
-                                                                                                                                                                                                  
-                              currentForm.submit();
-               }
-               //payment method page Edit payment will execute this function
-               function changePaymentSection (){          
-                              document.getElementById("opInformationDisplay").style.display = "none";
-                              document.getElementById("opInformationForm").style.display = "block";
-                              if(!$('.noBalanceDue').is(':visible'))            
-                              document.getElementById("WC_StandardCreditCard_FormInput_cardNumber_2").value = document.getElementById("cardNumberCrossRefValue").value                                                 
-                              document.getElementById("cardVerificationCode").value = document.getElementById("cardVerificationCodeDisp").value;
-                             
-                              // changes added to show PO number as part of Checkout redesign
-               if( document.getElementById("poNumberDisp") != undefined) {
-               document.getElementById("poNumber").value = document.getElementById("poNumberDisp").value;
-               }
-                var  cardType=document.getElementById("cardBrand").value;
-                              if( cardType !="HDCON"  &&  cardType !="PPAL" &&  cardType!="-1"){
-                                             document.getElementById("poNumb").style.display="block";
-                              }else{
-                               document.getElementById("poNumb").style.display="none";
-                              }   
-               }
+ // this method is updated for Sept release - payment method-multiple credit cards task
+function resubmitForDisplayorEdit(frmName,selectOrEdit,profileSelectedId) {
+	
+		var currentForm = document.getElementById(frmName);	
+	
+		var buttonX;
+		try {
+		if(selectOrEdit == 'edit'){
+				buttonX = document.createElement("<input name='addrEdit.x' type='hidden' value='1' />");
+			}else{
+				buttonX = document.createElement("<input name='addrSelect.x' type='hidden' value='1' />");
+			}
+		}
+		catch(e) {
+			buttonX = document.createElement("input");
+			buttonX.type  = "hidden";
+			if(selectOrEdit == 'edit'){
+				buttonX.name = "addrEdit.x";
+			}else{
+				buttonX.name = "addrSelect.x";
+			}
+			buttonX.value = "1";
+		}
+		currentForm.appendChild(buttonX);
+		var buttonY;
+		try {
+			if(selectOrEdit == 'edit'){
+				buttonY = document.createElement("<input name='addrEdit.y' type='hidden' value='1' />");
+			}else{
+				buttonY = document.createElement("<input name='addrSelect.y' type='hidden' value='1' />");
+			}
+		}
+		catch(e) {
+			buttonY = document.createElement("input");
+			buttonY.type = "hidden";
+			if(selectOrEdit == 'edit'){
+				buttonY.name = "addrEdit.y";
+			}else{
+				buttonY.name = "addrSelect.y";
+			}
+			buttonY.value = "1";
+		}
+		currentForm.appendChild(buttonY);
+		
+		var	selectedProfileId = document.createElement("input");
+		selectedProfileId.type  = "hidden";
+		
+			selectedProfileId.name = "selectedProfileId";
+		
+		selectedProfileId.value = profileSelectedId;										
+	currentForm.appendChild(selectedProfileId);
+			
+		 if( !$('#opInformationForm').is(':visible')){                          
+        	document.PaymentMethodForm.cardVerificationCode.value = document.getElementById("cardVerificationCodeDisp").value;                                	
+        	document.PaymentMethodForm.paymentEditForm.value = "false";
+        }
+		var selectedcardBrandValue = document.getElementById("addNewCreditCard").value
+		if(selectedcardBrandValue == 'true'){
+		   document.getElementById("selectedCreditCard").value = $("#cardBrand").val();
+		}													
+		currentForm.submit();
+	}
+	//payment method page Editpayment will execute this function
+	function changePaymentSection (){		
+		document.getElementById("opInformationDisplay").style.display = "none";
+		document.getElementById("opInformationForm").style.display = "block";
+		if(!$('.noBalanceDue').is(':visible'))	
+		document.getElementById("WC_StandardCreditCard_FormInput_cardNumber_2").value = document.getElementById("cardNumberCrossRefValue").value				
+		document.getElementById("cardVerificationCode").value = document.getElementById("cardVerificationCodeDisp").value;
+  	}
+
+	function refreshBillAddr(profileSelectedId) {
+		var currentForm = document.getElementById('PaymentMethodForm');	
+		var	selectedProfileId;
+		var buttonX;
+		var cardSelect;
+
+		buttonX = document.createElement("input");
+		buttonX.type  = "hidden";
+		buttonX.name = "addrSelect.x";
+		buttonX.value = "1";
+		currentForm.appendChild(buttonX);
+
+		selectedProfileId = document.createElement("input");
+		selectedProfileId.type  = "hidden";
+		selectedProfileId.name = "selectedProfileId";
+		selectedProfileId.id = "selectedProfileId";
+		selectedProfileId.value = profileSelectedId;										
+		currentForm.appendChild(selectedProfileId);	
+		
+		cardSelect = document.createElement("input");
+		cardSelect.type  = "hidden";
+		cardSelect.name = "cardSelect";
+		cardSelect.value = "true";
+		currentForm.appendChild(cardSelect);
+		
+		if( !$('#opInformationForm').is(':visible')){                          
+			document.PaymentMethodForm.cardVerificationCode.value = document.getElementById("cardVerificationCodeDisp").value;                                	
+			document.PaymentMethodForm.paymentEditForm.value = "false";
+		}	
+		document.getElementById("selectedCreditCard").value = "";		
+		document.getElementById("selectedProfileCard").value = profileSelectedId;
+		document.getElementById("addNewCreditCard").value = "false";
+		currentForm.submit();
+	}	
+	function addNewPaymentProfile() {
+		var currentForm = document.getElementById('PaymentMethodForm');
+		var buttonX;
+		buttonX = document.createElement("input");
+		buttonX.type  = "hidden";
+		buttonX.name = "addrSelect.x";
+		buttonX.value = "1";
+		currentForm.appendChild(buttonX);
+	    document.getElementById("addNewCreditCard").value = "true";
+	    document.getElementById("selectedCreditCard").value = "";
+	    $(".error").css('display','none');  
+		$('.required').removeClass('required');
+		$("#cardHolderName",self.$selectedDomPayPalAndCC).val("");			
+		$("#WC_StandardCreditCard_FormInput_cardNumber_2",self.$selectedDomPayPalAndCC).val("");
+		$("#cardExpiryMonthLabel",self.$selectedDomPayPalAndCC).val("");
+		document.PaymentMethodForm.addressId.value = "-1";
+		document.PaymentMethodForm.selectedProfileCard.value = "-1";
+		if(document.getElementById("taxId")){
+			document.PaymentMethodForm.taxIdExemptNum.value="";
+		}
+		
+		currentForm.submit();
+	}    
+	function editPaymentSection(cardBrand,cardMaskedCC,cardHolderName,cardExpMonth,cardExpYear)	{
+		
+		$("#cardHolderName",self.$selectedDomPayPalAndCC).val(cardHolderName);
+		$("#cardBrand",self.$selectedDomPayPalAndCC).val(cardBrand);
+		//calling change drop down for setting UI behavioure
+		ChangeDropdowns(cardBrand);
+		$("#WC_StandardCreditCard_FormInput_cardNumber_2",self.$selectedDomPayPalAndCC).val(cardMaskedCC);
+		$("#cardExpiryMonthLabel",self.$selectedDomPayPalAndCC).val(cardExpMonth);
+		$("#cardExpiryYearLabel",self.$selectedDomPayPalAndCC).val(cardExpYear);
+		$(".defaultCCContainer,#cardBrandContainer,.otherCCDetails,.update-CCInfo",self.$selectedDomPayPalAndCC).show();		
+		$(".save-CCInfo",self.$selectedDomPayPalAndCC).hide();	
+	    document.getElementById("selectedCreditCard").value= cardBrand;	   
+	    $(".error").css('display','none');
+	    $('.required').removeClass('required'); 
+	    $("#noBalanceDueSaved").css('display','none');
+	}	 
+	function changePaymentSelection(value)	{		
+		document.getElementById("selectedCreditCard").value= value;
+	}
               
                function gcUISet(){
                               var totalGC = document.forms[0].totalGC.value;

@@ -59,7 +59,7 @@ else{$$(document.body).setStyle('background-color',$$('.seo_birdseed')[0].getEle
 window.addEvent('scroll',function(){if(scroll_area>win_height){$(document.body).setStyle('background-color',$$('.everything')[0].getStyle('background-color'));}});window.addEvent('resize',function(){var scroll_area=$(document.body).getScrollSize().y;var win_height=window.getHeight();if(scroll_area>win_height){$(document.body).setStyle('background-color',$$('.everything')[0].getStyle('background-color'));}
 else{$$(document.body).setStyle('background-color',$$('.seo_birdseed')[0].getElement('.color_theme').getStyle('background-color'));}});}
 else{return;}}
-function setPrintLogo(){if($$('.hplogo')[0].getElements('img')<=1){var printlogo=new Element('img',{'class':'printable logo png'});$$('.hplogo')[0].adopt(printlogo);var src=$$('.hplogo img.logo')[0].getStyle('background-image');if(navigator.userAgent.toLowerCase().indexOf('chrome')>-1){src=src.replace(new RegExp("url\\(",'gi'),'');src=src.replace(new RegExp("\\)",'gi'),'');}
+function setPrintLogo(){if($$('.hplogo')[0].getElements('img')<=1){var printlogo=new Element('img',{'class':'printable logo png'});$$('.hplogo')[0].adopt(printlogo);var src=$$('.hplogo img.logo')[0].getStyle('background-image');if((navigator.userAgent.toLowerCase().indexOf('chrome')>-1)||(navigator.userAgent.toLowerCase().indexOf('safari')>-1)){src=src.replace(new RegExp("url\\(",'gi'),'');src=src.replace(new RegExp("\\)",'gi'),'');}
 else{src=src.replace('url("','').replace('")','');}
 $$('.hplogo img.logo')[0].setProperty('src',src);}
 else{return;}}
@@ -71,7 +71,7 @@ loadPrintLogo();});function loadScript(url,callback){var script=document.createE
 script.src=url;document.getElementsByTagName("head")[0].appendChild(script);}
 
 /*
-Date: 2/27/2012 4:43:54 PM
+Date: 8/20/2012 11:54:12 AM
 Non-published images:
 /webdav/17%20United%20States-English%20Web/Building%20Blocks/System/00%20Shared/Content/CSS/i/"',''
 */

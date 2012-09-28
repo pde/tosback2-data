@@ -285,7 +285,7 @@ $(document).ready(function() {
         }
     });
     $('div.tool td.email a').bind('click', function() {
-        $("#email2friend").css("height", "190px");
+        $("#email2friend").css("height", "400px");
         $("#email2friend").append(
             $('<div />').attr('id', 'email2friend_close').append(
                 $('<a />').attr('title', 'Close').bind('click', function(){
@@ -299,10 +299,8 @@ $(document).ready(function() {
                     name: 'email',
                     scrolling: 'no',
                     frameborder: '0',
-                    width: '340px',
-                    height: '170px',
                     src: $(this).attr('href') + '&title=' + Base64.encode(document.title)
-                })
+                }).css({'width': '340px', 'height': '375px'})
         ).show();
         return false;
     });
@@ -446,7 +444,7 @@ function initialize_map()
                     map: theMap,
                     draggable: false,
                     position: new google.maps.LatLng(COORDINATES[_cat][i].lat, COORDINATES[_cat][i].lng),
-                    title: COORDINATES[COORDINATE_CATEGORY][i].title,
+                    title: COORDINATES[_cat][i].title,
                     visible: true,
                     cat: _cat
                 });

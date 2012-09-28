@@ -1,4 +1,3 @@
-
 // Opens a pop-up when the function is called.
 function openPopUp(url, navStatus, name, height, width){
     //Opens the popup window.

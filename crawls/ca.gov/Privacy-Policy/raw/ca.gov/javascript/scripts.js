@@ -513,7 +513,8 @@ var CAGOVLocation = {
 		document.getElementById("loc_container").style.display = "none";
 	
 		// update weather
-		CAGOVWeather.getWeatherXML();
+		//CAGOVWeather.getWeatherXML();
+		displayLocation();
 	},
 	
 	changeExpiration:function() {
@@ -629,6 +630,12 @@ CAGOVWeather = {
 
 }
 
+function displayLocation() {
+	document.getElementById("weather_container").innerHTML = '<a href="/weather/"></a>'
+	+ ' <span class="weather_temp_city">' + '<span onclick="CAGOVLocation.setLocation()">' + CAGOVLocation.objLocation.cty + '</span></span><br />'
+	+ '<div onclick="CAGOVLocation.setLocation()" class="weather_set_location loc_clickable">Set Location</div>';
+}
+
 function getCookie(cookie_name) {
 	var results = document.cookie.match('(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
 	if (results)
@@ -695,7 +702,8 @@ function initPage() {
 	initNavigation();
 	headerPhoto();
 	CAGOVLocation.initLocation();
-	CAGOVWeather.initWeather();
+	//CAGOVWeather.initWeather();
+	displayLocation();
 	breadcrumbs();
 }
 addLoadEvent(initPage);

@@ -2,8 +2,6 @@ function trackGoogle() {
 	try {var pageTracker = _gat._getTracker("UA-7226372-1");pageTracker._trackPageview();} catch(err) {}
 }
 
-trackGoogle();
-
 /* Extra code for DIGI-2632 - taken from http://stackoverflow.com/questions/4064783/google-analytics-track-outbound-clicks-how */
 function isLinkExternal(link) {
     var r = new RegExp('^https?://(?:www.)?' + location.host.replace(/^www./, ''));

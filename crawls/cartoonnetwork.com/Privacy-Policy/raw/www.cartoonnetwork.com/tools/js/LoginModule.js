@@ -121,6 +121,7 @@ LoginModule.doCartoonLogIn = function (){
 		LoginModule.onReady();
 		LoginModule.checkForFriendRequests()
 	}else{
+		LoginModule.onCartoonMSIBCancel();
 		LoginModule.onCartoonLoggedOut();
 	}
 }
@@ -275,7 +276,6 @@ LoginModule.onCartoonLoggedOut = function (p_imgURL){
 }
 
 LoginModule.onCartoonLoginCancel = function (){
-
 	LoginModule.showLoginWindow({visible: false});
 	LoginModule.onCartoonLoginCancel_Complete();
 }
@@ -342,16 +342,30 @@ LoginModule.onCartoonLogIn_Complete = function (){
 		TDAModuleComm.talktoSwf(LoginModule.userDisplayName);
 	}
 	
+	if (typeof (_runSocial) != 'undefined'){
+		if(typeof(_runSocial.loggedIn) == "function"){
+			_runSocial.loggedIn();	
+		}
+	}
+	
+	if(typeof(gamecreatorDisplayNameCall) == "function"){
+		gamecreatorDisplayNameCall(LoginModule.userDisplayName);
+	}
 }
 
 LoginModule.onCartoonReg = function (p_ScreenName){
 	jQuery('<div></div>').html('reg happened').css('color','#ffffff').prependTo('body');
 }
 
+LoginModule.onCartoonMSIBCancel = function (){
+	if(typeof(gamecreatorCancelCall) == "function"){
+		gamecreatorCancelCall();
+	}
+}
+
 LoginModule.onCartoonRegCancel = function (){
-	alert("testing cancel 1");
+
 	if(typeof(LoginModuleComm) == "function"){ 
-	alert("testing cancel 1a");
 		LoginModuleComm.sendCancel(); 
 	}
 
@@ -359,10 +373,8 @@ LoginModule.onCartoonRegCancel = function (){
 }
 
 LoginModule.onCartoonLoginCancel_Complete = function (){
-	alert("testing cancel 2");
 
 	if(typeof(LoginModuleComm) == "function"){ 
-	alert("testing cancel 2a");
 		LoginModuleComm.sendCancel(); 
 	} 
 

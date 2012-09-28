@@ -2,7 +2,7 @@
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 
-/* GameStop Implementation Version 6.2 (2011-11-17A) */
+/* GameStop Implementation Version 6.6 (2012-09-05A) */
 
 /* Specify the Report Suite ID(s) to track here */
 var s_account = 'gamestopdev'
@@ -32,8 +32,8 @@ else if (document.URL.indexOf('m.gamestop.com') > -1)
     s_account = 'gamestopmobileprod';
 else if (document.URL.indexOf('m.qa.gamestop.com') > -1)
     s_account = 'gamestopmobiledev';
-else if (document.URL.indexOf('impulsedriven.com') > -1 || document.URL.indexOf('impulsedriven.net') > -1 || document.URL.indexOf('impulsestore.gamestore.com') > -1)
-    s_account = 'gamestopimpprod';
+else if (document.URL.indexOf('impulsedriven.com') > -1 || document.URL.indexOf('impulsedriven.net') > -1 || document.URL.indexOf('impulsestore.gamestop.com') > -1)
+    s_account = 'gamestoppcdownloadprod';
 else if (document.URL.indexOf('www.gameinformer.com') > -1)
     s_account = 'gamestopgiprod';
 var gs = s_gi(s_account)
@@ -116,6 +116,24 @@ function s_doPlugins(s) {
     if (!gs.eVar56 && s.p_fo('ev56') == 1) {
         gs.eVar56 = gs.c_r('omtc');
         gs.c_w('omtc', '', 0);
+    }
+
+    /* EC - Automate OMTI Tracking */
+    if (!gs.eVar73 && s.p_fo('ev73') == 1) {
+        gs.eVar73 = gs.c_r('omti');
+        gs.c_w('omti', '', 0);
+    }
+
+    /* EC - Automate OMTG Tracking */
+    if (!gs.eVar71 && s.p_fo('ev71') == 1) {
+        gs.eVar71 = gs.c_r('omtg');
+        gs.c_w('omtg', '', 0);
+    }
+
+    /* EC - Automate OMTD Tracking */
+    if (!gs.eVar72 && s.p_fo('ev72') == 1) {
+        gs.eVar72 = gs.c_r('omtd');
+        gs.c_w('omtd', '', 0);
     }
 
     /* EC - Automate TBYB Tracking */
@@ -334,7 +352,7 @@ gs.doPlugins = s_doPlugins
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
 
-gs.trackdivs = ['3ds_link', '3ds_mega', 'pc_link', 'pc_mega', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cLeftNav_LeftNavSocial_lnkFacebook', 'latest_tweet', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion1_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion2_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion3_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion4_splSmartList', 'all_mega', 'blade', 'blade_header', 'carousel', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_searchbox', 'deals_signup', 'ds_mega', 'fb', 'genre_bestsellers', 'genre_comingsoon', 'genre_nowshipping', 'genre_row_1', 'genre_row_2', 'genre_row_3', 'genre_row_4', 'genre_spot1', 'genre_spot1', 'genre_spot2', 'genre_spot2', 'home_bestsellers', 'home_comingsoon', 'home_nowshipping', 'home_row1_1', 'home_row1_2', 'home_row1_3', 'home_row1_4', 'home_thedeal_offer', 'hs_feature_1', 'hs_feature_2', 'hs_feature_3', 'hs_feature_4', 'hs_feature_5', 'pick_home_store', 'ps2_mega', 'ps3_mega', 'psp_mega', 'sliderOne', 'sliderThree', 'sliderTwo', 'tweet', 'wf_genre_menu_1', 'wf_genre_menu_10', 'wf_genre_menu_11', 'wf_genre_menu_12', 'wf_genre_menu_13', 'wf_genre_menu_14', 'wf_genre_menu_15', 'wf_genre_menu_16', 'wf_genre_menu_17', 'wf_genre_menu_2', 'wf_genre_menu_3', 'wf_genre_menu_4', 'wf_genre_menu_5', 'wf_genre_menu_6', 'wf_genre_menu_7', 'wf_genre_menu_8', 'wf_genre_menu_9', 'wii_mega', 'xbox360_mega', 'all_link', 'buykinect', 'console', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_hdrPowerUpRewards_lnkHowToJoin', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkDownloads', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkGiftCards', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkOrderHistory', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkPreOwned', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkStoreEvents', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkStoreLocator', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkTradeIns', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkWeeklyAd', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkWishList', 'ds_link', 'header_auth_actions', 'logo grid_5', 'ps2_link', 'ps3_link', 'psp_link', 'sbs', 'wf_genre_menu_10-trigger', 'wf_genre_menu_11-trigger', 'wf_genre_menu_12-trigger', 'wf_genre_menu_13-trigger', 'wf_genre_menu_14-trigger', 'wf_genre_menu_15-trigger', 'wf_genre_menu_16-trigger', 'wf_genre_menu_17-trigger', 'wf_genre_menu_1-trigger', 'wf_genre_menu_2-trigger', 'wf_genre_menu_3-trigger', 'wf_genre_menu_4-trigger', 'wf_genre_menu_5-trigger', 'wf_genre_menu_6-trigger', 'wf_genre_menu_7-trigger', 'wf_genre_menu_8-trigger', 'wf_genre_menu_9-trigger', 'wii_link', 'xbox360_link', 'Home_row2_1', 'Home_row2_2', 'Home_row2_3', 'Home_row2_4', 'kongregate', 'mycart', 'global_nav_newstyle', 'engagement1', 'engagement2', 'engagement3', 'engagement4', 'engagement5', 'engagement6', 'engagement7', 'engagement8', 'engagement9', 'engagement10', 'boxart1', 'boxart2', 'boxart3', 'boxart4', 'boxart5', 'screen1', 'screen2', 'screen3', 'screen4', 'screen5', 'screen6', 'screen7', 'screen8', 'screen9', 'screen10', 'screen11', 'screen12', 'screen13', 'screen14', 'screen15', 'sweeps_signup', 'cta_buynow', 'cta_buynow_ps3', 'cta_buynow_pc', 'cta_buynow_xbox', 'cta_buynow_ds', 'cta_buynow_wii', 'cta_buynow_other', 'cta_preorder', 'cta_preorder_ps3', 'cta_preorder_pc', 'cta_preorder_xbox', 'cta_preorder_ds', 'cta_preorder_wii', 'cta_preorder_other', 'cta_addtocart', 'cta_addtocart_ps3', 'cta_addtocart_pc', 'cta_addtocart_xbox', 'cta_addtocart_ds', 'cta_addtocart_wii', 'cta_addtocart_other', 'cta_buynow_spc_edition1', 'cta_buynow_spc_edition2', 'cta_buynow_spc_edition3', 'cta_buynow_spc_edition4', 'cta_buynow_spc_edition5', 'cta_preorder_spc_edition1', 'cta_preorder_spc_edition2', 'cta_preorder_spc_edition3', 'cta_preorder_spc_edition4', 'cta_preorder_spc_edition5', 'cta_addtocart_spc_edition1', 'cta_addtocart_spc_edition2', 'cta_addtocart_spc_edition3', 'cta_addtocart_spc_edition4', 'cta_addtocart_spc_edition5', 'cta_buynow_spc_bundle1', 'cta_buynow_spc_bundle2', 'cta_buynow_spc_bundle3', 'cta_buynow_spc_bundle4', 'cta_buynow_spc_bundle5', 'cta_preorder_spc_bundle1', 'cta_preorder_spc_bundle2', 'cta_preorder_spc_bundle3', 'cta_preorder_spc_bundle4', 'cta_preorder_spc_bundle5', 'cta_addtocart_spc_bundle1', 'cta_addtocart_spc_bundle2', 'cta_addtocart_spc_bundle3', 'cta_addtocart_spc_bundle4', 'cta_addtocart_spc_bundle5', 'watch_video1', 'watch_video2', 'watch_video3', 'watch_video4', 'watch_video5', 'watch_video6', 'watch_video7', 'watch_video8', 'watch_video9', 'watch_video10', 'bonus1', 'bonus2', 'bonus3', 'bonus4', 'bonus5', 'bonus6', 'bonus7', 'bonus8', 'bonus9', 'bonus10', 'slot1', 'slot2', 'slot3', 'slot4', 'slot5', 'slot6', 'slot7', 'slot8', 'slot9', 'slot10', 'slot11', 'slot12', 'slot13', 'slot14', 'slot15', 'slot16', 'slot17', 'slot18', 'slot19', 'slot20', 'at_hover', 'atic_facebook', 'atic_twitter', 'atic_myspace', 'atic_print', 'atic_google', 'atic_favorites', 'atic_digg', 'atic_delicious', 'atic_stumbleupon', 'atic_live', 'atic_email', 'atic_more', 'powerup_hero', 'powerup_activiate', 'kongregate_FeaturedFeed', 'kongregate_FeaturedFeed', 'kongregate_HotFeed', 'kongregate_ActionFeed', 'kongregate_MmoFeed', 'kongregate_StrategyFeed', 'kongregate_PuzzleFeed', 'kongregate_more_cats', 'kongregate_play_online', 'kongregate_get_gadges', 'kongregate_earn_money', 'pick_home_store', 'ctl00_cHeader_searchtext', 'ctl00_cHeader_searchbox', 'ctl00_cLeftNav_LeftNavHomeStore_txtStoreZipCode', 'ctl00_cLeftNav_LeftNavSocial_lnkFacebook', 'twitter_avatar', 'ctl00_cLeftNav_LeftNavNewsletter_btnSignup', 'ctl00_cLeftNav_LeftNavNewsletter_txtNewsletterSignup', 'ctl00_cLeftNav_LeftNavNewsletter_NewsletterSignupControlPanel', 'ctl00_cHeader_searchbox', 'ctl00_cHeader_searchbutton', 'ctl00$cLeftNav$LeftNavHomeStore$txtStoreZipCode', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Xbox360_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Wii_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_DS_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PS3_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PS2_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PSP_splSmartList', 'rr1', 'rr2', 'rr3', 'rr4', 'rr5', 'rr6', 'genretab', 'pubtab', 'sorttab', 'commtab', 'supporttab', 'hphero1', 'hphero2', 'hphero3', 'hphero4', 'hphero5', 'hphero6', 'hphero7', 'hphero8', 'hphero9', 'hphero10', 'feat01', 'feat02', 'feat03', 'feat04', 'feat05', 'feat06', 'feat07', 'feat08', 'feat09', 'feat10', 'feat11', 'feat12', 'feat13', 'feat14', 'feat15', 'feat16', 'feat17', 'feat18', 'feat19', 'feat20', 'feat21', 'feat22', 'feat23', 'feat24', 'feat25', 'featmore', 'anowtab', 'csoontab', 'bsellertab', 'onsaletab', 'hpclientdl', 'hpemailsubmit', 'hpsearch', 'anow01', 'anow02', 'anow03', 'anow04', 'anow05', 'anow06', 'anow07', 'anow08', 'anow09', 'anow10', 'anow11', 'anow12', 'anow13', 'anow14', 'anow15', 'anow16', 'anow17', 'anow18', 'anow19', 'anow20', 'anow21', 'anow22', 'anow23', 'anow24', 'anow25', 'csoon01', 'csoon02', 'csoon03', 'csoon04', 'csoon05', 'csoon06', 'csoon07', 'csoon08', 'csoon09', 'csoon10', 'csoon11', 'csoon12', 'csoon13', 'csoon14', 'csoon15', 'csoon16', 'csoon17', 'csoon18', 'csoon19', 'csoon20', 'csoon21', 'csoon22', 'csoon23', 'csoon24', 'csoon25', 'bseller01', 'bseller02', 'bseller03', 'bseller04', 'bseller05', 'bseller06', 'bseller07', 'bseller08', 'bseller09', 'bseller10', 'bseller11', 'bseller12', 'bseller13', 'bseller14', 'bseller15', 'bseller16', 'bseller17', 'bseller18', 'bseller19', 'bseller20', 'bseller21', 'bseller22', 'bseller23', 'bseller24', 'bseller25', 'onsale01', 'onsale02', 'onsale03', 'onsale04', 'onsale05', 'onsale06', 'onsale07', 'onsale08', 'onsale09', 'onsale10', 'onsale11', 'onsale12', 'onsale13', 'onsale14', 'onsale15', 'onsale16', 'onsale17', 'onsale18', 'onsale19', 'onsale20', 'onsale21', 'onsale22', 'onsale23', 'onsale24', 'onsale25', 'link01', 'link02', 'link03', 'link04', 'link05', 'link06', 'link07', 'link08', 'link09', 'link10', 'link11', 'link12', 'link13', 'link14', 'link15', 'link16', 'link17', 'link18', 'link19', 'link20', 'link21', 'link22', 'link23', 'link24', 'link25', 'link26', 'link27', 'link28', 'link29', 'link30', 'link31', 'link32', 'link33', 'link34', 'link35', 'link36', 'link37', 'link38', 'link39', 'link40', 'link41', 'link42', 'link43', 'link44', 'link45', 'link46', 'link47', 'link48', 'link49', 'link50', 'impulsedailydeal', 'imp_announce01', 'imp_announce02', 'imp_announce03', 'imp_announce04', 'imp_announce05', 'imp_announce06', 'imp_announce07', 'imp_announce08', 'imp_announce09', 'imp_announce10', 'imp_announcemore', 'anowmore', 'csoonmore', 'bsellermore', 'onsalemore']
+gs.trackdivs = ['3ds_link', '3ds_mega', 'pc_link', 'pc_mega', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cLeftNav_LeftNavSocial_lnkFacebook', 'latest_tweet', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion1_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion2_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion3_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Accordion4_splSmartList', 'all_mega', 'blade', 'blade_header', 'carousel', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_searchbox', 'deals_signup', 'ds_mega', 'fb', 'genre_bestsellers', 'genre_comingsoon', 'genre_nowshipping', 'genre_row_1', 'genre_row_2', 'genre_row_3', 'genre_row_4', 'genre_spot1', 'genre_spot1', 'genre_spot2', 'genre_spot2', 'home_bestsellers', 'home_comingsoon', 'home_nowshipping', 'home_row1_1', 'home_row1_2', 'home_row1_3', 'home_row1_4', 'home_thedeal_offer', 'hs_feature_1', 'hs_feature_2', 'hs_feature_3', 'hs_feature_4', 'hs_feature_5', 'pick_home_store', 'ps2_mega', 'ps3_mega', 'psp_mega', 'sliderOne', 'sliderThree', 'sliderTwo', 'tweet', 'wf_genre_menu_1', 'wf_genre_menu_10', 'wf_genre_menu_11', 'wf_genre_menu_12', 'wf_genre_menu_13', 'wf_genre_menu_14', 'wf_genre_menu_15', 'wf_genre_menu_16', 'wf_genre_menu_17', 'wf_genre_menu_2', 'wf_genre_menu_3', 'wf_genre_menu_4', 'wf_genre_menu_5', 'wf_genre_menu_6', 'wf_genre_menu_7', 'wf_genre_menu_8', 'wf_genre_menu_9', 'wii_mega', 'xbox360_mega', 'all_link', 'buykinect', 'console', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_hdrPowerUpRewards_lnkHowToJoin', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkDownloads', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkGiftCards', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkOrderHistory', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkPreOwned', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkStoreEvents', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkStoreLocator', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkTradeIns', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkWeeklyAd', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_cHeader_lnkWishList', 'ds_link', 'header_auth_actions', 'logo grid_5', 'ps2_link', 'ps3_link', 'psp_link', 'sbs', 'wf_genre_menu_10-trigger', 'wf_genre_menu_11-trigger', 'wf_genre_menu_12-trigger', 'wf_genre_menu_13-trigger', 'wf_genre_menu_14-trigger', 'wf_genre_menu_15-trigger', 'wf_genre_menu_16-trigger', 'wf_genre_menu_17-trigger', 'wf_genre_menu_1-trigger', 'wf_genre_menu_2-trigger', 'wf_genre_menu_3-trigger', 'wf_genre_menu_4-trigger', 'wf_genre_menu_5-trigger', 'wf_genre_menu_6-trigger', 'wf_genre_menu_7-trigger', 'wf_genre_menu_8-trigger', 'wf_genre_menu_9-trigger', 'wii_link', 'xbox360_link', 'Home_row2_1', 'Home_row2_2', 'Home_row2_3', 'Home_row2_4', 'kongregate', 'mycart', 'global_nav_newstyle', 'engagement1', 'engagement2', 'engagement3', 'engagement4', 'engagement5', 'engagement6', 'engagement7', 'engagement8', 'engagement9', 'engagement10', 'boxart1', 'boxart2', 'boxart3', 'boxart4', 'boxart5', 'screen1', 'screen2', 'screen3', 'screen4', 'screen5', 'screen6', 'screen7', 'screen8', 'screen9', 'screen10', 'screen11', 'screen12', 'screen13', 'screen14', 'screen15', 'sweeps_signup', 'cta_buynow', 'cta_buynow_ps3', 'cta_buynow_pc', 'cta_buynow_xbox', 'cta_buynow_ds', 'cta_buynow_wii', 'cta_buynow_other', 'cta_preorder', 'cta_preorder_ps3', 'cta_preorder_pc', 'cta_preorder_xbox', 'cta_preorder_ds', 'cta_preorder_wii', 'cta_preorder_other', 'cta_addtocart', 'cta_addtocart_ps3', 'cta_addtocart_pc', 'cta_addtocart_xbox', 'cta_addtocart_ds', 'cta_addtocart_wii', 'cta_addtocart_other', 'cta_buynow_spc_edition1', 'cta_buynow_spc_edition2', 'cta_buynow_spc_edition3', 'cta_buynow_spc_edition4', 'cta_buynow_spc_edition5', 'cta_preorder_spc_edition1', 'cta_preorder_spc_edition2', 'cta_preorder_spc_edition3', 'cta_preorder_spc_edition4', 'cta_preorder_spc_edition5', 'cta_addtocart_spc_edition1', 'cta_addtocart_spc_edition2', 'cta_addtocart_spc_edition3', 'cta_addtocart_spc_edition4', 'cta_addtocart_spc_edition5', 'cta_buynow_spc_bundle1', 'cta_buynow_spc_bundle2', 'cta_buynow_spc_bundle3', 'cta_buynow_spc_bundle4', 'cta_buynow_spc_bundle5', 'cta_preorder_spc_bundle1', 'cta_preorder_spc_bundle2', 'cta_preorder_spc_bundle3', 'cta_preorder_spc_bundle4', 'cta_preorder_spc_bundle5', 'cta_addtocart_spc_bundle1', 'cta_addtocart_spc_bundle2', 'cta_addtocart_spc_bundle3', 'cta_addtocart_spc_bundle4', 'cta_addtocart_spc_bundle5', 'watch_video1', 'watch_video2', 'watch_video3', 'watch_video4', 'watch_video5', 'watch_video6', 'watch_video7', 'watch_video8', 'watch_video9', 'watch_video10', 'bonus1', 'bonus2', 'bonus3', 'bonus4', 'bonus5', 'bonus6', 'bonus7', 'bonus8', 'bonus9', 'bonus10', 'slot1', 'slot2', 'slot3', 'slot4', 'slot5', 'slot6', 'slot7', 'slot8', 'slot9', 'slot10', 'slot11', 'slot12', 'slot13', 'slot14', 'slot15', 'slot16', 'slot17', 'slot18', 'slot19', 'slot20', 'at_hover', 'atic_facebook', 'atic_twitter', 'atic_myspace', 'atic_print', 'atic_google', 'atic_favorites', 'atic_digg', 'atic_delicious', 'atic_stumbleupon', 'atic_live', 'atic_email', 'atic_more', 'powerup_hero', 'powerup_activiate', 'kongregate_FeaturedFeed', 'kongregate_FeaturedFeed', 'kongregate_HotFeed', 'kongregate_ActionFeed', 'kongregate_MmoFeed', 'kongregate_StrategyFeed', 'kongregate_PuzzleFeed', 'kongregate_more_cats', 'kongregate_play_online', 'kongregate_get_gadges', 'kongregate_earn_money', 'pick_home_store', 'ctl00_cHeader_searchtext', 'ctl00_cHeader_searchbox', 'ctl00_cLeftNav_LeftNavHomeStore_txtStoreZipCode', 'ctl00_cLeftNav_LeftNavSocial_lnkFacebook', 'twitter_avatar', 'ctl00_cLeftNav_LeftNavNewsletter_btnSignup', 'ctl00_cLeftNav_LeftNavNewsletter_txtNewsletterSignup', 'ctl00_cLeftNav_LeftNavNewsletter_NewsletterSignupControlPanel', 'ctl00_cHeader_searchbox', 'ctl00_cHeader_searchbutton', 'ctl00$cLeftNav$LeftNavHomeStore$txtStoreZipCode', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Xbox360_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_Wii_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_DS_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PS3_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PS2_splSmartList', 'ctl00_ctl00_ctl00_BaseContentPlaceHolder_mainContentPlaceHolder_mainContentPlaceHolder_PSP_splSmartList', 'rr1', 'rr2', 'rr3', 'rr4', 'rr5', 'rr6', 'genretab', 'pubtab', 'sorttab', 'commtab', 'supporttab', 'hphero1', 'hphero2', 'hphero3', 'hphero4', 'hphero5', 'hphero6', 'hphero7', 'hphero8', 'hphero9', 'hphero10', 'feat01', 'feat02', 'feat03', 'feat04', 'feat05', 'feat06', 'feat07', 'feat08', 'feat09', 'feat10', 'feat11', 'feat12', 'feat13', 'feat14', 'feat15', 'feat16', 'feat17', 'feat18', 'feat19', 'feat20', 'feat21', 'feat22', 'feat23', 'feat24', 'feat25', 'featmore', 'anowtab', 'csoontab', 'bsellertab', 'onsaletab', 'hpclientdl', 'hpemailsubmit', 'hpsearch', 'anow01', 'anow02', 'anow03', 'anow04', 'anow05', 'anow06', 'anow07', 'anow08', 'anow09', 'anow10', 'anow11', 'anow12', 'anow13', 'anow14', 'anow15', 'anow16', 'anow17', 'anow18', 'anow19', 'anow20', 'anow21', 'anow22', 'anow23', 'anow24', 'anow25', 'csoon01', 'csoon02', 'csoon03', 'csoon04', 'csoon05', 'csoon06', 'csoon07', 'csoon08', 'csoon09', 'csoon10', 'csoon11', 'csoon12', 'csoon13', 'csoon14', 'csoon15', 'csoon16', 'csoon17', 'csoon18', 'csoon19', 'csoon20', 'csoon21', 'csoon22', 'csoon23', 'csoon24', 'csoon25', 'bseller01', 'bseller02', 'bseller03', 'bseller04', 'bseller05', 'bseller06', 'bseller07', 'bseller08', 'bseller09', 'bseller10', 'bseller11', 'bseller12', 'bseller13', 'bseller14', 'bseller15', 'bseller16', 'bseller17', 'bseller18', 'bseller19', 'bseller20', 'bseller21', 'bseller22', 'bseller23', 'bseller24', 'bseller25', 'onsale01', 'onsale02', 'onsale03', 'onsale04', 'onsale05', 'onsale06', 'onsale07', 'onsale08', 'onsale09', 'onsale10', 'onsale11', 'onsale12', 'onsale13', 'onsale14', 'onsale15', 'onsale16', 'onsale17', 'onsale18', 'onsale19', 'onsale20', 'onsale21', 'onsale22', 'onsale23', 'onsale24', 'onsale25', 'link01', 'link02', 'link03', 'link04', 'link05', 'link06', 'link07', 'link08', 'link09', 'link10', 'link11', 'link12', 'link13', 'link14', 'link15', 'link16', 'link17', 'link18', 'link19', 'link20', 'link21', 'link22', 'link23', 'link24', 'link25', 'link26', 'link27', 'link28', 'link29', 'link30', 'link31', 'link32', 'link33', 'link34', 'link35', 'link36', 'link37', 'link38', 'link39', 'link40', 'link41', 'link42', 'link43', 'link44', 'link45', 'link46', 'link47', 'link48', 'link49', 'link50', 'impulsedailydeal', 'imp_announce01', 'imp_announce02', 'imp_announce03', 'imp_announce04', 'imp_announce05', 'imp_announce06', 'imp_announce07', 'imp_announce08', 'imp_announce09', 'imp_announce10', 'imp_announcemore', 'anowmore', 'csoonmore', 'bsellermore', 'onsalemore', 'hphero01', 'hphero02', 'hphero03', 'hphero04', 'hphero05', 'hphero06', 'hphero07', 'hphero08', 'hphero09', 'hphero10', 'announce1', 'announce2', 'announce3', 'announce4', 'announce5', 'announce6', 'announce7', 'announce8', 'announce9', 'announce10', 'announce11', 'announce12', 'announce13', 'announce14', 'announce15', 'announce16', 'announce17', 'announce18', 'announce19', 'announce20', 'announce21', 'announce22', 'announce23', 'announce24', 'announce25', 'announcemore', 'dailydeal']
 
 /*
 * Utility manageVars v0.2 - clear variable values (requires split 1.5)
@@ -661,6 +679,66 @@ function gs_setOMTC() {
                 }
             }
         }
+        for (i = 0; i < divs.length; i++) {
+            if (divs[i].className.indexOf('omti-') > -1) {
+                val = divs[i].className.substring(divs[i].className.indexOf('omti-') + 5);
+                valArray = val.split(" ");
+                val = valArray[0];
+                if (divs[i].hasAttribute('onclick')) {
+                    divs[i].setAttribute('onclick', divs[i].getAttribute('onclick') + ';gs.c_w(\"omti\",\"' + val + '\",0);');
+                }
+                else {
+                    divs[i].setAttribute('onclick', 'gs.c_w(\"omti\",\"' + val + '\",0);');
+                }
+            }
+        }
+        for (i = 0; i < divs.length; i++) {
+            if (divs[i].className.indexOf('omtg') > -1) {
+                var imgs = divs[i].getElementsByTagName('img');
+                if (imgs) {
+                    val = imgs[0].src;
+                    if (divs[i].hasAttribute('onclick')) {
+                        divs[i].setAttribute('onclick', divs[i].getAttribute('onclick') + ';gs.c_w(\"omtg\",\"' + val + '\",0);');
+                    }
+                    else {
+                        divs[i].setAttribute('onclick', 'gs.c_w(\"omtg\",\"' + val + '\",0);');
+                    }
+                }
+            }
+        }
+        for (i = 0; i < divs.length; i++) {
+            if (divs[i].className.indexOf('omtd') > -1) {
+                var anchors = divs[i].getElementsByTagName('a');
+                if (anchors) {
+                    val = anchors[0].href;
+                    if (divs[i].hasAttribute('onclick')) {
+                        divs[i].setAttribute('onclick', divs[i].getAttribute('onclick') + ';gs.c_w(\"omtd\",\"' + val + '\",0);');
+                    }
+                    else {
+                        divs[i].setAttribute('onclick', 'gs.c_w(\"omtd\",\"' + val + '\",0);');
+                    }
+                }
+            }
+            //Support for MegaMenu auto-tag of OMTD
+            else if (divs[i].className.indexOf('navBar') > -1) {
+                var anchors = divs[i].getElementsByTagName('a');
+                if (anchors) {
+                    for (i2 = 0; i2 < anchors.length; i2++) {
+                        path = anchors[i2].href.split(/\/\//);
+                        path = path[1].split('/').slice(1).join('/');
+                        //Uncomment following line to remove URL parameters
+                        //path = path.split(/\?/); path = path[0];
+                        val = path;
+                        if (anchors[i2].hasAttribute('onclick')) {
+                            anchors[i2].setAttribute('onclick', 'gs.c_w(\"omtd\",\"megamenu: ' + val + '\",0);' + anchors[i2].getAttribute('onclick'));
+                        }
+                        else {
+                            anchors[i2].setAttribute('onclick', 'gs.c_w(\"omtd\",\"megamenu: ' + val + '\",0);');
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -825,39 +903,6 @@ gs.m_Integrate_c = "var m=gs.m_i('Integrate');m.add=function(n,o){var m=this,p;i
 gs.m_i("Integrate");
 
 /* Configure Modules and Plugins */
-gs.rlcv = gs.c_r('s_ni');
-if (gs.rlcv) {
-    gs.eVar47 = gs.rlcv;
-}
-else {
-    gs.rlpc = function (cv, d, cn) {
-        var s = this, e = new Date(), ct = e.getTime();
-        d = d || d == 0 ? d : 30;
-        cn = cn ? cn : 's_bk';
-        e.setTime(ct + d * 24 * 60 * 60 * 1000);
-        if (d == 0)
-            gs.c_w(cn, cv, d);
-        else
-            gs.c_w(cn, cv, e);
-    }
-    gs.maxDelay = 1000;
-    gs.loadModule("Integrate");
-    gs.Integrate.add("Rapleaf");
-    gs.Integrate.Rapleaf.site = 42664;
-    gs.Integrate.Rapleaf.type = 'js';
-    gs.Integrate.Rapleaf.get("rd.rlcdn.com/rd?site=[site]&type=[type]&var=[VAR]&rnd=[RAND]");
-    gs.Integrate.Rapleaf.setVars = function (gs, p) {
-        if (p.X) {
-            gs.eVar47 = p.X;
-            gs.length = 30;
-        }
-        else {
-            gs.eVar47 = 'No Match';
-            gs.length = 0;
-        }
-        gs.rlpc(gs.eVar47, gs.length, 's_ni');
-    }
-}
 
 
 
@@ -992,3 +1037,4 @@ w = window, l = w.s_c_il, n = navigator, u = n.userAgent, v = n.appVersion, e = 
 + "'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
     c = s_d(c); if (e > 0) { a = parseInt(i = v.substring(e + 5)); if (a > 3) a = parseFloat(i) } else if (m > 0) a = parseFloat(u.substring(m + 10)); else a = parseFloat(v); if (a >= 5 && v.indexOf('Opera') < 0 && u.indexOf('Opera') < 0) { w.s_c = new Function("un", "pg", "ss", "var s=this;" + c); return new s_c(un, pg, ss) } else s = new Function("un", "pg", "ss", "var s=new Object;" + s_ft(c) + ";return s"); return s(un, pg, ss)
 }
+

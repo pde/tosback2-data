@@ -268,9 +268,13 @@
 			}
 			return undefined;
         },
+        
+		resetCheckboxFunc: function(){
+			this.checkedStatus = false;
+			this.element.attr({'checked': false});
+		},
 		
         reflectUI: function(e){
-			
             var oldChecked 			= this.checkedStatus, 
 				oldDisabledStatus 	= this.disabledStatus
 			;
@@ -288,8 +292,7 @@
 				
 				(this.checkedStatus !== oldChecked &&
 					this.propagate('change', e));
-			}
-            
+			}			            
         }
     });
 })(jQuery);

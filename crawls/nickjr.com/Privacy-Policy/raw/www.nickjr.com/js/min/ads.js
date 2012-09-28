@@ -254,8 +254,8 @@ if(d.length==2){b=d[0]+"/interstitial."+d[1];
 if(b.indexOf(".jhtml")<0){if(a.length==2){if(a[1]=="index.html"){b="/_hp";
 }}else{if(a.length==3){if(a[2]=="index.html"){b="/"+a[1]+"/_mn";
 }}}}if(KIDS.ads.pageLevelAdConfig.maxSponsor>1){g+="cat="+KIDS.ads.pageLevelAdConfig.randSponsor+";";
-}if(KIDS.get("urlAlias").length>0){g+="activity="+KIDS.get("urlAlias")+";";
-}if(KIDS.get("showId").length>0){g+="!category="+KIDS.get("showId")+";showid="+KIDS.get("showId")+";";
+}if(KIDS.get("urlAlias")){g+="activity="+KIDS.get("urlAlias")+";";
+}if(KIDS.get("showId")){g+="!category="+KIDS.get("showId")+";showid="+KIDS.get("showId")+";";
 }if(location.pathname.indexOf("/kids/")>-1||location.pathname.indexOf("/kids-games/")>-1||location.pathname.indexOf("/kids-videos/")>-1||location.pathname.indexOf("/kids-create/")>-1){g+="demo=D;";
 }var h=location.search;
 if(h.length>0){h=h.replace("?","");
@@ -3398,7 +3398,7 @@ KIDS.reporting.config.setProp(17,KIDS.reporting.config.getEVar(2));
 KIDS.reporting.firePageLoad=function(){if(location.href.indexOf("ad-entry")<0){KIDS.reporting.omnifunctions.sendReportingCall();
 }};
 
-if(location.pathname.indexOf("/kids/")>-1||location.pathname.indexOf("/kids-games/")>-1||location.pathname.indexOf("/kids-videos/")>-1||location.pathname.indexOf("/kids-create/")>-1){btg.config.DoubleClick.dartSite="nickjr.playtime.nol";
+if(location.pathname==("/kids/")||location.pathname.indexOf("/kids-games/")==0||location.pathname.indexOf("/kids-videos/")==0||location.pathname.indexOf("/kids-create/")==0){btg.config.DoubleClick.dartSite="nickjr.playtime.nol";
 }else{btg.config.DoubleClick.dartSite="nickjr.nol";
 }btg.config.DoubleClick.positionThreshold=3;
 

@@ -37,23 +37,23 @@ CIM.cookie = (function () {
             'user_mecomcast',
             'browse_popular',
             'browse_newest',
-			// end of Fancast binary values
-	        'browserDetection'
+            // end of Fancast binary values
+            'browserDetection'
         ],
 
         permBinaryCookieValues = [
-			'rs_activation',		//see rsActivationMap
-			'rs_devicetype',		//see rsDeviceTypeMap
-			'profile_named_cable_boxes',
-			'profile_remote_tuned',
-			'profile_watchlist_setup',
-			'test_value',
+            'rs_activation',        //see rsActivationMap
+            'rs_devicetype',        //see rsDeviceTypeMap
+            'profile_named_cable_boxes',
+            'profile_remote_tuned',
+            'profile_watchlist_setup',
+            'test_value',
             'skip_idevice_roadblock',
             'skip_launch_promo'
         ],
 
-		rsActivationMap = ["ACTIVATED","ATTEMPTED","NOTSET","DEACTIVATED"],
-		rsDeviceTypeMap = ["GUIDEWORKS","TIVO","NOTSET"],
+        rsActivationMap = ["ACTIVATED","ATTEMPTED","NOTSET","DEACTIVATED"],
+        rsDeviceTypeMap = ["GUIDEWORKS","TIVO","NOTSET"],
         object,
         defaultOptions = {
             domain: ".comcast.net",
@@ -153,7 +153,7 @@ CIM.cookie = (function () {
      * Arguments:
      *    cookieName -
      *    pos -
-	 *    name -
+     *    name -
      *
      * Returns:
      *
@@ -163,26 +163,26 @@ CIM.cookie = (function () {
 
         if (CIM.cookie.exists(cookieName)) {
             bin = CIM.cookie.read(cookieName);
-			switch(name){
-				//prefs whose binary value is not a boolean
-				case "rs_activation":
-					return rsActivationMap[bin.charAt(pos)].toLowerCase();
-					break;
+            switch(name){
+                //prefs whose binary value is not a boolean
+                case "rs_activation":
+                    return rsActivationMap[bin.charAt(pos)].toLowerCase();
+                    break;
 
-				case "rs_devicetype":
-					return rsDeviceTypeMap[bin.charAt(pos)].toLowerCase();
-					break;
+                case "rs_devicetype":
+                    return rsDeviceTypeMap[bin.charAt(pos)].toLowerCase();
+                    break;
 
-				default:
-		            // result is false by default, only set to true if the bit is 1.
+                default:
+                    // result is false by default, only set to true if the bit is 1.
                     value = bin.charAt(pos);
-		            if (value === "1") {
-		                return true;
-		            } else if (value === "0") {
+                    if (value === "1") {
+                        return true;
+                    } else if (value === "0") {
                         return false;
                     }
-					break;
-			}
+                    break;
+            }
         }
 
         return;
@@ -194,7 +194,7 @@ CIM.cookie = (function () {
      * Arguments:
      *    cookieName -
      *    pos -
-	 *	  name -
+     *    name -
      *    value -
      *    valueArray -
      *    permanent -
@@ -213,28 +213,28 @@ CIM.cookie = (function () {
             bin += '2';
         }
 
-		switch(name){
-			case "rs_activation":
-				if(inArray(value.toUpperCase(), rsActivationMap) > -1){
-					val = inArray(value.toUpperCase(), rsActivationMap);
-				} else {
-					val = '2';
-				}
-				break;
+        switch(name){
+            case "rs_activation":
+                if(inArray(value.toUpperCase(), rsActivationMap) > -1){
+                    val = inArray(value.toUpperCase(), rsActivationMap);
+                } else {
+                    val = '2';
+                }
+                break;
 
-			case "rs_devicetype":
-				if(inArray(value.toUpperCase(), rsDeviceTypeMap) > -1){
-					val = inArray(value.toUpperCase(), rsDeviceTypeMap);
-				} else {
-					val = '2';
-				}
-				break;
+            case "rs_devicetype":
+                if(inArray(value.toUpperCase(), rsDeviceTypeMap) > -1){
+                    val = inArray(value.toUpperCase(), rsDeviceTypeMap);
+                } else {
+                    val = '2';
+                }
+                break;
 
-			default:
-        		val = (value ? 1 : 0);
-				break;
-		}
-		bin = setCharAt(bin, pos, val);
+            default:
+                val = (value ? 1 : 0);
+                break;
+        }
+        bin = setCharAt(bin, pos, val);
 
         if (permanent === 'undefined' || !permanent) {
             CIM.cookie.write(cookieName, bin); // Set the cookie to last for session
@@ -374,11 +374,15 @@ CIM.cookie = (function () {
 
             var cookieString, domain, expires = '', hostname = '', path = 'path=' + defaultOptions.path;
 
+            if (typeof options === "number") {
+                expires = setExpiresString(options);
+                options = {};
+            }
 
              if (typeof options['days'] !== "undefined") {
                 expires = setExpiresString(options.days);
             }
-
+            
             if (typeof options['path'] !== 'undefined') {
                 path = 'path=' + options.path;
             }
@@ -433,17 +437,17 @@ CIM.cookie = (function () {
         read: function (name) {
             var cookie,
                 cookieArray = document.cookie.split(';'),
-				        i,
+                        i,
                 nameEQ = name + "=",
                 re = /\s*(.*)/, // match everything after any white space
-				        result = false;
+                        result = false;
 
             for (i = 0; i < cookieArray.length; i = i + 1) {
                 cookie = cookieArray[i].match(re)[1];
 
                 if (cookie.indexOf(nameEQ) === 0) {
                     result = cookie.substring(nameEQ.length, cookie.length);
-					          break;
+                              break;
                 }
             }
 
@@ -491,7 +495,7 @@ CIM.cookie = (function () {
          * If you pass in *name*, this function operates as a getter. If you pass *name* and *value*,
          * this function operates like a setter. Return value (result) can be true, false, undefined, or a string
          * (corresponding to 0, 1, 2, ..., n in the cookie)
-		 * PLEASE NOTE: when using a value -> string representation, you need to use a map such as rsActivationMap
+         * PLEASE NOTE: when using a value -> string representation, you need to use a map such as rsActivationMap
          *
          * Arguments:
          *    name - name of the cookie value as defined in the tempBinaryCookieValues array
@@ -559,10 +563,10 @@ CIM.cookie = (function () {
             if (cookie) {
                 cookie = unescape(cookie);
                 values = cookie.split("&");
-				i = values.length;
+                i = values.length;
                 while(i) {
-                	i--;
-					// element 0 is the key, element 1 is the value
+                    i--;
+                    // element 0 is the key, element 1 is the value
                     key = values[i].split('=', 1)[0];
                     value = values[i].slice(key.length + 1);
                     object[key] = unescapeValue(value);
@@ -606,7 +610,7 @@ CIM.cookie = (function () {
                 name;
 
             for (name in object) {
-            		results.push([name, escapeValue(object[name])].join('=')); // join key/value pairs in object with "="
+                    results.push([name, escapeValue(object[name])].join('=')); // join key/value pairs in object with "="
             }
             return results.join('&'); // join key=value pairs into ampersand delimited string
         },

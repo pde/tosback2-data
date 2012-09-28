@@ -186,7 +186,7 @@ function thumb_url_desmond(srv, bucket, thumbname, direct)
 //        var id = srv + '/' + bucket + '/' + fn;
 //        return 'http://a.imageshack.us/img' + id;
 //  }
-    id = srv + '/scaled.php?server=' + srv + '&filename=' + fn + '&res=crop';
+    id = srv + '/scaled.php?server=' + srv + '&filename=' + fn + '&res=avatar96';
     return 'http://desmond.imageshack.us/Himg' + id;
 }
 
@@ -214,12 +214,12 @@ function get_scaled_size(width, height, max_width, max_height, crop)
 
 function noimage_url()
 {
-    return 'http://www.imageshack.us/common/images/thumbnail.gif';
+    return 'http://www.imageshack.us/images/thumbnail.gif';
 }
 
 function pdflogo()
 {
-    return 'http://www.imageshack.us/common/images/pdf.gif';
+    return 'http://www.imageshack.us/images/pdf.gif';
 }
 
 
@@ -254,19 +254,19 @@ function show_links()
     if (o)
         o.innerHTML = 
             is_user ? 
-            "| <a class=\"menu\" href=\"http://my.imageshack.us/slideshow/my_shows.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-slideshows');\">Slideshows</a> " :
+            "| <a class=\"menu\" href=\"http://imageshack.us/slideshow/my_shows.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-slideshows');\">Slideshows</a> " :
             "";
     var o = get('hmyimages');
     if (o)
         o.innerHTML = 
             is_user ? 
             "| <a class=\"menu\" href=\"" + myimages_url() + "\" onClick=\"pageTracker._trackEvent('header-click','old-header-myimages');\">My Images</a> " :
-            "| <a class=\"menu\" href=\"http://my.imageshack.us/registration\" onClick=\"pageTracker._trackEvent('header-click','old-header-myimages');\">My Images</a> ";
+            "| <a class=\"menu\" href=\"http://imageshack.us/registration\" onClick=\"pageTracker._trackEvent('header-click','old-header-myimages');\">My Images</a> ";
     var o = get('hmyvideos');
     if (o)
         o.innerHTML = 
             is_user ? 
-            "| <a class=\"menu\" href=\"http://my.imageshack.us/video/my_videos.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-videos');\">Videos</a> " :
+            "| <a class=\"menu\" href=\"http://imageshack.us/video/my_videos.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-videos');\">Videos</a> " :
             "";
     var o = get('hmyfriends');
     if (o)
@@ -275,7 +275,7 @@ function show_links()
     if (o)
         o.innerHTML = 
             is_user ? 
-            "| <a class=\"menu\" href=\"http://profile.imageshack.us/prefs/index.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-preferences');\">Preferences</a> " :
+            "| <a class=\"menu\" href=\"http://imageshack.us/prefs/index.php\" onClick=\"pageTracker._trackEvent('header-click','old-header-preferences');\">Preferences</a> " :
             "";
 }
 
@@ -345,11 +345,6 @@ function set_loading(holderid)
     o.innerHTML = '<div style="width: 100%; height: 100%; text-align: center; vertical-align: middle;"><img src="' + ICO_LOADING + '" width="56" height="16" alt="Loading" title="Loading"/></div>';
 }
 
-function homepage_url(user)
-{
-    return 'http://profile.imageshack.us/user/' + user;
-}
-
 function base_name(name)
 {
     var pos = name.lastIndexOf('.');
@@ -399,13 +394,13 @@ function iurl(id, root)
         else
             return root + '/' + id;
     }
-    // return 'http://imgcash.imageshack.us/common/images/' + id;
-    return 'http://imageshack.us/common/images/' + id;
+    // return 'http://imgcash.imageshack.us/images/' + id;
+    return 'http://imageshack.us/images/' + id;
 }
 
 function myimages_url()
 {
-    return 'http://my.imageshack.us/v_images.php';
+    return 'http://imageshack.us/v_images.php';
 }
 
 function lightencode(s)

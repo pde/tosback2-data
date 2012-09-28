@@ -104,7 +104,6 @@ if (typeof jQuery != 'undefined') {
 			},
 			sites		: {
 				'phub'	: {	'inBar': true,	'name': "PornHub",	'code': "phub",	'utm': "pornhub",		'utmSafe': "ph",	'url': "http://www.pornhub.com/?",	'css': {
-						'#ph_net_container'	: ['width','962px'],
 						'body'				: ['background-position','0 27px']
 					}
 				},
@@ -118,7 +117,10 @@ if (typeof jQuery != 'undefined') {
 						'body'				: ['background-position','0 27px']
 					}
 				},
-				'prmd'	: {	'inBar': true,	'name': "PornMD",	'code': "prmd",	'utm': "",			'utmSafe': "",	'url': "http://www.pornmd.com/?",		'css': {}
+				'prmd'	: {	'inBar': true,	'name': "PornMD",	'code': "prmd",	'utm': "pornmd",			'utmSafe': "md",	'url': "http://www.pornmd.com/?",		'css': {
+						'#ph_net_container'	: ['width','962px'],
+						'body'				: ['background-position','0 27px']
+					}
 				},
 				'wire'	: {	'inBar': true,	'name': "SpankWire",	'code': "wire",	'utm': "spankwire",	'utmSafe': "sw",	'url': "http://www.spankwire.com/?",	'css': {
 						'#ph_net_container'	: ['width','980px'],
@@ -144,9 +146,9 @@ if (typeof jQuery != 'undefined') {
 					}
 				},
 				'alts'	: {	'inBar': true,	'name': "",			'code': "alts",	'utm': "",			'utmSafe': "",	'url': "#",	'css': {}
-				},
-				'bash'	: {	'inBar': true,	'name': "Viral Videos",'code': "bash",	'utm': "videobash",	'utmSafe': "vb",	'url': "http://www.videobash.com/?",'css': {}
-				},
+				},/*
+				'bash'	: {	'inBar': true,	'name': "Viral Videos",'code': "bash",	'utm': "videobash",	'utmSafe': "vb",	'url': "http://www.prankvidz.com/?",'css': {}
+				},*/
 				'peep'	: {	'inBar': true,	'name': "Peeperz",	'code': "peep",	'utm': "peeperz",		'utmSafe': "pz",	'url': "http://www.peeperz.com/?",'css': {
 						'#ph_net_container'		: ['width','102.8em']
 					}
@@ -178,7 +180,10 @@ if (typeof jQuery != 'undefined') {
 						'body'				: ['background-position','0 27px']
 					}
 				},
-				'prmd'	: {	'inBar': true,	'name': "PornMD",	'code': "prmd",	'utm': "",			'utmSafe': "",	'url': "http://www.pornmd.com/?",		'css': {}
+				'prmd'	: {	'inBar': true,	'name': "PornMD",	'code': "prmd",	'utm': "pornmd",			'utmSafe': "md",	'url': "http://www.pornmd.com/?",		'css': {
+						'#ph_net_container'	: ['width','962px'],
+						'body'				: ['background-position','0 27px']
+					}
 				},
 				'phub'	: {	'inBar': true,	'name': "PornHub",	'code': "phub",	'utm': "pornhub",		'utmSafe': "ph",	'url': "http://www.pornhub.com/gay?",	'css': {
 						'#ph_net_container'	: ['width','962px'],
@@ -202,9 +207,9 @@ if (typeof jQuery != 'undefined') {
 					}
 				},
 				'alts'	: {	'inBar': true,	'name': "",			'code': "alts",	'utm': "",			'utmSafe': "",	'url': "#",	'css': {}
-				},
-				'bash'	: {	'inBar': true,	'name': "Viral Videos",'code': "bash",	'utm': "videobash",	'utmSafe': "vb",	'url': "http://www.videobash.com/?",'css': {}
-				},
+				},/*
+				'bash'	: {	'inBar': true,	'name': "Viral Videos",'code': "bash",	'utm': "videobash",	'utmSafe': "vb",	'url': "http://www.prankvidz.com/?",'css': {}
+				},*/
 				'peep'	: {	'inBar': true,	'name': "Peeperz",	'code': "peep",	'utm': "peeperz",		'utmSafe': "pz",	'url': "http://www.peeperz.com/?",'css': {
 						'#ph_net_container'		: ['width','102.8em']
 					}
@@ -291,8 +296,8 @@ if (typeof jQuery != 'undefined') {
 
 					$('#ph_net_'+settings.site).css(settings.css.links_active);
 					$('a.ph_net_links').each( function() { jQuery(this).hover(callbacks.net_links_hover,callbacks.net_links_blur) } );
-					$('a.ph_net_links:not(#ph_net_bash):not(#ph_net_'+settings.site+'):not(#ph_net_alts),a.ph_alt_links').each( callbacks.click );
-					$('a#ph_net_bash').attr('href', $('a#ph_net_bash').attr('href')+'utm_source='+sites[settings.site].utmSafe+'&utm_medium=network-bar&utm_campaign='+sites[settings.site].utmSafe+'-networkbar'+(settings.isGay?'-gay':'') );
+					$('a.ph_net_links:not(#ph_net_bash):not(#ph_net_'+settings.site+'):not(#ph_net_alts):not(a.ph_alt_links)').each( callbacks.click );
+					//$('a#ph_net_bash').attr('href', $('a#ph_net_bash').attr('href')+'utm_source='+sites[settings.site].utmSafe+'&utm_medium=network-bar&utm_campaign='+sites[settings.site].utmSafe+'-networkbar'+(settings.isGay?'-gay':'') );
 
 					for( style in sites[settings.site].css ) {
 						$(style).css(sites[settings.site].css[style][0],sites[settings.site].css[style][1]);

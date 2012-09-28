@@ -223,6 +223,12 @@ if (domain.indexOf("fusionfall") != -1) {
 	path1 = "help", path2 = "";
 } else if (pathname.match(/^\/tdi\//)) {
 	path1 = "tv_shows", path2 = "tdi";
+} else if (pathname.match(/\/exonaut\//)) {
+	path1 = "exonaut", path2 = "games";
+} else if (pathname.match(/\/formula-cartoon\//)) {
+	path1 = "formula-cartoon", path2 = "games";
+} else if (pathname.match(/\/wild-skies\//)) {
+	path1 = "dragons wild skies", path2 = "games";
 } else if (pathname.match(/^\/video\/problemsolverz/) || pathname.match(/^\/video\/tvmadness/)) {
 	path1 = "list";
 } else if (pathname.match(/^\/accounts\//)) {
@@ -303,6 +309,7 @@ var pattern1 = {
 	"destroy build destroy":			[(/\/(games|tv_shows)\/dbd/)],
 	"dexter's laboratory":				[(/\/(games|tv_shows)\/dexter/)],
 	"dude, what would happen":			[(/\/(games|tv_shows)\/dude/)],
+	"dragons":							[(/\/(games|tv_shows)\/dragons/)],
 	"ed, edd n' eddy":					[(/\/(games|tv_shows)\/eds/)],
 	"firebreather":						[(/\/(games|tv_shows)\/firebreather/)],
 	"flapjack":							[(/\/(games|tv_shows)\/flapjack/)],

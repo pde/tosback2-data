@@ -1,111 +1,122 @@
 
-function getWindowSize() {    
-    var windowWidth = 0, windowHeight = 0;
-    if ( typeof( window.innerWidth ) == 'number' ) {
-        //Non-IE
-        windowWidth = window.innerWidth;
-        windowHeight = window.innerHeight;
-    } else if ( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-        //IE 6+ in 'standards compliant mode'
-        windowWidth = document.documentElement.clientWidth;
-        windowHeight = document.documentElement.clientHeight;
-    } else if ( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
-        //IE 4 compatible
-        windowWidth = document.body.clientWidth;
-        windowHeight = document.body.clientHeight;
-    }
-    var windowSize = new Array(windowWidth, windowHeight);
-    return windowSize;
-}
-// Determine the size of the window
-var windowSize = getWindowSize();
-var X = windowSize['0'];
-var Y = windowSize['1']; 
-var ad4GamePopUnderWindow = true;
-var sUrl = 'http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=41832__zoneid=24923__OXLCA=1__ver=3.3__cb=a788ca0766__zt=zt__oadest=http%3A%2F%2Fwww.myfreefarm.de%2F%3Fref%3Dad4ga'; 
-var puShown = false;
-var PopFocus = 0;
-var _Top = null;
-function doOpen(url) {
-    var popURL = 'about:blank';
-    var popID = 'ad4game_popunder_' + Math.floor(89999999*Math.random()+10000000);
-    if (puShown == true) {
-        return true;
-    }
-    var PopWin=_Top.window.open(popURL,popID,'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resiza ble=1,top=0,left=0,width=' + X + ',height=' + Y);
-    if (PopWin) {
-        puShown = true;
-        if (PopFocus == 0) {
-	        PopWin.blur();
-	        if (navigator.userAgent.toLowerCase().indexOf('applewebkit') > -1) {
-	            _Top.window.blur();
-	            _Top.window.focus();
-	        }
-        }
-        PopWin.Init = function(e) {
-	        with (e) {
-                Params = e.Params;
-	            Main = function() {
-                    if (typeof window.mozPaintCount != 'undefined') {
-                        var x = window.open('about:blank');
-                        x.close();
+window.ad4gsu = window.ad4gsu || function (i) {
+    var u = i.document,
+        m = navigator.userAgent,
+        n, f = m.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+)/i);
+    if (f && null !== (n = m.match(/version\/([\.\d]+)/i))) f[2] = n[1];
+    var f = f ? {
+        n: f[1].toLowerCase(),
+        v: f[2]
+    } : {
+        n: null,
+        v: null
+    }, c = i,
+        e = u,
+        o = '',
+        logUrl = '',
+        g = f,
+        v = top != self ? 1 : 0,
+        k = !1,
+        p = 86400,
+        q = 1,
+        l = 0,
+        r = function () {
+            var a = 0,
+                b = 0;
+            'number' === typeof c.innerWidth ? (a = c.innerWidth, b = c.innerHeight) : e.documentElement && e.documentElement.clientWidth ? (a = e.documentElement.clientWidth, b = e.documentElement.clientHeight) : e.body && e.body.clientWidth && (a = e.body.clientWidth, b = e.body.clientHeight);
+            return {
+                w: a,
+                h: b
+            }
+        }, s = function () {
+            var a = 0,
+                b = 0,
+                a = c.screenX ? c.screenX : c.screenLeft,
+                b = c.screenY ? c.screenY : c.screenTop;
+            return {
+                x: a,
+                y: b
+            }
+        }, j = function () {
+            var a = parseInt,
+                b;
+            a: {
+                b = e.cookie;
+                if (0 < b.length) {
+                    var d = b.indexOf('ad4zu=');
+                    if (-1 !== d) {
+                        var d = d + 5 + 1,
+                            h = b.indexOf(';', d); - 1 === h && (h = b.length);
+                        b = i.unescape(b.substring(d, h));
+                        break a
                     }
-                    var popURL = Params.PopURL;
-	               try { opener.window.focus(); }
-	               catch (err) { }
-	               window.location = popURL;
-	            }
-	            Main();
-	        }   
+                }
+                b = !1
+            }
+            a = a(b, 10);
+            a = 0 < a ? a + 1 : 1;
+            if (!(1 === l || a - 1 >= q) || q == 0) {
+                l = 1;
+                b = s().y + 30;
+                var d = s().x + 20,
+                    h = r().w - 40,
+                    f = r().h - 20;  
+                c.wad4 = c.open('', 'wad4_' + a, 'top=' + b + ',left=' + d + ',height=' + (500 > f ? 500 : f) + ',width=' + (660 > h ? 660 : h) + ',toolbar=no,location=no,menubar=no,status=no,resizable=yes,scrollbars=no');
+                if ('' === c.wad4.document.title || 'about:blank' === c.wad4.location || '' === c.wad4.location) {
+                    
+                	var img = c.wad4.document.createElement('IMG');
+                    img.src = olog;
+                    img.style.height = '0px';
+                    img.style.width = '0px';
+                    img.style.display = 'none';
+                    c.wad4.document.body.appendChild(img); 
+
+                    setTimeout(function(){ },100);
+                
+                	//c.wad4.document.write('<img src="'+olog+'"  width="0" height="0">');      
+                	c.wad4.location = o;
+                    h = 'chrome' === g.n && 20 <= g.v;
+                    if ('firefox' === g.n && 4 <= g.v || h) {
+                        var ad4un = function (elm) {
+                            with(elm) {
+                                window.open('about:blank').close();
+                            }
+                        };
+                        ad4un(c.wad4);
+                    } else 'msie' === g.n && c.wad4.moveTo(d, b), c.wad4.blur(), c.focus();
+                    b = new Date;
+                    d = new Date(b);
+                    d = new Date(b.getTime() + 1E3 * p);
+                    e.cookie = 'ad4zu=' + a + '; ' + (k ? ' domain=' + k + ';' : '') + 'path=/;expires=' + d.toGMTString();
+                }
+            }
+        }, t = function () {
+            var a = e;
+            a.attachEvent ? a.attachEvent('onclick', j) : a.addEventListener && a.addEventListener('click', j, !1);
+            1 == v && top.document && (a = i.document, a.attachEvent ? a.attachEvent('onclick', j) : a.addEventListener && a.addEventListener('click', j, !1))
         };
-	    PopWin.Params = {
-	        PopURL: url
-	    }
-        PopWin.Init(PopWin);
+    return {
+        init: function (a) {
+            if (top !== self) try {
+                top.document && (e = top.document, c = top)
+            } catch (b) {
+                e = i.document, c = i
+            }
+            var d = c.location.host.match(/([a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/gi);
+            a.d && (1 === a.d && d) && (k = '.' + d[0]);
+            o = a.l;
+            olog = a.log;
+            p = a.c;
+            q = a.cc;
+            t();
+        }
     }
-    return PopWin;
-}
-function initPu(){
-    _Top = self;
-    if (top != self) {
-        try {
-        if (top.document.location.toString())
-            _Top = top;
-        }catch(err) { }
-    }
-    if ( document.attachEvent ) {
-        document.attachEvent( 'onclick', checkTarget );
-    } else if ( document.addEventListener ){
-        document.addEventListener( 'click', checkTarget, false );
-    }
-}
-function checkTarget(e){
-    x = document.body;
-    if (x  && readCookie('ad4GamePopUnderWindow') == '') {
-        createCookie('ad4GamePopUnderWindow','ad4GamePopUnderWindow');
-        var img = document.createElement('IMG');
-        img.src = 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=41832&campaignid=2224&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=86400&OASZCAP=1&loc=http%3A%2F%2Fwww.freeonlinegames.com%2Fprivacypolicy.php&cb=a788ca0766';
-        img.style.height = '0px';
-        img.style.width = '0px';
-        img.style.display = 'none';
-        x.appendChild(img); 
-        var e = e || window.event;
-        ad4GamePopUnderWindow = false;
-        var win = doOpen('http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=41832__zoneid=24923__OXLCA=1__ver=3.3__cb=a788ca0766__zt=zt__oadest=http%3A%2F%2Fwww.myfreefarm.de%2F%3Fref%3Dad4ga');
-    }          
-}
-function createCookie(name,value) {
-    var expires = '';
-    document.cookie = name+"="+value+expires+"; path=/";
-}
-function readCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return '';
-}
-initPu();
+}(window);
+var _ad6gsu = _ad6gsu || {
+    l: 'http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=90044__zoneid=24923__OXLCA=1__ver=3.3__cb=afccab1479__zt=zt__oadest=http%3A%2F%2Fwww.evony.com%2Fevonyxc18.html%3Fad4gamenewcpa%26site%3D24923',
+    log: 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=90044&campaignid=3614&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=43200&OASZCAP=1&loc=http%3A%2F%2Fwww.freeonlinegames.com%2F&cb=afccab1479',
+    d: false,
+    c: 43200 ,
+    cc: 1
+};
+window.ad4gsu.init(_ad6gsu);

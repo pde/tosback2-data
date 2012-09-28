@@ -96,8 +96,8 @@ TSCM.ads.AdPlacerx = new function(){
 
    autotarget:true,
    protocol:"http://",
-   server:"a.collective-media.net",
-   defaultServer:"a.collective-media.net",
+   server:"ad.doubleclick.net",
+   defaultServer:"ad.doubleclick.net",
    calltype:"adj",
    default_calltype:"adj",
    cmn:"ts",
@@ -241,17 +241,6 @@ TSCM.ads.AdPlacerx = new function(){
 
 						}else { // not an array
 
-                              if((i == "primaryTickers")||(i=="updateTickers")||(i=="bearishTickers")||(i=="bullishTickers")){
-                                 var tickarray = o.split(' ');
-                                 for(var j =0;j<tickarray.length;j++){
-                                    var val = tickarray[j];
-                                    if(isDefined(val)){
-                                    this.setTarget('tkr',val);
-                                    }
-                                 }
-
-                              }
-
                               // things to skip
                               if(i == "hasReporting"){
                                  //
@@ -259,7 +248,11 @@ TSCM.ads.AdPlacerx = new function(){
 
                               }else if(i == "headline"){
 
+                              }else if((i == "primaryTickers")||(i=="updateTickers")||(i=="bearishTickers")||(i=="bullishTickers")){
+
                               }else if(i == "tickers"){
+
+                              }else if(i == "leadTickers"){
 
                               }else if(i == "stockPositions"){
 
@@ -432,19 +425,31 @@ TSCM.ads.AdPlacerx = new function(){
    },
 
    getRSIvals:function(){
-      var rsistring = ";";
-      var segCookie;
-      var cn = "rsi_segs";
-      var cv = "";
-      if((cv =getCookie(cn)) != null) {
-         var segs = cv.split("|");
-            for(i=0; i<segs.length; i++) {
-                var seg = segs[i];
-                seg = seg.substring(seg.indexOf("_")+1);
-               rsistring += ("rsi=" + seg + ";");  // rsistring var used in ad tags
-            }
-      }
-      return rsistring;
+
+
+var rsi_segs = [];
+var segs_beg=document.cookie.indexOf('rsi_segs=');
+if (segs_beg>=0){
+segs_beg=document.cookie.indexOf('=',segs_beg)+1;
+if(segs_beg>0){
+var segs_end=document.cookie.indexOf(';',segs_beg);
+if(segs_end==-1) segs_end=document.cookie.length;
+rsi_segs=document.cookie.substring(segs_beg,segs_end)
+.split('|');
+}
+}
+var segLen=20;
+var segQS="";
+if (rsi_segs.length<segLen){segLen=rsi_segs.length}
+for (var i=0;i<segLen;i++){
+     var seg = rsi_segs[i];
+segQS+=("rsi"+"="+seg+";")
+}
+     return   ";"+ segQS;
+       
+
+
+
    },
 
    geturl:function(){
@@ -474,10 +479,6 @@ TSCM.ads.AdPlacerx = new function(){
 	if(this.includeDcopt == true ) {
 		this.setTarget("dcopt","ist");
 	}
-
-	if(this.cmn == "ts") {
-		this.setTarget("cmn","ts");
-		}
 
 
 	var targetstr=this.getTargetingString();
@@ -554,7 +555,7 @@ TSCM.ads.AdPlacerx = new function(){
 
 	},
    getOrd:function(){
-      return SC + this.makeParam (ORD_PARAM,this.getOrdNum());
+      return SC + this.makeParam (ORD_PARAM,this.getOrdNum()) + "?";
    },
 
 
@@ -649,7 +650,7 @@ TSCM.ads.AdPlacerx = new function(){
 		 var it;
 		 var url =  this.geturl();
 		 if(this.override == "blank"){
-		 	url = "http://i.thestreet.com/files/tsc/blank.html";
+		 	url = "http://i.thestreet-static.com/files/tsc/blank.html";
 		 }
 
          it = "<iframe name='" + this.getIframeName() + "' id='" + this.getIframeName() + "' frameborder='no' scrolling='no' width='" + w + "' height='" + h + "' src='" + url + "'><\/ifr"+"ame>";

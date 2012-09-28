@@ -1,5 +1,5 @@
-// 2012/05/03 16:20:47
-var ANV='6.4.0';
+// 2012/09/26 17:03:23
+var ANV='6.4.5';
 var ANAXCD=24;
 var ANDCC='acx';
 var ANDPEFA;
@@ -72,6 +72,13 @@ var ANBTF=1;
 var ANBTURL='http://s.thebrighttag.com/cs?tp=ao&aolid=UTID';
 var ANBTFRAME='1';
 var ANBTFRURL='http://an.tacoda.net/an/btids.html';
+var ANADF=1;
+var ANADURL='http://dpm.demdex.net/ibs:dpid=416&dpuuid=UTID';
+var ANADFRAME='1';
+var ANADFRURL='http://an.tacoda.net/an/adids.html';
+var ATSYNCT=1;
+var ATSYNCFRAME='1';
+var ATSYNCFRURL='http://an.tacoda.net/an/atids.html';
 var ANBYODE='bk';
 var ANBYODS='bk,^100[0-9]{3}$';
 var ANBYODO='bk';
@@ -466,13 +473,36 @@ function ANDEMO()
 {
 document.write('<IMG'+' SRC="'+ANDEMOURL+'" STYLE="display: none" height="1" width="1" border="0">');
 }
+function ATSYNC(url)
+{
+ATSYNCURL=url.replace('UTID',ANTID);
+if(1==ATSYNCFRAME){
+var encodedUrl=encodeURIComponent(ATSYNCURL);
+var frmUrl=ATSYNCFRURL+'?url='+encodedUrl;
+var atsyncfr=document.createElement("iframe");
+atsyncfr.setAttribute('style','display: none');
+atsyncfr.setAttribute('height','1');
+atsyncfr.setAttribute('width','1');
+atsyncfr.setAttribute('border','0');
+atsyncfr.setAttribute('src',frmUrl);
+document.body.appendChild(atsyncfr);
+}else if(0==ATSYNCFRAME){
+document.write('<IMG'+' SRC="'+ATSYNCURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
 function ANBK()
 {
 ANBKURL=ANBKURL.replace('UTID',ANTID);
 if(1==ANBKFRAME){
 var encodedUrl=encodeURIComponent(ANBKURL);
 ANBKFRURL+='?url='+encodedUrl;
-document.write('<IFRAME'+' SRC="'+ANBKFRURL+'" STYLE="display: none" height="1" width="1" border="0">');
+var bkfr=document.createElement("iframe");
+bkfr.setAttribute('style','display: none');
+bkfr.setAttribute('height','1');
+bkfr.setAttribute('width','1');
+bkfr.setAttribute('border','0');
+document.body.appendChild(bkfr);
+bkfr.setAttribute('src',ANBKFRURL);
 }
 if(0==ANBKFRAME){
 document.write('<IMG'+' SRC="'+ANBKURL+'" STYLE="display: none" height="1" width="1" border="0">');
@@ -484,7 +514,13 @@ ANACURL=ANACURL.replace('UTID',ANTID);
 if(1==ANACFRAME){
 var encodedUrl=encodeURIComponent(ANACURL);
 ANACFRURL+='?url='+encodedUrl;
-document.write('<IFRAME'+' SRC="'+ANACFRURL+'" STYLE="display: none" height="1" width="1" border="0">');
+var acfr=document.createElement("iframe");
+acfr.setAttribute('style','display: none');
+acfr.setAttribute('height','1');
+acfr.setAttribute('width','1');
+acfr.setAttribute('border','0');
+document.body.appendChild(acfr);
+acfr.setAttribute('src',ANACFRURL);
 }
 if(0==ANACFRAME){
 document.write('<IMG'+' SRC="'+ANACURL+'" STYLE="display: none" height="1" width="1" border="0">');
@@ -496,10 +532,34 @@ ANBTURL=ANBTURL.replace('UTID',ANTID);
 if(1==ANBTFRAME){
 var encodedUrl=encodeURIComponent(ANBTURL);
 ANBTFRURL+='?url='+encodedUrl;
-document.write('<IFRAME'+' SRC="'+ANBTFRURL+'" STYLE="display: none" height="1" width="1" border="0">');
+var btfr=document.createElement("iframe");
+btfr.setAttribute('style','display: none');
+btfr.setAttribute('height','1');
+btfr.setAttribute('width','1');
+btfr.setAttribute('border','0');
+document.body.appendChild(btfr);
+btfr.setAttribute('src',ANBTFRURL);
 }
 if(0==ANBTFRAME){
 document.write('<IMG'+' SRC="'+ANBTURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANAD()
+{
+ANADURL=ANADURL.replace('UTID',ANTID);
+if(1==ANADFRAME){
+var encodedUrl=encodeURIComponent(ANADURL);
+ANADFRURL+='?url='+encodedUrl;
+var adfr=document.createElement("iframe");
+adfr.setAttribute('style','display: none');
+adfr.setAttribute('height','1');
+adfr.setAttribute('width','1');
+adfr.setAttribute('border','0');
+document.body.appendChild(adfr);
+adfr.setAttribute('src',ANADFRURL);
+}
+if(0==ANADFRAME){
+document.write('<IMG'+' SRC="'+ANADURL+'" STYLE="display: none" height="1" width="1" border="0">');
 }
 }
 function Tacoda_AMS_DDC_addPair(k,v){
@@ -763,6 +823,10 @@ if(ANDEMOF==1)
 {
 ANU+="&amp;df="+escape(ANDEMOF);
 }
+if((ATSYNCT!=null)&&(ATSYNCT>0))
+{
+ANU+="&amp;atsync="+escape(ATSYNCT);
+}
 if(ANBKF==1)
 {
 ANU+="&amp;bf="+escape(ANBKF);
@@ -774,6 +838,10 @@ ANU+="&amp;acf="+escape(ANACF);
 if(ANBTF==1)
 {
 ANU+="&amp;btf="+escape(ANBTF);
+}
+if(ANADF==1)
+{
+ANU+="&amp;adf="+escape(ANADF);
 }
 document.write('<SCR'+'IPT SRC="'+ANDPU+'cmd='+ccc+'&amp;si='+ANSID+ANU+'&amp;v='+ANV+'&amp;cb='+Math.floor(Math.random()*100000)+'" LANGUAGE="JavaScript"></SCR'+'IPT>');
 }

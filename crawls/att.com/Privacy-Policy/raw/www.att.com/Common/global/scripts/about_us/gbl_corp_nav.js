@@ -725,6 +725,7 @@ function bn_enterprise_solutions_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=9389" title="BusinessDirect">BusinessDirect</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=19852" title="Business Continuity Study">Business Continuity Study</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=20106" title="Cloud News">Cloud News</a></li>'
+				
 				 + '</ul>'
 				 + '</li>'
 				 + '<li class="col3"><strong>Innovative Solutions</strong>'
@@ -741,6 +742,7 @@ function bn_enterprise_solutions_nav() {
 				 + '<ul>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=18708" title="AT&amp;T ForHealth">AT&amp;T ForHealth</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=12201" title="Business Customer News">Business Customer News</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=23280" title="Enhanced Push-to-Talk">Enhanced Push-to-Talk</a></li>'
 				 + '</ul>'
 				 + '</li>'
 				 + '</ul>');
@@ -801,6 +803,7 @@ function bn_other_markets_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=18708" title="AT&amp;T ForHealth">AT&amp;T ForHealth</a></li>'
 				 + '<li><a href="' + site + '/gen/general?pid=7786" title="AT&amp;T Business Customer News">AT&amp;T Business Customer News</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=21257" title="Education Solutions">Education Solutions</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=23117" title="State and Local Government Solutions">State &amp; Local Gov\'t Solutions</a></li>'				 
 				 + '</ul>'
 				 + '</li>'
 				 + '</ul>');

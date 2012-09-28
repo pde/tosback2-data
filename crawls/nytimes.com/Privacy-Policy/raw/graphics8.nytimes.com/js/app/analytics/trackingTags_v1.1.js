@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 87530 2012-01-26 20:54:42Z benjamin.morss $
+* $Id: trackingTags_v1.1.js 107406 2012-08-17 20:33:55Z surya.sanagavarapu $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -142,30 +142,10 @@ document.getElementsByTagName('head').item(0).appendChild(customRevSci);
 
 // comScore beacon
 NYTD.require((window.location.protocol == 'https:' ? 'https://sb' : 'http://b') +
-'.scorecardresearch.com/beacon.js', function () {
-  var url = window.location.protocol + '//' + window.location.host + window.location.pathname;
-  
-  var section = (function () {
-    var metaTagEls = document.getElementsByTagName('meta');
-    for (var i=0; i<metaTagEls.length; i++) {
-      if (metaTagEls[i].name=='CG') {
-        return metaTagEls[i].content.toLowerCase();
-      }
-    }
-    return '';
-  })();
-
-  if (typeof COMSCORE !== "undefined") {
-    COMSCORE.beacon({
-      c1: 2,
-      c2: 3005403,
-      c3: '',
-      c4: url,
-      c5: section,
-      c6: '', 
-      c15: ''
-    });
-  }
+'.scorecardresearch.com/c2/3005403/cs.js', function () {
+  //Vendor code
+  function udm_(a){var b="comScore=",c=document,d=c.cookie,e="",f="indexOf",g="substring",h="length",i=2048,j,k="&ns_",l="&",m,n,o,p,q=window,r=q.encodeURIComponent||escape;if(d[f](b)+1)for(o=0,n=d.split(";"),p=n[h];o<p;o++)m=n[o][f](b),m+1&&(e=l+unescape(n[o][g](m+b[h])));a+=k+"_t="+ +(new Date)+k+"c="+(c.characterSet||c.defaultCharset||"")+"&c8="+r(c.title)+e+"&c7="+r(c.URL)+"&c9="+r(c.referrer),a[h]>i&&a[f](l)>0&&(j=a[g](0,i-8).lastIndexOf(l),a=(a[g](0,j)+k+"cut="+r(a[g](j+1)))[g](0,i)),c.images?(m=new Image,q.ns_p||(ns_p=m),m.src=a):c.write("<","p","><",'img src="',a,'" height="1" width="1" alt="*"',"><","/p",">")}
+  udm_('http'+(document.location.href.charAt(4)=='s'?'s://sb':'://b')+'.scorecardresearch.com/b?c1=2&c2=3005403');
 });
 
 // Nielsen tagging

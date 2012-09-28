@@ -1,17 +1,13 @@
-var userIDDefaultVal = jQuery('#userIDDefaultVal').val();
-var passwordDefaultVal;
 var tGuardOn;
 
 function displayBubble(){jQuery("#loginBubbleUnit").show();}
 function hideBubble(){jQuery("#loginBubbleUnit").hide();}
+tGuardOn = jQuery('#tGuardOn').val();
 
 
 jQuery(document).ready(function() 
 {
-	tGuardOn = jQuery('#tGuardOn').val();
-	userIDDefaultVal = jQuery('#userIDDefaultVal').val();
-	passwordDefaultVal = jQuery('#passwordDefaultVal').val();
- 	
+	tGuardOn = jQuery('#tGuardOn').val();		 	
 	if(tGuardOn == "false")
 	{ // Tguard is off
 		
@@ -247,6 +243,7 @@ function hideUserIDPopup()
 	jQuery("#superN").hide();
 }
 
+//Below method will not be used anymore
 function userIDOnFoucs()
 {
 	userIDDefaultVal = jQuery('#userIDDefaultVal').val(); // resetting this value
@@ -268,6 +265,49 @@ function userIDOnFoucs()
 	}
 }
 
+function UserBoxFocusImgChange()
+{
+	jQuery(".UserValueDiv").hide();
+	jQuery('#userNameDiv span.textInput-wrapper').addClass('focus');
+	jQuery('#userNameDiv span.textInput-wrapper span').addClass('focus');
+
+}
+
+function UserDivShow()
+{
+	jQuery('#userNameDiv span.textInput-wrapper').removeClass('focus');
+	jQuery('#userNameDiv span.textInput-wrapper span').removeClass('focus');
+	if(tGuardOn == "false")
+	{
+		if(jQuery("#wireless_num").val() =="")
+		{
+			jQuery(".UserValueDiv").show();		
+		}	
+	}
+	else
+	{
+		if(jQuery("#userID").val() =="")
+		{
+			jQuery(".UserValueDiv").show();		
+		}	
+	}
+	userIDOnBlur();
+}
+
+function UserDivHide()
+{
+		jQuery(".UserValueDiv").hide();	
+		if(tGuardOn == "true")
+		{			
+			jQuery("#userID").focus();
+		}
+		else
+		{
+		jQuery("#wireless_num").focus();
+		}
+}
+
+
 function userIDOnBlur()
 {
 	validateUserID();
@@ -286,16 +326,18 @@ function userIDOnBlur()
 					&& (userIDValue.indexOf('@')==-1 || isValidEmail(userIDValue)))
 		{
 			jQuery("#userAlertDiv").hide();
-			jQuery("#userNameDiv").attr("className","w211");
+			jQuery("#userNameDiv").attr("className","w211 rel");
 		}
 	}
 	if(userIDValue == "")
 	{
 		if(tGuardOn == "false") {
-			jQuery("#wireless_num").val(userIDDefaultVal);
+			jQuery(".UserValueDiv").show();
+			jQuery("#wireless_num").val("");
 		}
 		else{
-			jQuery("#userID").val(userIDDefaultVal);
+			jQuery(".UserValueDiv").show();	
+			jQuery("#userID").val("");
 		}
 	}
 }
@@ -308,9 +350,8 @@ function validateUserID()
 	}
 	else{
 		userID = jQuery("#userID").val();
-	}
-	
-	if(userID != null && userID != userIDDefaultVal)
+	}	
+	if(userID != null || userID!="")
 	{
 		userID = userID.split(' ').join('');
 		if(userID.indexOf('@')==-1)
@@ -323,20 +364,18 @@ function validateUserID()
 			{
 				userID = userIDtemp;
 			}
+		}			
+		if(tGuardOn == "false") {						
+				jQuery("#wireless_num").val(userID);			
 		}
-		if(tGuardOn == "false") {
-			jQuery("#wireless_num").val(userID);
-		}
-		else{
-			jQuery("#userID").val(userID);
+		else{						
+				jQuery("#userID").val(userID);							
 		}
 	}
 }
 
 function showPasswordField()
-{
-	jQuery("#pwdDiv").show();
-	jQuery("#pwdTextDiv").hide();
+{	
 	if(tGuardOn == "true")
 	{
 		jQuery("#password").focus()
@@ -347,7 +386,7 @@ function showPasswordField()
 	}
 }
 
-function showPasswordTextDiv()
+function PasswordOnBlur() //this func prev name is showPasswordTextDiv
 {
 	var password = "";
 	if (tGuardOn == "true")
@@ -364,24 +403,54 @@ function showPasswordTextDiv()
 		if(password != null && password != "" && password.length>3)
 		{
 			jQuery("#pwdAlertDiv").hide();
-			jQuery("#pwdDiv").attr("className","w211");
-			jQuery("#pwdTextDiv").attr("className","w211");
+			jQuery("#pwdDiv").attr("className","w211 rel");			
 		}
 	}
-	if(password == null || password == "")
-	{
-		jQuery("#pwdTextDiv").show();
-		jQuery("#pwdDiv").hide();
-		// Resetting the Password Value
-		if (tGuardOn == "true"){
-			jQuery("#password").attr("value", "");
-		}
-		else{
-			jQuery("#pass").attr("value", "")
-		}
-	}
-	jQuery("#passwordTextField").blur();
 }
+
+function PasswordDivShow()
+{
+	jQuery('#pwdDiv span.textInput-wrapper').removeClass('focus');
+	jQuery('#pwdDiv span.textInput-wrapper span').removeClass('focus');
+	if (tGuardOn == "true")
+	{
+		if(jQuery("#password").val() =="")
+		{
+			jQuery(".PasswordValueDiv").show();
+		}
+	}
+	else
+	{
+		if(jQuery("#pass").val() =="")
+		{
+			jQuery(".PasswordValueDiv").show();
+		}
+	}
+	PasswordOnBlur();
+}
+
+function PasswordDivHide()
+{
+		jQuery(".PasswordValueDiv").hide();
+		if (tGuardOn == "true")
+		{
+		jQuery("#password").focus();
+		}
+		else
+		{
+		jQuery("#pass").focus();
+	}
+}
+
+function PasswordBoxFocusImgChange()
+{
+	jQuery(".PasswordValueDiv").hide();
+	jQuery('#pwdDiv span.textInput-wrapper').addClass('focus');
+	jQuery('#pwdDiv span.textInput-wrapper span').addClass('focus');
+}
+
+
+
 function validateCapsLock(e)
 {
 	var tguard = document.forms['loginActionForm'].elements["tGuardOn"].value;
@@ -401,11 +470,10 @@ function clearErrorDivs()
 {
 	// UserID
 	jQuery("#userAlertDiv").hide();
-	jQuery("#userNameDiv").attr("className","w211");
+	jQuery("#userNameDiv").attr("className","w211 rel");
 	// Password
 	jQuery("#pwdAlertDiv").hide();
-	jQuery("#pwdDiv").attr("className","w211");
-	jQuery("#pwdTextDiv").attr("className","w211");
+	jQuery("#pwdDiv").attr("className","w211 rel");
 }
 
 function checkFormValues(formObj)
@@ -426,11 +494,11 @@ function checkFormValues(formObj)
 		password = rtrim(jQuery("#password").val());
 		jQuery("#password").val(password);
 	}
-	if (userID == "" || userID == userIDDefaultVal) 
+	if (userID == "") 
 	{
 		jQuery("#userAlertDiv").show();
 		jQuery("#userIDErrMsg").html(jQuery("#blankUserID").val());
-		jQuery("#userNameDiv").attr("className","w211 error");
+		jQuery("#userNameDiv").attr("className","w211 rel error");
 		if(tGuardOn == "false") {
 			jQuery("#wireless_num").focus();
 		}
@@ -444,7 +512,7 @@ function checkFormValues(formObj)
 	{
 		jQuery("#userAlertDiv").show();
 		jQuery("#userIDErrMsg").html(jQuery("#invalidEmailID").val());
-		jQuery("#userNameDiv").attr("className","w211 error");
+		jQuery("#userNameDiv").attr("className","w211 rel error");
 		if(tGuardOn == "false") {
 			jQuery("#wireless_num").focus();
 		}
@@ -459,8 +527,7 @@ function checkFormValues(formObj)
 	{
 		jQuery("#pwdAlertDiv").show();
 		jQuery("#passwordErrMsg").html(jQuery("#blankPassword").val());
-		jQuery("#pwdDiv").attr("className","w211 error");
-		jQuery("#pwdTextDiv").attr("className","w211 error");
+		jQuery("#pwdDiv").attr("className","w211 rel error");		
 		if(errorFieldFocus==null)
 		{
 			showPasswordField();
@@ -477,8 +544,7 @@ function checkFormValues(formObj)
     {
 		jQuery("#pwdAlertDiv").show();
 		jQuery("#passwordErrMsg").html(jQuery("#passwordLessChars").val());
-		jQuery("#pwdDiv").attr("className","w211 error");
-		jQuery("#pwdTextDiv").attr("className","w211 error");
+		jQuery("#pwdDiv").attr("className","w211 rel error");		
 		if(errorFieldFocus==null)
 		{
 			showPasswordField();
@@ -569,7 +635,7 @@ function getCOLAMCookie(name)
 function getCOLAMCookieArray()
 {
 	  var colamCtnCookie = getCOLAMCookie("colam_ctn");
-	  var cookieArray = new Hash();	  
+	  var cookieArray = new Array();	  
 	  if (colamCtnCookie!=null) 
 	  {
 		  if (colamCtnCookie.indexOf(";") != -1) 
@@ -613,6 +679,7 @@ function populateUserIDFromCookie()
 	{
 		if(cookieArray['uid']!=null && cookieArray['uid'] !="")
 		{
+			UserBoxFocusImgChange();
 			if(tGuardOn == "false") {
 				jQuery("#wireless_num").val(cookieArray['uid']);
 			}

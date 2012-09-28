@@ -3,11 +3,17 @@ Copyright 1996-2012 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 //Sheplers.com SiteCatalyst s_code as of 2012-04-11
 //Specify the Report Suite ID(s) to track here
-var s_account='sheplersdev'
-if(document.URL.indexOf('www.sheplers.com')>-1)
-	s_account='sheplersprod';
-var s=s_gi(s_account)
-
+var s_account="sheplersdev"
+	if(document.URL.indexOf('www.sheplers.com')>-1)
+	{
+		s_account='sheplersprod';
+	}
+	else if(document.URL.indexOf('shp-stg.ms.fry.com')>-1)
+	{
+		s_account='sheplersstaging';
+	}
+	var s=s_gi(s_account)
+ 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 /* Link Tracking Config */
@@ -43,12 +49,31 @@ s._channelPattern='Social Media Other|facebook>'
 +'Vendor Source|Wrangler,Justin,Tony Lama,TonyLama,Ariat,Lucchese,DanPost,Cinch,CruelGirl,Resistol,StetsonNocona,NoconaCollegeBoots,ChippewaBoots>'
 +'Misc. Paid Sources|miva,ptech';
 
+function readCookie(name) {
+var nameEQ = name + "=";
+var ca = document.cookie.split(';');
+if(document.cookie.indexOf(name) != -1){
+for(var i=0;i < ca.length;i++) {
+var c = ca[i];
+while (c.charAt(0)==' ') c = c.substring(1,c.length);
+if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+}
+}
+else{
+return null;
+}
+}
+
 //Setup Clickmap
 function s_getObjectID(o)
 {
 	var ID=o.href;
 	return ID;
 }
+
+
+
+
 s.getObjectID=s_getObjectID;
 
 /************************** PLUGIN CONFIG  **************************/
@@ -308,7 +333,23 @@ function s_doPlugins(s)
 
 	//Setup Clickmap Object IDs
 	s.setupDynamicObjectIDs();
+	
+	if(!s.eVar30){
+	s.eVar30=s.getQueryParam('promoCode');
+	s.eVar30=s.getValOnce(s.eVar30,'s_ev30',0);
+	}	
 
+	
+	if(!s.prop10){
+	s.prop10=window.location.href
+	}
+
+	
+	if(!s.prop11){
+	s.prop11=readCookie("PIPELINE_SESSION_ID");
+	s.prop11=s.getValOnce(s.prop11,'s_prop11',0);
+	}
+	
 	//Get rid of browser plugins.  Not used in SC15/not needed
 	s.plugins='';
 }
@@ -653,6 +694,8 @@ s.join = new Function("v","p",""
 +":'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0"
 +";x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);el"
 +"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
+
+
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.24.3';s.an=s_an;s.logDebug=function(m){var s=this,tcf=new Function('var e;try{console.log(\"'+s.rep(s.rep(m,\"\\n\",\"\\\\n\"),\""

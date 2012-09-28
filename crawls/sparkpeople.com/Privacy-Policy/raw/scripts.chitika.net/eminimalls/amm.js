@@ -5,24 +5,27 @@ String.prototype.ltrim = function() {
 ch_ad_url = '';
 ch_oeh = window.onerror;
 ch_chitika_loaded = true;
-ch_amm_version = "1.13.0";
-ch_osnap_loaded = 0;
+ch_amm_version = "1.13.2";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
 function ch_aue(p,v) { if (v) { ch_au(p,escape(v)); } }
 function ch_def(v, def) { return (v) ? v : def; }
 
-function ch_ad_render_search() {
+function ch_ad_render_search(response) {
     var w = window;
-    if(typeof(w["ch_mmhtml"])!="undefined") {
+    if (response === undefined) {
+        response = w.ch_mmhtml;
+    }
+
+    if (response !== undefined) {
         var thehtml = w.ch_mmhtml["output"];
         if (thehtml) {
-            ch_decision(true);
+            ch_decision(response, true);
             return;
         }
     }
-    ch_decision(false);
+    ch_decision(response, false);
 }
 
 function ch_get_real_height(body) {
@@ -232,35 +235,31 @@ function ch_write_iframe(f, thehtml, r, width, height) {
     interval = w.setInterval(checkDisplay, 100);
 }
 
-function ch_decision(render) {
+function ch_decision(response, render) {
     var w = window;
-    var r = w.ch_mmhtml["cb"];
-    var thehtml = w.ch_mmhtml["output"];
+    var r = response["cb"];
+    var thehtml = response["output"];
     var f = document.getElementById("ch_ad"+r);
     if (!f) {return;}
 
-    if (w.ch_mmhtml['osnap']) {
-        ch_add_script('http://scripts.chitika.net/eminimalls/osnap.js');
-    }
-
-    if (w.ch_mmhtml["js"]) {
-        for (var i = 0; i < w.ch_mmhtml.js.length; i++) {
-            var url = w.ch_mmhtml.js[i];
+    if (response["js"]) {
+        for (var i = 0; i < response.js.length; i++) {
+            var url = response.js[i];
             ch_add_script(url);
         }
     }
 
-    if (w.ch_mmhtml["hover"]) {
-        w.ch_hover_content = w.ch_mmhtml["hover"]["html"];
-        w.ch_mobile_height = w.ch_mmhtml["hover"]["height"];
-        w.ch_mobile_width = w.ch_mmhtml["hover"]["width"];
-        w.ch_mobile_padding = w.ch_mmhtml["hover"]["padding"];
-        if (w.ch_mmhtml["hover"]["type"] === 'hover-iphone2' ||
-            w.ch_mmhtml["hover"]["type"] === 'hover-iphone-call') {
+    if (response["hover"]) {
+        w.ch_hover_content = response["hover"]["html"];
+        w.ch_mobile_height = response["hover"]["height"];
+        w.ch_mobile_width = response["hover"]["width"];
+        w.ch_mobile_padding = response["hover"]["padding"];
+        if (response["hover"]["type"] === 'hover-iphone2' ||
+            response["hover"]["type"] === 'hover-iphone-call') {
             ch_add_script('http://labs.chitika.com/sandbox/m.js');
-        } else if (w.ch_mmhtml["hover"]["type"] === 'hover-ipad') {
+        } else if (response["hover"]["type"] === 'hover-ipad') {
             ch_add_script('http://labs.chitika.com/sandbox/m.js');
-        } else if (w.ch_mmhtml["hover"]["type"] === 'hover-pc') {
+        } else if (response["hover"]["type"] === 'hover-pc') {
             ch_add_script('http://scripts.chitika.net/mobile/js/pc.js');
         } else {
             ch_add_script('http://labs.chitika.com/sandbox/m.js');
@@ -272,9 +271,9 @@ function ch_decision(render) {
         }
     }
 
-    if (w.ch_mmhtml["pixels"]) {
-        for (var k = 0; k < w.ch_mmhtml.pixels.length; k++) {
-            var url = w.ch_mmhtml.pixels[k];
+    if (response["pixels"]) {
+        for (var k = 0; k < response.pixels.length; k++) {
+            var url = response.pixels[k];
             var fimg = document.createElement("img");
             fimg.border = 0;
             fimg.style.border = 'none';
@@ -293,10 +292,10 @@ function ch_decision(render) {
         f.style.display = "none";
         ch_chitika_loaded = false;
 
-        if (w.ch_mmhtml["alturl"]) {
+        if (response["alturl"]) {
             var d = w.ch_dim["ch_ad"+r];
             var fobj = document.createElement("iframe");
-            fobj.src = w.ch_mmhtml["alturl"];
+            fobj.src = response["alturl"];
             fobj.border = "0";
             fobj.style.margin = fobj.style.padding = fobj.style.border= 0;
             fobj.padding = "0";
@@ -360,12 +359,15 @@ function ch_mm() {
     }
 
     ch_screen = "" + screen.width + "x" + screen.height;
-    if (navigator.appName.indexOf("Microsoft") != -1) {
-        ch_window = "" + document.body.offsetWidth + "x" + document.body.offsetHeight;
+    // Get window size and visible page size; accessed differently for MSIE vs. standards-compliant browsers
+    if (navigator.appName.indexOf("Microsoft") !== -1 &&
+        navigator.userAgent.match(/MSIE ([^\.]+)/)[1]*1 < 9) {
+        ch_window = document.documentElement.clientWidth + "x" + document.documentElement.clientHeight;
+        ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
     } else {
-        ch_window = "" + w.outerWidth + "x" + w.outerHeight;
+        ch_window = window.innerWidth + "x" + window.innerHeight;
+        ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
     }
-    ch_canvas = "" + document.body.clientWidth + "x" + document.body.clientHeight;
 
     ch_aue('w', w.ch_width);
     ch_aue('h', w.ch_height);
@@ -374,7 +376,6 @@ function ch_mm() {
     ch_aue('cid', w.ch_cid);
     ch_aue('nump', w.ch_nump);
     ch_aue('query', w.ch_query);
-    if(w.ch_local_enabled) w.ch_type = "map";
     if (w.ch_type) {
         ch_aue('type', w.ch_type);
         if (w.ch_queries && w.ch_queries.constructor.toString().indexOf("Array") != -1) {
@@ -399,15 +400,13 @@ function ch_mm() {
     ch_aue('behavioral_window', w.ch_behavioral_window);
     ch_aue('previous_format',w.ch_previous_format);
     ch_aue('must_fill',w.ch_must_fill);
-    ch_aue('theme',w.ch_theme);
     ch_aue('select',w.ch_select);
     ch_aue('screenres', w.ch_screen);
     ch_aue('winsize', w.ch_window);
     ch_aue('canvas', w.ch_canvas);
-    ch_aue('extra_poi', w.ch_poi);
     ch_aue('mobile', w.ch_mobile);
     ch_aue('where', w.ch_where);
-    ch_aue('frm', w.top.location != document.location ? 'true' : 'false');
+    ch_aue('frm', w.top.location != document.location ? 1 : 0);
     ch_aue('history', history.length);
     ch_aue('metro_id', w.ch_metro_id);
     ch_aue('city', w.ch_city);
@@ -542,7 +541,6 @@ function ch_clear() {
     w.ch_height = undefined;
     w.ch_host = undefined;
     w.ch_impsrc = undefined;
-    w.ch_local_enabled = undefined;
     w.ch_metro_id = undefined;
     w.ch_must_fill = undefined;
     w.ch_noborders = undefined;
@@ -552,7 +550,6 @@ function ch_clear() {
     w.ch_select = undefined;
     w.ch_sid = undefined;
     w.ch_state = undefined;
-    w.ch_theme = undefined;
     w.ch_type = undefined;
     w.ch_where = undefined;
     w.ch_width = undefined;

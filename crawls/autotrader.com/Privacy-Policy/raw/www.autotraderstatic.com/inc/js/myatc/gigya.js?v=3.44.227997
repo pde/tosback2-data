@@ -1,0 +1,52 @@
+$j.getScript((window.location.protocol == "https:" ? "https://cdns" : "http://cdn") + ".gigya.com/js/socialize.js?apiKey=2_S9yQ4k4sutW0IemTk38sKxXJ7K9Je1ZPaMFEgQQlyVWGwmHEFUOig3kJt1Qlawfa", function() {
+    window.initGigya();
+});
+
+var conf=
+{
+    APIKey: '2_S9yQ4k4sutW0IemTk38sKxXJ7K9Je1ZPaMFEgQQlyVWGwmHEFUOig3kJt1Qlawfa'
+    ,enabledProviders: 'facebook'
+}
+var login_params=
+{
+    provider: 'facebook'
+    ,callback: function(response){
+        if(response.status == "FAIL"){
+            // Facebook login failed.
+        }
+    }
+    ,redirectURL: "https://" + window.location.host + "/myatc/social_login.xhtml"
+}
+$j(document).ready(function(){
+    $j(".social-line a").click(function(e){
+        e.preventDefault();
+
+        var return_page = window.location.href;
+
+        if(window.location.pathname.indexOf("/myatc/index.xhtml") == 0 || window.location.pathname.indexOf("/myatc/register.xhtml") == 0){
+            return_page = "";
+        }        
+
+        return_page = return_page.split("?loggedOut=true").join("?").split("&loggedOut=true").join("");
+
+        asis("/no_cache/ac/myatc_sociallogin_link.asis?rdpage=FACEBOOK");
+        if(typeof gigya == "undefined"){
+            $j(".social-line a .error").show();
+            return false;
+        }
+
+        if(return_page == ""){
+            gigya.services.socialize.login(conf, login_params);
+        }
+        else{
+            gigya.services.socialize.shortenURL(conf, {URL: return_page, callback: function(r){
+                if(r.errorCode != 0){
+                    $j(".social-line a .error").show();
+                    return false;
+                }
+                login_params.redirectURL += "?referer_url=" + r.shortURL;
+                gigya.services.socialize.login(conf, login_params);
+            }});
+        }
+    })
+})

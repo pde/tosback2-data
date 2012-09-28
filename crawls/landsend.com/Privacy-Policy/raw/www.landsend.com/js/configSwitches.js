@@ -14,6 +14,7 @@ metric.criteoActive = true;    // set to true if you want Criteo activated for l
 metric.criteoActiveCanvas = false;    // set to true if you want Criteo activated for canvas
 metric.monetateActive = true;  // set to true if you want Monetate activated
 metric.mercentActive = true; // set to true if you want Mercent activated
+metric.commissionJunctionActive = true; // set to true if you want Comission Junction activated
 
 ratings.leActive = true;  //set to true if you want ratings and reviews active for lestore
 ratings.canvasActive = true;   //set to true if you want ratings and reviews active for canvas
@@ -65,6 +66,10 @@ metric.writeTags = function() {
 	if (metric.mercentActive && window.location.pathname.indexOf("OrderConfirm.cgi") == -1 ) {
 		metric.sendMercent();
 	}
+	
+	if (metric.commissionJunctionActive) {
+		metric.sendCommissionJunction();
+	}
 };
 
 metric.sendEgain = function() {
@@ -95,10 +100,6 @@ metric.sendMonetate = function() {
 };
 
 metric.sendCriteo = function() {
-	// don't send criteo tags if engaged in a vee24 chat
-	if (typeof vee24 != 'undefined' && typeof vee24.api != 'undefined' && vee24.api.iAmEngaged()) {
-		return;
-	}
 	if (window.location.pathname.indexOf("/pp/") != -1 && resx.itemid != null) {
 		// Product Tag
 		var itemid = resx.itemid.split(":", 1);
@@ -185,6 +186,81 @@ metric.sendCriteo = function() {
 			}],[3396,7714506,7714507]);
 	}
 };
+
+metric.sendCommissionJunction = function() {
+	var cm_mmc = $.query.get("cm_mmc");
+	
+	// convert to a string so we can do string comparisons correctly
+	if (cm_mmc != null) {
+		cm_mmc = cm_mmc.toString();
+	}	
+	
+	// if the cm_mmc parameter is set and it isn't CJ clear the cookie
+	if (cm_mmc != null && cm_mmc.length > 2 && cm_mmc.substring(0,2).toLowerCase() != "cj") {
+		$.cookie("aff_trck", 
+				null, {
+				expires : -1, 
+				path : '/', 
+				domain : '.landsend.com'});	
+	} /* else if (document.referrer) {
+		// just get the base part of the referrer before any query string parameters which might include .landsend.com
+		var referrerSplit = document.referrer.split("?");
+		
+		// if cm_mmc isn't set and the referrer is from outside then delete the cookie
+		if (location.search.indexOf("cm_mmc") == -1 && referrerSplit[0].match("landsend.com|cardinalcommerce.com") == null) {
+			$.cookie("aff_trck",
+					null, {
+					expires : -1, 
+					path : '/', 
+					domain : '.landsend.com'});
+		}
+	} */
+	
+	// set the cust_trck cookie if the cm_mmc query string is set to something starting with cj
+	if (cm_mmc != null && cm_mmc.length > 2 && cm_mmc.substring(0,2).toLowerCase() == "cj") {
+		$.cookie("aff_trck",
+				cm_mmc, {
+				expires : 1, 
+				path : '/', 
+				domain : '.landsend.com'});
+	}
+	
+	if (window.location.pathname.indexOf("OrderConfirm.cgi") != -1 && cj.itemids != null && $.cookie("aff_trck")) {
+		var actionID = 353241; // core default
+		if (location.host.match("m.landsend.com")) //mobile
+		{
+		  actionID = 353243; // core mobile
+		  if (location.pathname.match("canvas.landsend.com")) 
+		  {
+			actionID = 353244; // canvas mobile
+		  }
+		} else if (location.host.match("canvas.landsend.com")) {
+			actionID = 353242; // canvas
+		}
+	
+
+		var tag = '<!-- BEGIN COMMISSION JUNCTION TRACKING CODE --><iframe height="1" width="1" frameborder="0" scrolling="no" src="https://www.emjcd.com/tags/c?containerTagId=772&';
+
+		// Purchase Confirmation Tag
+		var items = cj.itemids.split(",");
+		var prices = cj.prices.split(",");
+		var quantities = cj.qtys.split(",");
+		var itemDiscounts = cj.itemDiscounts.split(",");
+		
+		for(var i=0; i < items.length; i++) {
+			var curItem = items[i];
+			var itemSpaceTox = curItem.replace(/ /g,"x");
+			tag += "&ITEM" + (i+1) + "=" + itemSpaceTox;
+			tag += "&AMT" + (i+1) + "=" + parseFloat(prices[i]).toFixed(2);
+			tag += "&QTY" + (i+1) + "=" + quantities[i];
+			tag += "&DCNT"+ (i+1) + "=" + itemDiscounts[i];
+		}
+		
+		tag += '&CID=1523480&OID=' + resx.transactionid + '&TYPE=' + actionID + '&DISCOUNT=' + cj.orderDiscount + '&CURRENCY=USD" name="cj_conversion" ></iframe><!-- END COMMISSION JUNCTION TRACKING CODE -->';
+		document.write(tag);
+	}	
+};
+
 if (typeof getCookie == 'undefined') {
     function getCookie(name) {
         var nameEQ = name + "=";
@@ -213,15 +289,6 @@ if (getCookie("kiosk") != "") {
 if (metric.criteoActive) {
 	// this needs to be written to the page before we get to the footer
 	document.write("<scr" + "ipt type=\"text/javascript\" src=\"/js/criteo_ld.js\"><\/scr" + "ipt>");
-}
-
-if ( ((ratings.leActive && !location.host.match("canvas")) || (ratings.canvasActive && location.host.match("canvas"))) && 
-	     (location.pathname.indexOf("/cgi-bin/") == -1 &&  location.pathname.indexOf("/co/") == -1 && location.pathname.indexOf("popupAllSites") == -1 
-	                  && location.pathname.indexOf("/GiftCards.html") == -1)) {
-	ratings.path = location.host.match("www.landsend.com|canvas.landsend.com|loadtest01.landsend.com")?"//reviews.landsend.com":"//reviews.landsend.com/bvstaging";
-	ratings.bvSitePath = location.host.match("canvas")?"2019":"2008";
-	document.write("<li" + "nk type=\"text/css\" rel=\"stylesheet\" href=\""+ratings.path+"/static/"+ratings.bvSitePath+"/bazaarvoice.css\"><\/li" + "nk>");
-	document.write("<scr" + "ipt type=\"text/javascript\" src=\""+ratings.path+"/static/"+ratings.bvSitePath+"/bazaarvoice.js\"><\/scr" + "ipt>");
 }
 
 var resx = {

@@ -1,4 +1,4 @@
-//$Revision: 456459 $, $Date: 2012-07-19 17:43:05 -0700 (Thu, 19 Jul 2012) $ and $Author: pl8911 $
+//$Revision: 479732 $, $Date: 2012-09-13 12:31:12 -0700 (Thu, 13 Sep 2012) $ and $Author: gt7886 $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -14,15 +14,20 @@ ATT.c2c = function () {
     		orderTotalDeviceValue:[],
     		orderTotalDeviceQuantity:[],
     		orderTotalDeviceType:[],
+    		orderDeviceSku:[],
     		orderTotalPlanValue:[],
+    		orderPlanPID:[],
     		orderTotalPlanQuantity:[],
     		orderTotalPlanType:[],
+    		orderPlanSku:[],
     		orderTotalFeatureValue:[],
     		orderTotalFeatureQuantity:[],
     		orderTotalFeatureType:[],
+    		orderFeatureSku:[],
     		orderTotalAccessoriesValue:[],
     		orderTotalAccessoriesQuantity:[],
-    		orderTotalAccessoriesType:[]
+    		orderTotalAccessoriesType:[],
+    		orderAccessoriesSku:[]
     	}, $ =jQuery, doc = document, 
         href = doc.location.href, buyflowCode,
         checkoutStage, category, j, k, l, m,
@@ -92,6 +97,7 @@ ATT.c2c = function () {
                         }
                         results.orderTotalDeviceQuantity[m] = lines[i].parts.device[m].qty;
                         results.orderTotalDeviceType[m] = lines[i].parts.device[m].detail;
+                        results.orderDeviceSku[m] = lines[i].parts.device[m].sku;
                     }
 
                 }
@@ -106,6 +112,8 @@ ATT.c2c = function () {
                         }
                         results.orderTotalPlanQuantity[l] = lines[i].parts.plan[l].qty;
                         results.orderTotalPlanType[l]= lines[i].parts.plan[l].detail;
+                        results.orderPlanPID[l] = lines[i].parts.plan[l].pid;
+                        results.orderPlanSku[l] = lines[i].parts.plan[l].sku;
                     }
 
                 }
@@ -120,6 +128,7 @@ ATT.c2c = function () {
                         }
                         results.orderTotalFeatureQuantity[j] = lines[i].parts.services[j].qty;
                         results.orderTotalFeatureType[j] = lines[i].parts.services[j].detail;
+                        results.orderFeatureSku[j] = lines[i].parts.services[j].sku;
                     }
 
 
@@ -137,6 +146,7 @@ ATT.c2c = function () {
                         }
                         results.orderTotalAccessoriesQuantity[k] = lines[i].parts.accessories[k].qty;
                         results.orderTotalAccessoriesType[k] = lines[i].parts.accessories[k].detail;
+                        results.orderAccessoriesSku[k] = lines[i].parts.accessories[k].sku;
                     }
 
                 }

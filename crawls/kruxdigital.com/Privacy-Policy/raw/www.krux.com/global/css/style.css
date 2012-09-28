@@ -200,150 +200,479 @@ color: #4a8db4
 
 /* -------------------------- SLIDER HOME -------------------------------- */
 
-#features {
-	height:330px;
-	position:relative;
-}
-#features #feature-links {
-	display:block;
-	height:1em;
-	margin:0;
-	padding: 0px;
-	position:absolute;
-	left:50%;
-	text-align:center;
-	bottom:15px;
-	z-index:50;
-	margin-left: -110px;
-}
-#features #feature-links li {
-	float:left;
-	list-style-image:none;
-	list-style-position:outside;
-	list-style-type:none;
-	margin:0 5px;
-	padding:0;
-}
-
-#features #feature-links li a {
-	background: url('../images/slide-position-inactive.png') top left no-repeat;
-	display:block;
-	font-size:1.2em;
-	height:11px;
-	width:11px;
-	padding:0;
-	@padding:0px;
-	text-align: center;
-	text-decoration:none !important;
-}
-
-#features #feature-links li a {
-	display:block;
-	font-size:1.0em;
-	padding:0 0 15px;
-	@padding:0px;
-	text-align:center;
-	text-decoration:none !important;
-}
-
-#features #feature-links li a.active{
-	background: url('../images/slide-position-active.png') top left no-repeat;
-}
-
-#features.home .feature-story {
-	background:white none repeat scroll 0 0;
-	left:0;
-	position:absolute;
-	top:0;
-	text-align: center;
-	width: 100%;
+/* v1.0.2 */
+/* Core RS CSS file. 95% of time you shouldn't change anything here. */
+.royalSlider {
+	width: 960px;
 	height: 330px;
+	position: relative;
+	direction: ltr;
 }
 
-#features h2.feature-title, #features span.feature-title {
-	color:#fff;
-	font-size:65px;
-	font-weight:normal;
-	height:1.2em;
-	left:340px;
-	margin:0;
-	padding:0 5px 0 0;
-	position:absolute;
-	text-align:right;
-	text-shadow:1px 1px 10px #333;
-	top:-666em;
-	display:block;
+.rsWebkit3d .rsSlide,
+.rsWebkit3d .rsContainer,
+.rsWebkit3d .rsThumbs,
+.rsWebkit3d .rsPreloader,
+.rsWebkit3d img,
+.rsWebkit3d .rsOverflow,
+.rsWebkit3d .rsBtnCenterer,
+.rsWebkit3d .rsAbsoluteEl {
+	-webkit-backface-visibility: hidden;
+	-webkit-transform: translateZ(0); 
+}
+.rsFade.rsWebkit3d .rsSlide,
+.rsFade.rsWebkit3d img,
+.rsFade.rsWebkit3d .rsContainer {
+	-webkit-transform: none;
+}
+.rsOverflow {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+	float: left;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-#features .feature-photo {
-	border:0 none;
-	display:block;
-	margin:0 auto;
+.rsContainer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-.feature-story img{
-	height:330px;
+.rsArrow,
+.rsThumbsArrow {
+	cursor: pointer;
 }
-body.innerPage .feature-story img {
+
+.rsThumb {
+	float: left;
+	position: relative;
+}
+
+.rsArrow,
+.rsNav,
+.rsThumbsArrow {
+	opacity: 1;
+	-webkit-transition:opacity 0.3s linear;
+	-moz-transition:opacity 0.3s linear;
+	-o-transition:opacity 0.3s linear;
+	transition:opacity 0.3s linear;
+}
+.rsHidden {
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition:visibility 0s linear 0.3s,opacity 0.3s linear;
+	-moz-transition:visibility 0s linear 0.3s,opacity 0.3s linear;
+	-o-transition:visibility 0s linear 0.3s,opacity 0.3s linear;
+	transition:visibility 0s linear 0.3s,opacity 0.3s linear;
+}
+
+
+.rsGCaption {
+	width: 100%;
+	float: left;
+	text-align: center;
+}
+
+/* Fullscreen options, very important ^^ */
+.royalSlider.rsFullscreen {
+	position: fixed !important;
+	height: auto !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	z-index: 2147483647 !important;
+	top: 0 !important;
+	left: 0 !important;
+	bottom: 0 !important;
+	right: 0 !important;
+}
+
+.royalSlider .rsSlide.rsFakePreloader {
+	opacity: 1 !important;
+	-webkit-transition: 0s;
+	-moz-transition: 0s;
+	-o-transition:  0s;
+	transition:  0s;
+	display: none;
+}
+
+.rsSlide {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: block;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+}
+
+.rsSlide img.bg {
+	position: absolute;
+	
+}
+
+.royalSlider.rsAutoHeight,
+.rsAutoHeight .rsSlide {
 	height: auto;
 }
 
-.feature-story .wrapper {
+.rsContent {
+	width: 100%;
+	height: 100%;
 	position: relative;
+}
+
+.rsPreloader {
+	position:absolute;
+	z-index: 0;	
+}
+
+.rsNav {
+	-moz-user-select: -moz-none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.rsNavItem {
+	-webkit-tap-highlight-color:rgba(0,0,0,0.25);
+}
+
+.rsThumbs {
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	float: left;
+	z-index: 22;
+}
+.rsTabs {
+	float: left;
+}
+.rsTabs,
+.rsThumbs {
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+
+.rsVideoContainer {
+	/*left: 0;
+	top: 0;
+	position: absolute;*/
+	/*width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	float: left;*/
+	width: auto;
+	height: auto;
+	line-height: 0;
+	position: relative;
+}
+.rsVideoFrameHolder {
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: #141414;
+	opacity: 0;
+	-webkit-transition: .3s;
+}
+.rsVideoFrameHolder.rsVideoActive {
+	opacity: 1;
+}
+.rsVideoContainer iframe,
+.rsVideoContainer video,
+.rsVideoContainer embed,
+.rsVideoContainer .rsVideoObj {
+	position: absolute;
+	z-index: 0;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+/* ios controls over video bug, shifting video */
+.rsVideoContainer.rsIOSVideo iframe,
+.rsVideoContainer.rsIOSVideo video,
+.rsVideoContainer.rsIOSVideo embed {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-right: 44px;
+}
+
+.rsABlock {
+	position: absolute;
 	width: 960px;
-	margin: 0 auto;
+	left: 50%;
+	margin-left: -480px;
+	z-index: 15;
+	-webkit-backface-visibility: hidden;
+}
+
+.grab-cursor {
+	cursor:url(http://www.krux.com/global/images/grab.png) 8 8, move; 
+}
+
+.grabbing-cursor{ 
+	cursor:url(http://www.krux.com/global/images/grabbing.png) 8 8, move;
+}
+
+.rsNoDrag {
+	cursor: auto;
+}
+
+.rsLink {
+	left:0;
+	top:0;
+	position:absolute;
+	width:100%;
+	height:100%;
+	display:block;	
+	z-index: 20;
+	background: url(http://www.krux.com/global/images/blank.gif);
+	-webkit-backface-visibility: hidden;
+}
+
+#full-width-slider {
+  width: 100%;
+}
+.coloredBlock {
+  padding: 12px;
+  background: rgba(255,0,0,0.6);
+  color: #FFF;
+   width: 200px;
+   left: 20%;
+   top: 5%;
+}
+.infoBlock {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  left: auto;
+  max-width: 25%;
+  padding-bottom: 0;
+  background: #FFF;
+  background: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  padding: 20px;
+}
+.infoBlockLeftBlack {
+  color: #FFF;
+  background: #000;
+  background: rgba(0,0,0,0.75);
+  left: 30px;
+  right: auto;
+}
+.infoBlock h4 {
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0;
+  padding-bottom: 3px;
+}
+.infoBlock p {
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+.infoBlock a {
+  color: #FFF;
+  text-decoration: underline;
+}
+.fullWidth {
+  max-width: 1600px;
+  margin: 0 auto 24px;
+}
+
+@media screen and (min-width:960px) and (min-height:660px) {
+  .heroSlider .rsOverflow,
+  .royalSlider.heroSlider {
+      height: 330px !important;
+  }
+}
+
+@media screen and (min-width:960px) and (min-height:1000px) {
+    .heroSlider .rsOverflow,
+    .royalSlider.heroSlider {
+        height: 330px !important;
+    }
+}
+@media screen and (min-width: 0px) and (max-width: 800px) {
+  .royalSlider.heroSlider,
+  .royalSlider.heroSlider .rsOverflow {
+    height: 330px !important;
+  }
+  .infoBlock {
+    padding: 10px;
+    height: 100%;
+    max-height: 100%;
+    min-width: 40%;
+    left: 0;
+    top: 0;
+    right: auto;
+    font-size: 12px;
+  }
+  .infoBlock h3 {
+     font-size: 14px;
+     line-height: 17px;
+  }
+}
+
+/***************
+*
+*  Arrows
+*
+****************/
+
+.rsArrow {
+	height: 44px;
+	width: 30px;
+	position: absolute;
+	display: block;
+	cursor: pointer;
+	z-index: 21;
+  }
+
+
+.rsArrowLeft { right: 39px; bottom: 2px; }
+.rsArrowRight { right: 9px; bottom:2px; }
+
+.rsArrowIcn {		
+	width: 24px;
+	height: 24px;
+	top: 50%;
+	left: 50%;
+	margin-top:-12px;	
+	margin-left: -12px;
+
+	position: absolute;	
+	cursor: pointer;	
+	background: url('http://www.krux.com/global/css/rs-minimal-white.png');
+	background-color: transparent;
+}
+.rsArrowIcn:hover {
+
+}
+
+.rsArrowLeft .rsArrowIcn { background-position: -68px -36px; }
+.rsArrowRight .rsArrowIcn { background-position: -68px -68px; }
+
+.rsArrowLeft .rsArrowIcn { background-position: -96px -32px; }
+.rsArrowRight .rsArrowIcn { background-position: -96px -64px; }
+
+.rsArrowDisabled .rsArrowIcn { opacity: .3; }
+
+
+/***************
+*
+*  Bullets
+*
+****************/
+
+.rsBullets {
+	width: 400px;
+	position: absolute;
+	z-index: 35;
+	left: 50%;
+	bottom: 40px;
+	margin-left: -200px;
+	height: auto;
+	text-align: center;
+	overflow: hidden;
+	line-height: 8px;
+	cursor: hand;
+	cursor: pointer;
+}
+.rsBullet {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+	margin: 0 5px;
+	border-radius: 50%;
+	background: #999;
+	background: rgba(255,255,255,0.3);
+	-webkit-box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, .4);
+	box-shadow: inset 1px 1px 1px 0px rgba(0, 0, 0, .4);
+
+	*display:inline; 
+	*zoom:1;
+}
+.rsBullet.rsNavSelected, .rsBullet.rsNavSelected:hover, .rsBullet:hover  {
+	background: #FFF;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+/***************
+*
+*  Custom
+*
+****************/
+
+.rsContent img.bg {
+	width: 100%;
 	height: 330px;
 }
-
-.feature-story .btn.learn-more {
+.rsContent .headline {
 	position: absolute;
-	right: 50px;
-	bottom: 35px;
+	top: 20px;
+	left: 330px;
+	height: 120px;
 }
-
-.btn.learn-more {
+.rsContent h3 {
+	font-family:proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	letter-spacing: .06;
+	font-size: 50px;
+	color: #fff;
+	position: absolute;
+	width: 620px;
+	bottom: 0;
 	display: block;
-	width: 124px;
-	height: 38px;
-	background: url('../images/btn-learn-more.png') top left no-repeat;
+	line-height: 45px;
+	text-shadow: 1px 1px 6px rgba(0, 0, 0, .5);
+	filter: dropshadow(color=rgba(0, 0, 0, .5), offx=1, offy=1);
 }
-.btn.learn-more:hover {
-	background-position: 0 -38px;
+html.lt-ie10 .rsContent h3 {
+	text-shadow: none !important;
+	filter:  none !important;
 }
-
-#features.home #feature-1.feature-story {
-	background: url('../images/slide-1-1.jpg') top center;
-}
-#features.home #feature-2.feature-story {
-	background: url('../images/slide-1-2.jpg') top center;
-}
-#features.home #feature-3.feature-story {
-	background: url('../images/slide-1-3.jpg') top center;
-}
-#features.home #feature-4.feature-story {
-	background: url('../images/slide-1-4.jpg') top center;
-}
-#features.home #feature-5.feature-story {
-	background: url('../images/slide-1-5.jpg') top center;
-}
-#features.home #feature-6.feature-story {
-	background: url('../images/slide-1-6.jpg') top center;
-}
-#features.home #feature-7.feature-story {
-	background: url('../images/slide-1-7.jpg') top center;
-}
-#features.home #feature-8.feature-story {
-	background: url('../images/slide-protect.jpg') top center;
-}
-#features.home #feature-9.feature-story {
-	background: url('../images/slide-manage.jpg') top center;
-}
-#features.home #feature-10.feature-story {
-	background: url('../images/slide-monetize.jpg') top center;
+.rsContent p {
+	font-size: 19px;
+	line-height: 25px;
+	position: absolute;
+	left: 330px;
+	top: 160px;
+	color: rgb(225, 225, 225);
+	color: rgba(255, 255, 255, .75);
 }
 
-#features .hide {
-	display: none;
+.rsContent a.learn-more {
+	position: absolute;
+	right: 0;
+	top: 265px;
+	background: url("../images/btn-learn-more.png") no-repeat scroll left top transparent;
+  display: block;
+  height: 38px;
+  width: 124px;
+}
+
+.special-k {
+	position: absolute !important;
+	left: 50%;
+	top:175px;
+	margin-left: -470px;
+	z-index: 999; 
+	opacity: 1;
+	-webkit-transition: opacity .3s ease-in-out;
+	-moz-transition: opacity .3s ease-in-out;
+	-ms-transition: opacity .3s ease-in-out;
+	-o-transition: opacity .3s ease-in-out;
+	transition: opacity .3s ease-in-out;
+}
+.special-k.gone {
+	opacity: 0;
 }
 
 
@@ -706,6 +1035,7 @@ font-size: 14px;
 	width: 550px !important;
 	text-align: left;
 	height: 200px;
+	position: relative;
 }
 #content #hhcontainer h2 {
 	font-weight: 100;
@@ -758,15 +1088,18 @@ font-size: 14px;
 }
 #content #hhcontainer ul#feature-links {
 	bottom: 0px;
+	right: 0;
   display: block;
   margin: 0 0 0 -25px;
   padding: 0;
   position: absolute;
   text-align: center;
   z-index: 50;
+
 }
 #content #hhcontainer ul#feature-links li {
 	margin: 0px;
+	display: inline-block;
 }
 #content #hhcontainer ul li a {
 			display:block;
@@ -1926,7 +2259,7 @@ p.nb {
 .side-tab-bgcover {
 	top: 0;
 	left: -9999em;
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	background: url(../images/trans-b-60.png) repeat;
@@ -1938,7 +2271,7 @@ p.nb {
 	-o-transition: opacity .3s ease-in-out;
 	transition: opacity .3s ease-in-out;
 }
-.side-tab.demo-signup:hover + .side-tab-bgcover {
+.side-tab.demo-signup:hover + .side-tab-bgcover, .side-tab.demo-signup.demo-tab-open + .side-tab-bgcover {
 	left: 0;
 	opacity: 1;
 }
@@ -1955,7 +2288,7 @@ p.nb {
 	-o-transition: all .3s ease-in-out;
 	transition: all .3s ease-in-out;
 }
-.side-tab.demo-signup:hover {
+.side-tab.demo-signup:hover, .side-tab.demo-signup.demo-tab-open {
 	-moz-transform: scale(1) rotate(0deg) translateX(-440px) translateY(0px) skewX(0deg) skewY(0deg);
 	-webkit-transform: scale(1) rotate(0deg) translateX(-440px) translateY(0px) skewX(0deg) skewY(0deg);
 	-o-transform: scale(1) rotate(0deg) translateX(-440px) translateY(0px) skewX(0deg) skewY(0deg);
@@ -1978,7 +2311,7 @@ p.nb {
 	min-height: 300px;
 }
 
-.side-tab.demo-signup .content p.intro {
+.side-tab.demo-signup p.intro {
 	font-family:proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding: 15px 20px;
 	font-size: 16px;
@@ -2021,4 +2354,25 @@ p.nb {
 .side-tab.demo-signup form input.text:focus {
 	background: #fff;
 	color: #333;
+}
+
+/* -----------------------------------------
+   Salesforce forms
+----------------------------------------- */
+
+form.salesforce p.w-e-b label, form.salesforce p.w-e-b input {
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+form.salesforce span.error {
+  font-size: 0.85em;
+  color: #d74040;
+	display: block;
+	padding-top: 4px;
+}
+
+form.salesforce#download_cis2012 span.error {
+	margin-left: 102px;
 }

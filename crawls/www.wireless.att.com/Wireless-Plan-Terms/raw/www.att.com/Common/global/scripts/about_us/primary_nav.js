@@ -137,8 +137,8 @@ function renderPrimaryNav() {
  	document.write('><a href="' + site + '/gen/landing-pages?pid=7735" title="Sustainability" id="au_sustainability_link">Sustainability</a>');
 						au_sustainability_nav();
  	document.write('</li>'
-				 + '<li><a id="au_aspire_link" href="/gen/press-room?pid=2631"> AT&amp;T Aspire </a></li>'
-				 + '<li><a id="au_txting_link" href="/gen/press-room?pid=2964"> It Can Wait </a></li>'
+				 + '<li><a id="au_aspire_link" href="' + site + '/gen/press-room?pid=2631"> AT&amp;T Aspire </a></li>'
+				 + '<li><a id="au_txting_link" href="' + site + '/gen/press-room?pid=2964"> It Can Wait </a></li>'
 				 + '<li><a href="http://att.jobs/" title="Careers" id="au_careers_link">Careers</a>');
 						au_careers_nav();
  	document.write('</li>'

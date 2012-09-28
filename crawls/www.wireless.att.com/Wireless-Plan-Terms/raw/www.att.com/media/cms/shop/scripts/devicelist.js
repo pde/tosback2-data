@@ -3,11 +3,6 @@
 	jQuery('div#deviceList-showMoreFooter div#showMoreDevicesSpinner').css('display','block');
 }
 
-function filterCollapseExpand(param) {
-	jQuery("#"+param).toggle();
-	jQuery("#filter-collapse-"+param).toggle();
-	jQuery("#filter-expand-"+param).toggle();
-}
 
 function checkCompareSelectionCount(selectBoxId,selectProcess) {	
 	var allCheckboxes = jQuery("input[name=skuId]:checked");
@@ -84,6 +79,10 @@ function updateCompareDevicesLink() {
 
 jQuery(document).ready(function() {
 	updateCompareDevicesLink();
+	
+	//Collapse all but the first three filters.
+	jQuery.each(jQuery(".filterCollapseControl").get().slice(3), function(index, element){filterCollapse(element.id.split("-").pop())});
+	jQuery.each(jQuery(".filterCollapseControl"), function(index, element){toggleFilterItems(element.id.split("-").pop())});
 	
 	// No thanks functionality
 	jQuery.when(ATT.globalVars.cartPromise).done(function(){

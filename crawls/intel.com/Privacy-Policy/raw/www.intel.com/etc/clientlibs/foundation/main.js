@@ -94,3 +94,27 @@ B(this)
 }}catch(E){C(E,"Init failed")
 }})
 })($CQ||$);
+function cq5forms_isArray(A){return typeof A.length=="number"&&A.item
+}function cq5forms_showMsg(E,C,D,A){var B=document.forms[E].elements[C];
+alert(D);
+if(cq5forms_isArray(B)){if(!A){A=0
+}B[A].focus()
+}else{B.focus()
+}}function cq5forms_isEmpty(B){var A=true;
+if(cq5forms_isArray(B)){for(i=0;
+i<B.length;
+i++){if(B[i].type=="radio"||B[i].type=="checkbox"){if(B[i].checked){A=false
+}}else{if(B[i].value.length>0){A=false
+}}}}else{if(B.type=="radio"||B.type=="checkbox"){if(B.checked){A=false
+}}else{if(B.value.length>0){A=false
+}}}return A
+}function cq5forms_regcheck(F,D){var B=false;
+var C=D.exec(F);
+if(C){var A=F.length;
+var E=C[0].length;
+B=(E==A)
+}return B
+}function cq5forms_multiResourceChange(A,B,C){if(!C){if(!A){A=window.event
+}if(A.keyCode<48&&A.keyCode!=8&&A.keyCode!=46){return 
+}}try{document.getElementById(B).checked=true
+}catch(D){}};

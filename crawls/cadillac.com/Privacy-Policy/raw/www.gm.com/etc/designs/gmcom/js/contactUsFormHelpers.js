@@ -133,6 +133,36 @@ $(document).ready( function(){
 	if($form){
 		$('div#resetButton').click(function(){
 			$form[0].reset();
+		
+			var frm_elements = $form[0].elements;
+			for (i = 0; i < frm_elements.length; i++)
+			{
+			    field_type = frm_elements[i].type.toLowerCase();
+			    switch (field_type)
+			    {
+			    case "text":
+			    case "password":
+			    case "textarea":
+			        frm_elements[i].value = "";
+			        break;
+			    case "radio":
+			    case "checkbox":
+			    	jQuery(frm_elements[i]).checkBox("resetCheckboxFunc");
+			        break;			        
+			    case "select-one":
+			    case "select-multi":
+			        frm_elements[i].selectedIndex = -1;	
+			        $('span.select').text(" - select - ");
+			        break;			        
+			    default:
+			        break;
+			    }
+			}
+		
+		    $('.errorIndicator').remove();
+		    $('.errorMessageTitle').remove();
+		    $('.errorMessage').remove();
+		    $('span.ui-radio').removeClass('ui-radio-checked ui-radio-state-checked ui-radio-state-hover ui-radio-state-disabled');
 			$('textarea').keyup();
 		});
 		$('div#submitButton').click(function(){

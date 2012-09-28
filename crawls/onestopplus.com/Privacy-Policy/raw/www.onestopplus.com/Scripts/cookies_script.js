@@ -422,7 +422,7 @@ function unicodelessDecode (encStr) {
 			
 		}
 		
-		var urlBase = "https://secureimages.redcatsusa.com/images/site_images/mastersite/";
+		var urlBase = "https://secureimages.redcatsecom.com/images/site_images/mastersite/";
 				
 		var imagePre = urlBase + "77_preapproved_chkbx.gif";
 			
@@ -491,11 +491,11 @@ function unicodelessDecode (encStr) {
 		
 		if(window.location.protocol.indexOf("s")>0)
 		{
-		    urlBase = "https://secureimages.redcatsusa.com/images/site_images/mastersite/";
+		    urlBase = "https://secureimages.redcatsecom.com/images/site_images/mastersite/";
 		}
 		else
 		{
-		    urlBase = "http://images.redcatsusa.com/images/site_images/mastersite/";
+		    urlBase = "http://images.redcatsecom.com/images/site_images/mastersite/";
 		}
 			
 		var imageOTB = urlBase + "77_footer_otb-328.gif";
@@ -607,7 +607,7 @@ function unicodelessDecode (encStr) {
 			
 		}
 		
-		var urlBase = "https://secureimages.redcatsusa.com/images/site_images/womanwithin/";
+		var urlBase = "https://secureimages.redcatsecom.com/images/site_images/womanwithin/";
 			
 		
 				
@@ -970,3 +970,10 @@ function DisableEnterKey(evt)
 	}
 }
 //////////////////////////////////End of AssignEnterKey////////////////////////////////////////////
+
+jQuery(document).ready(function () {
+    /**** Disable copy and paste *****/
+    jQuery('input.disablecopypaste').bind('copy paste', function (e) {
+        e.preventDefault();
+    });
+});

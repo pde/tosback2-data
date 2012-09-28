@@ -39,7 +39,7 @@
 		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 		<META HTTP-EQUIV="EXPIRES" CONTENT="-1">
 		
-		<script src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>	
+		<script src="../../scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script>	
 				
 		<script type="text/javascript" src="../../../www.wireless.att.com/webtrends/scripts/dcs_tag_TOP.js"></script>
 		<script type="text/javascript" src="../scripts/commonFunc.js"></script>
@@ -109,7 +109,7 @@ body				{background: transparent url("http://www.att.com/images/global/backgroun
 html				{background: transparent url("http://www.att.com/images/global/background_left.jpg") 0 0 no-repeat !important; background-attachment: scroll; opacity: 1;}
 </style>
 
-<script src="http://www.att.com/scripts/jquery.min.js" type="text/javascript" ></script>
+<script src="http://www.att.com/scripts/jquery.min.js"></script>
 <script src="../../scripts/skatools.js" type="text/javascript"></script>
 <script src="http://www.att.com/scripts/gbl.js" type="text/javascript"></script>
 <script src="http://www.att.com/scripts/reporting.js" type="text/javascript"></script>
@@ -272,7 +272,7 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155" />
+<meta NAME="DCSext.sessionid" 				CONTENT="99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
@@ -356,7 +356,15 @@ var customGlobalNavResources = {userInfo:'/globalnav/includes/user_info.jsp', se
 
 
 
-<meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
+
+
+
+
+		
+		
+			<meta NAME="DCSext.wtBuyFlowType" CONTENT="PROVIDE" />
+		
+
 <meta NAME="DCSext.Referral_app_id" CONTENT="" />
 
 
@@ -406,7 +414,9 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		DCSext$wtEmailAddr : 				'',
 		DCSext$wtAddSkuQty : 				'',
 		DCSext$wtPaperlessBill :			'',	
-		DCSext$wtAutoPay :			        ''	
+		DCSext$wtAutoPay :			        '',
+		DCSext$wtBuyFlowType :	 			'PROVIDE',
+		DCSext$flowtype :	 				'UVERSE'
 	}
 	
 	reporting.capture([
@@ -424,12 +434,20 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			}
 		},
 		//Bug fix ECOM 1108 - 254 
+		//Modified as part of ECOM1207-167
 		{selector: '.wt', type: 'wtevent', 
 			name: function() {
 			 var v_eventName = ((this.className.match(/\bwt\s(.+)(\s|$)/)||[])[1]||'')
 					.replace(/__serv__/g, ((window.showModal||{}).curServ||'').capitalize())
-					.replace(/__step__/g, ((window.showModal||{}).curStep||''));
-			 var v_stepNumber = '';
+					.replace(/__step__/g, ((window.showModal||{}).curStep||''));				 
+				if(v_eventName == 'Uverse_Voip_Step1_Submit'){	
+					var phoneLinesList = Modal.Details.phoneLinesList||[];
+					if (phoneLinesList.error) {
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Complete Phone Number Check Pg','DCSext.wtNoHit','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','');
+					webTrendTag('Uverse_Voip_Step2_Submit',0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					}
+				}
+				var v_stepNumber = '';
 				if (v_eventName == 'Hub_Voip_config_Initated'){
 					v_stepNumber = 'Step1';
 					v_eventName = 'Uverse_Voip_Step1_Submit';}
@@ -437,13 +455,32 @@ jQuery.when(reporting_ready).then(function (reporting) {
 					v_stepNumber = 'Step2';
 				else if (v_eventName == 'Uverse_Voip_Step3_Submit')
 					v_stepNumber = 'Step3';
-					
-				if (v_eventName == 'Uverse_Voip_Step1_Submit' || v_eventName == 'Uverse_Voip_Step2_Submit' || v_eventName == 'Uverse_Voip_Step3_Submit'){
-					webTrendTag(v_eventName,0,'User','DCSext.wtPN','Uverse Spoke IPVOIP '+v_stepNumber+' Config Pg','wtBuyFlowType','PROVIDE');
+				else if (v_eventName == 'Uverse_Voip_Step1_Submit')
+					v_eventName = '';				
+				if(this.className == "wt voip"){
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					v_eventName = '';
+				}
+				if (v_eventName == 'Uverse_Voip_Step1_Submit'){					
+					webTrendTag(v_eventName,0,'User','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
 					return "";
+				}	else if (v_eventName == 'Uverse_Voip_Step2_Submit' ){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step2 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep2.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";
+				}else if ( v_eventName == 'Uverse_Voip_Step3_Submit'){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step3 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep3.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";	
 				}else {
 					return v_eventName;
 				}
+
 			}
 		},
 		{selector: '[action*=checkout] :input', type: 'wtparam', name: 'wtLastFieldInteracted', 
@@ -453,7 +490,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		},
 		{selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkLoc', 
 			value: function() {
-				return 'Uverse' + '__' + 'Body';
+				return 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body';
 			}
 		},
         {selector: '#paperlessBillingCheck:page(creditcard-information)', type: 'wtparam', name: 'wtPaperlessBill', 
@@ -526,7 +563,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		
 		//shop page build your own button link name and link location
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkName', value: 'Build_Your_Own'},
-		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '__' + 'Body'},
+		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body'},
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc'},
 		
 		//voip.jsp adding 2nd line user response
@@ -683,10 +720,13 @@ function handleLastFieldInteracted(e) {
 <script src="/global/scripts/menu.js" type="text/javascript"></script>
 <![endif]-->
 
+
+
+
 <script type="text/javascript" charset="utf-8">
 	function SessionVars() {
 		this.getCurrSessId = function() {
-			var pSessionId = '67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155';
+			var pSessionId = '99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475';
 			return pSessionId;
 		};
 
@@ -726,7 +766,7 @@ function handleLastFieldInteracted(e) {
 	var forceFlashDebugMode = false;
 	var getTimeOffset = function() {
 		var offset = new Number();
-		var servertime = 1345228279124;
+		var servertime = 1348874983997;
 		var clientdateObj = new Date();
 		var clienttime = clientdateObj.getTime();
 		offset = clienttime - servertime;
@@ -1111,8 +1151,7 @@ function handleLastFieldInteracted(e) {
 												
 											
 										
-									
-									
+																		
 								</ul>
 							</div>
 						</li>
@@ -1868,7 +1907,7 @@ function handleLastFieldInteracted(e) {
 																			
 																				
 																				
-																				<li><a href="../../../buy-connectech.att.com/ctcomm/home/index.jsp.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
+																				<li><a href="../../../buy-connectech.att.com/ctcomm/catalog/index.jsp%3FcatId=cat30030.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li>
 																			
 																		</ul>
 																	</div>
@@ -2062,23 +2101,18 @@ function handleLastFieldInteracted(e) {
 										
 									
 								
-								
-									
-									
-										<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
-											<fieldset>
-												
-												
-												<input type="hidden" name="App_ID" value="HOME"/>
-												<input type="hidden" name="autoSuggest" value=""/>
-												<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
-												<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
-												<button type="button">Submit</button>
-												<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
-											</fieldset>
-										</form>
-									
-								
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" >
+									<fieldset>
+										
+										
+										<input type="hidden" name="App_ID" value="HOME"/>
+										<input type="hidden" name="autoSuggest" value=""/>
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/>
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" />
+										<button type="button">Submit</button>
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
+									</fieldset>
+								</form>
 							</li>
 						</ul>
 					</div>
@@ -2240,7 +2274,7 @@ function handleLastFieldInteracted(e) {
 						
 							
 						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp">Retrieve Cart</a></li>
-						<li class="last"><a rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"><img src="../../global/images/cart_icon.jpg" height="15" width="20" border="0" alt="" /></a></li>
+						<li class="last"><a class="shop_cart_img shop_cart_padding" rel="nofollow" href="http://www.att.com/u-verse/cart/retrieve-cart.jsp"></a></li>
 						
 						
 						
@@ -3231,11 +3265,9 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 										
 											
 											
+											
 												<a target="_blank" href="http://www.att.com/u-verse/att-terms-of-service.jsp">AT&amp;T U-verse Terms of Service</a> |
 												<a target="_blank" href="http://www.att.com/u-verse/explore/offer-details.jsp">AT&amp;T U-verse&reg; Offer Details</a>
-												
-													
-												
 											
 										
 									
@@ -3592,9 +3624,9 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 				<span class="modal-header-subtitle">Customize your digital home phone service in 3 steps</span>
 			</div>	
     	</div>
-        <div style="text-align: right; padding-top: 10px;">
-	        <span onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
-	        <img alt="Close" style="cursor: pointer; cursor: hand;" src="../../media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif"/></span></div>
+        <div style="text-align: right; padding-top: 10px;float:right;">
+	        <span class="shop_popup_close_button fl" onclick="if ($('modalFooterCancel')) $('modalFooterCancel').onclick();">
+	     </span></div>
     	<div id="mainPopUpTitleIDM" style="display: none;"></div>
     </div>
         
@@ -4051,7 +4083,7 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
-<meta NAME="DCSext.sessionid" 				CONTENT="67bJQnNFhhK1sTr5LXjlC2gh!383257643!1345228261155" />
+<meta NAME="DCSext.sessionid" 				CONTENT="99GWQmyGFlLTthq0TpcLFpQJ!1296021616!1348874950475" />
 <meta NAME="DCSext.flowtype" 				CONTENT="UVERSE" />
 <meta NAME="DCSext.wtCustType" 				CONTENT="Consumer">
 <meta NAME="DCSext.wtCustTypeSub" 			CONTENT="residential" />
@@ -4135,7 +4167,15 @@ Includes access at home and on-the-go to the entire national AT&T Wi-Fi Hot Spot
 
 
 
-<meta NAME="DCSext.wtBuyFlowType" 			CONTENT="PROVIDE" />
+
+
+
+
+		
+		
+			<meta NAME="DCSext.wtBuyFlowType" CONTENT="PROVIDE" />
+		
+
 <meta NAME="DCSext.Referral_app_id" CONTENT="" />
 
 
@@ -4185,7 +4225,9 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		DCSext$wtEmailAddr : 				'',
 		DCSext$wtAddSkuQty : 				'',
 		DCSext$wtPaperlessBill :			'',	
-		DCSext$wtAutoPay :			        ''	
+		DCSext$wtAutoPay :			        '',
+		DCSext$wtBuyFlowType :	 			'PROVIDE',
+		DCSext$flowtype :	 				'UVERSE'
 	}
 	
 	reporting.capture([
@@ -4203,12 +4245,20 @@ jQuery.when(reporting_ready).then(function (reporting) {
 			}
 		},
 		//Bug fix ECOM 1108 - 254 
+		//Modified as part of ECOM1207-167
 		{selector: '.wt', type: 'wtevent', 
 			name: function() {
 			 var v_eventName = ((this.className.match(/\bwt\s(.+)(\s|$)/)||[])[1]||'')
 					.replace(/__serv__/g, ((window.showModal||{}).curServ||'').capitalize())
-					.replace(/__step__/g, ((window.showModal||{}).curStep||''));
-			 var v_stepNumber = '';
+					.replace(/__step__/g, ((window.showModal||{}).curStep||''));				 
+				if(v_eventName == 'Uverse_Voip_Step1_Submit'){	
+					var phoneLinesList = Modal.Details.phoneLinesList||[];
+					if (phoneLinesList.error) {
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Complete Phone Number Check Pg','DCSext.wtNoHit','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','');
+					webTrendTag('Uverse_Voip_Step2_Submit',0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					}
+				}
+				var v_stepNumber = '';
 				if (v_eventName == 'Hub_Voip_config_Initated'){
 					v_stepNumber = 'Step1';
 					v_eventName = 'Uverse_Voip_Step1_Submit';}
@@ -4216,13 +4266,32 @@ jQuery.when(reporting_ready).then(function (reporting) {
 					v_stepNumber = 'Step2';
 				else if (v_eventName == 'Uverse_Voip_Step3_Submit')
 					v_stepNumber = 'Step3';
-					
-				if (v_eventName == 'Uverse_Voip_Step1_Submit' || v_eventName == 'Uverse_Voip_Step2_Submit' || v_eventName == 'Uverse_Voip_Step3_Submit'){
-					webTrendTag(v_eventName,0,'User','DCSext.wtPN','Uverse Spoke IPVOIP '+v_stepNumber+' Config Pg','wtBuyFlowType','PROVIDE');
+				else if (v_eventName == 'Uverse_Voip_Step1_Submit')
+					v_eventName = '';				
+				if(this.className == "wt voip"){
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					v_eventName = '';
+				}
+				if (v_eventName == 'Uverse_Voip_Step1_Submit'){					
+					webTrendTag(v_eventName,0,'User','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step1 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep1.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
 					return "";
+				}	else if (v_eventName == 'Uverse_Voip_Step2_Submit' ){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step2 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep2.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";
+				}else if ( v_eventName == 'Uverse_Voip_Step3_Submit'){				    
+					webTrendTag(v_eventName,0,'User','DCSext.wtPN','','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/shop/customize.jsp');
+					webTrendTag('',0,'','DCSext.wtPN','Uverse Spoke voip Step3 Config Pg','wtBuyFlowType','PROVIDE','flowtype', 'UVERSE','dcsuri', '/u-verse/virtual/iptvconfigstep3.jsp','DCSext.wtEventType','','DCSext.wtNoHit','');
+					document.getElementById('popCloseButtonSpan').className = '';
+					return "";	
 				}else {
 					return v_eventName;
 				}
+
 			}
 		},
 		{selector: '[action*=checkout] :input', type: 'wtparam', name: 'wtLastFieldInteracted', 
@@ -4232,7 +4301,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		},
 		{selector: '#wrapper a:local', type: 'wtparam', name: 'wtLinkLoc', 
 			value: function() {
-				return 'Uverse' + '__' + 'Body';
+				return 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body';
 			}
 		},
         {selector: '#paperlessBillingCheck:page(creditcard-information)', type: 'wtparam', name: 'wtPaperlessBill', 
@@ -4305,7 +4374,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 		
 		//shop page build your own button link name and link location
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkName', value: 'Build_Your_Own'},
-		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '__' + 'Body'},
+		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtparam', name: 'wtLinkLoc', value: 'Uverse' + '_Uverse_Movers_Landing_Pg_' + 'Body'},
 		{selector: 'img[src*=btn_BuildYourOwn_blue_3dot0]', type: 'wtlink', name: '', params: 'wtLinkName,wtLinkLoc'},
 		
 		//voip.jsp adding 2nd line user response

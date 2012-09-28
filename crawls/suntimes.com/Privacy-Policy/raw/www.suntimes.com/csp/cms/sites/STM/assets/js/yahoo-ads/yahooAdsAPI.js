@@ -13,7 +13,7 @@ var enableJSON;
 //Defines the size of each slot position 
 //Slot positions commented out by TB per Julie Parker's request
 var slotPosition =[];
-//slotPosition["OneByTwo"]=["100x100"];
+slotPosition["OneByTwo"]=["100x100"];
 slotPosition["Top1Right"]=["234x60"];
 slotPosition["Top1"]=["728x90"];
 slotPosition["Top2"] = ["950x30"];
@@ -62,7 +62,7 @@ slotPosition["mon15"]=["168x28"];
 
 //Define Delivery Mode
 var slotDelivery =[];
-//slotDelivery["OneByTwo"]=["ipatf"];
+slotDelivery["OneByTwo"]=["ipatf"];
 slotDelivery["Top1Right"]=["ipatf"];
 slotDelivery["Top1"]=["ipatf"];
 slotDelivery["Top2"] = ["ipatf"];

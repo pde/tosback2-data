@@ -1,0 +1,663 @@
+var default_email = "Email",
+    default_username = "Username",
+    default_password = "}}}}}}}}}}",
+    next = window.location.search.match(/next=(.+?)(&|$)/) ? decodeURIComponent(window.location.search.match(/next=(.+?)(&|$)/)[1]) : "/home/",
+    is_register = window.location.search.match(/register=(.+?)(&|$)/) ? window.location.search.match(/register=(.+?)(&|$)/)[1] : "";
+
+if(is_register && window.location.search.indexOf("invite_code") > -1)
+    next = window.location.search.match("invite_code=(.+)") ? "/?" + window.location.search.match("invite_code=(.+)")[0] : "/home/";
+
+jQuery.fn.center = function (vertical_adjust) {
+    this.css("position","fixed");
+    this.css("top", ( $(window).height() - (this.outerHeight()+vertical_adjust) ) / 2 + "px");
+    this.css("left", ( $(window).width() - this.outerWidth() ) / 2 + "px");
+    return this;
+}
+
+//Clear all modals
+function clear_modals(keep_bg){
+    $(".modal_window").hide();
+    if(!keep_bg)
+        $("#mask").hide();
+}
+
+//Clears input fields when focused and resets the defaults when cleared
+function bind_clear_field_defaults(element, default_value, cleared_value){
+    element.val(default_value);
+    element.unbind("focus");
+    element.focus(function(e){
+        e.preventDefault();
+        if($(this).val() == default_value)
+            $(this).val(cleared_value);
+    });
+    element.unbind("blur");
+    element.blur(function(e){
+        e.preventDefault();
+        if($(this).val() == cleared_value)
+            $(this).val(default_value);
+    });
+}
+
+//Show error text for a modal
+function show_modal_error(element, error_text){
+    element.find(".error").text(error_text);
+    element.find(".error").show();
+    element.find(".hint").hide();
+}
+
+//Show hint text for a modal
+function show_modal_hint(element){
+    element.find(".error").html("");
+    element.find(".error").hide();
+    element.find(".hint").show();
+}
+
+//Prep background for all models
+function prep_modal(){
+    $("#mask").unbind("click");
+    $("#mask").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+    $("#mask").show();
+    $('#mask').css({'z-index': 18, 'display': 'block', opacity: 0.5});
+}
+
+//Register via facebook
+function bind_register_via_facebook(){
+    var button_default_state = "with Facebook",
+        button_submitting_state = "Connecting...",
+        button_success_state = "Here We Go!";
+    $(".facebook-register-button").text(button_default_state);
+
+    //Bind submit facebook button
+    $(".facebook-register-button").unbind("click");
+    $(".facebook-register-button").click(function(e){
+        e.preventDefault();
+        
+        //submitting state
+        show_modal_hint($(".base-register-div"));
+        $(".facebook-register-button").text(button_submitting_state);
+        $(".facebook-register-button").unbind("click");
+        $(".facebook-register-button").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //update with next redirect if possible
+        if(next && next != "/home/")
+            $("#facebook-register-next").val(next);
+
+        //get uid and token from facebook
+        FB.login(function(response) {
+            if (response.authResponse) {
+                _kmq.push(['record', 'New - Register - User Registered (bugfix 81512)', {'register_method':'facebook'}]);
+                
+                //update registration form with facebook uid and token
+                $("#facebook-register-uid").val(response.authResponse.userID);
+                $("#facebook-register-token").val(response.authResponse.accessToken);
+
+                //submit registration form
+                var submit_url = base_https_domain + "/register_via_facebook/";
+                $.post(submit_url, $("#facebook-register-form").serialize())
+                    .success(function(data){
+                        if(data.success){
+                            $(".facebook-register-button div").text(button_success_state);
+                            if(data.redirect)
+                                window.location.replace(data.redirect);
+                            else
+                                window.location.replace("/connect/");
+                        }
+                        else if(data.error){
+                            show_modal_error($(".base-register-div"), data.error);
+                            $(".facebook-register-button").text(button_default_state);
+                            bind_register_via_facebook();
+                        }
+                        else{
+                            show_modal_error($(".base-register-div"), "Something went wrong :(");
+                            $(".facebook-register-button").text(button_default_state);
+                            bind_register_via_facebook();
+                        }
+                    })
+                    .error(function(data){
+                        show_modal_error($(".base-register-div"), "There was a problem connecting to the server :(");
+                        $(".facebook-register-button div").text(button_default_state);
+                        bind_register_via_facebook();
+                    });
+            }
+            else{
+                show_modal_error($(".base-register-div"), "You need to authorize Fitocracy in order to register with Facebook. You can also register with an email, too!");
+                $(".facebook-register-button").text(button_default_state);
+                bind_register_via_facebook();
+            }
+        }, {scope: fb_scope});
+
+
+    });
+}
+
+//Register via email
+function bind_register_via_email(){
+    //reset state
+    
+    var button_default_state = "Go Forth!",
+        button_submitting_state = "Registering...",
+        button_success_state = "Redirecting...";
+    $("#submit-email-register").text(button_default_state);
+
+    //Bind submit form button
+    $("#submit-email-register").unbind("click");
+    $("#submit-email-register").click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        _kmq.push(['record', 'New - Register - User Registered (bugfix 81512)', {'register_method':'email'}]);
+        
+        //clear out default email
+        if($("#email-register-email").val() == default_email)
+            $("#email-register-email").val("");
+        if($("#email-register-password").val() == default_password)
+            $("#email-register-password").val("");
+
+        //submitting state
+        show_modal_hint($("#email-register-modal"));
+        $("#submit-email-register").text(button_submitting_state);
+        $("#submit-email-register").unbind("click");
+        $("#submit-email-register").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //update with next redirect if possible
+        if(next && next != "/home/")
+            $("#email-register-next").val(next);
+
+        //submit registration form
+        var submit_url = base_https_domain + "/register_via_email/";
+        $.post(submit_url, $("#email-register-form").serialize())
+            .success(function(data){
+                if(data.success){
+                    $("#submit-email-register").text(button_success_state);
+                    if(data.redirect)
+                        window.location.replace(data.redirect);
+                    else
+                        window.location.replace("/connect/");
+                }
+                else if(data.error){
+                    show_modal_error($("#email-register-modal"), data.error);
+                    $("#submit-email-register").text(button_default_state);
+                    bind_register_via_email();
+                }
+                else{
+                    show_modal_error($("#email-register-modal"), "Something went wrong :(");
+                    $("#submit-email-register").text(button_default_state);
+                    bind_register_via_email();
+                }
+            })
+            .error(function(data){
+                show_modal_error($("#email-register-modal"), "Couldn't connect to the server :(");
+                $("#submit-email-register").text(button_default_state);
+                bind_register_via_email();
+            });
+    });
+}
+
+//Email registration modal
+function email_register_modal(){
+    //reset state
+    clear_modals(true);
+    prep_modal();
+    $("#email-register-modal").center(10);
+    $("#email-register-modal").show();
+
+    //Bind close button
+    $("#email-register-modal .close_modal").unbind("click");
+    $("#email-register-modal .close_modal").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+
+    //Bind back link
+    $("#back-to-base-from-email").unbind("click");
+    $("#back-to-base-from-email").click(function(e){
+        e.preventDefault();
+        base_register_modal();
+    });
+
+    //Bind clearing email and password
+    bind_clear_field_defaults($("#email-register-email"), default_email, "");
+    bind_clear_field_defaults($("#email-register-password"), default_password, "");
+
+    //Bind submit button
+    bind_register_via_email();
+}
+
+//Base register modal
+function base_register_modal(){
+    clear_modals(true);
+    prep_modal();
+    $("#base-register-modal").center(10);
+    $("#base-register-modal").show();
+    show_modal_hint($("#base-register-modal"));
+
+    //Bind close button
+    $("#base-register-modal .close_modal").unbind("click");
+    $("#base-register-modal .close_modal").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+
+    //Bind facebook signup button
+    bind_register_via_facebook();
+
+    //Bind email signup button
+    $(".register-with-email").unbind("click");
+    $(".register-with-email").click(function(e){
+        e.preventDefault();
+        email_register_modal();
+    });
+}
+
+//Hook up register button so the modal appears when it's clicked
+function bind_register_button(){
+    $(".register-button").unbind("click");
+    $(".register-button").click(function(e){
+        e.preventDefault();
+        base_register_modal();
+        _kmq.push(['record', 'New - Register - Click Register Button']);
+    });
+}
+
+//Login callback
+function login_to_fitocracy(modal_element, form_element, status_element, success_status_text, default_status_text, rebind_function, invalid_connection_modal){
+    //submit registration form
+    var submit_url = base_https_domain + "/accounts/login/";
+    $.post(submit_url, form_element.serialize())
+        .success(function(data){
+            if(data.success){
+                status_element.text(success_status_text);
+                if(data.redirect)
+                    window.location.replace(data.redirect);
+                else
+                    window.location.replace("/home/");
+            }
+            else if(data.error){
+                if(invalid_connection_modal){
+                    invalid_login_modal();
+                }
+                else{
+                    show_modal_error(modal_element, data.error);
+                    status_element.text(default_status_text);
+                    rebind_function();
+                }
+            }
+            else{
+                show_modal_error(modal_element, "Something went wrong :(");
+                status_element.text(default_status_text);
+                rebind_function();
+            }
+        })
+        .error(function(data){
+            show_modal_error(modal_element, "There was a problem connecting to the server :(");
+            status_element.text(default_status_text);
+            rebind_function();
+        });
+}
+
+//Login via facebook
+function bind_login_via_facebook(){
+    var button_default_state = "with Facebook",
+        button_submitting_state = "Logging in...",
+        button_success_state = "Logged in! Here We Go!";
+    $("#login-facebook div").text(button_default_state);
+
+    //Bind submit facebook button
+    $("#login-facebook").unbind("click");
+    $("#login-facebook").click(function(e){
+        e.preventDefault();
+        _kmq.push(['record', 'New - Login - Click Login Via Facebook']);
+
+        //submitting state, disabled button
+        show_modal_hint($("#login-modal"));
+        $("#login-facebook div").text(button_submitting_state);
+        $("#login-facebook").unbind("click");
+        $("#login-facebook").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //get uid and token from facebook
+        FB.login(function(response) {
+            if (response.authResponse) {
+                //update registration form with facebook uid and token
+                $("#login-facebook-uid").val(response.authResponse.userID);
+                $("#login-facebook-token").val(response.authResponse.accessToken);
+                login_to_fitocracy($("#login-modal"), $("#login-facebook-form"), $("#login-facebook div"), button_success_state, button_default_state, bind_login_via_facebook, true);
+            }
+            else{
+                show_modal_error($("#login-modal"), "You need to authorize Fitocracy in order to login with Facebook. You can also login with your username and password, too!");
+                $("#login-facebook div").text(button_default_state);
+                bind_login_via_facebook();
+            }
+        }, {scope: fb_scope});
+
+
+    });
+}
+
+//Login via twitter
+function bind_login_via_twitter(){
+    var button_default_state = "with Twitter",
+        button_submitting_state = "Logging in...",
+        button_success_state = "Logged in! Here We Go!";
+    $("#login-twitter div").text(button_default_state);
+
+    //Bind submit twitter button
+    $("#login-twitter").unbind("click");
+    $("#login-twitter").click(function(e){
+        e.preventDefault();
+        _kmq.push(['record', 'New - Login - Click Login Via Twitter']);
+
+        //submitting state, disabled button
+        show_modal_hint($("#login-modal"));
+        $("#login-twitter div").text(button_submitting_state);
+        $("#login-twitter").unbind("click");
+        $("#login-twitter").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //twitter popup with listener on success
+        window.addEventListener("message", function(e){
+            if(e.data[0] === "twitter_login_done" && e.data[1] != "failure") {
+                //successful callback from twitter
+                $("#login-twitter-req").val(e.data[1]);
+                login_to_fitocracy($("#login-modal"), $("#login-twitter-form"), $("#login-twitter div"), button_success_state, button_default_state, bind_login_via_twitter, true);
+            }
+            else if(e.data[0] === "twitter_login_done" && e.data[1] === "failure") {
+                show_modal_error($("#login-modal"), "Something went wrong trying to confirm your connection with Twitter :(");
+                $("#login-twitter div").text(button_default_state);
+                bind_login_via_twitter();
+            }
+        }, false);
+        window.open("/social/twitter/redirect/?next="+escape(window.location.protocol + "//" + window.location.host+"/social/twitter/redirect/"));
+    });
+}
+
+//Login via runkeeper
+function bind_login_via_runkeeper(){
+    var button_default_state = "with Runkeeper",
+        button_submitting_state = "Logging in...",
+        button_success_state = "Logged in! Here We Go!";
+    $("#login-runkeeper div").text(button_default_state);
+
+    //Bind submit runkeeper button
+    $("#login-runkeeper").unbind("click");
+    $("#login-runkeeper").click(function(e){
+        e.preventDefault();
+        _kmq.push(['record', 'New - Login - Click Login Via RunKeeper']);
+
+        //submitting state, disabled button
+        show_modal_hint($("#login-modal"));
+        $("#login-runkeeper div").text(button_submitting_state);
+        $("#login-runkeeper").unbind("click");
+        $("#login-runkeeper").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //runkeeper popup with listener on success
+        window.addEventListener("message", function(e){
+            if(e.data[0] === "runkeeper_login_done" && e.data[1] == "logged_in") {
+                //successful callback from runkeeper
+                $("#login-runkeeper-pass").val("True");
+                $("#login-runkeeper-req").val(e.data[1]);
+                var next_rk = $("#login-runkeeper-form > [name=next]").val();
+                if(next_rk)
+                    window.location.replace(next_rk);
+                else
+                    window.location.replace("/home/");
+            }
+            else if(e.data[0] === "runkeeper_login_done" && e.data[1] === "unknown_user") {
+                invalid_login_modal();
+            }
+            else{
+                show_modal_error($("#login-modal"), "Something went wrong trying to confirm your connection with Runkeeper :(");
+                $("#login-runkeeper div").text(button_default_state);
+                bind_login_via_runkeeper();
+            }
+        }, false);
+        window.open("/social/runkeeper/redirect/?next="+escape(window.location.protocol + "//" + window.location.host+"/social/runkeeper/redirect/"));
+    });
+}
+
+//Login via username
+function bind_login_via_username(){
+    var button_default_state = "Log in",
+        button_submitting_state = "Logging in...",
+        button_success_state = "Here We Go!";
+    $("#username-login-submit").text(button_default_state);
+
+    //Bind submit twitter button
+    $("#username-login-submit").unbind("click");
+    $("#username-login-submit").click(function(e){
+        e.preventDefault();
+        _kmq.push(['record', 'New - Login - Click Login Via Username']);
+
+        //submitting state, disabled button
+        show_modal_hint($("#username-login-modal"));
+        $("#username-login-submit").text(button_submitting_state);
+        $("#username-login-submit").unbind("click");
+        $("#username-login-submit").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //clear out default email
+        if($("#username-login-username").val() == default_username)
+            $("#username-login-username").val("");
+        if($("#username-login-password").val() == default_password)
+            $("#username-login-password").val("");
+
+        //login request
+        login_to_fitocracy($("#username-login-modal"), $("#username-login-form"), $("#username-login-submit"), button_success_state, button_default_state, bind_login_via_username);
+    });
+}
+
+//Reset password
+function bind_reset_password(){
+    var button_default_state = "Reset",
+        button_submitting_state = "Resetting...",
+        button_success_state = "Email Sent!";
+    $("#reset-password-submit").text(button_default_state);
+
+    //Bind submit twitter button
+    $("#reset-password-submit").unbind("click");
+    $("#reset-password-submit").click(function(e){
+        e.preventDefault();
+
+        //submitting state, disabled button
+        show_modal_hint($("#reset-password-modal"));
+        $("#reset-password-submit").text(button_submitting_state);
+        $("#reset-password-submit").unbind("click");
+        $("#reset-password-submit").click(function(e){e.preventDefault(); e.stopPropagation();});
+
+        //clear out default email
+        if($("#reset-password-email").val() == default_email)
+            $("#reset-password-email").val("");
+
+        //login request
+        var submit_url = base_https_domain + "/reset/password/";
+        $.post(submit_url, $("#reset-password-form").serialize())
+            .success(function(data){
+                if(data.success){
+                    $("#reset-password-submit").text(button_success_state);
+                    $("#reset-password-submit").unbind("click");
+                    $("#reset-password-submit").click(function(e){
+                        e.preventDefault();
+                        clear_modals();
+                    });
+                }
+                else if(data.error){
+                    show_modal_error($("#reset-password-modal"), data.error);
+                    $("#reset-password-submit").text(button_default_state);
+                    bind_reset_password();
+                }
+                else{
+                    show_modal_error($("#reset-password-modal"), "Something went wrong :(");
+                    $("#reset-password-submit").text(button_default_state);
+                    bind_reset_password();
+                }
+            })
+            .error(function(data){
+                show_modal_error($("#reset-password-modal"), "There was a problem connecting to the server :(");
+                $("#reset-password-submit").text(button_default_state);
+                bind_reset_password();
+            });
+    });
+}
+
+//Show password reset modal
+function reset_password_modal(){
+    //reset state
+    clear_modals(true);
+    prep_modal();
+    $("#reset-password-modal").center(10);
+    $("#reset-password-modal").show();
+
+    //Bind close button
+    $("#reset-password-modal .close_modal").unbind("click");
+    $("#reset-password-modal .close_modal").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+
+    //Bind back link
+    $("#back-to-login").unbind("click");
+    $("#back-to-login").click(function(e){
+        e.preventDefault();
+        base_login_modal();
+    });
+
+    //Bind clearing email
+    bind_clear_field_defaults($("#reset-password-email"), default_email, "");
+
+    //Bind submit button
+    bind_reset_password();
+}
+
+//Username login modal
+function username_login_modal(){
+    //reset state
+    clear_modals(true);
+    prep_modal();
+    $("#username-login-modal").center(10);
+    $("#username-login-modal").show();
+
+    //Bind close button
+    $("#username-login-modal .close_modal").unbind("click");
+    $("#username-login-modal .close_modal").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+
+    //Bind back link
+    $("#back-to-login").unbind("click");
+    $("#back-to-login").click(function(e){
+        e.preventDefault();
+        base_login_modal();
+    });
+
+    //Bind clearing username
+    bind_clear_field_defaults($("#username-login-username"), default_username, "");
+    bind_clear_field_defaults($("#username-login-password"), default_password, "");
+
+    //Bind submit button
+    bind_login_via_username();
+
+    //Bind forgot password link
+    bind_password_reset_button();
+}
+
+//Base login modal
+function base_login_modal(){
+    clear_modals(true);
+    prep_modal();
+    $("#login-modal").center(10);
+    $("#login-modal").show();
+    show_modal_hint($("#login-modal"));
+
+    //Bind close button
+    $("#login-modal .close_modal").unbind("click");
+    $("#login-modal .close_modal").click(function(e){
+        e.preventDefault();
+        clear_modals();
+    });
+
+    //Bind facebook login button
+    bind_login_via_facebook();
+
+    //Bind facebook login button
+    bind_login_via_twitter();
+
+    //Bind facebook login button
+    bind_login_via_runkeeper();
+}
+
+//Hook up login link so the modal appears when it's clicked
+function bind_login_button(){
+    $(".login-button").unbind("click");
+    $(".login-button").click(function(e){
+        e.preventDefault();
+        base_login_modal();
+    });
+    $(".login-form [name=next]").val(next);
+
+    //Bind username login link
+    $(".login-username-link").unbind("click");
+    $(".login-username-link").click(function(e){
+        e.preventDefault();
+        username_login_modal();
+    });
+}
+
+function bind_password_reset_button(){
+    //Bind forgot password link
+    $(".forgot-password-link").unbind("click");
+    $(".forgot-password-link").click(function(e){
+        e.preventDefault();
+        reset_password_modal();
+    });
+}
+
+//Connection error modal
+function invalid_login_modal(){
+    //reset state
+    clear_modals(true);
+    prep_modal();
+    $("#invalid-login-modal").center(10);
+    $("#invalid-login-modal").show();
+}
+
+//Initialize facebook app id
+function fb_init(app_id){
+    FB._initialized = false;
+    FB.init({
+        appId  : app_id,
+        status : true,
+        cookie : true,
+        oauth  : true,
+        xfbml  : true,
+    });
+}
+
+//Start facebook
+function fb_start(app_id){
+    if(!$("#fb-root").length)
+        $("body").append("<div id='fb-root'></div>");
+
+    window.fbAsyncInit = function(){fb_init(app_id);};
+
+    (function(d){
+        var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+        js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        d.getElementsByTagName('head')[0].appendChild(js);
+     }(document));
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

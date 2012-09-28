@@ -395,27 +395,3 @@ com.ikea.irw.askAnna.Settings.default_locale = 'USEN';
 com.ikea.irw.askAnna.Settings.active = true;
 com.ikea.irw.askAnna.Settings.reference = 'US';
 
-
-function backimage() {
-    "use strict";
-    var str, endte, start, end, d, today, month, day;
-    str = "2012-08-01";
-    endte = "2012-12-31";
-    start = str.replace(/-/g, "");
-    end = endte.replace(/-/g, "");
-    d = new Date();
-    month = d.getMonth() + 1;
-    day = d.getDate();
-    today = d.getFullYear() +
-        ((month.toString()).length < 2 ? '0' : "") + month +
-        ((day.toString()).length < 2 ? '0' : "") + day;
-    if (today >= start) {
-        if (end >= today) {
-            document.observe("dom:loaded", function () {
-                com.ikea.irw.GUI.background.changeBackground("url(/ms/img/homepage_background/bg01.jpg)");
-            }
-                );
-        }
-    }
-}
-window.onload = backimage();

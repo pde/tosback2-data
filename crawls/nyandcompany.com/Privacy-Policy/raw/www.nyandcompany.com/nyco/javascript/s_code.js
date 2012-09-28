@@ -37,6 +37,10 @@ function s_doPlugins(s)
 	var sssdmh = s.getQueryParam ("sssdmh");
 	var ep_rid=s.getQueryParam("ep_rid");
 	var cid = s.getQueryParam ('cid');
+	if(!s.campaign){
+		s.campaign = s.getQueryParam ('cid');
+		s.channelManager('cid','','c_m','0','','1');
+	}
 	if(!s.campaign && ep_mid){
 		s.channelManager('ep_mid','','c_m','0','','1');		
 		s._channel="Email";
@@ -47,15 +51,15 @@ function s_doPlugins(s)
 		s.channelManager('ep_rid','','c_m','0','','1');
 		s._channel="Email";
 	}
-	if(!s.campaign){
-		s.campaign = s.getQueryParam ('cid');
-		s.channelManager('cid','','c_m','0','','1');
-	}
 	s.campaign=s.getValOnce(s.campaign,"s_campaign",0);
 	
 	/* Get Channel With ChannelManager*/
 	s.eVar39=s._channel;
-	s.eVar40=s.crossVisitParticipation(s.eVar39,'s_ev40','30','5','>','purchase',1);
+	
+	if(s.eVar39)
+		s.eVar49=s.eVar50=s.eVar51=s.eVar39;
+		
+	s.eVar40=s.crossVisitParticipation(s.eVar39,'s_ev40','7','10','>','purchase',1);
 	
 	/* Capture Email ID*/
 	if(!s.eVar10)

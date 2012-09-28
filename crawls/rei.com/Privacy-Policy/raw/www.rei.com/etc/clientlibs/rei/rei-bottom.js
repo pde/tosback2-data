@@ -27,7 +27,7 @@ function fixHeight() {
 $(document).ready(function() {
 	fixHeight();
 });
-/* $Id: analytics.js 4448 2012-08-04 21:44:00Z pmcmaho $ */
+/* $Id: analytics.js 4766 2012-08-16 00:20:33Z cromeis $ */
 
 /* Google Analytics, setup then load below */
 var _gaq = _gaq||[];
@@ -325,7 +325,7 @@ function reiAnalytics() {
 	a.addToCart_Membership = function(){
 	try{
 		var s = s_gi(s_account);
-		s.products = ";membership";
+		s.products = ";648592";
 		s.events = "scAdd";
 		s.linkTrackVars="events,products";
 		s.linkTrackEvents="scAdd";
@@ -829,13 +829,15 @@ function reiAnalytics() {
 		options.subsection3 = omniStoreId;
 	}
 
-	//Order Checkout Page
-	if(options.page_name.indexOf("checkout:order confirmation")+1){
-		s.products = options.products;
+	//Order Confirmation Page
+	//if(options.page_name.indexOf("checkout:order confirmation")+1){
+	if($('#reiOrderReceipt').length > 0){
+		//s.products = options.products;
 		//Membership Purchased
-		if(options.products.indexOf("membership")+1){
-			a.events("event18");
-		}
+		//if(s.products.indexOf("membership")+1 || s.products.indexOf("648592")+1){
+			// 648592 is style number for membership as of 8/5/12
+		//	a.events("event18");
+		//}
 	}
 	
 	// A User Search has occured, REI or Outlet

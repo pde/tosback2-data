@@ -1,4 +1,4 @@
-function gvpUtils() {
+function gvpUtils() { 
 	var W3C = (!document.all && document.getElementById);
 	var IE = (document.all);
 	var ns4 = (document.layers);
@@ -948,27 +948,38 @@ The subclass gvpUtils.mobile is defined below.  It encapsulates all mobile funct
 
 The two main functions of this class are setContentStr and openModal.  setContentStr runs first and creates the appropriate HTML containing a video tag for the detected device and stores it in the contentStr variable.  The contents of this function are exactly the same for gvpUtils and gvpUtils_HR.  openModal opens a modal window and injects the HTML stored in the contentStr into it.  Adding support for a new device entails adding device detection, adding a case to the if/else block in setContentStr for the device, and possibly adding device-specific behavior to openModal.
 
-Currently Android devices are being detected and being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
+Currently 3 types of devices are being detected: IOS, Kindle, and Android.  Kindle's can identify themselves as Androids if the browser is in mobile optimization mode.  Therefore, it is critical that Kindle comes before Android in the if/else statement in setContentStr().  Android devices are being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
 */
 gvpUtils.prototype.mobile = new function () {
 
 	//device detection
 	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+	var isKindle = /silk/i.test(navigator.userAgent);
 	var isAndroid = /android/i.test(navigator.userAgent);
-	this.isMobile = isIOS || isAndroid;
+	this.isMobile = isIOS || isKindle || isAndroid;
 	
 	//other variables
 	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
 	var closeModal = 'jQuery.colorbox.close();';
+	var firstTime  = true;
 	var contentStr;
+	var noVideo; 
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
+		//strip off parameters
+		var paramStart = pConfig.indexOf('&');
+		if (paramStart !== -1)
+			pConfig = pConfig.substring(0, paramStart);
+		
+		//strip off directory prefix and file type
 		var nameStart = pConfig.lastIndexOf('/')+1;
 		var nameEnd = pConfig.indexOf('.',nameStart);
 		var h264FileName = pConfig.substring(nameStart, nameEnd);
 
 		if (h264FileName === '') {
+			//no video img
+			noVideo = true;
 			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
 		}
 		else if(isIOS) {
@@ -977,27 +988,78 @@ gvpUtils.prototype.mobile = new function () {
 			//loading image
 			contentStr += '<img id="gvp_loadImg" src="/images/global/ajaxLoader.gif" style="display:block; position:absolute; margin:122px 0 0 234px;">';
 		}
-		else if(isAndroid) {
-			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+		else if(isKindle) {
+			//Note: Kindles can be identified as Androids if in mobile browser mode
+			//video tag
+			contentStr = '<video id="currEmbStream" style="position:absolute;" poster="' + p_locEnv + 'global_resources/defaultMedia/GVP_Poster.jpg" width="512" height="288" onended="' + closeModal + '"><source src="' + h264PathMarker + h264FileName + '.mp4" /></video>';
 		}
-	};
-	
+		else if(isAndroid) {
+			contentStr = '';
+		}
+	}; 
+		
 	//Open a modal and inject the contentStr
 	this.openModal = function (headerStr) {
-		jQuery.colorbox({html: headerStr + '<div id="gvp_modalInjection" style="width:512px; height:288px;">' + contentStr + '</div>', 
-			close: ''
+		//cbox_complete event hook
+		if (firstTime && isKindle) {
+			firstTime = false;
+			jQuery(document).bind('cbox_complete', function () {
+				if (gvp.mobile.injectVideo) {
+					gvp.mobile.injectVideo();
+				}
+			});
+		}
+		
+		//define gvp.mobile.injectVideo
+		if (isKindle && !noVideo) {
+			this.injectVideo = function () {
+			jQuery('#gvp_modalInjection').append(contentStr)
+				.find('#currEmbStream')
+				.get(0)
+				.addEventListener('touchstart', function () {
+					this.play();
+				}, false);
+			}
+		}
+		
+		jQuery.colorbox({html: headerStr + '<div id="gvp_modalInjection" style="width:512px; height:288px;">' + (isIOS || noVideo? contentStr: '') + '</div>',
+			close: '',
+			onClosed: function () {
+				if (isKindle)
+					gvp.mobile.injectVideo = undefined;
+			}
 		});
 		
-		/*
-		// MFM 2012 JUL 24 - Attach a click listener to the video element after the video element has been inserted into the page.
-		if(isAndroid) {
-			var androidVideo = document.getElementById("currEmbStream");
-			androidVideo.addEventListener("click",function(){currEmbStream.play();},false);
-		}
-		 */
+		if(isAndroid) {			
+			// Create a video element, attach it to the modal dialog and attach a click listener to the video element.
+			var vidFrag = document.createDocumentFragment();
+
+			var androidVidEl = document.createElement('video');
+			androidVidEl.setAttribute('id', 'currEmbStream');
+			androidVidEl.setAttribute('style', 'display:block; position:absolute;');
+
+			// Create and identify the child elements for the video element. Do not insert a "type" attribute. Android does not accept that attribute.
+			var androidSourceEl = document.createElement('source');
+			androidSourceEl.setAttribute('src',h264PathMarker + h264FileName + '.mp4');
+
+			var videoLoadImgEl = document.createElement('img');
+			videoLoadImgEl.setAttribute('id','gvp_loadImg');
+			videoLoadImgEl.setAttribute('src','ajaxLoader.gif');
+			videoLoadImgEl.setAttribute('style', 'display:block; position:absolute; margin:122px 0 0 234px;');
+
+			androidVidEl.appendChild(androidSourceEl);								
+			androidVidEl.appendChild(videoLoadImgEl);								
+
+			vidFrag.appendChild(androidVidEl);
+
+			var gvpModal = document.getElementById("gvp_modalInjection");
+			gvpModal.appendChild(vidFrag);
+
+			androidVidEl.addEventListener('click',function() {androidVidEl.play();},true);
+		 }
 	};
 	
-	//IOS 'ready to play video' event, hides loading image and shows video
+	//IOS only 'ready to play video' event, hides loading image and shows video
 	this.iosOnSuspend = function () {
 		var jqVideo = jQuery('#currEmbStream');
 		var video = jqVideo[0];
@@ -1006,7 +1068,7 @@ gvpUtils.prototype.mobile = new function () {
 			jqVideo.show();
 		}
 	};
-}();
+};
 
 gvp = new gvpUtils();
 

@@ -58,6 +58,11 @@
 					return (ret.join(";"));
 				};
 				
+				//chuck norris was here
+				if($('meta[name="dc.identifier"]').attr("content") == "urn:uuid:1f5745b035869310VgnVCM100000d7c1a8c0RCRD"){
+					data.dc.site = "fnc.entertainment/faithfamfreedom";		
+				};				
+				
 				//Collective Calls
 				if(szs.indexOf("728x90") > -1 || szs.indexOf("300x250") > -1 || szs.indexOf("300x100") > -1){
 					tagSvr = this._collSvr + "/" + this._method + "/" + data.dc.site + ";";
@@ -115,6 +120,7 @@
 	
 				var col = "";
 				if (d.ptype==="column"||d.ctype==="column"){var col = "-" + d.channel.split('/').slice(-1)[0].replace("-","");}
+					
 				var url = "http://ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data_inline.js";
 				if(window.isBeta){
 					var url = "http://beta.ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data_inline.js";
@@ -276,15 +282,25 @@
 				var play = "";
 				var pnam = "";
 				
-
-				//u=ptype|adv|ctype|pos|url 
-				//var a = [data.ptype,bk,pnam,thisObj._qc,rs,cat,fmat,show,thisObj.adv(window.location, false),pers,$.ad.meta().ctype,idd,$.ad.dc._url];
-				var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url];	   
-			   
+				
+				
+				
+				if(typeof $.ad._meta["classification"] == "string"){
+					var c = $.ad._meta["classificationISA"];
+					c = c.replace(/[ ]/g,"");
+					//u=ptype|adv|ctype|pos|url|classification 
+					var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url,escape(c)];
+				}else{
+					//u=ptype|adv|ctype|pos|url 
+					var a = [data.ptype,thisObj.adv(window.location, false),$.ad.meta().ctype,idd,$.ad.dc._url];
+				}	   
+				   
 			    var p = ";u=";
-			//	if (thisObj._u[idd]==undefined) {
-					thisObj._u[idd] = a.join('|');
-			//	}
+				
+				thisObj._u[idd] = a.join('|');
+		
+				if(a.length == 5){thisObj._u[idd] += "|";}
+						
 				return p + this._u[idd];
 			},
 			quant: {
@@ -353,7 +369,7 @@
 				
 				
 				var adInject = function(elm,id){
-				
+			
 					var showBetaAd = false;
 					var mArr = location.search.match(/[\w]+=[\w]+/g);
 					if(mArr){
@@ -371,7 +387,6 @@
 						    return false;
 						}					
 					}
-
 					
 					if (isShow(elm)) {
 						elm.empty();
@@ -455,7 +470,9 @@
 					
 					if(	$.ad.adBlade.isAdBlade(id)){return;}
 
-					if(   $.ad.goog.adsense.isAdsense() && id === "qu_channel_7" 	){return;}		
+					if( $.ad.goog.adsense.isAdsense() && id === "qu_channel_7"){return;}		
+					
+					if( $.ad._meta.channel.indexOf("fnc/politics") > -1){return;}
 					
 					var sz = $.ad.qu.getSize(data, id);
 					var ifr = $.ad.util.iframe.create(sz.width, sz.height, id);
@@ -481,29 +498,6 @@
 				}
 			}
 		},	    
-		luminate: {
-			init: function(){
-				var root = this;
-				if(typeof window.FOX_PhotoArchives != "undefined" && window.FOX_PhotoArchives) {
-					root.insert("photoArchives");
-				}
-				if($.ad._meta.ptype == "slideshow" && $.ad._meta.channel.indexOf("entertainment") > -1){
-					root.insert("entertainmentSlideshows");
-				}
-			},
-			config: {
-				photoArchives: "110696f3704",
-				entertainmentSlideshows: "10bc1576f4f" 
-			},
-			insert: function(targetSection){
-				var root = this;
-				  var a, s = document.getElementsByTagName("script")[0];
-				  a = document.createElement("script");
-				  a.type="text/javascript"; a.async = true;
-				  a.src = "http://www.luminate.com/widget/async/" + root.config[targetSection] + "/";
-				  s.parentNode.insertBefore(a, s);
-			}
-		},	
 		buzzFeed: {
 			init: function(d){
 				if(d.channel.indexOf("fnc/politics") > -1){
@@ -571,7 +565,7 @@
 		goog: {
 			adsense: {
 				isAdsense: function() {
-					return flag = ( $('#qu_channel_7').size() == 0 ) ? false : true;
+					return flag = ( $('#qu_channel_7').size() == 0 || $.ad._meta.channel.indexOf("fnc/politics") > -1) ? false : true;
 				},
 				init: function(d){
 					var root = this;
@@ -697,6 +691,7 @@
 			pre: function(d) {
 				var s_account = "foxnewsexception";
 				var path = d.raw.channel+"/"+d.raw.section;
+				
 				var omniture_rsid_map = {
 					"fnc/imag": "foxnewsimagprod",
 					"fnc/nation": "foxnewsfoxnation",
@@ -845,7 +840,7 @@
 				if(d.raw.genre == "interactiveContent"){
 					omtr.prop13 = "interactive";
 				}				
-				
+									
 				
 				if (typeof $.ad._meta.language != "undefined") {
 					var lang = $.ad._meta.language;
@@ -872,7 +867,7 @@
 					var classVal = $.ad._meta["classification"];
 					var colVal = $.ad._meta["column"];
 					if(colVal){
-						omtr.prop53 = omtr.eVar53 = colVal;
+							omtr.prop53 = omtr.eVar53 = colVal;
 					}else{
 						omtr.prop53 = omtr.eVar53 = classVal;
 					}
@@ -881,8 +876,7 @@
 				if(d.mDate){ 
 					omtr.prop54 = omtr.eVar54 = d.mDate; 
 					window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";
-				}	
-				
+				}				
 				
 				//nation grid/list view tracking			
 				if($.ad._meta.channel.indexOf('fnc/nation') > -1){
@@ -930,6 +924,19 @@
 				}else{omtr.t();}
 			},
 			map: {
+				//Janrain
+				"network-share-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar29,eVar30,events";window.omtr.linkTrackEvents="event47";window.omtr.events="event47"; window.omtr.eVar29="D=c29";omtr.tl();},
+				"email-share-success": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar29,eVar30,events";window.omtr.linkTrackEvents="event48";window.omtr.events="event48";window.omtr.eVar29="D=c29";omtr.tl();},
+				"network-share-start": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar29,eVar30,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.eVar29="D=c29";omtr.tl();},
+				"email-share-start": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar29,eVar30,events";window.omtr.linkTrackEvents="event51";window.omtr.events="event51";window.omtr.eVar29="D=c29";omtr.tl();},
+				"registration-complete": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event50";window.omtr.events="event50";window.omtr.tl('','o', "registration success");},
+				"registration-start": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event7";window.omtr.events="event7";window.omtr.tl('','o', "registration start");},
+				"logins": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event8";window.omtr.events="event8";window.omtr.tl('','o', "login");},
+				"profile-updates": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar21";window.omtr.linkTrackEvents="event48";window.omtr.events="event48";window.omtr.tl('','o','profile update');},
+				"comment-post": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,eVar16,events";window.omtr.linkTrackEvents="event21";},
+				"fb-share": function(obj){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,prop29,eVar29,events";window.omtr.linkTrackEvents="event6";window.omtr.events="event6";window.omtr.prop29 ='network share';window.omtr.eVar29="D=c29";omtr.tl();},
+				"twttr-follow": function(){window.omtr.linkTrackVars="eVar11,eVar12,eVar13,eVar14,eVar15,events";window.omtr.linkTrackEvents="event42";window.omtr.events="event42";window.omtr.tl('','o','follow');},
+				
 				"slide": function(obj){
 					window.omtr.events="event26";
 					if (typeof obj == "object") {
@@ -994,7 +1001,7 @@
 						"fnc/nation": "nation.foxnews.com",
 						"fnc/radio": "radio.foxnews.com",
 						"fnc/insider": "disabled", // force disable
-						"fnc/magazine": "magazine.foxnews.com",							
+						"fnc/magazine": "magazine.foxnews.com",						
 						"fsb/.+": "smallbusiness.foxbusiness.com"
 					};
 					dom = (function(o,p) {
@@ -1088,6 +1095,20 @@
 		},
 		track: function(d) {
 			var track_map = {
+	
+				//Janrain
+				"network-share-success": function(obj){$.ad.omni.load({"network-share-success": obj});},
+				"email-share-success": function(obj){$.ad.omni.load({"email-share-success": obj});},
+				"network-share-start": function(obj){$.ad.omni.load({"network-share-start": obj});},
+				"email-share-start": function(obj){$.ad.omni.load({"email-share-start": obj});},
+				"registration-complete": function(obj){$.ad.omni.load({"registration-complete": obj});},
+				"registration-start": function(obj){$.ad.omni.load({"registration-start": obj});},
+				"logins": function(obj){$.ad.omni.load({"logins": obj});},
+				"profile-updates": function(obj){$.ad.omni.load({"profile-updates": obj});},
+				"comment-post": function(obj){$.ad.omni.load({"comment-post": obj});},
+				"fb-share": function(obj){$.ad.omni.load({"fb-share": obj});},
+				"twttr-follow": function(obj){$.ad.omni.load({"twttr-follow": obj});},		
+					
 				"view": function(d){$.ad.omni.init(d);$.ad.niel.pre(d);$.ad.coms.load(d);$.ad.chart.load();},
 				//"slide": function(x){$.ad.omni.load({"slide": x});$.ad.niel.pre($.ad.meta());$.ad.coms.load($.ad.meta());/*$.ad.chart.load('/'+x);*/},
 				"slide": function(obj){
@@ -1155,7 +1176,7 @@
 					x.parentNode.insertBefore(s, x);
 				})(document, 'script');					
 			}
-		},	
+		},			
 		tynt: {
 			init: function(d) {
 				var ptype = d.ptype;
@@ -1189,6 +1210,24 @@
 				}
 			}
 		},
+		tapAd:{
+			init : function(d){
+				if(d.channel.indexOf("fnc") > -1){
+					window._tapalytics = [];
+				    _tapalytics.push(['_setPubId', "foxnews.com"]);
+				    _tapalytics.push(['_setContextId', "foxnews.com"]);
+				    _tapalytics.push(['_trackPageView']);
+				    (function() {
+				        var ta = document.createElement('script');
+				        ta.type = 'text/javascript';
+				        ta.async = true;
+				        ta.src = (("https:" == document.location.protocol) ? "https://" : "http://") + "tapad-taptags.s3.amazonaws.com/analytics/analytics.min.js";
+				        var s = document.getElementsByTagName('script')[0];
+				        s.parentNode.insertBefore(ta, s);
+				    })();					
+				}					
+			}
+		},			
 		util: {
 			getLRC: function(s) {
 		        if (s=="") { return 0; }
@@ -1625,8 +1664,6 @@
 			var d = $.ad.meta();
 			var m = "server";
 
-			$.ad.luminate.init();
-			
 			$.ad.util.cookie('surround', window.sid, {path: '/'});
 
 			$.ad.buzzFeed.init(d);
@@ -1637,12 +1674,16 @@
 			//tynt
 			$.ad.tynt.init(d);			
 
+			//tapAd
+			$.ad.tapAd.init(d);				
+			
 			$.ad.visrev.init();
 												
 			$.ad.adBlade.init();
 			
 			var col = "";
 			if (d.ptype==="column"||d.ctype==="column") { var col = "-" + d.channel.split('/').slice(-1)[0]; }
+			
 			var url = "http://ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+"-data.js?callback=jQuery.ad.callback&jsonp=?";
 			if(window.isBeta){
 				var url = "http://beta.ads.foxnews.com/api/"+$.ad.util.enc(d.channel)+"-"+d.ptype.toLowerCase()+col+"-data.js?callback=jQuery.ad.callback&jsonp=?";
@@ -1656,7 +1697,7 @@
 				$.ad.invoke([$.ad.dc.init, $.ad.qu.init], data);
 			}
 		},
-		callback: function(data) {      
+		callback: function(data) {
 						
 			$.ad.invoke([$.ad.dc.init, $.ad.qu.init], data);
 			$.ad._data = data;
@@ -1720,7 +1761,7 @@
 				t.creator = byCleaner(t.creator);					
 
 				var language = ($('meta[name=language]').attr("content")) || false;	
-				var column = ($('meta[name=column]').attr("content")) || false;				
+				var column = ($('meta[name=column]').attr("content")) || false;					
 				var classification = ($('meta[name=classification]').attr("content")) || false;
 				var classificationISA = ($('meta[name=classification-isa]').attr("content")) || false;
 				var mDate = ($("meta[name='dc.date']").attr("content")) || false;				

@@ -9,12 +9,19 @@ var NBC = jqN = jQuery.noConflict(),
     loginStateChangeInterval,
     tabbed = false,
     isCurrentlyLoggedIn = nbcu.sn.session.isLoggedIn(),
+    showId = SITE.id,
     clickedNav;
 
-loginStateChangeInterval = self.setInterval("detectLoginStateChange()", 3000); 
+loginStateChangeInterval = self.setInterval("detectLoginStateChange()", 3000);
 
 // BEGIN NBCU FRAMEWORK CONFIGURATION
 nbcu.config.addParam("nbcuEnvironment", "production");
+nbcu.config.addParam("frameworkUrl", "/assets/nbcu");
+nbcu.config.addParam("frameworkApiUrl", "/app/api");
+nbcu.config.addParam("snasSiteName", "nbc.com");
+nbcu.config.addParam("snasSiteDomainName", "my.nbc.com");
+nbcu.config.addParam("siteName", "NBC.com");
+nbcu.config.addParam("socialNetworkName", "myNBC");
 domain = document.domain;
 
 if (domain.substring(0, 6) == "stage.") {
@@ -34,7 +41,7 @@ function initMyNBC() {
         $loginBox.find(".welcome").html("Welcome Back");
 
         if (nbcu.sn.session.getUsername().length > 12) {
-            var short_username  = nbcu.sn.session.getUsername().substring(0,12) + '...';
+            var short_username  = nbcu.sn.session.getUsername().substring(0,10) + '...';
         } else {
             var short_username  = nbcu.sn.session.getUsername();
         }
@@ -50,10 +57,10 @@ function initMyNBC() {
         event.stopPropagation();
         clickedNav = null;
         closeDropdown();
-        
+
         if (nbcu.sn.session.isLoggedIn()) {
             var randNum = Math.floor(Math.random()*999999999);
-            
+
             NBC.fancybox({
                 "type" : "iframe",
                 "href" : '/assets/esp/social/Identity/getDashboard?page=1&perPage=10&cb='+randNum,
@@ -113,7 +120,8 @@ function loadGlobalDropdown() {
             dropdown_global_request.abort();
         }
         dropdown_global_request = NBC.ajax({
-            url: '/assets/core/themes/2012/nbc/includes/auto-generated/dropdowns-global.shtml'
+            url: '/assets/core/themes/2012/nbc/includes/auto-generated/dropdowns-global.shtml',
+            cache: (nbcu.config.getParam("nbcuEnvironment") == "dev") ? false : true
         }).done(function(data) {
             dropdown_global = data;
             NBC('#dropdowns-global').html(dropdown_global);
@@ -131,13 +139,13 @@ function loadGlobalDropdown() {
 function loadGlobalDropdownShop() {
     var shopHeader = NBC('#dropdown-global-extras .shop'),
         url;
-        
+
     if (document.domain == "www.nbc.com") {
-        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=107&format=json";        
+        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=107&format=json";
     } else {
         url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D107%26format%3Djson";
     }
-        
+
     NBC.ajax({
         url: url,
         contentType : "application/json",
@@ -145,21 +153,21 @@ function loadGlobalDropdownShop() {
         success : function (data) {
             if (data.products.length > 0) {
                 var output = '';
-                               
+
                 for (var i in data.products) {
                     var node = data.products[i];
-          
+
                     output += '<div class="featured row">';
                     output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" width="107" height="107" alt="' + node.name + '" /></a>';
                     output += '<h5>' + node.name + '</h5>';
                     output += '<p>$' + node.salePrice + '<br /><a href="' + node.url + '" target="_blank">Buy &raquo;</a></p>';
                     output += '</div>';
-                                       
+
                     if (i == 2) {
                         break;
                     }
                 }
-                
+
                 shopHeader.append(output);
             }
         }
@@ -254,11 +262,11 @@ function loadSiteDropdown() {
         if (SITE.dropdownUrl !== undefined && SITE.dropdownUrl !== "") {
             url = SITE.dropdownUrl;
         } else {
-            url = SITE.absoluteUrl + 'partials/dropdowns-site.shtml';
+            url = SITE.absoluteUrl + 'partials/dropdowns-site.html';
         }
         dropdown_site_request = NBC.ajax({
             url: url,
-            cache: true
+            cache: (nbcu.config.getParam("nbcuEnvironment") == "dev") ? false : true
         }).done(function(data) {
             dropdown_site = data;
             NBC('#dropdowns-site').html(dropdown_site);
@@ -292,17 +300,26 @@ function initSiteDropdown() {
             showDropdown();
         }
     });
+
+    // detaching shop link from the dropdowns
+    NBC('a.dropdown-site-link[data-target="#dropdown-site-shop"]').removeClass('dropdown-site-link').attr('target','_blank');
+
     NBC('#dropdowns-site').bind('click', function(event){
         event.stopPropagation();
     });
 }
 /* -------------------------------------------------------------------------*/
 /* Slider */
+
+var sliderTimeout;
+
 function slideContentChange(args) {
     if (args.currentSlideNumber === 0) {
         NBC('header.site .logo').fadeOut(240);
     } else {
-        NBC('header.site .logo').fadeIn(300);
+        if (SITE.id != "10211") {
+            NBC('header.site .logo').fadeIn(300);
+        }
     }
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button').removeClass('selected');
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button:eq(' + args.currentSlideNumber + ')').addClass('selected');
@@ -317,9 +334,18 @@ function slideContentLoaded(args) {
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button:eq(' + args.currentSlideNumber + ')').addClass('selected');
 }
 function showSiteSliderButtons() {
+    clearTimeout(sliderTimeout);
+    NBC('header.site .slider-buttons .button .button-image').stop(true, true);
     NBC('header.site .slider-buttons .button .button-image').animate({top: "0px"}, 600, 'easeOutExpo');
 }
+function timeSiteSliderButtons() {
+    clearTimeout(sliderTimeout);
+    NBC('header.site .slider-buttons .button .button-image').stop(true, true);
+    sliderTimeout = setTimeout(hideSiteSliderButtons, 1000);
+}
 function hideSiteSliderButtons() {
+    clearTimeout(sliderTimeout);
+    NBC('header.site .slider-buttons .button .button-image').stop(true, true);
     NBC('header.site .slider-buttons .button .button-image').animate({top: "90px"}, 900, 'easeOutExpo');
 }
 /* INIT */
@@ -336,8 +362,9 @@ function initSlider() {
             snapToChildren: true,
             autoSlide: autoSlide,
             autoSlideTimer: 7500,
+            autoSlideToggleSelector: NBC('.slider-container .video-item a'),
             infiniteSlider: autoSlide,
-            desktopClickDrag: true,
+            //desktopClickDrag: true,
             navSlideSelector: NBC('.slider-buttons .button'),
             // navPrevSelector: NBC('.slider-container .icons-arrow-slider-left'),
             // navNextSelector: NBC('.slider-container .icons-arrow-slider-right'),
@@ -350,19 +377,10 @@ function initSlider() {
             NBC('header.site .slider-buttons').hide(0);
             slider.iosSlider('lock');
         } else {
-            NBC('header.site .slider-container').hover(function (e) {
-                e.stopPropagation();
-                // NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeIn(200, 'easeOutExpo');
-            //    showSiteSliderButtons();
-            }, function (e) {
-                e.stopPropagation();
-                // NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').fadeOut(200, 'easeOutExpo');
-            //    hideSiteSliderButtons();
-            });
+            NBC('header.site .slider-buttons').hover(showSiteSliderButtons, timeSiteSliderButtons);
+            NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').hide();
+            sliderTimeout = setTimeout(hideSiteSliderButtons, 3000);
         }
-        NBC('header.site .slider-buttons').hover(showSiteSliderButtons, hideSiteSliderButtons);
-        NBC('.slider-container .icons-arrow-slider-left, .slider-container .icons-arrow-slider-right').hide();
-        setTimeout(hideSiteSliderButtons, 3000);
     }
 }
 /* -------------------------------------------------------------------------*/
@@ -389,13 +407,13 @@ function loadGlobalFooter() {
 function loadGlobalFooterShop() {
     var shopFooter = NBC('footer.global #shop-footer'),
         url;
-    
+
     if (document.domain == "www.nbc.com") {
         url = "/api/shop/products.php?cnt=3&thumbnailimgsize=77&format=json" + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
     } else {
         url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D77%26format%3Djson" + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
     }
-     
+
     NBC.ajax({
         url: url,
         contentType : "application/json",
@@ -403,14 +421,14 @@ function loadGlobalFooterShop() {
         success : function (data) {
             if (data.products.length > 0) {
                 var output = '';
-                
+
                 for (var i in data.products) {
                     var node = data.products[i];
                     output += '<li class="shop">';
                     output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" target="_blank" width="77" height="77" alt="' + node.name + '" /></a>';
-                    output += '<p>' + node.name + ' <a href="' + node.url + '" target="_blank">Buy &raquo;</a></p>';
+                    output += '<p>' + node.name + ' <a href="' + node.url + '" target="_blank">Buy&nbsp;&raquo;</a></p>';
                     output += '</li>';
-                    
+
                     if (i == 2) {
                         break;
                     }
@@ -426,19 +444,19 @@ function loadGlobalFooterTrending() {
         isSite = false,
         showId = SITE.id,
         url = "/useractivity/rest/listTopVideos?timePeriod=HOURLY&fromRow=0&toRow=";
-		
-	// Don't filter for global sites	
+
+	// Don't filter for global sites
     if (showId == "69") {
-        showId = null;	
+        showId = null;
     }
-		
+
     if(showId) {
         isSite = true;
         url += '6&campaignName=site-' + showId;
     } else {
         url += '20';
     }
-    
+
     NBC.ajax({
         url: url,
         contentType : "application/json",
@@ -544,6 +562,40 @@ function initTiles() {
         setTimeout(arrangeTiles, 3000);
     }
 }
+var newFeatured,
+    featuredPageTotal,
+    featuredPage = 2;
+
+function appendFeatured(content) {
+    var bottom = NBC('.thumbnails.tiled').offset().top + NBC('.thumbnails.tiled').height();
+    NBC('.thumbnails.tiled').append(content);
+    arrangeTiles();
+
+    NBC('body,html').animate({scrollTop: bottom}, 500);
+}
+
+function loadMoreFeatured(page) {
+    NBC.ajax({
+        url: '/app/esp/publishing/modules/getExclusivesPinterestStyle/containerId/' + FEATURED.containerId + '/page/' + page + '/perPage/9.html'
+    }).done(function(data) {
+        newFeatured = data;
+        appendFeatured(newFeatured);
+    });
+}
+function initFeatured() {
+    if (NBC('section.latest.section-home').length > 0) {
+        featuredPageTotal = Math.ceil(FEATURED.totalItems / 9);
+        NBC('.btn.load-more').bind('click', function(event) {
+            loadMoreFeatured(featuredPage);
+            if (featuredPage >= featuredPageTotal) {
+                NBC('.btn.load-more').unbind('click');
+                NBC('.load-more-row').hide(0);
+            } else {
+                featuredPage++;
+            }
+        });
+    }
+}
 /* -------------------------------------------------------------------------*/
 /* Compatibility */
 function initCompatibility() {
@@ -601,17 +653,28 @@ function initTransitional() {
         NBC('#site').css('background-color', el.css('background-color'));
         NBC('#site').css('background-position', '50% -180px');
         NBC('#site').css('background-repeat', el.css('background-repeat'));
-        
+
         el.css('background', 'none');
         el.css('background-image', 'none');
     }
-} 
+}
 /* -------------------------------------------------------------------------*/
 /* Show homepage videos */
 function initShowsMainVideo() {
-    var $featuredVideo = NBC(".featured-video .video-item"); 
+	var $vidWrap = NBC('.featured-video, .slider-container'), $slider, inSlider = false;
+    var $featuredVideo = $vidWrap.find(".video-item");
+
     if(!$featuredVideo.length) { return false; }
-    
+
+    if($vidWrap.is('.slider-container')){
+    	inSlider = true;
+		$slider = $vidWrap.find('.slider');
+
+    	$vidWrap.find('a[data-content-id]').bind('click',function(){
+    		$slider.iosSlider('lock');
+    	});
+    }
+
     NBC.ajax({
         dataType : 'script',
         cache: true,
@@ -619,10 +682,24 @@ function initShowsMainVideo() {
         error:function(a,b,c){ if(typeof console != 'undefined' && console.log){ console.log('initShowsMainVideo', c); } },
         complete: function(){
             setTimeout(function(){
-                $featuredVideo.video();    
+                $featuredVideo.video({sustainLoader:inSlider , clipComplete:function($this){
+                	if($vidWrap.is('.slider-container')){
+
+                		$slider.iosSlider('unlock');
+
+                		$this.find('.sliderToggle').click();
+                		$this.find('object').remove();
+                		$this.find('a[data-content-id]').css({display:'block'});
+                	}
+                }});
             }, 500);
         }
     });
+}
+
+function initAutoComplete() {
+    ezAutocompleteSearchUrl = "/search?";
+    myAC = queryExpansion_init(NBC("#search-global"), NBC("#search-auto"), "/autocomplete/?callbackName=myAC&q=");
 }
 /* -------------------------------------------------------------------------*/
 /* INIT */
@@ -632,6 +709,8 @@ initGlobalDropdown();
 initSiteDropdown();
 initSlider();
 initTiles();
+initFeatured();
 initShowsMainVideo();
 initFooter();
 initCompatibility();
+initAutoComplete();

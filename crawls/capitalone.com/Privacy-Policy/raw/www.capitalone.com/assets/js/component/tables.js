@@ -46,7 +46,7 @@ function initBrowseTable() {
      Browse.jq_infoTip = $('body').append('<div id="compareInfoTip" class="none"></div>').find("#compareInfoTip").eq(0);
      Browse.jq_infoTip.append('<div class="compareState nothingSelected">Check the box next to each <br />product you want to compare.</div>');
      Browse.jq_infoTip.append('<div class="compareState oneSelected">You can compare up to 3 products. <br />(Please select at least one more to compare.)</div>');
-     Browse.jq_infoTip.append('<div class="compareState multiSelected">When you\'re ready, click the <span class="buttonName"></span>&nbsp;button.<br />(<span class="numChecked">'+ Browse.prodCount +'</span> currently checked, maximum of 3.)</div>');
+     Browse.jq_infoTip.append('<div class="compareState multiSelected">When you\'re ready, click the <span class="buttonName">Compare</span>&nbsp;button.<br />(<span class="numChecked">'+ Browse.prodCount +'</span> currently checked, maximum of 3.)</div>');
      Browse.jq_infoTip.append('<div class="compareState maxSelected">You\'ve selected the maximum of 3 cards.</div>');
      
      //Functions
@@ -59,8 +59,12 @@ function initBrowseTable() {
                 }).get().join("~");
 
 				compareTargetPage = typeof(compareTargetPage) == 'undefined' ? '/compare' : compareTargetPage;
-                var targetPage = compareURL+compareTargetPage+'?pid=' + selectedProducts + '&fbtoc=true';
+				//var targetPage = compareURL+compareTargetPage+'?pid=' + selectedProducts + '&fbtoc=true';
 				
+				compareTargetPage = $('#browseHref').attr('href');
+				
+				var targetPage = compareTargetPage +'&pid=' + selectedProducts + '&fbtoc=true';				
+
                 $('.compare-submit').attr('href',targetPage);
                 $('.compareNowLink').attr('href',targetPage);
            }

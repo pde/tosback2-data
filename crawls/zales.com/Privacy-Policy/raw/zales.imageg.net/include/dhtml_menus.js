@@ -26,7 +26,6 @@
  *            also made gecko check a little more strict by specifying build no.
  * ============================================================================================== */
 
-
 //==================================================================================================
 // Configuration properties
 //==================================================================================================
@@ -601,6 +600,7 @@ function TransMenuItem(sText, sUrl, oParent) {
         this.parentMenu = oParent;
 
         function toString(bDingbat) {
+				//alert(sText);
                 var sDingbat = bDingbat ? TransMenu.dingbatOff : TransMenu.spacerGif;
                 var iEdgePadding = TransMenu.itemPadding + TransMenu.menuPadding;
                 var sPaddingLeft = "padding:" + TransMenu.itemPadding + "px; padding-left:" + iEdgePadding + "px;"
@@ -910,3 +910,11 @@ var WCH_Constructor = function() {
 	};
 };
 var WCH = new WCH_Constructor();
+
+var _old_onloiad = window.onload;
+window.onload = function(){
+	_old_onloiad();	
+	if(jQuery('.inactive').length>0){
+		jQuery('.paypal-icon').addClass('InactivePaypal');
+	}
+}

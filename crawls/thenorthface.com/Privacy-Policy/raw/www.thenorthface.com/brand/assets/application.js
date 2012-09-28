@@ -1118,6 +1118,34 @@ window.log = function() {
     BRAND: {}
   });
 }).call(this);
+(function() {
+  var $, StartupManager;
+  $ = jQuery;
+  StartupManager = (function() {
+    function StartupManager() {
+      this.controllers = [];
+    }
+    StartupManager.prototype.registerController = function(controller) {
+      return this.controllers.push({
+        controller: controller,
+        selector: controller.selector
+      });
+    };
+    StartupManager.prototype.init = function() {
+      var elements, startupController, _i, _len, _ref, _results;
+      _ref = this.controllers;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        startupController = _ref[_i];
+        elements = $(startupController.selector);
+        _results.push(elements.length > 0 ? startupController['controller'].bootstrap(elements) : void 0);
+      }
+      return _results;
+    };
+    return StartupManager;
+  })();
+  $.TNF.BRAND.startupManager = new StartupManager();
+}).call(this);
 (function(i){var n=function(){var f=function(){};f.prototype={otag:"{{",ctag:"}}",pragmas:{},buffer:[],pragmas_implemented:{"IMPLICIT-ITERATOR":true},context:{},render:function(a,b,c,d){if(!d){this.context=b;this.buffer=[]}if(!this.includes("",a))if(d)return a;else{this.send(a);return}a=this.render_pragmas(a);a=this.render_section(a,b,c);if(d)return this.render_tags(a,b,c,d);this.render_tags(a,b,c,d)},send:function(a){a!=""&&this.buffer.push(a)},render_pragmas:function(a){if(!this.includes("%",a))return a;
 var b=this;return a.replace(RegExp(this.otag+"%([\\w-]+) ?([\\w]+=[\\w]+)?"+this.ctag),function(c,d,e){if(!b.pragmas_implemented[d])throw{message:"This implementation of mustache doesn't understand the '"+d+"' pragma"};b.pragmas[d]={};if(e){c=e.split("=");b.pragmas[d][c[0]]=c[1]}return""})},render_partial:function(a,b,c){a=this.trim(a);if(!c||c[a]===undefined)throw{message:"unknown_partial '"+a+"'"};if(typeof b[a]!="object")return this.render(c[a],b,c,true);return this.render(c[a],b[a],c,true)},render_section:function(a,
 b,c){if(!this.includes("#",a)&&!this.includes("^",a))return a;var d=this;return a.replace(RegExp(this.otag+"(\\^|\\#)\\s*(.+)\\s*"+this.ctag+"\n*([\\s\\S]+?)"+this.otag+"\\/\\s*\\2\\s*"+this.ctag+"\\s*","mg"),function(e,j,k,h){e=d.find(k,b);if(j=="^")return!e||d.is_array(e)&&e.length===0?d.render(h,b,c,true):"";else if(j=="#")return d.is_array(e)?d.map(e,function(g){return d.render(h,d.create_context(g),c,true)}).join(""):d.is_object(e)?d.render(h,d.create_context(e),c,true):typeof e==="function"?
@@ -2413,6 +2441,46 @@ i.trim(c.html());f[c.hasClass("partial")?"addPartial":"addTemplate"](c.attr("id"
   };
   locale = $('body').attr('data-locale');
   $.extend(TNF.lang, localizations[locale]);
+}).call(this);
+(function() {
+  var data, locale;
+  data = {
+    'en-US': {
+      webid: {
+        production: '483713437851576667',
+        integration: '4388611242818298611'
+      },
+      chatWindow: '1604085870321787882',
+      invitation: '2801648890451179768',
+      chatId: 'Chat2432923122777161943',
+      rdid: '3546246270438552630',
+      locale: 'en-US'
+    },
+    'en-CA': {
+      webid: {
+        production: '3651534479179214362',
+        integration: '2918980656995012843'
+      },
+      chatWindow: '2688609039639312553',
+      invitation: '3891091424565989146',
+      chatId: 'Chat1183508591688229177',
+      rdid: '544577056805816794',
+      locale: 'en-CA'
+    },
+    'fr-CA': {
+      webid: {
+        production: '3651534479179214362',
+        integration: '2918980656995012843'
+      },
+      chatWindow: '1507247164595787663',
+      invitation: '2775378763968910345',
+      chatId: 'Chat2434653173367672351',
+      rdid: '544577056805816794',
+      locale: 'fr-CA'
+    }
+  };
+  locale = $('body').attr('data-locale');
+  $.TNF.BRAND.BoldChat = data[locale];
 }).call(this);
 (function($) {
 
@@ -4181,6 +4249,256 @@ $.fn.tnfBrandItemBuilder = function () {
   })();
   $.TNF.BRAND.RegistrationButtonMonitor = RegistrationButtonMonitor;
 }).call(this);
+(function() {
+  var $, ProductGridTabController;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  $ = jQuery;
+  ProductGridTabController = (function() {
+    ProductGridTabController.singleton = function() {
+      var _ref;
+      return (_ref = this.instance) != null ? _ref : this.instance = new this;
+    };
+    function ProductGridTabController() {
+      this.activateAnchor = __bind(this.activateAnchor, this);
+      this.activateGrid = __bind(this.activateGrid, this);      this.elements = [];
+      this.build();
+      this.bindEvents();
+    }
+    ProductGridTabController.prototype.build = function() {
+      var firstGrid;
+      this.element = $('<div id="product-grid-tabs" class="row tab-box">\
+      <div class="col-24">\
+        <div class="tabs">\
+          <ul></ul>\
+        </div>\
+      </div>\
+    </div>');
+      firstGrid = $('.tabbed-product-grid:first');
+      firstGrid.closest('.row').before(this.element);
+      return this.add($("<div id='tabbed-product-grid-all' data-product-tab='All'>"));
+    };
+    ProductGridTabController.prototype.bindEvents = function() {
+      $('#product-grid-tabs a').live('click', this.activateGrid);
+      return this.element.bind('selected_product_grid', this.activateAnchor);
+    };
+    ProductGridTabController.prototype.add = function(element) {
+      var anchor, id, name;
+      id = element.attr('id').replace(/selected-/, '');
+      name = element.data('product-tab');
+      anchor = $("<li><a href='#" + id + "'>" + name + "</a></li>");
+      this.element.find('ul').append(anchor);
+      return this.elements.push(anchor);
+    };
+    ProductGridTabController.prototype.activate = function(target) {
+      var anchor, item, targetItem, _i, _len, _ref;
+      if (target === '') {
+        return this.activateFirst();
+      }
+      _ref = this.elements;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        if (item.find('a').attr('href') === ("#" + target)) {
+          targetItem = item;
+        }
+      }
+      if (!targetItem) {
+        return this.activateFirst();
+      }
+      anchor = targetItem.find('a');
+      return this.select(anchor);
+    };
+    ProductGridTabController.prototype.activateGrid = function(event) {
+      event.preventDefault();
+      return this.select($(event.target));
+    };
+    ProductGridTabController.prototype.activateAnchor = function(event, anchor) {
+      var element, _i, _len, _ref;
+      _ref = this.elements;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        element = _ref[_i];
+        element.removeClass('active');
+      }
+      return anchor.parent().addClass('active');
+    };
+    ProductGridTabController.prototype.activateFirst = function() {
+      return this.select(this.elements[0].find('a'));
+    };
+    ProductGridTabController.prototype.select = function(anchor) {
+      return this.element.trigger('selected_product_grid', [anchor]);
+    };
+    return ProductGridTabController;
+  })();
+  $.TNF.BRAND.ProductGridTabController = ProductGridTabController;
+}).call(this);
+(function() {
+  var $, ProductGridTabbed;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  $ = jQuery;
+  ProductGridTabbed = (function() {
+    ProductGridTabbed.selector = '.tabbed-product-grid';
+    ProductGridTabbed.bootstrap = function(elements) {
+      var hash, tabController;
+      tabController = $.TNF.BRAND.ProductGridTabController.singleton();
+      elements.each(function(index, element) {
+        return new ProductGridTabbed(element);
+      });
+      hash = $.uri(window.location.href).hash;
+      return tabController.activate(hash);
+    };
+    function ProductGridTabbed(element) {
+      this.handleProductGridSelection = __bind(this.handleProductGridSelection, this);      this.element = $(element);
+      this.tabController = $.TNF.BRAND.ProductGridTabController.singleton();
+      this.build();
+      this.bindEvents();
+    }
+    ProductGridTabbed.prototype.build = function() {
+      return this.tabController.add(this.element);
+    };
+    ProductGridTabbed.prototype.bindEvents = function() {
+      return $('body').bind('selected_product_grid', this.handleProductGridSelection);
+    };
+    ProductGridTabbed.prototype.handleProductGridSelection = function(event, anchor) {
+      var target;
+      target = anchor.attr('href').replace(/#/, 'selected-');
+      if (target === this.element.attr('id') || target === 'selected-tabbed-product-grid-all') {
+        this.show();
+      } else {
+        this.hide();
+      }
+      return this.updateHashTag(anchor);
+    };
+    ProductGridTabbed.prototype.show = function() {
+      return this.element.show();
+    };
+    ProductGridTabbed.prototype.hide = function() {
+      return this.element.hide();
+    };
+    ProductGridTabbed.prototype.updateHashTag = function(anchor) {
+      var currentHashTag, hash;
+      hash = anchor.attr('href');
+      currentHashTag = $.uri(window.location.href).hash;
+      if (hash !== currentHashTag) {
+        return location.hash = hash;
+      }
+    };
+    return ProductGridTabbed;
+  })();
+  $.TNF.BRAND.startupManager.registerController(ProductGridTabbed);
+}).call(this);
+// jQuery.support.transition
+// to verify that CSS3 transition is supported (or any of its browser-specific implementations)
+$.support.transition = (function(){ 
+  var thisBody = document.body || document.documentElement,
+  thisStyle = thisBody.style,
+  support = thisStyle.transition !== undefined || thisStyle.WebkitTransition !== undefined || thisStyle.MozTransition !== undefined || thisStyle.MsTransition !== undefined || thisStyle.OTransition !== undefined;
+  return support; 
+})();
+(function() {
+  var HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, TabbedHeroGallery;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  };
+  TabbedHeroGallery = (function() {
+    TabbedHeroGallery.selector = '.tabbed-hero-gallery';
+    TabbedHeroGallery.bootstrap = function(element) {
+      return new this(element);
+    };
+    function TabbedHeroGallery(element) {
+      var el, tabElements, tabs;
+      tabElements = $('.side-tabs a', element);
+      tabs = (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = tabElements.length; _i < _len; _i++) {
+          el = tabElements[_i];
+          _results.push(new HeroGalleryTab($(el)));
+        }
+        return _results;
+      })();
+      tabs[0].select();
+    }
+    return TabbedHeroGallery;
+  })();
+  HeroGalleryTab = (function() {
+    function HeroGalleryTab(element) {
+      this.renderStrategy = HeroGalleryTabRenderStrategy.factory(element);
+      element.click(this.renderStrategy.select);
+    }
+    HeroGalleryTab.prototype.select = function() {
+      return this.renderStrategy.select();
+    };
+    return HeroGalleryTab;
+  })();
+  HeroGalleryTabRenderStrategy = (function() {
+    var CLASS_NAME, PANEL_CLASS_NAME, SELECTION_EVENT;
+    CLASS_NAME = 'open';
+    PANEL_CLASS_NAME = 'shown';
+    SELECTION_EVENT = 'selected.TNF.herogallerytab';
+    HeroGalleryTabRenderStrategy.factory = function(element) {
+      if ($.support.transition) {
+        return new HeroGalleryTabRenderStrategy(element);
+      } else {
+        return new HeroGalleryTabJSRenderStrategy(element);
+      }
+    };
+    function HeroGalleryTabRenderStrategy(element) {
+      this.deselect = __bind(this.deselect, this);
+      this.select = __bind(this.select, this);      this.element = element;
+      this.panel = $(this.element.attr('href'));
+      $(document).live(SELECTION_EVENT, this.deselect);
+    }
+    HeroGalleryTabRenderStrategy.prototype.select = function(event) {
+      if (event != null) {
+        event.preventDefault();
+      }
+      this.element.trigger(SELECTION_EVENT);
+      this.element.addClass(CLASS_NAME);
+      return this.panel.addClass(PANEL_CLASS_NAME);
+    };
+    HeroGalleryTabRenderStrategy.prototype.deselect = function() {
+      this.element.removeClass(CLASS_NAME);
+      return this.panel.removeClass(PANEL_CLASS_NAME);
+    };
+    return HeroGalleryTabRenderStrategy;
+  })();
+  HeroGalleryTabJSRenderStrategy = (function() {
+    __extends(HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy);
+    function HeroGalleryTabJSRenderStrategy() {
+      this.deselect = __bind(this.deselect, this);
+      this.select = __bind(this.select, this);
+      HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
+    }
+    HeroGalleryTabJSRenderStrategy.prototype.select = function(event) {
+      HeroGalleryTabJSRenderStrategy.__super__.select.apply(this, arguments);
+      this.element.animate({
+        width: 187
+      }).find('span').animate({
+        left: 156
+      });
+      return this.panel.animate({
+        opacity: 1
+      });
+    };
+    HeroGalleryTabJSRenderStrategy.prototype.deselect = function(event) {
+      HeroGalleryTabJSRenderStrategy.__super__.deselect.apply(this, arguments);
+      this.element.animate({
+        width: 31
+      }).find('span').animate({
+        left: 0
+      });
+      return this.panel.animate({
+        opacity: 0
+      });
+    };
+    return HeroGalleryTabJSRenderStrategy;
+  })();
+  $.TNF.BRAND.startupManager.registerController(TabbedHeroGallery);
+}).call(this);
 (function($) {
   $(function() {
     $.interface.initialize();
@@ -4205,6 +4523,8 @@ $.fn.tnfBrandItemBuilder = function () {
       if ($("#race_event").length) { new $.TNF.BRAND.RaceNav() }
       new $.TNF.BRAND.RaceCountdown($('.race-start'))
       new $.TNF.BRAND.RaceEventShuffler($('#race-event-table'))
+
+      $.TNF.BRAND.startupManager.init()
 
       $('#rating-wrapper .rating').each(function() {
         new $.TNF.BRAND.Rating($(this));
@@ -4255,7 +4575,7 @@ $.fn.tnfBrandItemBuilder = function () {
           if ( player && typeof player.pauseMovie === 'function'){
             player.pauseMovie();
           }
-          iframed.pause(); 
+          iframed.pause();
           $('#colorbox').removeClass('brand');
         },
         onCleanup: function() {
@@ -4263,7 +4583,7 @@ $.fn.tnfBrandItemBuilder = function () {
           if ( player && typeof player.pauseMovie === 'function'){
             player.pauseMovie();
           }
-          iframed.pause(); 
+          iframed.pause();
           $('.ooyala-player').css({'height':'1px', 'width':'1px', 'overflow':'hidden'});
         }
       });
@@ -4357,10 +4677,10 @@ $.fn.tnfBrandItemBuilder = function () {
             remainingAthleteBox = $('.remaining_athletes');
         togglerLink.toggle(function() {
           remainingAthleteBox.slideDown('slow');
-          athleteShowMoreText.text(TNF.lang.athletes.ui.hide_additional_athletes); 
+          athleteShowMoreText.text(TNF.lang.athletes.ui.hide_additional_athletes);
         }, function() {
           remainingAthleteBox.slideUp('slow');
-          athleteShowMoreText.text(TNF.lang.athletes.ui.show_additional_athletes); 
+          athleteShowMoreText.text(TNF.lang.athletes.ui.show_additional_athletes);
         });
       }
     },
@@ -4417,13 +4737,24 @@ $.fn.tnfBrandItemBuilder = function () {
     },
 
     setupBoldchatLink: function() {
-      var boldchatWebId = "4388611242818298611";
+      var boldchatWebId = $.TNF.BRAND.BoldChat['webid']['integration'],
+          chatId        = $.TNF.BRAND.BoldChat['chatId'],
+          chatWindow    = $.TNF.BRAND.BoldChat['chatWindow'],
+          rdid          = $.TNF.BRAND.BoldChat['rdid'];
+
       if ( location.href.indexOf('www') > -1 ) {
-        boldchatWebId = "483713437851576667";
+        boldchatWebId = $.TNF.BRAND.BoldChat['webid']['production'];
       }
       $('.boldchatNow').click(function(e) {
         e.preventDefault();
-        window.open('https://livechat.boldchat.com/aid/303292010053200/bc.chat?cwdid=1604085870321787882&wdid='+boldchatWebId+'&rdid=3546246270438552630&url='+escape(document.location.href),'Chat2432923122777161943','toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=640,height=480');
+        window.open(
+          'https://livechat.boldchat.com/aid/303292010053200/bc.chat?'
+           + 'cwdid=' + chatWindow
+           + '&wdid=' + boldchatWebId
+           + '&rdid=' + rdid
+           + '&url=' + escape(document.location.href), chatId,
+           'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=640,height=480'
+        );
       });
     },
 

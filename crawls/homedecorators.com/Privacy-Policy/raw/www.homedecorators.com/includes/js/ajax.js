@@ -167,6 +167,7 @@ $(document).ready(function(){
 			popUpElem.overlay({
 				mask:{ color: '#cccccc' },
 				top: 'center',
+        fixed:false,
 				load: true
 			});
 		}
@@ -233,6 +234,7 @@ $(document).ready(function(){
 				target:'#qlOverlay',
 				mask:{ color: '#cccccc' },
 				top: 'center',
+				fixed: false,
 				load: true,
 				onBeforeLoad: function() {
 					// grab wrapper element inside content
@@ -273,6 +275,7 @@ $(document).ready(function(){
 									popUpElem.overlay({
 										mask:{ color: '#cccccc'},
 										top: 'center',
+                    fixed: false,
 										load: true
 									});
 								}
@@ -714,6 +717,7 @@ function qlSwatchClick(item,spec1,spec2){
 			$('#qlOverlayContent').fadeTo('fast','1');
 			$('.qlProductLink').attr('href',d.productLink);
 			$('#qlAddToCartImg').css('visibility',addToCartTweaker);
+			$('.qlProdName').html(d.name);
 			//$('#qlReviewImg').attr('src',d.ratingImg);
 		});
 	};
@@ -737,59 +741,4 @@ function qlSwatchClick(item,spec1,spec2){
 	return false;
 }
 
-function checkPromoCode(theForm) {
-	var $cMsg = 'Are you sure you want to replace this discount?\nOnly one discount per order is allowed.',
-	newEle = theForm.promoCodeTemp,
-	oldEle = theForm.promoCode,	
-	nVal = theForm.promoCodeTemp.value;
-	oVal = theForm.promoCode.value,
-	retVal = true;
-	
-	// Only work if we have a something in the temp promo code
-	if (nVal != '' && oVal !='') {
-		// Now check to see if promo codes match.
-		if (nVal != oVal) {
-			// So they are different, now confirm that the user wants to change them.
-			if (!confirm($cMsg)) {
-				retVal = false;
-			}
-		} // They do, stop processing
-	}
-	if (retVal) {
-		oldEle.value = nVal;
-	} else {
-		newEle.value = oVal;
-	}
-	return retVal;
-}
 
-function applyPromoCode(theForm){
-	if (theForm.promoCodeTemp.value !="" && checkPromoCode(theForm)) {
-		$("#payRecord").val("");
-		$("#GCpaymentTypeId").val("");
-		$("#CCpaymentTypeId").val("");
-		$("#nextPage").val("-1");
-		
-		// This is the list of elements that need to be cleared on Discount "Apply"
-		var fields = ['savedAmount','IdNumberpayment','Amountpayment','PINpayment',''],
-		selects = ['monthExpDatepayment','yearExpDatepayment','CCpaymentTypeId','GCpaymentTypeId'],
-		cbs = ['saveCC','tcAccept','ignore'];
-		
-		// handle fields
-		for (var i=fields.length; i>-1 ; --i) {
-			var ele = theForm[fields[i]];
-			if (ele) { ele.value=""; }
-		}
-		
-		for (var i=selects.length; i>-1 ; --i) {
-			var ele = theForm[selects[i]];
-			if (ele) { ele.selectedIndex=0; }
-		}
-		
-		for (var i=cbs.length; i>-1 ; --i) {
-			var ele = theForm[cbs[i]];
-			if (ele) { ele.checked=false; }
-		}
-		$("#paymentForm").submit();
-	}
-}

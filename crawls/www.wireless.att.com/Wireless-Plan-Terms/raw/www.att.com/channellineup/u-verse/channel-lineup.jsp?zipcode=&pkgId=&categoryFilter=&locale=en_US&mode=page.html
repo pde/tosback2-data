@@ -2,7 +2,7 @@
 
 
 
-
+ 
 
 
 
@@ -105,7 +105,7 @@
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html lang="en">
 	<head>
-	<link rel="stylesheet" href="http://www.att.com/channellineup/styles/channel-lineup-20120814.css" type="text/css" /> 
+	<link rel="stylesheet" href="http://www.att.com/channellineup/styles/channel-lineup-20120926.css" type="text/css" /> 
 	<script type="text/javascript" src="http://www.att.com/channellineup/scripts/custom-elements.js"></script>
 	<script type="text/javascript" src="http://www.att.com/channellineup/scripts/jquery.min.js"></script>
 	<script type="text/javascript" src="http://www.att.com/channellineup/scripts/jquery.colorbox-min.js"></script>
@@ -158,7 +158,7 @@
  
  
  
-  
+    
 
    
    
@@ -183,15 +183,13 @@
  
  
 
- 
 <script>
-
 var packageIdArray = new Array();
 var categoryFilterArray = new Array(); 
 var searchText ='',id='';
 var zipcodejs='',temp='',actionType='';
 var premiumFilterSelectedValue = '';
-var message='',custType='',isBusinessCustomer=false;
+var message='',custType='',isBusinessCustomer=false,flag='';
 var comparePkgIdArr = new Array();
 var sortBy ='',sortOrder='',localeForLat='',browserName = navigator.appName;
 var externalFilter ='',isLatinoFlag=false,externalPreFilter = '',brChk=false;
@@ -288,6 +286,7 @@ var chkValidPkg = function(myPkgId){
 		}
 	//end
 }
+
 zipcodejs = '';
 if(zipcodejs == '' || zipcodejs == null ){
 	zipcodejs='';
@@ -336,7 +335,11 @@ isBusinessCustomer = true;
 else{
 isBusinessCustomer = false;
 }
+flag = '';
+
 </script>
+
+
 
 
 
@@ -387,19 +390,19 @@ isBusinessCustomer = false;
 	<input id="view-channel-lineup" alt="View Channellineup" name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelSearchByZipCode" value="View ChannelLineUp" class="viewchannellineup" src="http://www.att.com/media/att/2011/global/btn/btn-en-viewchannellineup-blu29.gif" type="image"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelSearchByZipCode" value=" " type="hidden">
 	
 
-<input name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpSuccessUrl" value="/channellineup/u-verse/channel-lineup.jsp?locale=en_US&mode=page" type="hidden"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpSuccessUrl" value=" " type="hidden">
-<input name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value="/channellineup/u-verse/channel-lineup.jsp?locale=en_US&mode=page" type="hidden"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value=" " type="hidden">
+<input name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpSuccessUrl" value="/channellineup/u-verse/channel-lineup.jsp?locale=en_US&mode=page&flag=" type="hidden"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpSuccessUrl" value=" " type="hidden">
+<input name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value="/channellineup/u-verse/channel-lineup.jsp?locale=en_US&mode=page&flag=" type="hidden"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value=" " type="hidden">
 </div><input name="_DARGS" value="/channellineup/u-verse/channel-lineupbody.jsp" type="hidden"></input></form>
 	<div id="displaytext" class="colsec_650">
-					ZIP code:  <a id="changeZip" href="javascript:void(0);" onclick="changeZipCode();">Change</a>&nbsp;|&nbsp;As of:&nbsp;August 17, 2012 &nbsp;
+					ZIP code:  <a id="changeZip" href="javascript:void(0);" onclick="changeZipCode();">Change</a>&nbsp;|&nbsp;As of:&nbsp;September 28, 2012 &nbsp;
 	</div>
 <!--Changing for latino-->
 	<div style="display:inline;" id="showOnly">Show only:</div>
 	<div id="engTab" style="display:none;" class="engimg engsel" onclick="setLatinoFlag(this.id);"></div><div id="latinoTab" style="display:none;" class="engimg latnotsel" onclick="setLatinoFlag(this.id);"></div>
 	<div id="spnEngTab" style="display:none;" class="latimg spnengnotsel" onclick="setLatinoFlag(this.id);"></div><div id="spnLatinoTab" style="display:none;" class="latimg spnlatsel" onclick="setLatinoFlag(this.id);"></div>
-	<div id="dumyLtTab" style="display: none;float: left;font-size: 14px;height: 25px;margin: 0 0 7px;width: 250px;"></div>
+	<div id="dumyLtTab" style="display: none;float: left;font-size: 14px;height: 25px;margin: 0 0 7px;width: 300px;">&nbsp;</div>
 <!--Latino Package Change-->
-	<div id="print" class="printDiv">   
+	<div id="print" class="printDiv"> 
 	 <div class='uverse-btn'>
 	 	<a href='../../u-verse/shop/index.jsp.html' target='_top'>
 		
@@ -413,6 +416,7 @@ isBusinessCustomer = false;
 		<a href="javascript:void(0);" class="printclassicon" style="text-decoration:none;" onclick="printLineUp();" title='Print'>&nbsp;</a>
 		<a href="javascript:void(0);" style="margin-right:20px;" onclick="printLineUp();">Print</a>
 	</div>
+    <div class="clear:both;"></div>
 <div class="colsec_200">
 	<div id="channelLineUpSearch">	
 	<input type="text" maxlength="600" id="searchbox" title="Search Box" onclick="clickSearchTextBox();" class="searchbox" value="Search by channel names" />
@@ -455,7 +459,7 @@ isBusinessCustomer = false;
 						<div id="limitfavmodal">
 										<div class="favheader">
 										<div class="compinnertxtfav">Add to Favorites</div>
-										<div class="closetext"><a href="javascript:void(0);" onclick="closeCompareModal('limitFavModal');">Close</a></div><div><a href="javascript:void(0);" onclick="closeCompareModal('limitFavModal');"><img alt="Close" class="favclosebtn" src="../../media/att/2011/global/btn/btn_close.gif"/></a></div>
+										<div class="closetext"><a href="javascript:void(0);" onclick="closeCompareModal('limitFavModal');">Close</a></div><div><a href="javascript:void(0);" onclick="closeCompareModal('limitFavModal');"><img alt="Close" class="favclosebtn" src="http://www.att.com/media/att/2011/global/btn/btn_close.gif"/></a></div>
 										</div>
 										<div class="textcomp">You've selected the maximum number of Favorites.</div><br>
 										
@@ -468,7 +472,7 @@ isBusinessCustomer = false;
 						<div id="favhelpmodal">
 										<div class="favheader">
 										<div class="compinnertxtfav">Add to Favorites</div>
-										<div class="closetext"><a href="javascript:void(0);" onclick="closeCompareModal('filterFavModal');">Close</a></div><div><a href="javascript:void(0);" onclick="closeCompareModal('filterFavModal');"><img alt="Close" class="favclosebtn" src="../../media/att/2011/global/btn/btn_close.gif"/></a></div>
+										<div class="closetext"><a href="javascript:void(0);" onclick="closeCompareModal('filterFavModal');">Close</a></div><div><a href="javascript:void(0);" onclick="closeCompareModal('filterFavModal');"><img alt="Close" class="favclosebtn" src="http://www.att.com/media/att/2011/global/btn/btn_close.gif"/></a></div>
 										</div>
 										<div class="textcomp">Click the star next to your favorite channels, and then click the Favorites filter.</div><br>
 										
@@ -1697,26 +1701,7 @@ isBusinessCustomer = false;
 						<ul id="all-packs" class="tabs" style="width:780px;margin-left:-40px;*margin-left:0px;"></ul>
 							<div id="ajaxLoadImage" style="display:none;margin-left: 380px;margin-top: 200px;"><img  alt="Loading" src="http://www.att.com/channellineup/images/ajaxLoader.gif"/></div>
 
-								 <div id="ListViewPackages"></div>
-<script>
-jQuery(document).ready(function() {
-	jQuery('#uvBt').hide(0).delay(5000).show(0);
-	setTimeout(function() {
-   if (jQuery('#ListViewPackages').hasClass('rst')){ $('.uverse-btn-bottom').css('margin-top','-30px'); }
-}, 9000);
-	
-});
-</script>    
-					    	<div class='uverse-btn-bottom'>
-					    		<a href='../../u-verse/shop/index.jsp.html' target='_top'>
-					    		
-									
-									
-									<img src="http://www.att.com/media/att/2012/global/page-elements/img-ready-shop-uverse_AA001KY6.jpg" alt='Shop U-verse' border="0" />
-									
-								
-								</a>
-							</div>
+								 <div id="ListViewPackages"></div>    					    	
 		</div>
 </div>
 </div>
@@ -2241,11 +2226,12 @@ var combinedParamterStr = function(parameterStr,fromMode){
 			if(isBusinessCustomer){
 				parameterStr = parameterStr+'&custSubType=Business';
 			}
-			if(isLatinoFlag){
+			if(isLatinoFlag || flag == 'true'){
 				parameterStr = parameterStr+'&isLatino=Y';
 			}
 return parameterStr;
 }
+
 //Creating the tabs 
 var createTabs = function (packageIdArray,isBusinessCustomer,isLatinoFlag){
 	var residentialTabArr = ["Compare Packages","U450","U300","U200","U-family","U-basic"];
@@ -2271,7 +2257,7 @@ var createTabs = function (packageIdArray,isBusinessCustomer,isLatinoFlag){
 			isBusinessUser = true;
 		}
 		else{
-		if(isLatinoFlag){
+		if(isLatinoFlag == true){
 			tabsArray = latTabArr;
 		}
 		else{
@@ -2285,7 +2271,7 @@ var createTabs = function (packageIdArray,isBusinessCustomer,isLatinoFlag){
 		totWidth = 497;
 	}
 	else{
-		totWidth = 498;
+		totWidth = 497;
 	}
 	if(frmCompare){
 		tabWidth  = Math.round(totWidth/(resTabCount-1));
@@ -2435,6 +2421,27 @@ data =data+'&locale=en_US';
 			   }
 			});
 }
+if(flag == 'true' ){
+	isLatinoFlag = true;
+	var parameterStr = '';
+	parameterStr = combinedParamterStr(parameterStr,'');
+	if(localeForLat == 'es_US'){
+		$("#spnLatinoTab").removeClass('latimg spnlatnotsel');
+		$("#spnLatinoTab").addClass('latimg spnlatsel');
+		$("#spnEngTab").removeClass('latimg spnengsel');
+		$("#spnEngTab").addClass('latimg spnengnotsel');
+		$("#spnLatinoTab").poshytip('disable');
+		$("#spnEngTab").poshytip('disable');
+		}
+		else{
+		$("#latinoTab").removeClass('engimg latnotsel');
+		$("#engTab").removeClass('engimg engsel');
+		$("#latinoTab").addClass('engimg latsel');
+		$("#engTab").addClass('engimg engnotsel');
+		$("#latinoTab").poshytip('disable');
+		$("#engTab").poshytip('disable');
+		}
+	}
 
 var openPrintDialog = function(){
 	//getting the printClu url param if any
@@ -3197,7 +3204,7 @@ var createPkgCompareModal = function (){
 	html+='<div id="comparecontentmodal">';
 	html+='<div class="bgimgcompare">';
 	html+='<div class="compinnertxt">Compare TV Packages</div>';
-	html+='<div class="closetext"><a href="javascript:void(0);" class="compareModal" onclick="closeCompareModal(this.className);">Close</a></div><div><a href="javascript:void(0);" class="compareModal" onclick="closeCompareModal(this.className);"><img class="compclosebtn" src="../../media/att/2011/global/btn/btn_close.gif"/></a></div>';
+	html+='<div class="closetext"><a href="javascript:void(0);" class="compareModal" onclick="closeCompareModal(this.className);">Close</a></div><div><a href="javascript:void(0);" class="compareModal" onclick="closeCompareModal(this.className);"><img class="compclosebtn" src="http://www.att.com/media/att/2011/global/btn/btn_close.gif"/></a></div>';
 	html+='</div>';
 	html+='<div id="compareChkAlertMsg" class="nocomparechkoutline" style="display:none">';
 	html+='<img class="nosearchalerticon" src="http://www.att.com/media/att/2011/global/ico/ico-alert-big-red.png"/>';
@@ -3480,10 +3487,22 @@ var convertPackageId = function(packageId){
 	}
 	if(zipcodejs != ""){
 	if((localeForLat == "es_US") && (customerType != "Business")){
-		isLatinoFlag = true;
-		parameterStr = 'isLatino=Y&'; 
 		$("#engTab,#latinoTab").hide();
 		$("#spnEngTab,#spnLatinoTab").show();
+		if(flag == 'true'){
+			isLatinoFlag = true;
+			parameterStr = 'isLatino=Y&'; 
+			$("#spnLatinoTab").removeClass('latimg spnlatnotsel');
+			$("#spnLatinoTab").addClass('latimg spnlatsel');
+			$("#spnEngTab").removeClass('latimg spnengsel');
+			$("#spnEngTab").addClass('latimg spnengnotsel');
+		}else{
+			isLatinoFlag = false;
+			$("#spnLatinoTab").removeClass('latimg spnlatsel');
+			$("#spnLatinoTab").addClass('latimg spnlatnotsel');
+			$("#spnEngTab").removeClass('latimg spnengnotsel');
+			$("#spnEngTab").addClass('latimg spnengsel');
+		}
 	}
 	else{
 		$("#engTab,#latinoTab").show();
@@ -3593,6 +3612,9 @@ var convertPackageId = function(packageId){
 		$("#dumyLtTab").hide();
 			parameterStr = parameterStr+'&custSubType=Residential';
 		}
+		if(isLatinoFlag){
+		parameterStr = parameterStr+'&isLatino=Y';	
+		}
 		$.ajax({
 				   type: "GET",
 				   dataType:'html',
@@ -3694,6 +3716,8 @@ var convertPackageId = function(packageId){
   </script>
 <!--Scripts ends here-->
 
+
+  
 		</div>
 	</div>
 

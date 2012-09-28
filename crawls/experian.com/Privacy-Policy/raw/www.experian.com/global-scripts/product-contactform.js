@@ -156,11 +156,11 @@ function submitAjaxForm (jCurrentForm, postToUrl, expFormName){
 				}
 				
 				else if(jCurrentForm.find('input[type="hidden"][name="tt"]').val() == 'yes-enterprise'){
-					//try{
-					//	mboxDefineExperianBus(jCurrentForm.find('.formConfirmation').attr('id'),pageUrl.pageId+'_modal_form-success');
-					//	mboxUpdateExperianBus(pageUrl.pageId+'_modal_form-success');
-				//	} 
-				//	catch(e){}
+					try{
+						mboxDefineExperianBus(jCurrentForm.find('.formConfirmation').attr('id'),pageUrl.pageId+'_modal_form-success');
+						mboxUpdateExperianBus(pageUrl.pageId+'_modal_form-success');
+					} 
+					catch(e){}
 				}
 				
 				try{

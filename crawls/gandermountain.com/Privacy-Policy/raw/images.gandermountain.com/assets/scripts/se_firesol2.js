@@ -1,5 +1,7 @@
 isFromADWS();
 toggleFA();
+toggleLogo();
+toggleUFSearch();
 
 function isFromADWS()
 {
@@ -14,6 +16,7 @@ function isFromADWS()
 	else if(!fireRstrct)
 	{ }
 }
+
 function toggleFA()
 {
 	var fireRstrct=getCookie('fire_restrict');
@@ -21,11 +24,47 @@ function toggleFA()
 	{
 		var obj=document.getElementById('hnav_fire_cat'); 
 		if(obj != null) {showObject(obj); }
-		
+
+		var obj2=document.getElementById('hnav_shooting'); 
+		if(obj2 != null) {showObject(obj2); }
+
 		var shoot = getElementsByClass('hnav_shoot_cat');
 		for(i=0; i<shoot.length; i++) 
 		{ shoot[i].style.display = 'block'; }
 
+	}
+}
+
+function toggleLogo()
+{
+	var fireRstrct = getCookie('fire_restrict');
+	if((fireRstrct!=null) && (fireRstrct<4))
+	{
+		document.getElementById("logo").href='http://www.gandermountain.com/indexGoogle.shtml';
+	}else{
+		document.getElementById("logo").href='http://www.gandermountain.com/';
+	}
+}
+
+function toggleUFSearch(){
+	var fireRstrct = getCookie('fire_restrict');
+	var searchDropdown = document.getElementById('ufSelect');
+	if((fireRstrct!=null) && (fireRstrct<4))
+	{	
+		if(searchDropdown.options[1])
+			searchDropdown.remove(1);
+	}else{
+		if(!searchDropdown.options[1]){
+			var ufSearchOption = document.createElement('option');
+			ufSearchOption.text = "Used Firearms";
+			ufSearchOption.value = "1";
+			try{
+				searchDropdown.add(ufSearchOption,null);
+			}catch(ex){
+				searchDropdown.add(ufSearchOption);
+			}
+			
+		}
 	}
 }
 

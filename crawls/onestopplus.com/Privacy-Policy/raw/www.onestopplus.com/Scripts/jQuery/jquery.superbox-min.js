@@ -51,7 +51,7 @@ p=i('<p class="loading">'+w.loadTxt+"</p>").appendTo(r).hide();l.add(t).add(a).c
     //Script open overlayer    
 		jQuery(function(){
 			jQuery.superbox.settings = {
-			    closeTxt: "<img src='//secureimages.redcatsusa.com/images/site_images/mastersite/1024_osp_sb_close.png'  alt='Close X'  />",
+			    closeTxt: "<img src='//secureimages.redcatsecom.com/images/site_images/mastersite/1024_osp_sb_close.png'  alt='Close X'  />",
 				loadTxt: "Loading..."
 			};
 			jQuery.superbox();
@@ -60,6 +60,6 @@ p=i('<p class="loading">'+w.loadTxt+"</p>").appendTo(r).hide();l.add(t).add(a).c
 
 jQuery(document).ready(function() {
     var IE6 = (jQuery.browser.msie && jQuery.browser.version == 6 );
-    if(IE6) {  jQuery('.IE6Close').html("<span>close X</span>")}
+    if (jQuery.browser.msie && jQuery.browser.version == 6) { jQuery('.IE6Close').html("<span>close X</span>") }
 });  		
 

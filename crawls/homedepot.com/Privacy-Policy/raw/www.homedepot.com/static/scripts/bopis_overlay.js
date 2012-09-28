@@ -112,6 +112,7 @@ function addMultiStore(size, catEntId, type, orderItemId, prevStoreNbr) {
 	setUrl();
 	var cookieVal=persistanValue;	
 	var storeArray=cookieVal.split('&quanity_');
+	
 	for(var i=1;i<=storeArray.length-1;i++){
 		// WCS7Up CodeMerge 4.5.2 STARTS
 		var storeNQty = storeArray[i].split('=');
@@ -140,7 +141,14 @@ function addMultiStore(size, catEntId, type, orderItemId, prevStoreNbr) {
 		document.getElementById('multiStore').appendChild(catEntField);
 		
 		k = k + 1;
-	} 
+	}
+
+	var qtyBoxWithZero = $('input.quantity_box').filter(function() { return this.value == "0"; });
+	
+	qtyBoxWithZero.each(function() {
+		$(this).parents('div').parents('div').find('p').children('span:nth-child(7n)').css('display','block');
+		flag = false;
+	});
 	
 	if(flag==true) {
 		var urlField = document.createElement("input");
@@ -163,7 +171,7 @@ function addMultiStore(size, catEntId, type, orderItemId, prevStoreNbr) {
 		persistanValue="";
 		multiForm.submit();
 	}else{
-		ele4.style.display = "block";
+		//ele4.style.display = "block";
 		//send error message to omniture
 		sendError(errorMsg);		
 		return false;
@@ -194,6 +202,7 @@ function onlyNumbers(e){
 	}
 	return true;
 }
+
 function setUrl() {
 	var add2CUrl=persistanValue;
 	if(add2CUrl== null ||add2CUrl=='' || add2CUrl=='null' || add2CUrl=='&'){
@@ -322,8 +331,15 @@ function evaluateInventory(val,inventoryQty,object){
         
     var idx= object.id.split("_");
     var chkboxObj=$('#str_chk_box_ID_'+idx[1]);
-    if(val == null || val == 'undefined'|| val==''){    
+	
+	/*Modified on:8/9/2012, Modified by:Prabha, Description:added an extra condition to Uncheck the check box when the quantity is <1*/
+    
+	//var qtyBoxId = quant_5
+	
+	if(val == null || val == 'undefined'|| val=='' || val<1){    
     	chkboxObj.attr('checked',false);
+		//$(this).closest('p').children('span.invalid_qty').css('display','inline-block');
+		//ele1.style.display = "block";
    }else if(!chkboxObj.attr('checked')){
    		chkboxObj.attr('checked',true);
    }

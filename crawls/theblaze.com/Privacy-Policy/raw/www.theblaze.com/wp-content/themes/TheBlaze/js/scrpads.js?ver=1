@@ -1,0 +1,111 @@
+(function($) {
+	$.blzads = {
+		ord : Math.ceil( Math.random() * 10000000000000000),
+		radiumoneval : null,
+		ckkie_exp : {expires:30, path: '/', domain: document.location.hostname.replace('www.','')},
+		init : function() { 
+			this.radiumoneval = ($.cookie("TheBlazeRA") == "Yes")?"Yes":"No";
+		},
+		util : {
+			iframe : {
+				create : function(w, h, id) {
+					var ifrm = document.createElement('iframe');
+					ifrm.setAttribute('id', 'iframe-' + id);
+					ifrm.setAttribute('border', 0);
+					ifrm.setAttribute('scrolling', 'no');
+					ifrm.setAttribute('frameBorder', 0);
+					ifrm.setAttribute('width', w);
+					ifrm.setAttribute('height', h);
+					return ifrm;
+				},
+				doc: function(ifr) {
+					if (ifr.contentDocument) {
+						// For NS6
+						return ifr.contentDocument;
+					} else if (ifr.contentWindow) {
+						// For IE5.5 and IE6
+						return ifr.contentWindow.document;
+					} else if (ifr.document) {
+						// For IE5
+						return ifr.document;
+					} else {
+						return;
+					}
+				},
+				closeDoc: function(doc, i) {
+					if (i==10) {
+						doc.close();
+					} else {
+						setTimeout(function(){jQuery.blzads.util.iframe.closeDoc(doc,i+1);},20);
+					}
+				}
+			},
+			get_doubleclick_params:function(params){
+				var rt = '', rta ='';
+				$.each(params, function(k,v){
+					if(k == 'prnpage' && v == '' ){ v='home';}
+					rt += k+'='+v+';';
+					rta += k+'*'+v+'!';
+				});
+				rta = rta.substring(0, (rta.length - 1));
+				return rt+'u='+rta;
+			}
+		},
+		create_script_ad : function(id,url,w,h,params,xparams){
+			//return '';
+			//var ifram = this.util.iframe.create(w,h,id);
+			$.extend(params,xparams);
+			var src_url = url+';'+ this.util.get_doubleclick_params(params) +';ord=' + this.ord +'?';
+			//ifram.src = '/wp-content/themes/TheBlaze/js/ads-ifrm.html?ad='+id;
+			//$('#'+id).append(ifram);
+			//var doc = this.util.iframe.doc(ifram);
+			//doc.open();
+			document.write('<script type="text/javascript" src="'+src_url+'"></sc'+'ript>');
+			//document.write('<style type="text/css">html,body{margin:0;padding:0;}</style>');
+			//this.util.iframe.closeDoc(doc, 0);
+			
+		},
+		create_iframe_ad : function(id,url,w,h,params,xparams){
+			var ifram = this.util.iframe.create(w,h,id);
+			$.extend(params,xparams);
+			ifram.src  = url+';'+ this.util.get_doubleclick_params(params) +';ord=' + this.ord +'?';
+			$('#'+id).append(ifram);
+		},
+		create_takeover_ad : function(takeover){
+			takeover = takeover||false;
+			if( !isMobile() && (screen.width > 500) && !isBot() && takeover ){
+				var d = new Date();
+				var ckkie_exp = this.ckkie_exp, entryad_name = 'entryad_D'+d.getDay()+'M'+d.getMonth()+'Y'+d.getFullYear() , entryad_cookie = {};
+				ckkie_exp.expires = 3;
+				var entryad_cookie = $.cookie(entryad_name);
+				if (entryad_cookie !== 'hide3') {
+					tb_show( '', '#TB_inline?width=750&height=600&modal=true' );
+					ad_content = '<style type="text/css">#TB_window iframe{display:block;margin:0 auto;}</style><div style="margin-bottom:15px;"><span class="timeout">Closes in <span id="takeover_time">15</span> seconds</span><a href="#" onClick="tb_remove();" class="close_link" style="float:right;">Close [x]</a></div>';
+					ad_content += '<iframe src="http://ad.doubleclick.net/adi/prnd/prn-theblaze;pos=popup;prntype=web;sz=640x480;ord=' + this.ord + '?" width="640" height="480" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">';
+					if (navigator.userAgent.indexOf("Gecko")==-1) {
+						ad_content += '<script type="text/javascript" src="http://ad.doubleclick.net/adj/prnd/prn-theblaze;pos=popup;prntype=web;sz=640x480;abr=!ie;ord=' + this.ord + '?"><\/script>';
+					}
+					ad_content += '</iframe>';
+					$('#TB_ajaxContent').html(ad_content);
+					takeover_alive = true;
+					takeover_i = 1;
+					function _StartCountDown(){
+						takeover_interval = setInterval(function() {
+							$('#takeover_time').text(15 - takeover_i);
+							if(takeover_i === 15) {
+								clearInterval(takeover_interval);
+								tb_remove();
+							}
+							takeover_i+=1;
+						}, 1000);
+						$.cookie(entryad_name, 'hide3',ckkie_exp);
+					}
+					setTimeout(_StartCountDown,1000);
+				}
+			}
+		}
+	};
+	$.blzads.init(); 
+//	$.blzads.create_takeover_ad(); 
+	
+})(jQuery);

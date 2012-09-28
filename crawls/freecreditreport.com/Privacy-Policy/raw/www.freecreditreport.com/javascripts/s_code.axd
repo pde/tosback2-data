@@ -2,8 +2,12 @@
 Copyright 1997-2010 Omniture, Inc. More info available at
 http://www.omniture.com */
 	
-if(!s_account)
-var s_account = "expilive,expiglobal"
+if(!!window.s) { // Experian / other co-existing s-object already defined
+	window.s_account = "expilive,expiglobal";
+	window.s=null;
+} else { // All other cases, act as normal
+	if(!window.s_account) { var s_account = "expilive,expiglobal"; }
+}
 
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
@@ -123,7 +127,12 @@ function s_doPlugins(s) {
 			s.eVar43=s.prop41=s.getQueryParam('userconfirmed');}			
 		s.eVar4=s.prop4=s.getQueryParam('areaid');
 		s.eVar5=s.prop5=s.c_r('CustomerStatus');
-	
+		if(s.getQueryParam('pcrid')){ 
+			s.eVar62=s.getQueryParam('pcrid');}		
+		if(s.getQueryParam('pmt')){ 
+			s.eVar63=s.getQueryParam('pmt');}
+		if(s.getQueryParam('pkw')){ 
+			s.eVar66=s.getQueryParam('pkw');}
 		
 	/* Set and Read a customer number */
 		if(s.c_r('OMTRcn') && s.c_r('OMTRcn') != 0){

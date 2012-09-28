@@ -13,72 +13,76 @@ JB.Model.Cache = {};
  * @param {Function} callback Callback function.
  */
 
-JB.Model.getAirports = function(url, callback){
-	var self = this;
-	// Parameter Shift
-	if($.isFunction(url)){
-		var callback = url;
-		var url = null;
-	}
-	if(!!JB.Model.Cache.airports && $.isFunction(callback)){
-		callback(JB.Model.Cache.airports);
-		return;
-	}
-	var countries = {};
-	$.map(aRegions, function(region){
-		if(!!region.countries){
-			for(var i = 0; i < region.countries.length; i++){
-				countries[region.countries[i]] = {
-					name: region.name,
-					code: region.code,
-					country: region.countries[i]
-				}
-			}
-		}
-	});
-	var airportsCode = $.map(countries, function(country){
-		return $.extend(eval("c" + country.country).airports, eval("c" + country.country).airports);
-	});
-	// Sanatized Airports
-	var airports = $.map(airportsCode, function(airport){
-		var airport = (typeof airport === "string") ? eval("o" + airport) : null;
-		if(!airport) return;
-		var routes = eval("r" + airport.code);
-		return {
-			label: airport.name,
-			code: airport.code,
-			jb: airport.jb,
-			cc: airport.cc,
-            duplicate: airport.duplicate == undefined ? false : true,
-			country: eval("c" + airport.cc).name,
-			region: countries[airport.cc],
-			routes: routes
-		};
-	});
-	// ASC sort airports by country name
-	airports.sort(function(a, b){
-		var labelA = a.country.toLowerCase(), labelB = b.country.toLowerCase();
-		if(labelA < labelB) return -1;
-		if(labelA > labelB) return 1
-		return 0;
-	});
-	var airportsByCountry = {};
-	for(var i = 0; i < airports.length; i++){
-		if(!!!(airportsByCountry[airports[i].country])) airportsByCountry[airports[i].country] = [];
-		airportsByCountry[airports[i].country].push(airports[i]);
-	}
-	var airports = [];
-	for(country in airportsByCountry){
-		airportsByCountry[country].sort(function(a, b){
-			var labelA = a.label.toLowerCase(), labelB = b.label.toLowerCase();
-			if(labelA < labelB) return -1;
-			if(labelA > labelB) return 1
-			return 0;
-		});
-		airports = airports.concat(airportsByCountry[country]);
-	}
-	if($.isFunction(callback)) callback(airports);
-	JB.Model.Cache.airports = airports; // Cache
+JB.Model.getAirports = function (url, callback) {
+    var self = this;
+    // Parameter Shift
+    if ($.isFunction(url)) {
+        var callback = url;
+        var url = null;
+    }
+    if (!!JB.Model.Cache.airports && $.isFunction(callback)) {
+        callback(JB.Model.Cache.airports);
+        return;
+    }
+    var countries = {};
+    $.map(aRegions, function (region) {
+        if (!!region.countries) {
+            for (var i = 0; i < region.countries.length; i++) {
+                countries[region.countries[i]] = {
+                    name: region.name,
+                    code: region.code,
+                    country: region.countries[i]
+                }
+            }
+        }
+    });
+    var airportsCode = $.map(countries, function (country) {
+        return $.extend(eval("c" + country.country).airports, eval("c" + country.country).airports);
+    });
+    // Sanatized Airports
+    var airports = $.map(airportsCode, function (airport) {
+        var airport = (typeof airport === "string") ? eval("o" + airport) : null;
+        if (!airport) return;
+        if (window["r" + airport.code] != undefined) {
+            var routes = eval("r" + airport.code);
+            return {
+                label: airport.name,
+                code: airport.code,
+                jb: airport.jb,
+                cc: airport.cc,
+                duplicate: airport.duplicate == undefined ? false : true,
+                country: eval("c" + airport.cc).name,
+                region: countries[airport.cc],
+                routes: routes
+            };
+        } else {
+            return;
+        }
+    });
+    // ASC sort airports by country name
+    airports.sort(function (a, b) {
+        var labelA = a.country.toLowerCase(), labelB = b.country.toLowerCase();
+        if (labelA < labelB) return -1;
+        if (labelA > labelB) return 1
+        return 0;
+    });
+    var airportsByCountry = {};
+    for (var i = 0; i < airports.length; i++) {
+        if (!!!(airportsByCountry[airports[i].country])) airportsByCountry[airports[i].country] = [];
+        airportsByCountry[airports[i].country].push(airports[i]);
+    }
+    var airports = [];
+    for (country in airportsByCountry) {
+        airportsByCountry[country].sort(function (a, b) {
+            var labelA = a.label.toLowerCase(), labelB = b.label.toLowerCase();
+            if (labelA < labelB) return -1;
+            if (labelA > labelB) return 1
+            return 0;
+        });
+        airports = airports.concat(airportsByCountry[country]);
+    }
+    if ($.isFunction(callback)) callback(airports);
+    JB.Model.Cache.airports = airports; // Cache
 };
 
 

@@ -52,22 +52,22 @@ adSetAdURL('http://' + ((document.domain && document.domain != '')?document.doma
         	              	
 	<title>Privacy Policy</title>
 
-	<link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=verticals%252Fdefault.css%252Ctopnav_new%252Fmodule.edition_nav.css%252Cbasic.css%252Cmasthead.css%252Call_pages.css%252Cmaster.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=site_promo.css%252Cpoll_like.css%252Csearch_autocomplete.css%252Csocial-navbar.css%252Chp_modules%252Fmodule.apps_feeds.css%252Ch.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=twitter.css%252Cbing.css%252Csubmissions.css%252Chp_modules%252Fmodule.bubble.css%252Chp_modules%252Fmodule.sponsor-widgets.css%252.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=snp_friends.css%252Csnn-header.css%252Csignup_modal.css%252Chuff_promo.css%252Cmodal_window.css%252Cread-edge.css%252Cfonts%252Fope.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=verticals%252Fdefault.css%252Ctopnav_new%252Fmodule.edition_nav.css%252Cbasic.css%252Cmasthead.css%252Call_pages.css%252Cmaster.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=poll_like.css%252Csearch_autocomplete.css%252Csocial-navbar.css%252Chighlights.css%252Chp_modules%252Fmodule.apps_feeds.css%252Ch.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=twitter.css%252Cbing.css%252Csubmissions.css%252Chp_modules%252Fmodule.bubble.css%252Chp_modules%252Fmodule.sponsor-widgets.css%252.css" type="text/css" media="screen" /><link rel="stylesheet" href="../../s.huffpost.com/assets/css.php%3Ff=snp_friends.css%252Csnn-header.css%252Csignup_modal.css%252Chuff_promo.css%252Cmodal_window.css%252Cread-edge.css%252Cfonts%252Fope.css" type="text/css" media="screen" />
 			
      
 
 	  	  	  	  
           
-	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=yui.js%252Cjquery.js&amp;v55266" ></script>
-	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=jquery%252Fjquery.I18N.js%252Clocale%252Fdefault.js%252Csprintf-0.7.js&amp;v70064" ></script> 
+	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=yui.js%252Cjquery.js&amp;vcfcd20" ></script>
+	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=jquery%252Fjquery.I18N.js%252Clocale%252Fdefault.js%252Csprintf-0.7.js&amp;vcfcd20" ></script> 
 						
 	
 	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=huff.js%252Chp_config.js%252Chp_app.js%252Chp_plugins_default.js%252Chp_plugins_default_yui.js%252Chp_init.js%252Cjquery%252Fjquery."></script>
 	<script type="text/javascript">huff.v()</script>
-	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=v.js&amp;v88157"></script>
+	<script type="text/javascript" src="../../s.huffpost.com/assets/js.php%3Ff=v.js&amp;v01386b"></script>
 
 			<script type="text/javascript">
-			jQuery.getScript('http://s.huffpost.com/assets/js.php?f=', function(){
+			jQuery.getScript('http://s.huffpost.com/assets/js.php?f=&amp;vcfcd20', function(){
 				huff.emit('ready');
 			});
 		</script>
@@ -104,7 +104,7 @@ huff.use('front/bignews', 'bpage/threeup', 'bpage');
                       "site_and_category":"huffpost.general",
                       "package":""
                   };
-              </script><!-- Commercial Badges Initialization --><script type="text/javascript"> badge_promo_ad = { "crime-solver": {"badge":"crime-solver","custom_html":"<a href="http://www.huffingtonpost.com/privacy/\&quot;http:\/\/www.huffingtonpost.com\/news\/armchair-detective\&quot;"><img src="http://www.huffingtonpost.com/privacy/\&quot;http:\/\/big.assets.huffingtonpost.com\/tnt_armchair_logo.png\&quot;" alt=\"TNT\" border=\"0\" height=\"45\" width=\"190\"\/><\/a><!--img src=\"http:\/\/big.assets.huffingtonpost.com\/tnt_sponsor_logo.gif\" alt=\"TNT\" border=\"0\" height=\"45\" width=\"123\"\/-->","commercial_text":""}};</script>
+              </script>
 <!-- tacProp object -->
 <script type="text/javascript">
                 tacProp={vert:"Homepage",tags:"kvpagetype=atf;kvvert=general;kvspon=y;"};
@@ -164,14 +164,22 @@ huff.use('front/bignews', 'bpage/threeup', 'bpage');
 	HPConfig.bit_ly_key = {"_Note":"bit.ly public key, will generate huff.to links only for whitelisted domains","user_name":"huffpostapi","user_key":"R_d7766e99c939e9f2b0c074c155e98b83"};
 	HPConfig.entry_expanded = 0;
 	            HPAds.social_campaigns = {"all_on_everywhere":false};
+    // websocket support
+      
+            huff.use('ws/websocket', 'jquery', function(ws, $) {
+                var channel = 'huffpost';
+                ws.subscribe(channel);
+            });
+    
+
     	
 	HPConfig.terms_link = "http://www.huffingtonpost.com/terms.html";
 	HPConfig.privacy_link = "";
 </script>
 
 <script type="text/javascript">
-	HPConfig.fb_recom_version = 2;
-	HPConfig.most_popular_version = 3;
+	HPConfig.fb_recom_version = 1;
+	HPConfig.most_popular_version = 1;
 </script>
 
     <div id="fb-root"></div>
@@ -288,7 +296,7 @@ d.getElementsByTagName('head')[0].appendChild(s);
 	{
 		ad_spec = {
 			"zone_info": "huffpost.general",
-			"ord": 1345227623,
+			"ord": 1348874236,
 			"tile": 3,
 			"width": 300,
 			"height": 250,
@@ -351,11 +359,17 @@ d.getElementsByTagName('head')[0].appendChild(s);
 
 <div id="big_news_update">
 <ul class="big_news_ontop">
-<li><a href="http://www.huffingtonpost.com/news/election-2012-blog/" class="big_news_item first bn_v_politics" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Election 2012</a></li><li><a href="http://www.huffingtonpost.com/news/@primacy_movies/" class="big_news_item bn_v_celebrity" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Movies</a></li><li><a href="http://www.huffingtonpost.com/news/fashion/" class="big_news_item bn_v_style" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Fashion</a></li><li><a href="http://www.huffingtonpost.com/news/fast-food/" class="big_news_item bn_v_food" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Fast Food</a></li></ul>
+<li><a href="http://www.huffingtonpost.com/news/sofia-vergara/" class="big_news_item bn_v_latino-voices" onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Sofia Vergara</a></li></ul>
 </div>
  
 <div class="more_in_bignews">
-<script type="text/javascript">ads_top_bar_sponsor_links = ['<a href="http://www.huffingtonpost.com/news/smarter-ideas" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Smarter Ideas</a>','<a href="http://www.huffingtonpost.com/news/armchair-detective" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Armchair Detective</a>','<a href="http://www.huffingtonpost.com/news/mazda-the-choice" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">The Choice</a>','<a href="http://livebetteramerica.aol.com/" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Live Better America</a>'];document.write(ads_top_bar_sponsor_links[Math.floor(Math.random()*(ads_top_bar_sponsor_links.length))]);</script>    </div>
+<script type="text/javascript">ads_top_bar_sponsor_links = ['<a href="http://www.huffingtonpost.com/news/smarter-ideas" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Smarter Ideas</a>','<a href="http://www.huffingtonpost.com/news/armchair-detective" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Armchair Detective</a>','<a href="http://www.huffingtonpost.com/news/mazda-the-choice" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">The Choice</a>','<a href="http://livebetteramerica.aol.com/" class="margin_right_10" onclick="HPTrack.trackPageview(\'/t/a/topnav_bignews/v2\');">Live Better America</a>'];document.write(ads_top_bar_sponsor_links[Math.floor(Math.random()*(ads_top_bar_sponsor_links.length))]);</script>
+  <a href="http://itunes.apple.com/us/app/the-huffington-post/id306621789?mt=8" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">iPhone app</a>
+  <a href="http://itunes.apple.com/us/app/huffington-post-for-ipad/id376304186?mt=8" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">iPad app</a>
+  <a href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android&hl=en" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Android phone app</a>
+  <a href="https://play.google.com/store/apps/details?id=com.huffingtonpost.android.tablet&hl=en" class="margin_right_10" data-beacon='{"p":{"lnid":"bgNewsMore"}}' onclick="HPTrack.trackPageview('/t/a/topnav_bignews/v2');">Android tablet app</a>
+
+    </div>
 
 <div class="clear"></div>
 </div>
@@ -375,18 +389,6 @@ d.getElementsByTagName('head')[0].appendChild(s);
 
         <ul class="user-nav no-select">
         
-                    <li class="notifications">
-                <a href="javascript:void(0);" class="notifications-link">
-                    <span class="caption bold">Notifications</span>
-                    <span class="counter-box">
-                        <span class="t"></span>
-                        <span class="v value bold"></span>
-                    </span>
-                </a>
-                <div id="social-nav-bar" class="visibility_hidden">
-                    <div class="popup"></div>
-                </div>
-            </li>
         
             <li class="wendybird_user_data">
                 <div class="clearfix display_none" id="avatar_logged_in"></div>
@@ -428,7 +430,7 @@ d.getElementsByTagName('head')[0].appendChild(s);
 		<div class="clear"></div>
 	
 <div id="logo" data-beacon='{"p":{"mnid":"logo","mlid":"masthead"}}' class="data center georgia_12 margin_top_7 color_666666">
-    August 17, 2012    <h2 class="margin_top_7">
+    September 28, 2012    <h2 class="margin_top_7">
         	<a href="http://www.huffingtonpost.com/">
     		<img src="../../s.huffpost.com/images/v/logos/bpage/homepage.gif%3F29" alt="homepage" />
         	
@@ -462,7 +464,6 @@ d.getElementsByTagName('head')[0].appendChild(s);
 </script>
 
 <div class="clearfix margin_top_5 margin_right_10 margin_left_15 social_search_panel margin_bottom_5">
-
 	<div class="float_left edition_holder">
             			
             <div id="edition_nav" class="arial_11 float_left relative edition_nav">
@@ -472,16 +473,14 @@ d.getElementsByTagName('head')[0].appendChild(s);
                         <li>
                             <a href="http://www.huffingtonpost.com/?country=CA">
                                 <span>CA</span> Canada                            </a>
-                            <ul>
-                                <li>
-                                    <a href="http://quebec.huffingtonpost.ca/">
-                                        &nbsp;Qu&eacute;bec                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li>
                             <a href="http://www.huffingtonpost.com/?country=FR">
                                 <span>FR</span> France                            </a>        
+                        </li>
+                        <li>
+                            <a href="http://www.huffingtonpost.com/?country=IT">
+                                <span>IT</span> Italy                            </a>        
                         </li>
                         <li>
                             <a href="http://www.huffingtonpost.com/?country=ES">
@@ -524,15 +523,8 @@ d.getElementsByTagName('head')[0].appendChild(s);
     <div class="bnpage_vertical_fb_like social_list float_right">
         <table>
             <tr>
-                <td><div hp_track='Front Page' class="fb-like">
-    <iframe
-        src="../../www.facebook.com/plugins/like.php%3Fhref=http%253A%252F%252Fwww.facebook.com%252FHuffingtonPost&amp;send=false&amp;layout=button_count&amp;width=95&amp;show_faces=false&amp;action=li.html"
-        scrolling="no"
-        frameborder="0"
-        style="border:none; overflow:hidden; width:95px; height:21px;"
-        allowTransparency="true"
-    ></iframe>
-</div><script type="text/javascript">
+                <td><div class="fb-like" data-href="http://www.facebook.com/HuffingtonPost" data-send="false" data-layout="button_count" data-width="95" data-show-faces="false" data-colorscheme="light" data-font="trebuchet ms" data-action="like" ref="" style="width: 95px" hp_track="Front Page"></div>
+<script type="text/javascript">
 jQuery('#fb_like_vertical').mouseenter(function() {
 	var html = "<div id=\"fb-tooltip\" class=\"fb-tooltip-main\"><div class=\"fb-tooltip-wrapper\"><span>Follow us on Facebook</span><br/>Get updates from HuffPost  posted directly to your News Feed.<div class=\"corner\"><div class=\"first\"></div><div class=\"second\"></div></div></div></div>";
 	var coords = [-5, -78];
@@ -596,40 +588,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141509 -->
+							<!-- last update is 20120928_191506 -->
 															<ul>
-																			<li id='id_trending_1790411'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/mitt-romney-tax-rate_n_1790411.html?ir=Politics">Romney: 'I Never Paid Less Than 13 Percent' In Taxes																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922560'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/romney-bush-favorability_n_1922560.html?ir=Politics">Mitt Romney Has Lower Favorability Ratings Than George W. Bush, Poll Finds																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">58k</span>
+													<span class="comments-count">14k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1785482'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/jan-brewer-executive-order_n_1785482.html?ir=Politics">Brewer Defies Obama On DREAM-Like Program																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921430'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/sarah-palin-lawsuit_n_1921430.html?ir=Politics">Ruling Issued In Palin Lawsuit																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">17k</span>
+													<span class="comments-count">1k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1796291'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/obama-romney-tax-returns_n_1796291.html?ir=Politics">Obama Campaign To Romney: Release 5 Years Of Tax Returns																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921455'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/mitt-romney-ohio-ground-game_n_1921455.html?ir=Politics">Mitt Romney Moves Frantically Catch Obama's Ohio Ground Game																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">19k</span>
+													<span class="comments-count">9k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1795607'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/tom-morello-paul-ryan-rage-against-the-machine_n_1795607.html?ir=Politics">Paul Ryan's Favorite Band Writes Brutal Op-Ed Against Him																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1920396'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/mitt-romney-sensata-tax-break_n_1920396.html?ir=Politics">Romney Enjoys Tax Break Off Bain-Owned Outsourcer																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">6k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1790556'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/donald-trump-republican-national-convention_n_1790556.html?ir=Politics">Donald Trump's Republican National Convention Surprise Has Been Ruined For Everybody																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922698'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/allen-west-ad_n_1922698.html?ir=Politics">Allen West Goes There: Congressman Uses Opponent's Mugshot In New Ad																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">4k</span>
 												</span>
 																							</a>
 										</li>
@@ -644,7 +636,7 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 						<div class="more_box">
 															<strong class="title">More in Politics</strong>
 								<ul class="vertical_list">
-																			<li><a href="http://www.huffingtonpost.com/news/pollster/">Pollster</a></li>										<li><a href="http://www.huffingtonpost.com/news/election-2012-blog/">2012 Blog</a></li>										<li><a href="http://www.huffingtonpost.com/news/2012-speculatron/">Speculatron</a></li>										<li><a href="http://www.offthebus.org">Off The Bus</a></li>										<li><a href="http://elections.huffingtonpost.com/">Election Dashboard</a></li>								</ul>
+																			<li><a href="http://www.huffingtonpost.com/news/pollster/">Pollster</a></li>										<li><a href="http://www.huffingtonpost.com/news/election-2012-blog/">2012 Blog</a></li>										<li><a href="http://www.huffingtonpost.com/news/2012-speculatron/">Speculatron</a></li>										<li><a href="http://www.offthebus.org">Off The Bus</a></li>										<li><a href="http://elections.huffingtonpost.com/">Election Maps</a></li>								</ul>
 							
 															<strong class="title">You might also like</strong>
 								<ul class="like_list">
@@ -660,40 +652,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_142023 -->
+							<!-- last update is 20120928_191504 -->
 															<ul>
-																			<li id='id_trending_1790027'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/jim-donnan-ponzi-scheme-football_n_1790027.html?ir=Business">Jim Donnan, Hall Of Fame Football Coach, Accused Of Running $80 Million Ponzi Scheme																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1920096'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/mahmoud-ahmadinejad-shopping-spree_n_1920096.html?ir=Business">Iranian Diplomats Stocking Up On Shoes, Shampoo																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">336</span>
+													<span class="comments-count">436</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1791177'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/hotel-shangri-la-discriminated-against-jews_n_1791177.html?ir=Business">LA Hotel Owner: 'Get The [Expletive] Jews Out Of My Pool!'																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922352'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/bank-of-america-settlement-merrill-lynch_n_1922352.html?ir=Business">BofA Agrees On $2.5 BILLION Settlement 																								<span class="comments" data-anchor="#comments">
+													<span class="talkbubble"><span></span></span>
+													<span class="comments-count">445</span>
+												</span>
+																							</a>
+										</li>
+																			<li id='id_trending_1922089'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/france-tax-rich-rate_n_1922089.html?ir=Business">France Unveils <em>75 Percent</em> Super-Rich Tax Rate 																								<span class="comments" data-anchor="#comments">
+													<span class="talkbubble"><span></span></span>
+													<span class="comments-count">2k</span>
+												</span>
+																							</a>
+										</li>
+																			<li id='id_trending_1920944'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/bain-workers-bus-tour-romney_n_1920944.html?ir=Business">Bain Workers To Slam 'Romney Economy' Until Election Day																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
 													<span class="comments-count">1k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1791198'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/jon-corzine-hedge-fund_n_1791198.html?ir=Business">Jon Corzine Wants To Start A Hedge Fund. Seriously.																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1918202'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/australians-statistician-wealthier_n_1918202.html?ir=Business">One Country Just Found An Extra $338 BIllion Lying Around																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">1k</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1791780'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/fedex-chili-pepper_n_1791780.html?ir=Business">FedEx Workers Hospitalized After Enormous Chili Pepper Extract Leak																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">207</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1791008'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/airbnb-ceo-brian-chesky_n_1791008.html?ir=Business">This Guy May Have Stumbled On A Solution To The Foreclosure Crisis																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">239</span>
+													<span class="comments-count">146</span>
 												</span>
 																							</a>
 										</li>
@@ -724,40 +716,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141507 -->
+							<!-- last update is 20120928_191505 -->
 															<ul>
-																			<li id='id_trending_1784525'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/dave-mustaine-megadeth-si_n_1784525.html?ir=Entertainment">Dave Mustaine: Obama 'Staged' Aurora, Sikh Shootings																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921162'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/mark-ruffalo-avengers-photo_n_1921162.html?ir=Entertainment">Mark Ruffalo Wasn't Always The Hulk (PHOTO)																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">7k</span>
+													<span class="comments-count">99</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1795607'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/tom-morello-paul-ryan-rage-against-the-machine_n_1795607.html?ir=Entertainment">Paul Ryan's Favorite Band Writes Brutal Op-Ed Against Him																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1918806'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/lil-wayne-elvis-billboard-record_n_1918806.html?ir=Entertainment">Lil Wayne Beats Elvis																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">843</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1795570'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/pussy-riot-trial-guilty_n_1795570.html?ir=Entertainment">Judge: Pussy Riot Guilty Of Hooliganism																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921124'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/diana-movie-paparazzi_n_1921124.html?ir=Entertainment">'Diana' Filmmakers Strike Deal With Paparazzi																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">41</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1779123'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/compliance-movie-film_n_1779123.html?ir=Entertainment">The Most Disturbing Film Of All Time?																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1916065'>
+											<a href="http://www.huffingtonpost.com/2012/09/26/beach-boys-dump-three-members-public-statement-uk-tour_n_1916065.html?ir=Entertainment">The Beach Boys Dump Three Founding Members																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">1k</span>
+													<span class="comments-count">2k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1783904'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/ezra-miller-gay-comes-out-perks-of-being-a-wallflower_n_1783904.html?ir=Entertainment">Star Of The Much-Anticipated Fall Film Comes Out 																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922571'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/funny-women-comedies-pitch-perfect_n_1922571.html?ir=Entertainment">Who Said Women Aren't Funny?																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">341</span>
+													<span class="comments-count">39</span>
 												</span>
 																							</a>
 										</li>
@@ -788,40 +780,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141510 -->
+							<!-- last update is 20120928_191507 -->
 															<ul>
-																			<li id='id_trending_1783176'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/kim-kardashian-eric-schmidt_n_1783176.html?ir=Technology">What Do The Chairman Of Google And Kim Kardashian Have In Common?																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922378'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/tim-cook-apology-apple-maps_n_1922378.html?ir=Technology">Apple CEO Offers Apology For Maps Debacle 																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">442</span>
+													<span class="comments-count">1k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1783819'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/tsa-items-craziest-airport-security_n_1783819.html?ir=Technology">Breast Pumps, Grenade Launchers And More: The 15 Craziest Items People Tried To Bring On Planes																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1916825'>
+											<a href="http://www.huffingtonpost.com/2012/09/26/hitachi-data-glass-one-hundred-million-years_n_1916825.html?ir=Technology">This Tiny Square Could Store Data For 100 Million Years																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">87</span>
+													<span class="comments-count">529</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1789111'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/netflix-unveils-post-play_n_1789111.html?ir=Technology">Netflix Rolls Out Addictive New Feature																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1919854'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/things-we-cant-do-without-google_n_1919854.html?ir=Technology">13 Things We CAN'T Do Without Google																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">680</span>
+													<span class="comments-count">107</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1773402'>
-											<a href="http://www.huffingtonpost.com/2012/08/14/facebook-banned-suspended-what-not-to-do_n_1773402.html?ir=Technology">9 Ways To Get Kicked Right Off Facebook																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921324'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/ios-maps-apple-google_n_1921324.html?ir=Technology">5 Reasons Apple Broke Up With Google Over Maps																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">374</span>
+													<span class="comments-count">367</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1772902'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/iphone-sell-iphone-5_n_1772902.html?ir=Technology">A New iPhone Is Coming; Here's The Best Time To Sell Your Old iPhone																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1921161'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/searchxxx-porn-search-engine_n_1921161.html?ir=Technology">Search.xxx Porn Search Engine Launches (Because It's So Hard To Find Porn Online)																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">538</span>
+													<span class="comments-count">261</span>
 												</span>
 																							</a>
 										</li>
@@ -852,40 +844,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141508 -->
+							<!-- last update is 20120928_191506 -->
 															<ul>
-																			<li id='id_trending_1790381'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/al-roker-matt-lauer-awkward-today_n_1790381.html?ir=Media">WATCH: Did Al Roker Just Go There?																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1919840'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/whoopi-goldberg-ann-coulter-view-know-being-black_n_1919840.html?ir=Media">WATCH: Whoopi Goldberg Explodes At Ann Coulter																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">317</span>
+													<span class="comments-count">5k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1788717'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/julian-assange-asylum-ecuador_n_1788717.html?ir=Media">Julian Assange Granted Asylum																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">12k</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1792081'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/fareed-zakaria-time-columns-review_n_1792081.html?ir=Media">FAREED AT LAST																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">1k</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1778393'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/anderson-cooper-andy-cohen-croatia-pictures_n_1778393.html?ir=Media">PHOTOS: Guess Who Anderson Cooper's On Vacay With																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">598</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1795749'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/toure-romney-niggerization-obama_n_1795749.html?ir=Media">WATCH: MSNBC Host Hits Romney With N-Word Accusation																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922393'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/wolf-blitzer-polls-fox-news_n_1922393.html?ir=Media">WATCH: Wolf Blitzer Smacks Down Wild GOP Allegation																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
 													<span class="comments-count">3k</span>
+												</span>
+																							</a>
+										</li>
+																			<li id='id_trending_1922120'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/sun-prince-harry-photos_n_1922120.html?ir=Media">Palace Won't Complain Over Naked Prince Harry Photos																								<span class="comments" data-anchor="#comments">
+													<span class="talkbubble"><span></span></span>
+													<span class="comments-count">181</span>
+												</span>
+																							</a>
+										</li>
+																			<li id='id_trending_1915975'>
+											<a href="http://www.huffingtonpost.com/2012/09/26/joe-scarborough-romney-ryan-sweet-jesus_n_1915975.html?ir=Media">WATCH: Joe Scarborough's Hilarious Reaction To Mitt Romney																								<span class="comments" data-anchor="#comments">
+													<span class="talkbubble"><span></span></span>
+													<span class="comments-count">5k</span>
+												</span>
+																							</a>
+										</li>
+																			<li id='id_trending_1923971'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/shep-smith-apologizes-fox-news-apparent-suicide-live-messed-up_n_1923971.html?ir=Media">WATCH: Shep Smith Apologizes For Airing Apparent Suicide																								<span class="comments" data-anchor="#comments">
+													<span class="talkbubble"><span></span></span>
+													<span class="comments-count">984</span>
 												</span>
 																							</a>
 										</li>
@@ -916,40 +908,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141512 -->
+							<!-- last update is 20120928_191508 -->
 															<ul>
-																			<li id='id_trending_1784500'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/bill-clinton-meets-bill-clinton-uganda_n_1784500.html?ir=World">LOOK: Bill Clinton Meets Bill Clinton																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1920343'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/benjamin-netanyahu-world-red-line-iran_n_1920343.html?ir=World">Netanyahu: It's Getting 'Late, Very Late' To Stop Iran																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">2k</span>
+													<span class="comments-count">7k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1790021'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/south-africa-mine-shooting_n_1790021.html?ir=World">Police Open Fire On Striking Workers																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1919327'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/f-22-glitch-predicted-air-force_n_1919327.html?ir=World">PHOTOS: Air Force Insiders Predicted Fatal F-22 Glitch																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">285</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1795570'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/pussy-riot-trial-guilty_n_1795570.html?ir=World">Judge: Pussy Riot Guilty Of Hooliganism																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922441'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/everest-plane-crash_n_1922441.html?ir=World">No Survivors In Fiery Plane Crash																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">3k</span>
+													<span class="comments-count">36</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1777258'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/national-geographic-photo-contest_n_1777258.html?ir=World">PHOTOS: National Geographic Traveler Contest Winners																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922637'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/hina-rabbani-khar-drones_n_1922637.html?ir=World">Pakistani Official: Drones Are Top Reason For Anti-Americanism																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">89</span>
+													<span class="comments-count">4k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1788717'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/julian-assange-asylum-ecuador_n_1788717.html?ir=World">Julian Assange Granted Asylum																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1919566'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/sumiyoshi-kai-japan-yakuza-blacklisted_n_1919566.html?ir=World">U.S. Blacklists Yakuza Mob Family																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">12k</span>
+													<span class="comments-count">11</span>
 												</span>
 																							</a>
 										</li>
@@ -974,104 +966,44 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					</div>
 							</div>
 		</li>
-			<li class="n_arts n_empty" id="li_arts">
-			<div class="relative">
-									<a class="topnav_tab_link" href="http://www.huffingtonpost.com/arts/">Arts <span class="arrow-down"></span></a>
-					<div class="menu absolute">
-						<div class="menu_h clearfix">
-						<div class="trending">
-							<!-- last update is 20120817_142012 -->
-															<ul>
-																			<li id='id_trending_1779123'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/compliance-movie-film_n_1779123.html?ir=Arts">The Most Disturbing Film Of All Time?																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">1k</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1777258'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/national-geographic-photo-contest_n_1777258.html?ir=Arts">PHOTOS: National Geographic Traveler Contest Winners																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">89</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1789239'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/grand-palace-in-brussels-_n_1789239.html?ir=Arts">Giant Carpet Made From 600,000 Flowers!																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">22</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1789487'>
-											<a href="http://www.huffingtonpost.com/2012/08/17/photographer-gustavo-lace_n_1789487.html?ir=Arts">Stunning Photo Series Gives Albinos A Closer Look																								<span class="comments" data-anchor="#comments">
-													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">18</span>
-												</span>
-																							</a>
-										</li>
-																			<li id='id_trending_1784154'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/french-artist-laurent-che_n_1784154.html?ir=Arts">Surreal Shots Of Flying Houses																							</a>
-										</li>
-									                                </ul>
-                                                                                    <div class="vertical_info">
-								<div class="float_right social_widget">
-                                    <div class="i_v_fb_like like_fb_like_action  i_v_with_count"></div>
-                                    								</div>
-								<a href="http://www.huffingtonpost.com/arts/">Go to Arts <span class="arrow"><span></span></span></a>
-							</div>
-						</div>
-						<div class="more_box">
-															<strong class="title">More in Arts</strong>
-								<ul class="vertical_list">
-																			<li><a href="http://www.huffingtonpost.com/news/painting/">Painting</a></li>										<li><a href="http://www.huffingtonpost.com/news/film/">Film</a></li>										<li><a href="http://www.huffingtonpost.com/news/design/">Design</a></li>										<li><a href="http://www.huffingtonpost.com/news/photography/">Photography</a></li>										<li><a href="http://www.huffingtonpost.com/news/theatre/">Theater</a></li>										<li><a href="http://www.huffingtonpost.com/news/architecture/">Architecture</a></li>								</ul>
-							
-															<strong class="title">You might also like</strong>
-								<ul class="like_list">
-																			<li><a href="http://www.huffingtonpost.com/books/">Books</a></li>										<li><a href="http://www.huffingtonpost.com/new-york/">New York</a></li>										<li><a href="http://www.huffingtonpost.com/los-angeles/">Los Angeles</a></li>								</ul>
-													</div>
-						</div>
-					</div>
-							</div>
-		</li>
 			<li class="n_healthy-living n_empty" id="li_healthy-living">
 			<div class="relative">
 									<a class="topnav_tab_link" href="http://www.huffingtonpost.com/healthy-living/">Healthy Living <span class="arrow-down"></span></a>
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141507 -->
+							<!-- last update is 20120928_191505 -->
 															<ul>
-																			<li id='id_trending_1756208'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/i-lost-weight-kris-webb_n_1756208.html?ir=Healthy+Living">Kris Lost 180 Pounds: 'I Have My Life, And For That I Will Always Be Thankful'																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1913193'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/fall-allergy-capitals-2012_n_1913193.html?ir=Healthy+Living">The 20 Worst Places To Live For Fall Allergies																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">42</span>
+													<span class="comments-count">116</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1784377'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/food-for-bones_n_1784377.html?ir=Healthy+Living">9 Of The Healthiest Foods For Your Bones																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1905410'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/health-staples_n_1905410.html?ir=Healthy+Living">15 Essential Staples For Any Healthy Kitchen																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">69</span>
+													<span class="comments-count">121</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1776434'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/paul-ryan-p90x_n_1776434.html?ir=Healthy+Living">Paul Ryan And 7 Other Famous P90X Devotees																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1916252'>
+											<a href="http://www.huffingtonpost.com/2012/09/26/bladder-cancer-andy-williams-moon-river_n_1916252.html?ir=Healthy+Living">'Moon River' Singer Andy Williams Dies From Bladder Cancer: What Is It?																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">277</span>
+													<span class="comments-count">57</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1776205'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/i-lost-weight-loss-success-stories_n_1776205.html?ir=Healthy+Living">The Most Inspirational Weight Loss Success Stories Of The Summer																							</a>
-										</li>
-																			<li id='id_trending_1784361'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/male-birth-control-jq1-sperm-count_n_1784361.html?ir=Healthy+Living">New Finding Could Make Male Birth Control A Reality																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1910362'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/antioxidants-heart-attack-women-risk_n_1910362.html?ir=Healthy+Living">Antioxidant-Rich Diet Could Lower Women's Heart Attack Risk: Study																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">359</span>
+													<span class="comments-count">11</span>
 												</span>
 																							</a>
+										</li>
+																			<li id='id_trending_1920443'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/worst-heart-problems-2012_n_1920443.html?ir=Healthy+Living">The 10 Worst U.S. Cities For Heart Problems																							</a>
 										</li>
 									                                </ul>
                                                                                     <div class="vertical_info">
@@ -1084,11 +1016,11 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 						<div class="more_box">
 															<strong class="title">More in Healthy Living</strong>
 								<ul class="vertical_list">
-																			<li><a href="http://www.huffingtonpost.com/health-fitness/">Health and Fitness</a></li>										<li><a href="http://www.huffingtonpost.com/gps-for-the-soul/">GPS for the Soul</a></li>										<li><a href="http://www.huffingtonpost.com/health-news/">Health News</a></li>										<li><a href="http://www.huffingtonpost.com/news/becoming-fearless/">Becoming Fearless</a></li>										<li><a href="http://www.huffingtonpost.com/news/sleep/">Sleep</a></li>								</ul>
+																			<li><a href="http://www.huffingtonpost.com/gps-for-the-soul/">GPS for the Soul</a></li>										<li><a href="http://www.huffingtonpost.com/health-fitness/">Health and Fitness</a></li>										<li><a href="http://www.huffingtonpost.com/health-news/">Health News</a></li>										<li><a href="http://www.huffingtonpost.com/news/becoming-fearless/">Becoming Fearless</a></li>										<li><a href="http://www.huffingtonpost.com/news/sleep/">Sleep</a></li>								</ul>
 							
 															<strong class="title">You might also like</strong>
 								<ul class="like_list">
-																			<li><a href="http://www.huffingtonpost.com/travel/">Travel</a></li>										<li><a href="http://www.huffingtonpost.com/food/">Food</a></li>										<li><a href="http://www.huffingtonpost.com/fifty/">Post50</a></li>										<li><a href="http://www.huffingtonpost.com/kitchendaily/">Recipes</a></li>										<li><a href="http://www.huffingtonpost.com/religion/">Religion</a></li>								</ul>
+																			<li><a href="http://www.huffingtonpost.com/food/">Food</a></li>										<li><a href="http://www.huffingtonpost.com/fifty/">Post50</a></li>										<li><a href="http://www.huffingtonpost.com/taste/">Taste</a></li>										<li><a href="http://www.huffingtonpost.com/religion/">Religion</a></li>								</ul>
 													</div>
 						</div>
 					</div>
@@ -1100,40 +1032,40 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					<div class="menu absolute">
 						<div class="menu_h clearfix">
 						<div class="trending">
-							<!-- last update is 20120817_141509 -->
+							<!-- last update is 20120928_191507 -->
 															<ul>
-																			<li id='id_trending_1789824'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/little-mermaid-ariel-disney-plastic-surgery-ad_n_1789824.html?ir=Style">PHOTO: Did The Little Mermaid Get A Boob Job?																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922685'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/kate-middleton-naked-photos-bottomless-se-og-hor-topless-pics_n_1922685.html?ir=Style">Magazine Publishes Photos Of Kate Middleton Topless AND Bottomless																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">229</span>
+													<span class="comments-count">738</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1788554'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/kelly-ripa-without-makeup-anderson-cooper-instagram_n_1788554.html?ir=Style">PHOTOS: Kelly Ripa Poses For No Makeup Photo With Anderson Cooper																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922236'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/michelle-obama-look-like-a-first-lady-bobbie-lussier_n_1922236.html?ir=Style">Virginia Voter: Michelle Obama Doesn't Dress Or Act Like A First Lady																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">179</span>
+													<span class="comments-count">2k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1784599'>
-											<a href="http://www.huffingtonpost.com/2012/08/15/hillary-clinton-sweat-never-conde-nast-traveler_n_1784599.html?ir=Style">Hillary Clinton Never Sweats, Says Reporter																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1916188'>
+											<a href="http://www.huffingtonpost.com/2012/09/26/bagel-head-forehead-injections-japan-saline_n_1916188.html?ir=Style">WATCH: 'Bagel Heads' Are Asia's New Beauty Trend																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">816</span>
+													<span class="comments-count">3k</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1790499'>
-											<a href="http://www.huffingtonpost.com/2012/08/16/doutzen-kroes-bikini-model-miami_n_1790499.html?ir=Style">PHOTOS: Doutzen's Skimpy Bikini Stays On, Somehow																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1918575'>
+											<a href="http://www.huffingtonpost.com/2012/09/27/kristen-stewart-paris-fashion-week_n_1918575.html?ir=Style">PHOTOS: Kristen Stewart Brings Star Power To Balenciaga & Balmain																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">186</span>
+													<span class="comments-count">241</span>
 												</span>
 																							</a>
 										</li>
-																			<li id='id_trending_1776535'>
-											<a href="http://www.huffingtonpost.com/2012/08/14/katrina-darling-playboy-photos-pictures-2012-kate-middleton_n_1776535.html?ir=Style">PHOTOS: Katrina Darling, Kate Middleton's Cousin, Covers Playboy																								<span class="comments" data-anchor="#comments">
+																			<li id='id_trending_1922582'>
+											<a href="http://www.huffingtonpost.com/2012/09/28/photoshop-fail-levis-photos_n_1922582.html?ir=Style">Did Levi's Twist Its Model's Legs Around?																								<span class="comments" data-anchor="#comments">
 													<span class="talkbubble"><span></span></span>
-													<span class="comments-count">380</span>
+													<span class="comments-count">20</span>
 												</span>
 																							</a>
 										</li>
@@ -1158,13 +1090,76 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 					</div>
 							</div>
 		</li>
+			<li class="n_highlights n_empty" id="li_highlights">
+			<div class="relative">
+									<a href="http://labs.huffingtonpost.com/highlights">Highlights</a>
+							</div>
+		</li>
 			
 				<li class="n_live" id="tn-live">
 
-							<div class="relative">
+							<!--
+				<div class="relative">
 					<a href="http://live.huffingtonpost.com/">LIVE</a>
 				</div>
+				-->
 				
+
+
+<div class="relative">
+	<a href="http://live.huffingtonpost.com/">LIVE</a>
+	<div class="menu absolute right_align">
+			<div class="menu_h clearfix">
+				<div class="trending tn-hp-live">
+					<ul>
+																		<li class="scheduled-soon">
+								<a href="http://live.huffingtonpost.com/r/segment/505cae0b78c90a7ce5000077">
+									 <span class="schedule-status now">Now</span>
+										<span class="segment-title">The Silent Majority										</span>
+										</span>
+								</a>
+							</li>
+													<li class="scheduled-soon">
+								<a href="http://live.huffingtonpost.com/r/segment/505ff44078c90a7ce100011a">
+									 <span class="schedule-status ">Next</span>
+										<span class="segment-title">Philanthropy Pays Off										</span>
+										</span>
+								</a>
+							</li>
+													<li class="">
+								<a href="http://live.huffingtonpost.com/r/segment/5058dda8fe34446a5c0001cc">
+									 <span class="schedule-status ">Coming Up</span>
+										<span class="segment-title">Sacred Womb										</span>
+										</span>
+								</a>
+							</li>
+													<li class="">
+								<a href="http://live.huffingtonpost.com/r/segment/5060f2932b8c2a18c40002ce">
+									 <span class="schedule-status ">Coming Up</span>
+										<span class="segment-title">HuffPost Top Stories										</span>
+										</span>
+								</a>
+							</li>
+													<li class="">
+								<a href="http://live.huffingtonpost.com/r/segment/505b3c7802a7600427000024">
+									 <span class="schedule-status ">Coming Up</span>
+										<span class="segment-title">Celeb PSAs Getting Good										</span>
+										</span>
+								</a>
+							</li>
+																</ul>
+				<div class="vertical_info">
+					<a href="http://live.huffingtonpost.com/" class="link-to-hp-live">
+						Go to HuffPost Live 
+						<span class="arrow"><span></span></span>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 			</li>
 	
 				<li class="n_all_sections last" id="all-sections">
@@ -1212,7 +1207,7 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 						<li><a href="http://www.huffingtonpost.com/gps-for-the-soul/">GPS for the Soul</a></li>
 						<li><a href="http://www.huffingtonpost.com/style/">Style</a></li>
 						<li><a href="http://www.huffingtonpost.com/food/">Food</a></li>
-						<li><a href="http://www.huffingtonpost.com/kitchendaily/">Kitchen Daily</a></li>
+						<li><a href="http://www.huffingtonpost.com/taste/">Taste</a></li> 
 						<li><a href="http://www.huffingtonpost.com/weddings/">Weddings</a></li>
 						<li><a href="http://www.huffingtonpost.com/travel/">Travel</a></li>
 						<li><a href="http://www.huffingtonpost.com/parents/">Parents</a></li>
@@ -1275,14 +1270,14 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 			<strong class="title">AOL</strong>
 			<ul class="all_sections_section"> 
 				<li><a href="http://www.dailyfinance.com/">Daily Finance</a></li>
-				<li><span class="bullet"></span><a href="http://jobs.aol.com/">Aol Jobs</a></li>
-				<li><span class="bullet"></span><a href="http://autos.aol.com/">Aol Autos</a></li>
+				<li><span class="bullet"></span><a href="http://jobs.aol.com/">AOL Jobs</a></li>
+				<li><span class="bullet"></span><a href="http://autos.aol.com/">AOL Autos</a></li>
 				<li><span class="bullet"></span><a href="http://www.autoblog.com/">Autoblog</a></li>
-				<li><span class="bullet"></span><a href="http://music.aol.com/">Aol Music</a></li>
-				<li><span class="bullet"></span><a href="http://on.aol.com/">Aol Video</a></li>
+				<li><span class="bullet"></span><a href="http://music.aol.com/">AOL Music</a></li>
+				<li><span class="bullet"></span><a href="http://on.aol.com/">AOL On</a></li>
 				<li><span class="bullet"></span><a href="http://www.games.com/">Games.com</a></li>
 				<li><span class="bullet"></span><a href="http://heidiklum.aol.com/">Heidi Klum</a></li>
-				<li><span class="bullet"></span><a href="http://shopping.aol.com/">Aol Shopping</a></li>
+				<li><span class="bullet"></span><a href="http://shopping.aol.com/">AOL Shopping</a></li>
 				<li><span class="bullet"></span><a href="http://realestate.aol.com/">Real Estate</a></li>
 			</ul>
 		</div>			
@@ -1298,18 +1293,20 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 	<div class="featured">
 	
 			<ul>
-					<li><a href="http://live.huffingtonpost.com/" class="modal_inner ftd_homepage">HuffPost Live</a></li>
-					<li><a href="http://www.huffingtonpost.com/news/2012-summer-olympics" class="modal_inner ftd_homepage">London 2012</a></li>
+					<li><a href="http://elections.huffingtonpost.com/" class="modal_inner ftd_homepage">Election Maps</a></li>
+					<li><a href="http://www.huffingtonpost.com/news/opportunity-working/" class="modal_inner ftd_homepage">Opportunity</a></li>
 					<li><a href="http://www.huffingtonpost.com/gps-for-the-soul/" class="modal_inner ftd_homepage">GPS for the Soul</a></li>
 					<li><a href="http://www.huffingtonpost.com/news/election-2012-blog/" class="modal_inner ftd_homepage">2012 Blog</a></li>
-					<li><a href="http://www.huffingtonpost.com/news/opportunity-working/" class="modal_inner ftd_homepage">Opportunity</a></li>
 					<li><a href="http://www.huffingtonpost.com/latino-voices/" class="modal_inner ftd_homepage">Latino Voices</a></li>
-					<li><a href="http://www.huffingtonpost.com/science/" class="modal_inner ftd_homepage">Science</a></li>
 					<li><a href="http://www.huffingtonpost.com/black-voices/" class="modal_inner ftd_homepage">Black Voices</a></li>
-					<li><a href="http://www.huffingtonpost.com/crime/" class="modal_inner ftd_homepage">Crime</a></li>
-					<li><a href="http://www.huffingtonpost.com/comedy/" class="modal_inner ftd_homepage">Comedy</a></li>
+					<li><a href="http://www.huffingtonpost.com/gay-voices/" class="modal_inner ftd_homepage">Gay Voices</a></li>
+					<li><a href="http://www.huffingtonpost.com/science/" class="modal_inner ftd_homepage">Science</a></li>
 					<li><a href="http://www.huffingtonpost.com/green/" class="modal_inner ftd_homepage">Green</a></li>
-					<li><a href="http://www.huffingtonpost.com/news/breakdown/" class="modal_inner ftd_homepage">The Breakdown</a></li>
+					<li><a href="http://www.huffingtonpost.com/crime/" class="modal_inner ftd_homepage">Crime</a></li>
+					<li><a href="http://www.huffingtonpost.com/arts/" class="modal_inner ftd_homepage">Arts</a></li>
+					<li><a href="http://www.huffingtonpost.com/comedy/" class="modal_inner ftd_homepage">Comedy</a></li>
+					<li><a href="http://www.huffingtonpost.com/sports/" class="modal_inner ftd_homepage">Sports</a></li>
+					<li><a href="http://www.huffingtonpost.com/religion/" class="modal_inner ftd_homepage">Religion</a></li>
 			</ul>
 	</div>
 </div>
@@ -1353,10 +1350,10 @@ jQuery('#fb_like_vertical').mouseenter(function() {
                             <div class="clear"></div>
                     <div id="threeup_top_wrapper" class="threeup-bl nocontent" data-beacon='{"p":{"mnid":"threeup_top_wrapper","mlid":"threeup"}}'>
                         <div id="threeup_left_nav" class="">
-                            <a href="index.html#" onclick="HPTrack.trackPageview('/t/a/threeupnav.v1/left.v2/Home'); return false;" class="vertical_background_light lnid-threeup_left_nav arrow"></a>
+                            <a href="index.html#" onclick="HPTrack.trackPageview('/t/a/threeupnav.v2/left.v2/Home'); return false;" class="vertical_background_light lnid-threeup_left_nav arrow"></a>
                         </div>
                         <div id="threeup_right_nav" class="">
-                            <a href="index.html#" onclick="HPTrack.trackPageview('/t/a/threeupnav.v1/right.v2/Home'); return false;" class="vertical_background_light lnid-threeup_right_nav arrow"></a>
+                            <a href="index.html#" onclick="HPTrack.trackPageview('/t/a/threeupnav.v2/right.v2/Home'); return false;" class="vertical_background_light lnid-threeup_right_nav arrow"></a>
                         </div>
                         <div id="threeup_wide_container">
                             <div id="threeup_content"><!-- this content will be replaced --></div>
@@ -1629,9 +1626,13 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 <!--    <li><a href="/advertise">Advertise</a> | </li>-->
 		<li><a href="http://advertising.aol.com/brands/huffington-post" target="_blank">Advertise</a> | </li>
     <li id="loggedin_user"></li>
-    <li><a href="http://www.huffingtonpost.com/makehome/">Make HuffPost your Home Page</a> | </li>
+
+            <li><a href="http://www.huffingtonpost.com/makehome/">Make HuffPost your Home Page</a> | </li>
+    
     <li><a href="http://www.huffingtonpost.com/syndication">RSS</a> | </li>
-    <li><a href="http://www.huffingtonpost.com/jobs/">Careers</a> | </li>
+
+            <li><a href="http://www.huffingtonpost.com/jobs/">Careers</a> | </li>
+    
     <li><a href="http://www.huffingtonpost.com/faq/">FAQ</a></li>
 </ul>
 <ul id="footer_nav_2" class="footer_nav">
@@ -1639,7 +1640,9 @@ jQuery('#fb_like_vertical').mouseenter(function() {
     <li><a href="index.html">Privacy</a> | </li>
     <li><a href="http://www.huffingtonpost.com/comment/policy/">Comment Policy</a> | </li>
     <li><a href="http://www.huffingtonpost.com/p/huffington-post.html">About Us</a> | </li>
-    <li><a href="http://adinfo.aol.com/about-our-ads/" target="_blank">About Our Ads</a> | </li>
+
+            <li><a href="http://adinfo.aol.com/about-our-ads/" target="_blank">About Our Ads</a> | </li>
+    
     <li><a href="http://www.huffingtonpost.com/contact/">Contact Us</a></li>
 </ul>
 <ul id="footer_nav_3" class="footer_nav">
@@ -1650,7 +1653,8 @@ jQuery('#fb_like_vertical').mouseenter(function() {
 -->
 
                                 <ul id="footer_nav_4" class="footer_nav">
-                        <li>Part of <strong>HuffPost News &bull; HPMG News</strong></li>
+                        <li>Part of <strong>
+                        HuffPost News &bull; HPMG News                        </strong></li>
                     </ul>
                         <br/>
 	</div>
@@ -1672,7 +1676,7 @@ jQuery('#fb_like_vertical').mouseenter(function() {
                 <script type="text/javascript">
                     
                     HPAds.ad_store_move_to_place(false);
-                    HPAds.page_spots["adtech_header"]=true;HPAds.page_spots["badges_sponsor"]=true;HPAds.page_spots["sharebox_260x60"]=true;HPAds.page_spots["social_sponsor_campaigns"]=true;HPAds.page_spots["big_news_link"]=true;
+                    HPAds.page_spots["adtech_header"]=true;HPAds.page_spots["sharebox_260x60"]=true;HPAds.page_spots["social_sponsor_campaigns"]=true;HPAds.page_spots["big_news_link"]=true;
                 </script>		<!-- footer -->
 	</div>
 	</div>
@@ -1736,17 +1740,18 @@ jQuery('#fb_like_vertical').mouseenter(function() {
     <script type="text/javascript" src="../../pixel.quantserve.com/seg/p-6fTutip1SMLM2.js"></script>
 
 
+
  
 <script type="text/javascript">
-HPUtil.ExtTracking.Nielsen();
+  HPTrack.Services.trackTo(['Nielsen']);
 </script>
 <noscript>
-    <img src="../../secure-us.imrworldwide.com/cgi-bin/m%3Fci=us-703240h&amp;cg=0&amp;cc=1&amp;ts=noscript" width="1" height="1" alt="" />
+  <img src="../../secure-us.imrworldwide.com/cgi-bin/m%3Fci=us-703240h&amp;cg=0&amp;cc=1&amp;ts=noscript" width="1" height="1" alt="" />
 </noscript>
 
 
 
-<!-- Served from: wfe7.nyc -->
+<!-- Served from: wfe6.nyc -->
 <!-- Wrapped End -->
 		<div id="hp_vertical_common_lightbox" style="visibility: hidden;" >
 		<center>
@@ -1764,24 +1769,13 @@ HPUtil.ExtTracking.Nielsen();
 		        </div>
 	        </div>
 	    </center>
-	</div><!--  Buzz Feed BuzzBox code begins -->
-			<script type="text/javascript">
-			BF_BB_DATA = null;
-			(function( ){
-			        document.write('<div id="BF_BUZZBOX" style="height: 0px; width: 0px;"></div>');
-			            var sid="71I817";   var c=""; var b="";
-			            BF_BB_SCRIPT=document.createElement('script'); BF_BB_SCRIPT.type="text/javascript";
-			                BF_BB_SRC="http://buzzbox.buzzfeed.com/wd/BuzzBox?sid=" + sid + c + b + '&it=1&cb=' + (new Date()).getTime();
-			                setTimeout(function() { document.getElementById('BF_BUZZBOX').appendChild(BF_BB_SCRIPT); BF_BB_SCRIPT.src=BF_BB_SRC; },1);
-			})();
-		</script>
-	<!-- / Buzz Feed BuzzBox code ends -->
+	</div><!-- buzzfeed tracking code was here -->
 
 <!--  HuffPost Labs Quotes begins -->
 <script type="text/javascript">
 	jQuery(function() {
 		jQuery(".entry_body_text").quoteable({
-			"service": "http://labs.huffingtonpost.com/huffquotes/snippets/create.json",
+			"service": "http://labs.huffingtonpost.com/highlights/snippets/create.json",
 			"minlength": 25,
 			"maxlength": 10000,
 			"sample": 1
@@ -1823,6 +1817,7 @@ HPAds.adtracker.init();
 <script type="text/javascript">
         HPAds.ad_html_wh("home","bpage");
 </script>
-<!-- Tracking pixels --><script type="text/javascript">huff.use('conf', function(c){ c.set({"mtime":1345227623,"entry":0,"vertical":"home","vertical-id":-1,"vertical-name":"Home","ads\/zone":"","topnav\/version":"2","cookie\/domain":"huffingtonpost.com","websocket\/enabled":true,"websocket\/url":"ws.huffingtonpost.com","social_tracking":true,"primary_vertical_id":-1,"primary_vertical_name":false,"primary_vertical_facebook_name":"HuffingtonPost","primary_vertical_twitter_name":"HuffingtonPost","current_vertical_facebook_name":"HuffingtonPost","current_vertical_twitter_name":"HuffingtonPost","vertical\/bignews":"homepage","threeup":{"version":1}}); });</script></body>
+<!-- Tracking pixels --><script type="text/javascript">huff.use('conf', function(c){ c.set({"mtime":1348874236,"entry":0,"vertical":"home","vertical-id":-1,"vertical-name":"Home","ads\/zone":"","topnav\/version":"2","cookie\/domain":"huffingtonpost.com","websocket\/enabled":true,"websocket\/url":"ws.huffingtonpost.com","social_tracking":true,"primary_vertical_id":-1,"primary_vertical_name":false,"primary_vertical_facebook_name":"HuffingtonPost","primary_vertical_twitter_name":"HuffingtonPost","current_vertical_facebook_name":"HuffingtonPost","current_vertical_twitter_name":"HuffingtonPost","vertical\/bignews":"homepage","threeup":{"version":2}}); });</script>
+</body>
 </html>
 

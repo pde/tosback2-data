@@ -201,6 +201,41 @@ var argsVal = getQueryStringValues();
 	
 	return true;
 }
+function checkEmailAndPrivacy() {
+    var argsVal = getQueryStringValues();
+
+    illegal = /[^\w._\-]/
+    email = document.MiniForm.EmailAddr.value;
+
+    if ($("#EmailCheck").is(':checked')) {
+        if (email.length < 6 || email.indexOf('@') == -1 || email.indexOf('.') == -1)
+            email = "";
+        else {
+            At = email.indexOf('@');
+            Period = email.lastIndexOf('.');
+            DNS1 = email.substring(0, At);
+            if (DNS1.length < 1 || DNS1.match(illegal) != null) email = "";
+            DNS2 = email.substring(At + 1, Period);
+            if (DNS2.length < 1 || DNS2.match(illegal) != null) email = "";
+            DNS3 = email.substring(Period + 1, email.length);
+            if (DNS3.length < 2 || DNS3.match(illegal) != null) email = "";
+        }
+
+        if (email.length == 0) {
+            alert("The email address you have entered is invalid. Please re-enter a valid email address.\n");
+            document.MiniForm.EmailAddr.focus();
+            return false;
+        }
+    }
+    else {
+        $("#EmailCheck,.emailCheckError").addClass("error");
+        return false;
+    }
+
+
+
+    return true;
+}
 
 
 

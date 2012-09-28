@@ -12,17 +12,26 @@ NICK.club.favorites.addFavorite = function(itemId, attribute) {
 	this.itemId = itemId;
 	this.attribute = attribute;
 	if(!NICK.utils.isEmptyString(NICK.login.getNickName())){
-		NICK.club.favorites.getFavorites(attribute, function( response ) {
-			if ( response.attributeValue == null || response.attributeValue.split(",").length < 100 ) {
-				NICK.club.favorites.saveMergedFavorites(itemId, response, attribute, false);
-				//reporting moved to saveMergedFavorites
 
-			} else {
-				NICK.overlay.message("Oops! We're sorry, but you must remove a game from your favorites before you can add this one.");
-			}
-		});
+		if(NICK.login.isGuest()){
+			NICK.club.favorites.favLoginPrompt(itemId, attribute);
+		}else{
+		
+			NICK.club.favorites.getFavorites(attribute, function( response ) {
+				if ( response.attributeValue == null || response.attributeValue.split(",").length < 100 ) {
+					NICK.club.favorites.saveMergedFavorites(itemId, response, attribute, false);
+					//reporting moved to saveMergedFavorites
+	
+				} else {
+					NICK.overlay.message("Oops! We're sorry, but you must remove a game from your favorites before you can add this one.");
+				}
+			});
+		}
+		
 	}else{
-		NICK.login.prompt();
+		NICK.club.favorites.favLoginPrompt(itemId, attribute);
+		//NICK.login.prompt();
+		/*
 		$(document).bind("authStatus loggedIn", function(){
 			if (NICK.login.isLoggedIn()) {
 				NICK.club.favorites.getFavorites(attribute, function(response) {
@@ -31,7 +40,47 @@ NICK.club.favorites.addFavorite = function(itemId, attribute) {
 				});
 			}
 		})
+		*/
 	}
+}
+
+NICK.club.favorites.favLoginPrompt = function(itemId, attribute){
+	this.itemId = itemId;
+	this.attribute = attribute;
+	NICK.utils.doLog('favLoginPrompt ' +itemId);
+	var msg, section;
+
+	switch( attribute ) {
+		case "fav_games":
+			section = "games";
+			msg = "You need to be a <b>Club member</b> to <b>Favorite</b> a game!";
+			break;
+		case "fav_videos":
+			section = "videos";
+			msg = "You need to be a <b>Club member</b> to <b>Favorite</b> a video!";
+			break;
+		case "fav_shows":
+			section = "shows";
+			msg = "You need to be a <b>Club member</b> to <b>Become a Fan</b> of a show!";
+			break;
+		case "fav_stars":
+			section = "star";
+			msg = "You need to be a <b>Club member</b> to <b>Become a Fan</b> of a Star!";
+			break;
+		default:
+			section = "main";
+			msg = "You need to be a <b>Club member</b> to <b>favorite</b> this item!";
+	}
+
+	$(document).unbind('loggedIn.guestFavPrompt authStatus.guestFavPrompt');
+	var overlayObject = {msg:msg,trackLoc: "Favorite"};
+	NICK.overlay.doLogInOverlay(overlayObject);
+	$(document).bind("loggedIn.guestFavPrompt authStatus.guestFavPrompt", function(){
+		if (NICK.login.isLoggedIn()) {
+			NICK.club.favorites.addFavorite(itemId, attribute);
+			$(document).unbind('loggedIn.guestFavPrompt authStatus.guestFavPrompt');
+		}
+	})
 }
 
 NICK.club.favorites.onRemovedClicked = function(cmsid,attribute, element){
@@ -162,6 +211,7 @@ NICK.club.favorites.saveMergedFavorites = function(itemId, response, profileAttr
 	}
 }
 NICK.club.favorites.setFavoriteButtonText = function (){
+	NICK.utils.doLog('setFavoriteButtonText');
 	if($("#become-a-fan").length){
 		$("#become-a-fan").addClass("isFan");
 		$("#become-a-fan a").html($("#become-a-fan a").html().replace('Become a',"You are a") );
@@ -235,6 +285,7 @@ NICK.club.favorites.setAttribute = function(attribute, attributeValue, callback,
 	}
 	requestParams[attribute] = attributeValue;
 	NICK.request.doRequest({
+		type: "GET",
 		dataType: "jsonp",
 		url: attrSetUrl,
 		data: requestParams,

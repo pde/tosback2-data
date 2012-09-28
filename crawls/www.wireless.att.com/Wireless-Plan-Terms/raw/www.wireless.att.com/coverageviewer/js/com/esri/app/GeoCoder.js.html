@@ -1,5 +1,5 @@
-var _locator = null;
-var _premiumLocator = null;
+var _defaultLocator = null;
+var _backupLocator = null;
 var _searchType = null;
 var _addressLOD = null;
 
@@ -9,18 +9,22 @@ var _lastAgolAddress = null;
 var _agolCompleteEventListener = null;
 var _agolErrorEventListener = null;
 
-var _usePremiumLocator = false;
+var _useBackupLocator = false;
+
+var _defaultLocatorURL = ESRIConfig.premiumLocatorURL;
+var _backupLocatorURL = ESRIConfig.locatorURL;
+
 
 function initializeGeoCoder() {
 	
-	_locator = getNewGeocoder();
-	_premiumLocator = new esri.tasks.Locator(ESRIConfig.premiumLocatorURL);
+	_defaultLocator = getNewGeocoder();
+	_backupLocator = new esri.tasks.Locator(_backupLocatorURL);
 	
-	//Hook up premium event handlers
-	dojo.connect(_premiumLocator, "onAddressToLocationsComplete",
-			premiumAgolOnAddressToLocationsCompleteHandler);
-	dojo.connect(_premiumLocator, "onError",
-			premiumAgolOnAddressToLocationsErrorHandler);
+	//Hook up backup event handlers
+	dojo.connect(_backupLocator, "onAddressToLocationsComplete",
+			backupAgolOnAddressToLocationsCompleteHandler);
+	dojo.connect(_backupLocator, "onError",
+			backupAgolOnAddressToLocationsErrorHandler);
 }
 
 function locateByAddress(address, city, state, zip, lod) {
@@ -87,13 +91,13 @@ function locateByAddress(address, city, state, zip, lod) {
 		//save address search to global var
 		_lastAgolAddress = location;
 		
-		if(_usePremiumLocator){
-			_premiumLocator.addressToLocations(location, [ "Loc_name" ]);
+		if(_useBackupLocator){
+			_backupLocator.addressToLocations(location, [ "Loc_name" ]);
 		}else {
 			//call default locator
-			_locator.addressToLocations(location, [ "Loc_name" ]);
-			//count down timer for premium fail over
-			_lastTimeoutId = setTimeout("callPremiumGeocoder();", ESRIConfig.agolGeocoderTimeOutMS);
+			_defaultLocator.addressToLocations(location, [ "Loc_name" ]);
+			//count down timer for backup fail over
+			_lastTimeoutId = setTimeout("callBackUpGeocoder();", ESRIConfig.agolGeocoderTimeOutMS);
 		}
 	}
 
@@ -309,7 +313,7 @@ function onAddressToLocationsCompleteHandler(candidates) {
 
 function agolOnAddressToLocationsErrorHandler(error)
 {
-	callPremiumGeocoder();
+	callBackUpGeocoder();
 }
 
 function cityLayerResults(results) {
@@ -547,7 +551,7 @@ function sortByPopulation(a, b) {
 
 
 function getNewGeocoder() {
-    var locator = new esri.tasks.Locator(ESRIConfig.locatorURL);
+    var locator = new esri.tasks.Locator(_defaultLocatorURL);
     _agolCompleteEventListener = dojo.connect(locator, "onAddressToLocationsComplete", agolOnAddressToLocationsCompleteHandler);
     _agolErrorEventListener = dojo.connect(locator, "onError", agolOnAddressToLocationsErrorHandler);
 
@@ -558,29 +562,30 @@ function getNewGeocoder() {
 
 //--------------------------------------------------------------------------
 //
-// Premium Locator Methods
+// Backup Locator Methods
 //
 // --------------------------------------------------------------------------
-function callPremiumGeocoder(){
+function callBackUpGeocoder(){
 	
-	//all calls in this sesion will now use the Premium Locator
-	_usePremiumLocator = true;
+	//all calls in this sesion will now use the Backup Locator
+	_useBackupLocator = true;
 	
 	//disconnect normal AGOL event handlers
 	dojo.disconnect(_agolCompleteEventListener);
 	dojo.disconnect(_agolErrorEventListener);
 	
-	//call premium service
-	_premiumLocator.addressToLocations(_lastAgolAddress, [ "Loc_name" ]);
+	//call backup service
+	_backupLocator.addressToLocations(_lastAgolAddress, [ "Loc_name" ]);
 }
 
 
-function premiumAgolOnAddressToLocationsCompleteHandler(candidates) {
+function backupAgolOnAddressToLocationsCompleteHandler(candidates) {
 	onAddressToLocationsCompleteHandler(candidates);
-//	_locator = getNewGeocoder();
+//	_defaultLocator = getNewGeocoder();
 }
 
-function premiumAgolOnAddressToLocationsErrorHandler(error)
+function backupAgolOnAddressToLocationsErrorHandler(error)
 {
+	alert(error);
 	updateMessage("error.address.no.matches");
 }

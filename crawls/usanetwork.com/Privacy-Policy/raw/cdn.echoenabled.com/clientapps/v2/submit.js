@@ -1556,6 +1556,11 @@ Echo.Submit = function(config) {
 		"itemURIPattern": undefined,
 		"actionString": "Type your comment here...",
 		"postingTimeout": 30,
+		"errorWindow": {
+			"width": 390,
+			"minHeight": 70,
+			"maxHeight": 150
+		},
 		"targetQuery": undefined
 	});
 	this.initialMode = this.config.get("mode");
@@ -1853,23 +1858,38 @@ Echo.Submit.prototype.post = function() {
 			var message = isNetworkTimeout
 				? self.label("postingTimeout")
 				: self.label("postingFailed", {"error": data.errorMessage || data.errorCode});
+			var dimensions = self.config.get("errorWindow");
+			var template = '<div><div class="echo-submit-error">{Data:message}</div></div>';
+			var messageDOM = $.toDOM(self.substitute(template, {
+				"message": message
+			}));
+			messageDOM.content.css({
+				"width": dimensions.width,
+				"position": "absolute",
+				"visibility": "hidden"
+			}).appendTo(get("container"));
+			var currentHeight = messageDOM.content.height();
+			var height = currentHeight < dimensions.minHeight ? dimensions.minHeight
+					: (currentHeight > dimensions.maxHeight ? dimensions.maxHeight : currentHeight);
+			messageDOM.get("echo-submit-error", true).height(height);
 			$.fancybox({
-				"content": '<div class="echo-submit-error">' + message + '</div>',
-				"height": 70,
-				"width": isNetworkTimeout ? 320 : 390,
+				"content": messageDOM.get("echo-submit-error", true),
+				"height": height,
+				"width": dimensions.width,
 				"padding": 15,
 				"orig": get("text"),
 				"autoDimensions": false,
 				"transitionIn": "elastic",
 				"transitionOut": "elastic",
 				"onComplete": function() {
+					messageDOM.content.remove();
 					// set fixed dimensions of the fancybox-wrap (for IE in quirks mode it should be bigger)
 					if ($.browser.msie && document.compatMode != "CSS1Compat") {
 						var options = arguments[2];
-						var delta = 2 * options.padding + 40;
+						var delta = 2 * options.padding + 50;
 						$("#fancybox-wrap").css({
-							"width": options.width + delta,
-							"height": options.height + delta
+							"width": $("#fancybox-wrap").width() + delta,
+							"height": $("#fancybox-wrap").height() + delta
 						});
 					}
 				}
@@ -2032,7 +2052,7 @@ Echo.Submit.prototype.addCss = function() {
 		'.echo-submit-border { border: 1px solid #d2d2d2; }' +
 		'.echo-submit-mandatory { border: 1px solid red; }' +
 		'.echo-submit-queries-view-option { padding-right: 5px; }' +
-		'.echo-submit-error { color: #444444; font: 14px Arial; line-height: 150%; padding-left: 85px; background: no-repeat url(//cdn.echoenabled.com/images/info70.png); height: 70px; }'
+		'.echo-submit-error { color: #444444; font: 14px Arial; line-height: 150%; padding-left: 85px; background: no-repeat url(//cdn.echoenabled.com/images/info70.png); }'
 	, 'submit');
 
 	if ($.browser.msie) {

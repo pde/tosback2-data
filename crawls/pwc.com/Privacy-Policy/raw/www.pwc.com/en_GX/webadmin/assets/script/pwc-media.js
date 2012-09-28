@@ -43,7 +43,7 @@
 
 
 // Following is PwC Media Player library
-// v10.3 June 18 2012
+// v11 Sept 11 2012
 // (c) 2012 PwC
 
 function thisMovie(movieName) {
@@ -120,7 +120,11 @@ jQuery.extend({
 	
 
   $.fn.embedMedia = function(t) {  
-  
+	var _mob = false;
+	(jsdevice == 'mobile' ) ? _mob = true : _mob = false;
+	
+	//(jQuery.getUrlVar('mobiletvh') == '1' ) ? _mob = true : _mob = false;
+	
   //Determine if media should use UK's servers
 	var _mediaPageURL = window.location.href.toString();
 	var _mediaURLPrefix = "download.pwc.com";
@@ -181,14 +185,24 @@ jQuery.extend({
 		if ($(this).attr("media-alternate-id")) { 	mediaAltFlashID	= $(this).attr("media-alternate-id"); 	} 
 		if ( ($(this).attr("media-activatenow")) && ($(this).attr("media-activatenow") == "true") ) 	{ 	mediaActivateNow	= true; 	} 
 		if ($(this).attr("media-cuepoints")) 	{ 	mediaCuepoints	= $(this).attr("media-cuepoints"); 	} 
+		
+		//resize for mobile
+		if (_mob) {
+			var mw = parseInt(mediaWidth);
+			var mh = parseInt(mediaHeight);
+			var aspectratio = mw / mh;
+			mh = 320 / aspectratio;
+			mediaWidth = "320";
+			mediaHeight = String(mh);
+		}
+			
+		
+		
 		//reformat mediatitle
 		var reformattedMediaTitle = mediaTitle.replace(/[\'\?]/g, "");
 		//hide the alternate-id
 		(mediaAltFlashID) ? $(mediaAltFlashID).css("display", "none") : undefined;
-		//look for link transform
-		var hasLinkTransform = false;
-		var testString = new RegExp(/\?linktransform=no/ig);
-		testString.test(document.URL) ? hasLinkTransform = true : undefined;
+		
 			
 		//check for file extension
 		var mediaType 		= "";
@@ -200,13 +214,12 @@ jQuery.extend({
 		} else if ( fileExtension == "mp3" ) {
 			buttonSrc		= "media-audio-button.jpg";
 			mediaType 		= "audio";
-			hasLinkTransform ? mediaSrc = mediaSrc.substring(3,mediaSrc.length) : undefined;
+			
 		} else if ( fileExtension == "swf" ) {
 			mediaType		= "flash";
 		} else {
 			mediaType	 	= "video";
 			buttonSrc 		= "media-play-button.jpg";
-			hasLinkTransform ? mediaSrc = mediaSrc.substring(3,mediaSrc.length) : undefined;
 		}
 		
 		//Set mobile version flag
@@ -324,6 +337,10 @@ jQuery.extend({
   (function($){  
   $.fn.overlayMedia = function(p) {  
   
+  	var _mob = false;
+	(jsdevice == 'mobile' ) ? _mob = true : _mob = false;
+	//(jQuery.getUrlVar('mobiletvh') == '1' ) ? _mob = true : _mob = false;
+  
   //Determine if media should use UK's servers
 	var _mediaPageURL = window.location.href.toString();
 	var _mediaURLPrefix = "download.pwc.com";
@@ -391,16 +408,24 @@ jQuery.extend({
 		if ($(this).attr("media-alternate-id")) { 	mediaAltFlashID	= $(this).attr("media-alternate-id"); 	} 
 		if ($(this).attr("media-cuepoints")) 	{ 	mediaCuepoints	= $(this).attr("media-cuepoints"); 	} 
 		if ($(this).attr("media-type")) 		{ 	mediaType		= $(this).attr("media-type"); 		} 
+		
+		//resize for mobile
+		if (_mob) {
+			var mw = parseInt(mediaWidth);
+			var mh = parseInt(mediaHeight);
+			var aspectratio = mw / mh;
+			mh = 320 / aspectratio;
+			mediaWidth = "320";
+			mediaHeight = String(mh);
+		}
+		
 		//reformat mediatitle
 		var reformattedMediaTitle = mediaTitle.replace(/[\'\?]/g, "");
 		//hide the alternate-id
 		(mediaAltFlashID) ? $("#"+mediaAltFlashID).css("display", "none") : undefined;
 		//hide details ID if it exists
 		(mediaDetailsId) ? $("#"+mediaDetailsId).css("display", "none") : undefined;
-		//look for link transform
-		var hasLinkTransform = false;
-		var testString = new RegExp(/\?linktransform=no/ig);
-		testString.test(document.URL) ? hasLinkTransform = true : undefined;
+		
   		
 				
 		//check for file extension
@@ -412,17 +437,14 @@ jQuery.extend({
 			mediaType 		= "html";
 		} else if ( (fileExtension == "jhtml") || (fileExtension == "html") || (fileExtension == "htm") ) {
 			mediaType 		= "external";
-			hasLinkTransform ? mediaSrc += "?linktransform=no" : undefined;
 		}else if ( (fileExtension == "jpeg") || (fileExtension == "jpg") || (fileExtension == "gif") || (fileExtension == "png")) {
 			mediaType 		= "image";
 		} else if ( fileExtension == "mp3" ) {
-			mediaType 		= "audio";			
-			hasLinkTransform ? mediaSrc = mediaSrc.substring(3,mediaSrc.length) : undefined;			
+			mediaType 		= "audio";					
 		} else if ( fileExtension == "swf" ) {
 			mediaType		= "flash";
 		} else {
 			mediaType 	= "video";
-			hasLinkTransform ? mediaSrc = mediaSrc.substring(3,mediaSrc.length) : undefined;
 		}
 		
 		
@@ -496,6 +518,7 @@ jQuery.extend({
 						this.getOverlay().appendTo('body'); //IE7 fix for z-index issue
 						var formattedtitle = "<h3>"+mediaTitle+"</h3>";
 						$("#media-details").css("width", (mediaWidth+"px"));
+						$("#media-details").css("z-index", "20020");
 						//use the title or inline content div for details
 						(mediaDetailsId) ? $("#media-details").html($("#"+mediaDetailsId).html()) : $("#media-details").html(formattedtitle);
 						
@@ -526,7 +549,14 @@ jQuery.extend({
 								
 							case "html":
 								
-								var tempContentDiv = "<div id='media-inline-html-div' style='overflow-y:auto;width:"+mediaWidth+"px;height:"+mediaHeight+"px;padding:0px 10px 10px 10px;'></div>";
+								var tempContentDiv = "";
+								if (mediaSrc.search('youtube') >= 0) { //remove padding for overlay youtube vids
+									tempContentDiv = "<div id='media-inline-html-div' style='overflow-y:auto;width:"+mediaWidth+"px;height:"+mediaHeight+"px;padding:0px 0px 0px 0px;'></div>";
+								} else {
+									tempContentDiv = "<div id='media-inline-html-div' style='overflow-y:auto;width:"+mediaWidth+"px;height:"+mediaHeight+"px;padding:0px 10px 10px 10px;'></div>";
+								}
+								
+								
 														
 								$("#media-player").append(tempContentDiv);
 								$(mediaSrc).appendTo("#media-inline-html-div");
@@ -640,6 +670,24 @@ jQuery.extend({
 	
 
 $(document).ready(function() {  //START document ready
+	
+	//fix youtube iframes for mobile...jsdevice is defined in scripts.js and m.js
+	if (jsdevice == 'mobile' ) {
+		$('iframe').each(function(i){  
+		  if ($(this).attr('src').search('youtube.com') >=0 ){  
+			  var ytwidth = parseFloat($(this).attr('width')); 
+			  var ytheight = parseFloat($(this).attr('height'));  
+			  var aspectratio = ytwidth / ytheight;	
+			  if (ytwidth > 320) { 
+				  var newheight = parseInt(320 / aspectratio); 
+				 $(this).attr('width','320');
+				 $(this).attr('height', String(newheight));
+				
+			  }
+		  }
+	  });
+
+	}
 	<!--only scan div elements -->
 	$("div.media-embed").each(function(a){
 		$(this).embedMedia(a)
@@ -657,6 +705,8 @@ $(document).ready(function() {  //START document ready
 		}
 
 	}
+	
+	
 	
 		
 });  //END document ready

@@ -76,6 +76,7 @@ return (false);
 }
 }
 }
+_e=_e.replace("&","%26");
 var _10="http://search.replacements.com/texis/search?order=ClientCount-d&query="+_e;
 _c.action=_10;
 return (true);
@@ -478,6 +479,9 @@ f1+="</script>";
 f1+="<!-- End FB Like Button Script -->\n";
 document.write(f1);
 }
+function runShippingPromo(){
+document.write("<br /><span style=\"color:#CC0099;font-weight:bold;\">Free Ground Shipping for Orders of $150.00 or More - </span><a href=\"../../shipping_promo.htm\">Click Here for Details!</a>");
+}
 function runFBButton(){
 document.write("<br /><span style=\"margin-top:-2px;color:#000080;\">  Be the first of your friends to like us on Facebook!<fb:like href=\"http://www.replacements.com/\" layout=\"button_count\"   show_faces=\"false\" style=\"margin-top:5px;padding-left:5px;\"></fb:like></span>");
 }
@@ -556,5 +560,6 @@ orderConfirmationPixels();
 function runPageTopIncludes(){
 }
 function runPageMessageIncludes(){
+runShippingPromo();
 }
 

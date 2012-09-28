@@ -36,6 +36,7 @@ CIM.properties = {
 "ads": { "space_id": "",
 "property_id": ""
 },
+"adtReadUis": "true",
 "adtWriteUis": "true",
 "ajax_prefix": ".",
 "assetUrl": "http://por-img.cimcontent.net",
@@ -44,11 +45,15 @@ CIM.properties = {
 "bunchballHashedGuidEnabled": "true",
 "chromeUrl": "http://por-chr.cimcontent.net",
 "cimaPassiveCheck": "true",
+"cimaTsInterval": "300000",
+"comcastWebmailSigninUrl": "https://login.comcast.net/login?s=wnamp",
 "comstockUrlPrefix": "https://sso.comcast.net/sso?entityid=comstock&target=",
+"connectCalendarURL": "http://calendar.comcast.net/calendar/module",
 "customerRecordEnabled": "true",
 "dataPackageContext": "/support/privacy/updates/doc.xml",
 "debug": (match = document.location.href.match(/\?.*debug=([^&#]*)/)) ? (match[1] == 'true') : false,
 "debugEnabled": "false",
+"disableImageReplacement": "true",
 "dvrManager": "true",
 "edataServer": "http://edata.comcast.net/cc-edata",
 "enable_remote_log": "true",
@@ -65,7 +70,7 @@ CIM.properties = {
 "fancastSSOxpbar": "http://xfinity.comcast.net/user/authkey/fc/?target=",
 "feedbackProvider": "foresee",
 "flashVersion": "9.0.28",
-"getSigninHref": "https://login.comcast.net/login?s=portal&ts=45208e1e&continue=http%3A%2F%2Fxfinity.comcast.net%2Fprivacy%2F2011-10%2F",
+"getSigninHref": "https://login.comcast.net/login?s=portal&ts=25603623&continue=http%3A%2F%2Fxfinity.comcast.net%2Fprivacy%2F2011-10%2F",
 "hostName": "xfinity.comcast.net",
 "launch_promo_active": "false",
 "lithium.api.root": "http://comcastportal.lithium.com",
@@ -89,18 +94,17 @@ CIM.properties = {
 "redirectBrowserObjectName": "customer_redirect",
 "remote_log_path": "/xtv/authkey/event/store/",
 "requestURL": "http://xfinity.comcast.net/privacy/2011-10/",
-"revision": "41736",
+"revision": "42022",
 "segments": { },
 "shindigDebug": "0",
 "shindigNocache": "0",
 "shindigServer": "my.cim.comcast.net/capi",
 "smartZoneCalWidget": "http://calendar.comcast.net",
-"smartZoneToken": "45208e1e",
-"ssMgProxy": "https://76.96.54.214:2223",
+"smartZoneToken": "25603623",
 "tPCommunityAccount": "prod",
 "trackingAccount": "comcastnet",
-"tsGamesSigninUrl": "https://login.comcast.net/login?s=games&ts=45208e1e&continue=",
-"tsSigninUrl": "https://login.comcast.net/login?s=portal&ts=45208e1e&continue=",
+"tsGamesSigninUrl": "https://login.comcast.net/login?s=games&ts=25603623&continue=",
+"tsSigninUrl": "https://login.comcast.net/login?s=portal&ts=25603623&continue=",
 "usePDK": "true",
 "vidChannel3Enabled": "false",
 "vidChannelBLegacyPath": "/ui/swf/videochannel/VideoChannelPDKb.swf",
@@ -130,7 +134,11 @@ var s_account = "comcastnet";
 var requirejs = {
 baseUrl: "http://por-chr.cimcontent.net/",
 paths: {
+"carousel_lentils": "/cimspire/js/ui/addons/carousel_lentils",
+"tab_animation": "/cimspire/js/ui/addons/tab_animation",
+"carousel_pagination": "/cimspire/js/ui/addons/carousel_pagination",
 "layout": "/layout/js",
+"tab_automation": "/cimspire/js/ui/addons/tab_automation",
 "xds": "/layout_xds/js",
 "ui": "/ui/js",
 "cimspire": "/cimspire/js"
@@ -145,7 +153,7 @@ paths: {
 
 
 
-        <script type="text/javascript" src="../../../por-chr.cimcontent.net/ui/js/compressed/41563-2043/base.js"></script>
+        <script type="text/javascript" src="../../../por-chr.cimcontent.net/ui/js/compressed/42015-2306/base.js"></script>
 
         <script type="text/javascript" src="../../../por-chr.cimcontent.net/ui/js/lib/mbox.js"></script>
 
@@ -156,7 +164,7 @@ paths: {
 
 
                         <style type="text/css">
-@import url(../../../por-chr.cimcontent.net/ui/styles/compressed/41597-1154/global.css);        </style>
+@import url(../../../por-chr.cimcontent.net/ui/styles/compressed/41596-2281/global.css);        </style>
 
 
 
@@ -212,7 +220,7 @@ paths: {
 </p>
 <p data-type="cid" data-message="xfinityconnecttocomcastnet" data-priority="100" class="message dark">
 <span class="message">Your XFINITY Connect session has timed out due to inactivity.
-<a href="https://login.comcast.net/login?ts=45208e1e&s=wnamp" rel="track closebutton">Click here to go back</a></span>
+<a href="https://login.comcast.net/login?ts=25603623&s=wnamp" rel="track closebutton email external">Click here to go back</a></span>
 <a href="http://xfinity.comcast.net/" class="close">close</a>
 </p>
 </div>
@@ -220,7 +228,7 @@ paths: {
 
 
 
-<!-- crumb: NOHOSTSPECIFIED-32-HTTPTHR8080THRPROCESSOR2-PDS-1345228353011 -->
+<!-- crumb: NOHOSTSPECIFIED-69-HTTPTHR8080THRPROCESSOR27-PDS-1348875042434 -->
 <div class="xpbar_3" data-lightbox-url="http://xfinitytv.comcast.net">
 <!-- META
 module: xpbar
@@ -231,9 +239,9 @@ linkType: basic
 <ul class="xp_properties">
 <li class="first xpbar_home"><a href="http://xfinity.comcast.net/" rel="default">Home</a></li>
 <li class="xpbar_tv"><a href="http://xfinitytv.comcast.net" rel="default">TV</a></li>
-<li class="last xpbar_email"><a href="https://login.comcast.net/login?ts=45208e1e&amp;s=wnamp" rel="default"> Connect
+<li class="last xpbar_email"><a href="https://login.comcast.net/login?ts=25603623&amp;s=wnamp" rel="default"> Connect
 </a></li>
-<li class="last xpbar_account"><a href="https://login.comcast.net/account?cmp=ILCCOM164349" rel="default"> Account
+<li class="last xpbar_account"><a href="https://customer.comcast.com/Secure/home.aspx?cmp=ILCCOM164349" rel="default"> Account
 </a></li>
 <li class="last xpbar_shop"><a href="http://www.comcast.com/Corporate/shop/productoverview.html?CMP=ILCBBAR" rel="default"> Shop
 </a></li>
@@ -247,15 +255,19 @@ linkType: basic
 </ul>
 <!-- Sign-in links are only shown for unauthenticated users -->
 <ul class="xp_signin">
-<li class="xp_register first"><a href="https://login.comcast.net/myaccount/create-uid?execution=e3s1"> Register
+<li class="xp_profile_link first"><a href="http://xfinity.comcast.net/profile/?cid=xpbar_myprofile">My Profile</a></li>
+<li class="xp_register"><a href="https://login.comcast.net/myaccount/create-uid?execution=e3s1"> Register
 </a></li>
-<li class="xp_signin last"><span class="unauth"><a href="https://login.comcast.net/login?continue=http%3A%2F%2Fxfinity.comcast.net%2Fprivacy%2F2011-10%2F&amp;ts=45208e1e&amp;s=portal" rel="signin"> Sign In
+<li class="xp_signin last"><span class="unauth"><a href="https://login.comcast.net/login?continue=http%3A%2F%2Fxfinity.comcast.net%2Fprivacy%2F2011-10%2F&amp;ts=25603623&amp;s=portal" rel="signin"> Sign In
 </a></span></li>
 </ul>
 <!-- The Profile Box is only shown for authenticated users -->
 <div class="xp_profile_box">
+<div class="xp_myprofile">
+<a href="http://xfinity.comcast.net/profile/?cid=xpbar_myprofile">My Profile</a>
+</div>
 <div class="xpbar_progress">
-<p><a data-onboarding-open="true" class="xp_profile_setup" href="index.html#profile"> Profile Set-up
+<p><a data-onboarding-open="true" class="xp_profile_setup" href="index.html#profile"> Set-up
 </a></p>
 <div class="xp_progress_bar"><div class="xp_progress_fill" style="width: 0;"><span class="access_aid">Loading Percentage</span></div></div>
 <span class="xp_menu_toggle"><span class="access_aid">View More Options</span></span>

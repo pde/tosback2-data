@@ -1,24 +1,34 @@
-var FSR = {
-    'version': '6.4.0',
-    'date': '1/12/2011',
-    'enabled': true,
-	'auto' : true,
-	'encode' : false,
-    'files': '/media/foresee/',
-    'id': 'eZD0aL0T5IwKxKozKPZbGw==',
-    'sites': [{
-        path: /\w+-?\w+\.(com|org|edu|gov|net)/
-    }, {
-        path: '.',
-        domain: 'default'
-    }]
+var $$FSR = {
+   'timestamp': 'July 26, 2012 @ 1:42 PM',
+   'version': '14.0.3',
+   'enabled': true,
+   'sessionreplay': true,
+   'auto' : true,
+   'encode' : false,
+   'files': '/media/foresee/',
+   //'swf_files': '__swf_files_' needs to be set when foresee-transport.swf is not located at 'files'
+   'id': 'eZD0aL0T5IwKxKozKPZbGw==',
+   'definition': 'foresee-surveydef.js',
+   'embedded': false,
+   'replay_id': 'site.com',
+   'renderer':'W3C',	// or "ASRECORDED"
+   'layout':'CENTERFIXED',	// or "LEFTFIXED" or "LEFTSTRETCH" or "CENTERSTRETCH"
+   'pools' : [
+      {
+         path: '.',
+         sp: 100  // CHANGE ONLY WHEN INCLUDING SESSION REPLAY
+      }
+   ],
+   'sites': [
+      {
+         path: /\w+-?\w+\.(com|org|edu|gov|net|co\.uk)/
+      },
+      {
+         path: '.',
+         domain: 'default'
+      }
+   ],
+   storageOption: 'cookie'
 };
-/************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
-function fsr$setAlive(){var A=new Date().getTime();document.cookie="fsr.a"+(FSR.site.cookie?"."+FSR.site.cookie:"")+"="+A+";path=/"+((FSR.site.domain)?";domain="+FSR.site.domain+";":";")+(FSR.site.secure?"secure":"")
-}(function(){if(window!=window.top){return }function G(K){if(typeof K=="object"){var J=K.constructor.toString().match(/array/i);
-return(J!=null)}return false}var I=FSR.sites;for(var F=0,D=I.length;F<D;F++){var B;if(!G(I[F].path)){I[F].path=[I[F].path]
-}for(var E=0,C=I[F].path.length;E<C;E++){if(B=document.location.href.match(I[F].path[E])){FSR.siteid=F;
-FSR.site=FSR.sites[FSR.siteid];if(!FSR.site.domain){FSR.site.domain=B[0]}else{if(FSR.site.domain=="default"){FSR.site.domain=false
-}}if(!FSR.site.secure){FSR.site.secure=false}if(!FSR.site.name){FSR.site.name=B[0]}var A=["files","js_files","image_files","html_files","css_files"];
-for(var F=0,H=A.length;F<H;F++){if(FSR.site[A[F]]){FSR[A[F]]=FSR.site[A[F]]}}break}}if(B){break}}if(!window["fsr$timer"]){fsr$setAlive();
-window["fsr$timer"]=setInterval(fsr$setAlive,1000)}})();
+// -------------------------------- DO NOT MODIFY ANYTHING BELOW THIS LINE ---------------------------------------------
+for(var a=$$FSR,b=window.document,c=a.sites,d=0,e=c.length;d<e;d++){var f;"[object Array]"!==Object.prototype.toString.call(c[d].path)&&(c[d].path=[c[d].path]);for(var g=0,h=c[d].path.length;g<h;g++)if(f=b.location.href.toLowerCase().match(c[d].path[g])){a.siteid=d;a.site=a.sites[d];a.site.domain?"default"==a.site.domain&&(a.site.domain=null):a.site.domain=f[0];a.site.secure||(a.site.secure=null);a.site.name||(a.site.name=f[0]);break}if(f)break} b.cookie="fsr.a"+(a.site.cookie?"."+a.site.cookie:"")+"=suspended;path=/"+(a.site.domain?";domain="+a.site.domain+";":";")+(a.site.secure?"secure":"");

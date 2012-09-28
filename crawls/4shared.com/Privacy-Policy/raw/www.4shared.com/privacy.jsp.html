@@ -50,7 +50,7 @@
   Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/'
   Config.isRTLLanguage = false
   Config.isReplaceSearchNameForSeo = false
-  Config.revisionNum = 21182
+  Config.revisionNum = 22884
   Config.syncDomain = 'https://www.4sync.com/'
 </script>
 
@@ -120,7 +120,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=1148291398"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=4162725675"></script>
 
 
 
@@ -149,7 +149,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=2428399622.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=904998850.css"/>
 
 
   <!--[if lt IE 7]>
@@ -204,7 +204,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=1010739718.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=1560910537.css"/>
 
 
 
@@ -337,6 +337,9 @@
 
 
 
+
+
+
 <script type="text/javascript" src="../static.4shared.com/js/json2.js%3Fver=2156414635"></script>
 
 
@@ -394,7 +397,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/login_fnc.js%3Fver=1464498900"></script>
+<script type="text/javascript" src="../static.4shared.com/js/login_fnc.js%3Fver=2846050369"></script>
 
 
 
@@ -683,7 +686,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=2387744687"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=3022280681"></script>
 
 
 
@@ -802,7 +805,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/Events.js%3Fver=2527780177"></script>
+<script type="text/javascript" src="../static.4shared.com/js/Events.js%3Fver=853860823"></script>
 
 
 
@@ -815,7 +818,24 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=796738734.css"/>
+
+
+
+
+<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.jsonWithError.js%3Fver=2940546744"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=3868284539.css"/>
 
 
 
@@ -846,24 +866,28 @@
       fieldForFocus.focus();
   }
 
-
   function authenticate(e, params, params2){
     params2 = params2 || {}
     eventObj = {};
     for (var i in e) eventObj[i] = e[i];
 
     paramsObj = {};
-    for (var p in params) paramsObj[p] = params[p];
-
+    var requestParams = new Object();
+    for (var p in params) {
+        paramsObj[p] = params[p];
+        requestParams[p]= params[p];
+    }
     var sp = escape(JSON.stringify(params));
+    requestParams.login = '';
+    requestParams.password = '';
+    requestParams.fpRedirParam='http://www.4shared.com/privacy.jsp';
+    requestParams.params = sp;
+    if (params && params.couponcode)
+      requestParams.couponcode = params.couponcode;
 
     document.body.style.cursor = 'wait';
     $.get('/authPopup.jsp',
-        {
-          login : '',
-          password : '',
-          fpRedirParam : 'http://www.4shared.com/privacy.jsp',
-          params: sp},
+        requestParams,
         function(data){
           data = $("<div/>").html(data)
           $('body').css('cursor', '');
@@ -930,7 +954,8 @@
         password: password,
         remember: false,
         doNotRedirect: 1,
-        successUrl: unescape(paramsObj.returnTo)
+        successUrl: unescape(paramsObj.returnTo),
+        couponcode: paramsObj.couponcode
     };
     document.body.style.cursor = 'wait';
     $.get('https://www.4shared.com/login?callback=?',
@@ -938,8 +963,20 @@
       function(data){
         $("body").css("cursor", "auto");
         if(data.ok){
+          var jsCallback = $("#jsCallback").val();
           authSaveParams(paramsObj);
-          loginFnc.redirect(data.redirectUrl || loginFnc.getLocation());
+          if (jsCallback != ""){
+              try{
+                eval(jsCallback);
+              }
+              catch(err){
+
+              }
+          }
+            else
+          {
+             loginFnc.redirect(data.redirectUrl || loginFnc.getLocation());
+          }
         }else{
           $('#loginreg-div #loginErrorMsg').html(data.rejectReason).show();
         }
@@ -1107,9 +1144,10 @@
   }
 
   function signOut(serverURL){
-    loginFnc.signOut(serverURL);
+    var redirectUrl = 'http://www.4shared.com/privacy.jsp?redirectAfterSignout=true';
+    loginFnc.signOut(serverURL, null, redirectUrl);
     if (serverURL != sn) {
-      loginFnc.signOut('/');
+      loginFnc.signOut('/', null, redirectUrl);
     }
     return false;
   }
@@ -1216,7 +1254,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.placeholder.patch.js%3Fver=1029541301"></script>
+<script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.placeholder.patch.js%3Fver=3412900527"></script>
 
 <script type="text/javascript" src="../static.4shared.com/js/plugins/jquery.outerhtml.js%3Fver=2856790532"></script>
 
@@ -1327,7 +1365,6 @@
     var url="/feedback.jsp";
     OpenWindow = window.open(url,windowname,'toolbar=no,scrollbars=yes,resizable=yes,width=500,height=460,left=50,top=50');
     OpenWindow.focus();
-    return false
   }
 
   function reportAbuse2() {
@@ -1336,11 +1373,10 @@
     }
     catch (e) {
       var windowname="abuse";
-      var url="/abuse.jsp?abuseType=1&link=" + " ";
+      var url="/web/abuse?abuseType=1&link=" + " ";
       OpenWindow = window.open(url,windowname,'toolbar=no,scrollbars=yes,resizable=yes,width=550,height=650,left=50,top=50');
       OpenWindow.focus();
     }
-    return false
   }
 
   document.write('<iframe width="0" height="0" id="iapHiddenFrame" name="iapHiddenFrame" style="display:none;" onload="iapHiddenFrameOnload()" ><' + '/iframe>');
@@ -1382,7 +1418,7 @@
   </div>
 </div>
 
-<!--script type="text/javascript" src="/js/header.js?ver=21182"></script-->
+<!--script type="text/javascript" src="/js/header.js?ver=22884"></script-->
 
 
 
@@ -1399,6 +1435,8 @@
 
 
 <script type="text/javascript" src="../static.4shared.com/js/AjaxSuggestion.js%3Fver=2632769902"></script>
+
+
 
 
 
@@ -1458,11 +1496,10 @@
 
 
 
-
 <div class="newHeader smallHeader">
   <div class="centered">
 
-    <div class="floatLeft logo gaClick paddingL10" data-element="h1">
+    <div class="floatLeft logo gaClick" data-element="h1">
         <a href="http://www.4shared.com/" title="Free file sharing"><img src="../static.4shared.com/images/spacer.gif%3Fver=1912669180" alt="Free file sharing" /></a>
     </div>
     
@@ -1599,10 +1636,10 @@
                   method="post" id="login_form" onsubmit="return doLogin()">
 
               <div class="input-light-small round4 marginT5 gaClick" data-element="h10_1">
-                  <input type="text" id="iloginfield" name="login" placeholder="Login"/>
+                  <input type="text" id="iloginfield" name="login" placeholder="Login" onkeydown="if(event.keyCode==13) {$(this).closest('form').submit(); return false}" />
               </div>
               <div class="input-light-small round4 marginT5 gaClick" data-element="h10.2">
-                  <input type="password" id="ipassfield" name="password" placeholder="Password"/>
+                  <input type="password" id="ipassfield" name="password" placeholder="Password" onkeydown="if(event.keyCode==13) {$(this).closest('form').submit(); return false}"/>
               </div>
                 <div class="capsWarning small red" style="display: none; padding: 3px 0px 0 0 ; text-align:right">Caps Lock is on</div>
 
@@ -1629,15 +1666,15 @@
                   <div class="floatLeft ffshadow">Login with:</div>
                   <div class="floatRight">
                     
-                      <a href="http://www.4shared.com/servlet/signin/twitter"
+                      <a href="http://www.4shared.com/servlet/signin/twitter?fp=http://www.4shared.com/privacy.jsp"
                          class="tw floatLeft sprite1 gaClick" data-element="h12"></a>
                     
                     
-                      <a href="http://www.4shared.com/servlet/signin/facebook"
+                      <a href="http://www.4shared.com/servlet/signin/facebook?fp=http://www.4shared.com/privacy.jsp"
                          class="fb floatLeft sprite1 gaClick" data-element="h13"></a>
                     
                     
-                      <a href="http://www.4shared.com/servlet/signin/google"
+                      <a href="http://www.4shared.com/servlet/signin/google?fp=http://www.4shared.com/privacy.jsp"
                          class="go floatLeft sprite1 gaClick" data-element="h14"></a>
                     
                   </div>
@@ -1691,8 +1728,6 @@
   </div>
 </div>
 
-
-
 <form action="http://www.4shared.com/account/home.jsp" method="post" style="display:none;" id="subscribeForm" name="subscribeForm">
   <input type="hidden" name="homemode" value="30"/>
   <input type="hidden" name="userId" value="-1"/>
@@ -1706,7 +1741,7 @@
 
   function doLogin() {
     $('#ipassfield').val(getFakePass2($('#ipassfield')))
-    return loginFnc.doLogin(undefined, 'https://www.4shared.com/', null, null, false, true);
+    return loginFnc.doLogin('http://www.4shared.com/privacy.jsp', 'https://www.4shared.com/', null, null, false, true);
   }
 </script>
 
@@ -1717,7 +1752,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc328, rev=21182"
+    title : "Title = dc329, rev=22884"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2235,7 +2270,7 @@
 <div class="copy">
     <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc328, rev=21182'>&copy;</span> 2005-2012 4shared.com 
+             Copyright <span title='dc329, rev=22884'>&copy;</span> 2005-2012 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             <script type="text/javascript" src="../privacy-policy.truste.com/privacy-seal/New-It-Solutions-LTD-/asc%3Frid=0b69e881-c8aa-478c-a8ce-4f1fc3d88e75"></script>
@@ -2251,7 +2286,8 @@
 
 
 
-<!-- www.currDcID=328 -->
+<!-- www.currDcID=329 -->
+
 
 
 
@@ -2271,14 +2307,16 @@ var sc_partition=51;
 var sc_click_stat=1;
 var sc_security="e8ecc2ac";
 </script>
-<script type="text/javascript" src="../www.statcounter.com/counter/counter.js"></script>
-<noscript>
-  <div class="statcounter">
-    <a title="free hit counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank" rel="nofollow">
-      <img class="statcounter" src="../c.statcounter.com/4135125/0/e8ecc2ac/1/index.html" alt="free hit counter" >
-    </a>
-  </div>
-</noscript>
+
+  <script type="text/javascript" src="../www.statcounter.com/counter/counter.js"></script>
+  <noscript>
+    <div class="statcounter">
+      <a title="free hit counter" href="http://www.statcounter.com/free_hit_counter.html" target="_blank" rel="nofollow">
+        <img class="statcounter" src="../c.statcounter.com/4135125/0/e8ecc2ac/1/index.html" alt="free hit counter" >
+      </a>
+    </div>
+  </noscript>
+
 <script type="text/javascript">
  document.write("<img src='../www.jscount.com/a/4/28b1a41b/z%3Fref=%2522+escape(document.referrer)+%2522&amp;url=%2522+escape(document.URL)+%2522&amp;rand=%2522+Math.random()+%2522' width=1 height=1 alt='' style='display:none'>")
 </script>

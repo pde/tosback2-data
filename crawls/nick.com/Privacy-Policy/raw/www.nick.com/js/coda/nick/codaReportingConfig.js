@@ -167,10 +167,12 @@ Configuration.prototype.initialize = function(){
 				else if(KIDS.get("primaryType")== "Mall")ct="Mall";
 				else if(KIDS.get("uri").indexOf("/celebrity/")>-1&&KIDS.get("type")=="")ct="Nick Star profile page";
 				else if(KIDS.reporting.site == "kca"&&KIDS.get("urlAlias").indexOf("quiz")>-1)ct = "Quiz";
+				else if(KIDS.get("urlAlias").indexOf("-comics")>-1)ct="Comics";
 				else if(KIDS.get("uri").indexOf("extras")>-1)ct="Extras";
 				else if(KIDS.get("urlAlias").indexOf("nominee")>-1 || KIDS.get("urlAlias").indexOf("winner")>-1 || KIDS.get("urlAlias").indexOf("host")>-1)
 					ct = "Host/nominees/winners";
-			}else if(KIDS.get("uri").indexOf("extras")>-1)ct="Extras";
+			}
+			else if(KIDS.get("uri").indexOf("extras")>-1)ct="Extras";
 			else if(KIDS.get("uri").indexOf("printables")>-1)ct="Printables";
 			else if(KIDS.get("isCharacterPage")== "true" || KIDS.get("isAboutPage")== "true")ct="About-info";
 			else if(KIDS.get("uri").indexOf("/club/parent")>-1 || KIDS.get("uri").indexOf("/info/")>-1)ct="About-info";
@@ -227,13 +229,40 @@ KIDS.reporting.init = function(){
 		});			
 	}
 	if(typeof NICK.choicestream!="undefined"){
-		KIDS.reporting.abTest = {"abtestId":"CSAbTestID","abtestGroups":[{name:"Group ChoiceStream",weight:99},{name:"Control Group",weight:1}],"currentGroup":""};
+		KIDS.reporting.abTest = {"abtestId":"CSAbTestID","abtestGroups":[{name:"Group ChoiceStream",weight:0},{name:"Control Group",weight:100}],"currentGroup":""};
 	}
 	btg.config.Omniture.percentPageViewedVarMap = {
 		previousPage: "prop54",
 		percentage:"prop55"
 	}
 	KIDS.reporting.badgeColorToggleCount = 0;
+
+	//reporting override for nickapp
+	try{
+		if(KIDS.get("uri").indexOf("/games/nickapp/")>-1){
+			KIDS.reporting.config.setName("vianickapp");
+			KIDS.reporting.config.setDynamicAccountSelection("true");
+			KIDS.reporting.config.setDynamicAccountList("vianickappdev=mtvi.com,localhost");
+			var site = "Windows8";
+			KIDS.reporting.config.setProp("1",site);
+			KIDS.reporting.config.setEVar("1",site);
+			var pn = KIDS.reporting.config.getPageName();
+			pn = pn.replace(KIDS.reporting.domain,site);
+			KIDS.reporting.config.setPageName(pn);
+			KIDS.reporting.config.setEVar("16",pn);
+			KIDS.reporting.config.setProp("25","");
+			KIDS.reporting.config.setList("1","");
+			var date=new Date();
+			var weekday= ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+			var day=weekday[date.getUTCDay()];
+			var hour=date.getUTCHours();
+			KIDS.reporting.config.setProp("9",date.toUTCString());
+			KIDS.reporting.config.setEVar("45",day);
+			KIDS.reporting.config.setProp("33",day);
+			KIDS.reporting.config.setEVar("46",hour);
+			KIDS.reporting.config.setProp("34",hour);
+		}
+	}catch(e){}
 }
 KIDS.reporting.firePageLoad = function(){
 	KIDS.reporting.omnifunctions.sendReportingCall();

@@ -1,6 +1,24 @@
 // setup container for new divs
 $('#wrapper').prepend('<div id="DivContainer" style="position: relative; width:0px; top:0px; left:0px; z-index: 10002;"></div>');
 
+//add free ship images at top right corner of every pages
+
+$(document).ready(function() {
+	var num = $('#branding_wrapper').children('#header_freeship');
+	if(num.length == 0){
+		$('#branding_wrapper').append('<a href="/online/handbags/genWCM-10551-10051-en-/Coach_US/CustomerService/OrderInformation/SHIPPING+METHODS+AND+FEES?LOC=TN" id="header_freeship" alt="free shipping"><img src="/popup/freeship.jpg"/></a>');
+		$('#header_freeship').css({
+			'position':'absolute',
+			'top':'60px',
+			'right':'18px',
+			'width':'311px',
+			'height':'30px',
+			'border':'none'
+		});
+		$('#full_page').css('padding-top','20px');
+	}
+});
+
 //MEN TOP NAV SET BORDER	
 /*$(document).ready(function() {
 	$('#divCon').css('border','1px solid #000000 !important');
@@ -117,6 +135,205 @@ function goLink(linkwwcm){
 	
 	}
 		
+}
+
+// Men Form and Function DIV
+function popFFWomen(){
+$('#DivContainer').prepend('<div id="FFWomenDiv" style="visibility:visible; width:842px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFFWomen()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:842px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="FFWomenFrame" id="FFWomenFrame" src="/us/201210/ff_women/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'FFWomenDiv';
+	divwidth = 842;
+	divheight = 557;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Womens Fashion and Function Div";
+	s.eVar16 = "Womens Fashion and Function Div";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeFFWomen() {
+	$('#FFWomenFrame').remove();
+	$('#FFWomenDiv').remove();
+	window.onresize = null; 
+}
+
+// Men Form and Function DIV
+function popFFMen(){
+$('#DivContainer').prepend('<div id="FFMenDiv" style="visibility:visible; width:842px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFFMen()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:842px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="FFMenFrame" id="FFMenFrame" src="/us/201210/ff_men/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'FFMenDiv';
+	divwidth = 842;
+	divheight = 557;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Mens Form and Function Div";
+	s.eVar16 = "Mens Form and Function Div";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeFFMen() {
+	$('#FFMenFrame').remove();
+	$('#FFMenDiv').remove();
+	window.onresize = null; 
+}
+
+//Duffle Kit
+function popDuffleKit(){
+	closeDuffleDIY();
+	$('#DivContainer').prepend('<div id="duffleDiv" style="visibility:visible; width:620px; height:557px; top: 60px; *top:-80px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDuffleKit()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right; display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:620px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="duffleFrame" id="duffleFrame" src="/us/201209/duffle_kit/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+
+	 // REPOSITION DIV
+	divname = 'duffleDiv';
+	divwidth = 620;
+	divheight = 557;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Duffle Kit";
+	s.prop4="div";
+	s.eVar16 = "Duffle Kit";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeDuffleKit() {
+	$('#duffleFrame').remove();
+	$('#duffleDiv').remove();
+	window.onresize = null; 
+}
+
+//Duffle DIY
+function popDuffleDIY(){
+	$('#DivContainer').prepend('<div id="duffleDiv" style="visibility:visible; width:751px; height:694px; top: 60px; *top:-80px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDuffleDIY()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right; display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:751px; height:694px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="duffleFrame" id="duffleFrame" src="/us/201209/duffle_diy/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+
+	 // REPOSITION DIV
+	divname = 'duffleDiv';
+	divwidth = 751;
+	divheight = 694;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Duffle DIY";
+	s.eVar16 = "Duffle DIY";
+	s.prop4="div";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeDuffleDIY() {
+	$('#duffleFrame').remove();
+	$('#duffleDiv').remove();
+	window.onresize = null; 
+}
+
+//Duffle video
+//Duffle DIY
+function popDuffleVideo(){
+alert('this will pop the duffle video');
+	/*$('#DivContainer').prepend('<div id="duffleDiv" style="visibility:visible; width:751px; height:647px; top: 60px; *top:-80px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeDuffleVideo()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right; display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:751px; height:647px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="duffleFrame" id="duffleFrame" src="/us/201209/duffle_diy/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+*/
+	 // REPOSITION DIV
+	divname = 'duffleDiv';
+	divwidth = 751;
+	divheight = 647;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Duffle DIY";
+	s.eVar16 = "Duffle DIY";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeDuffleVideo() {
+	$('#duffleFrame').remove();
+	$('#duffleDiv').remove();
+	window.onresize = null; 
+}
+
+// Frye Scroll
+function popFryeScroll(){
+	if (navigator.userAgent.indexOf('iPad') != -1) {
+		$('#DivContainer').prepend('<div id="FryeScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFryeScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="FryeScrollFrame" id="FryeScrollFrame" src="/us/201209/frye_scroll/indexIpad.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	} else {
+		$('#DivContainer').prepend('<div id="FryeScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFryeScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="FryeScrollFrame" id="FryeScrollFrame" src="/us/201209/frye_scroll/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	}
+	 // REPOSITION DIV
+	divname = 'FryeScrollDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Frye Scroll";
+	s.eVar16 = "Frye Scroll";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeFryeScroll() {
+	$('#FryeScrollFrame').remove();
+	$('#FryeScrollDiv').remove();
+	window.onresize = null; 
+}
+
+//Men's Wallet Guide div
+function popMenWallets(){
+$('#DivContainer').prepend('<div id="MenWalletGuideDiv" style="visibility:visible; width:847px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeMenWalletGuide()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:847px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="MenWalletGuideFrame" id="MenWalletGuideFrame" src="/us/men_wallet/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'MenWalletGuideDiv';
+	divwidth = 847;
+	divheight = 557;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Mens Wallet Guide Div";
+	s.eVar16 = "Mens Wallet Guide Div";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeMenWalletGuide() {
+	$('#MenWalletGuideFrame').remove();
+	$('#MenWalletGuideDiv').remove();
+	window.onresize = null; 
+}
+
+// Sartorialist DIV
+function popSartorialist(entry){
+	if (entry == 'video') {
+		$('#DivContainer').prepend('<div id="SartorialistDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSartorialist()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="SartorialistFrame" id="SartorialistFrame" src="/us/201209/sartorialist/index.html#video" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+		//OMNITURE TRACKER	
+		s.pageName = "Sartorialist video DIV";
+		s.eVar16 = "Sartorialist video DIV";
+	} else {
+		$('#DivContainer').prepend('<div id="SartorialistDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSartorialist()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="SartorialistFrame" id="SartorialistFrame" src="/us/201209/sartorialist/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+		//OMNITURE TRACKER	
+		s.pageName = "Sartorialist gallery DIV";
+		s.eVar16 = "Sartorialist gallery DIV";
+	}
+	 // REPOSITION DIV
+	divname = 'SartorialistDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeSartorialist() {
+	$('#SartorialistFrame').remove();
+	$('#SartorialistDiv').remove();
+	window.onresize = null; 
 }
 
 // Natalie Joos
@@ -333,6 +550,33 @@ function closeDayTrippers() {
 
 }
 		
+		// Foundation Div
+function popFoundGall(name){
+$('#DivContainer').prepend('<div id="foundationDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFoundation()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="foundationFrame" id="foundationFrame" src="/us/foundation/gallery/'+name+'/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'foundationDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+		
+	//OMNITURE TRACKER	
+	s.pageName = "foundation";
+	s.eVar16 = "foundation";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+	
+}
+	
+
+function closeFoundation() {
+	$('#foundationFrame').remove();
+	$('#foundationDiv').remove();
+	window.onresize = null; 
+
+}
 		
 	
 //Coach and The Glow div
@@ -663,8 +907,8 @@ $('#DivContainer').prepend('<div id="spotDiv" style="visibility:visible; width:8
 	divPos();		
 		
 	//OMNITURE TRACKER	
-	s.pageName = "spotted popup";
-	s.eVar16 = "spotted popup";
+	s.pageName = "new at coach: spotted popup";
+	s.eVar16 = "new at coach: spotted popup";
 	var s_code=s.t();
 	if(s_code)document.write(s_code);
 	
@@ -856,7 +1100,7 @@ function popLegacy(content){
 	//var content;
 		
 	$('#DivContainer').html('');
-	$('#DivContainer').prepend('<div id="legacyDiv" style="width:850px; height:550px; background:none; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeLegacy()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
+	$('#DivContainer').prepend('<div id="legacyDiv" style="width:850px; height:550px; background:#fff; position:absolute; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeLegacy()" style="position: absolute; right: -1px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a></div>');
 	
 switch(content){ 
 	case 'd':
@@ -1532,7 +1776,7 @@ $('#lookFrame').attr('src','/201011/looks/indexNB.html');
  function popupLookNB() {
 	setTimeout('delaylookNB()', 3000);
 	
-	$('#DivContainer').prepend('<div id="DivLook" style="width:764px; height:466px; background:none; visibility:hidden; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><iframe style="width:764px; height:466px;margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid black;" src="/201011/looks/0.html" name="lookFrame" id="lookFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivLook" style="width:764px; height:466px; background:none; visibility:hidden; border: 1px solid #000; position:fixed; _position: absolute; top: 30%; left: 30%; _top:60px; _left:60px; z-index:900000;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><iframe style="width:764px; height:466px;margin-left: 0px; margin-top: 0px; z-index: 80000; _hasLayout:true; border: 1px solid black;" src="/201011/looks/0.html" name="lookFrame" id="lookFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
  	document.getElementById('DivLook').style.visibility='visible';
 	document.getElementById('DivLook').style.zIndex='9000';
@@ -1561,7 +1805,7 @@ function closeLook() {
 
 function popupWallets() {
 
-	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; background:none; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/wallet_guide/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/wallet_guide/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
 	document.getElementById('DivWallet').style.visibility='visible';
 	document.getElementById('DivWallet').style.zIndex='9000';
@@ -1575,8 +1819,8 @@ function popupWallets() {
 	
    	// REPOSITION DIV
 	divname = 'DivWallet';
-	divwidth = 852;
-	divheight = 552;
+	divwidth = 842;
+	divheight = 557;
 	window.onresize =  divPos;
 	divPos();
 	
@@ -2020,78 +2264,80 @@ function divPos(){
 //load the page
 window.onload = function () { 
 
-	  //if hash or converted hash tag exists
-	  if((window.location.hash) || (window.location.href.search('%23')!=-1)) {
-		if(!($.browser.msie)) { //no IE
-			console.log("Hash tag is found.");
-		}
-				//get full url
-				var url = window.location.href;
-
-				
-				if(window.location.hash){
-								split = '#';
-				}else{
-								split = '%23';
+	var page = "", result;
+	if (window.location.hash.length) {
+		page = window.location.hash;
+	} else if (window.location.href.indexOf("%23") !== -1) {
+		var url = decodeURIComponent(window.location.href);
+		page = url.substr(url.indexOf("#"), str.length);
+	}
+		page = page.replace("#", "");
+		result = page.split("&")[0];
+		result = result.split("%26")[0];
+    		
+		//fire the function, else log the error
+		var popdiv = result.toLowerCase();
+		switch(popdiv){
+			case "ff_men":
+				popFFMen();
+				break;
+			case "ff_women":
+				popFFWomen();
+				break;
+			case "sartorialist_video":
+				popSartorialist('video');
+				break;
+			case "duffle_kit":
+				popDuffleKit();
+				break;
+			case "duffle_diy":
+				popDuffleDIY();
+				break;
+			case "jw_care":
+				popJw('care');
+				break;
+			case "daytrippers":
+				popDayTrippers();
+				break;
+			case "have2have":
+				popContent('wardrobe');
+				break;
+			case "spotted":
+				popSpot();
+				break;
+			case "leather":
+				popLeather();
+				break;
+			case "crosby":
+				popCrosby();
+				break;
+			case "shoes_video":
+				popVideo('shoes')
+				break;
+			case "heritage":
+				popHeritage();
+				break;
+			case "stripes":
+				popupStripes();
+				break;
+			case "baby":
+				popBaby();
+				break;
+			case "nares":
+				popNares();
+				break;
+			case "washed":
+				popWashedCanvas();
+				break;
+			case "mothersday":
+				popMothersDay();
+				break;
+			case "glow":
+				popGlow();
+				break;
+			default:
+				if(!($.browser.msie)) { //no IE
+					console.log("Hash tag has no popup function.");
 				}
-				//grab the hash part
-				url = url.split(split);
-				var popdiv = url[1];          
-				
-				//fire the function, else log the error
-				var popdiv = popdiv.toLowerCase();
-				switch(popdiv){
-					case "jw_care":
-						popJw('care');
-						break;
-					case "daytrippers":
-						popDayTrippers();
-						break;
-					case "have2have":
-						popContent('wardrobe');
-						break;
-					case "spotted":
-						popSpot();
-						break;
-					case "leather":
-						popLeather();
-						break;
-					case "crosby":
-						popCrosby();
-						break;
-					case "shoes_video":
-						popVideo('shoes')
-						break;
-					case "heritage":
-						popHeritage();
-						break;
-					case "stripes":
-						popupStripes();
-						break;
-					case "baby":
-						popBaby();
-						break;
-					case "nares":
-						popNares();
-						break;
-					case "washed":
-						popWashedCanvas();
-						break;
-					case "mothersday":
-						popMothersDay();
-						break;
-					case "glow":
-						popGlow();
-						break;
-					default:
-						if(!($.browser.msie)) { //no IE
-							console.log("Hash tag has no popup function.");
-						}
-				}              
-	  }else{
-			  //no hash tag
-			if(!($.browser.msie)) { //no IE
-				console.log("No hash tag found in the URL.");
-			}
-	  }
+		}
 }

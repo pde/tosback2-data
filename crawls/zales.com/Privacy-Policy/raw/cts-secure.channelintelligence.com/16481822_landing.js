@@ -125,7 +125,13 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 				ci_FP('bp.specificclick.net?pixid=99069675');
 			}
 		}catch(err){CI_LogError(err, 'landing_JessicaSimpson');}
-
+		
+		//Yahoo
+		try{
+			ci_FP('idcs.interclick.com/Segment.aspx?sid=8d1a234c-1208-4ddb-9f08-c900b0eeebb6');
+		}catch(err){CI_LogError(err, 'landing_Yahoo');}
+		
+		
 		try{
 			if(ci_cpncode!==null){
 				try{

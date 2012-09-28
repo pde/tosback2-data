@@ -3158,8 +3158,6 @@ this.setLinkName=function(linkName){this.setting.linkName=linkName
 };
 if(typeof KIDS=="undefined"||!KIDS){var KIDS={}
 }KIDS.namespace("reporting.omnifunctions");
-$(document).bind("loggedIn",function(){KIDS.reporting.omnifunctions.sendLogin("Complete")
-});
 $(document).bind("photoSlideNext",function(){KIDS.reporting.omnifunctions.photoSlide()
 });
 KIDS.reporting.omnifunctions.DOSstaus="";
@@ -3173,7 +3171,8 @@ KIDS.ads.refresh.KCALiveShowOff()
 })
 }}});
 KIDS.reporting.omnifunctions.sendReportingCall=function(b){try{if(b==null){b=KIDS.reporting.config
-}var a=btg.config.Omniture.account;
+}if(b.getPageName()!=null&&b.getPageName()!=""){if(b.getEVar(16)==null||b.getEVar(16)==""){b.setEVar(16,b.getPageName())
+}}var a=btg.config.Omniture.account;
 if(btg.String.isDefined(b.setting.name)){btg.config.Omniture.account=b.setting.name
 }btg.Controller.init();
 if(typeof KIDS.reporting.abTest!="undefined"){var c=new btg.ABTest(KIDS.reporting.abTest.abtestId,KIDS.reporting.abTest.abtestGroups);
@@ -3276,20 +3275,7 @@ a=c.exec(b);
 if(a){return("nick-localhost")
 }else{return(null)
 }}}}}}};
-KIDS.reporting.omnifunctions.trackKidsGamePlay=function(f){try{var b=new Configuration();
-b.init();
-var a=KIDS.reporting.omnifunctions.fetchGamePlaySite(document.URL);
-var c="viakidsgameplay";
-b.setName(c);
-b.setDynamicAccountSelection("false");
-b.setChannel(a);
-b.setHier1(a+"/"+f);
-b.setHier2("");
-b.setProp(1,b.getHier1());
-b.setProp(2,f);
-b.setProp(3,a);
-KIDS.reporting.omnifunctions.sendReportingCall(b)
-}catch(d){}};
+KIDS.reporting.omnifunctions.trackKidsGamePlay=function(b){try{}catch(a){}};
 KIDS.reporting.omnifunctions.clearDispatcherEVars=function(b){try{var a=(com.mtvi.reporting.Controller.initalized?btg.reporting.omniture.Hcode:btg.config.ReportSettings.Omniture);
 for(var c=b;
 c>0;
@@ -3435,27 +3421,28 @@ KIDS.reporting.omnifunctions.sendUsernameTaken=function(){try{var a="Registratio
 btg.Controller.sendLinkEvent({linkName:a,linkType:"o",prop29:"Registration: Username Taken Error"})
 }catch(b){KIDS.utils.doLog(b.toString())
 }};
-KIDS.reporting.omnifunctions.sendLogin=function(b){try{if(b=="Popup"){var a=new Configuration();
-a.init();
-a.setName(KIDS.reporting.config.getName());
-a.setDynamicAccountSelection("true");
-a.setDynamicAccountList(KIDS.reporting.config.getDynamicAccountList());
-a.setLinkInternalFilters(KIDS.reporting.config.getLinkInternalFilters());
-a.setTrackExternalLinks(true);
-a.setTrackDownloadLinks(true);
-a.setTrackInlineStats(true);
-a.setPageName("Login - "+b);
-a.setProp("1",KIDS.reporting.site);
-a.setEVar("1",KIDS.reporting.site);
-a.setProp("17","Login");
-a.setEVar("17","Login");
-a.setHier2("Login/"+b);
-a.setChannel("Login");
-KIDS.reporting.omnifunctions.sendReportingCall(a)
-}if(b=="Complete"){btg.Controller.sendLinkEvent({linkName:"Login Complete",events:"event3",linkType:"o"})
-}}catch(c){KIDS.utils.doLog(c.toString())
+KIDS.reporting.omnifunctions.sendLogin=function(c,a){try{if(c=="Popup"){var b=new Configuration();
+b.init();
+b.setName(KIDS.reporting.config.getName());
+b.setDynamicAccountSelection("true");
+b.setDynamicAccountList(KIDS.reporting.config.getDynamicAccountList());
+b.setLinkInternalFilters(KIDS.reporting.config.getLinkInternalFilters());
+b.setTrackExternalLinks(true);
+b.setTrackDownloadLinks(true);
+b.setTrackInlineStats(true);
+b.setPageName("Login - "+c);
+if(a){b.setEVar(9,"Login - "+a)
+}b.setProp("1",KIDS.reporting.site);
+b.setEVar("1",KIDS.reporting.site);
+b.setProp("17","Login");
+b.setEVar("17","Login");
+b.setHier2("Login/"+c);
+b.setChannel("Login");
+KIDS.reporting.omnifunctions.sendReportingCall(b)
+}if(c=="Complete"){btg.Controller.sendLinkEvent({linkName:"Login Complete",events:"event3",eVar9:(a)?"Login - "+a:"",linkType:"o"})
+}}catch(d){KIDS.utils.doLog(d.toString())
 }};
-KIDS.reporting.omnifunctions.sendReg=function(b){try{var a=new Configuration();
+KIDS.reporting.omnifunctions.sendReg=function(b,d){try{var a=new Configuration();
 a.init();
 a.setName(KIDS.reporting.config.getName());
 a.setDynamicAccountSelection("true");
@@ -3466,6 +3453,7 @@ a.setTrackDownloadLinks(true);
 a.setTrackInlineStats(true);
 a.setPageName(KIDS.reporting.domain+"/Registration -"+b);
 if(b=="Registration Complete"){a.setEvents("event1")
+}if(d){a.setEVar(9,KIDS.reporting.domain+"/Registration -"+d)
 }a.setHier2(KIDS.reporting.domain+"/Registration/"+b);
 a.setChannel("Registration");
 a.setProp("1",KIDS.reporting.site);
@@ -3928,6 +3916,7 @@ KIDS.reporting.omnifunctions.sendClubGameSession=function(a){try{btg.Controller.
 KIDS.reporting.omnifunctions.sendClubClosetOpen=function(){try{var a=new Configuration();
 a.init();
 a.setPageName("nick.com/club/Closet Open");
+a.setEVar(16,"nick.com/club/Closet Open");
 a.setProp(1,"Nick.com Proper");
 a.setEVar(1,"Nick.com Proper");
 a.setChannel("club");
@@ -3942,6 +3931,7 @@ KIDS.reporting.omnifunctions.sendClubSaveAvatar=function(){try{btg.Controller.se
 KIDS.reporting.omnifunctions.sendClubEditRoomOpen=function(){try{var a=new Configuration();
 a.init();
 a.setPageName("nick.com/club/Edit Room");
+a.setEVar(16,"nick.com/club/Edit Room");
 a.setProp(1,"Nick.com Proper");
 a.setEVar(1,"Nick.com Proper");
 a.setChannel("club");
@@ -3987,6 +3977,7 @@ a.setTrackExternalLinks(true);
 a.setTrackDownloadLinks(true);
 a.setTrackInlineStats(true);
 a.setPageName(KIDS.reporting.domain+"/club/profile/"+f);
+a.setEVar(16,KIDS.reporting.domain+"/club/profile/"+f);
 a.setHier2(KIDS.reporting.domain+"/club/profile/view/"+f);
 a.setChannel("club");
 a.setProp(1,"Nick.com Proper");

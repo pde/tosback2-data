@@ -389,7 +389,12 @@ var Util = {
 				address : Util.empty,
 				profile : Util.empty,
 				payment : Util.empty,
-				notify : Util.empty
+				notify : Util.empty,
+				
+				prefcenter: function (){
+				      VCS.initErrorModal('div.account-error li');
+				  
+				}
 			},
 
 			checkout : {

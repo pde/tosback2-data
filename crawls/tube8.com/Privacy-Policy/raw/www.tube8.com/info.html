@@ -14,10 +14,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
-<link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" /> 
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=138.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=150.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
-	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=042" rel="stylesheet" type="text/css" />
+	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=043" rel="stylesheet" type="text/css" />
 <![endif]-->
 
 <!--[if lt IE 7]>
@@ -36,8 +36,7 @@
 <![endif]-->
 
 <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=017"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/ourfriends.js"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=019"></script>
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 	var $j = jQuery.noConflict();
@@ -46,17 +45,17 @@
 	var cats = '';
 	var changing_thumbs = new Object();
 	var first_thumbs = new Object();
-	
+
 	var loggedin = 0;
 	var username = "none";
 	var runal = false;
 	var goUrl = false;
-	
+
 	var site_url = "http://www.tube8.com/";
 	var ajax_url = "/ajax/";
 
 	if (top!=self)top.location=location;
-	
+
 	var deferred_external_scripts = new Array(); //script id as key, value is the src
 	deferred_external_scripts['gplus1js'] = 'https://apis.google.com/js/plusone.js';
 	deferred_external_scripts['twitter-wjs'] = '//platform.twitter.com/widgets.js';
@@ -79,7 +78,7 @@
 		['_setAllowAnchor',true],
 		['_trackPageview']
 	);
-	
+
 	(function() {
 		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -87,9 +86,11 @@
 	})();
 
 </script>
+	  <link href="../ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+	  <script src="../ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 	<script language="javascript" type="text/javascript">
 	//<![CDATA[
-	
+
 		function trackFilter(){
 	if (document.getElementById('cat_6').checked) {pageTracker._trackEvent('Filter', 'Amateur');}
 if (document.getElementById('cat_13').checked) {pageTracker._trackEvent('Filter', 'Anal');}
@@ -109,8 +110,71 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 		}
 
 		$j(document).ready(function() {
-				
-							
+
+			// ****** ADBlocker tracking *************
+			setTimeout(function () {
+				var TJ_missing = [];
+				$('iframe.tj').each(function (index, iframe) {
+					var reasons = [];
+					if ('visible' != $(iframe).css("visibility") && 'inherit' != $(iframe).css("visibility")) {
+						reasons.push('Visibility:' + $(iframe).css("visibility"));
+					}
+					if ('none' == $(iframe).css("display")) {
+						reasons.push('Display:none');
+					}
+					if (0 == $(iframe).width() || 0 == $(iframe).height()) {
+						reasons.push('WidthxHeight:' + $(iframe).width() + 'x' + $(iframe).height());
+					}
+					if (-1 == $(iframe).attr('src').indexOf('ads.trafficjunky.net')) {
+						reasons.push('IframeSRC:' + $(iframe).attr('src'));
+					}
+					if (reasons.length > 0) {
+						TJ_missing.push(reasons.sort().join(','));
+					}
+				});
+				if (TJ_missing.length > 0 && statTracker) {
+
+					statTracker()._setSiteID(13);
+					// Assume all ads on the page are hidden the same way
+					statTracker()._event('adblock', 'enabled', TJ_missing[0], TJ_missing.length);
+				}
+			}, 1500);
+			//**********************************************
+
+			//************************************* Search Auto Complete Feature *************************************************************
+			var autocomplete = {
+				cache       : {},
+				xhr         : {}
+			};
+
+			$('input#searchq').autocomplete({
+				minLength       : 2,
+				source          : function (request,response) {
+					var q = request.term;
+					if( q in autocomplete.cache ) {
+						response( autocomplete.cache[q] );
+						return false;
+					}
+					else {
+						autocomplete.xhr = $.getJSON("/ajax/processSearchAutoComplete.php?c=US&segment=0&search_term="+encodeURIComponent(q.replace(' ','%20')),function(data, status, xhr) {
+							autocomplete.cache[q] = data;
+							if( autocomplete.xhr === xhr ) { // only use the latest xhr callback
+								response(data);
+							}
+						});
+
+						return true;
+					}
+				},
+				select: function(event, ui) {
+					$("input#searchq").val(ui.item.value);
+					$("#search_form").submit();
+				}
+			});
+			//*********************************************************************************************************************************
+
+
+			
 			$j('div#form_box_img').css({
 				top: ($j(window).scrollTop() + 150 ) + 'px'
 			});
@@ -157,7 +221,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				{
 					var segment_id = 0;
 					var faction = '/search.html';
-					
+
 					if($j('#searchw').val() > 0)
 					{
 						var el = $j('#searchw :selected');
@@ -188,6 +252,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 		});
 
 	//]]>
+
 	</script>
 							<script type="text/javascript">
 		(function() { var rts = document.createElement('script'); rts.type = 'text/javascript'; rts.async = true; rts.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'rts.phn.doublepimp.com/Publishers/0e80465c73.js?random=' + Math.floor(89999999*Math.random()+10000000) + '&amp;millis='+new Date().getTime(); var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(rts, s); })();
@@ -261,7 +326,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 						<a href="http://www.tube8.com/categories.html" onclick="pageTracker._trackEvent('Header', 'Click Categories Tab');">Categories</a>
 					</li>
 					<li class="float-left tm-border ">
-						<a href="http://www.tube8.com/tags.html" onclick="pageTracker._trackEvent('Header', 'Click Tags Tab');" style="padding-right:15px;">Tags<span class="new"></span></a>
+						<a href="http://www.tube8.com/tags.html" onclick="pageTracker._trackEvent('Header', 'Click Tags Tab');" style="padding-right:15px;">Tags</a>
 					</li>
 					<li class="float-left tm-border">
 						<a href='http://enter.t8premium.com/track/MTU5NTQ6MjU6MzQ,587/' target='_blank' rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Premium Tab');">Premium</a>
@@ -300,10 +365,10 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 							</a>
 													</li>
 						<li class="float-left"><a class="display-block" href="http://www.tube8.com/upload.html" rel="nofollow" onclick="pageTracker._trackEvent('Header', 'Click Upload Tab');" class="needLogin"><span>Upload Video</span></a></li>
-						
+
 						<li class="float-right display-block"><a onclick="segmentCookie(2);" href="http://www.tube8.com/shemale/"><span>Shemale</span></a></li><li class="float-right display-block"><a onclick="segmentCookie(1);" href="http://www.tube8.com/gay/"><span>Gay</span></a></li><li class="float-right display-block"><p><span>Straight</span></p></li>					</ul>
 				</div>
-			</div>		
+			</div>
 			    <div class="content-wrapper">
         <div class="tabmenu">
             <ul class="tab-list">
@@ -1132,22 +1197,22 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 		closeNotificationButton	= $(".close-notification-button"),
 		myVideosList			= "closed",
 		currentThumbnailFlip	= null;
-		
-		
+
+
 		function showMyVideosList(){
 			fifthElement.nextAll().removeClass("display-none");
 		}
-		
+
 		function hideMyVideosList () {
 			fifthElement.nextAll().addClass("display-none");
 		}
 
 		$j(document).ready(function(){
-			
+
 			closeNotificationButton.click(function(){
 				$(this).parent().parent().html("");
 			});
-			
+
 			myVideosTriggerButton
 				.mouseenter(function(){
 					$(this).addClass("mouse-over");
@@ -1157,17 +1222,17 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					$(this).removeClass("mouse-over");
 					myVideosListMenu.addClass("display-none");
 				});
-			
+
 			contentList
-				.mouseenter(function(){ 
-					$(this).addClass("active"); 
+				.mouseenter(function(){
+					$(this).addClass("active");
 					$(this).children(".close-notification-button").addClass("sprite-my-videos");
 				})
-				.mouseleave(function(){ 
-					$(this).removeClass("active"); 
-					$(this).children(".close-notification-button").removeClass("sprite-my-videos"); 
+				.mouseleave(function(){
+					$(this).removeClass("active");
+					$(this).children(".close-notification-button").removeClass("sprite-my-videos");
 				});
-			
+
 			myVideosListTrigger.click(function(){
 				if (myVideosList == "closed"){
 					showMyVideosList();
@@ -1176,9 +1241,9 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				}
 				myVideosTrigger.addClass("display-none");
 			});
-			
-			
-			
+
+
+
 			$j("img.videoThumbs").each(function(idx, cb)
 			{
 				if ($j("#"+cb.id).attr('category') && cats.indexOf($j("#"+cb.id).attr('category'))!=-1) {
@@ -1212,7 +1277,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			if( skinEvent.start < skinEvent.now && skinEvent.end > skinEvent.now )  {
 				skinEvent.key = Math.ceil((skinEvent.now - skinEvent.start) / 86400000);
 				$('body').css('background-color','#000');
-				$('.home-message').hide().prev().css('height','3px');		
+				$('.home-message').hide().prev().css('height','3px');
 				if( typeof $j('.videopage')[0] == 'undefined' ) {
 					$j('body').prepend('<div class="skin'+skinEvent.key+'"><a href="http://www.fuck.com" target="_blank" class="skinLink" /></div>');
 					$j('.content-wrapper').first().css({
@@ -1252,8 +1317,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 <li><a href='http://www.tube8.com/cat/mature/2/' onclick="pageTracker._trackEvent('Header', 'ChosenSort category Mature in straight');">Mature</a></li>
 <li><a href='http://www.tube8.com/cat/strip/10/' onclick="pageTracker._trackEvent('Header', 'ChosenSort category Strip in straight');">Strip</a></li>
 <li><a href='http://www.tube8.com/cat/teen/3/' onclick="pageTracker._trackEvent('Header', 'ChosenSort category Teen in straight');">Teen</a></li>
-<li><a href="http://www.tube8.com/gay/" onclick="pageTracker._trackEvent('Header', 'ChosenSort gay in straight ');segmentCookie(1);">Gay</a></li><li><a href="http://www.tube8.com/shemale/" onclick="pageTracker._trackEvent('Header', 'ChosenSort shemale in straight ');segmentCookie(2);">Shemale</a></li><li><a href="http://enter.t8premium.com/track/MTY0OTQ6MjU6MzQ,615/" rel="nofollow" target="_blank">HD</a></li></ul>	
-		</div>
+<li><a href="http://www.tube8.com/gay/" onclick="pageTracker._trackEvent('Header', 'ChosenSort gay in straight ');segmentCookie(1);">Gay</a></li><li><a href="http://www.tube8.com/shemale/" onclick="pageTracker._trackEvent('Header', 'ChosenSort shemale in straight ');segmentCookie(2);">Shemale</a></li><li><a href="http://enter.t8premium.com/track/MTY0OTQ6MjU6MzQ,615/" rel="nofollow" target="_blank">HD</a></li></ul>		</div>
 	</div>
 	<div class="footer-wrapper">
 		<div class="footer-cont main-sprite-img relative auto width-layout">
@@ -1301,20 +1365,20 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 		var widthWindow = ($j(window).width() /2) - 300;
 		$j("div#form_box_img").css("left" , widthWindow + "px");
 	});
-	
+
 	var addThisLoaded = false;
 	var twitterLoaded = false;
-	
-	function showAddThisButtons() 
+
+	function showAddThisButtons()
 	{
 		addThisLoaded = true;
 		$j('#redditButton,#stumbleButton,#moreButton,#mailButton,#tumblrButton').css("visibility","visible");
 		addthis.addEventListener('addthis.menu.share', function(evt){shareEventHandler(evt.data.service)});
 	}
-	
+
 	function initAddThis() {
 		var addthisScript = document.getElementById('addth1sjs');
-		
+
 		if (typeof addthisScript === 'undefined') {
 			setTimeout("initAddThis()", 1000);
 			return;
@@ -1331,13 +1395,13 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			}
 		}
 	}
-	
-	$j(document).ready(function(){		
+
+	$j(document).ready(function(){
 		var widthWindow = ($j(window).width() /2) - 300;
 		$j("div#form_box_img").css("left" , widthWindow + "px");
+
+
 		
-	
-						
 		//Asynchronous loading of social media buttons
 		(function(d, s) {
 			var t, js, fjs = d.getElementsByTagName(s)[0], load = function(url, id) {
@@ -1353,7 +1417,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				}
 			}
 		}(document, 'script'));
-		
+
 				if (navigator.appName == 'Microsoft Internet Explorer') {
 			document.getElementById('twitter-wjs').onreadystatechange = function() {
 				if ( this.readyState == "loaded" || twitterLoaded == false ) {
@@ -1365,7 +1429,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					 });
 				}
 			}
-			
+
 			initAddThis()
 		}
 		else {
@@ -1382,7 +1446,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				});
 				addthis.addEventListener('addthis.menu.share', function(evt){shareEventHandler(evt.data.service)});
 			});
-		}		
+		}
 	});
 </script>
 </body>

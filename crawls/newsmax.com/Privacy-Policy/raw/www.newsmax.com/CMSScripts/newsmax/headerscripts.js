@@ -113,6 +113,7 @@ function drawPromoPixel() {
 
 jQuery(document).ready(function() {
 
+   
 
 //Mobile Device Detection
     function detectMobile() {

@@ -262,8 +262,12 @@ $(".updateres").click(function(){
 
 var menuSec = "";
 
-$("#tmglPrimaryNav li a").click(function() {
+$("#tmglPrimaryNav li a").click(function() {	
 	menuSec = "primary-" + $(this).text().replace(/\s+/g,'_');
+	getNavPos($(this).attr("href"),menuSec);
+});
+$("#tmglExtraNav li a").click(function() {
+	menuSec = "primary-" + $(this).text().replace(/\s+/g,'_');	
 	getNavPos($(this).attr("href"),menuSec);
 });
 $("#tmglSecondNav li a").click(function() {
@@ -287,8 +291,9 @@ $("#mostpop #div-THIS_WEEK li h3 a").click(function() {
 $("#mostpop #div-THIS_MONTH li h3 a").click(function() {
 	getNavPos($(this).attr("href"),'mostpop-thismonth');
 });
-function getNavPos(href,nav) {
-	if((href.indexOf("http://www")==0)||(href.indexOf("/")==0)){
-		$.cookie('tmg_navPos', nav, { path: '/'});
+function getNavPos(href,nav) {	
+	if((href.indexOf("http://")==0)||(href.indexOf("/")==0)){		
+		$.cookie('tmg_navPos', nav, { path: '/', domain: 'telegraph.co.uk'});
 	}
 }
+

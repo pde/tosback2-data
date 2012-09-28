@@ -92,40 +92,40 @@ var omn_ss_loggedin = "not logged in";
 
 		return uniqueID;
 	}
+     // This function will be called when the user is redirected to an online retailer. 
+     // The passed params object would contain details about the product and seller: sku, seller name, price, etc  
+     function psWidgetSellerRedirect(params)
+     {
+         var sku = psGetSKU(params);
+           var uniqueId = psGetUniqueID(params);
 
-	// This function will be called when the user is redirected to an online retailer. 
-	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
-	function psWidgetSellerRedirect(params)
-	{
-	    var sku = psGetSKU(params);
-		var uniqueId = psGetUniqueID(params);
+           var s = s_gi(s_account);
+           s.linkTrackVars = 'eVar27,eVar32,products,events';
+           s.linkTrackEvents = 'event10,event33:' + uniqueId;
+           s.events = 'event10,event33:' + uniqueId;
+           s.eVar27 = params.sellerName;
+           s.eVar32 = 'online external';
+           s.products = ';' + sku + ';0;0;event10=' + (params.price ? params.price : '');
+           s.tl(null, 'e', 'buy online');
+     }
 
-		var s = s_gi(s_account);
-		s.linkTrackVars = 'eVar27,eVar32,products,events';
-		s.linkTrackEvents = 'purchase,event10,event33:' + uniqueId;
-		s.events = 'purchase,event10,event33:' + uniqueId;
-		s.eVar27 = params.sellerName;
-		s.eVar32 = 'online external';
-		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
-		s.tl(null, 'e', 'buy online');
-	}
+     // This function will be called when the user requests driving directions to a particular brick and mortar store
+     // The passed params object would contain details about the product and seller: sku, seller name, price, etc  
+     function psWidgetGetDirections(params)
+     {
+           var sku = psGetSKU(params);
+           var uniqueId = psGetUniqueID(params);
 
-	// This function will be called when the user requests driving directions to a particular brick and mortar store
-	// The passed params object would contain details about the product and seller: sku, seller name, price, etc  
-	function psWidgetGetDirections(params)
-	{
-		var sku = psGetSKU(params);
-		var uniqueId = psGetUniqueID(params);
+           var s = s_gi(s_account);
+           s.linkTrackVars = 'eVar27,eVar32,products,events';
+           s.linkTrackEvents = 'event10,event35:' + uniqueId;
+           s.events = 'event10,event35:' + uniqueId;
+           s.eVar27 = params.sellerName;
+           s.eVar32 = 'in store';
+           s.products = ';' + sku + ';0;0;event10=' + (params.price ? params.price : '');
+           s.tl(null, 'e', 'buy in-store');
+     }
 
-		var s = s_gi(s_account);
-		s.linkTrackVars = 'eVar27,eVar32,products,events';
-		s.linkTrackEvents = 'purchase,event10,event35:' + uniqueId;
-		s.events = 'purchase,event10,event35:' + uniqueId;
-		s.eVar27 = params.sellerName;
-		s.eVar32 = 'in store';
-		s.products = ';' + sku + ';1;0;event10=' + (params.price ? params.price : '');
-		s.tl(null, 'e', 'buy in-store');
-	}
 
 	// Added by Shanth
 
@@ -147,7 +147,8 @@ $(document).ready (function () {
 	    }	
 	}
 	if(    uriString.indexOf("-features") != -1 || typeof(omn_ss_error_page) != 'undefined' ||  uriString.indexOf("/aboutsamsung") != -1
-		 ||  uriString.indexOf("espsearchResult.do") != -1){
+		 ||  uriString.indexOf("espsearchResult.do") != -1 ||  uriString.indexOf("espArticleSearchResult.do") != -1 || uriString.indexOf("pressrelease/mediacontact") != -1 
+		 || uriString.indexOf("globalnews") != -1){
 		
 		$("#main-nav #search").css('top','25px');
 	}
@@ -738,6 +739,7 @@ This Privacy Policy is effective as of March 26, 2012, and complies with Samsung
 
 var urlValue = String(window.location.href);
 var urlValueSplit = urlValue.split('/');
+
 if (document.createStyleSheet)
 {
     document.createStyleSheet("/us/css/badgeville.css");
@@ -748,6 +750,7 @@ else
     $('head').append('<link rel="stylesheet" href="../css/badgeville.css" type="text/css" />');
 	$('head').append('<link rel="stylesheet" href="../css/badgeville2.css" type="text/css" />');
 }
+
 if(urlValue.match('reviews') && !urlValue.match('accessories')){
 
 	$(function(){
@@ -780,6 +783,7 @@ if(urlValueSplit[4] == 'support'){
 
 </script>
 		
+			
 		<ul class="site_links">
 			<li class="left_group right_border_1px">
 				<strong>Who We Are</strong>
@@ -942,17 +946,30 @@ if(urlValueSplit[4] == 'support'){
 		</div>
 
 
+
 <script type="text/javascript" src="../scripts/search/search.min.js"></script>
 
 <script type="text/javascript" src="../scripts/common/mainNavigation.js"></script>
 <script type="text/javascript" src="../scripts/common/s_code.js"></script>
 <script type="text/javascript" src="../scripts/modal.js"></script>
+<script type="text/javascript" src="../../../platform.twitter.com/anywhere.js%3Fid=oQYqWBpP2udteN5A86dCag&amp;v=1.1.2"></script>
+<script type="text/javascript">
 
-
+	// below setting is necessary to fix known issue with twitter and IE
+if (typeof(twttr) != 'undefined') {
+	if (typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype == 'Homepage') {
+			//do nothing - homepage twitter tab does not work if document.domain is set to "samsung.com"
+	}
+	else {
+		document.domain = 'samsung.com';
+		twttr.anywhere.config({ domain: document.domain });
+	}
+}
+</script>
 <!-- survey for iPerception/ForeSee begins -->
 <script type="text/javascript" src="../foresee/foresee-trigger.js"></script>
 <!-- survey for iPerception/ForeSee ends -->
-
+<script type="text/javascript" src="../scripts/badgeville.js"></script>
 <script type="text/javascript">
 
 
@@ -996,11 +1013,12 @@ if(urlValueSplit[4] == 'support'){
 			$('#main-nav li.products a').removeClass('active');
 		  	$('#main-nav li.support a:first').css('background', 'url(/us/images/common/icon-nav-arrow.png) center bottom no-repeat');
 		}
+
 				
 		var hostName = location.hostname;
 			
 		if(hostName.indexOf('devus') != -1 || hostName.indexOf('devwww') != -1 || hostName.indexOf('dev') != -1) {
-			 document.getElementById('logout').href = 'http://sso-stg.us.samsung.com/sso/logout';
+			 document.getElementById('logout').href = 'http://sso-dev.us.samsung.com/sso/logout';
 		}
 		else if(hostName.indexOf('stgwww') != -1 || hostName.indexOf('stgapp') != -1) {
 			document.getElementById('logout').href = 'http://sso-stg.us.samsung.com/sso/logout';
@@ -1014,55 +1032,90 @@ if(urlValueSplit[4] == 'support'){
 	
 	});
 
+LazyLoad.js(["/us/scripts/tooltipsy.min.js","/us/scripts/jquery.xdomainajax.js","/us/scripts/redirects.js", "https://apis.google.com/js/plusone.js"], function(){
 
-LazyLoad.js(["http://api.v2.badgeville.com/v2/badgeville-current.js?key=cdcbee16f671f20a8e8c094b9adc13d7&domain=samsung.com","/us/scripts/tooltipsy.min.js","/us/scripts/jquery.xdomainajax.js","/us/scripts/redirects.js","http://platform.twitter.com/anywhere.js?id=oQYqWBpP2udteN5A86dCag&v=1.1.2", "https://apis.google.com/js/plusone.js"], function(){
+	$('head').append('<link href="https://plus.google.com/104794915167914988036" rel="publisher" />');
+});
+	
 
+		$(document).ready(function(){
 		//Check for existence of badgeville
+
+		var urlValue = String(window.location.href);
+		var urlValueSplit = urlValue.split('/');
+var checkForBV = function() {
 		if(typeof Badgeville === 'undefined'){
 			
 			//replace widgets with alert message
-			$('.bv_widgetwrap').html('<div style="width:643px;height:500px; background: url(../images/bv_modules/badgereplacement_homepage_cut.jpg) no-repeat;"></div>');
+			$('.bv_widgetwrap').html('<div style="width:650px;height:520px; background: url(../images/badgeville/badgevill_error.jpg) no-repeat;"></div>');
 			
-		if(urlValueSplit[4] == 'samsungnation' || urlValueSplit[4] == 'support' ){
-			
-				$('#multiTab').prepend('<div style="width:643px;height:500px; background: url(../images/bv_modules/badgereplacement_homepage_cut.jpg) no-repeat;"></div>');
-			
-			$('#showcase').prepend('<div style="width:962px;height:364px; background: url(../images/bv_modules/badgereplacement_mysamsung_showcase_cut.jpg) no-repeat;"></div>');
-			
-		}
+			if(urlValueSplit[4] == 'samsungnation' || urlValueSplit[4] == 'support' ){
+				$('#multiTab').prepend('<div style="width:650px;height:520px; background: url(../images/badgeville/badgevill_error.jpg) no-repeat;"></div>');
+				if(isLogin()){
+					$('#joinBadgeville').hide();
+					$('.bv_login').removeClass();
+					$('#loggedinBadgeville').show();
+					$('#loginframe').remove();
+					
+				}else{
+				
+					$('#loggedinBadgeville').hide();
+					$('#joinBadgeville').show();
+					$('#joinBadgeville h2.badgevillehead').append('<p style="font-size:11px; font-family:arial; margin-top:10px; font-weight:normal; line-height:16px;">Enter your existing Samsung.com username and 		password:</p> <iframe id="loginframe" src="../../../sso-us.samsung.com/sso/bv_profile/bvViewAction_LI.html" width="250" height="325" style="margin-top: 15px" scrolling="no" frameborder="0"></iframe>');
+					$('#bv_joinNow').addClass('.bv_login');
+				}
+			}		
+		
+
+			$('#horizontalLeaderboard').hide();
 			
 			//if badgeville exists load local js file
-			}else if(typeof Badgeville !== 'undefined'){
-				var script = document.createElement('script');
-				script.type = 'text/javascript';
-				script.src = '/us/scripts/badgeville.js';
-				document.body.appendChild(script);
-				Badgeville.refreshWidgets();
-			}		
-		}
-	);
-	
-	$(document).ready(function(){ 
+				
+		} 
+};
+setTimeout(checkForBV, 10000);
 		if (urlValueSplit[4] == 'article') {
+			/*
 			var t;
 
 			function refreshIt() {
 			    Badgeville.refreshWidgets();
-			  	
+			  	//console.log('timing');
 			   	if ($('#horizontalLeaderboard').length) {
-			    	setTimeout(function(){Badgeville.refreshWidgets();}, 5000);
+			    	//setTimeout(function(){Badgeville.refreshWidgets();}, 5000);
 			        clearInterval(t);
-			        
+			        //console.log('done');
 			   }
 			}
 			
 			t = setInterval(refreshIt,500);
+			//setTimeout(function(){Badgeville.refreshWidgets();}, 5000);
+			*/
 			
-			
-		} 
-		
-	 $('head').append('<link href="https://plus.google.com/104794915167914988036" rel="publisher" />');
-	});
+		}   
+		});
+	window.BadgevilleAsynchInit = function() {
+	// Add any Badgeville.Settings changes (such as domain) into this extend call:
+		Badgeville.$.extend(Badgeville.Settings, {
+		key : 'cdcbee16f671f20a8e8c094b9adc13d7',
+		domain : 'samsung.com'
+		});
+        	
+		BVinit();
+	
+	};	
+	
+	// Load the Framework asynchronously
+	
+	(function() {
+		var s = document.createElement('script');
+		s.async = true;
+		s.src = document.location.protocol + '//api.badgeville.com/v3/badgeville-current.js';
+		document.body.appendChild(s);
+	}());
+
+
+
 
 if (urlValueSplit[4] == ''){
 	LazyLoad.js(["/us/scripts/jquery.smooth-scroll.min.js","/us/scripts/jcarousellite_original.js"], function () {
@@ -1080,16 +1133,6 @@ if (urlValueSplit[4] == 'news'){
 	
 }
 	
-// below setting is necessary to fix known issue with twitter and IE
-	if (typeof(twttr) != 'undefined') {
-	if (typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype == 'Homepage') {
-			//do nothing - homepage twitter tab does not work if document.domain is set to "samsung.com"
-	}
-	else {
-		document.domain = 'samsung.com';
-		twttr.anywhere.config({ domain: document.domain });
-	}
-}
 $('#footer').append('<link rel="stylesheet" href="../css/support/support_stylesheet.css" type="text/css" />');
 
 </script>

@@ -6,9 +6,9 @@ http://www.omniture.com */
      Plugins 2
 */
 
-var s_account = 
-  (document.domain.match(/(devcpd\d|staging)\.touch\.lexus\.com$/i))?"tmsdevlexusmobile":
-  (document.domain.match(/touch\.lexus\.com$/i))?"tmslexusmobile":
+var s_account =
+  (document.domain.match(/(devcpd\d|staging)\.touch\.lexus\.com$/i))?"tmsdevlexusmobile,tmsdevlexusdealernational":
+  (document.domain.match(/touch\.lexus\.com$/i))?"tmslexusmobile,tmslexusdealernational":
   (document.domain.match(/((devcpd\d|dev)\.lexus)\.com$/i))?"devlexus":
 	(document.domain.match(/staging\.lexus\.com$/i))?"devlexusstaging":
 	(document.domain.match(/icshq\.com$/i))?"tmsdevlexusexternal":
@@ -18,22 +18,22 @@ var s_account =
 (document.domain.match(/compute-1\.amazonaws\.com$/i))?"tmsdevlexusexternal":
 	"tmslexusnew";
 
-var s=s_gi(s_account)
+var s=s_gi(s_account);
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 
 /* Link Tracking Config */
-s.trackDownloadLinks=true
-s.trackExternalLinks=true
-s.trackInlineStats=true
-s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,lexus.com"
-s.linkLeaveQueryString=false
-s.linkTrackVars="prop1,prop2,prop3,prop4,prop5,prop6,prop8,prop9,prop10,prop11,prop16,prop17,prop18,prop20,prop21,prop27,prop29,prop30,prop34,prop35,prop43,prop47,prop48,eVar3,eVar10,eVar21,eVar44,eVar45,events"
-s.linkTrackEvents="event5"
+s.trackDownloadLinks=true;
+s.trackExternalLinks=true;
+s.trackInlineStats=true;
+s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx";
+s.linkInternalFilters="javascript:,lexus.com";
+s.linkLeaveQueryString=false;
+s.linkTrackVars="prop1,prop2,prop3,prop4,prop5,prop6,prop8,prop9,prop10,prop11,prop16,prop17,prop18,prop20,prop21,prop27,prop29,prop30,prop34,prop35,prop43,prop47,prop48,eVar3,eVar10,eVar21,eVar44,eVar45,events";
+s.linkTrackEvents="event5";
 
 /* Plugin Config */
-s.usePlugins=true
+s.usePlugins=true;
 
 function s_doPlugins(s) {
 
@@ -41,47 +41,48 @@ function s_doPlugins(s) {
 	var loc;
 	
 	try{
-	   loc = window.parent.location;
+        loc = window.parent.location;
 	}catch(e){
-	    // continue
+        // continue
 	}
 	if (!loc){
-	    try{
-	       loc = window.self.location ;
-	    }catch(e){
-        // continue
-        loc = "";
+        try{
+            loc = window.self.location ;
+        }catch(e){
+            // continue
+            loc = "";
         }
 	}
 	if (document.URL.match(/lexus\.com(\/lexus-share)?\/configurator/i)&&safeGetQueryParam('dealer','',loc)) {
 		isDealer = true;
 	} else if (document.URL.match(/secure\.lexus\.com\/lexus\/ssl\/(models\/orderbrochure|sl\/lexusBRFormSubmit|sl\/selectBRAddress|sl\/lexusBRDealerSelect)/i)&&window.self!=window.top) {
 		isDealer = true;
-	} else if (safeGetQueryParam('mode')=='dealer'||safeGetQueryParam('dealer')!='') {
+	} else if (safeGetQueryParam('mode')=='dealer'||safeGetQueryParam('dealer')!=='') {
 		isDealer = true;
 	}
 
 	var aff_id;
 	try {
-	   aff_id = safeGetQueryParam('affiliate_id','',loc);
+        aff_id = safeGetQueryParam('affiliate_id','',loc);
 	} catch(e){
-	    // continue
-	   aff_id = '';
+        // continue
+        aff_id = '';
 	}
 
     
 	if (s_account=="tmslexusnew"&&(aff_id=='my_is'||aff_id=='club_lexus'||aff_id=='lexus_enthusiast'))
-	  s.sa("TMSLexusExternal");
+        s.sa("TMSLexusExternal");
 	else if (s_account=="tmslexusnew") {
 		if (isDealer)
-	  		s.sa("tmslexusdealernational");
+            s.sa("tmslexusdealernational");
 		else
 			s.sa("tmslexusnew,tmslexusdealernational"); }
 	else if ((s_account=="devlexus"||s_account=="devlexusstaging")) {
 		if (isDealer)
-	  		s.sa("tmsdevlexusdealernational");
+            s.sa("tmsdevlexusdealernational");
 		else
-			s.sa(s_account+",tmsdevlexusdealernational"); }
+			s.sa(s_account+",tmsdevlexusdealernational");
+    }
 
 	if (isDealer) {
 		s.pageName = adjustPrefix(s.pageName);
@@ -92,7 +93,7 @@ function s_doPlugins(s) {
 		s.linkName = adjustPrefix(s.linkName);
 		s.prop34 = "LDN:Site";
 	} else {
-		s.prop34 = "L:Site";	
+		s.prop34 = "L:Site";
 	}
 
     s.eVar44 = s.getNewRepeat();
@@ -111,15 +112,15 @@ function s_doPlugins(s) {
     s.prop48 = document.location.toString().toLowerCase();
 	
 	//Stack eVar46's values
-	if (s.prop46) { 
-      s.eVar46 = s.prop46;
-	  s.eVar46 = s.getValOnce(s.eVar46,'s_evar46',0); //edited
-      s.eVar4 = s.crossVisitParticipation(s.eVar46,'s_cvp_evar4','30','5','>','event68',1);
-    }   
+	if (s.prop46) {
+        s.eVar46 = s.prop46;
+        s.eVar46 = s.getValOnce(s.eVar46,'s_evar46',0); //edited
+        s.eVar4 = s.crossVisitParticipation(s.eVar46,'s_cvp_evar4','30','5','>','event68',1);
+    }
 
 	
     
-    if (s.prop9) { 
+    if (s.prop9) {
       s.eVar35 = classifyVeh(s.prop9);
       s.eVar9 = s.prop9;
       s.eVar19 = s.crossVisitParticipation(s.prop9,'s_evar19','30','5','>');
@@ -133,11 +134,11 @@ function s_doPlugins(s) {
     if (checkEvents('event1,event25')) {
         if (s.getValOnce('1','event65')=='1') addEvent('event65');
          addEvent('event66');
-    } 
+    }
    
     if (checkEvents('event5')) {
          if (s.getValOnce('1','event7')=='1') addEvent('event7');
-    }   
+    }
 
     var dt = new Date();
     s.eVar45 = dt.getDay() + ' ' + dt.getHours();
@@ -145,9 +146,9 @@ function s_doPlugins(s) {
 function safeGetQueryParam(param, sep, loc){
         var value = "";
         try{
-           value = s.getQueryParam(param, sep, loc)
+            value = s.getQueryParam(param, sep, loc);
         }catch(e){
-           // 
+            //
         }
         return value;
 }
@@ -156,10 +157,11 @@ function adjustPrefix(value) {
 }
 
 function addEvent(evnt) {
-    if (s.events=='')
+    if (s.events===''){
         s.events=evnt;
-    else
+    }else{
         s.events+=','+evnt;
+    }
 }
 
 function checkEvents(evnts) {
@@ -170,7 +172,7 @@ function checkEvents(evnts) {
     for (i=0;i<etc.length;i++) {
         for (j=0;j<etl.length;j++) {
             if (etc[i]==etl[j]) return true;
-        }       
+        }
     }
     return false;
 }
@@ -216,7 +218,7 @@ function classifyVeh(veh) {
     }
 }
 
-s.doPlugins=s_doPlugins
+s.doPlugins=s_doPlugins;
 
 /*********Media Module Calls**************/
 s.loadModule("Media");
@@ -225,9 +227,9 @@ s.Media.trackWhilePlaying=true;
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
-s.dc=112
-s.trackingServer="metrics.lexus.com"
-s.trackingServerSecure="smetrics.lexus.com"
+s.dc=112;
+s.trackingServer="metrics.lexus.com";
+s.trackingServerSecure="smetrics.lexus.com";
 
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
@@ -280,7 +282,7 @@ s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
 +"m:dl});if(ce)s.c_w(cn,'');return r;");
 
 
-/*                                                                  
+/*
  * Plugin: getVisitNum - version 3.0
  */
  s.getVisitNum=new Function("tp","c","c2",""

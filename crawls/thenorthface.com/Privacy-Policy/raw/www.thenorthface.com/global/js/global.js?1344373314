@@ -3728,6 +3728,7 @@ TNF.minicart = {
 TNF.assisted_search = {
 	_widget: false,
 	_emptyValue : $('#nav .search-input').val(),
+	lastSelectedUrl: '',
 	init: function() {
 		var searchBtn = $('#nav .search-submit');
 		searchBtn.data('button',searchBtn.attr('src'));
@@ -3812,8 +3813,17 @@ TNF.assisted_search = {
 		$('#nav .search-input').bind('keydown.autocomplete', function(event){
 			var key = event.keyCode;
 			var keyCode = $.ui.keyCode;
+			
+			
 			if (key == keyCode.ENTER) { 
-				TNF.assisted_search.gotoSearchPage();
+				/** ZCG: Link to last selected link rather than search page */
+				if (lastSelectedUrl != undefined) {
+					window.location = lastSelectedUrl;
+				} else {
+					TNF.assisted_search.gotoSearchPage();
+				}
+			} else {
+				lastSelectedUrl = $('a.ui-state-hover').attr("href");
 			}
 		});
 		
@@ -3832,7 +3842,8 @@ TNF.assisted_search = {
 	},
 	gotoSearchPage: function() {
 		if ( TNF.assisted_search._widget.val().length > 0 && TNF.assisted_search._widget.val() != TNF.assisted_search._emptyValue ) {
-			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+TNF.assisted_search._widget.val();
+			/** ZCG: encode search term to prevent truncation when special characters like & are included */
+			var url = TNF.env.URL.get('SEARCH_REQUEST')+'&searchTerm='+encodeURIComponent(TNF.assisted_search._widget.val());
 			window.location = url;
 		}
 	}

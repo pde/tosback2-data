@@ -38,6 +38,7 @@ More info available at http://www.omniture.com */
  *13/4/12 Add eVar42 with p_pro and p_lqe (Adam)
  *20/4/12 BUGFIX#6 eVar42 added cookies definition + logic for case when cookies defined (Jarda)
  *30/7/12 added evar6 - tests tracking
+ *24/9/12 added s.prop23 for sociual ikons s.linkTrackVars="prop23" (Pepa C)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -75,7 +76,7 @@ s.trackInlineStats=true;
 s.linkDownloadFileTypes="exe,zip,msi,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx,aswcs";
 s.linkInternalFilters="javascript:,avast.com,avast.co.jp,digitalriver.com";
 s.linkLeaveQueryString=false;
-s.linkTrackVars="None";
+s.linkTrackVars="prop23";
 s.linkTrackEvents="None";
 
 if (window.location.hostname == "www.avast.co.jp" ) {

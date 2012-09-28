@@ -1,4 +1,4 @@
-/* Begin General Scripts */
+﻿/* Begin General Scripts */
 //Get the true height of any given page
 function getPageHeight() {
 	return document.getElementById('container').offsetHeight;
@@ -1361,7 +1361,53 @@ function pageTitle_verify()
   	    window.open('http://twitter.com/share?url=' + encodeURIComponent(U) + '&text=@TiffanyAndCo ' + encodeURIComponent(T), 'sharer', 'toolbar=0,status=0,width=650,height=436');
   	    sendOmnitureClickEvent('Post to Twitter');
   	}
+  	function postToPinterest(T, U, L, OMCID) {
+  	    if (typeof postURL == 'undefined') { postURL = window.location.protocol + "//" + window.location.host; }
+  	    U = postURL + U + "&omcid=" + OMCID;
 
+  	    //Fetch product image via inline LINK tag on page.
+  	    var imageURL = $('link[rel=image_src]').attr('href');
+  	    //hasSubDomain() inside shared.js - test URLs should not be sent to Pinterest.
+  	    if (hasSubDomain(imageURL)) {
+  	        var loc = imageURL.indexOf(".");
+  	        imageURL = 'http://' + imageURL.substring(loc + 1);
+  	    }
+  	    var directURL = 'http://pinterest.com/pin/create/button/?';
+  	    directURL += 'url=' + encodeURIComponent(U);
+  	    directURL += '&media=' + encodeURIComponent(imageURL);
+  	    directURL += '&description=' + encodeURIComponent(T);
+  	    //Height needs to be bigger. If user is not logged into Pinterest,
+  	    //the login button is cut off in popup window.
+  	    window.open(directURL, 'sharer', 'toolbar=0,status=0,width=626,height=550,resizable=1', false);
+  	    //omnitureModuleTracking(L + " | Post to Pinterest | " + U)
+  	    sendOmnitureClickEvent('Post to Pinterest');
+  	}
+
+  	function postToWeibo(T, U, L, OMCID) {
+  	    if (typeof postURL == 'undefined') { postURL = window.location.protocol + "//" + window.location.host; }
+  	    U = postURL + U + "&omcid=" + OMCID;
+
+  	    //Fetch product image via inline LINK tag on page.
+  	    var imageURL = $('link[rel=image_src]').attr('href');
+  	    //hasSubDomain() inside shared.js - test URLs should not be sent to Pinterest.
+  	    if (hasSubDomain(imageURL)) {
+  	        var loc = imageURL.indexOf(".");
+  	        imageURL = 'http://' + imageURL.substring(loc + 1);
+  	    }
+  	    var directURL = 'http://service.weibo.com/share/share.php?';
+  	    directURL += 'url=' + encodeURIComponent(U);
+  	    directURL += '&title=' + encodeURIComponent(T + ' @TiffanyAndCo蒂芙尼 ');
+  	    directURL += '&pic=' + encodeURIComponent(imageURL);
+
+  	    if (locale.toLowerCase() == 'zh-cn') {
+  	        directURL += '&language=zh_cn';
+  	    } else {
+  	        directURL += '&language=zh_tw';
+  	    }
+  	    window.open(directURL, 'sharer', 'toolbar=0,status=0,width=626,height=436');
+  	    //omnitureModuleTracking(L + " | Post to Twitter | " + U)
+  	    sendOmnitureClickEvent('Post to Weibo');
+  	}
 
   	function postToMySpace(U, SKU, L, OMCID) {
   	    if (typeof postURL == 'undefined') { postURL = window.location.protocol + "//" + window.location.host; }
@@ -2330,8 +2376,37 @@ function cancelCloseWishlistPopUp()
         }
         var xpos = ((viewportWidthOffset + (viewportwidth / 2)) - ((viewportwidth - document.getElementById('silverlightControlHost').offsetWidth) / 2));
         return xpos;
-    }                
-	
-	
+    }
+
+    function hasSubDomain(url) {
+        // IF THERE, REMOVE WHITE SPACE FROM BOTH ENDS
+        url = url.replace(new RegExp(/^\s+/), ""); // START
+        url = url.replace(new RegExp(/\s+$/), ""); // END
+
+        // IF FOUND, CONVERT BACK SLASHES TO FORWARD SLASHES
+        url = url.replace(new RegExp(/\\/g), "/");
+
+        // IF THERE, REMOVES 'http://', 'https://' or 'ftp://' FROM THE START
+        url = url.replace(new RegExp(/^http\:\/\/|^https\:\/\/|^ftp\:\/\//i), "");
+
+        // IF THERE, REMOVES 'www.' FROM THE START OF THE STRING
+        url = url.replace(new RegExp(/^www\./i), "");
+
+        // REMOVE COMPLETE STRING FROM FIRST FORWARD SLASH ON
+        url = url.replace(new RegExp(/\/(.*)/), "");
+
+        // REMOVES '.??.??' OR '.???.??' FROM END - e.g. '.CO.UK', '.COM.AU'
+        if (url.match(new RegExp(/\.[a-z]{2,3}\.[a-z]{2}$/i))) {
+            url = url.replace(new RegExp(/\.[a-z]{2,3}\.[a-z]{2}$/i), "");
+
+            // REMOVES '.??' or '.???' or '.????' FROM END - e.g. '.US', '.COM', '.INFO'
+        } else if (url.match(new RegExp(/\.[a-z]{2,4}$/i))) {
+            url = url.replace(new RegExp(/\.[a-z]{2,4}$/i), "");
+        }
+        // CHECK TO SEE IF THERE IS A DOT '.' LEFT IN THE STRING
+        var subDomain = (url.match(new RegExp(/\./g))) ? true : false;
+
+        return (subDomain);
+    }
 
 //----------------------------------------------------

@@ -1,7 +1,7 @@
 ﻿function LoadSponsoredHeadlines(arrHL) {
     var j = 0;
     var count = 0;
-
+  
     // Assign randoms.
     for (var i = 0; i < arrHL.Headlines.length; i++) {
         var intRandNum = Math.floor(Math.random() * 30);

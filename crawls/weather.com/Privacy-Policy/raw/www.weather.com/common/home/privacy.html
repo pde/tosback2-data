@@ -25,6 +25,7 @@ function object(o){
 
 window.TWCI = object(YAHOO);
 var Cookie = TWCI.util.Cookie;
+var Connect = TWCI.util.Connect;
 
 
 
@@ -383,13 +384,8 @@ wx.config.user.savedLocs= ""; // ***************************** Replaced by wx.co
 	wx.config.page.pageId = ts_pageid;
 	wx.config.page.pageURL = ts_pagename;
 </script>
-<script type="text/javascript" src="../../../s.imwx.com/global/common/elements/javascript/a21-2_7.js"></script>
-<script src="../../../j.imwx.com/v.20120428.0/common/a21/plugins/a21plugins.js"></script>
 
-<script>
-//A21.initStatic();
-</script>
-        <!-- externals static version 09.08.2011 @ 05:22PM -->
+        <!-- externals static version 07.27.2012 @ 09:02AM -->
 
 
 <script type="text/javascript">
@@ -731,6 +727,12 @@ if(!window.YAHOO){
 	document.write('<scr'+'ipt type="text/javascript" src="http://s.imwx.com/v.20111014.174328/js/yuiloader-header-startup.js"></scr'+'ipt>')
 }
 
+
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////////
 ////////////// M U S T    B E    S E T    F A L S E    B E F O R E    L A U N C H////////////
 var devTest = false
@@ -742,6 +744,32 @@ if(window.location.hostname.match(/preview/) || devTest){
 	document.write('<scr' + 'ipt src="http://j.imwx.com/v.20120508.0/common/header/javascript/yui_modules_header_startup.js"></scr' + 'ipt>');
 }
 </script>
+
+<!-- Adding jQuery and PCO3 and NEW DFPP ad controller-->
+<script src="../../../d.imwx.com/managedfe/js/jquery/jquery-1.7.1-IE7-twccore.min.js"></script>
+<script src="../../../d.imwx.com/services/pco"></script>
+</script>
+
+<script>
+'TWC' in window || (window.TWC = {});
+var pageId = (window.wx && wx.config && wx.config.page && wx.config.page.pageId);
+var mode = (window.wx && wx.config && wx.config.ad && wx.config.ad.mode);
+var locid = (window.wx && wx.config && wx.config.loc && wx.config.loc.locid) ||
+                 (window.wx && wx.config && wx.config.loc && wx.config.loc.zip);
+locid = locid.replace("\$",":");
+
+
+
+
+TWC.pco = TWC.initpco(jQuery,null, pageId, mode, "53", locid);
+ 
+
+</script>
+<script src="../../../js.revsci.net/gateway/gw.js%3Fcsid=K06578"></script>
+	
+<script src="../../../d.imwx.com/managedfe/js/TWC/util/a21_dfpp.js"></script>
+
+
 <script>
 var appsInfo;
 var user = yStorage.get("user");
@@ -845,6 +873,7 @@ yStorage.set("user",user);
  //END SET up local storage for hard Declarations
 </script>
 
+
 <!--[if IE]>
 <style>
 #wx-weather-search .wx-alert-badge {top:-14px !important;left:95px !important;border:none !important;padding:0 !important;text-align:center !important;width:34px !important;height:27px !important;line-height:27px !important;display:inline-block !important;background: url(http://qcweb0b00.dev.weather.com/v.20110830.165355/img/module/local-alerts-sprite.png) no-repeat -40px 0;}  
@@ -857,11 +886,11 @@ yStorage.set("user",user);
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" LEFTMARGIN="0" TOPMARGIN="0" MARGINHEIGHT="0" MARGINWIDTH="0">
 <script>
-	YAHOO.util.Get.script('http://j.imwx.com'+bust_s_code+'/common/omniture/s_code06112010.js');	 
+
+
+	YAHOO.util.Get.script('http://j.imwx.com'+bust_s_code+'/common/omniture/s_code07202012.js');	 
 	Cookie.remove("fromStr",{domain:".weather.com",path:"/"});
  </script>
-
-
 
 <CENTER style="position: relative ! important;">
 
@@ -882,15 +911,15 @@ function actionLib(actionID) {
 
 
 <!--link href="http://s.imwx.com/js/2.8.0r4/reset-fonts-base-autocomplete.css" type="text/css" rel="stylesheet"-->
-<link rel="stylesheet" type="text/css" href="../../css/common-1-base,common-2-header-hpr,common-3-search-hpr,common-4-content,common-4-content-hpr,common-5-footer-hpr,common-6-alerts.css">
+<link rel="stylesheet" type="text/css" href="../../../d.imwx.com/css/common-1-base,common-2-header-hpr,common-3-search-hpr,common-4-content,common-4-content-hpr,common-5-footer-hpr,common-6-alerts.css">
 <!--[if IE 6]>
-<link rel="stylesheet" type="text/css" href="/css/common_ie6.css">
+<link rel="stylesheet" type="text/css" href="http://d.imwx.com/css/common_ie6.css">
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="../../css/module-1-base,module-2-seasonpromo,module-3-dl,module-4-ontv,module-5-onthisday,module-6-forecastlanding,module-7-laplinker,mod.css">
+<link rel="stylesheet" type="text/css" href="../../../d.imwx.com/css/module-1-base,module-2-seasonpromo,module-3-dl,module-4-ontv,module-5-onthisday,module-6-forecastlanding,module-7-laplinker,mod.css">
 <!--[if IE 6]>
-<link rel="stylesheet" type="text/css" href="/css/module_ie6.css">
+<link rel="stylesheet" type="text/css" href="http://d.imwx.com/css/module_ie6.css">
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="../../css/module-3-dl.css" />
+<link rel="stylesheet" type="text/css" href="../../../d.imwx.com/css/module-3-dl.css" />
 
 <!--[if lte IE 9]>
 <style>
@@ -909,7 +938,7 @@ function actionLib(actionID) {
 <script type="text/javascript" src="http://d.imwx.com/js/wx-a21-plugthis-2_0.js"></script-->
 <script>
 if (window.wx && wx.config && wx.config.page && wx.config.page.pageId){
-	YAHOO.util.Get.css("/css/highlight.css?pageId="+wx.config.page.pageId);
+	YAHOO.util.Get.css("http://d.imwx.com/css/highlight.css?pageId="+wx.config.page.pageId);
 }
 </script>
 </head>
@@ -950,42 +979,41 @@ function addCloseicon(closeIcon){
 	}
 }
 
-	(function(){
-		A21.onParseConfig.subscribe(function(){
-			var Dom = TWCI.util.Dom,
-			    Event = TWCI.util.Event,
-				adPositions = wx.config.ad.positions,
-				masterDiv = 'WX_BrandingLeaderShade',
-				winShade = 'WX_WindowShade',
-				leader = 'WX_Leaderboard',
-				brandBar = 'WX_BrandingBar';
+ 
+(function($){ 
+// We expect the synchronous portion of the pco to be completed before this executes 
+TWC.Events.setEvent("pcoReady"); 
+TWC.Events.pcoReady.done(function(){ 
+var adPositions = TWC.pco.get("ad.positions"), 
+newAdStyle=null, 
+masterDiv = 'WX_BrandingLeaderShade', 
+winShade = 'WX_WindowShade', 
+leader = 'WX_Leaderboard', 
+brandBar = 'WX_BrandingBar'; 
 
-			Event.onContentReady(masterDiv,function(){
-				var adDiv = Dom.get(masterDiv),
-					newAdStyle = null;
+$("#" + masterDiv).ready(function(){ 
+if (adPositions){ 
+if (adPositions[winShade]){ 
+newAdStyle = winShade; 
+}else if (adPositions[leader]) { 
+newAdStyle = leader; 
+}else if (adPositions[brandBar]) { 
+newAdStyle = brandBar; 
+} 
 
-				if (adPositions[winShade]){ 
-					newAdStyle = winShade; 
-					//release the height so the windowShade can allocate space dynamically
-					A21.onFinish.subscribe(function(){
-						Dom.setStyle(winShade + '_frame','display','block');
-						Dom.setStyle(winShade + '_frame','height','0');
-						Dom.setStyle(adDiv,'height','');
-					});
-				}
-				else if (adPositions[leader]) { newAdStyle = leader; }
-				else if (adPositions[brandBar]) { newAdStyle = brandBar; }
+if (null !== newAdStyle){ 
+$("#" + masterDiv).attr("id",newAdStyle);
+$("#" + masterDiv).attr("style","display:none"); 
+A21.notifyRegistered(newAdStyle); 
+} 
+} 
+}); 
+}); 
 
-				if (null !== newAdStyle){
-					// console.log("adding %o to %o",newAdStyle,adDiv);
-					Dom.setAttribute(adDiv,"id",newAdStyle);
-					A21.notifyRegistered(newAdStyle);
-				}
-			});
-		});
-	})();
+})(jQuery); 
+</script> 
+	
 
-</script>
 
 
 
@@ -1088,7 +1116,7 @@ function addCloseicon(closeIcon){
 <li pageid="62976"><a href="http://www.weather.com/weather/hurricanecentral/" from="nav_sec_Hurricane Central">Hurricane Central</a></li>
 <li pageid="63022"><a href="http://www.weather.com/life/safety/" from="nav_sec_Safety &amp; Preparedness">Safety &amp; Preparedness</a></li>
 <li pageid="61599"><a href="http://www.weather.com/outdoors/agriculture/forecast/" from="nav_sec_Farming">Farming</a></li></ul></li><li id="wx-primeNav2" pageid="63128">
-  <a href="http://www.weather.com/life/" from="nav_primary_Lifestyle">Lifestyle</a>
+  <a href="http://www.weather.com/lifestyle/main" from="nav_primary_Lifestyle">Lifestyle</a>
 
 
 
@@ -1098,7 +1126,7 @@ function addCloseicon(closeIcon){
 <li pageid="63164"><a href="http://www.weather.com/outlook/health/aches-pains/articles/welcome-health_2011-12-20" from="nav_sec_Health">Health</a></li>
 <li pageid="62264"><a href="http://www.weather.com/weather/health/beauty/" from="nav_sec_Fashion &amp; Beauty">Fashion &amp; Beauty</a></li>
 <li pageid="63166"><a href="http://www.weather.com/outlook/home-family/lawn-garden/articles/welcome-home-and-family_2011-12-20" from="nav_sec_Family">Family</a></li>
-<li pageid="63165"><a href="http://www.weather.com/outlook/outdoor-activities/fishing-reports/articles/welcome-sports-and-recreation_2011-12-20" from="nav_sec_Sports &amp; Recreation">Sports &amp; Recreation</a></li>
+<li pageid="63424"><a href="http://www.weather.com/sports-rec/main" from="nav_sec_Sports &amp; Recreation">Sports &amp; Recreation</a></li>
 <li pageid="63219"><a href="http://www.weather.com/life/home-and-garden/" from="nav_sec_Home &amp; Garden">Home &amp; Garden</a></li></ul></li><li id="wx-primeNav3" pageid="62979">
   <a href="http://www.weather.com/social/national" from="nav_primary_Social">Social</a>
 
@@ -1106,6 +1134,7 @@ function addCloseicon(closeIcon){
 
 
 <ul class="twc-subNav">
+<li pageid="63479"><a href="http://www.weather.com/social/tutorial/breakingnow" from="nav_sec_My Friends&#39; Weather">My Friends&#39; Weather</a></li>
 <li pageid="62979"><a href="http://www.weather.com/social/national" from="nav_sec_The Weather Channel Social">The Weather Channel Social</a></li>
 <li pageid="62304"><a href="http://iwitness.weather.com/service/displayHomePageExperience.kickAction?page=Homepage&amp;as=148597" from="nav_sec_iWitness Photos &amp; Videos">iWitness Photos &amp; Videos</a></li>
 <li pageid="58091"><a href="http://www.weather.com/blog/weather/" from="nav_sec_Blogs">Blogs</a></li>
@@ -1127,7 +1156,7 @@ function addCloseicon(closeIcon){
 
 
 </li><li id="wx-primeNav6" pageid="63127">
-  <a href="http://www.weather.com/newscenter/" from="nav_primary_News">News</a>
+  <a href="http://www.weather.com/news/main" from="nav_primary_News">News</a>
 
 
 
@@ -1147,7 +1176,7 @@ function addCloseicon(closeIcon){
 <!-- NAVIGATION links ENDS-->
 			<div id="wx-weather-search" class="wx-searchCntr">
 				<form action="http://www.weather.com/search/enhancedlocalsearch" method="get" id="headerSearchForm" onSubmit="return false;">
-					<input id="typeaheadBox" name="where" placeholder="Search Zip, City or Place(ie. Cars Land)" title="Search Zip, City or Place(ie. Cars Land)"> 
+					<input id="typeaheadBox" name="where" placeholder="Search Zip, City or Place" title="Search Zip, City or Place"> 
 					<div class="wx-searchButton twc-clickable"><!--<a href="" title="Search">-->Search<!--</a>--></div>
 					<input type="hidden" value="1003,1001,1000,1,9,5,11,13,19,20" name="loctypes">
 					<input type="hidden" value="hdr_localsearch" name="from">
@@ -1170,7 +1199,7 @@ function addCloseicon(closeIcon){
 <div id="wx-header-ph"></div>
    <div id="wx-content">
 	
-		<div id="WX_BrandingLeaderShade" class="adDiv"> </div>
+		<div id="WX_BrandingLeaderShade" class="adDiv" style="display:none;"> </div>
 
 	<!-- breadcrumb  -->
 	  <div id="breadcrumbDiv"></div>
@@ -1178,12 +1207,6 @@ function addCloseicon(closeIcon){
 	</TD>
 	</TR>
 </TABLE> -->
-
-
-
-
-
-
 
 
 <!-- Begin tabset home_usen - STATIC --><script>
@@ -1548,7 +1571,7 @@ The Weather Channel, and all associated Services and systems, including registra
 <li class="twc-second-list">
       <dl>
         <dt>Explore</dt>
-	<dd><a  href="http://www.weather.com/encyclopedia/" from="footer_stormencylopedia">Storm Encylopedia</a></dd>
+	<dd><a  href="http://www.weather.com/encyclopedia/" from="footer_stormencylopedia">Storm Encyclopedia</a></dd>
 		<dd><a  href="http://www.weather.com/glossary/" from="footer_wxglossary">Weather Glossary</a></dd>
 		<dd><a  href="http://www.weather.com/common/drilldown/US/top100.html" from="footer_top100us">Top 100 U.S. Cities</a></dd>
 		<dd><a  href="http://www.weather.com/outlook/weatherbystate/" from="footer_searchbystate">Search by State</a></dd>
@@ -2194,39 +2217,6 @@ try {
 			
 } catch (err) { try { console.log(err); } catch(error) {} }
 
-/* Inserted by  */
-try {
-YAHOO.util.Get.script("http://js.revsci.net/gateway/gw.js?csid=K06578",{
-  onSuccess: function(o){
-    o.purge();
-	var asiCountry = (typeof wx !== "undefined" && wx.config && wx.config.loc && wx.config.loc.country) || "US";
-	var asiState = (typeof wx !== "undefined" && wx.config && wx.config.loc && wx.config.loc.state) || "";
-	var asiDMA = (typeof wx !== "undefined" && wx.config && wx.config.loc && wx.config.loc.dma) || "";
-
-var asiCat = "";if(mx_hash["category_id"] != undefined){asiCat = mx_hash["category_id"];}
-var asiObj=new Array();var asiCategory="";
-	if(asiCat != undefined && asiCat != ""){
-		var asiStr=asiCat;var asiSplitUP = asiStr.split("-");
-		for (var i=0; i < asiSplitUP.length; i++){
-			asiObj[i] = asiSplitUP[i];
-		}
-		asiCategory = asiObj.join(" > ");asiCategory = asiCategory+" > ";
-	}
-
-
-
-	K06578.DM_addToLoc("country",asiCountry);
-	K06578.DM_addToLoc("state",asiState);
-	K06578.DM_addToLoc("dma",asiDMA);
-	K06578.DM_addToLoc("beh_cat",asiCat);
-	K06578.DM_cat(asiCategory);
-	K06578.DM_tag();
-  },
-  onFailure: function(o){
-    alert("Failed to load audience science");
-  }
-});
-} catch (err) { try { console.log(err); } catch(error) {} }
 
 /* Inserted by ssherwood to handle the new rotating logo */
 try{

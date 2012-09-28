@@ -219,30 +219,7 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 
 
  
- <script type="text/javascript">
-//The document.write method does not work with XHTML when served with the correct MIME type ('application/xhtml+xml'), and the innerHTML property is not part of the DOM specification and thus should be avoided.
-//  method to convert the following document.write using DOM
-//document.write("<li> <a id=\"PageLanguageToggle\" href="general%3Fpid=7901.html#" onclick='"+page_language_toggle_script+"'>Pagina en Espa&#241;ol</a> </li>");
-function pglang1(){
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'PageLanguageToggle');
-	a1.setAttribute('href', '#');
-	a1.appendChild(document.createTextNode("Pagina en Espa" + String.fromCharCode(241)+"ol"));
-	var li1 = document.createElement("li");
-	li1.appendChild(a1);
-	var pglang = document.getElementById("pglang");
-	pglang.appendChild(li1);
-	document.getElementById("pglang").onclick=pl_toggle_fn;
-}
-
-//This method to execute the java script stored in a variable 
-function pl_toggle_fn(){
-var tmpFunc = new Function(page_language_toggle_script);
-tmpFunc();
-}
- </script>
-
- <div id="segMenuContainer">
+	<div id="segMenuContainer">
 		<div id="segcenterSpan"></div>
 		<ul class="segMenu" id="leftSegMenu">
 	    	<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../index.html"><span>Personal</span></a></li>
@@ -284,147 +261,23 @@ tmpFunc();
 
 
 
-<script type="text/javascript">
-//The document.write method does not work with XHTML when served with the correct MIME type ('application/xhtml+xml'), and the innerHTML property is not part of the DOM specification and thus should be avoided.
-
-//  method to convert the following document.write using DOM
-//document.write("Hi <span id=\"globalNavUserFirstName\"><a id=\"profilelnk\" href="http://www.att.com/gen/\&quot;//www.att.com/olam/passthroughAction.myworld?actionType=ProfileAccountInfo\&quot;"> "+userNameStr+"</a></span>, welcome back | ");
-function auth1(){
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'profilelnk');
-	a1.setAttribute('class', 'login');
-	a1.setAttribute('href', 'www.att.com/olam/passthroughAction.myworld?actionType=ProfileAccountInfo');
-	a1.appendChild(document.createTextNode(userNameStr));
-	var span1 = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserFirstName');
-	span1.appendChild(a1);
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(document.createTextNode("Hi "));
-	authhll.appendChild(span1);
-	authhll.appendChild(document.createTextNode(", welcome back |"));
-}
-//  method to convert the following document.write using DOM
-//document.write("Hi <span id=\"globalNavUserFirstName\"> "+userNameStr+"</span>, welcome back | ");
-function auth2(){
-	var span1 = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserFirstName');
-	span1.appendChild(document.createTextNode(userNameStr));
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(document.createTextNode("Hi "));
-	authhll.appendChild(span1);
-	authhll.appendChild(document.createTextNode(", welcome back |"));
-}
-//  method to convert the following document.write using DOM
-//document.write("Welcome back, ");
-function auth3(){
-	var span1 = document.createElement("span");
-	span1.appendChild(document.createTextNode("Welcome back, "));
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(span1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<a id=\"globalNavLogout\" class=\"login\" href="http://www.att.com/gen/\&quot;https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt\&quot;"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png\&quot;" width=\"66px\" height=\"24px\" alt=\"Log Out\" /></a>");
-function logout1(){
-	var img1 = document.createElement("img");
-	img1.setAttribute('src', '//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png');
-	img1.setAttribute('width', '66px');
-	img1.setAttribute('height', '24px');
-	img1.setAttribute('alt', 'Log Out');
-	
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'globalNavLogout');
-	a1.setAttribute('class', 'login');
-	a1.setAttribute('href', 'https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt');
-	a1.appendChild(img1);
-	
-	var logout = document.getElementById("logout");
-	logout.appendChild(a1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");   
-function logout2(){
-	var img1 = document.createElement("img");
-	img1.setAttribute('src', '//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png');
-	img1.setAttribute('width', '54px');
-	img1.setAttribute('height', '24px');
-	img1.setAttribute('alt', 'Log Out');
-	
-	var a1 = document.createElement("a");
-	a1.setAttribute('href', '//www.att.com/olam/slidRegistrationAction.olamexecute');
-	a1.appendChild(document.createTextNode("Register"));
-	
-	var a2 = document.createElement("a");
-	a2.setAttribute('href', '//www.att.com/olam');
-	a2.setAttribute('class', 'login');
-	a2.appendChild(img1);
-	
-	
-	var logout = document.getElementById("logout");
-	logout.appendChild(a1);
-	logout.appendChild(document.createTextNode(" | "));
-	logout.appendChild(a2);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span> <a id=\"globalNavChangeCity\" href="http://www.att.com/gen/\&quot;http://localization.att.com/loc/controller?localization-reset=true&amp;return-path=&quot;+clt_return_url+&quot;\&quot;">(Change)</a>");
-function changeWithURL(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-	change.appendChild(document.createTextNode(' '));
-	var a1  = document.createElement("a");
-	a1.setAttribute('id', 'globalNavChangeCity');
-	a1.setAttribute('href', 'http://localization.att.com/loc/controller?localization-reset=true&return-path='+clt_return_url);
-	a1.appendChild(document.createTextNode('(Change)'));
-	change.appendChild(a1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span>");
-function localeDisp(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span> <a id=\"globalNavChangeCity\" href="http://www.att.com/gen/\&quot;http://localization.att.com/loc/controller?localization-reset=true\&quot;">(Change)</a>");
-function changeWithOutURL(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-	change.appendChild(document.createTextNode(' '));
-	var a1  = document.createElement("a");
-	a1.setAttribute('id', 'globalNavChangeCity');
-	a1.setAttribute('href', 'http://localization.att.com/loc/controller?localization-reset=true');
-	a1.appendChild(document.createTextNode('(Change)'));
-	change.appendChild(a1);
-}
-</script>
 
 <div id="globalNavUserInfo">
 	<div style="padding-top:4px">
-   
+   	<script>
 	
-    <span id="authhll"></span>
-    <script>
-    //userTypeStr = "Authenticated";
 		// added check for userGroup to check its value is not "Unauth" to avoid flow to enter this if condition after user has logged out 
 		if (userTypeStr == "Authenticated" && userGroup!="Unauth") {	
 			
-				auth2();
+				document.write("Hi <span id=\"globalNavUserFirstName\"> "+userNameStr+"</span>, welcome back | ");
 			
 	 	}
 		else if (userTypeStr == "Semi-Authenticated") {
-				auth3();  
+				document.write("Welcome back, ");  
 		}
 	
 	</script>	 
 	
-           <span id="change"></span>
              <script>	
              	if (userLocaleStr == ""){
              	} 
@@ -433,20 +286,19 @@ function changeWithOutURL(){
              	}
              </script>	 
 	
-	
-	<span id="logout"></span>	
 	<script>
+		
 		// added check for userGroup to check its value is not "Unauth" to avoid flow to enter this if condition after user has logged out 
 		if (userTypeStr == "Authenticated" && userGroup!="Unauth") {	
 			
-				logout1();
+				document.write("<a id=\"globalNavLogout\" class=\"login\" href="http://www.att.com/gen/\&quot;https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt\&quot;"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png\&quot;" width=\"66px\" height=\"24px\" alt=\"Log Out\" /></a>");
 						
  		}
  		else if (userTypeStr == "Semi-Authenticated") {
-  			logout2();  
+  			document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");  
  		}
  		else {
-		 	logout2();   
+		 	document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");   
 		}
 	
 	</script>	 
@@ -482,7 +334,7 @@ function changeWithOutURL(){
  	<div id="tieredNav">
 				<div id="primaryMenu">
 					<ul>
-						<li id="primary_ATTLogo"><a class="primaryMenuItem" href="../index.html">&nbsp;<span style="text-indent:-999em;overflow:hidden;">primary_ATTLogo</span></a></li>
+						<li id="primary_ATTLogo"><a class="primaryMenuItem" href="../index.html">&nbsp;</a></li>
 
  
 
@@ -490,20 +342,21 @@ function changeWithOutURL(){
 
  						
 	
-				<li><a href='../shop/index.html' id='primary_Shop' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_Shop</span></a></li>
+				<li><a href='../shop/index.html' id='primary_Shop' class="primaryMenuItem"></a></li>
 						
 				
-				<li><a href='../olam/passthroughAction.myworld%3FactionType=Manage.html' id='primary_MyATT' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_MyATT</span></a></li>
+				<li><a href='../olam/passthroughAction.myworld%3FactionType=Manage.html' id='primary_MyATT' class="primaryMenuItem"></a></li>
 						
 				
-				<li><a href='../esupport/index.jsp.html' id='primary_Support' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_Support</span></a></li>
+				<li><a href='../esupport/index.jsp.html' id='primary_Support' class="primaryMenuItem"></a></li>
 						
 			 
- 	<li id="primary_Search">
+ 	<li id="primary_Search"><form method="get" id="searchForm" name="allSearchHeader" action="http://www.att.com/global-search/search.jsp">
  	
- 	<form method="get" id="searchForm" name="allSearchHeader" action="http://www.att.com/global-search/search.jsp">
- 	
- 	<input type="text" value="Search" name="q" id="search" title="Search" />
+	<fieldset>
+ 	<input type="text" value="Search" name="q" id="search" />
+	
+
 	<input type="hidden" name="autoSuggest" value="" class="accessibility" />
 	<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE" class="accessibility" />
 	<script>
@@ -523,6 +376,7 @@ function changeWithOutURL(){
 	</script>
 	<button id="searchSubmit"></button>
 	<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
+	</fieldset>
 	</form>
 	</li>
 	
@@ -534,7 +388,8 @@ function changeWithOutURL(){
 				<div id="trayContent"></div>
 			</div>	
 
-	 
+	
+ 
  	
 </div>
 <div id="globalNavShadows"></div>
@@ -558,7 +413,7 @@ function changeWithOutURL(){
 
 
 
-<!-- cmdversionid=167 -->
+<!-- cmdversionid=171 -->
 <!-- 7901 -->
 <!-- Script to retrieve address_id from the url and pass it along -->
 <script type="text/javascript">
@@ -595,22 +450,21 @@ function addURLParams(href) {
 	<div class="mod_f2 min234noPad marquee">
 
 		<!-- ROTATING BANNER #1 -->
-		<div id="hero1" style="display:none;background:url(../Common/indc/images/marquees/mrq_bkg_dtv_nfl-eli_950x236.jpg) no-repeat;">
+		<div id="hero1" style="display:block;background:url(../Common/indc/images/marquees/mrq_bkg_dtv_football_950x236.jpg) no-repeat;">
 			<div class="rel" style="position:relative;margin-top:0;margin-left:20px;height:200px;">
-				<h1 style="width:1px;height:1px;">Get the best offer of the year from DIRECTV - over $450 value!</h1>
-				<div style="position:absolute;top:90px;">
+				<h1 style="width:1px;height:1px;">Get DIRECTV's best offer of the year</h1>
+				<div style="position:absolute;top:97px;left:-25px;color:#666;font-family:Arial;font-size:14px;line-height:17px;">Watch every 2012 NFL SUNDAY TICKET game live anywhere<br /> at no extra charge with NFL SUNDAY TICKET MAX! <a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="popup" style="padding-left:10px;color:#067ab4;font-size:11px;">Offer details</a></div>
+
+				<div style="position:absolute;top:150px;left:-25px;">
 					<a href="http://www.att.com/gen/general?pid=11096" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/marquees/btn_learn-more_blue_135x40.jpg" width="135" height="40" alt="Learn More" /></a>
 				</div>
-				<div style="position:absolute;top:98px;left:150px;">
-					<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="color:#067ab4;" title="See offer details">See offer details</a>
-				</div>
-				<div style="position:absolute;top:150px;left:0px;color:#666;font-family:Arial;font-size:11px;">On qualifying packages. <b>ALL OFFERS REQUIRE 24-MONTH DIRECTV AGREEMENT &amp;<br /> QUALIFYING AT&amp;T SERVICE.</b> ** Offers end 10/3/12. Credit card required. New<br /> approved customers only (lease required).</div>
+				<div style="position:absolute;top:150px;left:125px;color:#666;font-family:Arial;font-size:10px;">On qualifying packages. <b>ALL OFFERS REQUIRE 24-MONTH DIRECTV<br /> AGREEMENT &amp; QUALIFYING AT&amp;T SERVICE.</b> ** Offers end 10/3/12.<br /> Credit card required. New approved customers only (lease required).</div>
 			</div>
 			<div class="rotateHero" style="display:none;"><a href="general%3Fpid=7901.html#hero3"><img src="../Common/indc/images/btn_back.png" width="44" height="21" title="Back" alt="Back" /></a><a href="general%3Fpid=7901.html#heroPause"><img src="../Common/indc/images/btn_pause.gif" width="21" height="21" title="Pause" alt="Pause" /></a><a id="rotateNext1" href="general%3Fpid=7901.html#hero2"><img src="../Common/indc/images/btn_next_wcounter.png" width="36" height="21" title="Next" alt="Next"/></a><img src="../Common/indc/images/ind_1of3.png" width="47" height="21" title="1 of 3" alt="1 of 3"/></div>
 		</div>
 
 		<!-- ROTATING BANNER #2 -->
-		<div id="hero2" style="display:block;background:url(../Common/indc/images/marquees/116380_mrq_zookeeper_v02_BG.jpg) no-repeat;">
+		<div id="hero2" style="display:none;background:url(../Common/indc/images/marquees/116380_mrq_zookeeper_v02_BG.jpg) no-repeat;">
 			<div class="local_ban1_text">
 				<div><a href="http://www.att.com/Common/indc/popup/directv_offers.htm" style="color:#067ab4;font-size:10px;">See offer details</a></div>
 				<div style="margin-top:6px;"><a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_learn_more_140x44.png" width="140" height="44" alt="Learn More" /></a></div>
@@ -619,12 +473,15 @@ function addURLParams(href) {
 		</div>
 
 		<!-- ROTATING BANNER #3 -->
-		<div id="hero3" style="display:none;background:url(../Common/indc/images/marquees/mrq_bkg_dtv_wireless_950x236.jpg) no-repeat;">
+		<div id="hero3" style="display:none;background:url(../Common/indc/images/marquees/mrq_bkg_dtv_inet_950x236.jpg) no-repeat;">
 			<div class="rel" style="margin-top:15px;">
-				<h1 style="background:url(../Common/indc/images/marquees/mrq_hdr_dtv_wireless_421x45.gif) no-repeat;margin-bottom:5px;width:421px;height:45px;">Digital TV + Wireless = savings</h1>
-				<h1 style="background:url(../Common/indc/images/marquees/mrq_txt_dtv_wireless_392x42.gif) no-repeat;width:392px;height:42px;">Combine AT&amp;T | DIRECTV with new or existing Wireless to take advantage of bundle discounts.</h1>
-				<div class="topMar15">
-					<a href="https://connect.att.com/apps/supern/StartAction.form?source=ICBL25F010000000L&wtSourceUID=lg2871&wtExtndSource=0711_M3_Tvwir_odrnow" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/marquees/btn_order_now_blue_129x40.gif" width="129" height="40" alt="Order Now" /></a>
+				<h1 style="width:1px;height:1px;">Digital TV + Internet</h1>
+				<div style="position:absolute;top:80px;left:-5px;color:#333;font-family:Arial;font-size:13px;line-height:17px;">Get a $100 AT&amp;T Reward Card when you bundle DIRECTV&#174; CHOICE XTRA&#153;<br> Package with Advanced Receiver Service and AT&amp;T High Speed Internet.</div>
+				<div style="position:absolute;top:118px;left:-5px;">
+					<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="popup" style="color:#067ab4;font-size:11px;">Offer details</a>
+				</div>
+				<div style="position:absolute;top:145px;left:-5px;">
+					<a href="https://connect.att.com/apps/supern/StartAction.form?wtSlotClick=1-006IOX-0-1&dsl=HSIEL1YR2495_&dtv=DTVCHOICEXTRA" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/marquees/btn_order-now_blue_129x40.jpg" width="129" height="40" alt="Order Now" /></a>
 				</div>
 			</div>
 			<div class="rotateHero" style="display:none;"><a href="general%3Fpid=7901.html#hero2"><img src="../Common/indc/images/btn_back.png" width="44" height="21" title="Back" alt="Back" /></a><a href="general%3Fpid=7901.html#heroPause"><img src="../Common/indc/images/btn_pause.gif" width="21" height="21" title="Pause" alt="Pause" /></a><a id="rotateNext1" href="general%3Fpid=7901.html#hero1"><img src="../Common/indc/images/btn_next_wcounter.png" width="36" height="21" title="Next" alt="Next"/></a><img src="../Common/indc/images/ind_3of3.png" width="47" height="21" title="3 of 3" alt="3 of 3"/></div>
@@ -644,7 +501,7 @@ function addURLParams(href) {
 			<div><sup>$</sup>29.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Over 140 channels of family programming suitable for all ages, including local channels. 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional & Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
+		<p style="margin-top:40px">Over 140 channels of family programming suitable for all ages, including local channels. 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional &amp; Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
 			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C1_2999_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
@@ -661,7 +518,7 @@ function addURLParams(href) {
 			<div><sup>$</sup>38.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Get over 205 channels. Plus, for a limited time get 2012 NFL SUNDAY TICKET at no extra charge! AND a special offer for wireless customers: Watch every NFL SUNDAY TICKET game LIVE, anywhere, on your laptop, phone or tablet with 2012 NFL SUNDAY TICKET MAX at no extra charge** 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional &amp; Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
+		<p style="margin-top:40px">Get over 205 channels. Plus, for a limited time get 2012 NFL SUNDAY TICKET at no extra charge! AND a special offer for AT&amp;T customers: Watch every NFL SUNDAY TICKET game LIVE, anywhere, on your laptop, phone or tablet with 2012 NFL SUNDAY TICKET MAX at no extra charge** 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional &amp; Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
 			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C2_3699_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
@@ -678,7 +535,7 @@ function addURLParams(href) {
 			<div><sup>$</sup>44.<sup class="cents">99*</sup></div>
 			<span class="reoccurrence twoDigit" style="left:105px;top:8px;">per month <br /> for 12 months after instant<br /> rebate with 24-month DIRECTV<br />agreement when bundled with a<br /> qualifying AT&amp;T service*</span>
 		</div><!-- .pricing -->
-		<p style="margin-top:40px">Over 225 channels. 11 movie channels. Plus, for a limited time get 2012 NFL SUNDAY TICKET at no extra charge! AND a special offer for wireless customers: Watch every NFL SUNDAY TICKET game LIVE, anywhere, on your laptop, phone or tablet with 2012 NFL SUNDAY TICKET MAX at no extra charge** 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional &amp; Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
+		<p style="margin-top:40px">Over 225 channels. 11 movie channels. Plus, for a limited time get 2012 NFL SUNDAY TICKET at no extra charge! AND a special offer for AT&amp;T customers: Watch every NFL SUNDAY TICKET game LIVE, anywhere, on your laptop, phone or tablet with 2012 NFL SUNDAY TICKET MAX at no extra charge** 4 Free Upgrades: HD DVR and up to 3 HD Receivers (Additional &amp; Advanced Receiver fees apply. Select models only.). Plus save $10/mo for 12 months on Advanced Receiver service. 3 months free HBO<sup>&#174;</sup>, STARZ<sup>&#174;</sup>, SHOWTIME&#174;, and Cinemax<sup>&#174;</sup>, a $135 value.</p>
 		<div class="btmCta">
 			<a href="http://www.att.com/Common/indc/popup/directv_offers.htm" target="_blank" class="nowrap popup btnWhiteCagedArrow" style="display:block;" title="See offer details">See offer details</a>
 			<a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;wtSourceUID=tm2768&amp;wtExtndSource=0811_C3_4199_LrnMor&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')" class="nowrap btnWhiteCagedArrow" style="display:block;margin-top:-5px;" title="Learn more">Learn more</a>
@@ -797,7 +654,7 @@ function addURLParams(href) {
 
 <!-- // Conditionally use the foresee script, don't use for uvp -->
 
-		<script language="JavaScript" src="http://www.att.com/scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script> 
+		<script language="JavaScript" src="../scripts/foresee_global/foresee-trigger-global.js" type="text/javascript"></script> 
 	
 
 	
@@ -807,7 +664,7 @@ function addURLParams(href) {
     <!-- // BELOW SCRIPTS SHOULD NOT BE USED WITH OPSS -->
 	<script type="text/javascript" src="http://csct.att.com/scripts/csct.js"></script>
 	<!-- // ALTERNATIVE SINGLE PIXEL IF BROWSER DOES NOT SUPPORT JAVASCRIPT -->
-	<noscript><img src="http://csct.att.com/csct.gif?Log=1&amp;v_jd=1" alt="csct"
+	<noscript><img src="http://csct.att.com/csct.gif?Log=1&amp;v_jd=1"
 		border="0" width="1" height="1" /></noscript>
 	<!-- //END VS REFERENCE PAGE TAG -->
         

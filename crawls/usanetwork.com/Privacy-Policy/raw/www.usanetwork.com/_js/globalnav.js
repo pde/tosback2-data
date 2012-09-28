@@ -222,6 +222,13 @@ function usa_buildGlobalMenu()
 							else if (colCounter == maxPerCol || currentColumnIndex > (maxPerColNum - 1))
 							{
 								html += '</ul><ul>';
+								
+								
+								maxPerCol = Math.ceil((usa_globalMenu.menu[lvl1obj].subMenu[lvl2obj].items.length - maxPerCol) / 4);
+								usa_debugFlag = true;
+								usa_debugOut(maxPerCol);
+								usa_debugFlag = false;
+								
 								colCounter = 0;
 								currentColumnIndex++;
 							}
@@ -388,6 +395,10 @@ var usa_globalMenu = {
 							"url" : usa_baseUrlDomain + "/series/fairlylegal/"
 						},
 						{
+							"title" : "Graceland",
+							"url" : usa_baseUrlDomain + "/series/graceland/"
+						},
+						{
 							"title" : "In Plain Sight",
 							"url" : usa_baseUrlDomain + "/series/inplainsight/"
 						},					
@@ -431,31 +442,31 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "Political Animals",
-							"url" : usa_baseUrlDomain + "/series/politicalanimals/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_1.png",
-							"tuneIn" : "SUNDAYS 10/9C"
+							"title" : "WWE RAW",
+							"url" : usa_baseUrlDomain + "/sports/wwe/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
+							"tuneIn" : "MONDAY 9/8C"
 						},
 						/* Featured Slot 2 */
 						{
-							"title" : "White Collar",
-							"url" : usa_baseUrlDomain + "/series/whitecollar/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wc.png",
-							"tuneIn" : "TUESDAYS 9/8C"
+							"title" : "Covert Affairs",
+							"url" : usa_baseUrlDomain + "/series/covertaffairs/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_ca.png",
+							"tuneIn" : "RETURNS OCT 16 TUESDAY 10/9C"
 						},
 						/* Featured Slot 3 */
-						{
-							"title" : "Necessary Roughness",
-							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
-							"tuneIn" : "WEDNESDAYS 10/9C"
-						},
-						/* Featured Slot  - LAST */
 						{
 							"title" : "Burn Notice",
 							"url" : usa_baseUrlDomain + "/series/burnnotice/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_bn.png",
-							"tuneIn" : "THURSDAYS 9/8C"
+							"tuneIn" : "RETURNS NOV 8 THURSDAY 9/8C"
+						},
+						/* Featured Slot  - LAST */
+						{
+							"title" : "Suits",
+							"url" : usa_baseUrlDomain + "/series/suits/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
+							"tuneIn" : "RETURNS THIS JANUARY"
 						}
 
 					]
@@ -638,7 +649,7 @@ var usa_globalMenu = {
 						},
 						{
 							"title" : "Characters Unite Town Hall",
-							"url" : "http://www.charactersunite.com/town-hall"
+							"url" : "http://www.charactersunite.com/initiatives/town-hall/overview"
 						},
 						{
 							"title" : "Green is Welcome Here",
@@ -660,7 +671,7 @@ var usa_globalMenu = {
 						/* Featured Slot 2 */
 						{
 							"title" : "WATCH THE CHARACTERS UNITE PSA",
-							"url" : "http://www.charactersunite.com/video/tsbpsa",
+							"url" : "http://www.charactersunite.com/programming/the-space-between/psa",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/featured_2.png"
 						},
 						/* Featured Slot 3 */
@@ -684,29 +695,30 @@ var usa_globalMenu = {
 					"items" : [
 						
 						{
+							"title" : "NEXT FRIDAY",
+							"subtitle" : "MONDAY SEPT 24 11:05/10:05C",
+							"url" : usa_baseUrlDomain + "/movies/nextfriday/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nextfriday.png"
+						},
+						{
+							"title" : "RESIDENT EVIL: AFTERLIFE",
+							"subtitle" : "SATURDAY OCT 6 9/8C",
+							"url" : usa_baseUrlDomain + "/movies/residentevil/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
+						},
+						{
+							"title" : "DAWN OF THE DEAD",
+							"subtitle" : "SATURDAY OCTOBER 6 2/1C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dawnofthedead.png"
+						},
+						{
 							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "MONDAY AUG 20 11:05/10:05C",
+							"subtitle" : "SATURDAY OCT 6 6:30/5:30C",
 							"url" : usa_baseUrlDomain + "/movies/gijoe/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
-						},
-						{
-							"title" : "BLUE CRUSH 2",
-							"subtitle" : "WEDNESDAY AUG 22 8AM/7C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_bluecrush2.png"
-						},
-						{
-							"title" : "COUPLES RETREAT",
-							"subtitle" : "MONDAY AUG 27 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
-						},
-						{
-							"title" : "BAD BOYS 2",
-							"subtitle" : "SATURDAY SEPT 1 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/badboys2/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_badboys2.png"
 						}
+
 
 
 						

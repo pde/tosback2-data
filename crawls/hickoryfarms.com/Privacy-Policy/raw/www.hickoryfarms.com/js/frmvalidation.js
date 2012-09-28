@@ -136,6 +136,7 @@ function chkFrmRegister(f)
 	var validEmail = true;
 	var errMSG = "";
 	document.getElementById("dvErrMsg").innerHTML = "";
+
 	if (chkElement("txtFirstName", "lblFirstName") == false) { validForm = false; }
 	if (chkElement("txtLastName", "lblLastName") == false) { validForm = false; }
 	if (chkElement("txtEmail", "lblEmail") == false)
@@ -273,6 +274,17 @@ function chkFrmSiteReview(f)
 		{
 			alert("Our terms need to be agreed upon to proceed with your submission.");
 			document.getElementById("terms").focus();
+			return false;
+		}
+	}
+	if (document.getElementById("ccode"))
+	{
+		var ccode = alltrim(document.getElementById("ccode").value);
+		if (ccode.length < 2)
+		{
+			alert("Please enter the captcha code");
+			document.getElementById("ccode").value = ccode;
+			document.getElementById("ccode").focus();
 			return false;
 		}
 	}

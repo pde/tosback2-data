@@ -3,7 +3,7 @@
 	if ($.fn.sm4)
 		return false
 	
-	var configured, conf = {}, stub, loading, debugMode = false, extant = {}, _guid = 1; waiting = $();
+	var configured, conf, stub, loading, debugMode = false, extant = {}, _guid = 1, waiting = $();
 	var version = "0.1";
 
 	function log () {
@@ -48,9 +48,8 @@
 
 
 	var createConf = function() {
-
 		if (w.MTVN && w.MTVN.conf && w.MTVN.conf.sm4) {
-			$.extend(conf, w.MTVN.conf.sm4);
+			conf = $.extend({}, w.MTVN.conf.sm4);
 			configured = true;
 		}
 		
@@ -58,6 +57,7 @@
 	
 	var loadCore = function() {
 
+	
 		if(!w.yepnope) {
 			return false
 		}
@@ -88,6 +88,7 @@
 				} else {
 					waiting.trigger("sm4.coreLoad", [false]);
 				}
+				waiting = $();
 			}
 		});
 
@@ -149,18 +150,15 @@
 
 	
 	var reset = function() {
-	
+
 		configured = false;
 		loading = false;
-		extant = {};
-		waiting = $();
 		
-		conf = {}		
-
 		if (stub) {
 			stub.parentNode.removeChild(stub);
 			stub = undefined;
 		}
+		
 	}
 
 	$.fn.sm4 = function(cmd) {
@@ -177,8 +175,6 @@
 		
 			return {
 				configured: configured,
-				extant: extant,
-				waiting: waiting,
 				version: version,
 				setDebugMode: setDebugMode
 				
@@ -201,7 +197,7 @@
 					return false;
 				}
 			});
-			
+
 			waiting = waiting.add(filtered);
 
 			if (filtered.length) {
@@ -209,12 +205,19 @@
 				if (!window.Flux4) {
 					
 					if (!loading) {
-						loadCore(filtered);
+						filtered.bind("sm4.coreLoad", function(){
+							loadElement(this);
+						});
+						
+						loadCore();
+					} else {
+						filtered.bind("sm4.coreLoad", function(){
+							loadElement(this);
+						});
+					
 					}
 
-					filtered.bind("sm4.coreLoad", function(){
-						loadElement(this);
-					});
+
 	
 				} else {
 	

@@ -637,7 +637,8 @@ NICK.utils.doLog("doLogIn: nickName: "+NICK.userData.nickName);
 NICK.utils.doLog("gender: "+NICK.userData.gender);
 NICK.utils.doLog("age: "+NICK.userData.age);
 NICK.login.setLoginCookies();
-if(c.loggedIn=="true"){$(document).trigger("loggedIn",c);
+if(c.loggedIn=="true"){NICK.login.loggedInTrack();
+$(document).trigger("loggedIn",c);
 NICK.login.prepGamesServer();
 NICK.club.messages.loginWelcome()
 }else{if(c.approved=="B"){NICK.utils.doLog("doLogIn: Triggering B");
@@ -734,12 +735,13 @@ NICK.login.forgot.questionData="";
 NICK.login.forgot.submitAuthQuestion=function(){NICK.utils.doLog("submitAuthQuestion");
 if($("#getQuestionDiv").css("display")!="none"){NICK.login.forgot.submitNickname()
 }else{NICK.login.forgot.submitAnswer()
-}};
+}$("#answerField").focus().select()
+};
 NICK.login.forgot.submitNickname=function(){NICK.overlay.loadingToggle();
 var b=$("#usernameField").val();
 NICK.utils.doLog("submitNickName: ["+b+"]");
 if(NICK.utils.isEmptyString(b)){NICK.overlay.loadingToggle();
-$("#failMsg").show().html("Incorrect NickName");
+$("div.o_popup_forgot div.failMsg").show().html("Incorrect Username");
 return
 }var a={username:$("#usernameField").val(),showComments:"false",responseType:"json"};
 NICK.request.doRequest({dataType:"jsonp",url:NICK.login.nickAuthQuestionUrl,data:a,onSuccess:function(c){NICK.overlay.loadingToggle();
@@ -748,8 +750,8 @@ if(c.questionid!="null"){NICK.login.forgot.questionData=c;
 $("#secretQuestion").html(c.question);
 $("#getQuestionDiv").hide();
 $("#getAnswerDiv").show();
-$("#failMsg").hide()
-}else{$("#failMsg").show().html("Incorrect NickName")
+$("div.o_popup_forgot div.failMsg").hide()
+}else{$("div.o_popup_forgot div.failMsg").show().html("Incorrect Username")
 }},onFail:function(d){NICK.overlay.loadingToggle();
 for(var c in d){NICK.utils.doLog("submitNickname: error: "+c+" - "+d[c])
 }}})
@@ -758,20 +760,20 @@ NICK.login.forgot.submitAnswer=function(){NICK.overlay.loadingToggle();
 NICK.utils.doLog("submitAnswer");
 var a=$("#answerField").val();
 if(NICK.utils.isEmptyString(a)){NICK.overlay.loadingToggle();
-$("#failMsg").show().html("Incorrect Answer");
+$("div.o_popup_forgot div.failMsg").show().html("Incorrect Answer");
 return
 }var b={username:NICK.login.forgot.questionData.username,questionid:NICK.login.forgot.questionData.questionid,answer:a,responseType:"json"};
 NICK.request.doRequest({dataType:"jsonp",url:NICK.login.nickAuthAnswerUrl,data:b,onSuccess:function(c){NICK.overlay.loadingToggle();
 NICK.utils.doLog("response valid:"+c.valid);
-if(c.valid=="true"){$("#failMsg").hide();
+if(c.valid=="true"){$("div.o_popup_forgot div.failMsg").hide();
 $("#getAnswerDiv").hide();
 $(".o_popup_forgot .actions").hide();
-$("#yourPassword").show().html("Your password is: "+c.password)
+$("#yourPassword").show().find("label.password").html(c.password)
 }else{NICK.utils.doLog("response invalid:"+c.approved);
 if(c.approved=="B"){NICK.utils.doLog("doLogIn: Triggering B");
 $(document).trigger("bannedUserFail")
 }else{if(c.approved=="S"){$(document).trigger("bannedUserTempFail")
-}else{$("#failMsg").show().html("Incorrect Answer")
+}else{$("div.o_popup_forgot div.failMsg").show().html("Incorrect Answer")
 }}}},onFail:function(d){NICK.overlay.loadingToggle();
 for(var c in d){NICK.utils.doLog("submitAnswer: error: "+c+" - "+d[c])
 }}})
@@ -828,10 +830,10 @@ $("#nickLogin").show();
 $("#loginLoader").hide();
 $("#bannedUserError").hide();
 $("#bannedUserTempError").show()
+});
+$(document).bind("registered",function(){NICK.login.registeredTrack()
 })
 });
-NICK.login.prompt=function(){NICK.overlay.open("Please Sign In","/overlay/login.html",{method:"ajax"})
-};
 NICK.login.games.doLogin=function(a){if(a==null){a="doLoginResponse"
 }$("#games-player-game").addClass("hidden").addClass("swfnohide");
 NICK.login.prompt();
@@ -851,6 +853,28 @@ NICK.login.games.watchUserLogOut=function(a){if(a==null){a="watchUserLogOutRespo
 }$(document).unbind("loggedOut.games");
 $(document).bind("loggedOut.games",function(b){NickProxy.swfObserver.dispatch(a)
 })
+};
+NICK.login.isGuest=function(){return NICK.login.getNickName().indexOf("guest")!=-1
+};
+NICK.login.userLocation="";
+NICK.login.prompt=function(a){if(a==undefined&&NICK.login.userLocation==""){a="unknown";
+NICK.login.userLocation=a
+}else{if(a!=undefined){NICK.login.userLocation=a
+}}NICK.overlay.doLogInOverlay({method:"ajax",trackLoc:NICK.login.userLocation});
+return false
+};
+NICK.login.loggedInTrack=function(){KIDS.reporting.omnifunctions.sendLogin("Complete",NICK.login.userLocation);
+NICK.utils.doLog("sendLogin Login "+NICK.login.userLocation)
+};
+NICK.login.registeredTrack=function(){KIDS.reporting.omnifunctions.sendReg("Registration Complete",NICK.login.userLocation);
+NICK.utils.doLog("sendReg Register "+NICK.login.userLocation)
+};
+NICK.login.registerPrompt=function(a){if(a==undefined&&NICK.login.userLocation==""){a="unknown";
+NICK.login.userLocation=a
+}else{if(a!=undefined){NICK.login.userLocation=a
+}}NICK.overlay.doRegisterOverlay({method:"ajax",trackLoc:NICK.login.userLocation});
+NICK.utils.doLog("registerPrompt "+NICK.login.userLocation);
+return false
 };
 $(document).ready(function(){NICK.login.doNickCookieCheck()
 });
@@ -1218,8 +1242,9 @@ $("#buddyRequestCount").parent().show()
 }})
 }}function setHeaderStatus(){$("#mynick").css("display","inline");
 if(NICK.login.isLoggedIn()){NickLog.info(NICK.login.getNickName()+" successfully logged in.");
-$(".mynick-noauth").hide();
-var a=NICK.login.getNickName();
+if(NICK.login.isGuest()){$(".mynick-noauth").show()
+}else{$(".mynick-noauth").hide()
+}var a=NICK.login.getNickName();
 var b='<div id="mynick-private" class="mynick-auth"><div class=\'auth-holder\'>';
 b+="<h5><a href='javascript:NICK.club.global.gotoProfile()' class=\"profile\">"+a+"</a></h5>";
 b+="<a href='javascript:NICK.club.global.goToBuddyRequest()' style='display:none;'><span id=\"buddyRequestCount\">0</span></a>";
@@ -1230,8 +1255,11 @@ $("#mynick-private").remove();
 $("#mynick").append(b);
 setHeaderAvatar();
 setBuddyRequests();
-$(".mynick-auth").show()
-}else{NickLog.warn("No user session found.");
+if(NICK.login.isGuest()){$(".mynick-auth").hide();
+$("#mynick-public-nav.mynick-noauth").hide();
+$("#mynick-private.mynick-auth").show()
+}else{$(".mynick-auth").show()
+}}else{NickLog.warn("No user session found.");
 $("#mynick-private").remove();
 $("#UAPreview").html('<img class="png" id="user-avatar" src="/assets/default_avatar.png" width="45" height="50" />');
 $(".mynick-auth").hide();

@@ -94,22 +94,12 @@ function miniPromo(){
 	LXPreload([
 		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazing.gif',
 		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_engineerAmazingOv.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_hardway.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_hardwayOv.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_pursuitContinues.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_pursuitContinuesOv.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_insidePerformance.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_insidePerformanceOv.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_insideHybrid.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_insideHybridOv.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudio.png',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudioOv.png',
 		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaits.png',
 		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_luxuryAwaitsOv.png',
 		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexus.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexusOv.gif'/*,
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_hybridLiving.gif',
-		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_hybridLivingOv.gif'*/
+		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_vidaLexusOv.gif',
+		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudio.png',
+		'/lexus-share/images/navigation/more-lexus-sites/moreLexusSites_lStudioOv.png'
 	]);
 	
 	LXDoDynamicContent({
@@ -118,10 +108,6 @@ function miniPromo(){
 			href: "http://www.lexus.com/engineering_amazing/?siteid=Lexus_More_Sites_Nav",
 			tag: "onclick=fireTag('2300.6',{'<category>':'more lexus sites','<button_name>':'engineering_amazing'});",
 			image: LEXUS_URL + "/lexus-share/images/navigation/more-lexus-sites/img_pursuitAmazing.jpg"
-		}, {
-			href: "http://www.lexus.com/performance/?siteid=Lexus_More_Sites_Nav",
-			tag: "onclick=fireTag('2300.6',{'<category>':'more lexus sites','<button_name>':'performance'});",
-			image: LEXUS_URL + "/lexus-share/images/navigation/more-lexus-sites/img-inside-performance.jpg"
 		}, {
 			href: "http://luxuryawaits.com?siteid=Lexus_More_Sites_Nav",
 			tag: "onclick=fireTag('2300.6',{'<category>':'more lexus sites','<button_name>':'luxury awaits'});",
@@ -134,11 +120,7 @@ function miniPromo(){
 			href: "http://www.lstudio.com?cid=Lexus_More_Sites_Nav",
 			tag: "onclick=fireTag('2300.6',{'<category>':'more lexus sites','<button_name>':'lstudio'});",
 			image: LEXUS_URL + "/lexus-share/images/navigation/more-lexus-sites/img-lstudio.jpg"
-		}/*,{
-			href: "http://www.lexus.com/hybridliving/?siteid=Lexus_More_Sites_Nav",
-			tag: "onclick=fireTag('2300.6',{'<category>':'more lexus sites','<button_name>':'hybrid living'});",
-			image: LEXUS_URL + "/lexus-share/images/navigation/more-lexus-sites/img-hybrid-living.jpg"
-		}*/],
+		}],
 		template: '\
 			<li>\
 				<a href="{href}" class="lexus-moresites-{current}" onclick="{tag}">\
@@ -1953,8 +1935,9 @@ function animationVehicles(e,callback) {
 		    LXSetTimeout("aniVehiclesC('hybrids','cth',20, 100)",50);
 			LXSetTimeout("aniVehiclesC('hybrids','hsh',40, 100)",100);
 			LXSetTimeout("aniVehiclesC('hybrids','rxh',60, 100)",150);
-			LXSetTimeout("aniVehiclesC('hybrids','gsh',80, 100)",200);
-			LXSetTimeout("aniVehiclesC('hybrids','lsh',100, 100)",250);
+			LXSetTimeout("aniVehiclesC('hybrids','esh',80, 100)",200);
+			LXSetTimeout("aniVehiclesC('hybrids','gsh',100, 100)",250);
+			LXSetTimeout("aniVehiclesC('hybrids','lsh',120, 100)",300);
 			lxShowPromo(e);
 		  break;
 		case "performance":
@@ -1966,8 +1949,10 @@ function animationVehicles(e,callback) {
 			//LXSetTimeout("aniVehiclesC('future','fgsh',40, 100)",100);
 			//LXSetTimeout("aniVehiclesC('future','gsfs',60, 100)",150);
 			 LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
-             LXSetTimeout("aniVehiclesC('future','fes',40, 100)",200);
-			 LXSetTimeout("aniVehiclesC('future','fls',60, 100)",200);
+             //LXSetTimeout("aniVehiclesC('future','fes',40, 100)",200);
+			 LXSetTimeout("aniVehiclesC('future','fls',40, 100)",200);
+			 LXSetTimeout("aniVehiclesC('future','lfcc',60, 100)",200);
+			 
 			lxShowPromo(e);
 		  break;
 	}
@@ -2044,6 +2029,7 @@ function animationVehicles1(e) {
 		    aniVehicles('hybrids','cth');
 			aniVehicles('hybrids','hsh');
 			aniVehicles('hybrids','rxh');
+			aniVehicles('hybrids','esh');
 			aniVehicles('hybrids','gsh');
 			aniVehicles('hybrids','lsh');
 		  break;
@@ -2055,8 +2041,9 @@ function animationVehicles1(e) {
 			//aniVehicles('future','fgsh');
 			//aniVehicles('future','gsfs');
 			aniVehicles('future','concept');
-            aniVehicles('future','fes');
+            //aniVehicles('future','fes');
 			aniVehicles('future','fls');
+			aniVehicles('future','lfcc');
 		  break;
 		default:
 		  break;

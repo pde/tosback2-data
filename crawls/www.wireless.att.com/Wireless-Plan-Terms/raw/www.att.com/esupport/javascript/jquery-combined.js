@@ -3168,7 +3168,7 @@ function nyroModalDebug(msg, elts, settings) {
 		delay : 100,        	// The number of milliseconds before displaying the tooltip
         duration : 500,   		// The number of milliseconds after moving the mouse cusor before removing the tooltip.
 		stickyDuration : 10000, // added a delay before removing a sticky tooltip.
-        xOffset : 70,     		// X offset will allow the tooltip to appear offset by x pixels.
+        xOffset : 20,     		// X offset will allow the tooltip to appear offset by x pixels.
         yOffset : 10,     		// Y offset will allow the tooltip to appear offset by y pixels.
 		opacity : 0,      		// 0 is completely opaque and 100 completely transparent
 		sticky : false,   		// true to make the tooltip sticky
@@ -4324,7 +4324,8 @@ $.extend($.validator, {
 			return this.optional(element) || /^\d+$/.test(value);
 		},
 		alfaChars:function(value,element){			
-			return this.optional(element) || /^[a-zA-Z]+$/.test(value);			 
+			//return this.optional(element) || /^[a-zA-Z]+$/.test(value);	
+			return this.optional(element) || /^[a-zA-Z][a-zA-Z\ \-\']+$/.test(value);		 
 		},
 		// http://docs.jquery.com/Plugins/Validation/Methods/creditcard
 		// based on http://en.wikipedia.org/wiki/Luhn

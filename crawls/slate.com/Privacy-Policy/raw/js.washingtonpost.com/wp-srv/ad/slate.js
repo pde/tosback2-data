@@ -14,7 +14,7 @@
   };
 
   wpAd.constants = {
-    'ad_config_url': /ad_config_url\=/.test(location.search) ? location.search.split(/ad_config_url\=/)[1].split(/&/)[0] : 'http://js.washingtonpost.com/wp-srv/ad/slate_config.js',
+    'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/slate_config.js',
     'wpniSite': 'slate',
     'wpniDomain': 'slate.com',
     'fifURL': (function () {
@@ -67,6 +67,18 @@
 
   //slate specific keyvalues
   wpAd.config.keyvalues = {
+    amazon: {
+      exec: function(){
+        var args = doc.amzn_args || win.amzn_args || false;
+        if(args){
+          for(var key in args){
+            if(args.hasOwnProperty(key)){
+              wpAd.briefcase.keyvalues[key] = args[key];
+            }
+          }
+        }
+      }
+    },
     page: function () {
       return wpAd.cache.hasOwnProperty('page') ? wpAd.cache.page : (function () {
         if(typeof wp_meta_data !== 'undefined' && wp_meta_data.contentType && wpAd.tools.zoneBuilder.contentType[wp_meta_data.contentType[0]]) {

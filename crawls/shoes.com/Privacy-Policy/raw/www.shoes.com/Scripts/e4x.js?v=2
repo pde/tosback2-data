@@ -181,6 +181,7 @@ var E4XClient = {
         var userCountry = cookieManager.getValueIgnoreCase('Country') || 'US';
         var fxrate = $('.e4xrates').attr(userCurrency);
         var lcpRate = $('.e4xLcpRates').attr(userCountry);
+        var e4xRoundingMethod = parseInt($('.e4xRoundingMethods').attr(cookieManager.getValueIgnoreCase('Currency') || 'USD'));
 
         if (isNaN(lcpRate))
             lcpRate = 1;
@@ -199,14 +200,14 @@ var E4XClient = {
 			            var cprice = parseFloat(e.innerHTML.substring(e.innerHTML.indexOf('$') + 1).replace(/\,/g, ''));
 			            var text = e.innerHTML.substring(0, e.innerHTML.indexOf('$'));
 			            if (!isNaN(cprice) && !isNaN(fxrate) && userCountry != 'US') {
-			                e.innerHTML = text + userCurrency + " " + thousandSeparator(e4xRounding(cprice * fxrate * lcpRate).toFixed(2));
+			                e.innerHTML = text + userCurrency + " " + thousandSeparator(e4xRounding(cprice * fxrate * lcpRate, e4xRoundingMethod).toFixed(2));
 			            }
 			        } else {
 			            if (isNaN(fxrate) || userCountry == 'US') {
 			                e.innerHTML += "$" + thousandSeparator(price.toFixed(2));
 			            }
 			            else {
-			                e.innerHTML += userCurrency + " " + thousandSeparator(e4xRounding(price * fxrate * lcpRate).toFixed(2));
+			                e.innerHTML += userCurrency + " " + thousandSeparator(e4xRounding(price * fxrate * lcpRate, e4xRoundingMethod).toFixed(2));
 			            }
 			        }
 			    }
@@ -394,9 +395,7 @@ function thousandSeparator(v, s, d) {
     return z;
 }
 
-function e4xRounding(p) {
-    var cookieManager = new CookieManager();
-    var e4xRoundingMethod = parseInt($('.e4xRoundingMethods').attr(cookieManager.getValueIgnoreCase('Currency') || 'USD'));
+function e4xRounding(p, e4xRoundingMethod) {    
     var coefficient = Math.pow(10, e4xRoundingMethod);
     return Math.round(p * coefficient) / coefficient;
 }

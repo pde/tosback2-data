@@ -39,6 +39,11 @@ $(document).ready (function() {
 		fireMetrics( 'print', options );
 	});
 
+	//tool bar faq
+	$('div.faq_question ul li a').live( 'click', function(){
+		fireMetrics( 'content_links_faq', { 'destination_name' : $(this).text() });
+	});
+	
 	//leftnav slide menu
 	$( 'div#slideMenuContent a' ).live( 'click', function(){
 		var options = {
@@ -198,20 +203,22 @@ $(document).ready (function() {
 			fireMetrics( 'content_links', { 'destination_name' : $( this ).text() });
 		});
 		// visionconfigpage gallery
-		$( 'body.visionconfigpage div.actionContainer a' ).live( 'click', function(){
+		$( 'div.shadedContainerPop div.actionContainer a').live( 'click', function(){
 			fireMetrics( 'video_close_button' );
 			$( "div.modalOffClick,div.shadedContainerPop" ).remove();
 		});
 		//video link
-		$('body.visionconfigpage div.galleryWraper li a').live('click', function(){
+		$('body.visionconfigpage div.galleryWraper li a, body.peoplepage div.galleryWraper li a').live('click', function(){
 			fireMetrics( 'VIDEO_HOMEPAGE_PLAY' );
 		});
-		//visionconfigpage promotile
-		/*$( 'body.visionconfigpage .cq-colctrl-lt0-c1 .flex_promo_tile a' ).live( 'click', function(){
-			fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
-		});*/
+		//promotile
 		$( '.flex_promo_tile a' ).live( 'click', function(){
-			fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
+			var chkAlt = $(this).find( 'img' ).attr( 'alt' );
+			if (chkAlt){
+				fireMetrics( 'promo_tile', { 'destination_name' : $( this ).find( 'img' ).attr( 'alt' ) });
+			}else {
+				fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
+			}
 		});
 		// visionconfigpage relatedResources
 		$('.visionconfigpage .relatedResources a, body.peoplepage .relatedResources a').live('click', function() {
@@ -224,6 +231,51 @@ $(document).ready (function() {
 			} else {
 				fireMetrics( 'related_resources_exit', { destination_name : $( this ).text() });
 			}
+		});
+		
+		//gallery 
+		if( $( 'ul.slideshow').length > 0 ){
+			if( !$( 'body' ).hasClass( 'contentpagetwocolumn' )){
+				//console.log( 'in diversity tracking' );		//fire the up gallery initaly
+				/*$( 'ul.slideshow li.active' ).each( function(){
+					fireMetrics( 'image_gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' )});
+				});*/
+				//previous click
+				$( 'div.galleryPrev' ).live( 'click', function(){
+					fireMetrics( 'image_gallery_prev_arrow' );
+					fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				});
+				//next click
+				$( 'div.galleryNext' ).live( 'click', function(){
+					fireMetrics( 'image_gallery_next_arrow' );
+					fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				});
+				//number click
+				$( 'div.controlNav a' ).live( 'click', function(){
+					var text = $( this ).text();
+					text = $( this ).index() == 0 ? "left-arrow" : text;
+					text = $( this ).index() == $( this ).parent().children().length - 1 ? "right-arrow" : text;
+					fireMetrics( 'image_gallery_number', { number_clicked : text });
+					fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				});
+			}
+		}
+		$( 'ul#stopLabels li a' ).live( 'click', function(){
+			fireMetrics( 'placement_links', { 'placement_number' : $( this ).parent().index()});
+		});
+		$( 'ul#sliderContent li a.button' ).live( 'click', function(){
+			var text1 = $( this ).text();
+			if (text1.toLowerCase().indexOf( 'read' ) >= 0){
+				fireMetrics( 'read_article');
+			}else{
+				fireMetrics( 'learn_more');
+			}
+		});
+		$( 'div#sliderCTAWraper a' ).live( 'click', function(){
+			fireMetrics( 'slider_cta', { link_name : $( this ).text()});
+		});
+		$( '.cq-colctrl-lt0-c0 .actionContainer a, .cq-colctrl-lt1-c0 .actionContainer a' ).live( 'click', function(){
+			fireMetrics( 'related_resources_exit', { 'destination_name' : $( this ).text() });
 		});
 				
 	}
@@ -319,78 +371,7 @@ $(document).ready (function() {
 			});
 		}
 	}
-	//gallery for teamGM_cares
-	if( uri.indexOf( '/content/gmcom/home/vision/community_education/teamGM_cares' ) >= 0 && $( 'ul.slideshow').length > 0 ){
-		if( !$( 'body' ).hasClass( 'contentpagetwocolumn' )){
-			//console.log( 'in diversity tracking' );		//fire the up gallery initaly
-			/*$( 'ul.slideshow li.active' ).each( function(){
-				fireMetrics( 'image_gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' )});
-			});*/
-			//previous click
-			$( 'div.galleryPrev' ).live( 'click', function(){
-				fireMetrics( 'image_gallery_prev_arrow' );
-				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
-			});
-			//next click
-			$( 'div.galleryNext' ).live( 'click', function(){
-				fireMetrics( 'image_gallery_next_arrow' );
-				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
-			});
-			//number click
-			$( 'div.controlNav a' ).live( 'click', function(){
-				var text = $( this ).text();
-				text = $( this ).index() == 0 ? "left-arrow" : text;
-				text = $( this ).index() == $( this ).parent().children().length - 1 ? "right-arrow" : text;
-				fireMetrics( 'image_gallery_number', { number_clicked : text });
-				fireMetrics( 'image_gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
-			});
-		}
-	}
-
-	//-------------------------------------------------------------
-	// Pillar page - design_technology - environment1 - community_education - quality_safety
-	if( uri == '/content/gmcom/home/vision/design_technology'   ||
-		uri == '/content/gmcom/home/vision/environment1'        ||
-		uri == '/content/gmcom/home/vision/community_education' ||
-		uri == '/content/gmcom/home/vision/quality_safety'
-	){
-		$( 'ul#stopLabels li a' ).live( 'click', function(){
-			fireMetrics( 'placement_links', { 'placement_number' : $( this ).parent().index()});
-		});
-		$( 'ul#sliderContent li a.button' ).live( 'click', function(){
-			var text = $( this ).text();
-			text = text.toLowerCase().replace( /\s+|-/g, '_' );
-			fireMetrics( 'internal' );
-		});
-		$( 'div#sliderCTAWraper a' ).live( 'click', function(){
-			fireMetrics( 'slider_cta', { link_name : $( this ).text()});
-		});
-		$( 'body#design_technology div.actionContainer a' ).live( 'click', function(){
-			fireMetrics( 'learn_more');
-		});
-		$( 'body#environment1 div.actionContainer a' ).live( 'click', function(){
-			fireMetrics( 'read_article');
-		});
-		$( 'body#community_education div.actionContainer a' ).live( 'click', function(){
-			fireMetrics( 'read_article');
-		});
-		$( 'body#quality_safety div.actionContainer a' ).live( 'click', function(){
-			fireMetrics( 'read_article');
-		});
-	}
-
-	//-------------------------------------------------------------
-	// Pillar article page - design_technology - environment1 - community_education - quality_safety
-	if( uri == '/content/gmcom/home/vision/community_education/education_project' ){
-		$( '.relatedResources a, .actionContainer a' ).live( 'click', function(){
-			fireMetrics( 'exit', { 'destination_name' : $( this ).text() });
-		});
-		//to include promo tiles
-		//$( '.cq-colctrl-lt0-c1 a' ).live( 'click', function(){
-			//fireMetrics( 'promo_tile', { 'destination_name' : $( this ).attr('href') });
-		//});
-	}
-
+	
 	//-------------------------------------------------------------
 	// board_of_directors0
 	if (uri == "/content/gmcom/home/company/aboutGM/board_of_directors0") {
@@ -661,7 +642,12 @@ $(document).ready (function() {
 					pat = /^http/,
 					test = pat.test( href ),
 					page = test ? 'exit' : 'internal';
-				fireMetrics( page, { link_text : $( this ).text() });
+				if( ($('body').attr('id')=='owner_advantages') && ($(this).text().toLowerCase().indexOf( 'learn' ) >= 0)){
+					//if the CTA button has Learn More and belongs to the owner_advantages page do nothing
+					//the tracking for the CTA button with Learn More is @owner_advantages
+				}else{
+					fireMetrics( page, { link_text : $( this ).text() });
+				}
 			}
 		});
 		//links that trigger modals
@@ -703,14 +689,17 @@ $(document).ready (function() {
 	
 	//-------------------------------------------------------------
 	
-	//owner_benefits
-	if( uri.indexOf( "/content/gmcom/home/vehicles/owner_benefits" ) != -1 ){
+	//owner_advantages
+	if( uri.indexOf( "/content/gmcom/home/vehicles/owner_advantages" ) != -1 ){
 		$( 'div.callToAction div.actionContainer a' ).live( 'click', function(){
 			var href = $( this ).attr( 'href' );
-			if( href ){
-				fireMetrics( 'learn_more', { 'link_text' : href });
-			} else {
-				fireMetrics( 'learn_more', { 'link_text' : 'learn_more' });
+			var altTxt = $(this).text();
+			if (altTxt.toLowerCase().indexOf( 'learn' ) >= 0){
+				if( href ){
+					fireMetrics( 'learn_more', { 'link_text' : href });
+				} else {
+					fireMetrics( 'learn_more', { 'link_text' : 'learn_more' });
+				}
 			}
 		});
 		//for the brand logos
@@ -724,37 +713,9 @@ $(document).ready (function() {
 		});
 		
 		$( 'div#bottomTabContainer ul.tabs li' ).live( 'click', function(){
-			 
-				var altVal =$(this).find('cufon').attr('alt'); 
-				
-			if(altVal.indexOf('Warranty') != -1){
-				fireMetrics( 'exit', {link_text: altVal});
-				
-			} else if(altVal.indexOf('Owner') != -1){
-				fireMetrics( 'exit', {link_text: 'Owner Center'});
-				
-			} else if(altVal.indexOf('OnStar') != -1){
-				fireMetrics( 'exit', {link_text: altVal});
-				
-			} else if(altVal.indexOf('Bluetooth') != -1){
-				fireMetrics( 'exit', {link_text: altVal});
-				
-			}  else if(altVal.indexOf('Certified') != -1){
-				fireMetrics( 'exit', {link_text: 'Certified Service'});
-				
-			} else if(altVal.indexOf('SiriusXM') != -1){
-				fireMetrics( 'exit', {link_text: 'SiriusXM Radio'});
-				
-			} else if(altVal.indexOf('GM') != -1){
-				fireMetrics( 'exit', {link_text: 'GM Card'});
-				
-			} else if(altVal.indexOf('Parts') != -1){
-				fireMetrics( 'exit', {link_text: 'Parts & Accessories'});
-				
-			}
-			   
-			
-			
+			 	//var altVal =$(this).find('cufon').attr('alt'); 
+				var attrTitle = $( 'ul#bottomTabContainerData > li' ).eq( $( this ).index() ).attr( 'title' );
+						fireMetrics( 'exit', {link_text: attrTitle});
 		});
 	}
 		

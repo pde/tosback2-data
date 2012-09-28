@@ -49,9 +49,11 @@ function populatePrices(a) {
 			if (a.prices[b].valid === "true") { // if JSON response object item is valid
 				//do rating stuff
 				var rating = a.prices[b].rating;
+				var review_txt = " Reviews ";
 				if (rating > 0){
+					if (a.prices[b].reviewCount == 1) review_txt = " Review ";
 					$("#rrRating" + a.prices[b].pid).addClass("bv" + rating*10);
-					$("#rrReview" + a.prices[b].pid).html("Read all " + a.prices[b].reviewCount +" reviews");
+					$("#rrReview" + a.prices[b].pid).html("(" + a.prices[b].reviewCount + review_txt + ")");
 					$("#rrRatingBox" + a.prices[b].pid).show();
 				}else{
 					$("#rrRatingBox" + a.prices[b].pid).html('<a href="' + rrLink +'%23reviewTab" class="underline">Write the first review</a>');

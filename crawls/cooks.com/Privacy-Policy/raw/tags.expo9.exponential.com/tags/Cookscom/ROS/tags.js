@@ -429,6 +429,20 @@ if (e9Manager === undefined)
 	      adSpec.pop = 'only';
 	    }
 
+	   if (e9.toolbar === 1)
+            {
+              var toolbar = e9Page.getToolBarOptions();
+
+              adSpec.tagType = "toolbar";
+	      adSpec.env = "toolbar";
+              adSpec.adApp = 1;
+              adSpec.mediaType     = toolbar.mediaType     || 0;
+              adSpec.mediaDataID   = toolbar.mediaDataID   || 0;
+              adSpec.clientID      = toolbar.clientID      || 0;
+              adSpec.clickTrackURL = toolbar.clickTrackURL || "http://" + p.host + "/hd.click/random/";
+              adSpec.noAdChoice = 1;	      
+            }
+
            if (   typeof(p.enabledAdChoices) == "undefined" 
 	       || p.enabledAdChoices === false)
               adSpec.noAdChoice = 1;
@@ -486,7 +500,7 @@ if (e9Manager === undefined)
 
         var e9Page = 
 	 {
-	   version: "1.23",
+	   version: "1.24",
 	   displayAdVersion: "0.4",
 	   adNum:0,
 	   adResponse:undefined,
@@ -499,6 +513,7 @@ if (e9Manager === undefined)
 	   tagKey: "1883697412",
 	   enabledRichAdInIframe: true,
 	   enabledAdChoices: true,
+	   tagOptions: {},
            
 	   isIE: (navigator.appVersion.indexOf("MSIE") !== -1),
 
@@ -570,6 +585,24 @@ if (e9Manager === undefined)
 		p.pageData.adNum++;
 		return p.pageData.adNum;
               },
+
+	   getToolBarOptions:
+	     function()
+	      {
+		var		p = this;
+		if (typeof p.tagOptions.toolbar !== "undefined")
+		 {
+		   var 		toolbarOptions = p.tagOptions.toolbar;
+		   return {
+			    mediaType     :  toolbarOptions.mediaType,
+			    mediaDataID   :  toolbarOptions.mediaDataID,
+			    clientID      :  toolbarOptions.clientID,
+			    clickTrackURL :  toolbarOptions.clickTrackURL
+		          };
+		 }
+                return {};
+	      },
+	   
 
 	   includeJScript: 
              function(f) 
@@ -722,6 +755,10 @@ if (e9Manager === undefined)
 				t.cmd =  "f.ad";
 				t.tagType = "iframe";
 				break;
+			   case "toolbar":
+				t.cmd =  "j.ad";
+				t.tagType = "toolbar";
+				break;
 			   default:
 				t.cmd = "j.ad";
 				t.tagType = "jscript";
@@ -749,7 +786,14 @@ if (e9Manager === undefined)
 			cpx(t,'adParams','size', t.filterValidSizesAndSetSizeFrame());
 
 			cpex(t,'adParams','clickTrackURL', adSpec.clickTrackURL);
+			cpex(t,'adParams','playTrackURL', adSpec.playTrackURL);
+
+		        cpx(t,'adParams','adApp', adSpec.adApp);
+                        cpx(t,'adParams','mediaType', adSpec.mediaType);
+			cpx(t,'adParams','mediaDataID', adSpec.mediaDataID);
+			cpx(t,'adParams','clientID', adSpec.clientID);
 			cpx(t,'adParams','env', adSpec.env || p.env);
+			cpx(t,'adParams','flushMedia', adSpec.flushMedia);
 		      },
 
 		   copyFixedBehaviors:
@@ -909,11 +953,22 @@ if (e9Manager === undefined)
 			     || (isForFetchAds))
 			   isBustable = false;
 
-			frameLevel = (window.top.location === document.location)
-				      ? 0
-				      : ((window.parent === window.top)
-					  ? 1
-					  : 2);
+			if (    (typeof p.tagOptions.turnOffPageSafety !== "undefined") 
+			     && (p.tagOptions.turnOffPageSafety === true)
+			     && (p.busterframe.indexOf("http") === -1))
+                         {
+			    frameLevel = (window.top.location === document.location)
+                                          ? 0 
+				          :1;	                        
+                         }
+                        else
+                         {
+			   frameLevel = (window.top.location === document.location)
+				          ? 0
+				          : ((window.parent === window.top)
+					     ? 1
+					     : 2);
+                         }
 
 			if (adSpec.busted === 1)
 			 {
@@ -1085,6 +1140,7 @@ if (e9Manager === undefined)
 				break;
 
 			   case "jscript":
+			   case "toolbar":
 				{
 				  t.tagSrc = '<scr' + 'ipt type="text/javascript" SRC="' + t.url + '"><\/sc' + 'ript>';
 				}
@@ -1343,9 +1399,7 @@ if (e9Manager === undefined)
 		var		center = (adSpec.center !== undefined) ? adSpec.center
 				    		      		       : p.center;
 		var 		sizeArray = frameSpec.size.split('x');
-		var 		frameSrc = (frameSpec.mediaURL && (frameSpec.mediaURL.indexOf('http') === 0))
-				            ? " src=\""+ frameSpec.mediaURL + "\" "
-				            : "";
+		var 		frameSrc = "";
 		var 		style = frameSpec.style ? 'style='+frameSpec.style: '';
 		var 		viewpixel = frameSpec.viewpixel || '';
 		var		frameTags;
@@ -1365,7 +1419,7 @@ if (e9Manager === undefined)
 
 		   idoc.open();
 		   idoc.write('<html><head></head><body>' + frameSpec.creative + '</body></html>');
-		   if (p.isIE === false)
+		   if (p.isIE === false && p.isOpera === false)
 		      idoc.close(); 
 		 }
 	      }

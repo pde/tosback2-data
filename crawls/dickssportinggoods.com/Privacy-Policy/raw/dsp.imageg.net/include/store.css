@@ -106,7 +106,7 @@ dl ol ul p { font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif; color:#656
 #emailSubmit img { margin-left:120px; vertical-align: top; }
  
 /* fam/search prodloop */
-ul#productLoopUL { margin:0px; padding:0px; list-style-type:none; float:left; }
+ul#productLoopUL { margin:0px; padding:0px; list-style-type:none; float:left; position:relative;z-index:1;*z-index:-1; }
 .prodloopProduct { height:350px; display:block; float:left; width:178px; overflow:hidden; margin-right:12px; padding-bottom:10px; }
 .prodloopRow { margin-top:25px; }
 .prodloopImage { float:left; width:178px; height:178px; position: relative; }
@@ -135,7 +135,7 @@ li.prodloopProduct:hover a.prodImgLink { background: url(../images/category/famI
 
 
 /* footer */
-	#footer {background: #00483A; width: 960px; overflow: hidden; clear: both;z-index:0 !important; *margin-top: 10px;}
+	#footer {background: #00483A; width: 960px; overflow: hidden; clear: both;position:relative;z-index:0; *margin-top: 10px;*z-index:-1;}
 	#footer #footer-contents { padding: 20px 0 0; margin:0 auto; }
 	.footerNavlink{margin:0 auto; overflow:hidden;width:915px;padding-left:45px;}
 	#footer ul { margin: 0; padding: 0; list-style: none; }
@@ -373,7 +373,7 @@ a.breadcrumb:hover { text-decoration:underline; }
 /*site palette*/
 /*.maincolor { background:#003932; color:#fff; }*/
 /*.maincolor { background:url(../images/bg_greentile.gif); color:#006555; text-transform:uppercase; }*/
-.maincolor { background:#006555; color:#E6F7F1; text-transform:uppercase; padding:0px;}
+.maincolor { background:#006555; color:#E6F7F1; padding:0px;}
 #loyalityInputSidebar .maincolor { background: none; }
 body#Checkout_login table{width:890px; margin-left:40px !important;}
 body#Checkout_login table tr td table{ width:300px;margin:0 auto !important;}
@@ -409,7 +409,6 @@ div.promo { width:176px;
 /*checkout 2004*/
 /*.checkbg_lt { background-color:#F5F5F5; }*/
 .checkbg_lt, .cartrow1 { background-color:#fff; width:770px; line-height:18px; padding:0 !important; }
-/*.checkbg_dk { background-color:#D7D7D7; }*/
 .checkbg_dk { background-color:#006555; color:#E6F7F1; }
 .checkbg_border { border:solid 1px #666; }
 .check_bullet { color:#c00; }
@@ -2301,6 +2300,7 @@ div.leftNavNew .parametricAttribs ul#leftNavUL { margin: 0 0 3px 0; }
 	position: absolute;
 	width: 697px;
 	left: 7px;
+	z-index:999;
 }
 
 .parametricAttribs #expandMore_Brand , .parametricAttribs #expandMore_SizeGeneral { top: 17px; *left: 0px; _left: 2px;}
@@ -2626,7 +2626,7 @@ storeColorAlert: #006555;
 	width: 226px !important;
 }
 #checkoutPanelsHolder #orderSummary #orderSummaryWidgetTotalRow td {
-	border-top:1px solid #006555; /* storeColorAlert */
+	border-top:1px solid #666; /* storeColorAlert */
 	}	
 #checkoutPanelsHolder a{
 	color:#006555;
@@ -2661,7 +2661,7 @@ Multi-ship: when different items go to different addresses
 /* millere2: Multimode ON, Shoprunner OFF, Multi-Ship OFF */
 #checkoutPanelsHolder .leftPanel table.productList {
 	margin-bottom:25px;
-	border-bottom:3px solid #006555;
+	border-bottom:3px solid #666;
 	}
 #checkoutPanelsHolder .leftPanel table#items {
 	_margin: 0 0 25px 0;
@@ -2679,7 +2679,7 @@ Multi-ship: when different items go to different addresses
 	}
 #checkoutPanelsHolder .leftPanel td.leftPanel {
 	margin-bottom:25px;
-	border-bottom:3px solid #006555;
+	border-bottom:3px solid #666;
 	}
 /* millere2: other conditions: */
 /* millere2: Multimode ON, Shoprunner OFF, Multi-Ship ON */		
@@ -2835,9 +2835,10 @@ p.Events {float: left; margin-left: 114px; margin-top: -12px; width: 450px;}
 #davisCartOtherViewLink{ font-size:9px;}
 #cartItemDescCol .maincolor{ line-height:20px;}
 .promoApplyCell.pagetext{font-size:11px !important;}
-td#addressTitle { font-size:11px; display: none!important; }
+td#addressTitle { background:#666; color:#E6F7F1; text-transform:uppercase; font-size:11px; display: none!important; }
+#addressShippingOptionsTitle { background:#666; color:#E6F7F1; text-transform:uppercase; font-size:11px; }
 #Checkout_login .pagetext{ width:220px; font-size:11px;}
-#costSummarySection table tr td#costSummaryHeadingTD{ background-color:#006555;}
+#costSummarySection table tr td#costSummaryHeadingTD{ background-color:#666; text-transform: uppercase !important;}
 #wishlistheader{ width:100%;margin:0 auto;}
 #cartItems tr td{margin-top:5px;}
 #cartItems .cartMainInfo td a img{margin-top:5px;vertical-align:middle; margin-bottom:6px;}
@@ -2898,7 +2899,7 @@ input.emailBg { width:400px !important;}
 table.cartMainInfo{margin-top:3px;}
 #product div#rCol div div#imgDis{width:auto !important;}
 .width750 #imgDis{width:587px !important;margin-left:50px;}
-td#cartQtyCol{width:70px;}
+td#cartQtyCol{width:62px;padding-left: 8px;}
 td#cartTotalCol{width:80px;}
 
 #wrapper #frame table tr td a.stMapDir {visibility:hidden;}
@@ -2966,7 +2967,12 @@ td#buttonBox br{display:none;}
 .cartWrapper_v2 form#myQty table tr td.wishlistCell{text-align:left;}
 #Checkout_confirm #checkoutPanelsHolder td.rightPanel .loyal-bttm-txt-inst{display:inline-block;}
 #Checkout_address #frame div.checkoutPanels-address table.checkoutPanels td.leftPanel table td form#address table td table tr td.checkout-text{display:block!important;}
-
+#Checkout_shipMethods .leftPanel font.subheadmed,
+#Checkout_payment .leftPanel font.subheadmed,
+#Checkout_confirm .confirmTotal,
+#addressTitle {
+	text-transform: uppercase !important;
+}
 #Checkout_address #frame .checkoutPanels-address table.checkoutPanels td.leftPanel table td form#address table td fieldset#billingShipping div a img{width:80px !important;height:20px;}
 #Checkout_payment fieldset #shipMethodsSidebar div{padding-top:0 !important;}
 #Checkout_thanks .checkoutPanels-thanks table#thanksHeader td.rightPanel table#thanksCreateAccountTable td a#thanksCreateAccountButton{margin-left:10px;}
@@ -3007,3 +3013,49 @@ fieldset#addressSidebar div{*margin-top:20px !Important;}
 #cartTopButtonContainer .paypal-icon .txt{padding-top:10px;*padding-right:3px;}
 td.colOr{padding-top:10px;}
 #cartTopButtonContainer .paypal-icon #paypalButtonDiv.activePPEDiv{top:9px !important;}
+
+/** Checkout Enhancements PMO 2847**/
+fieldset#billingShipping div#addressShippingOptionsTitle { background: #666; }
+.productList td.maincolor, 
+#cartBgclrProdDtls .maincolor,
+#cartBgclrProdDtls .checkbg_dk,
+#cart-cross-sells-container td.checkbg_dk
+{ background: #666;}
+#orderSummary .cart-summary-entry {
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 130px;
+}
+
+#itemDesc {
+	padding-left: 0; /* fixes IE 7 issue with a particular items' content wrapping */
+	padding-right: 10px;
+}
+
+#loyalityInputSidebar table { border-collapse: collapse; }
+
+/* Target IE7 and below only with #cartSummaryTab */
+#cartSummaryTab {
+	*float: left;
+	*width: 94% !important;
+}
+#titleQty {
+    padding-right: 5px;
+}
+#titleCost {
+	padding-left: 5px;
+	text-align: right;
+}
+#Checkout_ccv td.maincolor,
+.cartMainInfo td.maincolor {
+	text-transform: uppercase;
+}
+#Checkout_ccv td.maincolor { background: #666; }
+#Checkout_ccv td.checkbg_dk { background: #666; }
+#Checkout_ccv td.checkbg_dk b { color: #E6F7F1; }
+
+#Checkout_itemDestinations .leftPanel .subheadmed,
+#Checkout_address #billingAddressTitle {text-transform:uppercase;}
+#checkoutPanelsHolder .leftPanel table.check_border .GTGTshipdesc {color: #006555; font-family: Verdana,Geneva,Arial,Helvetica,sans-serif; font-size: 10px;}
+#checkoutPanelsHolder .leftPanel table.check_border .shipdesc0{word-spacing: -1px;}
+#checkoutPanelsHolder .leftPanel table.check_border .shipdesc2{word-spacing: -1px;}

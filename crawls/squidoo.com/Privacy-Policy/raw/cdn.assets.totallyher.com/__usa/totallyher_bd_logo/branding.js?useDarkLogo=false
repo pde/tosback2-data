@@ -1,0 +1,184 @@
+(function () {
+	var TH_MT_LIGHT_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_momtastic_white_r01.png';
+	var TH_MT_DARK_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_momtastic_grey_r01.png';
+	var TH_TFS_LIGHT_URL	= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_tfs_white_r01.png';
+	var TH_TFS_DARK_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_tfs_grey_r01.png';
+	var TH_TEEN_LIGHT_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_teens_white_r01.png';
+	var TH_TEEN_DARK_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_teens_grey_r01.png';
+	var TH_KIDS_LIGHT_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_kids_white_r01.png';
+	var TH_KIDS_DARK_URL		= 'http://cdn.assets.totallyher.com/__usa/totallyher_bd_logo/logo/totallyher_bd_logo_kids_grey_r01.png';
+	var TH_MT     = "TH_MT";
+    var TH_TFS    = "TH_TFS";
+    var TH_TEEN    = "TH_TEEN";
+    var TH_KIDS    = "TH_KIDS";
+	var TH_NA	  = "NonTH";
+    
+	var TH_MT_SITES     = [ 
+        'babyandbump', 'babynameworld', 'blackcelebkids', 'craftown', 'imperfectparent', 'momswhothink', 'momtastic', 'oldfashionedliving', 'parentpreviews', 'passionforsavings', 'pregnancy-info.net', 'realitytea', 'savingslifestyle', 'skinnyvscurvy', 'squawkfox', 'soapcentral', 'thehappyhousewife', 'zootoo', 'allthingscupcake', 'aliciasrecipes', 'anniesrecipes', 'askdrsears', 'babynamenetwork', 'babynamespedia', 'beautyandbedlam', 'celebrations', 'cookrecipesblog', 'curveinspire', 'dineanddish.net', 'divinedinnerparty', 'dogasaur', 'dogs.net', 'drsearsfamilyessentials', 'familyfriendlyfrugality', 'fibromyalgia-symtoms.org', 'freshlypicked.blogspot', 'halfhourmeals', 'i-love-cats', 'i-love-dogs', 'inmyownstyle', 'livingwithpunks', 'minti', 'modernparentsmessykids', 'nextdaypets', 'petsdo', 'pingg', 'popularbabynames', 'qualitydogs', 'recipeland', 'sayyestohoboken', 'spaoa.org', 'squidoo', 'theideabox', 'thelovelycupboard', 'webecoist', 'wholesomebabyfood', 'womens-health', 'youaremyfave'
+    ];
+    var TH_TFS_SITES = [
+        'exploremodeling', 'fashionbombdaily', 'fashionmodeldirectory', 'short-hair-styles', 'thefashionspot', 'cheapchicas', 'coolspotters', 'fadedyouthblog', 'fashiongonerogue', 'fashionindie', 'fashionista101', 'hintmag', 'losmag', 'lotsofstyle', 'makeupgeek', 'mookychick', 'shoeblog', 'thebrokenheeldiaries'
+    ];
+    var TH_TEEN_SITES = [
+	'ninjakiwi', 'bulbagarden', 'teenspot', 'dressupwho', 'weplay', 'hypable', 'ebuddy', 'oceanup', 'elouai', 'teenidols4you', 'gossipteen', 'student', 'teenhollywood', 'teenmusic', 'kabillion', 'avrilbandaids', 'bff', 'campusbug', 'ezone', 'fanfilled', 'fanhost', 'originalicons', 'lyricsspot', 'course-notes', 'teentelevision', 'formspring', 'songlyrics', 'agame', 'campushook', 'dragonballgt', 'dragonballz', 'dressupdream', 'freeonlinegames', 'gamesgames', 'girlsgogames', 'pokedream', 'sodahead', 'songlyrics', 'teenisland' 
+    ];
+    var TH_KIDS_SITES = [
+	'agkidzone', 'buildabear', 'bearville', 'firemansamonline', 'gogoddess', 'jaroo', 'kewlmag', 'mugglenet', 'rainbowmagiconline', 'suvudu', 'weeworld', 'rhymezone', 'kidzworld', 'woozworld', 'hellokids', 'thomasandfriends', 'hitentertainment', 'thekidzpage', 'barney', 'cartoondollemporium', 'bobthebuilder', 'cdeboys', 'pingu', 'horseland', 'angelinaballerina', 'kidsturncentral', 'dollwizard', 'kidmango'
+
+    ];
+    
+    var domain = getRootURL(document.domain);
+	var brand = searchDomain(domain);
+    
+	var queryObj = parseQuery();
+	
+	var useDark;
+	if( typeof queryObj.useDarkLogo != 'undefined' && queryObj.useDarkLogo.match(/false/i) ) {
+		useDark = false;
+	}
+	else {
+		useDark = true;
+	}
+	
+	printBranding( brand, useDark )
+	
+	//******** FUNCTIONS **********//
+	function getRootURL(url){
+		var TLDs = ['ac', 'ad', 'ae', 'aero', 'af', 'ag', 'ai', 'al', 'am', 'an', 'ao', 'aq', 'ar', 'arpa', 'as', 'asia', 'at', 'au', 'aw', 'ax', 'az', 'ba', 'bb', 'bd', 'be', 'bf', 'bg', 'bh', 'bi', 'biz', 'bj', 'bm', 'bn', 'bo', 'br', 'bs', 'bt', 'bv', 'bw', 'by', 'bz', 'ca', 'cat', 'cc', 'cd', 'cf', 'cg', 'ch', 'ci', 'ck', 'cl', 'cm', 'cn', 'co', 'com', 'coop', 'cr', 'cu', 'cv', 'cx', 'cy', 'cz', 'de', 'dj', 'dk', 'dm', 'do', 'dz', 'ec', 'edu', 'ee', 'eg', 'er', 'es', 'et', 'eu', 'fi', 'fj', 'fk', 'fm', 'fo', 'fr', 'ga', 'gb', 'gd', 'ge', 'gf', 'gg', 'gh', 'gi', 'gl', 'gm', 'gn', 'gov', 'gp', 'gq', 'gr', 'gs', 'gt', 'gu', 'gw', 'gy', 'hk', 'hm', 'hn', 'hr', 'ht', 'hu', 'id', 'ie', 'il', 'im', 'in', 'info', 'int', 'io', 'iq', 'ir', 'is', 'it', 'je', 'jm', 'jo', 'jobs', 'jp', 'ke', 'kg', 'kh', 'ki', 'km', 'kn', 'kp', 'kr', 'kw', 'ky', 'kz', 'la', 'lb', 'lc', 'li', 'lk', 'lr', 'ls', 'lt', 'lu', 'lv', 'ly', 'ma', 'mc', 'md', 'me', 'mg', 'mh', 'mil', 'mk', 'ml', 'mm', 'mn', 'mo', 'mobi', 'mp', 'mq', 'mr', 'ms', 'mt', 'mu', 'museum', 'mv', 'mw', 'mx', 'my', 'mz', 'na', 'name', 'nc', 'ne', 'net', 'nf', 'ng', 'ni', 'nl', 'no', 'np', 'nr', 'nu', 'nz', 'om', 'org', 'pa', 'pe', 'pf', 'pg', 'ph', 'pk', 'pl', 'pm', 'pn', 'pr', 'pro', 'ps', 'pt', 'pw', 'py', 'qa', 're', 'ro', 'rs', 'ru', 'rw', 'sa', 'sb', 'sc', 'sd', 'se', 'sg', 'sh', 'si', 'sj', 'sk', 'sl', 'sm', 'sn', 'so', 'sr', 'st', 'su', 'sv', 'sy', 'sz', 'tc', 'td', 'tel', 'tf', 'tg', 'th', 'tj', 'tk', 'tl', 'tm', 'tn', 'to', 'tp', 'tr', 'travel', 'tt', 'tv', 'tw', 'tz', 'ua', 'ug', 'uk', 'us', 'uy', 'uz', 'va', 'vc', 've', 'vg', 'vi', 'vn', 'vu', 'wf', 'ws', 'xxx', 'ye', 'yt', 'za', 'zm', 'zw'].join()
+
+		var parts = url.split('.');
+		if (parts[0] === 'www' && parts[1] !== 'com'){
+			parts.shift()
+		}
+		var ln = parts.length
+		  , i = ln
+		  , minLength = parts[parts.length-1].length
+		  , part
+
+		// iterate backwards
+		while(part = parts[--i]){
+			if (i === 0                    
+				|| i < ln-2                
+				|| part.length < minLength 
+				|| TLDs.indexOf(part) < 0  
+			){
+				return part
+			}
+		}
+	}
+	
+    function searchDomain(domain) {
+	
+		var MTi = TH_MT_SITES.length;
+		
+		while (MTi--) {
+		   if (TH_MT_SITES[MTi] === domain) {
+			   return "TH_MT";
+		   }
+		}
+		
+		var TFSi = TH_TFS_SITES.length;
+		
+		while (TFSi--) {
+		   if (TH_TFS_SITES[TFSi] === domain) {
+			   return "TH_TFS";
+		   }
+		}
+		
+		var TNi = TH_TEEN_SITES.length;
+		
+		while (TNi--) {
+		   if (TH_TEEN_SITES[TNi] === domain) {
+			   return "TH_TEEN";
+		   }
+		}
+		
+		var KDi = TH_KIDS_SITES.length;
+		
+		while (KDi--) {
+		   if (TH_KIDS_SITES[KDi] === domain) {
+			   return "TH_KIDS";
+		   }
+		}
+		
+		return "NonTH";
+		
+	}
+	
+	function printBranding( brand, useDark )
+	{
+		
+		var outImgStr = "<img src='";
+		
+		switch( brand )
+		{
+			case TH_MT:
+				if( useDark ) {
+					outImgStr += TH_MT_DARK_URL;
+				}
+				else {
+					outImgStr += TH_MT_LIGHT_URL;
+				}
+				break;
+				
+			case TH_TFS:
+				if( useDark ) {
+					outImgStr += TH_TFS_DARK_URL;
+				}
+				else {
+					outImgStr += TH_TFS_LIGHT_URL;
+				}
+				break;
+				
+			case TH_TEEN:
+				if( useDark ) {
+					outImgStr += TH_TEEN_DARK_URL;
+				}
+				else {
+					outImgStr += TH_TEEN_LIGHT_URL;
+				}
+				break;
+				
+			case TH_KIDS:
+				if( useDark ) {
+					outImgStr += TH_KIDS_DARK_URL;
+				}
+				else {
+					outImgStr += TH_KIDS_LIGHT_URL;
+				}
+				break;
+				
+			default:
+				break;
+		}
+		
+		outImgStr += "' alt='Totally Her' width='230px' height='54px' />";
+		
+		if(brand != "NonTH")
+		{ 
+			document.write( outImgStr );
+		}
+	}
+    
+    function parseQuery (  ) 
+    {
+        var scripts = document.getElementsByTagName('script');
+        var myScript = scripts[ scripts.length - 1 ];
+		var query = myScript.src.replace(/^[^\?]+\??/,'');
+		
+        var Params = new Object ();
+       
+        if ( ! query ) return Params; // return empty object
+        var Pairs = query.split(/[;&]/);
+        for ( var i = 0; i < Pairs.length; i++ ) 
+        {
+            var KeyVal = Pairs[i].split('=');
+            if ( ! KeyVal || KeyVal.length != 2 ) continue;
+            var key = unescape( KeyVal[0] );
+            var val = unescape( KeyVal[1] );
+            val = val.replace(/\+/g, ' ');
+            Params[key] = val;
+		}
+		return Params;
+    }
+})();

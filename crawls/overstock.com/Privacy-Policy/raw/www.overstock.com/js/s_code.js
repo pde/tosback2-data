@@ -127,7 +127,7 @@ function s_doPlugins(s) {
     +"Dominant_category_id:prop9,surftype:prop44");
 
   if (s.pageName){
-    if (s.pageName.indexOf('Home & Garden Store')>-1 || s.prop5 == 'International Checkout Page')
+    if (s.pageName.indexOf('Home & Garden Store')>-1)
       {
       s.loadModule("Survey")
       }

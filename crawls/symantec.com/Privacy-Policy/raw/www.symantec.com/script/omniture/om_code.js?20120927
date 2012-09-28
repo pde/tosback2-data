@@ -1,0 +1,383 @@
+/* ###qa###release date###20120801### */
+
+// Changes 2011-05-22: 	Added Overlay function for GRS
+// Changes 2011-06-01:  Removed logic to send data to 'veritassecurityresponsebiz'
+// Changes 2011-08-06:  Removed logic to send data to 'symanteccom' based on meta data norton and pctools have own files now
+// Changes 2011-08-07:  DemandBase code added. -- rperez
+// Changes 2011-08-16:  symanteccom had to be added back due to Norton fixhomepage
+// Changes 2012-09-24:	Added trackDownloadLink function for tracking downloads
+
+
+/* The array is needed for legacy setup on business/support pages - in bottom code.
+Omniture has server rule to capture this data in prop1 - Do not use function */
+
+var RegionArray = new Array();
+RegionArray["ca"] = "NAM";
+RegionArray["us"] = "NAM";
+RegionArray["at"] = "EMEA";
+RegionArray["be"] = "EMEA";
+RegionArray["ch"] = "EMEA";
+RegionArray["cz"] = "EMEA";
+RegionArray["de"] = "EMEA";
+RegionArray["dk"] = "EMEA";
+RegionArray["es"] = "EMEA";
+RegionArray["fi"] = "EMEA";
+RegionArray["fr"] = "EMEA";
+RegionArray["gr"] = "EMEA";
+RegionArray["hu"] = "EMEA";
+RegionArray["il"] = "EMEA";
+RegionArray["it"] = "EMEA";
+RegionArray["lu"] = "EMEA";
+RegionArray["me"] = "EMEA";
+RegionArray["nl"] = "EMEA";
+RegionArray["no"] = "EMEA";
+RegionArray["pl"] = "EMEA";
+RegionArray["pt"] = "EMEA";
+RegionArray["ro"] = "EMEA";
+RegionArray["ru"] = "EMEA";
+RegionArray["se"] = "EMEA";
+RegionArray["tr"] = "EMEA";
+RegionArray["uk"] = "EMEA";
+RegionArray["za"] = "EMEA";
+RegionArray["aa"] = "APAC";
+RegionArray["au"] = "APAC";
+RegionArray["cn"] = "APAC";
+RegionArray["hk"] = "APAC";
+RegionArray["id"] = "APAC";
+RegionArray["in"] = "APAC";
+RegionArray["jp"] = "APAC";
+RegionArray["kr"] = "APAC";
+RegionArray["lk"] = "APAC";
+RegionArray["my"] = "APAC";
+RegionArray["ph"] = "APAC";
+RegionArray["sg"] = "APAC";
+RegionArray["th"] = "APAC";
+RegionArray["tw"] = "APAC";
+RegionArray["vn"] = "APAC";
+RegionArray["br"] = "LAM";
+RegionArray["mx"] = "LAM";
+RegionArray["pr"] = "LAM";
+RegionArray["xa"] = "LAM";
+RegionArray["xc"] = "LAM";
+RegionArray["xs"] = "LAM";
+
+
+function getMetaData() {
+	var thisMetaData = new Array();
+	var metaElem = document.all ? document.all.tags('META') : document.getElementsByTagName ? document.getElementsByTagName('META') : new Array();
+
+	for(var m = 0; m < metaElem.length; m++) {
+		var metaName = metaElem[m].name.toLowerCase();
+
+		if(!metaName.indexOf('om.')) {
+			thisMetaData[metaName.substring(3)] = metaElem[m].content;
+		}
+	}
+
+	return thisMetaData;
+}
+
+function getReportSuite(md) {
+	if(md['visitor_segment'] == 'bizstore') {
+		md['visitor_segment'] = "Business";
+		md['site_sub_section'] = md['site_section'];
+		md['site_section_us'] = "Store";
+		md['site_section'] = "Store";
+	}
+
+	if(md['report_suite']) return md['report_suite'];
+
+	if(md['environment'] == 'dev' ) return 'symantecdev';
+	if(md['environment'] == 'uat' ) return 'veritasnonconsumeruat';
+
+	var suite = '';
+	var visitor_segment = '';
+	var site_section_us = '';
+	var site_section    = '';
+
+	if(md['visitor_segment']) visitor_segment = md['visitor_segment'].toLowerCase();
+	if(md['site_section_us']) site_section_us = md['site_section_us'].toLowerCase();
+	if(md['site_section'])    site_section    = md['site_section'].toLowerCase();
+
+	if(visitor_segment != 'business' &&
+	   visitor_segment != 'partners' &&
+	   visitor_segment != 'corporate') {
+		suite = "symanteccom";
+	}
+
+	if(site_section_us == '' ) site_section_us = site_section;
+
+	if(visitor_segment != 'consumer') {
+		suite += ',veritasnonconsumer';
+	}
+
+	if(visitor_segment == 'consumer') {
+		if(site_section_us == 'support') {
+			suite += ',symantecconsumersupport';
+		}
+	} else if(visitor_segment == 'business') {
+		if(site_section_us == 'store') {
+			suite += ',symantecstoresmb';
+		} else if(site_section_us == 'training') {
+			suite += ',symantectraining';
+		} else if(site_section_us == 'support') {
+			suite += ',symantecenterprisesupport';
+		} else if(site_section_us == 'mysymantec') {
+			suite += ',symantecmysymantec';
+		} /*else if(site_section_us == 'security response') {
+			suite += ',veritassecurityresponsebiz';
+		}*/
+
+		if(site_section_us == 'welcome'   ||
+		   site_section_us == 'solutions' ||
+		   site_section_us == 'products'  ||
+		   site_section_us == 'services'  ||
+		   site_section_us == 'resources' ||
+		   site_section_us == 'themes'    ||
+		   site_section_us == 'campaign') {
+			suite += ',veritasbizmarketing';
+		} else if(site_section_us == 'connect') {
+			suite += ',veritasconnect';
+		}
+	} else if(visitor_segment == 'partners' || visitor_segment == 'partner') {
+		suite += ',symantecpartner';
+	} else if(visitor_segment == 'corporate') {
+		suite += ',symantecabout';
+	} else {
+		suite += ',veritasagnostic';
+	}
+
+	if(suite.charAt(0) == ',') suite = suite.substring(1);
+
+	return suite;
+}
+
+var metaData = new Array();
+
+metaData = getMetaData();
+
+if(!metaData['visitor_segment'])	metaData['visitor_segment']		= 'none';
+if(!metaData['site_section']) 		metaData['site_section']		= 'none';
+if(!metaData['site_sub_section'])	metaData['site_sub_section']	= 'none';
+
+metaData['repsuite'] = getReportSuite(metaData);
+
+metaData['page_url'] = document.location;
+
+if(metaData['page_type'] && document.referrer != '') {
+	if(metaData['page_type'] == '404' || metaData['page_type'] == '500') {
+		metaData['error_url'] = document.referrer;
+	}
+}
+//Used to send Overlay data to the Global Report Suite - 04/30/2012
+function trackOverlayView() {
+	var pn = s.pageName;
+	var ch = s.channel;
+	var c27 = s.prop27;
+	var c41 = s.prop41;
+	var e41 = s.eVar41;
+	var c48= s.prop48;
+	var c54 = s.prop54;
+	var acct =  s_account;
+	s_account="symanteccom";
+	s.sa(s_account);
+	s.prop27="Global";
+	s.prop41=s.eVar41="symantec overlay";
+	s.prop48=s.prop54=s.eVar54="symantec overlay";
+	s.pageName=s.prop3 + "/"+s.prop2+": global: symantec overlay";
+	s.channel="Global: symantec overlay";
+	s.prop30 = s.prop32 = s.prop42 =s.prop43 = s.prop49 = s.prop58 = s.prop59 = s.prop60 = "";
+	s.eVar29 = s.eVar48 = s.eVar59 = s.eVar68 = s.eVar71 = s.eVar72 = "";
+	s.prop35 = s.pageName;
+	s.doPlugins=new Function("");
+	s.t();
+	s.doPlugins = s_doPlugins;
+	s_account = acct;
+	s.sa(s_account);
+	s.pageName=pn;
+	s.prop54=c54;
+	s.channel=ch;
+	s.prop27=c27;
+	s.prop41=c41;
+	s.eVar41=e41;
+	s.prop48=c48;
+	s.prop54=c54;
+}
+
+//Used to send Overlay Segment selection to the Global Report Suite - 06/30/2012
+function trackSegments(label) {
+      var pn = s.pageName;
+      var e70= s.eVar70;
+      var p57 = s.prop57;
+      s.pageName+=': '+label.toLowerCase();
+      s.prop57=s.eVar70=label;
+      s.t();
+      s.eVar70=e70;
+      s.prop57=p57;
+     s.pageName=pn;
+}
+//:Used to send Overlay close - 06/30/2012
+function closeOverlay() {
+      var pn = s.pageName;
+      var e8= s.eVar8;
+      var p57 = s.prop57;
+      s.pageName+=': overlay: close';
+      s.prop57=s.eVar8='Close';
+      s.t();
+      s.eVar8=e8;
+      s.prop57=p57;
+     s.pageName=pn;
+}
+
+function trackPageView(label) {
+	s.linkTrackVars="";
+	s.linkTrackEvents="";
+	var pn = s.pageName;
+	s.pageName+=': '+label.toLowerCase();
+	s.t();
+	s.pageName=pn;
+}
+
+function trackPromoClick(obj) {
+	s.linkTrackVars='None';
+	s.linkTrackEvents='None';
+	s.tl(obj, 'o', s.pageName+': '+obj.href);
+}
+
+function trackTabClick(obj, label) {
+	s.linkTrackVars='None';
+	s.linkTrackEvents='None';
+	s.tl(obj, 'o', s.pageName+': tabs: '+label.toLowerCase());
+}
+
+function trackSBWidget(label) {
+
+	s.linkTrackVars="";
+	s.linkTrackEvents="";
+	var segment=metaData['visitor_segment'].toLowerCase();
+	var name=metaData['site_language'] + '/' + metaData['site_country'] + ': ' + segment + ': ' + label;
+	var pn = s.pageName;
+	s.pageName=name.toLowerCase();
+	s.events='event26';
+	s.t();
+	s.pageName=pn;
+}
+
+function trackDownloadLink(url_file, url_redir){
+	var urlLink='';
+	if(url_redir){
+		urlLink=url_redir;
+	}else{
+		urlLink=url_file;
+	}
+	var index = urlLink.lastIndexOf("/") + 1;
+	var filename = urlLink.substr(index);
+	var parts = urlLink.split('.');
+	var filetype= parts[parts.length-1];
+		s.events="event1";
+		s.eVar1  = urlLink;
+		s.prop33 = urlLink;
+		s.prop46 = filetype;
+		s.prop47 = "download";
+		s.eVar57 = "download";
+		s.prop48 = filename;
+		s.eVar49 = filename;
+		s.linkTrackVars="";
+		s.linkTrackEvents="";	
+		s.t();	
+}
+
+function trackDownload(url_file, url_redir) {
+	window.location = url_redir;
+}
+
+function trackDownloadFileOpen(url_file, url_redir) {
+		if (url_redir != null)	{
+		window.open (url_redir,'data','');
+	}
+	else{
+		window.open (url_file,'data','');
+	}
+}
+function trackProducts(obj, events, products) {
+	s.linkTrackVars='';
+	s.linkTrackEvents='';
+	s.events=events;
+	s.products=products;
+	s.tl(obj, 'o', s.pageName+': trackProducts: '+events);
+}
+
+/* Brightcove integration */
+function bc_getPageVariables() {
+	var obj = new Object();
+	obj.country = metaData['site_country'];
+	obj.language = metaData['site_language']
+	obj.visitor_segment = metaData['visitor_segment'];
+	obj.site_section = metaData['site_section'];
+	obj.site_sub_section = metaData['site_sub_section'];
+	obj.product_name = metaData['product_name'];
+	obj.product_category = metaData['product_category_name'];
+	obj.product_version = metaData['product_version_name'];
+	obj.content_type = "video";
+	obj.user_id = metaData['user_id'];
+	obj.repsuite = metaData['repsuite'];
+	return obj;
+}
+
+/* Demandbase code
+
+Added by Rob Perez August 07, 2012
+
+*/
+function trackDemandBase(){
+	var sessync=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('sessync');
+	if(sessync.indexOf('db')==-1){
+	  if(typeof($)!="undefined"){
+		$(window).load(function(){
+		  $.getJSON("//api.demandbase.com/api/v2/ip.json?key=09884c914277626561f7b4e7cff7fa13edf3b423&callback=?", function(data){
+			try{
+				s.linkTrackVars = 'prop28,prop51,prop55,prop63,eVar15';
+				s.prop28 = data["company_name"];
+				s.prop51 = data["audience_segment"];
+				s.eVar15 = data["employee_count"];
+				s.prop55 = data["industry"];
+				s.prop63 = data["sub_industry"];
+				void(s.tl(this,'o','DB2SC'));
+				document.cookie = ('sessync='+sessync+'|db ;domain = .symantec.com; path=/');
+			}
+			catch (ex){}
+		  });
+		});
+	  }
+	}
+}
+
+fireDemandBaseTracking = function(){
+	var myPageName = metaData['page_name'];
+	// if we're not en/us, we're done.
+	if(myPageName.indexOf('en/us')<0){
+		return false;
+	}
+	else{	// we are en/us. Test return true if any conditions are met
+		if(myPageName == "en/us: biz: symantec"){ // homepage
+			return true;
+		}
+		if(myPageName.indexOf('en/us: biz: products:')>-1){ //product pages
+			return true;
+		}
+		if(myPageName.indexOf('en/us: biz: solutions:')>-1){ //solutions pages
+			return true;
+		}
+		if(myPageName.indexOf('en/us: biz: theme:')>-1){ //theme pages
+			return true;
+		}
+		if(myPageName.indexOf('en/us: biz: cmp:')>-1){ //campaign pages
+			return true;
+		}
+	}
+	return false; //no conditions met? Return false and do not invoke demandbase.
+}
+
+if(fireDemandBaseTracking()){
+	trackDemandBase();
+}

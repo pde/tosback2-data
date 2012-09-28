@@ -43,6 +43,90 @@
 <script type="text/javascript">var IS_HOMEPAGE = true;</script> 
                 <script type="text/javascript" src="media/cms/homepage/scripts/combined-top.min.js"></script> 
                 <script type="text/javascript" src="olam/js/dotComPrefetch.js.html"></script> 
+	                <script> 
+	                //<![CDATA[ 
+	                    //***Start Mobile Detection Steps*** 
+							//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+							function getURLParam(pName) 
+							{ 
+								var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+							if (pName) 
+							{ 
+							if (queryString.indexOf(pName) != -1) 
+							{ 
+							startPos = queryString.indexOf(pName) + pName.length + 1; 
+							stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+							pValue = queryString.substring(startPos, stopPos); 
+							pValue = unescape(pValue); 
+							} 
+							} 
+							return pValue; 
+							} 
+							var mobile = getURLParam('mobile'); 
+							var mobileView; 
+							var fullSiteView; 
+							var mRedirectURL = 'http://m.att.com'; 
+							//Check URL for mobile=false. Set FulSiteView=True if found. 
+								if (mobile =="false") 
+								{ 
+									sessionStorage.setItem('storageFullSiteView', "True");	 
+								} 
+								else 
+								{ 
+									//Check for HTML5 storage support 
+									if(typeof(Storage)!=="") 
+									{ 
+									// Yes! localStorage and sessionStorage support! 
+									// Test for FullSiteView=True 
+										fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+										if (fullSiteView == "True") 
+										{ 
+										//do nothing 
+										} 
+									else 
+										{ 
+										DetectMobile(); //start mobile detection 
+										} 
+									} 
+									else 
+									{ 
+									// Sorry! No web storage support.. 
+										DetectMobile(); 
+									} 
+								} 
+								//***Start Mobile Detection Steps*** 
+								//2. Detect Mobile 
+								function DetectMobile() 
+								{ 
+									//Get user-agent 
+									var uagent = navigator.userAgent.toLowerCase(); 
+									//Check if device is mobile 
+									if (uagent.search("mobile") > -1) 
+									{    
+										// Verify device is not ipad or tablet 
+											//iPad Check 
+											if (uagent.search("ipad") > -1) 
+											{ 
+												return //Fullsite View 
+											} 
+											// Tablet Check 
+											if (uagent.search("tablet") > -1) 
+											{ 
+												return // Fullsite View 
+											} 
+											//Galaxy Tab 7 inch Check 
+											else if (uagent.search("gt-p10") > -1) 
+											{ 
+												return // FullSite View 
+											} 
+											else 
+											// Device is not a tablet,ridirect to m.att.com 
+												window.location =  mRedirectURL; 
+									} 
+								} 
+							//***End Mobile Detection Steps***        
+	                //]]> 
+	                </script> 
         <script type="text/javascript"> 
             jQuery.noConflict(); 
         </script> 
@@ -344,7 +428,7 @@
 																		<ul class="trayNoBullet"> 
 																				<li><a href="../www.att.net/s/s.dll%3Fep=16323&amp;ch=at%252Ftb%252Fsec.html" name="Shop_Internet_Internet Security Suite" >Internet Security Suite</a></li> 
 																				<li><a href="gen/general%3Fpid=5949.html" name="Shop_Internet_AT&amp;T Wi-Fi" >AT&amp;T Wi-Fi</a></li> 
-																				<li><a href="../buy-connectech.att.com/ctcomm/home/index.jsp.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li> 
+																				<li><a href="../buy-connectech.att.com/ctcomm/catalog/index.jsp%3FcatId=cat30030.html" name="Shop_Internet_AT&amp;T Support Plus" >AT&amp;T Support Plus</a></li> 
 																		</ul> 
 																	</div> 
 																</div> 
@@ -415,16 +499,16 @@
 								<li class=""><a href="esupport/index.jsp.html" id="primary_Support" name="Support" class="primaryMenuItem">Support<span></span></a> 
 								</li> 
 							<li id="primary_Search"> 
-										<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" > 
-											<fieldset> 
-												<input type="hidden" name="App_ID" value="HOME"/> 
-												<input type="hidden" name="autoSuggest" value=""/> 
-												<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/> 
-												<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" /> 
-												<button type="button">Submit</button> 
-												<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div> 
-											</fieldset> 
-										</form> 
+								<form method="get" id="searchForm" name="searchForm" action="http://www.att.com/global-search/search.jsp" > 
+									<fieldset> 
+										<input type="hidden" name="App_ID" value="HOME"/> 
+										<input type="hidden" name="autoSuggest" value=""/> 
+										<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE"/> 
+										<input type="text" value="Search" name="q" id="search" class="ask_a_question_box" title="Search" /> 
+										<button type="button">Submit</button> 
+										<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div> 
+									</fieldset> 
+								</form> 
 							</li> 
 						</ul> 
 					</div> 
@@ -463,8 +547,8 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 	<div id="marquee"> 
 		<div class="homepageMarqueePromo base"> 
 <div class="marquee parbase teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee/ug-dma-s-22-state","name":"ug-dma-s-22-state","campainName":"admanager-marquee","id":"admanager-marquee_ug-dma-s-22-state","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee/unknown-and-oor-prospect","name":"unknown-and-oor-prospect","campainName":"admanager-marquee","id":"admanager-marquee_unknown-and-oor-prospect","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee/ug-dma-s-22-state1","name":"ug-dma-s-22-state1","campainName":"admanager-marquee","id":"admanager-marquee_ug-dma-s-22-state1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/prospect-out-of-region"],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
-         <div id="_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee" class="campaign campaign-admanager-marquee"> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/ug-dma-s-22-state1","name":"ug-dma-s-22-state1","campainName":"admanager-marquee1","id":"admanager-marquee1_ug-dma-s-22-state1","segments":["/shopcms/shopetc/segmentation/UF/segmnts/dma807-sanfran-oakland-sanjose"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/ug-dma-s-22-state","name":"ug-dma-s-22-state","campainName":"admanager-marquee1","id":"admanager-marquee1_ug-dma-s-22-state","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/unknown-and-oor-prospect","name":"unknown-and-oor-prospect","campainName":"admanager-marquee1","id":"admanager-marquee1_unknown-and-oor-prospect","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
+         <div id="_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee" class="campaign campaign-admanager-marquee1"> 
          </div><div class="clear"></div> 
 </div> 
 </div> 
@@ -523,7 +607,7 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 	<p class="center capsLock">CAPS LOCK IS ON!</p> 
 	<div class="clear"></div> 
 	<div class="floatl"> 
-		<input type ="checkbox" id="remMe" name="rememberme" value="N" />   
+		<input type ="checkbox" id="remMe" name="remMe" value="N" />   
 		<label for="remMe">Remember me</label><br/> 
 	</div> 
 	<input name="actionEvent" value="dotComLogin" type="hidden"> 
@@ -557,50 +641,50 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 	<div id="serviceItemsContainer"> 
 		<div class="serviceItemContainer"> 
 			<div class="serviceItem"><div class="parbase serviceitem serviceItem1"> 
-<a href="shop/wireless.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem1;2012073"> 
+<a href="shop/wireless.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem1;2012214"> 
 	<img src="shopcms/media/att/2011/shop/landing/att-services-wireless.png" alt="Wireless"/><br> 
 </a> 
-<a href="shop/wireless.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem1;2012073">Wireless</a> 
+<a href="shop/wireless.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem1;2012214">Wireless</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
 			<div class="serviceItem"><div class="parbase serviceitem serviceItem2"> 
-<a href="shop/tv/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem2;2012073"> 
+<a href="shop/tv/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem2;2012214"> 
 	<img src="shopcms/media/att/2011/shop/landing/att-services-television.png" alt="Digital TV"/><br> 
 </a> 
-<a href="shop/tv/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem2;2012073">Digital TV</a> 
+<a href="shop/tv/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem2;2012214">Digital TV</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
 			<div class="serviceItem"><div class="parbase serviceitem serviceItem3"> 
-<a href="shop/internet/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem3;2012073"> 
+<a href="shop/internet/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem3;2012214"> 
 	<img src="shopcms/media/att/2011/shop/landing/att-services-internet.png" alt="Internet"/><br> 
 </a> 
-<a href="shop/internet/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem3;2012073">Internet</a> 
+<a href="shop/internet/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem3;2012214">Internet</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
 			<div class="serviceItem"><div class="parbase serviceItem4 serviceitem"> 
-<a href="shop/home-phone/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem4;2012073"> 
+<a href="shop/home-phone/index.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem4;2012214"> 
 	<img src="shopcms/media/att/2011/shop/landing/att-services-homephone.png" alt="Home Phone"/><br> 
 </a> 
-<a href="shop/home-phone/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem4;2012073">Home Phone</a> 
+<a href="shop/home-phone/index.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem4;2012214">Home Phone</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
 			<div class="serviceItem"><div class="parbase serviceitem serviceItem5"> 
-<a href="shop/bundles.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem5;2012097"> 
-	<img src="shopcms/media/att/2012/shop/landing/shop_att-services-bundles.png" alt="Bundles"/><br> 
+<a href="shop/bundles.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem5;2012214"> 
+	<img src="shopcms/media/att/2011/shop/landing/att-services-bundles.png" alt="Bundles"/><br> 
 </a> 
-<a href="shop/bundles.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem5;2012097">Bundles</a> 
+<a href="shop/bundles.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem5;2012214">Bundles</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
 			<div class="serviceItem"><div class="parbase serviceitem serviceItem6"> 
-<a href="shop/u-verse.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem6;2012075"> 
-	<img src="shopcms/media/att/2012/shop/landing/shop_att-services-uverse.png" alt="U-verse"/><br> 
+<a href="shop/u-verse.html" class="servicesIcon" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem6;2012214"> 
+	<img src="shopcms/media/att/2011/shop/landing/att-services-uverse.png" alt="U-verse"/><br> 
 </a> 
-<a href="shop/u-verse.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem6;2012075">U-verse</a> 
+<a href="shop/u-verse.html" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray/serviceItem6;2012214">U-verse</a> 
 <div class="clear"></div> 
 </div> 
 </div> 
@@ -608,7 +692,7 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 		<div class="serviceItemsTile" style="float:left"><img class="vertSep" src="shopcms/media/att/2011/shop/common/bkd_div_vertical_197.gif" alt=""/></div> 
 		<div class="rightSide"><h4>My Account</h4> 
 			<ul> 
-                      <li><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=ViewBillDetails&gnLinkId=t1002" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012107">Log in to view/pay bill</a></li><li><a href="https://www.att.com/eos/unauth/eosLogin" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012107">Check an order status</a></li><li><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=WirelessProductLandingPage" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012107">Check Wireless usage</a></li> 
+                      <li><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=ViewBillDetails&gnLinkId=t1002" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012263">Log in to view/pay bill</a></li><li><a href="https://www.att.com/eos/unauth/eosLogin" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012263">Check an order status</a></li><li><a href="https://www.att.com/olam/passthroughAction.myworld?actionType=WirelessProductLandingPage" target="_self" data-cqpath="/content/att/homepage/en/index/jcr:content/producttray;2012263">Check Wireless usage</a></li> 
 			</ul> 
 		</div> 
 	</div> 
@@ -621,41 +705,37 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/features/campaign/WBDefault","name":"WBDefault","campainName":"campaign","id":"campaign_WBDefault","segments":["/shopcms/shopetc/segmentation/UF/segmnts/justordered"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/features/campaign/Uversegreentiles","name":"Uversegreentiles","campainName":"campaign","id":"campaign_Uversegreentiles","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas","/shopcms/shopetc/segmentation/UF/segmnts/uverse-green-22state"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/features/campaign/Default","name":"Default","campainName":"campaign","id":"campaign_Default","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageftrs_featureteaser" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/home/features/campaign/Default/jcr:content;2012227" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/home/features/campaign/Default/jcr:content;2012268" style="visibility:hidden;"> 
 	<div class="parbase LoBTabs"> 
         <div class="parsys LobTab1"><div class="homepagethreeup parbase section"> 
  <!-- BEGIN: Home Page Three up  --> 
 	<div id="mainSlot1" style="float:left;width:auto;"> 
         <div class="thirdwidth1 parbase onethird"> 
 <div class="featuredItemTile" style="height:auto;"> 
-    <img src="shopcms/media/att/2012/tiles/w324h170/homepage_gogreenandsave_tile_Thrill_Freestyle.png" alt="Go Green and Save"/> 
+    <img src="shopcms/media/att/2012/tiles/w324h170/Att-Adv-324x170.png" alt="AT&T The nation's largest 4G network"/> 
    <div class="textSection"> 
         <div class="text parbase titleplustext"> 
-    <h4 >Go Green and Save</h4>  
-    <p><p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;">2-yr voice agreement with qualifying monthly data plan required.<br> 
-<br> 
-</p> 
-<p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;"></p> 
-<p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;"></p> 
-<p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;"></p> 
-<p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;"></p> 
-<p style="font-family: tahoma,arial,helvetica,sans-serif; font-size: 12px;"></p> 
+    <p><p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">The nation's largest 4G network.</p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">Talk and surf at the same time.</p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12.222222328186035px;">&nbsp;Fairest and Most Flexible plans.</p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
+<p style="font-family: tahoma, arial, helvetica, sans-serif; font-size: 12px;"></p> 
 </p> 
 <div class="clear"></div>                  
 </div> 
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/refurbishedphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth1/onethird/homepagecta;2012226"> 
-<img src="shopcms/media/att/2012/shop/wireless/promotions/common/btn-shop-now-blu29.jpg" alt="Shop Now"/> 
+		<a class="cta" href="http://www.att.com/network/?" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth1/onethird/homepagecta;2012264"> 
+<img src="shopcms/media/att/2012/shop/wireless/promotions/common/btn-learn-more-blu29.jpg" alt="Learn more"/> 
 </a> 
 <div class="clear"></div> 
 </div> 
 <div class="legal text parbase section"> 
-	<div class="legal"> 
-	   2-yr voice agreement with qualifying <br> 
-monthly data plan required.<br> 
-	</div> 
 <div class="clear"></div></div> 
 </div> 
    </div> 
@@ -666,13 +746,11 @@ monthly data plan required.<br>
     <div id="mainSlot2" style="float:left;width:auto;"> 
         <div class="thirdwidth2 parbase onethird"> 
 <div class="featuredItemTile" style="height:auto;"> 
-    <img src="shopcms/media/att/2012/tiles/w324h170/clo-ItCanWait-3Up.png" alt="It Can Wait"/> 
+    <img src="shopcms/media/att/2012/tiles/w324h314/clo-HTC1X-hm-tile.png" alt="HTC One™ X "/> 
    <div class="textSection"> 
         <div class="text parbase titleplustext"> 
-    <h4 >It Can Wait</h4>  
-    <p><p>No text is worth the risk.&nbsp;<br> 
-</p> 
-<p>&nbsp;<br> 
+    <h4 >NEVER MISS A MOMENT</h4>  
+    <p><p>Take high-resolution photos right from video with the HTC One™ X only $99.99.<br> 
 </p> 
 <p></p> 
 <p></p> 
@@ -686,14 +764,14 @@ monthly data plan required.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="http://www.itcanwait.com/" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2012227"> 
+		<a class="cta" href="http://www.att.com/shop/wireless/devices/htc/one-x-white.html" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth2/onethird/homepagecta;2012268"> 
 <img src="shopcms/media/att/2012/shop/wireless/promotions/common/btn-learn-more-blu29.jpg" alt="Learn more"/> 
 </a> 
 <div class="clear"></div> 
 </div> 
 <div class="legal text parbase section"> 
 	<div class="legal"> 
-	   <p><br> 
+	   <p>2-yr voice agreement with qualifying monthly data plan required.<br> 
 </p> 
 <p><br> 
 </p> 
@@ -708,11 +786,11 @@ monthly data plan required.<br>
     <div id="mainSlot3" style="float:left;width:auto;"> 
         <div class="parbase thirdwidth3 onethird"> 
 <div class="featuredItemTile" style="height:auto;"> 
-    <img src="shopcms/media/att/2012/tiles/w324h170/clo-ATT-Fusion-3Up.png" alt="Prepaid GoPhone"/> 
+    <img src="shopcms/media/att/2012/tiles/w324h170/clo-MobileShare-324x170.png" alt="Mobile Share"/> 
    <div class="textSection"> 
         <div class="text parbase titleplustext"> 
-    <h4 >Prepaid GoPhone&reg;</h4>  
-    <p><p>Unlimited nationwide talk, text, and data now for just $50/mo.<br> 
+    <h4 >AT&T MOBILE SHARE</h4>  
+    <p><p>Share data, plus get unlimited Talk &amp; Text for your phones on one plan.<br> 
 <br> 
 </p> 
 <p></p> 
@@ -722,14 +800,14 @@ monthly data plan required.<br>
    </div> 
    <div class="cta"> 
        <div class="parsys onethird"><div class="homepagecta cta section"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/prepaidphones.html" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth3/onethird/homepagecta;2012226"> 
-<img src="shopcms/media/att/2012/shop/wireless/promotions/common/btn-shop-now-blu29.jpg" alt="Learn More"/> 
+		<a class="cta" href="https://www.att.com/shop/wireless/data-plans.html#tab2" target="_self" data-cqpath="/content/campaigns/att/en/home/features/campaign/Default/jcr:content/LoBTabs/LobTab1/homepagethreeup/thirdwidth3/onethird/homepagecta;2012263"> 
+<img src="shopcms/media/att/2012/shop/wireless/promotions/common/btn-learn-more-blu29.jpg" alt="Learn More"/> 
 </a> 
 <div class="clear"></div> 
 </div> 
 <div class="legal text parbase section"> 
 	<div class="legal"> 
-	   Eligible phone req'd.<br> 
+	   <br> 
 <br> 
 	</div> 
 <div class="clear"></div></div> 
@@ -810,7 +888,7 @@ monthly data plan required.<br>
     <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/link-farm/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_lnkfrm", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_lnkfrm" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
-<div data-teaserId="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content;2012215" style="visibility:hidden;"> 
+<div data-teaserId="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content;2012264" style="visibility:hidden;"> 
 	<div class="linkfarmteaser parbase LoBTabs"> 
 		    <div class="parsys lnkfrmteaser"><div class="linkfarm4col section"> 
 						<div id="linkFarm" class="fullWidth">  
@@ -849,12 +927,13 @@ monthly data plan required.<br>
 												<ul>  
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/0" href="http://www.att.com/shop/wireless/plans/learningcenter/plans_learningcenter.html">Wireless Plans</a></li> 
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/1" href="http://www.wireless.att.com/cell-phone-service/cell-phones/">Cell Phones & Mobile Devices</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/2" href="shop/u-verse.html">U-verse</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/3" href="http://www.att.com/gen/general?pid=13712">Home Phone Plans</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/4" href="http://www.att.com/dsl/start/index.jsp">Internet/DSL Plans</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/5" href="http://www.att.com/shop/bundles">Bundles</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/6" href="http://www.att.com/shop/tv">Digital TV</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/7" href="http://telephones.att.com/att/">Home Phone Equipment</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/2" href="http://att.tradein-program.com/">Trade-In Program</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/3" href="shop/u-verse.html">U-verse</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/4" href="http://www.att.com/gen/general?pid=13712">Home Phone Plans</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/5" href="http://www.att.com/dsl/start/index.jsp">Internet/DSL Plans</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/6" href="http://www.att.com/shop/bundles">Bundles</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/7" href="http://www.att.com/shop/tv">Digital TV</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist2/8" href="http://telephones.att.com/att/">Home Phone Equipment</a></li> 
 												</ul>  
 												</div>  
 											</div> 
@@ -891,7 +970,7 @@ monthly data plan required.<br>
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/4" href="http://www.att.com/gen/press-room?wtSlotClick=1-00760J-0-4&pid=2943&RIAConsoleLogLevel=4000">Wireless Network News</a></li> 
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/5" href="http://www.att.com/gen/landing-pages?pid=3309&RIAConsoleLogLevel=4000">Media Newsroom</a></li> 
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/6" href="http://www.att.com/gen/landing-pages?wtSlotClick=1-00760J-0-6&pid=5718&RIAConsoleLogLevel=4000">Investor Relations</a></li> 
-													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/7" href="https://www.accountonline.com/cards/svc/OutsideView.do?forward=Index&siteId=AC&langId=EN">AT&T Universal Card</a></li> 
+													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/7" href="http://citi-preview.bridgetrack.com/usc/ATT/rewards/April2012/enews/interstitial/default.htm ">AT&T Universal Card</a></li> 
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/8" href="http://developer.att.com/developer/tier1page.jsp?passedItemId=100006&_requestid=42836#http://developer.att.com/developer/tier1page.jsp?passedItemId=100006&_requestid=42836">Developer Program</a></li> 
 													<li><a data-cqpath="/content/campaigns/att/en/home/link-farm/campaign/default/jcr:content/linkfarmteaser/lnkfrmteaser/linkfarm4col/linklist4/9" href="http://www.att.com/gen/press-room?pid=14209">AT&T Innovation</a></li> 
 												</ul>  
@@ -1023,8 +1102,7 @@ monthly data plan required.<br>
 			_gaq.push(['_trackPageview']); 
 			(function() { var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); })(); 
 		</script> 
-        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 72240986602187654337575497946730586533 --> 
+		 <!--X-Renderer: 140464135215828640442344154341058538575 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1036,7 +1114,7 @@ ATT.globalVars.custType = "";
 ATT.globalVars.ban = ""; 
 ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = ""; 
+ATT.globalVars.ckavailUserZip = "60004"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -1047,7 +1125,7 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="60004"; 
 	} 
 	return wtzip; 
 }; 
@@ -1129,7 +1207,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "ARLINGTON HEIGHTS"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -1138,7 +1216,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "IL"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1213,7 +1291,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","FbqTQnKHf9vZRHZpnZnxJBxB!361696121!1345227399077"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","LgkvQlpHrqyFCNcF9x2FNYB2!-1657520870!1348853447985"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1239,6 +1317,14 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
 	<!-- atlastag --> 
 	<div class="atlastag"> 
 </div> 
+	<script type="text/javascript"> 
+	jQuery(document).ready(function() { 
+	var r = navigator.userAgent.toLowerCase(); 
+	if(r.search("mobile")> -1){ 
+	jQuery("#userid, .userInputNote").unbind('mouseover'); 
+	} 
+	}); 
+	</script> 
 </body> 
 	<script type="text/javascript">  
 		jQuery(window).load(function(){  

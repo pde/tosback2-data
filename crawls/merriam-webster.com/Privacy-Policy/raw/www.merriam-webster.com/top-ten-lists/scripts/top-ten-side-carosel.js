@@ -3,4 +3,4 @@ document.write('<div id="top-ten-side-carosel" class="side-carosel">');
 document.write('</div>');
 
 // Load the data.
-$.getJSON('/top-ten-lists/carosel.php?max=2&offset=0&id=top-ten-side-carosel&pages=4&selected=top-10-unusual-phobias-vol-2,top-10-favorite-british-words-vol-1', onCaroselLoaded);
+$.getJSON('/top-ten-lists/carosel.php?max=2&offset=0&id=top-ten-side-carosel&pages=4&selected=top-10-words-from-trademarks-vol-2,top-10-words-for-intriguing-concepts', onCaroselLoaded);

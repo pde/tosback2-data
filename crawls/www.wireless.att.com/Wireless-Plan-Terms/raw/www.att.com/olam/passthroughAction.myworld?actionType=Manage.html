@@ -296,7 +296,7 @@ function openPopUpManageFeatures(){
 
 
 
-	<body id='main' onload="javascript:triggerSessionTimoutTimer()" class='extend3o  '>
+	<body id='main' onload="javascript:triggerSessionTimoutTimer()" class='extend3o dashboardModal '>
 
 <!--[if lte IE 8]><div id="ie"><![endif]-->
 <!--[if lte IE 6]><div id="ie6"><![endif]-->
@@ -406,7 +406,7 @@ return true;
 
 
 
-	<script type="text/javascript" src="../scripts/foresee_global/foresee-trigger-global.js"></script>
+	<script type="text/javascript" src="https://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script>
 	
 	<script type="text/javascript">ForeSee.CPPS.fsr$set('customer_type','current')</script>
 	
@@ -462,19 +462,22 @@ return true;
 					<li id="primary_Search">
 					
 						
-						
-						
-							<form style="display: inline;" name="frmSearchHeader" action="https://www.wireless.att.com/global-search/search.jsp"
-								method="get" onSubmit="return validateSearchHeader()" style="display:inline;">
-								<input title="Search"  type="text" 
-								name="q" id="q" value="Search" 
-								onfocus="if (this.value==DefaultValue) this.value='';" onblur="if (this.value=='') this.value=DefaultValue;" /> <input
-								type="hidden" name="searchEngine" id="searchEngine" value="g" /> 
-								<button type="submit"></button>
+							
+							
 								
+							
+						
+						<form name="searchForm" id="searchForm" style="display: inline;" name="frmSearchHeader" action="https://www.att.com/global-search/search.jsp"
+								method="get" onSubmit="return validateSearchHeader()" style="display:inline;">
+								<input type="hidden" value="FALSE" name="autoSuggest">
+								<input type="hidden" value="FALSE" id="tabPressed" name="tabPressed">
+								<input title="Search"  type="text" 
+								name="q" id="search" value="Search" 
+								onfocus="if (this.value==DefaultValue) this.value='';" onblur="if (this.value=='') this.value=DefaultValue;" />
+								<button type="submit"></button>
+								<div style="display: none;" class="autoSuggest" id="autoSuggestBox"></div>
 							</form>
 						
-					
 					
 				</li>
 			</ul>
@@ -506,7 +509,6 @@ var globalNavDefaultSelections = {"primary" : "020000","secondary" : "020900"}
 		
 		<!--/GLOBAL NAV-->	
 		
-
 		<!-- WRAPPER -->
 		<div id='wrapper' >
 		
@@ -666,10 +668,26 @@ jQuery(document).ready(function() {
  
 <div class="full noBG" style="margin-bottom:0px" >
 	<div id="errorDiv">
+
+	  <div class="errorMsg box" id="errorJavascriptDisabled">
+	  		<P>Javascript is disabled in your browser.  Please enable Javascript then attempt to log in again. <br>(LU0611)<!--UserDisplayError:LU0611--></P>
+	  </div>
 	
 	  <div class="errorMsg box" style="display:none" id="errorCookieDisabled">
-	  		<P>LU0610: Cookie is not enabled in the browser</P>
+	  		<P>Cookie is not enabled in the browser<!--UserDisplayError:LU0610--></P>
 	  </div>
+	  
+	  <!-- Supress Of above Error Due to TeaLeaf -->
+	  <script type="text/javascript">
+	  	jQuery("#errorJavascriptDisabled").html("");
+	  	jQuery("#errorJavascriptDisabled").hide();
+	  	if(navigator.cookieEnabled)
+	  	{
+	  		jQuery("#errorCookieDisabled").html("");
+	  	}
+	  	
+	  </script>
+	  
 		
 		
 		
@@ -772,6 +790,10 @@ jQuery(document).ready(function() {
 <script type="text/javascript" src="js/myATTLoginValidation.js.html"></script>
 <script type="text/javascript" src="js/deleteCookies.js.html"></script>
 <script type="text/javascript" src="js/sniffer.js.html"></script>
+
+
+<script type="text/javascript" src="js/Prefetch.js.html"></script>
+
 <script language="javascript">
     var urlAddress = window.location;
     var pageName = "MyAccount - Cingular Wireless";
@@ -787,7 +809,7 @@ jQuery(document).ready(function() {
 			eraseUnwantedCookieByRegExp();
 			jQuery("#cancelURL").val(urlAddress);
 			setRememberMeVal();
-			jQuery("#login").attr("action","https://myattdx11.att.com/commonLogin/igate_wam/multiLogin.do");
+			jQuery("#login").attr("action","https://myattwx05.att.com/commonLogin/igate_wam/multiLogin.do");
 			clearErrorDivs();
 		    openPopup();
 			return true;
@@ -810,7 +832,7 @@ jQuery(document).ready(function() {
 	
 	<input type="hidden" id="userIDDefaultVal" value='User ID'/>	
 	<input type="hidden" id="passwordDefaultVal" value="Password"/>
-	<input type="hidden" id="browserVersionError" value="<p>The browser that you are using is not supported by AT&T's website. You may continue to explore the site, but many features and layout elements may not work or display properly.<br /><br />Currently supported browsers:<ul><li>Firefox v4.0 and above</li><li>Safari v4.0 and above</li><li>Chrome v7.0 and above</li><li>Internet Explorer v7.0 and above</li></ul></p>"/> 
+	<input type="hidden" id="browserVersionError" value="<p><strong>Outdated browser</strong><br /><br />The browser you are using doesn't fully support the AT&T website. You can continue to view the site but some features and images may not function properly.<br /><br />Please ensure your browser version is supported to get full functionality of the AT&T website.<br /><br /><a href='http://www.att.com/esupport/article.jsp?sid=KB402059'> Get more help with browser updates</a><br /><br />Currently supported browsers:<ul><li> Safari v4.0 and up</li><li> Firefox v4.0 and up</li><li> Chrome v7.0 and up</li><li> Internet Explorer V7.0 and up</li></ul></p>"/> 
 	<input type="hidden" id="blankUserID" value="<b>Enter your User ID</b>"/>
 	<input type="hidden" id="invalidEmailID" value='<b>Your e-mail address must be in a valid format.</b> '/>
 	<input type="hidden" id="blankPassword" value='<b>Enter your password</b>'/>
@@ -818,7 +840,7 @@ jQuery(document).ready(function() {
 	<input type="hidden" id="passwordMoreChars" value='<b>Your password must be a minimum of 4 characters.</b>'/>
 	<input type="hidden" id="cookiesToBeErasedForAllBrowser" value='DL3K,svariants,stickySite,__utma,__utmb,__utmc,__utmz,__unam,bn_ec,DLOM-tGuard,GNSESS,TLTHID,TLTSID,TLTUID,SessionPersistence,meteor_referrer_cache,uverse_webtrend,AgentLaunchIndex,bn_u,NCES_attPersistentPersonalization,NCES_attPersistantLocalization'/>	
 	<input type="hidden" id="cookiesToBeErasedForSpecificBrowser" value=''/>
-
+	<input type="hidden" id="isMyATTLoginPage" value="Y"/>
 <div class="box">
 	<div id="padRt0">
 		<div id="note" style="display: none"> 
@@ -829,9 +851,9 @@ jQuery(document).ready(function() {
 		<div class="w320 row-seamless noRtMar">
 			<div class="borRt Padbot0">
 				
-				<p class="loginRibbon"><strong>NEW!</strong> No need to select an account type. Just enter your User ID and password to access your AT&T account.</p>
+				<p class="MarTop20">Enter your login information to manage your AT&T products and services.</p>
 			                        
-					<form id="login" name="loginActionForm" class="styled_forms" action="passthroughAction.myworld%3FactionType=Manage.html#" method="post" onSubmit="return submitLoginPage(this);">
+					<form id="login" name="loginActionForm" class="Login_styled_forms" action="passthroughAction.myworld%3FactionType=Manage.html#" method="post" onSubmit="return submitLoginPage(this);">
 							
 						<input type = "hidden" name="reportActionEvent" value="A_LGN_LOGIN_SUB"/>
 						<input type = "hidden" name="rootPath" value="/olam/English"/>
@@ -848,7 +870,7 @@ jQuery(document).ready(function() {
 						    <input type= "hidden" name="pass" value=""/>	  
 						    
 						    <input type= "hidden" name="vhname" value="www.att.com" />
-						    <input type= "hidden" name="urlParameters" value="actionType=Manage&reportActionEvent=A_LGN_LOGIN_SUB"/>
+						    <input type= "hidden" name="urlParameters" value="actionType=Manage&reportActionEvent=A_LGN_LOGIN_SUB&loginSource=olam"/>
 						     <input type= "hidden" id="cancelURL" name="cancelURL" value=""/>  
 					                     
 				        
@@ -864,7 +886,6 @@ jQuery(document).ready(function() {
 						<input type="hidden" name="ck_userType" value="" />
 						<input type="hidden" name="wireLineOn" value="true"/>
 						<input type="hidden" name="localeInRequest" value=""/>
-						<input type="hidden" name="combinedBillAccountType" value=""/>	
 						
 						 	
 						
@@ -873,17 +894,24 @@ jQuery(document).ready(function() {
 						</div>
 												
 						
-						<div id="userNameDiv" class="w211">
+						<div id="userNameDiv"  style="position:relative" class="w211 rel">
+						
+						<span class="textInput-wrapper">
+							<span>
 						
 								
 										
 										<input type ="hidden" name="style" value="account" />
 			                                  	<input type="text" name="userid" autocomplete=off size="39" class="inputClass"  
-			                                  			value='User ID'
-			                              		    	maxlength="50" title="User ID" id="userID" onkeyup="autotab('loginActionForm',this,50);" onblur="userIDOnBlur();" onfocus="userIDOnFoucs();"/>
+			                              		    	maxlength="50" title="User ID" id="userID" onkeyup="autotab('loginActionForm',this,50);" onblur="UserDivShow();" onfocus="UserBoxFocusImgChange();"/>
 										
 									
 									
+							 
+						 	<div class="UserValueDiv" onclick="UserDivHide();" >User ID</div>
+							</span>
+						</span>
+							 
 							 	
 	                        
 	                        	<a class="tooltips helpImg" href="passthroughAction.myworld%3FactionType=Manage.html#tip101" title="" tabindex="-1">
@@ -895,6 +923,29 @@ jQuery(document).ready(function() {
 	                        
 	                        
 						</div>
+						<script type="text/javascript">
+							var bubbleTop = 0;
+							var preFooterTop = 0;
+							var topDiff = 0;
+						jQuery(".UserValueDiv").mouseenter(function() 
+						{
+							jQuery("#loginBubbleUnit").show();
+							bubbleTop = (jQuery("#userNameDiv").offset().top);
+							preFooterTop = (jQuery("#preFooter").offset().top);
+							topDiff = bubbleTop - preFooterTop;	
+								
+							if (jQuery.browser.msie && jQuery.browser.version < 9) {	
+								topDiff = topDiff + 3;
+							}
+							/********/
+							topDiff=topDiff-67;
+							/********/                                
+							jQuery("#loginBubbleUnit").css("top",topDiff);
+							
+							}).mouseleave(function() {
+							jQuery("#loginBubbleUnit").hide();
+							});
+						</script>						
 						
 						
 						
@@ -902,24 +953,30 @@ jQuery(document).ready(function() {
 							<p id="passwordErrMsg" class="alertNew WidthLoginValid_291 MarBot0"><b>Please enter your password.</b></p>
 						</div>
 						
-						<div class="w2ll" id="pwdTextDiv" style="display:block;">
-							<input type="text" class="inputClass" size="39"  title="Password"
-								value='Password'
-									onfocus="showPasswordField();" id="passwordTextField" />
-
-                       		
-
-						</div>
+						<!--  
+							<div class="w2ll" id="pwdTextDiv" style="display:block;">
+								<input type="text" class="inputClass" size="39"  title="Password"
+									value='Password'
+										onfocus="showPasswordField();" id="passwordTextField" />
+	
+	                       		
+	
+							</div>
+						-->
 							
-						<div class="w211" id="pwdDiv" style="display:none;">
+						<div class="w211 rel" style="position:relative" id="pwdDiv" style="display:block;">
+							<span class="textInput-wrapper">
+								<span>
 														
 		                                 <input onkeypress="validateCapsLock(event);" id="password" 
 		                                 		class="inputClass" type="password" title="Password" name="password" size="39" value=""
-		                                 		onblur="showPasswordTextDiv();"
-		                                 />
+		                                 		onblur="PasswordDivShow();" onfocus="PasswordBoxFocusImgChange();" />
 		                       		
 	                     
                        		
+                          </span>
+							</span>
+							<div  class="PasswordValueDiv" onclick="PasswordDivHide();">Password</div>
 						</div>
 						
 						 <div id="capsLockDiv" style="display:none;">										
@@ -931,11 +988,25 @@ jQuery(document).ready(function() {
 						</div>
 						
 						<div id="alignLogIn" class="w166 login">
-							<input type="checkbox"  id="rememberMe"/>
+							<div class="checker " id="uniform-rememberMe">
+							<span class="">
+								<input type="checkbox"  id="rememberMe"/>
+							</span></div>
 							<label for="remember" class="text">
 								Remember me
 							</label>
 						</div>
+						<script>
+							jQuery('#rememberMe').click(function(){
+							if(jQuery(this).parent('span').hasClass('checked')){
+							jQuery(this).parent('span').removeClass('checked');
+							}
+							else{
+							jQuery(this).parent('span').addClass('checked');
+							}
+							});
+						</script>
+						
 
 						<div>
 							<input 	type="image" class="MarTop10" src="English/brand30/bt/btnLogIn.png.html" 
@@ -954,7 +1025,7 @@ jQuery(document).ready(function() {
 									<p><a href="https://www.att.com/olam/enterUserIdSlidFpwd.myworld">Forgot your password?</a></p>
 								</dd>
 								<dd>
-									<a class="openModal" href="https://www.att.com/olam/slidRegistrationAction.olamexecute" title="">
+									<a class="openModal" href="slidRegistrationAction.olamexecute.html" title="">
 											Register</a>
 								</dd>
 							</dl>
@@ -970,7 +1041,7 @@ jQuery(document).ready(function() {
 					<h2 class="botMar15">Online Account Management made easy</h2>
 					<p  class="botMar0">Quickly view and manage all of your AT&T accounts with online access.<br /><br />Don't have a login? Register today!</p>
 					<p class="bt_left MarTop20">
-						<a class="arrowRt" href="https://www.att.com/olam/slidRegistrationAction.olamexecute" >
+						<a class="arrowRt" href="slidRegistrationAction.olamexecute.html" >
 							Register now
 						</a>
 					</p>
@@ -1018,8 +1089,9 @@ jQuery(document).ready(function() {
 
 <script type="text/javascript" src="js/myatt-gvp.js.html"></script>
 <script type="text/javascript" src="../scripts/jquery.jcarousel.min.js"></script>
-<script type="text/javascript" src="https://www.att.com/media/gvp/gvpUtils.js"></script>
-
+<!--  
+<script type="text/javascript" src="//www.att.com/media/gvp/gvpUtils.js"></script>
+-->
 <script type="text/javascript">
 	jQuery(document).ready(function() 
 	{
@@ -1062,8 +1134,6 @@ jQuery(document).ready(function() {
 
 				
 
-
-<script>document.write('<s'+'cript language="JavaScript" src="//view.atdmt.com/jaction/cntcin_OLAMLoginPageUAT_1"></s'+'cript>')</script><noscript><iframe src="../../view.atdmt.com/iaction/cntcin_OLAMLoginPageUAT_1.html" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript>
 								
 								
 								
@@ -1245,21 +1315,7 @@ jQuery(document).ready(function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- RHC Flag = true -->
 
 
 
@@ -1270,29 +1326,23 @@ jQuery(document).ready(function() {
 
  
 
-
-
-
-
-
-
-
-
-
-      
-			<!-- BCC Page Name Login -->
-       
- 
-
-
-
-<!-- RHC AccountLogin/RightHandCallouts -->
 	
-   
-   
-   
-   	
 
+
+
+	
+			
+
+	
+	
+	<!-- RHC AccountLogin/RightHandCallouts -->
+		
+			
+   			
+	   		
+   			
+   				
+		
 
 
 
@@ -1319,6 +1369,7 @@ jQuery(document).ready(function() {
    
   
   
+
 
 
 <!-- Callout AccountLogin/RightHandCallouts -->
@@ -1378,8 +1429,8 @@ jQuery(document).ready(function() {
 
 
 
-
-
+		
+			
 
 
 
@@ -1505,8 +1556,8 @@ Enter the new ID and password you received in your recent order confirmation.
 	
 	<script type="Text/javascript">
 	
-		lpMTagConfig.vars.push(['session','sessionId','tRxYQnNBbrQJ25DVpRph0fYzJ22ypsh26hTcJCH2czn7XNcnWH7d']);
-		lpMTagConfig.vars.push(['session','stack','p2eam1m71']);
+		lpMTagConfig.vars.push(['session','sessionId','sV7PQmyY1kqrlsGw5l8v5310SQXqf0WWWdCqnvTh7jJHJz6cjq2v']);
+		lpMTagConfig.vars.push(['session','stack','woammw05']);
 		lpMTagConfig.vars.push(['session','CTN','']);
 		
 		lpMTagConfig.vars.push(['session','upgradeEligibilityFlag','']);
@@ -1517,7 +1568,7 @@ Enter the new ID and password you received in your recent order confirmation.
 		lpMTagConfig.vars.push(['page','PhoneDevice','']);//Pass the phone device name for current account visitor is currently on
 		lpMTagConfig.vars.push(['page','FeatureConversionStage','']);//Pass the pagenames that make up the Feature Conversion Process
 		lpMTagConfig.vars.push(['page','Feature_OrderTotal','']);//Pass the Monthly RMR of the total for features added to the account visitor is currently on
-		lpMTagConfig.vars.push(['page','CustomerType','']);//Pass the customer type
+		lpMTagConfig.vars.push(['page','CustomerType','']);//Pass the secondary navigation category of the site the visitor is currently on
 		
  		  
 			lpMTagConfig.vars.push(["page","unit","sso"]);
@@ -1527,6 +1578,9 @@ Enter the new ID and password you received in your recent order confirmation.
 		
 	
 			
+		
+		lpSendData();
+		
 	</script>
 	<noscript><p>Script section containing code for Liveperson Chat Solution</p></noscript>
 	<!--Immediate Data Submission function-->
@@ -1548,7 +1602,7 @@ Enter the new ID and password you received in your recent order confirmation.
 					<a class="" title="Contract (Wireless)" href="../wirelessterms.html" target="_blank">Contract (Wireless)</a>
 						|
 				
-					<a class="" title="Cell Phone Records Security" href="http://www.wireless.att.com/learn/articles-resources/records-security.jsp" target="_blank">Cell Phone Records Security</a>
+					<a class="" title="Cell Phone Records Security" href="../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" target="_blank">Cell Phone Records Security</a>
 						|
 				
 					<a class="" title="Wireless Legal Site" href="../wirelesslegal.html" target="_blank" target="_blank">Wireless Legal Site</a>
@@ -1767,12 +1821,6 @@ Enter the new ID and password you received in your recent order confirmation.
 	<!-- WebTrends Base Tag : include only at end of page -->
 	
 	
-		<script>
-	   // the below block of code is very important; it clears all the prototype
-	   // javascript functions that otherwise get added as webtrends query paramaters
-		if (window.webTrendTag_unprototype) webTrendTag_unprototype();
-	</script>
-		<script src="../webtrends/scripts/dcs_tag.js" type="text/javascript"></script>
 	
 
 
@@ -1807,7 +1855,7 @@ Enter the new ID and password you received in your recent order confirmation.
 
 
 <script language="JavaScript" type="text/javascript">
-	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","bl":"english","as":"0"},"bi":{"it":"User","cp":"Login","ap":"p2eam1m71","sc":"OLAM","pn":"Login","se":"AccountLogin","si":"tRxYQnNBbrQJ25DVpRph0fYzJ22ypsh26hTcJCH2czn7XNcnWH7d!-1697183797!1345228225648"}};
+	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","bl":"english","as":"0"},"bi":{"it":"User","cp":"Login","ap":"woammw05","sc":"OLAM","pn":"Login","se":"AccountLogin","si":"sV7PQmyY1kqrlsGw5l8v5310SQXqf0WWWdCqnvTh7jJHJz6cjq2v!2103540191!1348874904186"}};
 </script>
 <!--  VirtuOzLoader.js file included for RD2113 - Virtual Expert - 1104-->
 <script type="text/javascript" src="virtuOz/scripts/VirtuOzLoader.js.html"></script>
@@ -1872,10 +1920,7 @@ Enter the new ID and password you received in your recent order confirmation.
 	</script>
 
 
-
-
-
-	<!-- Send NRT and CSR Report Events by AJAX -->
+<!-- Send NRT and CSR Report Events by AJAX -->
 
 
 
@@ -1903,65 +1948,59 @@ Enter the new ID and password you received in your recent order confirmation.
 
 
 
+
+
 	
 
 
 
 	<script type="text/javascript">
 	var PASSTHROUGH_URL = "passthroughAction.myworld";
-	var array = [ "wt_Header", "wt_MainNav", "wt_SubNav", "wt_LeftNav","wt_RightNav", "wt_Body", "wt_Footer" ];
-	var parentWebtrendClasses = "div.wt_Header,div.wt_MainNav,div.wt_SubNav,div.wt_LeftNav,div.wt_RightNav,div.wt_Body,div.wt_Footer";
+	var array = [ "wt_Header", "wt_MainNav", "wt_SubNav", "wt_LeftNav","wt_RightNav", "wt_Body", "wt_BodyAlerts", "wt_BodyQuickLinks", "wt_BodyModal", "wt_Footer" ];
+	var specificWebtrendClasses = "a.wt_Header, a.wt_MainNav, a.wt_SubNav, a.wt_LeftNav, a.wt_RightNav, a.wt_Body, a.wt_BodyAlerts, a.wt_BodyQuickLinks, a.wt_BodyModal, a.wt_Footer";
+	var globalWebtrendClasses = "div.wt_Header, div.wt_MainNav, div.wt_SubNav, div.wt_LeftNav, div.wt_RightNav, div.wt_Body, div.wt_BodyAlerts, div.wt_BodyQuickLinks, div.wt_BodyModal, div.wt_Footer";
 	
 	jQuery(document).ready(function() 
 	{
-		jQuery("a").filter(function() 
+		// Class for Each Hyperlink Tracking
+		jQuery("body").delegate(specificWebtrendClasses, "click", function(event)
 		{
-			return isWebTrendClassPresent(jQuery(this).attr("class"));
-					}).click(function(event) 
-								{
-								 try
-								 {
-										var elementEvent = event.currentTarget || event.srcElement;
-										if(jQuery.trim(elementEvent.nodeName) == "A" || jQuery.trim(elementEvent.nodeName) == "a")
-						 				{
-											invokeWebtrendDCSMultiTrack(elementEvent, false)
-						 				}
-								 }catch(exception){}
-								}
-							);
-	});
-	
-	jQuery(document).ready(function() 
-	{
-		jQuery("div").filter(function() 
-				{
-					return isWebTrendClassPresent(jQuery(this).attr("class"));
-							}).click(function(event) 
-					{
-						try
-						{
-							var elementEvent = event.target || event.srcElement;
-							if(jQuery.trim(elementEvent.nodeName) == "A" || jQuery.trim(elementEvent.nodeName) == "a")
-			 				{
-								invokeWebtrendDCSMultiTrack(elementEvent, true)
-			 				}
-						}catch(exception){}
-					}
-			);
+			 try
+			 {
+				var elementEvent = event.currentTarget || event.srcElement;
+				if(jQuery.trim(elementEvent.nodeName) == "A" || jQuery.trim(elementEvent.nodeName) == "a")
+ 				{
+					invokeWebtrendDCSMultiTrack(elementEvent, false)
+ 				}
+			 }
+			 catch(exception)
+			 {
+			 }
+		});
+		
+		// Global Solution for Hyperlink Tracking
+		
+		jQuery("body").delegate(globalWebtrendClasses, "click", function(event)
+		{
+			 try
+			 {
+				var elementEvent = event.target || event.srcElement;
+				if(jQuery.trim(elementEvent.nodeName) == "A" || jQuery.trim(elementEvent.nodeName) == "a")
+ 				{
+					invokeWebtrendDCSMultiTrack(elementEvent, true)
+ 				}
+			 }
+			 catch(exception)
+			 {
+			 }
+		});
+		
 	 });
-	
-	function isWebTrendClassPresent(searchString) 
-	{
-		if (getWebTrendClass(searchString) != '') 
-		{
-			return true;
-		}
-		return false;
-	}
+
 	
 	function getWebtrendTagLocationFromParent(elementEvent)
 	{
-		var classArray = jQuery(elementEvent).parents().filter(parentWebtrendClasses);
+		var classArray = jQuery(elementEvent).parents().filter(globalWebtrendClasses);
 		var className = null;
 		for(i = 0 ; i < classArray.length ; i ++)
 		{
@@ -2004,17 +2043,6 @@ Enter the new ID and password you received in your recent order confirmation.
 		}
 	}
 	
-	function getWebTrendClass(searchString) 
-	{
-		var regExp = /wt_[a-z]*/i;
-		var matchString = jQuery.trim(searchString.match(regExp));
-		if (jQuery.inArray(matchString, array) != -1) {
-	
-			return (matchString);
-		}
-		return '';
-	}
-	
 	function getLinkLocationFromClassName(className)
 	{
 		if(className.indexOf('wt_Header')!=-1) return "Header";
@@ -2022,6 +2050,9 @@ Enter the new ID and password you received in your recent order confirmation.
 		if(className.indexOf('wt_SubNav')!=-1) return "SubNav";
 		if(className.indexOf('wt_LeftNav')!=-1) return "LeftNav";
 		if(className.indexOf('wt_RightNav')!=-1) return "RightNav";
+		if(className.indexOf('wt_BodyAlerts')!=-1) return "Body_Alerts";
+		if(className.indexOf('wt_BodyQuickLinks')!=-1) return "Body_QuickLinks";
+		if(className.indexOf('wt_BodyModal')!=-1) return "Body_Modal";
 		if(className.indexOf('wt_Body')!=-1) return "Body";
 		if(className.indexOf('wt_Footer')!=-1) return "Footer";
 		
@@ -2033,7 +2064,6 @@ Enter the new ID and password you received in your recent order confirmation.
 		//return "'" + string + "'";
 		return string;
 	}
-	
 	
 	function getWebtrendLinkURI(elementEvent)
 	{
@@ -2128,17 +2158,34 @@ Enter the new ID and password you received in your recent order confirmation.
 
 <input type='hidden' name='DCS.dcssip'	webtrendTagAttr='true'	value='www.att.com'/>
 <input type='hidden' name='DCSext.wtNoHit'	webtrendTagAttr='true'	value='1'/>
+<input type='hidden' name='DCSext.wtPN'	webtrendTagAttr='true'	value='Login Pg'/>
 
 
 
 
  
- 
- 
 
 
 
 
+
+<!-- Page Name should be after execution of WebtrendReporting -->
+
+	<meta name="DCSext.wtPN" content='Login Pg' escapeXml="false"/>
+
+
+	<script>
+	   // the below block of code is very important; it clears all the prototype
+	   // javascript functions that otherwise get added as webtrends query paramaters
+		if (window.webTrendTag_unprototype) webTrendTag_unprototype();
+	</script>
+	<script src="../webtrends/scripts/dcs_tag.js" type="text/javascript"></script>
+
+<script language="JavaScript" type="text/JavaScript">
+jQuery(document).ready(function() {
+jQuery('#secondary-content div:first-child').css('margin-top','0px');
+});
+</script>
 
 	<!-- /CE FOOTER -->
 				</div>
@@ -2152,7 +2199,7 @@ Enter the new ID and password you received in your recent order confirmation.
 		<!--[if lte IE 6]></div><![endif]--> 
 <!--[if lte IE 8]></div><![endif]-->
 <!-- 
-	codeVersion1207
+	CodeVersion1208
 -->
 </body>
 </html>

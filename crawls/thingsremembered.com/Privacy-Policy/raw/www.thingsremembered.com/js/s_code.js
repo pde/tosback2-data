@@ -324,6 +324,8 @@ function s_doPlugins(s)
 		}
 	}
 
+	//In-Store ID
+	if(!s.eVar54) s.eVar54=s.getQueryParam('storeid_conv');
 }
 s.doPlugins=s_doPlugins
 

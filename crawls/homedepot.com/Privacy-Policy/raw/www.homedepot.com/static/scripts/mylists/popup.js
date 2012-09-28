@@ -35,7 +35,6 @@ function loadPopup(a){
 	$("#"+a).prepend('<div class="backgroundPopup z-index-9998" id="backgroundPopup1" style="opacity: 0.7; display: block;"></div>');
 	}
 	}
-	
 	else if(a=="popupAddToYour"){
 	$("#"+a).css({
 		"position": "fixed",
@@ -49,12 +48,11 @@ function loadPopup(a){
 		"top": "80px",
 		"left": "30%"
 	});
-	} 
-	
+	}
 	else
 	{
 	$("#"+a).css({
-		"position": "fixed", 
+		"position": "fixed",
 		"top": ((windowHeight/4)-10),  
 		"left": (windowWidth/2-popupWidth/2) 
 	});
@@ -97,7 +95,6 @@ $(window).resize(function() {
 	var popupHeight = $("#"+a).height();
 	var popupWidth = $("#"+a).width();
 	//centering
-	
 	if(a=="popupAddToYour"){
 	$("#"+a).css({
 		"position": "fixed",
@@ -105,7 +102,6 @@ $(window).resize(function() {
 		"left": windowWidth/2-popupWidth/2
 		});
 	}
-	
 	//only need force for IE6
 	
 	$("#backgroundPopup").css({
@@ -115,7 +111,6 @@ $(window).resize(function() {
 if(a == 'popupSignIn'){ 
 	$("#email_id, .backgroundPopup #password").css('border','1px solid gray');
 	$(".signInError").css('display','none');
-	
 	var checkLogin = $('.headerHorzMenuSecondary').html(); 
 	if(checkLogin.indexOf('Sign Out') < 0 ){
 		$('#email_id').val('');
@@ -123,7 +118,6 @@ if(a == 'popupSignIn'){
 	if(emailPasswordChanged){
 		$(".backgroundPopup #password").val('');
 	} 
-	
 	} 
 
 }
@@ -135,27 +129,35 @@ $(document).ready(function(){
 	$("#addToList_button").click(function(){
 		loadPopup('popupSignIn');
 	});
+$("#popupSignIn #userLogin input#email_id, #popupSignIn #userLogin input#password").live('keypress', function(e){
+if (e.keyCode == 13)
+    $("#popupSignIn #signIn").trigger('click');
 
-	$("#signIn").click(function(){	
+});
+	$("#signIn").click(function(e){	
+		e.preventDefault();
 		var e = $("#email_id").attr('value');
 		var f = $(".backgroundPopup #password").attr('value'); 
 		var atpos=e.indexOf("@");
 		var dotpos=e.lastIndexOf(".");
-		  $("#email_id,.backgroundPopup #password").css('border','1px solid gray'); 
-		if (atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length)
-		  {
-		$("#email_id,.backgroundPopup #password").css('border','1px solid red');
-		$(".signInError").css({display:'block', color:'red'});
-		$(".signInError").html("The following field(s) are required: E-mail Address, Password.");
-		  }
-		 
-		  else if(f.length==0){
-			$(".backgroundPopup #password").css('border','1px solid red'); 
+		 $("#email_id, .backgroundPopup #password").css('border','1px solid gray');
+		  if ((e.length==0 && f.length==0) ||((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) && f.length==0)) {
+			$(".signInError").css('display','none');
+			$("#email_id, .backgroundPopup #password").css('border','1px solid red');
 			$(".signInError").css({display:'block', color:'red'});
-			
-			$(".signInError").html("The following field(s) are required: Password.");
-			}
-			
+			$(".signInError").html("The following field(s) are required: E-mail Address, Password.");
+		  }
+		  else if ((atpos<1 || dotpos<atpos+2 || dotpos+2>=e.length) || e.length==0) {
+			$(".signInError").css('display','none');
+			$("#email_id").css('border','1px solid red');
+			$(".signInError").css({display:'block', color:'red'});
+			$(".signInError").html("The following field(s) are required: E-mail Address.");
+		  }
+		 		else if(f.length==0){
+				$(".backgroundPopup #password").css('border','1px solid red'); 
+				$(".signInError").css({display:'block', color:'red'});
+				$(".signInError").html("The following field(s) are required: Password.");
+				}
 		  else
 		  {
 		$("#email_id").css('border','1px solid gray');
@@ -271,7 +273,7 @@ if((uname == "") || (uemail == "") || (recipient == ""))
 	$("#recipientsEmails").css('border','1px solid red');
 	
 	$(".nameExistError3").css('display','block');
-	$(".nameExistError3 div.ErrorWithoutIcon").html("The Your fields cannot be blank. Type your name or e-mail in the field and try again.");
+	$(".nameExistError3 div.ErrorWithoutIcon").html("The Your fields cannot be blank. Type your name or e-mail in the field and try again.");/*13 changes by Guru*/
 	}
 
 }

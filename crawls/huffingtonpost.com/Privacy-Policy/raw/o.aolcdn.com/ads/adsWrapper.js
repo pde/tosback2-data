@@ -7,6 +7,13 @@ catch (e){}
 }
 adsLo=adsLo||""
 var adsUAC=adsLo.indexOf('atwUAC='),adsUACH
+function adSetMOAT(v){
+if (v){
+var d=document,s=d.createElement("script"),h=d.getElementsByTagName("head")[0]; 
+s.src='http://s.moatads.com/aolalways5fd2/moatuac.js'; 
+h.appendChild(s); 
+} 
+}
 function adsLoadUAC(){
 var n,d=document,z=d.createElement('script')
 n=adsLo.substring(adsUAC+7,adsLo.length).replace(/&.*$/,'').split(/\||;/);

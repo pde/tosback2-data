@@ -135,6 +135,7 @@ function reply_comment(type, profileId){
 		return false; 
 	});
 }
+
 function comments_showResponse(responseText, statusText) {
 	if($.trim(responseText)=="RATE") {
 		$("#comments").prepend("<div class='error'><p>You must wait a few minutes to post another comment!</p></div>");
@@ -149,6 +150,7 @@ function comments_showResponse(responseText, statusText) {
             comments_delete_buttons();
 	}
 }
+
 function validateReply() {
 	var text = $("#reply-form form textarea").val();
 	if(!text) {
@@ -403,10 +405,11 @@ $(document).ready(function() {
 	});
 	
 	$('.boxgrid.caption').hover(function(){
-        $(".cover", this).stop().animate({top:'0px'},{queue:false,duration:160});
-    }, function() {
-        $(".cover", this).stop().animate({top:'100px'},{queue:false,duration:160});
-    });
+            $(".cover", this).find('h5').css('color','#0060B2');
+        }, function() {
+            $(".cover", this).find('h5').css('color','#000000');
+        });
 	
 	
 });
+

@@ -57,12 +57,10 @@ function replaceSelects()
 					{
 	//					isVisible = !selectList[i].disabled;
 						isVisible = true;
-	//					alert(pMenuVisibility[selectList[i].id]);
 						if (pMenuVisibility[selectList[i].id] == false || pMenuRemoved[selectList[i].id] == true)
 						{
 							isVisible = false;
 						}
-	//					alert("menu: " + selectList[i].id + " visible: " + isVisible);
 	//					Create dhtml select
 						createSelect(selectList[i].id, selectList[i], selectList[i].id, isVisible);
 						//Determine variable size
@@ -158,7 +156,7 @@ function createSelect(hNum, hItem, objID, isVisible)
 		// insert the new element into the DOM before the combobox
 		parentDiv.insertBefore(spanHolderArray[hItem], selectArray[hItem]);
 	}
-//alert(divHolder.parentNode.parentNode.outerHTML);
+
 	if (isVisible == false)
 	{
 		divHolder.parentNode.parentNode.style.display = "none";
@@ -308,6 +306,7 @@ function setWidth(formElementID,selectText,cddDefaultClass, cddWidth) {
 
 function cddHTMLOutput2 (formElementID, formElementObjName)
 {
+	var foundSpacer = false;
 	formElementObj = document.getElementById(formElementObjName);
 	var cddWidth = (formElementObj.className.substring(formElementObj.className.indexOf(" "),formElementObj.className.length ));
 	//Globalization options
@@ -347,16 +346,44 @@ function cddHTMLOutput2 (formElementID, formElementObjName)
 				dhtmlContents += '<div class="close" onclick="cddClose(\'cdd' + formElementID + '\');"><img src="/shared/images/misc/close_ipad.gif" width="10" height="10" /></div>';
 			}
 		}
-		dhtmlContents += '<ul id="cddUL' + formElementID + '" style="' + cddULWidth + '">';
+
+		if (formElementObj.length > 15 && isIPad() == true)
+		{
+			dhtmlContents += '<div class="upArrow" ontouchstart="handleMenuScrollMouseDown(\'up\', \'' + formElementID + '\'); return false;" ontouchend="handleMenuScrollMouseUp(\'up\', \'' + formElementID + '\'); return false;">&nbsp;</div>';
+		}
+
+		if (formElementObj.length > 15)
+		{
+			if ($("select#" + formElementID).hasClass("ddlReset") == false)
+			{
+				dhtmlContents += '<ul id="cddUL' + formElementID + '" class="scroll" style="' + cddULWidth + '">';
+			}
+			else
+			{
+				dhtmlContents += '<ul id="cddUL' + formElementID + '" style="' + cddULWidth + '">';
+			}
+		}
+		else
+		{
+			dhtmlContents += '<ul id="cddUL' + formElementID + '" style="' + cddULWidth + '">';
+		}
 	
 		var formDDLStart = 0;
-		for (var i=formDDLStart; i<formElementObj.length; i++) 
+		for (var i=formDDLStart; i<formElementObj.length; i++)
 		{
-			if(formElementObj[i].value=="---" || formElementObj[i].text == "---")
+			if ((formElementObj[i].value=="---" || formElementObj[i].text == "---") && foundSpacer == false)
 			{
-				if (formElementObj.length > 21)
+				foundSpacer = true;
+				if (formElementObj.length > 15)
 				{
-					dhtmlContents += '</ul><ul class="'+cddDefaultClass+' scroll" style="width:'+cddWidth + '">';
+					if (isIPad() == true)
+					{
+						dhtmlContents += '</ul><ul class="' + cddDefaultClass + ' scroll" style="width:' + cddWidth + '" onscroll="handleMenuScroll(\'' + formElementID + '\');">';
+					}
+					else
+					{
+						dhtmlContents += '</ul><ul class="' + cddDefaultClass + ' scroll" style="width:' + cddWidth + '">';
+					}
 				}
 				dhtmlContents += '<li class="cddEmpty">&nbsp;</li>';
 			}
@@ -370,15 +397,130 @@ function cddHTMLOutput2 (formElementID, formElementObjName)
 				}
 				else
 				{
-					dhtmlContents += '<li style="width:' + cddWidth + '"><a id="cddLI' + formElementID + i + '" href="javascript:cddUpdateValue(\'' + formElementID + '\', \'' + escape(escape(formElementObj[i].text)) + '\', \'' + i + '\')" onfocus="this.blur()" >' + formElementObj[i].text + '</a></li>';
+					if (formElementObj[i].value == "---" || formElementObj[i].text == "---")
+					{
+						dhtmlContents += '<li class="cddEmpty">&nbsp;</li>';
+					}
+					else
+					{
+						dhtmlContents += '<li style="width:' + cddWidth + '"><a id="cddLI' + formElementID + i + '" href="javascript:cddUpdateValue(\'' + formElementID + '\', \'' + escape(escape(formElementObj[i].text)) + '\', \'' + i + '\')" onfocus="this.blur()" >' + formElementObj[i].text + '</a></li>';
+					}
 				}
 			}
 		}
-		dhtmlContents += '<li class="cddLast">&nbsp;</li>'
-					  + '</ul></div>';
+		dhtmlContents += '<li class="cddLast">&nbsp;</li></ul>';
+		if (formElementObj.length > 15 && isIPad() == true)
+		{
+			dhtmlContents += '<div class="downArrow" ontouchstart="handleMenuScrollMouseDown(\'down\', \'' + formElementID + '\'); return false;" ontouchend="handleMenuScrollMouseUp(\'down\', \'' + formElementID + '\'); return false;">&nbsp;</div>';
+			$("body").append('<style type="text/css">#cdd' + formElementID + ' ul.scroll { border-top:solid 1px #ffffff; background-image:none; }</style>');
+			if ($("select#" + formElementID).hasClass("ddlReset") == false)
+			{
+				$("body").append('<style type="text/css">#cdd' + formElementID + ' .upArrow { top:-18px;  }</style>');
+			}
+		}
+		dhtmlContents += '</div>';
 	}
 	return dhtmlContents;
 }
+
+var dropDownIntervalId;
+
+function handleMenuScrollClick(direction, id)
+{
+/*	var $scrollHandle = $("#cdd" + id + " .scroll");
+	var $upArrow = $("#cdd" + id + " .upArrow");
+	var $downArrow = $("#cdd" + id + " .downArrow");
+	clearInterval(dropDownIntervalId);
+
+	switch (direction.toLowerCase())
+	{
+		case "up":
+			$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() - 40 }, 200, "linear");
+			$downArrow.show();
+			if ($scrollHandle.scrollTop() <= 0)
+			{
+				$upArrow.hide();
+			}
+			break;
+		default:
+			// down
+			$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() + 40 }, 200, "linear");
+			$upArrow.show();
+			if ($scrollHandle.scrollTop() >= $scrollHandle[0].scrollHeight - $scrollHandle.height())
+			{
+				$downArrow.hide();
+			}
+	}*/
+}
+
+function handleMenuScrollMouseDown(direction, id)
+{
+	var $scrollHandle = $("#cdd" + id + " .scroll");
+	var $upArrow = $("#cdd" + id + " .upArrow");
+	var $downArrow = $("#cdd" + id + " .downArrow");
+	clearInterval(dropDownIntervalId);
+
+	switch (direction.toLowerCase())
+	{
+		case "up":
+			$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() - 80 }, 200, "linear");
+			dropDownIntervalId = setInterval(function ()
+			{
+				$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() - 80 }, 200, "linear");
+				if ($scrollHandle.scrollTop() <= 0)
+				{
+					$upArrow.hide();
+				}
+			}, 200);
+			$downArrow.show();
+			break;
+		default:
+			// down
+			$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() + 80 }, 200, "linear");
+			dropDownIntervalId = setInterval(function ()
+			{
+				$scrollHandle.animate({ scrollTop: $scrollHandle.scrollTop() + 80 }, 200, "linear");
+				if ($scrollHandle.scrollTop() >= $scrollHandle[0].scrollHeight - $scrollHandle.height())
+				{
+					$downArrow.hide();
+				}
+			}, 200);
+			$upArrow.show();
+	}
+}
+
+function handleMenuScrollMouseUp(direction, id)
+{
+	var $scrollHandle = $("#cdd" + id + " .scroll");
+	$scrollHandle.stop();
+	clearInterval(dropDownIntervalId);
+}
+
+function handleMenuScroll(id)
+{
+	var $scrollHandle = $("#cdd" + id + " .scroll");
+	var $upArrow = $("#cdd" + id + " .upArrow");
+	var $downArrow = $("#cdd" + id + " .downArrow");
+
+	if ($scrollHandle.scrollTop() <= 0)
+	{
+		$upArrow.hide();
+	}
+	else
+	{
+		$upArrow.show();
+	}
+
+	if ($scrollHandle.scrollTop() >= $scrollHandle[0].scrollHeight - $scrollHandle.height())
+	{
+		$downArrow.hide();
+	}
+	else
+	{
+		$downArrow.show();
+	}
+}
+
 
 function closeMenu(event) 
 {
@@ -399,7 +541,6 @@ function closeMenu(event)
 	{
 		cddClose(this.id);
 	}
-	//alert(this.id)
 }
 
 function contains(a, b) 

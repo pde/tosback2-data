@@ -19,13 +19,15 @@ var zfcCookieDomain='.6pm.com', zfcXDHost='track.zappos.com', bmv={};
 </script><script type="text/javascript">
   var zfcUUID = function(){var a=function(){return((1+Math.random())*65536|0).toString(16).substring(1)};return a()+a()+"-"+a()+"-"+a()+"-"+a()+"-"+a()+a()+a()}();
   var zfcUPU = '/c/privacy-policy';
-  var zfcAHW = [{h: 'a1.zassets.com', r:   6}, {h: 'a2.zassets.com', r:   6}];
+  var zfcAHW = [{h: 'a1.zassets.com', r:   2}, {h: 'a2.zassets.com', r:   2}, {h: 'a3.zassets.com', r:   2}, {h: 'l3.zassets.com', r:   2}];
   var hydraTests = [
-    {name:'wl',phase:1,url:/./,variants:[{chance:0.9},{chance:0.1,setup:function(){window.showLists=1}}]},
-    {name:'nap',phase:1,url:/^\/c\/(?:shoes|clothing|sandals)\b/,variants:[{chance:0.5,setup:function(){window.bmv.nap=0}},{chance:0.5,setup:function(){window.bmv.nap=1}}]}
+    {name:'nap',phase:1,url:/^\/c\/(?:shoes|clothing|sandals)\b/,variants:[{chance:0.5,setup:function(){window.bmv.nap=0}},{chance:0.5,setup:function(){window.bmv.nap=1}}]},
+    {name:'ept',url:/./,phase:2,variants:[{chance:0.5},{chance:0.5,setup:function(){window.ept=1;}}]},
+    {name:'slps',phase:1,url:/^\/c\/shoes\b/,variants:[{chance:0.5},{chance:0.5,setup:function(){window.bmv.slps=1;}}]},
+    {name:'crp',phase:1,url:/^\/c\/clothing\b/,variants:[{chance:0.5},{chance:0.5,setup:function(){window.bmv.crp=1;}}]}
   ];
   var zfc = [];
-  zfc.push(['initialize', '1345227688919', (new Date).getTime(), 'dcache', 'www.6pm.com', zfcUPU, '5ce7d78e-e898-11e1-b4a5-00215e22da70', zfcUUID]);
+  zfc.push(['initialize', '1348873716411', (new Date).getTime(), 'dcache', 'www.6pm.com', zfcUPU, '6ea3eacc-09c1-11e2-a37b-00215e22da70', zfcUUID]);
   zfc.push(['setEventUrl', '/event.cgi']);
 </script><script type="text/javascript">
 var todo=[];(function(e,t){var n,r,i,s,o,u,a=e.zfcUPU||e.location.toString(),f="/karakoram/js/main.9c9eee2.js",l=e.hydraTests||[];e.zfc&&zfc.push(["createWindowId",zfcUUID]),e.K2={cookieDomain:e.zfcCookieDomain,clickCookie:"click",clickAckCookie:"clickAck"};for(n=0,r=l.length;n<r;n++){u=l[n],u.url&&(i=new RegExp(u.url),o=i.test(a));if(o||!u.url&&u.assign){t.write('<script src="http://www.6pm.com/'+f+'" type="text/javascript"></scr'+"ipt>");return}}s=t.createElement("script"),s.type="text/javascript",s.src=f,s.async=!0,(t.getElementsByTagName("head")[0]||t.getElementsByTagName("body")[0]).appendChild(s)})(window,document);</script>
@@ -54,9 +56,9 @@ for (var i = 0; i < names.length; ++i) w.console[names[i]] = function() {};
 }
 })(window);
 </script>
-<link rel="stylesheet" href="styles/main.p.20120816143400.css" type="text/css" media="all" />
-<link rel="stylesheet" href="css/drupal-content.20120816143356.css" type="text/css" media="screen, projector, print" />
-<link rel="stylesheet" href="css/landing-page.20120816143356.css" type="text/css" media="screen, projector, print" />
+<link rel="stylesheet" href="styles/main.p.20120928112009.css" type="text/css" media="all" />
+<link rel="stylesheet" href="css/drupal-content.20120928112005.css" type="text/css" media="screen, projector, print" />
+<link rel="stylesheet" href="css/landing-page.20120928112005.css" type="text/css" media="screen, projector, print" />
 <script type="text/javascript">
 // From /js/z/z.js
 var z = {init:[],choiceStreamQueue:[],runChoiceStreamQueue:function(){var q=z.choiceStreamQueue;for(var i=0;i<q.length;i++)q[i]();}};
@@ -76,6 +78,8 @@ z.killAccountPoints = false;
 z.killPatron = false;
 z.killA9 = false;
 z.imagesSecureUrl = 'https://secure-www.zappos.com';
+z.token = z.token || {};
+z.token.cart = '4fd01eb2727b220c84809bc3f98f3ecbb2786ecdd96eb28a0be190f186aa4dbcd50a35730eb4a5d7be55723c26b81bfb4dd9def440915952bce5416253d3226b604c03ceb42d7a16f5bdd326b7de8433e99135eea81f05a9e8a5db7e41dcacb0b9c18f4e2ff8bd6e539cc687196f9f06';
 </script>
 <!--[if IE 6]>
 <meta http-equiv="imagetoolbar" content="no"/>
@@ -84,12 +88,23 @@ z.imagesSecureUrl = 'https://secure-www.zappos.com';
 <link rel="stylesheet" href="/styles/iestyles.css" type="text/css" media="screen" />
 <![endif]-->
 <script type="text/javascript">
+var _denali = [];
+_denali.push({ name : 'zapmain', domain : '.6pm.com', def : true });
+_denali.push({ name : 'zetamain', domain:'zeta.zappos.com' });
+// Include json2 for unsupported browsers.
+var JSON;JSON||(JSON={}); (function(){function k(a){return 10>a?"0"+a:a}function o(a){p.lastIndex=0;return p.test(a)?'"'+a.replace(p,function(a){var c=r[a];return"string"===typeof c?c:"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)})+'"':'"'+a+'"'}function m(a,j){var c,d,h,n,g=e,f,b=j[a];b&&("object"===typeof b&&"function"===typeof b.toJSON)&&(b=b.toJSON(a));"function"===typeof i&&(b=i.call(j,a,b));switch(typeof b){case "string":return o(b);case "number":return isFinite(b)?""+b:"null";case "boolean":case "null":return""+b;
+case "object":if(!b)return"null";e+=l;f=[];if("[object Array]"===Object.prototype.toString.apply(b)){n=b.length;for(c=0;c<n;c+=1)f[c]=m(c,b)||"null";h=0===f.length?"[]":e?"[\n"+e+f.join(",\n"+e)+"\n"+g+"]":"["+f.join(",")+"]";e=g;return h}if(i&&"object"===typeof i){n=i.length;for(c=0;c<n;c+=1)"string"===typeof i[c]&&(d=i[c],(h=m(d,b))&&f.push(o(d)+(e?": ":":")+h))}else for(d in b)Object.prototype.hasOwnProperty.call(b,d)&&(h=m(d,b))&&f.push(o(d)+(e?": ":":")+h);h=0===f.length?"{}":e?"{\n"+e+f.join(",\n"+
+e)+"\n"+g+"}":"{"+f.join(",")+"}";e=g;return h}}"function"!==typeof Date.prototype.toJSON&&(Date.prototype.toJSON=function(){return isFinite(this.valueOf())?this.getUTCFullYear()+"-"+k(this.getUTCMonth()+1)+"-"+k(this.getUTCDate())+"T"+k(this.getUTCHours())+":"+k(this.getUTCMinutes())+":"+k(this.getUTCSeconds())+"Z":null},String.prototype.toJSON=Number.prototype.toJSON=Boolean.prototype.toJSON=function(){return this.valueOf()});var q=/[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+p=/[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,e,l,r={"\u0008":"\\b","\t":"\\t","\n":"\\n","\u000c":"\\f","\r":"\\r",'"':'\\"',"\\":"\\\\"},i;"function"!==typeof JSON.stringify&&(JSON.stringify=function(a,j,c){var d;l=e="";if(typeof c==="number")for(d=0;d<c;d=d+1)l=l+" ";else typeof c==="string"&&(l=c);if((i=j)&&typeof j!=="function"&&(typeof j!=="object"||typeof j.length!=="number"))throw Error("JSON.stringify");return m("",
+{"":a})});"function"!==typeof JSON.parse&&(JSON.parse=function(a,e){function c(a,d){var g,f,b=a[d];if(b&&typeof b==="object")for(g in b)if(Object.prototype.hasOwnProperty.call(b,g)){f=c(b,g);f!==void 0?b[g]=f:delete b[g]}return e.call(a,d,b)}var d,a=""+a;q.lastIndex=0;q.test(a)&&(a=a.replace(q,function(a){return"\\u"+("0000"+a.charCodeAt(0).toString(16)).slice(-4)}));if(/^[\],:{}\s]*$/.test(a.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,"@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,
+"]").replace(/(?:^|:|,)(?:\s*\[)+/g,""))){d=eval("("+a+")");return typeof e==="function"?c({"":d},""):d}throw new SyntaxError("JSON.parse");})})();
+</script>
+<script type="text/javascript">
 var _gaq = _gaq || [];
 _gaq.push(
 ['pageTrackerPriTr._setAccount', 'UA-8814898-13'],
 ['pageTrackerPriTr._setDomainName', '.6pm.com'],
-['pageTrackerPriTr._setAllowHash', false],
-['pageTrackerPriTr._setAllowAnchor', true]
+['pageTrackerPriTr._setAllowHash', false]
 );
 _gaq.push(['pageTrackerPriTr._trackPageview']);
 (function() {
@@ -113,8 +128,8 @@ wait:o.wait,setOptions:function(g){z(g,b);return o}}}var l={},A=B||S,e=[],j={},n
 h,false);document.readyState="complete"},false)}})("addEventListener","DOMContentLoaded")})(this);
 </script>
 <script type="text/javascript">
-var customerToken = '4fd01eb2727b220c84809bc3f98f3ecbb9bc395c59de1b78177592638907de2b74d4dc6ac4f231553973ac4a5811d8b325340a19f55e081d9c7ee65dd64ce0a447c19b65ba9ba79ef9487dba660b861606a310d083e2d75393e44f4812b4eb9ccbc0acee4aee9c892ef7380dcaefec5a';
-var favoriteToken = '4fd01eb2727b220c84809bc3f98f3ecbb9bc395c59de1b78177592638907de2b74d4dc6ac4f231553973ac4a5811d8b32210ea91d4e55edf50d70681f336b8974af4f732b484cff7aeba71b675267a6b1a4f738374ec79ef35c239490d94134089aabfab2158b06f98da7d82d19692a2';
+var customerToken = '4fd01eb2727b220c84809bc3f98f3ecbef1113f87e6b5c37e5df1f022bd65608d50a35730eb4a5d7be55723c26b81bfb25340a19f55e081d9c7ee65dd64ce0a447c19b65ba9ba79ef9487dba660b861606a310d083e2d75393e44f4812b4eb9ccbc0acee4aee9c892ef7380dcaefec5a';
+var favoriteToken = '4fd01eb2727b220c84809bc3f98f3ecbef1113f87e6b5c37e5df1f022bd65608d50a35730eb4a5d7be55723c26b81bfb2210ea91d4e55edf50d70681f336b8974af4f732b484cff7aeba71b675267a6b1a4f738374ec79ef35c239490d94134089aabfab2158b06f98da7d82d19692a2';
 </script>
       
   <title>Privacy Policy | 6pm.com</title>
@@ -123,9 +138,9 @@ var favoriteToken = '4fd01eb2727b220c84809bc3f98f3ecbb9bc395c59de1b7817759263890
 <script type="text/javascript" src="js/LAB.2.0.3.src.js"></script>
 <script type="text/javascript">
 $LAB
-.script('/js/main.p.20120816143358.js')
+.script('/js/main.p.20120928112007.js')
 .wait()
-.script('/js/drupal.p.20120816143358.js')
+.script('/js/drupal.p.20120928112007.js')
 .wait();
 </script>
 <link rel="canonical" href="privacy-policy.html" /><meta name="google-site-verification" content="SO0XCClAY5ysgPNP1g4bwtpfwXsEhwZpjyfLIN_yMnU" />
@@ -140,18 +155,12 @@ a.zph:hover {color:#369; text-decoration:underline;}
 <div id="headerPromoBanners">
 </div>
 <div id="headerBanner">
-<a href="http://www.6pm.com/c/holiday-paypal-faq" title="Free shipping on all orders!"><img src="assets/hotspot/timeslot_images/10514_1336599296.gif" width="1000" height="30" alt="Free shipping on all orders!" border="0" id="6pm-header-banner" class="hotspot"></a> </div>
+<a href="http://www.6pm.com/c/shipping-and-returns" title="Free Shipping on all orders!"><img src="assets/hotspot/timeslot_images/11948_1348185743.gif" width="1000" height="30" alt="Free Shipping on all orders!" border="0" id="6pm-header-banner" class="hotspot"></a> </div>
 <!-- [/header_promos] -->
 <!-- [start_wrap] -->
 <div id="wrap">
 <!-- [/start_wrap] -->
 <!-- [masthead] -->
-<script>
-if (window.headerTest && window.headerTest == 1) {
-document.write('<div id=\"newHeader\"\> <div id=\"feedback\"\><a target=\"_blank\" href="http://www.6pm.com/\&quot;https://zappos.qualtrics.com/SE/?SID=SV_3ZZakthFVm6mv7m\&quot;\"><img src=\"/imgs/feedback.png\" alt=\"6pm Redesign Feedback\" title=\"6pm Redesign Feedback\" /\></a\></div\> <h1 class=\"zlogo zlogo-home new\"\> <a href="http://www.6pm.com/\&quot;/\&quot;" title=\"6pm.com - it\'s time to get your brand fix!\"\><img src="http://www.6pm.com/\&quot;/assets/hotspot/timeslot_images/6322_1327015190.jpg\&quot;" width=\"240\" height=\"84\" alt=\"6pm.com - it\'s time to get your brand fix!\" border=\"0\" id=\"6pm-logo\" class=\"hotspot\"\></a\> </h1\> <div id=\"glSearchWrap\"\> <form action="http://www.6pm.com/\&quot;/search\&quot;" method=\"get\"\> <fieldset\> <input type=\"hidden\" name=\"department\" /\> <input id=\"glSearchField\" type=\"text\" name=\"term\" class=\"entire-search\" value=\"\" /\> <button id=\"glSearchSubmit\" type=\"submit\"\><img src=\"/imgs/search.png\" /\></button\> </fieldset\> </form\> </div\> <div id=\"glShipping\"\><a href="http://www.6pm.com/\&quot;/c/shipping-and-returns\&quot;" class=\"gae-click*Header*FreeShipping\"\><img src=\"/imgs/shipping.png\" title=\"Free shipping on all orders\" alt=\"Free shipping on all orders\" /\></a\></div\> <div id=\"glCart\"\><a class=\"gae-click*Global*Main-Nav*Cart\" href="http://www.6pm.com/\&quot;/cart\&quot;\">Shopping Bag</a\></div\> </div\> <div id=\"glNav\"\> <ul\> <li id=\"allDepts\"\><a href="http://www.6pm.com/\&quot;/\&quot;\">All Departments</a\> <div id=\"moreDepts\"\> <ul class=\"first\"\> <li\> <a class=\"gae-click*Global*Main-Nav*View-More-Shoes\" href="http://www.6pm.com/\&quot;/c/shoes\&quot;\">Shoes</a\> <ul\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Wide\" href="http://www.6pm.com/\&quot;/c/wide-shoes\&quot;\">Wide</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Narrow\" href="http://www.6pm.com/\&quot;/c/narrow-shoes\&quot;\">Narrow</a\></li\> </ul\> </li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Clothing\" href="http://www.6pm.com/\&quot;/c/clothing\&quot;\">Clothing</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Handbags\" href="http://www.6pm.com/\&quot;/c/bags\&quot;\">Bags &amp; Handbags</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Watches\" href="http://www.6pm.com/\&quot;/c/watches\&quot;\">Watches</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Sunglasses\" href="http://www.6pm.com/\&quot;/c/sunglasses\&quot;\">Sunglasses</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Accessories\" href="http://www.6pm.com/\&quot;/c/accessories\&quot;\">Accessories</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Jewelry\" href="http://www.6pm.com/\&quot;/search/jewelry/filter/zc1/%22Jewelry%22/sort/goLiveDate/desc\&quot;\">Jewelry</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Electronics\" href="http://www.6pm.com/\&quot;/search/null/filter/zc1/%22Entertainment%22/zc2/%22Electronics%22/sort/goliveRecentSalesStyle/desc\&quot;\">Electronics</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Housewares\" href="http://www.6pm.com/\&quot;/c/homestyle\&quot;\">Housewares</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Beauty\" href="http://www.6pm.com/\&quot;/c/beauty\&quot;\">Beauty</a\></li\> </ul\> <ul\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Women\" href="http://www.6pm.com/\&quot;/c/womens\&quot;\">Women</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Men\" href="http://www.6pm.com/\&quot;/c/mens\&quot;\">Men</a\></li\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Kids\" href="http://www.6pm.com/\&quot;/c/kids\&quot;\">Kids</a\></li\> </ul\> <ul\> <li\><a class=\"gae-click*Global*Main-Nav*View-More-Gift-Certificate\" href="http://www.6pm.com/\&quot;/gift-certificate\&quot;\">Gift Certificate</a\></li\> </ul\> <ul\> <li class=\"clearance\"\> <a href="http://www.6pm.com/\&quot;/c/clearance\&quot;" class=\"gae-click*Global*Main-Nav*View-More-Clearance to-drupal\"\>Clearance</a\></li\> </ul\> </div\> </li\> <li\><a href="http://www.6pm.com/\&quot;/c/shoes\&quot;" class=\"gae-click*Global*Main-Nav*Shoes\"\>Shoes</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/clothing\&quot;" class=\"gae-click*Global*Main-Nav*Clothing\"\>Clothing</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/bags\&quot;" class=\"gae-click*Global*Main-Nav*Bags\"\>Bags</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/accessories\&quot;" class=\"gae-click*Global*Main-Nav*Accessories\"\>Accessories</a\></li\> <li class=\"clearance\"\><a href="http://www.6pm.com/\&quot;/c/clearance\&quot;" class=\"gae-click*Global*Main-Nav*Clearance\"\>Clearance</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/womens\&quot;" class=\"gae-click*Global*Main-Nav*Womens\"\>Women\'s</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/mens\&quot;" class=\"gae-click*Global*Main-Nav*Mens\"\>Men\'s</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/c/kids\&quot;" class=\"gae-click*Global*Main-Nav*Kids\"\>Kid\'s</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brands\&quot;" class=\"gae-click*Global*Main-Nav*Brands\"\>Brands</a\></li\> </ul\> </div\> <ul id=\"headerBrandAlpha\"\> <li class=\"headerBrandAlphaTitle\"\><a href="http://www.6pm.com/\&quot;/brands\&quot;" class=\"gae-click*Global*Brand-Index*brand-index\"\>Alphabetical Brand Index</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/%23\&quot;" class=\"gae-click*Global*Brand-Index*brands-num\"\>#</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/A\&quot;" class=\"gae-click*Global*Brand-Index*brands-a\"\>A</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/B\&quot;" class=\"gae-click*Global*Brand-Index*brands-b\"\>B</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/C\&quot;" class=\"gae-click*Global*Brand-Index*brands-c\"\>C</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/D\&quot;" class=\"gae-click*Global*Brand-Index*brands-d\"\>D</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/E\&quot;" class=\"gae-click*Global*Brand-Index*brands-e\"\>E</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/F\&quot;" class=\"gae-click*Global*Brand-Index*brands-f\"\>F</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/G\&quot;" class=\"gae-click*Global*Brand-Index*brands-g\"\>G</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/H\&quot;" class=\"gae-click*Global*Brand-Index*brands-h\"\>H</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/I\&quot;" class=\"gae-click*Global*Brand-Index*brands-i\"\>I</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/J\&quot;" class=\"gae-click*Global*Brand-Index*brands-j\"\>J</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/K\&quot;" class=\"gae-click*Global*Brand-Index*brands-k\"\>K</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/L\&quot;" class=\"gae-click*Global*Brand-Index*brands-l\"\>L</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/M\&quot;" class=\"gae-click*Global*Brand-Index*brands-m\"\>M</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/N\&quot;" class=\"gae-click*Global*Brand-Index*brands-n\"\>N</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/O\&quot;" class=\"gae-click*Global*Brand-Index*brands-o\"\>O</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/P\&quot;" class=\"gae-click*Global*Brand-Index*brands-p\"\>P</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/Q\&quot;" class=\"gae-click*Global*Brand-Index*brands-q\"\>Q</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/R\&quot;" class=\"gae-click*Global*Brand-Index*brands-r\"\>R</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/S\&quot;" class=\"gae-click*Global*Brand-Index*brands-s\"\>S</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/T\&quot;" class=\"gae-click*Global*Brand-Index*brands-t\"\>T</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/U\&quot;" class=\"gae-click*Global*Brand-Index*brands-u\"\>U</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/V\&quot;" class=\"gae-click*Global*Brand-Index*brands-v\"\>V</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/W\&quot;" class=\"gae-click*Global*Brand-Index*brands-w\"\>W</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/X\&quot;" class=\"gae-click*Global*Brand-Index*brands-x\"\>X</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/Y\&quot;" class=\"gae-click*Global*Brand-Index*brands-y\"\>Y</a\></li\> <li\><a href="http://www.6pm.com/\&quot;/brand/letter/Z\&quot;" class=\"gae-click*Global*Brand-Index*brands-z\"\>Z</a\></li\> </ul\> <a href="http://www.6pm.com/\&quot;/clearance\&quot;" title=\"Shop end-of-season clearance - going fast!\"\><img src="http://www.6pm.com/\&quot;/assets/hotspot/timeslot_images/11884_1344918725\&quot;" width=\"982\" height=\"30\" alt=\"Shop end-of-season clearance - going fast!\" border=\"0\" id=\"6pm-secondary-banner\" class=\"hotspot\"\></a\>');
-document.write('<noscr' + 'ipt>');
-}
-</script>
 <div id="globalActions">
 <ul>
 <li class="csinfo"><em>1.888.676.2660</em> 6am - 8pm PST</li>
@@ -164,7 +173,6 @@ document.write('<li><a href="http://www.6pm.com/account/favorites" class="gae-cl
 </script>
 <li class="help">
 <a href="http://www.6pm.com/customer-service-center" class="gae-click*Global*Header*Help to-drupal">Help</a></li>
-<li><a class="createANewPassword" href="http://www.6pm.com/passwordToken.do">Create a New Password</a></li>
 </ul>
 <a id="viewCart" class="gae-click*Global*Main-Nav*Cart" href="http://www.6pm.com/cart">Shopping Bag</a>
 </div>
@@ -173,9 +181,9 @@ document.write('<li><a href="http://www.6pm.com/account/favorites" class="gae-cl
 <div class="main">
 <h1 class="zlogo zlogo-home">
 <a href="http://www.6pm.com/" title="6pm.com - it's time to get your brand fix!"><img src="assets/hotspot/timeslot_images/6322_1327015190.jpg" width="240" height="84" alt="6pm.com - it's time to get your brand fix!" border="0" id="6pm-logo" class="hotspot"></a> </h1>
-<p class="header-promo"><a href="http://www.6pm.com/c/yard-sale" title="Yard Sale!!!"><img src="assets/hotspot/timeslot_images/11885_1345048867.html" width="221" height="49" alt="Yard Sale!!!" border="0" id="6pm-header-promo" class="hotspot"></a><a href="http://www.6pm.com/c/yard-sale" title="Yard Sale!!!"><img src="assets/hotspot/timeslot_images/11886_1345048902.html" width="221" height="49" alt="Yard Sale!!!" border="0" id="6pm-header-promo2" class="hotspot"></a><a href="http://www.6pm.com/c/yard-sale" title="Yard Sale!!!"><img src="assets/hotspot/timeslot_images/11887_1345048959.html" width="221" height="49" alt="Yard Sale!!!" border="0" id="6pm-header-promo3" class="hotspot"></a><a href="http://www.6pm.com/c/yard-sale" title="Yard Sale!!!"><img src="assets/hotspot/timeslot_images/11888_1345049038.html" width="221" height="49" alt="Yard Sale!!!" border="0" id="6pm-header-promo4a" class="hotspot"></a></p>
+<p class="header-promo"><a href="http://www.6pm.com/search/null/filter/pricingTag/%22MA%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="Merrell and Ahnu Up to 65% Off"><img src="assets/hotspot/timeslot_images/11952_1348682172.jpg" width="221" height="49" alt="Merrell and Ahnu Up to 65% Off" border="0" id="6pm-header-promo" class="hotspot"></a><a href="http://www.6pm.com/search/null/filter/pricingTag/%22MA%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="Merrell and Ahnu Up to 65% Off"><img src="assets/hotspot/timeslot_images/11953_1348682271.jpg" width="221" height="49" alt="Merrell and Ahnu Up to 65% Off" border="0" id="6pm-header-promo2" class="hotspot"></a><a href="http://www.6pm.com/search/null/filter/pricingTag/%22MA%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="Merrell and Ahnu Up to 65% Off"><img src="assets/hotspot/timeslot_images/11954_1348682384.jpg" width="221" height="49" alt="Merrell and Ahnu Up to 65% Off" border="0" id="6pm-header-promo3" class="hotspot"></a><a href="http://www.6pm.com/search/null/filter/pricingTag/%22MA%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="Merrell and Ahnu Up to 65% Off"><img src="assets/hotspot/timeslot_images/11955_1348682437.jpg" width="221" height="49" alt="Merrell and Ahnu Up to 65% Off" border="0" id="6pm-header-promo4a" class="hotspot"></a></p>
 <p class="header-promo-2">
-<a class="gae-click*Global*Main-Nav*Brandaholics" href="http://www.6pm.com/c/6pmbrandaholics"><img src="imgs/promos/rewards.20120816143357.png" alt="6pm Brandaholics reward program" /></a>
+<a class="gae-click*Global*Main-Nav*Brandaholics" href="http://www.6pm.com/c/6pmbrandaholics"><img src="imgs/promos/rewards.20120928112006.png" alt="6pm Brandaholics reward program" /></a>
 <!--Delete above line and uncomment this one when Hotspot tool is working again <a href="/6pm-brandaholics" title="6PM Brandaholics rewards program"><img src="/assets/hotspot/timeslot_images/11542_1331920456.png" width="160" height="35" alt="6PM Brandaholics rewards program" border="0" id="6pm-header-promo5" class="hotspot"></a>-->
 </p>
 <div id="search">
@@ -189,7 +197,14 @@ Search </button>
 </fieldset>
 </form>
 </div>
-<a class="specialDeals" href="http://www.6pm.com/email/signup.zml" title="Sign Up for Daily Deals and Offers">Daily Deals &amp; Offers <span>Sign Up</span></a>
+<script>
+if (window.ept === 1 || window.location.search.indexOf('ept') > -1) {
+document.write('<a id="emailSignup" class="gae-click*Global*Email-Signup*Global-Email" href="http://www.6pm.com/email/signup.zml" title="Sign Up for Daily Deals and Offers"><span></span>Subscribe to Email Promotions</a>');
+document.getElementById("search").className = "emailTest";
+} else {
+document.write('<a class="specialDeals" href="http://www.6pm.com/email/signup.zml" title="Sign Up for Daily Deals and Offers">Daily Deals &amp; Offers <span>Sign Up</span></a>');
+}
+</script>
 </div>
 <!-- [/banner] -->
 <!-- [nav] -->
@@ -274,7 +289,7 @@ Search </button>
 </ul>
 <!-- [/headerBrandAlpha] -->
 <div id="navBanner">
-<a href="http://www.6pm.com/clearance" title="Shop end-of-season clearance - going fast!"><img src="assets/hotspot/timeslot_images/11884_1344918725.html" width="982" height="30" alt="Shop end-of-season clearance - going fast!" border="0" id="6pm-secondary-banner" class="hotspot"></a> </div>
+<a href="privacy-policy.html#" title="."><img src="assets/hotspot/timeslot_images/11806_1341615759.gif" width="982" height="1" alt="." border="0" id="6pm-secondary-banner" class="hotspot"></a> </div>
 </div>
 <!-- [/masthead] -->
 <!-- [breadcrumbs] -->
@@ -353,8 +368,8 @@ Search </button>
 <a href="http://www.6pm.com/shop-with-confidence" title="Read Our Safe Shopping Guarantee" class="to-drupal">Safe Shopping Guarantee</a>
 </div>
 <div class="sidebar-promo"><a href="http://www.6pm.com" title="Check out Today's Daily Deals"><img src="assets/hotspot/timeslot_images/11837_1343082917.jpg" width="180" height="190" alt="Check out Today's Daily Deals" border="0" id="6pm-sidebar-promo" class="hotspot"></a></div>
-<div class="sidebar-promo"><a href="http://www.6pm.com/Calvin&#32;Klein,&#32;Anne&#32;Klein,&#32;and&#32;more!&#32;Up&#32;to&#32;80%&#32;Off" title="Calvin Klein, Anne Klein, and more! Up to 80% Off"><img src="assets/hotspot/timeslot_images/11877_1344529500.html" width="180" height="190" alt="/search/null/filter/pricingTag/%22AAD%22/zc1/%22Clothing%22/sort/recentSalesStyle/desc" border="0" id="6pm-sidebar-promo-2" class="hotspot"></a></div>
-<div class="sidebar-promo"><a href="http://www.6pm.com/search/null/filter/pricingTag/%22SkateCentral%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="DC, Supra, etnies, and more! Up to 75% Off"><img src="assets/hotspot/timeslot_images/11878_1344529948.html" width="180" height="190" alt="DC, Supra, etnies, and more! Up to 75% Off" border="0" id="6pm-sidebar-promo-3" class="hotspot"></a></div>
+<div class="sidebar-promo"><a href="http://www.6pm.com/search/null/filter/pricingTag/%22FallColoredClothing%22/zc1/%22Clothing%22/sort/isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="FALL IN LOVE … with the rich hues of the season. Up to 75% Off"><img src="assets/hotspot/timeslot_images/11956_1348682640.jpg" width="180" height="190" alt="FALL IN LOVE … with the rich hues of the season. Up to 75% Off" border="0" id="6pm-sidebar-promo-2" class="hotspot"></a></div>
+<div class="sidebar-promo"><a href="http://www.6pm.com/nike~1?s=isNew/desc/goLiveDate/desc/recentSalesStyle/desc/" title="Score shoes, apparel & accessories for the whole family! Up to 75% Off"><img src="assets/hotspot/timeslot_images/11957_1348682729.jpg" width="180" height="190" alt="Score shoes, apparel & accessories for the whole family! Up to 75% Off" border="0" id="6pm-sidebar-promo-3" class="hotspot"></a></div>
 <div class="sidebar-promo"><a href="http://www.6pm.com/shipping-and-delivery-questions" title="Standard Shipping! Enjoy free standard shipping on all orders - Learn More"><img src="assets/hotspot/timeslot_images/10808_1318543928.jpg" width="180" height="190" alt="Standard Shipping! Enjoy free standard shipping on all orders" border="0" id="6pm-sidebar-promo-4" class="hotspot"></a></div>
 <div class="returns">
 <h3>Return Policy</h3>
@@ -427,7 +442,7 @@ Search </button>
 	  <!-- [pixels] --><!-- [/pixels] -->
 <script type="text/javascript">
 $LAB
-.script('/js/tealeaf.p.20120816143358.js')
+.script('/js/tealeaf.p.20120928112007.js')
 .wait();
 </script>
 <!-- Advertiser 'Zappos.com, Inc.', Include user in segment 'Zappos.com_Enhanced Retargeting_Homepage' - DO NOT MODIFY THIS PIXEL IN ANY WAY -->
@@ -441,4 +456,4 @@ $LAB
 zfc.push(["leaveBody",(new Date).getTime()]),function(){function t(t,n){var r=window[t];window[t]=function(){typeof r=="function"&&r(),e||(e=!0,zfc.push(["onload","/onload.cgi",(new Date).getTime(),n]))}}var e=!1;t("onload",!1),t("onunload",!0)}(),zfc.push(["tracker","/track.cgi"]),todo.push(function(){var e=this,t=e.K2;e.LazyEye?new LazyEye(Protobuf.Messages.zfcLazyEye,"zfc.LazyEye",{maxDataLength:700,listenDuration:1e3,textNodeMaxLength:64,cookieDomain:t.cookieDomain,clickCookie:t.clickCookie,clickAckCookie:t.clickAckCookie}):e.Annapurna&&Annapurna.error("Lazy Eye was not found on "+zfcUPU+" at "+ +(new Date))});</script></body>
 <!-- -->
 <!-- -->
-<!-- zfc02 www dcache 2012/08/17 11:21:28 2 ms uplat 0.839 ms rwlat 14 execs 5555 trans 55107 bytes 76 lrw 115 lex 198 texts 2769 words 5 links 5ce7d78e-e898-11e1-b4a5-00215e22da70 --></html>
+<!-- zfc02 www dcache 2012/09/28 16:08:36 0 ms uplat 0.758 ms rwlat 13 execs 4865 trans 51741 bytes 76 lrw 113 lex 198 texts 2769 words 5 links 6ea3eacc-09c1-11e2-a37b-00215e22da70 --></html>

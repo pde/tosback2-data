@@ -2,6 +2,11 @@ $(document).ready( function(){
 
 	//When page loads...
 	$("#shadowboxClose").append("#sb-title");
+	// var regionLink = $("#regionLink a").attr("href");
+	// $("a.regionLink2").attr("href", regionLink);
+	// var interactiveLink = $("#interactiveLink a").attr("href");
+	// $("a.photoLink").attr("href", interactiveLink);
+	// $("a.videoLink").attr("href", interactiveLink);
 	$(".panel").hide(); //Hide all content
 	$("ul.tabbedContentNav li:first").addClass("active").show(); //Activate first tab
 	$(".panel:first").show(); //Show first tab content

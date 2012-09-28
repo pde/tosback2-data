@@ -68,6 +68,7 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1512
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15124|15064|15064.15124|Y">&nbsp; Earrings</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15127|0|1|Category|15127|15064|15064.15127">&nbsp; Men\'s Jewelry</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|20564|15064|15064.20564|Y">&nbsp; Colors of Diamonds</a></li>');
+document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15129|0|1|Category|15129|15064|15064.15129">&nbsp; Gift Sets</a></li>');
 document.writeln('<li><a href="//personalize.kay.com/kay1.html?q=category:diamond_jewelry">&nbsp; Personalized Jewelry</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15125|0|1|Category|15125|15064|15064.15125">&nbsp; More Diamond Jewelry</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProductsAll|10101|10001|-1|15064|0|1|Category|15064|15064|15064">&nbsp; View All</a></li>');
@@ -127,7 +128,6 @@ document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|1815
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15471|15095|15095.15471|Y">&nbsp; Citizen</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|23055|15095|15095.23055|Y">&nbsp; Citizen Signature</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|15470|15095|15095.15470|Y">&nbsp; Bulova</a></li>');
-document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|21582|15095|15095.21582|Y">&nbsp; BulovaAccutron</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'category|10101|10001|-1|22376|15095|15095.22376|Y">&nbsp; Bulova Precisionist</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProducts|10101|10001|-1|15473|0|1|Category|15473|15095|15095.15473">&nbsp; Pocket Watches</a></li>');
 document.writeln('<li><a href="//www.kay.com'+path+'categoryProductsAll|10101|10001|-1|15095|0|1|Category|15095|15095|15095">&nbsp; View All</a></li>');

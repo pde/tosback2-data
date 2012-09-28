@@ -272,24 +272,43 @@ function prepareChatLink() {
 		var serviceCode = jQuery('input#additionalSupportServiceCodeForChat').val();
 		var regionCode = jQuery('input#additionalSupportRegionFolderCode').val();
 		var pageName = jQuery('input#pageNameForChat').val();
-
 		if( serviceCode != '820' && serviceCode != '821' ){
-			var url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_sw.aspx';
-			if ( serviceCode == '803' ||
-					serviceCode == '812' ||
-					serviceCode == '813' ||
-					serviceCode == '814' ) {
-				url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx';
-			}else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'main') {
-				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=61';
-			}else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'wifi') {
-				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=61';
-			}
-			else if ( regionCode.indexOf('71') == 0 && serviceCode == '801' && pageName == 'article') {
-				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=64';
-			}else if ( regionCode.indexOf('71') == 0 ) {
-				url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx';
-			}
+			var url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_sw.aspx'; 
+			/*DLS start*/
+				if (serviceCode == '801' && regionCode.indexOf('72') == 0 && (pageName == 'main' || pageName == 'welcome' || pageName == 'search' || pageName == 'wifi' || pageName == 'email')) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_sw.aspx?ChatRefId=65';
+				}
+				else if (serviceCode == '801' && regionCode.indexOf('71') == 0 && (pageName == 'main' || pageName == 'welcome' || pageName == 'search' || pageName == 'wifi' || pageName == 'email')) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=64';
+				}
+				else if (serviceCode == '801' && pageName == 'article' && regionCode.indexOf('72') == 0) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_sw.aspx?ChatRefId=62';
+				}
+				else if (serviceCode == '801' && pageName == 'article' && regionCode.indexOf('71') == 0) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_c2c_dsl_se.aspx?ChatRefId=61';
+				}
+			/*DLS end*/
+			/*u-verse start*/
+				else if ((serviceCode == '803' || serviceCode == '812' || serviceCode == '813' || serviceCode == '814') && pageName == 'article' && (regionCode.indexOf('71') == 0 || regionCode.indexOf('72') == 0)) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx?ChatRefId=63';
+				}
+				else if (serviceCode == '803' && (pageName == 'main' || pageName == 'search') && (regionCode.indexOf('71') == 0 || regionCode.indexOf('72') == 0)) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx?ChatRefId=66';
+				}
+				else if (serviceCode == '812' && (pageName == 'main' || pageName == 'welcome' || pageName == 'search' || pageName == 'wifi' || pageName == 'email') && (regionCode.indexOf('71') == 0 || regionCode.indexOf('72') == 0)) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx?ChatRefId=66';
+				}
+				else if (serviceCode == '813' && (pageName == 'main' || pageName == 'welcome' || pageName == 'search') && (regionCode.indexOf('71') == 0 || regionCode.indexOf('72') == 0)) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx?ChatRefId=66';
+				}
+				else if (serviceCode == '814' && (pageName == 'main' || pageName == 'welcome' || pageName == 'search') && (regionCode.indexOf('71') == 0 || regionCode.indexOf('72') == 0)) {
+					url = 'https://pattta.att.motive.com/netagent/questionnaire_uverse.aspx?ChatRefId=66';
+				}
+			/*u-verse-end*/
+			/*Fix for IE - PROD12-2830*/
+			if (jQuery.browser.msie) {
+			    jQuery('a.chat').attr("href","javascript:void(0);");
+			  }
 			var popup_options = 'menubar=no,toolbar=no,scrollbars=no,resizable=no,width=472,height=350';
 			var newWin = window.open(url, "attchat", popup_options);
 			newWin.focus();

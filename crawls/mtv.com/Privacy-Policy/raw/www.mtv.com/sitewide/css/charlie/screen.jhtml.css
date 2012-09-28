@@ -24,8 +24,8 @@ background: #1A1A1A url(themes/charlie-css-default/hat.gif) no-repeat 50% 0;
 position: relative;
 width: 976px;
 margin: 0 auto;
-padding-top: 111px; 
-/*padding-top:55px; by johns 4 nav redisign. do not delete*/
+/* padding-top: 111px; by johns 4 nav redisign. do not delete*/
+padding-top:55px;
 }
 #container-inner.franchise{
 padding-top: 0;
@@ -57,7 +57,7 @@ background: #0d0d0d url(../../images/u/footer-bgfade.gif) repeat-x top left;
 }
 /* hdr */
 #header{
-margin: -8px 0 0 0 !important;
+/*margin: -8px 0 0 0 !important;*/
 background-color: #000;
 _margin-top:-120px;
 _margin-bottom:-120px;
@@ -393,14 +393,19 @@ div#nav.globalNav div.navLogoToolTip{ border: 1px solid #000; padding: 5px; posi
 .flux4Widget .userBar .myStuffElement .publishToTimeline {padding-top:4px;}
 .flux4Widget .userBar .myStuffElement { float: right; margin-right: -1px; margin-top: -2px;}
 .flux4 a, .Flux .flux4 a, .flux4 .link { color: #39BFA8; cursor: pointer; font-size: 12px; text-decoration: none; }
-.flux 4 a:hover, .Flux flux4 a:hover{ background-color: #39BFA8; text-decoration:none;}
+.flux4 a.tabLink, .flux4 a.bigLink {color:#000;}
+.flux4 a:hover, .Flux flux4 a:hover{ background-color: #39BFA8; text-decoration:none;}
 
 /* SPRITE */
 .flux4 .thirdPartyAuth,
 .flux4 .overlayContentWrapper .closeButton,
+.flux4 .overlayContentWrapper.flyoutOverlay .closeButton,
 .flux4 .signinForm a.primaryButton { background-image:url('../../../global/music/images/flux4_sprites.png');}
 .flux4 .signinForm a.primaryButton { width:100px; height:30px;}
-.flux4 .overlayContentWrapper .closeButton { background-position:-22px -22px; width:35px; height:28px; margin: 10px; top:-9px; right:0;}
+.flux4 .overlayContentWrapper .closeButton,
+.flux4 .overlayContentWrapper.flyoutOverlay .closeButton { background-position:-22px -22px; width:35px; height:28px; margin: 10px; top:-9px; right:0;}
+.flux4 .timelineOverlayContentWrapper.flyoutOverlay .closeButton {background-position:-34px -50px; width:30px; height:20px;top:0;}
+
 /*FLUX4 PROFILE OVERLAY*/
 .flux4Widget .userProfileOverlay .profileHeader { background-color: #EEEEEE; display: block; padding: 15px; }
 .flux4Widget .userProfileOverlay .profileHeader .userTitle {line-height: 24px; margin-top: 18px;}
@@ -487,7 +492,7 @@ div#nav.globalNav ul#navlist div.grid ul.wide ul li{ font-family:Tahoma,Verdana,
 div#nav.globalNav ul#navlist div.grid ul.wide ul li a{ text-transform: none; font-weight: bold; font-size: 11px; display: block; color: #1F1F1F; }
 div#nav.globalNav ul#navlist div.grid ul.wide ul li a:hover{ background-color: #39BFA8; color: #fff; }
 div#nav.globalNav ul#navlist div.grid ul.wide ul li.allshowsLabel{ display: inline-block; }
-div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows{ font-weight: normal; background-color: #39BFA8; color: #fff; padding-right: 5px !important; }
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows{ font-weight: normal; color: #fff; padding-right: 5px !important; }
 div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows:after{ content: '\00BB'; }
 div#nav.globalNav ul#navlist div.grid ul.centerCol li.first a,
 div#nav.globalNav ul#navlist div.grid ul.rightBlock li.first a,
@@ -893,7 +898,7 @@ background-color:#fff; padding:0; margin-bottom: 20px; border:1px solid #41B0A0;
 }
 .flux4Widget .activityFeed .commentForm .userAvatarWithPointer {
 background:url('../../../global/music/images/flux4_sprites.png') 0 -77px #fff;
-position:absolute; left: 35px; height:25px; width:10px;
+position:absolute; height:25px; width:10px;
 }
 .group-article-ab .flux4Widget .activityFeed {width:619px;}
 .group-article-ab .flux4Widget .activityFeed .commentForm .userAvatarWithPointer {
@@ -997,8 +1002,9 @@ background-position:-56px -341px;
 -ms-filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
 filter: progid:DXImageTransform.Microsoft.gradient(enabled=false) !important;
 }
-#wrap .flux4Widget .activityFeed a:link,
-#wrap .flux4Widget .activityFeed a:visited {color:#D489B6; font-size: 11px; border:0;text-decoration:none;}
+.flux4Widget .activityFeed a,
+.flux4Widget .activityFeed a:link,
+.flux4Widget .activityFeed a:visited {color:#D489B6; font-size: 11px; border:0;text-decoration:none;}
 #wrap #wActivity .activityFeed .bottomActionLinks a:link,
 #wrap #wActivity .activityFeed .bottomActionLinks a:visited {
 color:#fff; font-weight:bold; font-size: 13px; text-decoration:none; text-transform:uppercase; text-align:center;line-height:20px;
@@ -4735,7 +4741,9 @@ margin-right:15px;
 }
 #header .navWrap{
 width: 976px;
+height:54px;
 }
+
 #wrap .chart_list ol.lst .numbr{
 color:#999999;
 float:left;
@@ -5841,7 +5849,7 @@ background: white url('../../../global/music/images/indicator.gif') right center
 .ac_results li.ac_odd{
 }
 .ac_results li.ac_over{
-background-color: #4698CA;
+/*background-color: #4698CA;*/
 color: #fff;
 }
 /* Music Videos search module */
@@ -6212,6 +6220,377 @@ width: 385px;
 height: 11px;
 z-index: 5000 !important;
 }
+
+/* testing */
+div.elementContent{ height:15px !important;}
+.flux4Widget .userBar ul.elements{margin-top:3px;}
+.flux4Widget .userBar ul.elements .withDropdown{height:15px !important;}
+
+.flux4Widget .userBar .barElement, .flux4Widget .userBar ul.elements .elementContainer{height:15px !important;}
+.flux4Widget .userBar .backgroundPanel{height:25px !important;}
+.flux4Widget .userBar .bar{height:15px !important;}
+.flux4Widget .userBar .myStuffElement .elementContainer .elementContent {
+line-height: normal;
+}
+
+.flux4Widget .userBar .dropdownAnimation{
+top:32px;	
+}
+
+.flux4Widget .userBar .myStuffElement .loggedOut .thirdPartyAuth{
+display:none; visibility:hidden;
+}
+
+#nav .userBar a.signIn {
+text-transform:none;
+}
+
+/*end test*/
+
+#container-outer #nav-container-span { 
+height: 49px;
+}
+
+div#nav.globalNav{
+background-color:#000;
+height:49px;	
+}
+
+div#nav.globalNav ul#topnavLinks li.first{
+margin: 0 0 0 23px;
+}
+
+div#nav.globalNav ul#topnavLinks li{
+margin:0 0 0 20px;
+}
+
+div#nav.globalNav ul#topnavLinks li a{
+color: #8f8f8f;
+font-size:12px;
+}
+
+div#nav.globalNav ul#topnavLinks li a:hover{
+text-decoration:none;
+color:#00bbef;
+}
+
+div#nav.globalNav ul#navlist li a.n-link {
+color:#fff;
+}
+
+div#nav.globalNav ul#navlist li.hover a.n-link {
+color:#00bbef;
+background-color:inherit;
+}
+
+div#nav.globalNav ul#navlist li div.grid {
+border-color:#000;
+background-color:#232323;
+
+}
+
+div#nav.globalNav ul#navlist div.grid ul.centerCol{
+border-right: 1px dotted #666; 
+}
+
+div#nav.globalNav ul#navlist div.grid ul.last {
+border: 0 none;
+}
+
+div#nav.globalNav ul#navlist div.grid li a {
+color:#fff; 
+font-family: nimbus-sans, sans-serif;
+font-size: 12px;
+}
+
+div#nav.globalNav ul#navlist div.grid li a:hover {
+background:none; 
+color: #00bbf0;
+}
+
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a{
+color:#fff;
+font-size:12px;
+}
+
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a:hover{
+background:none; 
+color: #00bbf0;
+}
+
+div#nav.globalNav div#mtvLogo{
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0 8px transparent;
+width: 59px;
+height: 46px;
+margin:0 0 0 5px;
+padding:0;
+}
+
+#nav div#searchmtv form input#searchmtv-text {
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -60px 7px #000000;
+width: 142px;
+border-bottom: 1px solid #666;
+border-top:none;
+border-left:none;
+border-right:none;
+color:#8f8f8f;
+padding-left:15px;
+font-size:12px;
+font-weight:bold;
+height:14px;
+text-transform:lowercase;
+}
+
+#nav ul#socialIcons li{	
+display:inline;
+float:left;
+margin-right:5px;	
+}
+
+div#nav.globalNav ul#navlist{
+width: 450px;
+height:30px;
+margin:0;
+}
+
+div#nav.globalNav ul#navlist li.toplvl{
+margin:0 0 0 16px;
+padding:0 5px 0 5px;
+}
+
+div#nav.globalNav ul#navlist li#n-music a.n-link{
+/*width:93px;*/
+width:auto;
+}
+
+div#nav.globalNav ul#navlist li#n-shows a.n-link {
+/*width: 96px;*/
+width:auto;
+}
+
+div#nav.globalNav ul#navlist li#n-news a.n-link {
+/* width: 79px;*/
+width:auto;
+}
+
+div#nav.globalNav ul#navlist li#n-movies a.n-link {
+/*width: 109px;*/
+width:auto;
+}
+
+#nav ul#socialIcons {
+margin-top:7px;;
+margin-bottom:0;	
+display:inline-block;
+padding-left:0px;
+
+}
+
+#nav ul#socialIcons li a{
+width:22px;
+height:22px;
+display:block;
+text-indent:-9999999px;
+}
+
+div#nav.globalNav ul#navlist li a.n-link{
+font-size:30px;
+letter-spacing: -0.25px;
+line-height:30px;
+margin-top:0;
+}
+
+#nav ul#socialIcons li a#si-facebook{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -39px #000000;
+}
+
+#nav ul#socialIcons li a#si-facebook:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -39px #000000;
+}
+
+#nav ul#socialIcons li a#si-twitter{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -63px #000000;
+}
+
+#nav ul#socialIcons li a#si-twitter:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -63px #000000;
+}
+
+#nav ul#socialIcons li a#si-tumblr{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -87px #000000;
+}
+
+#nav ul#socialIcons li a#si-tumblr:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -87px #000000;
+}
+
+#nav ul#socialIcons li a#si-google{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -111px #000000;
+}
+
+#nav ul#socialIcons li a#si-google:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -111px #000000;
+}
+
+#nav ul#socialIcons li a#si-pintrest{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -135px #000000;
+}
+
+#nav ul#socialIcons li a#si-pintrest:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -135px #000000;
+}
+
+#nav ul#socialIcons li a#si-fourSquare{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll 0px -159px #000000;
+}
+
+#nav ul#socialIcons li a#si-fourSquare:hover{	
+background: url("../../images/charlie/sprites/nav_sprite.png") no-repeat scroll -24px -159px #000000;
+}
+
+div#searchmtv form{
+margin-top:0px;
+}
+
+div#nav.globalNav ul#navlist ul.gridContainer.hover li div#music-grid{
+left:-94px;
+}
+
+div#nav.globalNav ul#navlist ul.gridContainer.hover li div#shows-grid{
+left:-199px;
+}
+
+div#nav.globalNav ul#navlist ul.gridContainer.hover li div#news-grid{
+left:-314px;
+}
+
+div#nav.globalNav ul#navlist ul.gridContainer.hover li div#movies-grid{
+left:-404px;
+}
+
+div.ac_results{
+width:207px !important;
+/*top:47px !important;*/
+background-color:#232323;	
+border: 2px solid #000000;
+}
+
+div.ac_results li {
+color: #fff;
+font-size: 12px;
+}
+
+div.ac_results li:hover{
+cursor:pointer;
+color:#fff;
+background-color:#e62970;
+
+}
+
+div#searchmtv form button{
+line-height:10px;
+}
+
+div#searchmtv form button#searchmtv-btn:hover, div#searchmtv form button#searchweb-btn:hover{
+background-color:#fff;
+color:#000;
+}
+
+div#searchmtv form button, div#searchmtvF form button{
+font-family: nimbus-sans, sans-serif;
+}
+
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows {
+color: #8f8f8f;
+}
+
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows:hover {
+color: #00bbf0;
+}
+
+div#nav.globalNav ul#navlist div.grid ul.wide ul li a.allshows:after{ content: '\203A'; }
+
+#wUserBar{
+min-height:15px;	
+}
+
+div#nav div#quickmenuWrap{min-height:15px;}
+
+/***************************************** inner pages only **********************************/
+
+div#nav.globalNav ul#topnavLinks {
+margin: 0 0 0 0;
+height:18px;
+}
+
+div#nav.globalNav ul#navlist li a.n-link{
+padding:0;
+}
+
+div#searchmtv form button#searchweb-btn, div#searchmtvF form button#searchwebF-btn{
+color:#fff;
+}
+
+div#searchmtv form button#searchmtv-btn, div#searchmtvF form button#searchmtvF-btn {
+background-color: #E62970;
+}
+
+div#searchmtv form button {
+height: 20px;
+padding-bottom: 4px;
+text-transform: lowercase;
+width: 30px;
+line-height:10px;
+font-family: nimbus-sans, sans-serif;
+}
+
+div#searchmtv, div#searchmtvF {
+height: auto;
+margin-top:5px;
+}
+
+div#nav-container-span-old{
+width:100%;
+height:49px;
+background-color:#000;
+}
+
+div#ad-container-span-old{
+width:100%;
+/*min-height:96px;*/
+height:inherit;
+background-color:#8f8f8f;
+clear:both;
+float:none;
+}
+
+div#ad-container-span-old div#header{
+background-color:#8f8f8f;
+/*width:728px;*/
+margin:0 auto;
+}
+
+div#nav.globalNav div.navLogoToolTip {
+left: auto;
+position: absolute;
+top: 50px;
+}
+
+div#nav-container-span-old div#nav.globalNav{
+width:976px;
+position:static;
+margin:0 auto;
+}
+
+#container-inner{
+padding-top:0px;
+}
+
+#container-inner.franchise #wrap-inner{
+padding-top:10px;
+}
+
+div#nav-container-span-old div#nav.globalNav ul#navlist li.hover, div#nav-container-span div#nav.globalNav ul#navlist li.hover{ background-color:#232323;}
 
 /*Title:MTV ie/win fixes*/
 /* for descenders */

@@ -304,6 +304,15 @@ switch(awStrVertical){
 		//
 }
 
+//If product token is in the cookies, extract it and copy demographic data over to eVars
+if(typeof(edbTokens)!="undefined"&&edbTokens.productToken!=null){
+	//These are still being defined by business. Double check latest requirements before implementing.
+	//prop46 / eVar46 Membership Type
+	//prop47 / eVar47 Member ID
+	s.eVar47 = edbTokens.productToken.id;
+	s.prop47 = s.eVar47;
+	//prop48 / eVar48 Zip
+}
 // All conent under 29-95 needs to be categorized as under channel/SSL1 'entertainment',
 // so add that to the front of the channel path...
 if (awStrChannelPath.substr(0,5)=='29-95') {awStrChannelPath = 'entertainment :: ' + awStrChannelPath;}

@@ -337,7 +337,13 @@ if($('#quickDTVProg').is('.lightboxon')) {
 	 $('#lang-title2 h3').show();
  }
  
- 
+ if($('#TWD_nr').is('.lightboxon')) {
+	 currentLocation = '.att.com/newsroom/releases/2012/att_twd_8-15-12.html';
+	 stateID = ' ';
+	 linkTitle = "It can wait";
+	 $('#lang-title h3').hide();
+	 $('#lang-title2 h3').show();
+ }
 
 	//DO NOT CHANGE THE ORDER OF THIS LIST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  WHEN ADDING A NEW STATE, PLEASE BE AWARE THAT THE STATES POPULATE HORIZONTALLY ACROSS THE SCREEN
 	

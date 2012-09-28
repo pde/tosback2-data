@@ -46,7 +46,13 @@ var bc = bc || {};
                 //TODO:Check why was this added.
                 //$(".ui-dialog-content").dialog("close");
                 modalUrl = jQuery("#hdnModalRegistrationUrl").val();
-				var iframe = $('#registrationDialogDiv').find('iframe');
+				var iframe = jQuery('#registrationDialogDiv').find('iframe');
+			    
+			    if (window.location.protocol === "https:") {
+			        modalUrl = modalUrl.substring(0, modalUrl.indexOf("scheme=")) + "scheme=https";
+			    } else {
+			        modalUrl = modalUrl.substring(0, modalUrl.indexOf("scheme=")) + "scheme=http";
+			    }
                 iframe.attr('src',modalUrl);                
 				iframe.attr('width', 0);
 				iframe.attr('height', 0);

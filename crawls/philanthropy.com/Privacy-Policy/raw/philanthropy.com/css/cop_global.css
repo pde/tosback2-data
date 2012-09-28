@@ -25,6 +25,7 @@ html {overflow-y: scroll;}
 .column {display:block; float:left;} /* make adjacent block level elements act like columns */
 .hide {display:none;}
 .bold {font-weight:bold;}
+.overflowhidden {overflow:hidden;}
 
 .wrap {width:1003px; margin: 0px auto; }
 .wrap .top-corners, .wrap .top-corners-bn {display:none;}
@@ -1136,7 +1137,66 @@ form fieldset .job-ad-search-phrases { float:left; font-style:italic; clear:both
 #share-popup ul li {float:none; padding-bottom:7px;}
 
 /* premium */
-.premium {width:581px; background:#E6EFF4; border:1px solid #CCCCCC; padding:10px 10px 20px; overflow:hidden;}
+.premium-border { border-radius:27px; margin: 0 auto; padding:7px; position:relative; width:741px; background:rgba(82, 82, 82, 0.1); }
+.premium-wrap { position:absolute; width:100%; left:0; z-index:3001;}
+.premium {width:739px;  padding:0; overflow:hidden; position:relative; margin: 0 auto;
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+background:#fff;
+background-image: linear-gradient(bottom, rgb(255,255,255) 0%, rgb(230,230,230) 100%);
+background-image: -o-linear-gradient(bottom, rgb(255,255,255) 0%, rgb(230,230,230) 100%);
+background-image: -moz-linear-gradient(bottom, rgb(255,255,255) 0%, rgb(230,230,230) 100%);
+background-image: -webkit-linear-gradient(bottom, rgb(255,255,255) 0%, rgb(230,230,230) 100%);
+background-image: -ms-linear-gradient(bottom, rgb(255,255,255) 0%, rgb(230,230,230) 100%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0, rgb(255,255,255)),
+	color-stop(1, rgb(230,230,230))
+);
+}
+
+.premium-article-overlay {
+	position:absolute;
+	left:0;
+	width: 100%;
+	z-index: 3000;
+	height: 100%;
+	background:#000;
+	opacity:0.3;
+}
+
+.premium-article-overlay-grad {
+	top:200px;
+	height:200px;
+	background:none;
+	background-image: linear-gradient(bottom, rgba(0,0,0, 1) 0%, rgba(255,250,255, 0) 100%);
+	background-image: -o-linear-gradient(bottom, rgba(0,0,0, 1) 0%, rgba(255,250,255, 0) 100%);
+	background-image: -moz-linear-gradient(bottom, rgba(0,0,0, 1) 0%, rgba(255,250,255, 0) 100%);
+	background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,1) 0%, rgba(255,250,255,0) 100%);
+	background-image: -ms-linear-gradient(bottom, rgba(0,0,0, 1) 0%, rgba(255,250,255) 100%);
+
+background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.0, rgba(0,0,0, 1)),
+    color-stop(1, rgba(255,250,255, 0))
+);
+filter: progid:DXImageTransform.Microsoft.gradient(
+  startColorstr=#00FFFFFF, endColorstr=#49000000
+);
+
+-ms-filter: progid:DXImageTransform.Microsoft.gradient(
+  startColorstr=#00FFFFFF, endColorstr=#49000000
+);
+
+}
+.premium-article-overlay-solid { top:400px; }
+
 .premium h2 {font-size:16px;}
 .premium h3 {font-size:1.1em;}
 .premium .subscribe {background:url('../img/key.gif') 0 3px no-repeat; padding-left:25px;}

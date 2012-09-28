@@ -48,7 +48,7 @@
 	 
     
     newNavLexusS.categoryModelES= 'ES';
-    newNavLexusS.categoryModelPriceES= 'Starting at $36,725';
+    newNavLexusS.categoryModelPriceES= 'Starting at $36,100';
     newNavLexusS.categoryModelEndPriceES= '';
     newNavLexusS.categoryModelCodeES= '9000';
     
@@ -63,12 +63,12 @@
                       
                 newNavLexusS.ESFeature4='FWD';
                       
-                newNavLexusS.ESFeature5='19/27 City/Hwy MPG';
+                newNavLexusS.ESFeature5='21/31 City/Hwy MPG';
         
 	 
     
     newNavLexusS.categoryModelIS= 'IS';
-    newNavLexusS.categoryModelPriceIS= 'Starting at $33,795';
+    newNavLexusS.categoryModelPriceIS= 'Starting at $35,065';
     newNavLexusS.categoryModelEndPriceIS= '';
     newNavLexusS.categoryModelCodeIS= '95';
     
@@ -115,7 +115,7 @@
 	 
     
     newNavLexusFP.categoryModelISF= 'ISF';
-    newNavLexusFP.categoryModelPriceISF= 'Starting at $61,300';
+    newNavLexusFP.categoryModelPriceISF= 'Starting at $61,600';
     newNavLexusFP.categoryModelEndPriceISF= '';
     newNavLexusFP.categoryModelCodeISF= '9550';
     
@@ -142,7 +142,7 @@
   
     
     newNavLexusC.categoryModelISC= 'ISC';
-    newNavLexusC.categoryModelPriceISC= 'Starting at $41,190';
+    newNavLexusC.categoryModelPriceISC= 'Starting at $42,510';
     newNavLexusC.categoryModelEndPriceISC= '';
     newNavLexusC.categoryModelCodeISC= '9529';
     
@@ -277,6 +277,26 @@
         
 	 
     
+    newNavLexusH.categoryModelESh= 'ESh';
+    newNavLexusH.categoryModelPriceESh= 'Starting at $38,850';
+    newNavLexusH.categoryModelEndPriceESh= '';
+    newNavLexusH.categoryModelCodeESh= '9000';
+    
+                      
+                newNavLexusH.EShFeature0='2.5-liter Hybrid';
+                      
+                newNavLexusH.EShFeature1='';
+                      
+                newNavLexusH.EShFeature2='';
+                      
+                newNavLexusH.EShFeature3='0-60 mph in 8.1 sec <span class="span_disclaim" name="PREMIUMFUEL">[<a href="#ESh_Disclaimer_1" class="link_disclaim">1</a>]</span><span class="span_disclaim" name="PERFFIGS">[<a href="#ESh_Disclaimer_2" class="link_disclaim">2</a>]</span>';
+                      
+                newNavLexusH.EShFeature4='FWD';
+                      
+                newNavLexusH.EShFeature5='40/39 City/Hwy MPG';
+        
+	 
+    
     newNavLexusH.categoryModelRXh= 'RXh';
     newNavLexusH.categoryModelPriceRXh= 'Starting at $45,910';
     newNavLexusH.categoryModelEndPriceRXh= '';
@@ -298,7 +318,7 @@
 	 
     
     newNavLexusH.categoryModelCTh= 'CTh';
-    newNavLexusH.categoryModelPriceCTh= 'Starting at $29,120';
+    newNavLexusH.categoryModelPriceCTh= 'Starting at $31,850';
     newNavLexusH.categoryModelEndPriceCTh= '';
     newNavLexusH.categoryModelCodeCTh= '9535';
     

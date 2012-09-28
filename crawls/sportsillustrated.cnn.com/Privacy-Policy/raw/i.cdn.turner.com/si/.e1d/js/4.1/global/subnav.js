@@ -149,7 +149,8 @@ siNav.load({
 		{ "u":"/football/ncaa/polls/ap/?eref=sinav",		"l":"Rankings" },
 		{ "u":"/football/ncaa/schedules/weekly/?eref=sinav",		"l":"Schedules" },
 		{ "u":"/football/ncaa/stats/divia/?eref=sinav",					"l":"Stats" },
-		{ "u":"/podcasts/stewart_mandel/?eref=sinav",					"l":"Podcasts" }
+		{ "u":"/podcasts/stewart_mandel/?eref=sinav",					"l":"Podcasts" },
+		{ "u":"/heisman/?eref=sinav",					"l":"Heisman Watch" }
 	],
 	"mlb" : [
 		{ "u": "/baseball/mlb/scoreboards/today/?eref=sinav",	"l":"Scores" },
@@ -522,6 +523,7 @@ siNav.load({
 		{ "u": "/specials/futuregamechangers/?eref=sinav",			"l":"Future Game Changers" },
 		{ "u": "/behindthemic/?eref=sinav",			"l":"Behind The Mic" },
 		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
+		{ "u": "/specials/underdogs/?eref=sinav",			"l":"Underdogs" },
 		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }
 	]
 });

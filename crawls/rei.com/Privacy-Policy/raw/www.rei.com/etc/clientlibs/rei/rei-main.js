@@ -1989,7 +1989,7 @@ function O_GoT(_p) {
     _d.write('<a href=\'javascript:O_LC()\'>' + _p + '</a>');
     _fPe()
 }
-/* $Id: minicart.class.js 4490 2012-08-06 16:12:58Z jspires $ */
+/* $Id: minicart.class.js 4583 2012-08-08 18:45:00Z agatlab $ */
 
 // Requirements: 
 //	jQuery
@@ -2348,6 +2348,8 @@ function Minicart() {
 				itemTotalPrice = parseFloat(item.totalProductPrice).toFixed(2);
 				carouselItems++;
 
+				var isPromoCard = (item.certificateInfo && item.certificateInfo.promoGiftCertificate) ? item.certificateInfo.promoGiftCertificate : false;
+
 				//Build Price Info
 				if((itemSavedAmount == 0) || (isNaN(itemSalePrice)) || (isNaN(itemSavedAmount))) {
 					priceInfo.push(["Price: ", formatDollars(itemPrice)]);
@@ -2376,12 +2378,13 @@ function Minicart() {
 					attr.value = "80";
 					itemImg.setAttributeNode(attr);
 					
-					//attr = document.createAttribute("alt");
-					//attr.value = item.skuDescription;
-					//itemImg.setAttributeNode(attr);
-					
 					attr = document.createAttribute("src");
-					attr.value = "/skuimage/" + item.sku + "/80";
+					if(isPromoCard){
+						attr.value = "/img/holidayPromoCard.png";
+					}else{
+						attr.value = "/skuimage/" + item.sku + "/80";
+					}
+					
 					itemImg.setAttributeNode(attr);
 				
 				itemLi.appendChild(itemImg);
@@ -2392,7 +2395,11 @@ function Minicart() {
 					attr.value = "minicartProductName";
 					itemDiv.setAttributeNode(attr);
 					
-					itemDiv.appendChild(document.createTextNode(skuDescription.firstLine));
+					if(isPromoCard){
+						itemDiv.appendChild(document.createTextNode("Holiday Promo Card"));
+					}else{
+						itemDiv.appendChild(document.createTextNode(skuDescription.firstLine));
+					}
 					if (skuDescription.secondLine) {
 						itemDiv.appendChild(document.createElement("br"));
 						itemDiv.appendChild(document.createTextNode(skuDescription.secondLine));

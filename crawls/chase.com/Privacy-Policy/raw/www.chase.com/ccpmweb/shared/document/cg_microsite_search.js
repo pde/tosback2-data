@@ -98,7 +98,9 @@ function navigateMicrositeCategory(creditCardUrl,category)
 
 function navigateJPMorganCategories(pagetype,restrict,query)
 {
-  var url = "http://query.jpmorgan.com/inetSearch/index.jsp?pageType=" + pagetype +"&q=" + query +"&sort=2&start=1&num=10&lr=&restrict=" + restrict +"&gce=&siteID=&searchoption=&querytext=" + query;
+  var url = "http://query.jpmorgan.com/inetSearch/index_redesign.jsp?pageType=" + pagetype +"&q=" + query +"&sort=2&start=1&num=10&lr=&restrict=" + restrict +"&gce=&siteID=&searchoption=&querytext=" + query+"&site=jpmorgan";
+  if(pagetype == "_JPMC")
+	url="http://www.jpmorganchase.com/corporate/Home/search.htm?search_string="+query;
   window.location.href = url;
   return false;
 }

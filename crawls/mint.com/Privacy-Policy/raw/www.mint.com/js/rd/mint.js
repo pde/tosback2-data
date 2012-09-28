@@ -789,7 +789,7 @@ var changeTestimonial = function() {
     }
   }
 
-  var t = setInterval(changeTestimonial , 3000);	
+  var t = setInterval(changeTestimonial , 5000);	
 
 
 

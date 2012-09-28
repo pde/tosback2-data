@@ -40,42 +40,29 @@ s.searchTermVariable = 'eVar4';
 s.prop14 = 'D=pageURL';
 s.eVar16 = 'D=pageURL';
 
-//Check if the referrer is not an internal url or paypal
-if (document.referrer.indexOf(location.hostname) == -1){
-     if (document.referrer.indexOf("paypal") == -1) {
-        document.cookie="omniReferrerValue="+document.referrer+";domain=.shopjustice.com;path=/";
-     }
-}
-
-//Extract cookie data
-function getCookie(c_name){
-	var i,x,y,ARRcookies=document.cookie.split(";");
-	for (i=0;i<ARRcookies.length;i++)     {
-	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-	  x=x.replace(/^\s+|\s+$/g,"");
-	  if (x==c_name) {
-		   return unescape(y);
-		   }
-	}}
-	
-
-//Check if the referrer is paypal on the checkout page and overwrite it
-if (document.referrer.indexOf("paypal") >= 0){
-	if (document.URL.indexOf("/checkout/review") >= 0 ){ 
-		if (getCookie('omniReferrerValue') == "") {
-			s._1_referrer='1';
-		}
-		else{
-			s.referrer = getCookie('omniReferrerValue');
-		}
-	}
-}
 
 /* Plugin Config */
 s.usePlugins=true
 
 function s_doPlugins(s) {
+
+	// Optimizely SiteCatalyst Integration - Added by Keystone-08292012
+	 window.optimizely = window.optimizely || [];
+	 window.optimizely.push("sc_activate");
+
+	/* PayPal Referrer Check - Added by Keystone-08172012 */
+	
+	   var sp_ref = document.referrer;
+	   var sp_drl = document.URL;
+	   var pp = "paypal.com";
+	   var tb_orv = s.c_r('s_tb_orv');
+	
+		 	
+	//Check for external referrer and set cookie if not internal using s.c_w 
+	if(sp_ref.indexOf(sp_drl)==-1&&sp_ref.indexOf(pp)==-1){s.c_w('s_tb_orv',sp_ref,0);}
+		
+	//Check for PP and TB checkout and set or drop referrer
+	if(sp_ref.indexOf(pp)!=-1&&sp_drl.indexOf('checkout/review')!=-1){if(tb_orv){s.referrer=tb_orv}else{s._1_referrer='1';}}
 
   /* External Campaigns */
 	if(!s.campaign){ 

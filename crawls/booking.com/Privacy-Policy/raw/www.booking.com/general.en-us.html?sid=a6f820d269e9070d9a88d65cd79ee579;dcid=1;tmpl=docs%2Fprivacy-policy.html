@@ -7,6 +7,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml"
 class="b_firefox_3"
 >
 <head profile="http://a9.com/-/spec/opensearch/1.1/">
+ 
 <!-- start calendar_year_format.inc -->
 <!-- end calendar_year_format.inc -->
 <!-- start: global js include -->
@@ -18,7 +19,8 @@ var sNSExperimentsLoad = 'experiments_load';
 var sNSStartupLoad = 'startup_load';
 var b_experiments = {}, WIDTH, booking = {
 env : {
-"b_current_datetime" : '2012-08-17 20:21:49',
+'z_track_searchbox' : 1,
+"b_current_datetime" : '2012-09-29 01:19:54',
 "b_action" : 'general',
 "b_google_maps_key_params" : 'key=ABQIAAAAEG168dBcRndNV70R9mDglhSZn_smZpFKc3SoS1v7FyDshy3QMxSgeH0qWTH24Gc7je-iJ9DSXiNmcA&amp;client=gme-booking&indexing=true',
 "b_lang" : 'en',
@@ -46,7 +48,7 @@ b_aid: '304142',
 b_sid: 'a6f820d269e9070d9a88d65cd79ee579',
 ip_country: 'us',
 b_selected_currency: 'USD',
-pageview_id: '169c811e3e2b00bc',
+pageview_id: '10d9a40d24a9002f',
 aid: '304142',
 b_browser: 'firefox',
 b_browser_version: '3',
@@ -101,15 +103,18 @@ b_simple_weekdays_for_js: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
 b_long_weekdays: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
 b_short_months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
 b_short_months_abbr: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+b_site_experiment_sr_filter_creditcards_accepted: 0,
 new_av_calendar_can_be_tracked: true,
-b_site_experiment_calendar_lazy_init: 1,
-bse_tooltip_cleanup: 1,
-bse_tooltip_delegate: 1,
+b_should_track_show_first_hotel_rates: true,
+b_site_experiment_sr_sort_by_distance_from: 1,
 b_site_experiment_tooltip_hide_without_fadeout: 1,
+b_site_experiment_change_currency_performance: 1,
 b_site_experiment_tooltip_traversing: 1,
 is_v1_of_store_guest_data: 1,
 inandaround_more: "More",
 b_site_experiment_subscriber_reinforcement: 2,
+b_site_experiment_subscribe_nodates_users: 2,
+b_site_experiment_dealfinder_new_header: 1,
 b_site_experiment_hotel_photo_expose_throughout: 1,
 view_prices_enter_dates: 'To view prices and availability, please enter your dates.',
 no_blinking: false,
@@ -145,14 +150,15 @@ aid: 304142
 },
 touch_os: false,
 b_site_variant_calendar_days_allowed_fix: 1,
-calendar_days_allowed_number: 348,
+calendar_days_allowed_number: 364,
+b_site_experiment_rolling_calendar_year: 1,
 b_password_strength_msg: ['Weak','Fair ','Good','Strong','Very Strong'],
 b_show_passwd: 'View password',
 b_passwd_tooltip: 'Include capital letters, special characters, and numbers to increase your password strength ',
 b_site_experiment_social_plugins_footer: 1,
 // adding the show_social setting for affiliate partners
 b_site_experiment_lazy_load_print_css: 1,
-print_css_href: 'http://q.bstatic.com/static/css/print.2295.css',
+print_css_href: 'http://q.bstatic.com/static/css/print.2465.css',
 b_site_experiment_signup_expand: "1",
 b_hostname_signup: "www.booking.com",
 b_nonsecure_hostname_signup: "http://www.booking.com",
@@ -164,6 +170,8 @@ b_check_is_zinadev: 0,
 b_site_experiment_account_signin_redesign: 1,
 b_site_experiment_fb_likes: 1,
 b_site_experiment_bp_remove_cancellation_survey_2: 1,
+b_site_experiment_mybooking_grouping_ctas: 1,
+is_mybooking_grouping_ctas: 1,
 trackExperiment : function () { },
 "error" : {}
 },
@@ -175,6 +183,50 @@ booking[namespaceString] = {};
 function Tip() {};
 </script>
 <!--[if IE]> <script type="text/javascript"> document.createElement('time'); </script> <![endif]-->
+<script type="text/javascript">
+(function( booking ) {
+var dateFormats = {"short_date":"{short_month_name} {day_of_month}, {full_year}","short_date_with_weekday":"{short_weekday}, {short_month_name} {day_of_month}, {full_year}","short_date_without_year":" {short_month_name} {day_of_month}"},
+months = {"6":{"short_name":"Jun","name":"June"},"11":{"short_name":"Nov","name":"November"},"3":{"short_name":"Mar","name":"March"},"7":{"short_name":"Jul","name":"July"},"9":{"short_name":"Sept","name":"September"},"2":{"short_name":"Feb","name":"February"},"12":{"short_name":"Dec","name":"December"},"8":{"short_name":"Aug","name":"August"},"1":{"short_name":"Jan","name":"January"},"4":{"short_name":"Apr","name":"April"},"10":{"short_name":"Oct","name":"October"},"5":{"short_name":"May","name":"May"}},
+weekDays = {"6":{"short":"Sat","name":"Saturday","shortest":"Sa"},"4":{"short":"Thu","name":"Thursday","shortest":"Th"},"1":{"short":"Mon","name":"Monday","shortest":"Mo"},"3":{"short":"Wed","name":"Wednesday","shortest":"We"},"7":{"short":"Sun","name":"Sunday","shortest":"Su"},"2":{"short":"Tue","name":"Tuesday","shortest":"Tu"},"5":{"short":"Fri","name":"Friday","shortest":"Fr"}};
+if ( booking.formatter ) { return; }
+weekDays['0'] = weekDays['7'];
+booking.formatter = {
+date: function( dateString, format ) {
+var dateParts,
+dayIndex,
+weekDay,
+monthIndex,
+month,
+date = isNaN( Date.parse(dateString) ) ? false : new Date( dateString ),
+template = dateFormats[ format || 'short_date' ];
+if ( !date ) {
+dateString = dateString.replace( /-/g , '/' );
+date = isNaN( Date.parse(dateString) ) ? false : new Date( dateString );
+}
+if ( !template || !date ) { return false; }
+dayIndex = date.getDay();
+weekDay = weekDays[ dayIndex ];
+monthIndex = date.getMonth() + 1;
+month = months[ monthIndex ];
+dateParts = {
+day_of_month: date.getDate(),
+weekday: weekDay.name,
+short_weekday: weekDay.short,
+month: monthIndex,
+month_name: month.name,
+short_month_name: month.short_name,
+full_year: date.getFullYear()
+};
+return $.trim(template.replace(/{([^{}]*)}/g,
+function (a, b) {
+var r = dateParts[b];
+return typeof r === 'string' || typeof r === 'number' ? r : a;
+}
+));
+}
+};
+})( window.booking || {} );
+</script>
 <!-- end: global js include -->
 <meta http-equiv="content-language" content="en-us" />
 <meta http-equiv="content-script-type" content="text/javascript" />
@@ -183,7 +235,7 @@ function Tip() {};
 <meta http-equiv="window-target" content="_top" />
 <meta property="fb:page_id" content="131840030178250" />
 <meta property="og:type" content="company" />
-<meta property="og:title" content="Booking.com: 238,244 hotels worldwide. Book your hotel now!" />
+<meta property="og:title" content="Booking.com: 244,485 hotels worldwide. Book your hotel now!" />
 <meta property="og:image" content="http://q.bstatic.com/static/img/mobile/iphone/i_iphone_app.gif" />
 <meta property="og:description" content="Big savings on hotels in 41,000 destinations worldwide. Browse hotel reviews and find the guaranteed best price on hotels for all budgets." />
 <meta property="og:url" content="http://www.booking.com/general.html" />
@@ -207,7 +259,7 @@ function Tip() {};
 <link rel="alternate" type="text/html" hreflang="cs" href="http://www.booking.com/general.cs.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="Čeština" />
 <link rel="alternate" type="text/html" hreflang="hu" href="http://www.booking.com/general.hu.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="Magyar" />
 <link rel="alternate" type="text/html" hreflang="ro" href="http://www.booking.com/general.ro.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="Română" />
-<link rel="alternate" type="text/html" hreflang="ja" href="http://www.booking.com/general.ja.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="日本語 [Nihongo]" />
+<link rel="alternate" type="text/html" hreflang="ja" href="http://www.booking.com/general.ja.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="日本語 [Japanese]" />
 <link rel="alternate" type="text/html" hreflang="zh" href="http://www.booking.com/general.zh.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="简体中文 [Zhongwen]" />
 <link rel="alternate" type="text/html" hreflang="pl" href="http://www.booking.com/general.pl.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="Polski" />
 <link rel="alternate" type="text/html" hreflang="el" href="http://www.booking.com/general.el.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy" title="Ελληνικά" />
@@ -236,8 +288,8 @@ function Tip() {};
 <link rel="help" href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs/faqmain" />
 <link rel="search" type="application/opensearchdescription+xml" href="http://q.bstatic.com/static/opensearch/en-us.xml" title="Booking.com Online Hotel Reservations" />
 <link href="https://plus.google.com/105443419075154950489" rel="publisher" />
-<link rel="stylesheet" type="text/css" href="../q.bstatic.com/static/css/main.2295.css" />
-<link rel="stylesheet" type="text/css" href="../q.bstatic.com/static/css/popups.2295.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="../q.bstatic.com/static/css/main.2465.css" />
+<link rel="stylesheet" type="text/css" href="../q.bstatic.com/static/css/popups.2465.css" media="screen" />
 <style type="text/css">
 #mailafriend_shadow,
 #newletter_popup_shadow,
@@ -248,25 +300,25 @@ filter: alpha(opacity=40);
 img { -ms-interpolation-mode: bicubic; }
 </style>
 <!--[if lte IE 9]>
-<link rel="stylesheet" type="text/css" href="http://r.bstatic.com/static/css/ie9lte.2295.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://r.bstatic.com/static/css/ie9lte.2465.css" media="screen" />
 <![endif]-->
 <!--[if lte IE 8]>
 <![endif]-->
 <!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="http://r.bstatic.com/static/css/ie7lte.2295.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://r.bstatic.com/static/css/ie7lte.2465.css" media="screen" />
 <![endif]-->
 <!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="http://q.bstatic.com/static/css/ie6lte.2295.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://q.bstatic.com/static/css/ie6lte.2465.css" media="screen" />
 <![endif]-->
 <!--[if lt IE 6]>
-<link rel="stylesheet" type="text/css" href="http://q.bstatic.com/static/css/ie55lte.2295.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://q.bstatic.com/static/css/ie55lte.2465.css" media="screen" />
 <![endif]-->
 <script type="text/javascript">var _gaq = _gaq || [];</script>
 <title>Booking.com: 
-Privacy Statement.
+Privacy and Cookies.
  Book your hotel now!</title>
 <!-- css -->
-<link rel="stylesheet" type="text/css" href="../r.bstatic.com/static/css/static.2295.css" />
+<link rel="stylesheet" type="text/css" href="../r.bstatic.com/static/css/static.2465.css" />
 <!-- /css -->
 <style>
 .alert {color: #ff0000;font-weight:bold;font-size:16px;}
@@ -308,14 +360,14 @@ overflow:visible;
 <body
 id="b2generalPage"
 class="bookings2 b2 general  en header_reshuffle
-nobg  ">
+ nobg  ">
 <div id="bp_cart" style="display:none;"></div>
 <div id="bodyconstraint">
 <div id="bodyconstraint-inner">
 <div id="top">
-<a href="http://www.booking.com/index.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1" title="Booking.com" style="text-decoration: none;">
-<img id="logo_no_globe_new_logo" src="../r.bstatic.com/static/img/b25logo/booking_header.png" alt="Booking.com Online Hotel Reservations" />
-</a>
+<!-- start header_main_logo -->
+<a href="http://www.booking.com/index.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1" title="Booking.com" style="text-decoration: none;"><img id="logo_no_globe_new_logo" src="../r.bstatic.com/static/img/b25logo/booking_logo.png" alt="Booking.com Online Hotel Reservations" /></a>
+<!-- end header_main_logo -->
 <!-- begin header_new_dropdowns.inc -->
 <!-- begin user_menu.inc -->
 <div id="personal_form" class="ticker_space" style="z-index: 1000;">
@@ -335,14 +387,14 @@ U.S. Dollar
 <style type="text/css">
 #currencyChange {display:block;}
 #current_currency .description,
-#current_currency .pointer {display:none;}	
+#current_currency .pointer {display:none;}
 </style>
 </noscript>
 <div id="current_currency_foldout" class="select_foldout">
 <div class="select_foldout_wrap">
 <ul></ul>
 </div>
-</div> 
+</div>
 <form name="currency" id="currencyChange" style="float:left;padding-top:3px;" action="http://www.booking.com/general.html" method="get">
 <select name="selected_currency" style="height:19px;width:150px;">
 <option data-label="&euro;&pound;$"  value="hotel_currency">
@@ -367,174 +419,173 @@ Singapore Dollar
 <option data-label="US$"  class="selected_currency" selected="selected" >
 U.S. Dollar
 </option>
-<option disabled="disabled" class="currency_split">All currencies:</option> 
+<option disabled="disabled" class="currency_split">All currencies:</option>
 <option data-label="AR$" value="ARS">
 Argentine peso
-</option>	
+</option>
 <option data-label="AUD" value="AUD">
 Australian Dollar
-</option>	
+</option>
 <option data-label="AZN" value="AZN">
 Azerbaijan, New Manats
-</option>	
+</option>
 <option data-label="BHD" value="BHD">
 Bahrain dinar
-</option>	
+</option>
 <option data-label="R$" value="BRL">
 Brazilian Real
-</option>	
+</option>
 <option data-label="BGN" value="BGN">
 Bulgarian lev
-</option>	
+</option>
 <option data-label="CAD" value="CAD">
 Canadian Dollar
-</option>	
+</option>
 <option data-label="XOF" value="XOF">
 CFA Franc BCEAO
-</option>	
+</option>
 <option data-label="CL$" value="CLP">
 Chilean Peso
-</option>	
+</option>
 <option data-label="CNY" value="CNY">
 Chinese yuan
-</option>	
+</option>
 <option data-label="COP" value="COP">
 Colombian peso
-</option>	
+</option>
 <option data-label="CZK" value="CZK">
 Czech Koruna
-</option>	
+</option>
 <option data-label="DKK" value="DKK">
 Danish Krone
-</option>	
+</option>
 <option data-label="EGP" value="EGP">
 Egyptian pound
-</option>	
+</option>
 <option data-label="&#x20AC;" value="EUR">
 Euro
-</option>	
+</option>
 <option data-label="FJD" value="FJD">
 Fijian dollar
-</option>	
+</option>
 <option data-label="GEL" value="GEL">
 Georgian lari
-</option>	
+</option>
 <option data-label="HKD" value="HKD">
 Hong Kong Dollar
-</option>	
+</option>
 <option data-label="HUF" value="HUF">
 Hungarian Forint
-</option>	
+</option>
 <option data-label="INR" value="INR">
 Indian Rupee
-</option>	
+</option>
 <option data-label="IDR" value="IDR">
 Indonesian rupiah
-</option>	
+</option>
 <option data-label="ILS" value="ILS">
 Israeli New Sheqel
-</option>	
+</option>
 <option data-label="&#165;" value="JPY">
 Japanese Yen
-</option>	
+</option>
 <option data-label="JOD" value="JOD">
 Jordanian dinar
-</option>	
+</option>
 <option data-label="KZT" value="KZT">
 Kazakhstani tenge
-</option>	
+</option>
 <option data-label="KRW" value="KRW">
 Korean won
-</option>	
+</option>
 <option data-label="KWD" value="KWD">
 Kuwaiti dinar
-</option>	
+</option>
 <option data-label="LVL" value="LVL">
 Latvian lats
-</option>	
+</option>
 <option data-label="LTL" value="LTL">
 Lithuanian litas
-</option>	
+</option>
 <option data-label="MYR" value="MYR">
 Malaysian ringgit
-</option>	
+</option>
 <option data-label="MXN" value="MXN">
 Mexican Peso
-</option>	
+</option>
 <option data-label="MDL" value="MDL">
 Moldovan leu
-</option>	
+</option>
 <option data-label="NAD" value="NAD">
 Namibian Dollar
-</option>	
+</option>
 <option data-label="TWD" value="TWD">
 New Taiwan Dollar
-</option>	
+</option>
 <option data-label="NZD" value="NZD">
 New Zealand dollar
-</option>	
+</option>
 <option data-label="NOK" value="NOK">
 Norwegian Krone
-</option>	
+</option>
 <option data-label="OMR" value="OMR">
 Omani rial
-</option>	
+</option>
 <option data-label="PLN" value="PLN">
 Polish Zloty
-</option>	
+</option>
 <option data-label="&#163;" value="GBP">
 Pound Sterling
-</option>	
+</option>
 <option data-label="QAR" value="QAR">
 Qatar riyal
-</option>	
+</option>
 <option data-label="RON" value="RON">
 Romanian new leu
-</option>	
+</option>
 <option data-label="RUB" value="RUB">
 Russian Ruble
-</option>	
+</option>
 <option data-label="SAR" value="SAR">
 Saudi Arabian riyal
-</option>	
+</option>
 <option data-label="SGD" value="SGD">
 Singapore Dollar
-</option>	
+</option>
 <option data-label="ZAR" value="ZAR">
 South African rand
-</option>	
+</option>
 <option data-label="SEK" value="SEK">
 Swedish Krona
-</option>	
+</option>
 <option data-label="CHF" value="CHF">
 Swiss Franc
-</option>	
+</option>
 <option data-label="THB" value="THB">
 Thai baht
-</option>	
+</option>
 <option data-label="TL" value="TRY">
 Turkish Lira
-</option>	
+</option>
 <option data-label="AED" value="AED">
 U.A.E. Dirham
-</option>	
+</option>
 <option data-label="US$" value="USD">
 U.S. Dollar
-</option>	
+</option>
 <option data-label="UAH" value="UAH">
 Ukraine Hryvnia
-</option>	
+</option>
 <option data-label="VEF" value="VEF">
 Venezuelan bolívar
-</option>	
- 
+</option>
 </select>
-<input id="link_with_currency" type="hidden" value="/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy&amp;selected_currency"/>	
+<input id="link_with_currency" type="hidden" value="/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy&amp;selected_currency"/>
 <input type="hidden" name="dcid" value="1" />
 <input type="hidden" name="sid" value="a6f820d269e9070d9a88d65cd79ee579" />
-<input type="hidden" name="tmpl" value="docs/privacy-policy" />	
+<input type="hidden" name="tmpl" value="docs/privacy-policy" />
 <input type="submit" style="height:19px;" value="Ok" />
-</form>	
+</form>
 <!-- end user_menu_dropdown_currency.inc -->
 </div>
 </div>
@@ -750,7 +801,7 @@ My Booking.com
 Forgot your password?
 </a>
 <br/><br/> 
-<a href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html" id="user_pin_link">Sign in using your booking number and PIN code</a>
+<a href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#old_pin_login" id="user_pin_link">Sign in using your booking number and PIN code</a>
 </p>
 </form>
 </div>
@@ -795,7 +846,6 @@ Forgot your password?
 <li>Book faster</li>
 </ul>
 </div>
-<div class="login_left">
 <form action="https://secure.booking.com/login.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1" method="post" id="signup_form_regular">
 <input type="hidden" name="endpoint_url" value="https://secure.booking.com/login.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=profile/signup;" />
 <input type="hidden" name="tmpl" value="profile/signup" />
@@ -803,6 +853,7 @@ Forgot your password?
 <input type="hidden" name="dcid" value="1" />
 <input type="hidden" name="lang" value="en-us" />
 <input type="hidden" name="sid" value="a6f820d269e9070d9a88d65cd79ee579" />
+<div class="login_left">
 <label for="username" style="margin-top:0">Email address:</label>
 <input type="text" id="username" class="inputText" name="username" value="" />
 <div>
@@ -813,7 +864,14 @@ Forgot your password?
 <label for="confirm_password">Confirm password:</label>
 <input type="password" id="confirm_password" class="inputText" name="password_confirm" value="" />
 </div>
-<button type="submit" class="bigbluebutton submit_active">Create my account</button>
+</div>
+<div style="float:left;clear:both;margin-left:0.9em;">
+<label for="newsletter_subscribe_check" >
+<input type="checkbox" id="newsletter_subscribe_check" class="inputText" name="subscribe" value="1" />
+Yes, I want to get emails with deals for subscribers
+</label>
+</div>
+<button type="submit" class="bigbluebutton submit_active" style="float:left;clear:both;margin-left:0.7em;width:190px !important;">Create my account</button>
 </form>
 <div id="signed_up_message" style="display:none;">
 <p>
@@ -827,7 +885,6 @@ Forgot your password?
 <p>
 <em>Unactivated accounts will be removed in 7 days. </em>
 </p>
-</div>
 </div>
 </div>
 </div>
@@ -874,7 +931,7 @@ Forgot your password?
 </li>
 <li class="bar" style="height: 3px;border-bottom: 1px solid #003580;margin-bottom:3px;overflow:hidden;width:150px;">&nbsp;</li>
 <li>
-<a href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy;logout=1" class="my_logout">
+<a href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs%2Fprivacy-policy;logout=1;hsout=1" class="my_logout">
 <span class="selsymbol">&nbsp;</span>
 <span class="seldescription">Sign Out</span>
 </a>
@@ -898,6 +955,11 @@ Forgot your password?
 <span class="loading_content">Loading</span>
 </div>
 </div>
+<div id="search_foldout_favourite" class="search_foldout closed_content">
+<div class="foldout_content" id="search_tab_favourite_content">
+<span class="loading_content">Loading</span>
+</div>
+</div>
 </div>
 <!-- end user_menu_searches -->
 <div id="special_actions">
@@ -914,7 +976,7 @@ Forgot your password?
 <!-- start empty_in_defaults.inc -->
 <!-- end empty_in_defaults.inc -->
 </div>
-<div id="subheader-wrap">
+<div id="subheader-wrap" >
 <div id="greybar" class="reshuffle"></div>
 <!-- BEGIN breadcrumb.inc -->
 <!-- END breadcrumb.inc -->
@@ -922,9 +984,9 @@ Forgot your password?
 <!-- end header2 -->
 <!-- start static.tmpl -->
 <div id="doc">
-<div class="breadcrumb breadcrumb-reshuffle breadcrumb_user">
+<div class="breadcrumb breadcrumb-reshuffle breadcrumb_user ">
 <a href="http://www.booking.com/index.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1">Home</a> &gt;
-Policies &gt; Privacy Statement
+Policies &gt; Privacy and Cookies
 </div>
 <div id="left">
 <!-- begin privacy_and_terms_menu.inc -->
@@ -932,7 +994,7 @@ Policies &gt; Privacy Statement
 <h3>Policies</h3>
 <ul class="staticmenustyle">
 <li><a href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs/terms-and-conditions">Terms & Conditions</a></li>
-<li>Privacy Statement</a></li>
+<li>Privacy and Cookies</a></li>
 </ul>
 </div>
 <!-- end privacy_and_terms_menu.inc -->
@@ -1037,6 +1099,8 @@ Policies &gt; Privacy Statement
 </div>
 </div>
 <!-- end static.tmpl -->
+<!-- begin footer.inc -->
+<div class="footer_no_lang_track">	
 	
 <div class="newsletter_subscribe newsletter_subscribe_with_sprites" >
 <form action="http://www.booking.com/newslettersubscribe.html" method="post" name="newsletterform" class="signupForm footerForm" >
@@ -1080,7 +1144,6 @@ Policies &gt; Privacy Statement
 </div>
 <div style="clear: both;"></div>
 	
-<!-- begin footer.inc -->
 <div id="lazy-loaded-target-footer">
 </div>
 <div id="footer" class="tracked" style="border-top:0;">
@@ -1124,7 +1187,7 @@ Twitter
 href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs/terms-and-conditions"
 >Terms &amp; Conditions</a>
 |
-Privacy Statement
+Privacy and Cookies
 |
 </div>
 </div>
@@ -1181,7 +1244,7 @@ id="footernote"
 Copyright &copy; 1996&ndash;2012
 Booking.com&trade;. All rights reserved.
 	
-Booking.com B.V. is based in Amsterdam, the Netherlands, and is supported internationally by offices in: Amsterdam - Antalya - Athens - Auckland - Bangkok - Barcelona - Beijing - Berlin - Bolzano - Bordeaux - Brussels - Budapest - Buenos Aires - Cairo - Cambridge - Cape Town - Casablanca - Chicago - Copenhagen - Dubai - Dublin - Edinburgh - Grand Rapids - Helsinki - Hong Kong - Honolulu - Houston - Innsbruck - Istanbul - Kiev - Kuala Lumpur - Kuta (Bali) - Las Palmas de Gran Canaria - Las Vegas - Lille - Lisbon - London - Loulé (PT) - Lyon - Madrid - Málaga - Manila - Mexico City - Miami - Milan - Montréal - Moscow - Mumbai - Munich - Natal - New York - Nice - Norwalk - Orlando - Osaka - Oslo - Paris - Phuket - Prague - Riga - Rome - San Francisco - São Paulo - Seoul - Shanghai - Singapore - Sofia - Stockholm - Sydney - Thessaloniki - Tokyo - Toronto - Vancouver - Venice - Vienna - Warsaw - Zagreb - Zürich.
+Booking.com B.V. is based in Amsterdam, the Netherlands, and is supported internationally by offices in: Amsterdam - Antalya - Athens - Auckland - Bangkok - Barcelona - Beijing - Berlin - Bolzano - Bordeaux - Brussels - Budapest - Buenos Aires - Cairo - Cambridge - Cape Town - Casablanca - Chicago - Copenhagen - Dubai - Dublin - Edinburgh - Grand Rapids - Helsinki - Hong Kong - Honolulu - Houston - Innsbruck - Istanbul - Jeddah - Kiev - Kuala Lumpur - Kuta (Bali) - Las Palmas de Gran Canaria - Las Vegas - Lille - Lisbon - London - Loule (PT) - Lyon - Madrid - Malaga - Manila - Mexico City - Miami - Milan - Montreal - Moscow - Mumbai - Munich - Natal - New York - Nice - Norwalk - Orlando - Osaka - Oslo - Paris - Phuket - Prague - Riga - Rome - San Francisco - Santiago - Santo Domingo - Sao Paulo - Seoul - Shanghai - Singapore - Sofia - Stockholm - Sydney - Thessaloniki - Tokyo - Toronto - Vancouver - Venice - Vienna - Warsaw - Zagreb - Zurich.
 </div>
 <div id="footerrefid">
 Your Reference ID is: <span>A6F82</span>
@@ -1375,7 +1438,7 @@ src="about:blank"
 <p class="sl_pt_01"><strong>We've negotiated with thousands of hotels</strong> to get the very best deals. We call them Secret Deals and they only last for a limited time.</p>
 <p class="sl_pt_02"><strong>You can get these deals for free</strong> by subscribing to our newsletters. You can even choose your favorite destinations to receive personalized deals.</p>
 <p class="sl_pt_03"><strong>Get started now by entering your email address.</strong> We'll instantly send you a link to our Deal Finder!</p>
-<p class="sl_pt_04" style="padding-bottom: 30px; margin-bottom: 0;"><strong>Don't worry - your email address is safe with us.</strong> We'll never share your private information and you can unsubscribe at any time.</p>
+<p class="sl_pt_04" style="padding-bottom: 30px; margin-bottom: 0;"><strong>Don't worry – your email address is safe with us.</strong> We'll never share your private information and you can unsubscribe at any time.</p>
 </div>
 </div>
 <div id="mailafriend">
@@ -1400,13 +1463,11 @@ src="about:blank"
 <div style="clear:both;">&#160;</div>
 </div>
 </div>
+</div>
 <div id="calendar_popup" class="newcalendar singleCalendar" style="display:none;">
 <div class="browseCalendar">
 <a href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#" class="prevmonth disabled" onclick="booking.env.trackExperiment('stopped,stopped');"><span>&laquo;</span></a>
 <select>
-<option class="b_months" value="2012-8">
-August 2012
-</option>
 <option class="b_months" value="2012-9">
 September 2012
 </option>
@@ -1439,6 +1500,12 @@ June 2013
 </option>
 <option class="b_months" value="2013-7">
 July 2013
+</option>
+<option class="b_months" value="2013-8">
+August 2013
+</option>
+<option class="b_months" value="2013-9">
+September 2013
 </option>
 </select>
 <a href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#" class="nextmonth"><span>&raquo;</span></a>
@@ -1661,36 +1728,11 @@ Venezuelan bolívar
 <input type="submit" style="height:19px;" value="Ok" />
 	
 </form>	
-<div id="acknowlednge_holder">
-<div class="acknowledge_background">&nbsp;</div>
-<div class="acknowledge_message">
-<div class="dropdowns_action"> 
-<a class="update_settings" href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#">OK</a>
-<a class="keep_settings_nofocus" href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#">No thanks</a>
-</div> 
-<div class="ack_intro">
-<span class="acknowledge_text">Hello Traveller! We would like to change your setting to:</span>
-<div id="curr_aknowledge">
-	
-</div>
-<div id="lang_aknowledge">
-<span class="symbol selected_symbol"><img src="../q.bstatic.com/static/img/flags/24/us.png" /></span>
-<span class="description selected_description">
-<input type="hidden" name="dcid" value="1" />
-<input type="hidden" name="sid" value="a6f820d269e9070d9a88d65cd79ee579" />
-<input type="hidden" name="tmpl" value="docs/privacy-policy" />
-</span>
-</div>
-<span class="ack_anytime">You may change this setting whenever you like.</span>
-<a class="close_acknow_msg use_sprites" href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#"><span>X</span></a>
-</div>
-</div>
-</div>
 <!-- scripts_global.inc -->
-<script type="text/javascript" src="../r.bstatic.com/static/js/error_catcher_z.2295.js"></script>
+<script type="text/javascript" src="../r.bstatic.com/static/js/error_catcher_z.2465.js"></script>
 <script type="text/javascript" src="../r.bstatic.com/static/js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="../q.bstatic.com/static/js/main.2295.js"></script>
-<script type="text/javascript" src="../r.bstatic.com/static/js/autocomplete.2295.js"></script>
+<script type="text/javascript" src="../q.bstatic.com/static/js/main.2465.js"></script>
+<script type="text/javascript" src="../r.bstatic.com/static/js/autocomplete.2465.js"></script>
 <script type="text/javascript">
 booking.env.js_experiment_tracking = {
 hotel_photo_expose : "full_on",
@@ -1699,6 +1741,9 @@ fb_likes : "10177",
 single_occ_selectbox_fix : "stopped",
 movable_hotel_info_header : "stopped",
 switch_login_usps : "stopped",
+newsletter_checkbox_account : "full_on",
+newsletter_checkbox_header : "full_on",
+better_signout_icon : "stopped",
 hotel_user_photos: "stopped",
 add_sq_ft_enus_not_in_us: "stopped",
 content_room_facilities_reorder: "full_on",
@@ -1711,19 +1756,20 @@ search_autocomplete_hotels_nearby: "stopped",
 copy_rewrite_my_details: "stopped",
 authenticated_email_change: "stopped",
 remove_hotel_img_tooltip_sr : "stopped",
+booking_elite_reviews : "11679",
 hp_reviews_who_can_write : "stopped",
 search_autocomplete_with_search_history: "stopped",
 change_currency_on_click_convert_prices: "stopped",
+sr_price_sorting_options: "11789",
 acknowledge_currency_and_language: "stopped",
-footer_nolanguages_redesign: "stopped",
-header_cleaned_links: "stopped",	
+cookie_warning: "11670",
+error_page_evolved: "stopped",
 hp_guarantee_as_usp: "stopped",
-general_links_loaded: "stopped",
-translate_brand_filter: "full_on",
+translate_brand_filter_2: "11617",
 american_bed_size: "full_on",
 canadian_bed_size: "stopped",
 seo_footer_links: "full_on",
-open_checkout_calendar: "stopped",
+open_checkout_calendar: "11833",
 hotel_rooms_double_click: "stopped",
 show_menu_after_login: "stopped",
 search_near_me: "stopped",
@@ -1731,16 +1777,33 @@ show_password: "stopped",
 sr_hotel_preview_on_hover: "stopped",
 page_alive_after_submit: "stopped",
 change_wk_sunday: "stopped",
-continent_lp_wrapper: "11139",
+continent_lp_wrapper: "stopped",
 add_usp_hotelpage_change_date_lightbox: "stopped",
 improve_seo_facilities_policies: "full_on",
 hotels_in_new_tab: "stopped",
 share_hotel_seo: "stopped",
+facebook_share_icon_on_hp: "11630",
+clearer_meal_plan: "11649",
 hp_most_recent_booking_date_seo: "stopped",
 light_signup: "stopped",
 new_review_flag: "stopped",
-new_av_calendar: "11178",
-reviews_list_undesign: "11176"
+new_av_calendar: "stopped",
+reviews_list_undesign: "full_on",
+promise_to_you_on_hotelpage: "stopped",
+generalised_bpg: "full_on",
+price_filter_slider: "stopped",
+sr_scroll_memory: "stopped",
+clicked_soldout_subscription: "stopped",
+show_first_hotel_rates: "stopped",
+subscribe_nodates_users: "11572",
+hp_anon_reviews_user_lang: "11848",
+broaden_search_redesign: "stopped",
+hp_good_bad_reviews: "11861",
+hp_district_description: "11821",
+content_contributer: "11870",
+smart_deal_tooltip_alt_translation: "stopped",
+bp_maildomain_check: "full_on",
+email_bs2_for_all: "stopped"
 };
 booking.env.map_more_params = "";
 booking.env.autocomplete_more_params = "";
@@ -1773,6 +1836,7 @@ if (document.getElementById('blockdisplay' + j)) {
 document.getElementById('blockdisplay' + j).style.display = (j === i) ? 'block' : 'none';
 }
 }
+$(document.body).trigger((i == 4) ? 'ReviewsTab_onOpen' : 'ReviewsTab_onClose');
 if (i === 1 && typeof bMovableBookNowButton != "undefined") {
 bMovableBookNowButton.init();
 }
@@ -1799,11 +1863,11 @@ newWindow.focus();
 booking.ensureNamespaceExists( 'env' );
 booking.env.b_checkin_date = '';
 booking.env.b_checkout_date = '';
-booking.env.b_months = [{"b_number":8,"name":'August'},{"b_number":9,"name":'September'},{"b_number":10,"name":'October'},{"b_number":11,"name":'November'},{"b_number":12,"name":'December'},{"b_number":1,"name":'January'},{"b_number":2,"name":'February'},{"b_number":3,"name":'March'},{"b_number":4,"name":'April'},{"b_number":5,"name":'May'},{"b_number":6,"name":'June'},{"b_number":7,"name":'July'}];
-booking.env.b_timestamp = 1345227709;
+booking.env.b_months = [{"b_number":9,"name":'September'},{"b_number":10,"name":'October'},{"b_number":11,"name":'November'},{"b_number":12,"name":'December'},{"b_number":1,"name":'January'},{"b_number":2,"name":'February'},{"b_number":3,"name":'March'},{"b_number":4,"name":'April'},{"b_number":5,"name":'May'},{"b_number":6,"name":'June'},{"b_number":7,"name":'July'},{"b_number":8,"name":'August'},{"b_number":9,"name":'September'}];
+booking.env.b_timestamp = 1348874395;
 booking.env.b_this_year4 = 2012;
-booking.env.b_this_month = 8;
-booking.env.b_this_day = 17;
+booking.env.b_this_month = 9;
+booking.env.b_this_day = 29;
 booking.env.date_format_acronym = "YYYY-MM-DD";
 booking.env.day = "day";
 booking.env.error.checkin_date_in_the_past = {
@@ -1834,8 +1898,8 @@ booking.env.s_value_checkin_year_month = '';
 booking.env.s_value_checkout_year_month = '';
 booking.env.to_check_availability_please_enter_your_dates_of_stay = "Oops! We need your dates to check availability.";
 booking.env.checkout_date_not_after_checkin_date = "Please check your dates, the check-out date appears to be before the check-in date.";
-booking.env.b_site_experiment_event_tracking = true;
 booking.env.b_room_groups = [];
+booking.env.b_room_extrabeds = [];
 booking.env.b_canonical_url = 'http://www.booking.com/general.en.html?tmpl=docs/privacy-policy';
 booking.env.b_canonical_url_delimiter = ';';
 booking.env.b_query_params_delimiter = ';';
@@ -1856,19 +1920,16 @@ $("#footerlanguage").click(function(){
 booking.env.trackExperiment(booking.env.js_experiment_tracking.seo_footer_links);
 });
 booking.env.compare_my_viewed_hotels_link = "/hotelcomparison.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;";
-if (b_cookie.langPrompt != 'dontshow') {
-booking.env.trackExperiment(booking.env.js_experiment_tracking.acknowledge_currency_and_language);
-}
-booking.env.b_site_variant_localize_price_number_format = 0;
-booking.track.onView('#footer').exp( booking.env.js_experiment_tracking.footer_nolanguages_redesign );
+booking.env.b_site_variant_localize_price_number_format = 1;
+booking.track.onView('#error404page').exp( booking.env.js_experiment_tracking.error_page_evolved );
 </script>
 <!-- /scripts_global.inc -->
 <div id="logo-not-document-write"></div>
 <script type="text/javascript">
-(document.getElementById( 'logo-not-document-write' ) || {}).innerHTML = '<img style="display:none;" src="logo%3Fver=1%3Bt='+1345227709+1+'">';
+(document.getElementById( 'logo-not-document-write' ) || {}).innerHTML = '<img style="display:none;" src="logo%3Fver=1%3Bt='+1348874395+1+'">';
 </script>
 <noscript>
-<img style="display:none" src="logo%3Fver=0%3Bt=1345227709" />
+<img style="display:none" src="logo%3Fver=0%3Bt=1348874395" />
 </noscript>
 <noscript>
 <iframe height="1" width="1" frameborder="0" style="height:1px;width:1px;overflow:hidden;border:0;" src="index.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=no_script.html"></iframe>
@@ -1885,7 +1946,7 @@ document.cookie = "gzt=0; path=/";
 var i = document.createElement('iframe');
 i.src = "/test_gzip2.html";
 i.style.display = "none";
-document.body.appendChild(i);
+document.body.insertBefore(i, document.body.childNodes[0]);
 }
 </script>
 <script type="text/javascript" charset="utf-8">
@@ -1898,7 +1959,7 @@ oSelect.prepend(oThis);
 });
 </script>
 <script type="text/javascript">
-var b_first_seen = '10931=1,9460=1,10631=0,9145=0,11084=0,11124=0,11082=1,11148=1';
+var b_first_seen = '9460=0,11727=0,11904=0,10631=0,9145=0,11755=0,11356=0';
 </script>
 <script type="text/javascript">
 booking.ensureNamespaceExists('env');
@@ -1932,8 +1993,10 @@ _gaq.push(['_trackPageview', booking.google.analyticsTrackingString]);
 _gaq.push(['_trackPageLoadTime']);
 (function () {
 var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; 
+	
+var s = document.getElementsByTagName('script')[0]; 
+s.parentNode.insertBefore(ga, s);
 }());
 } catch (err) {}
 } else {
@@ -1972,6 +2035,7 @@ _setLocalRemoteServerMode : function () { }
 }
 </script>
 <span id="req_info" style="display:none;"></span>
-<!-- with love from bc211app-04! -->
+<!-- with love from bc27app-01! -->
 </body>
 </html>
+<!-- end footer.inc -->

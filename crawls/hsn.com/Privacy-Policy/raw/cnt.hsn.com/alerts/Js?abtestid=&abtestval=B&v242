@@ -1,0 +1,181 @@
+
+
+var cacheDuration = 5;
+var ABTestId      = '';
+var ABTestValue   = 'B';
+
+
+
+
+function GetNbrOfNewAlerts( deliveryMethod, callback )
+{
+
+    if ( ABTestId == '23' && ABTestValue != '' )
+    {
+        try 
+        { 
+            var alertTrackingCookie = ReadCookie('alertTracking')
+        
+            if ( alertTrackingCookie == null )
+            {
+                cmCreateConversionEventTag(ABTestValue + ' Group', '1', 'Alerts', '0'); 
+            
+                createCookie( 'alertTracking', '1' );
+            }
+        } 
+        catch(e) {;}
+    }
+
+
+    var alertCookie;
+   
+    if ( cacheDuration > 0 )
+      alertCookie = ReadCookie('newAlerts');
+      
+    if ( alertCookie == null )
+    {
+        var script  = document.createElement('script');
+        script.src  = 'http://cnt.hsn.com/alerts/count/?deliveryId=' + deliveryMethod + '&output=json&callback=' + callback + '&rnd=' + Math.random();
+        script.type = 'text/javascript';
+        
+        document.getElementsByTagName('head')[0].appendChild(script);
+    }
+    else
+    {
+        var nbrOfAlerts = parseInt( ReadCookie( 'newAlerts' ) );
+        var funcName    = callback + '(' + nbrOfAlerts + ')';
+        
+        eval( funcName );    
+    }
+}
+
+
+
+
+
+// cmd values ( 'goto' == navigate to source; 'buy' == buy now, 'add2bag' )
+function AlertTakeAction( cmd, eventId, deliveryMethod, source, webPId, webId, isPopup )
+{
+   document.location = '/code/cust/processAlerts.aspx?Action=' + cmd + '&eid=' + eventId + '&dm=' + deliveryMethod + '&src=' + source + '&webPId=' + webPId + '&webid=' + webId + '&popup=' + isPopup;
+}
+
+
+
+function GetNewCustomerAlerts( deliveryMethod, callback )
+{
+    GetCustomerAlerts( deliveryMethod, callback, 'true', 'true' );
+}
+
+
+function GetCustomerAlerts( deliveryMethod, callback, newOnly, update )
+{
+    var newOnly = ( newOnly == null ) ? 'false' : newOnly;
+    var update  = ( update == null ) ? 'false' : update;
+
+    var script = document.createElement('script');
+    script.src = 'http://cnt.hsn.com/alerts/?newOnly=' + newOnly + '&deliveryId=' + deliveryMethod + '&output=json&updateStatus=' + update + '&callback=' + callback + '&rnd=' + Math.random();
+    script.type = 'text/javascript';
+    
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+
+function DecreaseNbrOfNewAlerts( nbr )
+{
+    if ( cacheDuration > 0 )
+    {
+      var alertCookie = ReadCookie('newAlerts')
+      
+      if ( alertCookie != null )
+      {
+         var currentNbrOfAlerts = parseInt( alertCookie );
+         var newNbr = currentNbrOfAlerts - nbr;
+         
+         if ( newNbr > 0 )
+            createCookie( 'newAlerts', newNbr, 5 ); 
+         else
+            createCookie( 'newAlerts', 0, 5 ); 
+      }
+    }
+} 
+
+function GetNbrOfNewAlertsReturn( json )
+{
+    var nbr = 0;
+    if (json.ResultSet != null && json.ResultSet != undefined && json.ResultSet.NbrOfAlerts != undefined )
+        nbr = parseInt( json.ResultSet.NbrOfAlerts );
+    
+    if ( cacheDuration > 0 )
+        createCookie( 'newAlerts', nbr, 5 ); 
+
+    var funcName = json.ResultSet.callBack + '(' + json.ResultSet.NbrOfAlerts + ')';
+    eval( funcName );
+} 
+
+
+
+function AlertReturn( json )
+{
+    var script = document.createElement('script');
+    script.src = 'http://cnt.hsn.com/alerts/?deliveryId=' + deliveryMethod + '&nbr=' + nbrOfAlerts + '&output=json&callback=' + callback + '&rnd=' + Math.random();
+    script.type = 'text/javascript';
+    
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+function UpdateAlertStatus( eventId, deliveryMethod, status )
+{
+    var params = 'action=' + status + '&eid=' + eventId + '&dm=' + deliveryMethod + '&noCache=' + Math.floor(Math.random(100000) * 100000000);
+
+    if ( status == "ignore" )
+        params += '&cm_sp=sitealerts*hide*na';
+
+    new Ajax.Request( '/code/cust/processAlerts.aspx', { parameters: params } );
+}
+
+var newAlerts = 0;
+
+
+function createCookie(name, value, expireMin ) {
+  
+  if ( expireMin )
+  {  
+      var today = new Date();
+      today.setTime( today.getTime() );
+      expireMin = expireMin * 1000 * 60;
+      var expires_date = new Date( today.getTime() + (expireMin) );
+      document.cookie = name + "=" + value + "; expires=" + expires_date.toGMTString() + "; domain=hsn.com";
+  }
+  else
+      document.cookie = name + "=" + value + "; domain=hsn.com";
+  
+}
+	
+
+
+function extractCookieValue(val) {
+  if ((endOfCookie = document.cookie.indexOf(";", val)) == -1) {
+     endOfCookie = document.cookie.length;
+  }
+  return unescape(document.cookie.substring(val,endOfCookie));
+}
+
+function ReadCookie(cookiename) {
+  var numOfCookies = document.cookie.length;
+  var nameOfCookie = cookiename + "=";
+  var cookieLen = nameOfCookie.length;
+  var x = 0;
+  while (x <= numOfCookies) {
+        var y = (x + cookieLen);
+        if (document.cookie.substring(x, y) == nameOfCookie)
+           return (extractCookieValue(y));
+           x = document.cookie.indexOf(" ", x) + 1;
+           if (x == 0){
+              break;
+           }
+  }
+  return (null);
+}
+

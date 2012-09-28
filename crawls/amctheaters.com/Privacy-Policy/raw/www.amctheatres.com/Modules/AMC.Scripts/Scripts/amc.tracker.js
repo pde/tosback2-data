@@ -4,74 +4,6 @@
 * Created: 4/25/2012
 */
 
-//#region Available Events
-/***** Document Events *****
-*** Locator ***
-searchStarted.Locator: label, query
-searchSuccess.Locator: label, query, matches
-searchError.Locator label, query, message, details
-searchCompleted.Locator label, query, success, duration
-
-*** LocationSearchBox ***
-searchStarting.LocationSearchBox: label, query
-searchSuccess.LocationSearchBox: label, query, matches, preliminary
-searchError.LocationSearchBox: label, query, message, details: details
-autocompleteSearchStarting.LocationSearchBox: label, query
-autocompleteSearchSuccess.LocationSearchBox: label, query, matches
-
-*** TheatresLocationSearchWidget ***
-stateSearch.TheatresLocationSearchWidget
-geoSearch.TheatresLocationSearchWidget
-stateSearchError.TheatresLocationSearchWidget
-geoSearchError.TheatresLocationSearchWidget
-showInfoBoxClick.TheatresLocationSearchWidget
-pinClick.TheatresLocationSearchWidget
-directionsClick.TheatresLocationSearchWidget
-showtimesClick.TheatresLocationSearchWidget
-
-*** ShowtimesWidget, MovieShowtimesWidget, MobileShowtimesWidget ***
-savedSearchRestore
-savedSearchTheatreRestore
-favoriteTheatreRestore
-prepopulatePostalCodeRestore
-stateSearch
-geoSearch
-gpsSearch
-stateSearchError
-geoSearchError
-gpsSearchError
-showtimesLoaded
-showtimesLoadingError
-
-*** TheatreShowtimesWidget ***
-showtimesLoaded
-showtimesLoadingError
-
-*** MovieShowtimesWidget, TheatreShowtimesWidget ***
-printShowtimesClick
-
-***** Element Events *****
-*** .showtimes-link.click ***
-data-irn: Movie.IRN
-title: Movie.Title
-href: Showtime.PurchaseURL
-data-showtimedate: ShowtimeDate
-data-attributes :Movie.AttributesString
-text: Showtime.DisplayShowTime
-
-*** .theatre-link.click ***
-href: Theatre.WebsiteUrl
-data-unitnumber: Theatre.UnitNumber
-text: Theatre.TheatreName
-
-*** .movie-link.click ***
-href: Movie.WebsiteURL
-data-unitnumber: UnitNumber
-data-showtimedate: ShowtimeDate
-text: Movie.Title
-*/
-//#endregion
-
 var AmcTracker = function(options) {
     this.initialize($.extend({
         documentEvents: [],
@@ -88,35 +20,9 @@ AmcTracker.prototype = function () {
         debug: false
     };
     var defaults = {
-        documentEvents: [
-            'searchCompleted.Locator',
-            'searchStarting.LocationSearchBox',
-            'searchSuccess.LocationSearchBox',
-            'searchError.LocationSearchBox',
-            'autocompleteSearchStarting.LocationSearchBox',
-            'autocompleteSearchSuccess.LocationSearchBox',
-            'showInfoBoxClick.TheatresLocationSearchWidget',
-            'pinClick.TheatresLocationSearchWidget',
-            'directionsClick.TheatresLocationSearchWidget',
-            'showtimesClick.TheatresLocationSearchWidget',
-            'stateSearch.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatresLocationSearchWidget',
-            'geoSearch.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatresLocationSearchWidget',
-            'stateSearchError.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatresLocationSearchWidget',
-            'geoSearchError.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatresLocationSearchWidget',
-            'savedSearchRestore.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'savedSearchTheatreRestore.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'favoriteTheatreRestore.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'prepopulatePostalCodeRestore.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'gpsSearch.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'gpsSearchError.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget',
-            'showtimesLoaded.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatreShowtimesWidget',
-            'showtimesLoadingError.ShowtimesWidget.MovieShowtimesWidget.MobileShowtimesWidget.TheatreShowtimesWidget',
-            'printShowtimesClick.MovieShowtimesWidget.TheatreShowtimesWidget'
-        ],
+        documentEvents: [],
         elementEvents: [
-            { selector: '.showtimes-link', eventName: 'click' },
-            { selector: '.theatre-link', eventName: 'click' },
-            { selector: '.movie-link', eventName: 'click' }
+            { selector: '.showtimes-link', eventName: 'click' }
         ],
         elementAttributes: [
             'data-irn',
@@ -228,7 +134,9 @@ AmcTracker.prototype = function () {
         return _self;
     };
 
-    var trackLink = function (target, url) {
+    var trackLink = function (anchor, url, event) {
+        var target = anchor.attr('target') || '_self';
+        var newWindow = target.toLowerCase() != '_self';
         _gaq.push(
             function () {
                 var tracker = _gaq._getAsyncTracker();  // Gets the default tracker
@@ -240,10 +148,16 @@ AmcTracker.prototype = function () {
                 }
 
                 //Update the url
-                target.attr('href', linkerUrl);
+                anchor.attr('href', linkerUrl);
+                
+                //handle new window link tracking
+                if (newWindow) {
+                    event.preventDefault();
+                    window.open(linkerUrl, target);
+                }
             });
 
-        return _self;
+        return newWindow;
     };
 
     var handleDocumentEvent = function (event, data) {
@@ -286,8 +200,7 @@ AmcTracker.prototype = function () {
                 // Cross-domain link tracking when 'data-tracklink' attribute is true
                 // BCK 2012 JUL 19
                 if ((t.attr('data-tracklink') || 'false') == 'true') {
-                    trackLink(t, url);
-                    return;
+                    return trackLink(t, url, event);
                 }
 
                 // This to prevent the page moving on before the event can be tracked.

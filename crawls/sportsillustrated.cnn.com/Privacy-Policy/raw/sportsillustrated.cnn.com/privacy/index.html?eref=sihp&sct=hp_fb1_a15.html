@@ -17,8 +17,118 @@ window.location = "https://subscription.timeinc.com/storefront/privacy/si/generi
 <link rel="canonical" href="http://sportsillustrated.cnn.com/about_us/staff/index.html">
 <!--'B:htmlHead'--><link rel="stylesheet" type="text/css" href="../../i.cdn.turner.com/si/.e/css/pkg/global_41/129.css"/>
 <script language="JavaScript" type="text/javascript" src="../../i.cdn.turner.com/si/.e/js/4.2/global/lib/jquery-1.7.2.min.js"></script>
-<script language="JavaScript" type="text/javascript" src="../../i.cdn.turner.com/si/.e/js/pkg/global/621.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../i.cdn.turner.com/si/.e/js/pkg/global/634.js"></script>
 <script src="../../img.timeinc.net/shared/static/js/tii_ads.js"></script><script>var adConfig=new TiiAdConfig('3475.si2');adConfig.setRevSciTracking(true);</script>
+
+<!-- Visual Revenue Reader Response Tracking Script (v6) -->
+<script type="text/javascript">
+	var automate_vrq = false;
+	try{
+		automate_vrq = cnnPage.isHomepage;
+	}catch(e){}
+	
+	var _vrq = _vrq || [];
+	_vrq.push(['id', 188]);
+	_vrq.push(['automate', automate_vrq ]);	//automate should be set to true if this is the homepage
+	_vrq.push(['track', function(){}]);
+	(function(d, a){
+		var s = d.createElement(a),
+		x = d.getElementsByTagName(a)[0];
+		s.async = true;
+		s.src = 'http://a.visualrevenue.com/vrs.js';
+		x.parentNode.insertBefore(s, x);
+	})(document, 'script');
+</script>
+<!-- End of VR RR Tracking Script - All rights reserved -->
+
+<!-- Visual Revenue Logic for Homepage - SI-5749 -->
+<script type="text/javascript">
+try{
+	
+	if( cnnPage.isHomepage ){
+	
+		$(document).ready(function(){
+			
+			
+			jQuery.fn.setVRTitle = function(){
+				var title = $(this[0]).find('DIV.cnnTitle').text();
+				if ( $(this[0]).find('DIV.cnnTitle > A').length > 0 ){
+					title = $(this[0]).find('DIV.cnnTitle > A').text();
+				}
+				return title.trim();
+			};
+			
+			
+				/*
+				 *
+				 *	Set the zones by adding the Visual Revenue attribute : data-vr-zone
+				 *
+				 */
+				
+				$(	'DIV#cnnT1Holder'		).attr('data-vr-zone', 'T1');		//T1
+				$(	'DIV.cnnT2s'			).attr('data-vr-zone', 'T2');		//T2
+				$(	'DIV.cnnBoxWritersRow5'	).attr('data-vr-zone', 'Writers');	//Writers
+				$(	'DIV.cnnBoxSiVideo'		).attr('data-vr-zone', 'Video');	//Video
+				
+				$(	'DIV.cnnBoxEM'			).attr('data-vr-zone', 'Extra Mustard');	//Extra Mustard
+				
+				$(	'DIV.cnnBoxTR'			).attr('data-vr-zone', 'Truth & Rumors');	//Truth & Rumors
+					
+				//cnnRow2, cnnCol1 is always SI Photos
+				$(	'DIV.cnnBoxPhotos'		).attr('data-vr-zone', 'SI Photos');		//SI Photos
+				
+				//Generic Boxes				
+				var el,title;
+				var generic_boxes = {
+					'a': 'DIV.cnnRow2 DIV.cnnCol0',
+					'b': 'DIV.cnnRow3 DIV.cnnCol0',
+					'c': 'DIV.cnnRow3 DIV.cnnCol1'
+				};
+				for ( box in generic_boxes ){
+					el = generic_boxes[ box ];
+					title = $( el ).setVRTitle();
+					$(el).attr('data-vr-zone', title);
+				}
+				
+				 /*
+				  *
+				  *	Set the content boxes by adding the Visual Revenue attribute : data-vr-contentbox
+				  *		Since many of the boxes below the fold can change positions and type,
+				  *		set the content box using the generic classes/ids/elements. Other boxes,
+				  *		namely the T1, T2, Writers, and Video Box, are fixed on the page and have
+				  *		specific class names or ids to classify a content box.
+				  */
+				
+				$('DIV#cnnT1Holder DIV.cnnT1Pane').attr('data-vr-contentbox', '');  //T1
+				$('DIV.cnnT2s ul li').attr('data-vr-contentbox', '');				//T2
+				
+				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersFeature').attr('data-vr-contentbox', '');	//Writer Feature
+				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersMain li').attr('data-vr-contentbox', ''); //Writer Generic
+				
+				$('DIV.cnnBoxSiVideo DIV#si-hp-carousel-video-player').attr('data-vr-contentbox', '');					//Featured Video
+				$('DIV.cnnBoxSiVideo DIV.jcarousel-skin-home_video LI.jcarousel-item').attr('data-vr-contentbox', '');	//Video Carousel
+				
+				$('DIV.cnnBoxEM DIV A').attr('data-vr-contentbox', '');				//Extra Mustard
+				
+				$('DIV.cnnBoxTR DT').attr('data-vr-contentbox', '');				//Truth and Rumors Feature
+				$('DIV.cnnBoxTR DD UL LI A').attr('data-vr-contentbox', '');		//Truth and Rumors Link
+				
+				$('DIV.cnnBoxPhotos A').attr('data-vr-contentbox', '');				//SI Photos
+				
+				$('DIV.cnnBoxDefault DT').attr('data-vr-contentbox', '');			//Generic Box Feature
+				$('DIV.cnnBoxDefault DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
+				
+				$('DIV.cnnBoxDefaultThumbs DIV').attr('data-vr-contentbox', '');	//Generic Box Link
+				
+		});
+	
+	}	
+		
+} catch(e){
+	siLog.error( e.message );
+}
+</script>
+<!-- /END: Visual Revenue Logic for Homepage - SI-5749 -->
 
 <!--[if IE 9]>
 <link rel="stylesheet" type="text/css" href="http://i.cdn.turner.com/si/.e/css/4.1/ie9.css" />
@@ -101,8 +211,14 @@ if(x/2 == 1) {
 </script>
 
 <!--single, no split-->
+<script type="text/javascript">
+if ( ( document.location.pathname ).indexOf( '/football/ncaa/' ) == 0 ) {
+	document.write( '<a href="https://subscription.si.com/storefront/subscribe-to-sports-illustrated/link/1011581.html" target="_blank">Get EA NCAA CF 13 FREE</a>');
+} else {
+	document.write( '<a href="https://subscription.si.com/storefront/subscribe-to-sports-illustrated/link/1012230.html" target="_blank">Get Madden 13 FREE</a>');
+}
 
-<a href="https://subscription.si.com/storefront/subscribe-to-sports-illustrated/link/1011581.html" target="_blank">Get EA NCAA CF 13 FREE</a>
+</script>
 
 <style>div.cnnSearch input.cnnLeft { width:260px!important; } </style> | <a href="https://subscription.si.com/storefront/subscribe-to-sports-illustrated/link/1002346.html" target="_blank" id="cnn_cm_subscribe2">Subscribe to SI</a> | <a href="https://subscription.si.com/storefront/Give-the-Gift-of-Sports-Illustrated/site/si-donor0411jacket.html?xid=sirosheader&link=1001406" target="_blank" id="cnn_cm_subscribe3">Give the Gift of SI</a></div>
 		<div class="cnnRight"><form method="get" action="http://sportsillustrated.cnn.com/search/" name="cm_search"><input type="text" name="text" class="cnnLeft"/><input type="image" src="../../i.cdn.turner.com/si/.element/img/4.1/global/search.gif" alt="Search" title="Search" class="cnnRight"/></form></div>
@@ -112,7 +228,7 @@ if(x/2 == 1) {
 
 <!-- start navbar -->
 <style>
-DIV.cnnTopnav LI A { color:#000;display:block;padding:0 16px 0 15px!important; }
+DIV.cnnTopnav LI A { color:#000;display:block;padding:0 21px 0 20px!important; }
 DIV.cnnTopnav LI.cnnFirst { padding-left:5px; }
 </style>
 <div class="cnnTopnav">
@@ -125,7 +241,7 @@ DIV.cnnTopnav LI.cnnFirst { padding-left:5px; }
 		<li><a href="http://www.sportsillustratedeverywhere.com/">MAGAZINE</a></li>
 		<li><a href="http://sportsillustrated.cnn.com/sifk/?eref=sinav">SI KIDS</a></li>
 		<li><a href="http://sportsillustrated.cnn.com/highschool/?eref=sinav">HIGH SCHOOL</a></li>
-		<li><a href="http://sportsillustrated.cnn.com/olympics/?eref=sinav">OLYMPICS</a></li>
+		<!--<li><a href="/olympics/?eref=sinav">OLYMPICS</a></li>-->
 		<li><a href="http://sportsillustrated.cnn.com/behindthemic/?eref=sinav">BEHIND THE MIC</a></li>
 		<!--<li><a href="http://www.maxpreps.com/national/national.htm?eref=sinav" target="_blank" rel="nofollow">MAXPREPS</a></li>-->
 	</ul>
@@ -305,8 +421,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 <p>The Privacy Statement posted on this site was updated in March, 2011.</p>
 
 </div>
-<!--'B:sponsorLinksTable'--><!--div class="cnnWideSL"></div-->
-<!--'B:/sponsorLinksTable'-->
+<!--'B:sponsorLinksTable'--><!--'B:/sponsorLinksTable'-->
 </div>
 <!--'B:sideColumn'--><div id="cnnSideColumn">
 	<div id="cnnTowerAd"><!-- ADSPACE: ros/rgt.300x250 --><script type="text/javascript">adFactory.getMultiAd(new Array("300x250", "300x600")).write();</script></div>
@@ -316,13 +431,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle" style="border-top: 0px none;">Latest News</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/eric_mack/08/17/fantasy-football-predictions/index.html?eref=sircrc"><strong>Eric Mack:</strong> Fifteen bold fantasy football predictions for 2012</a>
+<a href="http://blogs.golf.com/presstent/2012/09/live-coverage-of-2012-ryder-cup-day-1-live-blog.html?eref=sircrc"><strong>Ryder Cup:</strong> Follow live analysis of Day 1 from Medinah</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/football/nfl/08/17/ryan-tannehill/index.html?eref=sircrc">Miami to start rookie Tannehill against Panthers</a>
+<a href="http://sportsillustrated.cnn.com/baseball/mlb/gameflash/2012/09/28/42827/index.html#boxscore?eref=sircrc">Red Sox at O's</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/baseball/mlb/gameflash/2012/08/16/42248/index.html#recap#?eref=sircrc">Rays' Price flusters Angels for MLB-best 16th win</a>
+<a href="http://keepingscore.blogs.time.com/2012/09/28/a-replacement-ref-reflects-did-the-nfl-overlook-an-obvious-experience-gap/?eref=sircrc"><strong>TIME.com:</strong> NFL replacement referee speaks out</a>
 </li>
 
 		</ul>
@@ -331,14 +446,14 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">Video</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 		<tr>
-		<td><a href="http://sportsillustrated.cnn.com/video/ncaaf_video/2012/08/17/081712.mandel-staples-college-football-big-east.SportsIllustrated/index.html">
+		<td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/09/28/092812-Don-Banks-Eagles-Vick-sml.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/ncaaf_video/2012/08/17/l124.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">College Football Preview: Big East</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/08/16/0801512-kansas-city-chiefs-matt-cassell-peter-king.SportsIllustrated/index.html">
+<img src="../../i2.cdn.turner.com/si/video/nfl/2012/09/28/MV124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Banks: Faith in Vick wavering</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/09/28/092812-Draft-Watch-Matt-Barkley-sml.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/nfl/2012/08/16/matt.124.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Peter King's team report: Chiefs</div>
+<img src="../../i2.cdn.turner.com/si/video/nfl/2012/09/28/MB124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Tony Pauline's NFL Draft Watch: Matt Barkley</div>
 </a></td>
 
 		</tr>
@@ -348,13 +463,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Writers</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/dave_doyle/08/17/joe.lauzon/index.html?eref=sircrc"><strong>Dave Doyle:</strong> UFC 150 main event has Fight of the Year potential</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/eric_mack/09/28/fantasy-football-scouting-report/index.html?eref=sircrc"><strong>Eric Mack:</strong> Fantasy football future looks bright for Simpson</a>
 </li>
 <li>
-<a href="http://nba-point-forward.si.com/2012/08/17/stephen-curry-warriors/?eref=sircrc">What a healthy Stephen Curry could mean to new-look Warriors</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/tim_tuttle/09/28/Chris-Economaki-obituary/index.html?eref=sircrc"><strong>Tim Tuttle:</strong> Chris Economaki wanted to know anything and everything about racing</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/georgina_turner/08/17/premier-league-preview/index.html?eref=sircrc"><strong>Georgina Turner:</strong> Premier League preview: Breaking down all 20 clubs by tier</a>
+<a href="http://nhl-red-light.si.com/2012/09/28/blogging-the-new-york-cba-talks/?eref=sircrc">Blogging the New York CBA talks</a>
 </li>
 
 		</ul>
@@ -363,18 +478,18 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Photos</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 			<tr>
-<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1208/cfb-preview-all-big-east-team/content.1.html?eref=sircrc">
+<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1209/2012-WNBA-playoff-stars/content.1.html?eref=sircrc">
 <div>
-<img title="2012 Preseason All-Big East Team" alt="2012 Preseason All-Big East Team" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1208/cfb-preview-all-big-east-team/images/00-khaseem-greene-thumb.jpg"></div>
-<div>2012 Preseason All-Big East Team</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1008/nfl.hazing/content.1.html?eref=sircrc">
+<img title="Players to watch in 2012 WNBA playoffs" alt="Players to watch in 2012 WNBA playoffs" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1209/2012-WNBA-playoff-stars/images/Maya-Moore-100.jpg"></div>
+<div>Players to watch in 2012 WNBA playoffs</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1209/did-you-see-that-092812/content.1.html?eref=sircrc">
 <div>
-<img title="NFL Rookie Hazing Through the Years" alt="NFL Rookie Hazing Through the Years" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1008/nfl.hazing/images/thumb.jpg"></div>
-<div>NFL Rookie Hazing Through the Years</div>
-</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1201/wta.champions/content.1.html?eref=sircrc">
+<img title="Did You See That?" alt="Did You See That?" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1209/did-you-see-that-092812/images/thumb.645589.jpg"></div>
+<div>Did You See That?</div>
+</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1209/athletes-drinking-coffee/content.1.html?eref=sircrc">
 <div>
-<img title="2012 WTA Champions" alt="2012 WTA Champions" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1201/wta.champions/images/williams-gallery-thumb.jpg"></div>
-<div>2012 WTA Champions</div>
+<img title="Athletes Drinking Coffee" alt="Athletes Drinking Coffee" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1209/athletes-drinking-coffee/images/thumb2.jpg"></div>
+<div>Athletes Drinking Coffee</div>
 </a></td>
 
 			</tr>
@@ -397,7 +512,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnnRight">
 			<dl>
 				<dt><a href="http://sportsillustrated.cnn.com/"><img src="../../i.cdn.turner.com/si/.element/img/4.1/global/footer_logo.jpg" alt="SI.com" title="SI.com"/></a></dt>
-				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/2012/writers/cory_mccartney/08/16/acc-conference-report/index.html" title="ACC Football Preview"class="cnnFirst">ACC Football Preview</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/cliff_corcoran/08/16/trout-mccutchen-most-valuable-player/1.html" title="Andrew McCutchen">Andrew McCutchen</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/andrew_lawrence/08/16/titans-training-camp-postcard/index.html" title="Chris Johnson">Chris Johnson</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/joe_lemire/08/15/melky-cabrera-suspension/index.html" title="Melky Cabrera">Melky Cabrera</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/grant_wahl/08/16/usa-mexico-tim-howard/index.html" title="U.S. Soccer">U.S. Soccer</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
+				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/2012/writers/peter_king/09/27/nfl-game-plan-week4/index.html" title="NFL Week 4"class="cnnFirst">NFL Week 4</a>   <a href="http://www.golf.com/" title="Ryder Cup" target="new" >Ryder Cup</a>   <a href="http://sportsillustrated.cnn.com/2012/basketball/nba/09/28/john-wall-knee-injury.ap/index.html" title="John Wall">John Wall</a>   <a href="http://mlb.si.com/2012/09/28/al-playoff-races-rays-angels-orioles-yankees-rangers-tigers-white-sox/" title="AL Wild Card Race" target="new" >AL Wild Card Race</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/chris_ballard/09/28/jim-harbaugh/index.html" title="Jim Harbaugh">Jim Harbaugh</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/andy_staples/09/28/georgia-tennessee-bacarri-rambo-alec-ogletree/index.html" title="Bacarri Rambo">Bacarri Rambo</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
 			</dl>
 			<div class="cnnClear"></div>
 			<ul>
@@ -425,12 +540,11 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 				.cnnFooterBox .cnnRight DIV.cnnCopyright IMG { float:left;margin:0 6px 14px 0; }
 				.cnnFooterBox .cnnRight DIV.cnnCopyright IMG#cnnFooterAdOpt { float:none;margin:0 0 0 6px;vertical-align:bottom; }
 				</style>
-				<img src="../../i.cdn.turner.com/si/.element/img/4.1/global/logo_footer_turner.png" alt="Turner - SI Digital"/> 
-				<script type="text/javascript">if( ( ( document.location.pathname ).indexOf( '/basketball/nba' ) >= 0 ) || ( ( document.location.pathname ).indexOf( '/video/nba' ) == 0 ) ) { document.write( 'TM & &#169; 2012 Turner Broadcasting System, Inc. A Time Warner Company. All Rights Reserved. SI.com is part of CNN Digital Network, which is part of the Turner Digital Network.' ); } else { document.write( 'TM & &#169; 2012 Turner Broadcasting System, Inc. A Time Warner Company. All Rights Reserved. SI.com is part of CNN Digital Network, which is part of the Turner Digital Network.' ); }</script><noscript>TM & &#169; 2012 Turner Broadcasting System, Inc. A Time Warner Company. All Rights Reserved. SI.com is part of CNN Digital Network, which is part of the Turner Digital Network.</noscript>
+				TM & &#169; 2012 Time Inc. A Time Warner Company. All Rights Reserved. SI.com is part of CNN Digital Network, which is part of the Turner Digital Network.
 				<br/> <a href="http://sportsillustrated.cnn.com/interactive_legal.html" rel="nofollow">Terms</a> under which this service is provided to you. Read our <a href="http://sportsillustrated.cnn.com/privacy/" rel="nofollow">privacy guidelines</a>, <a href="https://subscription.timeinc.com/storefront/privacy/si/generic_privacy_new.html?dnp-source=E#california" rel="nofollow">your California privacy rights</a>, and <a href="http://subscription-assets.timeinc.com/prod/assets/themes/magazines/default/template-resources/html/legal/ti-corp-behavioral.html">ad choices<img src="../../i.cdn.turner.com/si/.element/img/4.1/global/logo_adchoices.gif" id="cnnFooterAdOpt"/></a>.
 			</div>
 		</div>
-		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11814/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/0820_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href="http://www.sicovers.com/ils.aspx?p=SPR20120820MICH&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
+		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11874/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/1001_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href=" http://www.sicovers.com/ils.aspx?p=SPR20121001BAL&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
 </div>
 	</div>
 </div>

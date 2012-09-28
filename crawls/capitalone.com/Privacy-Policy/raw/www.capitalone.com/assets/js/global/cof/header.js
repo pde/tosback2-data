@@ -130,8 +130,13 @@ Cof.Header.GlobalNav = function() {
 Cof.Header.PrimaryNav = function() {
 
     jQuery.elReady('#nav-primary', function() {
+		Cof.Header.PrimaryNav.Render();
+        
+    });
+};
 
-        var navEntries = jQuery("#nav-primary > li");
+Cof.Header.PrimaryNav.Render = function() {
+	var navEntries = jQuery("#nav-primary > li");
 
         jQuery('ul.nav-primary-menu').supersubs({
             minWidth   : 12,   // minimum width of sub-menus in em units
@@ -162,8 +167,8 @@ Cof.Header.PrimaryNav = function() {
             // add a cookie so we know that "For Business" was clicked
             jQuery.cookie("forbusiness", "true", {path : '/', domain: '.capitalone.com'});
         });
-    });
-};
+}
+
 
 Cof.Header.Zipcode = (function() {
 

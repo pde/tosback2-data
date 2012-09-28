@@ -150,7 +150,7 @@
                     if (qparamArray[i].indexOf('=') !== -1) {
                         var qparam = qparamArray[i].split('=');
                         if (p.toLowerCase() === unescape(qparam[0].toLowerCase())) {
-                            retVal = unescape(qparam[1].toLowerCase());
+                            retVal = unescape(qparam[1]);
                             break;
                         }
                     }
@@ -662,12 +662,12 @@
                         cn = 'college-hooded-sweatshirt';
                     } else if (SmtrRmkr.isPage('/back-to-school')) {
                         var h = SmtrRmkr.wl.hash.replace('#', '');
-                        if (h.length == 0) {
+                        if (h.length == 0 || h.length > 32) {
                             h = 'default';
                         }
                         cn = 'Back To School: ' + h;
                         cid = 'b2s_' + h;
-
+                        
                         if (SmtrRmkr.btsWired == false) {
                             SmtrRmkr.btsWired = true;
                             $(document).ready(function () {
@@ -1076,7 +1076,7 @@
             isCartPage: function () {
                 return SmtrRmkr.isPage('/store/checkout/cart.jsp');
             }
-        };                      //end SmtrRmkr
+        };  //end SmtrRmkr
 
         if (!window.addListener) {
             window.addListener = function(element, type, expression, bubbling) {

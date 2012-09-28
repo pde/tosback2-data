@@ -126,14 +126,14 @@ if(window.location.protocol.toLowerCase() == 'http:'){
 }
 try {
 	//Monetate
-	if(ci_ITD()===false){
-	     var monetateT = new Date().getTime();
-	    (function() {
-		    var p = document.location.protocol;
-		    if (p == "http:" || p == "https:") {
-			    var m = document.createElement('script'); m.type = 'text/javascript'; m.src = (p == "https:" ? "https://s" : "http://") + "b.monetate.net/js/1/a-ffc9d1d5/p/brookstone.com/" + Math.floor(monetateT / 3600000) + "/g";
-			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
-		    }
-	    })();
+	if(typeof g_b_Monetate_Loded==='undefined'||g_b_Monetate_Loded==false){
+		 var monetateT = new Date().getTime();
+		(function() {
+			var p = document.location.protocol;
+			if (p == "http:" || p == "https:") {
+				var m = document.createElement('script'); m.type = 'text/javascript'; m.src = (p == "https:" ? "https://s" : "http://") + "b.monetate.net/js/1/a-ffc9d1d5/p/brookstone.com/" + Math.floor(monetateT / 3600000) + "/g";
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(m, s);
+			}
+		})();
 	}
 }catch(err){}

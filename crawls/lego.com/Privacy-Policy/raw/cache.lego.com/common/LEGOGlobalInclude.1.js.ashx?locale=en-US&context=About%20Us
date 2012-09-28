@@ -1,1 +1,20 @@
-document.write('<script type="text/javascript" src="http://cache.lego.com/common/globalSettings.1.js.ashx"></script>');document.write('<script type="text/javascript" src="http://cache.lego.com/common/survey/LEGONpsSurvey.js.ashx?context=About Us&locale=en-US"></script>');document.write('<script type="text/javascript" src="http://cache.lego.com/common/LEGOID/LEGOID.API.js.ashx"></script>');
+;(function(){
+function includeCss(path) {
+    var newStyleInclude = document.createElement('link');
+    newStyleInclude.setAttribute('rel', 'stylesheet');
+    newStyleInclude.setAttribute('type', 'text/css');
+    newStyleInclude.setAttribute('href', path);
+    document.getElementsByTagName('head')[0].appendChild(newStyleInclude);
+}
+
+function includeJs(path) {
+    var newJsInclude = document.createElement('script');
+    newJsInclude.setAttribute('src', path);
+    document.body.appendChild(newJsInclude);
+}
+includeJs('http://cache.lego.com/common/globalSettings.1.js.ashx');
+includeJs('http://cache.lego.com/common/survey/LEGONpsSurvey.js.ashx?context=About Us&locale=en-US');
+includeJs('http://cache.lego.com/common/LEGOID/LEGOID.API.js.ashx');
+includeJs('http://cache.lego.com/common/privacypolicy/PrivacyPolicy.js.ashx?context=About Us&locale=en-US');
+includeCss('http://cache.lego.com/common/privacypolicy/PrivacyPolicy.css.ashx?context=About Us&locale=en-US');
+}())

@@ -45,10 +45,10 @@ MS.ads = {
                 var kwKval = ms_adConfig.kw.join('|');
                 var adStyle = 'adj';
 
-                var tile = ''; var dcopt = ''; var size = ''; var iframe = false; var iframeID = ''; var cauXtra = '';
+                var tile = ''; var size = ''; var iframe = false; var iframeID = ''; var cauXtra = '';
                 var cauValue = (typeof ms_adConfig.cau == 'undefined' || ms_adConfig.cau == '' ? 'none' : ms_adConfig.cau);
                 switch (adType) {
-                    case 'top': tile = 1; dcopt = ';dcopt=ist'; size = '728x90'; iframeID = 'iframe_ad728x90t2'; break;
+                    case 'top': tile = 1; size = '728x90'; iframeID = 'iframe_ad728x90t2'; break;
                     case 'cau': tile = 2; size = '233x224'; cauXtra = ';adtype=cau'; iframeID = 'iframe_cau'; break;
                     case 'right': tile = 3; size = '336x280,300x250,336x850'; iframeID = 'iframe_right'; break;
                     case 'rightxtra': tile = 4; size = '336x280,300x250'; iframeID = 'iframe_rightxtra'; break;
@@ -60,7 +60,7 @@ MS.ads = {
                 kwCau += cauXtra;
 
                 // Would be nice to insert script object, but with crappy browsers out there, resort to old method
-                var scriptSrc = 'http://a.collective-media.net/'+ adStyle + '/'+ adSite + '/'+ kwPath + kwCau + ';kval='+ kwKval + ';storyid='+ ms_adConfig.storyid + ';tile='+ tile + dcopt + ';sz='+ size + ';ord=' + ord + ';cmn=ts';
+                var scriptSrc = 'http://ad.doubleclick.net/'+ adStyle + '/'+ adSite + '/'+ kwPath + kwCau + ';kval='+ kwKval + ';storyid='+ ms_adConfig.storyid + ';tile='+ tile + ';dcopt=ist;sz='+ size + ';ord=' + ord + ';cmn=ts;';
 
                 if (iframe || forceFrame) {
                     var sSplit = size.split('x');

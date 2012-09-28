@@ -34,7 +34,7 @@ var controler = (function(){
 			
 			resizeWindow();
 			
-			setSearch()
+			search.init();
 			supplimentHTML();
 			nav.init();
 		}
@@ -131,6 +131,7 @@ var footer = (function(){
 	
 })();
 
+//nav
 var nav = (function(){
 	var $menuBtn,
 		$nav,
@@ -141,7 +142,6 @@ var nav = (function(){
 		$allNavLinks,
 		$firstDropdownLists,
 		$dropdownList,
-		$subNavs,
 		$dropdownListitems,
 		$dropdownLinks,
 		navTracker = 0,
@@ -151,33 +151,42 @@ var nav = (function(){
 	return{
 		init:function(obj){
 			$nav = $('#nav');
-			
-			$nav.wrapInner('<div class="content"></div>');
-			
-			$nav.before('<p class="closed" id="menu-btn"><a href="#">Menu</a></p>');
 			$menuBtn = $('#menu-btn a');
+			nav.btn = $menuBtn;
 			
 			$menuBtn.click(function() {
 				var $this = $(this);
+
+				search.close();
 				
 				if($this.parent().hasClass("closed")){
-					animateMenu("show");
+					nav.animateMenu("show");
 				}else{
-					animateMenu("hide");
+					nav.animateMenu("hide");
 				}
 				return false;
 			});
 			
 			buildNav();
+		},
+		animateMenu:function(showOrHide){
+			if(showOrHide == 'show'){
+				$menuBtn.parent().removeClass('closed').addClass('open');
+				
+				$navContent.css({'left': 0});
+				
+			}else if(showOrHide == 'hide'){
+				$menuBtn.parent().removeClass('open').addClass('closed');
+				$navContent.css({'left': 480});
+				navTracker = 0;
+			}
 		}
 	}
 	/****** private methods ******/
 	function buildNav(){
-		
-		$('#nav').find('.sub').each(function(){
+		$nav.find('.sub').each(function(){
 			$(this).children('ul').prepend('<li class="title"><a href="#"><span>'+$(this).children('a').children('span').text()+'</span></a></li>');
 		});
-		
 		
 		$navContent = $nav.children('.content'),
 		$navList = $navContent.children('ul');
@@ -189,12 +198,24 @@ var nav = (function(){
 		$dropdownListItems = $navListItems.find('li');
 		$dropdownLinks = $dropdownList.find('a');
 		navHeight = $navList.height();
-		
-		
-		
-		
 
 		$navList.addClass('current');
+		
+		$allNavListItems.hover(
+			function(){
+				if(controler.size != 's'){
+					//alert('add Hover');
+					$(this).addClass('hover');
+					//adjustDropdown($(this).children('ul'));
+				}
+			},
+			function(){
+				if(controler.size != 's'){
+					//alert('remove hover');
+					$(this).removeClass('hover');
+					//adjustDropdown($(this).children('ul'));
+				}
+		});
 		
 		//add active class to links when clicked
 		$allNavLinks.click(function(){
@@ -211,9 +232,11 @@ var nav = (function(){
 					$parent.addClass('current');
 				//if it is not small view
 				}else{
-					if($parent.hasClass('top') && $parent.hasClass('hover')){
+					if($parent.hasClass('top') && $this.hasClass('clicked')){
+						//alert('deActivateDropdowns');
 						deActivateDropdowns();
 					}else{
+						//alert('activateDropdown');
 						activateDropdown($this);
 					}
 				}
@@ -229,19 +252,7 @@ var nav = (function(){
 			
 		});
 		
-		$allNavListItems.hover(
-			function(){
-				if(controler.size != 's'){
-					$(this).addClass('hover');
-					//adjustDropdown($(this).children('ul'));
-				}
-			},
-			function(){
-				if(controler.size != 's'){
-					$(this).removeClass('hover');
-					//adjustDropdown($(this).children('ul'));
-				}
-		});
+		
 		
 		$(window).resize(function(){
 			resize();
@@ -279,20 +290,7 @@ var nav = (function(){
 			
 		}
 	};
-	
-	function animateMenu(showOrHide){
-		if(showOrHide == 'show'){
-			$menuBtn.parent().removeClass('closed').addClass('open');
-			
-			$navContent.css({'left': 0});
-			
-		}else if(showOrHide == 'hide'){
-			$menuBtn.parent().removeClass('open').addClass('closed');
-			$navContent.css({'left': 480});
-			navTracker = 0;
-		}
-	};
-	
+
 	function slideNav(direction){
 		var contentWidth,
 			navMargin = $navContent.css('left');
@@ -321,33 +319,42 @@ var nav = (function(){
 				$navContent.find('.previous').removeClass('previous').removeClass('current');
 			});
 		}
-	};
+	}
 	
 	function activateDropdown(link){
+		//alert('activateDropdown');
 		var $link = $(link),
 			$parent = $link.parent(),
 			$siblings = $parent.siblings(),
 			$activeChildren;
 		
 		//if the clicked link is active
-		if($parent.hasClass('hover')){
+		if($link.hasClass('clicked')){
+			//alert('has been clicked');
 			//make it not active
 			$parent.removeClass('hover');
+			$link.removeClass('clicked');
 			//make children not active
 			$activeChildren = $parent.find('.hover');
+			$clickedChildren = $parent.find('.clicked');
 			$activeChildren.removeClass('hover');
+			$clickedChildren.removeClass('clicked');
 			
 		//if the clicked link is not active
 		}else{
+			//alert('does not have hover');
 			//make it active
 			$parent.addClass('hover');
+			$link.addClass('clicked');
 			//remove active states from siblings 
 			$siblings.each(function(){
 				var $this = $(this);
-				if($this.hasClass('hover')){
+				if($this.children('a').hasClass('clicked')){
 					$activeChildren = $this.find('.hover');
+					$clickedChildren = $this.find('.clicked');
 					$this.removeClass('hover');
 					$activeChildren.removeClass('hover');
+					$clickedChildren.removeClass('clicked');
 				}
 			});
 			
@@ -356,9 +363,12 @@ var nav = (function(){
 		}
 	};
 	function deActivateDropdowns(){
-		var $active = $navList.find('.hover');
+		//alert('deActivateDropdowns');
+		var $active = $navList.find('.hover'),
+			$clicked = $navList.find('.clicked');
 		
 		$active.removeClass('hover');
+		$clicked.removeClass('clicked');
 		$firstDropdownLists.css('left', -9999);
 	};
 	

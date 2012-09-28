@@ -758,6 +758,9 @@ function submitProductLoginForm(my_form_name, my_dest, my_act) {
 	//alert("submitProductLoginForm");
 	setButton('2');
 	my_form = document.forms[my_form_name];
+	if (my_form == null) {
+		my_form = document.forms['giftCertForm'];
+	}
 	my_form.action = my_act;
 	my_form.dest.value = my_dest;
 	my_form.productShipToSubmit.value = false;
@@ -1166,6 +1169,7 @@ function swfEmbed(swfPath, writeLocation, autoStart, width, height, videoPath, f
 	vidEmbed.addParam('allowfullscreen',allowfullscreen);
 	vidEmbed.addParam("wmode", wmode);
 	vidEmbed.addParam('allowscriptaccess',allowscriptaccess);
+	vidEmbed.addParam('ExternalInterface.available','true');
 	vidEmbed.addParam('bgcolor',bgcolor);
     
 	vidEmbed.addVariable("autostart", autoStart);

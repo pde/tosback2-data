@@ -65,7 +65,7 @@ h6 { font-size:0.923em; }
 
 h1, h2, h3, h4, h5, h6 { color:#4e8db6; line-height:1.2; margin-bottom:10px; }
 
-a { color:#204e91; }
+a { color:#204e91; } /* Removed outline:none; */
 a:visited { color:#204e91; }
 a:hover { color:#955efc; }
 a:active { color:#204e91; }
@@ -99,7 +99,7 @@ sub { bottom:-0.25em; }
 ul, ol { margin:10px 0; }
 dd { margin:0 0 0 15px; }
 ul li { color:#204e91; list-style:none; }
-ul.bullet li { list-style-image:url(../img/bullet.png); list-style-position:outside; margin-left:15px; line-height:1.2; padding-bottom:5px; }
+ul.bullet li { color:#00A5E5; list-style-image:url(../img/bullet.png); list-style-position:outside; margin-left:15px; line-height:1.4em; padding-bottom:5px; }
 ul.bullet li a { font-weight:600; text-decoration:none; }
 ul.bullet li a:hover { text-decoration:underline; }
 ol li { color:#204e91; list-style:outside decimal; margin-left:15px; }
@@ -220,10 +220,20 @@ td { padding:10px; vertical-align:top; }
 	.section { border-bottom:1px solid #4e8db6; clear:both; margin-bottom:25px; padding-bottom:50px; }
 	.section-header { font-size:1.077em; font-weight:600; margin-bottom:15px; text-transform:uppercase; }
 	.section:last-child { border:0; margin-bottom:0; padding-bottom:0; }
+	.section-noborder { border:none; margin-bottom:10px; padding-bottom:10px; }
+	
 	.left-column { float:left; width:48%; }
 	.right-column { margin-left:52%; width:48%; }
+	
+	.left-med-column { float:left; width:58%; }
+	.right-med-column { margin-left:42%; }
+
+	.left-narrow-column { float:left; width:38%; }
+	.right-narrow-column { margin-left:62%; }	
+		
 	.left-wide-column { float:left; width:70%; }
 	.right-sidebar { margin-left:75%; }
+
 	.link-category { border-bottom:1px solid #4e8db6; margin-bottom:10px; overflow:hidden; padding-bottom:30px; }
 	.link-category:last-child { border:0; margin-bottom:0; padding-bottom:0; }
 	.link-category h3 { float:left; font-weight:300; padding-right:40px; width:20% }
@@ -237,13 +247,16 @@ td { padding:10px; vertical-align:top; }
 	
 	.offset-left { margin-left:-50px; }
 	.offset-right { margin-left:50px; }
+	.offset-left-extended { margin-left:-50px; }
+	.offset-right-extended { margin-left:50px; }
 	.more-info { clear:both; overflow:hidden; }
 	.more-info h4 { color:#444; display:block; font-size:1.385em; margin:40px 0 20px 0; }
 	.more-info h4 span { background:#eee; padding:8px 10px; }
-	.link-column { float:left; margin:0 5% 0 0; width:28%; }
 	.more-info.link-list { clear:none; float:left; margin:0 5% 0 0; width:28%; }
+	.link-column { float:left; margin:0 5% 0 0; width:28%; }
 	.left-column .link-column, .right-column .link-column { float:left; margin:0 5% 0 0; width:45%; }
-	
+	.no-clear { clear:none; }
+
 	.right-sidebar .article { margin-bottom:40px; }
 	.right-sidebar .article img { margin-bottom:10px; }
 	.right-sidebar .article p { color:#204e91; margin-bottom:10px; }
@@ -269,12 +282,12 @@ td { padding:10px; vertical-align:top; }
 	#landing-headline { margin-top:40px; }
 	
 	#featured-stories { }
-	#featured-stories .viewport { height:350px; overflow:hidden; position:relative; width:100%; }
-	#featured-stories .text {height:150px;}
+	#featured-stories .viewport { height:300px; overflow:hidden; position:relative; width:100%; }
+	#featured-stories .text { height:150px;}
 	#featured-stories .buttons { background:url(../img/flexslider-direction-nav.png) no-repeat; cursor:pointer; display:block; height:52px; position:absolute; text-indent:-999em; top:16%; width:52px; }
 	#featured-stories .disabled { visibility:hidden; }
 	#featured-stories .overview { list-style:none; position:absolute; padding:0; margin:0; left:0; top:0; }
-	#featured-stories .overview li { float:left; padding-right:77px; width:215px; word-wrap:break-word; }
+	#featured-stories .overview li { float:left; padding-right:77px; width:215px; }
 	#featured-stories .carousel-nav { } 
 	#featured-stories .next { background-position:-52px 0; right:10px; }
 	#featured-stories .prev { background-position:0 0; left:10px; }
@@ -284,8 +297,10 @@ td { padding:10px; vertical-align:top; }
 	#featured-stories .story img { margin-bottom:20px; }
 	#featured-stories a.bullet, #home-news a.bullet, #home-events a.bullet { border-top:1px solid #e4e4e4; padding-top:5px; text-decoration:none; text-transform:uppercase; }
 	#featured-stories a.bullet:hover, #home-news a:hover, #home-events a.bullet:hover { text-decoration:underline; }
+
 	.height_happenings li { height:120px; }
 	.height_news, .height_happenings {height:410px; }
+	
 	#home-news, #home-events, #home-social-media { float:left; padding-right:9.5%; margin-bottom:20px; width:27%; }
 	#home-news h3, #home-events h3, #home-social-media h3 { border-bottom:1px solid #e4e4e4; padding-bottom:5px; }
 	#home-news li { margin-bottom:10px; }
@@ -302,7 +317,13 @@ td { padding:10px; vertical-align:top; }
 	.bio-img { float:left; }
 	.bio-copy { margin-left:115px; width:73%; }	
 	
-	.fluid-width-video-wrapper { margin:40px 0 10px 0; }
+	.fluid-width-video-wrapper { margin: 40px 0 40px 0; }
+	
+	.timeline-entry { width:100%; display:block; margin-bottom:6px; overflow:hidden; }
+	.timeline-entry p { margin-left:140px; }
+	.timeline-entry img { margin-right:10px; float:left; }
+	.decade { margin-bottom:20px; }
+
 
 /* ---------------------------------------------------
 	FOOTER
@@ -319,6 +340,7 @@ td { padding:10px; vertical-align:top; }
 	#footer #social-media { border-top:1px solid #fff100; margin-top:10px; padding-top:10px; width:130px; }
 	#footer #social-media li { background:none; float:left; padding:0; }
 
+
 /* ---------------------------------------------------
 	HELPER CLASSES
 --------------------------------------------------- */
@@ -332,6 +354,8 @@ td { padding:10px; vertical-align:top; }
 .clear-fix:before, .clear-fix:after { content:""; display:table; }
 .clear-fix:after { clear:both; }
 .clear-fix { *zoom:1; }
+.noborder { border:none; }
+
 
 /* ---------------------------------------------------
 	NO JS FIXES
@@ -342,6 +366,7 @@ td { padding:10px; vertical-align:top; }
 .no-js #featured-stories .overview li.third-story { padding-right:0; }
 .no-js #featured-stories .viewport { height:auto; }
 .no-js .video { display:none; }
+
 
 /* ---------------------------------------------------
 	IE FIXES
@@ -354,5 +379,4 @@ td { padding:10px; vertical-align:top; }
 .lt-ie8 .flexslider .slides li img { vertical-align:baseline; }
 .lt-ie8 .flex-control-nav { bottom:80px; }
 .lt-ie8 #search #search-btn { font-size:0; line-height:0; right:1px; }
-
 

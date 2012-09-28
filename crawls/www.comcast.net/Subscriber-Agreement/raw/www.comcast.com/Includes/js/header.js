@@ -1,7 +1,3 @@
-// Prevent compression problems
-;
-
-
 
 (function ($) {
 
@@ -52,45 +48,53 @@
         }
     }
 
-    //Show Sign in or Sign out
-    var customerid = getCookieVal('RC.CID');
-    
-    $("#header-signin").hide();
-    $("#header-signout").hide();
-    $("#header-user-info").hide();
-    
-    $("#user-greetings-info").hide();
-    $("#user-location-info").hide();
+	try
+	{
+		//Show Sign in or Sign out
+		var customerid = getCookieVal('RC.CID');
+		
+		$("#header-signin").hide();
+		$("#header-signout").hide();
+		$("#header-user-info").hide();
+		
+		$("#user-greetings-info").hide();
+		$("#user-location-info").hide();
 
-    if(customerid != ''){
-        $("#header-signout").show(); 
-        
-        //Show greetings for user
-        $("#header-user-info").show();
-        $("#user-greetings-info").show();
-    }
-    else {
-         $("#header-signin").show();
-         //Set location details in header
-         $("#header-user-info").show();
-         var locHeader =  $("#user-location-info");         
-         var locCookie = getCookieVal("Serviceability");
-            if (locCookie.length > 0) {
-                if (GetCookie("Serviceability", "Zip") != false) {
-                    if (window.location.pathname.indexOf("/es/") > 0) {
-                        //This should only be valid for CM
-                        //the locationInfoEs div does not exist in non-CM pages.                        
-                        ///YET TO BE DONE
-                    }
-                    else {
-                        if (locHeader != null) {
-                            $("#user-location-info").show();
-                            $("#hyperLinkChangeLocation").text(get5DigitZip());                            
-                        }
-                    }
-                }
-            }        
-        }
+	
+		if(customerid != ''){
+			$("#header-signout").show(); 
+			
+			//Show greetings for user
+			$("#header-user-info").show();
+			$("#user-greetings-info").show();
+		}
+		else {
+			 $("#header-signin").show();
+			 //Set location details in header
+			 $("#header-user-info").show();
+			 var locHeader =  $("#user-location-info");         
+			 var locCookie = getCookieVal("Serviceability");
+				if (locCookie.length > 0) {
+					if (GetCookie("Serviceability", "Zip") != false) {
+						if (window.location.pathname.indexOf("/es/") > 0) {
+							//This should only be valid for CM
+							//the locationInfoEs div does not exist in non-CM pages.                        
+							///YET TO BE DONE
+						}
+						else {
+							if (locHeader != null) {
+								$("#user-location-info").show();
+								$("#hyperLinkChangeLocation").text(get5DigitZip());                            
+							}
+						}
+					}
+				}        
+			}
+	}
+	catch(err)
+	{
+		$("#header-signin").show();
+	}
      if($("#shop-search-textbox").val() != "")
      {
            $("#shop-search-textbox").val("");
@@ -102,7 +106,14 @@
             $("#shop-search-submit").click();
         }
     });
-
+    $("#subheader-search-container>a").click(function(e) {
+        var language = $(this).text();
+        if (language != null && language.length > 3 && language.substring(0,4) == "Espa") {
+            setLanguage("es");
+        } else {
+            setLanguage("en");
+        }
+    });
     $("#myaccount-search-textbox").keydown(function(event){
         if(event.keyCode == 13){
             $("#myaccount-search-submit").click();

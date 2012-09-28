@@ -18,9 +18,9 @@ function addscript() {
 		if (document.getElementById('searchfield')) { if (document.getElementById('searchfield').value == "") { document.getElementById('searchfield').value= searchfieldlabel; } }
 		if (document.getElementById('countriesanchor')) { document.getElementById('countriesanchor').href = "#"; }
 		if (document.getElementById('intllink')) {
-			if (document.getElementById('intllayer')) { document.getElementById('intllink').href = "#"; }
+		if (document.getElementById('intllayer')) { document.getElementById('intllink').href = "#"; }
 		}
-		if (document.getElementById('intllayer')) { document.getElementById('intllayer').innerHTML = "<h2>Commonly visited PwC sites</h2><table id='countriestable' border='0'><tbody><tr><td><ul class='countrylist'><li><a href='http://www.pwc.com/gx/en/index.jhtml?ld=no'>Global</a></li><li><a href='http://www.pwc.com.au'>Australia</a></li> <li><a href='http://www.pwc.com/br/pt'>Brazil</a></li> <li><a href='http://www.pwc.com/ca/en'>Canada</a></li> <li><a href='http://www.pwccn.com'>China</a>&nbsp;/&nbsp;<a href='http://www.pwchk.com'>Hong Kong</a></li> <li><a href='http://www.pwc.fr'>France</a></li> <li><a href='http://www.pwc.de'>Germany</a></li> <li><a href='http://www.pwc.com/in/en'>India</a></li></ul></td><td><ul class='countrylist'><li><a href='http://www.pwc.com/it/it'>Italy</a></li> <li><a href='http://www.pwcjp.com/e/index.html'>Japan</a></li> <li><a href='http://www.pwc.com/mx/es'>Mexico</a></li><li><a href='http://www.pwc.com/m1/en'>Middle East</a></li> <li><a href='http://www.pwc.com/nl/nl'>Netherlands</a></li> <li><a href='http://www.pwc.com/ru/ru'>Russia</a></li> <li><a href='http://www.pwc.com/sg/en'>Singapore</a></li> <li><a href='http://www.pwc.com/za/en'>South Africa</a></li></ul></td><td valign='top'><ul class='countrylist'><li><a href='http://www.pwc.com/kr/ko'>South Korea</a></li> <li><a href='http://www.pwc.com/es/es'>Spain</a></li> <li><a href='http://www.pwc.com/se/sv'>Sweden</a></li> <li><a href='http://www.pwc.ch'>Switzerland</a></li> <li><a href='http://www.pwc.co.uk'>United Kingdom</a></li> <li><a href='http://www.pwc.com/us/en'>United States</a></li> </ul> </td></tr></tbody></table><div class='clearer'></div><p style='text-align: right; padding-right: 20px;'><a href='http://www.pwc.com/gx/en/site-index.jhtml'>Complete list of PwC territory sites</a></p><a href='#' onclick='intlhide(); return false;'><img src='/en_GX/webadmin/assets/image/icon_close.gif' alt='Close' id='intllayerclose'></a>"; /* 2011 Intl Sites */ }
+		if (document.getElementById('intllayer')) { document.getElementById('intllayer').innerHTML = "<h2>Commonly visited PwC sites</h2><table id='countriestable' border='0'><tbody><tr><td><ul class='countrylist'><li><a href='http://www.pwc.com/gx/en/index.jhtml?ld=no'>Global</a></li><li><a href='http://www.pwc.com.au'>Australia</a></li> <li><a href='http://www.pwc.com/br/pt'>Brazil</a></li> <li><a href='http://www.pwc.com/ca/en'>Canada</a></li> <li><a href='http://www.pwccn.com'>China</a>&nbsp;/&nbsp;<a href='http://www.pwchk.com'>Hong Kong</a></li> <li><a href='http://www.pwc.fr'>France</a></li> <li><a href='http://www.pwc.de'>Germany</a></li> <li><a href='http://www.pwc.com/in/en'>India</a></li></ul></td><td><ul class='countrylist'><li><a href='http://www.pwc.com/it/it'>Italy</a></li> <li><a href='http://www.pwc.com/jp/ja/index.jhtml'>Japan</a></li> <li><a href='http://www.pwc.com/mx/es'>Mexico</a></li><li><a href='http://www.pwc.com/m1/en'>Middle East</a></li> <li><a href='http://www.pwc.com/nl/nl'>Netherlands</a></li> <li><a href='http://www.pwc.com/ru/ru'>Russia</a></li> <li><a href='http://www.pwc.com/sg/en'>Singapore</a></li> <li><a href='http://www.pwc.com/za/en'>South Africa</a></li></ul></td><td valign='top'><ul class='countrylist'><li><a href='http://www.pwc.com/kr/ko'>South Korea</a></li> <li><a href='http://www.pwc.com/es/es'>Spain</a></li> <li><a href='http://www.pwc.com/se/sv'>Sweden</a></li> <li><a href='http://www.pwc.ch'>Switzerland</a></li> <li><a href='http://www.pwc.co.uk'>United Kingdom</a></li> <li><a href='http://www.pwc.com/us/en'>United States</a></li> </ul> </td></tr></tbody></table><div class='clearer'></div><p style='text-align: right; padding-right: 20px;'><a href='http://www.pwc.com/gx/en/site-index.jhtml'>Complete list of PwC territory sites</a></p><a href='#' onclick='intlhide(); return false;'><img src='/en_GX/webadmin/assets/image/icon_close.gif' alt='Close' id='intllayerclose'></a>"; /* 2011 Intl Sites */ }
 		if (document.getElementById('popupclose')) { document.getElementById('popupclose').innerHTML = "<a href='#' target='_self' onclick='window.close();'>close window <img src='/en_GX/webadmin/assets/image/icon_close.gif' border='0' alt='close window' /></a>"; } //Add close window link for popup template
 	}
 	if (((BrowserDetect.browser)=="Firefox")&((BrowserDetect.version)=="3.5")) { document.getElementById('searchsubmit').style.marginBottom = "-10px"; }
@@ -40,6 +40,7 @@ $(document).ready(function(){
 			$('#followhide').click(function() { $('#followbar').fadeOut(500); });
 		};
 	};
+
 	$('#morecontactsbutton').click(function() { 
 		$("#morecontacts").slideDown("medium");
 		$("#lesscontactsbutton").show();
@@ -65,6 +66,10 @@ $(document).ready(function(){
 		return false;
 	});
 	
+	$("#pwcslider .feature").css("width", ($('#pwcslider').width()-60));
+	$("#pwcslider .feature").css("height", ($('#pwcslider').height()-27));
+	$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator().autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
+	
 	var contacttooltipoffset = 0
 	if (((BrowserDetect.browser)=="Explorer")&((BrowserDetect.version)==8)) { contacttooltipoffset = -225; }
 	$(".contacttooltip").tooltip({ position: "bottom left", relative: "true", offset: [-27,contacttooltipoffset]});
@@ -86,6 +91,17 @@ $(document).ready(function(){
 	         $(this).next("div.pane").slideToggle("slow", function(){ $("#accordion h2").css("overflow","hidden")});
 	     }
 	});
+	$(".accordion > h2").click(function(){
+	     if (this.className == "current") {
+	         $(this).removeClass("current");
+	         $(this).next("div.pane").slideToggle("slow", function(){ $(".accordion h2").css("overflow","hidden")});
+	     } else {
+	         $(this).parent().children("h2").removeClass("current");
+	         $(this).parent().children("div.pane").slideUp("slow");
+	         $(this).toggleClass("current");
+	         $(this).next("div.pane").slideToggle("slow", function(){ $(".accordion h2").css("overflow","hidden")});
+	     }
+	});
 	
 	$("#promofeatures").scrollable().navigator({navi: "#flowtabs",naviItem: 'a'});
 	$(".promostaticnav").tabs("#promostatic > .item", {effect: 'fade', rotate: 'true', fadeOutSpeed: 'fast'}).slideshow({autoplay: 'true', interval: '9000'});
@@ -97,6 +113,19 @@ $(document).ready(function(){
 	});
 	
 });
+
+$.fn.handleSwipes = function() {
+	return this.each(function() {
+		var api = $(this).data("scrollable");
+		api.getRoot().addSwipeEvents()
+		.bind('swipeleft', function() {
+				api.next();
+		})
+		.bind('swiperight', function() {
+				api.prev();
+		});
+	});
+};
 
 function openpopup() {
 	window.open('popup.html','popup','width=500,height=500');
@@ -132,7 +161,7 @@ function countriesreveal() { // Show, hide or add to territory selector box
 	var countriesheader="<div id='countriestitle'>Commonly visited PwC sites</div><br clear='all' />";
 
 	document.getElementById('countriescontents').innerHTML = "";
-  var countriesoutput="<table id='countriestable' border='0'><tbody><tr><td><ul class='countrylist'><li><a href='http://www.pwc.com/gx/en/index.jhtml?ld=no'>Global</a></li><li><a href='http://www.pwc.com.au'>Australia</a></li> <li><a href='http://www.pwc.com/br/pt'>Brazil</a></li> <li><a href='http://www.pwc.com/ca/en'>Canada</a></li> <li><a href='http://www.pwccn.com'>China</a>&nbsp;/&nbsp;<a href='http://www.pwchk.com'>Hong Kong</a></li> <li><a href='http://www.pwc.fr'>France</a></li> <li><a href='http://www.pwc.de'>Germany</a></li> <li><a href='http://www.pwc.com/in/en'>India</a></li></ul></td><td><ul class='countrylist'><li><a href='http://www.pwc.com/it/it'>Italy</a></li> <li><a href='http://www.pwcjp.com/e/index.html'>Japan</a></li> <li><a href='http://www.pwc.com/mx/es'>Mexico</a></li><li><a href='http://www.pwc.com/m1/en'>Middle East</a></li> <li><a href='http://www.pwc.com/nl/nl'>Netherlands</a></li> <li><a href='http://www.pwc.com/ru/ru'>Russia</a></li> <li><a href='http://www.pwc.com/sg/en'>Singapore</a></li> <li><a href='http://www.pwc.com/za/en'>South Africa</a></li></ul></td><td valign='top'><ul class='countrylist'><li><a href='http://www.pwc.com/kr/ko'>South Korea</a></li> <li><a href='http://www.pwc.com/es/es'>Spain</a></li> <li><a href='http://www.pwc.com/se/sv'>Sweden</a></li> <li><a href='http://www.pwc.ch'>Switzerland</a></li> <li><a href='http://www.pwc.co.uk'>United Kingdom</a></li> <li><a href='http://www.pwc.com/us/en'>United States</a></li> </ul> </td></tr></tbody></table><br clear='all'> <p style='text-align: right; font-weight: bold;'><a href='http://www.pwc.com/gx/en/site-index.jhtml'>Complete list of PwC territory sites</a></p><br clear='all' />";
+  var countriesoutput="<table id='countriestable' border='0'><tbody><tr><td><ul class='countrylist'><li><a href='http://www.pwc.com/gx/en/index.jhtml?ld=no'>Global</a></li><li><a href='http://www.pwc.com.au'>Australia</a></li> <li><a href='http://www.pwc.com/br/pt'>Brazil</a></li> <li><a href='http://www.pwc.com/ca/en'>Canada</a></li> <li><a href='http://www.pwccn.com'>China</a>&nbsp;/&nbsp;<a href='http://www.pwchk.com'>Hong Kong</a></li> <li><a href='http://www.pwc.fr'>France</a></li> <li><a href='http://www.pwc.de'>Germany</a></li> <li><a href='http://www.pwc.com/in/en'>India</a></li></ul></td><td><ul class='countrylist'><li><a href='http://www.pwc.com/it/it'>Italy</a></li> <li><a href='http://www.pwc.com/jp/ja/index.jhtml'>Japan</a></li> <li><a href='http://www.pwc.com/mx/es'>Mexico</a></li><li><a href='http://www.pwc.com/m1/en'>Middle East</a></li> <li><a href='http://www.pwc.com/nl/nl'>Netherlands</a></li> <li><a href='http://www.pwc.com/ru/ru'>Russia</a></li> <li><a href='http://www.pwc.com/sg/en'>Singapore</a></li> <li><a href='http://www.pwc.com/za/en'>South Africa</a></li></ul></td><td valign='top'><ul class='countrylist'><li><a href='http://www.pwc.com/kr/ko'>South Korea</a></li> <li><a href='http://www.pwc.com/es/es'>Spain</a></li> <li><a href='http://www.pwc.com/se/sv'>Sweden</a></li> <li><a href='http://www.pwc.ch'>Switzerland</a></li> <li><a href='http://www.pwc.co.uk'>United Kingdom</a></li> <li><a href='http://www.pwc.com/us/en'>United States</a></li> </ul> </td></tr></tbody></table><br clear='all'> <p style='text-align: right; font-weight: bold;'><a href='http://www.pwc.com/gx/en/site-index.jhtml'>Complete list of PwC territory sites</a></p><br clear='all' />";
 	
 	// Finally write the output; close button, header & contents.
 	document.getElementById('countriesboxclose').innerHTML = "<a href='#' onClick='countrieshide(); return false;'><img src='/en_GX/webadmin/assets/image/icon_close.gif' alt='Close' border='0' id='countriesclosebutton' /></a>"
@@ -423,12 +452,12 @@ if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
 	}
 	
 	if (arr_ss [3] === undefined) {
-		// Google buzz
+		// Google+
 		arr_ss [3] = new Array()
-		arr_ss [3][0] = "/en_GX/webadmin/assets/image/share_googlebuzz.gif";
-		arr_ss [3][1] = "http://www.google.com/reader/link?url=" + escape(window.location);
+		arr_ss [3][0] = "/en_GX/webadmin/assets/image/share_googleplus2.gif";
+		arr_ss [3][1] = "https://plus.google.com/share?url=" + escape(window.location);
 		arr_ss [3][2] = "";
-		arr_ss [3][3] = "Google buzz";
+		arr_ss [3][3] = "Google+";
 		arr_ss [3][4] = "";
 		arr_ss [3][5] = "_new";
 	}
@@ -1273,3 +1302,119 @@ function loadxmlcontacts() {
 	xmlhttp.send();	           
 }
 
+(function($) {
+  
+  var defaults = {
+    'swipeTolerance': 40
+  };
+  
+  var touchStatus = function(target, touch) {
+    this.target    = $(target);
+    this.touch     = touch;
+    this.startX    = this.currentX = touch.screenX;
+    this.startY    = this.currentY = touch.screenY;
+    this.eventType = null;
+  }
+  touchStatus.options = {};
+  touchStatus.latestTap = null;
+
+  touchStatus.prototype.move = function(touch) {
+    this.currentX = touch.screenX;
+    this.currentY = touch.screenY;
+  }
+
+  touchStatus.prototype.process = function() {
+    var offsetX = this.currentX - this.startX;
+    var offsetY = this.currentY - this.startY;
+    if(offsetX == 0 && offsetY == 0) {
+      this.checkForDoubleTap();
+    } else if(Math.abs(offsetY) > touchStatus.options.swipeTolerance && Math.abs(offsetY) > Math.abs(offsetX)) {
+      this.eventType = offsetY > 0 ? 'swipedown' : 'swipeup';
+      this.target.trigger('swipe', [this])
+    } else if(Math.abs(offsetX) > touchStatus.options.swipeTolerance) {
+      this.eventType = offsetX > 0 ? 'swiperight' : 'swipeleft';
+      this.target.trigger('swipe', [this])
+    }
+    if(this.eventType) this.target.trigger(this.eventType, [this])
+    this.target.trigger('touch',        [this])
+  }
+
+  touchStatus.prototype.checkForDoubleTap = function() {
+    if(touchStatus.latestTap) {
+      if((new Date() - touchStatus.latestTap) < 400) 
+        this.eventType = 'doubletap'
+    }
+    if(!this.eventType) this.eventType = 'tap'
+    touchStatus.latestTap = new Date()
+  }
+
+  var swipeEvents = function(elements, options) {
+    touchStatus.options = $.extend(defaults, options);
+    elements.bind('touchstart',  this.touchStart);
+    elements.bind('touchmove',   this.touchMove);
+    elements.bind('touchcancel', this.touchCancel);
+    elements.bind('touchend',    this.touchEnd);
+  }
+
+  swipeEvents.prototype.touchStart = function(evt) {
+    var target = this;
+    swipeEvents.eachTouch(evt, function(touch) {
+      swipeEvents.touches[touch.identifier] = new touchStatus(target, touch);
+    })
+  }
+
+  swipeEvents.prototype.touchMove = function(evt) {
+    swipeEvents.eachTouch(evt, function(touch) {
+      var loc = swipeEvents.touches[touch.identifier]
+      if(loc) loc.move(touch)
+    })
+  }
+
+  swipeEvents.prototype.touchCancel = function(evt) {
+    swipeEvents.eachTouch(evt, function(touch) {
+      swipeEvents.purge(touch, true)
+    })
+  }
+
+  swipeEvents.prototype.touchEnd = function(evt) {
+    swipeEvents.eachTouch(evt, function(touch) {
+      swipeEvents.purge(touch)
+    })
+  }
+
+  swipeEvents.touches = {}
+  swipeEvents.purge = function(touch, cancelled) {
+    if(!cancelled) {
+      var loc = swipeEvents.touches[touch.identifier]
+      if(loc) loc.process()
+    }
+    delete swipeEvents.touches[touch.identifier]
+  }
+
+  swipeEvents.eachTouch = function(evt, callback) {
+    var evt = evt.originalEvent;
+    var num = evt.changedTouches.length;
+    for(var i = 0; i < num; i++) {
+      callback(evt.changedTouches[i])
+    }
+  }
+
+  // adds custom events:
+  //   touch      // all events
+  //   swipe      // only swipe* events
+  //   swipeleft
+  //   swiperight
+  //   swipeup
+  //   swipedown
+  //   tap
+  //   doubletap
+  $.fn.addSwipeEvents = function(options, callback) { 
+    if (!callback && jQuery.isFunction(options)) {
+      callback = options;
+      options = null;
+    }
+    new swipeEvents(this, options);
+    if(callback) this.bind('touch', callback);
+    return this;
+  }
+})(jQuery);

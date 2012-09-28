@@ -1,5 +1,5 @@
-// 2012/02/01 13:14:27
-var ANV='6.1';
+// 2012/09/26 17:01:58
+var ANV='6.4.5';
 var ANAXCD=24;
 var ANDCC='adg';
 var ANDPEFA;
@@ -60,6 +60,28 @@ var TCDACMDADD='';
 var ANMCCF=1;
 var ANDEMOF=1;
 var ANDEMOURL='http://ar.atwola.com/atd';
+var ANBKF=1;
+var ANBKURL='http://tags.bluekai.com/site/4470?id=UTID';
+var ANBKFRAME='1';
+var ANBKFRURL='http://an.tacoda.net/an/bkids.html';
+var ANACF=1;
+var ANACURL='http://d.p-td.com/r/dt/id/L21rdC80L21waWQvMzMxNTMzNg/mpuid/UTID';
+var ANACFRAME='1';
+var ANACFRURL='http://an.tacoda.net/an/acids.html';
+var ANBTF=1;
+var ANBTURL='http://s.thebrighttag.com/cs?tp=ao&aolid=UTID';
+var ANBTFRAME='1';
+var ANBTFRURL='http://an.tacoda.net/an/btids.html';
+var ANADF=1;
+var ANADURL='http://dpm.demdex.net/ibs:dpid=416&dpuuid=UTID';
+var ANADFRAME='1';
+var ANADFRURL='http://an.tacoda.net/an/adids.html';
+var ATSYNCT=1;
+var ATSYNCFRAME='1';
+var ATSYNCFRURL='http://an.tacoda.net/an/atids.html';
+var ANBYODE='bk';
+var ANBYODS='bk,^100[0-9]{3}$';
+var ANBYODO='bk';
 function safeVar(variable){
 var ret;
 try{
@@ -120,46 +142,80 @@ var t=ANSL;
 FPAC(v,t,b);
 }
 }
-function FCSS(t,d)
-{
+function FCSS(t,d){
+var m=false;
+var x;
+var e=","+ANBYODE+",";
+var o=ANBYODO.split(",");
+var p=ANBYODS.split(":");
 var a=t.split("|");
 var i;
-var s;
-for(i=0;i<a.length;i++)
-{
-if(a[i].length>=5)
-{
-if(s==null)
-{
-s=a[i];
-}
-else
-{
-s+=d+a[i];
+var s=new Array();
+var tcs;
+var id;
+var sw;
+var le;
+for(i=0;i<p.length;i++){
+p[i]=p[i].split(",");
+if(e.indexOf(","+p[i][0]+",")==-1){
+p.splice(i,1);
 }
 }
+for(i=0;i<a.length;i++){
+x=(p.length-1);
+m=false;
+while(x>=0&&m==false){
+id=p[x][0];
+re=eval('/'+p[x][1]+'/i');
+if(id!='tc'){
+if(a[i].search(re)!=-1){
+if(id in s){
+s[id]+=d+a[i];
+}else{
+s[id]=id+'='+a[i];
 }
-if(s==null)
-{
-return'';
+m=true;
 }
-return s;
 }
-function FPAC(v,
-t,
-b)
-{
-var u='<IMG'+' SRC="http://leadback.advertising.com/adcedge/lb?site=695501&betr=tc=';
-if(t==null)
-{
-u+='1&guidm=1:'+v;
+x--;
 }
-else
-{
+if(m==false&&a[i].length>=5){
+if(tcs==null){
+tcs='tc='+a[i];
+}else{
+tcs+=d+a[i];
+}
+}
+}
+var r=(tcs!=null)?tcs:'tc=0|';
+for(i=0;i<o.length;i++){
+if(o[i]in s){
+if(o[i]!='tc'){
+r+=(tcs!=null||s.length>1)?'|'+s[o[i]]:s[o[i]];
+}
+}
+else{
+if(o[i]!='tc'){
+r+=(tcs!=null)?'|'+o[i]+'=0':o[i]+'=0';
+}
+}
+}
+return r;
+}
+function FPAC(v,t,b){
+var u='<IMG'+' SRC="http://leadback.advertising.com/adcedge/lb?site=695501&betr=';
+if(t==null){
+u+='tc=1&guidm=1:'+v;
+}else{
 var s=FCSS(t,',');
-if(s=='')
-{
-s='0';
+if(s==''){
+s='tc=0';
+var e=ANBYODE.split(",");
+for(i=0;i<e.length;i++){
+if(e[i]!='tc'){
+s+='|'+e[i]+'=0';
+}
+}
 }
 u+=s+'&guidm=1:'+v;
 }
@@ -404,6 +460,95 @@ catch(e2)
 function ANDEMO()
 {
 document.write('<IMG'+' SRC="'+ANDEMOURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+function ATSYNC(url)
+{
+ATSYNCURL=url.replace('UTID',ANTID);
+if(1==ATSYNCFRAME){
+var encodedUrl=encodeURIComponent(ATSYNCURL);
+var frmUrl=ATSYNCFRURL+'?url='+encodedUrl;
+var atsyncfr=document.createElement("iframe");
+atsyncfr.setAttribute('style','display: none');
+atsyncfr.setAttribute('height','1');
+atsyncfr.setAttribute('width','1');
+atsyncfr.setAttribute('border','0');
+atsyncfr.setAttribute('src',frmUrl);
+document.body.appendChild(atsyncfr);
+}else if(0==ATSYNCFRAME){
+document.write('<IMG'+' SRC="'+ATSYNCURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANBK()
+{
+ANBKURL=ANBKURL.replace('UTID',ANTID);
+if(1==ANBKFRAME){
+var encodedUrl=encodeURIComponent(ANBKURL);
+ANBKFRURL+='?url='+encodedUrl;
+var bkfr=document.createElement("iframe");
+bkfr.setAttribute('style','display: none');
+bkfr.setAttribute('height','1');
+bkfr.setAttribute('width','1');
+bkfr.setAttribute('border','0');
+document.body.appendChild(bkfr);
+bkfr.setAttribute('src',ANBKFRURL);
+}
+if(0==ANBKFRAME){
+document.write('<IMG'+' SRC="'+ANBKURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANAC()
+{
+ANACURL=ANACURL.replace('UTID',ANTID);
+if(1==ANACFRAME){
+var encodedUrl=encodeURIComponent(ANACURL);
+ANACFRURL+='?url='+encodedUrl;
+var acfr=document.createElement("iframe");
+acfr.setAttribute('style','display: none');
+acfr.setAttribute('height','1');
+acfr.setAttribute('width','1');
+acfr.setAttribute('border','0');
+document.body.appendChild(acfr);
+acfr.setAttribute('src',ANACFRURL);
+}
+if(0==ANACFRAME){
+document.write('<IMG'+' SRC="'+ANACURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANBT()
+{
+ANBTURL=ANBTURL.replace('UTID',ANTID);
+if(1==ANBTFRAME){
+var encodedUrl=encodeURIComponent(ANBTURL);
+ANBTFRURL+='?url='+encodedUrl;
+var btfr=document.createElement("iframe");
+btfr.setAttribute('style','display: none');
+btfr.setAttribute('height','1');
+btfr.setAttribute('width','1');
+btfr.setAttribute('border','0');
+document.body.appendChild(btfr);
+btfr.setAttribute('src',ANBTFRURL);
+}
+if(0==ANBTFRAME){
+document.write('<IMG'+' SRC="'+ANBTURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
+}
+function ANAD()
+{
+ANADURL=ANADURL.replace('UTID',ANTID);
+if(1==ANADFRAME){
+var encodedUrl=encodeURIComponent(ANADURL);
+ANADFRURL+='?url='+encodedUrl;
+var adfr=document.createElement("iframe");
+adfr.setAttribute('style','display: none');
+adfr.setAttribute('height','1');
+adfr.setAttribute('width','1');
+adfr.setAttribute('border','0');
+document.body.appendChild(adfr);
+adfr.setAttribute('src',ANADFRURL);
+}
+if(0==ANADFRAME){
+document.write('<IMG'+' SRC="'+ANADURL+'" STYLE="display: none" height="1" width="1" border="0">');
+}
 }
 function Tacoda_AMS_DDC_addPair(k,v){
 ANCV(k,v);
@@ -665,6 +810,26 @@ ANU+="&amp;ud="+escape(ANTPUD);
 if(ANDEMOF==1)
 {
 ANU+="&amp;df="+escape(ANDEMOF);
+}
+if((ATSYNCT!=null)&&(ATSYNCT>0))
+{
+ANU+="&amp;atsync="+escape(ATSYNCT);
+}
+if(ANBKF==1)
+{
+ANU+="&amp;bf="+escape(ANBKF);
+}
+if(ANACF==1)
+{
+ANU+="&amp;acf="+escape(ANACF);
+}
+if(ANBTF==1)
+{
+ANU+="&amp;btf="+escape(ANBTF);
+}
+if(ANADF==1)
+{
+ANU+="&amp;adf="+escape(ANADF);
 }
 document.write('<SCR'+'IPT SRC="'+ANDPU+'cmd='+ccc+'&amp;si='+ANSID+ANU+'&amp;v='+ANV+'&amp;cb='+Math.floor(Math.random()*100000)+'" LANGUAGE="JavaScript"></SCR'+'IPT>');
 }

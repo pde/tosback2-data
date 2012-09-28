@@ -1,8 +1,21 @@
 
-if (WCMMode !== "undefined" && WCMMode === "DISABLED") {
+if (typeof(WCMMode) !== "undefined" && WCMMode === "DISABLED") {
 	var crtg_nid="1180"; 
 	var crtg_cookiename="cto_was"; 
 	function crtg_getCookie(c_name){var i,x,y,ARRcookies=document.cookie.split(";");for(i=0;i<ARRcookies.length;i++){x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';} var crtg_content=crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);var crtg_url='http://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=crtg_content';var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+}
+if (typeof(WCMMode) !== "undefined" && WCMMode === "DISABLED") {
+	(function() {
+		var aax_src='1077';
+		var aax_rnd = Math.round(Math.random()*10000000);
+		var aax_url = 'http://aax-us-east.amazon-adsystem.com/e/dtb/bid?src=' + escape(aax_src) + '&cb=' + aax_rnd;
+		var aax_script = document.createElement('script');
+		aax_script.type = 'text/javascript';
+		aax_script.src = aax_url;
+		aax_script.async = true;
+		if (document.getElementsByTagName("head").length > 0) document.getElementsByTagName("head")[0].appendChild(aax_script);
+		else if (document.getElementsByTagName("body").length > 0) document.getElementsByTagName("body")[0].appendChild(aax_script);
+	})();
 }
 
 SG_Utils = {};
@@ -934,7 +947,7 @@ var commentCounter = {
             returnVals.push({
                 'id':url,
                 'method':'count',
-                'q':'childrenof:' + url + ' type:comment -source:Twitter'+ 
+                'q':'childrenof:' + url + ' type:comment -source:Twitter source:slate.com'+ 
                 ' sortOrder:reverseChronological (state:ModeratorApproved OR'+
                 ' (state:Untouched -user.state:ModeratorBanned,ModeratorDeleted))'+
                 ' children:3 (state:ModeratorApproved OR (state:Untouched'+

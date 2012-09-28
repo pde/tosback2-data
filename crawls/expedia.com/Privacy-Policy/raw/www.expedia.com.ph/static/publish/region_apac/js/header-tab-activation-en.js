@@ -116,10 +116,10 @@ function ViewParams() {
     var Pvalue = getQuerystring(URLParam);
     if (Pvalue != "" && URLString.indexOf(".Hotel-Information") != -1 && CheckIncludes(Includes, Pvalue) && CheckExcludes(Exncludes, Pvalue)) {
         //alert(Message);
-        document.getElementById('singleSearchWizardContainer').style.marginTop = "25px";
+        document.getElementById('collapsedWizard').style.marginTop = "40px";
         document.getElementById('infosite_BColumn').style.marginTop = "25px";
 
-        document.getElementById('singleSearchWizardContainer').innerHTML = document.getElementById('singleSearchWizardContainer').innerHTML + Message;
+        document.getElementById('collapsedWizard').innerHTML = document.getElementById('collapsedWizard').innerHTML + Message;
         //self.scrollTo(190, 0); this.onfocus = null;
     }
 

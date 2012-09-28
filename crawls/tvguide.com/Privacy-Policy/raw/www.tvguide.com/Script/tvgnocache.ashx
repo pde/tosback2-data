@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,7,17,18,28,27,0);
+var tvgServerTimeUTC = new Date(2012,8,28,23,26,21,0);
 
-var dServerET = new Date(2012,7,17,14,28,27,0);
+var dServerET = new Date(2012,8,28,19,26,21,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,7,17);
-dSrvrTime.setUTCHours(18,28,27,0);
+dSrvrTime.setUTCFullYear(2012,8,28);
+dSrvrTime.setUTCHours(23,26,21,0);
 
-var dLocalTime = new Date(2012,7,17,14,28,27,0);
-var dGridStart = new Date(2012,7,17,14,0,0,0);
+var dLocalTime = new Date(2012,8,28,19,26,21,0);
+var dGridStart = new Date(2012,8,28,19,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 6f36a21b6aa6a4eeb4f34fc240c0d86c8cbb717d 1345228107';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= c48183c57f6ed0954d68b5886e3c6d88affdcd07 1348874781';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 8/17/2012 6:15:00 PM GMT */
+/* TVGSVC02 9/28/2012 11:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-08-17)*/
+/* Listings: In-Grid and Close-Up Ads (2012-09-28)*/
 var GridAds = true;
-var MaxGridAds = 8;
+var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/NailFiles_Top_080812a.jpg";
-var magicBotImage = "/listings/images/topchan/NailFiles_Bottom_PREM_AUG.jpg";
-var magicLogo = "/listings/images/topchan/NailFiles_Middle.jpg";
-var magicLink = "http://www.facebook.com/TVGuideNetwork/app_153855648022942";
+var magicTopImage = "/listings/images/topchan/NailFilesS2_Top.jpg";
+var magicBotImage = "/listings/images/topchan/NailFilesS2_Bottom_SUN.jpg";
+var magicLogo = "/listings/images/topchan/NailFilesS2_Middle.jpg";
+var magicLink = "http://www.tvguide.com/tvshows/nail-files/325827";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;
@@ -106,7 +106,7 @@ var slot_box_300x250 = 0;
 var bEnableWallpaperAds_HP = true;
 var bEnableRichmediaAds_HP = true;
 var slot_banner_top_HP = 0;
-var slot_box_300x250_HP = 0;
+var slot_box_300x250_HP = 1;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
 var slot_banner_top_LST = 1;

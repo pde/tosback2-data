@@ -158,7 +158,19 @@ if (!window.bam) {
 				useArguments: false,
 				pollInterval: 1
 			};
-			this.context = {};
+			this.context = function ctx(lib){ 
+				if (lib.indexOf('/') !== -1) {
+					lib = everythingAfterLastSlash.exec(lib)[1];
+				}
+				if (lib.indexOf('-')) {
+					lib = lib.split('-')[0];
+				}
+				if (that.context[lib]) {
+					return that.context[lib];
+				} else {
+					throw new Error('Tried to require '+lib+', which is not in the dependency list!');
+				}
+			};
 			this.deferred = $.Deferred();
 		};
 
@@ -431,19 +443,7 @@ if (!window.bam) {
 		// require and register the new module
 		bam.require(dependencies).done(function(ctx) {
 			if (typeof constructor === 'function') {
-				var moduleRequire = function moduleRequire(lib){ 
-					if (lib.indexOf('/') !== -1) {
-						lib = everythingAfterLastSlash.exec(lib)[1];
-					}
-					if (lib.indexOf('-')) {
-						lib = lib.split('-')[0];
-					}
-					if (ctx[lib]) {
-						return ctx[lib];
-					} else {
-						throw new Error('Tried to require '+lib+', which is not in the dependency list!');
-					};
-				};
+				var moduleRequire = function moduleRequire(lib){ return ctx(lib); };
 				var moduleExports = {};
 				var moduleModule = {
 					id: identifier,

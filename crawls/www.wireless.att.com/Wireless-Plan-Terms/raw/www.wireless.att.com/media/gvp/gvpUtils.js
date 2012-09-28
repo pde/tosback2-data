@@ -1,4 +1,4 @@
-function gvpUtils() {
+function gvpUtils() { 
 	var W3C = (!document.all && document.getElementById);
 	var IE = (document.all);
 	var ns4 = (document.layers);
@@ -1314,19 +1314,21 @@ gvpUtils.prototype.mobile = new function () {
 
 	//device detection
 	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+	var isKindle = /silk/i.test(navigator.userAgent);
 	var isAndroid = /android/i.test(navigator.userAgent);
-	this.isMobile = isIOS || isAndroid;
+	this.isMobile = isIOS || isKindle || isAndroid;
 	
 	//other variables
 	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
 	var closeModal = 'gvp.closePopup();';
 	var contentStr;
+	var h264FileName;
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
 		var nameStart = pConfig.lastIndexOf('/')+1;
 		var nameEnd = pConfig.indexOf('.',nameStart);
-		var h264FileName = pConfig.substring(nameStart, nameEnd);
+		h264FileName = pConfig.substring(nameStart, nameEnd);
 
 		if (h264FileName === '') {
 			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
@@ -1337,27 +1339,55 @@ gvpUtils.prototype.mobile = new function () {
 			//loading image
 			contentStr += '<img id="gvp_loadImg" src="/images/global/ajaxLoader.gif" style="display:block; position:absolute; margin:122px 0 0 234px;">';
 		}
+		else if(isKindle) {
+			//Note: Kindles can be identified as Androids if in mobile browser mode
+			contentStr = '';
+		}
 		else if(isAndroid) {
-			contentStr = '<img src="' + p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg" border="0" onclick="' + closeModal + '" />';
+			contentStr = '';
 		}
 	};
 	
 	//Open a modal and inject the contentStr
 	this.openModal = function (parent) {
+		
+		// Set modal size
 		parent.getElementObj('gvp_mainPopupDiv').style.width = '534px';
 		parent.getElementObj("gvp_mainPopupBody").style.width = '512px';
 		parent.getElementObj("gvp_mainPopupBody").style.height = '288px';
-		parent.getElementObj("gvp_mainPopupBody").innerHTML = contentStr;
+		
+		// Inject video
+		if(isKindle || isAndroid) {
+			// Create a video element, attach it to the modal dialog and attach a click listener to the video element.
+			var vidFrag = document.createDocumentFragment();
+			var androidVidEl = document.createElement('video');
+			
+			androidVidEl.setAttribute('id', 'currEmbStream');
+			androidVidEl.setAttribute('style', 'display:block; position:absolute; height:288px; width:512px;');
+			androidVidEl.setAttribute('poster', 'http://www.att.com/media/gvp/global_resources/defaultMedia/GVP_Poster.jpg');
+
+			// Create and identify the child elements for the video element. Do not insert a "type" attribute. Android does not accept that attribute.
+			
+			var androidSourceEl = document.createElement('source');			
+			
+			androidSourceEl.setAttribute('src', h264PathMarker + h264FileName + '.mp4');
+
+			androidVidEl.appendChild(androidSourceEl);
+			
+			vidFrag.appendChild(androidVidEl);
+
+			var gvpModal = document.getElementById("gvp_mainPopupBody");
+			gvpModal.appendChild(vidFrag);
+
+			androidVidEl.addEventListener('touchstart',function() {androidVidEl.play();},true);
+		}
+		else {
+			parent.getElementObj("gvp_mainPopupBody").innerHTML = contentStr;
+		}
+		
+		// Finish opening modal
 		parent.centerDiv('gvp_mainPopupDiv');
 		parent.divPopUp('gvp_mainPopupDiv',true);
-		
-		/*
-		// MFM 2012 JUL 24 - Attach a click listener to the video element after the video element has been inserted into the page.
-		if(isAndroid) {
-			var androidVideo = document.getElementById("currEmbStream");
-			androidVideo.addEventListener("click",function(){currEmbStream.play();},false);
-		}
-		 */
 	};
 	
 	//IOS 'ready to play video' event, hides loading image and shows video

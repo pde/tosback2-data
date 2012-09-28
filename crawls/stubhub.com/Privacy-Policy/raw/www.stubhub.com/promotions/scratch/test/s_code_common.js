@@ -141,6 +141,14 @@ function s_doPlugins(s)
 			s.pageName = 'Fan Code';
 		else if(document.URL.match('brsearch'))
 			s.pageName = 'Broad Search Terms Landing';
+		else if(document.URL.match('/artist/')) {
+			if (typeof artist != 'undefined'){
+				s.pageName = 'Discover:' + artist;
+				s.prop1 = 'Discover';
+				s.prop11 = 'Discover';
+				s.hier1 = 'Concert tickets/' + artist + ' Tickets/Discover';
+			}
+		}
 		else if(document.URL.match('/madison-square-garden/'))
 		{
 			s.pageName = 'New York/Madison Square Garden - NEW/browse';
@@ -339,8 +347,14 @@ function s_doPlugins(s)
 	s.apl(s.linkTrackVars,'s.prop28,s.prop31,s.prop32',',',2);
 	
 	//Get Tealeaf Session ID
-	if(document.URL.indexOf('www.stubhub.com')>-1)
-		s.prop29 = GetCookie('TLTSID');
+	if(document.URL.indexOf('www.stubhub.com')>-1) {
+		if (typeof getCookie == 'function') {
+			s.prop29 = getCookie('TLTSID');
+		}
+		else {
+			s.prop29 = GetCookie('TLTSID');
+		}
+	}
 	
 	//Banner Tracking 
 	if(s.c_r('s_bic')) 

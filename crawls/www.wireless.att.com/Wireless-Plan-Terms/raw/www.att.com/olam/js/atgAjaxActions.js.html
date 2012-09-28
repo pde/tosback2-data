@@ -1,9 +1,10 @@
 function uverseEligibilityAjaxAction(linkUrl)
 {
-	//window.location = "http://www.yahoo.com";
 	
 	var url="/olam/foresee/loading.gif";
 	jQuery.colorbox({iframe:false, height:75, width:75, scrolling:false, href: url, close:'', overlayClose:false})
+	
+	//alert(linkUrl);
 	
 	//invokeAJAX("/jsp/jsonStr.jsp");
 	invokeAJAX(linkUrl);
@@ -15,7 +16,6 @@ function invokeAJAX(url)
 		type : 'POST',
 		url : url,
 		async : true,
-		dataType: "text",
 		success : function(jsonStr) {
 			parseJson(jsonStr);
 			
@@ -31,6 +31,7 @@ function parseJson(jsonStr)
 	try
 	{
 		jsonObj = jQuery.parseJSON(jsonStr);
+		//alert(jsonStr);
 		if(jsonObj != null){
 			
 			if(jsonObj.SuccessUrl!="" && jsonObj.SuccessUrl!="undefined")

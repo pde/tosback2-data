@@ -27,7 +27,7 @@ function getUSxml(d) {
 	var p = d;	
 	var parentGeo =0;
 	var parentGeo1 =0;
-	var urly= location.protocol+"//publicfeed"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/US?_jsonp=?";
+	var urly= location.protocol+"//www"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/US?_jsonp=?";
 	
 	if(document.getElementById("US")){
 		var a , b ;
@@ -35,6 +35,7 @@ function getUSxml(d) {
 				type : "GET",
 				url : urly,
 				dataType : "json",
+				contentType : "application/json",
 				success : function(data) {
 					var root1 = data.GetCoordinateResponse;
 					var sort_by = function(field, reverse, primer){
@@ -193,11 +194,12 @@ function getUSxml(d) {
 				}			});
 				 
 				countryGeoArr.US = parentGeo;
-				var urlx= location.protocol+"//publicfeed"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/CA?_jsonp=?";
+				var urlx= location.protocol+"//www"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/CA?_jsonp=?";
 				 $.ajax({
 				 type: "GET",
 				 url:urlx,
 				 dataType:"json",
+				 contentType : "application/json",
 				 success:function(data3) {
 					 var root2 = data3.GetCoordinateResponse;
 					 var sort_by = function(field, reverse, primer){
@@ -339,12 +341,13 @@ function getUSxml(d) {
 						}
 						
 	}            
-	var urlz= location.protocol+"//publicfeed"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/UK?_jsonp=?";
+	var urlz= location.protocol+"//www"+intlDomain+"/feedservices/lcsServices/getCoordinate/domain/"+dmn+"/country/UK?_jsonp=?";
 				 if(document.getElementById("UK"))	{
 						$.ajax({
 							type : "GET",
 							url : urlz,
 							dataType : "json",
+							contentType : "application/json",
 							success : function(data) {
 								var root1 = data.GetCoordinateResponse;
 								var sort_by = function(field, reverse, primer){
@@ -517,7 +520,7 @@ function getGenreFeed(){
     };
 
 // "+intlDomain+"
-	var newUrl = location.protocol+"//publicfeed"+intlDomain+"/feedservices/lcsServices/allFavouriteGenresForDomainAndGeo/domain/"+dmn+"/geoId/"+userGeo+"?_jsonp=nonstop";
+	var newUrl = location.protocol+"//www"+intlDomain+"/feedservices/lcsServices/allFavouriteGenresForDomainAndGeo/domain/"+dmn+"/geoId/"+userGeo+"?_jsonp=nonstop";
 	        $.ajax({
 			type : "GET",
 			url : newUrl,

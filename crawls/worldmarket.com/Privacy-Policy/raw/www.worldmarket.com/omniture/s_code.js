@@ -18,7 +18,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,/,.paypal.com,.worldmarket.shoplocal.com,.worldmarket.com,.marketlive.com"
+s.linkInternalFilters="javascript:,/,.paypal.com,.worldmarket.com,.marketlive.com"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
@@ -27,7 +27,7 @@ s.linkTrackEvents="None"
 s._extraSearchEngines="zing.com|q|Zing>search.comcast.net|q|Comcast.net";
 s._channelDomain="Social Networks|facebook.com,twitter.com,digg.com,stumbleupon.com,fark.com,reddit.com,linkedin.com,myspace.com,pinterest.com,buzz.yahoo.com,delicious.com,del.icio.us,newsvine.com>WME|worldmarketexplorer.com";
 s._channelParameter="External Campaign|camp";
-s._channelPattern = "Email|em>Email|20>Email|X_>Email|%_>CSE|cse>CSE|ca>Affiliate|pj>Affiliate|Af>Display Ad|ban>Paid Search|ppc>WME|wme>WME|site"
+s._channelPattern = "Email|em,1,2,3,4,5,6,7,8,9,X_,%_,cpwm_>CSE|cse,CSE:>Affiliate|pj,Aff>Display Ad|ban>Paid Search|ppc>WME|wme,site>Social Networks|sm,yelp"
 /****************CHANNEL MANAGER CONFIG END***************************/
 /* Plugin Config */
 s.usePlugins=true
@@ -35,7 +35,9 @@ function s_doPlugins(s) {
 
 /******************** BEGIN PLUGINS *****************************/
 /************************BEGIN CHANNEL MANAGER**************************/
-s.channelManager('camp');
+s.channelManager('camp','','s_cm','','s_cmdl','180');
+if(s._channel=="Typed/Bookmarked")
+	s._channel=s._referrer=s._referringDomain=s._campaign="Direct Load"
 s.campaign=s._campaign;
 s.eVar4=s._channel;
 s.eVar5=s._keywords;
@@ -64,7 +66,8 @@ s.eVar50=s.getQueryParam('RRID');
 
    /********************INTERNAL CAMPAIGNS BEGIN********************/ 
 if(!s.eVar14) { 
-  s.eVar14=s.getQueryParam('ab');  
+  s.eVar14=s.getQueryParam('ab'); 
+  s.prop22 =s.eVar14;
 } 
 /********************INTERNAL CAMPAIGNS END**********************/    
 
@@ -75,11 +78,10 @@ s.eVar29=s.purchaseID;
 /**********************************************************************/
 /*Configure the crossVisitParticipation plugin*/
 /**********************************************************************/
-	s.eVar7=s.crossVisitParticipation(s.eVar4,'s_ev7','30','5','>','',1);
+s.eVar7=s.crossVisitParticipation(s.eVar4,'s_ev7','30','5','>','',1);
 /**New vs Repeat Conversion**/
-if(s.eVar37) { 
-s.eVar37=s.getNewRepeat();
-}
+//s.eVar37=s.getNewRepeat();
+s.eVar37 = s.getNewRepeat(730);
 /**Time to Complete**/
 if(s.events!=null){
 	if(s.events.indexOf('event57') >-1 ) 
@@ -97,9 +99,7 @@ s_day=s.getTimeParting('d','-5');
 s_timepart=s_day+"|"+s_hour;
 
 /********Time Parting Begin***********/
-if(s.eVar37) { 
 s.eVar38=s_timepart.toLowerCase();
-}
 /********Time Parting End************/
 
 /*********Optimizely SiteCatalyst Integration*****************/
@@ -107,9 +107,7 @@ window.optimizely = window.optimizely || [];
 window.optimizely.push("sc_activate")
 
 /***GET VISIT NUMER***/
-if(s.eVar37) { 
 s.eVar42=s.getVisitNum(365);
- }
 }
 s.doPlugins=s_doPlugins
 /************************   END PLUGINS *****************************/
@@ -182,14 +180,21 @@ s.c_w=new Function("k","v","e",""
 +"ndexOf(';')));t=t.substring(t.indexOf(';')+1);ht=ht<t1?t1:ht;}d.set"
 +"Time(ht);s.c_wr(pn,pv,d);}return v==s.c_r(s.epa(k));");
 
-/* new vs repeat */
-s.getNewRepeat=new Function(""
-+"var s=this,e=new Date(),cval,ct=e.getTime(),y=e.getYear();e.setTime"
-+"(ct+30*24*60*60*1000);cval=s.c_r('s_nr');if(cval.length==0){s.c_w("
-+"'s_nr',ct,e);return 'New';}if(cval.length!=0&&ct-cval<30*60*1000){s"
-+".c_w('s_nr',ct,e);return 'New';}if(cval<1123916400001){e.setTime(cv"
-+"al+30*24*60*60*1000);s.c_w('s_nr',ct,e);return 'Repeat';}else retur"
-+"n 'Repeat';");
+/*
+ * Plugin: getNewRepeat 1.2 - Returns whether user is new or repeat
+ */
+s.getNewRepeat=new Function("d","cn",""
++"var s=this,e=new Date(),cval,sval,ct=e.getTime();d=d?d:30;cn=cn?cn:"
++"'s_nr';e.setTime(ct+d*24*60*60*1000);cval=s.c_r(cn);if(cval.length="
++"=0){s.c_w(cn,ct+'-New',e);return'New';}sval=s.split(cval,'-');if(ct"
++"-sval[0]<30*60*1000&&sval[1]=='New'){s.c_w(cn,ct+'-New',e);return'N"
++"ew';}else{s.c_w(cn,ct+'-Repeat',e);return'Repeat';}");
+/*
+* Utility Function: split v1.5 (JS 1.0 compatible)
+*/
+s.split=new Function("l","d",""
++"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
 /*
 * Plugin: getTimeToComplete
 */
@@ -201,42 +206,21 @@ s.getTimeToComplete=new Function("v","cn","e",""
 +"3600,tm=60,r=5,u,un;if(v>td){u=td;un='days';}else if(v>th){u=th;un="
 +"'hours';}else if(v>tm){r=2;u=tm;un='minutes';}else{r=.2;u=1;un='sec"
 +"onds';}v=v*r/u;return (Math.round(v)/r)+' '+un;}}return '';");
-/*
-* Plugin: getVisitNum
 
+/*
+ * Plugin: Visit Number By Month 2.0 - Return the user visit number
+ */
 s.getVisitNum=new Function(""
 +"var s=this,e=new Date(),cval,cvisit,ct=e.getTime(),c='s_vnum',c2='s"
 +"_invisit';e.setTime(ct+30*24*60*60*1000);cval=s.c_r(c);if(cval){var"
-+" i=cval.indexOf('&amp;vn='),str=cval.substring(i+4,cval.length),k;}cvis"
++" i=cval.indexOf('&vn='),str=cval.substring(i+4,cval.length),k;}cvis"
 +"it=s.c_r(c2);if(cvisit){if(str){e.setTime(ct+30*60*1000);s.c_w(c2,'"
 +"true',e);return str;}else return 'unknown visit number';}else{if(st"
-+"r){str++;k=cval.substring(0,i);e.setTime(k);s.c_w(c,k+'&amp;vn='+str,e)"
++"r){str++;k=cval.substring(0,i);e.setTime(k);s.c_w(c,k+'&vn='+str,e)"
 +";e.setTime(ct+30*60*1000);s.c_w(c2,'true',e);return str;}else{s.c_w"
-+"(c,ct+30*24*60*60*1000+'&amp;vn=1',e);e.setTime(ct+30*60*1000);s.c_w(c2"
-+",'true',e);return 1;}}");
-*/
-
-  /*                                                                  
-   * Plugin: getVisitNum - version 3.0
-   */
-   s.getVisitNum=new Function("tp","c","c2",""
-  +"var s=this,e=new Date,cval,cvisit,ct=e.getTime(),d;if(!tp){tp='m';}"
-  +"if(tp=='m'||tp=='w'||tp=='d'){eo=s.endof(tp),y=eo.getTime();e.setTi"
-  +"me(y);}else {d=tp*86400000;e.setTime(ct+d);}if(!c){c='s_vnum';}if(!"
-  +"c2){c2='s_invisit';}cval=s.c_r(c);if(cval){var i=cval.indexOf('&vn="
-  +"'),str=cval.substring(i+4,cval.length),k;}cvisit=s.c_r(c2);if(cvisi"
-  +"t){if(str){e.setTime(ct+1800000);s.c_w(c2,'true',e);return str;}els"
-  +"e {return 'unknown visit number';}}else {if(str){str++;k=cval.substri"
-  +"ng(0,i);e.setTime(k);s.c_w(c,k+'&vn='+str,e);e.setTime(ct+1800000);"
-  +"s.c_w(c2,'true',e);return str;}else {s.c_w(c,e.getTime()+'&vn=1',e)"
-  +";e.setTime(ct+1800000);s.c_w(c2,'true',e);return 1;}}");
-  s.dimo=new Function("m","y",""
-  +"var d=new Date(y,m+1,0);return d.getDate();");
-  s.endof=new Function("x",""
-  +"var t=new Date;t.setHours(0);t.setMinutes(0);t.setSeconds(0);if(x=="
-  +"'m'){d=s.dimo(t.getMonth(),t.getFullYear())-t.getDate()+1;}else if("
-  +"x=='w'){d=7-t.getDay();}else {d=1;}t.setDate(t.getDate()+d);return "
-  +"t;");
++"(c,ct+30*24*60*60*1000+'&vn=1',e);e.setTime(ct+30*60*1000);s.c_w(c2"
++",'true',e);return 1;}}"
+); 
 /*
 * Plugin: getTimeParting 3.0
 */
@@ -256,73 +240,57 @@ s.getTimeParting=new Function("t","z",""
 +"+P;if(t=='h'){return T}if(t=='d'){return O}if(t=='w'){return Q}}");
 
 /*
- * channelManager v2.2 - Tracking External Traffic
+ * channelManager v2.8 - Tracking External Traffic
  */
-s.channelManager=new Function("a","b","c","V",""
-+"var s=this,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E,F,"
-+"G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,W,X,Y;g=s.referrer?s.referrer:documen"
-+"t.referrer;g=g.toLowerCase();if(!g){h='1'}i=g.indexOf('?')>-1?g.ind"
-+"exOf('?'):g.length;j=g.substring(0,i);k=s.linkInternalFilters.toLow"
-+"erCase();k=s.split(k,',');l=k.length;for(m=0;m<l;m++){n=j.indexOf(k"
-+"[m])==-1?'':g;if(n)o=n}if(!o&&!h){p=g;q=g.indexOf('//')>-1?g.indexO"
-+"f('//')+2:0;r=g.indexOf('/',q)>-1?g.indexOf('/',q):i;t=g.substring("
-+"q,r);t=t.toLowerCase();u=t;P='Referrers';v=s.seList+'>'+s._extraSea"
-+"rchEngines;if(V=='1'){j=s.repl(j,'oogle','%');j=s.repl(j,'ahoo','^'"
-+");g=s.repl(g,'as_q','*');}A=s.split(v,'>');B=A.length;for(C=0;C<B;C"
-+"++){D=A[C];D=s.split(D,'|');E=s.split(D[0],',');F=E.length;for(G=0;"
-+"G<F;G++){H=j.indexOf(E[G]);if(H>-1){I=s.split(D[1],',');J=I.length;"
-+"for(K=0;K<J;K++){L=s.getQueryParam(I[K],'',g);if(L){L=L.toLowerCase"
-+"();M=L;if(D[2]){u=D[2];N=D[2]}else{N=t}if(V=='1'){N=s.repl(N,'#',' "
-+"- ');g=s.repl(g,'*','as_q');N=s.repl(N,'^','ahoo');N=s.repl(N,'%','"
-+"oogle');}}}}}}}O=s.getQueryParam(a,b);if(O){u=O;if(M){P='Paid Searc"
-+"h'}else{P='Paid Non-Search';}}if(!O&&M){u=N;P='Natural Search'}f=s."
-+"_channelDomain;if(f){k=s.split(f,'>');l=k.length;for(m=0;m<l;m++){Q"
-+"=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length;for(T=0;T<S;T++){"
-+"W=j.indexOf(R[T]);if(W>-1)P=Q[0]}}}d=s._channelParameter;if(d){k=s."
-+"split(d,'>');l=k.length;for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.sp"
-+"lit(Q[1],',');S=R.length;for(T=0;T<S;T++){U=s.getQueryParam(R[T]);i"
-+"f(U)P=Q[0]}}}e=s._channelPattern;if(e){k=s.split(e,'>');l=k.length;"
-+"for(m=0;m<l;m++){Q=s.split(k[m],'|');R=s.split(Q[1],',');S=R.length"
-+";for(T=0;T<S;T++){X=O.indexOf(R[T]);if(X==0)P=Q[0]}}}if(h=='1'&&!O)"
-+"{u=P=t=p='Direct Load'}T=M+u+t;U=c?'c':'c_m';if(c!='0'){T=s.getValO"
-+"nce(T,U,0);}if(T)M=M?M:'n/a';s._referrer=T&&p?p:'';s._referringDoma"
-+"in=T&&t?t:'';s._partner=T&&N?N:'';s._campaignID=T&&O?O:'';s._campai"
-+"gn=T&&u?u:'';s._keywords=T&&M?M:'';s._channel=T&&P?P:'';");
+s.channelManager=new Function("a","b","c","d","e","f","g",""
++"var s=this,h=new Date,i=0,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E"
++",F,G,H,I,J,K,L,M,N,O,P,Q,R,S;h.setTime(h.getTime()+1800000);if(e){i"
++"=1;if(s.c_r(e))i=0;if(!s.c_w(e,1,h))s.c_w(e,1,0);if(!s.c_r(e))i=0;i"
++"f(f&&s.c_r('s_tbm'+f))i=0;}j=s.referrer?s.referrer:document.referre"
++"r;j=j.toLowerCase();if(!j)k=1;else {l=j.indexOf('?')>-1?j.indexOf('"
++"?'):j.length;m=j.substring(0,l);n=s.split(j,'/');o=n[2].toLowerCase"
++"();p=s.linkInternalFilters.toLowerCase();p=s.split(p,',');for(q=0;q"
++"<p.length;q++){r=o.indexOf(p[q])==-1?'':j;if(r)break;}}if(!r&&!k){t"
++"=j;u=v=o;w='Other Natural Referrers';x=s.seList+'>'+s._extraSearchE"
++"ngines;if(d==1){m=s.repl(m,'oogle','%');m=s.repl(m,'ahoo','^');j=s."
++"repl(j,'as_q','*');}y=s.split(x,'>');for(z=0;z<y.length;z++){A=y[z]"
++";A=s.split(A,'|');B=s.split(A[0],',');for(C=0;C<B.length;C++){D=m.i"
++"ndexOf(B[C]);if(D>-1){if(A[2])E=v=A[2];else E=o;if(d==1){E=s.repl(E"
++",'#',' - ');j=s.repl(j,'*','as_q');E=s.repl(E,'^','ahoo');E=s.repl("
++"E,'%','oogle');}F=s.split(A[1],',');for(G=0;G<F.length;G++){if(j.in"
++"dexOf(F[G]+'=')>-1||j.indexOf('https://www.google.')==0)H=1;I=s.get"
++"QueryParam(F[G],'',j).toLowerCase();if(H||I)break;}}if(H||I)break;}"
++"if(H||I)break;}}if(!r||g!='1'){r=s.getQueryParam(a,b);if(r){v=r;if("
++"E)w='Paid Search';else w='Unknown Paid Channel';}if(!r&&E){v=E;w='N"
++"atural Search';}}if(k==1&&!r&&i==1)t=u=v=w='Typed/Bookmarked';J=s._"
++"channelDomain;if(J&&o){K=s.split(J,'>');for(L=0;L<K.length;L++){M=s"
++".split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++){Q="
++"N[P].toLowerCase();R=o.indexOf(Q);if(R>-1){w=M[0];break;}}if(R>-1)b"
++"reak;}}J=s._channelParameter;if(J){K=s.split(J,'>');for(L=0;L<K.len"
++"gth;L++){M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0"
++";P<O;P++){R=s.getQueryParam(N[P]);if(R){w=M[0];break;}}if(R)break;}"
++"}J=s._channelPattern;if(J){K=s.split(J,'>');for(L=0;L<K.length;L++)"
++"{M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++"
++"){Q=N[P].toLowerCase();R=r.toLowerCase();S=R.indexOf(Q);if(S==0){w="
++"M[0];break;}}if(S==0)break;}}S=w?r+u+w+I:'';c=c?c:'c_m';if(c!='0')S"
++"=s.getValOnce(S,c,0);if(S){s._campaignID=r?r:'n/a';s._referrer=t?t:"
++"'n/a';s._referringDomain=u?u:'n/a';s._campaign=v?v:'n/a';s._channel"
++"=w?w:'n/a';s._partner=E?E:'n/a';s._keywords=H?I?I:'Keyword Unavaila"
++"ble':'n/a';if(f&&w!='Typed/Bookmarked'){h.setTime(h.getTime()+f*864"
++"00000);s.c_w('s_tbm'+f,1,h);}}");
 
-/* non-custom list */
-s.seList="search.aol.com,search.aol.ca|query,q|AOL.com Search>ask.com"
-+",ask.co.uk|ask,q|Ask Jeeves>google.co,googlesyndication.com|q,as_q|"
-+"Google>google.com.ar|q,as_q|Google - Argentina>google.com.au|q,as_q"
-+"|Google - Australia>google.be|q,as_q|Google - Belgium>google.com.br"
-+"|q,as_q|Google - Brasil>google.ca|q,as_q|Google - Canada>google.cl|"
-+"q,as_q|Google - Chile>google.cn|q,as_q|Google - China>google.com.co"
-+"|q,as_q|Google - Colombia>google.dk|q,as_q|Google - Denmark>google."
-+"com.do|q,as_q|Google - Dominican Republic>google.fi|q,as_q|Google -"
-+" Finland>google.fr|q,as_q|Google - France>google.de|q,as_q|Google -"
-+" Germany>google.gr|q,as_q|Google - Greece>google.com.hk|q,as_q|Goog"
-+"le - Hong Kong>google.co.in|q,as_q|Google - India>google.co.id|q,as"
-+"_q|Google - Indonesia>google.ie|q,as_q|Google - Ireland>google.co.i"
-+"l|q,as_q|Google - Israel>google.it|q,as_q|Google - Italy>google.co."
-+"jp|q,as_q|Google - Japan>google.com.my|q,as_q|Google - Malaysia>goo"
-+"gle.com.mx|q,as_q|Google - Mexico>google.nl|q,as_q|Google - Netherl"
-+"ands>google.co.nz|q,as_q|Google - New Zealand>google.com.pk|q,as_q|"
-+"Google - Pakistan>google.com.pe|q,as_q|Google - Peru>google.com.ph|"
-+"q,as_q|Google - Philippines>google.pl|q,as_q|Google - Poland>google"
-+".pt|q,as_q|Google - Portugal>google.com.pr|q,as_q|Google - Puerto R"
-+"ico>google.ro|q,as_q|Google - Romania>google.com.sg|q,as_q|Google -"
-+" Singapore>google.co.za|q,as_q|Google - South Africa>google.es|q,as"
-+"_q|Google - Spain>google.se|q,as_q|Google - Sweden>google.ch|q,as_q"
-+"|Google - Switzerland>google.co.th|q,as_q|Google - Thailand>google."
-+"com.tr|q,as_q|Google - Turkey>google.co.uk|q,as_q|Google - United K"
-+"ingdom>google.co.ve|q,as_q|Google - Venezuela>bing.com|q|Microsoft "
-+"Bing>naver.com,search.naver.com|query|Naver>yahoo.com,search.yahoo."
-+"com|p|Yahoo!>ca.yahoo.com,ca.search.yahoo.com|p|Yahoo! - Canada>yah"
-+"oo.co.jp,search.yahoo.co.jp|p,va|Yahoo! - Japan>sg.yahoo.com,sg.sea"
-+"rch.yahoo.com|p|Yahoo! - Singapore>uk.yahoo.com,uk.search.yahoo.com"
-+"|p|Yahoo! - UK and Ireland>search.cnn.com|query|CNN Web Search>sear"
-+"ch.earthlink.net|q|Earthlink Search>search.comcast.net|q|Comcast Se"
-+"arch>search.rr.com|qs|RoadRunner Search>optimum.net|q|Optimum Searc"
-+"h";
+/* Top 130 Search Engines - Grouped */
+s.seList="google.,googlesyndication.com|q,as_q|Google>yahoo.com,yahoo"
++".co.jp|p,va|Yahoo!>bing.com|q|Bing>altavista.co,altavista.de|q,r|Al"
++"taVista>.aol.,suche.aolsvc.de|q,query|AOL>ask.jp,ask.co|q,ask|Ask>w"
++"ww.baidu.com|wd|Baidu>daum.net,search.daum.net|q|Daum>icqit.com|q|i"
++"cq>myway.com|searchfor|MyWay.com>naver.com,search.naver.com|query|N"
++"aver>netscape.com|query,search|Netscape Search>reference.com|q|Refe"
++"rence.com>seznam|w|Seznam.cz>abcsok.no|q|Startsiden>tiscali.it,www."
++"tiscali.co.uk|key,query|Tiscali>virgilio.it|qs|Virgilio>yandex|text"
++"|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net"
++"|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.c"
++"om|qs|RoadRunner Search>optimum.net|q|Optimum Search";
 
 /*
  * Plugin Utility: Replace v1.0

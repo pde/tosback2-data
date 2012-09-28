@@ -133,10 +133,29 @@ var adweek = function(){
 	    /* and also some listing pages 02_Listing */
 	    var sA = ($("body#franchise").length > 0) ? 986 : 650;
 	    //
-	    $("#features.slideable").slider({
-    	    sliderContainer: $("#features.slideable"),
-            sliderInner: $("#features.slideable .slider"),
+	    $("#franchise #features.slideable").slider({
+    	    sliderContainer: $("#franchise #features.slideable"),
+            sliderInner: $("#franchise #features.slideable .slider"),
             slideAmount: sA,
+            itemsVisible: 1,
+            currentSet: 1,
+            budge: 0,
+            looping: true,
+            automate: true,
+            interval: 6,
+            direction: "ltr",
+            quickLinks: true,
+            speed: 250,
+            quickLinksChar: "bull"
+    	});
+
+    	/* for digital download franchise template */
+    	//var sAddf = ($("body#ddf").length > 0) ? 986 : 650;
+
+	    $("#ddf #features.slideable").slider({
+    	    sliderContainer: $("#ddf #features.slideable"),
+            sliderInner: $("#ddf #features.slideable .slider"),
+            slideAmount: 986,
             itemsVisible: 1,
             currentSet: 1,
             budge: 0,
@@ -708,7 +727,7 @@ var adweek = function(){
 				shell_media.animate({
 					height: next_img.attr('height')
 				}, 300);
-			}
+			} 
 			shell_media.html(lb_next_current.find('.media').html());
 			shell_desc.html(lb_next_current.find('.cols').children('.col').eq(0).html());
 			shell_meta.html(lb_next_current.find('.cols').children('.col').eq(1).html());
@@ -739,6 +758,25 @@ var adweek = function(){
 		function updatePageNumber(hashchange) {
 			lb_pagenumber = lb.find('.current').prevAll().size() + 1;
 			lb_pg.find('.pagenumber').find('b:first').text(lb_pagenumber);
+   /**
+    * remove unnecessary navigation on the first and last pages
+    **/
+   if (lb_pagenumber == '1') {
+     lb_pg.find('.prev').hide();
+   } else {
+     if (!lb_pg.find('.prev').is(':visible')) {
+       lb_pg.find('.prev').show();
+      }
+   }
+   var last = lb_pg.find('.pagenumber').find('b:last').text();
+   if (lb_pagenumber == last) {
+     lb_pg.find('.next').hide();
+   } else {
+    if (!lb_pg.find('.next').is(':visible')) {
+       lb_pg.find('.next').show();
+     } 
+   }
+   /* end of navigation sanitize */
 			if (!hashchange)
 				window.location.hash = lb_pagenumber;
 		}

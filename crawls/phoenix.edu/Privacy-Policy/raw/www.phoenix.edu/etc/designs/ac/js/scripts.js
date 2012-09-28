@@ -1240,7 +1240,7 @@ $("#flyoutWrapper").live("mouseenter",function(){if(undefined!=f){clearTimeout(f
 $("#flyoutWrapper").live("mouseleave",function(){if(undefined!=f){clearTimeout(f)
 }if(d){f=setTimeout(h,200)
 }});
-$(".header a#chatLive").live("click",function(){cmCreateManualLinkClickTag("?cm_sp=CTA-_-Chat Live-_-Header","Chat Live",strCmTitle);
+$(".header a#chatLive").live("click",function(){cmCreateManualLinkClickTag("?cm_sp=CTA-_-Chat Live-_-Header","Chat Live",document.title);
 if(typeof pageTracker==="function"){pageTracker._trackPageview("/virtual/link/CTA/Chat Live/Header")
 }var j="uopx",k="student",l=window.location.pathname;
 if($("body.homepageContEd").length||$("body.secondary").length||$("body.superHub").length||$("body.hub").length||$("body.certificates").length){k="Single_Course"

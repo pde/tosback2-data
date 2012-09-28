@@ -159,7 +159,7 @@ function findSuite(theHostname, thePathname, theQueryStr) {
     st:       "seatimesseattletimescom",
     nwapt:    "seatimesnwapartmentscom",
     nwauto:   "seatimesnwautoscom",
-    nwhome:   "seatimesnwhomescom",
+    nwhome:   "seatimesseattletimescom",
     nwjob:    "seatimesnwjobscom",
     nwsrc:    "seatimesnwsourcecom",
     corp:     "seatimesseattletimescompanycom",
@@ -379,8 +379,15 @@ made when instructed to do so by your account manager.*/
 s.dc=112
 
 /***the following two lines are used for first party cookies only ***/
-s.trackingServer="metric.nwsource.com"
-s.trackingServerSecure="metrics.nwsource.com"
+if (/nwsource\.com$/.test(window.location.hostname)) {
+	s.trackingServer="metric.nwsource.com"
+	s.trackingServerSecure="metrics.nwsource.com"
+}
+else {
+	s.trackingServer="metric.seattletimes.com"
+	s.trackingServerSecure="metrics.seattletimes.com"
+}
+
 
 /*** Nielsen ***/
 try {

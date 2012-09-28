@@ -11,13 +11,14 @@ NICK.club.global.getBuddiesRequest = function(callback) {
 		});
 }
 
-NICK.club.global.gotoProfile = function(section){
+NICK.club.global.gotoProfile = function(section, userTrak){
+	if(userTrak == undefined){ userTrak = "unknown"};
 	section = !!section ? section : "main";
 	if (NICK.login.isLoggedIn()) {
 		NICK.club.global.goToProfileLink(section);
 	}
 	else {
-		NICK.login.prompt();
+		NICK.login.prompt(userTrak);
 		$(document).bind("authStatus loggedIn", function(){
 			if (NICK.login.isLoggedIn()) {
 				NICK.club.global.goToProfileLink(section);

@@ -1506,15 +1506,23 @@ $('#joinNow').ready(function(){
 				tr.children('td').eq(1).append('<div id="joinNowArrow"></div>');
 				$('#joinNowArrow').css({'top':offTop,'left':offLeft});
 				name=tr.children('td').eq(0).text();
+				// Start PA Modified for 12.9 MVP changes 
 				if(name.match(/Advantage Plus/)){				
 					$('.memInfo').html(benefitsText.advPlus);
 				}else if(name.match(/Advantage/)){
 					$('.memInfo').html(benefitsText.adv);
 				}else if(name.match(/Business Plus/)){
 					$('.memInfo').html(benefitsText.busPlus);
+				}else if(name.match(/Plus Membership/)){
+					$('.memInfo').html(benefitsText.pplus);
+				}else if(name.match(/Savings Membership/)){
+					$('.memInfo').html(benefitsText.padv);
+				}else if(name.match(/Sam\'s Business Membership/)){
+					$('.memInfo').html(benefitsText.pbus);
 				}else if(name.match(/Business/)){
 					$('.memInfo').html(benefitsText.bus);
 				}
+				// End PA Modified for 12.9 MVP changes 
 			},100);
 		},function(){
 			tr=$(this).parent();
@@ -1604,6 +1612,24 @@ function submitPrefPopUp(val){
 	document.prefPopUpForm.submit();
 }
 //End PASupport S2 preference center
+
+//Start Infosys :: 12.9 Release :: RAF POPUP
+function callRAFOverlay(contextPath,rafoverlay,pageRefreshonclick){	
+	var newTopPostion = $(document).scrollTop();
+	newTopPostion = newTopPostion + 160;	
+	$('.Referafriend-Overlay-Container').css('display','block');		
+	$('#rafoverlay').empty();	
+	pagepath = contextPath+	'/account/referal/rafPopupOverlay.jsp?overlay='+rafoverlay+'&pageRefreshonclick='+pageRefreshonclick;
+	$.get(pagepath, function(result){
+		$('#rafoverlay').html(result);
+	});
+	$('#rafoverlay').css("top",newTopPostion);
+	$('#rafoverlay').css("left","150px");
+	$('#rafoverlay').css("position","absolute");
+	$('#rafoverlay').css("z-index","99999");		
+	$('.Referafriend-Overlay-Content').css('position','fixed');	
+}
+//End Infosys :: 12.9 Release :: RAF POPUP
 var regFocus = ""; function focusOnEmailField() { document.getElementById("mail").focus(); } function focusOnUserNameField() { document.getElementById("username").focus(); } function setFocus() { if (document.getElementById("fName")) { document.getElementById("fName").focus(); } } function showMap(club_id, url) { var href = url + "&myClub=" + club_id; if (!window.focus) return true; window.open(href, '', 'width=625, height=500, menubar=yes, scrollbars=yes,resizable=yes'); } function updateNeedHaveQunatities(formObj) { var needQts = ""; for (counter = 0; counter <= size; counter++) { if (document.getElementById('need' + counter) != null) { var name = document.getElementById('need' + counter).name; var value = document.getElementById('need' + counter).value; needQts = needQts + name + "=" + value + ","; } } formObj["/atg/commerce/gifts/GiftlistFormHandler.updateNeed"].value = needQts; var haveQts = ""; for (counter = 0; counter <= size; counter++) { if (document.getElementById('have' + counter) != null) { var name = document.getElementById('have' + counter).name; var value = document.getElementById('have' + counter).value; haveQts = haveQts + name + "=" + value + ","; } } formObj["/atg/commerce/gifts/GiftlistFormHandler.updateHave"].value = haveQts; var storeDeliverQuantities = ""; for (counter = 0; counter <= size; counter++) { if (document.getElementById('delqty' + counter) != null) { var name = document.getElementById('delgiftItemid' + counter).name; var value = document.getElementById('delqty' + counter).value; storeDeliverQuantities = storeDeliverQuantities + counter + "=" + value + ","; } } formObj["/atg/commerce/gifts/GiftlistFormHandler.storeDeliverQuantities"].value = storeDeliverQuantities; var storePickupQuantities = ""; for (counter = 0; counter <= size; counter++) { if (document.getElementById('pickqty' + counter) != null) { var name = document.getElementById('pickqty' + counter).name; var value = document.getElementById('pickqty' + counter).value; storePickupQuantities = storePickupQuantities + counter + "=" + value + ","; } } formObj["/atg/commerce/gifts/GiftlistFormHandler.storePickupQuantities"].value = storePickupQuantities; /* * * * * R2 * * * EGiftCards * * * VGDESAI * * * start */ var storeEGiftCardAmount = ""; for (counter = 0; counter <= size; counter++) { if (document.getElementById('eGiftCardAmount' + counter) != null) { var name = document.getElementById('eGiftCardAmount' + counter).name; var value = document.getElementById('eGiftCardAmount' + counter).value; storeEGiftCardAmount = storeEGiftCardAmount + counter + "=" + value + ","; } } formObj["/atg/commerce/gifts/GiftlistFormHandler.storeEGiftCardAmounts"].value = storeEGiftCardAmount; /* * * * * R2 * * * EGiftCards * * * VGDESAI * * * end */ formobj.submit(); } function addMapPriceToCartDelivary() { document.getElementById("delivary").value = '1'; document.MapPriceToCart.submit(); } function addMapPriceToCartPickup() { document.getElementById("pickup").value = '1'; document.MapPriceToCartPickup.submit(); } function addToMapPickup(form, pickup) { form.elements[pickup].value = '1'; form.submit(); } function updateClubSelection(form, clubId) { document.getElementById("clubId").value = clubId; } function addToMapDelivary(form, delivary) { form.elements[delivary].value = '1'; form.submit(); } function submitOptOut() { document.privacyOptOutForm.optOutSub.value = 'submit'; document.privacyOptOutForm.submit(); } function isPageloaded(id, value) { if (isloaded == null) { document.getElementById(id).href = value; } else { document.getElementById(id).href = '#'; } } function selectAll(elemId) { if (document.getElementById('SelectAll1').firstChild.nodeValue != selectAllMessage) { document.getElementById('SelectAll1').firstChild.nodeValue = selectAllMessage; document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } else { document.getElementById('SelectAll1').firstChild.nodeValue = deselectAllMessage; document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } for (i = 0; i < size; i++) { var item = document.getElementById(elemId + i); if (item != null) { if (document.getElementById('SelectAll1').firstChild.nodeValue != selectAllMessage) { item.checked = true; } else { item.checked = false; } } } } function SelectAll2(elemId) { var checkedd = ''; for (i = 0; i < size; i++) { var item = document.getElementById(elemId + i); if (item != null && !item.checked) { checkedd = 'false'; } } if (checkedd == 'false') { document.getElementById('SelectAll1').firstChild.nodeValue = selectAllMessage; document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } else { document.getElementById('SelectAll1').firstChild.nodeValue = deselectAllMessage; document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } } function deleteList(formObj, name) { var wishcheckboxchecked = "false"; var shopcheckboxchecked = "false"; for (counter = 1; counter <= wishlistsize; counter++) { var wishlist = document.getElementById('wish' + counter).checked; if (wishlist) { wishcheckboxchecked = "true"; } } for (counter = 1; counter <= shoppinglistsize; counter++) { var shoplist = document.getElementById('shop' + counter).checked; if (shoplist) { shopcheckboxchecked = "true"; } } if (wishcheckboxchecked == "true" || shopcheckboxchecked == "true") { formObj.name.value = 'submit'; formObj.submit(); } else { document.getElementById('listError').innerHTML = '<div class="scrollingPromo"><div align="center"><span class="errorRed">Please select one or more lists to remove! </span></div></div>'; } } function callSubmit(formObj) { var checkboxchecked = "false"; var giftListIds = ""; for (counter = 0; counter < size; counter++) { var checkBoxName = document.getElementById('giftCheck' + counter); if (checkBoxName.checked) { giftListIds = giftListIds + checkBoxName.value + ","; checkboxchecked = "true"; } } if (checkboxchecked == "true") { formObj["/atg/commerce/gifts/GiftlistFormHandler.selectedGiftListItem"].value = giftListIds; formObj.submit(); } else { document.getElementById('listError').innerHTML = '<div class="scrollingPromo"><div align="center"><span class="errorRed">Uh-oh!...It looks like you forgot to select a list item. Please select a list item before proceeding.</span></div></div>'; } } function Check(formObj, chk) { var total = ""; checkCount = 0; count = 0; var objField = formObj.elements[chk]; count = objField.length; if (count != null) { for (i = 0; i < count; i++) { if (objField[i].checked) { total = checkCount + 1; checkCount++; } else if (objField[i] == "") { total = checkCount + 1; checkCount++; } } } else { total = 1; if (objField.checked) { count = 1; } else { count = 0; } } if (total == count) { unCheckAll(formObj); if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = selectAllMessage; } } else { checkAll(formObj); if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = deselectAllMessage; } } } function Check2(formObj, chk) { var objField = formObj.elements[chk]; total = objField.length; if (total != null) { count = 0; checkCount = 0; for (i = 0; i < total; i++) { if (objField[i].checked) { count = checkCount + 1; checkCount++; } } if (total == count) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = deselectAllMessage; } } if (total != count) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = selectAllMessage; } } } else { if (objField.checked) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = deselectAllMessage; } } else { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } if (document.getElementById('SelectAll1')) { document.getElementById('SelectAll1').firstChild.nodeValue = selectAllMessage; } } } } function selectRefreshMultiplePay(param, value) { var URL = ""; if (value == 'combination') { var formObj = document.selectpmfrm; formObj["/atg/commerce/order/purchase/PaymentGroupFormHandler.populateProfileCardsIntoOrder"].value = "submit"; formObj.submit(); } else { URL = window.location.pathname + '?' + param + '=' + value; window.location.href = URL; } } function selectRefresh(param, value) { var URL = window.location.pathname + '?' + param + '=' + value; window.location.href = URL; } function checkAll(formObj) { count = formObj.elements.length; for (i = 0; i < count; i++) { formObj.elements[i].checked = true; } } function confirmDeletion() { if (confirm("Are you Sure You Want to Delete this List(s)?")) { return true; } else { return false; } } function confirmDeletionForItems() { if (confirm("Are you Sure You Want to Delete items from the List")) { return true; } else { return false; } } function unCheckAll(formObj) { count = formObj.elements.length; for (i = 0; i < count; i++) { formObj.elements[i].checked = false; } } function deleteAddress(formObj, name) { formObj.elements[name].value = 'submit'; formObj.submit(); } function submitFormOnEnter(form, ev) { var keycode; if (window.event) { keycode = window.event.keyCode; } else if (ev) { keycode = ev.which; } else { return true; } if (keycode == 13) { if (regFocus.length == 0) { trimFormElements(form); form.submit(); return false; } } else { return true; } return false; } function setCookie() { var name = "usernameCookie"; var docCookie = document.cookie; var value = document.loginForm.username.value; if (docCookie.length > 0 && value != "") { var expiry = new Date(); expiry.setTime(expiry.getTime() + (1000 * 60 * 60 * 24 * 30)); document.cookie = name + "=" + escape(value) + "; path=/" + ((expiry == null) ? "" : "; expires=" + expiry.toGMTString()); } } function getCookie() { var cookieName = "usernameCookie"; var cookieValue; var nameEQ = cookieName + '='; var splittedCookie = document.cookie.split(';'); for ( var i = 0; i < splittedCookie.length; i++) { var temp = splittedCookie[i]; while (temp.charAt(0) == ' ') temp = temp.substring(1, temp.length); if (temp.indexOf(nameEQ) == 0) cookieValue = unescape(temp.substring(nameEQ.length, temp.length)); if (cookieValue != null) { var emailId = cookieValue.replace(/\"/g, ""); document.loginForm.username.value = emailId; } } return null; } function clearTextBoxes() { var itemNumberBoxes = document.searchbyitemnumber["/com/walmart/ecommerce/samsclub/search/SearchFormHandler.itemNumber"]; var itemNumberBoxes1 = document.searchbyitemnumber["/com/walmart/ecommerce/samsclub/search/ShopByItemNumberFormHandler.itemNumber"]; if (itemNumberBoxes != undefined && itemNumberBoxes != null) { if (itemNumberBoxes.length != undefined) { for ( var i = 0; i < itemNumberBoxes.length; i++) { itemNumberBoxes[i].value = ""; } } else { itemNumberBoxes.value = ""; } } if (itemNumberBoxes1 != undefined && itemNumberBoxes1 != null) { if (itemNumberBoxes1.length != undefined) { for ( var i = 0; i < itemNumberBoxes1.length; i++) { itemNumberBoxes1[i].value = ""; } } else { itemNumberBoxes1.value = ""; } } } function clearAllTextBoxes() { var itemNumberBoxes = document.searchbykeyword["/com/walmart/ecommerce/samsclub/search/SearchFormHandler.keywordsArray"]; if (itemNumberBoxes != undefined && itemNumberBoxes != null) { if (itemNumberBoxes.length != undefined) { for ( var i = 0; i < itemNumberBoxes.length; i++) { itemNumberBoxes[i].value = ""; } } else { itemNumberBoxes.value = ""; } } } function clearTextArea() { document.searchbyitemnumbers.itemNumbersTextArea.value = ""; } function selectAllCheckBoxes() { var skuCheckBoxes = document.getElementsByName('skuCheckBox'); if (skuCheckBoxes != undefined && skuCheckBoxes != null) { if (skuCheckBoxes.length != undefined) { for ( var i = 0; i < skuCheckBoxes.length; i++) { skuCheckBoxes[i].checked = true; } } else { skuCheckBoxes.checked = true; } } } function clearFormElements(form) { var noOfFormElements = form.elements.length; for ( var i = 0; i < noOfFormElements; i++) { if (form.elements[i].type == "text" || form.elements[i].type == "textarea") { form.elements[i].value = ""; } if ((form.elements[i].type == "radio") || (form.elements[i].type == "checkbox")) { form.elements[i].checked = false; } if (form.elements[i].type == 'select-one') { if (form.elements[i].name == "where") { var temp = form.elements[i]; temp.value = "Home"; } else { if (form.elements[i].name == "whereb") { var temp1 = form.elements[i]; temp1.value = "Mobile"; } else { form.elements[i].value = ""; } } } } } function populatevalue(form, ptype) { var formElem = form.elements; for ( var i = 0; i <= formElem.length; i++) { if (formElem[i]) { if (formElem[i].type == 'select-one') { var elem = formElem[i].options; for ( var j = 0; j <= formElem[i].length; j++) { if (elem[j]) { if (elem[j].value == formElem[i].id) { elem[j].selected = true; } } } } if (formElem[i].type == 'radio') { if (formElem[i].id == 'Credit/Debit Card') { if (formElem[i].value == 0) { formElem[i].checked = true; } } if (formElem[i].id == 'Sams Club Credit') { if (formElem[i].value == 1) { formElem[i].checked = true; } } } } } } function populateField(form, query) { var arr1 = new Array(); var str = query; arr1 = str.substring(0, str.length).split("&"); for ( var i = 0; i <= arr1.length; i++) { if (arr1[i] != null) { var val = arr1[i].toString(); var key = val.substring(0, val.indexOf('=')); var valuess = val.substring(val.indexOf('=') + 1); if (key != 'status_code_msg' && key != 'cardCvv') { if (form.elements[key]) { form.elements[key].value = valuess; } if (key == 'defaultPaymentMethod' || key == 'saveAsDefault' || key == 'saveInfo' || key == 'autoRenewMembership') { form.elements[key].checked = true; } } } } } function formReset() { var skuCheckBoxes = document.searchResults.skuCheckBox; if (skuCheckBoxes != undefined && skuCheckBoxes != null) { if (skuCheckBoxes.length != undefined) { for ( var i = 0; i < skuCheckBoxes.length; i++) { skuCheckBoxes[i].checked = false; } } else { skuCheckBoxes.checked = false; } } } function addSingleItemToOrder(skuItemId, productID) { var formObjOne = document.searchResults; var formObjTwo = document.searchResultsformtwo; formObjTwo["/atg/commerce/order/purchase/CartModifierFormHandler.catalogRefIds"].value = skuItemId; formObjTwo["/atg/commerce/order/purchase/CartModifierFormHandler.productId"].value = productID; formObjTwo["/atg/commerce/order/purchase/CartModifierFormHandler.quantity"].value = formObjOne[skuItemId].value; formObjTwo.submit(); } function hideErrorMessage() { document.getElementById("Error").style.display = 'none'; } function hideAll(a1) { for ( var iCounter = 0; iCounter <= Size; iCounter++) { if (document.getElementById(a1 + iCounter)) { document.getElementById(a1 + iCounter).style.display = 'none'; } if (document.getElementById('change' + iCounter)) { document.getElementById('change' + iCounter).innerHTML = showSubCatgoryMessage; document.getElementById('change' + iCounter).className = "blueCircleUp"; } } intialChecking(intiallySelected); } function showAll(a3) { for ( var iCounter = 0; iCounter <= Size; iCounter++) { if (document.getElementById(a3 + iCounter)) { document.getElementById(a3 + iCounter).style.display = 'inline'; } if (document.getElementById('change' + iCounter)) { document.getElementById('change' + iCounter).innerHTML = hideSubCatgoryMessage; document.getElementById('change' + iCounter).className = "blueCircleDown"; } } } function switchVisibility(a5, a8) { if (document.getElementById(a5).style.display == "inline") { document.getElementById(a8).innerHTML = showSubCatgoryMessage; document.getElementById(a8).className = "blueCircleUp"; document.getElementById(a5).style.display = 'none'; } else { document.getElementById(a8).innerHTML = hideSubCatgoryMessage; document.getElementById(a8).className = "blueCircleDown"; document.getElementById(a5).style.display = 'inline'; } } function checkboxSelected() { var size = 0; var check = ''; var formElements = document.survey.elements; for ( var i = 0; i < formElements.length; i++) { if (formElements[i].type == "checkbox" && formElements[i].id.indexOf('belongsTorootCat') == 0 && formElements[i].checked) { size += 1; if (Number(selectedSize) + size > 25) { formElements[i].checked = false; check = 'true' } } if (formElements[i].type == "checkbox" && formElements[i].id.indexOf('rootCat') == 0 && formElements[i].checked && check == 'true') { formElements[i].checked = false; } } return size; } function intialChecking(count) { var size = checkboxSelected(); if (size != 0) { if (count < 25) { checkForMaxSelected(); } else { selectedSize = count; displayErrormessage(count); } } else { selectedSize = count; if (count < 25) { checkForMaxSelected(); } else { displayErrormessage(count); } } } function checkForMaxSelected() { var tempSize = checkboxSelected(); var size = Number(selectedSize) + tempSize; displayErrormessage(size); } function displayErrormessage(size) { var noOfFormElements = document.survey.elements.length; var formElements = document.survey.elements; if (size >= 25) { document.getElementById("Error").style.display = 'inline'; for ( var i = 0; i < noOfFormElements; i++) { if (!formElements[i].checked) { var tagName = formElements[i].id; if ((tagName.indexOf('belongsTorootCat') >= 0) || (tagName.indexOf('rootCat') >= 0)) { formElements[i].disabled = true; selectedSize = 0; } } } window.scrollTo(0, 0); } else { document.getElementById("Error").style.display = 'none'; for ( var i = 0; i < noOfFormElements; i++) { formElements[i].disabled = false; } } } 
 function clearAllCheckBoxes() { var formElements = document.survey.elements; for ( var i = 0; i < formElements.length; i++) { if (formElements[i].type == "checkbox") { formElements[i].checked = false; } } intialChecking(intiallySelected); } function nextbox(fldobj, nbox, ev) { var key_code; if (window.event) { key_code = event.keyCode } else if (ev.which) { key_code = ev.which } if (key_code != '39' && key_code != '37' && key_code != '16' && key_code != '9') { if (fldobj.value.length == fldobj.maxLength) { fldobj.form.elements[nbox].focus(); } } else if (key_code == '39' && fldobj.selectionEnd == 3) { fldobj.form.elements[nbox].focus(); } else { var txt = fldobj.value; var len = txt.length; var erg = txt.split("\n"); var pos = -1; if (typeof document.selection != "undefined") { range_sel = document.selection.createRange(); range_obj = fldobj.createTextRange(); range_obj.moveToBookmark(range_sel.getBookmark()); range_obj.moveEnd('character', fldobj.value.length); pos = len - range_obj.text.length; if (pos == 3) { fldobj.form.elements[nbox].focus(); } } } } function submitRegistration() { var formObj = document.registrationForm; formObj["/atg/userprofiling/ProfileFormHandler.createSuccessURL"].value = formObj["/atg/userprofiling/ProfileFormHandler.createSuccessURL"].value; formObj["/atg/userprofiling/ProfileFormHandler.conflictingEmailURL"].value = formObj["/atg/userprofiling/ProfileFormHandler.conflictingEmailURL"].value; if (validatePasswordAndConfirmPassword(formObj)) { trimFormElements(formObj); formObj.submit(); } } function displaySelectEmailAddress() { document.getElementById('Error').innerHTML = '<div class="orangeBg-whiteBrdr smMargB"><h2 class="red">' + selectEmailAddress + '</h2></div>'; document.getElementById('Error').style.display = "inline"; } function checkEnterAndSubmitFindForShopByKeyWord(e) { if (checkEnter(e)) { document.getElementById("updateButton").name = ""; document.getElementById("findButton").click(); return false; } } function checkPasswordAndConfirmPassword(formObj) { var password = formObj.ypass.value; var confirmpassword = formObj.cpass.value; if (password != "" && confirmpassword != "") { if (password != confirmpassword) { document.getElementById('passwordError').innerHTML = '<div class="orangeBg-whiteBrdr smMargB"><h2 class="red">Password and Confirm Password fields do not match</h2></div>'; document.getElementById('passwordError').style.display = "inline"; document.getElementById('Password').style.color = "red"; document.getElementById('confirmPassword').style.color = "red"; regPassword = formObj.ypass.value; regConfirmPassword = formObj.cpass.value; formObj.ypass.value = ""; formObj.cpass.value = ""; return false; } else { document.getElementById('passwordError').style.display = "none"; document.getElementById('Password').style.color = ""; document.getElementById('confirmPassword').style.color = ""; regPassword = ""; regConfirmPassword = ""; return true; } } return true; } function validatePasswordAndConfirmPassword(formObj) { var password = regPassword; var confirmpassword = regConfirmPassword; if (password != "" && confirmpassword != "") { if (password != confirmpassword) { document.getElementById('passwordError').innerHTML = '<div class="orangeBg-whiteBrdr smMargB"><h2 class="red">Password and Confirm Password fields do not match</h2></div>'; document.getElementById('Password').style.color = "red"; document.getElementById('confirmPassword').style.color = "red"; formObj.ypass.value = ""; formObj.cpass.value = ""; return false; } else { document.getElementById('passwordError').style.visibility = "hidden"; document.getElementById('Password').style.color = ""; document.getElementById('confirmPassword').style.color = ""; return true; } } return true; } function submitRemoveInterest(category, frmObj) { frmObj["/com/walmart/ecommerce/samsclub/inmyclub/ItemsOfInterestFormHandler.removeCategory"].value = category; frmObj.submit(); } function clearRegFormElements(form) { var noOfFormElements = form.elements.length; for ( var i = 0; i < noOfFormElements; i++) { if (form.elements[i].type == "checkbox") { form.elements[i].checked = false; } if (form.elements[i].type == "text") { form.elements[i].value = ""; } if (form.elements[i].type == "password") { form.elements[i].value = ""; } form.suffix.value = ""; } } function trimAll(sString) { while (sString.substring(0, 1) == ' ') { sString = sString.substring(1, sString.length); } while (sString.substring(sString.length - 1, sString.length) == ' ') { sString = sString.substring(0, sString.length - 1); } return sString; } function trimFormElements(form) { var noOfFormElements = form.elements.length; var i = 0; for (i = 0; i < noOfFormElements; i++) { if (form.elements[i].type == "text") { form.elements[i].value = trimAll(form.elements[i].value); } } } function openNewWindow(URL, popUpName) { if (!window.focus) return true; var href; if (typeof (URL) == 'string') href = URL; window.open(href, popUpName, 'resizable=0,width=600,height=250,left = 440,top = 212'); return false; } function submitRenewal(form, change) { window.location.href = window.location.pathname; form["/com/walmart/ecommerce/samsclub/profile/MyAccountProfileFormHandler.changeRenewalSetting"].value = change; form.submit(); window.focus(); } function closeWindow(URL, closeme, closeonly) { if (!(window.focus && window.opener)) return true; window.opener.focus(); if (!closeonly) window.opener.location.href = URL; if (closeme) window.close(); return false; } function checkEnter(e) { var characterCode; if (e && e.which) { e = e; characterCode = e.which; } else { e = event; characterCode = e.keyCode; } if (characterCode == 13) { return true; } else { return false; } } function checkEnterAndSubmitUpdate(e) { if (checkEnter(e)) { document.getElementById("findButton").name = ""; document.getElementById("updateButton").click(); return false; } } function checkEnterAndSubmitFind(e) { if (checkEnter(e)) { document.getElementById("updateButton").name = ""; document.getElementById("findButton").click(); return false; } else { return isNumberKey(e); } } function checkEnterAndSubmitToCart(e, index) { var cartElement = "addtocartsingle"; if (index != null && index.length > 0 && index != '') { cartElement = cartElement + index; } if (checkEnter(e)) { document.getElementById(cartElement).click(); return false; } } function checkEnterAndSubmitSearch(e) { if (checkEnter(e)) { document.getElementById("searchButton").click(); return false; } } var xmlHttp; var clubId; function dispalyPopup(productId, club, param, contextRoot) { xmlHttp = GetXmlHttpObject(); clubId = "club" + param; var contextPath = contextRoot + "/common"; if (xmlHttp == null) { alert("Your browser does not support AJAX!"); return; } var url = contextPath + "/selectClub.jsp"; url = url + "?productId=" + productId; url = url + "&clubId=" + club; xmlHttp.open("GET", url, true); xmlHttp.onreadystatechange = clubStateChanged; xmlHttp.send(null); } function clubStateChanged() { if (xmlHttp.readyState == 4) { var clubResponse = xmlHttp.responseText; var clubAvailable = new String(clubResponse); clubAvailable = clubAvailable.trim(); var club = document.getElementById(clubId); if (clubAvailable == "true") { club.style.visibility = "visible"; } } } String.prototype.trim = function() { return this.replace(/^\s*/, "").replace(/\s*$/, ""); }; function GetXmlHttpObject() { var xmlHttp = null; try { xmlHttp = new XMLHttpRequest(); } catch (e) { try { xmlHttp = new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) { xmlHttp = new ActiveXObject("Microsoft.XMLHTTP"); } } return xmlHttp; } function setValue() { regFocus = "onlink"; } function clearValue() { regFocus = ""; } function addMultipleItemsToCart(formobj) { var length = document.getElementById("formCount").value;	 for (i = 0; i < length; i++) { if (document.getElementById('delqty' + i) != null || document.getElementById('delqty' + i) != undefined) { if (document.getElementById('multidelqty' + i + formobj) != null || document.getElementById('multidelqty' + i + formobj) != undefined) { document.getElementById('multidelqty' + i + formobj).value = document .getElementById('delqty' + i).value; } } if (document.getElementById('pickqty' + i) != null || document.getElementById('pickqty' + i) != undefined) { if (document.getElementById('multipickqty' + i + formobj) != null || document.getElementById('multipickqty' + i + formobj) != undefined) { document.getElementById('multipickqty' + i + formobj).value = document .getElementById('pickqty' + i).value; } } if (document.getElementById('delgiftItemid' + i) != null || document.getElementById('delgiftItemid' + i) != undefined) { if (document.getElementById('multidelgiftitemids' + i + formobj) != null || document.getElementById('multidelgiftitemids' + i + formobj) != undefined) { document.getElementById('multidelgiftitemids' + i + formobj).value = document .getElementById('delgiftItemid' + i).value; } } if (document.getElementById('pickgiftItemid' + i) != null || document.getElementById('pickgiftItemid' + i) != undefined) { if (document.getElementById('multipickgiftitemids' + i + formobj) != null || document.getElementById('multipickgiftitemids' + i + formobj) != undefined) { document.getElementById('multipickgiftitemids' + i + formobj).value = document .getElementById('pickgiftItemid' + i).value; } } /* R2 EGiftCards VGDESAI start */		 if (document.getElementById('eGiftCardAmount' + i) != null || document.getElementById('eGiftCardAmount' + i) != undefined) { if (document.getElementById('multiEGiftAmounts' + i + formobj) != null || document.getElementById('multiEGiftAmounts' + i + formobj) != undefined) { document.getElementById('multiEGiftAmounts' + i + formobj).value = document .getElementById('eGiftCardAmount' + i).value; } } /* R2 EGiftCards VGDESAI end */ } formobj.submit(); } function checkIsProductsSelected(requestUri) { var length = formCount; var flag = false; for (i = 0; i < length; i++) { if (document.getElementById('delqty' + i) != null) { var delQty = document.getElementById('delqty' + i).value; if (delQty > 0) { flag = true; } } } for (i = 0; i < length; i++) { if (document.getElementById('pickqty' + i) != null) { var pickQty = document.getElementById('pickqty' + i).value; if (pickQty > 0) { flag = true; } } } if (flag) { document.getElementById('addMultipleItems').style.display = 'inline'; document.getElementById('continue').href = requestUri; document.getElementById("addCount").value = length; } else { document.location.href = requestUri; } } function addProductsSelected(formobj) { var length = formCount; for (i = 0; i < length; i++) { if (document.getElementById('delqty' + i) != null) { if (document.getElementById('multidelqty' + i + formobj.name) != null) { document.getElementById('multidelqty' + i + formobj.name).value = document .getElementById('delqty' + i).value; } } if (document.getElementById('pickqty' + i) != null) { if (document.getElementById('multipickqty' + i + formobj.name) != null) { document.getElementById('multipickqty' + i + formobj.name).value = document .getElementById('pickqty' + i).value; } } } formobj.submit(); } function cartformselectall() { var total = ""; checkCount = 0; count = 0; var objField = document.cartform.elements["removalcommmerceids"]; if (objField != undefined) { count = objField.length; if (count != null) { for (i = 0; i < count; i++) { if (document.cartform.removalcommmerceids[i].checked) { total = checkCount + 1; checkCount++; } else if (document.cartform.removalcommmerceids[i] == "") { total = checkCount + 1; checkCount++; } } } else { total = 1; if (document.cartform.removalcommmerceids.checked) { count = 1; } else { count = 0; } } if (total == count) { unCheckAllItems(); document.getElementById('SelectAllItems').firstChild.nodeValue = selectAllMessage;/* Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */  document.getElementById('SelectAllItems1').firstChild.nodeValue = selectAllMessage; /* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */} else { checkAllItems(); document.getElementById('SelectAllItems').firstChild.nodeValue = deselectAllMessage; /*Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */document.getElementById('SelectAllItems1').firstChild.nodeValue = deselectAllMessage;/* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ } } } function checkAllItems() { count = document.cartform.removalcommmerceids.length; if (count != undefined) { for (i = 0; i < count; i++) { document.cartform.removalcommmerceids[i].checked = true; } } else { document.cartform.removalcommmerceids.checked = true; } } function unCheckAllItems() { count = document.cartform.removalcommmerceids.length; if (count != undefined) { for (i = 0; i < count; i++) { document.cartform.removalcommmerceids[i].checked = false; } } else { document.cartform.removalcommmerceids.checked = false; } } function onmyinput(o) { if (o.value.length >= o.getAttribute("maxlength")) { if (o.value.length > o.getAttribute("maxlength")) o.value = o.value.substring(0, o.getAttribute("maxlength")); return false; } return true; } function onmypaste(o) { var nMaxLen = o.getAttribute ? parseInt(o.getAttribute("maxlength")) : ""; if (document.all) { if (document.selection.createRange().text.length > 0) { var ovalueandclipboarddata = o.value + window.clipboardData.getData("Text"); if (o.getAttribute && ovalueandclipboarddata.length - document.selection.createRange().text.length > nMaxLen) { if (window.clipboardData.getData("Text").substring( 0, document.selection.createRange().text.length + nMaxLen - o.value.length) != "") { window.clipboardData .setData( "Text", window.clipboardData .getData("Text") .substring( 0, document.selection .createRange().text.length + nMaxLen - o.value.length)); } else { return false; } } } else { var ovalueandclipboarddata = o.value + window.clipboardData.getData("Text"); if (o.getAttribute && ovalueandclipboarddata.length > nMaxLen) { if (ovalueandclipboarddata.substring(0, nMaxLen - o.value.length) != "") window.clipboardData.setData("Text", ovalueandclipboarddata .substring(0, nMaxLen - o.value.length)); else return false; } } return true; } } function onmykeypress(o) { if (!document.all) { var nMaxLen = o.getAttribute ? parseInt(o.getAttribute("maxlength")) : ""; if (onmykeypress.caller.arguments[0].ctrlKey == true) { if (onmykeypress.caller.arguments[0].which == 118) { if (o.selectionStart < o.selectionEnd) { var ovalueandclipboarddata = o.value + mygetclipdata(); if (o.getAttribute && (ovalueandclipboarddata.length - o.selectionEnd + o.selectionStart > nMaxLen)) { if (mygetclipdata().substring( 0, o.selectionEnd - o.selectionStart + nMaxLen - o.value.length) != "") { mysetclipdata(mygetclipdata().substring( 0, o.selectionEnd - o.selectionStart + nMaxLen - o.value.length)); } else { return false; } } } else { var ovalueandclipboarddata = o.value + mygetclipdata(); if (o.getAttribute && ovalueandclipboarddata.length > nMaxLen) { if (ovalueandclipboarddata.substring(0, nMaxLen - o.value.length) != "") { mysetclipdata(ovalueandclipboarddata.substring(0, nMaxLen - o.value.length)); } else { return false; } } } return true; } } if (onmykeypress.caller.arguments[0].which == 0 || onmykeypress.caller.arguments[0].which == 8) return true; if (o.value.length >= o.getAttribute("maxlength")) { if (o.selectionStart < o.selectionEnd) return true; if (o.value.length > o.getAttribute("maxlength")) o.value = o.value.substring(0, o.getAttribute("maxlength")); return false; } else return true; } else { if (document.selection.createRange().text.length > 0) return true; if (o.value.length >= o.getAttribute("maxlength")) return false; else return true; } } function selectAddOnype(form, elementId, number) { var element = document.getElementById(elementId); if (element.selectedIndex == 0) { form["/com/walmart/ecommerce/samsclub/profile/MyAccountProfileFormHandler.editMembership"].value = number; form.submit(); } if (element.selectedIndex == 1) { window.location.href = 'replaceBusinessAddon.jsp?cardToUpdate=' + number; } } function submitAddBusinessAddonToForm(param, form) { var param1 = param; if (param1 == 'addon') { form["/com/walmart/ecommerce/samsclub/order/purchase/EcomMembershipCartModifierFormhandler.addAddOnMembershipToCart"].name = ""; form["/com/walmart/ecommerce/samsclub/order/purchase/EcomMembershipCartModifierFormhandler.attachAdditionalAddonAccount"].value = "submit"; ; form.submit(); } else if (param1 = 'continue') { form["/com/walmart/ecommerce/samsclub/order/purchase/EcomMembershipCartModifierFormhandler.attachAdditionalAddonAccount"].name = ""; form["/com/walmart/ecommerce/samsclub/order/purchase/EcomMembershipCartModifierFormhandler.addAddOnMembershipToCart"].value = "submit"; ; form.submit(); } } function selectType(form, pSams, pCredit) { if (form.value == 0) { form.checked = true; document.getElementById(pCredit).style.display = 'inline'; document.getElementById(pSams).style.display = 'none'; } if (form.value == 1) { form.checked = true; document.getElementById(pCredit).style.display = 'none'; document.getElementById(pSams).style.display = 'inline'; } } var commerceIds = new Array(); function setCommerceIds(pCommerceIds) { commerceIds = pCommerceIds; } function cartformsubmit(method) { if (method == 'updatecart') { var length = document.getElementById("cartItemsCount").value; for ( var j = 0; j < commerceIds.length; j++) { document.getElementById(commerceIds[j] + 'updateqty').value = document .getElementById(commerceIds[j] + 'qty').value; } document.getElementById("removefromcart").name = ""; document.cartupdateform.submit(); } if (method == 'deleteselected') { document.getElementById("updatecart").name = ""; document.cartform.submit(); } } function cartupdateformsubmit() { document.getElementById("removefromcart").name = ""; var length = document.getElementById("cartItemsCount").value; for ( var j = 0; j < commerceIds.length; j++) { document.getElementById(commerceIds[j] + 'updateqty').value = document .getElementById(commerceIds[j] + 'qty').value; } document.cartupdateform.submit(); return false; } function addServiceAgg(commmerceItemId, serviceAgreementId) { document.getElementById("selectedCommerceItem").value = commmerceItemId; document.getElementById("serviceAgreement").value = serviceAgreementId; document.AddServiceAgreement.submit(); } function changeDate(deliveryDate, ClubcommerceItemId) { if (deliveryDate == "") return; document.getElementById("ClubDeliveryDate").value = deliveryDate; document.getElementById("ClubCommerceItemId").value = ClubcommerceItemId; document.changeDateInCommerceItem.submit(); } function ShippingMethodChange(commerceItemId, shippingMethod) { document.getElementById('commId').value = commerceItemId; document.getElementById('changedShippingMethod').value = shippingMethod; document.changeShippingMethod.submit(); } function pickupClubChange(contextpath, commerceItemId, newClubId) { if (newClubId == "selectnewclub") { window.location.href = contextpath + '/shoppingtools/selectaclub.jsp?page=cart&commerceItemId=' + commerceItemId; } else { document.getElementById('assosciatedCommId').value = commerceItemId; document.getElementById('selectedPickupClub').value = newClubId; document.changeSelectedClub.submit(); } } function showdeselect(formObj, chk) { var objField = formObj.elements[chk]; total = objField.length; if (total != null) { count = 0; checkCount = 0; for (i = 0; i < total; i++) { if (objField[i].checked) { count = checkCount + 1; checkCount++; } } if (total == count) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } if (document.getElementById('SelectAllItems')) { document.getElementById('SelectAllItems').firstChild.nodeValue = deselectAllMessage; /* Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */document.getElementById('SelectAllItems1').firstChild.nodeValue = deselectAllMessage;/* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ } } if (total != count) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } if (document.getElementById('SelectAllItems')) { document.getElementById('SelectAllItems').firstChild.nodeValue = selectAllMessage; /* Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ document.getElementById('SelectAllItems1').firstChild.nodeValue = selectAllMessage; /* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ } } } else { if (objField.checked) { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = deselectAllMessage; } if (document.getElementById('SelectAllItems')) { document.getElementById('SelectAllItems').firstChild.nodeValue = deselectAllMessage; /* Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ document.getElementById('SelectAllItems1').firstChild.nodeValue = deselectAllMessage; /* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ } } else { if (document.getElementById('SelectAll2')) { document.getElementById('SelectAll2').firstChild.nodeValue = selectAllMessage; } if (document.getElementById('SelectAllItems')) { document.getElementById('SelectAllItems').firstChild.nodeValue = selectAllMessage; /* Start PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */document.getElementById('SelectAllItems1').firstChild.nodeValue = selectAllMessage; /* End PASupport:: 22nd April, 2011 :: 8393:: Cartpage changes */ } } } } function isNumberKey(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (charCode > 31 && (charCode < 48 || charCode > 57)) { return false; } else { return true; } } function allownumbersonly(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (!((charCode >= 48 && charCode <= 57) || (charCode == 8))) { return false; } else { return true; } } function allowAlphabeticsonly(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (!((charCode >= 97 && charCode <= 122) || (charCode >= 65 && charCode <= 90) || (charCode == 8))) { return false; } else { return true; } } function allowAlphabeticsAndSpecialCharsOnly(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (!((charCode >= 97 && charCode <= 122) || (charCode >= 65 && charCode <= 90) || (charCode == 8) || (charCode == 45))) { return false; } else { return true; } } function show() { var check = document.getElementById('aam'); var tr = document.getElementById('grandtotal'); if (check.checked) { tr.style.display = 'block'; } else { tr.style.display = 'none'; } } function populateBillingAddress(addressKey, path) { if (addressKey == "novalue") { document.getElementById("fName").value = ""; document.getElementById("midl").value = ""; document.getElementById("lName").value = ""; document.addPayment.elements['suffix'].options[0].selected = true; document.getElementById("bizOrg").value = ""; document.getElementById("srtAddress").value = ""; document.getElementById("city").value = ""; document.getElementById("zip").value = ""; document.getElementById("p_num").value = ""; document.getElementById("p_num2").value = ""; document.getElementById("p_num3").value = ""; document.getElementById("p_numb").value = ""; document.getElementById("p_numb2").value = ""; document.getElementById("p_numb3").value = ""; document.addPayment.elements['state'].options[0].selected = true; document.getElementById("address2").value = ""; document.getElementById("address3").value = ""; document.addPayment.elements['phoneType'].options[0].selected = true; document.addPayment.elements['phoneType2'].options[2].selected = true; } else { xmlHttp = GetXmlHttpObject(); if (xmlHttp == null) { alert("Your browser does not support AJAX!"); return; } var url = path + "/checkout/common/populateAddress.jsp"; url += "?addressKey=" + addressKey; xmlHttp.onreadystatechange = populateBillingAddressFields; xmlHttp.open("GET", url, true); xmlHttp.send(null); } } function populateBillingAddressFields() { if (xmlHttp.readyState == 4) { var ele = xmlHttp.responseXML; if (ele != null) { ele = xmlHttp.responseXML.documentElement; } if (ele != null) { var xmlDoc = ele; if (xmlDoc.getElementsByTagName("firstName")[0] != null) { document.getElementById("fName").value = xmlDoc .getElementsByTagName("firstName")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("middleName")[0] != null) { document.getElementById("midl").value = xmlDoc .getElementsByTagName("middleName")[0].childNodes[0].nodeValue; } else { document.getElementById("midl").value = ""; } if (xmlDoc.getElementsByTagName("lname")[0] != null) { document.getElementById("lName").value = xmlDoc .getElementsByTagName("lname")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("suffix")[0] != null) { var suffixVal = xmlDoc.getElementsByTagName("suffix")[0].childNodes[0].nodeValue; var suffixprop = document.addPayment.elements['suffix']; ; var elem = suffixprop.options; for ( var j = 0; j <= suffixprop.length; j++) { if (elem[j] != null) { if (elem[j].value == suffixVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['suffix'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("companyName")[0] != null) { document.getElementById("bizOrg").value = xmlDoc .getElementsByTagName("companyName")[0].childNodes[0].nodeValue; } else { document.getElementById("bizOrg").value = ""; } if (xmlDoc.getElementsByTagName("address1")[0] != null) { document.getElementById("srtAddress").value = xmlDoc .getElementsByTagName("address1")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("city")[0] != null) { document.getElementById("city").value = xmlDoc .getElementsByTagName("city")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("zip")[0] != null) { document.getElementById("zip").value = xmlDoc .getElementsByTagName("zip")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pArea")[0] != null) { document.getElementById("p_num").value = xmlDoc .getElementsByTagName("pArea")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pPrefix")[0] != null) { document.getElementById("p_num2").value = xmlDoc .getElementsByTagName("pPrefix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pSuffix")[0] != null) { document.getElementById("p_num3").value = xmlDoc .getElementsByTagName("pSuffix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("p2Area")[0] != null) { document.getElementById("p_numb").value = xmlDoc .getElementsByTagName("p2Area")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb").value = ""; } if (xmlDoc.getElementsByTagName("p2Prefix")[0] != null) { document.getElementById("p_numb2").value = xmlDoc .getElementsByTagName("p2Prefix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb2").value = ""; } if (xmlDoc.getElementsByTagName("p2Suffix")[0] != null) { document.getElementById("p_numb3").value = xmlDoc .getElementsByTagName("p2Suffix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb3").value = ""; } if (xmlDoc.getElementsByTagName("phoneType")[0] != null) { var phoneTypeVal = xmlDoc.getElementsByTagName("phoneType")[0].childNodes[0].nodeValue; var phoneTypeProp = document.addPayment.elements['phoneType']; var elem = phoneTypeProp.options; for ( var j = 0; j <= phoneTypeProp.length; j++) { if (elem[j] != null) { if (elem[j].value == phoneTypeVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['phoneType'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("phoneType2")[0] != null) { var phone2TypeVal = xmlDoc.getElementsByTagName("phoneType2")[0].childNodes[0].nodeValue; var phone2TypeProp = document.addPayment.elements['phoneType2']; var elem = phone2TypeProp.options; for ( var j = 0; j <= phone2TypeProp.length; j++) { if (elem[j] != null) { if (elem[j].value == phone2TypeVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['phoneType2'].options[2].selected = true; } if (xmlDoc.getElementsByTagName("state")[0] != null) { var stateVal = xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue; var stateProp = document.addPayment.elements['state']; var elem = stateProp.options; for ( var j = 0; j <= stateProp.length; j++) { if (elem[j] != null) { if (elem[j].value == stateVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['state'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("address2")[0] != null) { document.getElementById("address2").value = xmlDoc .getElementsByTagName("address2")[0].childNodes[0].nodeValue; } else { document.getElementById("address2").value = ""; } if (xmlDoc.getElementsByTagName("address3")[0] != null) { document.getElementById("address3").value = xmlDoc .getElementsByTagName("address3")[0].childNodes[0].nodeValue; } else { document.getElementById("address3").value = ""; } } } } function populateAddress(addressKey, path) { if (addressKey == "") { document.getElementById("fName").value = ""; document.getElementById("lName").value = ""; document.getElementById("midl").value = ""; document.getElementById("bizOrg").value = ""; document.getElementById("srtAddress").value = ""; document.getElementById("address2").value = ""; document.getElementById("city").value = ""; document.getElementById("address3").value = ""; document.getElementById("nickName").value = ""; document.getElementById("zip").value = ""; document.getElementById("p_num").value = ""; document.getElementById("p_num2").value = ""; document.getElementById("p_num3").value = ""; document.getElementById("p_numb").value = ""; document.getElementById("p_numb2").value = ""; document.getElementById("p_numb3").value = ""; document.getElementById("state").value = ""; document.getElementById("address2").value = ""; document.getElementById("address3").value = ""; document.addPayment.elements['suffix'].options[0].selected = true; document.addPayment.elements['phoneNumberType'].options[0].selected = true; document.addPayment.elements['phone2Type'].options[2].selected = true; } else { xmlHttp = GetXmlHttpObject(); if (xmlHttp == null) { alert("Your browser does not support AJAX!"); return; } var url = path + "/common/populateAddress.jsp"; url += "?addressKey=" + addressKey; xmlHttp.onreadystatechange = populateAddressValue; xmlHttp.open("GET", url, true); xmlHttp.send(null); } } function populateAddressValue() { if (xmlHttp.readyState == 4) { var ele = xmlHttp.responseXML; if (ele != null) { ele = xmlHttp.responseXML.documentElement; } if (ele != null) { var xmlDoc = ele; if (xmlDoc.getElementsByTagName("firstName")[0] != null) { document.getElementById("fName").value = xmlDoc .getElementsByTagName("firstName")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("lname")[0] != null) { document.getElementById("lName").value = xmlDoc .getElementsByTagName("lname")[0].childNodes[0].nodeValue; } else { document.getElementById("lname").value = ""; } if (xmlDoc.getElementsByTagName("middleName")[0] != null) { document.getElementById("midl").value = xmlDoc .getElementsByTagName("middleName")[0].childNodes[0].nodeValue; } else { document.getElementById("midl").value = ""; } if (xmlDoc.getElementsByTagName("suffix")[0] != null) { var suffixVal = xmlDoc.getElementsByTagName("suffix")[0].childNodes[0].nodeValue; var suffixprop = document.addPayment.elements['suffix']; var elem = suffixprop.options; for ( var j = 0; j <= suffixprop.length; j++) { if (elem[j] != null) { if (elem[j].value == suffixVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['suffix'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("companyName")[0] != null) { document.getElementById("bizOrg").value = xmlDoc .getElementsByTagName("companyName")[0].childNodes[0].nodeValue; } else { document.getElementById("bizOrg").value = ""; } if (xmlDoc.getElementsByTagName("address1")[0] != null) { document.getElementById("srtAddress").value = xmlDoc .getElementsByTagName("address1")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("address2")[0] != null) { document.getElementById("address2").value = xmlDoc .getElementsByTagName("address2")[0].childNodes[0].nodeValue; } else { document.getElementById("address2").value = ""; } if (xmlDoc.getElementsByTagName("address3")[0] != null) { document.getElementById("address3").value = xmlDoc .getElementsByTagName("address3")[0].childNodes[0].nodeValue; } else { document.getElementById("address3").value = ""; } if (xmlDoc.getElementsByTagName("city")[0] != null) { document.getElementById("city").value = xmlDoc .getElementsByTagName("city")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("zip")[0] != null) { document.getElementById("zip").value = xmlDoc .getElementsByTagName("zip")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pArea")[0] != null) { document.getElementById("p_num").value = xmlDoc .getElementsByTagName("pArea")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pPrefix")[0] != null) { document.getElementById("p_num2").value = xmlDoc .getElementsByTagName("pPrefix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pSuffix")[0] != null) { document.getElementById("p_num3").value = xmlDoc .getElementsByTagName("pSuffix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("p2Area")[0] != null) { document.getElementById("p_numb").value = xmlDoc .getElementsByTagName("p2Area")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb").value = ""; } if (xmlDoc.getElementsByTagName("p2Prefix")[0] != null) { document.getElementById("p_numb2").value = xmlDoc .getElementsByTagName("p2Prefix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb2").value = ""; } if (xmlDoc.getElementsByTagName("p2Suffix")[0] != null) { document.getElementById("p_numb3").value = xmlDoc .getElementsByTagName("p2Suffix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb3").value = ""; } if (xmlDoc.getElementsByTagName("state")[0] != null) { var stateVal = xmlDoc.getElementsByTagName("state")[0].childNodes[0].nodeValue; var stateProp = document.addPayment.elements['state']; var elem = stateProp.options; for ( var j = 0; j <= stateProp.length; j++) { if (elem[j] != null) { if (elem[j].value == stateVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['state'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("phoneNumberType")[0] != null) { var phoneTypeVal = xmlDoc .getElementsByTagName("phoneNumberType")[0].childNodes[0].nodeValue; var phoneTypeProp = document.addPayment.elements['phoneNumberType']; var elem = phoneTypeProp.options; for ( var j = 0; j <= phoneTypeProp.length; j++) { if (elem[j] != null) { if (elem[j].value == phoneTypeVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['phoneNumberType'].options[0].selected = true; } if (xmlDoc.getElementsByTagName("phone2Type")[0] != null) { var phone2TypeVal = xmlDoc.getElementsByTagName("phone2Type")[0].childNodes[0].nodeValue; var phone2TypeProp = document.addPayment.elements['phone2Type']; var elem = phone2TypeProp.options; for ( var j = 0; j <= phone2TypeProp.length; j++) { if (elem[j] != null) { if (elem[j].value == phone2TypeVal) { elem[j].selected = true; } } } } else { document.addPayment.elements['phone2Type'].options[2].selected = true; } if (xmlDoc.getElementsByTagName("nickName")[0] != null) { document.getElementById("nickName").value = xmlDoc .getElementsByTagName("nickName")[0].childNodes[0].nodeValue; } else { document.getElementById("nickName").value = ""; } } } } function populateCheckingAddress(addressKey, form, path) { if (addressKey == "") { document.getElementById("fName").value = ""; document.getElementById("lName").value = ""; document.getElementById("midl").value = ""; document.getElementById("bizOrg").value = ""; document.getElementById("suffix").options[0].selected = true; document.getElementById("stAdd").value = ""; document.getElementById("add2").value = ""; document.getElementById("addressInfo").value = ""; document.getElementById("city").value = ""; document.getElementById("zip").value = ""; document.getElementById("p_num").value = ""; document.getElementById("p_num2").value = ""; document.getElementById("p_num3").value = ""; document.getElementById("p_numb").value = ""; document.getElementById("p_numb2").value = ""; document.getElementById("p_numb3").value = ""; form.elements["states"].options[0].selected = true; form.elements["phoneNumberType"].options[0].selected = true; form.elements["phone2Type"].options[2].selected = true; } else { xmlHttp = GetXmlHttpObject(); if (xmlHttp == null) { alert("Your browser does not support AJAX!"); return; } var url = path + "/common/populateAddress.jsp"; url += "?addressKey=" + addressKey; xmlHttp.onreadystatechange = populateCheckingAddressValue; xmlHttp.open("GET", url, true); xmlHttp.send(null); } } function populateCheckingAddressValue() { if (xmlHttp.readyState == 4) { var ele = xmlHttp.responseXML; if (ele != null) { ele = xmlHttp.responseXML.documentElement; } if (ele != null) { var xmlDoc = ele; if (xmlDoc.getElementsByTagName("firstName")[0] != null) { document.getElementById("fName").value = xmlDoc .getElementsByTagName("firstName")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("lname")[0] != null) { document.getElementById("lName").value = xmlDoc .getElementsByTagName("lname")[0].childNodes[0].nodeValue; } else { document.getElementById("lName").value = ""; } if (xmlDoc.getElementsByTagName("middleName")[0] != null) { document.getElementById("midl").value = xmlDoc .getElementsByTagName("middleName")[0].childNodes[0].nodeValue; } else { document.getElementById("midl").value = ""; } if (xmlDoc.getElementsByTagName("suffix")[0] != null) { document.getElementById("suffix").value = xmlDoc .getElementsByTagName("suffix")[0].childNodes[0].nodeValue; } else { document.getElementById("suffix").options[0].selected = true; } if (xmlDoc.getElementsByTagName("companyName")[0] != null) { document.getElementById("bizOrg").value = xmlDoc .getElementsByTagName("companyName")[0].childNodes[0].nodeValue; } else { document.getElementById("bizOrg").value = ""; } if (xmlDoc.getElementsByTagName("address1")[0] != null) { document.getElementById("stAdd").value = xmlDoc .getElementsByTagName("address1")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("address2")[0] != null) { document.getElementById("add2").value = xmlDoc .getElementsByTagName("address2")[0].childNodes[0].nodeValue; } else { document.getElementById("add2").value = ""; } if (xmlDoc.getElementsByTagName("address3")[0] != null) { document.getElementById("addressInfo").value = xmlDoc .getElementsByTagName("address3")[0].childNodes[0].nodeValue; } else { document.getElementById("addressInfo").value = ""; } if (xmlDoc.getElementsByTagName("city")[0] != null) { document.getElementById("city").value = xmlDoc .getElementsByTagName("city")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("zip")[0] != null) { document.getElementById("zip").value = xmlDoc .getElementsByTagName("zip")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pArea")[0] != null) { document.getElementById("p_num").value = xmlDoc .getElementsByTagName("pArea")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pPrefix")[0] != null) { document.getElementById("p_num2").value = xmlDoc .getElementsByTagName("pPrefix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("pSuffix")[0] != null) { document.getElementById("p_num3").value = xmlDoc .getElementsByTagName("pSuffix")[0].childNodes[0].nodeValue; } if (xmlDoc.getElementsByTagName("p2Area")[0] != null) { document.getElementById("p_numb").value = xmlDoc .getElementsByTagName("p2Area")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb").value = ""; } if (xmlDoc.getElementsByTagName("p2Prefix")[0] != null) { document.getElementById("p_numb2").value = xmlDoc .getElementsByTagName("p2Prefix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb2").value = ""; } if (xmlDoc.getElementsByTagName("p2Suffix")[0] != null) { document.getElementById("p_numb3").value = xmlDoc .getElementsByTagName("p2Suffix")[0].childNodes[0].nodeValue; } else { document.getElementById("p_numb3").value = ""; } if (xmlDoc.getElementsByTagName("state")[0] != null) { document.getElementById("states").value = xmlDoc .getElementsByTagName("state")[0].childNodes[0].nodeValue; } else { document.getElementById("states").options[0].selected = true; } if (xmlDoc.getElementsByTagName("phoneNumberType")[0] != null) { document.getElementById("phoneNumberType").value = xmlDoc .getElementsByTagName("phoneNumberType")[0].childNodes[0].nodeValue; } else { document.getElementById("phoneNumberType").options[0].selected = true; } if (xmlDoc.getElementsByTagName("phone2Type")[0] != null) { document.getElementById("phone2Type").value = xmlDoc .getElementsByTagName("phone2Type")[0].childNodes[0].nodeValue; } else { document.getElementById("phone2Type").options[2].selected = true; } } } } function limitTextArea(limitField, limitNum) { if (limitField.value.length > limitNum) { limitField.value = limitField.value.substring(0, limitNum); } } function selectedCommerceItems() { count = 0; var objField = document.cartform.elements["removalcommmerceids"]; if (objField != undefined) { count = objField.length; if (count != undefined) { for (i = 0; i < count; i++) { if (document.cartform.removalcommmerceids[i].checked) { document.getElementById('hideSelectedItems' + i).value = document.cartform.removalcommmerceids[i].value; } else { document.getElementById('hideSelectedItems' + i).name = ""; } } } else { document.getElementById('hideSelectedItems' + 0).name = ""; } } } function selectedSaveForLaterItems() { count = 0; var objField = document.giftform.elements["giftItems"]; if (objField != undefined) { count = objField.length; if (count != undefined) { for (i = 0; i < count; i++) { if (document.giftform.giftItems[i].checked) { document .getElementById('hideSelectedSaveForLaterItems' + i).value = document.giftform.giftItems[i].value; } else { document .getElementById('hideSelectedSaveForLaterItems' + i).name = ""; } } } else { document.getElementById('hideSelectedSaveForLaterItems' + 0).name = ""; } } } function isSpaceEntered(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (charCode == 32) { return false; } else { return true; } } function submitFormOnEnterOnChooseAList(form, ev) { selectedCommerceItems(); submitFormOnEnter(form, ev); } function submitFormOnEnterOnChooseAListOnSaveForLater(form, ev) { selectedSaveForLaterItems(); submitFormOnEnter(form, ev); } function isDoubleValue(evt) { var charCode = (evt.which) ? evt.which : event.keyCode; if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46) { return false; } else { return true; } } function addToCartPopUpEnter(form, ev) { var keycode; if (window.event) { keycode = window.event.keyCode; } else if (ev) { keycode = ev.which; } else { return true; } if (keycode == 13) { form.submit(); return false; } else { return true; } return false; } function mtrackdown() { document.getElementById('serverdownError').innerHTML = '<div class="scrollingPromo"><center><strong><font color="#CC0033">Server down please try after some time</font></strong></center></div>'; document.getElementById('serverdownError').style.display = "inline"; } function saveanywayAddAddress() { var formObj = document.saveanywayform; var selected = document.getElementById('add1'); if (selected.checked) { document.getElementById('selected').value = true; formObj.submit(); } } function editaddress(param) { document.getElementById("editkey").value = document.getElementById("key").value; document.getElementById("editaddressSuccessURL").value = document .getElementById("updateAddressSuccessURL").value; document.getElementById("editaddressType").value = document .getElementById("addressType").value; document.getElementById("editfirstName").value = document .getElementById("firstName").value; document.getElementById("editlastName").value = document .getElementById("lastName").value; document.getElementById("editmiddleName").value = document .getElementById("middleName").value; document.getElementById("editcompanyName").value = document .getElementById("companyName").value; document.getElementById("editsuffix").value = document .getElementById("suffix").value; document.getElementById("editaddress1").value = document .getElementById("address1").value; document.getElementById("editaddress2").value = document .getElementById("address2").value; document.getElementById("editaddress3").value = document .getElementById("address3").value; document.getElementById("editpostalCode").value = document .getElementById("postalCode").value; document.getElementById("editphoneAreaCode").value = document .getElementById("phoneAreaCode").value; document.getElementById("editphonePrefix").value = document .getElementById("phonePrefix").value; document.getElementById("editphoneSuffix").value = document .getElementById("phoneSuffix").value; document.getElementById("editphone2AreaCode").value = document .getElementById("phone2AreaCode").value; document.getElementById("editphone2Prefix").value = document .getElementById("phone2Prefix").value; document.getElementById("editphone2Suffix").value = document .getElementById("phone2Suffix").value; document.getElementById("editphoneNumberType").value = document .getElementById("phoneNumberType").value; document.getElementById("editphone2Type").value = document .getElementById("phone2Type").value; document.getElementById("editphone2").value = document .getElementById("phone2").value; document.getElementById("editnickName").value = document .getElementById("nickName").value; if (param == 'suggestedaddress') { document.getElementById("editcity").value = document .getElementById("validCity").value; document.getElementById("editstate").value = document .getElementById("validState").value; } else { document.getElementById("editcity").value = document .getElementById("city").value; document.getElementById("editstate").value = document .getElementById("state").value; } document.editaddress.submit(); } function submitSearchForm1(contextpath) { var searchTerm = document.getElementById("searchBar").value; var catId = document.getElementById("searchSelect").value; var path = contextpath + "/search/searchResults.jsp?searchTerm=" + searchTerm + "&searchCategoryId=" + catId; document.searchForm.action = path; return true; } function shwhidecategories(a8, a5, a9) { if (document.getElementById(a8).checked == true) { document.getElementById(a5).style.display = 'inline'; document.getElementById(a9).innerHTML = hideSubCatgoryMessage; document.getElementById(a9).className = "blueCircleDown"; } else { document.getElementById(a9).innerHTML = showSubCatgoryMessage; document.getElementById(a9).className = "blueCircleUp"; document.getElementById(a5).style.display = 'none'; } } function savegiftlistitems(formobj) { var length = document.getElementById("formCount").value; for (i = 0; i < length; i++) { if (document.getElementById('delqty' + i) != null || document.getElementById('delqty' + i) != undefined) { if (document.getElementById('multidelqty' + i + formobj) != null || document.getElementById('multidelqty' + i + formobj) != undefined) { document.getElementById('multidelqty' + i + formobj).value = document .getElementById('delqty' + i).value; } } if (document.getElementById('pickqty' + i) != null || document.getElementById('pickqty' + i) != undefined) { if (document.getElementById('multipickqty' + i + formobj) != null || document.getElementById('multipickqty' + i + formobj) != undefined) { document.getElementById('multipickqty' + i + formobj).value = document .getElementById('pickqty' + i).value; } } /* R2 EGiftCards VGDESAI start */ if (document.getElementById('eGiftCardAmount' + i) != null || document.getElementById('eGiftCardAmount' + i) != undefined) { if (document.getElementById('multiEGiftAmounts' + i + formobj) != null || document.getElementById('multiEGiftAmounts' + i + formobj) != undefined) { document.getElementById('multiEGiftAmounts' + i + formobj).value = document .getElementById('eGiftCardAmount' + i).value; } } /* R2 EGiftCards VGDESAI end */ } var formNameObj = document.getElementsByName(formobj); formNameObj[0].submit(); } function submitListForm() { document.chooseListForm.submit(); } 
 function copyValues() {	
@@ -2219,7 +2245,7 @@ $(document).ready(function(){
 		// load and populate modal window - start //
 		
 		var mainHtml = '<div class="evaluesOverlay">';		  
-		  mainHtml += '<div class="evaluesTitle"><h2 class="jsonTitle"></h2><img src="/sams/images/BTN_Close-modal_19x20.gif" alt="Close" title="Close" /></div>';
+		  mainHtml += '<div class="evaluesTitle forModal"><h2 class="jsonTitle"></h2><img src="/sams/images/BTN_Close-modal_19x20.gif" alt="Close" title="Close" /></div>';
 		  mainHtml += '<div class="scroll">';		  
 		
 		 
@@ -2233,6 +2259,7 @@ $(document).ready(function(){
 					
 					//following lines truncates the evalue title (in modal window) to 41 chars and adds 3 ellipses to it 
 					var truncTitle = sampData['producttitle'];
+					var availability = sampData['availability'];
 					if (truncTitle.length > 41){
 						truncTitle = truncTitle.substring(0,41)+'...';
 					}
@@ -2244,17 +2271,21 @@ $(document).ready(function(){
 				
 				var productid = sampData.productid;				
 					/* Looping only the eValue (Level-1)*/
-					var html = '<ul id="eValueItems"><div class="ConditionText">*eValues are  subject to availability</div>';				
+					var html = '<ul id="eValueItems"><div class="ConditionText">'+availability+'</div>';							
 					
-					$.each(sampData['evalue'], function(idx1, val1){ 					
+					$.each(sampData['evalue'], function(idx1, val1){ 	
+						
+						var eValTypeInt = val1['eValueType'];
+						
 						//$('.jsonTitle').html(producttitle);					
 						var evalID =val1.eValueId;
 						html += '<li class="eValListItems">';				
 		                html += '<div class="ProductImage"><img src="'+val1['eValueImage']+'" alt="'+val1['title']+'" title="'+val1['title']+'" width="80" /></div>';  				 
 		                html +='<div class="ProductDesc"><div class="HeaderText">' + val1['title']+'</div>';
-						html += '<div class="clearfix"></div><ul class="ItemsChoice">';		
-						html +='<span class="myeValLimit">'+val1['usage']+'</span>';							
+													
+						
 						// Loop through the skuvariants
+						/*
 							$.each(val1['skuvariants'], function(idx2, val2){													
 									var skunumber = val2.skunumber;							
 									var titleVal = val2.title;	
@@ -2267,20 +2298,104 @@ $(document).ready(function(){
 									});
 									//
 									var spid = "p"+skunumber+idx2;
-									//
-								/* Formulate the parameters to be passed upon mouse over and mouse out scenario */
-									//html += '<li><a href="#" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+skunumber+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+skunumber+'" class="triangle-border"></div></li>';
-									html += '<li><a href="'+url+'" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+spid+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+spid+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+spid+'" class="triangle-border"></div></li>';							
-									/*html += '<li><a href="#" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+skunumber+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+skunumber+'" class="ttip"></div></li>';*/
+									//						
+									html += '<li><a href="'+url+'" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+spid+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+spid+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+spid+'" class="triangle-border"></div></li>';
 								});
 							
 						html += '</ul></div>'; 				
 						html += '<div class="ProductAvailability">';
 						//html += '<div class="ProductAvailabilityText">Available...'+val1['availStart']+'</div>';
 						html += '<div class="ProductAvailabilityText">'+val1['startDateStatus']+'...'+val1['availStart']+'</div>';						
-		                
+		                */						
+						/* -- */
+						/* loop to get coreskus*/ 		
+															
+						if (eValTypeInt == 1 || eValTypeInt == 2){
+							
+							html += '<div class="clearfix"></div><ul class="ItemsChoice">';		
+							html +='<span class="myeValLimit">'+val1['usage']+'</span>';		
+												
+						// Loop through the coreskus
+							$.each(val1['coreSkus'], function(idx2, val2){													
+								var skunumber = val2.skunumber;							
+								var titleVal = val2.title;	
+								var imgPath	= val2.image;
+								var url = val2.url;
+								var description = val2.desc;
+								var descriptionText=new Array();							
+								$.each(val2['desc'], function(idx3, val3){								
+									descriptionText[idx3]=val2.desc[idx3]+'<li>';								
+								});
+								//
+								var spid = "p"+skunumber+idx2;
+								//						
+								html += '<li><a href="'+url+'" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+spid+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+spid+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+spid+'" class="triangle-border"></div></li>';
+							});
+						
+					html += '</ul>'; 	
+						
+						}else if(eValTypeInt == 3 || eValTypeInt == 4){	
+							
+							html += '<div class="clearfix"></div><ul class="ItemsChoice">';	
+							html +='<div class="isSubHeadPdp"><strong>'+val1['seedTitle']+'</strong></div>';
+							html +='<div class="clearfix"></div><span class="myeValLimit">'+val1['usage']+'</span>';		
+							
+							// Loop through the seedskus
+							html +=''
+								$.each(val1['seedSkus'], function(idx2, val2){													
+									var skunumber = val2.skunumber;							
+									var titleVal = val2.title;	
+									var imgPath	= val2.image;
+									var url = val2.url;
+									var description = val2.desc;
+									var descriptionText=new Array();							
+									$.each(val2['desc'], function(idx3, val3){								
+										descriptionText[idx3]=val2.desc[idx3]+'<li>';								
+									});
+									//
+									var spid = "p"+skunumber+idx2;
+									//						
+									html += '<li><a href="'+url+'" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+spid+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+spid+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+spid+'" class="triangle-border"></div></li>';
+								});
+							
+						html += '</ul>'; 	
+						
+						html += '<div class="clearfix"></div><ul class="ItemsChoice">';	
+						html +='<div class="isSubHeadPdp"><strong>'+val1['rewardTitle']+'</strong></div>';
+						html +='<span class="myeValLimit">'+val1['usage']+'</span>';		
+						
+						// Loop through the rewardskus	
+						
+						html +=''
+							$.each(val1['rewardSkus'], function(idx2, val2){													
+								var skunumber = val2.skunumber;							
+								var titleVal = val2.title;	
+								var imgPath	= val2.image;
+								var url = val2.url;
+								var description = val2.desc;
+								var descriptionText=new Array();							
+								$.each(val2['desc'], function(idx3, val3){								
+									descriptionText[idx3]=val2.desc[idx3]+'<li>';								
+								});
+								//
+								var spid = "p"+skunumber+idx2;
+								//						
+								html += '<li><a href="'+url+'" onMouseOver="javascript:fnShowPopUp(\''+skunumber+'\',\''+spid+'\',\''+imgPath+'\',\''+titleVal+'\',\''+descriptionText+'\');" onMouseOut="javascript:fnHidePopUp(\''+spid+'\');">' +skunumber+ '</a> '+titleVal+'<div id="'+spid+'" class="triangle-border"></div></li>';
+							});
+						
+					html += '</ul>'; 				
+							
+						}else{
+							//nothing
+						}
+						html += '</div>';	
+						/* -- */
+						
 						/* condition to check if it is expires or expires soon */
-						//html += '<div class="ProductAvailabilityText expires">'+val1['availEnd']+'</div>';				
+						html += '<div class="ProductAvailability">';
+						//html += '<div class="ProductAvailabilityText">Available...'+val1['availStart']+'</div>';
+						html += '<div class="ProductAvailabilityText">'+val1['startDateStatus']+'...'+val1['availStart']+'</div>';
+						
 						var expFlag = (val1['expiryFlag']);
 						if (expFlag == 1){
 							html += '<div class="ProductExpiryText"><span class="expires">'+val1['availStatus']+'</span><span class="expiryDate">...'+val1['availEnd']+'</span></div>';				
@@ -2289,16 +2404,6 @@ $(document).ready(function(){
 							html += '<div class="ProductExpiryText"><span class="expiresSoon">'+val1['availStatus']+'</span><span class="expiryDate">...'+val1['availEnd']+'</span></div>';				
 						}
 		                /**/
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
 						html += '</div></li>';							
 					  });	
 					  html +='</ul>';
@@ -2307,9 +2412,11 @@ $(document).ready(function(){
 				} else{
 					$('.scroll').html('<h2 class="jsonError">Sorry, please try later.</h2>');//rendering error if no data available				
 				}
-					 });					 
+					 });	
+						
 		        
 				$(".evaluesOverlay").show("fast");	
+								
 		        return false;  
 		     }));  
 		        $("body").delegate("div.evaluesTitle img","click", (function(event){
@@ -2323,13 +2430,35 @@ $(document).ready(function(){
 		   mainHtml += '</div></div>';
 		   $("a#myEvalButn").after(mainHtml);
 		  //load and populate modal window - end //
+		   
+			
 	
 	}
-	});
+		
 	
-   
+	});
+	  
 });
 
+setTimeout(function() {
+ 	$('.evaluesOverlay').ready(function(){
+		
+				/* see all - start - p0joshi */
+				/* find an eValue with more than 2 skus */
+				var liSize = $(".ItemsChoice").find("li:gt(2)");
+				//add a class to hide the li 
+				$(liSize).addClass('hideLi');
+				$(liSize).parent().addClass('add-SeeAll');
+				$('.add-SeeAll').after('<a href="javascript:void(0);" class="seeallLink"  style="font:normal 12px arial;color:#0075c8; text-decoration:none;">...See all</a>');		
+					
+				//display 'see all' and enable a click on it
+				$('.seeallLink').click(function(){
+					$(this).parent().find('.hideLi').removeClass('hideLi');		
+					$(this).parent().find('.seeallLink').hide('fast');		
+				});	
+				/* see all - end - p0joshi */
+				});
+}, 5000);
 
 	/* Function		: fnShowPopUp takes the ID, Image Path, Title & the Description as input parameters */	
 	/* Last Editor	: Sathya */
@@ -2388,6 +2517,32 @@ $(document).ready(function(){
 		}
 		submitRegistration();
   	}
+	
+	/* to open an overlay window on the new My Sams page - p0joshi*/
+	function fnOpenMySamsOverlay(){	
+		//alert("mysams overlay");
+			var MySamsPostion = $(document).scrollTop();
+			MySamsPostion = MySamsPostion + 20;	
+			$('.mySamsModalContainer').css('display','block');
+			$('.mySamsModalContainer').empty();
+			
+			var urlPath = '/sams/shoppingtools/justforyou/justForYouModal.jsp';
+			$.ajax({
+				type: 'GET',
+				url : urlPath,
+				cache:false,                                                        
+				//data: "commerceItemId="+commerceItemId,                                                                                    
+				success:function(result){                                                             
+					$('.mySamsModalContainer').html(result); 
+				}                                                                              
+			});		
+		$('.mySamsModalContainer').css("top",MySamsPostion);		
+		$('.mySamsModalContainer').css("position","absolute");
+		$('.mySamsModalContainer').css("z-index","99999");
+		$('.mySamsModalContainer').css("left","5px");
+		$('.mySams_overlayBG').css('display','block');
+		//
+		}	
 /* End PASupport: 7 April 2012 for S2 */
 
 //StartPA Support  for 12.8
@@ -2396,13 +2551,25 @@ $(document).ready(function(){
 /* Last Editor	: Sathya */
 /* Date			: 04/19/2012 */
 /* Comment		: Amount will be set as a part of the input parameter for each radio button field. Upon selecting the radio button, this method calculates the TOTAL amount for the number of quantities if applicable. */	
-	function fnCalculateTotal(amount){
+	function fnCalculateTotal(amount,commerceId){
 		var radioButtonsVal = document.getElementsByName('ProtectPlanOption');				
 		var rdx = 0;			
 		for (rdx = 0; rdx < radioButtonsVal.length; rdx ++) {					
 			if (radioButtonsVal[rdx].checked) {
 					var serviceAgrement = radioButtonsVal[rdx].value;						
-					$('.slidingDiv').load('/sams/cart/protectionplanSpecifications.jsp?id='+serviceAgrement);				
+					//$('.slidingDiv').load('/sams/cart/protectionplanSpecifications.jsp?id='+serviceAgrement+'&comerceItemId='+commerceId);									
+					//$('.slidingDiv').html('');
+					var urlDataPath = '/sams/cart/protectionplanSpecifications.jsp';
+					var PPDataString = 'id='+serviceAgrement+'&comerceItemId='+commerceId;
+					$.ajax({
+						type: 'GET',
+						url : urlDataPath,
+						cache:false,				
+						data: PPDataString,						
+						success:function(result){				
+							$('.slidingDiv').html(result); 			
+						}						 					 
+					});
 				}
 		}
 		var Quantity=0;
@@ -2507,85 +2674,169 @@ $(document).ready(function(){
 	}
 
 	//StartPA Support  for 12.8
-	$('#addtocartsingleajax').live('click',function() {
+	$('#addtocartsingleajax').live('click',function() {			
 		$('.loadPPOverlayCircle').css('display','block');
-	      var dataString = "/sams" + $("#addToCartSingleForm").serialize();
-		   var action = $("#addToCartSingleForm").attr("action");
-		  $('.Protectionplan-Overlay-Container').css('display','block');
-		  $('.Protectionplan-Overlay-Container').empty();
-	      var res = false;		  
-		  var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
-		  var popupPosition = $(document).scrollTop() +10;	
-			overlayPos = 	popupPosition + 60;	  
-				$('.loadPPOverlayCircle').css('display','block');
-				$('.loadPPOverlayCircle').css("position","absolute");
-				$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
-				$('.loadPPOverlayCircle').css("left", "100px");
-	      $.ajax({                
-	        type: "POST",
-		url:action,
-	        data: dataString,
-	        dataType: "json",
-	        cache: false,
-	        success: function(data) {			
-				 var prdId = data.pId;
-				 var zipcodepageurl = data.GEZipcodePageUrl;				 
-				 var gepage = data.GEZipCodepage;				 
-				 if(gepage =='GE'){					
-				window.location.href= zipcodepageurl;
-				 }else {
-					 if(data.isOverlay && data.isSuccess){
-				//Here is the nested Ajax call to load the actual protection plan upon Success...
-				var urlCartPath = '/sams/cart/protectionPlanSelector.jsp';
-				var cartDataString = 'productid='+prdId;
-					$.ajax({
-						type: 'GET',
-						url : urlCartPath,
-						cache:false,				
-						data: cartDataString,						
-						success:function(result){				
-							$('.Protectionplan-Overlay-Container').html(result); 
-							$('.Protectionplan-Overlay-Container').ready(function(){
+	    var dataString = "/sams" + $("#addToCartSingleForm").serialize();		
+		var PDPaction = $("#addToCartSingleForm").attr("action");	
+		$('.Protectionplan-Overlay-Container').empty();
+	    var res = false;		  
+		var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
+		var popupPosition = $(document).scrollTop() +10;	
+		overlayPos = 	popupPosition + 60;	  
+		$('.loadPPOverlayCircle').css('display','block');
+		$('.loadPPOverlayCircle').css("position","absolute");
+		$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
+		$('.loadPPOverlayCircle').css("left", "100px");		
+		$.ajax({               
+			type: "POST",
+			url:PDPaction,
+			data: dataString,
+			dataType: "json",
+			cache: false,
+			success: function(respObj) {		
+				if(respObj != undefined && respObj != 'undefined' && respObj != null){
+					var comeerceItemId= respObj.commerceItemId;
+					var prdId = respObj.pId;
+					var zipcodepageurl = respObj.GEZipcodePageUrl;				 
+					var gepage = respObj.GEZipCodepage;				 
+					if(gepage =='GE'){					
+						window.location.href= zipcodepageurl;
+					} else {
+						if(respObj.isOverlay && respObj.isSuccess){
+						//	Here is the nested Ajax call to load the actual protection plan upon Success...
+							var urlCartPath = '/sams/cart/protectionPlanSelector.jsp';
+					var cartDataString = 'productid='+prdId+'&comerceItemId='+comeerceItemId;
+						$.ajax({
+							type: 'GET',
+							url : urlCartPath,
+							cache:false,				
+							data: cartDataString,						
+							success:function(result){				
+								$('.Protectionplan-Overlay-Container').html(result); 
+								$('.Protectionplan-Overlay-Container').ready(function(){
 								$('.loadPPOverlayCircle').hide();
 								$('.Protectionplan-Overlay-Container').css('top', overlayPos+ "px");
 								$('.Protectionplan-Overlay-Container').css('position','absolute');	
 								$('.Protectionplan-Overlay-Container').css("left","5px");
-								$('.Protectionplan-Overlay-Container').css("z-index","99999");							
-								$('.Protectionplan-Overlay-Container').css('display','block');
-							});					
-							 $('#ajaxCartLoad').load('/sams/common/myCart.jsp');					 
+								$('.Protectionplan-Overlay-Container').css("z-index","99999");									
+								$('.Protectionplan-Overlay-Container').css('display','block');								
+							});							 
+							fnUpdateRHSCart();	
 							$(this).css({
 								"display" : "block",
 								"left" : ($("body").width()-$(this).width())/2
 							});
 						}					 
-				});		        
-		     }else if(data.isSuccess && !data.isOverlay){
-				window.location.href="/sams/cart/addToCartConfirmPage.jsp";
-			 }else{
-				$('#ajaxError').addClass("orangeBg-whiteBrdr smMargB"); 
-				$('#ajaxError').load('/sams/common/getmessagekey.jsp?key='+data.Error_Code);
-				$('#displayError').hide();
-				$('#ajaxError').show();
-				$('.loadPPOverlayCircle').hide();
-		    	 
-             }
-			 }
-	      	}, 
-	            error: function(data){
-				$('#ajaxError').addClass("orangeBg-whiteBrdr smMargB"); 
-				$('#ajaxError').load('/sams/common/getmessagekey.jsp?key='+data.Error_Code);
-				$('#displayError').hide();
-				$('#ajaxError').show();
-				$('.loadPPOverlayCircle').hide();
+					});		        
+				} else if(respObj.isSuccess && !respObj.isOverlay){
+					window.location.href="/sams/cart/addToCartConfirmPage.jsp";
+				} else{
+					if(($('#delqty').val()=='0' || $('#delqty').val()=='' || $('#delqty').val() == undefined ) && ($('#pickqty').val()=='0' || $('#pickqty').val()=='' ||$('#pickqty').val() == undefined)  ){ 
+						$('#delqty').css("border","solid 2px #CC0000");
+						$('#pickqty').css("border","solid 2px #CC0000");
+					}				
+					//Consolidated the error case and calling fnShowErrorCode method...
+					fnShowErrorCode(respObj.Error_Code);
+				}
 			}
-	  });
-	  return res;
+		}else{
+			fnRecallJustOnce();
+			//fnShowErrorCode('m_error_reset_wrong_att_system_fail');
+		}
+      }, 
+      error: function(respObj){				
+		//Consolidated the error case and calling fnShowErrorCode method...	
+		if(respObj != undefined && respObj != 'undefined' && respObj != null){
+			fnShowErrorCode(respObj.Error_Code);
+		} else {
+			fnShowErrorCode('m_error_reset_wrong_att_system_fail');
+		}
+      }
 	});
-
-		$('.searchAddtocart').live('click',function() {
-				//$(document).ready(function(){	
-				//$('.searchAddtocart').click(function(){		
+		return res;	
+	});
+	
+	function fnRecallJustOnce(){			
+		$('.loadPPOverlayCircle').css('display','block');
+	    var dataString = "/sams" + $("#addToCartSingleForm").serialize();		
+		var PDPaction = $("#addToCartSingleForm").attr("action");	
+		$('.Protectionplan-Overlay-Container').empty();
+	    var res = false;		  
+		var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
+		var popupPosition = $(document).scrollTop() +10;	
+		overlayPos = 	popupPosition + 60;	  
+		$('.loadPPOverlayCircle').css('display','block');
+		$('.loadPPOverlayCircle').css("position","absolute");
+		$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
+		$('.loadPPOverlayCircle').css("left", "100px");		
+		$.ajax({               
+			type: "POST",
+			url:PDPaction,
+			data: dataString,
+			dataType: "json",
+			cache: false,
+			success: function(respObj) {				
+				if(respObj != undefined && respObj != 'undefined' && respObj != null){
+					var comeerceItemId= respObj.commerceItemId;
+					var prdId = respObj.pId;
+					var zipcodepageurl = respObj.GEZipcodePageUrl;				 
+					var gepage = respObj.GEZipCodepage;				 
+					if(gepage =='GE'){					
+						window.location.href= zipcodepageurl;
+					} else {
+						if(respObj.isOverlay && respObj.isSuccess){
+						//	Here is the nested Ajax call to load the actual protection plan upon Success...
+							var urlCartPath = '/sams/cart/protectionPlanSelector.jsp';
+					var cartDataString = 'productid='+prdId+'&comerceItemId='+comeerceItemId;
+						$.ajax({
+							type: 'GET',
+							url : urlCartPath,
+							cache:false,				
+							data: cartDataString,						
+							success:function(result){				
+								$('.Protectionplan-Overlay-Container').html(result); 
+								$('.Protectionplan-Overlay-Container').ready(function(){
+								$('.loadPPOverlayCircle').hide();
+								$('.Protectionplan-Overlay-Container').css('top', overlayPos+ "px");
+								$('.Protectionplan-Overlay-Container').css('position','absolute');	
+								$('.Protectionplan-Overlay-Container').css("left","5px");
+								$('.Protectionplan-Overlay-Container').css("z-index","99999");									
+								$('.Protectionplan-Overlay-Container').css('display','block');								
+							});							 
+							fnUpdateRHSCart();	
+							$(this).css({
+								"display" : "block",
+								"left" : ($("body").width()-$(this).width())/2
+							});
+						}					 
+					});		        
+				} else if(respObj.isSuccess && !respObj.isOverlay){
+					window.location.href="/sams/cart/addToCartConfirmPage.jsp";
+				} else{
+					if(($('#delqty').val()=='0' || $('#delqty').val()=='' || $('#delqty').val() == undefined ) && ($('#pickqty').val()=='0' || $('#pickqty').val()=='' ||$('#pickqty').val() == undefined)  ){ 
+						$('#delqty').css("border","solid 2px #CC0000");
+						$('#pickqty').css("border","solid 2px #CC0000");
+					}				
+					//Consolidated the error case and calling fnShowErrorCode method...
+					fnShowErrorCode(respObj.Error_Code);
+				}
+			}
+		}else{									
+			fnShowErrorCode('m_error_reset_wrong_att_system_fail');
+		}
+      }, 
+      error: function(respObj){				
+		//Consolidated the error case and calling fnShowErrorCode method...		
+		fnShowErrorCode(respObj.Error_Code);	
+      }
+	});
+		return res;		
+	}
+	
+	
+	
+	
+		$('.searchAddtocart').live('click',function() {					
 				var formId=this.form.id;
 				var action = $("#"+formId).attr("action");
 				var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
@@ -2606,6 +2857,8 @@ $(document).ready(function(){
 				  dataType: "json",
 				  cache: false,
 				  success: function(data) {
+				   if(data!=null && data!=''){
+					var comeerceItemId= data.commerceItemId;
 					var prdId = data.pId;
 					 var zipcodepageurl = data.GEZipcodePageUrl;				 
 					 var gepage = data.GEZipCodepage;				 
@@ -2615,7 +2868,7 @@ $(document).ready(function(){
 					 if(data.isOverlay && data.isSuccess){
 					//Here is the nested Ajax call to load the actual protection plan upon Success...
 					var urlSearchtoCartPath = '/sams/cart/protectionPlanSelector.jsp';
-					var searchDataString = 'productid='+prdId;
+					var searchDataString = 'productid='+prdId+'&comerceItemId='+comeerceItemId;
 					$('#'+prdId).html('');
 					$.ajax({
 						type: 'GET',
@@ -2625,14 +2878,15 @@ $(document).ready(function(){
 						success:function(result){				
 							$('#'+prdId).html(result); 
 							 $('.Protectionplan-Overlay-Container').ready(function(){
-							$('.loadPPOverlayCircle').hide();
-							$('.Protectionplan-Overlay-Container').css('top',popupRePosition);
-							$('.Protectionplan-Overlay-Container').css('position','absolute');	
-							$('.Protectionplan-Overlay-Container').css("left","5px");
-							$('.Protectionplan-Overlay-Container').css("z-index","99999");	
-							$('#'+prdId).css('display','block');							
-							});
-							$('#ajaxCartLoad').load('/sams/common/myCart.jsp');
+								$('.loadPPOverlayCircle').hide();
+								$('.Protectionplan-Overlay-Container').css('top',popupRePosition);								
+									$('.Protectionplan-Overlay-Container').css('position','absolute');	
+									$('.Protectionplan-Overlay-Container').css("left","5px");
+									$('.Protectionplan-Overlay-Container').css("z-index","99999");										
+										$('#'+prdId).css('display','block');
+								});							  
+							  //$('#ajaxCartLoad').load('/sams/common/myCart.jsp');
+							   fnUpdateRHSCart();	
 							$(this).css({
 								"display" : "block",
 								"left" : ($("body").width()-$(this).width())/2
@@ -2640,24 +2894,30 @@ $(document).ready(function(){
 						}					 
 					});
 				   }else if(data.isSuccess && !data.isOverlay){
-						window.location.href="/sams/cart/addToCartConfirmPage.jsp";
+					   if(data.fromShippingList){
+						   window.location.href="/sams/cart/addToCartConfirmPage.jsp?shoppinglist=true";
+					   }else{
+						   window.location.href="/sams/cart/addToCartConfirmPage.jsp"; 
+					   }						
 					 }					 
-				   else{
-						$('#ajaxError').addClass("orangeBg-whiteBrdr smMargB"); 
-						$('#ajaxError').load('/sams/common/getmessagekey.jsp?key='+data.Error_Code);
-						$('#displayError').hide();
-						$('#ajaxError').show();
-						$('.loadPPOverlayCircle').hide();
+				   else{						
+						//Consolidated the error case and calling fnShowErrorCode method...
+						fnShowErrorCode(data.Error_Code);
+						if(data.fromShippingList){
+							addErrorInListpage(data);
+						}
 				    	 
 		             }
 					 }
+					 }
+					 //The response object is empty hence throwing the error message...
+							else{						
+								fnShowErrorCode('m_error_reset_wrong_att_system_fail'); 
+							}
 					}, 
-					error: function(data){
-						$('#ajaxError').addClass("orangeBg-whiteBrdr smMargB"); 
-						$('#ajaxError').load('/sams/common/getmessagekey.jsp?key='+data.Error_Code);
-						$('#displayError').hide();
-						$('#ajaxError').show();
-						$('.loadPPOverlayCircle').hide();
+					error: function(data){						
+						//Consolidated the error case and calling fnShowErrorCode method...
+						fnShowErrorCode(data.Error_Code);
 					}
 				});
 		return res;
@@ -2686,13 +2946,133 @@ $(document).ready(function(){
 				$('#'+commerceItemId).css('display','block');	
 			}                                                                              
 		});
-										
-
+			
 }
+	/* Threshold Shipping begins */
+	/* function to bring up the tooltip on simple saver logo - prashant - 6/25/2012*/
+		$(".threshold-tooltip").ready(function () {          
 
+			var htm1 = '<div>&nbsp;</div><span class="eVarrow"></span>';
+			$(".simpleSaverToolTip").append(htm1);		
+					
+			$('.simpleSaverLogo .simpleSaverLogoSideCart').ready(function() {
+			$('.simpleSaverLogo, .simpleSaverLogoSideCart').each(function () {	
+			
+			var boxHeight = $(".simpleSaverToolTip").height();
+			//alert("boxHeight = "+boxHeight);
+			var vOffset = 55;
+			if ($.browser.webkit) {
+				vOffset=55;
+		    }
+			
+			var distance = boxHeight-vOffset;// Fix for Google Chrome! (by Stan 6-9-2012)
+			//var distance = 20;
+			var time = 50;
+			var hideDelay = 500;
+			var hideDelayTimer = null;
+			var beingShown = false;
+			var shown = false;
+			var trigger = $('.shipsFreeCopy', this);
+			var info = $('.threshold-tooltip', this).css('display', 'none');
+			$([trigger.get(0), info.get(0)]).mouseover(function () {
+				if (hideDelayTimer) clearTimeout(hideDelayTimer);
+				if (beingShown || shown) {
+					// don't trigger the animation again
+					return;
+				} else {
+					
+					//var sfContainerOffset = $('.simpleSaverLogoSideCart').position();
+					var sfOffset = $('.shipsFreeCopy').position();
+					var xPos = sfOffset.left  - ($('.simpleSaverToolTip').width())/2 + 65;
+					//alert(xPos);
+					var yPos = sfOffset.top  - ($('.simpleSaverToolTip').height())*2 + 55;
+					//alert(yPos);
+				
+						if ($(this).parents('div').hasClass("simpleSaverLogoSideCart")){
+						//positioning for side cart related bubble
+							// reset position of info box
+							beingShown = true;
+							info.css({
+							top: yPos,
+							left:xPos,
+							display: 'block'
+						}).animate({
+							top: '-=' + distance + 'px'
+						}, time, 'swing', function() {
+							beingShown = false;
+							shown = true;
+							});
+						}else{
+						//positioning for non side cart related bubble
+						// reset position of info box
+							beingShown = true;
+							info.css({
+							top: -100,
+							left:-60,
+							display: 'block'
+						}).animate({
+							top: '-=' + distance + 'px'
+						}, time, 'swing', function() {
+							beingShown = false;
+							shown = true;
+							});
+						}					
+				}
+					return false;
+			}).mouseout(function () {
+				if (hideDelayTimer) clearTimeout(hideDelayTimer);
+					hideDelayTimer = setTimeout(function () {
+						hideDelayTimer = null;
+						info.css({
+							'display':'none'
+						}).animate({
+							top: '-=' + distance + 'px'
+						}
+						, time, 'swing', function () {
+							shown = false;
+						});
+					}, hideDelay);
+					return false;
+				});
+			});
+		});
+		//--> 		
+		});
+		
+		/* function to pull up a modal window for Threshold Shipping banner on homepage */
+		/* This function has been commented as the modal window is no more required */
+		/*$(function(){				
+			$('.tsShipsFreeDONT').click(function(){				
+				fnOpenShipsFreeOverlay();
+			})							
+		});  
+		
+		function fnOpenShipsFreeOverlay(){	
+			var ShipsFreePostion = $(document).scrollTop();
+			ShipsFreePostion = ShipsFreePostion + 20;	
+			$('.shipsFreeModalContainer').css('display','block');
+			$('.shipsFreeModalContainer').empty();
+			//
+				var urlPath = '/sams/shop/product/common/thresholdShippingOverlay.jsp';
+				$.ajax({
+				type: 'GET',
+				url : urlPath,
+				cache:false,                                                        
+				//data: "commerceItemId="+commerceItemId,                                                                                    
+				success:function(result){                                                             
+				$('.shipsFreeModalContainer').html(result); 
+							}                                                                              
+		});		
+		$('.shipsFreeModalContainer').css("top",ShipsFreePostion);				
+		$('.shipsFreeModalContainer').css("position","absolute");
+		$('.shipsFreeModalContainer').css("z-index","99999");
+		$('.shipsFree_overlayBG').css('display','block');		
+		}*/		
+				
+	/* Threshold Shipping ends */
 function fnOpenPPDetailsOverlay(protectionPlanItemId){	
 	var ppDetailsPostion = $(document).scrollTop();
-	ppDetailsPostion = ppDetailsPostion + 80;	
+	ppDetailsPostion = ppDetailsPostion + 20;	
 	$('.ProtectionplanDetails-Overlay-Container').css('display','block');
 	$('.ProtectionplanDetails-Overlay-Container').empty();
 	$.get('/sams/cart/protectionPlanDetails.jsp?ppItemId='+protectionPlanItemId, function(ppContent){
@@ -2702,6 +3082,163 @@ function fnOpenPPDetailsOverlay(protectionPlanItemId){
 		$('.ProtectionplanDetails-Overlay-Container').css("position","absolute");
 		$('.ProtectionplanDetails-Overlay-Container').css("z-index","99999");
 }
+function callProtectionplanOverlayOrderHistory(commerceItemId,orderId,sgId){	
+		var newTopPostion = $(document).scrollTop();
+		newTopPostion = newTopPostion + 20;			
+		$('#'+commerceItemId).empty();	
+		$('#'+commerceItemId).css('display','none');
+		$.get('/sams/cart/orderhistoryprotectionplanselector.jsp?commerceItemId='+commerceItemId+'&orderId='+orderId+'&ShGrpId='+sgId, function(result){
+			$('#'+commerceItemId).html(result); 
+		});
+		$('#'+commerceItemId).css("top",newTopPostion);
+		$('#'+commerceItemId).css("left","5px");
+		$('#'+commerceItemId).css("position","absolute");
+		$('#'+commerceItemId).css("z-index","99999");	
+		$('#'+commerceItemId).css('display','block');				
+}
+
+
+
+$('#express').live('click',function() {	
+	$('.loadPPOverlayCircle').css('display','block');
+    var dataString = "/sams" + $("#addToCartSingleForm").serialize();
+	   var action = $("#addToCartSingleForm").attr("action");	
+	  $('.Protectionplan-Overlay-Container').empty();
+    var res = false;		  
+	  var overlayPos = Math.max(0, (($(window).height() - $('.Protectionplan-Overlay-Container').outerHeight()) / 2) + $(window).scrollTop()) - 70;
+	  var popupPosition = $(document).scrollTop() +10;	
+		overlayPos = 	popupPosition + 60;	  
+			$('.loadPPOverlayCircle').css('display','block');
+			$('.loadPPOverlayCircle').css("position","absolute");
+			$('.loadPPOverlayCircle').css("top", Math.max(0, (($(window).height() - $('.loadPPOverlayCircle').outerHeight()) / 2) + $(window).scrollTop()) + "px");
+			$('.loadPPOverlayCircle').css("left", "100px");				
+	      $.ajax({                
+	        type: "POST",
+	        url:action,
+	        data: dataString,
+	        dataType: "json",
+	        cache: false,
+	        success: function(data) {
+	    	  var comeerceItemId= data.commerceItemId;
+	    	  var prdId = data.pId;
+				 var page='express';
+				 var zipcodepageurl = data.GEZipcodePageUrl;				 
+				 var gepage = data.GEZipCodepage;				 
+				 if(gepage =='GE'){					
+				window.location.href= zipcodepageurl;
+				 }else {
+			 if(data.isOverlay && data.isSuccess){
+					//Here is the nested Ajax call to load the actual protection plan upon Success...
+					var urlExpressCartPath = '/sams/cart/protectionPlanSelector.jsp';
+					var expressDataString = 'productid='+prdId+'&comerceItemId='+comeerceItemId+'&page='+page;
+					$('.Protectionplan-Overlay-Container').html('');
+					$.ajax({
+						type: 'GET',
+						url : urlExpressCartPath,
+						cache:false,				
+						data: expressDataString,						
+						success:function(result){				
+						$('.Protectionplan-Overlay-Container').html(result); 
+						$('.Protectionplan-Overlay-Container').ready(function(){
+							$('.loadPPOverlayCircle').hide();
+							$('.Protectionplan-Overlay-Container').css('top', popupPosition+ "px");
+							$('.Protectionplan-Overlay-Container').css('position','absolute');	
+							$('.Protectionplan-Overlay-Container').css("left","5px");
+							$('.Protectionplan-Overlay-Container').css("z-index","99999");									
+							$('.Protectionplan-Overlay-Container').css('display','block');								
+						});							 
+						  //$('#ajaxCartLoad').load('/sams/common/myCart.jsp');	
+						   fnUpdateRHSCart();	
+						$(this).css({
+							"display" : "block",
+							"left" : ($("body").width()-$(this).width())/2
+						});
+						}					 
+					});
+		     }else if(data.isSuccess && !data.isOverlay){
+		    	window.location.href='/sams/shop/product.jsp?productId='+prdId+'&checkout='+page;
+			 }else{
+				 //Start Modified for 12.9 site enhancements
+				 if(($('#delqty').val()=='0' || $('#delqty').val()=='' || $('#delqty').val() == undefined ) && ($('#pickqty').val()=='0' || $('#pickqty').val()=='' ||$('#pickqty').val() == undefined)  ){ 
+		                $('#delqty').css("border","solid 2px #CC0000");
+	                    $('#pickqty').css("border","solid 2px #CC0000");
+				     }
+				 //end modified for 12.9 site enhancement changes								
+				//Consolidated the error case and calling fnShowErrorCode method...
+				fnShowErrorCode(data.Error_Code);
+		    	 
+             }
+				 }
+	      	}, 
+	            error: function(data){							
+				//Consolidated the error case and calling fnShowErrorCode method...
+				fnShowErrorCode(data.Error_Code);
+			}
+	  });
+	  return res;
+	});
+// Start12.9 site enhancement changes 
+function SelectaClub(productId,skuId,rdurl,cId,page){	
+	$('#pickup'+cId).show();
+	$('#selectaclub'+cId).hide();
+	
+	$('#CartZipCode'+cId).live('click',function() {
+		var zipCodeValue = $("#cartZip"+cId).val();
+		if($("#cartZip"+cId).val().length == 0  || $("#cartZip"+cId).val()=="Enter ZIP, City or State"){
+				$('#zipcodeError'+cId).css('display','block');
+				$('#cartZip'+cId).addClass('cart_zipCodeErrorStroke');
+		}
+		else{
+				$('#zipcodeError'+cId).css('display','none');					
+				$('#cartZip'+cId).removeClass('cart_zipCodeErrorStroke').addClass('cart_zipCode');			
+				
+				callClubLocatorOverlayFromCartPage(productId,skuId,rdurl,cId,page);
+			} 
+	});
+	
+}
+function callClubLocatorOverlayFromCartPage(productId,skuId,rdURL,cId,page){
+	 var decodeUrl = decodeURIComponent(rdURL) 
+	  var lastPageAccessInSeconds = Math.floor(lastAccesspage/1000);
+	  var currnetDate = new Date();
+	  var currnetDateInTime = currnetDate.getTime();
+	  var currnetDateInSeconds = Math.floor(currnetDateInTime/1000);
+	  var diffTime = currnetDateInSeconds - lastPageAccessInSeconds;
+	  if(diffTime >= sessionTimeout){
+		  window.location.reload();
+	  }else{
+	  openClubLocatorOverlay("/sams/shoppingtools/clubSelector/clubSelector.jsp?prodId="+productId+"&skuId="+skuId+"&redirectURL="+encodeURIComponent(decodeUrl)+"&page="+page+"&cID="+cId);
+	  }
+}
+
+function changeClubFromCartPage(productId,skuId,rdURL,cId,page){	
+	var changeclub = true;	
+	  var lastPageAccessInSeconds = Math.floor(lastAccesspage/1000);
+	  var currnetDate = new Date();
+	  var currnetDateInTime = currnetDate.getTime();
+	  var currnetDateInSeconds = Math.floor(currnetDateInTime/1000);
+	  var diffTime = currnetDateInSeconds - lastPageAccessInSeconds;
+	  if(diffTime >= sessionTimeout){
+		  window.location.reload();
+	  }else{
+	  openClubLocatorOverlay("/sams/shoppingtools/clubSelector/clubSelector.jsp?prodId="+productId+"&changeclub="+changeclub+"&skuId="+skuId+"&redirectURL="+encodeURIComponent(rdURL)+"&page="+page+"&cID="+cId);
+	  }
+}
+
+
+//end 12.9 site enhancement changes
+
+function fnUpdateRHSCart(){	
+	var urlRHSCartPath = '/sams/common/myCart.jsp';
+    $.ajax({
+           type: 'GET',
+           url : urlRHSCartPath,
+           cache:false,                                                                                                                                                    
+           success:function(result){                                                             
+                   $('#ajaxCartLoad').html(result); 
+          }                                                                              
+    });
+}
 
 $('#enableNotifyBtn').live('click',function() {
 	 $('#mainAddToCart').empty();
@@ -2709,6 +3246,1142 @@ $('#enableNotifyBtn').live('click',function() {
 		document.addToCartSingleForm.submit();
 		
 	 });
+	 
+function fnShowErrorCode(errCode){
+		$('#ajaxError').empty();
+		var msgurlPath = '/sams/common/getmessagekey.jsp';	
+		if(!(errCode != '' && errCode !=null)){				
+				errCode = 'm_error_reset_wrong_att_system_fail';
+		}		
+			$.ajax({
+			type: 'GET',
+			url : msgurlPath,
+			cache:false,                                                        
+			data: "key="+errCode,                                                                                    
+			success:function(result){
+							$('#ajaxError').addClass("orangeBg-whiteBrdr smMargB"); 						
+							$('#displayError').hide();
+							$('#ajaxError').html(result); 	
+							$('#ajaxError').show();
+							$('.loadPPOverlayCircle').hide();												
+				}                                                                              
+			});		
+}
+/* Start PA Modified :12.9 S2(Cash back) requirement */
+function selectCashBack(){ 
+	if(document.getElementById('cashPaymentGroupIds').checked){
+		$.get("/sams/checkout/payment/addCashBack.jsp",function(sampData){								
+			var payId = $.trim(($(sampData).find(".cashbackdiv")).html());				
+			document.getElementById("cashPaymentGroupIds").value = payId;				
+		});
+	}else{		
+		$.get("/sams/checkout/payment/removeCashBack.jsp",function(sampData){
+		});
+	}	
+}
+/* End PA Modified :12.9 S2(Cash back) requirement */
+	
+/* Start PA Modified :12.9 S2(MVP) requirement */
+
+function submitCheckBoxForm(form, type) {
+	if (type == 'select')
+	{
+		form.pilotpurchase.value = 'submit';
+		if(form.selectMemType && !form.selectMemType.checked) {
+		form.memType.value='Advantage Plus';
+		} else {
+		form.memType.value='Business Plus';
+		}
+		document.getElementById('pilotsetmemberInfo').disabled=true; 
+		form.submit();
+	} else {
+		form.pilotpurchase.value = '';
+		form.memType.value= '';
+		document.getElementById('pilotpurchase').disabled=true;
+		document.getElementById('pilotsetmemberInfo').disabled=false;
+		}
+  }
+/* End PA support 12.9(MVP) changed */
+
+function addErrorInListpage(data){
+	$('.ajaxerr').removeClass("errorRed");
+	$('#ajaxErrorTag'+data.pId).addClass("errorRed");
+	if(window.location.href.indexOf("#") > -1) {
+		window.location.href = document.URL	
+	}else{
+		window.location.href = document.URL+'#'
+	}
+}
+/* Start PASupport 12.9 MVP Changes */
+
+function submitFormOnEnterForPilot(form, ev) {
+	var keycode;
+	if (window.event) {
+		keycode = window.event.keyCode;
+	} else if (ev) {
+		keycode = ev.which;
+	} else {
+		return true;
+	}
+	if (keycode == 13) {
+		if (regFocus.length == 0) {
+			trimFormElements(form);
+			fetchPilotStatus('OnEnter', form);			
+			return false;
+		}
+	} else {
+		return true;
+	}
+	return false;
+}
+
+function fetchPilotStatus(content, form) {
+	var zipCode = $("#zip").val();
+	$.get("/sams/account/signin/fetchPilotStatus.jsp?zipCode=" + zipCode,
+			function(result) {
+				var reslength = result.length;			
+				if (content == 'OnEnter') {
+					if ((result != null || result != undefined)
+							&& reslength > 0) {
+						alert(result);
+						form.submit();
+					} else {
+						form.submit();
+					}
+				} else {
+					if ((result != null || result != undefined)
+							&& reslength > 0) {
+						alert(result);
+						$("#purchaseAdvForm").submit();
+					} else {
+						$("#purchaseAdvForm").submit();
+					}
+				}
+			});
+
+}
+/* End PASupport 12.9 MVP Changes */
+//Product Wizard section starts here...
+$(function(){
+	
+	$(document).ready(function(){
+		
+		// Load the subsequent scripts only for a product wizard template
+		var isProductWizard = true;
+		var finderInstanceId;
+		var contentTemplate;
+		var wizardDivId;
+		var bgImgDivId;
+		$('#SpinloadingImg').css('display','block');
+		if ($("#tire_wizard").size()) {
+			finderInstanceId = "tires";
+			wizardDivId = "tire_wizard";
+			bgImgDivId = "tw_bg_img";
+			contentTemplate = "/sams/search/wizard/tireWizardContent.jsp";
+		} else if ($("#ink_toner").size()) {
+			finderInstanceId = "inktoner";
+			wizardDivId = "ink_toner";
+			bgImgDivId = "search_option";
+			contentTemplate = "/sams/search/wizard/inkAndTonerWizardContent.jsp";
+		} else {
+			isProductWizard = false;
+		}
+		
+		// Load the scripts only for a product wizard
+		if (isProductWizard) {
+
+			// The required wizard scoped objects
+			var searchOptions;
+			var currentSearchOption;
+			var currentDataElements;
+			var applicableDataElements;
+			var searchOptionId;
+			var currentCategoryId;
+			var interactionState = "new";
+			
+			// Firstly, load the fragment to fetch the wizard parameters as a JSON
+			$.ajax({
+				type	: "POST",
+				url		: "/sams/search/wizard/common/fetchWizardParams.jsp",
+				data	: {finderInstance: finderInstanceId, interactionState: interactionState, selectionCount: 0},
+				dataType: "json",
+				cache	: false,
+				success	: function(wizardData) {
+					if (wizardData) {
+	
+						// In the event of a successful wizard data retrieval
+						if (wizardData.isSuccess) {
+	
+							// Set the wizard's search option details
+							searchOptions = wizardData.searchOptions;
+							setSearchOptionData(wizardData, wizardData.searchOptId);
+							
+							// Load the wizard's search option content
+							var isOpenSearch = currentSearchOption.isOpenSearch
+							$("#" + wizardDivId).load(
+									contentTemplate,
+									{
+										instanceId				: finderInstanceId,
+										searchOption			: searchOptionId,
+										isOpenSearch			: isOpenSearch,
+										srchOptIdsStr 			: JSON.stringify(wizardData.srchOptIdsStr),
+										dataElementsStr			: JSON.stringify(currentDataElements),
+										dataElementId			: wizardData.dataElementId,
+										applicableDataElemStr	: JSON.stringify(applicableDataElements),
+										isLastSearch 			: currentSearchOption.isStoreLastSearch,
+										isPopCategory			: currentSearchOption.isPopulateCategory,
+										currentCategoryId		: currentCategoryId,
+										isClubSelected			: false
+									},
+									function(){
+										onWizardLoad();
+									}
+							);
+	
+							// The function to load the relevant JQuery after loading the wizard's content
+							function onWizardLoad() {
+	
+								// Set the wizard's dimensions and background image
+								setWizardUI(wizardData);
+								
+								// Change the interaction state to 'rendered' and load the relevant scripts
+								interactionState = "rendered";
+								if (finderInstanceId == "tires") {
+									loadTireWizardScript();
+									loadTireWizardSrchOptScript();
+								} else if (finderInstanceId == "inktoner" && searchOptionId == "brand-model-series") {
+									loadInkTonerWizardBMSScript();
+								}
+								
+								// Load the open search and last search related JQuery, as applicable
+								if (isOpenSearch) {
+									loadOpenSrchScript();
+								}
+								if (currentSearchOption.isStoreLastSearch) {
+									loadLastSrchScript();
+								}
+							}
+	
+							// The function which loads the scripts for a tire wizard in general
+							function loadTireWizardScript() {
+								
+								// Initially, hide the club selection prompt.
+								$("#club_sel_prompt").css("display","none");
+								
+								// The actions to be performed when the member wishes to select/change a club
+								$("#select_a_club").live("click",function(){
+									showClubSelection(true);
+								});
+								$("#change_club").live("click",function(){
+									showClubSelection(false);
+								});
+								
+								$("#LearnMoreLnk").live("click",function(){										
+									showLearnMoreOverlay();
+								});
+								
+								//Function to show the Learn More Overlay...
+								function showLearnMoreOverlay(){
+									var lmDetailsPostion = $(document).scrollTop();
+									lmDetailsPostion = lmDetailsPostion + 20;	
+									$('.LearnMoreLnk-Container').css('display','block');
+									$('.LearnMoreLnk-Container').empty();
+									var urlPathLm = '/sams/search/wizard/tire/searchBySizeLearnMore.jsp';
+										$.ajax({
+										type: 'GET',
+										url : urlPathLm,
+										cache:false,                                                        											                                                                           
+										success:function(result){  												
+											$('.LearnMoreLnk-Container').html(result); 
+											$('.LearnMoreLnk-Container').css("top",lmDetailsPostion);				
+											$('.LearnMoreLnk-Container').css("position","absolute");
+											$('.LearnMoreLnk-Container').css("z-index","99999");
+										  }                                                                              
+										});
+									
+								}
+								function showClubSelection(isFirstSel) {
+									var content = "/sams/search/wizard/common/clubSelector.jsp";
+									$('body').append('<div class="clubpopupOverlay"></div><div class="popupModalWindow clubLoc"><div class="popupCornerTL"></div><div class="popupCornerTop"></div><div class="popupCornerLeft"></div><div class="popupCornerBottom"></div><div class="popupCornerRight"></div><div class="popupCornerBL"></div><div class="popupCornerBR"></div><a href="#" class="popupClose">Close Popup Window</a><div class="popupModalContent"><div class="popupContentInner"></div></div></div>');
+									
+									/* To avoid modal window to appear off screen - Prashant/SamsClub*/
+									var newTop = $(document).scrollTop();
+									var clubTop = newTop + 100;
+									$('.clubLoc').css("top",clubTop);
+																			
+									$('.clubpopupOverlay').add('.popupModalWindow').fadeOut(0);
+									$('.clubpopupOverlay').fadeTo(100,0.6);
+									$('.popupModalWindow').fadeIn(100);
+									
+									if(typeof(content)=='string' && content.match('')){		
+										$('.popupContentInner').load(content);
+									}else{
+										$(content).clone().css({'display':'block','visibility':'visible','opacity':'1'}).appendTo($('.popupContentInner'));
+										contentName=$(content).attr('id');
+										if(contentName==''){contentName=$(content).find('h1:first,h2:first,h3:first,h4:first,h5:first,strong:first').eq(0).text();}
+										if(contentName==''){contentName=$.trim($(content).text()).substr(0,20).replace(/ /gm,'');}
+										trackEvent(contentName+'|popup|content');
+										checkPopupHeight();	
+									}
+									
+									// The action to facilitate Club Selection
+									$("a[id^=submitClubSel_]").live("click",function(){
+										var clubIdTokens = $(this).attr("id").split("_");
+										var clubId;
+										if (clubIdTokens.length == 2) {
+											clubId = clubIdTokens[1];
+										}
+										$("#sel_club_id").val(clubId);
+										$.ajax({                
+											type	: "POST",
+											url		: $("#update_club_form").attr("action"),
+											data	: "/sams" + $("#update_club_form").serialize(),
+											dataType: "json",
+											cache	: false,
+											success	: function(data) {
+												if (data.isSuccess) {
+													$('.clubpopupOverlay').add('.popupModalWindow').fadeOut(400,function(){$(this).remove();});
+													$("#club_prompt").fadeOut();
+													$("#club_sel_prompt").fadeOut();
+													$("#club_info").load(
+															"/sams/search/wizard/tire/clubInfo.jsp",
+															{
+																isLastSearch : currentSearchOption.isStoreLastSearch
+															},
+															function (){
+																if (isFirstSel) {
+																	$("#club_info").css("display", "block");
+																} 
+																$("div[id^=pageFilters] div[id^=clubLocator]").load(
+																		"/sams/search/wizard/common/clubMetaInfo.jsp",
+																		{selectedCatId : $("#vehicle").parent().attr("id")},
+																		function(){
+																			if (isFirstSel) {
+																				$('<div></div>').load(
+																						"/sams/search/wizard/common/clubName.jsp",
+																						{selectedCatId : $("#vehicle").parent().attr("id")},
+																						function() {
+																							$("div.sortSide p a.right").replaceWith($(this).html());
+																						}
+																				);
+																			} else {
+																				$("div.sortSide span[id^=clubLocatorLink] a").html(
+																					$.trim($("span#club_name").html()) + "&nbsp;" + "Club" + '<span class="arrow"></span>'
+																				);
+																			}
+																		}
+																);
+																/*// The actions to be performed when the member wishes to change the club
+																$("#change_club").click(function(){
+																	showClubSelection();
+																});*/
+															}
+													);
+												}
+											}, 
+											error	: function(data) {
+												
+											}
+										});
+									});
+									
+									$('.popupClose').live('click',function(){
+										$('.clubpopupOverlay').add('.popupModalWindow').fadeOut(400,function(){$(this).remove();});
+										return false;
+									});
+								}
+								
+								// The actions in the event of a search option switch
+								$("#vehicle .container .search .tabs ._nav li").click(function(){
+									var srchOptContentDivId = $(this).attr("id");
+									// Initially, hide the club selection prompt.
+									$("#club_sel_prompt").css("display","none");
+									if(srchOptContentDivId == "ssize"){
+										//assign a height-A
+										$('#tw_bg_img').css('height','265px');
+									}else{
+										//assign height-B
+										$('#tw_bg_img').css('height','217px');
+									}
+									if(srchOptContentDivId && srchOptContentDivId=="svehicle" || srchOptContentDivId=="ssize"){
+	
+										// Set the search option switch
+										$(this).addClass("active").siblings().removeClass("active");
+										var $sept = $("#vehicle #svehicle").next();
+										var $sepb = $("#vehicle #ssize").next();
+										if($sept.attr("class")=="seperator-tb" && srchOptContentDivId=="svehicle"){
+											$sept.attr("class","seperator-tt");		
+											$sepb.attr("class","seperator-bt");						
+										}
+										else if($sept.attr("class")=="seperator-tt" && srchOptContentDivId=="ssize"){
+											$sept.attr("class","seperator-tb");
+											$sepb.attr("class","seperator-bb");
+										}
+	
+										// Set the search option specific variables
+										setSearchOptionData(wizardData, $(this).next().attr("id"));
+	
+										// Load the member selected search option with the initial data options
+										$.ajax({
+											type	: "POST",
+											url		: "/sams/search/wizard/common/fetchWizardParams.jsp",
+											data	: {
+														finderInstance: finderInstanceId, 
+														searchOption: searchOptionId,
+														interactionState: interactionState, 
+														applicableDataElemStr: JSON.stringify(applicableDataElements),
+														selectionCount: 0
+													},
+											dataType: "json",
+											cache	: false,
+											success	: function(wizData) {
+												if (wizData && wizData.isSuccess) {
+													$("#search_option").load(
+															"/sams/search/wizard/tire/searchOption.jsp",
+															{
+																searchOption		: searchOptionId,
+																isOpenSearch		: isOpenSearch,
+																dataElementsStr		: JSON.stringify(currentDataElements),
+																dataElementId		: wizardData.dataElementId,
+																isLastSearch 		: currentSearchOption.isStoreLastSearch,
+																isPopCategory		: currentSearchOption.isPopulateCategory,
+																currentCategoryId	: currentCategoryId
+															},
+															function(){
+																$("#c_" + srchOptContentDivId).css("display", "block");
+																loadTireWizardSrchOptScript();
+															}
+													);
+												}
+											}
+										});
+									}
+								});
+							}
+	
+							// The function which loads the scripts for a tire wizard's search option
+							function loadTireWizardSrchOptScript() {
+								
+								function deactive(ids){
+									var len = ids.length;
+									for(var i=0; i<len; i++){
+										var $mySelects = $('#' + ids[i]);
+										$mySelects.addClass("deactive").attr("disabled","disabled").prev().addClass("deactive");
+									}
+								}
+								
+								function forgeSelect(id) {
+									var $mySelects = $('#' + id);
+									var $div = $("<div class='forgeSelect'></div>");
+									var $ul = $("<ul></ul>");
+									var $em = $("<span></span>");
+									$div.css('zIndex',999);
+									$div.click(
+										function(){
+											$('ul',this).show();
+										}
+									).mouseleave(
+										function(){
+											$('ul',this).hide();
+										}
+									);
+									$div.append($em);
+									$div.append($ul);
+									var $myOptions = $('option', $mySelects);
+									var k = $myOptions.length;
+									for (var j = 0; j < k; j++) {
+										var $myValue = $($myOptions[j]).val() ? $($myOptions[j]).val() : $($myOptions[j]).text();
+										var $li = $("<li>" + $myValue + "</li>");
+										$li.hover(function(){
+											$(this).addClass('hover');
+										},function(){
+											$(this).removeClass('hover');
+										});
+										$li.click(function(){
+											$(this).parent().prev().html($(this).text());
+											var index = $(this).parent().find('li').index(this);
+											$(this).parent().parent().next().get(0).selectedIndex = index;
+											$(this).parent().parent().next().trigger("change");                                            
+											$(this).parent().hide();            
+											return false;
+										});
+										if ($myOptions[j].selected == true) {
+											$em.html($myValue);
+										}
+										$ul.append($li);
+										$ul.hide();
+									}
+									$($mySelects).parent().find('label').after($div);
+									$($mySelects).hide();
+								}
+								
+								// Reset the club prompt and the error message.
+								$("#form_val_error").css("display","none");
+								
+								// Load the current search option specific scripts
+								if (searchOptionId == "year-make-model") {
+									loadTireWizardYMMScript();
+								} else if (searchOptionId == "tire-size") {
+									loadTireWizardTSScript();
+								}
+								
+								// Pre-select the current brand
+								var selectedBrand = $("#vehicle").parent().attr("id");
+								$("#brand option[value=" + selectedBrand + "], #sbrand option[value=" + selectedBrand + "]")
+								.attr("selected", "selected");
+							}
+	
+							// The function which loads the scripts for a tire wizard's YMM search option
+							function loadTireWizardYMMScript() {
+								
+								// Load the available vehicle years
+								populateDataOptions(
+										{
+											finderInstance			: finderInstanceId,
+											searchOption			: searchOptionId,
+											interactionState		: interactionState,
+											applicableDataElemStr	: JSON.stringify(applicableDataElements),
+											selectionCount			: 0
+										},
+										"year"
+								);
+								if($('#year').val() == "Please Select" || $('#year').val() == null){
+									$('#make').attr("disabled","disabled");
+									$('label[for="make"]').addClass("deactive"); 
+									$('#model').attr("disabled","disabled");
+									$('label[for="model"]').addClass("deactive"); 
+									$('#size').attr("disabled","disabled");
+									$('label[for="size"]').addClass("deactive"); 
+								}
+								// The actions to be performed upon a year change
+								$("#year").change(function(){
+									resetDataElement("make");
+									resetDataElement("model");
+									resetDataElement("size");
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 1
+												},
+												"make"
+										);
+									}
+									if($('#year').val() == "Please Select" || $('#year').val() == null){
+										$('#make').attr("disabled","disabled");
+										$('label[for="make"]').removeClass('activate').addClass('deactive');
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').removeClass('activate').addClass('deactive'); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');
+									}else if($('#make').val() == "Please Select" || $('#make').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');									
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').addClass("deactive"); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').addClass("deactive"); 
+									}
+								});
+								
+								// The actions to be performed upon a make change
+								$("#make").change(function(){
+									resetDataElement("model");
+									resetDataElement("size");
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $("#year").val(),
+													data2					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 2
+												},
+												"model"
+										);
+									}
+									if($('#year').val() == "Please Select" || $('#year').val() == null){
+										$('#make').attr("disabled","disabled");
+										$('label[for="make"]').removeClass('activate').addClass('deactive');
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').removeClass('activate').addClass('deactive'); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');
+									}else if($('#make').val() == "Please Select" || $('#make').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').removeClass('activate').addClass('deactive'); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');
+									}else if($('#model').val() == "Please Select" || $('#model').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');									
+										$('#model').removeAttr("disabled","disabled");
+										$('label[for="model"]').removeClass('deactive').addClass('activate');									
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').addClass("deactive"); 
+									}
+								});
+								
+								// The actions to be performed upon a model change
+								$("#model").change(function(){
+									resetDataElement("size");
+									if ($(this).val() != "Please Select" || $(this).val() != "") {
+										$("#form_val_error").css("display","none");
+									}
+									$("#form_val_error").css("display","none");
+									if ($(this).val() != "Please Select") {
+	
+										// Populate the tire size specific data options fragment
+										$("#size").load(
+												"/sams/search/wizard/tire/tireSizeDataOptions.jsp",
+												{
+													finderInstance			: finderInstanceId, 
+													searchOption			: searchOptionId,
+													interactionState		: interactionState, 
+													data1 					: $("#year").val(),
+													data2 					: $("#make").val(),
+													data3 					: $(this).val(),
+													applicableDataElemStr 	: JSON.stringify(applicableDataElements),
+													selectionCount			: 3
+												}
+										);
+									}
+									if($('#year').val() == "Please Select" || $('#year').val() == null){
+										$('#make').attr("disabled","disabled");
+										$('label[for="make"]').removeClass('activate').addClass('deactive');
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').removeClass('activate').addClass('deactive'); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');
+									}else if($('#make').val() == "Please Select" || $('#make').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');
+										$('#model').attr("disabled","disabled");
+										$('label[for="model"]').removeClass('activate').addClass('deactive'); 
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');
+									}else if($('#model').val() == "Please Select" || $('#model').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');									
+										$('#model').removeAttr("disabled","disabled");
+										$('label[for="model"]').removeClass('deactive').addClass('activate');									
+										$('#size').attr("disabled","disabled");
+										$('label[for="size"]').removeClass('activate').addClass('deactive');	
+									}else if($('#size').val() == "Please Select" || $('#size').val() == null){
+										$('#make').removeAttr("disabled","disabled");
+										$('label[for="make"]').removeClass('deactive').addClass('activate');									
+										$('#model').removeAttr("disabled","disabled");
+										$('label[for="model"]').removeClass('deactive').addClass('activate');									
+										$('#size').removeAttr("disabled","disabled");
+										$('label[for="size"]').removeClass('deactive').addClass('activate');
+									}
+								});
+								
+								// Configure the action to be performed when the user clicks on the 'Show Me Tires' link
+								$("#tw_year-make-model_search").click(function(){
+									var isValidationSuccess = true;
+									var vYear = $("#year").val();
+									var vMake = $("#make").val();
+									var vModel = $("#model").val();
+									var srchCatId = $("#brand").val();
+									var srchSize = $("#size").val();
+									// See if a club check is required and prompt the user for club selection if required
+									if (currentSearchOption.isClubCheck && !$("#change_club").size()) {
+										$("#club_sel_prompt").css("display","block").html("Please select a Club to see available tires.");
+										isValidationSuccess = false;
+										return;
+									}
+									// Perform initial validation and populate the corresponding error messages if required
+									if (vYear == "Please Select" || vMake == "Please Select" || vModel == "Please Select") {
+										$("#form_val_error").css("display","block").html("Please select your vehicle's Year, Make and Model");
+										isValidationSuccess = false;
+									}
+									
+									//1- Validation for Year option...																		
+									if (vYear == "Please Select" || vYear == null){
+										$("#year").addClass('errorBorder');
+										isValidationSuccess = false;
+									} else { $("#year").removeClass('errorBorder'); }									
+									
+									//2- Validation for Make Option...
+									if(vMake == "Please Select" || vMake == null){
+										$("#make").addClass('errorBorder');										
+										isValidationSuccess = false;
+									}else { $("#make").removeClass('errorBorder'); }
+									
+									//3- Validation for Model option...									
+									if(vModel == "Please Select" || vModel == null){
+										$("#model").addClass('errorBorder');										
+										isValidationSuccess = false;
+									}else { $("#model").removeClass('errorBorder'); }
+									
+									//4- Validation for Size option...									
+									if(srchSize == "Please Select" || srchSize == null){
+										$("#size").addClass('errorBorder');										
+										isValidationSuccess = false;
+									}else { $("#size").removeClass('errorBorder'); }
+	
+									// If there are no form errors, set the necessary form handler attributes and submit the form
+									if (isValidationSuccess) {	
+										$("#f_veh_year").val(vYear);
+										$("#f_veh_make").val(vMake);
+										$("#f_veh_model").val(vModel);
+										$("#f_tire_size").val($("#size").val());											
+										if (srchCatId && srchCatId != "See all brands") {
+											$("#f_srch_cat_id").val(srchCatId);
+											$("#f_sel_tire_brand").val($("#brand").find("'option[value=" + srchCatId + "]'").html());
+										} else {
+											$("#f_srch_cat_id").val("all");
+										}
+										var clubId = $("#change_club").parent().attr("id");
+										$("#f_club_id").val(clubId);
+										$("#f_store_num").val(clubId);
+										$("#f_srch_cnt_type").val(currentSearchOption.searchContentType);
+										$("#f_srch_term").val($("#size").val());
+											$("#ymm_srch_form").submit();										
+										
+									} else{
+									//Validation is failed, stay on the same page...
+										$("#form_val_error").css("display","block").html("Please select your vehicle's Year, Make and Model");
+										return;
+									}
+								});
+							}
+							
+							
+							// The function which loads the scripts for a tire wizard's TS search option
+							function loadTireWizardTSScript() {
+								
+								// Load the available tire width values from the feed
+								populateDataOptions(
+										{
+											finderInstance			: finderInstanceId,
+											searchOption			: searchOptionId,
+											interactionState		: interactionState,
+											applicableDataElemStr	: JSON.stringify(applicableDataElements),
+											selectionCount			: 0
+										},
+										"tire_width"
+								);
+								 if($('#tire_width').val() == "Please Select" || $('#tire_width').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');	
+										$('#aspect_ratio').attr("disabled","disabled");
+										$('label[for="aspect_ratio"]').addClass("deactive"); 
+										$('#rim_diameter').attr("disabled","disabled");
+										$('label[for="rim_diameter"]').addClass("deactive"); 
+									}
+								
+								// The actions to be performed upon a tire width change
+								$("#tire_width").change(function(){
+									resetDataElement("aspect_ratio");
+									resetDataElement("rim_diameter");
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 1
+												},
+												"aspect_ratio"
+										);
+									}
+									if($('#tire_width').val() == "Please Select" || $('#tire_width').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');
+										$('#aspect_ratio').attr("disabled","disabled");
+										$('label[for="aspect_ratio"]').removeClass('activate').addClass('deactive'); 
+										$('#rim_diameter').attr("disabled","disabled");
+										$('label[for="rim_diameter"]').removeClass('activate').addClass('deactive');
+									}else if($('#aspect_ratio').val() == "Please Select" || $('#aspect_ratio').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');									
+										$('#aspect_ratio').removeAttr("disabled","disabled");
+										$('label[for="aspect_ratio"]').removeClass('deactive').addClass('activate');									
+										$('#rim_diameter').attr("disabled","disabled");
+										$('label[for="rim_diameter"]').addClass("deactive"); 
+									}
+								});
+								
+								// The actions to be performed upon an aspect ratio change
+								$("#aspect_ratio").change(function(){
+									resetDataElement("rim_diameter");
+									if ($(this).val() != "Please Select" || $(this).val() != "") {
+										$("#form_val_error").css("display","none");
+									}
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $("#tire_width").val(),
+													data2					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 2
+												},
+												"rim_diameter"
+										);
+									}
+									if($('#tire_width').val() == "Please Select" || $('#tire_width').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');
+										$('#aspect_ratio').attr("disabled","disabled");
+										$('label[for="aspect_ratio"]').removeClass('activate').addClass('deactive'); 
+										$('#rim_diameter').attr("disabled","disabled");
+										$('label[for="rim_diameter"]').removeClass('activate').addClass('deactive');
+									}else if($('#aspect_ratio').val() == "Please Select" || $('#aspect_ratio').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');									
+										$('#aspect_ratio').removeAttr("disabled","disabled");
+										$('label[for="aspect_ratio"]').removeClass('deactive').addClass('activate');									
+										$('#rim_diameter').attr("disabled","disabled");
+										$('label[for="rim_diameter"]').removeClass('activate').addClass('deactive');	
+									}else if($('#rim_diameter').val() == "Please Select" || $('#rim_diameter').val() == null){
+										$('#tire_width').removeAttr("disabled","disabled");
+										$('label[for="tire_width"]').removeClass('deactive').addClass('activate');									
+										$('#aspect_ratio').removeAttr("disabled","disabled");
+										$('label[for="aspect_ratio"]').removeClass('deactive').addClass('activate');									
+										$('#rim_diameter').removeAttr("disabled","disabled");
+										$('label[for="rim_diameter"]').removeClass('deactive').addClass('activate');
+									}
+								});
+								
+								// Configure the action to be performed when the user clicks on the 'Show Me Tires' link
+								$("#tw_tire-size_search").click(function(){
+									var isValidationSuccess = true;
+									var tWidth = $("#tire_width").val();
+									var tRatio = $("#aspect_ratio").val();
+									var tDia = $("#rim_diameter").val();
+									var srchCatId = $("#sbrand").val();	
+									
+									// See if a club check is required and prompt the user for club selection if required
+									if (currentSearchOption.isClubCheck && $("#club_prompt").css("display") == "block" 
+										//Start PA Support: 12.9 Product Wizard - Fix for Defect # 9676
+										&& !$("#change_club").size()
+										//End PA Support: 12.9 Product Wizard - Fix for Defect # 9676
+									) {
+										$("#club_sel_prompt").css("display","block").html("Please select a club to see available tires");
+										isValidationSuccess = false;
+										return;
+									}
+									
+									// Perform initial validation and populate the corresponding error messages if required
+									if (tWidth == "Please Select" || tRatio == "Please Select" || tDia == "Please Select") {
+										$("#form_val_error").css("display","block").html("Please tell us the Tire Width, Aspect Ratio, and Rim Diameter");
+										isValidationSuccess = false;
+									}
+									
+									//1- Validation for Tire Width option...
+									if(tWidth == "Please Select" || tWidth == null){										
+										$("#tire_width").addClass('errorBorder');										
+										isValidationSuccess = false;
+									}else { $("#tire_width").removeClass('errorBorder'); }
+									
+									//2- Validation for Aspect Ration option...
+									if (tRatio == "Please Select" || tRatio == null){										
+										$("#aspect_ratio").addClass('errorBorder');										
+										isValidationSuccess = false;
+									} else { $("#aspect_ratio").removeClass('errorBorder'); }
+									
+									//3- Validation for Rim Diameter Option....
+									if(tDia == "Please Select" || tDia == null){									
+										$("#rim_diameter").addClass('errorBorder');																					
+										isValidationSuccess = false;
+									} else { $("#rim_diameter").removeClass('errorBorder'); }
+									
+									
+									
+									
+									// If there are no form errors, set the necessary form handler attributes and submit the form
+									if (isValidationSuccess) {																					
+										showWarningOverlay();
+									}else{
+										//Validation is failed, hence stay on the same page...
+										$("#form_val_error").css("display","block").html("Please tell us the Tire Width, Aspect Ratio, and Rim Diameter");											
+										return;
+									}
+									
+									//Function to Show Warning overlay...
+								function showWarningOverlay(){																				
+									var WarningPostion = $(document).scrollTop();
+									WarningPostion = WarningPostion + 120;	
+									$('.SBSWarning-Container').css('display','block');
+									$('.SBSWarning-Container').css("top",WarningPostion);				
+									$('.SBSWarning-Container').css("position","absolute");
+									$('.SBSWarning-Container').css("z-index","99999");										
+								}
+									$("#btnAgree").live("click",function(){																																
+										$("#f_tire_width").val(tWidth);
+										$("#f_tire_ratio").val(tRatio);
+										$("#f_tire_dia").val(tDia);	
+										$("#f_srch_cat_id").val((srchCatId && srchCatId != "See all brands") ? srchCatId : "all");
+										var clubId = $("#change_club").parent().attr("id");
+										$("#f_club_id").val(clubId);
+										$("#f_store_num").val(clubId);
+										$("#f_srch_cnt_type").val(currentSearchOption.searchContentType);
+										$("#ts_srch_form").submit();
+									});
+								});
+							}
+							
+							
+							function fnSearchbySizeFormSubmit(){											
+										$("#f_tire_width").val(tWidth);
+										$("#f_tire_ratio").val(tRatio);
+										$("#f_tire_dia").val(tDia);
+										var srchCatId = $("#sbrand").val();
+										$("#f_srch_cat_id").val(
+												(srchCatId && srchCatId != "See all brands") ? srchCatId : "all");
+										var clubId = $("#change_club").parent().attr("id");
+										$("#f_club_id").val(clubId);
+										$("#f_store_num").val(clubId);
+										$("#f_srch_cnt_type").val(currentSearchOption.searchContentType);
+										$("#ts_srch_form").submit();
+							}
+							
+							// The function which loads the scripts for an ink and toner wizard's BMS search option
+							function loadInkTonerWizardBMSScript() {
+								
+								// Load the available printer brands from the feed
+								populateDataOptions(
+										{
+											finderInstance			: finderInstanceId,
+											searchOption			: searchOptionId,
+											interactionState		: interactionState,
+											applicableDataElemStr	: JSON.stringify(applicableDataElements),
+											selectionCount			: 0
+										},
+										"brand"
+								);
+								
+								// Initially hide the error message DIV
+								$("#form_val_error").css("display", "none");
+								$('a.Find_BTN_darkblue').ready(function(){
+									//$('a.Find_BTN_darkblue').addClass('mt15');
+								});
+								
+								// The actions to be performed upon a brand change
+								$("#brand").change(function(){
+									resetDataElement("printer");
+									resetDataElement("model");
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 1
+												},
+												"printer"
+										);
+									}
+								});
+								
+								// The actions to be performed upon a printer change
+								$("#printer").change(function(){
+									resetDataElement("model");
+									if ($(this).val() != "Please Select") {
+										populateDataOptions(
+												{
+													finderInstance			: finderInstanceId,
+													searchOption			: searchOptionId,
+													interactionState		: interactionState,
+													data1					: $("#brand").val(),
+													data2					: $(this).val(),
+													applicableDataElemStr	: JSON.stringify(applicableDataElements),
+													selectionCount			: 2
+												},
+												"model"
+										);
+									}
+								});
+								
+								// The actions to be performed upon a model change
+								$("#model").change(function(){
+									if ($(this).val() != "Please Select" || $(this).val() != "") {
+										$("#form_val_error").css("display","none");
+									}
+								});
+								
+								// Configure the action to be performed when the user clicks on the 'See Ink & Toner' link
+								$("#int_brand-model-series_search").click(function(){
+									var isValidationSuccess = true;
+									var pBrand = $("#brand").val();
+									var pType = $("#printer").val();
+									var pModel = $("#model").val();
+									//Hiding the top image error section...
+									$("#partNum_val_error").css("display","none");
+									$('#srch_term').removeClass('errorBorder');
+									// Perform initial validation and populate the corresponding error messages if required
+									if (pBrand == "Please Select" || pType == "Please Select" || pModel == "Please Select") {
+										$("#form_val_error").css("display","block").html("Please tell us your Printer Brand, Printer Type, and Model Number");
+										isValidationSuccess = false;
+									}
+									//1- Validation for Brand option...
+									if (pBrand == "Please Select"  || pBrand == null){
+										$("#brand").addClass('errorBorder');
+										isValidationSuccess = false;
+									}else{
+										$("#brand").removeClass('errorBorder');
+									}
+									
+									//2-Validation for Printer type option...
+									if (pType == "Please Select"  || pType == null){
+										$("#printer").addClass('errorBorder');
+										isValidationSuccess = false;
+									}else{
+										$("#printer").removeClass('errorBorder');
+									}
+									
+									//3-Validation for Model option....
+									if (pModel == "Please Select"  || pModel == null){
+										$("#model").addClass('errorBorder');
+										isValidationSuccess = false;
+									}else{
+										$("#model").removeClass('errorBorder');
+									}
+									// If there are no form errors, set the necessary form handler attributes and submit the form
+									if (isValidationSuccess) {
+										$("#f_sel_opts").val(JSON.stringify([pBrand, pType, pModel]));
+										$("#f_srch_cnt_type").val(currentSearchOption.searchContentType);
+										$("#bms_srch_form").submit();
+									}else{
+										$("#form_val_error").css("display","block").html("Please tell us your Printer Brand, Printer Type, and Model Number");
+										return;
+									}
+								});
+								
+								// Configure the action to be performed when the user performs a 'Part Number Search'
+								$("#int-open-search").click(function(){
+									//Hide the error message sections...
+									$("#form_val_error").css("display","none");
+									$("#brand").removeClass('errorBorder');
+									$("#printer").removeClass('errorBorder');
+									$("#model").removeClass('errorBorder');									
+									if ($("#srch_term").val() && $("#srch_term").val() != null && $.trim($("#srch_term").val()) != '') {
+										$('#srch_term').removeClass('errorBorder');
+										$("#partNum_val_error").css("display","none");
+										$("#osf_srch_term").val($("#srch_term").val());
+										$("#open_srch_form").submit();
+									} else {
+										$("#partNum_val_error").css("display","block").html("Please enter your part number or search by Brand.");
+										$('#srch_term').addClass('errorBorder');
+									}
+								});
+								
+							}
+	
+							// The function to populate data options based on the given interface and input parameter JSON
+							function populateDataOptions(inputParamJSON, interfaceId) {
+								$("#" + interfaceId).load("/sams/search/wizard/common/dataOptions.jsp", inputParamJSON);
+							}
+	
+							// The function to load the relevant JQuery for the Open Search on the product wizard
+							function loadOpenSrchScript() {
+								$("#ink_toner .direct .tips").click(function(){
+									//Hide the error message if it is available...
+									$("#form_val_error").css("display","none");
+									$("#brand").removeClass('errorBorder');
+									$("#printer").removeClass('errorBorder');
+									$("#model").removeClass('errorBorder');
+									var cheight = $(".content").height();
+									var govisable = $(this).next().css("display");
+									if(govisable!="block"){
+										$(this).css("margin-bottom",0).next().css("display","block");											
+										$(".content").height(cheight+35);
+									}
+									else{
+										$(this).css("margin-bottom",25).next().css("display","none");											
+										$(".content").height(cheight-41);
+									}
+								});		
+							}
+	
+							// The function to load the relevant JQuery to facilitate the product wizard's last search feature
+							function loadLastSrchScript() {
+								
+							}
+														 
+						}
+	
+						// If the wizard data could not be retrieved successfully
+						else if (wizardData.isEmpty) {
+							
+						}
+	
+						// In the event of an error while retrieving the wizard data
+						else if (wizardData.isError) {
+							
+						}
+					}
+				}
+			});
+			
+			// The function to set the initial wizard data parameters
+			function setSearchOptionData(wizardData, searchOptId) {
+				searchOptionId = searchOptId;
+				if (searchOptions) {
+					currentSearchOption = searchOptions[searchOptId];
+					if (currentSearchOption) {
+						currentDataElements = currentSearchOption.dataElements;
+						applicableDataElements = currentSearchOption.applicableDataElements;
+						if (currentSearchOption.isPopulateCategory) {
+							currentCategoryId = currentSearchOption.categoryId;
+						}
+					}
+				}
+			}
+			
+			// The function to set the wizard's dimensions and background image
+			function setWizardUI(wizardData) {
+				
+				// Dynamically create a CSS class to render the wizard's background image  
+				$("head").append(
+						"<style type='text/css'> .dynWizParams{background:url("
+						+ wizardData.backgroundImageURL
+						+ ");} </style>"
+				);
+
+				// Set the finder instance's height and width and add the dynamically created class to the background image holder element 
+				$("#" + wizardDivId).css({					
+					"width" : wizardData.width
+				});
+				$("#" + bgImgDivId).addClass("dynWizParams");
+				
+			}
+			
+			// The function to reset a data element with the given ID, if already set.
+			function resetDataElement(elementId) {
+				var dataElem = $("#" + elementId);
+				if (dataElem && dataElem != null) {
+					dataElem.empty();
+				}
+			}
+		
+		}
+		$('.conditions').ready(function(){						
+			//Hide the loading image once the page is ready...
+			$('#SpinloadingImg').css('display','none');
+		});		
+		
+	});
+
+});
+//Product Wizard section ends...
 /* SWFObject v2.2 alpha10 <http://code.google.com/p/swfobject/>
 	Copyright (c) 2007-2009 Geoff Stearns, Michael Williams, and Bobby van der Sluis
 	This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>

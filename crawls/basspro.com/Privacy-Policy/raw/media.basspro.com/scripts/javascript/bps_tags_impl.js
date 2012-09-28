@@ -147,6 +147,20 @@ function updatePageVariables(tag)
   {
     errorHandler(js_filename, "updatePageVariables(tag)", error);
   }
+
+  try
+  {
+  for(var i = 0 ; i < tag.refinementValues; i++)
+  {
+    if(tag.refinementValues[i].indexOf("Clearance") != -1)
+    {
+      tag.appendType(PageType.CLEARANCE);
+      break;
+    }
+  }
+  }
+  catch(ignore)
+  {}
 }
 
 /*
@@ -637,7 +651,6 @@ function checkBillingAddress(omniTagObj)
   catch(error)
   {
     errorHandler(js_filename, "checkBillingAddress()", error);
-    alert("ERROR: [" + error.message + "]");
   }
 }
 
@@ -775,14 +788,30 @@ RichRelevanceTag.prototype.initialize = function()
       {
         R3_COMMON.addPlacementType("home_page.rvi");
         R3_COMMON.addPlacementType("home_page.content");
+        //Sprint2 - Cognizant new RR catridges -- start
+        R3_COMMON.addPlacementType("home_page.content2");
+        R3_COMMON.addPlacementType("home_page.content3");
+        R3_COMMON.addPlacementType("home_page.content4");
+        R3_COMMON.addPlacementType("home_page.content5");
+        R3_COMMON.addPlacementType("home_page.content6");
+        R3_COMMON.addPlacementType("home_page.content7");
+        //Sprint2 - Cognizant new RR catridges -- end
         R3_COMMON.addClickthruParams(0, "CROSSSELL_HOMEPAGE");
 
         R3_HOME = new r3_home();
       }
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]))
       {
-    R3_COMMON.addPlacementType("category_page.rvi");
+        R3_COMMON.addPlacementType("category_page.rvi");
+
         R3_COMMON.addPlacementType("category_page.sub_content");
+        R3_COMMON.addPlacementType("category_page.sub_content2");
+        R3_COMMON.addPlacementType("category_page.sub_content3");
+        R3_COMMON.addPlacementType("category_page.sub_content4");
+        R3_COMMON.addPlacementType("category_page.sub_content5");
+        R3_COMMON.addPlacementType("category_page.sub_content6");
+        R3_COMMON.addPlacementType("category_page.sub_content7");
+
         R3_COMMON.addClickthruParams(0, "CROSSSELL_THUMBNAIL");
 
         var rrCatId = this.Tag.subdeptId;
@@ -822,6 +851,15 @@ RichRelevanceTag.prototype.initialize = function()
       {
     R3_COMMON.addPlacementType("category_page.rvi");
         R3_COMMON.addPlacementType("category_page.content");
+        R3_COMMON.addPlacementType("category_page.content2");
+        R3_COMMON.addPlacementType("category_page.content3");
+        //Sprint2 - Cognizant new RR catridges -- start
+        R3_COMMON.addPlacementType("category_page.content4");
+        R3_COMMON.addPlacementType("category_page.content5");
+        R3_COMMON.addPlacementType("category_page.content6");
+        R3_COMMON.addPlacementType("category_page.content7");
+        R3_COMMON.addPlacementType("category_page.content8");
+        //Sprint2 - Cognizant new RR catridges -- end
         R3_COMMON.addClickthruParams(0, "CROSSSELL_DEPT");
 
         R3_CATEGORY = new r3_category();
@@ -831,7 +869,15 @@ RichRelevanceTag.prototype.initialize = function()
       else if(this.Tag.isType(PageTypes.SEARCH))
       {
         R3_COMMON.addPlacementType("search_page.rvi");
+
         R3_COMMON.addPlacementType("search_page.content");
+        R3_COMMON.addPlacementType("search_page.content2");
+        R3_COMMON.addPlacementType("search_page.content3");
+	R3_COMMON.addPlacementType("search_page.content4");
+        R3_COMMON.addPlacementType("search_page.content5");
+        R3_COMMON.addPlacementType("search_page.content6");
+        R3_COMMON.addPlacementType("search_page.content7");
+
         R3_COMMON.addClickthruParams(0, "CROSSSELL_THUMBNAIL");
 
         R3_SEARCH = new r3_search();
@@ -859,17 +905,17 @@ RichRelevanceTag.prototype.initialize = function()
         catch(ignore)
         {}
       }
-  else if(this.noResultsSearch)
-  {
-    R3_COMMON.addPlacementType("search_page.no_results");
-    R3_SEARCH = new r3_search();
-    R3_SEARCH.setTerms(getURLParameter("searchTerm"));
-  }
-  else if(this.rrErrorPage)
-  {
-    R3_COMMON.addPlacementType('error_page.content');
-    var R3_ERROR = new r3_error();
-  }
+    else if(this.noResultsSearch)
+    {
+      R3_COMMON.addPlacementType("search_page.no_results");
+      R3_SEARCH = new r3_search();
+      R3_SEARCH.setTerms(getURLParameter("searchTerm"));
+    }
+    else if(this.rrErrorPage)
+    {
+      R3_COMMON.addPlacementType('error_page.content');
+      var R3_ERROR = new r3_error();
+    }
       else if(this.Tag.isType(PageTypes.CART))
       {
           R3_COMMON.addPlacementType('cart_page.rvi');
@@ -914,18 +960,20 @@ RichRelevanceTag.prototype.placement = function(position)
 {
   if(!getCookie('CALL_CENTER_USER') && RichRelevanceTag.enabled)
   {
+  updatePageVariables(this.Tag);
+
     try
     {
-  if(this.noResultsSearch)
-  {
-        r3_placement("search_page.no_results");
-    rr_flush_onload();
-  }
-  else if(this.rrErrorPage)
-  {
-        r3_placement("error_page.content");
-    rr_flush_onload();
-  }
+    if(this.noResultsSearch)
+    {
+      r3_placement("search_page.no_results");
+      rr_flush_onload();
+    }
+    else if(this.rrErrorPage)
+    {
+      r3_placement("error_page.content");
+      rr_flush_onload();
+    }
       else if(this.Tag.isType(PageTypes.PRODUCT))
       {
         if(position == 0)
@@ -934,17 +982,96 @@ RichRelevanceTag.prototype.placement = function(position)
           r3_placement("item_page.left2");
         }
       }
-      else if(this.Tag.isType(PageTypes.HOME)){
+      else if(this.Tag.isType(PageTypes.HOME) && position == 0){
         r3_placement("home_page.content");
       }
-      else if(this.Tag.isType(PageTypes.DEPT)){
-        r3_placement("category_page.content");
+      else if(this.Tag.isType(PageTypes.HOME) && position == 1){
+          r3_placement("home_page.content2");
       }
-      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.SEARCH])){
-        r3_placement("category_page.sub_content");
+      else if(this.Tag.isType(PageTypes.HOME) && position == 2){
+          r3_placement("home_page.content5");
       }
-      else if(this.Tag.isType(PageTypes.CART) && position == 0)
+      else if(this.Tag.isType(PageTypes.HOME) && position == 3){
+          r3_placement("home_page.content6");
+      }
+      else if(this.Tag.isType(PageTypes.HOME) && position == 4){
+          r3_placement("home_page.content3");
+      }
+      else if(this.Tag.isType(PageTypes.HOME) && position == 5){
+          r3_placement("home_page.content4");
+      }
+      else if(this.Tag.isType(PageTypes.HOME) && position == 6){
+          r3_placement("home_page.content7");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.CLEARANCE]) && position == 0){
+          r3_placement("category_page.sub_content");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.CLEARANCE]) && position == 1){
+          r3_placement("category_page.sub_content2");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.CLEARANCE]) && position == 2){
+          r3_placement("category_page.sub_content3");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 3){
+          r3_placement("category_page.sub_content4");
+	}
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 4){
+          r3_placement("category_page.sub_content5");
+	}
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 5){
+          r3_placement("category_page.sub_content6");
+	}
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 6){	
+          r3_placement("category_page.sub_content7");
+	}
+      else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 0){
+          r3_placement("search_page.content");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 1){
+          r3_placement("search_page.content2");
+      }
+      else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 2){
+          r3_placement("search_page.content3");
+      }
+        else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 3){
+            r3_placement("search_page.content4");
+	}
+        else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 4){
+            r3_placement("search_page.content5");
+	}
+        else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 5){
+            r3_placement("search_page.content6");
+	}
+        else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 6){
+            r3_placement("search_page.content7");
+	}
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 0){
+          r3_placement("category_page.content3");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 1){
+          r3_placement("category_page.content4");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 2){
+          r3_placement("category_page.content");
+        }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 3){
+        r3_placement("category_page.content2");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 4){
+        r3_placement("category_page.content7");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 5){
+        r3_placement("category_page.content8");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 6){
+        r3_placement("category_page.content5");
+      }
+      else if(this.Tag.isType(PageTypes.DEPT) && position == 7){
+        r3_placement("category_page.content6");
+      }
+      else if(this.Tag.isType(PageTypes.CART) && position == 0){
         r3_placement("cart_page.right");
+      }
       else if(this.Tag.isType(PageTypes.CART) && position == 1){
         r3_placement("cart_page.content");
       }
@@ -1132,10 +1259,10 @@ RichRelevanceTag.prototype.fixProductRecs = function(position)
         r3_placement("home_page.content");
       }
       else if(this.Tag.isType(PageTypes.DEPT)){
-        r3_placement("category_page.content");
+        //r3_placement("category_page.content");
       }
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.SEARCH])){
-        r3_placement("category_page.sub_content");
+        //r3_placement("category_page.sub_content");
       }
       else if(this.Tag.isType(PageTypes.CART) && position == 1){
         r3_placement("cart_page.content");
@@ -1376,7 +1503,7 @@ TrackingPixelTag.prototype = new TagImpl();
 TrackingPixelTag.base = TagImpl.prototype;
 TrackingPixelTag.production = Tag.production;
 TrackingPixelTag.enabled = TagImpl.enableTagByParameter("tptag", true);
-TrackingPixelTag.liveChatEnabled = false;
+TrackingPixelTag.liveChatEnabled = TagImpl.enableTagByParameter("livechat", true);
 
 TrackingPixelTag.prototype.setConfirmPagePixels = function()
 {
@@ -1428,17 +1555,30 @@ try
 catch(ignoreErr)
 {}
 
-  if(TrackingPixelTag.enabled)
-  {
     try
     {
-    initUpdateSelect("");
+      initUpdateSelect("");
+
+	var hasSwatchCode = "";
+
+	try
+	{
+		hasSwatchCode = $('[id^="swatch_color_"]');
+	}
+	catch(noswatches)
+	{
+		hasSwatchCode = "";
+	}
+
+      if(ppdType != "C" && hasSwatchCode.length == 0)
+      {
+        document.write("<script language='JavaScript'>function updateDynamicElementsFromDefiningAttributes(cameFromS7){}</script>");
+      }
     }
     catch(error)
     {
       errorHandler(js_filename, "TrackingPixelTag.execute()", error);
     }
-  }
 };
 
 // Google Firearms Affiliation Code
@@ -1456,6 +1596,7 @@ function updateFirearms(tag)
 var ppddEnabled = TagImpl.enableTagByParameter("ppdd", true);
 var aux1Enabled = TagImpl.enableTagByParameter("aux1", true);
 var swatchEnabled = TagImpl.enableTagByParameter("swdd", true);
+var swatchUpdRm = TagImpl.enableTagByParameter("swupdrm", false);
 var tempSelections = new Array();
 var ppddInit = 0;
 var ppException = false;
@@ -1527,6 +1668,16 @@ function chartSelect()
       var itemNum = "";
       var numChildren = 0 ;
       var resolvedCatentryId = "";
+	var minPrice=0.0;
+	var maxPrice=0.0;
+	var regMinPrice=0.0;
+	var regMaxPrice=0.0;
+	var isClearance = false;
+	var isRebate = false;
+	var isDropShip = false;
+	var isBuyable = true;
+	var quantityLimit="";
+	var firstSKU=true;
 
       $.each(skuList, function(index, aSku)
       {
@@ -1536,17 +1687,310 @@ function chartSelect()
           resolvedCatentryId = aSku.pkey;
           itemNum = aSku.itemNumber;
           $("#sku_"+aSku.pkey).show();
+
+	 var thisPrice = parseFloat(aSku.price);
+        var thisRegPrice = parseFloat(aSku.regPrice);
+
+        if(firstSKU)
+        {
+          firstSKU=false;
+          minPrice=parseFloat(thisPrice);
+          maxPrice=parseFloat(thisPrice);
+          regMinPrice=parseFloat(thisRegPrice);
+          regMaxPrice=parseFloat(thisRegPrice);
+          fullImage = aSku.fullImage ;
+        }
+        else
+        {
+          if ( thisPrice < minPrice ) { minPrice=thisPrice;}
+          if ( thisPrice > maxPrice ) { maxPrice=thisPrice;}
+          if ( thisRegPrice < regMinPrice ) { regMinPrice=thisRegPrice;}
+          if ( thisRegPrice > regMaxPrice ) { regMaxPrice=thisRegPrice;}
+        }
+
+        if(aSku.isClearance)
+        {
+          isClearance = true;
+        }
+
+        if(aSku.buyable != "true")
+        {
+          isBuyable = false;
+        }
+
+        if(aSku.isDropShip)
+        {
+          isDropShip = true;
+        }
+
+        if(aSku.isRebate)
+        {
+          isRebate = true;
+        }
+
+        if(aSku.inventory <= 0)
+        {
+          hasAtLeastOneOutOfStock = true;
+        }
+
+        if(aSku.inventory > 0)
+        {
+          hasAtLeastOneInStock = true;
+        }
+
+        if(aSku.quantityLimit!="" && aSku.quantityLimit>0)
+        {
+          quantityLimit=aSku.quantityLimit;
+        }
+
         }
         else
         {
           $("#sku_"+aSku.pkey).hide();
         }
       });
+
+    var priceText="";
+
+    if(minPrice==maxPrice)
+    {
+	try
+	{
+      		$("#your-price-sale").text("");
+      		$("#offer-price-sale").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+	}
+	catch(ignore)
+	{}
+
+      if(minPrice.toFixed(2) > 0.00)
+      {
+		try
+		{
+     	  		$("#your-price").text("Your Price:");
+        		$("#offer-price").text("$"+minPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+      }
+
+      if(isClearance)
+      {
+		try
+		{
+        		$("#your-price").text("");
+        		$("#offer-price").text("");
+        		$("#offer-price-clearance").text("$"+minPrice.toFixed(2));
+        		$("#your-price-clearance").text("Clearance Price");
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+			document.getElementById("your-clearance-label").className = "clearance price";
+		}
+		catch(ignore)
+		{}
+      }
+    }
+    else
+    {
+	try
+	{
+      		$("#your-price-sale").text("");
+      		$("#offer-price-sale").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+	}
+	catch(ignore)
+	{}
+
+      if(minPrice.toFixed(2) > 0.00)
+      {
+		try
+		{
+     		  	$("#your-price").text("Your Price:");
+      	  		$("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
+			document.getElementById("your-starting-label").className = "starting price";
+		}
+		catch(ignore)
+		{}
+	}
+
+      if(isClearance)
+      {
+		try
+		{
+       		$("#your-price").text("");
+       		$("#offer-price").text("");
+      			$("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+       		$("#your-price-clearance").text("Clearance Price");
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+			document.getElementById("your-clearance-label").className = "clearance price";
+			document.getElementById("your-clearance-starting-label").className = "starting clearance price";
+		}
+		catch(ignore)
+		{}
+      }
+    }
+
+    if(minPrice!=regMinPrice)
+    {
+	try
+	{
+      		$("#your-price").text("");
+      		$("#offer-price").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+      		$("#offer-price-clearance").text("");
+      		$("#your-price-clearance").text("");
+	}
+	catch(ignore)
+	{}
+
+	try
+	{
+		$("#your-price-value").text("");
+		$("#reg-price-value").text("");
+		document.getElementById("your-reg-label").className = "regular price dynamic";
+		document.getElementById("your-clearance-label").className = "clearance price dynamic";
+		document.getElementById("your-sale-label").className = "sale price dynamic";
+		document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
+		document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
+	}
+	catch(ignore)
+	{}
+
+      if(minPrice==maxPrice)
+      {
+		try
+		{
+			$("#your-price-sale").text("SALE Price");
+			$("#offer-price-sale").text("$"+minPrice.toFixed(2));
+
+        		if(isClearance)
+        		{
+          			$("#your-price-sale").text("Clearance Price");
+        		}
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+
+        		if(isClearance)
+			{
+				document.getElementById("your-clearance-label").className = "clearance price";
+			}
+			else
+			{
+				document.getElementById("your-sale-label").className = "sale price";
+			}
+		}
+		catch(ignore)
+		{}
+      }
+      else
+      {
+		try
+		{
+        		$("#your-price-sale").text("SALE Price");
+        		$("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+
+        		if(isClearance)
+        		{
+ 				$("#your-price-sale").text("Clearance Price");
+			}
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+
+        		if(isClearance)
+			{
+				document.getElementById("your-clearance-starting-label").className = "starting clearance price";
+			}
+			else
+			{
+				document.getElementById("your-sale-starting-label").className = "starting sale price";
+			}
+		}
+		catch(ignore)
+		{}
+      }
+
+      if(regMinPrice==regMaxPrice)
+      {
+		try
+		{
+        		$("#regularpricetext").text("Regular Price:");
+        		$("#regularprice").text("$"+regMinPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+			document.getElementById("your-reg-label").className = "regular price";
+		}
+		catch(ignore)
+		{}
+      }
+      else
+      {
+		try
+		{
+        		$("#regularpricetext").text("Regular Price:");
+        		$("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+			document.getElementById("your-reg-label").className = "regular price";
+		}
+		catch(ignore)
+		{}
+      	}
+    }
     }
     catch(ignore)
     {}
   }
 }
+
+var multiItemDisplay = true;
 
 function hideSelect()
 {
@@ -1555,6 +1999,8 @@ function hideSelect()
   if(ppdType == "C")
   chartSelect();
   else if(ppddEnabled && ppdType != "C")
+  {
+  if(multiItemDisplay)
   {
   try
   {
@@ -1723,6 +2169,7 @@ function hideSelect()
   }
   catch(ignore)
   {}
+  }
 
     var minPrice=0.0;
     var maxPrice=0.0;
@@ -1731,6 +2178,7 @@ function hideSelect()
     var isClearance = false;
     var isRebate = false;
     var isDropShip = false;
+    var isBuyable = true;
     var auxDesc1 = "";
     var hasAtLeastOneInStock = false;
     var hasAtLeastOneOutOfStock = false;
@@ -1742,18 +2190,19 @@ function hideSelect()
     var disclaimerText = '';
     var resolvedCatentryId = "";
     var showDisclaimer = false;
-    var first=true;
+    var firstSKU=true;
 
-    $.each( skuList, function(index, aSku)
+    $.each(skuList, function(index, aSku)
     {
-      if ( aSku.isPossible )
+      if(aSku.isPossible)
       {
-        numChildren++ ;
+        numChildren++;
         var thisPrice = parseFloat(aSku.price);
         var thisRegPrice = parseFloat(aSku.regPrice);
-        if ( first )
+
+        if(firstSKU)
         {
-          first=false;
+          firstSKU=false;
           minPrice=parseFloat(thisPrice);
           maxPrice=parseFloat(thisPrice);
           regMinPrice=parseFloat(thisRegPrice);
@@ -1783,6 +2232,11 @@ function hideSelect()
         if ( aSku.isClearance )
         {
           isClearance = true;
+        }
+
+        if (aSku.buyable != "true")
+        {
+          isBuyable = false;
         }
 
         if ( aSku.isDropShip )
@@ -1832,162 +2286,404 @@ function hideSelect()
     });
 
     var priceText="";
-    if ( minPrice==maxPrice )
+
+    if(minPrice==maxPrice)
     {
-      $("#your-price-sale").text("");
-      $("#offer-price-sale").text("");
-      $("#regularpricetext").text("");
-      $("#regularprice").text("");
+	try
+	{
+      		$("#your-price-sale").text("");
+      		$("#offer-price-sale").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+	}
+	catch(ignore)
+	{}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-        $("#your-price").text("Your Price:");
-        $("#offer-price").text("$"+minPrice.toFixed(2));
+		try
+		{
+     	  		$("#your-price").text("Your Price:");
+        		$("#offer-price").text("$"+minPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
       }
 
-      if ( isClearance )
+      if(isClearance)
       {
-        $("#your-price").text("");
-        $("#offer-price").text("");
-        $("#offer-price-clearance").text("$"+minPrice.toFixed(2));
-        $("#your-price-clearance").text("Clearance Price");
+		try
+		{
+        		$("#your-price").text("");
+        		$("#offer-price").text("");
+        		$("#offer-price-clearance").text("$"+minPrice.toFixed(2));
+        		$("#your-price-clearance").text("Clearance Price");
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+			document.getElementById("your-clearance-label").className = "clearance price";
+		}
+		catch(ignore)
+		{}
       }
     }
     else
     {
-      $("#your-price-sale").text("");
-      $("#offer-price-sale").text("");
-      $("#regularpricetext").text("");
-      $("#regularprice").text("");
+	try
+	{
+      		$("#your-price-sale").text("");
+      		$("#offer-price-sale").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+	}
+	catch(ignore)
+	{}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-        $("#your-price").text("Your Price:");
-        $("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-      }
+		try
+		{
+     		  	$("#your-price").text("Your Price:");
+      	  		$("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
 
-      if ( isClearance )
+		try
+		{
+	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
+			document.getElementById("your-starting-label").className = "starting price";
+		}
+		catch(ignore)
+		{}
+	}
+
+      if(isClearance)
       {
-        $("#your-price").text("");
-        $("#offer-price").text("");
-        $("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-        $("#your-price-clearance").text("Clearance Price");
+		try
+		{
+       		$("#your-price").text("");
+       		$("#offer-price").text("");
+      			$("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+       		$("#your-price-clearance").text("Clearance Price");
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+			document.getElementById("your-clearance-label").className = "clearance price";
+			document.getElementById("your-clearance-starting-label").className = "starting clearance price";
+		}
+		catch(ignore)
+		{}
       }
     }
 
-    if ( minPrice!=regMinPrice )
+    if(minPrice!=regMinPrice)
     {
-      $("#your-price").text("");
-      $("#offer-price").text("");
-      $("#regularpricetext").text("");
-      $("#regularprice").text("");
-      $("#offer-price-clearance").text("");
-      $("#your-price-clearance").text("");
+	try
+	{
+      		$("#your-price").text("");
+      		$("#offer-price").text("");
+      		$("#regularpricetext").text("");
+      		$("#regularprice").text("");
+      		$("#offer-price-clearance").text("");
+      		$("#your-price-clearance").text("");
+	}
+	catch(ignore)
+	{}
 
-      if ( minPrice==maxPrice )
+	try
+	{
+		$("#your-price-value").text("");
+		$("#reg-price-value").text("");
+		document.getElementById("your-reg-label").className = "regular price dynamic";
+		document.getElementById("your-clearance-label").className = "clearance price dynamic";
+		document.getElementById("your-sale-label").className = "sale price dynamic";
+		document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
+		document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
+	}
+	catch(ignore)
+	{}
+
+      if(minPrice==maxPrice)
       {
-        $("#your-price-sale").text("SALE Price");
-        $("#offer-price-sale").text("$"+minPrice.toFixed(2));
+		try
+		{
+			$("#your-price-sale").text("SALE Price");
+			$("#offer-price-sale").text("$"+minPrice.toFixed(2));
 
-        if ( isClearance )
-        {
-          $("#your-price-sale").text("Clearance Price");
-        }
+        		if(isClearance)
+        		{
+          			$("#your-price-sale").text("Clearance Price");
+        		}
+		}
+		catch(ignore)
+		{}
 
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+
+        		if(isClearance)
+			{
+				document.getElementById("your-clearance-label").className = "clearance price";
+			}
+			else
+			{
+				document.getElementById("your-sale-label").className = "sale price";
+			}
+		}
+		catch(ignore)
+		{}
       }
       else
       {
-        $("#your-price-sale").text("SALE Price");
-        $("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+		try
+		{
+        		$("#your-price-sale").text("SALE Price");
+        		$("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
 
-        if ( isClearance )
-        {
-          $("#your-price-sale").text("Clearance Price");
-        }
+        		if(isClearance)
+        		{
+ 				$("#your-price-sale").text("Clearance Price");
+			}
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#your-price-value").text("$"+minPrice.toFixed(2));
+
+        		if(isClearance)
+			{
+				document.getElementById("your-clearance-starting-label").className = "starting clearance price";
+			}
+			else
+			{
+				document.getElementById("your-sale-starting-label").className = "starting sale price";
+			}
+		}
+		catch(ignore)
+		{}
       }
-      if ( regMinPrice==regMaxPrice )
+
+      if(regMinPrice==regMaxPrice)
       {
-        $("#regularpricetext").text("Regular Price:");
-        $("#regularprice").text("$"+regMinPrice.toFixed(2) );
+		try
+		{
+        		$("#regularpricetext").text("Regular Price:");
+        		$("#regularprice").text("$"+regMinPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+			document.getElementById("your-reg-label").className = "regular price";
+		}
+		catch(ignore)
+		{}
       }
       else
       {
-        $("#regularpricetext").text("Regular Price:");
-        $("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
-      }
+		try
+		{
+        		$("#regularpricetext").text("Regular Price:");
+        		$("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+			document.getElementById("your-reg-label").className = "regular price";
+		}
+		catch(ignore)
+		{}
+      	}
     }
 
-    initUpdateSelect(itemNum);
+    	initUpdateSelect(itemNum);
 
-    if ( isRebate )
-    {
-      $("#rebate").text("Rebate");
-    }
-    else
-    {
-      $("#rebate").text("");
-    }
+	try
+	{
+    		if(isRebate)
+      			$("#rebate").text("Rebate");
+    		else
+      			$("#rebate").text("");
+	}
+	catch(ignore)
+	{}
 
-    if ( showDisclaimer )
-    {
-      $("#shippingDisclaimerInner").html(disclaimerText);
-      $("#shipL").css('visibility', 'visible');
-    }
-    else
-    {
-      $("#shippingDisclaimerInner").html("");
-      $("#shipL").css('visibility', 'hidden');
-    }
+	try
+	{
+    		if(showDisclaimer)
+    		{
+      			$("#shippingDisclaimerInner").html(disclaimerText);
+      			$("#shipL").css('visibility', 'visible');
+    		}
+    		else
+    		{
+      			$("#shippingDisclaimerInner").html("");
+      			$("#shipL").css('visibility', 'hidden');
+    		}
+	}
+	catch(ignore)
+	{}
 
-    if(aux1Enabled && numChildren == 1 && !isEmpty(auxDesc1))
-    {
-  document.getElementById("prod_level_stock").innerHTML = auxDesc1;
-      $("#prod_outof_stock").text("");
-  $("#dropship").text("");
-    }
-    else if(numChildren == 1)
-    {
-      if ( hasAtLeastOneInStock &&  !hasAtLeastOneOutOfStock ){
-        $("#prod_outof_stock").text("");
-        $("#prod_level_stock").text("In stock");
-      }else if ( !hasAtLeastOneInStock &&  hasAtLeastOneOutOfStock ){
-        $("#prod_level_stock").text("");
-        $("#prod_outof_stock").text("Out of stock");
-      } else {
-        $("#prod_outof_stock").text("");
-        $("#prod_level_stock").text("");
-      }
+    	if(aux1Enabled && numChildren == 1 && !isEmpty(auxDesc1))
+    	{
+		try
+		{
+  			document.getElementById("prod_level_stock").innerHTML = auxDesc1;
+      			$("#prod_outof_stock").text("");
+  			$("#dropship").text("");
+		}
+		catch(ignore)
+		{}
 
-      if (isDropShip)
-      {
-        $("#dropship").text("Ships from Manufacturer");
-    $("#prod_level_stock").text("");
-      }
-      else
-      {
-        $("#dropship").text("");
-      }
-    }
-  else {
-        $("#prod_outof_stock").text("");
-        $("#prod_level_stock").text("");
-    $("#dropship").text("");
-      }
+		try
+		{
+  			document.getElementById("stock-message").innerHTML = auxDesc1;
+			document.getElementById("stock-message-class").className = "stock message out";
+		}
+		catch(ignore)
+		{}
+	}
+    	else if(numChildren == 1)
+    	{
+		try
+		{
+    	  		if(hasAtLeastOneInStock && !hasAtLeastOneOutOfStock)
+			{
+     		 		$("#prod_outof_stock").text("");
+        			$("#prod_level_stock").text("In stock");
+      			}
+			else if(!hasAtLeastOneInStock && hasAtLeastOneOutOfStock)
+			{
+        			$("#prod_level_stock").text("");
+        			$("#prod_outof_stock").text("Out of stock");
+      			}
+			else
+			{
+        			$("#prod_outof_stock").text("");
+        			$("#prod_level_stock").text("");
+      			}
 
-    if ( numChildren==1)
-    {
-      $("#item_num_prod_level").text(itemNum);
-      skuResolved=true;
-      $('#resolvedItemNum').val(itemNum);
-      $('#quantityLimit').val(quantityLimit);
-      $('#catEntryId').val(resolvedCatentryId);
-    }
-    else
-    {
-      $("#item_num_prod_level").text("");
-      skuResolved=false;
-    }
-  }
+      			if(isDropShip)
+      			{
+        			$("#dropship").text("Ships from Manufacturer");
+    				$("#prod_level_stock").text("");
+      			}
+      			else
+      			{
+        			$("#dropship").text("");
+      			}
+		}
+		catch(ignore)
+		{}
+    	}
+	else
+	{
+		try
+		{
+			$("#prod_outof_stock").text("");
+			$("#prod_level_stock").text("");
+			$("#dropship").text("");
+		}
+		catch(ignore)
+		{}
+	}
+
+    	if(numChildren==1)
+    	{
+		try
+		{
+      			$("#item_num_prod_level").text(itemNum);
+      			skuResolved=true;
+      			$('#resolvedItemNum').val(itemNum);
+      			$('#quantityLimit').val(quantityLimit);
+      			$('#catEntryId').val(resolvedCatentryId);
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+			$("#catalog-number").text(itemNum);
+      			skuResolved=true;
+			document.getElementById("catalog-number-class").className = "catalog item number";
+		}
+		catch(ignore)
+		{}
+
+		if(!isBuyable)
+		{
+			try
+			{
+				document.getElementById("add-to-cart").className = "cart button container dynamic";
+			}
+			catch(ignore)
+			{}
+		}
+		else
+		{
+			try
+			{
+				document.getElementById("add-to-cart").className = "cart button container";
+			}
+			catch(ignore)
+			{}
+		}
+
+		try
+		{
+			document.getElementById("your-starting-label").className = "starting price dynamic";
+			document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
+			document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
+		}
+		catch(ignore)
+		{}
+    	}
+    	else
+    	{
+		try
+		{
+      			$("#item_num_prod_level").text("");
+      			skuResolved=false;
+		}
+		catch(ignore)
+		{}
+
+		try
+		{
+      			$("#catalog-number").text("");
+      			skuResolved=false;
+			document.getElementById("catalog-number-class").className = "catalog item number dynamic";
+  			document.getElementById("stock-message").innerHTML = "";
+			document.getElementById("stock-message-class").className = "stock message dynamic out";
+		}
+		catch(ignore)
+		{}
+    	}
+   }
 }
 catch(error)
 {
@@ -1996,204 +2692,311 @@ catch(error)
 }
 }
 
+function hideSelect2()
+{
+try
+{
+  if(ppddEnabled)
+  {
+    multiItemDisplay = false;
+    hideSelect();
+  }
+}
+catch(error)
+{
+  ppException = true;
+  errorHandler(js_filename, "hideSelect2()", error);
+}
+}
+
 var defaultSelectFirst = true;
 var defaultFixOnce = true;
 
 function initUpdateSelect(itemNumVal)
 {
-  try
-  {
-    if(ppddEnabled)
-    {
-    if(itemNumVal.toString().indexOf("object") != -1)
-    {
-    if(!swatchEnabled)
-      return true;
+	try
+	{
+		if(ppddEnabled)
+		{
+			if(itemNumVal.toString().indexOf("object") != -1)
+			{
+    				if(!swatchEnabled)
+      					return true;
 
-    var swatchCount = 0;
+    				var swatchCount = 0;
 
-    if(defaultFixOnce == false)
-    {
-    try
-    {
-    $('[id^="swatch_color_"]').each(function()
-    {
-              var swatchColorEvent = $(this)[0].getAttribute('onclick').toString();
-      var swatchColor = null;
-      var swStart = swatchColorEvent.indexOf("'");
-      swStart = swatchColorEvent.indexOf("'", ++swStart);
-      swStart = swatchColorEvent.indexOf("'", ++swStart);
-      var swEnd = swatchColorEvent.indexOf("'", ++swStart);
+    				if(defaultFixOnce == true)
+    				{
+    					try
+    					{
+    						$('[id^="swatch_color_"]').each(function()
+    						{
+              					var swatchColorEvent = $(this)[0].getAttribute('onclick').toString();
+      							var swatchColor = null;
+      							var swStart = swatchColorEvent.indexOf("'");
+      							swStart = swatchColorEvent.indexOf("'", ++swStart);
+      							swStart = swatchColorEvent.indexOf("'", ++swStart);
+      							var swEnd = swatchColorEvent.indexOf("'", ++swStart);
 
-      if(swStart > -1 && swEnd > swStart)
-        swatchColor = swatchColorEvent.substring(swStart, swEnd);
+      							if(swStart > -1 && swEnd > swStart)
+        							swatchColor = swatchColorEvent.substring(swStart, swEnd);
 
-      var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
-      var attrDDId = null;
+      							var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+      							var attrDDId = null;
 
-      for(var p = 0; p < attrDropDowns.length; p++)
-      {
-        if(attrDDId ==  null)
-        {
-          for(var r = 0; r < attrDropDowns[p].length; r++)
-          {
-            if(swatchColor == attrDropDowns[p][r].value)
-            {
-              var tempSWId = attrDropDowns[p][r].id;
+      							for(var p = 0; p < attrDropDowns.length; p++)
+      							{
+        							if(attrDDId ==  null)
+        							{
+          								for(var r = 0; r < attrDropDowns[p].length; r++)
+          								{
+            									if(swatchColor == attrDropDowns[p][r].value)
+            									{
+              									var tempSWId = attrDropDowns[p][r].id;
 
-              if(tempSWId.length > 13)
-                attrDDId = tempSWId.substring(13, tempSWId.length);
-              else
-                attrDDId = tempSWId;
+              									if(tempSWId.length > 13)
+                										attrDDId = tempSWId.substring(13, tempSWId.length);
+              									else
+                										attrDDId = tempSWId;
 
-              break;
-            }
-          }
-        }
-        else
-          break;
-      }
+              									break;
+            									}
+          								}
+        							}
+        							else
+          								break;
+      							}
 
-      var newSWColorId = ("swatch_color_" + attrDDId);
-      var newSWImgId = ("swatch_img_" + attrDDId);
+      							var newSWColorId = ("swatch_color_" + attrDDId);
+      							var newSWImgId = ("swatch_img_" + attrDDId);
 
-      if(attrDDId != null && newSWColorId != $(this)[0].id.toString())
-      {
-        $(this)[0].id = newSWColorId;
-        $(this)[0].firstChild.id = newSWImgId;
-      }
-    });
+      							if(attrDDId != null && newSWColorId != $(this)[0].id.toString())
+      							{
+        							$(this)[0].id = newSWColorId;
+        							$(this)[0].firstChild.id = newSWImgId;
+      							}
+    						});
 
-    // first make all the swatches disabled.
-    $("#swatch_text_name").text('');
-    $('[id^="swatch_color_"]').each(function()
-    {
-              $(this).removeClass();
-      $(this).parent().css('display', 'none');
-    });
+    						// first make all the swatches disabled.
+    						$("#swatch_text_name").text('');
+    						$('[id^="swatch_color_"]').each(function()
+    						{
+              					$(this).removeClass();
+      							$(this).parent().css('display', 'none');
+    						});
 
-    defaultFixOnce = false;
-    }
-    catch(ignore)
-    {}
-    }
+    						defaultFixOnce = false;
+    					}
+    					catch(ignore)
+    					{}
+    				}
 
-    // going by the swatch options
-    var swatchAttrId = itemNumVal.pkey;
-    var defaultFirstSwatch = null;
+    				// going by the swatch options
+    				var swatchAttrId = itemNumVal.pkey;
+    				var defaultFirstSwatch = null;
 
-    $("#"+swatchAttrId+" option:not(option:first)").each(function()
-    {
-      //get the key
-      var thisAttrValueKey = this.id.substring(13);
+    				$("#"+swatchAttrId+" option:not(option:first)").each(function()
+    				{
+      					//get the key
+      					var thisAttrValueKey = this.id.substring(13);
 
-          // opt_attr_val_
-          var swatchLink = document.getElementById("swatch_color_" + thisAttrValueKey);
-          var swatchImg = document.getElementById("swatch_img_" + thisAttrValueKey);
+          				// opt_attr_val_
+          				var swatchLink = document.getElementById("swatch_color_" + thisAttrValueKey);
+          				var swatchImg = document.getElementById("swatch_img_" + thisAttrValueKey);
 
-      var newImageSetString = null;
+      					var newImageSetString = null;
 
-      try
-      {
-          var clickString = swatchLink.getAttribute('onclick');
-                 var tempStr1Start = clickString.indexOf("'");
-        var tempStr1 = clickString.substring(tempStr1Start + 1);
-                 var endPlace = tempStr1.indexOf("'");
-                 newImageSetString = tempStr1.substring(0, endPlace);
-      }
-      catch(ignore2)
-      {}
+      					try
+      					{
+          					var clickString = swatchLink.getAttribute('onclick');
+                 				var tempStr1Start = clickString.indexOf("'");
+        					var tempStr1 = clickString.substring(tempStr1Start + 1);
+                 				var endPlace = tempStr1.indexOf("'");
+                 				newImageSetString = tempStr1.substring(0, endPlace);
+      					}
+      					catch(ignore2)
+      					{}
 
-          if(this.selected == true && newImageSetString != null)
-          {
-            // remove any previous class
-                $("#swatch_color_" + thisAttrValueKey).removeClass();
+          				if(this.selected == true && newImageSetString != null)
+         				{
+            					// remove any previous class
+                				$("#swatch_color_" + thisAttrValueKey).removeClass();
 
-                // make this swtach active
-               $("#swatch_color_" + thisAttrValueKey).addClass('swatch-select');
+                				// make this swtach active
+               				$("#swatch_color_" + thisAttrValueKey).addClass('swatch-select');
 
-             // set the text
-                 $("#swatch_text_name").text(this.text);
+             					// set the text
+                 				$("#swatch_text_name").text(this.text);
 
-                 setImageSet("BassPro/" + newImageSetString);
-        $("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
+                 				setImageSet("BassPro/" + newImageSetString);
+        					$("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
 
-        swatchCount++;
-        defaultFirstSwatch = null;
+        					swatchCount++;
+        					defaultFirstSwatch = null;
+           				}
+					else
+					{
+               				// remove any previous class
+                 				$("#swatch_color_" + thisAttrValueKey).removeClass();
 
-           } else {
-               // remove any previous class
-                 $("#swatch_color_" + thisAttrValueKey).removeClass();
+        					if(newImageSetString != null)
+        					{
+          						// make this swatch active
+          						$("#swatch_color_" + thisAttrValueKey).addClass('swatch-available');
+          						$("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
 
-        if(newImageSetString != null)
-        {
-          // make this swatch active
-          $("#swatch_color_" + thisAttrValueKey).addClass('swatch-available');
-          $("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
+          						if(swatchCount == 0)
+            							defaultFirstSwatch = swatchLink;
 
-          if(swatchCount == 0)
-            defaultFirstSwatch = swatchLink;
+          						swatchCount++;
+        					}
+          				}
+    				});
 
-          swatchCount++;
-        }
-          }
-    });
+    				if(defaultFirstSwatch != null && defaultSelectFirst)
+    				{
+      					defaultFirstSwatch.click();
+      					defaultSelectFirst = false;
+    				}
 
-    if(defaultFirstSwatch != null && defaultSelectFirst)
-    {
-      defaultFirstSwatch.click();
-      defaultSelectFirst = false;
-    }
+    				return false;
+    			}
+    			else if(itemNumVal != "")
+    			{
+				for(var i = 0; i < skuList.length; i++)
+				{
+					if(skuList[i].itemNumber == itemNumVal && skuList[i].buyable == 'false')
+					{
+						document.getElementById('addToCartBtn').style.display = 'none';
+						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+						break;
+					}
+					else
+					{
+						document.getElementById('addToCartBtn').style.display = 'block';
+						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+					}
+				}
+    			}
+			else
+			{
+				if(ppdType != "C" && skuList.length == 1 && skuList[0].buyable == 'false')
+				{
+					hideSelect2();
+				}
 
-    return false;
-    }
-        else if(itemNumVal != "")
-        {
-          for(var i = 0; i < skuList.length; i++)
-          {
-            if(skuList[i].itemNumber == itemNumVal && skuList[i].buyable == 'false')
-            {
-              document.getElementById('addToCartBtn').style.display = 'none';
-              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-              break;
-            }
-            else
-            {
-              document.getElementById('addToCartBtn').style.display = 'block';
-              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-            }
-          }
-        }
-        else
-        {
-    if(skuList.length == 1 && skuList[0].buyable == 'false')
-            {
-              document.getElementById('addToCartBtn').style.display = 'none';
-              document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-            }
-    else
-              document.getElementById('addToCartBtn').style.display = 'block';
+				if(skuList.length == 1 && skuList[0].buyable == 'false')
+				{
+					try
+					{
+						document.getElementById('addToCartBtn').style.display = 'none';
+						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+					}
+					catch(ignore)
+					{}
 
-    if(skuList.length == 1 && skuList[0].buyable == 'true')
-    {
-      hideSelect();
-    }
-        }
-    }
-  }
-  catch(error)
-  {
-    ppException = true;
-    errorHandler(js_filename, "initUpdateSelect()", error);
-  }
+					try
+					{
+						document.getElementById('add-to-cart').className = 'cart button container dynamic';
+					}
+					catch(ignore)
+					{}
+				}
+				else
+				{
+					try
+					{
+						document.getElementById('addToCartBtn').style.display = 'block';
+					}
+					catch(ignore)
+					{}
+
+					try
+					{
+						document.getElementById('add-to-cart').className = 'cart button container';
+					}
+					catch(ignore)
+					{}
+				}
+
+				hideSelect();
+   			}
+ 		}
+	}
+	catch(error)
+	{
+	    ppException = true;
+	    errorHandler(js_filename, "initUpdateSelect()", error);
+	}
 }
 
 function updateSelect()
 {
   try
   {
-    if(ppddEnabled)
-    {}
+    if(swatchUpdRm)
+    {
+        try
+        {
+        $('[id^="swatch_color_"]').each(function()
+        {
+                  var swatchColorEvent = $(this)[0].getAttribute('onclick').toString();
+          var swatchColor = null;
+          var swStart = swatchColorEvent.indexOf("'");
+          swStart = swatchColorEvent.indexOf("'", ++swStart);
+          swStart = swatchColorEvent.indexOf("'", ++swStart);
+          var swEnd = swatchColorEvent.indexOf("'", ++swStart);
+
+          if(swStart > -1 && swEnd > swStart)
+            swatchColor = swatchColorEvent.substring(swStart, swEnd);
+
+          var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+          var attrDDId = null;
+
+          for(var p = 0; p < attrDropDowns.length; p++)
+          {
+            if(attrDDId ==  null)
+            {
+              for(var r = 0; r < attrDropDowns[p].length; r++)
+              {
+                if(swatchColor == attrDropDowns[p][r].value)
+                {
+                  var tempSWId = attrDropDowns[p][r].id;
+
+                  if(tempSWId.length > 13)
+                    attrDDId = tempSWId.substring(13, tempSWId.length);
+                  else
+                    attrDDId = tempSWId;
+
+                  break;
+                }
+              }
+            }
+            else
+              break;
+          }
+
+          var newSWColorId = ("swatch_color_" + attrDDId);
+          var newSWImgId = ("swatch_img_" + attrDDId);
+
+          if(attrDDId != null && newSWColorId != $(this)[0].id.toString())
+          {
+            $(this)[0].id = newSWColorId;
+            $(this)[0].firstChild.id = newSWImgId;
+          }
+        });
+
+        // first make all the swatches disabled.
+        $("#swatch_text_name").text('');
+        $('[id^="swatch_color_"]').each(function()
+        {
+                  $(this).removeClass();
+          $(this).parent().css('display', 'none');
+        });
+        }
+        catch(ignore)
+        {}
+    }
   }
   catch(error)
   {
@@ -2201,4 +3004,3 @@ function updateSelect()
     errorHandler(js_filename, "updateSelect()", error);
   }
 }
-

@@ -19,6 +19,8 @@ referrer = referrer.replace(/^.*?\./g, "");
 function ad_tag(pos,sz,admode,dcopt,custom_params){
   //console.log(sitezone);
   //if(sitezone != "post.general" && sitezone != "post.news/home" && sitezone != "post.pagesix/home" && sitezone != "post.entertainment/home" &&  sitezone != "post.homepage" && sitezone !="post.sports/home"){ return; }
+
+
     
   switch(admode){
      case "script":
@@ -27,7 +29,7 @@ function ad_tag(pos,sz,admode,dcopt,custom_params){
        ad += "pos="+pos+";";
        ad += "ref="+referrer+";";       
        ad += "popup="+popup+";";
-       ad += crtg_content;       
+       ad += crtg_content; 
        if (custom_params.length > 0) {
           ad += custom_params+";";
        }
@@ -55,7 +57,7 @@ function ad_tag(pos,sz,admode,dcopt,custom_params){
        ad += "ord="+ord+"?";
        ad += "'></iframe>";
        
-       section_class = "#fat_header #section_"+pos.split('_')[2];    
+       section_class = "#fat-header #"+pos.split('_')[2]+"-nav";
        $(section_class+' .ad.wrap.fh_rollover_sponsorship .ad.fh_rollover_sponsorship').html(ad);
        break;
   }

@@ -1,0 +1,118 @@
+
+function checkNumField(valeur){
+	if (valeur.length>11){
+		//$j('#NumTelFooter').focus();
+		return "Veuillez v&eacute;rifier le format du n&deg; de t&eacute;l&eacute;phone tel.";		
+	}else{
+		if (isNaN(valeur)){
+			//$j('#NumTelFooter').focus();
+			return "Veuillez indiquer 10 chiffres, sans lettres, ni caract&egrave;res sp&eacute;ciaux.";
+		}else{
+			if (valeur.substring(0,2) != "06" && valeur.substring(0,2) != "07") {
+				$j('#NumTelFooter').focus();
+				return "Veuillez indiquer un num&eacute;ro commen&ccedil;ant par 06 ou 07.";
+			}else{
+				if (valeur.length!=10){
+					$j('#NumTelFooter').focus();
+					return "Ce format est incorrect. Merci d'indiquer 10 chiffres sans espace.";
+				}
+				return "";
+			}
+		}
+	}
+}
+
+
+var var_numbtn;
+var var_numserror;
+var var_numcli;
+var current_num;
+
+function TestNumTelSend(var_numbtn){
+	var valeur = "";
+	var var_numserror_msg = "";
+
+	if (var_numbtn=="#NumTelContentBtn"){
+		var valeur = $j("#NumTelContent").val();
+		var_numserror = "NumTelContentError";
+	}
+
+	if (var_numbtn=="#NumTelFooterBtn"){
+		var valeur = $j("#NumTelFooter").val();
+		var_numserror = "NumTelFooterError";
+	}
+
+	var rdte_numtel_num = valeur;
+	var rdte_numtel_frame = "rdte_numtel_frame";
+	var numtel_cookie =  $j.cookie("M.R.User");
+	
+	if (numtel_cookie!=null){
+		
+		var rdte_numtel_cookie1 = numtel_cookie.split("&");
+		if(typeof(rdte_numtel_cookie1[3])!='undefined'){
+			var rdte_numtel_cookie2 = rdte_numtel_cookie1[3].split("=");
+			var rdte_numtel_url = "http://webforms.redcats.com/webApp/rdtAbonnementMobile?numcli="+ rdte_numtel_cookie2[1] +"&mobilephone="+ rdte_numtel_num +"&urlAbonnement=" + window.location.href;
+		}else{
+			var rdte_numtel_url = "http://webforms.redcats.com/webApp/rdtAbonnementMobile?numcli=null&mobilephone="+ rdte_numtel_num +"&urlAbonnement=" + window.location.href;
+		}
+	}else{
+		var rdte_numtel_url = "http://webforms.redcats.com/webApp/rdtAbonnementMobile?numcli=null&mobilephone="+ rdte_numtel_num +"&urlAbonnement=" + window.location.href;
+	}
+
+
+	var_numserror_msg = checkNumField(valeur);
+	if (var_numserror_msg.length>0){
+		displayNumTelError(var_numserror, var_numserror_msg);
+	}else{
+		try{
+			
+			var numtel_iframe = document.createElement("iframe");
+			numtel_iframe.id = rdte_numtel_frame;
+			numtel_iframe.name = rdte_numtel_frame;
+			//numtel_iframe.src = "http://atkoz.atkoz.fr/Untitled-3.html?numcli=null&mobilephone=45646564564&urlAbonnement=https://www.laredoute.fr/MySpace/Refunds.aspx&blockphone=NumTelFooterError";
+			numtel_iframe.src = rdte_numtel_url +'&blockphone='+ var_numserror;
+			numtel_iframe.style.display = "none";
+			$j("#dialog_return").empty().hide().append(numtel_iframe);
+			//document.getElementById(var_numserror).innerHTML = "Votre inscription est bien enregistr&eacute;e";
+			document.getElementById(var_numserror).style.display = 'block';
+			//alert(var_numserror);
+
+		}catch(e){
+			laredoute_numtel_ReturnCode("ko");
+		}
+	}
+}
+
+function displayNumTelError(error_class, message){
+
+	document.getElementById(error_class).innerHTML = message;
+	document.getElementById(error_class).style.display = 'block';
+}
+
+function laredoute_abonumtel_neolane(){
+	var rdte_telframe = "neolane_telframe";
+	var varhtttp = document.location.href.split("blockphone=")[1];
+	var rdte_telurl = "//www.laredoute.fr/StaticPage/BlankContentPage.aspx?pagename=numtel_proxy&result="+ReturnCode+"&blockphone="+varhtttp;
+	
+	
+	var iframetel = document.createElement("iframe");
+	iframetel.id = rdte_telframe;
+	iframetel.name = rdte_telframe;
+	iframetel.src = rdte_telurl;
+	iframetel.style.display = "none";
+	
+	if(ReturnCode == 0 ){ document.getElementById("headertext-error").appendChild(iframetel); }
+	if(ReturnCode == 1 ){ document.getElementById("headertext-end").appendChild(iframetel); }
+}
+
+function laredoute_numtel_proxy(){
+	var result = document.location.href.split("result=")[1];
+	result = result.split("&")[0];
+	var varhtttp = document.location.href.split("blockphone=")[1];
+	
+	switch(result){ 
+		case "0" : top.document.getElementById(varhtttp).innerHTML = "Erreur lors de votre inscription. Veuillez essayer de nouveau."; break;
+        case "1" : top.document.getElementById(varhtttp).innerHTML = "Votre inscription est bien enregistr&eacute;e"; break;
+		default : top.document.getElementById(varhtttp).innerHTML = "Erreur lors de votre inscription. Veuillez essayer de nouveau."; break;
+    }
+}

@@ -41,6 +41,8 @@ PBS.KIDS.Headband = (function(){
 	    /^\/caillou\/activities\/(coloringbook|paperdolls)\/(?!index.html).+/,
 	    /^\/clifford\/printables/,
 	    /^\/curiousgeorge\/printables\/(?!index.html).+/,
+	    /^\/dinosaurtrain\/print\/print\d+.html/,
+	    /^\/rogers\/color\w+.html/,
 	    /^\/georgeshrinks\/characters\/(?!index.html).+/,
 	    /^\/jayjay\/colr\.(book|activity)\.\d+\.print\.\d+\.html/,
 	    /^\/noddy\/popup-/,
@@ -54,7 +56,11 @@ PBS.KIDS.Headband = (function(){
 	    /^\/historydetectives\/printables\/bookmark\/(?!index.html).+/,
 	    /^\/historydetectives\/printables\/notebook\/(?!(index|step0).html).+/,
 	    /^\/cgi-registry\/you_are_in_the_story.cgi$/,
-	    /^\/historydetectives\/printables\/booklist/
+	    /^\/historydetectives\/printables\/booklist/,
+	    /^\/lab/,
+	    /^\/fetch\/mobile/,
+	    /^\/martha\/mobile/,
+	    /^\/sesame\/videoPlayer/
     ];
 
     //Dynmically compute CDN domain
@@ -212,11 +218,11 @@ PBS.KIDS.Headband = (function(){
 	 'callback': function(){ _load_next() }
 	},
 	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.handlebars.runtime-1.0.0.beta.js', 
-	 'condition': function(){ return typeof Handlebars != 'undefined' },  
+	 'condition': function(){ return typeof PBS.KIDS.Handlebars != 'undefined' },  
 	 'callback': function(){ _load_next() }
 	},
 	{'url': _cdn_base + '/pbs-kids-headband/headband.tmpl.html', 
-	 'condition': function(){ return typeof Handlebars.templates != 'undefined' },  
+	 'condition': function(){ return typeof PBS.KIDS.Handlebars.templates != 'undefined' },  
 	 'callback': function(){ _load_next(); _load_headband(); }
 	},
 	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.jquery.outside.js',
@@ -310,7 +316,7 @@ PBS.KIDS.Headband = (function(){
 
 	var _render = function(context){
 	    //Compile the template and inject the headband
-	    var template = Handlebars.templates['headband.source.html'];
+	    var template = PBS.KIDS.Handlebars.templates['headband.source.html'];
 	    var headband_container = PBS.KIDS.$_auth('#headband-container')[0];
 	    if(! headband_container){ 
 		headband_container = PBS.KIDS.$_auth('<div id="headband-container"></div>')
@@ -402,6 +408,7 @@ PBS.KIDS.Headband = (function(){
 	_set_button_color($siteButtonColors);
 	
 	$('#headband-grownups-block ul li.button:last-child').addClass('last');
+	$('#pbskids-headband').append('<span class="jimmy"></span>');
 
 	var exploreToggle = function() {
         var $trigger = $(this);

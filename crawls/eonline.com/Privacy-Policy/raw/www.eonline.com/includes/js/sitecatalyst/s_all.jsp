@@ -16,12 +16,28 @@ function sTrackPhotoView(photoName,cleanGalleryTitle) { //Tracks as a Page View
 
 	s.prop38=cleanGalleryTitle;
 	
-	s.pageName+=":"+photoName;
+	s.pageName = s.pageName.substring(0, s.pageName.lastIndexOf(":"))+photoName.substring(photoName.lastIndexOf(":"));
 //else
 //	s.pageName = "";
 
 //	sSetHeavyPhoto();
 //	sGetHeavyPhoto("gallery");
+	s.eVar43=s.prop43;
+	s.t();
+	s.linkTrackEvents=s.events=s.eVar21="";
+	s.linkTrackVars=s.linkTrackVarsTmp;
+}
+
+function sTrackPollGameView(pollName,photoName) {
+	s.linkTrackVarsTmp=s.linkTrackVars;
+	s.linkTrackVars+=",eVar21,prop43,prop38,";
+	s.linkTrackEvents="event22";
+	s.events="event22";
+	s.prop15 ="games";
+	s.prop62="detail";
+	
+	s.prop66=s.prop48+":"+pollName;
+	s.pageName = s.prop66+":"+photoName;
 	s.eVar43=s.prop43;
 	s.t();
 	s.linkTrackEvents=s.events=s.eVar21="";
@@ -872,7 +888,7 @@ var sUrlToPageNameMappingArray = [
         bigPicModule();
                 
         $.extend(s, pageDetails() );
-        s.prop16 = widgetArray.join("");   
+//        s.prop16 = widgetArray.join("");   
         if ( s.prop7 ) { //stick page content source name in front of the page name if it's not already there
             if (s.pageName.length < s.prop7.length || s.pageName.substring(0,s.prop7.length) != s.prop7) {
 	            s.pageName = s.prop7 + ":" + s.pageName

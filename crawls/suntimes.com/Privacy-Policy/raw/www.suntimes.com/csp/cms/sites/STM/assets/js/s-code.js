@@ -201,9 +201,12 @@ if (document.URL.match(/rogerebert\./i)) {
 } else if (document.URL.match(/\.com\/community\//i)) {
 	s_account='digchtncnetwork';	communityName='suntimes.com';
 	linkInternalFilters="javascript:,www.suntimes.com";
-} else if (document.URL.match(/\.com\/travel\//i) || document.URL.match(/travel\./i)) {
+} else if (document.URL.match(/\.com\/travel\//i) || document.URL.match(/travel\./i) || document.URL.match(/weekaway\./i)) {
 	s_account='digchtncnetwork';	communityName='suntimes.com';
 	linkInternalFilters="javascript:,www.suntimes.com";
+} else if (document.URL.match(/splash\./i)) {
+	s_account='digchsplash';
+	linkInternalFilters="javascript:,splash.suntimes.com";
 }
 
 s_account= s_account + ",digchstglobal";
@@ -963,24 +966,17 @@ var s_code=s.t();if(s_code)document.write(s_code)
 
 
 <!-- ChartBeat tag -->
-switch (window.location.host) {
-case "www.suntimes.com": chartbeat_on = window.location.host;
-	break;
-case "blogs.suntimes.com": chartbeat_on = window.location.host;
-	break;
-case "highschoolsports.suntimes.com": chartbeat_on = window.location.host;
-	break;
-default: 
-	chartbeat_on = '';
-}	
+if (document.URL.match(/suntimes\.com/i)) {chartbeat_on = window.location.host;} 
+if (document.URL.match(/blogs\./i)) {chartbeat_on = window.location.host;} 
 
 if (chartbeat_on != '') {
     var _sf_async_config={};
     /** CONFIGURATION START **/
     _sf_async_config.uid = 38241;
     _sf_async_config.domain = chartbeat_on;
-    _sf_async_config.sections = s.channel;  //CHANGE THIS
-    _sf_async_config.authors = s.prop8;    //CHANGE THIS
+    _sf_async_config.sections = s.channel;
+    _sf_async_config.authors = s.prop8;
+	_sf_async_config.useCanonical = true;
     /** CONFIGURATION END **/
     (function(){
       function loadChartbeat() {

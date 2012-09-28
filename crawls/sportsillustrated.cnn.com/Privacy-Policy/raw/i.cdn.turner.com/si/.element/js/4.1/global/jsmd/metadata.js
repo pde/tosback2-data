@@ -883,7 +883,8 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 	else if ( ( $pathname ).match( /^\/multimedia\/photo_gallery\// ) ) {
 		//cnn_metadata.section = [ 'si photos', 'photo gallery' ];
 		if ( typeof( cnnPageInfo_pageType ) !== "undefined" ) {
-			if ( cnnPageInfo_pageType === 'section' ) {
+			if ( cnnPageInfo_pageType === 'section' ) {				
+				cnn_metadata.section = [ 'si photos', 'photo gallery' ];
 				cnn_metadata.template_type = 'section front';
 				cnn_metadata.content_type = 'none';
 			} else if ( adFactory.zone == 'olympics/photos' ) {
@@ -897,6 +898,12 @@ if ( $hostname === "sports.sportsillustrated.cnn.com" && $isStatsHosted ) {
 				cnn_metadata.template_type = 'other:photo gallery';
 				cnn_metadata.content_type = 'none';
 			} else {
+				var galleryWrapper = document.getElementById("primeCont");
+				var galleryContainer = (galleryWrapper !== null) ? galleryWrapper.getElementsByTagName("h1") : 
+					   ( document.getElementsByClassName('cnnGalleryImgHdr').length > 0 ) ? document.getElementsByClassName('cnnGalleryImgHdr') :
+					   ( document.getElementsByClassName('title').length > 0 ) ? document.getElementsByClassName('title') : [];
+				var galleryName = ( galleryContainer.length > 0 ) ? galleryContainer[0].innerHTML : '';//document.title.replace('SI.com - Photo Gallery - ', '');
+				cnn_metadata.section = [ 'si photos', 'photo gallery:' + galleryName.toLowerCase() ];
 				cnn_metadata.template_type = 'other:photo gallery';
 				cnn_metadata.content_type = 'none';
 			}
@@ -1114,3 +1121,57 @@ siLog.groupEnd('siAnalytics');
 } catch(e){
     
 }
+
+/* Livefyre Metrics */
+$(document).ready(function(){
+								function lfSocialClick(type){
+																var data = type;
+																
+																siLog.group('lfSocialClick');
+																siLog.debug( 'livefyre comment click' );
+																siLog.groupEnd();
+																								
+																try{
+																								trackMetrics({
+																																type:"livefyre-click",
+																																data: data
+																								});
+																}catch(e){
+																								siLog.group('livefyre click - ');
+																								siLog.debug( e );
+																								siLog.groupEnd();
+																							
+															 }
+								}
+		
+								if( typeof jQuery.fn.on == "function" ){						
+																//Track Likes, Replies, and Posts
+																/*
+																$( '#livefyre' ).on( 'click', '.lf_like', function(){
+																								lfSocialClick( 'Like' );
+																});
+																*/
+																$( '#livefyre' ).on( 'click', '.lf_comment_reply_form .lf_post', function(){
+																								lfSocialClick( 'Reply' );
+																});
+																
+																$( '#livefyre' ).on( 'click', '#lf_comment_form .lf_post', function(){
+																								lfSocialClick( 'Post Comment' );
+																});
+								} else if( typeof jQuery.fn.live == "function" ){								
+																/*
+																$( '#livefyre .lf_like' ).live( 'click', function(){
+																								lfSocialClick( 'Like' );
+																});
+																*/
+																$( '#livefyre .lf_comment_reply_form .lf_post' ).live( 'click', function(){
+																								lfSocialClick( 'Reply' );
+																});
+																
+																$( '#livefyre #lf_comment_form .lf_post' ).live( 'click', function(){
+																								lfSocialClick( 'Post Comment' );
+																});																
+								} else {
+																siLog.error("Omniture Error: LiveFyre commenting actions are not being tracked. Check jQuery version and binding options.");
+								}
+});

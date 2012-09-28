@@ -58,3 +58,15 @@ function resetAccordion(){
 	Event.unloadCache();
 }
 
+jQuery(document).ready(function(){
+	var slotMaxHeight=0;
+	(function($){
+		$('.slots.shop_offers').each(function(){
+			var sh = $(this).height();
+			slotMaxHeight = sh > slotMaxHeight ? sh : slotMaxHeight;
+		});
+		$('.slots.shop_offers').height(slotMaxHeight);
+		var internetHeight = $('.product_not_selected').height();
+		$('.shop_internet_main').height(internetHeight);
+	})(jQuery);
+});

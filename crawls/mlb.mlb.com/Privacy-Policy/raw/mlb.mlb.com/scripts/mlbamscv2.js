@@ -60,6 +60,9 @@ function s_doPlugins(s) {
 		{
 			s.events=s.apl(s.events,"event4",",",2)
 		}
+/* Get SC Visitor ID */
+		s.prop64 = "D=s_vi";
+		s.eVar64 = "D=s_vi";
 /* Campaign Secondary Responses */
 		if(!s.campaign)
 		{

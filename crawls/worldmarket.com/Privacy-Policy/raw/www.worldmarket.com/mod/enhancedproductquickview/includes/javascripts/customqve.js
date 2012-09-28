@@ -11,13 +11,18 @@ jQuery(document).ready(function() {
 		var itemCode = obj.attr('id');
 		if(itemCode != ''){
 		obj.load("/wmcustomthumbnail.do?itemCode=" + itemCode + "&showBadge=" + showBadge + "&showPQV="+ showPQV + "&showRating=" +showRating,function(){
-			jQuery("div#" + itemCode + " .qveThumbnail").unbind("mouseenter").bind("mouseenter", function(){				
-				var obj = jQuery(this);
-				jQuery.fn.qve("attachButton", this, obj.attr("dialogTitle"), obj.attr("catPK"), obj.attr("buttonOn"), obj.attr("buttonOff"), obj.attr("url"), obj.attr("windowWidth"), obj.attr("windowHeight"),(obj.attr("showInCenter")!=null));
-			});
-			jQuery("div#" + itemCode + " .qveThumbnail").unbind("mouseleave").bind("mouseleave", function(){
-				jQuery.fn.qve("detachButton", this);
-			});
+			var container = jQuery(this);
+			if(container.html().trim().length > 0){
+				jQuery("div#" + itemCode + " .qveThumbnail").unbind("mouseenter").bind("mouseenter", function(){
+					var obj = jQuery(this);
+					jQuery.fn.qve("attachButton", this, obj.attr("dialogTitle"), obj.attr("catPK"), obj.attr("buttonOn"), obj.attr("buttonOff"), obj.attr("url"), obj.attr("windowWidth"), obj.attr("windowHeight"),(obj.attr("showInCenter")!=null));
+				});
+				jQuery("div#" + itemCode + " .qveThumbnail").unbind("mouseleave").bind("mouseleave", function(){
+					jQuery.fn.qve("detachButton", this);
+				});
+			}else{
+				container.css('display','none');
+			}
 		});
 		}
 		else{

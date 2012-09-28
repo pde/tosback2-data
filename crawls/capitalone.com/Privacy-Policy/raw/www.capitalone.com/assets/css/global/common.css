@@ -55,6 +55,17 @@ accessibility overrides
     color:inherit;
 }
 
+/* add spacing and breaks for credit card compare tables */
+table.browse-table .rate-2, table.basic .second-rate-break {
+    display:block;
+}
+table.browse-table .second-rate-2, table.basic .second-rate-break {
+    margin-top:10px;
+}
+table.browse-table .rate-semicolon {
+    display:none;
+}
+
 .disclosures {
     color: #999;
     font-size: 0.83em;
@@ -204,6 +215,9 @@ ul.quick-links {
 }
 ul.quick-links a {
     padding-left: 25px;
+}
+ul.top-requests a {
+	font-weight:bold;
 }
 ul.quick-links li.icon-alert a {
     padding-left: 30px !important;
@@ -1272,13 +1286,10 @@ modal overlay window
 	margin-right: 10px;
 } 
 .modal-overlay-content { 
-	padding: 10px; 
-	overflow: auto !important;
 	background-color: #FFFFFF;
     max-height: auto !important;
     max-width: auto !important;
    /* overflow-x: hidden; */
-    padding: 10px;
 }
 #cboxLoadedContent {
     margin-bottom: 0px !important;
@@ -2174,6 +2185,11 @@ table.credit-partners-compare-table thead tr.last th, table.credit-partners-comp
     border-top:none;
 }
 
+/* fix table col width for card compare */
+table.credit-browse-compare-table {
+    table-layout: fixed;
+}
+
 /* ratings modal conflict fix */
 #BVRRContainer {
     position:relative;
@@ -2181,19 +2197,27 @@ table.credit-partners-compare-table thead tr.last th, table.credit-partners-comp
 }
 /* ratings at a glance fix */
 .ratings-glance-holder {
-    float:right;
     width:190px;
 }
+table.glance thead th .ratings-glance-holder .BVRRRatingNormalImage img,
+table.glance thead td .ratings-glance-holder .BVRRRatingNormalImage img {
+    padding-left:0;
+}
+
+/* rack up miles table spacing fix */
+table.credit-rewards-3col tbody tr td p {
+    width:95%;
+}
+
 /*override common 336 */
 div.key-benefits-callout span {
 	font-size: 1em;
 	}
 	
-/* 
+
 #header.nav-off {
 	height:90px;
 }
-*/
 
 /*============ GET ANSWERS =============*/
 
@@ -2387,4 +2411,30 @@ form#authLogin #Submit {
     padding:4px;
     color:#fff;
     font-weight:bold;
+}
+
+/* FF whitespace browse filter fix */
+#page-content {
+    overflow: hidden;
+}
+
+.loading-image {margin:100px auto 200px auto;display:block;}
+
+/* X+1 wait styles */
+#waitingDiv {
+	position: absolute; 
+	float: left; 
+	background-color: #FFFFFF; 
+	z-index: 5; 
+	text-align: center;
+}	
+
+#waitingDiv img {
+	padding-top: 175px;
+}
+
+#waitingDiv p {
+	color: #767676; 
+	font-size: 0.83em; 
+	text-align: center;
 }

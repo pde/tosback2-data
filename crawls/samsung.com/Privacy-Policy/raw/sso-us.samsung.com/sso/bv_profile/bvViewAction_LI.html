@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Samsung</title>
+
+	<link type="text/css" href="../../../www.samsung.com/us/css/common.css" rel="stylesheet"/>
+	<link type="text/css" href="../../../www.samsung.com/us/css/products.css" rel="stylesheet"/>
+	<link type="text/css" href="../../../www.samsung.com/us/css/samsung-common.css" rel="stylesheet"/>
+	<link type="text/css" href="../../../www.samsung.com/us/css/badgeville_forms.css" rel="stylesheet"/>
+	<script type="text/javascript" src="../../../www.samsung.com/us/scripts/jquery.js"></script>
+	<script type="text/javascript">
+
+	// CLEAR FORM FIELDS ON FOCUS, RESTORE ON BLUR
+		$(function() {
+			jQuery.fn.resettable = function ( ) {
+			  fields = new Array();
+			  this.each(function() {
+			    //check to make sure the element has a name attribute. If not, do nothing!
+			    if (!jQuery(this).attr("name")) return true;
+			    fields [ jQuery(this).attr("name") ] = jQuery(this).val();
+			    jQuery(this).focus(function() {
+			      if ( jQuery(this).val() == fields[ jQuery(this).attr("name") ] ) 	jQuery(this).val("");   
+			    }).blur(function() {
+			  		if (jQuery(this).val() == "") jQuery(this).val( fields[ jQuery(this).attr("name") ] );
+			    });
+			  });
+			  return this;
+			}
+			$("#badgeVille_login input").resettable();
+		});
+	
+		//display default text in password
+		$(document).ready(function() {
+			$('#BV_passwordClear').show();
+			$('#BV_passwordLogin').hide();
+			
+			$('#BV_passwordClear').focus(function() {
+			    $('#BV_passwordClear').hide();
+			    $('#BV_passwordLogin').show();
+			    $('#BV_passwordLogin').focus();
+			});
+			$('#BV_passwordLogin').blur(function() {
+			    if($('#BV_passwordLogin').val() == '') {
+			        $('#BV_passwordClear').show();
+			        $('#BV_passwordLogin').hide();
+			    }
+			});
+		});
+
+		//forgot password
+		function forgotPassword() {
+			var mywindow = window.open("/sso/profile/requestPassword.action","ForgotPassword","width=375,height=300");
+		}
+		
+		//sets hidden input on submit
+		function checkLogin(){
+			var form = document.login;
+			form.password.value = form.BV_passwordLogin.value;
+			
+			if(form.optin2.checked==true){
+	    		form.rememberEmail.value="Y";
+    		}
+    		if(checkValue()){
+    			form.submit();
+				return true;
+			}
+		}
+		function checkValue(){
+			var form = document.login;
+			if (form.email_address.value.length == 0){
+				alert ("please enter email id");
+				return false;
+			}
+			if (form.password.value.length == 0){
+				alert ("please enter password");
+				return false;
+			}
+			return true;
+		}
+		
+		function checkError(){
+			var valid_login="Y";
+			//alert ("valid_login=="+valid_login);
+			if (valid_login == "N"){
+				alert ("Incorrect emailaddress or password");
+			}
+		}
+	</script>
+
+	<script type="text/javascript">
+	(function() {
+	    if (typeof window.janrain !== 'object') window.janrain = {};
+	    window.janrain.settings = {};
+	   
+	    /* _______________ can edit below this line _______________ */
+	 
+	    janrain.settings.tokenUrl = 'https://sso-us.samsung.com/sso/service/samsung/socialProcess';
+	    janrain.settings.type = 'embed';
+	    janrain.settings.appId = 'fpnmpifpchgcidnlmlmd';
+    	    janrain.settings.appUrl = 'https://sso-us.samsungusa.com';
+	    janrain.settings.providers = [
+	        'facebook',
+	        'google',
+	        'twitter',
+	        'linkedin',
+	        'yahoo',
+	        'live_id'];
+	    janrain.settings.providersPerPage = '6';
+	    janrain.settings.format = 'one row';
+	    janrain.settings.actionText = 'Sign in using your account with';
+	    janrain.settings.showAttribution = false;
+	    janrain.settings.fontColor = '#666666';
+	    janrain.settings.fontFamily = 'lucida grande, Helvetica, Verdana, sans-serif';
+	    janrain.settings.backgroundColor = '#ffffff';
+	    janrain.settings.width = '217';
+	    janrain.settings.borderColor = '#C0C0C0';
+	    janrain.settings.borderRadius = '5';
+	    janrain.settings.buttonBorderColor = '#CCCCCC';
+	    janrain.settings.buttonBorderRadius = '5';
+	    janrain.settings.buttonBackgroundStyle = 'gradient';
+	    janrain.settings.language = 'en';
+	    janrain.settings.linkClass = 'janrainEngage';
+	 
+	    /* _______________ can edit above this line _______________ */
+	 
+	    function isReady() { janrain.ready = true; };
+	    if (document.addEventListener) {
+	      document.addEventListener("DOMContentLoaded", isReady, false);
+	    } else {
+	      window.attachEvent('onload', isReady);
+	    }
+
+	    var e = document.createElement('script');
+	    e.type = 'text/javascript';
+	    e.id = 'janrainAuthWidget';
+
+	    if (document.location.protocol === 'https:') {
+	      e.src = 'https://rpxnow.com/js/lib/sso-us.samsungusa.com/engage.js';
+	    } else {
+	      e.src = 'http://widget-cdn.rpxnow.com/js/lib/sso-us.samsungusa.com/engage.js';
+	    }
+
+	    var s = document.getElementsByTagName('script')[0];
+	    s.parentNode.insertBefore(e, s);
+		})();
+	</script>	
+	<style type="text/css">
+		h3{
+			font-size: 12px;	
+		}
+		p{
+			font-size: 14px;
+		}
+		#wrap{
+			width: 250px;
+			height: 360px;
+			position: absolute;
+			top: 0;
+			left: 5px;
+		}
+	</style>
+</head>
+	<body onload="checkError()">
+		<div id="wrap">
+			<div id="badgeVille_login" >
+				<form action="https://sso-us.samsung.com/sso/bv_profile/BV_LoginAction.action" method="post" class="login_form" name="login">
+					<table cellspacing="0" cellpadding="0" border="0">
+						<tr valign="top">
+							<td>
+								<input type="text" name="email_address" id="email_address" value="Email" class="w177" />
+								<span class="required">&nbsp;*</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="password" name="BV_passwordLogin" id="BV_passwordLogin" value="" class="w177" />
+								<input type="hidden" name="password" id="password" />
+								<input type="hidden" name="login" id="login" value="1" />
+								<input type="text" name="BV_passwordClear" id="BV_passwordClear" value="Password" class="w177" />
+								<span class="required">&nbsp;*</span>
+							</td>
+						</tr>
+						<tr>
+							<td><a href="javascript:forgotPassword()">Forget your password?</a></td>
+						</tr>
+					</table>
+					<span class="bvInput">
+						<input type="checkbox" name="optin2" value="" class="chk" checked="checked" />&nbsp;&nbsp;<label class="chk">Remember my email address</label>
+						<input type="hidden" name="rememberEmail" value ="N" />
+					</span>
+					<div id="submitButton">
+						<a href="javascript:checkLogin();"><img src="../images/common/login_blue.jpg" /></a>
+					</div>
+				</form>
+				<h3 style="margin-left: 80px; margin-bottom: -10px;"><b>- or - </b></h3><br />
+				<!--  <h3 style="margin-left: 10px;">Sign in using your account with</h3> -->
+				<div id="janrainEngageEmbed"></div>
+			</div>
+		</div>
+	</body>
+</html>

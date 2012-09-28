@@ -29,6 +29,7 @@ s.linkLeaveQueryString=false
 s.linkTrackVars="prop29,prop30,prop31,prop32"
 s.linkTrackEvents="None"
 
+
 /* Form Analysis Config (should be above doPlugins section) */
 s.formList=""
 s.trackFormList=true
@@ -121,6 +122,14 @@ s.doPlugins=s_doPlugins
 /* You may insert any plugins you wish to use here.                 */
 
 /* You may insert any plugins you wish to use here.                 */
+
+
+
+ // Optimizely SiteCatalyst Integration
+ window.optimizely = window.optimizely || [];
+ window.optimizely.push("sc_activate");
+
+
 
 /*
  * Function - read combined cookies v 0.3

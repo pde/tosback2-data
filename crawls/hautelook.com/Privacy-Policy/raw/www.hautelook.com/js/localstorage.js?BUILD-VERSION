@@ -1,0 +1,772 @@
+/* IE Does not yet support Array.indexOf, a JavaScript 1.6 feature. The following code implements it */
+/* Code is from https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf */
+/* It would be better practice to stick this into Array.prototype, but too much code iterates through arrays improperly */
+var arrayIndexOf = function(elt /*, from*/) {  
+    var len = this.length >>> 0;  
+    var from = Number(arguments[1]) || 0;  
+    from = (from < 0) ? Math.ceil(from) : Math.floor(from);  
+    
+    if (from < 0) {
+        from += len;  
+    }
+    for (; from < len; from++) {  
+        if (from in this && this[from] === elt) {
+            return from;  
+        }
+    }
+    return -1;
+};  
+
+var BrowserStorage = new function _browserStorage() {
+    var updateTimer = 30000;
+    var storageOptions = ['local', 'session', 'userdata', 'cookie', 'empty'];
+    var timestamp_name = 'bstorage_timestamp';
+    var meta_name = 'bstorage_meta';
+    var internalStorageRequests, cookieStorageRequests;
+    var availableEngines = {};
+    var engines = {};
+    var meta;
+
+    var Engine = function() {};
+    engines.empty = new Engine;
+    engines.session = new Engine;
+    engines.local = new Engine;
+    engines.userdata = new Engine;
+    engines.cookie = new Engine;
+
+    var listAvailableEngines = function() {
+        var engineList = [];
+
+        for (var x in availableEngines) {
+            engineList.push(availableEngines[x].name.toLowerCase());
+        }
+        
+        return engineList;
+    }
+    
+    var getTimer = function(n) {
+        n = (typeof n != 'number') ? 0 : parseInt(n);
+		var ct = new Date();
+		return ct.getTime() + n; // milliseconds
+    }
+
+    var updateTimeStamp = function() {
+        if(typeof internalStorageRequests == 'function') {
+            var ts = getTimer();
+            internalStorageRequests.set(timestamp_name, ts, getTimer(1000 * 60 * 60 * 24 * 365 * 5)); // Timestamp expires in 5 years
+            meta.info.lastTimestamp = ts;
+        }
+        else {
+            setTimeout(arguments.callee, 250);
+        }
+    }
+    
+    meta = {
+        /*
+         * {
+         *      info: {
+         *        keys: {
+         *           key: {
+         *                priority: 1 - 10,
+         *                storage: engine,
+         *                expires: timestamp
+         *            }
+         *        },
+         *        lastTimestamp: 0
+         *      }
+         * }
+         *
+         */
+        info: {
+            lastTimestamp: 0,
+            keys: {}
+        },
+        
+        findKey: function(key) {
+            if(key !== undefined) {
+                return this.info.keys[key];
+            }
+            else return undefined;
+        },
+        
+        findKeyToExpire: function(engine, priority) {
+            priority = priority || 5;
+            engine = engine || 'empty';
+            var closestToExpiration = null;
+            for(var x in this.info.keys) {
+                if(x != meta_name && x != timestamp_name) {
+                    if(this.info.keys[x].storage == engine) {
+                        closestToExpiration = (closestToExpiration === null) ? x :
+                            ((this.info.keys[closestToExpiration].expires > this.info.keys[x].expires && this.info.keys[closestToExpiration].priority <= this.info.keys[x].priority) ?
+                               x : closestToExpiration);
+                    }
+                }
+            }
+            return closestToExpiration;
+        },
+        
+        updateKey: function(key, value, engine, priority, expires) {
+            // Passing undefined for value means the key should be deleted.
+            if(value === undefined) {
+                if(key === undefined && engine != 'undefined') {
+                    // Delete all keys for this engine
+                    for(var x in this.info.keys) {
+                        if(this.info.keys[x].storage == engine) {
+                            delete this.info.keys[x];
+                        }
+                    }
+                }
+                else if(key != 'undefined' && typeof this.info.keys[key] != 'undefined') {
+                    delete this.info.keys[key];
+                }
+            }
+            else if(key != undefined) {
+                this.info.keys[key] = {
+                    priority: priority,
+                    storage: engine,
+                    expires: (engine != 'cookie') ? expires : -1
+                };
+            }
+            meta.info.lastTimestamp = getTimer();
+        },
+        
+        update: function() {
+            if(typeof internalStorageRequests == 'function') {
+                var ts = internalStorageRequests.get(timestamp_name);
+                var metaInfo = false;
+                if(this.info.lastTimestamp < ts) {
+                    metaInfo = internalStorageRequests.get(meta_name);
+                    meta.info.keys = (metaInfo === null) ? meta.initializeKeys() : JSON.parse(metaInfo);
+                    this.info.lastTimestamp = ts;
+                }
+                if(metaInfo === null || this.info.lastTimestamp >= ts) {
+                    internalStorageRequests.set(meta_name, meta.info.keys, getTimer(1000 * 60 * 60 * 24 * 365 * 5));
+                    internalStorageRequests.set(timestamp_name, meta.info.lastTimestamp, getTimer(1000 * 60 * 60 * 24 * 365 * 5));
+                }
+            }
+            else {
+                setTimeout(arguments.callee, 250);
+            }
+        },
+        
+        initializeKeys: function() {
+            var storedKeys, tempKeys = {};
+            
+            for (var eng in availableEngines) {
+                storedKeys = engines[eng].getAll();
+                
+                for (var x in storedKeys) {
+                    tempKeys[x] = {
+                        priority: 5,
+                        storage: eng,
+                        expires: ((eng == 'cookie') ? -1 : getTimer(1000 * 60 * 60 * 12))
+                    };
+                }
+            }
+            
+            tempKeys[meta_name] = {
+                priority: 10,
+                storage: internalStorageRequests.toString().split(",", 1)[0],
+                expires: getTimer(1000 * 60 * 60 * 24 * 365 * 5)
+            };
+            
+            tempKeys[timestamp_name] = {
+                priority: 10,
+                storage: internalStorageRequests.toString().split(",", 1)[0],
+                expires: getTimer(1000 * 60 * 60 * 24 * 365 * 5)
+            };
+
+            return tempKeys;
+        }
+    };
+    
+    // Engine Definitions
+    Engine.prototype.name = 'empty';
+    Engine.prototype.available = true;
+    Engine.prototype.get = function() {
+        return null;
+    }
+    Engine.prototype.set = function() {
+        return false;
+    }
+    Engine.prototype.remove = function() {
+        return false;
+    }
+    Engine.prototype.clear = function() {
+        return false;
+    }
+    Engine.prototype.length = function() {
+        return null;
+    }
+    Engine.prototype.remainingSpace = function() {
+        return 0;
+    }
+    Engine.prototype.getAll = function() {
+        return {};
+    }
+    
+    // localStorage Engine
+    engines.local.name = 'local';
+	
+    engines.local.available = (typeof localStorage !== 'undefined' && typeof Storage != 'undefined' && localStorage instanceof Storage) ? true : false;
+    engines.local.get = function(key) {
+        return localStorage.getItem(key);
+    }
+    engines.local.getAll = function() {
+        var items = {};
+        var key, len = this.length();
+        for(var x = 0; x < len; x++) {
+            key = localStorage.key(x);
+            items[key] = this.get(key);
+        }
+
+        return items;
+    }
+    engines.local.set = function(key, value) {
+        try {
+            localStorage.setItem(key, value);
+            return true;
+        }
+        catch(err) {
+            return false;
+        }
+    }
+    engines.local.remove = function(key) {
+        localStorage.removeItem(key);
+    }
+    engines.local.clear = function() {
+        localStorage.clear();
+    }
+    engines.local.remainingSpace = (typeof localStorage != 'undefined' && (typeof localStorage.remainingSpace == 'undefined' || localStorage.remainingSpace === null)) ?
+        function() {
+            return null;
+        } :
+        function() {
+           var space = localStorage.remainingSpace;
+           return (typeof space == 'number') ? space : null;
+        }
+    engines.local.length = function() {
+        return localStorage.length;
+    }
+    
+    // sessionStorage Engine
+    engines.session.name = 'session';
+    engines.session.available = (typeof sessionStorage !== 'undefined' && typeof Storage != 'undefined' && sessionStorage instanceof Storage) ? true : false;
+    engines.session.get = function(key) {
+        return sessionStorage.getItem(key);
+    }
+    engines.session.getAll = function() {
+        var items = {};
+        var key, len = this.length();;
+        
+        for(var x = 0; x < len; x++) {
+            key = sessionStorage.key(x);
+            items[key] = this.get(key);
+        }
+        
+        return items;
+    }
+    engines.session.set = function(key, value) {
+        try {
+            sessionStorage.setItem(key, value);
+            return true;
+        }
+        catch(err) {
+            return false;
+        }
+    }
+    engines.session.remove = function(key) {
+        sessionStorage.removeItem(key);
+    }
+    
+	engines.session.clear = (function() {
+		return (typeof sessionStorage != 'undefined' && typeof sessionStorage.clear != 'undefined') ?
+			function() {
+				sessionStorage.clear();
+			}
+			:
+			function() {
+				var data = engines.session.getAll();
+				
+				for(var x in data) {
+					engines.session.remove(x);
+				}
+			};
+    })();
+	
+    engines.session.remainingSpace = (typeof sessionStorage != 'undefined' && (typeof sessionStorage.remainingSpace == 'undefined' || sessionStorage.remainingSpace === null)) ?
+        function() {
+            return null;
+        } :
+        function() {
+           var space = sessionStorage.remainingSpace;
+           return (typeof space == 'number') ? space : null;
+        }
+    engines.session.length = function() {
+        return sessionStorage.length;
+    }
+
+    // userData Engine
+    engines.userdata.name = 'userdata';
+    engines.userdata.ref = false;
+    engines.userdata.namespace = 'localStorage';
+    engines.userdata.available = (function() {
+        if((navigator.userAgent.indexOf("MSIE") != -1)) {
+			try {
+				var refEl = document.createElement('<link id="UD_LS_DATA" class="localstorage" />');
+                var head = document.getElementsByTagName("head");
+                if(head.length == 0) {
+                    return false;
+                }
+                else {
+                    head = head[0];
+                }
+                
+                head.appendChild(refEl);
+                
+                if(typeof refEl.addBehavior != 'undefined' && refEl.addBehavior('#default#userdata')) {
+                    engines.userdata.ref = refEl;
+                    engines.userdata.ref.load(engines.userdata.namespace);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+			}
+			catch (e) {
+				return false;
+			}
+        }
+        return false;
+    })();
+    engines.userdata.get = function(key) {
+        return this.ref.getAttribute(key);
+    }
+    engines.userdata.getAll = function() {
+        var items = {};
+        var records = this.ref.XMLDocument.documentElement.attributes;
+
+        for (var x = 0; x < this.length(); x++) {
+            items[records[x].name] = this.get(records[x].name);
+        }
+        
+        return items;
+    }
+    engines.userdata.set = function(key, value) {
+        try {
+            this.ref.setAttribute(key, value);
+            this.ref.save(this.namespace);
+            return true;
+        }
+        catch (e) {
+            this.ref.removeAttribute(key);
+            return false;
+        }
+    }
+    engines.userdata.remove = function(key) {
+        try {
+            this.ref.removeAttribute(key);
+            this.ref.save(this.namespace);
+            return true;
+        }
+        catch (e) {
+            return false;
+        }
+    }
+    engines.userdata.clear = function() {
+        var records = this.getAll();
+
+        for (var x in records) {
+            this.remove(x);
+        }
+    }
+    engines.userdata.remainingSpace = function() {
+        return null;
+    }
+    engines.userdata.length = function() {
+        return this.ref.XMLDocument.documentElement.attributes.length;
+    }
+
+    // Cookie Engine
+    engines.cookie.name = 'cookie';
+    engines.cookie.defaultDomain = '.hautelook.com';
+    engines.cookie.availabilityCheck = 'Hautelook_Cookie_Avail';
+    engines.cookie.cookieLimit = 20;
+
+    engines.cookie.get = function(key) {
+        if (document.cookie.length > 0) {
+            var cookie_start = document.cookie.indexOf(key + "=");
+            if (cookie_start != -1) {
+                cookie_start = cookie_start + key.length+1;
+                var cookie_end = document.cookie.indexOf(";",cookie_start);
+                
+                if (cookie_end == -1) {
+                    cookie_end = document.cookie.length;
+                }
+                
+                return unescape(document.cookie.substring(cookie_start,cookie_end));
+            }
+        }
+		
+        return undefined;
+    }
+    
+    engines.cookie.getAll = function() {
+        var cookies = {};
+
+        var pairs = document.cookie.split(";");
+
+        for (var i = 0; i < pairs.length; i++){
+            var pair = pairs[i].split("=");
+            cookies[pair[0].replace(/ /g, '')] = unescape(pair[1]);
+        }
+        
+        return cookies;
+    }
+    
+    engines.cookie.set = function(key, value, expire, path, domain) {
+        path = (typeof path == 'undefined') ? '/' : path;
+        domain = (typeof domain == 'undefined') ? this.defaultDomain : domain;
+
+		expire = (expire) ? expire : null;
+        
+        if(expire !== null) {
+			if(((+new Date()) < expire)) {
+				expire_date = new Date(expire);
+			}
+			else {
+				expire = getTimer(expire);
+				expire_date = new Date();
+	            expire_date.setTime(expire);
+			}
+        }
+
+        value = (typeof value == 'undefined') ? '' : ((typeof value != 'object') ? value : JSON.stringify(value));
+        if(typeof value == 'object') value = JSON.stringify(object);
+
+        if(typeof key == 'undefined'|| value.length > 4000) {
+            return false;
+        }
+
+        document.cookie = key + "=" + escape(value) + ";" +
+            ((expire === null) ? "" : "expires=" + expire_date.toUTCString()) + ";path=" + path + ";domain=" + domain;
+
+        return true;
+    }
+    
+    engines.cookie.remove = function(key, path, domain) {
+        this.set(key, "", -1, path, domain);
+    }
+    engines.cookie.clear = function() {
+        for(var x in this.getAll) {
+            this.remove(x);
+        }
+    }
+    engines.cookie.remainingSpace = function() {
+        var remaining = this.cookieLimit;
+        remaining -= this.length;
+        
+        return (remaining < 0) ? 0 : remaining;
+    }
+    engines.cookie.length = function() {
+        var pairs = document.cookie.split(";");
+        
+        return pairs.length;
+    }
+    engines.cookie.available = (function() {
+        if (document.cookie.length > 0) {
+            return true;
+        }
+        else if(engines.cookie.get(engines.cookie.availabilityCheck) !== undefined) {
+            return true;
+        }
+        else {
+            engines.cookie.set(engines.cookie.availabilityCheck, true);
+            if(engines.cookie.get(engines.cookie.availabilityCheck) !== undefined) {
+                return true;
+            }
+        }
+        return false;
+    }());
+    
+    // Initialize engine list. Automatically invoking the initialization function prevents re-initialization.
+    availableEngines = (function() {
+        var engineList = {};
+        for(var x = 0; x < storageOptions.length; x++) {
+            var engine = storageOptions[x];
+            if(typeof engines[engine] != 'undefined' && engines[engine] instanceof Engine) {
+                if(engines[engine].available) {
+                    engineList[engine] = engines[engine];
+                }
+            }
+        }
+        return engineList;
+    }());
+    
+    this.setStorageEngines = (function() {
+        var engineList = listAvailableEngines();
+        
+        return function() {
+            var args = Array.prototype.slice.call(arguments);
+            var myEngines = [];
+			
+            if(args.length > 0) {
+                for (var x = 0; x < args.length; x++) {
+
+                    if(arrayIndexOf.call(engineList, args[x].toLowerCase()) != -1) {
+                        myEngines.push(args[x].toLowerCase());
+                    }
+                }
+            }
+            else {
+                myEngines = engineList.slice(0);
+            }
+            
+            if(arrayIndexOf.call(myEngines, 'empty') == -1) {
+                myEngines.push('empty');
+            }
+            var storageInterface = function() {};
+            
+            storageInterface.remainingSpace = function(engine) {
+                return (arrayIndexOf.call(myEngines, engine) == -1) ? null : engines[engine].remainingSpace();
+            }
+            
+            storageInterface.count = function(engine) {
+                return (arrayIndexOf.call(myEngines, engine) == -1) ? 0 : engines[engine].length();
+            }
+            
+            storageInterface.get = function(key, engine, callback) {
+				
+                var ts, keyInfo, gottenResult;
+                
+				if(key != timestamp_name && key != meta_name) {
+					ts = internalStorageRequests.get(timestamp_name);
+					if(ts >= meta.info.lastTimestamp) {
+						meta.update();
+					}    
+					
+					keyInfo = meta.findKey(key);
+					
+					if(keyInfo === undefined) {
+						gottenResult = null;
+					}
+					else {
+						if(arrayIndexOf.call(myEngines, keyInfo.storage) != -1) {
+							var val = engines[keyInfo.storage].get(key);
+							gottenResult = (val) ? val : null;
+						}
+						else {
+							gottenResult = null;
+						}
+					}
+				}
+				else {
+					if(key == timestamp_name) {
+						gottenResult = engines[myEngines[0]].get(timestamp_name) || getTimer();
+					}
+					else {
+						gottenResult = engines[myEngines[0]].get(meta_name) || null;
+					}                
+				}
+				
+				if (typeof callback == "function") {
+					callback(gottenResult);
+				}
+				
+				return gottenResult;
+            }
+            storageInterface.getAll = function(/* engine1, engine2, ... */) {
+                var ts = internalStorageRequests.get(timestamp_name);
+                var enginesToGet = myEngines.slice(0);
+                var resultSet = {}, result = {};
+
+                if(ts > meta.info.lastTimestamp) {
+                    meta.update();
+                }
+
+                if(arguments.length != 0) {
+                    enginesToGet = [];
+                    
+                    for(var i = 0; i < arguments.length; i++) {
+                        if(arrayIndexOf.call(myEngines, arguments[i]) != -1) {
+                            enginesToGet.push(arguments[i]);
+                        }
+                    }
+                }
+              
+                for(var i = 0; i < enginesToGet.length; i++) {
+                    result = engines[enginesToGet[i]].getAll();
+                    
+                    for(var x in result) {
+                        resultSet[x] = result[x];
+                    }
+                }
+                
+                return resultSet;
+            }
+            
+            storageInterface.set = function(key, value, expires, priority, path, domain) {
+                try {
+					var result = true;
+					if(typeof value == 'function') return false;
+					if(typeof value == 'object') {
+						value = JSON.stringify(value);
+					}
+					if(typeof key == undefined || value == 'undefined') return false;
+					
+					if(expires instanceof Date) {
+						expires = expires.getTime();
+					}
+					else {
+						expires = (typeof expires != 'undefined') ? parseInt(expires) : 0;
+						if(typeof expires != 'number') {
+							expires = getTimer();
+						}
+						else if (expires != 0) {
+							expires = getTimer(expires);
+						}
+					}
+					
+					priority = (typeof priority == 'number') ? priority : 1;
+					if(key !== timestamp_name && key !== meta_name) {
+						result = engines[myEngines[0]].set(key, value, expires, path, domain);
+						if(result) {
+							meta.updateKey(key, value, myEngines[0], priority, expires);
+							meta.update();
+						}
+					}
+					else if(key == meta_name) {
+						result = engines[myEngines[0]].set(meta_name, value);
+						if(result) {
+							meta.updateKey(key, value, myEngines[0], 10, expires);
+						}
+						else {
+							if(engines[myEngines[0]].length > 0) {
+								var expire = findKeyToExpire(myEngines[0], 10);
+								if (expire !== null) {
+									internalStorageRequests.remove(expire);
+									return arguments.callee.apply(this, arguments);
+								}
+							}
+						}
+					}
+					else {
+						result = engines[myEngines[0]].set(timestamp_name, value);
+						if(result) {
+							meta.updateKey(key, value, myEngines[0], 10, expires);
+						}
+					}
+					
+					return result;
+				}
+				catch(e) {
+					return false;
+				}
+            }
+            
+            storageInterface.remove = function(key) {
+                var ts, keyInfo;
+                
+                ts = internalStorageRequests.get(timestamp_name);
+                if(ts > meta.info.lastTimestamp) {
+                    meta.update();
+                }    
+                
+                keyInfo = meta.findKey(key);
+
+                if(keyInfo === undefined) {
+                    for (x = 0; x < myEngines.length; x++) {
+                        engines[myEngines[x]].remove(key);
+                    }
+                    return true;
+                }
+                else {
+                    if(arrayIndexOf.call(myEngines, keyInfo.storage) != -1) {
+                        meta.updateKey(key, undefined);
+                        meta.update();
+                        var val = engines[keyInfo.storage].get(key);
+                        
+                        return engines[keyInfo.storage].remove(key);
+                    }
+                    else {
+                        return null;
+                    }
+                }
+            }
+            
+            storageInterface.clear = function(/* engine1, engine2, ... */) {
+                /* NOTE: Be careful! If your engineList contains cookie this will wipe ALL cookies, which may be bad. */
+                
+                var enginesToClear = myEngines.slice(0);
+                if(arguments.length != 0) {
+                    for(var x = 0; x < myEngines.length; x++) {
+                        if(arrayIndexOf.call(arguments, myEngines[x]) == -1) {
+                            enginesToClear.splice(x, 1);
+                        }
+                    }
+                }
+                for(var i = 0; i < enginesToClear.length; i++) {
+                    meta.updateKey(undefined, undefined, enginesToClear[i]);
+                    engines[enginesToClear[i]].clear();
+                }
+                if(enginesToClear.length > 0) meta.update();
+            }
+
+            storageInterface.toString = function() {
+                var temp = myEngines.slice(0);
+                temp.splice(arrayIndexOf.call(temp, 'empty'), 1);
+                return Array.prototype.toString.call(temp);
+            }
+                        
+            return storageInterface;
+        }
+    }());
+    
+    internalStorageRequests = this.setStorageEngines('local', 'session', 'userdata');
+    cookieStorageRequests = this.setStorageEngines('cookie');
+
+    (function() {
+        var ts = getTimer(), expired = false, newCookies = false;
+        meta.update();
+        // Clear any expired keys from the meta info
+        for(var x in meta.info.keys) {
+            if(ts > meta.info.keys[x].expires && meta.info.keys[x].expires != -1) {
+                expired = true;
+                engines[meta.info.keys[x].storage].remove(x);
+                delete meta.info.keys[x];
+            }
+        }
+        if(expired === true) {
+            updateTimeStamp();
+            meta.update();
+        }
+        
+        // Cookies can be set by the server, need to add them in
+        var cookies = cookieStorageRequests.getAll();
+        for (var x in cookies) {
+            var keyInfo = meta.findKey(x);
+            
+            if(keyInfo === undefined) {
+                newCookies = true;
+                meta.info.keys[x] = {
+                    priority: 5,
+                    storage: 'cookie',
+                    expires: -1
+                }
+            }
+        }
+
+        if(newCookies === true) {
+            updateTimeStamp();
+            meta.update();
+        }
+        
+        meta.info.lastTimestamp = internalStorageRequests.get(timestamp_name) || ts;
+    }());
+    
+    setInterval(function() {
+        meta.update.call(meta);
+    }, updateTimer);
+} 
+//browserStorage = BrowserStorage.setStorageEngines('userdata');
+//browserStorage2 = BrowserStorage.setStorageEngines('local', 'session');

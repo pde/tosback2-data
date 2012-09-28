@@ -158,6 +158,7 @@ function launchGameday( params ) {
 		winName       = "GamedayWin",
 		isv4          = false,
 		isMLBgame     = false,
+		isWBCgame     = false,
 		thisWinName   = window.name,
 
 		parentIsMini  = thisWinName.indexOf('gdmini_') !== -1,
@@ -269,6 +270,17 @@ function launchGameday( params ) {
             h   : 368 
         },
 
+        // 2013 World Baseball Classic
+        "v6_wbc2013" : {
+            url     : '/wbc/2013/gameday/index.jsp?gid=' 
+                            + gid 
+                            + ( mode !== '' ? '&mode='+mode : '' )
+                            + ( env  !== '' ? '&env='+env : '' )
+                            + ( lang !== '' ? '&lang='+lang : '' ),
+		    w       : !parentIsMini ? window.innerWidth  : 990,
+		    h       : !parentIsMini ? window.innerHeight : 576
+        },
+
         "v5" : {
             url     : '/mlb/gameday/index.jsp?gid=' 
                             + gid 
@@ -285,12 +297,16 @@ function launchGameday( params ) {
 
     function getGamedayLink( params ) {
         var year = params.gid.substring( 0, 4 ),
+        	sport_code  = params.gid.substring( 21, 24 ),
             version;
 
         // TODO: put this logic in config?
 
         if( mode === 'mini' ) {
             version = 'v4_mini';
+        // 2013 World Baseball Classic
+        } else if( ((parseInt( year, 10 ) === 2012) || (parseInt( year, 10 ) === 2013)) && sport_code === 'int') {
+            version = 'v6_wbc2013';
         // 2010 and forward use v5 aka penguin
         } else if( parseInt( year, 10 ) >= 2010 ) {
             version = 'v5';
@@ -334,6 +350,14 @@ function launchGameday( params ) {
         // pop v4 gameday in new window
         } else if ( "v4".indexOf( gamedayLinkObj.version ) !== -1 ) {
             window.open( baseURL + gamedayLinkObj.url, 'gd_' + gid );
+
+        // open 2013 World Baseball Classic in current window
+        } else if ( "v6_wbc2013".indexOf( gamedayLinkObj.version ) !== -1 ) {
+            if( parentIsMini ) {
+                window.open( baseURL + gamedayLinkObj.url, 'gd_' + gid );
+            } else {
+                window.location.href = baseURL + gamedayLinkObj.url; 
+            }
 
         // open v5 gameday in current window
         } else if ( "v5".indexOf( gamedayLinkObj.version ) !== -1 ) {

@@ -619,6 +619,19 @@ HDM.registration = {
 	},
 	init : function(fbAppID){// lives in here because I don't know where mike may call this elsewhere. In any case, this is more legacy than anything..
 		// make sure this code isn't run twice..
+		
+		// this function is about to handle the profile picture pickup
+		window.parent.preview = function (o) { 
+			var profilePic = document.querySelector("#profileImage img"); 
+			if (o.type === 'file') { 
+				profilePic.src = (o.files) ? o.files[0].getAsDataURL() : 'file:///' + o.value; 
+			} else { 
+				profilePic.src = o.value || original; 
+			} 
+			$imageInputs = $("#upload_user_icon, #url_user_icon"); 
+			$imageInputs.not(o).attr('value', ''); 
+		}
+		
 		try{
 			if (!this._vars.initialized){
 				this._vars.initialized = true;
