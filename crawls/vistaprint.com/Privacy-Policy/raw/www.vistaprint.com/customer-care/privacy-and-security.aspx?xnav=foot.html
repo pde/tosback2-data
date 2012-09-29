@@ -16,7 +16,7 @@ window.vpSiteVersion="25.4";
 window.languageId=1;
 window.imageHost='http://www.vphosted.com';
 window.vpCookieDomain='.vistaprint.com';
-window._vp_page_guid = 'bbed0c8d-aae7-4a7a-a089-dc417eb6998d';
+window._vp_page_guid = '604e2990-a3fb-4459-a024-a425198856cf';
 window._vp_session_id = 1;
 var VP_CLIENT_EVENT_TYPE_Unknown = 0;
 var VP_CLIENT_EVENT_TYPE_Begin = 1;
@@ -27,6 +27,100 @@ var VP_CLIENT_EVENT_TYPE_DomLoad = 5;
 var VP_CLIENT_EVENT_TYPE_LandingPageLoad = 6;
 var VP_CLIENT_EVENT_TYPE_LandingPageLoadServer = 7;
 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                if(!window.__td){window.__MT=100;window.__ti=0;window.__td=[];window.__td.length=window.__MT;window.__noTrace=false;}
+
+var __instrumentationPingEvents={};
+
+function __instrumentationPingImpl(iEvent)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+
+var oRequest;
+if(typeof XMLHttpRequest!="undefined")
+{
+oRequest=new XMLHttpRequest();
+}
+else if(typeof ActiveXObject!="undefined")
+{
+oRequest=new ActiveXObject("MSXML2.XmlHttp");
+}
+
+if(!oRequest)
+{
+return;
+}
+
+var sQs=document.location.search;
+if(sQs.length>1)
+{
+sQs=sQs.substring(1);
+}
+
+var sUrl="/vp/tracking/client-event-logger.aspx"+
+"?d="+encodeURIComponent(new Date().toUTCString().replace('UTC','GMT'))+
+"&g="+window._vp_page_guid+
+"&s="+window._vp_session_id+
+"&e="+iEvent+
+"&p="+encodeURIComponent(document.location.pathname)+
+"&q="+encodeURIComponent(sQs)+
+"&b="+encodeURIComponent(navigator.userAgent)+
+"&ilp="+(document.location.search.indexOf("GP=")!=-1?"1":"0");
+
+if(window._vp_logical_page)
+{
+sUrl+="&lp="+encodeURIComponent(window._vp_logical_page);
+}
+
+oRequest.open("get",sUrl,true);
+oRequest.send(null);
+}__instrumentationPingImpl._vpfn='$vpfn_hiGQSQQ16c8BKaZbPGB1Qw5$0';
+
+function __instrumentationPing(iEvent)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+if(__instrumentationPingEvents[iEvent])
+{
+return;
+}
+
+__instrumentationPingEvents[iEvent]=true;
+
+if(window.isDebug)
+{
+__instrumentationPingImpl(iEvent);
+}
+else
+{
+try
+{
+__instrumentationPingImpl(iEvent);
+}
+catch(ex)
+{
+
+}
+}
+}__instrumentationPing._vpfn='$vpfn_Iml3U2Qk0tp5P$muKu3KRw48$0';
+
+function __instrumentationPingForEvent(sEvent,iEvent)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+__addEvent(window,sEvent,function $vpfn_7_Ogmx21_SfIdRMSVbABCA76$31(){if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}__instrumentationPing(iEvent);});
+}__instrumentationPingForEvent._vpfn='$vpfn_JiITeqifmHHtNe$$zDBNuA74$0';
+
+function __addEvent(oTarget,sEvent,fnHandler)
+{if(!window.__noTrace){__td[__ti]=arguments;__ti=__ti>=__MT?0:__ti+1;}
+if(oTarget.addEventListener)
+{
+oTarget.addEventListener(sEvent,fnHandler,false);
+}
+else if(oTarget.attachEvent)
+{
+oTarget.attachEvent("on"+sEvent,fnHandler);
+}
+}__addEvent._vpfn='$vpfn_YKcDGpYKLZXmgJTVW77Gkg79$0';
+
+__instrumentationPing(VP_CLIENT_EVENT_TYPE_Begin);
+__instrumentationPingForEvent('load', VP_CLIENT_EVENT_TYPE_Load);
+__instrumentationPingForEvent('beforeunload', VP_CLIENT_EVENT_TYPE_Unload);
+__instrumentationPingForEvent('unload', VP_CLIENT_EVENT_TYPE_Unload);
 window._vp_log_client_errors = true;
 } catch (ex) {}
 
@@ -1280,7 +1374,7 @@ window.__vp_dialog_map['LowPriceGuarantee'].options.parentNode=vp.ui.get('frmPag
             <div id="divPageId" style="display:none">16398</div>
 <div id="divInstitution" style="display:none">1</div>
 <div id="divPppSrcId" style="display:none">0870635663</div>
-<div id="divMachineId" style="display:none">4c5f91046859082e7b45694ffc2140c7</div>
+<div id="divMachineId" style="display:none">05caff8d168ff01d00317ae4bdb73fd6</div>
 <div id="divShopperId" style="display:none"></div>
 <div id="divVisitorId" style="display:none">0</div>
 

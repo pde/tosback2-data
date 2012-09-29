@@ -296,7 +296,7 @@ if (typeof jQuery != 'undefined') {
 
 					$('#ph_net_'+settings.site).css(settings.css.links_active);
 					$('a.ph_net_links').each( function() { jQuery(this).hover(callbacks.net_links_hover,callbacks.net_links_blur) } );
-					$('a.ph_net_links:not(#ph_net_bash):not(#ph_net_'+settings.site+'):not(#ph_net_alts):not(a.ph_alt_links)').each( callbacks.click );
+					$('a.ph_net_links:not(#ph_net_bash):not(#ph_net_'+settings.site+'):not(#ph_net_alts),a.ph_alt_links').each( callbacks.click );
 					//$('a#ph_net_bash').attr('href', $('a#ph_net_bash').attr('href')+'utm_source='+sites[settings.site].utmSafe+'&utm_medium=network-bar&utm_campaign='+sites[settings.site].utmSafe+'-networkbar'+(settings.isGay?'-gay':'') );
 
 					for( style in sites[settings.site].css ) {

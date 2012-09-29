@@ -121,6 +121,7 @@ dojo.addOnLoad(function () {
     { id: 'HD10WEB',    type: 'coupon' },
     { id: 'HDFREE',     type: 'coupon' },
     { id: 'HND10WB',    type: 'coupon' },
+    { id: 'HND49',      type: 'coupon' },
     { id: 'HD5WEB',     type: 'coupon' },
     { id: 'HDGIFT',     type: 'coupon' },
     { id: 'HOLLY',      type: 'coupon' },

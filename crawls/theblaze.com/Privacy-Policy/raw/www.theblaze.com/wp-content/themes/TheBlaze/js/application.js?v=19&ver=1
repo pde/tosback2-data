@@ -1,4 +1,16 @@
 var blazeuser = null; 
+
+(function(){
+	/*
+	 * THIS IS FOR TESTING ONLY PLEASE REMOVE BEFORE GOING TO PROD
+	 */
+	if( /dev\./.test(window.location.hostname) &&  /http\:\/\/dev\./.test(window.location.href)) {
+		jQuery('#postContent').prepend('<div class="sharing-tools share-tools-classic article-share-tools-top" data-engines="facebook,twitter,google,linkedin,comments,email,print,ad" >yes</div>');
+	}
+	//END OF DEV TESTING 
+})();
+
+
 function is_touch_device() {
 	try {
 		document.createEvent("TouchEvent");  
@@ -477,6 +489,7 @@ $(document).ready( function() {
 });
 
 	if($('.sharing-tools').length > 0  && !isMobile() && !isBot() ){
+		
 		(function(){
 		    var s = document.createElement('link');
 		    s.type = 'text/css',
