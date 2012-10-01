@@ -2195,6 +2195,16 @@ function CandidateSearchJobId()
     return false;
 }
 
+function ParticipantSearch()
+{
+    var re = /wizardstep\/Participants/i;
+    if(re.test(window.location))
+    {
+        return true;
+    }
+    return false;
+}
+
 JobGo.RegExp = {
 	escape : function(text) {
 		if (!arguments.callee.sRE) {
@@ -2215,13 +2225,14 @@ JobGo.Search = {
         init: function() {
             $('#gActions').attr('disabled', true);
             var jobId = CandidateSearchJobId();
+            var participants = ParticipantSearch();
             var rxMessageSend = /\/message\/(sendmessage|invitetorecruitment)\//i;
             var rxTypeOffer = /\/type\/offer\//i;
             $('#chk-all').click(function() {
                 $("input[name='itemCheckbox[]']").attr('checked', $('#chk-all').is(':checked'));
                 var c = ''; // general id hash
                 var jc = ''; // candidate id hash
-                if(jobId)
+                if(jobId || participants)
                 {
                     $("input[name='itemCheckbox[]']:checked")
                         .each(function(i,v)
@@ -2245,6 +2256,8 @@ JobGo.Search = {
                             if(jobId)
                             {
                                 newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
+                            } else if (participants) {
+                                newUrl = target + jc;
                             }
                             else
                             {
@@ -2264,7 +2277,7 @@ JobGo.Search = {
                 var all = true;
                 var c = ''; // general id hash
                 var jc = ''; // candidate id hash
-                if(jobId)
+                if(jobId || participants)
                 {
                     $("input[name='itemCheckbox[]']:checked").each(function(i,v)
                     {
@@ -2289,6 +2302,8 @@ JobGo.Search = {
                             if(jobId)
                             {
                                 newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
+                            } else if (participants) {
+                                newUrl = target + jc;
                             }
                             else
                             {

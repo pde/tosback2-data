@@ -306,8 +306,8 @@ Code to detect flash plug-in and version
 Based on  moock fpi [f.lash p.layer i.nspector]
  version: 1.3.5
  written by colin moock
-code maintained at: http://www.moock.org/webdesign/flash/detection/moockfpi/
- terms of use posted at: http://www.moock.org/terms/
+code maintained at: http://"ec"+"webs01".moock.org/webdesign/flash/detection/moockfpi/
+ terms of use posted at: http://"ec"+"webs01".moock.org/terms/
 */
 // #############################################
 // these are the user defined globals
@@ -977,22 +977,22 @@ function cookieValSegmentation() {
     // Random number 0 - 9
     var varRandy = llb_ab_cookie.getRandInt(10);
 
-	// Image - greater than 5 or 40%  (9,8,7,6) - 4 values = 40%
-	if (varRandy > 5) {
-	llb_ab_cookie.val = 1;
-
-	// Department - greater than 1 or 40% (1,2,3,4) - 4 values = 40%
-	} else if (varRandy > 1) {
-	llb_ab_cookie.val = 3;
-
-	// Text - equal to 1 or 10% (1) - 1 value = 10%
-	} else if (varRandy == 1){
-	llb_ab_cookie.val= 0;
+    // Image - greater than 5 or 40%  (9,8,7,6, 5) - 5 values = 50%
+	    if (varRandy >= 5) {
+		llb_ab_cookie.val = 1;
 	
-	// Control - else or (must be zero) 10%  (0) - 1 values 10%
-	} else {
-	llb_ab_cookie.val = 4;
-	}
+		// Department - greater than 1 or 40% (1,2,3,4) - 4 values = 40%  - Not used
+	    //   } else if (varRandy > 1) {
+		//llb_ab_cookie.val = 3;
+	
+		// Text - equal to 1,2, 3, 4 or 40% (1) - 1 value = 40%
+	    } else if (varRandy > 0){
+		llb_ab_cookie.val= 0;
+		
+		// Control - else or (must be zero) 10%  (0) - 1 values 10%
+	    } else {
+		llb_ab_cookie.val = 4;
+	    }
 
     llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
 }

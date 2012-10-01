@@ -1,7 +1,7 @@
 var ForeSee = {
     'version': '2.6.0',
     'Date:': '2/24/2009',
-    'enabled': true,
+    'enabled': false,
     'files': '/nyco/javascript/foresee/',
     //'files': 'http://<hostname>/foresee/',
     'id': '01YQVBh49IhZwxdcwM98Vg==',

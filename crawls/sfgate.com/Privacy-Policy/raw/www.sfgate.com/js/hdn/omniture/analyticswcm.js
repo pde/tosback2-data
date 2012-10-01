@@ -429,6 +429,14 @@ function getCanonicalURL() {
 	for (var intWhichLink = 0; intWhichLink < arrayLinks.length; intWhichLink++) {
 		if (arrayLinks[intWhichLink].getAttribute("rel") == "canonical") {
 			strCanonical = arrayLinks[intWhichLink].getAttribute("href");
+
+            // If the domain we're on is different than the one in the canonical URI, update the URI we pass to jump-time:
+            if (strCanonical.indexOf(document.domain) < 0) {
+                var arTmpCanonical = strCanonical.split('/');
+                var arTmpCurrentURI = window.location.href.split('/');
+                arTmpCanonical[2] = arTmpCurrentURI[2];
+                strCanonical = arTmpCanonical.join('/');
+            }
 			break;
 		}
 	}

@@ -16,7 +16,7 @@ if(!llCatDesc)var llCatDesc="";
 if(!llFlashPath)var llFlashPath="";
 if(!llPYOrecipts)var llPYOrecipts="";
 if(!llprodName)var llprodName="";
-if(!lledds)var lledds="";
+
 
  if (llProducts.length>1&&llProducts.charAt(llProducts.length-1)==","){
     llProducts=llProducts.substring(0,llProducts.length-1); //trim comma
@@ -121,9 +121,9 @@ if (pval("qei")){
    } else {
       llEvent+=",event16";
    }
-   // also, edds parm? when email link ..
-   if (pval("edds")) {
-       lledds=pval("edds")
+   // also, cid parm? when email link ..
+   if (pval("cid")) {
+       s_o_sc.eVar17=pval("cid");
    }
 }
 
@@ -164,7 +164,6 @@ s_o_sc.eVar7=llQSTerm;
 s_o_sc.eVar10=llKeyword;
 s_o_sc.eVar12=llCkSC;
 s_o_sc.eVar14=llLoginStatus;
-s_o_sc.eVar17=lledds;
 
 s_o_sc.prop7=s_o_sc.prop4;
 

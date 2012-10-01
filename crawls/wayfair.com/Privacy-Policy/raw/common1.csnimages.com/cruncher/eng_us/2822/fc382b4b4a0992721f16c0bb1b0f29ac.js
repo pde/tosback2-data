@@ -14,5 +14,5 @@ b.mix(b.namespace("Features"),{tests:c,add:function(d,e,f){c[d]=c[d]||{};c[d][e]
 a.throttle=function(c,b){b=(b)?b:(a.config.throttleTime||150);if(b===-1){return(function(){c.apply(null,arguments);});}var d=a.Lang.now();return(function(){var e=a.Lang.now();if(e-d>b){d=e;c.apply(null,arguments);}});};},"3.3.0",{requires:["yui-base"]});YUI.add("yui",function(a){},"3.3.0",{use:["yui-base","get","features","rls","intl-base","yui-log","yui-later","yui-throttle"]});
 /* CB:2822 RqV:2822 */
 /* RtV:2822 */
-/* Timer[finished]: 0.540972 ms */
+/* Timer[finish no-cache]: 2415.357113 ms */
 /* lang: eng_us*/

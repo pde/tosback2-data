@@ -1,0 +1,573 @@
+﻿/// <reference path="~/js/library/prototype.js"/>
+/// <reference path="~/js/library/scriptaculous.js"/>
+
+function CreateProductFeedList(parentDiv, location, nbrItems)
+{
+    var script = document.createElement('script');
+    script.src = 'http://cnt' + scEnvironment + '.hsn.com/feeds/' + location + '/JSON/?max=' + nbrItems + '&callback=FeedListReturn&targetDiv=' + parentDiv + '&rnd=' + Math.random();
+    script.type = 'text/javascript';
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+function FeedListReturn(json)
+{
+    if ($(json.TargetDiv) != null)
+    {
+        if (json.ResultSet != null && json.ResultSet != undefined && json.ResultSet.Items.length > 0)
+        {
+            BuildFeedList(json);
+        }
+        else
+            $(json.TargetDiv).hide();
+    }
+}
+
+
+function CreateProductFeedCarousel(targetDivName, location, nbrProductsPerPage, nbrOfPages)
+{
+    var nbrOfProducts = nbrProductsPerPage * nbrOfPages;
+    
+    var script = document.createElement('script');
+    script.src = 'http://cnt' + scEnvironment + '.hsn.com/feeds/' + location + '/JSON/?max=' + nbrOfProducts +  '&nbrOfPages=' + nbrOfPages +'&nbrProductsPerPage=' + nbrProductsPerPage + '&callback=ProductFeedReturn&targetDiv=' + targetDivName + '&rnd=' + Math.random();
+    script.type = 'text/javascript';
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+
+
+function ProductFeedReturn(json)
+{
+    if ($(json.TargetDiv) != null)
+    {
+        if (json.ResultSet != null && json.ResultSet != undefined && json.ResultSet.Items.length > 0)
+        {
+            if (BuildCarousel(json))
+            {
+                new CarouselV9(json.TargetDiv);
+//                $(json.TargetDiv).setStyle({ 'height': '99%' });
+
+//                if ($(json.TargetDiv).select('div#previousButton') == null)
+//                    alert('div#previousButton not found');
+//                else
+//                    alert('div#previousButton found');
+            }
+        }
+        else
+            $(json.TargetDiv).hide();
+    }
+}
+
+function BuildFeedList(jsonFeedList)
+{
+    var parentDivName = jsonFeedList.TargetDiv;
+
+    var parentDiv = $(parentDivName);
+
+    parentDiv.update('');
+
+    var topBar = new Element('div', { 'id': parentDivName + '_topBar' });
+    topBar.setStyle({ 'margin': '0', 'padding': '0' });
+    parentDiv.insert(topBar);
+
+    var subHeader = new Element('div', { 'id': parentDivName + '_subHeader' });
+    subHeader.setStyle({ 'margin': '0 0 5px' });
+    topBar.insert(subHeader);
+
+    var subHeaderText = new Element('h2', { 'class': 'TitleHdr' });
+    subHeaderText.update(jsonFeedList.FeedName);
+    subHeaderText.setStyle({ 'padding': '5px 0 10px 10px', 'margin': '0', 'color': '#007dca', 'fontFamily': 'Century Gothic,Arial', 'fontSize': '20px' });
+    subHeader.insert(subHeaderText);
+
+    var prodItem;
+    var prodAnchor;
+
+    var listDiv = new Element('div');
+    listDiv.setStyle({ 'padding': '0 10px' });
+    parentDiv.insert(listDiv);
+
+    var blueArrors = new Element("span", { 'class': 'blueArrowsSmall' });
+    blueArrors.update("»&nbsp;");
+
+    for (x = 0; x < jsonFeedList.ResultSet.Items.length; x++)
+    {
+        if (jsonFeedList.ResultSet.Items[x].text != "")
+        {
+            prodItem = new Element('div');
+            prodItem.setStyle({ 'padding': '3px 0', 'margin': '0' });
+            if (x > 0) prodItem.setStyle({ 'borderTop': '1px dotted #cccccc' });
+            prodItem.update('<span class="blueArrowsSmall">»&nbsp;</span><a style="font-size: 14px;" href="' + jsonFeedList.ResultSet.Items[x].url + jsonFeedList.UrlParams + '">' + jsonFeedList.ResultSet.Items[x].text + '</a>');
+            listDiv.insert(prodItem);
+        }
+    }
+}
+
+function BuildCarousel(jsonProductList )
+{
+    var nbrOfPages            = (jsonProductList.nbrOfPages == null) ? 3 : jsonProductList.nbrOfPages;
+    var nbrOfProductsPerPage  = (jsonProductList.nbrProductsPerPage == null) ? 5 : jsonProductList.nbrProductsPerPage;
+
+    var parentDivName        = jsonProductList.TargetDiv;
+
+    var parentDiv            = $(parentDivName);
+
+    parentDiv.update('');
+
+    parentDiv.addClassName('carouselV9');
+
+    var topBar = new Element('div', { 'id': parentDivName + '_topBar' });
+    topBar.setStyle({ 'width': '100%', 'clear': 'both', 'margin': '0 0 5px 0', 'padding': '0 0 5px 0', 'height': '32px', 'overflow': 'hidden'});
+    parentDiv.insert(topBar);
+
+    var subHeader = new Element('div', { 'id': parentDivName + '_subHeader' });
+    subHeader.setStyle({ 'cssFloat': 'left', 'margin': '0 0 0 10px' });
+    topBar.insert(subHeader);
+
+    var subHeaderText = Element('h2', { 'class': 'TitleHdr' });
+    subHeaderText.update(jsonProductList.FeedName);
+    subHeaderText.setStyle({ 'padding': '3px 0 0 0', 'margin': '0px', 'color': '#007dca', 'fontFamily': 'Century Gothic,Arial', 'fontSize': '20px', 'lineHeight': '28px' });
+    subHeader.insert(subHeaderText);
+
+    var navigation = new Element('div', { 'id': parentDivName + '_navigation' });
+    navigation.setStyle({ 'cssFloat': 'right', 'paddingTop': '10px', 'width': '185px' });
+    topBar.insert(navigation);
+
+    var previousButton = new Element('div', { 'id': 'previousButton', 'class': 'inactive' });
+    previousButton.update('previous');
+    navigation.insert(previousButton);
+
+    var pageNumbers = new Element('div', { 'id': parentDivName + '_pageNumbers' });
+    pageNumbers.setStyle({ 'cssFloat': 'left', 'margin': '1px 10px 0 0' });
+    navigation.insert(pageNumbers);
+
+    var page;
+    for ( y = 1; y <= nbrOfPages; y++ )
+    {
+        page = new Element('div', { 'class': 'selector' });
+        
+        if ( y == 1 )
+            page.setStyle({ 'cssFloat': 'left', 'font-size': '12px', 'font-weight': 'bold', 'text-decoration': 'none', 'color': '#222' });
+        else
+            page.setStyle({ 'cssFloat': 'left', 'font-size': '12px', 'font-weight': 'bold', 'color': '#007dca', 'cursor': 'pointer', 'marginLeft': '10px' });
+        
+        page.update(y.toString());
+        pageNumbers.insert(page);
+    }
+
+
+    var nextButton = new Element('div', { 'id': 'nextButton' });
+    nextButton.update('next');
+    navigation.insert(nextButton);
+
+    var curItem = nbrOfProductsPerPage - 1;
+    var curPage = -1;
+    var pageContentDiv;
+    var prodDiv;
+    var prodNameDiv;
+    var prodImgAnchor;
+    var prodNameAnchor;
+    var prodImg;
+    var priceSpan;
+    var priceParagraph;
+    var shortProdName;
+    var imgLocation = 'http://dyn-images.hsni.com/is/image/HomeShoppingNetwork/';
+
+    var prodWidth = 100 / nbrOfProductsPerPage;
+    
+    for (x = 0; x < jsonProductList.ResultSet.Items.length; x++)
+    {
+
+        curItem++;
+
+        if (curItem == nbrOfProductsPerPage)
+        {
+            curPage++;
+            curItem = 0;
+            pageContentDiv = new Element('div', { 'id': 'Content' + curPage, 'class': 'CarouselV9Page' });
+            if (curPage == 0)
+                pageContentDiv.setStyle({ 'height': '227px', 'width': '100%', 'margin': '5px 10px 0 0', 'position': 'relative', 'z-index': '5' });
+            else
+                pageContentDiv.setStyle({ 'height': '227px', 'width': '100%', 'margin': '5px 10px 0 0', 'position': 'relative', 'z-index': '1' });
+
+            parentDiv.insert(pageContentDiv);
+        }
+
+
+        prodDiv = new Element('div', { 'align': 'center' });
+        prodDiv.setStyle({ 'width': prodWidth.toString() + '%', 'float': 'left', 'text-align': 'center' });
+
+        prodImgAnchor = new Element('a', { 'href': 'http://www' + scEnvironment + '.hsn.com/product_p-' + jsonProductList.ResultSet.Items[x].webp_id + '_xp.aspx?' + jsonProductList.UrlParams });
+
+        prodImgAnchor.setStyle({ 'width': '126px', 'height': '126px' });
+
+
+        prodImg = new Element('img', { 'alt': jsonProductList.ResultSet.Items[x].prod_name, 'height': '126', 'width': '126', 'src': imgLocation + jsonProductList.ResultSet.Items[x].ImageName + '?$icn126$' });
+        prodImgAnchor.insert(prodImg);
+
+        prodDiv.insert(prodImgAnchor);
+
+        prodDiv.insert(new Element('div'));
+
+        prodNameDiv = new Element('div', { 'align': 'center' });
+        prodNameDiv.setStyle({ 'width': '85%' });
+
+        shortProdName = (jsonProductList.ResultSet.Items[x].prod_name.length > 55) ? jsonProductList.ResultSet.Items[x].prod_name.truncate(49, '...') : jsonProductList.ResultSet.Items[x].prod_name;
+
+        prodNameAnchor = new Element('a', { 'href': 'http://www' + scEnvironment + '.hsn.com/product_p-' + jsonProductList.ResultSet.Items[x].webp_id + '_xp.aspx?' + jsonProductList.UrlParams });
+        prodNameAnchor.setStyle({ 'width': '130px' });
+        prodNameAnchor.update(shortProdName);
+        prodNameDiv.insert(prodNameAnchor);
+        prodNameDiv.insert((new Element('div')).update('&nbsp;'));
+        prodNameDiv.insert(new Element('div'));
+
+        priceSpan = new Element('span', { 'class': 'pcelltop' });
+        priceParagraph = new Element('p');
+
+        //debugger;
+        // Matrix Pricing
+        if (jsonProductList.ResultSet.Items[x].min_price != null && jsonProductList.ResultSet.Items[x].max_price != null)
+        {
+
+            if (jsonProductList.ResultSet.Items[x].min_price == jsonProductList.ResultSet.Items[x].max_price)
+            {
+
+                if (jsonProductList.ResultSet.Items[x].min_price != jsonProductList.ResultSet.Items[x].hsn_original_price)
+                {
+                    priceParagraph.update('HSN Price: ' + jsonProductList.ResultSet.Items[x].hsn_original_price);
+                    priceParagraph.className = "pdhsn"
+                    priceSpan.insert(priceParagraph);
+                    prodNameDiv.insert(priceSpan);
+
+
+                    priceSpan = new Element('span', { 'class': 'pcell_btm"' });
+                    priceParagraph = new Element('p', { 'class': 'pdsale' });
+                    priceParagraph.update(jsonProductList.ResultSet.Items[x].Label + ': ' + jsonProductList.ResultSet.Items[x].sale_price);
+                    priceSpan.insert(priceParagraph);
+                    prodNameDiv.insert(priceSpan);
+                }
+                else
+                {
+                    priceParagraph.update(jsonProductList.ResultSet.Items[x].Label + ': ' + jsonProductList.ResultSet.Items[x].hsn_original_price);
+                    priceParagraph.className = "pdhsn"
+                    priceSpan.insert(priceParagraph);
+                    prodNameDiv.insert(priceSpan);
+                }
+            }
+            // FROM / TO PRICING
+            else
+            {
+                priceParagraph.update(jsonProductList.ResultSet.Items[x].Label + ' From: ' + jsonProductList.ResultSet.Items[x].min_price + ' - ' + jsonProductList.ResultSet.Items[x].max_price);
+
+                if (jsonProductList.ResultSet.Items[x].Label != 'HSN Price' && jsonProductList.ResultSet.Items[x].Label != 'Price')
+                    priceParagraph.className = "pdsale"
+                else
+                    priceParagraph.className = "pdhsn"
+
+                priceSpan.insert(priceParagraph);
+                prodNameDiv.insert(priceSpan);
+            }
+        }
+        // NON MATRIX PRICING
+        else
+        {
+            if (jsonProductList.ResultSet.Items[x].hsn_original_price != "$0.00")
+                priceParagraph.update('HSN Price: ' + jsonProductList.ResultSet.Items[x].hsn_original_price);
+            else
+                priceParagraph.update('HSN Price: ' + jsonProductList.ResultSet.Items[x].sale_price);
+                
+            priceParagraph.className = "pdhsn"
+            priceSpan.insert(priceParagraph);
+            prodNameDiv.insert(priceSpan);
+
+
+            if (jsonProductList.ResultSet.Items[x].Label != 'HSN Price' && jsonProductList.ResultSet.Items[x].Label != 'Price')
+            {
+                priceSpan = new Element('span', { 'class': 'pcell_btm"' });
+                priceParagraph = new Element('p', { 'class': 'pdsale' });
+                priceParagraph.update(jsonProductList.ResultSet.Items[x].Label + ': ' + jsonProductList.ResultSet.Items[x].sale_price);
+                priceSpan.insert(priceParagraph);
+                prodNameDiv.insert(priceSpan);
+            }
+            else if (jsonProductList.ResultSet.Items[x].sale_price != jsonProductList.ResultSet.Items[x].hsn_original_price)
+            {
+                priceSpan = new Element('span', { 'class': 'pcell_btm"' });
+                priceParagraph = new Element('p', { 'class': 'pdsale' });
+                priceParagraph.update('Sale Price: ' + jsonProductList.ResultSet.Items[x].sale_price);
+                priceSpan.insert(priceParagraph);
+                prodNameDiv.insert(priceSpan);
+            }
+            
+            
+        }
+
+        prodDiv.insert(prodNameDiv);
+        
+        pageContentDiv.insert(prodDiv);
+    }
+
+    return true;
+}
+
+
+var CarouselV9 = Class.create({
+    page: 0,
+    pageCount: null,
+    Carousel: null,
+    Pages: null,
+    PreviousButton: null,
+    NextButton: null,
+    Selectors: null,
+
+    ShowPrevious: function()
+    {
+        if (this.page > 0)
+        {
+
+            this.NextButton.removeClassName('inactive');
+            this.Pages.each(function(item)
+            {
+                item.setStyle({ 'display': 'none' });
+            });
+
+            this.Selectors.each(function(item)
+            {
+                item.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                item.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                item.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            });
+
+            this.page -= 1;
+            this.Pages[this.page].setStyle({ 'display': 'block' });
+            this.Selectors[this.page].setStyle({ 'color': '#222',
+                'cursor': 'default',
+                'textDecoration': 'none'
+            });
+
+            this.Selectors[this.page].stopObserving('mouseover');
+            this.Selectors[this.page].stopObserving('mouseout');
+
+            if (this.NextButton.getStyle('color') != '#007dca')
+            {
+                this.NextButton.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                this.NextButton.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                this.NextButton.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            }
+
+            if (this.page == 0)
+            {
+                this.PreviousButton.addClassName('inactive');
+                this.PreviousButton.setStyle({ 'color': '#666',
+                    'cursor': 'default',
+                    'textDecoration': 'none'
+                });
+                this.PreviousButton.stopObserving('mouseover');
+                this.PreviousButton.stopObserving('mouseout');
+            }
+        }
+    },
+
+    ShowNext: function()
+    {
+        if (this.page < this.pageCount - 1)
+        {
+
+            this.PreviousButton.removeClassName('inactive');
+
+            var allImages = this.Carousel.select('img');
+            allImages.each(function(img)
+            {
+                if (img.src.indexOf('loading') > -1)
+                    img.src = img.readAttribute('tag');
+            });
+
+            this.Pages.each(function(item)
+            {
+                $(item).setStyle({ 'display': 'none' });
+            });
+
+            this.Selectors.each(function(item)
+            {
+                item.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                item.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                item.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            });
+
+            this.page += 1;
+            this.Pages[this.page].setStyle({ 'display': 'block' });
+            this.Selectors[this.page].setStyle({ 'color': '#222',
+                'cursor': 'default',
+                'textDecoration': 'none'
+            });
+
+            this.Selectors[this.page].stopObserving('mouseover');
+            this.Selectors[this.page].stopObserving('mouseout');
+
+            if (this.PreviousButton.getStyle('color') != '#007dca')
+            {
+                this.PreviousButton.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                this.PreviousButton.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                this.PreviousButton.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            }
+
+            if (this.page == (this.pageCount - 1))
+            {
+                this.NextButton.addClassName('inactive');
+                this.NextButton.setStyle({ 'color': '#666',
+                    'cursor': 'default',
+                    'textDecoration': 'none'
+                });
+                this.NextButton.stopObserving('mouseover');
+                this.NextButton.stopObserving('mouseout');
+            }
+        }
+    },
+
+    SelectPage: function()
+    {
+        if (this.page != $A(arguments)[0])
+        {
+            var allImages = this.Carousel.select('img');
+            allImages.each(function(img)
+            {
+                if (img.src.indexOf('loading') > -1)
+                    img.src = img.readAttribute('tag');
+            });
+
+            this.page = $A(arguments)[0];
+            this.Pages.each(function(item)
+            {
+                $(item).setStyle({ 'display': 'none' });
+            });
+
+            this.Selectors.each(function(item)
+            {
+                item.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                item.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                item.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            });
+
+            this.Pages[this.page].setStyle({ 'display': 'block' });
+            this.Selectors[this.page].setStyle({ 'color': '#222',
+                'cursor': 'default',
+                'textDecoration': 'none'
+            });
+
+            this.Selectors[this.page].stopObserving('mouseover');
+            this.Selectors[this.page].stopObserving('mouseout');
+
+            if (this.page == 0)
+            {
+                this.PreviousButton.addClassName('inactive');
+                this.NextButton.removeClassName('inactive');
+                this.PreviousButton.setStyle({ 'color': '#666',
+                    'cursor': 'default',
+                    'textDecoration': 'none'
+                });
+                this.PreviousButton.stopObserving('mouseover');
+                this.PreviousButton.stopObserving('mouseout');
+            }
+            else
+            {
+                if (this.PreviousButton.getStyle('color') != '#007dca')
+                {
+                    this.PreviousButton.removeClassName('inactive');
+                    this.PreviousButton.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                    this.PreviousButton.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                    this.PreviousButton.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+                }
+            }
+
+            if (this.page == (this.pageCount - 1))
+            {
+                this.NextButton.addClassName('inactive');
+                this.PreviousButton.removeClassName('inactive');
+                this.NextButton.setStyle({ 'color': '#666',
+                    'cursor': 'default',
+                    'textDecoration': 'none'
+                });
+                this.NextButton.stopObserving('mouseover');
+                this.NextButton.stopObserving('mouseout');
+            }
+            else
+            {
+                if (this.NextButton.getStyle('color') != '#007dca')
+                {
+                    this.NextButton.removeClassName('inactive');
+                    this.NextButton.setStyle({ 'color': '#007dca', 'cursor': 'pointer' });
+                    this.NextButton.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                    this.NextButton.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+                }
+            }
+        }
+    },
+
+    initialize: function(divID)
+    {
+        if (!divID)
+        {
+            throw new Error(1000, "Invalid Carosuel Parameter: divID = " + divID);
+            return;
+        }
+        this.Carousel = $(divID);
+        this.Pages = this.Carousel.select('.CarouselV9Page');
+
+        var pageHeight = this.Pages.first().getHeight();
+        this.Pages.each(function(pg)
+        {
+            var divs = pg.select('div');
+            divs.each(function(d)
+            {
+                if (d.getHeight() > pageHeight)
+                    pageHeight = d.getHeight();
+            });
+            if (pg != this.Pages.first())
+                pg.setStyle({ 'display': 'none' });
+        } .bind(this));
+        this.Pages.each(function(pg)
+        {
+            pg.setStyle({ 'height': pageHeight + 'px' });
+        });
+
+        var carouselHeight = pageHeight + 50;
+        this.Carousel.setStyle({ 'height': carouselHeight + 'px' });
+
+        var nav = $(this.Carousel.id + '_navigation');
+        if (nav == null)
+        {
+            this.PreviousButton = this.Carousel.select('div#previousButton').first();
+            this.NextButton = this.Carousel.select('div#nextButton').first();
+        }
+        else
+        {
+            nav.childElements().each(function(ele){
+                if(ele.id == 'previousButton')
+                    this.PreviousButton = ele;
+                if(ele.id == 'nextButton')
+                    this.NextButton = ele;
+            }.bind(this));
+        }
+
+        if(this.PreviousButton)
+            this.PreviousButton.observe('click', this.ShowPrevious.bind(this));
+        if(this.NextButton)
+            this.NextButton.observe('click', this.ShowNext.bind(this));
+
+        this.Selectors = this.Carousel.select('.selector');
+        this.pageCount = this.Selectors.length;
+        this.Selectors.each(function(item)
+        {
+            item.observe('click', this.SelectPage.bind(this, this.Selectors.indexOf(item)));
+            if (this.Selectors.indexOf(item) > 0)
+            {
+                item.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+                item.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+            }
+        } .bind(this));
+        if (this.NextButton != null)
+        {
+            this.NextButton.observe('mouseover', function(e) { Event.element(e).setStyle({ 'textDecoration': 'underline' }); });
+            this.NextButton.observe('mouseout', function(e) { Event.element(e).setStyle({ 'textDecoration': 'none' }); });
+        }
+    }
+});

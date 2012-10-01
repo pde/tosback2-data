@@ -168,11 +168,9 @@ jQuery(document).ready(function() {
 					case 'flynavId-1766616':
 						jQuery('#d3-1766616').css('background-image','url(/images/3d-women-blue_920x245.jpg)').show();
 					break;
-				/*	-- Removed Pink Pony	
 					case 'flynavId-1870143':
 						jQuery('#d3-1870143').css('background-image','url(/images/3d-women-pinkpony_920x245.jpg)').show();
 					break;
-				*/	
 					case 'flynavId-10848464':
 						jQuery('#d3-10848464').css('background-image','url(/images/3d-women-rlx_920x245.jpg)').show();
 					break;

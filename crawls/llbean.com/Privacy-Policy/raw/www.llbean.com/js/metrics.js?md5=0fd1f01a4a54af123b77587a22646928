@@ -1,5 +1,12 @@
 /*requires s_code.js*/
 
+function passMetricObjectAndSendPageTag ( objRef ) {
+     for (key in objRef ){
+         s_o_sc[key]=objRef[key];
+     }
+     sendMetricTag();
+}
+
 function sendMetricTag () {
    // for layer calls
    if (typeof ll_o=="object"){
@@ -460,7 +467,7 @@ function getMemberId(){
 
 
 s_o_sc.eVar41="D=c1";
-s_o_sc.eVar42=ll_o.prop10;
+s_o_sc.eVar42=s_o_sc.prop10;
 s_o_sc.eVar43=getMemberId();
 
 //personalization 
@@ -606,7 +613,7 @@ var google_conversion_value = 0;
 
 llg_ab.writeTag=function(lbl){
    google_conversion_label = llg_ab[lbl];
-   document.writeln("<script type='text/javascript' src='http://www.googleadservices.com/pagead/conversion.js'></script>");
+   document.writeln("<script type='text/javascript' src='"+ location.protocol +"//www.googleadservices.com/pagead/conversion.js'></script>");
 }
 
 llg_ab.handleSegCookie = function(pgm,seg){
@@ -674,6 +681,7 @@ function sendMetricsTagLoginLayer () {
    s_o_sc.pageName='Log In (LoginLayer)';
    s_o_sc.prop4='LogInLayer';
    s_o_sc.prop7='LogInLayer';
+   s_o_sc.events='';
 
    sendMetricTag();
 

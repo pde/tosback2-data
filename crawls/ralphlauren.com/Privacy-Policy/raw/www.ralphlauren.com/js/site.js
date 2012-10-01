@@ -107,3 +107,55 @@ Event.observe(window, 'load', function(e){
 		
 	});
 });
+
+function setCookie(c_name,value,exdays) {
+	var exdate = new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value = escape(value) + ((exdays==null) ? "" : "; expires=" + exdate.toUTCString());
+	document.cookie = c_name + "=" + c_value + '; path=/';
+}
+
+function getCookie(c_name) {
+	var i,x,y,ARRcookies = document.cookie.split(";");
+	for (i = 0; i < ARRcookies.length; i++) {
+	  x = ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+	  x = x.replace(/^\s+|\s+$/g,"");
+	  if (x == c_name) {
+	    return unescape(y);
+      }
+	}
+}
+
+function populateGET() {
+  window.get = {};
+  var params = location.search.slice(1).split('&');
+  for(var i=0,len=params.length;i<len;i++) {
+    var keyVal = params[i].split('=');
+    try {
+    	window.get[decodeURIComponent(keyVal[0])] = decodeURIComponent(keyVal[1]);
+  	} catch(err) {
+    	window.get[keyVal[0]] = keyVal[1];
+  	}
+  }
+}
+
+/* called from topnav.js jquery on load because topnav.js loads after jquery.1.4.2 */
+function attachStickyView() {
+    populateGET();
+    var newsize = (window.get['view']) ? window.get['view'] : getCookie('viewsizecookie');
+    if (newsize) {
+   		newsize = (newsize == 99) ? 'all' : newsize; /* another Polo USA patch */ 
+        setCookie('viewsizecookie', newsize, 365);
+        jQuery('a[href*="family"]').each(function (index) {
+            var href = jQuery(this).attr('href');
+        	var html = jQuery(this).html(); /* hacky patch for Polo USA since it doesn't include a view param on the back to 15 <a> */
+            if (href.indexOf('view') == -1 && href.indexOf('pg') == -1 && html.substr(0,10) !== 'Back to 15') {
+            	jQuery(this).attr('href', href + '&view=' + newsize);
+            }
+            if (href.indexOf('view') == -1 && href.indexOf('pg') == -1 && html.substr(0,10) == 'Back to 15') {
+            	jQuery(this).attr('href', href + '&view=15');
+            }
+        });
+    }
+}

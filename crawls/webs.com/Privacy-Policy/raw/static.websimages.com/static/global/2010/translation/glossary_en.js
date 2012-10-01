@@ -163,9 +163,9 @@ var glossary = {
 	spotlight_top_50: "Spotlight: Top 50",
 	
 	divPromotion: "Promotion",
-	google_ad_credits: "Google Ad Credits",
+	google_ad_credits: "How to Redeem Google AdWords Credit",
 	facebook_ad_credits: "Facebook Ad Credits",
-	google_ad_tos: "Google Ads Terms of Service",
+	google_ad_tos: "Google AdWords Terms of Service",
 	facbook_ad_tos: "Facebook Ads Terms of Service",
 	
 	divDomainLookup: "Domain Lookup",

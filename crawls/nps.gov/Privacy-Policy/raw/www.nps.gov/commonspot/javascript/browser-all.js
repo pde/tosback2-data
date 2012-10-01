@@ -63,10 +63,11 @@ function GetHttpRequest(counter, fileID, fileName, fileType, arrFiles)
 			}
 			catch(e)
 			{ 
-				connections[counter] = false; 
+				connections[counter] = false;
 			}
-		}	
+		}
 	}
+	var stop = true;
 	if (connections[counter])
 	{
 		connections[counter].onreadystatechange = function()
@@ -79,20 +80,26 @@ function GetHttpRequest(counter, fileID, fileName, fileType, arrFiles)
 					nextCounter = counter + 1;
 					if (nextCounter < arrFiles.length)
 					{
+						stop = false;
 						GetHttpRequest(nextCounter, arrFiles[nextCounter].fileID, arrFiles[nextCounter].fileName, arrFiles[nextCounter].fileType, arrFiles);
 					}
 					else
 						setCommonspot();
 				}
-				else
+				// alert error unless it's just a request abort
+				// there are other cases that look like this (request to a different domain, http request to an https server...), no real way to distinguish them
+				else if (connections[counter].status != 0 || connections[counter].statusText != '')
+					alert('Ajax request error: ' + connections[counter].statusText + ' (' + connections[counter].status + ')');
+				if (stop)
 				{
-					alert('XML request error: ' + connections[counter].statusText + ' (' + connections[counter].status + ')');
+					connections[counter].abort();
+					connections = [];
 				}
 			}
 		}
 		connections[counter].open('GET', fileName, true);
-		connections[counter].send("");		 
-	}	
+		connections[counter].send("");
+	}
 };
 
 function loadDashboardFiles(arrFiles)
@@ -315,58 +322,86 @@ function unescapeHTML(msg)
 
 // this function is duplicated in browser-all.js and util.js; if you change one, change the other!
 function BrowserCheck() {
-	var b=navigator.appName.toString();
-	var up=navigator.platform.toString();
-	var ua=navigator.userAgent.toString().toLowerCase();
-	var re_opera=/Opera.([0-9\.]*)/i;
-	var re_msie=/MSIE.([0-9\.]*)/i;
-	var re_gecko=/gecko/i;
-	var re_safari=/safari\/([\d\.]*)/i;	
-	var re_mozilla=/firefox\/([\d\.]*)/i;
+	var b = navigator.appName.toString();
+	var b_ver;
+	var up = navigator.platform.toString();
+	var ua = navigator.userAgent.toString().toLowerCase();
+	var re_opera = /Opera.([0-9\.]*)/i;
+	var re_msie = /MSIE.([0-9\.]*)/i;
+	var re_gecko = /gecko/i;
+	// mozilla/5.0 (macintosh; u; intel mac os x 10_6_7; en-us) applewebkit/533.20.25 (khtml, like gecko) version/5.0.4 safari/533.20.27
+	var re_safari = /safari\/([\d\.]*)/i;
+	var re_mozilla = /firefox\/([\d\.]*)/i;
+	var re_chrome = /chrome\/([\d\.]*)/i;
+	var ie_documentMode = 0;
 	var browserType = {};
-	browserType.mozilla=browserType.ie=browserType.opera=r=false;
-	browserType.version = (ua.match( /.+(?:rv|it|ra|ie|me)[\/: ]([\d.]+)/ ) || [])[1];
+	browserType.mozilla = browserType.ie = browserType.opera = r = false;
+	browserType.version = (ua.match(/.+(?:rv|it|ra|ie|me)[\/: ]([\d.]+)/) || [])[1];
 	browserType.chrome = /chrome/.test(ua);
 	browserType.safari = /webkit/.test(ua) && !/chrome/.test(ua);
 	browserType.opera = /opera/.test(ua);
 	browserType.ie = /msie/.test(ua) && !/opera/.test(ua);
 	browserType.mozilla = /mozilla/.test(ua) && !/(compatible|webkit)/.test(ua);
-	if(ua.match(re_opera)) 
+	
+	if (ua.match(re_opera))
 	{
-		r=ua.match(re_opera);
-		browserType.version=parseFloat(r[1]);
+	    r = ua.match(re_opera);
+	    browserType.version = parseFloat(r[1]);
 	}
-	else if(ua.match(re_msie)) 
+	else if (ua.match(re_msie))
 	{
-		r=ua.match(re_msie);
-		browserType.version=parseFloat(r[1]);
+	    r = ua.match(re_msie);
+	    browserType.version = parseFloat(r[1]);
+	    ie_documentMode = browserType.version;
+	    if (browserType.version <= 7)
+	    {
+	        re_ver = /trident\/([\d\.]*)/i;
+	        r = ua.match(re_ver);
+	        // in IE compat mode, trident=4.0 (IE8), =5.0 (IE9), =6.0 (IE10) etc, i.e, version=trident+4.
+	        if (r && parseFloat(r[1]) >= 4)
+	        {
+	            browserType.version = parseFloat(r[1]) + 4;
+	            ie_documentMode = document.documentMode;
+	        }
+	    }
 	}
-	else if(ua.match(re_safari)) 
+	else if (browserType.safari && !browserType.chrome)
 	{
-		browserType.version=1.4;
+	    re_ver = /version\/([\d\.]*)/i;
+	    if (ua.match(re_ver))
+	    {
+	        r = ua.match(re_ver);
+	        browserType.version = parseFloat(r[1]);
+	    }
 	}
-	else if(ua.match(re_gecko)) 
+	else if (browserType.chrome)
 	{
-		var re_gecko_version=/rv:\s*([0-9\.]+)/i;
-		r=ua.match(re_gecko_version);
-		browserType.version=parseFloat(r[1]);
-		if (ua.match(re_mozilla))
-		{
-			r=ua.match(re_mozilla);
-			browserType.version=parseFloat(r[1]);
-		}		
+	    b_ver = ua.match(re_chrome);
+	    r = b_ver[1].split('.');
+	    browserType.version = parseFloat(r[0]);
+	}
+	else if (ua.match(re_gecko))
+	{
+	    var re_gecko_version = /rv:\s*([0-9\.]+)/i;
+	    r = ua.match(re_gecko_version);
+	    browserType.version = parseFloat(r[1]);
+	    if (ua.match(re_mozilla))
+	    {
+	        r = ua.match(re_mozilla);
+	        browserType.version = parseFloat(r[1]);
+	    }
 	}
 	else if (ua.match(re_mozilla))
 	{
-		r=ua.match(re_mozilla);
-		browserType.version=parseFloat(r[1]);
+	    r = ua.match(re_mozilla);
+	    browserType.version = parseFloat(r[1]);
 	}
-	browserType.windows=browserType.mac=browserType.linux=false;
-	browserType.Platform=ua.match(/windows/i)?"windows":(ua.match(/linux/i)?"linux":(ua.match(/mac/i)?"mac":ua.match(/unix/i)?"unix":"unknown"));
-	this[browserType.Platform]=true;
-	browserType.v=browserType.version;
-	browserType.valid=browserType.ie&&browserType.v>=6||browserType.mozilla&&browserType.v>=1.4;
-	browserType.okToAuthor=browserType.ie&&browserType.v>=7||browserType.mozilla&&browserType.v>=2;
+	browserType.windows = browserType.mac = browserType.linux = false;
+	browserType.Platform = ua.match(/windows/i) ? "windows" : (ua.match(/linux/i) ? "linux" : (ua.match(/mac/i) ? "mac" : ua.match(/unix/i) ? "unix" : "unknown"));
+	this[browserType.Platform] = true;
+	browserType.v = browserType.version;
+	browserType.valid = browserType.ie && browserType.v >= 6 || browserType.mozilla && browserType.v >= 1.4 || browserType.safari && browserType.v >= 5 || browserType.chrome && browserType.v >= 12;
+	browserType.okToAuthor = (browserType.ie && browserType.v >= 8 && ie_documentMode >= 7) || (browserType.mozilla && browserType.v >= 3.6);
 	return browserType;
 };
 

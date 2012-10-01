@@ -47,6 +47,9 @@ s.prop33=sc_code_ver;
 function s_doPlugins(s) {
 	/* Add calls to plugins here */
 
+	/* TNT plugin calls */
+	s.tnt=s.trackTNT();
+
 	var myDfaFlag = 0;
 
     myDfaFlag = s.getQueryParam('dfaid');
@@ -190,6 +193,16 @@ function Set_Year() {
         }
     return year;
 }
+
+
+/*
+* TNT Integration Plugin v1.0
+*/
+s.trackTNT=new Function("v","p","b",""
++"var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(s."
++"getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
++"]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
+
 
 /*
  * Utility Function: vpr - set the variable vs with value v
