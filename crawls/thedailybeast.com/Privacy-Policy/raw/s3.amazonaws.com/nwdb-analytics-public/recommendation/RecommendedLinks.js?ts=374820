@@ -1,0 +1,1587 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/american-airlines-suffers-its-worst-week-ever.html",' +
+                '"title": "American Airlines Suffers Its Worst Week Ever",' +
+                '"rubric": "FLYING LOW",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "de33f136c46d6623bb7198faf3472186"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-s-bizarre-lyme-disease-offensive.html",' +
+                '"title": "Mitt&rsquo;s Bizarre Lyme Disease Offensive",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2a2d47da8a50b878c7d8bf4dcfe85b03"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/barack-obama-keeps-mitt-romney-on-defensive-in-first-presidential-debate.html",' +
+                '"title": "Mitt Romney Holds His Own Against Barack Obama in First Presidential Debate",' +
+                '"rubric": "Frontal Assault",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4995d833a22b7e0342ecddf3fd1849eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/presidential-debate-interactive.html",' +
+                '"title": "Presidential Debate Dashboard",' +
+                '"rubric": "Presidential Debate",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8eb0d06f9537287904f18abb4b81492c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/why-mitt-romney-is-trapped-by-his-negative-narrative.html",' +
+                '"title": "Why Mitt Romney Is Trapped By His Negative Narrative",' +
+                '"rubric": "Press Piles On",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "054b80aed924bae1e764bea73fa24c46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/05/04/speed-read-12-naughty-bits-from-50-shades-darker.html",' +
+                '"title": "Speed Read: 12 Naughty Bits From &lsquo;50 Shades Darker&rsquo;",' +
+                '"rubric": "Book 2",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a7204298f06e42b9befdbf761c07462e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/speed-read-11-juiciest-bits-from-philip-norman-s-biography-of-mick-jagger.html",' +
+                '"title": "Speed Read: 11 Juiciest Bits From Philip Norman&rsquo;s Biography of Mick Jagger",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "23abe17449b2adfd172233b4da44a861"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2012/10/02/starlings-dive-bomb-the-autobahn-more-animal-suicides-photos.html",' +
+                '"title": "Starlings Dive-Bomb the Autobahn &amp; More Animal Suicides (PHOTOS)",' +
+                '"rubric": "Shocking Photos",' +
+                '"topic": "World",' +
+                '"urlHashCode": "abd573925f8e8b062022349cfa407968"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/why-mitt-romney-is-trapped-by-his-negative-narrative.html",' +
+                '"title": "Why Mitt Romney Is Trapped By His Negative Narrative",' +
+                '"rubric": "Press Piles On",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "054b80aed924bae1e764bea73fa24c46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-s-bizarre-lyme-disease-offensive.html",' +
+                '"title": "Mitt&rsquo;s Bizarre Lyme Disease Offensive",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2a2d47da8a50b878c7d8bf4dcfe85b03"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/barack-obama-keeps-mitt-romney-on-defensive-in-first-presidential-debate.html",' +
+                '"title": "Mitt Romney Holds His Own Against Barack Obama in First Presidential Debate",' +
+                '"rubric": "Frontal Assault",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4995d833a22b7e0342ecddf3fd1849eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/how-mitt-romney-s-campaign-resembles-the-new-york-jets-season.html",' +
+                '"title": "How Mitt Romney&rsquo;s Campaign Resembles the New York Jets&rsquo; Season",' +
+                '"rubric": "THE FUMBLERS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f1a61d4d556d8686fbc8650860253d46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/presidential-debate-interactive.html",' +
+                '"title": "Presidential Debate Dashboard",' +
+                '"rubric": "Presidential Debate",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8eb0d06f9537287904f18abb4b81492c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/benghazi-backlash-mideast-implosion-jobless-numbers-the-real-potential-october-surprises.html",' +
+                '"title": "Benghazi Backlash, Mideast Implosion, Jobless Numbers: The Real Potential October Surprises",' +
+                '"rubric": "Campaign Home Stretch",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b500f26f1f0a6f0e99fec4345ebb670"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/seth-macfarlane-s-9-funniest-awards-shows-moments-video.html",' +
+                '"title": "Seth MacFarlane&rsquo;s 9 Funniest Awards Show Moments (VIDEO)",' +
+                '"rubric": "Oscar Host",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "102068ad239361bbfd1fafe708b5b631"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/american-airlines-suffers-its-worst-week-ever.html",' +
+                '"title": "American Airlines Suffers Its Worst Week Ever",' +
+                '"rubric": "FLYING LOW",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "de33f136c46d6623bb7198faf3472186"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/are-karl-rove-and-crossroads-propping-up-the-romney-campaign.html",' +
+                '"title": "Are Karl Rove and Crossroads Propping Up the Romney Campaign",' +
+                '"rubric": "Money Talks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c408d2cc976e02d454efeb981ede88ea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/presidential-debate-wins-fails-reagan-gore-bush-more-video.html",' +
+                '"title": "Presidential Debate Wins and Fails: Reagan, Gore, Bush &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "60e4a316fd62e037535b73dbfba62e97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/speed-read-11-juiciest-bits-from-philip-norman-s-biography-of-mick-jagger.html",' +
+                '"title": "Speed Read: 11 Juiciest Bits From Philip Norman&rsquo;s Biography of Mick Jagger",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "23abe17449b2adfd172233b4da44a861"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2012/10/01/new-york-city-haunted-house-tries-out-serial-killer-theme.html",' +
+                '"title": "New York City Haunted House Tries Out Serial-Killer Theme",' +
+                '"rubric": "True &lsquo;Nightmare&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f72f0e9eac926f6901da64e8589f0ef8"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/how-the-government-failed-to-fix-wall-street.html",' +
+                '"title": "How the Government Failed to Fix Wall Street",' +
+                '"rubric": "Fail",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7cb0d126c12d27825ad2a5aaff285eee"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/how-the-government-failed-to-fix-wall-street.html",' +
+                '"title": "How the Government Failed to Fix Wall Street",' +
+                '"rubric": "Fail",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7cb0d126c12d27825ad2a5aaff285eee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-intel-behind-obama-s-libya-line.html",' +
+                '"title": "The Intel Behind Obama&rsquo;s Libya Line",' +
+                '"rubric": "Talking Points",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b4e81bfa6911c170a6972868007b64a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/bruce-riedel-stop-the-libya-blame-game.html",' +
+                '"title": "Bruce Riedel: Stop the Libya Blame Game",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "15e63b6130711d915ad00ca2e37bd314"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/speed-read-11-juiciest-bits-from-philip-norman-s-biography-of-mick-jagger.html",' +
+                '"title": "Speed Read: 11 Juiciest Bits From Philip Norman&rsquo;s Biography of Mick Jagger",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "23abe17449b2adfd172233b4da44a861"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/30/if-obama-wins-what-changes-for-his-second-term.html",' +
+                '"title": "If Obama Wins, What Changes for His Second Term?",' +
+                '"rubric": "After Election Day",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8de78de0eafed91f5e49cd3bcf811c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2012/01/01/photo-of-the-day-2012.html",' +
+                '"title": "Photo of the Day",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "59b5e55ea7e374ff3953fc560d9b92d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/why-mitt-romney-is-trapped-by-his-negative-narrative.html",' +
+                '"title": "Why Mitt Romney Is Trapped By His Negative Narrative",' +
+                '"rubric": "Press Piles On",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "054b80aed924bae1e764bea73fa24c46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2012/10/02/starlings-dive-bomb-the-autobahn-more-animal-suicides-photos.html",' +
+                '"title": "Starlings Dive-Bomb the Autobahn &amp; More Animal Suicides (PHOTOS)",' +
+                '"rubric": "Shocking Photos",' +
+                '"topic": "World",' +
+                '"urlHashCode": "abd573925f8e8b062022349cfa407968"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/barack-obama-keeps-mitt-romney-on-defensive-in-first-presidential-debate.html",' +
+                '"title": "Mitt Romney Holds His Own Against Barack Obama in First Presidential Debate",' +
+                '"rubric": "Frontal Assault",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4995d833a22b7e0342ecddf3fd1849eb"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2012/10/02/sahara-davenport-dies-at-270.html",' +
+                '"title": "Sahara Davenport Dies at 27",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cdc378b318784ba302ec0e2c22c8dc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/galleries/2012/10/03/12-worst-celebrity-excuses-pete-townshend-lindsay-lohan-others-photos.html",' +
+                '"title": "12 Worst Celebrity Excuses: Pete Townshend, Lindsay Lohan &amp; Others (Photos)",' +
+                '"rubric": "BUSTED!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e0c7cf63de0ded51885721e1b4072374"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/03/kony-2012-creator-s-oprah-interview.html",' +
+                '"title": "Kony 2012 Creator: I Had an \'Out-of-Body Experience\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "56c94e5e5708a4dd489c35761e17e198"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/seth-macfarlane-s-9-funniest-awards-shows-moments-video.html",' +
+                '"title": "Seth MacFarlane&rsquo;s 9 Funniest Awards Show Moments (VIDEO)",' +
+                '"rubric": "Oscar Host",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "102068ad239361bbfd1fafe708b5b631"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/roman-polanski-the-sequel-marina-zenovich-s-explosive-follow-up.html",' +
+                '"title": "Roman Polanski, the Sequel",' +
+                '"rubric": "Still Wanted!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "200d5c2aee62d9ecbaa14814246d7e29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/nicki-minaj-blows-up-on-idol.html",' +
+                '"title": "Nicki Minaj Blows Up on \'Idol\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bc9a8f454c4a2e9ee49dc1fef1400964"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/morrissey-s-royal-rant.html",' +
+                '"title": "Morrissey\'s Royal Rant",' +
+                '"rubric": "Miserable Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "28fd1b85f414adba39de2690c49f2f4f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/09/23/drive-by-truckers-talk-politics.html",' +
+                '"title": "Drive By Truckers Talk Politics",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e60965245fb93133b678685d40b7cdab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-s-bizarre-lyme-disease-offensive.html",' +
+                '"title": "Mitt&rsquo;s Bizarre Lyme Disease Offensive",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2a2d47da8a50b878c7d8bf4dcfe85b03"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/never-before-seen-obama-footage.html",' +
+                '"title": "Never-Before-Seen Obama Footage",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1e77faf77bb6726abfd04759008bbe31"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/presidential-debate-interactive.html",' +
+                '"title": "Presidential Debate Dashboard",' +
+                '"rubric": "Presidential Debate",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8eb0d06f9537287904f18abb4b81492c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/28/with-dreams-from-my-real-father-have-obama-haters-hit-rock-bottom.html",' +
+                '"title": "With &lsquo;Dreams From My Real Father,&rsquo; Have Obama Haters Hit Rock Bottom?",' +
+                '"rubric": "2012 Presidential Election",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5d71ee958f4034ae89c334b215faf351"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/abortion-at-sea.html",' +
+                '"title": "Abortion at Sea",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0725d7e9ba86a61738ef323dca75c9ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/21-year-old-millionaire-buys-his-way-to-political-influence.html",' +
+                '"title": "21-Year-Old Millionaire Buys His Way to Political Influence",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d63930932793c941c6291e1aa1b5f947"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/charlie-cook-puts-his-money-on-obama.html",' +
+                '"title": "Charlie Cook Puts His Money on Obama",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5c19a1f5fe02f9e778b0a14916b61d3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/american-airlines-suffers-its-worst-week-ever.html",' +
+                '"title": "American Airlines Suffers Its Worst Week Ever",' +
+                '"rubric": "FLYING LOW",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "de33f136c46d6623bb7198faf3472186"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/steve-harvey-on-hosting-michelle-obama-his-new-talk-show-more.html",' +
+                '"title": "Steve Harvey on Hosting Michelle Obama, His New Talk Show &amp; More",' +
+                '"rubric": "Daytime Upstart",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2fd3978f4536283f69a63a7f880f587f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/why-mitt-romney-is-trapped-by-his-negative-narrative.html",' +
+                '"title": "Why Mitt Romney Is Trapped By His Negative Narrative",' +
+                '"rubric": "Press Piles On",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "054b80aed924bae1e764bea73fa24c46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/steve-harvey-on-hosting-michelle-obama-his-new-talk-show-more.html",' +
+                '"title": "Steve Harvey on Hosting Michelle Obama, His New Talk Show &amp; More",' +
+                '"rubric": "Daytime Upstart",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2fd3978f4536283f69a63a7f880f587f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/how-mitt-romney-s-campaign-resembles-the-new-york-jets-season.html",' +
+                '"title": "How Mitt Romney&rsquo;s Campaign Resembles the New York Jets&rsquo; Season",' +
+                '"rubric": "THE FUMBLERS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f1a61d4d556d8686fbc8650860253d46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-s-bizarre-lyme-disease-offensive.html",' +
+                '"title": "Mitt&rsquo;s Bizarre Lyme Disease Offensive",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2a2d47da8a50b878c7d8bf4dcfe85b03"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/benghazi-backlash-mideast-implosion-jobless-numbers-the-real-potential-october-surprises.html",' +
+                '"title": "Benghazi Backlash, Mideast Implosion, Jobless Numbers: The Real Potential October Surprises",' +
+                '"rubric": "Campaign Home Stretch",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b500f26f1f0a6f0e99fec4345ebb670"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/parenthood-in-praise-of-ray-romano-s-amazing-performance.html",' +
+                '"title": "&lsquo;Parenthood&rsquo;: In Praise of Ray Romano&rsquo;s Amazing Performance",' +
+                '"rubric": "I Now Love Raymond",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "337760b803683c5e3041ef3d4de51610"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/americans-strange-addiction-to-downton-abbey-explained.html",' +
+                '"title": "Americans&rsquo; Strange Addiction to &lsquo;Downton Abbey&rsquo; Explained!",' +
+                '"rubric": "CREATORS DISH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c88308ae8551500c54094d47b72d9ff2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/25/obama-s-stirring-un-speech-john-avlon.html",' +
+                '"title": "Obama&rsquo;s Stirring U.N. Speech: John Avlon",' +
+                '"rubric": "FTW",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8ae72b3e92a3a38be937e7e02f306e53"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/barack-obama-keeps-mitt-romney-on-defensive-in-first-presidential-debate.html",' +
+                '"title": "Mitt Romney Holds His Own Against Barack Obama in First Presidential Debate",' +
+                '"rubric": "Frontal Assault",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4995d833a22b7e0342ecddf3fd1849eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/from-honey-ryder-to-pussy-galore-the-evolution-of-the-james-bond-girl.html",' +
+                '"title": "From Honey Ryder to Pussy Galore, the Evolution of the James Bond Girl",' +
+                '"rubric": "50TH ANNIVERSARY",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5086135e2f1d0420f3d9aa853a13ae87"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/battle-for-colorado-heats-up-as-candidates-prep-for-denver-debate.html",' +
+                '"title": "Battle for Colorado Heats Up as Candidates Prep for Denver Debate",' +
+                '"rubric": "HIGH FIVE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a6685d6eac9a3d619d6a5f24a10359a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/speed-read-11-juiciest-bits-from-philip-norman-s-biography-of-mick-jagger.html",' +
+                '"title": "Speed Read: 11 Juiciest Bits From Philip Norman&rsquo;s Biography of Mick Jagger",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "23abe17449b2adfd172233b4da44a861"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/presidential-debate-interactive.html",' +
+                '"title": "Presidential Debate Dashboard",' +
+                '"rubric": "Presidential Debate",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8eb0d06f9537287904f18abb4b81492c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/presidential-debate-wins-fails-reagan-gore-bush-more-video.html",' +
+                '"title": "Presidential Debate Wins and Fails: Reagan, Gore, Bush &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "60e4a316fd62e037535b73dbfba62e97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/charlie-cook-puts-his-money-on-obama.html",' +
+                '"title": "Charlie Cook Puts His Money on Obama",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5c19a1f5fe02f9e778b0a14916b61d3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/is-this-drudge-s-scoop.html",' +
+                '"title": "Is This Drudge\'s Scoop?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bf7f5a0f6dbfe5cf4be97b739a89d5ee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/the-best-tucker-carlson-quote-ever.html",' +
+                '"title": "The Best Tucker Carlson Quote Ever?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "92e046f6a86efdb0bbc821066f807e0c"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/how-the-government-failed-to-fix-wall-street.html",' +
+                '"title": "How the Government Failed to Fix Wall Street",' +
+                '"rubric": "Fail",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7cb0d126c12d27825ad2a5aaff285eee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/bruce-riedel-stop-the-libya-blame-game.html",' +
+                '"title": "Bruce Riedel: Stop the Libya Blame Game",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "15e63b6130711d915ad00ca2e37bd314"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/battle-for-colorado-heats-up-as-candidates-prep-for-denver-debate.html",' +
+                '"title": "Battle for Colorado Heats Up as Candidates Prep for Denver Debate",' +
+                '"rubric": "HIGH FIVE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a6685d6eac9a3d619d6a5f24a10359a7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/why-mitt-romney-is-trapped-by-his-negative-narrative.html",' +
+                '"title": "Why Mitt Romney Is Trapped By His Negative Narrative",' +
+                '"rubric": "Press Piles On",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "054b80aed924bae1e764bea73fa24c46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-romney-s-game-change-moment-in-the-denver-presidential-debate.html",' +
+                '"title": "Mitt Romney&rsquo;s Game-Change Moment in the Denver Presidential Debate",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ee5e262f7126b457e7379bbcac85f23e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/are-we-wasting-billions-seeking-a-cure-for-cancer.html",' +
+                '"title": "Are We Wasting Billions Seeking a Cure for Cancer?",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6b02bc89dbec4d9de1ba0de52509e2d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/speed-read-arnold-schwarzenegger-s-total-recall-11-juiciest-bits.html",' +
+                '"title": "Speed Read Arnold Schwarzenegger&rsquo;s &lsquo;Total Recall&rsquo;: the 11 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "69418cd50ac63b5aec6c806682292226"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/30/if-obama-wins-what-changes-for-his-second-term.html",' +
+                '"title": "If Obama Wins, What Changes for His Second Term?",' +
+                '"rubric": "After Election Day",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8de78de0eafed91f5e49cd3bcf811c7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/presidential-debate-wins-fails-reagan-gore-bush-more-video.html",' +
+                '"title": "Presidential Debate Wins and Fails: Reagan, Gore, Bush &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "60e4a316fd62e037535b73dbfba62e97"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/barack-obama-keeps-mitt-romney-on-defensive-in-first-presidential-debate.html",' +
+                '"title": "Mitt Romney Holds His Own Against Barack Obama in First Presidential Debate",' +
+                '"rubric": "Frontal Assault",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4995d833a22b7e0342ecddf3fd1849eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/how-mitt-romney-s-campaign-resembles-the-new-york-jets-season.html",' +
+                '"title": "How Mitt Romney&rsquo;s Campaign Resembles the New York Jets&rsquo; Season",' +
+                '"rubric": "THE FUMBLERS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f1a61d4d556d8686fbc8650860253d46"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/benghazi-backlash-mideast-implosion-jobless-numbers-the-real-potential-october-surprises.html",' +
+                '"title": "Benghazi Backlash, Mideast Implosion, Jobless Numbers: The Real Potential October Surprises",' +
+                '"rubric": "Campaign Home Stretch",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9b500f26f1f0a6f0e99fec4345ebb670"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-intel-behind-obama-s-libya-line.html",' +
+                '"title": "The Intel Behind Obama&rsquo;s Libya Line",' +
+                '"rubric": "Talking Points",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b4e81bfa6911c170a6972868007b64a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/amanda-knox-one-year-later.html",' +
+                '"title": "Happy Anniversary, Amanda Knox!",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "35ad469e5b8d1dc449bb1ac8dacfa99d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/presidential-debate-interactive.html",' +
+                '"title": "Presidential Debate Dashboard",' +
+                '"rubric": "Presidential Debate",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8eb0d06f9537287904f18abb4b81492c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-year-of-kinky-movie-sex-the-master-the-paperboy-on-the-road-more.html",' +
+                '"title": "The Year of Kinky Movie Sex: &lsquo;The Master,&rsquo; &lsquo;The Paperboy,&rsquo; &lsquo;On the Road,&rsquo; &amp; More",' +
+                '"rubric": "X-Rated",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "b373a50a3ff10d7e2019056c13d92e51"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/are-karl-rove-and-crossroads-propping-up-the-romney-campaign.html",' +
+                '"title": "Are Karl Rove and Crossroads Propping Up the Romney Campaign",' +
+                '"rubric": "Money Talks",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c408d2cc976e02d454efeb981ede88ea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/mitt-s-bizarre-lyme-disease-offensive.html",' +
+                '"title": "Mitt&rsquo;s Bizarre Lyme Disease Offensive",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2a2d47da8a50b878c7d8bf4dcfe85b03"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/10/03/marijuana-could-be-legal-in-colorado-and-washington-after-election-day.html",' +
+                '"title": "Marijuana Could Be Legal in Colorado and Washington After Election Day",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b3eec71f5ffba694f0318a52339294ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/jim-lehrer-ask-mitt-romney-if-he-stands-by-mormonism-s-views-of-women.html",' +
+                '"title": "Jim Lehrer: Ask Mitt Romney if He Stands By Mormonism&rsquo;s Views of Women",' +
+                '"rubric": "DEBATE QUESTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c9238dbd2935e4e06bd16f303dafc3d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/the-obama-romney-gap-is-narrowing.html",' +
+                '"title": "The Obama-Romney Gap Is Narrowing",' +
+                '"rubric": "Not So Fast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ea366c493fe49f73ca1d2ee44cf9cc77"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/the-blowout-scenario-following-a-possible-obama-landslide.html",' +
+                '"title": "The Blowout Scenario Following a Possible Obama Landslide",' +
+                '"rubric": "Forecast",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a705a9032fe1495d02258aa139b42347"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/28/with-dreams-from-my-real-father-have-obama-haters-hit-rock-bottom.html",' +
+                '"title": "With &lsquo;Dreams From My Real Father,&rsquo; Have Obama Haters Hit Rock Bottom?",' +
+                '"rubric": "2012 Presidential Election",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5d71ee958f4034ae89c334b215faf351"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/conservative-outlets-push-old-video-of-barack-obama-talking-about-the-poor.html",' +
+                '"title": "Conservative Outlets Push Old Video of Barack Obama Talking About the Poor",' +
+                '"rubric": "Frenzy",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "38c092dd8d80fdae881bc500b7b13d38"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/07/13/rate-fixing-scandal-hits-u-s-fed-drops-libor-bombshells.html",' +
+                '"title": "Rate-Fixing Scandal Hits U.S.: Fed Drops LIBOR Bombshells",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "af22535833b8f8098dc14d119a84fe4e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/27/nyu-professor-are-student-loans-immoral.html",' +
+                '"title": "NYU Professor: Are Student Loans Immoral?",' +
+                '"rubric": "Higher Ed",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "82a45154560a645c4aa94e2cf4a15f15"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/abortion-at-sea.html",' +
+                '"title": "Abortion at Sea",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0725d7e9ba86a61738ef323dca75c9ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/02/u-s-consulate-in-benghazi-bombed-twice-in-run-up-to-9-11-anniversary.html",' +
+                '"title": "U.S. Consulate in Benghazi Bombed Twice in Run-Up to 9/11 Anniversary",' +
+                '"rubric": "Benghazi Attack",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0966e9be3193f36cf6a25c400553e12c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/01/jp-morgan-s-food-stamp-empire.html",' +
+                '"title": "JP Morgan&rsquo;s Food Stamp Empire",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "f9e0acb70b2de372cdde1cf48bee6ce6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/03/brett-o-donnell-what-to-watch-for-in-the-first-presidential-debate.html",' +
+                '"title": "Brett O&rsquo;Donnell: What to Watch For in the First Presidential Debate",' +
+                '"rubric": "DEBATE PREP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4e4cb8e84012ad28ac0a66a90ba1cb9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2010/11/16/how-i-met-your-mother-robin-sparkles-returns.html",' +
+                '"title": "Robin Sparkles Returns to \'HIMYM\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d3f37f20cf48ca39ebd2d8991bfc229"' +
+            '}' +
+        ']' +
+    '}'
+);

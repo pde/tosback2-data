@@ -1,1 +1,1 @@
-document.write("2,602,255 Followers");
+document.write("2,604,927 Followers");

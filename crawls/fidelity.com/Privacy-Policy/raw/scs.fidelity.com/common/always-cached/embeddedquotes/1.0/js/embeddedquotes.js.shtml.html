@@ -1,0 +1,305 @@
+var embeddedQuotesConfigVars = {
+jsonQuoteUrl: "https://fastquote.fidelity.com/service/quote/json",
+componentGetUrl: "https://qr.fidelity.com/embeddedquotes/components/get",
+componentMgetUrl: "https://qr.fidelity.com/embeddedquotes/components/mget",
+staticfiles : "https://scs.fidelity.com",
+productid : "default"
+}
+if(typeof embeddedQuotesConfig!="undefined"){
+if(typeof embeddedQuotesConfig["jsonQuoteUrl"]!="undefined"){
+embeddedQuotesConfigVars["jsonQuoteUrl"]=embeddedQuotesConfig["jsonQuoteUrl"];
+}
+if(typeof embeddedQuotesConfig["componentGetUrl"]!="undefined"){
+embeddedQuotesConfigVars["componentGetUrl"]=embeddedQuotesConfig["componentGetUrl"];
+}
+if(typeof embeddedQuotesConfig["componentMgetUrl"]!="undefined"){
+embeddedQuotesConfigVars["componentMgetUrl"]=embeddedQuotesConfig["componentMgetUrl"];
+}
+if(typeof embeddedQuotesConfig["componentMgetUrl"]!="undefined"){
+embeddedQuotesConfigVars["staticfiles"]=embeddedQuotesConfig["staticfiles"];
+}
+if(typeof fmrProductid!="undefined"){
+embeddedQuotesConfigVars["productid"]=fmrProductid;
+}
+}
+function initDefaultEventingImpl(){
+try{
+var _1=fmr.rct.Container.getInstance().getProvider("eventing");
+if(_1){
+}
+}
+catch(err){
+fmr.rct.Container.getInstance().addProvider(new fmr.rct.Provider("eventing"));
+fmr.rct.Container.getInstance().getProvider("eventing").addServiceProvider(new fmr.rct.eventing.DojoEventingImpl());
+fmr.rct.Eventing.getInstance("init").setDefaultProvider("dojo");
+}
+};
+dojo.addOnLoad(function(){
+fmr.rct.sal.ServiceFactory.addConfig("jsonpQuoting",{facade:{clazz:"fmr.rct.sal.GenericFacade"},handler:{clazz:"fmr.rct.sal.jsonp.DojoJsonpHandler",request:{clazz:"fmr.rct.sal.GenericRequest"},url:embeddedQuotesConfigVars["jsonQuoteUrl"],callbackParamName:"callback",incomingFilters:[{clazz:"fmr.rct.sal.filters.JsonPollingFilter"}]}});
+});
+dojo.addOnLoad(function(){
+fmr.rct.sal.ServiceFactory.addConfig("jsonpMget",{facade:{clazz:"fmr.rct.sal.GenericFacade"},handler:{clazz:"fmr.rct.sal.jsonp.DojoJsonpHandler",request:{clazz:"fmr.rct.sal.GenericRequest"},url:embeddedQuotesConfigVars["componentMgetUrl"],callbackParamName:"callback"}});
+});
+var quoteEventing;
+dojo.addOnLoad(function(){
+initDefaultEventingImpl();
+quoteEventing=new QuoteEventingImpl();
+fmr.rct.Container.getInstance().addProvider(new fmr.rct.Provider("quoting"));
+fmr.rct.Container.getInstance().getProvider("quoting").addServiceProvider(quoteEventing);
+fmr.rct.Eventing.getInstance().subscribe("onFmrAttachEnd",quoteEventing,"start");
+fmrAttach();
+});
+function QuoteEventingImpl(_2){
+this.ServiceProviderName="quotes";
+this._quotables=new Array();
+this._topics=new Array();
+this._marketStatus=0;
+this._pollingLimit=-1;
+this._request=null;
+};
+QuoteEventingImpl.prototype.publish=function(_3,_4){
+if(arguments.length!=2){
+throw new Error("Invalid number of arguments.");
+}
+if(typeof (_3)!="string"){
+throw new Error("Topic value must be string.");
+}
+dojo.publish(_3,[_4]);
+};
+QuoteEventingImpl.prototype.subscribe=function(_5,_6,_7){
+if(arguments.length!=3){
+throw new Error("Invalid number of arguments.");
+}
+if(typeof (_6)!="object"){
+throw new Error("_targetObj value must be an object.");
+}
+if(typeof (_7)!="string"){
+throw new Error("taretFunc value must be a string.");
+}
+var _8=_5.split(":");
+var _9=_8[0];
+var _a=_8[1];
+if(_9&&_a){
+if(_9=="MARKET_CLOSE"){
+quoteEventing._marketStatus="1";
+}else{
+this._addQuotable(_9);
+}
+this._topics.push(_5);
+return dojo.subscribe(_5,_6,_7);
+}
+throw new Error("Unexpected topic format.");
+};
+QuoteEventingImpl.prototype.unsubscribe=function(_b){
+if(arguments.length!=1){
+throw new Error("Invalid number of arguments.");
+}
+dojo.unsubscribe(_b);
+};
+QuoteEventingImpl.prototype._addQuotable=function(_c){
+for(var j in this._quotables){
+if(this._quotables[j]==_c){
+return false;
+}
+}
+this._quotables.push(_c);
+return true;
+};
+var render=function(_e,_f){
+var q=_e["QUOTES"];
+for(var i=0;i<_f._topics.length;i++){
+var _12=_f._topics[i];
+var _13=_12.split(":");
+var _14=_13[0];
+var _15=_13[1];
+if(_14&&_15){
+if(_14=="MARKET_CLOSE"){
+fmr.rct.Eventing.getInstance("quotes").publish(_12,_e["MARKET_CLOSE"]);
+}else{
+var _16=q[_14];
+if(!_16){
+continue;
+}
+if(!_16[_15]){
+}
+quotefield=_16[_15];
+fmr.rct.Eventing.getInstance("quotes").publish(_12,[quotefield,_16]);
+}
+}else{
+throw new Error("Invalid topic "+_12+" in subscribed list");
+}
+}
+};
+QuoteEventingImpl.prototype.quoteResponder={onResponse:function(_17,_18){
+var _19=_18.result.JSON;
+var q=_17.quoteEventingInstance;
+render(_19,q);
+if(q._pollingLimit==-1){
+if(typeof _19["POLLING_CONTROL"]=="undefined"){
+console.log("no polling control, defaulting limit to 120000");
+q._pollingLimit=120000;
+}else{
+q._pollingLimit=_19["POLLING_CONTROL"]["LIMIT"];
+}
+if(q._pollingLimit>0){
+setTimeout("quoteEventing.stop()",q._pollingLimit);
+}
+}
+return _18;
+},onFault:function(_1b,_1c){
+throw new Error("quoteResponder fault");
+}};
+var getQuotes=function(_1d){
+var _1e=_1d._quotables.toString();
+service=fmr.rct.sal.ServiceFactory.getService("jsonpQuoting");
+request=service.getRequest({responder:_1d.quoteResponder,preventCache:true,pollingInterval:60000,params:{"productid":"embeddedquotes","subproductid":embeddedQuotesConfigVars["productid"],"market_close":quoteEventing._marketStatus,"symbols":_1e}});
+request.quoteEventingInstance=_1d;
+_1d._request=request;
+request.send();
+};
+QuoteEventingImpl.prototype._timerFunction=function(_1f){
+return (function(){
+getQuotes(_1f);
+});
+};
+QuoteEventingImpl.prototype._setQuoteTimer=function(_20){
+var _21=this._timerFunction(this);
+if(_20){
+setTimeout(_21,_20);
+}
+};
+QuoteEventingImpl.prototype.stop=function(){
+this._request.cancel();
+};
+QuoteEventingImpl.prototype.start=function(){
+this._getQuotables();
+if(this._quotables.length!=0){
+this._setQuoteTimer(100);
+}
+};
+QuoteEventingImpl.prototype._getQuotables=function(){
+dojo.query("span[quotefield]").forEach(function(_22){
+var _23=_22.getAttribute("quotefield");
+var _24=_22.getAttribute("quotehandler");
+var _25=_23.split(":");
+var _26=_25[0];
+var _27=_25[1];
+var _28=_25[2];
+if(_27&&_28){
+var _29=_27+":"+_28;
+if(_24){
+if(_26=="QUOTES"){
+_22.quoteEventHandler=function(_2a,_2b){
+window[_24].apply(_22,[_22,_2a,_2b]);
+};
+fmr.rct.Eventing.getInstance("quotes").subscribe(_29,_22,"quoteEventHandler");
+}else{
+if(_26=="MARKET_STATUS"){
+_22.quoteEventHandler=function(_2c,_2d){
+window[_24].apply(_22,[_22,_2c,_2d]);
+};
+fmr.rct.Eventing.getInstance("quotes").subscribe(_29,_22,"quoteEventHandler");
+}
+}
+}else{
+_22.quoteEventHandler=function(_2e){
+if(typeof _2e[0]!="undefined"){
+_22.innerHTML=_2e[0];
+}
+};
+fmr.rct.Eventing.getInstance("quotes").subscribe(_29,_22,"quoteEventHandler");
+}
+}else{
+console.log("malformed quotefield ('"+_23+"'), skipping");
+}
+});
+};
+function publishComponents(_2f){
+mget=_2f["MGET"];
+for(var i in mget){
+fmr.rct.Eventing.getInstance().publish(i,[mget[i]]);
+}
+fmr.rct.Eventing.getInstance().publish("onFmrAttachEnd",[new Date()]);
+};
+var fmrParamsCompactValues={"_sequence":"_s","true":"t","false":"f","yes":"y","no":"n","MutualFund":"mf","Equity":"e","Annuities":"a","Annuity":"a","Stock":"e","symbol":"s","component":"c","security-type":"s-t","prospectus-link":"p-l","action-links":"a-l","line-divider":"l-d","change-arrow":"c-a","ignore-invalid":"i-i","name-lines":"n-l","fmr.qnr.components.snapshot.Mini":"s.m","fmr.qnr.components.snapshot.Vertical":"s.v","fmr.qnr.components.snapshot.Horizontal":"s.h","fmr.qnr.components.snapshot.Bricklet":"brk","fmr.qnr.components.MarketBar":"mb"};
+function fmrAttachObj(){
+fmr.rct.Eventing.getInstance().publish("onFmrAttachStart",[new Date()]);
+this.params=new Array();
+this.toQuery=function(_31){
+var _32=new Array();
+for(p in this.params){
+_32.push(p);
+}
+_32.sort(function(a,b){
+return (a>b)-(a<b);
+});
+var _35="";
+for(var j=0;j<_32.length;j++){
+var _37=_32[j];
+var val=this.params[_37];
+if(_31&&fmrParamsCompactValues[_37]){
+_37=fmrParamsCompactValues[_37];
+}
+if(_31&&fmrParamsCompactValues[val]){
+val=fmrParamsCompactValues[val];
+}
+var _39=_37+"="+val;
+if(_35.length>0){
+_35=_35+"&";
+}
+_35=_35+_39;
+}
+return _35;
+};
+};
+var mgetResponder={onResponse:function(_3a,_3b){
+var _3c=_3b.result.JSON;
+publishComponents(_3c);
+return _3b;
+},onFault:function(_3d,_3e){
+fmr.rct.Eventing.getInstance().publish("onFmrAttachEnd",[new Date()]);
+}};
+function fmrAttach(_3f){
+var a="fmr-attach-component";
+var p="fmr-param-";
+var _42=new Array();
+var _43=0;
+dojo.query("span["+a+"]",_3f).forEach(function(_44){
+var _45=new Array();
+for(var i=0;i<_44.attributes.length;i++){
+var _47=_44.attributes[i].nodeName;
+if(_47.substr(0,p.length)==p){
+var _48=_47.substr(p.length);
+var _49=_44.attributes[i].nodeValue;
+_45[_48]=_49;
+}
+}
+_45["component"]=_44.getAttribute(a);
+_45["_sequence"]=_43++;
+var _4a=new fmrAttachObj();
+_4a.params=_45;
+_42.push(_4a);
+_44.fmrAttachHandler=function(_4b){
+__fmrAttach_currentComponent_innerHTML__=this.innerHTML;
+this.innerHTML=_4b;
+dojo.query("script",this).forEach(function(_4c){
+eval(_4c.text);
+});
+__fmrAttach_currentComponent_innerHTML__=null;
+};
+fmr.rct.Eventing.getInstance().subscribe(_4a.toQuery(),_44,"fmrAttachHandler");
+});
+var _4d=new Array();
+for(var i=0;i<_42.length;i++){
+_4d.push(_42[i].toQuery(true));
+}
+if(_4d.length==0){
+fmr.rct.Eventing.getInstance().publish("onFmrAttachEnd",[new Date()]);
+return;
+}
+service=fmr.rct.sal.ServiceFactory.getService("jsonpMget");
+request=service.getRequest({responder:mgetResponder,preventCache:true,params:{"productid":embeddedQuotesConfigVars["productid"],"get":_4d}});
+request.send();
+};
+var GLOBAL_CONFIG={displayMode:fmr.rct.ui.DisplayObject.MODE_RIGHT,hideConfig:{duration:500,properties:{opacity:{end:0}}},displayConfig:{duration:200,properties:{opacity:{end:100}}},hMargin:0,vMargin:0,watchDelay:200,triggerHoverClass:"ofToolTipHover",triggerEvents:"onfocus,onmouseover"};
+

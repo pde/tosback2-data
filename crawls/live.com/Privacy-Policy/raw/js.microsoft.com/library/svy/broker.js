@@ -973,7 +973,7 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 			start: function() {
 				//If Mobile browser NOT detected then run init() function
-				if((/iphone|android|opera mini|blackberry|windows(phone|ce)|iemobile|htc|nokia/i.test(navigator.userAgent)) && (/\/\/[\w\.]+\/windowsphone/i.test(SR_url))){
+				if((/iphone|ipad|ipod|android|opera mini|blackberry|windows(phone|ce)|iemobile|htc|nokia/i.test(navigator.userAgent)) && (/\/\/[\w\.]+\/windowsphone/i.test(SR_url))){
 				 //Disable recruitment for mobile
 				}else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
 					// CUSTOM CODE - Check for AR Already Asked cookie

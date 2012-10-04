@@ -2461,9 +2461,10 @@ jQuery(function($) {
 	// search
 	$('#topsearch').submit(function (e) {
 		e.preventDefault();
+		var search = $('#topsearch_text').val().replace('/', ' ');
 		var url =
 			PHP.get('search_urls')[$('#topsearch_type').getSelected().val()] + '/' +
-			encodeURIComponent($('#topsearch_text').val())
+			encodeURIComponent(search)
 		;
 
 		document.location = url;

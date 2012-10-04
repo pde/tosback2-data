@@ -370,31 +370,9 @@
 			{ name: "other", weight: 100 }
 		]
 	);
-	
-    var unlimitedUpsell2 = new btg.ABTest(
-		"unlimitedUpsell2",
-		[
-			{ name: "controlA", weight: 0 },
-			{ name: "controlB", weight: 100 }
-		]
-	);
 
 		sw_gameRecs();
 		btg.Controller.sendPageCall( pageOmniVars );
-        
-        $(document).ready(function(){
-            var unlimited = unlimitedUpsell2.getGroup() == 'controlA';
-            var unlimitedCookie = document.cookie.indexOf("newSWU") == -1;
-//            console.log('-1: ' + unlimitedCookie);
-            if(unlimited){
-               $('.controlA').show();
-            } else {
-               $('.controlB').show();
-               if(unlimitedCookie){
-                   $.cookie('newSWU', 'uxSWU', {expires: 1});
-               }
-            }
-        });
 	</script>
         
         

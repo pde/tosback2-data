@@ -225,6 +225,32 @@ function getProducts() {
     
     document.write('                <td>');
     document.write('                    <div class="contentLeft">');
+    document.write('                        <a href="/us/en/catalog/categories/departments/ikea_family_products"><div class="productImage" style="background-position:-250px 0;"></div><span>IKEA FAMILY products</span></a>');
+    document.write('                    </div>');
+    document.write('                </td>');
+    
+    
+    
+    
+    
+    
+    document.write('                <td>');
+    document.write('                    <div class="contentRight">');
+    document.write('                        <a href="/us/en/catalog/categories/seasonal/winter_holidays"><img src="/ms/img/menu/products/32x32/winter_collections_32x32.gif" alt="" border="0" /><span class="seasonal" style="color:#444444">Winter holidays</span></a>');
+    document.write('                    </div>');
+    document.write('                </td>');
+    
+    document.write('            </tr>');
+    
+    
+    
+    
+    
+    document.write('            <tr>');
+    
+    
+    document.write('                <td>');
+    document.write('                    <div class="contentLeft">');
     document.write('                        <a href="/us/en/catalog/categories/departments/kitchen"><div class="productImage" style="background-position:-0px 0;"></div><span>Kitchen</span></a>');
     document.write('                    </div>');
     document.write('                </td>');

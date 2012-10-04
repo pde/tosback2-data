@@ -219,30 +219,7 @@ menuJSON:"/SiteUtil/globalnav/globalnav_jasonxml.jsp"
 
 
  
- <script type="text/javascript">
-//The document.write method does not work with XHTML when served with the correct MIME type ('application/xhtml+xml'), and the innerHTML property is not part of the DOM specification and thus should be avoided.
-//  method to convert the following document.write using DOM
-//document.write("<li> <a id=\"PageLanguageToggle\" href="general%3Fpid=7901.html#" onclick='"+page_language_toggle_script+"'>Pagina en Espa&#241;ol</a> </li>");
-function pglang1(){
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'PageLanguageToggle');
-	a1.setAttribute('href', '#');
-	a1.appendChild(document.createTextNode("Pagina en Espa" + String.fromCharCode(241)+"ol"));
-	var li1 = document.createElement("li");
-	li1.appendChild(a1);
-	var pglang = document.getElementById("pglang");
-	pglang.appendChild(li1);
-	document.getElementById("pglang").onclick=pl_toggle_fn;
-}
-
-//This method to execute the java script stored in a variable 
-function pl_toggle_fn(){
-var tmpFunc = new Function(page_language_toggle_script);
-tmpFunc();
-}
- </script>
-
- <div id="segMenuContainer">
+	<div id="segMenuContainer">
 		<div id="segcenterSpan"></div>
 		<ul class="segMenu" id="leftSegMenu">
 	    	<li><a id="segMenuItemPersonal" class="segMenuItem selected" href="../index.html"><span>Personal</span></a></li>
@@ -284,147 +261,23 @@ tmpFunc();
 
 
 
-<script type="text/javascript">
-//The document.write method does not work with XHTML when served with the correct MIME type ('application/xhtml+xml'), and the innerHTML property is not part of the DOM specification and thus should be avoided.
-
-//  method to convert the following document.write using DOM
-//document.write("Hi <span id=\"globalNavUserFirstName\"><a id=\"profilelnk\" href="http://www.att.com/gen/\&quot;//www.att.com/olam/passthroughAction.myworld?actionType=ProfileAccountInfo\&quot;"> "+userNameStr+"</a></span>, welcome back | ");
-function auth1(){
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'profilelnk');
-	a1.setAttribute('class', 'login');
-	a1.setAttribute('href', 'www.att.com/olam/passthroughAction.myworld?actionType=ProfileAccountInfo');
-	a1.appendChild(document.createTextNode(userNameStr));
-	var span1 = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserFirstName');
-	span1.appendChild(a1);
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(document.createTextNode("Hi "));
-	authhll.appendChild(span1);
-	authhll.appendChild(document.createTextNode(", welcome back |"));
-}
-//  method to convert the following document.write using DOM
-//document.write("Hi <span id=\"globalNavUserFirstName\"> "+userNameStr+"</span>, welcome back | ");
-function auth2(){
-	var span1 = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserFirstName');
-	span1.appendChild(document.createTextNode(userNameStr));
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(document.createTextNode("Hi "));
-	authhll.appendChild(span1);
-	authhll.appendChild(document.createTextNode(", welcome back |"));
-}
-//  method to convert the following document.write using DOM
-//document.write("Welcome back, ");
-function auth3(){
-	var span1 = document.createElement("span");
-	span1.appendChild(document.createTextNode("Welcome back, "));
-	var authhll = document.getElementById("authhll");
-	authhll.appendChild(span1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<a id=\"globalNavLogout\" class=\"login\" href="http://www.att.com/gen/\&quot;https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt\&quot;"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png\&quot;" width=\"66px\" height=\"24px\" alt=\"Log Out\" /></a>");
-function logout1(){
-	var img1 = document.createElement("img");
-	img1.setAttribute('src', '//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png');
-	img1.setAttribute('width', '66px');
-	img1.setAttribute('height', '24px');
-	img1.setAttribute('alt', 'Log Out');
-	
-	var a1 = document.createElement("a");
-	a1.setAttribute('id', 'globalNavLogout');
-	a1.setAttribute('class', 'login');
-	a1.setAttribute('href', 'https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt');
-	a1.appendChild(img1);
-	
-	var logout = document.getElementById("logout");
-	logout.appendChild(a1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");   
-function logout2(){
-	var img1 = document.createElement("img");
-	img1.setAttribute('src', '//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png');
-	img1.setAttribute('width', '54px');
-	img1.setAttribute('height', '24px');
-	img1.setAttribute('alt', 'Log Out');
-	
-	var a1 = document.createElement("a");
-	a1.setAttribute('href', '//www.att.com/olam/slidRegistrationAction.olamexecute');
-	a1.appendChild(document.createTextNode("Register"));
-	
-	var a2 = document.createElement("a");
-	a2.setAttribute('href', '//www.att.com/olam');
-	a2.setAttribute('class', 'login');
-	a2.appendChild(img1);
-	
-	
-	var logout = document.getElementById("logout");
-	logout.appendChild(a1);
-	logout.appendChild(document.createTextNode(" | "));
-	logout.appendChild(a2);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span> <a id=\"globalNavChangeCity\" href="http://www.att.com/gen/\&quot;http://localization.att.com/loc/controller?localization-reset=true&amp;return-path=&quot;+clt_return_url+&quot;\&quot;">(Change)</a>");
-function changeWithURL(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-	change.appendChild(document.createTextNode(' '));
-	var a1  = document.createElement("a");
-	a1.setAttribute('id', 'globalNavChangeCity');
-	a1.setAttribute('href', 'http://localization.att.com/loc/controller?localization-reset=true&return-path='+clt_return_url);
-	a1.appendChild(document.createTextNode('(Change)'));
-	change.appendChild(a1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span>");
-function localeDisp(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-}
-//  method to convert the following document.write using DOM
-//document.write("<span id=\"globalNavUserLocale\">"+userLocaleStr+"</span> <a id=\"globalNavChangeCity\" href="http://www.att.com/gen/\&quot;http://localization.att.com/loc/controller?localization-reset=true\&quot;">(Change)</a>");
-function changeWithOutURL(){
-	var span1  = document.createElement("span");
-	span1.setAttribute('id', 'globalNavUserLocale');
-	span1.appendChild(document.createTextNode(userLocaleStr));
-	var change = document.getElementById("change");
-	change.appendChild(span1);
-	change.appendChild(document.createTextNode(' '));
-	var a1  = document.createElement("a");
-	a1.setAttribute('id', 'globalNavChangeCity');
-	a1.setAttribute('href', 'http://localization.att.com/loc/controller?localization-reset=true');
-	a1.appendChild(document.createTextNode('(Change)'));
-	change.appendChild(a1);
-}
-</script>
 
 <div id="globalNavUserInfo">
 	<div style="padding-top:4px">
-   
+   	<script>
 	
-    <span id="authhll"></span>
-    <script>
-    //userTypeStr = "Authenticated";
 		// added check for userGroup to check its value is not "Unauth" to avoid flow to enter this if condition after user has logged out 
 		if (userTypeStr == "Authenticated" && userGroup!="Unauth") {	
 			
-				auth2();
+				document.write("Hi <span id=\"globalNavUserFirstName\"> "+userNameStr+"</span>, welcome back | ");
 			
 	 	}
 		else if (userTypeStr == "Semi-Authenticated") {
-				auth3();  
+				document.write("Welcome back, ");  
 		}
 	
 	</script>	 
 	
-           <span id="change"></span>
              <script>	
              	if (userLocaleStr == ""){
              	} 
@@ -433,20 +286,19 @@ function changeWithOutURL(){
              	}
              </script>	 
 	
-	
-	<span id="logout"></span>	
 	<script>
+		
 		// added check for userGroup to check its value is not "Unauth" to avoid flow to enter this if condition after user has logged out 
 		if (userTypeStr == "Authenticated" && userGroup!="Unauth") {	
 			
-				logout1();
+				document.write("<a id=\"globalNavLogout\" class=\"login\" href="http://www.att.com/gen/\&quot;https://cprodx-myatt.att.com/apiserver/igate_web_dlom/logOut.do?style=myatt\&quot;"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/logout_button_AA0011EK.png\&quot;" width=\"66px\" height=\"24px\" alt=\"Log Out\" /></a>");
 						
  		}
  		else if (userTypeStr == "Semi-Authenticated") {
-  			logout2();  
+  			document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");  
  		}
  		else {
-		 	logout2();   
+		 	document.write("<a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;">Register</a> | <a href="http://www.att.com/gen/\&quot;http://www.wireless.att.com/accounts/?source=IC4425j4900s2000\&quot;" class=\"login\"><img src="http://www.att.com/gen/\&quot;//www.att.com/media/att/2011/global/nav/Login_button_AA0011EJ.png\&quot;" width=\"54px\" height=\"24px\" alt=\"Log In\" /></a>");   
 		}
 	
 	</script>	 
@@ -482,7 +334,7 @@ function changeWithOutURL(){
  	<div id="tieredNav">
 				<div id="primaryMenu">
 					<ul>
-						<li id="primary_ATTLogo"><a class="primaryMenuItem" href="../index.html">&nbsp;<span style="text-indent:-999em;overflow:hidden;">primary_ATTLogo</span></a></li>
+						<li id="primary_ATTLogo"><a class="primaryMenuItem" href="../index.html">&nbsp;</a></li>
 
  
 
@@ -490,20 +342,21 @@ function changeWithOutURL(){
 
  						
 	
-				<li><a href='../shop/index.html' id='primary_Shop' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_Shop</span></a></li>
+				<li><a href='../shop/index.html' id='primary_Shop' class="primaryMenuItem"></a></li>
 						
 				
-				<li><a href='../olam/passthroughAction.myworld%3FactionType=Manage.html' id='primary_MyATT' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_MyATT</span></a></li>
+				<li><a href='../olam/passthroughAction.myworld%3FactionType=Manage.html' id='primary_MyATT' class="primaryMenuItem"></a></li>
 						
 				
-				<li><a href='../esupport/index.jsp.html' id='primary_Support' class="primaryMenuItem"><span style="text-indent:-999em;overflow:hidden;">primary_Support</span></a></li>
+				<li><a href='../esupport/index.jsp.html' id='primary_Support' class="primaryMenuItem"></a></li>
 						
 			 
- 	<li id="primary_Search">
+ 	<li id="primary_Search"><form method="get" id="searchForm" name="allSearchHeader" action="http://www.att.com/global-search/search.jsp">
  	
- 	<form method="get" id="searchForm" name="allSearchHeader" action="http://www.att.com/global-search/search.jsp">
- 	
- 	<input type="text" value="Search" name="q" id="search" title="Search" />
+	<fieldset>
+ 	<input type="text" value="Search" name="q" id="search" />
+	
+
 	<input type="hidden" name="autoSuggest" value="" class="accessibility" />
 	<input type="hidden" name="tabPressed" id="tabPressed" value="FALSE" class="accessibility" />
 	<script>
@@ -523,6 +376,7 @@ function changeWithOutURL(){
 	</script>
 	<button id="searchSubmit"></button>
 	<div id="autoSuggestBox" class="autoSuggest" style="display:none;"></div>
+	</fieldset>
 	</form>
 	</li>
 	
@@ -534,7 +388,8 @@ function changeWithOutURL(){
 				<div id="trayContent"></div>
 			</div>	
 
-	 
+	
+ 
  	
 </div>
 <div id="globalNavShadows"></div>
@@ -558,7 +413,7 @@ function changeWithOutURL(){
 
 
 
-<!-- cmdversionid=171 -->
+<!-- cmdversionid=172 -->
 <!-- 7901 -->
 <!-- Script to retrieve address_id from the url and pass it along -->
 <script type="text/javascript">
@@ -603,13 +458,13 @@ function addURLParams(href) {
 				<div style="position:absolute;top:150px;left:-25px;">
 					<a href="http://www.att.com/gen/general?pid=11096" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/marquees/btn_learn-more_blue_135x40.jpg" width="135" height="40" alt="Learn More" /></a>
 				</div>
-				<div style="position:absolute;top:150px;left:125px;color:#666;font-family:Arial;font-size:10px;">On qualifying packages. <b>ALL OFFERS REQUIRE 24-MONTH DIRECTV<br /> AGREEMENT &amp; QUALIFYING AT&amp;T SERVICE.</b> ** Offers end 10/3/12.<br /> Credit card required. New approved customers only (lease required).</div>
+				<div style="position:absolute;top:150px;left:125px;color:#666;font-family:Arial;font-size:10px;">On qualifying packages. <b>ALL OFFERS REQUIRE 24-MONTH DIRECTV<br /> AGREEMENT &amp; QUALIFYING AT&amp;T SERVICE.</b> ** Offers end 12/5/12.<br /> Credit card required. New approved customers only (lease required).</div>
 			</div>
 			<div class="rotateHero" style="display:none;"><a href="general%3Fpid=7901.html#hero3"><img src="../Common/indc/images/btn_back.png" width="44" height="21" title="Back" alt="Back" /></a><a href="general%3Fpid=7901.html#heroPause"><img src="../Common/indc/images/btn_pause.gif" width="21" height="21" title="Pause" alt="Pause" /></a><a id="rotateNext1" href="general%3Fpid=7901.html#hero2"><img src="../Common/indc/images/btn_next_wcounter.png" width="36" height="21" title="Next" alt="Next"/></a><img src="../Common/indc/images/ind_1of3.png" width="47" height="21" title="1 of 3" alt="1 of 3"/></div>
 		</div>
 
 		<!-- ROTATING BANNER #2 -->
-		<div id="hero2" style="display:none;background:url(../Common/indc/images/marquees/116380_mrq_zookeeper_v02_BG.jpg) no-repeat;">
+		<div id="hero2" style="display:none;background:url(../Common/indc/images/marquees/123986_mrq_zookeeper_v03_BG.jpg) no-repeat;">
 			<div class="local_ban1_text">
 				<div><a href="http://www.att.com/Common/indc/popup/directv_offers.htm" style="color:#067ab4;font-size:10px;">See offer details</a></div>
 				<div style="margin-top:6px;"><a href="http://www.att.com/gen/general?pid=11096&amp;source=ICND25BD10000000L&amp;onLpPgClick=1" onclick="return addURLParams(this.href,'address_id')"><img src="../Common/indc/images/btn_learn_more_140x44.png" width="140" height="44" alt="Learn More" /></a></div>
@@ -696,7 +551,7 @@ function addURLParams(href) {
 <div>
 	<p><b>*ALL OFFERS REQUIRE A QUALIFYING AT&amp;T SERVICE AND 24-MONTH DIRECTV AGREEMENT.</b></p>
 
-	<p>**Offer ends 10/3/12. Credit card required. New approved customers only (lease required). $19.95 Handling &amp; Delivery fee may apply. Applicable use tax adjustment may apply on the retail value of the DIRECTV installation. Programming/pricing may vary in certain markets. NFL SUNDAY TICKET and NFL SUNDAY TICKET MAX consist of all out-of market NFL games broadcast on FOX and CBS at 1 pm and 4 pm ET. Available games in NFL SUNDAY TICKET and NFL SUNDAY TICKET MAX based on customer's service address. However, games broadcast by your local FOX and CBS affiliate will not be available in NFL SUNDAY TICKET or NFL SUNDAY TICKET MAX. Games available via remote viewing with NFL SUNDAY TICKET MAX based on device location. <b>Only one game may be accessed from any device at any given time.</b> Online application is only available on certain operating systems. Computer hardware, software, and Internet connection not included. Mobile phone application only available on certain devices from certain providers. Additional data charges may apply. Please check with your service provider. Visit directv.com/NFL for a list of system requirements and compatible mobile devices. NFL SUNDAY TICKET/NFL SUNDAY TICKET MAX will automatically continue each season at a special renewal rate unless customer calls to cancel prior to start of season. Subscriptions cannot be cancelled (in part or in whole) after the start of the season and subscription fees cannot be refunded.</p>
+	<p>**Offer ends 12/5/12. Credit card required. New approved customers only (lease required). $19.95 Handling &amp; Delivery fee may apply. Applicable use tax adjustment may apply on the retail value of the DIRECTV installation. Programming/pricing may vary in certain markets. NFL SUNDAY TICKET and NFL SUNDAY TICKET MAX consist of all out-of market NFL games broadcast on FOX and CBS at 1 pm and 4 pm ET. Available games in NFL SUNDAY TICKET and NFL SUNDAY TICKET MAX based on customer's service address. However, games broadcast by your local FOX and CBS affiliate will not be available in NFL SUNDAY TICKET or NFL SUNDAY TICKET MAX. Games available via remote viewing with NFL SUNDAY TICKET MAX based on device location. <b>Only one game may be accessed from any device at any given time.</b> Online application is only available on certain operating systems. Computer hardware, software, and Internet connection not included. Mobile phone application only available on certain devices from certain providers. Additional data charges may apply. Please check with your service provider. Visit directv.com/NFL for a list of system requirements and compatible mobile devices. NFL SUNDAY TICKET/NFL SUNDAY TICKET MAX will automatically continue each season at a special renewal rate unless customer calls to cancel prior to start of season. Subscriptions cannot be cancelled (in part or in whole) after the start of the season and subscription fees cannot be refunded.</p>
 
 	<p><a href="http://www.att.com/Common/indc/popup/advanced_tv_terms_conditions.htm" class="popup" target="_blank">DIRECTV Terms and Conditions</a></p>
 </div>
@@ -809,7 +664,7 @@ function addURLParams(href) {
     <!-- // BELOW SCRIPTS SHOULD NOT BE USED WITH OPSS -->
 	<script type="text/javascript" src="http://csct.att.com/scripts/csct.js"></script>
 	<!-- // ALTERNATIVE SINGLE PIXEL IF BROWSER DOES NOT SUPPORT JAVASCRIPT -->
-	<noscript><img src="http://csct.att.com/csct.gif?Log=1&amp;v_jd=1" alt="csct"
+	<noscript><img src="http://csct.att.com/csct.gif?Log=1&amp;v_jd=1"
 		border="0" width="1" height="1" /></noscript>
 	<!-- //END VS REFERENCE PAGE TAG -->
         

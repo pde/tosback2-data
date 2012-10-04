@@ -205,7 +205,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setStyle('.mbslider_x4 .mbcarousel-item','width','200px !important');
 
 	
-	mybuys.setStyle('.mbslider_x5','max-height','320px','width','923px','border','0','position','relative','padding','0px 18px','overflow','visible','background-color','#FFFFFF');
+	mybuys.setStyle('.mbslider_x5','max-height','320px','width','925px','border','0','position','relative','padding','0px 18px','overflow','visible','background-color','#FFFFFF');
 	mybuys.setStyle('.mbslider_x5 .mbitem','width','180px','border','0','padding','0px 2px');
 	mybuys.setStyle('.mbslider_x5 .mbimgspan','margin-bottom','5px');
 	mybuys.setStyle('.mbslider_x5 .mbimg','border','1px none #e8e6d9 !important');

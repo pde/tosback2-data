@@ -1,3 +1,135 @@
+function ClickTracker(b,a){this.storageKey=b==null?"clickTracker":b;
+this.targetClass=a==null?"click-track":a;
+this.initJSON()
+}ClickTracker.prototype={init:function(){$("a."+this.targetClass).bind("click",{tracker:this},this.doClickEvent)
+},doClickEvent:function(c){var b=c.data.tracker;
+if(b==null){return
+}var d=$(this).data("navid");
+if(d==null){d=$(this).attr("data-navid")
+}var a={id:$(this).attr("id"),href:$(this).attr("href"),text:$(this).text(),navid:d,pageX:c.pageX,pageY:c.pageY,timestamp:c.timeStamp};
+b.doSaveEvent(a)
+},doSaveEvent:function(a){if(a==null){return
+}if(a.navid==null){return
+}amplify.store(this.storageKey,a)
+},doClearEvent:function(){amplify.store(this.storageKey,null)
+},getReport:function(){var a=amplify.store(this.storageKey);
+if(a!=null){this.doClearEvent()
+}return a
+},initJSON:function(){if(typeof JSON=="undefined"&&typeof mtvn!="undefined"){JSON={stringify:mtvn.btg.util.JSON.stringify,parse:mtvn.btg.util.JSON.parse}
+}}};
+$(document).ready(function(){try{KIDS.reporting.tracker.init()
+}catch(a){alert(a)
+}});
+/*
+ * Amplify Store - Persistent Client-Side Storage @VERSION
+ *
+ * Copyright 2011 appendTo LLC. (http://appendto.com/team)
+ * Dual licensed under the MIT or GPL licenses.
+ * http://appendto.com/open-source-licenses
+ *
+ * http://amplifyjs.com
+ */
+(function(a,g){var b=a.store=function(i,k,e){var j=b.type;
+if(e&&e.type&&e.type in b.types){j=e.type
+}return b.types[j](i,k,e||{})
+};
+b.types={};
+b.type=null;
+b.addType=function(e,i){if(!b.type){b.type=e
+}b.types[e]=i;
+b[e]=function(k,l,j){j=j||{};
+j.type=e;
+return b(k,l,j)
+}
+};
+b.error=function(){return"amplify.store quota exceeded"
+};
+var h=/^__amplify__/;
+function d(e,i){b.addType(e,function(r,q,s){var k,p,l,m,n=q,j=(new Date()).getTime();
+if(!r){n={};
+m=[];
+l=0;
+try{r=i.length;
+while(r=i.key(l++)){if(h.test(r)){p=JSON.parse(i.getItem(r));
+if(p.expires&&p.expires<=j){m.push(r)
+}else{n[r.replace(h,"")]=p.data
+}}}while(r=m.pop()){i.removeItem(r)
+}}catch(o){}return n
+}r="__amplify__"+r;
+if(q===g){k=i.getItem(r);
+p=k?JSON.parse(k):{expires:-1};
+if(p.expires&&p.expires<=j){i.removeItem(r)
+}else{return p.data
+}}else{if(q===null){i.removeItem(r)
+}else{p=JSON.stringify({data:q,expires:s.expires?j+s.expires:null});
+try{i.setItem(r,p)
+}catch(o){b[e]();
+try{i.setItem(r,p)
+}catch(o){throw b.error()
+}}}}return n
+})
+}for(var c in {localStorage:1,sessionStorage:1}){try{window[c].setItem("__amplify__","x");
+window[c].removeItem("__amplify__");
+d(c,window[c])
+}catch(f){}}if(!b.types.localStorage&&window.globalStorage){try{d("globalStorage",window.globalStorage[window.location.hostname]);
+if(b.type==="sessionStorage"){b.type="globalStorage"
+}}catch(f){}}(function(){if(b.types.localStorage){return
+}var k=document.createElement("div"),j="amplify";
+k.style.display="none";
+document.getElementsByTagName("head")[0].appendChild(k);
+try{k.addBehavior("#default#userdata");
+k.load(j)
+}catch(i){k.parentNode.removeChild(k);
+return
+}b.addType("userData",function(t,s,u){k.load(j);
+var p,r,n,l,m,o=s,e=(new Date()).getTime();
+if(!t){o={};
+m=[];
+l=0;
+while(p=k.XMLDocument.documentElement.attributes[l++]){r=JSON.parse(p.value);
+if(r.expires&&r.expires<=e){m.push(p.name)
+}else{o[p.name]=r.data
+}}while(t=m.pop()){k.removeAttribute(t)
+}k.save(j);
+return o
+}t=t.replace(/[^\-._0-9A-Za-z\xb7\xc0-\xd6\xd8-\xf6\xf8-\u037d\u037f-\u1fff\u200c-\u200d\u203f\u2040\u2070-\u218f]/g,"-");
+t=t.replace(/^-/,"_-");
+if(s===g){p=k.getAttribute(t);
+r=p?JSON.parse(p):{expires:-1};
+if(r.expires&&r.expires<=e){k.removeAttribute(t)
+}else{return r.data
+}}else{if(s===null){k.removeAttribute(t)
+}else{n=k.getAttribute(t);
+r=JSON.stringify({data:s,expires:(u.expires?(e+u.expires):null)});
+k.setAttribute(t,r)
+}}try{k.save(j)
+}catch(q){if(n===null){k.removeAttribute(t)
+}else{k.setAttribute(t,n)
+}b.userData();
+try{k.setAttribute(t,r);
+k.save(j)
+}catch(q){if(n===null){k.removeAttribute(t)
+}else{k.setAttribute(t,n)
+}throw b.error()
+}}return o
+})
+}());
+(function(){var j={},e={};
+function i(k){return k===g?g:JSON.parse(JSON.stringify(k))
+}b.addType("memory",function(l,m,k){if(!l){return i(j)
+}if(m===g){return i(j[l])
+}if(e[l]){clearTimeout(e[l]);
+delete e[l]
+}if(m===null){delete j[l];
+return null
+}j[l]=m;
+if(k.expires){e[l]=setTimeout(function(){delete j[l];
+delete e[l]
+},k.expires)
+}return m
+})
+}())
+}(this.amplify=this.amplify||{}));
 if(typeof KIDS=="undefined"||!KIDS){var KIDS={}
 }KIDS.namespace("ads.pageLevelAdConfig");
 KIDS.ads.pageLevelAdConfig.minSponsor=1;

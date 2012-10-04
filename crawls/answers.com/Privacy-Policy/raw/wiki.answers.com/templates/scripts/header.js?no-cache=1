@@ -1,0 +1,12 @@
+
+function search_submit(event)
+{event.preventDefault();var searchInput=jQuery(".search_input");var searchText=jQuery.trim(searchInput.val());var defaultText=jQuery.trim(searchInput.attr('title'));if(""!=searchText&&defaultText!=searchText)
+{jQuery("#lookup1").submit();}}
+function clear_keyword_default()
+{input_value=jQuery("#searchText").val();input_default=jQuery("#searchText").attr("title");if(input_value==input_default)
+{jQuery("#searchText").val('');}}
+function use_keyword_default()
+{input_value=jQuery("#searchText").val();input_default=jQuery("#searchText").attr("title");if(input_value=='')
+{jQuery("#searchText").val(input_default);}}
+jQuery(document).ready(function(){jQuery(".search_submit").click(function(e)
+{search_submit(e);});jQuery("#searchText").bind('focus',clear_keyword_default).bind('blur',use_keyword_default);});

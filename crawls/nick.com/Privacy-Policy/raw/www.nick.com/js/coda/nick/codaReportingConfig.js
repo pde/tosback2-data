@@ -15,6 +15,8 @@ KIDS.reporting.hpCTMArray = ["HomeALevel1", "Latest1", "Latest2", "Latest3", "La
 KIDS.reporting.gamesCTMArray = ["FeatToutGame1", "MoreGame1", "MoreGame2", "MoreGame3", "MoreGame4", "MoreGame5", "MoreGame6", "GameChar1", "GameChar2", "GameChar3", "GameChar4", "GameChar5", "GameChar6", "GameChar7", "GameChar8", "GameChar9", "AllGamesByShow", "VirtualWorld1", "VirtualWorld2", "VirtualWorld3", "FeatGame", "GameCat1", "GameCat2", "GameCat3", "GameCat4", "GameCat5", "GameCat6", "GameCat7", "GameCat8", "GameCat9", "GameCat10", "GameCat11", "GameCat12", "GameCat13", "GameCat14", "GameCat15", "GameCat16", "GameCat17", "GameCat18", "GamePodAtitle", "GamePodA1", "GamePodA2", "GamePodAmore", "GamePodBtitle", "GamePodB1", "GamePodB2", "GamePodBmore", "GamePodCtitle", "GamePodC1", "GamePodC2", "GamePodCmore", "GamePodDtitle", "GamePodD1", "GamePodD2", "GamePodDmore", "GamePodEtitle", "GamePodE1", "GamePodE2", "GamePodEmore", "GamePodFtitle", "GamePodF1", "GamePodF2", "GamePodFmore", "GamePodGtitle", "GamePodG1", "GamePodG2", "GamePodGmore", "GamePodHtitle", "GamePodH1", "GamePodH2", "GamePodHmore", "GamePodItitle", "GamePodI1", "GamePodI2", "GamePodImore", "GamePodJtitle", "GamePodJ1", "GamePodJ2", "GamePodJmore", "GamePodKtitle", "GamePodK1", "GamePodK2", "GamePodKmore", "GamePodLtitle", "GamePodL1", "GamePodL2", "GamePodLmore", "SpotlightTitle", "SpotlightAll", "TopGameSeeAllA", "TopGameSeeAllB", "TopGame1", "TopGame2", "TopGame3", "TopGame4", "TopGame5", "GameBuild1", "GameBuild2", "GameBuild3", "GameBuild4", "GameBuild5", "ShoutName1", "ShoutTitle1", "ShoutName2", "ShoutTitle2", "ShoutName3", "ShoutTitle3", "ShoutName4", "ShoutTitle4", "UniversalTout1", "UniversalTout2", "UniversalTout3"];
 KIDS.reporting.videosCTMArray = ["VideoNav1", "VideoNav2", "VideoNav3", "VideoNav4", "VideoNav5", "VideoALevel1", "VideoBLevel1", "VideoBLevel2", "VideoBLevel3", "VideoBLevelmore", "VideoCLevel1", "VideoCLevel2", "VideoCLevel3,VideoCLevelmore", "VideoDLevel1", "VideoDLevel2", "VideoDLevel3", "VideoDLevelmore", "VideoShow1", "VideoShow2", "VideoShow3", "VideoShow4", "VideoShow5", "VideoShow6", "VideoShow7", "VideoShow8", "VideoShow9", "VideoShow10", "VideoShow11", "VideoShow12", "VideoShow13", "VideoShow14", "VideoShow15", "VideoShow16", "VideoShow17", "VideoShow18", "VideoShow19", "VideoShow20", "VideoShow21", "VideoShow22", "VideoShow23", "VideoShow24"];
 
+KIDS.reporting.tracker;
+
 Configuration.prototype.initialize = function(){
 	try{
 		this.init();
@@ -25,7 +27,9 @@ Configuration.prototype.initialize = function(){
 		this.setting["trackExternalLinks"] = true;
 		this.setting["trackDownloadLinks"] = true;
 		this.setting["trackInlineStats"] = false;
-		if(!this.isLink()){
+		
+		if(!this.isLink())
+		{
 			this.setting.prop1 = KIDS.reporting.site;
 			this.setting.eVar1 = KIDS.reporting.site;
 			this.setting.pageName = KIDS.get("uri");			
@@ -183,11 +187,7 @@ Configuration.prototype.initialize = function(){
 			this.setting.eVar17 = ct;
 		
 			this.setting.eVar16 = this.setting.pageName;
-			
-			var navid = KIDS.reporting.qs.navid?KIDS.reporting.qs.navid:"";
-			this.setting.eVar13 = navid;
-			this.setting.prop2 = navid;
-				
+							
 			if(this.setting.prop2.length>0){
 				if(this.setting.events.length>0)this.setting.events += ",";
 				this.setting.events += "event13";
@@ -200,6 +200,21 @@ Configuration.prototype.initialize = function(){
 			this.setting.list1 = list1.join();
 			this.setting.prop25 = this.setting.list1;
 			
+			KIDS.reporting.tracker = new ClickTracker("nickTracker", "nick-track");
+			var data = KIDS.reporting.tracker.getReport();
+			var navid = null;
+			if(data!=null){
+				for(var key in data) {
+					if(key=="navid"){
+						navid=data[key];
+						NickLog.debug("click tracking navid="+navid);
+					}
+				}
+			}
+			navid = (navid==null) ? KIDS.reporting.qs.navid ? KIDS.reporting.qs.navid : "" : navid;
+			
+			this.setting.eVar13 = navid;
+			this.setting.prop2 = navid;
 		}
 		
 		if(location.pathname.indexOf("/club")!=-1){

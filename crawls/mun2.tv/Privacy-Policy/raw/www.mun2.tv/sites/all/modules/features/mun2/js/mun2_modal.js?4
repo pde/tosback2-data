@@ -1,0 +1,78 @@
+Drupal.behaviors.mun2modal = function(context) {
+    if (typeof Mun2Responsive !== 'undefined' && Mun2Responsive.nAdaptIndex < 2) return;
+	// This is our onSubmit callback that will be called from the child window
+    // when it is requested by a call to modalframe_close_dialog() performed
+    // from server-side submit handlers.
+    function onSubmitModal(args, statusMessages) {
+    	if (args) {
+    		if (args.reload) {
+    			// reload page
+    			setTimeout(function() { window.location.reload(); }, 100);
+    		}
+    		else if (args.open) {
+    			// open modal
+    			openModal(args.child);
+    			// Prevent default action of the link click event.
+    			return false;
+    		}
+    	}
+    }
+    
+    function onLoadModal(modalFrame, $iFrameWindow, $iFrameDocument) {
+    	$iframe = $('.mun2-modal-dialog iframe');
+    	setTimeout(function() {
+    		var fh = $iframe.height();
+    		var h = $iFrameWindow('body').height();
+    		// console.log("h = "+h+", fh = "+fh);
+    		$iframe.height(h+25);
+    		var titleBarHeight = $('.modalframe .ui-dialog-titlebar').outerHeight(true);
+    		// console.log("titleBarHeight = "+titleBarHeight);
+    		$('.mun2-modal-dialog').height($iframe.height()+titleBarHeight);
+    	}, 100);
+    }
+    
+    function openModal(el) {
+    	// Build modal frame options.
+		var modalOptions = {
+			url: $(el).attr('href'),
+			autoFit: false,
+			width: 450,
+			height: 500,
+			onSubmit: onSubmitModal,
+			onLoad: onLoadModal,
+			customDialogOptions: {'dialogClass' : 'modalframe mun2-modal-dialog'}
+		};
+		// Open the modal frame dialog.
+		setTimeout(function() { Drupal.modalFrame.open(modalOptions); }, 100);
+    }
+
+    $('.mun2-modal:not(.mun2-modal-processed)').addClass('mun2-modal-processed').click(function() {
+    	if (Drupal.modalFrameChild) {
+    		// already in a modal window; so simply refresh content
+    		window.location.href = $(this).attr('href')+'?refresh';
+    		return false;
+    	}
+    	openModal(this);
+    	// Prevent default action of the link click event.
+		return false;
+	});
+}
+
+Drupal.behaviors.mun2convertlinks = function(context) {
+    if (typeof Mun2Responsive !== 'undefined' && Mun2Responsive.nAdaptIndex < 2) return;
+
+	$('#block-menu-primary-links a, #block-mun2_blocks-footer_links a, #user-login-form a').each(function() {
+		if ($(this).attr('href') == '/user/login') {
+			// convert to modal
+			$(this).addClass('mun2-modal');
+			$(this).attr('href', '/mun2/login-modal');
+		}
+		if ($(this).attr('href') == '/user/register') {
+			// convert to modal
+			$(this).addClass('mun2-modal');
+			$(this).attr('href', '/mun2/register-modal');
+		}
+	});
+   // attach behavior
+	Drupal.behaviors.mun2modal();
+}

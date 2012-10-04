@@ -17,6 +17,7 @@ clearInterval(this.timer);},getScale:function(){var scale=DetectZoom.device();if
 return false;if(scale==1.0&&t.zoomed==false)
 return false;return true;},zoomImages:function(){var t=this;var scale=t.getScale();if(!t.shouldZoom(scale)){return;}
 t.zoomed=true;var imgs=document.getElementsByTagName("img");for(var i=0;i<imgs.length;i++){var imgScale=imgs[i].getAttribute("scale");if(imgScale==scale||imgScale=="0")
+continue;var scaleFail=imgs[i].getAttribute("scale-fail");if(scaleFail&&scaleFail<=scale)
 continue;if(!(imgs[i].width&&imgs[i].height))
 continue;if(t.scaleImage(imgs[i],scale)){imgs[i].setAttribute("scale",scale);}
 else{imgs[i].setAttribute("scale","0");}}},scaleImage:function(img,scale){var t=this;var newSrc=img.src;if(img.parentNode.className.match(/slideshow-slide/))
@@ -40,11 +41,14 @@ newSrc=img.src.replace(/\?(zoom=[^&]+&)?/,'?zoom='+scale+'&');}
 else if(img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/latex\.php\?(latex|zoom)=(.+)/)){img.width=img.width;img.height=img.height;if(scale==1)
 newSrc=img.src.replace(/\?(zoom=[^&]+&)?/,'?');else
 newSrc=img.src.replace(/\?(zoom=[^&]+&)?/,'?zoom='+scale+'&');}
-else if(img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/([^\/]+)\/.*-(1|2)x\.(gif|jpeg|jpg|png)(\?|$)/)){if(RegExp.$3=="files"||RegExp.$1.match(/(^|\.)files\.$/)){return false;}
-img.width=img.width;img.height=img.height;var currentSize=RegExp.$4,newSize=currentSize;if(scale<=1)
+else if(img.src.match(/^https?:\/\/[^\/]+\/.*[-@]([12])x\.(gif|jpeg|jpg|png)(\?|$)/)){img.width=img.width;img.height=img.height;var currentSize=RegExp.$1,newSize=currentSize;if(scale<=1)
 newSize=1;else
 newSize=2;if(currentSize!=newSize)
-newSrc=img.src.replace(/-[12]x\.(gif|jpeg|jpg|png)(\?|$)/,'-'+newSize+'x.$1$2');}
+newSrc=img.src.replace(/([-@])[12]x\.(gif|jpeg|jpg|png)(\?|$)/,'$1'+newSize+'x.$2$3');}
 else{return false;}
-if(newSrc!=img.src)
-img.src=newSrc;return true;}};wpcom_img_zoomer.init();
+if(newSrc!=img.src){var prevSrc,origSrc=img.getAttribute("src-orig");if(!origSrc){origSrc=img.src;img.setAttribute("src-orig",origSrc);}
+if(img.complete)
+prevSrc=img.src;else
+prevSrc=origSrc;img.onerror=function(){img.src=prevSrc;if(img.getAttribute("scale-fail")<scale)
+img.setAttribute("scale-fail",scale);img.onerror=null;};img.src=newSrc;}
+return true;}};wpcom_img_zoomer.init();

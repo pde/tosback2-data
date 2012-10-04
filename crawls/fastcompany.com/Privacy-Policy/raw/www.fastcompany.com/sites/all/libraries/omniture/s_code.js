@@ -4,13 +4,14 @@ More info available at http://www.omniture.com */
 
 /* Code updates
 
+2012-10-01 Update Page Number variable
 2012-05-17 Updated code to H244
 2012-05-14 Update PPV and referrers into an eVar
 2012-04-17 Updated eVar duplication into Dynamic Variables
 
 */
 
-var SCCodeVersion="H24.4|2012.5.17"
+var SCCodeVersion="H24.4|2012.10.01"
 
 /* Specify the Report Suite ID(s) to track here */
 var s_account="gjincfastcoprod"
@@ -59,8 +60,7 @@ function s_doPlugins(s) {
 
   /* Navigation Source */
   s.prop7=s.eVar7=s.getQueryParam('nav');
-    s.eVar7=s.getValOnce(s.eVar7,'s_nav',0);
-
+  s.eVar7=s.getValOnce(s.eVar7,'s_nav',0);
 
   /* Populate Time Parting */
   var currentDate = new Date()
@@ -159,6 +159,15 @@ function s_doPlugins(s) {
 
   /* Ad ID to List Var */
   if(s.eVar43&&!s.list2) s.list2="D=v43";
+  
+  /* BP Page Name */
+  if(s.prop4&&!s.eVar27) s.eVar27="D=c4";
+  
+  /* Page Number */
+  if(s.prop13&&!s.eVar28) s.eVar28="D=c13";
+  
+  /* Content Type */
+  if(s.prop28&&!s.eVar35) s.eVar35="D=c28";
 
 }
 s.doPlugins=s_doPlugins

@@ -2072,6 +2072,16 @@ function webcamInfo() {
   $("UL.cta").find("LI:first").css({"height" : "30px"});
 }
 
+function getHomePageOffers() {
+    $('#homepageOffers').load('/templates/pando/ajax/homepageoffers.aspx?id=' + Math.random(), function() {
+    });
+}
+
+function getHomePageHowMayWeHelp() {
+    $('#homepageHowMayWeHelp').load('/templates/pando/ajax/homepagehowmaywehelp.aspx?id=' + Math.random(), function() {
+    });
+}
+
 function getFeaturedCruises(pageQuery) {
     $('#featuredCruises').load('/ajaxFeaturedCruises.aspx?' + pageQuery + ' #target', function() {
     $(document).click(function(e) {

@@ -110,20 +110,20 @@ function BVinit(){
 					var optOutFlag = data.options.optOut;
 					
 					$('#optOutPlaceholder').append(
-						'<br><br><a class=' + (optOutFlag ? 'turn_on' : 'turn_off') + ' href="javascript:" onclick="setOptOut(bvEmail, '
-							+ !optOutFlag + ');">' + (optOutFlag ? 'Turn On Samsung Nation' : 'Turn Off Samsung Nation') + '</a>'
-					); 
-					
-					if (optOutFlag) {
-						Badgeville.setPlayer();
-						$('#turnOnMsgPlaceholder').append(
-							'<hr/><br/><p><a class="turn_on" href="javascript:" onclick="setOptOut(bvEmail, \'false\');" >Turn on Samsung Nation</a> to start earning points, unlocking new badges and qualifiying for sweepstakes!</p><br/><hr/>'
-						);
-						$('#turnOnMsgPlaceholder').css('border-bottom','1px solid #CCCCCC');
-						$('.bv_infopanel .badgevillehead').html('Oh no, You\'ve Turned Off Samsung Nation');
-						$('.bv_infopanel').find('p').html('You can turn on Samsung Nation at any time. Simply click <a href="javascript:setOptOut(bvEmail,\'false\')">here</a>'); 
+							'<br><br><a class=' + (optOutFlag ? 'turn_on' : 'turn_off') + ' href="javascript:" onclick="setOptOut(\''+bvEmail+ '\', '
+								+ !optOutFlag + ');">' + (optOutFlag ? 'Turn On Samsung Nation' : 'Turn Off Samsung Nation') + '</a>'
+						); 
 						
-					} else {
+						if (optOutFlag) {
+							Badgeville.setPlayer();
+							$('#turnOnMsgPlaceholder').append(
+								'<hr/><br/><p><a class="turn_on" href="javascript:" onclick="setOptOut(\''+bvEmail+'\', '+ !optOutFlag +');" >Turn on Samsung Nation</a> to start earning points, unlocking new badges and qualifiying for sweepstakes!</p><br/><hr/>'
+							);
+							$('#turnOnMsgPlaceholder').css('border-bottom','1px solid #CCCCCC');
+							$('.bv_infopanel .badgevillehead').html('Oh no, You\'ve Turned Off Samsung Nation');
+							$('.bv_infopanel').find('p').html('You can turn on Samsung Nation at any time. Simply click <a href="setOptOut(\''+bvEmail+'\', '+ !optOutFlag +');" >here</a>'); 
+							
+						} else {
 						if (janRainPhotoUrl == null || janRainPhotoUrl == '')  {
 							Badgeville.setPlayer({
 								email: bvEmail,
@@ -508,6 +508,15 @@ function onloadBadgevilleInit(enoughtimeonpage) {
 		if(typeof(badgev_isNoteworthy) != 'undefined' && badgev_isNoteworthy){
 			badgev_params.category = 'note';
 			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);  
+		}
+		// Energy star badge
+      		
+		var badgev_isEnergy = getCookie('badgev_isEnergy');
+
+		if(badgev_isEnergy){
+                 	badgev_params.category = 'energy';
+           		badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);  
+		 	deleteCookie("badgev_isEnergy", "/", "samsung.com");	 
 		}
 		// is it a Galaxy S phone?
 		if(typeof(omn_ss_productName) != 'undefined' && (omn_ss_productName == 'SGH-I897' ||

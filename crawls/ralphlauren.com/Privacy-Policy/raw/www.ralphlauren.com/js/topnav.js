@@ -260,10 +260,3 @@ jQuery(document).ready(function() {
 	})
 	
 });
-
-jQuery(function () {
-	/* in site.js */
-	if (typeof attachStickyView == 'function') {
-		attachStickyView();
-	}
-});

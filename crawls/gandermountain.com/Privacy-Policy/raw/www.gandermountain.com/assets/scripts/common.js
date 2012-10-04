@@ -1,3 +1,8 @@
+var domain=".gandermountain.com"; var covrssn="co_onvpg";
+
+var gmSecureHostName = 'secure'+domain;
+var gmNonSecHostName = 'www'+domain;
+
 /**********************************************************************/
 function getCookie(n) 
 {
@@ -185,11 +190,6 @@ function openWin(url,h,w)
 function fetchPrice(f)
 { f.action=f.cs_action.value; f.r.value=f.cs_request.value; if(f.target != "") { f.target=""; } f.submit(); }
 
-var domain=".gandermountain.com"; var covrssn="co_onvpg";
-
-var gmSecureHostName = 'secure'+domain;
-var gmNonSecHostName = 'www'+domain;
-
 // !My Account Globals
 window.cgi_account_url = 'https://'+gmSecureHostName+'/my-account/wbsrvcs/myaccount.cgi';
 
@@ -251,7 +251,6 @@ thirdPartyCookie("source","linkconn","linkconn",1,30,domain); // if source==link
 
 var pr_facebook_like_button_url="";
 
-
 function setClickID(){
 	if(navigator.doNotTrack!=undefined && navigator.doNotTrack!="unspecified")
 	{
@@ -264,3 +263,13 @@ function setClickID(){
 	}
 }
 setClickID();
+
+function buildPostDataStr(dataObj) {
+	var pstdata='';
+	for(var name in dataObj) {
+		pstdata+='&'+name+'='+encodeURIComponent(dataObj[name]);
+	}
+	if(pstdata)
+		pstdata=pstdata.replace(/^&/,'');
+	return pstdata;
+}

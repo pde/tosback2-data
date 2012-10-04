@@ -27,6 +27,13 @@ JY = {
             $('input#keywords').blur(function() {
                 if ($(this).val() == '') { $(this).attr('value', 'search'); }
             });
+            $('form#search-form input[type="submit"]').click(function(e){
+                if ( $('input#keywords').val() == 'search' ){
+                    e.preventDefault();
+                }else{
+                    $('form#search-form').submit();
+                }
+            });
             $('ul.slides li:empty').remove();
             var lastLi = $('ul.prod-list li:last');
             if (lastLi.is(':empty')) {
@@ -261,6 +268,19 @@ JY = {
             $('a#qs-btn-add').live('click', function(e) {
                 e.preventDefault();
                 UTILS.addToCart(true);
+            });
+            $('a#lnk-bday-club').click(function(e){
+                e.preventDefault();
+                $('div#modal-bday').dialog({
+                    modal: true,
+                    height: 440,
+                    width: 550,
+                    position: ['center', 'center'],
+                    dialogClass: 'modal-quickshop'
+                });
+            });
+            $('a#btn-close-bday').click(function(e){
+                $('div#modal-bday').dialog('close');
             });
             $('nav#nav-products a.second-level').click(function(e) {
                 e.preventDefault();
@@ -854,6 +874,11 @@ JY = {
                     $(this).attr('value', 'eg. 2399868');
                 }
             });
+            $('input#btnLookup').click(function(e){
+                if ( $('input#txtCardNumber').val() == 'eg. 2399868' ){
+                    e.preventDefault();
+                }
+            });
         },
         jy_gift_cards: function() {
             var errors = 0;
@@ -956,6 +981,11 @@ JY = {
             });
             $('input#txtPromoCode').blur(function() {
                 if ($(this).val().length < 1) { $(this).attr('value', 'eg; 3456603'); }
+            });
+            $('a#btnApply').click(function(e){
+                if ( $('input#txtPromoCode').val() == 'eg; 3456603' ){
+                    e.preventDefault();
+                }
             });
             $('a#btn-ic-check').click(function(e) {
                 e.preventDefault();

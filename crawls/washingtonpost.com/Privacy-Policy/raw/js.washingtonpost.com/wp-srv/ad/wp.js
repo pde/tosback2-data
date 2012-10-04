@@ -219,17 +219,14 @@
     })();
   };
 
-  /*
-  //homepage refresh modification FOR REFERENCE:
-  TWP.hpRefreshTests = TWP.hpRefreshTests || {};
-  TWP.hpRefreshTests.adRefreshFunction = function() {
-    if(true){
-      //You want to disallow a refresh
-      return false;
-    }
-    return true;
+  
+  //homepage refresh modification:
+  win.TWP = win.TWP || {};
+  win.TWP.hpRefreshTests = win.TWP.hpRefreshTests || {};
+  win.TWP.hpRefreshTests.adRefreshFunction = function() {
+    return wpAd.flags.test_ads ? false : true;
   };
-  */
+
   
   // last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {

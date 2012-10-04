@@ -39,6 +39,9 @@ bam.extend({
                     _mediaProps, _fullPlayerUrl, curParam, _clickOrigin = "",
 
                     _flatMode;
+				
+				var isMlbSource = (!props.source) ? true : (props.source.indexOf("MLB")>-1 || props.source.indexOf("YOY")>-1 || props.source=="ROGERS") ? true : false;
+
 
                 // device detection / redirects
                 if (bam.env && bam.env.client) {
@@ -53,7 +56,7 @@ bam.extend({
                         return;
                     }
 					
-					// don't launch for android (except on GBTV or THEBLAZE)
+					// don't launch for android (except on GBTV/THEBLAZE)
 					if((props.source !== "GBTV" && props.source !== "THEBLAZE") && bam.env.client.isAndroid) {
 						location.href = "/mobile/android/unsupported.jsp";
 						return;
@@ -100,8 +103,8 @@ bam.extend({
 
                 // flat drill check //////////////////////
                 _flatMode = false;
-
-                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
+                
+                if ( isMlbSource ) {
                     $.ajax({
                         type: "GET",
                         async: false,
@@ -126,9 +129,9 @@ bam.extend({
                     return;
                 }
                 
-                /*
+                
                 //COMMENT OUT FOR OFFSEASON
-                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
+                if ( isMlbSource ) {
                     /////////////////////////////////////////
                     // MLB.TV vs. PostSeason.TV mini-interstitial //////////////
                     var _calIdArr = props.calendar_event_id.split("-"),
@@ -136,13 +139,14 @@ bam.extend({
                         _m = _calIdArr[3],
                         _d = _calIdArr[4],
                         _gameDate = _y + _m + _d,
-                        _psStartDate = new Date("2011/09/30"),  // start of post-season
+                        _psStartDate = new Date("2012/10/04"),  // start of post-season
+                        _psEndDate = new Date("2012/11/03"),  // end of post-season
                         _calIdDate   = new Date(_y+"/"+_m+"/"+_d),                        
                         _todayDate = window.sysdate ? new Date(sysdate.replace(/^(\d{4})(\d{2})(\d{2})\d+/, "$1/$2/$3")) : new Date(),
                         _isGameLive = false,
                         _gameProps; // will contain game params from multi-angle-epg, if game is live
                     // @TODO pull this out after postseason		
-                    if ((_todayDate > _psStartDate) && (_calIdDate >= _todayDate) && !props.skipIntr) { // param passed by links from interstitial to avoid recursion
+                    if ((_todayDate > _psStartDate) && (_todayDate < _psEndDate) && (_calIdDate >= _todayDate) && !props.skipIntr) { // param passed by links from interstitial to avoid recursion
                         // get game data from multi-angle-epg. can't cache since game states change
                         $.ajax({
                             url: "/gdcross/components/game/mlb/year_" + _y + "/month_" + _m + "/day_" + _d + "/multi_angle_epg.xml",
@@ -170,23 +174,14 @@ bam.extend({
                                 gameProps: _gameProps
                             });
                             return;
-                        } else {
-
-						bam.media.launchTvStreamSelect({
-                                mode: "watch",
-                                linkProps: props,
-                                gameProps: _gameProps
-                            },"NLDS");
-							return;
-						}
-                    
+                        }
                     }
                 }
-                */
+                
 
                 /////////////////////////////////////////
                 // if content_id and media_type are not set, try to find content_id for HD stream
-                if (props.source !== "GBTV" && props.source !== "THEBLAZE") {
+                if ( isMlbSource ) {
                     if (!props.content_id) {
                         if (typeof props.media_type === "undefined") {
                             props.media_type = "";
@@ -252,6 +247,16 @@ bam.extend({
                         _mp4_baseurl = "http://qa.mlb.com";
                     }
                 }
+                
+                // Add environment property to ensure we connect to the proper backend data
+                if (bam.env && bam.env.host) {
+	               	if (bam.env.host.isQA) {
+						_mediaProps['environment'] = 'qa';
+					}
+					else if (bam.env.host.isBeta) {
+						_mediaProps['environment'] = 'beta';
+					}
+				}
 
                 _fullPlayerUrl = _mp4_baseurl + bam.mp4_config.url + "?" + $.param(_mediaProps);
 
@@ -271,7 +276,7 @@ bam.extend({
              * @param cfg {Object}	Configuration
              * @TODO Add purchase links
              */
-            launchTvStreamSelect: function(cfg,series) {
+            launchTvStreamSelect: function(cfg) {
                 var linkClass = "tv-watch",
                     linkText = "Watch Now";
                 if (cfg.mode === "buy") {
@@ -288,9 +293,9 @@ bam.extend({
                 
 
                 bam.loadCSS("/style/media/mp4_mini_interstitial.css");
-					var _miniIntHtml = '' + '<div id="mini-int">' + '<div id="mini-int-mlbtv" class="mp-option">' + '<h5>International Users - MLB.TV</h5>' + 'Watch all World Series games LIVE with MLB.TV.' + '<a href="/mlb/subscriptions/index.jsp?product=mlbtv&affiliateId=SCOREBOARDCORNER" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' + '</div>' + '<div id="mini-int-pstv" class="mp-option">' + '<h5>U.S./Canada Users – MLB.TV</h5>' + 'Due to Major League Baseball exclusivities, during the MLB Postseason, all live games will be blacked out in the United States (including the territories of Guam and the U.S. Virgin Islands) and Canada. Each of these games will be available as an archived game approximately 90 minutes after the conclusion of the applicable game.' 
-					//+ '<a href="/mlb/subscriptions/index.jsp" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' 
-					+ '</div>' +  '</div>' + '</div>';
+					var _miniIntHtml = '' + '<div id="mini-int">' + '<div id="mini-int-mlbtv" class="mp-option">' + '<h5>International Users - MLB.TV</h5>' + '<p>Watch ALL live Postseason games with MLB.TV.</p><p><strong><em>Live games NOT available in the U.S. and Canada.  Full game archives available approximately 90 minutes after each game.</em></strong></p>' + '<a href="/mlb/subscriptions/index.jsp?product=mlbtv" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' + '</div>' + '<div id="mini-int-pstv" class="mp-option">' + '<h5>U.S./Canada Users - Postseason.TV *</h5>' + '<p>Watch live online companion coverage of the Wild Card &amp; Division Series, plus the AL Championship Series (no blackout restrictions).</p><p><strong>Wild Card - AL & NL<br />Division Series - ALDS & NLDS<br />League Championship Series - ALCS only</strong></p>' 
+					+ '<a href="/mlb/subscriptions/index.jsp" class="bam-button bam-button-mlbtv ' + linkClass + '">' + linkText + '</a>' 
+					+ '</div>' +  '<p class="mp-legalese">* Postseason multi-angle coverage is presented in conjuction with TBS and MLB Network as a companion to the live broadcast feed.</p><p class="mp-legalese">All broadcasts subject to blackout restrictions. <a href="/mlb/subscriptions/index.jsp">Learn More</a></p></div>';
 
 
 
@@ -323,7 +328,7 @@ bam.extend({
 
 								cfg.linkProps.source = "MLB";
 								cfg.linkProps.sponsor = "MLB";
-								cfg.linkProps.view_key = "MLB";
+								cfg.linkProps.view_key = "";
 								
                                 delete cfg.linkProps.content_id;
 								bam.media.launchPlayer(cfg.linkProps);
@@ -343,9 +348,9 @@ bam.extend({
                                     skipIntr: "true"
                                 });
 
-								/*
+								/* This was hardcoded at one time -- could be used for testing now
 								cfg.linkProps.source = "MLB_POSTSEASON_MULTIANGLE_TBS";
-								cfg.linkProps.sponsor = "MLB_POSTSEASON_MULTIANGLE_TBS";
+								cfg.linkProps.sponsor = "MLB_TBSSKIN";
 								cfg.linkProps.view_key = "MLB_POSTSEASON_MULTIANGLE_TBS";
 								*/
 								
@@ -902,7 +907,7 @@ bam.extend({
                 return iframe;
             },
             isSilverLightInstalled: function() {
-/*if( Silverlight.ua.Browser == "Unsupported"){
+				/*if( Silverlight.ua.Browser == "Unsupported"){
                     return "notSupported";
                 }
                 else */

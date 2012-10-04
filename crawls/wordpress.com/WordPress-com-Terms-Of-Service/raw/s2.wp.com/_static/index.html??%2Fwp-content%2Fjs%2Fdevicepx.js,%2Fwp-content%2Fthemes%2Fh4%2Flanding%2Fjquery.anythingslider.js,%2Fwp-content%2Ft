@@ -303,6 +303,11 @@ var wpcom_img_zoomer = {
 			if ( imgScale == scale || imgScale == "0" )
 				continue;
 
+			// Skip images that have already failed at this scale
+			var scaleFail = imgs[i].getAttribute("scale-fail");
+			if ( scaleFail && scaleFail <= scale )
+				continue;
+
 			// Skip images that have no dimensions yet.
 			if ( ! ( imgs[i].width && imgs[i].height ) )
 				continue;
@@ -465,31 +470,46 @@ var wpcom_img_zoomer = {
 				newSrc = img.src.replace(/\?(zoom=[^&]+&)?/, '?zoom=' + scale + '&');
 		}
 
-		// Scale static assets that have a name matching *-1x.png
-		else if ( img.src.match(/^https?:\/\/([^\/.]+\.)*(wp|wordpress)\.com\/([^\/]+)\/.*-(1|2)x\.(gif|jpeg|jpg|png)(\?|$)/) ) {
-			// Skip uploads that have the -1x suffix (maybe we will do a HEAD check for -2x on these)
-			if ( RegExp.$3 == "files" || RegExp.$1.match(/(^|\.)files\.$/) ) {
-				return false;
-			}
+		// Scale static assets that have a name matching *-1x.png or *@1x.png
+		else if ( img.src.match(/^https?:\/\/[^\/]+\/.*[-@]([12])x\.(gif|jpeg|jpg|png)(\?|$)/) ) {
 			// Fix width and height attributes to rendered dimensions.
 			img.width = img.width;
 			img.height = img.height;
-			var currentSize = RegExp.$4, newSize = currentSize;
+			var currentSize = RegExp.$1, newSize = currentSize;
 			if ( scale <= 1 )
 				newSize = 1;
 			else
 				newSize = 2;
 			if ( currentSize != newSize )
-				newSrc = img.src.replace(/-[12]x\.(gif|jpeg|jpg|png)(\?|$)/, '-'+newSize+'x.$1$2');
+				newSrc = img.src.replace(/([-@])[12]x\.(gif|jpeg|jpg|png)(\?|$)/, '$1'+newSize+'x.$2$3');
 		}
 
 		else {
 			return false;
 		}
 
-		// Don't reset img.src unless it has changed. This avoids unnecessary reloads.
-		if ( newSrc != img.src )
+		// Don't set img.src unless it has changed. This avoids unnecessary reloads.
+		if ( newSrc != img.src ) {
+			// Store the original img.src
+			var prevSrc, origSrc = img.getAttribute("src-orig");
+			if ( !origSrc ) {
+				origSrc = img.src;
+				img.setAttribute("src-orig", origSrc);
+			}
+			// In case of error, revert img.src
+			if ( img.complete )
+				prevSrc = img.src;
+			else
+				prevSrc = origSrc;
+			img.onerror = function(){
+				img.src = prevSrc;
+				if ( img.getAttribute("scale-fail") < scale )
+					img.setAttribute("scale-fail", scale);
+				img.onerror = null;
+			};
+			// Finally load the new image
 			img.src = newSrc;
+		}
 
 		return true;
 	}

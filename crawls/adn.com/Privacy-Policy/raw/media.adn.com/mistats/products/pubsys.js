@@ -350,6 +350,8 @@ mistats.InteractionTracker = function ()
 
    this.increment = function (pType)
    {
+      var tmp;
+
       console.log(pType);
       if (!(pType in types))
          return false;
@@ -360,8 +362,16 @@ mistats.InteractionTracker = function ()
       if (counts[pType])
          counts[pType]++;
       else
+      {
+         tmp = sessionStorage.getItem(types[pType].key);
+         counts[pType] = (!tmp || isNaN(tmp)) ? 1 : tmp;
+      }
+/*
+      if (counts[pType])
+         counts[pType]++;
+      else
          counts[pType] = 1;
-
+*/
       sessionStorage.setItem(types[pType].key, counts[pType]);
 
       if (!pending)

@@ -457,7 +457,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_N1401158389/optimizedBundles/globalOptimized.css" />
+<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_1874299602/optimizedBundles/globalOptimized.css" />
 
 
 
@@ -655,7 +655,11 @@
 
 
 
+<!-- Ensure that date is always formated for en_US for processing at the JavaScript tier -->
 
+
+
+<!-- Reset localeCode to default standard -->
 
 
 
@@ -734,29 +738,39 @@
         	yourAccount : "Your account",
         	signOut : "Sign out",
         	isRecognizedUser : "Not you?",
+        	changeUserMessageTemplate : "(Not #{name}?)",
         	signIn : "Sign in",
         	orderStatus : "Orders and returns",
+        	orderStatusV2 : "Order Status",
         	shippingTo : "Shipping to",
         	weak : "Weak",
         	fair : "Fair",
         	good : "Good",
         	strong : "Strong",
         	sameAsUser : "Weak: Same as user",
-        	sameAsHint : "Weak: Same as hint"
+        	sameAsHint : "Weak: Same as hint",
+        	rewards : "Rewards",
+        	accountSettings : "Account Settings",
+        	haveAnAccount : "Have an account?"      	
         },
         inLineBag :{
-	        labelColor : "Color",
+            labelColor : "Color",
 	        labelSize : "Size",
 			labelQuantity : "Qty",
 			labelPrice : "Price",
 			itemInSingular : "item in",
 			itemInPlural : "items in",
+			lineItemJp : "???common.universal.lineItem.text.lineItemJp???",
 			lineItemBag : "bag",
 			yourBag : "your bag",
 			addedTo : "Added to",
 			inlineBagItemSingular : "item in",
-			inlineBagItemPlural : "items in"
-         },
+			inlineBagItemPlural : "items in",
+	    	inlineBagItemJp : "???common.universal.navigation.TopNavCommon.text.inlineBagItemJp???"
+	    },
+	    discounts :{
+	    	rewardMessage : "Redeem Your <div id='ribbon'><div id='ribbonAmount'>$#{rewardValue}</div></div> in Rewards Now"
+		},
         product : {
 	        groupNameOverview : "overview",
 	        groupNameTips : "tips",
@@ -875,22 +889,19 @@
 
 <script type="text/javascript">
     var isClientStateManagementActive = "true";
+    var isGuestCheckoutActive = "false";
 </script>
 
 
-	
-	
-	
-		<script type="text/javascript" src="http://www.gap.com/gzip_2105876195/optimizedBundles/globalOptimized.js" ></script>
+	<script type="text/javascript" src="http://www.gap.com/gzip_943672989/optimizedBundles/globalOptimized.js" ></script>
 
-	
 
 	<script type="text/javascript">
 		// Activation of the navigationService and associated Managers
-		navigationService.model.isActive = ('false' === 'true')
+		navigationService.model.isActive = ('true' === 'true')
                 || ('false' === 'true')
-                || ('false' === 'true')
-                || ('false' === 'true');
+                || ('true' === 'true')
+                || ('true' === 'true');
 		navigationService.paginationHelper.constants.MAX_PRODUCTS_PER_PAGE = 100;
 	</script>
 
@@ -936,11 +947,11 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/01/2012 08:09 AM",
+            DATE_IN_USE: "10/04/2012 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
 
             IS_NAV2_ENABLED: 'false' === 'true',
-            IS_FACET_ENABLED: 'false' === 'true'
+            IS_FACET_ENABLED: 'true' === 'true'
 		});
 	// ]]>
 </script>	
@@ -974,8 +985,8 @@
 <!-- shippingOptionsFeatureActive  = true -->
 <!-- isLoggingServiceActive  = false -->
 <!-- catalogCategoryFeaturesEnabled  = power_reviews,quick_links,cj_feed,top_left_nav,ecom_rest_services,categories -->
-<!-- localCacheActive  = true -->
-<!-- isLocalCacheDisabled  = false -->
+<!-- localCacheActive  = false -->
+<!-- isLocalCacheDisabled  = true -->
 <!-- isPageContentDataActive  = true -->
 <!-- isKeywordSearchDrivenByEaskAsk  = true -->
 
@@ -993,7 +1004,7 @@
 <!-- faceted category white list =  -->
 <!-- faceted category black list =  -->
 <!-- isFaceted = false -->
-<!-- is facets enabled = false -->
+<!-- is facets enabled = true -->
 <!-- is category search faceted  = false -->
 
 <!-- isClientStateManagementActive  = true -->
@@ -1015,6 +1026,7 @@
 	browserService.controller.managers.mobileBrowserManager.constants.MOBILE_BROWSERS_TO_REDIRECT = ["iphone","ipod","android:mobile"];
 	browserService.controller.init.main();
 	
+	contentService = new ContentService();
  	// ]]>
 </script>
 
@@ -1085,7 +1097,7 @@
 			  }
 			}
 		
-
+		
 		if (window["personalizationService"] != undefined) {
 			with (personalizationService.model) {
 				globalShipping.isGlobalShippingActive = "true";
@@ -1094,6 +1106,7 @@
 			}
 			personalizationService.controller.init.main();
 		}
+		
 		
 		if (window["categoryService"] != undefined) {
 			if (window["categoryInfo"] != undefined) {
@@ -4117,6 +4130,202 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 </script>
 <!-- END IT Override #149 - omni size variant fix -->
 
+<!-- begin contentOverride151.2 -->
+<script type="text/javascript">
+	pixelManagementService.controller.eventHandlers.domLoadedHandler = function () {
+		var isPersonalizationDataReady = personalizationService.model.isPersonalizationDataReady;
+		var pixelManagementServiceReadyHandler = this.controller.eventHandlers.pixelManagementServiceReadyHandler
+				.bind(this);
+		if (isPersonalizationDataReady) {
+			pixelManagementServiceReadyHandler();
+		} else {
+			Event.observe(document, "personalizationData:ready",
+					pixelManagementServiceReadyHandler);
+		}
+	}
+	if (!(/product.do$/.test(document.location.pathname))) {
+		pixelManagementService.override = {};
+		pixelManagementService.override.domLoadedHandlerBound = pixelManagementService.controller.eventHandlers.domLoadedHandler.bind(pixelManagementService);
+		processingService.api.addApplicationMethodToRegistry(pixelManagementService.override.domLoadedHandlerBound, "pixel management service");
+	}
+</script>
+<!-- end contentOverride151.2 -->
+
+<!-- begin contentOverride153 -->
+<script type="text/javascript">
+
+
+if (brandConst.IS_FACET_ENABLED) {
+
+    (function () {
+        navigationService.controller.managers.categoryFacetedSearchManager.model.isInitialLoad = true;
+        var oldInitializeGrid = navigationService.productGridHelper.api.initializeProductGrid,
+            oldRenderProductGrid = navigationService.productGridHelper.api.renderProductGrid.wrap(function (originalMethod) {
+                var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+                var model = categoryFacetedSearchManager.model;
+                var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+                if (!model.hasSearchResults) return;
+
+                var productCategoryFacetedSearch = categoryFacetedSearchManager.model.data.productCategoryFacetedSearch;
+                var productCategory = (productCategoryFacetedSearch || {})
+                    .productCategory;
+
+                if (!productCategory) return;
+
+                originalMethod(productCategory);
+
+                if (!productCategory.childCategories && !productCategory.childProducts) return;
+                navigationService.productGridHelper.api.productLinkHelperUtils.productLinkClickScroller();
+            });
+
+        //*************** BACK BTN FIX BEGIN **************************
+        navigationService.controller.managers.categoryFacetedSearchManager.constants.templates.PRODUCT_TEMPLATE_TEXT = '<li id="categoryProductItem_#{pid}#{cidIdParam}" class="brand#{brandName} productCatItem" >' + '<div id="categoryProductItemImageContainer_#{pid}#{cidIdParam}" class="brand#{brandName} facetedSearchImgDiv imgDiv productPlaceholder">' + '<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#{categoryProductLink}" #{productClickEventHandler}>' + '<img id="cimg_#{productImgId}" class="gridProdImg" alt="#{categoryUnstyledProductName}" productimagepath="#{productImagePath}" src="http://www.gap.com/assets/common/clear.gif" #{mouseEventHandlers}>' + '</a>' + '</div>' + '<a class="productItemName" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#{categoryProductLink}">#{categoryProductName}</a>' + '#{pricingHTML}' + '#{mupAndMarketing}' + '</li>';
+
+        navigationService.productGridHelper.api.productLinkHelperUtils = {
+            getClickEventHandlerName: function (cid) {
+                return 'onclick="navigationService.productGridHelper.api.productLinkHelperUtils.productLinkClickHandler()"';
+            },
+            getProductLink: navigationService.productGridHelper.api.productLinkHelper,
+            productLinkClickHandler: function () {
+                var top = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop,
+                    cid = gidLib.getQuerystringParam('cid');
+                window.name = top > 0 ? 'productClickScrollTop_' + cid + '_' + top : '';
+            },
+            productLinkClickScroller: function () {
+                if (window.name.search('^productClickScrollTop_(\\d+)*_(\\d+)$') == 0) {
+                    var position = window.name.split('_'),
+                        clickedCid = position[1],
+                        top = parseInt((position[2] || '0'), 10),
+                        pageCid = gidLib.getQuerystringParam('cid') || '',
+                        shouldScroll = clickedCid == pageCid;
+
+                    if (shouldScroll) {
+                        window.scrollTo(0, top);
+                    }
+                }
+                window.name = '';
+            }
+        };
+        navigationService.productGridHelper.api.buildProductElementHelper = navigationService.productGridHelper.api.buildProductElementHelper.wrap(
+
+        function (originalMethod, product, index, productContractObj, isOutfitCategory) {
+            var productGridApi = navigationService.productGridHelper.api;
+
+            function fixProductContract(product1, productContractObj) {
+                var productLinkHelper = productGridApi.productLinkHelperUtils,
+                    cid = productContractObj.get('cid') || '';
+
+                productContractObj.set('categoryProductLink', productLinkHelper.getProductLink(cid, product1));
+                productContractObj.set('productClickEventHandler', productLinkHelper.getClickEventHandlerName(cid));
+            }
+
+            var productContractObj = originalMethod(product, index, productContractObj, isOutfitCategory);
+            if (!(product.isOutfit === 'true' && isOutfitCategory === true)) {
+            	fixProductContract(product, productContractObj);
+	    }
+
+            return productContractObj;
+        });
+
+        //*************** BACK BTN FIX END **************************
+
+
+        //*************** DISABLE FADE BEGIN ************************
+        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.createHandler = function(transport) {
+            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+            var model = categoryFacetedSearchManager.model;
+
+            if (!model.isDomReady) return;
+
+
+            var productHighlights = $$('.productHighlight');
+            productHighlights && productHighlights.each(function(highlight, index) {highlight.remove();});
+
+            var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+            var productGridHelper = navigationService.productGridHelper;
+
+            if(quickLook.isQuickLookOpen) { quickLook.closeQuickLook(); }
+
+            productGridHelper.api.renderProductGrid({childProducts: null, childCategories: []});
+            var cachedElements = productGridHelper.cachedElements;
+            if (model.isInitialLoad) {
+                cachedElements.loadingSpinner.addClassName('hideMe');
+            } else {
+                cachedElements.loadingSpinner.removeClassName('hideMe');
+            }
+
+            //we are using display:none because of the effect, more information here http://madrobby.github.com/scriptaculous/effect-appear/
+            $(productToolsLineBottom).setStyle('display:none');
+
+            cachedElements.productGrid.update("");
+        };
+        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = function (transport) {
+            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+            var model = categoryFacetedSearchManager.model;
+
+            if (!model.isDomReady) return;
+            var productGridDiv = $('tabTableOff');
+            if (model.isInitialLoad) {
+                productGridDiv.setStyle('display:block');
+            } else {
+                productGridDiv.setStyle('display:none');
+                productGridDiv.appear();
+            }
+
+            var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
+            if (!spinner.hasClassName('hideMe')) {
+                spinner.addClassName('hideMe');
+            }
+
+            var areAllSubCatsOutfit = model.data.productCategoryFacetedSearch.productCategory.areAllSubCatsOutfit == "true";
+            var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+
+            if (!areAllSubCatsOutfit) {
+                var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+                $(productToolsLineBottom)
+                    .appear();
+            }
+
+            if (navigationService.preview && navigationService.preview.productHighlight.isPreviewEnable()) {
+                if (objPreview.previewMode == "WIP") {
+                    objPreview.togglePreview(true);
+                    navigationService.preview.productHighlight.setElementHighLighter();
+                }
+            }
+
+            categoryFacetedSearchManager.view.fixSizeFacetVariantName();
+            model.isInitialLoad = false;
+        };
+        //*************** DISABLE FADE END ************************
+
+        //*************** MAKE SURE GRID RENDER AS EARLY AS POSSIBLE BEGIN ***********************
+        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.domReadyHandler = navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.domReadyHandler.wrap(function (old) {
+	    $('loadingSpinner').addClassName('hideMe');
+            oldInitializeGrid();
+            old();
+        });
+
+        navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchView = navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchView.wrap(function (old) {
+            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+            if (!categoryFacetedSearchManager.view.initializeDomElements()) return;
+            oldRenderProductGrid();
+
+            old();
+        });
+        //*************** MAKE SURE GRID RENDER AS EARLY AS POSSIBLE BEGIN ***********************
+
+        navigationService.productGridHelper.api.initializeProductGrid = navigationService.productGridHelper.api.renderProductGrid = function () {};
+    })();
+
+
+}
+
+
+
+
+</script>
+<!-- end contentOverride153 -->
+
 
 
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
@@ -4124,7 +4333,7 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 
 
 <!-- container 6 -->
-<!-- BEGIN Content Item File: /content/0005/510/026/cn5510026.html -->
+<!-- BEGIN Content Item File: /content/0005/623/434/cn5623434.html -->
 
 
 <style type="text/css">
@@ -4144,7 +4353,7 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 
 var globalIntercept = {
 	model: {
-		wcdAssetPath:'/Asset_Archive/GPWeb/content/0005/510/026/assets/',
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0005/623/434/assets/',
 		businessUnit:'GP_US',
 		brandName:'Gap',
 		brandURL:'www.gap.com',
@@ -4152,8 +4361,8 @@ var globalIntercept = {
 		trackingId:'',
 		
 		// Which countries launch which intercept - array of coutnry codes
-		wcdInterceptCoutnries:['CN','HK','TW','JP'],
-		globalGatewayCountries:['AE','AR','AT','AU','BB','BD','BE','BG','BH','BN','BO','BR','CA','CH','CL','CO','CR','CY','CZ','DE','DK','DO','EC','EE','EG','ES','FI','FR','GB','GR','GT','HN','HT','HU','ID','IE','IL','IN','IT','JM','JO','KH','KR','KW','LI','LK','LT','LU','LV','MA','MO','MT','MX','NI','NL','NO','NP','NZ','OM','PA','PE','PH','PK','PL','PT','PY','QA','RO','SA','SE','SG','SI','SK','SV','TH','TR','TT','UK','ZA'],
+		wcdInterceptCoutnries:['CN','HK','TW'],
+		globalGatewayCountries:['AE','AR','AT','AU','BB','BD','BE','BG','BH','BN','BO','BR','CA','CH','CL','CO','CR','CY','CZ','DE','DK','DO','EC','EE','EG','ES','FI','FR','GB','GR','GT','HN','HT','HU','ID','IE','IL','IN','IT','JM','JO','KH','KR','KW','LI','LK','LT','LU','LV','MA','MO','MT','MX','NI','NL','NO','NZ','OM','PA','PE','PH','PK','PL','PT','PY','QA','RO','SA','SE','SG','SI','SK','SV','TH','TR','TT','UK','ZA'],
 		
 		// Life of intercept cookie by region
 		interceptCookieLife: {
@@ -4366,7 +4575,7 @@ if( window['siteNavigation'] ) {
 
 </script>
 
-<!-- END Content Item File: /content/0005/510/026/cn5510026.html -->
+<!-- END Content Item File: /content/0005/623/434/cn5623434.html -->
 
 
 
@@ -4765,7 +4974,7 @@ var navABTest = function (config) {
     }
 
 
-var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1209_v4_rollout', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '34-33-33', '41', '');
+var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1209_v5_rollout', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '0-0-100', '0', '');
 
 Event.observe(document, "dom:loaded", function () {
 
@@ -6184,6 +6393,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 											<div id="checkoutButtonContainer2"><a href="http://www.gap.com/buy/shopping_bag.do"><img src="http://www.gap.com/assets/common/clear.gif" alt="checkout" id="inlineBagCheckOut1" class="universalButtonSprite universalButtonSpriteCheckoutOn"/></a></div>
 										</div>
 									
+									
 								</div>
 								
 									<div id="inlineBagHeaderOpen" style="display:none;">
@@ -6211,6 +6421,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 												</div>
 										    </div>
 	                                    </div>
+										<div id="inlineCustomerAttributesPlaceholder"></div>
 									</div>
 	 
 									
@@ -6328,8 +6539,6 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 										</div>
 									</div>
 								
-							</div>
-							<div id="inlineCustomerAttributesPlaceholder">
 							</div>
 						
 					</div>
@@ -6641,8 +6850,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/596/998/cn5596998.html -->
-<div id="contentItemContainer10000395" class="5596998" >
+    	<!-- BEGIN Content Item File: /content/0005/588/211/cn5588211.html -->
+<div id="contentItemContainer10000395" class="5588211" >
 
 <style type="text/css">
 #globalBanner {
@@ -6703,18 +6912,18 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/596/998/assets/093012_BRONG_GAP_GB_US.png" alt="save 30% on your purchase or save 35% when you use your GapCard, BananaCard, or Old Navy Card. Online only. Ends 10/2. Enter THANKYOU. Details" usemap="#gbMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/588/211/assets/100412_ALL_columbus_SBAN_US.png" alt="online: 30% off your purchase. in stores: up to 40% off select styles. ends 10/8. enter GAPCOLOR. details" usemap="#gbMap" />
 		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="373,7,459,54" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/596/998/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-3,514,108" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/596/998/assets/legal.html',id:'legal',width:350,height:300});">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="322,22,472,56" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:300});">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
 	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/596/998/assets/093012_BRONG_GAP_DISR_US.gif" alt="save 30% on your purchase or save 35% when you use your GapCard, BananaCard, or Old Navy Card. Online only. Ends 10/2. Enter THANKYOU. Details" usemap="#disruptorMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/588/211/assets/100412_ALL_columbus_DISR_US.jpg" alt="30% off your online purchase. enter GAPCOLOR. plus, in stores up to 40% off select styles. ends monday, 10/8. details" usemap="#disruptorMap" />
 		<map name="disruptorMap">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/596/998/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
 		</map>
 	</div><!-- /Global Banner Disruptor -->
 
@@ -6722,7 +6931,7 @@ Event.observe(window,"load",function(){
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('093012_GB');
+	globalBannerDisruptor.init('100412_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -6843,7 +7052,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0005/596/998/cn5596998.html -->
+<!-- END Content Item File: /content/0005/588/211/cn5588211.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7457,6 +7666,17 @@ var gqVideoPopup = new GQ_VIDEO_POPUP_CLASS();
 	
 </div>
 
+
+	<div id="sideNavFacetsHeader" class="facets-container facet facet_master_header hideMe">
+	<!-- @FF Division Facet Code hidden until ready to play. JS is in place in facet manager -->
+		<div id="lrCategoryNameHeader" class="category heading categoryNameDiv"></div>
+		<div class="category heading categoryItemCountResetDiv">
+			<span id="facet_header_item_count" class="totalItemCountDiv"></span>
+			<span class="resetAllButton hideMe"><a id="facet_reset_all" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" onclick="navigationService.controller.managers.categoryFacetedSearchManager.util.resetAllSelectedOptions(event);navigationService.controller.managers.categoryFacetedSearchManager.controller.filterByFacets();return false;" class="sprite-button_reset" alt="Reset" title="Reset"></a></span>
+		</div>
+	</div>
+
+	<div id="sideNavFacets" class="facets-container"></div>	
 
 
 
@@ -8599,6 +8819,7 @@ max-width: none;
 	
             </div>
             <div id="mainContentBottom">
+                
             	
 
 
@@ -9109,7 +9330,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5596998,5569434,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5588211,5569434,5106701,5451526,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

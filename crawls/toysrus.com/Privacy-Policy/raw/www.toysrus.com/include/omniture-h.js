@@ -268,7 +268,7 @@ More info available at http://www.omniture.com */
       /* OAS Plugin */
       s.oas({cookie:'prop45'});
       if (s.products != null && s.products != ';') {
-      	 s.products = (''||s.products).replace(/eVar32=([^|]*)/i, 'eVar32='+s.prop14);
+      	 s.products = (''||s.products).replace(/eVar32=([^|^,]*)/i, 'eVar32='+s.prop14);
       }
     }
     s.usePlugins=true

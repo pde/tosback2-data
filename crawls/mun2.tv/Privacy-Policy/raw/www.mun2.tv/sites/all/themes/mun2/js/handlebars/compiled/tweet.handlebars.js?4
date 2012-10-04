@@ -1,0 +1,47 @@
+(function() {
+  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['tweet'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n  <li>\n    <a class=\"tweet_avatar\" href=\"http://twitter.com/";
+  stack1 = depth0.user;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.screen_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\">\n      <img src=\"";
+  stack1 = depth0.user;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.profile_image_url;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" height=\"48\" width=\"48\" alt=\"";
+  stack1 = depth0.user;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.screen_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "'s avatar\" title=\"";
+  stack1 = depth0.user;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.screen_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "'s avatar\" border=\"0\">\n    </a>\n    <span class=\"tweet_time\">\n      <a href=\"http://twitter.com/mun2/status/";
+  foundHelper = helpers.id_str;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.id_str; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\" title=\"view tweet on twitter\">";
+  foundHelper = helpers.time_ago;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.time_ago; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "</a>\n    </span>\n    <span class=\"tweet_text\">\n      ";
+  foundHelper = helpers.text;
+  if (foundHelper) { stack1 = foundHelper.call(depth0, {hash:{}}); }
+  else { stack1 = depth0.text; stack1 = typeof stack1 === functionType ? stack1() : stack1; }
+  buffer += escapeExpression(stack1) + "\n    </span>\n  </li>\n  ";
+  return buffer;}
+
+  buffer += "<ul class=\"tweet_list\">\n  ";
+  stack1 = depth0.items;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</ul>";
+  return buffer;});
+})();

@@ -15,8 +15,8 @@
         <meta name="robots" content="noarchive"/>
         <meta name="language" content="en"/>
         <meta name="location" content="us"/>
-        <meta name="X-Server" content="PRD1PCQAPP08"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>	
+        <meta name="X-Server" content="PRD1PCQAPP04"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
         <meta property="og:title" content="Intel® Online Privacy Notice"/>
         <meta property="og:type" content="company"/>
         <meta property="og:url" content="http://www.intel.com/content/www/us/en/privacy/intel-online-privacy-notice.html"/>
@@ -130,7 +130,7 @@ CQURLInfo = {
 			<!-- Will load font file for browsers IE7,8 -->
 			<!--[if (gt IE 6)&(lt IE 9)]>
 			<link rel="stylesheet" type="text/css" href="/etc/designs/intel/us/en/css/latin.monotype.fonts.oldie.css" media="screen" />
-		<![endif]-->
+		<![endif]-->		
  </head>
 <body class="page assetdetail assetdetailhtml ">
     <noscript>
@@ -294,206 +294,193 @@ CQClientLibraryManager.write([{"p":"/etc/clientlibs/foundation/personalization.j
       
       
       
-            <div class="homepagesearch uheadersearch"> 
-
+            <div class="homepagesearch uheadersearch">
 
 
 
 <script type="text/javascript">
-    function showHPResult(str) {
-        var timestamp = Number(new Date());
-        var xmlhttp;
-        if (str.length==0) { 
-            $(".predictive-search").addClass('hideme');
-             return;
-        }
-
-        $.ajax({ 
-            type: "GET",
-            url: "/content/intelutility/proxypage.js?searchPhrase=" + encodeURI(str) + "&locale=" + encodeURI('en_US') + "&searchRealm=Default",
-            dataType: "application/json",
-            success: function(result, request) {
-                if( xhr.status == 200 ) {
-                    processHPResult(xhr.responseText);
-             }
-            }, 
-            error: function(xhr) {
-                if( xhr.status == 200 ) {
-                    processHPResult(xhr.responseText);
-                    
-                }
-            } 
-        });
+function showHPResult(str) {
+    var timestamp = Number(new Date());
+    var xmlhttp;
+    if (str.length==0) {
+        $(".predictive-search").addClass('hideme');
+        return;
     }
-
-    function processHPResult(resultStr)
-    {
-        var respJson = JSON.parse(resultStr);
-        var isBestMatch = respJson[1];
-        
-        if(respJson[0].length == 'undefined' || respJson[0].length == 0) {
-            $(".other-match").hide();
-            $(".best-match").hide();
+    $.ajax({
+        type: "GET",
+        url: "/content/intelutility/proxypage.js?searchPhrase=" + encodeURI(str) + "&locale=" + encodeURI('en_US') + "&searchRealm=Default",
+        dataType: "application/json",
+        success: function(result, request) {
+            if( xhr.status == 200 ) {
+                processHPResult(xhr.responseText);
+            }
+        },
+        error: function(xhr) {
+            if( xhr.status == 200 ) {
+                processHPResult(xhr.responseText);
+            }
         }
-        
-        document.getElementById("otherResults").innerHTML="";
-        document.getElementById("bestResults").innerHTML="";
-
-        var searchResults = respJson[0];
-
-        if (searchResults.length > 0) {
-            $(".predictive-search").removeClass('hideme');
-
-            if(isBestMatch) {
-                getBestMatchResults();
-                if(searchResults.length > 0) {
-                    $(".other-match").show();
-                }
-                else {
-                    $(".other-match").hide();
-                }
+    });
+}
+function processHPResult(resultStr)
+{
+    var respJson = JSON.parse(resultStr);
+    var isBestMatch = respJson[1];
+    if(respJson[0].length == 'undefined' || respJson[0].length == 0) {
+        $(".other-match").hide();
+        $(".best-match").hide();
+    }
+    document.getElementById("otherResults").innerHTML="";
+    document.getElementById("bestResults").innerHTML="";
+    var searchResults = respJson[0];
+    if (searchResults.length > 0) {
+        $(".predictive-search").removeClass('hideme');
+        if(isBestMatch) {
+            getBestMatchResults();
+            if(searchResults.length > 0) {
+                $(".other-match").show();
             }
             else {
-                $(".best-match").hide();
-                if(searchResults.length > 0) {
-                    $(".other-match").show();
-                }
-            }
-            for(k = 0; k < searchResults.length; k++) {
-                document.getElementById("otherResults").innerHTML += "<li><a  data-wap='{\"method\":\"typeahead\",\"keyword\":\""+ searchResults[k]+ "\"}' href='http://www.intel.com/content/www/us/en/search.html?keyword=&quot;&#32;+&#32;encodeURI(searchResults[k])&#32;+&#32;&quot;'>" + searchResults[k] + "</a></li>";
+                $(".other-match").hide();
             }
         }
-        // added this for key board accessability
-        replaceVal();
-    }
-    
-    function onSubmitHps() { 
-        var boxVal = document.getElementById("searchBox").value;
-        var searchText = 'What can we help you find today?';
-        waTrackSearch(document.getElementById(boxVal, 'text', '')); //analytic tracking - do not remove
-        if(boxVal==searchText){
-            var action = '/content/www/us/en/search.advanced.html';
-            document.getElementById("hpsform").action = action;
-            $('#searchBox').attr('name','');
-        }else if(boxVal.length==0)
-        {
-               document.getElementById("hpsform").action = '/content/www/us/en/search.html?advanced=true&locale=' + encodeURI('en_US');
-        }
-        else{
-            document.getElementById("hpsform").action = '/content/www/us/en/search.html?keyword=' + encodeURI(document.getElementById("searchBox").value) + '&locale=' + encodeURI('en_US');
-        }        
-        document.getElementById("hpsform").submit();
-        return true;        
-    }
-
-    function getBestMatchResults() {
-        $.ajax({ 
-            type: "GET",
-            url: "/content/intelutility/proxypage.js?searchPhrase=" + encodeURI(document.getElementById("searchBox").value) + '&operation=bestmatch&locale=' + "en"+'&localecode='+encodeURI('en_US'),
-            dataType: "application/json",
-            success: function(result, request) {
-                if( xhr.status == 200 ) {
-                    processBestMatchResults(xhr.responseText)
-                }
-            }, 
-            error: function(xhr) {
-                if( xhr.status == 200 ) {
-                    processBestMatchResults(xhr.responseText)
-                }
-            } 
-        });
-    }
-
-    function processBestMatchResults(bestMatchResult) {
-        
-        var bestResultsDiv = document.getElementById("bestResults");
-        var leftColDiv = document.getElementById("leftCol");
-        bestResultsDiv.innerHTML = "";
-        leftColDiv.innerHTML = "";
-        
-        var respJson = JSON.parse(bestMatchResult);
-        var resultSetArray = respJson.ResultSet;
-        var fieldsList = resultSetArray[0];
-        if (resultSetArray != null && resultSetArray.length > 0) {
-            if (fieldsList != null && fieldsList != 'undefined') {
-
-            	leftColDiv.innerHTML += "<h4>Best Match</h4>";
-                var filedListArray = fieldsList.FieldList;
-
-                var title = "";
-                var description = "";
-                var link = "";
-                var thumbnailURL = "";
-                for(var i = 0; i < filedListArray.length; i++){
-                    if(filedListArray[i].FieldName == "title"){
-                        title = filedListArray[i].FieldValue;
-                    }else if(filedListArray[i].FieldName == "description"){
-                        description = filedListArray[i].FieldValue;
-                    }else if(filedListArray[i].FieldName == "url"){
-                        link = filedListArray[i].FieldValue;                        
-                    }
-                    else if(filedListArray[i].FieldName == "thumbnailurl")
-                    {
-                        thumbnailURL = filedListArray[i].FieldValue;
-                    }
-                }
-
-                if(description != null && description.length > 160) {
-                    description = description.substring(0, 160);
-                }
-                
-                
-                bestResultsDiv.innerHTML += "<a data-wap='{\"method\":\"featured\",\"keyword\":\""+document.getElementById("searchBox").value+"\"}' >" + title + "</a>";
-                link = (link.indexOf("?") > -1) ? link + "&wapkw="+ document.getElementById("searchBox").value : link + "?wapkw="+ document.getElementById("searchBox").value, //add wapkw querystring                
-                $('#bestResults a').attr('href',link );
-                if (description != null) {
-                    bestResultsDiv.innerHTML +="<p>" + description + "</p>";
-                }
-                if (thumbnailURL != null) {
-                    if(thumbnailURL.indexOf("/content/dam/") > -1) {
-                       leftColDiv.innerHTML += "<img src='http://www.intel.com/content/www/us/en/privacy/&quot;&#32;+&#32;thumbnailURL&#32;+&#32;&#32;&quot;/_jcr_content/renditions/cq5dam.thumbnail.64.64.png'></img>";
-                    } else {
-                       leftColDiv.innerHTML += "<img src='http://www.intel.com/content/www/us/en/privacy/&quot;&#32;+&#32;thumbnailURL&#32;+&#32;&#32;&quot;'></img>";
-                    }
-                }
-                $(".best-match").show();
+        else {
+            $(".best-match").hide();
+            if(searchResults.length > 0) {
+                $(".other-match").show();
             }
         }
+        for(k = 0; k < searchResults.length; k++) {
+            document.getElementById("otherResults").innerHTML += "<li><a  data-wap='{\"method\":\"typeahead\",\"keyword\":\""+ searchResults[k]+ "\"}' href='http://www.intel.com/content/www/us/en/search.html?keyword=&quot;&#32;+&#32;encodeURI(searchResults[k])&#32;+&#32;&quot;'>" + searchResults[k] + "</a></li>";
+        }
     }
-    
+    // added this for key board accessability
+    replaceVal();
+}
+function onSubmitHps() {
+    var boxVal = document.getElementById("searchBox").value,
+            hpsForm = document.getElementById("hpsform");
+    var searchText = 'What can we help you find today?';
+    waTrackSearch(document.getElementById(boxVal, 'text', '')); //analytic tracking - do not remove
+    if(boxVal==searchText){
+        var action = '/content/www/us/en/search.advanced.html';
+        hpsForm.action = action;
+        $('#searchBox').attr('name','');
+    }
+    else if(boxVal.length==0) {
+        hpsForm.action = '/content/www/us/en/search.html?advanced=true&locale=' + encodeURI('en_US');
+    }
+    else {
+        hpsForm.action = '/content/www/us/en/search.html?keyword=' + encodeURI($('#searchBox').val()) + '&locale=' + encodeURI('en_US');
+    }
+    return true;
+}
+function getBestMatchResults() {
+    $.ajax({
+        type: "GET",
+        url: "/content/intelutility/proxypage.js?searchPhrase=" + encodeURI(document.getElementById("searchBox").value) + '&operation=bestmatch&locale=' + "en"+'&localecode='+encodeURI('en_US'),
+        dataType: "application/json",
+        success: function(result, request) {
+            if( xhr.status == 200 ) {
+                processBestMatchResults(xhr.responseText)
+            }
+        },
+        error: function(xhr) {
+            if( xhr.status == 200 ) {
+                processBestMatchResults(xhr.responseText)
+            }
+        }
+    });
+}
+function processBestMatchResults(bestMatchResult) {
+    var bestResultsDiv = document.getElementById("bestResults");
+    var leftColDiv = document.getElementById("leftCol");
+    bestResultsDiv.innerHTML = "";
+    leftColDiv.innerHTML = "";
+    var respJson = JSON.parse(bestMatchResult);
+    var resultSetArray = respJson.ResultSet;
+    var fieldsList = resultSetArray[0];
+    if (resultSetArray != null && resultSetArray.length > 0) {
+        if (fieldsList != null && fieldsList != 'undefined') {
+            leftColDiv.innerHTML += "<h4>Best Match</h4>";
+            var filedListArray = fieldsList.FieldList;
+            var title = "",
+                    description = "",
+                    link = "",
+                    thumbnailURL = "";
+            for(var i = 0; i < filedListArray.length; i++) {
+                if(filedListArray[i].FieldName == "title") {
+                    title = filedListArray[i].FieldValue;
+                }
+                else if(filedListArray[i].FieldName == "description") {
+                    description = filedListArray[i].FieldValue;
+                }
+                else if(filedListArray[i].FieldName == "url"){
+                    link = filedListArray[i].FieldValue;
+                }
+                else if(filedListArray[i].FieldName == "thumbnailurl") {
+                    thumbnailURL = filedListArray[i].FieldValue;
+                }
+            }
+            if(description != null && description.length > 160) {
+                description = description.substring(0, 160);
+            }
+            bestResultsDiv.innerHTML += "<a data-wap='{\"method\":\"featured\",\"keyword\":\""+document.getElementById("searchBox").value+"\"}' >" + title + "</a>";
+            link = (link.indexOf("?") > -1) ? link + "&wapkw="+ document.getElementById("searchBox").value : link + "?wapkw="+ document.getElementById("searchBox").value, //add wapkw querystring
+                    $('#bestResults a').attr('href',link );
+            if (description != null) {
+                bestResultsDiv.innerHTML +="<p>" + description + "</p>";
+            }
+            if (thumbnailURL != null) {
+                if(thumbnailURL.indexOf("/content/dam/") > -1) {
+                    leftColDiv.innerHTML += "<img src='http://www.intel.com/content/www/us/en/privacy/&quot;&#32;+&#32;thumbnailURL&#32;+&#32;&#32;&quot;/_jcr_content/renditions/cq5dam.thumbnail.64.64.png'></img>";
+                }
+                else {
+                    leftColDiv.innerHTML += "<img src='http://www.intel.com/content/www/us/en/privacy/&quot;&#32;+&#32;thumbnailURL&#32;+&#32;&#32;&quot;'></img>";
+                }
+            }
+            $(".best-match").show();
+        }
+    }
+}
+function custCharRplHps(p){return p.replace(/'/g,'\u02B9').replace(/</g,'\u02C2').replace(/>/g,'\u02C3');}
+$(function (){var custEnc=function(){$('#searchBox').val(custCharRplHps($('#searchBox').val()));};
+    $('#hpsform').delegate('input','keypress',function(e){var code=(e.keyCode?e.keyCode:e.which);if(code==13){custEnc();}});
+    $('#hpsform').submit(function(){custEnc();return true;});
+});
 </script>
 
 
 <div class="component" data-component="homepagesearch" data-component-id="1">
     <form class="intel-search" name="hpsform" id="hpsform" action="http://www.intel.com/content/www/us/en/search.html"/>
-        <input autocomplete="off" id="searchBox" name="keyword" type="text" value="What can we help you find today?" title="What can we help you find today?" class="input clearOnFocus" onkeyup="showHPResult(this.value)"/>
-        <input type="submit" class="submit" value="Search" onclick="onSubmitHps()"/>
-        <div class="predictive-search hideme" id="predictive-search">
-            <ul>
-                <li class="best-match hidden" id="bestMatch">
-                    <div class="left-col" id="leftCol">
-                        <h4>Best Match</h4>
-                    </div>
-                    <div class="right-col">
-                        <ul id="bestResults">
-                        </ul>
-                    </div>
-                </li>
-                <li class="other-match hidden" id="otherMatch">
-                    <div class="left-col">
-                        <h4>Suggested:</h4>
-                    </div>
-                    <div class="right-col">
-                        <ul id="otherResults">
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-            <div class="bottom"></div>
-        </div>
-        
+    <input autocomplete="off" id="searchBox" name="keyword" type="text" value="What can we help you find today?" title="What can we help you find today?" class="input clearOnFocus" onkeyup="showHPResult(this.value)"/>
+    <input type="submit" class="submit" value="Search" onclick="onSubmitHps()"/>
+    <div class="predictive-search hideme" id="predictive-search">
+        <ul>
+            <li class="best-match hidden" id="bestMatch">
+                <div class="left-col" id="leftCol">
+                    <h4>Best Match</h4>
+                </div>
+                <div class="right-col">
+                    <ul id="bestResults">
+                    </ul>
+                </div>
+            </li>
+            <li class="other-match hidden" id="otherMatch">
+                <div class="left-col">
+                    <h4>Suggested:</h4>
+                </div>
+                <div class="right-col">
+                    <ul id="otherResults">
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <div class="bottom"></div>
+    </div>
+
     </form>
-  
+
 </div></div>
 
         
@@ -642,7 +629,7 @@ CQClientLibraryManager.write([{"p":"/etc/clientlibs/foundation/personalization.j
     </div> 
     <div id="submenu-wrapper" class="hidden" style="margin-top:61px">
     
-    <div id="Intel Products" class="submenu wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Processors</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i7ee-processor.html">Intel&reg; Core&trade; i7 Extreme Edition</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i7-processor.html">3rd Gen Intel&reg; Core&trade; i7</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html">3rd Gen Intel&reg; Core&trade; i5</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i3-processor.html">3rd Gen Intel&reg; Core&trade; i3</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/vpro/core-processors-with-vpro-technology.html">3rd Gen Intel&reg; Core&trade; vPro&trade;</a></li><li class="subheading"><a href="http://www.intel.com/products/processors/previousgeneration/index.htm">Previous Generation Intel&reg; Core&trade;</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/pentium/pentium-processor.html">Pentium&reg;</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/celeron/celeron-processor.html">Celeron&reg;</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-e7-family.html">Intel&reg; Xeon&reg; E7 Family </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-5000-sequence.html">Intel&reg; Xeon&reg; E5 Family</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-e3-family.html">Intel&reg; Xeon&reg; E3 Family </a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/itanium/itanium-processor-9000-sequence.html">Itanium&reg;</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/atom/atom-processor.html">Intel&reg; Atom&trade;</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/hwsw/hardware">Embedded</a></li><li class="subheading"><a href="http://www.intel.com/design/celect/mp.htm">Consumer Electronics</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processor-comparison/compare-intel-processors.html">Help me choose a processor</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul><ul class="collapsed"><li class="heading">Chipsets</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/performance-chipsets/laptop-desktop-performance-chipsets.html">Performance</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/mainstream-chipsets/laptop-desktop-mainstream-chipsets.html">Mainstream </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/business-chipsets/laptop-desktop-business-chipsets.html">Business</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/chipsets/value-chipsets/laptop-desktop-value-chipsets.html">Value</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/server-chipsets/server-workstation-chipsets.html">Server and Workstation Chipsets</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/chipsets/internet-devices-chipsets/internet-devices-chipsets.html">Internet Devices </a></li><li class="subheading"><a href="http://www.intel.com/p/en_US/embedded/hwsw/hardware">Embedded </a></li><li class="subheading"><a href="http://www.intel.com/design/celect/mp.htm">Consumer Electronics </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/performance-chipsets/chipsets.html">Help me choose a chipset</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Motherboards</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-extreme-series.html">Intel&reg; Desktop Extreme Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-media-series.html">Intel&reg; Desktop Media Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-executive-series.html">Intel&reg; Desktop Executive Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-classic-series.html">Intel&reg; Desktop Classic Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-innovation-series.html">Intel&reg; Desktop Innovation Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-essential-series.html">Intel&reg; Desktop Essential Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/dsktpboards">Intel&reg; Desktop Legacy Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/server-motherboards/server-board.html">Server and Workstation Boards</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/motherboards.html">Help me choose a motherboard</a></li></ul><ul class="collapsed"><li class="heading">Ethernet Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/network-adapters/10-gigabit-network-adapters/ethernet-10gigabit-adapters.html">Ethernet 10-Gigabit Server Adapters</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ethernet-controllers/ethernet-controllers.html">Ethernet Controllers</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/network-adapters/gigabit-network-adapters/ethernet-server-adapters.html">Ethernet Gigabit Server Adapters</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/switch-silicon/switch-silicon-ethernet-switch.html">Ethernet Switch Silicon</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ethernet-controllers/ethernet-products.html">Help me choose an ethernet product</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">More Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/home-users/intel-appup-center.html">Intel AppUp&reg; Center </a></li><li class="subheading always-show"><a href="http://www.intel.com/products/cablemodem/index.htm">Cable Modems</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/software-developers/cloud-identity-and-api-security.html">Cloud Identity and API Security Software</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cofluent/intel-cofluent-studio.html">Intel&#174; CoFluent Studio </a></li><li class="subheading always-show"><a href="http://www.intel.com/design/celect/dtcomponents.htm">Demodulators and Tuners</a></li><li class="subheading always-show"><a href="http://www.intel.com/products/server/io/index.htm">Expansion Modules</a></li><li class="subheading always-show"><a href="http://www.intel.com/design/embcontrol/index.htm">Microcontrollers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-products/mobile-communications.html">Mobile Communications</a></li><li class="subheading always-show"><a href="http://www.intel.com/products/server/raid/index.htm">RAID</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-chassis/server-chassis.html">Server Chassis</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-management/intel-server-management.html">Server Management</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/servers/serverservices.html">Server Services </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-systems/intel-server-systems.html">Server Systems</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/solid-state-drives/solid-state-drives-ssd.html">Solid State Drives</a></li><li class="subheading always-show"><a href="http://software.intel.com/en-us/intel-sdp-home/">Software Products</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/infiniband/truescale-infiniband.html">Intel&reg; TrueScale InfiniBand</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-network/wireless-products.html">Wireless Products</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav","linktype":"featured"}'><a href="full.htm#"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/intel_products.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="full.htm#">Products with Intel Inside&reg;</a></h2></div><div class="navrighttext"><h2></h2><ul><li><a href="http://www.intel.com/content/www/us/en/desktops/desktop-products.html">Desktops</a></li><li><a href="http://www.intel.com/content/www/us/en/laptops/laptop-products.html">Laptops</a></li><li><a href="http://www.intel.com/content/www/us/en/servers/server-products.html">Servers</a></li><li><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Ultrabook&trade;</a></li></ul></div></div></div><div id="Products with Intel Inside&reg;" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_2","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Personal Computers</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/all-in-one/all-in-one.html">All-in-One</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/desktops/desktop-products.html">Desktops</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/laptops/laptop-products.html">Laptops</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-home.html">Ultrabook&trade;</a></li></ul><ul class="collapsed"><li class="heading">Enterprise Systems</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/servers/server-products.html">Servers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/workstations/workstation-products.html">Workstations</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Consumer Electronics</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/home-users/netbooks.html">Netbooks</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/smart-tv/smart-tv-with-intel-inside.html">Smart TVs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/smartphones/smartphones.html">Smartphones</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tablets/tablets.html">Tablets</a></li></ul><ul class="collapsed"><li class="heading">Storage Solutions</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/storage/storage-products.html">Storage</a></li></ul><ul class="collapsed"><li class="heading">Embedded Products</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/applications/digital-signage/">Digital Signage</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Intelligent Systems</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/applications/in-vehicle-infotainment">In-Vehicle Infotainment</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/classmatepc-clamshell.html">Intel classmate PC - Clamshell</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/classmatepc-convertible.html">Intel classmate PC - Convertible</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/studybook.html">Intel&#174; studybook</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_2","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/ultrabook-menu-promo.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Ultrabook&#153;. Inspired by Intel.</a></h2><p>Cowboys, Knights, Martial Artists &amp; bulky laptops?! See how they compare to Ultrabook&#153; in this interactive video where you choose what happens next.<br><br><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Experience a New Era in Computing&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Topics" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_3","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Intel@Work</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/intel-cloud-based-solutions.html">Cloud Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/data-center/energy-efficient-servers-with-xeon-processors.html">Data Center Efficiency</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-reliability/server-reliability.html">Enterprise Reliability</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/multi-level-enterprise-security.html">Enterprise Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/high-performance-computing/server-reliability.html">High Performance Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/windows-7-upgrade/windows-7-upgrade-with-intel-technology.html">Microsoft Windows* 7 Upgrade</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/computer-upgrades/pc-upgrades/upgrade-pcs-and-transactional-devices.html">PC Upgrade</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/performance/intel-processor-performance.html">Performance</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/remote-support/remotely-update-protect-and-repair-pcs-and-devices.html">Remote Support</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/virtualization/intel-virtualization-transforms-it.html">Virtualization</a></li></ul><ul class="collapsed"><li class="heading">Hot Topics for IT</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Big Data Analytics</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/securing-clients-in-the-cloud.html">Client Computing in the Cloud</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/pc-security-with-intel-core-vpro-processors.html">Client Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/processors-with-built-in-cloud-security.html">Cloud Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/cloud-computing-future-data-center-design.html">Data Center Design for Cloud Computing </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/virtualization/improve-laptop-and-desktop-virtualization.html">Desktop Virtualization</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/it-efficiency/improving-it-efficiency-with-intelligent-pcs.html">IT Efficiency with Intelligent PCs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mission-critical/mission-critical-meeting-todays-it-challenges.html">Mission Critical Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mobile-computing/mobile-computing.html">Mobile Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mission-critical/mission-critical-meeting-todays-it-challenges.html">RISC Migration</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Intel@Home</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/before-you-buy.html">Before You Buy</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/setting-up-your-computer.html">Computer Set Up</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/content-creators/content-creators.html">Creative Tools</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/visibly-smart-entertainment.html">Entertainment</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/gamers/intel-core-i7-extreme-for-serious-gaming.html">Gaming</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/security/security-at-home.html">Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/tech-chef-tidbits.html">Tech Tips</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-products/wireless-home.html">Wireless</a></li></ul><ul class="collapsed"><li class="heading">Industry Topics</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/automotive-overview.html">Automotive</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/communications-overview.html">Communications</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/energy-overview.html">Energy</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/financial-services-it/intel-financial-services-solutions.html">Financial Services</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/healthcare-it/healthcare-overview.html">Healthcare</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/industrial-overview.html">Industrial</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/retail-overview.html">Retail</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/intel-in-education.html">Intel in Education </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/k12/k12-educators.html">K-12 Programs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/university/higher-education.html">Higher Education</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/it-in-education/intel-and-education-elearning-technology.html">Education Technology Advisor</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_3","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/bigdata.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Go Fast, Go Smart, Go Big: Big Data Analytics with Intel</a></h2><p>Count on Intel for the technology, guidance, and vision to make big data work for you.<br><br><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Learn about Big Data Analytics &gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Information for..." class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_4","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Business Use</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Embedded Customers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/hardware-developers/hardware-development.html">Hardware Developers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Intelligent Systems Customers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/it-management/intel-it/it-managers.html">IT Managers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/resellers/reseller-collection.html">Resellers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/small-business/small-business-collection.html">Small Business</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/software-developers/software-developers.html">Software Developers</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Investors</li><li class="subheading always-show"><a href="http://www.intc.com/">Investors and Financial Analysts</a></li></ul><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/intel-in-education.html">Educators</a></li></ul><ul class="collapsed"><li class="heading">Personal Use</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/gamers/intel-core-i7-extreme-for-serious-gaming.html">Gamers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/home-users/intel-visibly-smart-technology-for-the-home.html">Home Users</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Press</li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/">Press and Industry Analysts</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_4","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_promo_IT_center.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html">Join the Intel&reg; IT Center–For IT Pros</a></h2><p>Get an all-access pass to real-world insights, exclusive research, and third-party solution reviews.<br><br><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html"> Register now&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="How to Buy" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_0","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Where to Buy</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/for-business.html">Where to Buy for Business Use</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/for-home.html">Where to Buy for Home Use</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/designcenter/suppliers">Where to Buy Embedded Products</a></li></ul><ul class="collapsed"><li class="heading">Shop for Systems</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ultrabook/shop-ultrabook.html">Ultrabook™</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelinside/desktops.html">Desktop Computers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelinside/laptops.html">Laptop Computers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/server_resellers.html">Servers by Reseller</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelinside/netbooks.html">Netbooks</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Intel Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/boxed_processors.html">Boxed Desktop Processors</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/boxed_boards.html">Boxed Desktop Boards</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/solid_state_drives.html">Solid State Drives</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/raid.html">RAID</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Custom Business Solutions</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/inteltechnologyprovider/find_an_intel_techno.html">Intel&reg; Technology Providers</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_0","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_spotlight_graphic_219x146.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">Ultrabook&trade; Project with will.i.am</a></h2><p>will.i.am is going global with Ultrabook&trade; to create music inspired by the world’s most amazing cities. Follow his adventures and experience music in a whole new way. <br><br><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">Launch Ultrabook&trade; Project&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Support" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_5","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Downloads and Drivers</li><li class="subheading always-show"><a href="http://downloadcenter.intel.com/default.aspx?lang=eng">Get the Latest Drivers</a></li></ul><ul class="collapsed"><li class="heading">Product Information</li><li class="subheading always-show"><a href="http://ark.intel.com/">Compare Products and View Specifications</a></li></ul><ul class="collapsed"><li class="heading">Compatibility</li><li class="subheading always-show"><a href="http://processormatch.intel.com/COMPDB/default.aspx">Processor and Motherboard Compatibility</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Tech Support</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support">Intel Support Home</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/faq">Frequently Asked Questions</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/utilitytools.htm">Tools and Utilities</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/idyp.htm">Product Identification Help </a></li><li class="subheading always-show"><a href="http://communities.intel.com/community/tech">View Support Communities </a></li><li class="subheading always-show"><a href="http://www.intel.com/support/oems.htm">Computer Manufacturer Support</a></li></ul><ul class="collapsed"><li class="heading">Warranty</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/warranty">Warranty Center</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Tools and Resources</li><li class="subheading always-show"><a href="http://www.intel.com/support/tech101.htm">Tutorials</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/glossary.htm">Glossary of Terms</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/contact-us.html">Presales Support </a></li><li class="subheading always-show"><a href="http://www.intel.com/support/feedback.htm">Contact Support</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_5","linktype":"featured"}'><a href="http://downloadcenter.intel.com/"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/nav_promo_support.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://downloadcenter.intel.com/">Software Downloads and Drivers</a></h2><p>Find updates to keep your system up-to-date with the latest software.<br><br><a href="http://downloadcenter.intel.com/">Get Laptop and Desktop Support &gt; </a></p></div><div class="navrighttext"></div></div></div><div id="About Intel" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_6","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Company Information</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/company-overview.html">Company Overview</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/corporate-responsibility/corporate-responsibility.html">Corporate Responsibility</a></li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/bios">Executive Biographies</a></li><li class="subheading always-show"><a href="http://www.intel.com/about/companyinfo/capital/index.htm">Intel Capital</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/corporate-responsibility/community-involvement.html">Intel in the Community </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/environment/intel-and-the-environment.html">Intel in the Environment</a></li><li class="subheading always-show"><a href="http://www.intel.com/jobs/">Jobs at Intel</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/intel-museum.html">Intel Museum</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">News and Events</li><li class="subheading always-show"><a href="http://www.intel.com/idf">Intel Developer Forum (IDF)</a></li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/">Newsroom</a></li></ul><ul class="collapsed"><li class="heading">Today@Intel</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-innovation/innovations.html">Intel Innovation</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/technology-in-education/programs-for-women-and-girls.html">Programs for Girls and Women </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">The Ultrabook Project with Will.i.am</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/technology-to-classroom.html">Intel&reg; Learning Series</a></li></ul><ul class="collapsed"><li class="heading">Our Technology</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/research/intel-research.html">Research</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/silicon-innovations/silicon-innovations-technology.html">Silicon Innovations</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/standards/intel-standards-and-initiatives.html">Standards</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_6","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_promo_PC_excite.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl">Unfold What’s Possible</a></h2><p>Intel uses origami to show how a PC can help you create, enjoy and explore amazing new things. The only thing more amazing than Intel&reg; technology is what you’ll do with it. <br><br><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl">See for yourself&gt; </a></p></div><div class="navrighttext"></div></div></div>
+    <div id="Intel Products" class="submenu wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Processors</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i7ee-processor.html">Intel&reg; Core&trade; i7 Extreme Edition</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i7-processor.html">3rd Gen Intel&reg; Core&trade; i7</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html">3rd Gen Intel&reg; Core&trade; i5</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/core/core-i3-processor.html">3rd Gen Intel&reg; Core&trade; i3</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/vpro/core-processors-with-vpro-technology.html">3rd Gen Intel&reg; Core&trade; vPro&trade;</a></li><li class="subheading"><a href="http://www.intel.com/products/processors/previousgeneration/index.htm">Previous Generation Intel&reg; Core&trade;</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/pentium/pentium-processor.html">Pentium&reg;</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/celeron/celeron-processor.html">Celeron&reg;</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-e7-family.html">Intel&reg; Xeon&reg; E7 Family </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-5000-sequence.html">Intel&reg; Xeon&reg; E5 Family</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/xeon/xeon-processor-e3-family.html">Intel&reg; Xeon&reg; E3 Family </a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/processors/itanium/itanium-processor-9000-sequence.html">Itanium&reg;</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processors/atom/atom-processor.html">Intel&reg; Atom&trade;</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/hwsw/hardware">Embedded</a></li><li class="subheading"><a href="http://www.intel.com/design/celect/mp.htm">Consumer Electronics</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/processor-comparison/compare-intel-processors.html">Help me choose a processor</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul><ul class="collapsed"><li class="heading">Chipsets</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/performance-chipsets/laptop-desktop-performance-chipsets.html">Performance</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/mainstream-chipsets/laptop-desktop-mainstream-chipsets.html">Mainstream </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/business-chipsets/laptop-desktop-business-chipsets.html">Business</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/chipsets/value-chipsets/laptop-desktop-value-chipsets.html">Value</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/server-chipsets/server-workstation-chipsets.html">Server and Workstation Chipsets</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/chipsets/internet-devices-chipsets/internet-devices-chipsets.html">Internet Devices </a></li><li class="subheading"><a href="http://www.intel.com/p/en_US/embedded/hwsw/hardware">Embedded </a></li><li class="subheading"><a href="http://www.intel.com/design/celect/mp.htm">Consumer Electronics </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/chipsets/performance-chipsets/chipsets.html">Help me choose a chipset</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Motherboards</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-extreme-series.html">Intel&reg; Desktop Extreme Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-media-series.html">Intel&reg; Desktop Media Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-executive-series.html">Intel&reg; Desktop Executive Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-classic-series.html">Intel&reg; Desktop Classic Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-innovation-series.html">Intel&reg; Desktop Innovation Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/desktop-board-essential-series.html">Intel&reg; Desktop Essential Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/dsktpboards">Intel&reg; Desktop Legacy Series </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/server-motherboards/server-board.html">Server and Workstation Boards</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/motherboards/desktop-motherboards/motherboards.html">Help me choose a motherboard</a></li></ul><ul class="collapsed"><li class="heading">Ethernet Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/network-adapters/10-gigabit-network-adapters/ethernet-10gigabit-adapters.html">Ethernet 10-Gigabit Server Adapters</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ethernet-controllers/ethernet-controllers.html">Ethernet Controllers</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/network-adapters/gigabit-network-adapters/ethernet-server-adapters.html">Ethernet Gigabit Server Adapters</a></li><li class="subheading"><a href="http://www.intel.com/content/www/us/en/switch-silicon/switch-silicon-ethernet-switch.html">Ethernet Switch Silicon</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ethernet-controllers/ethernet-products.html">Help me choose an ethernet product</a></li><li class="subheading show-less"><span>Show Less</span></li><li class="subheading show-more"><span>Show More</span></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">More Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/home-users/intel-appup-center.html">Intel AppUp&reg; Center </a></li><li class="subheading always-show"><a href="http://www.intel.com/products/cablemodem/index.htm">Cable Modems</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cofluent/intel-cofluent-studio.html">Intel&#174; CoFluent Studio </a></li><li class="subheading always-show"><a href="http://www.intel.com/design/celect/dtcomponents.htm">Demodulators and Tuners</a></li><li class="subheading always-show"><a href="http://www.intel.com/products/server/io/index.htm">Expansion Modules</a></li><li class="subheading always-show"><a href="http://www.intel.com/design/embcontrol/index.htm">Microcontrollers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-products/mobile-communications.html">Mobile Communications</a></li><li class="subheading always-show"><a href="http://www.intel.com/products/server/raid/index.htm">RAID</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-chassis/server-chassis.html">Server Chassis</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-management/intel-server-management.html">Server Management</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/servers/serverservices.html">Server Services </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/server-systems/intel-server-systems.html">Server Systems</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/solid-state-drives/solid-state-drives-ssd.html">Solid State Drives</a></li><li class="subheading always-show"><a href="http://software.intel.com/en-us/intel-sdp-home/">Software Products</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/infiniband/truescale-infiniband.html">Intel&reg; True Scale Fabric</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-network/wireless-products.html">Wireless Products</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav","linktype":"featured"}'><a href="full.htm#"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/intel_products.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="full.htm#">Products with Intel Inside&reg;</a></h2></div><div class="navrighttext"><h2></h2><ul><li><a href="http://www.intel.com/content/www/us/en/desktops/desktop-products.html">Desktops</a></li><li><a href="http://www.intel.com/content/www/us/en/laptops/laptop-products.html">Laptops</a></li><li><a href="http://www.intel.com/content/www/us/en/servers/server-products.html">Servers</a></li><li><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Ultrabook&trade;</a></li></ul></div></div></div><div id="Products with Intel Inside&reg;" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_2","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Personal Computers</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/all-in-one/all-in-one.html">All-in-One</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/desktops/desktop-products.html">Desktops</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/laptops/laptop-products.html">Laptops</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Ultrabook&trade;</a></li></ul><ul class="collapsed"><li class="heading">Enterprise Systems</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/servers/server-products.html">Servers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/workstations/workstation-products.html">Workstations</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Consumer Electronics</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/smart-tv/smart-tv-with-intel-inside.html">Smart TVs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/smartphones/smartphones.html">Smartphones</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tablets/tablets.html">Tablets</a></li></ul><ul class="collapsed"><li class="heading">Storage Solutions</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/storage/storage-products.html">Storage</a></li></ul><ul class="collapsed"><li class="heading">Embedded Products</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/applications/digital-signage/">Digital Signage</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Intelligent Systems</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/applications/in-vehicle-infotainment">In-Vehicle Infotainment</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/classmatepc-clamshell.html">Intel classmate PC - Clamshell</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/classmatepc-convertible.html">Intel classmate PC - Convertible</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/studybook.html">Intel&#174; studybook</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_2","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/ultrabook-menu-promo.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Ultrabook&#153;. Inspired by Intel.</a></h2><p>Cowboys, Knights, Martial Artists &amp; bulky laptops?! See how they compare to Ultrabook&#153; in this interactive video where you choose what happens next.<br><br><a href="http://www.intel.com/content/www/us/en/sponsors-of-tomorrow/ultrabook.html">Experience a New Era in Computing&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Topics" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_3","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Intel@Work</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/intel-cloud-based-solutions.html">Cloud Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/data-center/energy-efficient-servers-with-xeon-processors.html">Data Center Efficiency</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-reliability/server-reliability.html">Enterprise Reliability</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/multi-level-enterprise-security.html">Enterprise Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/high-performance-computing/server-reliability.html">High Performance Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/windows-7-upgrade/windows-7-upgrade-with-intel-technology.html">Microsoft Windows* 7 Upgrade</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/computer-upgrades/pc-upgrades/upgrade-pcs-and-transactional-devices.html">PC Upgrade</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/performance/intel-processor-performance.html">Performance</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/remote-support/remotely-update-protect-and-repair-pcs-and-devices.html">Remote Support</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/virtualization/intel-virtualization-transforms-it.html">Virtualization</a></li></ul><ul class="collapsed"><li class="heading">Industry Topics</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/automotive-overview.html">Automotive</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/communications-overview.html">Communications</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/energy-overview.html">Energy</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/financial-services-it/intel-financial-services-solutions.html">Financial Services</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/healthcare-it/healthcare-overview.html">Healthcare</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/industrial-overview.html">Industrial</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/retail-overview.html">Retail</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Intel@Home</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/before-you-buy.html">Before You Buy</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/content-creators/content-creators.html">Creative Tools</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/visibly-smart-entertainment.html">Entertainment</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/gamers/intel-core-i7-extreme-for-serious-gaming.html">Gaming</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/security/security-at-home.html">Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/tech-tips-and-tricks/tech-chef-tidbits.html">Tech Tips</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/wireless-products/wireless-home.html">Wireless</a></li></ul><ul class="collapsed"><li class="heading">Hot Topics for IT</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Big Data Analytics</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/securing-clients-in-the-cloud.html">Client Computing in the Cloud</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/pc-security-with-intel-core-vpro-processors.html">Client Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/enterprise-security/processors-with-built-in-cloud-security.html">Cloud Security</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/cloud-computing/cloud-computing-future-data-center-design.html">Data Center Design for Cloud Computing </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/virtualization/improve-laptop-and-desktop-virtualization.html">Desktop Virtualization</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/it-efficiency/improving-it-efficiency-with-intelligent-pcs.html">IT Efficiency with Intelligent PCs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mission-critical/mission-critical-meeting-todays-it-challenges.html">Mission Critical Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mobile-computing/mobile-computing.html">Mobile Computing</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/mission-critical/mission-critical-meeting-todays-it-challenges.html">RISC Migration</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/intel-in-education.html">Intel in Education </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/k12/k12-educators.html">K-12 Programs</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/university/higher-education.html">Higher Education</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/it-in-education/intel-and-education-elearning-technology.html">Education Technology Advisor</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_3","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/bigdata.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Go Fast, Go Smart, Go Big: Big Data Analytics with Intel</a></h2><p>Count on Intel for the technology, guidance, and vision to make big data work for you.<br><br><a href="http://www.intel.com/content/www/us/en/big-data/big-data-analytics-turning-big-data-into-intelligence.html">Learn about Big Data Analytics &gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Information for..." class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_4","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Business Use</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Embedded Customers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/hardware-developers/hardware-development.html">Hardware Developers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/embedded-developers-engineers/embedded-developers.html">Intelligent Systems Customers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/it-management/intel-it/it-managers.html">IT Managers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/resellers/reseller-collection.html">Resellers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/small-business/small-business-collection.html">Small Business</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/software-developers/software-developers.html">Software Developers</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Investors</li><li class="subheading always-show"><a href="http://www.intc.com/">Investors and Financial Analysts</a></li></ul><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/education/intel-in-education.html">Educators</a></li></ul><ul class="collapsed"><li class="heading">Personal Use</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/gamers/intel-core-i7-extreme-for-serious-gaming.html">Gamers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/home-users/intel-visibly-smart-technology-for-the-home.html">Home Users</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Press</li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/">Press and Industry Analysts</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_4","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_promo_IT_center.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html">Join the Intel&reg; IT Center–For IT Pros</a></h2><p>Get an all-access pass to real-world insights, exclusive research, and third-party solution reviews.<br><br><a href="http://www.intel.com/content/www/us/en/it-managers/it-center-program-membership-benefits.html"> Register now&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="How to Buy" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_0","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Where to Buy</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/for-business.html">Where to Buy for Business Use</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/for-home.html">Where to Buy for Home Use</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/embedded/designcenter/suppliers">Where to Buy Embedded Products</a></li></ul><ul class="collapsed"><li class="heading">Shop for Systems</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ultrabook/shop-ultrabook.html">Ultrabook™</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelinside/desktops.html">Desktop Computers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelinside/laptops.html">Laptop Computers</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/server_resellers.html">Servers by Reseller</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Intel Products</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/boxed_processors.html">Boxed Desktop Processors</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/boxed_boards.html">Boxed Desktop Boards</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/solid_state_drives.html">Solid State Drives</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/intelproducts/raid.html">RAID</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Custom Business Solutions</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/buy/inteltechnologyprovider/find_an_intel_techno.html">Intel&reg; Technology Providers</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_0","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_spotlight_graphic_219x146.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">Ultrabook&trade; Project with will.i.am</a></h2><p>will.i.am is going global with Ultrabook&trade; to create music inspired by the world’s most amazing cities. Follow his adventures and experience music in a whole new way. <br><br><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">Launch Ultrabook&trade; Project&gt; </a></p></div><div class="navrighttext"></div></div></div><div id="Support" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_5","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Downloads and Drivers</li><li class="subheading always-show"><a href="http://downloadcenter.intel.com/default.aspx?lang=eng">Get the Latest Drivers</a></li></ul><ul class="collapsed"><li class="heading">Product Information</li><li class="subheading always-show"><a href="http://ark.intel.com/">Compare Products and View Specifications</a></li></ul><ul class="collapsed"><li class="heading">Compatibility</li><li class="subheading always-show"><a href="http://processormatch.intel.com/COMPDB/default.aspx">Processor and Motherboard Compatibility</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Tech Support</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support">Intel Support Home</a></li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/faq">Frequently Asked Questions</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/utilitytools.htm">Tools and Utilities</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/idyp.htm">Product Identification Help </a></li><li class="subheading always-show"><a href="http://communities.intel.com/community/tech">View Support Communities </a></li><li class="subheading always-show"><a href="http://www.intel.com/support/oems.htm">Computer Manufacturer Support</a></li></ul><ul class="collapsed"><li class="heading">Warranty</li><li class="subheading always-show"><a href="http://www.intel.com/p/en_US/support/warranty">Warranty Center</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Tools and Resources</li><li class="subheading always-show"><a href="http://www.intel.com/support/tech101.htm">Tutorials</a></li><li class="subheading always-show"><a href="http://www.intel.com/support/glossary.htm">Glossary of Terms</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/contact-us.html">Presales Support </a></li><li class="subheading always-show"><a href="http://www.intel.com/support/feedback.htm">Contact Support</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_5","linktype":"featured"}'><a href="http://downloadcenter.intel.com/"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/nav_promo_support.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://downloadcenter.intel.com/">Software Downloads and Drivers</a></h2><p>Find updates to keep your system up-to-date with the latest software.<br><br><a href="http://downloadcenter.intel.com/">Get Laptop and Desktop Support &gt; </a></p></div><div class="navrighttext"></div></div></div><div id="About Intel" class="submenu hidden wapwrapper" data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_6","linktype":"subheading"}'><div class="navigation"><ul class="collapsed"><li class="heading">Company Information</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/company-overview.html">Company Overview</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/corporate-responsibility/corporate-responsibility.html">Corporate Responsibility</a></li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/bios">Executive Biographies</a></li><li class="subheading always-show"><a href="http://www.intel.com/about/companyinfo/capital/index.htm">Intel Capital</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/corporate-responsibility/community-involvement.html">Intel in the Community </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/environment/intel-and-the-environment.html">Intel in the Environment</a></li><li class="subheading always-show"><a href="http://www.intel.com/jobs/">Jobs at Intel</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/company-overview/intel-museum.html">Intel Museum</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">News and Events</li><li class="subheading always-show"><a href="http://www.intel.com/idf">Intel Developer Forum (IDF)</a></li><li class="subheading always-show"><a href="http://newsroom.intel.com/community/intel_newsroom/">Newsroom</a></li></ul><ul class="collapsed"><li class="heading">Today@Intel</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-innovation/innovations.html">Intel Innovation</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/technology-in-education/programs-for-women-and-girls.html">Programs for Girls and Women </a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/ultrabook/ultrabook-project/ultrabook-project.html">The Ultrabook Project with Will.i.am</a></li></ul></div><div class="navigation"><ul class="collapsed"><li class="heading">Education</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/intel-learning-series/technology-to-classroom.html">Intel&reg; Learning Series</a></li></ul><ul class="collapsed"><li class="heading">Our Technology</li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/research/intel-research.html">Research</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/silicon-innovations/silicon-innovations-technology.html">Silicon Innovations</a></li><li class="subheading always-show"><a href="http://www.intel.com/content/www/us/en/standards/intel-standards-and-initiatives.html">Standards</a></li></ul></div><div class='navright wapwrapper' data-component='megamenu' data-component-id='1' data-wap='{"submenu":"mainnav_6","linktype":"featured"}'><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl"><img class="navrightimg" src="../../../../content/dam/www/global/homepage/spotlight/menu_promo_PC_excite.jpg"/></a><div class='navrighttext'><h2 class='headingone'><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl">Unfold What’s Possible</a></h2><p>Intel uses origami to show how a PC can help you create, enjoy and explore amazing new things. The only thing more amazing than Intel&reg; technology is what you’ll do with it. <br><br><a href="http://www.intel.com/content/www/us/en/home-users/unfold-whats-possible.html#/FORTUNE_TELLERl">See for yourself&gt; </a></p></div><div class="navrighttext"></div></div></div>
       
     </div>
 </div>
@@ -749,7 +736,6 @@ else{
 
 <html xmlns:fb="http://www.facebook.com/2008/fbml">
 
-
 <script>
 
 </script>
@@ -769,7 +755,7 @@ else{
 <script type="text/javascript">
     // <![CDATA[
     var backbutton = [];
-    var templateType = "assetdetailhtml";
+    var templateType = "";
     backbutton["contentlibrary"] = "Back to Content Library";
     backbutton["search"] = "Back to Search";
     backbutton["collection"] = "Back to Collection";
@@ -858,13 +844,35 @@ else{
         <li class="tags"><div class="parbase tagged">
 
 
-<div class="component" data-component="tagged" data-component-id="1">
+
+    
+    
+        <div class="component" data-component="tagged" data-component-id="1">    
+    
+
+
+
 
 
 <ul><li>
 
 <span class="">Tagged As</span><a href="http://www.intel.com/content/www/us/en/contentlibrary.html?customfacets=!:Topic/Corporate+Information/Policy">Policy</a>
-     </li></ul></div></div>
+     </li></ul></div>
+     </div>
+</li>
+		<li class="tags"><div class="parbase tagged2">
+
+
+
+
+
+    
+    
+        <div class="component" data-component="tagged" data-component-id="2">    
+    
+
+
+</div>
 </li>
         </ul>
         <ul class="page-info">
@@ -893,9 +901,12 @@ else{
              <script>
                  //<![CDATA[
                  var locationCountry = "en_US";
-                 if(locationCountry =="en_XA"||locationCountry =="en_AU"||locationCountry =="en_HK"||locationCountry =="en_MY"||locationCountry =="en_NZ"||locationCountry =="en_PK"||locationCountry =="en_PH"){
-                     locationCountry = "en_US";
-                 }
+                 var locationCountryOverride="en_GB";
+                 if (locationCountryOverride.length!=0)
+                 {
+                     locationCountry= locationCountryOverride;
+                  }
+
                     if (window.parent.document.location.protocol == "http:")
                     {
                     document.write('<script src="http://connect.facebook.net/' + locationCountry + '/all.js#appId=186774301373559&amp;xfbml=1" type="text/javascript"><\/script>');
@@ -929,7 +940,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="1">
-<p><b>Our website uses cookies.&nbsp; For more information about how we use cookies, please see our <a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html">Cookie Notice</a>.</b>&nbsp; </p>
+ <p><b>Our website uses cookies.&nbsp; For more information about how we use cookies, please see our <a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html">Cookie Notice</a>.</b>&nbsp; </p>
 
     
 </div>
@@ -947,7 +958,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="2">
-<h2>Collection of Your Personal Information</h2>
+ <h2>Collection of Your Personal Information</h2>
 <p>Intel collects personal information such as your name, address, email address, and payment card information for a variety of reasons. We will explain why we need to collect this information when we ask you for it.</p>
 
     
@@ -966,7 +977,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="3">
-<h2>Use of Your Personal Information</h2>
+ <h2>Use of Your Personal Information</h2>
 <p>Intel will only use your personal information for the purpose it was collected. For example, to deliver a product or service that you have requested, enable your participation in online activities, or personalize your experience. We will not use your personal information for a different purpose without first asking your permission.</p>
 
     
@@ -985,7 +996,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="4">
-<h2>Sharing Your Personal Information</h2>
+ <h2>Sharing Your Personal Information</h2>
 <p>Intel may share your personal information with Intel Corporation in the US, with any Intel subsidiary worldwide, or with authorized third parties. We only provide third parties with the minimum amount of personal information necessary to complete the requested service. We do not allow third parties to use your personal information for a different purpose.</p>
 <p>We may need to access or disclose your personal information to comply with the law or legal process and to exercise our legal rights or defend against legal claims.</p>
 <p>We may share personal information and any additional information available to us in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, and situations involving potential threats to the physical safety of any person, violations of Intel's terms of use, or as otherwise required by law.</p>
@@ -1006,7 +1017,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="5">
-<h2>Privacy Notice Links</h2>
+ <h2>Privacy Notice Links</h2>
 <ul>
 <li><a href="http://www.intel.com/content/www/us/en/privacy/intel-online-privacy-notice-summary.html">Intel® Online Privacy Notice Summary</a></li>
 <li><a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html">Cookies <b>[Updated]</b></a></li>
@@ -1030,7 +1041,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="6">
-<h2>Privacy Supplements</h2>
+ <h2>Privacy Supplements</h2>
 <ul>
 <li><a href="http://www.intel.com/content/www/us/en/privacy/corporate-privacy-rules-deed-poll.html">Intel Corporate Privacy Rules (Deed Poll)</a></li>
 <li><a href="http://www.intel.com/sites/corporate/privacy3.htm">Candidate Notice</a></li>
@@ -1055,7 +1066,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="7">
-<h2>Communication Preferences</h2>
+ <h2>Communication Preferences</h2>
 <p>You can manage your communication preferences using one of the following methods: visit the specific product or service web site; visit the <a href="http://www.intel.com/intel/subscriptions.htm">Intel Subscription Center</a>; <a href="http://www.intel.com/sites/sitewide/en_US/privacy/contactus.htm">contact us</a> using the online form; or send a letter to the mailing address below including your name, e-mail address, and the details of your request. For example, if you wish to unsubscribe from a newsletter, include the name of the newsletter.</p>
 
     
@@ -1074,7 +1085,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="8">
-<h2>Accessing Your Personal Information</h2>
+ <h2>Accessing Your Personal Information</h2>
 <p>You may access and update your personal information using one of the following methods: visit the specific product or service web site; visit the <a href="https://ssl.intel.com/ipc-app/default.aspx">Intel Profile Center</a>; <a href="http://www.intel.com/sites/sitewide/en_US/privacy/contactus.htm">contact us</a> using the online form; or send a letter to the mailing address below including your name, e-mail address, account id, and purpose of request.</p>
 
     
@@ -1093,7 +1104,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="9">
-<h2>Security of Your Personal Information</h2>
+ <h2>Security of Your Personal Information</h2>
 <p>Intel uses a combination of industry standard security measures to protect your personal information from loss and misuse. For example, we use encryption when transmitting payment card information over the Internet.</p>
 
     
@@ -1112,7 +1123,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="10">
-<h2>Personalization</h2>
+ <h2>Personalization</h2>
 <p>Intel uses cookies, web beacons, and the personal information you provide us to personalize your online experience and improve our services. For example, we use a cookie to remember the country and language preferences you selected on our web site.</p>
 <p>For more information about how we use cookies, please see our <a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html">Cookie Notice</a>.
 </p>
@@ -1133,7 +1144,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="11">
-<h2>Data Retention</h2>
+ <h2>Data Retention</h2>
 <p>Intel will only retain your personal information to fulfill the purposes for which it was collected or as required by applicable laws or regulations.</p>
 
     
@@ -1152,7 +1163,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="12">
-<h2>Linked Sites</h2>
+ <h2>Linked Sites</h2>
 <p>Intel may provide links to web sites operated by third parties that are not covered by this policy. We encourage you to review the privacy policies posted on those web sites.</p>
 
     
@@ -1171,7 +1182,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="13">
-<h2>Children's Privacy</h2>
+ <h2>Children's Privacy</h2>
 <p>Intel does not normally collect the personal information of children under the age of 13. If we do, we require verifiable parental consent, prior to collection. If we learn that we have collected children's personal information without parental consent, we will delete it from our systems.</p>
 
     
@@ -1190,7 +1201,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="14">
-<h2>Transfer of Personal Information</h2>
+ <h2>Transfer of Personal Information</h2>
 <p>Intel may transfer your personal information to Intel Corporation in the US or to any Intel subsidiary worldwide. We may transfer your personal information to third parties located in another country for purposes of processing, storage, or fulfillment.</p>
 <p>We participate in the U.S. Department of Commerce's Safe Harbor principles for off-line, online, and manually processed personal data.</p>
 
@@ -1210,7 +1221,7 @@ This component display both image and text and aligned them based on user select
                 
 
 <div class="component" data-component="contentwithimage" data-component-id="15">
-<h2>How to Contact Us</h2>
+ <h2>How to Contact Us</h2>
 <p>You can contact Intel by using the <a href="http://www.intel.com/sites/sitewide/en_US/privacy/contactus.htm">Contact Us</a> form or send a letter to the mailing address listed below. Please include your contact information, name of the Intel web site or service, and a detailed description of your request or privacy concern.</p>
 <p>Intel Corporation<br>
 ATTN: Privacy<br>
@@ -1241,9 +1252,7 @@ $(document).ready(function(){
         
 </div>
 
-    
-   
-
+    <div class="">
         <div class="parbase videofilmstripgallery">
 
 
@@ -1253,57 +1262,104 @@ $(document).ready(function(){
 
 
 <script src="../../../../etc/designs/intel/us/en/js/reflection.js" type="text/javascript"></script>
-<div class="component" data-component="videofilmstripgallery" data-component-id="1">        
+
+
+    
+    
+        <div class="component" data-component="videofilmstripgallery" data-component-id="1">
+    
+
 </div>
 
 <script type="text/javascript">
-$(document).ready(function () {
-    // call for image reflection
-    jQuery("#v-carousal-new .video-carousal li img").reflect();
-    // this will dynamically change the width of the video carousal and make the elements align center if items less than 4
-    $("#v-carousal-new .video-carousal ul:first").addClass('active').css('left', '0');
-    if ($("#v-carousal-new .video-carousal ul:first li").length < 4) {        
-        var itm = ($("#v-carousal-new .video-carousal ul li").length) * ($("#v-carousal-new .video-carousal ul li").outerWidth()+40);
-        $("#v-carousal-new .video-carousal ul").css({ width: itm, position: 'relative', margin: '0 auto' });
-    }
-    $("#v-carousal-new .video-carousal li img").load(function (){
-        // this will dynamically change the height of the video carousal
-        var maxheight = 0;
-        $('#v-carousal-new .video-carousal ul li').each(function (index) {
-            if ($(this).outerHeight() > maxheight) { maxheight = $(this).outerHeight() };
+    $(document).ready(function () {
+        // call for image reflection
+        jQuery("#v-carousal-new .video-carousal li img").reflect();
+        // this will dynamically change the width of the video carousal and make the elements align center if items less than 4
+        $("#v-carousal-new .video-carousal ul:first").addClass('active').css('left', '0');
+        if ($("#v-carousal-new .video-carousal ul:first li").length < 4) {
+            var itm = ($("#v-carousal-new .video-carousal ul li").length) * ($("#v-carousal-new .video-carousal ul li").outerWidth()+40);
+            $("#v-carousal-new .video-carousal ul").css({ width: itm, position: 'relative', margin: '0 auto' });
+        }
+        $("#v-carousal-new .video-carousal li img").load(function (){
+            // this will dynamically change the height of the video carousal
+            var maxheight = 0;
+            $('#v-carousal-new .video-carousal ul li').each(function (index) {
+                if ($(this).outerHeight() > maxheight) { maxheight = $(this).outerHeight() };
+            });
+            $("#v-carousal-new .video-carousal").height(maxheight + 30);
         });
-        $("#v-carousal-new .video-carousal").height(maxheight + 30);
-   });
-});
+    });
 </script>
 </div>
 
+        </div>
+        <div class="">
+        <div class="videofilmstripgallery2 parbase relatedbladevideos2">
+
+
+
+
+
+</div>
+
+         </div>
+        <div class="">
         <div class="parbase relatedmaterials related"><!--
 Related Component
 -->
 
 
-<div class="component" data-component="related" data-component-id="1">
+
+
+
+	
+	
+	    <div class="component" data-component="related" data-component-id="1">
+	
+
+
 
 <div class="module" id="related">
 <div class="module-header">
     <h4>Related Materials</h4>
-    <a id="viewmore" href="http://www.intel.com/content/www/us/en/contentlibrary.html?customfacets=!:Topic%2FCorporate+Information%2FPolicy&amp;customfacets=!:&amp;customfacets=!:Topic%2FCorporate+Information%2FPolicy" title="View More" data-languagerootpath="/content/www/us/en" data-viewmoretext="View More"><span>View More</span>
-        &gt;</a></div>
+    <a id="viewmore" href="http://www.intel.com/content/www/us/en/contentlibrary.html?customfacets=!:Topic%2FCorporate+Information%2FPolicy&amp;customfacets=!:&amp;customfacets=!:Topic%2FCorporate+Information%2FPolicy" title="View More" data-languagerootpath="/content/www/us/en" data-viewmoretext="View More"><span>View More</span></a></div>
 <!--module-header-->
 <div class="module-content">
 <ul class="sidebar">
     
-    <li class="first"><a href="full.htm#" rel="panel1" class="related-update-param-link  selected" data-pagetags="Topic%2FCorporate+Information%2FPolicy" data-name="assetdetail">Related Content</a></li>
+    <li class="first"><a href="full.htm#" rel="panel1" class="related-update-param-link selected" data-pagetags="Topic%2FCorporate+Information%2FPolicy" data-name="assetdetail">Related Content</a></li>
     
     <li><a href="full.htm#" rel="panel2" class="related-update-param-link" data-pagetags="Topic%2FCorporate+Information%2FPolicy" data-name="topiccollection">Related Topics</a></li>
     
-    <li><a href="full.htm#" rel="panel3" class="related-update-param-link" data-pagetags="Topic%2FCorporate+Information%2FPolicy" data-name="productcollection">Related Products</a></li>
+    <li><a href="full.htm#" rel="panel3" class="related-update-param-link " data-pagetags="Topic%2FCorporate+Information%2FPolicy" data-name="productcollection">Related Products</a></li>
     
 </ul>
 
 <div class="panel panel1 selected" id="relatedcontent1" class="component" data-component="relatedcontent" data-component-id="1">
 <ul id="related-content-ul">
+
+<li>
+    
+    <div class="signature-assets  "><img src="../../../../content/dam/image/Icons/Page_Types/Policy-Content-Library-icon-64x64.png/_jcr_content/renditions/cq5dam.thumbnail.64.64.png" class="s-icon" style="background: none"/>
+        <div class="s-flag-it"></div>
+        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html"></a></div>
+    </div>
+    
+    <h2><a href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html" title="Public Policy: Communications, Broadband">Public Policy:...</a></h2>
+    <p>Intel promotes communications policies that encourage deployment of wireless, wired broadband services.<br /><a data-wap="{&quot;linktype&quot;:&quot;previewpdf&quot;}" href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html">Preview</a> | <a data-wap="{&quot;linktype&quot;:&quot;downloadpdf&quot;}" title="Right-Click to Save As" href="http://www.intel.com/content/dam/doc/policy/policy-communications-broadband.pdf">Download</a></p>
+</li>
+
+<li>
+    
+    <div class="signature-assets  "><img src="../../../../content/dam/image/Icons/Page_Types/Policy-Content-Library-icon-64x64.png/_jcr_content/renditions/cq5dam.thumbnail.64.64.png" class="s-icon" style="background: none"/>
+        <div class="s-flag-it"></div>
+        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/policy/policy-import-customs-policy.html"></a></div>
+    </div>
+    
+    <h2><a href="http://www.intel.com/content/www/us/en/policy/policy-import-customs-policy.html" title="Intel Public Policy: Import, Customs">Intel Public Policy:...</a></h2>
+    <p>Intel supports customs, trade facilitation policies that enhance trade with respect to importation of...<br /><a data-wap="{&quot;linktype&quot;:&quot;previewpdf&quot;}" href="http://www.intel.com/content/www/us/en/policy/policy-import-customs-policy.html">Preview</a> | <a data-wap="{&quot;linktype&quot;:&quot;downloadpdf&quot;}" title="Right-Click to Save As" href="http://www.intel.com/content/dam/doc/policy/policy-import-customs-policy.pdf">Download</a></p>
+</li>
 
 <li>
     
@@ -1318,35 +1374,15 @@ Related Component
 
 <li>
     
-    <div class="signature-assets  "><img src="../../../../content/dam/image/Icons/Page_Types/Policy-Content-Library-icon-64x64.png/_jcr_content/renditions/cq5dam.thumbnail.64.64.png" class="s-icon" style="background: none"/>
+    <div
+            class="signature-assets s-whitepaper  ">
+        <div class="s-icon"><a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html"></a></div>
         <div class="s-flag-it"></div>
-        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/policy/policy-political-accountability.html"></a></div>
+        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html"></a></div>
     </div>
     
-    <h2><a href="http://www.intel.com/content/www/us/en/policy/policy-political-accountability.html" title="Intel Political Accountability Guidelines">Intel Political...</a></h2>
-    <p>Intel drafts formal policy on political accountability to provide improvement and clarity to existing...<br /><a data-wap="{&quot;linktype&quot;:&quot;previewpdf&quot;}" href="http://www.intel.com/content/www/us/en/policy/policy-political-accountability.html">Preview</a> | <a data-wap="{&quot;linktype&quot;:&quot;downloadpdf&quot;}" title="Right-Click to Save As" href="http://www.intel.com/content/dam/doc/policy/policy-political-accountability.pdf">Download</a></p>
-</li>
-
-<li>
-    
-    <div class="signature-assets  "><img src="../../../../content/dam/image/Icons/Page_Types/Policy-Content-Library-icon-64x64.png/_jcr_content/renditions/cq5dam.thumbnail.64.64.png" class="s-icon" style="background: none"/>
-        <div class="s-flag-it"></div>
-        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/policy/policy-media-content.html"></a></div>
-    </div>
-    
-    <h2><a href="http://www.intel.com/content/www/us/en/policy/policy-media-content.html" title="Public Policy: Media and Content">Public Policy: Media and...</a></h2>
-    <p>Intel advocates enabling new digital markets while respecting intellectual property, consumer interests.<br /><a data-wap="{&quot;linktype&quot;:&quot;previewpdf&quot;}" href="http://www.intel.com/content/www/us/en/policy/policy-media-content.html">Preview</a> | <a data-wap="{&quot;linktype&quot;:&quot;downloadpdf&quot;}" title="Right-Click to Save As" href="http://www.intel.com/content/dam/doc/policy/policy-media-content.pdf">Download</a></p>
-</li>
-
-<li>
-    
-    <div class="signature-assets  "><img src="../../../../content/dam/image/Icons/Page_Types/Policy-Content-Library-icon-64x64.png/_jcr_content/renditions/cq5dam.thumbnail.64.64.png" class="s-icon" style="background: none"/>
-        <div class="s-flag-it"></div>
-        <div class="s-flag-lock"><a href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html"></a></div>
-    </div>
-    
-    <h2><a href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html" title="Public Policy: Communications, Broadband">Public Policy:...</a></h2>
-    <p>Intel promotes communications policies that encourage deployment of wireless, wired broadband services.<br /><a data-wap="{&quot;linktype&quot;:&quot;previewpdf&quot;}" href="http://www.intel.com/content/www/us/en/policy/policy-communications-broadband.html">Preview</a> | <a data-wap="{&quot;linktype&quot;:&quot;downloadpdf&quot;}" title="Right-Click to Save As" href="http://www.intel.com/content/dam/doc/policy/policy-communications-broadband.pdf">Download</a></p>
+    <h2><a href="http://www.intel.com/content/www/us/en/privacy/intel-cookie-notice.html" title="Intel® Cookie Notice">Intel® Cookie Notice</a></h2>
+    <p>Intel's cookie practices on Intel websites.</p>
 </li>
 
 </ul>
@@ -1399,8 +1435,20 @@ Related Component
     {
         $('#related-content-ul li:even').css('clear', 'both');
     });
-</script></div>
+</script>
+</div>
 
+         </div>
+        <div class="">
+        <div class="parbase related2 relatedmaterials2"><!--
+Related Component
+-->
+
+
+</div>
+
+         </div>
+        
         <div class="conversations">
 
 
@@ -1428,10 +1476,10 @@ Related Component
     </div>
            
 <script type="text/javascript">
-createCookie('Topic%2FCorporate+Information%2FPolicy', '',30);
+ createCookie('Topic%2FCorporate+Information%2FPolicy', '',30);
 </script>
 <!-- Script to create cookie for Recommended For Members Component. -->
-<script src="../../../../etc/designs/intel/us/en/js/json2.js" type="text/javascript"></script> 
+ <script src="../../../../etc/designs/intel/us/en/js/json2.js" type="text/javascript"></script> 
  <script type="text/javascript">
 
 function setCookie(name,value,days) {
@@ -1450,7 +1498,7 @@ $(document).ready( function () {
     jQuery(document).ready(function(){
         var pageEntry = {
             'pageName':  '/content/www/us/en/privacy/intel-online-privacy-notice'.substr( '/content/www/us/en/privacy/intel-online-privacy-notice'.lastIndexOf('/') + 1),
-            'visitDate': '09-30-2012 21-26',
+            'visitDate': '10-03-2012 17-36',
             'pageTags': 'Topic%2FCorporate+Information%2FPolicy',
             'contentAttribute' : ''
           };
@@ -1511,7 +1559,6 @@ $(document).ready( function () {
   })();
 </script>
 </html>
-
         
 
 
@@ -1577,7 +1624,7 @@ function navigateTo(url){
 
                 <li class="category">Asia Pacific</li> 
 
-                <li class="lang-option"><a href='http://www.intel.com/content/www/xa/en/privacy/intel-online-privacy-notice.html'>Asia Pacific (English)</a></li>
+                <li class="lang-option"><a href='http://www.intel.com.au/content/www/xa/en/privacy/intel-online-privacy-notice.html'>Asia Pacific (English)</a></li>
         
                 <li class="lang-option"><a href='http://www.intel.com.au/content/www/au/en/privacy/intel-online-privacy-notice.html'>Australia (English)</a></li>
         
@@ -1601,7 +1648,7 @@ function navigateTo(url){
         
                 <li class="lang-option"><a href='http://www.intel.ph/content/www/ph/en/privacy/intel-online-privacy-notice.html'>Philippines (English)</a></li>
         
-                <li class="lang-option"><a href='http://www.intel.com/content/www/xa/en/privacy/intel-online-privacy-notice.html'>Singapore (English)</a></li>
+                <li class="lang-option"><a href='http://www.intel.com.au/content/www/xa/en/privacy/intel-online-privacy-notice.html'>Singapore (English)</a></li>
         
                 <li class="lang-option"><a href='http://www.intel.com.tw/content/www/tw/zh/privacy/intel-online-privacy-notice.html'>Taiwan (繁體中文)</a></li>
         
@@ -1857,7 +1904,7 @@ $(document).ready(function (){
 <!--
 More detailed timing info is available by uncommenting some code in the timing.jsp component
 Timing chart URL:
-http://chart.apis.google.com/chart?chtt=intel-online-privacy-notice.html+%281000ms%29&cht=bhs&chxt=x&chco=c6d9fd,4d89f9&chbh=a&chds=0,1000,0,1000&chxr=0,0,1000&chd=t:0,47,47,47,47,47,47,47,63,63,63,63,78,78,78,78,78,78,94,94,110,110,110,110,125,125,125,125,125,141,141,141,141,141,141,141,156,156,156,156,156,156,156,156,172,172,172,172,453,891,891,891,891,891,906,985,1000,1000,1000,1000|47,0,0,0,0,0,47,47,0,0,0,0,0,0,0,16,16,16,0,16,0,0,15,781,0,0,0,47,47,0,0,0,0,0,0,15,0,0,0,0,0,0,0,16,0,0,0,281,422,0,0,0,109,109,0,15,0,0,0,0&chly=head.jsp|headlibs.jsp|init.jsp|headcustom.jsp|clickstreamcloud.jsp|header.html%29|uheader.jsp|header.jsp|logo.html%29|logo.jsp|uheadernavigationtitle...|mainmenutitle.jsp|homepagesearch.jsp|uheaderlinks.html%29|uheaderlinks.jsp|savedcontents.jsp|unavmyintel.jsp|unavmyintel.jsp|unav.jsp|oldbrowsersdialog.jsp|redirect.jsp|backbutton.jsp|intelparsys.jsp|content.jsp|title.jsp|subtitle.jsp|tagged.jsp|intelparsys.jsp|main.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|org.apache.sling.servl...|intelparsys.jsp|intelparsys.jsp|videofilmstripgallery.jsp|related.jsp|conversations.jsp|disclaimers.jsp|globalfooter.html%29|footer.jsp|footer.jsp|proactivechat.jsp|footertools.jsp|footerlinks.html%29|footerlinks.jsp|mvt_stats.jsp|stats.jsp&chs=600x500
+http://chart.apis.google.com/chart?chtt=intel-online-privacy-notice.html+%28687ms%29&cht=bhs&chxt=x&chco=c6d9fd,4d89f9&chbh=a&chds=0,687,0,687&chxr=0,0,687&chd=t:0,31,31,31,31,31,31,31,31,31,47,47,47,47,47,47,47,47,47,62,62,62,62,62,62,78,78,78,78,78,78,78,78,78,78,78,94,94,94,94,94,94,94,94,94,94,94,94,94,297,297,625,625,625,625,625,625,625,687,687,687,687,687|31,0,0,0,0,0,0,16,31,31,0,0,0,0,0,0,0,0,15,0,0,0,0,0,563,0,0,0,0,0,0,0,0,16,16,16,0,0,0,0,0,0,0,0,0,0,0,0,203,0,328,0,0,0,0,15,62,62,0,0,0,0,0&chly=head.jsp|headlibs.jsp|init.jsp|headcustom.jsp|clickstreamcloud.jsp|header.html%29|logo.html%29|logo.jsp|uheader.jsp|header.jsp|uheadernavigationtitle...|mainmenutitle.jsp|homepagesearch.jsp|uheaderlinks.html%29|uheaderlinks.jsp|savedcontents.jsp|unavmyintel.jsp|unavmyintel.jsp|unav.jsp|oldbrowsersdialog.jsp|redirect.jsp|backbutton.jsp|intelparsys.jsp|title.jsp|content.jsp|subtitle.jsp|tagged.jsp|tagged2.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|intelparsys.jsp|main.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|contentwithimage.jsp|org.apache.sling.servl...|intelparsys.jsp|intelparsys.jsp|videofilmstripgallery.jsp|relatedbladevideos2.jsp|related.jsp|related2.jsp|conversations.jsp|disclaimers.jsp|globalfooter.html%29|proactivechat.jsp|footer.jsp|footer.jsp|footertools.jsp|footerlinks.html%29|footerlinks.jsp|mvt_stats.jsp|stats.jsp&chs=600x500
 -->
 
 </div>

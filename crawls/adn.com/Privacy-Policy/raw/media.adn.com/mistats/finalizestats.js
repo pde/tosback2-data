@@ -273,14 +273,14 @@ else {
       var r;
       var rs;
 
-      r = document.referrer.toLowerCase();
+      r = document.referrer.toLowerCase() || '';
 
       if (!r.length || !r.match(/\w+/))
       {
          if (window.opener)
             try
             {
-               r = window.opener.location.href;
+               r = window.opener.location.href || '';
             } catch (miError)
             {
                return 'external opener';
@@ -387,11 +387,11 @@ else {
    };
 
    // Interaction Tracking for MIA pilot test -- 2012-01-31 JG
-   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT/) && mistats.InteractionTracker)
+   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT|NAO|SLO/) && mistats.InteractionTracker)
       mistats.interactionTracker = new mistats.InteractionTracker();
 
    // Track surveywall on CharlotteObserver
-   if (mistats.GCSTracker && mistats.bizunit && mistats.bizunit === 'CLT')
+   if (mistats.GCSTracker && mistats.bizunit && mistats.bizunit.match(/CLT|NAO/))
       mistats.gcsTracker = new mistats.GCSTracker();
 
    // Post Load Omniture Tracking

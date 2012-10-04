@@ -1768,7 +1768,7 @@ $(document).ready(function(){
 	}
 	
 });
-
+/*
 $(document).ready(function(){
 	//Marketo Tagging on Business Pages
 	if( (urlValueSplit[4].match('business') && urlValueSplit[5].match('monitors')) || 
@@ -1796,7 +1796,7 @@ $(document).ready(function(){
 			});
 	}
 });
-
+*/
 //smart tv bundle topic page disclaimer injection 
 $(document).ready(function(){
 

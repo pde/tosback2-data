@@ -107,10 +107,16 @@ TSCM.ads.AdPlacerx = new function(){
    sz:"",
    adtype:"",
    type:"adj",
-   ord:Math.floor(Math.random() * 1000000000000000),
+
    includeUvalues:false,
    autotile:true,
-   tile:1,
+   tileGroupMap : {
+       'default' : {'count':1,'ord':Math.floor(Math.random() * 1000000000000000)},
+       'buttons' : {'count':1,'ord':Math.floor(Math.random() * 1000000000000000)},
+       'text' : {'count':1,'ord':Math.floor(Math.random() * 1000000000000000)}
+   },
+   tileGroup:"default",
+   default_tileGroup:"default",
    includeDcopt:false,
    usePtile:false,
    includeOrd:true,
@@ -391,7 +397,10 @@ TSCM.ads.AdPlacerx = new function(){
    reset:function(key,value){
       targets=new Array();
       uvals=new Array();
-      this.tile=1;
+      this.tileGroupMap["default"]['count']=1;
+       this.tileGroupMap["buttons"]['count']=1;
+      this.tileGroupMap["text"]['count']=1;
+
    },
 
    getTargetingString:function(){
@@ -421,7 +430,8 @@ TSCM.ads.AdPlacerx = new function(){
       if(this.usePtile == true){
          tileparam = PTILE_PARAM;
       }
-      return this.autotile ? this.makeParam(tileparam,this.tile++):this.makeParam(tileparam,this.tile);
+      //return this.autotile ? this.makeParam(tileparam,this.tileGroupMap[this.tileGroup]['count']++):this.makeParam(tileparam,this.tile);
+      return this.makeParam(tileparam,this.tileGroupMap[this.tileGroup]['count']++);
    },
 
    getRSIvals:function(){
@@ -524,11 +534,11 @@ segQS+=("rsi"+"="+seg+";")
      //var urlstring= this.protocol + this.server + DS + this.calltype + DS + this.site + DS + this.zone + targetstr + SC + size;
 
 
-      if(this.autotile == true ) {
+     // if(this.autotile == true ) {
          var tilestr= "";
          tilestr +=  SC +  this.getTile();
          urlstring +=  SC +  tilestr;
-      }
+     // }
 
       	urlstring += this.getOrd();
 
@@ -561,13 +571,13 @@ segQS+=("rsi"+"="+seg+";")
 
    getOrdNum:function(){
       if(this.includeOrd==true){
-         if(this.autotile == true){
-            return this.ord;
-         }else{
-            return Math.floor(Math.random()*100000000000);
-         }
+       //  if(this.autotile == true){
+            return this.tileGroupMap[this.tileGroup]['ord'];
+        // }else{
+         //   return Math.floor(Math.random()*100000000000);
+       //  }
       }else{
-         return this.ord;
+            return this.tileGroupMap[this.tileGroup]['ord'];
       }
    },
 
@@ -622,12 +632,17 @@ segQS+=("rsi"+"="+seg+";")
       parent.appendChild(s);
    },
    writeTag:function(id){
+         if( this.tileGroupMap[this.tileGroup]===undefined){
+            this.tileGroup=this.default_tileGroup;
+       }
       var tag = this.getScriptTag();
       document.write(tag);
       this.server = this.defaultServer;
+      this.tileGroup=this.default_tileGroup;
+        this.autotile=true;
    },
 	getIframeName:function(){
-		var name = "iframe_ad" + this.sz + "t" + this.tile;
+		var name = "iframe_ad" + this.sz + "t" +    this.tileGroupMap[this.tileGroup]['count'];
 		return name;
 	},
    getScriptTag:function(){

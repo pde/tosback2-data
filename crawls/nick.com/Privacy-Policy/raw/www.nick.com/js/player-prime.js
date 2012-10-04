@@ -376,9 +376,10 @@ $(document).ready(function () {
 				}
 
 				// Handle flashVars and params.
-				if (name.indexOf('flashvars') !== -1) {
-
-					name = name.replace('flashvars-', '');
+				// .toLowerCase used to combat xbrowser issues with attribute names
+				if (name.toLowerCase().indexOf('flashvars') !== -1) {
+					
+					name = name.toLowerCase().replace('flashvars-', '');
 					config.flashVars[name] = currentTarget.attributes[a].value;
 
 				} else if (name.indexOf('params') !== -1) {

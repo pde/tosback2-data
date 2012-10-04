@@ -78,12 +78,18 @@ function getViewName() {
     // weekly specials result does not have the map. So we use less height here.
     if(url.indexOf('weekly720') > -1) {
      	ifrm.height = '1300';
+		ifrm.width = '720';
     } else if (url.indexOf('powerpump720') > -1) { // Power pump locator results
      	 ifrm.height = '900';
+		 ifrm.width = '720';
+	} else if (url.indexOf('index720') > -1) { 
+     	 ifrm.height = '1300';
+		 ifrm.width = '970';
     } else { // for store locator results
      	 ifrm.height = '1300';
+		 ifrm.width = '720';
     }
-    ifrm.width = '720';
+    
    } else if (url.indexOf('cellfire.com') > -1) {
      	ifrm.height = '1400';
      	ifrm.width = '970';

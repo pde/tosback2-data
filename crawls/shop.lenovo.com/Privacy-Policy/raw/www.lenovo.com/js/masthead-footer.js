@@ -1,4 +1,7 @@
-﻿var countrySettings = function(country,language) {
+﻿/* Ensighten Bootstrap -- PLEASE DO NOT REMOVE */
+document.write(unescape('%3Cscript src="//nexus.ensighten.com/lenovo/Bootstrap.js"%3E%3C/script%3E'));
+
+var countrySettings = function(country,language) {
 	this.searchAction 	= "//shop.lenovo.com/SEUILibrary/controller/e/web/LenovoPortal/en_US/site.workflow:SimpleSiteSearch";
 	this.searchValue 	= "Search";
 	this.menuXml			= "/includes/menus/default.xml";

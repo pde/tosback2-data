@@ -1,0 +1,961 @@
+
+/**
+	*	version: Q13-110817
+	*	 @autors ICEJL, Kristopher Kleva
+	*
+	*    Json key/value autocomplete for jQuery 
+	*    Provides a transparent way to have key/value autocomplete and display associated products
+	*    Developed by Kristopher Kleva/Ernest Lombardi
+	*    inspired by Ziadin Givan www.CodeAssembly.com  
+	*
+	*    This software contains the following licences:
+	*
+	*    This program is free software: you can redistribute it and/or modify
+	*    it under the terms of the GNU Lesser General Public License as published by
+	*    the Free Software Foundation, either version 3 of the License, or
+	*    (at your option) any later version.
+	*
+	*    This program is distributed in the hope that it will be useful,
+	*    but WITHOUT ANY WARRANTY; without even the implied warranty of
+	*    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	*    GNU General Public License for more details.
+	*
+	*    You should have received a copy of the GNU Lesser General Public License
+	*    along with this program.  If not, see http://www.gnu.org/licenses/
+	* 
+	*   or http://www.gnu.org/licenses/lgpl.html
+	*    
+	* 
+	*    Examples for using the L.L.Bean Auto Complete Plug-In
+	*	 $("input#example").llbac("autocomplete.php",
+				{
+					featCode:'osbsr',
+				}
+		);
+	*    This here are the  options to be used for the auto-complete plug-in. 
+	*    minChars = Minimum characters the input must have for the ajax request to be made
+	*	 timeOut = Number of miliseconds passed after user entered text to make the ajax request   
+	*    validSelection = If set to true then will invalidate (set to empty) the value field if the text is not selected (or modified) from the list of items.
+	*    parameters = Custom parameters to be passed
+	*    after, before = a function that will be called before/after the ajax request
+	*/
+    
+    if (typeof (sigPage) !== 'undefined') {
+	var isSigPage = 1;
+    } else {
+	var isSigPage = 0;
+    }
+    
+    if (typeof storeUserSchTermCookie !== "function") {
+	//for HP
+	function storeUserSchTermCookie(term) {
+	    document.cookie = "LLBUSERSCH=" + escape(term) + ";path=/;domain=.llbean.com;";
+	}
+    }
+    
+    try {
+	var llbacProdWrapper;
+	$("#search").attr("autocomplete", "off");
+	if (typeof isHP === 'undefined') {
+	    $(document).ready(function () {
+		llb_ac_ab.init();
+	    });
+	} else {
+	    $LAB.ready(function () {
+		llb_ac_ab.init();
+	    });
+	}
+    } catch (err) {
+	llb_ac_ab.logIt("llb_ac_ab exception: " + err);
+    }
+    
+    var llb_ac_ab = {
+	init: function () {
+	    llb_ac_ab.logIt("initiated llb_ac_ab");
+	    llbacProdWrapper = $('.llbac_prodWrapper');
+	    llb_ac_ab.setAbtest();
+	},
+    
+	logIt: function (str) {
+	    if (window.console) {
+		console.log(str);
+	    }
+	},
+    
+	setAbtest: function () {
+	    //llb_ac_ab.logIt(llb_ab_cookie.val);
+    
+	    if (llb_ac_ab.isTextAC()) {
+		// the homepage needs ui
+		if (typeof isHP != 'undefined') {
+		    $.getScript('/js/jquery-ui.js', function () {
+			initateTextAC();
+		    });
+		} else {
+		    initateTextAC();
+		}
+		// Image Segment
+	    } else if (llb_ac_ab.isImageAC()) {
+		initateImageAC();
+		// Both: Easter Egg(List+Image segments) Hybrid
+	    } else if (llb_ac_ab.isHybridAC()) {
+		initiateTextImageAC();
+		// Default
+	    } else if (llb_ac_ab.isDepartmentsAC()) {
+		initiateDepartmentsAC();
+	    }
+	},
+    
+	departmentCatIdArray: function () {
+	    return isSigPage ? [20, 21, 22, 23] : [26, 27, 28, 31, 32, 97, 98, 50];
+	},
+	isTextAC: function () {
+	    return (llb_ab_cookie.val == '0') ? 1 : 0;
+	},
+    
+	isImageAC: function () {
+	    return (llb_ab_cookie.val == '1') ? 1 : 0;
+	},
+    
+	isHybridAC: function () {
+	    return (llb_ab_cookie.val == '2') ? 1 : 0;
+	},
+    
+	isDepartmentsAC: function () {
+	    return (llb_ab_cookie.val == '3') ? 1 : 0;
+	}
+    };
+    
+    var trackACUsage = (function () {
+	var _sendEvtFunc = function (name) {
+		if (typeof sendEvt == 'function') {
+		    s_o_sc.prop31 = "matched:" + name;
+		    sendEvt('prop1,eVar41,prop31', 'None', s_o_sc.prop31);
+		}
+	    };
+	return {
+	    textAC: function () {
+		_sendEvtFunc("text");
+	    },
+	    imageAC: function () {
+		_sendEvtFunc("image");
+	    },
+	    hybridAC: function () {
+		_sendEvtFunc("hybrid");
+	    },
+	    departmentsAC: function () {
+		_sendEvtFunc("departments");
+	    }
+	}
+    })();
+    
+    /*************************************************************************************************/
+    /* Utitlity method to remove any special chars in the given text				*/
+    /*************************************************************************************************/
+    var removeSpecialChars = function (text) {
+	    return text.replace(/[^a-zA-Z 0-9]+/g, '');
+	};
+	
+    /*************************************************************************************************/
+    /* Common AJAX Utitlity method which requests list terms from ShowCachedKeyWords commands        */
+    /*************************************************************************************************/
+    var llbac_Ajax = (function () {
+	return {
+	    run: function (text, successCallback) {
+		//Replace any special characters in input box.
+		text = removeSpecialChars(text);
+		if (text.length > 0) {
+		    var params = {
+			'q': text,
+			'subrnd': isSigPage ? 1 : 0
+		    };
+    
+		    $.ajax({
+			url: '/webapp/wcs/stores/servlet/ShowCachedKeywords',
+			dataType: 'json',
+			type: 'GET',
+			data: params,
+			success: successCallback
+		    });
+		}
+	    }
+	}
+    })();
+	
+    //**********************************************************************************************************************/
+    //	Utility method for decoding html (&lt, &amp, &gt..etc) string to HTML text.
+    //*******************************************************************************************
+    var decodeHtmlText = function(value) {
+	return $('<div/>').html(value).text();
+    };
+    
+    /*************************************************************************************************/
+    /* The below function when initialized highlights the entered characters for LIST Auto-Complete. */
+    /*************************************************************************************************/
+    function customListAC() {
+	$.ui.autocomplete.prototype._renderItem = function (ul, item) {
+	    var term = item.label;
+	    
+	    //uncomment the below code to highlight the enter charecters in list drop down.
+	    //var regx = new RegExp("^" + this.term, "i"),
+	    //	termCh = "<span style='color:black;font:normal 12px Arial, sans-serif !important;'>" + this.term + "</span>";
+	    //term = term.replace(regx, termCh);
+	    
+	    var _href = getFreetxtUrl(term);
+	    return $("<li></li>").data("item.autocomplete", item).append("<a display='guidednav' href='"+_href+"'>" + term + "</a>").appendTo(ul);
+	};
+    }
+    
+    /*************************************************************************************************/
+    /* getSearchUrl method returns search url which always has http: instead of https:
+    /*************************************************************************************************/
+    function getSearchUrl() {
+	if (typeof gnJsonData != 'undefined') {
+	    return '/llb/search/';
+	} else {
+	    return 'http://' + location.hostname + '/llb/search/';    
+	}
+    }
+    
+    function getFreetxtUrl(freeText) {
+    	var url = getSearchUrl() + '?init=1';
+	url += (isSigPage) ? '&subrnd=1' : '';
+	url += '&freeText=' + freeText;
+	//url += '&thumbType=0'; //force thumbtype to fourUp.
+	return url;
+    }
+    
+    function initateImageAC(excludeParms) {
+	llb_ac_ab.logIt("initiated");
+    
+	var activeSearchClass = 'activeSearchLink';
+	if (llb_ac_ab.isHybridAC() || llb_ac_ab.isDepartmentsAC()) {activeSearchClass = 'activeThumbLink';}
+    
+	$("input#search-string").llbac({
+	    feat: 'osbsr',
+	    excludes: excludeParms
+	}).keydown(function (e) {
+	    //hold the input value in the input#search-string element
+	    $(this).data('srhTerm', $(this).val());
+    
+	    if (e.keyCode == 40) { //MOVEDOWN
+		$("#llbac_results a:visible").filter(':first').focus().addClass(activeSearchClass);
+		e.preventDefault();
+		return false;
+	    }
+	    if (e.keyCode == 38) { //KEYUP
+		if ($("#departmentWrap").length > 0) {
+		    $("#departmentWrap").find('a:last').focus().addClass('activeDeptLink');
+		} else {
+		    if ($("#llbac_results a:last").is('.llbac_prodListTemp')) {
+			var term = $("#llbac_results a:last").focus().addClass("activeTermLink").data('srhTerm');
+			$('input#search-string').val(term);
+		    } else {
+			//find the visible last thumb anchor and add class
+			llbacProdWrapper.find('a.llbac_prodTemplate:visible').filter(':last').focus().addClass(activeSearchClass);
+			$("input#search-string").val($("input#search-string").data('srhTerm'));
+		    }
+		}
+		e.preventDefault();
+		return false;
+	    }
+	});
+
+  
+	//if any anchor is triggers by ENTER KEY - #llbac_results div then close dropdown and load results.
+	$('html,body').delegate('#llbac_results a', 'keydown', function (e) {
+	    if (e.keyCode == 13) { // ENTER KEY
+		
+		if(typeof gnJsonData != 'undefined' && !$(this).hasClass('llbac_prodTemplate')){
+			window.location.hash = $(this).attr('href');
+		} else {
+			window.location = $(this).attr('href');
+		}
+		$('#llbac_results').css({'display':'none'});
+		return false;
+	    }
+	});
+	
+	//if any of anchor clicked in #llbac_results div then close dropdown and load results.
+	$('html,body').delegate('#llbac_results a', 'click', function (e) {
+	    $('#llbac_results').css({'display':'none'});
+	});
+    
+    
+	$('#llbac_results').delegate('a.seeMoreResults', 'keydown', function (e) {
+	    if (e.keyCode == 40) { //MOVEDOWN
+		var nxtDom = $(this).next();
+		if (nxtDom.hasClass('departmentWrap')) {
+		    nxtDom.find('a.deptLink:first').focus().addClass('activeDeptLink');
+		} else if (nxtDom.hasClass('llbac_prodList')) {
+		    var term = nxtDom.find('a.llbac_prodListTemp:first').focus().addClass("activeTermLink").data('srhTerm');
+		    $('input#search-string').val(term);
+		} else {
+		    $("input#search-string").focus();
+		}
+		e.preventDefault();
+		return false;
+	    }
+	    if (e.keyCode == 38) { //MOVEUP
+		//find the visible last thumb anchor and add class
+		llbacProdWrapper.find('a.llbac_prodTemplate:visible').filter(':last').focus().addClass(activeSearchClass);
+	    }
+	});
+    
+	$('#llbac_results').delegate('a.llbac_prodTemplate', 'mouseover', function (e) {
+	    $("#llbac_results a." + activeSearchClass).removeClass(activeSearchClass);
+	    $(this).addClass(activeSearchClass).focus();
+	});
+    
+	$('#llbac_results').delegate('a.llbac_prodTemplate', 'mouseout', function (e) {
+	    $(this).removeClass(activeSearchClass);
+	});
+    
+	$('#llbac_results').delegate('a.' + activeSearchClass, 'keydown', function (e) {
+	    if (e.keyCode == 40 && $(this).next("a:visible").hasClass("llbac_prodTemplate")) { //MOVEDOWN
+		$("#llbac_results a." + activeSearchClass).removeClass(activeSearchClass);
+		$(this).next("a.llbac_prodTemplate").focus().addClass(activeSearchClass);
+		$("input#search-string").val($('#search-string').data('srhTerm'));
+		e.preventDefault();
+		return false;
+	    }
+    
+	    if (e.keyCode == 40 && !$(this).next("a:visible").hasClass("llbac_prodTemplate")) { //MOVEDOWN
+		$("#llbac_results a." + activeSearchClass).removeClass(activeSearchClass);
+		$(".seeMoreResults").focus();
+		e.preventDefault();
+		return false;
+    
+	    } else if (e.keyCode == 38 && $(this).prev("a:visible").hasClass("llbac_prodTemplate")) { //MOVEUP
+		$("#llbac_results a." + activeSearchClass).removeClass(activeSearchClass);
+		$(this).prev("a.llbac_prodTemplate").focus().addClass(activeSearchClass);
+		e.preventDefault();
+		return false;
+    
+	    } else if (e.keyCode == 38 && !$(this).prev("a:visible").hasClass("llbac_prodTemplate")) { //MOVEUP
+		$("#llbac_results a." + activeSearchClass).blur().removeClass(activeSearchClass);
+		$("input#search-string").val($("input#search-string").data('srhTerm'));
+		$("input#search-string").focus();
+		e.preventDefault();
+		return false;
+    
+	    } else if (e.keyCode == 9) { //TAB
+		$("#llbac_results a." + activeSearchClass).removeClass(activeSearchClass);
+		$("#search-button").focus();
+		llbacProdWrapper.css({'display':'none'});
+		e.preventDefault();
+		return false;
+	    }
+	});
+    }
+    
+    function initiateTextImageAC() {
+	initateImageAC();
+	/*************************************************************************************************/
+	/* The below logic binds the KEYDOWN events for list suggestions in List+Image view AutoComlpete*/
+	/*************************************************************************************************/
+	$('#llbac_results').delegate('a.activeTermLink', 'keydown', function (e) {
+	    if (e.keyCode == 40 && $(this).next("a:visible").hasClass("llbac_prodListTemp")) { //MOVEDOWN
+		$("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+		var term = $(this).next("a.llbac_prodListTemp").focus().addClass("activeTermLink").data('srhTerm');
+		$('input#search-string').val(term);
+		e.preventDefault();
+		return false;
+	    }
+	    if (e.keyCode == 40 && !$(this).next("a:visible").hasClass("llbac_prodListTemp")) { //MOVEDOWN    
+		$("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+		$("input#search-string").val($("input#search-string").data('srhTerm'));
+		$("input#search-string").focus();
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 38 && $(this).prev("a:visible").hasClass("llbac_prodListTemp")) { //MOVEUP
+		$("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+		var term = $(this).prev("a.llbac_prodListTemp").focus().addClass("activeTermLink").data('srhTerm');
+		$('input#search-string').val(term);
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 38 && !$(this).prev("a:visible").hasClass("llbac_prodListTemp")) { //MOVEUP
+		$("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+		$("input#search-string").val($("input#search-string").data('srhTerm'));
+		$("#llbac_results a.seeMoreResults").focus();
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 9) { //TAB
+		$("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+		$('input#search-string').val($(this).data('srhTerm'));
+		$('#search-button').focus();
+		llbacProdWrapper.css({'display':'none'});
+		e.preventDefault();
+		return false;
+	    }	    
+	});
+    
+	$("#llbac_results").delegate('a.llbac_prodListTemp', 'mouseover', function () {
+	    $("#llbac_results a.activeTermLink").removeClass("activeTermLink");
+	    $(this).addClass("activeTermLink");
+	    $(this).focus();
+	});
+    
+	$("#llbac_results").delegate('a.llbac_prodListTemp', 'mouseout', function () {
+	    $(this).removeClass("activeTermLink");
+	});
+    }
+    
+    function initiateDepartmentsAC() {
+	initateImageAC('views.banners.mtxt.attr_arry.item.refine.header.sort');
+    
+	/*************************************************************************************************/
+	/* The below logic binds the KEYDOWN events for list suggestions in Image + Department view AutoComlpete*/
+	/*************************************************************************************************/
+	$('#llbac_results').delegate('a.activeDeptLink', 'keydown', function (e) {
+	    if (e.keyCode == 40 && $(this).next("a").hasClass("deptLink")) { //MOVEDOWN
+		$("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+		$(this).next("a.deptLink").focus().addClass("activeDeptLink");
+		e.preventDefault();
+		return false;
+	    }
+	    if (e.keyCode == 40 && !$(this).next("a").hasClass("deptLink")) { //MOVEDOWN
+		$("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+		$("input#search-string").focus();
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 38 && $(this).prev("a").hasClass("deptLink")) { //MOVEUP
+		$("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+		$(this).prev("a.deptLink").focus().addClass("activeDeptLink");
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 38 && !$(this).prev("a").hasClass("deptLink")) { //MOVEUP
+		$("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+		$("#llbac_results a.seeMoreResults").focus();
+		e.preventDefault();
+		return false;
+	    } else if (e.keyCode == 9) { //TAB
+		$("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+		$("#search-button").focus();
+		llbacProdWrapper.css({'display':'none'});
+		e.preventDefault();
+		return false;
+	    }
+	});
+    
+	$('#llbac_results').delegate('a.deptLink', 'mouseover', function () {
+	    $("#departmentWrap a.activeDeptLink").removeClass("activeDeptLink");
+	    $(this).addClass("activeDeptLink");
+	    $(this).focus();
+	});
+    
+	$('#llbac_results').delegate('a.deptLink', 'mouseout', function () {
+	    $(this).removeClass("activeDeptLink");
+	});
+    }
+    
+    function initateTextAC() {
+	var used = false;
+	$("input#search-string").autocomplete({
+	    minLength: 1,
+	    delay: 0,
+	    source: function (request, response) {
+		llbac_Ajax.run(request.term, function (data) {
+		    response(data);
+		});
+	    },
+	    create: function (event, ui) {
+		if ($.browser.msie) {
+		    $("ul.ui-autocomplete").css({
+			"position": "absolute"
+		    });
+		}
+	    },
+	    open: function () {
+		$("ul.ui-autocomplete li").each(function (index) {
+		    if (index > 9) {
+			$(this).remove();
+		    }
+		});
+	    },
+	    select: function(event, ui) {
+		//used to store search Term in cookie
+		//if ( typeof isHP === 'undefined') {
+		storeUserSchTermCookie(ui.item.label);
+	        //}
+		//used for metrics
+		trackACUsage.textAC();
+
+		//update the search input box on click of search term
+		$(this).val(ui.item.label);
+		//trigger submit button event
+		$('#search').trigger('submit');
+	    }
+	});
+    }
+     
+    /****************************************************************************************************/
+    /* Form Submit Handler for search input field*/
+    /****************************************************************************************************/
+    $(function(){
+	$('#search').submit(function (e) {
+	    
+	    var $searchStr = $("#search-string"), searchStrVal = $searchStr.val();
+	    if(searchStrVal != '' && searchStrVal != 'Enter item # or keyword' && searchStrVal != 'SEARCH'){
+		//hide any autocomplete drop downs
+		$('#llbac_results').css({
+			'display': 'none'
+		});
+
+		var gnCookieObj = gn_Cookie.get();
+		//force form submission in insecure mode 
+		var actionStr = getSearchUrl();
+
+		var gnParms = {};
+		gnParms.freeText =  searchStrVal.replace(/[^a-zA-Z 0-9]+/g,'');
+
+		gnParms.init = 1;
+		if (gnCookieObj.gnSortField != '' && gnCookieObj.gnSortField != -1) {
+			gnParms.sort_field = gnCookieObj.gnSortField;
+		}
+		if (gnCookieObj.gnThumbType != '' && gnCookieObj.gnThumbType != -1) {
+			//if thumbtype is 10(groupedview) force user to fourUp
+			gnParms.thumbType = (gnCookieObj.gnThumbType != 10) ? gnCookieObj.gnThumbType : 0;
+		}
+		if (gnCookieObj.gnAttr != '' && gnCookieObj.gnAttr != -1) {
+			gnParms.gnattr = gnCookieObj.gnAttr;
+		}
+
+		if (isSigPage) {
+			gnParms.subrnd = 1;
+		}
+
+		var parmStr = $.param(gnParms);
+		actionStr += "?" + decodeURIComponent(parmStr);
+
+		if (typeof gnJsonData != 'undefined') {
+			window.location.hash = actionStr;
+		} else {
+			window.location = actionStr;
+		}
+		$('#search-button').focus();
+	    }
+	    return false;
+	});
+    });
+    
+    jQuery.fn.llbac = function (options) {
+    
+	// The array contains the list of previously matched keyword 
+	var llbacMatches = [];
+    
+	/* here are the default name value pairs for the page.  Note: when adding new varibles to 
+	 * the GuidednavAjax JSP it's a good idea to add them here too.
+	 */
+	var parameters = {
+	    // Check for sig or core
+	    //'categoryId': isSigPage ? 8 : 2,
+	    'storeId': 1,
+	    'catalogId': 1,
+	    'langId': -1,
+	    'position': 1,
+	    'sort_field': 'Relevance',
+	    'freeText': '',
+	    'subrnd': isSigPage ? 1 : 0,
+	    'excludes': options.excludes || 'dept.views.banners.mtxt.attr_arry.item.refine.sort',
+	    'limit': options.limit || 5
+	};
+    
+	/* default settings for the page eg. image sizes, view types and other setting that can be 
+	 * over-ridden. for example position can be over-ridden by the plug-in user 
+	 */
+	var settings = {
+	    'imgHei': 63,
+	    'imgWidth': 52,
+	    'imgPlaceholder': '',
+	    'imgError': '',
+	    'viewType': 'fourUpView',
+	    'featCode': 'osbsr'
+	};
+    
+	var status = {
+	    'oldText': '',
+	    'newText': '',
+	    'oldMatch': '',
+	    'newMatch': ''
+	};
+    
+    
+	return this.each(function () {
+	    var textInput = $(this);
+	    var typingTimeout;
+	    var size = 0;
+	    var selected = 0;
+	    settings = jQuery.extend({
+		minChars: 1,
+		timeout: 300,
+		validSelection: false,
+		feat: 'osbsr'
+	    }, settings);
+    
+	    var getDataText = '';
+    
+	    function getData(text) {
+		window.clearInterval(typingTimeout);
+    
+		if (text != status.oldText && (settings.minChars != null && text.length >= settings.minChars)) {
+		    //store text value in getDataText, which will be reused in ajax response to set as oldText  
+		    getDataText = text;
+		    llbac_Ajax.run(text, responseHandler);
+		} else {
+		    status.oldMatch = '';
+		    status.oldText = '';
+		    llbacProdWrapper.css({'display':'none'});
+		}
+	    }
+    
+	    function responseHandler(response) {
+		if (typeof response !== 'undefined' && !!response && response !== 'null' && response.length > 0) {
+		    status.oldText = getDataText;
+		    getDataText = response[0];
+    
+		    if (status.oldMatch != response[0]) {
+			populateSearchText(response, textInput.val());
+			refreshData(getDataText);
+			status.oldMatch = response[0];
+			return true;
+		    } else if (status.oldMatch == response[0]) {
+			//unhide llbacProdWrapper only if it has thumbnails
+			var visibleAnc = llbacProdWrapper.children('a:visible');
+			if(visibleAnc.length){
+			    llbacProdWrapper.css({'display':'block'});   
+			}
+			populateSearchText(response, textInput.val(), true);
+			return true;
+		    }
+		}
+		status.oldMatch = '';
+		llbacProdWrapper.css({'display':'none'});
+		return false;
+	    }
+    
+	    $("#search-string").keydown(function (e) {
+		if ((e.keyCode != 13) && (e.keyCode != 38) && (e.keyCode != 40)) {
+		    window.clearInterval(typingTimeout);
+		    typingTimeout = window.setTimeout(function () {
+			getData(textInput.val());
+		    }, settings.timeout);
+		}
+	    });
+    
+	    var itemUsed = false;
+	    function refreshData(newFreeText) {
+		parameters.freeText = newFreeText;
+	
+		if (typeof llbacMatches[newFreeText] != "undefined" && typeof llbacMatches[newFreeText] != "function") { //in FF llbacMatches[watch] is a function
+		    //Remove llbacMatches[newFreeText].orignalSearchTerm if not eqauls newFreeText
+		    if (llbacMatches[newFreeText].originalSearchTerm != newFreeText) {
+			delete llbacMatches[newFreeText];
+			refreshData(newFreeText);
+		    }
+		    var newFreeTextData = llbacMatches[newFreeText];
+		    if(typeof newFreeTextData !== 'undefined'){
+			status.newMatch = parameters.freeText;
+			refreshTemplate(newFreeTextData);
+		    }
+		} else {
+		    var searchUrl = '/llb/gnajax/';
+		    //var searchUrl = '/webapp/wcs/stores/servlet/GuidednavAjax?categoryId=';
+		    searchUrl += isSigPage ? 8 : 2;
+		    $.getJSON(searchUrl, parameters, function (data) {
+			// get the core data in the first element in the array
+			if (data != null) {
+			    data = data[0];
+			    if (data != null && data.products != null && $(data.products).size() > 0) {
+	
+				// new match is what the term was when the response came back
+				status.newMatch = parameters.freeText;
+				llbacMatches[status.newMatch] = data;
+	
+				// If the term has not changed, refresh the template
+				if (status.oldMatch == status.newMatch) {
+				    refreshTemplate(data);
+				    if (!itemUsed && llb_ac_ab.isImageAC()) {
+					trackACUsage.imageAC();
+					itemUsed = true;
+				    }
+				}
+			    } else {
+				//hide thumbnails in drop down
+				$('#llbac_results').css('display', 'none').children('a').css('display', 'none');
+				//hide depts in drop down
+				if(llb_ac_ab.isDepartmentsAC()){
+				    $('#departmentWrap').css('display', 'none');
+				}
+			    }
+			} else {
+			    //hide thumbnails in drop down
+			    $('#llbac_results').css('display', 'none').children('a').css('display', 'none');
+			    //hide depts in drop down
+			    if(llb_ac_ab.isDepartmentsAC()){
+				$('#departmentWrap').css('display', 'none');
+			    }
+			}
+		    });
+		}
+	    }
+    
+    }); // end for each
+    
+	function updateThumbImageType(imgCat, imgType) {
+	    var thumbArry = imgCat.split("_");
+	    if (thumbArry.length === 3) {
+		return thumbArry[0] + "_" + thumbArry[1] + "_" + imgType;
+	    }
+	}
+    
+	/****************************************************************************************************/
+	/* populateSearchText funtions populates and appends the search text above Image view Autocomplete*/
+	/* this fucntion only populates the values if the cookie.val is '2'(i.e List+Image view AC)*/
+	/****************************************************************************************************/
+	var hItemUsed = false;
+    
+	function populateSearchText(searchTxt, textInput, showDropdown) {
+	    if (llb_ac_ab.isHybridAC()) {
+    
+		if (searchTxt.length > 5) {searchTxt = searchTxt.slice(0, 5);}
+    
+		updateCCSClassForHybAC();
+    
+		var prdWrapUL = $('#llbac_results').find('div.llbac_prodList');
+		if (prdWrapUL.length > 0) {
+		    prdWrapUL.empty();
+		} else {
+		    $('#llbac_results a:last').after("<div class='llbac_prodList'></div>");
+		}
+    
+		//Replace any special characters in input box.
+		textInput = removeSpecialChars(textInput);
+    
+		var re = new RegExp("^" + textInput, "i");
+		for (var i = 0; i < searchTxt.length; i++) {
+		    var txt = searchTxt[i],
+			ancClass = 'llbac_prodListTemp',
+		        _href = getFreetxtUrl(searchTxt[i]);
+    
+		    //the below line replaces the matching terms list suggestions. Uncomment if functionality is needed
+		    //txt = searchTxt[i].replace(re, "<span class='llbac_prodTermBold'>" + textInput + "</span>");
+		    if (i == searchTxt.length - 1) {
+			ancClass += ' lastAnc';
+		    }
+		    
+		    //Create anchor DOM and add data 'srhTerm' which will hold the search term value
+		    var ancTerm = $("<a display='guidednav' href='"+_href+"' class='" + ancClass + "'><span class='llbac_prodListLink'>" + txt + "</span></a>").data('srhTerm', searchTxt[i]);
+		    $('#llbac_results').find('div.llbac_prodList').append(ancTerm);
+		}
+    
+		if (isSigPage) {
+		    $('#llbac_results').find('a.llbac_prodListTemp').each(function (index) {
+			$(this).find('span').css({
+			    'color': '#333',
+			    'text-transform': 'uppercase',
+			    'font-size': '14px',
+			    'display': 'block',
+			    'margin': '4px 0px 4px 8px'
+			});
+		    });
+		}
+		if (!hItemUsed) {
+		    trackACUsage.hybridAC();
+		    hItemUsed = true;
+		}
+    
+		//Adjust AC dropdown to right on sig site
+		if (isSigPage == 1) {
+		    llbacProdWrapper.css('left', ($(window).width() - 980) / 2);
+		}
+		if(showDropdown){ //FIX for ECXXXIV-435
+		    llbacProdWrapper.css({'display':'block'});   
+		}
+	    }
+	}
+    
+	function updateCCSClassForHybAC() {
+	    //Adds background Image and adjust the size for Hybrid AC using css Class.
+	    llbacProdWrapper.find('a.llbac_prodTemplate').addClass('llbac_prodTemplateHyb');
+	    llbacProdWrapper.find('span.llbac_productLink').addClass('llbac_productLinkHyb');
+	    llbacProdWrapper.addClass('llbacResultsHyb');
+	    llbacProdWrapper.find('a.seeMoreResults').addClass('seeMoreResultsHybImgBG');
+	}
+    
+	function updateCCSClassForDeptAC() {
+	    //Adds background Image and adjust the size for Hybrid AC using css Class. 
+	    llbacProdWrapper.find('a.llbac_prodTemplate').addClass('llbac_prodTemplateDept');
+	    llbacProdWrapper.find('span.llbac_productLink').addClass('llbac_productLinkDept');
+	    llbacProdWrapper.addClass('llbacResultsHyb');
+	    llbacProdWrapper.find('a.seeMoreResults').addClass('seeMoreResultsHybImgBG');
+	}
+    
+	function refreshTemplate(data) {
+	    var productImages = [];
+	    var maxDisplayCount = 5;
+	    if (data.pageFoundSize < maxDisplayCount) {
+		maxDisplayCount = data.pageFoundSize;
+	    }
+    
+	    //Used for Metrics
+	    //if ( typeof isHP === 'undefined') {
+	    storeUserSchTermCookie(data.originalSearchTerm.replace(/&#034;/g, ""));
+	    //}
+	    $('#llbac_results').children('a.llbac_prodTemplate').css('display', 'none');
+	    if (!llb_ac_ab.isHybridAC()) {
+		$('#llbac_results a.seeMoreResults').addClass('seeMoreResultsImgBG');
+	    }
+    
+	    for (i = 0; i < maxDisplayCount; i++) {
+		var thumbUrl = "";
+    
+		if (typeof data.products[i] != "undefined") {
+    
+		    if (typeof data.products[i].img !== "undefined") {
+			thumbUrl = "//cdni.llbean.com/is/image/wim/" + data.products[i].img + "?wid=" + settings.imgWidth + "&hei=" + settings.imgHei + '&defaultImage=pTiff/A0211793_02.tif';
+		    } else {
+			thumbUrl = "//cdni.llbean.com/is/image/wim/" + updateThumbImageType(data.products[i].swatches[0].id, "42") + "?wid=" + settings.imgWidth + "&hei=" + settings.imgHei + '&defaultImage=pTiff/A0211793_02.tif';
+		    }
+    
+		    productImages.push(thumbUrl);
+    
+		    var price = data.products[i].price.replace(/&lt;|&gt;/g, function (chr) {
+			return chr == "&lt;" ? "<" : ">";
+		    }).replace(/&#034;/g, "");
+    
+		    var currentResultLink = $('#llbac_results').children('a.llbac_prodTemplate').eq(i); //returns jquery object for specified index(i).
+		    var prodName = decodeHtmlText(data.products[i].name.replace(/&#039;/g, "\'").replace(/&#034;/g, "\""));
+		    currentResultLink.attr("href", "/llb/shop/" + data.products[i].id + "?feat=osbsr&page=" + data.products[i].seoName).find("span[class*=llbac_productLink]").text(prodName);
+		    currentResultLink.find("span.llbac_productPrice").html(price);
+    
+		    if (llb_ac_ab.isDepartmentsAC() && typeof data.products[i].qrtxt1 != 'undefined' && data.products[i].qrtxt1.length > 0) {
+			var prodDescSpan = currentResultLink.find('span.llbac_prodDesc');
+			if(prodDescSpan.length){
+			    prodDescSpan.html(data.products[i].qrtxt1);
+			} else {
+			    currentResultLink.find("span[class*=llbac_productLink]").after("<span class='llbac_prodDesc'>" + data.products[i].qrtxt1 + "</span>");   
+			}
+		    }
+    
+		    currentResultLink.css('display', 'block');
+    
+		    var maskHeight = $(document).height();
+		    var maskWidth = $(window).width();
+		    var maskLeftMargin = (maskWidth - 980) / 2;
+    
+    
+		    if (isSigPage == 1) {
+			llbacProdWrapper.css('left', maskLeftMargin);
+		    }
+    
+		    if (maskLeftMargin > 0) {
+			maskLeftMargin = 0 - maskLeftMargin;
+		    }
+    
+		    llbacProdWrapper.css({'display':'block'});
+    
+		    //Set height and width to mask to fill up the whole screen
+		    if (!isSigPage) {
+			$('#mask').css({
+			    'width': maskWidth,
+			    'height': maskHeight,
+			    'left': maskLeftMargin,
+			    //transition effect    
+			    'display':'block'
+			})
+			.click(function () {
+			    $(this).css({'display':'none'});
+			    llbacProdWrapper.css({'display':'none'});
+			});
+		    } else {
+			var trgt = $("input#search-string");
+			//Added below code to hide the AC dropdown
+			$('html').click(function (e) {
+			    if (e.target != trgt) {
+				llbacProdWrapper.css({'display':'none'});
+			    }
+			});
+		    }
+		}
+	    }
+    
+	    addDepartments(data);
+    
+	    $('#llbac_results a.seeMoreResults').css({'display':'block'});
+	    $('#llbac_results a.llbac_prodTemplate:first').css('border-top', '0px');
+	   
+	    var viewAllTxt = "View All " + data.pageFoundSize + " Results for " + data.originalSearchTerm.replace(/&#034;/g, "")
+		,_title = '';
+		
+	    if(isSigPage == 1 || llb_ac_ab.isImageAC()){
+		//if view all text > 40 then truncate text to 40 chars and add ellipsis at end ECXXXIV-420
+		if(viewAllTxt.length > 40){
+		    _title = viewAllTxt; //add alt/title tags
+		    viewAllTxt = viewAllTxt.substring(0, 40) + '...';
+		}
+	    }
+		
+	    var srhUrl = getSearchUrl();
+	    if (isSigPage == 1) {
+		$("#llbac_results a.seeMoreResults").html(viewAllTxt + "<img src='/images/sigACSeeAllArrow.png' />").attr({"href": srhUrl + "?nav=osbsr&init=1&subrnd=1&freeText=" + data.originalSearchTerm.replace(/ /g, "+"), 'display' : 'guidednav', 'alt': _title, 'title' : _title});
+	    } else {
+		$("#llbac_results a.seeMoreResults").html("<img src='/images/search_small_white_arrow.gif' />" + viewAllTxt ).attr({"href": srhUrl + "?nav=osbsr&init=1&freeText=" + data.originalSearchTerm.replace(/ /g, "+"), 'display' : 'guidednav', 'alt': _title, 'title' : _title});
+	    }
+    
+	    $("a.llbac_prodTemplate img.llbac_productImg").each(function (i, v) {
+		$(this).attr("src", productImages[i]);
+	    });
+	}
+    
+	var dItemUsed = false;
+    
+	function addDepartments(data) {
+	    if (llb_ac_ab.isDepartmentsAC()) {
+    
+		updateCCSClassForDeptAC();
+		//Since llbac_productLink has all important css vars
+		llbacProdWrapper.find('span.llbac_productLink').removeClass('llbac_productLink');
+    
+		if (typeof data.dept != "undefined" && data.dept.length > 0) {
+    
+		    var deptCatIds = llb_ac_ab.departmentCatIdArray(),
+			aHtml = '';
+    
+		    for (var i = 0; i < data.dept.length; i++) {
+			if($.inArray(parseInt(data.dept[i].categoryId), deptCatIds) > -1 && data.dept[i].prodCount > 0) {
+			    var aHref = getSearchUrl() + data.dept[i].categoryId + "?freeText=" + data.originalSearchTerm + "&init=1";
+			    aHref += "&thumbType=0"; //force thumbtype to fourUp.
+			    //FIX for ECXXXVI-940(RAJ)
+			    if(typeof data.crt !== 'undefined' && data.crt.length){
+				aHref += "&crt=" + data.crt;
+			    }
+			    if(isSigPage) {aHref += "&subrnd=1";}
+    
+			    aHtml += "<a href='" + aHref + "' class='deptLink' display='guidednav'><span class='resDeptName'>" + data.dept[i].name + " </span><span class='resultNumTxt'> (" + data.dept[i].prodCount + ")</span></a>";
+			}
+		    }
+
+		    var $llbacResults = $('#llbac_results');
+			
+		    if (aHtml.length > 0) {
+			var $deptWrapDiv = $('#departmentWrap');
+			if ($deptWrapDiv[0]) {
+			    $deptWrapDiv.css({'display': 'block'});
+			    $deptWrapDiv.children('a.deptLink').remove();
+			} else {
+			    $llbacResults.append("<div id='departmentWrap' class='departmentWrap'><span class='deptResSpan'>Show results in:</span></div>");
+			}
+    
+			$('#departmentWrap').append(aHtml);
+			$llbacResults.find('a.deptLink').last().css('margin-bottom', '5px');
+		    }
+    
+		    if (!dItemUsed) {
+			trackACUsage.departmentsAC();
+			dItemUsed = true;
+		    }
+		}
+	    }
+	}
+    }; //return

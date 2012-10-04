@@ -60,7 +60,10 @@ PBS.KIDS.Headband = (function(){
 	    /^\/lab/,
 	    /^\/fetch\/mobile/,
 	    /^\/martha\/mobile/,
-	    /^\/sesame\/videoPlayer/
+	    /^\/sesame\/videoPlayer/,
+	    /^\/curiousgeorge\/games\/glass_palace/,
+	    /^\/curiousgeorge\/games\/on_the_job/,
+	    /^\/itsmylife\/games\/story_strips_print.html/
     ];
 
     //Dynmically compute CDN domain

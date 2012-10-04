@@ -470,7 +470,7 @@
 					
 					if(	$.ad.adBlade.isAdBlade(id)){return;}
 
-					if( $.ad.goog.adsense.isAdsense() && id === "qu_channel_7"){return;}		
+					if( id === "qu_channel_7"){return;}		
 					
 					if( $.ad._meta.channel.indexOf("fnc/politics") > -1){return;}
 					
@@ -564,9 +564,6 @@
 		},
 		goog: {
 			adsense: {
-				isAdsense: function() {
-					return flag = ( $('#qu_channel_7').size() == 0 || $.ad._meta.channel.indexOf("fnc/politics") > -1) ? false : true;
-				},
 				init: function(d){
 					var root = this;
 					return false; 
@@ -677,13 +674,13 @@
 				},
 				embed: function(obj) {
 					var root = this;
-					if (!root.isAdsense()) { return false; }
 
-					root.addGoogleObjFunc();
-					root.config(obj);				
-					document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');
-						
-				}			
+					if($("meta[name='prism.section']").attr("content") != "politics" && obj.qid == "channel_7" ){
+						root.addGoogleObjFunc();
+						root.config(obj);				
+						document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');	
+					}			
+				}				
 			},
 			pre: function(){}
 		},

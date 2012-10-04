@@ -1672,7 +1672,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	*/
 	var initProductModuleFlag = false;
 	var styleChangedFlag = false;
-
+	var setPDPRadioButtons = false;
+	var getInformationFlag = false;
+	
 	jQuery.fn.ProductModule = function(options) {					
 		var thresholdQty = 10;		
 		var validFlag = false;
@@ -1749,36 +1751,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						'speed' : 0
 					}				
 			}
-			//for (var i = 0; i < jQuery(targetPage+'#imageThumbs a').length; i++) {
-				//if (i <= 0) {
-					//jQuery(targetPage+'#imageThumbs a:first-child').trigger("click");
-				//}
-			//}
-			//for (var i = 1; i < jQuery(targetPage+'#imageThumbs a').length; i++) {
-				//if (i <= 1) {
-					//jQuery(targetPage+'#imageThumbs a:first-child').trigger("click");					
-				//}
-			//}
-			//var $allAnchors = jQuery(targetPage+'#imageThumbs a.Selector');
-			//$allAnchors.each(function () {
-				//var $this = jQuery(this);
-				//var hover = true;
-				//$this.click(function () {
-					//$this.data('clicked', true);
-					//if ($this.data('clicked')) {
-						//hover = false;
-						//jQuery(targetPage+'#imageThumbs a:first-child').removeClass('selected');
-					//} else {
-						//if (hover) {
-							//$this.hover(function () {
-								//jQuery(targetPage+'#imageThumbs a:first-child').removeClass('selected');
-							//}, function () {
-								//jQuery(targetPage+'#imageThumbs a:first-child').addClass('selected');
-							//});
-						//}
-					//}
-				//});
-			//});
+			
 		}
 			assignEventHandlers = function(){
 			jQuery(targetPage+'.toolTip').click(function (event) {
@@ -1798,12 +1771,12 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var contentYpos = contentOffset.top;		
 					this.contentOverlay = '#overlay_' + this.contentHref.replace('#','');		
 					jQuery(this).append(
-						'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;padding-bottom:30px;width:250px">'		
+						'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;width:250px">'		
 						+'</div>'
 					);
 					if (jQuery(this).attr('id') == "DropShip") {
 						jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
-						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos, marginTop: contentYpos-420, width: 350, position: "relative"});		
+						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos, marginTop: contentYpos-350, width: 350, position: "relative"});		
 						jQuery('.toolTipWrapper').fadeIn(300);
 					} else {
 						jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
@@ -1835,7 +1808,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				jQuery(targetPage+'#imageThumbs a').removeClass('hover');								
 			});				
 			//swatches non-clearance
-			jQuery(targetPage+'#swatches a').live('click', function (event){	
+			jQuery(targetPage+'#swatches a').live('click', function (event){
+				getInformationFlag = true;
 				if (jQuery(this).parent().hasClass('soldout')){
 					
 				}else if(!loadImageTransitionFlag){
@@ -1870,7 +1844,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			});	
 			
 			//swatches clearance
-			jQuery(targetPage+'#swatchesClearance a').click(function (event){	
+			jQuery(targetPage+'#swatchesClearance a').live('click', function (event){
+				getInformationFlag = true;			
 				if (jQuery(this).parent().hasClass('soldout')){
 					
 				}else if(!loadImageTransitionFlag){
@@ -1914,12 +1889,14 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			});				
 			// input options
 			jQuery(targetPage+'#size').live('change', function(){
+				getInformationFlag = true;
 				validateSelections();
 				jQuery(targetPage+'input[name=selectedSizeId]').val(jQuery(targetPage+'#size').val()); 
 				// update control panel
 				updateContolPanel();
 			});
 			jQuery(targetPage+'#color').live('change', function(){
+				getInformationFlag = true;
 				validateSelections();
 				updateSwatchInfoDropdown();
 				//update selected color
@@ -1927,8 +1904,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				zoomImageCheck(jQuery(targetPage+'#swatches dd.hot'),'swatch');
 				updateContolPanel();
 			});
-			jQuery(targetPage+'#inSeamLength').live('change', function(){
-				validateSelections();
+			jQuery(targetPage+'#inSeamLength').live('change', function(){				
 				if (jQuery(targetPage+'#inSeamLength').val() !="default"){
 					jQuery(targetPage+'input[name=selectedInseamLength]').val(jQuery(targetPage+'#inSeamLength').val());
 				}else{
@@ -1937,6 +1913,11 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				validateSelections();
 			});
 			jQuery(targetPage+'#hemStyle').live('change', function(){
+				if (jQuery(targetPage+'#hemStyle').val() !="default"){
+					jQuery(targetPage+'input[name=selectedHemStyle]').val(jQuery(targetPage+'#hemStyle').val());
+				}else{
+					jQuery(targetPage+'input[name=selectedHemStyle]').val("");					
+				}
 				validateSelections();
 				updateInseamLength();
 			});
@@ -1948,7 +1929,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				//reset size
 				jQuery(targetPage+'#size').val("null");
 				jQuery(targetPage+'input[name=selectedSizeId]').val(jQuery(targetPage+'#size').val());
-				styleChangedFlag = true;				
+				styleChangedFlag = true;	
+				updateInseam();
 				updateItemNumber();					
 			})
 			// tool tips
@@ -2052,12 +2034,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						if (colorValue != null && colorValue.length != 0){
 							inputsCount ++;
 						}
-						if (inseamValue != null && !jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
-							if (hemValue != null && hemValue.length != 0){
-								inputsCount ++;
-							}
-							if (inseamValue != null && inseamValue.length != 0){
-								inputsCount ++;
+						if (hemValue == "Unfinished" && hemValue.length != 0){
+							inputsCount ++;
+						}else{
+							if (inseamValue != null && !jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
+								if (hemValue != null && hemValue.length != 0){
+									inputsCount ++;
+								}
+								if (inseamValue != null && inseamValue.length != 0){
+									inputsCount ++;
+								}
 							}
 						}
 						// get vaild count
@@ -2067,14 +2053,18 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						if (colorValue !="null" && colorValue !=null && colorValue.length != 0 && soldOutFlag == false){
 							validatedCount ++;
 						}
-						if (!jQuery(targetPage+'#inseamDetails').hasClass('errorHide') && inseamValue != null){
-							if (hemValue !="null" && hemValue.length != 0){
-								validatedCount ++;
+						if (hemValue == "Unfinished" && hemValue.length != 0){
+							validatedCount ++;
+						}else{
+							if (!jQuery(targetPage+'#inseamDetails').hasClass('errorHide') && inseamValue != null){
+								if (hemValue !="null" && hemValue.length != 0){
+									validatedCount ++;
+								}
+								if (inseamValue !="null" && inseamValue.length != 0){
+									validatedCount ++;
+								}
 							}
-							if (inseamValue !="null" && inseamValue.length != 0){
-								validatedCount ++;
-							}
-						}		
+						}
 						//alert('inputsCount='+inputsCount+' validatedCount='+validatedCount);
 						if(inputsCount == validatedCount){								
 							// IE might throw an error calling preventDefault(), so use a try/catch block.
@@ -2133,6 +2123,19 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			jQuery(targetPage+"#tabs").tabs();
 		
 		}
+		updateInseam = function(){
+			var radioButton = jQuery(targetPage+'input:radio[name=cut]:checked');
+			var cutID = jQuery(radioButton).attr('id');			
+			var cutNumber = cutID.replace('cut','');
+			var inseamId = 'inseamFlag_'+cutNumber;
+			var inseamFlag = jQuery(targetPage+'input[name='+inseamId+']').val();				
+			if (inseamFlag == 'true'){
+				jQuery('#inseamDetails').removeClass('errorHide');
+			}else if(inseamFlag == 'false'){				
+				jQuery('#inseamDetails').addClass('errorHide');
+			}
+		}
+			
 		zoomFullScreen = function(){
 			// full screen zoom		
 			jQuery(targetPage+'.zoomFullScreenAlt').click(function (event){	
@@ -2153,8 +2156,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						jQuery('#fbBoxLiner').append(exitButton);
 						jQuery('.optionalExitControls').live('click', function(){
 							jQuery('#fbClose').trigger('click');
-						});		
-						
+						});							
 					}
 					fb.DOMReady( displatExitButton );
 				}
@@ -2177,8 +2179,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						jQuery('#fbBoxLiner').append(exitButton);
 						jQuery('.optionalExitControls').live('click', function(){
 							jQuery('#fbClose').trigger('click');
-						});		
-						
+						});						
 					}
 					fb.DOMReady( displatExitButton );
 				}
@@ -2227,6 +2228,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}*/
 		
 		updateItemNumber = function() {
+			getInformationFlag = true;
 			var selectInput = jQuery(targetPage+'input:radio[name=cut]:checked');				
 			var itemTitle = jQuery(targetPage+'.itemNumber span');
 			var itemNumber = jQuery(targetPage+'.itemNumber .number');
@@ -2235,13 +2237,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			itemTitle.html(itemDataTitle + ' Item #: ');
 			itemNumber.html(itemDataNumber);
 			var mode = jQuery("#mode").val();			
-			if (mode !== 'edit' || styleChangedFlag) {
-				// Reset the styleChangedFlag back to false, to stop update control panel call.
-				styleChangedFlag = false;
-				// update control panel
-				updateContolPanel(); //BUG01940 : For Editing product page, This call unnecessarily triggers getcolors and getsizes again and again. So commented out.				
-			}
-			
+			updateContolPanel();			
 		}
 		
 		function typeOf(o){
@@ -2265,7 +2261,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			var sizeText = jQuery(targetPage+'#size :selected').text();
 			var colorValue = jQuery(targetPage+'#color').val();
 			var colorText = jQuery(targetPage+'#color :selected').text();
-			var soldOutFlag = false;	
+			var soldOutFlag = false;
 			if (jQuery('#dossier').hasClass('WISHLIST')){
 				addToWishList = true;
 			}			
@@ -2318,7 +2314,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		getColorsPage = function(){				
 			if (PPL && editMode){
 				var ensemble_id = itemForEditValues.item.ensid;
-				var product_id = itemForEditValues.item.productid;
+				if (!setPDPRadioButtons){
+					var product_id = itemForEditValues.item.productid;
+					setPDPRadioButtons = true; //used to only set the defaut radio button state
+				}else{
+					if(eob){
+						var product_id = jQuery(targetPage+"input[name=cut]:checked").val() || "-1";
+					}else{
+						var product_id = jQuery(targetPage+'input[name=productId]').val() || "-1";
+					}
+				}				
 				if (jQuery(targetPage+'input[name=selectedSizeId]').val() !="-1" && jQuery(targetPage+'input[name=selectedSizeId]').val() !="null" && jQuery(targetPage+'input[name=selectedSizeId]').val() !=""){
 					var selectedSizeId = jQuery(targetPage+'input[name=selectedSizeId]').val();
 				}else{
@@ -2491,7 +2496,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}					
 				// swatches non-clearance
 				var imageSwatchCount = 0;
-				if(typeOf(data.swatchImages[0]) != 'undefined'){
+				if(typeOf(data.swatchImages[0]) != 'undefined'){					
 					var swatches = '';
 					if (data.swatchImages[0].value.length > 0) {
 						var swatchImagesDB = data.swatchImages[0].value[0].value;
@@ -2501,7 +2506,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							var imageURL = this.value;
 							var imageLargeURL = mainImagesDB[key].zoomableSrc;
 							var swatchImageURL = mainImagesDB[key].value;
-							// check to see if color is not soldout
+							// check to see if color is not soldout							
 							var selectedKey = key +1;
 							var colorValue = jQuery(targetPage+'#color option:eq('+ selectedKey +')').text();						
 							if ( colorValue.indexOf("Sold Out") != -1 ){
@@ -2522,7 +2527,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					 	var pricesCurDB = data.swatchImages[0].value[0].key;
 					 	var pricesCurDBValue = pricesCurDB.replace("$","");
 					 	if (parseFloat(pricesRegDBValue) > parseFloat(pricesCurDBValue)){
-							jQuery(targetPage+'.productPrice').html("<span class='strikethrough'>"+pricesRegDB + "</span> - <span class='salePrice'>$" + pricesCurDB + "</span>");
+							jQuery(targetPage+'.productPrice').html("<span class='strikethrough'>"+pricesRegDB + "</span>  <span class='salePrice'>$" + pricesCurDB + "</span>");
 						}else{
 							if (pricesCurDB >0){
 								jQuery(targetPage+'.productPrice').html("$"+pricesCurDB);
@@ -2569,7 +2574,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						 	var pricesRegDB = data.swatchImages[1].value[0].regPrice;
 						 	var pricesCurDB = data.swatchImages[1].value[0].key;
 						 	jQuery(targetPage+'.productPrice').html(pricesRegDB);
-						 	jQuery(targetPage+'.swatchesClearancePrice').html("<span class='strikethrough'>"+pricesRegDB + "</span> - <span class='clearancePrice'>$" + pricesCurDB+"</span>");
+						 	jQuery(targetPage+'.swatchesClearancePrice').html("<span class='strikethrough'>"+pricesRegDB + "</span>  <span class='clearancePrice'>$" + pricesCurDB+"</span>");
 					 }
 				}				
 				
@@ -2602,7 +2607,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		getSizesPage = function(){				
 			if (PPL && editMode){
 				var ensemble_id = itemForEditValues.item.ensid;
-				var product_id = itemForEditValues.item.productid;
+				if (!setPDPRadioButtons){
+					var product_id = itemForEditValues.item.productid;
+					setPDPRadioButtons = true; //used to only set the defaut radio button state
+				}else{
+					if(eob){
+						var product_id = jQuery(targetPage+"input[name=cut]:checked").val() || "-1";
+					}else{
+						var product_id = jQuery(targetPage+'input[name=productId]').val() || "-1";
+					}
+				}		
 				if (jQuery(targetPage+'input[name=selectedSizeId]').val() !="-1" && jQuery(targetPage+'input[name=selectedSizeId]').val() !="null" && jQuery(targetPage+'input[name=selectedSizeId]').val() !=""){
 					var selectedSizeId = jQuery(targetPage+'input[name=selectedSizeId]').val();
 				}else{
@@ -2860,8 +2874,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					}
 					var radioButtonId = targetPage+'input:radio[name=cut]:eq('+key+')';		
 					jQuery(radioButtonId).parent().parent().find(".sizeWrap .priceWrap").html(price);	
-
-					
 				});		
 				
 			}
@@ -2952,20 +2964,31 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				var maxCuffLengthDB = data.maxCuffLength;
 				var sizesOptions = '<option value="default" selected="selected">Select Inseam Length</option>';
 				jQuery(targetPage+'#inSeamLength').val(sizesOptions);
-				var selectedHemStyleDB = jQuery(targetPage+'#hemStyle').val() || jQuery(targetPage+'input[name=selectedHemStyle]').val() || "-1";
-				var selectedInseamLengthDB = jQuery(targetPage+'#inSeamLength').val() || jQuery(targetPage+'input[name=selectedInseamLength]').val() || "-1";	
+				var selectedHemStyleDB = jQuery(targetPage+'input[name=selectedHemStyle]').val();
+				var selectedInseamLengthDB = jQuery(targetPage+'input[name=selectedInseamLength]').val();	
 				var arrayStart = 0;
 				var arrayEnd = 0;				
 				if (selectedHemStyleDB == "Cuffed"){
 					arrayStart = minCuffLengthDB;
-					arrayEnd = maxCuffLengthDB;					
+					arrayEnd = maxCuffLengthDB;		
+					jQuery(targetPage+'#hemStyle').val(selectedHemStyleDB);
+					jQuery(targetPage+'#inSeamLength').removeAttr("disabled"); 
 				}else if (selectedHemStyleDB == "Plain"){
 					arrayStart = minPlainLengthDB;
-					arrayEnd = maxPlainLengthDB;					
+					arrayEnd = maxPlainLengthDB;
+					jQuery(targetPage+'#hemStyle').val(selectedHemStyleDB);
+					jQuery(targetPage+'#inSeamLength').removeAttr("disabled"); 
 				}else{
 					jQuery(targetPage+'#inSeamLength').html(sizesOptions);
 					jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");
 					jQuery(targetPage+'input[name=selectedInseamLength]').val("");
+				}				
+				if (minPlainLengthDB >0 && minCuffLengthDB ==0 || minPlainLengthDB >0 && minCuffLengthDB == "" || minPlainLengthDB >0 && minCuffLengthDB == undefined){
+					jQuery(targetPage+'#hemStyle').html('<option value="default">Select Hem Style</option><option value="Plain">Without Cuffs</option><option value="Unfinished">Unfinished</option>');
+					jQuery(targetPage+'#hemStyle').val(selectedHemStyleDB);
+				}else{
+					jQuery(targetPage+'#hemStyle').html('<option value="default">Select Hem Style</option><option value="Cuffed">With Cuffs</option><option value="Plain">Without Cuffs</option><option value="Unfinished">Unfinished</option>');
+					jQuery(targetPage+'#hemStyle').val(selectedHemStyleDB);
 				}
 				
 				if (arrayStart !=0){
@@ -3021,13 +3044,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			jQuery(swatchID).addClass('hot');				
 		}
 		
-		updateContolPanel = function(){
-			//alert("updateContolPanel");
+		updateContolPanel = function(){	
+			//alert("getInformationFlag="+getInformationFlag);
+			if (getInformationFlag){
 				//AJAX Color inofo
-				getColorsPage();
-				
+				getColorsPage();				
 				//AJAX Size Info				
-				getSizesPage();					
+				getSizesPage();	
+				getInformationFlag = false;
+			}
 		}
 		
 		validateSelections = function(type){
@@ -3048,22 +3073,26 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				errorTipHide(targetPage+'#size');
 				validFlag =  true;
 			}
-			
-			if (inseamValue != null && !jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
-				if (hemValue != null && hemValue.length != 0 || hemValue !="default" && hemValue.length != 0){						
-					errorTipHide(targetPage+'#hemStyle');
-					jQuery(targetPage+'#inSeamLength').removeAttr("disabled"); 
-					validFlag =  true;
-				}
-				if (hemValue != null && hemValue.length != 0 || hemValue !="default" && hemValue.length != 0){
-					//jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");
-				}else{
+			if (hemValue == "Unfinished" && hemValue.length != 0 ){
+				jQuery(targetPage+'.selectInSeamLength').hide();
+				validFlag =  true;
+			}else{
+				jQuery(targetPage+'.selectInSeamLength').show();
+				if (inseamValue != null && !jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
+					if (hemValue != null && hemValue.length != 0 || hemValue !="default" && hemValue.length != 0){						
+						errorTipHide(targetPage+'#hemStyle');
+						jQuery(targetPage+'#inSeamLength').removeAttr("disabled"); 
+						validFlag =  true;
+					}
+					if (hemValue != null && hemValue.length != 0 || hemValue !="default" && hemValue.length != 0){
+						//jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");
+					}
 					if (inseamValue != null && inseamValue.length != 0 || inseamValue !="default" && inseamValue.length != 0){							
 						errorTipHide(targetPage+'#inSeamLength');
 						validFlag =  true;
-					}
+					}					
 				}
-			}			
+			}
 			
 			if(typeValue == 'addtobag' || typeValue=='addtowishlist'){
 				if (colorValue =="null" && colorValue.length != 0){
@@ -3075,18 +3104,24 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					validFlag = false;
 				}
 				
-				if (!jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
-					if (hemValue =="null" && hemValue.length != 0 || hemValue =="default" && hemValue.length != 0){
-						errorTipShow(targetPage+'#hemStyle','Please select a hem style');
-						jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");					
-						validFlag = false;
-					}
-					if (hemValue =="null" && hemValue.length != 0 || hemValue =="default" && hemValue.length != 0){
-						//jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");
-					}else{
-						if (inseamValue =="null" && inseamValue.length != 0 || inseamValue =="default" && inseamValue.length != 0){
-							errorTipShow(targetPage+'#inSeamLength','Please select a inseam length');
+				if (hemValue == "Unfinished" && hemValue.length != 0 ){
+					jQuery(targetPage+'.selectInSeamLength').hide();
+					validFlag =  true;
+				}else{
+					jQuery(targetPage+'.selectInSeamLength').show();
+					if (!jQuery(targetPage+'#inseamDetails').hasClass('errorHide')){
+						if (hemValue =="null" && hemValue.length != 0 || hemValue =="default" && hemValue.length != 0){
+							errorTipShow(targetPage+'#hemStyle','Please select a hem style');
+							jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");					
 							validFlag = false;
+						}
+						if (hemValue =="null" && hemValue.length != 0 || hemValue =="default" && hemValue.length != 0){
+							//jQuery(targetPage+'#inSeamLength').attr("disabled", "disabled");
+						}else{
+							if (inseamValue =="null" && inseamValue.length != 0 || inseamValue =="default" && inseamValue.length != 0){
+								errorTipShow(targetPage+'#inSeamLength','Please select a inseam length');
+								validFlag = false;
+							}
 						}
 					}
 				}
@@ -3182,14 +3217,13 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			if (swatchImageSrc){
 				//add loading class				
 				jQuery(targetPage+'.imageStatus').removeClass('loaded').addClass('loading');								
-				var zoomImage = swatchImageSrc;				
-				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?wid=3000";
-				// make sure MagicZoomPlus is refreshed to see updates
-				// set magic zoom attributes and show/hide zoomable here
+				var zoomImage = swatchImageSrc;	
+				zoomImage = zoomImage.replace("&op_sharpen=0","&op_sharpen=1");
+				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?&wid=3000&op_sharpen=1";
+				// set magic zoom attributes and show/hide zoomable here				
 				MagicZoomPlus.update('itemZoom', zoomImageLarge, zoomImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');							
 				jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
-				loadImageTransitionFlag = false;	
-				
+				loadImageTransitionFlag = false;					
 			}				
 		}
 		zoomImageCheck = function(obj, type){	
@@ -3228,12 +3262,13 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}
 		resetProductPage = function(){	
 			// reset any vars here
-            jQuery(targetPage+'input[name=selectedSizeId]').val("");
-            jQuery(targetPage+'input[name=selectedColorId]').val("");   
-            jQuery(targetPage+'#monogramCheck').attr('checked', false);
-            jQuery(targetPage+'#giftboxCheck').attr('checked', false);
-            jQuery(targetPage+'input[name=cut]:first').attr('checked', true);
-            
+			if(!initProductModuleFlag){
+	            jQuery(targetPage+'input[name=selectedSizeId]').val("");
+	            jQuery(targetPage+'input[name=selectedColorId]').val("");   
+	            jQuery(targetPage+'#monogramCheck').attr('checked', false);
+	            jQuery(targetPage+'#giftboxCheck').attr('checked', false);
+	            jQuery(targetPage+'input[name=cut]:first').attr('checked', true);
+			}
             
             // private        
             o = options || {};      
@@ -3461,19 +3496,19 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			
 		}
 		checkImageZoomable = function(){
-			
 			if (jQuery('#dossier').hasClass('PP') || jQuery('#dossier').hasClass('PPL')){
 				var defaultImageUrlDB = jQuery(targetPage+'#itemZoom').attr('href');
 				if (defaultImageUrlDB != undefined){// no images
 					if (PPL){				
-						var mainProductImage = defaultImageUrlDB.replace('&wid=400&hei=496','&wid=332&hei=412');
-						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000');				
+						var mainProductImage = defaultImageUrlDB.replace('&wid=400&hei=496','&wid=332&hei=412&op_sharpen=1');
+						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');				
 					}else{				
 						var mainProductImage = defaultImageUrlDB;
-						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000');				
+						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');				
 					}
 					jQuery(targetPage+'#itemZoom').attr('href',mainProductImageZoom);
-					//set main image			
+					//set main image with sharpened img	
+					mainProductImage = mainProductImage.replace("&op_sharpen=0","&op_sharpen=1");
 					MagicZoomPlus.update('itemZoom', mainProductImageZoom, mainProductImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');					
 					jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
 					
@@ -3537,14 +3572,23 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				// Set radio cut type button
 				if(cutType !=""){	
 					var radioButton = "input:radio[value="+productId+"]";
-					jQuery(radioButton).attr('checked',true);					
+					jQuery(radioButton).attr('checked',true);	
+					//check for and update inseam info
+					var cutID = jQuery(radioButton).attr('id');
+					var cutNumber = cutID.replace('cut_','');
+					var inseamFlag = jQuery('#inseamFlag_'+cutNumber).attr('value');
+					if (inseamFlag == "Y"){
+						jQuery('#inseamDetails').removeClass('errorHide');
+					}else{
+						jQuery('#inseamDetails').addClass('errorHide');
+					}
 				}	
 				if (quantity !=""){
 					jQuery('#quantity').val(quantity);
 				}
 				
 				zoomImageCheckPP = function(){			
-					var imageSrc = jQuery('.mainImage img').attr('src');		
+					var imageSrc = jQuery('.mainImage img').attr('src');
 					if (imageSrc != "" && imageSrc != undefined){
 						var zoomMessage = '<div class="Zoomable"><span class="icon zoomMessage"></span><span class="text">Roll over image to zoom in</span><a href="javascript:void(0);" class="zoomFullScreenAlt"><span class="icon imageMessage"></span><span class="text largerClick">Click for larger image</span></a></div>';
 						//check to see if image zoomable
@@ -3564,19 +3608,20 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					}
 				}
 				
-				// Set main image
-				if(defaultImageUrl !=""){		
+				// Set main image check for defaultImageUrl not null
+				if(defaultImageUrl !== "" && defaultImageUrl !== undefined ){		
 					jQuery('.imageStatus').removeClass('loaded').addClass('loading');		
 					var mainImageObj = jQuery('#itemZoom img');	
 					var mainImageSrc = mainImageObj.attr('src',defaultImageUrl);
 					var swatchImage = jQuery('#swatches #swatch'+colorid+' img');			
-					var mainImageSrcLarge = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000');	
+					var mainImageSrcLarge = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');	
 					jQuery('#itemZoom').attr('href',mainImageSrcLarge);
 					MagicZoomPlus.update('itemZoom', mainImageSrcLarge, mainImageSrc, 'disable-expand:true; show-title:false; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');
 					zoomImageCheckPP();
 					jQuery('.imageStatus').removeClass('loading').addClass('loaded');		
 				}
-				MagicScroll.init();
+				MagicZoomPlus.refresh();
+				MagicScroll.init();				
 			}else if (eob){				
 				getColorsPage();
 				getSizesPage();
@@ -3586,7 +3631,19 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		};	
 		wishListCheck = function(){
 			
-		}		
+		}
+		setBreadCrumbVariable = function() {
+			var $totalAnchors = jQuery('#breadcrumb a').length;
+			switch ($totalAnchors) {
+				case 4:
+					var crumbVar = jQuery('#breadcrumb a.breadcrumbLevel_3').attr('href');
+					break;
+				case 3:
+					var crumbVar = jQuery('#breadcrumb a.breadcrumbLevel_2').attr('href');
+					break;
+			}
+			return crumbVar;
+		}
 		setDefaultFontColor = function () {
 			jQuery('.infoModule .content p.overview font').css({
 				color: '#333333'
@@ -3610,7 +3667,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 if (YAHOO.ebauer.productUtils.buyAnotherMode === true) {
                     piValue = 'T429P' + pid;
                 } else {
-                    piValue = document.forms.productForm.pathInfo.value;
+                	piValue = document.forms.productForm.pathInfo.value;
                 }
             }
 
@@ -3648,9 +3705,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
         }
 		
 		// init section
-		init = function(){
-			
-			setCoreMetricsProductData();
+		init = function(){			
+			//setCoreMetricsProductData();
 			
             if (!initProductModuleFlag){
                 getProductPageHash();
@@ -3667,12 +3723,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 eobCheck();
                 wishListCheck();        
                 setDefaultFontColor();
+                setBreadCrumbVariable();
                 setTipToolStyle();
+                updateInseamLength();
+              //  MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
+                assignEventHandlers();
                 if(!soldOut){
                       imageThumbScroll();
                 }              
@@ -3684,7 +3744,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 eobCheck();
                 wishListCheck();        
                 setDefaultFontColor();
-                setTipToolStyle();
+                setBreadCrumbVariable();
+                setTipToolStyle(); 
+                updateInseamLength();
+               // MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
           }
@@ -3695,16 +3758,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	};	
 		
 })(jQuery);
-
-
-
-
-
-
-
-
-
-
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the productModule.js(220) ~~~~~~~~~~~~~~~~~~~~ */
 
@@ -6718,7 +6771,7 @@ YAHOO.ebauer.productUtils = function () {
                 if (YAHOO.ebauer.productUtils.isGiftBoxSelected) {
                     setGiftboxValues(productForm); //set the gift box globals
                 }
-
+                
                 if (YAHOO.ebauer.productUtils.editProductMode) {
 
                     var submitBtn = $("addToCart");
@@ -6761,7 +6814,7 @@ YAHOO.ebauer.productUtils = function () {
         performProductEdits: function (isWishListItem) {
             if (YAHOO.ebauer.bagUtils) {
                 try {
-                    if (gProductVariantId) {
+                    if (gProductVariantId || (YAHOO.ebauer.productUtils.editProductMode && YAHOO.ebauer.productUtils.passedItemUUID != undefined) || buyAnotherItemFlag === true) {
                         if (isWishListItem == true) {
                             prepareWishListItemForm(YAHOO.ebauer.productUtils.isEOBProduct);
                         } else {
@@ -6887,7 +6940,7 @@ YAHOO.ebauer.productUtils = function () {
         buyAnotherItem: function (passedUUID, passedCategoryId, imgName, imgTypeCode, isWishListItem) {
             // reset the flags to prevent buying another monogram or giftbox
             //flags specific to color and size drop downs
-
+        	
             YAHOO.ebauer.productUtils.resetFlags();
             editedItemUUID = null; //clears the global in case edit was attempted before buy another
             editedItemUserItemId = null;
@@ -6904,7 +6957,7 @@ YAHOO.ebauer.productUtils = function () {
             } else {
                 buyAnotherItemFlag = true;
             }
-
+            
             var cObj = YAHOO.ebauer.utilities.asyncRequest('GET', getBaseURL() + '/ajax/loadItemDetailsForEdit.jsp?' + key + passedUUID + '&imageName=' + imgName + '&imageTypeCode=' + imgTypeCode, callbackLoadBuyAnotherItemForEdit);
         },
         loadStandalone: function (basic) {
@@ -7017,10 +7070,15 @@ YAHOO.ebauer.productUtils = function () {
         },
 
         getTabs: function() {
+        	var initProductModuleFlag = false;
+        	var styleChangedFlag = false;
         	jQuery.fn.ProductModule();
+         	MagicZoomPlus.refresh();
+        	jQuery('.infoModule .content .tabs').tabs();
         },
         
         getInfoTabs: function() {
+        	alert('getInfoTabs');
         	jQuery('.infoModule .content .tabs').tabs();
         	jQuery('#fbBox #fbClose').css({
         		marginRight: '-5px',
@@ -7490,7 +7548,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 			ddElement = createDOM('dd', null);
 			column1.appendChild(ddElement);
 			gUUID = item.uuid;
-			/*
+			
 			if (!soldOutFlag) {
 				var aElement = createDOM('a', {'href':'javascript:YAHOO.ebauer.productUtils.buyAnotherItem(\"' + item.uuid + '\",null,\"'+ item.imageName +'\",\"' + item.imageTypeCode + '\", false);','title':'Buy Another','id':'buyAnother'});
 				aElement.appendChild(document.createTextNode('Buy Another'));
@@ -7523,7 +7581,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 			}
 
 			addAnchorElement('javascript:removeConfirmation(\"' + item.uuid + '\",true)', 'Remove', ddElement);
-			*/
+			
 			dialogSlat = createDOM('div', {'class':'dialog-slat'});
 			matte.appendChild(dialogSlat);
 			var invMessage = createDOM('div', {'class':'invMessage'});
@@ -7543,8 +7601,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 	//BUG0099: Add back button on layer only for product page.
     
     //if (YAHOO.ebauer.productUtils.productPageMode) {
-	    //console.log('YAHOO.ebauer.productUtils.productPageMode');
-    	if (buyAnotherItemFlag == false || buyAnotherItemFlag == undefined) {
+	    if (buyAnotherItemFlag == false || buyAnotherItemFlag == undefined) {
 	        var categoryName = "Previous Page";
 	        if (gBackToCat != undefined && gBackToCat != ''){
 	            categoryName = gBackToCat;
@@ -7553,7 +7610,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 	        fieldSet.appendChild(tag);
 	        if (gBackToCat == undefined || gBackToCat == "undefined")
 	            gBackToCat = document.title;
-	        fieldSet.innerHTML = "<input type='button' class='button ui-button ui-widget ui-state-default ui-corner-all' value='Back to: " + suppressHtmlTag(gBackToCat) + "' id='goBackFromAdded'>";
+	        fieldSet.innerHTML = "<input type='button' class='button ui-button ui-widget ui-state-default ui-corner-all' value='Back to: " + suppressHtmlTag(gBackToCat) + "' id='goBackFromAdded' onclick='goBackToCat()'>";
 	        fieldSet.appendChild(tag);
 	       }
     //}
@@ -7633,6 +7690,11 @@ function resetPageVars()
 	giftBoxFrom = "";
 	giftBoxTo = "";
 	giftBoxMsg = "";
+}
+function goBackToCat() {
+	var breadcrumbPath = parent.setBreadCrumbVariable();
+	var pathName = breadcrumbPath.substr(breadcrumbPath.indexOf("m") + 1);
+	window.location.href = pathName;
 }
 
 function showNextPage(e) {

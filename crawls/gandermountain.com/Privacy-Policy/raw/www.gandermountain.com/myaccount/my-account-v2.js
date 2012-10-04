@@ -1,3 +1,37 @@
+function hideNotifyBoxes() {
+	jQuery("#edit-email-notify").hide();
+	jQuery("#edit-name-notify").hide();
+	jQuery("#edit-password-notify").hide();
+	jQuery("#edit-address-notify").hide();
+	jQuery("#add-edit-payment-method-notify").hide();
+	jQuery("#add-address-notify").hide();
+	jQuery("#add-billing-notify").hide();
+}
+
+function renewMySession() {
+	var secureFlag=getCookie("CSITO-S");
+	var date=new Date();
+	var next_exp=0;
+	
+	if(secureFlag){
+	date.setTime(date.getTime()+(10*60*1000));
+	next_exp = Math.round(date.getTime()/1000.0);
+	setCookie("CSITO-S",next_exp,0,domain,0,10,"","");
+	
+	date.setTime(date.getTime()+(30*60*1000));
+	next_exp = Math.round(date.getTime()/1000.0);
+	setCookie("CSITO",next_exp,0,domain,0,30,"","");
+	
+	}else{
+	date.setTime(date.getTime()+(30*60*1000));
+	next_exp = Math.round(date.getTime()/1000.0);
+	setCookie("CSITO",next_exp,0,domain,0,30,"","");
+	}
+	window.idle_popup=false; //reset to popup inactive
+	
+	return true;
+}
+
 jQuery(function(){
 
 // !Extend jQuery to Include Delay Function
@@ -17,7 +51,7 @@ jQuery.fn.extend({
 
 // !jQuery Document OnLoad Functions
 jQuery('document').ready(function(){
-		
+		// !STARTUP FUNCTIONS
 		// !Establish Customer Name, Status & Change Header Greeting
 		var is_customer = getCookie("custFirstName"), logged_in = getCookie("CSITO");
 		if(is_customer){
@@ -25,51 +59,56 @@ jQuery('document').ready(function(){
 			s.prop10 = "Logged In";
 			s.eVar14 = "Logged In";
 		}else{
-			s.prop10 = "Not Logged In";			
-			s.eVar14 = "Not Logged In";			
+			s.prop10 = "Not Logged In";
+			s.eVar14 = "Not Logged In";
 		}
 		
-		// Check Idle Timeout Cookie Every 2 Seconds
+		// Check Idle Timeout Cookie Every 5 Seconds
 		window.idle_popup=false;
-		var check_timeout = window.setInterval(function(){
-		
+		var invlID = window.setInterval(function(){
 			if( (getCookie("CSITO")) || (getCookie("CSITO-S")) )
 			{
-				window.use_secure = jQuery("body").attr("id");
-				window.current_time = Math.round(new Date().getTime()/1000.0);
-		
-				if(window.use_secure == "use_secure"){
-					window.expire_time = getCookie("CSITO-S");
+				var usec = jQuery("body").attr("id");
+				var curr_time = Math.round(new Date().getTime()/1000.0);
+				var exp_time=0; var time_gap=0;
+				
+				if(usec == "use_secure"){
+					exp_time = getCookie("CSITO-S");
 				}else{
-					window.expire_time = getCookie("CSITO");
+					exp_time = getCookie("CSITO");
 				}
 				
-				if(window.expire_time)
-					window.time_interval = window.expire_time - window.current_time;
+				if(exp_time)
+					time_gap = exp_time - curr_time;
 				else
-					window.time_interval = 0;
-						
-				if(window.expire_time) {
+					time_gap=0;
+				
+				if(exp_time) {
 					/* Alert User to Idleness */
-					if(window.time_interval<=130){
+					if(time_gap<=130){
 						if(window.idle_popup==false){
-						jQuery("#idle-alert-popup-link").fancybox({'autoDimensions':false,'showCloseButton':false,'height':'220'});
+						jQuery("#idle-alert-popup-link").fancybox({'autoDimensions':false,'showCloseButton':false,'height':'230'});
 						jQuery("#idle-alert-popup-link").trigger('click');
 						window.idle_popup=true;
 						}
 					}
 					
 					/* Destroy Session & Log Out */
-					if((window.time_interval<=10) && (window.idle_popup==true)){
-						window.time_interval = window.expire_time - window.current_time;
+					if((time_gap<=10) && (window.idle_popup==true)){
+						time_gap = exp_time - curr_time;
 						jQuery("#session-timeout-form").submit();
-						jQuery.fancybox.close;
+						jQuery.fancybox.close();
 					}
 				}
+			} else {
+				window.clearInterval(invlID);
 			}
-		},2000)
+		},5000);
 		
-		// !STARTUP FUNCTIONS
+		// !Session Renewal Code
+		jQuery('#renew-session-link').click(function(e){
+			e.preventDefault(); renewMySession(); jQuery.fancybox.close();
+		});
 		
 		// Show Appropriate Header Information
 		if(logged_in){
@@ -101,12 +140,16 @@ jQuery('document').ready(function(){
 				jQuery('#register-password').keyup(function(){
 					var entered_password = jQuery('#register-password').val();
 					var proper_length = false;
+					var mya_val_chars = true;
 					var proper_groups = 0;
 					
 					/* !Does Match 8 Characters? */
 					if(entered_password.length > 7){
 						proper_length = true;
 					}
+					
+					if(entered_password.match(/([^A-Za-z\d\!\@\#\$\%\^\&\*_\-\+\?\.]+)/))
+						mya_val_chars=false;
 					
 					/* !Contains an Uppercase Character */
 					if ( entered_password.match(/[A-Z]/) ) {
@@ -124,16 +167,15 @@ jQuery('document').ready(function(){
 					}
 					
 					/* !Contains a Symbol */
-					if ( entered_password.match(/([\!\@\#\$\%\^\&\*_\-]+)/) )  {
+					if ( entered_password.match(/([\!\@\#\$\%\^\&\*_\-\+\?\.]+)/) ) {
 						proper_groups++;
 					}
 					
-					if(proper_length && proper_groups > 2){
+					if(proper_length && mya_val_chars && proper_groups > 2) {
 						jQuery('.password-text').css('color','#00573c');
 					}else{
 						jQuery('.password-text').css('color','#c63c24');
 					}
-					
 				})
 
 				// !Register Submit Function
@@ -158,8 +200,8 @@ jQuery('document').ready(function(){
 						var from_checkout = jQuery("#register-form-form input[name='from_checkout']").val();
 						var join_email = jQuery("#join_email:checked").val();
 						var non_us_can = (typeof jQuery("#international:checked").val() === 'undefined')?'':jQuery("#international:checked").val();
-						var formData = 'r=registerAccount&firstname='+firstname+'&lastname='+lastname+'&email='+email+'&confirm_email='+confirm_email+'&password='+escape(password)+'&confirm_password='+escape(confirm_password)+'&zip_code='+zip_code+'&question_1='+question_1+'&question_2='+question_2+'&answer_1='+answer_1+'&answer_2='+answer_2+'&join_email='+join_email+'&non_us_can='+non_us_can;
-						var loginData = 'r=logInXMLService&email='+email+'&password='+escape(password);
+						var formData = 'r=registerAccount&firstname='+firstname+'&lastname='+lastname+'&email='+email+'&confirm_email='+confirm_email+'&password='+encodeURIComponent(password)+'&confirm_password='+encodeURIComponent(confirm_password)+'&zip_code='+zip_code+'&question_1='+question_1+'&question_2='+question_2+'&answer_1='+answer_1+'&answer_2='+answer_2+'&join_email='+join_email+'&non_us_can='+non_us_can;
+						var loginData = 'r=logInXMLService&email='+email+'&password='+encodeURIComponent(password);
 						jQuery.ajax({
 							type: "POST",
 							url: window.cgi_account_url,
@@ -227,28 +269,6 @@ jQuery('document').ready(function(){
 		if(jQuery('#login-form-form'))
 			jQuery('#login-form-form').validationEngine('attach');
 		
-		// !Session Renewal Code
-		jQuery('#renew-session-link').click(function(){
-			var current_time = Math.round(new Date().getTime()/1000.0);
-			var secureFlag = getCookie("CSITO-S");
-			var date = new Date();
-			
-			if(secureFlag){
-				date.setTime(date.getTime()+(5*60*1000));
-				var cookie_value = Math.round(date.getTime()/1000.0);
-				setCookie("CSITO-S",cookie_value,0,domain,0,5,"","");
-				date.setTime(date.getTime()+(30*60*1000));
-				var cookie_value = date/1000;
-				setCookie("CSITO",cookie_value,0,domain,0,30,"","");
-			}else{
-				date.setTime(date.getTime()+(30*60*1000));
-				var cookie_value = Math.round(date.getTime()/1000.0);
-				setCookie("CSITO",cookie_value,0,domain,0,30,"","");
-			}
-			
-			jQuery.fancybox.close;
-		});
-		
 		if(is_customer){
 			jQuery('#greeting').css('display','block');
 		}else{
@@ -257,7 +277,7 @@ jQuery('document').ready(function(){
 		
 		// !Open Modal Box
 		jQuery('[rel^=modal]').live('click',function(e){
-			e.preventDefault();
+			e.preventDefault();renewMySession();
 			
 			var href = jQuery(this).attr('href');
 			if(href.indexOf("#")>0){
@@ -268,10 +288,37 @@ jQuery('document').ready(function(){
 			
 			if(id == "#add-address-form")
 				resetAddAddressForm();
+			else if(id == "#add-edit-payment-method") {
+				resetPaymentForm("add");
+			}
 			
 			var content = jQuery(id);
 			var c_width = jQuery(id).width();
 			var c_height = jQuery(id).height();
+			
+			var modal_setting = jQuery(id).attr("data-close-allowed");
+			
+			if(modal_setting==null)
+				modal_setting = false;
+			else if(modal_setting==false)
+				modal_setting = true;
+				
+			var scroll_setting = jQuery(id).attr("data-scrolling-allowed");
+			var before_load = '';
+			var after_load  = '';
+			
+			scroll_bool='auto';
+			
+			if(scroll_setting==false){
+				//with this set, parent window will not scroll with large vertical amounts of data on the fbox
+				before_load = function() {
+					jQuery("body").css({"overflow":"hidden"});
+				};
+				after_load = function() {
+					jQuery("body").css({"overflow":"visible"});
+				};
+				scroll_bool='no';
+			}
 			
 			//my account home - hide notification box
 			jQuery("#edit-email-notify").hide();
@@ -282,10 +329,13 @@ jQuery('document').ready(function(){
 			
 			jQuery.fancybox({
 				'autoSize'	: true,
-				'fitToView'			: false,
-				'type'				: 'inline',
-				'scrolling'			: 'auto',
-				'content'			: content
+				'fitToView'	: false,
+				'type'		: 'inline',
+				'scrolling'	: scroll_bool,
+				'content'	: content,
+				'modal'		: modal_setting,
+				'beforeLoad': before_load,
+				'afterClose': after_load
 			});
 		});
 		
@@ -352,22 +402,6 @@ jQuery('document').ready(function(){
 			jQuery('#my-account-dashboard').siblings().hide();
 			jQuery('#my-account-dashboard').show();
 		});
-		
-		// !Hash Navigation
-		jQuery(window).hashchange(function(e){
-			e.preventDefault()
-			if(location.hash!="#registerPopup"){
-				var panel_to_show = jQuery(location.hash);
-				panel_to_show.siblings('.panel').hide();
-				panel_to_show.show();
-				panel_to_show.find("div").show();
-				jQuery('#my-account-left-nav ul li > a[href="'+location.hash+'"]').parent('li').click();
-			}else{
-				jQuery("#hidden-register-link").trigger('click');
-			}
-			return false;
-		});
-		jQuery(window).hashchange();
 });
 });
 

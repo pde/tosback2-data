@@ -1,7 +1,8 @@
 /* SiteCatalyst code version: H.24.4
 Copyright 1996-2012 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
-/* Last Updated 2012-07-26
+/* Last Updated 2012-10-03
+2012-10-03 - Facebook tracking
 2012-07-26 - Go together codes
 2012-06-25 - update getQueryParam plugin to version 2.4, added TNT Integration plugin, add s.tnt do_plugins call
 */
@@ -80,7 +81,7 @@ function s_doPlugins(s)
 	if(!s.eVar64)
         	s.eVar64=s.getQueryParam('ebayid'); // Ebay traffic codes
 	if(!s.eVar25)
-        	s.eVar25=s.getQueryParam('GoToid'); // Go together codes
+        	s.eVar25=s.getQueryParam('GoToid,fb_ref'); // Go together codes
 
 	if(!s.campaign)
 		s.campaign=s.getQueryParam('affiliate_id,a_id,cjpub,atid,gcid,gtse');
@@ -340,7 +341,7 @@ function s_doPlugins(s)
 	if(!s.eVar33)
 		s.eVar33=s.getQueryParam('creative')
 	
-	s.prop28="H.24.4_20120726"	
+	s.prop28="H.24.4_20121003"	
 	s.prop31=s.c_r('currentCTC');
 	s.prop32=s.c_r('currentCVP');
 	

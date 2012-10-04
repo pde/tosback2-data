@@ -763,7 +763,7 @@ de.bild.env = {
  'sslbase' : 'https://ka-ssl.bild.de',
  'facebookAppId' : '78193590860'
 };
-/*de.bild.settings:22104336.39*/
+/*de.bild.settings:22104336.40*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -805,10 +805,9 @@ de.bild.settings = (function(){
                 //Community Center Home
                 'home' : '/ka/p/community',
 
-
                 // number of comments in ugc comment forms             
-                'getNumberOfComments' : '/ka/ugcelement/getNewComments/%UGCID%/',
-                'showNewComments' : '#url=;/ka/ugcelement/getNewComments/%UGCID%/%NUMNEW%;', 
+                'getNumberOfComments' : '/ka/ajax/ugcelement/getNewComments/%UGCID%/',
+                'showNewComments' : '#url=;/ka/ajax/ugcelement/getNewComments/%UGCID%/%NUMNEW%;', 
                 'getNewComments' : '#url=;/ka/p/ugcelement/getNewCommentsHTML/%UGCID%/%TIME%/%NUMBEROFCOMMENTS%;',    
                 
                 // upload urls
@@ -1001,7 +1000,7 @@ de.lib = (function($){
         }
     };
 }(jQuery));
-/*de.bild.utils:22104220.9*/
+/*de.bild.utils:22104220.15*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -1014,13 +1013,36 @@ de.bild = de.bild || {};
 * @dependencies ['jQuery','jQuery.cookie']
 */
 de.bild.utils = (function($){
-    var uA = navigator.userAgent.toLowerCase();
-  
+
+   var uA = navigator.userAgent.toLowerCase();
+    
+    // function isHome(){
+    //     // und nicht auf der Videobuehne
+    //     if ($('body#video').length > 0) {
+    //         return false;
+    //     } else if ($('#lvl2 > li:first-child').hasClass(lib.styles.current) ) {
+    //         return true;
+    //     }
+    //     return false;
+    // };
+    
+    // function isArticle(){
+    //     return ($('body').attr('id') === 'video') ? true : false;
+    // };
+    
+    // function isVideo(){
+    //     return ($('body').attr('id') === 'article') ? true : false;
+    // };
+
+
+    //
+
     /* check if window has loaded */ 
     var windowhasLoaded = false;
     $(window).load(function(){
         windowhasLoaded = true;
     });
+
     /* is local storage supported? */ 
     var supportsLocalStorage = function() {
       try {
@@ -1112,6 +1134,7 @@ de.bild.utils = (function($){
      * @private
      */
     function getTime(pattern){
+
         /*
             String patterns:
             getTime('$d.$m.$Y $h:$i Uhr') => 17.02.2012 13:30 Uhr
@@ -1119,13 +1142,17 @@ de.bild.utils = (function($){
             getTime('$D, $M $d, $Y @ $h:$i') => Freitag, Februar 17, 2012 @ 13:30
             getTime('Heute ist $D der $d $M. Das Jahr ist $Y.') => Heute ist Freitag der 17 Februar. Das Jahr ist 2012.
         */
+
         pattern = pattern || '';
+
         // if a pattern has been passed and we have at least something to change
         if (pattern !== '' && pattern.indexOf('$') !== -1) {
+
             var exp = /(\${1}[a-zA-Z]{1})/gi,
             dict = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
             d = new Date(),
             f = {
+
                 // day number with 0
                 '$d' : function(){
                     return (d.getDate() < 10) ? '0'+  d.getDate() : d.getDate()
@@ -1167,13 +1194,18 @@ de.bild.utils = (function($){
                     return d.getFullYear().toString().slice(2)
                 }
             };
+
             var formatted = pattern.replace(exp, function (t) {            
                 return f[t] ? f[t]() : '';
             });
+
             return formatted;
         }
+
         return pattern;
+
     };
+
     /**
      * jQuery Extension - Autogrow/shrink functionality for textareas
      * @param {Int} minHeight minimum shrink height of the textarea
@@ -1198,7 +1230,6 @@ de.bild.utils = (function($){
                 e.style.overflow = (e.scrollHeight > h ? 'auto' : 'hidden');
                 e.style.height = h + 'px';
                 e.valLength = vlen;
-            //e.boxWidth = ewidth;
             }
             return true;
         };
@@ -1221,6 +1252,7 @@ de.bild.utils = (function($){
         });
         return this;
     };
+
     /**
      * calculate the browser viewport
      * @function
@@ -1233,6 +1265,7 @@ de.bild.utils = (function($){
         var win = $(window),
             top = win.scrollTop(),
             left = win.scrollLeft();
+
         return {
             top: top,
             left: left,
@@ -1276,6 +1309,7 @@ de.bild.utils = (function($){
      * @name scrollTo
      * @memberOf de.bild.utils
      * @param {number} targetOffset y-position to where the window should scroll
+     * @param {bool} animate the scroll (true) or not (false)
      * @private
      */
     function scrollTo(ypos, anim){
@@ -1286,6 +1320,7 @@ de.bild.utils = (function($){
             $(window.opera ? 'html' : 'html, body').scrollTop(ypos);
         }
     }; 
+
     /**
     * ran - Zufallsgenerator - generiert eine Zufallszahl zwischen 0 und n. Standardwert = 101
     * @private
@@ -1311,6 +1346,7 @@ de.bild.utils = (function($){
             var cssLoaded = false,
             id = id || 'newStyleSheet' + ran(7001),
             $link = $('<link id="' + id + '" href="' + url + '" rel="stylesheet" type="text/css" media="all" />').appendTo('head');
+
             // has to work in IE and opera so we do it the long way
             $link.attr({
                 href : url,
@@ -1318,10 +1354,12 @@ de.bild.utils = (function($){
                 type : 'text/css',
                 media : 'all'
             });
+
             if ($('link#'+id).length) cssLoaded = true;
             
             return cssLoaded;
     };
+
     /**
      * remove double carriage returns and jquery trims string
      * @function
@@ -1346,6 +1384,7 @@ de.bild.utils = (function($){
         return '';      
     };
     
+
     return {
         'scrollTo' : function(ypos, anim){
             if (ypos) {
@@ -1385,6 +1424,7 @@ de.bild.utils = (function($){
             return uA.match(/android|blackberry|iphone|ipad|ipod|windowsce|windowsphoneos7/i) != null;
         }
     }
+
 }(jQuery));
 /*de.bild.utils:25424994.2*/
 
@@ -1884,7 +1924,8 @@ de.bild.httpFist = (function($){
     };
    
 }(jQuery));
-/*de.bild.sso:22104188.18*/
+/*de.bild.sso:22104188.19*/
+
 
 /**
 * de.bild.sso - main SSO functionality
@@ -1897,6 +1938,7 @@ de.bild.httpFist = (function($){
 * @dependencies ['de.bild.settings','jquery.bildLightbox.js', 'jQuery.cookie']
 */
 de.bild.sso = (function($){
+
     // cookie names
     var avKeepUsr = 'avKeepUsr',
     avComUsr = 'avComUsr',
@@ -1909,6 +1951,7 @@ de.bild.sso = (function($){
     
     //login iframe id for in-page login forms
     loginIframe = 'login_popup_accountsettings',
+
     // userinfo
     userInfo = null,
     
@@ -1920,7 +1963,7 @@ de.bild.sso = (function($){
     templates = {
         //'userStrap' : '<img alt="%NAME%" src="%SRC%">&nbsp;%NAME%&nbsp;▼',
         'userStrap' : '%NAME%&nbsp;▼',
-        'loggedout' : '<a href="#" id="comNewUser" onclick="de.bild.sso.register()">'+de.bild.settings.community.lang.register+'</a><span>|</span><a href="#" id="comLoginout" onclick="de.bild.sso.login({\'goHome\':false});return false;">' + de.bild.settings.community.lang.login + '</a>',
+        'loggedout' : '<a href="#" id="comNewUser" onclick="de.bild.sso.register()">'+de.bild.settings.community.lang.register+'</a><span>|</span><a href="#" id="comLoginout" onclick="de.bild.sso.login({\'goHome\':true});return false;">' + de.bild.settings.community.lang.login + '</a>',
         'loggedinNoData' : '<a href="#" onclick="de.bild.sso.logout()">' + de.bild.settings.community.lang.logout + '</a>',
         //'loggedin' : '<p class="%CLASS%" id="comUsername">' + de.bild.settings.community.lang.loggedInAs + ' <a href="%PROFILEURL%">%NAME%</a></p><span>|</span><a href="#" id="comLoginout" onclick="de.bild.sso.logout()">' + de.bild.settings.community.lang.logout + '</a>'
         'loggedin' : '<p class="%CLASS%" id="comUsername">' + de.bild.settings.community.lang.loggedInAs + ' <a href="'+de.bild.settings.community.urls.profilePage+'">%NAME%</a></p><span>|</span><a href="#" id="comLoginout" onclick="de.bild.sso.logout();return false;">' + de.bild.settings.community.lang.logout + '</a>'
@@ -1930,12 +1973,14 @@ de.bild.sso = (function($){
     // we need this to record whether the page (tab) thinks the user is logged in 
     // since someone might log in/out in another tab
     isUserBarOn = false,
+
     // cache DOM elements
     $body,
     $contentWrapper,
     // login container selector and elem var
     comloginSelector = '#comlogin',
     $comlogin,
+
     //15 Spalten
     _15_spalten = false,
     $comloginLoggedInList,
@@ -1943,6 +1988,8 @@ de.bild.sso = (function($){
     $comLoginLink,
     $comUsername,
     $comLogoutLink;
+
+
     /* UTILS
     ///////////////////////////       */
     /**
@@ -2015,7 +2062,6 @@ de.bild.sso = (function($){
     };
     /* checks if we should redirect!*/
     function getGoHome() {
-        
         if (redirectToCommunityHome === true) {
             close();
             if (window.location.href.indexOf(de.bild.settings.community.urls.home) !== 1) {
@@ -2051,24 +2097,32 @@ de.bild.sso = (function($){
      * @private
      */
     function setupEvents(){  
+
         if (_15_spalten === true) {
+
             $comNewUser.on('click', function(e){
                 e.preventDefault();
                 register();
             });
+
             $comLoginLink.on('click', function(e){
                 e.preventDefault();
-                login({'goHome':false});
+                login({'goHome':true});
             });
+
             $comLogoutLink.on('click', function(e){
                 e.preventDefault();
                 logout();
             });
+
+
         }
+
         de.lib.live($contentWrapper, 'a.login-lightbox, form.commentlogin input.btn-login', 'click', function(e){
             e.preventDefault();
             login();
         });
+
         de.lib.live($contentWrapper, 'a.com-fb-login, a.com-fb-login-button', 'click', function(e){
             e.preventDefault();
             var fbLoginWindow = window.open(de.bild.settings.community.urls.ssoFBLogin, 'fbLoginWindow', 'width='+lbWidth+',height='+lbHeight+',resizable=yes');
@@ -2078,6 +2132,7 @@ de.bild.sso = (function($){
             e.preventDefault();
             var fbLoginWindow = window.open(de.bild.settings.community.urls.ssoFBAdd, 'fbLoginWindow', 'width='+lbWidth+',height='+lbHeight+',resizable=yes');
         }); 
+
         de.lib.live($contentWrapper, 'a.com-register', 'click', function(e){
             e.preventDefault();
             register();
@@ -2140,6 +2195,7 @@ de.bild.sso = (function($){
             } 
         });
     };
+
     /* ACTIONS
     ///////////////////////////       */
      /**
@@ -2196,12 +2252,14 @@ de.bild.sso = (function($){
      */
     function renderUserBarLoggedIn(calledByServer) {
         var getCookieInfo = getUserInfo();
+
         if ($comlogin && $comlogin.length) {
             calledByServer = calledByServer || false;
             if (getCookieInfo) {
                 var userName = getCookieInfo.userName || de.bild.settings.community.lang.anonUser,
                 userPicSrc = getCookieInfo.profileImage || de.bild.settings.community.urls.anonProfileImage,
                 cssClass = isFbUser() ? 'fbConnect' : '';
+
                 if (_15_spalten === true) {
                     $comlogin.addClass('logged-in')
                     $comloginLoggedInList.show();
@@ -2210,6 +2268,7 @@ de.bild.sso = (function($){
                     var html = templates.loggedin.replace('%CLASS%',cssClass).replace('%NAME%', userName);
                     $comlogin.html(html);
                 }
+
                 /* change on the profile page too but only if it is your page
                     this is generally used after an SSO gateway callback
                 */
@@ -2219,6 +2278,7 @@ de.bild.sso = (function($){
                  }
                  
             } else {
+
                 if (_15_spalten === true) {
                     $comlogin.addClass('logged-in')
                     $comloginLoggedInList.show();
@@ -2226,8 +2286,10 @@ de.bild.sso = (function($){
                 } else {
                     $comlogin.html(templates.loggedinNoData);
                 }
+
             }
         } 
+
         isUserBarOn = true;
     };
     /**
@@ -2246,6 +2308,7 @@ de.bild.sso = (function($){
                 } else {
                     $comlogin.html(templates.loggedout);
                 }
+
         } 
         isUserBarOn = false;
     };
@@ -2283,7 +2346,9 @@ de.bild.sso = (function($){
      */
     function login(data){
         
+
         data = data || {};
+
         /* are we already logged in for some reason?*/
         if ($.cookie(avComUsr) && isLoggedIn()) {
             window.location.reload();
@@ -2303,10 +2368,12 @@ de.bild.sso = (function($){
                 window.location.href = xhr.getResponseHeader('Location');
             }
         });
+
         /* here we set the session cookie to tell the appage iframe to redirect to community homepage from header */
         if (data.goHome) {
             setGoHome();
         }
+
         return false;
     };
     /**
@@ -2324,7 +2391,7 @@ de.bild.sso = (function($){
         $.ajax(de.bild.settings.community.urls.ssoFBLogin, {
             dataType: 'json',
             cache : true
-        }).done(function(data) {
+        }).done(function(data) {        	
             if (data && data.html && !isLoggedIn()) {
                 lightBox(data.html);
             } else {
@@ -2365,8 +2432,10 @@ de.bild.sso = (function($){
         
         // new header
         $comlogin = $(comloginSelector);
+
         //15 Spalten
         $comloginLoggedInList = $comlogin.children('ul');
+
         if ($comloginLoggedInList.length) {
             _15_spalten = true;
             $comNewUser = $('#comNewUser');
@@ -2375,11 +2444,16 @@ de.bild.sso = (function($){
             $comUsername.attr('href', de.bild.settings.community.urls.profilePage);
             $comLogoutLink = $('#comLogoutLink');
         }
+
         renderUserBar();
+
         getStatus();
+
         setupEvents();
+
         return true;
     };
+
     //public methods
     return {
         'init' : function(){
@@ -2429,11 +2503,12 @@ de.bild.sso = (function($){
             return getGoHome();
         }
     }
+
 })(jQuery);
 /*de.bild.sso:25798984.1*/
 
 
-/*de.bild.social:22104236.71*/
+/*de.bild.social:22104236.72*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -2448,6 +2523,7 @@ de.bild = de.bild || {};
 * @dependencies ['jQuery', 'de.bild.sso', de.bild.settings']
 */
 de.bild.social = (function($){
+
     var bodyTag = null,
     $body,
     insertScript = function(id,url){
@@ -2455,6 +2531,7 @@ de.bild.social = (function($){
         s = 'script',
         js,
         fjs=d.getElementsByTagName(s)[0];
+
         if(!d.getElementById(id)) {
             js=d.createElement(s);
             js.id=id;
@@ -2567,6 +2644,7 @@ de.bild.social = (function($){
                el.innerHTML = facebook.getLoginButton(); 
             }
         },
+
         /**
      * postCommentToFeed - tests permissions in order to post a comment to facebook
      * @function
@@ -2578,6 +2656,7 @@ de.bild.social = (function($){
         postCommentToFeed: function(params){
             if(facebook.publishStream !== true){
                 facebook.initLogin(function(){
+
                 }, {
                     scope: 'publish_stream'
                 } );
@@ -2630,6 +2709,7 @@ de.bild.social = (function($){
             });
             return true;
         },
+
         /**
      * loadSDK - Facebook JavascriptSDK anfuegen
      * @function
@@ -2640,6 +2720,7 @@ de.bild.social = (function($){
      */
         loadSDK : function(callback){
             window.fbAsyncInit = function(){
+
                 FB.init({
                     appId: de.bild.settings.facebookAppId,
                     /*status: true,*/
@@ -2647,6 +2728,9 @@ de.bild.social = (function($){
                     xfbml: true,
                     oauth : true 
                 });
+
+
+
                 /*overwrite getLoginStatus*/
                 facebook.getLoginStatus = function(){
                     FB.getLoginStatus(function(response){
@@ -2658,6 +2742,9 @@ de.bild.social = (function($){
                     });
                     return facebook.isLoggedIn;
                 };
+
+
+
                 /*check status right away*/
                 FB.getLoginStatus(function(response){
                    
@@ -2672,10 +2759,13 @@ de.bild.social = (function($){
          
                     if (fblogin !== false && de.bild.sso.isLoggedIn() === false) {
                         var facebookLoginId = 'facebookAutoLogin';
-                        $body.append('<iframe id="'+facebookLoginId+'" src="'+de.bild.settings.community.urls.ssoFBIframe+'" style="position:absolute;height:0;width:0;border:0;left:-9999px;" frameborder="0" />');
+                        // Auto Login disabled
+                        //$body.append('<iframe id="'+facebookLoginId+'" src="'+de.bild.settings.community.urls.ssoFBIframe+'" style="position:absolute;height:0;width:0;border:0;left:-9999px;" frameborder="0" />');
                     }
          
+
                     if (!response.authResponse) {
+
                     } else {
                         FB.api('/me/permissions', function(response) {
                             if(response.data && response.data[0]['publish_stream'] != 1){
@@ -2683,20 +2773,26 @@ de.bild.social = (function($){
                             }else{
                                 facebook.publishStream = true;
                             }
+
                             if(response.data && response.data[0]['user_photos'] != 1){
                                 facebook.userPhotos = false;
                             }else{
                                 facebook.userPhotos = true;
                             }
+
                         });
                         /* we check if the user if logged into facebook
                         and then trigger an event attached to the body (in de.bild.social.init())*/
                         $body.trigger('facebookLoginStatus');
                     }
+
                 });
+
+
                 facebook.initLogin = function(cb,opts){
                     FB.login(cb,opts);
                 };
+
                 FB.Event.subscribe('auth.login', function(response) {
                     if (!response.authResponse) {
                         facebook.isLoggedIn = false;
@@ -2704,7 +2800,10 @@ de.bild.social = (function($){
                         facebook.isLoggedIn = true;
                     }
                 });
+
+
             };
+
             /* FB Javaskript einbinden*/
             var container = document.createElement('div');
             container.setAttribute('id', 'fb-root');
@@ -2714,8 +2813,10 @@ de.bild.social = (function($){
             container.appendChild(e);
             if (bodyTag)  bodyTag.appendChild(container);
             if (typeof callback === 'function')  callback();
+
         }
     },
+
     google = {
         'widgetURL' : 'https://apis.google.com/js/plusone.js',
          'buttonHTML' : '<g:plusone size="%SIZE%" annotation="%ANNOTATION%"></g:plusone>',
@@ -2737,12 +2838,16 @@ de.bild.social = (function($){
             size = data.size ? data.size : 'medium',
             annotation = data.annotation ? data.annotation : 'bubble';
             return google.gbuttonFrame.replace('%URL%', url).replace('%SIZE%', size);
+
          }
     },
+
+
     twitter = {
         'widgetURL' : '//platform.twitter.com/widgets.js',
         'buttonHTML' : '<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="BILD" data-related="%RELATED%">Tweet</a>',
         'buttonFollowHTML' : '<a href="https://twitter.com/%USER%" class="twitter-follow-button" data-show-count="true" data-lang="de">@%USER% folgen</a>',
+
         'getTwitterFollowButton' : function(user){
             return twitter.buttonFollowHTML.replace(/%USER%/g, user);
         },
@@ -2753,18 +2858,26 @@ de.bild.social = (function($){
                 $elem.append(twitter.buttonHTML.replace('%RELATED%', related));
                 
             }
+
         }
     };
+
+
     /*
         The social block is under the article in the left col and the channel block is in the right hand column.
         Buttons are loaded on window.load.
         Social block appears under the article
         Channel in the side bar
     */ 
+
     function setupSocialBlock(){
+
         var $socialBlock = $('div.socialBlock'),
         $channelBlock = $('#smbChannelBlock');
+
+
         if ($socialBlock.length) {  
+
              contributeLightBox(); 
             // bind only once
             $body.one('commentEventsSetup', function(e, data){
@@ -2776,19 +2889,29 @@ de.bild.social = (function($){
                     $socialBlock.find('a.add-comment').attr('href', '#' + data.ugcid).parent('li').removeClass('hidden');
                 }
             });
+
         }
             
         if ($channelBlock.length || $socialBlock.length) {
+
        
             $(window).load( function() {
+
                 setTimeout(function(){
+
                     if ($socialBlock.length) {   
                         
                         /*$('#socialBlockGPlus').append(google.getPlusOneButton({'size' : 'medium'}));*/
+
                         google.loadGoogleScript();
+
                         twitter.renderButton('socialBlockTwitter');
+
                         var $fb = $('#socialBlockFb'),
                         url = ($fb.hasClass('meinklub')) ? facebook.getKlubUrlId() : getEncodedURL();
+
+
+
                         if ($fb.length && $fb.hasClass('smb-recommend')) {
                             $fb.append(facebook.getRecommendButton({
                                 'url' : url,
@@ -2802,89 +2925,109 @@ de.bild.social = (function($){
                                 'height' : '24'
                             }));    
                         }      
+
                         
                     }     
                     if ($channelBlock.length) {
+
                         var $fbc_a = $('#smbChannelFbCont a'),
                         fbc_a_link = $fbc_a.attr('href');
+
                         $fbc_a.replaceWith(facebook.getLikeButton({'url':fbc_a_link})); 
                         
                         var $twc_a = $('#smbChannelTwCont a'),
                         twc_a_link = $twc_a.attr('href').split('#!/')[1];
+
                         $('#smbChannelTwCont a').replaceWith(twitter.getTwitterFollowButton(twc_a_link));
                         
                         google.loadGoogleScript();
              
                     }
+
                     insertScript('twitter-wjs',twitter.widgetURL);
+
                 },500);
             });
         
+
         }
+
+
+
+
     };
   
-    /**
-     * contributeLightBox
-     * @function
-     * @name contributeLightBox
-     * @private
-     * @memberOf de.bild.social
-     */
-  function contributeLightBox() {
-   var $contributeLink = $('div.socialBlock a.add-contribute');
-   if ($contributeLink.length) {
-    $contributeLink.click(function(e) {
-     /* this is for stage which needs the servlet. Shame really */
-     var _href = (document.domain.indexOf('bild.de') !== -1) ? '/sendCorrectionForm' : '/servlet/sendCorrectionForm', posturl = _href + document.location.pathname, geturl = _href + '/-2952512,Url=' + document.location.pathname;
-     /* this is for live which needs the view param. Shame really */
-     geturl = geturl.replace('.bild.html', ',view=sendCorrectionForm.bild.html');
-     e.preventDefault();
-     de.bild.httpFist.load({
-      'url' : geturl,
-      'callback' : function(response) {
-       $body.bildLightbox({
-        'wrapperClass' : 'lightbox layer lb1 correct',
-        'wrapperId' : 'contributeLightbox',
-        'content' : response,
-        'callback' : function() {
-         /* set form*/
-         var $innerBox = $('#contributeLightbox div.innerBox');
-         de.lib.live($('#contributeLightbox'), 'form#formAddContribute', 'submit', function(e) {
-          e.preventDefault();
-          var $this = $(this), params = $this.serialize();
-          params += '&url=' + encodeURI(posturl);
-          $.ajax({
-           'url' : $this.attr('action'),
-           'dataType' : 'html',
-           'data' : params,
-           'type' : 'POST',
-           'timeout' : 5000
-          }).done(function(response) {
-           $innerBox.html(response);
-           var $form = $('form#hint-confirm');
-           $form.attr('action', '');
-           if ($form.length) {
-            $form.submit(function(e) {
-             e.preventDefault();
-             if ($body.data('bildLightbox')) {
-              $body.data('bildLightbox').close();
-             }
-            });
-           }
-          }).fail(function() {
-           if ($body.data('bildLightbox')) {
-            $body.data('bildLightbox').close();
-           }
-          });
-         });
-        }
-       });
-      }
-     });
-     return false;
-    });
-   }
-  };
+
+
+	/**
+	 * contributeLightBox
+	 * @function
+	 * @name contributeLightBox
+	 * @private
+	 * @memberOf de.bild.social
+	 */
+	function contributeLightBox() {
+		var $contributeLink = $('div.socialBlock a.add-contribute');
+		if($contributeLink.length) {
+
+			$contributeLink.click(function(e) {
+				/* this is for stage which needs the servlet. Shame really */
+				var _href = (document.domain.indexOf('bild.de') !== -1) ? '/sendCorrectionForm' : '/servlet/sendCorrectionForm', posturl = _href + document.location.pathname, geturl = _href + '/-2952512,Url=' + document.location.pathname;
+
+				/* this is for live which needs the view param. Shame really */
+				geturl = geturl.replace('.bild.html', ',view=sendCorrectionForm.bild.html');
+
+				e.preventDefault();
+
+				de.bild.httpFist.load({
+					'url' : geturl,
+					'callback' : function(response) {
+						$body.bildLightbox({
+							'wrapperClass' : 'lightbox layer lb1 correct',
+							'wrapperId' : 'contributeLightbox',
+							'content' : response,
+							'callback' : function() {
+								/* set form*/
+								var $innerBox = $('#contributeLightbox div.innerBox');
+
+								de.lib.live($('#contributeLightbox'), 'form#formAddContribute', 'submit', function(e) {
+									e.preventDefault();
+									var $this = $(this), params = $this.serialize();
+									params += '&url=' + encodeURI(posturl);
+									$.ajax({
+										'url' : $this.attr('action'),
+										'dataType' : 'html',
+										'data' : params,
+										'type' : 'POST',
+										'timeout' : 5000
+									}).done(function(response) {
+										$innerBox.html(response);
+										var $form = $('form#hint-confirm');
+										$form.attr('action', '');
+										if($form.length) {
+											$form.submit(function(e) {
+												e.preventDefault();
+												if($body.data('bildLightbox')) {
+													$body.data('bildLightbox').close();
+												}
+											});
+										}
+									}).fail(function() {
+										if($body.data('bildLightbox')) {
+											$body.data('bildLightbox').close();
+										}
+									});
+								});
+							}
+						});
+					}
+				})
+				return false;
+			});
+		}
+	};
+
+
    
     function init(){
         bodyTag = document.getElementsByTagName('body')[0];
@@ -2908,6 +3051,7 @@ de.bild.social = (function($){
     function getEncodedURL(){
         return encodeURIComponent(document.location.href);
     };
+
     /* oeffentliches Interface*/
     return {
         /* facebook*/
@@ -2930,6 +3074,7 @@ de.bild.social = (function($){
         'getActivityFeed' : function() {
             return facebook.getActivityFeed();
         },
+
         'loginToFB' : function(cb,opts){
             cb = cb || function(){};
             opts = opts || {};
@@ -2960,11 +3105,13 @@ de.bild.social = (function($){
         'setupSocialBlock' : function(){
             return setupSocialBlock();
         },
+
         /*  google */
         'getPlusOneButton' : function(data){
             data = data || {};
             return google.getPlusOneButton(data);
         },
+
         /*twitter*/
         'renderTwitterButton' : function(id, related){
             if (id) {
@@ -2972,6 +3119,7 @@ de.bild.social = (function($){
                 twitter.renderButton(id, related);
             }
         },
+
         'getTwitterFollowButton' : function(user){
             if (user) {
                return twitter.getTwitterFollowButton(user);
@@ -2981,16 +3129,18 @@ de.bild.social = (function($){
             return init();
         }
     };
+
 }(jQuery));
+
 /*de.bild.social:25798986.1*/
 
 
-/*de.bild.community:22104118.32*/
+/*de.bild.community:22104118.36*/
 
 var de = de || {};
 de.bild = de.bild || {};
 /**
-* de.bild.community 
+* de.bild.community
 * @name community
 * @memberOf de.bild
 * @param {object} $ JQuery
@@ -3014,6 +3164,7 @@ de.bild.community = (function($){
         'startCheckCommentsDelay' : 3000,
         'fadeDelay' : 3000,
         'fadeSpeed' : 400,
+        'layerDelay' : 500,
         'minCharacktersTyped' : 2,
         // classes
         'ajaxClass' : 'data-ajax',
@@ -3021,9 +3172,11 @@ de.bild.community = (function($){
         'ajaxClassLightBox' : 'data-ajax-lb',
         'ajaxClassLoad' : 'data-ajax-load',
         //storage name for anon likes
-        'anonLikes' : 'commAnonLikes',
+        'anonLikes' : 'commAnonLikes', 
         // this is a manual override for live Comments in case we need to switch it on/off fast!
-        'allowLiveComments' : true 
+        'allowLiveComments' : false,
+        'comCenterElems' :5,
+        'comCenterSlideDelay' :4000 
     },
     /**
      * these values can be updates by the public function de.bild.community.update({});
@@ -3037,13 +3190,15 @@ de.bild.community = (function($){
         'checkForNewCommentsDelay' : 10000,
         'commentRequestMaximum' : 10,
         'liveCommentsOn' : false,
-        'socialBarOn' :  false,
         'oldestCommentCommitTimeSeenInBrowser' : 0,
         'ugcid' : '',
         'maxCommentLength': 1000,
         'uploadProgressSid' : '',
         'profileOwnerEncryptedUserId' : '',
-        'profileViewToken' : ''
+        'ownEncryptedUserId':de.bild.sso.getUserInfo()!=null ?de.bild.sso.getUserInfo().encryptedUserId:'',
+        'profileViewToken' : '',
+        'defollow': de.bild.settings.community.lang.defollow,
+        'follow':de.bild.settings.community.lang.following
     },
     // html templates
     templates = {
@@ -3053,19 +3208,25 @@ de.bild.community = (function($){
         loadingLayer : '<div id="loadingLayer"><img src="%IMG%"/></div>',
         message : '<p class="%CLASS%">%CONTENT%</p>',
         lbMessage : '<div class="section"><div class="header"><h2>%HEADING%</h2></div><form class="cform"><fieldset><p class="%CLASS%">%CONTENT%</p></fieldset></form></div>',
+        lbMessageWithButton : '<div class="section"><div class="header"><h2>%HEADING%</h2></div><form class="cform safetyquery"><fieldset><p>%CONTENT%</p><div class="column clearfix"><div class="cbutton"><input type="submit" value="%BUTTON%" class="btn-submit" onclick="de.bild.community.closeLightBox(); return false;"></div></div></fieldset></form></div>',
         spanEl : '<span>%CONTENT%</span>',
         profileSeparator : ' • ',
-        linkNewWindow : '<a href="%URL%" rel="external" target="_blank" title="'+de.bild.settings.community.lang.newWindow+'">%CONTENT%</a>'
+        linkNewWindow : '<a href="%URL%" rel="external" target="_blank" title="'+de.bild.settings.community.lang.newWindow+'">%CONTENT%</a>',
+        genericLink : '<a href="%URL%" class="%CLASS%">%CONTENT%</a>',
+        bcard : '<div class="card loading" id="userProfileCard"></div>'
+
     },
     // cache DOM elements
     $contentWrapper,
     $doc,
     $body,
+
     //click handler var so we can use it across private functions
     docClickHandler,
     //for mobile devices,
     isMobile = de.bild.utils.isMobile(),
     mouseEnterEvent = (isMobile === true) ? 'touchstart' : 'mouseenter';
+
     /* ================================================================================================================ START COMMON UTILS */
     /**
      * public function to update editable values in the variables object
@@ -3102,7 +3263,7 @@ de.bild.community = (function($){
             params.wrapperClass = 'lightbox layer lb1';
             return $body.bildLightbox(params);
         }
-    };  
+    }; 
     /**
      * closes window
      * @function
@@ -3141,6 +3302,7 @@ de.bild.community = (function($){
             });
         }, fadeDelay);
     };
+
     /**
      * will loop through all elements with a class of .required
      * null values trigger the error
@@ -3168,6 +3330,51 @@ de.bild.community = (function($){
         }
         return okToSubmit;
     };
+
+    /**
+     * from R2 onwards: checks requests for the presence of a json object and failure param
+     * @function
+     * @name screenForResponseErrors
+     * @param {string} resp Response from an ajax call
+     * @returns {Bool}
+     * @memberOf de.bild.community
+     * @private
+     */
+    function screenForResponseErrors(response){
+        /*
+            for this piece of code, i am sorry. we receive various responses (html and json) and the headers are not correctly set
+            so we have to attempt to parse the response as json
+
+        */
+        var respObj;
+
+            try {
+                // normal json?
+                if (response.status.length) {
+                    respObj = response;
+                } else {
+                    respObj = $.parseJSON(response);
+                }
+               
+            } catch(e) {
+                respObj = null;
+            }
+
+        if (respObj !== null && respObj.status && respObj.status === 'failure') {
+            var html = templates.lbMessageWithButton.replace('%CONTENT%', respObj.message).replace('%HEADING%', respObj.title).replace('%BUTTON%', de.bild.settings.community.lang.closeLightbox);
+            closeLightBox({
+                'callback' : function(){
+                    showLightBox({
+                        'content' : html
+                    }); 
+                }
+            });
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     /**
      * clears textareas in a form so that default text is not sent
      * @function
@@ -3186,6 +3393,7 @@ de.bild.community = (function($){
         });
         return $formElem;
     };
+
     /* LOADING LAYER
     ///////////////////////////       */
     /**
@@ -3203,13 +3411,15 @@ de.bild.community = (function($){
         marginLeft,
         $loadingLayer,
         isSubComment = ($elem.hasClass('hint') && $elem.parents('ol.threaded-comment-list').length > 0),
-        imgsrc = (isSubComment) ? de.bild.settings.community.urls.loadingIconSmallDark : de.bild.settings.community.urls.loadingIconSmall;
-        if ($parent.height() > 36) {
+        isContactList = $elem.parents('#user-contact-list').length>0,
+        imgsrc = (isSubComment || isContactList) ? de.bild.settings.community.urls.loadingIconSmallDark : de.bild.settings.community.urls.loadingIconSmall;
+        if ($parent.height() > 36 && !isContactList) {
             imgsrc = de.bild.settings.community.urls.loadingIconBig;
             halfPic = 16;
         }
         $parent.css('position', 'relative');
         $parent.append(templates.loadingLayer.replace('%IMG%', imgsrc));
+
         $loadingLayer = $('#loadingLayer');
         //replace CSS declarations with a class here
         $loadingLayer.css({
@@ -3219,11 +3429,14 @@ de.bild.community = (function($){
             bottom: '0',
             right: '0'
         });
-        marginLeft = (isSubComment) ? 10 : $loadingLayer.width() / 2 - halfPic;
+
+		//ContactList = 160, subComment = 10 else $loadingLayer.width() / 2 - halfPic;
+        marginLeft = isSubComment ? 10 : isContactList ? 160 :$loadingLayer.width() / 2 - halfPic;
         $img = $('img', $loadingLayer);
+
         $img.css({
             marginLeft: (marginLeft),
-            marginTop: ($loadingLayer.height() / 2 - halfPic)
+            marginTop: isContactList? 15 :($loadingLayer.height() / 2 - halfPic)
         });
         //Kommentarformular Opacity runtersetzen
         /* this whole nastiness needs CSS declarations instead of JS*/
@@ -3231,7 +3444,7 @@ de.bild.community = (function($){
             $parent.css('opacity', '0.5');
         } else {
             $elem.addClass('active');
-        }   
+        }  
     };
     /**
      * removes the loadingLayer after a successful response
@@ -3275,13 +3488,43 @@ de.bild.community = (function($){
             .done(callback);
         }
     };
+    /**
+     * update a static count in an element on the page (beitrag counts etc)
+     * @function
+     * @name updateCount
+     * @memberOf de.bild.community
+     * @param {$object} $elem - url
+     * @param {Num} inc - the number which should be added (can be negative)
+     * @private
+     */
+    function updateCount($elem, inc){
+        if ($elem.length === 0) {
+            return null;
+        }
+        var count = parseInt($.trim($elem.text())),
+        newCount;
+        if (typeof count === 'number') {
+            newCount = count + inc;
+            if (newCount < 0) {
+                newCount = 0;
+            }
+            $elem.text(newCount);
+            return newCount;
+        }
+
+        return null;
+    };
+
 /* ================================================================================================================ END COMMON UTILS */
-/* ================================================================================================================ START COMMUNITY TRACKING 
+
+/* ================================================================================================================ START COMMUNITY TRACKING
+
     dependencies:
     de.bild.settings
     jquery
     jquery.cookie
 */
+
     /**
      * this function returns logged in values stored in a cookie. it's used for webtrek tracking and called in the head of the page onload
      * @function
@@ -3355,8 +3598,100 @@ de.bild.community = (function($){
         }
         return false;
     };
+
 /* ================================================================================================================ END COMMUNITY TRACKING */
+
+/* ================================================================================================================ START COMMUNITY CENTER */
+    /**
+     * if User is not logged in rotate the User activities
+     * @function
+     * @name setupCommunityCenter
+     * @memberOf de.bild.community
+     * @private
+     */
+
+	function setupCommunityCenter() {
+		//only if logged Out
+		if(de.bild.sso.isLoggedIn())
+			return false;
+		//init the two Lists
+		var activityList = $('.latest-usr-feed .usr-feed>ol');
+		var activities = activityList.children('li');
+		//if not enough elements to rotate -> return
+		if(activities.length <= settings.comCenterElems)
+			return false;
+
+		var hidden = activityList.children('li:gt(' + settings.comCenterElems + ')');
+		var rotateElem = activityList.parent();
+		rotateElem.css('top', 0);
+		activities = activities.not(hidden);
+		var rotationTimer = null;
+
+		rotateOneItem();
+
+		/**
+		 * Rotationfunction
+		 */
+
+		function rotateOneItem() {
+			//First clear Timeout and animation
+			clearTimeout(rotationTimer);
+			activityList.parent().stop();
+			
+			//Only do s.th if there is no bcard active
+			if($card == null) {
+				//Normal rotate
+				if(parseInt(rotateElem.css('top')) == 0) {
+					var $elem = hidden.first();
+					$elem.removeClass('hide');
+					activityList.prepend($elem);
+					var height = $elem.height();
+					//calculate a constant speed
+					var speed = height * 20;
+					rotateElem.css('top', -height - 20).animate({
+						'top' : 0
+					}, speed, 'linear', function() {
+						rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
+					});
+					hidden = hidden.not(hidden.first()).add(activities.last());
+					activities = activities.not(activities.last()).add($elem);
+				}
+				//finish the rotation
+				else {
+					var speed = -1 * parseInt(rotateElem.css('top')) * 15;
+					rotateElem.animate({
+						'top' : 0
+					}, speed, 'linear', function() {
+						rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
+					});
+				}
+			}
+
+		}
+
+		//Start/Stop on Hover 
+		rotateElem.parent().on('mouseenter.comCenter', function() {
+			$(this).data('over',true);							
+			clearTimeout(rotationTimer);
+			activityList.parent().stop();
+		}).on('mouseleave.comCenter', function() {
+			$(this).data('over',false);			
+			rotateOneItem();		
+		})
+		
+		rotateElem.parent().on('autorotate.comCenter',function(){
+			if($(this).data('over')==false){
+				rotateOneItem();
+			}
+		})
+		
+	}
+
+
+/* ================================================================================================================ ENDE COMMUNITY CENTER */
+
 /* ================================================================================================================ START PROFILE PAGE */
+
     var $profileHead,
     $profileSettings,
     isProfileHead,
@@ -3369,12 +3704,14 @@ de.bild.community = (function($){
      * @private
      */
     function setupProfileEvents(){
+
         $profileHead = $('div.profileHead');
         $profileSettings = $('div.account.profile');
         isProfileHead = $profileHead.length;
         isProfileSettings = $profileSettings.length;
+
         /* Profilephoto Lightbox trigger  */
-        de.lib.live($contentWrapper, 'div.usrProfileImg a.profilephoto, div.profileHead a.profilephoto', 'click', function(e){
+        de.lib.live($contentWrapper, 'div.usrProfileImg a.profilephoto, div.profileHead a.profilephoto, table.profTable a.edit', 'click', function(e){
             e.preventDefault();
             de.bild.httpFist.load({
               'obj': this,
@@ -3385,13 +3722,14 @@ de.bild.community = (function($){
                     /* if success window has class of refresh...refresh! */
                     if($body.find('#success.refresh').length){
                       /* refresh on success so we can see result of change */
-                      window.location.reload(); 
-                    }                    
+                      window.location.reload();
+                    }                   
                   }
                 });
               }
             });
         });
+
         /* change name form */
         de.lib.live($contentWrapper, 'form#account-name, form#privUnlocks, form#usrProfileSocial', 'submit.change', function(e){
             e.preventDefault();
@@ -3419,6 +3757,7 @@ de.bild.community = (function($){
                 $sibling.trigger('click');
             }
         });
+
        /*delete profilephoto link inside lightbox (global so it works in lightbox) */
         de.lib.live($body, 'form#profilePic a.delimage', 'click', function(e){
             e.preventDefault();
@@ -3430,6 +3769,7 @@ de.bild.community = (function($){
                 window.location.reload();
             });
         });
+
        /* delete facebook connection */
         de.lib.live($contentWrapper, 'a.removefb', 'click', function(e){
             e.preventDefault();
@@ -3441,69 +3781,81 @@ de.bild.community = (function($){
                 window.location.reload();
             });
         });
+
        /* report profile */
        var reportLayerTimeout;
-        de.lib.live($contentWrapper, 'div.profileHead .fnc > li', {
+        de.lib.live($contentWrapper, 'div.profileHead .fnc a.drop', {
             'mouseenter' : function(){
                 clearTimeout(reportLayerTimeout);
-                $(this).addClass('active');
+                $(this).parent().addClass('active');
             },
             'mouseleave' : function(){
                 var $this = $(this);
                 reportLayerTimeout = setTimeout(function(){
-                    $this.removeClass('active');
-                },500);
+                    $this.parent().removeClass('active');
+                },settings.layerDelay);
             }
         });
-        /* 
+
+        /*
             Paket 2 R1
         */
-    
+   
         var currentShowActivities = 1,
         className,
         $activityPage;
         de.lib.live($contentWrapper, 'div.usr-feed div.loadmore > a.hint', 'click', function(e){
             e.preventDefault();
             var $parent = $(this).parent('div.loadmore');
+
             className = $parent.attr('class');
+
             className = className.replace(/\s?loadmore\s?/g, '');
             /* if we are dealing with the main load more button at the bottom of the feed*/
             if (className === '') {
                 $activityPage = $('.activityPage'+currentShowActivities);
                 if ($activityPage.length) {
-                    $('.activityPage'+currentShowActivities).fadeIn(settings.fadeSpeed); 
+                    $('.activityPage'+currentShowActivities).fadeIn(settings.fadeSpeed);
                     currentShowActivities++;
                     if ($('.activityPage'+currentShowActivities).length === 0) {
                         $parent.parent('li').hide();
                     }
+
                 } else {
                     $parent.parent('li').hide();
                 }
-                
-            /* nested more buttons have more classes!*/    
+               
+            /* nested more buttons have more classes!*/   
             } else {
                 $('div.usr-feed li.'+className+'.hide').fadeIn(settings.fadeSpeed);
             }
+
         });
+
        /* edit profile image */
        var uploadLayerTimeout,
        $ulUpload;
+
         if ($profileHead.length) {
+
             de.lib.live($profileHead, 'div.usrimg', mouseEnterEvent, function(e){
+
                 if (!$ulUpload) {
                     $ulUpload = $profileHead.find('ul.usr-img-upload');
                 }
-                
-                clearTimeout(uploadLayerTimeout); 
+               
+                clearTimeout(uploadLayerTimeout);
                 $ulUpload.removeClass('hide').data('imageActive', true);
-                
+
+               
                 if (isMobile === true) {
                     $ulUpload.find('ul').show();
                     uploadLayerTimeout = setTimeout(function(){
                         $ulUpload.addClass('hide');
-                    },5000);  
+                    },5000); 
                 }
             });
+
             de.lib.live($profileHead, 'div.usrimg', 'mouseleave', function(e){
                 $ulUpload.data('imageActive', false);
                 if (isMobile !== true) {
@@ -3512,12 +3864,13 @@ de.bild.community = (function($){
                         if (!$ulUpload.data('menuActive') || $ulUpload.data('menuActive') === false) {
                             $ulUpload.addClass('hide');
                         }
-                    },500);  
+                    },settings.layerDelay); 
                 }
             });
+
             de.lib.live($profileHead, 'ul.usr-img-upload', {
                 'mouseenter' : function(){
-                     clearTimeout(uploadLayerTimeout);   
+                     clearTimeout(uploadLayerTimeout);  
                      $ulUpload.data('menuActive', true);
                 },
                 'mouseleave' : function(){
@@ -3527,11 +3880,14 @@ de.bild.community = (function($){
                         if (!$ulUpload.data('imageActive') || $ulUpload.data('imageActive') === false) {
                             $ulUpload.addClass('hide');
                         }
-                    },500); 
+
+                    },settings.layerDelay);
                 }
             });
-        } 
+        }
+
     };
+
     /**
      * profile pages - getting user data via JSONP
      * @function
@@ -3539,14 +3895,17 @@ de.bild.community = (function($){
      * @memberOf de.bild.community
      * @private
      */
+
     var profileUrl,
     _separator = templates.profileSeparator,
     userData = {},
     profileString = [],
     notprovided = templates.message.replace('%CLASS%', 'disabled').replace('%CONTENT%', de.bild.settings.community.lang.notprovided),
     notpublished = templates.message.replace('%CLASS%', 'disabled').replace('%CONTENT%', de.bild.settings.community.lang.notpublished),
-    profileYears = de.bild.settings.community.lang.years;     
+    profileYears = de.bild.settings.community.lang.years;    
+
      function getProfileData() {
+        /* these vars are set in setupProfileEvents()*/
         if (isProfileHead || isProfileSettings) {
             if (variables.profileOwnerEncryptedUserId && variables.profileOwnerEncryptedUserId.length) {
                 profileUrl = de.bild.settings.community.urls.getUserInfo.replace('%USERID%', variables.profileOwnerEncryptedUserId);
@@ -3558,21 +3917,20 @@ de.bild.community = (function($){
                 removeLoadingLayer();
                 loadingLayer($('#aboutyou table.profTable tbody'));
             }
-            /*get the JSONP response*/    
+            /*get the JSONP response*/   
             if (isProfileHead) {
                 jsonp(profileUrl,function (response) {
                     removeLoadingLayer();
                     if (response) {
                         userData['name'] = (response.name && response.name.length > 0) ? response.name : null;
                         userData['homepage'] = (response.homepage && response.homepage.length > 0) ? response.homepage : null;
-                        userData['homepageView'] = (response.homepageView && response.homepageView.length > 0) ? response.homepageView : null;                    
+                        userData['homepageView'] = (response.homepageView && response.homepageView.length > 0) ? response.homepageView : null;                   
                         userData['errors'] = (response.errors) ? response.errors : null;
                         userData['occupation'] = (response.occupation && response.occupation.length > 0) ? response.occupation : null;
                         userData['location'] = (response.location && response.location.length > 0) ? response.location : null;
                         userData['age'] = (response.age && parseInt(response.age) !== 0) ? response.age+profileYears : null;
                         userData['showLocation'] = response.showLocation;
                         userData['showAge'] = response.showAge;
- 
                         /* let's build the string - we don't need the home page in the string for now */
                         if (userData['occupation']) {
                             profileString.push(_separator);
@@ -3584,7 +3942,7 @@ de.bild.community = (function($){
                         }
                         if (userData['age'] && response.showAge == 1) {
                             profileString.push(_separator);
-                            profileString.push(userData['age']);     
+                            profileString.push(userData['age']);    
                         }
                         /* remove the first dot if the strong tag has content (moderator etc)*/
                         if ($profileHead.find('p.userdata > strong')[0].innerHTML.length < 1) {
@@ -3594,9 +3952,8 @@ de.bild.community = (function($){
                         $profileHead.find('p.userdata').append(templates.spanEl.replace('%CONTENT%', profileString.join('')));
                         /* if there is a homepage include it*/
                         if (userData['homepageView'] && userData['homepage']) {
-                        $profileHead.find('p.homepage').html(templates.linkNewWindow.replace('%URL%', userData['homepage']).replace('%CONTENT%', userData['homepageView'])); 
+                        $profileHead.find('p.homepage').html(templates.linkNewWindow.replace('%URL%', userData['homepage']).replace('%CONTENT%', userData['homepageView']));
                         }
- 
                         return response;
                     }
                 });
@@ -3609,12 +3966,13 @@ de.bild.community = (function($){
                         return response;
                     }
                 });
+
                 de.lib.live($contentWrapper, '#aboutyou a.tooltip', 'click', function(e) {
                     e.preventDefault();
                     removeLoadingLayer();
                     loadingLayer($('#aboutyou table.profTable tbody'));
                     var url = $(this).attr('href');
-                    url = url.substring(url.indexOf('#')+1,url.length)  + '/' + variables.profileViewToken;                    
+                    url = url.substring(url.indexOf('#')+1,url.length)  + '/' + variables.profileViewToken;                   
                     jsonp(url, function (response) {
                         removeLoadingLayer();
                         if (response) {
@@ -3622,8 +3980,7 @@ de.bild.community = (function($){
                             return response;
                         }
                     });
-                }); 
- 
+                });
                 //
                 // fix for PROCO-1152. this is work if form is sended
                 // error handling in server side
@@ -3642,14 +3999,15 @@ de.bild.community = (function($){
                         }
                         return false;
                     });
-                });  
+                }); 
             }
         }
      };
+
     /**
      * profile settings data loading - this is not schoen, but we have to reload the data every time
      * @function
-     * @name setupSecurityQuestions
+     * @name insertProfileSettingsData
      * @memberOf de.bild.community
      * @private
      */
@@ -3658,19 +4016,22 @@ de.bild.community = (function($){
             return;
         }
         $profileSettings.find('td.homepage').html(userData['homepage'] ? userData['homepage'] : notprovided);
-        
+       
         $profileSettings.find('td.occupation').html(userData['occupation'] ? userData['occupation'] : notprovided);
-        
+       
+
         if (userData['location']) {
             $profileSettings.find('td.location').html((userData['showLocation'] == 1) ? userData['location'] : notpublished);
         } else {
             $profileSettings.find('td.location').html(notprovided);
         }
+
         if (userData['age']) {
-            $profileSettings.find('td.age').html((userData['showAge'] == 1) ? userData['age'] : notpublished);     
+            $profileSettings.find('td.age').html((userData['showAge'] == 1) ? userData['age'] : notpublished);    
         } else {
             $profileSettings.find('td.age').html(notprovided);
         }
+
     };
     /**
      * Setup lightbox trigger for security questions, eg: Profilephoto Lightbox trigger "do you want to delete this photo?"
@@ -3688,13 +4049,13 @@ de.bild.community = (function($){
                 'callback': function(response, $target){
                     showLightBox({
                         'content': response,
-                        'onClose' : function(){                        
+                        'onClose' : function(){                       
                             /* if success window has class of refresh...refresh! */
-                            if($body.find('div.lightbox #success').length) {                            
+                            if($body.find('div.lightbox #success').length) {                           
                                 /* refresh on success so we can see result of change */
-                                window.location.reload(); 
+                                window.location.reload();
                             }
-                        }                        
+                        }                       
                     });
                 },
                 'error' : function(){
@@ -3709,90 +4070,515 @@ de.bild.community = (function($){
             });
         });
     };
+
 /* ================================================================================================================ END PROFILE PAGE */
+
+/* ================================================================================================================ START BUSINESS CARD OVERLAY
+*/
+   
+    var bcardTimeout,
+    activeCardId = 'userProfileCardActive',
+    $activeCardElement,
+    pos,
+    cardUrl,
+    $parent,    
+    $card,
+    cardRequest;
+
+   // userProfileCard
+
+    /**
+     * events for follow and block buttons  :)
+     * @function
+     * @name setupFollowButtons
+     * @memberOf de.bild.community
+     * @private
+     */
+    function setupBusinessCardOverlays(){
+       
+        de.lib.live($contentWrapper, 'div.comments p.post-meta a, div.comments img.usr-ico', {
+
+            'mouseover' : function(e){
+                e.preventDefault();
+                clearTimeout(bcardTimeout);               
+
+                $activeCardElement = $(this);
+
+                /* we have to have a reference point. this is to catch links which have the same parent. */
+                $parent = $activeCardElement.parents('li.post').first();
+               
+               
+                /* get the url */
+               
+               //when there is a replier we have to find an other userid
+               var userlink = $activeCardElement.get(0).nodeName.toUpperCase()=='IMG' ? $activeCardElement.parents('a').first().attr('href') : $activeCardElement.attr('href');
+               var inputLink = $parent.find('input[name="encryptedUserId"]').val();
+               
+               
+               if(userlink){
+               	userlink = userlink.split('/');
+               	userlink = userlink.length>0?userlink[userlink.length-1]:null;
+               }
+               
+               
+               var $userId = userlink; 
+               
+               var url;
+
+                if ($userId && $userId.length && $userId != variables.ownEncryptedUserId) {
+
+                    url = de.bild.settings.community.urls.bcard + $userId;
+                    //url = 'snippets/JS-2-R1-12-profile-activities/' + $userId.val();
+
+                    /* if the card is active and the url is the same then we're dealing with the same bubble */
+                    if ($parent.data('isCardActive') === true && cardUrl === url) {
+                    	
+                    	//maybe the cursor changed to from profile pic to username so only adjust the card
+                    	pos = $activeCardElement.offset();
+                    	$card.css({
+                        'top' : pos.top - $card.height() -30,
+                        'left' : pos.left + 5
+                   		});
+                    	
+                        return false;
+                    }
+
+                    cardUrl = url;
+                    $parent.data('isCardActive', true);
+
+                    /* remove the current bubble, get the position and set up/show the bubble */
+                    $('#userProfileCard').remove();
+                    pos = $activeCardElement.offset(),
+                    $card = $(templates.bcard);
+                    $card.hide()
+                    $body.append($card);                  
+                    
+                    $card.css({
+                        'top' : pos.top - $card.height() -30,
+                        'left' : pos.left + 5
+                    });
+                 
+                   
+                   
+                    $card.show();
+					if(cardRequest){
+	                	 cardRequest.abort();
+	                }
+                   
+                  cardRequest=de.bild.httpFist.load({
+                        'url' : cardUrl,
+                        'cache':!$.browser.msie,
+                        'callback' : function(response){
+                            if (screenForResponseErrors(response) === false) {
+                                if($card && $card!=null){                               
+                                 $card.html(response).removeClass('loading');
+                                }
+                            }
+                        },
+                        'error' : function(){
+                            $card.remove();
+                            $parent.data('isCardActive', false);
+                        }
+                    });
+                }
+                else{
+                	if($card){
+                		$card.remove();
+                	}
+                    $parent.data('isCardActive', false);
+                }
+                                
+            },
+
+            'mouseout' : function(){
+                bcardTimeout = setTimeout(function(){
+                    if ($card && $card.length) {
+                        $parent.data('isCardActive', false);
+                        $card.remove();
+                        $parent = null;
+                        $card = null;
+                        $activeCardElement = null;
+                        //start Communitycenter Rotation
+                  		$('.latest-usr-feed').trigger('autorotate.comCenter');
+                    }
+                }, settings.layerDelay);
+               
+               
+            }
+
+        });
+
+   
+        de.lib.live($body, '#userProfileCard', {
+            'mouseover' : function(e){
+                clearTimeout(bcardTimeout);
+                $parent.data('isCardActive', true);
+            },
+
+            'mouseout' : function(){
+                bcardTimeout = setTimeout(function(){
+                    if ($card && $card.length) {
+                        $parent.data('isCardActive', false);
+                        $card.remove();
+                        $parent = null;
+                        $card = null;
+                        $activeCardElement = null;
+                        //start Communitycenter Rotation
+                  		$('.latest-usr-feed').trigger('autorotate.comCenter');
+                    }
+                }, settings.layerDelay);
+            }
+
+        });
+
+    };
+
+/* ================================================================================================================ END BUSINESS CARD OVERLAY */
+
 /* ================================================================================================================ START FOLLOWER LIST
 */
-       
-    function followButtons(){
+      
+
+    /**
+     * events for follow and block buttons  :)
+     * @function
+     * @name setupFollowButtons
+     * @memberOf de.bild.community
+     * @private
+     */
+
+    function setupFollowButtons(){
+
+        var incVal = 1,
+        $response;
+
         /* all buttons will make the ajax call to follow or unfollow */
-         de.lib.live($contentWrapper, 'a.follow-button', {
+         de.lib.live($body, 'a.follow-button, a.following-button', {
             'click' : function(e) {
                 e.preventDefault();
-                var $parent = $(this).parent('li');
+                var $this = $(this);
+                // prevent too many clicks
+                if ($this.data('clicked') === true) {
+                    return false;
+                }
+                $this.data('clicked', true);
+
+                var isFollowing = $this.hasClass('following-button'),
+                $followTab = $('div.tabs li.tab2 > a').first(),
+                countVal = null;
+
                 de.bild.httpFist.load({
                     'obj': this,
+                    'cache':!$.browser.msie,
+                    'dataType' : 'json',
                     'callback': function(response, $target){
-                        $parent
-                        .html(response)
-                        .parents('li').first()
-                        .css('opacity',0)
-                        .animate({'opacity' : 1}, settings.fadeSpeed);
+                        if (screenForResponseErrors(response) === false) {
+
+                            //if ne response is '' delete parent li element
+                            if(response.html!=''){
+                            	/* here we including a nice fade in effect woooosh! */
+                            $response = $(response.html);
+                            $response.css('opacity',0);
+                            $this.replaceWith($response);
+
+                            $response.animate({'opacity' : 1}, settings.fadeSpeed, function(){
+                                $response.data('clicked', false).css('opacity',1);
+                            });
+                            }
+                            else{
+                            	$this.parent().remove();
+                            }
+                            
+                            
+
+                            /* set values depending on whether we are following or defollowing */
+                            if (isFollowing) {
+                                incVal = -1;
+                            } else {
+                                incVal = 1;
+                            }
+                           
+                           
+                            if($('.profileHead').length>0){
+                             countVal = updateCount($('.profileHead em.count-followers'), incVal);
+                            }
+                           
+                            if($('.combox-profile').length>0){
+                             //Only Update Count if its your own profile
+                             if($('.combox-profile #currentUser').val()==1)
+                             {
+                              countVal = updateCount($('.combox-profile em.count-followed'), incVal);
+                             }
+                            }
+
+                            if (countVal !== null && $followTab.length) {
+                                $followTab.text(de.bild.settings.community.lang.followingNo.replace('%COUNT%', countVal));
+                            }
+                           
+
+                        }
+                        //Error Screen appears, reset the click status
+                        else{
+                        	$this.data('clicked', false);
+                        }
+                    },
+                    'error' : function(){
+                        $this.data('clicked', false).css('opacity',1);
                     }
                 });
             }
          });
-         /* handle mouseover lang switch */
-         de.lib.live($contentWrapper, 'a.btn-style-icon.follow-button', {
+
+         /* this does nothing more than to replace the text */  
+         de.lib.live($contentWrapper, 'a.following-button', {
             'mouseover' : function(e){
-                $(this).text(de.bild.settings.community.lang.defollow);
+               // $(this).text(de.bild.settings.community.lang.defollow);
+               //value from the variables
+                $(this).text(variables.defollow);
             },
-            'mouseleave' : function(e){
-                $(this).text(de.bild.settings.community.lang.following);
+            'mouseleave' : function(e){            	
+                //$(this).text(de.bild.settings.community.lang.following);
+                //value from the variables
+                $(this).text(variables.follow);
+            }
+         });
+
+         /* delete post popup from the privacy settings page  */
+         de.lib.live($body, 'div.usrpagesList a.delpost', {
+            'click' : function(e){
+            	var $this = $(this);
+            	//unblocking in lightbox
+            	var modifyBlockNumber = false;
+            	if($this.parents('.lightbox') && $this.attr('href').indexOf('/ka/p/private/unblock/')!=-1){
+            		 modifyBlockNumber = true;
+            	}            	
+            	
+                e.preventDefault();
+                var $this = $(this);
+                de.bild.httpFist.load({
+                    'obj': this,
+                    'cache':!$.browser.msie,
+                    'callback': function(response){
+                        if (screenForResponseErrors(response) === false) {
+                        	
+                        	//decrase the number of blocked Users in Lightbox
+                        	if(modifyBlockNumber){
+                        		var count = $this.parents('.lightbox').find('.header h2');
+                        		if(count.length!=0)
+                        		var countVal = parseInt(count.text().match(/\d/)[0]);
+                        		if(typeof(countVal)=='number'){
+                        			count.text(de.bild.settings.community.lang.blockingNo.replace('%COUNT%',countVal-1));
+                        		}
+                        	}
+                        	
+                            $this.parent('li').fadeOut(settings.fadeSpeed, function(){
+                                $(this).remove();
+                            });
+                        }   
+                    }
+                });
+
+            }
+         });
+
+        
+
+         /* blocking users */
+
+         de.lib.live($contentWrapper, 'ul.fnc a.block, ul.fnc a.unblock', {
+            'click' : function(e){
+                e.preventDefault();
+                var $this = $(this);
+
+                if ($this.data('clicked') === true) {
+                    return false;
+                }
+
+                $this.data('clicked', true),
+                isBlock = $this.hasClass('block');
+
+                de.bild.httpFist.load({
+                    'obj': this,
+                    'callback': function(response, $target){
+                           
+                        if (screenForResponseErrors(response) === false) {
+
+                            if (isBlock === true) {
+
+                                $('#communityPendingUserBlock').attr('id', '');
+                                $this.attr('id', 'communityPendingUserBlock');
+                               
+                                showLightBox({
+                                    'content': response,
+                                    'closeOnEsc' : false,
+                                    'wrapperId' : 'communityBlockUser'                     
+                                });
+                            } else {
+
+                                // unblock case 
+                                var respObj = $.parseJSON(response);
+                                if (respObj !== null) {
+
+                                    var $parent = $this.parent('li');
+                                    $parent.html(templates.genericLink.replace('%URL%', '#url=;' + respObj.button.link + ';').replace('%CLASS%', 'block').replace('%CONTENT%', respObj.button.text))
+                                   
+                                    var $followbutton = $parent.closest('ul.fnc').find('li:first > a.follow-button, li:first > a.following-button');
+
+                                    if ($followbutton.length === 0) {
+                                        $parent.closest('ul.fnc').prepend('<li>' + respObj['follow-button-html'] + '</li>');
+                                    } else {
+                                        $followButton.replaceWith(respObj['follow-button-html']);
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                        $this.data('clicked', false);
+                    },
+
+                    'error' : function(){
+                        $this.data('clicked', false);
+                    }
+                   
+                });
+
             }
          });
     };
+
+     /**
+     * this handles the case when the form in a lightbox is for a blocked user confirmation
+     * it is an exception to the general rule that all forms in lightboxes should submit an AJAX request via post and inject the contents into the lightbox
+     * see function setupLightboxForms()
+     * @function
+     * @name handleBlockUser
+     * @memberOf de.bild.community
+     * @param {$object} $form form in the lightbox
+     * @private
+     */
+    function handleBlockUser($form) {
+        loadingLayer($form.find('fieldset'));
+        de.bild.httpFist.load({
+        'url': $form.attr('action'),
+        'method': $form.attr('method'),
+        'dataType' : 'json',
+        'callback': function(response, $target){
+                if (screenForResponseErrors(response) === false) {
+                    closeLightBox({
+                        'callback' : function(){
+                            var $pendingUserBlock = $('#communityPendingUserBlock'),
+                            countVal,
+                            $activeTab = $('div.tabs li.active > a').first(),
+                            $followButton = $pendingUserBlock.closest('ul.fnc').find('li:first > a.follow-button, li:first > a.following-button');
+                            $pendingUserBlock.data('clicked', false).attr('id', '').parent('li').html(templates.genericLink.replace('%URL%', '#url=;' + response.button.link + ';').replace('%CLASS%', 'unblock').replace('%CONTENT%', response.button.text));
+                            $followButton.parent('li').fadeOut(settings.fadeSpeed, function(){
+                                $(this).remove();
+                            });
+
+
+							/*Only if its your profile change the count */
+							if($('.combox-profile #currentUser').val()==1)
+                             {
+	                            /* if on folgen mir list*/
+	                            if ($('#follower-list').length) {
+	                                countVal = updateCount($('em.count-followers'), -1);
+	                                if (countVal !== null) {
+	                                    $activeTab.text(de.bild.settings.community.lang.followersNo.replace('%COUNT%', countVal));
+	                                }
+	                            }
+	
+	                            /* if on folge ich list*/
+	                            if ($('#following-list').length) {
+	                                countVal = updateCount($('em.count-followed'), -1);
+	                                if (countVal !== null) {                                	
+	                                    $activeTab.text(de.bild.settings.community.lang.followingNo.replace('%COUNT%', countVal));
+	                                }
+	                            }
+	       					}
+
+                        }
+                    });
+                }
+            },
+        'error' : function(){
+            closeLightBox();
+        }   
+        });
+    };
+
      /**
      * sets up events for followers lists P2 R2
      * @function
-     * @name followerList
+     * @name setupFollowerList
      * @memberOf de.bild.community
+     * @param {$object} $el parent element
      * @private
      */
-     function followerList(){           
-        followButtons();
-        var $followerlist = $contentWrapper.find('div.followerlist');
+     function setupFollowerList($el){          
+
+       
+        $el = $el || $contentWrapper;
+        var $followerlist = $el .find('div.followerlist');
         if ($followerlist.length === 0) {
             return false;
         }
+
         var $more,
-        $response,
-        scrollCallback = function($elem){
+        $response;
+/*
+        var scrollCallback = function($elem){
             $(window).off('scroll.showfollow');
             $(window).on('scroll.showfollow', function(e){
-                if (de.bild.utils.inViewport($elem) > 4) { 
+                if (de.bild.utils.inViewport($elem) > 4) {
                     setTimeout(function(){
-                        $elem.find('a.hint').trigger('click'); 
+                        $elem.find('a.hint').trigger('click');
                     },settings.fadeSpeed);
                 }
             });
         };
-        $more = $followerlist.find('li.show-more');
-        de.lib.live($followerlist, 'li.show-more a.hint', 'click', function(e) {
+*/
+
+        $more = $followerlist.find('li.last');
+
+        de.lib.live($followerlist, 'li.last a.hint', 'click', function(e) {
             e.preventDefault();
-            $more.addClass('loading');
+            loadingLayer($(this));
             de.bild.httpFist.load({
                 'obj': this,
+                'dataType' : 'json',
                 'callback': function(response, $target){
-                    $more.remove();
-                    $response = $(response);
-                    $response.hide();
-                    $followerlist.children('ul').first().append($response);
-                    $response.fadeIn(settings.fadeSpeed, function(){
-                        $more = $followerlist.find('li.show-more');
-                        $(window).off('scroll.showfollow');  
-                        if ($more.length) {
-                          scrollCallback($more);
-                        }
-                    });
+                    if (screenForResponseErrors(response) === false) {
+                        $more.remove();
+                        $response = $(response.html);
+                        $response.hide();
+                        $followerlist.children('ul').first().append($response);
+                        $response.fadeIn(settings.fadeSpeed, function(){
+                            $more = $followerlist.find('li.last');
+                            /*
+                            $(window).off('scroll.showfollow'); 
+                            if ($more.length) {
+                              scrollCallback($more);
+                            }
+                            */
+                        });
+                   }
                 }
             });
-        });    
+        });   
+
+    /*
         if ($more.length && de.bild.utils.inViewport($more) === 0) {
             scrollCallback($more);
         }
+*/
      };
+
 /* ================================================================================================================ END FOLLOWER LIST */
-/* ================================================================================================================ START LIKE BUTTONS 
+
+/* ================================================================================================================ START LIKE BUTTONS
+
     dependencies:
     de.bild.settings
     jquery
@@ -3800,9 +4586,10 @@ de.bild.community = (function($){
     de.bild.httpFist
     de.bild.sso.isLoggedIn
 */
-     var likeClickTimeout, 
+
+     var likeClickTimeout,
      $loadObj;
-       
+      
      /**
      * checks for anon session and marks the like buttons according to stored data. done for caching reasons (PROCO-388)
      * @function
@@ -3810,13 +4597,13 @@ de.bild.community = (function($){
      * @memberOf de.bild.community
      * @private
      */
-     function checkAnonLikes(){           
-        if (de.bild.sso.isLoggedIn() === false && $('.likebtn').length) {                        
+     function checkAnonLikes(){          
+        if (de.bild.sso.isLoggedIn() === false && $('.likebtn').length) {                       
             var likedata = $.cookie(settings.anonLikes);
-            if (likedata) {                
-                var likedataObj = $.parseJSON(likedata);                
+            if (likedata) {               
+                var likedataObj = $.parseJSON(likedata);               
                 $.each(likedataObj, function(key, value){
-                    var $key = $('#cmt-'+key);                                        
+                    var $key = $('#cmt-'+key);                                       
                     if ($key.length) {
                         if (value === 1){
                             $key.find('a.likebtn:first').parent().addClass('liked');
@@ -3824,15 +4611,16 @@ de.bild.community = (function($){
                             $key.find('a.likebtn:first').parent().removeClass('liked');
                         }
                     }
-                });                
+                });               
             }
-        }       
+        }      
     };
     /**
      * saves the like status so that we only send requests when the status has changed
      * @function
      * @name saveLikeStatus
      * @memberOf de.bild.community
+     * @param {$object} $el parent element
      * @private
      */
    function saveLikeStatus($el) {
@@ -3848,6 +4636,7 @@ de.bild.community = (function($){
             });
         }
    };
+
     /**
      * sets up events for like buttons in the comments lists
      * @function
@@ -3855,21 +4644,23 @@ de.bild.community = (function($){
      * @memberOf de.bild.community
      * @private
      */
+
     function setupLikeButtonsEvents(){
+
         de.lib.live($contentWrapper, 'a.likebtn', 'click', function(e){
             e.preventDefault();
-            
+           
             var obj = this,
             $this = $(this);
-            var $likecnt = $this.siblings('span.likecnt'), 
+            var $likecnt = $this.siblings('span.likecnt'),
             likeCount = parseInt($likecnt.text()),
             $parent = $this.parent();
-            
+           
             if (typeof $this.data('clickStatus')!== 'number') {
                 $this.data('clickStatus', 0);
             }
             $this.data('clickStatus', $this.data('clickStatus')+1);
-            
+           
                 // colour the thing before we get the response
                 // insert new value
                 if (typeof likeCount === 'number') {
@@ -3881,42 +4672,51 @@ de.bild.community = (function($){
                         $likecnt.text(likeCount + 1);
                     }
                 }
+
             if (typeof likeClickTimeout !== 'undefined' && likeClickTimeout !== null) {
                 clearTimeout(likeClickTimeout);
-            } 
-           
-           $this.blur();
+            }
           
+           $this.blur();
+         
              likeClickTimeout = setTimeout(function(){
-                
+               
                 if ($this.data('clickStatus')%2 === 1) {
                     $this.data('clickStatus',0);
                     $loadObj = de.bild.httpFist.load({
                         'obj': obj,
                         'method': 'POST',
                         'dataType': 'json'
-                    });                     
-                }   
+                    });                    
+                }  
              },500);
-                
+               
         });
         return false;
     };
+
 /* ================================================================================================================ END LIKE BUTTONS */
-/* ================================================================================================================ START UPLOAD 
+
+/* ================================================================================================================ START UPLOAD
+
     dependencies:
+
     de.bild.settings
     jquery
     jquery.bildProgressBar
     de.bild.utils.ran
     de.bild.social.postingPhototoFB
     de.bild.social.postingVideotoFB
+
 */
-    
-    /* timer for progress bar ajax calls */ 
+   
+
+    /* timer for progress bar ajax calls */
     var uploadProgressBarInterval,
-    /* 1414 var to be thrown around */ 
+
+    /* 1414 var to be thrown around */
     anonUpload = '1414';
+
     /**
      * handles the results of the upload handshake and publishes the output to the screen
      * @function
@@ -3928,7 +4728,7 @@ de.bild.community = (function($){
      */
     function showUploadResults(id,type) {
         var i = document.getElementById(id);
-        clearInterval(uploadProgressBarInterval); 
+        clearInterval(uploadProgressBarInterval);
         if (i.contentDocument) {
             var d = i.contentDocument;
         } else if (i.contentWindow) {
@@ -3957,9 +4757,10 @@ de.bild.community = (function($){
                         }
                     }
                 }
-            }  
-        }, 500); 
+            } 
+        }, 500);
     };
+
     /**
      * This function launches an upload progress bar. It will poll the url every 1000ms and update the bar accordingly.
      * When 100% is reached it will trigger another ajax call to fetch the success/failure message. The url for this comes from the form action attribute.
@@ -3991,7 +4792,8 @@ de.bild.community = (function($){
             uploadProgressBarInterval = setInterval(function(){
                 $.ajax({
                 'url': url + de.bild.utils.ran(1000000000),
-                'dataType': 'json'
+                'dataType': 'json',
+                'cache' : true
                 })
                 .done(function(data){
                     if (data == null || data.uploadedbytes >= data.totalbytes) {
@@ -4001,13 +4803,14 @@ de.bild.community = (function($){
                     }
                     if ($meter.length && $meter.data('bildProgressBar')) $meter.data('bildProgressBar').update(data.uploadedbytes, data.totalbytes);
                 })
-                .fail(function() { 
+                .fail(function() {
                     clearInterval(uploadProgressBarInterval);
                     $meter.data('bildProgressBar') && $meter.data('bildProgressBar').destroy();
-                });                      
+                });                     
             }, delay);
         }
     };
+
     /**
      * does the decision making in upload forms
      * @function
@@ -4023,23 +4826,25 @@ de.bild.community = (function($){
         uploadProgressBarURL = (formType === anonUpload) ? de.bild.settings.community.urls.uploadProgressBarFF : de.bild.settings.community.urls.uploadProgressBar;
         uploadType = 'photo',
         $uploadMsg = $('#uploadMsg');
-        
+       
         /* crude - this should not really be done this way
             in upload forms
             remove default description text from textarea before submit */
          clearTextareas($form);
-        
+       
         if ($form.hasClass('videoUpload')) {
          uploadType = 'video';
-        }     
+        }    
+
         var $fileInput = $('input:file', $form),
         $fileInputLength = $fileInput.length,
         formElement = $form.get(0);
+
         if ($fileInputLength > 0 && $fileInput.val().length > 0) {
             /* onstart function here if needed
                 submit over an iframe */
             var $commFormIOIframe = $('[id*=commFormIOIframe]');
-                
+               
             if ($commFormIOIframe.length === 0) {
                 var id = 'commFormIOIframe'+de.bild.utils.ran(1000001);
                 var $iframe = $('<iframe name="' + id + '" id="' + id + '" src="about:blank" onload="de.bild.community.upload(\''+id+'\',\''+formType+'\')" />');
@@ -4061,7 +4866,7 @@ de.bild.community = (function($){
             }
             /* then start the progress.. */
             $uploadMsg.show();
-            
+           
             if ($uploadMsg.length > 0) {
                 /* here we distinguish between a single upload and multiple upload (check the number of input[type="file"])
                   at the moment, only videos get a progress bar */
@@ -4070,10 +4875,11 @@ de.bild.community = (function($){
                     uploadProgressBar(id,uploadProgressBarURL);
                 } else {
                     $uploadMsg.find('form:first div.meter').get(0).className = 'loading';
-                }  
-            }               
+                } 
+            }              
         }
     };
+
     /**
      * upload form for 1414
      * @function
@@ -4093,27 +4899,38 @@ de.bild.community = (function($){
                 }
                  handleUpload($form, anonUpload);
             });
+
             /* for multiupload forms, get rid of the default value*/
+
             de.lib.live($contentWrapper, '#lruploadMultiDet', 'submit', function(e) {
                 e.preventDefault();
                 clearTextareas($(this));
                 this.submit();
-            });  
+            }); 
+
         }
+
     };
+
 /* ================================================================================================================ END UPLOAD */
-/* ================================================================================================================ START TEASER OVERLAY COMMENTS 
+
+/* ================================================================================================================ START TEASER OVERLAY COMMENTS
+
     dependencies:
+
     de.bild.settings
     jquery
     de.bild.utils.addStyleSheet
+
 */
+
     /* cache JSON data for article comments */
     var articleCommentsJSON = {},
     /* cache idMap data for article comments (get from inline call to loadTeaserComments() rendered by CMS) */
     articleCommentsMap = {},
     /* cache single ids of the article comments DOM elements */
     articleCommentsIds = [];
+
     /**
      * Loads JSON with the number of comments for each teaser.
      * Required CSS can be dynamically loaded
@@ -4133,7 +4950,7 @@ de.bild.community = (function($){
     function loadTeaserComments(idMap,url){
         /* idMap has to be present */
         if (typeof idMap === 'object') {
-            articleCommentsMap = idMap;             
+            articleCommentsMap = idMap;            
             /*load css */
             de.bild.utils.addStyleSheet(de.bild.settings.community.urls.commentsCSS, 'comTeaserComments');
             /* option url */
@@ -4141,9 +4958,10 @@ de.bild.community = (function($){
             /* build parameter string to add to the URL */
             articleCommentsIds = [];
             for (var k in articleCommentsMap) {
-               articleCommentsIds.push(k);   
+               articleCommentsIds.push(k);  
             }
             url = url + articleCommentsIds.join(':');
+
             /* get JSON */
             $.ajax({
                 url: url,
@@ -4156,8 +4974,8 @@ de.bild.community = (function($){
             })
             .always(function(){
                 showTeaserComments();
-            }); 
-            
+            });
+           
             /* ie is crippled */
             if (!$body.hasClass('modern')){
                 $contentWrapper.find('div.hentry, .mtA, div.ateaser-content, div.slide-item')
@@ -4170,7 +4988,7 @@ de.bild.community = (function($){
                         $ugc = $this.find('div.ugcGroup');
                     }
                     if ($ugc.length) {
-                       $ugc.show(); 
+                       $ugc.show();
                     }
                 })
                 .mouseleave(function () {
@@ -4182,7 +5000,7 @@ de.bild.community = (function($){
                         $ugc = $this.find('div.ugcGroup');
                     }
                     if ($ugc.length) {
-                       $ugc.hide(); 
+                       $ugc.hide();
                     }
                 });
             }
@@ -4200,7 +5018,7 @@ de.bild.community = (function($){
         if (articleCommentsIds.length) {
             /* loop through the idMap and */
             for (var i = 0, l = articleCommentsIds.length; i < l; ++i) {
-                var id = articleCommentsIds[i], 
+                var id = articleCommentsIds[i],
                 value = (articleCommentsJSON[id]) ? parseInt(articleCommentsJSON[id]) : 0;
                 /* get the dom element ids.. */
                 var collection = articleCommentsMap[id];
@@ -4209,14 +5027,17 @@ de.bild.community = (function($){
                     var $elem = $('#' + collection[n]);
                     /* only if the element has more than 2 comments, otherwise delete it */
                     if ($elem.length && value > 2) {
-                         $elem.text(value).parents('div.ugcGroup, li.comment-count').addClass('active'); 
+                         $elem.text(value).parents('div.ugcGroup, li.comment-count').addClass('active');
                     }
                 }
             }
         }
     };
+
 /* ================================================================================================================ END TEASER OVERLAY COMMENTS */
-/* ================================================================================================================ START ARTICLE COMMENTS FORMS, BUTTONS, EVENTS 
+
+/* ================================================================================================================ START ARTICLE COMMENTS FORMS, BUTTONS, EVENTS
+
     dependencies:
     de.bild.settings
     jquery
@@ -4226,13 +5047,16 @@ de.bild.community = (function($){
     de.bild.utils.trim
     de.bild.sso.isLoggedIn
     de.bild.sso.login
+
 */
+
     /*save the ajax request in forms */
     var submitAjaxRequest,
     /* UGC comments */
     commentUpdateTimeout,
     commentRequestCount = 0,
     userCommentCount = 0;
+
     /**
      * handles the communication between server and form elements
      * @function
@@ -4256,6 +5080,7 @@ de.bild.community = (function($){
             method = data.method ? data.method : 'POST',
             timeout = data.timeout ? data.timeout : '15000',
             params = (data.params &&  method.toLowerCase() === 'post') ? data.params : false;
+
             submitAjaxRequest = $.ajax({
                 'url': data.url,
                 'dataType': datatype,
@@ -4282,6 +5107,7 @@ de.bild.community = (function($){
             });
         }
     };
+
     /**
      * Handles form field states sets the default text and text colour when the feld gains and loses focus.
      * @function
@@ -4293,43 +5119,43 @@ de.bild.community = (function($){
      * @returns {Bool} false
      */
     function setFormFieldState($elem, focus){
-  
+ 
         var $form = $elem.parents('form.cform'),
         nodeName = $elem[0].nodeName.toLowerCase();
-        
+       
         /* is the field active? */
         if (focus) {
             /* in the CSS, this active class shows the corresponding buttons and checkboxes  */
             if (!$form.hasClass('comment-nologin')) {
-                $form.addClass('active'); 
-            } 
-            
+                $form.addClass('active');
+            }
+           
             /* make this element active and the text black */
             $elem.addClass('active').css({
                 'color' : 'black'
             });
-            
+           
             /* remove default text */
             if ($elem.attr('title')) {
                 if ($elem.val() == $elem.attr('title')) {
                     $elem.val('');
                 }
             }
-   
+  
             if (nodeName === 'textarea') {
                 if ($elem.attr('id') === 'usr-comment') {
                     $elem.TextAreaExpander('38');
                 }  else {
                     $elem.TextAreaExpander($elem.height());
-                } 
+                }
             }
-            
+           
         /* else we are leaving the element */
         } else {
             setTimeout(function(){
                 if ($elem.length) {
                     var isEmpty = ($.trim($elem.val()) === '') ? true : false;
-                    /* 
+                    /*
                         we no longer check if the facebook checkbox is active
                         $form.find('input[type=checkbox]:checked').length === 0 && $form.find('input[type=checkbox]:focus').length === 0
                     */
@@ -4337,12 +5163,12 @@ de.bild.community = (function($){
                         $elem.removeClass('active').css({
                             'color': ''
                         });
-                        
+                       
                         /* put the default text back in */
                         if ($elem.attr('title')) {
                             $elem.val($elem.attr('title'));
-                        } 
-                        
+                        }
+                       
                         /* set textarea */
                         if (nodeName === 'textarea') {
                             $elem.css('height', '');
@@ -4365,27 +5191,31 @@ de.bild.community = (function($){
      */
     function shrinkComments($elem){
         var $comments = (!$elem) ? $('p.post-content , p.thread-body , div.userThread span.entry-content', $contentWrapper) : $elem.find('p.post-content');
+
         if (!$comments || $('div.comments').hasClass('comments-expanded')) {
             return;
         }
+
         $comments.each(function(){
             var $oneComment = $(this),
             $commentMore = $oneComment.find('span.comment-more a.more');
+
             /* PROCO-785 - comments truncated on the server for forum comments */
             if ($commentMore.length > 0) {
                 $commentMore.click(function(e){
                     e.preventDefault();
-                    $oneComment.addClass('expanded-comment');             
+                    $oneComment.addClass('expanded-comment');            
                 });
                 return true;
-            }   
+            }  
+
             if (!$oneComment.data('longTxt')) {
                 var text = $.trim($oneComment.find('a.more').remove().end().html());
                 $oneComment.data('longTxt', text);
-                /* 
+                /*
                     Ab zeichen 195 nach einem Leerzeichen suchen und dann das Kommentar abschneiden
                     und wenn es kein Leerzeichen gibt
-                    replace <br> 
+                    replace <br>
                 */
                 text = text.replace(/<br>|<br\/>/g, '|');
                 if (text.length > 195) {
@@ -4397,7 +5227,7 @@ de.bild.community = (function($){
                             /* if there are many spaces we can cut off at the end */
                             if (text.split(' ').length > 10) {
                                 text = text.substring(0, 200) + ' ';
-                            /* if there are many chars but not many line breaks */ 
+                            /* if there are many chars but not many line breaks */
                             } else {
                                 text = text.substring(0, 50) + ' ';
                             }
@@ -4432,14 +5262,16 @@ de.bild.community = (function($){
                     }
                 }
             }
+
             $('a.more', $oneComment).click(function(e){
                 e.preventDefault();
                 expandComment($(this).parent());
             });
-            
+           
         });
+
         if ($elem) {
-           return $elem; 
+           return $elem;
         }
     };
     /**
@@ -4466,8 +5298,8 @@ de.bild.community = (function($){
                 if ($('div.comments a.collapse').length) {
                     /* lengthen */
                     if ($this.html() != $this.data('longTxt')) {
-                       $this.html($this.data('longTxt')).hide().fadeIn(settings.fadeSpeed); 
-                    } 
+                       $this.html($this.data('longTxt')).hide().fadeIn(settings.fadeSpeed);
+                    }
                 } else {
                     /* shorten */
                     $this.html($this.data('shortTxt')).hide().fadeIn(settings.fadeSpeed).append(templates.moreHTML);
@@ -4496,7 +5328,7 @@ de.bild.community = (function($){
      */
     function getCommentbox(elem){
         var $elem = $(elem);
-    
+   
         /* stop click if disallowed */
         if ($elem.data('clickOff')) {
             //if the facebook check button is out of screen, jump to element */
@@ -4506,31 +5338,33 @@ de.bild.community = (function($){
                 de.bild.utils.scrollTo(targetOffset);
             };
             return;
-        }  
+        } 
         /* no more clicky click until we say so */
         $elem.data('clickOff', true);
-        
+       
         /* get the parent */
         var $post = $elem.parents('li.post');
-        
+       
         /* if a form is already there */
         if ($post.find('ol.threaded-comment-list form').length === 0) {
             de.bild.httpFist.load({
                 'obj': elem,
                 'callback': function(html, $target){
-                    
+                   
                     /* if threaded */
                     if ($post.find('ol').length) {
                         var $module = $post.find('ol:eq(0)').append(templates.threadedCommentItem.replace('%CONTENT%', $(html).html()));
-                    /* this condition for profile pages*/    
+
+                    /* this condition for profile pages*/   
                     } else if ($post.find('div.post-actions').length) {
                         $post.find('div.post-actions').after(templates.threadedCommentList.replace('%CONTENT%', $(html).html()));
+
                     } else {
                         $post.append(templates.threadedCommentList.replace('%CONTENT%', $(html).html()));
                     }
                     /* Scroll to comment field and focus */
                     var $threadField = $('#usr-comment-threaded');
-                 
+                
                     /* if the facebook check button is out of screen, jump to element */
                     var $fbcheckbox = $('#fb-threaded');
                     if ($fbcheckbox.length && de.bild.utils.inViewport($fbcheckbox) === 0) {
@@ -4562,14 +5396,14 @@ de.bild.community = (function($){
                     $doc.on('click', docClickHandler);
                     /* clicky click back on */
                     $elem.data('clickOff', false);
-                }   
+                }  
             });
-            
-        // just focus the exisiting form    
-        } else {   
+           
+        // just focus the exisiting form   
+        } else {  
             $('#usr-comment-threaded').focus();
         }
-        
+       
         return false;
     };
     /**
@@ -4589,11 +5423,12 @@ de.bild.community = (function($){
         var $commentField = $('#usr-comment');
         //Hover Effekt vom Abschicken Button wegnehmen
         $elem.find('input[type=submit]').blur();
-        
+       
         // if we have a valid message send it off
         // trim the contents
         var commentFieldVal = de.bild.utils.trim($commentField.val());
-        
+       
+
         if (commentFieldVal !== '' && commentFieldVal !== $commentField.attr('title')) {
             // insert trimmed content in form
             $commentField.val(commentFieldVal);
@@ -4606,25 +5441,28 @@ de.bild.community = (function($){
                 callback = function(response, type){
                     removeLoadingLayer();
                     if (response) {
+
                         var $fieldset = $elem.find('fieldset');
                         if (response.form) {
                             $fieldset.remove();
                             $elem.append($(response.form));
                         }
-                        if (response.status === 'error') { 
-                            if (response.message) { 
+
+                        if (response.status === 'error') {
+                            if (response.message) {
                                 showLightBox({
                                     'content' : templates.lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
                                 });
-                            } 
+                            }
                             return;
-                        } 
+                        }
+
                         var $textArea = $('#usr-comment');
                         // successful message
                         if (response.status === 'success' && response.comments) {
                             // is box checked? if so, send to FB
                             var $newComs = $(response.comments);
-                            $newComs.hide();                         
+                            $newComs.hide();                        
                             // first comment?
                             var $comments = $elem.parents('div.comments'), $ol = $comments.find('ol').eq(0);
                             // if this is the first comment that we are seeing
@@ -4633,7 +5471,7 @@ de.bild.community = (function($){
                                 $comments.find('div.sys-message').replaceWith('<ol/>');
                                 $ol = $comments.find('ol').eq(0);
                                 // no user icon in the orginal form?
-                                if ($comments.find('img.usr-ico') != 0)
+                                if ($comments.find('img.usr-ico') == 0)
                                     $ol.addClass('no-icons');
                             }
                             $ol.prepend($newComs);
@@ -4642,35 +5480,35 @@ de.bild.community = (function($){
                             // reset form
                             $elem.removeClass('active');
                             userCommentCount++;
-                            
+                           
                             // update the tab number
-                            var tabCommentCount = $('#ugc-comment-count'), commentCount = parseInt($.trim(tabCommentCount.text()));
-                            if (typeof commentCount === 'number') {
-                                tabCommentCount.text(commentCount + 1);
-                            }
+                            updateCount($('#ugc-comment-count'), 1);
+
                             // we check for new comments
                             checkforNewComments(true);
-                        
+                       
                         // error
                         } else {
                            setFormFieldState($textArea,true);
+
                         }
-                    
+                   
+
                         if (response.form) {
-                            var $textArea = $('#usr-comment'); 
-                            /* success? */        
+                            var $textArea = $('#usr-comment');
+                            /* success? */       
                             if (response.status === 'success') {
                                 var $success = $elem.find('p.success');
-                                if ($success.length) { 
+                                if ($success.length) {
                                     delayToFade($success, settings.delayToFade, function(){
                                         $elem.removeClass('active').find('fieldset').show();
                                     });
-                                } 
+                                }
                                 /* reset form */
                                 $elem.find('input[type!=submit][type!=hidden]').val('');
                                 setFormFieldState($textArea, false);
                                 checkforNewComments(true);
-                                
+                               
                              /* no success :( */
                             } else {
                                  /* all fields should be be active*/
@@ -4679,45 +5517,46 @@ de.bild.community = (function($){
                                 setFormFieldState($textArea,true);
                             }
                         }
-                    }     
-                    
+                    }    
+                   
                 };
+
             /* premoderation, just show success message  */
-            } else { 
+            } else {
                 callback = function(response, type){
                     removeLoadingLayer();
                     if (response) {
-                        
+                       
                         var $fieldset = $elem.find('fieldset');
                         if (response.form) {
                             $fieldset.hide();
                             $elem.html($(response.form));
                         }
-                        
-                        if (response.status === 'error') { 
-                            if (response.message) { 
+                       
+                        if (response.status === 'error') {
+                            if (response.message) {
                                 showLightBox({
                                     'content' : templates.lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
                                 });
-                            } 
+                            }
                             return;
-                        } 
-                        
+                        }
+                       
                         if (response.form) {
-                            var $textArea = $('#usr-comment'); 
-                            /* success?  */        
+                            var $textArea = $('#usr-comment');
+                            /* success?  */       
                             if (response.status === 'success') {
                                 var $success = $elem.find('p.success');
-                                if ($success.length) { 
+                                if ($success.length) {
                                     delayToFade($success, settings.delayToFade, function(){
                                         $elem.removeClass('active').find('fieldset').show();
                                     });
-                                } 
+                                }
                                 /* reset form  */
                                 $elem.find('input[type!=submit][type!=hidden]').val('');
                                 setFormFieldState($textArea, false);
                                 checkforNewComments(true);
-                                
+                               
                             /* no success :(  */
                             } else {
                                 /* all fields should be be active  */
@@ -4725,8 +5564,9 @@ de.bild.community = (function($){
                                 /* adjust the height of the textarea to its content  */
                                setFormFieldState($textArea,true);
                             }
-                        }  
-                    /* no response? network fail */    
+                        } 
+
+                    /* no response? network fail */   
                     } else {
                         /*PROCO-994*/
                         $elem.find('fieldset')
@@ -4761,7 +5601,7 @@ de.bild.community = (function($){
      * @param {Object} elem - submitted form
      * @private
      */
-    function makeThread(elem){        
+    function makeThread(elem){       
         var $elem = $(elem),
         $text = $('#usr-comment-threaded'),
         /* the list element that houses the form*/
@@ -4775,7 +5615,7 @@ de.bild.community = (function($){
         if (textVal !== '' && textVal !== $text.attr('title')) {
             /* insert trimmed content in form*/
             $text.val(textVal);
-            
+           
             var dataType = 'json',
             callback;
             /* post moderation goes straight into the list
@@ -4783,59 +5623,61 @@ de.bild.community = (function($){
             if ($elem.hasClass('postmoderation')) {
                 callback = function(response, type){
                     removeLoadingLayer();
-                    if (response) {      
-                    
-                        if (response.status === 'error') { 
-                            if (response.message) { 
+                    if (response) {     
+                   
+                        if (response.status === 'error') {
+                            if (response.message) {
                                 showLightBox({
                                     'content' : templates.lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
                                 });
-                            } 
+                            }
                             return;
-                        } 
-                                      
+                        }
+                                     
                         $elem.remove();
-                        
+                       
+
                         var $textArea = $('#usr-comment');
                         /*success message*/
                         if (response.status === 'success' && response.comments) {
-                                var $newComs = $(response.comments);                                                        
-                                $newComs.hide(); 
+
+                                var $newComs = $(response.comments);                                                       
+                                $newComs.hide();
                                 //remove threaded-comment-area
-                             $parent.remove();                                                                                                               
-                                $parentOl.append($newComs);                                                                                    
+                             $parent.remove();                                                                                                              
+                                $parentOl.append($newComs);                                                                                   
                                 /*fading new comment*/
                                 $('li.newComment:hidden', $parentOl).fadeIn(settings.fadeSpeed);
                                 /* reset form*/
                                 $elem.removeClass('active');
                                 userCommentCount++;
                                 /* update the tab number*/
-                                var tabCommentCount = $('#ugc-comment-count'), commentCount = parseInt($.trim(tabCommentCount.text()));
-                                if (typeof commentCount === 'number') {
-                                    tabCommentCount.text(commentCount + 1);
-                                }
+     
+                                updateCount($('#ugc-comment-count'), 1);
+
                             /* we check for new comments*/
                             checkforNewComments(true);
                             $doc.off('click', docClickHandler);
+
                         /* error*/
                         } else {
                             setFormFieldState($textArea,true);
                         }
                     }
                 };
-            } else { /* premoderation, just show success message */               
+            } else { /* premoderation, just show success message */              
                 callback = function(response, type){
                     if (response) {
-                        
-                        if (response.status === 'error') { 
-                            if (response.message) { 
+                       
+                        if (response.status === 'error') {
+                            if (response.message) {
                                 showLightBox({
                                     'content' : templates.lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
                                 });
-                            } 
+                            }
                             return;
-                        }                       
-                        
+                        }                      
+                       
                         if(response.status === 'success' && response.form){
                             /*insert success message*/
                             $text.val($text.attr('title')).blur();
@@ -4853,11 +5695,11 @@ de.bild.community = (function($){
                     }
                 };
             }
-            
+           
             if ($elem.find('fieldset').find('input#fb-cmt-post:checked').length || $elem.find('fieldset').find('input#fb-threaded:checked').length){
                 de.bild.social.postingCommentToFeed();
             }
-                                    
+                                   
             submitForm($elem.find('fieldset'), {
                 'url' : $elem.attr('action'),
                 'params' : $elem.serialize(),
@@ -4869,6 +5711,7 @@ de.bild.community = (function($){
         }
         return false;
     };
+
     /* ============================================= START REAL-TIME COMMENTING */
     /**
      * kicks off the timeout to check for new comments after the specified delay
@@ -4882,14 +5725,14 @@ de.bild.community = (function($){
         if (variables.liveCommentsOn && settings.allowLiveComments) {
             if (reset === true) {
                 commentRequestCount = 0;
-            }    
+            }   
             if (commentUpdateTimeout) {
                 clearTimeout(commentUpdateTimeout);
-            } 
-            /* check to see of we've exceed the maximum allowed requests  */ 
+            }
+            /* check to see of we've exceed the maximum allowed requests  */
             if (commentRequestCount !== variables.commentRequestMaximum) {
                 commentUpdateTimeout = setTimeout(updateComments, variables.checkForNewCommentsDelay);
-            }    
+            }   
         } else {
             if (commentUpdateTimeout) clearTimeout(commentUpdateTimeout);
         }
@@ -4908,6 +5751,7 @@ de.bild.community = (function($){
         if ($comments.length < 1) {return;}
         var $hint = $comments.find('a.hint.new-comments');
         if ($hint.length === 0) {return;}
+
         var _url = de.bild.settings.community.urls.getNumberOfComments.replace('%UGCID%', variables.ugcid),
         jqxhr =  $.ajax({
             url: _url,
@@ -4915,9 +5759,11 @@ de.bild.community = (function($){
             cache: true
         })
         .done(function(data, textStatus, xhr){
+
             var lastModified = xhr.getResponseHeader('Last-Modified'),
             newComments = xhr.getResponseHeader('X-CommentCount'),
             newCommentsDelta;
+
             if (newComments > variables.totalComments) {
                 /* the total of new comments minus those that the user has made */
                 newCommentsDelta = (newComments - variables.totalComments) - userCommentCount;
@@ -4927,18 +5773,21 @@ de.bild.community = (function($){
                     .data('newComments', newComments)
                     .data('lastModified', lastModified)
                     .get(0).innerHTML = (newCommentsDelta > 1) ? de.bild.settings.community.lang.newComments.replace('%COUNT%',newCommentsDelta) : de.bild.settings.community.lang.newComment;
-                }    
+                }   
             }
+
             /* bump up the count and do it again */
             commentRequestCount++;
             checkforNewComments();
+
         })
         .fail(function(){
             $hint.hide();
         });
     };
-    
+   
     /* ============================================= END REAL-TIME COMMENTING */
+
     /**
      * Sets up all the live functionality of buttons and forms for UGC comment fields
      * @function
@@ -4947,8 +5796,9 @@ de.bild.community = (function($){
      * @private
      */
     function setupCommentEvents(){
+
         /* General function for textareas. Default text is deleted and the colour of the text changes to black. When the doc is clicked, everything will be reset. It used to be onBlur.  */
-        de.lib.live($body, 'form.cform textarea:not(#usr-comment-threaded), form.cform input[type="text"], form.cform input[type="email"], form.cform input[type="tel"], div.comments input[type="text"]',  { 
+        de.lib.live($body, 'form.cform textarea:not(#usr-comment-threaded), form.cform input[type="text"], form.cform input[type="email"], form.cform input[type="tel"], div.comments input[type="text"]',  {
             focus: function(){
                 var $this = $(this);
                 setFormFieldState($this, true);
@@ -4956,6 +5806,7 @@ de.bild.community = (function($){
                     var $target = $(e.target);
                     /* don't catch clicks on the form area */
                     if ($target.parents('form.cform').length === 0) {
+
                         setFormFieldState($this, false);
                         $doc.off('click', docClickHandler);
                     }
@@ -4970,7 +5821,8 @@ de.bild.community = (function($){
                     $this.val(value);
                 }
             }
-        });  
+        }); 
+
         /* Bei Klick auf Kommentieren Kommentarformular einblenden */
         de.lib.live($contentWrapper, 'div.comments li a.reply','click', function(e){
             e.preventDefault();
@@ -5005,10 +5857,11 @@ de.bild.community = (function($){
             }
             expandComment();
         });
+
         /* Loading new comments for real-time comments and sub-comments*/
         de.lib.live($contentWrapper, 'div.comments a.hint.new-comments, ol.threaded-comment-list li > a.hint','click', function(e){
-           e.preventDefault();          
-           var $this = $(this); 
+           e.preventDefault();         
+           var $this = $(this);
             /*add Loadinglayer */
             loadingLayer($(this));
             de.bild.httpFist.load({
@@ -5019,11 +5872,12 @@ de.bild.community = (function($){
                     var $this = $(this),
                     newComments = $this.hasClass('new-comments'),
                     $elem;
+
                     /* Replace for new comments, append for children*/
                     if(newComments){
                         $elem = $('ol', $this.parents('div.comments')).eq(0);
                         $elem.html($newComs);
-                        
+                       
                         /* here we are setting the value of total comments loaded AFTER click*/
                         if ($this.data('newComments') > variables.totalComments){
                             variables.totalComments = $this.data('newComments');
@@ -5031,11 +5885,14 @@ de.bild.community = (function($){
                         $this.hide();
                         /* reset the usercomment count after the new comment alert has been click*/
                         userCommentCount = 0;
+
                     } else {
-                       $elem = $this.parents('ol').eq(0); 
+                    	//remove all comment except the last and append the new loaded
+                        $elem = $this.parents('ol').eq(0); 
                         $elem.children('li:gt(0)').remove();
-                        $elem.append($newComs);          
+                        $elem.append($newComs);   
                     }
+
                     /*fading new comments*/
                     removeLoadingLayer();
                     $('li.post:hidden', $elem).fadeIn(settings.fadeSpeed);
@@ -5044,14 +5901,19 @@ de.bild.community = (function($){
                     removeLoadingLayer();
                 }
             });
-        });     
+        });    
     };
+
 /* ================================================================================================================ END ARTICLE COMMENTS FORMS, BUTTONS, EVENTS */
-/* ================================================================================================================ START LIGHTBOX FORMS 
+
+/* ================================================================================================================ START LIGHTBOX FORMS
+
     dependencies:
     de.bild.social.userPhotos
     de.bild.social.publishStream
+
 */
+
     /**
      * setups the ajax upload for upload forms
      * the event delays the submission until we've built in an iframe
@@ -5062,25 +5924,33 @@ de.bild.community = (function($){
      */
     function setupLightboxForms() {
         /*  Lightbox Form  submit  - we capture upload forms here too ! :) */
-       
+      
         /* Avoiding accidental submit by pressing return */
         de.lib.live($body, 'div.lightbox form.cform input[type!=submit]','keypress', function(e){
             var code = (e.keyCode ? e.keyCode : e.which);
-            if(code == 13) {                    
-                return false;           
+            if(code == 13) {                   
+                return false;          
             }
         });
-        
+       
         de.lib.live($body, 'div.lightbox form.cform','submit', function(e){
             e.preventDefault();
-            submitLightBoxForm($(this));
+            var $this = $(this);
+            if ($this.attr('id') === 'blockinguser') {
+                handleBlockUser($this);
+            } else {
+                submitLightBoxForm($this);
+            }
+           
         });
+
         /* Extra close button in lightbox form
          reset button in light box form - even though it's a reset button :) */
         de.lib.live($body, 'div.lightbox form.cform input.btn-close, div.lightbox form.cform input.btn-reset','click', function(e){
             closeLightBox();
         });
     };
+
     /**
      * does what the name says
      * @function
@@ -5092,10 +5962,12 @@ de.bild.community = (function($){
      function submitLightBoxForm($form) {
         /*validate required fields */
         if (!validateForm($form)) return false;
+
         /* crude - this should not really be done this way
             in upload forms
             remove default description text from textarea before submit */
         clearTextareas($form);
+
         /* don't submit upload forms via this method*/
         if (!$('input:file', $form).length) {
             /* check for fb box in multi upload */
@@ -5127,7 +5999,7 @@ de.bild.community = (function($){
                             'params' : $form.serialize(),
                             'method' : $form.attr('method'),
                             'timeout' : '15000', // increase timeout here because we are uploading to FB in background
-                            'callback' : function(response, type){ 
+                            'callback' : function(response, type){
                                 $form.css('opacity', 1).parents('div.section').replaceWith(response);
                             }
                          });
@@ -5149,7 +6021,7 @@ de.bild.community = (function($){
                                 }
                             });
                             return;
-                        } 
+                        }
                         $form.css('opacity', 1).parents('div.section').replaceWith(response);
                     }
                  });
@@ -5177,6 +6049,7 @@ de.bild.community = (function($){
                     }, {
                         scope: 'publish_stream,user_photos'
                     } );
+                    
                 /* user had permissions, upload that thang */
                 }else{
                     handleUpload($form, 'lightbox');
@@ -5188,6 +6061,7 @@ de.bild.community = (function($){
         }
         return false;
      };
+
     /**
      * sets up the events to opensreport form in a lightbox
      * @function
@@ -5197,7 +6071,7 @@ de.bild.community = (function($){
      */
      function setupReportFormEvents(){
         /* Report Lightbox trigger  */
-        de.lib.live($contentWrapper, 'div.comments div.post-actions a.report, div.profileHead ul.fnc a.report','click', function(e){
+        de.lib.live($contentWrapper, 'div.comments div.post-actions a.report, ul.fnc a.report','click', function(e){
             e.preventDefault();
             if (de.bild.sso.isLoggedIn() === false ) {
                 de.bild.sso.login();
@@ -5206,16 +6080,18 @@ de.bild.community = (function($){
                     'obj': this,
                     'callback': function(response, $target){
                         showLightBox({
-                            'content': response
+                         'content': response
                         });
                     }
-                }); 
+                });
             }
         });
      };
+
 /* ================================================================================================================ END LIGHTBOX FORMS */
+
 /* ================================================================================================================ START FORUMS */
-    
+   
     /* FORUM FORMS
     ///////////////////////////       */
     /**
@@ -5236,13 +6112,13 @@ de.bild.community = (function($){
                 $elem.find('input[type=submit]').blur();
                 if (!validateForm($elem)) return false;
                 var $fieldset = $elem.find('fieldset').first();
-                
+               
                 submitForm($fieldset, {
                     'url': $elem.attr('action'),
                     'params': $elem.serialize(),
                     'method': 'POST',
                     'callback': function(response, type){
-                    
+                   
                         if ($elem.find('input#fb-cmt-post:checked').length || $elem.find('input#fb-threaded:checked').length) {
                             de.bild.social.postingCommentToFeed($elem.serialize() + '&threadid=' + response);
                         }
@@ -5261,11 +6137,15 @@ de.bild.community = (function($){
             });
         }
     };
-    
+   
+
 /* ================================================================================================================ END FORUMS */
+
     /* NETWORK LAYER DROPDOWN
     ///////////////////////////       */
+
 /* ================================================================================================================ START NETWORK BUTTONS + SEND TO A FRIEND */
+
     /**
      * Controlls the opening network layer and send to a friend lightbox
      * @function
@@ -5274,7 +6154,7 @@ de.bild.community = (function($){
      * @private
      */
     function setupNetworkLayer(){
-        
+       
         de.lib.live($body, '#networks', {
             mouseenter: function(){
                 $(this).addClass('active').find('ul').show();
@@ -5283,7 +6163,7 @@ de.bild.community = (function($){
                 $(this).removeClass('active').find('ul').hide();
             }
         });
-        
+       
         de.lib.live($('#networks'), 'a:first', 'click', function(e){
             e.preventDefault();
         });
@@ -5319,37 +6199,46 @@ de.bild.community = (function($){
             });
         });
     };
+
 /* ================================================================================================================ END NETWORK BUTTONS + SEND TO A FRIEND */
+
 /* ================================================================================================================ START NOTIFICATION POPUP */
-    
+   
     var notificationCookie = 'new_notification';
     /**
      * checks for cookie to see if new notification is there and triggers lightbox
      * @function
-     * @name setupSecurityQuestions
+     * @name setupNotificationPopup
      * @memberOf de.bild.community
      * @private
      */
- function setupNotificationPopup() {
-  if($.cookie(notificationCookie) && parseInt($.cookie(notificationCookie)) === 1) {
-   var url = de.bild.settings.community.urls.newfeatureNotification;
-   de.bild.httpFist.load({
-    'url' : url,
-    'callback' : function(response) {
-     showLightBox({
-      'content' : response,
-      'callback' : function() {
-       $.cookie(notificationCookie, null);
-      },
-      'onClose' : function() {
-      }
-     });
-    }
-   })
-  }
- }
+
+	function setupNotificationPopup() {
+		if($.cookie(notificationCookie) && parseInt($.cookie(notificationCookie)) === 1) {
+			var url = de.bild.settings.community.urls.newfeatureNotification;
+			de.bild.httpFist.load({
+				'url' : url,
+				'callback' : function(response) {
+					showLightBox({
+						'content' : response,
+						'callback' : function() {
+							$.cookie(notificationCookie, null);
+						},
+						'onClose' : function() {
+
+						}
+					});
+
+				}
+			})
+		}
+
+	}
+
 /* ================================================================================================================ END NOTIFICATION POPUP */
-    
+
+   
+
     /* AJAX LINKS FOR THE FIST
     ///////////////////////////       */
     /**
@@ -5371,7 +6260,7 @@ de.bild.community = (function($){
                 '$target' : $target,
                 'callback' : function(response,$target) {
                     initReattach($target);
-                    
+                   
                     /* set up only when needed onload*/
                     if ($('div.comments').length) {
                         setTimeout(function(){
@@ -5380,15 +6269,15 @@ de.bild.community = (function($){
                         /* tell the world about it and pass the ugc id of the article*/
                         $body.trigger('commentEventsSetup', {ugcid: 'ugc-' + variables.ugcid});
                     }
-                    
+                   
                 },
                 'error' : function(xhr, textStatus, $target){
                     if ($target.length) {
-                        /* not live*/
-                        if (document.location.host.match(/bild\-und\-partner\.de/i) != null) {
+                        /* if not live show the returned error */
+                        if (de.bild.env.domain !== 'bild.de') {
                             $target.html(templates.lbMessage.replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error).replace('%CONTENT%', xhr.status + ' : '+ textStatus));
-                        } 
-                    }           
+                        }
+                    }          
                  }
             });
         });
@@ -5421,7 +6310,7 @@ de.bild.community = (function($){
                 }
             });
         });
-  
+ 
         /* Onchange event for select boxes */
         de.lib.live($contentWrapper, 'select.' + settings.ajaxClassReplace, 'change', function(e){
             e.preventDefault();
@@ -5437,6 +6326,9 @@ de.bild.community = (function($){
                 }
             });
         });
+        /* Onsubmit event for forms that open lightboxes (usually upload forms)
+         we disable the esc/body click close for these to prevent people losing data */
+
   de.lib.live($contentWrapper, 'form.' + settings.ajaxClassLightBox, 'submit', function(e) {
    e.preventDefault();
    var $this = $(this), thisAction = $this.attr('action');
@@ -5454,6 +6346,7 @@ de.bild.community = (function($){
    }
   });
   };
+
     /* INIT AND RE-INIT FUNCTIONS
     ///////////////////////////       */
     /**
@@ -5484,7 +6377,7 @@ de.bild.community = (function($){
             }
         },
         /**
-         * when a user is logged in in another tab for instance, loggedin content will be shown 
+         * when a user is logged in in another tab for instance, loggedin content will be shown
          * let's update the bar if necessary
          * !! this should be moved to de.bild.sso and just triggered from here
          * @function
@@ -5497,13 +6390,19 @@ de.bild.community = (function($){
                 de.bild.sso.renderUserBar();
             } else if (de.bild.sso.isLoggedIn() === false && de.bild.sso.isUserBarOn()) {
                 de.bild.sso.renderUserBar();
-            } 
+            }
         },
+
         like : function($el){
-          var $parent = ($el) ? $el : $contentWrapper;  
+          var $parent = ($el) ? $el : $contentWrapper; 
           saveLikeStatus($el);
+        },
+
+        followerList : function($el){
+          var $parent = ($el) ? $el : $contentWrapper; 
+          setupFollowerList($el);
         }
-        
+       
     };
     /**
      * loops through the reattach object and executes its functions
@@ -5521,7 +6420,7 @@ de.bild.community = (function($){
             }
         }
     };
-    /** 
+    /**
      * initialise the requisite functions
      * @function
      * @name init
@@ -5531,52 +6430,66 @@ de.bild.community = (function($){
      */
     function init(callback){
         /* assign DOM vars */
-        $contentWrapper = $('#contentWrapper');
+        $contentWrapper = $('#innerWrapper');
         $body = $('body');
         $doc = $(document);
+
         /* set up all UGC events */
         setAjaxLinks();
-        
+       
         shrinkComments();
+
         /* community comments :) */
         setupCommentEvents();
-        
+       
         /* are comments already in the page? */
-        
+       
         if ($('div.comments').length) {
             checkforNewComments();
         }
-        
+       
         /* forum related */
         setupThreadForm();
+       
         /* lightbox forms */
         setupLightboxForms();
+
+        /* send to a friend list */
         setupNetworkLayer();
+       
         /* security question lightboxes */
         setupSecurityQuestions();
+       
         /* 1414 - no numbers in JS Functions, m'kay? */
         setupFourteenFourteenForm();
-        
+       
         /* i like! */
         setupLikeButtonsEvents();
-        
+       
         /* parse likes */
         saveLikeStatus($contentWrapper);
-        
+       
         /* check for anon comments (even when content not loaded by fist) */
         checkAnonLikes();
-       
+      
        /* profile pages */
         setupProfileEvents();
         getProfileData();
+
         setupReportFormEvents();
-        /* 
-            Paket 2 
+
+        /*
+            Paket 2
         */
+
         setupNotificationPopup();
-        //followerList();
+  		setupCommunityCenter();
+        setupFollowerList();
+        setupFollowButtons();
+        setupBusinessCardOverlays();
+
         if (typeof callback === 'function') {
-         callback(); 
+         callback();
         }
     };
     /* public methods */
@@ -5586,7 +6499,7 @@ de.bild.community = (function($){
             init(callback);
             return true;
         },
-        
+       
         'vars' : variables,
         'update' : function(data){
             return updateVars(data);

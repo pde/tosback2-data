@@ -1,0 +1,257 @@
+// WWDOP Pages.
+if (location.href.indexOf("nick") !== -1 && location.href.indexOf("/thebighelp/") !== -1) {
+
+var WWDOPCONFIG = {};
+
+WWDOPCONFIG.liveTwitterRate = "300";
+WWDOPCONFIG.singleTwitterRate = "300";
+WWDOPCONFIG.pictureRate = "180";
+WWDOPCONFIG.eventDetailsTwitterStatus = "on";
+
+// Set cookie.
+var wwdopDate = new Date();
+wwdopDate.setTime(wwdopDate.getTime()+(2*24*60*60*1000));
+
+var expires = "; expires="+wwdopDate.toGMTString();
+
+document.cookie = "2011-wwdop" + "=" + "2011-wwdop" +expires+"; path=/";
+
+} else { 
+
+(function(w) {
+
+if( location.href.indexOf("nickjr") !== -1 && location.href.indexOf("/standalone/") !== -1 ){
+return;
+}
+
+var DOMContentLoaded;
+var isReady = false;
+var isNick = false;
+
+var overlayImagePath = "http://www.nick.com/nick-assets/big-help/roadblock/roadblock-overlay.png";
+var overlayImageWidth = "760";
+var overlayImageHeight = "515";
+var currentOverlayStatus = "off";
+var currentOverlayCookieName = "2011-wwdop";
+var overlayHref = "http://www.worldwidedayofplay.com";
+
+if ( document.addEventListener ) {
+DOMContentLoaded = function() {
+document.removeEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+create();
+};
+
+} else if ( document.attachEvent ) {
+DOMContentLoaded = function() {
+if ( document.readyState === "complete" ) {
+document.detachEvent( "onreadystatechange", DOMContentLoaded );
+create();
+}
+};
+}
+
+function doScrollCheck() {
+if ( isReady ) {
+return;
+}
+
+try {
+document.documentElement.doScroll("left");
+} catch( error ) {
+setTimeout( doScrollCheck, 1 );
+return;
+}
+
+create();
+}
+
+function ready() {
+NickLog.debug(">Overlay>ready!");	
+if ( document.readyState === "complete" ) {
+return create();
+}
+if ( document.addEventListener ) {
+document.addEventListener( "DOMContentLoaded", DOMContentLoaded, false );
+window.addEventListener( "load", create, false );
+} else if ( document.attachEvent ) {
+document.attachEvent("onreadystatechange", DOMContentLoaded);
+window.attachEvent( "onload", create );
+if ( document.documentElement.doScroll ) {
+doScrollCheck();
+}
+}
+}
+
+function createCookie(name,value,days) {
+if (days) {
+var date = new Date();
+date.setTime(date.getTime()+(days*24*60*60*1000));
+var expires = "; expires="+date.toGMTString();
+}
+else var expires = "";
+document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+var nameEQ = name + "=";
+var ca = document.cookie.split(';');
+for(var i=0;i < ca.length;i++) {
+var c = ca[i];
+while (c.charAt(0)==' ') c = c.substring(1,c.length);
+if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+}
+return null;
+}
+
+function remove() {
+NickLog.debug(">Overlay>remove!");
+
+if ( isNick ) {
+NICK.utils.showSwfs();
+}
+document.body.removeChild(document.getElementById('roadblockModal'));
+document.body.removeChild(document.getElementById('roadblockOverlay'));
+
+return false;
+}
+
+function isNickProper() {
+if(!isNick) return false;
+
+var domain = NICK.utils.getDomain();
+return (domain == "www.nick.com" || domain == "t.nick.com" || domain == "localhost" || domain == "www.nick-d.mtvi.com" || domain == "www.nick-q.mtvi.com");
+}
+
+function isAdFreeOverlay() {
+return (isNick && NICK.get("adfree") == "true");
+}
+
+function create() {
+NickLog.debug(">Overlay>create!");
+if ( isReady ) {
+NickLog.debug(">Overlay>create: exiting!");
+return false;
+}
+
+if ( !document.body ) {
+return setTimeout( create, 13 );
+}
+
+isNick = (typeof NICK == "object" && typeof NICK.get == "function");
+isReady = true;
+
+display();
+}
+
+function go() {
+document.location = overlayHref;
+
+return false;
+}
+
+function display( voting, phase ) {
+
+if ( currentOverlayStatus == "on" ) {
+
+if(isAdFreeOverlay()) {
+NickLog.debug(">Overlay>overlay: adfree!: exiting");
+return false;
+}
+if ( readCookie(currentOverlayCookieName) != currentOverlayCookieName ) {
+createCookie(currentOverlayCookieName, currentOverlayCookieName,2);
+} else {
+NickLog.debug(">Overlay>overlay:already shown");
+return false;
+}
+} else {
+NickLog.debug(">Overlay>none:exit");
+return false;
+}
+
+if ( isNick ) {
+NICK.utils.hideSwfs();
+}
+
+var wh = (window.innerHeight || document.body.offsetHeight);
+var ww = (window.innerWidth || document.body.offsetWidth);
+var ow = overlayImageWidth;
+var oh = overlayImageHeight;
+
+// Modal overlay
+var modal = document.createElement('div');
+modal.id = 'roadblockModal';
+modal.style.position = 'absolute';
+modal.style.top = 0;
+modal.style.left = 0;
+modal.style.width = '100%';
+modal.style.height = (Math.max(
+document.documentElement.clientHeight,
+document.body.scrollHeight, document.documentElement.scrollHeight,
+document.body.offsetHeight, document.documentElement.offsetHeight
+)) + 'px';
+modal.style.backgroundColor = '#fff';
+modal.style.zIndex = 2147483640;
+modal.style.opacity = 0.8;
+modal.style.filter = "alpha(opacity=80);";
+
+// Core overlay element
+var oel = document.createElement('div');
+oel.id = 'roadblockOverlay';
+oel.style.position = 'fixed';
+oel.style.width = ow + 'px';
+oel.style.height = oh + 'px';
+oel.style.top = '10%';
+oel.style.left = '25%';
+oel.style.zIndex = 2147483641;
+
+// Close hitbox
+var close = document.createElement('div');
+close.style.position = 'absolute';
+close.style.width = '120px';
+close.style.height = '60px';
+close.style.right = '0px';
+close.style.top = '0px';
+close.style.zoom = 1;
+close.style.cursor = "pointer";
+close.style.zIndex = 2147483643;
+close.onclick = remove;
+
+// Overylay design
+var img = document.createElement('div');
+img.style.backgroundImage = "url('" + overlayImagePath + "')";
+img.style.width = overlayImageWidth + "px";
+img.style.height = overlayImageHeight + "px";
+img.style.position = 'absolute';
+img.style.zoom = 1;
+img.style.top = 0;
+img.style.left = 0;
+img.style.backgroundRepeat = "no-repeat";
+img.style.zIndex = 2147483642;	
+
+// Action hitbox	
+var action = document.createElement('div');
+action.style.position = 'absolute';
+action.style.width = '208px';
+action.style.height = '28px';
+action.style.left = '336px';
+action.style.bottom = '56px';
+action.style.zoom = 1;
+action.style.cursor = "pointer";
+action.style.zIndex = 2147483644;
+action.onclick = go;
+
+oel.appendChild(img);
+oel.appendChild(close);
+oel.appendChild(action);
+
+// Append element
+document.body.appendChild(modal);
+document.body.appendChild(oel);
+
+}
+
+ready();
+})(window);
+
+}
+

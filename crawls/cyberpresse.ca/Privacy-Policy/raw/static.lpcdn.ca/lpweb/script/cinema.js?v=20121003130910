@@ -1,0 +1,306 @@
+// JavaScript Document
+
+$j(document).ready(function() {
+
+	/* -------------------------------------------------------------------------------------------- */
+	/* gestion des étoiles dans la fiche cinema
+	/* -------------------------------------------------------------------------------------------- */
+
+	// Montre une legende pour les étoiles                                                     
+	$j("#starLaPresse").hover(
+	  function () {
+			$j("#tooltipStar").show();
+	  },
+	  function () {
+			$j("#tooltipStar").hide();
+	  }
+	);
+	
+	/* -------------------------------------------------------------------------------------------- */																												
+	/* gestion du video et des photos de la fiche de film
+	/* -------------------------------------------------------------------------------------------- */
+                                        
+	// bande annonce video.
+	$j("#voirBandeAnnonce .petitButtonVideo, #afficheFilmGauche a").click(function () {
+	    $j('#ficheCotez').css('visibility','visible');
+	    var heightBandeAnnonce = $j('#ficheResume').outerHeight();
+	    
+		$j('#bandeAnnonce').show();
+		$j('#bandeAnnonce').css('height', heightBandeAnnonce);
+		$j('#bandeAnnonce .chapitreVideo');
+		 	           
+		// S'assure que les autres sont caché.   		
+		$j('#galeriePhoto').hide();
+		$j('#slideshow').hide();
+		$j('#videos').hide();
+	});
+
+	// video
+	$j(".videoSlider a").click(function () {
+	    var jVideoSlider = $j(this).parent('.videoSlider');
+		var jVideoPlayer = $j('div.videoPreload',jVideoSlider).clone();
+		
+	    var heightVideo = $j('#ficheResume').outerHeight();
+	    var title   = $j(this).attr('videotitle');
+		var credit  = $j(this).attr('videocredit');
+		var caption = $j(this).attr('title');
+	    
+		$j('#ficheCotez').css('visibility','visible');
+		$j('#videos').show();
+		$j('#videos').css('height', heightVideo);
+		
+		// Ajoute le titre si il existe
+        if(title != "") {
+          $j('#videos p.titleVisual').html(title);
+        }
+        
+        // Ajoute le credit si il existe
+        if(credit != "") {
+          $j('#videos p.creditVisual').html(credit);
+        }
+        
+        // Ajoute le caption si il existe
+        if(caption != "") {
+          $j('#videos p.captionVisual').html(caption);
+        }
+      
+		// S'assure que les autres sont caché.   		
+		$j('#galeriePhoto').hide();
+		$j('#slideshow').hide();
+		$j('#bandeAnnonce').hide();
+		
+		$j('#videos .chapitreVideo').empty().html(jVideoPlayer.html());
+ 
+        // S'assure que le player de la bandes-annonce est Off
+        var limeLightPlayer = $j("#bandeAnnonce object")[0];		
+		if(typeof limeLightPlayer.doPause == 'function') { 
+		  limeLightPlayer.doPause();
+		}
+		
+		// créer un player de toute pièce (clone ne fonctionne pas) pour IE8 et 7 ....
+		// selon output html octobre2012
+		if($j('#videos .chapitreVideo object param').length == 0){
+ 			//console.log("IE FAIL!")
+            var id_player=$j(this).parent('.videoSlider').attr('data-mediaId');
+            
+            var playerIEfix = '<span class="LimelightEmbeddedPlayer">'
+                            + '<object type="application/x-shockwave-flash" id="limelight_player_'
+                            + id_player + '" name="limelight_player_' + id_player
+                            + '" class="LimelightEmbeddedPlayerFlash_" width="604" height="345" data="http://static.lpcdn.ca/lpweb/flash/DelveMoviePlayer.swf"><param name="movie" value="http://assets.delvenetworks.com/player/loader.swf"><param name="WMODE" value="transparent"><param name="allowScriptAccess" value="always"><param name="allowFullScreen" value="true"><param name="scale" value="showall"><param name="flashVars" value="autoplay=true&amp;autoPlayNextMedia=false&amp;playerForm=DelvePlayer&amp;mediaId='
+                            + id_player +'&share="></object></span>';
+            $j('#videos .chapitreVideo').empty().html(playerIEfix);
+
+        }
+	});
+
+
+	// Photos
+	$j(".photoSlider a").click(function (){
+	    
+	    // patch pour bug ie7
+    	$j('#ficheCotez').css('visibility','hidden');	
+	    
+	    // Met la bonne taille de photos
+		var src     = $j(this).children().attr('src');
+		var title   = $j(this).attr('phototitle');
+		var credit  = $j(this).attr('photocredit');
+		var caption = $j(this).attr('title');
+		var heightPhotoGalerie = $j('#ficheCotez').outerHeight() + $j('#ficheResume').outerHeight();
+		newsrc = src.replace("130x87", "569x379");
+		
+	    if(newsrc != $j('#photoGalerie').attr('src')){
+	        
+	  		// Gere le toogle de la photo
+        		$j('#galeriePhoto').show();
+        		$j('#galeriePhoto').css('height', heightPhotoGalerie);
+        	$j('#photoGalerie').hide().attr("src",newsrc).load(function() {
+        	    $j(this).show();
+        	    
+        	    // Ajoute le titre si il existe
+    	        if(title != "") {
+    	          $j('#galeriePhoto p.titleVisual').html(title);
+    	        }
+    	        
+    	        // Ajoute le credit si il existe
+    	        if(credit != "") {
+    	          $j('#galeriePhoto p.creditVisual').html(credit);
+    	        }
+    	        
+    	        // Ajoute le caption si il existe
+    	        if(caption != "") {
+    	          $j('#galeriePhoto p.captionVisual').html(caption);
+    	          $j('#galeriePhoto img').attr('alt', caption);
+    	          $j('#galeriePhoto img').attr('title', caption);
+    	        }
+	    	});
+	    	
+
+
+	    	
+	    }
+	    else{
+	       $j('#galeriePhoto').show(); 
+	       $j('#galeriePhoto').css('height', heightPhotoGalerie);
+	    }       
+               
+        // S'assure que le player des bandes-annonces sont Off
+        var limeLightPlayer = $j("#bandeAnnonce object")[0];		
+		if(typeof limeLightPlayer.doPause == 'function') { 
+		  limeLightPlayer.doPause();
+		}
+		
+		$j('#videos .chapitreVideo').empty();
+       
+        // S'assure que les autres sont caché.
+    	   $j('#bandeAnnonce').hide();
+    	 	   $j('#slideshow').hide();
+    	 	   $j('#videos').hide();  
+	});
+	
+	
+	// Slideshow
+	$j(".slideshowSlider a").click(function () {
+        
+        // patch pour bug ie7
+		$j('#ficheCotez').css('visibility','hidden');
+        
+        // Met la bonne taille pour la gallerie photo
+        var heightSlideshow = $j('#ficheCotez').outerHeight() + $j('#ficheResume').outerHeight() +  $j('#ficheSlider').outerHeight() ;
+        
+        // Gere le toogle du slideshow
+        $j('#slideshow').show();
+        $j('#slideshow').css('height', heightSlideshow);
+        
+        // S'assure que le player des bandes-annonces sont Off
+        var limeLightPlayer = $j("#bandeAnnonce object")[0];		
+		if(typeof limeLightPlayer.doPause == 'function') { 
+		  limeLightPlayer.doPause();
+		}
+		
+		$j('#videos .chapitreVideo').empty();
+        
+        // S'assure que les autres sont caché.
+        $j('#galeriePhoto').hide();
+		$j('#bandeAnnonce').hide();
+		$j('#videos').hide();  
+		
+        // Pour eviter confusion graphique des fleches	
+        
+        $j('#ficheSlider').css('visibility','hidden');
+		$j('#ficheSlider').css('background-color','#333333');
+        
+        // Ajoute en ajax le slideshow
+        $j.ajax({
+            type: 'POST',
+            url: '/includes/slideshow/slideshowRenderer.php',
+            data: {
+                'slideshowId' : $j(this).attr('id')
+            },
+            success: function(dataReceive){
+                if(dataReceive){
+                    $j(document).ready(function() {
+                        $j('#galleria').html(dataReceive);
+                    });
+                }
+            }
+        });
+	});
+    
+    // Ferme video trailer
+    $j("a#fermer").click(function () {
+		
+        var limeLightPlayer = $j("#bandeAnnonce object")[0];		
+		if(typeof limeLightPlayer.doPause == 'function') { 
+		  limeLightPlayer.doPause();
+		}
+
+		$j('#bandeAnnonce').hide();
+
+		/* patch pour bug ie7 */
+		$j('#ficheCotez').css('visibility','visible');	
+	});
+	
+    // Ferme photo
+	$j("a#fermerGalerie").click(function () {
+		$j('#galeriePhoto').hide();
+		
+		/* patch pour bug ie7 */
+		$j('#ficheCotez').css('visibility','visible');
+	});
+	
+	// Ferme SlideShow
+	$j("a#fermerSlideshow").click(function () {
+		$j('#slideshow').hide();
+		
+		// Pour eviter confusion graphique des fleches
+		$j('#ficheCotez').css('visibility','visible');	
+		
+		/* patch pour bug ie7 */
+		$j('#ficheSlider').css('background-color','#000000');
+		$j('#ficheSlider').css('visibility','visible');
+	});
+
+    // Ferme video
+	$j("a#fermerVideo").click(function () {
+		
+		var limeLightPlayerVideo = $j("#videos object")[0];		
+		if(typeof limeLightPlayerVideo.doPause == 'function') { 
+		  limeLightPlayerVideo.doPause();
+		}
+		
+		$j('#videos').hide();
+
+        /* patch pour bug ie - vider le place holder pour forcer stop */
+        $j('#videos .chapitreVideo').html("");
+		
+		// Pour eviter confusion graphique des fleches
+		$j('#ficheCotez').css('visibility','visible');	
+		
+		/* patch pour bug ie7 */
+		$j('#ficheSlider .listePhotos').css('visibility', 'visible');
+		
+	});
+	
+	// Gestion du ligthbox pour le critique vidéo
+	$j('.critiqueVideo a').click(function() {
+		var videoId = $j('.blocLibre175.critiqueVideo').attr('data-id');
+		$j('#dialog'+videoId+'.videoCriticLm').clone().dialog({
+			"modal": true,
+			"dialogClass":'transparent',
+			"create": function(event, ui) { $j('.ui-dialog').wrap('<div class="videooverlay"></div>'); },
+			"open": function () { $j('.ui-widget-overlay').wrap('<div class="videooverlay"></div>'); },
+			"height": 630,
+			"width": 954,
+			"closeText": 'FERMER',
+			"close": function(event, ui) { 
+			     
+			    i=0; // compteur pour ne pas détruire l'original (juste les clones)
+                $j('.videoCriticLm').each(function (){
+                    if(i != 0){
+                         $j(this).empty().remove();
+                         
+                    }
+                    i++;
+                })
+                $j('.videooverlay').each(function(){
+                    $j(this).empty().remove();
+                    
+                }); 
+
+			}
+		});
+
+		// créer un player de toute pièce (clone ne fonctionne pas) pour IE8 et 7 ....
+		if($j('.videooverlay #dialog'+videoId+' object param').length == 0){            
+            var playerIEfix =  '<span class="LimelightEmbeddedPlayer">'
+            				+ '<object type="application/x-shockwave-flash" id="limelight_player_'
+                            + videoId + '" name="limelight_player_' + videoId
+                            + '" class="LimelightEmbeddedPlayerFlash_" width="924" height="508" data="http://static.lpcdn.ca/lpweb/flash/DelveMoviePlayer.swf"><param name="movie" value="http://assets.delvenetworks.com/player/loader.swf"><param name="WMODE" value="transparent"><param name="allowScriptAccess" value="always"><param name="allowFullScreen" value="true"><param name="scale" value="showall"><param name="flashVars" value="autoplay=true&amp;autoPlayNextMedia=false&amp;playerForm=DelvePlayer&amp;mediaId='
+                            + videoId +'&share="></object>';
+            $j('.videooverlay #dialog'+videoId).empty().html(playerIEfix);
+
+        }
+		
+	});	
+	
+});			

@@ -126,6 +126,21 @@ if(u.indexOf('int3.walgreens.com')>-1)
 	s_account="devwalgrnsstaging"; 
 /*Added for EO-22751  End */
 
+/************ Start of EHC-182 ********************************/
+if(u.indexOf('health.walgreens.com')>-1)
+	s_account="walgrns";
+if(u.indexOf('partner1.medhelp.ws')>-1)
+	s_account="devwalgrnsstaging";
+if(u.indexOf('walgreens.medhelp.ws')>-1)
+	s_account="devwalgrnsstaging";
+if(u.indexOf('m.health.walgreens.com')>-1)
+	s_account="walgrnsmobile";
+if(u.indexOf('m.partner1.medhelp.ws')>-1)
+	s_account="walgrnsmobiledev";
+if(u.indexOf('m.walgreens.medhelp.ws')>-1)
+	s_account="walgrnsmobiledev";
+/************ End of EHC-182 ********************************/
+
 
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
@@ -174,10 +189,7 @@ function s_doPlugins(s)
 		s.eVar40=s.getQueryParam('ep_rid');		
 	
 	if(!s.eVar1)
-		s.eVar1=s.getQueryParam('ban');	
-	/* EO-21920 Capture omniture when Loyalty user successful logs in */
-	if(!s.eVar65)
-		s.eVar65=s.getQueryParam('loyaltyId');
+		s.eVar1=s.getQueryParam('ban');		
 	if(!s.eVar2)
 		s.eVar2=s.getQueryParam('nug');	
 	if(!s.eVar3)

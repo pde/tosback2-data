@@ -832,7 +832,8 @@ function gvpUtils() {
 	// param: title, modal or not, close button or not (T/F)
 	// return: nothing
 	this.showPopUp = function showPopUp(title, blockBG, closeButton, playerType, mSkuOrPath, returnEl) {
-		gvpVersion = '_2.2.1';
+		gvp.beginLoadTime = new Date();
+		gvpVersion = '_2.2.2';
 		body = document.getElementsByTagName('body')[0];
 		var p_contentHt;
 		if(arguments.length >= 4) {
@@ -940,7 +941,15 @@ function gvpUtils() {
 			displayError(arguments.callee.toString(), e);
 		}
 	};	
-	
+	/*
+	* added 9/12; used by reporting to track load times
+		by Chris
+	*/
+	this.videoReady = function videoReady() {
+		//track and return media load time
+		if(gvp.beginLoadTime) gvp.loadTime = new Date() - gvp.beginLoadTime;	
+		if(gvp.loadTime)return gvp.loadTime; 
+	};	
 }
 
 /*

@@ -4394,7 +4394,7 @@ $.support.transition = (function(){
   return support; 
 })();
 (function() {
-  var HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, TabbedHeroGallery;
+  var HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, OPEN_TAB_CLASS_NAME, TabbedHeroGallery;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -4403,15 +4403,21 @@ $.support.transition = (function(){
     child.__super__ = parent.prototype;
     return child;
   };
+  OPEN_TAB_CLASS_NAME = 'open';
   TabbedHeroGallery = (function() {
     TabbedHeroGallery.selector = '.tabbed-hero-gallery';
     TabbedHeroGallery.bootstrap = function(element) {
       return new this(element);
     };
     function TabbedHeroGallery(element) {
-      var el, tabElements, tabs;
-      tabElements = $('.side-tabs a', element);
-      tabs = (function() {
+      var el, tabElements;
+      this.element = element;
+      this.resumeAutoRotation = __bind(this.resumeAutoRotation, this);
+      this.pauseAutoRotation = __bind(this.pauseAutoRotation, this);
+      this.stopAutoRotation = __bind(this.stopAutoRotation, this);
+      this.rotate = __bind(this.rotate, this);
+      tabElements = $('.side-tabs a', this.element);
+      this.tabs = (function() {
         var _i, _len, _results;
         _results = [];
         for (_i = 0, _len = tabElements.length; _i < _len; _i++) {
@@ -4420,23 +4426,65 @@ $.support.transition = (function(){
         }
         return _results;
       })();
-      tabs[0].select();
+      this.tabs[0].select();
+      this.autoRotate();
+      this.bindEvents();
     }
+    TabbedHeroGallery.prototype.autoRotate = function() {
+      this.autoRotationPaused = false;
+      return this.autoRotateInterval = setInterval(this.rotate, 7000);
+    };
+    TabbedHeroGallery.prototype.rotate = function() {
+      var currentTabIndex, nextTab, nextTabIndex, tab, _i, _len, _ref;
+      if (!this.autoRotationPaused) {
+        _ref = this.tabs;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          tab = _ref[_i];
+          if (tab.isActive()) {
+            currentTabIndex = $.inArray(tab, this.tabs);
+          }
+        }
+        nextTabIndex = currentTabIndex + 1;
+        if (nextTabIndex >= this.tabs.length) {
+          nextTabIndex = 0;
+        }
+        nextTab = this.tabs[nextTabIndex];
+        return nextTab.select();
+      }
+    };
+    TabbedHeroGallery.prototype.stopAutoRotation = function() {
+      clearInterval(this.autoRotateInterval);
+      return this.autoRotateInterval = null;
+    };
+    TabbedHeroGallery.prototype.pauseAutoRotation = function() {
+      return this.autoRotationPaused = true;
+    };
+    TabbedHeroGallery.prototype.resumeAutoRotation = function() {
+      return this.autoRotationPaused = false;
+    };
+    TabbedHeroGallery.prototype.bindEvents = function() {
+      this.element.bind('mouseover', this.pauseAutoRotation);
+      this.element.bind('mouseleave', this.resumeAutoRotation);
+      return this.element.bind('click', this.stopAutoRotation);
+    };
     return TabbedHeroGallery;
   })();
   HeroGalleryTab = (function() {
     function HeroGalleryTab(element) {
-      this.renderStrategy = HeroGalleryTabRenderStrategy.factory(element);
-      element.click(this.renderStrategy.select);
+      this.element = element;
+      this.renderStrategy = HeroGalleryTabRenderStrategy.factory(this.element);
+      this.element.click(this.renderStrategy.select);
     }
+    HeroGalleryTab.prototype.isActive = function() {
+      return this.element.hasClass(OPEN_TAB_CLASS_NAME);
+    };
     HeroGalleryTab.prototype.select = function() {
       return this.renderStrategy.select();
     };
     return HeroGalleryTab;
   })();
   HeroGalleryTabRenderStrategy = (function() {
-    var CLASS_NAME, PANEL_CLASS_NAME, SELECTION_EVENT;
-    CLASS_NAME = 'open';
+    var PANEL_CLASS_NAME, SELECTION_EVENT;
     PANEL_CLASS_NAME = 'shown';
     SELECTION_EVENT = 'selected.TNF.herogallerytab';
     HeroGalleryTabRenderStrategy.factory = function(element) {
@@ -4450,18 +4498,18 @@ $.support.transition = (function(){
       this.deselect = __bind(this.deselect, this);
       this.select = __bind(this.select, this);      this.element = element;
       this.panel = $(this.element.attr('href'));
-      $(document).live(SELECTION_EVENT, this.deselect);
+      this.element.closest('.side-tabs').bind(SELECTION_EVENT, this.deselect);
     }
     HeroGalleryTabRenderStrategy.prototype.select = function(event) {
       if (event != null) {
         event.preventDefault();
       }
       this.element.trigger(SELECTION_EVENT);
-      this.element.addClass(CLASS_NAME);
+      this.element.addClass(OPEN_TAB_CLASS_NAME);
       return this.panel.addClass(PANEL_CLASS_NAME);
     };
     HeroGalleryTabRenderStrategy.prototype.deselect = function() {
-      this.element.removeClass(CLASS_NAME);
+      this.element.removeClass(OPEN_TAB_CLASS_NAME);
       return this.panel.removeClass(PANEL_CLASS_NAME);
     };
     return HeroGalleryTabRenderStrategy;
@@ -4480,9 +4528,7 @@ $.support.transition = (function(){
       }).find('span').animate({
         left: 156
       });
-      return this.panel.animate({
-        opacity: 1
-      });
+      return this.panel.fadeIn(400);
     };
     HeroGalleryTabJSRenderStrategy.prototype.deselect = function(event) {
       HeroGalleryTabJSRenderStrategy.__super__.deselect.apply(this, arguments);
@@ -4491,9 +4537,7 @@ $.support.transition = (function(){
       }).find('span').animate({
         left: 0
       });
-      return this.panel.animate({
-        opacity: 0
-      });
+      return this.panel.fadeOut(400);
     };
     return HeroGalleryTabJSRenderStrategy;
   })();

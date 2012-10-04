@@ -844,7 +844,7 @@ var c;
 	$.fn.snasPoll.defaults = {
 		question_template: '<li><dl><dt>[$$QUESTION]</dt>[$$CHOICES]</dl></li>',
 		question_choice_template: '<dd><input type="radio" id="choice_[$$CHOICE_ID]" value="[$$CHOICE_ID]" name="question_[$$QUESTION_ID]" /><label for="choice_[$$CHOICE_ID]">[$$CHOICE]</label></dd>',
-		question_submit_template: '<button type="submit">Submit Vote</button>',
+		question_submit_template: '<button class="site_btn" type="submit">Submit Vote</button>',
 		result_question_template: '<li><dl><dt>[$$QUESTION]<span class="votes">([$$TOTAL_VOTES])</span></dt>[$$CHOICES]</dl></li>',
 		result_choice_template: '<dd><span class="vote_percent">([$$CHOICE_PERCENT]%)</span>[$$CHOICE]</dd>'
 	}

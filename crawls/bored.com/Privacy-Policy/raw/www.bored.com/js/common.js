@@ -135,7 +135,6 @@ function reply_comment(type, profileId){
 		return false; 
 	});
 }
-
 function comments_showResponse(responseText, statusText) {
 	if($.trim(responseText)=="RATE") {
 		$("#comments").prepend("<div class='error'><p>You must wait a few minutes to post another comment!</p></div>");
@@ -150,7 +149,6 @@ function comments_showResponse(responseText, statusText) {
             comments_delete_buttons();
 	}
 }
-
 function validateReply() {
 	var text = $("#reply-form form textarea").val();
 	if(!text) {
@@ -330,7 +328,7 @@ function showAjaxLogin(ob){
                                             });
                                     }
                                     if($("#upload-a-video").length==0){
-                                        var upvideo  = $('<div style="margin-bottom: 10px;"><a id="upload-a-video" title="" href="/media/add?page=video"><img alt="" src="http://cdn1.image.bored.com/images/upload_movie.jpg"></a></div>');
+                                        var upvideo  = $('<div style="margin-bottom: 10px;"><a id="upload-a-video" title="" href="/media/add?page=video"><img alt="" src="/images/upload_movie.jpg"></a></div>');
                                         upvideo.prependTo($("#videos .col2-2"));
                                     }
                                     try{bindCommentSubmit2button();}catch(e){if(typeof(console)!="undefined"){console.log(e);}}
@@ -377,39 +375,3 @@ function log(something){
         alert(something);
     }
 }
-
-function showCloseBt(){
-	$("#stickmanSwfWrapper a").fadeIn();					
-}
-
-function hideStickman(){
-	$('#stickmanSwfWrapper').fadeOut();
-}
-
-$(document).ready(function() {
-	// TOGGLE HEADER FROM STATIC TO RELATIVE
-	$("#toggle").click(function () {
-		$("#toggle").toggleClass('view');
-		$("#header").toggleClass('relative');
-		$("#mainContainer").toggleClass('relative');
-	});
-	
-	$('#loginBt').click(function () {
-		$('#loginBt').toggleClass('active');
-		$('#header-login').toggleClass('show');	
-	});
-	
-	$('#mainContainer').mouseover(function () {
-		$('#loginBt').removeClass('active');
-		$('#header-login').removeClass('show');
-	});
-	
-	$('.boxgrid.caption').hover(function(){
-            $(".cover", this).find('h5').css('color','#0060B2');
-        }, function() {
-            $(".cover", this).find('h5').css('color','#000000');
-        });
-	
-	
-});
-
