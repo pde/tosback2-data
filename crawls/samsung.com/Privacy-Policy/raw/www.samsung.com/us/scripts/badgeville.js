@@ -153,6 +153,7 @@ function BVinit(){
 					
 					
 						});
+						onloadBadgevilleInit();
 					});
 
 					if(urlValueSplit[4] == 'article' && !urlValueSplit[5]){Badgeville.Defaults.horizontalLeaderboard.width = '960';}
@@ -198,7 +199,7 @@ function BVinit(){
 			};
 		})( Badgeville.$ );
 		
-		addLoadEvent(onloadBadgevilleInit);
+	//	addLoadEvent(onloadBadgevilleInit);
 		addLoadEvent(checkBadgevTimeOnSite);  // check after load
 		addUnloadEvent(checkBadgevTimeOnSite);  // check before unload
 		setInterval('checkBadgevTimeOnSite()',5000);  // check every 5 seconds
@@ -411,7 +412,7 @@ var badgev_params = {
 		event:''
 }
 	
-function onloadBadgevilleInit(enoughtimeonpage) {
+function onloadBadgevilleInit() {
 	
 	Badgeville.ready( function() {
 		

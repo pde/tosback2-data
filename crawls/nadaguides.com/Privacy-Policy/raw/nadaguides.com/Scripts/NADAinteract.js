@@ -94,6 +94,8 @@ $(function() {
     });
 });
 
+var optList = '';
+
 //TODO change all of the above into the NADAjs namespace
 var NADAjs = {
     NewOptions: new function() {
@@ -133,6 +135,8 @@ var NADAjs = {
                 $("#opt-conflict").dialog("open");
             }
         }
+
+
         var toggleBoxes = function(optdata) {
             $('input:checked').attr("checked", false);
             $('.opt-img').attr("src", "http://images.nadaguides.com/shared/shim.gif").attr("alt", "");
@@ -158,8 +162,41 @@ var NADAjs = {
                             $('input[optcode=' + this.code + ']').attr("checked", true);
                             break;
                     }
+
                 });
             });
+        }
+
+        var updateShare = function(optCode) {
+            shareUpdated = true;
+
+            if (optList == '')
+                optList += optCode;
+            else
+                optList += '|' + optCode;
+
+            var printParams = '?options=' + optList;
+            var destination = document.location.href + printParams;
+            if (optList != '') {
+                $('#sharebutton').html('');
+
+                stWidget.addEntry({
+                    "service": "sharethis",
+                    "element": document.getElementById('sharebutton'),
+                    "url": destination,
+                    "title": $('h2').html(),
+                    "type": "chicklet",
+                    "summary": $('title').html(),
+                    "text": "share"
+                });
+
+                $('#sharebutton').children('span').first().css('padding-top', '2px');
+                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
+                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
+                $('#emailFriend-dialog').css('padding-bottom', '2px');
+            }
+
+            document.getElementById('optParams').value = optList;
         }
 
         var buildSumm = function() {
@@ -216,7 +253,6 @@ var NADAjs = {
         }
 
         var toggleOpt = function(vehId, optCode) {
-
             $('#opt-summ-optlist').html('');
             $('.opt-summ-working').show();
             sending = true;
@@ -226,8 +262,10 @@ var NADAjs = {
                 url: "/Cars/ToggleOption/" + vehId,
                 data: { 'changedOptionCode': optCode },
                 dataType: "json",
-                async: true,
-                error: function(data) { /*$.modal.close();*/ },
+                async: false,
+                error: function(data) {
+                    /*$.modal.close();*/
+                },
                 success: function(data) {
                     changePrices(data);
                     optState = $(data.optData);
@@ -235,7 +273,7 @@ var NADAjs = {
                     handleConflicts(data.optConflict);
                     toggleBoxes(optState);
                     buildSumm();
-
+                    updateShare(optCode);
                 }
             });
 
@@ -257,6 +295,7 @@ var NADAjs = {
         this.isSending = getSendingVal;
         this.setPaintColor = setColor;
         this.gotoDealerQuote = gotoQuote;
+        this.updateShare = updateShare;
 
     },
     PSCompare: new function() {
@@ -925,4 +964,47 @@ function killsChildNodes2(another_element) {
             killsChildNodes(another_element.firstChild);
         }
     }
+}
+
+
+function SetupModelDetailTableEvents() {
+
+    $("#content_models tr.detailrow").click(function() {
+
+        if ($('tr.selectedColor').length == 0) {
+            $(this).removeClass("detailrow").removeClass('even').removeClass('highlightColor');
+            $(this).find('td').removeClass('even');
+            $(this).addClass("selectedColor");
+            var url = $(this).find('td:first').find('div a').attr('href');
+            if (url != '' && url != undefined)
+                window.open(url, '_self', '');
+        }
+    });
+
+    $("#content_models tr.detailrow").hover(
+        function() {
+            if ($(this).find('td').hasClass('even')) {
+                $(this).find('td').addClass('highlightColoreven');
+            } else {
+                $(this).find('td').addClass('highlightColor');
+            }
+
+            if ($(this).find('td').hasClass('even')) {
+                $(this).find('td').addClass('waseven').removeClass('even');
+            }
+        },
+        function() {
+            if ($(this).hasClass('detailrow')) {
+                $(this).find('td').removeClass('highlightColor').removeClass('highlightColoreven');
+
+                if ($(this).find('td').hasClass('waseven')) {
+                    $(this).find('td').addClass('even');
+                    $(this).find('td').removeClass('waseven');
+                }
+            }
+        }
+    );
+
+    $("#content_models tr.detailrow td:nth-child(1)").addClass('borderRight');
+
 }

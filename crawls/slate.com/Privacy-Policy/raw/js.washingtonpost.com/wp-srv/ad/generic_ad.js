@@ -1001,7 +1001,7 @@ var wpAd, placeAd2;
         return wpAd.tile;
       },
       ord: function () {
-        if(wpAd.briefcase.delivery !== 'ajax' || !wpAd.templates[wpAd.briefcase.pos].briefcase) {
+        if(wpAd.briefcase.delivery !== 'ajax' || !wpAd.templates[wpAd.briefcase.what].briefcase) {
           return wpAd.cache.hasOwnProperty('ord') ? wpAd.cache.ord : (function () {
             wpAd.cache.ord = typeof spec_ord !== 'undefined' ? spec_ord : Math.floor(Math.random() * 1E18);
             return wpAd.cache.ord;

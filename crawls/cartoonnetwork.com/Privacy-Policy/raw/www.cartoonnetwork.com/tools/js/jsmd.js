@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "cartoon.172.1050.20120911",
+	version: "cartoon.189.1050.20121004",
 	release: "0",
 	dictionary: {
 		init: {
@@ -71,6 +71,7 @@ var _jsmd_default={
 			"business.cnt.game.user_type":		"",						//prop15,eVar15 - set with custom tracking from game specific calls
 			"business.cnt.achievement":			"",						//prop16,eVar16
 			"business.cnt.logreg":				"",						//prop17,eVar17
+			"business.cnt.promo_button":		"",						//prop18,eVar18 - promo button click
 			"business.cnt.hp_perc_view":		"",						//prop19,eVar19
 			"business.cnt.hp_prev_page":		"",						//prop20,eVar20
 			"business.cnt.game.title":			"gJObj|cnt_metadata,game_title",		//prop21,eVar21 - passed from custom tracking
@@ -179,7 +180,8 @@ var _jsmd_default={
 						"formula-cartoon":	{ ignore: true },
 						"ingame-progress":	{ ignore: true },
 						"cnt-login":		{ ignore: true },
-						"cnt-gnav":			{ ignore: true }
+						"cnt-gnav":			{ ignore: true },
+						"promo-link":		{ ignore: true }
 					}
 				}
 			],
@@ -199,7 +201,8 @@ var _jsmd_default={
 					"video-autostart":					{ include: ["business.cnt.super_franchise","video.type","video.segment","page.section","video.episode_start"] },
 					"video-complete":					{ include: ["business.cnt.super_franchise","video.type","video.segment","page.section"] },
 					"mixit-video-start":				{ include: ["business.cnt.super_franchise","video.type","video.segment","page.section","video.episode_start"] },
-					"mixit-video-complete":				{ include: ["business.cnt.super_franchise","video.type","video.segment","page.section"] }
+					"mixit-video-complete":				{ include: ["business.cnt.super_franchise","video.type","video.segment","page.section"] },
+					"promo-link":						{ include: ["business.cnt.promo","business.cnt.promo_button"] }
 				},
 				account: function() {
 					var hostName = _w.location.hostname, path = _w.location.pathname;
@@ -266,6 +269,7 @@ var _jsmd_default={
 					"business.cnt.game.user_type":		["prop15","eVar15"],
 					"business.cnt.achievement":			["prop16","eVar16"],
 					"business.cnt.logreg":				["prop17","eVar17"],
+					"business.cnt.promo_button":		["prop18","eVar18"],
 					"business.cnt.hp_perc_view":		["prop19","eVar19"],
 					"business.cnt.hp_prev_page":		["prop20","eVar20"],
 					"business.cnt.game.title":			["prop21","eVar21"],
@@ -278,19 +282,23 @@ var _jsmd_default={
 				},
 				eventmap: {
 					"business.cnt.game.unity_installed":["event1"],		//unity Player Installed
-					"business.cnt.game.start":			["event2"],		//game play
+					"business.cnt.game.play":			["event2"],		//game play
 					"business.cnt.game.replay":			["event3"],		//game replay - ??
 					"video.episode_start":				["event4"],		//episode video start, on first segment of episode only
 					"business.cnt.game.fflaunch":		["event5"],		//fusionfall game launch
-					"business.cnt.game.unity_not_installed":	["event6"],		//unity player not installed
+					"business.cnt.game.unity_not_installed":	["event6"],	//unity player not installed
 					"business.cnt.game.ffintro":		["event7"],		//fusionfall intro movie, only on splash page
 					"business.cnt.game.unity_download":	["event8"],		//unity player download
-					"business.cnt.kalydo.install": 		["event9"],	//installation of Kalydo completed
+					"business.cnt.kalydo.install": 		["event9"],		//installation of Kalydo completed
 					"business.cnt.game.download_start":	["event10"],	//game download started
-					"business.cnt.game.download_complete": ["event11"], //game download completed
+					"business.cnt.game.download_complete":		["event11"], //game download completed
 					"business.cnt.game.session_start":	["event12"],	//game session start
 					"business.cnt.game.race_play":		["event13"],	//race started
-					"business.cnt.game.time_spent":		["event14"]		//time spent for game session
+					"business.cnt.game.time_spent":		["event14"],	//time spent for game session
+					"business.cnt.game.init":		["event15"],	//game init
+					"business.cnt.game.start":		["event16"],	//game start
+					"business.cnt.epic.game.time_spent":["event17"],	//time spent for epic game session
+					"business.cnt.promo_button":		["event18"]		//for promo pages
 				},
 				premap: function() { },
 				postmap: function() {
@@ -324,10 +332,21 @@ var _jsmd_default={
 				    var igt = (this.get("business.cnt.game.ingame_title") != "" ? this.get("business.cnt.game.ingame_title") : "");
 				    var gts = (this.get("business.cnt.game.time_spent") != "" ? this.get("business.cnt.game.time_spent") : "");
 				    if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("ingame-progress") > -1){
-					    this.v.products = ";"+igt+";;;event14="+gts;
+					   if (_w.location.href.indexOf("formula-cartoon") != -1)
+						{
+					      this.v.products = ";"+igt+";;;event14="+gts;
 						this.v.eVar3 = this.v.prop3; this.v.prop3 = "";
 						this.v.eVar15 = this.v.prop15; this.v.prop15 = "";
 						this.v.linkTrackVars = "events,products,eVar3,eVar15,prop35,prop46,eVar46,prop47,eVar47";
+						}
+						else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1)
+						{
+				   		 var igt = (this.get("business.cnt.game.title") != "" ? this.get("business.cnt.game.title") : "");
+				    		 var gts = (this.get("business.cnt.epic.game.time_spent") != "" ? this.get("business.cnt.epic.game.time_spent") : "");
+						 this.v.products = ";"+igt+";;;event17="+gts;
+						 this.v.linkTrackVars = "events,products,prop21,eVar21,prop35";
+						}
+
 				    }
 
 					/* disable download tracking to force triggering dynamic action instead */
@@ -391,6 +410,7 @@ var _jsmd_default={
 							this.v.events = "";
 						}
 						/* remove props from video tracking */
+
 						if (d.indexOf("video-") != -1 || d.indexOf("mixit-video") != -1) {
 							this.v.eVar27 = this.v.channel; this.v.channel = "";
 							this.v.eVar28 = this.v.prop28; this.v.prop28 = "";
@@ -409,6 +429,10 @@ var _jsmd_default={
 								this.v.eVar31 = this.v.prop31; this.v.prop31 = "";
 								this.v.eVar33 = this.v.prop33; this.v.prop33 = "";
 							}
+						}
+						/* remove promo prop from promo custom link tracking */
+						if (d.indexOf("promo-link") != -1) {
+							this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
 						}
 					} else {
 						/* prop19/eVar19 - user "zero" instead of "0" */
@@ -500,7 +524,8 @@ var _jsmd_default={
 					"kalydo-plugin":					{ include: ["nothing"] },
 					"formula-cartoon":					{ include: ["nothing"] },
 					"ingame-progress":					{ include: ["nothing"] },
-					"flash-link":						{ include: ["video.","content_type","link."] }
+					"flash-link":						{ include: ["video.","content_type","link."] },
+					"promo-link":						{ include: ["nothing"] }
 				},
 				settings: {
 					"trackInlineStats":					true,
@@ -1734,11 +1759,21 @@ var _jsmd_default={
 				var progressTime = new Date().getTime();
 				var timeSpent = (jsmd_gameStartTime == 0 ? 0 : Math.round((progressTime - jsmd_gameStartTime) / 1000));
 				this.set("action","link");
-				this.set("link",{name: "game time spent: "+gd.ingame_title, type: "o"});
+
 				if(timeSpent > 60 || timeSpent < 0){
 					timeSpent = 60;
 				}
+				if (_w.location.href.indexOf("formula-cartoon") != -1)
+				{
+				this.set("link",{name: "game time spent: "+gd.ingame_title, type: "o"});
 				this.set("business.cnt.game.time_spent",timeSpent+"");
+				}
+				else if(_w.location.href.indexOf("dragons") != -1 ||_w.location.href.indexOf("ben10gamecreator") != -1 || _w.location.href.indexOf("exonaut") != -1)
+
+				{
+				this.set("link",{name: "game time spent: "+gd, type: "o"});
+				this.set("business.cnt.epic.game.time_spent",timeSpent+"");
+				}
 				this.send();
 			},
 			"cnt-search": function(data,map) {	//page
@@ -1838,11 +1873,38 @@ var _jsmd_default={
 				this.send();
 			},
 			"cnt-game-playnow": function(data,map) {	//link
-				this.push("page.events","business.cnt.game.start");		//event2
+				var gd = data.game_data;
+				this.push("page.events","business.cnt.game.play");		//event2
 				this.set("action","link");
 				this.set("link",{name: "cnt-game-playnow", type: "o"});
+				this.set("business.cnt.game.title",gd);
 				this.send();
 			},
+			"cnt-game-replay": function(data,map) {	//link
+				var gd = data.game_data;
+				this.push("page.events","business.cnt.game.replay");		//event3
+				this.set("action","link");
+				this.set("link",{name: "cnt-game-replay", type: "o"});
+				this.set("business.cnt.game.title",gd);
+				this.send();
+			},
+			"cnt-game-init": function(data,map) {	//link
+				var gd = data.game_data;
+				this.push("page.events","business.cnt.game.init");		//event15
+				this.set("action","link");
+				this.set("link",{name: "cnt-game-init", type: "o"});
+				this.set("business.cnt.game.title",gd);
+				this.send();
+			},
+			"cnt-game-start": function(data,map) {	//link
+				var gd = data.game_data;
+				jsmd_gameStartTime = new Date().getTime();
+				this.push("page.events","business.cnt.game.start");		//event16
+				this.set("action","link");
+				this.set("link",{name: "cnt-game-start", type: "o"});
+				this.set("business.cnt.game.title",gd);
+				this.send();
+				},
 			"cnt-game-unity-download": function(data,map) {	//link
 				this.push("page.events","business.cnt.game.unity_download");	//event8
 				this.set("action","link");
@@ -1919,6 +1981,19 @@ var _jsmd_default={
 					this.send();
 				};
 			},
+			"promo-main": function(data,map) {	//page
+				var pm = this.get("business.cnt.promo");
+				var pn = this.get("page.name");
+				this.set("page.name",pn + " [" + pm + "]");
+				this.push("page.events","page.view");	//event26
+				this.send();
+			},
+			"promo-link": function(data,map) {	//link
+				this.set("business.cnt.promo_button",data);	//prop18,eVar18
+				this.set("action","link");
+				this.set("link",{name: "promo-link: " + data, type: "o"});
+				this.send();
+			},
 			"video-common": function(data,map) {
 				/*
 					autoplayed:	true,
@@ -1932,7 +2007,12 @@ var _jsmd_default={
 				*/
 				var v = data.video||{};
 				this.set("video.id",v.id);							//eVar42
-				var videoTitle = v.title;
+				var videoTitle = "";
+				if(typeof(v.title) == "undefined"){
+					videoTitle = (v.headline ? v.headline : "");
+				}else{
+						videoTitle = v.title;
+				}
 				var pFranchise = this.get("page.franchise");
 				var vFranchise = "";
 				if (v.franchise) {
@@ -1951,41 +2031,59 @@ var _jsmd_default={
 			},
 			"video-preroll": function(data, map) {
 				var v=data.video||{};
+				var videoTitle = "";
+				if(typeof(v.title) == "undefined"){
+					videoTitle = (v.headline ? v.headline : "");
+				}else{
+						videoTitle = v.title;
+				}
 				this.set("action","link");
-				this.set("link",{name: "video-preroll: " + v.title, type: "o"});
+				this.set("link",{name: "video-preroll: " + videoTitle, type: "o"});
 				this.push("page.events","video.preroll");
 			},
 			"video-start": function(data, map) {
 				var v = data.video||{};
+				var videoTitle = "";
+				if(typeof(v.title) == "undefined"){
+					videoTitle = (v.headline ? v.headline : "");
+				}else{
+						videoTitle = v.title;
+				}
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
-				vc.start(v.id,v.title);
+				vc.start(v.id,videoTitle);
 				this.set("action","link");
 				var tl_name = "video-start";
 				if (v.autoplayed && (v.autoplayed == true || v.autoplayed == "true")) {
 					tl_name = "video-autostart";
 					this.push("page.events","video.autostart");
 				}
-				this.set("link",{name: tl_name + ": " + v.title, type: "o"});
+				this.set("link",{name: tl_name + ": " + videoTitle, type: "o"});
 				this.push("page.events","video.start");
 				v.segment = v.segment + "";
 				if (v.type && v.type.toLowerCase().indexOf("epi") != -1 && v.segment && (v.segment == "0" || v.segment == "")) this.push("page.events","video.episode_start");	//event4
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1);	//content-related comscore call
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,v.title);
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,videoTitle);
 			},
 			"video-autostart": function(data, map) {
 				var v = data.video||{};
+				var videoTitle = "";
+				if(typeof(v.title) == "undefined"){
+					videoTitle = (v.headline ? v.headline : "");
+				}else{
+						videoTitle = v.title;
+				}
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
-				vc.start(v.id,v.title);
+				vc.start(v.id,videoTitle);
 				this.set("action","link");
-				this.set("link",{name: "video-autostart: " + v.title, type: "o"});
+				this.set("link",{name: "video-autostart: " + videoTitle, type: "o"});
 				this.push("page.events","video.start");
 				this.push("page.events","video.autostart");
 				v.segment = v.segment + "";
 				if (v.type && v.type.toLowerCase().indexOf("epi") != -1 && v.segment && (v.segment == "0" || v.segment == "")) this.push("page.events","video.episode_start");	//event4
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1);	//content-related comscore call
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,v.title);
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id,videoTitle);
 			},
 			"video-pause": function(data, map) {
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
@@ -1997,11 +2095,17 @@ var _jsmd_default={
 			},
 			"video-complete": function(data, map) {
 				var v = data.video||{};
+				var videoTitle = "";
+				if(typeof(v.title) == "undefined"){
+					videoTitle = (v.headline ? v.headline : "");
+				}else{
+						videoTitle = v.title;
+				}
 				var vc = new _jsmd.plugin.gCNTVideoCollection();
 				var timeSpent = vc.complete(v.id);
 				this.set("video.duration_watched",timeSpent+"");
 				this.set("action","link");
-				this.set("link",{name: "video-complete: " + v.title, type: "o"});
+				this.set("link",{name: "video-complete: " + videoTitle, type: "o"});
 				this.push("page.events","video.complete");
 				var duration = (parseFloat(v.trt));
 				if(duration == ""){
@@ -2011,7 +2115,7 @@ var _jsmd_default={
 					};
 					this.send();
 				};
-				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",v.id,v.title,timeSpent+"");
+				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"complete",v.id,videoTitle,timeSpent+"");
 			},
 			/* TVE Dyanmic Actions */
 			"tve-ad-start": function(data, map) {
@@ -3783,6 +3887,21 @@ function sendInteractionEvent(data,event){
 }
 
 function sendGameEvent(action,info,event){
+
+ if(event === "START"){
+        action = "cnt-game-start";}
+ else if(event === "INIT"){
+        action = "cnt-game-init";}
+
+ else if(event === "PLAY"){
+        action = "cnt-game-playnow";}
+
+else if(event === "REPLAY"){
+        action = "cnt-game-replay";	}
+
+else if(event === "TIME SPENT"){
+ action = "ingame-progress";}
+
     try {
 		trackMetrics({
 			type: action,
@@ -3979,14 +4098,14 @@ _jsmd.JSMD.prototype.sTVE_RSID = function(_category){
 	var globalRSID = "tveglobal";
 	var brandRSID = "tvecartoon";
 	var networkRSID = "tve" + (this.tveMSO) + "cartoon";
-	if(networkRSID.indexOf("dtv") > -1){
+	if(this.tveMSO == "dtv"){
 		networkRSID = networkRSID.replace("dtv","directtv");
 	}
 
 	var devStng = (window.location.host === "www.cartoonnetwork.com" || window.location.host === "cartoonnetwork.com")?"":"dev"
-		if (this.tveMSO != "Unauthorized"){
-			this.tveRSID =  globalRSID+devStng+","+brandRSID+devStng+","+networkRSID+devStng;
-		}
+	if (this.tveMSO != "Unauthorized"){
+		this.tveRSID =  globalRSID+devStng+","+brandRSID+devStng+","+networkRSID+devStng;
+	}
 }
 /*TVE Objects*/
 _jsmd.JSMD.prototype.TVE = {

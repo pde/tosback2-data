@@ -71,7 +71,7 @@
 							this.dcopt(tile), "cmn=fn", "comp=" + this.adv(window.location, true),
 							"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid,
 							"url=" + this.url(window.location.pathname) + this.kw(window.location, true) + this.ref(true) + cus,
-							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,","), "tile=" + tile + this.u(data, id) + "|",
+							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,",").replace("300x100","300x251,300x100"), "tile=" + tile + this.u(data, id) + "|",
 							"ord=" + $.ad.ord + "?"
 						]);
 						
@@ -678,8 +678,9 @@
 					if($("meta[name='prism.section']").attr("content") != "politics" && obj.qid == "channel_7" ){
 						root.addGoogleObjFunc();
 						root.config(obj);				
-						document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');	
-					}			
+					document.write('<scr'+'ipt type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></scr'+'ipt>');
+						
+				}			
 				}				
 			},
 			pre: function(){}

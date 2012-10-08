@@ -1,0 +1,54 @@
+document.write('');
+
+
+var page_count = "off";           
+
+if (typeof OAS_rdl == "undefined") {
+
+document.write("<scr" + "ipt type='text/javascript' src='http://oasc12.247realmedia.com/Scripts/oas_analytics.js'></scr" + "ipt>"); 
+
+page_count = "on";}
+
+var MMI_ClickURL = ""; 
+
+var OAS_searchterms = "";
+
+var OAS_taxonomy ="muid=0";
+
+var MMI_RNS =  (new String(Math.random())).substring(2, 11);
+
+var MMI_URL="http://msite.martiniadnetwork.com/index/?pid=10029217584eb04757013b2&sid=10105857384fa03f7f4d3dd&loc="+ encodeURIComponent(window.location.toString()) + "&rnd=" + MMI_RNS;
+
+MMI_ClickURL += ((MMI_ClickURL.split("/").length - 1) % 2 )?  "/": "";
+
+if (document.referrer != "") MMI_URL += "&ref=" + encodeURIComponent(document.referrer.substring(0,255));
+
+document.write("<script type='text/javascript' src='" + MMI_URL + "'></scr" + "ipt>");
+
+if(typeof(OAS_pubclick) == "undefined")
+
+var OAS_pubclick = 'http://msite.martiniadnetwork.com/action/track/type/0/pid/10029217584eb04757013b2/sid/10105857384fa03f7f4d3dd/loc/' + encodeURIComponent(window.location.toString().substring(0,255)) + '/pubclick/' + MMI_ClickURL;
+
+
+var OAS_sitepage = "mcclatchy.com/ROS";
+
+var OAS_pos = "Middle";
+
+var OAS_RNS = (new String(Math.random())).substring(2, 11);
+
+OAS_searchterms == "" ? OAS_searchterms = "" : OAS_searchterms += "&";
+
+if (page_count != "on") {OAS_taxonomy += "&oas_pv=no_analytics&";}
+
+if (typeof OAS_rdl == "undefined") { var OAS_rdl = ""; var OAS_CA = "";}
+
+OAS_query = "_RM_HTML_CLICK_=" + OAS_pubclick + "&" + OAS_searchterms + "XE&" + OAS_taxonomy + "&" + OAS_rdl + "&if_nt_CookieAccept=" + OAS_CA + "&XE";
+
+document.write("<scr" + "ipt type='text/javascript' src='http://oasc12.247realmedia.com/RealMedia/ads/adstream_jx.ads/" + OAS_sitepage + "/1" + OAS_RNS + "@" + OAS_pos + "?" + OAS_query + "'></scr" + "ipt>");
+
+document.write("<scr" + "ipt type='text/javascript' src='http://oasc12.247realmedia.com/RealMedia/ads/adstream_jx.ads/" + OAS_sitepage + "/1" + OAS_RNS + "@x96?XE&oas_pv=no_analytics&XE'></scr" + "ipt>");
+
+if (typeof MMI_AdScript == "function") MMI_AdScript(1,"Middle");
+
+
+document.write('');

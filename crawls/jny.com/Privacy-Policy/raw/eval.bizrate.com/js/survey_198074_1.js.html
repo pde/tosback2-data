@@ -96,7 +96,7 @@ var BIZRATE = {
             this.inviteImageURL = this.inviteImageURL.replace(/_pos/, '_multi') + '&image_size=' + this.size;
         }
         this.inviteURL = 'https://eval.bizrate.com/surveyinvite?id=198074&surveyType=multi&multiType=1&imageSize=' + this.size;
-        this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13493529611200232454502030302014152&rid=1349352961020208722&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0';
+        this.surveyURL = 'http://evalus.bizrate.com/wix/p2375715.aspx?br=13496985606295491417202030302014152&rid=1349698560020106191&mid=198074&l=1033&flow=104&id=198074&pr=0&brand=BR&rf_code=sur&mkt_id=0&cs_id=0';
 
         if (typeof(br_pos_x) != 'undefined' && !isNaN(br_pos_x)) {
             this.posX = br_pos_x;
@@ -220,7 +220,7 @@ var BIZRATE = {
 	this.logInvite(this.pitchType);
     },
     logInvite: function(param) {
-        document.write('<script type="text/javascript" src="https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1349352961020208722&pitchType=' + param + '"> </script>');
+        document.write('<script type="text/javascript" src="https://eval.bizrate.com/inviteLog?id=198074&product_id=7&flow=104&respondentId=1349698560020106191&pitchType=' + param + '"> </script>');
     },
     minimizeInvite: function() {
         this.inviteWindow = window.open(this.inviteURL + this.URLParameters, 'br_invite', this.windowParameters);
@@ -228,7 +228,7 @@ var BIZRATE = {
         self.focus();
         this.closeInvite();
     },
-  /* openSurvey:function() {
+    openSurvey:function() {
         var sURL = this.surveyURL + this.URLParameters; 
         if (typeof(sURL) != "undefined") { 
             var surveyWindow = window.open(sURL + "&" + location.search, this.windowName, "menubar=yes, location=yes, status=yes, toolbar=yes, resizable=yes, scrollbars=yes, width=760, height=568, screenX=10, screenY=10, left=10, top=10"); 
@@ -236,40 +236,8 @@ var BIZRATE = {
                 if (this.type == 3) { surveyWindow.focus(); } else { surveyWindow.blur(); self.focus(); } 
             } 
         } 
-    }, */
-    
-    openSurvey:function() {
-        var sURL = this.surveyURL + this.URLParameters; 
-        var surveyWindow;
-        if (typeof(sURL) != "undefined") { 
-        	if (this.type == 3)	{
-        		surveyWindow = window.open(sURL + "&" + location.search, this.windowName, "menubar=yes, location=yes, status=yes, toolbar=yes, resizable=yes, scrollbars=yes, width=760, height=568, screenX=10, screenY=10, left=10, top=10"); 
-        		if (surveyWindow) { surveyWindow.focus(); }
-        	} else {
-        		surveyWindow = window.open("", "_blank", "menubar=0, location=0, status=0, toolbar=0, resizable=1, scrollbars=1, width=704, height=242, screenX=280, screenY=180, left=280, top=180, titlebar=0");
-        		if (surveyWindow) {
-        			surveyWindow.document.title="Survey - Provided by Bizrate";
-    				var divBox = surveyWindow.document.createElement('div');
-    				var imgSource;
-    				("https:" == document.location.protocol) ? imgSource="https://images.bizrate.com/eval/survey/non_buyer/InterstitialPage.jpg":imgSource="http://images.bizrate.com/eval/survey/non_buyer/InterstitialPage.jpg" ;
-    				divBox.innerHTML = '<img src=' + imgSource + ' alt="Welcome to the survey" /> ';
-    				surveyWindow.document.body.appendChild (divBox);    				   
-    				var pollTimer = window.setInterval(function( ){
-    					if ( document.hasFocus() ) {
-    						if ( (navigator.userAgent.toLowerCase().indexOf('firefox') != -1) || (navigator.userAgent.toLowerCase().indexOf('safari') != -1 && navigator.appVersion.indexOf("Win")!= -1) ) {  //firefox browser or safari on Windows
-    							surveyWindow.location = sURL + "&" + location.search;  
-    						}	else {
-    							surveyWindow.location = sURL + "&" + location.search; 
-    							surveyWindow.resizeTo(800,750);
-    						}	
-    						window.clearInterval(pollTimer); 
-    					};
-        			},300); //end of pollTimer
-        		} // end if surveyWindow        	
-        	} // end else
-        } // end outer if undefined.
     },
-   closeInvite:function() { 
+    closeInvite:function() { 
         if (this.pitchType == 0) {
             // Disable hiding for POS inline invites
             if (this.type != 3) { document.getElementById('br_invite_inline').style.display = 'none'; }

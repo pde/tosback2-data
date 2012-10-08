@@ -18,7 +18,7 @@ if(a!=null){this.doClearEvent()
 },initJSON:function(){if(typeof JSON=="undefined"&&typeof mtvn!="undefined"){JSON={stringify:mtvn.btg.util.JSON.stringify,parse:mtvn.btg.util.JSON.parse}
 }}};
 $(document).ready(function(){try{KIDS.reporting.tracker.init()
-}catch(a){alert(a)
+}catch(a){NickLog.debug("site-click:"+a)
 }});
 /*
  * Amplify Store - Persistent Client-Side Storage @VERSION

@@ -65,7 +65,7 @@ JB.Model = {};
 JB.Class = Class.extend({
 	config: {
 		jsPath: JB.Config.jsPath,
-		jsExtension: ".js?v=1.2"
+		jsExtension: ".js?v=1.3"
 	},
 	require: {"jQuery": "vendor/jquery-1.6.2.min"}, // Filenames with no file extension
 	depender: function(options){

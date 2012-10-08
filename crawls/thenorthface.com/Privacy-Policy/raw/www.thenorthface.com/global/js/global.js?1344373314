@@ -3520,7 +3520,8 @@ TNF.minicart = {
 						op += (item.color) ? '<dl class="color" id="' + item.color.variationId + '"><dt>' + TNF.lang.MINICART.get('COLOR') + ': <img src="/global/images/ui/blank.gif" class="swatch" style="background-color: ' + item.color.color1 + ';"></dt><dd class="name">' + item.color.colorName + '</dd></dl>' : '';
 						op += (item.size) ? '<dl class="size"><dt>' + TNF.lang.MINICART.get('SIZE') + ':</dt><dd>'+item.size+'</dd></dl>' : '';
 						op += (item.quantity) ? '<dl class="quantity"><dt>' + TNF.lang.MINICART.get('QTY') + ':</dt><dd>'+item.quantity+'</dd></dl>' : '';
-						products.push('<li id="product_' + item.productId + '" class="item">' + op + '</li>');
+						/** ZCG: append orderId into the element as there can be items belong to different orders*/
+						products.push('<li id="product_' + item.productId + '" name='+ item.orderId + ' class="item">' + op + '</li>');
 					});
 					
 					var $oldProductsWrapper = $('.productsWrapper:first');
@@ -3545,8 +3546,8 @@ TNF.minicart = {
 						
 						$.ajax({
 							type: 'POST',
-							url: TNF.minicart.vars.url.remove, /** ZCG: Support dynamic delete */
-							data: { fromOrderItemId: $(this).parents('.item').attr('id').substring(8), fromOrderId: TNF.minicart.orderId},
+							url: TNF.minicart.vars.url.remove, /** ZCG: Support dynamic delete and use specific orderId as there can be multiple pending orders*/
+							data: { fromOrderItemId: $(this).parents('.item').attr('id').substring(8), fromOrderId: $(this).parents('.item').attr('name')},
 							dataType: 'json',
 							success: function(success_data, status){
 								if (status) {
@@ -3759,7 +3760,7 @@ TNF.assisted_search = {
 							response([]);
 							return;
 						}
-						TNF.assisted_search._widget.data('result_count', '<div class="asearch-number"><a href="'+data.search_term_link+'">'+data.product_amt_result+TNF.lang.AUTOCOMPLETE.get('RESULTS')+'</a></div>');
+						TNF.assisted_search._widget.data('result_count', '<div class="asearch-number"><a href="'+data.search_term_link+'">'+data.product_amt_result+' '+TNF.lang.AUTOCOMPLETE.get('RESULTS')+'</a></div>');
 						TNF.assisted_search._widget.data('result_link', '<a href="'+data.search_term_link+'">' + TNF.lang.AUTOCOMPLETE.get('VIEW_ALL') + '<span>"'+data.search_term+'" &gt;</span></a>');
 						var itemArray = new Array();
 						var productArray = new Array();

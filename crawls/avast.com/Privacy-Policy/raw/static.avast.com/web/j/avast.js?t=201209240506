@@ -31,6 +31,8 @@ if( typeof jQuery != 'undefined' ){
 			disableNavigation:false,
 			disableFilter:false,
 			disableGaTracking:false,
+			disableHadd:false,
+			disableUpdatePrice:false,
 			locale:"en-ww",
 			rootPath:""
 		},
@@ -770,7 +772,71 @@ if( typeof jQuery != 'undefined' ){
 		}
 	};
 	
-	//TODO - HADD manipulation
+	/**
+	 * Avast hadd manipulation class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2012
+	 */
+	avast.hadd = avast.prototype = {
+	    options:{
+		regexS:"[\\?&]hadd=([^&#]*)",
+		providers:["dr-store.avast.com","store.avast.com"]
+	    },
+	    init:function(params){
+		    var root = this;
+		    if(params !== undefined){
+			    for(var param in params){
+				    this.options[param] = params[param];
+			    }
+		    }
+		    
+		    var regex = new RegExp(this.options.regexS,"i");
+		    var results = regex.exec(window.location.href);
+		    
+		    if(results == null){
+			return 1;
+		    }
+		    else{
+			var href;
+			var providers = this.options.providers;
+			var param;
+			$("a").each(function(){
+			    href = $(this).attr('href');
+			    for(var i=0;i<providers.length;i++){
+				if(href.indexOf(providers[i]) != -1){
+				    if(i == 0){
+					    var regIDS = "[\\?&]PRODUCT([^&#=]*)";
+					    var regID = new RegExp(regIDS,"i");
+					    var ids = regID.exec(href);
+					    if(ids == null){}
+					    else{
+						    param = "HADD"+ids[1]+"[ADDITIONAL1]="+results[1];
+						    if(href.indexOf("?") == -1)
+							    href = href + "?" + param;
+						    else
+							    href = href + "&" + param;
+						    $(this).attr('href',href);
+					    }
+				    }
+				    else if(i == 1){
+					    var regIDS = "productID[\.]([^&#=\/]*)[\/]";
+					    var regID = new RegExp(regIDS,"i");
+					    var ids = regID.exec(href);
+					    if(ids == null){}
+					    else{
+						    param = "/HADD."+ids[1]+"/ADDITIONAL1."+results[1];
+						    href = href + param;
+						    $(this).attr('href',href);
+					    }
+				    }
+				}
+			    }
+			});
+		    }
+	    }
+	};
+	
 	//TODO - lightbox
 	
 	avast.numberFormat = avast.prototype = {

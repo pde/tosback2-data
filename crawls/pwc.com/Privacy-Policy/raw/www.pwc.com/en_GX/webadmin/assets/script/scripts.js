@@ -66,10 +66,12 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$("#pwcslider .feature").css("width", ($('#pwcslider').width()-60));
+	$("#pwcslider .feature").css("width", ($('#pwcslider').width()-40));
 	$("#pwcslider .feature").css("height", ($('#pwcslider').height()-27));
-	$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator().autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
-	
+	//$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'}).autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
+	//$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator().autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
+	$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'}).handleSwipes();
+
 	var contacttooltipoffset = 0
 	if (((BrowserDetect.browser)=="Explorer")&((BrowserDetect.version)==8)) { contacttooltipoffset = -225; }
 	$(".contacttooltip").tooltip({ position: "bottom left", relative: "true", offset: [-27,contacttooltipoffset]});

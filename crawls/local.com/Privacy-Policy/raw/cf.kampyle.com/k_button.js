@@ -1,5 +1,5 @@
 
-var k_button_js_revision='$Rev: 18734 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
+var k_button_js_revision='$Rev: 19014 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
 this.newwindow.location.href=url;else
 {if(!this.window_width)
 this.window_width=440;if(!this.window_height)
@@ -34,8 +34,10 @@ else
 else
 {main_domain=domain;}}}
 return main_domain;},"generate_pre_id":function()
-{var vector1=Math.floor(Math.random()*(Math.pow(2,48)));var vector2=new Date().getTime();return vector1+"_"+vector2;},"open_ff":function(ff_params,url)
-{try
+{var vector1=Math.floor(Math.random()*(Math.pow(2,48)));var vector2=new Date().getTime();return vector1+"_"+vector2;},"last_open_ff":0,"open_ff":function(ff_params,url)
+{var currentTime=(new Date()).getTime()
+if(currentTime-k_button.last_open_ff<500)
+return false;k_button.last_open_ff=currentTime;try
 {if(typeof(k_sc_param)=="object")
 {k_button.callSiteCatalyst(k_sc_param.instance,k_sc_param.evar);}}
 catch(e)

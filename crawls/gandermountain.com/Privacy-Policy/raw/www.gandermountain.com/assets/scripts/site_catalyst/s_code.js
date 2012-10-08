@@ -4,6 +4,15 @@ More info available at http://www.omniture.com */
 var s_account="overtonsgandermountain"
 //var s_account="overtonsganderdev"
 var s=s_gi(s_account)
+
+/************************** SERVER VARIABLES SECTION **************************/
+
+var s_server = document.domain.toString().replace (/\/.*/, '').replace (/^www\./, '');
+var s_url = document.location.protocol + "//" + document.location.hostname + document.location.pathname;
+var s_querystring = document.location.search + " " + document.location.hash;
+
+s.server=s_server;
+
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 s.charSet="UTF-8"

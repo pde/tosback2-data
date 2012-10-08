@@ -1504,7 +1504,7 @@ Filters/Components
 
 .article-callout {
     background: transparent url('../images/offset-articles-background.png') 0 0 no-repeat;
-    padding: 46px 0 0 0;
+    padding: 46px 0 32px 0;
 }
 
 .article-callout-heading {
@@ -1646,14 +1646,6 @@ Components > Facebook
     display: block;
     line-height: 26px;
     background: url('../images/icon-login-twitter.png') no-repeat;
-}
-
-/* ---------------------------------------------------------------------
-Components > Heading Sidebar
------------------------------------------------------------------------- */
-
-.copy-heading-sidebar {
-    padding: 25px 50px;
 }
 
 /* ---------------------------------------------------------------------
@@ -2327,6 +2319,21 @@ Layout Styles > Positioning and aligning elements
     text-align: center;
 }
 
+.layout-centered-img,
+.layout-centered-img img{
+    margin: 0 auto;
+    display: block;
+}
+
+.layout-right-img {
+    float: right;
+    margin: 16px 0 16px 16px;
+}
+
+.layout-left-img {
+    float: left;
+    margin: 16px 16px 16px 0;
+}
 /* ---------------------------------------------------------------------
 Components > Product Rating
 ------------------------------------------------------------------------ */
@@ -2497,22 +2504,6 @@ Callouts
 /* ---------------------------------------------------------------------
 Articles
 ------------------------------------------------------------------------ */
-
-.article-callout-article {
-    margin-bottom: 15px;
-    height: 315px;
-    background: none;
-    border: none;
-    box-sizing: border-box;
-}
-
-.article-callout .inner {
-    padding: 0;
-}
-
-.article-callout.first {
-    padding-left: 15px;
-}
 
 .article-block-link {
     text-align: center;
@@ -3255,7 +3246,7 @@ Components > Icons
 .icon-inline-facebook {
     background: url('../images/fb-small.png') 0 0 no-repeat;
     padding: 0 0 0 20px;
-    display: inline-block;
+    display: inline;
 }
 
 .icon-return-form {
@@ -3354,12 +3345,16 @@ p.wysiwyg {
 }
 
 .wysiwyg ul {
-    margin: 0 0 15px 15px;
+    margin: 0 0 32px 16px;
     list-style: disc outside;
 }
 
-.wysiwyg ul ul {
-    margin-left: 20px;
+.wysiwyg li ul {
+    margin: 16px 0 0 16px;
+}
+
+.wysiwyg li ol {
+    margin: 16px 0 0 20px;
 }
 
 .wysiwyg ul.alt {
@@ -3367,7 +3362,7 @@ p.wysiwyg {
 }
 
 .wysiwyg ol {
-    margin: 0 0 15px 20px;
+    margin: 0 0 32px 20px;
     list-style: decimal outside;
 }
 
@@ -3389,11 +3384,12 @@ p.wysiwyg {
     background-color: transparent;
 }
 
-.wysiwyg .row-highlight {
+.wysiwyg table td {
     background-color: #fff;
 }
 
-.wysiwyg .row-highlight-alt {
+.wysiwyg .row-highlight-alt,
+.wysiwyg tr:nth-child(odd) td {
     background-color: #f4f4f4;
 }
 
@@ -5819,8 +5815,25 @@ Custom Homepage Slideshow
     top: 400px;
 }
 
-#my-hallmark-flag 
-{
+#my-hallmark-flag {
     display: block; 
     text-align: center;    
+}
+
+/* ---------------------------------------------------------------------
+Responsive Content
+------------------------------------------------------------------------ */
+
+.responsive-area img {
+    max-width: 100%;
+}
+
+.blocks-custom-2up {
+    overflow: hidden;
+}
+
+.blocks-custom-2up > * {
+    float: left;
+    margin-left: 2.6%;
+    width: 45.9%;
 }

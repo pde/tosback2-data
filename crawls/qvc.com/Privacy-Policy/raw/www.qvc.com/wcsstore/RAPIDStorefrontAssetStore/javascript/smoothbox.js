@@ -32,6 +32,8 @@ var IS_ZOOM_OVERLAY = false;
 var IS_PLAYER = false;
 var POPUP_SPACE = 20;
 var POPUP_OVERLAY_CLOSE = 'Close';
+var LOADING_GIF = "/wcsstore/US/content/images/loading.gif";
+var PRINT_STYLES = '<link type="text/css" media="print" href="/wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
 
 // add smoothbox to href elements that have a class of .smoothbox
 function TB_init(){
@@ -55,7 +57,8 @@ function TB_bind(event){
 
 // called when the user clicks on a smoothbox link
 function TB_show(caption, url, rel){
-	var queryString = url.match(/\?(.+)/)[1];
+	var queryString = url;
+	if(null!=url.match(/\?(.+)/)) queryString = url.match(/\?(.+)/)[1];
     var params = TB_parseQuery(queryString);
     
 	IS_CHOOSEMORE_OVERLAY = false; // default to false for each TB_show function call
@@ -65,6 +68,35 @@ function TB_show(caption, url, rel){
 	IS_WL_CONFIRM_OVERLAY = false;
 	IS_ZOOM_OVERLAY = false;
 	IS_PLAYER = false;
+	var overlaytype = "";
+	if(params['player'] != null && params['player'] != ''){
+        IS_PLAYER= true;
+        overlaytype+= 'TB_'+params['player']+' ';
+    }
+    if(params['template'] == 'FacetValuesPopupView'){ // if choosemore overlay
+       IS_CHOOSEMORE_OVERLAY = true;
+       overlaytype+= 'TB_'+params['template']+' ';
+	}
+	if(params['cartOverlay'] == 'true'){
+		IS_CART_IN_OVERLAY = true;
+		overlaytype+= 'TB_cartOverlay ';
+	}
+	if(params['cartWLConfirm'] == 'true'){
+		IS_WL_CONFIRM_OVERLAY = true;
+		overlaytype+= 'TB_cartWLConfirm ';
+	}
+	if(params['cartADConfirm'] == 'true'){
+		IS_AD_CONFIRM_OVERLAY = true;
+		overlaytype+= 'TB_cartADConfirm ';
+	}
+	if(params['TB_zoomOverlay'] == 'true'){
+		IS_ZOOM_OVERLAY = true;
+		overlaytype+= 'TB_zoomOverlay ';
+	}
+	if(params['keyword'] != null && params['keyword'] != ''){
+		IS_SEARCH_OVERLAY = true;
+		overlaytype+= 'TB_searchOverlay ';
+	}
     // create iframe, overlay and box if non-existent
     
     if (!$("TB_overlay")) {
@@ -72,41 +104,29 @@ function TB_show(caption, url, rel){
         $('TB_HideSelect').setOpacity(0);
         new Element('div').setProperty('id', 'TB_overlay').injectInside(document.body);
         $('TB_overlay').setOpacity(0);
-        TB_overlaySize();
-        new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='wcsstore/images/loading.gif' />";
-        TB_load_position();
-        
+        TB_overlaySize();    
         $('TB_overlay').set('tween', {
             duration: 400
         });
         $('TB_overlay').tween('opacity', 0, 0.6);
         
     }
-    
     if (!$("TB_load")) {
-        new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='wcsstore/images/loading.gif' />";
+        new Element('div').setProperty('id', 'TB_load').setProperty('html', '<img src="'+LOADING_GIF+'" />').injectInside(document.body);
         TB_load_position();
-    }
-    
+    } 
     if (!$("TB_window")) {
-        new Element('div').setProperty('id', 'TB_window').injectInside(document.body);
+        new Element('div').setProperty('id', 'TB_window').setProperty('class', overlaytype).injectInside(document.body);
         $('TB_window').setOpacity(0);
-        if(url.indexOf('player')!= -1){
-	        IS_PLAYER= true;
-	        $('TB_window').addClass('TB_'+params['player']);
-        }
     }
-    
-    $("TB_overlay").onclick = TB_remove;
-    
+      
     //check if print button needed
     var printbtn="";
 	if (url.indexOf('print=true') != -1) printbtn = "<div id='TB_print'><a href='javascript:void(0);' onclick='window.print();'>Print</a></div>";
     
     // check if a query string is involved
-    var baseURL = url.match(/(.+)?/)[1] || url;
+    var baseURL = url;
+    if(null!=url.split("?")) baseURL = url.split("?")[0];
     
     // regex to check if a href refers to an image
     //var imageURL = /\.(jpe?g|png|gif|bmp)/gi;
@@ -201,7 +221,7 @@ function TB_show(caption, url, rel){
             
             // TODO empty window content instead
             $("TB_window").innerHTML += "<a href='' id='TB_ImageOff' title='" + POPUP_CLOSE + "'><img id='TB_Image' src='" + url + "' width='" + imageWidth + "' height='" + imageHeight + "' alt='" + caption + "'/></a>" + "<div id='TB_caption'>" + caption + "<div id='TB_secondLine'>" + imageCount + prev.html + next.html + "</div></div><div id='TB_closeWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div>";
-            $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
+            $("TB_window").innerHTML += PRINT_STYLES;
             $("TB_closeWindowButton").onclick = TB_remove;
             
             function buildClickHandler(image){
@@ -258,27 +278,7 @@ function TB_show(caption, url, rel){
         TB_HEIGHT = (params['height'] * 1) + 40;
         
         var ajaxContentW = TB_WIDTH - 30, ajaxContentH = TB_HEIGHT - 45;
-        
-        if(params['template'] == 'FacetValuesPopupView'){ // if choosemore overlay
-	       IS_CHOOSEMORE_OVERLAY = true;
-		}
-		
-		if(params['cartOverlay'] == 'true'){
-			IS_CART_IN_OVERLAY = true;
-		}
-		if(params['cartWLConfirm'] == 'true'){
-			IS_WL_CONFIRM_OVERLAY = true;
-		}
-		
-		if(params['cartADConfirm'] == 'true'){
-			IS_AD_CONFIRM_OVERLAY = true;
-		}
-		if(params['TB_zoomOverlay'] == 'true'){
-			IS_ZOOM_OVERLAY = true;
-		}
-		if(params['keyword'] != null && params['keyword'] != ''){
-			IS_SEARCH_OVERLAY = true;
-		}
+
         if(IS_PLAYER){ 
             $("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a id='TB_closeWindowButton' href='#'  title='" + POPUP_CLOSE + "' >" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + url+ "' id='TB_iframeContent' name='TB_iframeContent' style='margin-top:0px;width:" + (ajaxContentW+5) + "px;height:" + (ajaxContentH+10) + "px;' onload='TB_showWindow()'> </iframe>";            
         }else if(IS_ZOOM_OVERLAY){ 
@@ -294,17 +294,14 @@ function TB_show(caption, url, rel){
 				$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a id='TB_closeWindowButton' href='#'  title='" + POPUP_CLOSE + "' >" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + urlNoQuery[0] + "' id='TB_iframeContent' name='TB_iframeContent' style='margin-top:0px;width:" + (ajaxContentW + 29) + "px;height:" + (ajaxContentH + 17) + "px;' onload='TB_showWindow()'> </iframe>";            
             }  
             // End of Defect 9149          
-         } 
-        else {
-        	if(IS_CART_IN_OVERLAY){
+        }else if(IS_CART_IN_OVERLAY){
 			$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' style='font-weight:normal !important;'>" + POPUP_OVERLAY_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";        	        		        		
 		}else{			        
-            		$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>" + POPUP_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";
-            	}
+			$("TB_window").innerHTML += "<div id='TB_title'>"+printbtn+"<div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>" + POPUP_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";
         }
-        $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
+        $("TB_window").innerHTML += PRINT_STYLES;
 	    
-	if(IS_CART_IN_OVERLAY){
+		if(IS_CART_IN_OVERLAY){
         	 $("TB_closeWindowButton").onclick = CloseSecureOverlay;
         }else{        
         	 $("TB_closeWindowButton").onclick = TB_remove;
@@ -314,34 +311,31 @@ function TB_show(caption, url, rel){
             $("TB_ajaxContent").innerHTML = ($(params['inlineId']).innerHTML);
             TB_position();
             TB_showWindow();
-        }
-        else 
-            if (url.indexOf('TB_iframe') != -1) {
+        }else if (url.indexOf('TB_iframe') != -1) {
+			TB_position();
+			if (frames['TB_iframeContent'] == undefined) {//be nice to safari
+			    $(document).keyup(function(e){
+			        var key = e.keyCode;
+			        if (key == 27) {
+			            TB_remove()
+			        }
+			    });
+			    TB_showWindow();
+			}
+		}else{
+            var handlerFunc = function(){
                 TB_position();
-                if (frames['TB_iframeContent'] == undefined) {//be nice to safari
-                    $(document).keyup(function(e){
-                        var key = e.keyCode;
-                        if (key == 27) {
-                            TB_remove()
-                        }
-                    });
-                    TB_showWindow();
-                }
-            }
-            else {
-                var handlerFunc = function(){
-                    TB_position();
-                    TB_showWindow();
-					//initFunctions();
-					initFunctionsSmoothbox();
-                };
+                TB_showWindow();
+				//initFunctions();
+				initFunctionsSmoothbox();
+            };
 
-				new Request.HTML({
-                    method: 'get',
-                    update: $("TB_ajaxContent"),
-                    onComplete: handlerFunc
-                }).get(url);
-            }
+			new Request.HTML({
+                method: 'get',
+                update: $("TB_ajaxContent"),
+                onComplete: handlerFunc
+            }).get(url);
+        }
     }
     document.onkeyup = function(event){
         var event = new Event(event);
@@ -349,251 +343,8 @@ function TB_show(caption, url, rel){
             TB_remove();
         }
     }
-    
 }
-function TB_show_overlay(caption, url, rel){
-
-    // create iframe, overlay and box if non-existent
-    
-    if (!$("TB_overlay")) {
-        new Element('iframe').setProperty('id', 'TB_HideSelect').injectInside(document.body);
-        $('TB_HideSelect').setOpacity(0);
-        new Element('div').setProperty('id', 'TB_overlay').injectInside(document.body);
-        $('TB_overlay').setOpacity(0);
-        TB_overlaySize();
-        new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='/images/loading.gif' />";
-        TB_load_position();
-        
-        $('TB_overlay').set('tween', {
-            duration: 400
-        });
-        $('TB_overlay').tween('opacity', 0, 0.6);
-        
-    }
-    
-    if (!$("TB_load")) {
-        new Element('div').setProperty('id', 'TB_load').injectInside(document.body);
-        $('TB_load').innerHTML = "<img src='/images/loading.gif' />";
-        TB_load_position();
-    }
-    
-    if (!$("TB_window")) {
-        new Element('div').setProperty('id', 'TB_window').injectInside(document.body);
-        $('TB_window').setOpacity(0);
-    }
-    
-    $("TB_overlay").onclick = TB_remove;
-    
-    // check if a query string is involved
-    var baseURL = url.match(/(.+)?/)[1] || url;
-    
-    // regex to check if a href refers to an image
-    //var imageURL = /\.(jpe?g|png|gif|bmp)/gi;
-    var imageURL = /^[^\?]*\.(jpe?g|png|gif|bmp)$/gi;
-    
-    // check for images
-    if (baseURL.match(imageURL)) {
-        var dummy = {
-            caption: "",
-            url: "",
-            html: ""
-        };
-        
-        var prev = dummy, next = dummy, imageCount = "";
-        
-        // if an image group is given
-        if (rel) {
-            function getInfo(image, id, label){
-                return {
-                    caption: image.title,
-                    url: image.href,
-                    html: "<span id='TB_" + id + "'>&nbsp;&nbsp;<a href='#'>" + label + "</a></span>"
-                }
-            }
-            
-            // find the anchors that point to the group
-            var imageGroup = [];
-            $$("a.smoothbox").each(function(el){
-                if (el.rel == rel) {
-                    imageGroup[imageGroup.length] = el;
-                }
-            })
-            
-            var foundSelf = false;
-            
-            // loop through the anchors, looking for ourself, saving information about previous and next image
-            for (var i = 0; i < imageGroup.length; i++) {
-                var image = imageGroup[i];
-                var urlTypeTemp = image.href.match(imageURL);
-                
-                // look for ourself
-                if (image.href == url) {
-                    foundSelf = true;
-                    imageCount = "Image " + (i + 1) + " of " + (imageGroup.length);
-                }
-                else {
-                    // when we found ourself, the current is the next image
-                    if (foundSelf) {
-                        next = getInfo(image, "next", "Next &gt;");
-                        // stop searching
-                        break;
-                    }
-                    else {
-                        // didn't find ourself yet, so this may be the one before ourself
-                        prev = getInfo(image, "prev", "&lt; Prev");
-                    }
-                }
-            }
-        }
-        
-        imgPreloader = new Image();
-        imgPreloader.onload = function(){
-            imgPreloader.onload = null;
-            
-            // Resizing large images
-            var x = window.getWidth() - 150;
-            var y = window.getHeight() - 150;
-            var imageWidth = imgPreloader.width;
-            var imageHeight = imgPreloader.height;
-            if (imageWidth > x) {
-                imageHeight = imageHeight * (x / imageWidth);
-                imageWidth = x;
-                if (imageHeight > y) {
-                    imageWidth = imageWidth * (y / imageHeight);
-                    imageHeight = y;
-                }
-            }
-            else 
-                if (imageHeight > y) {
-                    imageWidth = imageWidth * (y / imageHeight);
-                    imageHeight = y;
-                    if (imageWidth > x) {
-                        imageHeight = imageHeight * (x / imageWidth);
-                        imageWidth = x;
-                    }
-                }
-            // End Resizing
-            
-            // TODO don't use globals
-            TB_WIDTH = imageWidth + 30;
-            TB_HEIGHT = imageHeight + 60;
-            
-            // TODO empty window content instead
-            $("TB_window").innerHTML += "<a href='' id='TB_ImageOff' title='" + POPUP_CLOSE + "'><img id='TB_Image' src='" + url + "' width='" + imageWidth + "' height='" + imageHeight + "' alt='" + caption + "'/></a>" + "<div id='TB_caption'>" + caption + "<div id='TB_secondLine'>" + imageCount + prev.html + next.html + "</div></div><div id='TB_closeWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div>";
-            $("TB_window").innerHTML += '<link type="text/css" media="print" href="wcsstore/US/content/css/printoverlay.css" rel="stylesheet"/>';
-            $("TB_closeWindowButton").onclick = TB_remove;
-            
-            function buildClickHandler(image){
-                return function(){
-                    $("TB_window").dispose();
-                    new Element('div').setProperty('id', 'TB_window').injectInside(document.body);
-                    
-                    TB_show(image.caption, image.url, rel);
-                    return false;
-                };
-            }
-            var goPrev = buildClickHandler(prev);
-            var goNext = buildClickHandler(next);
-            if ($('TB_prev')) {
-                $("TB_prev").onclick = goPrev;
-            }
-            
-            if ($('TB_next')) {
-                $("TB_next").onclick = goNext;
-            }
-            
-            document.onkeydown = function(event){
-                var event = new Event(event);
-                switch (event.code) {
-                    case 27:
-                        TB_remove();
-                        break;
-                    case 190:
-                        if ($('TB_next')) {
-                            document.onkeydown = null;
-                            goNext();
-                        }
-                        break;
-                    case 188:
-                        if ($('TB_prev')) {
-                            document.onkeydown = null;
-                            goPrev();
-                        }
-                        break;
-                }
-            }
-            
-            // TODO don't remove loader etc., just hide and show later 
-            $("TB_ImageOff").onclick = TB_remove;
-            TB_position();
-            TB_showWindow();
-        }
-        imgPreloader.src = url;
-        
-    }
-    else { //code to show html pages
-        var queryString = url.match(/\?(.+)/)[1];
-        var params = TB_parseQuery(queryString);
-        
-        TB_WIDTH = (params['width'] * 1) + 30;
-        TB_HEIGHT = (params['height'] * 1) + 40;
-        
-        var ajaxContentW = TB_WIDTH - 30, ajaxContentH = TB_HEIGHT - 45;
-        
-        if (url.indexOf('TB_iframe') != -1) {
-            urlNoQuery = url.split('TB_');
-            $("TB_window").innerHTML += "<div id='TB_title' class='hideIt'><div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton' title='" + POPUP_CLOSE + "'>" + POPUP_CLOSE + "</a></div></div><iframe frameborder='0' hspace='0' src='" + urlNoQuery[0] + "' id='TB_iframeContent' name='TB_iframeContent' style='width:" + (ajaxContentW + 29) + "px;height:" + (ajaxContentH + 17) + "px;' onload='TB_showWindow()'> </iframe>";
-        }
-        else {
-            $("TB_window").innerHTML += "<div id='TB_title'><div id='TB_ajaxWindowTitle'>" + caption + "</div><div id='TB_closeAjaxWindow'><a href='#' id='TB_closeWindowButton'>" + POPUP_CLOSE + "</a></div></div><div id='TB_ajaxContent' style='width:" + ajaxContentW + "px;height:" + ajaxContentH + "px;'></div>";
-        }
-        $("TB_window").innerHTML += '<link type="text/css" media="print" href="/US/content/css/printoverlay.css" rel="stylesheet"/>';
-        $("TB_closeWindowButton").onclick = TB_remove;
-        
-        if (url.indexOf('TB_inline') != -1) {
-            $("TB_ajaxContent").innerHTML = ($(params['inlineId']).innerHTML);
-            TB_position();
-            TB_showWindow();
-        }
-        else 
-            if (url.indexOf('TB_iframe') != -1) {
-                TB_position();
-                if (frames['TB_iframeContent'] == undefined) {//be nice to safari
-                    $(document).keyup(function(e){
-                        var key = e.keyCode;
-                        if (key == 27) {
-                            TB_remove()
-                        }
-                    });
-                    TB_showWindow();
-                }
-            }
-            else {
-                var handlerFunc = function(){
-                    TB_position();
-                    TB_showWindow();
-					//initFunctions();
-					initFunctionsSmoothbox();
-                };
-
-				new Request.HTML({
-                    method: 'get',
-                    update: $("TB_ajaxContent"),
-                    onComplete: handlerFunc
-                }).get(url);
-            }
-    }    
-    document.onkeyup = function(event){
-        var event = new Event(event);
-        if (event.code == 27) { // close
-            TB_remove();
-        }
-    }
-}
-
 //helper functions below
-
 function TB_showWindow(){
     //$("TB_load").dispose();
     //$("TB_window").setStyles({display:"block",opacity:'0'});
@@ -618,7 +369,7 @@ function TB_showWindow(){
             $('TB_load').dispose();
         }
     }
-     if($('TB_iframeContent')!=null){       	 
+    if($('TB_iframeContent')!=null){       	 
     	if($('TB_iframeContent').src!=null){
     		if($('TB_iframeContent').src.indexOf("cartOverlay=true")>-1){	    		
 	    		if($('TB_title')!=null){
@@ -626,38 +377,25 @@ function TB_showWindow(){
 	    		}
  			}     	
    		 }
-   	 }	    
+   	 }
+   	 $("TB_overlay").onclick = TB_remove;	    
 }
-
-function TB_remove(){
-
-		 if(parent.document.getElementById('autoDelEditiframe_new') != null)  //AD plan details page.
-        {      
-             if(parent.document.getElementById('frmAutoDeliveryPlanDetails') != null)
-             {                       
-                parent.document.getElementById('frmAutoDeliveryPlanDetails').reset();
-				parent.document.getElementById('selAutoDeliveryFrequency').blur();
-                  
-              }      
-        }  
-
-    if ($('TB_overlay')) {
-	    $("TB_overlay").onclick = null;
+function TB_remove_onclick(arr){
+	for(var i =0;i<arr.length;i++){
+		if (null != $(arr[i])) $(arr[i]).onclick = null;
 	}
+}
+function TB_remove(){
+	if(parent.document.getElementById('autoDelEditiframe_new') != null){//AD plan details page.
+		if(parent.document.getElementById('frmAutoDeliveryPlanDetails') != null){                       
+                parent.document.getElementById('frmAutoDeliveryPlanDetails').reset();
+				parent.document.getElementById('selAutoDeliveryFrequency').blur(); 
+        }      
+	}  
+	var clickarr=["TB_overlay", "TB_imageOff", "TB_closeWindowButton", "TB_prev", "TB_next"];
+	TB_remove_onclick(clickarr);
     document.onkeyup = null;
     document.onkeydown = null;
-    
-    if ($('TB_imageOff')) 
-        $("TB_imageOff").onclick = null;
-    if ($('TB_closeWindowButton')) 
-        $("TB_closeWindowButton").onclick = null;
-    if ($('TB_prev')) {
-        $("TB_prev").onclick = null;
-    }
-    if ($('TB_next')) {
-        $("TB_next").onclick = null;
-    }
-    
     
     $('TB_window').set('tween', {
         duration: 250,
@@ -666,9 +404,6 @@ function TB_remove(){
         }
     });
     $('TB_window').tween('opacity', 1, 0);
-    
-    
-    
     if ($('TB_overlay')) {
 	    $('TB_overlay').set('tween', {
     	    duration: 400,
@@ -839,84 +574,18 @@ function TB_position(){
 				left: pos.left + 'px'
 			});
 		}
-		
-	//	if($('cartOverlayFrame')!=null || $('cartADConfirmOverlayFrame')!=null || $('cartSpeedBuyOverlayFrame')!=null || $('cartWLConfirmOverlayFrame')!=null){           
-                       // if($('cartWLConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartADConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartSpeedBuyOverlayFrame').src.indexOf("cartOverlay=true")>-1 || $('cartWLConfirmOverlayFrame').src.indexOf("cartOverlay=true")>-1){
-                        if(IS_AD_CONFIRM_OVERLAY  || IS_WL_CONFIRM_OVERLAY ){
-                                      $('TB_ajaxContent').setStyles({                                                                     
-                                                  "padding-left": 0 + 'px',
-                                                  "padding-right": 0 + 'px',
-                                                  height:(pos.height - borderWidth) + 'px',    
-                                                  width: pos.width + 'px',                     
-                                                   overflow: 'hidden'
-                                      }); 
-                                      parent.$('TB_window').setStyles({ 
-                                            "padding-bottom": 0 + 'px'
-                                      });                                                                                                                                
-                        }
-        //}		
-		 							 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        if(IS_AD_CONFIRM_OVERLAY  || IS_WL_CONFIRM_OVERLAY ){
+			$('TB_ajaxContent').setStyles({                                                                     
+			            "padding-left": 0 + 'px',
+			            "padding-right": 0 + 'px',
+			            height:(pos.height - borderWidth) + 'px',    
+			            width: pos.width + 'px',                     
+			            overflow: 'hidden'
+			}); 
+			parent.$('TB_window').setStyles({ 
+			      "padding-bottom": 0 + 'px'
+			});                                                                                                                                
+        }
 	}
 }
 

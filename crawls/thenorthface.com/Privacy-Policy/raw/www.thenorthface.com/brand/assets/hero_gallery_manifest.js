@@ -226,7 +226,11 @@ var Class = (function() {
     },
 
     pause: function() {
+     try {
       this.player.pauseMovie();
+     } catch (e) {
+      this.player = document.getElementById(this.playerId);
+     }
     },
 
     play: function() {

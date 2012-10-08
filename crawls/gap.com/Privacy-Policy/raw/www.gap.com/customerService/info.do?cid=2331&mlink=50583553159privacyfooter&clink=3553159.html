@@ -947,7 +947,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/04/2012 08:09 AM",
+            DATE_IN_USE: "10/08/2012 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
 
             IS_NAV2_ENABLED: 'false' === 'true',
@@ -1752,9 +1752,50 @@ if ( (location.pathname == "/browse/product.do") || (location.pathname == "/brow
 
 
 <!-- container 3 -->
-<!-- BEGIN Content Item File: /content/0005/468/862/cn5468862.html -->
+<!-- BEGIN Content Item File: /content/0005/630/580/cn5630580.html -->
 
 <script type="text/javascript">
+/*begin override to update Return Policy link on shopping bag to new CS Returns Page */
+
+if( location.pathname == "/buy/shopping_bag.do" ) {
+ document.observe("dom:loaded", function() {
+	var shopBagContainer = $('shoppingBagSummaryContainer');
+
+	if (shopBagContainer){
+	var shoppingBagSummaryContainer = shopBagContainer.select('p');
+
+	shoppingBagSummaryContainer = shoppingBagSummaryContainer[0];
+
+	var shopBagLinks = shoppingBagSummaryContainer.select('a');
+		
+		for (i=0; i<shopBagLinks.length; i++) {
+			if (shopBagLinks[i].innerHTML.include("Return Policy") ){
+				shopBagLinks[i].setAttribute('href','/customerService/info.do?cid=81264');
+				
+			}
+		}
+	}
+ })
+}
+/*end override to update Return Policy link on shopping bag to new CS Returns Page */
+
+
+
+
+/* begin override to fix broken Privacy Policy link fix on  Sign In Page  */
+
+if( location.pathname == "/profile/sign_in.do" ) {
+ document.observe("dom:loaded", function() {
+   if($('privacyPolicyLink')) {
+    $('privacyPolicyLink').getElementsByTagName("a")[0].setAttribute('href','/customerService/info.do?cid=2331');
+   }
+ })
+}
+
+/* end override to fix broken Privacy Policy link fix on  Sign In Page  */
+
+
+
 /* BEGIN Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
 
 document.observe("dom:loaded",function() {
@@ -1950,7 +1991,7 @@ if (location.pathname == "/browse/category.do") {
 
 
 
-<!-- END Content Item File: /content/0005/468/862/cn5468862.html -->
+<!-- END Content Item File: /content/0005/630/580/cn5630580.html -->
 
 
 
@@ -4793,7 +4834,7 @@ if( window['siteNavigation'] ) {
 
 
 <!-- container 8 -->
-<!-- BEGIN Content Item File: /content/0005/563/152/cn5563152.html -->
+<!-- BEGIN Content Item File: /content/0005/629/193/cn5629193.html -->
 
 <script type="text/javascript">
 
@@ -5226,7 +5267,12 @@ Event.observe(document, "dom:loaded", function () {
 				'914400002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20875/outfit/gp-otf-out20875odv01.jpg','Sparkle + Shine'],
 				'317288002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22828/outfit/gp-otf-out22828odv01.jpg','Flocked Velvet Hidden Underwire Balconette Bra & Flocked Velvet High-Waist Bikini (true black)'],			
 				'317280002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22849/outfit/gp-otf-out22849odv01.jpg','Flocked Velvet Plunge Demi Bra & Flocked Velvet Hipster (true black)'],			
-				'317287002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22850/outfit/gp-otf-out22850odv01.jpg','Flocked Velvet Uplift Balconette Bra & Flocked Velvet Hipster (true black)']				
+				'317287002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22850/outfit/gp-otf-out22850odv01.jpg','Flocked Velvet Uplift Balconette Bra & Flocked Velvet Hipster (true black)'],
+				'245957032':['/Asset_Archive/GPWeb/Assets/Outfit/165/OUT16584/outfit/gp-otf-out16584odv01.jpg','The Moss Stitch Hat & Plaid Scarf'],			
+				'243964112':['/Asset_Archive/GPWeb/Assets/Outfit/165/OUT16582/outfit/gp-otf-out16582odv01.jpg','The Dot Pullover & 1969 Legging Cord'],
+				'246378012':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16233/outfit/gp-otf-out16233odv01.jpg','The Stripe Top & 1969 Real Straight Jean'],			
+				'243974092':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16234/outfit/gp-otf-out16234odv01.jpg','The Raglan Cardigan & Print Pocket Top'],			
+				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift']					
 		},
 
 
@@ -5443,7 +5489,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 
 
 
-<!-- END Content Item File: /content/0005/563/152/cn5563152.html -->
+<!-- END Content Item File: /content/0005/629/193/cn5629193.html -->
 
 
 
@@ -6850,8 +6896,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/588/211/cn5588211.html -->
-<div id="contentItemContainer10000395" class="5588211" >
+    	<!-- BEGIN Content Item File: /content/0005/643/340/cn5643340.html -->
+<div id="contentItemContainer10000395" class="5643340" >
 
 <style type="text/css">
 #globalBanner {
@@ -6863,10 +6909,10 @@ Event.observe(window,"load",function(){
 	z-index: 50;
 }
 
-#globalBanner a:link, 
-#globalBanner a:hover,
-#globalBanner a:visited, 
-#globalBanner a:active
+#globalBanner > a:link, 
+#globalBanner > a:hover,
+#globalBanner > a:visited, 
+#globalBanner > a:active
 {
 	color: #000000;
 	text-decoration: none;
@@ -6906,32 +6952,46 @@ Event.observe(window,"load",function(){
 	opacity: 0.25;
 	filter: alpha(opacity = 25);
 }
+
+#globalBannerCloser {
+	position: absolute;
+	top: 1px; 
+	right: 5px; 
+	color: #ffffff;
+}
+
+#globalBannerCloser:hover {
+	text-decoration: underline;
+}
 </style>
 
 <div id="globalBanner">
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/588/211/assets/100412_ALL_columbus_SBAN_US.png" alt="online: 30% off your purchase. in stores: up to 40% off select styles. ends 10/8. enter GAPCOLOR. details" usemap="#gbMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/643/340/assets/100412_ALL_columbus_SBAN_US.png" alt="online: 30% off your purchase. in stores: up to 40% off select styles. ends 10/8. enter GAPCOLOR. details" usemap="#gbMap" />
 		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="322,22,472,56" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:300});">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="2,7,472,55" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:300});">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/588/211/assets/100412_ALL_columbus_DISR_US.jpg" alt="30% off your online purchase. enter GAPCOLOR. plus, in stores up to 40% off select styles. ends monday, 10/8. details" usemap="#disruptorMap" />
-		<map name="disruptorMap">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/588/211/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
-		</map>
+	<div id="globalBannerDisruptor" style="display:none;">
+		<div>
+			<a id="globalBannerCloser" href="javascript:void(0);" class="noHideDisruptor" onclick="globalBannerDisruptor.close();">X</a>
+			<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/643/340/assets/100412_ALL_columbus_DISR_US.jpg" alt="30% off your online purchase. enter GAPCOLOR. plus, in stores up to 40% off select styles. ends monday, 10/8. details" usemap="#disruptorMap" />
+			<map name="disruptorMap">
+			    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+			</map>
+		</div>
 	</div><!-- /Global Banner Disruptor -->
 
 </div>
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('100412_GB');
+	globalBannerDisruptor.init('100612_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -6953,7 +7013,7 @@ var globalBannerDisruptor = {
 	disruptorID: 'globalBannerDisruptor',
 	activatorID: 'globalBannerActivator',
 	containerID: 'globalBannerText',
-	cookieName: '',
+	cookieName:  '',
 	
 	init: function(cookieName) {
 	
@@ -6975,11 +7035,14 @@ var globalBannerDisruptor = {
 
 		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
 		
+		/*
+
 		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
 
 		var timerID = setTimeout(function() {
 			globalBannerDisruptor.hide();
 		}, 8000);
+		*/
 
 	},
 	
@@ -7032,6 +7095,8 @@ var globalBannerDisruptor = {
 			globalBannerDisruptor.addDisruptBehaviour();
 		}, 1000);
 
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
 	},
 
 	addDisruptBehaviour: function() {
@@ -7052,7 +7117,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0005/588/211/cn5588211.html -->
+<!-- END Content Item File: /content/0005/643/340/cn5643340.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9330,7 +9395,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5588211,5569434,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5643340,5569434,5106701,5451526,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

@@ -1,0 +1,698 @@
+
+function getFilename() {
+    var url = window.location.pathname.toLowerCase();
+    var filename = url.substring(url.lastIndexOf('/') + 1);
+    return filename;
+}
+var ctPageName = getFilename().replace(".html", "");
+
+function SafeClickTaleExec(code) {
+    if (typeof ClickTaleExec == "function") {
+        ClickTaleExec(code);
+    }
+}
+
+function SafeClickTaleEvent(EventString) {
+    if (typeof ClickTaleEvent == "function") {
+        ClickTaleEvent(EventString);
+    }
+}
+
+jQuery(document).ready(function () {
+    // setting the debug dump area:
+    jQuery("#ClickTaleDebugDump").css({ 'width': '400px', 'font-size': '13px', 'z-index': '100000' });
+
+    //Set Cart Viewing
+    SafeClickTaleExec("jQuery(\"#minicart_trigger\").text(\"" + jQuery("#minicart_trigger").text() + "\")");
+    SafeClickTaleExec("jQuery(\"#minicart\").html('" + jQuery("#minicart").html() + "')");
+    if (ctPageName == "tnfpickupatstoreview" && jQuery("#zipCode").val() != "") {
+        SafeClickTaleExec("jQuery(\"#zipCode\").val(\"" + jQuery("#zipCode").val() + "\")");
+        var s = jQuery("#shop-container .col-15").eq(0).html();
+        s = s.replace(/"/g, "\\\"");
+        s = s.replace(/\n/g, "");
+        s = s.replace(/\r/g, "");
+        SafeClickTaleExec("jQuery(\"#shop-container .col-15\").eq(0).html(\"" + s + "\")");
+        SafeClickTaleExec("jQuery(\"#zipCodeSearchResults input[type=radio]\").eq(0).attr('checked',true)");
+
+        jQuery("#zipCodeSearchResults input[type=radio]").each(function (index) {
+            jQuery("#zipCodeSearchResults input[type=radio]").eq(index).click(function () {
+                SafeClickTaleExec("jQuery(\"#zipCodeSearchResults input[type=radio]\").eq(" + index + ").click()");
+            });
+        });
+
+        jQuery("#bmStoreName input[type=text]").each(function (index) {
+            jQuery("#bmStoreName input[type=text]").eq(index).keyup(function () {
+                var vl = "";
+                for (var i = 0; i < jQuery("#bmStoreName input[type=text]").eq(index).val().length; i++)
+                    vl += "-";
+
+                SafeClickTaleExec("jQuery(\"#" + jQuery("#bmStoreName input[type=text]").eq(index).attr("id") + "\").val(\"" + vl + "\")");
+            });
+        });
+    }
+
+    ////////////// EYAL /////////////////////
+
+
+    //Non Action Triggered Events
+
+    //Quick View Click
+    jQuery(".quickView.DOMWindow.cboxElement").live("click", function (index) {
+        SafeClickTaleEvent("Product Quick View");
+    });
+
+    //See it in action Click
+    jQuery(".seeItInAction.DOMWindow.cboxElement").live("click", function (index) {
+        SafeClickTaleEvent("See it in action");
+    });
+
+    //Shop now click
+    jQuery("a:contains('Shop Now')").click(function () {
+        SafeClickTaleEvent("(Generic) Shop Now - Menu");
+        SafeClickTaleEvent("(Specific) Shop Now - " + jQuery(this).parent().parent().parent().parent().attr("class").replace("dropdown ", ""));
+    });
+
+    //Shopping Cart button click (opens a menu with all products selected thus far
+    jQuery("#minicart_trigger").click(function () {
+        SafeClickTaleExec("jQuery(\"#minicart_trigger\").click()");
+    })
+
+    //Add to cart button clicked
+    jQuery("#addToCart").click(function () {
+        SafeClickTaleEvent("Quick View - Add To Cart");
+        SafeClickTaleExec("jQuery(\"#addToCart\").click()");
+        if (jQuery("#addToCart").attr("class").indexOf("buyFromDealer") < 0) {
+            SafeClickTaleExec("jQuery(\"#minicart_trigger\").click()");
+            SafeClickTaleExec("jQuery(\"#minicart_trigger\").parent().addClass(\"pellet cool active\")");
+            SafeClickTaleExec("jQuery(\"#minicart\").css('top','27px')");
+            SafeClickTaleExec("jQuery(\"#minicart\").css('display','block')");
+        }
+    });
+
+    //Review Tab is viewed
+    jQuery("a[href=#reviews]").click(function () {
+        SafeClickTaleEvent("Product - Reviews");
+    });
+
+    //Options Tab is viewed
+    jQuery("a[href=#options]").click(function () {
+        SafeClickTaleExec("jQuery(\"a[href=#options]\").click()");
+    });
+
+    //Features Tab is viewed
+    jQuery("a[href=#features]").click(function () {
+        SafeClickTaleExec("jQuery(\"a[href=#features]\").click()");
+    });
+
+    //Specification Tab is viewed
+    jQuery("a[href=#specifications]").click(function () {
+        SafeClickTaleExec("jQuery(\"a[href=#specifications]\").click()");
+    });
+
+    //Search Stores in ZIP 
+    jQuery("#zipCodeSearch button").click(function () {
+        SafeClickTaleExec("jQuery(\"#zipCodeSearch button\").click()");
+    });
+
+    //Remove Button on checkout page clicked
+    jQuery("li.orderItemActions.clearfix a:contains('Remove')").each(function (index) {
+        jQuery("li.orderItemActions.clearfix a:contains('Remove')").eq(index).click(function () {
+            SafeClickTaleEvent("Shopping Cart - Remove Item");
+            SafeClickTaleExec("jQuery(\"li.orderItemActions.clearfix a:contains('Remove')\").eq(" + index + ").click()");
+        });
+    });
+
+    //Save for later Button on checkout page clicked
+    jQuery("li.orderItemActions.clearfix a:contains('Save For Later')").each(function (index) {
+        jQuery("li.orderItemActions.clearfix a:contains('Save For Later')").eq(index).click(function () {
+            SafeClickTaleEvent("Shopping Cart - Save For Later");
+            SafeClickTaleExec("jQuery(\"li.orderItemActions.clearfix a:contains('Save For Later')\").eq(" + index + ").click()");
+        });
+    });
+
+    jQuery("li.orderItemButtons.clearfix span.hot.pellet.big.ecom button").eq(0).click(function () {
+        SafeClickTaleExec("jQuery(\"li.orderItemButtons.clearfix span.hot.pellet.big.ecom button\").eq(0).click()");
+    });
+
+    jQuery("div.actions div span:contains('Checkout')").click(function () {
+        SafeClickTaleEvent("Shopping Cart  - Checkout");
+    });
+
+    jQuery("#checkout_trigger").click(function () {
+        SafeClickTaleEvent("Quick Checkout");
+    });
+
+    jQuery("a[href='javascript:gotoCart(0)']").click(function () {
+        SafeClickTaleEvent("Quick Checkout");
+    })
+
+    jQuery("a.order-side").parent().click(function () {
+        SafeClickTaleEvent("Checkout - Edit Cart");
+    })
+
+    jQuery("span.pellet.hot.big a:contains('Place Order')").click(function () {
+        SafeClickTaleEvent("Checkout - Place order");
+    })
+
+    jQuery("a span:contains('Place Order')").eq(0).parent().click(function () {
+        SafeClickTaleEvent("Checkout - Place order");
+    });
+
+    jQuery("a:contains('Place Order')").eq(0).click(function () {
+        SafeClickTaleEvent("Checkout - Place order");
+    });
+
+    ///////// CASE 7295 //////////
+
+    //Record Top Menu Across site
+    var bflag = false;
+    var cflag = false;
+
+    jQuery("div#nav-inner ul.main-menu li").each(function (index) {
+        jQuery(this).mouseenter(function () {
+            bflag = true;
+            SafeClickTaleExec("jQuery(\"div#nav-inner ul.main-menu li\").eq(" + index + ").find(\"a\").eq(0).addClass(\"hover\")");
+            SafeClickTaleExec("jQuery(\"div.dropdown." + jQuery("div#nav-inner ul.main-menu li").eq(index).find("a").eq(0).attr("data-dropdown") + "\").css('display', 'block')");
+        });
+
+        jQuery(this).mouseleave(function () {
+            bflag = false;
+            setTimeout(function () {
+                if (!cflag) {
+                    SafeClickTaleExec("jQuery(\"div#nav-inner ul.main-menu li\").eq(" + index + ").find(\"a\").eq(0).removeClass()");
+                    SafeClickTaleExec("jQuery(\"div.dropdown." + jQuery("div#nav-inner ul.main-menu li").eq(index).find("a").eq(0).attr("data-dropdown") + "\").css('display', 'none')");
+                }
+            }, 300);
+        });
+    })
+
+    jQuery("#nav-dropdowns-inner div[class*=dropdown]").each(function (index) {
+        jQuery(this).mouseenter(function () {
+            cflag = true;
+        });
+
+        jQuery(this).mouseleave(function () {
+            cflag = false;
+            if (!bflag) {
+                SafeClickTaleExec("jQuery(\"a[data-dropdown=" + jQuery(this).attr("class").split(' ')[1] + "]\").removeClass()");
+                SafeClickTaleExec("jQuery(\"#nav-dropdowns-inner div[class*=dropdown]\").eq(" + index + ").css('display', 'none')");
+            }
+        });
+    })
+
+    ///////// END CASE 7295 ////////
+
+    ///////// CASE 7297 ////////////
+
+    //Record MouseOver & Click on Pagination
+    function initPagination() {
+        jQuery(".pagination .controls .pages ul li a").each(function (index) {
+            jQuery(".pagination .controls .pages ul li a").eq(index).mouseenter(function () {
+                SafeClickTaleExec("jQuery(\".pagination .controls .pages ul li a\").eq(" + index + ").addClass(\"active\")");
+            });
+
+            jQuery(".pagination .controls .pages ul li a").eq(index).mouseleave(function () {
+                SafeClickTaleExec("jQuery(\".pagination .controls .pages ul li a\").eq(" + index + ").removeClass()");
+            });
+
+            jQuery(".pagination .controls .pages ul li a").eq(index).click(function () {
+                SafeClickTaleExec("jQuery(\".pagination .controls .pages ul li a\").eq(" + index + ").click()");
+            });
+        })
+
+        jQuery("#pagePrev").click(function () {
+            SafeClickTaleExec("jQuery(\"#pagePrev\").click()");
+        });
+
+        jQuery("#pageNext").click(function () {
+            SafeClickTaleExec("jQuery(\"#pagePrev\").click()");
+        });
+    }
+
+    initPagination();
+    if (TNF.ECOM.pagination != null) {
+        var orgBC = TNF.ECOM.pagination.bindClicks;
+        TNF.ECOM.pagination.bindClicks = function () {
+            orgBC();
+            initPagination();
+        }
+    }
+
+    //Sorting Controls
+    jQuery("a[class*=grid3Col]").click(function () {
+        SafeClickTaleExec("jQuery(\"a[class*=grid3Col]\").eq(0).click()");
+    })
+
+    jQuery("a[class*=grid6Col]").click(function () {
+        SafeClickTaleExec("jQuery(\"a[class*=grid6Col]\").eq(0).click()");
+    })
+
+    jQuery("select#sortBy").change(function () {
+        var vl = jQuery("select#sortBy").val();
+        SafeClickTaleExec("jQuery(\"select#sortBy\").val(\"" + vl + "\").change()");
+    })
+
+    //Record tabs transition inside the Quick View pop-up 
+    jQuery("div.tabs ul li a").each(function (index) {
+        jQuery("div.tabs ul li a").eq(index).click(function () {
+            SafeClickTaleExec("jQuery(\"div.tabs ul li a\").eq(" + index + ").click()");
+        });
+    });
+
+    ///////// END CASE 7297 ////////
+
+    ////////////// EYAL-END ///////////////////////////
+
+    ////////////// KOBI ///////////////////////////////
+
+    ////////// start of case #7294 /////////
+
+    // homepage - carousel - left arrow:
+    jQuery("DIV#midas_snippet_21 A.hero-gallery-arrow-left.arrow-box-left.short").click(function () {
+        var code = "jQuery(\"DIV#midas_snippet_21 A.hero-gallery-arrow-left.arrow-box-left.short\").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // homepage - carousel - right arrow:
+    jQuery("DIV#midas_snippet_21 A.hero-gallery-arrow-right.arrow-box.short").click(function () {
+        var code = "jQuery(\"DIV#midas_snippet_21 A.hero-gallery-arrow-right.arrow-box.short\").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // "+" icons inside the homepage carousel:
+    jQuery('DIV.col-24.hero-gallery.short DIV.hero-gallery-callout-marker A').click(function () {
+        var index = jQuery('DIV.col-24.hero-gallery.short DIV.hero-gallery-callout-marker A').index(this);
+        var code = "jQuery('DIV.col-24.hero-gallery.short DIV.hero-gallery-callout-marker A').eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // closing homepage carousel popups, by the "X" button (top-right corner):
+    jQuery('A.hero-gallery-callout-popup-close').click(function () {
+        var index = jQuery('A.hero-gallery-callout-popup-close').index(this);
+        var code = "jQuery('A.hero-gallery-callout-popup-close').eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // navigation dots on homepage carousel:
+    jQuery('DIV.hero-gallery-paginator A').click(function () {
+        var index = jQuery('DIV.hero-gallery-paginator A').index(this);
+        var code = "jQuery('DIV.hero-gallery-paginator A').eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    })
+
+    // product banners below homepage carousel:
+    jQuery("DIV.products-grid-wrapper A.box").mouseenter(function () {
+        var index = jQuery("DIV.products-grid-wrapper A.box").index(this);
+        var code = "jQuery(\"DIV.products-grid-wrapper A.box\").eq(" + index + ").addClass('hover');";
+        SafeClickTaleExec(code);
+    });
+    jQuery("DIV.products-grid-wrapper A.box").mouseleave(function () {
+        var index = jQuery("DIV.products-grid-wrapper A.box").index(this);
+        var code = "jQuery(\"DIV.products-grid-wrapper A.box\").eq(" + index + ").removeClass('hover');";
+        SafeClickTaleExec(code);
+    });
+
+    ////////// end of case #7294 /////////
+
+    ////////// start of case #7298 /////////
+
+    // switching between tabs on product page:
+    jQuery("DIV#pdpV3tabs DIV.tabs UL LI A").click(function () {
+        var index = jQuery("DIV#pdpV3tabs DIV.tabs UL LI A").index(this);
+        var code = "jQuery(\"DIV#pdpV3tabs DIV.tabs UL LI A\").eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // product page carousel ("Other people also viewed"):
+    jQuery('DIV#detailsMerchandiser DIV.jcarousel-container.jcarousel-container-horizontal A[class^="jcarousel-"]').click(function () {
+        var index = jQuery('DIV#detailsMerchandiser DIV.jcarousel-container.jcarousel-container-horizontal A[class^="jcarousel-"]').index(this);
+        var code = "jQuery('DIV#detailsMerchandiser DIV.jcarousel-container.jcarousel-container-horizontal A[class^=\"jcarousel-\"]').eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // product page colors & sizes:
+
+    // clicking on a color:
+    jQuery("LI.productColors A").click(function () {
+        var index = jQuery("LI.productColors A").index(this);
+        var code = "jQuery(\"LI.productColors A\").eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // clicking on a size:
+    jQuery("LI.productSize A").click(function () {
+        var index = jQuery("LI.productSize A").index(this);
+        var code = "jQuery(\"LI.productSize A\").eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // hovering the colors:
+    jQuery("LI.productColors A").mouseenter(function () {
+        var index = jQuery("LI.productColors A").index(this);
+        var code = "jQuery(\"LI.productColors A\").eq(" + index + ").mouseover();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productColors A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'#DC241F'});";
+        SafeClickTaleExec(code);
+    });
+    jQuery("LI.productColors A").mouseleave(function () {
+        var index = jQuery("LI.productColors A").index(this);
+        var code = "jQuery(\"LI.productColors A\").eq(" + index + ").mouseout();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productColors A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'transparent'});";
+        SafeClickTaleExec(code);
+    });
+
+    // hovering the sizes:
+    jQuery("LI.productSize A").mouseenter(function () {
+        var index = jQuery("LI.productSize A").index(this);
+        var code = "jQuery(\"LI.productSize A\").eq(" + index + ").mouseover();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productSize A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'#DC241F'});";
+        SafeClickTaleExec(code);
+    });
+    jQuery("LI.productSize A").mouseleave(function () {
+        var index = jQuery("LI.productSize A").index(this);
+        var code = "jQuery(\"LI.productSize A\").eq(" + index + ").mouseout();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productSize A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'transparent'});";
+        SafeClickTaleExec(code);
+    });
+
+    // clicking the length:
+    jQuery("LI.productLength A").click(function () {
+        var index = jQuery("LI.productLength A").index(this);
+        var code = "jQuery(\"LI.productLength A\").eq(" + index + ").click();";
+        SafeClickTaleExec(code);
+    });
+
+    // hovering the length:
+    jQuery("LI.productLength A").mouseenter(function () {
+        var index = jQuery("LI.productLength A").index(this);
+        var code = "jQuery(\"LI.productLength A\").eq(" + index + ").mouseover();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productLength A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'#DC241F'});";
+        SafeClickTaleExec(code);
+    });
+    jQuery("LI.productLength A").mouseleave(function () {
+        var index = jQuery("LI.productLength A").index(this);
+        var code = "jQuery(\"LI.productLength A\").eq(" + index + ").mouseout();";
+        SafeClickTaleExec(code);
+        var code = "jQuery(\"LI.productLength A\").eq(" + index + ").find('SPAN.swatch').css({'border-color':'transparent'});";
+        SafeClickTaleExec(code);
+    });
+
+    ////////// end of case #7298 /////////
+
+    ////////// start of case #7300 /////////
+
+    //Click on "remember me" checkbox
+    jQuery("#rememberMe").click(function () {
+        SafeClickTaleExec("jQuery(\"#rememberMe\").click()");
+    });
+
+    //Shipping options//
+
+    ///Single Store///
+    //Radio Buttons
+    jQuery("#GRS").live('click', function () {
+        SafeClickTaleExec("jQuery(\"#GRS\").click()");
+    });
+
+    jQuery("#ECO").live('click', function () {
+        SafeClickTaleExec("jQuery(\"#ECO\").click()");
+    });
+
+    jQuery("#STD").live('click', function () {
+        SafeClickTaleExec("jQuery(\"#STD\").click()");
+    });
+
+    jQuery("#PRI").live('click', function () {
+        SafeClickTaleExec("jQuery(\"#PRI\").click()");
+    });
+
+    //Address Checkbox
+    jQuery("#shippingIsPOBox").click(function () {
+        setTimeout(function () {
+            if (jQuery("#shippingIsPOBox").attr('checked') == 'checked' || jQuery("#shippingIsPOBox").attr('checked') == true) {
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").attr('checked', true)");
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").click()");
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").attr('checked', true)");
+            }
+            else {
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").attr('checked', false)");
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").click()");
+                SafeClickTaleExec("jQuery(\"#shippingIsPOBox\").attr('checked', false)");
+            }
+        }, 200);
+    });
+
+    //Email Change
+    jQuery("#shippingEmail").change(function () {
+        var vl = jQuery("#shippingEmail").val();
+        SafeClickTaleExec("jQuery(\"#shippingEmail\").val(\"" + vl + "\").change()");
+    });
+
+    ///Ship to multiple addresses///
+    jQuery(".col-15.gutter-02 select").each(function (index) {
+        var vl = jQuery(".col-15.gutter-02 select").eq(index).val();
+        SafeClickTaleExec("jQuery(\".col-15.gutter-02 select\").eq(" + index + ").val(\"" + vl + "\").change()");
+    });
+
+    ///Ship to a store///
+    jQuery("button:contains('Find Store')").click(function () {
+        SafeClickTaleExec("jQuery(\"button:contains('Find Store')\").click()");
+    });
+
+    ///PAYMENT///
+
+    //Same As Shipping Button
+    jQuery("#sameAsShipping").click(function () {
+        setTimeout(function () {
+            if (jQuery("#sameAsShipping").attr('checked') == 'checked' || jQuery("#sameAsShipping").attr('checked') == true) {
+                SafeClickTaleExec("jQuery(\"#sameAsShipping\").attr('checked','checked')");
+                SafeClickTaleExec("jQuery(\"#sameAsShipping\").click()");
+
+                jQuery("div.pl-10 input[class*=addressField]").each(function (index) {
+                    var s = "";
+                    for (var i = 0; i < jQuery("div.pl-10 input[class*=addressField]").eq(index).val().length; i++)
+                        s += "?";
+
+                    SafeClickTaleExec("jQuery(\"div.pl-10 input[class*=addressField]\").eq(" + index + ").val(\"" + s + "\")");
+                });
+
+                SafeClickTaleExec("jQuery(\"#sameAsShipping\").attr('checked','checked')");
+            }
+            else
+                SafeClickTaleExec("jQuery(\"#sameAsShipping\").attr('checked',false)");
+        }, 200);
+    });
+
+    //MouseOver "What is this" ToolTip
+    jQuery(".whatIsThis").mouseenter(function () {
+        SafeClickTaleExec("jQuery(\".qtip.qtip-light\").addClass(\"qtip qtip-light qtip-active\")");
+    });
+
+    jQuery(".whatIsThis").mouseleave(function () {
+        SafeClickTaleExec("jQuery(\".qtip.qtip-light qtip-active\").addClass(\"qtip qtip-light\")");
+    });
+
+    //Click On Gift Card Button
+    jQuery("div#giftCardHeader span.title").eq(0).click(function () {
+        setTimeout(function () { SafeClickTaleExec("jQuery(\"div#giftCardHeader span.title\").eq(0).click()") }, 200);
+    })
+
+    //Click On Online Store Credit Button
+    jQuery("div#onlineCreditHeader span.title").eq(0).click(function () {
+        setTimeout(function () { SafeClickTaleExec("jQuery(\"div#onlineCreditHeader span.title\").eq(0).click()") }, 200);
+    })
+
+    //Select different shipping method
+    jQuery("#shippingDetails li select").change(function () {
+        var vl = jQuery("#shippingDetails li select").val();
+        SafeClickTaleExec("jQuery(\"#shippingDetails li select\").val(\"" + vl + "\").change()");
+    });
+
+    ////////// end of case #7300 /////////
+
+    ///Checkout as returning customer
+    jQuery("#shippingExistingAddress").change(function () {
+        var vl = jQuery("#shippingExistingAddress").val();
+        SafeClickTaleExec("jQuery(\"#shippingExistingAddress\").val(\"" + vl + "\").change()");
+
+        setTimeout(function () {
+            jQuery("div.pl-10 input[class*=addressField]").each(function (index) {
+                var s = "";
+                for (var i = 0; i < jQuery("div.pl-10 input[class*=addressField]").eq(index).val().length; i++)
+                    s += "?";
+
+                SafeClickTaleExec("jQuery(\"div.pl-10 input[class*=addressField]\").eq(" + index + ").val(\"" + s + "\")");
+            });
+        }, 1500);
+    });
+
+    //Save address to address book checkbox
+    jQuery("#shippingSaveAddress").click(function () {
+        setTimeout(function () { SafeClickTaleExec("jQuery(\"#shippingSaveAddress\").click()"); }, 200);
+    });
+
+    //Set shipping address
+    jQuery(".orderItemShipTo select").each(function (index) {
+        jQuery(".orderItemShipTo select").eq(index).change(function () {
+            var vl = jQuery(".orderItemShipTo select").eq(index).val();
+            SafeClickTaleExec("jQuery(\".orderItemShipTo select\").eq(" + index + ").val(\"" + vl + "\").change()");
+        });
+    });
+    ////////// end of case #7300 /////////
+
+    ///////////// KOBI-END ////////////////////////////
+
+    ///////////// BRYAN     ////////////////////////////
+
+    /////////     CASE 7747 ////////
+
+    //Close Buy From Dealer Window
+    jQuery('#cboxClose').click(function () {
+        SafeClickTaleExec("jQuery('#cboxClose').click();");
+    });
+
+    ///////// END CASE 7747 ////////
+
+    ///////////// BRYAN-END ////////////////////////////
+
+    // PLAYBACK:
+    // Adding custom events (cross-site):
+
+    if (typeof ClickTaleContext == 'object') {
+        try {
+            ClickTaleContext.getRecordingContextAsync("1", function (context) {
+                if (jQuery(".page-title h1").length == 1 && jQuery(".page-title h1").text() == "Checkout") {
+                    jQuery("div").eq(0).remove();
+                    jQuery("div").eq(0).remove();
+                }
+                // fixing an issue of position on product pages:
+                jQuery("LI.productRatings").height(28);
+
+                //Hide Customer's details
+                jQuery("input[class*=addressField]").eq(0).parent().find("input[type=text]").each(function (index) {
+                    var s = "";
+                    for (var i = 0; i < jQuery(this).val().length; i++)
+                        s += "?";
+
+                    jQuery(this).val(s);
+                });
+
+                var ev = "";
+                for (var i = 0; i < jQuery("#shippingEmail").val().length; i++)
+                    ev += "?";
+
+                jQuery("#shippingEmail").val(ev);
+
+                if (jQuery("#shippingSaveNickname") != null) {
+                    ev = "";
+                    for (var i = 0; i < jQuery("#shippingSaveNickname").val().length; i++)
+                        ev += "?";
+
+                    jQuery("#shippingSaveNickname").val(ev);
+                }
+
+                if (jQuery("#emailMember") != null) {
+                    ev = "";
+                    for (var i = 0; i < jQuery("#emailMember").val().length; i++)
+                        ev += "?";
+
+                    jQuery("#emailMember").val(ev);
+                }
+
+                if (jQuery("#passwordMember") != null) {
+                    ev = "";
+                    for (var i = 0; i < jQuery("#passwordMember").val().length; i++)
+                        ev += "?";
+
+                    jQuery("#passwordMember").val(ev);
+                }
+            });
+        } catch (e) { }
+
+        if (typeof ClickTaleContext == 'object') {
+            try {
+                ClickTaleContext.getRecordingContextAsync("1", function (context) {
+                    if (jQuery(".page-title h1").length == 1 && jQuery(".page-title h1").text() == "Checkout") {
+                        jQuery("div").eq(0).remove();
+                        jQuery("div").eq(0).remove();
+                    }
+                    // fixing an issue of position on product pages:
+                    jQuery("LI.productRatings").height(28);
+
+                    //CBoxWrapper
+                    jQuery('#colorbox, #cboxOverlay, #cboxWrapper').css('z-index', '1000');
+
+                    ///////// CASE 7623 ////////
+                    try {
+                        var BAcartButton = jQuery("#minicart_trigger");
+                        var BAminicart = jQuery('#minicart');
+                        var BArightSide = BAcartButton.offset().left + BAcartButton.width();
+                        BAminicart.css({ 'left': BArightSide - BAminicart.width() + 16 });
+                    } catch (e) { }
+
+                    ///////// END CASE 7623 ////////
+                });
+            } catch (e) { }
+
+        }
+
+
+        // REPORTS:
+
+        if (typeof ClickTaleContext == 'object') {
+            try {
+                ClickTaleContext.getAggregationContextAsync("1", function (context) {
+
+                    ////////////// BRYAN ///////////////////////////////
+
+                    ///////// CASE 7604 ////////
+
+                    jQuery('.hero-gallery-scroller').removeClass('hero-gallery-scroller'); // carousel
+                    jQuery('.hero-gallery-paginator em').css('display', 'none'); 		// position indicator
+
+                    ///////// END CASE 7604 ////////
+
+                    ///////////// BRYAN-END ////////////////////////////
+
+
+                    ////////////// EYAL ///////////////////////////////
+
+                    ///////// CASE 7295 ////////
+
+                    jQuery("div#nav-dropdowns-inner div[class*=dropdown]").css({ 'display': 'block', 'visibility': 'hidden' });
+
+                    jQuery("#giftCardsBlock").css('display', 'block');
+
+                    /*jQuery(".title").each(function (index) {
+                    jQuery(".title").eq(index).click();
+                    });*/
+
+                    ///////// END CASE 7295 ////////
+
+                    ///////////// EYAL-END ////////////////////////////
+
+
+                    ////////////// KOBI ///////////////////////////////
+
+                    // fixing an issue of position on product pages:
+                    jQuery("LI.productRatings").height(28);
+
+                    ///////////// KOBI-END ////////////////////////////
+
+
+                    // Code to run here when displaying the page inside Reports (all types)
+                    for (i = 0; i < context.VisitorEvents.length; i++) {
+
+                    }
+                });
+            } catch (e) { }
+        }
+
+
+
+    }
+});

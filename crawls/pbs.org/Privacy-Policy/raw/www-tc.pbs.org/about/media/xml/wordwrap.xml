@@ -1,0 +1,21 @@
+<?xml version = "1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:html="http://www.w3.org/1999/xhtml">
+    <binding id="wordwrap" applyauthorstyles="false">
+        <implementation>
+            <constructor>
+                //<![CDATA[
+                var elem = this;
+                doWrap();
+                elem.addEventListener('overflow', doWrap, false);
+                function doWrap(){
+                    var walker = document.createTreeWalker(elem, NodeFilter.SHOW_TEXT, null, false);
+                    while (walker.nextNode()){
+                        var node = walker.currentNode;
+                        node.nodeValue = node.nodeValue.split('').join(String.fromCharCode('8203'));
+                    }
+                }
+                //]]>
+            </constructor>
+        </implementation>
+    </binding>
+</bindings>

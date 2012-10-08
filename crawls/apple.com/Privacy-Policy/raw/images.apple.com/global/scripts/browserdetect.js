@@ -28,11 +28,10 @@ if(j&&j[1]){i=j[1].split(" ");g=i[2].split("_");return g}else{return[1]}}return 
 },_iOSVersion:null,iOSVersion:function(){if(this._iOSVersion===null){this._iOSVersion=(AC.Detector.isMobile()||AC.Detector.isiPad())?parseFloat(navigator.userAgent.match(/os ([\d_]*)/i)[1].replace("_",".")):false
 }return this._iOSVersion},isOpera:function(c){var d=c||this.getAgent();return !!d.match(/opera/i)
 },isIE:function(c){var d=c||this.getAgent();return !!d.match(/msie/i)},isIEStrict:function(c){var d=c||this.getAgent();
-return d.match(/msie/i)&&!this.isOpera(d)},isIE8:function(f){var d=f||this.getAgent();
-var e=d.match(/msie\D*([\.\d]*)/i);if(e&&e[1]){version=e[1]}return(+version>=8)
-},isFirefox:function(c){var d=c||this.getAgent();return !!d.match(/firefox/i)},isiTunesOK:function(c){var d=c||this.getAgent();
-if(this.isMac(d)){return true}if(this.winAtLeastVersion(5.1,d)){return true}return false
-},_isQTInstalled:undefined,isQTInstalled:function(){if(this._isQTInstalled===undefined){var e=false;
+return d.match(/msie/i)&&!this.isOpera(d)},isIE8:function(g){var h,e,f;h=g||this.getAgent();
+e=h.match(/msie\D*([\.\d]*)/i);f=-1;if(e&&e[1]){f=e[1]}return(+f>=8)},isFirefox:function(c){var d=c||this.getAgent();
+return !!d.match(/firefox/i)},isiTunesOK:function(c){var d=c||this.getAgent();if(this.isMac(d)){return true
+}if(this.winAtLeastVersion(5.1,d)){return true}return false},_isQTInstalled:undefined,isQTInstalled:function(){if(this._isQTInstalled===undefined){var e=false;
 if(navigator.plugins&&navigator.plugins.length){for(var d=0;d<navigator.plugins.length;
 d++){var f=navigator.plugins[d];if(f.name.indexOf("QuickTime")>-1){e=true}}}else{if(typeof(execScript)!="undefined"){qtObj=false;
 execScript('on error resume next: qtObj = IsObject(CreateObject("QuickTimeCheckObject.QuickTimeCheck.1"))',"VBScript");

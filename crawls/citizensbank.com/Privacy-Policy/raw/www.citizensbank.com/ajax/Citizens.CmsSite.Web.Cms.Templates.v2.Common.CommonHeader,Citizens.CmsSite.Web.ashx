@@ -5,8 +5,6 @@ RegionLookup:function(zip,callback,context){return new ajax_request(this.url + '
 RegionBrandLookup:function(zip,url,callback,context){return new ajax_request(this.url + '?_method=RegionBrandLookup&_session=no','zip=' + enc(zip)+ '\r\nurl=' + enc(url),callback, context);},
 url:'/ajax/Citizens.CmsSite.Web.Cms.Templates.v2.Common.CommonHeader,Citizens.CmsSite.Web.ashx'
 }
-function TimeSpan(){this.Days=0;this.Hours=0;this.Minutes=0;this.Seconds=0;this.Milliseconds=0;}
-TimeSpan.prototype.toString = function(){return this.Days+'.'+this.Hours+':'+this.Minutes+':'+this.Seconds+'.'+this.Milliseconds;}
 function HtmlControl(id) {
 	var ele = null;
 	if(typeof(id) == 'object') ele = id; else ele = document.getElementById(id);
@@ -36,6 +34,8 @@ if(ff != null && typeof(ff.invoke) == 'function')
 	ele.innerHTML = res.value;
 }
 }
+function TimeSpan(){this.Days=0;this.Hours=0;this.Minutes=0;this.Seconds=0;this.Milliseconds=0;}
+TimeSpan.prototype.toString = function(){return this.Days+'.'+this.Hours+':'+this.Minutes+':'+this.Seconds+'.'+this.Milliseconds;}
 function _getTable(n,e){for(var i=0; i<e.Tables.length; i++){if(e.Tables[i].Name == n)return e.Tables[i];}return null;}
 function AjaxImage(url){var img=new Image();img.src=url;return img;}
 function digi(v, c){v = v + "";var n = "0000";if(v.length < c) return n.substr(0, c-v.length) + v;return v;}

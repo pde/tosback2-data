@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,9,4,12,14,54,0);
+var tvgServerTimeUTC = new Date(2012,9,8,12,15,2,0);
 
-var dServerET = new Date(2012,9,4,8,14,54,0);
+var dServerET = new Date(2012,9,8,8,15,2,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,9,4);
-dSrvrTime.setUTCHours(12,14,54,0);
+dSrvrTime.setUTCFullYear(2012,9,8);
+dSrvrTime.setUTCHours(12,15,2,0);
 
-var dLocalTime = new Date(2012,9,4,8,14,54,0);
-var dGridStart = new Date(2012,9,4,8,0,0,0);
+var dLocalTime = new Date(2012,9,8,8,15,2,0);
+var dGridStart = new Date(2012,9,8,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= c2f2119aea6b141a263045b90c11032ccb7e671b 1349352894';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 29a899243d0af363970679744dc65b6bd78b5d84 1349698502';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 10/4/2012 12:00:00 PM GMT */
+/* TVGSVC02 10/8/2012 12:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-10-04)*/
+/* Listings: In-Grid and Close-Up Ads (2012-10-08)*/
 var GridAds = true;
 var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/Shores_Top_REV.jpg";
-var magicBotImage = "/listings/images/topchan/Shores_Bottom_SUN_REV.jpg";
-var magicLogo = "/listings/images/topchan/Shores_Middle_REV.jpg";
-var magicLink = "www.Facebook.com/TVGuideNetwork/app_153855648022942";
+var magicTopImage = "/listings/images/topchan/Shores_Top_New.jpg";
+var magicBotImage = "/listings/images/topchan/Shores_Bottom_SUNDAYS_New.jpg";
+var magicLogo = "/listings/images/topchan/Shores_Middle_New.jpg";
+var magicLink = "https://www.facebook.com/TVGuideNetwork/app_153855648022942";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;

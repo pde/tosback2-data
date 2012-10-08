@@ -155,15 +155,19 @@
 <script type="text/javascript">
 jQuery(document).ready(function(){
                 var time = new Date();
-                var displayStart =[11, 10, 10, 10, 10, 10, 11];
-                var displayEnd = [3, 3, 5, 5, 5, 5, 5];
+                var dstTime = new Date();
+                dstTime.setMonth(0);
+                dstTime.setDate(1);
+                var dstAdj = time.getUTCHours() + dstTime.getTimezoneOffset()/60 - time.getTimezoneOffset()/60;
                 var dow = time.getUTCDay();
-                if (time.getUTCHours() > displayStart[dow] || time.getUTCHours() < displayEnd[dow]) {
-                                if (time.getUTCHours() == (displayEnd[dow] - 1) && time.getUTCMinutes() > 30) {
-            return false;
-        }
-        $("#moxie").attr("style", "");
-$("#moxie2").attr("style", "");
+                var displayStart = [12, 11, 11, 11, 11, 11, 12];
+                var displayEnd = [4, 4, 6, 6, 6, 6, 6];
+
+                if (dstAdj > displayStart[dow] || dstAdj  < displayEnd[dow]) {
+                                if (dstAdj  == (displayEnd[dow] - 1) && time.getUTCMinutes() > 30) {
+                                                return false;
+                                }
+                                $("#moxie").attr("style", "");
                 }
 });
 </script>

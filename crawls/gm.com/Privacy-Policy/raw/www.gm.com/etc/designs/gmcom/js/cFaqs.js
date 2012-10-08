@@ -25,4 +25,7 @@ $( 'document' ).ready( function(){
 		}
 		return false;
 	});
+	
+	
+	$('a.linkPrint').text("Print Top FAQs");
 });

@@ -15,6 +15,9 @@ $(document).ready(function() {
 	var isAnimateOut = false;		//set the variable to false to show that the slide menu is "in"
 	
 	if($('body').hasClass('mobile')){
+		$('#topMenuImage').click(function(event){
+			 event.preventDefault();	
+		});
 		 $("#slideMenuTag").click(function(){
 			if ( !isAnimateOut ) {
 				$( "#slideMenu" ).stop(true, false).animate({

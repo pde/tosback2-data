@@ -1,4 +1,4 @@
-//$Revision: 479732 $, $Date: 2012-09-13 12:31:12 -0700 (Thu, 13 Sep 2012) $ and $Author: gt7886 $
+//$Revision: 483615 $, $Date: 2012-09-25 18:43:08 -0700 (Tue, 25 Sep 2012) $ and $Author: pl8911 $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 

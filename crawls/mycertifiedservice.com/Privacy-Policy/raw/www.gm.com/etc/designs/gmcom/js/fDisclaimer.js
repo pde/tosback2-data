@@ -43,6 +43,10 @@ $tipText = $( '.rollOverDetails' ).children( '.tipText' ).hide();
 				"$shadedContainerToolTip.appendTo($('.parbase.disclaimer'));"+
 					"$shadedContainerToolTip.css({ bottom : 'auto',position:'absolute',marginTop:'-400px'});" +
 				"}" +
+				"if($('body').attr('id')=='browseByType' || $('body').attr('id')=='browseByBrand'){"+
+					"$shadedContainerToolTip.appendTo($('.parbase.disclaimer'));" +
+					"$shadedContainerToolTip.children().css({ width : 340});" +
+					"}"+
 				"$shadedContainerToolTip.fadeIn().bind( '" + finlListener + "', function (){ " +
 					"$( this ).fadeOut( function(){ " +
 						"$( this ).remove(); " +

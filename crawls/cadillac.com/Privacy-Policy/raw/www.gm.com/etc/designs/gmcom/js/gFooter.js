@@ -31,14 +31,14 @@ var target=false;
 var url=window.location.href;
 
 for(i in locations){
-	
+
 	if(url.indexOf(locations[i])>-1){// if is present
 		target=true;
-		
+
 		for(i in exclusions){
 			if(url.indexOf(exclusions[i])>-1){
 				target=false;
-				
+
 				for(i in inclusions){
 					if(url.indexOf(inclusions[i])>-1){// if is present
 							target=true;
@@ -58,6 +58,7 @@ for(i in includeClass){
 	}
 }
 
+
 var formPageId=['browseByBrand','browseByType'];
 for(i in formPageId){
 	if( ( $('body').attr('id') == formPageId[i] ) && $('body').hasClass('ver4') ){
@@ -69,7 +70,7 @@ for(i in formPageId){
 }
 
 if($('body').hasClass('visionpage') && $('body').hasClass('ver4')){
-	$("#auxiliaryNavigation").insertAfter($('#background'));
+	$("#auxiliaryNavigation").insertAfter($('#background img'));
 	target=false;
 }
 

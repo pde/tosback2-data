@@ -295,8 +295,9 @@ function addPersonalizationToCart(prefix, container, action) {
 function addGlobalSharedParams(scope){
     var productVariantId = $("input[type=hidden][name=productVariantId]", scope).val();
     if (productVariantId == null || productVariantId == undefined)  {
-        productVariantId = $("input[name=productVariantId]", scope).val();
+        productVariantId = $("input:radio[name=productVariantId]:checked", scope).val();
     }
+
     var shipTo = $("#shipTo").val();
     if (shipTo == null || shipTo == undefined)  {
         shipTo = $("select[name='shipTo']").val();
@@ -311,7 +312,11 @@ function addGlobalSharedParams(scope){
                         "&categoryId=" + $("input[type=hidden][name=categoryId]", scope).val() +
                         "&pCategoryId=" + $("input[type=hidden][name=pCategoryId]", scope).val() +
                         "&gpCategoryId=" + $("input[type=hidden][name=gpCategoryId]", scope).val() +
-                        "&siteId=" + $("input[type=hidden][name=siteId]", scope).val();
+                        "&siteId=" + $("input[type=hidden][name=siteId]", scope).val() +
+                        "&freebieFlag=" + $("input[type=hidden][name=freebieFlag]", scope).val() +
+                        "&orderTotal=" + $("input[type=hidden][name=orderTotal]", scope).val() +
+                        "&orderSubTotal=" + $("input[type=hidden][name=orderSubTotal]", scope).val();
+
 
     $('input[type=hidden][name="omBreadCrumb"]').each(function() {
          params = params + "&" + $(this).attr("name") + "=" + $(this).val();
@@ -327,7 +332,7 @@ function addGlobalSharedParams(scope){
     }
     if( $("input[type=hidden][name=pageName]", scope).size() > 0 ) {
           { params = params + "&pageName=" + $("input[type=hidden][name=pageName]", scope).val(); }
-    }
+    }     
 
 }
 
@@ -340,6 +345,7 @@ function addSharedParams(scope){
                         "&shipToLastName=" + $("input[type=text][name=shipToLastName]", scope).val() +
                         "&shipToZipCode=" + $("input[type=text][name=shipToZipCode]", scope).val() +
                         "&shipToPOBox=" + $("input[type=checkbox][name=shipToPOBox]", scope).val();
+                        
 
      $('[id^="selected_attribute_code_"]').each(function() {
          params = params + "&" + $(this).attr("name") + "=" + $(this).val();
@@ -379,6 +385,7 @@ function addPNCParams(scope){
     $('input[type=hidden][name="pageName"]').each(function() {
          params = params + "&" + $(this).attr("name") + "=" + $(this).val();
      });
+
     if( $("input[type=hidden][name=selectedKitQuantity]", scope).size() > 0 )
           { params = params + "&selectedKitQuantity=" + $("input[type=hidden][name=selectedKitQuantity]", scope).val(); }
     if( $("input[type=hidden][name=pncProduct]", scope).size() > 0 )

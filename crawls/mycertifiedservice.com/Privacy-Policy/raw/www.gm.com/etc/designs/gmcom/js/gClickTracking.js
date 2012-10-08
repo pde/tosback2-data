@@ -5,6 +5,11 @@
 String.prototype.trim = function() {
 	return this.replace( /^\s*|\s*$/g, "" );
 }
+//This function is for the click tracking of the images in the browseby(brand and type) page
+function callFromBrowseBy(theTitle){
+	//alert(theTitle);
+	fireMetrics( 'baseball_card', { value : theTitle});
+}
 
 $(document).ready (function() {
 	
@@ -70,6 +75,23 @@ $(document).ready (function() {
 
 			}
 		});
+		$('body.homepage div.brandLogos li a[href*="chevrolet.html"]').live('click', function(){
+			fireMetrics( 'LEARN_MORE_CHEVROLET' );
+		});
+		$('body.homepage div.brandLogos li a[href*="buick.html"]').live('click', function(){
+			fireMetrics( 'LEARN_MORE_BUICK' );
+		});
+		$('body.homepage div.brandLogos li a[href*="gmc.html"]').live('click', function(){
+			fireMetrics( 'LEARN_MORE_GMC' );
+		});
+		$('body.homepage div.brandLogos li a[href*="cadillac.html"]').live('click', function(){
+			fireMetrics( 'LEARN_MORE_CADILLAC' );
+		});
+		
+		$('body.homepage div.menuHolder li a').live('click', function(){
+			fireMetrics( $( this ).attr('name'));
+		});
+		
 		$( 'body.homepage ul.feedWrapper li.brandFeed a' ).live( 'click', function(){
 			if( $( this ).hasClass( 'slideLeft'  )) fireMetrics( 'NEWS_LEFT_ARROW_GM'  );
 			if( $( this ).hasClass( 'slideRight' )) fireMetrics( 'NEWS_RIGHT_ARROW_GM' );
@@ -130,6 +152,33 @@ $(document).ready (function() {
 				fireMetrics( type, { value : $( this ).val() });
 			}
 		});
+		//brandLogos
+		
+		$('body#browseByBrand div.brandLogosContainer ul#brandLogos li a img[alt*="chevrolet"]').live('click', function(){
+			fireMetrics('chevrolet_logo');
+		});
+		$('body#browseByBrand div.brandLogosContainer ul#brandLogos li a img[alt*="buick"]').live('click', function(){
+			fireMetrics('buick_logo');
+		});
+		$('body#browseByBrand div.brandLogosContainer ul#brandLogos li a img[alt*="gmc"]').live('click', function(){
+			fireMetrics('gmc_logo');
+		});
+		$('body#browseByBrand div.brandLogosContainer ul#brandLogos li a img[alt*="cadillac"]').live('click', function(){
+			fireMetrics('cadillac_logo');
+		});
+		
+		$('body#browseByType div.brandLogosContainer ul#brandLogos li a img[alt*="chevrolet"]').live('click', function(){
+			fireMetrics('chevrolet_logo');
+		});
+		$('body#browseByType div.brandLogosContainer ul#brandLogos li a img[alt*="buick"]').live('click', function(){
+			fireMetrics('buick_logo');
+		});
+		$('body#browseByType div.brandLogosContainer ul#brandLogos li a img[alt*="gmc"]').live('click', function(){
+			fireMetrics('gmc_logo');
+		});
+		$('body#browseByType div.brandLogosContainer ul#brandLogos li a img[alt*="cadillac"]').live('click', function(){
+			fireMetrics('cadillac_logo');
+		});
 		//price slider
 		//putting the fire metrrics call in the plugin
 		//reset button
@@ -149,7 +198,7 @@ $(document).ready (function() {
 			fireMetrics( 'locate_other_dealers', { destination_name : name });
 		});
 		//the images I couldent get the jQuery live function to work
-		function vehicleResultsImageClick(){
+		/*function vehicleResultsImageClick(){
 			$( 'ul#vehicleResults li a' ).click( function(){
 				fireMetrics( 'baseball_card', { value : $( this ).attr( 'title' )});
 			});
@@ -161,7 +210,11 @@ $(document).ready (function() {
 				setTimeout( function(){ vehicleResultsImageClickTimer()}, 100 );
 			}
 		}
-		vehicleResultsImageClickTimer();
+		vehicleResultsImageClickTimer();*/
+		
+		$( '#liveChat').live( 'click', function(){
+			fireMetrics( 'browseby_chat' );
+		});
 	}
 	//-------------------------------------------------------------
 	// baseball_cards
@@ -481,7 +534,7 @@ $(document).ready (function() {
 
 	} // END dealerLocator
 	
-	//-------------------------------------------------------------
+	//-----------------------------------------------------------------------
 	// contactUs
 	if (uri == "/content/gmcom/home/toolbar/contactUs") {
 		$('body#contactUs div.shadedContainer div.contact-us-brand-section a').live('click', function(){
@@ -490,17 +543,24 @@ $(document).ready (function() {
 				result = pat.exec( href );
 			fireMetrics('contact_us_exit', { 'destination_name' : result[1] });
 		});
-		$( 'body#contactUs div.cq-colctrl-lt1-c1 div.cta_shaded_container a' ).live('click', function(){
+		$( 'body#contactUs div.cq-colctrl-lt1-c0 div.cta_shaded_container a' ).live('click', function(){
 			var href = $( this ).attr( 'href' ),
 				pat = /www\.(\w*)\./,
 				result = pat.exec( href );
 			if( result && result[1].length > 0 ){
 				fireMetrics('contact_us_exit', { 'destination_name' : result[1] });
+			}else{
+				var txt = $(this).text();
+				txt = txt.replace(/\s+/g, " ");
+				fireMetrics('contact_us_exit', { 'destination_name' : txt });
 			}
+		});
+		$( '#liveChat').live( 'click', function(){
+			fireMetrics( 'contactus_chat' );
 		});
 	} // END contactUs
 	
-	//-------------------------------------------------------------
+	//--------------------------------------------------------------------------
 	// contactUsForm
 	if (uri == "/content/gmcom/home/toolbar/contactUsForm") {
 		$('body#contactUsForm a.help-me-decide-submit-button').live('click', function() {
@@ -596,7 +656,16 @@ $(document).ready (function() {
 			}
 		});
 	}
-
+	//------------------------------------------------------------
+	//Social-hub
+	if( uri == "/content/gmcom/home/company/social_hub"){
+		$( 'div#promoTileMedium a' ).live( 'click', function(){
+			fireMetrics( 'social_promotile', { 'destination_name' : $( this ).find( 'img' ).attr( 'alt' ) });
+		});
+		$( 'div.flexLeftContent div.text a, div.flexRightContent div.text a' ).live( 'click', function(){
+			fireMetrics( 'social_exit', { 'destination_name' : $(this).text() });
+		});
+	}
 	//Below this point only tracking blocks that have been made generic ie not page specfic but work for a template or some other item used on all pages of a given type or style.
 	//-------------------------------------------------------------
 	//Tile page

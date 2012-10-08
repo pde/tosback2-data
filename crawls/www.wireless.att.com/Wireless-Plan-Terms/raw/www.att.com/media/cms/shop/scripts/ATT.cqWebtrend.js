@@ -184,7 +184,7 @@ ATT.cqWebtrend = function ($, doc) {
     $(document).bind('CartSuccess CartConflict', function(e, d) {
     	if (!! d.data && !! d.data.wirelessAddToCartResultHolder) {
 			var linesLen, losg, eventType = e.type, statusCode, statusFlag, lines,
-				cartLine,
+				cartLine, errorCode, 
 				losgInContext =  (ATT.globalVars.cartContents && ATT.globalVars.cartContents.losgInContext) ? ATT.globalVars.cartContents.losgInContext:null,
 				data = ATT.globalVars.cartContents,		
 				currentLine = function (){
@@ -214,8 +214,9 @@ ATT.cqWebtrend = function ($, doc) {
 				}, clickid;
 			
 			addItems = d.data.wirelessAddToCartResultHolder.addItems;
-			statusCode = e.type === 'CartSuccess' ? '0' : -2;
-			statusFlag = statusCode === '0' ? 1 : -2; //ECOM1202-8735
+			errorCode = d.data.wirelessAddToCartResultHolder.rollUpErrorCode ? d.data.wirelessAddToCartResultHolder.rollUpErrorCode.split('.')[1] : "-2";
+			statusCode = e.type === 'CartSuccess' ? '0' : errorCode;
+			statusFlag = statusCode === '0' ? 1 : '0'; //ECOM1202-8735
 			len = addItems.length;
 			
 			if(!addItems || !len || origTarget.attr('class')==="noThanks noThanksCart"){
@@ -1159,7 +1160,8 @@ ATT.cqWebtrend = function ($, doc) {
  
 }(jQuery, document);
 
-ATT.globalVars.confirmationFlag = 1;
+window.localStorage.setItem("orderStatus", 1);
+ATT.globalVars.confirmationFlag = ~~window.localStorage.getItem("orderStatus");
 
 if (ATT.globalVars.confirmationFlag && ~location.href.indexOf('/ordersummary')) {
       var t = function(){
@@ -1177,7 +1179,7 @@ if (ATT.globalVars.confirmationFlag && ~location.href.indexOf('/ordersummary')) 
       
       };
       setTimeout(function(){t();}, 5000);
- ATT.globalVars.confirmationFlag = 0;
+      window.localStorage.setItem("orderStatus", 0);
 }
             
             

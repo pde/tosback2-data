@@ -9,8 +9,13 @@ $('document').ready(function(){
 	var brandFeedArr = [];
 	
 	// places brand descriptions inside of contentOne into an array and removes unseen nodes
-	var brandContent = $('.brandContent ul li').toArray();
-	$('.brandContent ul li:first').nextAll().remove();
+	//var brandContent = $('.brandContent ul li').toArray();
+	//$('.brandContent ul li').remove();
+	
+	
+	$('.brandContent').remove();
+		
+
 	
 	//places all feeds into a 2d array
 	brandFeedArr.push($('.gmFeed li'),$('.chevroletFeed li'),$('.buickFeed li'),$('.gmcFeed li'),$('.cadillacFeed li'));
@@ -34,12 +39,14 @@ $('document').ready(function(){
 	}
 	// dynamically creates buttons and drop down selections
 	$('.chooseBrand').append('<a class="brandTarget" href="#">--SELECT--</a>');
+	/*
 	$('.menuHolder').prepend('<ul class="brandDropOptions" />');
 	options.each( function( i, val){
 		//This will prevent the brand feed items from displaying on the home page menu bar
 		var href = $( brandContent[i] ).find( 'a' ).length > 0 ? $( brandContent[i] ).find( 'a' ).attr( 'href' ) : '#';
 		$('.brandDropOptions').append('<li><a href="' + href + '">' + $(this).text() + '</a></li>');
 	});
+	*/
 	
 	// calls drop down menu when brand button is clicked
 	$('.brandTarget').live('click',function(){

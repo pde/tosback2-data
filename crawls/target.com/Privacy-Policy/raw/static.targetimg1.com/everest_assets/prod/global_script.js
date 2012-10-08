@@ -1,6 +1,11 @@
 /* js file */
 
 $(document).ready(function(){
+	if($('body').hasClass("components-testnewLayout")){
+		$('body').removeClass("components-testnewLayout");
+		$('body').addClass("components-test");
+		$('body').addClass("newLayout");
+	}
 	//$("#MainMenu .home-link a").attr("href", "/");
 	//setTimeout(function(){$("#MainMenu .home-link a").attr("href", "/")});
 	try{

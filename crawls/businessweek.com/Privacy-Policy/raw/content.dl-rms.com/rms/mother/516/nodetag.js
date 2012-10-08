@@ -1,7 +1,7 @@
 (function(){
-var pfs={ "http://www.businessweek.com/investing/insights/blog/":{"nid":1581,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"},
+var pfs={ "http://www.businessweek.com/markets-and-finance/investing":{"nid":1581,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"},
 "http://www.businessweek.com/companies-and-industries":{"nid":13968,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"},
-"http://www.businessweek.com/finance/":{"nid":13990,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"},
+"http://www.businessweek.com/markets-and-finance":{"nid":13990,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"},
 "http://www.businessweek.com/":{"nid":22527,"tr":1,"ex":"http://businessweek.com/$|http://www.businessweek.com/testing/checkM8/verizon/$|http://www.businessweek.com/$|http://bx.businessweek.com/$"} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){

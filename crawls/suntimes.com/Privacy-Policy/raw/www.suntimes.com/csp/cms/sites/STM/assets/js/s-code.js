@@ -207,6 +207,9 @@ if (document.URL.match(/rogerebert\./i)) {
 } else if (document.URL.match(/splash\./i)) {
 	s_account='digchsplash';
 	linkInternalFilters="javascript:,splash.suntimes.com";
+} else if (document.URL.match(/chicagoreader\./i)) {
+	s_account='digchreader';	communityName='chicagoreader';
+	linkInternalFilters="javascript:,chicagoreader.com";
 }
 
 s_account= s_account + ",digchstglobal";
@@ -968,6 +971,7 @@ var s_code=s.t();if(s_code)document.write(s_code)
 <!-- ChartBeat tag -->
 if (document.URL.match(/suntimes\.com/i)) {chartbeat_on = window.location.host;} 
 if (document.URL.match(/blogs\./i)) {chartbeat_on = window.location.host;} 
+if (document.URL.match(/chicagoreader\./i)) {chartbeat_on = window.location.host;} 
 
 if (chartbeat_on != '') {
     var _sf_async_config={};

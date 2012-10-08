@@ -180,7 +180,7 @@ function validateEmailAdd(a){
 <script type="text/javascript" language="javascript">
 
 function displayemailadd(){
-var emailID=document.ccExForm.email;
+var emailID=document.emailInsider_form;
 document.write(emailID);
 }
 
@@ -195,33 +195,22 @@ document.cookie=c_name+ "=" +escape(value)+
 function lightbox(div,action){
 
 	if ((div=="ccExO_wrapper") && (action == "close")){
-	
+	setCookie('visited','yes',30);	
 	document.getElementById('ccExO_wrapper').style.display='none';
 	document.getElementById('hom_24Ex_wrapper').style.display='none';
-	setCookie('visited','yes',30);
+
 	}
 
 	else if ((div=="ccExO_wrapper") && (action == "open"))  {
 	document.getElementById('ccExO_wrapper').style.display='block';
 	document.getElementById('hom_24Ex_wrapper').style.display='block';
 	}
-	
-	if ((div=="ccExO_wrapper2") && (action == "close")){
-	document.getElementById('ccExO_wrapper2').style.display='none';
-	document.getElementById('hom_24Ex_wrapper').style.display='none';
-	}
-	else if ((div=="ccExO_wrapper2") && (action == "open"))  {
-	document.getElementById('ccExO_wrapper2').style.display='block';
-	document.getElementById('hom_24Ex_wrapper').style.display='block';
-	setCookie('visited','yes',30);
-	setTimeout("lightbox('ccExO_wrapper2','close')",10000);
-	}
 
-	
 }
 
 function overlay_emailcheck(str) {
-		var emailID=document.ccExForm.email;
+		var emailID = document.emailInsider_form.email;
+		
 		var at="@"
 		var dot="."
 		var lat=str.indexOf(at)
@@ -231,67 +220,60 @@ function overlay_emailcheck(str) {
 	
 		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
 		    alert(alertxr);
-			lightbox("open");
+			//lightbox("open");
 			emailID.focus();
 		    return false
 		}
 
 		 if (str.indexOf(at,(lat+1))!=-1){
 		    alert(alertxr);
-			lightbox("open");
+			//lightbox("open");
 			emailID.focus();
 		    return false
 		 }
 
 		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
 		    alert(alertxr);
-			lightbox("open");
+			//lightbox("open");
 			emailID.focus();
 		    return false
 		 }
 
 		 if (str.indexOf(dot,(lat+2))==-1){
 		    alert(alertxr);
-			lightbox("open");
+			//lightbox("open");
 			emailID.focus();
 		    return false
 		 }
 		
 		 if (str.indexOf(" ")!=-1){
 		    alert(alertxr);
-			lightbox("open");
+			//lightbox("open");
 			emailID.focus();
 		    return false
 		 }
-
+		 lightbox('ccExO_wrapper','close');
  		 return true					
+		 
 	}
 function overlay_ValidateForm(){
 	
-	var emailID=document.ccExForm.email;
-    var CaptchaStrID=document.ccExForm.CaptchaStr;
-	
+	var emailID = document.emailInsider_form.email;
+    var CaptchaStrID = document.emailInsider_form.CaptchaStr;
 
-	if ((emailID.value==null)||(emailID.value=="") || (emailID.value=="Email Address")){
-		lightbox("open");
+	if ((emailID.value==null)||(emailID.value=="")){
+		//lightbox("open");
 		alert("Please Enter your Email Address");
 		emailID.focus();
 		return false;
 	}
     
 	if (overlay_emailcheck(emailID.value)==false){
-		lightbox("open");
+		//lightbox("open");
 		emailID.focus();
 		return false;
 	}
-	
-	if ((CaptchaStrID.value==null)||(CaptchaStrID.value=="")){
-		lightbox("open");
-		alert("Please enter the text contained in the image to the left.");
-		CaptchaStrID.focus();
-		return false;
-	}
-	
+
 	return true
 	
  }
@@ -898,84 +880,60 @@ function overlay_ValidateForm(){
         &nbsp;
     </div>
 <div id="ccExO_wrapper">
-	<a id="ccExo_wrapbtn" href="privacy.asp.html#" onClick="lightbox('ccExO_wrapper','close')"></a>
-	<div id="ccExO_top">
-    	<div id="site_logo"><img src="../../../images.highspeedbackbone.net/homepage/promotions/exclusive_24hour/tigerLogo_overlay.png"/></div>
-        <div id="closebuttonPos"><a href="privacy.asp.html#" onClick="lightbox('ccExO_wrapper','close')"><img src="../../../images.highspeedbackbone.net/homepage/promotions/exclusive_24hour/closeButton.png" alt="Close Overlay" border="0" /></a></div>
-    <span id="ccExO_title">ONE DAY EXCLUSIVE OFFER!</span>
-    <span id="ccExO_subtitle">Sign up for our TigerDirect Exclusive Email Offers and get<br />
-    <b>$10 Off* YOUR NEXT ORDER</b></span>
-    </div>
-    <div id="ccExO_mid">
-    <form id="ccExForm" name="ccExForm" method="post" action="http://www.tigerdirect.com/include/LyrisProxy.asp"s>
-    	<div id="ccExForm_textInput"><span class="ccExForm_text" id="ccExForm_text2">Please enter your email address:</span>
-        <input id="ccExForm_email" onFocus="if(this.value=='Email Address')this.value='';" onBlur="if(this.value=='')this.value='Email Address';" value="Email Address" name="email"/></div>
-        <div id="ccExForm_CaptchWrap">
-            <div id="ccExForm_CaptchImg">
-             	<IFRAME SRC="../../secure/captcha/Default.aspx.html" WIDTH="220" HEIGHT="95" FRAMEBORDER="0" SCROLLING="NO" ALLOWTRANSPARENCY="true" id="captchaframe"></IFRAME>
-            </div>
-            <div id="ccExForm_CaptchInput">
-            <span class="ccExForm_text">Enter the text you see on the left:</span>
-            <input id="ccExForm_captcha" name="CaptchaStr"/><br />
-            </div>
-        </div><br clear="all"/>
-        <input type="hidden" name="ListCode" value="TO">
-        <input name="list" type="hidden" value="td_overlay">
-        <input type="hidden" name="SrcCode" value="WEB1210" size=10 maxlength=100>
-        <input type="hidden" name="demographics" value="ListCode SrcCode">
-        <input type="hidden" name="confirm" value="one">
-        <input type="hidden" name="showconfirm" value="F">
-        <center><input id="ccExForm_submit" type="image"  onClick="return overlay_ValidateForm()"  src="../../../images.highspeedbackbone.net/homepage/promotions/exclusive_24hour/submitbtn_blue.jpg" /></center>
-        <input type="hidden" name="url" value="http://www.tigerdirect.com/sectors/aboutus/privacy.asp?page=ty&">        
-    </form>
-       
-    <br clear="all" />
-    </div>
-    <div id="ccExO_bottom">
-        <center><a href="javascript:void(0)" onClick="lightbox('ccExO_wrapper','close')"> <img id="ccExButton_no" src="../../../images.highspeedbackbone.net/homepage/promotions/exclusive_24hour/nothanksBtn_blue.jpg" border="0"/></a></center>
-        <div id="ccEx_TC">
-        	* Requires $100 Minimum Purchase. Cannot be combined with other offers. Limit one discount code per customer. Must validate email address by responding to our confirmation email. After valid email confirmation, please allow up to 2-4 business days to receive your $10 discount via email. Must follow instructions within the email to qualify. To ensure delivery to your inbox, please add TigerDirect@tigeronline.com to your address book.
+	<a id="ccExo_wrapbtn" href="privacy.asp.html#" onClick="lightbox('ccExO_wrapper','close')" title="Close">
+    	<img src="../../../images.highspeedbackbone.net/overlay/close.png" alt="close" />
+    </a>
+<div id="emailSite_overlay">
+	<div id="overlay_innerWrap">
+    	<span><img src="../../../images.highspeedbackbone.net/overlay/title.gif" /></span><br />
+        <span>
+        	<img src="../../../images.highspeedbackbone.net/overlay/message.gif" />
+        </span>
+        <div id="email_formWrap">
+
+            <form id="emailInsider_form" name="emailInsider_form" method="post" action="http://www.tigerdirect.com/email/genericLyrisSignup.asp" target="_blank" onsubmit="return overlay_ValidateForm()">
+                <ul>
+                    <li id="email_lcol">
+                        <input type="text" name="email" id="inside_email" onfocus="if(this.value=='enter email address')this.value='';" onblur="if(this.value=='')this.value='enter email address';" value="enter email address" />
+                    </li>
+                    <li id="email_rcol">
+                        <input type="image" src="../../../images.highspeedbackbone.net/overlay/signMeUp.gif" />
+                        <input type="hidden" name="ListCode" value="OL">
+                        <input type="hidden" name="list" value="preferred">
+                        <input type="hidden" name="Additional_" value="overlay" />
+                        <input type="hidden" name="div" value="03">
+                        <input type="hidden" name="confirm" value="one">
+                        <input type="hidden" name="showconfirm" value="F">
+                        <input type="hidden" name="SrcCode" value="WEB1210" size=10 maxlength=100>
+                        <input type="hidden" name="url" value="/applications/email/thankyouMH.asp">
+                    </li>
+                </ul>
+            </form>
         </div>
+        <span class="clearfloats emailText">We respect your privacy and take it very seriously. <a href="privacy.asp.html">View our privacy policy</a></span>
+        <p>
+        	<a href="http://www.tigerdirect.com/email/latest_emailDeal.asp" title="See Sample Email" target="_blank"><img src="../../../images.highspeedbackbone.net/overlay/sample.jpg" alt="Sample Emails" border="0"/></a><br />
+        	<a href="http://www.tigerdirect.com/email/latest_emailDeal.asp" title="See Sample Email" target="_blank">View a sample email</a>
+        </p>
     </div>
 </div>
 
-
-<div id="ccExO_wrapper2">
-	<div id="ccExO_top">
-    <span id="ccExO_title">THANK YOU</span>
-    <span id="ccExO_subtitle">for your email submission</span>
-    </div>
-    <div id="ccExO_mid">
-  	<span id="ccExO_mid_inner">You have one more step to get your $10 discount. Just confirm your entry via the confirmation email to validate your email address and then we will send you a $10 discount link.</span>
-    <br clear="all" />
-    </div>
-    <div id="ccExO_bottom">
-        <center><a href="javascript:void(0)" onClick="lightbox('ccExO_wrapper2','close')"> <img id="ccExButton_no" src="../../../images.highspeedbackbone.net/homepage/promotions/exclusive_24hour/closeBtn_grey.jpg" border="0"/></a></center>
-        <div id="ccEx_TC">
-        	* Requires $100 Minimum Purchase. Cannot be combined with other offers. Limit one discount code per customer. Must validate email address by responding to our confirmation email. After valid email confirmation, please allow up to 2-4 business days to receive your $10 discount via email. Must follow instructions within the email to qualify. To ensure delivery to your inbox, please add TigerDirect@tigeronline.com to your address book.
-        </div>
-    </div>
 </div>
 
 
 	
     <script language="javascript" type="text/javascript">
-    $("#hom_24Ex_wrapper").click(function () { 
-     lightbox('ccExO_wrapper','close');
-    });
-	
-	$("#hom_24Ex_wrapper").click(function () { 
-     lightbox('ccExO_wrapper2','close');
-    });
-	
+		$("#hom_24Ex_wrapper").click(function () { 
+			 lightbox('ccExO_wrapper','close');
+		});
 	</script>
 
 	
 	
     <script language="JavaScript" type="text/JavaScript">
-       setTimeout("lightbox('ccExO_wrapper','open')",10000);
+		setTimeout("lightbox('ccExO_wrapper','open')",7000);   
     </script>
-    <div class="mastHeadBanner">
+	<div class="mastHeadBanner">
 	<div class="hdrPromo1">
     
         <!-- begin ad tag -->
@@ -1798,15 +1756,15 @@ a.fv:hover #fv_img {display:block;}
         <!-- begin ad tag-->
         <img src="../../../images.highspeedbackbone.net/rightnav/h_advert.gif" width="70" height="5" style="margin-bottom: 1px;
             margin-top: 20px;" /><br />
-        <iframe src="../../../ad.doubleclick.net/adi/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Bord=5327590703964.html"
+        <iframe src="../../../ad.doubleclick.net/adi/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Bord=6239303350448.html"
             width="160" height="600" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">
-            <script language="JavaScript" src="../../../ad.doubleclick.net/adj/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie%3Bord=5327590703964"
+            <script language="JavaScript" src="../../../ad.doubleclick.net/adj/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie%3Bord=6239303350448"
                 type="text/javascript"></script>
         </iframe>
         <noscript>
-            <a href="http://ad.doubleclick.net/jump/tigerdirect.com/ROS_160x600;sz=160x600;abr=!ie4;abr=!ie5;abr=!ie6;ord=5327590703964?"
+            <a href="http://ad.doubleclick.net/jump/tigerdirect.com/ROS_160x600;sz=160x600;abr=!ie4;abr=!ie5;abr=!ie6;ord=6239303350448?"
                 target="_blank">
-                <img src="../../../ad.doubleclick.net/ad/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie4%3Babr=!ie5%3Babr=!ie6%3Bord=5327590703964"
+                <img src="../../../ad.doubleclick.net/ad/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie4%3Babr=!ie5%3Babr=!ie6%3Bord=6239303350448"
                     width="160" height="600" border="0" alt=""></a></noscript>
         <!-- End ad tag -->
 
@@ -2085,20 +2043,19 @@ try {
 </script>
 
 <!--SRCCODE             :WEB1210-->
-<!--SessionId           :726197020121004081013641471888-->
+<!--SessionId           :2498153920121008081024641471888-->
 <!--Cart(rNavSearch)    :^D>>Top Product: >>^D>>Top Product: >>^D>>Top Product: >>-->
-<!--Cart(rNavEdpDesc)   :^D>>Microsoft Windows 7 Professional 64bit OSS>>EdpNo=5213934^D>>Ultra ULT31803 All-in-One Flash Reader>>EdpNo=1187796^D>>D-Link Wireless-N Home Router >>EdpNo=5650958-->
+<!--Cart(rNavEdpDesc)   :^D>>Microsoft Windows 7 Professional 64bit OSS>>EdpNo=5213934^D>>Ultra ULT31803 All-in-One Flash Reader>>EdpNo=1187796^D>>ED1TC HB STEREOPHONE IDEAL F/>>EdpNo=2745101-->
 <!--Cart(Landing)       :http://www.tigerdirect.com/sectors/aboutus/privacy.asp-->
 <!--Cart(rNavLastVisit) :-->
 <!--Cart(rNavCatId)     :^D>>Desktop Computers>>category_tlc.asp?CatId=6^D>>Monitors>>category_tlc.asp?CatId=12^D>>Laptops &amp; Notebooks>>category_tlc.asp?CatId=17-->
 <!--Cart(Referer)       :-->
-<!--SRVR                :WEBX10-01B-->
-<!--DB(msImageSC)       :/microsoft/MSelasticity-bnr_620x150B.jpg-->
+<!--SRVR                :WEBX10-07B-->
+<!--DB(msImageSC)       :/microsoft/MSelasticity-bnr_620x150A.jpg-->
 <!--DB(Surveyflag)      :1-->
-<!--DB(msImageID)       :/microsoft/MSelasticity-bnr_430x150B.jpg-->
-<!--DB(msProduct)       :1782290-->
-<!--DB(msRandX)         :62-->
-<!--visited             :tempyes-->
+<!--DB(msImageID)       :/microsoft/MSelasticity-bnr_430x150A.jpg-->
+<!--DB(msProduct)       :335878-->
+<!--DB(msRandX)         :23-->
 
 </body>
 </html>

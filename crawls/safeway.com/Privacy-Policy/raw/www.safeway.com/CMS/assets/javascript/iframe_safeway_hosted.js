@@ -83,7 +83,7 @@ function getViewName() {
      	 ifrm.height = '900';
 		 ifrm.width = '720';
 	} else if (url.indexOf('index720') > -1) { 
-     	 ifrm.height = '1300';
+     	 ifrm.height = '900';
 		 ifrm.width = '970';
     } else { // for store locator results
      	 ifrm.height = '1300';

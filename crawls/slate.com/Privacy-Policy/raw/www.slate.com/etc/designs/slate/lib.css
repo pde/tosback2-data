@@ -464,7 +464,7 @@ margin-right: 12px !important;
 margin-left: 0px !important;
 }
 .tbar-art{
-width:564px !important;
+width:100% !important;
 padding-left: -6px;
 }
 .sl-tbar-bord{
@@ -3988,29 +3988,13 @@ a.slb-rrw-ais-link:visited {
     padding-bottom: 10px;
 }
 .slb-rrw-pf-section {
-    clear: left;
-    height: 90px;
-    border-bottom: 1px solid #ECECEC;
     padding: 15px;
 }
 .slb-rrw-pf-section-last {
     border-bottom: none;
 }
-.slb-rrw-pf-section-logo {
-    margin-right: 10px;
-    width: 65px;
-    height: 65px;
-    float: left;
-}
-.slb-rrw-pf-theroot .slb-rrw-pf-section-logo {
-    background-position:-111px -205px;
-}
-.slb-rrw-pf-foreignpolicy .slb-rrw-pf-section-logo {
-    background-position:-178px -205px;
-}
 .slb-rrw-pf-section-data {
     float: left;
-    width: 220px;
 }
 .slb-rrw-pf-section-header {
     font-weight: bold;
@@ -4018,11 +4002,22 @@ a.slb-rrw-ais-link:visited {
     text-transform: uppercase;
 }
 .slb-rrw-pf-list{
-    list-style-type: bullet;
+    list-style-type: none;
 }
-.slb-rrw-pf-list-item{
-    float:left;
+.slb-rrw-pf-list-item-no-site{
     margin-left: 15px;
+}
+.slb-rrw-pf-list-item-tr{
+	background-image: url(images/slb-rrw-pf-list-item-trfav.gif);
+    background-repeat: no-repeat;
+    background-position: 0 -2;
+    padding: 0 0 10px 26px;
+}
+.slb-rrw-pf-list-item-fp{
+    background-image: url(images/slb-rrw-pf-list-item-fpfav.gif);
+    background-repeat: no-repeat;
+    background-position: 0 -2;
+    padding: 0 0 10px 26px;
 }
 .slb-rrw-pf-list-item-spacer{
     clear:both;
@@ -4417,6 +4412,11 @@ a.slatestBox-text, a.slatestBox-text:active, a.slatestBox-text:visited{
 	overflow-y:scroll;
 	position: relative !important;
 }
+.sl-rww-photo-media-header {
+	background: url("images/behold.gif") no-repeat;
+	height: 63px;
+	width: 336px;
+}
 
 /* Floating Toolbar */
 
@@ -4429,13 +4429,14 @@ a.slatestBox-text, a.slatestBox-text:active, a.slatestBox-text:visited{
     position:relative; 
     display: block; 
     left: -70px; 
-    background-color: #c1cad1; 
+    background-color: #c1cad1;
+    padding-top:9px;
  }
 #share-box-flank * span { display: inline-block; position: relative; overflow: hidden;  }
 #share-box-flank a { text-decoration: none; }
 .punched { background-image: url('images/sprite_toolbar.png'); }
 #tb-comments-count, #tb-fb-count, #tb-gogplus-count, #tb-tw-count { display: block; height: 70px; width: 100%; text-align: center;}
-#tb-comments-count span { width:58px;height:54px; background-position:-386px 0; top: 9px;  }    
+#tb-comments-count span { width:58px;height:54px; background-position:-386px 0;}
 #tb-comments-count span b { 
     position: relative; 
     padding-top: 0px; 
@@ -4626,6 +4627,145 @@ a.slatestBox-text, a.slatestBox-text:active, a.slatestBox-text:visited{
 	margin-top:5px;
 	display:none;
 }
+.slb-Weigel-defaultimg {
+   background: url('../../../content/slate/blogs/weigel/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-TrendingNewsChannel-defaultimg {
+   background: url('../../../content/slate/blogs/trending/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-FutureTense-defaultimg {
+   background: url('../../../content/slate/blogs/future_tense/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-Moneybox-defaultimg {
+   background: url('../../../content/slate/blogs/moneybox/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-TheWrightShow-defaultimg {
+   background: url('../../../content/slate/blogs/the_wright_show/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-BrowBeat-defaultimg {
+   background: url('../../../content/slate/blogs/browbeat/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-TheXXFactor-defaultimg {
+   background: url('../../../content/slate/blogs/xx_factor/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-TheReckoning-defaultimg {
+   background: url('../../../content/slate/blogs/the_reckoning/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+.slb-Quora-defaultimg {
+   background: url('../../../content/slate/blogs/quora/jcr:content/sprite.gif') no-repeat scroll 0 0;
+   display: block;
+}
+
+/*
+ * jQuery FlexSlider v2.0
+ * http://www.woothemes.com/flexslider/
+ *
+ * Copyright 2012 WooThemes
+ * Free to use under the GPLv2 license.
+ * http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Contributing author: Tyler Smith (@mbmufffin)
+ */
+
+
+/* Browser Resets */
+.flex-container a:active,
+.flexslider a:active,
+.flex-container a:focus,
+.flexslider a:focus  {outline: none;}
+.slides,
+.flex-control-nav,
+.flex-direction-nav {margin: 0; padding: 0; list-style: none; width: 100%; height: 100px;}
+
+/* FlexSlider Necessary Styles
+*********************************/
+.flexslider {margin: 0; padding: 0;}
+.flexslider .slides > li {display: none; -webkit-backface-visibility: hidden;} /* Hide the slides before the JS is loaded. Avoids image jumping */
+.flexslider .slides img {width: 100%; display: block;}
+.flex-pauseplay span {text-transform: capitalize;}
+
+/* Clearfix for the .slides element */
+.slides:after {content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0;}
+html[xmlns] .slides {display: block;}
+* html .slides {height: 1%;}
+
+/* No JavaScript Fallback */
+/* If you are not using another script, such as Modernizr, make sure you
+ * include js that eliminates this class on page load */
+.no-js .slides > li:first-child {display: block;}
+
+
+/* FlexSlider Default Theme
+*********************************/
+.flexslider {margin: 0 0 60px; background: #fff; border: 4px solid #fff; position: relative; -webkit-border-radius: 4px; -moz-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; box-shadow: 0 1px 4px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.2); -moz-box-shadow: 0 1px 4px rgba(0,0,0,.2); -o-box-shadow: 0 1px 4px rgba(0,0,0,.2); zoom: 1;}
+.flex-viewport {max-height: 2000px; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; transition: all 1s ease;}
+.loading .flex-viewport {max-height: 300px;}
+.flexslider .slides {zoom: 1;}
+
+.carousel li {margin-right: 5px}
+
+
+/* Direction Nav */
+.flex-direction-nav a:link, .flex-direction-nav a:active, .flex-direction-nav a:focus {
+    width: 44px; 
+    height: 90px; 
+    display: block; 
+    cursor: pointer; 
+    text-indent: -9999px; 
+    -webkit-transition: all .3s ease;
+    position: absolute;
+    top: 250px;
+    outline: 0;
+}
+.flex-direction-nav .flex-next {
+    background: url(images/flexslider/right_arrow.png) no-repeat 0 0;
+    right: 135px;
+}
+.flex-direction-nav .flex-prev {
+    background: url(images/flexslider/left_arrow.png) no-repeat 0 0;
+    left: 135px;
+}
+.flexslider:hover .flex-next {opacity: 0.8; right: 5px;}
+.flexslider:hover .flex-prev {opacity: 0.8; left: 5px;}
+.flexslider:hover .flex-next:hover, .flexslider:hover .flex-prev:hover {opacity: 1;}
+.flex-direction-nav .disabled {opacity: .3!important; filter:alpha(opacity=30); cursor: default;}
+
+/* Control Nav */
+.flex-control-nav {width: 100%; position: absolute; bottom: 20px; text-align: center;height: 70px; margin-top: 20px;}
+.flex-control-nav li {margin: 0 6px; display: inline-block; zoom: 1; *display: inline;}
+.flex-control-paging li a {
+    width: 11px; 
+    height: 11px; 
+    display: block; 
+    background: white;
+    cursor: pointer; 
+    text-indent: -9999px; 
+    -webkit-border-radius: 20px; 
+    -moz-border-radius: 20px; 
+    -o-border-radius: 20px; 
+    border-radius: 20px; 
+}
+.flex-control-paging li a:hover { background: #000; background: white; }
+.flex-control-paging li a.flex-active { background: #603; background: rgba(102,0,51,1); cursor: default; }
+
+.flex-control-thumbs {margin: 5px 0 0; position: static; overflow: hidden;}
+.flex-control-thumbs li {width: 25%; float: left; margin: 0;}
+.flex-control-thumbs img {width: 100%; display: block; opacity: .7; cursor: pointer;}
+.flex-control-thumbs img:hover {opacity: 1;}
+.flex-control-thumbs .active {opacity: 1; cursor: default;}
+
+@media screen and (max-width: 860px) {
+    .flex-direction-nav .flex-prev {opacity: 1; left: 0;}
+    .flex-direction-nav .flex-next {opacity: 1; right: 0;}
+}
 /*SHARED*/
 .sl-nbox-cntr{
 	position:fixed;
@@ -4791,40 +4931,3 @@ a.slatestBox-text, a.slatestBox-text:active, a.slatestBox-text:visited{
 .sl-nboxd-promo{
     font-size:0.923em;
 }
-.slb-Weigel-defaultimg {
-   background: url('../../../content/slate/blogs/weigel/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-TrendingNewsChannel-defaultimg {
-   background: url('../../../content/slate/blogs/trending/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-FutureTense-defaultimg {
-   background: url('../../../content/slate/blogs/future_tense/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-Moneybox-defaultimg {
-   background: url('../../../content/slate/blogs/moneybox/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-TheWrightShow-defaultimg {
-   background: url('../../../content/slate/blogs/the_wright_show/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-BrowBeat-defaultimg {
-   background: url('../../../content/slate/blogs/browbeat/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-TheXXFactor-defaultimg {
-   background: url('../../../content/slate/blogs/xx_factor/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-TheReckoning-defaultimg {
-   background: url('../../../content/slate/blogs/the_reckoning/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-.slb-Quora-defaultimg {
-   background: url('../../../content/slate/blogs/quora/jcr:content/sprite.gif') no-repeat scroll 0 0;
-   display: block;
-}
-

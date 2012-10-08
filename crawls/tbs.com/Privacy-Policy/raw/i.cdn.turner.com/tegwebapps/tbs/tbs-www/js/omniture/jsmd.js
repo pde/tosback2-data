@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.170.1870.20120911",
+	version: "tbs.184.1870.20121001",
 	release: "0",
 	dictionary: {
 		init: {
@@ -237,6 +237,7 @@ var _jsmd_default={
 				},
 				account: function() {
 					var host = window.location.hostname;
+					var rsid = "";
 					if( (host.indexOf("tbs.com") > -1) ||
 						(host.indexOf("comedyfestival.com") > -1) ||
 						(host.indexOf("veryfunnyads.com") > -1) ||
@@ -251,10 +252,14 @@ var _jsmd_default={
 						(host.indexOf("theconanblimp.com") > -1) ||
 						(host.indexOf("conan.xxx") > -1)
 					){
-						return "tcm-tbs-adbp";
+						rsid = "tcm-tbs-adbp";
 					}else{
-						return "tcm-tbs-adbp-dev";
+						rsid = "tcm-tbs-adbp-dev";
 					}
+					if(host.indexOf("reftest") > -1 || host.indexOf("dev.") > -1 || host.indexOf("pre-prod") > -1 || host.indexOf("qa-ext") > -1 || host.indexOf("dev-ext") > -1){
+						rsid = "tcm-tbs-adbp-dev";
+					}
+					return rsid;
 				},
 				settings: {
 					"trackDownloadLinks":		        	true,
@@ -1735,10 +1740,10 @@ var _jsmd_default={
 			},
 			"video-stop": "alias:video-complete",
 			"social-click": function(data,map) {
-				var co = data.socialType||"";
-				this.set("business.tbs.socialType",co);
+				var st = data.socialType||"";
+				this.set("business.tbs.socialType",st);
 				this.set("action","link");
-				this.set("link",{name: "social-click: " + co, type: "o"});
+				this.set("link",{name: "social-click: " + st, type: "o"});
 				this.push("page.events","social.interaction");
 				this.send();
 			},
@@ -3601,13 +3606,22 @@ function sendVideoProgress(vidInfo) {
 	} catch(e){}
 }
 
-function sendSocialClick(clickInfo){
-	try {
-		trackMetrics({
-			type: "social-click",
-			data: {	socialType: clickInfo }
-		});
-	} catch(e){}
+function sendSocialClick(site,action,target){
+	if(action == undefined && target == undefined){
+		try {
+			trackMetrics({
+				type: "social-click",
+				data: {	socialType: site }
+			});
+		} catch(e){}
+	} else {
+		try {
+			trackMetrics({
+				type: "social-click",
+				data: {	socialType: (site ? site : "no site") + " : " + (action ? action : "no action") + " : " + (target ? target : "no target") }
+			});
+		} catch(e){}
+	}
 }
 
 /*
@@ -3831,14 +3845,15 @@ _jsmd.JSMD.prototype.sTVE_RSID = function(_category){
 	var globalRSID = "tveglobal";
 	var brandRSID = "tvetbs";
 	var networkRSID = "tve" + (this.tveMSO) + "tbs";
-	if(networkRSID.indexOf("dtv") > -1){
+
+	if(this.tveMSO == "dtv"){
 		networkRSID = networkRSID.replace("dtv","directtv");
 	}
 
 	var devStng = (window.location.host === "www.tbs.com")?"":"dev"
-		if (this.tveMSO != "Unauthorized"){
-			this.tveRSID =  globalRSID+devStng+","+brandRSID+devStng+","+networkRSID+devStng;
-		}
+	if (this.tveMSO != "Unauthorized"){
+		this.tveRSID =  globalRSID+devStng+","+brandRSID+devStng+","+networkRSID+devStng;
+	}
 }
 
 /*TVE Objects*/

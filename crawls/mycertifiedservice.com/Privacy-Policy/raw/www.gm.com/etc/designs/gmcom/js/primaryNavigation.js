@@ -91,8 +91,15 @@ function orient() {
 
 $(document).ready( function(){
 	
+	// resolve dropdown offsecreen
+	if($('#primaryNavigation').innerWidth()<1274)
+		$('#primaryNavigation ul li ul').css({left:0, right:'auto'});
+
+
+ if($('body').hasClass('tabpage'))
+	$('meta[name="viewport"]').replaceWith('<meta name="viewport" content="width=1200, initial-scale=0.92 maximum-scale=1.0" />');
+
 	addBodyClass();
-	
 	lastOrient=window.orientation;
 	
 
@@ -101,11 +108,12 @@ $(document).ready( function(){
 		$('body').append('<div id="vignette" ><img src="/etc/designs/gmcom/images/vignette.png"></div>');
 	}
 	
+if(!($('html').hasClass('mac') && $('html').hasClass('safari'))){
 	$( 'div#primaryNavigation > ul' ).fill({
 		elements : 'li',
 		fill     : 'li#blackFill'
 	});
-
+}
 
 	$( 'li#vehicles, li#vision, li#company' ).primaryNavigationSlideDown();
 

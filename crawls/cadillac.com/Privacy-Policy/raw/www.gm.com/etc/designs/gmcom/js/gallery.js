@@ -47,7 +47,7 @@ $(document).ready( function(){
 				youTubePauseAdvance : false, //If youtube video is paused and in gallery of length greater than 1 advance to next item automaticly
 				youTubeEndAdvance   : false  //If youtube video ends and in gallery of length greater than 1 advance to next item automaticly 
 			});
-			if( $( '#videogalleryvideo_gallery_crx' ).length > 0 ){
+			if( $( '.videogallery_video_gallery_crx' ).length > 0 ){
 				galleryModalVideo();
 			}
 		}

@@ -1,6 +1,7 @@
 
 	
 	
+	
 
 
 
@@ -117,8 +118,9 @@ btg.config={
 		useStaticCreative:false,
 		staticCreativeDomID:''
 	}
-};
+};		
 	
+
 
 
 		
@@ -453,5 +455,29 @@ com.mtvi.reporting.Dispatcher=function(){this.getValOnce=function(){return true}
 c[d])};this.send=function(c){btg.Controller.sendPageCall(c)};this.setDefaultData=function(){};this.clearProps=function(){};this.clearAllVars=function(){}};com.mtvi.reporting.FluxWidgeted={setVars:function(){return true}};com.mtvi.reporting.GoogleAnalytics={makeCall:function(){(new btg.GoogleAnalytics(btg.GoogleAnalytics)).sendPageCall();return true}};com.mtvi.reporting.MediaPlayer={addPlayer:btg.MediaPlayer.addPlayer};
 mtvn.btg.reporting.MediaPlayer={setEndSlateClick:mtvn.btg.reporting.player.MediaPlayer.setEndSlateClick,getEndSlateClick:mtvn.btg.reporting.player.MediaPlayer.getEndSlateClick};com.mtvi.reporting.QuantCast=new function(){this.sendQuantCastCall=function(){(new btg.QuantCast(btg.config.QuantCast)).sendPageCall();return true}};com.mtvi.reporting.Search=btg.Search;com.mtvi.reporting.Search.setVars=btg.Search.setData;
 btg.isCoreLoaded=function(){btg.Events.CORE_LOADED.fire();btg.SurrogateAd.load("poe");return true}();if(btg && btg.config)btg.config.fullVersion='3.3.74.138';
+
+
+		
+		
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+							
+		
+		
 
 	

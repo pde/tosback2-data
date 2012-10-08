@@ -260,5 +260,10 @@ if (document.images)
 	relax_off.src = "/img/lnav3_3relax_off.gif";
 	var relax_on = new Image();
 	relax_on.src = "/img/lnav3_3relax_on.gif";
+
+	var carepackages_off = new Image();
+	carepackages_off.src = "/img/lnav3_3carepackages_off.gif";
+	var carepackages_on = new Image();
+	carepackages_on.src = "/img/lnav3_3carepackages_on.gif";
 }
 //-->

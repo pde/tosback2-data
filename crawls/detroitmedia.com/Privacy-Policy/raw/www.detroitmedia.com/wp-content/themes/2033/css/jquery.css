@@ -1,0 +1,437 @@
+/*JQUERY CSS */
+
+/* Color Box */
+#colorbox, #modalBackgroundOverlay, #modalWrap{position:absolute; top:0; left:0; z-index:9999;}
+#modalBackgroundOverlay{position:fixed; width:100%; height:100%;}
+#colorbox{overflow:hidden; padding:1px; margin-top:-1px; margin-left:-1px;}/*padding fixes a ghosting issue in IE7, the negative margin compensates */
+	#modalWrap{width:9000px; height:9000px;}
+		#modalContent, #borderTopLeft, #borderTopCenter, #borderTopRight, #borderBottomLeft, #borderBottomCenter, #borderBottomRight, #borderMiddleLeft, #borderMiddleRight {float:left; height:0; width:0; overflow:hidden;}
+		#borderMiddleLeft, #borderBottomLeft{clear:left;}
+		#modalContent{position:relative; overflow:visible;}
+			#contentTitle{margin:0;}
+			#modalClose, #contentPrevious, #contentNext{outline:none; cursor:pointer; border:0; margin:0;}
+			#modalLoadedContent{overflow:auto; width:0; height:0;}
+			#modalLoadedContent iframe{display:block; width:100%; height:100%; border:0;}
+			#modalLoadedContent img#modalPhoto{display:block; border:0; margin:auto;}
+			#modalLoadedContent embed{display:block; border:0;}/* Display:block removes the line-height gap underneath images, iframes, and embedded content */
+			#modalLoadingOverlay{position:absolute; width:100%; height:100%; top:0; left:0;}
+
+
+#modalBackgroundOverlay{background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/stripe.png) 0 0 repeat;}
+
+#colorbox{height: auto; }
+	#borderTopLeft{width:21px; height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderTopLeft.png) 0 0 no-repeat;}
+	#borderTopCenter{height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderTopCenter.png) 0 0 repeat-x;}
+	#borderTopRight{width:21px; height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderTopRight.png) 0 0 no-repeat;}
+	#borderBottomLeft{width:21px; height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderBottomLeft.png) 0 0 no-repeat;}
+	#borderBottomCenter{height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderBottomCenter.png) 0 0 repeat-x;}
+	#borderBottomRight{width:21px; height:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderBottomRight.png) 0 0 no-repeat;}
+	#borderMiddleLeft{width:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderMiddleLeft.png) 0 0 repeat-y;}
+	#borderMiddleRight{width:21px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/borderMiddleRight.png) 0 0 repeat-y;}
+	#modalContent{background:#fff; }
+		#modalLoadedContent{margin-bottom:28px; padding: 20px; font-size: 14px; }
+			#contentTitle{position:absolute; bottom:3px; left:0; text-align:center; width:100%; background:#fff; color:#9caf5a; font-size: 16px; margin-bottom: 4px; }
+			#contentCurrent{position:absolute; bottom:3px; left:58px;  color:#949494; font-size:13px;}
+			#contentPrevious{position:absolute; bottom:0; left:0px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/controls.png) -25px 0px no-repeat; width:25px; height:25px; text-indent:-9999px;}
+			#contentPrevious:hover{background-position:-25px -25px;}
+			#contentNext{position:absolute; bottom:0; left:27px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/controls.png) 0px 0px no-repeat; width:25px; height:25px; text-indent:-9999px;}
+			#contentNext:hover{background-position:0px -25px;}
+		#modalLoadingOverlay{background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/loading.gif) center center no-repeat #fff;}
+		#modalClose{position:absolute; top:-20px; right:-20px; background:url(http://www.detroitmedia.com/wp-content/themes/2033/images/controls.png) -50px 0px no-repeat; width:25px; height:25px; text-indent:-9999px;}
+		#modalClose:hover{background-position:-50px -25px; cursor: pointer;}
+		#modalContent p.title{font-size: 20px; text-transform:normal; width: auto; color:#9caf5a; letter-spacing: .08em;}
+		
+
+/* Carousel for front page */
+
+.jcarousel-container, #carousel-wrap {position: relative; width: 598px;}
+.jcarousel-clip {z-index: 2; padding: 0; margin: 0 30px; overflow: hidden; position: relative; width: 540px;}
+.jcarousel-list {z-index: 1; overflow: hidden; position: relative; top: 0; left: 0; margin: 0; padding: 0;}
+.jcarousel-list li, .jcarousel-item {float: left; list-style: none;  width: 162px; height:85px; }
+#main-content #featured-products {margin: 0; padding: 0 10px 0 0;}
+#featured-products li {background-image: none; padding: 5px 5px 5px 5px; width: 162px; margin: 0 10px 0 0 ; cursor: pointer;}
+	#featured-products li img {padding: 4px 4px 4px 4px; margin: 0; border: 1px solid #fff;}
+	#featured-products li img:hover {background: #f2f2f2; border: 1px solid #ccc;}
+	
+
+.jcarousel-next-horizontal {position: absolute; top: 26px; right: 0px; width: 21px; height: 42px; cursor: pointer; background: url(http://www.detroitmedia.com/wp-content/themes/2033/images/sprite-carousel-butt.gif) 0 0; z-index: 3;}
+	.jcarousel-next-horizontal:hover {background-position: -26px 0;}
+	.jcarousel-next-horizontal:active {background-position: -52px 0;}
+		.jcarousel-next-disabled-horizontal,
+		.jcarousel-next-disabled-horizontal:hover,
+		.jcarousel-next-disabled-horizontal:active {cursor: default; background-position: -78px 0;}
+
+.jcarousel-prev-horizontal {position: absolute; top: 26px; left: 5px; width: 21px; height: 42px; cursor: pointer; background: url(http://www.detroitmedia.com/wp-content/themes/2033/images/sprite-carousel-butt.gif) 0 -50px; z-index: 4;}
+	.jcarousel-prev-horizontal:hover {background-position: -26px -50px;}
+	.jcarousel-prev-horizontal:active {background-position: -52px -50px;}
+		.jcarousel-prev-disabled-horizontal,
+		.jcarousel-prev-disabled-horizontal:hover,
+		.jcarousel-prev-disabled-horizontal:active {cursor: default; background-position: -78px -50px;}
+
+#featured-products li div.texts {display: none; line-height: 20px;}
+#featured-text {width: 515px; background: #f2f2f2; border: 1px solid #ccc; padding: 10px; margin: 0 0 0 34px;}
+
+
+/*
+ * FancyBox - jQuery Plugin
+ * Simple and fancy lightbox alternative
+ *
+ * Examples and documentation at: http://fancybox.net
+ * 
+ * Copyright (c) 2008 - 2010 Janis Skarnelis
+ *
+ * Version: 1.3.1 (05/03/2010)
+ * Requires: jQuery v1.3+
+ *
+ * Dual licensed under the MIT and GPL licenses:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *   http://www.gnu.org/licenses/gpl.html
+ */
+
+#fancybox-loading {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	height: 40px;
+	width: 40px;
+	margin-top: -20px;
+	margin-left: -20px;
+	cursor: pointer;
+	overflow: hidden;
+	z-index: 1104;
+	display: none;
+}
+
+* html #fancybox-loading {	/* IE6 */
+	position: absolute;
+	margin-top: 0;
+}
+
+#fancybox-loading div {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 480px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+}
+
+#fancybox-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: #000;
+	z-index: 1100;
+	display: none;
+}
+
+* html #fancybox-overlay {	/* IE6 */
+	position: absolute;
+	width: 100%;
+}
+
+#fancybox-tmp {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	overflow: auto;
+	display: none;
+}
+
+#fancybox-wrap {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 20px;
+	z-index: 1101;
+	display: none;
+}
+
+#fancybox-outer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background: #FFF;
+}
+
+#fancybox-inner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: 0;
+	outline: none;
+	overflow: hidden;
+}
+
+#fancybox-hide-sel-frame {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+}
+
+#fancybox-close {
+	position: absolute;
+	top: -15px;
+	right: -15px;
+	width: 30px;
+	height: 30px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px 0px;
+	cursor: pointer;
+	z-index: 1103;
+	display: none;
+}
+
+#fancybox_error {
+	color: #444;
+	font: normal 12px/20px Arial;
+	padding: 7px;
+	margin: 0;
+}
+
+#fancybox-content {
+	height: auto;
+	width: auto;
+	padding: 0;
+	margin: 0;
+}
+
+#fancybox-img {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	line-height: 0;
+	vertical-align: top;
+	-ms-interpolation-mode: bicubic;
+}
+
+#fancybox-frame {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	border: none;
+	display: block;
+}
+
+#fancybox-title {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	font-family: Arial;
+	font-size: 12px;
+	z-index: 1102;
+}
+
+.fancybox-title-inside {
+	padding: 10px 0;
+	text-align: center;
+	color: #333;
+}
+
+.fancybox-title-outside {
+	padding-top: 5px;
+	color: #FFF;
+	text-align: center;
+	font-weight: bold;
+}
+
+.fancybox-title-over {
+	color: #FFF;
+	text-align: left;
+}
+
+#fancybox-title-over {
+	padding: 10px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancy_title_over.png');
+	display: block;
+}
+
+#fancybox-title-wrap {
+	display: inline-block;
+}
+
+#fancybox-title-wrap span {
+	height: 32px;
+	float: left;
+}
+
+#fancybox-title-left {
+	padding-left: 15px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -90px;
+	background-repeat: no-repeat;
+}
+
+#fancybox-title-main {
+	font-weight: bold;
+	line-height: 29px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox-x.png');
+	background-position: 0px -40px;
+	color: #FFF;
+}
+
+#fancybox-title-right {
+	padding-left: 15px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -55px -90px;
+	background-repeat: no-repeat;
+}
+
+#fancybox-left, #fancybox-right {
+	position: absolute;
+	bottom: 0px;
+	height: 100%;
+	width: 35%;
+	cursor: pointer;
+	outline: none;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/blank.gif');
+	z-index: 1102;
+	display: none;
+}
+
+#fancybox-left {
+	left: 0px;
+}
+
+#fancybox-right {
+	right: 0px;
+}
+
+#fancybox-left-ico, #fancybox-right-ico {
+	position: absolute;
+	top: 50%;
+	left: -9999px;
+	width: 30px;
+	height: 30px;
+	margin-top: -15px;
+	cursor: pointer;
+	z-index: 1102;
+	display: block;
+}
+
+#fancybox-left-ico {
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -30px;
+}
+
+#fancybox-right-ico {
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -60px;
+}
+
+#fancybox-left:hover, #fancybox-right:hover {
+	visibility: visible;    /* IE6 */
+}
+
+#fancybox-left:hover span {
+	left: 20px;
+}
+
+#fancybox-right:hover span {
+	left: auto;
+	right: 20px;
+}
+
+.fancy-bg {
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	width: 20px;
+	height: 20px;
+	z-index: 1001;
+}
+
+#fancy-bg-n {
+	top: -20px;
+	left: 0;
+	width: 100%;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox-x.png');
+}
+
+#fancy-bg-ne {
+	top: -20px;
+	right: -20px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -162px;
+}
+
+#fancy-bg-e {
+	top: 0;
+	right: -20px;
+	height: 100%;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox-y.png');
+	background-position: -20px 0px;
+}
+
+#fancy-bg-se {
+	bottom: -20px;
+	right: -20px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -182px; 
+}
+
+#fancy-bg-s {
+	bottom: -20px;
+	left: 0;
+	width: 100%;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox-x.png');
+	background-position: 0px -20px;
+}
+
+#fancy-bg-sw {
+	bottom: -20px;
+	left: -20px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -142px;
+}
+
+#fancy-bg-w {
+	top: 0;
+	left: -20px;
+	height: 100%;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox-y.png');
+}
+
+#fancy-bg-nw {
+	top: -20px;
+	left: -20px;
+	background-image: url('http://www.detroitmedia.com/wp-content/themes/2033/images/fancybox/fancybox.png');
+	background-position: -40px -122px;
+}
+
+/* IE */
+
+#fancybox-loading.fancybox-ie div	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_loading.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-close		{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_close.png', sizingMethod='scale'); }
+
+.fancybox-ie #fancybox-title-over	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_title_over.png', sizingMethod='scale'); zoom: 1; }
+.fancybox-ie #fancybox-title-left	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_title_left.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-title-main	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_title_main.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-title-right	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_title_right.png', sizingMethod='scale'); }
+
+.fancybox-ie #fancybox-left-ico		{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_nav_left.png', sizingMethod='scale'); }
+.fancybox-ie #fancybox-right-ico	{ background: transparent; filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_nav_right.png', sizingMethod='scale'); }
+
+.fancybox-ie .fancy-bg { background: transparent !important; }
+
+.fancybox-ie #fancy-bg-n	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_n.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-ne	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_ne.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-e	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_e.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-se	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_se.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-s	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_s.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-sw	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_sw.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-w	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_w.png', sizingMethod='scale'); }
+.fancybox-ie #fancy-bg-nw	{ filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/fancybox/fancy_shadow_nw.png', sizingMethod='scale'); }

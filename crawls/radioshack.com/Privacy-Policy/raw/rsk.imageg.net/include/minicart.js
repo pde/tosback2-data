@@ -156,16 +156,15 @@ function updateCartItemDisplay(itemCount,itemValue) {
 		var items = '';
 		Element.addClassName(n.parentNode,'notEmpty');
 		if (itemCount == 1) {
-			items = "ITEM";
+			items = "item";
 		} else {
-			items = 'ITEMS';
+			items = 'items';
 		}
-		var newText = '<span class="sprite myCartImg"></span>' + 
-		'<span>My Cart</span>' + 
-		'<span class="sprite myCartDivider"></span>' + 
-		'<span class="quantity"><strong>&nbsp;' + itemCount + '&nbsp;</strong>' + items + '&nbsp;</span>' + 
+		var newText = '<span class="sprite my-cart">My Cart</span>' + 
+		'<div class="cart-info">' +
+		'<span class="quantity">' + itemCount + ' ' + items + '</span>' + 
 		'<span class="total">&#036;' + itemValue.replace( '$ ','') + '</span>' + 
-		'<span class="sprite roundDownButton"></span>';
+		'</div><span class="sprite roundDownButton"></span>';
 		n.innerHTML = newText;
 	}
 }

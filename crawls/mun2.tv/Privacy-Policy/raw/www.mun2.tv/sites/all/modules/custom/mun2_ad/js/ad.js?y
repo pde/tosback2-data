@@ -1,0 +1,110 @@
+var intVal;
+Drupal.behaviors.mun2AdRotate = function(context) {
+  	intVal = setInterval(function () {
+      rotate_ads()
+    }, 100000)
+}
+
+function rotate_ads() {
+  $('.mun2-ad-init').remove();
+  genSetRandDARTNumber();
+  if (typeof eTandomAd == "undefined") { 
+    eTandomAd = "none";
+  }
+  if(Drupal.settings.mun2_ad) {
+    $('.mun2-ad').each(function () {
+        var id = $(this).attr('id')
+        $('iframe',this).remove()
+        script = '<scr' + 'ipt src="' + eval(Drupal.settings.mun2_ad[id]) + '"></scri' + 'pt>'
+        style = '<style type="text/css">html, body, div { margin: 0; padding: 0; }</style>'
+        var container = document.getElementById(id);
+        var iframe = new IFrame(container);
+        if (iframe.doc.body.innerHTML)  {
+            iframe.doc.body.innerHTML = '&nbsp';
+        }          
+        iframe.doc.write(script)
+        iframe.doc.write(style)
+    });
+  }
+}
+
+// compatibility for working with iframe documents
+function IFrame(parentElement) {
+   // Create the iframe which will be returned
+   var iframe = document.createElement("iframe");
+ 
+   // If no parent element is specified then use body as the parent element
+   if(parentElement == null)
+      parentElement = document.body;
+   iframe.id = parentElement.id + '-ad';
+   // This is necessary in order to initialize the document inside the iframe
+   parentElement.appendChild(iframe);
+ 
+   // Initiate the iframe's document to null
+   iframe.doc = null;
+ 
+   // Depending on browser platform get the iframe's document, this is only
+   // available if the iframe has already been appended to an element which
+   // has been added to the document
+   if(iframe.contentDocument)
+      // Firefox, Opera
+      iframe.doc = iframe.contentDocument;
+   else if(iframe.contentWindow)
+      // Internet Explorer
+      iframe.doc = iframe.contentWindow.document;
+   else if(iframe.document)
+      // Others?
+      iframe.doc = iframe.document;
+ 
+   // If we did not succeed in finding the document then throw an exception
+   if(iframe.doc == null)
+      throw "Document not found, append the parent element to the DOM before creating the IFrame";
+ 
+   // Create the script inside the iframe's document which will call the
+   iframe.doc.open();
+   iframe.doc.close();
+ 
+   // Return the iframe, now with an extra property iframe.doc containing the
+   // iframe's document
+   return iframe;
+}
+
+// figure out the platform and device for mobile-friendly ad tag goodness.
+function UASniff() {
+  var ua = new Object;
+  if(navigator.userAgent.match(/iPad/i)) {
+    ua.platform = 'tablet';
+    ua.device = 'ipad';
+  } else if((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
+    ua.platform = 'mobile';
+    ua.device = 'iphone';
+  } else if(navigator.userAgent.match(/android/i))  {
+    // if it also says mobile, it's mobile android, otherwise, tablet.
+    if(navigator.userAgent.match(/mobile/i))  {
+      ua.platform = 'mobile';
+      ua.device = 'android';
+    } else {
+      ua.platform = 'tablet';
+      ua.device = 'androidtab';
+    }
+  } else {
+    ua.platform = null;
+    ua.device = null;
+  }
+  return ua;
+}
+
+// odd that there's no built-in js or even jquery function to do this.
+// Read a page's GET URL variables and return them as an associative array.
+function getQueryString() {
+  var vars = [], hash;
+  var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+  for(var i = 0; i < hashes.length; i++)
+  {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+  }
+  return vars;
+}
+

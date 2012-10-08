@@ -1,0 +1,655 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>Inline300</title>
+<!--[if IE]>
+		<link href="http://assets.newsinc.com/players/inline300/20120911/thumbLauncher4ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+<!--[if !IE]><!-->
+        <link href="../../assets.newsinc.com/players/inline300/20120911/thumbLauncher4.css" rel="stylesheet" type="text/css">
+<!--<![endif]-->
+<script type='text/javascript'>    var _parent;</script>
+<script type='text/javascript' src='../../assets.newsinc.com/players/inline300/20120911/jquery-1.6.4.min.js'></script>
+<script type='text/javascript' src='../../assets.newsinc.com/players/inline300/20120911/jquery.scrollTo-min.js'></script>
+<script type='text/javascript' src='../../assets.newsinc.com/players/inline300/20120911/jquery.timers.js'></script> 
+<script type='text/javascript' src="../../assets.newsinc.com/players/inline300/20120911/jquery.ServiceCalls.js"></script>
+<script type="text/javascript" src="../../assets.newsinc.com/ndn.2.js"></script>
+<script type="text/javascript" language="javascript">
+    function getUrlVars() {
+        var vars = {};
+        var parts = 'http://assets.newsinc.com/players/inline300/20120911/inlinePlayer.html?wid=12299&vid=&cid=&freewheel=90046&sitesection= dailycaller_hom_non_fro&height=512&width=300&embed=iframe'.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+            if (value.charAt(value.length - 1) == "#") {
+                value = value.substring(0, value.length - 1);
+            }
+            vars[key.toLowerCase()] = value;
+        });
+        return vars;
+    }
+</script>
+<script type="text/javascript" src="../../assets.newsinc.com/players/inline300/20120911/processThumbs5_iframe.js"></script>
+<script type="text/javascript" src="../../assets.newsinc.com/swfobject.js"></script>
+<!--[if !IE]><!-->
+    <script type='text/javascript' src="../../adunit.cdn.auditude.com/player/js/lib/aud.html5player.js" type="application/javascript"></script>
+<!--<![endif]-->
+<script>
+    ndn = {};
+
+    var firstLoad = new Boolean(true);
+    var auditudeLoaded = new Boolean(false);
+
+    var firstThumbLoaded = new Boolean(false);
+
+    var linearAdPlayed = new Boolean(false);
+
+    var eventid = 0;
+    var eventvalue = "";
+    var analyticsString = "";
+    var GAC = "";
+
+    //switchToWidgetTimeout = null;
+
+    //timer = {
+    //loadTime: new Date(),
+    //breakBeginTime: null,
+    //breakEndTime: null
+    //};
+
+    function CreateTimer(TimerID, Time) {
+        Timer = document.getElementById(TimerID);
+        TotalSeconds = Time;
+
+        UpdateTimer()
+        window.setTimeout("Tick()", 1000);
+    }
+
+    function UpdateTimer() {
+        var Seconds = TotalSeconds;
+
+        var Minutes = Math.floor(Seconds / 60);
+        Seconds -= Minutes * (60);
+
+
+        var TimeStr = LeadingZero(Minutes) + ":" + LeadingZero(Seconds)
+
+        if (isMobile == true) {
+            Timer.innerHTML = "Today's top videos available in " + TimeStr;
+        }
+    }
+
+    function LeadingZero(Time) {
+
+        return (Time < 10) ? "0" + Time : +Time;
+
+    }
+
+    function Tick() {
+        if (TotalSeconds <= 0) {
+            //alert("Time's up!")
+            return;
+        }
+
+        TotalSeconds -= 1;
+        UpdateTimer()
+        window.setTimeout("Tick()", 1000);
+    }
+    var switchToWidget = function () {
+        rdm = String(Math.floor(Math.random() * 1000000000));
+        eventid = "6";
+        eventvalue = "complete";
+        analyticsString = String("http://sana.newsinc.com/sana.html?wid=" + wid + "&uut=" + GAC + "&furl=" + furl + "&purl=&ssid=" + sitesection + "&anid=" + freewheel + "&ltype=1&ptype=0&plid=" + cid + "&eventid=" + eventid + "&eventvalue=" + eventvalue + "&rdm=" + rdm);
+        loadPage('swfviewFRM', null, analyticsString);
+        //alert("switchToWidget -3");
+        //clearTimeout(switchToWidgetTimeout);
+        //$('div[id*=aud_container_]').hide().empty().remove();
+        $('#ndn_adchoice', _parent).attr('style', 'visibility:hidden;');
+        //$('#flashcontent', _parent).attr('style', 'height:0px;width:0px;overflow:hidden;');
+        //loadThumbs();
+        $('#ndn_container', _parent).show();
+    }
+
+    startJavaScript = function () {
+        flashInit = true;
+        if (htmlInit == true && arraysSent == false) {
+            sendArraysToFlash();
+        }
+        if ((DistributorName != "") && (adCalled == false) && (htmlInit == true)) {
+            adCalled = true;
+            //sendToActionScript();
+        }
+    }
+
+    /*
+    ndn.auditudeCallback = function (type, params) {
+    //alert("ndn.auditudeCallbac"  + type + " - "+ params);
+    switch (type) {
+    case 'breakBegin':
+    timer.breakBeginTime = new Date();
+    switchToWidgetTimeout = setTimeout(switchToWidget, 35 * 1000);
+    break;
+    case 'breakEnd':
+    timer.breakEndTime = new Date();
+    timer.breakBeginTime = (timer.breakBeginTime != null) ? timer.breakBeginTime : timer.loadTime;
+    switchToWidget();
+    break;
+    case 'initFailed':
+    switchToWidget();
+    break;
+    }
+    }
+    */
+
+    var _getViewportHeight = function () {
+        if ($.browser.msie) { if (!(document.documentElement.clientHeight) || (document.documentElement.clientHeight === 0)) { return document.body.clientHeight; } else { return document.documentElement.clientHeight } } else { return window.innerHeight; }
+    };
+    var _getViewportWidth = function () {
+        return $.browser.msie ? (!(document.documentElement.clientWidth) || (document.documentElement.clientWidth === 0)) ? document.body.clientWidth : document.documentElement.clientWidth : window.innerWidth; { 0 }
+    };
+
+    var external_url = document.referrer;
+    if (external_url == "") {
+        external_url = window.location.href.split('?')[0];
+        //external_url = window.location.href;
+    }
+
+    /*
+    setupAutoPlay = function () {
+    var siteSectionParts = sitesection.split('_');
+    var sec = (siteSectionParts.length >= 2) ? siteSectionParts[1] : "oth";
+    var sub = (siteSectionParts.length >= 3) ? siteSectionParts[2] : "";
+    var viewportWidth = _getViewportWidth();
+    //var viewportHeight = _getViewportHeight();
+    var viewportHeight = 300;
+    var adWidth = $('#flashcontent').width();
+    //var adHeight = $('#flashcontent').height();
+    var adHeight = 300;
+    //playerHeight = 200;
+    var auditudeLibURL = "http://adunit.cdn.auditude.com/flash/modules/display/auditudeDisplayLib.js" +
+    //var auditudeLibURL = "http://adunit.cdn.auditude.com/player/js/lib/display/1.0/auditudeDisplayLib_s_1.0.0.js"
+    "?callback=ndn.auditudeCallback" +
+    "&width=" + playerWidth +
+    "&height=" + 300 +
+    "&version=adunit-1.0&domain=auditude.com" +
+    "&zoneId=" + (ZoneID != "0" ? ZoneID : "50974") +
+    "&mediaId=23408962" +
+    "&parentNode=auditudeContent" +
+    "&keyValues=" +
+    "dpid=" + freewheel +
+    ";sitesection=" + sitesection +
+    ";sec=" + sec +
+    ";sub=" + sub +
+    ";wgt=1" +
+    ";width=" + adWidth +
+    ";height=" + adHeight +
+    ";url=" + window.location.href +
+    "&customParams="+
+    "external_url=" + encodeURI(external_url) +
+    "&autoPlay=true" +
+    "&ndnR=" + Math.round(Math.random() * 10000) + "&countdownMessage=Todays Top Videos available in {countdown}" +
+    "videotype=HTML5";
+    var script = document.createElement("script");
+    script.id = "auditudeScript";
+    script.type = "text/javascript";
+    script.src = auditudeLibURL;
+    if (isMobile == true){
+    $('#flashcontent', _parent)[0].appendChild(script);
+    }
+    }
+    */
+    setWaypoints = function () {
+        $('#ndn_container', parent).waypoint(function (event) {
+            traceMsg("call setupAutoPlay from setWaypoints");
+            //setTimeout(setupAutoPlay, 100);
+            setTimeout(loadThumbs, 100);
+            event.stopPropagation();
+        }, {
+            triggerOnce: true,
+            offset: 'bottom-in-view'
+        });
+    };
+
+    $(document).ready(function () {
+        setUpPage();
+    });
+
+    setUpPage = function () {
+        traceMsg("in setUpPage");
+        var flashvars = new Object();
+        var params = new Object();
+        params.allowfullscreen = "true";
+        params.AllowScriptAccess = "always";
+        params.wmode = "transparent";
+
+        //var test = true;
+        //if (test == true) {
+        if (navigator.userAgent.match(/(iphone|ipod|ipad)/i)) {
+            loadThumbs();
+        } else {
+            swfobject.embedSWF("http://assets.newsinc.com/players/inline300/20120911/inline300.swf", "flashcontent", "300", "169", "9.0.115", "#FFFFFF", flashvars, params);
+            if ($('#ndn_container', _parent).length > 0 && $('#ndn_container', _parent).position().top > _getViewportHeight()) {
+                if ($.waypoints) {
+                    setWaypoints();
+                } else {
+                    setTimeout(setWaypoints, 100);
+                }
+            } else {
+                setTimeout(loadThumbs, 100);
+            }
+            /*
+            if (firstLoad == true){
+            firstLoad = false;
+            loadThumbs();
+            }
+            */
+        }
+
+    }
+</script>
+<style type="text/css">
+	#flashcontent {
+		background-image: url("../../assets.newsinc.com/players/images/NDNLogo_inline300.gif");
+		background-repeat: no-repeat;
+	}
+}
+</style>
+</head>
+<body style="margin:0px;">
+    <div id="ndn_adchoice" class="ndn_adchoice" style="visibility:hidden;"><a href="http://assets.newsinc.com/info/adchoices.html" target="_blank"><img src="../../assets.newsinc.com/CollisionAdMarker.png" border="0"></a></div>
+<div id="ndn_container" style="overflow:hidden;v-align:top;border-width:1px;border-color:#CCC;border-style:solid;">
+	<div class="video_info" id="video_info">
+		<div class="title_text" id="title_text"></div>
+        <div class="provider_text" id="provider_text"></div><div class="date_text" id="date_text"></div>
+        <div class="provider_logo" id="provider_logo"><img src="iframe.html%3Fwid=12299&amp;freewheel=90046&amp;sitesection=%2520dailycaller_hom_non_fro.html" id="prov_logo" class="prov_logo"/></div>
+    </div>    
+	<div id="flashcontent"><video id="ndn_video" class="ndn_video" controls="controls" width="300" height="169" src="" poster=""></video></div>
+    <div class="ndn_companion" id="ndn_companion" style="visibility:hidden;height:0px;margin-top:20px;"></div>
+	<div id="ndn_thumbContainer" class="ndn_thumbContainer"> 
+		<div id="ndn_thumbScroller" class="ndn_thumbScroller"></div>
+		<div id="ndn_thumbScroller2" class="ndn_thumbScroller2"></div>
+		<div id="ndn_thumbScroller3" class="ndn_thumbScroller"></div>
+		<div id="ndn_thumbScroller4" class="ndn_thumbScroller2"></div>
+	</div>
+	<div id="ndn_thumbControls" class="ndn_thumbControls"></div>
+    <div id="ndn_thumb_ad" class="ndn_thumb_ad" style="visibility:hidden;z-index:80;position:relative;"></div>
+	<div id="ndn_countdown" class="ndn_countdown">Advertisement countdown</div>
+    <div id="socialWindow" class="socialWindow" style="visibility:hidden"></div>
+    <div id="replayButton" class="replayButton" style="visibility:hidden"><a href="iframe.html%3Fwid=12299&amp;freewheel=90046&amp;sitesection=%2520dailycaller_hom_non_fro.html#" onclick="replayVideo()">REPLAY</a></div>
+	<div id="nextVideoButton" class="replayButton" style="visibility:hidden"><a href="iframe.html%3Fwid=12299&amp;freewheel=90046&amp;sitesection=%2520dailycaller_hom_non_fro.html#" onclick="playNextVideo()">NEXT</a></div>
+    <div id="adChoicesContainer" class="adChoicesContainer">
+    <div id="events" class="clearfix">
+    <h1>event registration</h1>
+    <div id="pct" class="clearfixTest">
+      <div id="progress">&mdash;</div>
+      <div id="bar">
+        <div id="bar_move"></div>
+      </div>
+    </div>
+    <div id="log" class="clearfixTest">
+      <div id="feedback"></div>
+    </div>
+	</div>
+     
+   <!-- <script type="text/javascript">CreateTimer("ndn_countdown", 15);</script>-->
+</div>
+
+  <div id="ads" class="clearfixTest" style="margin-left: 0px; visibility:hidden;">
+    <form method="post" onsubmit="load();" action="iframe.html%3Fwid=12299&amp;freewheel=90046&amp;sitesection=%2520dailycaller_hom_non_fro.html">
+      <h1>Configuration</h1>
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <th style="padding: 0px 10px 0px 0">Server</th>
+          <td><input type="text" name="adDomain" value="auditude.com" /></td>
+        </tr>
+        <tr>
+          <th style="padding: 10px 10px 10px 0">Zone</th>
+          <td><input type="text" name="zone" value="50974" /></td>
+        </tr>
+        <tr>
+          <th style="padding: 0px 10px 0px 0">Video</th>
+          <td><input type="text" name="video" value="asset1" /></td>
+        </tr>
+        <tr>
+          <th style="padding: 10px 10px 10px 0">Userdata</th>
+          <td><input type="text" name="userdata" /></td>
+        </tr>
+      </table>
+      <input type="submit" value="start" />
+    </form>
+  </div>
+   <div id="plugins"></div>
+        <a href="iframe.html%3Fwid=12299&amp;freewheel=90046&amp;sitesection=%2520dailycaller_hom_non_fro.html#" onmousedown="shareButton('adChoices')"><img id='AdChoices' border='0' width='77' height='15' src="../../assets.newsinc.com/players/inline300x512hybridQA/img/adchoices.png"/></a>
+    </div>
+  <div id="trace" width="300" height="1000" ></div>
+<iframe name="swfviewFRM" id="swfviewFRM" width="0" height="0" frameborder="0"></iframe> 
+
+<script type='text/javascript'><!--  This script is for the Auditude HTML5 plug-in -->
+			var i = 0;
+			var cnt = 0;
+			var feedback = document.getElementById('feedback');
+			var pct = document.getElementById('progress');
+			var bar_move = document.getElementById('bar_move');
+			var title = document.getElementById('title');
+			var playerCtr = document.getElementById('ndn_container');
+			var pluginsCtr = document.getElementById('plugins');
+			var hasContentStarted = false;
+			var firstCall = true;
+			/*
+			 * Load auditude html5 player
+			 */
+			function load()
+			{	
+				var domain = document.forms[0].adDomain.value;
+				//trace("document.forms[0].video.value " + document.forms[0].adDomain.value); 
+				//trace("ZoneID " + ZoneID); 
+				var zoneId = ZoneID.toString();//'50974';//'9797'; //'50807'; // document.forms[0].zone.value;
+				//var videoId = document.forms[0].video.value;
+				//trace("document.forms[0].video.value " + document.forms[0].video.value); 
+				var userdata = ''; //document.forms[0].userdata.value;
+				//traceMsg("AudVideoId " + AudVideoId); 
+				var videoId = String(playlistArr[activePlaylist].Contents[activeContent].ContentID);
+				traceMsg("videoId " + videoId);
+				var sec;
+				var sub;
+				var firstCall = true;
+				
+				var ssArr = sitesection.split("_");
+				if (ssArr[1] != null){
+					sec = ssArr[1];
+				}else{
+					sec = "oth";
+				}
+				if (ssArr[2] != null){
+						sub = ssArr[2];
+				}else{
+						sub = "";
+				}
+				var external_url = document.referrer;
+				if (external_url == ""){
+					external_url =window.location.href.split('?')[0];
+					//external_url = window.location.href;
+				}
+
+				userdata = 'dpid=' +freewheel+ ';sitesection='+sitesection + ';sec='+ sec + ';sub=' + sub + ';plt=4;wgt=0;adtype=2;width=300;height=169;external_url='+external_url+';videotype=html5';
+				traceMsg("userdata " + userdata); 
+				// options for ad playback (width and height are required)
+				var opts = {
+					controls : true,	// video controls play/pause/stop/etc on ad playback
+					style : { //css styles for video ad container
+						"backgroundColor" : '#000',
+						width : Number(300), // should be a number
+						height : Number(169) // should be a number
+					},
+					handlers : { //custom handlers for video ad player. 
+						play : function() {
+							traceMsg('ad playing');
+							
+							//log('ad playing');
+						},
+						error : function() {
+							traceMsg('ad error');
+							//log('ad error');
+						},						
+						pause : function() {
+							traceMsg('ad paused');
+							//log('ad paused');
+						},
+						timeupdate : function(evt, player, video) {
+							//traceMsg('ad timeupdate');
+							if (firstCall == true){
+								firstCall = false;
+							}
+							updateProgress(Math.round(video.currentTime.toFixed(1) / video.duration * 100) + '%');
+							//traceMsg(Math.round(video.currentTime.toFixed(1) / video.duration * 100) + '%');
+							var timeLeft = String(Math.floor(Math.round(video.duration) - video.currentTime.toFixed(1)));
+							//traceMsg(timeLeft);
+							var theMessage = '<BR>Your selected content will begin in ' + timeLeft + " seconds.";
+							if (timeLeft != "NaN"){
+								updateCountdown(theMessage);
+							}
+							//updateProgress(Math.round(video.currentTime.toFixed(1) / video.duration * 100) + '%');
+						}
+					}
+				};
+				
+				/*
+				 * Instantiate ad player. 
+				 * @param video - The video object that should be used to display ads
+				 * @param contaner - container element -- in this example <div id=plugins>. To overlay over a video for the IPad, the 
+				 * 					 placeholder must be defined before the document has loaded. See comments above in HTML.
+				 * @param domain - auditude domain
+				 * @param zoneId - auditude zoneId
+				 * @param opts - options. see above for the available properties.
+				 
+				trace("zoneId AUD PLUGIN " + zoneId);*/
+				var video = $('#ndn_video').get(0)
+				var audPlugin = aud.html5.AdPlayer(video, pluginsCtr, domain, zoneId, opts)
+				rdm = String(Math.floor(Math.random()*1000000000));
+				GAC = GetAnalyticsUserToken();
+				if (GAC == null){
+					GAC = SetAnalyticsCookie();
+				}
+				analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ptype=8&plid="+cid+"&device="+did+"&eventid=2&eventvalue=LoadRequest&rdm="+rdm);
+				loadPage('swfviewFRM', null,analyticsString);
+
+				audPlugin
+					.subscribe(aud.events.init_complete, function(event, plugin) {
+						callOnce = false;
+						traceMsg('init completed');
+						rdm = String(Math.floor(Math.random()*1000000000));
+						GAC = GetAnalyticsUserToken();
+						if (GAC == null){
+							GAC = SetAnalyticsCookie();
+						}
+						analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ptype=8&plid="+cid+"&device="+did+"&eventid=2&eventvalue=LoadComplete&rdm="+rdm);
+						loadPage('swfviewFRM', null,analyticsString);
+						plugin.publish(aud.notifications.break_begin);
+					})
+					.subscribe(aud.events.init_failed, function(event, plugin) {
+						traceMsg('init failed');
+						//firstPlayClicked = true;
+						traceMsg($('#ndn_video').get(0).src);
+						//plugin.publish(aud.notifications.break_end);
+						//video.src = getAsset(activePlaylist,activeContent,"src");
+						$('#ndn_video').get(0).play();
+					})
+					.subscribe(aud.events.break_begin, function(event, plugin) {
+						traceMsg('break begin');
+						adRunning = true;
+						//document.getElementById('ndn_video').play();
+						//video.play();
+						//traceMsg('play video: ' + aud.util.player.src);
+						//plugin.publish(aud.notifications.resume_playback);
+					})
+					
+					.subscribe(aud.events.break_end, function(event, plugin) {
+						adRunning = false;
+						hideCountdown();
+						$('#ndn_video').get(0).src = getAsset(activePlaylist,activeContent,"src");
+						$('#ndn_video').get(0).load();
+						$('#ndn_video').get(0).play();
+							/*if (!hasContentStarted)
+							{
+								hasContentStarted = true;
+								traceMsg('+++++ call d setProgramName ' + hasContentStarted);
+								
+								video.src = getAsset(activePlaylist,activeContent,"src");
+							
+								firstAdRun = false;
+								video.addEventListener('timeupdate', function() {
+									var progress = Math.round(video.currentTime.toFixed(1) / video.duration * 100);
+									traceMsg(progress);
+									if (progress == 100 && adRunning == false){
+										video.pause();
+										activeContent = Number(activeContent) + 1;
+										traceMsg("activeContent = " + activeContent);
+										if (activeContent >= contentLength){
+											activeContent = 0;
+										}
+										videoId = playlistArr[activePlaylist].Contents[activeContent].ContentID;
+										setNextVideo(videoId);
+										continuousPlayCounter+=1;
+										if (continuousPlayCounter < continuousPlay){
+											traceMsg("continuousPlayCounter = " + continuousPlayCounter);
+											firstPlayClicked = false;
+											
+											load();
+										}
+										//video.src = getAsset(activePlaylist,activeContent,"src");
+										//video.play();
+									}
+								},false);	
+								
+							}*/
+							//video.play();
+							//setProgramName(vidId);
+						
+					})	
+					.subscribe(aud.events.linear_ad_begin, function(event, plugin, ctx) {
+						traceMsg('linear ad begin');
+						showAdChoices(true);
+						myC5 = "09";
+						callComscore();
+						
+						rdm = String(Math.floor(Math.random()*1000000000));
+						GAC = GetAnalyticsUserToken();
+						if (GAC == null){
+							GAC = SetAnalyticsCookie();
+						}
+						analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ptype=8&plid="+cid+"&device="+did+"&eventid=2&eventvalue=start&rdm="+rdm);
+						loadPage('swfviewFRM', null,analyticsString);
+						
+						//adChoicesContainer.style.visibility = "visible";
+						//adChoicesContainer.style.zIndex = "100";
+						//video = document.getElementById('ndn_video');
+						//document.getElementById('ndn_video').play();
+						traceMsg('ctx.banners[0].resourceType = ' + ctx.banners[0].resourceType);
+						traceMsg('ctx.banners[0].data = ' + ctx.banners[0].data);
+						showBanners(ctx.banners); 
+						
+					})
+					.subscribe(aud.events.linear_ad_end, function(event, plugin, ctx) {
+						traceMsg('linear ad end');
+						firstCall = true;
+						showAdChoices(false);
+						//adChoicesContainer.style.visibility = "hidden";
+						rdm = String(Math.floor(Math.random()*1000000000));
+						GAC = GetAnalyticsUserToken();
+						if (GAC == null){
+							GAC = SetAnalyticsCookie();
+						}
+						analyticsString = String("http://sana.newsinc.com/sana.html?wid="+wid+"&uut="+GAC+"&furl="+furl+"&purl=&ssid="+sitesection+"&anid="+freewheel+"&ptype=8&plid="+cid+"&device="+did+"&eventid=2&eventvalue=complete&rdm="+rdm);
+						loadPage('swfviewFRM', null,analyticsString);
+						
+						//video.src = getAsset(activePlaylist,activeContent,"src");
+						//plugin.publish(aud.notifications.break_end);
+					})	
+					.subscribe(aud.events.non_linear_ad_begin, function(event, plugin, ctx) {
+						traceMsg('non linear ad begin');
+						showBanners(ctx.banners);
+					})
+					.subscribe(aud.events.non_linear_ad_end, function(event, plugin, ctx) {
+						traceMsg('non linear ad end');
+					})	
+					.subscribe(aud.events.pause_playback, function(event, plugin, ctx) {
+					 traceMsg('pause_playback');
+					 $('#ndn_video').get(0).pause();
+					})
+					.subscribe(aud.events.resume_playback, function(event, plugin, ctx) {
+						 traceMsg('resume_playback');
+						 $('#ndn_video').get(0).play();
+					})
+					/*
+						init call takes two parameters
+						a) videoId - the unique video id
+						b) params - an object containing key-values and other configuration parameters
+									key-values should be passed through the 'userData' key. The value should be 
+									of the following format. foo=bar;genre=comedy;category=home
+					userData : userdata  'videotype=html5'
+					
+					*/
+					.init(videoId, { 
+							userData : userdata // key-value targeting
+					});
+				video.addEventListener('timeupdate', function() {
+					var progress = Math.round(video.currentTime.toFixed(1) / video.duration * 100);
+					traceMsg(progress);
+					if (progress == 100 && adRunning == false && callOnce == false){
+						callOnce = true;
+						traceMsg('ad ended');
+						$('#ndn_video').get(0).pause();
+						thisPos++;
+						if (thisPos == 5){
+							thisPos = 1;
+							scrollDivDown();
+						}
+						activeContent = Number(activeContent) + 1;
+						traceMsg("activeContent = " + activeContent);
+						if (activeContent >= contentLength){
+							activeContent = 0;
+						}
+						videoId = playlistArr[activePlaylist].Contents[activeContent].ContentID;
+						setNextVideo(videoId);
+						$('#ndn_video').get(0).src = getAsset(activePlaylist,activeContent,"src");
+						video.load();
+						continuousPlayCounter+=1;
+						if (continuousPlayCounter < continuousPlay){
+							traceMsg("continuousPlayCounter = " + continuousPlayCounter);
+							firstPlayClicked = false;
+							progressSent = [];
+							video.play()
+							//load();
+						}else{
+							video.webkitExitFullScreen();
+							firstPlayClicked = false;
+							progressSent = [];
+						}
+						//video.src = getAsset(activePlaylist,activeContent,"src");
+						//video.play();
+					}
+				},false);
+					
+				
+			}
+			function updateProgress(progress)
+			{
+				//traceMsg("progress :" + progress);
+				pct.innerHTML = progress;
+				var bar = progress.replace('%', '');
+				if(bar>24 && bar<26){trace("25 25 25 25 25");}
+				bar_move.style.width = (Math.round((bar/100) * 88) + 12) + 'px';
+			}
+
+			
+
+			function showBanners(banners)
+			{
+				//trace("show banner called");
+				if (!banners || !banners.length) return;
+				for (var i = 0; i < banners.length; i++)
+				{
+					var banner = banners[i].mediaFiles[0];
+					var slot = document.getElementById('bannerAd' + (i + 1)),
+					html = '<iframe frameborder="0" scrolling="no" src="http://embed.newsinc.com/Inline/'&#32;+&#32;banner.src&#32;+&#32;'" width="' + banner.width + '" height="' + banner.height + '" />';
+					if(slot) slot.innerHTML = html;
+				}
+			}
+			//traceMsg("call setupAutoPlay");
+			//setupAutoPlay();
+			//loadPlayer();
+</script>
+
+
+<!-- Start Quantcast tag -->
+<script type="text/javascript">
+    _qoptions = {
+        qacct: "p-573scDfDoUH6o"
+    };
+</script>
+<script type="text/javascript" src="../../edge.quantserve.com/quant.js"></script>
+<noscript>
+    <img src="../../pixel.quantserve.com/pixel/p-573scDfDoUH6o.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast" />
+</noscript>
+<!-- End Quantcast tag -->
+</body>
+</html>

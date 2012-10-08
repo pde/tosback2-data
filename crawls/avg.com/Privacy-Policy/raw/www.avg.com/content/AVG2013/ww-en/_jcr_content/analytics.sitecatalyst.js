@@ -307,13 +307,14 @@
      changes to how your visitor data is collected.  Changes should only be
      made when instructed to do so by your account manager.*/
         s.visitorNamespace = "avgtechnologies"
-        s.trackingServer = "avgtechnologies.112.2o7.net"
-        s.trackingServerSecure = "avgtechnologies.112.2o7.net"
+        s.trackingServer = "omni.avg.com"
+        s.trackingServerSecure = "somni.avg.com"
         CQ_Analytics.adhocLinkTracking = "true"
         
         
         
-        s.usePlugins=true; //do not modify
+        /*JANA*/
+s.usePlugins=true; //do not modify
 
 /**Note: add your custom JS plugins inside the s_doPlugins function below**/
 

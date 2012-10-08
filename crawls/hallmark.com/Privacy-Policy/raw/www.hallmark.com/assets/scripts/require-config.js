@@ -1,1 +1,5 @@
-var $BV=null;require.config({baseUrl:"/"})
+var $BV = null;
+
+require.config({
+    baseUrl: "/"
+});

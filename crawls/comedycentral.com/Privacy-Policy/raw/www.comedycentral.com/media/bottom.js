@@ -3069,11 +3069,9 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 			} else {
 				feedUrl = config.getTweetRiverUrl() + config.getTweetRiverFeed() + '.' + config.getTweetRiverType();
 			}
-			function tweetRiverCallback(d) { return d; }
 			jQuery.ajax ({
 				url: feedUrl,
 				dataType: 'jsonp',
-				jsonpCallback: 'tweetRiverCallback',
 				cache: 'true',
 				scriptCharset:	'utf-8',
 				beforeSend: jQuery.proxy(function () {
@@ -6834,6 +6832,10 @@ $(document).ready(function(){
 			
 			attachHandlers: function(){
 				var self = this;
+				$(this.tweet + ' .tweet_text a').click(function(event){
+					event.preventDefault();
+					$(this).parent().click();
+				});
 				$(this.container).masonry({
 					itemSelector : '.box',
 					columnWidth: 252,
@@ -7306,7 +7308,9 @@ $(function() {
 					self._loadContent($(this), event, '.fb-comments');
 				});
 				this.module.find('.videoWrapper').live('click', function() {
-					self._replacePlayer($(this));
+					if (!$(this).find('#video_player_box').length) {
+						self._replacePlayer($(this));
+					}
 				});
 				this.module.find('.share_button_container .share_button').unbind('click')
 					.live('click', function(event) {

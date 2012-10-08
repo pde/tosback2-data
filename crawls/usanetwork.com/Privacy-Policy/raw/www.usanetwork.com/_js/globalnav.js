@@ -695,28 +695,28 @@ var usa_globalMenu = {
 					"items" : [
 						
 						{
-							"title" : "NEXT FRIDAY",
-							"subtitle" : "MONDAY SEPT 24 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/nextfriday/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_nextfriday.png"
+							"title" : "DIE ANOTHER DAY",
+							"subtitle" : "SUNDAY OCT 14 2/1C",
+							"url" : usa_baseUrlDomain + "/movies/dieanotherday/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dieanotherday.png"
 						},
 						{
 							"title" : "RESIDENT EVIL: AFTERLIFE",
-							"subtitle" : "SATURDAY OCT 6 9/8C",
+							"subtitle" : "SUNDAY OCT 14 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/residentevil/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
 						},
 						{
-							"title" : "DAWN OF THE DEAD",
-							"subtitle" : "SATURDAY OCTOBER 6 2/1C",
+							"title" : "MR. DEEDS",
+							"subtitle" : "MONDAY OCT 15 11:05/10:05C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dawnofthedead.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_mrdeeds.png"
 						},
 						{
-							"title" : "G.I. JOE: THE RISE OF COBRA",
-							"subtitle" : "SATURDAY OCT 6 6:30/5:30C",
-							"url" : usa_baseUrlDomain + "/movies/gijoe/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+							"title" : "EAT PRAY LOVE",
+							"subtitle" : "SATURDAY OCT 20 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/eatpraylove/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_eatpraylove.png"
 						}
 
 

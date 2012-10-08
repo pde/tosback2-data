@@ -12,6 +12,11 @@ var NBC = jqN = jQuery.noConflict(),
     showId = SITE.id,
     clickedNav;
 
+//needs to happen asap 
+NBC('.featured-video .video-item a').bind('click', function(e){
+	e.preventDefault();
+});
+
 loginStateChangeInterval = self.setInterval("detectLoginStateChange()", 3000);
 
 // BEGIN NBCU FRAMEWORK CONFIGURATION
@@ -418,6 +423,9 @@ function loadGlobalFooterShop() {
         url: url,
         contentType : "application/json",
         dataType : "json",
+        error: function (xhr, ajaxOptions, thrownError) {
+            shopFooter.hide(0);
+        },
         success : function (data) {
             if (data.products.length > 0) {
                 var output = '';
@@ -435,6 +443,8 @@ function loadGlobalFooterShop() {
                 }
 
                 shopFooter.append(output);
+            } else {
+                shopFooter.hide(0);
             }
         }
     });
@@ -552,14 +562,11 @@ Array.max = function(array) {
 function initTiles() {
     if (NBC('.thumbnails.tiled').length > 0) {
         arrangeTiles();
-        NBC(window).resize(arrangeTiles);
 
         NBC('.btn.load-more').click(function (event) {
             event.stopPropagation();
             return false;
         });
-
-        setTimeout(arrangeTiles, 3000);
     }
 }
 var newFeatured,
@@ -692,17 +699,18 @@ function initShowsMainVideo() {
                 		$this.find('a[data-content-id]').css({display:'block'});
                 	}
                 }});
-            }, 500);
+            }, 350);
         }
     });
 }
 
 function initAutoComplete() {
     ezAutocompleteSearchUrl = "/search?";
-    myAC = queryExpansion_init(NBC("#search-global"), NBC("#search-auto"), "/autocomplete/?callbackName=myAC&q=");
+    myAC = queryExpansion_init("#search-global", "#search-auto", "/autocomplete/?callbackName=myAC&q=");
 }
 /* -------------------------------------------------------------------------*/
 /* INIT */
+initShowsMainVideo();
 initMyNBC();
 initTransitional();
 initGlobalDropdown();
@@ -710,7 +718,7 @@ initSiteDropdown();
 initSlider();
 initTiles();
 initFeatured();
-initShowsMainVideo();
+//initShowsMainVideo();
 initFooter();
 initCompatibility();
 initAutoComplete();

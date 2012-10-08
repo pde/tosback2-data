@@ -387,7 +387,7 @@ else {
    };
 
    // Interaction Tracking for MIA pilot test -- 2012-01-31 JG
-   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT|NAO|SLO/) && mistats.InteractionTracker)
+   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT|NAO|SLO|ADN/) && mistats.InteractionTracker)
       mistats.interactionTracker = new mistats.InteractionTracker();
 
    // Track surveywall on CharlotteObserver

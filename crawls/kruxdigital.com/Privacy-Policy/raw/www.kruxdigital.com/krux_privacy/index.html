@@ -31,7 +31,7 @@
 		<meta name="DC.publisher" content="" />
 		<meta name="DC.date.created" scheme="DCTERMS.W3CDTF" content="2011-02-16T02:28:52-08:00" />
 		<meta name="DC.date.modified" scheme="DCTERMS.W3CDTF" content="2012-03-30T01:59:53-08:00" />
-		<meta name="DC.date.valid" scheme="DCTERMS.W3CDTF" content="2012-10-10T07:21:15-08:00" />
+		<meta name="DC.date.valid" scheme="DCTERMS.W3CDTF" content="2012-10-14T07:21:29-08:00" />
 		<meta name="DC.type" scheme="DCTERMS.DCMIType" content="Text" />
 		<meta name="DC.rights" scheme="DCTERMS.URI" content="">
 		<meta name="DC.format" content="text/html" />
@@ -298,7 +298,7 @@
             <img src="../../www.krux.com/global/images/connect-mail.png" id="socialEmail" />
             <div class="tooltip">
               <p>drop us a line<br />
-                <span eeEncEmail_rqkCXsVENx='1'>.(JavaScript must be enabled to view this email address)</span><script type="text/javascript">/*<![CDATA[*/var out = '',el = document.getElementsByTagName('span'),l = ['>','a','/','<',' 109',' 111',' 99',' 46',' 108',' 97',' 116',' 105',' 103',' 105',' 100',' 120',' 117',' 114',' 107',' 64',' 111',' 102',' 110',' 105','>','\"',' 109',' 111',' 99',' 46',' 108',' 97',' 116',' 105',' 103',' 105',' 100',' 120',' 117',' 114',' 107',' 64',' 111',' 102',' 110',' 105',':','o','t','l','i','a','m','\"','=','f','e','r','h','a ','<'],i = l.length,j = el.length;while (--i >= 0){out += unescape(l[i].replace(/^\s\s*/, '&#'));}while (--j >= 0){/**/if (el[j].getAttribute('eeEncEmail_rqkCXsVENx')){el[j].innerHTML = out;}}/*]]>*/</script></p>
+                <span eeEncEmail_qVTHuURgcv='1'>.(JavaScript must be enabled to view this email address)</span><script type="text/javascript">/*<![CDATA[*/var out = '',el = document.getElementsByTagName('span'),l = ['>','a','/','<',' 109',' 111',' 99',' 46',' 108',' 97',' 116',' 105',' 103',' 105',' 100',' 120',' 117',' 114',' 107',' 64',' 111',' 102',' 110',' 105','>','\"',' 109',' 111',' 99',' 46',' 108',' 97',' 116',' 105',' 103',' 105',' 100',' 120',' 117',' 114',' 107',' 64',' 111',' 102',' 110',' 105',':','o','t','l','i','a','m','\"','=','f','e','r','h','a ','<'],i = l.length,j = el.length;while (--i >= 0){out += unescape(l[i].replace(/^\s\s*/, '&#'));}while (--j >= 0){/**/if (el[j].getAttribute('eeEncEmail_qVTHuURgcv')){el[j].innerHTML = out;}}/*]]>*/</script></p>
               </p>
             </div>
           </li>
@@ -433,7 +433,7 @@
     <input id="description" class="text" name="description" size="20" type="text" autocomplete="off" />
     <span class="error" style="display:none"></span>
   </p>
-	<p>
+  <p>
     <input type="image" name="submit" src="../../www.krux.com/global/images/btn-demo-signup.png">
   </p>
   <p class="w-e-b">
@@ -442,11 +442,20 @@
     <span class="error" style="display:none"></span>
   </p>
 
-  
+
 </form>
 
 <script>
   $(function() {
+    // http://www.benjaminkim.com/?p=24
+    function demo_conversion() {
+      var iframe = document.createElement('iframe');
+      iframe.style.width = '0px';
+      iframe.style.height = '0px';
+      document.body.appendChild(iframe);
+      iframe.src = '/form/demo_conversion';
+    };
+
     var $form = $('#product_demo'),
         $submit = $form.find('input[type=submit]'),
         $errors = $form.find('.error'),
@@ -470,8 +479,9 @@
           } else {
             window._gaq = window._gaq || [];
             _gaq.push(['_trackEvent', 'Form', 'Submit', 'General_DMP']);
-            conversionImage = new Image(1, 1);
-            conversionImage.src = 'http://www.googleadservices.com/pagead/conversion/1008087368/?value=0&amp;label=IiDmCPjTugMQyOLY4AM&amp;guid=ON&amp;script=0';
+            // conversionImage = new Image(1, 1);
+            // conversionImage.src = 'http://www.googleadservices.com/pagead/conversion/1008087368/?value=0&amp;label=IiDmCPjTugMQyOLY4AM&amp;guid=ON&amp;script=0';
+            demo_conversion();
             $form.remove();
             $tab.find('p.intro').html(data.message.split('\n').join('<br />'));
             $tab.addClass('demo-tab-open');
@@ -483,6 +493,7 @@
     });
   });
 </script>
+
 			<br clear="all" />
 		</div>
 	</div>
