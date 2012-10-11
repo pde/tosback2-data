@@ -2501,7 +2501,8 @@ SlateNextBox.prototype.init = function(d){
     }
             
     this.ctrl = parseInt($.cookie('sl-nbox-ctrl'));
-    this.treatment = (ctrl <= this.BREAK)? this.TREATMENT_B : this.TREATMENT_A;        
+    //this.treatment = (ctrl <= this.BREAK)? this.TREATMENT_B : this.TREATMENT_A;        
+    this.treatment = this.TREATMENT_B;
     this.shell = new SlateNextBoxShell.factory(this.treatment);
     this.content = new SlateNextBoxContent.factory(MYS.sc.state.name);
 

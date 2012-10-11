@@ -11,6 +11,7 @@ var IE6 = (version.indexOf("MSIE 6.0") != -1) ? true : false;
 var IE = (version.indexOf("MSIE") != -1) ? true : false;
 var documentElement = (!document.documentElement || document.compatMode == "BackCompat") ? document.body : document.documentElement;
 //var popUpDivName = new Array();
+var modalLinkID = '';
 
 
 function showPopup(divId,  blockBG, closeButton) {
@@ -34,6 +35,8 @@ function showPopup(divId,  blockBG, closeButton) {
 			v_Width = messDivObj.style.width.substring(0, messDivObj.style.width.length - 2);
 			showPopupByStr(messDivObj.innerHTML,  messDivObj.title, blockBG, closeButton, vButtonStr, v_Width);
 		}
+		modalElementID("urs-modal-link",divId);
+		focusShopLinks(divId);
 	} catch(e) {
 		// do nothing
 	}
@@ -84,6 +87,10 @@ function showFormPopup(title, pwidth, closeButton, showSelect) {
 			hideSelectOption(true, showSelect);
 		}
 		commonFunc.divPopUp('formPopupDiv',true);
+		var modal_objform = commonFunc.getElementObj("modal-contentform");
+		if(modal_objform){   
+			modal_objform.focus();
+		}
 	} catch(e) {
 		// do nothing
 	}
@@ -178,6 +185,7 @@ function showPopupByUrl(url,  title, blockBG, width, height, pBorder) {
 	} catch(e) {
 		// do nothing
 	}
+modalElementID("urs-modal-link",url);
 } // end of showPopupByUrl
 
 /*
@@ -240,6 +248,10 @@ function closePopup(param) {
 				hideSelectOption(false);
 			}
 		}
+	if((modalLinkID !='')){
+		commonFunc.getElementObj(modalLinkID).focus();
+		modalLinkID = '';
+	}
 	} catch(e) {
 		// do nothing
 	}
@@ -302,6 +314,7 @@ function showPopupByFullUrl(url,  title, pWidth, pHeight, scroll) {
 		var mainPopupDiv = commonFunc.getElementObj("mainPopupDiv");
 		if (mainPopupDiv.style.visibility == 'visible') mainPopupDiv.style.zIndex = '';
 		if (IE6) hideSelectOption(true);
+		setModalFocus();
 	} catch(e) {
 		// do nothing
 	}
@@ -337,6 +350,7 @@ function showChannelLineupPopup(url,  title, pWidth, pHeight, scroll) {
 		var mainPopupDiv = commonFunc.getElementObj("mainPopupDiv");
 		if (mainPopupDiv.style.visibility == 'visible') mainPopupDiv.style.zIndex = '';
 		if (IE6) hideSelectOption(true);
+		setModalFocus();
 	} catch(e) {
 		// do nothing
 	}
@@ -611,9 +625,12 @@ function showModal(serv, step, mode) {
 		Modal.Details(serv, div);
 		if (mode == 'd' && !Modal[serv].saved) Modal[serv].saved = 'reset';
 	}
+	//Modified as part of PROD12-1390
+	var v_webBuyFlowType='PROVIDE';
+	if(v_ipdslam=='true'){v_webBuyFlowType='PROVIDE_IPDSLAM';}
 	//Modified as part of ECOM1207-167
     if (webTrendTag && serv != "voip") {
-        webTrendTag('Uverse_Spoke_'+serv+'_Step'+step+'_ConfigPg', 0, 'System', 'dcsuri', '/u-verse/virtual/iptvconfigstep'+step+'.jsp', 'wtBuyFlowType', 'PROVIDE', 'flowtype', 'UVERSE');
+        webTrendTag('Uverse_Spoke_'+serv+'_Step'+step+'_ConfigPg', 0, 'System', 'dcsuri', '/u-verse/virtual/iptvconfigstep'+step+'.jsp', 'wtBuyFlowType', v_webBuyFlowType, 'flowtype', 'UVERSE');
     }
 }
 
@@ -910,6 +927,78 @@ function printChannels(){
 	printWindowUrl = innerIframeHandle.src+'&printClu=yes';
 	window.open(printWindowUrl, '');
 		
+}
+//method for setting focus for modals in u verse
+function  setModalFocus(){
+		try {
+			var modal_objsub = document.getElementById("modal-contentsub");
+			if(modal_objsub){   
+				modal_objsub.focus();
+			}
+		}catch(e){}
+		try{
+			var modal_objidm = document.getElementById("modal-contentidm");
+			if(modal_objidm){   
+				modal_objidm.focus();
+			}
+		}catch(e){}
+		try{
+			var modal_objclu = document.getElementById("modal-contentclu");
+			if(modal_objclu){   
+				modal_objclu.focus();
+			}
+		}catch(e){}
+		try {
+			var modal_objindex = document.getElementById("modal-contentindex");
+			if(modal_objindex){   
+				modal_objindex.focus();
+			}
+		}catch(e){}
+}
+var findElementsByClassName = function(className){
+	try{
+	var elArray = [];         
+	var elObj = document.getElementsByTagName("a");        
+	var regex = new RegExp("(^|\\s)" + className+ "(\\s|$)"); 
+	for ( var i = 0; i < elObj.length; i++ ) { 
+	if ( regex.test(elObj[i].className) ) {                
+	elArray.push(elObj[i]);         
+	}        
+	}          
+	return elArray; 
+	}catch(e){}    
+}
+var modalElementID = function(className,checkCnd){
+	try{
+		var modalElmentLinks = findElementsByClassName(className);
+		for(i=0;i<modalElmentLinks.length;i++){
+			if(modalElmentLinks[i].href==checkCnd){
+				modalLinkID = modalElmentLinks[i].id;
+			}
+			if(modalElmentLinks[i].id+'Pop'==checkCnd && checkCnd.match('Pop')){
+				modalLinkID = modalElmentLinks[i].id;
+			}
+			if(checkCnd.match(modalElmentLinks[i].id)){
+				modalLinkID = modalElmentLinks[i].id;
+			}
+			
+		}
+		focusShopLinks(checkCnd)
+	}catch(e){}
+}
+
+var focusShopLinks = function(linkVar){
+	try{
+		if(linkVar == 'LocalChannels')
+			modalLinkID = 'localChannelsLink';
+		if(linkVar.match('Total Home DVR'))	
+			modalLinkID = 'TotalHomeDVRLink';
+		if(linkVar.match('uverse-high-def-tv'))	
+			modalLinkID = 'uverseHighDefLink';
+		if(linkVar.match('programming-packages'))
+			modalLinkID = 'programmingPackagesLink';
+		
+	}catch(e){}
 }
 //method for printing the package channels in a new window
 var printPackageChannels = function(){

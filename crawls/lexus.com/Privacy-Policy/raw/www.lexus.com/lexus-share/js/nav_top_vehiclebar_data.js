@@ -8,7 +8,7 @@
   
     
     newNavLexusS.categoryModelLS= 'LS';
-    newNavLexusS.categoryModelPriceLS= 'Starting at $67,630';
+    newNavLexusS.categoryModelPriceLS= 'Starting at $71,990';
     newNavLexusS.categoryModelEndPriceLS= '';
     newNavLexusS.categoryModelCodeLS= '91';
     
@@ -238,7 +238,7 @@
   
     
     newNavLexusH.categoryModelLSh= 'LSh';
-    newNavLexusH.categoryModelPriceLSh= 'Starting at $112,750';
+    newNavLexusH.categoryModelPriceLSh= 'Starting at $119,910';
     newNavLexusH.categoryModelEndPriceLSh= '';
     newNavLexusH.categoryModelCodeLSh= '9140';
     

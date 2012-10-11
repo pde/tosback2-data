@@ -1,0 +1,67 @@
+// use this variable to see if command runs at all
+FWFS101012 = false;
+
+le.uxd.ui.abtest.manager.execute('FWFS101012', {
+	allocation: [50,50,0],
+	eVar: 'eVar41',
+	eVarFormat: function(testName, group){
+		return testName + "-_-" + group;
+	},
+	kioskGroup: 'C',
+	duration: 45,
+	command: function(group){
+		
+		// if we made it here, the ab-test error handling should take over
+		FWFS101012 = true;
+		
+		$(document).ready(function(){
+			
+			var 
+				isHomepage = (window.location.pathname == "/" || window.location.pathname == "/index.html") ? true : false,
+				theBanner,
+				theHomePage;
+
+			
+			if (group == 'A'){
+				
+				if (isHomepage) {
+					theHomePage = '<div id="FWFS101012-homepage-a"><img src="/ab-tests/FWFS101012/FWFS101012-homepage-a.gif" width="1000" height="551" usemap="#imgmap201210312329" /></div>'+
+								   '<map id="imgmap201210312329" name="imgmap201210312329"><area shape="rect" alt="Shoes" title="" coords="12,9,986,474" href="/ix/shoes/index.html?seq=1&visible=1&cm_re=hp-_-baner" target="_self" /><area shape="rect" alt="" title="" coords="262,478,730,512" href="javascript:showPopup(\'/hpmedia/pop_promo_details_shoes.html\' ,600 ,360);" target="" /><area shape="rect" alt="Women\'s Shoes" title="" coords="388,510,446,542" href="/ix/shoes/Shoes/Women/index.html?catNumbers=916~917&visible=1~2~1&cm_re=D-7-1" target="_self" /><area shape="rect" alt="Men\'s Shoes" title="" coords="451,509,489,544" href="/ix/shoes/Shoes/Men/index.html?seq=1~2~3&catNumbers=916~918&visible=1~2~1&cm_re=D-7-2" target="_self" /><area shape="rect" alt="Girl\'s Shoes" title="" coords="494,510,538,543" href="/ix/shoes/Shoes/Girls/index.html?seq=1~2~3&catNumbers=916~919&visible=1~2~1&cm_re=D-7-3" target="_self" /><area shape="rect" alt="Boy\'s Shoes" title="" coords="544,510,594,544" href="/ix/shoes/Shoes/Boys/index.html?seq=1~2~3&catNumbers=916~920&visible=1~2~1&cm_re=D-7-4" target="_self" /></map>';
+					$('#bd').find('.hero-image').html(theHomePage).css('visibility','visible');
+				}else{
+					theBanner = '<div id="FWFS101012-banner-a" class="l-line" style="text-align: center;width: 1000px;"><img src="/ab-tests/FWFS101012/FWFS101012-banner-a.gif" border="0" usemap="#imgmap201210415501" /></div>'+
+								'<map id="imgmap201210415501" name="imgmap201210415501"><area shape="rect" alt="Women\'s Shoes" title="" coords="852,11,902,27" href="/ix/shoes/Shoes/Women/index.html?catNumbers=916~917&amp;visible=1~2~1&amp;cm_re=D-7-1&amp;pageSize=72" target="_self" "><area shape="rect" alt="Girls Shoes" title="" coords="850,30,902,43" href="/ix/shoes/Shoes/Girls/index.html?seq=1~2~3&amp;catNumbers=916~919&amp;visible=1~2~1&amp;cm_re=D-7-3" target="_self"><area shape="rect" alt="Men\'s Shoes" title="" coords="910,12,954,25" href="/ix/shoes/Shoes/Men/index.html?seq=1~2~3&amp;catNumbers=916~918&amp;visible=1~2~1&amp;cm_re=D-7-2" target="_self"><area shape="rect" alt="Boys Shoes" title="" coords="911,27,954,43" href="/ix/shoes/Shoes/Boys/index.html?seq=1~2~3&amp;catNumbers=916~920&amp;visible=1~2~1&amp;cm_re=D-7-4" target="_self"><area shape="rect" alt="Details" title="" coords="774,52,840,65" href="javascript:showPopup(\'/hpmedia/pop_promo_details_shoes.html\' ,600 ,360);" target=""></map>';
+					$('#tab-navigation').after(theBanner);
+				}
+				
+				return;
+			}
+			
+			if (group == 'B' || group == 'C'){
+				theBanner = '<div id="FWFS101012c" class="l-line" style="text-align: center;width: 1000px;"><a href="javascript:showPopup(\'/hpmedia/pop_promo_details.html\' ,600 ,360);"><img src="/ab-tests/FWFS101012/FWFS101012-banner-bc.gif" border="0" /></a></div>';				
+				$('#tab-navigation').after(theBanner);
+				
+				if (isHomepage) {
+					$('#bd').find('.hero-image').css('visibility','visible');
+				}
+
+				return;
+			}
+		});
+		
+	},
+	error: function(){
+		// Default - do nothing
+		return;
+	}
+});
+
+// if error anywhere on the page show dropdowns
+$(window).error(function(){
+	setTimeout(function(){
+		if (!FWFS101012){
+			// Default - do nothing
+			return;
+		}
+	},5000);
+});

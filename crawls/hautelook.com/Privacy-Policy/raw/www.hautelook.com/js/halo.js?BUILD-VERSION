@@ -856,40 +856,6 @@ var Halo = new function _halo() {
         return;
     }
     
-   
-
-    
-    // MISC DEBUGGING FUCTIONS
-    
-    this.dump = function(arr, level) {
-        var dumped_text = "<pre>";
-        if (!level) level = 0;
-    
-        //The padding given at the beginning of the line.
-        var level_padding = "";
-        for (var j = 0; j < level + 1; j++) level_padding += "    ";
-    
-        try {
-            if (typeof (arr) == 'object') { //Array/Hashes/Objects 
-                for (var item in arr) {
-                    var value = arr[item];
-    
-                    if (typeof (value) == 'object') { //If it is an array,
-                        dumped_text += level_padding + "'" + item + "' ...\n";
-                        dumped_text += Halo.dump(value, level + 1);
-                    } else {
-                        dumped_text += level_padding + "'" + item + "' => \"" + value + "\"\n";
-                    }
-                }
-            } else { //Stings/Chars/Numbers etc.
-                dumped_text = "===>" + arr + "<===(" + typeof (arr) + ")";
-            }
-        }
-        catch (err) { }
-        return dumped_text + '</pre>';
-    };
-
-    
   this.dateTool = {
     shortDays: ['Sun','Mon','Tues','Wed','Thurs','Fri','Sat'],
     shortMonths: ['Jan','Feb','Mar','Apr','May','Jun','July','Aug','Sep','Oct','Nov','Dec'],
@@ -906,11 +872,6 @@ var Halo = new function _halo() {
     }
     return undefined;
   };
-  
-  
-  
-  
-  
   
   var toBaseArray = function(num, newBase){
     var number = num || 0, dig = 0, base = newBase || 10, nums = [];

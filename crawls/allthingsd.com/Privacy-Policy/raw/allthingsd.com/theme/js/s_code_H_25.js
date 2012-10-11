@@ -75,35 +75,41 @@ http://www.omniture.com */
      Plugins
 */
 
-var s_account="djglobal,djatd"
+var s_account="djglobal,djatd";
 var env = document.location.host;
 if (env.indexOf('qa') != -1 || env.indexOf('dev') != -1) {
   s_account="dowjdev";
 }
-var s=s_gi(s_account)
+var s=s_gi(s_account);
+
+	// Stop Safari Top Sites requests from being sent
+
+if ( navigator && navigator.loadPurpose && navigator.loadPurpose == 'preview' ) {
+	s.t=new Function("return ''");
+}
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 /* E-commerce Config */
-s.charSet="UTF-8"
-s.currencyCode="USD"
+s.charSet="UTF-8";
+s.currencyCode="USD";
 /* Link Tracking Config */
-s.trackDownloadLinks=true
-s.trackExternalLinks=false
-s.trackInlineStats=true
+s.trackDownloadLinks=true;
+s.trackExternalLinks=false;
+s.trackInlineStats=true;
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,wsj.com,wallstreetjournal.com,bankrate.com,smartmoney.com,barrons.com,marketgauge.com,marketwatch.com,bigcharts.com,virtualstockexchange.com,hulbertinteractive.com,collegejournal.com,careercast.com,careerjournal.com,careerjournalasia.com,realestatejournal.com,loopnet.com,opinionjournal.com,politicaldiary.com,startupjournal.com,homefair.com,myplan.com,contacts.zoominfo.com,secure.theladders.com,selectrecruiters.com,kennedyinfo.com,allisontaylor.com,wsj.careerdev.org,wsj.resumeedge.com,newhomesource.com,blacksguide.com,rej.informars.com,wsj.miniplan.com,wsj.knowledgestorm.com,entrepreneur.com,toolkit.prnewswire.com,tsnn.com,allthingsd.com,traffic.outbrain.com"
-s.linkLeaveQueryString=false
-s.linkTrackVars="None"
-s.linkTrackEvents="None"
+s.linkInternalFilters="javascript:,wsj.com,wallstreetjournal.com,bankrate.com,smartmoney.com,barrons.com,marketgauge.com,marketwatch.com,bigcharts.com,virtualstockexchange.com,hulbertinteractive.com,collegejournal.com,careercast.com,careerjournal.com,careerjournalasia.com,realestatejournal.com,loopnet.com,opinionjournal.com,politicaldiary.com,startupjournal.com,homefair.com,myplan.com,contacts.zoominfo.com,secure.theladders.com,selectrecruiters.com,kennedyinfo.com,allisontaylor.com,wsj.careerdev.org,wsj.resumeedge.com,newhomesource.com,blacksguide.com,rej.informars.com,wsj.miniplan.com,wsj.knowledgestorm.com,entrepreneur.com,toolkit.prnewswire.com,tsnn.com,allthingsd.com,traffic.outbrain.com";
+s.linkLeaveQueryString=false;
+s.linkTrackVars="None";
+s.linkTrackEvents="None";
 
 /* Plugin Config */
-s.usePlugins=true
+s.usePlugins=true;
 function s_doPlugins(s) {
 	/* Add calls to plugins here */
 	s.campaign=s.getQueryParam('cid');	
 }
-s.doPlugins=s_doPlugins
+s.doPlugins=s_doPlugins;
 /************************** PLUGINS SECTION *************************/
 /* You may insert any plugins you wish to use here.                 */
 
@@ -111,13 +117,13 @@ s.doPlugins=s_doPlugins
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
-s.visitorNamespace="dowjones"
+s.visitorNamespace="dowjones";
 
-s.vmk="44BD02B1"
+s.vmk="44BD02B1";
 
-s.trackingServer="om.dowjoneson.com"
-s.trackingServerSecure="oms.dowjoneson.com"
-s.dc="122"
+s.trackingServer="om.dowjoneson.com";
+s.trackingServerSecure="oms.dowjoneson.com";
+s.dc="122";
 /*
  * Plugin: getQueryParam 1.3 - Return query string parameter values
  */

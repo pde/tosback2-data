@@ -1,4 +1,3 @@
-// Loads script file with src URL and waits for it to complete load before returning.
 function mbcarouselInitCallback(carousel) {
 	jQuery('.mbleftnavbtn').bind('click', function() { carousel.prev(); return false; });
 	jQuery('.mbrightnavbtn').bind('click', function() { carousel.next(); return false; });
@@ -106,20 +105,15 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 		}
 	if(this.pagetype != "pie") {
 		visibleitems = scrollitems = 0;
-		if (this.params.wrz == 2 || this.params.wrz == 4 || this.params.wrz == 6 || this.params.wrz == 8 || this.params.wrz == 9 || this.params.wrz == 10) {
-			if(this.pagetype == "CATEGORY" || this.pagetype == "HIGH_LEVEL_CATEGORY" || this.pagetype == "SEARCH_RESULTS") {
-				visibleitems = scrollitems = 4;
-			}
-			else {
-				visibleitems = scrollitems = 6;
-			}
-		}
-		if (this.params.wrz == 1 || this.params.wrz == 3 || this.params.wrz == 5 || this.params.wrz == 7) {
+		if (this.params.wrz == 1 || this.params.wrz != 1) {
 			if(this.pagetype == "CATEGORY" || this.pagetype == "HIGH_LEVEL_CATEGORY" || this.pagetype == "SEARCH_RESULTS") {
 				visibleitems = scrollitems = 3;
 			}
 			else {
 				visibleitems = scrollitems = 5;
+				if (this.params.wrz == 10) {
+					visibleitems = scrollitems = 2;
+				}
 			}
 		}
 		if (typeof jQuery == 'undefined') {
@@ -163,6 +157,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 
 	mybuys.setClient("WORLDMARKET");
 	mybuys.enableZones();
+
 
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
 	mybuys.setStyle('.mblegend','text-align','left');
@@ -239,6 +234,23 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setStyle('.mbslider_x5_title .mbCarousellist','float','left','width','174px !important');
 	mybuys.setStyle('.mbzone_slider_x5 .mblegend','text-align','left !important','font-size','15px !important','font-weight','bold !important','color','#796243 !important','font-family','Arial !important');
 
+	
+	//mobile zone styling
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbslider_x5','width','293px','padding','0px 20px','margin','0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbitem','width','124px','padding','10px 11px 0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbCarousellist','float','left','width','146px !important','padding','10px 0px 0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbrightnav','width','28px','position','relative','right','-298px','top','-227px','padding','0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbleftnav','left','-29px','top','-171px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbtitleimg','padding','0px','text-align','left','font-family','SofiaProLight,Verdana,Geneva,Helvetic,sans-serif','color','#1B9990','font-size','12px','font-weight','bold','position','static');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbnamelink:link','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbnamelink:visited','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbpricelink:link','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbpricelink:visited','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbsalelink:link','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbsalelink:visited','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mblistlink:link','font-size','10px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mblistlink:visited','font-size','10px');
+	
 	mybuys.applyStyles();
 
 	mybuys.setFailOverMsecs(5000);

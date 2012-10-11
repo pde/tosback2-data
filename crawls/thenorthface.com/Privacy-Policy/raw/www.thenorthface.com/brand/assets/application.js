@@ -254,7 +254,7 @@ var Class = (function() {
 	}
 
 	// Handles "data-method" on links such as:
-	// <a href="/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
+	// <a href="/fr_CA/users/5" data-method="delete" rel="nofollow" data-confirm="Are you sure?">Delete</a>
 	function handleMethod(link) {
 		var href = link.attr('href'),
 			method = link.data('method'),
@@ -3899,10 +3899,10 @@ $.fn.tnfBrandItemBuilder = function () {
     }
 
     $.fn.extend({
-      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/$2\">$2</a>"),
+      linkUser: replacer(/(^|[\W])@(\w+)/gi, "$1@<a href=\"http://"+s.twitter_url+"/fr_CA/$2\">$2</a>"),
       // Support various latin1 (\u00**) and arabic (\u06**) alphanumeric chars
       linkHash: replacer(/(?:^| )[\#]+([\w\u00c0-\u00d6\u00d8-\u00f6\u00f8-\u00ff\u0600-\u06ff]+)/gi,
-                         ' <a href="http://'+s.twitter_search_url+'/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
+                         ' <a href="http://'+s.twitter_search_url+'/fr_CA/search?q=&tag=$1&lang=all'+((s.username && s.username.length == 1 && !s.list) ? '&from='+s.username.join("%2BOR%2B") : '')+'">#$1</a>'),
       capAwesome: replacer(/\b(awesome)\b/gi, '<span class="awesome">$1</span>'),
       capEpic: replacer(/\b(epic)\b/gi, '<span class="epic">$1</span>'),
       makeHeart: replacer(/(&lt;)+[3]/gi, "<tt class='heart'>&#x2665;</tt>")
@@ -4358,8 +4358,9 @@ $.fn.tnfBrandItemBuilder = function () {
       return $('body').bind('selected_product_grid', this.handleProductGridSelection);
     };
     ProductGridTabbed.prototype.handleProductGridSelection = function(event, anchor) {
-      var target;
-      target = anchor.attr('href').replace(/#/, 'selected-');
+      var hash, target;
+      hash = anchor.attr('href').split('#')[1];
+      target = "selected-" + hash;
       if (target === this.element.attr('id') || target === 'selected-tabbed-product-grid-all') {
         this.show();
       } else {
@@ -4374,11 +4375,14 @@ $.fn.tnfBrandItemBuilder = function () {
       return this.element.hide();
     };
     ProductGridTabbed.prototype.updateHashTag = function(anchor) {
-      var currentHashTag, hash;
-      hash = anchor.attr('href');
+      var currentHashTag, full_url, hash, parts, url;
       currentHashTag = $.uri(window.location.href).hash;
+      full_url = anchor.attr('href');
+      parts = full_url.split('#');
+      url = parts[0];
+      hash = parts != null ? parts[1] : void 0;
       if (hash !== currentHashTag) {
-        return location.hash = hash;
+        return window.location.href = "" + url + "#" + hash;
       }
     };
     return ProductGridTabbed;
@@ -4394,7 +4398,7 @@ $.support.transition = (function(){
   return support; 
 })();
 (function() {
-  var HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, OPEN_TAB_CLASS_NAME, TabbedHeroGallery;
+  var DISABLED_CLASS_NAME, HeroGalleryTab, HeroGalleryTabJSRenderStrategy, HeroGalleryTabRenderStrategy, OPEN_TAB_CLASS_NAME, SELECTION_EVENT, TabbedHeroGallery;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -4404,6 +4408,8 @@ $.support.transition = (function(){
     return child;
   };
   OPEN_TAB_CLASS_NAME = 'open';
+  DISABLED_CLASS_NAME = 'disabled';
+  SELECTION_EVENT = 'selected.TNF.herogallerytab';
   TabbedHeroGallery = (function() {
     TabbedHeroGallery.selector = '.tabbed-hero-gallery';
     TabbedHeroGallery.bootstrap = function(element) {
@@ -4412,6 +4418,8 @@ $.support.transition = (function(){
     function TabbedHeroGallery(element) {
       var el, tabElements;
       this.element = element;
+      this.closeUstream = __bind(this.closeUstream, this);
+      this.embedUstream = __bind(this.embedUstream, this);
       this.resumeAutoRotation = __bind(this.resumeAutoRotation, this);
       this.pauseAutoRotation = __bind(this.pauseAutoRotation, this);
       this.stopAutoRotation = __bind(this.stopAutoRotation, this);
@@ -4435,15 +4443,9 @@ $.support.transition = (function(){
       return this.autoRotateInterval = setInterval(this.rotate, 7000);
     };
     TabbedHeroGallery.prototype.rotate = function() {
-      var currentTabIndex, nextTab, nextTabIndex, tab, _i, _len, _ref;
+      var currentTabIndex, nextTab, nextTabIndex;
       if (!this.autoRotationPaused) {
-        _ref = this.tabs;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          tab = _ref[_i];
-          if (tab.isActive()) {
-            currentTabIndex = $.inArray(tab, this.tabs);
-          }
-        }
+        currentTabIndex = $.inArray(this.activeTab(), this.tabs);
         nextTabIndex = currentTabIndex + 1;
         if (nextTabIndex >= this.tabs.length) {
           nextTabIndex = 0;
@@ -4465,28 +4467,68 @@ $.support.transition = (function(){
     TabbedHeroGallery.prototype.bindEvents = function() {
       this.element.bind('mouseover', this.pauseAutoRotation);
       this.element.bind('mouseleave', this.resumeAutoRotation);
-      return this.element.bind('click', this.stopAutoRotation);
+      this.element.bind('click', this.stopAutoRotation);
+      this.element.bind('embed_TNF_ustream', this.embedUstream);
+      return this.element.bind('close_TNF_ustream', this.closeUstream);
+    };
+    TabbedHeroGallery.prototype.activeTab = function() {
+      var tab;
+      return ((function() {
+        var _i, _len, _ref, _results;
+        _ref = this.tabs;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          tab = _ref[_i];
+          if (tab.isActive()) {
+            _results.push(tab);
+          }
+        }
+        return _results;
+      }).call(this))[0];
+    };
+    TabbedHeroGallery.prototype.embedUstream = function() {
+      return this.activeTab().disable();
+    };
+    TabbedHeroGallery.prototype.closeUstream = function() {
+      var tab, _i, _len, _ref, _results;
+      _ref = this.tabs;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tab = _ref[_i];
+        _results.push(tab.enable());
+      }
+      return _results;
     };
     return TabbedHeroGallery;
   })();
   HeroGalleryTab = (function() {
     function HeroGalleryTab(element) {
       this.element = element;
+      this.select = __bind(this.select, this);
       this.renderStrategy = HeroGalleryTabRenderStrategy.factory(this.element);
-      this.element.click(this.renderStrategy.select);
+      this.element.click(this.select);
     }
     HeroGalleryTab.prototype.isActive = function() {
       return this.element.hasClass(OPEN_TAB_CLASS_NAME);
     };
-    HeroGalleryTab.prototype.select = function() {
+    HeroGalleryTab.prototype.select = function(event) {
+      if (event != null) {
+        event.preventDefault();
+      }
+      this.element.trigger(SELECTION_EVENT, this.renderStrategy);
       return this.renderStrategy.select();
+    };
+    HeroGalleryTab.prototype.disable = function() {
+      return this.renderStrategy.disable();
+    };
+    HeroGalleryTab.prototype.enable = function() {
+      return this.renderStrategy.enable();
     };
     return HeroGalleryTab;
   })();
   HeroGalleryTabRenderStrategy = (function() {
-    var PANEL_CLASS_NAME, SELECTION_EVENT;
+    var PANEL_CLASS_NAME;
     PANEL_CLASS_NAME = 'shown';
-    SELECTION_EVENT = 'selected.TNF.herogallerytab';
     HeroGalleryTabRenderStrategy.factory = function(element) {
       if ($.support.transition) {
         return new HeroGalleryTabRenderStrategy(element);
@@ -4495,22 +4537,27 @@ $.support.transition = (function(){
       }
     };
     function HeroGalleryTabRenderStrategy(element) {
+      this.element = element;
       this.deselect = __bind(this.deselect, this);
-      this.select = __bind(this.select, this);      this.element = element;
+      this.select = __bind(this.select, this);
       this.panel = $(this.element.attr('href'));
       this.element.closest('.side-tabs').bind(SELECTION_EVENT, this.deselect);
     }
     HeroGalleryTabRenderStrategy.prototype.select = function(event) {
-      if (event != null) {
-        event.preventDefault();
-      }
-      this.element.trigger(SELECTION_EVENT);
       this.element.addClass(OPEN_TAB_CLASS_NAME);
       return this.panel.addClass(PANEL_CLASS_NAME);
     };
     HeroGalleryTabRenderStrategy.prototype.deselect = function() {
       this.element.removeClass(OPEN_TAB_CLASS_NAME);
       return this.panel.removeClass(PANEL_CLASS_NAME);
+    };
+    HeroGalleryTabRenderStrategy.prototype.enable = function() {
+      this.element.removeClass(DISABLED_CLASS_NAME);
+      return this.panel.removeClass(DISABLED_CLASS_NAME);
+    };
+    HeroGalleryTabRenderStrategy.prototype.disable = function() {
+      this.element.addClass(DISABLED_CLASS_NAME);
+      return this.panel.addClass(DISABLED_CLASS_NAME);
     };
     return HeroGalleryTabRenderStrategy;
   })();
@@ -4522,26 +4569,86 @@ $.support.transition = (function(){
       HeroGalleryTabJSRenderStrategy.__super__.constructor.apply(this, arguments);
     }
     HeroGalleryTabJSRenderStrategy.prototype.select = function(event) {
-      HeroGalleryTabJSRenderStrategy.__super__.select.apply(this, arguments);
-      this.element.animate({
-        width: 187
-      }).find('span').animate({
-        left: 156
-      });
-      return this.panel.fadeIn(400);
+      this.showTab();
+      return this.panel.fadeIn(400, this.constructor.__super__.select.bind(this));
     };
     HeroGalleryTabJSRenderStrategy.prototype.deselect = function(event) {
-      HeroGalleryTabJSRenderStrategy.__super__.deselect.apply(this, arguments);
-      this.element.animate({
+      this.collapseTab();
+      return this.panel.fadeOut(400, this.constructor.__super__.deselect.bind(this));
+    };
+    HeroGalleryTabJSRenderStrategy.prototype.enable = function() {
+      this.showTab();
+      return this.panel.find('img, .hero-cta').fadeTo(400, 1, this.constructor.__super__.enable.bind(this));
+    };
+    HeroGalleryTabJSRenderStrategy.prototype.disable = function() {
+      this.collapseTab();
+      return this.panel.find('img, .hero-cta').fadeTo(400, 0, this.constructor.__super__.disable.bind(this));
+    };
+    HeroGalleryTabJSRenderStrategy.prototype.collapseTab = function() {
+      return this.element.animate({
         width: 31
       }).find('span').animate({
         left: 0
       });
-      return this.panel.fadeOut(400);
+    };
+    HeroGalleryTabJSRenderStrategy.prototype.showTab = function() {
+      return this.element.animate({
+        width: 187
+      }).find('span').animate({
+        left: 156
+      });
     };
     return HeroGalleryTabJSRenderStrategy;
   })();
   $.TNF.BRAND.startupManager.registerController(TabbedHeroGallery);
+}).call(this);
+(function() {
+  var Ustream, _ref;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+    if ((_ref = this.JST) != null) {
+    _ref;
+  } else {
+    this.JST = {};
+  };
+  this.JST['ustream-video'] = '<iframe id="ustream-video" src="http://www.ustream.tv/embed/12083483?autoplay=true" width="575" height="610" scrolling="no" frameborder="0" style="border: 0px none transparent;"></iframe>';
+  this.JST['ustream-social'] = '<iframe id="ustream-social" width="340" scrolling="no" height="610" frameborder="0" style="border: 0px none transparent;" src="http://www.ustream.tv/socialstream/12083483"></iframe>';
+  this.JST['ustream-ui-close'] = '<a href="#ustream-container" class="video-interface-close">x</a>';
+  this.JST['ustream-ui-link'] = '<a href="http://www.ustream.tv/" class="ustream-external" target="_blank">Streaming live video by Ustream</a>';
+  this.JST['ustream'] = "<div id='ustream-container'>" + this.JST['ustream-ui-close'] + this.JST['ustream-video'] + this.JST['ustream-social'] + this.JST['ustream-ui-link'] + "</div>";
+  Ustream = (function() {
+    Ustream.selector = '#ustream';
+    Ustream.bootstrap = function(element) {
+      return new Ustream(element);
+    };
+    function Ustream(el) {
+      this.el = el;
+      this.close = __bind(this.close, this);
+      this.embed = __bind(this.embed, this);
+      this.panel = this.el.closest('.panel');
+      this.tabs = $('.side-tabs');
+      this.bindEvents();
+    }
+    Ustream.prototype.bindEvents = function() {
+      return this.el.click(this.embed);
+    };
+    Ustream.prototype.embed = function(event) {
+      event.preventDefault();
+      this.el.trigger('embed_TNF_ustream');
+      this.panel.append(JST['ustream']);
+      this.panel.find('a.video-interface-close').click(this.close);
+      return this.tabs.bind('selected.TNF.herogallerytab', this.close);
+    };
+    Ustream.prototype.close = function(event) {
+      if (event != null) {
+        event.preventDefault();
+      }
+      this.el.trigger('close_TNF_ustream');
+      this.panel.find('#ustream-container').remove();
+      return this.tabs.unbind('selected.TNF.herogallerytab', this.close);
+    };
+    return Ustream;
+  })();
+  $.TNF.BRAND.startupManager.registerController(Ustream);
 }).call(this);
 (function($) {
   $(function() {
@@ -4589,6 +4696,7 @@ $.support.transition = (function(){
       $('.tertiary table.chart').each(function(){
        $('tr:odd', this).addClass('odd');
       });
+
       $('.hero-box .cta a.video, .hero-cta a .hero-arrow-box').tnfInlineVideoExpanderer($(".hero-box.box"));
 
       $('#content').append('<div id="colorbox-empty-content"></div>');

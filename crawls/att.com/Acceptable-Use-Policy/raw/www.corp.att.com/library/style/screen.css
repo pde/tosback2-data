@@ -1,0 +1,178 @@
+/*
+ * AT&T Web Standards Initiative <wsi at att dot com>
+ * Joe D'Andrea, Vincent Murphy, John Crowley
+ *
+ * $Id: screen.css,v 2.0 2008/08/22 17:27:15
+ *
+ * Screen Media
+ */
+
+body { margin: 0; padding: 0; font-size: 75%; text-align: center; }
+
+/* Page Width - change to 98/100% width for liquid layout */
+#page, #splash, #promotion { width: 988px; min-width: 988px; }
+#page, #promotion, .block { background: #fff url(http://www.corp.att.com/library/style/image/page_midSlice.gif) repeat-y scroll 0pt; }
+
+div#page, div#promotion {
+margin-left: auto;
+margin-right: auto;
+text-align: left;
+}
+
+/* "Debug first, _then_ code!" */
+#debug { text-align: center; }
+
+#debug #header,
+#debug #footer { background-color: green; }
+
+#debug .block .main,
+#debug .block .main .split-12,
+#debug .block .main .split-22 { background-color: red; }
+
+#debug .block .index,
+#debug .block .sidebar { background-color: yellow; }
+
+/* Tip of the hat: www.positioniseverything.net (3px gap fix for IE/Win) */
+/* Hide from IE5-mac \*/
+* .block .main { height: 1%; }
+/* End IE5-mac hide */
+
+/* Regions */
+
+/* Index and Sidebar */
+.block .index { width: 255px; float: left; }
+.block .sidebar { width: 253px; float: right; }
+
+/* Index + Main */
+.block .index+.main { margin-left: 255px; }
+.block .main-index { margin-left: 255px; }
+
+/* Sidebar + Main */
+.block .sidebar+.main { margin-right: 255px; }
+.block .main-sidebar { margin-right: 240px; }
+   
+/* Index + Sidebar + Main */
+.block .index+.sidebar+.main { margin: 0 255px; }
+.block .main-index-sidebar { margin: 0 255px; }
+
+/* Sidebar Clear */
+/* TODO: Normalize path */
+.block .sidebar-clear {
+  margin: 0; padding: 0;
+}
+
+* html .block .index-clear,
+* html .block .sidebar-clear { height: 1%; }
+/* Clear */
+.block .clear {
+  clear: both;
+  height: 1px;
+  font-size: 1px;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  z-index: -1000;
+}
+
+@media screen {
+
+/* Hat-tip: http://www.positioniseverything.net/explorer/doubled-margin.html */
+/* If display:inline is present it breaks IE5.5! Remove it and it breaks IE6! */
+* html .main {
+  d\isplay: inline; /* Not for IE5.x eyes, thank you */
+} /* Remove OR add float:left and it breaks IE6! */
+/* Add overflow:hidden below and Firefox moves main to the RIGHT of sidebar!? */
+.main .content {
+  float: left; display: inline; width: 950px; margin-left: 10px;
+}
+* html .main .content {
+  margin-left: 14px; /* 3px jog times two?? */
+  ma\rgin-left: 20px; /* Hide from IE5.x */
+}
+.main-index .content { width: 715px; }
+.main-index .chunk1 .content {margin-left: -0px; _margin-left: 255px; } 
+.main-sidebar .content { width: 710px; }
+.main-index-sidebar .content { width: 470px; }
+.main-index .split-12 .content, .main-index .split-22 .content {
+  width: 350px;
+}
+.main-sidebar .split-12 .content, .main-sidebar .split-22 .content {
+  width: 270px;
+}
+
+.main .full .split-12 .content,
+.main .full .split-22 .content { width: 450px; }
+
+/* IE 5.x: If we have a sidebar involved, leave the left margin at 20!
+ * Take 6px from the right instead.
+ */
+.main-sidebar .content,
+.main-index-sidebar .content {
+  margin-left: 10px;
+  margin-right: 0px; /* 3px jog times two?? */
+  ma\rgin-right: 0px; /* Hide from IE5.x */
+}
+
+/* Standard sIFR styles. Do not modify (this means you). */
+.sIFR-flash { visibility: visible !important; margin: 0; }
+.sIFR-replaced { visibility: visible !important; }
+span.sIFR-alternate {
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  display: block; overflow: hidden; letter-spacing: 0;
+}
+
+
+.main-index .split-12 {  
+  _margin-left: 240px;
+}
+
+.main-index .split-22 {
+_margin-left: -0px;
+}
+
+
+.content .border {
+  margin-bottom: 0.5em;
+  padding: 10px;
+  padding-bottom: 7px;
+  margin-left: 0px;
+  margin-top: 5px;
+ border-color: #CCCCCC;
+ border-style: solid;
+ border-width: 1px 1px 1px 1px;
+background-image: url("http://www.corp.att.com/library/style/image/sb_gradient_tile_1x9.gif");
+background-repeat: repeat-x;
+background-position: bottom; 
+overflow: auto;
+}
+
+#chunks23 .main-index .content {  
+ margin-left: 0px;
+}
+
+.main-index .chunk1 .content,  .main-index .chunk2 .content, {_margin-left: 255px;}
+* html #chunks23 .main-index .split-12 .content, * html #chunks23 .main-index .split-22 .content { 
+  width: 350px; 
+  margin: 5px 5px 7px 0; 
+} 
+
+.main-index-sidebar .content { margin-left: -0px; }
+.main-index-sidebar .chunk1 .content, .main-index-sidebar .chunk2 .content, {  
+ _margin-left: 255px;
+}
+
+.sidebar .content {
+_margin-left: -0px;
+}
+.main-sidebar .chunk1 .content {
+width: 710px;
+} 
+
+.main .split-12 .content { width: 475px; margin-right: 3px; }
+.main .split-22 .content { width: 475px; margin-left: 3px;}
+
+.main-index .split-12 .content { width: 355px; margin-right: 3px;}
+.main-index .split-22 .content { width: 355px; margin-left: 3px;}
+
+} /* end media screen */

@@ -1,0 +1,2761 @@
+/**
+ * Additional functions available on the jQuery object ($)
+ *
+ * up: same as Prototype Element.up()
+ *
+ * down: same as Prototype Element.down()
+ *
+ * imgload: assign a function to be called when an image has loaded.
+ *   NOTE: The argument passed to the callback function is the IMG element itself, NOT an event object (and not a jQuery objec)
+ */
+
+ /*global NgFormValidator: false */
+
+(function ($) {
+	$.fn.down = function (selector) {
+		if (typeof selector === 'undefined') return this.children(':eq(0)');
+		else return this.find(selector + ':first');
+	};
+
+	// shorter name; similar in functionality to Prototype
+	$.fn.up = $.fn.closest;
+
+	// passes element as first argument to function, instead of second
+	$.fn.Each = function (callback) {
+		this.each(function () {
+			callback(this);
+		});
+	};
+
+	// flips $.each
+	$.Each = function (arr, callback) {
+		return $.each(arr, function (index, value) {
+			callback(value, index);
+		});
+	};
+
+	// Extract a method, for passing as an argument for example
+	$.method = function(obj, name) {
+		return function() {
+			obj[name].apply(obj, arguments);
+		};
+	};
+
+	// this is the same as the $ function, only it takes a "true" argument, like in Prototype
+	$.fn.serialize = function(as_array) {
+		if (as_array) return this.serializeArray();
+		else return $.param(this.serializeArray());
+	};
+
+	// whether this element and all of its children have loaded - mostly useful for IMG elements
+	$.fn.isLoaded  = function (value) {
+		var is_loaded = true;
+
+		this.find('img').each(function() {
+			// custom member "fail" indicates we have given up on this image
+			if (this.fail) return;
+
+			if (this.tagName === 'IMG') {
+				if (typeof(this.naturalWidth) !== 'undefined') { // Gecko
+					is_loaded = is_loaded && this.complete;
+				} else if (typeof(this.complete) === 'boolean') { // IE
+					is_loaded = is_loaded && this.naturalWidth;
+				} else { // this will always be true, unless the img has no width attr., in which case it's only true when the img is loaded
+					is_loaded = is_loaded && this.width;
+				}
+			} else { /* do nothing; assume is loaded */ }
+		});
+
+		return is_loaded;
+	};
+
+	/**
+	 * define a function to call when element is loaded (see isLoaded above)
+	 * data - (all params are optional): {
+	 *   period: time between checks, in milliseconds, default 100
+	 *   timeout: when to stop checking, in milliseconds, default 5000
+	 */
+	$.fn.loaded = function (handler, data) {
+		var total_time = 0;
+
+		if (!data) data = {};
+		if (data.period === undefined) data.period = 100;
+		if (data.timeout === undefined) data.timeout = 5000;
+
+		var that = this;
+
+		var doWaiting = function () {
+			if ($(that).isLoaded() || total_time > data.timeout) { // if we timeout, call event handler anyway
+				handler(that);
+				if (that._loaded_timer) {
+					clearTimeout(that._loaded_timer);
+				}
+			} else {
+				total_time += data.period;
+				that._loaded_timer = setTimeout(doWaiting, data.period); // FIXME: use this to remove the listener
+			}
+		};
+
+		doWaiting();
+	};
+
+	/* FORMS */
+
+	// Enable a form element, or all of the elements in a form
+	$.fn.enable = function () {
+		if (this.is('form')) {
+			this.find('input, textarea, select, button').enable();
+		} else {
+			this.each(function () {
+				this.disabled = false;
+			});
+		}
+
+		return this;
+	};
+
+	// Disable a form element, or all of the elements in a form
+	$.fn.disable = function () {
+		if (this.is('form')) {
+			this.find('input, textarea, select, button').disable();
+		} else {
+			this.attr('disabled', true);
+		}
+
+		return this;
+	};
+
+	/**
+	 * Set value of file input on corresponding text input "facade"
+	 * Change this if method of facade changes
+	 */
+	$.fn.setUploadVal = function (val) {
+		if (typeof val == 'undefined') {
+			val = this.val();
+		}
+
+		if (this.is('input[type="file"]')) {
+			// this.nextAll('input:first').val(this.val());
+			this.next().next().val(this.val());
+		}
+
+		return this;
+	};
+
+	$.fn.validate = function (validations) {
+		if (this.is('form')) {
+			this.bindValidator(new NgFormValidator(this, validations));
+		}
+
+		return this;
+	};
+
+	// double submit handling
+	(function() {
+		var getSubmitButtons = function(elem) {
+			return $(elem).find('button[type!="reset"][type!="button"], input[type="submit"]o');
+		};
+
+		$.fn.disableSubmit = function() {
+			getSubmitButtons(this).disable();
+		};
+		$.fn.enableSubmit = function() {
+			getSubmitButtons(this).enable();
+		};
+	})();
+
+	$.fn.preventDoubleSubmit = function () {
+		this.submit(this.disableSubmit);
+	};
+	$.fn.allowDoubleSubmit = function () {
+		this.unbind('submit', this.disableSubmit);
+	};
+
+	(function () {
+		var
+			validation_str = 'validation',
+			getValidationFunction = function (validator) {
+				if (validator) {
+
+					return function (e) {
+						validator.validate();
+
+						if (!validator.isValid()) {
+							// tell user about errors
+							validator.inform();
+
+							return false;
+						}
+					};
+
+				}
+			}
+		;
+
+		/**
+		 * Bind the validation function to the submit event
+		 */
+		$.fn.bindValidator = function (validator) {
+			var validation = getValidationFunction(validator);
+			this.data(validation_str, validation);
+			this.data('validator', validator);
+
+			return this.submit(validation);
+		};
+
+		$.fn.unbindValidator = function () {
+			return this.unbind('submit', this.data(validation_str));
+		};
+
+	})();
+
+	// Checks to see whether an element actually exists (for cases when checkboxes
+	// are in place in some instances as per user agreements and when they're not
+	// etcetra)
+	$.fn.exists = function () {
+		return this.length > 0;
+	};
+
+	// same as .text(), but returns an array
+	$.fn.Text = function () {
+		return $.map(function () {
+			return $(this).text();
+		}).get();
+	};
+
+	// for adding callbacks to $.ajax options like success, error, etc.
+	var addFunction = function(func_list, func) {
+		if (typeof func_list === 'function') {
+			return [func_list, func];
+		} else if (typeof func_list === 'object') {
+			// assume is an array
+			return func_list.concat([func]);
+		} else {
+			return func;
+		}
+	};
+
+	/**
+	 * success_func - runs on success
+	 * element - element to set the waiting animation on; optional
+	 * options - parameters to be passed to $.ajax, see $.fn.ajaxWait below
+	 */
+	$.fn.ajaxSubmit = function (success_func, element, options) {
+		var that = this;
+
+		if (this.is('form')) {
+			if (options && options.preventDouble) {
+				// add reenabling as an error function
+				options.error = addFunction(options.error, function() {
+					that.enableSubmit();
+				});
+
+				this.disableSubmit();
+			}
+
+			return $.ajaxWait('post', this.attr('action'), this.serializeArray(), success_func, element, options);
+		}
+	};
+
+	/**
+	 * see argument documentation for $.fn.ajaxSubmit above
+	 */
+	$.fn.ajaxify = function (success_func, element, options) {
+		if (this.is('form')) {
+			var that = this;
+
+			// add submit button data to the data we send, to mimic a real submission
+			// this.delegate('button, input[type="submit"]', 'click', function () {
+			this.delegate('button', 'click', function () {
+				var data = that.serializeArray();
+				data.push({name: this.name, value: this.value});
+
+				$.ajaxWait('post', that.attr('action'), data, success_func, element, options);
+
+				return false;
+			});
+
+			return this.submit(function () {
+				$(this).ajaxSubmit(success_func, element, options);
+
+				return false;
+			});
+		}
+	};
+
+	$.fn.getSelected = function () {
+		if (this.is('select')) {
+			var select = this.get(0);
+			if (select) {
+				if (!select.selectedIndex) select.selectedIndex = 0;
+				return $(select.options[select.selectedIndex]);
+			} else {
+				return $();
+			}
+		}
+	};
+
+	$.fn.scrollTo = function (options) {
+		var destination = this.offset().top;
+
+		options = options || {};
+		options.duration = options.duration || 500;
+
+		$('html:not(:animated), body:not(:animated)').animate({
+			scrollTop: destination - 20
+		}, options );
+	};
+
+	// For doing old-style fade-n-slide animations
+	(function () {
+		var slide_duration = 600, fade_duration = 600;
+
+		var fadeMeIn = function () {
+			$(this).animate({ opacity: 1 }, fade_duration);
+		};
+
+		var scrollMeUp = function () {
+			$(this).slideUp(slide_duration);
+		};
+
+		$.fn.appear = function () {
+			return this.css('opacity', 0).slideDown(slide_duration, fadeMeIn);
+		};
+
+		$.fn.disappear = function () {
+			return this.animate({opacity: 0}, {duration: fade_duration, complete: scrollMeUp});
+		};
+
+		$.fn.animatedSwitch = function() {
+			if (this.is(':visible')) return this.disappear();
+			else return this.appear();
+		};
+	})();
+
+	(function () {
+		var
+			fading_menus = [],
+			count_showing = 0,
+
+			// fade all menus. If excluded is passed, the menu with that index will not be faded
+			fade_all = function (excluded) {
+				var i;
+				for (i = 0; i < fading_menus.length; ++i) {
+					if (i !== excluded && fading_menus[i].is(':visible')) fading_menus[i].fadeOut();
+					--count_showing;
+				}
+			}
+		;
+
+		$.fn.fadeable = function () {
+			// attaching this event here, because for some reason it doesn't work when defined outside fadeable()
+			if (!fading_menus.length) {
+				$(document.body).click(function () {
+					if (count_showing) {
+						fade_all();
+					}
+				});
+			}
+
+			// add each menu separately
+			this.each(function () {
+			var select, menu;
+
+				var me = $(this);
+
+				// allow the div.select, or any element inside it
+				select = me.is('div.select') ? me : me.up('div.select');
+				menu = select.down('ul.filtermenu');
+
+				// if we found a menu and we don't already have this one, make it fadeable
+				if (menu.length && $.inArray(menu, fading_menus) < 0) {
+
+					// add this to the list of menus to fade when the user clicks anywhere
+					fading_menus.push(menu);
+					menu
+						.data('fading_index', fading_menus.length - 1)
+						// style menu correctly
+						.hide().css('overflow', 'visible')
+					;
+
+					select.click(function (e) {
+						if (e.target.tagName.toLowerCase() != 'a') {
+							// toggle menu
+							if (menu.is(':hidden')) {
+								++count_showing;
+								menu.fadeIn(300, function () { $(this).show(); });
+
+								// hide all other menus
+								fade_all(menu.data('fading_index'));
+							} else {
+								menu.fadeOut();
+								--count_showing;
+							}
+
+							// stop the event, or the body element will try hiding the menus again
+							return false;
+						}
+					});
+				}
+			});
+
+		};
+
+	})();
+
+	$.isString = function (obj) {
+		return typeof obj === 'string' || obj instanceof String;
+	};
+
+	$.reverseString = function (str) {
+		return str.split('').reverse().join('');
+	};
+
+	// Inverse of $.param
+	$.unparam = function (str) {
+		var obj = {};
+
+		str.split('&').Each(function (equality) {
+			var parts = equality.split('=');
+			obj[parts[0]] = parts[1];
+		});
+
+		return obj;
+	};
+
+	$.isInteger = function(obj) {
+		return typeof obj === 'number' && parseInt(obj, 10) === obj;
+	};
+
+	// similar (but not identical) to PHP's function, range() - give it two integers
+	// or set of letters and it'll return an array of of numbers in that range.
+	// letters are returned as their respective charcode, for example, 'a'
+	// is 97
+	$.range = function(low, high, step) {
+		var
+			reversal,
+			quickstep = 1,
+			arr = [],
+			i
+		;
+
+		if ((!$.isInteger(low) && !$.isString(low)) || (typeof low !== typeof high)) {
+			return arr;
+		}
+
+		// just use for integers for the time being
+		if (typeof step !== undefined && $.isInteger(step) && $.isInteger(low)) {
+			quickstep = step;
+		}
+
+		if ($.isString(low)) {
+			low = parseInt(low.charCodeAt(0), 10);
+			high = parseInt(high.charCodeAt(0), 10);
+		}
+
+		if (low > high) {
+			reversal = low;
+			low = high;
+			high = reversal;
+		}
+
+		for (i = low; i <= high; i+= quickstep) {
+			arr.push(i);
+		}
+
+		return arr;
+	};
+
+	$.strip_text = function(s) {
+		return s
+			.toLowerCase()
+			.replace(/[^a-z0-9]/g, ' ')
+			.replace(/\s+/g, '-')
+			.replace(/(^-+|-+$)/, '')
+			;
+	};
+
+	// jQuery returns $.inArray as either -1 or index, which I didn't find particularly
+	// helpful
+	$.rInArray = function(value, arr) {
+		return $.inArray(value, arr) !== -1;
+	};
+
+	$.any = function (arr, f) {
+		var len = arr.length;
+		for (var i = 0; i < len; i++) {
+			if (f(arr[i])) return true;
+		}
+		return false;
+	};
+
+	$.all = function (arr, f) {
+		return !$.any(arr, function (x) {
+			return !f(x);
+		});
+	};
+
+	// reduce array to its unique elements. $.unique only works on DOM elements
+	$.nub = function (arr) {
+		var new_arr = [], len = arr.length, i, j, found_dup;
+
+		for (i = 0; i < len; ++i) {
+			found_dup = false;
+
+			for (j = i + 1; j < len && !found_dup; ++j) {
+				found_dup = arr[j] == arr[i];
+			}
+
+			// unshift so they elements appear in location of first occurrence
+			if (! found_dup) new_arr.unshift(arr[i]);
+		}
+
+		return new_arr;
+	};
+
+	// works like Prototype $ function - accepts element ID or DOM element or jQuery element
+	$.$ = function (elem_or_id) {
+		if ($.isString(elem_or_id)) return $('#' + elem_or_id);
+		else return $(elem_or_id);
+	};
+
+	$.windowHeight = function () {
+		return window.innerHeight ? window.innerHeight : $(window).height();
+	};
+
+	$(document).ajaxError(function (e, xhr, options, exception) {
+		if (xhr.status == 403) {
+			$.showAjaxError($.parseJSON(xhr.responseText));
+		}
+	});
+
+	$.showAjaxError = function (content) {
+		if (content && content.errors && content.errors.join) {
+			var msg = content.errors.join("\n");
+			if (content.selector) { // path to element for our error message
+				$(content.selector).html(msg);
+			} else {
+				alert(msg);
+			}
+		} else {
+			var server_error = 'Server error.  Please wait a moment and try again.';
+			alert(server_error);
+		}
+	};
+
+	// Check our old-style XML response for errors
+	// Returns true if valid response (i.e., no errors)
+	$.checkAjaxErrorOld = function (xml) {
+		var server_error = 'Server error.  Please wait a moment and try again.';
+		// Expand on this to show the output when in debug???
+		// For instance, if the output was previously HTML rather than XML, this returned
+		// true, but it would be useful to see the output if, for example, there's some
+		// parse error with the script handling the call or whatever
+
+		if (!xml) {
+			alert(server_error);
+			return false;
+		} else {
+			var errors = $(xml).find('errormsg');
+			if (errors.length) {
+				// I couldn't get this to work correctly - maybe just return the message
+				// as there will only ever be one node with the old stuff here?
+				//$.showAjaxError({ errors: errors });
+				alert(errors.text());
+				return false;
+			} else {
+				return true;
+			}
+		}
+	};
+
+	/**
+	 * Stop waiting animation when ajax is done
+	 */
+	$(document).ajaxComplete(function(e, xhr, options) {
+		if (xhr.uid) {
+			$.ajax.stopWaiting(xhr.uid);
+		}
+
+		if (window.QUnit) {
+			window.QUnit.ajaxing = false;
+		}
+
+		// select menu hack
+		enableSelectFacades();
+	});
+
+	(function () {
+		// map of uid -> elements w/ waiting animation
+		var waiting_elements = {};
+		var waiting_class = 'waiting';
+
+		/**
+		 * start waiting animation on element,
+		 * waitin for XMLHttpRequest xhr
+		 */
+		$.ajax.startWaiting = function (element, xhr) {
+			/* add a unique identifier to our XMLHttpRequest object
+			 * so we can stop waiting when the time comes */
+			xhr.uid = $.now();
+
+			element = $(element);
+
+			waiting_elements[xhr.uid] = element;
+			element.addClass(waiting_class);
+		};
+
+		/**
+		 * stop waiting animation for XMLHttpRequest with uid xhr_uid
+		 */
+		$.ajax.stopWaiting = function (xhr_uid) {
+			waiting_elements[xhr_uid].removeClass(waiting_class);
+			delete waiting_elements[xhr_uid];
+		};
+
+	})();
+
+	/**
+	 * start a waiting animation and send AJAX request
+	 *
+	 * element - the element to set the waiting animation on
+	 * all other args are options for $.ajax, see jQuery API docs
+	 *
+	 * ARG = NAME IN JQUERY API
+	 * type = type
+	 * url = url
+	 * data = data
+	 * success_func = success
+	 * optons - anything else that $.ajax would accept, e.g., { cache: false, contentType: "text/json" }
+	 *
+	 */
+	$.ajaxWait = function (type, url, data, success_func, element, options) {
+		return $.ajax.startWaiting(element, $.ajax($.extend({
+			type: type,
+			url: url,
+			data: data,
+			success: success_func
+		}, options)));
+	};
+
+	// replace a set of elements in the page with corresponding elements from AJAX response
+	$.ajax.replace = function (response_html, selectors) {
+		var i = 0;
+
+		for (i = 0; i < selectors.length; i++) {
+			$(selectors[i]).replaceWith($(selectors[i], response_html));
+		}
+	};
+
+	/**
+	 * Find element that 1.) contains the event target, 2.) is contained by "this", and 3.) matches the selector.
+	 * This is useful for event delegation, when, for example, there might be a SPAN inside an A tag, and you
+	 * want the HREF of the A tag. Then [e.closest('a').href] will get what you need, without searching all the way
+	 * up to the document root
+	 */
+	$.Event.prototype.closest = function (selector) {
+		var me = this.target;
+		while (me && !$(me).is(selector)) {
+			// return undefined if we could not find a matching element
+			if (me == this.currentTarget) return;
+
+			me = me.parentNode;
+		}
+
+		return me;
+	};
+
+	$.fn.insertRoundCaret = function (tagName) {
+		var
+			strStart, strEnd, stringBefore, stringAfter, sel, insertstring,
+			fullinsertstring, range, numlines, i, j, startPos, endPos, scrollTop;
+		return this.each(function(){
+			strStart = '['+tagName+']';
+			strEnd = '[/'+tagName+']';
+			if (document.selection) {
+				//IE support
+				stringBefore = this.value;
+				this.focus();
+				sel = document.selection.createRange();
+				insertstring = sel.text;
+				fullinsertstring = strStart + sel.text + strEnd;
+				sel.text = fullinsertstring;
+				document.selection.empty();
+				this.focus();
+				stringAfter = this.value;
+				i = stringAfter.lastIndexOf(fullinsertstring);
+				range = this.createTextRange();
+				numlines = stringBefore.substring(0,i).split("\n").length;
+				i = i+3-numlines+tagName.length;
+				j = insertstring.length;
+				range.move("character",i);
+				range.moveEnd("character",j);
+				range.select();
+			}else if (this.selectionStart || this.selectionStart == '0') {
+				//MOZILLA/NETSCAPE support
+				startPos = this.selectionStart;
+				endPos = this.selectionEnd;
+				scrollTop = this.scrollTop;
+				this.value = this.value.substring(0, startPos) + strStart + this.value.substring(startPos,endPos) + strEnd + this.value.substring(endPos,this.value.length);
+				this.focus();
+				this.selectionStart = startPos + strStart.length ;
+				this.selectionEnd = endPos + strStart.length;
+				this.scrollTop = scrollTop;
+			} else {
+				this.value += strStart + strEnd;
+				this.focus();
+			}
+		});
+	};
+
+	// expects to be called on an input element or elements, which might have an id of 'password'
+	// and then shows/hides an element with the same id appended with '_caps' if the
+	// caps key is on as they're typing
+	(function() {
+
+		var
+			upper_ranges = $.range('A', 'Z'),
+			lower_ranges = $.range('a', 'z'),
+			all_letters = upper_ranges.concat(lower_ranges),
+			wrap_element,
+			type,
+			shift_key,
+			which
+		;
+
+		$.fn.checkCapsLock = function(e) {
+			wrap_element = $('#' + $(this).attr('id') + '_caps');
+
+			return (function(event) {
+
+				type = event.type;
+				shift_key = event.shiftKey;
+				which = event.which;
+
+				if (type === 'blur') {
+					// close it and come back to it when they next type here
+					wrap_element.hide();
+				} else if (
+						($.rInArray(which, upper_ranges) && !shift_key) ||
+						($.rInArray(which, lower_ranges) && shift_key)
+				) {
+					// CAPS is on and the user has entered a lower case letter OR they have held shift with a letter
+					// they expect the letter to be upper case whilst CAPS is on
+					wrap_element.show();
+				} else if ($.rInArray(which, all_letters) && wrap_element.is(':visible')) {
+					// only if this is a letter do we then hide the display if it's visible
+					wrap_element.hide();
+				}
+
+			})(e);
+		};
+
+	})();
+
+	/*
+
+		Handles <select> options (specifically with respect to removing/replacing options
+		in any select).
+
+		I haven't done much yet with respect to anything but set(), which expects
+		a hash table: { 'val' : 'text', 'val2' : 'text2' }
+
+	*/
+	(function() {
+		$.fn.selectBoxOptions = function () {
+			var
+				that = this,
+				i = 0,
+				key,
+				options = document.getElementById(this.attr('id')).options
+			;
+
+			return {
+				size: function () {
+					return $(options).size();
+				},
+
+				set: function (new_options) {
+					// reset i first
+					i = 0;
+
+					for (var key in new_options) {
+						++i;
+					}
+
+					// reset the length of the select options
+					options.length = i;
+
+					i = 0;
+
+					// and then assign the new values and text
+					for (key in new_options) {
+						options[i].value = key;
+						options[i].text = new_options[key];
+						++i;
+					}
+				}
+			};
+		};
+	})();
+
+	// put site advisories on links and also bring embedded objects below links to media
+	(function() {
+
+		$.fn.watchLinks = function(settings) {
+
+			// merge any overrides in here
+			settings = $.extend({
+				// .sitenote needs to be the last div in this node
+				parentNode: '.podcontent',
+				trustedDomains: [],
+				spamDomains: []
+
+			}, settings);
+
+			var link_watcher = new LinkWatcher();
+			link_watcher.setParentNode(settings.parentNode);
+			link_watcher.setTrustedDomains(settings.trustedDomains);
+			link_watcher.setSpamDomains(settings.spamDomains);
+			link_watcher.pushElements($(this));
+			link_watcher.watch();
+
+			return this;
+		};
+
+		$.fn.watchEmbeds = function() {
+			var
+				watchable_links = [],
+				result,
+				mylink,
+				mydiv,
+
+				sites = {
+					youtube: [/^http:\/\/(www\.)?((youtube\.com\/(.*?watch\?v=|embed\/))|youtu\.be\/)([a-zA-Z0-9_\-]+).*$/, 5, 'video'],
+					vimeo: [/^https?:\/\/(www\.)?vimeo\.com\/([0-9]+)\/?$/, 2, 'video'],
+					soundcloud: [/^https?:\/\/(www\.)?(soundcloud\.com\/[^\/]+\/?([^\/]+\/?)?)$/, 2, 'audio']
+				},
+
+				addClickContext = function(context) {
+					context.click(function() {
+						$(this).next().toggle();
+						return false;
+					});
+				},
+
+				getYouTubeDivContent = function(url) {
+					return $('<div style="display:none; margin-top: 10px; width: 100%; height: auto;"><iframe width="590" height="332" frameborder="0" src="' + url + '" allowfullscreen></iframe></div>');
+				},
+
+				getVimeoDivContent = function(url) {
+					return $('<div style="display:none; margin-top: 10px; width: 100%; height: auto;"></div>').html(new FlashWriter(url + '&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=00adef&amp;fullscreen=1&amp;autoplay=0&amp;loop=0', 590, 332).ToString());
+				},
+
+				getSoundCloudDivContent = function(content, width, height) {
+					return $('<div style="display:none; margin-top: 10px; width: 100%; height: ' + height + 'px;">' + content + '</div>');
+				},
+
+				throwIEDebugDiv = function(xhr, statusText, errorText) {
+					return $('<div style="display:none;">' + errorText + '</div>');
+				},
+
+				insertDiv = function(key, identifier, mycontext) {
+					switch(key) {
+						case 'youtube':
+							mydiv = getYouTubeDivContent('http://www.youtube.com/embed/' + identifier);
+							mycontext.after(mydiv);
+							addClickContext(mycontext);
+
+							break;
+
+						case 'vimeo':
+							mydiv = getVimeoDivContent('http://vimeo.com/moogaloop.swf?clip_id=' + identifier);
+							mycontext.after(mydiv);
+							addClickContext(mycontext);
+
+							break;
+
+						case 'soundcloud':
+							$.ajax({
+								url: 'http://soundcloud.com/oembed?format=json&show_artwork=false&iframe=false&url=http://' + identifier,
+								type: 'get',
+								context: mycontext,
+								dataType: 'json',
+
+								success: function(mydata) {
+									mydiv = getSoundCloudDivContent(mydata.html.toString().replace(/\s*<span>.*<\/span>/, ''), mydata.width, mydata.height);
+									mycontext.after(mydiv);
+									addClickContext(mycontext);
+								}
+							});
+
+							break;
+
+						default:
+							console.log('Bad site');
+							break;
+					}
+				}
+			;
+
+
+			$(this).each(function() {
+				mylink = $(this);
+
+				for (var key in sites) {
+					if (sites.hasOwnProperty(key)) {
+						result = mylink.attr('href').match(sites[key][0]);
+
+						if (result) {
+							insertDiv(key.toString(), result[sites[key][1]], mylink);
+						}
+					}
+				}
+			});
+
+			return this;
+
+		};
+
+	})();
+
+})(jQuery);
+
+// 45 fps - tweak this to strike a balance between smooth animations and performance
+jQuery.fx.interval = 1 / 45 * 1000;
+
+jQuery.noConflict();
+
+/*jshint browser: true, prototypejs: true, boss: true, evil: true */
+
+/*global
+	PHP: true,
+	NiGhtBox: true,
+	CheckCharsRemaining: true,
+	CheckCharsRemainingInElem: true,
+	StopCharsRemaining: true,
+	GetElement: true,
+	StepAnimation: true,
+	EndAnimation: true,
+	SetElementHTML: true,
+	MakeButtonsDead: true,
+	MakeButtonsLive: true,
+	GetButtons: true,
+	GetHeader: true,
+	NgXmlDom: true,
+	console: false, ActiveXObject: false, ShockwaveFlash: false, cpmStar: false
+*/
+
+function RunSearch(searchname, type)
+{
+	// Prevent messing with this
+	if(type != "portal" && type != "audio")
+	{
+		return;
+	}
+
+	// First make sure the search terms aren't blank
+	var
+		terms_element = document.getElementById(searchname + "_terms"),
+		terms = terms_element.value
+	;
+
+	if(! terms.value)
+	{
+		alert("Please enter your search terms.");
+		terms_element.focus();
+		return;
+	}
+
+	// Let's also manually escape "/" if it's in the terms
+	terms = terms.replace(/\//, "%1b");		// %1b = ESC in ASCII
+
+	// Ready to go - run the search
+	window.location.href = "http://redirect.ngfiles.com/" + type + "/search/" + SelectValue(document.getElementById(searchname + "_type")) + "/" + terms;
+}
+
+function NewWindow(url, height, width, myname)
+{
+	if(typeof myname == "undefined")
+	{
+		myname = "newwin" + GetRandomNumber(1000000, 9999999);
+	}
+
+	var winprops = 'height=' + height + ',width=' + width + ',top=' + ((screen.height - height) / 2) + ',left=' + ((screen.width - width) / 2) + ',status=yes,scrollbars=yes,resizable=yes,toolbar=no,location=no,menubar=no';
+
+	var win = window.open(url, myname, winprops);
+	win.window.focus();
+	return win;
+}
+
+function Reload()
+{
+	// This is better than calling window.reload()
+	window.location.href = window.location.href;
+}
+
+// Check whether a given number is an integer.
+function IsValidInteger(num)
+{
+	return num.length && !(/[^0-9]+/.exec(num));
+}
+
+// Takes a regular expression or regular string.
+function CountOccurences(val, expr)
+{
+	var parts = val.split(expr);
+	return parts.length-1;
+}
+
+// Let's get rid of whitespace.
+function Trim(text)
+{
+	return String(text).replace(/(^\s*|\s*$)/g, "");
+}
+
+function Round(num, precision)
+{
+	if(typeof precision == "undefined")
+	{
+		precision = 0;
+	}
+
+	var multiplier = Math.pow(10, precision);
+
+	return Math.round(num * multiplier) / multiplier;
+}
+
+// Utility function to get the value of a <select> element
+function SelectValue(select)
+{
+	if(typeof select == "string")		// Assume this is the id of the select object
+	{
+		return SelectValue(document.getElementById(select));
+	}
+	else if(typeof select == "object")	// Assume this is the select object itself
+	{
+		return select.options[select.selectedIndex].value;
+	}
+	else								// Eh... ?!?
+	{
+		alert("Don't know how to do a SelectValue on " + select);
+		return null;
+	}
+}
+
+// Utility function to get the value of a radio button
+function GetRadioValue(form_name, radio_name)
+{
+	var radio = document.forms[form_name].elements[radio_name], i;
+
+	for(i=0; i<radio.length; i++)
+	{
+		if(radio[i].checked)
+		{
+			return radio[i].value;
+		}
+	}
+
+	return null;
+}
+
+// This function has proved expensive for slow computers, so let's try unrolling it.
+function FormatNumber(num)
+{
+	num = num.toString();
+	var len = num.length;
+
+	if(len <= 3)
+	{
+		return num;
+	}
+	else if(len <= 6)
+	{
+		return num.substring(0, len - 3) + "," + num.substring(len - 3, len);
+	}
+	else if(len <= 9)
+	{
+		return num.substring(0, len - 6) + "," + num.substring(len - 6, len - 3) + "," + num.substring(len - 3, len);
+	}
+	else if(len <= 12)
+	{
+		return num.substring(0, len - 9) + "," + num.substring(len - 9, len - 6) + "," + num.substring(len - 6, len - 3) + "," + num.substring(len - 3, len);
+	}
+	else	// We can only handle numbers up to 999,999,999,999
+	{
+		return -1;
+	}
+}
+
+function GetRandomNumber(low, high)
+{
+	return Math.floor((Math.random() * (high - low + 1)) + low);
+}
+
+function GetPercentage(part, total)
+{
+	if(!part)
+	{
+		return 0;
+	}
+
+	return FormatNumber( part/total * 100 );
+}
+
+function HandleClick(element_name)
+{
+	var this_element = document.getElementById(element_name);
+	if(this_element.disabled)
+	{
+		return;
+	}
+
+	if(this_element.type == "checkbox")
+	{
+		this_element.checked = !(this_element.checked);
+	} else if(this_element.type == "radio")
+	{
+		this_element.checked = true;
+	}
+}
+
+/* HTML FUNCTIONS */
+
+// If remaining_char_count_elem is not given,
+// Assumes there's a span/div id identical to that of the textarea, with the exception that its name has "_chars_remaining"
+// appended to it. So, the textarea might be called 'body' and the span/div id would be called 'body_chars_remaining'
+// Usage: <textarea ... onkeyup="CharactersRemaining(this);" onkeydown="CharactersRemaining(this);" onchange="CharactersRemaining(this);">
+function CharactersRemaining(textarea, maxnum, remaining_char_count_elem)
+{
+  if (PHP.get('DEBUG') && !textarea) {
+    if (window.console && console.log){
+      console.log("missing textarea for CharsRemaining() in ng.js");
+    }
+    return;
+  }
+	var chars_remaining = maxnum - textarea.value.length;
+	if(chars_remaining < 0)
+	{
+		textarea.value = textarea.value.substring(0, maxnum);
+		chars_remaining = 0;
+	}
+
+	if (!remaining_char_count_elem) {
+		remaining_char_count_elem = document.getElementById(textarea.id + "_chars_remaining");
+	}
+
+	remaining_char_count_elem.innerHTML = FormatNumber(chars_remaining);
+}
+
+// Like above, but we have to have _chars_remaining_minus_html
+function CharactersRemainingMinusHTML(textarea, maxnum, maxnumminushtml)
+{
+	CharactersRemaining(textarea, maxnumminushtml);
+
+	var chars_remaining = maxnum - textarea.value.replace(/<\/?(a|i(ns)?|b|u|em|strong).*?>/ig, '').length;
+	if(chars_remaining < 0)
+	{
+		chars_remaining = 0;
+	}
+
+	document.getElementById(textarea.id + "_chars_remaining_minus_html").innerHTML = FormatNumber(chars_remaining);
+}
+
+(function () {
+
+	// Use this to kick off our chars remaining stuff.  Recalculating on each keypress is too intensive.
+	var chars_remaining_timeouts = [];
+
+	CheckCharsRemaining = function (id, max_chars, max_chars_minus_html)
+	{
+		if(max_chars_minus_html > 0)
+		{
+			CharactersRemainingMinusHTML(document.getElementById(id), max_chars, max_chars_minus_html);
+		}
+		else
+		{
+			CharactersRemaining(document.getElementById(id), max_chars);
+		}
+
+		chars_remaining_timeouts[id] = setTimeout("CheckCharsRemaining('" + id + "', " + max_chars + ", " + max_chars_minus_html + ")", 1500);
+	};
+
+	CheckCharsRemainingInElem = function (id_or_elem, max_chars, max_chars_minus_html, remaining_char_count_elem)
+	{
+		var
+			elem = $(id_or_elem),
+			check_chars
+		;
+
+		if (max_chars_minus_html > 0) {
+			check_chars = function () {
+				CharactersRemainingMinusHTML(elem, max_chars, max_chars_minus_html);
+			};
+		} else {
+			check_chars = function () {
+				CharactersRemaining(elem, max_chars, remaining_char_count_elem, remaining_char_count_elem);
+			};
+		}
+
+		check_chars();
+		chars_remaining_timeouts[elem.identify()] = setInterval(check_chars, 1500);
+	};
+
+	StopCharsRemaining = function (id)
+	{
+		clearTimeout(chars_remaining_timeouts[id]);
+	};
+
+})();
+
+function GetAge(month, day, year, nowmonth, nowday, nowyear)
+{
+	var age = nowyear-year;
+
+	if(month<nowmonth) {
+		age--;
+	} else if(month == nowmonth && day > nowday)
+	{
+		age--;
+	}
+
+	return age;
+}
+
+function CheckDate(month, day, year)
+{
+	var test_date = new Date(month + "/" + day + "/" + year);
+	if(test_date.getMonth() + 1 == month)
+	{
+		return true;
+	}
+	return false;
+}
+
+// Do we have an array element needle in haystack already?
+function InArray(needle, haystack) {
+	for (var i = 0, len = haystack.length; i < len; i++) {
+		if (needle == haystack[i]) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+function remove_value(needle, haystack) {
+	var index = jQuery.inArray(needle, haystack);
+	if (index >= 0) {
+		haystack.splice(index, 1);
+	}
+
+	return haystack;
+}
+
+// Utility function to take some HTML in a string and give back its DOM representation
+function DOMNodeFromHTML(html) {
+	var holder_node = Builder.node("div");
+	holder_node.innerHTML = html;
+
+	for(var i=0; i<holder_node.childNodes.length; i++)
+	{
+		if(holder_node.childNodes[i].nodeType == 1)		// 1 = element/tag
+		{
+			return(holder_node.childNodes[i]);
+		}
+	}
+
+	return(null);
+}
+
+// Function to scroll to an element within a page.
+function ScrollToElement(elementid)
+{
+	new Effect.ScrollTo(elementid);
+}
+
+// These are strictly for opening/closing review mod windows.
+var reviewmod_win;
+function OpenReviewModWindow(url)
+{
+	reviewmod_win = window.open("http://redirect.ngfiles.com" + url);
+}
+function CloseReviewModWindow()
+{
+	reviewmod_win.close();
+}
+
+// Class to handle animating text when all we're doing is adding dots on the end (like "Deleting...")
+function DotAnimatedText(element_name, animate_class)
+{
+	var
+		// Constants
+		NUM_ANIMATION_DOTS = 5,					// Max number of dots to animate
+		ANIMATION_CYCLE_TIME = 0.5,				// How many seconds should it take to animate all the dots?
+
+		// Private variables
+		timeout_handle = null,					// Handle to the next animation step
+		dot_count = 1,							// Used to increment the dots in our animation
+		animation_text = "",					// Gets set when we kick off the animation
+		original_animation_html = "",			// Store the text we're starting with
+		add_class = (typeof animate_class == "string"),
+		element = null
+	;
+
+	this.Start = function(text_to_animate)
+	{
+		original_animation_html = GetElement().innerHTML;
+		animation_text = text_to_animate;
+		StepAnimation();
+	};
+
+	this.Stop = function()
+	{
+		// Clear any pending animations
+		EndAnimation();
+
+		// Restore our original text
+		SetElementHTML(original_animation_html);
+	};
+
+	function StepAnimation()
+	{
+		var newtext = "";
+
+		if(add_class)
+		{
+			newtext += "<span class=\"" + animate_class + "\">";
+		}
+
+		newtext += animation_text;
+
+		// Build the text with the correct number of dots
+		for(var i=1; i<=dot_count; i++)
+		{
+			newtext += ".";
+		}
+
+		// Increment the dot counter
+		dot_count++;
+		if(dot_count > NUM_ANIMATION_DOTS)
+		{
+			dot_count = 1;
+		}
+
+		if(add_class)
+		{
+			newtext += "</span>";
+		}
+
+		// Stick the text back out there
+		SetElementHTML(newtext);
+
+		// Set a timer to call ourselves later
+		timeout_handle = setTimeout(StepAnimation, (ANIMATION_CYCLE_TIME / NUM_ANIMATION_DOTS) * 1000);
+	}
+
+	function GetElement()
+	{
+		return $(element_name);
+	}
+
+	this.getElement = function ()
+	{
+		return GetElement();
+	};
+
+	function SetElementHTML(html)
+	{
+		var element = GetElement();
+		if(element)
+		{
+			element.innerHTML = html;
+		}
+		else
+		{
+			// This means we tried to set the HTML of an element that's now gone.
+			// Simply kill our animation (if necessary) and go home.
+			EndAnimation();
+		}
+	}
+
+	function EndAnimation()
+	{
+		if(timeout_handle)
+		{
+			clearTimeout(timeout_handle);
+			timeout_handle = null;
+		}
+	}
+}
+
+// Class for doing "in progress" animations in box headers
+function HeaderAnimator(element_id, animation_text)
+{
+	var
+		// ================ CONSTANTS ================
+		ANIMATION_CLASSNAME = "i-activity",		// The class we apply while the animation is happening
+
+		// ================ PRIVATE variables ================
+		animation_running = false,				// Is the "Leaving Comment..." animation running?
+		button_link_html = [],			// The HTML from the link inside our button
+		button_classes = [],			// All buttons don't have the same class
+		animated_text = new DotAnimatedText(element_id + "_header"),
+
+		GetHeader,
+
+		// This is the original stuff (pre-animation) text that appears in the header
+		original_text = GetHeader().firstChild.data,
+		original_classname = GetHeader().className,
+
+		// // Let's try to force a pre-load of the activity image that the CSS uses
+		activity_image = new Image()
+	;
+
+	activity_image.src = "http://img.ngfiles.com/hicons/i67.gif";		// Referenced in the i-activity class
+
+	// ================ PUBLIC functions ================
+	this.Start = function(text_to_animate)
+	{
+		if(!(animation_running))
+		{
+			animation_running = true;
+
+			// Let's see if they're passing in the text to animate here
+			if(typeof text_to_animate == "string")
+			{
+				animation_text = text_to_animate;
+			}
+
+			// This kicks off our dot animation
+			animated_text.Start(animation_text);
+
+			// Swap in the hourglass image
+			GetHeader().className = ANIMATION_CLASSNAME;
+
+			// Deactivate the button
+			MakeButtonsDead();
+		}
+	};
+
+	this.Stop = function()
+	{
+		if(animation_running)
+		{
+			animation_running = false;
+
+			// Stop any running animation
+			animated_text.Stop();
+
+			// Swap back in the original icon image
+			GetHeader().className = original_classname;
+
+			// Make the button clickable again
+			MakeButtonsLive();
+		}
+	};
+
+	// ================ PRIVATE functions ================
+	function MakeButtonsLive()
+	{
+		var button_elements = GetButtons();
+		var button;
+
+		for(var i=0; i<button_elements.length; i++)
+		{
+			button = button_elements[i];
+
+			// Replace the dead button guts with the live one
+			button.innerHTML = button_link_html[i];
+			button.className = button_classes[i];
+		}
+	}
+
+	function MakeButtonsDead()
+	{
+		var button_elements = GetButtons();
+		var button;
+
+		for(var i=0; i<button_elements.length; i++)
+		{
+			button = button_elements[i];
+
+			// Store the old button link
+			button_link_html[i] = button.innerHTML;
+			button_classes[i] = button.className;
+
+			// Now replace the live button guts with the dead one
+			button.innerHTML = "<span>" + button.firstChild.innerHTML + "</span>";
+			button.className = "btn dead";
+		}
+	}
+
+	GetHeader = function () {
+		return document.getElementById(element_id + "_header");
+	};
+
+	function GetButtons()
+	{
+		var
+			all_spans = GetHeader().parentNode.getElementsByTagName("span"),
+			buttons = [],
+			i
+		;
+
+		for(i=0; i<all_spans.length; i++)
+		{
+			if(/_button$/.test(all_spans[i].id))
+			{
+				buttons[buttons.length] = all_spans[i];
+			}
+		}
+
+		return buttons;
+	}
+}
+
+// Function for adding and immediately removing a space to some text.  Forces the browser to re-render stuff.
+function AddRemoveSpace(element)
+{
+	if(typeof element.value == "string")	// For form elements
+	{
+		element.value += " ";
+		element.value = element.value.substring(0, element.value.length - 1);
+	}
+	else					// Normal text embedded in the page
+	{
+		element.firstChild.data += " XYZ";
+		element.firstChild.data = element.firstChild.data.substring(0, element.firstChild.data.length - 4);
+	}
+}
+
+// Use this to properly write out the HTML for any Flash.
+function FlashWriter(url, width, height)
+{
+	var
+		LookForFlashPlugin = function () {
+			var flash_versions = 12, x;
+
+			// Code swiped from http://www.dangrossman.info/2007/01/03/detecting-flash-and-java-with-javascript/
+			if (navigator.plugins && navigator.plugins.length) {
+				// Netscape style plugin detection
+				for (x = 0; x <navigator.plugins.length; x++) {
+					if (navigator.plugins[x].name.indexOf('Shockwave Flash') != -1) {
+						return(true);
+					}
+				}
+			} else if (window.ActiveXObject) {
+				// ActiveX style plugin detection
+				for (x = 2; x <= flash_versions; x++) {
+					try {
+						// oFlash = eval("new ActiveXObject('ShockwaveFlash.ShockwaveFlash." + x + "');");
+						var oFlash = new ActiveXObject(ShockwaveFlash.ShockwaveFlash[x]);
+						if (oFlash) {
+							return true;
+						}
+					}
+					catch(e) { }
+				}
+			}
+
+			return(false);
+		},
+
+		// Options here are "window", "opaque", and "transparent"
+		DEFAULT_WINDOW_SETTING = "window",
+
+		// Defaults for optional stuff below
+		quality = "high",
+		id = "flash" + GetRandomNumber(1000000, 9999999),
+		wmode = DEFAULT_WINDOW_SETTING,
+		script_access = "sameDomain",
+		allow_fullscreen = "false",
+		fullscreen_on_selection = "false",
+
+		params = null,
+		has_flash = LookForFlashPlugin()
+	;
+
+	this.SetQuality = function (new_quality) {
+		quality = new_quality;
+	};
+
+	this.SetID = function (new_id) {
+		id = new_id;
+	};
+
+	this.SetTransparent = function (is_transparent) {
+		wmode = is_transparent ? "transparent" : DEFAULT_WINDOW_SETTING;
+	};
+
+	this.SetOpaque = function (is_opaque) {
+		wmode = is_opaque ? "opaque" : DEFAULT_WINDOW_SETTING;
+	};
+
+	this.SetDirect = function (is_direct) {
+		wmode = is_direct ? 'direct' : DEFAULT_WINDOW_SETTING;
+	};
+
+	this.SetFullScreen = function (fullscreen) {
+		allow_fullscreen = fullscreen ? "true" : "false";
+	};
+
+	this.SetFullScreenOnSelection = function (fullscreen) {
+		fullscreen_on_selection = fullscreen ? "true" : "false";
+	};
+
+	this.SetScriptAccess = function (new_script_access) {
+		script_access = new_script_access;
+	};
+
+	this.SetParams = function (new_params) {
+		params = new_params;
+	};
+
+	this.ToString = function() {
+		var str = "";
+
+		if (has_flash) {
+			// join is supposedly faster than repeated concats, and it takes fewer characters
+			str = [
+				str,
+				'<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="' + width + '" height="' + height + '" id="' + id + '">',
+				'<param name="allowScriptAccess" value="' + script_access + '" />',
+				'<param name="allowFullScreen" value="' + allow_fullscreen + '" />',
+				'<param name="movie" value="' + url + '" /><param name="quality" value="' + quality + '" />',
+				'<param name="wmode" value="' + wmode + '" />',
+				'<param name="fullScreenOnSelection" value="' + fullscreen_on_selection + '" />'
+			].join('');
+
+			if (params) {
+				// IE needs this
+				str += '<param name="flashvars" value="' + params + '" />';
+			}
+
+			str += '<embed src="' + url + '" quality="' + quality + '" ';
+
+			if (params) {
+				// Non-IE browsers need this
+				str += 'flashvars="' + params + '" ';
+			}
+
+			str = [
+				str,
+				'wmode="' + wmode + '" width="' + width + '" height="' + height + '" name="' + id + '" allowScriptAccess="' + script_access +'" ',
+				'fullScreenOnSelection="' + fullscreen_on_selection + '" ',
+				'allowFullScreen="' + allow_fullscreen + '" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />',
+				'</object>'
+			].join('');
+		} else {
+			str += '<p style="text-align: center; margin-top: 2em; margin-bottom: 2em; padding-top: 3em; padding-bottom: 3em; background: #333333">You don\'t appear to have <a target="_blank" href="http://getflash.ngfiles.com">Flash</a> installed. <a target="_blank" href="http://getflash.ngfiles.com">Click here</a> to get it (it\'s free).</p>';
+		}
+
+		return str;
+	};
+
+	this.Print = function () {
+		document.write(this.ToString());
+	};
+}
+
+/*
+Class to handle checkbox items for our checkbox element controls.
+Assumes that the checkboxes have ids of prefix + NUM, where NUM is 0 through
+total elements.
+*/
+
+// There's really no reason to have to pass in total here - rewrite this at some point
+// FIXME: this can probably go away forever, double check first - JH
+function CheckboxItems(total, prefix)
+{
+	var
+		ids = [],
+		keys = []
+	;
+
+	// Returns a checkbox element, with the given id.
+	function GetElement(id)
+	{
+		return document.getElementById(prefix +  id);
+	}
+
+	// Sets any checked boxes to unchecked and vice-versa
+	this.ToggleAll = function()
+	{
+		// Clear out the ids
+		ids = [];
+		keys = [];
+
+		// Set out temporary values.
+		var is_checked,
+			is_disabled,
+			element;
+
+		for(var i=0; i<total; i++)
+		{
+			element = GetElement(i);
+
+			is_checked = element.checked;
+			is_disabled = element.disabled;
+
+			if(!is_checked && !is_disabled)
+			{
+				// We add it into our list of ids (and keys), since it is about to get checked.
+				keys[keys.length] = i;
+				ids[ids.length] = element.value;
+			}
+
+			if(!is_disabled)
+			{
+				element.checked = !is_checked;
+			}
+		}
+	};
+
+	// We need this for our global list of ids, so if it's checked then we
+	// need to know about it.
+	this.Toggle = function(id)
+	{
+		var element = GetElement(id), i;
+
+		if(element.checked && !InArray(element.value, ids))
+		{
+			// We bang it straight in here.
+			keys[keys.length] = id;
+			ids[ids.length] = element.value;
+		} else
+		if(!element.checked && InArray(element.value, ids))
+		{
+			// We were previously checked by our toggle button.
+			for(i=0; i<total; i++)
+			{
+				if(element.value == ids[i])
+				{
+					keys.splice(i, 1);
+					ids.splice(i, 1);
+					break;
+				}
+			}
+		}
+	};
+
+	// Clears all checkbox elements, even if previously unchecked.
+	this.ClearAll = function()
+	{
+		ids = [];
+		keys = [];
+
+		for(var i=0; i<total; i++)
+		{
+			GetElement(i).checked = false;
+		}
+	};
+
+	// Selects all checkbox elements, whether previously checked or not.
+	this.SelectAll = function()
+	{
+		ids = [];
+		keys = [];
+
+		for(var i=0; i<total; i++)
+		{
+			GetElement(i).checked = true;
+			keys[keys.length] = i;
+			ids[ids.length] = GetElement(i).value;
+		}
+	};
+
+	this.Enable = function()
+	{
+		for(var i=0; i<total; i++)
+		{
+			GetElement(i).disabled = false;
+		}
+	};
+
+	this.Disable = function()
+	{
+		for(var i=0; i<total; i++)
+		{
+			GetElement(i).disabled = true;
+		}
+	};
+
+	this.GetKey = function(num)
+	{
+		return keys[num];
+	};
+
+	this.GetKeys = function()
+	{
+		return keys;
+	};
+
+	this.GetID = function(num)
+	{
+		return ids[num];
+	};
+
+	this.GetIDS = function()
+	{
+		return ids;
+	};
+
+	this.IsToggled = function()
+	{
+		return ids.length > 0;
+	};
+
+	this.GetNumChecked = function()
+	{
+		return ids.length;
+	};
+}
+
+// instantiate holder for PHP variables
+var PHP = (function () {
+	var vars = {};
+
+	return {
+		get : function (var_name, default_value) {
+			return PHP.has(var_name) ? vars[var_name] : default_value;
+		},
+
+		set : function (var_name, value) {
+			return (vars[var_name] = value);
+		},
+
+		has : function (var_name, value) {
+			return typeof vars[var_name] !== 'undefined';
+		},
+
+		// var_name is an array, and we'return pushing value onto it
+		add : function (var_name, value) {
+			if (!PHP.has(var_name)) {
+				PHP.set(var_name, []);
+			}
+
+			return vars[var_name].push(value);
+		},
+
+		// takes a list of key => value pairs, in the form of { key1: value1, key2: value2, ... }
+		// wanted to call it "import", but that is an obscure keyword in javascript
+		merge : function (obj) {
+			for (var key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					PHP.set(key, obj[key]);
+				}
+			}
+		}
+	};
+})();
+
+var NiGhtBox = (function ($) {
+	var
+		blackout_class = 'blackout-on',
+		no_dimming_class = 'nodimming',
+		visibility = 'visibility',
+		KEY_ESC = 27, // key code for escape
+		elem, height, loading,
+		no_dim_elem,
+		ads, blackout, blackout_center,
+		visible = false,
+		hide_on_esc = true,
+
+		getAds = function () {
+			if (!ads) ads = $('.adunit');
+
+			return ads;
+		},
+
+		hideAds = function () {
+			getAds().css(visibility, 'hidden');
+		},
+
+		showAds = function () {
+			getAds().css(visibility, 'visible');
+		},
+
+		escHandler, // putting this here for jshint's benefit
+
+		updateEscListener = function () {
+			if (hide_on_esc && visible) {
+				$('body').keydown(escHandler);
+			} else {
+				$('body').unbind('keydown', escHandler);
+			}
+		}
+	;
+
+	escHandler = function (e) {
+		if (e.which == KEY_ESC) {
+			NiGhtBox.hide();
+			updateEscListener();
+
+			return false;
+		}
+	};
+
+	return {
+		init: function () {
+			blackout = $('#blackout');
+			blackout_center = $('#blackout_center');
+
+			return NiGhtBox;
+		},
+
+		load: function (elem, elem_height, afterLoad) {
+			if (!blackout || !blackout_center) NiGhtBox.init();
+
+			loading = true;
+			elem.detach();
+
+			blackout_center.append(elem).loaded(function () {
+				// if passed a function for the height, evaluate it now
+				if (typeof elem_height === 'function') {
+					height = elem_height(blackout_center, blackout);
+				} else {
+					height = elem_height;
+				}
+
+				loading = false;
+
+				if (afterLoad) afterLoad();
+			});
+
+			return NiGhtBox;
+		},
+
+		show: function (element) {
+			if (!blackout || !blackout_center) NiGhtBox.init();
+			element = element ? $.$(element) : blackout_center.down();
+
+			var win_height, scroll;
+
+			// center element
+			if (element) {
+				// try to find height
+				if (!height) {
+					height = element.height();
+				}
+
+				if (height) {
+					scroll = Math.max($('html').scrollTop(), $(window).scrollTop());
+					win_height = $(window).height();
+
+					// don't show top of box above top of screen
+					if (height > win_height) {
+						blackout_center.css('margin-top', scroll + 'px');
+					} else {
+						blackout_center.css('margin-top', scroll + (win_height - height) / 2 + 'px');
+					}
+				} else {
+					$(element).addClass();
+				}
+			}
+
+			hideAds();
+
+			// show it
+			blackout.addClass(blackout_class);
+			blackout.show();
+			if (element) {
+				element.show();
+			}
+			visible = true;
+
+			if (hide_on_esc) updateEscListener();
+
+			return NiGhtBox;
+		},
+
+		hide: function () {
+			showAds();
+			blackout.removeClass(blackout_class);
+
+			visible = false;
+
+			if (hide_on_esc) updateEscListener();
+
+			return NiGhtBox;
+		},
+
+		toggle: function (element) {
+			if (!blackout || !blackout_center) NiGhtBox.init();
+
+			if (blackout.hasClass(blackout_class)) {
+				return NiGhtBox.hide();
+			} else {
+				return NiGhtBox.show(element);
+			}
+		},
+
+		// return boolean
+		visible: function () {
+			return visible;
+		},
+
+		// control whether ESC backs out of NiGhtBox
+		hideOnEsc: function (bool) {
+			hide_on_esc = bool;
+			updateEscListener();
+
+			return NiGhtBox;
+		}
+	};
+
+})(jQuery);
+
+/**
+ * Validate form fields
+ *
+ * @param form mixed The form element, or a selector to it
+ * @param validations object See examples
+ *
+ * Here is an example:
+ *
+ * {
+ *   require: [
+ *     { name: 'review_body', msg: 'Bad body' },
+ *     { name: 'review_stars', msg: 'Give stars!' }
+ *   ],
+ *
+ *   regex: [
+ *     { name: 'review_body', regex: /^[^<>#\\]*$/, msg: 'Bad body' }
+ *   ]
+ * }
+ *
+ * Here is the same example, with the alternate, more concise syntax:
+ *
+ * {
+ *   require: [
+ *     ['review_body', 'Bad body' ],
+ *     ['review_stars', 'Give stars!']
+ *   ],
+ *
+ *   regex: [
+ *     ['review_body', /^[^<>#\\]*$/, 'Bad body']
+ *   ]
+ * }
+ *
+ * Expanded to include 'require', 'regex', 'min_length', 'max_length',
+ * 'checked' and 'equals'.
+ *
+ */
+var NgFormValidator = function (the_form, validations) {
+	var
+		inputs,
+		errors = [],
+		$ = jQuery,
+		form
+	;
+
+	form = $(the_form);
+
+	if (!form.length) {
+		throw 'Form not found in NgFormValidator()';
+	}
+
+	var
+		failed = function (validation) {
+			errors.push({
+				name: validation.name || validation[0],
+				msg: validation.msg || validation[validation.length - 1]
+			});
+		},
+
+		hasError = function (name) {
+			return $.any(errors, function (err) {
+				return name == err.name;
+			});
+		},
+
+		checkValidation = function (type, validation, inputs) {
+			// find input by name
+			var
+				name = validation.name || validation[0],
+				input = inputs.filter("[name='" + name + "']"),
+				val,
+				passed
+			;
+
+			// disabled or nonexistent field automatically validates
+			if (input.length === 0) {
+				return true;
+			} else if (input.length === 1) {
+				val = input.val();
+			} else {
+				val = input.filter(':checked').first().val();
+			}
+
+			// handle error if input does not exist
+			// FIXME: some checkboxes are only available when the user has
+			// not agreed to something in the past.
+			if (PHP.get('DEBUG') && !input.exists() && type !== 'checked') {
+				throw 'Required input does not exist: ' + name;
+			}
+
+			switch (type) {
+			case 'require':
+				passed = val && val.length;
+				break;
+			case 'regex':
+				passed = !val || val.match(validation.regex || validation[1]);
+				break;
+			case 'min_length':
+				passed = val && val.length >= (validation.length_requirement || validation[1]);
+				break;
+			case 'max_length':
+				passed = !val || val.length <= (validation.length_requirement || validation[1]);
+				break;
+			case 'checked':
+				passed = !input.exists() || input.is(':checked');
+				break;
+			// checks to see whether one input is the same value as the one specified
+			case 'equals':
+				passed = !val || val === inputs.filter("[name='" + (validation.second_value || validation[1]) + "']").val();
+				break;
+
+			default:
+				throw 'Unknown validation type: ' + type;
+			}
+
+			if (!passed) {
+				failed(validation);
+			}
+		},
+
+		dependenciesValid = function (validator) {
+			if (validator.depends && !$.isArray(validator.depends)) {
+				throw "'depends' property of validator must be an array";
+			}
+
+			return !validator.depends || !$.any(validator.depends, function (name) {
+				return hasError(name);
+			});
+		}
+	;
+
+	this.validate = function () {
+		errors = []; // discard errors from previous attempt
+		inputs = form.find('input:enabled, textarea:enabled, select:enabled');
+
+		if (inputs && inputs.length) {
+			$.each(validations, function (type, validation_list) {
+				var len = validation_list.length;
+
+				for (var i = 0; i < len; ++i) {
+					if (dependenciesValid(validation_list[i])) {
+						checkValidation(type, validation_list[i], inputs);
+					}
+				}
+			});
+		} else if (PHP.get('DEBUG')) {
+			if (window.console && console.log){
+				console.log('no inputs found');
+			}
+		}
+
+		return errors.length === 0;
+	};
+
+	this.getErrors = function () {
+		return errors;
+	};
+
+	this.isValid = function () {
+		return errors.length === 0;
+	};
+
+	this.getErrorMessages = function () {
+		var msgs = [];
+		for (var i = errors.length - 1; i >= 0; --i) {
+			msgs.push(errors[i].msg);
+		}
+
+		return $.nub(msgs);
+	};
+
+	this.getFailedInputs = function () {
+		var failures = [];
+
+		for (var i = errors.length - 1; i >= 0; --i) {
+			failures.push(errors[i].name);
+		}
+
+		return failures;
+	};
+
+	// gets the first field that failed to focus (useful on big forms, where
+	// the page is scrolled down to the submit button and the error occured
+	// much further up the page) OR to a specified input
+	this.sendFocusTo = function (input_name) {
+		if (typeof input_name === 'undefined') {
+			inputs.filter("[name='" + (errors.pop().name) + "']").focus();
+		} else {
+			if (PHP.get('DEBUG') && !inputs.filter("[name='" + input_name + "']").exists()) {
+				throw 'Cannot focus on this, as it does not exist: ' + input_name;
+			}
+
+			inputs.filter("[name='" + input_name + "']").focus();
+		}
+	};
+};
+
+
+NgFormValidator.prototype.inform = function () {
+	// tell user about errors
+	// this should be overriden, or rewritten, to create different methods of informing user
+	alert(this.getErrorMessages().join("\n"));
+};
+
+/**
+ * Loosely coupled version of some code in AjaxHandler
+ */
+NgXmlDom = function(response) {
+	this._xml = response;
+};
+NgXmlDom.prototype = {
+	isValidDom: function () {
+		if (this._is_valid_dom === undefined) {
+			this._is_valid_dom = this._xml && this._xml.documentElement;
+		}
+
+		return this._is_valid_dom;
+	},
+
+	getXml: function () {
+		return this._xml;
+	},
+
+	getField: function (tag_name) {
+		if (this.isValidDom()) {
+			// Now check for this specific field
+			var node_list = this._xml.documentElement.getElementsByTagName(tag_name);
+			if (node_list && node_list.length == 1 && node_list[0].firstChild) {
+				return node_list[0].firstChild.data;
+			}
+		}
+	},
+
+	hasField: function (tag_name) {
+		if (this.isValidDom()) {
+			var node_list = this._xml.documentElement.getElementsByTagName(tag_name);
+			return node_list && node_list.length == 1 && node_list[0].firstChild;
+		}
+	},
+
+	STATUS_ERROR        : 0,
+	STATUS_SUCCESS      : 1,
+	STATUS_ERROR_SILENT : 2,
+
+	validate: function(error_handler) {
+		var response_status = this.getField('status');
+
+		if (!response_status && 0 !== response_status) {
+			alert('Server error.  Please wait a moment and try again.');
+
+			if (error_handler) {
+				error_handler(this);
+			}
+
+			return false;
+		} else {
+			switch (parseInt(response_status, 10)) {
+			case this.STATUS_SUCCESS:
+				return true;
+			case this.STATUS_ERROR:
+				alert('Error - ' + this.getField('errormsg'));
+
+				if (error_handler) {
+					error_handler(this);
+				}
+
+				return false;
+			case this.STATUS_ERROR_SILENT:
+				return false;
+			}
+		}
+	}
+};
+
+// select box styles require JS to update their "facade" element
+function enableSelectFacades() {
+	var
+		$ = jQuery,
+		showSelected = function (select) {
+			var $select = $(select);
+			$select.prev().text($select.getSelected().text());
+			// more reliable, maybe: jQuery(search_type_select).parent().find('span.fakeselecttext').text(selected_option.text());
+		},
+		select_event_handler = function () {
+			showSelected(this);
+		}
+	;
+
+	// onchange, update the facade span with the new text
+	$('div.select select')
+		.off('change', select_event_handler)
+		.on('change', select_event_handler)
+		.off('keyup', select_event_handler)
+		.on('keyup', select_event_handler)
+		// keydown is necessary for auto-repeat, when you hold the arrow key down
+		.off('keydown', select_event_handler)
+		.on('keydown', select_event_handler)
+		// initialize facade spans
+		.Each(showSelected)
+		;
+}
+
+// Initializations - these should go in another file probably
+jQuery(function($) {
+	var
+		init_fp_web_features = function () {
+			var feature_link = function (cpm) {
+				return '<li><a href="' + cpm.getLink() +
+					'"><img title="" alt="Ad Icon" src="' + cpm.getImageUrl(70,70) +
+					'" width="70" height="39" /></a><div><div><div><a href="' + cpm.getLink() +
+					'">' + cpm.getTitle() +
+					'</a><span>' + cpm.getDescription(100) +
+					'</span></div></div></div></li>'
+				;
+			};
+
+			if (window.cpmStar) {
+				var
+					webfeature = $('div#webfeature'),
+					cpm_list = $('<ul class="centeredblocks webfeature"></ul>'),
+					num_ads = 8,
+					i
+				;
+
+				// append ads
+				for (i = num_ads - 1; i; --i) {
+					cpm_list.append(feature_link(cpmStar));
+					cpmStar.nextAd();
+				}
+				// this way we don't fetch an extra ad that we don't use
+				cpm_list.append(feature_link(cpmStar));
+
+				webfeature.append(cpm_list);
+			}
+		}
+	;
+
+	// generic jquery for adding nightbox and minimizing functionality to any pod on the page
+	$('div.podtop a.min')
+		.click(function(e) {
+			if ($(this).hasClass('ignore')) return false;
+
+			// using a single var statement reduces minified size
+			var
+				$this = $(this),
+				pt = $this.parentsUntil('div.podtop').parent().parent(),
+				podtop
+			;
+
+			podtop = $this.parents('div.podtop:first');
+			if (!podtop.hasClass('minimized')) podtop.addClass('minimized');
+
+			return false;
+		});
+
+	$('div.podtop a.max')
+		.click(function(e) {
+			if ($(this).hasClass('ignore')) return false;
+
+			var podtop = $(this).parents('div.podtop:first');
+			if (podtop.hasClass('minimized')) podtop.removeClass('minimized');
+
+			return false;
+		});
+
+	$('input[type="reset"]').click(function (e) {
+		return confirm('Are you sure you want to reset this form?');
+	});
+
+	/* FIXME: need to style select boxes, etc, on focus
+	$('div.select select').focus(function (e) {
+		$(this).up('div.select').css('border', '3px solid yellow');
+	}).blur(function (e) {
+		$(this).up('div.select').css('border', 'none');
+	});
+	*/
+
+	$('input[type="file"]').change(function (e) {
+		$(this).setUploadVal();
+	});
+
+	// disable submit buttons when form is submitted. Forms that need to re-enable
+	// the submit buttons will have to do so manually
+	// $('form').preventDoubleSubmit();
+
+	// style alternating rows in tables. This will be obsolete in CSS3
+	$('table.alternate tr:odd').addClass('alt');
+
+	// make IE obey label click
+	if (PHP.get('is_ie')) {
+		$('label').click(function (e) {
+			$('#' + e.closest('label').attr('for')).click();
+			e.preventDefault();
+		});
+	}
+
+	// header nav animations
+	(function () {
+		var
+			currently_shown,
+			animating = [],
+			hovering = false,
+			uniq = 0,
+			unanimate = function (uniq_id) { animating = remove_value(uniq_id, animating); },
+			not_animating = function (uniq_id) { return !InArray(uniq_id, animating); }
+		;
+
+		$('#header_nav > dl').each(function () {
+			this.my_dds = $(this).children('dd');
+			this.uniq = ++uniq;
+		}).mouseenter(function(e) {
+			var me = this.uniq, mine = this.my_dds;
+
+			hovering = me;
+
+			if (not_animating(me)) {
+				animating.push(me);
+
+				// currently_shown.slideUp('fast');
+				currently_shown = { dds: mine, uniq: me };
+
+				this.my_dds.slideDown(50, function () {
+					unanimate(me);
+
+					if (me !== hovering) {
+						mine.hide();
+					}
+				});
+			}
+
+			return false;
+		}).mouseleave(function(e) {
+			var me = this.uniq, mine = this.my_dds;
+
+			hovering = false;
+
+			if (not_animating(me)) {
+				animating.push(me);
+
+				this.my_dds.slideUp('fast', function () {
+					unanimate(me);
+
+					if (me === hovering) {
+						mine.show();
+					}
+
+				});
+			}
+
+			return false;
+		});
+	})();
+
+	// search
+	$('#topsearch').submit(function (e) {
+		e.preventDefault();
+		var search = $('#topsearch_text').val().replace('/', ' ');
+		var url =
+			PHP.get('search_urls')[$('#topsearch_type').getSelected().val()] + '/' +
+			encodeURIComponent(search)
+		;
+
+		document.location = url;
+	});
+
+	// put this somewhere else
+	var is_iphone_ipad_or_ipod = navigator.userAgent.toLowerCase().match(/(iphone|ipod|ipad)/);
+
+	// default text for login boxes
+	/*
+	var defaultInput = function (elem, text) {
+		elem.focus(function () {
+			if (elem.val() == text) elem.val('');
+		}).blur(function () {
+			if (! elem.val() ) elem.val(text);
+		}).blur();
+	};
+
+	defaultInput($('#username'), 'username');
+	// defaultInput($('#password'), 'password');
+	// this is a problem - the word "password" appears as bullets, not letters
+	// need to do some trick to change this. Boo.
+	*/
+
+	// HERE'S THE TRICK :D - JT
+	var label_username = $('#header_label_username');
+
+	if (label_username.length) { // cheap way to skip this if the user is logged in
+
+		var
+			label_password = $('#header_label_password'),
+			input_username = $('#username'),
+			input_password = $('#password'),
+			remember_me = $('#remember'),
+			// attempt at hack for apple's stuff
+
+			assignLabelAction = function(input, label) {
+				label.click(function() {
+					$(this).hide();
+					input.focus();
+				});
+			},
+
+			defaultLabel = function(input, label) {
+				var defaultIfEmpty = function() {
+					if (input.val()) {
+						label.hide();
+					} else {
+						label.show();
+					}
+				};
+
+				input
+					.focus(function() { label.hide(); })
+					.blur(defaultIfEmpty)
+					.blur();
+
+				// fix Chrome's broken autofill
+				setTimeout(defaultIfEmpty, 100);
+			};
+
+		defaultLabel(input_username, label_username);
+		defaultLabel(input_password, label_password);
+
+		if (is_iphone_ipad_or_ipod) {
+			assignLabelAction(input_username, label_username);
+			assignLabelAction(input_password, label_password);
+			remember_me.css('z-index', '9999');
+		}
+
+		remember_me.next('span').click(function() { remember_me.checked = !remember_me.checked; });
+	}
+
+	// for toggling banner ads on light dimming
+	var adcode_html = {};
+	var lights = true;
+
+	// generic jquery for adding nightbox and minimizing functionality to any pod on the page
+	$('.podtop').click(function(e) {
+		var link = $(e.closest('a'));
+		if (link.length) {
+			if (link.hasClass('dim')) {
+				NiGhtBox.toggle($(this).parent());
+
+				if (lights) {
+					lights = false;
+
+					$('div[id^="adcode_iframe_"]').each(function() {
+						var id = $(this).attr('id');
+						var html = $(this).html();
+						adcode_html[id] = html;
+						$(this).html("");
+					});
+
+				} else {
+					lights = true;
+
+					$('div[id^="adcode_iframe_"]').each(function() {
+						var id = $(this).attr('id');
+						var html = adcode_html[id];
+						$(this).html(html);
+					});
+
+					adcode_html = {};
+				}
+
+			} else if (link.hasClass('max')) {
+				$(this).removeClass('minimized');
+			} else if (link.hasClass('min')) {
+				link.addClass('minimized');
+			} else {
+				return;
+			}
+
+			e.preventDefault();
+		}
+	});
+
+	// workaround for FF autocomplete radio tag bug. See http://www.ryancramer.com/journal/entries/radio_buttons_firefox/
+	if ($.browser.mozilla) {
+		$('input[type="radio"]').attr('autocomplete', 'off');
+	}
+
+	enableSelectFacades();
+	init_fp_web_features();
+
+	// generic click checkboxes and radios to accommodate ipod/ipad/iphone users
+	$(document).ready(function() {
+
+		/*
+
+		areas covered here:
+
+			- generic GG login form
+			- PM inbox/sentbox
+			- user agreements (at least in the bbs, not tested elsewhere)
+			- bbs moderation radios
+
+		*/
+
+		var
+			prev,
+			elements_to_inspect = $('ul.checkboxes li span, table.pmlist tr td span, table#pending_requests tr td span')
+		;
+
+		//alert(navigator.userAgent.toString());
+		if (is_iphone_ipad_or_ipod) {
+			//elements_to_inspect.each(function() {
+			//	prev = $(this).prev('input');
+
+				//$(this).find('span label').css('background-position',  '0 -17px');
+				//alert($(this).down().html());
+
+				//$(this).down().css('background-position',  '0 -17px');
+				//alert('woot');
+				//$(this).down().css('background-position',  '0 0px');
+
+			//	if (prev.is('input[type="checkbox"]') || prev.is('input[type="radio"]')) {
+					//prev.css('z-index', '9999');
+					//prev.css('background-position',  '0 -17px');
+			//	}
+			//});
+
+			elements_to_inspect.click(function() {
+				prev = $(this).prev('input');
+
+				if (prev.is('input[type="checkbox"]') || prev.is('input[type="radio"]')) {
+					prev.get(0).checked = !prev.get(0).checked;
+					prev.get(0).focus;
+
+					$(this).down().css('background-position',  prev.get(0).checked ? '0 0px' : '0 -17px');
+				}
+
+			});
+		}
+
+	});
+
+});
+
+/*jshint evil: true, ng: true */
+
+var addSwappableElement, addSwappableHTML, drawSwappableElement, fillSwappableElements, clearSwappableElements;
+
+(function () {
+	// we will load in another js file afterthis one that will set this to false unless it's blocked by an ad-blocker
+	var
+		user_is_a_leech = true,
+		swappable_names = {},
+		swappable_code = []
+	;
+
+	// modify / break apart/ignore, as needed
+	var get_substitution = function (ending, width, height) {
+		return '<iframe src="http://www.newgrounds.com/promo/store_promo' + ending + '.html" height="' + height + '" width="' + width + '" scrolling="no" frameborder="0"></iframe>';
+	};
+
+	var substitute_codes = {
+		'728x90':	get_substitution('_wide', 728, 90),
+		'630x90':	get_substitution('630x90', 630, 90),
+		'125x600': get_substitution('125x600', 600, 125),
+		'200x200': get_substitution('200x200', 200, 200),
+		'300x250': get_substitution('300x250', 250, 300)
+	};
+
+	// aliases
+	substitute_codes.wide		= substitute_codes['728x90'];
+	substitute_codes.sky		= substitute_codes['125x600'];
+	substitute_codes.square		= substitute_codes['200x200'];
+	substitute_codes.box		= substitute_codes['300x250'];
+
+	addSwappableElement = function (base_code, code_type, element_id) {
+		element_id = addSwappableHTML(base_code, code_type, element_id);
+		drawSwappableElement(element_id);
+	};
+
+	addSwappableHTML = function(base_code, code_type, element_id) {
+		if (!element_id) {
+			element_id = 'swappable_html';
+		}
+		if (swappable_names[element_id] !== undefined) {
+			swappable_names[element_id]++;
+			element_id = element_id + '_duplicate_'+ swappable_names[element_id];
+		} else {
+			swappable_names[element_id] = 0;
+		}
+
+		if (code_type === undefined) {
+			code_type = null;
+		}
+
+		swappable_code.push({
+			element_id: element_id,
+			base_code: base_code,
+			code_type: code_type
+		});
+
+		return element_id;
+	};
+
+	drawSwappableElement = function(element_id) {
+		document.write('<div id="' + element_id + '"></div>');
+	};
+
+	fillSwappableElements = function() {
+		var i, element, code_type;
+
+		for (i = 0; i < swappable_code.length; i++) {
+			element = $('#' + swappable_code[i].element_id);
+
+			if (element.length) {
+
+				code_type = swappable_code[i].code_type;
+
+				// if an ad blocker is running and this code has a code type, use subsititue code
+				if (user_is_a_leech && code_type !== null) {
+
+					// if we aren't using a freset substitute, we will just use whatever was passed
+					if (substitute_codes[code_type] === undefined) {
+						element.html(code_type);
+
+					// if we're using a prefab, we'll plop it in
+					} else {
+						element.html(substitute_codes[code_type]);
+					}
+
+				// if there is no blocker or no code type, just use the code provided
+				} else {
+					element.html(swappable_code[i].base_code);
+				}
+			}
+		}
+	};
+
+	clearSwappableElements = function() {
+		for (var i = 0; i < swappable_code.length; i++) {
+			$('#' + swappable_code[i].element_id).html('');
+		}
+	};
+
+	(function () {
+		var delayed_load = PHP.get('delayed_load'), id;
+
+		if (delayed_load) {
+			for (id in delayed_load) {
+				if (delayed_load.hasOwnProperty(id)) {
+					$('#' + id).html(delayed_load[id]);
+				}
+			}
+		}
+	})();
+
+})();
+

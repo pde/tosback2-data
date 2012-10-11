@@ -1820,7 +1820,13 @@ $(document).ready(function(){
 		$('.nav-shop').hide();
 	}
 
+	//hide shop buttons for LH40SFWTGC 40" Microsoft Surface
+	if(urlValueSplit[5].match('commercial-display-solutions') && urlValueSplit[6].match('LH40SFWTGC')){
+		$('.flagship-specs-cta-container').find('.noprice-note').html('Please check with an authorized Samsung reseller for price information or <br /> <strong>Call 1-866-SAM-4BIZ</strong>');
 
+		$('.flagship-cta').hide();
+		$('.nav-shop').hide();
+	}
 
 
 	//inject shop buttons for developer GS3 phones

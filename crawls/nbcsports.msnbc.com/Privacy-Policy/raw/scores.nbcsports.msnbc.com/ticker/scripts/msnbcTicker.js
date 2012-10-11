@@ -811,7 +811,8 @@
 							}
 						}
 						//alert(this.defaultPeriod + " | " + data.period);
-						if (url == "" || (status2 == "PPD") || (((data.sport.toUpperCase() == "NHL") || (data.sport.toUpperCase() == "NBA") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
+						//if (url == "" || (status2 == "PPD") || (((data.sport.toUpperCase() == "NHL") || (data.sport.toUpperCase() == "NBA") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
+						if (url == "" || (status2 == "PPD") || (((data.sport.toUpperCase() == "NHL") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
 							if (data.sport.toUpperCase() == "NFL") {
 								if (data.period < 0) {
 									url="http://scores.nbcsports.msnbc.com/fb/scoreboard.asp?week="+ Math.abs(data.period) + "&seasontype=pre";							

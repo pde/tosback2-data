@@ -457,7 +457,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_1874299602/optimizedBundles/globalOptimized.css" />
+<link rel="stylesheet" type="text/css" media="screen, print" href="http://www.gap.com/gzip_1266309181/optimizedBundles/globalOptimized.css" />
 
 
 
@@ -828,7 +828,9 @@
        		brandUrl20 : "gap.co.uk",
        		brandUrl21 : "bananarepublic.co.uk",
        		brandUrl24 : "gap.co.jp",
-       		brandUrl25 : "bananarepublic.co.jp"
+       		brandUrl25 : "bananarepublic.co.jp",
+       		brandUrl28 : "gap.eu",
+       		brandUrl29 : "bananarepublic.eu"
        	}
        	,
        	storeLocations : {
@@ -889,20 +891,20 @@
 
 <script type="text/javascript">
     var isClientStateManagementActive = "true";
-    var isGuestCheckoutActive = "false";
+    var isGuestCheckoutActive = "";
 </script>
 
 
-	<script type="text/javascript" src="http://www.gap.com/gzip_943672989/optimizedBundles/globalOptimized.js" ></script>
+	<script type="text/javascript" src="http://www.gap.com/gzip_1038882325/optimizedBundles/globalOptimized.js" ></script>
 
 
 	<script type="text/javascript">
 		// Activation of the navigationService and associated Managers
-		navigationService.model.isActive = ('true' === 'true')
+		navigationService.model.isActive = ('false' === 'true')
                 || ('false' === 'true')
                 || ('true' === 'true')
                 || ('true' === 'true');
-		navigationService.paginationHelper.constants.MAX_PRODUCTS_PER_PAGE = 100;
+		navigationService.paginationHelper.constants.MAX_PRODUCTS_PER_PAGE = 300;
 	</script>
 
 
@@ -916,6 +918,15 @@
 		window.addEventListener('touchstart', function(evt) { imageLoader.fetch(); }, false);
 	}
 </script>
+
+
+
+
+
+
+
+	
+
 
 <script type="text/javascript">
 	// <![CDATA[
@@ -947,11 +958,13 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/08/2012 08:09 AM",
+            DATE_IN_USE: "10/11/2012 08:04 AM",
             PREVIOUS_LOCALE : "en_US",
-
-            IS_NAV2_ENABLED: 'false' === 'true',
-            IS_FACET_ENABLED: 'true' === 'true'
+            
+            IS_NAV2_ENABLED: 'false',
+            IS_FACET_ENABLED: 'false',
+            IS_OPTIMIZED_PRODUCT_PAGE_ACTIVE: 'true' ==  "true"
+            
 		});
 	// ]]>
 </script>	
@@ -985,8 +998,8 @@
 <!-- shippingOptionsFeatureActive  = true -->
 <!-- isLoggingServiceActive  = false -->
 <!-- catalogCategoryFeaturesEnabled  = power_reviews,quick_links,cj_feed,top_left_nav,ecom_rest_services,categories -->
-<!-- localCacheActive  = false -->
-<!-- isLocalCacheDisabled  = true -->
+<!-- localCacheActive  = true -->
+<!-- isLocalCacheDisabled  = false -->
 <!-- isPageContentDataActive  = true -->
 <!-- isKeywordSearchDrivenByEaskAsk  = true -->
 
@@ -1003,9 +1016,10 @@
 
 <!-- faceted category white list =  -->
 <!-- faceted category black list =  -->
+<!-- isSolrEnabled = false -->
 <!-- isFaceted = false -->
-<!-- is facets enabled = true -->
-<!-- is category search faceted  = false -->
+<!-- isCategorySearchFaceted  = false -->
+<!-- isOptimizedProductPageActive  = true -->
 
 <!-- isClientStateManagementActive  = true -->
 
@@ -1071,10 +1085,11 @@
         
         
 		RockbridgeSurvey.brandsVisited = "1";
+
+	    
 		
 	// ]]>
 </script>
-
 <script type="text/javascript">
 // <![CDATA[
 		
@@ -2349,6 +2364,36 @@ if( location.pathname == "/browse/category.do") {
 /* begin contentOverride150 */
 #productSearchServiceLink {display: none; visibility: hidden;}
 /* end contentOverride150 */
+
+
+/* -- BEGIN content override CNOV-5 -- */
+
+#flyout_size .flyout-footer .clearAllButton {display:none;}
+#flyout_brand .flyout-footer .clearAllButton {display:none;}
+
+#sideNavFacets {
+	background-color: #F0F0F0;
+}
+
+#facet_price {
+	border-bottom: 2px solid black;
+}
+
+img.facet_flyout_close_button {
+	display:inline;
+}
+
+#facet_color .color-option.disabled {
+	background-color:#F0F0F0;
+}
+
+#facet_color .color-option.disabled:hover {
+	background-color:#F0F0F0;
+}
+
+
+/* -- END content override CNOV-5 -- */
+
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -3890,42 +3935,6 @@ if (typeof storeLocationsService != 'undefined') {
 </script>
 <!-- end contentOverride134 -->
 
-
-<!-- begin contentOverride135 -->
-<script type="text/javascript"> 
-if (window['outfitPage']) {
-outfitPage.initializeData = function() {
-                if (this.isOutfitLoaded) return;
-                
-        this.outfitIndex = 0;
-        var arrayProducts = this.arrayProducts.findAll(function(product) {
-            return product.dataLoaded;
-        });
-        this.arrayProducts = arrayProducts;
-        this.initializeDivs();
-        this.setOutfitName();
-        this.setOutfitCopy();
-        
-        this.arrayProducts.each(this.initializeOutfitComponent.bind(this));
-
-        this.updateTotalConfirmation();
-        this.setOutfitImage();
-        this.saveCookieSelections();
-        setTimeout("setSideNavHeight()",500);
-        this.isLoaded = true;
-                this.isOutfitLoaded = true;
-    };
-}
-
-if (window['objGIDPageViewAdapter'] && objGIDPageViewAdapter.objGIDProducts) {
-                Event.observe(document, 'categoryFacetedSearchGrid:ready', function(e) {
-                                objGIDPageViewAdapter.objGIDProducts.arrayProducts.length = 0;
-                });
-}
-</script>
-<!-- end contentOverride135 -->
-
-
 <!-- BEGIN IT Override #138 - excessive omniture call mitigation -->
 <script type="text/javascript">
 if (reportingService && reportingService.controller.viewManagers.rewardBannerViewManager && reportingService.controller.viewManagers.rewardBannerViewManager.controller) {
@@ -3979,117 +3988,6 @@ if (typeof productStyleService != 'undefined') {
 </script>
 <!-- end contentOverride140 -->
 
-<!-- begin contentOverride141 -->
-<script type="text/javascript">
-//var isOnPreview= /app.gidapps.com/.test(location.hostname);
-var isFacetedSearchPage = /search.do|category\w*.do/.test(location.pathname);
-
-if(isFacetedSearchPage && brandConst.IS_FACET_ENABLED){
-
-navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.renderFlyoutDisplayHelper = function(facet, clearAll) {
-            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-            var facetManager = categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager;
-            var constants = categoryFacetedSearchManager.constants;
-            var view = facetManager.view;
-            var sizeConstants = facetManager.constants;
-            var constants = categoryFacetedSearchManager.constants;
-            var model = facetManager.model;
-            var facetManagerId = model.facetManagerId;
-            
-            view.setSizeFacetVariantList(facet);
-            view.shouldCheckDefaultVariantBySortOrder();
-            view.displayAlternateAvailableVariants();
-                            
-             var facetVariantMap = model.facetVariantMap || {};
-            //FACET_VARIANT_DISPLAY_CONTAINER_TEMPLATE
-            //SF CATEGORY LIST
-            var flyoutContent = [], leftRailFacetOptionsHtml = [];
-            view.renderSizeFacetCategory(facet, facetVariantMap, flyoutContent, leftRailFacetOptionsHtml, facetManagerId);
-            var variantOptionContent = view.renderSizeVariantOption(facetVariantMap, sizeConstants);
-            var mousePanelEvent = 'navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.sizeFlyoutExpandContract(this,event)';
-            var isIEFix = (Prototype.Browser.IE && (clientBrowser.isIE6 || clientBrowser.isIE7)) ? "iefix" : "";
-            
-            var flyoutDisplayContract = {
-                facetElementId: constants.FACET_ID_PREFIX + facetManagerId,
-                facetName: facetManagerId,
-                facetNameId: facetManagerId.toLowerCase(),
-                facetClearAll: clearAll,
-                facetCategoryList: flyoutContent.join(''),
-                facetVariantOptionsContent: variantOptionContent.join(''),
-                mouseOverAction: mousePanelEvent,
-                mouseOutAction: mousePanelEvent,
-                selectOneOrMoreSizes: categoryFacetedSearchManager.view.translate('browse.templates.categoryFacetedSearch.text.selectOneOrMore', {facetNameId: facetManagerId.toLowerCase()}),
-                close: categoryFacetedSearchManager.view.translate('browse.templates.categoryFacetedSearch.text.close'),
-                isIEFix: isIEFix
-            };
-            
-            flyoutContent = sizeConstants.templates.FACET_FLYOUT_BODY_TEMPLATE.evaluate(flyoutDisplayContract);
-            
-            flyoutDisplayContract.flyoutDisplayContent = flyoutContent;
-            flyoutDisplayContract.flyoutFooterMisc = sizeConstants.templates.FACET_FLYOUT_SIZE_CHART_TEMPLATE.evaluate({
-                sizeChartText: categoryFacetedSearchManager.view.translate('browse.templates.categoryFacetedSearch.text.sizeChart')
-            });
-            var flyoutDisplayContent = {
-                flyoutDisplayHtml: constants.templates.flyoutDisplay.FACET_FLYOUT_CONTAINER_TEMPLATE.evaluate(flyoutDisplayContract),
-                leftRailFacetOptionsHtml: leftRailFacetOptionsHtml.join('')
-            };
-            return flyoutDisplayContent;
-   };					
-
-navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.shouldCheckDefaultVariantBySortOrder = function(){
-	var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-	var facetManager = categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager;
-	var model = facetManager.model;
-				        
-                // if no products were returned associated with the 
-                // default variant check variant by sort order
-                if(model.numberOfVariantChecked == 0 && facetManager.view.displaySizeVariants()){
-                	var variantKeys = model.facetVariantMap.keys().without('0').sort();
-                	var variant = model.facetVariantMap.get(variantKeys[0]);
-                	variant.variantChecked = "checked";
-                	model.numberOfVariantChecked = 1;
-                	return true;
-                }        
-          	return false;
-  };
-
-navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.displayAlternateAvailableVariants = function(){
-	var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-	var facetManager = categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager;
-	var model = facetManager.model;
-	var defaultSizeVariantId = (categoryFacetedSearchManager.model.defaultCategorySizeVariantId == 0) ? categoryFacetedSearchManager.model.defaultParentCategorySizeVariantId : categoryFacetedSearchManager.model.defaultCategorySizeVariantId;
-	var parentSizeVariantId = categoryFacetedSearchManager.model.defaultParentCategorySizeVariantId;
-	var variantKeys = model.facetVariantMap.keys().without('0').sort();
-
-	if(variantKeys.length == 0){ return false; }
-
-	var variant = model.facetVariantMap.get(variantKeys[0]);
-	// only one variant returned
-	// variant !== category default variant Id
-	if(!facetManager.view.displaySizeVariants() && model.numberOfVariantChecked == 0 && variant.variantId != defaultSizeVariantId){
-		variant.variantChecked = "checked";
-                    	model.numberOfVariantChecked = 1;
-                    	return true;
-	 }
-	return false;
-  };
-
-}
-
-</script>
-<!-- end contentOverride141 -->
-
-<!-- begin contentOverride136 -->
-<script type="text/javascript">
-if (window['reportingService'] && reportingService.controller.viewManagers.commonViewManager.model) {
-	reportingService.controller.viewManagers.commonViewManager.model.commonChannelName =
-		(window.location.pathname === '/' || window.location.pathname === '/browse/home.do') ? 'home' :
-			reportingService.controller.viewManagers.commonViewManager.model.commonChannelName;
-
-}
-</script>
-<!-- end contentOverride136 -->
-
 <!-- begin contentOverride144 -->
 <script type="text/javascript">
 if (window["navigationService"] && location.pathname == "/browse/category.do") {
@@ -4101,22 +3999,13 @@ if (window["navigationService"] && location.pathname == "/browse/category.do") {
 </script>
 <!-- end contentOverride144 -->
 
-<!-- begin contentOverride147 -->
-<script type="text/javascript">
-if (brandConst.IS_FACET_ENABLED && navigationService.productGridHelperConstructor && navigationService.productGridHelperConstructor.prototype.model) {
-
-navigationService.productGridHelperConstructor.prototype.model.variantNames=/\((Regular|Youth|Toddler|Big|Tall|Petite|Maternity|Husky|Slim|Preemie|Plus|Infant)\)$/;
-
-}
-</script>
-<!-- end contentOverride147 -->
 
 <!-- BEGIN IT Override #149 - omni size variant fix -->
 <script type="text/javascript">
 
 var isFacetedSearchPage = /search.do|category\w*.do/.test(location.pathname);
 
-if(isFacetedSearchPage && brandConst.IS_FACET_ENABLED && navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && navigationService.controller.managers.categoryFacetedSearchManager.controller && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager){
+if(isFacetedSearchPage && brandConst.IS_FACET_ENABLED === 'true' && brandConst.IS_NAV2_ENABLED === 'true' && navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && navigationService.controller.managers.categoryFacetedSearchManager.controller && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager){
 navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.renderFacetOptionRow = function(dimensionIndex, variantIndex, sizeFacetOptionList, facetManagerId, sizeFacetCategoryId,
                  sizeFacetCategoryName, sizeVariantName, dimensionName, sizeVariantId, dimensionId, variantSize, variantDisplay, numOfVariants, flyoutContent, leftRailFacetOptionsHtml) {
 
@@ -4196,7 +4085,9 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 <script type="text/javascript">
 
 
-if (brandConst.IS_FACET_ENABLED) {
+	if ((brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) &&
+	window['navigationService'] && navigationService.productGridHelper.api &&
+	typeof(navigationService.productGridHelper.api.productLinkHelper) === 'function') {
 
     (function () {
         navigationService.controller.managers.categoryFacetedSearchManager.model.isInitialLoad = true;
@@ -4367,14 +4258,68 @@ if (brandConst.IS_FACET_ENABLED) {
 </script>
 <!-- end contentOverride153 -->
 
+<!-- begin CNOV-4 --> 
+<script type="text/javascript">
+if (typeof storeLocationsService != 'undefined') {
+	storeLocationsService.view.render = function(skuInfo) {
+		var storeLocations = (storeLocationsService.model.jsonResponse)? storeLocationsService.controller.arrayified(storeLocationsService.model.jsonResponse["storeLocationList"]): null;
+		var storeList = storeLocationsService.controller.sortStores(storeLocationsService.model.selectedSort, storeLocations);
+		var listHtml = storeLocationsService.view.buildStoreList(skuInfo, storeList);
+		
+		if (storeLocationsService.model.jsonResponse) {
+			$('availabilityHeader').update('Availability<br/><div class="updatedAvailability">Updated regularly</div>');
+			var disableSortBy = storeLocationsService.controller.storeListHasOneOrZeroStores(storeList);
+			$('sortBy').disabled = disableSortBy;
+			
+			if (disableSortBy) {
+				$('sortByDiv').addClassName('disabled');
+			} else {
+				$('sortByDiv').removeClassName('disabled');
+			}
+		}
 
+		$("storeLocationsList").update(listHtml);
+		$$('#storeLocationsList > *').invoke('hide');
+		$$('#storeLocationsList > *').invoke('appear', { duration: 0.5 });
+		$$('.limitedBubble').invoke('observe', 'mouseover', storeLocationsService.controller.eventHandlers.mouseOverLimitedBubbleHandler);
+		$$('.limitedBubble').invoke('observe', 'mouseout', function(event) {
+			gidLib.rolloverBubble.closeBubble();
+		});
+	}
+}
+</script>
+<!-- end CNOV-4  -->
+
+
+<!--  BEGIN content override CNOV-5 JS -->
+<script type="text/javascript">
+if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) && window["navigationService"]) {
+	navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView = navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView.wrap(function(om) {
+		om();
+		if ($('size_select_text')) {
+			$('size_select_text').select('img')[0].setStyle({display:"inline",cursor:"pointer"}).observe("click",function(event) {
+				navigationService.controller.managers.categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind($('facet_size_flyout'),false,true)();
+				event.stop();
+			});
+		}
+		if ($('brand_select_text_header')) {
+			$('brand_select_text_header').select('img')[0].setStyle({display:"inline",cursor:"pointer"}).onclick = function() {
+				setTimeout("navigationService.controller.managers.categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind($('facet_brand_flyout'),false,true)();",100);
+				navigationService.controller.managers.categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind($('facet_brand_flyout'),false,true)();
+				event.stop();
+			};
+		}
+	});
+}
+</script>
+<!--  END content override CNOV-5 JS -->
 
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
 
 
 
 <!-- container 6 -->
-<!-- BEGIN Content Item File: /content/0005/623/434/cn5623434.html -->
+<!-- BEGIN Content Item File: /content/0005/646/507/cn5646507.html -->
 
 
 <style type="text/css">
@@ -4394,7 +4339,7 @@ if (brandConst.IS_FACET_ENABLED) {
 
 var globalIntercept = {
 	model: {
-		wcdAssetPath:'/Asset_Archive/GPWeb/content/0005/623/434/assets/',
+		wcdAssetPath:'/Asset_Archive/GPWeb/content/0005/646/507/assets/',
 		businessUnit:'GP_US',
 		brandName:'Gap',
 		brandURL:'www.gap.com',
@@ -4568,27 +4513,31 @@ var globalIntercept = {
 };
 
 // Wrap global gateway launcher in function to add checkbox
-siteNavigation.showShippingOptionsOverlay = siteNavigation.showShippingOptionsOverlay.wrap( function( om, shouldSelectCurrentSettings, interceptCountryCode, interceptTID ) { 
-	om( shouldSelectCurrentSettings, interceptCountryCode, interceptTID );
-	var interceptChecker = null;
-	if( ! $('shippingOptionsCancelButtons') ) {
-		interceptChecker = setTimeout( 'globalIntercept.controller.addSavePrefsCheck()', 2000 );
-	}
-	else {
-		globalIntercept.controller.addSavePrefsCheck();
-		clearInterval( interceptChecker );
-	}
-});
+if( location.pathname != '/checkout/order.do' && siteNavigation && siteNavigation.showShippingOptionsOverlay ) {
+	siteNavigation.showShippingOptionsOverlay = siteNavigation.showShippingOptionsOverlay.wrap( function( om, shouldSelectCurrentSettings, interceptCountryCode, interceptTID ) { 
+		om( shouldSelectCurrentSettings, interceptCountryCode, interceptTID );
+		var interceptChecker = null;
+		if( ! $('shippingOptionsCancelButtons') ) {
+			interceptChecker = setTimeout( 'globalIntercept.controller.addSavePrefsCheck()', 2000 );
+		}
+		else {
+			globalIntercept.controller.addSavePrefsCheck();
+			clearInterval( interceptChecker );
+		}
+	});
+}
 
 // Wrap shipping option processor in cookie setting mechanism
-shippingOptionsService.controller.continuePressed = shippingOptionsService.controller.continuePressed.wrap( function( om ) {
-	if( $('savePrefsCheck') ) {
-		if( $('savePrefsCheck').checked ) {
-			gidLib.setCookieVar('mktUniversalPersist','globalInterceptDontShow','true');
+if( location.pathname != '/checkout/order.do' && siteNavigation && siteNavigation.controller && siteNavigation.controller.continuePressed ) {
+	shippingOptionsService.controller.continuePressed = shippingOptionsService.controller.continuePressed.wrap( function( om ) {
+		if( $('savePrefsCheck') ) {
+			if( $('savePrefsCheck').checked ) {
+				gidLib.setCookieVar('mktUniversalPersist','globalInterceptDontShow','true');
+			}
 		}
-	}
-	om();
-});
+		om();
+	});
+}
 
 // Initialize popup
 if( window['siteNavigation'] ) {
@@ -4616,7 +4565,7 @@ if( window['siteNavigation'] ) {
 
 </script>
 
-<!-- END Content Item File: /content/0005/623/434/cn5623434.html -->
+<!-- END Content Item File: /content/0005/646/507/cn5646507.html -->
 
 
 
@@ -4834,10 +4783,11 @@ if( window['siteNavigation'] ) {
 
 
 <!-- container 8 -->
-<!-- BEGIN Content Item File: /content/0005/629/193/cn5629193.html -->
+<!-- BEGIN Content Item File: /content/0005/658/759/cn5658759.html -->
 
 <script type="text/javascript">
 
+// begin CNOV-7 - NAV2 AB Test
 var NAV2TestCookieCutter = Class.create();
 NAV2TestCookieCutter.prototype = {
     initialize: function (CookieVarName, CookieUsedName, CookieValueBase, ForcedModeBaseName, SegmentBreakdown, theEvar, plExcept) {
@@ -4931,91 +4881,132 @@ NAV2TestCookieCutter.prototype = {
     }
 };
 
+
 var navABTest = function (config) {
-        function getLinksSelector(context, id) {
-            var contentId = context.prefix + id,
-                tags = context.tags,
-                selectors = context.links,
-                tagSize = tags.length,
-                i, j, actions = context.actions,
-                actionSize = actions.length,
-                selectorDelimiter;
-            for (i = 0; i < tagSize; i++) {
-                for (j = 0; j < actionSize; j++) {
-                    selectorDelimiter = selectors.length == 0 ? '' : ','
-                    selectors.push(selectorDelimiter + contentId + ' ' + tags[i] + '[href*="' + actions[j] + '.do"]');
-                }
+    function getLinksSelector(context, id) {
+        var contentId = context.prefix + id,
+            tags = context.tags,
+            selectors = context.links,
+            tagSize = tags.length,
+            i, j, actions = context.actions,
+            actionSize = actions.length,
+            selectorDelimiter;
+        for (i = 0; i < tagSize; i++) {
+            for (j = 0; j < actionSize; j++) {
+                selectorDelimiter = selectors.length == 0 ? '' : ','
+                selectors.push(selectorDelimiter + contentId + ' ' + tags[i] + '[href*="' + actions[j] + '.do"]');
             }
-            return context;
         }
-
-        function getIdsSelector(context, container) {
-            var ids = container.ids;
-            context.prefix = container.prefix;
-            context.tags = container.tags;
-            context.actions = container.actions;
-
-            if (!ids || ids.length == 0) return context;
-            ids.inject(context, getLinksSelector);
-
-            return context;
-        }
-
-        function getLinks() {
-            var context = {
-                links: []
-            };
-            config.linkContainers.inject(context, getIdsSelector);
-            return context.links.join('');
-        }
-
-        var pathname = location.pathname,
-            isActive = pathname.match(/^\/$|\/browse\//) != null,
-            domainUrl = '.' + (location.host.split(':')[0]),
-            path = '/',
-            omniVar = config.omniVar,
-
-            cookie = 'NAV2MODE',
-            categoryName = 'category.do',
-
-            segA = 'NAV2SEG=segA',
-            segB = 'NAV2SEG=segB',
-            segC = 'NAV2SEG=segC',
-            segBSeed = 'nsb',
-            segCSeed = 'nsc',
-            wcdSegA = 'navFacetsSEGA',
-            wcdSegB = 'navFacetsSEGB',
-            wcdSegC = 'navFacetsSEGC',
-
-            segSeed = omniVar == wcdSegB ? segBSeed : (omniVar == wcdSegC ? segCSeed : ''),
-            segment = omniVar == wcdSegB ? segB : (omniVar == wcdSegC ? segC : segA),
-
-            links = $$(getLinks()) || [];
-
-        return {
-            isActive: function () {
-                return isActive;
-            },
-            displayManager: function () {
-                if (!isActive) return;
-
-                gidLib.setCookie(cookie, escape(segment), null, path, domainUrl, false);
-                if (segment === segB || segment === segC) {
-                    this.appendSeed();
-                }
-            },
-            linkModifier: function (link) {
-                link.href = link.href + ('&' + segSeed);
-            },
-            appendSeed: function () {
-                links.each(this.linkModifier);
-
-            }
-        };
+        return context;
     }
 
+    function getIdsSelector(context, container) {
+        var ids = container.ids;
+        context.prefix = container.prefix;
+        context.tags = container.tags;
+        context.actions = container.actions;
 
-var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1209_v5_rollout', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '0-0-100', '0', '');
+        if (!ids || ids.length == 0) return context;
+        ids.inject(context, getLinksSelector);
+
+        return context;
+    }
+
+    function getLinks() {
+        var context = {
+            links: []
+        };
+        config.linkContainers.inject(context, getIdsSelector);
+        return context.links.join('');
+    }
+
+    var pathname = location.pathname,
+        isActive = pathname.match(/^\/$|\/browse\//) != null,
+        domainUrl = '.' + (location.host.split(':')[0]),
+        path = '/',
+        omniVar = config.omniVar,
+
+        cookie = 'NAV2MODE',
+				categoryName = 'category.do',
+				isSearch = location.pathname === '/browse/search.do',
+
+        segA = 'NAV2SEG=segA',
+        segB = 'NAV2SEG=segB',
+        segC = 'NAV2SEG=segC',
+        segBSeed = 'nsb',
+        segCSeed = 'nsc',
+        wcdSegA = 'navFacetsSEGA',
+        wcdSegB = 'navFacetsSEGB',
+        wcdSegC = 'navFacetsSEGC',
+        wcdSegD = 'navFacetsSEGD',
+        wcdSegE = 'navFacetsSEGE',
+
+        segSeed = omniVar == wcdSegB ? segBSeed : ((omniVar == wcdSegC || omniVar == wcdSegD || omniVar == wcdSegE) ? segCSeed : ''),
+        segment = omniVar == wcdSegB ? segB : ((omniVar == wcdSegC || omniVar == wcdSegD || omniVar == wcdSegE) ? segC : segA),
+
+        links = $$(getLinks()) || [],
+        emptyFunc = function () {},
+        emptyElement = {
+            setStyle: emptyFunc
+        },
+        displayNone = {
+            display: 'none'
+        },
+        emptyString = '',
+        emptyStringFunc = function () {
+            return emptyString;
+        };
+
+    function executeSegmentD() {
+	var facetBrand = $('facet_brand')||emptyElement,
+		facetColor = $('facet_color')||emptyElement,
+		facetPrice = $('facet_price')||emptyElement;
+
+	facetBrand.setStyle(displayNone);
+	facetColor.setStyle(displayNone);
+	facetPrice.setStyle(displayNone);
+	if ($('facet_size')) $('facet_size').setStyle({'borderBottom':'2px solid #000'});
+    }
+
+    function executeSegmentE() {
+	executeSegmentD();
+	($('facet_style')||emptyElement).setStyle(displayNone);
+    }
+
+    return {
+        isActive: function () {
+            return isActive;
+        },
+        displayManager: function () {
+            if (!isActive) return;
+
+            gidLib.setCookie(cookie, escape(segment), null, path, domainUrl, false);
+            if (segment === segB || segment === segC) {
+                this.appendSeed();
+            }
+        },
+        linkModifier: function (link) {
+           var links = link.href.split('#'),
+												hash = links[1] ? '#' + links[1] : '';
+            link.href = links[0] + ('&' + segSeed) + hash;
+ 
+        },
+        appendSeed: function () {
+            links.each(this.linkModifier);
+
+        },
+executeSegmentSpecificCode: function () {
+						if (isSearch) { return; }
+            if (omniVar === wcdSegD) {
+                executeSegmentD();
+            } else if (omniVar === wcdSegE) {
+                executeSegmentE();
+            }
+        }
+    };
+}
+
+var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1210A_v1_rollout', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '20-20-20-20-20', '41', '');
 
 Event.observe(document, "dom:loaded", function () {
 
@@ -5023,7 +5014,7 @@ Event.observe(document, "dom:loaded", function () {
     var navAB = new navABTest({
         linkContainers: [{
             prefix: 'div#',
-            ids: ['sideNavCategories','homeVariant10000461_region1', 'GIDDivisionLeftNav_regionTop', 'GIDCategoryLeftNavNoVI_regionTop', 'GIDSubDivisionLeftNav_regionTop', 'categoryVariant10000508_region1'],
+            ids: ['sideNavCategories', 'homeVariant10000461_region1', 'GIDDivisionLeftNav_regionTop', 'GIDCategoryLeftNavNoVI_regionTop', 'GIDSubDivisionLeftNav_regionTop', 'categoryVariant10000508_region1'],
             tags: ['area', 'a'],
             actions: ['category', 'categorySearch']
         }],
@@ -5040,9 +5031,20 @@ Event.observe(document, "dom:loaded", function () {
         }
     });
 
-});
-</script>
 
+    if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true)) {
+	navigationService.controller.managers.categoryFacetedSearchManager.view.initializeFacets = 
+		navigationService.controller.managers.categoryFacetedSearchManager.view.initializeFacets.wrap(function(old, pageNumberRequested, activeFacetManagerMap, searchFacetList) {
+			old(pageNumberRequested, activeFacetManagerMap, searchFacetList);
+			navAB.executeSegmentSpecificCode();
+		});
+    }
+
+
+
+});
+
+</script>
 
 
 <!-- Begin Reveal Outfits Code -->
@@ -5050,7 +5052,7 @@ Event.observe(document, "dom:loaded", function () {
 	var outfitCategorizer = {
 
 		validOutfitCategories : {
-			'1'  : ['63506','63507','78110','69588','58426','62313','62314','82959','63507']
+			'1'  : ['63506','63507','78110','69588','58426','62313','62314','82959','63507','86251','69588','87139']
 		},
 		
 		validOutfitKeyItems : {
@@ -5272,7 +5274,176 @@ Event.observe(document, "dom:loaded", function () {
 				'243964112':['/Asset_Archive/GPWeb/Assets/Outfit/165/OUT16582/outfit/gp-otf-out16582odv01.jpg','The Dot Pullover & 1969 Legging Cord'],
 				'246378012':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16233/outfit/gp-otf-out16233odv01.jpg','The Stripe Top & 1969 Real Straight Jean'],			
 				'243974092':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16234/outfit/gp-otf-out16234odv01.jpg','The Raglan Cardigan & Print Pocket Top'],			
-				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift']					
+				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift'],
+				'317284002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22813/outfit/gp-otf-out22813odv01.jpg','Tea Rose Lace Uplift Bra & Tea Rose Lace Thong (waterdrop)'],																	
+				'317286002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22812/outfit/gp-otf-out22812odv01.jpg','Favorite Lace Uplift Bra & Ultra Sheer Printed Girl Shorts (pink floral)'],																	
+				'317275012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22862/outfit/gp-otf-out22862odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (pink papillions)'],																	
+				'317275002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22878/outfit/gp-otf-out22878odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (yellow butterflies)'],																	
+				'139926012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22861/outfit/gp-otf-out22861odv01.jpg','Favorite Floral Wireless Bra & Ultra Sheer Printed Girl Shorts (fog blooms)'],																	
+				'317282012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22831/outfit/gp-otf-out22831odv01.jpg','Mesh Lace plunge Demi Bra & Mesh Lace Hipster Tanga (clean lime)'],																	
+				'317277002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22834/outfit/gp-otf-out22834odv01.jpg','Mesh Lace Wireless Bra & Mesh Lace Girl Shorts (waterdrop)'],																	
+				'317289012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22835/outfit/gp-otf-out22835odv01.jpg','Mesh Lace Sexy Plunge Bra & Mesh Lace Girl Shorts (neon violet)'],																	
+				'322315002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22827/outfit/gp-otf-out22827odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (light heather pink)'],																	
+				'322315012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22877/outfit/gp-otf-out22877odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (true indigo)'],																	
+				'322375002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22895/outfit/gp-otf-out22895odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (peony fog)'],																	
+				'322375012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22793/outfit/gp-otf-out22793odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (abyss)'],																	
+				'322375022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22894/outfit/gp-otf-out22894odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (true black)'],
+				'912943002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16666/outfit/gp-otf-out16666odv01.jpg','Junior Varsity'],											
+				'184090002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16667/outfit/gp-otf-out16667odv01.jpg','Rugby Rules'],											
+				'141063002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16668/outfit/gp-otf-out16668odv01.jpg','Color Coded'],											
+				'184083022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16669/outfit/gp-otf-out16669odv01.jpg','Model Student'],											
+				'145148042':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16671/outfit/gp-otf-out16671odv01.jpg','Hue Knew'],											
+				'914476022':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18256/outfit/gp-otf-out18256odv01.jpg','Smarty Pants'],											
+				'912956002':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18258/outfit/gp-otf-out18258odv01.jpg','First Mate'],											
+				'184110002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19744/outfit/gp-otf-out19744odv01.jpg','Book Smarts'],											
+				'912942002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19745/outfit/gp-otf-out19745odv01.jpg','Boys Only'],											
+				'141060012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19746/outfit/gp-otf-out19746odv01.jpg','Video Game Creator'],											
+				'141041002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19747/outfit/gp-otf-out19747odv01.jpg','Star Athlete'],											
+				'145024012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19749/outfit/gp-otf-out19749odv01.jpg','Cool Cadet'],											
+				'911162002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19940/outfit/gp-otf-out19940odv01.jpg','A is for Apple'],											
+				'317284002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22813/outfit/gp-otf-out22813odv01.jpg','Tea Rose Lace Uplift Bra & Tea Rose Lace Thong (waterdrop)'],											
+				'317286002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22812/outfit/gp-otf-out22812odv01.jpg','Favorite Lace Uplift Bra & Ultra Sheer Printed Girl Shorts (pink floral)'],											
+				'317275012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22862/outfit/gp-otf-out22862odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (pink papillions)'],											
+				'317275002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22878/outfit/gp-otf-out22878odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (yellow butterflies)'],											
+				'139926012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22861/outfit/gp-otf-out22861odv01.jpg','Favorite Floral Wireless Bra & Ultra Sheer Printed Girl Shorts (fog blooms)'],											
+				'317282012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22831/outfit/gp-otf-out22831odv01.jpg','Mesh Lace plunge Demi Bra & Mesh Lace Hipster Tanga (clean lime)'],											
+				'317277002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22834/outfit/gp-otf-out22834odv01.jpg','Mesh Lace Wireless Bra & Mesh Lace Girl Shorts (waterdrop)'],											
+				'317289012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22835/outfit/gp-otf-out22835odv01.jpg','Mesh Lace Sexy Plunge Bra & Mesh Lace Girl Shorts (neon violet)'],											
+				'322315002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22827/outfit/gp-otf-out22827odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (light heather pink)'],											
+				'322315012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22877/outfit/gp-otf-out22877odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (true indigo)'],											
+				'322375002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22895/outfit/gp-otf-out22895odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (peony fog)'],											
+				'322375012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22793/outfit/gp-otf-out22793odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (abyss)'],											
+				'322375022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22894/outfit/gp-otf-out22894odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (true black)'],											
+				'170756022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16670/outfit/gp-otf-out16670odv01.jpg','Neon Casual'],											
+				'173320002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19738/outfit/gp-otf-out19738odv01.jpg','Statement Maker: Tweed!'],											
+				'172476002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19739/outfit/gp-otf-out19739odv01.jpg','So Now: Shorts+Footless Tights+Booties'],											
+				'172480002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19740/outfit/gp-otf-out19740odv01.jpg','What\'s Cool: Sparkle on Her Collar'],											
+				'910479002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19742/outfit/gp-otf-out19742odv01.jpg','Put It in Print'],											
+				'910488002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19748/outfit/gp-otf-out19748odv01.jpg','White Hot...Denim'],											
+				'172463012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19750/outfit/gp-otf-out19750odv01.jpg','Spotted! The Leopard Skirt'],											
+				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19786/outfit/gp-otf-out19786odv01.jpg','Mix This: Denim & Tulle'],											
+				'172482002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19787/outfit/gp-otf-out19787odv01.jpg','Sparkle+Shine+Cozy Knits'],											
+				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22218/outfit/gp-otf-out22218odv01.jpg','Perfect Fit'],											
+				'910512002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22219/outfit/gp-otf-out22219odv01.jpg','A Leg Up'],											
+				'762719002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22758/outfit/gp-otf-out22758odv01.jpg','Jump for Jeans'],											
+				'910510022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22760/outfit/gp-otf-out22760odv01.jpg','Best Right Foot'],											
+				'173326002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22762/outfit/gp-otf-out22762odv01.jpg','Be Spotted'],											
+				'175401002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22763/outfit/gp-otf-out22763odv01.jpg','Play Dress Up'],											
+				'762717002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22764/outfit/gp-otf-out22764odv01.jpg','Cute to Boot'],											
+				'146096022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22778/outfit/gp-otf-out22778odv01.jpg','Great American Painter'],											
+				'171684012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22780/outfit/gp-otf-out22780odv01.jpg','Editor-in-Chief'],											
+				'173905002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20871/outfit/gp-otf-out20871odv01.jpg','Lime + Cozy'],											
+				'301589002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20870/outfit/gp-otf-out20870odv01.jpg','Coral + Cable'],											
+				'914417082':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20866/outfit/gp-otf-out20866odv01.jpg','Grape + Fringe'],											
+				'914417092':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20867/outfit/gp-otf-out20867odv01.jpg','Aqua + Fur'],											
+				'292607002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20868/outfit/gp-otf-out20868odv01.jpg','Flower Girl'],											
+				'292606002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20873/outfit/gp-otf-out20873odv01.jpg','Perfect Your Party'],											
+				'292621002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20872/outfit/gp-otf-out20872odv01.jpg','All that Glitters'],											
+				'914408012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20874/outfit/gp-otf-out20874odv01.jpg','We Love Houndstooth'],											
+				'912282012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20869/outfit/gp-otf-out20869odv01.jpg','A Shot of Pink'],											
+				'914400002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20875/outfit/gp-otf-out20875odv01.jpg','Sparkle + Shine'],											
+				'211907002':['/Asset_Archive/GPWeb/Assets/Outfit/188/OUT18824/outfit/gp-otf-out18824odv01.jpg','Layer it: Dots + Color'],											
+				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/188/OUT18822/outfit/gp-otf-out18822odv01.jpg','Precious Metal'],											
+				'317288002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22828/outfit/gp-otf-out22828odv01.jpg','Flocked Velvet Hidden Underwire Balconette Bra & Flocked Velvet High-Waist Bikini (true black)'],											
+				'317280002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22849/outfit/gp-otf-out22849odv01.jpg','Flocked Velvet Plunge Demi Bra & Flocked Velvet Hipster (true black)'],											
+				'317287002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22850/outfit/gp-otf-out22850odv01.jpg','Flocked Velvet Uplift Balconette Bra & Flocked Velvet Hipster (true black)'],											
+				'296681002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20636/outfit/gp-otf-out20636odv01.jpg','Pop Goes the (Bright) Color'],											
+				'914812022':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21104/outfit/gp-otf-out21104odv01.jpg','Splash of Lime'],											
+				'914809002':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21105/outfit/gp-otf-out21105odv01.jpg','Puppy Love'],											
+				'914808002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20876/outfit/gp-otf-out20876odv01.jpg','Plaid Rocks!'],											
+				'296639002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21088/outfit/gp-otf-out21088odv01.jpg','Classic Gingham + (Bright!) Red Cords'],											
+				'914616002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21092/outfit/gp-otf-out21092odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/24) plaza view'],											
+				'914796012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21087/outfit/gp-otf-out21087odv01.jpg','Softly, Sweetly'],											
+				'185831002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21091/outfit/gp-otf-out21091odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/1) boy sleepwear'],											
+				'913422002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21090/outfit/gp-otf-out21090odv01.jpg','Puff Love'],											
+				'297823002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20626/outfit/gp-otf-out20626odv01.jpg','Creamy Cable Knit + (Bright!) Red Dots'],											
+				'185822002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20628/outfit/gp-otf-out20628odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/1) girl sleepwear'],											
+				'915113002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20629/outfit/gp-otf-out20629odv01.jpg','Puppy Love'],											
+				'915115002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20630/outfit/gp-otf-out20630odv01.jpg','The Littlest Lady'],											
+				'915121002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20631/outfit/gp-otf-out20631odv01.jpg','A Bit of Lime, A Lot of Grape'],											
+				'915116002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20632/outfit/gp-otf-out20632odv01.jpg','A Dot Here, A Bow There'],											
+				'915129002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21085/outfit/gp-otf-out21085odv01.jpg','Candy-Coated Stripes'],											
+				'299738002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21086/outfit/gp-otf-out21086odv01.jpg','A Bright Spot, or Two!'],											
+				'915110002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21096/outfit/gp-otf-out21096odv01.jpg','Do the Polka Dot'],											
+				'914974012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20627/outfit/gp-otf-out20627odv01.jpg','Puff Love'],											
+				'915156002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20242/outfit/gp-otf-out20242odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/24) plaza view'],											
+				'915147022':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20625/outfit/gp-otf-out20625odv01.jpg','Play with Pastel'],											
+				'151064032':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19165/outfit/gp-otf-out19165odv01.jpg','Cowlneck Tunic & Smocked Skirt'],											
+				'455136002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19774/outfit/gp-otf-out19774odv01.jpg','Military Jacket & Embroidered Dress'],											
+				'187367002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19776/outfit/gp-otf-out19776odv01.jpg','Striped Shirt & 1969 Real Straight Cropped Jean'],											
+				'915669002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20829/outfit/gp-otf-out20829odv01.jpg','Polka Dot Dress'],											
+				'915671012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20830/outfit/gp-otf-out20830odv01.jpg','Nautical Shift'],											
+				'302428022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16688/outfit/gp-otf-out16688odv01.jpg','Lived-In Wash Gingham Shirt + 1969 Five-Pocket Cord'],											
+				'302423012':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16689/outfit/gp-otf-out16689odv01.jpg','Lived-In Wash Plaid Shirt + Lived-In Slim Khaki'],											
+				'252368002':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14185/outfit/gp-otf-out14185odv01.jpg','Merino Cardigan + Gap 1969 T + Lived-In Slim Khaki'],											
+				'239524002':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14191/outfit/gp-otf-out14191odv01.jpg','Marled Henley + Lived-In Slim Khaki '],											
+				'302436002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16690/outfit/gp-otf-out16690odv01.jpg','Flannel Gingham Shirt + Gap 1969 T + 1969 Authentic Skinny Fit'],											
+				'246566012':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16692/outfit/gp-otf-out16692odv01.jpg','Flannel Gingham Shirt + Cable knit sweater + 1969 Authentic Skinny Fit Jeans'],											
+				'240373002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16691/outfit/gp-otf-out16691odv01.jpg','Four-Pocket Jacket + Cable Knit Sweater + 1969 Straight Fit Jeans'],											
+				'239545012':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14189/outfit/gp-otf-out14189odv01.jpg','Marled Striped T + 1969 Slim Fit Jeans + Cable Knit Beanie'],											
+				'302434022':['/Asset_Archive/GPWeb/Assets/Outfit/148/OUT14806/outfit/gp-otf-out14806odv01.jpg','Modern Oxford Shirt + Marled Pocket T + 1969 Slim Fit Jeans'],											
+				'302362022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13939/outfit/gp-otf-out13939odv01.jpg','Brushed Fleece Cardigan + Lived-In Wash Plaid Shirt + 1969 Slim Fit Jeans'],											
+				'911839012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13938/outfit/gp-otf-out13938odv01.jpg','Quilted Puffer Vest + Rugby Sweater + 1969 five-pocket cord'],											
+				'321835042':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13940/outfit/gp-otf-out13940odv01.jpg','Brushed Fleece Hooded Henley + Flannel Plaid Shirt + 1969 Selvage Straight Jeans'],											
+				'239693022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13943/outfit/gp-otf-out13943odv01.jpg','Plaited Waffle Crewneck + Lived-In Slim Khaki + Cable Knit Beanie'],											
+				'240158002':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13937/outfit/gp-otf-out13937odv01.jpg','Admiral Blazer + Merino Cardigan + Non-Iron Shirt + 1969 Selvage Slim Fit Jeans'],											
+				'302452012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13936/outfit/gp-otf-out13936odv01.jpg','Non-Iron Shirt + Tweed Tie + Lived-In Moleskin Pants'],											
+				'244874032':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13935/outfit/gp-otf-out13935odv01.jpg','Rugby Sweater + Lived-In Wash Plaid Shirt + 1969 Selvage Authentic Skinny Fit Jeans '],											
+				'279596002':['/Asset_Archive/GPWeb/Assets/Outfit/161/OUT16195/outfit/gp-otf-out16195odv01.jpg','The Twill Parka & Striped Sweater'],											
+				'218347002':['/Asset_Archive/GPWeb/Assets/Outfit/173/OUT17304/outfit/gp-otf-out17304odv01.jpg','The Leather Moto Jacket & Belted Dress'],											
+				'249627012':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17856/outfit/gp-otf-out17856odv01.jpg','The Dot Pullover & Animal Print Scarf'],											
+				'249631002':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17860/outfit/gp-otf-out17860odv01.jpg','The Oxford Shirt & 1969 Always Skinny Cord'],											
+				'279629002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19778/outfit/gp-otf-out19778odv01.jpg','The Printed Wrap Dress'],											
+				'914690002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20858/outfit/gp-otf-out20858odv01.jpg','Suit Up, Superman!'],											
+				'914731002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21060/outfit/gp-otf-out21060odv01.jpg','Biker Boy'],											
+				'297137002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21070/outfit/gp-otf-out21070odv01.jpg','Clubhouse Prep'],											
+				'914725002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21071/outfit/gp-otf-out21071odv01.jpg','Get Your Kicks!'],											
+				'148781002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20621/outfit/gp-otf-out20621odv01.jpg','A League of His Own'],											
+				'149542032':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20622/outfit/gp-otf-out20622odv01.jpg','Varsity Cool'],											
+				'148784012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20623/outfit/gp-otf-out20623odv01.jpg','Class Act'],											
+				'149651002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20212/outfit/gp-otf-out20212odv01.jpg','Anchors Our Way'],											
+				'149622012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20213/outfit/gp-otf-out20213odv01.jpg','Ahoy, Sea Captain!'],											
+				'914698032':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21066/outfit/gp-otf-out21066odv01.jpg','Cobalt + Cable'],											
+				'914699002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Orange + Stripes'],											
+				'183847002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20862/outfit/gp-otf-out20862odv01.jpg','Forest Green + Cable'],											
+				'183844002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20863/outfit/gp-otf-out20863odv01.jpg','Khaki + Leather'],											
+				'915035002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21063/outfit/gp-otf-out21063odv01.jpg','Waiting Studio to upload &  Copy to name'],											
+				'914688002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20860/outfit/gp-otf-out20860odv01.jpg','Waiting Studio to upload &  Copy to name'],											
+				'183852002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21062/outfit/gp-otf-out21062odv01.jpg','Warm, Warmer, Warmest!'],											
+				'181106012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20617/outfit/gp-otf-out20617odv01.jpg','Uptown Downtown'],											
+				'181127012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20618/outfit/gp-otf-out20618odv01.jpg','See You at the Show'],											
+				'180713002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20619/outfit/gp-otf-out20619odv01.jpg','Ready, Set, Style!'],											
+				'912919002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20851/outfit/gp-otf-out20851odv01.jpg','Desert Sands'],											
+				'913279002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20856/outfit/gp-otf-out20856odv01.jpg','Desert, First'],											
+				'914549002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21072/outfit/gp-otf-out21072odv01.jpg','Desert Sunset'],											
+				'912924002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21065/outfit/gp-otf-out21065odv01.jpg','Cozy + Coral'],											
+				'914560002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20857/outfit/gp-otf-out20857odv01.jpg','Spotted: Sweaters Everywhere!'],											
+				'914566002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20865/outfit/gp-otf-out20865odv01.jpg','A Little Bit Mod'],											
+				'912934002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21057/outfit/gp-otf-out21057odv01.jpg','Fit to be Tied'],											
+				'914560012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21058/outfit/gp-otf-out21058odv01.jpg','A Spot of Charm'],											
+				'912932002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21059/outfit/gp-otf-out21059odv01.jpg','Style Cycle'],											
+				'181204002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19910/outfit/gp-otf-out19910odv01.jpg','Retro Fitted'],											
+				'180574012':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19995/outfit/gp-otf-out19995odv01.jpg','Stir it Up'],											
+				'180577002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19996/outfit/gp-otf-out19996odv01.jpg','Precious Jewel Tones'],											
+				'914558002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Hot Pink + Fur'],											
+				'266967022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21067/outfit/gp-otf-out21067odv01.jpg','Sparkle + Hearts'],											
+				'914558022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21068/outfit/gp-otf-out21068odv01.jpg','White + Stripes'],											
+				'294597002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20859/outfit/gp-otf-out20859odv01.jpg','Waiting Studio to upload &  Copy to name'],											
+				'294553002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21064/outfit/gp-otf-out21064odv01.jpg','Waiting Studio to upload &  Copy to name'],											
+				'180780002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21061/outfit/gp-otf-out21061odv01.jpg','Warm, Warmer, Warmest!'],											
+				'349771002':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20450/outfit/gp-otf-out20450odv01.jpg','The Twill Parka & Super Skinny Pant'],											
+				'914029022':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20453/outfit/gp-otf-out20453odv01.jpg','The Cashmere Cardi & Drop-Shoulder Shirtdress'],											
+				'245334052':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20452/outfit/gp-otf-out20452odv01.jpg','The Patterned Sweater & Biker Boot'],											
+				'349771012':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20451/outfit/gp-otf-out20451odv01.jpg','The Military Cape & Striped Pullover'],											
+				'349771022':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19171/outfit/gp-otf-out19171odv01.jpg','The Tweed Moto & Plaid Scarf'],											
+				'244966012':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15825/outfit/gp-otf-out15825odv01.jpg','The Quilted Leather Jacket & Fluid Shirtdress'],											
+				'246470002':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15826/outfit/gp-otf-out15826odv01.jpg','The Turtleneck Sweater & Slim Cropped Pant'],											
+				'914476052':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20607/outfit/gp-otf-out20607odv01.jpg','Bright Green + Graphics'],											
+				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],											
+				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],											
+				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],											
+				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!']										
+					
 		},
 
 
@@ -5489,7 +5660,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 
 
 
-<!-- END Content Item File: /content/0005/629/193/cn5629193.html -->
+<!-- END Content Item File: /content/0005/658/759/cn5658759.html -->
 
 
 
@@ -6896,8 +7067,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/643/340/cn5643340.html -->
-<div id="contentItemContainer10000395" class="5643340" >
+    	<!-- BEGIN Content Item File: /content/0005/604/399/cn5604399.html -->
+<div id="contentItemContainer10000395" class="5604399" >
 
 <style type="text/css">
 #globalBanner {
@@ -6909,10 +7080,10 @@ Event.observe(window,"load",function(){
 	z-index: 50;
 }
 
-#globalBanner > a:link, 
-#globalBanner > a:hover,
-#globalBanner > a:visited, 
-#globalBanner > a:active
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
 {
 	color: #000000;
 	text-decoration: none;
@@ -6952,46 +7123,32 @@ Event.observe(window,"load",function(){
 	opacity: 0.25;
 	filter: alpha(opacity = 25);
 }
-
-#globalBannerCloser {
-	position: absolute;
-	top: 1px; 
-	right: 5px; 
-	color: #ffffff;
-}
-
-#globalBannerCloser:hover {
-	text-decoration: underline;
-}
 </style>
 
 <div id="globalBanner">
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/643/340/assets/100412_ALL_columbus_SBAN_US.png" alt="online: 30% off your purchase. in stores: up to 40% off select styles. ends 10/8. enter GAPCOLOR. details" usemap="#gbMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/604/399/assets/101112_ALL_25off_GB_US.png" alt="enjoy 25% off your purchase. online only. enter GAPCHEER at checkout. have a card? 30% off* your purchase when you use your gapcard, bananacard and old navy card. in stores and online. enter GCTHANKS at checkout. ends 10/4. details" usemap="#gbMap" />
 		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="2,7,472,55" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:300});">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="266,9,430,59" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:300});">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;">
-		<div>
-			<a id="globalBannerCloser" href="javascript:void(0);" class="noHideDisruptor" onclick="globalBannerDisruptor.close();">X</a>
-			<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/643/340/assets/100412_ALL_columbus_DISR_US.jpg" alt="30% off your online purchase. enter GAPCOLOR. plus, in stores up to 40% off select styles. ends monday, 10/8. details" usemap="#disruptorMap" />
-			<map name="disruptorMap">
-			    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/643/340/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
-			</map>
-		</div>
+	<div id="globalBannerDisruptor" style="display:none;"> 
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/604/399/assets/101112_ALL_25off_DISR_US.jpg" alt="enjoy 25% off your purchase. online only. enter GAPCHEER at checkout. have a card? 30% off* your purchase when you use your gapcard, bananacard and old navy card. in stores and online. enter GCTHANKS at checkout. ends 10/4. details" usemap="#disruptorMap" />
+		<map name="disruptorMap">
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+		</map>
 	</div><!-- /Global Banner Disruptor -->
 
 </div>
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('100612_GB');
+	globalBannerDisruptor.init('101112_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7013,7 +7170,7 @@ var globalBannerDisruptor = {
 	disruptorID: 'globalBannerDisruptor',
 	activatorID: 'globalBannerActivator',
 	containerID: 'globalBannerText',
-	cookieName:  '',
+	cookieName: '',
 	
 	init: function(cookieName) {
 	
@@ -7035,14 +7192,11 @@ var globalBannerDisruptor = {
 
 		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
 		
-		/*
-
 		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
 
 		var timerID = setTimeout(function() {
 			globalBannerDisruptor.hide();
 		}, 8000);
-		*/
 
 	},
 	
@@ -7095,8 +7249,6 @@ var globalBannerDisruptor = {
 			globalBannerDisruptor.addDisruptBehaviour();
 		}, 1000);
 
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
 	},
 
 	addDisruptBehaviour: function() {
@@ -7117,7 +7269,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0005/643/340/cn5643340.html -->
+<!-- END Content Item File: /content/0005/604/399/cn5604399.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7731,17 +7883,6 @@ var gqVideoPopup = new GQ_VIDEO_POPUP_CLASS();
 	
 </div>
 
-
-	<div id="sideNavFacetsHeader" class="facets-container facet facet_master_header hideMe">
-	<!-- @FF Division Facet Code hidden until ready to play. JS is in place in facet manager -->
-		<div id="lrCategoryNameHeader" class="category heading categoryNameDiv"></div>
-		<div class="category heading categoryItemCountResetDiv">
-			<span id="facet_header_item_count" class="totalItemCountDiv"></span>
-			<span class="resetAllButton hideMe"><a id="facet_reset_all" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" onclick="navigationService.controller.managers.categoryFacetedSearchManager.util.resetAllSelectedOptions(event);navigationService.controller.managers.categoryFacetedSearchManager.controller.filterByFacets();return false;" class="sprite-button_reset" alt="Reset" title="Reset"></a></span>
-		</div>
-	</div>
-
-	<div id="sideNavFacets" class="facets-container"></div>	
 
 
 
@@ -9395,7 +9536,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5643340,5569434,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5604399,5569434,5106701,5451526,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

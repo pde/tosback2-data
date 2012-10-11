@@ -437,7 +437,7 @@ if($.isValue(this.Class.SESSION_TIMEOUT_ERROR_CODES[errorCode]))
 var rootUrl=params.domainURL||"/svcs";$.ajax({url:rootUrl+"/products"+params.productKey+"/configurator.json"+queryString,type:'get',dataType:'jsonp',timeout:params.timeout,jsonpCallback:this.getCallbackName(params.productKey),success:this.callback(['wrap',success]),error:error,fixture:'//adobe/product/fixtures/product_design_premium.json'});},getCallbackName:function(productKey)
 {return"ILC_"+productKey.replace(/\//g,'_');}},{init:function(params)
 {this.initProperties();},initProperties:function()
-{this._filteredProductData=this.skus.slice(0);this._filterHistory=[];},filterProductSkus:function(fieldName,value)
+{this._filteredProductData=this.skus.slice(0);this._filterHistory=[];this.priceObject={};},filterProductSkus:function(fieldName,value)
 {if(this.filterAppliedPreviously(fieldName))
 this._revertDataToEarlierState(fieldName);this._filterSkuData(fieldName,value);this._saveFilterHistory(fieldName,value);},getSkusWithDistinctFieldValues:function(fieldName)
 {var skus=[],values={},len=this.numRemainingSkus();for(var i=0;i<len;i++){var aRecord=this._filteredProductData[i];var value=aRecord[fieldName];if(!$.hasKey(values,value)&&value!==""&&value!==null){values[value]=1;skus.push(aRecord);}}
@@ -464,10 +464,12 @@ item.data[prop]=null;}
 rs.push($.Array.hash(props,item.data));});return rs;}},normalizeColumnNames:function(raw)
 {var props=[];$.Array.each(raw,function(prop,i,arr){props.push($.String.camelize(prop.toLowerCase()));});return props;},publish:function(event,data)
 {if(window.OpenAjax){OpenAjax.hub.publish(this.Class.shortName+"."+this.productKey+"."+event,data);}},setPriceObject:function(sku)
-{var taxDisplayRule=this.getTaxDisplayRule();this.Class.priceObject.price.taxCode="";this.Class.priceObject.priceTypeKey=sku.distributionMethod;if(taxDisplayRule==="TAX_EXCLUSIVE"){this.Class.priceObject.price.priceWithoutTax=sku.price;this.Class.priceObject.price.priceWithTax=sku.priceWithTax;if(sku.priceWithTax!=sku.origPriceWithTax)
-this.Class.priceObject.price.orginalPriceWithTax=sku.origPriceWithTax;}else{this.Class.priceObject.price.priceWithTax=sku.priceWithTax;if(sku.priceWithTax!=sku.origPriceWithTax)
-this.Class.priceObject.price.orginalPriceWithTax=sku.origPriceWithTax;}},getPriceObject:function()
-{return this.Class.priceObject;},getCurrencyObject:function()
+{this.priceObject=$.extend(true,{},this.Class.priceObject);var taxDisplayRule=this.getTaxDisplayRule();this.priceObject.priceTypeKey=sku.distributionMethod;if(taxDisplayRule==="TAX_EXCLUSIVE"){this.priceObject.price.priceWithoutTax=sku.price;this.priceObject.price.priceWithTax=sku.priceWithTax;if(sku.priceWithTax!=sku.origPriceWithTax)
+this.priceObject.price.orginalPriceWithTax=sku.origPriceWithTax;}
+else
+{this.priceObject.price.priceWithTax=sku.priceWithTax;if(sku.priceWithTax!=sku.origPriceWithTax)
+this.priceObject.price.orginalPriceWithTax=sku.origPriceWithTax;}},getPriceObject:function()
+{return this.priceObject;},getCurrencyObject:function()
 {return this.Class.currencyObject;},getTaxDisplayRule:function(){return this.Class.taxDisplayRule;}});})(jQuery);(function($){var
 _native=false,is_canvasTextSupported,measureContext,measureText,info_identifier="shorten-info",options_identifier="shorten-options";$.fn.shorten=function(){var userOptions={},args=arguments,func=args.callee
 if(args.length){if(args[0].constructor==Object){userOptions=args[0];}else if(args[0]=="options"){return $(this).eq(0).data(options_identifier);}else{userOptions={width:parseInt(args[0]),tail:args[1]}}}

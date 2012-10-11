@@ -34,15 +34,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 	<!-- Global JS files --> 
 		<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/tealeaf/TeaLeaf.min.js"></script> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://www.att.com/styles/global-hardrock-combined-static.min.css" type="text/css"/> 
+<link rel="stylesheet" href="http://www.att.com/media/cms/shop/styles/global-hardrock-combined.min.css" type="text/css"/> 
 <!--[if IE 7]> 
-<link rel="stylesheet" href="http://1.ecom.attccc.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
+<link rel="stylesheet" href="http://www.att.com/styles/global-ie7.css" type="text/css" media="screen, projection, print" /> 
 <![endif]--> 
-			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/scripts/global-hardrock-combined-static-all.min.js"></script> 
 			<script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/global-hardrock-combined.min.js"></script> 
-			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
-	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
+			<script type="text/javascript" src="http://www.att.com/scripts/jquery.noconflict.js"></script> 
+	<script type="text/javascript" src="http://www.att.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 </head> 
 <body id="top"> 
@@ -867,10 +867,10 @@ groups or email use by others; use of the service as a substitute or backup for 
 	ATT.globalVars.wtCartState =  'E';  
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
-ATT.globalVars.ban = ""; 
-ATT.globalVars.flowIndicator = ""; 
-ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = "02135"; 
+ATT.globalVars.ban = "188027631496"; 
+ATT.globalVars.flowIndicator = "UP"; 
+ATT.globalVars.buyflow = "UP"; 
+ATT.globalVars.ckavailUserZip = "53536"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -881,21 +881,21 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip ="02135"; 
+		wtzip ="53536"; 
 	} 
 	return wtzip; 
 }; 
 ATT.globalVars.buyflowCheck = function () { 
 	var flowType, listYes = /\/addaline\.html|\/login\.html|\/upgradephone\.html/, 
 		sessionExpiredPage = /\/ordersummary\.html/.test(location.href); 
-	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || ""){ 
-		flowType =""; 
+	if( (listYes.test(location.href) && !/checkout/.test(location.href)) || "UP"){ 
+		flowType ="UP"; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.flowIndicator && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.flowIndicator; 
 	}else if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.buyFlowType && !sessionExpiredPage){ 
 		flowType = ATT.globalVars.cartContents.buyFlowType; 
 	} else { 
-		flowType ="NEW"; 
+		flowType ="UP"; 
 	} 
 	return flowType; 
  }; 
@@ -963,7 +963,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = "BRIGHTON"; 
+	    		wtCity = "EVANSVILLE"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -972,7 +972,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = "MA"; 
+	    		wtState = "WI"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1006,7 +1006,7 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            ATT.log('dcs injection block'); 
 	            var s = document.createElement("script"); 
 	            s.type = "text/javascript"; 
-	            s.src = "http://1.ecom.attccc.com/webtrends/scripts/dcs_tag.js"; 
+	            s.src = "http://www.att.com/webtrends/scripts/dcs_tag.js"; 
 	            s.onload = (function() { ATT.DCSSignals.resolveDCSFuncs(); }); 
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
@@ -1024,25 +1024,25 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 //minimal set of configuration setting to set up connection to liveperson server  
 var lpMTagConfig = lpMTagConfig || {}; 
     lpMTagConfig.vars = lpMTagConfig.vars || []; 
-    ATT.globalVars.custName = ["",""].join(' '); 
+    ATT.globalVars.custName = ["NICOLAS","LOGER"].join(' '); 
     ATT.globalVars.orderNumber = ""; 
-    ATT.globalVars.customerItemsOwned = ATT.util.filter(['','','',''], function(n){return n;}).join('|'); 
+    ATT.globalVars.customerItemsOwned = ATT.util.filter(['GSM_UMTS','012837008307788','APPLE','IPHONE 4'], function(n){return n;}).join('|'); 
 lpMTagConfig.lpServer = "sales.liveperson.net"; 
 lpMTagConfig.lpTagSrv = lpMTagConfig.lpServer; 
 lpMTagConfig.lpNumber = "76226072";	 
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","lrrkQxJLgjhQJQ31w9FCs684!73600653!1349587979165"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","bppXQ2KZNSxbhjh9hDp1MnVB!-389888158!1349929689078"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
-lpMTagConfig.vars.push(["visitor","customerZip",""]); 
-lpMTagConfig.vars.push(["visitor","customerCity",""]); 
-lpMTagConfig.vars.push(["visitor","customerState",""]); 
-lpMTagConfig.vars.push(["visitor","customerAccountInfo", '']); 
+lpMTagConfig.vars.push(["visitor","customerZip","53536"]); 
+lpMTagConfig.vars.push(["visitor","customerCity","EVANSVILLE"]); 
+lpMTagConfig.vars.push(["visitor","customerState","WI"]); 
+lpMTagConfig.vars.push(["visitor","customerAccountInfo", '543 PORTER RD']); 
 lpMTagConfig.vars.push(["visitor","customerItemsOwned", ATT.globalVars.customerItemsOwned]); 
-lpMTagConfig.vars.push(["visitor","customerQualification",""]); 
+lpMTagConfig.vars.push(["visitor","customerQualification","true"]); 
 lpMTagConfig.vars.push(["page","applicationName","shop"]); 
 lpMTagConfig.vars.push(["page","departmentName","wireless"]); 
 lpMTagConfig.vars.push(["visitor","customerLocalization",ATT.globalVars.zip()]); 
@@ -1060,6 +1060,14 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 	<!-- after footer this file is required to call any cleanup script needed on page like seession end. --> 
 	<!--  To create CLT cookies in existing customer flow --> 
 <!-- To create localization cookies. --> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.att.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.bellsouth.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.sbc.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.att.net/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.att.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.bellsouth.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.sbc.com/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
+				<img id="v_reverseLocalizaitonUrls" width="1" height="1" src="../../../localization.att.net/loc/controller%3Fappid=ecomm&amp;ltype=rev&amp;segment=res&amp;company=att&amp;zip=53536" border="0"></img> 
 </body> 
 	<script type="text/javascript">  
 		jQuery(window).load(function(){  

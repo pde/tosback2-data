@@ -22,6 +22,24 @@
     var response_type;
     var logout_callback;
 
+    JANRAIN.SSO.log =  function(msg) {
+        if (window.console && window.console.log) {
+            console.log("SSO: " + msg);
+        }
+    }
+    
+    JANRAIN.SSO.warn = function(msg) {
+        if (window.console && window.console.warn) {
+            console.warn("SSO WARNING: " + msg)
+        }
+    }
+    
+    JANRAIN.SSO.error = function(msg) {
+        if (window.console && window.console.error) {
+            console.error("SSO ERROR: " + msg);
+        }
+    }
+    
     /**
      * Log the user out of all Capture SSO sites that they have visited,
      * then (optionally) redirect the user to a destination page.
@@ -228,18 +246,22 @@
 
             if (config.logout_uri === undefined) { config.logout_uri = ""; }
             if (config.bp_uri === undefined) { config.bp_uri = ""; }
+            if (config.xd_receiver === undefined) { 
+            	JANRAIN.SSO.error("configuration value xd_receiver undefined");
+            } else {
 
-            var script = document.createElement("script");
-            script.src = config.sso_server + "/session/sso_check.js?"
-                + "v=" + new Date().getTime()
-                + "&xdcomm_uri=" + encodeURIComponent(config.xd_receiver)
-                + "&bp_channel=" + encodeURIComponent(config.bp_channel)
-                + "&logout_uri=" + encodeURIComponent(config.logout_uri);
-
-            script.type = "text/javascript";
-
-            var firstScript = document.getElementsByTagName("script")[0];
-            firstScript.parentNode.insertBefore(script, firstScript);
+		        var script = document.createElement("script");
+		        script.src = config.sso_server + "/session/sso_check.js?"
+		            + "v=" + new Date().getTime()
+		            + "&xdcomm_uri=" + encodeURIComponent(config.xd_receiver)
+		            + "&bp_channel=" + encodeURIComponent(config.bp_channel)
+		            + "&logout_uri=" + encodeURIComponent(config.logout_uri);
+		
+		        script.type = "text/javascript";
+		
+		        var firstScript = document.getElementsByTagName("script")[0];
+		        firstScript.parentNode.insertBefore(script, firstScript);
+            }
 
         }
     }

@@ -3,7 +3,7 @@ var e9AdSlots;
 var e9;
 var expo9_ad;
 
-if (e9Manager === undefined) 
+if (e9Manager === undefined || e9Manager.init === false)
  {
    e9Manager = (
      function() 
@@ -287,8 +287,8 @@ if (e9Manager === undefined)
                {
                  case 'object':
                        if (o === null) return 'null';
-                       if (o.constructor == Array) return 'array';
-                       if (o.constructor == Date) return 'date';
+                       if (o.constructor === Array) return 'array';
+                       if (o.constructor === Date) return 'date';
                        return 'object';
                  case 'function':
                        if (o.constructor === RegExp) return 'regex';
@@ -334,7 +334,7 @@ if (e9Manager === undefined)
 	     for (var name in object)
 	      {
 		var valStr = stringifyValue(object[name]);
-		if (valStr != undefined)
+		if (valStr !== undefined)
 		 {
 		   if (nameReg.test(name) === false)
 		      name = '"' + name + '"';
@@ -376,8 +376,9 @@ if (e9Manager === undefined)
           'flushMedia',
 	  'async',
  	  'noAdChoice',
-	  'env'
-	 ];
+	  'env',
+	  'json'
+         ];
 
 	var validCombineFields =
          [
@@ -443,8 +444,8 @@ if (e9Manager === undefined)
               adSpec.noAdChoice = 1;	      
             }
 
-           if (   typeof(p.enabledAdChoices) == "undefined" 
-	       || p.enabledAdChoices === false)
+           if (    (p.enabledAdChoices === undefined) 
+	        || (p.enabledAdChoices === false))
               adSpec.noAdChoice = 1;
 
 	   return adSpec;
@@ -480,7 +481,24 @@ if (e9Manager === undefined)
            setAdResponse:
 	     function(adResponse) 
               {
+                e9Manager.setMultiAdResponse(adResponse);
+              },
+
+           setMultiAdResponse:
+	     function(adResponse) 
+              {
+                if (typeof inMultiAsyncFrame !== "undefined")
+	   	   window.parent.e9Manager = manager;
+
+                e9Page.adResponse = adResponse;                
+                e9Page.processWaitingSlotsQueue()                
+              },
+
+	   setSingleAdResponse:
+	     function(adResponse) 
+              {
                 e9Page.adResponse = adResponse;
+                e9Page.displaySingleAd("defAdSlot");
               },
 
            displayAdFromE9:
@@ -492,7 +510,7 @@ if (e9Manager === undefined)
            displayAdSlot:
 	     function(slotName) 
               {
-                e9Page.displayAdSlot(slotName);
+                e9Page.displayMultiAd(slotName);
               }
          };
 
@@ -500,7 +518,7 @@ if (e9Manager === undefined)
 
         var e9Page = 
 	 {
-	   version: "1.24",
+	   version: "1.25",
 	   displayAdVersion: "0.4",
 	   adNum:0,
 	   adResponse:undefined,
@@ -516,6 +534,7 @@ if (e9Manager === undefined)
 	   tagOptions: {},
            
 	   isIE: (navigator.appVersion.indexOf("MSIE") !== -1),
+	   isIEOrOpera : (navigator.appVersion.indexOf("MSIE") !== -1) || (navigator.userAgent.indexOf("Opera") !== -1),
 
 	   init: 
              function()
@@ -523,10 +542,14 @@ if (e9Manager === undefined)
 	        var             p = this;
 
 		p.setPageData();
+		p.waitingSlotsQueue = (typeof inMultiAsyncFrame !== "undefined") ? parent.window.e9WaitingSlotsQueue : []; 
+		
 		p.center = 1;
 		p.async = true;
 		p.env = "display";
 		p.pageId = p.pageData.pageId;
+
+                p.setLoaderVersion();
 
 		p.setPageParams();
 		p.fetchedScripts = {};
@@ -535,6 +558,24 @@ if (e9Manager === undefined)
 		p.includeJScript(p.displayAdURL);
 	      },
 
+           setLoaderVersion:
+             function()
+              {
+	        var             p = this;
+
+                if (typeof e9Loader !== "undefined" )
+                   p.loaderVersion = e9Loader.loaderVersion;
+                else 
+                  {
+                    try
+                     {
+                       if (typeof parent.e9Loader !== "undefined" )
+                          p.loaderVersion = parent.e9Loader.loaderVersion;
+                     }
+		    catch(e) {}
+                 }
+              },
+ 
 	   setPageParams:
 	     function() 
 	      {
@@ -548,6 +589,8 @@ if (e9Manager === undefined)
 		px(p,'pageParams','ver',p.version);
 		px(p,'pageParams','th',p.tagHash);
 		px(p,'pageParams','tagKey',p.tagKey);
+
+		cpx(p,'pageParams','loaderVer',p.loaderVersion);
 	      },
 
 	   setPageData:
@@ -576,7 +619,7 @@ if (e9Manager === undefined)
 		   catch (e) {}
                  }
               },
-	     
+
 	   getAdNum:
              function()
               {
@@ -638,10 +681,8 @@ if (e9Manager === undefined)
 	     function() 
 	      {
 	        var             p = this;
-		var		isHead = (document.getElementsByTagName('body')[0] === undefined);
 
-		if (    (isHead)
-	             && (e9AdSlots !== undefined))
+		if (e9AdSlots !== undefined)
 		 {
 		   var		e9Ad = p.makeAd({});
 		   
@@ -678,7 +719,7 @@ if (e9Manager === undefined)
 			|| (canServePops() === true))
 		      adSlots[slotName] = p.pageBuildAdSpec(e9);
 
-		   if (firstSlot == undefined)
+		   if (firstSlot === undefined)
 		      firstSlot = adSlots[slotName];
 		 }
 		for (var key in firstSlot) 
@@ -776,6 +817,13 @@ if (e9Manager === undefined)
 			cpx(t,'adParams','adSpace', adSpec.adSpace || p.adSpace);
 
 			px(t,'adParams','center', t.center);
+
+			if (typeof inSingleAsyncFrame !== "undefined")
+			 {	
+			   px(t,'adParams','json', 1);
+			   px(t,'adParams','callback', "e9Manager.setSingleAdResponse");
+			 } 
+
 			cpx(t,'adParams','pop', adSpec.pop);
 			cpx(t,'adParams','noAd', adSpec.noAd);
 			cpx(t,'adParams','ct', adSpec.contentType);
@@ -793,6 +841,8 @@ if (e9Manager === undefined)
 			cpx(t,'adParams','mediaDataID', adSpec.mediaDataID);
 			cpx(t,'adParams','clientID', adSpec.clientID);
 			cpx(t,'adParams','env', adSpec.env || p.env);
+			cpx(t,'adParams','clickURL', adSpec.clickURL);
+			cpx(t,'adParams','imgURL', adSpec.imgURL);
 			cpx(t,'adParams','flushMedia', adSpec.flushMedia);
 		      },
 
@@ -970,6 +1020,12 @@ if (e9Manager === undefined)
 					     : 2);
                          }
 
+                        /* multi call when requested in iframe should 
+                           not go in the code for frame busting*/
+
+                        if (typeof inMultiAsyncFrame !== "undefined")
+                           frameLevel = 0;
+
 			if (adSpec.busted === 1)
 			 {
 			   try 
@@ -992,7 +1048,7 @@ if (e9Manager === undefined)
 			    } 
                            else
                             {
-		              if (p.enabledRichAdInIframe == true)
+		              if (p.enabledRichAdInIframe === true)
                                {
 				 if (frameLevel === 2) /*FSN */
 				  {
@@ -1026,6 +1082,14 @@ if (e9Manager === undefined)
 
 			      if (frameLevel === 2)
 			         frameLevel = 1;
+
+                              /* We don't serve PointRoll/AdFloating(EyeBlaster)/AdExpandable in iframes
+                               * So, for now frameLevel can be set to 0 in case of same domain nested iframes
+  			       * Later we can add cBuyReqFlags_IFrameBusted flag in mediaType.c for the above mediaTypes
+                               */
+
+			      if (typeof inSingleAsyncFrame !== "undefined" || typeof inMultiAsyncFrame !== "undefined")
+			         frameLevel = 0;
                             }
                          }
 		        catch (exception) 
@@ -1134,8 +1198,9 @@ if (e9Manager === undefined)
 			 {
 			   case "iframe":
 				{
-				  t.tagSrc = '<iframe src="' + t.url + '" marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 scrolling=no allowTransparency=true width='
-						   + t.fw + ' height=' + t.fh + ' ><\/iframe>';
+				  t.tagSrc = '<iframe src="' + t.url + '" marginwidth=0 marginheight=0 hspace=0 vspace=0'
+						+ 'frameborder=0 scrolling=no allowTransparency=true width='
+						+ t.fw + ' height=' + t.fh + ' ><\/iframe>';
 				}
 				break;
 
@@ -1156,8 +1221,9 @@ if (e9Manager === undefined)
 
 			   case "buster":
 				{
-				  t.tagSrc = '<iframe src="' + p.busterframe + '#' + t.pageParams + t.adParams + '" marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 ' +
-				       'scrolling=no allowTransparency=true width=' + t.fw + ' height=' + t.fh + '></iframe>';
+				  t.tagSrc = '<iframe src="' + p.busterframe + '#' + t.pageParams + t.adParams 
+					       + '" marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 '
+					       + 'scrolling=no allowTransparency=true width=' + t.fw + ' height=' + t.fh + '></iframe>';
 				}
 				break;
 			 }
@@ -1172,10 +1238,10 @@ if (e9Manager === undefined)
 		     function(window,frame)
                       {
                         var w = window;
-                        while (w.parent != w.top)
+                        while (w.parent !== w.top)
                          {
                            w = w.parent;
-                           if (w == frame.contentWindow)
+                           if (w === frame.contentWindow)
                               return true;
                          }
                         return false;
@@ -1203,7 +1269,8 @@ if (e9Manager === undefined)
                                  if (t.isAncestor(window,frame))
                                   {
 				    var		filterObj = t.filterSizeToFrameWxH(adSpec.size,frame);
-				    if (isAdEnclosedInIframe(filterObj.fw,filterObj.fh,frame,70) === true)
+				    if (    (isAdEnclosedInIframe(filterObj.fw,filterObj.fh,frame,70) === true )
+					 && (frame.src !== window.location.href))
 				     {
 				       frame.src = window.location.href;
 				       return true;
@@ -1243,11 +1310,15 @@ if (e9Manager === undefined)
 			t.setURLs(true);
 			var adslots = t.encodeAdSlots(p.adSlots);
 
-			if (adslots != '') 
+			if (adslots !== '') 
 			 {
-			   var url = "http://" + p.host + "/j.multi" + t.pageParams + "&site=" + p.site + "&adSpace=" + p.adSpace + t.adParams + "&rnd=" + getRnd() + '&' + adslots;
+			   var url = "http://" + p.host + "/j.multi" + t.pageParams 
+				        + "&site=" + p.site + "&adSpace=" + p.adSpace + t.adParams + "&rnd=" + getRnd() 
+				        + '&' + adslots + "&callback=e9Manager.setMultiAdResponse";
+
 			   if (p.isIE === false)
-			      window.addEventListener('load',checkForAdSlotsNotDisplayed,false);   
+			      window.addEventListener('load',checkForAdSlotsNotDisplayed,false); 
+
 			   p.includeJScript(url);
 		         }
 		      },
@@ -1296,17 +1367,15 @@ if (e9Manager === undefined)
 		return e9Ad;
 	      },
 
-           drawDataSlots:
+           getDataSlots:
 	     function()
               {
 	        var             p = this;
-		var 		dataCreative;
-		var 		data1x1Creative;
+		var 		dataCreative = "";
+		var 		data1x1Creative = "";
 
-		if (p.adResponse) 
+		if (p.adResponse !== undefined) 
 		 {
-		   dataCreative = "";
-		   data1x1Creative = "";
 		   for (var k in p.adResponse) 
 		    {
 		      if (k.indexOf("data_slot_") === 0) 
@@ -1319,125 +1388,196 @@ if (e9Manager === undefined)
 			 data1x1Creative += p.adResponse[k].creative;
 			 delete(p.adResponse[k]);
 		       }
-		    }
-
-		   if (dataCreative !== "") 
-		      p.writeAsyncFrame({},{ 'creative':dataCreative, 'size':"0x0", 'style':"display:none;" });
-
-		   if (data1x1Creative !== "") 
-		      document.write(data1x1Creative);
+	            }
 		 }
+	        
+                return { 'dataCreative': dataCreative, 'data1x1Creative':data1x1Creative }               
               },
 
-	   displayAdSlot:    
-	     function(slotName) 
+           processWaitingSlotsQueue:
+             function()
+              {
+                var		p = this;
+                var		waitingSlots = p.waitingSlotsQueue;
+
+                for (var i in waitingSlots)
+                   p.displayMultiAd(waitingSlots[i]);
+              },
+
+           createSameDomainIframeNode:
+             function(iframeID,width,height)
+              {
+                var     iframe = document.createElement('iframe');
+
+                iframe.setAttribute("frameBorder", "0");
+                iframe.setAttribute("allowtransparency", "true");
+                iframe.setAttribute("marginheight", "0");
+                iframe.setAttribute("marginwidth", "0");
+                iframe.setAttribute("scrolling", "no");
+                iframe.setAttribute("width", width);
+                iframe.setAttribute("height", height);
+                iframe.setAttribute("hspace", "0");
+                iframe.setAttribute("vspace", "0");
+                iframe.setAttribute("id" ,iframeID);
+
+                return iframe;
+              },
+        
+           getFrameID:
+             function (frameWindow) 
 	      {
-	        var             p = this;
-		var		adSlots = p.adSlots;
+                return "tfasyncframe_" + frameWindow.document.getElementsByTagName("iframe").length;
+	      },
 
-		p.drawDataSlots();
-		if (adSlots && (adSlots[slotName] !== undefined))
-                 {
-		   if (p.adResponse === undefined || p.adResponse[slotName] === undefined) 
+           getDivID:
+             function(slotName) 
+              {
+		return "tfasyncid_" + slotName;
+              },
+
+           buildContentFromResponse:
+             function(adResponse)
+              {
+                var		p = this;
+                var		creative   = adResponse.creative;
+		var		viewPixel  = "";
+		var             dataSlots  = p.getDataSlots();
+                var             content;
+
+		if (adResponse.viewpixel.indexOf('http') === 0)
+                   viewPixel = '<img src="' + adResponse.viewpixel + '" height=0 width=0 border=0 style="display:none"/>';
+
+                content =  '<!DOCTYPE html><html><head></head><body style="margin-left:0;margin-top:0px;">'
+                                      + creative
+                                      + viewPixel
+                                      + dataSlots.dataCreative
+                                      + dataSlots.data1x1Creative
+                           + '</body></html>';
+
+                return content;
+              },
+
+           displayMultiAd:
+             function(slotName) 
+              {
+                var             p = this;
+                var             adSlots = p.adSlots;
+
+                if (    (adSlots !== undefined)
+                     && (adSlots[slotName] !== undefined))
+		 {
+		   var          divID       = p.getDivID(slotName);
+                   var          frameWindow = (typeof inMultiAsyncFrame !== "undefined") ? parent.window: window;
+                   var          iframeID    = p.getFrameID(frameWindow);
+                   var		adSpec      = adSlots[slotName];
+                   var		center      = sfv(adSpec.center,adSlots.center,p.center);
+
+                   if (frameWindow.document.getElementById(divID) === null)
+		      p.createContainerDiv(slotName,frameWindow,center);
+
+                   if (p.adResponse !== undefined)
 		    {
-		      p.displayAdFromE9(e9AdSlots[slotName]);
-		    }
-		   else
-		    {
-		      var	adSpec = adSlots[slotName];
-		      var       adResponse = p.adResponse[slotName];
-		      var	creative,mediaURL,frmsize,viewpixel;
-		      var 	center = sfv(adSpec.center,adSlots.center,p.center);
-		      var 	async = sfv(adSpec.async,adSlots.async,p.async);
-		      var 	debug = sfv(adSpec.debug,adSlots.debug);
-
-		      creative = adResponse.creative;
-		      mediaURL = (adResponse.mtype != 22)?adResponse.html:undefined;
-
-		      if (adResponse.viewpixel.indexOf('http') === 0) 
-		         viewpixel = '<img src="' + adResponse.viewpixel + '" height=0 width=0 border=0 style="display:none"/>';
+		      var	adResponse  = p.adResponse[slotName];
+		      var	debug       = sfv(adSpec.debug,adSlots.debug);
+		      var	frameSize   = sfv(adSpec.rsize, adResponse.size);
+		      var       sizeArray   = frameSize.split("x");
+		      var       frameWidth  = sizeArray[0];
+		      var       frameHeight = sizeArray[1];
+		      var       content;
+                      var       iframe;
 
 		      if (debug === 1)
 		       {
 			 inspectNameObj(slotName,adSpec);
 			 inspectNameObj(slotName + ".adResponse",adResponse);
 		       }
-		      
-		      if (    (mediaURL === undefined)
-		           || (mediaURL.indexOf('http') !== 0)
-			   || (async === false))
-		       {
-		         if (center === 1)
-		            creative = '<div align="center">' + creative + '</div>';
-		   	 document.write(creative + (viewpixel || ''));
-  		       }
-		      else
-		       {
-		         var frmsize = adResponse.size;
-		         if (adSpec.rsize !== undefined)
-		            frmsize = adSpec.rsize;
 
-			 var frameSpec = { 
-			     	       	   'creative' : creative, 
-			     	       	   'mediaURL' : mediaURL,
-					   'size'     : frmsize, 
-					   'viewpixel':viewpixel 
-					 };
+		      iframe = p.createSameDomainIframeNode(iframeID,frameWidth,frameHeight);
 
-		         p.writeAsyncFrame(adSpec,frameSpec);
-		       }
+		      frameWindow.document.getElementById(divID).appendChild(iframe);		
+
+                      content = p.buildContentFromResponse(adResponse);
+
+		      p.writeContentInIframe(frameWindow,iframeID,content);
 		      p.displayFlags[slotName] = 1;
-                    }
-		 }
-	      },
+		    }  
+                 }
+              },
 
-	   writeAsyncFrame: 
-	     function(adSpec,frameSpec) 
-	      {
-	        var		p = this;
-		var 		rnd  = getRnd();
-		var		center = (adSpec.center !== undefined) ? adSpec.center
-				    		      		       : p.center;
-		var 		sizeArray = frameSpec.size.split('x');
-		var 		frameSrc = "";
-		var 		style = frameSpec.style ? 'style='+frameSpec.style: '';
-		var 		viewpixel = frameSpec.viewpixel || '';
-		var		frameTags;
+           displaySingleAd:
+             function(slotName) 
+              {
+                var		p = this;
+		var             adResponse  = p.adResponse[slotName];
+		var       	sizeArray   = adResponse.size.split("x");
+		var       	frameWidth  = sizeArray[0];
+		var       	frameHeight = sizeArray[1];
+                var             adSpec      = p.pageBuildAdSpec(e9);
+                var             currFrame   = window.frameElement;
+                var             content;
 
-		frameTags = '<iframe id="tfadfrm' + rnd + '" ' + frameSrc + ' width="' + sizeArray[0] + 'px" height="' + sizeArray[1] +
-			   'px" scrolling="no" allowTransparency=true marginwidth=0 marginheight=0 hspace=0 vspace=0 frameborder=0 ' +
-			    style + ' ></iframe>' + viewpixel;
-	
-	        if (center)
-		   frameTags = '<div align="center">' + frameTags + '</div>';
-
-		document.write(frameTags);
-
-		if (frameSrc === "")
+                if (    (currFrame !== null)
+                     && (currFrame.width !== frameWidth || currFrame.height !== frameHeight) )
 		 {
-		   var		idoc = document.getElementById('tfadfrm' + rnd).contentWindow.document;
+                   currFrame.width = frameWidth;
+                   currFrame.height = frameHeight;
+                 }
 
-		   idoc.open();
-		   idoc.write('<html><head></head><body>' + frameSpec.creative + '</body></html>');
-		   if (p.isIE === false && p.isOpera === false)
-		      idoc.close(); 
-		 }
-	      }
-	 };
+                if (adSpec.debug === 1)
+                 {
+                   inspectNameObj(slotName,adSpec);
+                   inspectNameObj(slotName + ".adResponse",adResponse);
+                 }
 
+                content = p.buildContentFromResponse(adResponse);
 
-	function expo9Ad() {}
+                document.write(content);
+              },
 
- 	expo9Ad.prototype.displayAd = 
-	  function() 
-	   {
-   	     var t = this;
-      	     manager.displayAdFromE9(t); 
+           createContainerDiv:
+	     function(slotName, w, center) 
+	      {
+                var     p = this;
+
+                w.document.write('<div id="'+p.getDivID(slotName)+'" name="tfasyncdiv" '
+				 +((center === 1) ? ' align="center"' : '')
+				 + '>  </div>');
+                p.waitingSlotsQueue.push(slotName);
+              },
+
+           writeContentInIframe:
+             function(frameWindow, iframeID, content)
+              {
+                var             p = this;
+                var		idoc = frameWindow.document.getElementById(iframeID).contentWindow;
+
+                if (p.isIEOrOpera === true)
+                 {
+                   idoc.contents = content;
+                   idoc.location.replace('javascript:window["contents"]');
+                 }             
+                else        
+                 {
+                   idoc.document.open(); 
+                   idoc.document.write(content);
+                   idoc.document.close();            
+                 }
+              } 
+         };
+
+        function expo9Ad() {}
+
+        expo9Ad.prototype.displayAd =
+          function()
+           {
+             var t = this;
+             manager.displayAdFromE9(t);
            }
 
-	expo9_ad = expo9Ad;
-	     
+        expo9_ad = expo9Ad;
+
         e9Page.init();
+        manager.init = true;
         return manager;
       })();
  }

@@ -30,7 +30,7 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 </script>
-<!-- Google Analytics - End --><link href="WebsitePrivacy.aspx.html" rel="stylesheet" type="text/css" /></head>
+<!-- Google Analytics - End --></head>
 <body class="LTR Gecko3 ENUS">
     <form method="post" action="WebsitePrivacy.aspx.html" id="form1">
 <div>
@@ -516,6 +516,54 @@ IN 2011</h4>
 </div>
 <script type="text/javascript" src="../script/Corporate/master20120708.js"></script>
 <script id="upsMainScript" src="../../storage.conduit.com/ups/ups.js" type="text/javascript"></script>
+
+<script type="text/javascript" />
+
+function setCookie(){
+var resCval = "";
+
+if (resCval == "1" || resCval == "2"){
+document.cookie = 'responsiveCookie=' + resCval + ';path=/;domain=.conduit.com';
+}
+
+}
+
+function getCookie(c_name)
+{
+var i,x,y,ARRcookies=document.cookie.split(";");
+for (i=0;i<ARRcookies.length;i++)
+  {
+  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+  x=x.replace(/^\s+|\s+$/g,"");
+  if (x==c_name)
+    {
+    return unescape(y);
+    }
+  }
+}
+function checkCookie()
+{
+var responsecss=getCookie("responsiveCookie");
+
+if (responsecss == "1")
+  {
+$("head").append("<link href="http://www.conduit.com/privacy/\&quot;http://reallygood.co.il/clients/conduit/staging/responsive.css\&quot;" rel=\"stylesheet\" type=\"text/css\">");
+  }
+else if (responsecss == "2")
+  {
+$("head").append("<link href="http://www.conduit.com/privacy/\&quot;http://reallygood.co.il/clients/conduit/dev/responsive.css\&quot;" rel=\"stylesheet\" type=\"text/css\">");
+  }
+
+}
+
+
+$(document).ready(function() {
+setCookie();
+checkCookie();
+});
+</script>
+
 
     
     

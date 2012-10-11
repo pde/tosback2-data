@@ -407,21 +407,6 @@ if (awBoolIs404) {
 var awJumpTimeAddlVars;
 var awBoolAddRef=false;
 
-function getakv2() {
-	var strAkv2='';
-
-	if (typeof yld_mgr.slots != 'undefined') {
-		for(key in yld_mgr.slots) {
-			if (yld_mgr.slots[key].cstm_content_cat_list) {
-				strAkv2='&akv2='+escape(yld_mgr.slots[key].cstm_content_cat_list[0]);
-				break;
-			} 
-		}
-	}
-
-	return strAkv2;
-}	
-
 function getCanonicalURL() {
 	var strCanonical = "";
 	var arrayLinks = document.getElementsByTagName("link");
@@ -457,7 +442,7 @@ function sendJumpTimeBeacon() {
 }
 
 function createJumpTimeBeacon() {
-	if (typeof jt_account != "undefined") {
+    if (typeof jt_account != "undefined") {
 		awJumpTimeAddlVars = jt_account;
 		awJumpTimeAddlVars += '&sec='+escape(awOmniSSL1);
 		if (awOmniSSL1 != awOmniSSL2) {awJumpTimeAddlVars += '&ss='+escape(awOmniSSL2);}
@@ -465,13 +450,20 @@ function createJumpTimeBeacon() {
 		awJumpTimeAddlVars += '&ct='+escape(awOmniContentType);
 		if (awOmniAuthor) {awJumpTimeAddlVars += '&tag='+escape(awOmniAuthor);}
 		awJumpTimeAddlVars += '&caid='+escape(awOmniPagename);
-		if (typeof yld_mgr != "undefined") {
-			if (yld_mgr.content_topic_id_list) {awJumpTimeAddlVars += '&akv1='+escape(yld_mgr.content_topic_id_list[0]);}
- //			if (yld_mgr.cstm_content_cat_list) {awJumpTimeAddlVars += '&akv2='+escape(yld_mgr.cstm_content_cat_list[0]);}
-			awJumpTimeAddlVars += getakv2();
-			if (yld_mgr.cstm_sctn_list) {awJumpTimeAddlVars += '&akv3='+escape(yld_mgr.cstm_sctn_list[0]);}
- //			if (yld_mgr.site_section_name_list) {awJumpTimeAddlVars += '&akv3='+escape(yld_mgr.site_section_name_list[0]);}
+		
+        // Add advertising information
+        if (typeof definedTags != "undefined") {
+            if (typeof definedTags.adUnit != "undefined") {
+                var adUnits = definedTags.adUnit.split('/');
+                if (typeof adUnits[0] != "undefined") {
+                    awJumpTimeAddlVars += '&akv1='+escape( adUnits[0] );
+                }
+                if (typeof adUnits[1] != "undefined") {
+                    awJumpTimeAddlVars += '&akv2='+escape( adUnits[1] );
+                }
+            }
 		}
+        
 		jQuery(function($) {
 			$.ajax({
 				type: "GET",

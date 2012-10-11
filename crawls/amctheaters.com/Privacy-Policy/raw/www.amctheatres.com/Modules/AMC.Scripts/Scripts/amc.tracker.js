@@ -86,6 +86,11 @@ AmcTracker.prototype = function () {
         var lblParts = [];
         $.each(options.elementAttributes, function (i, attrName) {
             var attrVal = el.attr(attrName);
+            
+            //HACK for Mobile iOS/jQueryMobile href handling
+            if ((attrName || '').toLowerCase() == 'href' && (!attrVal || attrVal == '#') && el.data(attrName))
+                attrVal = el.data(attrName);
+
             if (typeof attrVal != 'undefined')
                 lblParts.push(attrName.replace('data-', '').replace('-', ' ') + ": " + attrVal);
         });
@@ -196,6 +201,9 @@ AmcTracker.prototype = function () {
             if (t.is('a') && (action || '').toLowerCase() == 'click' && (t.attr('href') || '').toLowerCase().indexOf('javascript:') == -1) {
 
                 var url = t.attr('href');
+                
+                if (!url || url == '#' && t.data('href'))
+                    url = t.data('href');
 
                 // Cross-domain link tracking when 'data-tracklink' attribute is true
                 // BCK 2012 JUL 19

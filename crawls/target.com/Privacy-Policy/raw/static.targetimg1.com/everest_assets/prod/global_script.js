@@ -136,11 +136,5 @@ $(document).ready(function(){
 			});				
 		};
 	}
-	
-	try{
-		if ($("form#dimensions > div.fieldsetHolder").length == 0 && $(".leftNavShopLinks").length > 0 && $("div#leftNavArea").find("div#categories").length == 0 && $("#LeftNavRRComponent,#leftNavArea.adslot,#adcontainer1").length > 0) {
-			$("div.leftNavShopLinks:last").addClass("last");
-		}
-	}catch(e){}
 		
 });

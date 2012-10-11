@@ -794,11 +794,55 @@ if (typeof Sys != "undefined" && typeof Sys.Browser != "undefined") {
 	}
 }
 });
-
-fixResMenu = function () {
-    var objElement = GetElement("ctl00_HyperLink1");
-    if (objElement != null) {
-        ShowDiv('', 'ctl00_HyperLink1');
+// WI 59984 - Loyalty:  Add in Hover Text to Progress Bars on My Account page (short term fix)
+fixAccountPageProgressBar = function () {
+    if ((window.location.href.toLowerCase().indexOf("/apps/account/account.aspx") > -1)
+        || (window.location.href.toLowerCase().indexOf("/apps/account/profile.aspx") > -1)
+        || (window.location.href.toLowerCase().indexOf("/apps/admin/opscHome.aspx") > -1)) {
+        var objElement = null;
+        //General Members
+        objElement = GetElement("ctl00_ContentInfo_AccountSummary_trEliteProgress");
+        //alert(objElement);
+        if (objElement != null) {
+            SetText("ctl00_ContentInfo_AccountSummary_trEliteProgress", '<div id=\"divEliteProgessHover\" class=\"bgGradYellowTop\" style=\"display:none;position:absolute;font-size:85%;font-weight:normal;z-index:100;x\"><div class=\"bgGradYellowBtm\">*As part of qualification for any Premier level, members must fly at least four paid flights operated by United or Copa during a calendar year. Please note that the progress bar shows year-to-date progress for Premier qualifying miles (PQM) and Premier qualifying segments (PQS), but may not accurately show completion of the four minimum flights. Certain Chase cardholders are exempt from this minimum flight requirement.</div></div><span style=\"border-bottom:1px dotted #03c;color:#03c\">PQM/PQS Progress to Premier Silver*</span>');
+            objElement.onmouseover = function () {
+                ShowDiv('divEliteProgessHover', '');
+                positionSatelite(GetElement('ctl00_ContentInfo_AccountSummary_trEliteProgress'), GetElement('divEliteProgessHover'), false, 0, 0, true);
+            }
+            objElement.onmouseout = function () {
+                ShowDiv('', 'divEliteProgessHover');
+                return false;
+            }
+        }
+        //Members with premium status
+        objElement = GetElement("ctl00_ContentInfo_AccountSummary_trEliteStatus");
+        //alert(objElement);
+        if (objElement != null) {
+            SetText("ctl00_ContentInfo_AccountSummary_trEliteStatus", '<div id=\"divEliteStatusHover\" class=\"bgGradYellowTop\" style=\"display:none;position:absolute;font-size:85%;font-weight:normal;z-index:100;x\"><div class=\"bgGradYellowBtm\">*As part of qualification for any Premier level, members must fly at least four paid flights operated by United or Copa during a calendar year. Additionally, Flexible Premier qualifying miles (Flex PQMs) can only be redeemed up to Premier Platinum status. Please note that the progress bar shows year-to-date Premier qualifying miles (PQM) and Premier qualifying segments (PQS), but may not accurately show completion of the four minimum flights, or actual PQM progress beyond Premier Platinum.</div></div><span style=\"border-bottom:1px dotted #03c;color:#03c\">PQM/PQS Progress*</span>');
+            objElement.onmouseover = function () {
+                ShowDiv('divEliteStatusHover', '');
+                positionSatelite(GetElement('ctl00_ContentInfo_AccountSummary_trEliteStatus'), GetElement('divEliteStatusHover'), false, 0, 0, true);
+            }
+            objElement.onmouseout = function () {
+                ShowDiv('', 'divEliteStatusHover');
+                return false;
+            }
+        }
+        //Members with over 100,000 PQM/120 PQS
+        objElement = GetElement("ctl00_ContentInfo_AccountSummary_trSwuProgress");
+        //alert(objElement);
+        if (objElement != null) {
+            SetText("ctl00_ContentInfo_AccountSummary_trSwuProgress", '<div id=\"divSwuProgressHover\" class=\"bgGradYellowTop\" style=\"display:none;position:absolute;font-size:85%;font-weight:normal;z-index:100;x\"><div class=\"bgGradYellowBtm\">*The progress bar shows progress toward 125,000 Premier qualifying miles (PQM) or 140 Premier qualifying segments (PQS), at which eligible members can earn two additional Regional Premier Upgrades. As part of earning these upgrades, members must fly at least four paid flights operated by United or Copa during a calendar year. Please note that the progress bar may not accurately show completion of the four minimum flights. Certain Chase cardholders are exempt from this minimum flight requirement.</div></div><span style=\"border-bottom:1px dotted #03c;color:#03c\">PQM/PQS Toward Additional Upgrades*</span>');
+            objElement.onmouseover = function () {
+                ShowDiv('divSwuProgressHover', '');
+                positionSatelite(GetElement('ctl00_ContentInfo_AccountSummary_trSwuProgress'), GetElement('divSwuProgressHover'), false, 0, 0, true);
+            }
+            objElement.onmouseout = function () {
+                ShowDiv('', 'divSwuProgressHover');
+                return false;
+            }
+        }
     }
 }
-AddEventHandlerElement(window, 'load', fixResMenu);
+AddEventHandlerElement(window, 'load', fixAccountPageProgressBar);
+

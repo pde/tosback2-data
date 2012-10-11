@@ -1,0 +1,437 @@
+/*
+ * AT&T Web Standards Initiative <wsi at att dot com>
+ * Joe D'Andrea and Vincent Murphy
+ *
+ * Deprecated CSS definitions 
+ */
+
+/* from header.css */
+
+/* Accomodate header stragglers that were "all navigation." (Yipe!) */
+#header div.navigation { height: 54px; min-height: 54px; }
+#header div.navigation ul { display: none; }
+#header div.navigation form { margin-top: 20px; }
+
+/* No more global navigation. "Farewell, global nav, we hardly knew ye." */
+#page #header ul.navigation,
+#splash #header ul.navigation,
+#promotion #header ul.navigation { display: none; }
+#page #header,
+#splash #header,
+#promotion #header { padding-bottom: 0; border-bottom: 0; margin-bottom: 0; }
+
+#header ul.navigation {
+  clear: both;
+  position: relative;
+  z-index: 1000;
+  width: 760px;
+  min-width: 760px;
+  border-top: 1px solid #818181;
+  height: 2em;
+  border-bottom: 1px solid #818181;
+  cursor: pointer;
+  c\ursor: hand; /* Why isn't Safari showing the pointer, I wonder ... */
+}
+
+/* All lists */
+#header ul.navigation,
+#header ul.navigation ul {
+  font-family: "Lucida Grande", Arial, Helvetica, sans-serif;
+  padding: 0; margin: 0;
+  list-style: none;
+  line-height: 100%; /* For scaling */
+  font-size: 10px; /* (Groan.) */
+}
+
+/* IEeeeeeee! */
+* html #header ul.navigation,
+* html #header ul.navigation ul { line-height: 1; }
+* html #header ul.navigation li.menu {
+  background: url(http://www.corp.att.com/library/style/image/header.navigation.gif) repeat-x top left;
+}
+
+#header ul.navigation a {
+  display: block;
+  width: auto;
+  color: #666;
+  text-decoration: none;
+  margin: 0;
+  padding: 0.5em 10px;
+  background: url(http://www.corp.att.com/library/style/image/header.navigation.gif) repeat-x top left;
+}
+
+#header ul.navigation li.menu { border-left: 0; border-right: 1px solid #818181; }
+#header ul.navigation li.first ul { border-left: 0; }
+
+#header ul.navigation ul li a,
+#header ul.navigation ul li a:hover {
+  border: 0; /* Why do we need this? */
+  background-image: none;
+}
+
+/* TODO - first-level highlight to get ccc */
+#header ul.navigation ul li:hover,
+#header ul.navigation ul li.sfhover {
+  background-color: #D3E5F7;
+  color: #666;
+}
+
+/* Used for the sleight-of-hand moving */
+#header ul.navigation ul li a:hover { position: relative; }
+
+#header ul.navigation li {
+  /* all list items */
+  float: left;
+  width: 189px;
+}
+
+#header ul.navigation li ul li {
+  border-bottom: 1px solid #bbb;
+  min-width: 189px;
+  width: 189px;
+  margin-left: 0;
+  margin-right: 0;
+  background-color: #ddd; /* needed? */
+}
+
+#header ul.navigation li ul {
+  /* second-level lists */
+  position: absolute;
+  background-color: #ddd;
+  width: 189px;
+  _width: 12em;
+  min-width: 189px;
+  border-right: 1px solid #818181;
+  border-left: 1px solid #818181;
+  border-bottom: 1px solid #818181;
+  border-top: 1px solid #818181;
+  left: -999em; /* better for screen readers (vs. display: none) */
+}
+
+/* lists nested under hovered list items */
+#header ul.navigation li ul { top: 2em; }
+#header ul.navigation li:hover ul.segment,
+#header ul.navigation li.sfhover ul.segment { left: 0; }
+#header ul.navigation li:hover ul.purchase,
+#header ul.navigation li.sfhover ul.purchase { left: 189px; }
+#header ul.navigation li:hover ul.account,
+#header ul.navigation li.sfhover ul.account { left: 379px; }
+#header ul.navigation li:hover ul.about,
+#header ul.navigation li.sfhover ul.about { left: 569px; }
+
+/* Clearfix */
+#header ul.navigation:after {
+  content: "."; 
+  display: block; 
+  height: 0; 
+  clear: both; 
+  visibility: hidden;
+}
+/* \*/ * html #header ul.navigation { height: 1%; } /* Hiding from IE-mac */
+
+
+/* from main.css */
+
+/* A callout list */
+.main .content ul.callout {
+  list-style: none;
+  font-family: verdana, geneva, sans-serif;
+  font-size: 12px; /* Adjust this to use ems */
+  background-color: #a2b6db;
+  margin: 0 0 1em 0;
+  padding: 1px 0;
+  border-top: 5px solid #659e61;
+  border-bottom: 5px solid #659e61;
+  border-left: 0; border-right: 0;
+  position: relative;
+}
+
+.main .content ul.callout li {
+  margin: 0; padding: 0;
+  width: 40%;
+}
+
+.main .content ul.callout li a {
+  display: block;
+  margin: 0;
+  padding: 3px;
+  width: 100%;
+  background-color: #6d82a6;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #485572;
+  border-left: 0;
+}
+
+.main .content ul.callout li a:link, 
+.main .content ul.callout li a:visited {
+  color: #fff;
+  text-decoration: none;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #485572;
+  border-left: 0;
+}
+
+.main .content ul.callout li a:hover {
+  color: #fff;
+  background-color: #a2b6db;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #a2b6db;
+  border-bottom: 1px solid #a2b6db;
+  border-left: 0;
+}
+.main .content ul.callout li div {
+  display: none;
+  margin: 0; padding: 0;
+}
+.main .content ul.callout li:hover div,
+.main .content ul.callout li.sfhover div {
+  display: inline;
+  position: absolute;
+  margin: 0; padding: 4px;
+  top: 0; left: 42%;
+  color: #fff;
+  width: 56%;
+  border: 1px solid transparent;
+}
+/* Hides from IE-Mac \*/
+* html .main .content ul.callout {
+  hei\ght: 1%;
+}
+* html .main .content ul.callout li,
+* html .main .content ul.callout li.sfhover {
+  height: 1%;
+}
+* html .main .content ul.callout li.sfhover {
+  margin-bottom: -3px;
+}
+* html .main .content ul.callout li.sfhover div {
+  left: 37%; lef\t: 42%;
+  width: 142%; w\idth: 140%;
+  border: 0;
+}
+/* End hide from IE-Mac */
+
+/* Stock Table */
+.main .content table.stock {
+  border: 1px solid #ccc;
+  text-align: center;
+  width: 100%;
+}
+.main .content table.stock td,
+.main .content table.stock th {
+  border: 0;
+}
+.main .content table.stock th {
+  background-color: #fff;
+  text-align: center;
+  color: #000;
+}
+.main .content table.stock td {
+  text-align: center;
+}
+.main .content table.stock caption {
+  margin-bottom: 0;
+  color: #fff;
+  background-color: #039;
+}
+.main .content table.stock caption,
+.main .content table.stock thead {
+  color: #000;
+  font-weight: bold;
+  border-bottom: 1px solid #ccc;
+}
+.main .content table.stock tfoot .date {
+  font-weight: normal;
+  font-size: 90%;
+}
+.main .content table.stock tbody td {
+  border-top: 1px solid #ccc;
+}
+.main .content table.stock tfoot td,
+.main .content table.stock tfoot.footnote td {
+  padding: 0;
+}
+.main .content table.stock tbody td.name {
+  font-weight: bold;
+}
+.main .content table.stock tbody td.name:after {
+  content: ":";
+}
+.main .content table.stock tbody td.value {
+  text-align: right;
+}
+.main .content table.stock tfoot.footnote {
+  font-weight: normal;
+}
+
+/* TODO: Move to globals */
+.stock .change-down { color: red; }
+.stock .change-up { color: green; }
+
+/* (News) Release */
+.main .content .release h1, .main .content .release h2,
+.main .content .release h3, .main .content .release h4,
+.main .content .release h5, .main .content .release h6,
+.main .content .release p,  .main .content .release ul {
+  background-color: #fff;
+  color: #000;
+  font-family: verdana, geneva, sans-serif;
+}
+.main .content .release h1, .main .content .release h2,
+.main .content .release h3, .main .content .release h4,
+.main .content .release h5, .main .content .release h6,
+.main .content .release p {
+  padding: 0;
+  margin-bottom: 1em 0;
+}
+.main .content .release h2 {
+  font-size: 2em;
+  margin-bottom: 0.5em;
+}
+.main .content .release p.dateline {
+  font-size: 1.3em;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.main .content .release div.summary p,
+.main .content .release p.summary {
+  font-weight: bold;
+}
+.main .content .release .notice h2 { font-size: 1em; }
+.main .content .release .legal p { font-size: .85em; }
+.main .content .release .body p { font-size: 1em; }
+.main .content .release .footnote { font-size: smaller; }
+.main .content .release dl.contact dd { margin: 0; }
+
+/* Image List */
+/* display:inline fixes IE/Win double margin bug */
+.main dl.image,
+.main dl.image-30, .main dl.image-60,
+.main dl.image-90, .main dl.image-120 {
+  float: left; margin: 0 0 10px 0; padding: 0; display: inline;
+}
+
+/* Width minus left/right dl.image margin (it's curently zero) */
+/* Hiding this (for now) - lest it mess up 30px image lists? */
+/*
+.main dl.image,
+.main dl.image-30, .main dl.image-60,
+.main dl.image-90, .main dl.image-120 { width: 740px; }
+*/
+.main-index dl.image
+.main-index dl.image-30, .main-index dl.image-60,
+.main-index dl.image-90, .main-index dl.image-120 { width: 580px; }
+.main-sidebar dl.image,
+.main-sidebar dl.image-30, .main-sidebar dl.image-60,
+.main-sidebar dl.image-90, .main-sidebar dl.image-120 { width: 560px; }
+.main-index-sidebar dl.image,
+.main-index-sidebar dl.image-30, .main-index-sidebar dl.image-60,
+.main-index-sidebar dl.image-90, .main-index-sidebar dl.image-120 { width: 400px; }
+.main .split-12 dl.image,
+.main .split-12 dl.image-30, .main .split-12 dl.image-60,
+.main .split-12 dl.image-90, .main .split-12 dl.image-120,
+.main .split-22 dl.image,
+.main .split-22 dl.image-30, .main .split-22 dl.image-60,
+.main .split-22 dl.image-90, .main .split-22 dl.image-120 { width: 360px; }
+.main-index .split-12 dl.image, .main-index .split-22 dl.image,
+.main-index .split-12 dl.image-30, .main-index .split-22 dl.image-30,
+.main-index .split-12 dl.image-60, .main-index .split-22 dl.image-60,
+.main-index .split-12 dl.image-90, .main-index .split-22 dl.image-90,
+.main-index .split-12 dl.image-120, .main-index .split-22 dl.image-120 { width: 280px; }
+.main-sidebar .split-12 dl.image, .main-sidebar .split-22 dl.image,
+.main-sidebar .split-12 dl.image-30, .main-sidebar .split-22 dl.image-30,
+.main-sidebar .split-12 dl.image-60, .main-sidebar .split-22 dl.image-60,
+.main-sidebar .split-12 dl.image-90, .main-sidebar .split-22 dl.image-90,
+.main-sidebar .split-12 dl.image-120, .main-sidebar .split-22 dl.image-120 { width: 270px; }
+
+.main dl.image dt,
+.main dl.image-30 dt, .main dl.image-60 dt,
+.main dl.image-90 dt, .main dl.image-120 dt {
+  float: right; margin: 0 0 0.25em 0; padding: 0; font-size: 110%;
+}
+
+/* The values we're subtracting are from dl.image dd.img img */
+/* width - img width (90px) - 8px rt-margin - 2*(0 padding) - 2*(0 border) */
+.main dl.image dt { width: 642px; }
+.main-index dl.image dt { width: 482px; }
+.main-sidebar dl.image dt { width: 462px; }
+.main-index-sidebar dl.image dt { width: 302px; }
+.main .split-12 dl.image dt, .main .split-22 dl.image dt { width: 262px; }
+.main-index .split-12 dl.image dt, .main-index .split-22 dl.image dt { width: 182px; }
+.main-sidebar .split-12 dl.image dt, .main-sidebar .split-22 dl.image dt { width: 172px; }
+
+.main dl.image-30 dt { width: 702px; }
+.main-index dl.image-30 dt { width: 542px; }
+.main-sidebar dl.image-30 dt { width: 522px; }
+.main-index-sidebar dl.image-30 dt { width: 362px; }
+.main .split-12 dl.image-30 dt, .main .split-22 dl.image-30 dt { width: 322px; }
+.main-index .split-12 dl.image-30 dt, .main-index .split-22 dl.image-30 dt { width: 242px; }
+.main-sidebar .split-12 dl.image-30 dt, .main-sidebar .split-22 dl.image-30 dt { width: 232px; }
+
+.main dl.image-60 dt { width: 672px; }
+.main-index dl.image-60 dt { width: 512px; }
+.main-sidebar dl.image-60 dt { width: 492px; }
+.main-index-sidebar dl.image-60 dt { width: 332px; }
+.main .split-12 dl.image-60 dt, .main .split-22 dl.image-60 dt { width: 292px; }
+.main-index .split-12 dl.image-60 dt, .main-index .split-22 dl.image-60 dt { width: 212px; }
+.main-sidebar .split-12 dl.image-60 dt, .main-sidebar .split-22 dl.image-60 dt { width: 202px; }
+
+.main dl.image-90 dt { width: 642px; }
+.main-index dl.image-90 dt { width: 482px; }
+.main-sidebar dl.image-90 dt { width: 462px; }
+.main-index-sidebar dl.image-90 dt { width: 302px; }
+.main .split-12 dl.image-90 dt, .main .split-22 dl.image-90 dt { width: 262px; }
+.main-index .split-12 dl.image-90 dt, .main-index .split-22 dl.image-90 dt { width: 182px; }
+.main-sidebar .split-12 dl.image-90 dt, .main-sidebar .split-22 dl.image-90 dt { width: 172px; }
+
+.main dl.image-120 dt { width: 612px; }
+.main-index dl.image-120 dt { width: 452px; }
+.main-sidebar dl.image-120 dt { width: 432px; }
+.main-index-sidebar dl.image-120 dt { width: 272px; }
+.main .split-12 dl.image-120 dt, .main .split-22 dl.image-120 dt { width: 232px; }
+.main-index .split-12 dl.image-120 dt, .main-index .split-22 dl.image-120 dt { width: 152px; }
+.main-sidebar .split-12 dl.image-120 dt, .main-sidebar .split-22 dl.image-120 dt { width: 142px; }
+
+/* img width (90px) + "8 + 0x2 + 0x2" (see above) = 98px */
+.main dl.image dd,
+.main dl.image-30 dd, .main dl.image-60 dd,
+.main dl.image-90 dd, .main dl.image-120 dd { margin: 0; padding: 0; }
+.main dl.image dd { margin-left: 98px; } /* Default */
+.main dl.image-30 dd { margin-left: 38px; }
+.main dl.image-60 dd { margin-left: 68px; }
+.main dl.image-90 dd { margin-left: 98px; }
+.main dl.image-120 dd { margin-left: 128px; }
+
+.main dl.image dd.img,
+.main dl.image-30 dd.img, .main dl.image-60 dd.img,
+.main dl.image-90 dd.img, .main dl.image-120 dd.img { margin: 0; }
+.main dl.image dd.img img,
+.main dl.image-30 dd.img img, .main dl.image-60 dd.img img,
+.main dl.image-90 dd.img img, .main dl.image-120 dd.img img {
+  float: left; margin: 0 8px 0 0; background: #fff;
+}
+
+/* Reverse float */
+.main dl.image.right dt,
+.main dl.image-30.right dt, .main dl.image-60.right dt,
+.main dl.image-90.right dt, .main dl.image-120.right dt { float: left; }
+.main dl.image.right dd,
+.main dl.image-30.right dd, .main dl.image-60.right dd,
+.main dl.image-90.right dd, .main dl.image-120.right dd { margin: 0 98px 0 0; }
+.main dl.image-30.right dd { margin-right: 38px; }
+.main dl.image-60.right dd { margin-right: 68px; }
+.main dl.image-90.right dd { margin-right: 98px; }
+.main dl.image-120.right dd { margin-right: 128px; }
+
+.main dl.image.right dd.img,
+.main dl.image-30.right dd.img, .main dl.image-60.right dd.img,
+.main dl.image-90.right dd.img, .main dl.image-120.right dd.img { margin: 0; }
+.main dl.image.right dd.img img,
+.main dl.image-30.right dd.img img, .main dl.image-60.right dd.img img,
+.main dl.image-90.right dd.img img, .main dl.image-120.right dd.img img {
+  float: right; margin: 0 0 0 8px; background: #fff;
+}
+
+

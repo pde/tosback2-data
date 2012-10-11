@@ -687,7 +687,7 @@ function generateRightHeaderByScenario (scenario, banner, shopurl)
 			
 			newHTML  = newHTML.concat('<DIV class="globalui_header_toplinks" >');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_grocery" ><A href="' + shopurl +'" target="commerce">  Grocery Delivery</A></DIV>');
-			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator\');">Find a Store</A></DIV>');
+			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator-Results\');">Find a Store</A></DIV>');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_specials"  id="weekly-specials-header" ><a href="javascript:goURL(\'Weekly-Specials\');">Weekly Specials</A></DIV></DIV>');
 		
 			break;
@@ -695,7 +695,7 @@ function generateRightHeaderByScenario (scenario, banner, shopurl)
 		case 2: //GUEST COMMERCE
 		 	newHTML  = newHTML.concat('<DIV class="globalui_header_toplinks " >');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_grocery" ><A href="' + shopurl + '" target="commerce">  Grocery Delivery</A></DIV>');
-			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator\');">Find a Store</A></DIV>');
+			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator-Results\');">Find a Store</A></DIV>');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_specials"  id="weekly-specials-header" ><a href="javascript:goURL(\'Weekly-Specials\');">Weekly Specials</A></DIV>');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_savings" id="email-savings-header" ><a href="javascript:goURL(\'E-Mail-Savings\');">Email Savings</A>	</DIV></DIV>');
 
@@ -704,7 +704,7 @@ function generateRightHeaderByScenario (scenario, banner, shopurl)
 			if (isJ4UEnabledHeader(banner))
 			{
 			 	newHTML  = newHTML.concat('<DIV class="globalui_header_toplinks" >');
-				newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator\');">Find a Store</A></DIV>');			
+				newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator-Results\');">Find a Store</A></DIV>');			
 				newHTML  = newHTML.concat('<DIV class="globalui_header_specials"  id="weekly-specials-header" ><a href="javascript:goURL(\'Weekly-Specials\');">Weekly Specials</A></DIV>');
 				var mseOver = "this.src='/CMS/assets/media/images/styleimages/header_top_justforUoffers_107x17_Hover.gif'";
 				var mseOut ="this.src='/CMS/assets/media/images/styleimages/header_top_justforUoffers_107x17_Default.gif'";
@@ -714,14 +714,14 @@ function generateRightHeaderByScenario (scenario, banner, shopurl)
 			else
 			{
 				newHTML  = newHTML.concat('<DIV class="globalui_header_toplinks" >');
-				newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator\');">Find a Store</A></DIV>');			
+				newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator-Results\');">Find a Store</A></DIV>');			
 				newHTML  = newHTML.concat('<DIV class="globalui_header_specials"  id="weekly-specials-header" ><a href="javascript:goURL(\'Weekly-Specials\');">Weekly Specials</A></DIV></DIV>');
 			}
 			break;
 			
 		case 4: //GUEST NON COMMERCE
 		 	newHTML  = newHTML.concat('<DIV class="globalui_header_toplinks" >');
-			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator\');">Find a Store</A></DIV>');
+			newHTML  = newHTML.concat('<DIV  class="globalui_header_findstore" ><a href="javascript:goURL(\'Store-Locator-Results\');">Find a Store</A></DIV>');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_specials"  id="weekly-specials-header" ><a href="javascript:goURL(\'Weekly-Specials\');">Weekly Specials</A></DIV>');
 			newHTML  = newHTML.concat('<DIV class="globalui_header_savings" id="email-savings-header" ><a href="javascript:goURL(\'E-Mail-Savings\');">Email Savings</A>	</DIV></DIV>');
 			

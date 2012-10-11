@@ -142,7 +142,7 @@ bam.extend({
                         _psStartDate = new Date("2012/10/04"),  // start of post-season
                         _psEndDate = new Date("2012/11/03"),  // end of post-season
                         _calIdDate   = new Date(_y+"/"+_m+"/"+_d),                        
-                        _todayDate = window.sysdate ? new Date(sysdate.replace(/^(\d{4})(\d{2})(\d{2})\d+/, "$1/$2/$3")) : new Date(),
+                        _todayDate = bam.getFlipDisplayDate() || new Date(),
                         _isGameLive = false,
                         _gameProps; // will contain game params from multi-angle-epg, if game is live
                     // @TODO pull this out after postseason		
@@ -153,17 +153,23 @@ bam.extend({
                             dataType: "xml",
                             async: false,
                             success: function(tvData) {
-                                var $game = $("game[calendar_event_id='" + props.calendar_event_id + "']", tvData),
-                                    $media = $game.find("angle[id='1']").find("media[platform='WEB_MEDIAPLAYER']");
-                                _isGameLive = ($media.attr("media_state") === "media_on");
-                                if (_isGameLive) {
-                                    _gameProps = {
-                                        content_id: $media.attr("content_id"),
-                                        source: $media.attr("source"),
-                                        view_key: $media.attr("source"),
-                                        sponsor: $media.attr("sponsor")
-                                    };
-                                }
+                                var $game = $("game[calendar_event_id='" + props.calendar_event_id + "']", tvData);
+                                    $game.find("angle").each(function(){
+                                        if (_isGameLive) {
+                                            return false;
+                                        } else {
+                                            var $media = $(this).find("media[platform='WEB_MEDIAPLAYER']");
+                                            if ($media.attr("media_state") === "media_on") {
+                                                _gameProps = {
+                                                    content_id: $media.attr("content_id"),
+                                                    source: $media.attr("source"),
+                                                    view_key: $media.attr("source"),
+                                                    sponsor: $media.attr("sponsor")
+                                                };
+                                                _isGameLive = true;
+                                            }
+                                        }
+                                    });
                             }
                         });
 

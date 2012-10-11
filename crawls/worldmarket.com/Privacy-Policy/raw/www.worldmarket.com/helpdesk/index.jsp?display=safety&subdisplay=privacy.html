@@ -94,11 +94,17 @@
 <script src="../../cdn.optimizely.com/js/66336030.js"></script>
 
 <script>
-try{
-	jQuery.ajax({url: "http://api.hostip.info/get_json.php"}).done(function (msg) {window.userip=msg.ip;})
-} catch (e) {
-	window.netuserip = "";
+var netuserip = jQuery.cookie("myip");
+
+if (null===window.netuserip) {
+	window.netuserip = "n/a";
+	try{
+		jQuery.ajax({url: "http://api.hostip.info/get_json.php"}).done(function (msg) {window.netuserip=msg.ip;})
+	} catch (e) {
+	}
+	jQuery.cookie("myip", window.netuserip, { path: "/"}); 
 }
+
 </script>
 
 <script type="text/javascript" src="../text/inc/foresee/15.1.8/foresee-alive.js%3F20120927-1"></script>
@@ -412,41 +418,40 @@ div#cpwm_rollingpromo div {position:absolute; left: 0; top: 44px; display:none; 
 		allPromos.each(function () {
 			jQuery(this).css({zIndex: baseZindex--})
 		});
-/*
 		jQuery("#cpwm_rollingpromo div[name='promo2a']").click(function () {
 			 openDialogInfo('promo2apopup','Free Shipping on Orders over $150')
 		});
 		jQuery("#cpwm_rollingpromo div[name='promo2b']").click(function () {
-			 openDialogInfo('promo2bpopup','Friends &amp; Family')
+			 openDialogInfo('promo2bpopup','Free Shipping on Orders over $100')
 		});
-*/
 
 		var promo2Interval = setInterval(function () {if (jQuery("div.modalDialogBox").is(":visible") )return; swapPromo();}, 5000);
 	});
-	jQuery.ajax({url: "http://api.hostip.info/get_json.php"}).done(function (msg) {window.netuser=msg;})
-
-
 
 
 </script>
 
 <div id="cpwm_rollingpromo">
-	<div style="display: block;top: 0;">
-		<a href="javascript:openDialogInfo('promo2apopup','Friends &amp; Family')" style="position:absolute; bottom: 2px; right: 28px; display:block; width:52px; height:15px; background:url(../images/misc/blank.gif);"></a>
-		<img src="../text/promo-slots/2-left-of-search/wk37/v1/promo2-v1.gif" height="44" width="354" border="0"></div>
+	<div style="display: block;top: 0;"><a href="http://www.worldmarket.com/category/home-decorating/rugs.do"><img src="../text/promo-slots/2-left-of-search/wk37/wk35-promo1.png" height="44" width="354" border="0"></a></div>
 	
-	<div name="promo2b"><a href="http://www.worldmarket.com/category/home-decorating/rugs.do?ab=home:wk37:promo:2:rugs50sale"><img src="../text/promo-slots/2-left-of-search/wk37/wk35-promo1.png" height="44" width="354" border="0"></a></div>
+	<div name="promo2b"><img src="../text/promo-slots/2-left-of-search/wk37/wk35-promo2b.gif" height="44" width="354" border="0"></div>
 </div>
 
 
 <div id="promo2apopup" style="display: none;">
-<p><strong>*Offer valid 10/6/12-10/8/12.</strong></p>
-<p>Discount valid on current selling price. No discount on alcoholic beverages, gift cards, eGift Cards and kitchen electrics. Cannot be combined with other offers and coupons. Cannot be combined with the following discounts: World Market Credit Card discount, Decorators discount, World Market Explorer 10% enrollment discount, employee discount. Employees not eligible. No adjustments to prior purchases. No cash value or rain checks issued. Reproductions not accepted. Returns must be accompanied with original receipt. Returns will be credited as purchase price less the discount, and you will forfeit the discount. Offer good while supplies last. 10% discount on gourmet food is automatically applied online; no additional 10% discount given at checkout. Beverages not available online. Valid at World Market stores and worldmarket.com.</p>
-
-</div>
+<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
+<p> Minimum purchase of $100 (before tax, shipping and handling) required to qualify for offer. </p>
+<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
+<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
+<p> To redeem, enter promotion code at checkout.</p></div>
 
 <div id="promo2bpopup" style="display: none;">
-</div>
+<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
+<p> Minimum purchase of $100 (before tax, shipping and handling) required to qualify for offer. </p>
+<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
+<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
+<p> To redeem, enter promotion code at checkout.</p></div>
+
 
 	</div>
 	</div>
@@ -767,8 +772,8 @@ function getDivColor(color){
 
 <div class="footerTop">
 	<div class="promoSection">
-		<div style="text-align:left; margin-top:-10px">
-	<a href="http://worldmarket.com/category/code/seasonalhiring.do"><img src="../text/homepage/wk36/part1/wk36-promo3-right.png" width="164" height="47" alt="" style="margin:0 0 0 80px; float:right; padding-top:20px"></a>
+		<div style="text-align:left; margin-top:-10px; position:relative; width:650px">
+	<a href="http://worldmarket.com/category/code/seasonalhiring.do"><img src="../text/homepage/wk36/part1/wk36-promo3-right.png" width="164" height="47" alt="" style="position:absolute; right:20px; top:20px"></a>
 	<a href="http://worldmarketsweepstakes.com/"><img src="../text/homepage/wk36/part1/wk36-promo3-left.png" width="386" height="67" alt="Free Shipping"></a>
 </div>
 
@@ -1048,7 +1053,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "7108995"
+  return "4419261"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>
@@ -1093,7 +1098,7 @@ optimizely.$(document).ready(function() {
 </script>
 
 <script type="text/javascript" src="../text/pixels/pages.js%3F20120925-02"></script>
-<script type="text/javascript" src="../text/inc/foresee/15.1.8/foresee-trigger.js%3F20120927-03"></script>
+<script type="text/javascript" src="../text/inc/foresee/15.1.8/foresee-trigger.js%3F20120927-05"></script>
 <script src="../text/pixels/scrolltotop.js%3F20120918-03"></script>
 
 

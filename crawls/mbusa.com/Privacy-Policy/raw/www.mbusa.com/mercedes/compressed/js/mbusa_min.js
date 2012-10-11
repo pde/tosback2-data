@@ -7801,22 +7801,22 @@ f(this).data("color",n).hover(function(){f(j).not(this).animate({color:"#c2c2c2"
 },function(){f(j).animate({color:f(this).data("color")},150)
 })
 });
-f("#btn-search").click(function(){if(f.trim(f(".gsa-suggest-form #query").val())==f.trim(f("#gsa-page-search input[name='oQuery']").val())){return false
-}if(f(".search-results .result.spelling").size()>0){f("#gsa-page-search input[name='index']").val(1)
+f("#btn-search").click(function(){if(f.trim(f(".gsa-suggest-form #query").val())==f.trim(f('#gsa-page-search input[name="oQuery"]').val())){return false
+}if(f(".search-results .result.spelling").size()>0){f('#gsa-page-search input[name="index"]').val(1)
 }});
 f("#gsa-page-search").submit(function(){if(f.trim(f(".gsa-suggest-form #query").val())==""){return false
-}if(f.trim(f(".gsa-suggest-form #query").val())!=f.trim(f("#gsa-page-search input[name='oQuery']").val())){f("#gsa-page-search input[name='index']").val(1)
+}if(f.trim(f(".gsa-suggest-form #query").val())!=f.trim(f('#gsa-page-search input[name="oQuery"]').val())){f('#gsa-page-search input[name="index"]').val(1)
 }return true
 });
 f("#show-more").click(function(){if(f(".results-container").find("#searchAheadIndex").length>0){f("#searchAheadIndex").remove()
 }if(f(".search-results .result.spelling").size()>0){var q=f.trim(f(".search-results .result.spelling h2").text());
 f(".gsa-suggest-form #query").val(q);
-f("#gsa-page-search input[name='oQuery']").val(q)
+f('#gsa-page-search input[name="oQuery"]').val(q)
 }var n=l.getProperty("contextPath")+"/siteSearch/showMore";
 var p=f("#gsa-page-search").serialize();
 f.ajax({url:n,data:p,dataType:"html",success:function(t,u,s){f(".results-container").append(t);
 var r=f("#searchAheadIndex").text();
-f("#gsa-page-search input[name='index']").val(r)
+f('#gsa-page-search input[name="index"]').val(r)
 },error:function(r,t,s){mb.logger.log("Error:"+s)
 }})
 });
@@ -7835,7 +7835,7 @@ f(".tout-list.draw-border").hover(function(){f(".image-tout",this).addClass("dra
 f(".generic .accordion-title:not(#dealer-state-results)").hover(function(){f(this).stop().animate({backgroundColor:"#fabe65"},{duration:250})
 },function(){f(this).stop().animate({backgroundColor:"#f9f9f9"},{duration:250})
 });
-f(".accordion-title:not(#dealer-results .accordion-title, .faqs.uxp2 .accordion-component .accordion-title, .mbrace.uxp2 .accordion-component .accordion-title, .cpo.uxp2 .accordion-component .accordion-title)").click(function(){if(f(this).parent().hasClass("open")){if((window.location.href.indexOf("build")>-1)&&ie7){f(this).parent().children(".accordion-content").hide("fast",function(){mb.broadcaster.dispatchEvent(mb.events.ACCORDION_TOGGLE,f(this).parent())
+f(".accordion-title").not("#dealer-results .accordion-title, .faqs.uxp2 .accordion-component .accordion-title, .mbrace.uxp2 .accordion-component .accordion-title, .cpo.uxp2 .accordion-component .accordion-title, .edp.uxp2 .accordion-component .accordion-title").click(function(){if(f(this).parent().hasClass("open")){if((window.location.href.indexOf("build")>-1)&&ie7){f(this).parent().children(".accordion-content").hide("fast",function(){mb.broadcaster.dispatchEvent(mb.events.ACCORDION_TOGGLE,f(this).parent())
 })
 }else{f(this).parent().children(".accordion-content").slideUp("fast",function(){mb.broadcaster.dispatchEvent(mb.events.ACCORDION_TOGGLE,f(this).parent())
 })
@@ -7846,7 +7846,7 @@ f(".accordion-title:not(#dealer-results .accordion-title, .faqs.uxp2 .accordion-
 }}f(this).parent().toggleClass("open");
 return false
 });
-f(".accordion:not(#dealer-results .accordion, .program_information .accordion, .specs-list .accordion, #content-career .accordion, .faqs.uxp2 .accordion-component, .edp.uxp2 .accordion-component .accordion)").each(function(){var q=f(window.location.hash+" .accordion-title").eq(0);
+f(".accordion").not("#dealer-results .accordion, .program_information .accordion, .specs-list .accordion, #content-career .accordion, .faqs.uxp2 .accordion-component, .edp.uxp2 .accordion-component .accordion, .edp.uxp2 .accordion-component .accordion-title").each(function(){var q=f(window.location.hash+" .accordion-title").eq(0);
 if(window.location.hash&&q.size()){if(!f(q).parent().hasClass("open")){q.click()
 }}else{if(f(this).hasClass("multiopen")){f(".openme .accordion-title",this).click()
 }else{var p=window.location.hash.substring(1);
@@ -7910,6 +7910,9 @@ if(ie6){f(".tooltip").bgiframe();
 f("#overlay-nav").bgiframe();
 f(".btn-gray-gradient").hover(function(){f(this).toggleClass("hover")
 })
+}if(f(".concept-slideshow-items > li").length==0&&!f(".no-content-msg").length){f(".future.uxp2 #future-model").css({top:"-70px","padding-top":"137px"});
+f(".future.uxp2 .hero").remove()
+}if(f(".concept-slideshow-items > li").length==3){f(".future.uxp2 .concept-slideshow-items > li").css("float","left")
 }};
 d.wireSaveCompare=function(){var g=f(".comparison-tout");
 g.click(function(){f(".vehicle-tout-list").hide();
@@ -7955,7 +7958,7 @@ d.clearValue=function(g){g.each(function(h){if(g.val()===g.attr("placeholder")){
 var e=function(j){var h=j.getProperty("contextPath");
 if(f.cookie("MBUSA_OWNERS_STATUS")!=null&&typeof(f.cookie("MBUSA_OWNERS_STATUS"))!="undefined"&&f.cookie("MBUSA_OWNERS_STATUS")!="0"){f("#owners-login-header").html('<a class="track-click" href="'+h+'/owners/logout">Log out of Owners Online</a>')
 }if(f.cookie("MBUSA_FLEET_STATUS")!=null&&typeof(f.cookie("MBUSA_FLEET_STATUS"))!="undefined"&&f.cookie("MBUSA_FLEET_STATUS")!="0"){var g=f(".fleet #subnav-wrapper .login-link a");
-f(".fleet #subnav-wrapper .login-link").html("<a href='"+h+"/fleet_program/confirm_logout' class='active alt modal-1'>Log out</a>");
+f(".fleet #subnav-wrapper .login-link").html('<a href="'+h+'/fleet_program/confirm_logout" class="active alt modal-1">Log out</a>');
 mb.modal.wireModals(f(".fleet #subnav-wrapper .login-link"))
 }};
 d.openMaximizedWindow=function(){var h="maximized";
@@ -9679,3 +9682,6 @@ extend(mb.campaign.modal,mb.campaign.genericViewItem);
 mb.campaign.heroCarousel=function(a){mb.campaign.heroCarousel.superclass.constructor.call(this,a)
 };
 extend(mb.campaign.heroCarousel,mb.campaign.genericViewItem);
+mb.campaign.hero=function(a){mb.campaign.hero.superclass.constructor.call(this,a)
+};
+extend(mb.campaign.hero,mb.campaign.genericViewItem);

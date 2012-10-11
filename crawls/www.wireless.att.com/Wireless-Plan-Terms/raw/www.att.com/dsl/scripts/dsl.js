@@ -106,6 +106,7 @@ function showPopupByStr(str, title, blockBG, closeButton, buttonStr, pWidth, pHe
 				hideSelectOption(false);
 			}
 		}
+	  setModalFocus();		
 	} catch(e) {
 		// do nothing
 	}
@@ -270,7 +271,7 @@ function showPopupIframe(url, title, pWidth, pHeight, scrollFlag, buttonUrl, clo
 		}
 
 		commonFunc.divPopUp('mainPopupDiv2',true);
-		
+		setModalFocus();		
 		//var mainPopupDiv = commonFunc.getElementObj("mainPopupDiv");
 		//if (mainPopupDiv.style.visibility == 'visible') mainPopupDiv.style.zIndex = '';
 		//if (IE6) hideSelectOption(true);
@@ -434,5 +435,16 @@ function format24TimeAs12(time) {
 	}
 	var formattedTime = hours + ":" + minutes + meridian;
 	return formattedTime;
+}
+
+function  setModalFocus(){
+	var modal_objmain = commonFunc.getElementObj("modal-content");
+	if(modal_objmain){   
+		modal_objmain.focus();
+	}
+		var modal_objsub = commonFunc.getElementObj("modal-contentsub");
+	if(modal_objsub){   
+		modal_objsub.focus();
+	}
 }
 

@@ -16,6 +16,7 @@
         pixels_to_drop: [],
         dropping_pixels: false,
         rescue_pixel: null,
+        company_id: '',
 
         run: function() {
             dpx.drop_pixels();
@@ -42,6 +43,7 @@
                 if (src.indexOf('/dpx.js') > 0 && !node.getAttribute('data-sifi-parsed')) {
                     node.setAttribute('data-sifi-parsed', true);
                     var params = dpx.get_query_string(src);
+                    dpx.company_id = (params.match(/cid=(\d+)/) || [])[1] || dpx.company_id
                     pixels.push(params);
                     dpx.pixels.push(params);
                 }
@@ -57,7 +59,7 @@
 
         get_matching_pixels: function() {
             var script = document.createElement('script');
-            script.src = dpx.pixels_url + 'cb=dpx_' + hostname_as_int + '._hp';
+            script.src = dpx.pixels_url + 'cid=' + dpx.company_id + '&cb=dpx_' + hostname_as_int + '._hp';
             document.body.appendChild(script);
         },
 

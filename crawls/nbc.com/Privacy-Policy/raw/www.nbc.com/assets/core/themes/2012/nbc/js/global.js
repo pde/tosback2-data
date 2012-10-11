@@ -12,7 +12,7 @@ var NBC = jqN = jQuery.noConflict(),
     showId = SITE.id,
     clickedNav;
 
-//needs to happen asap 
+//needs to happen asap
 NBC('.featured-video .video-item a').bind('click', function(e){
 	e.preventDefault();
 });

@@ -4,7 +4,7 @@
 
 <!--
 
-    Server name: uobwisapp15-urban-store-08
+    Server name: uobwisapp16-urban-store-07
     Release tag: branches/Ur_Br2Br_MemCash_20120807
     Manifest Trac: #5527 
 
@@ -110,35 +110,28 @@ function submitform(s)
     <!-- Header subnav -->
     <div id="header-subnav">
 <script type="text/javascript">
-var subNav = {};
 
-subNav.twoCol = true;
 
-subNav.activateTwoCol = function() {
-	headerSubnavWrapper = jQuery("#header-subnav-wrapper").detach();
-};
+// this whole chunk of js can be removed 10/15/12, after monetate is turned off
+	var subNav = {};
+
+	subNav.twoCol = true;
+
+	subNav.activateTwoCol = function() {
+		// headerSubnavWrapper = jQuery("#header-subnav-wrapper").detach();
+	};
+// end removal of js
+
 
 (function($) {
 	$(document).ready(function() {
-			/*  Update homepage header */
-		var ranNum = Math.floor(Math.random()*5) + 1;
+			
+		/*  Update homepage header */
 		
-		$("div#header-nav h2#header-nav-home a img").attr("src", "/urban/emails/urban_outfitters" + ranNum + ".png");
-		
-		var testing = false;
+			var ranNum = Math.floor(Math.random()*5) + 1;
+			$("div#header-nav h2#header-nav-home a img").attr("src", "/urban/emails/urban_outfitters" + ranNum + ".png");
 
-		// determine if we are the live site;  if not, set testing to be true.
-		if (window.location.host.indexOf( "www.urbanoutfitters.com" == -1) ) { testing = true; }
-
-		// when the search box is clicked and blurred, swap the nav if testing is active
-		$("#header-search-query").focus(function(){
-			if (testing == true) { headerSubnavWrapper = $("#header-subnav-wrapper").detach(); }
-		});	
-		
-		$("#header-search-query").blur(function(){
-			if (testing == true) { $("#header-subnav").prepend(headerSubnavWrapper); }
-		});	
-
+		/* end homepage header */
 
 /* 		Drop Down Menu */
 		$("#header-nav-categories h2").mouseover(function(){
@@ -148,28 +141,29 @@ subNav.activateTwoCol = function() {
 		  
 		  $(".subnavTwoColList").hide();
 		  $(navID).show();
-		  $("#header-subnav-wrapper, #header-subnav-wrapperB").stop(true, false).animate({ "height" : subnavHeight }, 200);
+		  $("#header-subnav-wrapper").stop(true, false).animate({ "height" : subnavHeight }, 200);
 		});
 		
 		$(".subnavTwoColList").mouseover(function() {
 		  $(headerID).addClass("blue");
-		  $("#header-subnav-wrapper, #header-subnav-wrapperB").stop(true, false).animate({ "height" : subnavHeight }, 200);
+		  $("#header-subnav-wrapper").stop(true, false).animate({ "height" : subnavHeight }, 200);
 		}); 
 		
 	    $("#header-nav-categories").mouseout(function(){
-	      $("#header-subnav-wrapper, #header-subnav-wrapperB").stop(true, false).animate({ "height" : "0" }, 500);
+	      $("#header-subnav-wrapper").stop(true, false).animate({ "height" : "0" }, 500);
 	    });
 	    
 		$(".subnavTwoColList").mouseout(function() {
 		  $(headerID).removeClass("blue");
 	      
-	      $("#header-subnav-wrapper, #header-subnav-wrapperB").stop(true, false).animate({ "height" : "0" }, 500);
+	      $("#header-subnav-wrapper").stop(true, false).animate({ "height" : "0" }, 500);
 		}); 
 	});
 })(jQuery);
 </script>
 
 <style type="text/css">
+
 div#header-nav h2 {
 	padding: 0 0 20px;
 	background: transparent;
@@ -179,13 +173,13 @@ div#header-nav-categories {
   width: 400px;
 }
 
-#header-subnav-wrapper, #header-subnav-wrapperB {
+#header-subnav-wrapper {
   position: absolute;
 	top: 124px;
 	left: 230px;
 }
 
-#header-subnav-wrapper .subnavTwoColList, #header-subnav-wrapperB .subnavTwoColList {
+#header-subnav-wrapper .subnavTwoColList {
 	width: 466px;
 	overflow: hidden;
 	border: none;
@@ -198,14 +192,14 @@ div#header-nav-categories {
 	display: none;
 }
 
-#header-subnav-wrapper .subnavList, #header-subnav-wrapperB .subnavList {
+#header-subnav-wrapper .subnavList {
 	margin: 0px auto;
 	padding: 0 0 20px;
 	display: none;
 	overflow: hidden; 
 }
 
-#header-subnav-wrapper a, #header-subnav-wrapperB a {
+#header-subnav-wrapper a {
 	display: block;
 	margin: 0px;
 	padding: 0px;
@@ -218,20 +212,21 @@ div#header-nav-categories {
 	line-height: 16px;
 }
 
-#header-subnav-wrapper div.subnavTwoColList a:hover, #header-subnav-wrapperB div.subnavTwoColList a:hover {
+#header-subnav-wrapper div.subnavTwoColList a:hover {
 	text-decoration: underline;
 }
-#header-subnav-wrapper div.subnavTwoColList a.parent, #header-subnav-wrapperB div.subnavTwoColList a.parent {
+#header-subnav-wrapper div.subnavTwoColList a.parent {
 	text-transform: uppercase !important;
 	color: #000000 !important;
 	letter-spacing: 1px;
 	font: normal 12px "GRD Medium", "Helvetica Neue", sans-serif;
 }
-#header-subnav-wrapper div.subnavTwoColList a.parent.static:hover, #header-subnav-wrapperB div.subnavTwoColList a.parent.static:hover {
+#header-subnav-wrapper div.subnavTwoColList a.parent.static:hover {
 	text-decoration: underline !important;
 	cursor: default !important;
 }
-#header-subnav-wrapper div.subnavTwoCol-column, #header-subnav-wrapperB div.subnavTwoCol-column {
+
+#header-subnav-wrapper div.subnavTwoCol-column {
 
 	display: block;
 	float: left;
@@ -240,7 +235,7 @@ div#header-nav-categories {
 	padding: 20px 1px 20px 36px;
 }
 
-#header-subnav-wrapper div.subnavTwoCol-column p, #header-subnav-wrapperB div.subnavTwoCol-column p {
+#header-subnav-wrapper div.subnavTwoCol-column p {
 	display: block;
 	height: 16px;
 	width: 16px;
@@ -256,12 +251,6 @@ div#header-nav-categories {
 	text-decoration: underline !important;
 }
 
-/*
-.testB {
-	display: none;
-}
-*/
-
 .blue {
 	color: #0000FF !important;
 }
@@ -272,281 +261,29 @@ div#header-nav h2#header-nav-home {
 
 </style>
 
-<div id="header-subnav-wrapper" class="testA">
-	<div id="header-nav-womens-subnav" class="subnavTwoColList">
-		<div class="subnavTwoCol-column">
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_NEWARRIVALS" class="parent">New Arrivals</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ONLINEEX" class="parent subnavSpaced">Online Exclusives</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_DRESSES" class="parent subnavSpaced">Dresses</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_TOPS" class="parent subnavSpaced">Tops</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_KNIT" class="child">Tees &amp; Knit Tops</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_BLOUSES" class="child">Shirts &amp; Blouses</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SWEATERS" class="child">Sweaters &amp; Cardigans</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_TEES_GRAPHIC" class="child">Graphics</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_CAMIS" class="child">Camis &amp; Tanks</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_HOODIES" class="child">Hoodies &amp; Sweatshirts</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_OUTERWEAR" class="parent subnavSpaced">Coats &amp; Jackets</a>
-	
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_BOTTOMS" class="parent subnavSpaced">Bottoms</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_JEANS" class="child">Jeans</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_PANTS" class="child">Pants</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SHORTS_SKIRTS" class="child">Skirts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SHORTS_SHORTS" class="child">Shorts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_LEGGINGS" class="child">Leggings</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_VINTAGE" class="parent subnavSpaced">Vintage</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_LOUNGE" class="parent subnavSpaced">Lounge</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_INTIMATES" class="parent subnavSpaced">Intimates &amp; Tights</a>	
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SWIMWEAR" class="parent subnavSpaced">Swim</a>
-				
-		</div>
-		<div class="subnavTwoCol-column ">
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=WOMENS_SHOES" class="parent">Shoes</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_BOOTS" class="child">Boots</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_HEELSWEDGES">Heels &amp; Wedges</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_FLATS" class="child">Flats</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_SNEAKERS" class="child">Sneakers</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_ALLSHOES_SANDALS" class="child">Sandals</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_SHOES_SLIPPERS" class="child">Slippers</a>
-		
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_BEAUTY" class="parent subnavSpaced">Beauty</a>
 
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=WOMENS_ACCESSORIES" class="parent subnavSpaced">Accessories</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_BAGS" class="child">Bags &amp; Wallets</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_JEWELRY" class="child">Jewelry</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_HATS" class="child">Hats</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_SCARVES" class="child">Scarves</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_GLOVES" class="child">Gloves</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_BELTS" class="child">Belts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_HAIRACCESSORIES" class="child">Hair Accessories</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ACC_SUNGLASSES" class="child">Sunglasses &amp; Readers</a>
-						
-			<a class="parent static subnavSpaced" >Collections</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_AROUNDWORLD" class="child">International Brands</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_FALL_CATALOG" class="child">Fall Catalog 2012</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_DESIGNEDBY" class="child">Designed By</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_BAROQUE" class="child">Shop By Trend</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_HALLOWEEN" class="child">Halloween Shop</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_CUSTOMSHOPPE" class="child">Custom Tee Shop</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W" class="parent subnavSpaced" style="color:#ff0000 !important">Sale</a>
-		</div>
-	</div>
-
-	<div id="header-nav-mens-subnav" class="subnavTwoColList">
-		<div class="subnavTwoCol-column">
-
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=MCATALOG&amp;seenMens=true" class="parent">Men's Catalog</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_NEWARRIVALS" class="parent subnavSpaced">New Arrivals</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ONLINEEX" class="parent subnavSpaced">Online Exclusives</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_TOPS" class="parent subnavSpaced">Tops</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_TEESSHORT" class="child">Graphics</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_POLOS" class="child">Tees</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_BASICS_TANKS" class="child">Tanks</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_BUTTONDOWNSHIRTS" class="child">Shirts &amp; Polos</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_HOODIESTRACK" class="child">Hoodies &amp; Sweatshirts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_SWEATERS" class="child">Sweaters &amp; Cardigans</a>
-	
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_OUTERWEAR" class="parent subnavSpaced">Coats &amp; Jackets</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_BOTTOMS" class="parent subnavSpaced">Bottoms</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_JEANS" class="child">Jeans</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_PANTS" class="child">Pants</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_SHORTSSWIM_SHORTS" class="child">Shorts &amp; Swim</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_VINTAGE" class="parent subnavSpaced">Vintage</a>		
-			
-		</div>
-		<div class="subnavTwoCol-column ">
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=MENS_SHOES" class="parent">Shoes</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_SHOES_BOATANDMOC" class="child">Casual</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_SHOES_DRESS" class="child">Dress</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_SHOES_SNEAKERS" class="child">Sneakers</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_SHOES_BOOTS" class="child">Boots</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_SHOES_SANDALS" class="child">Slippers &amp; Sandals</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=MENS_ACCESSORIES" class="parent subnavSpaced">Accessories</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_BAGS2" class="child">Bags &amp; Wallets</a>			
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_HATS" class="child">Hats</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_SCARVES" class="child">Scarves &amp; Ties</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_GLOVES" class="child">Gloves</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_BELTS" class="child">Belts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_JEWELRY" class="child">Jewelry &amp; Watches</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_SUNGLASSES" class="child">Sunglasses &amp; Readers</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ACC_SOCKUNDER" class="child">Socks &amp; Underwear</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_GROOMING" class="child">Grooming</a>
-		
-			<a class="parent static subnavSpaced">Collections</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_FEATUREDBRANDS" class="child">Featured Brands</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_FALL_CATALOG" class="child">Fall Catalog 2012</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_HALLOWEEN" class="child">Halloween Shop</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_CUSTOMSHOPPE" class="child">Custom Tee Shop</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M" class="parent subnavSpaced" style="color:#ff0000 !important">Sale</a>
-		</div>
-	</div>
-
-	<div id="header-nav-apartment-subnav" class="subnavTwoColList">
-		<div class="subnavTwoCol-column">
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_NEWARRIVALS" class="parent">New Arrivals</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_ONLINEEX" class="parent subnavSpaced">Online Exclusives</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DEC_BEDDING" class="parent subnavSpaced">Bedding</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_BED_D" class="child">Duvets &amp; Quilts</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_BEDDING_THROWS" class="child">Blankets, Tapestries &amp; Coverlets</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DEC_BEDDING_PILLOWS" class="child">Pillowcases &amp; Shams</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_BEDDINGBASICS" class="child">Bedding Basics</a>
-	
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DECORATE" class="parent subnavSpaced">Room Accessories</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DECORATE_STORAGE" class="child">Shelving &amp; Storage</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_PRETTY" class="child">Room D&eacute;cor</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_LIGHTING" class="child">Lighting &amp; Candles</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DEC_JEWELRYBOX" class="child">Jewelry Storage</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DECORATE_HARDWARE" class="child">Hardware</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_RUGPILCUR" class="parent subnavSpaced">Rugs, Curtains, &amp; Pillows</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_RUGS" class="child">Rugs</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_WINDOW" class="child">Curtains</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_DEC_PILLOWS" class="child">Pillows</a>
-
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_WALL" class="parent subnavSpaced">Wall Art</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_FURNITURE" class="parent subnavSpaced">Furniture</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_FURNITURE_SOFAS" class="child">Sofas</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_FURNITURE_CHAIR" class="child">Chairs</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_FURNITURE_TABLES" class="child">Tables &amp; Storage</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_FURNITURE_BED" class="child">Headboards</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_DINNERWARE" class="parent subnavSpaced">Kitchen &amp; Bar</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FURN_BATH" class="parent subnavSpaced">Bath</a>
-
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_HOLIDAY_ALL" class="parent subnavSpaced">Holiday</a>
-			
-		</div>
-		<div class="subnavTwoCol-column">
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_MEDIA_GADGETS" class="parent">Cases &amp; Tech Accessories</a>
-
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_ENT_BOOKS_BOOK" class="parent subnavSpaced">Books</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_ENT_BOOKS_STATIONERY" class="parent subnavSpaced">Notebooks &amp; Desk Supplies</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=APARTMENT_MEDIA" class="parent subnavSpaced">Cameras &amp; Film</a>			
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=APARTMENT_MUSIC" class="parent subnavSpaced">Music &amp; Electronics</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_MUSIC_VITUR" class="child">Vinyl &amp; Turntables</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_MUSIC_HEAD" class="child">Headphones</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_MUSIC_SPEAKERS" class="child">Speakers &amp; Stereos</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=APARTMENT_MUSIC_INST" class="child">Instruments</a>
-							
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_ENT_GAMES" class="parent subnavSpaced">Games, Toys &amp; Fun Sh!t</a>
-			
-			<a class="parent static subnavSpaced">Collections</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_BRANDS" class="child">Featured Brands</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_CRITTERS" class="child">Shop by Room</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_VINTAGE" class="child">Vintage</a>	
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_FALL_CATALOG" class="child">Fall Catalog 2012</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_INDECISION2012" class="child">Indecision 2012</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=A_HALLOWEEN" class="child">Halloween Shop</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=APT_BIKESHOP" class="child">Build Your Own Bike</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=APT_PRINTSHOP" class="child">Print Shop</a>
-
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_APT" class="parent subnavSpaced" style="color:#ff0000 !important">Sale</a>
-		</div>
-	</div>
-
-	<div id="header-nav-general-subnav" class="subnavTwoColList">
-		<div class="subnavTwoCol-column">			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=GIFT_AWESOME" class="parent">Awesome</a>
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=GIFT_FKING" class="parent subnavSpaced">F!cking Gifts</a>
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=GIFT_BIRTHDAY" class="parent subnavSpaced">Birthdays Rule</a>
-		</div>
-		<div class="subnavTwoCol-column">
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=GIFT_HOME" class="parent">Welcome Home</a>
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=GIFT_BEAUTY" class="parent subnavSpaced">Beauty Queen</a>
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SHOP_GIFTCARDS" class="parent subnavSpaced">Gift Cards</a>
-		</div>
-	</div>
-
-	
-	<div id="header-nav-sale-subnav" class="subnavTwoColList">
-		<div class="subnavTwoCol-column">
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W" class="parent" style="color:#ff0000 !important">Women's Sale</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_DRESSES" class="child">Dresses</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_CLOTHING" class="child">Tops</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_CLOTHING_JACKETS" class="child">Jackets &amp; Blazers</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_BOTTOMS" class="child">Bottoms</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_INTIMATES" class="child">Swim &amp; Intimates</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_SHOES" class="child">Shoes</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_W_ACC" class="child">Accessories</a>
-				
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_APT" class="parent subnavSpaced" style="color:#ff0000 !important">Apartment Sale</a>
-		</div>
-		<div class="subnavTwoCol-column ">
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M" class="parent" style="color:#ff0000 !important">Men's Sale</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M_CLOTHING" class="child">Tops</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M_CLOTHING_JACKETS" class="child">Jackets &amp; Blazers</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M_BOTTOMS" class="child">Bottoms</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M_SHOES" class="child">Shoes</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_M_ACC" class="child">Accessories</a>
-			
-			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_STOCKUP" class="parent subnavSpaced">Stock Up</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_STOCKUP_W" class="child">Women's</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_STOCKUP_M" class="child">Men's</a>
-				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=SALE_STOCKUP_A" class="child">Apartment</a>
-		</div>
-	</div>
-</div>
-
-<!-- Test B -->
-<div id="header-subnav-wrapperB" class="testB">
+<div id="header-subnav-wrapper" class="">
 	<div id="header-nav-womens-subnav" class="subnavTwoColList">
 		<div class="subnavTwoCol-column">
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_NEWARRIVALS" class="parent">New Arrivals</a>
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_ONLINEEX" class="parent subnavSpaced">Online Exclusives</a>
-				
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_DRESSES" class="parent subnavSpaced">Dresses</a>
-			
+			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SWEATERS" class="parent subnavSpaced">Sweaters</a>
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_TOPS" class="parent subnavSpaced">Tops</a>
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_OUTERWEAR" class="parent subnavSpaced">Coats &amp; Jackets</a>
-	
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_BOTTOMS" class="parent subnavSpaced">Bottoms</a>
-				
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_VINTAGE" class="parent subnavSpaced">Vintage</a>
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_LOUNGE" class="parent subnavSpaced">Lounge</a>
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_INTIMATES" class="parent subnavSpaced">Intimates &amp; Tights</a>	
-				
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_APP_SWIMWEAR" class="parent subnavSpaced">Swim</a>
-				
 		</div>
-		<div class="subnavTwoCol-column ">
+		<div class="subnavTwoCol-column">
 
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=WOMENS_SHOES" class="parent">Shoes</a>
-		
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_BEAUTY" class="parent subnavSpaced">Beauty</a>
-			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=WOMENS_ACCESSORIES" class="parent subnavSpaced">Accessories</a>
 						
-			<a class="parent static subnavSpaced" >Collections</a>
+			<a class="parent static subnavSpaced">Collections</a>
 				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_AROUNDWORLD" class="child">International Brands</a>
 				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_FALL_CATALOG" class="child">Fall Catalog 2012</a>
 				<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=W_DESIGNEDBY" class="child">Designed By</a>
@@ -566,6 +303,8 @@ div#header-nav h2#header-nav-home {
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_NEWARRIVALS" class="parent subnavSpaced">New Arrivals</a>
 			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_ONLINEEX" class="parent subnavSpaced">Online Exclusives</a>
+
+			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_APP_SWEATERS" class="parent subnavSpaced">Sweaters</a>
 				
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_TOPS" class="parent subnavSpaced">Tops</a>
 	
@@ -575,7 +314,7 @@ div#header-nav h2#header-nav-home {
 			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=M_VINTAGE" class="parent subnavSpaced">Vintage</a>		
 		</div>
-		<div class="subnavTwoCol-column ">
+		<div class="subnavTwoCol-column">
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=MENS_SHOES" class="parent">Shoes</a>
 			
 			<a href="http://www.urbanoutfitters.com/urban/catalog/category.jsp?id=MENS_ACCESSORIES" class="parent subnavSpaced">Accessories</a>
@@ -786,9 +525,9 @@ div#header-nav h2#header-nav-home {
 		            </li>
 		            <li>
 		            	<h5>
-			                <form action="http://www.urbanoutfitters.com/urban/checkout/cart.jsp" name="headerlogoutForm" method="GET"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="1744772599252961043" type="hidden" name="_dynSessConf"></input><input value="submit" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logout"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logout"><input value="/urban/help/privacy_security.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><a href="http://www.urbanoutfitters.com/urban/user/checkout_login.jsp?anonymouslogin=anonymouslogin&amp;checkoutHeader=hide&amp;formURL=/urban/checkout/cart.jsp" target="_top" id="utility_signin">
+			                <form action="http://www.urbanoutfitters.com/urban/checkout/cart.jsp" name="headerlogoutForm" method="GET"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="-920175773473958750" type="hidden" name="_dynSessConf"></input><input value="submit" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logout"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logout"><input value="/urban/help/privacy_security.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><a href="http://www.urbanoutfitters.com/urban/user/checkout_login.jsp?anonymouslogin=anonymouslogin&amp;checkoutHeader=hide&amp;formURL=/urban/checkout/cart.jsp" target="_top" id="utility_signin">
 							Sign-In
-						</a><input value="/urban/common/login_check.jsp" type="hidden" name="_DARGS"></input></form><form action="http://www.urbanoutfitters.com/urban/common/#" name="logout" method="GET"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="1744772599252961043" type="hidden" name="_dynSessConf"></input><input value="" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logout"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logout"><input value="/urban/user/checkout_login.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutSuccessURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutSuccessURL"><input value="/urban/help/privacy_security.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value="/urban/common/login_check.jsp.1" type="hidden" name="_DARGS"></input></form></h5>
+						</a><input value="/urban/common/login_check.jsp" type="hidden" name="_DARGS"></input></form><form action="http://www.urbanoutfitters.com/urban/common/#" name="logout" method="GET"><input value="ISO-8859-1" type="hidden" name="_dyncharset"></input><input value="-920175773473958750" type="hidden" name="_dynSessConf"></input><input value="" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logout"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logout"><input value="/urban/user/checkout_login.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutSuccessURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutSuccessURL"><input value="/urban/help/privacy_security.jsp" type="hidden" name="/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value=" " type="hidden" name="_D:/atg/userprofiling/ProfileFormHandler.logoutErrorURL"><input value="/urban/common/login_check.jsp.1" type="hidden" name="_DARGS"></input></form></h5>
 		            </li>  
 		        </ul>
     </div>

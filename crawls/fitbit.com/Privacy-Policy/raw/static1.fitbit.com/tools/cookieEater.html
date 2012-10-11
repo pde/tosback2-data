@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+
+<script type="text/javascript">
+    var yesterday = new Date();
+    yesterday.setTime( yesterday.getTime() - 24*60*60*1000 );
+    var cookies = document.cookie.split(';');
+    for(var ii = 0; ii < cookies.length; ii++) {
+         var eq = cookies[ii].indexOf("="), name = cookies[ii].substring(0, eq).replace(/^\s+|\s+$/g,"");
+         if(name !== "JSESSIONID")
+             document.cookie = name+"=; expires="+yesterday.toGMTString()+"; path=/; domain=fitbit.com";
+    }
+</script>

@@ -201,7 +201,6 @@ else {
 	if(mistats.taxonomy.split("|").length != 5) { mistats.taxonomy = "BadTaxonomy||||";}
 
 	// Temporary New Tag Flags /
-	mistats.msr       = "*" + mistats.msr;
 	mistats.pagelevel = "*" + mistats.pagelevel;
 
 	// Catch pages improperly labeled as homepage

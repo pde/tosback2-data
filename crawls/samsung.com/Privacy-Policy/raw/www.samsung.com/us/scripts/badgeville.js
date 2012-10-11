@@ -595,10 +595,18 @@ function onloadBadgevilleCreds() {
 		} 
 	
 }
-
-
 function giveBadgevilleCredit(verb,category,timespent) {
-	Badgeville.bind( 'afterSetPlayer', function() {
+    // If BV player is already set, proceed with the credit.  If not, bind the credit to after set player.
+    if (Badgeville.Objects.is(Badgeville.Settings.player, Badgeville.Objects.PLAYER)) {
+        giveBadgevilleCreditInternal(verb,category,timespent);
+    } else {
+        Badgeville.bind( 'afterSetPlayer', giveBadgevilleCreditInternal(verb,category,timespent));
+    }
+
+}
+
+function giveBadgevilleCreditInternal(verb,category,timespent) {
+	
 
 		if (verb == null || verb == '') 
 			return;
@@ -633,7 +641,7 @@ function giveBadgevilleCredit(verb,category,timespent) {
 		// }
 		
 		Badgeville.credit(paramObject);   // only pass in non-empty parameters
-	});	
+
 }
 
 

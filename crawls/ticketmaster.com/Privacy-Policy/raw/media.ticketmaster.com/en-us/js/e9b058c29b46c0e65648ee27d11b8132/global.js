@@ -1892,3 +1892,26 @@ function lazy_load_script(url, callback) {
     script.src = url;
     body.appendChild(script);
 };
+
+//////////////////////////////////////////////////////////////////////////
+// return the unique items by feeding it the original array
+// -- trung lam
+//////////////////////////////////////////////////////////////////////////
+function get_unique_array(o_array) {
+    var n_array = [];
+    var o_len = o_array.length;
+    for (var x = 0; x < o_len; x++) {
+        var found = false;
+        var n_len = n_array.length;
+        for (var y = 0; y < n_len; y++) {
+            if (o_array[x] === n_array[y]) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            n_array.push(o_array[x]);
+        }
+    }
+    return n_array;
+};

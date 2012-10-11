@@ -53,7 +53,8 @@ f="";for(var a=0;a<b.length;a++){f+=b[a].charAt(0).toUpperCase()+b[a].slice(1)}}
 }else{if(e.match("-ms-")){e=e.replace("-ms-","-vendor-")}else{if(e.match("-o-")){e=e.replace("-o-","-vendor-")
 }}}}c.style["webkit"+f]=e.replace("-vendor-","-webkit-");c.style["Moz"+f]=e.replace("-vendor-","-moz-");
 c.style["ms"+f]=e.replace("-vendor-","-ms-");c.style["O"+f]=e.replace("-vendor-","-o-");
-c.style[f]=e;f=f.charAt(0).toLowerCase()+f.slice(1);c.style[f]=e},setVendorPrefixTransform:function(b,a,c){if(a=="none"){b.setVendorPrefixStyle("transform","none");
+e=e.replace("-vendor-","");c.style[f]=e;f=f.charAt(0).toLowerCase()+f.slice(1);
+c.style[f]=e},setVendorPrefixTransform:function(b,a,c){if(a=="none"){b.setVendorPrefixStyle("transform","none");
 return}if(a==null){a=0}if(c==null){c=0}if(AC.Detector.supportsThreeD()){b.setVendorPrefixStyle("transform","translate3d("+a+", "+c+", 0)")
 }else{b.setVendorPrefixStyle("transform","translate("+a+", "+c+")")}},addVendorEventListener:function(b,c,d,a){if(typeof(addEventListener)=="function"){if(c.match(/^webkit/i)){c=c.replace(/^webkit/i,"")
 }else{if(c.match(/^moz/i)){c=c.replace(/^moz/i,"")}else{if(c.match(/^ms/i)){c=c.replace(/^ms/i,"")

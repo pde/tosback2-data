@@ -87,8 +87,23 @@ BI.OAS = (function(w,undefined) {
 			}
 			if (typeof post != 'undefined' && post === 'story') {
 				post = 'post';
-			}
-			OAS_sitepage += '/'+ ((typeof post === 'object') ? 'post' : (typeof post === 'string' ) ? post : 'homepage');
+			} 
+            // if url is bi.com/category/BLAH then make it /category BI-496
+            if (window.location.pathname.substring(0, 9) == '/category'){
+				post = 'category';
+            }
+        
+            switch (typeof post){
+                case 'object':
+			        OAS_sitepage += '/post';
+                    break;
+                case 'string':
+			        OAS_sitepage += '/' + post;
+                    break;
+                default:
+			        OAS_sitepage += '/homepage';
+                    break;
+            }
 		},
         init: function(obj) {
             var rand = Math.floor(Math.random()*1000);

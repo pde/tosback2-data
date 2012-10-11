@@ -394,7 +394,7 @@ flag = '';
 <input name="att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value="/channellineup/u-verse/channel-lineup.jsp?locale=en_US&mode=page&flag=" type="hidden"><input name="_D:att/ecom/uverse/channellineup/view/ChannelLineUpFormHandler.channelLineUpValidationErrUrl" value=" " type="hidden">
 </div><input name="_DARGS" value="/channellineup/u-verse/channel-lineupbody.jsp" type="hidden"></input></form>
 	<div id="displaytext" class="colsec_650">
-					ZIP code:  <a id="changeZip" href="javascript:void(0);" onclick="changeZipCode();">Change</a>&nbsp;|&nbsp;As of:&nbsp;October 08, 2012 &nbsp;
+					ZIP code:  <a id="changeZip" href="javascript:void(0);" onclick="changeZipCode();">Change</a>&nbsp;|&nbsp;As of:&nbsp;October 11, 2012 &nbsp;
 	</div>
 <!--Changing for latino-->
 	<div style="display:inline;" id="showOnly">Show only:</div>
@@ -3545,10 +3545,10 @@ var convertPackageId = function(packageId){
 	}
 	//Code changed for latino CR from shop page for list view
 	if(parameterStr!=''){
-	parameterStr = parameterStr+'zipcode='+zipcodejs+'&pkgId='+packageId+'&actType='+actionType+'&custSubType=Residential'+'&categoryFilter='+externalFilter+'&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+searchText+'&gpId='+externalPreFilter;	
+	parameterStr = parameterStr+'zipcode='+zipcodejs+'&pkgId='+packageId+'&actType='+actionType+'&custSubType=Residential'+'&categoryFilter='+externalFilter+'&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+escape(searchText)+'&gpId='+externalPreFilter;	
 	}
 	else{
-	parameterStr = 'zipcode='+zipcodejs+'&pkgId='+packageId+'&actType='+actionType+'&custSubType=Residential'+'&categoryFilter='+externalFilter+'&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+searchText+'&gpId='+externalPreFilter;	
+	parameterStr = 'zipcode='+zipcodejs+'&pkgId='+packageId+'&actType='+actionType+'&custSubType=Residential'+'&categoryFilter='+externalFilter+'&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+escape(searchText)+'&gpId='+externalPreFilter;	
 	}
 	ajaxCall("/channellineup/u-verse/listViewFragment.jsp",parameterStr);	
 	}else{
@@ -3592,7 +3592,7 @@ var convertPackageId = function(packageId){
 	packageId = '';
 	}
 	//end
-	parameterStr = parameterStr+'zipcode='+zipcodejs+'&locale=en_US&pkgId='+packageId+'&actType=markerView&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+searchText+'&categoryFilter='+externalFilter+'&gpId='+externalPreFilter;
+	parameterStr = parameterStr+'zipcode='+zipcodejs+'&locale=en_US&pkgId='+packageId+'&actType=markerView&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+escape(searchText)+'&categoryFilter='+externalFilter+'&gpId='+externalPreFilter;
 	}
 	else{
 	isExtPkg = packageId;
@@ -3601,7 +3601,7 @@ var convertPackageId = function(packageId){
 	packageId = '';
 	}
 	//end
-	parameterStr = 'zipcode='+zipcodejs+'&locale=en_US&pkgId='+packageId+'&actType=markerView&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+searchText+'&categoryFilter='+externalFilter+'&gpId='+externalPreFilter;
+	parameterStr = 'zipcode='+zipcodejs+'&locale=en_US&pkgId='+packageId+'&actType=markerView&sortOrder='+sortOrder+'&sortBy='+sortBy+'&searchString='+escape(searchText)+'&categoryFilter='+externalFilter+'&gpId='+externalPreFilter;
 	}
 		if(isBusinessCustomer){
 		$("#dumyLtTab").show();

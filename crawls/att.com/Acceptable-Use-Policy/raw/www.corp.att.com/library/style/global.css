@@ -1,0 +1,81 @@
+/*
+ * AT&T Web Standards Initiative <wsi at att dot com>
+ * Joe D'Andrea, Vincent Murphy, John Crowley
+ *
+ * $Id: global.css,v 2.0 2008/08/22 Exp $
+ *
+ * Global Settings
+ */
+
+/* TODO: "That which is not expressly defined is unsupported?" */
+/*
+X* { background-color: red; color: white; text-decoration: line-through blink; }
+
+/* Body */
+
+html { 
+filter: expression(document.execCommand("BackgroundImageCache", false, true)); 
+}
+
+body {
+  background-color: #EDEDED;
+  color: #000;
+  font-family: verdana, geneva, sans-serif; 
+}
+
+/* Italics */
+/* Hat-tip: http://www.positioniseverything.net/explorer/italicbug-ie.html */
+/* \*/
+* html .content {
+  overflow: hidden;
+  o\verflow: visible;
+  width: 100%;
+  w\idth: auto;
+  he\ight: 1%;
+}
+/* */
+
+/* Image */
+img { border: 0; background-color: transparent; }
+img.right  { float: right; padding: 0 0 0 10px; }
+img.left   { float: left; padding: 0 10px 0 0; }
+img.center { text-align: center; padding: 0 10px; }
+
+/* Link */
+a { color: #067ab4; text-decoration: none; }
+a:visited { color: #067ab4; }
+
+/* Name, Phone #, trade/servicemarks, various tidbits */
+.name, .company { font-weight: inherit;  }
+.phone, .trademark, .servicemark { white-space: nowrap; }
+.footnote { font-size: 0.85em; }
+.location { text-transform: uppercase; }
+
+/* Date, time, time suffix (covering am/pm and time zone) */
+.date { font-weight: bold; white-space: nowrap; }
+.time { white-space: nowrap; }
+.time-suffix { font-size: smaller; } 
+
+/* "Hand Pointer" Cursor - TODO: Pick a better name, perhaps? */
+.ch { cursor: pointer; }
+
+/* FAQ */
+dl.faq dt { font-weight: bold; }
+
+/* Ordered List */
+ol.roman { list-style-type: lower-roman; }
+
+/* Flash Replacement */
+@media screen {
+  html.hasflash .altflash { visibility: hidden; }
+}
+@media print {
+  html.hasflash .altflash {
+    visibility: visible !important;
+    display: block !important;
+  }
+
+  html.hasflash .objectflash {
+    display: none !important;
+  }
+}

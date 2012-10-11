@@ -734,23 +734,85 @@ p.magStory = function(){
 	});
 }
 //COOKIE
-p.setCookie = function(n,v,d){
-	var y,x=new Date();
-	x.setDate(x.getDate() + d);
-	y=escape(v) + ((d==null) ? "" : "; expires="+x.toUTCString());
-	document.cookie=n + "=" + y;
+p.setCookie = function(c_name,value,exdays){
+	var c_value,exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value;
 }
-p.getCookie = function(n){
-	var i,x,y,c=document.cookie.split(";");
-	for (i=0;i<c.length;i++){
-		x=c[i].substr(0,c[i].indexOf("="));
-		y=c[i].substr(c[i].indexOf("=")+1);
-		x=x.replace(/^\s+|\s+$/g,"");
-		if (x=n) return unescape(y);
-		else return '';
+p.getCookie = function(c_name){
+	var i,x,y,ARRcookies=document.cookie.split(";");
+	for (i=0;i<ARRcookies.length;i++){
+	  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+	  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+	  x=x.replace(/^\s+|\s+$/g,"");
+	  if(x==c_name) return unescape(y);
 	}
 }
-//INIt
+//>cookie ends
+	
+//VARS
+p.vars = function(){
+	if( typeof window.localStorage === undefined ) return false ;
+	var n,k,c = new Array(); n = localStorage.length-1;
+	for (var i = 0; i <= n; i++){
+		k = localStorage.key(i); 
+		if( ( k.match(/mr-/) !== null ) && ( k.match(/-var/) != null ) ){
+			c.push({ key : k,value : localStorage.getItem(k) });
+		}
+	}	
+	return c;
+}
+p.vars.set = function(k,v){
+	if( typeof window.localStorage === undefined ) return false ;
+	var s,c = window.localStorage.setItem('mr-'+k+'-var', v); s = true;
+	if(!c) s = false;
+	return s;
+}
+p.vars.get = function(k){
+	if( typeof window.localStorage === undefined ) return false ;
+	var c = window.localStorage.getItem('mr-'+k+'-var');	
+	return c;
+}
+p.vars.del = function(k){
+	if( typeof window.localStorage === undefined ) return false ;
+	var c,s = true;
+	c = window.localStorage.removeItem('mr-'+k+'-var');
+	if(!c) s = false;	
+	return s;
+}
+p.vars.clear = function(){
+	if( typeof window.localStorage === undefined ) return false ;
+	var c = marie.util.vars();
+	c.each(function(i){
+		window.localStorage.removeItem(i.key);
+	});
+}
+p.app_d = function(){
+	var c,u,r,t,a = navigator.userAgent;
+	if ((a.match(/ipad.+safari/gi) !== null) || (a.match(/android/gi) !== null) || (a.match(/silk/gi) !== null)){
+		c = p.getCookie('nyp-d');
+		if(c === undefined) p.setCookie('nyp-d',true,30);
+		else return;
+		if(a.match(/ipad.+safari/gi) !== null){ 
+			t="Get The Post iPad App NOW A FREE DOWNLOAD";
+			u="http://bit.ly/k1OLwB";
+		}
+		if (a.match(/android/gi) !== null){ 
+			t="Get The Post Android App NOW A FREE DOWLOAD";
+			u="https://play.google.com/store/apps/developer?id=NYP+Holdings,+Inc."
+	    }
+		if (a.match(/silk/gi) !== null){
+			t="Download our app to view The Post optimized for your Fire";
+			u="http://www.amazon.com/New-York-Post-for-Tablet/dp/B006L4S3OY"
+		}
+	    setTimeout(function(){
+	    	r=confirm(t);
+	    	if(r==true) window.location.href = u;
+	    }, 0);
+    }
+} 
+//INIT
 $(document).ready(function(){
 		//START NAV MODULE
 		p.n();
@@ -798,4 +860,6 @@ $(document).ready(function(){
 		if( $("#breaking-news-bar").length > 0 ) p.bn();
 		//init columns
 		setTimeout(function(){ p.cols(); }, 1000);
+		//app download
+		p.app_d();
 });

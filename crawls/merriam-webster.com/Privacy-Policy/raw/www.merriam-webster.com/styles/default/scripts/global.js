@@ -1,4 +1,44 @@
+// Summary: This function outputs DFP style creatives.
+// Updates: 9-20-2012 -- Created.
+function output_creative (id)
+	{	document.write
+			("<div id='" + id + "'>" + 
+				"<scr" + "ipt type='text/javascript'>\r\n" + 
+				"googletag.cmd.push(function() { googletag.display('" + id + "'); });\r\n" +
+				"</sc" + "ript>" +
+				"</div>");
+	};
+
+// Summary: This function returns the qsegs parameter for creatives.
+// Updates: 9-20-2012 -- Created.
+function get_qsegs ()
+	{	var quantSegs = "";
+		var _qsegs = _quantgc('__qseg').split('|');
+		for (var i=0;i < _qsegs.length;i++) {
+		var qArr=_qsegs[i].split("_")
+		if (qArr.length>1) 
+			{ if (quantSegs.length >= 1){ quantSegs += ",";} quantSegs += qArr[1]; }
+			};
+		//quantSegs = quantSegs.replace(/[_,]/g, ':');		
+		quantSegs = quantSegs.replace(/[_]/g, ',');		
+		return quantSegs;
+	};
+
+// Summary: This function reloads the creatives on a page.
 function reloadCreatives (url)
+	{	// Reload the DFP creatives.
+		for ( var index = 1; index < 10; index++ )
+			{	googletag.cmd.push(function() { googletag.display('div-gpt-ad-219827234313134000-' + index); });
+			};
+		// Track the virtual page.
+		if ( url != null )
+			{	url = typeof(url) != 'undefined' ? url : '' + document.location;
+				_gaq.push(['_trackPageview', url]);
+			};
+	};
+
+
+function reloadCreatives_old_09_20_2012 (url)
 	{	ad_groupid = Math.round(Math.random() * 10000000000);
 		for ( var id in MW_RELOADABLE_CREATIVES )
 			{	 if ( document.getElementById(id) )

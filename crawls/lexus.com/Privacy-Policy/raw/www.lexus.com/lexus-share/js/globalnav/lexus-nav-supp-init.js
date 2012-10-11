@@ -1945,14 +1945,8 @@ function animationVehicles(e,callback) {
 			LXSetTimeout("aniVehiclesC('performance','lfa',40, 100)",100);
 			lxShowPromo(e);
 		case "future":
-		   // LXSetTimeout("aniVehiclesC('future','lfgh',20, 100)",50);
-			//LXSetTimeout("aniVehiclesC('future','fgsh',40, 100)",100);
-			//LXSetTimeout("aniVehiclesC('future','gsfs',60, 100)",150);
-			 LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
-             //LXSetTimeout("aniVehiclesC('future','fes',40, 100)",200);
-			 LXSetTimeout("aniVehiclesC('future','fls',40, 100)",200);
-			 LXSetTimeout("aniVehiclesC('future','lfcc',60, 100)",200);
-			 
+			LXSetTimeout("aniVehiclesC('future','concept',20, 100)",200);
+			LXSetTimeout("aniVehiclesC('future','lfcc',40, 100)",200);
 			lxShowPromo(e);
 		  break;
 	}
@@ -2037,12 +2031,7 @@ function animationVehicles1(e) {
 		    aniVehicles('performance','isf');
 			aniVehicles('performance','lfa');
 		case "performance":
-		    //aniVehicles('future','lfgh');
-			//aniVehicles('future','fgsh');
-			//aniVehicles('future','gsfs');
 			aniVehicles('future','concept');
-            //aniVehicles('future','fes');
-			aniVehicles('future','fls');
 			aniVehicles('future','lfcc');
 		  break;
 		default:

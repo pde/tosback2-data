@@ -187,7 +187,7 @@ function s_doPlugins(s) {
 
 	/* set internal campaign finding method */
 	if(s.eVar4 && !s.eVar18)
-		s.eVar18="Internal Campaigns";
+		s.eVar18="Internal Campaign";
 		
 	/* copy order ID to eVar12 */
 	if(!s.eVar12) 

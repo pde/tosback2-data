@@ -14,6 +14,7 @@
 
 
 
+
 	
 		
 	
@@ -123,9 +124,8 @@ btg.config={
 
 
 
-		
-		
-		//Including Coda 3 build.
+
+		//Including Coda version 3.3.74.
 		var btg=typeof btg==="object"?btg:{};btg.config=typeof btg.config==="object"?btg.config:{};btg.isCoreLoaded=false;
 btg.DOM={Events:{addListener:function(c,d,e){if(d=="DOMContentLoaded"&&!c.addEventListener)document.onreadystatechange=function(){if(document.readyState=="complete")e()};else if(c.attachEvent)c.attachEvent("on"+d,e);else if(c.addEventListener)c.addEventListener(d,e,false);else c["on"+d]=e},removeListener:function(c,d,e){if(c.detachEvent)c.detachEvent("on"+d,e);else if(c.removeEventListener)c.removeEventListener(d,e,false);else c["on"+d]=null}},Storage:{set:function(c,d,e){var f=btg.String.isDefined,
 g=btg.Object.isDefined;if(f(c)&&f(d))try{if(e!==true&&g(localStorage))localStorage[c]=d;else if(g(sessionStorage))sessionStorage[c]=d}catch(h){btg.Error.log("CODA Error: DOM storage not available!")}},get:function(c,d){var e,f=btg.String.isDefined,g=btg.Object.isDefined;if(f(c))try{if(d!==true&&g(localStorage)&&f(localStorage[c]))e=localStorage[c];else if(g(sessionStorage)&&f(sessionStorage[c]))e=sessionStorage[c]}catch(h){btg.Error.log("CODA Error: DOM storage not available!")}return e},clear:function(c){var d=
@@ -462,7 +462,12 @@ btg.isCoreLoaded=function(){btg.Events.CORE_LOADED.fire();btg.SurrogateAd.load("
 		
 							
 		
-							
+			
+					//Attempting to include CODA/builds/3.3.74/QuantCast.js
+					btg.QuantCast=function(a){this.labels="";this.config=a;this.labels=this.config.labels};btg.QuantCast.prototype={sendPageCall:function(a){if(this.config.reportMode=="direct"){var b=btg.QuantCast.Ads;if(b.dependencies.hasDependency()){b.dependencies.addToCallQueue(this,this.sendPageCall,a);return}try{_qoptions={labels:this.labels};_qacct="p-94wNw88f65Rhk";quantserve()}catch(c){}}}};
+btg.QuantCast.Ads=new function(){this.dependencies=new btg.DependencyManager;this.dependencies.add("qc_script_load",function(){return typeof quantserve=="function"},100,true);this.setLabels=function(a,b){try{if(this.dependencies.hasDependency()){this.dependencies.addToCallQueue(this,this.setLabels,a,b);return}var c="",d="",e="",d=a.dartSite.replace(/\./g,"_"),e=b.replace(/^\//m,""),e=e.replace(/\//g,"."),c=btg.config.QuantCast.labels+",Viacom Global Digital Network.MTVN Digital Ad Sales.Content.Pages."+
+d+"."+e;_qoptions={labels:c};_qacct="p-94wNw88f65Rhk";quantserve()}catch(f){}};this.setCookieDemoTargetVal=function(a){for(var b=[],c=0,d=a.segments.length;c<d;c++)b[c]="demo="+a.segments[c].id;btg.Cookie.set("qcDemo",escape(b.join(";")))}};try{var _qCfg=btg.config.QuantCast;if(_qCfg.enabled)btg.DOM.loadScript(("https:"==document.location.protocol?"//secure":"//edge")+".quantserve.com/quant.js");if(_qCfg.enableDemoTargeting&&!btg.String.isDefined(btg.Cookie.read("qcDemo")))btg.DOM.loadScript("//pixel.quantserve.com/api/segments.json?a=p-94wNw88f65Rhk&callback=btg.QuantCast.Ads.setCookieDemoTargetVal")}catch(e$$2){};
+								
 		
 							
 		
@@ -479,5 +484,5 @@ btg.isCoreLoaded=function(){btg.Events.CORE_LOADED.fire();btg.SurrogateAd.load("
 							
 		
 		
-
 	
+

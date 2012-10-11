@@ -186,8 +186,8 @@ function thumb_url_desmond(srv, bucket, thumbname, direct)
 //        var id = srv + '/' + bucket + '/' + fn;
 //        return 'http://a.imageshack.us/img' + id;
 //  }
-    id = srv + '/scaled.php?server=' + srv + '&filename=' + fn + '&res=avatar96';
-    return 'http://desmond.imageshack.us/Himg' + id;
+    id = '/scaled/avatar96/' + srv + '/' + fn;
+    return 'http://imageshack.us' + id;
 }
 
 function get_scaled_size(width, height, max_width, max_height, crop)
@@ -214,12 +214,12 @@ function get_scaled_size(width, height, max_width, max_height, crop)
 
 function noimage_url()
 {
-    return 'http://www.imageshack.us/images/thumbnail.gif';
+    return 'http://imageshack.us/images/thumbnail.gif';
 }
 
 function pdflogo()
 {
-    return 'http://www.imageshack.us/images/pdf.gif';
+    return 'http://imageshack.us/images/pdf.gif';
 }
 
 

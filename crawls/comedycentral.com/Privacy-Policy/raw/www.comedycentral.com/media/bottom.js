@@ -3900,61 +3900,87 @@ $Crabapple.extend($Crabapple.Module, $CC.Auction, {
 	addShareEvents: function() {
 		var na = this;
 		var title = na.elm.find(".header h2").text();
+		var escapedTitle = title.replace(/[^a-zA-z]+/g, '').toLowerCase();
 		var image = na.elm.find(".image-holder img").attr("src");
 		var copy = na.elm.find("p").text();
 		
 		na.elm.find("a.facebook").bind('click', function(event) {
 			event.preventDefault();
-			na.sendLinkEvent('share_fb');
+			na.sendLinkEvent('share', 'share_fb', escapedTitle);
 			var obj = {
 				method: 'feed',
 				link: $(this).attr("href"),
 				picture: image,
-				name: title,
-				caption: '',
-				description: copy
+				name: 'Celebrity Auction: ' + title,
+				description: copy + 'Night of Too Many Stars Celebrity Auction presented by GEICO.'
 			};
 			FB.ui(obj, function(response) {});
 		});
 		na.elm.find("a.pinterest").bind('click', function(event) {
 			event.preventDefault();
+			var title = na.elm.find(".header h2").text();
+			var escapedTitle = title.replace(/[^a-zA-z]+/g, '').toLowerCase();
 			var image = na.elm.find(".image-holder img").attr("src");
-			var copy = na.elm.find("p").text();
+			var copy = 'Now up on the auction block in the Night of Too Many Stars Celebrity Auction presented by GEICO: ' + title;
 			var link = $(this).attr("href");
-			na.sendLinkEvent('share_pinterest');
+			na.sendLinkEvent('share', 'share_pinterest', escapedTitle);
 			window.open('http://pinterest.com/pin/create/button/?url=' + encodeURIComponent(link) + '&media=' + encodeURIComponent(image) + '&description=' + copy);
 		});
 		na.elm.find("a.tumblr").bind('click', function(event) {
 			event.preventDefault();
+			var title = na.elm.find(".header h2").text();
+			var escapedTitle = title.replace(/[^a-zA-z]+/g, '').toLowerCase();
 			var image = na.elm.find(".image-holder img").attr("src");
-			var copy = na.elm.find("p").text();
+			var copy = 'Now up on the auction block in the Night of Too Many Stars Celebrity Auction presented by GEICO: ' + title;
 			var link = $(this).attr("href");
-			na.sendLinkEvent('share_tumblr');
+			na.sendLinkEvent('share', 'share_tumblr', escapedTitle);
 			window.open('http://www.tumblr.com/share/photo?source=' + encodeURIComponent(image) + '&clickthru=' + encodeURIComponent(link) + '&caption=' + copy);
 		});
 		na.elm.find("a.twitter").bind('click', function(event) {
 			event.preventDefault();
+			var title = na.elm.find(".header h2").text();
+			var escapedTitle = title.replace(/[^a-zA-z]+/g, '').toLowerCase();
 			var image = na.elm.find(".image-holder img").attr("src");
-			var copy = na.elm.find("p").text();
+			var copy = 'Bid now on ' + title + ' in the #2manystars Celebrity Auction presented by @GEICO!';
 			var link = $(this).attr("href");
-			na.sendLinkEvent('share_twitter');
-			window.open('http://twitter.com/share?url=' + encodeURIComponent(link) + "&text=" + copy);
+			na.sendLinkEvent('share', 'share_twitter', escapedTitle);
+			window.open('http://twitter.com/share?url=' + encodeURIComponent(link) + "&text=" + encodeURIComponent(copy));
 		});
 	},
 	addLinkEvents : function() {
 		var na = this;
 		na.elm.find("a.bid-now").bind('click', function(event) {
-			na.sendLinkEvent('bid');
+			var title = na.elm.find(".header h2").text();
+			var escapedTitle = title.replace(/[^a-zA-z]+/g, '').toLowerCase();
+			na.sendLinkEvent('NOTMS_bid_'+ escapedTitle, 'NOTMS_bid_' + escapedTitle, '');
+		});
+		
+		$("a[href='https://newyorkcenterforautism.org/secure/donation_notms.php?source=NOTMS']").bind('click', function(event) {
+			na.sendLinkEvent('NOTMS_donate', 'NOTMS_donate', '');
 		});
 	},
-	sendLinkEvent: function(text) {
+	sendLinkEvent: function(text, item, service) {
 		if (typeof(mtvn) != 'undefined') {
-			mtvn.btg.Controller.sendLinkEvent({
-				linkName:text,
-				linkType:'o',
-				eVar9:pageName,
-				events:'event9'
-			});	
+			if (text == "share") {
+				mtvn.btg.Controller.sendLinkEvent({
+					linkName:text,
+					linkType:'o',
+					eVar9:pageName,
+					events:'event9',
+					eVar16:service,
+					eVar19:item
+				});
+			}
+			else {
+				mtvn.btg.Controller.sendLinkEvent({
+					linkName:text,
+					linkType:'o',
+					eVar9:pageName,
+					events:'event9',
+					eVar16:item,
+				});
+			}
+				
 		}
 	}
 });
@@ -5008,10 +5034,13 @@ $(function() {
 		}
 	});
 });/* ccsu_on_demand_player.js */
-$(function() {
+var OnDemandPlayer;
+var $oDPlayer;
+$CCSU(function() {
 	
-	var OnDemandPlayer = {
-		
+	OnDemandPlayer = {
+		_current_playlist_mgid:'',
+		_current_index:0,
 		init : function()
 		{
 			$oDPlayer = $Crabapple.playerA.player.video_player_box;
@@ -5025,14 +5054,13 @@ $(function() {
 			OnDemandPlayer.initCarousel();
 			
 			//Set active Video
-			$CCSU(".videoClip:visible").eq(0).addClass('active');
+			$CCSU('div.on_demand_player ul.content .videoClip:visible').eq(0).addClass('active');
 			
 			//Bind Videos to click functions
-			$CCSU(".videoClip").live('click', function (event) {
+			$CCSU('div.on_demand_player ul.content .videoClip').live('click', function (event) {
 				OnDemandPlayer.vidClick(this);
 				event.preventDefault();
 			});
-			
 		},
 		
 		initTabs : function() {
@@ -5044,15 +5072,18 @@ $(function() {
 				rotate: false,
 				tabs: 'li'
 			});
-			
+			$on_demand_player_tabs.children('li:eq(0)').addClass('now_playing');
+			$on_demand_player_tab_content.find('li:eq(0)').addClass('now_playing_content');
 			$on_demand_player_tabs.children('li').click(function(){
+				$on_demand_player_tabs.children('li.now_playing').removeClass('now_playing');
+				$on_demand_player_tab_content.children('li.now_playing_content').removeClass('now_playing_content');
+				$CCSU(this).addClass('now_playing');
 				$CCSU(this).parent().attr('data-activeTab',$(this).index());
-				$CCSU(".videoClip:hidden").removeClass('active');
-				$CCSU(".videoClip:visible").removeClass('active');
-				$CCSU(".videoClip:visible").eq(0).addClass('active');
-				$on_demand_player_tab_content.find('li:visible .carousel_wrapper').scrollable().seekTo(0);
-				$oDPlayer.playURI($(this).attr('data-mgid'));
-				OnDemandPlayer.loadVideoMetaData($CCSU(".active").attr('data-videoMetaUrl'));
+				$on_demand_player_tab_content.find('.videoClip').removeClass('active');
+				$on_demand_player_tab_content.find('.videoClip:visible').eq(0).addClass('active').parent().parent().parent().addClass('now_playing_content');
+				$on_demand_player_tab_content.find('li.now_playing_content .carousel_wrapper').scrollable().seekTo(0);
+				$oDPlayer.playURI($CCSU(this).attr('data-mgid'));
+				OnDemandPlayer.loadVideoMetaData($on_demand_player_tab_content.find('.videoClip.active').attr('data-videoMetaUrl'));
 				return false;
 			});
 			
@@ -5062,19 +5093,21 @@ $(function() {
 					$on_demand_player_tab_content.children('li').hide().eq($(this).index()).show();
 					$on_demand_player_tab_content.find('li:visible .carousel_wrapper').scrollable().seekTo(0);
 				},
-				function(){
-					var idx = $CCSU(".active").attr('data-playlistIdx');
-					$on_demand_player_tabs.children('li').eq($('.on_demand_player .tabs').attr('data-activeTab')).addClass('current').siblings().removeClass('current');
-					$on_demand_player_tab_content.children('li').hide().eq($('.on_demand_player .tabs').attr('data-activeTab')).show();
-					$on_demand_player_tab_content.find('li:visible .carousel_wrapper').scrollable().seekTo(idx);
-				}
+				function(){}
 			);
+			
+			$CCSU('.on_demand_player .tab_wrapper').mouseleave(function(evt){
+				$on_demand_player_tabs.children('li').removeClass('current');
+				$on_demand_player_tabs.children('li.now_playing').addClass('current');
+				$on_demand_player_tab_content.children('li').hide();
+				$on_demand_player_tab_content.children('li.now_playing_content').show().find('.carousel_wrapper').scrollable().seekTo($CCSU('.on_demand_player .videoClip.active').attr('data-playlistIdx'));
+			});
 		},
 		
 		initCarousel : function() {
 			$CCSU('.on_demand_player .carousel_wrapper').scrollable({
-				next:".prev",
-				prev:".next",
+				next:'.prev',
+				prev:'.next',
 				onSeek: function() {
 					if (this.getIndex() >= (this.getSize()-4))
 					{
@@ -5089,15 +5122,34 @@ $(function() {
 		},
 		
 		vidClick : function(video) {
-			$CCSU(video).addClass('active').siblings().removeClass('active');
-			$on_demand_player_tab_content.find('li:visible .carousel_wrapper').scrollable().seekTo($(video).attr('data-playlistIdx'));
-			$oDPlayer.playIndex($(video).attr('data-playlistIdx'));
-			OnDemandPlayer.loadVideoMetaData($(video).attr('data-videoMetaUrl'));
+			//now_playing_content
+			$on_demand_player_tab_content.find('.videoClip').removeClass('active');
+			$CCSU(video).addClass('active');
+			//check to see if this is on the same playlist or a new one
+			if($on_demand_player_tabs.children('li.now_playing.current').length == 1){
+				//we're on the same playlist so just play the new index
+				$oDPlayer.playIndex($CCSU(video).attr('data-playlistIdx'));
+				$on_demand_player_tab_content.find('li.now_playing_content .carousel_wrapper').scrollable().seekTo($CCSU(video).attr('data-playlistIdx'));
+				OnDemandPlayer.loadVideoMetaData($CCSU(video).attr('data-videoMetaUrl'));
+			}else{
+				$on_demand_player_tabs.children('li.now_playing').removeClass('now_playing');
+				$on_demand_player_tabs.find('li.current').addClass('now_playing');
+				$on_demand_player_tab_content.children('li.now_playing_content').removeClass('now_playing_content');
+				$CCSU(video).parents('.carousel_wrapper').parent().addClass('now_playing_content');
+				
+				//new playlist new index
+				OnDemandPlayer._current_playlist_mgid = $on_demand_player_tabs.children('li.now_playing').attr('data-mgid');
+				OnDemandPlayer._current_index = $CCSU(video).attr('data-playlistIdx');
+				$oDPlayer.pause();
+				$oDPlayer.playURI($on_demand_player_tabs.children('li.now_playing').attr('data-mgid'));
+				
+				$oDPlayer.playIndex(OnDemandPlayer._current_index);
+			}
 		},
 		
 		loadVideoMetaData : function(metaUrl) {
-			$CCSU(".videoInformation").empty();
-			$CCSU(".videoInformation").load(metaUrl, function() {
+			$CCSU('.videoInformation').empty();
+			$CCSU('.videoInformation').load(metaUrl, function() {
 			    FB.XFBML.parse();
 			    twttr.widgets.load();
 			    $CC(document).sharebar();
@@ -5106,27 +5158,38 @@ $(function() {
 		},
 		
 		bindPlayerEvents : function () {
-			$oDPlayer.bind("onIndexChange", OnDemandPlayer.onIndexChange);
-			$oDPlayer.bind("onPlaylistComplete", OnDemandPlayer.onPlaylistComplete);
+			$oDPlayer.bind('onIndexChange', OnDemandPlayer.onIndexChange);
+			$oDPlayer.bind('onPlaylistComplete', OnDemandPlayer.onPlaylistComplete);
 		},
 		
 		onPlaylistComplete : function(event) {
 			var tabCount = $CCSU('.on_demand_player .tabs').children().length;
-			var idx = $CCSU('.on_demand_player .tabs').attr('data-activeTab');
+			var idx = $on_demand_player_tabs.attr('data-activeTab');
 			if (idx <= tabCount) {
-				$CCSU('.on_demand_player .tabs').children("li.current").next().click();
+				$on_demand_player_tabs.children('li.now_playing').next().click();
 			}
 		},
 		
 		onIndexChange : function(event) {
 			var $idx = event.data;
-			
-			if ($idx != 0)
+			if(OnDemandPlayer._current_playlist_mgid == $on_demand_player_tabs.children('li.now_playing').attr('data-mgid')){
+				if($idx != OnDemandPlayer._current_index){
+					//needed to trick the player to the correct play index
+					OnDemandPlayer._ignoreNextCall=true;
+					$oDPlayer.playIndex(OnDemandPlayer._current_index);
+					return;
+				}
+			}
+			if ($idx != 0 || OnDemandPlayer._current_playlist_mgid)
 			{
-				$on_demand_player_tab_content.find('li:visible .carousel_wrapper').scrollable().seekTo($idx);
-				$CCSU(".videoClip:visible").eq($idx-1).removeClass('active');
-				$CCSU(".videoClip:visible").eq($idx).addClass('active');
-				OnDemandPlayer.loadVideoMetaData($CCSU(".active").attr('data-videoMetaUrl'));
+				$on_demand_player_tab_content.find('li.now_playing_content .carousel_wrapper').scrollable().seekTo($idx);
+				$on_demand_player_tab_content.find('.videoClip.active').removeClass('active');
+				$on_demand_player_tab_content.find('li.now_playing_content .videoClip').eq($idx).addClass('active');
+				OnDemandPlayer.loadVideoMetaData($on_demand_player_tab_content.find('.videoClip.active').attr('data-videoMetaUrl'));
+			}
+			if(OnDemandPlayer._ignoreNextCall){
+				OnDemandPlayer._current_playlist_mgid='';
+				OnDemandPlayer._ignoreNextCall=false;
 			}
 		}
 	}
@@ -5312,6 +5375,9 @@ $(function() {
 			});
 			
 			req.complete(function(){
+				if(currentPage >= totalPages){
+					$CCSU(".comedian_showcase .loadMore").hide();
+				}
 				$CCSU(".comedian_showcase .loadMore").css("width", "auto").html(buttonText);
 				twttr.widgets.load();
 				FB.XFBML.parse();
@@ -5679,13 +5745,17 @@ function handleFluxWidgetReporting (widget) {
 	
 	// For comment tracking
 	if (typeof widget.attr('ActivityFeed')){
-		// Check to see what boxes are checked
+		commentLinkTracking('flux');
+		// Reporting calls to Facebook & Twitter if checkbox is checked
+		// Removed per Reporting - coming up with new established practices
+		/*
 		if ($widget.find('.postToContainer>.socialPublishing>.publishingContainer>.facebookPublishing>input:checked').length > 0) {
 			commentLinkTracking('flux_facebook');
 		}
 		if ($widget.find('.postToContainer>.socialPublishing>.publishingContainer>.twitterPublishing>input:checked').length > 0) {
 			commentLinkTracking('flux_twitter');
 		}
+		*/
 	}
 }
 
@@ -5819,6 +5889,29 @@ $(function() {
 	$('.video-web_video_showcase .middle div.episode').live('click', function (){
 		autoLinkTrackEvent('video-web_video_showcase', $(this).attr('data-url'));
 	});
+	// video-web_video_carousel--includes video, meta, prev/next buttons--module CC-Studios Series pages
+	// video-web_video_carousel is disabled below from autolink tracking
+	// 
+	$('.video-web_video_carousel>.middle a.next, .video-web_video_carousel>.middle a.previous').click(function (){
+		var destinationUrl = ( typeof $(this).attr('title') != 'undefined' ) ? $(this).attr('title') : '';
+		autoLinkTrackEvent('video-web_video_arrows', destinationUrl);
+	});
+	// Meta clicks - note metaWrapper class disappears when clicked to expand
+	$('.video-web_video_carousel>.middle .metaWrapper .meta a').click(function (){
+		var destinationUrl = ( typeof $(this).attr('href') != 'undefined' ) ? $(this).attr('href') : '';
+		autoLinkTrackEvent('video-web_video_meta', destinationUrl);
+	});
+	$('.video-web_video_carousel>.middle .metaWrapper .commentsWrapper a').click(function (){
+		var destinationUrl = ( typeof $(this).attr('href') != 'undefined' ) ? $(this).attr('href') : '';
+		autoLinkTrackEvent('video-web_video_comments', destinationUrl);
+	});
+	$('.video-web_video_carousel>.middle .metaWrapper a.load_description').click(function (){
+		var destinationUrl = ( typeof $(this).attr('href') != 'undefined' ) ? $(this).attr('href') : '';
+		autoLinkTrackEvent('video-web_video_loaddesc', destinationUrl);
+	});
+	
+	
+	
 	
 	// Latest Tweets Twitter Feed Module
 	$('.tweetriver .tweet a.intent').live('click', function (){
@@ -5849,7 +5942,7 @@ $(function() {
     });
        
 	// All other auto link tracking
-	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel)/; // div classes to skip autolink tracking
+	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel|video-web_video_carousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
 	
 	moduleRemove = /\s*module\s+/i; //To remove module from potential class names

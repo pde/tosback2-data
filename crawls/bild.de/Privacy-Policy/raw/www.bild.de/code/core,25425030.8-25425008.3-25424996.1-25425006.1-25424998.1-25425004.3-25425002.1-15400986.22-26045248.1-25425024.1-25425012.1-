@@ -763,7 +763,7 @@ de.bild.env = {
  'sslbase' : 'https://ka-ssl.bild.de',
  'facebookAppId' : '78193590860'
 };
-/*de.bild.settings:22104336.40*/
+/*de.bild.settings:22104336.41*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -822,7 +822,7 @@ de.bild.settings = (function(){
 
                          
 // teaser comments
-                'commentsCSS' : '/code/ugcgroup,21029782.19.bild.css',       
+                'commentsCSS' : '/code/ugcgroup,25424992.3.bild.css',       
                 'articleComments'  : '/ka/ajax/numcoms/',
                 
          //images
@@ -3135,7 +3135,7 @@ de.bild.social = (function($){
 /*de.bild.social:25798986.1*/
 
 
-/*de.bild.community:22104118.36*/
+/*de.bild.community:22104118.38*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -5014,7 +5014,7 @@ de.bild.community = (function($){
      * @param {Array} ids - Array of DOM ids
      * @private
      */
-    function showTeaserComments(){
+    function showTeaserComments(){ 
         if (articleCommentsIds.length) {
             /* loop through the idMap and */
             for (var i = 0, l = articleCommentsIds.length; i < l; ++i) {
@@ -5025,8 +5025,8 @@ de.bild.community = (function($){
                 /* and loop through it */
                 for (var n = 0, m = collection.length, $elem; n < m; ++n) {
                     var $elem = $('#' + collection[n]);
-                    /* only if the element has more than 2 comments, otherwise delete it */
-                    if ($elem.length && value > 2) {
+                    /* only if the element has more than 1 comments, otherwise delete it */
+                    if ($elem.length && value > 0) {
                          $elem.text(value).parents('div.ugcGroup, li.comment-count').addClass('active');
                     }
                 }

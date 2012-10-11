@@ -1,0 +1,129 @@
+/*
+ * AT&T Web Standards Initiative <wsi at att dot com>
+ * Joe D'Andrea and Vincent Murphy
+ *
+ * $Id: print.css,v 1.8 2005/10/03 14:20:06 jdandrea Exp $
+ *
+ * Print Media
+ */
+
+@media print {
+
+/* Page Width */
+#page, #splash, #promotion { width: auto; min-width: auto; }
+
+/* Nix the index and sidebar regions, plus the title navigation and
+ * almost all the header navigation.
+ */
+.block .index,
+.block .sidebar,
+#header .content ul.navigation,
+#header .content form, #header .content #worldwide,
+#header .content .navigation ul,
+#header .content .navigation form,
+#title .content .navigation {
+  display: none;
+}
+#header { border-bottom: 0; }
+
+#title .content h1 {
+  margin-top: 25px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.sIFR-hasFlash #title .content h1 {
+  background-color: white;
+  color: black;
+  padding: 0; margin: 0;
+}
+
+/* Reset the margins. */
+.clear,
+.index-clear,
+.sidebar-clear,
+.block .index,
+.block .sidebar,
+.block .main,
+.block .index+.main,
+.block .main-index,
+.block .sidebar+.main,
+.block .main-sidebar,
+.block .index+.sidebar+.main,
+.block .main-index-sidebar {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.block .main-index,
+.block .main-index-sidebar {
+  margin-left: 0;
+}
+.block .main-sidebar,
+.block .main-index-sidebar,
+.block .main-sidebar .content,
+.block .main-index-sidebar .content {
+  margin-right: 0;
+}
+
+.block .main,
+.block .main .split-12,
+.block .main .split-22 { width: 100%; }
+.block .main .split-12 { float: none; }
+.block .main .split-22 { float: none; }
+
+/* IE-only Adjustments:
+ *
+ * Additional margin after blocks and splits.
+ */
+/* Hides from IE-Mac \*/
+* html .block,
+* html .block .main .split-12,
+* html .block .main .split-22 { margin-bottom: 0.5em; }
+/* End hide from IE-Mac */
+
+/* Title Region */
+#title .content {
+  padding-top: 25px;
+}
+/* Main Region */
+.main .content {
+  font-size: 1em;
+  margin-left: 0;
+}
+.main .content h2,
+.main .content h3,
+.main .content h4 {
+  padding-left: 0;
+  padding-right: 0;
+  background-color: white;
+  font-weight: normal;
+  color: black;
+}
+.main .content h2 { font-size: 1.5em; }
+.main .content h3 { font-size: 1.2em; }
+.main .content h4 { font-size: 1em; }
+.main .content h2 a, .main .content h3 a, .main .content h4 a {
+  color: black;
+  background: transparent;
+}
+.main .content table {
+  width: auto;
+}
+
+/* Footer Region */
+#footer .content ul,
+#footer .content p {
+  margin-left: 0;
+}
+
+/* Standard sIFR styles. Do not modify (this means you). */
+.sIFR-flash, .sIFR-flash object, .sIFR-flash embed {
+  display: none !important; height: 0; width: 0;
+  position: absolute; overflow: hidden;
+}
+span.sIFR-alternate {
+  visibility: visible !important; display: block !important;
+  position: static !important; left: auto !important; top: auto !important;
+}
+
+} /* end media print */

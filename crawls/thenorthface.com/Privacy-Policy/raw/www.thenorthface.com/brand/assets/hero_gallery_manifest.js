@@ -203,16 +203,16 @@ var Class = (function() {
     *    TODO: add autoplay option
     */
     initialize: function(options) {
-      this.height = options.height || 538;
-      this.width = options.width || 936;
+      this.height           = options.height || 538;
+      this.width            = options.width || 936;
       this.playerReadyFault = 0;
-      this.apiReadyFault = 0;
-      this.playerId = options.playerId;
-      this.embedCode = options.embedCode;
-      this.onLoad = options.onLoad;
-      this.loaded = false;
-      this.Ooyala = window.tnfOoyala;
-      this.player = document.getElementById(this.playerId);
+      this.apiReadyFault    = 0;
+      this.playerId         = options.playerId;
+      this.embedCode        = options.embedCode;
+      this.onLoad           = options.onLoad;
+      this.loaded           = false;
+      this.Ooyala           = window.tnfOoyala;
+      this.player           = document.getElementById(this.playerId);
       this.load();
     },
 
@@ -226,11 +226,11 @@ var Class = (function() {
     },
 
     pause: function() {
-     try {
-      this.player.pauseMovie();
-     } catch (e) {
-      this.player = document.getElementById(this.playerId);
-     }
+      try {
+        this.player.pauseMovie();
+      } catch (e) {
+        this.player = document.getElementById(this.playerId);
+      }
     },
 
     play: function() {
@@ -264,14 +264,19 @@ var Class = (function() {
       if (this.player === null || this.Ooyala.apiReady[this.playerId] !== true ) {
         return false;
       }
+
       $(this.player).parent().css({height: this.height, width: this.width});
+
       this.player.height = this.height;
-      this.player.width = this.width;
+      this.player.width  = this.width;
+
       this.clearVideoRetryInterval();
+
       if (typeof this.onLoad === 'function' && !this.loaded) {
         this.onLoad.call(this);
         this.loaded = true;
       }
+
       $(document).trigger({type: 'tnf:brand:video_finished_loading', embedCode: this.embedCode});
     },
 
@@ -320,26 +325,36 @@ var Class = (function() {
     // usage: this.videoInterface = $.TNF.BRAND.VideoInterface.factory(options);
     // iframe building
     // TODO: Calculate width & height if they are not provided
-   
+
     options.playerId = 'player'+ new Date().getTime();
-    var scriptTag = document.createElement('script');
-    scriptTag.src = "http://player.ooyala.com/player.js?hasModuleParams=1&playerBrandingId=db367c03b0de4bcf8bf82a54c001a356&playerContainerId=ooyala-video-"+options.playerId+"&callback=tnfOoyala.handlePlayerReadyStateChange&playerId="+options.playerId+"&wmode=transparent&width=" + options.width + "&height=" + options.height + "&embedCode=" + options.embedCode + "&autoplay="
+
+    var scriptTag  = document.createElement('script');
+    scriptTag.src  = "http://player.ooyala.com/player.js?hasModuleParams=1&playerBrandingId=db367c03b0de4bcf8bf82a54c001a356&playerContainerId=ooyala-video-"+options.playerId+"&callback=tnfOoyala.handlePlayerReadyStateChange&playerId="+options.playerId+"&wmode=transparent&width=" + options.width + "&height=" + options.height + "&embedCode=" + options.embedCode + "&autoplay="
+
     options.container.append('<div id="ooyala-video-'+options.playerId+'" class="ooyala-player"></div>');
     options.container.append(scriptTag);
+
     return new VideoInterface(options);
   };
+
   window.tnfOoyala = (function(window) {
     return {
       apiReady: {},
       mobile: false,
+
       handlePlayerReadyStateChange: function (playerId, eventName, eventArgs) {
+
         if(eventName === 'playerEmbedded') {
           $('#'+playerId)[0].setModuleParams({"vfc-buy-ui":{"region":"US"}});
+
         } else if(eventName === 'apiReady') {
+
           tnfOoyala.apiReady[playerId] = true;
+
           if( $('#'+playerId+'_MobileContainer').length > 0 ){
             tnfOoyala.mobile = true;
           } 
+
           $(document).trigger('tnf:ooyala:event:' + eventName, playerId, eventArgs);
         }
       }
@@ -721,14 +736,17 @@ var Class = (function() {
     */
       var that = this;
       // if not set, default to 16:9
-      ratio = ratio || 0.5625;
-      this.embedCode = $actionElm.attr("data-embed-code");
-      this.$targetCont = $targetCont;
-      this.heroCont = $(".hero", this.$targetCont);
-      this.targetImage = $("img", this.$targetCont);
-      this.targetContWidth = this.$targetCont.width();
-      this.ratioHeight = Math.ceil(this.targetContWidth * ratio);
-      this.playHeadTime = 0;
+      ratio                 = ratio || 0.5625;
+      this.embedCode        = $actionElm.attr("data-embed-code");
+      this.$targetCont      = $targetCont;
+      this.heroCont         = $(".hero", this.$targetCont);
+      this.targetImage      = $("img", this.$targetCont);
+      this.targetContWidth  = this.$targetCont.width();
+      this.targetContHeight = this.$targetCont.height();
+      this.ratioHeight      = Math.ceil(this.targetContWidth * ratio);
+      this.playerContainer  = $('.player-container', this.$targetCont);
+      this.playHeadTime     = 0;
+
       $actionElm.bind('click', function(e) {
         e.preventDefault();
         // requery when the user has clicked
@@ -736,6 +754,7 @@ var Class = (function() {
         that.$targetCont.height(that.targetContHeight);
         that.adjustVideoSpace(true);
       });
+
       $(this.$targetCont).bind("close-event", function(){
         if (that.videoInterface){
           that.videoInterface.pause();
@@ -747,68 +766,95 @@ var Class = (function() {
     },
 
     adjustVideoSpace:function(insert) {
+      var that = this;
+
+      if(insert) {
+        that.insertVideo();
+      } else {
+        that.removeVideo();
+      }
+
+    },
+
+    insertVideo: function() {
       var that = this,
           height = that.ratioHeight;
-          playerCont = $('.player-container', that.$targetCont);
-      if(insert) {
-        that.heroCont.fadeOut('fast', function() {
-          if (TNF.ipad){
-            height = height + 35;
-          }
-         that.$targetCont.animate({height: height }, 1000, function() {
-            that.handleVideo(insert);
-            if (TNF.ipad){
-              playerCont.animate({'padding-top': '35px' });
-              $('a.video-interface-close', playerCont).css({"border-radius": '10px 10px 0 0'});
-            }
-          });
-        });
-      } else {
-        that.$targetCont.animate({height: that.targetContHeight}, 1000, function() {
-          that.heroCont.fadeIn('fast', function() {
-              that.handleVideo();
-              if (TNF.ipad){
-                playerCont.animate({'padding-top': '0px' });
-                $('a.video-interface-close', playerCont).css({"border-radius": '0 0 0 10px'});
-              }
-            });
-          });
-        }
+
+      that.heroCont.fadeOut('slow');
+
+      that.$targetCont.animate({ height: height}, 1000, function() {
+        that.handleVideo(true);
+        that.adjustForIpadInsert(that);
+      });
+    },
+
+    adjustForIpadInsert: function(that) {
+      if (TNF.ipad){
+        that.playerContainer.animate({'padding-top': '35px' });
+        $('a.video-interface-close', that.playerContainer).css({"border-radius": '10px 10px 0 0'});
+      }
+    },
+
+    removeVideo: function() {
+      var that = this;
+
+      that.playerContainer.fadeOut('slow');
+
+      $(that.$targetCont).animate({ height: that.targetContHeight }, 1000, function() {
+        that.handleVideo();
+        that.heroCont.fadeIn('slow');
+        that.adjustForIpadRemove(that);
+      });
+    },
+
+    adjustForIpadRemove: function(that) {
+      if (TNF.ipad){
+        that.playerContainer.animate({'padding-top': '0px' });
+        $('a.video-interface-close', that.playerContainer).css({"border-radius": '0 0 0 10px'});
+      }
     },
 
     handleVideo: function (insert) {
-      var playerContainer = $(".player-container", this.$targetCont),
-          player = null,
-          that = this;
+      var player = null,
+          that   = this;
+
       if (this.videoInterface){
         player = $("#"+this.videoInterface.playerId);
       }
+
       if (insert) {
+
         if ($(player).length === 0){
+
           this.videoInterface = $.TNF.BRAND.videoInterface.factory({
-            container: playerContainer,
+            container: this.playerContainer,
             width: that.targetContWidth,
             height: that.ratioHeight,
             embedCode: that.embedCode,
             onLoad: function() {
               that.videoInterface.play();
             }
+
           });
 
-          playerContainer.append('<a class="video-interface-close"></a>');
-          $('a.video-interface-close', playerContainer).click(function(e) {
+          that.playerContainer.append('<a class="video-interface-close"></a>');
+
+          $('a.video-interface-close', that.playerContainer).click(function(e) {
             e.preventDefault();
-            playerContainer.trigger("close-event");
-            playerContainer.fadeOut("fast");
-          });
+            that.$targetCont.trigger("close-event");
+          }).bind(this);
 
         } else {
-          playerContainer.fadeIn("fast", function(){
+
+          that.playerContainer.fadeIn("fast", function(){
             that.videoInterface.setPlayheadTime(that.playheadTime);
           }); 
+
         }
+
       } else {
-        playerContainer.fadeOut("fast");
+
+        that.playerContainer.fadeOut("fast");
       }
     }
   });

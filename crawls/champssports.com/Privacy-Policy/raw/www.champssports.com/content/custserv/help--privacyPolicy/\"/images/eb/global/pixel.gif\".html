@@ -24,11 +24,11 @@ function openInvestWin(url) {
 <HTML xmlns:fb="http://www.facebook.com/2008/fbml">
 <HEAD>
 <script type="text/javascript" src="../../../../../../../ns/common/coradiant/tsedge_instr-min.js"> </script>
-<!-- web-45 -->
+<!-- web-43 -->
 <meta name="msvalidate.01" content="EDC57CBB5433904007B934915238FE4A" />
 
 
-	<meta http-equiv="published" content="Monday, October 8, 2012 7:20:18">
+	<meta http-equiv="published" content="Thursday, October 11, 2012 7:13:24">
 
 	
 
@@ -37,6 +37,8 @@ function openInvestWin(url) {
 	<script type="text/javascript" src="../../../../../../../combine%3Ftype=js&amp;files=shared%252Fscripts%252Fjquery.bgiframe.pack.js,shared%252Fscripts%252Fajax.js,shared%252Fscripts%252Fcommon.js,shared"></script>
 
 	
+		<script type="text/javascript" src="../../../../../../../combine%3Ftype=js&amp;files=shared%252Fstorepickup%252Fmodal.js,shared%252Fstorepickup%252Fboris.js"></script>
+		
 
 	<script type="text/javascript">//<![CDATA[
 		var sizeSearchActionURL = 'http://www.champssports.com/includes/sizeSearchForm.cfm';
@@ -198,7 +200,7 @@ function openInvestWin(url) {
 
 
                 <style type="text/css">
-					@import '../../../../../../../css/typography.css'; @import '../../../../../../../css/style.css'; @import '../../../../../../../css/default_template.css'; 
+					@import '../../../../../../../css/typography.css'; @import '../../../../../../../css/style.css'; @import '../../../../../../../css/default_template.css'; @import '../../../../../../../shared/storepickup/style.css'; @import '../../../../../../../storepickup/style.css'; 
                 </style>
             
                 <style type="text/css">
@@ -257,7 +259,254 @@ width:auto !important;
 height:auto !important;
 }
             </style>
-        </HEAD>
+        
+<script type="text/javascript">
+	var ie6 = false;
+</script>
+
+<!--[if lt IE 7]>
+<script type="text/javascript">
+	ie6 = true;
+</script>
+
+
+
+	<script type="text/javascript" src="http://www.champssports.com/shared/scripts/jquery.bgiframe.pack.js"></script>
+    
+
+<![endif]-->
+
+<script type="text/javascript">
+var bubble = function() {
+	
+		var	thisWidth = 250; // minimum width
+		var	thisHeight = 75; // minimum height
+	//	var thisWidth = 283; // minimum width
+	//	var thisHeight = 150; // minimum height
+	
+	var content = null;
+	var wrapper = '<div id="bubbleContainer"><table id="bubble"><tr> <td class="top_left">&nbsp;</td> <td class="top_center" colspan="3">&nbsp;</td> <td class="top_right">&nbsp;</td></tr><tr> <td class="middle_left">&nbsp;</td> <td class="middle_center" colspan="3">&nbsp;</td> <td class="middle_right">&nbsp;</td></tr><tr> <td class="bottom_left">&nbsp;</td> <td class="bottom_center">&nbsp;</td> <td class="bottom_arrow">&nbsp;</td> <td class="bottom_center">&nbsp;</td> <td class="bottom_right">&nbsp;</td></tr></table></div>';
+	var mapping = new Object();
+	
+		mapping['billTextMessageMoreInfo'] = '<span class=mobile_opt_info>A text message will be sent to your phone. Please reply with &quot;YES&quot; to ensure you continue to receive the latest updates. You may unsubscribe from mobile offers at any time by texting &quot;<span class=call_out>CHSTOP</span>&quot; to <span class=call_out>242677</span>. Text &quot;<span class=call_out>HELP</span>&quot; to <span class=call_out>242677</span> for help.  4-8 messages per month.  Message & Data Rates may apply.</span>';
+		mapping['pickupTextMessageMoreInfo'] = '<span class=mobile_opt_info>A text message will be sent to your phone. Please reply with &quot;YES&quot; to ensure you continue to receive the latest updates. You may unsubscribe from mobile offers at any time by texting &quot;<span class=call_out>CHSTOP</span>&quot; to <span class=call_out>242677</span>. Text &quot;<span class=call_out>HELP</span>&quot; to <span class=call_out>242677</span> for help.  4-8 messages per month.  Message & Data Rates may apply.</span>';
+		mapping['billCountryNotListed'] = 'If your country is not listed, you will need to pay by Western Union QUICK Pay. Please email us or call Customer Service at <span id=phNum>1.715.261.9588</span> for further information on placing your order.';
+		mapping['shipCountryNotListed'] = 'If your country is not listed, you will need to pay by Western Union QUICK Pay. Please email us or call Customer Service at <span id=phNum>1.715.261.9588</span> for further information on placing your order.';
+		mapping['countryNotListed'] = 'If your country is not listed, you will need to pay by Western Union QUICK Pay. Please email us or call Customer Service at <span id=phNum>1.715.261.9588</span> for further information on placing your order.';
+		mapping['shipStreetAddrTooltip'] = 'Street addresses are required to ensure proper delivery for online orders. Orders sent to PO Boxes can only be sent via Standard delivery (5-6 Business days). Please allow up to 10 business days for delivery. If you do not have a street address (i.e. PO Box), please contact our Customer Service Department for assistance at <span id=phNum>1.800.991.6813</span>.';
+		mapping['promoCodeToolTip_0'] = 'If you have received a special promotional source code from an email, flyer, online banner, ad, etc., please enter it in this field (only one code valid per order).';
+		mapping['multiShipMoreInfo'] = 'If you would like to ship one order to multiple addresses, please contact our Customer Service Department at <span id=phNum>1.800.991.6813</span> immediately after placing your order on-line so that we may make the proper arrangements to ensure your packages are delivered.';
+	
+
+	return {
+		initializeMoreInfoLinks:function() {
+			for (id in mapping) {
+				if ($("#" + id).length > 0) 
+					$("#" + id).attr("href", "javascript:bubble.open('#" + id + "', '" + mapping[id] + "')");
+			}
+		},
+		open:function(selector, content, width, height) {
+			$("#bubbleContainer").remove();
+			
+			// abort if selector is not found
+			if ($(selector).length == 0) {
+				return;
+			}			
+			
+			if (width != null && width > thisWidth) thisWidth = width;
+			if (height != null && height > thisHeight) thisHeight = height;
+			
+			$("body").prepend(wrapper);
+			$("#bubbleContainer .middle_center").html(content);
+			$("#bubbleContainer").css({width: thisWidth, height: thisHeight});
+			
+			var targetOffset = $(selector).offset();
+			var targetWidth = $(selector).width();
+			//var targetHeight = $(selector).height();
+			var left = targetOffset.left + ((targetWidth - thisWidth) / 2);
+			var top = targetOffset.top - $("#bubble").height();
+			
+			$("#bubbleContainer").css({top: top, left: left});
+
+			// IE
+			if (!jQuery.support.leadingWhitespace) {
+				var bottom_center_width = Math.ceil((thisWidth - 44 - 20 - 20) / 2);
+				$("#bubbleContainer .bottom_center").css({width: bottom_center_width});
+			}
+			
+			$(document).bind("click", bubble.close);
+			if (ie6) $("#bubbleContainer").bgiframe();
+		},
+		close:function() {
+			//$(document).unbind("click");
+			$("#bubbleContainer").remove();
+		}
+	}
+}();
+
+$(document).ready(function() { bubble.initializeMoreInfoLinks(); });
+</script>
+
+
+<script type="text/javascript">
+	var borderImages = new Object();
+	borderImages.top_left = new Image();
+	borderImages.top_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_left.png";
+	borderImages.top_right = new Image();
+	borderImages.top_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_right.png";
+	borderImages.top_center = new Image();
+	borderImages.top_center.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_center.png";
+	borderImages.middle_left = new Image();
+	borderImages.middle_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/middle_left.png";
+	borderImages.middle_right = new Image();
+	borderImages.middle_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/middle_right.png";
+	borderImages.bottom_left = new Image();
+	borderImages.bottom_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_left.png";
+	borderImages.bottom_right = new Image();
+	borderImages.bottom_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_right.png";
+	borderImages.bottom_center = new Image();
+	borderImages.bottom_center.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_center.png";
+	borderImages.bottom_arrow = new Image();
+	borderImages.bottom_arrow.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_arrow.png";	
+</script>
+
+<style type="text/css">
+#bubbleContainer {
+	position: absolute;
+	z-index: 9999;
+}
+
+#bubble {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	border-collapse: collapse;
+}
+
+#bubble td {
+	padding: 0;
+}
+
+#bubble td.top_left {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/top_left.png) top right no-repeat;
+	width: 20px;	
+	height: 20px;
+}
+
+#bubble td.top_right {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/top_right.png) top left no-repeat;
+	width: 20px;
+	height: 20px;
+}
+
+#bubble td.top_center {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/top_center.png) top left repeat-x;
+	height: 20px;
+}
+
+#bubble td.middle_left {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/middle_left.png) top right repeat-y;
+	width: 20px;
+}
+
+#bubble td.middle_right {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/middle_right.png) top left repeat-y;
+	width: 20px;
+}
+
+#bubble td.middle_center {
+	background-color: white;
+	text-align: left;
+}
+
+#bubble td.bottom_left {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/bottom_left.png) top right no-repeat;
+	width: 20px;
+	height: 44px;	
+}
+
+#bubble td.bottom_right {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/bottom_right.png) top left no-repeat;
+	width: 20px;
+	height: 44px;	
+}
+
+#bubble td.bottom_center {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/bottom_center.png) top left repeat-x;
+	height: 44px;	
+}
+
+#bubble td.bottom_arrow {
+	background: transparent url(../../../../../../../images/cs/new_checkout/bubble/bottom_arrow.png) top right no-repeat;
+	width: 44px;
+	#width: 42px;
+	height: 44px;
+}
+
+</style>
+
+<!--[if lt IE 7]>
+
+<script type="text/javascript">
+	borderImages = new Object();
+	borderImages.top_left = new Image();
+	borderImages.top_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_left.gif";
+	borderImages.top_right = new Image();
+	borderImages.top_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_right.gif";
+	borderImages.top_center = new Image();
+	borderImages.top_center.src = "http://www.champssports.com/images/cs/new_checkout/bubble/top_center.gif";
+	borderImages.middle_left = new Image();
+	borderImages.middle_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/middle_left.gif";
+	borderImages.middle_right = new Image();
+	borderImages.middle_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/middle_right.gif";
+	borderImages.bottom_left = new Image();
+	borderImages.bottom_left.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_left.gif";
+	borderImages.bottom_right = new Image();
+	borderImages.bottom_right.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_right.gif";
+	borderImages.bottom_center = new Image();
+	borderImages.bottom_center.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_center.gif";
+	borderImages.bottom_arrow = new Image();
+	borderImages.bottom_arrow.src = "http://www.champssports.com/images/cs/new_checkout/bubble/bottom_arrow.gif";	
+</script>
+
+<style type="text/css">
+#bubble td.top_left {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/top_left.gif) top right no-repeat;
+}
+
+#bubble td.top_right {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/top_right.gif) top left no-repeat;
+}
+
+#bubble td.top_center {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/top_center.gif) top left repeat-x;
+}
+
+#bubble td.middle_left {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/middle_left.gif) top right repeat-y;
+}
+
+#bubble td.middle_right {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/middle_right.gif) top left repeat-y;
+}
+
+#bubble td.bottom_left {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/bottom_left.gif) top right no-repeat;	
+}
+
+#bubble td.bottom_right {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/bottom_right.gif) top left no-repeat;
+}
+
+#bubble td.bottom_center {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/bottom_center.gif) top left repeat-x;
+}
+
+#bubble td.bottom_arrow {
+	background: transparent url(http://www.champssports.com/images/cs/new_checkout/bubble/bottom_arrow.gif) top right no-repeat;
+}
+</style>
+<![endif]-->
+</HEAD>
 
 <body  
 	style="background: #d5d7d6 url(../../../../../../../images/cs/topnav/Wide/champs_site_bkg2.jpg) top center repeat-y">
@@ -1092,7 +1341,7 @@ body {
                         	
 							<a href="http://www.champssports.com/content/custserv.cfm?help=shipInfo"><strong>Shipping Information</strong></a><br />
 							
-							<div id="itemchild">Domestic Shipping Rates and Policies, Send2Store FREE, International Shipping Information, Shipping to a PO Box, Shipping One Order to Multiple Addresses, No Street Address</div>
+							<div id="itemchild">Domestic Shipping Rates and Policies, Send2Store FREE, International Shipping Information, Shipping to a PO Box, Shipping One Order to Multiple Addresses, No Street Address, Store Pickup</div>
 						</li>
 					
 						<li>
@@ -1218,3 +1467,10 @@ body {
             try { mybuys.initPage(); } catch(e) {}; 
         }); 
     </script> 
+
+<script type="text/javascript"> 
+	try {var __scP=(document.location.protocol=="https:")?"https://":"http://";
+	var __scS=document.createElement("script");__scS.type="text/javascript";
+	__scS.src=__scP+"app.salecycle.com/capture/CHAMPSSPORTS.js";
+	document.getElementsByTagName("head")[0].appendChild(__scS);}catch(e){}
+</script>

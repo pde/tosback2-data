@@ -33,6 +33,16 @@ a:hover{color:#900;}
 			.portal a { color: #000; text-decoration: none; }
 				.portal a:hover { color: #900; text-decoration: underline; }
 			.yourLogin { float: left; }
+				.storeLabel { font-weight: bold; }
+				.storeNum {
+					font-size: 11px;
+					height: 12px;
+					line-height: 12px;
+					margin: -2px 0 0;
+					text-align: center;
+					width: 26px;
+				}
+				.storeUpdate { font-size: 12px; margin: -2px 0 0; }
 			.portal ul {
 				float: right;
 				list-style: none;
@@ -73,7 +83,8 @@ a:hover{color:#900;}
 		        	right: 297px;
 		        	text-align: right;
 		        }
-				    #yourPortfolio { text-decoration: none; }
+				    #yourOrderStatus { text-decoration: none; margin: 0 15px 0 0; }
+					#yourPortfolio { text-decoration: none; }
 				        #yourPortfolio.portfolioHasItems { color: #c00; }
 				        #portfolioItemCount { margin: 0 0 0 2px; }
 			        #yourCart { margin-left: 15px; text-decoration: none; }
@@ -112,6 +123,7 @@ a:hover{color:#900;}
 			    }
 	    #siteShortcuts {
 	    	font: 14px Arial, sans-serif;
+	    	width: 100%;
 	    	height: 15px;
 	    	list-style-type: none;
 	    	margin: 0;
@@ -119,13 +131,31 @@ a:hover{color:#900;}
 	    	position: absolute;
 	    	right: 0;
 	    	top: 56px;
+	    	text-align: right;
 	    }
 		    #siteShortcuts li { margin: 0 15px 0 0; display: inline; }
+		    	#siteShortcuts.prosShortcuts li { margin: 0 10px 0 0; }
 			#siteShortcuts li a { color: #000; line-height: 17px; text-decoration: none; }
 		        #siteShortcuts li a:hover { color: #900; text-decoration: none; }
-			    #siteShortcuts li a span { font-size:14px; font-weight:bold; }
-			    #siteShortcuts .sale { color: #c00; font-weight: bold;  }
-			    li#contactPhone { font-size: 14px; font-weight: bold; margin: 0; }
+		        #siteShortcuts li a span { font-size:14px; }
+			    #siteShortcuts .sale { color: #c00; font-weight: bold; }
+			    li#contactPhone { font-size: 14px; }
+			    #siteShortcuts li#rateUs { margin: 0; }
+			    	#siteShortcuts li#rateUs a { 
+			    		width: 70px; 
+			    		height: 14px; 
+			    		display: inline-block;
+			    		text-align: left;
+			    	}
+			    		#siteShortcuts li#rateUs span { display: inline-block; float: left; }
+			    		#siteShortcuts li#rateUs span.globalSprite {
+			    			background-position: 0 -696px;
+			    			height: 15px;
+			    			margin-left: 5px;
+			    			width: 14px;
+			    		}
+			    		.ie7 #siteShortcuts li#rateUs a { display: inline; height: auto; }
+			    			.ie7 #siteShortcuts li#rateUs span.globalSprite { float: none; }
 	    #navWrapper { width:100%; height: 29px; clear:both; }
 		    #nav {
 		    	height: 30px;
@@ -152,7 +182,7 @@ a:hover{color:#900;}
 				    	color: #fff;
 				    	left: 1px;
 				    }
-			    #nav div:hover + div .aNavBtn, .hover + div .aNavBtn, .selected + div .aNavBtn { background: none !important; color: #464648; }
+			    #nav div:hover + div:not(.selected) .aNavBtn, .hover + div .aNavBtn, .selected + div .aNavBtn { background: none !important; color: #464648; }
 
 				#chandeliers { width: 117px; }
 				#ceilingLighting { width: 126px; }
@@ -175,7 +205,7 @@ a:hover{color:#900;}
 				    #nav div div a { font-size: 11px; text-decoration: none; padding: 3px 5px; }
 					    #nav div div a:hover { color: #000; }
 				    #nav div div i a { padding: 3px 5px 3px 23px; }
-				    #ceilingLighting div.CategoryDropDowns { left: -117px; }
+					#ceilingLighting div.CategoryDropDowns { left: -117px; }
 					#lamps div.CategoryDropDowns { left: -243px; }
 					#wallLights div.CategoryDropDowns { left: -321px; }
 					#outdoor div.CategoryDropDowns { left: -428px; }
@@ -711,7 +741,7 @@ a span.arw {
 	width: 0;
 }
 
-.calloutBtn {
+.calloutBtn, .calloutBtn:visited {
 	background: #cc0102;
 	background: -moz-linear-gradient(top,  #cc0102 0%, #990200 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cc0102), color-stop(100%,#990200));
@@ -726,11 +756,12 @@ a span.arw {
 	border-top: 1px solid #e26b6c;
 	border-radius: 2px;
 	color: #fff;
-	font-size: 14px;
-	font-weight: bold;
-	line-height: 25px;
+	cursor: pointer;
+	display: inline-block;
+	font: bold 14px/25px Arial, Helvetica, Verdana, sans-serif;
 	padding: 0 15px;
 	text-align: center;
+	text-decoration: none;
 	text-shadow: 1px 1px 0 #000;
 }
 	.calloutBtn:hover, .calloutBtn:focus {
@@ -741,6 +772,37 @@ a span.arw {
 		background: -o-linear-gradient(top,  #e00000 0%,#b10000 100%);
 		background: -ms-linear-gradient(top,  #e00000 0%,#b10000 100%);
 		background: linear-gradient(top,  #e00000 0%,#b10000 100%);
+		color: #fff;
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e00000', endColorstr='#b10000',GradientType=0 );
 	}
-	a.calloutBtn span.arw { border-color: transparent transparent transparent #fff; }
+	.calloutBtn.xxSmall { font-size: 10px; line-height: 21px; padding: 0 11px; }
+	.calloutBtn.xSmall { font-size: 11px; line-height: 22px; padding: 0 12px; }
+	.calloutBtn.small { font-size: 12px; line-height: 23px; padding: 0 13px; }
+	.calloutBtn.large { font-size: 16px; line-height: 27px; padding: 0 17px; }
+	.calloutBtn.xLarge { font-size: 18px; line-height: 29px; padding: 0 19px; }
+	.calloutBtn.xxLarge { font-size: 20px; line-height: 31px; padding: 0 21px; }
+	.calloutBtn.grey, .calloutBtn.grey:visited {
+		background: #9a9a9a;
+		background: -moz-linear-gradient(top,  #9a9a9a 0%, #343434 100%);
+		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#9a9a9a), color-stop(100%,#343434));
+		background: -webkit-linear-gradient(top,  #9a9a9a 0%,#343434 100%);
+		background: -o-linear-gradient(top,  #9a9a9a 0%,#343434 100%);
+		background: -ms-linear-gradient(top,  #9a9a9a 0%,#343434 100%);
+		background: linear-gradient(to bottom,  #9a9a9a 0%,#343434 100%);
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9a9a9a', endColorstr='#343434',GradientType=0 );
+		border-bottom: 1px solid #161616;
+		border-left: 1px solid #858585;
+		border-right: 1px solid #3f3f3f;
+		border-top: 1px solid #c4c4c4;
+	}
+		.calloutBtn.grey:hover, .calloutBtn.grey:focus {
+			background: #b2b2b2;
+			background: -moz-linear-gradient(top,  #b2b2b2 0%, #494949 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b2b2b2), color-stop(100%,#494949));
+			background: -webkit-linear-gradient(top,  #b2b2b2 0%,#494949 100%);
+			background: -o-linear-gradient(top,  #b2b2b2 0%,#494949 100%);
+			background: -ms-linear-gradient(top,  #b2b2b2 0%,#494949 100%);
+			background: linear-gradient(to bottom,  #b2b2b2 0%,#494949 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2b2b2', endColorstr='#494949',GradientType=0 );
+		}
+	.calloutBtn .arw { border-color: transparent transparent transparent #fff; }

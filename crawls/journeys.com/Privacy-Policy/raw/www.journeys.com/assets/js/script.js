@@ -27,10 +27,10 @@ JY = {
             $('input#keywords').blur(function() {
                 if ($(this).val() == '') { $(this).attr('value', 'search'); }
             });
-            $('form#search-form input[type="submit"]').click(function(e){
-                if ( $('input#keywords').val() == 'search' ){
+            $('form#search-form input[type="submit"]').click(function(e) {
+                if ($('input#keywords').val() == 'search') {
                     e.preventDefault();
-                }else{
+                } else {
                     $('form#search-form').submit();
                 }
             });
@@ -269,7 +269,7 @@ JY = {
                 e.preventDefault();
                 UTILS.addToCart(true);
             });
-            $('a#lnk-bday-club').click(function(e){
+            $('a#lnk-bday-club').click(function(e) {
                 e.preventDefault();
                 $('div#modal-bday').dialog({
                     modal: true,
@@ -279,7 +279,7 @@ JY = {
                     dialogClass: 'modal-quickshop'
                 });
             });
-            $('a#btn-close-bday').click(function(e){
+            $('a#btn-close-bday').click(function(e) {
                 $('div#modal-bday').dialog('close');
             });
             $('nav#nav-products a.second-level').click(function(e) {
@@ -299,6 +299,17 @@ JY = {
                         link.append(' <span class="plus">+</span>');
                     });
                 }
+            });
+            $('a#btn-write-rev').click(function(e) {
+                e.preventDefault();
+                $('div#rev-write-review-form input[type="radio"]').rating({
+                    starWidth: 24
+                });
+                $('div#write-rev-wrap').slideDown();
+                if ($('div.reviews').length < 1) {
+                    $('div#rev-explanation,div#reviews-empty').hide();
+                }
+                //$('input[type=checkbox]').prettyCheckboxes();
             });
         },
         finalize: function() {
@@ -429,8 +440,8 @@ JY = {
                 var link = $(this);
                 var img = $('div#full-size-img-wrap img');
                 var view = link.data('view');
-                img.attr('src', 'http://www.journeys.com/images/products/1_' + JY.jy_body_product.productID + '_ZM' + view + '.JPG');
-                $('img#imgZoom').attr('src', 'http://www.journeys.com/images/products/1_' + JY.jy_body_product.productID + '_ZM' + view + '.JPG');
+                img.attr('src', '/images/products/1_' + JY.jy_body_product.productID + '_FS' + view + '.JPG');
+                $('img#imgZoom').attr('src', '/images/products/1_' + JY.jy_body_product.productID + '_ZM' + view + '.JPG');
                 $('ul#alt-views li').addClass('inactive');
                 link.parent('li').removeClass('inactive');
             });
@@ -532,17 +543,6 @@ JY = {
                 $('div#results-info').hide();
                 $('div#check-stores-page1').show();
             });
-            $('a#btn-write-rev').click(function(e) {
-                e.preventDefault();
-                $('div#rev-write-review-form input[type="radio"]').rating({
-                    starWidth: 24
-                });
-                $('div#write-rev-wrap').slideDown();
-                if ($('div.reviews').length < 1) {
-                    $('div#rev-explanation,div#reviews-empty').hide();
-                }
-                //$('input[type=checkbox]').prettyCheckboxes();
-            });
             $('input#rev-overall-hidden').val($('div#rev-overall input[type="radio"]:checked').val());
             //            $('div#rev-overall input[type="radio"]').raty({
             //                starOn  : 'hand-on.png',
@@ -606,8 +606,8 @@ JY = {
                 var link = $(this);
                 var img = $('div#full-size-img-wrap img');
                 var view = link.data('view');
-                img.attr('src', 'http://www.journeys.com/images/products/1_' + JY.jy_body_product.productID + '_ZM' + view + '.JPG');
-                $('img#imgZoom').attr('src', 'http://www.journeys.com/images/products/1_' + JY.jy_body_product.productID + '_ZM' + view + '.JPG');
+                img.attr('src', '/images/products/1_' + JY.shi_body_product.productID + '_FS' + view + '.JPG');
+                $('img#imgZoom').attr('src', '/images/products/1_' + JY.shi_body_product.productID + '_ZM' + view + '.JPG');
                 $('ul#alt-views li').addClass('inactive');
                 link.parent('li').removeClass('inactive');
             });
@@ -874,8 +874,8 @@ JY = {
                     $(this).attr('value', 'eg. 2399868');
                 }
             });
-            $('input#btnLookup').click(function(e){
-                if ( $('input#txtCardNumber').val() == 'eg. 2399868' ){
+            $('input#btnLookup').click(function(e) {
+                if ($('input#txtCardNumber').val() == 'eg. 2399868') {
                     e.preventDefault();
                 }
             });
@@ -982,8 +982,8 @@ JY = {
             $('input#txtPromoCode').blur(function() {
                 if ($(this).val().length < 1) { $(this).attr('value', 'eg; 3456603'); }
             });
-            $('a#btnApply').click(function(e){
-                if ( $('input#txtPromoCode').val() == 'eg; 3456603' ){
+            $('a#btnApply').click(function(e) {
+                if ($('input#txtPromoCode').val() == 'eg; 3456603') {
                     e.preventDefault();
                 }
             });

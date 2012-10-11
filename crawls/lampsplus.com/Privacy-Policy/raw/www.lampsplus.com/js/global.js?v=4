@@ -1,11 +1,6 @@
 //hoverIntent jquery plugin - used for the mouseover in main nav dropdowns and attribute dropdowns - http://cherne.net/brian/resources/jquery.hoverIntent.html
 (function($) { $.fn.hoverIntent = function(f, g) { var cfg = { sensitivity: 7, interval: 200, timeout: 0 }; cfg = $.extend(cfg, g ? { over: f, out: g} : f); var cX, cY, pX, pY; var track = function(ev) { cX = ev.pageX; cY = ev.pageY; }; var compare = function(ev, ob) { ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t); if ((Math.abs(pX - cX) + Math.abs(pY - cY)) < cfg.sensitivity) { $(ob).unbind("mousemove", track); ob.hoverIntent_s = 1; return cfg.over.apply(ob, [ev]); } else { pX = cX; pY = cY; ob.hoverIntent_t = setTimeout(function() { compare(ev, ob); }, cfg.interval); } }; var delay = function(ev, ob) { ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t); ob.hoverIntent_s = 0; return cfg.out.apply(ob, [ev]); }; var handleHover = function(e) { var p = (e.type == "mouseover" ? e.fromElement : e.toElement) || e.relatedTarget; while (p && p != this) { try { p = p.parentNode; } catch (e) { p = this; } } if (p == this) { return false; } var ev = jQuery.extend({}, e); var ob = this; if (ob.hoverIntent_t) { ob.hoverIntent_t = clearTimeout(ob.hoverIntent_t); } if (e.type == "mouseover") { pX = ev.pageX; pY = ev.pageY; $(ob).bind("mousemove", track); if (ob.hoverIntent_s != 1) { ob.hoverIntent_t = setTimeout(function() { compare(ev, ob); }, cfg.interval); } } else { $(ob).unbind("mousemove", track); if (ob.hoverIntent_s == 1) { ob.hoverIntent_t = setTimeout(function() { delay(ev, ob); }, cfg.timeout); } } }; return this.mouseover(handleHover).mouseout(handleHover); }; })(jQuery);
 
-// loads Portal Menu
-$(document).ready(function() {
-    $('.portal ul').load('/includes/portal.html');
-});
-
 //applies red background to main nav buttons when in relevant category
 function fncParentCategoryShowHoverState(strTopLevelCategory) {
     $('#nav').find('#' + strTopLevelCategory).addClass('selected');
@@ -81,6 +76,24 @@ var boolSomethingIsSelected = false;
 
 $(function () {
 
+    // loads Portal Menu
+    if (typeof isKiosk === 'undefined') {
+        // variable is undefined
+        $.get('/includes/portal.html', function (d) {
+            $('.portal').append(d);
+        });
+    } else {
+        if (!isKiosk) {
+            $.get('/includes/portal.html', function (d) {
+                $('.portal').append(d);
+            });
+        } else {
+            $.get('/includes/portalKiosk.html', function (d) {
+                $('.portal').append(d);
+            });
+        }
+    }
+
     //main nav functionality - contains itouch, iphone, ipad specific functionality
     if (!isIpad()) {
         $(topNavSelectors).hoverIntent({
@@ -138,6 +151,18 @@ $(function () {
 		btnID: "searchBtn"
 	});
 
+    //On Click of update kiosk store number Button
+    $("#txtUpdateStoreNumber").click(function () {
+        var objStoreNumberTextBox = $("#txtStoreNumber");
+        var strKioskStoreNumber = "";
+        if (objStoreNumberTextBox != null) {
+            strKioskStoreNumber = objStoreNumberTextBox.val();
+            strKioskStoreNumber = strKioskStoreNumber.trim();
+            window.location = "http://" + location.host + "/SECURE/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + document.URL;
+        } else {
+            return;
+        }
+    });
 });
 
 //used for clearing and deleting LP professionals cookie

@@ -28,7 +28,7 @@ if ($().jquery == '1.3.2'){
 		var $flyout = $("#product-flyout");
 		//var animationFlag = false;
 		$flyoutTrigger.live('mouseenter',function() {
-				$flyout.slideDown('fast');
+				$flyout.filter(':not(:animated)').slideDown('fast');
 			}).live('mouseleave',function(){
 				$flyout.slideUp('fast');
 			});
@@ -36,7 +36,7 @@ if ($().jquery == '1.3.2'){
 		var $connectedFlyout = $("#connected-flyout");
 		//var animationFlag = false;
 		$connectedTrigger.live('mouseenter',function() {
-				$connectedFlyout.slideDown('fast');
+				$connectedFlyout.filter(':not(:animated)').slideDown('fast');
 			}).live('mouseleave',function(){
 				$connectedFlyout.slideUp('fast');
 		});
