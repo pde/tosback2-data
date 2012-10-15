@@ -1,0 +1,1616 @@
+// JScript File
+function $get(id)
+{
+	return document.getElementById(id);
+}
+function hideElement(e)
+{
+	e.style.display = "none";
+}
+function displayElement(e)
+{
+	e.style.display = "";
+}
+function toggleDisplay(e)
+{
+	if (e.style.display == "none")
+		displayElement(e);
+	else
+		hideElement(e);
+}
+
+function setHtml(e, html)
+{
+	e.innerHTML = html;
+}
+
+function getMainForm()
+{
+	var theForm = document.forms['aspnetForm'];
+	if (!theForm)
+		theForm = document.aspnetForm;
+
+	return theForm;
+}
+
+function findPosX(obj)
+{
+	var curLeft = 0;
+	if (obj.offsetParent)
+	{
+		do 
+		{
+			curLeft += obj.offsetLeft;
+		} while (obj = obj.offsetParent);
+	}
+	else if (obj.x)
+		curLeft += obj.x;
+	
+	return curLeft;	
+}
+function findPosY(obj)
+{
+	var curTop = 0;
+	if (obj.offsetParent)
+	{
+		do 
+		{
+			curTop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+	}
+	else if (obj.y)
+		curTop += obj.y;
+	
+	return curTop;	
+}
+function positionMenu(menu, div, offX, offY)
+{
+	var posY = findPosY(div);
+	var posX = findPosX(div);
+
+	posY += offY;
+	posX += offX;
+
+	menu.style.top = posY + "px";
+	menu.style.left = posX + "px";
+	//alert(menu.style.top);    
+}
+
+function changePage(page)
+{
+	window.open(page, "_self");
+}
+
+function showImageList(listid, productid, persid, width, height, title)
+{
+	var maxHeight = $(window).height()-35;
+	if (height > maxHeight) height = maxHeight;
+
+	title = title == null ? "View Options" : title;
+	var options = { width: width + 20, height: height + 20, title: title };
+
+
+	var u = "ImageListFrame.aspx?imagelistid=" + listid + "&productid=" + productid + "&persid=" + persid;
+	showWindowFrame(u, options);
+
+}
+
+function displayProductMedia(filename, w, h)
+{
+	if (w > 0 && h > 0)
+		window.open(filename, "_blank", "width=" + w + ",height=" + h);
+	else
+		window.open(filename, "_blank");
+
+}
+
+function displayDropdownMedia(filename, w, h, title)
+{
+	if (w == 0) w = 600;
+	if (h == 0) h = 450;
+
+	var img = "<img src='" + filename + "'>";
+	showDialogHtml(img, {width: w, height: h, title: title});
+}
+
+function textareaTextChanged(txt)
+{
+	var e = document.getElementById("aspnetForm").elements;
+	var imageListIndex = $(txt).attr("imageListIndex");
+	var sel = null;
+	var writeOwnIndex = -1;
+
+	if (imageListIndex == null)
+	{
+		// first time doing this check, pre-compute image list index of write your own index
+		imageListIndex = -1;
+		for (i = 0; i < e.length; i++)
+		{
+			if (e[i] == txt)
+			{
+				imageListIndex = i;
+				break;
+			}
+		}
+
+		// walk backwards to find matching dropdown
+		while (imageListIndex >= 0)
+		{
+			if (e[imageListIndex].type == "select-one" && e[imageListIndex].onchange != null)
+			{
+				// found dropdown with fill text option, now find write own verse option
+				sel = e[imageListIndex];
+
+				for (i = 0; i < sel.options.length; i++)
+				{
+					var value = sel.options[i].value.toLowerCase();
+					
+					if (value.indexOf("write") >= 0 && value.indexOf("own") >= 0)
+					{
+						$(sel).attr("writeOwnIndex", i);
+						writeOwnIndex = i;
+						break;
+					}
+				}
+
+				if (writeOwnIndex == -1)
+					// didn't find write your own, so we don't have image list
+					imageListIndex = -1;
+				
+				break; // found select 
+			}
+			imageListIndex--;
+		}
+
+		$(txt).attr("imageListIndex", imageListIndex); // remember index for future use
+
+	}
+
+
+	if (imageListIndex == -1) return; // dont have matching image list
+
+	sel = e[imageListIndex];
+	var writeOwnIndex = $(sel).attr("writeOwnIndex");
+
+	if (sel.selectedIndex != writeOwnIndex)
+		sel.selectedIndex = writeOwnIndex;
+
+}
+
+function fillText(sel, arrName)
+{
+	if (sel.selectedIndex == 0)
+		return;
+		
+	arr = eval(arrName);
+	text = arr[sel.selectedIndex-1];
+		
+	var e = document.getElementById("aspnetForm").elements;
+	var found = false;
+	for (i=0; i<e.length; i++)
+		if (e[i] == sel)
+				found = true;
+		else if (e[i].type == "textarea" && found)
+		{
+			 e[i].value = text;
+			 return;
+		}
+			
+}
+
+function ControlValue(field) {
+    if (!field)
+    // no pers
+        return null;
+
+    /*
+    else if ((field.length && !field.type) || field.type == "radio") // radio button
+    {
+    for (j=0; j<field.length; j++)
+    {
+    if (field[j].checked)
+    {
+    ret = field[j].value;
+
+    return ret;
+    }
+    }
+    }
+    */
+    else if (field.type == 'radio')
+        return field.checked ? field.value : null;
+
+    else if (field.type == 'select-one') {
+
+        var opt = field.options[field.selectedIndex];
+
+        return opt.value;
+
+    }
+    else if (field.type == 'text') {
+        return field.value;
+    }
+    else if (field.type == 'textarea') {
+        // need to wrap at maximum size
+        var output = "";
+        var lines = field.value.split("\n");
+        var mx = field.cols;
+
+        for (var lineno = 0; lineno < lines.length; lineno++) {
+            var line = lines[lineno];
+            if (line.length > mx) {
+                var words = line.split(" ");
+                var count = 0;
+                for (var j = 0; j < words.length; j++) {
+
+                    var word = words[j];
+                    if (count + word.length + 1 <= mx)	// word will fit on line
+                    {
+                        output = output + " " + word;
+                        count += word.length + 1;
+                    }
+                    else if (word.length > mx) // word byitself is too big
+                    {
+                        output += "\n" + word + "\n";
+                        count = 0;
+                    }
+                    else // word does not fit on this line
+                    {
+                        output += "\n" + word;
+                        count = word.length;
+                    }
+                }
+                output += "\n";
+            }
+            else
+                output += line + "\n";
+           }
+    	
+        return output;
+    }
+    else if (field.type == 'hidden') {
+        return field.value;
+    }
+    else
+        return "";
+}
+
+function ShowPreview()
+{
+	if (Page_ClientValidate("") == false)
+		return;
+
+	var form = document.getElementById("aspnetForm");
+	var e = form.elements;
+	var q = "ProductPreviewDialog.aspx?productID=" + previewProductID + "&itemID=" + previewItemID;
+	var apparelSize = null;
+	var apparelColor = null;
+
+	for (i=0; i<e.length; i++)
+	{
+		var n = e[i].name;
+		var ix = n.indexOf("pers");
+		
+		if (n.indexOf("kitDropdown") >= 0 || n.indexOf("kitOptions") >= 0)
+		{
+			var vvalue = ControlValue(e[i]);
+			if (vvalue != null)
+			{
+				vvalue = vvalue.replace(/\+/g, "__PLUS__");
+				q += "&dropdownItemID=" + escape(vvalue);
+
+			}
+		}
+		else if (n.indexOf("apparelSize") >= 0) 
+			apparelSize = ControlValue(e[i]);
+		else if (n.indexOf("apparelColor") >= 0 && e[i].checked) 
+			apparelColor = ControlValue(e[i]);
+		else if (ix >= 0)
+		{
+		    var vname = n.substr(ix + 5); //+5 because control name is $pers$pers3343
+		    if (vname.indexOf("$__") >= 0)
+		        vname = vname.substr(0, vname.indexOf("$__"));
+
+		    var vvalue = ControlValue(e[i]);
+	
+			if (vvalue != null)
+			{
+				vvalue = vvalue.replace(/\+/g, "__PLUS__");
+				q += "&" + vname + "=" + escape(vvalue);
+			}
+		}
+	}
+
+	if (apparelColor != null && apparelSize != null) {
+		var dropdownValue = apparelMap[apparelSize + "@" + apparelColor];
+		if (dropdownValue != null)
+			q += "&dropdownItemID=" + dropdownValue;
+	}
+    
+	ShowPreviewWithUrl(q);
+}
+
+function ShowPreviewWithUrl(q)
+{
+	
+	var h = previewHeight + 30;
+	var w = previewWidth + 180;
+	var maxH = getClientHeight();
+
+	h = h > maxH ? maxH : h;
+
+	var options = { width: w, height: h, title: previewItemName, closeHandler: PreviewComplete };
+	showWindowFrame(q, options);
+   
+}
+
+function PreviewComplete(dlg, params)
+{
+	if (params == "ValidateAndSubmit")
+	{
+		Page_ClientValidate();
+		if (Page_IsValid)
+			__doPostBack(addToCartButtonID, '');
+	}
+	else if (params == "Submit")
+	{
+		__doPostBack(addToCartButtonID, '');
+	}
+
+	return true;
+}
+
+function ShowOrderItemPreview(pw, ph, pname, u)
+{
+	var h = pw + 30;
+	var w = ph + 180;
+	var maxH = getClientHeight();
+
+	h = h > maxH ? maxH : h;
+
+	var options = { width: w, height: h, title: pname };
+	showWindowFrame(u, options);
+
+}
+
+
+
+var productExtraLargeImage = null;
+var productCurrentID = 0;
+var itemCurrentID = 0;
+
+function ShowProductImage(src, extraLarge)
+{
+	if (document.images == null) return;
+
+	var theImg = document.images["productImage"];
+
+	if (theImg)
+	{
+		if (theImg.filters && theImg.filters.length > 0)
+		{
+			theImg.filters[0].Apply();
+			theImg.src = src;		
+			theImg.filters[0].Play();			
+		}
+		else
+			theImg.src = src;
+	}
+
+	SetProductExtraLarge(extraLarge);
+}
+
+function SetProductExtraLarge(extraLarge) 
+{
+	var div = $get("extraLargeDiv");
+	if (extraLarge == "")
+	{
+		productExtraLargeImage = null;
+		div.style.display = "none";
+	}
+	else
+	{
+		div.style.display = "";
+		productExtraLargeImage = extraLarge;
+	}
+}
+
+function ViewExtraLargeImage()
+{
+	if (productExtraLargeImage == null)
+		return;
+
+	window.open('ExtraLargeImage.aspx?productID=' + productCurrentID + '&itemid=' + itemCurrentID + '&eimg=' + productExtraLargeImage, '_blank', 'width=700,height=640');
+}
+
+function EmailBoxDefault(box)
+{
+	if (box.value == box.defaultValue)
+	{
+		box.value = "";
+		box.style.color = "black";
+	}
+}
+
+function EmailBoxLeave(box)
+{
+	if (box.value == "")
+	{
+		box.value = box.defaultValue;
+		box.style.color = "gray";
+	}
+}
+
+function SearchBoxDefault(box)
+{
+	if (box.value == box.defaultValue)
+	{
+		box.value = "";
+		$(box).removeClass("search-box-notext");
+	}
+}
+function SearchBoxLeave(box)
+{
+	if (box.value == "")
+	{
+		box.value = box.defaultValue;
+		$(box).addClass("search-box-notext");
+	}
+	
+}
+
+function CheckSearchBox(form)
+{
+	
+	if (form.searchString.value.length == 0 || form.searchString.value == form.searchString.defaultValue)
+	{
+		alert("Please specify your search keywords.");
+		return false;
+	}
+	else
+		return true; 
+}
+
+function ShowMore(index)
+{
+	$("#navMore" + index).hide();
+	$("#navMoreExpanded" + index).slideDown("slow");	
+}
+
+
+function PreviewAlsoAvailable(img)
+{
+	var dest = $get("imgAlsoAvailable");
+	
+	if (dest)
+	{
+		if (img.length == 0)
+			img = "images/blank.gif";
+
+		if (dest.filters && dest.filters.length > 0)
+		{
+			dest.filters[0].Apply();
+			dest.src = img;
+			dest.filters[0].Play();
+		}
+		else
+		{
+			dest.src = img;
+		}
+	}
+}
+
+function openLargeImage(productID, width, height)
+{
+	window.open('ExtraLargeImage.aspx?productID=' + productID, '_blank', 'width='+width+',height='+height);
+}
+
+function ValidateImageUpload(source, args)
+{
+
+	var mailOption = source.optionMail ? document.getElementById(source.optionMail) : null;
+	var uploadOption = source.optionUpload ? document.getElementById(source.optionUpload) : null;
+	var keepOption = source.optionKeep ? document.getElementById(source.optionKeep) : null;
+	var libraryOption = source.optionLibrary ? document.getElementById(source.optionLibrary) : null;
+	var file = document.getElementById(source.fileUpload);
+	
+	if (mailOption && mailOption.checked)
+		args.IsValid = true;
+	else if (keepOption && keepOption.checked)
+		args.IsValid = true;
+	else if (libraryOption && libraryOption.checked)
+		args.IsValid = true;
+	else if (uploadOption.checked)
+	{
+		args.IsValid = file.value.length > 0;
+	}
+	else
+		args.IsValid = false;
+
+}
+
+
+
+function ValidateSelectPhoto(source, args)
+{
+	var photoControlID = source.photoControlID;
+	var valueControl = $("#" + photoControlID + "_selectPhotoValue");
+	args.IsValid = valueControl.val().length > 0;
+}
+
+function ValidateBirthday(source, args)
+{
+	var monthList = $get(source.monthlistID);
+	var dayList = $get(source.daylistID);
+
+	if (monthList.selectedIndex == 0 && dayList.selectedIndex == 0)
+		args.IsValid = true;
+	else if (monthList.selectedIndex == 0 || dayList.selectedIndex == 0)
+		args.IsValid = false;
+	else
+	{
+		var m = monthList.selectedIndex;
+		var d = dayList.selectedIndex;
+		if (m == 2)
+			args.IsValid = d <= 29;
+		else if (m == 4 || m == 6 || m == 9 || m == 11)
+			args.IsValid = d <= 30;
+		else
+			args.IsValid = d <= 31;
+	}
+}
+
+
+function ValidateCheckbox(source, args)
+{
+	var box = document.getElementById(source.checkboxID); 
+	args.IsValid = box.checked;
+}
+
+function ValidatePersTypeItem(source, args)
+{
+	var optionYes = $get(source.buttonsID + "_0");
+	var optionNo = $get(source.buttonsID + "_1");
+	
+	
+	args.IsValid = optionYes.checked || optionNo.checked;
+}
+
+function ValidateGiftBoxControl(source, args) 
+{
+	var optionGiftBox = $get(source.buttonsID + "_0");
+	var optionKit = $get(source.buttonsID + "_1");
+	var optionNone = $get(source.buttonsID + "_2");
+
+	args.IsValid = optionGiftBox.checked || optionKit.checked || optionNone.checked;
+
+}
+
+function ValidatorGetValueOrEmpty(id)
+{
+	if (document.getElementById(id) == null)
+		return "";
+	else
+		return ValidatorGetValue(id);
+}
+
+function ValidateDropdownKit(source, args) {
+
+	var c = $get(source.controlToValidate);
+	
+	source.errormessage = source.kitTitle; // need to reset as we could have modified on previous validation attempt
+
+	if (c != null && c.type && c.type == "select-one") 
+	{
+		// dropdown
+		if (c.selectedIndex == 0) 
+		{
+			// first option selected - select -
+			args.IsValid = false;
+			return;
+		}
+		var v = c.options[c.selectedIndex].value;
+		if (v == "")
+		{
+			source.errormessage = source.kitTitle + ": Your selected option is not currently available";
+			args.IsValid = false;
+			return;
+		}
+	}
+
+	args.IsValid = true;
+
+}
+
+function RadioButtonFromIdList(idList) {
+	var radioOptionIds = idList.split(",");
+
+	for (var i = 0; i < radioOptionIds.length; i++) {
+		var radio = $get(radioOptionIds[i]);
+
+		if (radio.checked) return radio.value;
+	}
+
+	return null;
+}
+
+function ValidateDropdownThumbList(source, args) {
+    
+	var selRadio = RadioButtonFromIdList(source.radioOptions);
+	
+	args.IsValid = selRadio != null;
+}
+
+function ValidateDropdownApparel(source, args) {
+	var selColor = RadioButtonFromIdList(source.colorOptions);
+	var selSize = ValidatorGetValueOrEmpty(source.sizeOptions);
+
+	args.IsValid = selColor != null && selSize != null && selColor.length > 0 && selSize.length > 0;
+}
+
+function ValidateDate(source, args)
+{
+	//alert(source.required);
+	var id = source.controlToValidate;
+	var m = ValidatorGetValueOrEmpty(id + "_Month");
+	var d = ValidatorGetValueOrEmpty(id + "_Day");
+	var y = ValidatorGetValueOrEmpty(id + "_Year");
+	var df = source.displayFields;
+
+	if (m.length == 0 && d.length == 0 && y.length == 0)
+	{
+		if (source.required == "t")
+		{
+			source.errormessage = source.orgErrorMessage;
+			args.IsValid = false;
+		}
+		else
+			args.IsValid = true;
+		return;
+	}
+	
+	m = ValidatorConvert(m, "Integer", null);
+	d = ValidatorConvert(d, "Integer", null);
+	y = ValidatorConvert(y, "Integer", null);
+
+
+	if ((df == 0 || df == 1 || df == 3) && m == null)
+	{
+		// year/month/day || month/year || month/day
+		args.IsValid = false;
+		return;
+	}
+	else if (m == null)
+		m = 1; // default to 1 if not needed
+
+	if ((df == 0 || df == 3) && d == null)
+	{
+		// year/month/day || month/day
+		args.IsValid = false;
+		return;
+	}
+	else if (d == null)
+		d = 1; // default to 1 if not needed
+
+	if ((df == 0 || df == 1 || df == 2) && y == null)
+	{
+		args.IsValid = false;
+		return;
+	}
+	else if (y == null)
+		y = 2000; // default if not needed
+
+	date = new Date(y, m - 1, d);
+	if (isNaN(date) || date.getMonth() != m-1)
+	{
+		args.IsValid = false;
+		source.errormessage = "Invalid Date";
+		return;
+	}
+
+	args.IsValid = true;
+	
+}
+
+function ShowExpressShippingInfo()
+{
+	//window.open("ExpressShipping.aspx", "_blank", "width=550,height=500,scrollbars=yes");
+	showStaticText(291, "Express Shipping", 500, 500);
+}
+function ShowDropshipInfo()
+{
+	showStaticText(292, "48 Contiguous States Shipping", 500, 500);
+}
+function ShowNoExpressInfo()
+{
+	showStaticText(293, "48 Contiguous States Shipping", 500, 500);
+}
+function ShowInternationalShipInfo()
+{
+	showStaticText(295, "48 Contiguous States Shipping", 500, 500);
+}
+
+
+function staticPageWindow(pageID)
+{
+	window.open("StaticPageWindow.aspx?pageid=" + pageID, "_blank", "width=550,height=500,scrollbars=yes");
+}
+
+function reviewVerifiedBuyer() {
+	window.open("ReviewsInfo.aspx", "_blank");
+}
+
+function writeUploadMessage()
+{
+	document.writeln("<div style='position:absolute;display:none;width:400px;height:180px;border:1px solid black;padding:2px;background-color:#FFFFCC;font-size:13px;color:green;font-weight:bold;' id='divUploadImage'>");
+	document.writeln("<div style='text-align:center'>Image Upload in Progress:<hr noshade size=1 width=90%></div>");
+	document.writeln("<div style='margin:10px'>Please wait while your image is uploaded.<br>Depending on your internet connection and image size, this might take couple minutes.<br>This message will go away once your image is uploaded.</div>");
+	//document.writeln("<div style='text-align:center'><img src='images/progress.gif' border=0></div>");	
+	document.writeln("</div>");
+}
+
+function showProgressMessage(btn, divID, ox, oy)
+{
+	var div = document.getElementById(divID);
+
+	if (!div)
+		return;
+		
+	div.style.left = findPosX(btn) + ox + "px";
+	div.style.top = findPosY(btn) + oy + "px";
+	div.style.display = "";	
+}
+
+function writePlaceOrderMessage()
+{
+	document.writeln("<div class='ajaxWaitBoxContainerCreditCardOrder' style='display:none' id='divPlaceOrderMessage'>");
+	document.writeln("<div class='bold_black_12'>Your Order is being completed:<hr noshade size=1 width=100%></div>");
+	document.writeln("<div style='font-style: italic;'>Please wait while your order is being placed.</div><div class='extraPadding-Top-10'>This operation could take up to a minute or two.</div><div class='LogoColor extraPadding-Top-10 extraPadding-Bottom-10'>DO NOT navigate away from this page.</div><div class='extraPadding-Top-5'>This message will disappear once your order is completed.</div><div class='extraPadding-Top-10'>Thank You.</div>");
+	document.writeln("</div>");
+}
+
+
+function writePlaceOrderMessagePayPal() {
+	document.writeln("<div class='ajaxWaitBoxContainerPayPalOrder' style='display:none' id='divPlaceOrderMessagePayPal'>");
+	document.writeln("<div class='bold_black_12'>We we now redirecting you to PayPal to complete this order:<hr noshade size=1 width=100%></div>");
+	document.writeln("<div style='font-style: italic;'>Please wait as this operation could take up to a minute or two.</div><div class='LogoColor extraPadding-Top-10 extraPadding-Bottom-10'>DO NOT navigate away from this page.</div><div class='extraPadding-Top-10'>Thank You.</div>");
+	document.writeln("</div>");
+}
+
+function showInfoInNavbar(info)
+{
+	var nav = document.getElementById("navbarInfoRight");
+	if (nav)
+		nav.innerHTML = info;
+}
+function hideInfoInNavbar()
+{
+	var nav = document.getElementById("navbarInfoRight");
+	if (nav)
+		nav.innerHTML = "";
+}
+
+function dontLeave()
+{
+	if (event && event.clientY && event.clientY < -10000) 
+		window.open("DontLeave.aspx", "_blank", "width=600,height=460,scrollbars=yes");
+}
+
+function ShowVerisignInfo()
+{
+	window.open("https://seal.verisign.com/splash?form_file=fdf/splash.fdf&dn=WWW.PERSONALIZATIONMALL.COM&lang=en", "_blank", "width=550,height=470");
+}
+
+// navbar specials
+navbarSpecialIndex = 0;
+navbarSpecialTimeout = 5000;
+navbarSpecials = null;
+
+navbarShowcaseIndex = 0;
+navbarShowcaseTimeout = 5000;
+navbarShowcases = null;
+
+function initNavbarSpecial(index)
+{
+	navbarSpecialIndex = index;
+	navbarSpecials = $("#navbarSpecialsList LI");
+	showNavbarSpecial();
+	window.setTimeout(rotateNavbarSpecial, navbarSpecialTimeout);
+
+}
+
+function initNavbarShowcase(index) {
+    navbarShowcaseIndex = index;
+    navbarShowcases = $("#navbarShowcasesList LI");
+    showNavbarShowcase();
+    window.setTimeout(rotateNavbarShowcase, navbarShowcaseTimeout);
+}
+
+function rotateNavbarSpecial()
+{
+	navbarSpecialIndex++;
+	if (navbarSpecialIndex >= navbarSpecials.length)
+		navbarSpecialIndex = 0;
+		
+	showNavbarSpecial();
+	window.setTimeout(rotateNavbarSpecial, navbarSpecialTimeout);
+}
+
+function rotateNavbarShowcase() {
+    navbarShowcaseIndex++;
+    if (navbarShowcaseIndex >= navbarShowcases.length)
+        navbarShowcaseIndex = 0;
+
+    showNavbarShowcase();
+    window.setTimeout(rotateNavbarShowcase, navbarShowcaseTimeout);
+}
+
+function showNavbarSpecial()
+{
+	var sContainer = $("#divSpecials");
+
+	var s = navbarSpecials[navbarSpecialIndex];
+
+	sContainer.animate({ opacity: 0.0 }, 250, "swing", function()
+	{
+		sContainer.html(s.innerHTML);
+		
+		sContainer.animate({ opacity: 1.0 }, 250, "swing");
+
+		/*
+		$("#hrefSpecialName").html(s.productName).attr("href", s.productURL);
+
+		$("#hrefSpecialImage").attr("href", s.productURL);
+
+		$("#imgSpecialImage").attr("src", s.imageURL).attr("alt", s.altTag);
+
+		$("#imgSpecialImage").animate({ opacity: 1.0 }, 250, "swing", function()
+		{
+		$("#hrefSpecialName").css({ visibility: "visible" });
+		});
+		*/
+	});    
+
+}
+
+function showNavbarShowcase() {
+    var sContainer = $("#divShowcases");
+
+    var s = navbarShowcases[navbarShowcaseIndex];
+
+    sContainer.animate({ opacity: 0.0 }, 250, "swing", function () {
+        sContainer.html(s.innerHTML);
+
+        sContainer.animate({ opacity: 1.0 }, 250, "swing");
+    });
+
+}
+
+function isDigitOrLetter(ch)
+{
+	return (ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z');
+}
+
+function checkGiftCardNumber(box)
+{
+	var r = "";
+	var g = box.value.toUpperCase();
+	var digits = 0;
+	
+	for (i=0; i<g.length; i++)
+	{
+		var ch = g.charAt(i);
+		
+		if (isDigitOrLetter(ch))
+		{
+			r += ch;
+			digits++;
+			if (digits >= 12)
+				break;
+			
+			if (digits % 4 == 0)
+				r+='-';
+		}
+	}
+	
+	box.value = r;
+}
+
+function textboxRemainingChars_Display(textbox, divID)
+{
+	var div = $get(divID);
+	if (div)
+	{
+		if (div.style.display == "none")
+			div.style.display = "";
+			
+		if (textbox.value.length > 0)
+		{
+			var r = textbox.maxLength - textbox.value.length;
+			div.innerHTML = r + " characters left";
+		}
+		else
+			div.innerHTML = "Up to " + textbox.maxLength + " chars.";
+		
+	}
+
+}
+
+function SetControlValue(field, value)
+{
+	if (!field)
+		// no pers
+		return null;
+	/*
+	else if (field.type == 'radio')
+		return field.checked ? field.value : null;
+	*/
+	else if (field.type == 'select-one') 
+	{
+		for (i=0; i<field.options.length; i++)
+			if (field.options[i].value == value)
+			{
+				field.selectedIndex = i;
+				return;
+			}	
+	}
+	else if (field.type == 'text' || field.type == 'textarea') 
+		field.value = value;
+
+}
+
+
+
+function dumpObject(obj)
+{
+	var str = "";
+	for (var f in obj)
+	{
+		var v = obj[f];
+		str += f + ": " + v + "\n";
+	}
+	alert(str);
+}
+
+function getClientHeight()
+{
+	if (document.documentElement)
+		return document.documentElement.clientHeight;
+	else if (document.body.clientHeight)
+		return document.body.clientHeight > 0 ? document.body.clientHeight : 600;
+	else
+		return 600;
+}
+
+function getScrollTop()
+{
+	var t1 = (document.documentElement ? document.documentElement.scrollTop : document.body.scrollTop);
+	var t2 = (document.body && document.body.scrollTop ? document.body.scrollTop : 0);
+	return Math.max(t1, t2) + "px";
+}
+
+
+function revealModal(div)
+{
+	//alert(getScrollTop());
+	
+	window.onscroll = function () 
+	{ 
+		div.style.top = getScrollTop(); 
+	};
+	div.style.display = "block";
+	//alert(getScrollTop());
+	div.style.top = getScrollTop();
+   
+}
+
+function updateCharsRemaining(txt, divName, count)
+{
+	var div = $get(divName);
+	var rem = count - txt.value.length;
+	if (rem == count)
+	{
+		div.innerHTML = "";
+		c = "#009900";
+	}
+	else if (rem >= 0)
+	{
+		div.innerHTML = "" + rem + " characters remaining.";
+		c = "#009900";
+	}
+	else 
+	{
+		c = "#FF0000";
+		div.innerHTML = "" + Math.abs(rem) + " too many characters.";
+	}
+	
+	if (div.style.color != c)
+		div.style.color = c;
+}
+
+// Pops up the window that shows the CVV help page in checkout
+function ShowCVVHelp() 
+{
+	window.open("CVVHelp.aspx", "_blank", "width=750,height=550,scrollbars=yes");
+}
+
+// Pops up the window that shows the CVV help page in checkout
+function ShowPayPalHelp() 
+{
+	window.open("https://www.paypal.com/us/cgi-bin/webscr?cmd=xpt/Marketing/popup/OLCWhatIsPayPal-outside", "_blank", "width=650,height=450,scrollbars=yes");
+}
+
+function LiveChat(pmsid) 
+{
+	//openChat(null, null, false);
+	window.open("https://server.iad.liveperson.net/hc/14230832/?cmd=file&file=visitorWantsToChat&site=14230832&byhref=1&imageUrl=https://server.iad.liveperson.net/hcp/Gallery/ChatButton-Gallery/English/General/1a&SESSIONVAR!pmsid=" + pmsid, "_blank", "width=600,height=400");
+
+	if ((typeof pageTracker) != 'undefined') {
+		var c = pageTracker._trackEvent('Live Chat', 'Start');
+	}
+	
+	
+	return false;
+}
+
+/*
+	when assigned as click argument to A link, will slowly scroll page to that part
+	attributes taken from A: href, scrollTime, scrollOffset (stops X pixels above section)
+	
+	<a href="#section" id="link" scrollTime="1000" scrollOffset="50">...</a>
+	$("link").click(scrollToHash);
+*/
+function scrollToHash()
+{
+	var hash = $(this).attr("href") || "html, body";
+	var scrollTime = parseInt($(this).attr("scrollTime") || 1000);
+	var scrollOffset = parseInt($(this).attr("scrollOffset") || 0);
+
+	$('html, body').animate({ scrollTop: $(hash).offset().top - scrollOffset }, scrollTime);
+
+	return false;
+}
+
+/* top menu */
+var menusInit = false;
+
+function menuMain_itemClick()
+{
+	var ahref = $(this).find("a");
+	if (ahref && ahref.attr("href"))
+		window.open(ahref.attr("href"), "_self");
+	else	// no link, just use default behaviour
+		return true;
+}
+
+function menuMain_show()
+{
+	$(this).addClass('show');
+	$(this).removeClass('with-js');
+
+	var img = $(this).find("img");
+	img.attr("src", "images/topnav/" + img.attr("imgname") + "_over.gif");
+
+	//if ($(this).attr("menuisinit") == null)
+	if (!menusInit)
+	{
+		$(".menu-col div").click(menuMain_itemClick);
+		menusInit = true;
+	}
+}
+function menuMain_hide()
+{
+	$(this).removeClass('show');
+	$(this).addClass('with-js');
+
+	var img = $(this).find("img");
+	img.attr("src", "images/topnav/" + img.attr("imgname") + ".gif");
+
+}
+function menuMain_itemOver()
+{
+	var imgname = $(this).attr("menuimgon");
+	$(this).attr("src", imgname);
+}
+function menuMain_itemOut()
+{
+	var imgname = $(this).attr("menuimgoff");
+	$(this).attr("src", imgname);
+}
+
+
+function menuMain_init()
+{
+	$(".menu-main").hoverIntent({
+		interval: 50,
+		over: menuMain_show,
+		timeout: 300,
+		out: menuMain_hide
+	});
+	$(".menu-main").addClass('with-js');
+
+	$("#topmenu1").mouseover(menuMain_itemOver).mouseout(menuMain_itemOut);
+	$("#topmenu2").mouseover(menuMain_itemOver).mouseout(menuMain_itemOut);
+	$("#topmenu3").mouseover(menuMain_itemOver).mouseout(menuMain_itemOut);
+	$("#topmenu4").mouseover(menuMain_itemOver).mouseout(menuMain_itemOut);
+	$("#topmenu5").mouseover(menuMain_itemOver).mouseout(menuMain_itemOut);
+}
+
+/* end of top menu */
+
+/* departments in store page menu */
+function menuDepts_init()
+{
+	$(".menu-depts").hoverIntent({
+		interval: 50,
+		over: menuDepts_show,
+		timeout: 300,
+		out: menuDepts_hide
+	});
+	$(".menu-depts").addClass('with-js');
+}
+
+var menusDeptsInit = false;
+
+function menuDepts_itemClick()
+{
+	var ahref = $(this).find("a");
+	if (ahref && ahref.attr("href"))
+		window.open(ahref.attr("href"), "_self");
+	else	// no link, just use default behaviour
+		return true;
+}
+
+function menuDepts_show()
+{
+	$(this).addClass('show');
+	$(this).removeClass('with-js');
+
+	if (!menusDeptsInit)
+	{
+		$(".menu-depts-dropdown DIV").click(menuDepts_itemClick);
+		$(".menu-depts-title").click(menuDepts_itemClick);
+		menusDeptsInit = true;
+	}
+}
+function menuDepts_hide()
+{
+	$(this).removeClass('show');
+	$(this).addClass('with-js');
+}
+
+/* end of departments in store page menu */
+
+var SLVersion;
+// returns silverlight version installed
+function getSilverlightVersion()
+{
+	try
+	{
+		try
+		{
+			var control = new ActiveXObject('AgControl.AgControl');
+			if (control.IsVersionSupported("4.0")) SLVersion = 4;
+			else if (control.IsVersionSupported("3.0")) SLVersion = 3;
+			else if (control.IsVersionSupported("2.0")) SLVersion = 2;
+			else SLVersion = 1;
+			control = null;
+		}
+		catch (e)
+		{
+			var plugin = navigator.plugins["Silverlight Plug-In"];
+			if (plugin)
+			{
+				if (plugin.description === "1.0.30226.2") SLVersion = 2;
+				else SLVersion = parseInt(plugin.description[0]);
+			}
+			else
+				SLVersion = 0;
+		}
+	}
+	catch (e)
+	{
+		SLVersion = 0;
+	}
+
+	return SLVersion;
+}
+
+function showStaticText(textID, title, width, height)
+{
+	showDialogAjax("AjaxHandler.ashx?action=statictext&tid=" + textID, { width: width, height: height, title: title });
+}
+
+function giftboxingAbout(itemID) {
+
+	showWindowFrame("GiftboxAbout.aspx?itemid=" + itemID, { width: 600, height: 600, title: "Exclusive Gift Box Service" });
+}
+
+function persItemControlMoreInfo(productID, itemID, title) {
+	showDialogAjax("AjaxHandler.ashx?action=iteminfo&productid=" + productID + "&itemid=" + itemID, { width: 600, height: 400, title: title });
+}
+
+
+
+/* jquery UI dialog */
+var pmall_curDialog = null;
+
+function showDialog(divID)
+{
+	pmall_curDialog = $("#" + divID);
+
+	if (pmall_curDialog.attr("winHref"))
+	{
+		$.ajax({
+			url: pmall_curDialog.attr("winHref"),
+			dataType: "html",
+			success: function (data)
+			{
+				pmall_curDialog.html(data);
+				createAndOpenDialog();
+			},
+			error: function (e) { return; }
+		});
+	}
+	else
+		createAndOpenDialog();
+
+}
+
+function showDialogAjax(url, options)
+{
+	$.ajax({ cache: false, url: url, success: function (responseText, textStatus, req)
+	{
+		showDialogHtml(responseText, options);
+	}
+	});
+}
+
+function createAndOpenDialog()
+{
+	var height = parseInt(pmall_curDialog.attr("winHeight")) || 500;
+	var width = parseInt(pmall_curDialog.attr("winWidth")) || 400;
+	var posX = pmall_curDialog.attr("winLeft") || "50%";
+	var posY = pmall_curDialog.attr("winTop") || 50;
+	var resizeable = pmall_curDialog.attr("winResizable") || false;
+
+	pmall_curDialog.dialog({
+		resizable: resizeable,
+		width: width,
+		height: height,
+		bgiframe: true,
+		modal: true,
+		autoOpen: true,
+		show: 'fade',
+		position: [posX, posY]
+	});
+
+}
+
+function closeDialog(params)
+{
+	if (pmall_curDialog.closeHandler)
+	{
+		if (pmall_curDialog.closeHandler(pmall_curDialog, params))
+			pmall_curDialog.dialog("close");
+	}
+	else
+		pmall_curDialog.dialog("close");
+}
+
+function showDialogHtml(html, options)
+{
+	var height = parseInt(options.height) || 600;
+	var width = parseInt(options.width) || 400;
+
+	pmall_curDialog = $("<div id=pmall_dialog_iframe style='width:" + width + "px;height:" + height + "px'>" + html + "</div>")
+		.dialog(
+			{
+				title: options.title || "",
+				autoOpen: true,
+				width: width+25,
+				height: height+15,
+				modal: true,
+				resizable: options.resizable || false,
+				autoResize: true,
+				show: 'slide',
+				position: ["50%", 50]
+			}
+		);
+
+	pmall_curDialog.closeHandler = options.closeHandler;
+
+}
+
+function showWindowFrame(src, options)
+{
+	var height = parseInt(options.height) || 500;
+	var width = parseInt(options.width) || 400;
+
+	pmall_curDialog = $('<iframe frameborder="0" id="pmall_dialog_iframe" style="padding:0px" src="' + src + '" />')
+		.dialog(
+			{
+				title: options.title,
+				autoOpen: true,
+				width: width,
+				height: height,
+				modal: true,
+				resizable: options.resizable,
+				autoResize: true,
+				show: 'slide',
+				position: ["50%", 50]
+			}
+		).width(width - 5).height(height - 15);
+
+	pmall_curDialog.closeHandler = options.closeHandler;
+}
+/* end of jQuery UI Dialog */
+var selectCustomerPhoto_persID = null;
+function selectCustomerPhoto(id)
+{
+	selectCustomerPhoto_persID = id;	
+	var options = { width: 900, height: 550, title: "Select Photo", resizable: true };
+	showWindowFrame("SelectPhoto.aspx", options);
+}
+
+function customPhotoSelected(id, thumb, imgname)
+{
+	var persID = persMappings[selectCustomerPhoto_persID];
+
+	var img = $("#" + persID + "_selectPhotoImage");
+	var hid = $("#" + persID + "_selectPhotoValue");
+	var link = $("#" + persID + "_selectPhotoLink");
+	var nameDiv = $("#" + persID + "_selectPhotoName");
+
+	nameDiv.html(imgname);
+	nameDiv.show();
+	hid.attr("value", id);
+	link.html("- select different photo -");
+	img.attr("src", "upload_art/thumb/" + thumb);
+	img.show();
+
+}
+
+function viewSelectedPhoto(id, img)
+{
+	if (img.src.toLowerCase().indexOf("upload_art") >= 0)
+	{
+		var s = img.src.lastIndexOf("/");
+		var f = img.src.substring(s + 1);
+		window.open("upload_art/" + f, "_blank");
+	}
+	else
+		selectCustomerPhoto(id);
+}
+
+function certonaTracking()
+{
+	var c = resx; // capture global value
+	if (c.r.length > 1000) c.r = c.r.substr(1000);
+	if (c.p.length > 500) c.p = c.p.substr(500);
+	var u = "CertonaHandler.ashx?a=" + c.a + "&r=" + c.r + "&p=" + c.p + "&i=" + c.i + "&s=" + c.s + "&l=" + c.l + "&d=" + c.d;
+	$.ajax({cache:false, url: u});
+}
+
+function certonaRecommendations()
+{
+	var c = resx; // capture global value
+	if (c.r.length > 1000) c.r = c.r.substr(1000);
+	if (c.p.length > 500) c.p = c.p.substr(500);
+	var u = "CertonaHandler.ashx?a=" + c.a + "&r=" + c.r + "&p=" + c.p + "&i=" + c.i + "&s=" + c.s + "&l=" + c.l + "&d=" + c.d + "&c=" + c.c;
+	$.ajax({ cache: false, url: u, success: certonaShowRecommendations });
+}
+
+function certonaShowRecommendations(responseText, textStatus, req)
+{
+	if (responseText.indexOf('<!-- Pmall-Recommendations -->') < 0)
+	{
+		$("#recommendationsContainer").hide();
+		return;
+	}
+
+	$("#recommendationsContainer").show();
+	$("#recommendationsContent").html(responseText);
+
+	if (responseText.indexOf('recommendations-type-pmall') >= 0)
+	{
+		$("#recommendationsTitle").html("May We Also Suggest:");
+	}
+}
+
+function dialogLargImg(dlgID, imgPath) {
+    $('#' + dlgID).html('<img src="' + imgPath + '" />');
+    $('#' + dlgID).attr("title", "Large Image View");
+    showDialog(dlgID);
+}
+
+function showDialogWithTitle(dlgID, titleText) {
+    $('#' + dlgID).attr("title", titleText);
+    showDialog(dlgID);
+} 
+
+function webGlobalTaglineTimerValue(val)
+{
+	if (val < 10) return "0" + val;
+	else return val;
+}
+
+function webGlobalTaglineTimer()
+{
+	clientDate = new Date();
+	var ms = endDate.getTime() - clientDate.getTime() - clientOffset;
+	var s = Math.ceil(ms / 1000);
+
+	if (s < 0)
+	{
+		$("#txtGlobalTimer").html("");
+	}
+	else
+	{
+
+		var day = 60 * 60 * 24;
+
+		var days = Math.floor(s / day);
+		s -= days * day;
+		days = webGlobalTaglineTimerValue(days);
+		$("#globalTimerDays").html(days);
+
+
+		var hour = 60 * 60;
+		var hours = Math.floor(s / hour);
+		s -= hours * hour;
+		hours = webGlobalTaglineTimerValue(hours);
+		$("#globalTimerHours").html(":" + hours);
+
+		var minute = 60;
+		var minutes = Math.floor(s / minute);
+		s -= minutes * minute;
+		minutes = webGlobalTaglineTimerValue(minutes);
+		$("#globalTimerMins").html(":" + minutes);
+
+		var seconds = webGlobalTaglineTimerValue(s);
+		$("#globalTimerSecs").html(":" + seconds);
+
+		if (s == 0)
+		{
+			$("#txtGlobalTimer").fadeOut("slow");
+		}
+		else if ($("#txtGlobalTimer").is(':hidden'))
+		{
+			$("#txtGlobalTimer").fadeIn("slow");
+		}
+
+	}
+}
+
+function webIconOver(productID, newSource) 
+{
+	var img = $("#prodimg" + productID);
+	img.attr("oldSource", img.attr("src"));
+	img.attr("src", newSource);
+}
+
+function webIconOut(productID) {
+	var img = $("#prodimg" + productID);
+	img.attr("src", img.attr("oldSource"));
+}
+
+function ImageListValidate(source, args) {
+    var persID = persMappings[source.perId];
+    var hiddenPer = $('#' + persID);
+    args.IsValid = false;
+    if (hiddenPer.val() == "") {
+        args.IsValid = false;
+    }
+    else {
+        args.IsValid = true;
+    }
+
+}
+
+function ImageDropdownValidate(source, args) {
+	var persID = persMappings[source.perId];
+
+    var dropdownPer = $('#' + persID);
+	
+    args.IsValid = dropdownPer.val().length > 0;
+    if (!args.IsValid)
+    	dropdownPer.focus();
+}
+
+function selImageListValue(pIndex, liID, perId, iName, avail, hasText) {
+	if (!avail) {
+		alert('We are sorry, but this option is not available for this item.');
+		return;
+	}
+	var persID = persMappings[perId];
+	var hiddenPer = $('#' + persID);
+	var groupLI = $('#ImgList_' + pIndex + ' LI');
+	var selecetedLI = $('#ImgLI_' + pIndex + '_' + liID);
+	if (selecetedLI.hasClass('highlighted')) {
+		selecetedLI.removeClass('highlighted');
+		hiddenPer.val('');
+	}
+	else {
+		groupLI.removeClass('highlighted');
+		selecetedLI.addClass('highlighted');
+		hiddenPer.val(iName);
+		if (hasText)
+		    fillNextText(perId, persID, liID);
+	}
+
+}
+
+function fillNextText(perId, persID, liID) {
+    var arrname = 'persData' + perId;
+    arr = eval(arrname);
+    text = arr[liID];
+    if (persID == null)
+        return;
+    var found = false;
+    for (keyVar in persMappings) {
+        if (persMappings[keyVar] == persID)
+            found = true;
+        else if ($('#' + persMappings[keyVar]).is('textarea') && found) {
+            $('#' + persMappings[keyVar]).val(text);
+        }
+    }
+}
+
+function ViewProductMedia(mediaid, width, height) {
+    window.open('productmediaplayer.aspx?productID=' + productCurrentID + '&mediaid=' + mediaid, '_blank', 'width=' + width + ',height=' + height);
+   }
+
+
+var search_cache = {};
+function searchAutoComplete_init() 
+{
+	$("#searchBox").autocomplete({
+   		minLength: 2,
+   		source: function (request, response) {
+   			var term = request.term;
+   			if (term in search_cache) {
+   				response(search_cache[term]);
+   				return;
+   			}
+
+   			lastXhr = $.getJSON("websearch/AutoCompleteHandler.ashx", request, function (data, status, xhr) {
+   				search_cache[term] = data;
+   				if (xhr === lastXhr)
+   					response(data);
+   			});
+   		},
+   		//click after select 
+   		select: function (event, ui) {
+   			$("#searchBox").val(ui.item.value);
+   			$("#btnSearch").click();
+   		}
+	});
+   }
+
+// personalization control: giftbox choice changed
+   function changeGiftboxOptions(options) {
+	$("#img-giftbox").attr("src", options.value);
+}
+
+   // cart & checkout pages: remove or add giftboxing
+function cartGiftwrapOptions(oitemID, rp) {
+	showWindowFrame("GiftBoxChange.aspx?oitemid=" + oitemID + "&rp=" + rp + "&c=" + Math.random(), { width: 600, height: 500, title: "Gift Box Options" });
+}
+
+// Show a slidedown div with background color
+function ShowSlideDownDiv(slidDivClickClass, slidDivId, slidDivBgColor) {
+	$('.' + slidDivClickClass).click(function () {
+		if ($('#' + slidDivId).is(":hidden")) {
+			$('#' + slidDivId).slideDown('fast', function () {
+				$('#' + slidDivId).css("background-color", slidDivBgColor);
+				$('#' + slidDivId).show();
+			});
+		} else {
+			$('#' + slidDivId).slideUp('fast', function () {
+				$('#' + slidDivId).hide();
+			});
+		}
+	});
+}
+

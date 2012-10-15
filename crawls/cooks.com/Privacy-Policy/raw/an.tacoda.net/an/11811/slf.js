@@ -1,4 +1,4 @@
-// 2012/09/26 17:03:23
+// 2012/10/12 12:03:36
 var ANV='6.4.5';
 var ANAXCD=24;
 var ANDCC='acx';
@@ -110,8 +110,11 @@ var smSites={"twitter":/twitter.com/i,
 "stumbleupon":/stumbleupon.com/i,
 "facebook:like":/facebook.com.plugins.like.php.*action.like/i,
 "facebook:like":/facebook.com.plugins.likebox.php/i,
+"facebook:like":/&fb_action_types=[^.]+.likes/i,
 "facebook:recommend":/facebook.com.plugins.like.php.*action.recommend/i,
+"facebook:recommend":/&fb_action_types=[^.]+.recommends/i,
 "facebook:read":/facebook.com.l.php/i,
+"facebook:read":/&fb_action_types=[^.]+.reads/i,
 "facebook":/facebook.com/i
 };
 var url=document.referrer;

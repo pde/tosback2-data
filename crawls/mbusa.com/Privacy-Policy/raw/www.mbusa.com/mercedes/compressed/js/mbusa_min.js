@@ -7771,8 +7771,8 @@ if(m!=="_blank"){document.location=l
 d.onFragmentLoaded=function(g){mb.global.initCustomFormElements();
 mb.global.checkPlaceholder()
 };
-var a=function(l){var h=new Date("05/13/2012");
-var m=new Date("06/05/2012");
+var a=function(l){var h=new Date("11/02/2012");
+var m=new Date("11/22/2012");
 if(!(Date.parse(b())>=Date.parse(h)&&Date.parse(b())<=Date.parse(m))){if(l.getProperty("section")=="homepage"){var k=document.createElement("script");
 k.setAttribute("type","text/javascript");
 k.setAttribute("src","http://ipinvite.iperceptions.com/Invitations/Javascripts/ip_Layer_Invitation_783.js");
@@ -8729,8 +8729,9 @@ $("#exteriorId").val("");
 $("#wheelId").val("")
 })
 };
-me.launchForm=function(href){if(href.match(/\/[a-zA-Z0-9]+-/)!=null){var url=href.replace(/\/[a-zA-Z0-9]+-/,"/modal$&")
+me.launchForm=function(href){if((href+"/").indexOf("/modal/")==-1){if(href.match(/\/[a-zA-Z0-9]+-/)!=null){var url=href.replace(/\/[a-zA-Z0-9]+-/,"/modal$&")
 }else{var url=href+"/modal"
+}}else{var url=href
 }mb.modal.getContent(url,"type8")
 };
 me.modalFormHijack=function(nodes){mb.logger.log("modal forms hijacked - "+nodes);

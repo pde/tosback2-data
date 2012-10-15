@@ -301,6 +301,16 @@ if (navigator.userAgent.match(/(iphone|ipod|ipad)/i)){
 	did = "2";
 	isMobile = true;	
 }
+var isIOS6 = false;
+if (navigator.userAgent.match(/(iPhone);.*CPU.*OS 6_\d/i))
+{ 
+	isIOS6 = true;
+  	//alert("iOS6 : " + navigator.userAgent )
+}else{
+	//alert("NOT iOS6 : " + navigator.userAgent )
+}
+
+
 if (navigator.userAgent.match(/Android/i)){
 	isAndroid = true;
 }
@@ -341,6 +351,7 @@ thisMovie = function (movieName) {
 	}
 }
 var sendToActionScript = function(thumbNum){
+	//console.log('continuousPlayCounter < continuousPlay ');
 	if(thumbNum == null){
 		thumbNum = 0;
 	}
@@ -349,6 +360,7 @@ var sendToActionScript = function(thumbNum){
 	autoScroll = false;
 	thumbClicked = true;
 	if (isMobile == true){
+		//console.log('sendToActionScript isMobile ' + isMobile);
 		
 		var x = (screenNum * 4)/contentLength;
 		var y = (screenNum * 4)-(contentLength * Math.floor(x));
@@ -362,6 +374,7 @@ var sendToActionScript = function(thumbNum){
 		$('#ndn_video').get(0).poster = getAsset(activePlaylist,thumbNum,'stillFrame');
 		progressSent = [];
 		firstPlayClicked = false;
+		
 		vid.play();
 		//load();
 	}else{
@@ -562,17 +575,18 @@ setNextVideo = function(nextVidId){
 }
 
 setVideoInfo = function(listIndex,amt){
-	traceMsg("autoPlay = " + autoPlay + " & bumperPlayed = " + bumperPlayed + " & isMobile = " + isMobile);
+	//console.log("in setVideoInfo set directly " + amt);
+	
 	if (autoPlay == false && bumperPlayed == false && isMobile != true){
 		thisMovie("flashcontent").changeImage(amt);
 	}else{
 		
 	}
 	if ((autoPlay == false && thumbClicked == false)||(autoPlay == true && isMobile == true)){
-		traceMsg("in setVideoInfo");
+		traceMsg("in setVideoInfo ");
 		if(amt == "plus"){
 			screenNum++;
-		}else{
+		}else if(amt == "minus"){
 			screenNum--;
 		}
 		curVidInfo = listIndex; 
@@ -585,9 +599,19 @@ setVideoInfo = function(listIndex,amt){
 		if(thumbClicked == false){
 			if (isMobile == true){
 				vid = $('#ndn_video').get(0);
+				
 				vid.src = getAsset(activePlaylist,curVidInfo,"src");
-				vid.load();
+				//console.log("isIOS6 :::::::: " + isIOS6);
+				if(isIOS6 == false){
+					//console.log("isIOS6 =  false" + isIOS6);
+					vid.load();
+				}
+				//var posterAddress = getAsset(activePlaylist,curVidInfo,"stillFrame") + '?cachbust=' +  Math.random();
+				//var posterAddress = getAsset(activePlaylist,curVidInfo,"stillFrame");
+				//console.log("posterAddress no buster = " + posterAddress);
+				//vid.poster = posterAddress;
 				vid.poster = getAsset(activePlaylist,curVidInfo,"stillFrame");
+				//console.log("vid.poster = " + vid.poster);
 			}else if (amt != null){
 				//thisMovie("flashcontent").changeImage(amt);
 			}
@@ -643,7 +667,7 @@ setVideoInfo = function(listIndex,amt){
 }
 
 setFirstStill = function(listIndex){
-	traceMsg("in setFirstStill");
+	//console.log("in setFirstStill 002");
 	//$("#ndn_thumbimg"+listIndex,_parent).each(function(i, element) { $(element)[0].style.borderWidth = "2px"; });
 	//$("#ndn_thumbimg"+listIndex,_parent).each(function(i, element) { $(element)[0].style.borderColor = "#990000"; });
 	//$("#ndn_thumbimg"+listIndex,_parent).each(function(i, element) { $(element)[0].style.borderStyle = "solid"; });
@@ -674,11 +698,30 @@ setFirstStill = function(listIndex){
 	if (isMobile == true){
 		traceMsg("isMobile");
 		//vid = document.getElementById("ndn_video");
-		vid = $('#ndn_video',_parent)[0];
-		vid.poster = getAsset(activePlaylist,listIndex,"stillFrame");
+		//vid = $('#ndn_video',_parent)[0];
+		//console.log("in setFirstStill NO call setVideoInfo");
+		//setVideoInfo(listIndex,"nada")
+		
+		/*vid = $('#ndn_video').get(0);
+		//vid.poster = getAsset(activePlaylist,listIndex,"stillFrame");
 		vid.src = getAsset(activePlaylist,listIndex,"src");
-		vid.load();
-		traceMsg('<img src="'+getAsset(activePlaylist,listIndex,"stillFrame")+'">');
+		vid.poster = getAsset(activePlaylist,listIndex,"stillFrame");
+		console.log("in setFirstStill LOAD IMG: 002" + getAsset(activePlaylist,listIndex,"stillFrame"));
+		console.log("in setFirstStill LOAD IMG: 002" + getAsset(activePlaylist,listIndex,"src"));
+		*/
+		//vid.load();
+		
+		/*COMPARE
+		
+		vid = $('#ndn_video').get(0);
+		vid.src = getAsset(activePlaylist,curVidInfo,"src");		
+		vid.poster = getAsset(activePlaylist,curVidInfo,"stillFrame");		
+				//console.log("vid.load(); & isMobile = " + isMobile);
+				//vid.load();
+				
+		
+		*/
+		//traceMsg('<img src="'+getAsset(activePlaylist,listIndex,"stillFrame")+'">');
 	}	//alert(getAsset(activePlaylist,listIndex,"stillFrame"));
 	//thisMovie("flashcontent").sendImgToActionScript(getAsset(activePlaylist,listIndex,"stillFrame"),String(buildPlayArray(0)));
 }
@@ -1082,7 +1125,7 @@ buildPlaylist = function (){
 	thumbContainer.style.top = "0px";
 	thumbContainer.style.zIndex = "0";
 	$(".ndn_inlinePlayerthumb",_parent).each(function(i, element) { $(element)[0].style.float = "left"; });
-	setFirstStill(0);
+	//setFirstStill(0); Moved 10/10/12
 	if (isMobile == true){
 		sendToAutoScroll();
 		thumbContainer.style.top = "-10px";
@@ -1090,6 +1133,7 @@ buildPlaylist = function (){
 	if(lastThumb <= 4){
 		thumbControls.style.visibility = "hidden";
 	}
+	setFirstStill(0);
 }
 
 videoView = function (sendData){
@@ -1254,9 +1298,11 @@ sendToAutoScroll = function(){
 }
 
 autoScrollStart = function (){
+	//console.log('autoScrollStart ');
 	//$(".ndn_thumbScroller").stopTime('autoScroll');	
 	if(lastThumb > 4){
 		$(".ndn_thumbContainer").everyTime(8000, 'autoScroll', function() {
+			//console.log('autoScrollStart TIMER ');
 			scrollDivDown("ndn_thumbScroller",true);														
 		});
 	}

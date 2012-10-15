@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/11/2012 08:04 AM",
+            DATE_IN_USE: "10/15/2012 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -2393,6 +2393,21 @@ img.facet_flyout_close_button {
 
 
 /* -- END content override CNOV-5 -- */
+
+/* -- BEGIN content override CNOV-10 CSS -- */
+
+
+body.locale_fr_CA div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-body .size_facet_category .size_option.wide_box,
+body.locale_en_GB div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-body .size_facet_category .size_option.wide_box {
+	width: 66px;
+}
+
+div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-footer .clearAllButton {
+	display: none !important;
+	visibility: hidden !important;
+}
+
+/* -- END content override CNOV-10 CSS -- */
 
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
@@ -4314,6 +4329,260 @@ if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === t
 </script>
 <!--  END content override CNOV-5 JS -->
 
+<!-- BEGIN content override CNOV-10 JS-->
+<script type="text/javascript">
+if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) && window["navigationService"]) {
+
+navigationService.controller.managers.categoryFacetedSearchManager.util.sizeFlyoutAddScrollIfNecessary = function(){
+	var sizeFacetCategoryContainer = $('size_facet_category_container');
+	if( sizeFacetCategoryContainer.getHeight() > 430){
+		$('size_flyout_body').addClassName('size-facet-scroll-enabled');						    	
+	}
+};
+
+navigationService.controller.managers.categoryFacetedSearchManager.util.facetFlyoutExpandContract  = function(explicitExpand,explicitContract,event){
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+		var $el = Element.extend(this);
+		var elChildren = $el.childElements();
+		var closePanelElem = "";
+		if(!explicitContract && (!$el.hasClassName('flyout_activated') || explicitExpand)){
+		    	var flyoutPanel = null;
+		    	$el.addClassName('flyout_activated');
+		          elChildren.each(function(elChild,i){
+		                if(elChild.hasClassName('facet-invisible-edge')){
+		                      elChild.removeClassName('hideMeOffscreen');
+		                      flyoutPanel = elChild;
+		                }
+		                if(elChild.hasClassName('facetName')){
+		                	var facetTitleArrow = elChild.select('.open-flyout-arrow')[0];
+		                	if(!facetTitleArrow.hasClassName('hideMe')){ 
+		                		facetTitleArrow.addClassName('hideMe');
+		                	}
+		                }
+		          });
+		          
+		          var supportScrolling = $el.id.split('_').indexOf('size')> 0;
+		          if(supportScrolling){
+		        	  categoryFacetedSearchManager.util.sizeFlyoutAddScrollIfNecessary();
+		          }
+		          categoryFacetedSearchManager.util.flyoutPositionInBrowserWindow($el,flyoutPanel);						          
+		    } else {
+		          elChildren.each(function(elChild,i){
+		                $el.removeClassName('flyout_activated');
+		                if(elChild.hasClassName('facet-invisible-edge')){
+		                      elChild.addClassName('hideMeOffscreen');
+		                }
+		                if(elChild.hasClassName('facetName')){
+		                	var facetTitleArrow = elChild.select('.open-flyout-arrow')[0];
+		                	if(facetTitleArrow.hasClassName('hideMe')){ 
+		                		facetTitleArrow.removeClassName('hideMe');
+		                	}
+		                }
+		          });
+		    }		    
+		};
+
+navigationService.controller.managers.categoryFacetedSearchManager.util.facetFlyoutExpandContractIPad =  function(event){
+		    var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+		    var $el = Element.extend(this);
+		    var elChildren = $el.childElements();
+		    var closePanelElem = "";
+
+		    if(!$el.hasClassName('flyout_activated')){
+		    	var flyoutPanel = null;
+		    	$el.addClassName('flyout_activated');
+		          elChildren.each(function(elChild,i){
+		                if(elChild.hasClassName('facet-invisible-edge')){
+		                      elChild.removeClassName('hideMeOffscreen');
+		                      flyoutPanel = elChild;
+		                }
+		                if(elChild.hasClassName('facetName')){
+		                	var facetTitleArrow = elChild.select('.open-flyout-arrow')[0];
+		                	if(!facetTitleArrow.hasClassName('hideMe')){ 
+		                		facetTitleArrow.addClassName('hideMe');
+		                	}
+		                }
+		          });
+
+		          var supportScrolling = $el.id.split('_').indexOf('size')> 0;
+		          if(supportScrolling){
+		        	  categoryFacetedSearchManager.util.sizeFlyoutAddScrollIfNecessary();
+		          }
+		          categoryFacetedSearchManager.util.flyoutPositionInBrowserWindow($el,flyoutPanel);						          
+		    } else {
+		          elChildren.each(function(elChild,i){
+		                $el.removeClassName('flyout_activated');
+		                if(elChild.hasClassName('facet-invisible-edge')){
+		                      elChild.addClassName('hideMeOffscreen');
+		                }
+		                if(elChild.hasClassName('facetName')){
+		                	var facetTitleArrow = elChild.select('.open-flyout-arrow')[0];
+		                	if(facetTitleArrow.hasClassName('hideMe')){ 
+		                		facetTitleArrow.removeClassName('hideMe');
+		                	}
+		                }
+		          });
+		    }		    
+		};
+
+navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.cacheFacetOptionElements = function(facet) {
+							var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+							var facetManager = categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager;
+							var model = categoryFacetedSearchManager.model;
+							var facetModel = facetManager.model;
+							var view = facetManager.view;
+							var cache = facetModel.cache;
+							var constants = categoryFacetedSearchManager.constants;
+							
+							var sizeFlyoutBody = $(cache['SIZE_FLYOUT_BODY']);
+							cache['SIZE_FLYOUT_BODY'] = sizeFlyoutBody;
+							var sizeFacetOptionElements = sizeFlyoutBody.select('li.size_option label input');
+							var sizeFacetOptionElementsCache = cache['FACET_OPTION_ELEMENTS'];
+							
+							var element = null;
+							for(var i=0, sizeFacetOptionsSize = sizeFacetOptionElements.length; i<sizeFacetOptionsSize; i++) {
+								element = sizeFacetOptionElements[i];
+								if(element.value != null && element.value.length > 0) {
+									sizeFacetOptionElementsCache.set(element.value, element);
+								}
+							}
+
+							var flyout = $(cache['SIZE_FLYOUT']);
+							cache['SIZE_FLYOUT'] = flyout;
+							
+							var isIpad = navigationService.productGridHelper.model.isIpad;  
+							if(isIpad){ //remove the hideOffScreen lass from the close element
+								$('facet_size').observe('click',
+										function(event) {
+											var target = event.srcElement || event.target; 
+											if (target.id == 'facet_size' ||
+												target.id == 'facet_size_flyout' ||
+												target.id == 'size_name' ||
+												target.id == 'size_instr_copy') {
+												categoryFacetedSearchManager.util.facetFlyoutExpandContractIPad.call(flyout);
+												event.stop();
+											}
+										}
+									);					        
+							} else {
+								flyout.observe('mouseenter',  categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
+								$('size_instr_copy').observe('focus',categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
+								$('size_close_flyout').observe('focus', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+					        }
+							flyout.observe('mouseleave', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+							var flyout_close = $(cache['SIZE_FLYOUT_CLOSE_BUTTON']); // mouse leave facet_flyout_close_button
+							flyout_close.observe('click', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+							
+							var sizeVariants = $(cache['VARIANT_PANEL']);
+							cache['VARIANT_PANEL'] = sizeVariants;
+							var variantCheckBoxes = sizeVariants.select('input');
+							cache['VARIANT_BOXES'] = variantCheckBoxes;
+							
+							cache['FLYOUT_CLEAR_ALL_BTN'] = $$('div#flyout_size div.flyout-footer span.clearAllButton')[0];
+							cache['SIZE_FLYOUT_PANEL'] = $(cache['SIZE_FLYOUT_PANEL']);
+							cache['SIZE_FACET_CATEGORY_ROWS'] = $$('.size_facet_category');
+							facetModel.selectedVariants = view.setSelectedVariants();
+
+							// grab all sfc containers
+							// fixes issue to hide sfc if no variant 
+							// matches selected default variant on initial load
+							cache['SIZE_FACET_CATEGORY_ROWS'].each(function(sfcRow, idx){
+								var categoryDimensions = sfcRow.select('.category_dimension');
+								var variantRows = null, variantPartition = null;
+								
+								if(categoryDimensions.length > 1){
+									categoryDimensions.each(function(sfcDim){
+										variantRows = sfcDim.select('.variant_container');
+										variantPartition = variantRows.partition(function(vRow){
+											return vRow.hasClassName('hideMe');
+										});
+										
+										if (variantRows.length == variantPartition[0].length){
+											sfcDim.addClassName('hideMe');
+										}
+									});
+								} else {
+									variantRows = sfcRow.select('.variant_container');
+									variantPartition = variantRows.partition(function(vRow){
+										return vRow.hasClassName('hideMe');
+									});
+									
+									if (variantRows.length == variantPartition[0].length){
+										sfcRow.addClassName('hideMe');
+									}
+								}
+							});
+							
+							categoryFacetedSearchManager.view.fixSizeFacetVariantName();
+							
+							var leftRailSelectionContainer = $(facet.searchFacetId +"_current_selection");
+							if(leftRailSelectionContainer){
+								var leftRailListContainer = leftRailSelectionContainer.select('ul.current-selection-list')[0];
+								var clearAllBtn = leftRailSelectionContainer.select('span.clearAllButton')[0];
+								
+								Element.extend(leftRailListContainer);
+								
+								cache['LEFT_RAIL_CONTAINER'] = leftRailSelectionContainer;
+								cache['LEFT_RAIL_LIST_CONTAINER'] = leftRailListContainer;
+								cache['LEFT_RAIL_CLEAR_ALL_BTN'] = clearAllBtn;
+								
+								var leftRailSelectedOptions = leftRailListContainer.select('li.current-selection-list-item');
+								var selectedSize = leftRailSelectedOptions.length;
+								var selectedOptionsCache = cache['FACET_OPTION_SELECTED_ELEMENTS'];
+								var selectedOption = null, sfvId = '';
+								for(var i=0; i<selectedSize; i++) {
+									selectedOption = leftRailSelectedOptions[i];
+									sfvId = selectedOption.getAttribute('facetValueId');
+									selectedOptionsCache.set(sfvId, selectedOption);
+								}
+							}
+							  facetManager.model.selectedOptionIds = facetManager.view.getSelectedOptionIds();
+							  
+							  var selectedOptions = facetManager.model.selectedOptions;
+							  facetManager.model.hasSelectedOptions = selectedOptions.size() > 0 && selectedOptions.join('').length > 0;
+							  facetManager.view.setSelectedMaster();
+							  
+							facetManager.model.isCached = true;
+						};
+}
+</script>
+<!-- END content override CNOV-10 JS-->
+
+<!-- BEGIN content override CNOV-9 JS -->
+<script type="text/javascript">
+function swapSignInFormTarget() {
+	var signInFormTargetLocation = location.search;
+		if (signInFormTargetLocation.indexOf('.jsp')) {
+			 var currentSignInTargetURL = $('existing_targetURL').value;
+			 var currentRegisterTargetURL = $('new_targetURL').value;
+			 if (currentSignInTargetURL.indexOf('www') > -1) {
+			 } else {
+				 if (currentSignInTargetURL && currentSignInTargetURL.indexOf('.jsp') > -1) {
+					 var newSignInTargetURL = 'http://www.gap.com' + currentSignInTargetURL;
+				 } else {
+					 var newSignInTargetURL = '/';
+				 }
+				 $('existing_targetURL').value = newSignInTargetURL;
+			 }
+			 if (currentRegisterTargetURL.indexOf('www') > -1) {
+			 } else {
+				 if (currentRegisterTargetURL && currentRegisterTargetURL.indexOf('.jsp') > -1) {
+					 var newRegisterTargetURL = 'http://www.gap.com' + currentRegisterTargetURL;
+				 } else {
+					 var newRegisterTargetURL = '/';
+				 }
+				 $('new_targetURL').value = newRegisterTargetURL;
+			 }
+		}
+}
+	if (location.pathname =='/profile/sign_in.do') {
+		document.observe("dom:loaded",function() {
+			swapSignInFormTarget();																 
+		});
+}
+</script>
+<!-- END content override CNOV-9 JS -->
+
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
 
 
@@ -4783,7 +5052,7 @@ if( window['siteNavigation'] ) {
 
 
 <!-- container 8 -->
-<!-- BEGIN Content Item File: /content/0005/658/759/cn5658759.html -->
+<!-- BEGIN Content Item File: /content/0005/673/404/cn5673404.html -->
 
 <script type="text/javascript">
 
@@ -5442,8 +5711,101 @@ Event.observe(document, "dom:loaded", function () {
 				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],											
 				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],											
 				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],											
-				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!']										
-					
+				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!'],
+				'912942002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19745/outfit/gp-otf-out19745odv01.jpg','Boys Only'],														
+				'762719002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22758/outfit/gp-otf-out22758odv01.jpg','Jump for Jeans'],														
+				'912282012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20869/outfit/gp-otf-out20869odv01.jpg','A Shot of Pink'],														
+				'914812022':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21104/outfit/gp-otf-out21104odv01.jpg','Splash of Lime'],														
+				'915116002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20632/outfit/gp-otf-out20632odv01.jpg','A Dot Here, A Bow There'],														
+				'240373002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16691/outfit/gp-otf-out16691odv01.jpg','Four-Pocket Jacket + Cable Knit Sweater + 1969 Straight Fit Jeans'],														
+				'239545012':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14189/outfit/gp-otf-out14189odv01.jpg','Marled Striped T + 1969 Slim Fit Jeans + Cable Knit Beanie'],														
+				'302434022':['/Asset_Archive/GPWeb/Assets/Outfit/148/OUT14806/outfit/gp-otf-out14806odv01.jpg','Modern Oxford Shirt + Marled Pocket T + 1969 Slim Fit Jeans'],														
+				'302362022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13939/outfit/gp-otf-out13939odv01.jpg','Brushed Fleece Cardigan + Lived-In Wash Plaid Shirt + 1969 Slim Fit Jeans'],														
+				'911839012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13938/outfit/gp-otf-out13938odv01.jpg','Quilted Puffer Vest + Rugby Sweater + 1969 five-pocket cord'],														
+				'321835042':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13940/outfit/gp-otf-out13940odv01.jpg','Brushed Fleece Hooded Henley + Flannel Plaid Shirt + 1969 Selvage Straight Jeans'],														
+				'239693022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13943/outfit/gp-otf-out13943odv01.jpg','Plaited Waffle Crewneck + Lived-In Slim Khaki + Cable Knit Beanie'],														
+				'240158002':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13937/outfit/gp-otf-out13937odv01.jpg','Admiral Blazer + Merino Cardigan + Non-Iron Shirt + 1969 Selvage Slim Fit Jeans'],														
+				'302452012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13936/outfit/gp-otf-out13936odv01.jpg','Non-Iron Shirt + Tweed Tie + Lived-In Moleskin Pants'],														
+				'244874032':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13935/outfit/gp-otf-out13935odv01.jpg','Rugby Sweater + Lived-In Wash Plaid Shirt + 1969 Selvage Authentic Skinny Fit Jeans '],														
+				'279596002':['/Asset_Archive/GPWeb/Assets/Outfit/161/OUT16195/outfit/gp-otf-out16195odv01.jpg','The Twill Parka & Striped Sweater'],														
+				'218347002':['/Asset_Archive/GPWeb/Assets/Outfit/173/OUT17304/outfit/gp-otf-out17304odv01.jpg','The Leather Moto Jacket & Belted Dress'],														
+				'249627012':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17856/outfit/gp-otf-out17856odv01.jpg','The Dot Pullover & Animal Print Scarf'],														
+				'249631002':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17860/outfit/gp-otf-out17860odv01.jpg','The Oxford Shirt & 1969 Always Skinny Cord'],														
+				'279629002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19778/outfit/gp-otf-out19778odv01.jpg','The Printed Wrap Dress'],														
+				'914690002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20858/outfit/gp-otf-out20858odv01.jpg','Suit Up, Superman!'],														
+				'914731002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21060/outfit/gp-otf-out21060odv01.jpg','Biker Boy'],														
+				'297137002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21070/outfit/gp-otf-out21070odv01.jpg','Clubhouse Prep'],														
+				'914725002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21071/outfit/gp-otf-out21071odv01.jpg','Get Your Kicks!'],														
+				'148781002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20621/outfit/gp-otf-out20621odv01.jpg','A League of His Own'],														
+				'149542032':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20622/outfit/gp-otf-out20622odv01.jpg','Varsity Cool'],														
+				'148784012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20623/outfit/gp-otf-out20623odv01.jpg','Class Act'],														
+				'149651002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20212/outfit/gp-otf-out20212odv01.jpg','Anchors Our Way'],														
+				'149622012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20213/outfit/gp-otf-out20213odv01.jpg','Ahoy, Sea Captain!'],														
+				'914698032':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21066/outfit/gp-otf-out21066odv01.jpg','Cobalt + Cable'],														
+				'914699002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Orange + Stripes'],														
+				'183847002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20862/outfit/gp-otf-out20862odv01.jpg','Forest Green + Cable'],														
+				'183844002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20863/outfit/gp-otf-out20863odv01.jpg','Khaki + Leather'],														
+				'915035002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21063/outfit/gp-otf-out21063odv01.jpg','Waiting Studio to upload &  Copy to name'],														
+				'914688002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20860/outfit/gp-otf-out20860odv01.jpg','Waiting Studio to upload &  Copy to name'],														
+				'183852002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21062/outfit/gp-otf-out21062odv01.jpg','Warm, Warmer, Warmest!'],														
+				'181106012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20617/outfit/gp-otf-out20617odv01.jpg','Uptown Downtown'],														
+				'181127012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20618/outfit/gp-otf-out20618odv01.jpg','See You at the Show'],														
+				'180713002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20619/outfit/gp-otf-out20619odv01.jpg','Ready, Set, Style!'],														
+				'912919002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20851/outfit/gp-otf-out20851odv01.jpg','Desert Sands'],														
+				'913279002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20856/outfit/gp-otf-out20856odv01.jpg','Desert, First'],														
+				'914549002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21072/outfit/gp-otf-out21072odv01.jpg','Desert Sunset'],														
+				'912924002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21065/outfit/gp-otf-out21065odv01.jpg','Cozy + Coral'],														
+				'914560002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20857/outfit/gp-otf-out20857odv01.jpg','Spotted: Sweaters Everywhere!'],														
+				'914566002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20865/outfit/gp-otf-out20865odv01.jpg','A Little Bit Mod'],														
+				'912934002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21057/outfit/gp-otf-out21057odv01.jpg','Fit to be Tied'],														
+				'914560012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21058/outfit/gp-otf-out21058odv01.jpg','A Spot of Charm'],														
+				'912932002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21059/outfit/gp-otf-out21059odv01.jpg','Style Cycle'],														
+				'181204002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19910/outfit/gp-otf-out19910odv01.jpg','Retro Fitted'],														
+				'180574012':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19995/outfit/gp-otf-out19995odv01.jpg','Stir it Up'],														
+				'180577002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19996/outfit/gp-otf-out19996odv01.jpg','Precious Jewel Tones'],														
+				'914558002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Hot Pink + Fur'],														
+				'266967022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21067/outfit/gp-otf-out21067odv01.jpg','Sparkle + Hearts'],														
+				'914558022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21068/outfit/gp-otf-out21068odv01.jpg','White + Stripes'],														
+				'294597002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20859/outfit/gp-otf-out20859odv01.jpg','Waiting Studio to upload &  Copy to name'],														
+				'294553002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21064/outfit/gp-otf-out21064odv01.jpg','Waiting Studio to upload &  Copy to name'],														
+				'180780002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21061/outfit/gp-otf-out21061odv01.jpg','Warm, Warmer, Warmest!'],														
+				'349771002':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20450/outfit/gp-otf-out20450odv01.jpg','The Twill Parka & Super Skinny Pant'],														
+				'914029022':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20453/outfit/gp-otf-out20453odv01.jpg','The Cashmere Cardi & Drop-Shoulder Shirtdress'],														
+				'245334052':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20452/outfit/gp-otf-out20452odv01.jpg','The Patterned Sweater & Biker Boot'],														
+				'349771012':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20451/outfit/gp-otf-out20451odv01.jpg','The Military Cape & Striped Pullover'],														
+				'349771022':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19171/outfit/gp-otf-out19171odv01.jpg','The Tweed Moto & Plaid Scarf'],														
+				'244966012':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15825/outfit/gp-otf-out15825odv01.jpg','The Quilted Leather Jacket & Fluid Shirtdress'],														
+				'246470002':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15826/outfit/gp-otf-out15826odv01.jpg','The Turtleneck Sweater & Slim Cropped Pant'],														
+				'914476052':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20607/outfit/gp-otf-out20607odv01.jpg','Bright Green + Graphics'],														
+				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],														
+				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],														
+				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],														
+				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!'],														
+				'243974092':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16234/outfit/gp-otf-out16234odv01.jpg','The Raglan Cardigan & Print Pocket Top'],														
+				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift'],														
+				'240733032':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22830/outfit/gp-otf-out22830odv01.jpg','The Fedora & Striped Sweater Dress'],														
+				'245930002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22829/outfit/gp-otf-out22829odv01.jpg','The Animal Print Scarf & Herringbone Blazer'],														
+				'322428022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22836/outfit/gp-otf-out22836odv01.jpg','The Twill Parka & Biker Boot'],														
+				'243718002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22867/outfit/gp-otf-out22867odv01.jpg','The Washed Leather Jacket & Dot Pullover'],														
+				'911668002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22815/outfit/gp-otf-out22815odv01.jpg','The Chambray Shirt & Striped Henley'],														
+				'243740002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22864/outfit/gp-otf-out22864odv01.jpg','The Academy Blazer & 1969 Sexy Boyfriend Jean'],														
+				'243964042':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22818/outfit/gp-otf-out22818odv01.jpg','The Houndstooth Sweater & 1969 Legging Cord'],														
+				'243964142':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22819/outfit/gp-otf-out22819odv01.jpg','The Wool Puffer & Lace-Up Bootie'],														
+				'245792012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22858/outfit/gp-otf-out22858odv01.jpg','The Striped Cowlneck & 1969 Always Skinny Jean'],														
+				'322428012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22796/outfit/gp-otf-out22796odv01.jpg','The Twill Parka & Arch Logo Sweater'],														
+				'245485002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22797/outfit/gp-otf-out22797odv01.jpg','The 1969 Western Shirt & Wool Mini'],														
+				'914035002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22893/outfit/gp-otf-out22893odv01.jpg','The Cashmere Striped Sweater & Fluid Blouson Dress'],														
+				'252416112':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22798/outfit/gp-otf-out22798odv01.jpg','Puffer Vest & 1969 Legging Jean'],														
+				'914028012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22821/outfit/gp-otf-out22821odv01.jpg','The Printed Dress & Opaque Tight'],														
+				'243974032':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22804/outfit/gp-otf-out22804odv01.jpg','The Military Coat & 1969 Skinny Boot Cord'],														
+				'243964122':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22859/outfit/gp-otf-out22859odv01.jpg','The Diamond Cable Sweater & Canvas Loafer'],														
+				'322673002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22866/outfit/gp-otf-out22866odv01.jpg','The Eversoft Striped Sweater & Ballet Flat'],														
+				'153134052':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22868/outfit/gp-otf-out22868odv01.jpg','The Eversoft Turtleneck & 1969 Real Straight Jean'],														
+				'245934002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22817/outfit/gp-otf-out22817odv01.jpg','The Classic Pea Coat & Striped Pullover'],														
+				'245747002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22822/outfit/gp-otf-out22822odv01.jpg','The Diamond Cable Sweater & Shirtdress'],														
+				'912292022':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22214/outfit/gp-otf-out22214odv01.jpg','Sweatshirt Chic'],														
+				'152402002':['/Asset_Archive/GPWeb/Assets/Outfit/223/OUT22332/outfit/gp-otf-out22332odv01.jpg','Puff Love'],														
+				'914350002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20605/outfit/gp-otf-out20605odv01.jpg','Get Down']															
 		},
 
 
@@ -5571,16 +5933,124 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 
 			displayDeptFacet : false,
 			deptFacetId : null,
+			
+			// Women categories, hidden dept facet
+			womenCategoriesHideFacet : $A([
+				'87243',
+			'']),
+			// Men categories, hidden dept facet
+			menCategoriesHideFacet : $A([
+			'']),
+
+			
+			// Women categories, visible dept facet
+			womenCategoriesShowFacet : $A([
+			'']),
+			// Men categories, visible dept facet
+			menCategoriesShowFacet : $A([
+			'']),
 
 			// Toddler/Infant Girl categories, hidden dept facet
 			tgirlCategoriesHideFacet : $A([
 				'76918', // Toddler Sleepwear
 				'76748', // Infant Sleepwear
+				'81111',
+				'70949',
+				'63863',
+				'83393',
+				'17846',
+				'70108',
+				'84668',
+				'84479',
+				'82562',
+				'82560',
+				'80374',
+				'80378',
+				'80384',
+				'14249',
+				'8772',
+				'7190',
+				'73590',
+				'7189',
+				'7191',
+				'7206',
+				'80900',
+				'76748',
+				'84335',
+				'86607',
+				'81587',
+				'50711',
+				'70949',
+				'63863',
+				'83393',
+				'17846',
+				'76918',
+				'55768',
+				'65263',
+				'65208',
+				'81577',
+				'35361',
+				'6465',
+				'84667',
+				'84665',
+				'84666',
+				'87444',
+				'8781',
+				'7190',
+				'83390',
+
 			'']),
 			// Toddler/Infant Boy categories, hidden dept facet
 			tboyCategoriesHideFacet : $A([
 				'76759', // Toddler Sleapwear
 				'76754', // Infant Sleepwear
+				'65281',
+				'65283',
+				'85104',
+				'81112',
+				'85064',
+				'70127',
+				'63897',
+				'77431',
+				'17850',
+				'70173',
+				'84824',
+				'84491',
+				'82572',
+				'82569',
+				'80386',
+				'80390',
+				'80396',
+				'42558',
+				'8788',
+				'7142',
+				'74004',
+				'7139',
+				'78580',
+				'7143',
+				'7185',
+				'80899',
+				'76754',
+				'84336',
+				'86610',
+				'81589',
+				'55773',
+				'65261',
+				'70127',
+				'63897',
+				'77431',
+				'17850',
+				'76759',
+				'50728',
+				'65236',
+				'84823',
+				'8777',
+				'83376',
+				'85214',
+				'85213',
+				'35792',
+				'6395',
+				'6392',
 			'']),
 
 			
@@ -5591,12 +6061,27 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 			tboyCategoriesShowFacet : $A([
 			'']),
 
-
-			processCategoryLists : function() {
+				processCategoryLists : function() {
 				var findIterator = function(i){
 					return (i == gidLib.getQuerystringParam('cid') ? true : false);
 				};
 
+				if (this.womenCategoriesHideFacet.find(findIterator)) {
+					this.deptFacetId = "136";
+				}
+				if (this.womenCategoriesShowFacet.find(findIterator)) {
+					this.deptFacetId = "136";
+					this.displayDeptFacet = true;
+				}
+
+				if (this.menCategoriesHideFacet.find(findIterator)) {
+					this.deptFacetId = "75";
+				}
+				if (this.menCategoriesShowFacet.find(findIterator)) {
+					this.deptFacetId = "75";
+					this.displayDeptFacet = true;
+				}
+				
 				if (this.tgirlCategoriesHideFacet.find(findIterator)) {
 					this.deptFacetId = "165";
 				}
@@ -5660,7 +6145,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 
 
 
-<!-- END Content Item File: /content/0005/658/759/cn5658759.html -->
+<!-- END Content Item File: /content/0005/673/404/cn5673404.html -->
 
 
 
@@ -7067,209 +7552,13 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/604/399/cn5604399.html -->
-<div id="contentItemContainer10000395" class="5604399" >
+    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
+<div id="contentItemContainer10000395" class="4281898" >
 
-<style type="text/css">
-#globalBanner {
-	width: 581px;
-	height: 62px;
-	position: relative;
-	display: block;
-	font-size: 10pt;
-	z-index: 50;
-}
-
-#globalBanner a:link, 
-#globalBanner a:hover,
-#globalBanner a:visited, 
-#globalBanner a:active
-{
-	color: #000000;
-	text-decoration: none;
-}
-
-.detailsLink {
-	font-size: 8pt; 
-	text-decoration: underline;
-}
-
-.promoCode, 
-.promoPercent 
-{
-	font-weight: bold;
-}
-
-.promoCode {
-	background-color: black;
-	color: white;
-	padding: 2px 6px;
-	font-size: 11px;
-}
-
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerActivator {
-	margin-top: 6px;
-	display: inline-block;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
-}
-</style>
-
-<div id="globalBanner">
-
-	<!-- Global Banner Text -->
-	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/604/399/assets/101112_ALL_25off_GB_US.png" alt="enjoy 25% off your purchase. online only. enter GAPCHEER at checkout. have a card? 30% off* your purchase when you use your gapcard, bananacard and old navy card. in stores and online. enter GCTHANKS at checkout. ends 10/4. details" usemap="#gbMap" />
-		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="266,9,430,59" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:300});">
-		</map>
-	</div><!-- /Global Banner Text -->
-
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/604/399/assets/101112_ALL_25off_DISR_US.jpg" alt="enjoy 25% off your purchase. online only. enter GAPCHEER at checkout. have a card? 30% off* your purchase when you use your gapcard, bananacard and old navy card. in stores and online. enter GCTHANKS at checkout. ends 10/4. details" usemap="#disruptorMap" />
-		<map name="disruptorMap">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/604/399/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
-		</map>
-	</div><!-- /Global Banner Disruptor -->
-
-</div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('101112_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/604/399/cn5604399.html -->
+<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9536,7 +9825,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5604399,5569434,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,4281898,5569434,5106701,5451526,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

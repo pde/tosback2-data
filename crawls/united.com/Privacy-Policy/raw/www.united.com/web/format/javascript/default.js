@@ -846,3 +846,10 @@ fixAccountPageProgressBar = function () {
 }
 AddEventHandlerElement(window, 'load', fixAccountPageProgressBar);
 
+fixResMenu = function () {
+    var objElement = GetElement("ctl00_HyperLink1");
+    if (objElement != null) {
+        ShowDiv('', 'ctl00_HyperLink1');
+    }
+}
+AddEventHandlerElement(window, 'load', fixResMenu);

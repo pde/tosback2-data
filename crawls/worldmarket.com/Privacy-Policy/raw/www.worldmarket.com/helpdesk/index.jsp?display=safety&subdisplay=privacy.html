@@ -94,16 +94,22 @@
 <script src="../../cdn.optimizely.com/js/66336030.js"></script>
 
 <script>
-var netuserip = jQuery.cookie("myip");
-
-if (null===window.netuserip) {
-	window.netuserip = "n/a";
-	try{
-		jQuery.ajax({url: "http://api.hostip.info/get_json.php"}).done(function (msg) {window.netuserip=msg.ip;})
-	} catch (e) {
+(function (c){
+	var setC = function (s) {
+		jQuery.cookie("myip", s, { path: "/"});
+		window.netuserip = s;
 	}
-	jQuery.cookie("myip", window.netuserip, { path: "/"}); 
-}
+	if (null===c){
+		try{
+			jQuery.ajax({async: false, dataType: "json",url: "http://api.hostip.info/get_json.php"}).done(function (msg) {setC(msg.ip);})
+		} catch (e) {
+			setC("n/a"); 
+			console.log(e)
+		}
+	} else {
+		window.netuserip = c;
+	}
+})(jQuery.cookie("myip"))
 
 </script>
 
@@ -1053,7 +1059,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "4419261"
+  return "9891328"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>

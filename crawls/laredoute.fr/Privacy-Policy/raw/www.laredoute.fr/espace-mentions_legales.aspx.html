@@ -290,7 +290,7 @@ div.price-information a.AlsoSoldBy {    display: block;}
 </div>
 <script type="text/javascript" src="../media.laredoute.fr/1024/projets/header2012/redoute/js/generate_layer_v03.js%3FcacheFR=100812.170459"></script>
 <script type="text/javascript">
-var layerVersion = 20121008;
+var layerVersion = 20121011;
 var IsRenfort = false;
 var navpf = navigator.platform;
 var navcn = navigator.appCodeName;
@@ -897,6 +897,7 @@ function init_lastSeen(){
 	var myArticles = "<div id='lastSeenArticles'><div class='bloc-title'><span class='title'>Mes derniers articles vus</span></div><ul class='lastProducts tab_content'>";
 	var imgProducts = new Array();
 	var linkProducts = new Array();
+	var cidProduct = new Array();
 	
 	if(value_PVPR != undefined && value_PVPR != "") 
 	{
@@ -909,13 +910,15 @@ function init_lastSeen(){
 			var infoProduits = produits[i].split(":");
 			for(var j=0;j<infoProduits.length;j++)
 			{
+				cidProduct[i]=infoProduits[0];
 				if(checkImg.test(infoProduits[j]) == true)	imgProducts[i] = infoProduits[j];
 				if(infoProduits[j].length > 8 && checkImg.test(infoProduits[j])==false ) linkProducts[i] = infoProduits[j];
 			}
 		}
 		for(var k=0;k<imgProducts.length;k++)
 		{
-			var Img = generateMillenaPictureURL(imgProducts[k]);
+			if(imgProducts[k].split("-")[0] == cidProduct[k]) var Img = generateMillenaPictureURL(imgProducts[k]);
+			else var Img = generateMarketPlacePictureURL(imgProducts[k]);
 			(k == 9) ? myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"' id='lastProduct'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>"	: myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>";
 		}
 		myArticles += "</ul><span class='btnDelete'><a href='javascript:removeLastSeenProducts();'>Effacer mes articles vus</a></span></div>";
@@ -924,7 +927,7 @@ function init_lastSeen(){
 		$j('div#wrapper form#aspnetForm div#lastSeenArticles').css('display','block');
 		
 	}
-	checkImages();
+	//checkImages();
 }
 function liProductOn(liOn)
 {
@@ -1492,7 +1495,7 @@ div#layerShoeStyle p.title {font-family:"DinMedium", Arial; font-size:20px}
     
         
     
-    <!--SessionID=wdt30e2rl2h0mp3jmzsxz2f5-->
+    <!--SessionID=pzvqxhvxaydum555o2n45w55-->
     
 
 
@@ -1660,7 +1663,7 @@ s.prop56 = Omniture_FP_sprop56;
 }
 s.pageName="FR:RE:AUTRE:staticpages/Content-Page_new.aspx?pagename=mentions_legales"
 s.channel="AUTRE"
-s.server="MISDC2WEBPR23"
+s.server="MISDC1WEBPR23"
 
 var Omniture_CustNmbr_sprop10 =GetSubCookieValue('M.R.User','CustNmbr')
 if(Omniture_CustNmbr_sprop10!=null && Omniture_CustNmbr_sprop10!='null' && Omniture_CustNmbr_sprop10!='' ) { 

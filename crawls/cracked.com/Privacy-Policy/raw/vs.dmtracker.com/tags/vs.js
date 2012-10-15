@@ -12,7 +12,7 @@ _JT.log="1";
 _JT.site=new Array();
 _JT.site['sensor']='vs.dmtracker.com/images/zig.gif';
 _JT.site['lt']=0;
-_JT.site['sensor2']='vs.dmtracker.com/images/zig.gif';
+_JT.site['sensor2']='extended.dmtracker.com/images/zig.gif';
 
 //DM Extended functions
 //By Aakshi Sehdave (Omniture)

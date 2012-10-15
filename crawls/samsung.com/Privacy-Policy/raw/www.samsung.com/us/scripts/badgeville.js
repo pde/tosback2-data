@@ -598,51 +598,52 @@ function onloadBadgevilleCreds() {
 function giveBadgevilleCredit(verb,category,timespent) {
     // If BV player is already set, proceed with the credit.  If not, bind the credit to after set player.
     if (Badgeville.Objects.is(Badgeville.Settings.player, Badgeville.Objects.PLAYER)) {
-        giveBadgevilleCreditInternal(verb,category,timespent);
+        giveBadgevilleCreditInternal();
     } else {
-        Badgeville.bind( 'afterSetPlayer', giveBadgevilleCreditInternal(verb,category,timespent));
+        Badgeville.bind( 'afterSetPlayer', giveBadgevilleCreditInternal);
+    }
+
+    function giveBadgevilleCreditInternal() {
+
+
+            if (verb == null || verb == '') 
+                return;
+
+            if(Badgeville.Settings.player == null) 
+                return;
+            if (typeof(Badgeville.Settings.player.admin) != 'undefined' && Badgeville.Settings.player.admin == true) {
+                return;
+            }
+
+            if (verb == 'pageread') 
+                badgev_params.enoughtimeonsite = 'true';
+
+            if (category) 
+                badgev_params.category = category;
+
+            if (timespent)
+                badgev_params.timespent = timespent;
+
+            var paramObject = new Object();
+
+            paramObject['verb'] = verb;
+
+            for (x in badgev_params) {
+                if (badgev_params[x] != '') {   
+                    paramObject[x] = badgev_params[x];
+                }
+            }
+
+            // for (x in paramObject) {
+            //  alert('valid param ' + x + ' is ' + paramObject[x]);
+            // }
+
+            Badgeville.credit(paramObject);   // only pass in non-empty parameters
+
     }
 
 }
 
-function giveBadgevilleCreditInternal(verb,category,timespent) {
-	
-
-		if (verb == null || verb == '') 
-			return;
-		
-		if(Badgeville.Settings.player == null) 
-			return;
-		if (typeof(Badgeville.Settings.player.admin) != 'undefined' && Badgeville.Settings.player.admin == true) {
-			return;
-		}
-	
-		if (verb == 'pageread') 
-			badgev_params.enoughtimeonsite = 'true';
-			
-		if (category) 
-			badgev_params.category = category;
-		
-		if (timespent)
-			badgev_params.timespent = timespent;
-		
-		var paramObject = new Object();
-		
-		paramObject['verb'] = verb;
-		
-		for (x in badgev_params) {
-			if (badgev_params[x] != '') {   
-				paramObject[x] = badgev_params[x];
-			}
-		}
-		
-		// for (x in paramObject) {
-		//	alert('valid param ' + x + ' is ' + paramObject[x]);
-		// }
-		
-		Badgeville.credit(paramObject);   // only pass in non-empty parameters
-
-}
 
 
 //changes href attribute of tooltip link to stop page refresh

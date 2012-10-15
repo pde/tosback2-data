@@ -521,7 +521,6 @@ siNav.load({
 	],
 	"video" : [
 		{ "u": "/specials/futuregamechangers/?eref=sinav",			"l":"Future Game Changers" },
-		{ "u": "/behindthemic/?eref=sinav",			"l":"Behind The Mic" },
 		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
 		{ "u": "/specials/underdogs/?eref=sinav",			"l":"Underdogs" },
 		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }

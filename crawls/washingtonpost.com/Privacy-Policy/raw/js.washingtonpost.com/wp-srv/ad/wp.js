@@ -238,8 +238,30 @@
       tempcase.where += 'refresh';
     }
     
-    if(/washingtonpost\.com/.test(tempcase.where) && tempcase.what === 'flex_bb_hp' && window.jQuery){
-      $('li.entertainment, li.lifestyle', '#main-nav').hover(function(){$('#eyeDiv').css({left: '-9999px'});}, function(){$('#eyeDiv').css({left: '0px'});});
+    if(/washingtonpost\.com/.test(tempcase.where) && window.jQuery){
+      if(tempcase.what === 'flex_bb_hp'){
+        $(function(){
+          var $target = $('#eyeDiv');
+          if($target.length){
+            $('li.entertainment, li.lifestyle', '#main-nav').hover(function(){
+              $target.css({left: '-9999px'});
+            }, function(){
+              $target.css({left: '0px'});
+            });
+          }
+        });
+      } else if(tempcase.what === 'pushdown'){
+        $(function(){
+          var $target = $('div.prWrap[id^="prf"]');
+          if($target.length){
+            $('#main-nav>li:not(.jobs)').hover(function(){
+              $target.hide();
+            }, function(){
+              $target.show();
+            });
+          }
+        });
+      }
     }
 
     //20007-CD

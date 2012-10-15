@@ -1,6 +1,6 @@
     /* Add common JS functions here */
 
-$(document).ready(function() {
+$(document).ready(function () {
     //Settign focus on the first enabled text box
     //$("input[type='text']:enabled:first").focus();
 
@@ -10,6 +10,26 @@ $(document).ready(function() {
 
 
     }
+
+
+    //For keybord access	
+    $("#primarynav > li > a").focus(function () {
+
+        $('.snav').css("left", "-5999px");
+        $('#primarynav h2').hide();
+        $(this).parent().find("ul").css("left", "auto");
+        $(this).parent().find("h2").show();
+
+    });
+
+    //For keybord access	
+    $("#skip-to-content").focus(function () {
+        $(this).removeClass("wai");
+        //alert("a");
+    }).focusout(function (){
+        $(this).addClass("wai");
+    });
+
 
 
 
@@ -32,7 +52,7 @@ $(document).ready(function() {
 
     //Testimonials
     $("#wraper-testimonials a").hover(
-          function() {
+          function () {
 
               var position = $("#" + this.id).position();
               $("#tooltip").css("left", (position.left - 30) + "px");
@@ -46,19 +66,19 @@ $(document).ready(function() {
               $("#tooltip").html($("<p class=" + titleAlign + ">" + AltText + "</p>"));
               $("#tooltip").show();
           },
-          function() {
+          function () {
               $("#tooltip").hide();
           }
     );
 
 
-    $('.external').click(function(e) {
+    $('.external').click(function (e) {
         e.preventDefault();
         window.open($(this).attr("href"));
     });
 
     /*Home page */
-    $('#btn-slide, #btn-slideclose').click(function(e) {
+    $('#btn-slide, #btn-slideclose').click(function (e) {
         $('#slider').css("z-index", "999999");
         if ($("#sd-facebook").html().length == 0) {
             _gaq.push(['_trackEvent', 'SOCIAL_ICON', "FaceBook", '']);
@@ -72,7 +92,7 @@ $(document).ready(function() {
         e.preventDefault();
         $("#slider").animate({
             right: sRight
-        }, 500, 'easeInQuart', function() { });
+        }, 500, 'easeInQuart', function () { });
 
     });
 
@@ -192,7 +212,7 @@ $(document).ready(function() {
     //Accordian Setup
     if ($('#military').length > 0) {
 
-        $(".accordion").accordion({ autoHeight: false, active: 50 });
+        $(".accordion").accordion({ autoHeight: false, active: 0 });
     }
     else if ($('#careercenter-default').length > 0) {
         $(".accordion").accordion({ autoHeight: false, active: 2 });
@@ -201,7 +221,7 @@ $(document).ready(function() {
         $(".accordion").accordion({ autoHeight: false, active: 0 });
 
     //SearchJobs
-    $('#ctl00_ctl07_btnSearchJobGo').click(function(e) {
+    $('#ctl00_ctl07_btnSearchJobGo').click(function (e) {
 
         var SearchATS = "http://www.connect.att.jobs/search/";
         var CurrentATS = $('#pnav-jobsearch').attr("href");
@@ -215,7 +235,7 @@ $(document).ready(function() {
 
     //LocalSearch Go
 
-    $('#ctl00_ctl08_btnSearchJobGo').click(function(e) {
+    $('#ctl00_ctl08_btnSearchJobGo').click(function (e) {
 
         var SearchATS = "http://www.connect.att.jobs/search/";
         var CurrentATS = $('#pnav-jobsearch').attr("href");
@@ -230,12 +250,12 @@ $(document).ready(function() {
 
     $(".ddl-position-int ul").addClass("left");
 
-    $(".ddl-position-int").click(function(e) {
+    $(".ddl-position-int").click(function (e) {
 
         $(".ddl-position-int ul").removeClass("left");
         $(".ddl-position-int ul").addClass("position-menu");
         $(".ddl-position").append("<span class='interest-close'>X</span>");
-        $(".interest-close").click(function(e) {
+        $(".interest-close").click(function (e) {
 
             $(".ddl-position-int ul").addClass("left");
             $(".ddl-position-int ul").removeClass("position-menu");
@@ -245,18 +265,18 @@ $(document).ready(function() {
 
 
     /* GA Event Tracking */
-    $(".btn-go").click(function(e) {
+    $(".btn-go").click(function (e) {
         var vKeyWord = $("#ctl00_txtSearchWebsite").val();
         _gaq.push(['_trackEvent', 'SITE-SEARCH-KEYWORDS', vKeyWord, '']);
         //alert("added");
     });
 
-    $("#careerarea li").click(function(e) {
+    $("#careerarea li").click(function (e) {
         vCA = this.id;
         _gaq.push(['_trackEvent', 'CAREER-AREA-ICON', vCA, '']);
     });
 
-    $("#careerarea-big li").click(function(e) {
+    $("#careerarea-big li").click(function (e) {
         vCA = this.id;
         _gaq.push(['_trackEvent', 'CAREER-AREA-ICON-BIG', vCA, '']);
         //alert(vCA);
@@ -264,7 +284,7 @@ $(document).ready(function() {
 
     /*Sub Navigation Menu Expand-Collapse*/
 
-    $('.secondarynav h3').click(function(i) {
+    $('.secondarynav h3').click(function (i) {
         var bgImage = $(this).css("backgroundImage");
 
         var parentElement = $(this).parent().attr("id");
@@ -276,7 +296,7 @@ $(document).ready(function() {
                 opacity: 1,
                 left: '+=50',
                 height: 'toggle'
-            }, 500, function() {
+            }, 500, function () {
                 // Animation complete.
             }); ;
         }
@@ -287,7 +307,7 @@ $(document).ready(function() {
                 opacity: 0.25,
                 left: '+=50',
                 height: 'toggle'
-            }, 500, function() {
+            }, 500, function () {
                 // Animation complete.
             });
         }
@@ -309,7 +329,7 @@ $(document).ready(function() {
 
     $("#sd-facebook").show();
 
-    $("#social-icons li a").click(function(e) {
+    $("#social-icons li a").click(function (e) {
 
         $("#social-icons li a").removeClass("active");
         $(".sframe").hide();
@@ -327,7 +347,7 @@ $(document).ready(function() {
         }
         else if (selID == "sd-youtube") {
             _gaq.push(['_trackEvent', 'SOCIAL_ICON', "YouTube", '']);
-            $("#sd-youtube").html('<iframe frameborder="0" src="http://feedaggregator.att.centralcast.net/youtubedisplay.aspx?feedid=2&amp;count=10&amp;feedListName=none " id="frm-youtube"></iframe>');
+            //$("#sd-youtube").html('<iframe frameborder="0" src="http://feedaggregator.att.centralcast.net/youtubedisplay.aspx?feedid=2&amp;count=10&amp;feedListName=none " id="frm-youtube"></iframe>');
         }
         else if (selID == "sd-facebook") {
             _gaq.push(['_trackEvent', 'SOCIAL_ICON', "FaceBook", '']);
@@ -335,8 +355,8 @@ $(document).ready(function() {
         }
 
         else if (selID == "sd-jobipedia") {
-        _gaq.push(['_trackEvent', 'SOCIAL_ICON', "Jobipedia", '']);
-        
+            _gaq.push(['_trackEvent', 'SOCIAL_ICON', "Jobipedia", '']);
+
             $("#sd-jobipedia").html('<iframe src="http://www.jobipedia.org/social/att-social.aspx" style="height:480px;width:440px;" title="JOBipedia" scrolling="yes" frameborder="0" id="frm-jobipedia" ></iframe>');
         }
 
@@ -348,11 +368,11 @@ $(document).ready(function() {
 
 
         if (isiPad) {
-            $('.ddl-select-category').click(function() {
+            $('.ddl-select-category').click(function () {
                 $(this).find("ul").css("left", 0);
             });
 
-            $('.ddl-select-category li a').click(function() {
+            $('.ddl-select-category li a').click(function () {
 
                 $(this).parent().parent().css("left", -999);
             });
@@ -363,7 +383,7 @@ $(document).ready(function() {
 
     var timeoutPlayVideo = null;
     //Video
-    $("#videos .level1 a").hover(function() {
+    $("#videos .level1 a").hover(function () {
 
         $(this).css({ 'z-index': '11' }); /*Add a higher z-index value so this image stays on top*/
         //$(this).animate({ opacity: 1.0 }, 300);
@@ -401,7 +421,7 @@ $(document).ready(function() {
 		    padding: '0px'
 		}, 200); /* this value of "200" is the speed of how fast/slow this hover animates */
 
-    }, function() {
+    }, function () {
         $(this).css({ 'z-index': '10' }); /* Set z-index back to 0 */
         $(this).removeClass("hover").stop()  /* Remove the "hover" class , then stop animation queue buildup*/
 		.animate({
@@ -620,3 +640,93 @@ function reverseclass(val){
         document.getElementById("ctl00_CphContent_tbxPersonalMsg").setAttribute("class", "form-textarea");
     }
 }
+
+
+
+
+
+// You tube social widget
+
+ $(document).ready(function () {
+
+     var playListURL = 'https://gdata.youtube.com/feeds/api/playlists/PL7FEF61DA1F5293A0?v=2&alt=json&callback=?';
+				var videoURL= 'https://www.youtube.com/watch?v=';
+				$.getJSON(playListURL, function(data) {
+				var list_data="";
+				$.each(data.feed.entry, function(i, item) {
+					var feedTitle = item.title.$t;
+					var feedURL = item.link[1].href;
+					var fragments = feedURL.split("/");
+					var videoID = fragments[fragments.length - 2];
+					var url = videoURL + videoID;
+					var thumb = "https://img.youtube.com/vi/"+ videoID +"/default.jpg";
+					list_data += '<li><a id="'+videoID+'" href="'+ url +'" title="'+ feedTitle +'"><img alt="'+ feedTitle+'" src="'+ thumb +'" </img></a><br/>'+ feedTitle+'</li>';
+					if(i==0)
+					{
+						//load the 1st video
+						loadPlayer(videoID);
+					}
+				});
+				$('#playlist').html(list_data);
+				$('#playlist a').click(function(e)
+				{
+					//var VID = $(this).attr("id");
+//					e.preventDefault();
+//					loadVideo(VID);
+					this.target = "_blank";
+				});
+			
+				$('#playlist').jcarousel();
+			});
+			
+				
+			});
+			
+			
+			
+			/*
+				   * Change out the video that is playing
+				   */
+				  
+				  // Update a particular HTML element with a new value
+				  function updateHTML(elmId, value) {
+					document.getElementById(elmId).innerHTML = value;
+				  }
+				  
+				  // Loads the selected video into the player.
+				  function loadVideo(videoID) {
+					 
+					if(ytplayer) {
+					  ytplayer.loadVideoById(videoID);
+					}
+				  }
+				  
+				  // This function is called when an error is thrown by the player
+				  function onPlayerError(errorCode) {
+					alert("An error occured of type:" + errorCode);
+				  }
+				  
+				  // This function is automatically called by the player once it loads
+				  function onYouTubePlayerReady(playerId) {
+					ytplayer = document.getElementById("ytPlayer");
+					ytplayer.addEventListener("onError", "onPlayerError");
+				  }
+				  
+				  // The "main method" of this sample. Called when someone clicks "Run".
+				  function loadPlayer(videoID) {
+					// The video to load
+				  
+					// Lets Flash from another domain call JavaScript
+					var params = { allowScriptAccess: "always" };
+					// The element id of the Flash embed
+					var atts = { id: "ytPlayer" };
+					// All of the magic handled by SWFObject (https://code.google.com/p/swfobject/)
+					swfobject.embedSWF("https://www.youtube.com/v/" + videoID +
+									   "&enablejsapi=1&showinfo=0;playerapiid=ytplayer&version=3",
+									   "player", "365", "220", "8", null, null, params, atts);
+				  }
+			
+				  var addthis_config = {
+					  services_compact: "bitly, blogger, digg, facebook, linkedin, myspace, twitter",
+				 ui_click: "false"
+			}

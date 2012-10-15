@@ -128,46 +128,46 @@
 		countryCodeArray[101]="UNITED STATES|US|USD|1|0";
 
 	var currencyCodeArray = new Array();
-		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504400000|2|27835439";
-		currencyCodeArray[1]="Argentine Peso|ARS|5.0683200000|2|27835440";
-		currencyCodeArray[2]="Australian Dollar|AUD|1.0352400000|1|27835441";
-		currencyCodeArray[3]="Brazilian Real|BRL|2.1917700000|1|27835442";
-		currencyCodeArray[4]="Canadian Dollar|CAD|1.0245400000|2|27835443";
-		currencyCodeArray[5]="Swiss Franc|CHF|1.0115100000|1|27835444";
-		currencyCodeArray[6]="Chilean Peso|CLP|511.1880000000|-1|27835445";
-		currencyCodeArray[7]="Colombian Peso|COP|1936.1200000000|-2|27835446";
-		currencyCodeArray[8]="Czech Koruna|CZK|20.8638000000|0|27835447";
-		currencyCodeArray[9]="Danish Krone|DKK|6.2339500000|0|27835448";
-		currencyCodeArray[10]="Egyptian Pound|EGP|6.5541400000|1|27835449";
-		currencyCodeArray[11]="Euro|EUR|0.8239280000|2|27835450";
-		currencyCodeArray[12]="British Pound|GBP|0.6622500000|2|27835451";
-		currencyCodeArray[13]="Hong Kong Dollar|HKD|8.3380800000|2|27835452";
-		currencyCodeArray[14]="Hungarian Forint|HUF|235.8370000000|0|27835453";
-		currencyCodeArray[15]="Indonesian Rupiah|IDR|10321.6000000000|-2|27835454";
-		currencyCodeArray[16]="Israeli Shekel|ILS|4.1602700000|1|27835455";
-		currencyCodeArray[17]="Indian Rupee|INR|57.0610000000|0|27835456";
-		currencyCodeArray[18]="Japanese Yen|JPY|83.0500000000|0|27835457";
-		currencyCodeArray[19]="Korean Won|KRW|1199.1300000000|0|27835458";
-		currencyCodeArray[20]="Kuwaiti Dinar|KWD|0.3026910000|2|27835459";
-		currencyCodeArray[21]="Lithuanian Litas|LTL|2.8849400000|2|27835460";
-		currencyCodeArray[22]="Latvian Lats|LVL|0.5821720000|2|27835461";
-		currencyCodeArray[23]="Mexican Peso|MXN|13.8421000000|0|27835463";
-		currencyCodeArray[24]="Norwegian Krone|NOK|6.1823300000|0|27835464";
-		currencyCodeArray[25]="New Zealand Dollar|NZD|1.3128800000|1|27835465";
-		currencyCodeArray[26]="Omani Rial|OMR|0.4140810000|2|27835466";
-		currencyCodeArray[27]="Peruvian Nuevo Sol|PEN|2.7850200000|1|27835467";
-		currencyCodeArray[28]="Philippine Peso|PHP|44.7034000000|0|27835468";
-		currencyCodeArray[29]="Polish Zloty|PLN|3.4168900000|2|27835469";
-		currencyCodeArray[30]="Qatari Riyal|QAR|3.9161300000|2|27835470";
-		currencyCodeArray[31]="Russian Ruble|RUB|33.4930000000|2|27835471";
-		currencyCodeArray[32]="Saudi Riyal|SAR|4.0333700000|1|27835472";
-		currencyCodeArray[33]="Swedish Krona|SEK|7.1946000000|0|27835473";
-		currencyCodeArray[34]="Singapore Dollar|SGD|1.3218000000|1|27835474";
-		currencyCodeArray[35]="Thai Baht|THB|33.0503000000|0|27835475";
-		currencyCodeArray[36]="Turkish Lira|TRY|1.9542000000|1|27835476";
-		currencyCodeArray[37]="Taiwan Dollar|TWD|31.5145000000|0|27835477";
-		currencyCodeArray[38]="US Dollar|USD|1.0000000000|2|27835479";
-		currencyCodeArray[39]="South African Rand|ZAR|9.3380800000|1|27835480";
+		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9505500000|2|27876619";
+		currencyCodeArray[1]="Argentine Peso|ARS|5.0677900000|2|27876620";
+		currencyCodeArray[2]="Australian Dollar|AUD|1.0342300000|1|27876621";
+		currencyCodeArray[3]="Brazilian Real|BRL|2.1967200000|1|27876622";
+		currencyCodeArray[4]="Canadian Dollar|CAD|1.0241200000|2|27876623";
+		currencyCodeArray[5]="Swiss Franc|CHF|1.0024800000|1|27876624";
+		currencyCodeArray[6]="Chilean Peso|CLP|508.9300000000|-1|27876625";
+		currencyCodeArray[7]="Colombian Peso|COP|1936.3400000000|-2|27876626";
+		currencyCodeArray[8]="Czech Koruna|CZK|20.7110000000|0|27876627";
+		currencyCodeArray[9]="Danish Krone|DKK|6.1841700000|0|27876628";
+		currencyCodeArray[10]="Egyptian Pound|EGP|6.5595100000|1|27876629";
+		currencyCodeArray[11]="Euro|EUR|0.8172590000|2|27876630";
+		currencyCodeArray[12]="British Pound|GBP|0.6599420000|2|27876631";
+		currencyCodeArray[13]="Hong Kong Dollar|HKD|8.3381900000|2|27876632";
+		currencyCodeArray[14]="Hungarian Forint|HUF|233.8260000000|0|27876633";
+		currencyCodeArray[15]="Indonesian Rupiah|IDR|10303.3000000000|-2|27876634";
+		currencyCodeArray[16]="Israeli Shekel|ILS|4.1187600000|1|27876635";
+		currencyCodeArray[17]="Indian Rupee|INR|56.8028000000|0|27876636";
+		currencyCodeArray[18]="Japanese Yen|JPY|83.1242000000|0|27876637";
+		currencyCodeArray[19]="Korean Won|KRW|1195.5900000000|0|27876638";
+		currencyCodeArray[20]="Kuwaiti Dinar|KWD|0.3031850000|2|27876639";
+		currencyCodeArray[21]="Lithuanian Litas|LTL|2.8620300000|2|27876640";
+		currencyCodeArray[22]="Latvian Lats|LVL|0.5773320000|2|27876641";
+		currencyCodeArray[23]="Mexican Peso|MXN|13.8380000000|0|27876643";
+		currencyCodeArray[24]="Norwegian Krone|NOK|6.1332900000|0|27876644";
+		currencyCodeArray[25]="New Zealand Dollar|NZD|1.3109500000|1|27876645";
+		currencyCodeArray[26]="Omani Rial|OMR|0.4141240000|2|27876646";
+		currencyCodeArray[27]="Peruvian Nuevo Sol|PEN|2.7844900000|1|27876647";
+		currencyCodeArray[28]="Philippine Peso|PHP|44.5798000000|0|27876648";
+		currencyCodeArray[29]="Polish Zloty|PLN|3.3977400000|2|27876649";
+		currencyCodeArray[30]="Qatari Riyal|QAR|3.9162400000|2|27876650";
+		currencyCodeArray[31]="Russian Ruble|RUB|33.3245000000|2|27876651";
+		currencyCodeArray[32]="Saudi Riyal|SAR|4.0333700000|1|27876652";
+		currencyCodeArray[33]="Swedish Krona|SEK|7.1980500000|0|27876653";
+		currencyCodeArray[34]="Singapore Dollar|SGD|1.3129800000|1|27876654";
+		currencyCodeArray[35]="Thai Baht|THB|32.9643000000|0|27876655";
+		currencyCodeArray[36]="Turkish Lira|TRY|1.9434400000|1|27876656";
+		currencyCodeArray[37]="Taiwan Dollar|TWD|31.4263000000|0|27876657";
+		currencyCodeArray[38]="US Dollar|USD|1.0000000000|2|27876659";
+		currencyCodeArray[39]="South African Rand|ZAR|9.2705400000|1|27876660";
 
 	function setCookies(cookieName,codeValue){
 		$.cookie(cookieName, codeValue,{ path: '/', domain: '.dillards.com' });
@@ -330,6 +330,15 @@
 		$("#imgFlagCode").append('<img src="/images/flags/'+countryCode+'.gif" alt= "" border="0" height="16" width="25"/>');
 		if(countryCode == 'US' || countryCode == '' || countryCode == null){
 			$("div").each(function (index) {
+				//Start:MyDillards
+				if ($(this).is("#myDillardsBar")) {
+					$(this).children('div').children('span').children('span').each(function () {
+						if($(this).is("#imgFlagCode")){
+							$(this).append('<img src="/images/flags/'+countryCode+'.gif" alt= "" border="0" height="16" width="25"/>');
+						}
+					});
+				}
+				//End:MyDillards
 				//Start: Kana
 				if ($(this).is(".us-content")) {
 					$(this).css("display","");
@@ -404,6 +413,15 @@
 			$('#search-filter').unbind();
 			$('#error-search-filter').unbind();
 			$('div').each(function (index) {
+				//Start:MyDillards
+				if ($(this).is("#myDillardsBar")) {
+					$(this).children('div').children('span').children('span').each(function () {
+						if($(this).is("#imgFlagCode")){
+							$(this).append('<img src="/images/flags/'+countryCode+'.gif" alt= "" border="0" height="16" width="25"/>');
+						}
+					});
+				}
+				//End:MyDillards
 				//Start: Kana
 				if ($(this).is(".fiftyOne-content")) {
 					$(this).css("display","");

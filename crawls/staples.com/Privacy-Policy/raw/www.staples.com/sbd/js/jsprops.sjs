@@ -36,9 +36,9 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1349856001400,
+	timeStamp: 1350288001224,
 	
-	
+
 	DEF_LANG_ID: '-1',
 	DEF_STORE_ID: '10001',
 	
@@ -72,7 +72,7 @@ function chatActive(dateStamp) {
 	
 	
 	samuserInfo: 'Account Manager',
-	
+		
         loading: 'Loading...',
 
 		
@@ -89,42 +89,46 @@ function chatActive(dateStamp) {
 		
 		
         closewindow: 'Close Window',
-	
+
 	wait: 'Wait',
 	moreAbout: 'More about',
 	lessAbout: 'Less about',
-	
-    addtocart: 'Add to Cart',
+		
+        addtocart: 'Add to Cart',
 	visitStaples: 'Visit Staples.com',
 	learnMore: 'Learn More',
-	
+        
 	
 	
 	Qty: 'Qty',
 	AddToFav:'Add To Favorites',
-	
+
 	
 	
 	cartOverLayFlag: 'ON',
-	
+		
 		reviewsMasterSwitch: 'ON',	
 		
 		
 		reviewsFeaturedItemsThreshold: '10',
-	
+		
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Oct 11, 2012 08:13:37'),
+	isChatOpen: chatActive('Oct 15, 2012 08:12:24'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
 		
 	analyticsSwitch: 'ON',
-
+	
+    	
+	socialLeaderBoardSwitch: 'OFF',	
+	socialLeaderBoardSecurePagesSwitch: 'OFF',
+	      
 		
 	searchAutocomplete: 'ON',
-	
+
 		
 	inkTonerAutocomplete: 'ON',
 
@@ -142,11 +146,11 @@ function chatActive(dateStamp) {
 	ajaxPerformanceSwitch: 'OFF',
 	
         ajaxTimeout: '10000',
-
+	
 	
 			
 	
-	 paginateAjaxErrorString: 'The last pagination operation failed.',
+	paginateAjaxErrorString: 'The last pagination operation failed.',
 	filterAjaxErrorString: 'The last filter operation failed. ',  
 	sortAjaxErrorString: 'The last sort operation failed.',
 	
@@ -176,7 +180,9 @@ function chatActive(dateStamp) {
 	alertcompareItem: 'Please select at least 2 items to compare',
 	alertselectItemLimit: 'You may only select up to three items to compare',
 	alertselectMoreItem: 'Please select one more item to compare',
-	TryAgain: 'Try again'
+	TryAgain: 'Try again',
+	
+	selected: 'You&#039;ve selected these items to compare'
 	},
 
  	
@@ -197,6 +203,7 @@ function chatActive(dateStamp) {
 	ProductDetail: 'Product Detail',
 	waitMessage:'Please wait while we add the items to your cart.',
 	addToCartErrorMessage:'We are unable to process your request at this time.Please close this window and try again.',
+	addToCartQuantityMessage:'Please add a quantity.',
 	addToCartTimeOutMessage:'We may encounter an error while adding items to cart. Please view your cart for details.'
 	},
 
@@ -235,10 +242,19 @@ function chatActive(dateStamp) {
 	 },
 	
     Autocomplete:{
-	selectSearch: 'Please select Search or hit enter when ready',
-	keywordMatches: 'KeyWord Matches',
-	weeklyDeals: 'Weekly Deals',
-	previouslyPurchasedItems: 'Previously Purchased Items'
+		selectSearch: 'Please hit enter when ready',
+		keywordMatches: 'Keyword Matches',
+		department: 'Department',
+		shopByBrand: 'Shop by Brand',
+		weeklyDeals: 'Weekly Deals',
+		previouslyPurchasedItems: 'Previously Purchased Items',
+		brandDepartmentResultsSwitch:true,
+		productResultsSwitch:true,
+		maxProdLinks : '3',
+		brandDepartmentURL: '/ws/tpahead-json',
+		productURL: '/office/supplies/StaplesB2CPAS/cat/autocompletedata.jsp',
+		endicaMinChars: 1,
+		endicaMaxChars: 20
 	  },
 	
     SKU:{
@@ -251,7 +267,7 @@ function chatActive(dateStamp) {
 	toggleListItemless: 'Less',
 	requiredFieldError: 'Please enter values in both fields',
 	validationError: 'The &#039;From&#039; value should be less than &#039;To&#039; value'
-	 }
+	}
 
 });
 	

@@ -91,6 +91,7 @@ dojo.addOnLoad(function () {
     { id: 'TPO',                 title: 'Discount Disclaimer'                                              },
     { id: 'VALOFFER',            title: 'Valentine&rsquo;s Day Delivery Deals'                             },
     { id: 'WAW',                 title: 'Terms &amp; Conditions'                                           },
+    { id: 'WICKED',              title: 'Terms &amp; Conditions'                                           },
     { id: 'WINESHIP',            title: 'Wine Shipping Details'                                            },
     { id: 'XMASFSD',             title: 'Terms &amp; Conditions'                                           },
     { id: '20SAVINGS',  type: 'coupon' },

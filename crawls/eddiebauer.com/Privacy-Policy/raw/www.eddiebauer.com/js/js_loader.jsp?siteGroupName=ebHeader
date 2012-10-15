@@ -1678,6 +1678,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	jQuery.fn.ProductModule = function(options) {					
 		var thresholdQty = 10;		
 		var validFlag = false;
+		var selectionsFlag = false;
 		var selectedSizeChartTab = 0;
 		var itemInventorySizeStatus = "";
 		var itemInventorySizeName = "";
@@ -1694,7 +1695,11 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		var clearanceSwatchFlag = false; //eob if user selects a clearance swatch
 		var toolTipContentLoaded = false;
 		var zoomMessage = "<div class='Zoomable'><span class='icon zoomMessage'></span><span class='text'>Roll over image to zoom in</span><a href='javascript:void(0);' class='zoomFullScreenAlt'><span class='icon imageMessage'></span><span class='text largerClick'>Click for larger image</span></a></div>";
-				
+		var currentCartCount = 0;	
+		var selectedQty = 0;
+		var maxItemsinCart = jQuery(targetPage+'#dash input[name=maxCartSize]').val() || 99;
+		var cartItemsTotal = 0;
+		
 		//set any cookie info here
 		var updateCookieIfNeeded = function (url, paramName) {
 			 var cookieParams = stringToParams (GetCookie('productModulePrefs'), true) ;
@@ -1884,13 +1889,12 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			});			
 			// add to bag button
 			jQuery(targetPage+'#addToCart').click(function (event){
-				checkItemsInBag();
+				addToWishList = false;
 			});
 			// add to wishlist button
-			jQuery(targetPage+'.saveToWishList').click(function (){
-				checkItemsInBag();
+			jQuery(targetPage+'.saveToWishList').click(function (){				
 				addToWishList = true;
-				addToBag(jQuery('form[name=productForm]'));				
+				addToBag(jQuery('form[name=productForm]'),'true');				
 			});				
 			// input options
 			jQuery(targetPage+'#size').live('change', function(){
@@ -2073,7 +2077,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						//console.log('inputsCount='+inputsCount+' validatedCount='+validatedCount);
 						if(inputsCount == validatedCount){								
 							// IE might throw an error calling preventDefault(), so use a try/catch block.
+							selectionsFlag = true;
 							try { event.preventDefault(); } catch(e) {  }						
+						}else{
+							selectionsFlag = false;
 						}
 					}
 				},
@@ -2245,17 +2252,23 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		checkItemsInBag = function(){
 			var currentCartItems = jQuery('#bagLink #itemsCount').html();			
 			var currentCartSplit = currentCartItems.split(" ");
-			var currentCartCount = parseInt(currentCartSplit[0]);			
-			var maxItemsinCart = 1;
-			if (currentCartCount){
-				if(currentCartCount >= maxItemsinCart){
-					shoppingBagFull();
-				}
-			}
+			currentCartCount = parseInt(currentCartSplit[0]);			
+			selectedQty = parseInt( jQuery(targetPage+'#quantity').val() );
+			cartItemsTotal = currentCartCount + selectedQty;
+			//console.log("currentCartCount="+currentCartCount+" selectedQty="+selectedQty+" selectionsFlag="+selectionsFlag);			
+			if(cartItemsTotal > maxItemsinCart && selectionsFlag == true){
+				validFlag = false;
+				shoppingBagFull();
+			}			
 		}
-		shoppingBagFull = function(){			
-			//console.log("you have exceeded the max cart limit");
-			//try { event.preventDefault(); } catch(e) {  }	
+		updateItemsInBagMessage = function(){
+			// update maxItem Number, totlal and items over maxItem number here
+			jQuery('#shoppingBagLimit .maxItemLimit').html("("+maxItemsinCart+")");
+			jQuery('#shoppingBagLimit .currentShoppingBagItems').html("("+currentCartCount+")");			
+			jQuery('#shoppingBagLimit .cartItemOvererage').html("(" +(cartItemsTotal - maxItemsinCart)+")");			
+		}
+		shoppingBagFull = function(){				
+			fb.start('/assets/html/shoppingBagLimit/shoppingbaglimit.html','type:ajax height:210 width:450 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemStart:updateItemsInBagMessage()');
 		}
 		updateItemNumber = function() {
 			getInformationFlag = true;
@@ -2291,14 +2304,19 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				return 'object';
 			}
 		}
-		addToBag = function(productForm){			
+		addToBag = function(productForm, addToWishListFlag){			
 			var sizeValue = jQuery(targetPage+'#size').val();
 			var sizeText = jQuery(targetPage+'#size :selected').text();
 			var colorValue = jQuery(targetPage+'#color').val();
 			var colorText = jQuery(targetPage+'#color :selected').text();
 			var soldOutFlag = false;
-			if (jQuery('#dossier').hasClass('WISHLIST')){
+			if (addToWishListFlag){
 				addToWishList = true;
+			}else{
+				addToWishList = false;
+			}				
+			if (jQuery('#dossier').hasClass('WISHLIST')){
+				addToWishList = true;			
 			}			
 			if(sizeText.indexOf('Sold Out') !=-1){
 				//Size Sold Out
@@ -3165,8 +3183,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							}
 						}
 					}
-				}
-						
+				}				
+				checkItemsInBag();						
 			}
 			
 		}		

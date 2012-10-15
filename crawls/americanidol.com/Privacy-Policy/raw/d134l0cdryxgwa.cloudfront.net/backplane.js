@@ -23,14 +23,29 @@ window.Backplane = window.Backplane || (function() {
             })();
         }
     };
-    BP.version = "1.2.2";
+    BP.log = function(msg) {
+        if (window.console && window.console.log) {
+            console.log("Backplane: " + msg);
+        }
+    }
+    BP.warn = function(msg) {
+        if (window.console && window.console.warn) {
+            console.warn("Backplane WARNING: " + msg)
+        }
+    }
+    BP.error = function(msg) {
+        if (window.console && window.console.error) {
+            console.error("Backplane ERROR: " + msg);
+        }
+    }
+    BP.version = "1.2.3";
     BP.channelByBus = {};
     BP.config = {};
     BP.initialized = false;
     BP.firstFrameReceived = false;
     BP.cachedMessages = {};
     BP.cachedMessagesIndex = [];
-    BP.cacheMax = 0;
+    BP.cacheMax = 5;
     BP.subscribers = {};
     BP.serverChannel = true;
     BP.awaiting = {
@@ -222,6 +237,12 @@ Backplane.setCookieChannels = function() {
 
 Backplane.resetCookieChannel = function() {
     delete this.channelByBus[this.config.busName];
+    if (localStorage) {
+        this.log("removing cached backplane messages");
+        localStorage.removeItem("cachedMessages");
+        localStorage.removeItem("cachedMessagesIndex");
+    }
+ 
     this.setCookieChannels();
     if (this.serverChannel) {
         this.fetchNewChannel();
@@ -294,6 +315,36 @@ Backplane.request = function() {
         self.timers.watchdog = setTimeout(function() {
             self.request();
         }, 5000);
+
+        // if no since parameter exists, check cache and play those back
+        // rather than hitting the server
+        if (localStorage && !self.since) {
+            // should cache be expired?
+            var cacheExpiresString = localStorage.getItem("cacheExpires");
+            if (cacheExpiresString) {
+               var cacheExpires = Date.parse(cacheExpiresString);
+               var now = new Date();
+               if (now > cacheExpires) {
+                 localStorage.removeItem("cacheExpires");
+                 localStorage.removeItem("cachedMessages");
+                 localStorage.removeItem("cachedMessagesIndex");
+                 Backplane.log("cache expired, purged");
+               } else {
+                 this.cachedMessages = JSON.parse(localStorage.getItem("cachedMessages"));
+                 this.cachedMessagesIndex = JSON.parse(localStorage.getItem("cachedMessagesIndex"));
+                 if (this.cachedMessages) {
+                    var messages = []; 
+                    for (var i=0; i<this.cachedMessagesIndex.length; i++) {
+                       messages[i] = this.cachedMessages[this.cachedMessagesIndex[i]];
+                    }
+                    Backplane.log(messages.length + " message(s) in cache");
+                    Backplane.response(messages);
+                    return;
+                 }
+               }
+            }
+        } 
+
         var script = document.createElement("script");
         script.type = "text/javascript";
         script.charset = "utf-8";
@@ -344,6 +395,13 @@ Backplane.response = function(messages) {
             if (this.cachedMessagesIndex.length > this.cacheMax) {
                 delete this.cachedMessages[this.cachedMessagesIndex[0]];
                 this.cachedMessagesIndex.splice(0,1);
+            }
+            if (localStorage) {
+                localStorage.setItem("cachedMessages", JSON.stringify(this.cachedMessages));
+                localStorage.setItem("cachedMessagesIndex", JSON.stringify(this.cachedMessagesIndex));
+                var expiresDate = new Date();
+                expiresDate.setDate(expiresDate.getDate()+7);
+                localStorage.setItem("cacheExpires", expiresDate.toUTCString()); 
             }
         }
 

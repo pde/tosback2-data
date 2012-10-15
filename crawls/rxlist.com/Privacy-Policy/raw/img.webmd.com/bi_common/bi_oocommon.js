@@ -1,4 +1,4 @@
-var s_ver='|oocommon|20120926',_ud="undefined",s_live=false,ntc="ntc";
+var s_ver='|oocommon|20121012',_ud="undefined",s_live=false,ntc="ntc";
 if (window.s_beaconload) { s_beaconload(); }
 try{if(s_account!="webmddev"){s_account="webmdp1global";s_live=true;}
 	else{s_account="webmddev";}}catch(e){s_account="webmdp1global";s_live=true;}
@@ -482,7 +482,7 @@ if((_haiq=="")||(_haiq=="99999")){
 	s_md.prop47=(typeof regId!=_ud&& regId!="")? regId.toLowerCase():ntc;
 }
 try{s_md.prop49=s_visitor;}catch(e){}
-s_md.evar46=_haiq;
+s_md.eVar46=_haiq;
 var ca = document.cookie.split(';');
 s_md.prop71 = (Math.ceil(ca.length/5)*5).toString();
 s_md.prop72 = (Math.ceil(document.cookie.length/25)*25).toString();

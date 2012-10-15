@@ -695,21 +695,9 @@ var usa_globalMenu = {
 					"items" : [
 						
 						{
-							"title" : "DIE ANOTHER DAY",
-							"subtitle" : "SUNDAY OCT 14 2/1C",
-							"url" : usa_baseUrlDomain + "/movies/dieanotherday/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_dieanotherday.png"
-						},
-						{
-							"title" : "RESIDENT EVIL: AFTERLIFE",
-							"subtitle" : "SUNDAY OCT 14 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/residentevil/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
-						},
-						{
 							"title" : "MR. DEEDS",
 							"subtitle" : "MONDAY OCT 15 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/",
+							"url" : usa_baseUrlDomain + "/movies/mrdeeds/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_mrdeeds.png"
 						},
 						{
@@ -717,7 +705,20 @@ var usa_globalMenu = {
 							"subtitle" : "SATURDAY OCT 20 8/7C",
 							"url" : usa_baseUrlDomain + "/movies/eatpraylove/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_eatpraylove.png"
+						},
+												{
+							"title" : "COUPLES RETREAT",
+							"subtitle" : "SAT OCT 20 5:30/4:30C",
+							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
+						},
+						{
+							"title" : "RESIDENT EVIL: AFTERLIFE",
+							"subtitle" : "SUN OCT 29 11:05/10:05C",
+							"url" : usa_baseUrlDomain + "/movies/residentevil/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
 						}
+
 
 
 

@@ -1207,24 +1207,6 @@
 					$.ad.util.include("http://tcr.tynt.com/ti.js",2);
 				}
 			}
-		},
-		tapAd:{
-			init : function(d){
-				if(d.channel.indexOf("fnc") > -1){
-					window._tapalytics = [];
-				    _tapalytics.push(['_setPubId', "foxnews.com"]);
-				    _tapalytics.push(['_setContextId', "foxnews.com"]);
-				    _tapalytics.push(['_trackPageView']);
-				    (function() {
-				        var ta = document.createElement('script');
-				        ta.type = 'text/javascript';
-				        ta.async = true;
-				        ta.src = (("https:" == document.location.protocol) ? "https://" : "http://") + "tapad-taptags.s3.amazonaws.com/analytics/analytics.min.js";
-				        var s = document.getElementsByTagName('script')[0];
-				        s.parentNode.insertBefore(ta, s);
-				    })();					
-				}					
-			}
 		},			
 		util: {
 			getLRC: function(s) {
@@ -1672,9 +1654,6 @@
 			//tynt
 			$.ad.tynt.init(d);			
 
-			//tapAd
-			$.ad.tapAd.init(d);				
-			
 			$.ad.visrev.init();
 												
 			$.ad.adBlade.init();

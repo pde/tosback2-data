@@ -9,7 +9,7 @@ var wpAd, placeAd2;
     //this is function is called on the FIRST placeAd2 call only
     init: function () {
       if(!win.jQuery){
-        wpAd.tools.writeScript('https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js');
+        wpAd.tools.writeScript('//js.washingtonpost.com/wpost/js/combo?token=20121010232000&c=true&m=true&context=eidos&r=/jquery-1.7.1.js');
       }
       if(typeof wpAd.config.init === 'function') {
         wpAd.config.init();
@@ -659,9 +659,8 @@ var wpAd, placeAd2;
           if(wpAd.templates[wpAd.briefcase.pos].id){
             wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id;
           }
-          // hack to fix double ad calls - ad current ad type to array:
-          /*if wpAd.tools.urlCheck(/cleanScriptTags/)*/
-          if(wpAd.flags.testEnv && wpAd.flags.IE) {
+          // hack to fix double ad calls - add current ad type to array:
+          if(wpAd.flags.cleanScriptTags && wpAd.flags.IE) {
             wpAd.tools.adsToBeCleaned.push(wpAd.briefcase.what);
           }
           return true;
@@ -1096,6 +1095,7 @@ var wpAd, placeAd2;
 
   //generic flags
   wpAd.flags = {
+    cleanScriptTags: !!/cleanScriptTags/i.test(location.search),
     debug: !!/debugAdCode/i.test(location.search),
     demoAds: wpAd.tools.urlCheck('demoAds', {type: 'variable'}),
     dcnode: wpAd.tools.urlCheck('dcnode', {type: 'variable'}),

@@ -226,32 +226,54 @@ if (hasClass(bodyEl, 'catalog')){
 		}
 	});
 
-	//Recently-viewed panel
-	(function(){
-		var container = $("#recentlyViewedContainer");
-		var body = container.find(".body");
-		body.data('height', body.height());
-		body.css({'visibility':'visible', 'height':0, 'opacity':0});
-		$('.trigger', container).click(function(){
-			if (body.height() === 0) {
-				container.addClass('open');
-				body.animate({ 'height':body.data('height'), 'opacity':1 }, 200,'swing');
-			} else {
-				body.animate({ 'height':0, 'opacity':0 }, 200,'swing', function(){ container.removeClass('open'); });
-			}
-		});
+// Dynamic Recently Viewed Items
+    (function() {
+        var container = $("#recentlyViewedContainer");
+        var loaded = false;
+        $('.trigger', container).click(function() {
+            if (!loaded) {
+                var rviURL = '/catalog/includes/get_recently_viewed_items.jsp'
+                if (typeof excludedRVI != 'undefined') {
+                    rviURL += "?" + excludedRVI;
+                }
 
-		//create thumbCarousel.
-		container
-			.thumbCarousel({'showAmount':3,'scrollAmount':3, 'scrollModifier':1})
-			.click(function(evt){ evt.stopPropagation(); });
-		//close panel when body is clicked.
-		$('body').click(function(){ body.animate({ 'height':0, 'opacity':0 }, 200,'swing', function(){ container.removeClass('open'); }); });
-		container.removeClass('open');
+                $.get(rviURL, function(data) {
+                    $("#recentlyViewedContainer").append(data);
+                    var body = container.find(".body");
+                    body.css({'visibility':'visible', 'height':0, 'opacity':0});
+                    loaded = true;
+                    container.addClass('open');
+                    // Close if they click on the body
+                    $('body').click(function() {
+                        body.animate({ 'height':0, 'opacity':0 }, 200, 'swing', function() {
+                            container.removeClass('open');
+                        });
+                    });
+                    //create thumbCarousel.
+                    container
+                        .thumbCarousel({'showAmount':3,'scrollAmount':3, 'scrollModifier':1})
+                        .click(function(evt) {
+                            evt.stopPropagation();
+                        });
 
-	})();
+                    body.animate({ 'height':245, 'opacity':1 }, 200, 'swing');
 
-	//Left-nav functions
+                });
+            } else {
+                var body = container.find(".body");
+                if (!body.height() || body.height() === 0) {
+                    container.addClass('open');
+                    body.animate({ 'height':245, 'opacity':1 }, 200, 'swing');
+                } else {
+                    body.animate({ 'height':0, 'opacity':0 }, 200, 'swing', function() {
+                        container.removeClass('open');
+                    });
+                }
+            }
+        });
+    })();
+
+    //Left-nav functions
 	// show refinement 'Narrow By' title if there are refinements
 	if ($('#catalogNav .refinement').length > 0) {
 		$('#catalogNav .refinementTitle').show();
@@ -519,3 +541,21 @@ if (bodyId === 'category' || bodyId === 'thumbnail' || bodyId === 'search' ){
 }
 
 $('.recentlyViewedContainer').css('position','absolute');
+
+// Dynamic header information
+$(document).ready(function() {
+
+    $.post('/includes/header_info.jsp', function(data) {
+        if (data.cartQuantityMessage) {
+            $("#cartQuantityMessage").html(data.cartQuantityMessage);
+        }
+        if (data.isMember) {
+            $("#signInContainer .user").text(data.welcomeMessage);
+            $("#signInContainer .signOut").show();
+        } else {
+            $("#signInContainer .signIn").show();
+        }
+    });
+
+});
+

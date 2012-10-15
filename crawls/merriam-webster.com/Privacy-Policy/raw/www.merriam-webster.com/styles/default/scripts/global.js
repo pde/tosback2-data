@@ -26,33 +26,33 @@ function get_qsegs ()
 
 // Summary: This function reloads the creatives on a page.
 function reloadCreatives (url)
-	{	// Reload the DFP creatives.
-		for ( var index = 1; index < 10; index++ )
-			{	googletag.cmd.push(function() { googletag.display('div-gpt-ad-219827234313134000-' + index); });
-			};
-		// Track the virtual page.
-		if ( url != null )
-			{	url = typeof(url) != 'undefined' ? url : '' + document.location;
-				_gaq.push(['_trackPageview', url]);
-			};
-	};
+	{ if ( navigator.userAgent.toLowerCase().indexOf('chrome') > -1 )
+                        {       for ( var index = 1; index < 6; index++ )
+                                        {       var div = document.getElementById('div-gpt-ad-219827234313134000-' + index);
+                                                div.innerHTML = '';
+                                                var content =
+                                                        'googletag.cmd.push(function() { googletag.display("div-gpt-ad-219827234313134000-' + index + '"); });';
+                                                var g = document.createElement('script');
+                                                g.type = 'text/javascript';
+                                                g.text = content;
+                                                div.parentNode.insertBefore(g, div.childNodes[0]);
+                                        };
+                        }
 
+                // Do it the normal way.
+                else
+                        {        for ( var index = 1; index < 6; index++ )
+                                        {       googletag.cmd.push(function() { googletag.display('div-gpt-ad-219827234313134000-' + index); });
+                                        };
+                        };
 
-function reloadCreatives_old_09_20_2012 (url)
-	{	ad_groupid = Math.round(Math.random() * 10000000000);
-		for ( var id in MW_RELOADABLE_CREATIVES )
-			{	 if ( document.getElementById(id) )
-					{// alert('Reloading creative ' + id + '.');
-				//alert('Reloading ' + id);
-				document.getElementById(id).innerHTML = MW_RELOADABLE_CREATIVES[id].replace(/&groupid=[^&]+/, '&groupid=' + ad_groupid);
-					};
-			};
-		if ( url != null )
-			{	url = typeof(url) != 'undefined' ? url : '' + document.location;
-				//alert("Tracking virtual page view: " + url);
-				_gaq.push(['_trackPageview', url]);
-			};
-	};
+                // Track the virtual page.
+                if ( url != null )
+                        {       url = typeof(url) != 'undefined' ? url : '' + document.location;
+                                _gaq.push(['_trackPageview', url]);
+                        };
+
+        };
 
 // This method handles all carosel load events.
 function onCaroselLoaded (data)
@@ -241,7 +241,7 @@ function outputCreative (creative_id, keyword, subjcode)
 		var domain = (document.location + '').indexOf('/opendictionary/') >= 0 || (document.location + '').indexOf('wodsignup') >= 0 ? 'http://www.merriam-webster.com' : '';	
 
 		// CREATIVES_TO_LOAD[creative_id] = { id: id, pageid: pageid, placement: placement, css: css, extra: extra, keyword: keyword, subjcode: subjcode };
-		var ad_call = '<iframe id="' + id + '-frame" class="' + css + '" src="' + domain + '/creative.php?pageid=' + pageid + '&placement=' + placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + extra + '" frameborder="no" scrolling="no"></iframe>';
+		var ad_call = '<iframe id="' + id + '-frame" class="' + css + '" src="' + domain + '/ads.php?pageid=' + pageid + '&placement=' + placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + extra + '" frameborder="no" scrolling="no"></iframe>';
 		MW_RELOADABLE_CREATIVES[id] = ad_call;
 		document.write("<div id=\"" + id + "\" class=\"" + css + "-container\">" + ad_call + "</div>");
 	};
@@ -292,7 +292,7 @@ function getCreativeIFrame (creative_id, keyword, subjcode, inc_dims)
 		quantSegs = quantSegs.replace(/[_,]/g, ':');
 	
 		var domain = (document.location + '').indexOf('/opendictionary/') >= 0 || (document.location + '').indexOf('wodsignup') >= 0 ? 'http://www.merriam-webster.com' : '';	
-		var the_iframe = '<iframe id="' + id + '" class="' + css + '" src="' + domain + '/creative.php?pageid=' + pageid + '&placement=' + placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + extra + '" frameborder="no" scrolling="no"' + dims + '></iframe>';
+		var the_iframe = '<iframe id="' + id + '" class="' + css + '" src="' + domain + '/ads.php?pageid=' + pageid + '&placement=' + placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + extra + '" frameborder="no" scrolling="no"' + dims + '></iframe>';
 
 		return the_iframe;
 	};
@@ -320,7 +320,7 @@ function loadCreatives_08_23_2010 (creative_id, keyword, subjcode)
 		for ( var id in CREATIVES_TO_LOAD )
 			{	var creative = CREATIVES_TO_LOAD[id];
 				var domain = (document.location + '').indexOf('/opendictionary/') >= 0 || (document.location + '').indexOf('wodsignup') >= 0 ? 'http://www.merriam-webster.com' : '';
-				var ad_call = '<iframe id="' + creative.id + '-frame" class="' + creative.css + '" src="' + domain + '/creative.php?pageid=' + creative.pageid + '&placement=' + creative.placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + creative.extra + '" frameborder="no" scrolling="no"></iframe>';
+				var ad_call = '<iframe id="' + creative.id + '-frame" class="' + creative.css + '" src="' + domain + '/BACKUP.php?pageid=' + creative.pageid + '&placement=' + creative.placement + '&groupid=' + ad_groupid + '&quantseg=' + quantSegs + creative.extra + '" frameborder="no" scrolling="no"></iframe>';
 				var the_div = document.getElementById(creative.id);
 				if ( the_div )
 					{	the_div.innerHTML = ad_call;

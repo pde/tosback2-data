@@ -284,6 +284,51 @@ function createCookie(name, value, domain, secs, path) {
 }
 
 
+function getCookie(c_name) {
+    var i, x, y, ARRcookies = document.cookie.split(";");
+    for (i = 0; i < ARRcookies.length; i++) {
+        x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+        y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+        x = x.replace(/^\s+|\s+$/g, "");
+        if (x == c_name) {
+            return encodeURIComponent(y);
+        }
+    }
+    return null;
+}
+
+function addToRecentlyViewedItems(entityId, cmsSiteId, rvCookieName, rvDelimiter, rvLimit) {
+    var idVal = decodeURIComponent(getCookie(rvCookieName));
+    if (!entityId || $.trim(entityId) == "") {
+        return idVal;
+    }
+    var rvis;
+    var rvEntityId = entityId + "-" + cmsSiteId;
+    if (idVal && idVal != "null" && idVal.length > 0 ) {
+        if (idVal.lastIndexOf(rvDelimiter) == (idVal.length - rvDelimiter.length)) {
+            // Remove the 'dangling delimiter' from legacy cookies
+            idVal = idVal.substring(0, idVal.lastIndexOf(rvDelimiter));
+        }
+        rvis = idVal.split(rvDelimiter);
+        var index = rvis.lastIndexOf(rvEntityId)
+        if (index != -1) {
+            // remove existing item
+            rvis.splice(index, 1);
+        }
+        // Add item to the front
+        rvis.push(rvEntityId);
+
+        while(rvis.length > (rvLimit+1)) {
+            // Remove the oldest one if we're at our limit
+            rvis.splice(0, 1);
+        }
+    } else {
+        rvis = [rvEntityId];
+    }
+    return rvis.join(rvDelimiter);
+}
+
+
 /* Dynamic error management */
 site.errorAppend = function(area,msg) {
 	$(area)

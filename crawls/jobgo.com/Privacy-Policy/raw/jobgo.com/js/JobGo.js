@@ -2228,6 +2228,7 @@ JobGo.Search = {
             var participants = ParticipantSearch();
             var rxMessageSend = /\/message\/(sendmessage|invitetorecruitment)\//i;
             var rxTypeOffer = /\/type\/offer\//i;
+            var sendMessage =  /sendmessage/i;
             $('#chk-all').click(function() {
                 $("input[name='itemCheckbox[]']").attr('checked', $('#chk-all').is(':checked'));
                 var c = ''; // general id hash
@@ -2256,7 +2257,7 @@ JobGo.Search = {
                             if(jobId)
                             {
                                 newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
-                            } else if (participants) {
+                            } else if (participants && sendMessage.test(target)) {
                                 newUrl = target + jc;
                             }
                             else
@@ -2302,7 +2303,7 @@ JobGo.Search = {
                             if(jobId)
                             {
                                 newUrl = target + '/id/' + jobId + '/candidateId/' + jc;
-                            } else if (participants) {
+                            } else if (participants && sendMessage.test(target)) {
                                 newUrl = target + jc;
                             }
                             else

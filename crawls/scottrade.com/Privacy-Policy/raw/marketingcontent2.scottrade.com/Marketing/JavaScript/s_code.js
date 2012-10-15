@@ -387,63 +387,22 @@ s.doPlugins = s_doPlugins
 
 
 /*
-
-
 * Function - grab dvi cookie value
-
-
 */
+var sCookieVal = "";
+function grabCookie() {
+    dviInterval = setInterval(function() {
+        var dviCookie = s.c_r('s_vi');
+        if (dviCookie.length > 0) {
+            clearInterval(dviInterval);
+            var visRegExp = /[0-9A-F]+-[0-9A-F]+/g;
+            var dvi = dviCookie.match(visRegExp);
+            sCookieVal = dvi;
+            console.log(sCookieVal);
+        }
+    }, 100)
+}
 
-
-sCookieVal="";
-
-
- var i = 1;
-
-
- function grabCookie () {
-
-
-	setTimeout(function () {
-
-
-		i++;
-
-
-		if (i < 5000) {
-
-
-			var dviCookie=s.c_r('s_vi');
-
-
-			if (dviCookie.length>0){
-
-
-				var visRegExp=/[0-9A-F]+-[0-9A-F]+/g;
-
-
-				var dvi=dviCookie.match(visRegExp);
-
-
-				var sCookieVal=dvi;
-
-
-				return sCookieVal;
-
-
-			}
-
-
-			grabCookie();
-
-
-		}
-
-
-	}, 3)
-
-
- }
 
 /*
 

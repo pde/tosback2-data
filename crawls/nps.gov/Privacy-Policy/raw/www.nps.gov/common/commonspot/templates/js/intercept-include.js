@@ -103,7 +103,7 @@ jQuery(document).ready(function(){
 	
 	// open any tag with a class of "colorbox-iframe" in a colorbox iframe
 	jQuery('a.colorbox-iframe').colorbox({iframe:true, transition:"none", title:"Contact Form", close:"close", width:"800", height:"780", scrolling: false});
-	
+	jQuery('a.colorbox-iframe-map').colorbox({iframe:true, transition:"none", title:jQuery('a.colorbox-iframe-map').attr('name'), close:"close", width:"800", height:"600", scrolling: false});
 });
 
 

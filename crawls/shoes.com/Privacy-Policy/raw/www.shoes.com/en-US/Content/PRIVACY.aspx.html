@@ -4,7 +4,7 @@
 
 <head id="ctl00_Head1"><title>
 	Privacy Policy | Shoes.com
-</title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><script> var seoRoutesNativeUrl = "http://www.shoes.com/Content.aspx?lang=en-US&contentid=PRIVACY"; </script><script language="javascript" type="text/javascript" src="../../scripts/MobileRedirect.js"></script>
+</title><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /><script> var seoRoutesNativeUrl = "http://www.shoes.com/Content.aspx?contentid=PRIVACY&lang=en-US"; </script><script language="javascript" type="text/javascript" src="../../scripts/MobileRedirect.js"></script>
    <script type="text/javascript">
               var turnToConfig = {
                   siteKey: "XOI2r4LLQRlHNsAsite",
@@ -41,7 +41,7 @@
 	$(document).ready(CartQuantityScript);
 </script>
 		
-		<script language='Javascript' type='text/javascript'>var serverDate= new Date("10/11/2012 7:03:31 AM")</script>
+		<script language='Javascript' type='text/javascript'>var serverDate= new Date("10/15/2012 7:08:27 AM")</script>
 					<!-- SiteCatalyst code version: H.15.1.
 					Copyright 1997-2008 Omniture, Inc. More info available at http://www.omniture.com -->
 					<script language="Javascript" type="text/javascript">
@@ -208,7 +208,7 @@ if(CookieManager)
             <input type="hidden" value="0" id="nval-input" name="N">
             <input type="hidden" value="SearchInterface" name="Ntk">
             <div id="top-search-box">
-              <input type="text" class="sf_inactive ac_input" name="Ntt" id="NttDrop">
+              <input type="text" class="sf_inactive ac_input" name="Ntt" id="NttDrop" autocomplete="off" onfocus="AutoCompleteTwo();">
             </div>
             <div id="nval-cat">
                 <a href="PRIVACY.aspx.html#">all</a>
@@ -334,15 +334,67 @@ ul#topnav-mega li .sub { background:#FFF url(../../Content/core/nav-ab/topnav-me
   </div>
 </div>
 <div class="clear"></div>
-<script type="text/javascript" src="../../Content/scripts/jq.js%3Fv=3"></script>
+<script type="text/javascript" src="../../Content/scripts/jq.js%3Fv=2"></script>
 <script src="../../Content/scripts/targetDetail.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../Scripts/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="../../Scripts/autocomplete.js"></script>
 <script type="text/javascript">
 <!--
 //var $ = jQuery.noConflict();
 var $j = $;
 var closeCats = '';
 var leftAdded = false;
-$(document).ready(function() {
+var autoStarted = false;
+var newAutoUI = true;
+function AutoCompleteTwo() {
+	if (!autoStarted) {
+		$('#NttDrop').autocomplete("/WebServices/AutoComplete.ashx", { 
+			dataType:'text',
+			formatItem: function(row) {
+				var s = row[0].split('~');
+				if (s.length > 0) {
+					if (newAutoUI) {
+						return '<b>' + s.pop() + '</b><br/><span style="font-size:85%;font-style:italic">' + s.join('~') + '</span>';
+					} else {
+						if ((s[0].toLowerCase() == 'brand') ||
+							(s[0].toLowerCase() == 'category')) {
+							s.shift();
+						}
+						return s.join('~');
+					}
+				} else {
+					return row[0];
+				}
+			},
+			formatResult: function(data) {
+				var s = data[0].split('~');
+				if ((s[0].toLowerCase() == 'brand') ||
+					(s[0].toLowerCase() == 'category')) {
+						s.shift();
+				}
+				return s.join('~');
+			}
+		});
+        $('#NttDrop').result(function(event, data) {
+        	if (newAutoUI) {
+	        	//selected category?
+	        	var nvalCat = $('#nval-cat a').attr('href');
+	        	if ((data.length > 1) && (!isNaN(parseInt(data[1], 10)))) {
+	            	if ((nvalCat === undefined) || (isNaN(parseInt(nvalCat, 10)))) {
+	              		window.location = "/Shopping/Results.aspx?icid=entiresitesearch&N=" + data[1];
+	              	}
+	            } else {
+	              		window.location = "/Shopping/Results.aspx?icid=entiresitesearch&N=" + data[1] + "+" + nvalCat;
+	            }	
+	        }
+	     	return false;
+        });
+		autoStarted = true;
+	}
+}
+$(document).ready(function() {	
+	/* INIT SUPERFISH */
+	//$('ul#navlist-main').superfish();
 	
 	var winLoc=window.location.href;
 	var icidSET = false;
@@ -412,7 +464,32 @@ function SearchSubmit() {
 		return false;
 }
 </script>
-<script src="../../Content/scripts/activexfix.js" type="text/javascript"></script><!-- Shop:20001_Template_TopMargin [Main] END -->
+<script src="../../Content/scripts/activexfix.js" type="text/javascript"></script>
+<!--[if IE 6]>
+<script src="/Content/scripts/dd_pngfix.js" type="text/javascript"></script>
+<script type="text/javascript">
+    DD_belatedPNG.fix('.intl-modal .dec');
+</script>
+<style type="text/css">
+.intl-modal .dec {
+top: 0px;
+left: 0px;
+}
+</style>
+<![endif]-->
+
+<!-- ===== KIDS LINK TEMP FIX ===== -->
+<script type="text/javascript">
+$(document).ready(function() {
+	if (window.location.href.indexOf('Kids') > -1 || window.location.href.indexOf('girls') > -1 || window.location.href.indexOf('boys') > -1) {	
+		var head=document.getElementsByTagName('head')[0],script=document.createElement('script');
+		script.type='text/javascript';
+		script.src='/Content/scripts/kidsLinkTempFix.js';
+		head.appendChild(script);
+	}
+});
+</script>
+<!-- Shop:20001_Template_TopMargin [Main] END -->
 		</div>
 		
 		<div id="pageContainer">
@@ -427,7 +504,7 @@ function SearchSubmit() {
 			<div id="ctl00_pnlE4x">
 	
 			<div id="E4x" class="E4x"></div>
-			<span class="e4xrates"  AED="3.9504400000" ARS="5.0683200000" AUD="1.0352400000" BRL="2.1917700000" CAD="1.0245400000" CHF="1.0115100000" CLP="511.1880000000" COP="1936.1200000000" CZK="20.8638000000" DKK="6.2339500000" EUR="0.8239280000" GBP="0.6622500000" HKD="8.3380800000" HUF="235.8370000000" IDR="10321.6000000000" ILS="4.1602700000" INR="57.0610000000" JPY="83.0500000000" KRW="1199.1300000000" KWD="0.3026910000" LTL="2.8849400000" LVL="0.5821720000" MXN="13.8421000000" NOK="6.1823300000" NZD="1.3128800000" OMR="0.4140810000" PEN="2.7850200000" PHP="44.7034000000" PLN="3.4168900000" QAR="3.9161300000" RUB="33.4930000000" SAR="4.0333700000" SEK="7.1946000000" SGD="1.3218000000" THB="33.0503000000" TRY="1.9542000000" TWD="31.5145000000" USD="1.0000000000" ZAR="9.3380800000"></span><span class="e4xRoundingMethods"  AED="2" ARS="2" AUD="1" BRL="1" CAD="2" CHF="1" CLP="-1" COP="-2" CZK="0" DKK="0" EUR="2" GBP="2" HKD="2" HUF="0" IDR="-2" ILS="1" INR="0" JPY="0" KRW="0" KWD="2" LTL="2" LVL="2" MXN="0" NOK="0" NZD="1" OMR="2" PEN="1" PHP="0" PLN="2" QAR="2" RUB="2" SAR="1" SEK="0" SGD="1" THB="0" TRY="1" TWD="0" USD="2" ZAR="1"></span><span class="e4xLcpRates"  AE="1.2000000000" AG="1.2000000000" AR="1.2000000000" BB="1.2000000000" BD="1.2000000000" BH="1.2000000000" BN="1.2000000000" BO="1.2000000000" BR="1.2000000000" BZ="1.2000000000" CH="1.2000000000" CL="1.2000000000" CN="1.2000000000" CO="1.2000000000" CR="1.2000000000" DM="1.2000000000" DO="1.2000000000" EC="1.2000000000" GD="1.2000000000" GT="1.2000000000" HK="1.2000000000" HN="1.2000000000" HT="1.2000000000" ID="1.2000000000" IL="1.2000000000" IN="1.2000000000" JM="1.2000000000" JO="1.2000000000" JP="1.2000000000" KH="1.2000000000" KR="1.2000000000" KW="1.2000000000" LI="1.2000000000" LK="1.2000000000" MC="1.2000000000" MO="1.2000000000" MV="1.2000000000" MX="1.2000000000" NI="1.2000000000" NO="1.2000000000" NP="1.2000000000" NZ="1.2000000000" OM="1.2000000000" PA="1.2000000000" PE="1.2000000000" PH="1.2000000000" PK="1.2000000000" PY="1.2000000000" QA="1.2000000000" SA="1.2000000000" SG="1.2000000000" SR="1.2000000000" SV="1.2000000000" TH="1.2000000000" TR="1.2000000000" TT="1.2000000000" TW="1.2000000000" AT="1.2000000000" BE="1.2000000000" BG="1.2000000000" CY="1.2000000000" CZ="1.2000000000" DE="1.2000000000" DK="1.2000000000" EE="1.2000000000" ES="1.2000000000" FI="1.2000000000" FR="1.2000000000" GR="1.2000000000" HU="1.2000000000" IE="1.2000000000" IT="1.2000000000" LT="1.2000000000" LU="1.2000000000" LV="1.2000000000" MT="1.2000000000" NL="1.2000000000" PL="1.2000000000" PT="1.2000000000" RO="1.2000000000" SE="1.2000000000" SI="1.2000000000" SK="1.2000000000" ZA="1.2000000000" AI="1.2000000000" AW="1.2000000000" BM="1.2000000000" GF="1.2000000000" GG="1.2000000000" GI="1.2000000000" GP="1.2000000000" IS="1.2000000000" JE="1.2000000000" KN="1.2000000000" KY="1.2000000000" LC="1.2000000000" MQ="1.2000000000" MS="1.2000000000" RE="1.2000000000" TC="1.2000000000" CA="1.1000000000" GB="1.2000000000" RU="1.2500000000" AU="1.2500000000"></span>
+			<span class="e4xrates"  AED="3.9505500000" ARS="5.0677900000" AUD="1.0356400000" BRL="2.1990900000" CAD="1.0243300000" CHF="1.0031200000" CLP="508.4990000000" COP="1933.3800000000" CZK="20.7003000000" DKK="6.1867400000" EUR="0.8175110000" GBP="0.6601060000" HKD="8.3370000000" HUF="231.1800000000" IDR="10319.5000000000" ILS="4.1028400000" INR="57.0287000000" JPY="83.4742000000" KRW="1194.2500000000" KWD="0.3026150000" LTL="2.8626700000" LVL="0.5777620000" MXN="13.7960000000" NOK="6.1428600000" NZD="1.3181800000" OMR="0.4140810000" PEN="2.7844900000" PHP="44.6173000000" PLN="3.3874100000" QAR="3.9156000000" RUB="33.3354000000" SAR="4.0333700000" SEK="7.1839500000" SGD="1.3133000000" THB="32.9858000000" TRY="1.9466700000" TWD="31.4037000000" USD="1.0000000000" ZAR="9.4329400000"></span><span class="e4xRoundingMethods"  AED="2" ARS="2" AUD="1" BRL="1" CAD="2" CHF="1" CLP="-1" COP="-2" CZK="0" DKK="0" EUR="2" GBP="2" HKD="2" HUF="0" IDR="-2" ILS="1" INR="0" JPY="0" KRW="0" KWD="2" LTL="2" LVL="2" MXN="0" NOK="0" NZD="1" OMR="2" PEN="1" PHP="0" PLN="2" QAR="2" RUB="2" SAR="1" SEK="0" SGD="1" THB="0" TRY="1" TWD="0" USD="2" ZAR="1"></span><span class="e4xLcpRates"  AE="1.2000000000" AG="1.2000000000" AR="1.2000000000" BB="1.2000000000" BD="1.2000000000" BH="1.2000000000" BN="1.2000000000" BO="1.2000000000" BR="1.2000000000" BZ="1.2000000000" CH="1.2000000000" CL="1.2000000000" CN="1.2000000000" CO="1.2000000000" CR="1.2000000000" DM="1.2000000000" DO="1.2000000000" EC="1.2000000000" GD="1.2000000000" GT="1.2000000000" HK="1.2000000000" HN="1.2000000000" HT="1.2000000000" ID="1.2000000000" IL="1.2000000000" IN="1.2000000000" JM="1.2000000000" JO="1.2000000000" JP="1.2000000000" KH="1.2000000000" KR="1.2000000000" KW="1.2000000000" LI="1.2000000000" LK="1.2000000000" MC="1.2000000000" MO="1.2000000000" MV="1.2000000000" MX="1.2000000000" NI="1.2000000000" NO="1.2000000000" NP="1.2000000000" NZ="1.2000000000" OM="1.2000000000" PA="1.2000000000" PE="1.2000000000" PH="1.2000000000" PK="1.2000000000" PY="1.2000000000" QA="1.2000000000" SA="1.2000000000" SG="1.2000000000" SR="1.2000000000" SV="1.2000000000" TH="1.2000000000" TR="1.2000000000" TT="1.2000000000" TW="1.2000000000" AT="1.2000000000" BE="1.2000000000" BG="1.2000000000" CY="1.2000000000" CZ="1.2000000000" DE="1.2000000000" DK="1.2000000000" EE="1.2000000000" ES="1.2000000000" FI="1.2000000000" FR="1.2000000000" GR="1.2000000000" HU="1.2000000000" IE="1.2000000000" IT="1.2000000000" LT="1.2000000000" LU="1.2000000000" LV="1.2000000000" MT="1.2000000000" NL="1.2000000000" PL="1.2000000000" PT="1.2000000000" RO="1.2000000000" SE="1.2000000000" SI="1.2000000000" SK="1.2000000000" ZA="1.2000000000" AI="1.2000000000" AW="1.2000000000" BM="1.2000000000" GF="1.2000000000" GG="1.2000000000" GI="1.2000000000" GP="1.2000000000" IS="1.2000000000" JE="1.2000000000" KN="1.2000000000" KY="1.2000000000" LC="1.2000000000" MQ="1.2000000000" MS="1.2000000000" RE="1.2000000000" TC="1.2000000000" CA="1.1000000000" GB="1.2000000000" RU="1.2500000000" AU="1.2500000000"></span>
             <script src="../../Scripts/e4x.js%3Fv=2"></script>
 			<script>
 				E4x.e4xPopup();
@@ -442,8 +519,10 @@ function SearchSubmit() {
 				<!-- Shop:20001_Template_Header [Main] START --><!-- Shop:20001_Template_Header [Main] END -->
 			</div>
 			
-			<form name="aspnetForm" method="post" action="http://www.shoes.com/en-US/Content/Content.aspx?lang=en-US&amp;contentid=PRIVACY" id="aspnetForm">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="gjdx7w879XPZwssV5qK/V+3d2miAcEj/IWrHSnQrOP6cEPpRBNSxoF4Ec4r+m2G4TEcCSj7BhOLGzNEbzk+vFKVJiZ8=" />
+			<form name="aspnetForm" method="post" action="http://www.shoes.com/en-US/Content/Content.aspx?contentid=PRIVACY&amp;lang=en-US" id="aspnetForm">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="zmQvOD8yttm2te9+1UgbGlNU1Ya6vamyA5ieElZTkgkwyLRQmRHh0lGToCx2hYIIBYSjg6x1KIuJdMWVNKSo7ozvX30=" />
+</div>
 
 
 <script type="text/javascript">
@@ -458,7 +537,10 @@ var freshAddressSiteToken='e215cebd9ca1a199f44e79cd267b99f9466cfe27e87844d2ef6f0
                                     var allowAll = '';//]]>
 </script>
 
-<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+<div>
+
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+</div>
 			
 			<div id="content-body">
 				<table cellpadding="0" cellspacing="0" border="0" id="content-frame">
@@ -520,7 +602,7 @@ var freshAddressSiteToken='e215cebd9ca1a199f44e79cd267b99f9466cfe27e87844d2ef6f0
 	<!-- Shop:20001_shoes_defaultcontent [Left] END -->
 </div></td>
 						<td valign="top" id="content-shop"><div>
-    <input type="hidden" id="SEORoutesNativeUrl" value="http://www.shoes.com/Content.aspx?lang=en-US&contentid=PRIVACY" />
+    <input type="hidden" id="SEORoutesNativeUrl" value="http://www.shoes.com/Content.aspx?contentid=PRIVACY&lang=en-US" />
     
     <!-- Shop:20001_privacy [Main] START --><!-- test -->
 <div class="mainContainer">
