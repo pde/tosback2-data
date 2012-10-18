@@ -1,18 +1,23 @@
 /*
 Cardinal Path - Google Analytics Government Wide Site Usage Measurement
 * v0.1 121011 : First Test Version
+* v1.0 121012 : Added Cookie Synchronizing and filtered out Outbound tracking of cross- and sub-domain links
+* v1.1 121015 : Changed cross-domain to use setAllowAnchor and fixed problem with some links
+* v1.2 121015-2 : Added incoming cross-domain tracking to default _gaq tracker by adding _setAllowLinker and _setAllowAnchor
+* v1.3 121015-3 : All Cross-domain Tracking removed
 */
 
+var _gaq = _gaq || [];
 var _gas = _gas || [];
 
 var GSA_CPwrapGA = (function () {
 
 	var oCONFIG = {
+		VERSION			: 'v1.3 121015-3 : All Cross-domain Tracking removed',
 		GAS_PATH		: '',
 		HOST_DOMAIN_OR	: '', // only required if tracking at a sub-domain level eg sub.example.gov and not at example.gov
-		LEADING_PERIOD	: '',
+		LEADING_PERIOD	: '.',
 		GWT_UAID		: 'UA-33523145-1'
-		//VERSION			: 'v0.1 121011 : First Test Version'
 	}
 
     var instance = this;
@@ -26,21 +31,32 @@ var GSA_CPwrapGA = (function () {
 	
 			// Returns domain name, not sub-domains and with no leading period e.g.  returns usa.gov on http://xyz.usa.gov
 		if (!oCONFIG.HOST_DOMAIN_OR) oCONFIG.HOST_DOMAIN_OR	= getDomainNameGovMil();
+		var ary = setHashAndPeriod(oCONFIG.HOST_DOMAIN_OR);
+		oCONFIG.LEADING_PERIOD = ary[1];
 
 		_gas.push(['GSA_CP._setAccount', oCONFIG.GWT_UAID]);
 		_gas.push(['GSA_CP._setDomainName', oCONFIG.LEADING_PERIOD + oCONFIG.HOST_DOMAIN_OR]);
-		_gas.push(['GSA_CP._setAllowLinker', true]);
+
+
+			// These 2 config lines will affect existing trackers owned by the Agencies - has been documented
+		// ver1.3 _gas.push(['_setAllowAnchor', true]);
+		// ver1.3 _gaq.push(['_setAllowLinker', true]);
+		 
+		// ver1.3 _gas.push(['GSA_CP._setAllowLinker', true]);
+		// ver1.3 _gas.push(['GSA_CP._setAllowAnchor', true]);
+		if(ary[0]) _gas.push(['GSA_CP._setAllowHash', true]);
+		
 
 		_gas.push(['GSA_CP._gasTrackOutboundLinks']);
 		_gas.push(['GSA_CP._gasTrackDownloads']);
 		_gas.push(['GSA_CP._gasTrackMailto']);
 
-		_gas.push(['GSA_CP._addExternalDomainName', "gov"]);
-		_gas.push(['GSA_CP._addExternalDomainName', "mil"]);
-		_gas.push(['GSA_CP._gasMultiDomain', 'click']);
-
+		// ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "gov"]);
+		// ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "mil"]);
+		// ver1.3 _gas.push(['GSA_CP._gasMultiDomain', 'click']);
+		
 /*
-			// In this implementation, we are placing gas,js
+			// In this implementation, we are placing gas,js into this file so no need to include it
 		(function() {
 			var ga = document.createElement('script');
 			ga.type = 'text/javascript';
@@ -50,6 +66,14 @@ var GSA_CPwrapGA = (function () {
 			s.parentNode.insertBefore(ga, s);
 		})();
 */
+
+			// Filter out cross & sub-domain Outbound links
+		_gas.push(['_addHook', '_trackEvent', function(cat, act){
+		  if (cat === 'Outbound' && typeof act === "string" && act.match(/\.(gov|mil)$/)){
+			return false;
+		  }
+		}]);
+
 
 	}
 
@@ -81,7 +105,7 @@ var GSA_CPwrapGA = (function () {
 
 	
 	/**
-	 *  Returns the domain and top-level domain  - eg example.com, example.ca example.co.uk, example.com.au or ipaddress
+	 *  Returns the GA hash for the Cookie domain passed 
 	 *
 	 * @private
 	 * @param {string} strCookieDomain -  the hostname used for the cookie domain 
@@ -110,6 +134,44 @@ var GSA_CPwrapGA = (function () {
 		return fromGaJs_s(strCookieDomain) ; 
 	}
 	
+	/**
+	 *  Returns an array [bool, str] where bool indicates value for setAllowHash and str is either blank or a leading period
+	 *
+	 * @private
+	 * @param {string} strCookieDomain -  the hostname used for the cookie domain WITHOUT  the leading period
+	 */
+	var setHashAndPeriod = function(strCookieDomain) {
+		var utmaCookies = document.cookie.match(/__utma=[^.]+/g);
+		var retVals = [false, ''];	// setAllowHash = false and leading period = ''
+		
+			// if no cookies found
+		if (!utmaCookies) return retVals;
+		
+		var domainHash = getDomainHash(strCookieDomain);
+		
+		for (var elm in utmaCookies) {
+			utmaCookies[elm] = utmaCookies[elm].substr(7);	// strip __utma= leaving only the hash
+			
+				// look for the cookie with the matching domain hash
+			var hashFound = (domainHash == utmaCookies[elm]);
+			if (!hashFound) {
+				hashFound =  (getDomainHash('.' + strCookieDomain) == utmaCookies[elm]);
+				retVals[1] = hashFound ? '.' : '' ;
+			}
+		
+				// if found, there's no hash and we're done
+			if (hashFound) {
+				retVals[0] = false;
+				return retVals;
+			}
+			
+				// if not found, check for hash
+			retVals[0] =  retVals[0] || ('1' == utmaCookies[elm]);	// true if hash == 1
+		}
+		
+		return retVals;
+	}
+
 	
 	/**
 	 * Reports a page view and detects if page is a 404 Page not found

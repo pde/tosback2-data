@@ -80,7 +80,7 @@ $(document).ready(function(){
 			 		s +=		'<input type="hidden" name="checkStock" value="true">'; 
 			 		s +=		'<input type="hidden" name="backTo" value="product">';	 
 			 		s +=		'<input type="text" id="qasSearchTerm" '+postCodeFieldClass+' name="qasSearchTerm" value="'+postCodeFieldValue+'"/>';
-					s +=		'<input type="image" id="checkStockGo" src="' + argos.page.imageDir + '/lightbox/img/btn_checkstock.gif" alt="Check stock" />';	     		
+					s +=		'<input type="image" id="checkStockGo" src="' + argos.app.imageDir + '/lightbox/img/btn_checkstock.gif" alt="Check stock" />';	     		
 			 		s +=	'</li>';
 			 	}
 			 	// outOfStockEmailable
@@ -204,73 +204,6 @@ $(document).ready(function(){
 		}());	     
 	    
 		/*
-		 * Product comparison
-		 */
-
-		(function(){
-			
-			if(typeof isaltmServiceEnabled !== "boolean") return;
-			var cells = $("div#productcomparisonwrap table.compare td.buybutt");
-			var cell;
-			var URL;
-			var identifier;
-			for(var i = cells.length-1; i>=0;i--) {
-				cell = cells[i];
-				var isOutOfStockEmailable = $(cell).hasClass("outOfStockEmailable");
-				var isBuyOrReservable = $(cell).hasClass("buyOrReservable");
-				if(!isOutOfStockEmailable && !isBuyOrReservable) {
-					continue;
-				}
-
-				identifier = $(cell).attr("id").split("product_")[1];
-				URL = $("#href_"+identifier).attr("href");
-				if(isBuyOrReservable && isaltmServiceEnabled) {
-					$(cell).prepend(
-						(function getHTML(){
-							var h = '';
-							h +=	'<div class="stockChecker">';
-							h +=		'<a class="checkStockActivator" href="/webapp/wcs/stores/servlet/ISALTMStockAvailability?';
-							h += (function(){
-								var h = '';
-								h += "partNumber=" + getPartNumber(URL) || "";
-								h += "&storeId=" + getStoreId() || "";
-								h += "&langId=" + getLangId() || "";
-								h += "&backTo=product+list" || "";
-								return h;
-							}());
-							h +=		'">Check stock in your area</a>';
-							h +=	'</div>';
-							return h;
-						}())
-					);
-					$("div#productcomparisonwrap div.stockChecker a.checkStockActivator").bind("click", checkStockActivator_onClick);
-				}
-
-				if(isOutOfStockEmailable) {
-					$(cell).prepend(
-						(function getHTML(){
-							var h = '';
-							h +=	'<div class="emailMe">';
-							h +=		'<a class="emailMe" href="/webapp/wcs/stores/servlet/ISALTMOutOfStockEmail?';
-							h += (function(){
-								var h = '';
-								h += "partNumber=" + getPartNumber(URL) || "";
-								h += "&storeId=" + getStoreId() || "";
-								h += "&langId=" + getLangId() || "";
-								h += "&viewTaskName=ISALTMAjaxResponseView";
-								return h;
-							}());
-							h +=		'">Email me when back in stock</a>';
-							h +=	'</div>';
-							return h;
-						}())
-					)
-					$("div#productcomparisonwrap div.emailMe a.emailMe").bind("click", listerEmailMe_onClick);
-				}
-			}
-		}());
-		
-		/*
 		 * Trolley lister
 		 */
 
@@ -383,12 +316,12 @@ $(document).ready(function(){
 	    
 	    function getStoreId(){
 	    	//return $("input[name=storeId]").val();
-	    	return argos.page.storeId;
+	    	return argos.app.storeId;
 	    }
 	    
 	    function getLangId(){
 	    	//return $("input[name=langId]").val();	
-	    	return argos.page.langId;
+	    	return argos.app.langId;
 	    }
 	    
 		function checkStockActivator_onClick() {

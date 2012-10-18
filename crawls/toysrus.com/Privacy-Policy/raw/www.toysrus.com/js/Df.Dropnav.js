@@ -65,12 +65,20 @@ Df.Dropnav = function(el){
 	
 	var display = this.display = function(event){
 		status = true;
-		setTimeout(waitToDisplay,pars.pause);
+		if (Prototype.Browser.WebKit) {
+			waitToDisplay(event);
+		} else {
+			setTimeout(function(){waitToDisplay(event)},pars.pause);
+		}
 	}
 	
 	var hide = this.hide = function(event){
 		status = false;
-		setTimeout(waitToHide,pars.pause);
+		if (Prototype.Browser.WebKit) {
+			waitToHide(event);
+		} else {
+			setTimeout(function(){waitToHide(event)},pars.pause);
+		}
 	}
 	
 	var waitToDisplay = function(event){
@@ -95,7 +103,7 @@ Df.Dropnav = function(el){
 				ele.addClassName(pars.activeClassName)
 			}
 			
-			if(pars.onDisplay){
+			if((ele == event.target || ele == event.target.parentNode) && pars.onDisplay){
 				pars.onDisplay(ele);
 			}
 			

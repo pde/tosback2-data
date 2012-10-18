@@ -48,4 +48,4 @@ window.sendBackToFeature=ebHelpSendBackToFeature;function ebHelpGetBackToFeature
 {str='<font face="arial" size="2">';str+='<a href="javascript:sendBackToFeature(';str+=(parseInt(ebHelpFeatureRef)-window.history.length)+');">';str+=decodeURIComponent(ebHelpFeatureName);str+='</a></font>&nbsp;&nbsp;';}
 return str;}
 window.getBackToFeature=ebHelpGetBackToFeature;window.ebHelpSearchClear=new Function("return true;");ebHelpGBTFInit();
-// b=15430098 -->
+// b=15457883 -->

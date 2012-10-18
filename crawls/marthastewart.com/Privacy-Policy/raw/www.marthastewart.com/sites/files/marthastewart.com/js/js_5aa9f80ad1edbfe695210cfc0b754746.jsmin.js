@@ -1,0 +1,2 @@
+// Minified using Javascript Aggregator - see /sites/files/marthastewart.com/js/js_5aa9f80ad1edbfe695210cfc0b754746.js for original source including licensing information.
+function Legolas_Event(){var d=new Image(1,1);d.onerror=d.onload=function(){d.onerror=d.onload=null};d.src="http://rt.legolas-media.com/lgrt?ci=2&ti=7998&pbi=10879"};Legolas_Event()

@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "si.179.904.20120912",
+	version: "si.192.904.20121005",
 	release: "0",
 	dictionary: {
 		init: {
@@ -8,25 +8,25 @@ var _jsmd_default={
 
 			"business.name":					"si",									//pageName
 			"business.lob":						"sports",								//hier1
-			"business.brand":					"sports illustrated",	                //hier1
+			"business.brand":					"sports illustrated",					//hier1
 			"business.friendly_name":			"si",									//prop30,eVar30,hier1
-			"page.clean_url":					"raw:gADBPURL|",		        		//prop26
-			"page.domain":						"raw:gADBPURL|domain",	                //server,eVar29
-			"page.url_section[0]":				"raw:gADBPURL|path,1",	                //prop41,eVar44 - first directory
-			"page.url_section[1]":				"raw:gADBPURL|path,2",	                //prop42,eVar45 - second directory
+			"page.clean_url":					"raw:gADBPURL|",						//prop26
+			"page.domain":						"raw:gADBPURL|domain",					//server,eVar29
+			"page.url_section[0]":				"raw:gADBPURL|path,1",					//prop41,eVar44 - first directory
+			"page.url_section[1]":				"raw:gADBPURL|path,2",					//prop42,eVar45 - second directory
 			"page.transaction_id":				(_w.cnnad_transactionID?_w.cnnad_transactionID+"":""),	//prop46,eVar46 - Transaction ID
-            "page.section[0]":                  "gJObj|cnn_metadata,section[0]",        //channel,eVar27
-            "page.section[1]":                  "gJObj|cnn_metadata,section[1]",        //prop28,eVar28
+			"page.section[0]":					"gJObj|cnn_metadata,section[0]",		//channel,eVar27
+			"page.section[1]":					"gJObj|cnn_metadata,section[1]",		//prop28,eVar28
 			"page.template_type":				"gJObj|cnn_metadata,template_type",		//prop32,eVar32
 			"page.content_type":				"gJObj|cnn_metadata,content_type",		//prop33,eVar33
-			"page.name":						"raw:gADBPPageName|",	                //pageName,eVar26
-			"promo.internal.id":				"gQuery|iid",			        		//eVar43
+			"page.name":						"raw:gADBPPageName|",					//pageName,eVar26
+			"promo.internal.id":				"gQuery|iid",							//eVar43
 			"promo.internal.implied":			"",										//eVar48
-			"promo.external.id":				"gQuery|xid,sr",			        		//campaign
+			"promo.external.id":				"gQuery|xid,sr",						//campaign
 			"search.internal.keyword":			"",										//prop39,eVar39
 			"search.internal.number_results":	"",										//prop27
-			"page.type":						"errorPage",						//prop29,eVar41
-			"video.players":					[],						//video player array object
+			"page.type":						"errorPage",							//prop29,eVar41
+			"video.players":					[],										//video player array object
 			nielsen: {
 				"video-census": {
 					clientid: "us-100120",
@@ -39,22 +39,22 @@ var _jsmd_default={
 			,
 			/* ADBP Recommended Standards */
 
-			"ignore":							""						// This can be removed once other recommended standards are defined.  Simply copy & replace
+			"ignore":							""										// This can be removed once other recommended standards are defined.  Simply copy & replace
 
 			,
 			/* Business-Specific Standards */
 
-	"business.si.column":					"gJObj|cnn_metadata,column",//prop,eVar1,8,9
-	"business.si.ex_ref":					"gSIRefDom|",				//prop2
-	"business.si.flash_ver":				"gSIFlashVer|",				//prop3
-	"business.si.survey":					"",							//prop4,eVar4
-	"business.si.vid_franchise":			"",							//prop5,eVar5
-	"business.si.player_loc":				"gSIVidPlayerLoc|",			//prop6,eVar6
-	"business.si.audio":					"gJObj|cnn_metadata,audio",	//prop7,eVar7
-	"business.si.hplink":					"gQuery|sct",				//prop10,eVar10
-	"business.si.vid_category":				"",							//prop11,eVar11
-	"business.si.social_type":				"",							//prop24,eVar24
-	"business.si.gallery_info":				""							//prop25,eVar25
+			"business.si.column":					"gJObj|cnn_metadata,column",		//prop,eVar1,8,9
+			"business.si.ex_ref":					"gSIRefDom|",						//prop2
+			"business.si.flash_ver":				"gSIFlashVer|",						//prop3
+			"business.si.survey":					"",									//prop4,eVar4
+			"business.si.vid_franchise":			"",									//prop5,eVar5
+			"business.si.player_loc":				"gSIVidPlayerLoc|",					//prop6,eVar6
+			"business.si.audio":					"gJObj|cnn_metadata,audio",			//prop7,eVar7
+			"business.si.hplink":					"gQuery|sct",						//prop10,eVar10
+			"business.si.vid_category":				"",									//prop11,eVar11
+			"business.si.social_type":				"",									//prop24,eVar24
+			"business.si.gallery_info":				""									//prop25,eVar25
 
 			,
 			/* Pre-Metadata Collection Routines */
@@ -65,82 +65,83 @@ var _jsmd_default={
 			/* Post-Metadata Translation Routines */
 			postinit: function() {
 
+				/* reformat template type and content type to match ADBP standard */
 				var tt=this.get("m:page.template_type"),ct=this.get("m:page.content_type");
-				if(tt!=null) {
+				if (tt!=null) {
 					tt=tt.replace(/adbp./,"");
-					if(tt.match("other:") || tt.match("adbp:")){
+					if (tt.match("other:") || tt.match("adbp:")) {
 						this.set("m:page.template_type",tt);
 					} else {
 						this.set("m:page.template_type","adbp:" + tt);
 					};
 				}
-				if(ct!=null) {
+				if (ct!=null) {
 					ct=ct.replace(/adbp./,"");
 					this.set("m:page.content_type","adbp:"+ct);
 					this.plugin.gADBPContentType(ct);
 				}
-				if(this.get("page.url_section[0]") == ""){
+
+				/* set default value for prop41,eVar44 */
+				if (this.get("page.url_section[0]") == "") {
 					this.set("page.url_section[0]","home");
 				}
 
-				/* Default value for prop28/eVar28 */
-				if(this.get("m:page.section[1]") == ""){
+				/* set default value for prop28/eVar28 */
+				if (this.get("m:page.section[1]") == "") {
 					this.set("page.section[1]","other");
 				}
 
-				/* Name spacing for SI and Vault */
+				/* Name spacing for SI and Vault section/subsection */
 				var ch = (this.get("m:page.section[0]") ? this.get("m:page.section[0]") : "");
 				var sch = (this.get("m:page.section[1]") ? this.get("m:page.section[1]") : "");
 				var siHost = window.location.host;
-				if( ((siHost.indexOf("sportsillustrated") > -1) || (siHost.indexOf("sipreview") > -1)) && !(window.location.pathname.indexOf("/vault/") > -1) ){
-					if(ch != null && ch != ""){
+				if (((siHost.indexOf("sportsillustrated") > -1) || (siHost.indexOf("sipreview") > -1)) && !(window.location.pathname.indexOf("/vault/") > -1)) {
+					if (ch != null && ch != "") {
 						this.set("page.section[0]","si:" + ch);
 					}
-					if(sch != null && sch != ""){
+					if (sch != null && sch != "") {
 						this.set("page.section[1]","si:" + ch + ":" + sch);
 					}
-				} else if((siHost.indexOf("vaultp1refcomp1") > -1) || (window.location.pathname.indexOf("/vault/") > -1)) {
-					if(ch != null && ch != ""){
+				} else if ((siHost.indexOf("vaultp1refcomp1") > -1) || (window.location.pathname.indexOf("/vault/") > -1)) {
+					if (ch != null && ch != "") {
 						this.set("page.section[0]","vault:" + ch);
 					}
-					if(sch != null && sch != ""){
+					if (sch != null && sch != "") {
 						this.set("page.section[1]","vault:" + ch + ":" + sch);
 					}
 				}
 
 				/* Vault Search */
-				if((window.location.pathname.indexOf("vault") > -1) && (window.location.href.indexOf("searchType") > -1)){
+				if ((window.location.pathname.indexOf("vault") > -1) && (window.location.href.indexOf("searchType") > -1)) {
 					this.set("m:search.internal.keyword",_jsmd.plugin.gJObj("cnn_metadata","search.term"));
-					if(_jsmd.plugin.gJObj("cnn_metadata","search.results") <= 0){
+					if (_jsmd.plugin.gJObj("cnn_metadata","search.results") <= 0) {
 						this.set("m:search.internal.number_results","zero");
 					} else {
-						this.set("m:search.internal.number_results",_jsmd.plugin.gJObj("cnn_metadata","search.results"));
+						this.set("m:search.internal.number_results",_jsmd.plugin.gJObj("cnn_metadata","search.results"));	//prop27
 					}
-					this.push("page.events","search.internal.page");
+					this.push("page.events","search.internal.page");	//event27
 				}
 
+				/* remove dot from column name */
 				var cn = (this.get("business.si.column.name") ? this.get("business.si.column.name") : "");
-				if(window.location.pathname.indexOf("/writers/") > -1){
-					this.set("business.si.column.name",cn.replace("."," "));
+				if (window.location.pathname.indexOf("/writers/") > -1) {
+					this.set("business.si.column.name",cn.replace("."," "));	//prop8,eVar8
 				}
 
 				/* facebook fantasy games */
-				if(window.location.pathname.indexOf("fb/fantasy/nflcommish2011") > -1){
-					this.set("business.si.game.name","commissioner");
-					this.set("business.si.game.league",_jsmd.plugin.gQuery("leagueid"));
-					this.set("business.si.game.team",_jsmd.plugin.gQuery("teamid"));
+				if (window.location.pathname.indexOf("fb/fantasy/nflcommish2011") > -1) {
+					this.set("business.si.game.name","commissioner");						//prop12,eVar12
+					this.set("business.si.game.league",_jsmd.plugin.gQuery("leagueid"));	//prop13,eVar13
+					this.set("business.si.game.team",_jsmd.plugin.gQuery("teamid"));		//prop14,eVar14
 
 					var curPageName = this.get("m:page.name");
 					var curPage = _jsmd.plugin.gQuery("page");
 					var initPage = _jsmd.plugin.gQuery("ntr");
-					if(initPage)
-					{
-						this.set("m:page.name",curPageName + "/?page=" + initPage);
-						this.push("page.events","app.init");
-					}
-					else if(curPage)
-					{
-						this.set("m:page.name",curPageName + "/?page=" + curPage);
+					if (initPage) {
+						this.set("m:page.name",curPageName + "/?page=" + initPage);		//pageName,eVar26
+						this.push("page.events","app.init");	//event15
+					} else if (curPage) {
+						this.set("m:page.name",curPageName + "/?page=" + curPage);		//pageName,eVar26
 					}
 				}
 
@@ -149,12 +150,10 @@ var _jsmd_default={
 					this.set("business.si.game.name",_jsmd.plugin.gADBPURL("path",1));	//prop12,eVar12
 				}
 
-
 				/* video pagename hash tag fix */
-				if(window.location.href.indexOf("video/#") > -1)
-				{
+				if (window.location.href.indexOf("video/#") > -1) {
 					var index = window.location.href.indexOf("video/#") + 7;
-					this.set("m:page.name","SI:v:sportsillustrated:video/[" + window.location.href.substr(index) + "]");
+					this.set("m:page.name","SI:v:sportsillustrated:video/[" + window.location.href.substr(index) + "]");	//pageName,eVar26
 				}
 
 			}
@@ -162,132 +161,132 @@ var _jsmd_default={
 	},
 	map: {
 
-	"si_main": {
-		vendors: [
-			{
-				name:			                "Adobe SiteCatalyst H-code",
-				account:		                "si",
-				settings:		                ["si"],
-				variablemap:	                ["si","adbp"],
-				eventmap:		                ["si","adbp"],
-				dynamic_actions: {
-					"video": {
-						variablemap:	        ["si","adbp-video"],
-						eventmap:				["si","adbp-video"]
-					}
-				},
-				prevendor: function() { },
-				postvendor: function() { }
-			},
-			{
-				name: 			                "Nielsen Hybrid Light Code",
-				account:		                "standard_nielsen",
-				dynamic_actions: {
-					"video":                    { ignore: true },
-					"gallery-click":			{ ignore: true },
-					"social-click":				{ ignore: true },
-					"livefyre-click":			{ ignore: true }
-				}
-
-			}
-		],
-		/** Variable: VendorSettingsObject
-		*/
-		standard_nielsen: {
-			account: function() {
-				return ("us-204044h");
-			}
-		},
-		si: {
-			account: function() {
-				var accountName;
-				var host = _w.location.hostname;
-				/* football challenge */
-				if (host.indexOf("sifantasy.secondthought.com") > -1) {
-					brand = "aolturnersibrand";
-					accountName = "sidsioffsite";
-				}
-
-				if((host.indexOf("sipreview") > -1) ||
-				   (host.indexOf("vaultp1refcomp1") > -1) ||
-				   (host.indexOf("webp1refcache1") > -1)){
-						if(_w.location.pathname.indexOf("vault") > -1){
-							accountName = "sidsivaultdev";
-						} else {
-							accountName = "sidsidev";
+		"si_main": {
+			vendors: [
+				{
+					name:							"Adobe SiteCatalyst H-code",
+					account:						"si",
+					settings:						["si"],
+					variablemap:					["si","adbp"],
+					eventmap:						["si","adbp"],
+					dynamic_actions: {
+						"video": {
+							variablemap:			["si","adbp-video"],
+							eventmap:				["si","adbp-video"]
 						}
-				} else {
-					if(_w.location.pathname.indexOf("vault") > -1){
-						accountName = "sidsivault";
-					} else if(_w.location.pathname.indexOf("ffgame") > -1){
-						accountName = "sidsioffsite";
-					} else {
-						accountName = "sidsi";
+					},
+					prevendor: function() { },
+					postvendor: function() { }
+				},
+				{
+					name:							"Nielsen Hybrid Light Code",
+					account:						"standard_nielsen",
+					dynamic_actions: {
+						"video":					{ ignore: true },
+						"gallery-click":			{ ignore: true },
+						"social-click":				{ ignore: true },
+						"livefyre-click":			{ ignore: true }
 					}
-				}
-				return accountName;
-			},
-			settings: {
-				"trackDownloadLinks":		        true,
-				"trackExternalLinks":		        true,
-				"trackInlineStats":					true,
-				"linkDownloadFileTypes":	        "exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls",
-				"linkInternalFilters":		        "javascript:,sportsillustrated,.si.com,turner.com,twackle.com,apps.facebook.com,sifantasy.secondthought.com,st-sifantasy.staging.catalyticgroup.com,sportstechinc.com,amazonaws.com",
-				"linkLeaveQueryString":		        false,
-				"trackingServer":					"metrics.cnn.com",
-				"trackingServerSecure":		        "smetrics.cnn.com",
-				"visitorNamespace":					"turnersports",
-				"charSet":							"ISO8859-1",
-				"currencyCode":						"USD"
-			},
-			filters: {
-				"mlbtab-click":		{ include: ["game.name"] },
-				"gallery-click":	{ include: ["business.si.gallery_info","page.template_type","page.content_type"] },
-				"social-click":		{ include: ["business.si.social_type"] }
-			},
-			variablemap: {
-				"business.si.column.writer":		["prop1","eVar1"],
-				"business.si.ex_ref":				["prop2"],
-				"business.si.flash_ver":			["prop3"],
-				"business.si.survey":				["prop4","eVar4"],
-				"business.si.audio":				["prop7","eVar7"],
-				"business.si.column.name":			["prop8","eVar8"],
-				"business.si.column.title":			["prop9","eVar9"],
-				"business.si.hplink":				["prop10","eVar10"],
-				"business.si.vid_category":			["prop11","eVar11"],
-				"business.si.game.name":			["prop12","eVar12"],
-				"business.si.game.league":			["prop13","eVar13"],
-				"business.si.game.team":			["prop14","eVar14"],
-				"business.si.game.action":			["prop15","eVar15"],
-				"business.si.social_type":			["prop24","eVar24"],
-				"business.si.gallery_info":			["prop25","eVar25"],
-				"m:page.type":						["pageType"]
-			},
-			eventmap: {
-				"app.init":							["event15"],
-				"social.interaction":				["event24"],
-				"social.comment_submit":			["event25"]
-			},
-			premap: function() { },
-			postmap: function() {
-				/* pageType - 404 Error Pages */
-				if(!document.title.match("404")){
-					this.v.pageType = "";
-				} else {
-					this.v.pageType = "errorPage";
-				}
 
-				/* Enable and Disable necessary video variables * /
-				/*  */ if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("preroll") > -1) {
+				}
+			],
+			/** Variable: VendorSettingsObject
+			*/
+			standard_nielsen: {
+				account: function() {
+					return ("us-204044h");
+				}
+			},
+			si: {
+				account: function() {
+					var accountName;
+					var host = _w.location.hostname;
+					/* football challenge */
+					if (host.indexOf("sifantasy.secondthought.com") > -1) {
+						brand = "aolturnersibrand";
+						accountName = "sidsioffsite";
+					}
+					if ((host.indexOf("sipreview") > -1) || (host.indexOf("vaultp1refcomp1") > -1) || (host.indexOf("webp1refcache1") > -1)) {
+							if (_w.location.pathname.indexOf("vault") > -1) {
+								accountName = "sidsivaultdev";
+							} else {
+								accountName = "sidsidev";
+							}
+					} else {
+						if (_w.location.pathname.indexOf("vault") > -1) {
+							accountName = "sidsivault";
+						} else if (_w.location.pathname.indexOf("ffgame") > -1) {
+							accountName = "sidsioffsite";
+						} else {
+							accountName = "sidsi";
+						}
+					}
+					return accountName;
+				},
+				settings: {
+					"trackDownloadLinks":				true,
+					"trackExternalLinks":				true,
+					"trackInlineStats":					true,
+					"linkDownloadFileTypes":			"exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls",
+					"linkInternalFilters":				"javascript:,sportsillustrated,.si.com,turner.com,twackle.com,apps.facebook.com,sifantasy.secondthought.com,st-sifantasy.staging.catalyticgroup.com,sportstechinc.com,amazonaws.com",
+					"linkLeaveQueryString":				false,
+					"trackingServer":					"metrics.cnn.com",
+					"trackingServerSecure":				"smetrics.cnn.com",
+					"visitorNamespace":					"turnersports",
+					"charSet":							"ISO8859-1",
+					"currencyCode":						"USD"
+				},
+				filters: {
+					"mlbtab-click":		{ include: ["game.name"] },
+					"gallery-click":	{ include: ["business.si.gallery_info","page.template_type","page.content_type"] },
+					"social-click":		{ include: ["business.si.social_type"] }
+				},
+				variablemap: {
+					"business.si.column.writer":		["prop1","eVar1"],
+					"business.si.ex_ref":				["prop2"],
+					"business.si.flash_ver":			["prop3"],
+					"business.si.survey":				["prop4","eVar4"],
+					"business.si.audio":				["prop7","eVar7"],
+					"business.si.column.name":			["prop8","eVar8"],
+					"business.si.column.title":			["prop9","eVar9"],
+					"business.si.hplink":				["prop10","eVar10"],
+					"business.si.vid_category":			["prop11","eVar11"],
+					"business.si.game.name":			["prop12","eVar12"],
+					"business.si.game.league":			["prop13","eVar13"],
+					"business.si.game.team":			["prop14","eVar14"],
+					"business.si.game.action":			["prop15","eVar15"],
+					"business.si.social_type":			["prop24","eVar24"],
+					"business.si.gallery_info":			["prop25","eVar25"],
+					"m:page.type":						["pageType"]
+				},
+				eventmap: {
+					"app.init":							["event15"],
+					"social.interaction":				["event24"],
+					"social.comment_submit":			["event25"]
+				},
+				premap: function() { },
+				postmap: function() {
+					/* clear cached linkTrackVars value */
+					this.v.linkTrackVars = "";
+
+					/* pageType - 404 Error Pages */
+					if (!document.title.match("404")) {
+						this.v.pageType = "";
+					} else {
+						this.v.pageType = "errorPage";
+					}
+
+					/* Enable and Disable necessary video variables */
+					if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("preroll") > -1) {
 						this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
 						this.v.eVar6 = this.v.prop6; this.v.prop6 = "";
 						this.v.eVar7 = this.v.prop7; this.v.prop7 = "";
 						this.v.eVar41 = this.v.prop29; this.v.prop29 = "";
 						this.v.prop2 = this.v.prop3 = this.v.prop10 = this.v.prop26 = this.v.prop28 = this.v.prop29 = this.v.prop32 = this.v.prop33 = this.v.prop35 = this.v.prop40 = this.v.prop41 = this.v.prop42 = "";
 						this.v.eVar10 = this.v.eVar26 = this.v.eVar27 = this.v.eVar28 = this.v.eVar32 = this.v.eVar33 = this.v.eVar40 = this.v.eVar44 = this.v.eVar45 = this.v.eVar46 = "";
-				} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1)) {
+					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("autostart") > -1 || this.config.map.isDynamic.indexOf("start") > -1)) {
 						this.v.prop2 = this.v.prop3 = this.v.eVar26 = this.v.eVar28 = this.v.eVar40 = this.v.eVar44 = this.v.eVar45 = this.v.eVar46 = "";
-				} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("fifty_percent") > -1 || this.config.map.isDynamic.indexOf("complete") > -1)) {
+					} else if (this.config.map.isDynamic != null && (this.config.map.isDynamic.indexOf("fifty_percent") > -1 || this.config.map.isDynamic.indexOf("complete") > -1)) {
 						this.v.eVar5 = this.v.prop5; this.v.prop5 = "";
 						this.v.eVar6 = this.v.prop6; this.v.prop6 = "";
 						this.v.eVar7 = this.v.prop7; this.v.prop7 = "";
@@ -295,309 +294,310 @@ var _jsmd_default={
 						this.v.eVar33 = this.v.prop33; this.v.prop33 = "";
 						this.v.prop2 = this.v.prop3 = "";
 						this.v.eVar46 = "";
-				}
-
-				/* football challenge */
-				if (this.config.map.isDynamic != null) {
-					if ((window.location.hostname.indexOf("sifantasy.secondthought.com") > -1) || (window.location.hostname.indexOf("st-sifantasy.staging.catalyticgroup.com") > -1)) {
-						this.v.hier1 = "";
 					}
-				}
-				/* Vegas click tracking */
-				if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("gallery-click") > -1){
-					this.v.linkTrackVars = "prop25,prop32,prop33,eVar25,eVar32,eVar33";
-				};
-				if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("social-click") > -1){
-					this.v.linkTrackVars = "prop24,eVar24";
-				};
 
-				/* livefyre click tracking */
-				if(this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("livefyre-click") > -1){
-					this.v.eVar26 = this.v.pageName;
-					this.v.pageName = "";
-					this.v.events = "event24,event25";
-				};
-			}
-		},
-		adbp: {
-			filters: {
-				"mlbtab-click":		{ include: ["nothing"] },
-				"livefyre-click":	{ include: ["page.name","code.version"] }
+					/* football challenge */
+					if (this.config.map.isDynamic != null) {
+						if ((window.location.hostname.indexOf("sifantasy.secondthought.com") > -1) || (window.location.hostname.indexOf("st-sifantasy.staging.catalyticgroup.com") > -1)) {
+							this.v.hier1 = "";
+						}
+					}
+
+					/* Vegas click tracking - Variable correction for module clicks */
+					if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("gallery-click") > -1) {
+						this.v.linkTrackVars = "prop25,prop32,prop33,eVar25,eVar32,eVar33";
+					};
+					if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("social-click") > -1) {
+						this.v.linkTrackVars = "prop24,eVar24";
+					};
+
+					/* livefyre click tracking */
+					if (this.config.map.isDynamic != null && this.config.map.isDynamic.indexOf("livefyre-click") > -1) {
+						this.v.eVar26 = this.v.pageName;
+						this.v.pageName = "";
+						this.v.events = "event24,event25";
+					};
+				}
 			},
-			settings: {
-				"trackInlineStats":				true,
-				"linkLeaveQueryString":		    false
+			adbp: {
+				filters: {
+					"mlbtab-click":		{ include: ["nothing"] },
+					"livefyre-click":	{ include: ["page.name","code.version"] }
+				},
+				settings: {
+					"trackInlineStats":				true,
+					"linkLeaveQueryString":			false
+				},
+				variablemap: {
+					"m:page.name":					["pageName","eVar26"],
+					"m:page.section[0]":			["channel","eVar27"],
+					"m:page.domain":				["server","eVar29"],
+					"m:page.clean_url":				["prop26"],
+					"m:search.internal.number_results":	["prop27"],
+					"m:page.section[1]":			["prop28","eVar28"],
+					"m:video.title":				["prop29","eVar41"],
+					"m:business.friendly_name":		["prop30","eVar30"],
+					"m:page.template_type":			["prop32","eVar32"],
+					"m:page.content_type":			["prop33","eVar33"],
+					"m:user.authenticated":			["prop34","eVar34"],
+					"m:code.version":				["prop35"],
+					"m:user.segment":				["prop36","eVar36"],
+					"m:search.internal.keyword":	["prop39","eVar39"],
+					"m:page.url_section[0]":		["prop41","eVar44"],
+					"m:page.url_section[1]":		["prop42","eVar45"],
+					"m:video.id":					["eVar42"],
+					"m:promo.internal.id":			["eVar43"],
+					"m:page.transaction_id":		["prop46","eVar46"],
+					"m:promo.internal.implied":		["eVar48"],				//Campaign Stacking (SEO Driven)
+					"m:promo.external.id":			["campaign"],			//Marketing/External Campaigns
+					"m:video.products":				["products"],
+					"m:business.lob|m:business.brand|m:business.friendly_name|m:page.domain|m:page.section[0]|m:page.section[1]":	["hier1"],
+					"delimiter":					"|"
+				},
+				eventmap: {
+					"m:page.name":					["event26"],
+					"page.view":					["event26"],
+					"search.internal.page":			["event27"],
+					"registration.complete":		["event28"],
+					"promo.internal.id":			["event31"],
+					"video.start":					["event32"],
+					"video.complete":				["event33"],
+					"video.autostart":				["event34"],
+					"ad.start.preroll":				["event35"],
+					"video.timespent":				["event36"],
+					"user.login":					["event37"],
+					"blog.read":					["event38"],
+					"article.read":					["event39"],
+					"video.preroll":				["event35"],
+					"m:video.duration_watched":		["event36"]
+				},
+				premap: function() { },
+				postmap: function() { }
 			},
-			variablemap: {
-				"m:page.name":					["pageName","eVar26"],
-				"m:page.section[0]":			["channel","eVar27"],
-				"m:page.domain":				["server","eVar29"],
-				"m:page.clean_url":				["prop26"],
-				"m:search.internal.number_results":	["prop27"],
-				"m:page.section[1]":			["prop28","eVar28"],
-				"m:video.title":				["prop29","eVar41"],
-				"m:business.friendly_name":		["prop30","eVar30"],
-				"m:page.template_type":			["prop32","eVar32"],
-				"m:page.content_type":			["prop33","eVar33"],
-				"m:user.authenticated":			["prop34","eVar34"],
-				"m:code.version":				["prop35"],
-				"m:user.segment":				["prop36","eVar36"],
-				"m:search.internal.keyword":	["prop39","eVar39"],
-				"m:page.url_section[0]":		["prop41","eVar44"],
-				"m:page.url_section[1]":		["prop42","eVar45"],
-				"m:video.id":					["eVar42"],
-				"m:promo.internal.id":			["eVar43"],
-				"m:page.transaction_id":		["prop46","eVar46"],
-				"m:promo.internal.implied":		["eVar48"],			//Campaign Stacking (SEO Driven)
-				"m:promo.external.id":			["campaign"],			//Marketing/External Campaigns
-				"m:video.products":				["products"],
-				"m:business.lob|m:business.brand|m:business.friendly_name|m:page.domain|m:page.section[0]|m:page.section[1]":	["hier1"],
-				"delimiter":					"|"
-			},
-			eventmap: {
-				"m:page.name":					["event26"],
-				"page.view":					["event26"],
-				"search.internal.page":	        ["event27"],
-				"registration.complete":	    ["event28"],
-				"promo.internal.id":		    ["event31"],
-				"video.start":					["event32"],
-				"video.complete":				["event33"],
-				"video.autostart":				["event34"],
-				"ad.start.preroll":				["event35"],
-				"video.timespent":				["event36"],
-				"user.login":					["event37"],
-				"blog.read":					["event38"],
-				"article.read":					["event39"],
-				"video.preroll":				["event35"],
-				"m:video.duration_watched":	    ["event36"]
-			},
-			premap: function() { },
-			postmap: function() { }
-		},
-		"adbp-video": {
-			filters: {
-				"video-preroll":                { include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","page.domain","video.title","video.id","business.friendly_name","video.preroll"] },
-				"video-progress":		        { include: ["video.duration_watched"] },
-				"video-complete":               { include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","video.title","video.id","business.friendly_name","page.content_type","page.domain","page.section[0]","page.template_type","video.duration_watched","video.complete"] },
-				"video-fifty_percent":          { include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","video.title","video.id","business.friendly_name","page.content_type","page.domain","page.section[0]","page.template_type","video.duration_watched","video.fifty_percent"] }
-			},
-			variablemap: {
-				"business.si.vid_franchise":	["prop5","eVar5"],
-				"business.si.player_loc":		["prop6","eVar6"],
-				"business.si.audio":            ["prop7","eVar7"],
-				"m:page.section[0]":			["eVar27"],
-				"m:page.section[1]":			["eVar28"],
-				"m:page.domain":				["eVar29"],
-				"m:video.title":				["prop29","eVar41"],
-				"m:video.id":					["eVar42"],
-				"m:business.friendly_name":		["eVar30"],
-				"m:page.template_type":			["eVar32"],
-				"m:page.content_type":			["prop33","eVar33"],
-				"m:code.version":				["prop35"],
-				"m:promo.internal.id":			["eVar43"],
-				"m:promo.internal.implied":		["eVar48"],			//Campaign Stacking (SEO Driven)
-				"m:promo.external.id":			["campaign"],		//Marketing/External Campaigns
-				"delimiter":					"|"
-			},
-			eventmap: {
-				"video.fifty_percent":          ["event1"],
-				"video.start":					["event32"],
-				"video.complete":				["event33"],
-				"video.autostart":				["event34"],
-				"video.preroll":				["event35"],
-				"m:video.duration_watched":	    ["event36"]
-			},
-			premap: function() { },
-			postmap: function() {
+			"adbp-video": {
+				filters: {
+					"video-preroll":				{ include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","page.domain","video.title","video.id","business.friendly_name","video.preroll"] },
+					"video-progress":				{ include: ["video.duration_watched"] },
+					"video-complete":				{ include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","video.title","video.id","business.friendly_name","page.content_type","page.domain","page.section[0]","page.template_type","video.duration_watched","video.complete"] },
+					"video-fifty_percent":			{ include: ["business.si.vid_franchise","business.si.player_loc","business.si.audio","video.title","video.id","business.friendly_name","page.content_type","page.domain","page.section[0]","page.template_type","video.duration_watched","video.fifty_percent"] }
+				},
+				variablemap: {
+					"business.si.vid_franchise":	["prop5","eVar5"],
+					"business.si.player_loc":		["prop6","eVar6"],
+					"business.si.audio":			["prop7","eVar7"],
+					"m:page.section[0]":			["eVar27"],
+					"m:page.section[1]":			["eVar28"],
+					"m:page.domain":				["eVar29"],
+					"m:video.title":				["prop29","eVar41"],
+					"m:video.id":					["eVar42"],
+					"m:business.friendly_name":		["eVar30"],
+					"m:page.template_type":			["eVar32"],
+					"m:page.content_type":			["prop33","eVar33"],
+					"m:code.version":				["prop35"],
+					"m:promo.internal.id":			["eVar43"],
+					"m:promo.internal.implied":		["eVar48"],			//Campaign Stacking (SEO Driven)
+					"m:promo.external.id":			["campaign"],		//Marketing/External Campaigns
+					"delimiter":					"|"
+				},
+				eventmap: {
+					"video.fifty_percent":			["event1"],
+					"video.start":					["event32"],
+					"video.complete":				["event33"],
+					"video.autostart":				["event34"],
+					"video.preroll":				["event35"],
+					"m:video.duration_watched":		["event36"]
+				},
+				premap: function() { },
+				postmap: function() {
+				}
 			}
 		}
-	}
 
 	},
 	plugins: {
 
-	/* prop2 - Referral Domain */
-	gSIRefDom:function(){
-		if(window.location.href.indexOf("eref") > -1){
-			var ref = document.referrer;
-			var exp = (ref.split(":").length > 2 ? /http:\/\/(\w+\.\w+\.\w+\:\d+)\// : /http:\/\/(\w+\.\w+\.\w+)\//);
-			var result = exp.exec(ref);
-		}
-		return result[1] + " - " + _jsmd.plugin.gQuery("eref");
-	},
-	/* prop3 - flash version */
-	gSIFlashVer:function(){
-		var flashVerObj;
-		var flashVer;
-		if(swfobject != null){
-			flashVerObj = swfobject.getFlashPlayerVersion();
-			flashVer = flashVerObj.major +"."+ flashVerObj.minor +"."+ flashVerObj.release;
-		}
-		return flashVer;
-	},
-	/* prop6, eVar6 - video player location*/
-	gSIVidPlayerLoc:function(){
-		var path = window.location.pathname.substring(1);
-		var path_array = path.split("/");
-		var yearPattern = /\d+/;
-		var swimsuitYear;
-		var swimRes;
-		var vidPlayerLoc;
-		if(path_array[0].match("swimsuit")){
-			swimsuitYear = yearPattern.exec(path_array[0]);
-			swimRes = swimsuitYear+"_swimsuit";
-		}
-		switch(path_array[0]){
-			case "video":
-				vidPlayerLoc = "video";
-				break;
-			case "behindthemic":
-				vidPlayerLoc = "behind the mic";
-				break;
-			case swimRes:
-			case "vault":
-			case "swimsuit":
-				vidPlayerLoc = "swimsuit";
-				break;
-			case "basketball":
-				vidPlayerLoc = "seth davis";
-				break;
-			case "":
-				vidPlayerLoc = "home";
-				break;
-			default:
-				vidPlayerLoc = path_array[0];
-				break;
-		};
-		return vidPlayerLoc;
-	},
-	/* Video player collection code */
-	gSIVideoCollection:function(){
-		return {
-			/* add: function (i,t) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				vplayer.push(new objVplayer(i,t));
-				function objVplayer (videoId,videoTitle) {
-					this.videoId = videoId;
-					this.videoTitle = videoTitle;
-					this.hasScrubbed = false;
-					this.isAuto = false;
-					this.isHalf = false;
-					this.isBuffering = false;
-					this.isPaused = false;
-				}
-			}, */
-			get: function (i,p) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						return vplayer[j][p];
+		/* prop2 - Referral Domain */
+		gSIRefDom:function() {
+			if (window.location.href.indexOf("eref") > -1) {
+				var ref = document.referrer;
+				var exp = (ref.split(":").length > 2 ? /http:\/\/(\w+\.\w+\.\w+\:\d+)\// : /http:\/\/(\w+\.\w+\.\w+)\//);
+				var result = exp.exec(ref);
+			}
+			return result[1] + " - " + _jsmd.plugin.gQuery("eref");
+		},
+		/* prop3 - flash version */
+		gSIFlashVer:function() {
+			var flashVerObj;
+			var flashVer;
+			if (swfobject != null) {
+				flashVerObj = swfobject.getFlashPlayerVersion();
+				flashVer = flashVerObj.major +"."+ flashVerObj.minor +"."+ flashVerObj.release;
+			}
+			return flashVer;
+		},
+		/* prop6, eVar6 - video player location*/
+		gSIVidPlayerLoc:function() {
+			var path = window.location.pathname.substring(1);
+			var path_array = path.split("/");
+			var yearPattern = /\d+/;
+			var swimsuitYear;
+			var swimRes;
+			var vidPlayerLoc;
+			if (path_array[0].match("swimsuit")) {
+				swimsuitYear = yearPattern.exec(path_array[0]);
+				swimRes = swimsuitYear+"_swimsuit";
+			}
+			switch(path_array[0]) {
+				case "video":
+					vidPlayerLoc = "video";
+					break;
+				case "behindthemic":
+					vidPlayerLoc = "behind the mic";
+					break;
+				case swimRes:
+				case "vault":
+				case "swimsuit":
+					vidPlayerLoc = "swimsuit";
+					break;
+				case "basketball":
+					vidPlayerLoc = "seth davis";
+					break;
+				case "":
+					vidPlayerLoc = "home";
+					break;
+				default:
+					vidPlayerLoc = path_array[0];
+					break;
+			};
+			return vidPlayerLoc;
+		},
+		/* Video player collection code */
+		gSIVideoCollection:function() {
+			return {
+				/* add: function (i,t) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					vplayer.push(new objVplayer(i,t));
+					function objVplayer (videoId,videoTitle) {
+						this.videoId = videoId;
+						this.videoTitle = videoTitle;
+						this.hasScrubbed = false;
+						this.isAuto = false;
+						this.isHalf = false;
+						this.isBuffering = false;
+						this.isPaused = false;
 					}
-				}
-			},
-			set: function (i,p,v) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						vplayer[j][p] = v;
-						break;
-					}
-				}
-			},
-			toggle: function (i,p) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						var v = vplayer[j][p];
-						vplayer[j][p] = !v;
-						break;
-					}
-				}
-			},
-			start: function (i,t) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				vplayer.push(new objVplayer(i,t));
-				function objVplayer (cid,videoTitle) {
-					this.containerId = cid;
-					this.videoTitle = videoTitle;
-					this.vidStarted = false;
-					this.hasScrubbed = false;
-					this.isAuto = false;
-					this.isPaused = false;
-					this.isBuffering = false;
-					this.pastHalf = false;
-					this.startTime = new Date().getTime();
-					this.timeSpent = 0;		//used in pause action to calculate time spent
-				}
-			},
-			/*
-			-- pause and buffering senario --
-			buffer un-buffer pause     un-pause
-			pause  un-pause  buffer    un-buffer
-			buffer pause     un-pause  un-buffer
-			buffer pause     un-buffer un-pause
-			pause  buffer    un-buffer un-pause
-			pause  buffer    un-pause  un-buffer
-			*/
-			pause: function (i) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						var p = vplayer[j].isPaused;
-						var b = vplayer[j].isBuffering;
-						if (!b) {	//not buffering
-							if (p) {	//pause -> unpause
-								vplayer[j].startTime = new Date().getTime();
-							} else {	//unpause -> pause
-								var playedTime = new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent;	//calculate time spent
-								vplayer[j].timeSpent = playedTime;
-							}
+				}, */
+				get: function (i,p) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							return vplayer[j][p];
 						}
-						vplayer[j].isPaused = !p;
-						break;
 					}
-				}
-			},
-			buffer: function (i) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						var p = vplayer[j].isPaused;
-						var b = vplayer[j].isBuffering;
-						if (!p) {	//not paused
-							if (b) {	//buffer -> unbuffer
-								vplayer[j].startTime = new Date().getTime();
-							} else {	//unbuffer -> buffer
-								var playedTime = new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent;	//calculate time spent
-								vplayer[j].timeSpent = playedTime;
-							}
+				},
+				set: function (i,p,v) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							vplayer[j][p] = v;
+							break;
 						}
-						vplayer[j].isBuffering = !b;
-						break;
 					}
-				}
-			},
-			progress: function (i) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						var playedTime = ( new Date().getTime() - vplayer[j].startTime ) / 1000;
-						vplayer[j].startTime = new Date().getTime();
-						return Math.round(playedTime);
+				},
+				toggle: function (i,p) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							var v = vplayer[j][p];
+							vplayer[j][p] = !v;
+							break;
+						}
 					}
-				}
-			},
-			complete: function (i) {
-				var vplayer = _jsmd.plugin.md.get("video.players");
-				for(var j=vplayer.length-1; j>=0; j--) {
-					if (vplayer[j].containerId == i) {
-						var playedTime = ( new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent ) / 1000;
-						return Math.round(playedTime);
+				},
+				start: function (i,t) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					vplayer.push(new objVplayer(i,t));
+					function objVplayer (cid,videoTitle) {
+						this.containerId = cid;
+						this.videoTitle = videoTitle;
+						this.vidStarted = false;
+						this.hasScrubbed = false;
+						this.isAuto = false;
+						this.isPaused = false;
+						this.isBuffering = false;
+						this.pastHalf = false;
+						this.startTime = new Date().getTime();
+						this.timeSpent = 0;		//used in pause action to calculate time spent
+					}
+				},
+				/*
+				-- pause and buffering senario --
+				buffer un-buffer pause     un-pause
+				pause  un-pause  buffer    un-buffer
+				buffer pause     un-pause  un-buffer
+				buffer pause     un-buffer un-pause
+				pause  buffer    un-buffer un-pause
+				pause  buffer    un-pause  un-buffer
+				*/
+				pause: function (i) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							var p = vplayer[j].isPaused;
+							var b = vplayer[j].isBuffering;
+							if (!b) {	//not buffering
+								if (p) {	//pause -> unpause
+									vplayer[j].startTime = new Date().getTime();
+								} else {	//unpause -> pause
+									var playedTime = new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent;	//calculate time spent
+									vplayer[j].timeSpent = playedTime;
+								}
+							}
+							vplayer[j].isPaused = !p;
+							break;
+						}
+					}
+				},
+				buffer: function (i) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							var p = vplayer[j].isPaused;
+							var b = vplayer[j].isBuffering;
+							if (!p) {	//not paused
+								if (b) {	//buffer -> unbuffer
+									vplayer[j].startTime = new Date().getTime();
+								} else {	//unbuffer -> buffer
+									var playedTime = new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent;	//calculate time spent
+									vplayer[j].timeSpent = playedTime;
+								}
+							}
+							vplayer[j].isBuffering = !b;
+							break;
+						}
+					}
+				},
+				progress: function (i) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							var playedTime = ( new Date().getTime() - vplayer[j].startTime ) / 1000;
+							vplayer[j].startTime = new Date().getTime();
+							return Math.round(playedTime);
+						}
+					}
+				},
+				complete: function (i) {
+					var vplayer = _jsmd.plugin.md.get("video.players");
+					for(var j=vplayer.length-1; j>=0; j--) {
+						if (vplayer[j].containerId == i) {
+							var playedTime = ( new Date().getTime() - vplayer[j].startTime + vplayer[j].timeSpent ) / 1000;
+							return Math.round(playedTime);
+						}
 					}
 				}
 			}
 		}
-	}
 
 		,
 /**
@@ -1290,31 +1290,31 @@ cookie: {
 		"flash-page": "alias:dynamic-page",
 		"video-common": function(data,map) {
 			var v = data.video||{};
-			if(v.headline != null && v.category != null){
+			if (v.headline != null && v.category != null) {
 				/* MLB Highlights need to be detected separately from the rest of MLB videos */
-				if(v.headline.indexOf("MLB Highlights") > -1){
-					this.set("business.si.vid_franchise","mlb highlights");
+				if (v.headline.indexOf("MLB Highlights") > -1) {
+					this.set("business.si.vid_franchise","mlb highlights");	//prop5,eVar5
 				/* Inside Report needs specific coding for its franchise variable because the category can be different with each video */
 				} else if (v.subcategory == "inside_report") {
-					this.set("business.si.vid_franchise","inside report");
+					this.set("business.si.vid_franchise","inside report");	//prop5,eVar5
 				/* Behind The Mic needs specific coding for its franchise variable because the category can be different with each video */
 				} else if (v.subcategory == "allstate") {
-					this.set("business.si.vid_franchise","behind the mic");
+					this.set("business.si.vid_franchise","behind the mic");	//prop5,eVar5
 				} else {
-					this.set("business.si.vid_franchise",v.category);
+					this.set("business.si.vid_franchise",v.category);		//prop5,eVar5
 				}
 			}
 			/* Code specific for setting the Audio ID variable on Podcast video pages */
-			if(v.headline != null && (window.location.pathname.indexOf("si-podcasts") > -1)){
-				this.set("business.si.audio",v.headline);
+			if (v.headline != null && (window.location.pathname.indexOf("si-podcasts") > -1)) {
+				this.set("business.si.audio",v.headline);	//prop7,eVar7
 			}
-			if(_jsmd.plugin.gJObj("cnn_metadata","template_type") == null){
-				this.set("page.template_type","adbp:video");
+			if (_jsmd.plugin.gJObj("cnn_metadata","template_type") == null) {
+				this.set("page.template_type","adbp:video");	//prop32,eVar32
 			}
-			this.set("page.content_type","adbp:video start");
-			this.set("video.title",v.headline);
-			this.set("video.id",v.id);
-			this.set("business.si.vid_category",v.category);
+			this.set("page.content_type","adbp:video start");	//prop33,eVar33
+			this.set("video.title",v.headline);					//prop29,eVar41
+			this.set("video.id",v.id);							//eVar42
+			this.set("business.si.vid_category",v.category);	//prop11,eVar11
 			var t=this.get("mb:video.player");
 			this.set("mb:video.player",v.video_player_name||t);
 		},
@@ -1324,7 +1324,7 @@ cookie: {
 			this.set("action","link");
 			this.set("link",{name: "video-preroll: "+ v.title, type: "o"});
 			this.push("page.events","video.preroll");
-			if(!v.source.match("NBA")){
+			if (!v.source.match("NBA")) {
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,2); // Ad-related comscore call
 			};
@@ -1336,16 +1336,16 @@ cookie: {
 			/* add new video player object */
 			var vc = (video_collection_created == false ? new _jsmd.plugin.gSIVideoCollection() : _jsmd.plugin.gSIVideoCollection());
 			this.set("action","link");
-			if(vc.get(cid,"isAuto") == true){
-				this.push("page.events","video.autostart");
+			if (vc.get(cid,"isAuto") == true) {
+				this.push("page.events","video.autostart");	//event34
 				this.set("link",{name: "video-autostart: "+ v.headline, type: "o"});
 			} else {
 				this.set("link",{name: "video-start: "+ v.headline, type: "o"});
 			}
-			this.push("page.events","video.start");
-			vc.start(cid,v.headline);
+			this.push("page.events","video.start");	//event32
+			vc.start(cid,v.headline);	//create new item in video collection array object
 			/* NBA sourced videos don't get tracked */
-			if(!v.source.match("NBA") && !v.source.match("nba")){
+			if (!v.source.match("NBA") && !v.source.match("nba")) {
 				this.send();
 				sendComscoreVideoMetrixBeacon(v.id,1); // Content-related comscore call
 				sendNielsenVideoCensusBeacon(this.get("m:nielsen"),"start",v.id);
@@ -1354,7 +1354,7 @@ cookie: {
 			vc.set(cid,"isAuto",true);
 			video_collection_created = true;
 		},
-		"video-autofix": function(data, map) {
+		"video-autofix": function(data, map) {	//called when the video is autostart to set the flag
 			var cid = data.instance||"";
 			var v = (data.video == null ? "" : data.video);
 			var vc = _jsmd.plugin.gSIVideoCollection();
@@ -1364,19 +1364,20 @@ cookie: {
 			var v = data.video||{};
 			var cid = data.instance||"";
 			var vc = _jsmd.plugin.gSIVideoCollection();
-			if(vc.get(cid,"pastHalf") == false && vc.get(cid,"hasScrubbed") == false){
+			if (vc.get(cid,"pastHalf") == false && vc.get(cid,"hasScrubbed") == false) {
 				var timeSpent = vc.progress(cid);
-				this.set("video.duration_watched",timeSpent+"");
+				this.set("video.duration_watched",timeSpent+"");	//event36
 				this.set("action","link");
 				this.set("link",{name: "video-fifty_percent: " + v.headline, type: "o"});
-				this.push("page.events","video.fifty_percent");
+				this.push("page.events","video.fifty_percent");		//event1
 				/* NBA sourced videos don't get tracked */
-				if(!v.source.match("NBA") && !v.source.match("nba")){
+				if (!v.source.match("NBA") && !v.source.match("nba")) {
+					/* validate timeSpent value */
 					var duration = parseFloat(v.trt)||"";
 					if (duration == "" || duration == null) {
 					}else{
 						try {
-							if ((timeSpent > duration * 2) || (timeSpent < 0)){
+							if ((timeSpent > duration * 2) || (timeSpent < 0)) {
 								timeSpent = duration * 2;
 							};
 						} catch(e) { timeSpent = 0; };
@@ -1390,24 +1391,24 @@ cookie: {
 			var v = data.video||{};
 			var cid = data.instance||"";
 			var vc = _jsmd.plugin.gSIVideoCollection();
-			if(vc.get(cid,"vidStarted") == true){
-				vc.pause(cid);
+			if (vc.get(cid,"vidStarted") == true) {
+				vc.pause(cid);	//calculate time spent and set flag
 			};
 		},
 		"video-buffer": function(data, map) {
 			var v = data.video||{};
 			var cid = data.instance||"";
 			var vc = _jsmd.plugin.gSIVideoCollection();
-			if(vc.get(cid,"vidStarted") == true){
-				vc.buffer(cid);
+			if (vc.get(cid,"vidStarted") == true) {
+				vc.buffer(cid);	//calculate time spent and set flag
 			};
 		},
 		"video-scrub": function(data, map) {
 			var v = data.video||{};
 			var cid = data.instance||"";
 			var vc = _jsmd.plugin.gSIVideoCollection();
-			if(vc.get(cid,"vidStarted") == true){
-				vc.set(cid,"hasScrubbed",true);
+			if (vc.get(cid,"vidStarted") == true) {
+				vc.set(cid,"hasScrubbed",true);	//set flag
 			};
 		},
 		"video-complete": function(data, map) {
@@ -1415,17 +1416,18 @@ cookie: {
 			var cid = data.instance||"";
 			var vc = _jsmd.plugin.gSIVideoCollection();
 			var timeSpent = vc.complete(cid);
-			this.set("video.duration_watched",timeSpent+"");
+			this.set("video.duration_watched",timeSpent+"");	//event36
 			this.set("action","link");
 			this.set("link",{name: "video-complete: "+ v.headline, type: "o"});
-			this.push("page.events","video.complete");
+			this.push("page.events","video.complete");			//event33
 			/* NBA sourced videos don't get tracked */
-			if(!v.source.match("NBA") && !v.source.match("nba")){
+			if (!v.source.match("NBA") && !v.source.match("nba")) {
+				/* validate timeSpent value */
 				var duration = parseFloat(v.trt)||"";
 				if (duration == "" || duration == null) {
 				}else{
 					try {
-						if ((timeSpent > duration * 2) || (timeSpent < 0)){
+						if ((timeSpent > duration * 2) || (timeSpent < 0)) {
 							timeSpent = duration * 2;
 						};
 					} catch(e) { timeSpent = 0; };
@@ -1447,18 +1449,18 @@ cookie: {
 			this.set("link",{name: "football-challenge", type: "o"});
 			this.send();
 		},
-		"search-results": function(data) {
-			if(this.plugin.gJObj(data,"search.results") <= 0){
-				this.set("search.internal.number_results","zero");
-			}else{
-				this.set("search.internal.number_results",this.plugin.gJObj(data,"search.results").toString());
+		"search-results": function(data) {	//page call
+			if (this.plugin.gJObj(data,"search.results") <= 0) {
+				this.set("search.internal.number_results","zero");	//prop27
+			} else {
+				this.set("search.internal.number_results",this.plugin.gJObj(data,"search.results").toString());	//prop27
 			}
-			this.set("search.internal.keyword",this.plugin.gJObj(data,"search.term"));
-			this.set("page.content_type","adbp:" + this.plugin.gJObj(data,"content_type"));
-			this.set("page.section[0]",this.plugin.gJObj(data,"section[0]"));
-			this.set("page.template_type",this.plugin.gJObj(data,"template_type"));
-			this.set("page.name",this.plugin.gADBPPageName());
-			this.push("page.events","search.internal.page");
+			this.set("search.internal.keyword",this.plugin.gJObj(data,"search.term"));		//prop39,eVar39
+			this.set("page.content_type","adbp:" + this.plugin.gJObj(data,"content_type"));	//prop33,eVar33
+			this.set("page.section[0]",this.plugin.gJObj(data,"section[0]"));				//channel,eVar27
+			this.set("page.template_type",this.plugin.gJObj(data,"template_type"));			//prop32,eVar32
+			this.set("page.name",this.plugin.gADBPPageName());								//pageName,eVar26
+			this.push("page.events","search.internal.page");								//event27
 			this.send();
 		},
 		"mlbtab-click": function(data) {
@@ -1470,7 +1472,11 @@ cookie: {
 		"livefyre-click": function(data) {
 			this.push("page.events","social.interaction");		//event24
 			this.push("page.events","social.comment_submit");	//event25
-			this.set("business.si.social_type","social: livefyre comment");	//prop24,eVar24
+			if (data.action) {
+				this.set("business.si.social_type",data.action);	//prop24,eVar24
+			} else {
+				this.set("business.si.social_type","social: livefyre comment");	//prop24,eVar24
+			}
 			this.set("action","link");
 			this.set("link",{name: "livefyre-click", type: "o"});
 			this.send();
@@ -1479,9 +1485,9 @@ cookie: {
 			var gi = data.gallery_info;
 			this.set("action","link");
 			this.set("link",{name: "gallery-click: " + gi, type: "o"});
-			this.set("business.si.gallery_info",gi);
-			this.set("page.template_type","other:photo gallery");
-			this.set("page.content_type","adbp:none");
+			this.set("business.si.gallery_info",gi);				//prop25,eVar25
+			this.set("page.template_type","other:photo gallery");	//prop32,eVar32
+			this.set("page.content_type","adbp:none");				//prop33,eVar33
 			this.set("page.name","");
 			this.send();
 		},
@@ -1489,7 +1495,7 @@ cookie: {
 			var st = data.social_type;
 			this.set("action","link");
 			this.set("link",{name: "social-click: " + st, type: "o"});
-			this.set("business.si.social_type",st);
+			this.set("business.si.social_type",st);		//prop24,eVar24
 			this.set("page.name","");
 			this.send();
 		}
@@ -2262,6 +2268,7 @@ if (!video_start_time) var video_start_time = 0;	//video start time - resets for
 if (!video_pause) var video_pause = [0,0];			//["flag","play time"]
 if (!video_collection_created) var video_collection_created = false;	//flag used for checking the existence of the video collection object in video calls
 
+/* video callback function */
 function sendVideoEvent(data, event, id){
     try {
 		var currVidObj = (typeof data != "string" ? data : _w.JSON.parse(data));

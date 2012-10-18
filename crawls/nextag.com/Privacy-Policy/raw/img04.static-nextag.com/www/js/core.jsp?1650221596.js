@@ -1706,6 +1706,56 @@ function getMfrNLA(popupId, searchStr,visibleMfrCnt, nodeid, nodeBoostStr, chann
 	}
 	
 	invokeAjaxCall(url, functionPtr, false);
+}
+
+/*
+Code to fetch content for coupons and deals using ajax
+*/
+function getAjaxDealsAndCoupons(rowId, left, top, url, thiz) {
+    if (thiz.promoPopUp) {
+        if (thiz.hasPromoPopUp) {
+            if (thiz.promoPopUp.style.visibility == "visible") {
+                closePromo();
+            } else {
+                closePromo();
+                showPromo(thiz.promoPopUp, rowId);
+            }
+        } else
+            closePromo();
+    } else {
+        closePromo();
+        var popupId = 'promoPopup_' + rowId;
+        var popUp = document.getElementById(popupId);
+        if (popUp) {
+            thiz.hasPromoPopUp = true;
+            thiz.promoPopUp = popUp;
+            var pos = findPos(thiz);
+            popUp.innerHTML = '<table class="promo-popup-container" style="width:100%;height:100px"><tr><td align="center" valign="middle">' +
+                    '<img src="/images/loading.gif">' +
+                    '</td></tr></table>';
+            popUp.style.left = pos[0] + left + "px";
+            popUp.style.top = pos[1] - top + "px";
+            popUp.style.visibility = "visible";
+            invokeAjaxCall(url, function(responseStr) {
+                popUp.innerHTML = getOnlyNextagHtmlContent(responseStr);
+                showPromo(popUp, rowId);
+            }, false);
+        }else
+            thiz.promoPopUp=true;
+    }
+
+    function closePromo() {
+        if (visiblePromoPopup && visiblePromoPopup.style)
+            visiblePromoPopup.style.visibility = "hidden";
+        visiblePromoPopup = undefined;
+    }
+
+    function showPromo(popUp, rowId) {
+        visiblePromoPopup = popUp;
+        visiblePromoPopup.style.visibility = "visible";
+        toggleContent("promo", rowId);
+    }
+
 }var NextagUtils = new Object();
 NextagUtils.sVisibleDiv = null;
 NextagUtils.sVisibleDivToggleFlag = 0;

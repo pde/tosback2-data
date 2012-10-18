@@ -29,19 +29,14 @@ More info available at http://www.omniture.com */
 /*               Added inList plugin */
 /*               Fixed checkout workaround */
 /* 30/08/2012 GH Survey Module Added */
+/* 08/10/2012 s_account modified (Chris Moores) */
 
-var s_account="argosprod,argosprodv14"
+/* var s_account="argosprod,argosprodv14" */
 
-if(s_account){
-	if(s_account.indexOf("argosglobalprod")>-1){
-		s_account=s_account.replace(/,argosglobalprod/g,"");
-		s_account=s_account.replace(/argosglobalprod,/g,"");
-	}
-}
-
+s_account=s_account.replace(",argosglobalprod","");
+s_account=s_account.replace("argosprod","argosprod,argosprodv14");
 
 var s=s_gi(s_account)
-
 
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -964,4 +959,3 @@ w.s_ft=new Function("c","c+='';var s,e,o,a,d,q,f,h,x;s=c.indexOf('=function(');w
 +"'+c.substring(e+1);s=c.indexOf('=function(')}return c;");
 c=s_d(c);if(e>0){a=parseInt(i=v.substring(e+5));if(a>3)a=parseFloat(i)}else if(m>0)a=parseFloat(u.substring(m+10));else a=parseFloat(v);if(a<5||v.indexOf('Opera')>=0||u.indexOf('Opera')>=0)c=s_ft(c);if(!s){s=new Object;if(!w.s_c_in){w.s_c_il=new Array;w.s_c_in=0}s._il=w.s_c_il;s._in=w.s_c_in;s._il[s._in]=s;w.s_c_in++;}s._c='s_c';(new Function("s","un","pg","ss",c))(s,un,pg,ss);return s}
 function s_giqf(){var w=window,q=w.s_giq,i,t,s;if(q)for(i=0;i<q.length;i++){t=q[i];s=s_gi(t.oun);s.sa(t.un);s.setTagContainer(t.tagContainerName)}w.s_giq=0}s_giqf()
-

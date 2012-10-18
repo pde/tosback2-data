@@ -386,7 +386,7 @@ var wpAd, placeAd2;
         return wpAd.flags.dcnode;
       },
       dcUrl: function () {
-        return 'http://ad.doubleclick.net/' + (wpAd.flags.network_id ? wpAd.flags.network_id + '/' : '') + wpAd.tools.dcFileType() + '/' + wpAd.constants.wpniSite + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
+        return 'http://ad.doubleclick.net/' + (wpAd.flags.network_id ? wpAd.flags.network_id + '/' : '') + wpAd.tools.dcFileType() + '/' + wpAd.constants.site + '.' + wpAd.briefcase.where + ';' + wpAd.exec.keysval() + '?';
       },
       debug: function () {
         if(wpAd.flags.debug) {
@@ -515,9 +515,9 @@ var wpAd, placeAd2;
           time = new Date(parseInt(new Date().getTime(), 10) + 432E5).toString();
           if(cookieVal){
             rv = Number(cookieVal)%3 ? false : true;
-            wpAd.tools.setCookie(name, Number(cookieVal) + 1, time, '/', wpAd.constants.wpniDomain);
+            wpAd.tools.setCookie(name, Number(cookieVal) + 1, time, '/', wpAd.constants.domain);
           } else {
-            wpAd.tools.setCookie(name, '1', time, '/', wpAd.constants.wpniDomain);
+            wpAd.tools.setCookie(name, '1', time, '/', wpAd.constants.domain);
           }
 
           return rv;
@@ -782,7 +782,7 @@ var wpAd, placeAd2;
       },
       poe: function () {
         return wpAd.cache.hasOwnProperty('poe') ? wpAd.cache.poe : (function () {
-          var name = wpAd.constants.wpniSite + '_poe',
+          var name = wpAd.constants.site + '_poe',
             cookieVal = wpAd.tools.getCookie(name);
 
           wpAd.cache.poe = ['no'];
@@ -1021,7 +1021,7 @@ var wpAd, placeAd2;
       } catch(e) {}
     }
 
-    if(wpAd.flags.no_ads) {
+    if(wpAd.flags.no_ads || !wpAd.config || !wpAd.config.adtypes) {
       return false;
     }
 
@@ -1042,8 +1042,7 @@ var wpAd, placeAd2;
 
     what = wpAd.tools.posOverride(what);
 
-    //need to figure out what to do with this monstrosity...
-    if(typeof what === 'undefined' || typeof wpAd === 'undefined' || !wpAd.config || !wpAd.config.adtypes || !wpAd.config.adtypes[what] || !wpAd.constants.wpniSite) {
+    if(!wpAd.config.adtypes[what]) {
       return false;
     }
 
@@ -1054,7 +1053,7 @@ var wpAd, placeAd2;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
 
     //a bit hacky but temporary, until we phase out tile flight manager for opening/closing tiffany tiles:
-    if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.wpniSite === 'wpni' && !/js_tiff/.test(location.search)) {
+    if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.site === 'wpni' && !/js_tiff/.test(location.search)) {
       //would be interesting to try figure out a way to just include tile_flights.js, and integrate it into  wpAd.templates...
       wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', 'http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
 

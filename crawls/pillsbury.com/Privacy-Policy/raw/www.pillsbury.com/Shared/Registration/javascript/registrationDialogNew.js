@@ -72,6 +72,7 @@ var bc = bc || {};
                     "width": "0",
 					"src": context.iFrameURL
 				}).css({'height': '0' + "px", 'width': '0' + "px"});
+
             };
 			
 			//Main function for cross domain communication

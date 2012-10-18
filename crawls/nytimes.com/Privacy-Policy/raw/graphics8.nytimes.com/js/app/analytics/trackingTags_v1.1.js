@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 107406 2012-08-17 20:33:55Z surya.sanagavarapu $
+* $Id: trackingTags_v1.1.js 113184 2012-10-08 18:28:22Z reed.emmons $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -201,109 +201,121 @@ var NYTD = NYTD || {};
 if (! NYTD.Hosts) NYTD.Hosts = {};
 if (! NYTD.Hosts.jsHost) NYTD.Hosts.jsHost = "http://js.nyt.com";
 NYTD.UPTracker = (function () {
-		
-		// default configuration
-	var config = {
-		baseUrl: 	'//up.nytimes.com/?',
-		eventType: 	undefined, 
-		data: 		undefined,
-		defaultArguments: 'd=0//&c=1'
-	};
+    
+    // default configuration
+  var config = {
+    baseUrl: '//up.nytimes.com/?',
+    defaultArguments: 'd=0//&c=1'
+  };
 
-	var url;
-	
-	function init (params) {
-		if (params.baseUrl)
-			config.baseUrl = params.baseUrl;
-		if (params.eventType)
-			config.eventType = params.eventType;
-		if (params.data)
-			config.data = params.data;
-	};
-	
-	function createUrl() {
-	
-			// begin with baseUrl
-		url = config.baseUrl + config.defaultArguments;
-		
-			// append eventType
-		if (config.eventType) {
-			url += '&e=' + config.eventType;
-		}
-		
-			// url encode and append url
-		url += '&u=' + encodeURIComponent(window.location.href);
-		
-			// url encode and append referrer
-		url += '&r=' + encodeURIComponent(document.referrer);
+  var url;
+  
+  function init (params) {
 
-			// if we have meta data, encode and append it
-		if (config.data) {
-			try {
-				JSON.stringify({world:'peace'});
-				appendAndSend();				
-			} catch (e) {  // if no JSON, inlcude json2-min
-				var script = document.createElement('script');
-				script.type = "text/javascript";
-				script.src  = "//www.nytimes.com/js/app/lib/json/json2-min.js";
-				script.onload =	function () { 
-					appendAndSend(); 
-				};
-				script.onreadystatechange =	function () {
-					if (this.readyState == 'loaded' || this.readyState == 'complete') {
-						appendAndSend();	
-					}
-				};
-				
-				document.getElementsByTagName("head")[0].appendChild(script);
-			}
-		} else {
-			send();
-		}
-	}; 
+    if (params.baseUrl) {
+      config.baseUrl = params.baseUrl;
+    }
+    if (params.eventType) {
+      config.eventType = params.eventType;
+    }
+    if (params.data) {
+      config.data = params.data;
+    }
+    if (params.userID) {
+      config.userID = params.userID;
+    }
+    
+    config.url = params.url || window.location.href;
+  };
+  
+  function createUrl() {
+  
+      // begin with baseUrl
+    url = config.baseUrl + config.defaultArguments;
+    
+      // append eventType
+    if (config.eventType) {
+      url += '&e=' + config.eventType;
+    }
 
-	function appendAndSend() {
-		var jsonData = JSON.stringify(config.data);
-		if (jsonData) {
-			url += '&p=' + encodeURIComponent(jsonData);
-		}
-		send ();
-	}
-	
-	function send() {
-		if (url) {
-		    var img = document.createElement('img');
-		    img.setAttribute('border', 0);
-		    img.setAttribute('height', 0);
-		    img.setAttribute('width', 0);
-		    img.setAttribute('src', url);
-		    document.body.appendChild(img);
-		} else {
-			return false;
-		}
-	};
+      // add user id if we have one
+    if (config.userID) {
+      url += '&ui=' + config.userID;
+    }
+    
+      // url encode and append url
+    url += '&u=' + encodeURIComponent(config.url);
+    
+      // url encode and append referrer
+    url += '&r=' + encodeURIComponent(document.referrer);
 
-	return {
-		track: function (params) {
-			var params = params || {};
-			init(params);
-			createUrl();
-		},
-		check: function (){
-	                var imageTags = document.getElementsByTagName('img');
-       			var UPTcalled = false;
-	                var pattern = /up\.nytimes\.com\//;
-       			for (var i=0; i < imageTags.length; i++){
-                       		if ( pattern.test(imageTags[i].src)){
-                        		UPTcalled = true;
-					break;
-               		        }
-                	}
-                	if (!UPTcalled) {
-                        	NYTD.UPTracker.track(); // set generic UPT call if not available on page load
-                	}
-        	}
-	};
+      // if we have meta data, encode and append it
+    if (config.data) {
+      try {
+        JSON.stringify({world:'peace'});
+        appendAndSend();        
+      } catch (e) {  // if no JSON, inlcude json2-min
+        var script = document.createElement('script');
+        script.type = "text/javascript";
+        script.src  = "//www.nytimes.com/js/app/lib/json/json2-min.js";
+        script.onload = function () { 
+          appendAndSend(); 
+        };
+        script.onreadystatechange = function () {
+          if (this.readyState == 'loaded' || this.readyState == 'complete') {
+            appendAndSend();  
+          }
+        };
+        
+        document.getElementsByTagName("head")[0].appendChild(script);
+      }
+    } else {
+      send();
+    }
+  }; 
+
+  function appendAndSend() {
+    var jsonData = JSON.stringify(config.data);
+    if (jsonData) {
+      url += '&p=' + encodeURIComponent(jsonData);
+    }
+    send ();
+  }
+  
+  function send() {
+    if (url) {
+        var img = document.createElement('img');
+        img.setAttribute('border', 0);
+        img.setAttribute('height', 0);
+        img.setAttribute('width', 0);
+        img.setAttribute('src', url);
+        document.body.appendChild(img);
+    } else {
+      return false;
+    }
+  };
+
+  return {
+    track: function (params) {
+      var params = params || {};
+      init(params);
+      createUrl();
+    },
+    check: function (){
+                  var imageTags = document.getElementsByTagName('img');
+            var UPTcalled = false;
+                  var pattern = /up\.nytimes\.com\//;
+            for (var i=0; i < imageTags.length; i++){
+                          if ( pattern.test(imageTags[i].src)){
+                            UPTcalled = true;
+          break;
+                          }
+                  }
+                  if (!UPTcalled) {
+                          NYTD.UPTracker.track(); // set generic UPT call if not available on page load
+                  }
+          }
+  };
 })();
 
 if (window.addEventListener) {

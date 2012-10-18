@@ -1,0 +1,64 @@
+// use this variable to see if command runs at all
+FS3W101612 = false;
+
+le.uxd.ui.abtest.manager.execute('FS3W101612', {
+	allocation: [34,33,33,0],
+	eVar: 'eVar41',
+	eVarFormat: function(testName, group){
+		return testName + "-_-" + group;
+	},
+	kioskGroup: 'D',
+	duration: 45,
+	command: function(group){
+	
+		// if we made it here, the ab-test error handling should take over
+		FS3W101612 = true;
+		
+		$(document).ready(function(){
+			var 
+				theBanner, 
+				theImageMap,
+				detailsPop;
+				
+			if (group == 'D'){
+				return;
+			}
+			
+			if (group == 'A'){			
+				theBanner = '<div id="FS3W101612-banner-a" class="l-line" style="text-align: center;width: 1000px;"><img usemap="#imgmap20121015144027" src="/ab-tests/FS3W101612/banner-a.gif" border="0" /></div>';
+				detailsPop = '/hpmedia/pop_promo_details_50min101612.html';
+			}
+			
+			if (group == 'B'){
+				theBanner = '<div id="FS3W101612-banner-b" class="l-line" style="text-align: center;width: 1000px;"><img usemap="#imgmap20121015144027" src="/ab-tests/FS3W101612/banner-b.gif" border="0" /></div>';
+				detailsPop = '/hpmedia/pop_promo_details_75min101612.html';
+			}
+			
+			if (group == 'C'){
+				theBanner = '<div id="FS3W101612-banner-c" class="l-line" style="text-align: center;width: 1000px;"><img usemap="#imgmap20121015144027" src="/ab-tests/FS3W101612/banner-c.gif" border="0" /></div>';
+				detailsPop = '/hpmedia/pop_promo_details_100min101612.html';
+			}
+			
+			theImageMap = '<map id="imgmap20121015144027" name="imgmap20121015144027"><area shape="rect" alt="Shop Outerwear" title="" coords="5,1,985,46" href="/ix/outerwear/Outerwear/Assortments=down-shop/index.html?seq=1~2~3&catNumbers=1028&visible=1~2~1&merchAsId=945" target="_self" /><area shape="rect" alt="Details" title="" coords="630,48,697,69" href="javascript:showPopup(\''+detailsPop+'\' ,600 ,360);" target="" /></map>';
+			
+			theBanner = theBanner + theImageMap;
+			
+			$('#tab-navigation').after(theBanner);
+		});
+		
+	},
+	error: function(){
+		// Default - do nothing
+		return;
+	}
+});
+
+// if error anywhere on the page show dropdowns
+$(window).error(function(){
+	setTimeout(function(){
+		if (!FS3W101612){
+			// Default - do nothing
+			return;
+		}
+	},5000);
+});

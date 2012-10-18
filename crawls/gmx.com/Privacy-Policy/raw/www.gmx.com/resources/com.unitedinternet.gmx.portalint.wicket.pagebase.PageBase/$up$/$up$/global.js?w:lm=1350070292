@@ -1,0 +1,109 @@
+$(document).ready(function () {
+    function addColoredFocus(events) {
+        $(".ColouredFocus").bind(events, function(){
+            $(this).toggleClass("Focused");
+        });
+    }
+
+    function addRequiredLabelOnFocus(events) {
+        $('.ColouredFocus').live(events, function(){
+            $(this).parents('.Error').find('.RequiredLabel').toggle();
+        });
+    }
+    
+    // TODO remove "else" part, since other browsers understand CSS input:focus selector
+    if ($.browser.msie && parseInt($.browser.version) === 7) {
+        addColoredFocus("focusin focusout");
+        addRequiredLabelOnFocus("focusin focusout");
+    } else {
+        addColoredFocus("focus blur");
+        addRequiredLabelOnFocus("focus blur");
+    }
+
+    $(".NoAutocomplete").attr("autocomplete", "off");
+    $("body").bind("resize load", function(){$(".Resizable").each(function(){resizeIframe(this)})});
+});
+
+var resizeIframe = function(elem){
+	try {
+		var height;
+		if (elem.contentDocument && elem.contentDocument.body && elem.contentDocument.body.offsetHeight) {
+			height = elem.contentDocument.body.offsetHeight + 32;
+		} else if (elem.Document && elem.Document.body && elem.Document.body.scrollHeight) {
+			height = elem.Document.body.scrollHeight + 32;
+		} else {
+			return;
+		}
+		$(elem).css("height", height);
+	} catch (e) { }
+}
+
+var rewriteWicketAjaxRequest = function() {
+	if (rewriteWicketAjaxRequest.timer) {
+		clearTimeout(rewriteWicketAjaxRequest.timer);
+		rewriteWicketAjaxRequest.counter++;
+	}
+	
+	// console.log("Trying to patch...");
+	if (typeof Wicket != "undefined" && typeof Wicket.Ajax != "undefined" && typeof Wicket.Ajax.Request != "undefined" && typeof Wicket.Ajax.Request.prototype != "undefined") {
+		// console.log("Patching...");
+		
+		delete(rewriteWicketAjaxRequest.counter);
+		delete(rewriteWicketAjaxRequest.timer);
+		
+		Wicket.Ajax.Request.prototype.oldCreateUrl = Wicket.Ajax.Request.prototype.createUrl;
+		Wicket.Ajax.Request.prototype.createUrl = function() {
+			var url = this.oldCreateUrl();
+			return url + (url.indexOf("?")>-1 ? "&" : "?") + "time=" + new Date().getTime();
+		}
+	} else {
+		if (!rewriteWicketAjaxRequest.counter) {
+			rewriteWicketAjaxRequest.counter = 1;
+		}
+		
+		if (rewriteWicketAjaxRequest.counter < 100) {
+			// console.log("Not loaded, repeating ("+rewriteWicketAjaxRequest.counter+")...");
+			rewriteWicketAjaxRequest.timer = setTimeout(rewriteWicketAjaxRequest, 100);
+		} else {
+			// console.log("Tried " + rewriteWicketAjaxRequest.counter + " times, giving up...");
+		}
+	}
+}
+rewriteWicketAjaxRequest();
+
+
+var copyToClipboard = function(text) {
+	try {
+		if (text.createTextRange) {
+			Copied = text.createTextRange();
+			Copied.execCommand("Copy");
+		} else if(window.clipboardData && window.clipboardData.setData) {
+			clipboardData.setData("Text", text);
+		} else if (user_pref && netscape && Components) {
+			user_pref("signed.applets.codebase_principal_support", true);
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			var clip = Components.classes["@mozilla.org/widget/clipboard;[[[[1]]]]"].createInstance(Components.interfaces.nsIClipboard);
+			if (clip) {
+				var trans = Components.classes["@mozilla.org/widget/transferable;[[[[1]]]]"].createInstance(Components.interfaces.nsITransferable);
+				if (trans) {
+					trans.addDataFlavor("text/unicode");
+					
+					var str = new Object();
+					var len = new Object();
+
+					var str = Components.classes["@mozilla.org/supports-string;[[[[1]]]]"].createInstance(Components.interfaces.nsISupportsString);
+					var copytext=text;
+					str.data=copytext;
+					
+					trans.setTransferData("text/unicode",str,copytext.length*[[[[2]]]]);
+					var clipid=Components.interfaces.nsIClipboard;
+					if (clip) {
+						clip.setData(trans,null,clipid.kGlobalClipboard);
+					}
+				}
+			}
+		}
+	} catch (e) {
+		// nothing to do
+	}
+}

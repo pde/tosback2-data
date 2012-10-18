@@ -235,7 +235,7 @@ else {
 	s.prop31 = mistats.pubdate;
 	s.prop32 = mistats.moddate;
 	s.prop37 = mistats.popular;
-	s.prop38 = mistats.adposition;
+//	s.prop38 = mistats.adposition;
 	s.prop39 = mistats.querystring;
 	s.prop47 = mistats.widgets;
 	s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;

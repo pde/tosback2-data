@@ -17,9 +17,8 @@ h.appendChild(s);
 function adsLoadUAC(){
 var n,d=document,z=d.createElement('script')
 n=adsLo.substring(adsUAC+7,adsLo.length).replace(/&.*$/,'').split(/\||;/);
-if (n[1]=='b'||n[1]=='q'){
-if (n[1]=='b')adsUACH='http://browsertest.web.aol.com/ads/'
-else adsUACH='http://qa.atwola.com/file/'
+if (n[1]=='b'){
+adsUACH='http://browsertest.web.aol.com/ads/'
 if(/^[0-9A-Za-z\/.]+$/.test(unescape(n[0])))d.write('<script type="text/javascript" src="'+adsUACH+n[0]+'"></scr','ipt>')
 }}
 if (adsUAC>0&&!window.adsUACH)adsLoadUAC()
@@ -27,7 +26,7 @@ else{
 if (window.adsIn!=1){
 adsIn=1
 var adsHt="http://at.atwola.com",adsNt='5113.1',adsPl='221794',adsESN='',adsATWM='',adsTp='J',
-adsATOth='',adsSrAT='',adsTacOK=1,adsD=new Date(),aolAdFdBkStr='',adsAddOn=1,adsAJAXAddOn=0,
+adsATOth='',adsATMob='',adsSrAT='',adsTacOK=1,adsD=new Date(),aolAdFdBkStr='',adsAddOn=1,adsAJAXAddOn=0,adsMob=0,
 adsScr=adsD.getTime()%0x3b9aca00,adsVal='',adsCp=0,adsMNS,adsExcV='',adsLNm=0,
 adsUA=navigator.userAgent.toLowerCase(),adsIE,adsAJAX=0,adsTzAT="aduho="+(-1*adsD.getTimezoneOffset())+";",
 adsNMSG='',adsTile=1,adsPage='',adsDivs=[],adsQuigo=0,adsCA,adsCF=[],adsCW=[],adsCH=[],adsCAd=[];
@@ -197,6 +196,13 @@ if (v){
  catch(e){}
 }
 }
+function adSetOthMob(v){
+if (v){v=v.replace(/;/g,'&');
+if (v[0]!='&')adsATMob='&'+v
+else adsATMob=v;
+try {ATW3_AdObj.adsATMob=adsATMob;}
+catch(e){}
+}}
 function adSetAddOn(v){
 if (adsAddOn!=2)adsAddOn=parseInt(v);
 }
@@ -226,6 +232,7 @@ adsDivs=[]
 adsD=new Date()
 adsScr=adsD.getTime()%0x3b9aca00
 adsATOth=''
+adsATMob=''
 adsSrAT=''
 adsAddOn=1
 }
@@ -293,18 +300,18 @@ var f,wi='',h='';
 if (adsQuigo>0)f=w
 else f=w.frameElement
 var v=f.parentNode;
-if (adsQuigo==1){wi=v.w;h=v.h}
-else{
 var s=d.getElementById("adSpan"),aD=d.getElementById("adDiv"),aD1=aD.innerHTML;
 if (adsQuigo==0&&(/aolSize=["']([\d]*?)\|([\d]*)["']/i.test(aD1))&&(unescape(RegExp.$2)>1)){
  wi=unescape(RegExp.$1);
  h=unescape(RegExp.$2);
 }
 else{
- if (/img (.*?)width=["']?(.*?)(\"|\'| )/i.test(aD1))wi=unescape(RegExp.$2);
- if (/img (.*?)height=["']?(.*?)[\"|\'| ]/i.test(aD1))h=unescape(RegExp.$2);
- if (!(/^[0-9]+$/.test(unescape(wi))))wi='';
- if (!(/^[0-9]+$/.test(unescape(h))))h='';
+ if (!adsMob){
+  if (/img (.*?)width=["']?(.*?)(\"|\'| )/i.test(aD1))wi=unescape(RegExp.$2);
+  if (/img (.*?)height=["']?(.*?)[\"|\'| ]/i.test(aD1))h=unescape(RegExp.$2);
+  if (!(/^[0-9]+$/.test(unescape(wi))))wi='';
+  if (!(/^[0-9]+$/.test(unescape(h))))h='';
+ }
  if (!(wi&&h)&&wi!=1&&h!=1){
   if ((v.childNodes.length==1)||(d.adsWidth&&d.adsHeight)){
    if (d.adsWidth&&d.adsHeight){wi=d.adsWidth;h=d.adsHeight}
@@ -316,13 +323,21 @@ else{
     }
    }
   }
+  else {
+   try{
+    wi=f.contentWindow.document.body.scrollHeight;
+    h=f.contentWindow.document.body.scrollWidth;
+   }
+   catch(e){}
+  } 
  }
-}
 }
 adsDevilObj(v.divName,wi,h)
 if (((wi&&h)&&!(v.w==wi&&v.h==h)&&(aD1.indexOf('AOLDevilNoExpand')==-1))||(aD1.indexOf('AOLDevilExpand')!=-1)){
+if (h!=1){
  f.width=wi
  f.height=h
+}
 }
 if (wi&&h&&f&&adsQuigo==0)f.className="uac_"+wi+"x"+h;
 adsQuigo=0
@@ -535,6 +550,17 @@ break
 }}}
 if (m=='0'){adsTile++;return 0}
 if (r==0){
+if (m[0]=='m'||m[0]=='M'){ 
+adsDisableTacoda();
+m=m.substring(1,m.length);
+adsMob=1;
+if (f)ds='r'
+if (adsESN)adsESN=adsESN.replace(/&ESN/,"&sn");
+if (adsATOth)adsATOth='&'+adsATOth.substring(0,adsATOth.length-1).replace(/;/g,'&');
+s='http://mads.aol.com/mads/mediate.php?hw=web&appid='+m+'&format=js&width='+w+'&height='+h+'&useragent='+escape(adsUA)+'&pageurl='+escape(adsLo)+adsATMob+adsESN+adsATOth;
+if (adsTp=='I'||t=='iframe')s=s.replace(/format=js/,"format=html");
+}
+else {
 if (!adsNMSG&&adsUA.indexOf('ipad')==-1)adsCkPlg()
 if (!adsNMSG)inc='artexc=art_flash,art_rrflash;'
 s=adsHt+"/addyn/3.0/"+adsNt+"/"+adsPl+"/0/-1/"
@@ -556,6 +582,7 @@ adsAddOn=2;
 }
 if (adsExcV=='blank')inc='artexc=all;'
 s+=inc+adsATOth+adsSrAT+adsATWM+adsVal+"kvmn="+m+";extmirroring=0;target=_blank;"+adsTzAT+"grp="+adsScr
+}
 }
 if (t=='text'){
 adSetupDiv(w,h,s,dv,fn,'text',m)
@@ -589,7 +616,7 @@ d.write("<iframe title='Ad' name='adsF"+adsLNm+"' id='adsF"+adsLNm+"' src='"+s1+
 adsLNm++
 }
 else if (adsTp=='J'){
-if (dv==undefined)d.write(st+s+"'></script>")
+if (dv==undefined||adsMob)d.write(st+s+"'></script>")
 else {
  s=s.replace(/allowedSizes=.*?;/,"size="+w+"x"+h+";");
  if (s.indexOf('size=')==-1)s=s.replace(/\/0\/-1\//, "\/0\/-1\/size="+w+"x"+h+";");

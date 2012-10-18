@@ -29,18 +29,18 @@
 	var ClientName = "Frontdoor";
 	var PortalName = "Frontdoor";
 	var staticImgHostname = "http://static-img.frontdoor.com";
-	var resourceVersion = "1.9.8";
+	var resourceVersion = "1.9.9";
     var bypassGlobalImgProxy = false;		
     var imgProxyHostname = "img-cdn.frontdoor.com";
     var logoImgProxyHostname = "logos-cdn.frontdoor.com";
 </script>
-<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,cssPlaceHolder,,1_9_8.css" />
-<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,cssPlaceHolder,,1_9_8.css" />
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,initResourcePlaceHolder,,1_9_8.js"></script>
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,plhSearch,,1_9_8.js"></script>
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,,,1_9_8.js"></script>
-<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,,,1_9_8.css" />
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,,,1_9_8.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,cssPlaceHolder,,1_9_9.css" />
+<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,cssPlaceHolder,,1_9_9.css" />
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,initResourcePlaceHolder,,1_9_9.js"></script>
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,plhSearch,,1_9_9.js"></script>
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,,,1_9_9.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,,,1_9_9.css" />
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/article.aspx@0@0@1@main_master@,,,1_9_9.js"></script>
     
     <script type="text/javascript">
         var mdManager = new MetaDataManager();
@@ -81,7 +81,7 @@
         
       setAdTagsParameters();
       var QSCache = new Object();
-      QSCache.QueryString = "p=1&sid=13A6202BB584&a=611";
+      QSCache.QueryString = "p=1&sid=13A7128AA94F&a=611";
       QSCache.Position = 0;
     </script>
 
@@ -220,58 +220,60 @@ window.location.href='/news';
 <script type="text/javascript">
 //Madhavi - Moved access_token to socail activity control.
 
-$(document).ready(function()
-{ 
-    var asyncHideDiv = false;
-    function facebookInit()
-    {
-        //$(window).load(function() {
-            FB.init({ appId: "108956252455503", status: true, cookie: true, xfbml: true, oauth: true });
-            FB.getLoginStatus(function(response) {
-                if ((response.status) && (response.status == "connected")) {
-                    Facebook.Toggle_Component_States();
-                }
-                else
-                {
-                    Facebook.OnLogin();
-                    asyncHideDiv = false;
-                }
-            });
+    $(document).ready(function () {
+        var asyncHideDiv = false;
+        function facebookInit() {
+            //$(window).load(function() {
+            try {
+                FB.init({ appId: "108956252455503", status: true, cookie: true, xfbml: true, oauth: true });
+                FB.getLoginStatus(function (response) {
+                    if ((response.status) && (response.status == "connected")) {
+                        Facebook.Toggle_Component_States();
+                    }
+                    else {
+                        Facebook.OnLogin();
+                        asyncHideDiv = false;
+                    }
+                });
 
-            /* All the events registered */
-            FB.Event.subscribe('auth.login', function(response)
-            {
-                // do something with response
-                Facebook.OnLogin();
-                // alert("logged in ");
-            });
-            
-            FB.Event.subscribe('auth.logout', function(response)
-            {
-                // do something with response
-                Facebook.Toggle_Component_States();
-                //  alert("logged out ");
-            });
-        //}); 
-        
-     }
-     
-     if(window.FB)
-     {
-        facebookInit();
-     }
-     else
-     {
-        window.fbAsyncInit = facebookInit;
-     }
-     
-     if(asyncHideDiv == false)
-     {
-        var divLoading = gE("loading");
-        if(divLoading != null)
-           divLoading.style.display = "none";
-     }
-});
+                /* All the events registered */
+                FB.Event.subscribe('auth.login', function (response) {
+                    // do something with response
+                    Facebook.OnLogin();
+                    // alert("logged in ");
+                });
+
+                FB.Event.subscribe('auth.logout', function (response) {
+                    // do something with response
+                    Facebook.Toggle_Component_States();
+                    //  alert("logged out ");
+                });
+            }
+            catch (err) {
+                window.fbAsyncInit = facebookInit;
+            }
+
+            //}); 
+
+        }
+        var version = 999;
+        if (navigator.appVersion.indexOf("MSIE") != -1) {
+            version = parseFloat(navigator.appVersion.split("MSIE")[1]);
+        }
+
+        if (window.FB) {
+            facebookInit();
+        }
+        else {
+            window.fbAsyncInit = facebookInit;
+        }
+
+        if (asyncHideDiv == false) {
+            var divLoading = gE("loading");
+            if (divLoading != null)
+                divLoading.style.display = "none";
+        }
+    });
  </script>
     
 <!--[if lt IE 9]>
@@ -285,7 +287,7 @@ $(document).ready(function()
             <li><a href="http://blog.hgtvgardens.com" target="_blank">HGTV Gardens</a></li>
             <li><a href="http://www.frontdoor.com" class="selected" target="_self">HGTV's FrontDoor</a></li>
             <li><a href="http://www.diynetwork.com" target="_blank">DIYNetwork</a></li>
-            <li><a href="http://marketplace.hgtv.com/hgtvhome" target="_blank">HGTV Products</a></li>
+            <li><a href="http://www.hgtvhome.com/" target="_blank">HGTV Products</a></li>
             <li><a href="https://subscribe.hearstmags.com/subscribe/splits/hgtvmagazine/hgtv_sub_nav" target="_blank">HGTV Magazine</a></li>
         </ul>
     </div>	
@@ -401,7 +403,7 @@ $(document).ready(function()
 
 <div id="log_in_wrapper" style="display:block;">
     <div id="loading" style="display:none;">
-        <img id="imgLoadingStatus" src="../../../static-img.frontdoor.com/images/v.1.9.8/account-ajax-loader.gif" alt="Loading your account" />
+        <img id="imgLoadingStatus" src="../../../static-img.frontdoor.com/images/v.1.9.9/account-ajax-loader.gif" alt="Loading your account" />
         <span>Loading your account</span>
     </div>
 
@@ -639,7 +641,7 @@ $(document).ready(function()
                     <span class="tw-tt"><a class="btn-twitter" href="javascript:void(0)" onclick="ShareOnTwitter();" rel="nofollow">&nbsp;</a></span> 
                     <span class="sep-line">&nbsp;</span>
                     <span class="pin-it">
-                        <a href="http://pinterest.com/pin/create/button/?url=http://fro.do/301462&media=http://static-img.frontdoor.com/images/v.1.9.8/fd-facebook-logo.jpg&description=Please+read+the+following+to+learn+more+about+our+Privacy+Policy%2c+which+includes+compliance+with+California+Privacy+Rights" class="pin-it-button" count-layout="horizontal" rel="nofollow" target="_blank">Pin It</a>
+                        <a href="http://pinterest.com/pin/create/button/?url=http://fro.do/301462&media=http://static-img.frontdoor.com/images/v.1.9.9/fd-facebook-logo.jpg&description=Please+read+the+following+to+learn+more+about+our+Privacy+Policy%2c+which+includes+compliance+with+California+Privacy+Rights" class="pin-it-button" count-layout="horizontal" rel="nofollow" target="_blank">Pin It</a>
                         <script type="text/javascript" src="../../../assets.pinterest.com/js/pinit.js"></script>
                     </span>  
                     <span class="sep-line">&nbsp;</span>   
@@ -1059,77 +1061,77 @@ $(document).ready(function()
 
    
     <section class="links">
-    	<span class="shadow"></span>
-        <div>
-            <h3>FrontDoor Info</h3>
-            <a href="http://www.frontdoor.com/buy/about-frontdoor/776">About FrontDoor</a>
-            <a href="http://www.frontdoor.com/buy/frequently-asked-questions/56067">Questions</a><!--FAQ-->
-            <a href="http://www.frontdoor.com/buy/jobs-at-frontdoor/779">Jobs at FrontDoor</a>
-            <!--<a href="http://www.frontdoor.com/Buy/Contact-Us/1375">Contact Us</a>-->
-            <!--<a href="http://www.frontdoor.com/Buy/Jobs-at-Frontdoor/779">Jobs at FrontDoor</a>-->
-            <a href="http://www.frontdoor.com/buy/press-and-public-releases/1633">Press &amp; PR</a>
-            <a href="http://coolhouses.frontdoor.com/" target="_blank">FrontDoor Blog</a>
-            <a href="http://www.hgtv.com/on-tv/be-on-hgtv/index.html" target="_blank">Be on HGTV</a>
-            <a href="http://mynewsletters.scrippsnetworks.com:8080/subscription/subscribe?brand=fdoor&amp;source=0000_FD_WEBFORM">Real Estate Newsletter</a>
-            <a href="http://www.facebook.com/pages/frontdoorcom/18669721826" target="_blank">Fan us on Facebook</a>
-            <a href="http://twitter.com/hgtvfrontdoor" target="_blank">Follow us on Twitter</a>
-            <a href="http://www.scrippsnetworksdigital.com/frontdoor/default.aspx" target="_blank">Advertise with Us</a>
-            <a href="http://www.frontdoor.com/buy/sweepstakes/56396">Sweepstakes</a>
-        </div>
-        <div>
-            <h3>Homes for Sale by City</h3>
-            <a href="http://www.frontdoor.com/sitemap">FrontDoor Local Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/rent-sitemap">FrontDoor Local Rental Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/new-york-ny-usa">New York Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/atlanta-ga-usa">Atlanta Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/las-vegas-nv-usa">Las Vegas Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/orlando-fl-usa">Orlando Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/raleigh-nc-usa">Raleigh Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/santa-fe-nm-usa">Santa Fe Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/san-antonio-tx-usa">San Antonio Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/tampa-fl-usa">Tampa Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/knoxville-tn-usa">Knoxville Real Estate Listings</a>
-            <a href="http://www.frontdoor.com/for_sale/san-francisco-ca-usa">San Francisco Real Estate Listings</a>
-        </div>
-        <div>
-            <h3>Real Estate Tools &amp; Guides</h3>
-            <a href="http://www.frontdoor.com/tools/calculators/mortgage-calculator.aspx">Mortgage Calculator</a>
-            <a href="http://www.frontdoor.com/tools/calculators/can-i-afford-it.aspx">Loan Payments</a>
-            <a href="http://www.frontdoor.com/tools/calculators/home-value-lossorgain-tax-estimator.aspx">Home Value Estimator</a>
-            <a href="http://www.frontdoor.com/buy/hgtv-frontdoor-widgets/55667">HGTV's FrontDoor Widgets</a>
-            <a href="http://www.frontdoor.com/buy/first-time-buyers-guide-find-tips-and-advice-onbuying-your-first-home/1978">First Time Home Buyer Guides</a>
-            <a href="http://www.frontdoor.com/sell/home-sellers-guide-tips-for-pricing-preparing-and-promoting-your-home-for-sale/541">Home Seller's Guide</a>
-            <a href="http://www.frontdoor.com/move/relocation-guide--tips-and-advice-to-help-you-plan-pack-and-move/959">Moving Guide</a>
-            <a href="http://www.frontdoor.com/home-finance/frontdoorcoms-guide-to-home-finance/542">Home Finance Guide</a>
-            <a href="http://www.frontdoor.com/home-finance/foreclosure-guide/1012">Foreclosure Guide</a>
-            <a href="http://www.frontdoor.com/city-guide/">City Guides</a>
-            <a href="http://www.frontdoor.com/agents" title="Real Estate Agents">Find an Agent</a>
-        </div>
-        <div>
-            <h3>Scripps Networks Digital</h3>
-            <a href="http://www.hgtv.com/" target="_blank">HGTV</a>
-            <a href="http://www.diynetwork.com" target="_blank">DIY Network</a>
-            <a href="http://www.hgtvremodels.com" target="_blank">HGTVRemodels.com</a>
-            <a href="http://www.foodnetwork.com/" target="_blank">Food Network</a>
-            <a href="http://www.cookingchanneltv.com/" target="_blank">Cooking Channel</a>
-            <a href="http://www.food.com/" target="_blank">Food.com</a>
-            <a href="http://www.cityeats.com/" target="_blank">CityEats.com</a>
-            <a href="http://www.travelchannel.com/" target="_blank">Travel Channel</a>
-            <a href="http://www.gactv.com/" target="_blank">GAC</a>
-        </div>                        
-    </section>
+    <span class="shadow"></span>
+    <div>
+        <h3>FrontDoor Info</h3>
+        <a href="http://www.frontdoor.com/buy/about-frontdoor/776">About FrontDoor</a>
+        <a href="http://www.frontdoor.com/buy/frequently-asked-questions/56067">Questions</a><!--FAQ-->
+        <a href="http://www.frontdoor.com/buy/jobs-at-frontdoor/779">Jobs at FrontDoor</a>
+        <!--<a href="http://www.frontdoor.com/Buy/Contact-Us/1375">Contact Us</a>-->
+        <!--<a href="http://www.frontdoor.com/Buy/Jobs-at-Frontdoor/779">Jobs at FrontDoor</a>-->
+        <a href="http://www.frontdoor.com/buy/press-and-public-releases/1633">Press &amp; PR</a>
+        <a href="http://coolhouses.frontdoor.com/" target="_blank">FrontDoor Blog</a>
+        <a href="http://www.hgtv.com/on-tv/be-on-hgtv/index.html" target="_blank">Be on HGTV</a>
+        <a href="http://mynewsletters.scrippsnetworks.com:8080/subscription/subscribe?brand=fdoor&amp;source=0000_FD_WEBFORM">Real Estate Newsletter</a>
+        <a href="http://www.facebook.com/pages/frontdoorcom/18669721826" target="_blank">Fan us on Facebook</a>
+        <a href="http://twitter.com/hgtvfrontdoor" target="_blank">Follow us on Twitter</a>
+        <a href="http://www.scrippsnetworksdigital.com/frontdoor/default.aspx" target="_blank">Advertise with Us</a>
+        <a href="http://www.frontdoor.com/buy/sweepstakes/56396">Sweepstakes</a>
+    </div>
+    <div>
+        <h3>Homes for Sale by City</h3>
+        <a href="http://www.frontdoor.com/sitemap">FrontDoor Local Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/rent-sitemap">FrontDoor Local Rental Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/new-york-ny-usa">New York Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/atlanta-ga-usa">Atlanta Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/las-vegas-nv-usa">Las Vegas Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/orlando-fl-usa">Orlando Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/raleigh-nc-usa">Raleigh Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/santa-fe-nm-usa">Santa Fe Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/san-antonio-tx-usa">San Antonio Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/tampa-fl-usa">Tampa Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/knoxville-tn-usa">Knoxville Real Estate Listings</a>
+        <a href="http://www.frontdoor.com/for_sale/san-francisco-ca-usa">San Francisco Real Estate Listings</a>
+    </div>
+    <div>
+        <h3>Real Estate Tools &amp; Guides</h3>
+        <a href="http://www.frontdoor.com/tools/calculators/mortgage-calculator.aspx">Mortgage Calculator</a>
+        <a href="http://www.frontdoor.com/tools/calculators/can-i-afford-it.aspx">Loan Payments</a>
+        <a href="http://www.frontdoor.com/tools/calculators/home-value-lossorgain-tax-estimator.aspx">Home Value Estimator</a>
+        <a href="http://www.frontdoor.com/buy/hgtv-frontdoor-widgets/55667">HGTV's FrontDoor Widgets</a>
+        <a href="http://www.frontdoor.com/buy/first-time-buyers-guide-find-tips-and-advice-onbuying-your-first-home/1978">First Time Home Buyer Guides</a>
+        <a href="http://www.frontdoor.com/sell/home-sellers-guide-tips-for-pricing-preparing-and-promoting-your-home-for-sale/541">Home Seller's Guide</a>
+        <a href="http://www.frontdoor.com/move/relocation-guide--tips-and-advice-to-help-you-plan-pack-and-move/959">Moving Guide</a>
+        <a href="http://www.frontdoor.com/home-finance/frontdoorcoms-guide-to-home-finance/542">Home Finance Guide</a>
+        <a href="http://www.frontdoor.com/home-finance/foreclosure-guide/1012">Foreclosure Guide</a>
+        <a href="http://www.frontdoor.com/city-guide/">City Guides</a>
+        <a href="http://www.frontdoor.com/agents" title="Real Estate Agents">Find an Agent</a>
+    </div>
+    <div>
+        <h3>Scripps Networks Digital</h3>
+        <a href="http://www.hgtv.com/" target="_blank">HGTV</a>
+        <a href="http://www.diynetwork.com" target="_blank">DIY Network</a>
+        <a href="http://www.hgtvremodels.com" target="_blank">HGTVRemodels.com</a>
+        <a href="http://www.foodnetwork.com/" target="_blank">Food Network</a>
+        <a href="http://www.cookingchanneltv.com/" target="_blank">Cooking Channel</a>
+        <a href="http://www.food.com/" target="_blank">Food.com</a>
+        <a href="http://www.cityeats.com/" target="_blank">CityEats.com</a>
+        <a href="http://www.travelchannel.com/" target="_blank">Travel Channel</a>
+        <a href="http://www.gactv.com/" target="_blank">GAC</a>
+    </div>                        
+</section>
     
-    <aside class="copyright">
-        <p>
-            &copy; <a href="http://www.scrippsnetworks.com/" target="_blank">2011 Scripps Networks, LLC</a>. All rights reserved.
-            <a href="611.html">Privacy and CA Privacy Rights</a> | 
-            <a href="http://dv.privacychoice.org/index.php/preferenceManager/global?company_id=40" target="_blank">Ad Choices</a>
-            <a href="http://dv.privacychoice.org/index.php/preferenceManager/global?company_id=40" target="_blank"><img src="../../../adimages.scrippsnetworks.com/daaIcon/daaIcon.png" border="0" alt="DAA Icon" class="ad-choices" /></a> |
-            <a href="http://www.frontdoor.com/buy/user-agreement/614">Terms of Use</a> |
-            <a href="http://www.frontdoor.com/buy/frontdoor-professional-terms-of-use/55936">Pro Terms of Use</a> |
-            <a href="611.html#"><span class="access"></span></a>
-        </p>
-    </aside>
+<aside class="copyright">
+    <p>
+        &copy; <a href="http://www.scrippsnetworks.com/" target="_blank">2011 Scripps Networks, LLC</a>. All rights reserved.
+        <a href="611.html">Privacy and CA Privacy Rights</a> | 
+        <a href="http://dv.privacychoice.org/index.php/preferenceManager/global?company_id=40" target="_blank">Ad Choices</a>
+        <a href="http://dv.privacychoice.org/index.php/preferenceManager/global?company_id=40" target="_blank"><img src="../../../adimages.scrippsnetworks.com/daaIcon/daaIcon.png" border="0" alt="DAA Icon" class="ad-choices" /></a> |
+        <a href="http://www.frontdoor.com/buy/user-agreement/614">Terms of Use</a> |
+        <a href="http://www.frontdoor.com/buy/frontdoor-professional-terms-of-use/55936">Pro Terms of Use</a> |
+        <a href="611.html#" class="access"><span>&nbsp;</span></a>
+    </p>
+</aside>
     
 </footer>
         
@@ -1188,8 +1190,8 @@ function ReloadFrameAds()
     </script>
 
     
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,postResourcePlaceHolder,,1_9_8.js"></script>
-<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,plhFacebook,,1_9_8.js"></script>
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,postResourcePlaceHolder,,1_9_9.js"></script>
+<script type="text/javascript" src="../../../static.frontdoor.com/dynamic/includes,masters,main.master@Undefined@0@,plhFacebook,,1_9_9.js"></script>
     
 <!-- Adobe Digital Marketing Suite Tag Management code Copyright 1996-2012 Adobe, Inc. All Rights Reserved More info available at http://www.adobe.com --> 
 <script type="text/javascript" src="../../includes/javascript/s_code_remote.js"></script> 

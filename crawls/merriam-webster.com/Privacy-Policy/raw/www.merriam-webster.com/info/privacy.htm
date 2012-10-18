@@ -44,6 +44,9 @@ node.parentNode.insertBefore(gads, node);
 </script>
 
 <script type="text/javascript">
+
+dfp_unit = "MW_GEN";
+
 googletag.cmd.push(function() {
 
 //Adslot 1 declaration
@@ -66,6 +69,37 @@ googletag.pubads().setTargeting('QSEGS',get_qsegs());
 googletag.pubads().enableAsyncRendering();
 googletag.enableServices();
 });
+function output_creative (id)
+	{	if ( dfp_unit == 'MW_VOCAB_QUIZ' || dfp_unit == 'MW_SPELLIT' || dfp_unit == 'MW_NTT' || dfp_unit == 'MW_GAMES_MENU' || dfp_unit == 'MW_GAMES' || dfp_unit == 'MW_TOF' )
+			{	var index	= id.substr(id.length - 1, 1);
+				var width	= index == 3 ? '160' : ( index == 1 || index == 5 ? '728' : '300' );
+				var height	= index == 3 ? '600' : ( index == 1 || index == 5 ? '90' : '250' );
+				var ord		= 2147483648*Math.random() + '.' + new Date().getTime();
+				var tag = '<iframe id="ad-spot-' + index + '" src="../ad-tags/reload.php%3Fid='%2520+%2520id%2520+%2520'&amp;unit=%252F34444486%252FMerriam-Webster%252F'%2520+%2520dfp_unit%2520+%2520'&amp;ord='%2520+%2520ord%2520+%2520'.html" frameborder="0" marginheight="0" marginwidth="0" scrolling="no" style="margin: 0; padding: 0; width: ' + width + 'px; height: ' + height + 'px;"></iframe>';
+				document.write(tag);
+			}
+
+		else
+			{	document.write
+					("<div id='" + id + "'>" + 
+						"<scr" + "ipt type='text/javascript'>\r\n" + 
+						"googletag.cmd.push(function() { googletag.display('" + id + "'); });\r\n" +
+						"</sc" + "ript>" +
+						"</div>");
+			};
+	};
+
+function reloadCreatives (url)
+	{	for ( var index = 1; index <= 5; index++ )
+			{	var ad = document.getElementById('ad-spot-' + index);
+				if ( ad )
+					{	var src = ad.src.substring(0, ad.src.indexOf('&ord='));
+						src += '&ord=' + 2147483648*Math.random() + '.' + new Date().getTime();
+						ad.src = src;
+					};
+			};
+	};
+
 </script>
 <!-- End: GPT -->
 	</head>

@@ -2,8 +2,13 @@
 (function (win, doc, wpAd, undefined) {
   
   'use strict';
- 
+
   wpAd.config = wpAd.config || {};
+  
+  //mini overlay hack:
+  if(wpAd.tools.urlCheck('mini_overlay_test=true')){
+    wpAd.tools.writeScript('http://ads.jetpackdigital.com/lineitems/8460/jpd.js?n=' + Math.floor(Math.random()*1E7) + '&u=http://www.miniusa.com');
+  }
 
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -15,8 +20,8 @@
 
   wpAd.constants = {
     'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/slate_config.js',
-    'wpniSite': 'slate',
-    'wpniDomain': 'slate.com',
+    'site': 'slate',
+    'domain': 'slate.com',
     'fifURL': (function () {
       if(!doc.domain) {
         return './fif.html'; //local test pages
@@ -32,12 +37,11 @@
       return false;
     })()
   };
-  
+
   if(!wpAd.flags.no_ads) {
     //ADD THE TEMPLATES - generated via flight manager tool:
     wpAd.tools.writeScript(wpAd.constants.ad_config_url);
   }
-
   
   //legacy quantcast code - may still be on some older pages:
   if(win.wp_quantcast) {

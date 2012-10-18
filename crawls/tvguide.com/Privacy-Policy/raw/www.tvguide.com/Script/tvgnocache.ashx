@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,9,15,12,14,7,0);
+var tvgServerTimeUTC = new Date(2012,9,18,12,13,17,0);
 
-var dServerET = new Date(2012,9,15,8,14,7,0);
+var dServerET = new Date(2012,9,18,8,13,17,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,9,15);
-dSrvrTime.setUTCHours(12,14,7,0);
+dSrvrTime.setUTCFullYear(2012,9,18);
+dSrvrTime.setUTCHours(12,13,17,0);
 
-var dLocalTime = new Date(2012,9,15,8,14,7,0);
-var dGridStart = new Date(2012,9,15,8,0,0,0);
+var dLocalTime = new Date(2012,9,18,8,13,17,0);
+var dGridStart = new Date(2012,9,18,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= c23a24d682430c485bfd6b3fdce17a24a07984bc 1350303247';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= e97fc315a42e8ab32da4b6f3a2036cc385ead18c 1350562397';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,45 +50,45 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 10/15/2012 12:00:00 PM GMT */
+/* TVGSVC02 10/18/2012 11:45:00 AM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-10-15)*/
+/* Listings: In-Grid and Close-Up Ads (2012-10-18)*/
 var GridAds = true;
 var MaxGridAds = 3;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/HHI_tvguide_triptych_770x25_Top.jpg";
-var magicBotImage = "/listings/images/topchan/HHI_tvguide_triptych_770x25_Bottom.jpg";
-var magicLogo = "/listings/images/topchan/HHI_revised_125x41_10.12_v2.jpg";
-var magicLink = "http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=20&mc=click&pli=5475491&PluID=0&ord=%n";
-var magicBkgnd = "#FFFFFF";
-var magicTextClr = "#FFFFFF";
-var magicLeftOffset = 700;
-var magicSources = [424];
+var magicTopImage = "";
+var magicBotImage = "";
+var magicLogo = "";
+var magicLink = "";
+var magicBkgnd = "";
+var magicTextClr = "";
+var magicLeftOffset = 0;
+var magicSources = [0];
 var magicIDtype = 0;
 var magicRepeat = true;
-var magicHpImage = "/listings/images/topchan/HHI_tvguide_triptych_100x40.jpg";
-var magicHpBkgnd = "#5E85C8";
-var magicTrackingPixel = "http://bs.serving-sys.com/BurstingPipe/adServer.bs?cn=tf&c=19&mc=imp&pli=5475491&PluID=0&ord=%n&rtu=-1";
-var magicChannelLocation = "bottom";
+var magicHpImage = "";
+var magicHpBkgnd = "";
+var magicTrackingPixel = "";
+var magicChannelLocation = "top";
 
 /* New! Franchise Channel Check-Ins */
 var franchiseCheckin = new Object();
-franchiseCheckin.Enabled = true;
-franchiseCheckin.ObjectID = 308182;
-franchiseCheckin.ProgramID = 21102442;
-franchiseCheckin.CategoryID = 9;
-franchiseCheckin.SeriesID = 5546185;
+franchiseCheckin.Enabled = false;
+franchiseCheckin.ObjectID = 0;
+franchiseCheckin.ProgramID = 0;
+franchiseCheckin.CategoryID = 0;
+franchiseCheckin.SeriesID = 0;
 franchiseCheckin.SportsNonEvent = false;
-franchiseCheckin.ProgramTitle = "House Hunters International";
-franchiseCheckin.EpisodeTitle = "Down by the Seaside in Hoi An, Vietnam";
-franchiseCheckin.ObjectUrl = "http://www.tvguide.com/tvshows/house-hunters-international/308182";
-franchiseCheckin.CallLetters = "HGTV";
-franchiseCheckin.StartTime = "201210151030";
-franchiseCheckin.BadgeUrl = "http://static.tvguide.com/MediaBin/Galleries/Shows/G_L/Hi_Hp/House_Hunters_International/house-hunters-international_badge.gif";
-franchiseCheckin.LeftOffset = 500;
+franchiseCheckin.ProgramTitle = "";
+franchiseCheckin.EpisodeTitle = "";
+franchiseCheckin.ObjectUrl = "";
+franchiseCheckin.CallLetters = "";
+franchiseCheckin.StartTime = "";
+franchiseCheckin.BadgeUrl = "";
+franchiseCheckin.LeftOffset = 0;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");

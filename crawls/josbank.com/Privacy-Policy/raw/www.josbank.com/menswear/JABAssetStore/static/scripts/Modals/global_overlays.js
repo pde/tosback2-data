@@ -157,7 +157,7 @@ function bind_WWCM_modal_evts(modal_wrapper){
 //generic modal open function
 // urlToLoad param is optional
 function genmodal_open(event, modal_wrapper, bindFn, urlToLoad){
-    $('body').append('<img src="/wcsstore/JABAssetStore/static/images/global/ajax-loader.gif" alt="loading modal" id="modal_loading"/>');
+    $('body').append('<img src="/menswear/JABAssetStore/static/images/global/ajax-loader.gif" alt="loading modal" id="modal_loading"/>');
     if (typeof(event) !== 'undefined' && event != null) {
         var href = $(event.target).attr('href');
     }

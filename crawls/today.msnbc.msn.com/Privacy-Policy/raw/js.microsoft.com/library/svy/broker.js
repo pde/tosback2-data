@@ -22,7 +22,9 @@ if(SR_url.search(/www\.microsoft\.com\/windows\/pc-selector/i) !== -1 || SR_url.
 		_sr_config = "broker-config_cle.js";
 }else if(/[\w\.]+\/windowsphone\/en-us/i.test(SR_url)) {
 	_sr_config = "broker-config_wp.js";	
-}else if(/[\w\.]+\/en-us\/bi\//i.test(SR_url)) {
+}else if(/[\w\.]+\/learning\/en\/us/i.test(SR_url)) {
+	_sr_config = "broker-config_learning.js";	
+} else if(/[\w\.]+\/en-us\/bi\//i.test(SR_url)) {
 	_sr_builder = "builder_Qbi.js";	
 }
 if(SR_url.search("www.microsoft.com/student") != -1 && document.cookie.indexOf('cleflag2') == -1){

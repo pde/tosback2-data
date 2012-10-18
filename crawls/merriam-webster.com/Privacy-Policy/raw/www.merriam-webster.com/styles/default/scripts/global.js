@@ -42,7 +42,8 @@ function reloadCreatives (url)
                 // Do it the normal way.
                 else
                         {        for ( var index = 1; index < 6; index++ )
-                                        {       googletag.cmd.push(function() { googletag.display('div-gpt-ad-219827234313134000-' + index); });
+                                        {       document.getElementById('div-gpt-ad-219827234313134000-' + index).innerHTML = '';
+						googletag.cmd.push(function() { googletag.display('div-gpt-ad-219827234313134000-' + index); });
                                         };
                         };
 

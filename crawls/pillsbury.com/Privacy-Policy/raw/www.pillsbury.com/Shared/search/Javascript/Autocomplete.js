@@ -52,20 +52,20 @@
                     for (var i = 0; i < paramArray.length; i++) {
                         var paramValue = paramArray[i];
                         if (paramValue.match("SearchText")) {
-                            paramValue = paramValue.replace("SearchText", "")
+                            paramValue = paramValue.replace("SearchText", "");
                             JSONDataSource[paramValue] = request.term.trim() + "*";
                         }
                         else if (paramValue.match("SearchQuery")) {
-                            paramValue = paramValue.replace("SearchQuery", "")
+                            paramValue = paramValue.replace("SearchQuery", "");
                             JSONDataSource[paramValue] = request.term.trim();
                         }
                         else if (paramValue.match("SearchLimit")) {
-                            paramValue = paramValue.replace("SearchLimit", "")
+                            paramValue = paramValue.replace("SearchLimit", "");
                             JSONDataSource[paramValue.split(":")[0]] = paramValue.split(":")[1];
                             limit = paramValue.split(":")[1];
                         }
                         else if (paramValue.match("SearchTime")) {
-                            paramValue = paramValue.replace("SearchTime", "")
+                            paramValue = paramValue.replace("SearchTime", "");
                             JSONDataSource[paramValue] = (new Date()).getTime().toString();
                         }
                         else {
@@ -120,7 +120,6 @@
                         jQuery("#" + searchResultTypeHiddenFieldID).val(urlParams.st);
                     }
                     var contentType = "Recipe";
-                    //alert(jQuery("#" + searchResultTypeHiddenFieldID).val());
                     switch (jQuery("#" + searchResultTypeHiddenFieldID).val()) {
                         case ContentTypeEnum.Recipe:
                             {
@@ -160,28 +159,32 @@
                                     label: __highlight(item, request.term.trim()),
                                     value: item.data
                                 };
-                            }))
+                            }));
+
+                            jQuery(".searchHints li.search a").bind("click", { autocompleteType: "keyword", "autoCompleteTextBox": autoCompleteTextBox }, fireEventTagAndRedirect);
+                            jQuery(".searchHints li.recipe a").bind("click", { autocompleteType: "recipe", "autoCompleteTextBox": autoCompleteTextBox }, fireEventTagAndRedirect);
+                            jQuery(".searchHints li.article a").bind("click", { autocompleteType: "article", "autoCompleteTextBox": autoCompleteTextBox }, fireEventTagAndRedirect);
+                            jQuery(".searchHints li.video a").bind("click", { autocompleteType: "video", "autoCompleteTextBox": autoCompleteTextBox }, fireEventTagAndRedirect);
                         },
 
-                        error: function (request, status, errorThrown) 
-                        {
-////                            var errMsgs = errorMessages.split('|');
-////                            if (request.status == 0) {
-////                                alert(errMsgs[0]); //'Network error'
-////                            } else if (request.status == 404) {
-////                                alert(errMsgs[1]); //'404 Page not found'
-////                            } else if (request.status == 500) {
-////                                // assume msft brings error page back with a useful title
-////                                var titleMatch = /(.*?)<\/title>/.exec(request.responseText);
-////                                var titleString = titleMatch ? titleMatch[1] : '';
-////                                //alert(errMsgs[2] + titleString); //'Oops!\n\n500 Internal Server Error\n\n'
-////                            } else if (status == 'parsererror') {
-////                                alert(errMsgs[3]); //'Error.\nParsing JSON Request failed.'
-////                            } else if (status == 'timeout') {
-////                                alert(errMsgs[4]); //'Request Time out.'
-////                            } else {
-////                                //alert(errMsgs[5] + ' ' + request.status + ' ' + request.statusText + ' - ' + dataSource); //Unkown error:
-////                            }
+                        error: function (request, status, errorThrown) {
+                            ////                            var errMsgs = errorMessages.split('|');
+                            ////                            if (request.status == 0) {
+                            ////                                alert(errMsgs[0]); //'Network error'
+                            ////                            } else if (request.status == 404) {
+                            ////                                alert(errMsgs[1]); //'404 Page not found'
+                            ////                            } else if (request.status == 500) {
+                            ////                                // assume msft brings error page back with a useful title
+                            ////                                var titleMatch = /(.*?)<\/title>/.exec(request.responseText);
+                            ////                                var titleString = titleMatch ? titleMatch[1] : '';
+                            ////                                //alert(errMsgs[2] + titleString); //'Oops!\n\n500 Internal Server Error\n\n'
+                            ////                            } else if (status == 'parsererror') {
+                            ////                                alert(errMsgs[3]); //'Error.\nParsing JSON Request failed.'
+                            ////                            } else if (status == 'timeout') {
+                            ////                                alert(errMsgs[4]); //'Request Time out.'
+                            ////                            } else {
+                            ////                                //alert(errMsgs[5] + ' ' + request.status + ' ' + request.statusText + ' - ' + dataSource); //Unkown error:
+                            ////                            }
                         }
                     });
                 },
@@ -254,7 +257,24 @@ function getParameterByName(name) {
     else
         return decodeURIComponent(results[1].replace(/\+/g, " "));
 }
-//added to fix url issue in serach hint
+
+function fireEventTagAndRedirect(event) {
+    event.preventDefault();
+    try {
+        var searchText = jQuery('#' + event.data.autoCompleteTextBox).val();
+        ntptEventTag("ev=PredictiveSearch_" + event.data.autocompleteType + "&SiteKeyword=" + searchText);
+    }
+    catch (ex) {
+    }
+    var href = jQuery(this).attr("href");
+    setTimeout(function () {
+        //wait a bit to let the eventtag fire over the network
+        window.location.href = href;
+    }, 100);
+}
+
+
+//  added to fix url issue in serach hint
 jQuery("li.search a").live("click", function () {
     var theUrl = jQuery(this).attr("href");
     var newUrl = theUrl.replace(/ /g, '%20');

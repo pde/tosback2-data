@@ -33,8 +33,8 @@
   
   wpAd.constants = {
     'ad_config_url': /ad_config_url\=/.test(location.search) ? decodeURIComponent(location.search.split(/ad_config_url\=/)[1].split(/&/)[0]) : 'http://js.washingtonpost.com/wp-srv/ad/wp_config.js',
-    'wpniSite': 'wpni',
-    'wpniDomain': 'washingtonpost.com',
+    'site': 'wpni',
+    'domain': 'washingtonpost.com',
     'fifURL': (function () {
       if(!doc.domain) {
         return './fif.html'; //local test pages

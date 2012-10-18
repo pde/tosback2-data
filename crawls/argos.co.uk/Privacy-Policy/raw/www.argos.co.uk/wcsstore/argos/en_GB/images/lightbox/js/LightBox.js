@@ -1,5 +1,3 @@
-argos.require("utils");
-
 var LightBox = {};
 $(document).ready(function(){
 	LightBox = new (function(){

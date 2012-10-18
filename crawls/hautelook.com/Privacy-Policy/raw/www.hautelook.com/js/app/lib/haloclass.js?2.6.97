@@ -1,0 +1,257 @@
+/*var Halo = Halo || {
+	blaze:	function(depth, trail, tree){
+		if(trail.length === depth){
+			return tree;
+		}
+		if(typeof tree[trail[depth]] !== 'undefined' && tree[trail[depth]] !== null){
+			return arguments.callee(depth + 1, trail, tree[trail[depth]]);
+		}
+		return false;
+	}
+};
+*/
+
+var $Halo = $Halo || {};
+
+$Halo.Obj = $Halo.Obj || function(obj){
+	/*
+	getDefaults: function
+	verify: function
+	getJSON: function
+	clone: function
+	*/
+};
+
+/*Array[Strings] propList, Array[Array[string]] deepProps*/
+$Halo.Obj.prototype.verify = function(propList/*, deepProps*/){
+	if(!(propList instanceof Array)){
+		throw new TypeError("Parameter 'propList' must be an Array");
+	}
+	
+	var deepProps = arguments[1] || [],
+		def = this.getDefaults(),
+		i = 0,	len = propList.length,
+		propChain = false, deepDef = false, deepThis = false;
+	
+	while(i < len){
+		if(def[propList[i]] === this[propList[i]]){
+			throw new Error("Property: '" + propList[i] + "' is set to default.");
+		}
+		i++;
+	}
+	
+	i = 0;
+	len = deepProps.length;
+	while(i < len){
+		propChain = deepProps[i];
+		if(!(propChain instanceof Array)){
+			throw new TypeError("Each entry in deepProps must also be an array");
+		}
+		deepDef = Halo.blaze(0, propChain, def);
+		deepThis = Halo.blaze(0, propChain, this);
+		if(typeof deepThis === 'undefined'){
+			throw new Error("Property chain: " + propChain.toString() + " was undefined, or the chain was invalid.");
+		}
+		if(deepDef === deepThis){
+			throw new Error("Property chain: " + propChain.toString() + " was set to default.");
+		}
+		i++;
+	}
+	
+	return true;
+};
+
+$Halo.Obj.prototype.getJSON = function(type){
+	if(type === 'string'){
+		return JSON.stringify(this);
+	}
+	else if(type==='object'){
+		return JSON.parse(JSON.stringify(this));
+	}
+	else{
+		return false;
+	}
+}
+
+$Halo.Obj.prototype.clone = function(){
+	return Halo.clone(this);
+}
+
+$Halo.Obj.prototype.getDefaults = function(){
+	return {};
+};
+
+$Halo.EstimatedDeliveryDateFormatter = $Halo.EstimatedDeliveryDateFormatter || function(data) {
+	var day_of_the_week = function(date) {
+		return new Date(date.split("-")[2],
+			(date.split("-")[0] -1), // zero-indexed
+			date.split("-")[1]).toDateString().substring(0,3);
+	};
+	var date_format_we_want = function(date) {
+		return day_of_the_week(date) +
+			" " +
+			date.split("-")[0] +
+			"/" +
+			date.split("-")[1] +
+			"/" +
+			date.split("-")[2].substring(2) ;
+	};
+	var build_date_range_string = function(estimated_delivery) {
+		return date_format_we_want(estimated_delivery.start_date) +
+			" to " +
+			date_format_we_want(estimated_delivery.end_date);
+	};
+	return build_date_range_string(data.estimated_delivery);
+};
+
+
+
+/////////
+
+
+$Halo.DataHandler = $Halo.DataHandler || function(mProps){
+	var props = mProps || {};
+	this.name = props.name || null;
+	this.url = props.url || null;
+	this.settings = {
+		useCache: props.cache || false,
+		useStorage: props.storage || false,
+		storageLength: props.storageLength || (5 * 60 * 1000),
+		storageLocations: props.storageLocations || ["local", "session"],
+		parameters: new $Halo.DataHandlerParameterCollection()
+	};
+	this.requests = [];
+	var len = HaloUI.fn.isArray(props.parameters) && props.parameters.length;
+	var param = null;
+	for(var i = 0; i < len; i++){
+		param = props.parameters[i];
+		if(typeof param == 'string'){
+			param = {};
+			param.name = props.parameters[i];
+		}
+		this.settings.parameters.add(param);
+	}
+};
+
+$Halo.DataHandler.prototype.name = "";
+$Halo.DataHandler.prototype.url = "";
+$Halo.DataHandler.prototype.success = function(reqUrl, deferred, data){
+    deferred.fulfiller(true, data);
+	this.store(reqUrl, data);
+};
+
+$Halo.DataHandler.prototype.failure = function(reqUrl, deferred, errors){
+	deferred.fulfiller(false, errors);
+};
+
+$Halo.DataHandler.prototype.store = function(reqUrl, data){
+	var returnVal = false;
+	if(this.settings.useStorage){
+		var storage = BrowserStorage.setStorageEngines(this.settings.storageLocations);
+		returnVal = storage.set(this.name + reqUrl, data, this.settings.storageLength || null);
+	}
+	return returnVal;
+};
+
+$Halo.DataHandler.prototype.getStorageData = function(){
+	if(this.settings.useStorage){
+		var storage = BrowserStorage.setStorageEngines(this.settings.storageLocations);
+		return storage.get(this.name + reqUrl);
+	}
+	return undefined;
+};
+
+$Halo.DataHandler.prototype.clearCache = function(){
+	delete this.requests;
+	this.requests = [];
+};
+
+$Halo.DataHandler.prototype.getData = function(parameterValues){
+	var reqUrl = this.settings.parameters.buildUrl(this.url, parameterValues);
+	var storageData = null;
+    var deferred;
+	if(!(reqUrl in this.requests)){
+		var deferred = HaloUI.Defer();
+        if(this.settings.useCache){
+            this.requests[reqUrl] = deferred;
+        }
+		if(!this.getStorageData(reqUrl)){
+			Halo.REST({
+				url: reqUrl,
+				type: "GET",
+				error: $.proxy(function(errors){
+					this.failure(reqUrl, deferred, errors);
+				}, this),
+				success: $.proxy(function(data){
+					this.success(reqUrl, deferred, data);
+				},this)
+			});
+		}
+	}
+    else{
+        deferred = this.requests[reqUrl];
+    }
+	return deferred.promise;
+};
+
+$Halo.DataHandlerParameter = $Halo.DataHandlerParameter || function(pObj){
+	var obj = pObj || {};
+	this.name = obj.name || "";
+	this.token = obj.token || ("#" + this.name);
+	this.type = obj.type || "string";
+	this.required = !!(obj.required); //forces to boolean
+};
+
+$Halo.DataHandlerParameter.prototype.cleanValue = function(value){
+	var returnVal = null;
+	if(typeof value === 'undefined' || typeof value === "function" || typeof value === "object"){
+		throw new Error("Only primitive types can be used for parameter values.");
+	}
+	if(this.type == "string"){
+		returnVal = value + "";
+	}
+	if(this.type == "number"){
+		returnVal = +value;
+		if(isNaN(returnVal)){
+			throw new Error("Value could not be cast as a number");
+		}
+	}
+	return returnVal;
+};
+
+$Halo.DataHandlerParameter.prototype.replaceIn = function(targetStr, value){
+	var val = this.cleanValue(value);
+	if(typeof targetStr == "string"){
+		var newStr = targetStr.replace(this.token, val);
+		return newStr;
+	}
+	throw new Error("Parameter 0 must be of type string");
+};
+
+$Halo.DataHandlerParameterCollection = $Halo.DataHandlerParameterCollection || function(){
+	this._list = [];
+};
+
+$Halo.DataHandlerParameterCollection.prototype.add = function(paramObj/*, param2, param3, ...*/){
+	if(!paramObj){
+		//throw exception?
+		return;
+	}
+	var i = 0, len = arguments.length;
+	for(;i < len; i++){
+		if(arguments[i]){
+			this._list.push(new $Halo.DataHandlerParameter(arguments[i]));
+		}
+	}
+};
+
+$Halo.DataHandlerParameterCollection.prototype.buildUrl = function(url, data){
+	var i = 0, len = this._list.length;
+	var workingStr = url;
+	for(;i < len; i++){
+		if(this._list[i].name in data){
+			workingStr = this._list[i].replaceIn(workingStr, data[this._list[i].name]);
+		}
+	}
+	return workingStr;
+};

@@ -452,7 +452,7 @@ var usa_globalMenu = {
 							"title" : "Covert Affairs",
 							"url" : usa_baseUrlDomain + "/series/covertaffairs/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_ca.png",
-							"tuneIn" : "RETURNS OCT 16 TUESDAY 10/9C"
+							"tuneIn" : "ALL NEW EPISODES TUESDAY 10/9C"
 						},
 						/* Featured Slot 3 */
 						{
@@ -692,14 +692,7 @@ var usa_globalMenu = {
 					/* MOVIES & SPECIALS */
 					"type" : "video_feature",
 					"title" : "Movies &amp; Specials",
-					"items" : [
-						
-						{
-							"title" : "MR. DEEDS",
-							"subtitle" : "MONDAY OCT 15 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/mrdeeds/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_mrdeeds.png"
-						},
+					"items" : [											
 						{
 							"title" : "EAT PRAY LOVE",
 							"subtitle" : "SATURDAY OCT 20 8/7C",
@@ -717,12 +710,13 @@ var usa_globalMenu = {
 							"subtitle" : "SUN OCT 29 11:05/10:05C",
 							"url" : usa_baseUrlDomain + "/movies/residentevil/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
+						},
+						{
+							"title" : "THE UGLY TRUTH",
+							"subtitle" : "SUNDAY NOVEMBER 3 9/8C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
 						}
-
-
-
-
-						
 					]
 				}
 			],

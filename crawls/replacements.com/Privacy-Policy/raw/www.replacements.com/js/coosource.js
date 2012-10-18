@@ -465,6 +465,32 @@ gr+="</noscript>\n";
 gr+="<!-- End Google Code for Homepage visitors Remarketing List -->\n";
 document.write(gr);
 }
+function runGoogleRemarketing(){
+var gr="";
+gr+="<!-- Google Code for Main list -->\n";
+gr+="<!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. ";
+gr+="For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->\n";
+gr+="<script type=\"text/javascript\">\n";
+gr+="/* <![CDATA[ */\n";
+gr+="var google_conversion_id = 1072723650;\n";
+gr+="var google_conversion_label = \"6PulCLu52QMQwu3B_wM\";\n";
+gr+="var google_custom_params = window.google_tag_params;\n";
+gr+="var google_remarketing_only = true;\n";
+gr+="/* ]]> */\n";
+gr+="</script>\n";
+gr+="<script type=\"text/javascript\" src=\"";
+gr+=("https:"==document.location.protocol?"https://www":"http://www");
+gr+=".googleadservices.com/pagead/conversion.js\">\n";
+gr+="</script>\n";
+gr+="<noscript>\n";
+gr+="<div style=\"display:inline;\">\n";
+gr+="<img height=\"1\" width=\"1\" style=\"border-style:none;\" alt=\"\" src=\"";
+gr+=("https:"==document.location.protocol?"https://googleads":"http://googleads");
+gr+=".g.doubleclick.net/pagead/viewthroughconversion/1072723650/?value=0&amp;label=6PulCLu52QMQwu3B_wM&amp;guid=ON&amp;script=0\"/>\n";
+gr+="</div>\n";
+gr+="</noscript>\n";
+document.write(gr);
+}
 function runEFRegTrack(){
 document.write("<img width=\"1\" height=\"1\" src=\"https://pixel1064.everesttech.net/1064/p?ev_reg_rev=100&ev_registrations=1\" />");
 }
@@ -525,20 +551,21 @@ fs+="</script>\n";
 document.write(fs);
 }
 function runFetchBack(){
-var _57="";
-_57+="<img src='http://pixel.fetchback.com/serve/fb/uat;cat=,name=landing,sid=2103";
+var _58="";
+_58+="<img src='http://pixel.fetchback.com/serve/fb/uat;cat=,name=landing,sid=2103";
 if(location.href.indexOf("webquote/")!=-1){
-var _58=location.href.substring((location.href.indexOf("/webquote/")+10),(location.href.indexOf(".htm")));
-_57+=",browse_products="+_58;
+var _59=location.href.substring((location.href.indexOf("/webquote/")+10),(location.href.indexOf(".htm")));
+_58+=",browse_products="+_59;
 }
-_57+="' border='0' alt='' width='1' height='1'/>";
-document.write(_57);
+_58+="' border='0' alt='' width='1' height='1'/>";
+document.write(_58);
 }
 function runEveryPageIncludes(){
 runGAcode();
 if(location.href.indexOf("order/confirm")==-1&&location.href.indexOf("order/order")==-1){
 runFetchBack();
 }
+runGoogleRemarketing();
 }
 function runGreyBarIncludes(){
 runAddThis();

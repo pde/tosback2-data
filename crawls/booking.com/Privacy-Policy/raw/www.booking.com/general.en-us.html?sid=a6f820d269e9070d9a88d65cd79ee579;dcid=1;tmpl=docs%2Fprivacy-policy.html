@@ -17,10 +17,55 @@ var sNSExperiments = 'experiments';
 var sNSStartup = 'startup';
 var sNSExperimentsLoad = 'experiments_load';
 var sNSStartupLoad = 'startup_load';
+(function(){
+var callback = function() {
+var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {};
+var navigation = performance.navigation;
+var timing = performance.timing;
+if ( !navigation || !timing )
+return;
+// make sure we get the last event
+if ( timing.loadEventEnd == 0 ) {
+setTimeout(callback, 1000);
+return;
+}
+// keep the list ordered to stay compatible
+(new Image()).src = '/navigation_times?pid=1192553641100006&nts='
++ navigation.type + ','
++ navigation.redirectCount + ','
++ timing.navigationStart + ','
++ timing.unloadEventStart + ','
++ timing.unloadEventEnd + ','
++ timing.redirectStart + ','
++ timing.redirectEnd + ','
++ timing.fetchStart + ','
++ timing.domainLookupStart + ','
++ timing.domainLookupEnd + ','
++ timing.connectStart + ','
++ timing.connectEnd + ','
++ timing.secureConnectionStart + ','
++ timing.requestStart + ','
++ timing.responseStart + ','
++ timing.responseEnd + ','
++ timing.domLoading + ','
++ timing.domInteractive + ','
++ timing.domContentLoadedEventStart + ','
++ timing.domContentLoadedEventEnd + ','
++ timing.domComplete + ','
++ timing.loadEventStart + ','
++ timing.loadEventEnd + ','
++ ntloadstyles
+;
+};
+if ( typeof window.attachEvent != "undefined" )
+window.attachEvent("onload", callback);
+else if ( window.addEventListener )
+window.addEventListener("load", callback, 0);
+})();
 var b_experiments = {}, WIDTH, booking = {
 env : {
 'z_track_searchbox' : 1,
-"b_current_datetime" : '2012-10-15 14:08:05',
+"b_current_datetime" : '2012-10-18 14:07:08',
 "b_action" : 'general',
 "b_google_maps_key_params" : 'key=ABQIAAAAEG168dBcRndNV70R9mDglhSZn_smZpFKc3SoS1v7FyDshy3QMxSgeH0qWTH24Gc7je-iJ9DSXiNmcA&amp;client=gme-booking&indexing=true',
 "b_lang" : 'en',
@@ -48,7 +93,7 @@ b_aid: '304142',
 b_sid: 'a6f820d269e9070d9a88d65cd79ee579',
 ip_country: 'us',
 b_selected_currency: 'USD',
-pageview_id: '1142555220f000b5',
+pageview_id: '1192553641100006',
 aid: '304142',
 b_browser: 'firefox',
 b_browser_version: '3',
@@ -104,8 +149,9 @@ b_long_weekdays: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday',
 b_short_months: ['January','February','March','April','May','June','July','August','September','October','November','December'],
 b_short_months_abbr: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
 b_site_experiment_sr_filter_creditcards_accepted: 0,
-new_av_calendar_can_be_tracked: true,
+b_site_experiment_show_first_hotel_rates: 2,
 b_should_track_show_first_hotel_rates: true,
+b_site_experiment_booking_track: 1,
 bse_tooltip_new_pos: 1,
 tooltip_hide_without_fadeout: 1,
 tooltip_traversing: 1,
@@ -140,7 +186,7 @@ hotels_nearby: 'Hotels nearby'
 },
 search_autocomplete_params: {
 lang: 'en',
-pid: '1142555220f000b5',
+pid: '1192553641100006',
 aid: 304142
 ,cities_first: 1
 ,es: 1
@@ -149,14 +195,14 @@ aid: 304142
 },
 touch_os: false,
 b_site_variant_calendar_days_allowed_fix: 1,
-calendar_days_allowed_number: 350,
+calendar_days_allowed_number: 347,
 b_password_strength_msg: ['Weak','Fair ','Good','Strong','Very Strong'],
 b_show_passwd: 'View password',
 b_passwd_tooltip: 'Include capital letters, special characters, and numbers to increase your password strength ',
 b_site_experiment_social_plugins_footer: 1,
 // adding the show_social setting for affiliate partners
 b_site_experiment_lazy_load_print_css: 1,
-print_css_href: 'http://q-ec.bstatic.com/static/css/print.2526.css',
+print_css_href: 'http://q-ec.bstatic.com/static/css/print.2549.css',
 b_site_experiment_signup_expand: "1",
 b_hostname_signup: "www.booking.com",
 b_nonsecure_hostname_signup: "http://www.booking.com",
@@ -170,8 +216,7 @@ b_site_experiment_fb_likes: 1,
 b_site_experiment_bp_remove_cancellation_survey_2: 1,
 b_site_experiment_mybooking_grouping_ctas: 1,
 is_mybooking_grouping_ctas: 1,
-is_exp_ungroup_reservations: 1,
-	
+b_site_experiment_track_custom_var: '1',
 trackExperiment : function () { },
 "error" : {}
 },
@@ -187,7 +232,7 @@ function Tip() {};
 (function( booking ) {
 var dateFormats = {"short_date":"{short_month_name} {day_of_month}, {full_year}","short_date_with_weekday":"{short_weekday}, {short_month_name} {day_of_month}, {full_year}","short_date_without_year":" {short_month_name} {day_of_month}"},
 months = {"6":{"short_name":"Jun","name":"June"},"11":{"short_name":"Nov","name":"November"},"3":{"short_name":"Mar","name":"March"},"7":{"short_name":"Jul","name":"July"},"9":{"short_name":"Sept","name":"September"},"2":{"short_name":"Feb","name":"February"},"12":{"short_name":"Dec","name":"December"},"8":{"short_name":"Aug","name":"August"},"1":{"short_name":"Jan","name":"January"},"4":{"short_name":"Apr","name":"April"},"10":{"short_name":"Oct","name":"October"},"5":{"short_name":"May","name":"May"}},
-weekDays = {"6":{"short":"Sat","name":"Saturday","shortest":"Sa"},"4":{"short":"Thu","name":"Thursday","shortest":"Th"},"1":{"short":"Mon","name":"Monday","shortest":"Mo"},"3":{"short":"Wed","name":"Wednesday","shortest":"We"},"7":{"short":"Sun","name":"Sunday","shortest":"Su"},"2":{"short":"Tue","name":"Tuesday","shortest":"Tu"},"5":{"short":"Fri","name":"Friday","shortest":"Fr"}};
+weekDays = {"6":{"short":"Sat","name":"Saturday","shortest":"Sa"},"4":{"short":"Thurs","name":"Thursday","shortest":"Th"},"1":{"short":"Mon","name":"Monday","shortest":"Mo"},"3":{"short":"Weds","name":"Wednesday","shortest":"We"},"7":{"short":"Sun","name":"Sunday","shortest":"Su"},"2":{"short":"Tues","name":"Tuesday","shortest":"Tu"},"5":{"short":"Fri","name":"Friday","shortest":"Fr"}};
 if ( booking.formatter ) { return; }
 weekDays['0'] = weekDays['7'];
 booking.formatter = {
@@ -235,7 +280,7 @@ return typeof r === 'string' || typeof r === 'number' ? r : a;
 <meta http-equiv="window-target" content="_top" />
 <meta property="fb:page_id" content="131840030178250" />
 <meta property="og:type" content="company" />
-<meta property="og:title" content="Booking.com: 244,995 hotels worldwide. Book your hotel now!" />
+<meta property="og:title" content="Booking.com: 245,348 hotels worldwide. Book your hotel now!" />
 <meta property="og:image" content="http://q-ec.bstatic.com/static/img/mobile/iphone/i_iphone_app.gif" />
 <meta property="og:description" content="Big savings on hotels in 41,000 destinations worldwide. Browse hotel reviews and find the guaranteed best price on hotels for all budgets." />
 <meta property="og:url" content="http://www.booking.com/general.html" />
@@ -288,8 +333,9 @@ return typeof r === 'string' || typeof r === 'number' ? r : a;
 <link rel="help" href="http://www.booking.com/general.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=docs/faqmain" />
 <link rel="search" type="application/opensearchdescription+xml" href="http://q-ec.bstatic.com/static/opensearch/en-us.xml" title="Booking.com Online Hotel Reservations" />
 <link href="https://plus.google.com/105443419075154950489" rel="publisher" />
-<link rel="stylesheet" type="text/css" href="../r-ec.bstatic.com/static/css/main_edgecast.2526.css" />
-<link rel="stylesheet" type="text/css" href="../r-ec.bstatic.com/static/css/popups_edgecast.2526.css" media="screen" />
+<script>var ntloadstyles = +new Date();</script>
+<link rel="stylesheet" type="text/css" href="../r-ec.bstatic.com/static/css/main_edgecast.2549.css" />
+<link rel="stylesheet" type="text/css" href="../r-ec.bstatic.com/static/css/popups_edgecast.2549.css" media="screen" />
 <style type="text/css">
 #mailafriend_shadow,
 #newletter_popup_shadow,
@@ -299,25 +345,26 @@ filter: alpha(opacity=40);
 img { -ms-interpolation-mode: bicubic; }
 </style>
 <!--[if lte IE 9]>
-<link rel="stylesheet" type="text/css" href="http://r-ec.bstatic.com/static/css/ie9lte.2526.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://r-ec.bstatic.com/static/css/ie9lte.2549.css" media="screen" />
 <![endif]-->
 <!--[if lte IE 8]>
 <![endif]-->
 <!--[if lte IE 7]>
-<link rel="stylesheet" type="text/css" href="http://r-ec.bstatic.com/static/css/ie7lte.2526.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://r-ec.bstatic.com/static/css/ie7lte.2549.css" media="screen" />
 <![endif]-->
 <!--[if lte IE 6]>
-<link rel="stylesheet" type="text/css" href="http://q-ec.bstatic.com/static/css/ie6lte.2526.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://q-ec.bstatic.com/static/css/ie6lte.2549.css" media="screen" />
 <![endif]-->
 <!--[if lt IE 6]>
-<link rel="stylesheet" type="text/css" href="http://q-ec.bstatic.com/static/css/ie55lte.2526.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="http://q-ec.bstatic.com/static/css/ie55lte.2549.css" media="screen" />
 <![endif]-->
+<script>ntloadstyles = (+new Date())-ntloadstyles;</script>
 <script type="text/javascript">var _gaq = _gaq || [];</script>
 <title>Booking.com: 
 Privacy and Cookies.
  Book your hotel now!</title>
 <!-- css -->
-<link rel="stylesheet" type="text/css" href="../q-ec.bstatic.com/static/css/static_edgecast.2526.css" />
+<link rel="stylesheet" type="text/css" href="../q-ec.bstatic.com/static/css/static_edgecast.2549.css" />
 <!-- /css -->
 <style>
 .alert {color: #ff0000;font-weight:bold;font-size:16px;}
@@ -787,7 +834,7 @@ My Booking.com
 <div id="existing_user_login">
 <div id="foldout_error" class="better_error">&nbsp;</div>
 <div class="login_left">
-<form name="loginform" class="stay_login" action="https://secure.booking.com/login.html?tmpl=profile/slogin&amp;protocol=http" id="foldout_login" method="POST" target="log_tar">
+<form name="loginform" class="stay_login" action="https://secure.booking.com/login.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=profile%2Fslogin;protocol=http" id="foldout_login" method="POST" target="log_tar">
 <input type="hidden" name="bm_log" id="bm_log" value="https://secure.booking.com/myreservations.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;" />
 <div id="login_loading">Loading...</div>
 <input type="hidden" name="op" value="login" />
@@ -891,6 +938,12 @@ Yes, I want to get emails with deals for subscribers
 <li class="my_bookings seo_link_look" data-href="https://secure.booking.com/myreservations.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=profile/myreservations">
 <span class="selsymbol">&nbsp;</span>
 <span class="seldescription">Bookings</span>
+</li>
+	
+<li class="my_inbox seo_link_look" data-href="https://secure.booking.com/myinbox.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=profile/myinbox">
+<span class="selsymbol">&nbsp;</span>
+<span class="seldescription">Messages</span>
+<span class="placeholder_hnm">&nbsp;</span>
 </li>
 <li class="my_personalize seo_link_look" data-href="https://secure.booking.com/login.en-us.html?sid=a6f820d269e9070d9a88d65cd79ee579;dcid=1;tmpl=profile/newsletter">
 <span class="selsymbol">&nbsp;</span>
@@ -1239,7 +1292,7 @@ Privacy and Cookies
 id="footernote"
 >
 	
-Booking.com B.V. is based in Amsterdam, the Netherlands, and is supported internationally by offices in: Amsterdam - Antalya - Athens - Auckland - Bangkok - Barcelona - Beijing - Berlin - Bolzano - Bordeaux - Brussels - Budapest - Buenos Aires - Cairo - Cambridge - Cape Town - Casablanca - Chicago - Copenhagen - Denver - Dubai - Dublin - Edinburgh - Faro - Grand Rapids - Helsinki - Hong Kong - Honolulu - Houston - Innsbruck - Istanbul - Jeddah - Kiev - Kuala Lumpur - Kuta (Bali) - Las Palmas de Gran Canaria - Las Vegas - Lille - Lisbon - London - Loule (PT) - Lyon - Madrid - Malaga - Manila - Mexico City - Miami - Milan - Montreal - Moscow - Mumbai - Munich - Natal - New York - Nice - Norwalk - Orlando - Osaka - Oslo - Paris - Phuket - Prague - Riga - Rome - San Francisco - Santiago - Santo Domingo - Sao Paulo - Seoul - Shanghai - Singapore - Sofia - Stockholm - Sydney - Thessaloniki - Tokyo - Toronto - Vancouver - Venice - Vienna - Warsaw - Zagreb - Zurich.
+Booking.com B.V. is based in Amsterdam, the Netherlands, and is supported internationally by offices in: Amsterdam - Antalya - Athens - Auckland - Bangkok - Barcelona - Beijing - Berlin - Bolzano - Bordeaux - Brussels - Budapest - Buenos Aires - Cairo - Cambridge - Cape Town - Casablanca - Chicago - Copenhagen - Denver - Dubai - Dublin - Edinburgh - Faro - Grand Rapids - Guangzhou - Helsinki - Hong Kong - Honolulu - Houston - Innsbruck - Istanbul - Jeddah - Kiev - Kuala Lumpur - Kuta (Bali) - Las Palmas de Gran Canaria - Las Vegas - Lille - Lisbon - London - Loule (PT) - Lyon - Madrid - Malaga - Manila - Mexico City - Miami - Milan - Montreal - Moscow - Mumbai - Munich - Natal - New York - Nice - Norwalk - Orlando - Osaka - Oslo - Paris - Phuket - Prague - Riga - Rio de Janeiro - Rome - San Francisco - Santiago - Santo Domingo - Sao Paulo - Seattle - Seoul - Shanghai - Singapore - Sofia - Stockholm - Sydney - Thessaloniki - Tokyo - Toronto - Vancouver - Venice - Vienna - Warsaw - Zagreb - Zurich.
 </div>
 <div class="footercopyright"><div>
 Copyright &copy; 1996&ndash;2012
@@ -1297,8 +1350,8 @@ src="about:blank"
 </div>
 </div>
 </div>
-<div id="calendar_popup" class="newcalendar singleCalendar" style="display:none;">
-<div class="browseCalendar">
+<div id="calendar_popup" class="newcalendar singleCalendar" style="display:none; ">
+<div class="browseCalendar" >
 <a href="general.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=docs%252Fprivacy-policy.html#" class="prevmonth disabled" onclick="booking.env.trackExperiment('stopped,stopped');"><span>&laquo;</span></a>
 <select>
 <option class="b_months" value="2012-10">
@@ -1559,10 +1612,7 @@ Venezuelan bolívar
 	
 </form>	
 <!-- scripts_global.inc -->
-<script type="text/javascript" src="../r-ec.bstatic.com/static/js/error_catcher_z.2526.js"></script>
-<script type="text/javascript" src="../r-ec.bstatic.com/static/js/jquery-1.4.4.min.js"></script>
-<script type="text/javascript" src="../r-ec.bstatic.com/static/js/main_edgecast.2526.js"></script>
-<script type="text/javascript" src="../q-ec.bstatic.com/static/js/autocomplete_edgecast.2526.js"></script>
+<script src="../q-ec.bstatic.com/static/js/common.2549.js"></script>
 <script type="text/javascript">
 booking.env.js_experiment_tracking = {
 hotel_photo_expose : "full_on",
@@ -1599,46 +1649,36 @@ translate_brand_filter_2: "11617",
 american_bed_size: "full_on",
 canadian_bed_size: "stopped",
 seo_footer_links: "full_on",
-ov_nearby_destinations: "stopped",
-nearby_destinations_islands: "stopped",	
+ov_nearby_destinations: "12207",
+nearby_destinations_islands: "stopped",
 open_checkout_calendar: "stopped",
 hotel_rooms_double_click: "stopped",
 show_menu_after_login: "stopped",
 search_near_me: "stopped",
 show_password: "stopped",
 sr_hotel_preview_on_hover: "stopped",
-page_alive_after_submit: "stopped",
 change_wk_sunday: "stopped",
 continent_lp_wrapper: "stopped",
-add_usp_hotelpage_change_date_lightbox: "stopped",
-improve_seo_facilities_policies: "full_on",
-hotels_in_new_tab: "stopped",
 share_hotel_seo: "stopped",
 facebook_share_icon_on_hp: "full_on",
-clearer_meal_plan: "stopped",
 hp_most_recent_booking_date_seo: "stopped",
-light_signup: "stopped",
-new_review_flag: "stopped",
-new_av_calendar: "stopped",
+new_av_calendar: "12279",
 reviews_list_undesign: "full_on",
 promise_to_you_on_hotelpage: "stopped",
 generalised_bpg: "full_on",
 price_filter_slider: "stopped",
-sr_scroll_memory: "stopped",
 clicked_soldout_subscription: "stopped",
-show_first_hotel_rates: "stopped",
-subscribe_nodates_users: "stopped",
+show_first_hotel_rates: "12250",
 hp_anon_reviews_user_lang: "11848",
 user_photos_on_review: "stopped",
-broaden_search_redesign: "stopped",
 hp_good_bad_reviews: "stopped",
 hp_district_description: "stopped",
 content_contributor: "12137",
 city_page_contributor: "stopped",
-smart_deal_tooltip_alt_translation: "stopped",
 bp_maildomain_check: "full_on",
 email_bs2_for_all: "12000",
-bs2_login_none_usps: "12186"
+bs2_login_none_usps: "12284",
+inline_password_reminder: "12283"
 };
 booking.env.map_more_params = "";
 booking.env.autocomplete_more_params = "";
@@ -1699,10 +1739,10 @@ booking.ensureNamespaceExists( 'env' );
 booking.env.b_checkin_date = '';
 booking.env.b_checkout_date = '';
 booking.env.b_months = [{"b_number":10,"name":'October'},{"b_number":11,"name":'November'},{"b_number":12,"name":'December'},{"b_number":1,"name":'January'},{"b_number":2,"name":'February'},{"b_number":3,"name":'March'},{"b_number":4,"name":'April'},{"b_number":5,"name":'May'},{"b_number":6,"name":'June'},{"b_number":7,"name":'July'},{"b_number":8,"name":'August'},{"b_number":9,"name":'September'}];
-booking.env.b_timestamp = 1350302885;
+booking.env.b_timestamp = 1350562028;
 booking.env.b_this_year4 = 2012;
 booking.env.b_this_month = 10;
-booking.env.b_this_day = 15;
+booking.env.b_this_day = 18;
 booking.env.date_format_acronym = "YYYY-MM-DD";
 booking.env.day = "day";
 booking.env.error.checkin_date_in_the_past = {
@@ -1733,6 +1773,7 @@ booking.env.s_value_checkin_year_month = '';
 booking.env.s_value_checkout_year_month = '';
 booking.env.to_check_availability_please_enter_your_dates_of_stay = "Oops! We need your dates to check availability.";
 booking.env.checkout_date_not_after_checkin_date = "Please check your dates, the check-out date appears to be before the check-in date.";
+booking.env.b_site_experiment_event_tracking = true;
 booking.env.b_room_groups = [];
 booking.env.b_room_extrabeds = [];
 booking.env.b_canonical_url = 'http://www.booking.com/general.en.html?tmpl=docs/privacy-policy';
@@ -1765,10 +1806,10 @@ booking.track.onView('#error404page').exp( booking.env.js_experiment_tracking.er
 <!-- /scripts_global.inc -->
 <div id="logo-not-document-write"></div>
 <script type="text/javascript">
-(document.getElementById( 'logo-not-document-write' ) || {}).innerHTML = '<img style="display:none;" src="logo%3Fver=1%3Bt='+1350302885+1+'">';
+(document.getElementById( 'logo-not-document-write' ) || {}).innerHTML = '<img style="display:none;" src="logo%3Fver=1%3Bt='+1350562028+1+'">';
 </script>
 <noscript>
-<img style="display:none" src="logo%3Fver=0%3Bt=1350302885" />
+<img style="display:none" src="logo%3Fver=0%3Bt=1350562028" />
 </noscript>
 <noscript>
 <iframe height="1" width="1" frameborder="0" style="height:1px;width:1px;overflow:hidden;border:0;" src="index.en-us.html%3Fsid=a6f820d269e9070d9a88d65cd79ee579%3Bdcid=1%3Btmpl=no_script.html"></iframe>
@@ -1798,7 +1839,7 @@ oSelect.prepend(oThis);
 });
 </script>
 <script type="text/javascript">
-var b_first_seen = '11953=1,9460=0,11999=0,12090=1,11988=1,10631=0,12039=0,11755=0,11356=1';
+var b_first_seen = '12230=0,12287=0,9460=1,11999=1,12090=1,11988=1,10631=1,12039=0,11755=1,11356=0,12234=1';
 </script>
 <script type="text/javascript">
 booking.ensureNamespaceExists('env');
@@ -1874,7 +1915,7 @@ _setLocalRemoteServerMode : function () { }
 }
 </script>
 <span id="req_info" style="display:none;"></span>
-<!-- with love from bc40app-02! -->
+<!-- with love from bc50app-02! -->
 </body>
 </html>
 <!-- end footer.inc -->

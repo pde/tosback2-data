@@ -69,7 +69,7 @@ jQuery(window).load(function () {
 		s.eVar8="D=c8";
 		s.eVar9="D=c9";
 		s.linkTrackVars=('prop5,prop7,prop8,prop9,eVar5,eVar7,eVar8,eVar9');
-		s.tl(true,'o',s.prop5);
+		s.tl(this,'o',s.prop5);
 	}); 
 });
 

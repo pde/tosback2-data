@@ -269,16 +269,16 @@ function addPersonalizationToCart(prefix, container, action) {
                 $('[name^="persValue1_"]').each(function() {
                      params = params + "&" + $(this).attr("name") + "=" + $(this).val();
                 });
-                $('[name^="persCheckbox_"]').each(function() {
+                $('[name^="persCheckbox"]').each(function() {
+                     params = params + "&" + $(this).attr("name") + "=" + $('[name^="persCheckbox"]').attr("checked");
+                });
+                $('[name^="persDay"]').each(function() {
                      params = params + "&" + $(this).attr("name") + "=" + $(this).val();
                 });
-                $('[name^="persDay_"]').each(function() {
+                $('[name^="persMonth"]').each(function() {
                      params = params + "&" + $(this).attr("name") + "=" + $(this).val();
                 });
-                $('[name^="persMonth_"]').each(function() {
-                     params = params + "&" + $(this).attr("name") + "=" + $(this).val();
-                });
-                $('[name^="persYear_"]').each(function() {
+                $('[name^="persYear"]').each(function() {
                      params = params + "&" + $(this).attr("name") + "=" + $(this).val();
                 });
 

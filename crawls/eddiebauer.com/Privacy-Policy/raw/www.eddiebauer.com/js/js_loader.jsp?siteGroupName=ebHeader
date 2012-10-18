@@ -1699,6 +1699,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		var selectedQty = 0;
 		var maxItemsinCart = jQuery(targetPage+'#dash input[name=maxCartSize]').val() || 99;
 		var cartItemsTotal = 0;
+		var pinterestPinFlag = false;
 		
 		//set any cookie info here
 		var updateCookieIfNeeded = function (url, paramName) {
@@ -1806,8 +1807,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			jQuery(targetPage+'#imageThumbs a').click(function (){				
 				jQuery(targetPage+'#imageThumbs a').removeClass('selected');
 				jQuery(this).addClass('selected');	
-				zoomImageCheck(jQuery(this),'alt');	
-				
+				zoomImageCheck(jQuery(this),'alt');					
 			});	
 			jQuery(targetPage+'#imageThumbs a').live('mouseover', function(){
 				jQuery(targetPage+'#imageThumbs a').removeClass('hover');
@@ -2137,17 +2137,18 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}
 		updateInseam = function(){
 			var radioButton = jQuery(targetPage+'input:radio[name=cut]:checked');
-			var cutID = jQuery(radioButton).attr('id');			
-			var cutNumber = cutID.replace('cut','');
-			var inseamId = 'inseamFlag_'+cutNumber;
-			var itemNumberId = 'desCode'+cutNumber;
-			var itemNumber = jQuery(radioButton).attr('data-item-number');			
-			var itemNumberValue = itemNumber.substring(itemNumber.length-4, itemNumber.length);
-			if (itemNumberValue !=""){
-				jQuery(targetPage+'input[name=item]').val(itemNumberValue);
-				jQuery(targetPage+'input[name=itemNumber]').val(itemNumberValue);
+			var cutID = jQuery(radioButton).attr('id');	
+			if (cutID){
+				var cutNumber = cutID.replace('cut','');
+				var inseamId = 'inseamFlag_'+cutNumber;
+				var itemNumberId = 'desCode'+cutNumber;
+				var itemNumber = jQuery(radioButton).attr('data-item-number');			
+				var itemNumberValue = itemNumber.substring(itemNumber.length-4, itemNumber.length);
+				if (itemNumberValue !=""){
+					jQuery(targetPage+'input[name=item]').val(itemNumberValue);
+					jQuery(targetPage+'input[name=itemNumber]').val(itemNumberValue);
+				}
 			}
-			
 			var inseamFlag = jQuery(targetPage+'input[name='+inseamId+']').val();				
 			if (inseamFlag == 'true'){
 				jQuery('#inseamDetails').removeClass('errorShow').removeClass('errorHide');
@@ -2256,9 +2257,11 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			selectedQty = parseInt( jQuery(targetPage+'#quantity').val() );
 			cartItemsTotal = currentCartCount + selectedQty;
 			//console.log("currentCartCount="+currentCartCount+" selectedQty="+selectedQty+" selectionsFlag="+selectionsFlag);			
-			if(cartItemsTotal > maxItemsinCart && selectionsFlag == true){
+			if(cartItemsTotal > maxItemsinCart && selectionsFlag == true && editMode == false){
 				validFlag = false;
 				shoppingBagFull();
+			}else if (selectionsFlag == true && editMode == true){
+				// allow save from shopping bag
 			}			
 		}
 		updateItemsInBagMessage = function(){
@@ -2272,13 +2275,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}
 		updateItemNumber = function() {
 			getInformationFlag = true;
-			var selectInput = jQuery(targetPage+'input:radio[name=cut]:checked');				
-			var itemTitle = jQuery(targetPage+'.itemNumber span');
-			var itemNumber = jQuery(targetPage+'.itemNumber .number');
+			var selectInput = jQuery('input:radio[name=cut]:checked');				
+			var itemTitle = jQuery('.itemNumber span');
+			var itemNumber = jQuery('.itemNumber .number');
 			var itemDataTitle = selectInput.attr('data-item-name');
 			var itemDataNumber = selectInput.attr('data-item-number');
-			itemTitle.html(itemDataTitle + ' Item #: ');
-			itemNumber.html(itemDataNumber);
+			if (itemDataNumber != undefined){
+				itemTitle.html(itemDataTitle + ' Item #: ');
+				itemNumber.html(itemDataNumber);
+			}
 			var mode = jQuery("#mode").val();			
 			if (mode !== 'edit' || styleChangedFlag) {
 				// Reset the styleChangedFlag back to false, to stop update control panel call.
@@ -2326,7 +2331,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				itemInventoryColorName = colorText.replace(' - Sold Out','');
 				soldOutFlag = true;
 			}
-			validateSelections('addtobag');		
+			
+			if(addToWishList)
+			{
+				validateSelections('addtowishlist');
+			}
+			else
+			{
+				validateSelections('addtobag');
+			}
+			
 			if(soldOutFlag && itemInventorySizeStatus =="Sold Out" && itemInventoryColorStatus =="Sold Out"){
 				var message = itemInventoryColorName + ' in Size '+itemInventorySizeName+' is no longer available. Please try a different color or size.';
 				errorTipSoldOutShow(targetPage+'#size',message);
@@ -3183,8 +3197,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							}
 						}
 					}
-				}				
-				checkItemsInBag();						
+				}
+				if(typeValue == 'addtobag'){
+					checkItemsInBag();
+				}
 			}
 			
 		}		
@@ -3282,7 +3298,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				// set magic zoom attributes and show/hide zoomable here				
 				MagicZoomPlus.update('itemZoom', zoomImageLarge, zoomImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');							
 				jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
-				loadImageTransitionFlag = false;					
+				loadImageTransitionFlag = false;	
+				pinterestPin();
 			}				
 		}
 		zoomImageCheck = function(obj, type){	
@@ -3311,6 +3328,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					zoomFullScreen();
 				}
 			}
+			pinterestPin();
 		}
 		setProductPageDefaults = function(){
 			// Values to set
@@ -3557,7 +3575,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			
 			if (sizeChartFlag){
 				var pdpURL = rewirteUrl(sizeChartUrl);	
-				fb.start(pdpURL, 'type:ajax height:485 width:996 autoFitHTML:true scrolling:no showOuterClose:true boxLeft:10% controlsPos:tr afterItemStart:updateTabs('+selectedSizeChartTab+')');
+				fb.start(pdpURL, 'type:ajax height:600 width:996 autoFitHTML:true scrolling:no showOuterClose:true boxLeft:10% controlsPos:tr afterItemStart:updateTabs('+selectedSizeChartTab+')');
 			} else {
 				alert("We're sorry but this product doesn't have a size chart!");
 			}			
@@ -3721,7 +3739,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				color: '#333333'
 			});
 		}
-		
 		setCoreMetricsProductData = function () {
             var piValue = '';
             var isEob = jQuery(targetPage+'#eob').val()
@@ -3765,19 +3782,104 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
             if (standaloneFlag === "false") {
                 // SetCookie('REFERRAL_URL', document.location.href);
                 DelCookie("REFERRAL_URL");
-                var theEBPi = escape(document.forms.productForm.name.value + ' (' + pid + ')');
+                var theEBPi = escape(document.forms.productForm.name.value + ' ' + pid);
     			SetCookie('ebPi',theEBPi);	                
             } else {
             	SetCookie('PREVIOUS', escape(document.location.href));
                 DelCookie('REFERRAL_URL');
             }
         }
-		
-		// init section
-		init = function(){			
-			setCoreMetricsProductData();
+		pinterestPin = function(){			
+			// add pinterest tag to page
+			var pinterestURL = "http://pinterest.com/pin/create/button/?url="+window.location;
+			var pinterestMedia = '&media='+ jQuery('#itemZoom img').attr('src');
+			var pinterestDescription = "&description="+jQuery('#productTitle').html();
+			var pinterestHref = pinterestURL+pinterestMedia+pinterestDescription;
+			jQuery('.pinterest a.pin-it-button').attr('href',pinterestHref);	
 			
+			(function (m, q, c) {
+			    var s = function (h) {
+			        var d = c.pinit,
+			            n = "?",
+			            a, i, f, b;
+			        f = [];
+			        b = [];
+			        var j = {}, g = m.createElement("IFRAME"),
+			            r = h.getAttribute(c.att.count) || false,
+			            o = h.getAttribute(c.att.layout) || "horizontal";
+			        if (q.location.protocol === "https:") d = c.pinit_secure;
+			        f = h.href.split("?")[1].split("#")[0].split("&");
+			        a = 0;
+			        for (i = f.length; a < i; a += 1) {
+			            b = f[a].split("=");
+			            j[b[0]] = b[1]
+			        }
+			        a = f = 0;
+			        for (i = c.vars.req.length; a < i; a += 1) {
+			            b = c.vars.req[a];
+			            if (j[b]) {
+			                d = d + n + b + "=" + j[b];
+			                n = "&"
+			            }
+			            f += 1
+			        }
+			        if (j.media && j.media.indexOf("http") !== 0) f = 0;
+			        if (f === i) {
+			            a = 0;
+			            for (i = c.vars.opt.length; a < i; a += 1) {
+			                b = c.vars.opt[a];
+			                if (j[b]) d = d + n + b + "=" + j[b]
+			            }
+			            d = d + "&layout=" + o;
+			            d = d + "&ref=" + encodeURIComponent(m.URL);
+			            if (r !== false) d += "&count=1";
+			            g.setAttribute("src", d);
+			            g.setAttribute("scrolling", "no");
+			            g.allowTransparency = true;
+			            g.frameBorder = 0;
+			            g.style.border = "none";
+			            g.style.width = c.layout[o].width + "px";
+			            g.style.height = c.layout[o].height + "px";
+			            h.parentNode.replaceChild(g, h)
+			        } else h.parentNode.removeChild(h)
+			    }, p = m.getElementsByTagName("A"),
+			        l, e, k = [];
+			    e = 0;
+			    for (l = p.length; e < l; e += 1) k.push(p[e]);
+			    e = 0;
+			    for (l = k.length; e < l; e += 1) k[e].href && k[e].href.indexOf(c.button) !== -1 && s(k[e])
+			})(document, window, {
+			    att: {
+			        layout: "count-layout",
+			        count: "always-show-count"
+			    },
+			    pinit: "http://pinit-cdn.pinterest.com/pinit.html",
+			    pinit_secure: "https://assets.pinterest.com/pinit.html",
+			    button: "//pinterest.com/pin/create/button/?",
+			    vars: {
+			        req: ["url", "media"],
+			        opt: ["title", "description"]
+			    },
+			    layout: {
+			        none: {
+			            width: 43,
+			            height: 20
+			        },
+			        vertical: {
+			            width: 43,
+			            height: 58
+			        },
+			        horizontal: {
+			            width: 90,
+			            height: 20
+			        }
+			    }
+			});  
+		}
+		// init section
+		init = function(){					
             if (!initProductModuleFlag){
+            	setCoreMetricsProductData();
                 getProductPageHash();
                 resetProductPage();// reset variables                 
                 assignEventHandlers();
@@ -3798,6 +3900,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
               //  MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
+                pinterestPin();
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
@@ -3819,6 +3922,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                // MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
+                pinterestPin();
           }
 		}
 					
@@ -3827,6 +3931,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	};	
 		
 })(jQuery);
+
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the productModule.js(220) ~~~~~~~~~~~~~~~~~~~~ */
 

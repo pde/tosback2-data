@@ -65,6 +65,98 @@ function s_doPlugins(s)
 
    // TNT-SC Plugin
    s.tnt=s.trackTNT();
+
+   // Collect data for each ad call on the page
+   s.prop38 = function ()
+   {
+      var ads;
+      var i;
+      var iframes;
+
+      ads = [];
+
+      function findAds(pObj)
+      {
+         var ad;
+         var c;
+         var d;
+         var divs;
+         var pos;
+         var size;
+
+         divs = pObj.document.getElementsByTagName('div');
+         for (d = 0; d < divs.length; d++)
+         {
+            ad = null;
+            for (c = 0; c < divs[d].childNodes.length; c++)
+            {
+               if (!ad
+                && divs[d].childNodes[c].nodeName === 'SCRIPT'
+                && divs[d].childNodes[c].src
+                && divs[d].childNodes[c].src.match(/https*:\/\/ad\.doubleclick\.net\/adj\/\w+/))
+               {
+                  size = divs[d].childNodes[c].src.match(/sz=[^\;]+/);
+                  if (!size)
+                     break;
+                  pos = divs[d].childNodes[c].src.match(/pos=\d+/);
+                  if (!pos)
+                     break;
+                  size = size[0].toLowerCase().replace(/sz=/, '');
+                  pos = pos[0].replace(/pos=/, '');
+                  ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
+               }
+               if (ad
+                && divs[d].childNodes[c].nodeName === 'A'
+                && divs[d].childNodes[c].href
+                && divs[d].childNodes[c].href.match(/https*:\/\/ad\.doubleclick\.net\/click\;/)
+                && divs[d].childNodes[c].innerHTML
+                && divs[d].childNodes[c].innerHTML.match(/https*:\/\/s0\.2mdn\.net\/viewad\/817-grey\.gif/))
+               {
+                  ad += 'D';
+                  break;
+               }
+            }
+            if (ad)
+               ads[ads.length] = ad;
+         }
+      };
+
+      if (s.prop3)
+      {
+         if (s.prop3.match(/home/i))
+            pl = 'H';
+         else if (s.prop3.match(/section/i))
+            pl = 'F';
+         else if (s.prop3.match(/story/i))
+            pl = 'S';
+         else if (s.prop3.match(/gallery/i))
+            pl = 'G';
+         else if (s.prop3.match(/postload/i))
+            pl = 'P';
+         else if (s.prop3.match(/cgi/i))
+            pl = 'C';
+         else if (s.prop3.match(/static/i))
+            pl = 'T';
+      } else
+         pl = 'U';
+
+      if (pl !== 'P')
+         findAds(window);
+
+      iframes = document.getElementsByTagName('iframe');
+      for (i = 0; i < iframes.length; i++)
+         try
+         {
+            if (iframes[i].src)
+               findAds(iframes[i].contentWindow);
+         } catch (miError)
+         {
+         }
+
+      return (ads.length) ? (pl + '|' + ads.join(',') + ',') : '';
+   }();
+
+   s.eVar3 = s.prop38;
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

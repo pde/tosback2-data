@@ -182,9 +182,10 @@ $(function () {
         var expirationDate = dataArray[1];
         var style = dataArray[2];
         var nonUserCookieName = dataArray[3];
-
+        var redirectUrl = dataArray[4]
+        
         $('#IFrameToAdjust').attr("style", style);
-
+        
         if (userId && userId != 0) {
             
             createCookie(UniversalAllPassCookieName, userId, null, expirationDate);
@@ -192,6 +193,10 @@ $(function () {
 
         if (nonUserCookieName && query[1]!= DebugRefValue) {
             createCookie(nonUserCookieName, "true");
+        }
+
+        if(redirectUrl){
+            window.location = redirectUrl;
         }
     }, receiveFromUrl);
 

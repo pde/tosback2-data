@@ -6,6 +6,34 @@ function df_lightbox_show(){}
 
 function df_lightbox_hide(){}
 
+function getBrandContentBox(brandId, categoryId, height) {
+	var brandFolder = "http://" + window.location.hostname + "/graphics/media/polo/branding";
+	jQuery.ajax({
+		url: brandFolder + "/" + brandId + "/content-box-" + categoryId + "-" + height + ".html",
+		success: function(data) { // category specific branding content
+			jQuery(".brand-" + brandId + " .brand-content").html(data);
+		},
+		error: function() {
+			jQuery.ajax({
+				url: brandFolder + "/" + brandId + "/content-box-" + height + ".html",
+				success: function(data2) { // default branding content
+					jQuery(".brand-" + brandId + " .brand-content").html(data2);
+				},
+				error: function() { // no content available
+					jQuery(".brand-content-box.brand-" + brandId).remove();
+				}
+			});
+		}
+	});
+}
+
+function selectParametricFilterValue(dropDown) {
+	var selectedValue = dropDown[dropDown.selectedIndex].value;
+	selectedValue = selectedValue.replace(/&$/, ""); // remove trailing "&" from URL (causes CMS to fail)
+	if (selectedValue > "") {
+		window.location = selectedValue;
+	}
+}
 
 Event.observe(window, 'load', function(e){
 
@@ -106,7 +134,169 @@ Event.observe(window, 'load', function(e){
 		}
 		
 	});
+
+	jQuery('.pagination')
+		.bind('keyup', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			if (e.keyCode == 13) {
+				var $this = jQuery(this);
+				var selectedPageValue = jQuery('input[name=pg]', $this).val();
+				var selectedPage = parseInt(selectedPageValue);
+
+				if (/^\d*$/.test(selectedPage) && selectedPage <= parseInt(jQuery('.total-pages', $this).text()) && selectedPage >= 1) {
+					window.location = $this.attr('action') + "&pg=" + selectedPage;
+				} else {
+					jQuery('input[name=pg]').val(jQuery('input[name=current-pg]').val()).blur();
+					return false;
+				}
+			}
+		})
+		.bind('submit', function(e) {
+			e.preventDefault();
+			return false;
+		});
+
 });
+
+prepend_uppercase = function (select,option) {
+	var text = select.attr('title');
+	if (!text) {
+		text = option.text();
+	} else {
+		text = text + ': ' + option.text();
+	}
+	//return text.toUpperCase();
+	return text;
+}
+
+reformatGridNav = function() {
+	jQuery('.selectFilterClass, .selectSortClass, .view-sizes').each(function() {
+
+		// The select element to be replaced:
+		var select = jQuery(this);
+		if (select.find('option').length > 0 || select.parent(".items-per-page").length) {
+			var whichone = select.attr("class");
+			var whichclass = 'dropDown';
+			var width;
+
+			if (whichone.indexOf('selectFilter_Brand') != -1) {
+				width = 140;
+			} else if (whichone.indexOf('selectFilter_GenericColor') != -1) {
+				width = 116;
+			} else if (whichone.indexOf('selectFilter_SizeGeneral') != -1) {
+				width = 116;
+			} else if (whichone.indexOf('view-sizes') != -1) {
+				width = 44;
+			} else if (whichone.indexOf('selectSortClass') != 1) {
+				width = 116;
+			} else {
+				width = 70;
+				whichclass = 'dropDownShort';
+			}
+
+			var selectBoxContainer = jQuery('<div>',{
+				width: width,
+				'class'     : 'cmfilter',
+				html        : '<div class="selectBox"></div>'
+			});
+
+			var dropDown = jQuery('<ul>',{ 'class': whichclass, 'width': width });
+			var selectBox = selectBoxContainer.find('.selectBox');
+
+			// Looping though the options of the original select element
+
+			select.find('option').each(function(i) {
+				var option = jQuery(this);
+				var sel = 0;
+
+				var li = jQuery('<li>',{
+					html: option.text()
+				});
+
+				if (i == sel) { // set default
+					selectBox.html('<span><span>' + prepend_uppercase(select,option) + '</span></span>');
+				}
+				if (option.attr('selected') == true) { // overwrite default with selected
+					selectBox.html('<span><span>' + prepend_uppercase(select,option) + '</span></span>');
+					li.addClass('selected');
+				}
+
+				li.not('.selected').click(function(e) {
+					selectBox.html('<span><span>' + prepend_uppercase(select,option) + '</span></span>');
+					selectBox.find('span span').each(function() {
+						jQuery(this).css({"display":"block"});
+					});
+					dropDown.trigger('cmhide');
+
+					select.val(option.val());
+
+					jQuery(select).trigger('change');
+
+					return false;
+				});
+
+				dropDown.append(li);
+			});
+
+			selectBoxContainer.append(dropDown.hide());
+			select.hide().after(selectBoxContainer);
+			selectBoxContainer.find('.selectBox span span').each(function() {
+				jQuery(this).css({"display":"block"});
+			});
+
+			// Binding custom show and hide events on the dropDown:
+			dropDown.bind('cmshow', function() {
+				// close the others
+				jQuery('ul.dropDown').each(function() {
+					jQuery(this).trigger('cmhide');
+				});
+
+				if (dropDown.is(':animated')) {
+					return false;
+				}
+
+				selectBoxContainer.addClass('cmfilterexpanded');
+				/*// some where is the slideDown effect it's not doing the display style
+				dropDown.slideDown('400');*/
+				dropDown.show();
+
+			}).bind('cmhide', function() {
+
+				if (dropDown.is(':animated')) {
+					return false;
+				}
+
+				/*dropDown.slideUp('400',function(){
+					selectBoxContainer.removeClass('cmfilterexpanded');
+				});*/
+				selectBoxContainer.removeClass('cmfilterexpanded');
+				dropDown.hide();
+
+			}).bind('cmtoggle',function(){
+				if (selectBoxContainer.hasClass('cmfilterexpanded')){
+					dropDown.trigger('cmhide');
+				}
+				else
+				{
+					dropDown.trigger('cmshow');
+				}
+			});
+
+			selectBoxContainer.click(function(e){
+				dropDown.trigger('cmtoggle');
+				return false;
+			});
+
+			// If we click anywhere on the page, while the
+			// dropdown is shown, it is going to be hidden:
+			jQuery(document).click(function(){
+				dropDown.trigger('cmhide');
+			});
+		}
+
+	}); // end of each loop over objects
+}
 
 function setCookie(c_name,value,exdays) {
 	var exdate = new Date();

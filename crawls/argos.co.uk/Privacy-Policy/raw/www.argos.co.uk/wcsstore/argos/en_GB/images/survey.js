@@ -11,6 +11,7 @@ if (!argos.thirdparty) argos.thirdparty = {};
 argos.thirdparty.Survey = function() {
 	var survey = argos.thirdparty.Survey;						// namespace and class hierarchy reference
 	var page = argos.page;										// page utility class reference
+	var cookie = argos.cookie;									// cookie object reference
 	
 	survey.VISIBILITY = {show: "show", hide: "hide"};				// available visibility status
 	survey.TYPE = {disabled: "0", internal: "1", external: "2"};  	// disabled=no popup, internal=popup+focus, external=popunder+blur
@@ -109,7 +110,7 @@ argos.thirdparty.Survey = function() {
 
 		if (survey.TYPE.disabled == this.type) return; 				// disabled, don't execute anything		
 		
-		this.visibility = page.getCookie(this.cookieName) || this.visibility;
+		this.visibility = cookie.get(this.cookieName) || this.visibility;
 		
 		if (survey.VISIBILITY.show == this.visibility) {
 			for (var i=0; i<this.pageList.length; i++) {
@@ -117,7 +118,7 @@ argos.thirdparty.Survey = function() {
 				if (elem==null || elem.length==0) continue;
 				this.show();
 				this.visibility = survey.VISIBILITY.hide;
-				page.setCookie(this.cookieName, survey.VISIBILITY.hide, 30);
+				cookie.set(this.cookieName, survey.VISIBILITY.hide, 30);
 				break;
 			}
 		}
@@ -132,7 +133,7 @@ argos.thirdparty.Survey = function() {
 					if (url.indexOf(this.categoryIdList[j]) == -1) continue;
 					this.show();
 					this.visibility = survey.VISIBILITY.hide;
-					page.setCookie(this.cookieName, survey.VISIBILITY.hide, 30);
+					cookie.set(this.cookieName, survey.VISIBILITY.hide, 30);
 					break;
 				}
 					

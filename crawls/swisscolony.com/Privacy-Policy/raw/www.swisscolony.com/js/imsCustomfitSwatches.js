@@ -601,7 +601,7 @@ function updateSwatchAlternateImage(alternateImage, alternateImageLayerId){
 			var mobileImgObj = document.getElementById("mobileAltImage_" + alternateImageLayerId);
 
 			if (mobileImgObj){
-				mobileImgObj.src = "http://s7d4.scene7.com/is/image/imsdm/" + alternateImage + "?$saMain$";
+				mobileImgObj.src = "http://s7d4.scene7.com/is/image/imsdm/" + alternateImage + "?$saMobiMain$";
 			}
 
 		}

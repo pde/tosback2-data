@@ -115,12 +115,12 @@ if (document.images)
 	luggage_off.src = "/img/lnav3_1luggage_off.gif";
 	var luggage_on = new Image();
 	luggage_on.src = "/img/lnav3_1luggage_on.gif";
-	
+
 	var pet_off = new Image();
 	pet_off.src = "/img/lnav3_1pet_off.gif";
 	var pet_on = new Image();
 	pet_on.src = "/img/lnav3_1pet_on.gif";
-	
+
 	var teamshop_off = new Image();
 	teamshop_off.src = "/img/lnav3_1teamshop_off.gif";
 	var teamshop_on = new Image();
@@ -150,6 +150,11 @@ if (document.images)
 	specialtyshops_off.src = "/img/lnav3_1specialtyshops_off.gif";
 	var specialtyshops_on = new Image();
 	specialtyshops_on.src = "/img/lnav3_1specialtyshops_on.gif";
+
+	var jewelry_off = new Image();
+	jewelry_off.src = "/img/lnav3_1jewelry_off.gif";
+	var jewelry_on = new Image();
+	jewelry_on.src = "/img/lnav3_1jewelry_on.gif";
 
 	var storage_off = new Image();
 	storage_off.src = "/img/lnav3_1storage_off.gif";

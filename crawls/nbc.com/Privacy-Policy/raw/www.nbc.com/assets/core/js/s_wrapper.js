@@ -1,4 +1,5 @@
-s_linkInternalFilters="javascript:,nbc.com,9thwonders.com,startomorrow.com,studio60theseries.com,fridaynightlightstheseries.com,itsyourshowtv.com,jaylenosgarage.com,my.nbc.com";
+s_linkInternalFilters="javascript:,nbcvoicelive.com,latenightwithjimmyfallon.com,nbc.com,9thwonders.com,startomorrow.com,studio60theseries.com,fridaynightlightstheseries.com,itsyourshowtv.com,jaylenosgarage.com,my.nbc.com";
+
 
 //var s_account="nbcudev";
 var s_account="nbcuglobal,nbcunetworkbu"; 

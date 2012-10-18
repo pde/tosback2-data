@@ -77,7 +77,7 @@ writeMegaMenu('<ul class="submenu-list">');
 writeMegaMenu('<li class="megamenu-submenu-header">Shop Our Designers &amp; Collections</li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/the-leo-diamond%C2%AE-100050--1/1000500000/100020/1/0/0/0/100020.100023.100050">The Leo Diamond&reg;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/neil-lane-bridal%C2%AE-100051--1/1000510000/100020/1/0/0/0/100020.100023.100051">Neil Lane Bridal&reg;</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/neil-lane-designs-100061--1/1000610000/100020/1/0/0/0/100020.100023.100061">Neil Lane Designs</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/neil-lane-designs-100061--1/1000610000/100020/1/0/0/0/100020.100023.100061">Neil Lane Designs&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/tolkowsky%C2%AE-100052--1/1000520000/100020/1/0/0/0/100020.100023.100052">Tolkowsky&reg;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/open-hearts-by-jane-seymour%C2%AE/1000530000/100020/1/0/0/0/100020.100023.100053">Open Hearts by Jane Seymour&reg;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/loves-embrace%C2%AE/1000540000/100020/1/0/0/0/100020.100023.100054">Love\'s Embrace&reg;</a></li>');
@@ -151,6 +151,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/movado-100095-
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/victorinox-swiss-army/1003400000/100090/1/0/0/0/100090.100094.100340">Victorinox Swiss Army</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/citizen-100096--1/1000960000/100090/1/0/0/0/100090.100094.100096">Citizen</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/citizen-signature-100100--1/1001000000/100090/1/0/0/0/100090.100094.100100">Citizen Signature</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/drive-by-citizen-eco-drive/1003390000/100090/1/0/0/0/100090.100094.100339">Drive by Citizen Eco-Drive</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bulova-100097--1/1000970000/100090/1/0/0/0/100090.100094.100097">Bulova</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100094|1000940000|1|0|||100090|100090.100094">View All</a></li>');
 writeMegaMenu('</ul>');

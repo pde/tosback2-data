@@ -21,6 +21,7 @@ ratings.canvasActive = true;   //set to true if you want ratings and reviews act
 metric.omnitureActive = true; // set to true if you want omniture activated
 chatObj.chatActive = false;    // set to true if you want astara reactive/proactive chat enabled.
 
+
 metric.ABTest = function (testName, alloc, eVar, testFunction) {
 	this.getGroup = function(id) {
 		for(var i=0,base=0; i< alloc.length; i++) {
@@ -190,6 +191,15 @@ metric.sendCriteo = function() {
 metric.sendCommissionJunction = function() {
 	var cm_mmc = $.query.get("cm_mmc");
 	
+	var Events = {
+		//Load the application
+		"app_start": {appid: "OrderConfirm", id: "123", name: "Application start", event: Instrumentation.START_EVENT},
+		"set_cookie": {appid: "OrderConfirm", id: "123", name: "Set CJ Cookie for cm_mmc rules", event: Instrumentation.MILESTONE_EVENT},		
+		"delete_cookie_cm_mmc": {appid: "OrderConfirm", id: "123", name: "Delete CJ Cookie for cm_mmc rules", event: Instrumentation.MILESTONE_EVENT},
+		"delete_cookie_referrer": {appid: "OrderConfirm", id: "123", name: "Delete CJ Cookie for referrer rules", event: Instrumentation.MILESTONE_EVENT},
+		"app_end": {appid: "OrderConfirm", id: "123", name: "Page is ready to be used by the user", event: Instrumentation.END_EVENT}
+	};
+	
 	// convert to a string so we can do string comparisons correctly
 	if (cm_mmc != null) {
 		cm_mmc = cm_mmc.toString();
@@ -202,19 +212,23 @@ metric.sendCommissionJunction = function() {
 				expires : -1, 
 				path : '/', 
 				domain : '.landsend.com'});	
-	} /* else if (document.referrer) {
+		Instrumentation.sendBeacon(Events.delete_cookie_cm_mmc);
+	} else if (document.referrer) {
 		// just get the base part of the referrer before any query string parameters which might include .landsend.com
 		var referrerSplit = document.referrer.split("?");
 		
 		// if cm_mmc isn't set and the referrer is from outside then delete the cookie
 		if (location.search.indexOf("cm_mmc") == -1 && referrerSplit[0].match("landsend.com|cardinalcommerce.com") == null) {
+			/*
 			$.cookie("aff_trck",
 					null, {
 					expires : -1, 
 					path : '/', 
 					domain : '.landsend.com'});
+					*/
+			Instrumentation.sendBeacon(id, Events.delete_cookie_referrer);
 		}
-	} */
+	} 
 	
 	// set the cust_trck cookie if the cm_mmc query string is set to something starting with cj
 	if (cm_mmc != null && cm_mmc.length > 2 && cm_mmc.substring(0,2).toLowerCase() == "cj") {
@@ -223,6 +237,7 @@ metric.sendCommissionJunction = function() {
 				expires : 1, 
 				path : '/', 
 				domain : '.landsend.com'});
+		Instrumentation.sendBeacon(Events.set_cookie);		
 	}
 	
 	if (window.location.pathname.indexOf("OrderConfirm.cgi") != -1 && cj.itemids != null && $.cookie("aff_trck")) {
@@ -257,7 +272,13 @@ metric.sendCommissionJunction = function() {
 		}
 		
 		tag += '&CID=1523480&OID=' + resx.transactionid + '&TYPE=' + actionID + '&DISCOUNT=' + cj.orderDiscount + '&CURRENCY=USD" name="cj_conversion" ></iframe><!-- END COMMISSION JUNCTION TRACKING CODE -->';
+
+		Instrumentation.sendBeacon(Events.app_start);
 		document.write(tag);
+		
+		var beaconTag = '<iframe height="1" width="1" frameborder="0" scrolling="no" src="/coradiant/beacon-event.!cm?appid=OrderConfirm&evid=123&name=iFrameLoaded&random=' + Math.floor(Math.random() * 1000000) +'"></iframe>';
+		document.write(beaconTag);
+		Instrumentation.sendBeacon(Events.app_end);
 	}	
 };
 
@@ -444,3 +465,5 @@ function getOSK() {}
 function cmApp() {}
 function cmTP(str) {}
 
+// Truesight monitoring utils
+var Utils={ajax:function(a,b,c,d){if(d){a+="?";for(var e in d){a+=e+"="+d[e]+"&"}a=a.replace(/&$/,"")}var f=new XMLHttpRequest;f.open("GET",a,true);f.onreadystatechange=function(){if(f.readyState==4){if(f.status==200)if(b)b.call();else if(c)c.call()}};f.send(a)}};var Instrumentation={START_EVENT:"start-event",MILESTONE_EVENT:"event-milestone",END_EVENT:"end-event",sendBeacon:function(a){var b="/coradiant/"+a.event+".!cm";var c=function(a){};var d=function(a){};var e={appid:a.appid,evid:a.id,name:a.name,random:Math.floor(Math.random()*1e6)};Utils.ajax(b,d,c,e)}}

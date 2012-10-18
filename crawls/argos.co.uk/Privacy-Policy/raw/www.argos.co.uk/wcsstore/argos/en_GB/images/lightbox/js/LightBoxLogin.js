@@ -17,6 +17,7 @@ $(document).ready(function(){
 	//next toggle used on trolley lister only
 	var forceTopMargin = false;
 	LoggedInTimeout = new (function(){
+		/*
 		var	cookieParts = unescape(Argos.Page.getCookie("UserPersistentSessionCookie")).split(";");
        	var timeoutActiveUser;
        	var timeoutDelay = 3600000; //(60mins)
@@ -27,6 +28,7 @@ $(document).ready(function(){
     			clearTimeout(timeoutActiveUser);
 		   	}
     	}
+    	*/
 	});
 	
 	LightBoxLogin = new (function(){

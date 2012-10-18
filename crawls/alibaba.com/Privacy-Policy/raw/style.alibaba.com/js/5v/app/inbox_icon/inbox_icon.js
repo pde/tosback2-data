@@ -145,7 +145,7 @@
 			};
 			_user.isNewUser = function () {
 				return userStatus.isNew;
-			}
+			};
 			var switchByUserStatus = function () {
 					//if _user.isNewUser() == true then _user.getFirstName() == ''
 					//so there is no use for determine _user.isNewUser()
@@ -192,7 +192,7 @@
 				if (doInitUserStatus()) {
 					switchByUserStatus();
 				}
-			}
+			};
 		};
 		this.afterGetMessageEvent = new YAHOO.util.CustomEvent("afterGetMessage", this, false, YAHOO.util.CustomEvent.FLAT);
 		_self.unreadMessageMgr = function () {
@@ -217,7 +217,7 @@
 				YAHOO.util.Get.script(thisUrl, {
 					onSuccess: goNext
 				});
-			}
+			};
 		};
 		_self.containerMgr = function () {
 			var _ctn = this;
@@ -308,7 +308,7 @@
 				if (msgConfig.dataReady) {
 					_ctn.setDataToCtn();
 				}
-			}
+			};
 		};
 		var userStatus = new _self.userStatusMgr();
 		var unreadMsg = new _self.unreadMessageMgr();
@@ -325,7 +325,8 @@
 			//so there is no use for determine _user.isNewUser()
 			if (statusReady.isNeedCheckMessage) {
 				// if user is not from China, HongKong, Taiwan, Macao do get message data
-				unreadMsg.doGetMessage(mConfig);
+				/* 注释掉未读消息请求入口，新消息提醒功能代替此请求 2012.10.11 by wiky */
+				//unreadMsg.doGetMessage(mConfig);
 			}
 		};
 	}

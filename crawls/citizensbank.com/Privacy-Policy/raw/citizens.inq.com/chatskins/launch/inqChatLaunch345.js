@@ -1,5 +1,7 @@
-/* Timestamp: Thu Oct 11 16:30:33 PDT 2012*/if (window["v3Lander"]==null){
+/* Timestamp: Wed Oct 17 22:36:09 PDT 2012*/if (window["v3Lander"]==null){
 v3Lander={
+
+    codeVersion:'1350538569499',
 	v3Frame:false,
 	domState: "defer-failed",
 	domReady: false,
@@ -352,11 +354,12 @@ v3Lander={
 
 		var bdy=document.getElementsByTagName("BODY");
 		if (bdy && bdy[0]){
-            insertScript("/chatskins/launch/tcFramework345.js");
-		}
-	},
-	parseC2CQueryString: function() {
-		
+
+             insertScript("/chatskins/launch/tcFramework345.js?codeVersion=" + encodeURIComponent(this.codeVersion));
+         }
+     },
+     parseC2CQueryString: function() {
+         
 		var queryStringIndex = window.location.href.indexOf("?C2C");
 		var queryString = window.location.href.substring(queryStringIndex + 4);
 		if(queryString.length > 1) {
@@ -690,4 +693,4 @@ v3Lander={
 		v3Lander.main();
 	}
 }
-/* Timestamp: Thu Oct 11 16:30:33 PDT 2012*/
+/* Timestamp: Wed Oct 17 22:36:09 PDT 2012*/

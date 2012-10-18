@@ -36,10 +36,10 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Women-Dresses-Mother-of-the-Bride-Dresses/_/N-ydnz?cm_sp=womens-_-ddf-_-mob+dresses+4+072812">Mother of the Bride Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Women-Dresses-Dresses-Under-150/_/N-yzo8?cm_sp=womens-_-ddf-_-dresses+under150+5+082312">Dresses Under $150</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Lauren-Ralph-Lauren/Women/_/N-17477Zlfx6Z1jl/Ntk-all/Ntt-breast+cancer/Nty-1?cm_sp=womens-_-ddpromo-_-lauren+pink+shop+100412" >Shop to Support the Pink Pony Fund of the Polo Ralph Lauren Foundation and the fight against cancer></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Peter-Nygard/Peter-Nygard-Petites/Peter-Nygard-Woman/Women/_/N-173f2Z17443Z17442Zlfx6?cm_sp=womens-_-ddpromo-_-nygard+event+week+101612" >Nygard Fashion Event:  Buy 2 Regular Priced Nygard Items & Save 20%, Buy 3 or More Regular Priced Nygard Items and Save 30% on Your Nygard Purchase.</a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Lauren-Ralph-Lauren/Women/_/N-17477Zlfx6Z1jl/Ntk-all/Ntt-breast+cancer/Nty-1?cm_sp=womens-_-ddimage-_-lauren+pink+shop+100412"><img src="/images/endeca/dropdown/100512dropdown_w_laurenpink.jpg"></a>');
+	document.writeln('<a href="/shop/Peter-Nygard/Peter-Nygard-Petites/Peter-Nygard-Woman/Women/_/N-173f2Z17443Z17442Zlfx6?cm_sp=womens-_-ddimage-_-nygard+event+week+101712"><img src="/images/endeca/dropdown/101612dropdown_w_nygardweek.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -61,7 +61,7 @@ function buildDropdown() {
 	document.writeln('<div class="bottom">');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Juniors-Dresses/_/N-lgbm/Ns-p_best_sellers_rank%7C1/Rpp-2?cm_sp=juniors-_-ddtc-_-dresses+1+062311">Dresses</a></li>');
-	document.writeln('<li><a href="/shop/Juniors-Denim-Collections/_/N-lgaz?cm_sp=juniors-_-ddtc-_-denim+collections+2+060712">Denim Collections</a></li>');
+	document.writeln('<li><a href="/shop/Juniors-Denim-Collections/_/N-lgaz?cm_sp=juniors-_-ddtc-_-denim+collections+2+101812">Denim</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Tops/_/N-lvp6?cm_sp=juniors-_-ddtc-_-tops+3+060712">Tops</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Jackets-Blazers/_/N-y3eh?cm_sp=juniors-_-ddtc-_-jackets+blazers+4+090712">Jackets & Blazers</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Pants-Leggings/_/N-lgbe?cm_sp=juniors-_-ddtc-_-pants+leggings+5+082412">Pants & Leggings</a></li>');
@@ -82,7 +82,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-2fer+dresses/Nty-1?cm_sp=juniors-_-ddf-_-2+fer+4+101212">TREND ALERT: 2-Fer Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-popular+picks/Nty-1?cm_sp=juniors-_-ddf-_-popular+picks+5+101212">Popular Picks</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/content/juniors-metallic-faux-leather-dresses-tops-leggings?cm_sp=juniors-_-ddpromo-_-rock+steady+101212" >Rock Steady: Shop Moto Jackets, Faux-Leather, Metallics & More></a></div>');
+	document.writeln('<div class="promo"><a href="/content/juniors-metallic-faux-leather-dresses-tops-leggings?cm_sp=juniors-_-ddpromo-_-rock+steady+101212" >Rock Steady: Shop Moto Jackets, Faux-Leather, Metallics & More ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Juniors-Dresses/_/N-lgbmZ1jl/Ntk-all/Ntt-lace+dresses/Nty-1?cm_sp=juniors-_-ddimage-_-shop+lace+dresses+101212"><img src="/images/dropDownImages/101012dropdown_lace_dresses.jpg"></a>');
@@ -341,7 +341,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Men-Dress-Shirts-Ties/_/N-m0i8?splashlink=dd_m_tc3_DressShirts_012712&cm_sp=mens-_-ddtc-_-dress+shirts+3+012712">Dress Shirts</a></li>');
 	document.writeln('<li><a href="/shop/Men-Pants/_/N-lgbg/Ns-p_best_sellers_rank%7C1?cm_sp=mens-_-ddtc-_-pants+4+080312">Pants</a></li>');
 	document.writeln('<li><a href="/shop/Men-Jeans/_/N-t74i?cm_sp=mens-_-ddtc-_-denim+5+101012">Denim</a></li>');
-	document.writeln('<li class="all"><a href="/shop/Men/_/N-lfy5?splashlink=dd_m_vac_072111&cm_sp=mens-_-ddtc-_-vac+072111">VIEW ALL MEN\'S CATEGORIES</a></li>');
+	document.writeln('<li class="all"><a href="/shop/Men/_/N-lfy5?splashlink=dd_m_vac_072111&cm_sp=mens-_-ddtc-_-vac+072111" target="_blank" >VIEW ALL MEN\'S CATEGORIES</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Polo-Ralph-Lauren/Men/_/N-173m7Zlfy5?splashlink=dd_m_tb1_polo_ralph_lauren_060111&cm_sp=mens-_-ddtb-_-polo+1+060111">Polo Ralph Lauren</a></li>');
@@ -353,15 +353,15 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z15p/Ns-p_best_sellers_rank|1?cm_sp=mens-_-ddf-_-new+arrivals+1+080312">NEW ARRIVALS in Men\'s</a></li>');
-	document.writeln('<li><a href="/content/mensaccessories?splashlink=dd_m_tr2_watchesBagsAccessories_112211&cm_sp=mens-_-ddf-_-watches+bags+accessories+2+112211">Watches, Bags & Accessories</a></li>');
+	document.writeln('<li><a href="/content/mensaccessories?splashlink=dd_m_tr2_watchesBagsAccessories_112211&cm_sp=mens-_-ddf-_-watches+bags+accessories+2+112211">Watches, Sunglasses, Bags & Accessories</a></li>');
 	document.writeln('<li><a href="/shop/Men-Polos-Tees-Sportshirts/_/N-nlmkZ1jl/Ntk-all/Ntt-OXFORD/Nty-1?cm_sp=mens-_-ddf-_-oxford+shirt+soft+structured+style+3+091912">Soft Structured Style: OXFORD SHIRTS</a></li>');
 	document.writeln('<li><a href="/shop/Roundtree-Yorke-Gold-Label/Men/_/N-173emZlfy5Z1jl/Ntk-all/Ntt-no-iron+dress+shirt/Nty-1?cm_sp=mens-_-ddf-_-roundtree+yorke+gold+no+iron+dress+shitr+4+090112">ROUNDTREE & YORKE Gold Label No-Iron Dress Shirts</a></li>');
-	document.writeln('<li><a href="/shop/Papi/Men-Underwear-Socks-Sleepwear/_/N-173y8Zyyme?cm_sp=mens-_-ddf-_-papi+underwear+sale+5+092712">PAPI Underwear 25% off</a></li>');
+	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-under+armour+jacket/Nty-1?cm_sp=mens-_-ddf-_-under+armour+jackets+5+101712">UNDER ARMOUR Jackets</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-0524/Nty-1?cm_sp=mens-_-ddpromo-_-great+gadgets+health+home+wardrobe+101212" >GREAT GADGETS FOR HEALTH, HOME, & WARDROBE</a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-0524/Nty-1?cm_sp=mens-_-ddpromo-_-great+gadgets+health+home+wardrobe+101212" >GREAT GADGETS FOR HEALTH, HOME, & WARDROBE ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Thomas-Dean/Men/_/N-174a3Zlfy5?cm_sp=mens-_-ddimage-_-thomas+dean+sportshirts+mens+101012"><img src="/images/dropDownImages/101012dropdown_mens_thomas_dean.jpg"></a>');
+	document.writeln('<a href="/shop/Cremieux/Men/_/N-174hoZlfy5?cm_sp=mens-_-ddimage-_-cremieux+fall+essentials+mens+101812"><img src="/images/dropDownImages/101612dropdown_mens_cremieux.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -404,7 +404,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Children/_/N-lfy0Z1jl/Ntk-p_tag/Ntt-Kids+Sweaters+and+Hoodies/Nty-1?cm_sp=children-_-ddf-_-kids+sweaters+hoodies+4+101212">SWEATERS & HOODIES</a></li>');
 	document.writeln('<li><a href="/shop/Children/_/N-lfy0Z1jl/Ntk-all/Ntt-leggings+set/Nty-1?cm_sp=children-_-ddf-_-little+girls+leggings+sets+5+101212">Little Girls\' LEGGINGS SETS</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Children-Little-Sports-Fans/_/N-zphp/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=children-_-ddpromo-_-new+arrivals+little+college+sports+fans+101212" >New Arrivals for Little College Sports Fans</a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Children-Little-Sports-Fans/_/N-zphp/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=children-_-ddpromo-_-new+arrivals+little+college+sports+fans+101212" >New Arrivals for Little College Sports Fans ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/content/kids-outerwear-coats-jackets?cm_sp=children-_-ddimage-_-kids+outerwear+columbia+jacket+101212"><img src="/images/dropDownImages/101212dropdown_kids_outerwear.jpg"></a>');

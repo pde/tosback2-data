@@ -22,12 +22,12 @@
 	//-->
 	</script>
 	<title>Howstuffworks "Privacy Policy"</title>
-	<link href="css/index/m/reset.css%252CbasicV3.css%252CutilityV3.css%252ClayoutV3.css%252Cads.css%252CnavV4.css%252Carticle.css%252CheaderSiteWide.css/v/en-us/r/10086.css" rel="stylesheet" type="text/css" />
+	<link href="css/index/m/reset.css%252CbasicV3.css%252CutilityV3.css%252ClayoutV3.css%252Cads.css%252CnavV4.css%252Carticle.css%252CheaderSiteWide.css/v/en-us/r/10098.css" rel="stylesheet" type="text/css" />
 		<!--[if lt IE 7]>
-	<link href="http://www.howstuffworks.com/css/index/m/nav_ie6.css%252Cie6.css/v/en-us/r/10086" rel="stylesheet" type="text/css" />
+	<link href="http://www.howstuffworks.com/css/index/m/nav_ie6.css%252Cie6.css/v/en-us/r/10098" rel="stylesheet" type="text/css" />
 	<![endif]-->
-	<script type="text/javascript" src="js/index/m/jquery162.js%252Chsw.js%252Cmodal.js%252CpanelHover.js/v/en-us/r/10086"></script>
-		<script type="text/javascript" src="js/index/m/ads.js/v/en-us/r/10086"></script>
+	<script type="text/javascript" src="js/index/m/jquery162.js%252Chsw.js%252Cmodal.js%252CpanelHover.js/v/en-us/r/10098"></script>
+		<script type="text/javascript" src="js/index/m/ads.js/v/en-us/r/10098"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="imagetoolbar" content="no" />
 
@@ -380,7 +380,7 @@ HSW.ads.render("MedRect");
 	var s_account="hswprod,hswprodhsw";
 </script>
 <div style="display: none;">
-<script type="text/javascript" src="js/index/m/s_code.js/v/en-us/r/10086"></script>
+<script type="text/javascript" src="js/index/m/s_code.js/v/en-us/r/10098"></script>
 </div>
 
 
@@ -405,36 +405,27 @@ function inArray(tag,lookupArray)
 {if(tag.indexOf(lookupArray[key])>=0)
 {found=true;break;}}
 return found;}
-function sendTags(tag,vars,current,eventObj,noRedirect)
+function sendTags(tag,vars,current,eventObj,noRedirect,pageNbr)
 {if(tag!='')
 {var hswOmniImage=document.getElementById('hswOmniImage');var omniImageData="http://metrics.howstuffworks.com/b/ss/"+s_account+"/1/H.17/s45086097826030?";var gotoAction=''
 var tagName='';var timestamp=new Date();var year=timestamp.getFullYear();var month=timestamp.getMonth()+1;var day=timestamp.getDate();var hours=timestamp.getHours();var mins=timestamp.getMinutes();var secs=timestamp.getSeconds();var weekday=timestamp.getDay();var timezoneOffset=timestamp.getTimezoneOffset();var gValue=location.protocol+'//'+location.hostname;var omniPrefix='';if(location.pathname)
 {gValue+=location.pathname;}
-omniImageData+='&AQB=1';omniImageData+='&t='+month+'/'+day+'/'+year+' '+hours+':'+mins+':'+secs+' '+weekday+' '+timezoneOffset;omniImageData+='&vmt='+'4467DB86';omniImageData+='&ns='+'hswmedia';omniImageData+='&g='+encodeURIComponent(gValue);var subDomain=location.href;subDomain=subDomain.substring(7,subDomain.indexOf('.',7));if(subDomain=='recipes')
-{if(vars)
-{vars=vars.replace(/=/gi,'=TLC : ');vars=vars.replace(/events=TLC :/gi,'events=');vars=vars.replace(/products=TLC :/gi,'products=');}}
-if(subDomain=='tlc'||subDomain=='recipes')
-{omniPrefix='TLC : ';if(vars)
-{vars=vars.replace(/Toyota\//gi,'Toyota');}}
-if(subDomain=='health'||subDomain=='healthguide')
-{omniPrefix='DHLT : ';if(vars)
-{vars=vars.replace(/Toyota\//gi,'Toyota');vars=vars.replace(/CampaignA\//gi,'CampaignA');vars=vars.replace(/CampaignB\//gi,'CampaignB');}}
-if(subDomain=='consumerguideauto')
-{cgaOutput=sendTagsCGA(tag,vars,current,eventObj);tag=cgaOutput.substr(0,cgaOutput.indexOf('&'));omniImageData+=cgaOutput.substr(cgaOutput.indexOf('&'));}
-if(vars)
+omniImageData+='&AQB=1';omniImageData+='&t='+month+'/'+day+'/'+year+' '+hours+':'+mins+':'+secs+' '+weekday+' '+timezoneOffset;omniImageData+='&vmt='+'4467DB86';omniImageData+='&ns='+'hswmedia';var subDomain=location.href;subDomain=subDomain.substring(7,subDomain.indexOf('.',7));if(vars)
 {omniImageData+=vars;}
-if(tag=='Search Top')
+if((tag.indexOf('Next : Top')>=0)||(tag.indexOf('Next : Bottom')>=0)||(tag.indexOf('Prev : Top')>=0)||(tag.indexOf('Prev : Bottom')>=0)||(tag.indexOf('Countdown : Top')>=0)||(tag.indexOf('Deep Link : Bottom')>=0))
+{var hash=eventObj.currentTarget.hash;var nextPageNbr=(typeof hash.split('=')[1]=='undefined')?'':hash.split('=')[1];var path=window.location.pathname.split('/');var pageStem=path[path.length-1].replace('.htm','');var pageUrl=[window.location.hostname,window.location.pathname,].join('').replace('.htm','');gValue=pageUrl+((pageNbr>0)?pageNbr:'')+'.htm';omniImageData+='&c7='+pageStem+nextPageNbr+'.htm';omniImageData+='&v9='+pageStem+nextPageNbr+'.htm';}
+if((tag.indexOf('Up Next Link')>=0))
+{var path=window.location.pathname.split('/');var pageStem=path[path.length-1].replace('.htm','');var targetHref;if($(current).attr('href')){targetHref=$(current).attr('href');}
+else{targetHref=eventObj.target.href;}
+var endPos=targetHref.indexOf('#');if(endPos<0)
+{endPos=targetHref.length;}
+var startPos=targetHref.lastIndexOf('/',endPos);var shortHref=targetHref.substr(startPos+1,endPos-startPos-1);omniImageData+='&c7='+shortHref;omniImageData+='&v9='+shortHref;var pageUrl=[window.location.hostname,window.location.pathname,].join('').replace('.htm','');gValue=pageUrl+((pageNbr>0)?pageNbr:'')+'.htm';}
+omniImageData+='&g='+encodeURIComponent(gValue);if(tag=='Search Top')
 {omniPage='Privacy Policy';omniImageData+='&v39='+omniPrefix+'About : Search Top';omniImageData+='&c25='+omniPrefix+'About : Search Top';tag=omniPage+' : Search Top : '+document.getElementById('terms_Top').value}
 if(tag=='Surprise Me')
 {omniPage='Privacy Policy';omniImageData+='&v39='+omniPrefix+'About : Surprise Me';omniImageData+='&c25='+omniPrefix+'About : Surprise Me';tag=omniPage+' : Surprise Me : '+document.getElementById('terms_Top').value}
 if(tag=='Search Bottom')
 {omniPage='Privacy Policy';omniImageData+='&v39='+omniPrefix+'About : Search Bottom';omniImageData+='&c25='+omniPrefix+'About : Search Bottom';tag=omniPage+' : Search Bottom : '+document.getElementById('terms_Bottom').value}
-if(tag.indexOf('Search Recipes')>=0)
-{omniPage='Privacy Policy';omniImageData+='&v39='+'TLC : About  : Recipe Search';omniImageData+='&c25='+'TLC : About  : Recipe Search';tag=omniPage+' : Search Recipes : '+document.getElementById('terms_recipes').value}
-if(tag.indexOf('TLC Video Search')>=0)
-{omniPage='Privacy Policy';omniImageData+='&v39='+omniPrefix+'About  : Video Search';omniImageData+='&c25='+omniPrefix+'About  : Video Search';tag=omniPage+' : Search Videos : '+document.getElementById('search-query-videos').value}
-if(tag.indexOf('TLC Standard Video Search')>=0)
-{omniPage=omniPrefix+'Privacy Policy';omniImageData+='&v39='+omniPrefix+'About  : Video Search';omniImageData+='&c25='+omniPrefix+'About  : Video Search';tag=omniPage+' : Search Videos : '+document.getElementById('search-query-videos').value}
 if(tag.indexOf('Video Search')>=0)
 {omniPage='Privacy Policy';omniImageData+='&v39='+'About  : Video Search';omniImageData+='&c25='+'About  : Video Search';tag=omniPage+' : Search Videos : '+document.getElementById('terms_videos').value}
 if(tag=='Random Article')
@@ -446,12 +437,6 @@ if(tag.toLowerCase().indexOf('toolbar')>=0&&omniImageData.indexOf('&c45=')===-1)
 {var user_value=encodeURIComponent(HSW.cookies.user_type.value.toLowerCase()+' : '+HSW.cookies.auth_type.value.toLowerCase());omniImageData+='&c45='+user_value+'&v49='+user_value;}
 else
 {omniImageData+='&c45=unregistered&v49=unregistered';}}
-if(subDomain=='recipes')
-{tag='TLC : '+tag;}
-if(subDomain=='tlc'&&tag.indexOf('TLC Tophat Search')>=0)
-{tag=omniPrefix+tag;}
-if((subDomain=='health'||subDomain=='healthguide')&&tag.indexOf('DHLT Tophat Search')>=0)
-{tag=omniPrefix+tag;}
 var _href=$(current).attr('href');if(_href)
 {if(omniImageData.indexOf('c25=')>=0&&omniImageData.indexOf('c7=')<0)
 {var endPos=_href.indexOf('?');if(endPos<0)
@@ -507,7 +492,9 @@ var fbRef=s.getQueryParam('fb_ref');if(fbRef)
 if(document.location.hash.indexOf('#mkcpgn=')!=-1&&document.referrer.indexOf('howstuffworks.com')==-1)
 {s.campaign=document.location.hash.split('=')[1];}
 if(document.location.hash.indexOf('#icpgn=')!=-1)
-{s.eVar49=document.location.hash.split('=')[1];}}
+{s.eVar49=document.location.hash.split('=')[1];}
+if(document.location.hash.indexOf('#page=')!=-1)
+{s.prop4=document.location.hash.split('=')[1];s.eVar6=document.location.hash.split('=')[1];}}
 if(HSW.cookies.exists('user_id'))
 {var smUserId=HSW.cookies.user_id.value;if(smUserId!=null&&smUserId!='')
 {s.prop50=smUserId;}}

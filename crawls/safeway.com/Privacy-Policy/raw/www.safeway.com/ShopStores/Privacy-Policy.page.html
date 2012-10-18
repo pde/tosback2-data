@@ -237,7 +237,11 @@ body.ls-center
                             if(goto!=null && goto!="") {
                                 caller = goto;
                             }else{
-                                caller = top.location.href;
+                                if (window != top) {
+                                  caller = location.href;
+                                } else {
+                                  caller = top.location.href;
+                                }
                             }
                         }
                         return caller;
@@ -868,20 +872,19 @@ writeCoupons();
     </span>
 </div>
 
-<!--  show Deal Match Oahu link ->
+<!--  show Deal Match Oahu link -->
 <script language='JavaScript' type='text/javascript'>
 function writedealmatch() { 
-	var localbanner = "";
 	if (domainName.match(/safeway/i)) {
 		document.write ('<div class="footer_nav_links"><span class="footer_links">');
-		document.write ('<a href="https://admatch.safeway.com/" title="Deal Match Oahu">Deal Match Oahu</a>');
+		document.write ('<a href="https://admatch.safeway.com/" style="text-decoration:none" title="Deal Match"><img src="../CMS/assets/media/images/styleimages/1x1pixel.png" alt="Deal Match Oahu Residents only" border="0"/></a>');
 		document.write ('</span></div>');
 	}
 	else return;
 }
 writedealmatch();
 </script>
-<!-  end of Deal Match Oahu link  -->
+<!--  end of Deal Match Oahu link  -->
 
 <!-- Navigation links ends -->
 </div><!-- Text ends -->
@@ -903,8 +906,15 @@ writedealmatch();
 	}
 	writeHomeDelivery();
 </script>
-
 <!--  end of Home Grocery Delivery link  -->
+
+<!--  show Gas Reward Points -->
+<script language='JavaScript' type='text/javascript'>
+	document.write ('<div class="footer_nav_links"><span class="footer_links">');
+	document.write ('<a href="http://www.safeway.com/ShopStores/'+&#32;prodURL&#32;+'ShopStores/RewardPoints.page?icmpid='+&#32;domainName&#32;+':footer:gas" title="Gas Reward Points">Gas Reward Points</a>');
+	document.write ('</span></div>');
+</script>
+<!-- end of Gas Reward Points -->
 
 <div class="footer_nav_links">
 	<span class="footer_links">

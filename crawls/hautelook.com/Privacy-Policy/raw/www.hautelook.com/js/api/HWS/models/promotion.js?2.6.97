@@ -1,0 +1,42 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.models === 'undefined') {
+    HWS.models = {};
+}
+
+HWS.models.promotion = function() {
+    this.start_date = "";
+    this.end_date = "";
+    this.modified_date = "";
+
+    this.section = "";
+    this.event_tabs = [];
+
+    this.placement = "";
+    this.resource = "";
+    this.type = "";
+
+    this.sort = 1;
+};
+
+HWS.models.promotion.prototype.isOnTab = function(tab) {
+    return arrayIndexOf.call(this.event_tabs, tab) != -1 ? true : false;
+};
+
+HWS.models.promotion.prototype.isGrid = function() {
+    return this.placement === 'grid_promo' ? true : false;
+}
+
+HWS.models.promotion.prototype.isTop = function() {
+    return this.placement === 'top_promo' ? true : false;
+}
+
+HWS.models.promotion.prototype.isBottom = function() {
+    return this.placement === 'bottom_promo' ? true : false;
+}
+
+HWS.models.promotion.prototype.isCollapsible = function() {
+    return this.placement === 'collapsible_promo' ? true : false;
+}

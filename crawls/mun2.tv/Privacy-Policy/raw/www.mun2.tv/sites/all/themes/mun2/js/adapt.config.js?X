@@ -1,3 +1,4 @@
+Function.prototype.bind=Function.prototype.bind||function(b){if(typeof this!=="function"){throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");}var a=Array.prototype.slice,f=a.call(arguments,1),e=this,c=function(){},d=function(){return e.apply(this instanceof c?this:b||window,f.concat(a.call(arguments)));};c.prototype=this.prototype;d.prototype=new c();return d;};
 Function.prototype.later = function (msec) {
   var fn = this,
      args = Array.prototype.slice.call(arguments,1);
@@ -5,7 +6,7 @@ Function.prototype.later = function (msec) {
     function(){fn.apply(this,args)},
     msec
   );
-}
+};
 
 var Mun2Responsive = {};
 Mun2Responsive.events = {};
@@ -21,7 +22,11 @@ Mun2Responsive.defaultWindowWidth = window.innerWidth;
 Mun2Responsive.nParseFBXML = 0;
 Mun2Responsive.isMobile = {
   Android: function() {
-    return navigator.userAgent.match(/Android/i) ? true : false;
+    if (navigator.userAgent.match(/Android/i)) {
+      return (navigator.userAgent.match(/Mobile/i)) ? 'mobile' : 'tablet';
+    } else {
+      return false;
+    }
   },
   BlackBerry: function() {
     return navigator.userAgent.match(/BlackBerry/i) ? true : false;
@@ -274,7 +279,7 @@ Mun2Responsive.expander = function () {
   Mun2Responsive.log('-- Mun2Responsive.replaceJSLinks');
   if ($('body.front.responsive').length > 0) {
     $('.front.responsive #content-top .region .block-views:not(#block-views-mun2_shows_shows-block_6) .views-field-title a').expander({
-      slicePoint:       25,  // default is 100
+      slicePoint:       40,  // default is 100
       expandPrefix:     '...', // default is '... '
       expandText:       '', // default is 'read more'
       userCollapseText: ''  // default is 'read less'
@@ -285,6 +290,17 @@ Mun2Responsive.expander = function () {
       expandPrefix:     '...',
       expandText:       '',
       userCollapseText: ''
+    });
+  } else if ($('body.page-shows.responsive').length > 0) { 
+    $('.recent-episodes h2.title a').each( function() {
+      var jqThis = $(this),
+          sText = jqThis.text();
+
+      if (sText && sText.length > 37) {
+        sText = sText.substring(0, 37) + ' ...';
+        jqThis.data('defaultText', sText);
+        jqThis.text(sText);
+      }
     });
   }
 };
@@ -410,7 +426,7 @@ Mun2Responsive.forceDesktop = function() {
         $.cookie('force_desktop', bForceDesktop, { expires: 7, path: '/' });
         $(this).unbind(e.type);
         window.location.reload();
-      }).insertAfter('#footer');
+      }).after('#footer');
   }
 };
 
@@ -439,14 +455,97 @@ Mun2Responsive.mobile = function () {
   }
 };
 
+function getVideoId () {
+  var videoID;
+  var aMetas = document.getElementsByTagName("meta");
+  var nMetas = aMetas.length;
+  var i = 0;
+  var property = "";
+  var contentURL = "";
+  var sVideoID = "";
+  aMatches = [];
+  for (; i < nMetas; i++) {
+    property = aMetas[i].getAttribute("property");
+    if (property !== null && property !== "undefined") {
+      contentURL = aMetas[i].getAttribute("content");
+      aMatches = contentURL.match(/videoID=([0-9]*)/);
+      sVideoID = aMatches && aMatches.length > 0 ? aMatches[1] : null;
+      if (sVideoID !== null) {
+        videoID = (sVideoID !== null) ? sVideoID : null;
+        break;
+      }
+    }  
+  }
+  if (videoID) return videoID;      
+}
+// Todo : 
+//   Identify patterns and de-couple this entire file
+//   into separate files making up a scoped object with
+//   shared functions/methods.
+var player; 
+var modVP;
+var modExp;
+var modCon;
+var previousVideoID=0;
+var nextVideo=0;
+var videoID=getVideoId();
+
+Mun2Responsive.log(videoID); 
+
+Mun2Responsive.onTemplateReady = function(evt) {
+  var classes = document.body.getAttribute("class");
+  document.body.setAttribute("class", classes + " video-loaded");
+  Mun2Responsive.log("onTemplateReady", evt, modVP, modExp);
+  modVP.loadVideoByID(videoID);
+};
+
+Mun2Responsive.myTemplateLoaded = function(experienceID) {
+  Mun2Responsive.log("onTemplateLoaded", experienceID);
+  player = brightcove.api.getExperience(experienceID);
+  modVP = player.getModule(brightcove.api.modules.APIModules.VIDEO_PLAYER);
+  modExp = player.getModule(brightcove.api.modules.APIModules.EXPERIENCE);
+  modExp.addEventListener(brightcove.api.events.ExperienceEvent.TEMPLATE_READY, Mun2Responsive.onTemplateReady);
+  Mun2Responsive.log(player, modVP, modExp);
+}
+
+Mun2Responsive.resizeExperience = function(width, height) {
+  height = Math.floor(width * 0.677);
+  Mun2Responsive.log("resizeExperience", width, height);
+  if ( (typeof modExp === 'object')
+    && (typeof modExp.setSize === 'function') ) {
+    modExp.setSize(width, height);
+    document.querySelector(".BrightcoveExperience").width = width;
+    document.querySelector(".BrightcoveExperience").height = height;    
+  }
+};
+
+var supportsOrientationChange = "onorientationchange" in window,
+    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
+
+if (window.addEventListener) {
+  window.addEventListener(orientationEvent, function() {
+    var orientation = Mun2Responsive.getOrientation(); // Fire event
+    Mun2Responsive.orientation = orientation;
+    $(Mun2Responsive.events).trigger('listenOrientationChange', orientation);
+  }, false);
+}
+
 Mun2Responsive.setupUI = function () {
   if (Mun2Responsive.bSetupUI !== false) return;
   Mun2Responsive.bSetupUI = true;
   Mun2Responsive.log('-- Mun2Responsive.setupUI');
 
-  var originalWidth = $('.BrightcoveExperience').width(),
-    originalHeight = $('.BrightcoveExperience').height();
-  // Execute functions for tablet or mobile.
+  var originalWidth = $('#brightcove-player').width(),
+    originalHeight = $('#brightcove-player').height(),
+    jqBcPlayer = $('#brightcove-player'),
+    tmplBrightcoveEmbed = '';
+
+  if(jqBcPlayer.length && $('#tmpl-video-player').length > 0) {
+    tmplBrightcoveEmbed = Handlebars.compile($('#tmpl-video-player').html()); // BC player
+    jqBcPlayer.html(tmplBrightcoveEmbed({}));
+    brightcove.createExperiences();
+  }
+  // // Execute functions for tablet or mobile.
   Mun2Responsive.setupNav();
   Mun2Responsive.setupLogin();
   Mun2Responsive.videoMeta();
@@ -464,24 +563,14 @@ Mun2Responsive.setupUI = function () {
   }
   // Listen for orientation changes and adapt.
   $(Mun2Responsive.events).bind('listenAdapt listenOrientationChange', function (e) {
-    var currentWidth = $('.player-embed').width(),
-        newHeight;
-    Mun2Responsive.log('listenAdapt listenOrientationChange', e, arguments);
-    if (originalWidth !== currentWidth) {
-      newHeight = originalHeight / originalWidth * currentWidth;
-      resizeExperience(currentWidth, newHeight);
-    }
+    setTimeout(function () {
+      var currentWidth = $('#brightcove-player').width()
+      Mun2Responsive.log('listenAdapt listenOrientationChange', e, arguments);      
+      Mun2Responsive.resizeExperience(currentWidth);
+    }, 500);
   });
+
 };
-
-var supportsOrientationChange = "onorientationchange" in window,
-    orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-
-window.addEventListener(orientationEvent, function() {
-  var orientation = Mun2Responsive.getOrientation(); // Fire event
-  Mun2Responsive.orientation = orientation;
-  $(Mun2Responsive.events).trigger('listenOrientationChange', orientation);
-}, false);
 
 $(function () {
   if ($('body.responsive') && $.cookie('force_desktop') === 'true') {
@@ -490,6 +579,10 @@ $(function () {
     Mun2Responsive.setupUI();    
   }
 });
+
+function myTemplateLoaded (experienceID) {
+  Mun2Responsive.myTemplateLoaded(experienceID);
+}
 
 // This is a constant.. Used in adapt.js
 var ADAPT_CONFIG = {

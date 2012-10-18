@@ -86,8 +86,14 @@ try{
 				};
 				for ( box in generic_boxes ){
 					el = generic_boxes[ box ];
-					title = $( el ).setVRTitle();
+					title = $( el ).setVRTitle() || '';
 					$(el).attr('data-vr-zone', title);
+					
+					//since we are already in the Generic Boxes, go ahead and set the contentbox
+					$(el).find('DIV.cnnBoxDefault DT').attr('data-vr-contentbox', title + ': Featured Link');	//Generic Box Featured Link
+					$(el).find('DIV.cnnBoxDefault DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
+					$( $(el).find('DIV.cnnBoxDefault DD UL LI A').get(0) ).attr('data-vr-contentbox', title + ': Featured Link');	//Generic Box Featured Link
+					
 				}
 				
 				 /*
@@ -99,8 +105,12 @@ try{
 				  *		specific class names or ids to classify a content box.
 				  */
 				
+				$('DIV.cnnBreakingNews DIV.cnnBreakingNewsHolder DIV').attr('data-vr-contentbox', '');	//Breaking News
+				
 				$('DIV#cnnT1Holder DIV.cnnT1Pane').attr('data-vr-contentbox', '');  //T1
-				$('DIV.cnnT2s ul li').attr('data-vr-contentbox', '');				//T2
+				$('DIV#cnnT1Holder DIV.cnnT1Pane DIV.cnnBullets').attr('data-vr-contentbox', '');  //T1 Bullets
+								
+				$('DIV.cnnT2s ul li a').attr('data-vr-contentbox', '');				//T2
 				
 				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersFeature').attr('data-vr-contentbox', '');	//Writer Feature
 				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersMain li').attr('data-vr-contentbox', ''); //Writer Generic
@@ -110,13 +120,11 @@ try{
 				
 				$('DIV.cnnBoxEM DIV A').attr('data-vr-contentbox', '');				//Extra Mustard
 				
-				$('DIV.cnnBoxTR DT').attr('data-vr-contentbox', '');				//Truth and Rumors Feature
+				$('DIV.cnnBoxTR DT').attr('data-vr-contentbox', 'Truth and Rumors: Featured Link');	//Truth and Rumors Feature
 				$('DIV.cnnBoxTR DD UL LI A').attr('data-vr-contentbox', '');		//Truth and Rumors Link
+				$( $('DIV.cnnBoxTR DD UL LI A').get(0) ).attr('data-vr-contentbox', 'Truth and Rumors: Featured Link');	//Truth and Rumors Feature
 				
 				$('DIV.cnnBoxPhotos A').attr('data-vr-contentbox', '');				//SI Photos
-				
-				$('DIV.cnnBoxDefault DT').attr('data-vr-contentbox', '');			//Generic Box Feature
-				$('DIV.cnnBoxDefault DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
 				
 				$('DIV.cnnBoxDefaultThumbs DIV').attr('data-vr-contentbox', '');	//Generic Box Link
 				
@@ -432,13 +440,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle" style="border-top: 0px none;">Latest News</div>
 		<ul>
 <li>
-<a href="http://nfl.si.com/2012/10/14/packers-quiet-their-critics-with-a-dominant-showing-in-houston/?eref=sircrc"><strong>Chris Burke:</strong> Rodgers, Packers shred Texans and silence critics</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/albert_chen/10/18/nlcs-game-3/index.html?eref=sircrc">Cards take Giant step toward World Series</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/baseball/mlb/gameflash/2012/10/14/43744/index.html#recap?eref=sircrc">Cards hold off Giants in NLCS opener</a>
+<a href="http://sportsillustrated.cnn.com/2012/baseball/mlb/10/17/alcs-game-4-postponed.ap/index.html?eref=sircrc">ALCS Game 4 postponed to Thursday</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/football/ncaa/10/14/bcs-standings-alabama-florida.ap/index.html?eref=sircrc"><strong>BCS:</strong> 'Bama at No. 1, Florida at No. 2</a>
+<a href="http://sportsillustrated.cnn.com/2012/football/ncaa/10/17/south-carolina-marcus-lattimore-florida.ap/index.html?eref=sircrc">Lattimore hurt, may not start vs. No. 3 Florida</a>
 </li>
 
 		</ul>
@@ -447,14 +455,14 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">Video</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 		<tr>
-		<td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/10/15/101412-new-york-jets-matthew-stafford-buffalo-bills.SportsIllustrated/index.html">
+		<td><a href="http://sportsillustrated.cnn.com/video/mlb/2012/10/18/101712-giants-cardinals-nlcs.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/nfl/2012/10/15/stafford124.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Who saved themselves in Week 6?</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/10/15/101512-dallas-cowboys-philadelphia-eagles-new-england-patriots.SportsIllustrated/index.html">
+<img src="../../i2.cdn.turner.com/si/video/mlb/2012/10/18/nlcs.124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Verducci: Patterns emerge in NLCS</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/video/ncaaf_video/2012/10/17/101712.cfb-midseason-awards-andy-staples.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/nfl/2012/10/15/garrett-romo124.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Headed for the hot seat</div>
+<img src="../../i2.cdn.turner.com/si/video/ncaaf_video/2012/10/17/AS_124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">2012 Midseason CFB Andy Awards</div>
 </a></td>
 
 		</tr>
@@ -464,13 +472,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Writers</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/ben_reiter/10/15/nlcs-cardinals-giants-game-1/index.html?eref=sircrc"><strong>Ben Reiter:</strong> Giants starters' struggles not a good sign for NLCS chances</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/albert_chen/10/18/nlcs-game-3/index.html?eref=sircrc"><strong>Albert Chen:</strong> Unlikely hero Carpenter helps Cards steal one from Giants</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/eric_mack/10/14/week-6-fantasy-fast-forward-shonn-greene/index.html?eref=sircrc"><strong>Eric Mack:</strong> Cowboys still alive, 49ers frustrate and more Week 6 fantasy observations</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/joe_lemire/10/18/arod-game-4/index.html?eref=sircrc"><strong>Joe Lemire:</strong> For better or worse, A-Rod likely staying with Yanks</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/joe_lemire/10/14/tigers-yankees-alcs-game-2/index.html?eref=sircrc"><strong>Joe Lemire:</strong> Deadline pitching deals paying postseason dividends for Tigers</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/dave_doyle/10/17/jon-jones-chael-sonnen-tuf/index.html?eref=sircrc"><strong>Dave Doyle:</strong> White beefs up TUF with Jones-Sonnen, but bout raises concerns</a>
 </li>
 
 		</ul>
@@ -479,18 +487,18 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Photos</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 			<tr>
-<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1210/cfb-top-25-review-week-7/content.1.html?eref=sircrc">
+<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1210/boxing-world-champs-from-brooklyn/content.1.html?eref=sircrc">
 <div>
-<img title="College Football Top 25 Review" alt="College Football Top 25 Review" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1210/cfb-top-25-review-week-7/images/red-river-thumb.jpg"></div>
-<div>College Football Top 25 Review</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1005/boxing.pound-for-pound.top15/content.1.html?eref=sircrc">
+<img title="Boxing World Champs from Brooklyn" alt="Boxing World Champs from Brooklyn" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1210/boxing-world-champs-from-brooklyn/images/00-junior-jones-thumb.jpg"></div>
+<div>Boxing World Champs from Brooklyn</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1210/cfb-did-you-see-that-7/content.1.html?eref=sircrc">
 <div>
-<img title="Boxing's Pound-for-Pound Top 15" alt="Boxing's Pound-for-Pound Top 15" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1005/boxing.pound-for-pound.top15/images/00-floyd-mayweather-jr-thumb.jpg"></div>
-<div>Boxing's Pound-for-Pound Top 15</div>
-</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1203/2012.nascar.cup.winners/content.1.html?eref=sircrc">
+<img title="Did You See That? - College Football" alt="Did You See That? - College Football" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1210/cfb-did-you-see-that-7/images/thumb-2-Texas-Oklahoma-Football.jpg"></div>
+<div>Did You See That? - College Football</div>
+</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1210/this-week-si-issue-102212/content.1.html?eref=sircrc">
 <div>
-<img title="2012 NASCAR Sprint Cup Winners" alt="2012 NASCAR Sprint Cup Winners" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1203/2012.nascar.cup.winners/images/keselowski-thumb.jpg"></div>
-<div>2012 NASCAR Sprint Cup Winners</div>
+<img title="This Week's SI" alt="This Week's SI" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1210/this-week-si-issue-102212/images/00-tyrann-mathieu-si-cover-thumb.jpg"></div>
+<div>This Week's SI</div>
 </a></td>
 
 			</tr>
@@ -513,7 +521,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnnRight">
 			<dl>
 				<dt><a href="http://sportsillustrated.cnn.com/"><img src="../../i.cdn.turner.com/si/.element/img/4.1/global/footer_logo.jpg" alt="SI.com" title="SI.com"/></a></dt>
-				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/2012/writers/don_banks/10/14/cowboys-week-6/" title="NFL Week 6"class="cnnFirst">NFL Week 6</a>   <a href="http://sportsillustrated.cnn.com/baseball/mlb/" title="MLB Playoffs">MLB Playoffs</a>   <a href="http://nfl.si.com/2012/10/14/packers-quiet-their-critics-with-a-dominant-showing-in-houston/" title="Aaron Rodgers" target="new" >Aaron Rodgers</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/stewart_mandel/10/14/alabama-oregon-florida-bcs-standings-overtime/index.html" title="BCS Standings">BCS Standings</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/eric_mack/10/14/week-6-fantasy-fast-forward-shonn-greene/index.html" title="Fantasy Football">Fantasy Football</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/tim_layden/10/14/usain-bolt/index.html" title="Usain Bolt">Usain Bolt</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
+				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/2012/writers/albert_chen/10/18/nlcs-game-3/index.html" title="Matt Carpenter"class="cnnFirst">Matt Carpenter</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/joe_lemire/10/18/arod-game-4/index.html" title="Alex Rodriguez">Alex Rodriguez</a>   <a href="http://sportsillustrated.cnn.com/2012/football/ncaa/10/17/midseason-all-america-team-geno-smith/index.html" title="CFB All-Americans">CFB All-Americans</a>   <a href="http://sportsillustrated.cnn.com/baseball/mlb/" title="MLB Playoffs">MLB Playoffs</a>   <a href="http://sportsillustrated.cnn.com/fantasy/football/nfl/player_projections/2012/07/running_back.html" title="Week 7 Fantasy Projections">Week 7 Fantasy Projections</a>   <a href="http://nhl-red-light.si.com/2012/10/16/new-nhl-offer-designed-to-save-season/" title="NHL Lockout" target="new" >NHL Lockout</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
 			</dl>
 			<div class="cnnClear"></div>
 			<ul>

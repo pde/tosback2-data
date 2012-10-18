@@ -23,8 +23,11 @@
                 // code to make sure html tags are not truncated
                 while (htmlStartTagIndex < body.length ) {
                     htmlStartTagIndex = body.indexOf('<', htmlStartTagIndex);
-                    if (htmlStartTagIndex > 0) {
+                    if (htmlStartTagIndex >= 0) {
                         htmlEndTagIndex = body.indexOf('</', htmlStartTagIndex);
+                        if (htmlEndTagIndex == -1){
+                            htmlEndTagIndex = body.indexOf('>', htmlStartTagIndex);
+                        }
                         var bodySubStr = body.substring(htmlStartTagIndex, htmlEndTagIndex + 1);
                         var bodyNewSubStr = bodySubStr.replace(/ /g, '~');
                         body = body.replace(bodySubStr, bodyNewSubStr);
