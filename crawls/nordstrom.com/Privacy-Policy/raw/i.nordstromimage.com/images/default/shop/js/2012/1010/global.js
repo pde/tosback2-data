@@ -57,7 +57,7 @@ if(PageParameters.hasOwnProperty('categoryName')){R3_CATEGORY.setName(String(Pag
 break;case'ProductPage':window.R3_ITEM=new r3_item();if(PageParameters.hasOwnProperty('styleNumber')){R3_ITEM.setId(String(PageParameters.styleNumber));}
 if(PageParameters.hasOwnProperty('categoryId')){R3_COMMON.addCategoryHintId(String(PageParameters.categoryId));}
 break;case'SearchPage':window.R3_SEARCH=new r3_search();var keyword=(PageParameters.hasOwnProperty('keyword'))?PageParameters.keyword:'',styles=(PageParameters.hasOwnProperty('styleList'))?PageParameters.styleList.split(','):[],len=Math.min(styles.length,15),i=0;R3_SEARCH.setTerms(keyword);for(i;i<len;i++){R3_SEARCH.addItemId(styles[i]);}
-break;case'ShoppingBagPage':window.R3_CART=new r3_cart();var items=PageParameters.orderInfo.items,len=Math.min(items.length,15),i=0;for(i;i<len;i++){R3_CART.addItemId(items[i]);}
+break;case'ShoppingBagPage':window.R3_CART=new r3_cart();var items=PageParameters.orderInfo.items,len=Math.min(items.length,15),i=0;for(i;i<len;i++){R3_CART.addItemId(items[i].styleNumber);}
 break;case'OrderConfirmationPage':window.R3_PURCHASED=new r3_purchased();R3_PURCHASED.setOrderNumber(PageParameters.orderInfo.orderId);var items=PageParameters.orderInfo.items,len=Math.min(items.length,15),i=0;for(i;i<len;i++){R3_PURCHASED.addItemIdPriceQuantity(items[i].styleNumber,items[i].orderItemsPrice,items[i].orderItemsQuantity);}
 break;case'ErrorPage':window.R3_ERROR=new r3_error();break;}
 if(PageParameters.hasOwnProperty('IsRRRecsVisible')===false){r3();}}}

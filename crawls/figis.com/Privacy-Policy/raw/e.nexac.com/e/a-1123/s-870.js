@@ -43,7 +43,7 @@ na_frame_url += '&na_bksite=' + '929';
 na_frame_url += '&na_trncnv=' + 'bEh2N_gxmTMqJOJH_tJ9KJiiB0Ei04GcmBst7V-enH7QoEeKvcezTnQEOVUCvtL44RCjhajV9A-9f_fB01WYwg';
 na_frame_url += '&na_trntrg=' + 'JrTFTuaTQtGfiM5_EGpOdPAjpNp8enGWft0HdomdVZbQoEeKvcezTnQEOVUCvtL4NrsPTSxv085WU2QpihEpwQ';
 na_frame_url += '&na_trncrt=' + '';
-na_frame_url += '&go_mmath=N';
+na_frame_url += '&go_mmath=$MM$';
 var w = window;
 if (w.na_ci) { na_frame_url += '&na_ci=' + escape(crypt(na_ci)); }
 if (w.na_oi) { na_frame_url += '&na_oi=' + escape(na_oi); }

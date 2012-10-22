@@ -69,8 +69,8 @@ function isItMothershipChecker() {
 
 //Check if we're on mobile or desktop
 function isItMobileChecker() {
-	if(lowercaseURL.indexOf("m=y")!=-1 || lowercaseURL.indexOf("m.k")!=-1 || mothershipDesktopURL!='') {
-		isItMobile = 1;
+	if(lowercaseURL.indexOf("m=y")!=-1 || lowercaseURL.indexOf("m.k")!=-1 || mothershipDesktopURL!='' || lowercaseURL.indexOf("m-enzo.k")!=-1) {
+		isItMobile = 1;	
 	}
 	else {
 		isItMobile = 0;	
@@ -213,7 +213,7 @@ function runOnLoad() {
 //~~~~~~~~~~~~~ link to classroom ~~~~~~~~~~~~~~~//
 function classroomAlert() {
 	if(confirm('Please note that our Classroom site is not yet mobile optimized. Do you still wish to continue?')) {
-		window.open('/classroom/');
+		window.open('http://classroom.kidshealth.org/');
 	}
 	else stop;
 }

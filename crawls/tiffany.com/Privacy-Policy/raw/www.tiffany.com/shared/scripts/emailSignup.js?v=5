@@ -1,0 +1,662 @@
+﻿var pcEmailID = "ctlFooter_emailMarketingCtl_txtSubscribeEmail"
+var mEmailID = "ctlFooter_emailMarketingCtl_txtSubscribeMobileEmail"
+
+if (locale.toUpperCase() == 'EN-US-ESTR' || locale.toUpperCase() == 'JA-JP-ESTR') {
+    pcEmailID = "ctlFooter_emailMarketingCtlEStore_txtSubscribeEmail";
+    mEmailID = "ctlFooter_emailMarketingCtlEStore_txtSubscribeMobileEmail" }
+
+     
+    function ValidateEmptySelectedValue() {
+     var ddl = document.getElementById(countryddlID);
+     if (ddl.options[ddl.selectedIndex].value == '-1') {
+         ddl.selectedIndex = '0'; return;
+     }
+    }
+function getEmailMarketingAttributes() 
+{
+  var valid;
+  valid = ValidateSubscribeEmail();
+  
+  var isCountrySelected ;
+  if (locale.toUpperCase() == 'INTL' || locale.toUpperCase() == 'ZH-HANT') {
+
+      var ddl = document.getElementById(countryddlID);
+      if (ddl.options[ddl.selectedIndex].value == '-1') { ddl.selectedIndex = '0';return;}
+	
+	isCountrySelected = ValidateCountrySelected();	}
+  
+  if(valid== true && (locale.toUpperCase()=='INTL'||locale.toUpperCase()=='ZH-HANT'))
+  {
+	valid =isCountrySelected;
+  }
+  
+  if(valid)
+  {
+      // Commented due to issue of custom variables of the slots after 5  
+      // Custom variable setting for Email Signup
+      //SetCustomVariableForEmailSignup();
+      //----------------------------------------
+	if(blnSubscribeFromFooter)
+	{
+		//Omniture
+		s_linkType="o";
+		s_linkName="Link to E-mail Marketing - Footer Thank You";
+		s_lnk=s_co(this);
+		s_pageName="Activity | Email Marketing | Footer | Success";
+		s_gs(s_account); 
+		
+		TrackEvent('Email Sign Up','Footer','Submit Success','');
+		
+	}
+	else
+	{
+		//Omniture
+		s_linkType="o";
+		s_linkName="Link to E-mail Marketing - HomePage Thank You";
+		s_pageName="Activity | Email Marketing | HomePage | Success";
+		if (typeof s_account != 'undefined') {
+			s_lnk=s_co(this);
+			s_gs(s_account);
+		}
+		TrackEvent('Email Sign Up','Home Page','Submit Success','');
+	}
+
+	emailMarketing_showProgress();
+//		var poststr = "txtSubscribeEmail=" + encodeURI( document.getElementById(pcEmailID).value ) + 
+//						"&blnSubscribeFooter=" + encodeURI( document.getElementById("blnSubscribeFooter").value ) +
+//						"&source=" + encodeURI ( '<%= Source %>' );
+//		makePOSTRequest('/Customer/Request/ProcessEmailMarketingRequest.aspx', poststr);
+
+	var emailAddr;
+	var mobileEmailAddr; 
+	var selectedCountry ;	
+	var countryCode ='';
+	
+	if(locale.toUpperCase() == 'INTL'||locale.toUpperCase() == 'ZH-HANT')
+	{
+		selectedCountry = document.getElementById(countryddlID );
+		if(selectedCountry !=null && selectedCountry!='undefined')
+		{
+		    countryCode = selectedCountry.options[selectedCountry.selectedIndex].value;
+		    if (countryCode == '-1') {
+		    
+		    }
+		}
+	}	
+	emailAddr = encodeURI( document.getElementById(pcEmailID).value );	
+	if (isMobileEmailSubscribe() == true)
+	{
+		mobileEmailAddr = encodeURI( document.getElementById(mEmailID).value );
+	}
+//	var footer = encodeURI( document.getElementById("blnSubscribeFooter").value );
+//	var source = encodeURI ( '<%= Source %>' );
+	
+	ServiceLocator.getInstance().getService("emailSubscribeService").processEmail(emailAddr, mobileEmailAddr,countryCode);
+  }
+}
+
+function emailMarketing_showStart()
+{
+		/* This fix allows multiple time submissoin because every time in success we are setting join_email_list_confirm.gif 
+		image in innerHTML of divTitle when submitting  from homepage / your account not footer.*/
+		
+		var emailSignup_joinTitle = document.getElementById('emailSignup_joinTitle');
+		
+		if(emailSignup_joinTitle == null || typeof(emailSignup_joinTitle)=='undefined')
+		{
+			document.getElementById('divTitle').innerHTML = '<span id="emailSignup_joinTitle"></span>';
+		}
+		
+	if (blnSubscribeFromFooter == true)
+	{
+	
+		show('divSubscribeEntry');
+		
+		show("emailSignup_joinTitle");
+		
+		document.getElementById('emailSignup_joinTitle').innerHTML = txtSubscribeTitle;
+		
+		show("divClose");
+		document.getElementById('divClose').innerHTML = '<a class="closeLink" href="javascript:closeSubscribe();">'+txtSubscribeClose+'</a>';
+
+		show("emailSignup_body");
+		hide("emailSignup_progress");
+		hide("emailSignup_results");
+
+		document.getElementById('divErrors').innerHTML="";
+		if(isMobileEmailSubscribe()) {document.getElementById('divPCErrors').innerHTML="";}
+
+		show("emailSignup_specialOfferPopover");
+		hide("emailSignup_specialOfferLink");
+		
+		emailOverlayYCoord = getPageHeight() - document.getElementById('divSubscribeEntry').offsetHeight + 25;
+		document.getElementById("divSubscribeEntry").style.top = emailOverlayYCoord +"px";
+	}
+	else
+	{
+		show('divSubscribeEntry');
+		
+		show("emailSignup_joinTitle");
+		document.getElementById('emailSignup_joinTitle').innerHTML = txtSubscribeTitle;
+
+		show("divClose");
+		document.getElementById('divClose').innerHTML = '<a class="closeLink" href="javascript:closeSubscribe();">'+txtSubscribeClose+'</a>';
+
+		show("emailSignup_body");
+		hide("emailSignup_progress");
+		hide("emailSignup_results");
+
+		document.getElementById('divErrors').innerHTML="";
+		//if(isMobileEmailSubscribe) {document.getElementById('divPCErrors').innerHTML="";}
+		
+		show("emailSignup_specialOfferPopover");
+		hide("emailSignup_specialOfferLink");
+		document.getElementById("divSubscribeEntry").style.top = "105px";
+	}
+}
+
+function emailMarketing_showProgress()
+{
+	hide("emailSignup_joinTitle");
+	hide("emailSignup_resultsTitle");
+
+	hide("divClose");
+
+	hide("emailSignup_body");
+	show("emailSignup_progress");
+	document.getElementById('emailSignup_progress').innerHTML = txtSubscribeProcessing;
+	hide("emailSignup_results");
+
+	document.getElementById('divErrors').innerHTML="";
+
+	hide("emailSignup_specialOfferPopover");
+	hide("emailSignup_specialOfferLink");
+		
+	if (blnSubscribeFromFooter == true)
+	{
+		emailOverlayYCoord = getPageHeight() - document.getElementById('divSubscribeEntry').offsetHeight + 25;
+		document.getElementById("divSubscribeEntry").style.top = emailOverlayYCoord +"px";
+	}
+}
+
+function emailMarketing_showResults()
+{
+	show("emailSignup_joinTitle");
+	document.getElementById('emailSignup_joinTitle').innerHTML = txtSubscribeThankYouTitle;
+
+	if (blnSubscribeFromFooter == true)
+	{
+		show("divClose");
+	}
+	else
+	{
+		show("divClose");
+		if (locale == "ja-JP" || locale == "ja-JP-EStr") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/ja-JP/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "zh-CN") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/zh-CN/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "zh-Hant") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/zh-Hant/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "ko-KR") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/ko-KR/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "de-AT") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/de-AT/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "de-DE") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/de-AT/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "es-ES") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/es-ES/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "fr-FR") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/fr-FR/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "it-IT") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/it-IT/images/title/join_email_list_confirm.gif' />"
+		}
+		else if (locale == "es-MX") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/es-MX/images/title/join_email_list_confirm.gif' />"
+		    document.getElementById('divTitle').style.backgroundImage = "none";
+		}
+		else if (locale == "fr-CA") {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/fr-CA/images/title/join_email_list_confirm.gif' />"
+		    document.getElementById('divTitle').style.backgroundImage = "none";
+		}
+		else {
+		    document.getElementById('divTitle').innerHTML = "<img src='/local/en-US/images/title/join_email_list_confirm.gif' />"
+		}
+	}
+
+	hide("emailSignup_body");
+	hide("emailSignup_progress");
+	show("emailSignup_results");
+	
+	document.getElementById('emailSignup_results').innerHTML = '<p>'+txtSubscribeThankYou+'</p>';
+
+	hide("emailSignup_specialOfferPopover");
+	show("emailSignup_specialOfferLink");
+	
+	if (blnSubscribeFromFooter == true)
+	{
+		emailOverlayYCoord = getPageHeight() - document.getElementById('divSubscribeEntry').offsetHeight + 25;
+		document.getElementById("divSubscribeEntry").style.top = emailOverlayYCoord +"px";
+	}
+}
+
+
+function clearEmailText(aTextBox,txtMatchInputValue) 
+{
+	if (aTextBox.value == txtMatchInputValue || aTextBox.value =='') 
+	{
+		if (blnSubscribeFromFooter == true)
+		{
+			if (aTextBox.value == txtEmailAddress)
+			{
+				change(pcEmailID,'english formText237');
+			}
+
+			if (isMobileEmailSubscribe() && aTextBox.value == txtMobEmailAddress) 
+			{
+				change(mEmailID,'english formText237 txtSubscribeMobileEmail');
+			}
+
+			if (document.getElementById(pcEmailID).value == "")
+			{
+				document.getElementById(pcEmailID).value = txtEmailAddress;
+				change(pcEmailID,'formText237');
+			} 
+
+			if (isMobileEmailSubscribe() && document.getElementById(mEmailID).value == "") 
+			{
+				document.getElementById(mEmailID).value = txtMobEmailAddress; 
+				change(mEmailID,'formText237 txtSubscribeMobileEmail'); 
+				hide("divErrors");
+			}
+			
+		}
+		else
+		{
+			if (aTextBox.value == txtEmailAddress)
+			{
+				change(pcEmailID,'english formText220');
+			}
+			if (isMobileEmailSubscribe() && aTextBox.value == txtMobEmailAddress) 
+			{
+				change(mEmailID,'english formText220 txtSubscribeMobileEmail');
+			}
+		}
+		aTextBox.value = '';
+	}
+}
+
+function isMobileEmailSubscribe()
+{
+	
+	if (document.getElementById(mEmailID)!= null) 
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+	
+}
+
+function subscribeFooter()
+{	
+	if (blnSubscribeReady) 
+	{
+	
+		document.getElementById(pcEmailID).onkeydown = function(e)
+		{
+		
+			e = e || window.event;
+			if (e.keyCode == 13) 
+			{
+				getEmailMarketingAttributes();
+				e.cancelBubble = true;
+				if (e.stopPropagation) e.stopPropagation();
+				return false;
+			}
+		};
+		document.getElementById(pcEmailID).onkeypress = function(e) 
+		{
+			e = e || window.event;
+			if (e.keyCode == 13) 
+			{
+				getEmailMarketingAttributes();
+				return false;
+			}
+		};
+		
+		if (isMobileEmailSubscribe() == true)
+		{
+			document.getElementById(mEmailID).onkeydown = document.getElementById(pcEmailID).onkeydown;
+			document.getElementById(mEmailID).onkeypress = document.getElementById(pcEmailID).onkeypress;
+		}
+		
+		blnSubscribeFromFooter = true;
+		document.getElementById("blnSubscribeFooter").value = true; 
+		document.getElementById(pcEmailID).value = txtEmailAddress;
+		
+		
+		change(pcEmailID,'formText237');
+		
+		if (isMobileEmailSubscribe() == true)
+		{
+			document.getElementById(mEmailID).value = txtMobEmailAddress;
+			change(mEmailID,'formText237 txtSubscribeMobileEmail');
+			document.getElementById('divPCErrors').style.paddingBottom = "10px";
+		}
+		
+		document.getElementById("divSubscribeEntry").className = 'subscribeFooter';		
+		
+		document.getElementById("divSubscribeEntry").style.left = "50%";
+		document.getElementById("divSubscribeEntry").style.marginLeft = "145px";
+			emailMarketing_showStart();
+			
+		//Omniture
+		if (typeof s_account != 'undefined') 
+		{
+			s_linkType="o";
+		    s_linkName="Link to E-mail Marketing - Footer Form";
+            s_lnk=s_co(this);
+            
+            s_pageName="Activity | Email Marketing | Footer";	
+			s_gs(s_account);
+		}
+		TrackEvent('Email Sign Up','Footer','View','');
+		
+	}
+}
+function linkEmailMarketing()
+{
+	if (blnSubscribeReady) 
+	{	
+		document.getElementById(pcEmailID).onkeydown = function(e)
+		{
+			e = e || window.event;
+			if (e.keyCode == 13) 
+			{
+				getEmailMarketingAttributes();
+				e.cancelBubble = true;
+				if (e.stopPropagation) e.stopPropagation();
+				return false;
+			}
+		};
+		document.getElementById(pcEmailID).onkeypress = function(e) 
+		{
+			e = e || window.event;
+			if (e.keyCode == 13) 
+			{
+				getEmailMarketingAttributes();
+				return false;
+			}
+		};
+		if (isMobileEmailSubscribe() == true)
+		{
+			document.getElementById(mEmailID).onkeydown = document.getElementById(pcEmailID).onkeydown;
+			document.getElementById(mEmailID).onkeypress = document.getElementById(pcEmailID).onkeypress;
+		}
+	
+		blnSubscribeFromFooter = false;
+		document.getElementById("blnSubscribeFooter").value = false;
+		document.getElementById(pcEmailID).value = "";
+		change(pcEmailID,'english formText237');
+		if (isMobileEmailSubscribe() == true)
+		{
+			document.getElementById(mEmailID).value = "";
+			change(mEmailID,'english formText237');
+			document.getElementById('divPCErrors').style.paddingBottom = "10px";
+		}
+		
+		document.getElementById("divSubscribeEntry").className = 'subscribeHomepage';
+		document.getElementById("divSubscribeEntry").style.left = "50%";
+		document.getElementById("divSubscribeEntry").style.marginLeft = "-205px";
+		
+		emailMarketing_showStart();
+		
+		//Omniture
+		s_linkType="o";
+		s_linkName="Link to E-mail Marketing - HomePage Form";
+		if (typeof s_account != 'undefined') 
+		{
+			s_lnk=s_co(this);
+			s_pageName="Activity | Email Marketing | HomePage";
+			s_gs(s_account);
+		}
+		
+		TrackEvent('Email Sign Up','Home Page','View','');
+		
+	}
+}
+
+function initSubscribe() 
+{
+	ServiceLocator.getInstance().registerService("emailSubscribeService", new EmailSubscribeService());
+}
+BrowserUtils.addOnLoadHandler(initSubscribe);
+
+function closeSubscribe() 
+{
+    
+	hide('divSubscribeEntry');
+	document.getElementById('divErrors').innerHTML="";
+	if (isMobileEmailSubscribe()) 
+	{
+		document.getElementById('divPCErrors').innerHTML="";
+	}
+	if(locale.toUpperCase()=='INTL'||locale.toUpperCase()=='ZH-HANT')
+	{
+		document.getElementById('divCountryddlErr').innerHTML ="";
+		selectedCountry = document.getElementById(countryddlID );
+		if(selectedCountry !=null && selectedCountry!='undefined')
+		{
+			 selectedCountry.selectedIndex =0;
+		}
+	}
+}
+
+
+function ValidateCountrySelected() 
+{
+		var valid = false ;		
+		var ddl=	document.getElementById(countryddlID );
+		
+		if(ddl.options[ddl.selectedIndex].value != '0')
+		{	document.getElementById('divCountryddlErr').innerHTML ='';// Reset value.
+			valid= true;
+		}
+		else 
+		{
+			document.getElementById('divCountryddlErr').innerHTML = txtErrSelectACountry;
+			if (isMobileEmailSubscribe()) {document.getElementById('divCountryddlErr').style.paddingBottom = "10px";}
+		}	
+
+		return valid;
+}
+function ValidateSubscribeEmail()
+{	
+	var divPCEmailError = 'divErrors';
+	var divMEmailError = 'divErrors';
+	if (isMobileEmailSubscribe()) {divPCEmailError = 'divPCErrors';}
+	
+	document.getElementById('divErrors').innerHTML = "";
+	if (isMobileEmailSubscribe()) {document.getElementById('divPCErrors').innerHTML = "";}
+	
+	var valid = ValidateEmailEntered(pcEmailID);
+	if(!valid) 
+	{
+		document.getElementById(divPCEmailError).innerHTML = txtErrEmailNull;
+		if (isMobileEmailSubscribe()) {document.getElementById(divPCEmailError).style.paddingBottom = "10px";}
+	} 
+	else 
+	{
+		valid = ValidateEmail4ASCII (pcEmailID);
+		if(!valid)
+		{
+			document.getElementById(divPCEmailError).innerHTML = txtErrEmailNotASCII;
+			if (isMobileEmailSubscribe()) {document.getElementById(divPCEmailError).style.paddingBottom = "10px";}
+		}
+		else
+		{
+			valid = ValidateEmailFormat(pcEmailID);
+			if(!valid)
+			{
+				document.getElementById(divPCEmailError).innerHTML = txtErrEmailInvalidFormat;
+				if (isMobileEmailSubscribe()) {document.getElementById(divPCEmailError).style.paddingBottom = "10px";}
+			}
+		}
+	}
+	
+	
+	if (isMobileEmailSubscribe() == true)
+	{
+		var mobileEmailValid = ValidateMobileEmailEntered(mEmailID);
+	 
+	    //In order to prevent sending to server "Please enter in half width." in Japanese as mobileEmail Address.
+		if(document.getElementById(mEmailID).value == txtMobEmailAddress && valid == true )
+		{
+			document.getElementById(mEmailID).value ='';
+		} 
+		if (mobileEmailValid == true)
+		{	
+			mobileEmailValid = ValidateEmail4ASCII(mEmailID);
+			if (!mobileEmailValid)
+			{
+				document.getElementById(divMEmailError).innerHTML = txtErrEmailNotASCII;
+				valid = false;
+			}
+			else
+			{
+				mobileEmailValid = ValidateEmailFormat(mEmailID);
+				if(!mobileEmailValid)
+				{
+					document.getElementById(divMEmailError).innerHTML = txtErrEmailInvalidFormat;
+					valid = false;
+				} 
+				else 
+				{				
+				    mobileEmailValid = ValidateSameEmailAndMobileEmail(pcEmailID, mEmailID);
+				    if(!mobileEmailValid)
+				    {
+				        document.getElementById(divMEmailError).innerHTML = txtErrSameEmailAndMobileEmail;
+					    valid = false;
+				    }
+				}
+			}
+		}
+	}
+		
+	return valid;
+}
+
+function ValidateEmailEntered(validateID)
+{
+	var email = document.getElementById(validateID).value;
+
+	if (email!=txtEmailAddress && TrimString(email).length >0) 
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
+function ValidateMobileEmailEntered(validateID)
+{
+	//This is an optional field
+	var email = document.getElementById(validateID).value;
+	if (email != txtMobEmailAddress && TrimString(email).length >0) 
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+function ValidateEmailFormat(validateID) 
+{	
+	return ValidateEmailRegExp(document.getElementById(validateID).value);
+}
+
+function ValidateEmail4ASCII(validateID)
+{
+	var isSafari = (navigator.userAgent.toLowerCase().indexOf("safari") != -1)?true:false;
+	if (isSafari) 
+	{
+		return ValidateRegExp(validateID, "^[a-zA-Z_0-9'\.\-]+@[a-zA-Z_0-9\-]+(\.([a-zA-Z_0-9\-])+)*[a-zA-Z]{1,4}$");
+	}
+	else 
+	{
+		return ValidateRegExp(validateID, "[\x00-\x7F]*");
+	}
+}
+
+function ValidateRegExp(control, pattern) 
+{	
+	//Get the value entered in subscribe email textbox
+	var email = document.getElementById(control).value;
+
+	//Create a RegEx for Email Validation			
+	var rx = new RegExp(pattern);
+	
+	//perform RegEx match
+	var matches = rx.exec(email);
+	
+	return (matches != null && email == matches[0]);
+
+}
+
+function ValidateSameEmailAndMobileEmail(emailID, mobileEmailID)
+{
+    var email = document.getElementById(emailID).value;
+    var mobileEmail = document.getElementById(mobileEmailID).value;
+
+    return (email != mobileEmail);
+}
+function TrimString(s) 
+{
+	 var m = s.match(/^\s*(\S+(\s+\S+)*)\s*$/);
+	 return (m == null) ? "" : m[1];
+}
+
+
+function ValidateEmailRegExp(email)
+{	
+	var result;
+	//Tco Bug 2613 fixed
+	var filter = /^\s*([0-9a-zA-Z]([-!#$%&*+_~'.\w]*[0-9a-zA-Z])*@[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*\.[a-zA-Z]{2,9})\s*$/i;
+	try {
+	    filter = emailsignupregex;
+	}
+	catch (ex) {
+	    try {
+	        filter = window.parent.window.emailsignupregex;
+	    }
+	    catch (ex1) {
+	    }
+	}
+
+	if (filter == null || filter == 'undefined') {
+	    return false;
+	}
+
+	if (filter.test(email)) {
+	    result = true;
+	}
+	else {
+	    result = false;
+	}
+	
+	return (result);
+}

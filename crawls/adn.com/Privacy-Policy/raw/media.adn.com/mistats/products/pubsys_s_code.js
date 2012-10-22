@@ -72,6 +72,7 @@ function s_doPlugins(s)
       var ads;
       var i;
       var iframes;
+      var pl;
 
       ads = [];
 

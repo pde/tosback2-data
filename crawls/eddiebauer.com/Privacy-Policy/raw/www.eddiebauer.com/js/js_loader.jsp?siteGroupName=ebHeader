@@ -1699,8 +1699,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		var selectedQty = 0;
 		var maxItemsinCart = jQuery(targetPage+'#dash input[name=maxCartSize]').val() || 99;
 		var cartItemsTotal = 0;
-		var pinterestPinFlag = false;
-		
+				
 		//set any cookie info here
 		var updateCookieIfNeeded = function (url, paramName) {
 			 var cookieParams = stringToParams (GetCookie('productModulePrefs'), true) ;
@@ -1737,28 +1736,28 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		if (cssClass)					
 			jQuery(this).addClass(cssClass);
 					
-		/* Common methods */	
+			/* Common methods */	
 				
-		imageThumbScroll = function() {
-			if (PP){
-				var imageThumbsScroll = 5; // how many thumbs to show on Product Page before adding magic scroll
-				var widthThumbsScroll = 400;
-			}else{
-				var imageThumbsScroll = 4; // how many thumbs to show on Product Page Layer before adding magic scroll
-				var widthThumbsScroll = 332;
+			imageThumbScroll = function() {
+				if (PP){
+					var imageThumbsScroll = 5; // how many thumbs to show on Product Page before adding magic scroll
+					var widthThumbsScroll = 400;
+				}else{
+					var imageThumbsScroll = 4; // how many thumbs to show on Product Page Layer before adding magic scroll
+					var widthThumbsScroll = 332;
+				}
+				var imageThumbs = jQuery(targetPage+'#imageThumbs a');
+				var imageThumbsCount = imageThumbs.length;
+				if (imageThumbsCount > imageThumbsScroll) {
+					jQuery(targetPage+'#imageThumbs').addClass("MagicScroll");	
+						MagicScroll.options = {
+							'items': imageThumbsScroll,						
+							'width': widthThumbsScroll,
+							'speed' : 0
+						}				
+				}
+				
 			}
-			var imageThumbs = jQuery(targetPage+'#imageThumbs a');
-			var imageThumbsCount = imageThumbs.length;
-			if (imageThumbsCount > imageThumbsScroll) {
-				jQuery(targetPage+'#imageThumbs').addClass("MagicScroll");	
-					MagicScroll.options = {
-						'items': imageThumbsScroll,						
-						'width': widthThumbsScroll,
-						'speed' : 0
-					}				
-			}
-			
-		}
 			assignEventHandlers = function(){
 			jQuery(targetPage+'.toolTip').click(function (event) {
 				 if (event.stopPropagation){
@@ -3298,8 +3297,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				// set magic zoom attributes and show/hide zoomable here				
 				MagicZoomPlus.update('itemZoom', zoomImageLarge, zoomImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');							
 				jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
-				loadImageTransitionFlag = false;	
-				pinterestPin();
+				loadImageTransitionFlag = false;				
 			}				
 		}
 		zoomImageCheck = function(obj, type){	
@@ -3328,7 +3326,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					zoomFullScreen();
 				}
 			}
-			pinterestPin();
+			
 		}
 		setProductPageDefaults = function(){
 			// Values to set
@@ -3380,6 +3378,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
             }
 
 		}
+		
         getGiftBoxStyle = function () {
             jQuery('#fbBox #fbCorners').css({
                 left: "0",
@@ -3486,7 +3485,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					//tab 4 mens pant hem styles
 					if (departId == "3" || departId == "03" || departId == "103"){
 						sections = "1";	
-						selectedSizeChartTab = 3;
+						selectedSizeChartTab = 1;
 						sizeChartName = "men."+siteFlag+".html";	
 						sizeChartUrl = sizeChartUrl + sizeChartName;
 						sizeChartFlag = true;
@@ -3767,14 +3766,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
             gPathInfo = piValue; // For ShopAction 5 and 9 tags
             if (search != '' && search != null) {
                 SetCookie('EOB_Search', '', 1);
-                cmCreateProductviewTag(pid, document.forms.productForm.name.value,
-    					piValue, document.forms.productForm.dept.value, '1',
-    					document.forms.productForm.host.value, '', tempURL, pid,
-    					"1");
+                cmCreateProductviewTag(pid, document.forms.productForm.name.value,piValue, document.forms.productForm.dept.value, '1',document.forms.productForm.host.value, '', tempURL, pid, "1");
             } else {
-                cmCreateProductviewTag(pid, document.forms.productForm.name.value,
-    					piValue, document.forms.productForm.dept.value, '1',
-    					document.forms.productForm.host.value, '', tempURL);
+                cmCreateProductviewTag(pid, document.forms.productForm.name.value, piValue, document.forms.productForm.dept.value, '1', document.forms.productForm.host.value, '', tempURL);
             }
             
             var standaloneFlag = jQuery('#standaloneFlag').val();
@@ -3789,93 +3783,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 DelCookie('REFERRAL_URL');
             }
         }
-		pinterestPin = function(){			
-			// add pinterest tag to page
-			var pinterestURL = "http://pinterest.com/pin/create/button/?url="+window.location;
-			var pinterestMedia = '&media='+ jQuery('#itemZoom img').attr('src');
-			var pinterestDescription = "&description="+jQuery('#productTitle').html();
-			var pinterestHref = pinterestURL+pinterestMedia+pinterestDescription;
-			jQuery('.pinterest a.pin-it-button').attr('href',pinterestHref);	
-			
-			(function (m, q, c) {
-			    var s = function (h) {
-			        var d = c.pinit,
-			            n = "?",
-			            a, i, f, b;
-			        f = [];
-			        b = [];
-			        var j = {}, g = m.createElement("IFRAME"),
-			            r = h.getAttribute(c.att.count) || false,
-			            o = h.getAttribute(c.att.layout) || "horizontal";
-			        if (q.location.protocol === "https:") d = c.pinit_secure;
-			        f = h.href.split("?")[1].split("#")[0].split("&");
-			        a = 0;
-			        for (i = f.length; a < i; a += 1) {
-			            b = f[a].split("=");
-			            j[b[0]] = b[1]
-			        }
-			        a = f = 0;
-			        for (i = c.vars.req.length; a < i; a += 1) {
-			            b = c.vars.req[a];
-			            if (j[b]) {
-			                d = d + n + b + "=" + j[b];
-			                n = "&"
-			            }
-			            f += 1
-			        }
-			        if (j.media && j.media.indexOf("http") !== 0) f = 0;
-			        if (f === i) {
-			            a = 0;
-			            for (i = c.vars.opt.length; a < i; a += 1) {
-			                b = c.vars.opt[a];
-			                if (j[b]) d = d + n + b + "=" + j[b]
-			            }
-			            d = d + "&layout=" + o;
-			            d = d + "&ref=" + encodeURIComponent(m.URL);
-			            if (r !== false) d += "&count=1";
-			            g.setAttribute("src", d);
-			            g.setAttribute("scrolling", "no");
-			            g.allowTransparency = true;
-			            g.frameBorder = 0;
-			            g.style.border = "none";
-			            g.style.width = c.layout[o].width + "px";
-			            g.style.height = c.layout[o].height + "px";
-			            h.parentNode.replaceChild(g, h)
-			        } else h.parentNode.removeChild(h)
-			    }, p = m.getElementsByTagName("A"),
-			        l, e, k = [];
-			    e = 0;
-			    for (l = p.length; e < l; e += 1) k.push(p[e]);
-			    e = 0;
-			    for (l = k.length; e < l; e += 1) k[e].href && k[e].href.indexOf(c.button) !== -1 && s(k[e])
-			})(document, window, {
-			    att: {
-			        layout: "count-layout",
-			        count: "always-show-count"
-			    },
-			    pinit: "http://pinit-cdn.pinterest.com/pinit.html",
-			    pinit_secure: "https://assets.pinterest.com/pinit.html",
-			    button: "//pinterest.com/pin/create/button/?",
-			    vars: {
-			        req: ["url", "media"],
-			        opt: ["title", "description"]
-			    },
-			    layout: {
-			        none: {
-			            width: 43,
-			            height: 20
-			        },
-			        vertical: {
-			            width: 43,
-			            height: 58
-			        },
-			        horizontal: {
-			            width: 90,
-			            height: 20
-			        }
-			    }
-			});  
+		faceBookButton = function(){
+			var facebookURL = "//www.facebook.com/plugins/like.php?href=";
+			var facebookPageURL = window.location;
+			var facebookParams = "&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21";
+			var facebookAPIID = "&amp;appId=295380103910634";
+			var facebookIframe = '<iframe src="'+facebookURL+facebookPageURL+facebookParams+facebookAPIID+'" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>';
+			jQuery('.social .like').html(facebookIframe);	
 		}
+		
 		// init section
 		init = function(){					
             if (!initProductModuleFlag){
@@ -3900,7 +3816,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
               //  MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
-                pinterestPin();
+                faceBookButton();                            
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
@@ -3922,7 +3838,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                // MagicZoomPlus.refresh();
                 MagicScroll.init();
                 initProductModuleFlag = true;
-                pinterestPin();
+                faceBookButton();              
           }
 		}
 					
@@ -3934,6 +3850,98 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the productModule.js(220) ~~~~~~~~~~~~~~~~~~~~ */
+
+/* ~~~~~~~~~~~~~~~~~~~~ Starting the module.tubePlayer.js(228) ~~~~~~~~~~~~~~~~~~~~ */
+(function(jQuery) {
+
+	jQuery.fn.openYouTubeVideos = function(options) {
+		var youtubeVideo = jQuery('.product_youtube_video');
+		if (youtubeVideo) {
+
+			jQuery('.product_youtube_video')
+					.each(
+							function() {
+								var videoModalData = jQuery(this);
+								var billboard = jQuery('.contentWrap');
+								var bgImage = '/assets/ocp/product_page/video/eb_video_bkgd_product_page_new.gif';
+								var outerContainer = videoModalData
+										.attr('data-link-outercontainer');
+								var href = videoModalData
+										.attr('data-link-href');
+								var objectWrapper = videoModalData
+										.attr('data-link-objectwrapper');
+								var objectPlaceholder = videoModalData
+										.attr('data-link-objectplaceholder');
+
+								var videoContainerHTML = '<div id="'
+										+ outerContainer
+										+ '" style="display: none;"><div id="'
+										+ href
+										+ '" style="width: 664px; height: 448px; background-image: url('
+										+ bgImage
+										+ ');"><div style="position: absolute; padding-left: 550px; padding-top: 12px; width: 105px;"><div style="position: absolute; top: 50px; left: 12px;"><div class="'
+										+ objectWrapper
+										+ '" style="display: block;"><div id="'
+										+ objectPlaceholder
+										+ '"></div></div></div></div></div></div>';
+								billboard.append(videoContainerHTML);
+							});
+
+			jQuery('.floatbox').bind(
+					'click',
+					function() {
+						var applyModalData = jQuery(this).closest(
+								'.product_youtube_video');
+						var videoId = applyModalData.attr('data-link-videoid');
+						var fName = applyModalData.attr('data-link-fname');
+						var playerObjId = applyModalData
+								.attr('data-link-playerobjid');
+						var objectPlaceholder = applyModalData
+								.attr('data-link-objectplaceholder');
+						var objectWrapper = applyModalData
+								.attr('data-link-objectwrapper');
+						var timestamp = Math
+								.round((new Date()).getTime() / 1000);
+						getYouTubeVideo(videoId, fName, playerObjId,
+								objectPlaceholder, objectWrapper, timestamp);
+					});
+
+			getYouTubeVideo = function(videoId, fName, playerObjId,
+					objectPlaceholder, objectWrapper, timestamp) {
+				var params = {
+					allowScriptAccess : "always",
+					wmode : "transparent"
+				};
+				var atts = {
+					id : playerObjId
+				};
+
+				onYouTubePlayerReady = function(playerId) {
+					var ytplayer = document.getElementById(playerObjId);
+					ytplayer.addEventListener("onStateChange",
+							"onytplayerStateChange");
+				}
+				triggerStopVideo = function() {
+					var ytplayer = document.getElementById(playerObjId);
+					ytplayer.stopVideo();
+					jQuery(objectWrapper).removeClass('selected').css(
+							'display', 'none');
+				}
+				swfobject
+						.embedSWF(
+								"http://www.youtube.com/v/"
+										+ videoId
+										+ "?enablejsapi=1&playerapiid=ytplayer&allowFullScreen=true&autohide=1&version=3&fmt=22&rel=0&autoplay=0&ts="
+										+ timestamp, objectPlaceholder, "640",
+								"385", "8", null, null, params, atts);
+			}
+
+		}
+	}
+
+})(jQuery);
+
+/* ~~~~~~~~~~~~~~~~~~~~ Ending the module.tubePlayer.js(228) ~~~~~~~~~~~~~~~~~~~~ */
 
 var $j=jQuery.noConflict();window.name="eb";function are_cookies_enabled()
 {var cookieEnabled=(navigator.cookieEnabled)?true:false;if(typeof navigator.cookieEnabled=="undefined"&&!cookieEnabled)

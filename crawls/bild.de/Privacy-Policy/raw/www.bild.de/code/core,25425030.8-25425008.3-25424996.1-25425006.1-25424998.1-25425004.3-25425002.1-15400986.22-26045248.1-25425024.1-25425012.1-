@@ -3135,7 +3135,7 @@ de.bild.social = (function($){
 /*de.bild.social:25798986.1*/
 
 
-/*de.bild.community:22104118.38*/
+/*de.bild.community:22104118.39*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -5314,7 +5314,10 @@ de.bild.community = (function($){
             $more = $elem.find('a.more');
             if ($more.length > 0) {
                 $more.remove();
-                $elem.hide().html($elem.data('longTxt')).fadeIn(settings.fadeSpeed);
+                $elem.hide().html($elem.data('longTxt')).fadeIn(settings.fadeSpeed); 
+                //In forums there are two spans with the long and the short text
+                $elem.find('span.comment-start').hide();
+                $elem.find('span.comment-end').show();
             }
         }
     };

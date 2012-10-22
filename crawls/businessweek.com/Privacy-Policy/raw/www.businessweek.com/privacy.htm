@@ -61,7 +61,7 @@
     }
   /*]]>*/
 </style>
-<link href="../static.btrd.net/assets/application-149e81dcafa5aae72d5932c3f6c5baa0.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="../static.btrd.net/assets/application-ebb3e0551879c4e639eb5a04f26941fe.css" media="screen" rel="stylesheet" type="text/css" />
 <link href="../static.btrd.net/assets/printer_friendly-8dca6e4223c4e785617ad6675c7c8cff.css" media="print" rel="stylesheet" type="text/css" />
 
 
@@ -200,7 +200,7 @@ Sign in with Facebook
 </span>
 <span class='login'>Or use your Businessweek account</span>
 <div class='login_form'>
-<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="7/m2nVbwIdPzzPb9Sz6FBFWBslaUFkC5dpx7pTKwd+c=" /></div>
+<form accept-charset="UTF-8" action="https://secure.businessweek.com/login" class="new_user_form" id="new_user_form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /><input name="authenticity_token" type="hidden" value="WkfKcOYN8GLcMdfjEMjiZpB0AFYu7ERfMLK7nHdX4Us=" /></div>
 <label class="for_email" for="user_form_email">Email</label>
 <input class="" id="user_form_email" name="user_form[email]" size="30" type="text" />
 <label class="password" for="user_form_password">Password</label>
@@ -227,6 +227,13 @@ Don't have an account?
 </div>
 <div class='branding_hat'></div>
 
+<div id='consent-track' style='display:none;'>
+This site uses cookies. By continuing to browse the site you are agreeing to our use of cookies.
+<a class='close-consent-track' href="privacy.htm#closeConsentTrack">X</a>
+<span id='consent-track-image'>
+<script src='../consent.truste.com/notice%3Fdomain=businessweek.com&amp;c=consent-track-image' type='text/javascript'></script>
+</span>
+</div>
 
 <div class='clearfix' id='header'>
 <div class='inner_wrapper'>
@@ -424,10 +431,10 @@ Don't have an account?
 <div class='current_issue module clearfix'>
 <h3>Get Businessweek Delivered</h3>
 <a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08" id='cover_image_thumbnail'>
-<img alt="Are You Better Off?" height="155" src="../images.businessweek.com/cms/2012-10-11/1242cov_110x155.jpg" width="110" />
+<img alt="The Battle for Best Buy" height="155" src="../images.businessweek.com/cms/2012-10-18/1243cov_110x155.jpg" width="110" />
 </a>
 <h6>
-<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Are You Better Off?</a>
+<a href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">The Battle for Best Buy</a>
 </h6>
 <a class='subscribe_button' href="https://subscribe.businessweek.com/servlet/OrdersGateway?cds_mag_code=BWK&amp;cds_page_id=123469&amp;cds_response_key=I1209HI08">Subscribe</a>
 </div>
@@ -454,6 +461,7 @@ Don't have an account?
 
 <script src="../static.btrd.net/assets/application-dab403ff3b463008559ff4ad59d226f7.js" type="text/javascript"></script>
 <script src="../static.btrd.net/assets/jquery.bloomberg_hat-d9e6e309c416ee8e657fcb91ccf573ac.js" type="text/javascript"></script>
+<script src="../static.btrd.net/assets/jquery.truste-consent-59099302a983ec3cc6a5b3519bb606e2.js" type="text/javascript"></script>
 
 
 
@@ -662,6 +670,27 @@ Don't have an account?
 
 <script>
   //<![CDATA[
+    $(function() {
+      console.log('works');
+      if ($.fn.trusteConsent) {
+        $("#consent-track").trusteConsent({
+          consentButton: "span#consent-track-image",
+          closeButton: "a.close-consent-track",
+          domain: "businessweek.com",
+          footerCallback: function() {
+            var $links = $("#footer ul");
+            $links.find("li").last().attr("class", ""); // remove class from last el
+            $links.append('<li class="last"><a href="privacy.htm#consentManager">Cookie Preferences</a></li>');
+            return $links.last();
+          }
+        });
+      }
+    }
+    );
+  //]]>
+</script>
+<script>
+  //<![CDATA[
     $(window).load(function(){
        if(true == true){
           BLOOMBERG.bw_user.show_reg();
@@ -729,7 +758,6 @@ Don't have an account?
 
 
 
-
-<!-- Last Update: 2012-10-18 08:11:56 -0400 -->
+<!-- Last Update: 2012-10-22 08:15:57 -0400 -->
 </body>
 </html>

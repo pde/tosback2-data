@@ -327,7 +327,9 @@ $('.siteSearch .searchInput').attr({value: 'Search...'}).focus(function(){
 			},function(){
 				$(this).find("span").removeClass("hover");
 			});
-			$(".queryType").click(function(){				
+			$(".queryType").click(function(){
+				$(this).closest('.siteSearch').attr('action','/search');
+				$(this).closest('.siteSearch').find('#headerSearch').attr("name","query");
 				var queryClass = $(this).find("span").attr("class");
 				var queryVal = queryClass.replace(" hover","");
 				var queryVal = queryClass.replace("hover","");
@@ -339,6 +341,13 @@ $('.siteSearch .searchInput').attr({value: 'Search...'}).focus(function(){
 					$(this).closest('.siteSearch').find('.queryChannel').attr("value","");
 
 				}
+			});
+			var queryName = "Member Search";
+			$(".searchType").html("<span>" + queryName + "</span>");
+			$(".searchType").click(function(){
+				$(this).closest('.siteSearch').attr('action','/explore/member');
+				$(this).closest('.siteSearch').find('#headerSearch').attr("name","username");
+				$(".selectedTxt").html(queryName);
 			});
 			$('#footerSearchSelect li').reverseOrder();
 			$("#pagewrap").addClass("loaded");
@@ -680,8 +689,8 @@ window.fbAsyncInit = function() {
 			</div>
 			<div style="display:none"><input id="reqConfOn" name="reqConfOn" value="true" /></div>
 			<!--
-			DATE: Thu Oct 18 05:10:11 PDT 2012
-			ON: dc3-ws-app2
+			DATE: Mon Oct 22 05:11:55 PDT 2012
+			ON: dc3-ws-app9
 			BY: /WEB-INF/jsp2/page/privacy.jsp
 			KEYWORDS: 
 			COUNT_TAG: /fixme/-web-inf-jsp2-page-privacy-jsp

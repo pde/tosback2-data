@@ -5,7 +5,7 @@ var gnLength;
 var COOKIE_NAME = "my_carousel_position";
 var cookiedomain = "cartoonnetwork.com";
 
-function getGNStartPoint() {
+function getGNStartPoint() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
     startVal = 0;
     var cookieVal = readCookie(COOKIE_NAME);
     if ((cookieVal != null) && (cookieVal != '')) {
@@ -18,7 +18,7 @@ function getGNStartPoint() {
     gnStPt = startVal;
 }
 
-function resetGNStartPoint() {
+function resetGNStartPoint() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
     var cookieVal = readCookie(COOKIE_NAME);
     if(cookieVal != null){
        deleteCookie(COOKIE_NAME);
@@ -28,7 +28,7 @@ function resetGNStartPoint() {
 
 var navArray = new Array();
 
-function doTrayNav() {
+function doTrayNav() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
 	navArray.sort(function(a,b){
 		var show1 = a.linktext.toLowerCase();
 		var show2 = b.linktext.toLowerCase();
@@ -71,6 +71,10 @@ jQuery(document).ready(function() {
 			}
 			
 //		if ((navigator.userAgent.match(/iPhone/i)) || isAndroidCheck ){
+
+/****** Disable mobile web  (rknopf:10/19/2012)
+
+
 		if ((navigator.userAgent.match(/iPhone/i)) ) {
 			
 				  var mMobilePref = readCookie("mobile_pref");
@@ -87,6 +91,7 @@ jQuery(document).ready(function() {
 				}
 
 		}
+ ******/
 
 		
 	/////////////////////////////////////////////////////////////////////////
@@ -204,14 +209,14 @@ jQuery(document).ready(function() {
 		}
 	);
 
-    jQuery('#deleteCookie').click(function(){
+    jQuery('#deleteCookie').click(function(){     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
 		delCookie(COOKIE_NAME);
 		return false;
     });
 
 });
 
-function switchClass(targetElement,className) {
+function switchClass(targetElement,className) {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
 	if (className.indexOf('.') <= -1) {
 		dotClass = "." + className;
 	}
@@ -304,7 +309,7 @@ function mnHideSearch() {
 }
 
 
-function smartBuffer(bufUrl, bufTime) {
+function smartBuffer(bufUrl, bufTime) {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
   var bufferC = readCookie("CNSBuf");
 	 if ((bufferC != null) && (bufferC != '')) {
 		deleteCookie("CNSBuf");

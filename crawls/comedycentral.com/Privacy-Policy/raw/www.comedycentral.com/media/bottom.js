@@ -7198,6 +7198,119 @@ $(document).ready(function(){
 		};
 		$CCSU.HomepageFeed.init();
 	}
+});/* series-web_series.js */
+/**
+ * @package: CC Studios 2012 M17 Series Archive
+ * @module:  M17 Series Archive JavaScript
+ * @link:    http://jira.mtvi.com/browse/ENTCCSTU-175
+ */
+
+$(document).ready(function(){
+	if($('.series-web_series').length) {
+
+		$CCSU.Archive = {
+			options: {
+				module: $('.series-web_series'),
+				pageNumber: 2,
+				resultsPerPage: 15,
+				categoryId: '',
+				activeSortingTrigger: 'date',
+				updateFeed: '/feeds/studios/series_archive/',
+				clearAllData: false
+			},
+
+			init: function() {
+				this.createQueries();
+				this.attachHandlers();
+				this.equalHeights();
+			},
+
+			createQueries: function(){
+				this.container = this.options.module.find('.middle .content');
+				this.loadMore = this.options.module.find('.load_more');
+				this.sortingTrigger = this.options.module.find('.sort_trigger span');
+				this.categoryFilter = this.options.module.find('.menu li');
+				this.ajaxSpinner = this.options.module.find('.ajax_spinner');
+				this.updateFeed = this.options.updateFeed + this.options.module.data('id');
+				this.showItemClass = '.web_series-child';
+			},
+
+			attachHandlers: function() {
+				var self = this;
+				this.loadMore.click(function(){
+					if ($(this).is('.loading')) {
+						return false;
+					}
+					$(this).addClass('loading');
+					self.ajaxCall();
+				});
+				this.sortingTrigger.add(this.categoryFilter).click(function(){
+					if(!$(this).is('.active')) {
+						$(self.ajaxSpinner).show();
+						$(this).addClass('active').siblings().removeClass('active');
+						if($(this).is(self.sortingTrigger)) {
+							self.options.activeSortingTrigger = $(this).data('sort');
+						} else if($(this).is(self.categoryFilter)) {
+							self.options.categoryId = $(this).data('sort');
+						}
+						self.options.pageNumber = 1;
+						self.options.clearAllData = true;
+						self.ajaxCall();
+					}
+				});
+			},
+			ajaxCall: function() {
+				var self = this;
+				$.ajax({
+					url: self.updateFeed + '?page=' + self.options.pageNumber + '&category=' + self.options.categoryId + '&sort=' + self.options.activeSortingTrigger,
+					context: document.body,
+					success: function(data) {
+						self.options.pageNumber++;
+						if($(self.ajaxSpinner).length){
+							$(self.ajaxSpinner).hide();
+						}
+						//count show items in response and if it less then results per page should be, "load more" button will be hide
+						if ($('<html />').html(data).find(self.showItemClass).length < self.options.resultsPerPage) {
+							$(self.loadMore).hide();
+						} else {
+							$(self.loadMore).show();
+						}
+						if($('.loading').length) {
+							$(self.loadMore).removeClass('loading');
+						}
+						if(self.options.clearAllData == true) {
+							$(self.container).html('');
+							self.options.clearAllData = false;
+						}
+						$(self.container).append(data);
+						self.equalHeights();
+					},
+					error: function() {
+						$(self.ajaxSpinner).hide();
+						$(self.loadMore).removeClass('loading');
+					}
+				});
+			},
+			// making show titles the same height in the same row
+			equalHeights: function() {
+				var iteration = 0,
+					row = this.container.find('.row'),
+					title = this.showItemClass + ' h3';
+				$(row).each(function() {
+					var currentTallest = 0;
+					iteration+= 1;
+					$(this).addClass('number' + iteration);
+					$(this).find(title).each(function() {
+						if ($(this).height() > currentTallest) {
+						 currentTallest = $(this).height(); 
+						}
+					})
+					$(this).find(title).css({'height': currentTallest});
+				})
+			}
+		};
+		$CCSU.Archive.init();
+	}
 });/* series_feed-vertical.js */
 /**
  * @package:    CC Studios 2012 M11 Series Feed

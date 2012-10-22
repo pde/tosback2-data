@@ -1,0 +1,1373 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/10/17/mitt-romney-s-binders-full-of-women-comment-sets-internet-ablaze.html",' +
+                '"title": "Mitt Romney&rsquo;s &lsquo;Binders Full of Women&rsquo; Comment Sets Internet Ablaze",' +
+                '"rubric": "Gender Gaffe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ab2220f05ccb194a9df951fb83419131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/17/the-true-story-behind-operation-argo-to-rescue-americans-from-iran.html",' +
+                '"title": "The True Story Behind Operation &lsquo;Argo&rsquo; to Rescue Americans From Iran",' +
+                '"rubric": "Contra",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a90f709cc734d9ea5fceca27eac91e6a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/zumba-madam-allegedly-used-maine-dance-studio-as-brothel-and-made-videos-of-customers.html",' +
+                '"title": "&lsquo;Zumba Madam&rsquo; Allegedly Used Maine Dance Studio As Brothel and Made Videos of Customers",' +
+                '"rubric": "&lsquo;Zumba Madam&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a6e422943df249f19798a932dd48580a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/05/04/speed-read-12-naughty-bits-from-50-shades-darker.html",' +
+                '"title": "Speed Read: 12 Naughty Bits From &lsquo;50 Shades Darker&rsquo;",' +
+                '"rubric": "Book 2",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a7204298f06e42b9befdbf761c07462e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/french-alps-murder-mystery-s-forensic-breakthrough.html",' +
+                '"title": "French Alps Murder Mystery&rsquo;s Forensic Breakthrough",' +
+                '"rubric": "Plot Thickens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad32cc14b058a84609d2ea31b0161458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/nine-craziest-things-about-hulk-hogan-s-sex-tape-scandal.html",' +
+                '"title": "Nine Craziest Things About Hulk Hogan&rsquo;s Sex Tape Scandal",' +
+                '"rubric": "Bizarre Twists",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "524e991c95588be337ff06078da464b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/abercrombie-lawsuit-why-ceos-love-their-jets.html",' +
+                '"title": "&lsquo;Abercrombie&rsquo; Lawsuit: Why CEOs Love Their Jets",' +
+                '"rubric": "Friendly Skies",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "da2b18456e478d14f4b46c50816aa594"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-boy-scouts-perversion-files-detail-abuses-convictions-and-a-shocking-cover-up.html",' +
+                '"title": "The Boy Scouts&rsquo; &lsquo;Perversion&rsquo; Files Detail Abuses, Convictions&mdash;and a Shocking Cover-Up",' +
+                '"rubric": "Scouts&rsquo; Dishonor",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dac6557156baa0a7086fe110f3f02e73"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/16/angelina-jolie-we-all-are-malala.html",' +
+                '"title": "Angelina Jolie: We All Are Malala",' +
+                '"rubric": "STAND UP",' +
+                '"topic": "World",' +
+                '"urlHashCode": "c58d644c9ba971419ec4678d7ad079e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-resigns-presidency-of-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Resigns Presidency of The King&rsquo;s College",' +
+                '"rubric": "Fallout",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "d36bc3a1612d98b33cf6fa626d0cd256"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/14/rebel-wilson-s-12-funniest-moments-video.html",' +
+                '"title": "Rebel Wilson&rsquo;s 12 Funniest Moments (Video)",' +
+                '"rubric": "Rebel Yell",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f989441442d085e2c5e8d1528929286c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/clues-emerge-in-search-for-jessica-ridgeway-s-killer.html",' +
+                '"title": "Clues Emerge in Search for Jessica Ridgeway&rsquo;s Killer",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "6e0a20f2296f453a6fa2337ca801fbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/unlock-your-inner-psychopath-kevin-dutton-s-the-wisdom-of-psychopaths.html",' +
+                '"title": "Unlock Your Inner Psychopath: Kevin Dutton&rsquo;s &lsquo;The Wisdom of Psychopaths&rsquo;",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "651afa9c7459ae9657dd61756f483048"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/obama-and-romney-must-address-the-pakistan-problem.html",' +
+                '"title": "Obama and Romney Must Address the Pakistan Problem",' +
+                '"rubric": "DRONE WAR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "11f045cf1bfcb8f7fef6509420cc3036"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/clues-emerge-in-search-for-jessica-ridgeway-s-killer.html",' +
+                '"title": "Clues Emerge in Search for Jessica Ridgeway&rsquo;s Killer",' +
+                '"rubric": "Crime",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "6e0a20f2296f453a6fa2337ca801fbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/french-alps-murder-mystery-s-forensic-breakthrough.html",' +
+                '"title": "French Alps Murder Mystery&rsquo;s Forensic Breakthrough",' +
+                '"rubric": "Plot Thickens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad32cc14b058a84609d2ea31b0161458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/week-in-the-life-of-dan-stevens-2012-man-booker-prize-judge-downton-abbey-star.html",' +
+                '"title": "Week in the Life of Dan Stevens, 2012 Man Booker Prize Judge &amp; Downton Abbey Star",' +
+                '"rubric": "English Novelty",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cb470231ed44af7151cbc19cfcedc01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/sunday-talk-rahm-emanuel-newt-gingrich-tina-brown-more-video.html",' +
+                '"title": "Sunday Talk: Rahm Emanuel, Newt Gingrich, Tina Brown &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1118352c13d9c344261db423980f1fc0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-boy-scouts-perversion-files-detail-abuses-convictions-and-a-shocking-cover-up.html",' +
+                '"title": "The Boy Scouts&rsquo; &lsquo;Perversion&rsquo; Files Detail Abuses, Convictions&mdash;and a Shocking Cover-Up",' +
+                '"rubric": "Scouts&rsquo; Dishonor",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dac6557156baa0a7086fe110f3f02e73"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/15/daddy-how-come-you-re-always-broke-benjamin-anastas-s-too-good-to-be-true.html",' +
+                '"title": "Daddy, How Come You&rsquo;re Always Broke? Benjamin Anastas&rsquo;s &lsquo;Too Good to Be True&rsquo;",' +
+                '"rubric": "Down and Out",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a4bcda5a22e77d92eef356ec075503d0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/a-top-hollywood-screenwriter-lays-down-his-10-rules-for-your-script.html",' +
+                '"title": "How to Write Groundhog Day: 10 Rules for Screenwriters",' +
+                '"rubric": "Movie Magic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "ae3033b9170c8a0cea7e4c06360c0323"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/robert-shrum-obama-had-everything-on-the-line-and-delivered-while-romney-sputtered.html",' +
+                '"title": "Robert Shrum: Obama Had Everything On the Line and Delivered, While Romney Sputtered",' +
+                '"rubric": "Obama Trounces Romney",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee516bf3f2d01ea6d8acf4352815b5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/american-consumers-aren-t-really-paying-down-credit-card-debt.html",' +
+                '"title": "American Consumers Aren&rsquo;t Really Paying Down Credit-Card Debt",' +
+                '"rubric": "Charge",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "76bd4783a49aaaf3e898eb3283fed391"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/pianist-matthew-shipp-says-goodbye-to-tenor-colossus-david-s-ware.html",' +
+                '"title": "Pianist Matthew Shipp Says Goodbye to Tenor Colossus David S. Ware",' +
+                '"rubric": "Tenor Colossus",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "12cb248c75f5578a15b135a5845232e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/obama-and-romney-must-address-the-pakistan-problem.html",' +
+                '"title": "Obama and Romney Must Address the Pakistan Problem",' +
+                '"rubric": "DRONE WAR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "11f045cf1bfcb8f7fef6509420cc3036"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/abercrombie-lawsuit-why-ceos-love-their-jets.html",' +
+                '"title": "&lsquo;Abercrombie&rsquo; Lawsuit: Why CEOs Love Their Jets",' +
+                '"rubric": "Friendly Skies",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "da2b18456e478d14f4b46c50816aa594"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/the-perils-of-driving-in-india-one-man-s-quest-for-a-driver-s-license.html",' +
+                '"title": "The Perils of Driving in India: One Man&rsquo;s Quest for a Driver&rsquo;s License",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fc31737089ce3d64576e157f7975b8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/george-mcgovern-democratic-icon-and-former-presidential-candidate-dies-at-age-90.html",' +
+                '"title": "George McGovern, Democratic Icon and Former Presidential Candidate, Dies at Age 90",' +
+                '"rubric": "Conscience of the Democratic Party",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "29b49a86a6f1aeb61d9768c06757e732"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/nine-craziest-things-about-hulk-hogan-s-sex-tape-scandal.html",' +
+                '"title": "Nine Craziest Things About Hulk Hogan&rsquo;s Sex Tape Scandal",' +
+                '"rubric": "Bizarre Twists",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "524e991c95588be337ff06078da464b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/giovanni-zopp-s-real-life-family-circus.html",' +
+                '"title": "Giovanni Zopp&eacute;&rsquo;s Real-Life Family Circus",' +
+                '"rubric": "One-Ring Wonder",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0316d442d1c7a59940cf5cf6c154ef62"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/can-science-spot-a-pedophile-research-zeroes-in-on-brain-abnormalities.html",' +
+                '"title": "Can Science Spot a Pedophile? Research Zeroes In On Brain Abnormalities",' +
+                '"rubric": "In a Predator&rsquo;s Brain",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "01315b2e655e881520c14fa5678c8805"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/tea-party-illinois-rep-joe-walsh-one-ups-akin-s-legitimate-rape.html",' +
+                '"title": "Tea Party Illinois Rep. Joe Walsh One-Ups Akin&rsquo;s &lsquo;Legitimate Rape&rsquo;",' +
+                '"rubric": "Illinois Race",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c6c1002332d7d0d5ffbbb7ad745477c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/16/dinesh-d-souza-fianc-e-scandal-rocks-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Fianc&eacute;e Scandal Rocks The King&rsquo;s College",' +
+                '"rubric": "Scandal",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5d0552dbe7676f04fa9672c17c22f954"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-resigns-presidency-of-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Resigns Presidency of The King&rsquo;s College",' +
+                '"rubric": "Fallout",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "d36bc3a1612d98b33cf6fa626d0cd256"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/nine-craziest-things-about-hulk-hogan-s-sex-tape-scandal.html",' +
+                '"title": "Nine Craziest Things About Hulk Hogan&rsquo;s Sex Tape Scandal",' +
+                '"rubric": "Bizarre Twists",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "524e991c95588be337ff06078da464b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/can-science-spot-a-pedophile-research-zeroes-in-on-brain-abnormalities.html",' +
+                '"title": "Can Science Spot a Pedophile? Research Zeroes In On Brain Abnormalities",' +
+                '"rubric": "In a Predator&rsquo;s Brain",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "01315b2e655e881520c14fa5678c8805"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-goes-on-counterattack-over-alleged-affair.html",' +
+                '"title": "Dinesh D&rsquo;Souza Goes On Counterattack Over Alleged Affair",' +
+                '"rubric": "Offensive",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cad9b8706c76927aabad887aa2b0fe42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/demographic-dead-end-barack-obama-s-single-nation.html",' +
+                '"title": "Demographic Dead End? Barack Obama&rsquo;s Single Nation",' +
+                '"rubric": "HIGH STAKES",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "540ab5d8e27d96d5bd4b72b6d4ee9815"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/17/the-true-story-behind-operation-argo-to-rescue-americans-from-iran.html",' +
+                '"title": "The True Story Behind Operation &lsquo;Argo&rsquo; to Rescue Americans From Iran",' +
+                '"rubric": "Contra",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a90f709cc734d9ea5fceca27eac91e6a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/zumba-madam-allegedly-used-maine-dance-studio-as-brothel-and-made-videos-of-customers.html",' +
+                '"title": "&lsquo;Zumba Madam&rsquo; Allegedly Used Maine Dance Studio As Brothel and Made Videos of Customers",' +
+                '"rubric": "&lsquo;Zumba Madam&rsquo;",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "a6e422943df249f19798a932dd48580a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/11/why-stacey-dash-s-looks-not-her-race-matter-in-her-romney-endorsement.html",' +
+                '"title": "Why Stacey Dash&rsquo;s Looks&mdash;Not Her Race&mdash;Matter in Her Romney Endorsement",' +
+                '"rubric": "Romney Uproar",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "375fc121ba6a53983dd1500a0c9b9535"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/robert-shrum-obama-had-everything-on-the-line-and-delivered-while-romney-sputtered.html",' +
+                '"title": "Robert Shrum: Obama Had Everything On the Line and Delivered, While Romney Sputtered",' +
+                '"rubric": "Obama Trounces Romney",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee516bf3f2d01ea6d8acf4352815b5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/15/daddy-how-come-you-re-always-broke-benjamin-anastas-s-too-good-to-be-true.html",' +
+                '"title": "Daddy, How Come You&rsquo;re Always Broke? Benjamin Anastas&rsquo;s &lsquo;Too Good to Be True&rsquo;",' +
+                '"rubric": "Down and Out",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a4bcda5a22e77d92eef356ec075503d0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/obama-and-romney-must-address-the-pakistan-problem.html",' +
+                '"title": "Obama and Romney Must Address the Pakistan Problem",' +
+                '"rubric": "DRONE WAR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "11f045cf1bfcb8f7fef6509420cc3036"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/mitt-romney-s-binders-full-of-women-comment-sets-internet-ablaze.html",' +
+                '"title": "Mitt Romney&rsquo;s &lsquo;Binders Full of Women&rsquo; Comment Sets Internet Ablaze",' +
+                '"rubric": "Gender Gaffe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ab2220f05ccb194a9df951fb83419131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/undercover-muslim-agents-mission-accomplished.html",' +
+                '"title": "Undercover Muslim Agents: Mission Accomplished",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c5249951d752a9a58a7a9203905aa659"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/20/best-of-this-week-s-late-night.html",' +
+                '"title": "&quot;For The Love Of God, Make It Stop&quot;",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a1b5729408c8dd104d98172e7a1c162"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/week-in-the-life-of-dan-stevens-2012-man-booker-prize-judge-downton-abbey-star.html",' +
+                '"title": "Week in the Life of Dan Stevens, 2012 Man Booker Prize Judge &amp; Downton Abbey Star",' +
+                '"rubric": "English Novelty",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cb470231ed44af7151cbc19cfcedc01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/french-alps-murder-mystery-s-forensic-breakthrough.html",' +
+                '"title": "French Alps Murder Mystery&rsquo;s Forensic Breakthrough",' +
+                '"rubric": "Plot Thickens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad32cc14b058a84609d2ea31b0161458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/16/angelina-jolie-we-all-are-malala.html",' +
+                '"title": "Angelina Jolie: We All Are Malala",' +
+                '"rubric": "STAND UP",' +
+                '"topic": "World",' +
+                '"urlHashCode": "c58d644c9ba971419ec4678d7ad079e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/mitt-romney-s-binders-full-of-women-comment-sets-internet-ablaze.html",' +
+                '"title": "Mitt Romney&rsquo;s &lsquo;Binders Full of Women&rsquo; Comment Sets Internet Ablaze",' +
+                '"rubric": "Gender Gaffe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ab2220f05ccb194a9df951fb83419131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-boy-scouts-perversion-files-detail-abuses-convictions-and-a-shocking-cover-up.html",' +
+                '"title": "The Boy Scouts&rsquo; &lsquo;Perversion&rsquo; Files Detail Abuses, Convictions&mdash;and a Shocking Cover-Up",' +
+                '"rubric": "Scouts&rsquo; Dishonor",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dac6557156baa0a7086fe110f3f02e73"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-resigns-presidency-of-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Resigns Presidency of The King&rsquo;s College",' +
+                '"rubric": "Fallout",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "d36bc3a1612d98b33cf6fa626d0cd256"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/11/a-soldier-and-a-cadet-quietly-together-under-dadt-survive-a-sexual-assault.html",' +
+                '"title": "A Soldier and a Cadet, Quietly Together Under DADT, Survive A Sexual Assault",' +
+                '"rubric": "Sexual Assault",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "0cca56577f379200dd6c2d0a76a80d3e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/free-birth-control-could-it-transform-society.html",' +
+                '"title": "Free Birth Control: Could It Transform Society?",' +
+                '"rubric": "Womb Wars",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "5ab68ca48a84b94f9f729bab5fe85f2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/somalia-s-fierce-daughter-dr-deqo-mohamed.html",' +
+                '"title": "Somalia&rsquo;s Fierce Daughter",' +
+                '"rubric": "Trailblazing",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a14635b06245389f81111fb8a716caef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/a-top-hollywood-screenwriter-lays-down-his-10-rules-for-your-script.html",' +
+                '"title": "How to Write Groundhog Day: 10 Rules for Screenwriters",' +
+                '"rubric": "Movie Magic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "ae3033b9170c8a0cea7e4c06360c0323"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/week-in-the-life-of-dan-stevens-2012-man-booker-prize-judge-downton-abbey-star.html",' +
+                '"title": "Week in the Life of Dan Stevens, 2012 Man Booker Prize Judge &amp; Downton Abbey Star",' +
+                '"rubric": "English Novelty",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cb470231ed44af7151cbc19cfcedc01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/abercrombie-lawsuit-why-ceos-love-their-jets.html",' +
+                '"title": "&lsquo;Abercrombie&rsquo; Lawsuit: Why CEOs Love Their Jets",' +
+                '"rubric": "Friendly Skies",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "da2b18456e478d14f4b46c50816aa594"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/18/obama-i-wish-i-could-use-my-middle-name.html",' +
+                '"title": "Obama: &lsquo;I Wish I Could Use My Middle Name&rsquo;",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c583703992c706308e99e5860e9a07d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/the-perils-of-driving-in-india-one-man-s-quest-for-a-driver-s-license.html",' +
+                '"title": "The Perils of Driving in India: One Man&rsquo;s Quest for a Driver&rsquo;s License",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "0fc31737089ce3d64576e157f7975b8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/hello-kitty-is-running-for-president.html",' +
+                '"title": "Hello Kitty Is Running for President",' +
+                '"rubric": "Meow in the Mix",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a35f292eba8b672bab79d1b419268075"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/tea-party-illinois-rep-joe-walsh-one-ups-akin-s-legitimate-rape.html",' +
+                '"title": "Tea Party Illinois Rep. Joe Walsh One-Ups Akin&rsquo;s &lsquo;Legitimate Rape&rsquo;",' +
+                '"rubric": "Illinois Race",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c6c1002332d7d0d5ffbbb7ad745477c"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/french-alps-murder-mystery-s-forensic-breakthrough.html",' +
+                '"title": "French Alps Murder Mystery&rsquo;s Forensic Breakthrough",' +
+                '"rubric": "Plot Thickens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad32cc14b058a84609d2ea31b0161458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/sunday-talk-rahm-emanuel-newt-gingrich-tina-brown-more-video.html",' +
+                '"title": "Sunday Talk: Rahm Emanuel, Newt Gingrich, Tina Brown &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1118352c13d9c344261db423980f1fc0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/robert-shrum-obama-had-everything-on-the-line-and-delivered-while-romney-sputtered.html",' +
+                '"title": "Robert Shrum: Obama Had Everything On the Line and Delivered, While Romney Sputtered",' +
+                '"rubric": "Obama Trounces Romney",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee516bf3f2d01ea6d8acf4352815b5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/26/ralph-lauren-plus-size-model-robyn-lawley-i-m-proud-of-my-body.html",' +
+                '"title": "Ralph Lauren Plus-Size Model Robyn Lawley: I&rsquo;m Proud of My Body",' +
+                '"rubric": "Body Revolution",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "eee6e8c7fcf2c7d1f89c1dee3b2391c2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/why-gawker-should-lose-its-war-with-reddit.html",' +
+                '"title": "Why Gawker Should Lose Its War With Reddit",' +
+                '"rubric": "Flame",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "44ffb754d98d8f9f27a59d0a59d985d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-boy-scouts-perversion-files-detail-abuses-convictions-and-a-shocking-cover-up.html",' +
+                '"title": "The Boy Scouts&rsquo; &lsquo;Perversion&rsquo; Files Detail Abuses, Convictions&mdash;and a Shocking Cover-Up",' +
+                '"rubric": "Scouts&rsquo; Dishonor",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dac6557156baa0a7086fe110f3f02e73"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/week-in-the-life-of-dan-stevens-2012-man-booker-prize-judge-downton-abbey-star.html",' +
+                '"title": "Week in the Life of Dan Stevens, 2012 Man Booker Prize Judge &amp; Downton Abbey Star",' +
+                '"rubric": "English Novelty",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cb470231ed44af7151cbc19cfcedc01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/pianist-matthew-shipp-says-goodbye-to-tenor-colossus-david-s-ware.html",' +
+                '"title": "Pianist Matthew Shipp Says Goodbye to Tenor Colossus David S. Ware",' +
+                '"rubric": "Tenor Colossus",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "12cb248c75f5578a15b135a5845232e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/tea-party-illinois-rep-joe-walsh-one-ups-akin-s-legitimate-rape.html",' +
+                '"title": "Tea Party Illinois Rep. Joe Walsh One-Ups Akin&rsquo;s &lsquo;Legitimate Rape&rsquo;",' +
+                '"rubric": "Illinois Race",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c6c1002332d7d0d5ffbbb7ad745477c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/a-top-hollywood-screenwriter-lays-down-his-10-rules-for-your-script.html",' +
+                '"title": "How to Write Groundhog Day: 10 Rules for Screenwriters",' +
+                '"rubric": "Movie Magic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "ae3033b9170c8a0cea7e4c06360c0323"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/15/daddy-how-come-you-re-always-broke-benjamin-anastas-s-too-good-to-be-true.html",' +
+                '"title": "Daddy, How Come You&rsquo;re Always Broke? Benjamin Anastas&rsquo;s &lsquo;Too Good to Be True&rsquo;",' +
+                '"rubric": "Down and Out",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a4bcda5a22e77d92eef356ec075503d0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/nine-craziest-things-about-hulk-hogan-s-sex-tape-scandal.html",' +
+                '"title": "Nine Craziest Things About Hulk Hogan&rsquo;s Sex Tape Scandal",' +
+                '"rubric": "Bizarre Twists",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "524e991c95588be337ff06078da464b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/american-consumers-aren-t-really-paying-down-credit-card-debt.html",' +
+                '"title": "American Consumers Aren&rsquo;t Really Paying Down Credit-Card Debt",' +
+                '"rubric": "Charge",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "76bd4783a49aaaf3e898eb3283fed391"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-goes-on-counterattack-over-alleged-affair.html",' +
+                '"title": "Dinesh D&rsquo;Souza Goes On Counterattack Over Alleged Affair",' +
+                '"rubric": "Offensive",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cad9b8706c76927aabad887aa2b0fe42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-opens-up-big-lead-in-state-headquarters.html",' +
+                '"title": "Ground Game: Obama Opens Up Big Lead in State Headquarters",' +
+                '"rubric": "Ground Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bdaae4e0c136593ac515549023152f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-resigns-presidency-of-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Resigns Presidency of The King&rsquo;s College",' +
+                '"rubric": "Fallout",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "d36bc3a1612d98b33cf6fa626d0cd256"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/obama-is-back.html",' +
+                '"title": "Obama Is Back!",' +
+                '"rubric": "Clear Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "44583e556c42715001eaa4e024264503"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-campaign-opens-up-a-big-lead-in-field-offices.html",' +
+                '"title": "Ground Game: Obama Campaign Opens Up a Big Lead in Field Offices",' +
+                '"rubric": "GOTV Map",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e7c1fce18bc145cf5ce06a08c411a2ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/george-mcgovern-democratic-icon-and-former-presidential-candidate-dies-at-age-90.html",' +
+                '"title": "George McGovern, Democratic Icon and Former Presidential Candidate, Dies at Age 90",' +
+                '"rubric": "Conscience of the Democratic Party",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "29b49a86a6f1aeb61d9768c06757e732"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/team-obama-s-dilemma-preparing-for-final-debate.html",' +
+                '"title": "Team Obama&rsquo;s Dilemma: Preparing for Final Debate",' +
+                '"rubric": "TACTICS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "be58493d0a120b8b3e673174675f9858"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/a123-goes-chapter-11.html",' +
+                '"title": "A123 Goes Chapter 11",' +
+                '"rubric": "Unplugged",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "085fa9cccc02d8919c7d134f7a7064a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/the-week-s-best-longreads-the-daily-beast-picks-for-october-20-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for October 20, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "5d7236dea30d27fd1650329efa530773"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/ground-game-obama-opens-up-big-lead-in-state-headquarters.html",' +
+                '"title": "Ground Game: Obama Opens Up Big Lead in State Headquarters",' +
+                '"rubric": "Ground Game",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bdaae4e0c136593ac515549023152f2c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/richard-burton-s-sexy-diaries-13-juiciest-bits.html",' +
+                '"title": "Richard Burton&rsquo;s Sexy Diaries: 13 Juiciest Bits",' +
+                '"rubric": "Speed Read",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "3943b6a19aae0d7964dae0c3074d9f00"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/demographic-dead-end-barack-obama-s-single-nation.html",' +
+                '"title": "Demographic Dead End? Barack Obama&rsquo;s Single Nation",' +
+                '"rubric": "HIGH STAKES",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "540ab5d8e27d96d5bd4b72b6d4ee9815"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/in-juvenile-in-justice-children-caught-in-america-s-prison-system.html",' +
+                '"title": "In &lsquo;Juvenile In Justice,&rsquo; Children Caught in America&rsquo;s Prison System",' +
+                '"rubric": "Corrections",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c35fd15526336d80139fe6a858dd7695"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/robert-shrum-obama-had-everything-on-the-line-and-delivered-while-romney-sputtered.html",' +
+                '"title": "Robert Shrum: Obama Had Everything On the Line and Delivered, While Romney Sputtered",' +
+                '"rubric": "Obama Trounces Romney",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee516bf3f2d01ea6d8acf4352815b5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/sunday-talk-rahm-emanuel-newt-gingrich-tina-brown-more-video.html",' +
+                '"title": "Sunday Talk: Rahm Emanuel, Newt Gingrich, Tina Brown &amp; More (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1118352c13d9c344261db423980f1fc0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/obama-is-back.html",' +
+                '"title": "Obama Is Back!",' +
+                '"rubric": "Clear Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "44583e556c42715001eaa4e024264503"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/can-science-spot-a-pedophile-research-zeroes-in-on-brain-abnormalities.html",' +
+                '"title": "Can Science Spot a Pedophile? Research Zeroes In On Brain Abnormalities",' +
+                '"rubric": "In a Predator&rsquo;s Brain",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "01315b2e655e881520c14fa5678c8805"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/new-york-terror-plot-why-target-the-fed.html",' +
+                '"title": "New York Terror Plot: Why Target the Fed?",' +
+                '"rubric": "Terror",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "47ffb29f87648a694ab187730efe9854"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/eight-best-bits-of-john-taylor-s-duran-duran-tell-all.html",' +
+                '"title": "Eight Best Bits of John Taylor&rsquo;s Duran Duran Tell-All",' +
+                '"rubric": "Please, Please Tell Me Now",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ab8659d2ef32667bd47dd01573096343"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/mitt-romney-s-binders-full-of-women-freefall-record-more-viral-videos.html",' +
+                '"title": "Mitt Romney&rsquo;s Binders Full of Women, Freefall Record &amp; More Viral Videos",' +
+                '"rubric": "WATCH THIS!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0d047776387848b2e66d535add82f54f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/15/daddy-how-come-you-re-always-broke-benjamin-anastas-s-too-good-to-be-true.html",' +
+                '"title": "Daddy, How Come You&rsquo;re Always Broke? Benjamin Anastas&rsquo;s &lsquo;Too Good to Be True&rsquo;",' +
+                '"rubric": "Down and Out",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a4bcda5a22e77d92eef356ec075503d0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/obama-and-romney-must-address-the-pakistan-problem.html",' +
+                '"title": "Obama and Romney Must Address the Pakistan Problem",' +
+                '"rubric": "DRONE WAR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "11f045cf1bfcb8f7fef6509420cc3036"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/dinesh-d-souza-resigns-presidency-of-the-king-s-college.html",' +
+                '"title": "Dinesh D&rsquo;Souza Resigns Presidency of The King&rsquo;s College",' +
+                '"rubric": "Fallout",' +
+                '"topic": "Education",' +
+                '"urlHashCode": "d36bc3a1612d98b33cf6fa626d0cd256"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/a-top-hollywood-screenwriter-lays-down-his-10-rules-for-your-script.html",' +
+                '"title": "How to Write Groundhog Day: 10 Rules for Screenwriters",' +
+                '"rubric": "Movie Magic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "ae3033b9170c8a0cea7e4c06360c0323"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/french-alps-murder-mystery-s-forensic-breakthrough.html",' +
+                '"title": "French Alps Murder Mystery&rsquo;s Forensic Breakthrough",' +
+                '"rubric": "Plot Thickens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "ad32cc14b058a84609d2ea31b0161458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/week-in-the-life-of-dan-stevens-2012-man-booker-prize-judge-downton-abbey-star.html",' +
+                '"title": "Week in the Life of Dan Stevens, 2012 Man Booker Prize Judge &amp; Downton Abbey Star",' +
+                '"rubric": "English Novelty",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cb470231ed44af7151cbc19cfcedc01e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/19/for-president-obama-a-cautious-sober-night-of-comedy.html",' +
+                '"title": "For President Obama, a Cautious, Sober Night of Comedy",' +
+                '"rubric": "Last Laughs?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8780210ebffa0790a42dffb87fefe923"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2011/03/30/game-of-thrones-writer-george-rr-martins-favorite-science-fiction-films.html",' +
+                '"title": "George R.R. Martin Picks His Favorite Science-Fiction Films of All Time",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fef3b4c23498becbbee1188b444bb961"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/18/why-gawker-should-lose-its-war-with-reddit.html",' +
+                '"title": "Why Gawker Should Lose Its War With Reddit",' +
+                '"rubric": "Flame",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "44ffb754d98d8f9f27a59d0a59d985d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/20/democrat-jim-graves-has-a-chance-to-unseat-michele-bachmann.html",' +
+                '"title": "Democrat Jim Graves Has a Chance to Unseat Michele Bachmann",' +
+                '"rubric": "&lsquo;Minnesota Nice&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "184556c8067156664c809c234acead5b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/somalia-s-fierce-daughter-dr-deqo-mohamed.html",' +
+                '"title": "Somalia&rsquo;s Fierce Daughter",' +
+                '"rubric": "Trailblazing",' +
+                '"topic": "World",' +
+                '"urlHashCode": "a14635b06245389f81111fb8a716caef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/21/giovanni-zopp-s-real-life-family-circus.html",' +
+                '"title": "Giovanni Zopp&eacute;&rsquo;s Real-Life Family Circus",' +
+                '"rubric": "One-Ring Wonder",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0316d442d1c7a59940cf5cf6c154ef62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/mitt-romney-s-binders-full-of-women-comment-sets-internet-ablaze.html",' +
+                '"title": "Mitt Romney&rsquo;s &lsquo;Binders Full of Women&rsquo; Comment Sets Internet Ablaze",' +
+                '"rubric": "Gender Gaffe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ab2220f05ccb194a9df951fb83419131"' +
+            '}' +
+        ']' +
+    '}'
+);

@@ -1,4 +1,4 @@
-// 2012/10/12 12:03:36
+// 2012/10/19 14:46:01
 var ANV='6.4.5';
 var ANAXCD=24;
 var ANDCC='acx';
@@ -104,19 +104,18 @@ return'&pu='+escape(ustr);
 }
 function isSocialNetworkShared(){
 var smPrefix="socialnetwork:share";
-var smSites={"twitter":/twitter.com/i,
-"googleplus":/plus.google.com/i,
-"lifestream":/lifestream.aol.com/i,
-"stumbleupon":/stumbleupon.com/i,
-"facebook:like":/facebook.com.plugins.like.php.*action.like/i,
-"facebook:like":/facebook.com.plugins.likebox.php/i,
-"facebook:like":/&fb_action_types=[^.]+.likes/i,
-"facebook:recommend":/facebook.com.plugins.like.php.*action.recommend/i,
-"facebook:recommend":/&fb_action_types=[^.]+.recommends/i,
-"facebook:read":/facebook.com.l.php/i,
-"facebook:read":/&fb_action_types=[^.]+.reads/i,
-"facebook":/facebook.com/i
-};
+var smSites=[{"key":"twitter","regex":/twitter.com/i},
+{"key":"googleplus","regex":/plus.google.com/i},
+{"key":"lifestream","regex":/lifestream.aol.com/i},
+{"key":"stumbleupon","regex":/stumbleupon.com/i},
+{"key":"facebook:like","regex":/facebook.com.plugins.like.php.*action.like/i},
+{"key":"facebook:like","regex":/facebook.com.plugins.likebox.php/i},
+{"key":"facebook:like","regex":/&fb_action_types=[^.]+.likes/i},
+{"key":"facebook:recommend","regex":/facebook.com.plugins.like.php.*action.recommend/i},
+{"key":"facebook:recommend","regex":/&fb_action_types=[^.]+.recommends/i},
+{"key":"facebook:read","regex":/facebook.com.l.php/i},
+{"key":"facebook:read","regex":/&fb_action_types=[^.]+.reads/i},
+{"key":"facebook","regex":/facebook.com/i}];
 var url=document.referrer;
 if(window!=window.top){
 url=document.referrer+document.location.href;
@@ -127,9 +126,9 @@ url=r[1];
 }
 }
 }
-for(var i in smSites){
-if(url.search(smSites[i])!=-1){
-return smPrefix+":"+i;
+for(var i=0;i<smSites.length;i++){
+if(url.search(smSites[i]["regex"])!=-1){
+return smPrefix+":"+smSites[i]["key"];
 }
 }
 return"";

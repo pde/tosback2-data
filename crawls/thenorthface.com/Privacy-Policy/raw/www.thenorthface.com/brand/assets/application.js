@@ -3679,34 +3679,34 @@ $.fn.tnfBrandItemBuilder = function () {
     Locale.prototype.locales = [
       {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 2,
         "lang_identifier": "-12",
         "language": "en",
         "name": "en-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-21T20:24:13Z"
+        "updated_at": "2011-09-21T14:24:13-06:00"
       }, {
         "catalog_identifier": "10201",
-        "created_at": "2011-03-04T21:31:30Z",
+        "created_at": "2011-03-04T14:31:30-07:00",
         "id": 1,
         "lang_identifier": "-1",
         "language": "en",
         "name": "en-US",
         "region": "US",
         "store_identifier": "207",
-        "updated_at": "2011-08-19T18:12:06Z"
+        "updated_at": "2011-08-19T12:12:06-06:00"
       }, {
         "catalog_identifier": "10251",
-        "created_at": "2011-08-18T20:09:27Z",
+        "created_at": "2011-08-18T14:09:27-06:00",
         "id": 3,
         "lang_identifier": "-13",
         "language": "fr",
         "name": "fr-CA",
         "region": "CA",
         "store_identifier": "208",
-        "updated_at": "2011-09-23T22:11:13Z"
+        "updated_at": "2011-09-23T16:11:13-06:00"
       }
     ];
     Locale.prototype.current = function() {
@@ -4527,7 +4527,8 @@ $.support.transition = (function(){
     return HeroGalleryTab;
   })();
   HeroGalleryTabRenderStrategy = (function() {
-    var PANEL_CLASS_NAME;
+    var CLASS_NAME, PANEL_CLASS_NAME;
+    CLASS_NAME = 'open';
     PANEL_CLASS_NAME = 'shown';
     HeroGalleryTabRenderStrategy.factory = function(element) {
       if ($.support.transition) {
@@ -4548,7 +4549,7 @@ $.support.transition = (function(){
       return this.panel.addClass(PANEL_CLASS_NAME);
     };
     HeroGalleryTabRenderStrategy.prototype.deselect = function() {
-      this.element.removeClass(OPEN_TAB_CLASS_NAME);
+      this.element.removeClass(CLASS_NAME);
       return this.panel.removeClass(PANEL_CLASS_NAME);
     };
     HeroGalleryTabRenderStrategy.prototype.enable = function() {

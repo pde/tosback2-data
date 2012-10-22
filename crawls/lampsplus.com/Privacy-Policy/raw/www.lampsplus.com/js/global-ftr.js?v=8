@@ -344,6 +344,145 @@ GetPortfolioItemCount();
     }
 })(jQuery);
 
+// lp tooltip plugin - relies on jquery and hoverintent plugin
+(function($) {
+
+    $.fn.lpTooltip = function(options) {
+
+        if (!this.length) { return this; }
+
+        //default options
+        var defaults = {
+            tooltip: $('#tooltip'),    // tooltip element to be used
+            position: 'top',           // position of tooltip - options are top, right, bottom, left, topright, topleft, bottomright, bottomleft
+            offsetX: 0,                // offset the position of the tooltip on the x axis - use positive or negative integers
+            offsetY: 0,                // offset the position of the tooltip on the y axis - use positive or negative integers
+            disableHover: false,
+            hoverDelay: 400,           // delay for tooltip to be shown after hovering over trigger element
+            tooltipFadeIn: 200,        // how long fade in animation takes
+            tooltipFadeOut: 100,       // how long fade out animation takes
+            openEvt: function(){},     // function to be run when tooltip opens
+            closeEvt: function(){}     // function to be run when tooltip closes
+        }
+
+        //combine defaults and passed in options
+        var o = $.extend(defaults, options);
+
+        this.each(function() {
+            
+            var $this = $(this);
+
+            function over(e){
+
+                var elPos            = $this.offset(),
+                    elWidth          = $this.outerWidth(),
+                    elHeight         = $this.outerHeight(),
+                    toolTipWidth     = o.tooltip.outerWidth(),
+                    toolTipHeight    = o.tooltip.outerHeight(),
+                    elToolDiffWidth  = Math.abs(elWidth - toolTipWidth),
+                    elToolDiffHeight = Math.abs(elHeight - toolTipHeight);
+
+                o.tooltip.css({
+                    position: 'absolute',
+                    zIndex: '99'
+                });
+
+                if (o.position === 'top'){
+                    o.tooltip.css({
+                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
+                        left: elPos.left - (elToolDiffWidth / 2) + o.offsetX + 'px'
+                    });
+                } else if (o.position === 'right'){
+                    o.tooltip.css({
+                        top: elPos.top - (elToolDiffHeight / 2) + o.offsetY + 'px',
+                        left: elPos.left + (elWidth + o.offsetX) + 'px'
+                    });
+                } else if (o.position === 'bottom'){
+                    o.tooltip.css({
+                        top: elPos.top + (elHeight + o.offsetY) + 'px',
+                        left: elPos.left - (elToolDiffWidth / 2) + o.offsetX + 'px'
+                    });
+                } else if (o.position === 'left'){
+                    o.tooltip.css({
+                        top: elPos.top - (elToolDiffHeight / 2) + o.offsetY + 'px',
+                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
+                    });
+                } else if (o.position === 'topleft'){
+                    o.tooltip.css({
+                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
+                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
+                    });
+                } else if (o.position === 'topright'){
+                    o.tooltip.css({
+                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
+                        left: elPos.left + (elWidth + o.offsetX) + 'px'
+                    });
+                } else if (o.position === 'bottomleft'){
+                    o.tooltip.css({
+                        top: elPos.top + (elHeight + o.offsetY) + 'px',
+                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
+                    });
+                } else if (o.position === 'bottomright'){
+                    o.tooltip.css({
+                        top: elPos.top + (elHeight + o.offsetY) + 'px',
+                        left: elPos.left + (elWidth + o.offsetX) + 'px'
+                    });
+                }
+
+                o.tooltip.fadeIn(o.tooltipFadeIn, o.openEvt($this));
+
+            }
+
+            var tooltipOn = false;
+            function out(){
+                if (tooltipOn){
+                    // do nothing
+                } else {
+                    tooltipOn = false;
+                    o.tooltip.fadeOut(o.tooltipFadeOut, o.closeEvt($this));
+                }
+            }
+
+            if(o.disableHover) {
+                $this.click(function() {
+                    o.tooltip.hide(o.closeEvt($this));
+
+                    over();
+
+                    $('a.close').css('display', 'block').click(function() {
+                        o.tooltip.fadeOut(o.tooltipFadeOut, o.closeEvt($this));
+                        event.preventDefault();
+                    });
+                });
+                
+            } else {
+                $this.hoverIntent({
+                    interval: o.tooltipFadeIn + 50,
+                    over: over,
+                    timeout: o.hoverDelay,
+                    out: out
+                });
+            
+                o.tooltip.mouseenter(function() {
+                    tooltipOn = true;
+                });
+
+                o.tooltip.mouseleave(function() {
+                    setTimeout(function(){
+                        tooltipOn = false;
+                        out();
+                    }, o.hoverDelay);
+                });
+            }
+        
+        });
+
+        return this;
+    };
+
+})(jQuery);
+
+
 //jQuery plugin for retrieving url parameters and values
 $.extend({
     getUrlVars: function(){

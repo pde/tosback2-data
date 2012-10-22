@@ -127,15 +127,21 @@ window.A21 = window.A21 || {};
 			});
 			googletag.cmd = googletag.cmd.concat(A21.displayCmd);
 
-			var wxLocDfrdEvent = $.ajax({
-				url: ["http://",sdynhost,"/services/wx/",newloc.locid].join(""),
-				dataType: "jsonp",
-				type:"GET",
-				success: function(data) {
-					TWC.pco.set("wx",data.wx);
-					TWC.pco.set("currloc",data.loc);
-				}
-			});
+			var wxLocDfrdEvent;
+			
+			if (newloc && newloc.locid){
+				 wxLocDfrdEvent = $.ajax({
+					url: ["http://",sdynhost,"/services/wx/",newloc.locid].join(""),
+					dataType: "jsonp",
+					type:"GET",
+					success: function(data) {
+						TWC.pco.set("wx",data.wx);
+						TWC.pco.set("currloc",data.loc);
+					}
+				});
+			}else{
+				 wxLocDfrdEvent=true;
+			}
 
 			var adDfrdEvent = $.ajax({
 				url: ["http://",sdynhost,"/services/ad/",pageId].join(""),

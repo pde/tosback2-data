@@ -35,6 +35,12 @@ function SlideShowObj(timeout, autoFunction) {
 	this.ssType=null;
 }
 
+function someclickReporting() {
+	Webtrends.dcs['dcsCleanUp'];
+	Webtrends.dcs['dcsMeta'];
+	Webtrends.dcs['dcsMetaCustom'];
+}
+
 // Slideshow function to show the "next" slide
 function ssNext(id) {
 	// Retrieve the currently shown slide number
@@ -173,9 +179,12 @@ function initSS() {
 				ssPrev(e.data.count);
 
 				// Click reporting
-				dcsCleanup();
-				dcsMeta();
-				dcsMetaCustom();
+//				dcsCleanup();
+//				dcsMeta();
+//				dcsMetaCustom();
+
+				someclickReporting();
+
 				// Click report based on slideshow type
 				if (ssObj[e.data.count].ssType == "image") {
 					// Added WT.dl = 53 parameter to flag that page is not a reload. See DIGI-1114
@@ -201,9 +210,12 @@ function initSS() {
 				ssNext(e.data.count);
 
 				// Click reporting
-				dcsCleanup();
-				dcsMeta();
-				dcsMetaCustom();
+//				dcsCleanup();
+//				dcsMeta();
+//				dcsMetaCustom();
+
+				someclickReporting();
+
 				// Click report based on slideshow type
 				if (ssObj[e.data.count].ssType == "image") {
 					// Added WT.dl = 53 parameter to flag that page is not a reload. See DIGI-1114

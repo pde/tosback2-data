@@ -139,7 +139,7 @@ var wpAd, placeAd2;
           scripts = slug.getElementsByTagName('script');
           s = scripts.length;
           while(s--) {
-            if(scripts[s].src && /serving-sys.com|mediaplex.com/i.test(scripts[s].src)) {
+            if(scripts[s].src && /serving-sys.com/i.test(scripts[s].src)) {
               scripts[s].src = "#";
             }
           }
@@ -558,8 +558,12 @@ var wpAd, placeAd2;
         wpAd.briefcase.pos_override = 0;
         if(/\|/.test(what)) {
           what = what.split('|');
-          wpAd.briefcase.pos_override = what[1];
-          what = what[0];
+          if(!wpAd.config.adtypes[what.join('_')]){
+            wpAd.briefcase.pos_override = what[1];
+            what = what[0];
+          } else{
+            what = what.join('_');
+          }
         }
         return what;
       },
@@ -660,7 +664,7 @@ var wpAd, placeAd2;
             wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id;
           }
           // hack to fix double ad calls - add current ad type to array:
-          if(wpAd.flags.cleanScriptTags && wpAd.flags.IE) {
+          if(wpAd.flags.IE) {
             wpAd.tools.adsToBeCleaned.push(wpAd.briefcase.what);
           }
           return true;
@@ -1094,7 +1098,6 @@ var wpAd, placeAd2;
 
   //generic flags
   wpAd.flags = {
-    cleanScriptTags: !!/cleanScriptTags/i.test(location.search),
     debug: !!/debugAdCode/i.test(location.search),
     demoAds: wpAd.tools.urlCheck('demoAds', {type: 'variable'}),
     dcnode: wpAd.tools.urlCheck('dcnode', {type: 'variable'}),

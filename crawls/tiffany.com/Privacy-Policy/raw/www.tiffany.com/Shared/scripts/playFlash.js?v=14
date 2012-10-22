@@ -1,0 +1,674 @@
+var siteFlashVer = 9;
+var blockTIFR = false;
+
+//Flash API function calls
+function introToFlash() 
+{
+	if (document.getElementById("contentImage") != null)
+	{
+		if (playFlashIntro) {
+			whichElHide = document.getElementById('divFlashIntro');
+			whichElHide.style.display = "none";
+		}
+		document.getElementById("contentImage").innerHTML = '<div style="background-color:#FFFFFF;">&nbsp;</div>';
+		
+		playCombinedAssetAndTitle(
+			playFlash_assetAndTitleSpecs.flashPath, 
+			playFlash_assetAndTitleSpecs.flashHeight, 
+			playFlash_assetAndTitleSpecs.flashWidth, 
+			playFlash_assetAndTitleSpecs.flashBgcolor, 
+			playFlash_assetAndTitleSpecs.imgPath, 
+			playFlash_assetAndTitleSpecs.targetID, 
+			false
+		);
+	}
+}
+
+function closeIntro() {
+	if (playFlashIntro) {
+		whichElHide = document.getElementById('divFlashIntro');
+		whichElHide.style.display = "none";
+	}
+}
+
+function openIntro() 
+{
+	var abortIntro = false;
+	
+	// If we are in cookieless mode and the page is trying to open the search box to 
+	// display an error message, then do not play intro.
+	if (document.forms[0].cookielessNoResultsMessage)
+	{
+		if (document.forms[0].cookielessNoResultsMessage.value != "")
+		{
+			abortIntro = true;
+		}
+	}
+	if (document.forms[0].cookielessDidYouMeanMessage)
+	{
+		if (document.forms[0].cookielessDidYouMeanMessage.value != "")
+		{
+			abortIntro = true;
+		}
+	}
+	
+	if (abortIntro == false)
+	{
+		if (playFlashIntro) 
+		{
+			whichElHide = document.getElementById('divFlashIntro');
+			whichElHide.style.display = "block";
+		}
+		var movie = window.document.introFlash;
+		if (typeof(movie) != "undefined" && movie != null)
+		{
+			if (typeof(movie.Rewind) != "undefined" && typeof(movie.Play) != "undefined")
+			{
+				movie.Rewind();
+				movie.Play();
+			}
+		}
+	}
+}
+
+// Flash Intro function
+function playFlashAsset(flashPath, flashHeight, flashWidth, flashBgcolor, imgPath, targetID) 
+{
+	// Change for Mac FF - play the flash asset and the tIFR title combined into one holder movie
+	playCombinedAssetAndTitle(flashPath, flashHeight, flashWidth, flashBgcolor, imgPath, targetID);
+}
+
+function playT57FlashAsset(flashPath, flashHeight, flashWidth, flashBgcolor) 
+{
+	if (DetectFlashVer(7, 0, 0)) 
+	{
+		document.write('<object id="mainFlash" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="'+flashWidth+'" height="'+flashHeight+'"><param name="movie" value="'+flashPath+'"><param name="quality" value="high"><param name="WMode" value="Transparent" /><param name="bgcolor" value="'+flashBgcolor+'" /><embed name="mainFlash" src="'+flashPath+'" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" bgcolor="'+flashBgcolor+'" width="'+flashWidth+'" height="'+flashHeight+'"></embed></object>');
+	}
+	else
+	{
+		window.location.href="/Common/Errors/Flash.aspx"
+	}
+	
+	// ** Todo: Migrate this function to use the FlashAPI mechanism. Currently, this is not working using FlashAPI.
+	// The flash movie seems to load but does not run.
+
+/*	var contentHolder = document.getElementById(targetID);
+	if (typeof(FlashAPI) != "undefined" && contentHolder != null)
+	{
+		var flashAsset = new FlashAPI(contentHolder);
+		flashAsset.setAttribute("src", flashPath);
+		flashAsset.setAttribute("id", "mainFlash");
+		flashAsset.setAttribute("name", "mainFlash");
+		flashAsset.setAttribute("width", flashWidth);
+		flashAsset.setAttribute("height", flashHeight);
+		flashAsset.setAttribute("wmode", "transparent");
+		flashAsset.setAttribute("bgcolor", flashBgcolor);
+		flashAsset.setAlternateHTML('<img src="'+imgPath+'" name="imgMainPhoto" width="'+flashWidth+'" height="'+flashHeight+'" border="0" id="imgMainPhoto" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" />');
+		flashAsset.setFlashVersion(siteFlashVer, 0, 0);
+		flashAsset.setEmbedType("write");
+		flashAsset.generateFlash();
+	}
+	else
+	{
+		// Give the page a chance to load some more, page source and script is not quite done loading yet
+		setTimeout('playT57FlashAsset("' + flashPath + '",' + flashHeight + ',' + flashWidth + ',"' + flashBgcolor + '","' + imgPath + '","' + targetID + '")', 100);
+	}*/
+}
+var introFlashPath;
+var introFlashHeight;
+var introFlashWidth;
+var introFlashBgcolor;
+
+function playIntro(flashPath, introHeight, introWidth, introBgcolor, targetID, videoPath, posterPath, captionsPath)
+{
+	if (flashPath.length > 1 || (typeof(videoPath) != "undefined" && videoPath.length > 1))
+	{
+	    var abortIntro = false;
+	    
+	    // If we are in cookieless mode and the page is trying to open the search box to 
+	    // display an error message, then do not play intro.
+	    if (document.forms[0].cookielessNoResultsMessage)
+	    {
+	        if (document.forms[0].cookielessNoResultsMessage.value != "")
+	        {
+	            abortIntro = true;
+	        }
+	    }
+	    if (document.forms[0].cookielessDidYouMeanMessage)
+	    {
+	        if (document.forms[0].cookielessDidYouMeanMessage.value != "")
+	        {
+	            abortIntro = true;
+	        }
+	    }
+	    
+	    if (abortIntro == false)
+	    {
+	    	if (playFlashIntro)
+	    	{ 
+		    	if (isIPad())
+		    	{
+
+		    		if (videoPath != undefined)
+		    		{
+
+		    			document.write('<div id="iPadIntro" class="start pause" style="z-index:90; background-color:'+introBgcolor+';margin-left: -480px; text-align: left; position: absolute;top: 0px;left: 50%; height:'+introHeight+'px; width:'+introWidth+'px"><video src="'+videoPath+'" height="'+introHeight+'" width="'+introWidth+'" poster="'+posterPath+'" data-captions="'+captionsPath+'"></video><a class="curtain" style="width:'+introWidth+'px;height:'+introHeight+'px"></a><div class="skipVideo"><a href="">Skip Video</a></div></div>');
+
+			    		iPadIntroControls();
+
+		    		}
+		    		
+		    	} else
+		    	{
+			        if (DetectFlashVer(8, 0, 0))
+			        {
+			            document.write('<div id="divFlashIntro" style="z-index:90; background-color:'+introBgcolor+';margin-left: -480px; text-align: left; position: absolute;top: 0px;left: 50%; height:'+introHeight+'px; width:'+introWidth+'px"></div>');
+
+			            introFlashPath=flashPath;
+			            introFlashHeight=introHeight;
+			            introFlashWidth=introWidth;
+			            introFlashBgcolor=introBgcolor;
+			            
+			            if (typeof(document.readyState) != "undefined")
+			            {
+			                if (document.readyState == "interactive")
+			                {
+			                    BrowserUtils.addOnLoadHandler(generateFlashIntro);
+			                }
+			                else {generateFlashIntro();}
+			            }
+			            else {generateFlashIntro();}
+			        }
+			    }
+
+	    	}
+	    }
+	}
+}
+
+function iPadIntroControls()
+{
+	// Pause/Play
+	$('.curtain').click(function()
+	{
+		if ($('video')[0].paused)
+		{
+			$('#iPadIntro').removeClass('start');
+			$('#iPadIntro').removeClass('pause');
+        	$('video')[0].play();
+        } else
+        {
+        	$('#iPadIntro').addClass('pause');
+        	$('video')[0].pause();
+        }
+	});
+	// Skip link
+	$('.skipVideo a').click(function()
+	{
+		if ($('.captions').length)
+		{
+			$('.captions').css('display','none');
+		}
+		if ($('video')[0].paused)
+		{
+			$('#iPadIntro').removeClass('pause');
+		} else
+		{
+			$('video')[0].pause();
+		}
+		iPadIntroEnd();
+		return false;
+	})
+	// Video end
+    $('video').bind('ended',function()
+    {
+		iPadIntroEnd();
+	})
+	// Captions
+	captionIntro($('video'));
+}
+
+function iPadIntroEnd() {
+	if (document.getElementById("contentImage") != null)
+	{
+		$('#hero1').fadeOut(0);
+		$('#iPadIntro').addClass('fadeOut');
+		window.setTimeout(function()
+		{
+			$('#iPadIntro').addClass('hide');
+			$('#hero1').fadeIn(2000);
+		},1500)
+	}
+}
+
+function captionIntro($vid) {
+	var $this = $(this);  // store the object refernce
+	if ($this.attr('data-captions') == undefined || $this.attr('data-captions') == '') {
+	    return false; // If there is no captions file, break out fo the loop.
+	}
+	var $video = $this[0],
+		$player = $this.parent(),
+   		isXMLLoaded = false,
+   		vidWidth = $this.width() + 'px',
+   		fontSize = '13px';
+   		bottom = '20px';
+
+   	if ($this.attr('data-captions') !== undefined) {
+
+        var captionsFile = $this.attr('data-captions'),
+            captionNode = '';
+
+        /* Parse captions */
+        $.ajax({
+            type: "GET",
+            url: captionsFile,
+            dataType:"xml",
+            success: function(xml){
+
+            	isXMLLoaded = true;
+
+                var $captions = $(xml).find('p')
+
+                if ($captions.length) {
+
+                    $captions.each(function(){
+
+                        var beginSplit = $(this).attr('begin').split(':');
+                        var endSplit = $(this).attr('end').split(':');
+                        var begin = (parseFloat(beginSplit[0])*60) + parseFloat(beginSplit[1]);
+                        var end = (parseFloat(endSplit[0])*60) + parseFloat(endSplit[1]);
+                        var text = $(this).text();
+
+                        captionNode += '<span class="caption" data-begin="' + begin + '" data-end="' + end + '" style="display:none">' + text + '</span>';
+
+                    })
+
+                    $player.append('<div class="captions ' + locale + '">' + captionNode + '</div>');
+
+                    /* Style captions */
+                    var $captions = $player.children('.captions');
+                    if ($captions.hasClass('ko-KR') || $captions.hasClass('ja-JP') || $captions.hasClass('zh-Hant') || $captions.hasClass('zh-CN')) {
+                    	var fontSize = '15px'; // Increase the font size for Asian characters
+                    }
+         
+                    var cssObj = {
+				    	'color':'#fff',
+				    	'font-size':fontSize,
+				    	'letter-spacing':'1.2',
+				    	'font-weight':'bold',
+				    	'position':'absolute',
+				    	'text-align':'center',
+				    	'text-shadow':'0px 0px 4px #000',
+				    	'width':vidWidth,
+				    	'bottom':bottom
+				    }
+				    $captions.css(cssObj);
+                
+                }
+
+            } 
+        });
+
+        /* Handle the display of captions */
+        $video.addEventListener('timeupdate',function(){
+        //$player.children('video')[0].addEventListener('timeupdate',function(){
+
+        	if (isXMLLoaded) {
+
+            	var currT = $video.currentTime;
+
+                if ($('.caption').length) {
+                    $('.caption').each(function(){
+                        if ((currT >= $(this).attr('data-begin')) && (currT <= $(this).attr('data-end'))) {
+                            $(this).css('display','block');
+                        } else {
+                            $(this).css('display','none');
+                        }
+                    })
+                }
+
+        	}
+
+        },false)
+
+    }
+}
+
+
+/*
+function playIntro(flashPath, flashHeight, flashWidth, flashBgcolor, targetID)
+{
+if (flashPath.length>1) {
+	var abortIntro = false;
+	
+	// If we are in cookieless mode and the page is trying to open the search box to 
+	// display an error message, then do not play intro.
+	if (document.forms[0].cookielessNoResultsMessage)
+	{
+		if (document.forms[0].cookielessNoResultsMessage.value != "")
+		{
+			abortIntro = true;
+		}
+	}
+	if (document.forms[0].cookielessDidYouMeanMessage)
+	{
+		if (document.forms[0].cookielessDidYouMeanMessage.value != "")
+		{
+			abortIntro = true;
+		}
+	}
+	
+	if (abortIntro == false)
+	{
+		if (playFlashIntro && DetectFlashVer(8, 0, 0)) 
+		{
+			document.write('<div id="divFlashIntro" style="z-index:90; background-color:'+flashBgcolor+';margin-left: -480px; text-align: left; position: absolute;top: 0px;left: 50%; height:'+flashHeight+'px; width:'+flashWidth+'px"></div>');
+
+		 	introFlashPath=flashPath;
+			introFlashHeight=flashHeight;
+			introFlashWidth=flashWidth;
+			introFlashBgcolor=flashBgcolor;
+			
+			if (typeof(document.readyState) != "undefined") {
+				if (document.readyState == "interactive") {
+					BrowserUtils.addOnLoadHandler(generateFlashIntro);
+				}
+				else {generateFlashIntro();}
+			}
+			else {generateFlashIntro();}
+		}
+	}
+}
+}
+*/
+
+function generateFlashIntro()
+{
+	var currentState = ProductModel.getInstance().getStateSnapshot(); 
+	var initFlashState = currentState.flash; 
+
+	var flashAsset = new FlashAPI(document.getElementById("divFlashIntro"));
+	flashAsset.setAttribute("src", introFlashPath);
+	flashAsset.setAttribute("id", "introFlash");
+	flashAsset.setAttribute("name", "introFlash");
+	flashAsset.setAttribute("width", introFlashWidth);
+	flashAsset.setAttribute("height", introFlashHeight);
+	flashAsset.setAttribute("bgcolor", introFlashBgcolor);
+	flashAsset.setAttribute("wmode", "transparent");
+	flashAsset.setAttribute("scale", "noscale");
+	flashAsset.setAttribute("flashVars", "connectionName=" + FlashCommBridge.getInstance().requestConnectionName() + "&locale=" + locale + "&initState=" + initFlashState);
+	flashAsset.setFlashVersion(siteFlashVer, 0, 0);
+	flashAsset.generateFlash();
+}
+
+function playFlashModule(flashID,flashPath,flashHeight,flashWidth,flashBgcolor,imgPath,imgURL) {
+//	if (DetectFlashVer(siteFlashVer, 0, 0)) {
+//		document.write('<object id="'+flashID+'" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="'+flashWidth+'" height="'+flashHeight+'"><param name="movie" value="'+flashPath+'"><param name="quality" value="high"><param name="WMode" value="Transparent" /><param name="bgcolor" value="'+flashBgcolor+'" /><embed name="'+flashID+'" src="'+flashPath+'" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" bgcolor="'+flashBgcolor+'" width="'+flashWidth+'" height="'+flashHeight+'"></embed></object>');
+//	}
+//	else{
+//		document.write('<a href="'+imgURL+'"><img src="'+imgPath+'" name="imgMainPhoto" width="'+flashWidth+'" height="'+flashHeight+'" border="0" id="'+flashID+'" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" /></a>');
+//	}
+	
+	var flashAsset = new FlashAPI(null);
+	flashAsset.setAttribute("src", flashPath);
+	flashAsset.setAttribute("id", flashID);
+	flashAsset.setAttribute("width", flashWidth);
+	flashAsset.setAttribute("height", flashHeight);
+	flashAsset.setAttribute("bgcolor", flashBgcolor);
+	flashAsset.setAttribute("wmode", "transparent");
+	flashAsset.setAttribute("scale", "noscale");
+	flashAsset.setAlternateHTML('<a href="'+imgURL+'"><img src="'+imgPath+'" name="imgMainPhoto" width="'+flashWidth+'" height="'+flashHeight+'" border="0" id="'+flashID+'" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" /></a>');
+	flashAsset.setFlashVersion(siteFlashVer, 0, 0);
+	flashAsset.generateFlash(true);
+}
+
+//catch for modules that have no flashParams
+if (typeof flashParams == 'undefined'){flashParams = "";}
+
+function playModule()
+{							// ----	user passes flash detection!
+	document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" ');
+	document.write('codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" ');
+	document.write('width="'+flashWidth+'" height="'+flashHeight+'" id="base" align="middle">');
+	document.write('<param name="allowScriptAccess" value="sameDomain" />');
+	document.write('<param name="movie" value="'+flashPath+''+strSWFParams+'" />');
+	document.write('<param name="quality" value="high" />');
+	document.write('<param name="WMode" value="Transparent" />');
+	document.write('<param name="bgcolor" value="'+flashBgcolor+'" />');
+	document.write('<param name="FlashVars" VALUE="'+flashParams+'" />'); 
+	document.write('<embed ');
+	document.write('	src="'+flashPath+''+strSWFParams+'" ');
+	document.write('	FlashVars = "'+flashParams+'" '); 
+	document.write('	quality="high" ');
+	document.write('	bgcolor="'+flashBgcolor+'" ');
+	document.write('	width="'+flashWidth+'" height="'+flashHeight+'" ');
+	document.write('	wmode="transparent" name="base" align="middle" ');
+	document.write('	allowscriptaccess="sameDomain" ');
+	document.write('	type="application/x-shockwave-flash" ');
+	document.write('	pluginspage="http://www.macromedia.com/go/getflashplayer" /></embed>');
+	document.write('</object>');
+								//-->
+}
+
+var playFlash_assetAndTitleSpecs = {};
+var playFlash9AssetOnlyVar = 'no';
+function playCombinedAssetAndTitle(flashPath, flashHeight, flashWidth, flashBgcolor, imgPath, targetID, forceReveal) 
+{
+//	alert("flashPath: " + flashPath + "\nflashHeight: "+ flashHeight + "\nflashWidth: " + flashWidth + "\nimgPath: " + imgPath + "\ntargetID: "+ targetID);
+	var fontNameRoman = "Sterling Display";
+	var fontNameCJK = "PMA_MSungGBSerling";
+
+	var h1Holder = document.getElementsByTagName("h1")[0];
+	var contentHolder = document.getElementById("contentImage");
+	
+	playFlash_assetAndTitleSpecs = {
+		flashPath:flashPath,
+		flashHeight:flashHeight,
+		flashWidth:flashWidth,
+		flashBgcolor:flashBgcolor,
+		imgPath:imgPath,
+		targetID:targetID
+	};
+	blockTIFR = true;
+	
+	//Used for NFT because is flash 9.  Standard load uses Flash 8 wrapper to load, which is not compatible.
+    if(playFlash9AssetOnlyVar != 'no'){playFlash9AssetOnly(flashPath, flashHeight, flashWidth, flashBgcolor, imgPath, targetID, forceReveal, contentHolder);}
+    
+	else if (typeof(BrowserUtils) != "undefined" && typeof(FlashAPI) != "undefined" && typeof(h1Properties) != "undefined" && h1Holder != null && contentHolder != null)
+	{
+		// Get x/y position of promo holder and h1 holder
+		var h1Position = BrowserUtils.getPosition(h1Holder);
+		var contentImagePosition = BrowserUtils.getPosition(contentHolder);
+
+		// Get language
+		var lang = "en";
+		if (locale != null && locale != "" && typeof(locale) != "undefined")
+		{
+			var splitLocale = locale.split("-");
+			if (splitLocale.length > 0)
+			{
+				if (splitLocale[0].length == 2)
+				{
+					lang = splitLocale[0];
+				}
+			}
+		}
+
+		var promoLocation = flashPath;
+		var titleLocation = "/Shared/flash/tIFR/flashHeader.swf?v=6";
+		var titleContents = h1Holder.innerHTML;
+		var initialHide = false;
+		if (typeof (playFlashIntro) != "undefined")
+		{
+			initialHide = playFlashIntro;
+		}
+		var currentState = ProductModel.getInstance().getStateSnapshot(); 
+		var initFlashState = currentState.flash; 
+		
+		if (typeof(forceReveal) != "undefined" && (forceReveal == false || forceReveal == "false"))
+		{
+			initialHide = false;
+		}
+
+		// Trim out special characters
+		titleContents = cleanHeaderText(titleContents);
+
+		if (typeof(h1Properties.color) != "undefined" && h1Properties.color != null && h1Properties.color != "")
+		{
+			h1Properties.color = h1Properties.color.split("#").join("0x");
+		}
+		if (typeof(h1Properties.color) != "undefined" && h1Properties.color != null && h1Properties.color != "")
+		{
+			h1Properties.colorCJK = h1Properties.colorCJK.split("#").join("0x");
+		}
+
+		if ((lang == "fr")|| (lang == "es")|| (lang == "it")|| (lang == "de")) 
+		{
+			lang = "en";
+		}
+
+		if (locale.toLowerCase() == "zh-hant")
+		{
+			lang = "zh-hant";
+		}
+
+		if (lang == "zh" || lang == "zh-hant" || lang == "cn")
+		{
+			fontNameCJK = "PMA_FZShuSong-Z01";
+		}
+		else if (lang == "ko")
+		{
+			fontNameCJK = "PMA_AdobeMyungjoStd-Medium";
+		}
+		else if (lang == "ja")
+		{
+			fontNameCJK = "PMA_HeiseiMinchoSterling";
+		}
+
+		// Set up flashvars to send to tIFR. This is separate from what's in flashHeader.js because 
+		// this flash movie does its own embedding of the tIFR flash component.
+		var h1FlashVars = "header=" + titleContents
+		+ "&color=" + h1Properties.color
+		+ "&fontSize=" + h1Properties.size
+		+ "&horizontalShift=" + h1Properties.horizontalShift.toString()
+		+ "&baselineShift=" + h1Properties.baselineShift.toString()
+		+ "&leading=" + h1Properties.leading.toString()
+		+ "&letterSpacing=" + h1Properties.tracking.toString()
+		+ "&align=" + h1Properties.align
+		+ "&sharpness=" + h1Properties.sharpness
+		+ "&thickness=" + h1Properties.thickness
+		+ "&initialHide=" + initialHide
+		+ "&colorCJK=" + h1Properties.colorCJK
+		+ "&fontSizeCJK=" + h1Properties.sizeCJK
+		+ "&letterSpacingCJK=" + h1Properties.trackingCJK.toString()
+		+ "&connectionName=" + FlashCommBridge.getInstance().requestConnectionName()
+
+		+ "&locale=" + pageLanguage
+		+ "&basePath="
+		+ "&fontName=" + fontNameRoman
+		+ "&fontNameCJK=" + fontNameCJK
+		+ "&romanFontFileName=/shared/fonts/fonts_en.swf";
+
+		if (searchFontPath != "")
+		{
+			h1FlashVars += "&searchFontFileName=" + escape(searchFontPath);
+		}
+		
+		if (staticFontPath != "")
+		{
+			h1FlashVars += "&cjkFontFileName=" + escape(staticFontPath);
+		}
+		else if (dynamicFontPath != "")
+		{
+			h1FlashVars += "&cjkFontFileName=" + escape(dynamicFontPath);
+		}
+
+		// Pass in position and path info for promo and header components.
+		var wrapperFlashVars = h1FlashVars;
+		wrapperFlashVars += "&promoSrc=" + promoLocation;
+		wrapperFlashVars += "&titleSrc=" + titleLocation;
+		wrapperFlashVars += "&titleX=" + (h1Position.left - contentImagePosition.left);
+		wrapperFlashVars += "&titleY=" + (h1Position.top - contentImagePosition.top);
+		wrapperFlashVars += "&titleVars=" + ["header", 
+												"color", "colorCJK", 
+												"fontSize", "fontSizeCJK",
+												"horizontalShift", "horizontalShiftCJK",
+												"baselineShift", "baselineShiftCJK",
+												"leading", "leadingCJK",
+												"letterSpacing", "letterSpacingCJK",
+												"align", "alignCJK",
+												"sharpness", "sharpnessCJK",
+												"thickness", "thicknessCJK",
+												"spaceWidth", "spaceWidthCJK"].join(",");
+		wrapperFlashVars += "&locale=" + locale;
+		wrapperFlashVars += "&initState=" + initFlashState;
+
+		var flashAsset = new FlashAPI(contentHolder);
+		flashAsset.setAttribute("src", "/shared/flash/promoHolder/promoHolder.swf?v=6");
+		flashAsset.setAttribute("id", "mainFlash");
+//		flashAsset.setAttribute("embedId", "mainFlash");
+//		flashAsset.setAttribute("name", "mainFlash");
+		flashAsset.setAttribute("width", flashWidth);
+		flashAsset.setAttribute("height", flashHeight);
+		flashAsset.setAttribute("bgcolor", flashBgcolor);
+		flashAsset.setAttribute("flashVars", wrapperFlashVars);
+		flashAsset.setAttribute("wmode", "transparent");
+		flashAsset.setAttribute("scale", "noscale");
+		flashAsset.setAlternateHTML('<img src="'+imgPath+'" name="imgMainPhoto" width="'+flashWidth+'" height="'+flashHeight+'" border="0" id="imgMainPhoto" galleryimg="no" />');
+		flashAsset.setAlternateMobile('<img src="' + imgPath + '" name="imgMainPhoto" width="' + flashWidth + '" height="' + flashHeight + '" border="0" id="imgMainPhoto" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" /><style type="text/css">h1.flashTitle{visibility:visible;}</style>');
+		flashAsset.setFlashVersion(siteFlashVer, 0, 0);
+		flashAsset.generateFlash();
+	}
+	else
+	{
+		// Give the page a chance to load some more, page source and script is not quite done loading yet
+		setTimeout('playFlashAsset("' + flashPath + '",' + flashHeight + ',' + flashWidth + ',"' + flashBgcolor + '","' + imgPath + '","' + targetID + '")', 100);
+	}
+}
+
+function playFlash9AssetOnly(flashPath, flashHeight, flashWidth, flashBgcolor, imgPath, targetID, forceReveal, contentHolder) {
+        var currentState = ProductModel.getInstance().getStateSnapshot(); 
+        var initFlashState = currentState.flash;
+        var connectionName = FlashCommBridge.getInstance().requestConnectionName();
+    	var wrapperFlashVars = "locale=" + locale;
+		wrapperFlashVars += "&initState=" + initFlashState;
+        wrapperFlashVars += "&connectionName=" + connectionName;
+		var flashAsset = new FlashAPI(contentHolder);
+		flashAsset.setAttribute("src", flashPath);
+		flashAsset.setAttribute("id", "mainFlash");
+		flashAsset.setAttribute("width", flashWidth);
+		flashAsset.setAttribute("height", flashHeight);
+		flashAsset.setAttribute("bgcolor", flashBgcolor);
+		flashAsset.setAttribute("flashVars", wrapperFlashVars);
+		flashAsset.setAttribute("wmode", "transparent");
+		flashAsset.setAttribute("scale", "noscale");
+		flashAsset.setAlternateHTML('<img src="'+imgPath+'" name="imgMainPhoto" width="'+flashWidth+'" height="'+flashHeight+'" border="0" id="imgMainPhoto" style="padding: 0px; margin: 0px; display:block;" galleryimg="no" />');
+		flashAsset.setFlashVersion(9, 0, 0);
+		flashAsset.generateFlash();
+}
+
+function sendCommand(command) 
+{
+	if (document.getElementById("promoHolderCommDiv") == null)
+	{
+		var holderDiv = document.createElement("div");
+		holderDiv.setAttribute("id", "promoHolderCommDiv");
+//		holderDiv.style.display = "none";
+		holderDiv.style.position = "absolute";
+		holderDiv.style.top = "1px";
+		holderDiv.style.left = "50px";
+		document.body.appendChild(holderDiv);
+	}
+	
+	document.getElementById("promoHolderCommDiv").innerHTML = "";
+
+	var flashAsset = new FlashAPI(document.getElementById("promoHolderCommDiv"));
+	flashAsset.setAttribute("src", "/shared/flash/promoHolderComm.swf");
+	flashAsset.setAttribute("id", "promoHolderComm");
+	flashAsset.setAttribute("width", "10");
+	flashAsset.setAttribute("height", "10");
+	flashAsset.setAttribute("flashVars", "command="+command);
+	flashAsset.setAttribute("wmode", "transparent");
+	flashAsset.setFlashVersion(siteFlashVer, 0, 0);
+	flashAsset.generateFlash();
+}

@@ -165,7 +165,17 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 			locid = currlocId;
 		}else{
 			var user = $.jStorage.get("user");
-			locid = (user && user.preferredLocation) ? user.preferredLocation.locid : undefined;
+			var preferredLoc =(user && user.preferredLocation) ? user.preferredLocation : undefined;;
+            if (preferredLoc)  {
+                    var locationId = preferredLoc.locid;
+                    if (!locationId)   locationId = preferredLoc.zip;
+                      
+                    if (locationId && locationId.indexOf(":") != -1) { //Sometimes we have loctype appended
+                        locationId = locationId.split(":")[0]; 
+                    }    
+                    locid=locationId  + ":" + (preferredLoc.type || preferredLoc.loctype)  + ":" + (preferredLoc.countryCode || preferredLoc.country);
+             }
+			 
 		}
 		
 		var sdynhost = "d.imwx.com" || "d.imwx.com";
@@ -921,7 +931,7 @@ try{console.log()}catch(e){}
 						{
 							if((typeof(isMobileSite) != 'undefined') && isMobileSite==1){
 								var currloc = TWC.pco.get('currloc');
-								var additionalParams =  currloc.zip + ":" + currloc.loctype + ":" + (currloc.country).toUpperCase();
+								var additionalParams =  currloc.locid + ":" + currloc.loctype + ":" + (currloc.country).toUpperCase();
 								document.location.href = TWC.pco.get("page").defaultCmd + "/"+additionalParams+"?"+ new Date().getTime();	
 							}else{
 								window.location.reload();
@@ -956,6 +966,8 @@ try{console.log()}catch(e){}
 			prvlgd.set("user.preferredLocation", val);
 		}else if(node == "lastResolvedLoc") {
 			prvlgd.set("user.lastResolvedLoc", prvlgd.get("currloc"));
+		}else if (node=="preferredDeclarationFamily"){
+			prvlgd.set("user.preferredDeclarationFamily", val);
 		}else if(node=="backTo"){
 			prvlgd.set("user.backTo",val);
 		}else if(node.match(/Locations/)){
@@ -1324,8 +1336,9 @@ try{console.log()}catch(e){}
 					ch=contentTypeMap.channel;
 					buildkw("fam",fam);
 					buildkw("ch",ch);
+					prvlgd.setUser("preferredDeclarationFamily", fam);
+				
 		    	}else if (!isdynamic && typeof(contentTypeMap)!="undefined"){
-					//do not populate fam/ch for pages that do not have decl
 					prvlgd.setUser("preferredDeclarationFamily", contentTypeMap.family);
 					
 				}

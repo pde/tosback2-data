@@ -83,7 +83,7 @@ function renderGlobalNav() {
 	document.write('<div id="global-nav">');
 	document.write('<ul>');
 	document.write('<li class="logo">');
-	if(state == 'nostate') {document.write('<a  href="javascript: stateSelectInitialize(\'home\')" title="P&aacute;gina principal de AT&amp;T"><img src="/mlcomm/_images/template/global_nav/global_logo.jpg" alt="Portada" /></a></li>') } 
+	if(state == 'nostate') {document.write('<a  href="/index.html?id=' + state + '" title="P&aacute;gina principal de AT&amp;T"><img src="/mlcomm/_images/template/global_nav/global_logo.jpg" alt="Portada" /></a></li>') } 
 	else {document.write('<a href="/index.html?id=' + state + '" title="P&aacute;gina principal de AT&amp;T"><img src="/mlcomm/_images/template/global_nav/global_logo.jpg" alt="Portada" /></a></li>');}
 	
 	if(state == 'nostate') {document.write('<li><a  href="javascript: stateSelectInitialize(\'comprar\')" title="Ordena paquetes y servicios para Internet, tel&eacute;fono m&oacute;vil y televisi&oacute;n digital"><img src="/mlcomm/_images/template/global_nav/global_comprar');}
@@ -93,15 +93,19 @@ function renderGlobalNav() {
 	}
 	document.write('.jpg"  alt="Comprar" /></a>');
 	document.write('</li>');
-	if(state == 'nostate') {document.write('<li><a  href="javascript: stateSelectInitialize(\'help\')" title="Servicio de ayuda al cliente "><img src="/mlcomm/_images/template/global_nav/global_ayuda');}
-	else {document.write('<li><a href="/help/index.html?id=' + state + '" title="Servicio de ayuda al cliente "><img src="/mlcomm/_images/template/global_nav/global_ayuda');}
+	if
+	(state == 'nostate') {document.write('<li><a  href="/help/index.html?id=' + state + '" title="Servicio de ayuda al cliente "><img src="/mlcomm/_images/template/global_nav/global_ayuda');}
+	else 
+	{document.write('<li><a href="/help/index.html?id=' + state + '" title="Servicio de ayuda al cliente "><img src="/mlcomm/_images/template/global_nav/global_ayuda');}
 	if(section == 'help' || section == 'privacy_policy') {
 	document.write('_on');
 	}
 	document.write('.jpg" alt="Ayuda" /></a>') 
 	document.write('</li>');
-	if(state == 'nostate') {document.write('<li><a  href="javascript: stateSelectInitialize(\'newsroom\')"  title="Paquetes para medios, comunicados de prensa, y archivo de noticias"><img src="/mlcomm/_images/template/global_nav/global_noticias')}
-	else {	document.write('<li><a href="/newsroom/index.html?id=' + state + '" title="Paquetes para medios, comunicados de prensa, y archivo de noticias"><img src="/mlcomm/_images/template/global_nav/global_noticias');}
+	if
+	(state == 'nostate') {document.write('<li><a  href="/newsroom/index.html?id=' + state + '"  title="Paquetes para medios, comunicados de prensa, y archivo de noticias"><img src="/mlcomm/_images/template/global_nav/global_noticias')}
+	else 
+	{document.write('<li><a href="/newsroom/index.html?id=' + state + '" title="Paquetes para medios, comunicados de prensa, y archivo de noticias"><img src="/mlcomm/_images/template/global_nav/global_noticias');}
 	if(section == 'newsroom') {
 	document.write('_on');
 	}
@@ -109,7 +113,7 @@ function renderGlobalNav() {
 	document.write('</li>');
 	
 	
-	if(state == 'nostate') {document.write('<li><a  href="/about_att/index.html" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');}
+	if(state == 'nostate') {document.write('<li><a href="/about_att/index.html?id=' + state + '" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');}
 	else {	
 	document.write('<li><a href="/about_att/index.html?id=' + state + '" title="Informaci&oacute;n corporativa sobre AT&amp;T"> <img src="/mlcomm/_images/template/global_nav/global_acerca');
 	}
@@ -254,17 +258,17 @@ function renderGlobalNav() {
 	document.write('<ul> ');
 	document.write('<li><a ');
 	if(directory == 'corporate_information') { document.write('  class="current" ');}
-	if(state == 'nostate') {document.write(' href="/about_att/corporate_information.html" title="Informaci&oacute;n Corporativa">Informaci&oacute;n Corporativa</a></li>');}
+	if(state == 'nostate') {document.write(' href="/about_att/corporate_information.html?id=' + state + '" title="Informaci&oacute;n Corporativa">Informaci&oacute;n Corporativa</a></li>');}
 	else {document.write(' href="/about_att/corporate_information.html?id=' + state + '" title="Informaci&oacute;n Corporativa">Informaci&oacute;n Corporativa</a></li>');}
 	
 	document.write('<li><a ');
 	if(directory == 'community') { document.write('  class="current" ');}
-	if(state == 'nostate') {document.write(' href="/about_att/community.html" title="Comunidad">Comunidad</a></li>');}
+	if(state == 'nostate') {document.write(' href="/about_att/community.html?id=' + state + '" title="Comunidad">Comunidad</a></li>');}
 	else {document.write(' href="/about_att/community.html?id=' + state + '" title="Comunidad">Comunidad</a></li>');}
 	
 	document.write('<li><a ');
 	if(directory == 'volunteerism') { document.write('  class="current" ');}
-	if(state == 'nostate') {document.write(' href="/about_att/volunteerism.html" title="Voluntarios">Voluntarios</a></li>');}
+	if(state == 'nostate') {document.write(' href="/about_att/volunteerism.html?id=' + state + '" title="Voluntarios">Voluntarios</a></li>');}
 	else {document.write(' href="/about_att/volunteerism.html?id=' + state + '" title="Voluntarios">Voluntarios</a></li>');}
 	
 	document.write('<li><a ');
@@ -274,7 +278,7 @@ function renderGlobalNav() {
 	
 	document.write('<li><a ');
 	if(directory == 'awards') { document.write('  class="current" ');}
-	if(state == 'nostate') {document.write(' href="/about_att/awards.html" title="Premios">Premios</a></li>');}
+	if(state == 'nostate') {document.write(' href="/about_att/awards.html?id=' + state + '" title="Premios">Premios</a></li>');}
 	else {document.write(' href="/about_att/awards.html?id=' + state + '" title="Premios">Premios</a></li>');}
 	
 	document.write('</ul>    ');   
@@ -438,13 +442,16 @@ document.write('                <h6>Enlaces...</h6>');
 document.write('                <ul>');
 document.write('                <li><a href="javascript: stateSelectInitialize(\'home\')" title="Selecciona tu estado">Selecciona tu estado</a></li>'); 
 document.write('                <li><a ');
-		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'awards\')"') } else {document.write(' href="/about_att/awards.html?id=' + state  + '" ');}
+		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'awards\')"') } 
+		else {document.write(' href="/about_att/awards.html?id=' + state  + '" ');}
 												document.write(' title="Premios por recomendaciones">Premios por recomendaciones</a></li>');
 document.write('                <li><a ');
-		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'help_billing\')"') } else {document.write(' href="/help/faqs/billing.html?id=' + state + '" ');}
+		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'help_billing\')"') } 
+		else {document.write(' href="/help/faqs/billing.html?id=' + state + '" ');}
 												document.write(' title="Opciones de facturaci&oacute;n y pago">Opciones de facturaci&oacute;n y pago</a></li>');
 document.write('                <li><a ');
-		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'move_att\')"') } else {document.write(' href="/help/att_move/index.html?id=' + state  + '" ');}
+		if(state == 'nostate') {document.write(' href="javascript: stateSelectInitialize(\'move_att\')"') } 
+		else {document.write(' href="/help/att_move/index.html?id=' + state  + '" ');}
 												document.write(' title="AT&amp;T facilita toda tu mudanza">AT&amp;T facilita toda tu mudanza</a></li>');
 document.write('                <li><a href="http://elportal.att.net/" title="Mi Portal &ndash; entretenimiento y m&aacute;s">Mi Portal  &ndash; entretenimiento y m&aacute;s</a></li>');
 document.write('                <li><a ');
@@ -635,25 +642,6 @@ function renderMoveRightCol() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function renderFooter() {
 	document.write('<div class="clear"></div>');
 	document.write('<div id="inner-footer">');
@@ -690,9 +678,10 @@ function renderFooterOrderForm() {
 	document.write('    </ul>');
 	document.write('    <div class="clear"></div>');
 	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">© 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
-	document.write('</div>');
-	
+	document.write('</div>');	
 	document.write('<div id="pop"> </div>');
+	//added 10/11/2012 [KD]
+	document.write('<s'+'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
 }
  
 
@@ -732,6 +721,8 @@ function renderLandingPageBottom() {
 	document.write('<div id="move-att-box" class="content-box-half last"> ');
 	document.write('<h6><em>&iquest;Te est&aacute;s mudando?</em> AT&amp;T facilita toda tu mudanza</h6>');
 	document.write('<p><a href="/help/att_move/index.html?id=' + state + '" title="M&aacute;s informaci&oacute;n">M&aacute;s informaci&oacute;n >></a></p>');
+	//removed10/11/2012 [KD]
+	/*document.write('<s'+'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');*/
 	document.write('</div>');
 }
 
@@ -757,7 +748,8 @@ document.write("    var s = document.getElementsByTagName('script')[0]; s.parent
 document.write("  })();"); 
 document.write("}  "); 
 document.write("</script>"); 
-
+//added 10/11/2012 [KD]
+	document.write('<s'+'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
 document.write('<s'+'cript language="JavaScript" src="http://switch.atdmt.com/jaction/cntcin_HispanicVisitorsUAT_10"></script><noscript><iframe src="http://switch.atdmt.com/iaction/cntcin_HispanicVisitorsUAT_10" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript>');
 }
 
@@ -778,5 +770,6 @@ document.write("  })();");
 document.write("</script>"); 
 
 document.write('<s'+'cript language="JavaScript" src="http://switch.atdmt.com/jaction/cntcin_HispanicVisitorsUAT_10"></script><noscript><iframe src="http://switch.atdmt.com/iaction/cntcin_HispanicVisitorsUAT_10" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe></noscript>');
- 
+//added 10/11/2012 [KD]
+	document.write('<s'+'cript src="//www.att.com/webtrends/scripts/dcs_tag.js" type="text/javascript"></script>');
 }

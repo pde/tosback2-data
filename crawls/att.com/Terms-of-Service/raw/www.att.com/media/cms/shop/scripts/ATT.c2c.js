@@ -1,4 +1,4 @@
-//$Revision: 483615 $, $Date: 2012-09-25 18:43:08 -0700 (Tue, 25 Sep 2012) $ and $Author: pl8911 $
+//$Revision: 486951 $, $Date: 2012-10-09 11:05:21 -0700 (Tue, 09 Oct 2012) $ and $Author: ap374r $
 /*jslint bitwise: false, eqeqeq: true, newcap: true, nomen:true, onevar: true, regexp: false, white: false, plusplus: false */
 /*global window $ jQuery ATT lpMTagConfig reporting_ready*/
 
@@ -65,7 +65,7 @@ ATT.c2c = function () {
         
         if(typeof results.orderTotal === 'string' && results.orderTotal){
         	results.orderTotal = results.orderTotal.replace('$','').replace(',','');
-        	results.orderTotal = parseFloat(results.orderTotal);
+        	results.orderTotal = results.orderTotal && typeof(results.orderTotal.toFixed(2) === 'string') ?  parseFloat(results.orderTotal.toFixed(2)) : '';
         	results.orderTotal = parseFloat(results.orderTotal.toFixed(2));
      	
         }

@@ -45,6 +45,6 @@ if( CQ_Analytics && CQ_Analytics.SurferInfoMgr) {
 
 if( CQ_Analytics && CQ_Analytics.PageDataMgr) {
     CQ_Analytics.PageDataMgr.loadInitProperties({
-  "random": "0.30"
+  "random": "0.14"
 }, true);
 }

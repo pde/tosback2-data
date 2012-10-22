@@ -5,9 +5,12 @@
 
   wpAd.config = wpAd.config || {};
   
-  //mini overlay hack:
-  if(wpAd.tools.urlCheck('mini_overlay_test=true')){
-    wpAd.tools.writeScript('http://ads.jetpackdigital.com/lineitems/8460/jpd.js?n=' + Math.floor(Math.random()*1E7) + '&u=http://www.miniusa.com');
+  //20353 - mini overlay hack:
+  if((estNowWithYear.substr(0,8) === '20121022' && commercialNode === 'homepage' && !wpAd.tools.getCookie('mini_overlay_served')) || wpAd.tools.urlCheck('mini_overlay_test=true')){
+    var mini_date = new Date();
+    mini_date.setDate(mini_date.getDate()+1);
+    wpAd.tools.setCookie('mini_overlay_served', 'true', mini_date.toGMTString(), '/', 'slate.com');
+    wpAd.tools.writeScript('http://ads.jetpackdigital.com/lineitems/8460/jpd.js?n=' + Math.floor(Math.random()*1E7));
   }
 
   //Friendly Iframe supported domains and URL's:

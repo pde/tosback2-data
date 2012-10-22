@@ -882,8 +882,12 @@ function gvpUtils() {
 						p_locEnv = '/media/gvp/';
 					}
 					if(this.mobile.isMobile) {	
-						this.mobile.setContentStr(pConfig, p_locEnv);
-						shouldShow = true;
+						if(this.mobile.isDeviceScreenSmall()) {
+							this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
+						} else {
+							this.mobile.setContentStr(pConfig, p_locEnv);
+							shouldShow = true;
+						}
 					}
 					else if (!this.getFlashVersion()) {
 						this.rplFlash('noFlash');
@@ -918,7 +922,11 @@ function gvpUtils() {
 									});
 				} else {
 					if (this.mobile.isMobile) {	
-						this.mobile.openModal(headerStr);
+						if(this.mobile.isDeviceScreenSmall()) {
+							this.mobile.insertVideoElemInModal(pConfig, p_locEnv);
+						} else {
+							this.mobile.openModal(headerStr);
+						}
 					} 
 					else {
 						jQuery.colorbox({html: headerStr+'<div id="gvp_modalInjection" style="padding-top:10px;"><center>'+contentStr+'</center></div>', 
@@ -960,12 +968,15 @@ The two main functions of this class are setContentStr and openModal.  setConten
 Currently 3 types of devices are being detected: IOS, Kindle, and Android.  Kindle's can identify themselves as Androids if the browser is in mobile optimization mode.  Therefore, it is critical that Kindle comes before Android in the if/else statement in setContentStr().  Android devices are being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
 */
 gvpUtils.prototype.mobile = new function () {
-
+	
 	//device detection
 	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 	var isKindle = /silk/i.test(navigator.userAgent);
 	var isAndroid = /android/i.test(navigator.userAgent);
 	this.isMobile = isIOS || isKindle || isAndroid;
+	
+	//mobile device screen size limit.
+	var screenSizeLimit = 750;
 	
 	//other variables
 	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
@@ -973,6 +984,7 @@ gvpUtils.prototype.mobile = new function () {
 	var firstTime  = true;
 	var contentStr;
 	var noVideo; 
+	var h264FileName;
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
@@ -984,7 +996,9 @@ gvpUtils.prototype.mobile = new function () {
 		//strip off directory prefix and file type
 		var nameStart = pConfig.lastIndexOf('/')+1;
 		var nameEnd = pConfig.indexOf('.',nameStart);
-		var h264FileName = pConfig.substring(nameStart, nameEnd);
+		
+		// MFM 2012 SEP 18 h264FileName has been declared outside this function to make it available in other mobile functions.
+		h264FileName = pConfig.substring(nameStart, nameEnd);
 
 		if (h264FileName === '') {
 			//no video img
@@ -999,18 +1013,18 @@ gvpUtils.prototype.mobile = new function () {
 		}
 		else if(isKindle) {
 			//Note: Kindles can be identified as Androids if in mobile browser mode
-			//video tag
-			contentStr = '<video id="currEmbStream" style="position:absolute;" poster="' + p_locEnv + 'global_resources/defaultMedia/GVP_Poster.jpg" width="512" height="288" onended="' + closeModal + '"><source src="' + h264PathMarker + h264FileName + '.mp4" /></video>';
+			//video tag			
+			contentStr = '';
 		}
 		else if(isAndroid) {
 			contentStr = '';
 		}
-	}; 
-		
+	}; 		
 	//Open a modal and inject the contentStr
+	
 	this.openModal = function (headerStr) {
 		//cbox_complete event hook
-		if (firstTime && isKindle) {
+		if ((firstTime && isAndroid) || (firstTime && isKindle)) {
 			firstTime = false;
 			jQuery(document).bind('cbox_complete', function () {
 				if (gvp.mobile.injectVideo) {
@@ -1018,63 +1032,175 @@ gvpUtils.prototype.mobile = new function () {
 				}
 			});
 		}
-		
 		//define gvp.mobile.injectVideo
-		if (isKindle && !noVideo) {
+		if (isAndroid || isKindle) {
 			this.injectVideo = function () {
-			jQuery('#gvp_modalInjection').append(contentStr)
-				.find('#currEmbStream')
-				.get(0)
-				.addEventListener('touchstart', function () {
-					this.play();
-				}, false);
+				var vidFrag = document.createDocumentFragment();
+				var androidVidEl = document.createElement('video');
+				var gvpModal = document.getElementById("gvp_modalInjection");
+				
+				androidVidEl.setAttribute('id', 'currEmbStream');
+				androidVidEl.setAttribute('style', 'display:block; position:absolute; height:288px; width:512px;');
+				androidVidEl.setAttribute('poster', 'http://www.att.com/media/gvp/global_resources/defaultMedia/GVP_Poster.jpg');
+
+				// Create and identify the child elements for the video element. Do not insert a "type" attribute. Android does not accept that attribute.
+				var androidSourceEl = document.createElement('source');
+				androidSourceEl.setAttribute('src',h264PathMarker + h264FileName + '.mp4');
+
+				androidVidEl.appendChild(androidSourceEl);													
+
+				vidFrag.appendChild(androidVidEl);
+				
+				gvpModal.appendChild(vidFrag);
+
+				androidVidEl.addEventListener('click',function() {androidVidEl.play();},true);
 			}
 		}
 		
 		jQuery.colorbox({html: headerStr + '<div id="gvp_modalInjection" style="width:512px; height:288px;">' + (isIOS || noVideo? contentStr: '') + '</div>',
 			close: '',
 			onClosed: function () {
-				if (isKindle)
+				if (isAndroid || isKindle)
 					gvp.mobile.injectVideo = undefined;
 			}
 		});
-		
-		if(isAndroid) {			
-			// Create a video element, attach it to the modal dialog and attach a click listener to the video element.
-			var vidFrag = document.createDocumentFragment();
-
-			var androidVidEl = document.createElement('video');
-			androidVidEl.setAttribute('id', 'currEmbStream');
-			androidVidEl.setAttribute('style', 'display:block; position:absolute;');
-
-			// Create and identify the child elements for the video element. Do not insert a "type" attribute. Android does not accept that attribute.
-			var androidSourceEl = document.createElement('source');
-			androidSourceEl.setAttribute('src',h264PathMarker + h264FileName + '.mp4');
-
-			var videoLoadImgEl = document.createElement('img');
-			videoLoadImgEl.setAttribute('id','gvp_loadImg');
-			videoLoadImgEl.setAttribute('src','ajaxLoader.gif');
-			videoLoadImgEl.setAttribute('style', 'display:block; position:absolute; margin:122px 0 0 234px;');
-
-			androidVidEl.appendChild(androidSourceEl);								
-			androidVidEl.appendChild(videoLoadImgEl);								
-
-			vidFrag.appendChild(androidVidEl);
-
-			var gvpModal = document.getElementById("gvp_modalInjection");
-			gvpModal.appendChild(vidFrag);
-
-			androidVidEl.addEventListener('click',function() {androidVidEl.play();},true);
-		 }
-	};
+	};	
 	
-	//IOS only 'ready to play video' event, hides loading image and shows video
+	// IOS only 'ready to play video' event, hides loading image and shows video
 	this.iosOnSuspend = function () {
 		var jqVideo = jQuery('#currEmbStream');
 		var video = jqVideo[0];
 		if (video.readyState == 0 && video.networkState == 1) {
 			jQuery('#gvp_loadImg').hide();
 			jqVideo.show();
+		}
+	};
+	
+	// SMALL MOBILE PHONE DEVICES ONLY
+	// Return the device screen's diagonal measurement using density independent pixels.
+	// Example: 800 X 360, ratio 1.5 yields a diagonal of about 658.
+	this.calcScreenDiagonal = function () {
+		var dsPixelRatio = window.devicePixelRatio;
+		var dsWidth = window.outerWidth;
+		var dsHeight = window.outerHeight;
+		var diagonalDim =  Math.sqrt( (dsWidth * dsWidth) + (dsHeight * dsHeight) ) / dsPixelRatio;
+		return diagonalDim;
+	};
+	
+	// If the device has a small screen, return true.
+	this.isDeviceScreenSmall = function () {
+		var screenDiagonal = this.calcScreenDiagonal();
+		return(screenDiagonal < screenSizeLimit);
+	};
+	
+	// Build the H.264 filename.
+	this.buildH264Filename = function (pConfig, p_locEnv) {
+		// Remove extraneous parameters.
+		var paramStart = pConfig.indexOf('&');
+		if (paramStart !== -1) {
+			pConfig = pConfig.substring(0, paramStart);
+		}
+
+		// Remove directory prefix and file type.
+		var nameStart = pConfig.lastIndexOf('/')+1;
+		var nameEnd = pConfig.indexOf('.',nameStart);
+
+		return(pConfig.substring(nameStart, nameEnd));
+	};
+	
+	// Build the image element for no video.
+	this.buildNoVideoImgEl = function (p_locEnv) {
+		var noVideoImgFrag = document.createDocumentFragment();
+		var imgEl = document.createElement('img');
+		imgEl.setAttribute('src', p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg');
+		imgEl.setAttribute('border', '0');
+		imgEl.setAttribute('onclick', 'closeModal');
+		noVideoImgFrag.appendChild(imgEl);
+		return noVideoImgFrag;
+	}
+	
+	// Build a video element for a device and particular operating system.
+	this.buildVideoElement = function (pConfig, p_locEnv) {
+		var h264fn = this.buildH264Filename(pConfig, p_locEnv);
+		
+		// If no filename is available, return with the No Video image element.
+		if (h264fn === '') {
+			// Set up to show the No Video image.
+			noVideo = true;
+			return this.buildNoVideoImgEl(p_locEnv);
+		}
+		
+		// Set up elements common to playing video with and without modal dialog.
+		var vidFrag = document.createDocumentFragment();		
+		var videoEl = document.createElement('video');
+		videoEl.setAttribute('id', 'currEmbStream');
+		videoEl.setAttribute('style', 'display:block; position:absolute;');
+		
+		// Create child elements for the video element. 
+		var videoSourceEl = document.createElement('source');
+		videoSourceEl.setAttribute('src',h264PathMarker + h264fn + '.mp4');
+		if(!isAndroid) {
+			// Android does not accept the "type" attribute and fails.
+			videoSourceEl.setAttribute('type','video/mp4');
+		}
+		
+		videoEl.setAttribute('poster',p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg');
+		videoEl.setAttribute('width','1');
+		videoEl.setAttribute('height','1');
+		videoEl.setAttribute('onended','closeModal');
+		
+		if(isIOS) {
+			videoSourceEl.setAttribute('onsuspend','gvp.mobile.iosOnSuspend();');
+			var videoLoadImgEl = document.createElement('img');
+			videoLoadImgEl.setAttribute('id','gvp_loadImg');
+			videoLoadImgEl.setAttribute('src','ajaxLoader.gif');
+			videoLoadImgEl.setAttribute('style', 'display:block; position:absolute; margin:122px 0 0 234px;');videoEl.appendChild(videoLoadImgEl);	
+		} 
+			 
+		// Append child elements of the video element.
+		videoEl.appendChild(videoSourceEl);								
+		vidFrag.appendChild(videoEl);
+		
+		
+		document.getElementsByTagName('body')[0].appendChild(vidFrag);	
+		videoEl.addEventListener('load',function() {videoEl.play();},true);
+		if(isIOS) {
+			videoEl.addEventListener('load',function() {videoEl.play();},true);
+			videoEl.load();
+			videoEl.play();
+		}
+		else {
+			// Android requires explicitly attaching a click listener to the video element.
+			videoEl.addEventListener('load',function() {videoEl.play();},true);
+			
+		}
+	};
+	
+	// Insert a video element into the modal dialog.
+	this.insertVideoElemInModal = function (pConfig, p_locEnv) {
+		var videoElement = this.buildVideoElement(pConfig, p_locEnv);
+		//document.getElementById("gvp_modalInjection").appendChild(videoElement);
+		
+		var videoElement = document.getElementById("gvp_modalInjection");
+		if (videoElement === null){
+			this.buildVideoElement(pConfig, p_locEnv);
+		}
+		else {
+			videoElement.parentNode.removeChild(videoElement);
+			this.buildVideoElement(pConfig, p_locEnv);
+		}
+	};
+	
+	// Insert a video element into the page.
+	this.insertVideoElemInPage = function (pConfig, p_locEnv) {
+		
+		var voidVid = document.getElementById("currEmbStream");
+		if (voidVid === null){
+			this.buildVideoElement(pConfig, p_locEnv);
+		}
+		else {
+			voidVid.parentNode.removeChild(voidVid);
+			this.buildVideoElement(pConfig, p_locEnv);
 		}
 	};
 };

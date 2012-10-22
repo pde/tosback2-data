@@ -398,7 +398,6 @@ function grabCookie() {
             var visRegExp = /[0-9A-F]+-[0-9A-F]+/g;
             var dvi = dviCookie.match(visRegExp);
             sCookieVal = dvi;
-            console.log(sCookieVal);
         }
     }, 100)
 }

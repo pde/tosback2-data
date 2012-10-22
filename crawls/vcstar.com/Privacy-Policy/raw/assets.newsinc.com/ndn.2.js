@@ -1,4 +1,4 @@
-﻿document.writeln("<script type='text/javascript' src='http://rt.legolas-media.com/lgrt?ci=2&ti=21322&pbi=10962'></script>");
+﻿//document.writeln("<script type='text/javascript' src='http://rt.legolas-media.com/lgrt?ci=2&ti=21322&pbi=10962'></script>");
 var ANALYTICS_USER_TOKEN = "ANALYTICS_USER_TOKEN"; var BASE_SERVICE_URL = "http://analytics.newsinc.com/"
 String.format = function(text) {
     if (arguments.length <= 1) { return text; }
@@ -52,6 +52,7 @@ getSwfId = function (movieName) {
 		return document[movieName];
 	}
 }
+
 function getLegolasCookie(name) 
 { 
 	var cookies = document.cookie; 
@@ -64,7 +65,9 @@ function getLegolasCookie(name)
 		return false; // the cookie couldn't be found! it was never set before, or it expired. 
 	} 
 } 
+
 function getDart(){
+	
 	var lsg_cookie = getLegolasCookie('lsg'); 
 	var dart = ''; 
 	if (lsg_cookie) { 
@@ -73,6 +76,8 @@ function getDart(){
 			dart+= ('lsg='+cookie_tokens[i]+';'); 
 		} 
 	}
+	
+	//var dart = '';
 	sendLegalos(dart);
 }
 function sendLegalos(dart) {

@@ -1,0 +1,48 @@
+;(function($){  
+  var Mun2Tweet = Backbone.View.extend({
+    el: '#mun2-tweet', // el attaches to existing element
+        
+    replaceURLWithHTMLLinks: function(text) {
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      return text.replace(exp,"<a href='$1' target='_new'>$1</a>"); 
+    },
+    
+    postRender: function() {
+      var t = this;
+      
+      this.jqEl.find('.tweet_text').each(function () {
+        var processedHTML = t.replaceURLWithHTMLLinks($(this).text());
+        $(this).html(processedHTML);
+      });
+    },
+    
+    processResponse: function() {
+      var data = arguments[0], nLength = data.length, i = 0;
+
+      for (; i < nLength; i++) {
+        data[i].time_ago = $.timeago(data[i].created_at);    
+      }
+      this.data = { items: data };
+      this.render();
+    },
+    
+    requestData: function(path) {
+      $.getJSON(path, this.processResponse.bind(this));
+    },
+    
+    render: function(){
+      // Precompiled handlebars.templates
+      this.jqEl.html(Handlebars.templates.tweet(this.data));
+      this.postRender();
+    },
+    
+    initialize: function(){
+      this.data = this.requestData('/tweets.json');
+      this.jqEl = $(this.el);
+    }
+  });
+  // Init
+  $(function () { 
+    Drupal.settings.mun2_tweet = new Mun2Tweet();
+  });
+})(jQuery);

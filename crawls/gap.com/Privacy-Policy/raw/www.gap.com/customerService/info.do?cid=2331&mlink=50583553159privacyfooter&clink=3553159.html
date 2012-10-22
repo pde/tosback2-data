@@ -895,12 +895,12 @@
 </script>
 
 
-	<script type="text/javascript" src="http://www.gap.com/gzip_1038882325/optimizedBundles/globalOptimized.js" ></script>
+	<script type="text/javascript" src="http://www.gap.com/gzip_78814602/optimizedBundles/globalOptimized.js" ></script>
 
 
 	<script type="text/javascript">
 		// Activation of the navigationService and associated Managers
-		navigationService.model.isActive = ('false' === 'true')
+		navigationService.model.isActive = ('true' === 'true')
                 || ('false' === 'true')
                 || ('true' === 'true')
                 || ('true' === 'true');
@@ -922,6 +922,8 @@
 
 
 
+
+	
 
 
 
@@ -956,11 +958,11 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/18/2012 08:08 AM",
+            DATE_IN_USE: "10/22/2012 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
-            IS_FACET_ENABLED: 'false',
+            IS_FACET_ENABLED: 'true',
             IS_OPTIMIZED_PRODUCT_PAGE_ACTIVE: 'false' ==  "true"
             
 		});
@@ -996,8 +998,8 @@
 <!-- shippingOptionsFeatureActive  = true -->
 <!-- isLoggingServiceActive  = false -->
 <!-- catalogCategoryFeaturesEnabled  = power_reviews,quick_links,cj_feed,top_left_nav,ecom_rest_services,categories -->
-<!-- localCacheActive  = true -->
-<!-- isLocalCacheDisabled  = false -->
+<!-- localCacheActive  = false -->
+<!-- isLocalCacheDisabled  = true -->
 <!-- isPageContentDataActive  = true -->
 <!-- isKeywordSearchDrivenByEaskAsk  = true -->
 
@@ -1015,7 +1017,7 @@
 <!-- faceted category white list =  -->
 <!-- faceted category black list =  -->
 <!-- isSolrEnabled = false -->
-<!-- isFaceted = false -->
+<!-- isFaceted = true -->
 <!-- isCategorySearchFaceted  = false -->
 <!-- isOptimizedProductPageActive  = false -->
 
@@ -2411,6 +2413,20 @@ div.facet div.flyout-panel div.facet-invisible-edge div.facet-flyout .flyout-foo
 
 /* -- END content override CNOV-10 CSS -- */
 
+/* Begin CNOV-12: Bottom tools line overflowing */
+	#mainContentContainer #mainContentBottom {
+		width: 100%;
+	}
+
+	#mainContentContainer #mainContentBottom .categoryFacetedSearch #productToolsLineBottom.productToolsLine .navSpeedBump .paginatorPreviousArrow {
+		margin-left: 351px;
+	}
+
+	.categoryFacetedSearch .productGridPage, .categoryFacetedSearch .productToolsLine .pagePaginator {
+		width: auto;
+	}
+/* End CNOV-12: Bottom tools line overflowing */
+
 </style>
 <!-- end CSS Hot Fix contentOverride  -->
 
@@ -2437,218 +2453,6 @@ if(window['productPage'] || window['quickLook']) {
 	}
 </script>
 <!-- end contentOverride61 -->
-
-
-<!-- begin contentOverride105_2_WCD -->
-<script type="text/javascript">
-	var CheckoutLoggingHelper = Class.create();
-	CheckoutLoggingHelper.prototype = {
-		initialize:function() {
-		
-		},
-		constants:{
-			CHECKOUT_LOGGING_HELPER_COOKIE_NAME:"checkoutLoggingHelper",
-			COOKIE_SIZE_MAX_LENGTH:3000,
-			SESSION_MAX_TIME:1800000
-		},
-		model:{
-			previousDwrRequestTime:null,
-			currentDwrRequestTime:null,
-			currentDwrRequestDate:null,
-			isCookieLengthHigh:false,
-			isSafari:false,
-			/* WCD cookies variables to keep */
-			wcdCookiesToKeep:['userSetShippingViaGlobeTrotterPopup','userSetDontShowGlobeTrotter','globalInterceptDontShow','disruptorCookie','atolGapPromoPop','MOXIESEARCH111011','011812EDFS','0108HeadlineCookie','VOLCTRL0123','QUICKLINKABTEST0216']
-		},
-		controller:{
-			init:{
-				orderMain:function() {
-					var checkoutGetRequestWrapper = checkoutLoggingHelper.controller.checkoutGetRequestWrapper;
-					/* Set previous time at initialization as aop wrap does not wrap the very first request.  Compensate
-					 * by setting the time at object instantiation - which will only be a few ms after the initial request.
-					 */
-					var currentDate = new Date();
-					var currentTime = currentDate.getTime();
-					checkoutLoggingHelper.model.previousDwrRequestTime = currentTime;
-					checkout.controller.dataLoadManager.getRequest = checkout.controller.dataLoadManager.getRequest.wrap(checkoutGetRequestWrapper);
-				},
-				shoppingBagMain:function() {
-					var controller = checkoutLoggingHelper.controller;
-					var model = checkoutLoggingHelper.model;
-					controller.setCookieSizeInfo();
-					controller.setUserAgentInfo();
-					var isCookieLengthHigh = model.isCookieLengthHigh;
-					var isSafari = model.isSafari;
-					if (isCookieLengthHigh) {
-						/* Clear globalSession cookie for all browsers */
-						controller.clearCookie("globalSession");
-						if (isSafari) {
-							/* Clear mkt cookies for Safari browsers only */
-							//controller.clearCookie("mktGlobalSession");
-							//controller.clearCookie("mktUniversalPersist");
-							
-							/* WCD update to clean up marketing cookies rather than delete */
-							controller.cleanCookie("mktGlobalSession");
-							controller.cleanCookie("mktUniversalPersist");
-						}
-					}
-				}
-			},
-			cleanCookie:function(cookieName) {
-				/* WCD function to clean marketing cookies up */
-				/* Deletes cookie values expect those specified to keep in data model */
-				var controller = checkoutLoggingHelper.controller;
-				var model = checkoutLoggingHelper.model;
-				var cookieStr = gidLib.getCookie( cookieName );
-				if( cookieStr != '' ) {
-					var cookieArray = cookieStr.split('&');
-					var newCookiStr = '';
-					var cookieVar;
-					
-					cookieArray.each( function( cookieArrayPair, i ) {
-						//console.log( cookieArrayPair );
-						cookieVar = cookieArrayPair.split('=');
-						cookieVar = cookieVar[0];
-					
-						if( model.wcdCookiesToKeep.include( cookieVar ) ) {
-							newCookiStr = newCookiStr + cookieArrayPair;
-							// Delimit cookie values with ampersand
-							if( i < cookieArray.length ) {
-								newCookiStr = newCookiStr + '&';
-							}
-						}
-					});
-					newCookiStr = newCookiStr.substr( 0, newCookiStr.length-1 );
-								
-					// Reset cookie with new value
-					var cookieConfiguration = cookieManagementService.api.getCookieConfigurationByCookieName(cookieName);
-					if (cookieConfiguration != null) {
-						/* Cookie is managed by cookieManagementService so proceed with cookieConfiguration from service. */
-						gidLib.setCookie(cookieConfiguration.name,
-							escape(newCookiStr),
-							cookieConfiguration.expirationDate,
-							cookieConfiguration.path,
-							cookieConfiguration.domain,
-							cookieConfiguration.isSecure);
-					} else {
-						/* Cookie is not managed by cookieManagementService so proceed with default execution. */
-						var expDate = (expDate != null ? expDate : gidLib.getFutureDate({"years":5}));
-						var cookieParams = gidLib.setCookieParamsHelper(cookieName,expDate);
-						/* Set cookie */
-						gidLib.setCookie(cookieName,
-							escape(newCookiStr),
-							cookieParams.exp,
-							cookieParams.path,
-							cookieParams.domain,
-							cookieParams.isSecure);
-					}
-				}
-			},
-			clearCookie:function(cookieName) {
-				if (cookieName != null) {
-					var newCookieValue = "";
-					var cookieConfiguration = cookieManagementService.api.getCookieConfigurationByCookieName(cookieName);
-					if (cookieConfiguration != null) {
-						/* Cookie is managed by cookieManagementService so proceed with cookieConfiguration from service. */
-						gidLib.setCookie(cookieConfiguration.name,
-							escape(newCookieValue),
-							cookieConfiguration.expirationDate,
-							cookieConfiguration.path,
-							cookieConfiguration.domain,
-							cookieConfiguration.isSecure);
-					} else {
-						/* Cookie is not managed by cookieManagementService so proceed with default execution. */
-						var cookieParams = gidLib.setCookieParamsHelper(cookieName,expDate);
-						/* Set cookie */
-						gidLib.setCookie(cookieName,
-							escape(newCookieValue),
-							cookieParams.exp,
-							cookieParams.path,
-							cookieParams.domain,
-							cookieParams.isSecure);
-					}
-				}
-			},
-			setPreviousDwrRequestDeltaTime:function() {
-				var CHECKOUT_LOGGING_HELPER_COOKIE_NAME = checkoutLoggingHelper.constants.CHECKOUT_LOGGING_HELPER_COOKIE_NAME;
-				var SESSION_MAX_TIME = checkoutLoggingHelper.constants.SESSION_MAX_TIME;
-				checkoutLoggingHelper.model.currentDwrRequestDate = new Date();
-				var currentDwrRequestDate = checkoutLoggingHelper.model.currentDwrRequestDate;
-				var previousDwrRequestTime = checkoutLoggingHelper.model.previousDwrRequestTime;
-				var currentDwrRequestTime = currentDwrRequestDate.getTime();
-				var isValidTimeout = false;
-				var previousDwrRequestDeltaTime = null;
-				if (previousDwrRequestTime != null) {
-					previousDwrRequestDeltaTime = currentDwrRequestTime - previousDwrRequestTime;
-					if (previousDwrRequestDeltaTime > SESSION_MAX_TIME) {
-						isValidTimeout = true;
-					}
-				} else {
-					previousDwrRequestDeltaTime = "previous delta time not yet recorded";
-				}
-				
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "previousDwrRequestTime", previousDwrRequestTime);
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "currentDwrRequestTime", currentDwrRequestTime);
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "dwrRequestDeltaTime", previousDwrRequestDeltaTime);
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "isValidTimeout", isValidTimeout);
-				/* Update previous time with current time so that the next request is ready to go */
-				checkoutLoggingHelper.model.previousDwrRequestTime = currentDwrRequestTime;
-			},
-			setCookieSizeInfo:function() {
-				var CHECKOUT_LOGGING_HELPER_COOKIE_NAME = checkoutLoggingHelper.constants.CHECKOUT_LOGGING_HELPER_COOKIE_NAME;
-				var COOKIE_SIZE_MAX_LENGTH = checkoutLoggingHelper.constants.COOKIE_SIZE_MAX_LENGTH;
-				var documentCookie = window.document.cookie;
-				if (documentCookie) {
-					if (documentCookie.length > 0 && documentCookie.indexOf(";") != -1) {
-						var documentCookieArray = documentCookie.split(";");
-						var allCookiesCount = documentCookieArray.length;
-						var allCookiesLength = documentCookie.length;
-						var isCookieLengthHigh = false;
-						if (allCookiesLength > COOKIE_SIZE_MAX_LENGTH) {
-							isCookieLengthHigh = true;
-							checkoutLoggingHelper.model.isCookieLengthHigh = isCookieLengthHigh;
-						}
-						gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "allCookiesCount", allCookiesCount);
-						gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "allCookiesLength", allCookiesLength);
-						gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "isCookieLengthHigh", isCookieLengthHigh);
-					}
-				}
-			},
-			setUserAgentInfo:function() {
-				var CHECKOUT_LOGGING_HELPER_COOKIE_NAME = checkoutLoggingHelper.constants.CHECKOUT_LOGGING_HELPER_COOKIE_NAME;
-				var isSafari = false;
-				var userAgent = navigator.userAgent;
-				var userAgentToSearch = userAgent.toLowerCase();
-				if (userAgentToSearch.indexOf("safari") != -1) {
-					isSafari = true;
-					checkoutLoggingHelper.model.isSafari = isSafari;
-					gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "userAgent", "");
-				}
-				gidLib.setCookieVar(CHECKOUT_LOGGING_HELPER_COOKIE_NAME, "isSafari", isSafari);
-			},
-			checkoutGetRequestWrapper:function(originalGetRequestMethod, requestVo, dataLoader) {
-				checkoutLoggingHelper.controller.setPreviousDwrRequestDeltaTime();
-				checkoutLoggingHelper.controller.setCookieSizeInfo();
-				checkoutLoggingHelper.controller.setUserAgentInfo();
-				originalGetRequestMethod(requestVo, dataLoader);
-			}
-		}
-	}
-	
-	if (window["checkout"] && window.location.pathname == "/checkout/order.do") {
-		var checkoutLoggingHelper = new CheckoutLoggingHelper();
-		checkoutLoggingHelper.controller.init.orderMain();
-	}
-	if (window.location.pathname == "/buy/shopping_bag.do") {
-		var checkoutLoggingHelper = new CheckoutLoggingHelper();
-		checkoutLoggingHelper.controller.init.shoppingBagMain();
-	}
-</script>
-<!-- end contentOverride105_2_WCD -->
-
-
-
-
 
  
   <!-- begin contentOverride23 -->
@@ -3407,26 +3211,6 @@ if( ( location.pathname == '/profile/order_status_detail.do' ) || ( location.pat
 </script>
 
 
-
-<!-- Content Override 94 -->
-<script type="text/javascript">
-if (window['reportingService'] && reportingService.controller.viewManagers.categoryFacetedSearchViewManager
-	&& reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
-
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.getReportRequest =
-		function() {
-			var reportingManager = reportingService.controller.reportingManager;
-			var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
-			viewManager.isWaitComplete = true;
-			// Do not pass the viewManager as this is a wait report and is already in the registry.
-			reportingManager.getReportingRequest(viewManager);
-		}
-}
-</script>
-<!-- END: Content Override 94 -->
-
-
-
 <!-- BEGIN: content override 97 -->
 <script type="text/javascript">
 document.observe('dom:loaded',function() {
@@ -3823,20 +3607,6 @@ if (window['checkout'] && checkout.controller && checkout.controller.modules.sig
 <!-- contentOverride113 end -->
 
 
-<!-- contentOverride121 begin -->
-<script type="text/javascript">
-//<![CDATA[
-
-// Override to set the default number of cooklies allowed 
-// for all browsers to 150
-if (browserService) {
-	browserService.api.getCookieLimits = function() { return browserService.model.cookieLimits.controller.limits(150,4000,4000)}
-}
- // ]]>
-</script>
-<!-- contentOverride121 end -->
-
-
 <!-- Begin Override 120 -->
 <script type="text/javascript">
 var myWipAppDomain = window.location.hostname;
@@ -3922,36 +3692,6 @@ if (window["browserService"]) {
 // contentOverride133 end
 </script>
 
-<!-- begin contentOverride134 -->
-<script type="text/javascript"> 
-if (typeof storeLocationsService != 'undefined') {
-	storeLocationsService.controller.getLocationInfo = function() {
-		var locationInfo = {
-			zipForService: 10007, // Default to New York
-			zipForDisplay: 10007,
-			latitude: null,
-			longitude: null
-		}; 
-
-		var cookieLocation = gidLib.getCookieVar('globalSession', 'pcode');
-		var akamaiLocation = personalizationService.model.personalizationData.personalizationInfoV1.marketingMessageInfo.geoLocation;
-
-		if (cookieLocation != null && cookieLocation != '') {
-			locationInfo.zipForService = cookieLocation;
-			locationInfo.zipForDisplay = cookieLocation;
-		} else if (akamaiLocation != null) {
-			var zipcodeMatches = akamaiLocation.match(/zip=([\d\w-]+)/);
-
-			locationInfo.zipForDisplay = zipcodeMatches ? zipcodeMatches[1] : undefined;
-			locationInfo.zipForService = locationInfo.zipForDisplay;
-		}
-
-		return locationInfo;
-	};
-}
-</script>
-<!-- end contentOverride134 -->
-
 <!-- BEGIN IT Override #138 - excessive omniture call mitigation -->
 <script type="text/javascript">
 if (reportingService && reportingService.controller.viewManagers.rewardBannerViewManager && reportingService.controller.viewManagers.rewardBannerViewManager.controller) {
@@ -3959,14 +3699,6 @@ reportingService.controller.viewManagers.rewardBannerViewManager.controller.getR
 }
 </script>
 <!-- END IT Override #138 - excessive omniture call mitigation -->
-
-<!-- begin contentOverride139 -->
-<script type="text/javascript">
-	if (window["productPage"] && window.location.pathname == "/browse/product.do") {
-		productPage.model = {};
-	}
-</script>
-<!-- end contentOverride139 -->
 
 <!-- begin contentOverride140 -->
 <script type="text/javascript">
@@ -4016,67 +3748,6 @@ if (window["navigationService"] && location.pathname == "/browse/category.do") {
 </script>
 <!-- end contentOverride144 -->
 
-
-<!-- BEGIN IT Override #149 - omni size variant fix -->
-<script type="text/javascript">
-
-var isFacetedSearchPage = /search.do|category\w*.do/.test(location.pathname);
-
-if(isFacetedSearchPage && brandConst.IS_FACET_ENABLED === 'true' && brandConst.IS_NAV2_ENABLED === 'true' && navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && navigationService.controller.managers.categoryFacetedSearchManager.controller && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers && navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager){
-navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.view.renderFacetOptionRow = function(dimensionIndex, variantIndex, sizeFacetOptionList, facetManagerId, sizeFacetCategoryId,
-                 sizeFacetCategoryName, sizeVariantName, dimensionName, sizeVariantId, dimensionId, variantSize, variantDisplay, numOfVariants, flyoutContent, leftRailFacetOptionsHtml) {
-
-                            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var facetManager = categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager;
-		var constants = categoryFacetedSearchManager.constants;
-		var view = facetManager.view;
-
-                            var facetOptionsHtml = view.renderFacetOption(
-                                    sizeFacetOptionList, facetManagerId, sizeFacetCategoryId,
-                                    sizeFacetCategoryName, sizeVariantName, dimensionName,
-                                    sizeVariantId, dimensionId, variantSize, leftRailFacetOptionsHtml);
-
-                            var categoryTopRowId = "";
-                            var categoryTopRow = "category_child_row_" + sizeFacetCategoryId;
-                            var parentRow = '';
-
-                            if((variantIndex == 0) && (dimensionIndex == 0)){
-                                categoryTopRow = "category_parent_row";
-                                categoryTopRowId = categoryTopRow+"_" + sizeFacetCategoryId;
-                            }
-                            
-                            var displayVariantTitle = Object.isUndefined(facetManager.view.shouldDisplayVariantTitle) ? (variantDisplay != 'hideMe' && numOfVariants > 1) : facetManager.view.shouldDisplayVariantTitle(sizeVariantName,sizeVariantId,variantDisplay);
-                            
-                            if(sizeVariantName.toLowerCase() == 'omni'){ sizeVariantId = 0; }
-                            
-                            var categoryDisplayContract = {
-                                facetElementId : constants.FACET_ID_PREFIX + facetManagerId,
-                                facetName : facetManagerId,
-                                facetNameId: facetManagerId.toLowerCase(),
-                                facetCategoryName: sizeFacetCategoryName,
-                                facetVariantName: sizeVariantName,
-                                facetVariantId: sizeVariantId,
-                                variantDisplay: variantDisplay,
-                                variantHeaderDisplay: displayVariantTitle ? '' : 'hideMe',
-                                facetCategoryDimension: dimensionName,
-                                facetCategoryDimensionId: constants.FACET_ID_PREFIX + facetManagerId + "_" +
-                                    sizeFacetCategoryId + "_" + dimensionId,
-                                showDimension: '',
-                                showCategoryName: '',
-                                isParentRow: parentRow,
-                                categoryDivider: '',
-                                facetOptions: facetOptionsHtml,
-                                variantName: sizeVariantName.replace(/ /g,"_"),
-                                onlyVariant: variantSize == 1 ? 'onlyVariant' : ''
-                            };
-                            flyoutContent.push(facetManager.constants.templates.FACET_SIZE_CATEGORY_LIST_TEMPLATE.evaluate(categoryDisplayContract));
-                        };
-}
-
-
-</script>
-<!-- END IT Override #149 - omni size variant fix -->
-
 <!-- begin contentOverride151.2 -->
 <script type="text/javascript">
 	pixelManagementService.controller.eventHandlers.domLoadedHandler = function () {
@@ -4098,182 +3769,6 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 </script>
 <!-- end contentOverride151.2 -->
 
-<!-- begin contentOverride153 -->
-<script type="text/javascript">
-
-
-	if ((brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) &&
-	window['navigationService'] && navigationService.productGridHelper.api &&
-	typeof(navigationService.productGridHelper.api.productLinkHelper) === 'function') {
-
-    (function () {
-        navigationService.controller.managers.categoryFacetedSearchManager.model.isInitialLoad = true;
-        var oldInitializeGrid = navigationService.productGridHelper.api.initializeProductGrid,
-            oldRenderProductGrid = navigationService.productGridHelper.api.renderProductGrid.wrap(function (originalMethod) {
-                var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-                var model = categoryFacetedSearchManager.model;
-                var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-                if (!model.hasSearchResults) return;
-
-                var productCategoryFacetedSearch = categoryFacetedSearchManager.model.data.productCategoryFacetedSearch;
-                var productCategory = (productCategoryFacetedSearch || {})
-                    .productCategory;
-
-                if (!productCategory) return;
-
-                originalMethod(productCategory);
-
-                if (!productCategory.childCategories && !productCategory.childProducts) return;
-                navigationService.productGridHelper.api.productLinkHelperUtils.productLinkClickScroller();
-            });
-
-        //*************** BACK BTN FIX BEGIN **************************
-        navigationService.controller.managers.categoryFacetedSearchManager.constants.templates.PRODUCT_TEMPLATE_TEXT = '<li id="categoryProductItem_#{pid}#{cidIdParam}" class="brand#{brandName} productCatItem" >' + '<div id="categoryProductItemImageContainer_#{pid}#{cidIdParam}" class="brand#{brandName} facetedSearchImgDiv imgDiv productPlaceholder">' + '<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#{categoryProductLink}" #{productClickEventHandler}>' + '<img id="cimg_#{productImgId}" class="gridProdImg" alt="#{categoryUnstyledProductName}" productimagepath="#{productImagePath}" src="http://www.gap.com/assets/common/clear.gif" #{mouseEventHandlers}>' + '</a>' + '</div>' + '<a class="productItemName" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#{categoryProductLink}">#{categoryProductName}</a>' + '#{pricingHTML}' + '#{mupAndMarketing}' + '</li>';
-
-        navigationService.productGridHelper.api.productLinkHelperUtils = {
-            getClickEventHandlerName: function (cid) {
-                return 'onclick="navigationService.productGridHelper.api.productLinkHelperUtils.productLinkClickHandler()"';
-            },
-            getProductLink: navigationService.productGridHelper.api.productLinkHelper,
-            productLinkClickHandler: function () {
-                var top = document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop,
-                    cid = gidLib.getQuerystringParam('cid');
-                window.name = top > 0 ? 'productClickScrollTop_' + cid + '_' + top : '';
-            },
-            productLinkClickScroller: function () {
-                if (window.name.search('^productClickScrollTop_(\\d+)*_(\\d+)$') == 0) {
-                    var position = window.name.split('_'),
-                        clickedCid = position[1],
-                        top = parseInt((position[2] || '0'), 10),
-                        pageCid = gidLib.getQuerystringParam('cid') || '',
-                        shouldScroll = clickedCid == pageCid;
-
-                    if (shouldScroll) {
-                        window.scrollTo(0, top);
-                    }
-                }
-                window.name = '';
-            }
-        };
-        navigationService.productGridHelper.api.buildProductElementHelper = navigationService.productGridHelper.api.buildProductElementHelper.wrap(
-
-        function (originalMethod, product, index, productContractObj, isOutfitCategory) {
-            var productGridApi = navigationService.productGridHelper.api;
-
-            function fixProductContract(product1, productContractObj) {
-                var productLinkHelper = productGridApi.productLinkHelperUtils,
-                    cid = productContractObj.get('cid') || '';
-
-                productContractObj.set('categoryProductLink', productLinkHelper.getProductLink(cid, product1));
-                productContractObj.set('productClickEventHandler', productLinkHelper.getClickEventHandlerName(cid));
-            }
-
-            var productContractObj = originalMethod(product, index, productContractObj, isOutfitCategory);
-            if (!(product.isOutfit === 'true' && isOutfitCategory === true)) {
-            	fixProductContract(product, productContractObj);
-	    }
-
-            return productContractObj;
-        });
-
-        //*************** BACK BTN FIX END **************************
-
-
-        //*************** DISABLE FADE BEGIN ************************
-        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.createHandler = function(transport) {
-            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-            var model = categoryFacetedSearchManager.model;
-
-            if (!model.isDomReady) return;
-
-
-            var productHighlights = $$('.productHighlight');
-            productHighlights && productHighlights.each(function(highlight, index) {highlight.remove();});
-
-            var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
-            var productGridHelper = navigationService.productGridHelper;
-
-            if(quickLook.isQuickLookOpen) { quickLook.closeQuickLook(); }
-
-            productGridHelper.api.renderProductGrid({childProducts: null, childCategories: []});
-            var cachedElements = productGridHelper.cachedElements;
-            if (model.isInitialLoad) {
-                cachedElements.loadingSpinner.addClassName('hideMe');
-            } else {
-                cachedElements.loadingSpinner.removeClassName('hideMe');
-            }
-
-            //we are using display:none because of the effect, more information here http://madrobby.github.com/scriptaculous/effect-appear/
-            $(productToolsLineBottom).setStyle('display:none');
-
-            cachedElements.productGrid.update("");
-        };
-        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = function (transport) {
-            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-            var model = categoryFacetedSearchManager.model;
-
-            if (!model.isDomReady) return;
-            var productGridDiv = $('tabTableOff');
-            if (model.isInitialLoad) {
-                productGridDiv.setStyle('display:block');
-            } else {
-                productGridDiv.setStyle('display:none');
-                productGridDiv.appear();
-            }
-
-            var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
-            if (!spinner.hasClassName('hideMe')) {
-                spinner.addClassName('hideMe');
-            }
-
-            var areAllSubCatsOutfit = model.data.productCategoryFacetedSearch.productCategory.areAllSubCatsOutfit == "true";
-            var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
-
-            if (!areAllSubCatsOutfit) {
-                var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
-                $(productToolsLineBottom)
-                    .appear();
-            }
-
-            if (navigationService.preview && navigationService.preview.productHighlight.isPreviewEnable()) {
-                if (objPreview.previewMode == "WIP") {
-                    objPreview.togglePreview(true);
-                    navigationService.preview.productHighlight.setElementHighLighter();
-                }
-            }
-
-            categoryFacetedSearchManager.view.fixSizeFacetVariantName();
-            model.isInitialLoad = false;
-        };
-        //*************** DISABLE FADE END ************************
-
-        //*************** MAKE SURE GRID RENDER AS EARLY AS POSSIBLE BEGIN ***********************
-        navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.domReadyHandler = navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.domReadyHandler.wrap(function (old) {
-	    $('loadingSpinner').addClassName('hideMe');
-            oldInitializeGrid();
-            old();
-        });
-
-        navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchView = navigationService.controller.managers.categoryFacetedSearchManager.controller.getCategoryFacetedSearchView.wrap(function (old) {
-            var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-            if (!categoryFacetedSearchManager.view.initializeDomElements()) return;
-            oldRenderProductGrid();
-
-            old();
-        });
-        //*************** MAKE SURE GRID RENDER AS EARLY AS POSSIBLE BEGIN ***********************
-
-        navigationService.productGridHelper.api.initializeProductGrid = navigationService.productGridHelper.api.renderProductGrid = function () {};
-    })();
-
-
-}
-
-
-
-
-</script>
-<!-- end contentOverride153 -->
 
 <!-- begin CNOV-4 --> 
 <script type="text/javascript">
@@ -5055,268 +4550,6 @@ if( window['siteNavigation'] ) {
 
 <!-- container 8 -->
 <!-- BEGIN Content Item File: /content/0005/673/404/cn5673404.html -->
-
-<script type="text/javascript">
-
-// begin CNOV-7 - NAV2 AB Test
-var NAV2TestCookieCutter = Class.create();
-NAV2TestCookieCutter.prototype = {
-    initialize: function (CookieVarName, CookieUsedName, CookieValueBase, ForcedModeBaseName, SegmentBreakdown, theEvar, plExcept) {
-        this.EvarToUse = theEvar != '' ? theEvar : false;
-        this.CookieVariableName = CookieVarName;
-        this.CookieUsed = CookieUsedName;
-        this.CookieValueBase = CookieValueBase;
-        this.SegBreakdown = SegmentBreakdown.split('-');
-        this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-        this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-        this.QuickSegment = '';
-        this.piperlimeException = plExcept;
-        this.userNeedsSync = false;
-        this.ForcedModeBase = ForcedModeBaseName;
-        this.ModeArrayIndex = this.SegBreakdown.length;
-        this.modeArray = new Array();
-        this.modeArray[0] = 'a';
-        this.modeArray[1] = 'b';
-        this.modeArray[2] = 'c';
-        this.modeArray[3] = 'd';
-        this.modeArray[4] = 'e';
-        this.modeArray[5] = 'f';
-        this.modeArray[6] = 'g';
-
-        if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-            this.forcedMode();
-        } else {
-            this.cookieScanner();
-        }
-    },
-
-    forcedMode: function () {
-        for (i = 0; i < this.ModeArrayIndex; i++) {
-            if (location.href.indexOf(this.ForcedModeBase + '=' + this.modeArray[i]) >= 1) {
-                this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-                this.QuickSegment = this.modeArray[i].toUpperCase();
-            }
-        }
-
-        gidLib.setCookieVar(this.CookieUsed, this.CookieVariableName, this.UserSegment);
-        if (this.EvarToUse) {
-            this.setABTestVariable(this.UserSegment);
-        }
-
-        userNeedsSync = true;
-    },
-
-    cookieScanner: function () {
-        if (this.DoesTheCookieExist) {
-            if (this.EvarToUse) {
-                this.setABTestVariable(this.RetrievedCookieValue);
-            }
-
-            for (i = 0; i < this.ModeArrayIndex; i++) {
-                if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-                    this.QuickSegment = this.modeArray[i].toUpperCase();
-                    break;
-                }
-            }
-        } else {
-            this.tagManager();
-        }
-    },
-
-    tagManager: function () {
-        this.Segmentation = Math.floor((Math.random() * 100) + 1); // chooses 1 to 100
-        this.FloorThreshold = 0;
-        this.TopThreshold = 0;
-
-        for (i = 0; i < this.ModeArrayIndex; i++) {
-            this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-            if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)) {
-                this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-                this.QuickSegment = this.modeArray[i].toUpperCase();
-                break;
-            } else {
-                this.FloorThreshold = this.TopThreshold;
-            }
-        }
-
-        gidLib.setCookieVar(this.CookieUsed, this.CookieVariableName, this.UserSegment);
-
-        if (this.EvarToUse) {
-            this.setABTestVariable(this.UserSegment);
-        }
-    },
-
-    setABTestVariable: function (setValue) {
-        thisEvar = 'eVar' + this.EvarToUse;
-        ABTestVariables[thisEvar] = setValue;
-    }
-};
-
-
-var navABTest = function (config) {
-    function getLinksSelector(context, id) {
-        var contentId = context.prefix + id,
-            tags = context.tags,
-            selectors = context.links,
-            tagSize = tags.length,
-            i, j, actions = context.actions,
-            actionSize = actions.length,
-            selectorDelimiter;
-        for (i = 0; i < tagSize; i++) {
-            for (j = 0; j < actionSize; j++) {
-                selectorDelimiter = selectors.length == 0 ? '' : ','
-                selectors.push(selectorDelimiter + contentId + ' ' + tags[i] + '[href*="' + actions[j] + '.do"]');
-            }
-        }
-        return context;
-    }
-
-    function getIdsSelector(context, container) {
-        var ids = container.ids;
-        context.prefix = container.prefix;
-        context.tags = container.tags;
-        context.actions = container.actions;
-
-        if (!ids || ids.length == 0) return context;
-        ids.inject(context, getLinksSelector);
-
-        return context;
-    }
-
-    function getLinks() {
-        var context = {
-            links: []
-        };
-        config.linkContainers.inject(context, getIdsSelector);
-        return context.links.join('');
-    }
-
-    var pathname = location.pathname,
-        isActive = pathname.match(/^\/$|\/browse\//) != null,
-        domainUrl = '.' + (location.host.split(':')[0]),
-        path = '/',
-        omniVar = config.omniVar,
-
-        cookie = 'NAV2MODE',
-				categoryName = 'category.do',
-				isSearch = location.pathname === '/browse/search.do',
-
-        segA = 'NAV2SEG=segA',
-        segB = 'NAV2SEG=segB',
-        segC = 'NAV2SEG=segC',
-        segBSeed = 'nsb',
-        segCSeed = 'nsc',
-        wcdSegA = 'navFacetsSEGA',
-        wcdSegB = 'navFacetsSEGB',
-        wcdSegC = 'navFacetsSEGC',
-        wcdSegD = 'navFacetsSEGD',
-        wcdSegE = 'navFacetsSEGE',
-
-        segSeed = omniVar == wcdSegB ? segBSeed : ((omniVar == wcdSegC || omniVar == wcdSegD || omniVar == wcdSegE) ? segCSeed : ''),
-        segment = omniVar == wcdSegB ? segB : ((omniVar == wcdSegC || omniVar == wcdSegD || omniVar == wcdSegE) ? segC : segA),
-
-        links = $$(getLinks()) || [],
-        emptyFunc = function () {},
-        emptyElement = {
-            setStyle: emptyFunc
-        },
-        displayNone = {
-            display: 'none'
-        },
-        emptyString = '',
-        emptyStringFunc = function () {
-            return emptyString;
-        };
-
-    function executeSegmentD() {
-	var facetBrand = $('facet_brand')||emptyElement,
-		facetColor = $('facet_color')||emptyElement,
-		facetPrice = $('facet_price')||emptyElement;
-
-	facetBrand.setStyle(displayNone);
-	facetColor.setStyle(displayNone);
-	facetPrice.setStyle(displayNone);
-	if ($('facet_size')) $('facet_size').setStyle({'borderBottom':'2px solid #000'});
-    }
-
-    function executeSegmentE() {
-	executeSegmentD();
-	($('facet_style')||emptyElement).setStyle(displayNone);
-    }
-
-    return {
-        isActive: function () {
-            return isActive;
-        },
-        displayManager: function () {
-            if (!isActive) return;
-
-            gidLib.setCookie(cookie, escape(segment), null, path, domainUrl, false);
-            if (segment === segB || segment === segC) {
-                this.appendSeed();
-            }
-        },
-        linkModifier: function (link) {
-           var links = link.href.split('#'),
-												hash = links[1] ? '#' + links[1] : '';
-            link.href = links[0] + ('&' + segSeed) + hash;
- 
-        },
-        appendSeed: function () {
-            links.each(this.linkModifier);
-
-        },
-executeSegmentSpecificCode: function () {
-						if (isSearch) { return; }
-            if (omniVar === wcdSegD) {
-                executeSegmentD();
-            } else if (omniVar === wcdSegE) {
-                executeSegmentE();
-            }
-        }
-    };
-}
-
-var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1210A_v1_rollout', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '20-20-20-20-20', '41', '');
-
-Event.observe(document, "dom:loaded", function () {
-
-    //SNAV AB test manager
-    var navAB = new navABTest({
-        linkContainers: [{
-            prefix: 'div#',
-            ids: ['sideNavCategories', 'homeVariant10000461_region1', 'GIDDivisionLeftNav_regionTop', 'GIDCategoryLeftNavNoVI_regionTop', 'GIDSubDivisionLeftNav_regionTop', 'categoryVariant10000508_region1'],
-            tags: ['area', 'a'],
-            actions: ['category', 'categorySearch']
-        }],
-        omniVar: (ABTestVariables['eVar' + (navCookieCutter.EvarToUse || '0')] || '')
-    });
-    navAB.displayManager();
-
-
-    Event.observe(window, 'load', function () {
-        //fire grid:ready event on std:content categories
-        var noViContent = $('GIDCategoryLeftNavNoVI_regionTop');
-        if (navAB.isActive() && noViContent) {
-            document.fire('categoryProductGrid:ready');
-        }
-    });
-
-
-    if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true)) {
-	navigationService.controller.managers.categoryFacetedSearchManager.view.initializeFacets = 
-		navigationService.controller.managers.categoryFacetedSearchManager.view.initializeFacets.wrap(function(old, pageNumberRequested, activeFacetManagerMap, searchFacetList) {
-			old(pageNumberRequested, activeFacetManagerMap, searchFacetList);
-			navAB.executeSegmentSpecificCode();
-		});
-    }
-
-
-
-});
-
-</script>
-
 
 <!-- Begin Reveal Outfits Code -->
 <script type="text/javascript">
@@ -7552,209 +6785,13 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/634/825/cn5634825.html -->
-<div id="contentItemContainer10000395" class="5634825" >
+    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
+<div id="contentItemContainer10000395" class="4281898" >
 
-<style type="text/css">
-#globalBanner {
-	width: 581px;
-	height: 62px;
-	position: relative;
-	display: block;
-	font-size: 10pt;
-	z-index: 50;
-}
-
-#globalBanner a:link, 
-#globalBanner a:hover,
-#globalBanner a:visited, 
-#globalBanner a:active
-{
-	color: #000000;
-	text-decoration: none;
-}
-
-.detailsLink {
-	font-size: 8pt; 
-	text-decoration: underline;
-}
-
-.promoCode, 
-.promoPercent 
-{
-	font-weight: bold;
-}
-
-.promoCode {
-	background-color: black;
-	color: white;
-	padding: 2px 6px;
-	font-size: 11px;
-}
-
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerActivator {
-	margin-top: 6px;
-	display: inline-block;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
-}
-</style>
-
-<div id="globalBanner">
-
-	<!-- Global Banner Text -->
-	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/634/825/assets/101712_ALL_countdown_GB_US.png" alt="shop early and save more. 30% off your purchase. ends 10/18. online only. enter GAPEARLY. details" usemap="#gbMap" />
-		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="298,10,447,55" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/634/825/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/634/825/assets/legal.html',id:'legal',width:350,height:300});">
-		</map>
-	</div><!-- /Global Banner Text -->
-
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/634/825/assets/101812_ALL_countdown_DISR_US.jpg" alt="shop early and save more. 30% off your purchase. ends 10/18. online only. enter GAPEARLY. details" usemap="#disruptorMap" />
-		<map name="disruptorMap">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/634/825/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
-		</map>
-	</div><!-- /Global Banner Disruptor -->
-
-</div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('101812_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/634/825/cn5634825.html -->
+<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8365,6 +7402,17 @@ var gqVideoPopup = new GQ_VIDEO_POPUP_CLASS();
 	
 </div>
 
+
+	<div id="sideNavFacetsHeader" class="facets-container facet facet_master_header hideMe">
+	<!-- @FF Division Facet Code hidden until ready to play. JS is in place in facet manager -->
+		<div id="lrCategoryNameHeader" class="category heading categoryNameDiv"></div>
+		<div class="category heading categoryItemCountResetDiv">
+			<span id="facet_header_item_count" class="totalItemCountDiv"></span>
+			<span class="resetAllButton hideMe"><a id="facet_reset_all" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#" onclick="navigationService.controller.managers.categoryFacetedSearchManager.util.resetAllSelectedOptions(event);navigationService.controller.managers.categoryFacetedSearchManager.controller.filterByFacets();return false;" class="sprite-button_reset" alt="Reset" title="Reset"></a></span>
+		</div>
+	</div>
+
+	<div id="sideNavFacets" class="facets-container"></div>	
 
 
 
@@ -10018,7 +9066,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,5634825,5691102,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,4281898,5691102,5106701,5451526,2486833,5125295,5217025";
 	 </script>
 	
 	<noscript>

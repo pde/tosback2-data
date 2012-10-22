@@ -35,7 +35,7 @@ slotPosition["Frame2"] =["800x600"];
 slotPosition["OneByOne"] =["1x1"];
 slotPosition["PromoRight"] =["300x100"];
 slotPosition["PromoBottom"] =["300x250"];
-//slotPosition["IWantItCube"] =["180x150"];
+slotPosition["IWantItCube"] =["180x150"];
 slotPosition["NavAd"] =["160x30"];
 //slotPosition["FourSixtyEight"] =["468x60"];
 
@@ -84,7 +84,7 @@ slotDelivery["Frame2"] =["ipatf"];
 slotDelivery["OneByOne"] =["ipatf"];
 slotDelivery["PromoRight"]=["ipatf"];
 slotDelivery["PromoBottom"]=["In Page - Below The Fold Content"];
-//slotDelivery["IWantItCube"] =["ipatf"];
+slotDelivery["IWantItCube"] =["ipatf"];
 slotDelivery["NavAd"] =["ipbtf"];
 //slotDelivery["FourSixtyEight"] =["ipatf"];
 

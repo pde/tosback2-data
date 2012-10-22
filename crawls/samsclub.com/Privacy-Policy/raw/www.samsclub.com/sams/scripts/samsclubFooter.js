@@ -12,7 +12,7 @@ More info available at http://www.omniture.com
      Plugins
 */
 
-var s_account="samclub3prod,samclubglobal3prod"; //"samclub3qa"; "samclub3dev";
+var s_account="samclub3prod,samclubglobal3prod"; //"samclub3qa"; //"samclub3dev"; 
 var s=s_gi(s_account);
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
@@ -39,12 +39,29 @@ s.getObjectID=s_getObjectID
 /* Plugin Config */
 s.usePlugins=true
 
+s._channelParameter="Display|cid";
+s._channelDomain="Internal|.samsclub.com>Social Networks|Facebook.com,Linkedin.com,Twitter.com,Plus.google.com,Orkut.com,friendster.com,livejournal.com,blogspot.com,wordpress.com,friendfeed.com,myspace.com,digg.com,reddit.com,stumbleupon.com,twine.com,yelp.com,mixx.com,delicious.com,tumblr.com,disqus.com,intensedebate.com,plurk.com,slideshare.net,backtype.com,netvibes.com,mister-wong.com,diigo.com,flixster.com,youtube.com,vimeo.com,12seconds.tv,zooomr.com,identi.ca,jaiku.com,flickr.com,imeem.com,dailymotion.com,photobucket.com,fotolog.com,smugmug.com,classmates.com,myyearbook.com,mylife.com,tagged.com,brightkite.com,ning.com,bebo.com,hi5.com,yuku.com,cafemom.com,xanga.com";
+s._channelPattern="Affiliates|_DoubleClick_Affiliates>Comparison Shopping|CSE_Shopzilla,CSE_NexTag,CSE_Bing,CSE_Froogle,CSE_TheFind>Emails Promo|promoemail>Transactional Emails|itmemail"; 
+
 var d = new Date();
 /***********BEGIN TIME PARTING PLUGIN ***************************/
 s.dstStart="03/08/" + d.getFullYear();
 s.dstEnd="11/01/" + d.getFullYear();
 /***********END TIME PARTING PLUGIN *****************************/
 function s_doPlugins(s){
+/************************BEGIN CHANNEL MANAGER**************************/
+s.channelManager('cid,pid,eid,sid','','s_cm','','s_cmdl','180');
+
+s.eVar44=s._campaign;
+s.eVar45=s._campaignID;
+s.eVar46=s._channel;
+s.eVar47=s._keywords;
+s.eVar48=s._referringDomain;
+s.eVar49=s._referrer;
+s.eVar50=s._partner;
+
+s.eVar51=s.crossVisitParticipation(s.eVar46,'s_ev51','30','7','>','purchase',0);
+/************************END CHANNEL MANAGER****************************/		
 /*****************DYNAMIC OBJECT ID BEGIN*********************/
   s.setupDynamicObjectIDs();
 /*****************DYNAMIC OBJECT ID END***********************/
@@ -126,22 +143,22 @@ if(document.referrer) {
 if(s.campaign) {  
   s.eVar1='external campaign referral'; 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4';
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4;
   s.eVar2='non-search'; 
   s.eVar3='non-internal campaign'; 
   s.eVar7='non-cross sell';  
-  s.eVar8='D=v7'; 
+  s.eVar8=s.eVar7; 
 } 
 else if(document.referrer&&!internalFlag) {  
   s.eVar1='external natural referral'; 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4';
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4;
   s.eVar2='non-search'; 
   s.eVar3='non-internal campaign'; 
   s.eVar7='non-cross sell';  
-  s.eVar8='D=v7';
+  s.eVar8=s.eVar7;
 }
 else if(s.eVar4&&s.eVar4!='non-browse') {  
   s.eVar1='browse'; 
@@ -152,25 +169,25 @@ else if(s.eVar4&&s.eVar4!='non-browse') {
   s.eVar2='non-search'; 
   s.eVar3='non-internal campaign'; 
   s.eVar7='non-cross sell';  
-  s.eVar8='D=v7';
+  s.eVar8=s.eVar7;
 }
 else if(s.eVar2&&s.eVar2!='non-search') {  
   s.eVar1='internal search'; 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4'; 
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4; 
   s.eVar3='non-internal campaign'; 
   s.eVar7='non-cross sell';  
-  s.eVar8='D=v7'; 
+  s.eVar8=s.eVar7; 
 }
 else if(s.eVar3&&s.eVar3!='non-internal campaign') {  
   s.eVar1='internal campaign'; 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4'; 
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4; 
   s.eVar2='non-search'; 
   s.eVar7='non-cross sell';  
-  s.eVar8='D=v7'; 
+  s.eVar8=s.eVar7; 
 }
 else if(s.eVar7&&s.eVar7!='non-cross sell') {  
   if(s.products) 
@@ -178,23 +195,23 @@ else if(s.eVar7&&s.eVar7!='non-cross sell') {
   s.linkTrackVars=s.apl(s.linkTrackVars,'eVar1,eVar4,eVar5,eVar6,eVar2,eVar3',',',2); 
   s.eVar1='cross sell'; 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4'; 
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4; 
   s.eVar2='non-search'; 
   s.eVar3='non-internal campaign'; 
 }
 else if(s.events&&s.events.indexOf('purchase')>-1){  
   s.eVar1='unknown at time of purchase'; 
-  s.eVar4=s.eVar5=s.eVar6=s.eVar2=s.eVar3=s.eVar7=s.eVar8='D=v7'; 
+  s.eVar4=s.eVar5=s.eVar6=s.eVar2=s.eVar3=s.eVar7=s.eVar8=s.eVar7; 
 }
 else if(s.eVar1){ 
   s.eVar4='non-browse'; 
-  s.eVar5='D=v4'; 
-  s.eVar6='D=v4'; 
+  s.eVar5=s.eVar4; 
+  s.eVar6=s.eVar4; 
   s.eVar2='non-search'; 
   s.eVar3='non-internal campaign'; 
   s.eVar7='non-cross sell'; 
-  s.eVar8='D=v7'; 
+  s.eVar8=s.eVar7; 
 }
 if(s.eVar1&&(!s.products||(s.products&&s.products.indexOf(';productmerch')>-1)||s.newProduct=='true')&&(s.p_fo('onemerch')==1||(s.linkType!=''&&s.linkTrackVars.indexOf('eVar1')>-1))) 
 { 
@@ -269,14 +286,14 @@ if(s.eVar32){
 	s.eVar32=s.getValOnce(s.eVar32,'evar_32',0);
 	if(s.eVar32.indexOf('In Club') != -1){
 		s.events=s.apl(s.events,'event26',',',2); 
-		s.prop8=s.eVar17=s.eVar32.split('(')[1].split(')')[0];
+		s.prop8=s.eVar17=s.eVar32.substring(s.eVar32.lastIndexOf('(')+1,s.eVar32.length-1);
 	}
 }
 /* END: Sams Analytic Team Addition */
 }
 /***************VARIABLES AUTOMATICALLY SET END***********************/
 /*******************BEGIN SITE TRACKING************************************/
-s.eVar33=s.prop25=document.domain;
+s.eVar33=s.prop25=s.server=document.domain;
 /*******************END SITE TRACKING**************************************/
 /*************CROSS SELL PLUGIN BEGIN***********************/
 function s_crossSell(){  
@@ -288,6 +305,110 @@ function s_crossSell(){
 /*************CROSS SELL PLUGIN END*************************/
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/
+/************************** PLUGINS SECTION *************************/
+/* Cross Visit Participation Plugin v1.6 (there might be an updated version)
+ */
+s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
++"var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
++" ay=s.split(ev,',');var ea=s.split(s.events,',');for(var u=0;u<ay.l"
++"ength;u++){for(var x=0;x<ea.length;x++){if(ay[u]==ea[x]){ce=1;}}}}i"
++"f(!v||v==''){if(ce){s.c_w(cn,'');return'';}else return'';}v=escape("
++"v);var arry=new Array(),a=new Array(),c=s.c_r(cn),g=0,h=new Array()"
++";if(c&&c!='')arry=eval(c);var e=new Date();e.setFullYear(e.getFullY"
++"ear()+5);if(dv==0&&arry.length>0&&arry[arry.length-1][0]==v)arry[ar"
++"ry.length-1]=[v,new Date().getTime()];else arry[arry.length]=[v,new"
++" Date().getTime()];var start=arry.length-ct<0?0:arry.length-ct;var "
++"td=new Date();for(var x=start;x<arry.length;x++){var diff=Math.roun"
++"d((td.getTime()-arry[x][1])/86400000);if(diff<ex){h[g]=unescape(arr"
++"y[x][0]);a[g]=[arry[x][0],arry[x][1]];g++;}}var data=s.join(a,{deli"
++"m:',',front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join"
++"(h,{delim:dl});if(ce)s.c_w(cn,'');return r;");
+
+/*
+ * channelManager v2.8 - Tracking External Traffic
+ */
+s.channelManager=new Function("a","b","c","d","e","f","g",""
++"var s=this,h=new Date,i=0,j,k,l,m,n,o,p,q,r,t,u,v,w,x,y,z,A,B,C,D,E"
++",F,G,H,I,J,K,L,M,N,O,P,Q,R,S;h.setTime(h.getTime()+1800000);if(e){i"
++"=1;if(s.c_r(e))i=0;if(!s.c_w(e,1,h))s.c_w(e,1,0);if(!s.c_r(e))i=0;i"
++"f(f&&s.c_r('s_tbm'+f))i=0;}j=s.referrer?s.referrer:document.referre"
++"r;j=j.toLowerCase();if(!j)k=1;else {l=j.indexOf('?')>-1?j.indexOf('"
++"?'):j.length;m=j.substring(0,l);n=s.split(j,'/');o=n[2].toLowerCase"
++"();p=s.linkInternalFilters.toLowerCase();p=s.split(p,',');for(q=0;q"
++"<p.length;q++){r=o.indexOf(p[q])==-1?'':j;if(r)break;}}if(!r&&!k){t"
++"=j;u=v=o;w='Referring Domains';x=s.seList+'>'+s._extraSearchE"
++"ngines;if(d==1){m=s.repl(m,'oogle','%');m=s.repl(m,'ahoo','^');j=s."
++"repl(j,'as_q','*');}y=s.split(x,'>');for(z=0;z<y.length;z++){A=y[z]"
++";A=s.split(A,'|');B=s.split(A[0],',');for(C=0;C<B.length;C++){D=m.i"
++"ndexOf(B[C]);if(D>-1){if(A[2])E=v=A[2];else E=o;if(d==1){E=s.repl(E"
++",'#',' - ');j=s.repl(j,'*','as_q');E=s.repl(E,'^','ahoo');E=s.repl("
++"E,'%','oogle');}F=s.split(A[1],',');for(G=0;G<F.length;G++){if(j.in"
++"dexOf(F[G]+'=')>-1||j.indexOf('https://www.google.')==0)H=1;I=s.get"
++"QueryParam(F[G],'',j).toLowerCase();if(H||I)break;}}if(H||I)break;}"
++"if(H||I)break;}}if(!r||g!='1'){r=s.getQueryParam(a,b);if(r){v=r;if("
++"E)w='Paid Search';else w='Unknown Paid Channel';}if(!r&&E){v=E;w='N"
++"atural Search';}}if(k==1&&!r&&i==1)t=u=v=w='Direct';J=s._"
++"channelDomain;if(J&&o){K=s.split(J,'>');for(L=0;L<K.length;L++){M=s"
++".split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++){Q="
++"N[P].toLowerCase();R=o.indexOf(Q);if(R>-1){w=M[0];break;}}if(R>-1)b"
++"reak;}}J=s._channelParameter;if(J){K=s.split(J,'>');for(L=0;L<K.len"
++"gth;L++){M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0"
++";P<O;P++){R=s.getQueryParam(N[P]);if(R){w=M[0];break;}}if(R)break;}"
++"}J=s._channelPattern;if(J){K=s.split(J,'>');for(L=0;L<K.length;L++)"
++"{M=s.split(K[L],'|');N=s.split(M[1],',');O=N.length;for(P=0;P<O;P++"
++"){Q=N[P].toLowerCase();R=r.toLowerCase();S=R.indexOf(Q);if(S==0){w="
++"M[0];break;}}if(S==0)break;}}S=w?r+u+w+I:'';c=c?c:'c_m';if(c!='0')S"
++"=s.getValOnce(S,c,0);if(S){s._campaignID=r?r:'n/a';s._referrer=t?t:"
++"'n/a';s._referringDomain=u?u:'n/a';s._campaign=v?v:'n/a';s._channel"
++"=w?w:'n/a';s._partner=E?E:'n/a';s._keywords=H?I?I:'Keyword Unavaila"
++"ble':'n/a';if(f&&w!='Direct'){h.setTime(h.getTime()+f*864"
++"00000);s.c_w('s_tbm'+f,1,h);}}");
+
+/* Top 130 Search Engines - Grouped */
+s.seList="google.,googlesyndication.com|q,as_q|Google>yahoo.com,yahoo"
++".co.jp|p,va|Yahoo!>bing.com|q|Bing>altavista.co,altavista.de|q,r|Al"
++"taVista>.aol.,suche.aolsvc.de|q,query|AOL>ask.jp,ask.co|q,ask|Ask>w"
++"ww.baidu.com|wd|Baidu>daum.net,search.daum.net|q|Daum>icqit.com|q|i"
++"cq>myway.com|searchfor|MyWay.com>naver.com,search.naver.com|query|N"
++"aver>netscape.com|query,search|Netscape Search>reference.com|q|Refe"
++"rence.com>seznam|w|Seznam.cz>abcsok.no|q|Startsiden>tiscali.it,www."
++"tiscali.co.uk|key,query|Tiscali>virgilio.it|qs|Virgilio>yandex|text"
++"|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net"
++"|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.c"
++"om|qs|RoadRunner Search>optimum.net|q|Optimum Search";
+
+/*
+ * Plugin Utility: Replace v1.0
+ */
+s.repl=new Function("x","o","n",""
++"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
++"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
+
+/*
+ * Utility Function: split v1.5 (JS 1.0 compatible)
+ */
+s.split=new Function("l","d",""
++"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
++"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
+
+/*
+ * Plugin: getValOnce_v1.1
+ */
+s.getValOnce=new Function("v","c","e","t",""
++"var s=this,a=new Date,v=v?v:'',c=c?c:'s_gvo',e=e?e:0,i=t=='m'?6000"
++"0:86400000;k=s.c_r(c);if(v){a.setTime(a.getTime()+e*i);s.c_w(c,v,e"
++"==0?0:a);}return v==k?'':v");
+
+/*
+ * s.join: 1.0 - Joins an array into a string
+ */
+
+s.join = new Function("v","p",""
++"var s = this;var f,b,d,w;if(p){f=p.front?p.front:'';b=p.back?p.back"
++":'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0"
++";x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);el"
++"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
+
 /*
  * Plugin Utility: apl v1.1
  */
@@ -304,29 +425,6 @@ s.clickPast=new Function("scp","ct_ev","cp_ev","cpc",""
 +"{cpc='s_cpc';}ev=s.events?s.events+',':'';if(scp){s.events=ev+ct_ev"
 +";s.c_w(cpc,1,0);}else{if(s.c_r(cpc)>=1){s.events=ev+cp_ev;s.c_w(cpc"
 +",0,0);}}}");
-
-/*
- *	Plug-in: crossVisitParticipation v1.7 - stacks values from
- *	specified variable in cookie and returns value
- */
-
-s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
-+"var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
-+" ay=s.split(ev,',');var ea=s.split(s.events,',');for(var u=0;u<ay.l"
-+"ength;u++){for(var x=0;x<ea.length;x++){if(ay[u]==ea[x]){ce=1;}}}}i"
-+"f(!v||v==''){if(ce){s.c_w(cn,'');return'';}else return'';}v=escape("
-+"v);var arry=new Array(),a=new Array(),c=s.c_r(cn),g=0,h=new Array()"
-+";if(c&&c!=''){arry=s.split(c,'],[');for(q=0;q<arry.length;q++){z=ar"
-+"ry[q];z=s.repl(z,'[','');z=s.repl(z,']','');z=s.repl(z,\"'\",'');arry"
-+"[q]=s.split(z,',')}}var e=new Date();e.setFullYear(e.getFullYear()+"
-+"5);if(dv==0&&arry.length>0&&arry[arry.length-1][0]==v)arry[arry.len"
-+"gth-1]=[v,new Date().getTime()];else arry[arry.length]=[v,new Date("
-+").getTime()];var start=arry.length-ct<0?0:arry.length-ct;var td=new"
-+" Date();for(var x=start;x<arry.length;x++){var diff=Math.round((td."
-+"getTime()-arry[x][1])/86400000);if(diff<ex){h[g]=unescape(arry[x][0"
-+"]);a[g]=[arry[x][0],arry[x][1]];g++;}}var data=s.join(a,{delim:',',"
-+"front:'[',back:']',wrap:\"'\"});s.c_w(cn,data,e);var r=s.join(h,{deli"
-+"m:dl});if(ce)s.c_w(cn,'');return r;");
 
 /*
  * DynamicObjectIDs v1.5: Setup Dynamic Object IDs based on URL
@@ -439,37 +537,6 @@ s.getTimeParting=new Function("t","z","y","l",""
 +"le'}else{if(t){if(t=='h'){return W}if(t=='d'){return Z}if(t=='w'){r"
 +"eturn A}}else{return Z+', '+W}}}");
 
-/*
- * Plugin: getValOnce_v1.1
- */
-s.getValOnce=new Function("v","c","e","t",""
-+"var s=this,a=new Date,v=v?v:'',c=c?c:'s_gvo',e=e?e:0,i=t=='m'?6000"
-+"0:86400000;k=s.c_r(c);if(v){a.setTime(a.getTime()+e*i);s.c_w(c,v,e"
-+"==0?0:a);}return v==k?'':v");
-
-/*
- * s.join: 1.0 - Joins an array into a string
- */
-
-s.join = new Function("v","p",""
-+"var s = this;var f,b,d,w;if(p){f=p.front?p.front:'';b=p.back?p.back"
-+":'';d=p.delim?p.delim:'';w=p.wrap?p.wrap:'';}var str='';for(var x=0"
-+";x<v.length;x++){if(typeof(v[x])=='object' )str+=s.join( v[x],p);el"
-+"se str+=w+v[x]+w;if(x<v.length-1)str+=d;}return f+str+b;");
-
-/*
- * Plugin Utility: Replace v1.0
- */
-s.repl=new Function("x","o","n",""
-+"var i=x.indexOf(o),l=n.length;while(x&&i>=0){x=x.substring(0,i)+n+x."
-+"substring(i+o.length);i=x.indexOf(o,i+l)}return x");
-
-/*
- * Utility Function: split v1.5 (JS 1.0 compatible)
- */
-s.split=new Function("l","d",""
-+"var i,x=0,a=new Array;while(l){i=l.indexOf(d);i=i>-1?i:l.length;a[x"
-+"++]=l.substring(0,i);l=l.substring(i+d.length);}return a");
 
 s.p_fo=new Function("n",""
 +"var s=this;if(!s.__fo){s.__fo=new Object;}if(!s.__fo[n]){s.__fo[n]="
@@ -564,8 +631,13 @@ s.Media.trackEvents="None"
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
+s.visitorNamespace="samsclub"
+s.dc=112
+/*s.trackingServer="metric.samsclub.com"
+s.trackingServerSecure="metrics.samsclub.com"
+s.visitorMigrationKey="4F53B68E"
+s.visitorMigrationServer="samsclub.112.2o7.net"*/
 s.trackingServer="samsclub.112.2o7.net"
-
 /****************************** MODULES *****************************/
 /* Module: Media */
 s.m_Media_c="var m=s.m_i('Media');if(m.completeByCloseOffset==undefined)m.completeByCloseOffset=1;if(m.completeCloseOffsetThreshold==undefined)m.completeCloseOffsetThreshold=1;m.cn=function(n){var m="

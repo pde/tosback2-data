@@ -1,0 +1,1916 @@
+﻿var $jq = jQuery.noConflict();
+
+/* jQuery selectbox related plugins */
+
+jQuery.fn.containsOption = function (query) {
+    var found = false;
+
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'select') {
+		        for (var i = 0; i < this.options.length; i++) {
+		            if (query.value) {
+		                found = (query.value.constructor == RegExp) ?
+							this.options[i].value.match(query.value) :
+							this.options[i].value == query.value;
+		            } else if (query.text) {
+		                found = (query.text.constructor == RegExp) ?
+							this.options[i].text.match(query.text) :
+							this.options[i].text == query.text;
+		            }
+
+		            if (found)
+		                break;
+		        }
+		    } else return this;
+		}
+	);
+
+    return found;
+};
+
+jQuery.fn.addOption = function (o) {
+    var opt = o;
+
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'select') {
+		        var option = document.createElement('OPTION');
+		        option.value = opt.value;
+		        option.text = opt.text;
+
+		        if (opt.selected)
+		            option.selected = opt.selected;
+
+		        this.options[this.options.length] = option;
+		    }
+		    else return this;
+		}
+	);
+
+    return this;
+};
+
+jQuery.fn.clearOptions = function () {
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'select') {
+		        this.options.length = 0;
+		    }
+		}
+	);
+};
+
+jQuery.fn.removeOption = function (val) {
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'select') {
+		        for (var i = 0; i < this.options.length; i++) {
+		            if (this.options[i].value == val) {
+		                this.options[i] = null;
+		            }
+		        }
+		    } else return this;
+		}
+	);
+
+    return this;
+};
+
+jQuery.fn.selectOptionByValue = function (val) {
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'select') {
+		        for (var i = 0; i < this.options.length; i++) {
+		            if (this.options[i].value == val) {
+		                this.options[i].selected = true;
+		            }
+		            else {
+		                this.options[i].selected = false;
+		            }
+		        }
+		    } else return this;
+		}
+	);
+
+    return this;
+};
+
+jQuery.fn.radioSelectByValue = function (val) {
+    this.each(
+		function () {
+		    if (this.nodeName.toLowerCase() == 'input' && jQuery(this).attr('type').toLowerCase() == 'radio') {
+		        if (jQuery(this).val() == val) {
+		            this.checked = true;
+		        }
+		        else {
+		            this.checked = false;
+		        }
+		    } else return this;
+		}
+	);
+
+    return this;
+};
+
+jQuery.fn.radioSelectedValue = function () {
+    var val = null;
+
+    this.each(
+		function () {
+		    if (val == null) {
+		        if (this.nodeName.toLowerCase() == 'input' && jQuery(this).attr('type').toLowerCase() == 'radio') {
+		            if (this.checked) {
+		                val = jQuery(this).val();
+		            }
+		        }
+		    }
+		}
+	);
+
+    return val;
+};
+
+jQuery.createCookie = function (name, value, days, isArray) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }
+    else var expires = "";
+
+    if (arguments.length > 3 && isArray) {
+        value = jQuery.serializeKeyValues(value);
+    }
+
+    document.cookie = name + "=" + value + expires + "; path=/";
+};
+
+jQuery.readCookie = function (name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) {
+            var val = c.substring(nameEQ.length, c.length);
+
+            if (val.indexOf('&')) {
+                return jQuery.parseKeyValueString(val);
+            }
+            else return val;
+        }
+    }
+    return null;
+};
+
+jQuery.updateCookie = function (name, val) {
+    var _name = name + "=";
+    var cookieCollection = document.cookie.split(';');
+    for (var i = 0; i < cookieCollection.length; i++) {
+        var cookie = cookieCollection[i];
+        while (cookie.charAt(0) == ' ') cookie = cookie.substring(1, cookie.length);
+        if (cookie.indexOf(_name) == 0) {
+            //var cookieVal = cookie.substring(_name.length, cookie.length);
+            cookie = cookie + "&" + val;
+            jQuery.createCookie(name, "", -1);
+            document.cookie = cookie;
+        }
+    }
+};
+
+jQuery.eraseCookie = function (name) {
+    jQuery.createCookie(name, "", -1);
+};
+
+jQuery.parseKeyValueString = function (val) {
+    var hash = [];
+    var pieces = val.split('&');
+
+    for (var i = 0; i < pieces.length; i++) {
+        var pair = pieces[i].split('=');
+        hash[pair[0]] = pair[1];
+    }
+
+    return hash;
+};
+
+jQuery.serializeKeyValues = function (hash) {
+    if (hash != null) {
+        var pairs = [];
+
+        for (var key in hash) {
+            pairs.push(key + '=' + hash[key]);
+        }
+
+        return pairs.join('&');
+    }
+
+    return null;
+};
+
+jQuery.namespace = function (namespace) {
+    var parts = namespace.split('.');
+
+    var current = window;
+
+    for (var i = 0; i < parts.length; i++) {
+        if (!current[parts[i]])
+            current[parts[i]] = {};
+
+        current = current[parts[i]];
+    }
+
+    return current;
+};
+jQuery.logException = function (e) {
+    try {
+        if (!jQuery.browser.msie) {
+            if (typeof debugging != undefined && typeof window.console != undefined) {
+                console.log(e.stack)
+            }
+        }
+    } catch (ex) { };
+    return this;
+}
+jQuery.queryString = function () {
+    var _keyVals = [];
+    var _loaded = false;
+
+    var load = function () {
+        if (!_loaded) {
+            var raw = (window.location.search.length > 0) ? window.location.search.substring(1) : '';
+            var pairs = raw.split("&");
+            for (i = 0; i < pairs.length; i++) {
+                var pair = pairs[i].split("=");
+
+                _keyVals[pair[0]] = pair[1];
+            }
+
+            _loaded = true;
+        }
+    }
+
+    return {
+        get: function (key) {
+            if (!_loaded)
+                load();
+
+            for (var currentKey in _keyVals) {
+                if (currentKey.toLowerCase() == key.toLowerCase())
+                    return _keyVals[currentKey];
+            }
+
+            return null;
+        }
+    };
+} ();
+
+jQuery.fn.addBehavior = function (behaviorName, instance) {
+    this.each(
+		function () {
+		    if (!this.behaviors)
+		        this.behaviors = [];
+
+		    this.behaviors[behaviorName] = instance;
+		}
+	);
+
+    return this;
+};
+
+jQuery.initBehavior = function (container, behaviorName, meta) {
+    try {
+        var ctl = eval('new ' + behaviorName + '()');
+        ctl.init({
+            "container": container,
+            "meta": meta
+        });
+
+        jQuery(container).addBehavior(behaviorName, ctl);
+
+        return ctl;
+    }
+    catch (e) {
+        $jq.logException(e);
+    }
+
+
+
+    return null;
+};
+
+jQuery.fn.parseBehavior = function () {
+    this.each(function () {
+        try {
+            var type = $jq(this).attr('behavior');
+
+            if (type != null && type != '') {
+                var metaData = null;
+
+                try {
+                    metaData = jQuery(this).metadata({ type: 'attr', name: 'meta' });
+                }
+                catch (e) {
+                    $jq.logException(e);
+                }
+
+                var types = type.split(',');
+
+                for (var i = 0; i < types.length; i++) {
+                    jQuery.initBehavior(this, types[i], metaData);
+                }
+            }
+        }
+        catch (e) {
+            $jq.logException(e);
+        }
+
+
+    });
+
+    return this;
+};
+
+jQuery.getBehavior = function (container, behaviorName) {
+    if (container.behaviors)
+        return container.behaviors[behaviorName];
+};
+
+jQuery.fn.behavior = function (behaviorName, eachFunc) {
+    this.each(
+		function () {
+		    var behavior = jQuery.getBehavior(this, behaviorName);
+		    if (behavior != null)
+		        eachFunc(behavior);
+		}
+	);
+
+    return this;
+};
+
+jQuery.behaviorAction = function (behaviorElem, behaviorAction) {
+    if (behaviorElem.behaviors) {
+        for (var key in behaviorElem.behaviors) {
+            var behavior = behaviorElem.behaviors[key];
+            if (behavior != null
+                && jQuery.isFunction(behavior[behaviorAction.action])
+                && (('behavior' in behaviorAction && behaviorAction.behavior == key) || !behaviorAction.behavior)
+                )
+
+                behavior[behaviorAction.action]();
+        }
+    }
+};
+
+jQuery.fn.trackFocus = function () {
+    this.each(
+		function () {
+		    jQuery(this).blur(function () {
+		        jQuery(this).attr('currentActiveElement', false);
+		    });
+		    jQuery(this).click(function () {
+		        jQuery(this).attr('currentActiveElement', true);
+		    });
+
+		    jQuery(this).focus(function () {
+		        jQuery('*[currentActiveElement]').attr("currentActiveElement", false);
+
+		        jQuery(this).attr('currentActiveElement', true);
+		    });
+		}
+	);
+
+    return this;
+};
+
+jQuery.fn.focusedElement = function () {
+    var elem = null;
+
+    this.each(
+		function () {
+		    jQuery('*[currentActiveElement]', this).each(function () {
+		        if (elem != null)
+		            return;
+
+		        if (jQuery(this).attr('currentActiveElement') == 'true') {
+		            elem = this;
+		            return;
+		        }
+		    });
+		}
+	);
+
+    return elem;
+};
+
+jQuery.defaultButton = function () {
+    jQuery(document).keypress(function (e) {
+        if (e.which == 13) {
+            var focusedElem = jQuery(document).focusedElement();
+            if ($jq(".focusedElem").attr("class") == "rememberMe") {
+                $jq(".signInBtn").click();
+            }
+        }
+    });
+};
+
+
+
+
+/*
+* Metadata - jQuery plugin for parsing metadata from elements
+*
+* Copyright (c) 2006 John Resig, Yehuda Katz, J�örn Zaefferer, Paul McLanahan
+*
+* Dual licensed under the MIT and GPL licenses:
+*   http://www.opensource.org/licenses/mit-license.php
+*   http://www.gnu.org/licenses/gpl.html
+*
+* Revision: $Id: jquery.metadata.js 3620 2007-10-10 20:55:38Z pmclanahan $
+*
+*/
+eval(function (p, a, c, k, e, r) { e = function (c) { return (c < a ? '' : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) r[e(c)] = k[c] || e(c); k = [function (e) { return r[e] } ]; e = function () { return '\\w+' }; c = 1 }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p } ('(9($){$.r({3:{7:{8:\'l\',h:\'3\',q:/({.*})/,4:\'3\'},w:9(a,b){g.7.8=a;g.7.h=b},j:9(b,c){5 d=$.r({},g.7,c);2(!d.4.o)d.4=\'3\';5 a=$.n(b,d.4);2(a)6 a;a="{}";2(d.8=="l"){5 m=d.q.v(b.u);2(m)a=m[1]}k 2(d.8=="t"){2(!b.i)6;5 e=b.i(d.h);2(e.o)a=$.s(e[0].C)}k 2(b.p!=A){5 f=b.p(d.h);2(f)a=f}2(a.z(\'{\')<0)a="{"+a+"}";a=y("("+a+")");$.n(b,d.4,a);6 a}}});$.x.3=9(a){6 $.3.j(g[0],a)}})(B);', 39, 39, '||if|metadata|single|var|return|defaults|type|function|||||||this|name|getElementsByTagName|get|else|class||data|length|getAttribute|cre|extend|trim|elem|className|exec|setType|fn|eval|indexOf|undefined|jQuery|innerHTML'.split('|'), 0, {}))
+
+$jq.namespace('MatchCore');
+$jq.namespace('MatchCore.Types');
+
+MatchCore.Session = function () {
+    var self = {
+        SID: function () {
+            if ($jq.readCookie('SECU') != null) {
+                //return _sid;
+                return $jq.readCookie('SECU')['ESID'];
+            }
+        },
+
+        ServerId: function () {
+            if ($jq.readCookie('SECU') != null) {
+                //return _serverId;
+                return $jq.readCookie('SECU')['THEME'];
+            }
+        },
+
+        UserId: function () {
+            if ($jq.readCookie('Match') != null) {
+                return $jq.readCookie('Match')['uid'];
+            }
+        },
+
+        isTimedOut: function () {
+            var sid = self.SID();
+            var serverId = self.ServerId();
+
+            return !(
+				sid != null &&
+				sid != undefined &&
+				sid.length > 0 &&
+				serverId != null &&
+				serverId != undefined &&
+				serverId.length > 0
+			   );
+        }
+    };
+
+    return self;
+} ();
+
+MatchCore.Delegate = function () {
+    var _handlers = [];
+
+    return {
+        add: function (handler) {
+            _handlers.push(handler);
+        },
+
+        fire: function () {
+            for (var i = 0; i < _handlers.length; i++) {
+                _handlers[i](arguments);
+            }
+            _handlers = [];
+        },
+
+        fireAndPreserve: function () {
+            for (var i = 0; i < _handlers.length; i++) {
+                _handlers[i](arguments);
+            }
+        },
+
+        count: function () {
+            return _handlers.length;
+        }
+    };
+};
+
+MatchCore.DelegateEnhanced = function () {
+    var _handlers = [];
+
+    return {
+        add: function (handler) {
+            _handlers.push(handler);
+        },
+
+        fire: function () {
+            for (var i = 0; i < _handlers.length; i++) {
+                _handlers[i].apply(this, arguments);
+            }
+            _handlers = [];
+        },
+
+        fireAndPreserve: function () {
+            for (var i = 0; i < _handlers.length; i++) {
+                _handlers[i].apply(this, arguments);
+            }
+        },
+
+        count: function () {
+            return _handlers.length;
+        }
+    };
+};
+
+MatchCore.ServiceProxy = function (baseUrl) {
+    var _baseUrl;
+    var _methodName;
+
+    if (baseUrl)
+        _baseUrl = baseUrl;
+
+    return {
+        invoke: function (opts) {
+            if (opts) {
+                var verb = (opts.verb) ? opts.verb : "GET";
+                var dataType = (opts.dataType) ? opts.dataType : "json";
+
+                if (opts.method) {
+                    var proxyUrl = (dataType.toLowerCase() == 'json') ? _baseUrl + '/' + opts.method : _baseUrl + '/' + opts.method + '/' + dataType;
+                } else {
+                    var proxyUrl = baseUrl;
+                }
+
+            }
+
+            var async = ('async' in opts) ? opts.async : true;
+
+            $jq.ajax({
+                type: verb,
+                url: proxyUrl,
+                data: opts.data,
+                dataType: dataType,
+                success: function (response) {
+                    if (opts.success)
+                        opts.success(response);
+                },
+                error: function (xmlhttp, status, exception) {
+
+                    if (opts.failure)
+                        opts.failure(xmlhttp, status, exception);
+
+                    if (opts.error)
+                        opts.error(xmlhttp, status, exception);
+                },
+                async: async
+            });
+        }
+
+    };
+};
+
+MatchCore.templateProxy = function (baseUrl) {
+    var _baseUrl;
+    _baseUrl = baseUrl;
+
+    return {
+        invoke: function (opts) {
+            var verb = (opts.verb) ? opts.verb : "GET";
+            var dataType = "html";
+
+            $jq.ajax({
+                type: verb,
+                url: _baseUrl,
+                dataType: dataType,
+                success: function (response) {
+                    if (opts.success)
+                        opts.success(response);
+                },
+                error: function (xmlhttp, status, exception) {
+                    if (opts.failure)
+                        opts.failure(xmlhttp, status, exception);
+
+                    if (opts.error)
+                        opts.error(xmlhttp, status, exception);
+                }
+            });
+        }
+    }
+};
+
+
+MatchCore.APIProxy = function (baseUrl) {
+    var _baseUrl;
+    var _methodName;
+
+    if (baseUrl)
+        _baseUrl = baseUrl;
+
+    return {
+        invoke: function (opts) {
+            var verb = (opts.verb) ? opts.verb : "GET";
+            var dataType = (opts.dataType) ? opts.dataType : "json";
+            var data = (dataType.toLowerCase() == "json") ? JSON.stringify(opts.data) : opts.data;
+            var subLink = (opts.subLink) ? '/' + opts.subLink : "";
+            var proxyUrl = _baseUrl + subLink;
+            var contentType = (opts.contentType) ? opts.contentType : "application/json; charset=utf-8";
+            var async = ('async' in opts) ? opts.async : true;
+            var auth = MatchCore.CP.Mauth();
+
+            if (proxyUrl.indexOf('?') == -1)
+                proxyUrl += '?Authorization=' + auth;
+            else
+                proxyUrl += '&Authorization=' + auth;
+
+            $jq.ajax({
+                type: verb,
+                url: proxyUrl,
+                data: data,
+                dataType: dataType,
+                contentType: contentType,
+                success: function (response) {
+                    if (opts.success)
+                        opts.success(response);
+                },
+                error: function (xmlhttp, status, exception) {
+                    if (opts.failure)
+                        opts.failure(xmlhttp, status, exception);
+
+                    if (opts.error)
+                        opts.error(xmlhttp, status, exception);
+                },
+                async: async
+            });
+        }
+    };
+};
+
+MatchCore.Messaging = function () {
+    var _messages = null;
+
+    var hasMessageSummary = function () {
+        return getMessageSummary().length > 0;
+    };
+
+    var getMessageSummary = function () {
+        return $jq('.userMessageSummary');
+    };
+
+    return {
+        reset: function () {
+            if (hasMessageSummary) {
+                getMessageSummary().html('');
+                getMessageSummary().hide();
+            }
+
+            if (_messages) {
+                for (var i = 0; i < _messages.length; i++) {
+                    var field = $jq('INPUT[@name="' + _messages[i].field + '"]')[0];
+                    var label = $jq('LABEL[@for="' + _messages[i].field + '"]')[0];
+
+                    $jq(label).removeClass('invalidFieldLabel');
+                    $jq(field).removeClass('invalidField');
+                }
+            }
+
+            _messages = null;
+        },
+
+        show: function (messages) {
+            this.reset();
+
+            _messages = messages;
+
+            if (hasMessageSummary()) {
+                getMessageSummary().html('<ul></ul>');
+                getMessageSummary().show();
+            }
+
+            for (var i = 0; i < messages.length; i++) {
+                if (messages[i].Field) {
+                    var field = $jq('INPUT[@name="' + messages[i].Field + '"]');
+                    var label = $jq('LABEL[@for="' + messages[i].Field + '"]');
+
+                    label.addClass('invalidFieldLabel');
+                    field.addClass('invalidField');
+                    if (i == 0 && field.length > 0)
+                        field[0].focus();
+                }
+
+                if (hasMessageSummary())
+                    $jq('UL', getMessageSummary()[0]).append('<li>' + messages[i].Text + '</li>');
+
+            }
+        }
+    };
+} ();
+
+MatchCore.Query = function (array) {
+    var _array = array;
+
+    return {
+        filter: function (method) {
+            if (method != null) {
+                var filtered = [];
+
+                for (var i = 0; i < _array.length; i++) {
+                    var item = _array[i];
+
+                    if (method(item))
+                        filtered.push(item);
+                }
+
+                return new MatchCore.Query(filtered);
+            }
+            else return this;
+        },
+
+        sort: function (method) {
+            return new MatchCore.Query(_array.sort(method));
+        },
+
+        data: function (array) {
+            if (array)
+                _array = array;
+            else
+                return _array;
+        }
+    }
+};
+
+MatchCore.PhotoConfig = {
+    Ids: [
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z'
+	]
+};
+
+MatchCore.Photo = function (uid, photoId) {
+    var _uid = uid;
+    var _id = photoId;
+
+    var generateUrl = function (type) {
+        var photoID = MatchCore.PhotoConfig.Ids[_id - 1];
+        var lastFour = _uid.toString().substring(_uid.toString().length - 4);
+        var folder1 = lastFour.substring(0, 2);
+        var folder2 = lastFour.substring(2);
+
+        return 'http://' + type + '.match.com/' + type + '/' + folder1 + '/' + folder2 + '/' + _uid.toString() + photoID + '.jpeg';
+    };
+
+    var self = {
+        smallThumbnail: function () {
+            if (self.isValid()) {
+                return generateUrl("sthumbnails");
+            }
+            return '';
+        },
+
+        thumbnail: function () {
+            if (self.isValid()) {
+                return generateUrl("thumbnails");
+            }
+            return '';
+        },
+
+        fullSize: function () {
+            if (self.isValid()) {
+                return generateUrl("pictures");
+            }
+            return '';
+        },
+
+        isValid: function () {
+            return (_uid > 0 && _id > 0 && _id <= MatchCore.PhotoConfig.Ids.length);
+        }
+    }
+
+    return self;
+};
+
+MatchCore.UI = {
+    busy: function () {
+        $jq('BODY').addClass('ui_busy');
+    },
+
+    done: function () {
+        $jq('BODY').removeClass('ui_busy');
+    }
+};
+
+MatchCore.UI.PopupWindow = function () {
+    var _container;
+    var _dimensions = { height: 220, width: 400 };
+    var _position = { left: 0, top: 0 };
+    var _url = 'about:blank';
+    var _win;
+
+    var self = {
+        init: function (opts) {
+            if (opts != undefined && opts.container != undefined) {
+                _container = opts.container;
+
+                if (opts.meta != undefined) {
+                    if (opts.meta.url != undefined)
+                        _url = opts.meta.url;
+
+                    if (opts.meta.height != undefined)
+                        _dimensions.height = parseInt(opts.meta.height);
+
+                    if (opts.meta.width != undefined)
+                        _dimensions.width = parseInt(opts.meta.width);
+
+                    if (opts.meta.top != undefined)
+                        _position.top = parseInt(opts.meta.top);
+
+                    if (opts.meta.left != undefined)
+                        _position.left = parseInt(opts.meta.left);
+
+                    if (opts.meta.timeout != undefined) {
+                        setTimeout(
+						function () {
+						    self.show();
+						},
+						opts.meta.timeout
+					);
+                    }
+                }
+            }
+        },
+
+        show: function () {
+            _win = window.open(_url, "popupWindow", 'toolbar=0,titlebar=0,scrollbars=0,resizable=0,menubar=0,Height=' + _dimensions.height.toString() + ',Width=' + _dimensions.width.toString() + ',top=' + _position.top + ',left=' + _position.left);
+
+            if (_win) {
+                if (_win.focus) { _win.focus() }
+            }
+        },
+
+        dismiss: function () {
+            _win.close();
+        }
+    };
+
+    return self;
+};
+
+MatchCore.Page = function () {
+    var _initComplete = new MatchCore.Delegate();
+    var _beginFormSubmit = new MatchCore.Delegate();
+    var _readyToSubmitForm = new MatchCore.Delegate();
+    var _initialized = false;
+
+    var initBehaviors = function () {
+        $jq('*[@behavior]').parseBehavior();
+        initComplete();
+    };
+
+    var initComplete = function () {
+        _initialized = true;
+        _initComplete.fire();
+    };
+
+    var self = {
+        init: function () {
+            initBehaviors();
+        },
+
+        onInitComplete: function (handler) {
+            _initComplete.add(handler);
+
+            if (_initialized)
+                _initComplete.fire();
+        },
+
+        onBeginFormSubmit: function (handler) {
+            _beginFormSubmit.add(handler);
+        },
+
+        beginSubmitForm: function () {
+            _beginFormSubmit.fire();
+            _readyToSubmitForm.fire();
+        },
+
+        onReadyToSubmitForm: function (handler) {
+            _readyToSubmitForm.add(handler);
+        }
+    };
+
+    return self;
+} ();
+
+MatchCore.Types.Byte = function (raw) {
+    var _raw = raw;
+
+    var self = {
+        isValid: function () {
+            if (_raw) {
+                if ((_raw - 0) == _raw) {
+                    var converted = parseInt(_raw);
+                    return converted >= 0 && converted <= 255;
+                }
+            }
+
+            return false;
+        },
+
+        value: function () {
+            if (self.isValid())
+                return parseInt(_raw);
+            else
+                return null;
+        },
+
+        getValueOrDefault: function (defaultVal) {
+            if (self.isValid())
+                return self.value();
+            else
+                return defaultVal;
+        }
+    };
+
+    return self;
+};
+
+MatchCore.UI.Navigation = {
+    redirectNonLoggedIn: function () {
+        var registered = $jq.readCookie('IsRegistered');
+        if (registered) {
+            window.location.href = '/login/login.aspx';
+        }
+        else {
+            window.location.href = '/registration/registration.aspx';
+        }
+    }
+};
+
+
+
+MatchCore.HtmlString = function (str) {
+    var _raw = str;
+
+    var self = {
+        html: function () {
+            var processed = _raw.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+            return processed;
+        }
+    };
+
+    return self;
+};
+
+MatchCore.Mask = function (raw) {
+    var _raw = raw;
+
+    var self = {
+        asString: function () {
+            return (_raw == null) ? "" : _raw;
+        },
+
+        asHtml: function () {
+            return (new MatchCore.HtmlString(self.asString())).html();
+        },
+
+        asBoolean: function () {
+            if (typeof (_raw) == 'boolean') {
+                return (_raw) ? 'true' : 'false';
+            }
+            return '';
+        }
+    };
+
+    return self;
+};
+
+MatchCore.UniversalTemplate = function () {
+
+    var construct = function (src) {
+        var _templateSrc = src;
+        var _pattern = /{@((.*?):(.*?)|(.*?))}/g;
+
+        var databind = function (property, container, mask) {
+            var pieces = property.split('.');
+            var databound = null;
+
+            if (pieces != null) {
+                databound = container[pieces[0]];
+
+                for (var i = 1; i < pieces.length; i++) {
+                    databound = databound[pieces[i]];
+                }
+            }
+            else {
+                databound = container[property];
+            }
+
+            if (arguments.length > 2 && mask != undefined && mask != null) {
+                var masker = new MatchCore.Mask(databound);
+                try {
+                    databound = masker[mask]();
+                }
+                catch (e) { }
+            }
+
+            return databound;
+        };
+
+        var self = {
+            bindTo: function (container) {
+                var processed = _templateSrc;
+
+                processed = processed.replace(_pattern, function (_0, _1, _2, _3, _4) {
+
+                    if (_3 != undefined && _3 != "" && _3 != null)
+                        return databind(_2, container, _3);
+                    else
+                        return databind(_4, container);
+                });
+
+                return processed;
+            }
+        };
+
+        return self;
+    };
+
+    var factory = {
+        processElement: function (elem, container) {
+            var instance = construct($jq(elem).html());
+            $jq(elem).html(instance.bindTo(container));
+        },
+
+        processTemplate: function (templateSrc, container) {
+            var instance = construct(templateSrc);
+            return instance.bindTo(container);
+        }
+    };
+
+    return factory;
+} ();
+
+
+MatchCore.UI.form = function () {
+    var _formData = {}, _url, _method, _formElm, _fields, _onSuccess, _onFailure;
+
+    var serializeObject = function () {
+        _fields = $jq(":input:not(button)", _formElm);
+        $jq(_fields).each(function (n, i) {
+            _formData[i.name] = $jq(i).val();
+        });
+    };
+
+    var failure = function (response) {
+        var handled = false;
+        $jq('.field-validation-error', _formElm).remove();
+        $jq('.input-validation-error', _formElm).removeClass('input-validation-error');
+        if (response.Messages) {
+            for (var i = 0; i < response.Messages.length; i++) {
+                if (response.Messages[i].Code && response.Messages[i].Code == 401) {
+                    MatchCore.UI.Elements.loginPrompt({ success: function () { handled = true; } });
+                } else if (response.Messages[i].Field && response.Messages[i].Field != "") {
+                    $jq('[name="' + response.Messages[i].Field + '"]', _formElm).addClass('input-validation-error');
+                    $jq("<span class='field-validation-error'>" + response.Messages[i].Text + "</span>").insertAfter($jq('[name="' + response.Messages[i].Field + '"]', _formElm)[0]);
+                    handled = true;
+                }
+            }
+        }
+        if (handled == false) {
+            if (_onFailure)
+                _onFailure(response, _formElm);
+
+        }
+        $jq(_formElm).removeClass("submitting").addClass("failure").removeClass("success");
+    };
+
+    var success = function (response) {
+        if (_onSuccess)
+            _onSuccess(response, _formElm);
+
+        $jq(_formElm).removeClass("submitting").removeClass("failure").addClass("success");
+    }
+
+    var submitForm = function () {
+        var _data;
+        if (_method.toLowerCase() == "post" && !_formData.noStringify) {
+            _data = JSON.stringify(_formData);
+        } else {
+            _data = _formData;
+        }
+
+        $jq('.field-validation-error', _formElm).remove();
+        $jq('.input-validation-error', _formElm).removeClass('input-validation-error');
+
+        $jq.ajax({
+            type: _method,
+            url: _url,
+            data: _data,
+            dataType: 'json',
+            success: function (response) {
+                if (response.Success == false) {
+                    failure(response);
+                    return;
+                }
+
+                success(response)
+            },
+            error: function (xmlhttp, status, exception) {
+                if (xmlhttp.status == 200) {
+                    success(xmlhttp);
+                    return;
+                }
+
+                failure(response);
+            }
+        });
+
+    };
+
+    var self = {
+        submit: function (elm, success, failure) {
+            if (elm.tagName != "FORM") {
+                $jq.logException("this is not a form tag");
+                return;
+            }
+
+            _formElm = elm, _onSuccess = success, _onFailure = failure, _url = $jq(_formElm).attr('action');
+            _method = $jq(_formElm).attr('method');
+
+            $jq(_formElm).addClass("submitting").removeClass("failure").removeClass("success");
+
+            serializeObject();
+            submitForm();
+        }
+    };
+    return self;
+};
+
+MatchCore.UI.FormCollection = function () {
+    var _forms;
+
+    var addForm = function (id, form, success, failure) {
+
+        _forms[id] = { form: form };
+    };
+
+    var addCallbacks = function (id, success, failure) {
+        if (_forms[id]) {
+            _forms[id].onSuccess = success;
+            _forms[id].onFailure = failure;
+        }
+    };
+
+    var wireUpSubmit = function () {
+        $jq('a[type="submit"]').unbind();
+        $jq('a[type="submit"]').click(function (e) {
+            $jq(e.target).parents('form').submit();
+            e.preventDefault();
+        });
+    };
+
+    var unbindForms = function () {
+        $jq('form[ajaxify="1"]').unbind('submit');
+    }
+
+
+
+    var self = {
+        getForm: function (id) {
+            return _forms[id];
+        },
+        addForm: function (elm) {
+            var form = new MatchCore.UI.form();
+            addForm(elm.id, form);
+
+            $jq(elm).submit(function (e) {
+                $jq(e.target).submitForm(function () {
+                }, function () {
+                });
+                e.preventDefault();
+                return false;
+            });
+        },
+        loadForms: function () {
+            _forms = [];
+            unbindForms();
+            wireUpSubmit();
+            $jq('form[ajaxify="1"]').each(function (key, elm) {
+                var form = new MatchCore.UI.form();
+                addForm(elm.id, form);
+
+                $jq(elm).submit(function (e) {
+                    $jq(e.target).submitForm(function () {
+                    }, function () {
+                    });
+                    e.preventDefault();
+                    return false;
+                });
+            });
+        },
+
+        addCallbacks: function (id, success, failure) {
+            addCallbacks(id, success, failure);
+        }
+    }
+    return self;
+} ();
+
+jQuery.fn.submitForm = function (success, failure) {
+    return this.each(function () {
+        var form = MatchCore.UI.FormCollection.getForm(this.id);
+        form.form.submit(this, form.onSuccess, form.onFailure);
+    });
+};
+
+jQuery.fn.registerCallbacks = function (success, failure) {
+    return this.each(function () {
+        MatchCore.UI.FormCollection.addCallbacks(this.id, success, failure);
+    });
+};
+
+//This function replaces the asp.net default button functionality.
+$jq(document).ready(function () {
+    MatchCore.UI.FormCollection.loadForms();
+
+    var btn = $jq('.defaultButton');
+    btn.parents('.defaultForm').keydown(function (e) {
+        if (e.which == 13 && e.target.type != 'textarea') {
+            if (btn[0].type == 'submit' || 'image' || 'button') {
+                $jq(btn[0]).click();
+            }
+            else
+                eval(btn[0].href);
+            return false;
+        }
+    });
+
+    $jq.defaultButton();
+    $jq(':input').trackFocus();
+
+    //look for custom behaviors
+    MatchCore.Page.init();
+});
+
+
+/*
+json2.js
+2007-12-02
+
+Public Domain
+
+No warranty expressed or implied. Use at your own risk.
+
+See http://www.JSON.org/js.html
+
+This file creates a global JSON object containing two methods:
+
+JSON.stringify(value, whitelist)
+value       any JavaScript value, usually an object or array.
+
+whitelist   an optional array prameter that determines how object
+values are stringified.
+
+This method produces a JSON text from a JavaScript value.
+There are three possible ways to stringify an object, depending
+on the optional whitelist parameter.
+
+If an object has a toJSON method, then the toJSON() method will be
+called. The value returned from the toJSON method will be
+stringified.
+
+Otherwise, if the optional whitelist parameter is an array, then
+the elements of the array will be used to select members of the
+object for stringification.
+
+Otherwise, if there is no whitelist parameter, then all of the
+members of the object will be stringified.
+
+Values that do not have JSON representaions, such as undefined or
+functions, will not be serialized. Such values in objects will be
+dropped; in arrays will be replaced with null.
+JSON.stringify(undefined) returns undefined. Dates will be
+stringified as quoted ISO dates.
+
+Example:
+
+var text = JSON.stringify(['e', {pluribus: 'unum'}]);
+// text is '["e",{"pluribus":"unum"}]'
+
+JSON.parse(text, filter)
+This method parses a JSON text to produce an object or
+array. It can throw a SyntaxError exception.
+
+The optional filter parameter is a function that can filter and
+transform the results. It receives each of the keys and values, and
+its return value is used instead of the original value. If it
+returns what it received, then structure is not modified. If it
+returns undefined then the member is deleted.
+
+Example:
+
+// Parse the text. If a key contains the string 'date' then
+// convert the value to a date.
+
+myData = JSON.parse(text, function (key, value) {
+return key.indexOf('date') >= 0 ? new Date(value) : value;
+});
+
+This is a reference implementation. You are free to copy, modify, or
+redistribute.
+
+Use your own copy. It is extremely unwise to load third party
+code into your pages.
+*/
+
+/*jslint evil: true */
+
+/*global JSON */
+
+/*members "\b", "\t", "\n", "\f", "\r", "\"", JSON, "\\", apply,
+charCodeAt, floor, getUTCDate, getUTCFullYear, getUTCHours,
+getUTCMinutes, getUTCMonth, getUTCSeconds, hasOwnProperty, join, length,
+parse, propertyIsEnumerable, prototype, push, replace, stringify, test,
+toJSON, toString
+*/
+
+if (!this.JSON) {
+
+    JSON = function () {
+
+        function f(n) {    // Format integers to have at least two digits.
+            return n < 10 ? '0' + n : n;
+        }
+
+        Date.prototype.toJSON = function () {
+
+            // Eventually, this method will be based on the date.toISOString method.
+
+            return this.getUTCFullYear() + '-' +
+                 f(this.getUTCMonth() + 1) + '-' +
+                 f(this.getUTCDate()) + 'T' +
+                 f(this.getUTCHours()) + ':' +
+                 f(this.getUTCMinutes()) + ':' +
+                 f(this.getUTCSeconds()) + 'Z';
+        };
+
+
+        var m = {    // table of character substitutions
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"': '\\"',
+            '\\': '\\\\'
+        };
+
+        function stringify(value, whitelist) {
+            var a,          // The array holding the partial texts.
+                i,          // The loop counter.
+                k,          // The member key.
+                l,          // Length.
+                r = /["\\\x00-\x1f\x7f-\x9f]/g,
+                v;          // The member value.
+
+            switch (typeof value) {
+                case 'string':
+
+                    // If the string contains no control characters, no quote characters, and no
+                    // backslash characters, then we can safely slap some quotes around it.
+                    // Otherwise we must also replace the offending characters with safe sequences.
+
+                    return r.test(value) ?
+                    '"' + value.replace(r, function (a) {
+                        var c = m[a];
+                        if (c) {
+                            return c;
+                        }
+                        c = a.charCodeAt();
+                        return '\\u00' + Math.floor(c / 16).toString(16) +
+                                                   (c % 16).toString(16);
+                    }) + '"' :
+                    '"' + value + '"';
+
+                case 'number':
+
+                    // JSON numbers must be finite. Encode non-finite numbers as null.
+
+                    return isFinite(value) ? String(value) : 'null';
+
+                case 'boolean':
+                case 'null':
+                    return String(value);
+
+                case 'object':
+
+                    // Due to a specification blunder in ECMAScript,
+                    // typeof null is 'object', so watch out for that case.
+
+                    if (!value) {
+                        return 'null';
+                    }
+
+                    // If the object has a toJSON method, call it, and stringify the result.
+
+                    if (typeof value.toJSON === 'function') {
+                        return stringify(value.toJSON());
+                    }
+                    a = [];
+                    if (typeof value.length === 'number' &&
+                        !(value.propertyIsEnumerable('length'))) {
+
+                        // The object is an array. Stringify every element. Use null as a placeholder
+                        // for non-JSON values.
+
+                        l = value.length;
+                        for (i = 0; i < l; i += 1) {
+                            a.push(stringify(value[i], whitelist) || 'null');
+                        }
+
+                        // Join all of the elements together and wrap them in brackets.
+
+                        return '[' + a.join(',') + ']';
+                    }
+                    if (whitelist) {
+
+                        // If a whitelist (array of keys) is provided, use it to select the components
+                        // of the object.
+
+                        l = whitelist.length;
+                        for (i = 0; i < l; i += 1) {
+                            k = whitelist[i];
+                            if (typeof k === 'string') {
+                                v = stringify(value[k], whitelist);
+                                if (v) {
+                                    a.push(stringify(k) + ':' + v);
+                                }
+                            }
+                        }
+                    } else {
+
+                        // Otherwise, iterate through all of the keys in the object.
+
+                        for (k in value) {
+                            if (typeof k === 'string') {
+                                v = stringify(value[k], whitelist);
+                                if (v) {
+                                    a.push(stringify(k) + ':' + v);
+                                }
+                            }
+                        }
+                    }
+
+                    // Join all of the member texts together and wrap them in braces.
+
+                    return '{' + a.join(',') + '}';
+            }
+        }
+
+        return {
+            stringify: stringify,
+            parse: function (text, filter) {
+                var j;
+
+                function walk(k, v) {
+                    var i, n;
+                    if (v && typeof v === 'object') {
+                        for (i in v) {
+                            if (Object.prototype.hasOwnProperty.apply(v, [i])) {
+                                n = walk(i, v[i]);
+                                if (n !== undefined) {
+                                    v[i] = n;
+                                }
+                            }
+                        }
+                    }
+                    return filter(k, v);
+                }
+
+
+                // Parsing happens in three stages. In the first stage, we run the text against
+                // regular expressions that look for non-JSON patterns. We are especially
+                // concerned with '()' and 'new' because they can cause invocation, and '='
+                // because it can cause mutation. But just to be safe, we want to reject all
+                // unexpected forms.
+
+                // We split the first stage into 4 regexp operations in order to work around
+                // crippling inefficiencies in IE's and Safari's regexp engines. First we
+                // replace all backslash pairs with '@' (a non-JSON character). Second, we
+                // replace all simple value tokens with ']' characters. Third, we delete all
+                // open brackets that follow a colon or comma or that begin the text. Finally,
+                // we look to see that the remaining characters are only whitespace or ']' or
+                // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+
+                if (/^[\],:{}\s]*$/.test(text.replace(/\\./g, '@').
+replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(:?[eE][+\-]?\d+)?/g, ']').
+replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+                    // In the second stage we use the eval function to compile the text into a
+                    // JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+                    // in JavaScript: it can begin a block or an object literal. We wrap the text
+                    // in parens to eliminate the ambiguity.
+
+                    j = eval('(' + text + ')');
+
+                    // In the optional third stage, we recursively walk the new structure, passing
+                    // each name/value pair to a filter function for possible transformation.
+
+                    return typeof filter === 'function' ? walk('', j) : j;
+                }
+
+                // If the text is not JSON parseable, then a SyntaxError is thrown.
+
+                throw new SyntaxError('parseJSON');
+            }
+        };
+    } ();
+}
+
+$jq.namespace('MatchCore.UI.Site');
+$jq.namespace('MatchCore.UI.Site.Modal');
+
+MatchCore.UI.Site.ModalDialog = function () {
+    var _container;
+    var _showDelegate = new MatchCore.Delegate();
+    var _dismissDelegate = new MatchCore.Delegate();
+    var _templateManager = new MatchCore.UI.Site.Modal.templateManager();
+    var _doc = $jq(document);
+    var _dismissed = false;
+    var _modalVisible = false;
+
+    var _effects = {
+        "fadeIn": null,
+        "fadeOut": null
+    };
+
+    var _settings = {
+        autoShow: false,
+        autoCenter: false,
+        enableScroll: {}
+    };
+
+    var wireupControls = function () {
+        $jq('.modal_dismiss', _container).bind('click', function (e) {
+            self.dismiss();
+            e.preventDefault();
+        });
+        if (_settings.autoCenter) {
+            $jq(window).resize(function () {
+                self.center();
+            });
+            $jq(document).ready(function () {
+                self.center();
+            });
+        }
+    };
+    var centerToBrowser = function () {
+        var div = _container;
+        var browserX;
+        var browserY;
+        var browserW;
+        var browserH;
+        var HorizontalReference;
+        var VerticalReference;
+        var modalTopOffset;
+        var modalLeftOffset;
+
+        if (typeof (window.innerWidth) == 'number') {
+            browserW = window.innerWidth;
+        }
+        else {
+            browserW = document.documentElement.clientWidth;
+        }
+        if (document.documentElement && (document.documentElement.scrollLeft)) {
+            browserX = document.documentElement.scrollLeft;
+        }
+        else {
+            browserX = document.body.scrollLeft;
+        }
+        if (typeof (window.innerHeight) == 'number') {
+            browserH = window.innerHeight;
+        }
+        else {
+            browserH = document.documentElement.clientHeight;
+        }
+        if (document.documentElement && (document.documentElement.scrollTop)) {
+            browserY = document.documentElement.scrollTop;
+        }
+        else {
+            browserY = document.body.scrollTop;
+        }
+
+        var divHeight = $jq(div).height();
+        var divWidth = $jq(div).width();
+        VerticalReference = browserH;
+
+        if (browserW > 1024) {
+            HorizontalReference = 1024;
+        } else {
+            HorizontalReference = browserW;
+        }
+
+        if (browserW < divWidth) {
+            modalLeftOffset = 0;
+        } else {
+            modalLeftOffset = (HorizontalReference / 2) - (divWidth / 2) + browserX + 'px';
+        }
+        if (browserH < divHeight) {
+            modalTopOffset = 0;
+        } else {
+            modalTopOffset = (VerticalReference / 2) - (divHeight / 2) + browserY + 'px';
+        }
+
+        if (_settings.enableScroll.isEnabled && _modalVisible) {
+            if (browserH < divHeight || browserW < divWidth) {
+                $jq("HTML").css({ overflow: "auto", height: 'auto', width: 'auto' });
+                $jq("BODY").css({ overflow: "visible" });
+                $jq('.modal_overlay').css({ height: _doc.height(), width: (_doc.width() > 975) ? '975px' : _doc.width() });
+                _dismissed = true;
+            } else {
+                if (_dismissed) {
+                    overtakePage();
+                    dismissed = false;
+                }
+            }
+        }
+
+        $jq(div).css("top", modalTopOffset);
+        $jq(div).css("left", modalLeftOffset);
+    }
+
+    var obscureNonZindexElements = function () {
+        $jq(".obscureFromModal").each(function () {
+            if ($jq(this).parents('.modal_dialog').length == -1) {
+                $jq(this).addClass('obscuredFromModal');
+            }
+        });
+
+        $jq("object").each(function () {
+            if ($jq(this).parents('.modal_dialog').length == -1) {
+                $jq(this).attr('modal_obscured', '1');
+                $jq(this).css('visibility', 'hidden');
+            }
+        });
+
+        if (jQuery.browser.msie) {
+            $jq('SELECT').each(function () {
+                if ($jq(this).parents('.modal_dialog').length == -1) {
+                    $jq(this).attr('modal_obscured', '1');
+                    $jq(this).css('visibility', 'hidden');
+                }
+            });
+        }
+    };
+    var overtakePage = function () {
+        _modalVisible = true;
+        $jq("HTML").css({ "height": "100%", "overflow": "hidden" });
+        $jq("BODY").css({ "height": "100%", "overflow": "hidden" });
+        $jq('.modal_overlay').css({ height: '100%', width: '100%' });
+        window.scrollTo("0", "0");
+    };
+
+    var restorePage = function () {
+        $jq("HTML").css({ "height": "auto", "overflow": "auto" });
+        $jq("BODY").css({ "height": "auto", "overflow": "visible" });
+        $jq('*[@modal_obscured="1"]').css('visibility', 'visible');
+        $jq('.obscuredFromModal').removeClass('obscuredFromModal');
+        _modalVisible = false;
+    };
+
+    var setupModal = function (opts) {
+        _container = opts.container;
+        $jq(_container).addClass('client_modal');
+
+        $jq(_container).hide();
+
+        parseMeta(opts.meta);
+
+        wireupControls();
+
+
+    }
+
+    var parseMeta = function (options) {
+        if (options) {
+            (options.onShow) ? self.onShow(opts.meta.onShow) : undefined;
+
+            (options.onDismiss) ? self.onDismiss(opts.meta.onDismiss) : undefined;
+
+            if (options.moveOutHierarchy) {
+                options.moveOutHierarchy = false;
+                $jq(_container).attr("meta", JSON.stringify(options));
+                $jq(_container).remove();
+
+                if (options.appendToElement) {
+                    $jq(options.appendToElement).append(_container);
+                } else {
+                    $jq("body").append(_container);
+                }
+
+            }
+
+            if (options.fadeIn)
+                _effects.fadeIn = options.fadeIn;
+
+            if (options.fadeOut)
+                _effects.fadeOut = options.fadeOut;
+
+            if (options.autoShow)
+                _settings.autoShow = options.autoShow;
+
+            if (options.autoCenter)
+                _settings.autoCenter = options.autoCenter;
+
+            if (options.enableScroll) {
+                _settings.enableScroll = { elem: _container, isEnabled: options.enableScroll };
+            }
+
+        }
+    };
+
+    var self = {
+        init: function (opts) {
+            if (!opts) return false;
+
+            if (opts.meta && opts.meta.templateUrl) {
+                _templateManager.createModalFromTemplate(opts, setupModal);
+            } else {
+                setupModal(opts);
+            }
+
+            MatchCore.UI.Site.ModalMaster.addModal(this);
+
+            if (_settings.autoShow) {
+                self.show();
+            }
+
+
+        },
+
+        dismiss: function () {
+            _dismissDelegate.fireAndPreserve();
+
+            restorePage();
+
+            $jq(".modal_overlay").remove();
+
+            if (_effects.fadeOut != null) {
+                $jq(_container).fadeOut(_effects.fadeOut);
+            }
+            else {
+                $jq(_container).hide();
+            }
+        },
+
+        show: function () {
+            _showDelegate.fireAndPreserve();
+            if (_settings.autoCenter) {
+                $jq('body > *:first').before('<div class="modal_overlay"></div>');
+            } else {
+                $jq(_container).before('<div class="modal_overlay"></div>');
+            }
+            $jq('#bodyWrapper').addClass("hasModal");
+            overtakePage();
+
+            obscureNonZindexElements();
+
+            if (_settings.autoCenter) {
+                centerToBrowser();
+            }
+            if (_effects.fadeIn != null) {
+                $jq(_container).fadeIn(_effects.fadeIn);
+            }
+            else {
+                $jq(_container).show();
+            }
+        },
+
+        center: function () {
+            centerToBrowser();
+        },
+
+        id: function () {
+            return $jq(_container).attr('id');
+        },
+
+        onShow: function (handler) {
+            _showDelegate.add(handler);
+        },
+
+        onDismiss: function (handler) {
+            _dismissDelegate.add(handler);
+        }
+
+
+    }
+
+    return self;
+};
+
+MatchCore.UI.Site.Modal.templateManager = function () {
+    var _opts, _callback;
+
+    var _bindModalData = function (resp) {
+        if (_opts.meta.data) {
+            $jq(_opts.container).setTemplate(resp);
+            $jq(_opts.container).processTemplate(_opts.meta.data);
+        } else {
+            $jq(_opts.container).html(resp);
+        }
+
+        _callback(_opts);
+    };
+
+    return {
+        createModalFromTemplate: function (opts, callback) {
+            _opts = opts;
+            _callback = callback;
+            var _tp = new MatchCore.templateProxy(_opts.meta.templateUrl);
+            _tp.invoke({ success: _bindModalData });
+
+        }
+    };
+}
+
+MatchCore.UI.Site.ModalMaster = function () {
+    var _modals = [];
+
+    var hideAll = function (except) {
+        for (var key in _modals) {
+            try {
+                if (key != except)
+                    _modals[key].dismiss();
+            }
+            catch (e) { }
+        }
+    };
+
+    var self = {
+        addModal: function (modal) {
+            var thisId = modal.id();
+
+            modal.onShow(function () {
+                hideAll(thisId);
+            });
+
+            _modals[modal.id()] = modal;
+        },
+        getModal: function (id) {
+            return _modals[id];
+        },
+        hideAll: function () {
+            hideAll();
+        }
+    };
+
+    return self;
+} ();
+
+
+jQuery.fn.showClientModal = function () {
+    return this.each(function () {
+        //check for attached behavior
+        jQuery(this).behavior('MatchCore.UI.Site.ModalDialog', function (modal) {
+            modal.show();
+        });
+    });
+};
+
+jQuery.fn.dismissClientModal = function () {
+    return this.each(function () {
+        //check for attached behavior
+        jQuery(this).behavior('MatchCore.UI.Site.ModalDialog', function (modal) {
+            modal.dismiss();
+        });
+    });
+};

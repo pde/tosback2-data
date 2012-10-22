@@ -8,7 +8,6 @@
 <html class='no-js' lang='en-US' xml:lang='en-US'>
 <!--<![endif]-->
 <head><script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
-<script src="../../../brand/javascripts/monetate.js%3F1350423984" type="text/javascript"></script>
 
 
 
@@ -1229,9 +1228,9 @@ var WRInitTime=(new Date()).getTime();
 			  }            
 		   }
 		   if (isGenericUser && isGenericUser == 1) {
-		      document.location.href='/webapp/wcs/stores/servlet/TNFOrderItemDisplayCmd?langId=-1&storeId=207&catalogId=10001';
+		      document.location.href='/webapp/wcs/stores/servlet/TNFOrderItemDisplayCmd?langId=-1&storeId=207&catalogId=10201';
 		   } else {
-		      document.location.href='/webapp/wcs/stores/servlet/OrderItemDisplay?langId=-1&storeId=207&catalogId=10001';
+		      document.location.href='/webapp/wcs/stores/servlet/OrderItemDisplay?langId=-1&storeId=207&catalogId=10201';
 		   }
 		   return true;
 		}
@@ -1249,6 +1248,7 @@ var WRInitTime=(new Date()).getTime();
       		<div class="greeting" id="WC_Greeting" style="display:none">
         		Welcome
         		<span class="user" id="WC_DisplayName">Username</span>
+        		
       		</div>
       		<ul>
       			<li>
@@ -1256,14 +1256,15 @@ var WRInitTime=(new Date()).getTime();
       			</li>
       			
         		<li>
-          			<a rel="nofollow" href="http://www.thenorthface.com/webapp/wcs/stores/servlet/LogonForm?langId=-1&amp;storeId=207&amp;catalogId=10001" title="My Account"
+          			<a rel="nofollow" href="http://www.thenorthface.com/webapp/wcs/stores/servlet/LogonForm?langId=-1&amp;storeId=207&amp;catalogId=10201" title="My Account"
           				manual_cm_sp="TopNav-_-MyAccount-_-MyAccount">
           				My Account
           			</a>
         		</li>
         		
+        		
         		<li>
-        			<a rel="nofollow" href="http://www.thenorthface.com/webapp/wcs/stores/servlet/InterestItemDisplay?langId=-1&amp;storeId=207&amp;catalogId=10001" manual_cm_sp="TopNav-_-WishList-_-WishList"
+        			<a rel="nofollow" href="http://www.thenorthface.com/webapp/wcs/stores/servlet/InterestItemDisplay?langId=-1&amp;storeId=207&amp;catalogId=10201" manual_cm_sp="TopNav-_-WishList-_-WishList"
         				title="Wish List">
           				Wish List
           			</a>
@@ -1771,8 +1772,8 @@ var WRInitTime=(new Date()).getTime();
 <script language="javascript"> 
 	var GLOBAL_STORE_ID = "207";
 	
-	var logoffURL     = "/webapp/wcs/stores/servlet/Logoff?langId=-1&storeId=207&catalogId=10001&personalizedCatalog=true&URL=LogonForm";
-	var logonFormURL  = "/webapp/wcs/stores/servlet/LogonForm?langId=-1&storeId=207&catalogId=10001";
+	var logoffURL     = "/webapp/wcs/stores/servlet/Logoff?langId=-1&storeId=207&catalogId=10201&personalizedCatalog=true&URL=LogonForm";
+	var logonFormURL  = "/webapp/wcs/stores/servlet/LogonForm?langId=-1&storeId=207&catalogId=10201";
 	
 	var msgLogOut         = "Sign Out"
 	var msgLoginRegister  = "Sign In"
@@ -1802,6 +1803,36 @@ var WRInitTime=(new Date()).getTime();
 		logonLogoffLink.innerHTML = msgLogOut;
 		user.innerHTML            = displayName;
 		greeting.style.display = '';
+	}
+	
+	var pointsMessage = "PeakPoints";
+	function getLoyaltyOptIn() {
+		var optIn = wc_getCookie( "LOYALTY_OPT_IN" + GLOBAL_STORE_ID );
+		if ( optIn == null ) {
+			optIn = wc_getCookie( "LOYALTY_OPT_IN" );
+			if ( optIn == null ) {
+				optIn = "0";
+			}
+		}
+		return optIn;
+	}
+	
+	function getLoyaltyPoints() {
+		var points = wc_getCookie( "LOYALTY_PEAK_POINTS" + GLOBAL_STORE_ID );
+		if ( points == null ) {
+			points = wc_getCookie( "LOYALTY_PEAK_POINTS" );
+			if ( points == null ) {
+				points = "0";
+			}
+		}
+		return points;
+	}
+	var loyaltyOptIn = getLoyaltyOptIn();
+	if (loyaltyOptIn == "1") {
+		var points = getLoyaltyPoints();
+		if (document.getElementById("WC_LoyaltyPoints")) {
+			document.getElementById("WC_LoyaltyPoints").innerHTML = "(" + points + " " + pointsMessage + ")"
+		}
 	}
 </script>
 
@@ -3020,6 +3051,8 @@ and future growth subject to risks.<br>
 						
 	                </li>
 	        	
+                
+				
             
 			
 			
@@ -3161,6 +3194,8 @@ and future growth subject to risks.<br>
 						  
 					</li>  
 				 
+			  
+        		 
 			         
 			
 			
@@ -4195,6 +4230,12 @@ and future growth subject to risks.<br>
 
 
 
+	
+
+
+
+
+
 
 								
 
@@ -4257,6 +4298,7 @@ and future growth subject to risks.<br>
 					
 					
 				
+			
 			
 			
     	</ul>
@@ -4343,6 +4385,12 @@ and future growth subject to risks.<br>
 				
 				<li><a manual_cm_sp="TopNav-_-Womens-_-JacketsVests-ExtendedSizes" 
 					href="http://www.thenorthface.com/catalog/sc-gear/womens-jackets-vests-filter-category-extended-sizes">Extended Sizes</a></li>
+			
+		
+		
+		
+		
+	
 			
 		
 		
@@ -5024,6 +5072,7 @@ and future growth subject to risks.<br>
 				
 			
 			
+			
     	</ul>
   	</div>
   	<div class="sub-category-col">
@@ -5107,6 +5156,12 @@ and future growth subject to risks.<br>
 				
 				<li><a manual_cm_sp="TopNav-_-Mens-_-JacketsVests-ExtendedSizes" 
 					href="http://www.thenorthface.com/catalog/sc-gear/mens-jackets-vests-filter-category-extended-sizes">Extended Sizes</a></li>
+			
+		
+		
+		
+		
+	
 			
 		
 		
@@ -5759,6 +5814,7 @@ and future growth subject to risks.<br>
 			
 				<li><a manual_cm_sp="TopNav-_-Kids-_-GiftCards" href="http://www.thenorthface.com/catalog/sc-gear/gift-card.html">Gift Cards</a></li>
 			
+			
     	</ul>
   	</div>
   	<div class="sub-category-col">
@@ -6137,6 +6193,7 @@ and future growth subject to risks.<br>
 			
 			
 				<li><a manual_cm_sp="TopNav-_-Equipment-_-GiftCards" href="http://www.thenorthface.com/catalog/sc-gear/gift-card.html">Gift Cards</a></li>
+			
 			
 			
 			
@@ -7123,7 +7180,7 @@ and future growth subject to risks.<br>
 </script>
 <!-- ClickTale end of Bottom part -->
 
-<script src="../../../global/js/clicktale_vfc_custom.js%3Ft=20121004" type="text/javascript"></script>
+<script src="../../../global/js/clicktale_vfc_custom.js%3Ft=20121019" type="text/javascript"></script>
 
 <script src="../../../brand/assets/hero_gallery_manifest.js" type="text/javascript"></script>
 <script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {
@@ -7135,6 +7192,6 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-1.newrelic.com","2661851d5b",948062,"e1dYFhQOXVRcQhtDQ1dMWREPFVRnX0JbXUUXS14NEQ==",0.0,628,new Date().getTime(),"","","","",""])</script></body>
+NREUMQ.push(["nrfj","beacon-1.newrelic.com","2661851d5b",948062,"e1dYFhQOXVRcQhtDQ1dMWREPFVRnX0JbXUUXS14NEQ==",0.0,700,new Date().getTime(),"","","","",""])</script></body>
 
 </html>

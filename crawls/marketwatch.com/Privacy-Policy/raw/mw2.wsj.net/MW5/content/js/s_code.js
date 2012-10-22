@@ -6,7 +6,11 @@ http://www.omniture.com */
 */
 
 var s_account="djglobal,djmarketwatch"
-var s=s_gi(s_account)
+var s = s_gi(s_account)
+// Stop Safari Top Sites requests from being sent
+if (navigator && navigator.loadPurpose && navigator.loadPurpose == 'preview') {
+    s.t = new Function("return ''");
+}
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 s.charSet="ISO-8859-1"

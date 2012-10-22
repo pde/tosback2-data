@@ -26,7 +26,7 @@ function GetProductsService()
 //				<Number> maxResults - The maximum number of results to return
 // Returns:		<nothing>
 // ----------------------------------------------
-GetProductsService.prototype.getData = function(queryString)
+GetProductsService.prototype.getData = function (queryString)
 {
 	try
 	{
@@ -39,6 +39,8 @@ GetProductsService.prototype.getData = function(queryString)
 		var search = false;
 		var searchQSVal = URLFactory.extractQueryStringValue(pageQueryString, "search");
 		var queryStringSearchParams = URLFactory.extractQueryStringValue(pageQueryString, "search_params");
+		var numPerPage = URLFactory.extractValue(pageQueryString, "pageSize");
+		var priceMarket = URLFactory.extractQueryStringValue(pageQueryString, "pkbpricemarket");
 		var selectedFilters;
 		var serviceHash;
 		var parent = this;
@@ -61,10 +63,32 @@ GetProductsService.prototype.getData = function(queryString)
 			{
 				if (gridName.toLowerCase() == "viewrelated" && sku != "")
 				{
-					PageMethods.GetRelatedItemsXml(sku, String(currentPage), relatedItemType, function(result)
+					if (locale.toLowerCase() == "en-us-pkb")
 					{
-						parent.onResult(result, queryString);
-					}, this.onError);
+						if (priceMarket == "" || priceMarket == null)
+						{
+							priceMarket = "0";
+						}
+						if (SELECTED_SKU != "")
+						{
+							sku = SELECTED_SKU;
+						}
+						else
+						{
+							sku = SKU;
+						}
+						PageMethods.GetSimilarItemsXml(sku, String(currentPage), numPerPage, priceMarket, function (result)
+						{
+							parent.onResult(result, queryString);
+						}, this.onError);
+					}
+					else
+					{
+						PageMethods.GetRelatedItemsXml(sku, String(currentPage), relatedItemType, function (result)
+						{
+							parent.onResult(result, queryString);
+						}, this.onError);
+					}
 				}
 				else if (locale.toLowerCase().indexOf("watch") > -1)
 				{
@@ -78,7 +102,7 @@ GetProductsService.prototype.getData = function(queryString)
 					// Use a proxy function handler so that we can pass in the original query string for the
 					// function call. Otherwise, if multiple calls are made quickly from swiping, the data
 					// returned may no longer be for the current page and so model.getPageNum() may not be correct.
-					PageMethods.GetItemsXmlBySearchQS(serviceHash, search, function(result)
+					PageMethods.GetItemsXmlBySearchQS(serviceHash, search, function (result)
 					{
 						parent.onResult(result, queryString);
 					}, this.onError);
@@ -116,21 +140,21 @@ GetProductsService.prototype.getData = function(queryString)
 					}
 
 					if (selectedFilters != "") { serviceHash += "-k+" + selectedFilters; }
-					PageMethods.GetItemsXmlBySearchQS(serviceHash, search, function(result)
+					PageMethods.GetItemsXmlBySearchQS(serviceHash, search, function (result)
 					{
 						parent.onResult(result, queryString);
 					}, this.onError);
 				}
 				else if (URLFactory.extractQueryStringValue(pageQueryString, "cid") != "")
 				{
-					PageMethods.GetItemsXmlByCategoryID(URLFactory.extractQueryStringValue(pageQueryString, "cid"), sku, currentPage, function(result)
+					PageMethods.GetItemsXmlByCategoryID(URLFactory.extractQueryStringValue(pageQueryString, "cid"), sku, currentPage, function (result)
 					{
 						parent.onResult(result, queryString);
 					}, this.onError);
 				}
 				else
 				{
-					PageMethods.GetItemsXmlBySku(sku, String(currentPage), function(result)
+					PageMethods.GetItemsXmlBySku(sku, String(currentPage), function (result)
 					{
 						parent.onResult(result, queryString);
 					}, this.onError);
@@ -157,6 +181,7 @@ GetProductsService.prototype.getJSONData = function()
 {
 	try
 	{
+		var model = ProductModel.getInstance();
 		var resultProductArray = [];
 		if (typeof(tblData) != "undefined")
 		{
@@ -169,12 +194,12 @@ GetProductsService.prototype.getJSONData = function()
 			numHits = gridData.numHits;
 		}
 
+        model.setNumProducts(numHits);
+        model.setProducts(resultProductArray);
+
 		var productsGrid = ViewLocator.getInstance().getView("productsGrid");
 		productsGrid.setProducts(resultProductArray, model.getPageNum());
 		
-		var model = ProductModel.getInstance();
-		model.setNumProducts(numHits);
-		model.setProducts(resultProductArray);	
 	}
 	catch (err)
 	{

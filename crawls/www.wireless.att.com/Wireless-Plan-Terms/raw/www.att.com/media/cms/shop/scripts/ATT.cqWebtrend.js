@@ -12,7 +12,7 @@
 */
 ATT.namespace('cqWebtrend');
 
-ATT.cqWebtrend = function ($, doc) {
+ATT.cqWebtrend = new function ($, doc) {
     var $cqclickid, filterdata, sku, wtSkuPrice,
         wtSkuQty, filterevent, wtPaperlessbillopt, servQty, planPrice, servPrice, planQty, href = doc.location.href, actualpath,
         cartId = "",
@@ -48,7 +48,7 @@ ATT.cqWebtrend = function ($, doc) {
 	                }
             		return wt;
             	};
-
+			
             if (~href.indexOf('/devices/') || ~href.indexOf('/addaline')) {
                 filterevent = "HRock_DeviceListFilter_Click";
                 evt = "HRock_DeviceListView_Click";
@@ -88,9 +88,7 @@ ATT.cqWebtrend = function ($, doc) {
                 wtcartstate:wtcartstate
             };
 
-        }()),
-        
-       
+        }()),            
        
         cbEvents = {
             cqClick:function (e) {
@@ -100,7 +98,9 @@ ATT.cqWebtrend = function ($, doc) {
                 					GlobalFooter: '#footer', LeftRail_:'.left-rail,#left-body', RightRail_:'.right-rail',ShoppingAssistant_:'#shoppingassistant', WirelessTile_:'.wirelessvalueTile',
                 					Body:'#primary-content,#tabsLinks, #right-body', PageHeaderBand:'#underNav', BasicValueTile_:'.basicvalueTile', LeadGenerationBar:'#stayConnectedID',
                 					SecondaryContent_:'#secondary-content'};
-                for(i in pageSection){
+                // if target element has data-preventWtCQClickHit="true" then no wtCqClickId will be generated.
+				if ($target.data('preventWtCQClickHit')==true) return;
+				for(i in pageSection){
                 	if ($this.parents(pageSection[i]).length) {
                 		loc = i.replace(/_$/, '_' + ($(pageSection[i]).index($(this).parents(pageSection[i]))+1)) || '';
                 	}
@@ -114,9 +114,24 @@ ATT.cqWebtrend = function ($, doc) {
                 	 clickid = clickid ? clickid + '~~'+loc : '';
                  }
                 
-                wtargs = ['DCSext.wtCQClickId', clickid, 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip()];
+                wtargs = ['DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip()];
                 
-                if(clickid){
+				// if the anchor is given a data-linkName then the wtLinkLoc and wtLinkName are added to the wtargs for the click event.
+				if($target.data('linkName')) {
+					wtargs.push('DCSext.wtLinkLoc');
+					if ($target.data('linkLoc')) { // if data-linkLoc is specified on anchor this will override the default loc.  Only do this per EDD requirement.
+						wtargs.push($target.data('linkLoc'));
+					} else {
+						wtargs.push(loc);
+					}
+					wtargs.push('DCSext.wtLinkName');
+					wtargs.push($target.data('linkName'));
+				} else {
+					wtargs.push('DCSext.wtCQClickId');
+					wtargs.push(clickid);
+				}
+				
+                if(clickid || $target.data('linkName')){
                 	window.dcsMultiTrack.apply(this, wtargs);
                 }
                 
@@ -124,8 +139,79 @@ ATT.cqWebtrend = function ($, doc) {
             }
 
         };
+		
+		/****RTI WT tags on page load
+		•	wtEvent
+		•	wtSuccessFlag
+		•	wtStatusCode or wtStatusMsg
+		•	wtOOSSKU
+		•	wtOOSSKUCount
+		•	wtSKUCount
+		•	wtSLID (authenticated customers only)
+		•	wtBAN/wtCTN/wtBTN (authenticated customers only) 
+		************/
+		
+		this.wtRTIOther = function wtRTIOther() {
+			//var wtargs = ['DCSext.wtSuccessFlag', 1, 'DCSext.wtStatusCode', 0, 'DCSext.wtBAN', ATT.globalVars.ban];
+			jQuery('<meta/>', {name: 'DCSext.wtSuccessFlag', content: 1}).appendTo('head');
+			jQuery('<meta/>', {name: 'DCSext.wtStatusCode', content: 0}).appendTo('head');
+			jQuery('<meta/>', {name: 'DCSext.wtBAN', content: ATT.globalVars.ban}).appendTo('head');
+			
+			var	r = (ATT.util.getCookie("colam_ctn") || ""),
+            j = $.parseJSON('{"' + r.replace(/%3B/gi, '","').replace(/%3D/gi, '":"').replace(/%40/gi, '@') + '":""}'),
+            a=/^[0-9]*$/;
+			if (j.uid !== undefined ) {
+				var logintype = a.test(j.uid) ? "CTN" : "SLID";
+				if (logintype === "CTN") {
+					//wtargs.push('DCSext.wtCTN', j.uid);
+					jQuery('<meta/>', {name: 'DCSext.wtCTN', content: j.uid}).appendTo('head');
+				}else {
+					//wtargs.push('DCSext.wtSLID', j.uid);
+					jQuery('<meta/>', {name: 'DCSext.wtSLID', content: j.uid}).appendTo('head');
+				}
+			}
+			
+			//window.dcsMultiTrack.apply(this, wtargs);			
+		} 
+		
+		/****RTI WT tags on page load/view/filter/showmore
+		•	wtOOSSKU
+		•	wtOOSSKUCount
+		•	wtSKUCount
+		***************/
 
-
+		this.wtRTISku = function wtRTISku() {
+			var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			jQuery('<meta/>', {name: 'DCSext.wtOOSSKU', content: wtrti.oosSKU}).appendTo('head');
+			jQuery('<meta/>', {name: 'DCSext.wtOOSSKUCount', content: wtrti.oosSKUCount}).appendTo('head');
+			jQuery('<meta/>', {name: 'DCSext.wtSKUCount', content: wtrti.SKUCount}).appendTo('head');
+			
+		}
+		this.wtSKUDetails = function wtRTISku() {
+			var sku = [], i = jQuery('.outOfStockOpacity').length, m = jQuery('img[id*="image-sku"]').length, n = jQuery('div[id*="item_sku"]').length;
+			var SKUCount = (m!=0) ? m : n;			
+			var oos = (m!=0) ? jQuery('.outOfStockOpacity') : jQuery('.outOfStockOpacity').parents('div[id*="item_sku"]');
+			while (i--) {
+				sku[i] = (m!=0) ? jQuery(oos[i]).attr('id').split('-')[1] : jQuery(oos[i]).attr('id').split('_')[1] ;
+			}
+			var oosSKU = sku.join('|');
+			var oosSKUCount = jQuery('.outOfStockOpacity').length;
+			oosSKUCount = (oosSKUCount!=0) ? oosSKUCount :'0';
+			
+			return {
+				oosSKU:oosSKU,
+				oosSKUCount:oosSKUCount,
+				SKUCount:SKUCount			
+			};
+		}
+		this.delay = function(millis) {      
+		    var dfd = jQuery.Deferred();      
+		    setTimeout(function() {          
+		        dfd.resolve();
+		    }, millis || 2000);
+		    return dfd.promise();
+		}
+	
     //check to see if list pages add proper params
     $('div[class*=listPage-left-nav]').click(function (e){
        
@@ -153,29 +239,36 @@ ATT.cqWebtrend = function ($, doc) {
         if (filterdata.charAt(0) === "|") {
             filterdata = filterdata.slice(1);
         }
-        wtargs = ['DCSext.wtFilterSelect', filterdata, 'DCSext.wtNoHit', 1,
-            'DCSext.wtEvent', eventCheck.filterevent, 'DCSext.wtEventType', 'User',
-            'DCSext.wtCart', eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce', 'DCSext.wtBAN', ATT.globalVars.ban,
-            'DCSext.wtStatusCode', "0", 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
-            'DCSext.wtZipCode',ATT.globalVars.zip(), 'DCSext.wtCartState', eventCheck.wtcartstate,
-            "DCSext.wtCustType", "consumer", 'DCSext.wtCQClickId', $cqclickid, 'DCSext.wtSuccessFlag', 1,
-            "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtCustType", "consumer"];
-        window.dcsMultiTrack.apply(this, wtargs);
-    });
 
+        ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+	        wtargs = ['DCSext.wtFilterSelect', filterdata, 'DCSext.wtNoHit', 1,
+	                  'DCSext.wtEvent', eventCheck.filterevent, 'DCSext.wtEventType', 'User',
+	                  'DCSext.wtCart', eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce', 'DCSext.wtBAN', ATT.globalVars.ban,
+	                  'DCSext.wtStatusCode', "0", 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
+	                  'DCSext.wtZipCode',ATT.globalVars.zip(), 'DCSext.wtCartState', eventCheck.wtcartstate,
+	                  "DCSext.wtCustType", "consumer", 'DCSext.wtCQClickId', $cqclickid, 'DCSext.wtSuccessFlag', 1,
+	                  "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtCustType", "consumer",
+	                  "DCSext.wtOOSSKU", wtrti.oosSKU,"DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+	        window.dcsMultiTrack.apply(this, wtargs);
+    	});
+    });
+	
     // clear filters
     $('.clearFilter', '#content').bind('click', function () {
-
-        var wtclick = '/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/clearall/clearallfilter';
-        wtargs = ['DCSext.wtFilterSelect', "Clearfilter", 'DCSext.wtNoHit', 1,
-            'DCSext.wtEvent', eventCheck.filterevent, 'DCSext.wtEventType', 'User',
-            'DCSext.wtCart', eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce',
-            'DCSext.wtStatusCode', "0", 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
-            'DCSext.wtZipCode',ATT.globalVars.zip(), 'DCSext.wtCartState', eventCheck.wtcartstate,
-            "DCSext.wtCustType", "consumer", 'DCSext.wtCQClickId', wtclick, 'DCSext.wtSuccessFlag', 1,
-            "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtCustType", "consumer"];
-        window.dcsMultiTrack.apply(this, wtargs);
-
+		ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			var wtclick = '/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/clearall/clearallfilter';
+			wtargs = ['DCSext.wtFilterSelect', "Clearfilter", 'DCSext.wtNoHit', 1,
+				'DCSext.wtEvent', eventCheck.filterevent, 'DCSext.wtEventType', 'User',
+				'DCSext.wtCart', eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce',
+				'DCSext.wtStatusCode', "0", 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
+				'DCSext.wtZipCode',ATT.globalVars.zip(), 'DCSext.wtCartState', eventCheck.wtcartstate,
+				"DCSext.wtCustType", "consumer", 'DCSext.wtCQClickId', wtclick, 'DCSext.wtSuccessFlag', 1,
+				"DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtCustType", "consumer",
+				"DCSext.wtOOSSKU", wtrti.oosSKU,"DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+			window.dcsMultiTrack.apply(this, wtargs);
+		});
     });
 
 /**************add to cart hook up********************************************************/
@@ -272,7 +365,7 @@ ATT.cqWebtrend = function ($, doc) {
 
     /***************  ATC hook up end ******************************************/
 
-        //cart add upsell
+    //cart add upsell
     $("#cart").delegate(".addToCart", "click", function () {
         var clickid = $(this).data("cqpath"),
             itemsku = $(this).closest(".cartItem").data("sku"),
@@ -290,7 +383,7 @@ ATT.cqWebtrend = function ($, doc) {
 
 
     });
-
+	
     //dropdown shorting
     $("#priceDropDown").bind('change', function () {
 
@@ -304,14 +397,18 @@ ATT.cqWebtrend = function ($, doc) {
             viewmodifier = viewmodifier;
         }
         actualpath = $(this).data('cqpath');
-
-        wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1, 'DCSext.wtBAN', ATT.globalVars.ban,
-            'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
-            'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate,
-            "DCSext.wtViewModifier", viewmodifier, "DCSext.wtCQClickId", actualpath,
-            "DCSext.wtCartId", eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer",
-            "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip()];
-        window.dcsMultiTrack.apply(this, wtargs);
+		
+		ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1, 'DCSext.wtBAN', ATT.globalVars.ban,
+				'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
+				'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate,
+				"DCSext.wtViewModifier", viewmodifier, "DCSext.wtCQClickId", actualpath,
+				"DCSext.wtCartId", eventCheck.cartId, 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer",
+				"DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip(),
+				"DCSext.wtOOSSKU", wtrti.oosSKU,"DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+			window.dcsMultiTrack.apply(this, wtargs);
+		});
     });
 
     // event hook for colorbox complete loading
@@ -333,11 +430,20 @@ ATT.cqWebtrend = function ($, doc) {
 						'DCSext.wtEventType', 'User', 'DCSext.wtStatusCode', -2 , 'DCSext.wtSuccessFlag', -2, 'DCSext.wtBAN', ATT.globalVars.ban,
 						'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer", 'DCSext.wtCartState', eventCheck.wtcartstate,
 						"DCSext.wtCartContents", eventCheck.wtcartcontent(), 'DCSext.wtCQClickId', clickid, 'DCSext.wtCartId', eventCheck.cartId];
-        	
-        	 window.dcsMultiTrack.apply(this, wtargs);
-        	
+
+            window.dcsMultiTrack.apply(this, wtargs);
+            
         }
-        
+		
+		if  (modalinit === 'StoreSearch') {
+			// var skuId = $('#inStoreAvailability').data('sku');
+			// var v_language = (window.location.pathname.match(/\/es\//)) ? 'Spanish' : 'English';
+			//var wtargs = ['DCSext.wtSku', skuId, 'DCSext.wtLanguage', v_language, 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
+			// 	'DCSext.wtZipCode', ATT.globalVars.zip(), 'DCSext.wtCustType', 'consumer', 'DCSext.wtPN', modaltitle];
+			// window.dcsMultiTrack.apply(this, wtargs);
+			return true;
+		}
+    
         $('img[src*=btn_save_cart_blu], #save-cart-btn', 'body').live('mousedown', function () {
 
             var wtclick = $(this).parent().data('cqpath'),
@@ -590,13 +696,16 @@ ATT.cqWebtrend = function ($, doc) {
             viewmodifier = viewmodifier;
         }
 
-       
-        wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
-            'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
-            'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate, 'DCSext.wtBAN', ATT.globalVars.ban,
-            "DCSext.wtViewModifier", viewmodifier, 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer",
-            "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip()];
-        window.dcsMultiTrack.apply(this, wtargs);
+		ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
+				'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
+				'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate, 'DCSext.wtBAN', ATT.globalVars.ban,
+				"DCSext.wtViewModifier", viewmodifier, 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "Consumer",
+				"DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip(),
+				"DCSext.wtOOSSKU", wtrti.oosSKU,"DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+			window.dcsMultiTrack.apply(this, wtargs);
+		});
     });
 
 
@@ -610,13 +719,16 @@ ATT.cqWebtrend = function ($, doc) {
             viewmodifier = viewmodifier;
         }
 
-        
-        wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
-            'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
-            'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate, 'DCSext.wtBAN', ATT.globalVars.ban,
-            "DCSext.wtViewModifier", viewmodifier, 'DCSext.wtCartType', 'eCommerce',
-            "DCSext.wtCustType", "consumer", "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip()];
-        window.dcsMultiTrack.apply(this, wtargs);
+        ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
+				'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0",
+				'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate, 'DCSext.wtBAN', ATT.globalVars.ban,
+				"DCSext.wtViewModifier", viewmodifier, 'DCSext.wtCartType', 'eCommerce',
+				"DCSext.wtCustType", "Consumer", "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip(),
+				"DCSext.wtOOSSKU", wtrti.oosSKU,"DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+			window.dcsMultiTrack.apply(this, wtargs);
+		});
     });
 
     /***************** grid/list view ends *****************************************************/
@@ -661,7 +773,6 @@ ATT.cqWebtrend = function ($, doc) {
         while (i--) {
             res[i] = $(r[i]).data('report') + "~1";
         }
-
         ind = res.join('|');
         wtargs = ['DCSext.wtEvent', 'HRock_Cart_Submit', 'DCSext.wtStatusCode', "0",
             "DCSext.wtCartContents", eventCheck.wtcartcontent(), 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode,
@@ -689,21 +800,22 @@ ATT.cqWebtrend = function ($, doc) {
             'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, "DCSext.wtSkuQty", ind, "DCSext.wtZipCode",ATT.globalVars.zip()];
         window.dcsMultiTrack.apply(this, wtargs);
     });
-
+	
     //show more devices
-    $("#showMoreDevices a").live('mousedown', function () {
+    $("#showMoreDevices a, #deviceShowAll a, #showMoreAcc a").live('mousedown', function () {
         var wtargs, href = location.href, evt = eventCheck.evt;
-            
-
-
-        wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
-            'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0" ,
-            'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate,
-            "DCSext.wtViewModifier", "Show More", 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "consumer", 'DCSext.wtBAN', ATT.globalVars.ban,
-            "DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip()];
-
-
-        window.dcsMultiTrack.apply(this, wtargs);
+        
+		ATT.cqWebtrend.delay(4000).then(function() {
+    		var wtrti = ATT.cqWebtrend.wtSKUDetails();
+			
+			wtargs = ['DCSext.wtEvent', evt, 'DCSext.wtNoHit', 1,
+				'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtStatusCode', "0" ,
+				'DCSext.wtSuccessFlag', 1, 'DCSext.wtCartState', eventCheck.wtcartstate,
+				"DCSext.wtViewModifier", "Show More", 'DCSext.wtCartType', 'eCommerce', "DCSext.wtCustType", "Consumer", 'DCSext.wtBAN', ATT.globalVars.ban,
+				"DCSext.wtCartContents", eventCheck.wtcartcontent(), "DCSext.wtZipCode",ATT.globalVars.zip(),
+				"DCSext.wtOOSSKU", wtrti.oosSKU, "DCSext.wtOOSSKUCount", wtrti.oosSKUCount,"DCSext.wtSKUCount", wtrti.SKUCount];
+			window.dcsMultiTrack.apply(this, wtargs);
+		});
     });
 
 
@@ -1088,8 +1200,10 @@ ATT.cqWebtrend = function ($, doc) {
                  reporting.params.wtZipCode = ATT.globalVars.zip();
                  reporting.params.wtCartId = eventCheck.cartId;
                  reporting.params.wtCQClickId ='/content/att/shop/en/cart/cartsummary/jcr:content/cart;2012129';
-             }, params: 'wtBAN, wtCartDiscounts, wtCartState, wtCartTotalAmt, wtCartMonthlyAmt, wtCartOneTimeAmt, wtShipping, wtSkuQty, wtCartContents, wtBuyFlowCode, wtZipCode, wtCQClickId, wtCartId'},*/
+             }, params: 'wtBAN, wtCartDiscounts, wtCartState, wtCartTotalAmt, wtCartMonthlyAmt, wtCartOneTimeAmt, wtShipping, wtSkuQty, wtCartContents, wtBuyFlowCode, wtZipCode, wtCQClickId, wtCartId'},
                  
+             }, params: 'wtBAN, wtCartDiscounts, wtCartState, wtCartTotalAmt, wtCartMonthlyAmt, wtCartOneTimeAmt, wtShipping, wtSkuQty, wtCartContents, wtBuyFlowCode, wtZipCode, wtCartId'}, */
+             
              {selector: '#submitorder', type: 'wtsubmit', name: 'HRock_CheckOut_Order_Submit', value: function() {
                  
             	 var wtclick = $('#submitorder').parent().find('a').data('cqpath');

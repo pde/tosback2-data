@@ -3561,13 +3561,39 @@ $(function(){
 																						"/sams/search/wizard/common/clubName.jsp",
 																						{selectedCatId : $("#vehicle").parent().attr("id")},
 																						function() {
-																							$("div.sortSide p a.right").replaceWith($(this).html());
+																							$("div.sortSide p a.right").replaceWith(
+																									$(this).html().replace(
+																											$("span#club_name").html(),
+																											$.trim($("span#club_name").html().split("#")[0])
+																									)
+																							);
+																							$("#clubLocatorLink").mouseover(function(){  
+																							     $("#clubLocator").stop(true, true).delay(1000).show(0);  
+																							});  
+
+																							$("#clubLocatorLink").mouseout(function(){  
+																							     $("#clubLocator").stop(true, true).delay(1000).hide(0);                                               
+																							});  
+
+																							$("#clubLocator").mouseover(function(){  
+																							     $("#clubLocator").stop(true, true).show(0);  
+																							  	 try { document.execCommand("BackgroundImageCache", false, true); }
+																							catch(err) {}
+
+																							});  
+
+																							$("#clubLocator").mouseout(function(){  
+																							     $("#clubLocator").stop(true, true).delay(2000).hide(0);  
+																							});
 																						}
 																				);
 																			} else {
-																				$("div.sortSide span[id^=clubLocatorLink] a").html(
-																					$.trim($("span#club_name").html()) + "&nbsp;" + "Club" + '<span class="arrow"></span>'
-																				);
+																				$("div.sortSide span[id^=clubLocatorLink] a").fadeOut(400,function(){
+																					$(this).html(
+																							$.trim($("span#club_name").html().split("#")[0]) + "&nbsp;" + "Club" + '<span class="arrow"></span>'
+																					);
+																					$(this).fadeIn(400);
+																				});
 																			}
 																		}
 																);

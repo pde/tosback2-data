@@ -582,13 +582,9 @@ B.insertBefore(C,B.firstChild)
 $(function(){$(".popup-submit-button").live("click",function(){$(this).closest().submit()
 })
 });
-$(function(){$(".related-update-param-link").live("click",function(){var G=$(this).data("name");
-var E=$("#viewmore").data("languageRootPath");
-var C=$(this).data("pagetags");
-var F=$("#viewmore").data("viewMoreText");
-var D='<a href="'+E+"/contentlibrary.html?facets="+C+'" title="'+F+'"><span>'+F+"</span> &gt;</a>";
-$("#viewmore").html(D)
-});
+$(function(){$(".related2 div.module div.module-content ul.sidebar li a").click(function(){if($(this).hasClass("hideViewMore")){$(".related2 div.module div.module-header #viewmore").hide()
+}else{$(".related2 div.module div.module-header #viewmore").show()
+}});
 $("#relatedproducts1").css({display:"block",visibility:"hidden",position:"absolute"});
 var A=$("#related-product .carousel-item").height();
 $("#relatedproducts1").removeAttr("style");

@@ -1,0 +1,1387 @@
+// Marketing Module Functions
+switch (locale){	
+  case "en-US":
+	localFolder="en-US";
+	break;
+  case "ja-JP":
+	localFolder="ja-JP";
+	break;
+  case "zh-CN":
+	localFolder="zh-CN";
+	break;	
+  default:
+	localFolder="en-US";
+	break;
+}
+
+function openMarketingPopUp(popUpName)
+{
+	var foundPopUp = openMarketingPopUpFollowup(popUpName, arguments);
+	if (foundPopUp == true)
+	{
+		var popupState = popUpName;
+		if (typeof(ProductModel) == "undefined") {return;}
+		var model = ProductModel.getInstance();
+		
+		if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+		{
+			for (var i=1; i < arguments.length; i++)
+			{
+				popupState += "+" + LocationsURLFactory.hashEscape(arguments[i]);
+			}
+	
+			if (isSafari3Plus() == false)
+			{
+				model.setBrowseStatesNoSideEffects({popup:popupState});
+				HistoryManager.getInstance().addHistoryItem(LocationsURLFactory.convertStateToHash(model.getStateSnapshot()));
+			}
+		}
+		else
+		{
+			for (var i=1; i < arguments.length; i++)
+			{
+				popupState += "+" + URLFactory.hashEscape(arguments[i]);
+			}
+	
+			if (isSafari3Plus() == false)
+			{
+				model.setBrowseStatesNoSideEffects({popup:popupState});
+				HistoryManager.getInstance().addHistoryItem(URLFactory.convertStateToHash(model.getStateSnapshot()));
+			}
+		}
+	}
+}
+
+function openMarketingPopUpFollowup(popUpName, popupArguments)
+{
+	var foundPopUp = false;
+	var isParentSecure = false;
+	switch(popUpName.toLowerCase())
+	{
+		case "linktiffanygold":
+			createPopUp(780,477,true,this,105,'/Expertise/Material/AboutTiffanyGold.aspx');
+			foundPopUp = true;
+			break;
+		case "linktiffanysilver":
+			createPopUp(780,477,true,this,105,'/Expertise/Material/AboutTiffanySilver.aspx');
+			foundPopUp = true;
+			break;
+		case "linktiffanyplatinum":
+			createPopUp(780,477,true,this,105,'/Expertise/Material/AboutTiffanyPlatinum.aspx');
+			foundPopUp = true;
+			break;
+		case "linkhistorytimeline":
+			createPopUp(768,425,true,this,60,'/About/Timeline.aspx');
+			foundPopUp = true;
+			break;
+		case "linkjewelrycare":
+			switch (locale) {
+	            case "ja-JP-Trade":
+	                createPopUp(780, 477, true, this, 105, '/Service/Care/AboutGeneralCare.aspx');
+	                break;
+				default:
+					createPopUp(780, 477, true, this, 105, '/Service/Care/AboutDefault.aspx');
+					break;
+			}
+			foundPopUp = true;
+			break;
+		case "linkmetalcare":
+			createPopUp(780,477,true,this,105,'/Service/Care/AboutPreciousMetals.aspx');
+			foundPopUp = true;
+			break;
+		case "linkgemstonecare":
+			createPopUp(780,477,true,this,105,'/Service/Care/AboutGemstones.aspx');
+			foundPopUp = true;
+			break;
+		case "linkwoodcare":
+			createPopUp(780,477,true,this,105,'/Service/Care/AboutWood.aspx');
+			foundPopUp = true;
+			break;
+		case "linkperettibio":
+			createPopUp(780,477,true,this,105,'/About/Designers/AboutElsaPeretti.aspx');
+			foundPopUp = true;
+			break;
+		case "linkpicassobio":
+			createPopUp(780,477,true,this,105,'/About/Designers/AboutPalomaPicasso.aspx');
+			foundPopUp = true;
+			break;
+		case "linkschlumbergerbio":
+			createPopUp(780,477,true,this,105,'/About/Designers/AboutJeanSchlumberger.aspx');
+			foundPopUp = true;
+			break;
+		case "linkgehrybio":
+			createPopUp(780,477,true,this,105,'/About/Designers/AboutFrankGehry.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatd":
+		    createBlueOverlay(860,548,true,this,59,'/Expertise/Diamond/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdbeauty":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Brilliance/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdringsetting":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Setting/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdcertification":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Certification/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdhistory":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/History/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdglossary":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Glossary/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdpricing":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Pricing/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatd7points":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/7_Points/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkgroomsguide4cs":
+			createPopUp(860,548,true,this,59,'/Engagement/GroomsGuide/4Cs.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdwaranty":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Certification/Promise.aspx');
+			foundPopUp = true;
+			break;
+		case "linkatdengravingcleaning":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/certification/engraving_and_cleaning.aspx');
+			foundPopUp = true;
+			break;
+
+//Text Overlays
+		case "c":
+			createPopUp(860,548,true,this,59,'/Expertise/Diamond/Certification/Default.aspx');
+			foundPopUp = true;
+			break;
+
+        case "linkprivacypolicy":
+            if (typeof isMobilePopupOverlay != "undefined" && isMobilePopupOverlay == true) {
+            	  createPopUp(300, 490, false, this, 105, '/Customer/Checkout/PrivacyPolicy.aspx');
+            } else {
+                createPopUp(400, 490, false, this, 105, '/Customer/Checkout/PrivacyPolicy.aspx');
+            }
+            foundPopUp = true;
+            break;
+           
+		case "linkgemstonecareenhancement":
+			createPopUp(780,500,false,this,105,'/Customer/Checkout/GemstoneCare.aspx');
+			foundPopUp = true;
+			break;
+		 
+        case "linkprop65":
+        case "linkcreditcard":
+        case "linkstoreconsultation":
+        case "linkpaymentoptions":        
+        case "linkhowtoshop":
+        case "linkorderstatus":
+        case "linkaboutengraving":
+        case "linkbops":
+        case "linkbops5thave":
+        case "linkbopssoho":
+        case "linkcounterfeitwarning":
+        case "linkbluebox":
+        case "linkspecialevents":
+        case "linkverifybyvisa":
+        case "linkmastercode":  
+		case "linkestorepoliciesguidelines":
+		case "linkestorewebsitepolicies":
+						if (typeof isMobilePopupOverlay != "undefined" && isMobilePopupOverlay == true) {
+							  createPopUp(300, 490, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase());
+						} else {
+                createPopUp(400, 490, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase());
+            }
+            //document.getElementById("divPopUp").style.left = "-5000px";
+            foundPopUp = true;
+            break;
+        case "linkshippingratestimes":       
+            if (typeof isMobilePopupOverlay != "undefined" && isMobilePopupOverlay == true) {
+            	  createPopUp(300, 490, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase() + '&showBnr=true');
+            } else {
+                createPopUp(400, 490, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase() + '&showBnr=true');
+            }
+            //document.getElementById("divPopUp").style.left = "-5000px";
+            foundPopUp = true;
+            break;
+        case "linkdeliveryoptions":
+        case "linkshiptopobox":
+            //linkdeliveryoptions, linkshiptopobox & linkshippingratestimes share the FAQ and it is stored with FAQCode linkshippingratestimes.            
+            createPopUp(400, 490, false, this, 105, '../../Service/FaqOverlay.aspx?faqCode=' + 'linkshippingratestimes');
+//            document.getElementById("divPopUp").style.left = "-5000px";
+            foundPopUp = true;
+            break;
+        case "linkaboutgiftmessage":
+            if (typeof isMobilePopupOverlay != "undefined" && isMobilePopupOverlay == true) {
+                createPopUp(300, 50, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase()); 
+            } else {
+            	  createPopUp(400, 50, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + popUpName.toLowerCase());
+            }
+//            document.getElementById("divPopUp").style.left = "-5000px";
+            foundPopUp = true;
+            break;
+        case "linkaboutcod":
+            createPopUp(400, 50, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=cashondelivery');
+            foundPopUp = true;
+            break;
+        case "linkaboutjpdeliverypreference":
+            createPopUp(400, 50, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=deliverypreference');
+            foundPopUp = true;
+            break; 
+        
+		case "linkscheduleconsultation":
+			createPopUp(400,490,false,this,105,'/Registry/ScheduleConsult.aspx');
+			foundPopUp = true;
+			break;
+		case "linkreturnpolicy":
+		  if (typeof isMobilePopupOverlay != "undefined" && isMobilePopupOverlay == true) {
+		  	  createPopUp(300,490,false,this,105,'/Customer/Checkout/AboutReturnPolicy.aspx');
+		  } else {
+			    createPopUp(400,490,false,this,105,'/Customer/Checkout/AboutReturnPolicy.aspx');
+		  }
+			//document.getElementById("divPopUp").style.left = "-5000px";
+			foundPopUp = true;
+			break;
+		case "linktermsofuse":
+		    switch (locale) {
+	            case "ja-JP-EStr":
+		            createPopUp(400, 490, false, this, 105, '/Service/FaqOverlay.aspx?faqCode=' + 'linkEstoreWebsitePolicies');
+                    document.getElementById("divPopUp").style.left = "-5000px";
+	                break;
+				default:
+					createPopUp(400,490,false,this,105,'/Customer/Checkout/AboutTermsOfUse.aspx');
+					break;
+			}
+		
+			foundPopUp = true;
+			break;
+		case "linkshoppingfaqs":
+					createPopUp(400,490,false,this,105,'/Customer/Checkout/ShoppingFaq.aspx');
+			foundPopUp = true;
+			break;		
+		
+		case "linkspeaktodiamondexpert":
+			createPopUp(400,490,false,this,105,'/Customer/Request/popup_expert.aspx');
+			foundPopUp = true;
+			break;
+		case "linkscheduleconsult":
+			  	if(top==self) { 
+			     createPopUp(500,490,false,this,105,'/Customer/Request/PopUpScheduleConsult.aspx');	
+				 foundPopUp = true;
+				}
+				else if (typeof(parent.divEmailPopupHolder) != "undefined") {
+					parent.document.getElementById("iframeMiniContent").style.width = "500px"
+					parent.document.getElementById("iframeMiniContent").style.height = "490px"
+					parent.document.getElementById("divMiniPopUp").style.width = "500px";
+					parent.document.getElementById("divMiniPopUp").style.marginLeft = "-390px"
+					parent.document.getElementById("divMiniPopUp").style.left = "50%";
+					window.location="/Customer/Request/PopUpScheduleConsult.aspx"
+				}
+				else {
+					parent.document.getElementById("iframeContent").style.width = "500px"
+					parent.document.getElementById("iframeContent").style.height = "490px"
+					parent.document.getElementById("divPopUp").style.width = "500px";
+					parent.document.getElementById("divPopUp").style.marginLeft = "-305px"
+					parent.document.getElementById("divPopUp").style.left = "50%";
+					window.location="/Customer/Request/PopUpScheduleConsult.aspx"
+					 foundPopUp = false;
+				}
+			break;
+		
+		case "linkcreditcardvalidation":
+			createPopUp(400,490,false,this,105,'/Customer/Checkout/AboutCardValidation.aspx');
+			foundPopUp = true;
+			break;
+
+
+        case "getfaq":
+            var omnicode = "";
+            if (popupArguments[2] != "" && popupArguments[2] != null) {
+                omnicode = "&hppromo=" + popupArguments[2];
+            }
+            createPopUp(400, 490, false, this, 105, '/Service/FaqOverlay.aspx?faq_id=' + popupArguments[1] + omnicode);
+			document.getElementById("divPopUp").style.left = "-5000px";
+			foundPopUp = true;
+			break;
+
+        case "getbluefaq":
+			var omnicode ="";
+            if (popupArguments[2] != "" && popupArguments[2] != null) {
+                omnicode = "&hppromo=" + popupArguments[2];
+            }
+			createBlueOverlay(400, 490, true, this, 105, '/Service/FaqOverlay.aspx?faq_id=' + popupArguments[1] + omnicode,'',false)
+            document.getElementById("divPopUp").style.left = "-5000px";
+            foundPopUp = true;
+            break;	
+			
+		case "linkemailmarketingspecialoffer":
+			createPopUp(400,300,false,this,105,'/seasonal/ja-JP/marketing_modules/email_marketing/about.aspx');
+			foundPopUp = true;
+			break;
+		case "linkaboutringsizes":
+			createPopUp(400,490,false,this,105,'/Shopping/AboutRingSizes.aspx');
+			foundPopUp = true;
+			break;
+        case "linkaboutglovesizes":
+            createPopUp(400, 365, false, this, 105, '/Shopping/AboutGloveSizes.aspx');
+            foundPopUp = true;
+            break;
+// Modules
+		case "linkgehrymodule":
+			createPopUp(860,548,true,this,54,'/Seasonal/'+localFolder+'/marketing_modules/FOG/index.aspx','e0e0e0',false);
+			foundPopUp = true;
+			break;
+		case "linkgehrymovie":
+			createPopUp(860,548,true,this,54,'/Seasonal/en-US/marketing_modules/FOG/select_video_size.aspx','e0e0e0',false);
+			foundPopUp = true;
+			break;
+		case "linklargegehrymovie":
+			createPopUp(786,548,true,this,54,'/Seasonal/'+localFolder+'/marketing_modules/FOG/FOGVideo_lg.aspx','e0e0e0',false);
+			foundPopUp = true;
+			break;
+		case "linksmallgehrymovie":
+			switch (locale){
+				case "ja-JP":
+					overlayHeight = 340;
+					break;
+				case "zh-CN":
+					overlayHeight = 340;
+					break;
+				default:
+					overlayHeight = 290;
+					break;
+			}
+			createPopUp(370,overlayHeight,true,this,54,'/Seasonal/'+localFolder+'/marketing_modules/FOG/FOGVideo.aspx','e0e0e0',false);
+			foundPopUp = true;
+			break;
+		case "linkoverlaygehrymodule":
+			closePopUp();
+			openMarketingPopUp("linkGehryModule");
+			foundPopUp = true;
+			break;
+		case "linkoverlaygehrymovie":
+			closePopUp();
+			openMarketingPopUp("linkLargeGehryMovie");
+			foundPopUp = true;
+			break;
+		case "linksimply":
+			createPopUp(540,500,true,this,105,'/Seasonal/Modules/Simply/default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkt57":
+			createPopUp(768,415,true,this,59,'/Expertise/T57/default.aspx','565656');
+			foundPopUp = true;
+			break;
+		case "linktiffanymarkmovie":
+			createPopUp(574,500,true,this,59,'/Local/en-US/flash/expertise/TiffanyMark/Video.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linkwatchheritage":
+			createPopUp(768,424,true,this,59,'/Local/'+localFolder+'/flash/expertise/TiffanyMark/Heritage.aspx');
+			foundPopUp = true;
+			break;
+		case "linkwatchpromise":
+			createPopUp(768,424,true,this,59,'/Local/'+localFolder+'/flash/expertise/TiffanyMark/Promise.aspx');
+			foundPopUp = true;
+			break;
+		case "linkwatchdesign":
+			createPopUp(768,424,true,this,59,'/Local/'+localFolder+'/flash/expertise/TiffanyMark/DesignInspiration.aspx');
+			foundPopUp = true;
+			break;
+		case "linkemailmarketingmodule":
+			createPopUp(400,300,false,this,59,'/Customer/Request/ProcessEmailMarketingRequest.aspx');
+			foundPopUp = true;
+			break;
+		case "linkcelebrationrings":
+			celebrationRings();
+			break;	
+		case "linkcrstacks":
+			crStacks();
+			break;
+			
+		case "linkcarvedhearts":
+			createPopUp(660,614,true,this,54,'/seasonal/en-us/marketing_modules/carved_hearts/Default.aspx');
+			foundPopUp = true;
+			break;	
+			
+		case "linkemailsignup":
+			setTimeout("linkEmailMarketing()", 1000);
+			foundPopUp = true;
+			break;	
+		case "linkemailsignuppromo":
+			setTimeout("subscribeFooter2()", 1000);
+			foundPopUp = true;
+			break;	
+		case "linkgiftcardbalance":
+			isParentSecure = BrowserUtils.getIsSecure();
+			createPopUp(400,490,false,this,105,popupArguments[1] + '/Customer/Request/GiftCardBalance.aspx?ps=' + isParentSecure);			
+			foundPopUp = true;
+			break;
+		case "linkaboutgiftcards":
+			isParentSecure = BrowserUtils.getIsSecure();
+			createPopUp(400,490,false,this,105,'/Service/AboutGiftCards.aspx?ps=' + isParentSecure);
+			foundPopUp = true;
+			break;
+		case "linkgiftcardterms":
+			isParentSecure = BrowserUtils.getIsSecure();
+			createPopUp(400,490,false,this,105,'/Service/AboutGiftCardTerms.aspx?ps=' + isParentSecure);
+			foundPopUp = true;
+			break;
+		case "linkfogqrcode":
+			if (typeof divPopupHolder != "undefined") {closePopUp();}
+			createPopUp(408,308,false,this,105,'/seasonal/ja-jp/marketing_modules/fog/qrcode.aspx');
+			foundPopUp = true;
+			break;
+		case "linkemailthispage":			
+			createEmailPopUp('/Customer/Request/' + popupArguments[1],1,400,360,105,275,'ffffff','e0e0e0',5);
+			foundPopUp = true;
+			break;
+		case "linkemailhint":
+		    //createEmailPopUp(popupArguments[1], 1, 950, 620, 20, 0, 'ffffff', 'e0e0e0', 5);
+		    createBlueOverlay(950, 620, true, this, 80, popupArguments[1], 'e0e0e0', true,5)
+			foundPopUp = true;
+			break;
+		case "linkemailcustomerservice":
+			createPopUp(400,400,false,this,105,'/Customer/Request/EmailCustSvr.aspx');
+			break;
+		case "linkengagementemailthispage":
+			createPopUp(400,400,false,this,105,'/Customer/Request/EmailThisPage.aspx?engagementSku=' + popupArguments[1]);
+			foundPopUp = true;
+			break;				
+		case "linkaboutquickorder":
+			createPopUp(400,490,false,this,105,'/Catalogues/AboutQuickOrder.aspx');
+			foundPopUp = true;
+			break;				
+		case "linkemailwishlist":
+			var session = "";
+			if (popupArguments[2] != "" && popupArguments[2] != null)
+			{
+				session = "&mysid2=" + popupArguments[2];
+			}
+			createPopUp(400,400,false,this,105,'/Customer/wishlist/EmailWishList.aspx?idList=' + popupArguments[1] + session);
+			foundPopUp = true;
+			break;
+        case "linkbejewelled":
+		    var omnicode =""
+			switch (locale){	
+			  case "ja-JP":
+	  			localFolder="ja-JP";
+				break;
+			  default:
+	  			localFolder="Intl";
+	  			omnicode = "?hppromo=" + popupArguments[1]
+				break;
+			}
+			createPopUp(820,471,true,this,105,'/Seasonal/'+localFolder+'/marketing_modules/bejewelled/default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linktiffanyengraving":
+		    createBlueOverlay(780, 475, true, this, 105, '/Shopping/AboutEngraving.aspx', '', false);
+			foundPopUp = true;
+			break;	
+		case "linktrophies":
+			createPopUp(780,475,true,this,105,'/Shopping/AboutTrophies.aspx')
+			foundPopUp = true;
+			break;	
+		case "linkabout37wallstreet":
+			createPopUp(780,480,true,this,105,'/Seasonal/en-US/marketing_modules/wall_street_bops/v1/About37WallStreet.aspx')
+			foundPopUp = true;
+			break;	
+		case "linkinstorepickup":
+			createPopUp(780,479,true,this,105,'/Seasonal/en-US/marketing_modules/wall_street_bops/v4/InStorePickup.aspx')
+			foundPopUp = true;
+			break;		
+		case "linkcrstorytop":
+			celebrationStories('storytop');
+			break;
+		case "linkcrcelebring01":
+			celebrationStories('celebring01');
+			break;	
+		case "linkcrcelebring02":
+			celebrationStories('celebring02');
+			break;
+		case "linkcrcelebring03":
+			celebrationStories('celebring03');
+			break;
+		case "linkcrcelebring04":
+			celebrationStories('celebring04');
+			break;
+		case "linkcrcelebring05":
+			celebrationStories('celebring05');
+			break;
+		case "linkcrcelebring06":
+			celebrationStories('celebring06');
+			break;
+		case "linkcrcelebring07":
+			celebrationStories('celebring07');
+			break;
+		case "linkcrcelebring08":
+			celebrationStories('celebring08');
+			break;
+		case "linkholiday":
+			createPopUp(744,532,true,this,105,'/Seasonal/Holiday2007/Video/HolidayVideo.aspx');
+			foundPopUp = true;
+			break;	
+		case "link2008springvideo":
+			createPopUp(744,532,true,this,105,'/Seasonal/Videos/2008Spring/Default.aspx');
+			foundPopUp = true;
+			break;	
+		case "linkholidaymakingof":
+			createPopUp(744,532,true,this,105,'/Seasonal/Holiday2007/Video/HolidayMakingOfVideo.aspx');
+			foundPopUp = true;
+			break;	
+		case "linkskatesomerset":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createBlueOverlay(912,592,true,this,84,'/Seasonal/en-GB/SkateSommerset/Default.aspx' + omnicode, '', false)
+			foundPopUp = true;
+			break;	
+		case "linkskatesomersetvideo":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(744,532,true,this,105,'/Seasonal/en-GB/SkateSommerset/VideoLayer.aspx' + omnicode)
+			foundPopUp = true;
+			break;
+		case "linkskatesomersetvideo09":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(744,532,true,this,105,'/Seasonal/en-GB/SkateSommerset/VideoLayer09.aspx' + omnicode)
+			foundPopUp = true;
+			break;
+		case "linkskatesomersetvideo10":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(744,532,true,this,105,'/Seasonal/en-GB/SkateSommerset/VideoLayer10.aspx' + omnicode)
+			foundPopUp = true;
+			break;
+        case "linkskatesomersetvideo11":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/en-GB/SkateSommerset/VideoLayer11.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+		case "linkholidayqr":
+			createPopUp(312,291,false,this,105,'/Seasonal/Holiday2007/Wallpapers/qrCode.aspx');
+			foundPopUp = true;
+			break;
+		case "linkvalentineqr":
+			createPopUp(402,318,false,this,105,'/Seasonal/Valentine2008/qrCode/qrCode.aspx');
+			foundPopUp = true;
+			break;
+		case "linkheathrowstore":
+			createPopUp(779,477,true,this,105,'/Seasonal/en-GB/HeathrowStore/Default.aspx?hppromo=' + popupArguments[1]);
+			foundPopUp = true;
+			break;
+		case "linkpatekphilippegrandexpo":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(783,481,true,this,105,'/Seasonal/en-US/marketing_modules/PatekPhilippe/GrandExpo.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkpatekphilippesalonopening":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(783,482,true,this,105,'/Seasonal/en-US/marketing_modules/PatekPhilippe/AboutTheSalon.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkpatekphilippeexclusive":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(861,550,true,this,105,'/Seasonal/en-US/marketing_modules/PatekPhilippe/Exclusive.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkchainclaspdemo":
+			createPopUp(480,467,false,this,105,'/Seasonal/en-US/marketing_modules/ChainClaspDemo/Default.aspx');
+			foundPopUp = true;
+			break;
+		case "linkjpcharmstories":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(875,552,true,this,105,'/Seasonal/ja-JP/marketing_modules/charms_stories/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		
+		case "linksingaporestore":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(910,471,true,this,105,'/Seasonal/Intl/marketing_modules/SingaporeStore/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkglamour":
+			createPopUp(768,565,true,this,95,'/seasonal/zh-CN/marketing_modules/glamour/default.aspx');
+			//createTestChrome(768,20,75,0,'#E2E0DB');
+			foundPopUp = true;
+			break;			
+		case "linksdr":
+			createPopUp(862,550,true,this,59,'/Engagement/LearnMore/SDR.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linklucida":
+			createPopUp(862,550,true,this,59,'/Engagement/LearnMore/Lucida.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linketoile":
+			createPopUp(862,550,true,this,59,'/Engagement/LearnMore/Etoile.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linklegacy":
+			createPopUp(862,550,true,this,59,'/Engagement/LearnMore/Legacy.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linknovo":
+			createPopUp(862,550,true,this,59,'/Engagement/LearnMore/Novo.aspx','',false);
+			foundPopUp = true;
+			break;
+		case "linkhonten":
+			createPopUp(744,532,true,this,105,'/Seasonal/ja-JP/marketing_modules/Honten/VideoLayer.aspx');
+			foundPopUp = true;
+			break;
+		case "linkbridewars":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(744,532,true,this,105,'/Seasonal/en-US/marketing_modules/BrideWars/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkjpbezet":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(860,523,true,this,105,'/Seasonal/ja-JP/marketing_modules/Bezet/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+        /*
+		case "linklocketphotosizer":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(784,546,true,this,105,'/Seasonal/Modules/LocketPhotoSizer/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+        */
+		case "linkkeysvideo":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(640,616,true,this,58,'/Seasonal/Videos/Keys/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkperettibritishmuseum":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(833,516,true,this,58,'/Seasonal/en-GB/PerettiBritishMuseum/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkcantonstore":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(835,560,true,this,68,'/Seasonal/zh-CN/marketing_modules/CantonStore/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkhkplazastore":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(835,560,true,this,68,'/Seasonal/zh-CN/marketing_modules/HKPlazaStore/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linkfedexcuptrophyvideo":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(680,616,true,this,58,'/Seasonal/Videos/FedExCupTrophy/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linktfbbenefits":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(784,478,true,this,118,'/Seasonal/en-US/marketing_modules/TFB/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;
+		case "linksharapovagehry":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(883,504,true,this,105,'/Seasonal/Modules/SharapovaGehry/Default.aspx' + omnicode);
+			foundPopUp = true;
+			break;			
+		case "linkgivevoicetoyourheartvideo":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(744,532,true,this,105,'/Seasonal/Modules/Holiday2009/Video/Default.aspx' + omnicode)
+			foundPopUp = true;
+			break;	
+		case "linkyellowdiamondsjp":
+		    var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createPopUp(349,294,true,this,105,'/Seasonal/Modules/YellowDiamonds/Overlay/Default.aspx' + omnicode)
+			foundPopUp = true;
+			break;
+        case "linkyellowdiamondsvideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+                }
+                createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Modules/YellowDiamonds/Video/Default.aspx' + omnicode,'',false)
+                foundPopUp = true;
+            break;
+        case "linkyellowdiamondspartyvideo":
+           	var omnicode = ""
+           	if (popupArguments[1]) {
+           		omnicode = "?hppromo=" + popupArguments[1];
+           	}
+           	createBlueOverlay(860, 550, true, this, 58, '/Seasonal/Modules/YellowDiamonds/PartyVideo/Default.aspx' + omnicode, '', false)
+           	foundPopUp = true;
+           	break;
+        case "linkyellowdiamondswinslet":
+           	var omnicode = ""
+           	if (popupArguments[1]) {
+           		omnicode = "?hppromo=" + popupArguments[1];
+           	}
+           	createBlueOverlay(412, 496, true, this, 58, '/Seasonal/Modules/YellowDiamonds/Winslet/Default.aspx' + omnicode, '', false)
+           	foundPopUp = true;
+           	break;
+        case "linkyellowdiamondsabout":
+           	var omnicode = ""
+           	if (popupArguments[1]) {
+           		omnicode = "?hppromo=" + popupArguments[1];
+           	}
+           	createBlueOverlay(862, 548, true, this, 58, '/Seasonal/Modules/YellowDiamonds/About/Default.aspx' + omnicode, '', false)
+           	foundPopUp = true;
+           	break;
+        
+        case "linkyellowdiamondspartyphoto":
+			var omnicode =""
+		    if (popupArguments[1]){
+		        omnicode = "?hppromo=" + popupArguments[1];
+		        }
+			createBlueOverlay(833,558,true,this,68,'/Seasonal/Modules/YellowDiamonds/PartyPhotos/Default.aspx' + omnicode, '', false);
+			foundPopUp = true;
+			break;
+		case "linkiphoneengagementpromo":
+			var omnicode = ""
+			var topPosition = 200;
+			if (isIPhone() == true || isIPad() == true)
+			{
+				var orientation = window.orientation;
+				if (orientation == 90 || orientation == -90) 
+				{
+					topPosition = 50;
+				}
+
+				if (popupArguments[1])
+				{
+					omnicode = "?hppromo=" + popupArguments[1];
+				}
+				window.onorientationchange = function()
+				{
+					orientation = window.orientation;
+					switch (orientation)
+					{
+						case 0:
+							document.getElementById("divPopUp").style.top = "200px";
+							break;
+						case 90:
+						case -90:
+							document.getElementById("divPopUp").style.top = "50px";
+							break;
+					}
+				}
+			}
+
+			switch (locale)
+			{
+				case "ja-JP":
+				    createBlueOverlay(760, 539, true, this, topPosition, '/Seasonal/Custom/iPhoneApp/EngagementApp/DefaultJP.aspx' + omnicode, 'dedee0', true, 14,'divWhiteMask');
+					break;
+				case "zh-CN":
+				case "cn-CN":
+				case "zh-Hant":
+				    createBlueOverlay(760, 539, true, this, topPosition, '/Seasonal/Custom/iPhoneApp/EngagementApp/DefaultCN.aspx' + omnicode, 'dedee0', true, 14,'divWhiteMask');
+					break;
+				default:
+				    createBlueOverlay(739, 614, true, this, topPosition, '/Seasonal/Custom/iPhoneApp/EngagementApp/Default.aspx' + omnicode, 'dedee0', true, 14,'divWhiteMask');
+					break;
+			}
+			foundPopUp = true;
+			break;
+		case "linkengagementapppreview":
+           	var omnicode = ""
+           	if (popupArguments[1]) {
+           		omnicode = "?hppromo=" + popupArguments[1];
+           	}
+           	createBlueOverlay(860, 550, true, this, 58, '/Seasonal/Custom/iPhoneApp/EngagementApp/PreviewTheApp.aspx' + omnicode, '', false)
+           	foundPopUp = true;
+           	break;
+		case "linkleatherretailstores":
+           	var omnicode = ""
+           	if (popupArguments[1]) {
+           		omnicode = "?hppromo=" + popupArguments[1];
+           	}
+           	createBlueOverlay(862, 548, true, this, 58, '/Seasonal/Modules/Leather/RetailStores/Default.aspx' + omnicode, '', false)
+           	foundPopUp = true;
+           	break;
+        case "linkstatementvideo": 
+
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+                }
+				createBlueOverlay(960, 664, true, this, 55, '/Seasonal/Videos/Statement/Default.aspx' + omnicode,'',false)
+                foundPopUp = true;
+                break;
+		case "linksomestyleislegendaryvideo":
+                var omnicode = ""
+                if (popupArguments[1]) {
+                    omnicode = "?hppromo=" + popupArguments[1];
+                }
+                createBlueOverlay(860, 550, true, this, 58, '/Seasonal/Videos/SomeStyleIsLegendary/Default.aspx' + omnicode, '', false)
+                foundPopUp = true;
+                break;
+            case "linkleatherabout":		        
+			//var omnicode = ""
+			//if (popupArguments[1]) {
+				//	omnicode = "?hppromo=" + popupArguments[1];
+				//}
+				//createBlueOverlay(922, 603, true, this, 58, '/Seasonal/Modules/Leather/About/Default.aspx?initState=/0' + omnicode, '', false)
+                //foundPopUp = true;
+				
+				break;
+		case "linkleatheraboutmaterials":
+			var omnicode = ""
+			if (popupArguments[1]) {
+					omnicode = "?hppromo=" + popupArguments[1];
+				}
+				createBlueOverlay(922, 603, true, this, 58, '/Seasonal/modules/Leather/About/default.aspx?initState=/1' + omnicode, '', false)
+				foundPopUp = true;
+				break;
+		case "linkleatheraboutcraft":
+			var omnicode = ""
+			if (popupArguments[1]) {
+					omnicode = "?hppromo=" + popupArguments[1];
+				}
+				createBlueOverlay(922, 603, true, this, 58, '/Seasonal/modules/Leather/About/default.aspx?initState=/2' + omnicode, '', false)
+				foundPopUp = true;
+				break;
+		case "linkleatheraboutdesigners":
+			var omnicode = ""
+			if (popupArguments[1]) {
+					omnicode = "?hppromo=" + popupArguments[1];
+				}
+				createBlueOverlay(922, 603, true, this, 58, '/Seasonal/modules/Leather/About/default.aspx?initState=/3' + omnicode, '', false)
+				foundPopUp = true;
+				break;
+        case "linkthetiffanystoryvideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/TheTiffanyStory/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+	    case "linkholiday2010video":
+                var omnicode = ""
+                if (popupArguments[1]) {
+                    omnicode = "?hppromo=" + popupArguments[1];
+                }
+                createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Holiday2010/Default.aspx' + omnicode, '', false)
+                foundPopUp = true;
+                break;
+
+		case "linkmilanopening":
+                var omnicode = ""
+                if (popupArguments[1]) {
+                    omnicode = "?hppromo=" + popupArguments[1];
+                }
+                createBlueOverlay(919, 575, true, this, 58, '/Seasonal/it-IT/MilanOpening/Default.aspx' + omnicode, '', false)
+                foundPopUp = true;
+                break;		
+        case "linkchinaworldstore":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/zh-CN/marketing_modules/ChinaWorldStore/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkspring2011video":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Spring2011/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkfall2011video":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Fall2011/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkholiday2011video":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Holiday2011/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkrubedovideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Rubedo/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkperettivideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/Peretti/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkcsrvideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/CSR/Default.aspx' + omnicode, '', false)
+            foundPopUp = true;
+            break;
+        case "linkdiamondvideo":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/Seasonal/Videos/TiffanyDiamond/Default.aspx', '', false);
+            foundPopUp = true;
+            break;
+	case "linkjpbridalfair":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+	    createBlueOverlay(750,384,true,this,157,'/Seasonal/ja-JP/marketing_modules/bridalfair/bridalFairOverlay.aspx' + omnicode, '', false);
+	    foundPopUp = true;
+	    break;
+	    
+	//Re added this case for bug id: 724
+        case "linkitradeemailthispage":
+            //Added for Email popup from itrade
+            createEmailPopUp('/Trade/Customer/Request/' + popupArguments[1], 1, 400, 360, 105, 275, 'ffffff', 'e0e0e0', 5);
+            foundPopUp = true;
+            break;
+
+        //for item demand
+        case "linkitradeitemdemandpage":            
+            createEmailPopUp('/shopping/' + popupArguments[1], 1, 400, 360, 105, 275, 'ffffff', 'e0e0e0', 5);
+            foundPopUp = true;
+            break;
+
+        case "linknewsarticle":
+            var omnicode = ""
+            if (popupArguments[2] != "" && popupArguments[2] != null) {
+                omnicode = "&hppromo=" + popupArguments[2];
+            }
+            createBlueOverlay(910, 627, true, this, 58, '/About/News/Article.aspx?id=' + popupArguments[1] + omnicode, '', false);
+            foundPopUp = true;
+            break;
+
+        case "linkwmltconfirm":
+            var omnicode = ""
+            if (popupArguments[1]) {
+                omnicode = "?id=" + popupArguments[1];
+            }
+            createBlueOverlay(498, 372, true, this, 109, '/Seasonal/Modules/WhatMakesLoveTrue/Confirm.aspx' + omnicode, '', false);
+            foundPopUp = true;
+            break;
+        case "linkengravingfairjp":
+            var omnicode = "";
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(902, 624, true, this, 58, "/Seasonal/ja-JP/marketing_modules/engravingfair/engravingFairJP.aspx" + omnicode, '', false);
+            foundPopUp = true;
+            break;
+        case "linkstorereopeningau":
+            var omnicode = "";
+            if (popupArguments[1]) {
+                omnicode = "?hppromo=" + popupArguments[1];
+            }
+            createBlueOverlay(730, 481, true, this, 58, "/Seasonal/en-AU/storeReOpening/StoreReOpening.aspx" + omnicode, '', false);
+            foundPopUp = true;
+            break;
+	}
+	return foundPopUp;
+}
+
+function continueToWMLT() {
+    //alert("test");
+
+    window.open("http://www.whatmakeslovetrue.com/");
+    parent.closePopUp();
+
+}
+
+function createTestChrome(pwidth,pheight,ptop,pBorderWidth,borderColor) {
+	divPopupChrome = document.createElement("div");
+	document.body.insertBefore(divPopupChrome, document.body.firstChild);
+	divPopupChrome.id = "divPopupChrome"
+	divPopupChrome.className= "divPopup"
+	divPopupChrome.style.position = "absolute";
+	divPopupChrome.style.width = pwidth +"px";
+	divPopupChrome.style.marginLeft = Math.round((pwidth+(pBorderWidth*2))/2)*-1 + "px";
+	divPopupChrome.style.left = "50%";
+	divPopupChrome.style.top = ptop +"px";
+	divPopupChrome.style.borderWidth = pBorderWidth +"px";
+	divPopupChrome.style.borderColor = borderColor;
+	divPopupChrome.style.borderStyle ="solid";
+	divPopupChrome.style.zIndex ="999";
+	txtPopUpChromeContent = '<div><div style="float:left"><a href="#">Shop</a></div><div style="float:right"><a href="#">Close</a></div></div>'
+	divPopupChrome.innerHTML = txtPopUpChromeContent;
+}
+
+function initPopoverHistory()
+{
+	if (typeof(StoreLocationsModel) != "undefined" && typeof(LocationsURLFactory != "undefined"))
+	{
+		HistoryManager.getInstance().initHistory(LocationsURLFactory.convertStateToHash(StoreLocationsModel.getInstance().getStateSnapshot()));
+	}
+	else
+	{
+		HistoryManager.getInstance().initHistory(URLFactory.convertStateToHash(ProductModel.getInstance().getStateSnapshot()));
+	}
+}
+if (typeof(BrowserUtils) != "undefined")
+{
+	if (typeof(HistoryManager) != "undefined")
+	{
+		BrowserUtils.addOnLoadHandler(initPopoverHistory);
+	}
+}
+
+// The functions below are just to keep pages from breaking. The preferred way now to call a popup is to use
+// openMarketingPopUp("popupName");
+// This will allow popups to integrate with history management, and will allow them to be triggered through query string parameters.
+// We should migrate pages away from the functions below, and remove each function once calling pages are migrated.
+function linkTiffanyGold() {openMarketingPopUp("linkTiffanyGold");}
+function linkTiffanySilver() {openMarketingPopUp("linkTiffanySilver");}
+function linkTiffanyPlatinum() {openMarketingPopUp("linkTiffanyPlatinum");}
+function linkHistoryTimeline() {openMarketingPopUp("linkHistoryTimeline");}
+function linkJewelryCare() {openMarketingPopUp("linkJewelryCare");}
+function linkMetalCare() {openMarketingPopUp("linkMetalCare");}
+function linkGemstoneCare() {openMarketingPopUp("linkGemstoneCare");}
+function linkWoodCare() {openMarketingPopUp("linkWoodCare");}
+function linkPerettiBio() {openMarketingPopUp("linkPerettiBio");}
+function linkPicassoBio() {openMarketingPopUp("linkPicassoBio");}
+function linkSchlumbergerBio() {openMarketingPopUp("linkSchlumbergerBio");}
+function linkGehryBio() {openMarketingPopUp("linkGehryBio");}
+function linkATD() {openMarketingPopUp("linkATD");}
+function linkAtdBeauty() {openMarketingPopUp("linkAtdBeauty");}
+function linkAtdRingSetting() {openMarketingPopUp("linkAtdRingSetting");} 
+function linkAtdCertification() {openMarketingPopUp("linkAtdCertification");}
+function linkAtdHistory() {openMarketingPopUp("linkAtdHistory");}
+function linkAtdGlossary() {openMarketingPopUp("linkAtdGlossary");}
+function linkAtdPricing() {openMarketingPopUp("linkAtdPricing");}
+function linkAtd7Points() {openMarketingPopUp("linkAtd7Points");}
+function linkGroomsGuide4Cs() {openMarketingPopUp("linkGroomsGuide4Cs");}
+function linkATDWaranty(){openMarketingPopUp("linkATDWaranty");}
+function linkATDPricing(){openMarketingPopUp("linkATDPricing");}
+function linkATDEngravingCleaning(){openMarketingPopUp("linkATDEngravingCleaning");}
+//Text Overlays
+function c(){openMarketingPopUp("c");}
+function linkPrivacyPolicy() {openMarketingPopUp("linkPrivacyPolicy");}
+function linkProp65() {openMarketingPopUp("linkProp65");}
+function linkGemstoneCareEnhancement() {openMarketingPopUp("linkGemstoneCareEnhancement");}
+function linkShippingRatesTimes() {openMarketingPopUp("linkShippingRatesTimes");}
+function linkCreditCard() {openMarketingPopUp("linkCreditCard");}
+function linkStoreConsultation() {openMarketingPopUp("linkStoreConsultation");}
+function linkScheduleConsultation() {openMarketingPopUp("linkScheduleConsultation");}
+function linkReturnPolicy() {openMarketingPopUp("linkReturnPolicy");}
+function linkTermsOfUse() {openMarketingPopUp("linkTermsOfUse");}
+function linkShoppingFAQs() {openMarketingPopUp("linkShoppingFAQs");}
+function linkHowToShop() {openMarketingPopUp("linkHowToShop");}
+function linkPaymentOptions() {openMarketingPopUp("linkPaymentOptions");}
+function linkDeliveryOptions() {openMarketingPopUp("linkDeliveryOptions");}
+function linkShipToPOBox() {openMarketingPopUp("linkShipToPOBox");}
+function linkSpeakToDiamondExpert() { openMarketingPopUp("linkSpeakToDiamondExpert"); GATrackItemActivity('linkSpeakToDiamondExpert'); }
+function linkScheduleConsult() {openMarketingPopUp("linkScheduleConsult");}
+function linkAboutGiftMessage() {openMarketingPopUp("linkAboutGiftMessage");}
+function linkOrderStatus() {openMarketingPopUp("linkOrderStatus");}
+function linkAboutEngraving() {openMarketingPopUp("linkAboutEngraving");}
+function linkBOPS() {openMarketingPopUp("linkBOPS");}
+function linkBOPS5thAve() { openMarketingPopUp("linkBOPS5thAve"); }
+function linkBOPSSoHo() { openMarketingPopUp("linkBOPSSoHo"); }
+function linkCounterfeitWarning() {openMarketingPopUp("linkCounterfeitWarning");}
+function linkCreditCardValidation() {openMarketingPopUp("linkCreditCardValidation");}
+function linkBlueBox() {openMarketingPopUp("linkBlueBox");}
+function linkSpecialEvents() {openMarketingPopUp("linkSpecialEvents");}
+
+function getFAQ(faqId, omnid) { openMarketingPopUp("getFAQ", faqId, omnid); }
+function getBlueFAQ(faqId, omnid) { openMarketingPopUp("getBlueFAQ", faqId, omnid); }
+function linkEmailMarketingSpecialOffer() {openMarketingPopUp("linkEmailMarketingSpecialOffer");}
+function linkAboutRingSizes() {openMarketingPopUp("linkAboutRingSizes");}
+function linkHolidayQr() {openMarketingPopUp("linkHolidayQr");}
+function linkValentineQr() { openMarketingPopUp("linkValentineQr"); }
+function linkAboutGloveSizes(omnid) { openMarketingPopUp("linkAboutGloveSizes", omnid); }
+
+// Modules
+function linkGehryModule() {openMarketingPopUp("linkGehryModule");}
+function linkGehryMovie() {openMarketingPopUp("linkGehryMovie");}
+function linkLargeGehryMovie() {openMarketingPopUp("linkLargeGehryMovie");}
+function linkSmallGehryMovie() {openMarketingPopUp("linkSmallGehryMovie");}
+function linkOverlayGehryModule() {openMarketingPopUp("linkOverlayGehryModule");}
+function linkOverlayGehryMovie() {openMarketingPopUp("linkOverlayGehryMovie");}
+function linkSimply() {openMarketingPopUp("linkSimply");}
+function linkT57() {openMarketingPopUp("linkT57");}
+function linkTiffanyMarkMovie(){openMarketingPopUp("linkTiffanyMarkMovie");}
+function linkWatchHeritage(){openMarketingPopUp("linkWatchHeritage");}
+function linkWatchPromise(){openMarketingPopUp("linkWatchPromise");}
+function linkWatchDesign(){openMarketingPopUp("linkWatchDesign");}
+function linkEmailMarketingModule() {openMarketingPopUp("linkEmailMarketingModule");}
+function linkCelebrationRings() {openMarketingPopUp("linkCelebrationRings");}
+function linkCRStacks() {openMarketingPopUp("linkCRStacks");}
+function linkCarvedHearts() {openMarketingPopUp("linkCarvedHearts");}
+function linkEmailSignUp() {openMarketingPopUp("linkEmailSignUp");}
+function linkEmailSignUpPromo() {openMarketingPopUp("linkEmailSignUpPromo");}
+function linkGiftCardBalance(secureURL) {openMarketingPopUp("linkGiftCardBalance", secureURL);}
+function linkAboutGiftCards() {openMarketingPopUp("linkAboutGiftCards");}
+function linkGiftCardTerms() {openMarketingPopUp("linkGiftCardTerms");}
+function linkfogqrcode() {openMarketingPopUp("linkfogqrcode");}
+function linkEmailThisPage(linkSrc) { openMarketingPopUp("linkEmailThisPage", linkSrc); }
+function linkEmailHint(linkSrc) { openMarketingPopUp("linkEmailHint", linkSrc); }
+function linkEmailCustomerService() { openMarketingPopUp("linkEmailCustomerService"); }
+function linkEngagementEmailThisPage(sku) {openMarketingPopUp("linkEngagementEmailThisPage", sku);}
+function linkAboutQuickOrder() {openMarketingPopUp("linkAboutQuickOrder");}
+function linkEmailWishList(id, sessionId) {openMarketingPopUp("linkEmailWishList", id, sessionId);}
+function linkbejewelled(omnid) {openMarketingPopUp("linkbejewelled", omnid);}
+function linkTiffanyEngraving() {openMarketingPopUp("linkTiffanyEngraving");}
+function linkTrophies() {openMarketingPopUp("linkTrophies");}
+function linkAbout37WallStreet() {openMarketingPopUp("linkAbout37WallStreet");}
+function linkInStorePickup() {openMarketingPopUp("linkInStorePickup");}
+function linkCRstorytop() {openMarketingPopUp("linkCRstorytop");}
+function linkCRcelebring01() {openMarketingPopUp("linkCRcelebring01");}
+function linkCRcelebring02() {openMarketingPopUp("linkCRcelebring02");}
+function linkCRcelebring03() {openMarketingPopUp("linkCRcelebring03");}
+function linkCRcelebring04() {openMarketingPopUp("linkCRcelebring04");}
+function linkCRcelebring05() {openMarketingPopUp("linkCRcelebring05");}
+function linkCRcelebring06() {openMarketingPopUp("linkCRcelebring06");}
+function linkCRcelebring07() {openMarketingPopUp("linkCRcelebring07");}
+function linkCRcelebring08() {openMarketingPopUp("linkCRcelebring08");}
+function linkHoliday() {openMarketingPopUp("linkHoliday");}
+function link2008SpringVideo() {openMarketingPopUp("link2008SpringVideo");}
+function linkHolidayMakingOf() {openMarketingPopUp("linkHolidayMakingOf");}
+function linkSkateSomerset(omnid) {openMarketingPopUp("linkSkateSomerset", omnid);}
+function linkSkateSomersetVideo(omnid) {openMarketingPopUp("linkSkateSomersetVideo", omnid);}
+function linkSkateSomersetVideo09(omnid) {openMarketingPopUp("linkSkateSomersetVideo09", omnid);}
+function linkSkateSomersetVideo10(omnid) { openMarketingPopUp("linkSkateSomersetVideo10", omnid); }
+function linkSkateSomersetVideo11(omnid) { openMarketingPopUp("linkSkateSomersetVideo11", omnid); }
+function linkHeathrowStore(omnid) {openMarketingPopUp("linkHeathrowStore", omnid);}
+function linkPatekPhilippeGrandExpo(omnid) {openMarketingPopUp("linkPatekPhilippeGrandExpo", omnid);}
+function linkPatekPhilippeSalonOpening(omnid) {openMarketingPopUp("linkPatekPhilippeSalonOpening", omnid);}
+function linkPatekPhilippeExclusive(omnid) {openMarketingPopUp("linkPatekPhilippeExclusive", omnid);}
+function linkChainClaspDemo() {openMarketingPopUp("linkChainClaspDemo");}
+function linkJPCharmStories(omnid) {openMarketingPopUp("linkJPCharmStories", omnid);}
+function linkVerifyByVisa() {openMarketingPopUp("linkVerifyByVisa");}
+function linkMasterCode() {openMarketingPopUp("linkMasterCode");}
+function linkSingaporeStore(omnid) {openMarketingPopUp("linkSingaporeStore", omnid);}
+function linkGlamour() {openMarketingPopUp("linkGlamour");}
+function linkSDR() {openMarketingPopUp("linkSDR");}
+function linkLucida() {openMarketingPopUp("linkLucida");}
+function linkEtoile() {openMarketingPopUp("linkEtoile");}
+function linkLegacy() {openMarketingPopUp("linkLegacy");}
+function linkNovo() {openMarketingPopUp("linkNovo");}
+function linkHonten() {openMarketingPopUp("linkHonten");}
+function linkBrideWars(omnid) {openMarketingPopUp("linkBrideWars", omnid);}
+function linkJPBezet(omnid) {openMarketingPopUp("linkJPBezet", omnid);}
+function linkLocketPhotoSizer(omnid) {openMarketingPopUp("linkLocketPhotoSizer", omnid);}
+function linkKeysVideo(omnid) {openMarketingPopUp("linkKeysVideo", omnid);}
+function linkPerettiBritishMuseum(omnid) {openMarketingPopUp("linkPerettiBritishMuseum", omnid);}
+function linkCantonStore(omnid) {openMarketingPopUp("linkCantonStore", omnid);}
+function linkHKPlazaStore(omnid) {openMarketingPopUp("linkHKPlazaStore", omnid);}
+function linkFedExCupTrophyVideo(omnid) {openMarketingPopUp("linkFedExCupTrophyVideo", omnid);}
+function linkTFBBenefits(omnid) {openMarketingPopUp("linkTFBBenefits", omnid);}
+function linkSharapovaGehry(omnid) {openMarketingPopUp("linkSharapovaGehry", omnid);}
+function linkGiveVoiceToYourHeartVideo(omnid) {openMarketingPopUp("linkGiveVoiceToYourHeartVideo", omnid);}
+function linkYellowDiamondsJP(omnid) {openMarketingPopUp("linkYellowDiamondsJP", omnid);}
+function linkYellowDiamondsVideo(omnid) { openMarketingPopUp("linkYellowDiamondsVideo", omnid); }
+function linkYellowDiamondsPartyVideo(omnid) { openMarketingPopUp("linkYellowDiamondsPartyVideo", omnid); }
+function linkYellowDiamondsWinslet(omnid) { openMarketingPopUp("linkYellowDiamondsWinslet", omnid); }
+function linkYellowDiamondsAbout(omnid) { openMarketingPopUp("linkYellowDiamondsAbout", omnid); }
+function linkYellowDiamondsPartyPhoto(omnid) {openMarketingPopUp("linkYellowDiamondsPartyPhoto", omnid);}
+function linkIphoneEngagementPromo(omnid) { openMarketingPopUp("linkIphoneEngagementPromo", omnid); }
+function linkEngagementAppPreview(omnid) { openMarketingPopUp("linkEngagementAppPreview", omnid); }
+function linkLeatherRetailStores(omnid) {openMarketingPopUp("linkLeatherRetailStores", omnid);}
+function linkEstoreWebsitePolicies(omnid) { openMarketingPopUp("linkEstoreWebsitePolicies", omnid); }
+function linkEstorePoliciesGuidelines(omnid) { openMarketingPopUp("linkEstorePoliciesGuidelines", omnid); }
+function linkStatementVideo(omnid) { openMarketingPopUp("linkStatementVideo", omnid); }
+function linkSomeStyleIsLegendaryVideo(omnid) { openMarketingPopUp("linkSomeStyleIsLegendaryVideo", omnid); }
+function linkLeatherAbout(omnid) { openMarketingPopUp("linkLeatherAbout", omnid); }
+function linkLeatherAboutMaterials(omnid) { openMarketingPopUp("linkLeatherAboutMaterials", omnid); }
+function linkLeatherAboutCraft(omnid) { openMarketingPopUp("linkLeatherAboutCraft", omnid); }
+function linkLeatherAboutDesigners(omnid) { openMarketingPopUp("linkLeatherAboutDesigners", omnid); }
+function linkTheTiffanyStoryVideo(omnid) { openMarketingPopUp("linkTheTiffanyStoryVideo", omnid); }
+function linkHoliday2010Video(omnid) { openMarketingPopUp("linkHoliday2010Video", omnid); }
+function linkMilanOpening(omnid) { openMarketingPopUp("linkMilanOpening", omnid); }
+function linkChinaWorldStore(omnid) { openMarketingPopUp("linkChinaWorldStore", omnid); }
+function linkSpring2011Video(omnid) { openMarketingPopUp("linkSpring2011Video", omnid); }
+function linkFall2011Video(omnid) { openMarketingPopUp("linkFall2011Video", omnid); }
+function linkHoliday2011Video(omnid) { openMarketingPopUp("linkHoliday2011Video", omnid); }
+function linkRubedoVideo(omnid) { openMarketingPopUp("linkRubedoVideo", omnid); }
+function linkPerettiVideo(omnid) { openMarketingPopUp("linkPerettiVideo", omnid); }
+function linkjpBridalFair(omnid) { openMarketingPopUp("linkjpBridalFair", omnid); }
+function linkNewsArticle(articleId, omnid) { openMarketingPopUp("linkNewsArticle", articleId, omnid); }
+function linkWMLTConfirm(omnid) { openMarketingPopUp("linkWMLTConfirm", omnid); }
+function linkEngravingFairJP(omnid) { openMarketingPopUp("linkEngravingFairJP", omnid); }
+function linkStoreReOpeningAU(omnid) { openMarketingPopUp("linkStoreReOpeningAU", omnid); }
+function linkCSRVideo(omnid) { openMarketingPopUp("linkCSRVideo", omnid); }
+function linkDiamondVideo(omnid) { openMarketingPopUp("linkDiamondVideo", omnid); }
+function linkAboutCOD() { openMarketingPopUp("linkAboutCOD"); }
+function linkaboutJPDeliveryPreference() { openMarketingPopUp("linkaboutJPDeliveryPreference"); }
+
+//Resolved bug 724
+function linkitradeemailthispage(linkSrc) { openMarketingPopUp("linkitradeemailthispage", linkSrc); }
+//724 end
+//for item demand page
+function linkItradeItemDemandPage(linkSrc) {openMarketingPopUp("linkItradeItemDemandPage", linkSrc); }
+
+function linkOverlays(overlayLink){
+	closePopUp();
+	openMarketingPopUp(overlayLink);
+}
+
+function ptRegistrySearch() {
+	if (document.getElementById("ptTxtRegistryLastName").value.length > 0){
+		hide("ptRegistrySearchError");
+		window.location.href="/Registry/Search.aspx?OtherSearch=1&fn="+document.getElementById("ptTxtRegistryFirstName").value+"&ln="+document.getElementById("ptTxtRegistryLastName").value}
+	else {show("ptRegistrySearchError")};
+}
+
+function msgOkCancel(confirmMsg, extLink) {
+    if (confirm(confirmMsg)) {window.open(extLink,'externalWebsite');}
+}
+
+//Begin Email Request
+	
+	//Function href,layerType,layerWidth,layerHeight,layerTop,layerLeft, layerBackgroundColor, layerBorderColor, layerBorderWidth
+function createEmailPopUp (href,layerType,pwidth,pheight,ptop,pleft,pbgcolor,pbrdrcolor,pbrdrwidth,blnPopupMask) {
+	//change('btnSendVideo','selectOn');
+	
+	divEmailPopupHolderTop = ptop;
+	divEmailPopupHolderHeight = pheight;
+	var destURL = href
+	txtPopUpContent = '<iframe id="iframeMiniContent" name="iframeMiniContent" src="'+destURL+'" style="border:0; width:'+pwidth+'px; height:'+pheight+'px" frameborder="0" scrolling="no" allowtransparency="true"></iframe>'
+	divEmailPopupHolder = document.createElement("div");
+	document.body.insertBefore(divEmailPopupHolder, document.body.firstChild);
+	divEmailPopupHolder.id = "divMiniPopUp"
+	divEmailPopupHolder.className= "divMiniPopUp"
+	divEmailPopupHolder.style.position = "absolute";
+	divEmailPopupHolder.style.width = pwidth +"px";
+	divEmailPopupHolder.style.marginLeft = "0px"
+	divEmailPopupHolder.style.left = pleft +"px";
+	divEmailPopupHolder.style.top = ptop +"px";
+	divEmailPopupHolder.style.borderWidth = pbrdrwidth + "px";
+	divEmailPopupHolder.style.borderColor = "#" + pbrdrcolor;
+	divEmailPopupHolder.style.backgroundColor = "#" + pbgcolor;
+	
+	if(top==self) {
+	divEmailPopupHolder.style.top = ptop +"px";
+	divEmailPopupHolder.style.left = "50%";
+	divEmailPopupHolder.style.marginLeft = (pleft-480)+"px";
+	divEmailPopupHolder.style.borderWidth = pbrdrwidth + "px";
+	divEmailPopupHolder.style.borderColor = "#" + pbrdrcolor;
+	divEmailPopupHolder.style.backgroundColor = "#" + pbgcolor;
+	}
+	
+	divEmailPopupHolder.innerHTML = txtPopUpContent;
+	
+		//Create Mask to cover contents below
+	divEmailMaskHolder = document.createElement("div");
+	document.body.insertBefore(divEmailMaskHolder, document.body.firstChild);
+	divEmailMaskHolder.id = "divMiniMask"
+	if (blnPopupMask) {divEmailMaskHolder.className= "divMask";} else {divEmailMaskHolder.className= "divClearMask";}
+	divEmailMaskHolder.style.height = (getPageHeight()) +"px"
+	divEmailMaskHolder.style.top = "0px"
+	divEmailMaskHolder.innerHTML = "&nbsp;";
+	divEmailMaskHolder.onclick = closeEmailPopUp;
+    
+}
+
+
+function closeEmailPopUp() {
+    if (typeof (divEmailPopupHolder) != "undefined") {
+        if (document.getElementById(divEmailPopupHolder.id) != null) {
+            divEmailPopupHolder.innerHTML = "";
+            document.body.removeChild(divEmailPopupHolder);
+            divEmailMaskHolder.innerHTML = "";
+            document.body.removeChild(divEmailMaskHolder);
+        }
+	}
+		
+}
+function initScrollLayer() {
+
+	checkOverlaySize();
+}
+function checkOverlaySize()
+{
+	if((document.getElementById("divText").offsetHeight) > 150) {resizeOverlay();}
+}
+function resizeOverlay()
+{
+	if (parent.document.getElementById("iframeMiniContent") != null)
+	{
+		var newOverlayOffSetHeight = document.getElementById("divText").offsetHeight + 20;
+		parent.document.getElementById("iframeMiniContent").style.height = newOverlayOffSetHeight + "px"
+	}
+}
+// End Email Request

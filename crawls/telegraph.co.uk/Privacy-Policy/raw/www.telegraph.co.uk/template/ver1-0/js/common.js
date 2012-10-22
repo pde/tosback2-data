@@ -1110,22 +1110,25 @@ function getParams(url){
 /* Standard function to rebuild standard tagging (removing any old data) */
 function dcsRebuild() {
 
-	// Clear existing parameters
-	if (typeof(DCSext) != "undefined") {
-		for (N in DCSext){
-			DCSext[N] = "";
-		}
-	}
-	// We also need to clear WT params (these don't all get cleared in dcsCleanup in the Webtrends script)
-	if (typeof(WT) != "undefined") {
-		for (N in WT){
-			WT[N] = "";
-		}
-	}
-
-	// Rebuild from meta
-	dcsMeta();
-	dcsMetaCustom();
+//	// Clear existing parameters
+//	if (typeof(DCSext) != "undefined") {
+//		for (N in DCSext){
+//			DCSext[N] = "";
+//		}
+//	}
+//	// We also need to clear WT params (these don't all get cleared in dcsCleanup in the Webtrends script)
+//	if (typeof(WT) != "undefined") {
+//		for (N in WT){
+//			WT[N] = "";
+//		}
+//	}
+//
+//	// Rebuild from meta
+//	dcsMeta();
+//	dcsMetaCustom();
+	Webtrends.dcs['dcsCleanUp'];
+	Webtrends.dcs['dcsMeta'];
+	Webtrends.dcs['dcsMetaCustom'];
 }
 
 /* Dating widget function to navigate through tabs */

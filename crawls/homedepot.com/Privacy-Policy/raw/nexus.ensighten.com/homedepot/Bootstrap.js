@@ -7,6 +7,6 @@ callback3517=Bootstrapper.new_fArray();callback11987=Bootstrapper.new_fArray();c
 _n=_n.previousSibling;}
 p=t+(c!=1?'['+c+']':'')+p;}
 n=n.parentNode;}
-return'/HTML'+p;};;}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='5223';
+return'/HTML'+p;};;}catch(e){Bootstrapper.reportException(e);}try{Bootstrapper.setCurrentRuleId(23582);if(window.location.search.indexOf('test=content')>-1){if(document.location.pathname==='/'||document.location.pathname==='/webapp/catalog/servlet/ContentView'){try{console.log('mbox create calling');mboxCreate('homedepot_content_mbox');console.log('mbox create calling');}catch(e){console.log('mbox create error:',e);}}};}catch(e){Bootstrapper.reportException(e);}Bootstrapper.globalRuleList='5223;23582';
 	Bootstrapper.getServerComponent();
 }
