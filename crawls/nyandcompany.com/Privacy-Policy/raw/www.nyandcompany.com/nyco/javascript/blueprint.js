@@ -37,7 +37,7 @@ atg.b2cblueprint.util={
      */ 
     // don't open window if we had a form error
     if (openWindow) {
-      document.open(URL,"","scrollbars=yes,toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,width=1024,height=750");
+      document.open(URL,"","scrollbars=yes,toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,width=900,height=375,left=200,top=200");
       //Line below are for setting the Omnitute variables.
       s.events='event7'; 
       s.eVar18='Sign Up';
@@ -243,6 +243,70 @@ atg.b2cblueprint.util={
         return true;
       });
     }
+  },
+
+	emailSignupOnKeyPress: function(URL,event) {  
+		
+    // need to make sure the required fields are not null
+    if(window.event)
+		{
+	var keyPressed = window.event.keyCode;
+	if(keyPressed==13)
+			{
+		var openWindow = true;
+    /**
+    // check to see if we have an email address at all
+    var addressEntered = theForm.emailAddress.value;
+    if (dojo.string.trim(addressEntered) === "") {
+      openWindow = false;
+    }
+    
+    //if email id is not valid don't open the window
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(addressEntered))){
+      openWindow = false;
+    }
+     */ 
+    // don't open window if we had a form error
+    if (openWindow) {
+      document.open(URL,"","scrollbars=yes,toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,width=910,height=400,left=200,top=200");
+      //Line below are for setting the Omnitute variables.
+      s.events='event7'; 
+      s.eVar18='Sign Up';
+      //alert("s.eVar18:"+s.eVar18);
+      //alert("s.events:"+s.events);
+      var s_code=s.t();if(s_code)document.write(s_code)
+	}
+	}
+
+	}// IE
+		else
+		{
+	//keyPressed = e.which; // Firefox
+	var openWindow = true;
+    /**
+    // check to see if we have an email address at all
+    var addressEntered = theForm.emailAddress.value;
+    if (dojo.string.trim(addressEntered) === "") {
+      openWindow = false;
+    }
+    
+    //if email id is not valid don't open the window
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(addressEntered))){
+      openWindow = false;
+    }
+     */ 
+    // don't open window if we had a form error
+    if (openWindow) {
+      document.open(URL,"","scrollbars=yes,toolbar=no,directories=no,menubar=no,resizable=yes,status=yes,width=900,height=375,left=200,top=200");
+      //Line below are for setting the Omnitute variables.
+      s.events='event7'; 
+      s.eVar18='Sign Up';
+      //alert("s.eVar18:"+s.eVar18);
+      //alert("s.events:"+s.events);
+      var s_code=s.t();if(s_code)document.write(s_code);
+	}
+		}
+	
   },
 
   noenter: function() {

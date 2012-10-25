@@ -26,6 +26,10 @@
 
 
 
+
+
+
+
 <script src="../../../../../images.sfbc.com/content/branding/common/js/hp_jquery.cookie.js"></script>
 
 
@@ -85,16 +89,38 @@ var clubCode="SFC".toLowerCase();
 
 <script language="JavaScript" type="text/javascript">
 
+var club3Code = 'SFC';
+var environment ='production';
 var strPageNamePrefix='';
 var strPageNameSuffix='';
 var omnChan = 'PrivacyPolicy';
 var omnCat = '';
 var omnSubc = '';
 
-if(omnChan == 'CART CONFIRMATION|FS ACCEPT'){
-		mboxCreate('DBC_FSAccept_qa');
-	}
-	
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'CBC' && environment == 'production'){
+		mboxCreate('CBC_FSAccept');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'RBC' && environment == 'production'){
+	mboxCreate('RBC_FSAccept');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'QPB' && environment == 'production'){
+	mboxCreate('QPB_FSAccept');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'HBC' && environment == 'production'){
+	mboxCreate('HBC_FSAccept');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'CBC' && environment == 'qa'){
+		mboxCreate('CBC_FSAccept_qa');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'RBC' && environment == 'qa'){
+	mboxCreate('RBC_FSAccept_qa');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'QPB' && environment == 'qa'){
+	mboxCreate('QPB_FSAccept_qa');
+}
+if(omnChan == 'CART CONFIRMATION|FS ACCEPT' && club3Code == 'HBC' && environment == 'qa'){
+	mboxCreate('HBC_FSAccept_qa');
+}
 if (omnChan != "PDP") {
 	if(omnCat!="" && omnChan != omnCat){
 			if(omnSubc!=""){
@@ -193,7 +219,7 @@ s.events="";
 
 s.channel="NEW MEMBER|PrivacyPolicy".toUpperCase();
 
-s.eVar29="751935274";s.prop29=s.eVar29;
+s.eVar29="753818832";s.prop29=s.eVar29;
 
 
 

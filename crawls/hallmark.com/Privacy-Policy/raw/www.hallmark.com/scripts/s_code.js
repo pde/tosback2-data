@@ -94,7 +94,34 @@ function s_doPlugins(s) {
         s.prop30 = s.pageName;
         s.prop32 = s.pageName;
     }
+    else {
+        sPath = s.pageName;
+        sIndex_start = sPath.indexOf(">");
+        if (sIndex_start == 0) {
+            sIndex_end = sPath.indexOf(">", sIndex_start + 1);
+            if (sIndex_end > 0) {
+                s.prop1 = sPath.substring(sIndex_start + 1, sIndex_end);
+            }
+            else {
+                s.prop1 = sPath.substring(sIndex_start + 1);
+            }
+            s.pageName = sPath.substring(sIndex_start + 1, s.pageName.length - 1);
+            s.prop2 = s.prop1 + ">Level2";
+            s.prop3 = s.pageName;
+            s.prop30 = s.pageName;
 
+        }
+    }
+
+    // Change for Home Page
+    if (s.prop1 == "") {
+        s.pageName = "Home page";
+        s.prop1 = "Home page";
+        s.prop2 = "Home page";
+        s.prop3 = "Home page";
+        s.prop30 = "Home page";
+        s.prop32 = "Home page";
+    }
     /*
     * Level 1 Pagename for Shop Online Top Page...
     */

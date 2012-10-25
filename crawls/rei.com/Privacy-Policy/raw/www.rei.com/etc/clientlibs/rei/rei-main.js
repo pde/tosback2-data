@@ -4,7 +4,7 @@
  * Build: http://www.modernizr.com/download/#-applicationcache-canvas-canvastext-draganddrop-hashchange-history-audio-video-indexeddb-input-inputtypes-localstorage-postmessage-sessionstorage-websockets-websqldatabase-webworkers-iepp-cssclasses-teststyles-testprop-testallprops-hasevent-prefixes-domprefixes-load
  */
 ;window.Modernizr=function(a,b,c){function F(){e.input=function(a){for(var b=0,c=a.length;b<c;b++)s[a[b]]=a[b]in l;return s}("autocomplete autofocus list placeholder max min multiple pattern required step".split(" ")),e.inputtypes=function(a){for(var d=0,e,f,h,i=a.length;d<i;d++)l.setAttribute("type",f=a[d]),e=l.type!=="text",e&&(l.value=m,l.style.cssText="position:absolute;visibility:hidden;",/^range$/.test(f)&&l.style.WebkitAppearance!==c?(g.appendChild(l),h=b.defaultView,e=h.getComputedStyle&&h.getComputedStyle(l,null).WebkitAppearance!=="textfield"&&l.offsetHeight!==0,g.removeChild(l)):/^(search|tel)$/.test(f)||(/^(url|email)$/.test(f)?e=l.checkValidity&&l.checkValidity()===!1:/^color$/.test(f)?(g.appendChild(l),g.offsetWidth,e=l.value!=m,g.removeChild(l)):e=l.value!=m)),r[a[d]]=!!e;return r}("search tel url email datetime date month week time datetime-local number range color".split(" "))}function E(a,b){var c=a.charAt(0).toUpperCase()+a.substr(1),d=(a+" "+p.join(c+" ")+c).split(" ");return D(d,b)}function D(a,b){for(var d in a)if(k[a[d]]!==c)return b=="pfx"?a[d]:!0;return!1}function C(a,b){return!!~(""+a).indexOf(b)}function B(a,b){return typeof a===b}function A(a,b){return z(o.join(a+";")+(b||""))}function z(a){k.cssText=a}var d="2.0.6",e={},f=!0,g=b.documentElement,h=b.head||b.getElementsByTagName("head")[0],i="modernizr",j=b.createElement(i),k=j.style,l=b.createElement("input"),m=":)",n=Object.prototype.toString,o=" -webkit- -moz- -o- -ms- -khtml- ".split(" "),p="Webkit Moz O ms Khtml".split(" "),q={},r={},s={},t=[],u=function(a,c,d,e){var f,h,j,k=b.createElement("div");if(parseInt(d,10))while(d--)j=b.createElement("div"),j.id=e?e[d]:i+(d+1),k.appendChild(j);f=["&shy;","<style>",a,"</style>"].join(""),k.id=i,k.innerHTML+=f,g.appendChild(k),h=c(k,a),k.parentNode.removeChild(k);return!!h},v=function(){function d(d,e){e=e||b.createElement(a[d]||"div"),d="on"+d;var f=d in e;f||(e.setAttribute||(e=b.createElement("div")),e.setAttribute&&e.removeAttribute&&(e.setAttribute(d,""),f=B(e[d],"function"),B(e[d],c)||(e[d]=c),e.removeAttribute(d))),e=null;return f}var a={select:"input",change:"input",submit:"form",reset:"form",error:"img",load:"img",abort:"img"};return d}(),w,x={}.hasOwnProperty,y;!B(x,c)&&!B(x.call,c)?y=function(a,b){return x.call(a,b)}:y=function(a,b){return b in a&&B(a.constructor.prototype[b],c)},q.canvas=function(){var a=b.createElement("canvas");return!!a.getContext&&!!a.getContext("2d")},q.canvastext=function(){return!!e.canvas&&!!B(b.createElement("canvas").getContext("2d").fillText,"function")},q.postmessage=function(){return!!a.postMessage},q.websqldatabase=function(){var b=!!a.openDatabase;return b},q.indexedDB=function(){for(var b=-1,c=p.length;++b<c;)if(a[p[b].toLowerCase()+"IndexedDB"])return!0;return!!a.indexedDB},q.hashchange=function(){return v("hashchange",a)&&(b.documentMode===c||b.documentMode>7)},q.history=function(){return!!a.history&&!!history.pushState},q.draganddrop=function(){return v("dragstart")&&v("drop")},q.websockets=function(){for(var b=-1,c=p.length;++b<c;)if(a[p[b]+"WebSocket"])return!0;return"WebSocket"in a},q.video=function(){var a=b.createElement("video"),c=!1;try{if(c=!!a.canPlayType){c=new Boolean(c),c.ogg=a.canPlayType('video/ogg; codecs="theora"');var d='video/mp4; codecs="avc1.42E01E';c.h264=a.canPlayType(d+'"')||a.canPlayType(d+', mp4a.40.2"'),c.webm=a.canPlayType('video/webm; codecs="vp8, vorbis"')}}catch(e){}return c},q.audio=function(){var a=b.createElement("audio"),c=!1;try{if(c=!!a.canPlayType)c=new Boolean(c),c.ogg=a.canPlayType('audio/ogg; codecs="vorbis"'),c.mp3=a.canPlayType("audio/mpeg;"),c.wav=a.canPlayType('audio/wav; codecs="1"'),c.m4a=a.canPlayType("audio/x-m4a;")||a.canPlayType("audio/aac;")}catch(d){}return c},q.localstorage=function(){try{return!!localStorage.getItem}catch(a){return!1}},q.sessionstorage=function(){try{return!!sessionStorage.getItem}catch(a){return!1}},q.webworkers=function(){return!!a.Worker},q.applicationcache=function(){return!!a.applicationCache};for(var G in q)y(q,G)&&(w=G.toLowerCase(),e[w]=q[G](),t.push((e[w]?"":"no-")+w));e.input||F(),z(""),j=l=null,a.attachEvent&&function(){var a=b.createElement("div");a.innerHTML="<elem></elem>";return a.childNodes.length!==1}()&&function(a,b){function s(a){var b=-1;while(++b<g)a.createElement(f[b])}a.iepp=a.iepp||{};var d=a.iepp,e=d.html5elements||"abbr|article|aside|audio|canvas|datalist|details|figcaption|figure|footer|header|hgroup|mark|meter|nav|output|progress|section|summary|time|video",f=e.split("|"),g=f.length,h=new RegExp("(^|\\s)("+e+")","gi"),i=new RegExp("<(/*)("+e+")","gi"),j=/^\s*[\{\}]\s*$/,k=new RegExp("(^|[^\\n]*?\\s)("+e+")([^\\n]*)({[\\n\\w\\W]*?})","gi"),l=b.createDocumentFragment(),m=b.documentElement,n=m.firstChild,o=b.createElement("body"),p=b.createElement("style"),q=/print|all/,r;d.getCSS=function(a,b){if(a+""===c)return"";var e=-1,f=a.length,g,h=[];while(++e<f){g=a[e];if(g.disabled)continue;b=g.media||b,q.test(b)&&h.push(d.getCSS(g.imports,b),g.cssText),b="all"}return h.join("")},d.parseCSS=function(a){var b=[],c;while((c=k.exec(a))!=null)b.push(((j.exec(c[1])?"\n":c[1])+c[2]+c[3]).replace(h,"$1.iepp_$2")+c[4]);return b.join("\n")},d.writeHTML=function(){var a=-1;r=r||b.body;while(++a<g){var c=b.getElementsByTagName(f[a]),d=c.length,e=-1;while(++e<d)c[e].className.indexOf("iepp_")<0&&(c[e].className+=" iepp_"+f[a])}l.appendChild(r),m.appendChild(o),o.className=r.className,o.id=r.id,o.innerHTML=r.innerHTML.replace(i,"<$1font")},d._beforePrint=function(){p.styleSheet.cssText=d.parseCSS(d.getCSS(b.styleSheets,"all")),d.writeHTML()},d.restoreHTML=function(){o.innerHTML="",m.removeChild(o),m.appendChild(r)},d._afterPrint=function(){d.restoreHTML(),p.styleSheet.cssText=""},s(b),s(l);d.disablePP||(n.insertBefore(p,n.firstChild),p.media="print",p.className="iepp-printshim",a.attachEvent("onbeforeprint",d._beforePrint),a.attachEvent("onafterprint",d._afterPrint))}(a,b),e._version=d,e._prefixes=o,e._domPrefixes=p,e.hasEvent=v,e.testProp=function(a){return D([a])},e.testAllProps=E,e.testStyles=u,g.className=g.className.replace(/\bno-js\b/,"")+(f?" js "+t.join(" "):"");return e}(this,this.document),function(a,b,c){function k(a){return!a||a=="loaded"||a=="complete"}function j(){var a=1,b=-1;while(p.length- ++b)if(p[b].s&&!(a=p[b].r))break;a&&g()}function i(a){var c=b.createElement("script"),d;c.src=a.s,c.onreadystatechange=c.onload=function(){!d&&k(c.readyState)&&(d=1,j(),c.onload=c.onreadystatechange=null)},m(function(){d||(d=1,j())},H.errorTimeout),a.e?c.onload():n.parentNode.insertBefore(c,n)}function h(a){var c=b.createElement("link"),d;c.href=a.s,c.rel="stylesheet",c.type="text/css";if(!a.e&&(w||r)){var e=function(a){m(function(){if(!d)try{a.sheet.cssRules.length?(d=1,j()):e(a)}catch(b){b.code==1e3||b.message=="security"||b.message=="denied"?(d=1,m(function(){j()},0)):e(a)}},0)};e(c)}else c.onload=function(){d||(d=1,m(function(){j()},0))},a.e&&c.onload();m(function(){d||(d=1,j())},H.errorTimeout),!a.e&&n.parentNode.insertBefore(c,n)}function g(){var a=p.shift();q=1,a?a.t?m(function(){a.t=="c"?h(a):i(a)},0):(a(),j()):q=0}function f(a,c,d,e,f,h){function i(){!o&&k(l.readyState)&&(r.r=o=1,!q&&j(),l.onload=l.onreadystatechange=null,m(function(){u.removeChild(l)},0))}var l=b.createElement(a),o=0,r={t:d,s:c,e:h};l.src=l.data=c,!s&&(l.style.display="none"),l.width=l.height="0",a!="object"&&(l.type=d),l.onload=l.onreadystatechange=i,a=="img"?l.onerror=i:a=="script"&&(l.onerror=function(){r.e=r.r=1,g()}),p.splice(e,0,r),u.insertBefore(l,s?null:n),m(function(){o||(u.removeChild(l),r.r=r.e=o=1,j())},H.errorTimeout)}function e(a,b,c){var d=b=="c"?z:y;q=0,b=b||"j",C(a)?f(d,a,b,this.i++,l,c):(p.splice(this.i++,0,a),p.length==1&&g());return this}function d(){var a=H;a.loader={load:e,i:0};return a}var l=b.documentElement,m=a.setTimeout,n=b.getElementsByTagName("script")[0],o={}.toString,p=[],q=0,r="MozAppearance"in l.style,s=r&&!!b.createRange().compareNode,t=r&&!s,u=s?l:n.parentNode,v=a.opera&&o.call(a.opera)=="[object Opera]",w="webkitAppearance"in l.style,x=w&&"async"in b.createElement("script"),y=r?"object":v||x?"img":"script",z=w?"img":y,A=Array.isArray||function(a){return o.call(a)=="[object Array]"},B=function(a){return Object(a)===a},C=function(a){return typeof a=="string"},D=function(a){return o.call(a)=="[object Function]"},E=[],F={},G,H;H=function(a){function f(a){var b=a.split("!"),c=E.length,d=b.pop(),e=b.length,f={url:d,origUrl:d,prefixes:b},g,h;for(h=0;h<e;h++)g=F[b[h]],g&&(f=g(f));for(h=0;h<c;h++)f=E[h](f);return f}function e(a,b,e,g,h){var i=f(a),j=i.autoCallback;if(!i.bypass){b&&(b=D(b)?b:b[a]||b[g]||b[a.split("/").pop().split("?")[0]]);if(i.instead)return i.instead(a,b,e,g,h);e.load(i.url,i.forceCSS||!i.forceJS&&/css$/.test(i.url)?"c":c,i.noexec),(D(b)||D(j))&&e.load(function(){d(),b&&b(i.origUrl,h,g),j&&j(i.origUrl,h,g)})}}function b(a,b){function c(a){if(C(a))e(a,h,b,0,d);else if(B(a))for(i in a)a.hasOwnProperty(i)&&e(a[i],h,b,i,d)}var d=!!a.test,f=d?a.yep:a.nope,g=a.load||a.both,h=a.callback,i;c(f),c(g),a.complete&&b.load(a.complete)}var g,h,i=this.yepnope.loader;if(C(a))e(a,0,i,0);else if(A(a))for(g=0;g<a.length;g++)h=a[g],C(h)?e(h,0,i,0):A(h)?H(h):B(h)&&b(h,i);else B(a)&&b(a,i)},H.addPrefix=function(a,b){F[a]=b},H.addFilter=function(a){E.push(a)},H.errorTimeout=1e4,b.readyState==null&&b.addEventListener&&(b.readyState="loading",b.addEventListener("DOMContentLoaded",G=function(){b.removeEventListener("DOMContentLoaded",G,0),b.readyState="complete"},0)),a.yepnope=d()}(this,this.document),Modernizr.load=function(){yepnope.apply(window,[].slice.call(arguments,0))};
-/* $Id: rei.js 1914 2012-03-30 17:26:26Z jowilso $ */
+/* $Id: rei.js 5508 2012-09-17 23:32:02Z roferna $ */
 
 // old deprecated code
 function init() { }								
@@ -191,8 +191,7 @@ window.rei = rei = {
 	// priority items
 
 		// was findAStore.js
-		// TODO find and test this zip feature
-		function checkZip(){
+		function checkZip(event){
 			var zipCodeWithZero = $(document.getElementById('findAStoreZip')).val();
 			var zip = parseInt($(document.getElementById('findAStoreZip')).val()||'',10);
 			if (isNaN(zip) || (zip < 1)) { alert("Please enter a valid ZIP code."); return false; };
@@ -208,7 +207,10 @@ window.rei = rei = {
 		$(document.getElementById('findAStoreZip')).focus(function(){ $(this).val(""); }).keydown(function(event){
 			if (event.keyCode == "13") checkZip();
 		})
-		$(document.getElementById('findAStoreClick')).click(checkZip);
+		$(document.getElementById('findAStoreClick')).click(function(event){			
+			event.preventDefault();
+			checkZip();
+		});
 
 		// drowDown init
 		var hunt3 = $(document.getElementById('hunt3'));
@@ -283,7 +285,18 @@ window.rei = rei = {
 		if($(".share").length > 0){
 			try{
 				var addthisjs = document.createElement('script');
-				addthisjs.src= "http://s7.addthis.com/js/250/addthis_widget.js?domready=1";
+				
+				//default to https to avoid security warning in browsers
+				var protocol = "https://";
+				try{
+					if(window.parent.document.location.protocol === 'http:'){
+						protocol = 'http://';
+					}					
+				}
+				catch(err){}
+				//end protocol check 
+				
+				addthisjs.src= protocol + "s7.addthis.com/js/250/addthis_widget.js?domready=1";
 				addthisjs.async = true;
 				addthisjs.id = 'addthisscriptloadtest';
 				document.body.appendChild(addthisjs);
@@ -968,7 +981,7 @@ function loadMaps() {
     }
 }
 
-/* $Id: common_ultra.js 3304 2012-06-09 00:20:04Z sfleshe $ */
+/* $Id: common_ultra.js 5968 2012-10-01 19:00:22Z jowilso $ */
 
 /**
  * TODO
@@ -1627,30 +1640,30 @@ document.execCommand("BackgroundImageCache", false, true);
 	
 /* create searchId cookie for SC event serialization */
 function genSearchId(){        
-               var newDate = new Date();
-           
-                      var myYear = newDate.getUTCFullYear();
-                      myYear = myYear.toString();
-                      myYear = myYear.substring(myYear.length-2,myYear.length);
-                      
-                      var myMonth = newDate.getUTCMonth() +1;
-                      myMonth = myMonth < 10 ? ('0'+myMonth) : myMonth;
-                      
-                      var myDay = newDate.getUTCDate();                      
-                      myDay = myDay < 10 ? ('0'+myDay) : myDay;                   
-                      
-                      var myMinutes = newDate.getUTCHours()*60 + newDate.getUTCMinutes();                         
-                      var shortDate=myYear+myMonth+myDay;                        
-                     
-                     var newValue = shortDate+myMinutes+rei.util.randomID(10);
-           
-               Set_Cookie('searchId', newValue, 1);        	     
+	var newDate = new Date();
+	   
+	var myYear = newDate.getUTCFullYear();
+	myYear = myYear.toString();
+	myYear = myYear.substring(myYear.length-2,myYear.length);
+	  
+	var myMonth = newDate.getUTCMonth() +1;
+	myMonth = myMonth < 10 ? ('0'+myMonth) : myMonth;
+	  
+	var myDay = newDate.getUTCDate();                      
+	myDay = myDay < 10 ? ('0'+myDay) : myDay;                   
+	              
+	var myMinutes = newDate.getUTCHours()*60 + newDate.getUTCMinutes();                         
+	var shortDate=myYear+myMonth+myDay;                        
+	 
+	var newValue = shortDate+myMinutes+rei.util.randomID(10);
+	   
+	Set_Cookie('searchId', newValue, 1);        	     
 }
 			
 function checkSearchBoxValue(form){
 	if(form){
 	    var parentForm = form.headerQuery;
-	    if (parentForm.value=='') {
+	    if (typeof parentForm != 'undefined' && parentForm.value=='') {
 	        var url = '/emptysearch';
 	        if (storeClass == 'outlet') {
 	        	url = '/outlet/emptysearch';
@@ -1989,7 +2002,7 @@ function O_GoT(_p) {
     _d.write('<a href=\'javascript:O_LC()\'>' + _p + '</a>');
     _fPe()
 }
-/* $Id: minicart.class.js 4583 2012-08-08 18:45:00Z agatlab $ */
+/* $Id: minicart.class.js 6333 2012-10-15 17:21:39Z dalee $ */
 
 // Requirements: 
 //	jQuery
@@ -2065,7 +2078,7 @@ function Minicart() {
 									<div class="horizdots"> </div>\
 									<div id="lineD" class="cf">\
 										<a href="/CheckoutLoginView?storeId=' + storeId + '" id="minicartCheckoutBtnLink" class="hdrLink_checkoutBtn button primary" style="float:right">checkout</a>\
-										<div id="minicartNonBtn"><a href="#" onclick="javascript:minicart.hideCart(); return false;" id="minicartClose">Continue Shopping</a>|<a href="/ShoppingCart?storeId=' + storeId + '" id="minicartViewCart">View Your Cart</a></div>\
+										<div id="minicartNonBtn"><a href="#" onclick="javascript:minicart.hideCart();" id="minicartClose">Continue Shopping</a>|<a href="/ShoppingCart?storeId=' + storeId + '" id="minicartViewCart">View Your Cart</a></div>\
 									</div>\
 									<div id="lineE">\
 									</div>\
@@ -2290,6 +2303,12 @@ function Minicart() {
 		itemAddedToCart = $("#itemAddedMsg",m);
 		itemAddedToCart.hide();
 		$("#minicartClose",m).click(hide);
+		var continue_url = getCookie('rei_continue');
+		if ( continue_url) {
+			if ( continue_url) {
+				$("#minicartClose").each(function(i,o) { o.href= continue_url});
+			}						
+		}
 	}
 	
 	function compareOrderItemId(thisItem,thatItem){
@@ -2343,7 +2362,8 @@ function Minicart() {
 				
 				scratch = parseFloat(item.price);
 				itemPrice = (isNaN(scratch))?0:scratch;
-				itemSalePrice = parseFloat(item.compareAtPrice).toFixed(2);
+				itemCompareAtPrice = parseFloat(item.compareAtPrice).toFixed(2);
+				itemSalePrice = parseFloat(item.totalProductPrice/itemQuantity).toFixed(2);
 				itemSavedAmount = parseFloat(item.totalSavings).toFixed(2);
 				itemTotalPrice = parseFloat(item.totalProductPrice).toFixed(2);
 				carouselItems++;
@@ -2351,20 +2371,26 @@ function Minicart() {
 				var isPromoCard = (item.certificateInfo && item.certificateInfo.promoGiftCertificate) ? item.certificateInfo.promoGiftCertificate : false;
 
 				//Build Price Info
-				if((itemSavedAmount == 0) || (isNaN(itemSalePrice)) || (isNaN(itemSavedAmount))) {
+				if((itemSavedAmount == 0) || (isNaN(itemCompareAtPrice)) || (isNaN(itemSavedAmount))) {
 					priceInfo.push(["Price: ", formatDollars(itemPrice)]);
-				}else if (itemSalePrice == 0) {
+				}else if (itemCompareAtPrice == 0) {
 					priceInfo.push(["Original price: " + "<span class='priceOriginal'>", formatDollars(itemPrice) + "</span>"]);
 					priceInfo.push(["<span class='priceSaved'>" + "You save: ", formatDollars(itemSavedAmount) + "</span>"]);
 						if (itemTotalPrice != 0) {
-							priceInfo.push(["<strong>" + "Unit price: ", formatDollars(itemTotalPrice / itemQuantity) + "</strong>"]);
+							priceInfo.push(["<strong>" + "Adjusted price: ", formatDollars(itemSalePrice) + "</strong>"]);
 						} else {
-							priceInfo.push(["<strong>" + "Unit price: ", "FREE" + "</strong>"]);
+							priceInfo.push(["<strong>" + "Adjusted price: ", "FREE" + "</strong>"]);
 						}
 				}else {
-					priceInfo.push(["Original price: " + "<span class='priceOriginal'>", formatDollars(itemSalePrice) + "</span>"]);
+					var tempPrice = 0;
+					if (itemCompareAtPrice >= itemPrice) {
+						tempPrice = itemCompareAtPrice;
+					} else {
+						tempPrice = itemPrice;
+					}
+					priceInfo.push(["Original price: " + "<span class='priceOriginal'>", formatDollars(tempPrice) + "</span>"]);
 					priceInfo.push(["<span class='priceSaved'>" + "You save: ", formatDollars(itemSavedAmount) + "</span>"]);
-					priceInfo.push(["<strong>" + "Unit price: ", formatDollars(itemPrice) + "</strong>"]);
+					priceInfo.push(["<strong>" + "Adjusted price: ", formatDollars(itemSalePrice) + "</strong>"]);
 				}
 							
 				var itemLi = document.createElement("LI");
@@ -2733,7 +2759,7 @@ window-resize triggers error */
 		    								}	
 											toUrl = getValueInQuerystring(serviceCallURL,"toUrl");//_getQueryStringParamVal("toUrl");
 											//Open minicart	
-											minicart.addToCart("/minicart?storeId="+storeId, successCallBack);		
+											minicart.addToCart("/minicart?storeId="+window.storeId, successCallBack);		
 										}
 										else{
 											_showError(serviceCallURL);
@@ -2771,7 +2797,7 @@ window-resize triggers error */
 						    	}
 					    		//Show Terms and Conditions page
 						    	//else if(status == '412' && (jQuery.inArray(errorCode,termsCondErrors) != -1  || xhr.responseText.indexOf('3502') != -1))
-						    	else if(status == '412' && jQuery.inArray(errorCode,termsCondErrors) != -1)
+						    	else if(jQuery.inArray(errorCode,termsCondErrors) != -1)
 					    		{
 					    			/*var n = document.additem;
 					    			n = n.sku;
@@ -2790,7 +2816,7 @@ window-resize triggers error */
 												_showError(serviceCallURL);
 											}
 											
-											var splashContent = '<div id="termsFancy" class="splash" style="">'+
+											var splashContent = '<div id="termsFancy" class="splash">'+
 																	'<h1 style="">Terms and Conditions: '+ splashJson.categoryTitle+'</h1>'+ 
 																	'<h2 style=""> WARNING: Please read carefully before accepting.</h2>'+	
 																	 '<div id="splashContent">'+
@@ -2800,7 +2826,7 @@ window-resize triggers error */
 																	 '<div style="height:90px;">'+
 														 			     '<p class="terms">Click to accept the Terms and Conditions and place item in your shopping cart.</p>'+
 														 			     '<div id="buttons">'+
-														 			     	'<ul style="width:55px;" id="acceptCssButton" class="button">'+
+														 			     	'<ul style="width:68px;" id="acceptCssButton" class="button">'+
 														 			     		'<a href="#" class="medium primary button">Accept</a>'+
 														 			     	 '</ul>'+
 														 			     	 '<ul style="padding-top:5px;width:0px;height:10px;">or</ul>'+
@@ -2817,7 +2843,6 @@ window-resize triggers error */
 					    								 autoDimensions: true,	
 						    							 padding: 0,
 						    							 margin:0,
-						    							 scrolling: 'yes',	
 					    							    onClosed: function(){
 					    									var prod = rei.prod;
 					    									if(prod && prod.reenableCart)
@@ -2866,7 +2891,7 @@ window-resize triggers error */
 					    		}
 						       // else if(status == '412' && (jQuery.inArray(errorCode,backOrderErrors) != -1 
 					    		//		|| (xhr.responseText.indexOf('350') != -1 && xhr.responseText.indexOf('3502') == -1)))
-						    	else if(status == '412' && jQuery.inArray(errorCode,backOrderErrors) != -1)
+						    	else if(jQuery.inArray(errorCode,backOrderErrors) != -1)
 					    		{
 									//serviceCallURL = serviceCallURL.replace('/rest/cart/item','/AddItemToCartController');
 					    			serviceCallURL = serviceCallURL.replace('/rest/cart/item','/backOrderController');
@@ -2889,6 +2914,10 @@ window-resize triggers error */
 									setCookie("GiftRegistryPurchase", "");*/
 					    			_updateCartUsingWebService(serviceCallURL, successCallBack);
 					    			return;
+					    		}
+					    		else{
+						    		_showError(serviceCallURL);
+						    		return;
 					    		}
 							}
 							//Show error page for any other errors
@@ -3416,7 +3445,7 @@ window-resize triggers error */
 
 var minicart=0;
 // minicart is initialized from rei.js
-/* $Id: unvHeader.js 4012 2012-07-13 23:20:09Z cromeis $ */
+/* $Id: unvHeader.js 5724 2012-09-22 17:30:59Z roferna $ */
 ReiUserLogin = {
 	helloUserNameLabel  : "Hello ",
     welcomeUserLabel    : "Welcome to REI!",
@@ -3488,7 +3517,13 @@ var hdrObj = {
 				}); 
 			}
 			//Disable checkout button for checkout
-			if(typeof rei.analytics[0] == "object" && rei.analytics[0].site_section == 'checkout'){
+			var isCheckoutSection = false;
+			try{
+				isCheckoutSection = rei.analytics && rei.analytics != null && typeof rei.analytics[0] == "object" && rei.analytics[0].site_section == 'checkout';
+			}
+			catch(err){}
+			
+			if(isCheckoutSection === true){
 				hdrObj.checkoutBtnDisable();
 			}else if ($('.checkout').length > 0){
 				hdrObj.checkoutBtnDisable();
@@ -4256,13 +4291,13 @@ function Delete_Cookie( name, path, domain ) {
     ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
 }
 
-/* $Id: cslogic.js 1914 2012-03-30 17:26:26Z jowilso $ */
+/* $Id: cslogic.js 5898 2012-09-27 18:11:08Z ttarbet $ */
 
 /* This code will set the continue shopping link that retains the users last search position for use by Shopping Basket page.*/
 /* expires - number of days until cookie should expire. If not specified, session cookie */
 function setCSCookie(name, value) { document.cookie=name+"="+value+"; path=/"; }
 //function setCSCookie(name, value) { document.cookie=name+"="+value+"; expires="+expires_date.toGMTString()+"; path=/"; }
-function setContinueShoppingCookie(url) { setCSCookie("rei_continue", url); }
+function setContinueShoppingCookie(url) { setCSCookie("rei_continue", escape(url)); }
 function setDCSCookie(name, value, expires) {
 // set time, it's in milliseconds
 var today = new Date();

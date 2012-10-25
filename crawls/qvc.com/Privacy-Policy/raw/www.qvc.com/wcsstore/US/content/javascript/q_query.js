@@ -547,3 +547,154 @@ var flash = {
 		}
 	}
 }
+
+var tooltip = {
+	'platforms' : false,
+	/*'isIE6' : (platform.browser == 'msie' && platform.version < 7) || false,
+	'isIE' : platform.browser == 'msie' || false,
+	'isFF' : platform.browser == 'firefox' || false,*/
+	'isIE6' : '',
+	'isIE' : '',
+	'isFF' : '',
+	'isOpening' : false,
+	'isOpen' : false,
+	'currTitle' : '',
+	'element' : null,
+	'tip' : null,
+	'delay' : null,
+	'alreadyTagged' : [],
+	init : function (o){
+		if (!tooltip.platforms) {
+			tooltip.isIE6 = (platform.browser == 'msie' && platform.version < 7) || false;
+			tooltip.isIE = platform.browser == 'msie' || false;
+			tooltip.isFF = platform.browser == 'firefox' || false;
+			tooltip.platforms = true;
+		}
+		if (tooltip.isIE) {
+			if ((window.event.type == 'mouseout') && !tooltip.isOpen && !tooltip.isOpening) { return; }
+		}
+		tooltip.element = o;		
+		if (tooltip.delay != null) {
+			clearTimeout(tooltip.delay);
+			tooltip.delay = null;
+			tooltip.isOpening = false;
+			tooltip.element.title = tooltip.currTitle;
+		} else if (tooltip.isOpen) {
+			tooltip.isOpen = false;
+			tooltip.element.title = tooltip.currTitle;
+			tooltip.close();
+		} else if (!tooltip.isOpening) {
+			tooltip.currTitle = tooltip.element.title;
+			tooltip.element.title = '';
+			tooltip.isOpening = true;
+			tooltip.delay = setTimeout(tooltip.open,500);
+		} else {
+			return;
+		}
+	},
+	open : function(e){
+		tooltip.delay = null;
+		tooltip.isOpen = true;
+		tooltip.isOpening = false;
+		tooltip.build();
+	},
+	close : function(){
+		document.body.removeChild(tooltip.tip);
+		tooltip.tip = null;
+		return;
+	},
+	tag : function(){
+		var cmStr = tooltip.element.getAttribute('manual_cm_sp');
+		if ((cmStr == '') || (cmStr == null)) { return; }
+		for ( i = 0; i < tooltip.alreadyTagged.length; i++ ) {
+			if (tooltip.alreadyTagged[i] == cmStr) { return; }
+		}
+		tooltip.alreadyTagged.push(cmStr);
+		cmCreateManualLinkClickTag('?cm_sp=' + cmStr);
+	},	
+	build : function(){
+		var ttParent = document.createElement('div');
+		var ttDiv = document.createElement('div');
+			ttDiv.id = "toolTip";
+		var ttText = document.createTextNode(tooltip.currTitle);
+		var ttArr = document.createElement('div');
+			ttArr.id = "toolTipArrow";
+			ttArr.style.borderLeft = "7px solid transparent";
+			ttArr.style.borderRight = "7px solid transparent";
+			ttArr.style.borderTop = "7px solid #EEEDF7";
+		var ttArrB = document.createElement('div');
+			ttArrB.id = "toolTipArrowB";
+			ttArrB.style.borderLeft = "7px solid transparent";
+			ttArrB.style.borderRight = "7px solid transparent";
+			ttArrB.style.borderTop = "7px solid #CFD5E3";
+		ttDiv.appendChild(ttText);
+		ttParent.appendChild(ttDiv);
+		if (!tooltip.isIE6) { ttParent.appendChild(ttArr); }
+		if ((!tooltip.isIE6) && (!tooltip.isFF)) { ttParent.appendChild(ttArrB); }
+		document.body.appendChild(ttParent);
+		tooltip.tip = ttParent;
+		tooltip.tag();
+		tooltip.align(ttDiv,ttArr,ttArrB);
+	},
+	align : function(ttDiv,ttArr,ttArrB){
+		var pageW = page.windowWidth() + page.scrollX();
+		var pageH = page.windowHeight() - page.scrollY();
+		if (element.fullWidth(ttDiv) > 210) {
+			ttDiv.style.width = 190 + 'px';
+			ttDiv.style.textAlign = 'left';
+		} else {
+			ttDiv.style.width = element.fullWidth(ttDiv) + 'px';
+		}
+		if ((element.findX(tooltip.element) + element.fullWidth(ttDiv)) >= (pageW - 20)) {
+			ttDiv.style.left = ((element.findX(tooltip.element) + element.fullWidth(tooltip.element)) - element.fullWidth(ttDiv) + 13) + 'px';
+			ttArr.style.left = ((element.findX(ttDiv) + element.fullWidth(ttDiv)) - 26) + 'px';
+			ttArrB.style.left = ((element.findX(ttDiv) + element.fullWidth(ttDiv)) - 26) + 'px';
+			if ((element.findY(tooltip.element) - element.fullHeight(ttDiv) - 20) <= page.scrollY()) {
+				ttDiv.style.top = (element.findY(tooltip.element) + element.fullHeight(tooltip.element) + 10) + 'px';
+				ttArr.style.borderTop = "none";
+				ttArrB.style.borderTop = "none";
+				ttArr.style.borderBottom = "7px solid #EEEDF7";
+				ttArrB.style.borderBottom = "7px solid #CFD5E3";
+				if (tooltip.isFF) {
+					ttArr.style.top = (element.findY(ttDiv) - 6) + 'px';
+				} else {
+					ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+				}
+				ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+			} else {
+				ttDiv.style.top = (element.findY(tooltip.element) - element.fullHeight(ttDiv) - 12) + 'px';
+				if (tooltip.isFF) {
+					ttArr.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv) - 1) + 'px';
+				} else {
+					ttArr.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv) - 2) + 'px';
+				}
+				ttArrB.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv)) + 'px';
+			}
+		} else {
+			ttDiv.style.left = (element.findX(tooltip.element) - 13) + 'px';
+			ttArr.style.left = (element.findX(ttDiv) + 12) + 'px';
+			ttArrB.style.left = (element.findX(ttDiv) + 12) + 'px';		
+			if ((element.findY(tooltip.element) - element.fullHeight(ttDiv) - 20) <= page.scrollY()) {
+				ttDiv.style.top = (element.findY(tooltip.element) + element.fullHeight(tooltip.element) + 10) + 'px';
+				ttArr.style.borderTop = "none";
+				ttArrB.style.borderTop = "none";
+				ttArr.style.borderBottom = "7px solid #EEEDF7";
+				ttArrB.style.borderBottom = "7px solid #CFD5E3";
+				if (tooltip.isFF) {
+					ttArr.style.top = (element.findY(ttDiv) - 6) + 'px';
+				} else {
+					ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+				}
+				ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+			} else {
+				ttDiv.style.top = (element.findY(tooltip.element) - element.fullHeight(ttDiv) - 12) + 'px';
+				if (tooltip.isFF) {
+					ttArr.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv) - 1) + 'px';
+				} else {
+					ttArr.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv) - 2) + 'px';
+				}
+				ttArrB.style.top = (element.findY(ttDiv) + element.fullHeight(ttDiv)) + 'px';
+			}
+		}
+	}
+};

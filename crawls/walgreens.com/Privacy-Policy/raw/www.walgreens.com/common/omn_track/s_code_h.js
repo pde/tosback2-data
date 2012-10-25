@@ -140,7 +140,15 @@ if(u.indexOf('m.partner1.medhelp.ws')>-1)
 if(u.indexOf('m.walgreens.medhelp.ws')>-1)
 	s_account="walgrnsmobiledev";
 /************ End of EHC-182 ********************************/
+/************Start  of EO-23982 ********************************/
+//Mobile Production ADAM Content:
+if(u.indexOf('walgreens-mobile.adam.com')>-1)
+	s_account="walgrnsmobile";
 
+//Mobile Staging ADAM Content:
+if(u.indexOf('walgreens-mobile-qa.adam.com')>-1)
+	s_account="walgrnsmobiledev";
+/************ END  of EO-23982 ********************************/
 
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/

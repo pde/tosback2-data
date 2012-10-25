@@ -377,6 +377,9 @@ mistats.InteractionTracker = function ()
       if (!pending)
          pending = true;
 
+      if (this.callout)
+         this.callout();
+
       return counts[pType];
    };
 
@@ -395,6 +398,9 @@ mistats.InteractionTracker = function ()
 
       if (!pending)
          pending = true;
+
+      if (this.callout)
+         this.callout();
 
       return counts[pType];
    };

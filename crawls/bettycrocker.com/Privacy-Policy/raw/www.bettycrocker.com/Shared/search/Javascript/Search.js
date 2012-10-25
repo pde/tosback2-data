@@ -37,7 +37,7 @@ function OnSearchButtonClick(resultURL, searchTextBox, searchResultType, searchB
     var searchType = jQuery("#" + searchResultTypeHiddenFieldID).val();
     if (term != null) {
         if (actualTerm.length > 0 && actualTerm != waterMarkDefaultValue) {
-            ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + term.toLowerCase());
+            ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + term.toLowerCase() + '&ActionType=Search');
 
             if (searchType.length <= 0)
                 searchType = searchResultType;
@@ -1144,7 +1144,7 @@ function onAdvSearchClick(keywordsWatermark, requiredLabelId, requiredErrorMessa
         alert(requiredErrorMessage);
     }
     else {
-        ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + jQuery("[id$=KeywordsTextBox]").val().toLowerCase());
+        ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + jQuery("[id$=KeywordsTextBox]").val().toLowerCase() + '&ActionType=Search');
         var facetval = searchFactesFilter.getFacetFilterValues();
         var rsltUrl = jQuery("[id$=AdvSearchRsltPageHiddenField]").val() + "?term=" + jQuery("[id$=KeywordsTextBox]").val();
         rsltUrl += "&st=7&ads=1";

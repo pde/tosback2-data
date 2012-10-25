@@ -28,7 +28,7 @@ fieldset legend {padding: 0 5px;}
 input[type=text], input[type=password] { border: 1px solid #ccc; padding: 2px }
 textarea {resize: none;}
 .error_message { color:red; margin:0.5em 0 }
-label.err_message {color: #f30;}
+label.err_message {display: block; color: #f30;}
 .red { color: #f30 !important }
 .border_box {-moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;}
 .ui-selectable-helper {position: absolute; z-index: 100; border: 1px dotted #000;}
@@ -204,17 +204,25 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 .manage .tab_content_right {float: right; width: 78%;}
 
 .manage .tab_content_left .tabs {list-style: none; margin: 0;}
-.manage .tab_content_left .tabs li {border-top: 1px solid #666;}
-.manage .tab_content_left .tabs li:first-child {border-top: none;}
-.manage .tab_content_left .tabs li a {display: block; padding: 5px 0; text-decoration: none; color: #666;}
-.manage .tab_content_left .tabs li.active a {color: #f30; font-weight: bold;}
+.manage .tab_content_left .tabs li {padding: 5px 0; color: #666; cursor: pointer;}
+.manage .tab_content_left .tabs li.active {color: #f30; font-weight: bold;}
+.manage .tab_content_left .tabs li * {vertical-align: middle;}
+.manage .tab_content_left .tabs li .spritefm {margin-right: 7px;}
 
 .manage .info a {color: #f0370e; text-decoration: none;}
 .manage .info a:hover {text-decoration: underline;}
 .manage ol.filenumed .bar {border: 1px solid #ccc;}
 .manage .ajaxload {margin-top: 20px;}
 
-.manage .ftplogin {margin: 0 0 20px 0; padding: 10px; background: #fff1b9 url(../images/yellow_corner.gif) no-repeat 100% 0%;}
+.manage .ftplogin {margin: 0 0 20px 0; padding: 10px; /*background: #fff1b9 url(../images/yellow_corner.gif) no-repeat 100% 0%;*/ border: 1px solid #f2ebcf; background: #fff1ba;}
+.manage .ftplogin {
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fff1ba), to(#fffcec)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(#fff1ba, #fffcec); /* Chrome 10+, Saf5.1+ */
+	background-image: -moz-linear-gradient(#fff1ba, #fffcec); /* FF3.6 */
+	background-image: -ms-linear-gradient(#fff1ba, #fffcec); /* IE10 */
+	background-image: -o-linear-gradient(#fff1ba, #fffcec); /* Opera 11.10+ */
+	background-image: linear-gradient(#fff1ba, #fffcec);
+}
 .manage .filelist_tab .name {width: 300px;}
 
 
@@ -226,8 +234,9 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 
 
 .remote_upload {padding-top: 20px;}
+.remote_upload #remote_upload_form {padding: 20px; border: 1px solid #ccc; background: #e6e6e6;}
 .remote_upload .form_tab {width: 100%;}
-.remote_upload .form_tab th {padding-top: 11px; text-align: left;}
+.remote_upload .form_tab th {padding-top: 11px; text-align: left; font-weight: bold;}
 .remote_upload .form_tab td {width: 85%;}
 .remote_upload .form_tab .note  {font-size: 11px; color: #666;}
 .remote_upload .form_tab .note th, .remote_upload .form_tab .note td  {padding-top: 0;}
@@ -389,60 +398,72 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 
 /* filemanager_s */
 .storage_promo {padding: 20px 0 0 0;}
-.storage_promo .tab_content {display: none; min-height: 265px; padding: 90px 100px 0 380px; font-size: 16px; text-align: center;}
+.storage_promo .tab_content_left .tabs {margin-top: 25px;}
+
+.storage_promo .tab_content {display: none; min-height: 330px; font-size: 16px; text-align: center;}
 .storage_promo .tab_content:first-child {display: block;}
-.storage_promo .tab_content h3 {margin: 0 0 20px 0; color: #f30; font-size: 16px; text-align: center;}
+.storage_promo .tab_content h3 {margin: 0 0 15px 0; color: #f30; font-size: 16px;}
+.storage_promo .tab_content .inner {float: right; width: 360px; padding: 40px 40px 0 0;}
+.storage_promo .tab_content .hamster {float: left;}
 
-.storage_promo .tab_content.c_secure {background: url(../images/hamsters/hamster_secure.jpg) no-repeat 80px 0;}
-.storage_promo .tab_content.c_gadget {background: url(../images/hamsters/hamster_gadget.jpg) no-repeat 30px 0;}
-.storage_promo .tab_content.c_sharing {padding: 90px 270px 0 280px; background: url(../images/hamsters/hamster_sharing.jpg) no-repeat 80px 0;}
-.storage_promo .tab_content.c_free {background: url(../images/hamsters/hamster_free.jpg) no-repeat 80px 0;}
-.storage_promo .tab_content.c_email_verification {padding: 90px 0 0 285px; background: url(../images/hamsters/hamster_email.jpg) no-repeat 15px 0; font-size: 12px; text-align: left;}
+.storage_promo .tab_content .hamster_sharing {float: none; margin: 0 auto; position: relative;}
+.storage_promo .tab_content.c_sharing .inner {position: absolute; left: 50%; top: 90px; width: 250px; margin: 0 0 0 -110px; padding: 0;}
+.storage_promo .tab_content.c_gadget .inner {padding-top: 20px;}
+.storage_promo .tab_content.c_email_verification .inner {width: 460px; padding-right: 0;}
+.storage_promo .tab_content .form_tab {font-size: 12px; text-align: left;}
+.storage_promo .tab_content .form_tab td.buttons .button {display: block;}
 
-.storage_promo .agreem_link a {color: #f30;}
-.storage_promo .tab_content_left .df_button {width: 100%; margin: 50px 0 20px 0; padding: 10px 0;}
-.storage_promo .form_tab label {display: block;}
-.storage_promo .form_tab td.buttons .button {display: block;}
-
+.storage_promo .create_block {margin: 40px 0 0 0; font-size: 12px;}
+.storage_promo .create_block .df_button {min-width: 200px; padding: 10px 20px;}
+.storage_promo .create_block .agreem_link {margin: 10px 0 0 0;}
+.storage_promo .create_block .agreem_link a {color: #f30;}
 
 .hamster_not_found {width: 260px; height: 339px; margin: 20px auto; background: url(../images/hamsters/hamster_not_found.jpg) no-repeat;}
 .hamster_empty {width: 290px; height: 345px; margin: 10px auto; background: url(../images/hamsters/hamster_empty.jpg) no-repeat;}
-.hamster_email {width: 288px; height: 351px; margin: 50px auto 10px auto; background: url(../images/hamsters/hamster_email.jpg) no-repeat;}
-.hamster_secure {width: 264px; height: 323px; margin: 0 auto; background: url(../images/hamsters/hamster_secure.jpg) no-repeat;}
+.hamster_email {width: 288px; height: 351px; background: url(../images/hamsters/hamster_email.jpg) no-repeat;}
+.hamster_secure {width: 264px; height: 323px; background: url(../images/hamsters/hamster_secure.jpg) no-repeat;}
+.hamster_gadget {width: 340px; height: 290px; background: url(../images/hamsters/hamster_gadget.jpg) no-repeat;}
+.hamster_sharing {width: 610px; height: 352px; background: url(../images/hamsters/hamster_sharing.jpg) no-repeat;}
+.hamster_free {width: 255px; height: 341px; background: url(../images/hamsters/hamster_free.jpg) no-repeat;}
 
 
 .spritefm {display: inline-block; background: url(../images/spritefm.png) no-repeat 0 200px; overflow: hidden;}
-.df_icon, .ss_icon, .sharedlinks_icon, .trash_icon {width: 25px; height: 25px;}
+.df_icon, .ss_icon, .sharedlinks_icon, .trash_icon, .upload_link_icon, .info_icon, .logs_icon, .servers_icon {width: 25px; height: 25px;}
 .df_icon {background-position: 0 0;}
 .ss_icon {background-position: 0 -25px;}
 .sharedlinks_icon {background-position: 0 -50px;}
 .trash_icon {background-position: 0 -75px;}
+.upload_link_icon {background-position: 0 -100px;}
+.info_icon {background-position: 0 -125px;}
+.logs_icon {background-position: 0 -150px;}
+.servers_icon {background-position: 0 -175px;}
+
 
 .df_icon_16, .ss_icon_16, .sharedlinks_icon_16, .trash_icon_16 {width: 16px; height: 16px;}
-.df_icon_16 {background-position: 0 -100px;}
-.ss_icon_16 {background-position: 0 -116px;}
-.sharedlinks_icon_16 {background-position: 0 -132px;}
-.trash_icon_16 {background-position: 0 -148px;}
+.df_icon_16 {background-position: 0 -250px;}
+.ss_icon_16 {background-position: 0 -266px;}
+.sharedlinks_icon_16 {background-position: 0 -282px;}
+.trash_icon_16 {background-position: 0 -298px;}
 
-#filemanager .spritefm.audio {background-position: 0 -164px;}
-#filemanager .spritefm.backup {background-position: 0 -180px;}
-#filemanager .spritefm.compressed {background-position: 0 -196px;}
-#filemanager .spritefm.data {background-position: 0 -212px;}
-#filemanager .spritefm.developer {background-position: 0 -228px;}
-#filemanager .spritefm.disk {background-position: 0 -244px;}
-#filemanager .spritefm.encoded {background-position: 0 -260px;}
-#filemanager .spritefm.executable {background-position: 0 -276px;}
-#filemanager .spritefm.font {background-position: 0 -292px;}
-#filemanager .spritefm.image {background-position: 0 -308px;}
-#filemanager .spritefm.misc {background-position: 0 -324px;}
-#filemanager .spritefm.settings {background-position: 0 -340px;}
-#filemanager .spritefm.system {background-position: 0 -356px;}
-#filemanager .spritefm.text {background-position: 0 -372px;}
-#filemanager .spritefm.video {background-position: 0 -388px;}
-#filemanager .spritefm.web {background-position: 0 -404px;}
+#filemanager .spritefm.audio {background-position: 0 -410px;}
+#filemanager .spritefm.backup {background-position: 0 -426px;}
+#filemanager .spritefm.compressed {background-position: 0 -442px;}
+#filemanager .spritefm.data {background-position: 0 -458px;}
+#filemanager .spritefm.developer {background-position: 0 -474px;}
+#filemanager .spritefm.disk {background-position: 0 -490px;}
+#filemanager .spritefm.encoded {background-position: 0 -506px;}
+#filemanager .spritefm.executable {background-position: 0 -522px;}
+#filemanager .spritefm.font {background-position: 0 -538px;}
+#filemanager .spritefm.image {background-position: 0 -554px;}
+#filemanager .spritefm.misc {background-position: 0 -570px;}
+#filemanager .spritefm.settings {background-position: 0 -586px;}
+#filemanager .spritefm.system {background-position: 0 -602px;}
+#filemanager .spritefm.text {background-position: 0 -618px;}
+#filemanager .spritefm.video {background-position: 0 -634px;}
+#filemanager .spritefm.web {background-position: 0 -650px;}
 
 .folder_icon, .file_icon {width: 16px; height: 16px; margin: 0 5px 0 0;}
-.folder_icon {width: 18px; background-position: 0 -436px;}
+.folder_icon {width: 18px; background-position: 0 -682px;}
 .download_cnt_icon {display: inline-block; width: 13px; height: 16px; background: url(../images/table_header_dc_icon.gif) no-repeat;}
 
 .ajaxload {display: none; width: 34px; height: 34px; margin: 0 auto; background: url(../images/preloader.gif) no-repeat 50% 50%;}
@@ -606,8 +627,8 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 .filelist_tab .action_btn.noactive:hover {opacity: 0.7; filter: alpha(opacity=70);}
 .filelist_tab .action_btn:last-child {margin-right: 0;}
 
-.filelist_tab .share_btn, .filelist_tab .share_link_btn {background-position: 0 -132px;}
-.filelist_tab .protect_btn, .filelist_tab .protect_link_btn {background-position: 0 -420px;}
+.filelist_tab .share_btn, .filelist_tab .share_link_btn {background-position: 0 -282px;}
+.filelist_tab .protect_btn, .filelist_tab .protect_link_btn {background-position: 0 -666px;}
 
 .ajax_status {position: fixed; top: 0; width: 100%; height: 25px; text-align: center; display: none; z-index: 1010;}
 .ajax_status span {display: inline-block; margin: 0 auto; padding: 5px 10px; background-color: #ffc; font-weight: bold; color: #000;}
@@ -634,10 +655,10 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 
 .dial_block {width: 152px; margin: 70px auto 20px auto; text-align: center;}
 .dial_block .upgrade_btn {display: inline-block; margin: 5px 0 0 0; padding: 3px 15px; border: 1px solid #a0a0a2; background: #efefef; color: #4a4a4a; text-decoration: none;}
-.dial {position: relative; width: 152px; height: 103px;}
+.dial {position: relative; width: 152px; height: 103px; text-align: left;}
 
 .dial_bg {position: absolute; width: 152px; height: 103px; background: url(../images/dial.gif) no-repeat;}
-.dial .size, .dial .free {width: 100%; position: absolute;}
+.dial .size, .dial .free {width: 100%; position: absolute; text-align: center;}
 .dial .size{top: 43px; font-weight: bold;}
 .dial .free {bottom: 5px;}
 

@@ -3,6 +3,11 @@
 var flag="default";
 var virtual="default";
 var menuHgtFlag = "new";
+var newUser = false;
+
+if (getCookie("__utma") == null) {
+    newUser = true;
+}
 
 /* New google analytics functions - need to wire in on a per page basis */
 $(document).ready(function() {
@@ -2074,6 +2079,7 @@ function webcamInfo() {
 
 function getHomePageOffers() {
     $('#homepageOffers').load('/templates/pando/ajax/homepageoffers.aspx?id=' + Math.random(), function() {
+        tb_init('#homepageOffers A.thickbox'); 
     });
 }
 

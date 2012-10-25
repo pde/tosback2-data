@@ -1,5 +1,5 @@
 /*
-    $Rev: 165112 $
+    $Rev: 173395 $
     XXX: REQUIREMENTS
         -- OOP.js
 */
@@ -59,7 +59,7 @@ var CommonInterface = {
 
         this.processUsagePage = pageAttrs.processUsagePage;
         this.attachment = FBAttrs.attachment;
-        this.perms = FBAttrs.perms;
+        this.perms = FBAttrs.scope;
 
         this.tokenObject = undefined; // set by checkStatus()
         this.appId = undefined; // set by initFacebook()
@@ -361,9 +361,12 @@ var CommonInterface = {
 
         /*R7 are postcards which do not have a view_facebook.pd experience. Also all
         postcards are supposed to use f.jpg instead of t.gif per brand.
+        note: the url's for the display page sometimes has an seo blurb in them,
+        since it isn't consistent and the blurb can be dropped from the url and the postcard
+        is still shown - I have dropped them from the messagePickupPage value below.
         */
         if (producttype == 'R7') {
-            messagePickupPage = host+'/ecards/postcards';
+            messagePickupPage = host + '/postcards/card-' + productnum;
             fbPostThumb = fbPostThumb.replace('t.gif','f.jpg');
         }
 

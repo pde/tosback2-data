@@ -631,7 +631,7 @@ function ValidateMeetingSearchInput(){
 		if(strSearchType == "cs") { formActionPage = wwControlDomain + "/util/mtf/location_results.aspx?pg=0&isExpand=" + isExpand + "&s=CS&c=" + meetingZip1.split("&").join("~").split(" ").join("%20") + "&st=" + meetingZip2.split("&").join("~").split(" ").join("%20"); }
 		if(undefined != timeDayQS){formActionPage += "&" + timeDayQS;}
 		}
-
+		
 		
 	if (meetingZip1.length == 0 || !inputControl1.value.match(zipRe5digit) ) {
       errMsg = msgEnterZipcode;
@@ -1066,4 +1066,54 @@ function PushOmnitureLateBindingEvar(item, value) {
     InitOmnitureLateBindingObj();
     omnitureTrackingLateBinding.eVars.push({ "item": item, "value": value });
 }
+function ValidatePersonnummer_Client(sender, args) {
+    args.IsValid = IsValidIdNr(args.Value);
+}
+function IsValidIdNr(idNumber) {
+    if (null == idNumber || "" == idNumber) {
+        return true;
+    }
+
+    if (idNumber.indexOf("-") != -1) {
+        idNumber = idNumber.replace("-", "");
+    }
+
+    if (idNumber.indexOf(' ') != -1) {
+        idNumber = idNumber.replace(" ", "");
+    }
+
+    if (idNumber.length == 12) {
+        idNumber = idNumber.substring(2);
+
+    } else if (idNumber.length != 10) {
+        return false;
+    }
+
+
+    return (CalculateIdNrControlNumber(idNumber.substring(0, 9)) == parseInt(idNumber[idNumber.length - 1]));
+}
+
+function CalculateIdNrControlNumber(idNumber) {
+    var sum = 0;
+    for (var i = 0; i <= idNumber.length - 1; i++) {
+        var number = parseInt(idNumber[i]) * (1 + ((i + 1) % 2));
+        number = number.toString();
+        if (number.length == 1) {
+            sum += parseInt(number)
+        }
+        else {
+
+            sum += parseInt(number.substring(0, 1));
+            sum += parseInt(number.substring(1));
+
+        }
+    }
+
+    var szSum = sum.toString();
+    var lastNum = parseInt(szSum[szSum.length - 1]);
+
+    return (lastNum != 0) ? 10 - lastNum : 0;
+}
+
+
 //End Omniture Tracking

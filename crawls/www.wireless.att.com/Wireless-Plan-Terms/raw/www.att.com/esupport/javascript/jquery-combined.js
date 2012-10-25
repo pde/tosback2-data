@@ -5142,7 +5142,7 @@ jQuery(function($){var userAgent=navigator.userAgent.toLowerCase();var browserVe
 				'div.',opts.className,' td.tip-bottom{background-position:100% 100%;}',
 				'div.',opts.className,' td.tip-left{background-position:0 100%;}',
 				'div.',opts.className,' div.tip-inner{background-positionis: -',opts.bgImageFrameSize,'px -',opts.bgImageFrameSize,'px;}',
-				'div.',opts.className,' div.tip-inner{background-image: url(/esupport/images/tooltip/tip-white/backgroundwhite.gif) repeat scroll bottom left transparent;}',
+				'div.',opts.className,' div.tip-inner{background-image: url(//www.att.com/images/global/tooltip/tip-white/backgroundwhite.gif) repeat scroll bottom left transparent;}',
 								
 				'div.',opts.className,' div.tip-arrow{visibility:hidden;position:absolute;overflow:hidden;font:1px/1px sans-serif;}',
 			'</style>'].join('')).appendTo('head');

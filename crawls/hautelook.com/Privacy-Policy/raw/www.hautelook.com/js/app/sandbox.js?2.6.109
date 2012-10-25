@@ -1,0 +1,404 @@
+var Sandbox = (function() {
+    var subscriptions = {};
+	var pageload = {};
+    var member = false;
+    var cookieStorage = BrowserStorage.setStorageEngines('cookie');
+    var memberUpdatePending = false;
+	
+    var sandboxAPI = function() {};
+		
+		sandboxAPI.roles = {
+			member: 1,
+			brand: 2,
+			admin: 4,
+			employee: 8,
+			developer: 16,
+			staff: 28,
+			1: 'member',
+			2: 'brand',
+			4: 'admin',
+			8: 'employee',
+			16: 'developer',
+			28: 'staff'
+		};
+		
+		
+        sandboxAPI.getaways = {
+            name: "getaways",
+            url:{
+                home: "/getaways/home/",
+                allEvents: "list/",
+                product: "show/"
+            }
+        };
+    
+		sandboxAPI.serverTime = (function(){
+			var timeObj = {};
+			var offset = null;
+			var offsetUTC = null;
+			var offsetPacific = null;
+			var offsetLocalToPacific = null;
+			
+			var set = false;
+			
+			timeObj.isSet = function(){
+				return set;
+			};
+			
+			timeObj.update = function(XHR){
+				
+				if(!member || !member.timezone){
+					return;
+				}
+				
+				offset = (+new Date(XHR.getResponseHeader("Date"))) - (+new Date());
+				offsetUTC = Halo.toUTC(0); 
+				offsetPacific = (member.timezone == 'PDT') ? -7 : -8;
+				offsetPacific *= 60 * 60 * 1000;
+				offsetLocalToPacific = offsetPacific + offsetUTC;
+				set = true;
+				$Halo.bigbro.notify("ServerTime_Ready", offset);
+			};
+			
+			timeObj.get = function(){
+				return (+new Date() + offset + offsetLocalToPacific);
+			}
+			
+			timeObj.getLocalToPacificOffset = function(){
+				return offsetLocalToPacific;
+			}
+			
+			return timeObj;
+		})();
+		
+        sandboxAPI.forceMemberUpdate = function(failCb, successCb) {
+			if(memberUpdatePending){
+				if(failCb){
+					$Halo.bigbro.subscribe("memberNotLoggedIn", function(){
+						$Halo.bigbro.unsubscribe("memberNotLoggedIn", arguments.callee);
+						failCb();
+					});
+				}
+				if(successCb){
+					$Halo.bigbro.subscribe("memberLoggedIn", function(){
+						$Halo.bigbro.unsubscribe("memberLoggedIn", arguments.callee);
+						successCb();
+					});
+				}
+				
+				return;
+			}
+			else{
+				memberUpdatePending = true;
+			}
+
+                        $.ajax({
+                            url: '/v3/credential',
+                            type: 'GET',
+                            useREST: true,
+                            haloHandleAjaxResponse:true,
+                            error: function() {
+                            },
+                            haloFail: function(response) {
+                                memberUpdatePending = false;
+                                Sandbox.setMember(false);
+                                cookieStorage.remove('hlmt');
+                                cookieStorage.remove('hlma');
+
+                                $Halo.bigbro.notify('memberNotLoggedIn');
+
+                                if(typeof failCb == 'function') failCb();
+                            },
+                            haloSuccess: function(response) {
+                                var member_id = response.member;
+                                $.ajax({
+                                    url: '/v3/member/' + member_id + '/summary?cb=' + (Math.floor(Math.random()*1000000000000)),
+                                    type: 'GET',
+                                    useREST: true, 
+                                    haloHandleAjaxResponse: true,
+                                    error: function(){
+                                        Sandbox.forceMemberUpdate(failCb, successCb);
+                                    },
+                                    haloFail: function(response) {
+                                        memberUpdatePending = false;
+                                        Sandbox.setMember(false);
+                                        cookieStorage.remove('hlmt');
+                                        cookieStorage.remove('hlma');
+
+                                        $Halo.bigbro.notify('memberNotLoggedIn');
+
+                                        if(typeof failCb == 'function') failCb();
+                                    },
+                                    haloSuccess: function(response) {
+                                    			memberUpdatePending = false;
+                                        Sandbox.setMember(response.member, null);
+                                        $Halo.bigbro.notify('memberLoggedIn', response);
+                                        
+                                        if(typeof successCb == 'function') successCb();
+                                    }
+                                });
+                            }
+                        });
+			
+        };
+		
+		// never use me anymore
+        sandboxAPI.getMember = function() {
+            member = cookieStorage.get('hauteLookMember');
+            if(member) {
+                member = JSON.parse(member);
+                return member;
+            }
+            else {
+                member = false;
+                return false;
+            }
+        };
+		
+		// use this version instead of getMember(). ensures that member data will always be available, even when the hauteLookMember cookie is not present.
+        sandboxAPI.getMemberAsync = function(callback, context) {
+            var args = [];
+            var context = context || window;
+            member = cookieStorage.get('hauteLookMember');
+            var successCallback = null;
+            var failureCallback = null;
+            if (typeof callback == 'function')
+            {
+                successCallback = callback;
+            }
+            else
+            {
+                if (typeof (callback == 'object'))
+                {
+                    if (callback.hasOwnProperty('success'))
+                    {
+                        successCallback = callback.success;
+                    }
+                    if (callback.hasOwnProperty('error'))
+                    {
+                        failureCallback = callback.error;
+                    }
+                }
+            }
+            if (successCallback != null)
+            {
+                if(member) {
+                    member = JSON.parse(member);
+    
+                    args[0] = member;
+                    successCallback.apply(context, args);
+                }
+                else {
+                    var hlmtCookie = cookieStorage.get('hlmt');
+                    if (hlmtCookie != null)
+                    {
+                        $Halo.bigbro.subscribe( 'memberLoggedIn', function(member){
+                            args[0] = member.member;
+                            successCallback.apply(context, args);
+        				});
+                    }
+                    else
+                    {
+                        if (failureCallback != null)
+                        {
+                            failureCallback.apply(context);
+                        }
+                    }
+                }
+            }
+        };
+		
+		// removed member_id from arguments since it should always come from async call inside
+		sandboxAPI.fetchMemberPrivateEventsList = function(){
+			
+			Sandbox.getMemberAsync(function(member) {
+				var storage = BrowserStorage.setStorageEngines('local', 'userData'),
+					member_id = member.member_id;
+				
+				var savedList=storage.get("private_events_list_" + member_id);	    
+				if(savedList!=null){
+					savedList=JSON.parse(savedList);
+					$Halo.bigbro.notify('Sandbox_membersPrivateEventList_Fetched',savedList);
+					return;
+				}
+				
+				$.ajax({
+					url: '/v2/event_list/' + member_id,
+					type: 'get',
+					dataType: 'json',
+					useREST: true,
+					haloHandleAjaxResponse: true,
+					haloSuccess: function(response, status, XHR) {
+						storage.set('private_events_list_' + member_id , response, 1800000);
+						$Halo.bigbro.notify('Sandbox_membersPrivateEventList_Fetched',response);
+					},
+					haloFail: function(response) {
+						this.haloSuccess({data:[]});
+					}
+				});
+			});
+		};
+
+		sandboxAPI.fetchMemberPreviewEventsList = function(){
+			Sandbox.getMemberAsync(function(member) {
+				var storage = BrowserStorage.setStorageEngines('local', 'userData'),
+					member_id = member.member_id,
+					savedList=storage.get("preview_events_list_" + member_id);
+	
+				if(savedList!=null){
+						savedList=JSON.parse(savedList);
+						$Halo.bigbro.notify('Sandbox_membersPreviewEventList_Fetched',savedList);
+						return;
+				}
+	
+				$.ajax({
+					url: "/v3/events/member/" + member_id + "/summary",
+						type: 'get',
+						dataType: 'json',
+						useREST: true,
+						haloHandleAjaxResponse: true,
+						haloSuccess: function(response, status, XHR) {
+								storage.set('preview_events_list_' + member_id , response, 1800000);
+								$Halo.bigbro.notify('Sandbox_membersPreviewEventList_Fetched',response);
+						},
+						haloFail: function(response) {
+								this.haloSuccess({data:[]});
+						}
+				});
+			});
+		};
+		
+		sandboxAPI.fetchMemberRole = function () {
+			var member = Sandbox.getMember();
+			if(!member){
+				var args = arguments;
+				$Halo.bigbro.subscribe( 'memberLoggedIn', function(){
+					args.callee(); 
+				});
+				return;
+			}
+			
+			$Halo.bigbro.notify('memberRole', member.role);
+			return;
+		};
+		
+		sandboxAPI.isBrandMember = function () {
+			var role = Sandbox.getMember().role;
+			
+			return !!(role & Sandbox.roles.brand);
+		};
+	
+        sandboxAPI.setMember = function(memberObj, exp) {
+			if(typeof memberObj != 'object') {
+				cookieStorage.remove('hauteLookMember');
+				member = false;
+			} else {
+				cookieStorage.set('hauteLookMember', memberObj, exp);
+				member = memberObj;
+				//setting gender cookie
+				_exp = new Date();
+				_exp.setDate(_exp.getDate() + 365) ;
+				cookieStorage.set('og', member.gender, _exp);
+			}
+        };
+    
+        sandboxAPI.setMemberInfo = function(key, value) {
+            if (member != false) {
+                member[key] = value;
+                this.setMember(member);
+            }
+        };
+
+        sandboxAPI.moduleStatus = function(module) {
+            module = Core.getData()[module];
+            
+            if(typeof module == 'undefined') {
+                return 'not_ready';
+            }
+            else if(module.getOwnProperty('active')) {
+                return 'active';
+            }
+            else if(module.getOwnProperty('initialized')) {
+                return 'initialized';
+            }
+            else if(module.getOwnProperty('ready')) {
+                return 'ready';
+            }
+            else {
+                return 'not_ready';
+            }
+        };
+    
+        sandboxAPI.notify = function(event/*, data1, data2, ... */) {
+            if(siteDebug) debug.log('Notify: ' + event);
+            var data = [];
+            for(var x = 1; x < arguments.length; x++) {
+                data[x - 1] = arguments[x];
+            }
+
+            if(typeof subscriptions[event] !== 'undefined')  {
+				var good_subs = [];
+				for(var x = 0; x < subscriptions[event].length; x++) {
+					if(subscriptions[event][x].flag){
+    					subscriptions[event][x].cb.apply(subscriptions[event][x].scope || window, data);
+						good_subs.push(subscriptions[event][x]);
+					}
+				}
+				subscriptions[event] = good_subs;
+			}
+        };
+
+        sandboxAPI.subscribe = function (event, callback, context) {
+            if(siteDebug) debug.log('Subscribe: ' + event);
+
+            subscriptions[event] = subscriptions[event] || [];
+            subscriptions[event].push({cb: callback, scope: context, flag: true});
+        };
+
+        sandboxAPI.unsubscribe = function (event, callback) {
+            if(siteDebug) debug.log('Unsubscribe: ' + event);
+
+            if(typeof subscriptions[event] != 'undefined') {
+                for(var x = 0; x < subscriptions[event].length; x++) {
+                    if(subscriptions[event][x].cb === callback) {
+						subscriptions[event][x].flag = false;
+                    }
+                }
+            }
+        };
+
+		sandboxAPI.setPageLoad = function(page, moduleList) {
+			if(moduleList instanceof Array) {
+				pageload[page] = moduleList;
+			}
+		};
+    
+		sandboxAPI.pageLoad = function(page) {
+			var module = (arguments[1]) ? arguments[1] : 0;
+
+			if(page in pageload) {
+				for (var module = 0; module < pageload[page].length; module++) {
+					var moduleStatus = Sandbox.moduleStatus(pageload[page][module]);
+					if(moduleStatus == 'not_ready' || moduleStatus == 'ready') {
+						var args = arguments;
+						setTimeout(function() {
+							// Currying!
+							args.callee(page, module);
+						}, 15);
+						return;
+					}
+					else {
+						if(moduleStatus == 'initialized') {
+							try {
+								Core.start(pageload[page][module]);
+							}
+							catch(e) {}
+						}
+					}
+				}
+			}
+			$Halo.bigbro.notify(page + 'GroupLoaded');
+		};
+	
+    return sandboxAPI;
+}());

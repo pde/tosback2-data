@@ -270,6 +270,233 @@ More info available at http://www.omniture.com */
       if (s.products != null && s.products != ';') {
       	 s.products = (''||s.products).replace(/eVar32=([^|^,]*)/i, 'eVar32='+s.prop14);
       }
+      
+      /* PMO 501 - MiniCart & IAS Omniture- Begin */
+      function getURLParameter(name) {
+    	  return decodeURI(
+    	        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+    	    );
+    	}
+      function buildSprodStrEVar34(sproductin , skusAddedin){
+    	  //s.product remove category then set skuId
+    	  var sprodsplit = sproductin.split(',');
+     	  var skusAddedSplit = skusAddedin.split('.');
+     	  var sprodSku = '';
+     	  if(sproductin == null || skusAddedin == null) {return '';}
+     	  for (var i=0; i < sprodsplit.length; i++) {
+  		     var sprodtoken = sprodsplit[i]; 
+  		     sprodtoken =  sprodtoken.substring(sprodtoken.indexOf(';'),sprodtoken.length);
+  		     for(var j=0; j < skusAddedSplit.length; j++) {
+			     var pid_skuid =skusAddedSplit[j].split('_');
+			     pid=pid_skuid[0];skuid=pid_skuid[1];
+			     if((typeof pid !='undefined')&& (typeof skuid !='undefined') 
+  					  && (sprodtoken.indexOf(pid)> 0) && (sprodtoken.indexOf('eVar34='+ skuid)== -1))
+			     {sprodtoken += ' |eVar34='+ skuid;}
+  		     }
+  		     sprodSku += sprodtoken + ',';
+     	  }
+     	  if(sprodSku.charAt(sprodSku.length-1)== ','){sprodSku= sprodSku.substring(0,sprodSku.length-1);}
+       	  return sprodSku;
+      }
+      /* PMO 501 - IAS Popup - ViewCart & CO click - for scAdd fix eVar34 */
+      var ias2VwCartSkus = getURLParameter('ias2VwCartSkusAdded');
+      if((ias2VwCartSkus != 'null') && (s.pageName == s.prop9+': Shopping Bag') && (s.products != null)
+    		  && (s.events.indexOf('scAdd') > -1))
+      {   
+    	  //eVar34|SKU
+      	  var spout = buildSprodStrEVar34(s.products,ias2VwCartSkus);
+      	  s.products = (spout != '')? spout: s.products;
+      	  
+      	  //AdnSrc
+      	  var ias2VwCartSkusSplit = ias2VwCartSkus.split('.');
+      	  var iasMainPagePrdSku = ias2VwCartSkusSplit[0];
+      	  var iasMainPagePid = iasMainPagePrdSku.split('_')[0];
+      	  
+    	  var sprodAdnSrcSplit = s.products.split(',');
+    	  var sprodAdnSrc = '';
+    	  for (var i=0; i < sprodAdnSrcSplit.length; i++) {
+    		var sprodAdnSrctoken = sprodAdnSrcSplit[i]; 
+			if (sprodAdnSrctoken.indexOf(iasMainPagePid) == -1) {
+ 		    	if ((sprodAdnSrctoken != null) && (sprodAdnSrctoken.indexOf('eVar17') < 0) && (sprodAdnSrctoken.indexOf('evar17') < 0))
+ 		    		{	sprodAdnSrctoken += ' |eVar17=Mini Cart cross sell';
+ 		    			//reset eVar5 cart addition source 
+ 		    			if(sprodAdnSrctoken.indexOf('eVar5') > -1) { 
+ 		    				sprodAdnSrctoken = sprodAdnSrctoken.replace('eVar5=Product Detail Page', 'eVar5=Mini Cart cross sell');
+ 		    			}else if(sprodAdnSrctoken.indexOf('eVar5') == -1){
+ 		    				sprodAdnSrctoken += ' |eVar5=Mini Cart cross sell';
+ 		    			}
+ 		    		}
+ 		     } 
+			if(sprodAdnSrctoken != null && sprodAdnSrctoken.length > 0)
+				{sprodAdnSrc += sprodAdnSrctoken + ',';}
+    	  }
+    	  if(s.products.length > 0 && sprodAdnSrc.length > 0) {
+    		  s.products = sprodAdnSrc;
+    		  if(s.products.charAt(s.products.length-1)== ','){s.products= s.products.substring(0,s.products.length-1);}
+    		  }
+      }
+      
+      /* PMO 501 - Infected header View Cart fix due to Mini Cart */ 
+      if((s.pageName == s.prop9+': Shopping Bag') 
+    		  && (s.prop14 == (s.prop9+': Mini Cart')) //previous page minicart
+    		  && (s.events.indexOf('scView') == -1)
+    		  && (s.events.indexOf('scAdd') > -1)
+    		  && (typeof infectedCartSproductJS != 'undefined')
+    		  && (infectedCartSproductJS != null)
+    		  && (infectedCartSproductJS.length > 0 )) 
+      {	  
+    	  if(infectedCartSproductJS.charAt(infectedCartSproductJS.length-1)== ',')
+    	  {infectedCartSproductJS= infectedCartSproductJS.substring(0,infectedCartSproductJS.length-1);}
+    	  s.products = infectedCartSproductJS;
+    	  s.events = 'scView';
+    	  //clean ups
+    	  infectedCartSproductJS = null;
+      }
+      
+      /* PMO 501 - Mini Cart omniture */ 
+      if((s.prop1 != null) && (s.prop1 == s.prop9+': Mini Cart') && (s.pageName != s.prop9+': Mini Cart'))
+      {   //cross confirm s.pageName not overidden
+    	  s.pageName =  s.prop1;
+      }
+      if((s.pageName == s.prop9+': Mini Cart')
+    		 && (typeof minicartJson != 'undefined')
+    		 && (minicartJson != null)
+    		 && (minicartJson.skusAdded != null) 
+    		 && (s.products != null))
+      {   
+    	  var skusAdded = minicartJson.skusAdded;
+      	  var cartitemCount = minicartJson.itemCount;
+      	  var adtnSource = miniCartAdditionSourceJS;
+      	  var justqtyAddedDelim = minicartJson.qtyAdded;
+      	  var tlQtyadded = 0;
+      	  var qtysplit = justqtyAddedDelim.split('.').forEach(function(i){ tlQtyadded += i*1 });
+      	  
+          //all pids in s.product check
+		  var skusAddedSplitchk = skusAdded.split('.');
+		  for (var chk=0; chk < skusAddedSplitchk.length; chk++) {
+			  var pid_skuidchk =skusAddedSplitchk[chk].split('_');
+		      pidchk=pid_skuidchk[0];skuidchk=pid_skuidchk[1];
+		      if((pidchk != null) && (s.products.indexOf(';'+pidchk+';') ==-1))
+		      {
+		     	  s.products += ',;'+pidchk+';;;;'+' |eVar34=' + skuidchk ;
+		      }
+		  }
+		  
+      	  //clean up scView
+	      if(s.events.indexOf('scView') > 0)
+	      {
+	    	  s.events = s.events.replace('scView',''); 
+	    	  s.events = s.events.replace(',,',','); 
+	    	  if(s.events.charAt(0)== ','){s.events = s.events.substring(1,s.events.length);}
+	    	  if(s.events.charAt(s.events.length-1)== ','){s.events= s.events.substring(0,s.events.length-1);}
+	      }
+      	  
+	      //scOpen
+      	  if((cartitemCount - tlQtyadded == 0) && (s.events.indexOf('scOpen') < 0)){
+      		  s.events = 'scOpen,' + s.events;  
+      	  }
+      	 
+      	  //s.product remove category, set sku
+    	  if(s.products!= null && s.products.length > 0 && skusAdded.length > 0) {
+    		  var spout = buildSprodStrEVar34(s.products,skusAdded);
+     		  s.products = (spout != '')? spout: s.products;
+    		  }
+    	  //addtn source fix
+    	  var sprodAdnSrcSplit = s.products.split(',');
+    	  var sprodAdnSrc = '';var mainpid = null;
+    	  for (var i=0; i < sprodAdnSrcSplit.length; i++) {
+    		var sprodAdnSrctoken = sprodAdnSrcSplit[i];
+ 		    if(i == 0 && sprodAdnSrctoken.indexOf(';;;;') > -1){mainpid = sprodAdnSrctoken.substring(sprodAdnSrctoken.indexOf(';')+1, sprodAdnSrctoken.indexOf(';;;;'));}
+    		if (i > 0) {
+ 		    	if(adtnSource == 'prodCrossSell' && (sprodAdnSrctoken != null)
+ 		    			&& (sprodAdnSrctoken.length > 0) && (sprodAdnSrctoken.indexOf('eVar17') < 0) && (sprodAdnSrctoken.indexOf('evar17') < 0))
+ 		     		{   
+ 		    		    if(mainpid != null && mainpid > 0) {sprodAdnSrctoken += ' |eVar17='+ mainpid;}
+ 		     			if((sprodAdnSrctoken.indexOf('eVar5') < 0)) { 
+ 		     				sprodAdnSrctoken += ' |eVar5=Product Cross Sells';
+ 		     			}
+ 		     		}
+ 		    	if (adtnSource != 'prodCrossSell' && (sprodAdnSrctoken != null)
+ 		    			& (sprodAdnSrctoken.length > 0) && (sprodAdnSrctoken.indexOf('eVar17') < 0) && (sprodAdnSrctoken.indexOf('evar17') < 0))
+ 		    		{
+ 		    		    sprodAdnSrctoken += ' |eVar17=Mini Cart cross sell';
+ 		    			if((sprodAdnSrctoken.indexOf('eVar5') < 0)) { 
+ 		    				sprodAdnSrctoken += ' |eVar5=Mini Cart cross sell';
+ 		    			}
+ 		    		}
+ 		    	
+ 		     } 
+			//correct STS/ISPU eVars
+			if(typeof omniISPUstorefrontCode != 'undefined' && omniISPUstorefrontCode != null)
+			{
+				if(sprodAdnSrctoken.indexOf('eVar44') == -1 && (sprodAdnSrctoken.indexOf('eVar38') > -1))
+				{
+					sprodAdnSrctoken = sprodAdnSrctoken.replace('eVar38','eVar44');
+				}
+			}
+			if(typeof omniSTSstorefrontCode != 'undefined' && omniSTSstorefrontCode != null)
+			{
+				if(sprodAdnSrctoken.indexOf('eVar38') == -1 && (sprodAdnSrctoken.indexOf('eVar44') > -1))
+				{
+					sprodAdnSrctoken = sprodAdnSrctoken.replace('eVar44','eVar38');
+				}
+			}
+			
+			//ISPU
+			if((sprodAdnSrctoken.indexOf('eVar44') > -1) 
+					&& (typeof omniISPUstorefrontCode == 'undefined' || omniISPUstorefrontCode == null)){
+				var remove_eVar44 = sprodAdnSrctoken.substring(sprodAdnSrctoken.indexOf('eVar44='), sprodAdnSrctoken.indexOf('|')+1);
+				sprodAdnSrctoken = sprodAdnSrctoken.replace(remove_eVar44, '');
+			}
+			if((sprodAdnSrctoken.indexOf('eVar44') > -1) && (sprodAdnSrctoken.indexOf('eVar5') == -1)
+					&& typeof omniISPUstorefrontCode != 'undefined' && omniISPUstorefrontCode != null){
+				//check storefrontId
+				if(sprodAdnSrctoken.indexOf(omniISPUstorefrontCode) == -1)
+				{   var old_eVar44 = sprodAdnSrctoken.substring(sprodAdnSrctoken.indexOf('eVar44='), sprodAdnSrctoken.indexOf('|'));
+				    sprodAdnSrctoken = sprodAdnSrctoken.replace(old_eVar44, 'eVar44='+ omniISPUstorefrontCode+' ');
+				}
+				//eVar5
+				sprodAdnSrctoken += ' |eVar5=In Store Pickup';
+				omniISPUstorefrontCode = null;
+			}
+			//STS 
+			if((sprodAdnSrctoken.indexOf('eVar38') > -1)
+					&& (typeof omniSTSstorefrontCode == 'undefined' || omniSTSstorefrontCode == null )){
+				var remove_eVar38 = sprodAdnSrctoken.substring(sprodAdnSrctoken.indexOf('eVar38='), sprodAdnSrctoken.indexOf('|')+1);
+				sprodAdnSrctoken = sprodAdnSrctoken.replace(remove_eVar38, '');
+			}
+			if((sprodAdnSrctoken.indexOf('eVar38') > -1)
+					&& typeof omniSTSstorefrontCode != 'undefined' && omniSTSstorefrontCode != null){
+				//check storefrontId
+				if(sprodAdnSrctoken.indexOf(omniSTSstorefrontCode) == -1)
+				{   var old_eVar38 = sprodAdnSrctoken.substring(sprodAdnSrctoken.indexOf('eVar38='), sprodAdnSrctoken.indexOf('|'));
+				    sprodAdnSrctoken = sprodAdnSrctoken.replace(old_eVar38, 'eVar38='+ omniSTSstorefrontCode+' ');
+				}
+				//eVar5
+				if(sprodAdnSrctoken.indexOf('eVar5') > -1) { 
+	    				sprodAdnSrctoken = sprodAdnSrctoken.replace('eVar5=Product Detail Page', 'eVar5=Ship To Store');
+	    			}else if(sprodAdnSrctoken.indexOf('eVar5') == -1){
+	    				sprodAdnSrctoken += ' |eVar5=Ship To Store';
+	    			}
+				omniSTSstorefrontCode = null;
+			}
+			//eVar5 for main product
+			if(i==0 && (sprodAdnSrctoken.indexOf('eVar44') == -1) && (sprodAdnSrctoken.indexOf('eVar5') ==-1))
+		    {sprodAdnSrctoken += ' |eVar5=Product Detail Page';}
+			
+			if(sprodAdnSrctoken != null && sprodAdnSrctoken.length > 0)
+				{sprodAdnSrc += sprodAdnSrctoken + ',';}
+    	  }
+    	  if(s.products.length > 0 && sprodAdnSrc.length > 0) {s.products = sprodAdnSrc;}
+
+    	  //final Clean ups
+    	  if(s.products.charAt(0)== ','){s.products = s.products.substring(1,s.products.length);}
+    	  if(s.products.charAt(s.products.length-1)== ','){s.products= s.products.substring(0,s.products.length-1);}
+      	  miniCartAdditionSourceJS = '';
+      	  minicartJson = null;
+      }
+      /* PMO 501 - MiniCart & IAS Omniture- End */ 
+      
     }
     s.usePlugins=true
     s.doPlugins=s_doPlugins

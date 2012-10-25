@@ -328,4 +328,48 @@ function limitText() {
 	var str=document.getElementById('review_text').value;
 	if(str.length>=750) return false;
 }
-
+function handleEnter(strId){
+	var evt = window.event;
+	if (evt.keyCode == 13){
+		emptykey(strId);
+		return false;
+	} else return true;
+}
+function emptykey(strId) {
+	try {
+		var searchkey = document.getElementById(strId).value.replace(/^\s+|\s+$/g, '').replace(/\\/g,''); 
+		if(searchkey=="") {
+			window.alert('No search criteria was entered in the search field');
+			return false;
+		} else {
+			document.getElementById('keyword').value = '_' + searchkey;
+			searchkey = searchkey.replace(/\//g,' ').replace(/%/g,'_percent_').replace(/\;/g,'').replace(/ /g,'%20').replace(/\+/g,'_');
+		//	alert(searchkey);
+			var url = '';
+			if(strId == 'qsearch') {
+				url = "";
+				url = window.location.protocol + "//" + window.location.hostname + '/search/';
+				url = url + '_'+ searchkey + '/';
+			} else {
+				url = window.location.protocol + "//" + window.location.host + window.location.pathname;
+				if(url.charAt(url.length -1) != '/') {
+					url = url + '/';
+				}
+				url = url + '_'+ searchkey + '/';
+				url = url + window.location.search;
+				if(isProject=='1' && url.indexOf("isPrj=") <= 0) {
+					if(url.indexOf("?") <= 0) {
+						url = url + "?isPrj=1";
+					} else {
+						url = url + "&isPrj=1";
+					}
+					
+				}
+			}
+			window.location.href = url;
+		}
+	}
+	catch (exp) {
+	//	alert('exp');
+	}
+}

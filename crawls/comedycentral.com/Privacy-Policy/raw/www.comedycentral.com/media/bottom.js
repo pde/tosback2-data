@@ -5249,6 +5249,16 @@ $(function() {
 	$(".ccsu_tv_schedule a.next, .ccsu_tv_schedule a.prev").click(function(){
 		return false
 	});
+});/* comedian_bio_description.js */
+/* 
+ * Used in SUP M011 Comedian Bio Description
+ */
+$(function() {
+	$('#read_more').click(function(){
+		$(this).hide();
+		$('#shorttext').html($('span.fulltext').html());					
+		return false;
+	});
 });/* comedian_showcase.js */
 /* 
  * Used in SUP M056 Comedian Showcase

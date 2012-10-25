@@ -641,7 +641,9 @@ if(c.loggedIn=="true"){NICK.login.loggedInTrack();
 $(document).trigger("loggedIn",c);
 NICK.login.prepGamesServer();
 NICK.club.messages.loginWelcome()
-}else{if(c.approved=="B"){NICK.utils.doLog("doLogIn: Triggering B");
+}else{if(c.loggedIn=="off"){NICK.overlay.open(" ","/overlay/no-login.html");
+$(document).trigger("loggedOut",c)
+}if(c.approved=="B"){NICK.utils.doLog("doLogIn: Triggering B");
 $(document).trigger("bannedUserFail")
 }else{if(c.approved=="S"){$(document).trigger("bannedUserTempFail")
 }else{$(document).trigger("logInFail")
@@ -697,8 +699,11 @@ b.res="js";
 b.trylogin="true";
 NICK.request.doRequest({dataType:"jsonp",url:NICK.login.nickRegUrl,data:b,onSuccess:function(c){NICK.utils.doLog("doRegister: onSuccess : ");
 if(c.success=="true"){doRegSuccess(c,a)
+}else{if(c.loggedIn=="off"){NICK.overlay.loadingToggle();
+NICK.login.setLoginStatus(c.loggedIn);
+NICK.overlay.open(" ","/overlay/no-login.html")
 }else{doRegFail(c,a)
-}},onFail:function(d){for(var c in d){NICK.utils.doLog("doRegister: error: "+c+" - "+d[c])
+}}},onFail:function(d){for(var c in d){NICK.utils.doLog("doRegister: error: "+c+" - "+d[c])
 }}})
 };
 NICK.login.getAvatar=function(){if(NICK.userData==null||NICK.utils.isEmptyString(NICK.userData.avatar)){return""

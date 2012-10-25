@@ -85,7 +85,7 @@ dojo.declare("bec.analytics.Coremetrics.Common", null,
 
 	isStorefront: function() {
 		var results = false;
-		var storefrontArr = ["Hand","Wolf","Cush"];
+		var storefrontArr = ["Hand","Wolf","Cush","Hand2"];
 		
 		dojo.forEach(storefrontArr, function(storeIdent, idx) {
 			if(jsStoreIdent == storeIdent)

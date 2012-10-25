@@ -4,7 +4,7 @@
 
 document.write('<div id="breaking" style="background-image: url(http://bilder.bild.de/fotos/background-15402288/Bild/4.bild.jpeg);"><span>Breaking News</span><div class="breakingTicker" ><div class="ugL"></div><ul>'
 	
-	+'<li><a href="http://www.bild.de/sport/mehr-sport/lance-armstrong/uci-hat-entschieden-exprofi-verliert-titel-26819102.bild.html" style="font-size:11px; font-family:Arial;color:#0xFFFFFF;" >Dopingaffäre: Lance Armstrong verliert alle Tour-Titel! ++ Dopingaffäre: Lance Armstrong verliert alle Tour-Titel!</a></li>'
+	+'<li><a href="http://www.bild.de/newsticker-meldungen/home/13-magath-entlassung-26875004.bild.html" style="font-size:11px; font-family:Arial;color:#0xFFFFFF;" >VfL Wolfsburg trennt sich von Trainer Felix Magath +++ VfL Wolfsburg trennt sich von Trainer Felix Magath</a></li>'
 	
 	+'<li><strong style="font-size:11px; font-family:Arial;color:#0xFFFFFF;">+++</strong></li></ul><div class="ugR"></div></div></div>');
 

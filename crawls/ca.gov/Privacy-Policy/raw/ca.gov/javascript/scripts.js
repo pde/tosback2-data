@@ -687,14 +687,37 @@ function breadcrumbs()
 }
 
 function toggle_menu() {
+	var searchContainer = document.getElementById("head_search");
 	var navContainer = document.getElementById("navigation");
+	var weatherContainer = document.getElementById("weather_container");
 
 	if (navContainer.className == "") {
 		// apply class "phone_show_nav" to nav
 		navContainer.className = "phone_show_nav";
+		weatherContainer.style.display = "none";
+		searchContainer.className = "";
 	} else {
 		// remove class
 		navContainer.className = "";
+		weatherContainer.style.display = "block";
+	}
+}
+
+function toggle_search() {
+	var searchContainer = document.getElementById("head_search");
+	var navContainer = document.getElementById("navigation");
+	var weatherContainer = document.getElementById("weather_container");
+
+	if (searchContainer.className == "") {
+		// apply class "phone_show_search" to nav
+		searchContainer.className = "phone_show_search";
+		document.getElementById("search_local_textfield").focus();
+		weatherContainer.style.display = "none";
+		navContainer.className = "";
+	} else {
+		// remove class
+		searchContainer.className = "";
+		weatherContainer.style.display = "block";
 	}
 }
 

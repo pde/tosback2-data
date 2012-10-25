@@ -1,6 +1,6 @@
 @charset "utf-8";
 /*CSS Document:US style.css */
-/*Last Updated By:Scott Hine - 10/19/2012 12:30PM*/
+/*Last Updated By:Scott Hine - 10/23/2012 11:15AM*/
 /*Build 2.08 Release*/
 /* =Global
 --------------------------------------------------------------------- */
@@ -3330,12 +3330,7 @@ span#spanTotalPurchaseAmount1{margin:0;padding:0;}
 #divCurrentProgram .divProgramDateWrapper, #divCurrentProgram .divProgramTimeWrapper{background:#94c329;color:#fff;height:73px;}
 #divCurrentProgram.divLongProgramDescription .divProgramDateWrapper, #divCurrentProgram.divLongProgramDescription .divProgramTimeWrapper{height:107px;}
 .programGuideSearchResults #divCurrentProgram.divLongProgramDescription .divProgramTimeWrapper{background-color:#ddebba;color:#333;}
-.divDailyProgram .divProgramInformationWrapper{
-	float:left;
-	width:768px;
-	height:45px;
-	border-right:1px solid #e4e3e3;
-}
+.divDailyProgram .divProgramInformationWrapper{float:left;width:768px;height:45px;border-right:1px solid #e4e3e3;position:relative;z-index:10;}
 .programGuideSearchResults .divDailyProgram .divProgramInformationWrapper{width:619px;}
 .divBottomProgram .divProgramDateWrapper, .divBottomProgram .divProgramTimeWrapper, .divBottomProgram .divProgramInformationWrapper{border-bottom:none;}
 .divLongProgramDescription .divProgramInformationWrapper, .divDailyProgram #divCurrentProgram .divProgramInformationWrapper{height:73px;}
@@ -3835,45 +3830,27 @@ input.popupCb{
 	vertical-align:top;
 }
 #divNavItemsRecentlyOnAir ul li.moreShowsFromYesterday{text-align:center;}
-#divNavItemsRecentlyOnAir select{
-	font-size:12px;
-	color:#7A7870;
-}
-	
+#divNavItemsRecentlyOnAir select{font-size:12px;color:#7A7870;}
+/* =Tooltip
+--------------------------------------------------------------------- */
+#toolTip{padding:10px;border:1px solid #CFD5E3;border-radius:6px;background:#EEEDF7;position:absolute;letter-spacing:.025em;left:0;top:0;z-index:1000;}
+#toolTipArrow{position:absolute;z-index:1002;}
+#toolTipArrowB{position:absolute;z-index:1001;}
+#divNavHomePage li .tooltipDiv{padding:7px 0 7px 20px;}
+#divNavHomePage li .tooltipDiv a{padding:0;}
 /* =Popups
 --------------------------------------------------------------------- */
-/*Defect 11145*/
-#TB_ajaxContent{
-	overflow-x:hidden;
-	overflow-y:auto;
-}
-#TB_ajaxContent h2{
-	font-size:14px;
-	margin-bottom:0;
-}
-dt{
-	font-weight:bold;
-	float:left;
-	margin-left:40px;
-	_margin-left:20px;
-	margin-right:5px;
-}
+#TB_ajaxContent{overflow-x:hidden;overflow-y:auto;}
+#TB_ajaxContent h2{font-size:14px;margin-bottom:0;}
+dt{font-weight:bold;float:left;margin-left:40px;_margin-left:20px;margin-right:5px;}
 dd{margin-bottom:15px;}
 #imgGiftCardNumbers{float:right;}
 #divNeedHelp{margin-top:30px;}
 #divEmailToAFriendThankYou{display:none;}
-
 /* =Calendar Popup
 --------------------------------------------------------------------- */
-.calendar table{
-	font:bold 12px Arial, Helvetica, sans-serif;
-	border:1px solid #e97400;
-	background-color:#fff;
-	text-align:center;
-	width:150px;
-	border-spacing:0;
-	border-collapse:collapse;
-}
+.calendar{z-index:10;}
+.calendar table{font:bold 12px Arial, Helvetica, sans-serif;border:1px solid #e97400;background-color:#fff;text-align:center;width:150px;border-spacing:0;border-collapse:collapse;}
 .calendar td, .calendar th{width:30px;height:20px;text-align:center;padding:0;}
 .calendar th{background-color:#e97400;color:#fff;vertical-align:middle;}
 .calendar .hdrday{background-color:#fff;color:#e97400;}
@@ -3883,14 +3860,9 @@ dd{margin-bottom:15px;}
 .calendar .close{cursor:pointer;border-top:1px solid #ccc;}
 .calendar a.inactive{color:#c4c0b5;cursor:default;border:1px solid #fff;}
 .calendar-monthswitch a, .calendar-monthswitch a.inactive{border:0;}
-
 /* =Accessibility
 --------------------------------------------------------------------- */
-.access, #frmProductDetail label.access, #frmProductDetailReviewSelection label.access{
-	position:absolute;
-	left:-9999px;
-	width:999px;
-}
+.access, #frmProductDetail label.access, #frmProductDetailReviewSelection label.access{position:absolute;left:-9999px;width:999px;}
 caption{display:none;}
 /* =Page Messaging
 --------------------------------------------------------------------- */
@@ -4002,7 +3974,6 @@ div.roundedBorderColorAll .outline{
 *:first-child+html .divPageView{margin-top:-2px;}
 /*Defect 5265   */
 .text{font-weight:normal;}
-
 /* Custom HTML Pages */
 .centered{text-align:center;}
 .mobileColumn{

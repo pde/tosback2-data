@@ -6,6 +6,7 @@
 // Changes 2011-08-07:  DemandBase code added. -- rperez
 // Changes 2011-08-16:  symanteccom had to be added back due to Norton fixhomepage
 // Changes 2012-09-24:	Added trackDownloadLink function for tracking downloads
+// Changes 2012-10-15:	Removed Demandbase code. Now lives in s_code.js
 
 //adding some weight
 //adding some weight
@@ -285,8 +286,8 @@ function trackDownloadLink(url_file, url_redir){
 		s.prop48 = filename;
 		s.eVar49 = filename;
 		s.linkTrackVars="";
-		s.linkTrackEvents="";	
-		s.t();	
+		s.linkTrackEvents="";
+		s.t();
 }
 
 function trackDownload(url_file, url_redir) {
@@ -324,62 +325,4 @@ function bc_getPageVariables() {
 	obj.user_id = metaData['user_id'];
 	obj.repsuite = metaData['repsuite'];
 	return obj;
-}
-
-/* Demandbase code
-
-Added by Rob Perez August 07, 2012
-
-*/
-function trackDemandBase(){
-	var sessync=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('sessync');
-	if(sessync.indexOf('db')==-1){
-	  if(typeof($)!="undefined"){
-		$(window).load(function(){
-		  $.getJSON("//api.demandbase.com/api/v2/ip.json?key=09884c914277626561f7b4e7cff7fa13edf3b423&callback=?", function(data){
-			try{
-				s.linkTrackVars = 'prop28,prop51,prop55,prop63,eVar15';
-				s.prop28 = data["company_name"];
-				s.prop51 = data["audience_segment"];
-				s.eVar15 = data["employee_count"];
-				s.prop55 = data["industry"];
-				s.prop63 = data["sub_industry"];
-				void(s.tl(this,'o','DB2SC'));
-				document.cookie = ('sessync='+sessync+'|db ;domain = .symantec.com; path=/');
-			}
-			catch (ex){}
-		  });
-		});
-	  }
-	}
-}
-
-fireDemandBaseTracking = function(){
-	var myPageName = metaData['page_name'];
-	// if we're not en/us, we're done.
-	if(myPageName.indexOf('en/us')<0){
-		return false;
-	}
-	else{	// we are en/us. Test return true if any conditions are met
-		if(myPageName == "en/us: biz: symantec"){ // homepage
-			return true;
-		}
-		if(myPageName.indexOf('en/us: biz: products:')>-1){ //product pages
-			return true;
-		}
-		if(myPageName.indexOf('en/us: biz: solutions:')>-1){ //solutions pages
-			return true;
-		}
-		if(myPageName.indexOf('en/us: biz: theme:')>-1){ //theme pages
-			return true;
-		}
-		if(myPageName.indexOf('en/us: biz: cmp:')>-1){ //campaign pages
-			return true;
-		}
-	}
-	return false; //no conditions met? Return false and do not invoke demandbase.
-}
-
-if(fireDemandBaseTracking()){
-	trackDemandBase();
 }

@@ -2,6 +2,7 @@ var sites = [
 "http://10.0.1.16/",
 "http://10.0.1.16:443/",
 "http://172.18.8.38/",
+"http://172.19.8.38/",
 "http://216.12.134.199/",
 "http://apps.irs.gov/",
 "hhtp://apps.irs.gov.edgesuite-staging.net/",
@@ -42,8 +43,7 @@ var sites = [
 "http://search.irs.gov/",
 "http://search.irs.gov.edgesuite-staging.net/",
 "http://server.iad.liveperson.net/",
-"https://state-excise.irs.gov/",
-"tel:" ];
+"https://state-excise.irs.gov/" ];
 
 var existTestSites = false;
 

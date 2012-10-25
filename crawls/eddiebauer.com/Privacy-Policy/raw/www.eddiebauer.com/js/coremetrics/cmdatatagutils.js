@@ -1,7 +1,7 @@
 /*
  * cmdatatagutils.js
- * $Id: cmdatatagutils.js,v 1.48 2011/06/15 22:13:25 kchilders Exp $
- * $Revision: 1.48 $
+ * $Id: cmdatatagutils.js,v 1.49 2012/10/19 22:24:08 kreilly Exp $
+ * $Revision: 1.49 $
  *
  * Version 4.2.0
  *
@@ -396,7 +396,7 @@ function cmCreateProductviewTag(productID, productName, categoryID, pa1var, line
 	var li = lineNum;
 	var ps1 = ps1var;
 	var ps2 = productName + " (" + productID + ")";
-	cmMakeTag(["tid","5","pi",productName+" ("+productID+")","pr",productID,"pm",productName,"cg",categoryID,"se",searchString,"sr",searchResults,"pa1",pa1var,"li",lineNum,"ps1",ps1var,"ps2",ps2,"rf",rf,"pc","N","cm_vc",cm_vc?cm_vc:cmExtractParameter("cm_vc",document.location.href),"cmAttributes",attributes]);
+	cmMakeTag(["tid","5","pi", "Product: " + productName+" ("+productID+")","pr",productID,"pm",productName,"cg",categoryID,"se",searchString,"sr",searchResults,"pa1",pa1var,"li",lineNum,"ps1",ps1var,"ps2",ps2,"rf",rf,"pc","N","cm_vc",cm_vc?cm_vc:cmExtractParameter("cm_vc",document.location.href),"cmAttributes",attributes]);
 }
 
 // Variables and Arrays to support Lineitem Aggregation

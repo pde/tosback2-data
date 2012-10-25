@@ -189,7 +189,7 @@ NICK.overlay.open = function(title, url, options) {
 	try{
 		if(NICK.login.getLoginStatus() == "off"){
 			if(url == "/overlay/registration.html" || url == "/overlay/login.html"){
-				title = ""
+				title = " "
 				url = "/overlay/no-login.html"
 			}
 		}

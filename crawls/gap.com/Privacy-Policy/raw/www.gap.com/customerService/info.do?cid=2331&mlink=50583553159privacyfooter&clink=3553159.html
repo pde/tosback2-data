@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/22/2012 08:09 AM",
+            DATE_IN_USE: "10/25/2012 08:09 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -4080,6 +4080,207 @@ function swapSignInFormTarget() {
 </script>
 <!-- END content override CNOV-9 JS -->
 
+<!-- CNOV-13: ProductSearch retry -->
+<script type="text/javascript">
+if (navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
+	var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+	categoryFacetedSearchManager.constants.MAX_REQUEST_RETRY_COUNT = 2;
+
+	categoryFacetedSearchManager.model.requestParams = {};
+
+	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.timeoutHandler = 
+		function(response, e, timedOut) {
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+
+		categoryFacetedSearchManager.model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
+					
+		// Met the max number of retries
+		if (categoryFacetedSearchManager.model.retryCount >= categoryFacetedSearchManager.constants.MAX_REQUEST_RETRY_COUNT) {
+			var handlers= categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers;
+			handlers.exceptionHandler(response, e, timedOut);
+		} else {
+			var log = loggingService.api.getLog();
+			log.error("Retrying URL due to timeout: [" + categoryFacetedSearchManager.model.latestFacetRequestUrl + "]\n\n");
+						
+			var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+			viewManager.model.isRetry = true;
+			viewManager.controller.getReportRequest();
+						
+			categoryFacetedSearchManager.model.retryCount++;
+						
+			var pageId = categoryFacetedSearchManager.model.requestParams.pageId;
+			var url = categoryFacetedSearchManager.model.requestParams.url;
+						
+			categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(pageId,url);						
+		}
+	};
+
+	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler.wrap(function(originalMethod,response,e,timedOut) {
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+
+		// Cleanup request-related variables
+		categoryFacetedSearchManager.model.retryCount = 0;
+		categoryFacetedSearchManager.model.requestParams.pageId = null;
+		categoryFacetedSearchManager.model.requestParams.url = null;
+		
+		originalMethod(response,e,timedOut);
+	});
+
+	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler.wrap(function(originalMethod,transport) {
+		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+
+		// Cleanup request-related variables
+		categoryFacetedSearchManager.model.retryCount = 0;
+		categoryFacetedSearchManager.model.requestParams.pageId = null;
+		categoryFacetedSearchManager.model.requestParams.url = null;
+		
+		originalMethod(transport);
+	});
+
+	categoryFacetedSearchManager.controller.getCategoryFacetedSearchData = function(pageId,url) {
+
+		var categoryFacetedSearchManager = 
+			navigationService.controller.managers.categoryFacetedSearchManager,
+			model = categoryFacetedSearchManager.model,
+			constants = categoryFacetedSearchManager.constants,
+			elementIds = categoryFacetedSearchManager.constants.elementIds,
+			productGridId = elementIds.PRODUCT_GRID,
+			getCategoryFacetedSearchDataHandlers = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers;
+
+		// record current parameters for potential retries
+		model.requestParams.pageId = pageId;
+		model.requestParams.url = url;
+			
+		var productSearchServiceUrl = url || UrlBuilder.getProductSearchServiceUrl(pageId);
+		categoryFacetedSearchManager.model.latestFacetRequestUrl = productSearchServiceUrl;
+			
+		var requestOptions = {
+			method : 'get',
+			onSuccess : getCategoryFacetedSearchDataHandlers.successHandler,
+			onException : getCategoryFacetedSearchDataHandlers.exceptionHandler,
+			onFailure : getCategoryFacetedSearchDataHandlers.timeoutHandler,
+			onCreate: getCategoryFacetedSearchDataHandlers.createHandler,
+		    onComplete: getCategoryFacetedSearchDataHandlers.completeHandler
+		};
+
+		if (model.dataRequestStatus === constants.requestStatus.BEGIN) return;
+		
+		model.dataRequestStatus = constants.requestStatus.BEGIN;
+		var log = loggingService.api.getLog();
+		log.info('starting AJAX request for URL [ ' + productSearchServiceUrl + ' ]');
+		
+		document.fire("categoryFacetedSearchDataRequest:begin");
+		new Ajax.Request(productSearchServiceUrl, requestOptions);
+		log.info('completed AJAX request for URL [ ' + productSearchServiceUrl + ' ]');
+	};
+
+
+	categoryFacetedSearchManager.controller.getCategoryFacetedSearchView = categoryFacetedSearchManager.controller.getCategoryFacetedSearchView.wrap(function(originalMethod) {
+		var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+		viewManager.model.isRetry = false;
+		
+		originalMethod();
+	});
+
+	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars = function() {
+		var facetMetrics = this.getFacetMetrics(),
+		    	pathName = window.location.pathname,
+			parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+			model = parent.model,
+			isEngaged = facetMetrics.prop13.length > 0,
+			isMpp = pathName.indexOf('mpp.do') >= 0, 
+			isSearchModel = model.isSearch,
+			isSearch = isSearchModel === true || isSearchModel === 'true',
+			errSuffix = ' : isEngaged=' + isEngaged + ' : ' + 
+			(((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
+			 (isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName),
+			parentModel = parent.model,
+			shouldUseMaxValue = parentModel.maxOptionsSelectedCount > facetMetrics.totalOptionsSelected;
+
+                if (isSearch) {
+			s.events = 'event39';
+
+			var searchAppManager = reportingService.controller.appManagers.searchAppManager;
+    				searchAppManager.setSiteSearchActive(true);
+
+    			model.searchKeyword = searchAppManager.getSiteSearchActiveKeyword();
+    			s.prop17 = searchAppManager.getSiteSearchActiveKeyword();
+
+			data = parent.facetSearchManager.model.data;
+    				
+    			if (data != undefined) {
+    				s.prop18 = data.productCategoryFacetedSearch.totalItemCount;
+    			
+    				if (model.hasNoProducts) {
+    					s.events += ",event37";
+    				}
+    			}
+                } else {
+			s.events = isMpp ? '' : 'event38';
+                }
+		          
+                var tmpProp51='';
+            	if (model.isRetry) {
+			var delaySuffix = ' : isEngaged=' + isEngaged + ' : ' + (((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
+				(isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName);
+            		delaySuffix += this.getHashWithoutSizeAndBrand();
+            		
+            		tmpProp51="delay:" + delaySuffix;
+            	} else if (model.isException) {
+                	if (model.timedOut) {
+				var timeoutSuffix = ' : isEngaged=' + isEngaged + ' : ' + (((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
+					(isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName);
+                		timeoutSuffix += this.getHashWithoutSizeAndBrand();
+                		
+                		tmpProp51="timeout:" + timeoutSuffix;
+                	} else {
+                		tmpProp51=model.exceptionType + errSuffix;
+                	}
+                } else  if (model.hasNoProducts) {
+                	tmpProp51 = (isEngaged ? 'no results-facets' : 'no products available') + errSuffix;
+                } else if (navigationService.paginationHelper.api.getUrlPageId() > 0) {
+                	tmpProp51 = "Pagination: " + navigationService.paginationHelper.api.getUrlPageId();
+                }
+                
+                s.prop51 = tmpProp51;
+                s.pageName = model.commonCurrentPageName + model.commonVariantStyle;
+                s.prop20 = model.previousPage;
+                s.prop21 = model.previousURL;
+                
+                if (!shouldUseMaxValue) {
+                	parentModel.maxProp13Value = facetMetrics.prop13;
+                	parentModel.maxProp14Value = facetMetrics.prop14;
+                	parentModel.maxProp12Value = facetMetrics.prop12;
+                	parentModel.maxProp16Value = facetMetrics.prop16;
+                	parentModel.maxOptionsSelectedCount = facetMetrics.totalOptionsSelected;
+                }
+
+                
+                s.prop13 = parentModel.maxProp13Value;
+                s.prop14 = parentModel.maxProp14Value;
+                s.prop12 = s.eVar19 = parentModel.maxProp12Value;
+                s.prop3 = isEngaged ? parent.strHierarchy : '';
+                s.prop15 = isSearch ? 'search' : (isMpp ? '' : 'category');
+                s.prop16 = parentModel.maxProp16Value;
+                
+                s.eVar15 = isEngaged ? s.prop3 : parent.notEngagedMessage;
+
+                this.setFSInCookie('cookieName', s.eVar15);
+                this.setFSInCookie('facetRefinementCookieName', s.prop19);
+                reportingService.api.setViewTypeReportParameter(model.viewType);
+
+	};
+
+	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp.wrap(function(originalMethod) {
+		parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+		parent.model.isRetry = false;
+
+		originalMethod();
+	});
+}
+</script>
+<!-- End CNOV-13 -->
+
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
 
 
@@ -5706,7 +5907,7 @@ if (window['ProductImages']) {
 
 
 <!-- container 13 -->
-<!-- BEGIN Content Item File: /content/0003/747/013/cn3747013.html -->
+<!-- BEGIN Content Item File: /content/0005/667/816/cn5667816.html -->
 
 <style type="text/css">
 #newTabWindow { border:1px #c1c1c1 solid; border-top:0; font-size: 11px; margin: 0; padding: 1px 10px 10px; width: 308px; color:#000;}
@@ -5764,15 +5965,15 @@ if( location.pathname == "/browse/product.do" ) {
 						case "0622PRODSHIPRETINFO_SEGC":
 							switch( prodType ) {
 								case "general":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE exchanges and FREE returns to stores</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a>';
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail &amp; to stores on all orders</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
 									break;
 									
 								case "generalExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>Return by mail only</li><li>FREE exchanges</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a>';
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
 									break;
 									
 								case "selectExclusive":
-									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>Everyday FREE shipping on any order over $50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE return (by mail only)</li><li>FREE exchanges</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a>';
+									shipReturnContent = '<div class="copyBlock">shipping &amp; returns </div><ul><li>FREE shipping on all orders over 50<br /><span class="italCopy">Select  the "FREE" option in the shopping bag</span></li><li>$7 Flat Rate for orders under $50</li><li>FREE returns &amp; exchanges by mail</li></ul><a href="javascript:void(0)" onclick="return productPageShipReturnInserter.controller.openPopAndSendToOmni()">Learn More</a><br/><br/>Print out a <a href="http://www.gap.com/profile/returns_address_entry.do">prepaid UPS label</a> or a <a href="http://www.shipmentmanager.com/Gap/default.aspx?merchantid=1392" target="_new">prepaid U.S. Postal Service SmartLabel&trade;</a>.';
 									break;
 							}
 							break;
@@ -5831,7 +6032,7 @@ if( location.pathname == "/browse/product.do" ) {
 
 </script>
 
-<!-- END Content Item File: /content/0003/747/013/cn3747013.html -->
+<!-- END Content Item File: /content/0005/667/816/cn5667816.html -->
 
 
 
@@ -5881,27 +6082,6 @@ if( (location.pathname == '/browse/product.do') ) {
 
 
 <!-- container 15 -->
-<!-- BEGIN Content Item File: /content/0004/618/951/cn4618951.html -->
-
-<!-- BEGIN - 022112 patch to remove "1969 denim boutique" listing from product pages-->
-<script type="text/javascript">
-if (location.pathname == "/browse/product.do") {
-	//objO = {};  // removes sizing links
-	productPage.loadProduct = productPage.loadProduct.wrap(function(originalMethod){
-		originalMethod();
-		var myLI = $("tabWindow").select('li');
-		for (i=0; i<myLI.length; i++) {
-			if (myLI[i].innerHTML.include("1969 denim boutique") ){
-				myLI[i].hide();
-				
-			}
-		}    
-	});
-}
-</script>
-<!-- END - 022112 patch to remove "1969 denim boutique" listing from product pages-->
-
-<!-- END Content Item File: /content/0004/618/951/cn4618951.html -->
 
 
 
@@ -6164,122 +6344,18 @@ if (location.pathname == "/browse/product.do") {
 						
 						<!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.universalBar.10000522.region1") -->
 
-<!-- BEGIN Content Item File: /content/0004/932/998/cn4932998.html -->
-<div id="contentItemContainer10000425" class="4932998" >
+<!-- BEGIN Content Item File: /content/0005/667/313/cn5667313.html -->
+<div id="contentItemContainer10000425" class="5667313" >
 
-<!-- CIID:4932998 US -->
-<!-- iPad DIV - this is where iPad (non-flash) content goes -->
-    <div id="EDFSPostageContainer" style="position:absolute; top:0px; left:0px; z-index:200; width:450px; height:50px; display:none;">
-      <img src="http://www.gap.com/Asset_Archive/GPWeb/content/0004/932/998/assets/edfs_top_static.gif" alt="free ship" style="width:450px; height:50px;" />
-    </div>
-	<div id="cn4932998_flashcontent" style="width:450px;height:50px;display:none;" class="clearfix" title="Everyday Free Shipping">
-		<a id="edfsStatic" href="http://www.gap.com/browse/info.do?cid=47471" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'shippingOptions',width:460,height:310,style:{name:'universalPopup'}});">
-			<img id="eds_static" src="http://www.gap.com/Asset_Archive/GPWeb/content/0002/349/495/assets/edfs_top_static.gif" alt="Everyday Free Shipping" />
-		</a>
-	</div>
-<!--<div style="position:relative;margin-left:-90px;margin-top:-15px;z-index:98;overflow:hidden;max-width:650px;max-height:105px;" id="eds_div"><img id="eds_stamp" style="width:650px;height:158px;display:none;" src="/Asset_Archive/GPWeb/content/0002/349/495/assets/edfs_top.png"></div>-->
- <style type="text/css">
-#universalMarketingContainerTop{overflow:visible !important;*overflow:visible !important;_overflow:hidden !important;}
-</style>
-<script type="text/javascript">
-var EDFSiPadBannerPlacement = function() {
-	var targetOffsetArray = $("universalMarketingContainerTop").cumulativeOffset();
-	var targetOffsetLeft = targetOffsetArray[0];
-	var targetOffsetTop = targetOffsetArray[1];
-	//alert(targetOffsetLeft + ", " + targetOffsetTop);
-	
-	var bannerElement = $("EDFSPostageContainer");
-	$('universalBar').insert( { top: bannerElement } )
-	bannerElement.style.left = (targetOffsetLeft-2) + "px";
-	bannerElement.style.top = targetOffsetTop + "px";
-	bannerElement.style.display = "block";
-}
-
-var isThisAnIpadWeNeedToFixBanner = navigator.userAgent;
-if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
-	Event.observe(window,"load",EDFSiPadBannerPlacement);
-} else {
-	
-	
-	var sCampCookie = gidLib.getCookie("s_camp");
-	
-	if( sCampCookie  == "GOGONS1SD" || sCampCookie  == "GOYSNS1SD" || sCampCookie  == "GOMSNS1SD" || sCampCookie  == "GOASNS1SD" || sCampCookie  == "GOAONS1SD" ||
-	sCampCookie  == "ONGONS1SD" || sCampCookie  == "ONYSNS1SD" || sCampCookie  == "ONMSNS1SD" || sCampCookie  == "ONASNS1SD" || sCampCookie  == "ONAONS1SD" || sCampCookie  == "BRGONS1SD" ||
-	sCampCookie  == "BRYSNS1SD" || sCampCookie  == "BRMSNS1SD" || sCampCookie  == "BRASNS1SD" || sCampCookie  == "BRAONS1SD" || sCampCookie  == "PLGONS1SD" || sCampCookie  == "PLYSNS1SD" || sCampCookie  == "PLMSNS1SD" || 
-	sCampCookie  == "PLASNS1SD" || sCampCookie  == "PLAONS1SD" || sCampCookie  == "ATGONS1SD" || sCampCookie  == "ATYSNS1SD" || sCampCookie  == "ATMSNS1SD" || sCampCookie  == "ATASNS1SD" || sCampCookie  == "ATAONS1SD"){
-	
-	
-	flashEFS()
-	
-	}
-	
-	else{
-	
-	Event.observe(window,"load",function(){
-	
-		if(clientBrowser.isIE6){
-	   
-	
-			$("eds_div").style.display = "none";  
-	   
-			flashEFS();
-	   
-	   
-		}else{
-	
-		//	if (gidLib.getCookieVar("mktGlobalSession","disruptorCookie")== 0){
-		
-				//alert("have not seen disruptor : " + gidLib.getCookieVar("mktGlobalSession","disruptorCookie") );
-		//		new Effect.Grow('eds_stamp', {direction:'center'});
-		//		setTimeout(shrinkEFS,4500);
-		//		gidLib.setCookieVar("mktGlobalSession","disruptorCookie","1");
-		//	}
-	
-		//	else{
-	
-				flashEFS()
-	
-		//	}
-			
-		}
-	
-	
-	});
-	
-	//function shrinkEFS(){
-	//	new Effect.Shrink('eds_stamp', { direction: 'center' });
-	//	setTimeout(flashEFS,1000);
-	//}
-	
-	
-	
-	function flashEFS(){
-	   var so = new SWFObject("/Asset"+"_Archive/GPWeb/content/0002/349/495/assets/stamp.swf?assetPath=/Asset_Archive/GPWeb/content/0002/349/495/assets/&contentItemId=4932998", "mymovie2", "450", "50", "9", "#ffffff");
-	   so.addVariable("assetPath", "/Asset_Archive/GPWeb/content/0002/349/495/assets/");
-	   so.addParam("wmode", "transparent");
-	   so.write("cn4932998_flashcontent");
-	   $("cn4932998_flashcontent").show();
-	}
-	
-	
-	function flashLink(thisButton){
-	
-		if(thisButton == "details"){    
-	
-		gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'FSpopup',width:460,height:310,style:{name:'universalPopup'}});
-		
-		}     
-	
-	} 
-	
-	
-	}
-}
-</script>
+<div id="EDFS-container" style="width:450px;height:45px;margin-top:3px;">
+	<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
+		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/313/assets/10-25_EDFSFR_UnivHeader_animate.gif" alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." />
+	</a>
+</div>
 
 
 </div>
-<!-- END Content Item File: /content/0004/932/998/cn4932998.html -->
+<!-- END Content Item File: /content/0005/667/313/cn5667313.html -->
 
 
 
@@ -6785,13 +6861,209 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
-<div id="contentItemContainer10000395" class="4281898" >
+    	<!-- BEGIN Content Item File: /content/0005/651/334/cn5651334.html -->
+<div id="contentItemContainer10000395" class="5651334" >
 
+<style type="text/css">
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+}
+
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
+
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+.promoCode {
+	background-color: black;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerActivator {
+	margin-top: 6px;
+	display: inline-block;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+}
+</style>
+
+<div id="globalBanner">
+
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/651/334/assets/102312_30off_GB_US.png" alt="shoptoberfest 30% off your purchase! ends thursday, 10/25. Online only. Enter GAPFEST. Details" usemap="#gbMap" />
+		<map name="gbMap">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="288,15,437,60" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:300});">
+		</map>
+	</div><!-- /Global Banner Text -->
+
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;"> 
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/651/334/assets/102312_30off_DISR_US.gif" alt="shoptoberfest 30% off your purchase! ends thursday, 10/25. Online only. Enter GAPFEST. Details" usemap="#disruptorMap" />
+		<map name="disruptorMap">
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
+		</map>
+	</div><!-- /Global Banner Disruptor -->
+
+</div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('102312_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
+<!-- END Content Item File: /content/0005/651/334/cn5651334.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8813,21 +9085,27 @@ function validateFormGapFooter()
 
 		</div>	
 	<div id="brandftr3_10000513">
-		<!-- BEGIN Content Item File: /content/0002/486/833/cn2486833.html -->
-<div id="contentItemContainer10000513" class="2486833" >
+		<!-- BEGIN Content Item File: /content/0005/667/166/cn5667166.html -->
+<div id="contentItemContainer10000513" class="5667166" >
 
-<div style="width:988px;height:56px;"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0002/486/833/assets/010611_edfs_footer_US.gif"  alt="everyday free shipping. on any domestic order over $50. no code. no hassle. new! introducing international shipping to nearly 80 countries." style="width: 988px; height: 56px;" usemap="#uniFoot_map"/>
+<div style="width:988px;overflow:hidden;border-top:1px solid black;display:block;padding:0;margin-bottom:-2px;" class="clearfix">
+	<div style="float:left;width:50%;">
+		<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
+			<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/166/assets/10-25_EDFSFR_UnivFooter.jpg" alt="Free shipping on all orders over $50. No code. No hassle. Free returns on all orders. Details" />
+		</a>
+	</div>
+	<div style="float:left;width:50%;">
+		<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#internationalShipping" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
+			<p style="font-size:13px;text-align:center;padding-top:18px;">
+				Introducing <strong>INTERNATIONAL SHIPPING</strong> to over 80 countries <span style="display: inline-block; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 4px solid black;"></span>
+			</p>
+		</a>
+	</div>
 </div>
 
 
-<map name="uniFoot_map">
-<area coords="512,5,985,54" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#internationalShipping" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()" alt="intl shipping" />
-<area alt="everyday free shipping on any domestic order over $50. no code. no hassle." coords="3,4,505,53" href="http://www.gap.com/browse/info.do?cid=47471" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'shippingOptions',width:460,height:310,style:{name:'universalPopup'}});">
-</map>
-
-
 </div>
-<!-- END Content Item File: /content/0002/486/833/cn2486833.html -->
+<!-- END Content Item File: /content/0005/667/166/cn5667166.html -->
 
 	</div>
 </div>
@@ -9066,7 +9344,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "4932998,5095770,4281898,5691102,5106701,5451526,2486833,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5095770,5651334,5691102,5106701,5451526,5667166,5125295,5217025";
 	 </script>
 	
 	<noscript>
@@ -9228,16 +9506,30 @@ function validateFormGapFooter()
 
 
 <!-- container 16 -->
-<!-- BEGIN Content Item File: /content/0002/496/497/cn2496497.html -->
-<div id="contentItemContainer212633" class="2496497" >
+<!-- BEGIN Content Item File: /content/0004/618/951/cn4618951.html -->
+<div id="contentItemContainer212633" class="4618951" >
 
-<!--WCD BODY CONTAINER -->
-
-
+<!-- BEGIN - 022112 patch to remove "1969 denim boutique" listing from product pages-->
+<script type="text/javascript">
+if (location.pathname == "/browse/product.do") {
+	//objO = {};  // removes sizing links
+	productPage.loadProduct = productPage.loadProduct.wrap(function(originalMethod){
+		originalMethod();
+		var myLI = $("tabWindow").select('li');
+		for (i=0; i<myLI.length; i++) {
+			if (myLI[i].innerHTML.include("1969 denim boutique") ){
+				myLI[i].hide();
+				
+			}
+		}    
+	});
+}
+</script>
+<!-- END - 022112 patch to remove "1969 denim boutique" listing from product pages-->
 
 
 </div>
-<!-- END Content Item File: /content/0002/496/497/cn2496497.html -->
+<!-- END Content Item File: /content/0004/618/951/cn4618951.html -->
 
 
 <!-- container 17 -->

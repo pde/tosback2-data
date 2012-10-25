@@ -182,109 +182,6 @@ function validateEmailAdd(a){
 
 
 		
-<script type="text/javascript" language="javascript">
-
-function displayemailadd(){
-var emailID=document.emailInsider_form;
-document.write(emailID);
-}
-
-function setCookie(c_name,value,expiredays)
-{
-var exdate=new Date();
-exdate.setDate(exdate.getDate()+expiredays);
-document.cookie=c_name+ "=" +escape(value)+
-((expiredays==null) ? "" : ";expires="+exdate.toUTCString());
-}
-
-function lightbox(div,action){
-
-	if ((div=="ccExO_wrapper") && (action == "close")){
-	setCookie('visited','yes',30);	
-	document.getElementById('ccExO_wrapper').style.display='none';
-	document.getElementById('hom_24Ex_wrapper').style.display='none';
-
-	}
-
-	else if ((div=="ccExO_wrapper") && (action == "open"))  {
-	document.getElementById('ccExO_wrapper').style.display='block';
-	document.getElementById('hom_24Ex_wrapper').style.display='block';
-	}
-
-}
-
-function overlay_emailcheck(str) {
-		var emailID = document.emailInsider_form.email;
-		
-		var at="@"
-		var dot="."
-		var lat=str.indexOf(at)
-		var lstr=str.length
-		var ldot=str.indexOf(dot)
-		alertxr = "Sorry, please enter a valid e-mail address, for example, johnsmith@gmail.com"
-	
-		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-		    alert(alertxr);
-			//lightbox("open");
-			emailID.focus();
-		    return false
-		}
-
-		 if (str.indexOf(at,(lat+1))!=-1){
-		    alert(alertxr);
-			//lightbox("open");
-			emailID.focus();
-		    return false
-		 }
-
-		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-		    alert(alertxr);
-			//lightbox("open");
-			emailID.focus();
-		    return false
-		 }
-
-		 if (str.indexOf(dot,(lat+2))==-1){
-		    alert(alertxr);
-			//lightbox("open");
-			emailID.focus();
-		    return false
-		 }
-		
-		 if (str.indexOf(" ")!=-1){
-		    alert(alertxr);
-			//lightbox("open");
-			emailID.focus();
-		    return false
-		 }
-		 lightbox('ccExO_wrapper','close');
- 		 return true					
-		 
-	}
-function overlay_ValidateForm(){
-	
-	var emailID = document.emailInsider_form.email;
-    var CaptchaStrID = document.emailInsider_form.CaptchaStr;
-
-	if ((emailID.value==null)||(emailID.value=="")){
-		//lightbox("open");
-		alert("Please Enter your Email Address");
-		emailID.focus();
-		return false;
-	}
-    
-	if (overlay_emailcheck(emailID.value)==false){
-		//lightbox("open");
-		emailID.focus();
-		return false;
-	}
-
-	return true
-	
- }
-</script>
-
-
 
 <style>
 /*temp style*/
@@ -370,7 +267,7 @@ function overlay_ValidateForm(){
                                 <a href="http://www.tigerdirect.com/applications/Category/guidedSearch.asp?CatId=6&amp;cm_sp=Masthead-_-Computers-_-Spot%2006" title="Desktops">Desktops</a>
 								<a href="http://www.tigerdirect.com/applications/category/category_tlc.asp?CatId=114&amp;cm_sp=Masthead-_-Computers-_-Spot%207" title="Gaming PCs">Gaming PCs</a>
                         
-                                <a href="http://www.tigerdirect.com/applications/Category/guidedSearch.asp?CatId=6&amp;sel=Detail;163_1173_12557_12557&amp;cm_sp=Masthead-_-Computers-_-Spot%2008" title="All-in-One Computers">All-in-One Computers</a>
+                                <a href="http://www.tigerdirect.com/applications/category/category_tlc.asp?CatId=3840&amp;name=All-in-On-Desktop-PC&amp;cm_sp=Masthead-_-Computers-_-Spot%2008" title="All-in-One Computers">All-in-One Computers</a>
 								<a href="http://www.tigerdirect.com/applications/category/guidedSearch.asp?CatId=6838&amp;cm_sp=Masthead-_-Computers-_-Spot%2009" title="Tablets / E-readers">Tablets / E-readers</a>
                                 <a href="http://www.tigerdirect.com/applications/Category/guidedSearch.asp?CatId=30&amp;cm_sp=Masthead-_-Computers-_-Spot%2010" title="Servers">Servers</a>
                                 <a href="http://www.tigerdirect.com/applications/Category/guidedSearch.asp?CatId=12&amp;name=Monitor-LCDs&amp;cm_sp=Masthead-_-Computers-_-Spot%2011" title="Monitors">Monitors</a>
@@ -882,65 +779,10 @@ function overlay_ValidateForm(){
 </div>
 
 
-
-<div id="hom_24Ex_wrapper">
-        &nbsp;
-    </div>
-<div id="ccExO_wrapper">
-	<a id="ccExo_wrapbtn" href="privacy.asp.html#" onClick="lightbox('ccExO_wrapper','close')" title="Close">
-    	<img src="../../../images.highspeedbackbone.net/overlay/close.png" alt="close" />
-    </a>
-<div id="emailSite_overlay">
-	<div id="overlay_innerWrap">
-    	<span><img src="../../../images.highspeedbackbone.net/overlay/title.gif" /></span><br />
-        <span>
-        	<img src="../../../images.highspeedbackbone.net/overlay/message.gif" />
-        </span>
-        <div id="email_formWrap">
-
-            <form id="emailInsider_form" name="emailInsider_form" method="post" action="http://www.tigerdirect.com/email/genericLyrisSignup.asp" target="_blank" onsubmit="return overlay_ValidateForm()">
-                <ul>
-                    <li id="email_lcol">
-                        <input type="text" name="email" id="inside_email" onfocus="if(this.value=='enter email address')this.value='';" onblur="if(this.value=='')this.value='enter email address';" value="enter email address" />
-                    </li>
-                    <li id="email_rcol">
-                        <input type="image" src="../../../images.highspeedbackbone.net/overlay/signMeUp.gif" />
-                        <input type="hidden" name="ListCode" value="OL">
-                        <input type="hidden" name="list" value="preferred">
-                        <input type="hidden" name="Additional_" value="overlay" />
-                        <input type="hidden" name="div" value="03">
-                        <input type="hidden" name="confirm" value="one">
-                        <input type="hidden" name="showconfirm" value="F">
-                        <input type="hidden" name="SrcCode" value="WEB1210" size=10 maxlength=100>
-                        <input type="hidden" name="url" value="/applications/email/thankyouMH.asp">
-                    </li>
-                </ul>
-            </form>
-        </div>
-        <span class="clearfloats emailText">We respect your privacy and take it very seriously. <a href="privacy.asp.html">View our privacy policy</a></span>
-        <p>
-        	<a href="http://www.tigerdirect.com/email/latest_emailDeal.asp" title="See Sample Email" target="_blank"><img src="../../../images.highspeedbackbone.net/overlay/sample.jpg" alt="Sample Emails" border="0"/></a><br />
-        	<a href="http://www.tigerdirect.com/email/latest_emailDeal.asp" title="See Sample Email" target="_blank">View a sample email</a>
-        </p>
-    </div>
-</div>
-
-</div>
-
-
-	
-    <script language="javascript" type="text/javascript">
-		$("#hom_24Ex_wrapper").click(function () { 
-			 lightbox('ccExO_wrapper','close');
-		});
-	</script>
-
-	
-	
-    <script language="JavaScript" type="text/JavaScript">
-		setTimeout("lightbox('ccExO_wrapper','open')",7000);   
-    </script>
-	<div class="mastHeadBanner">
+<div class="mastHeadBanner">
+<style type="text/css">
+#win8countdown{position:relative;}
+</style>
 	<div class="hdrPromo1">
     
         <!-- begin ad tag -->
@@ -958,11 +800,10 @@ function overlay_ValidateForm(){
         <!-- end ad tag -->
       
     </div>
-      
-    <div class="hdrPromo2">
-       	<a href="http://www.tigerdirect.com/sectors/campaigns/customerAppreciation/prelaunch/index.asp" title="Customer Appreciation Week: You Choose the Deal. Ends October 20th"><img src="../../../images.highspeedbackbone.net/sitebanners/TD_CAW_Bnr_475x35.jpg" border="0" alt="Customer Appreciation Week: You Choose the Deal. Ends October 20th"/></a>
-   
- 
+    <div class="hdrPromo2" id="win8countdown">
+
+       	<a href="http://www.tigerdirect.com/sectors/campaigns/windows8/upgrade.asp" title="Order Windows 8 Software today!"><img src="../../../images.highspeedbackbone.net/sitebanners/internal_sw_order475x35.jpg" border="0" alt="Order Windows 8 Software today!"/></a>   
+        
 
     </div>
 
@@ -1763,15 +1604,15 @@ a.fv:hover #fv_img {display:block;}
         <!-- begin ad tag-->
         <img src="../../../images.highspeedbackbone.net/rightnav/h_advert.gif" width="70" height="5" style="margin-bottom: 1px;
             margin-top: 20px;" /><br />
-        <iframe src="../../../ad.doubleclick.net/adi/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Bord=6615432500839.html"
+        <iframe src="../../../ad.doubleclick.net/adi/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Bord=4555190801620.html"
             width="160" height="600" marginwidth="0" marginheight="0" frameborder="0" scrolling="no">
-            <script language="JavaScript" src="../../../ad.doubleclick.net/adj/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie%3Bord=6615432500839"
+            <script language="JavaScript" src="../../../ad.doubleclick.net/adj/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie%3Bord=4555190801620"
                 type="text/javascript"></script>
         </iframe>
         <noscript>
-            <a href="http://ad.doubleclick.net/jump/tigerdirect.com/ROS_160x600;sz=160x600;abr=!ie4;abr=!ie5;abr=!ie6;ord=6615432500839?"
+            <a href="http://ad.doubleclick.net/jump/tigerdirect.com/ROS_160x600;sz=160x600;abr=!ie4;abr=!ie5;abr=!ie6;ord=4555190801620?"
                 target="_blank">
-                <img src="../../../ad.doubleclick.net/ad/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie4%3Babr=!ie5%3Babr=!ie6%3Bord=6615432500839"
+                <img src="../../../ad.doubleclick.net/ad/tigerdirect.com/ROS_160x600%3Bsz=160x600%3Babr=!ie4%3Babr=!ie5%3Babr=!ie6%3Bord=4555190801620"
                     width="160" height="600" border="0" alt=""></a></noscript>
         <!-- End ad tag -->
 
@@ -2050,19 +1891,19 @@ try {
 </script>
 
 <!--SRCCODE             :WEB1210-->
-<!--SessionId           :1497443920121022081046641471888-->
+<!--SessionId           :1787053020121025080959641471888-->
 <!--Cart(rNavSearch)    :^D>>Top Product: >>^D>>Top Product: >>^D>>Top Product: >>-->
-<!--Cart(rNavEdpDesc)   :^D>>Ultra ULT31803 All-in-One Flash Reader>>EdpNo=1187796^D>>Microsoft Windows 7 Professional 64bit OSS>>EdpNo=5213934^D>>WD Elements SE Portable 750GB HDD>>EdpNo=6076823-->
+<!--Cart(rNavEdpDesc)   :^D>>Ultra ULT31803 All-in-One Flash Reader>>EdpNo=1187796^D>>Microsoft Windows 7 Professional 64bit OSS>>EdpNo=5213934^D>>Cables To Go 14-Foot Cat5e Cable, Green>>EdpNo=325377-->
 <!--Cart(Landing)       :http://www.tigerdirect.com/sectors/aboutus/privacy.asp-->
 <!--Cart(rNavLastVisit) :-->
 <!--Cart(rNavCatId)     :^D>>Desktop Computers>>category_tlc.asp?CatId=6^D>>Monitors>>category_tlc.asp?CatId=12^D>>Laptops &amp; Notebooks>>category_tlc.asp?CatId=17-->
 <!--Cart(Referer)       :-->
-<!--SRVR                :WEBX10-07B-->
+<!--SRVR                :WEBX11-03B-->
 <!--DB(msImageSC)       :/microsoft/MSelasticity-bnr_620x150C.jpg-->
 <!--DB(Surveyflag)      :1-->
 <!--DB(msImageID)       :/microsoft/MSelasticity-bnr_430x150C.jpg-->
 <!--DB(msProduct)       :1782427-->
-<!--DB(msRandX)         :77-->
+<!--DB(msRandX)         :83-->
 
 </body>
 </html>

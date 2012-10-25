@@ -2,7 +2,7 @@ var bOldBrowser=false;
 var strAdditionalMessage="";
 var firstNameWhitelist = " '";
 var lastNameWhitelist = " '";
-var addressWhitelist = "#.,' ";
+var addressWhitelist = "#.,'-/ ";
 var cityWhitelist = " '";
 
 var sb;

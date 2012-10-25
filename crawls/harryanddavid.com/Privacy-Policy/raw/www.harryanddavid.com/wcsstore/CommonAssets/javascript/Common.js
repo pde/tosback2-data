@@ -7,6 +7,7 @@ dojo.config.dojoBlankHtmlUrl="/gifts/blank.html";
 
 dojo.require("dijit.layout.ContentPane");
 dojo.require("dijit.Tooltip");
+dojo.require("dijit.form.Form");
 dojo.require("wc.service.common");
 dojo.require("wc.widget.RefreshArea");
 dojo.require("bec.util.lang");
@@ -14,6 +15,7 @@ dojo.require("bec.util.browser");
 dojo.require("bec.util.search");
 dojo.require("bec.analytics.Coremetrics");	
 dojo.require("bec.widget.Button");
+dojo.require("bec.widget.EasyButton");
 dojo.require("bec.widget.PopupDialog");
 dojo.require("bec.product.AddToCart");
 dojo.require("bec.product.AddToCartButton");
@@ -29,6 +31,7 @@ dojo.require("bec.widget.PopupPanelContainer");
 dojo.require("bec.widget.PopupPanel");
 dojo.require("bec.espot.ClickInfo");
 dojo.require("bec.widget.iScroller");
+dojo.require("dojox.fx.scroll");
 
 dojo.require("bec.widget.form.SelectDropDown"); //for overriding filtering select for tablets
 
@@ -68,7 +71,7 @@ dojo.addOnLoad(function()
 function dojoParseButtons()
 {
 	// Nodelist of parseable buttons within the BODY element.
-	var parseableButtons = dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton']", dojo.query("body")[0]);
+	var parseableButtons = dojo.query("[dojoType='bec.widget.Button'],[dojoType='bec.product.AddToCartButton'],[dojoType='bec.widget.EasyButton']", dojo.query("body")[0]);
 	
 	parseableButtons.forEach(function(button,idx,buttons)
 	{
@@ -211,6 +214,33 @@ function processTabletOverrides()
             dijit.form.FilteringSelect.prototype = bec.widget.form.SelectDropDown.prototype;    
         }
     }
+}
+
+function scrollIntoView(id, smooth)
+{
+	var node = dojo.byId(id);
+	if (node)
+	{
+		if (smooth)
+		{
+			var scroll = new dojox.fx.smoothScroll({
+			      node: node,
+			      win: window,
+			      duration: 500
+			   });
+			scroll.play();
+			return scroll;
+		}
+		else
+		{
+			node.scrollIntoView(true);
+		}
+	}
+	else
+	{
+		// scroll to top if node not found
+		window.scrollTo(0,0);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

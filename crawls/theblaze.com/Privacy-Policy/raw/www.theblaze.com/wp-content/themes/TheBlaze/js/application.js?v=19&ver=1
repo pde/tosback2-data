@@ -161,7 +161,6 @@ jQuery(document).ready(function($) {
 	}
 
 	function loadCaptchaLibrary() {
-		console.log('Loading Library');
 		var solveLib = document.createElement('script'); solveLib.type = 'text/javascript';
 		solveLib.src = 'http://api.solvemedia.com/papi/challenge.ajax';
 		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(solveLib, s);
@@ -171,10 +170,8 @@ jQuery(document).ready(function($) {
 		if(typeof(ACPuzzle) === 'undefined') {
 			if(num == 0) loadCaptchaLibrary();
 			setTimeout((function(){loadCaptcha(num+1,id)}), 500);
-			console.log('waiting');
 		} else {
 			loadCaptchaText(id);
-			console.log('Library is good!');
 		}
 	}
 

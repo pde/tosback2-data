@@ -13,59 +13,11 @@ function isKioskMode(){
 }
 
 function createDTMAbandonPageTag(promoId, userId, categoryId, imgURL, prodId)  {
-    if('true'){
-        dtmSrc = window.location.protocol + "//login.dotomi.com/ucm/UCMController?dtm_com=28&dtm_fid=101&dtm_cid=2418&dtm_cmagic=db60b9&dtm_format=5";
-        var dtmTag = new Array();
-
-        dtmTag.cli_promo_id = promoId;
-
-        if(userId != ''){
-            dtmTag.dtm_user_id = userId  ;
-        }
-
-        dtmTag.dtmc_category_id = categoryId;
-
-        if(imgURL!= ''){
-            dtmTag.dtmc_prod_img = imgURL;
-        }
-
-        if(prodId!= ''){
-            dtmTag.dtmc_prod_id =  prodId;
-        }
-
-        dtmTag.dtmc_ref = document.referrer;
-        dtmTag.dtmc_loc = document.location.href;
-        for (var item in dtmTag){
-            if(typeof dtmTag[item] != "function" && typeof dtmTag[item] != "object")
-                dtmSrc += "&" + item + "=" + escape(dtmTag[item]);
-        }
-        setTimeout('timeOutDotomi()',2000);
-    }
+  
 }
 
 function createDTMTransactionPageTag(transId, userId, convValue, dtmitems)  {
-    if('true'){
-        dtmSrc = window.location.protocol + "//login.dotomi.com/ucm/UCMController?dtm_com=29&dtm_fid=102&dtm_cid=2418&dtm_cmagic=db60b9&dtm_format=5";
-        var dtmTag = new Array();
-
-        dtmTag.cli_promo_id = "100";
-
-        dtmTag.dtmc_transaction_id = transId;
-
-        if(userId != ''){
-            dtmTag.dtm_user_id = userId;
-        }
-
-        dtmTag.dtm_conv_val = convValue;
-
-        dtmTag.dtm_items = dtmitems;
-
-        for (var item in dtmTag){
-            if(typeof dtmTag[item] != "function" && typeof dtmTag[item] != "object")
-                dtmSrc += "&" + item + "=" + escape(dtmTag[item]);
-        }
-        setTimeout('timeOutDotomi()',5000);
-    }
+  
 }
 
 function timeOutDotomi() { document.getElementById("dtmdiv").innerHTML = "";}
@@ -836,15 +788,6 @@ function setFormActions(form, formURI)
 }
 
 function createCMPageTag(pageName, refUrl) {
-	
-	   //Changes for BUG 1039
-	   if(refUrl) {
-	      cmCreatePageviewTag(pageName, '', '1', 'www.eddiebauer.com', pageName, '','', refUrl);
-	   }
-	   else {
-         cmCreatePageviewTag(pageName, '', '1', 'www.eddiebauer.com', pageName, '','', '');
-      }
-	
 }
 
 function openWindow(address, width, height,features)
@@ -1166,7 +1109,7 @@ function takeAction(actionType, soaCookieString){
 		if(soaCookieString.indexOf('cartempty=false') == -1) {
 			if(soaCookieString.indexOf('firstorderofsession=true') > -1){
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoanow', 'oessoacart=' );
-				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '10/22/2012 05:10:01 EST');
+				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '10/25/2012 05:10:02 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmcnow', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvennow', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatnow', 'cmcatcart=');
@@ -1175,7 +1118,7 @@ function takeAction(actionType, soaCookieString){
 				soaCookieString = changeSEOString(soaCookieString, 'cartempty', 'false');
 			}else {
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoacartbak', 'oessoacart=');
-			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '10/22/2012 05:10:01 EST');
+			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '10/25/2012 05:10:02 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmccartbak', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvencartbak', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatcartbak', 'cmcatcart=');
@@ -1292,15 +1235,6 @@ function selectSub() {
 }
 
 function createPageViewTagForLayer(pageName, refUrl) {
-	
-	   //Changes for BUG 1039
-	   if(refUrl) {
-	      cmCreatePageviewTag(pageName, '', '1', 'www.eddiebauer.com', pageName, '','', refUrl);
-	   }
-	   else {
-         cmCreatePageviewTag(pageName, '', '1', 'www.eddiebauer.com', pageName, '','', '');
-      }
-	
 }
 
 function CMPopupTracking(hrefUrl) {

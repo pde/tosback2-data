@@ -1,0 +1,15 @@
+var currentCdn = 0;
+var imageLoader = function($rel_url) {
+	var cdn = currentCdn % 5 + 1;
+    var url_prefix = 'http://';
+
+    if (window.location.href.search('www.hautelook.com') != -1) {
+    	if (window.location.href.indexOf('https://') != -1) {
+    		url_prefix = 'https://';
+        }
+    	currentCdn++;
+    	return url_prefix + "www" + cdn + ".hautelookcdn.com" + $rel_url; 
+    } else {
+    	return $rel_url;
+    }
+};    

@@ -14,25 +14,26 @@
 /*********************************************************************************************************************/
 
 
-.dijitInputField                   { padding: 2px 3px; }
-.dijitInputField .dijitInputField  { padding: 0; }
-.dijitInputField .dijitPlaceHolder { left: 3px; top: 2px; }
+.dijitInputField                         { padding: 2px 3px; }
+.dijitInputField .dijitInputField        { padding: 0; }
+.dijitInputField .dijitPlaceHolder       { left: 3px; top: 2px; }
+.ie_7 .dijitInputField .dijitPlaceHolder { left: 3px; top: 3px; }
 
-.dijitValidationIcon { width: 2px; height: 16px; background-color: #d46363; background-image: url(http://www.harryanddavid.com/content/common/images/dijit/form/error.png); background-position: top center; border: solid #d46464 0; border-left-width: 1px; }
+.dijitValidationIcon { padding: 2px 0; width: 2px; height: 16px;
+                       border: solid #d46464 0; border-left-width: 1px;
+                       background-color: #d46363; background-image: url(http://www.harryanddavid.com/content/common/images/dijit/form/error.png); background-position: top center; }
+.ie_7 .dijitValidationIcon { padding: 3px 0 }
+
 
 /* dijit TextBox *****************************************************************************************************/
-
-.dijitTextBoxError,
-.dijitTextBoxError .dijitButtonNode,
-.dijitCheckBoxError                  { border-color: #d46464; }
-.dijitTextBoxError,
-.dijitTextBoxError .dijitInputContainer,
-.dijitCheckBoxError                      { background-color: #fdf7f7; }
 
 .dijitTextBox,
 .dijitTextBox .dijitButtonNode { border-color: #3c3c3c; }
 .dijitTextBox                  { background-color: #fff; }
 .dijitTextBox .dijitInputInner { padding: 1px 2px 1px 0; }
+
+.dijitTextBoxError                      { border-color: #FFF7D7; }
+.dijitTextBoxError .dijitValidationIcon { display: none; }
 
 .dijitTextBoxDisabled,
 .dijitTextBoxDisabled .dijitButtonNode { border-color: #d3d3d3; }
@@ -44,19 +45,30 @@
 .dijitTextArea          { border: 1px solid #3c3c3c; }
 .dijitTextAreaDisabled  { background-color: #efefef; cursor: not-allowed !important; }
 
+
 /* dijit Combo Box ***************************************************************************************************/
 
 .dijitComboBox .dijitButtonNode       { padding: 2px 1px; border-top: none; border-right: none; border-bottom: none;
                                         background-color: #eee; background-image: url(http://www.harryanddavid.com/content/common/images/dijit/form/formHighlight.png); background-repeat: repeat-x; }
-.dijitComboBox .dijitArrowButtonInner { margin: 0; width: 16px; height: 14px; background-image: url(http://www.harryanddavid.com/content/common/images/dijit/form/commonFormArrows.png); background-position:-36px 53%; background-repeat: no-repeat; }
+.dijitComboBox .dijitArrowButtonInner { margin: 0; width: 16px; height: 16px; background-image: url(http://www.harryanddavid.com/content/common/images/dijit/form/commonFormArrows.png); background-position:-36px 53%; background-repeat: no-repeat; }
+.ie_7 .dijitComboBox .dijitButtonNode { padding: 3px 1px; }
 
-.dijitComboBoxHover .dijitButtonNode { background-color:#ddd; }
+.dijitComboBoxHover .dijitButtonNode       { background-color:#ddd; }
 .dijitComboBoxHover .dijitArrowButtonInner { background-position:-70px 53%; }
 
-.dijitComboBoxFocused .dijitButtonNode { padding: 2px 1px; background-color:#ccc; background-position:0px -177px; }
-.dijitComboBoxFocused  .dijitArrowButtonInner { background-position:-70px 53%; border: 0 none; }
+      .dijitComboBoxFocused .dijitButtonNode       { padding: 2px 1px; background-color:#ccc; background-position:0px -177px; }
+      .dijitComboBoxFocused .dijitArrowButtonInner { background-position:-70px 53%; border: 0 none; }
+.ie_7 .dijitComboBoxFocused .dijitButtonNode       { padding: 3px 1px; }
+
+.dijitComboBoxError                      { border-color: #FFF7D7; }
+.dijitComboBoxError .dijitValidationIcon { display: none; }
 
 div.dijitComboBoxDisabled .dijitArrowButtonInner { background-position:0px 50%; background-color:#f1f1f1; }
+
+
+/* dijit CheckBox ****************************************************************************************************/
+
+.dijitCheckBoxError { border-color: #FFF7D7; }
 
 
 /* Buttons ***********************************************************************************************************/
@@ -506,10 +518,15 @@ table.dijitComboButton {
 
 
 /* Dijit Tab *********************************************************************************************************/
-
 .dijitTab                { cursor: default; }
 .dijitTab .tabOpenAction { cursor: pointer; }
 
+/* Dijit Text Box */
+      .dijitInputContainer { float: none !important; position: relative; vertical-align: middle; overflow: hidden; }
+.ie_6 .dijitInputContainer { display: inline; zoom: 1; }
+      .dijitPlaceHolder    { position: absolute; top: 0; left: 0; font-style: italic; color: #AAAAAA; }
+.ie_6 .dijitPlaceHolder    { filter: ""; }
+      .dijitTextAreaError  { border-color: #D46464; }
 
 /*********************************************************************************************************************/
 /*  End : bec-dijit-part.css                                                                                         */
@@ -937,17 +954,17 @@ span.sprite-verisign-normal            { display: inline-block; }
 /*********************************************************************************************************************/
 
 
-#breadcrumb             { padding: 0 0 10px; }
-#breadcrumb .start      { float: left; width: 90px; font-weight: bold; }
-#breadcrumb .trail      { float: right; width: 820px; }
+#breadcrumb              { padding: 0 0 10px; }
+#breadcrumb .start       { display: none; }
+#breadcrumb .trail       { line-height: 22px; }
 #breadcrumb .crumb,
-#breadcrumb .separator  { float: left; }
+#breadcrumb .separator   { float: left; }
 #breadcrumb .crumb,
-#breadcrumb .crumb a    { color: #777; }
-#breadcrumb .separator  { margin: 0 10px; }
-#breadcrumb .crumb.last { font-weight: bold; color: #3c3c3c; }
-#breadcrumb .trail h1   { font-size: 11px; margin: 0;}
-
+#breadcrumb .crumb a     { color: #777; }
+#breadcrumb .separator   { margin: 0 10px; }
+#breadcrumb .crumb.first { display: none; }
+#breadcrumb .crumb.last  { font-size: 18px; font-weight: bold; color: #3c3c3c; }
+#breadcrumb .trail h1    { font-size: 18px; margin: 0;}
 
 
 /*********************************************************************************************************************/
@@ -1030,7 +1047,7 @@ span.sprite-verisign-normal            { display: inline-block; }
 
 .dialog h1,
 .dialog p {
- margin-left: 0; /* margins will blow out backgrounds, leaving whitespace. */
+ margin: 0; /* margins will blow out backgrounds, leaving whitespace. */
  padding-top: 6px;
  padding-bottom: 6px;
 }
@@ -1074,6 +1091,8 @@ span.sprite-verisign-normal            { display: inline-block; }
 .dijitDialogTitleBar .dijitDialogTitle     { float: left; color: #758b0f; font-size: 18px; font-weight: bold; }
 .dijitDialogTitleBar .dijitDialogCloseIcon { float: right; margin: 3px 3px 0 0; width: 13px; height: 13px; font-size: 0; cursor: pointer; }
 
+.errorDialog .dijitDialogTitle { color: #c00; }
+
 .dijitDialogTitleBar .closeText       { display: block; font-size: 0;
                                         background-image: url("http://www.harryanddavid.com/content/common/images/sprites/global.png");
                                         background-position: -119px -111px; width:  9px; height:  9px; } /* sprite */
@@ -1094,6 +1113,10 @@ span.sprite-verisign-normal            { display: inline-block; }
 
 .functionalDialog p,
 .functionalDialog h1 { padding: 0; margin: 0; }
+
+
+/* Popups */
+.dijitPopup { z-index: 1536 !important; }
 
 
 /* Coupons */
@@ -1201,11 +1224,16 @@ span.sprite-verisign-normal            { display: inline-block; }
 
 /* Gift Card Balance *************************************************************************************************/
 
-#GiftCardBlanace.dijitDialog              { width: 420px; }
-#GiftCardBlanace.dijitDialog .error       { margin: 0 0 10px 0; }
-#GiftCardBlanace.dijitDialog .description { display: none; margin: 0 0 10px 0; }
-#GiftCardBlanace.dijitDialog .label       { margin: 0 0 5px 0; }
-#GiftCardBlanace.dijitDialog .scratch_off { margin: 5px 0 0 0; }
+#GiftCardBlanace.dijitDialog                      { width: 420px; }
+#GiftCardBlanace.dijitDialog .description         { display: none; margin: 0 0 10px 0; }
+#GiftCardBlanace.dijitDialog .label               { margin: 0 0 5px 0; }
+#GiftCardBlanace.dijitDialog .scratch_off         { margin: 5px 0 0 0; }
+#GiftCardBlanace.dijitDialog .right               { width: 150px; margin-right: 10px; }
+#GiftCardBlanace.dijitDialog .right .dijitTextBox { width: 150px; }
+#GiftCardBlanace.dijitDialog .buttons             { margin: 6px 0 0 0; }
+#GiftCardBlanace.dijitDialog .submit              { float: left; }
+#GiftCardBlanace.dijitDialog .message             { float: right; margin-right: 10px; padding: 2px 4px; line-height: 20px; background: #fff7d7; }
+#GiftCardBlanace.dijitDialog .error               { color: #c00; }
 
 /* Favorites List ****************************************************************************************************/
 
@@ -1287,6 +1315,9 @@ span.sprite-verisign-normal            { display: inline-block; }
 /* Greeting Cards */
 #greetingCardPopup.dijitDialog                         { width: 750px; }
 #greetingCardPopup.dijitDialog .dijitDialogPaneContent { position: relative; height: 435px !important; overflow: hidden; }
+
+/* Package Label */
+#shippingLabelPopup.dijitDialog { width: 518px; }
 
 /* Package Label */
 #packageLabelSample .sample { display: block; margin: 0 auto; }
@@ -1611,7 +1642,7 @@ a:hover { text-decoration: none; cursor: pointer;  }
 
 
 .error,
-.success,             
+.success,
 .important           { font-weight: bold; }
 .error,
 .success,
@@ -1627,9 +1658,7 @@ a:hover { text-decoration: none; cursor: pointer;  }
 .clear               { clear: both; }
 .product-unavailable { margin-top: 20px; font-size: 16px; }
 .separate            { margin-top: 1em; }
-.tooltip             { display: none; background: transparent url(http://www.harryanddavid.com/content/common/images/tooltip/black_arrow.png); font-size: 12px; height: 80px; width: 180px; padding: 15px 15px 25px 15px; color: #fff; }
-
-.webding { font-family: webdings; }
+.webding             { font-family: webdings; }
 
 
 /* slightly enhanced, universal clearfix hack */
@@ -1641,69 +1670,34 @@ a:hover { text-decoration: none; cursor: pointer;  }
 .clearfix        { display: block; }
 /* close commented backslash hack */
 
-
+/* Kill the number fields spinner controls */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0;
+  /* display: none; <- Crashes Chrome on hover */
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-
-
-#container { margin: 0 auto; width: 960px; text-align: left; }
-
+/* Containers */
+#container         { margin: 0 auto; width: 960px; text-align: left; }
 #page .strip-left,
 #page .strip-right { display: none; }
-
 #company,
-#banner   { display: block; margin: 0 0 5px 0; }
-
+#banner            { display: block; margin: 0 0 5px 0; }
 #content .ticketed { padding: 0 18px; width: 884px; }
 
-
-/* Dijit Text Box */
-
-.dijitInputContainer {
-  overflow: hidden;
-  float: none !important; /* needed by FF to squeeze the INPUT in */
-  position: relative;
-  vertical-align: middle;
-}
-.ie_6 .dijitInputContainer {
-  display: inline;
-  zoom: 1;
-}
-
-.dijitPlaceHolder {
-  color: #AAAAAA;
-  font-style: italic;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-.ie_6 .dijitPlaceHolder {
-  filter: "";
-}
-
-.dijitTextAreaError { border-color: #D46464; }
-
-
 /* Video Player */
-
 #player-overlay           { display: none; }
 #player-overlay .titlebar { padding: 3px; height: 9px; background-color: #fff; text-align: right; }
 
-
+/* Half and Half */
 #content                     { margin-bottom: 10px; }
 #content .half-n-half .left,
 #content .half-n-half .right { width: 475px; }
 
-
 /*********************************************************************************************************************/
 /*  End : global-part.css                                                                                            */
 /*********************************************************************************************************************/
-
 /***************************************/
 /* Global Style Sheet for Static Pages */
 /***************************************/
@@ -1713,17 +1707,12 @@ input::-webkit-inner-spin-button {
 /* Start: header-part.css                                                                                            */
 /*********************************************************************************************************************/
 
-
-#header { position: relative; margin: 0 0 5px 0; height: 100px; overflow: visible; }
-
+#header           { position: relative; margin: 0 0 5px 0; height: 100px; overflow: visible; }
 #header a         { text-decoration: none; color: #658528; }
 #header a:hover   { text-decoration: underline; }
 
-
-/* Left Side */
-
-#header .utility-left    { float: left; padding: 20px 20px 10px 20px; width: 220px; height: 70px; }
-
+/* Left */
+#header .utility-left              { float: left; padding: 20px 20px 10px 20px; width: 220px; height: 70px; }
 #header .search .label             { margin: 0 0 4px 0; font-weight: bold; }
 #header .search .search-input      { margin-top: 2px; width: 160px; height: 16px; vertical-align: top; border: 1px solid #ccc; }
 #header .search .btn-label span    { display: inline-block; width: 13px; height: 12px;
@@ -1738,38 +1727,27 @@ input::-webkit-inner-spin-button {
 #header .links .giftlist-link      { margin-right: 5px; }
 #header .links .favoriteslist-link { margin-left:  5px; }
 
-
 /* Right */
-
-      #header .utility-right  { float: right; padding: 10px 20px 10px 20px; width: 220px; height: 80px; }
-      #header .cart a         { display: inline-block; margin: 0 0 10px 0; padding: 3px 10px; border-radius: 3px; }
-.ie_7 #header .cart a         { display: inline; }
-      #header .cart .sprite   { float: left; margin: 2px 10px 0 0; }
-      #header .cart .text     { float: left; }
-      #header .cart .head     { font-weight: bold; }
-      #header .logonIncorrect { font-size: 9px; font-weight: normal; font-style: italic; color: #999; }
-      #header .cart .count,
-      #header .sign-in,
-      #header .greeting,
-      #header .name,
-      #header .phone          { font-weight: bold; }
-
+#header .utility-right          { float: right; padding: 10px 20px 10px 20px; width: 220px; height: 80px; }
+#header .cart a                 { display: inline-block; margin: 0 0 10px 0; padding: 3px 10px; border-radius: 3px; }
+#header .cart .inner            { padding: 0 0 0 24px; }
 #header .cart .dijitContentPane { display: inline; }
-
+#header .logonIncorrect         { font-size: 9px; font-weight: normal; font-style: italic; color: #999; }
+#header .cart .head,
+#header .cart .count,
+#header .sign-in,
+#header .greeting,
+#header .name,
+#header .phone                  { font-weight: bold; }
 
 /* Logo */
-
 #header .logo   { float: left; width: 412px;}
 #header .logo a { display: block; width: 412px; height: 100px; }
 
-
 /* Tooltips */
-
 #tooltip-header-giftlist { width: 300px; }
 
-
 /* Panels */
-
 .panel                { background-color: #fff; border: 1px solid #808080; }
 .panel .colored       { color: #80923f; }
 .panel .close         { float: right; }
@@ -1780,7 +1758,7 @@ input::-webkit-inner-spin-button {
 .ipad .panel .close a { background-position: -139px -109px; width: 13px; height: 13px; }
 .panel .content       { position: relative; padding: 10px; overflow: hidden; }
 .panel .titlebar      { padding: 5px; background-color: #88a548; }
-.panel .titleText     { float: left; color: #fff; font-weight: bold;}
+.panel .titleText     { float: left; color: #fff; font-weight: bold; }
 
 #emailDropDown  { position: absolute; top: 0; right: 0; width: 270px; text-align: left;  z-index:1000; }
 #signInDropDown { position: absolute; top: 0; right: 0; width: 270px; text-align: right; z-index:1000; }
@@ -1789,25 +1767,20 @@ input::-webkit-inner-spin-button {
 
 #emailDropDown .email .label { margin-top: 3px; }
 
-
 #userNameFormBody,
 #challengeAnswerFormBody,
 #resetPasswordFormBody,
 #rememberMeDetails        { left: 0; top: 0; width: 250px; margin-right: 2em; }
-
 #signInFormBody           { left: 0; top: 0; width: 250px; margin-right: 2em; }
-
-/* Sign-in Panel */
 
 #header .dijitLayoutContainer { position: static; }
 
+/* Sign-in Panel */
 #signInDropDown .middle       { position: relative; }
 #signInDropDown .back a       { text-decoration: none; }
 #signInDropDown .back a:hover { text-decoration: underline; }
 
-
 /* Sign-In Pane */
-
 #signInFormBody .sprite-icon-hand    { margin-left: 1em; }
 #signInFormBody .error,
 #signInFormBody .description         { text-align: left; }
@@ -1821,10 +1794,9 @@ input::-webkit-inner-spin-button {
 #signInFormBody .field               { float: right; width: 150px; border: 1px solid #80923f; padding-left: 2px  }
 #signInFormBody .rememberMe .details { margin-left: 65px; text-align: left; }
 #signInFormBody .dijitPlaceHolder    { text-align: left; font-size: smaller; }
-#signInFormBody #lpChatLoginButton   {float:left; width:112px;}
+#signInFormBody #lpChatLoginButton   { float: left; width: 112px; }
 
 /* Reset Password Pane 1 */
-
 #userNameFormBody .error,
 #userNameFormBody .description,
 #userNameFormBody .loginIdWrap, 
@@ -1836,9 +1808,7 @@ input::-webkit-inner-spin-button {
 #userNameFormBody input                { width: 245px; }
 #userNameFormBody .dijitTextBox        { border: 1px solid #80923f; }
 
-
 /* Reset Password Pane 2 */
-
 #challengeAnswerFormBody .error,
 #challengeAnswerFormBody .description,
 #challengeAnswerFormBody .required-note,
@@ -1855,9 +1825,7 @@ input::-webkit-inner-spin-button {
 #challengeAnswerFormBody input                   { width: 245px; border: 1px solid #80923f; }
 #challengeAnswerFormBody .dijitTextBox           { border: 1px solid #80923f; }
 
-
 /* Reset Password Pane 3 */
-
 #resetPasswordFormBody .error,
 #resetPasswordFormBody .description,
 #resetPasswordFormBody .message,
@@ -1873,14 +1841,10 @@ input::-webkit-inner-spin-button {
 #resetPasswordFormBody input          { width: 245px; border: 1px solid #80923f; }
 #resetPasswordFormBody .dijitTextBox  { border: 1px solid #80923f; }
 
-
 /* Remember Me Details Pane */
-
 #rememberMeDetails { text-align: left; }
 
-
 /* Email/Catalog Sign-Up Panel */
-
 #emailDropDown .sprite-icon-cup { margin-right: 1em; } 
 #emailDropDown .error
 #emailDropDown .button,
@@ -1898,10 +1862,7 @@ input::-webkit-inner-spin-button {
 #emailDropDown .requestCatalog        { text-align: right; }
 #emailDropDown .requestCatalog .right { margin-top: 10px;  }
 
-
-
 /* Mini Cart Panel */
-
 #minicart .close                       { text-align: right; }
 
 #minicart .add-item                    { padding: 5px; font-weight: bold; background-color: #fff; }
@@ -1928,24 +1889,18 @@ input::-webkit-inner-spin-button {
 #minicart .details .price              { float: right; }
 #minicart .details .error              { color: #c00 !important; }
 #minicart .details .error .title       { font-weight: bold; padding-bottom: 20px; }
-#minicart .buttons                     { text-align: right; padding-top:10px;}
+#minicart .buttons                     { text-align: right; padding-top: 10px;}
 #minicart .btn-label                   { display: inline-block; width: 150px; text-align: center; }
 #minicart .product-unavail-error       { color: #CC2036;}
 #minicart .continue-checkout           { display: none; }
-#minicart .spacer                      { width: 5px; height: 5px;}
-.ipad #minicart .spacer                { width: 20px; height: 20px;}
-
+#minicart .spacer                      { width: 5px; height: 5px; }
+.ipad #minicart .spacer                { width: 20px; height: 20px; }
 .minicart_underlay                     { opacity: 0.0; }
-
-#BTN_PROCEEDTOCHECKOUT_addToCart { margin-bottom: 5px; }
-
-
+#BTN_PROCEEDTOCHECKOUT_addToCart       { margin-bottom: 5px; }
 
 /* Firefox */
-
 .firefox #header .giftlist-link span,
 .firefox #header .my-account span                  { margin-bottom: -6px; }
-
 
 /*********************************************************************************************************************/
 /* Start: header-part.css                                                                                            */
@@ -2023,18 +1978,18 @@ input::-webkit-inner-spin-button {
 .product-display.horizontal .details { float: right; width: 203px; }
 
 .product-display .item-number { color: #000; }
-.product-display .regular     { color: #999; font-size: 11px; }
-.product-display .sale        { color: #c00; font-weight: bold; }
 
-.product-display .regular,
-.product-display .sale     { font-weight: bold; }
+.pricing .normal  { display: inline-block; font-weight: bold; }
+.pricing .full    { display: inline-block; padding: 0 0.6em 0 0;color: #777; text-decoration: line-through; }
+.pricing .sale    { display: inline-block; padding: 0 0.6em 0 0; font-weight: bold; }
+.pricing .percent { display: inline-block; font-weight: bold; color: #CD202C; }
 
 .product-display .rating              { margin-top: 5px; }
 .product-display .rating img          { padding-right: 5px; vertical-align: middle; }
 .product-display .ratingCount         { vertical-align: middle; }
 
-.product-display.verticle .group,
-.product-display.verticle .spacer  { float: none; }
+.product-display.vertical .group,
+.product-display.vertical .spacer  { float: none; }
 
 
 /*********************************************************************************************************************/
@@ -2044,28 +1999,23 @@ input::-webkit-inner-spin-button {
 /* Start: footer-part.css                                                                                            */
 /*********************************************************************************************************************/
 
-
 #footer { display: inline-block; }
-
 
 /* Backgrounds */
 #footer .background-dot-horizontal,
 #footer .background-line-horizontal { margin: 10px 0; }
 
-
 /* Links */
-
 #footer .links ul                    { margin: 0; padding: 0; list-style: none; }
 #footer .links ul li                 { float: left; margin: 0; width: 184px; }
-#footer .links ul h4                 { margin-bottom: 10px; padding: 10px 0; width: 184px; border-bottom: 1px solid #758b0f; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-#footer .links ul h4 a               { text-decoration: none; color: #758b0f; }
+#footer .links ul h4                 { margin-bottom: 10px; padding: 10px 0; width: 184px; border-bottom: 1px solid #000; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+#footer .links ul h4 a               { text-decoration: none; }
 #footer .links ul h4 a:hover         { text-decoration: underline; }
 #footer .links ul ul li              { margin: 0; padding: 2px 0; height: auto; }
-#footer .links ul ul li a            { color: #666; text-decoration: none; }
-#footer .links ul ul li a:hover      { font-weight: bold; color: #561e0f; text-decoration: underline;}
-#footer .links ul ul li.more a       { font-weight: bold; color: #000; }
+#footer .links ul ul li a            { text-decoration: none; }
+#footer .links ul ul li a:hover      { font-weight: bold; text-decoration: underline;}
+#footer .links ul ul li.more a       { font-weight: bold; }
 #footer .links ul ul li.more a:hover { text-decoration: underline; }
-
 
 /* Banner */
 #footer .banner .supportTeam { display: block; margin: 8px auto; width: 904px; text-align: center; }
@@ -2074,37 +2024,26 @@ input::-webkit-inner-spin-button {
 #footer .footerBanners .rightBanner { display: inline-block; float:left; margin-bottom:10px; }
 #footer .footerBanners .rightBanner { margin-left:6px; }
 
-
 /* Brands */
-
 #footer .brands   { margin: 20px 0; padding-bottom: 10px; text-align: center; border-bottom: 1px solid #ccc; }
 #footer .brands a { display: inline-block; margin: 0 35px; }
 
-
 /* Social */
-
 #footer .partners .social                          { margin: 30px 0 0 35px; width: 150px; }
 #footer .partners .social .sprite-social-facebook,
 #footer .partners .social .sprite-social-twitter   { margin: 0 5px 0 0; }
 ie_7 #footer .partners .social div                 { display: inline; }
 
-
 /* Copyright */
-
 #footer .partners .copyright   { margin: 35px 0 0 25px; width: 500px; text-align: center; }
 #footer .partners .copyright a { font-weight: bold; }
 #footer .partners .mobile      { padding: 25px 0 40px; }
 
-
 /* Partners */
-
 #footer .verisign    { float: right; margin: 0 15px 0 0; height: 100px; }
 
-
 /* Giftlist Mode */
-
 #footer .giftlist { margin-top: 20px; font-weight: bold; text-align: center; }
-
 
 /*********************************************************************************************************************/
 /*  End : footer-part.css                                                                                            */
@@ -2159,21 +2098,7 @@ ie_7 #footer .partners .social div                 { display: inline; }
 #content .side .product-display .image img { width: 178px; height: 178px; }
 
 /* Recipes */
-#content .file-recipes .section        { margin-top: 10px; }
-#content .file-recipes .section .image { float: left; margin-right: 10px; }
-
-#content .file-recipe .heading        { margin-bottom: 10px; }
-#content .file-recipe .heading .left  { width: 310px; }
-#content .file-recipe .heading .right { width: 430px; }
-
-#content .file-recipe #BVSYShareRecipe           {margin-bottom: 10px;}
-#content .file-recipe .BVSYShareRecipe           {margin: 10px 0;}
-#content .file-recipe #BVSYFrame                 { visibility: hidden; width: 1px; height: 1px; position: absolute; left: -999px; top: -999px; }
-
-#content #BVSYSubmissionParameters,
-#content #BVSYSubmissionURL,
-#content #BVSYFrame,
-#content .BVSYDisplayContentLinkWrite { display: none; }
+#content .file-recipes h2 { margin-top: 12px; }
 
 /* Videos for Easy Entertainging */
 #content .file-videos .episodes         { text-align: right;}

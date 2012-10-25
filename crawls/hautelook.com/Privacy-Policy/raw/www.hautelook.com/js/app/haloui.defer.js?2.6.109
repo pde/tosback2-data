@@ -1,0 +1,130 @@
+var HaloUI = HaloUI || {};
+HaloUI.fn = HaloUI.fn || {};
+
+//Convert parameter to array, or return parameter if already an array
+//Note: This works even if parameter is null, undefined, or a false-y value.
+//Useful for functions that want to perform a task on one-or-more of a given thing.
+//Said functions can call this on the parameter in question and deal with the return value
+//without checking for values, although it is worth noting that they should be
+//checking whether individual array entries are valid.
+HaloUI.fn.toArray = function( oneOrMore ){
+	return (HaloUI.fn.isArray(oneOrMore) ? oneOrMore : [oneOrMore]);
+};
+
+// http://perfectionkills.com/instanceof-considered-harmful-or-how-to-write-a-robust-isarray/
+HaloUI.fn.isArray = function(something) {
+  return Object.prototype.toString.call(something) === '[object Array]';
+};
+
+HaloUI.Defer = function(){
+	var intern = new HaloUI.Deferred();
+	return {
+		promise: intern.promise,
+		fulfiller: function(){
+			if(intern.callback){
+				intern.callback.apply(intern, arguments);
+			}
+		}
+	};
+};
+
+HaloUI.Deferred = function(){
+	if(!(this instanceof HaloUI.Deferred)){
+		return new HaloUI.Deferred(arguments);
+	}
+	this.complete = false;
+	this.callbacksOnSuccess = [];
+	this.callbacksOnFail = [];
+	this.chain = false;
+	this.promise = new HaloUI.Deferred.Promise($.proxy(this.then, this), $.proxy(this.fail, this));
+	return this;
+};
+
+HaloUI.Deferred.Promise = function(then, fail){
+	if(!(this instanceof HaloUI.Deferred.Promise)){
+		return new HaloUI.Deferred.Promise(arguments);
+	}
+	this.then = then;
+	this.fail = fail;
+	return this;
+};
+	
+HaloUI.Deferred.prototype.then = function(toAdd){
+	var callbacks = HaloUI.fn.toArray(toAdd);
+	var i = 0, len = callbacks.length;
+	for(;i < len; i++){
+		if(typeof callbacks[i] === 'function'){
+			if(this.complete && this.success){
+				callbacks[i].apply(callbacks[i], this.data);
+			}
+			else if(!this.complete){
+				this.callbacksOnSuccess.push(callbacks[i]);
+			}
+			else{
+				break;
+			}
+		}
+		else{
+			throw new TypeError("Non-function parameter specified as callback");
+		}
+	}
+	this.chain = this.chain || HaloUI.Defer();
+	return this.chain.promise;
+};
+
+HaloUI.Deferred.prototype.fail = function(toAdd){
+	var callbacks = HaloUI.fn.toArray(toAdd);
+	var i = 0, len = callbacks.length;
+	for(;i < len; i++){
+		if(typeof callbacks[i] === 'function'){
+			if(this.complete && !this.success){
+				callbacks[i].apply(callbacks[i], this.data);
+			}
+			else if(!this.complete){
+				this.callbacksOnFail.push(callbacks[i]);
+			}
+			else{
+				break;	
+			}
+		}
+		else{
+			throw new TypeError("Non-function parameter specified as callback");
+		}
+	}
+	this.chain = this.chain || HaloUI.Defer();
+	return this.chain.promise;
+};
+
+HaloUI.Deferred.prototype.triggerCallbacks = function(toRun){
+	var callbacks = HaloUI.fn.toArray(toRun);
+	var i = 0, len = callbacks.length;
+	for(;i < len; i++){
+		callbacks[i].apply(callbacks[i], this.data);
+	}
+};
+
+HaloUI.Deferred.prototype.callback = function(){
+	this.complete = true;
+	this.success = !!(Array.prototype.shift.call(arguments)); //this.success = arguments[0], remove arguments[0]
+	this.data = Array.prototype.slice.call(arguments);
+	this.triggerCallbacks(this["callbacksOn" + (this.success ? "Success" : "Fail")]);
+	this.callback = null;
+	if(this.chain){
+		this.chain.fulfiller.apply(this, ([this.success]).concat(this.data));
+	}
+};
+
+HaloUI.Deferred.prototype.addToList = function(toAdd, list){
+	var callbacks = HaloUI.fn.toArray(toAdd);
+	var i = 0, len = callbacks.length;
+	for(;i < len; i++){
+		if(typeof callbacks[i] === 'function'){
+			list.push(callbacks[i]);
+		}
+		else{
+			throw new TypeError("Non-function parameter specified as callback");
+		}
+	}
+	this.chain = this.chain || HaloUI.Defer();
+};
+

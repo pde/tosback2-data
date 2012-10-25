@@ -15,8 +15,8 @@
         <!-- facebook_insights_all START -->
 <meta property="fb:page_id" content="212959540914" />
 <!-- facebook_insights_all END -->
-        <link rel="stylesheet" href="../static1.spilcdn.com/tw/79/11.14.3/css/all.css" type="text/css" />
-        <link rel="stylesheet" href="../static1.spilcdn.com/tw/79/11.14.3/css/staticsites.css" type="text/css" />                            </head>
+        <link rel="stylesheet" href="../static1.spilcdn.com/tw/79/11.17/css/all.css" type="text/css" />
+        <link rel="stylesheet" href="../static3.spilcdn.com/tw/79/11.17/css/staticsites.css" type="text/css" />                            </head>
         <!--[if lt IE 7]> <body class="is-ie6"> <![endif]-->
     <!--[if IE 8]><body class="is-ie8"><![endif]-->
     <!--[if IE 9]><body class="is-ie9"><![endif]-->
@@ -67,34 +67,21 @@ var spilgames_api = {
 <script>SpilGames.Head.loadApi();</script>
 <script type="text/javascript">
 /* Provide Spilgames JS API with relevant portal data */
-SpilGames(function() {
 
-	var getPageId = function(){
-		var controller = 'staticsites';
-	
-		if (controller === 'categories')
-			return '';
-		else if (controller === 'subcategories')
-			return '';
-		else if (controller === 'games')
-			return '';
-		else {
-			return '';
-		}
-	};
-		
-	var portal = 'spilgames.set@spilgames.module.portal.',
-	    game = 'spilgames.set@spilgames.module.game.';
-	    api = this.getApi();
-	
-	// Set all portal settings
-	api(portal + 'version', '11.14.3' );
-	api(portal + 'page', 'staticsites/privacypolicy');
-	api(portal + 'pageid', getPageId());
-	api(portal + 'categoryname', '');
-	api(portal + 'subcategoryname', '');
+SpilGames(['JSLib', 'Portal'], function (jslib, portal) {
+    var pageId = parseInt('null');
+    portal.set('portalversion', 'gpconcept-tweens-11.17')
+          .set('pagetype', 'staticsites')
+          .set('pagetypedetail', 'privacypolicy')
+          .set('pageid', isNaN(pageId) ? null : pageId)
+          .set('categoryname', '')
+          .set('subcategoryname', '');
+
+    // Initiate page tracker as fast as posible (so right here). becuase we want to masure performance as well.
+    jslib('tracker.page.track');
 });
-</script><script>
+</script>
+<script>
     var Portal = window.Portal || {},
          _headJsScope;
 
@@ -105,12 +92,13 @@ SpilGames(function() {
     };
     
 </script>
-<script type="text/javascript" src="../static2.spilcdn.com/tw/79/11.14.3/js/head_load_js.js"></script>
+<script type="text/javascript" src="../static3.spilcdn.com/tw/79/11.17/js/head_load_js.js"></script>
 <script>
         _headJsScope = window.head_conf = null;
 </script>
 	
 	<script>
+    SpilGames.Settings.set('sgAdCssFile',"sgAdTeens2");
 	/* Copyright (c) 2009-2012 SPIL GAMES. DO NOT COPY THIS CODE. */
 
 var Portal=window.Portal||{};Portal.adsIntegration=(function(d,w){var publicAPI={},integrationInfo={},runtimeCache={},readCookie=function(name){var nameEQ=name+"=",ca=d.cookie.split(';'),i,c;for(i=0;i<ca.length;i+=1){c=ca[i];while(c.charAt(0)===' '){c=c.substring(1,c.length);}
@@ -119,7 +107,7 @@ return null;},atob=function(encodedData){if(typeof window.atob==='function'){ato
 catch(error){return error;}}());encodedData=encodedData.replace(/=+$/,'');if(encodedData.length%4==1)throw INVALID_CHARACTER_ERR;for(var bc=0,bs,buffer,idx=0,output='';buffer=encodedData.charAt(idx++);~buffer&&(bs=bc%4?bs*64+buffer:buffer,bc++%4)?output+=String.fromCharCode(255&bs>>(-2*bc&6)):0){buffer=chars.indexOf(buffer);}
 return output;};return atob.call(this,encodedData);}},base64toUtf8=function(string){return decodeURIComponent(window.escape(atob(string)));},getPortalLanguage=function(){var docElem=d.documentElement,lang;if(docElem&&docElem.lang){lang=docElem.lang;}else{lang=d.getElementsByTagName('html')[0].getAttribute('lang');}
 return lang;},getPreliminaryAuthInfo=function(){if(!runtimeCache.auth){var authCookie=readCookie('_profilar'),authCookieParts;if(authCookie!==null&&authCookie!==undefined){authCookie=base64toUtf8(authCookie);authCookieParts=authCookie.split('|');runtimeCache.auth={hash:authCookieParts[1],user:base64toUtf8(authCookieParts[0])};}else{runtimeCache.auth={};}}
-return runtimeCache.auth;},getIntegrationInformation=function(callback){integrationInfo.portalLanguage=getPortalLanguage();integrationInfo.auth=getPreliminaryAuthInfo();var getLocatarData=function(){Portal.locatar.getData(function(locatarResponse){integrationInfo.locatar=locatarResponse.locatar;callback.call(this,integrationInfo);});};if(Portal.locatar&&typeof Portal.locatar.getData==='function'){getLocatarData();}else{Portal.head.ready('all.js',function(){getLocatarData();});}},setIntegrationInformation=function(){SpilGames.Settings.set('currentPortalInfo',{lang:integrationInfo.portalLanguage,geoip:integrationInfo.locatar,pagetype:"staticsites"});SpilGames.Settings.set('currentCategories',['','']);},loadIntegrationPlugin=function(callback){SpilGames.Head.include('plugin.integration',function(){callback.call();});};publicAPI.start=function(callback){if(callback&&typeof callback!=='function'){throw{name:'InvalidArgument',message:'The provided callback is not a function'};}
+return runtimeCache.auth;},getIntegrationInformation=function(callback){integrationInfo.portalLanguage=getPortalLanguage();integrationInfo.auth=getPreliminaryAuthInfo();var getLocatarData=function(){Portal.locatar.getData(function(locatarResponse){integrationInfo.locatar=locatarResponse.locatar;callback.call(this,integrationInfo);});};if(Portal.locatar&&typeof Portal.locatar.getData==='function'){getLocatarData();}else{Portal.head.ready('all.js',function(){getLocatarData();});}},setIntegrationInformation=function(){SpilGames.Settings.set('sgAdCssFile',"sgAdTeens2");SpilGames.Settings.set('currentPortalInfo',{lang:integrationInfo.portalLanguage,geoip:integrationInfo.locatar,pagetype:"staticsites"});SpilGames.Settings.set('currentCategories',['','']);},loadIntegrationPlugin=function(callback){SpilGames.Head.include('plugin.integration',function(){callback.call();});};publicAPI.start=function(callback){if(callback&&typeof callback!=='function'){throw{name:'InvalidArgument',message:'The provided callback is not a function'};}
 getIntegrationInformation(function(){setIntegrationInformation();loadIntegrationPlugin(function(){if(callback)callback.call(this,integrationInfo);});});};return publicAPI;}(window.document,window));
 	    Portal.adsIntegration.start(function () {
 	    	SpilGames.Events.publish('advertising.prepared');
@@ -665,7 +653,7 @@ Did you know that: you can rate every game you play,  you can share your favorit
 <!--
 redirect = '/';
 -->
-</script>        <!-- Version(11.14.3):gpconcept-tweens-11.14.3 -->
+</script>        <!-- Version(11.17):gpconcept-tweens-11.17 -->
         </div>
                 <script type="text/javascript">
 Portal.head.ready(function() {
@@ -2385,7 +2373,7 @@ Portal.head.ready(function() {
 
 <script type="text/javascript">
     Portal.head.ready(function() {
-        Portal.head.js("http://static3.spilcdn.com/tw/79/11.14.3/js/registration.js",function() {
+        Portal.head.js("http://static1.spilcdn.com/tw/79/11.17/js/registration.js",function() {
             /* Copyright (c) 2009-2012 SPIL GAMES. DO NOT COPY THIS CODE. */
 
 var provider,initFunc,initRegForm;Portal.head.ready(function(){SPI._settings.reloadSiteAfterFBLogin=true;provider=$.profilar.getProvider();$.profilar.addLoginHandler(function(errors){if(!errors){$('.loginInfoPoints span').wrap('<a href="http://www.agame.com/userprofile/points"></a>');$('div#usernav div.notlogged').hide();$('div#usernav div.logged').show();$('div#usernav div.logged a.unav_logout').click(function(){$.profilar.clearAll();return false;});$('div#usernav span.avatar a').unbind();loginbarFill();$('.loginInfoLeft').add('.loginLinks').show();};});initRegForm=function(logged){provider=$.profilar.getProvider();if(provider=='fbc'){var reg_form_container='.popup_shadow';}else{var reg_form_container='#registrationbox';}
@@ -3575,7 +3563,7 @@ Portal.head.ready(function() {
         tooltip_thumbnail_width = 200;
 
     Portal.head.js(
-        'http://static3.spilcdn.com/tw/79/11.14.3/js/all.js', {config: '/11.14.3/dynjs/config.js'}, 'http://static2.spilcdn.com/tw/79/11.14.3/js/spil.js',
+        'http://static2.spilcdn.com/tw/79/11.17/js/all.js', {config: '/11.17/dynjs/config.js'}, 'http://static1.spilcdn.com/tw/79/11.17/js/spil.js',
         function() {
             gamelink_tracking_param = false;
             //current page detection for alerts

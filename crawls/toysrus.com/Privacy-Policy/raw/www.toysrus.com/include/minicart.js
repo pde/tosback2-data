@@ -15,8 +15,9 @@ Event.observe(window, "load", function() {
                         callback(formObject);
                     }
                     if (redirect) {
-                        window.location.href = '/cart/index.jsp';
+                        window.location.href = '/cart/index.jsp' + '?ias2VwCartSkusAdded=' + json.skusAdded;
                     } else {
+                    	window.minicartJson = json;
                         showCart(true);
                     }
                 }

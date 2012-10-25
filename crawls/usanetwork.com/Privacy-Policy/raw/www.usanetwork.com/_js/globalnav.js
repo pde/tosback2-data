@@ -223,11 +223,7 @@ function usa_buildGlobalMenu()
 							{
 								html += '</ul><ul>';
 								
-								
 								maxPerCol = Math.ceil((usa_globalMenu.menu[lvl1obj].subMenu[lvl2obj].items.length - maxPerCol) / 4);
-								usa_debugFlag = true;
-								usa_debugOut(maxPerCol);
-								usa_debugFlag = false;
 								
 								colCounter = 0;
 								currentColumnIndex++;
@@ -694,28 +690,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "EAT PRAY LOVE",
-							"subtitle" : "SATURDAY OCT 20 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/eatpraylove/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_eatpraylove.png"
-						},
-												{
-							"title" : "COUPLES RETREAT",
-							"subtitle" : "SAT OCT 20 5:30/4:30C",
-							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
-						},
-						{
 							"title" : "RESIDENT EVIL: AFTERLIFE",
 							"subtitle" : "SUN OCT 29 11:05/10:05C",
 							"url" : usa_baseUrlDomain + "/movies/residentevil/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
 						},
-						{
+												{
 							"title" : "THE UGLY TRUTH",
 							"subtitle" : "SUNDAY NOVEMBER 3 9/8C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
+						},
+						{
+							"title" : "CASINO ROYALE",
+							"subtitle" : "SUN NOVEMBER 3 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/casinoroyale/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_casinoroyale.png"
+						},
+						{
+							"title" : "QUANTUM OF SOLACE",
+							"subtitle" : "SUNDAY NOVEMBER 4 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/quantumofsolace/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_quantumofsolace.png"
 						}
 					]
 				}

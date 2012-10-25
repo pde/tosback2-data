@@ -61,7 +61,7 @@ function buildDropdown() {
 	document.writeln('<div class="bottom">');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Juniors-Dresses/_/N-lgbm/Ns-p_best_sellers_rank%7C1/Rpp-2?cm_sp=juniors-_-ddtc-_-dresses+1+062311">Dresses</a></li>');
-	document.writeln('<li><a href="/shop/Juniors-Denim-Collections/_/N-lgaz?cm_sp=juniors-_-ddtc-_-denim+collections+2+101812">Denim</a></li>');
+	document.writeln('<li><a href="/shop/Juniors-Denim-Collections/_/N-lgaz?cm_sp=juniors-_-ddtc-_-denim+2+101812">Denim</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Tops/_/N-lvp6?cm_sp=juniors-_-ddtc-_-tops+3+060712">Tops</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Jackets-Blazers/_/N-y3eh?cm_sp=juniors-_-ddtc-_-jackets+blazers+4+090712">Jackets & Blazers</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Pants-Leggings/_/N-lgbe?cm_sp=juniors-_-ddtc-_-pants+leggings+5+082412">Pants & Leggings</a></li>');
@@ -78,7 +78,7 @@ function buildDropdown() {
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-2fer+dresses/Nty-1?cm_sp=juniors-_-ddf-_-2+fer+1+101912">Trending Now: 2-Fer Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-p_tag/Ntt-sequin/Nty-1?cm_sp=juniors-_-ddf-_-sequin+dresses+2+101912">Stunning Sequin Dresses</a></li>');
-	document.writeln('<li><a href="/shop/GB/Juniors/_/N-173nyZlfxqZ15p/Ns-p_best_sellers_rank%7C1?cm_sp=juniors-_-ddf-_-new+gb+3+101212">NEW Arrivals from GB</a></li>');
+	document.writeln('<li><a href="/shop/GB/Juniors/_/N-173nyZlfxq/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=juniors-_-ddf-_-new+gb+3+102312">Fall Fashion from GB</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-popular+picks/Nty-1?cm_sp=juniors-_-ddf-_-popular+picks+4+101912">Popular Picks</a></li>');
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-p_tag/Ntt-Printed+Leggings+DD/Nty-1?cm_sp=juniors-_-ddf-_-printed+leggings+5+101912">Statement Making Leggings</a></li>');
 	document.writeln('</ul>');
@@ -131,7 +131,7 @@ function buildDropdown() {
 	document.writeln('<div class="promo"><a href="/content/shoes-dillards-online-exclusives?cm_sp=shoes-_-ddpromo-_-online+exclusive+brands+101012" >FIND THEM HERE: SHOP ONLINE EXCLUSIVE SHOES ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/UGG-Australia/Shoes-Women/_/N-173koZlgakZ1jl/Ntk-p_tag/Ntt-UGG+Fashion+Styles/Nty-1?cm_sp=shoes-_-ddimg-_-ugg+fashion+styles+foxley+102012"><img src="/images/dropDownImages/101912dropdown_s_ugg.jpg"></a>');
+	document.writeln('<a href="/shop/UGG-Australia/Shoes-Women/_/N-173koZlgak/Ntk-all/Ntt-03846180+or+03846184+or+03846273+or+03846275/Nty-1?Ntx=mode+matchboolean&cm_sp=shoes-_-ddimg-_-ugg+exotics+102412"><img src="/images/dropDownImages/102312dropdown_s_ugg_exotics.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');

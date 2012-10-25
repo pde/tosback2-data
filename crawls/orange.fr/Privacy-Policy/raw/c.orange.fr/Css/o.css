@@ -922,6 +922,11 @@ img{
 }
 #o_header4{
 	display:table;
+	-webkit-transition: height 0.2s ease-in-out;
+	-moz-transition: height 0.2s ease-in-out;
+	-o-transition: height 0.2s ease-in-out;
+	-ms-transition: height 0.2s ease-in-out;
+	transition: height 0.2s ease-in-out;
 }
 #iframeParent_MB body {
 	height:auto;
@@ -937,7 +942,7 @@ img{
 	min-width:728px;
 	margin:0 auto;
 }
-/* cette classe n'a pas le même comportement dans oie par rapport a un bug pour les pubs*/
+/* cette classe n'a pas le meme comportement dans oie par rapport a un bug pour les pubs*/
 #iframeParent_MB_Content {
 	/*position: absolute;*/
 	float: right;
@@ -977,6 +982,12 @@ img{
 	height:36px;
 	margin:0 auto;
 	width:990px;
+
+	-webkit-transition: height 0.2s ease-in-out;
+	-moz-transition: height 0.2s ease-in-out;
+	-o-transition: height 0.2s ease-in-out;
+	-ms-transition: height 0.2s ease-in-out;
+	transition: height 0.2s ease-in-out;
 }
 #o_header4 #o_ruban  #o_menu a,#o_header4 #o_ruban  #o_logo a,#o_header4 #o_ruban  #o_perso a{
 	color:#FFF;
@@ -1037,25 +1048,64 @@ img{
 }
 #o_header4 #o_bandeau{
 	background:#212121;
-	display:none;
+	/*display:none;*/
 	height:0;
 	left:0;
 	margin:0 auto;
 	position:absolute;
 	top:36px;
-	visibility:hidden;
+	/*visibility:hidden;*/
 	width:100%;
 	z-index:1001;
-	float:left;
+	/*float:left;*/
+
+	-webkit-transition: height 0.2s ease-in-out;
+	-moz-transition: height 0.2s ease-in-out;
+	-o-transition: height 0.2s ease-in-out;
+	-ms-transition: height 0.2s ease-in-out;
+	transition: height 0.2s ease-in-out;
 }
-#o_header4 #o_bandeau div.o_bdn{
-	display:none;
+#o_header4 #o_bandeau.on{
+	height: 145px;
+}
+#o_header4 #o_bandeau.on.invisibleBack {
+	height: 0;
+}
+#o_header4 #o_bandeau .o_bdn{
+	overflow: hidden;
+	/*display:none;*/
 	margin:0 auto;
-	min-height:145px;
-	height:auto;
+	height: 0;
 	position:relative;
-	visibility:hidden;
+	/*visibility:hidden;*/
 	width:990px;
+
+	-webkit-transition: height 0.2s ease-in-out;
+	-moz-transition: height 0.2s ease-in-out;
+	-o-transition: height 0.2s ease-in-out;
+	-ms-transition: height 0.2s ease-in-out;
+	transition: height 0.2s ease-in-out;
+}
+#o_header4 #o_bandeau .o_bdn > * {
+	visibility: hidden;
+	/*display: none;*/
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
+#o_header4 #o_bandeau .o_bdn.on > * {
+	visibility: visible;
+	/*display: block;*/
+	opacity: 1;
+	filter: alpha(opacity=100);
+
+	-webkit-transition: opacity 0.2s ease 0.175s;
+	-moz-transition: opacity 0.2s ease 0.175s;
+	-o-transition: opacity 0.2s ease 0.175s;
+	-ms-transition: opacity 0.2s ease 0.175s;
+	transition: opacity 0.2s ease 0.175s;
+}
+#o_header4 #o_bandeau .o_bdn.on {
+	height: 145px;
 }
 #o_header4.o_frame1px{
 	margin:0 auto 0 -20px!important;
@@ -1068,30 +1118,20 @@ img{
 #o_header4.o_frame1px #o_ruban {
 	padding: 0 30px 0 0;
 }
-#o_header4 #o_bandeau.on,#o_header4 #o_bandeau div.on{
-	display:block;
-	visibility:visible;
-}
 #o_header4 #o_MBCiblee.cached{
-	display:none;
+	/*display:none;*/
 	visibility:hidden;
 }
 #o_header4 #o_bandeau.repli{
 	height:0;
 }
-#o_header4 #o_bandeau.on{
-	min-height:145px;
-	display:block;
-	visibility:visible;
-}
 #o_header4 #o_bandeau.invisibleBack {
 	background: none;
 }
-
-#o_header4 #o_bandeau div.o_bdn .hbc ul{
+#o_header4 #o_bandeau .o_bdn .hbc ul{
 	margin-left:0;
 }
-#o_header4 #o_bandeau div.o_bdn ul{
+#o_header4 #o_bandeau .o_bdn ul{
 	margin-left:48px;
 }
 #o_header4 #o_bandeau ul{
@@ -1133,12 +1173,18 @@ img{
 #o_header4 #o_bandeau #bandeau_identification{
 	background:#212121;
 	box-shadow:1px 2px 3px #333;
-	float:left;
-	min-height:70px;
-	height:auto;
+	position: absolute;
+	top:0;
+	float: left;
+	height:0;
 	padding-bottom:10px;
 	width:229px;
-	z-index:1;
+	display:none;
+}
+#o_header4 #o_bandeau #bandeau_identification.on{
+	min-height:70px;
+	height:auto;
+	display: block;
 }
 #o_header4 #o_bandeau #bandeau_identification li#o_li_email.visibled{
 	display:block;
@@ -1247,8 +1293,13 @@ img{
 	top:77px;
 }
 #o_header4 #o_bandeau #bandeau_search {
-	height: 125px;
+	height: 0;
 	padding: 0;
+	overflow: visible;
+
+}
+#o_header4 #o_bandeau #bandeau_search.on{
+	height: 145px;
 }
 #o_header4 #o_bandeau #bandeau_cloudApps li.hbl{
 	height:25px;
@@ -1353,10 +1404,17 @@ img{
 	background:#212121;
 	box-shadow:1px 2px 3px #333;
 	float:left;
-	min-height:165px;
-	max-height:325px;
+	height:0;
 	margin:0;
 	width:400px;
+	display:none;
+	position:absolute;
+	top:0;
+}
+#o_header4 #o_bandeau #bandeau_cloudApps.on {
+	min-height:165px;
+	max-height:325px;
+	display:block;
 }
 #o_header4 #o_perso span{
 	color:#FFF;
@@ -1373,7 +1431,7 @@ img{
 }
 
 #o_header4 #o_bandeau .bd_fermer {
-	background: url(../Icons/Header/spriteEC4.png) no-repeat 32px -33px;
+	background: url(../Icons/Header/spriteEC4.png) no-repeat -7px -33px;
 	bottom: 5px;
 	color: #FFF;
 	cursor: pointer;
@@ -1383,7 +1441,7 @@ img{
 	line-height: 14px;
 	position: absolute;
 	right: 10px;
-	width: 60px;
+	width: 15px;
 	font-family: Arial, sans-serif;
 }
 /* zone de service */
@@ -1615,7 +1673,7 @@ FORM.o3_formSearch #rech{
 	top:0
 }
 /* Zone Logo */
-#o_header4 #o_ruban  #o_logo .btnHome{
+#o_header4 #o_ruban #o_logo .btnHome{
 	/*margin:0 0 0 20px;*/
 	left: 20px;
 	padding:0;

@@ -48,23 +48,19 @@ SG.FBWrapper = {
         if (this.uid < 0) {return;}
         clog('[FBWrapper loadPermissions]');
         clog('[FB AJAX REQUEST]\nFB.Data.query("select {0} from permissions where uid={1}", ' + SG.FBWrapper.permissions_to_check + ', '+ SG.FBWrapper.uid +')');
-        FB.Data.query('select {0} from permissions where uid={1}',
-                SG.FBWrapper.permissions_to_check, SG.FBWrapper.uid)
-                .wait(function(result) {
-                    clog("Got something....");
-                    if (result && result.length > 0) {
-                        clog(result);
-                        if (result[0][SG.FBWrapper.permissions_to_check] == 1) {
-                            clog("Got it");
-                            SG.FBWrapper.permissions[SG.FBWrapper.permissions_to_check] = true;
-                        } else {
-                            clog("Permission denied!!");
-                            SG.FBWrapper.permissions[SG.FBWrapper.permissions_to_check] = false;
-                        }
-                    }
-                    callback();
-        });
-        clog("outt...");
+        FB.api('/me/permissions', function(response) {
+			if (response && response.data) {
+				var permissions = response.data.shift();
+				//console.log(permissions);
+				if (!permissions || (!permissions.publish_actions) || (permissions.publish_actions == 0)) {
+					SG.FBWrapper.permissions[SG.FBWrapper.permissions_to_check] = false;
+				} else {
+					SG.FBWrapper.permissions[SG.FBWrapper.permissions_to_check] = true;
+				}
+			}
+			callback();
+		});
+        clog("[/FBWrapper loadPermissions]");
     },
     /**
      * Checks for a permission in the cache.

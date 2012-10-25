@@ -78,8 +78,8 @@ function hideQuickView(img_name) {
 		params.langId		= langId;
 		params.orderId		= ".";
 		params.calculationUsage = "-1,-2,-3,-4,-5,-6,-7";
-		params.catEntryId		= form.skuCatentry.value;
-		params.productId = form.skuCatentry.value;
+		params.catEntryId		= catEntryId;
+		params.productId = catEntryId;
 		params.quantity = "1";
 		params.SKUedSize = strSkyBySize;
 		params.comment=form.comment.value;

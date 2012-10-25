@@ -28,7 +28,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100018-
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/scott-kay-100019--1/1000190000/100006/1/0/0/0/100006.100008.100019">Scott Kay</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100008|1000080000|1|0|||100006|100006.100008">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_diamond_headline_page" title="Diamond Guide" target="_top"> Diamond Guide </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_bridal_guide_1" target="_top"> Bridal Guide </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=the_kay_guarantee" title="Lifetime Diamond and Color Gemstone Guarantee" target="_top"> Lifetime Diamond and Color Gemstone Guarantee </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" title="Find Your Ring Size" target="_top"> Ring Size Help </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=planning_the_perfect_wedding" target="_top"> Planning the Perfect Wedding </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=how_to_get_engaged" target="_top"> How to Get Engaged </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_diamond_headline_page" title="Diamond Guide" target="_top"> Diamond Guide </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_bridal_guide_1" target="_top"> Bridal Guide </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" title="Find Your Ring Size" target="_top"> Ring Size Help </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=the_kay_guarantee" title="Lifetime Diamond and Color Gemstone Guarantee" target="_top"> Lifetime Diamond and Color Gemstone Guarantee </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=planning_the_perfect_wedding" target="_top"> Planning the Perfect Wedding </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=how_to_get_engaged" target="_top"> How to Get Engaged </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -82,9 +82,9 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/tolkowsky%C2%A
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/open-hearts-by-jane-seymour%C2%AE/1000530000/100020/1/0/0/0/100020.100023.100053">Open Hearts by Jane Seymour&reg;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/loves-embrace%C2%AE/1000540000/100020/1/0/0/0/100020.100023.100054">Love\'s Embrace&reg;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/le-vian%C2%AE/1000550000/100020/1/0/0/0/100020.100023.100055">Le Vian&reg;</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/shades-of-australia%C2%99/1000560000/100020/1/0/0/0/100020.100023.100056">Shades of Australia&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/sea-magic-cultured-pearls%C2%AE-by-mikimoto/1000570000/100020/1/0/0/0/100020.100023.100057">Sea Magic Cultured Pearls&reg; by Mikimoto</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/family-and-mothers-jewelry/1000580000/100020/1/0/0/0/100020.100023.100058">Family and Mother\'s Jewelry</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/color-obsession-made-with-swarovski-elements%C2%99/1000600000/100020/1/0/0/0/100020.100023.100060">COLOR OBSESSION MADE WITH SWAROVSKI ELEMENTS&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/black---white-diamond-collection/1003420000/100020/1/0/0/0/100020.100023.100342">Black &amp; White Diamond Collection</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/blue-diamond-fashion-100301--1/1003010000/100020/1/0/0/0/100020.100023.100301">Blue Diamond Fashion</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/diamond-revelations-100062--1/1000620000/100020/1/0/0/0/100020.100023.100062">Diamond Revelations</a></li>');
@@ -92,7 +92,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100304-
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/music-rocks%C2%99-by-lyric-culture%C2%99-100315--1/1003150000/100020/1/0/0/0/100020.100023.100315">Music Rocks&#153; by Lyric Culture&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100023|1000230000|1|0|||100020|100020.100023">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_diamond_headline_page" target="_top"> Diamond Guide </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_gemstone_headline_guide" target="_top"> Gemstone Guide </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=diamond_care" target="_top"> Diamond Care </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=color_stone_care" target="_top"> Color Stone Care </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=color_stone_treatment" target="_top"> Color Treatment </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=cultured_pearl_care" target="_top"> Cultured Pearl Care </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" target="_top"> Ring Size Help </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_diamond_headline_page" target="_top"> Diamond Guide </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_gemstone_headline_guide" target="_top"> Gemstone Guide </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=the_kay_guarantee" target="_top"> Lifetime Diamond and Color Gemstone Guarantee </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=diamond_care" target="_top"> Diamond Care </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=color_stone_care" target="_top"> Color Stone Care </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=color_stone_treatment" target="_top"> Color Treatment </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=cultured_pearl_care" target="_top"> Cultured Pearl Care </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -127,7 +127,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/golden-finishe
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/music-rocks%C2%99-by-lyric-culture%C2%99-100316--1/1003160000/100063/1/0/0/0/100063.100066.100316">Music Rocks&#153; by Lyric Culture&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100066|1000660000|1|0|||100063|100063.100066">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=gold" target="_top"> Metal Guide: Gold </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_detail_metal_guide" target="_top"> Metal Guide: Platinum </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=sterling_silver" target="_top"> Metal Guide: Sterling Silver </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=alternative_metals" target="_top"> Metal Guide: Alternative Metals </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=metal_care" target="_top"> Metal Care </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=kay_jewelers_tv" target="_top"> Kay TV Advertising </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" target="_top"> Ring Size Help </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=gold" target="_top"> Metal Guide: Gold </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_detail_metal_guide" target="_top"> Metal Guide: Platinum </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=sterling_silver" target="_top"> Metal Guide: Sterling Silver </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=alternative_metals" target="_top"> Metal Guide: Alternative Metals </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=metal_care" target="_top"> Metal Care </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=kay_jewelers_tv" target="_top"> Kay TV Advertising </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -155,7 +155,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/drive-by-citiz
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bulova-100097--1/1000970000/100090/1/0/0/0/100090.100094.100097">Bulova</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100094|1000940000|1|0|||100090|100090.100094">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_watch_headline_guide" target="_top"> Watch Guide </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=education_center_watch_headline_guide" target="_top"> Watch Guide </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -179,7 +179,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'CatalogRequest?langId=-1&s
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/gift-ideas/gift-card">Gift Cards</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100102|1001020000|1|0|||100101|100101.100102">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=bridal_pary_gifts" target="_top"> Bridal Party Gifts </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=birthstone_jewelry" target="_top"> Birthstone Jewelry </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=choosing_her_birthday_gift" target="_top"> Her Birthday Gift </a></li><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=choosing_the_perfect_anniversary_gift" target="_top"> Anniversary Gifts </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=bridal_pary_gifts" target="_top"> Bridal Party Gifts </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=birthstone_jewelry" target="_top"> Birthstone Jewelry </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=choosing_her_birthday_gift" target="_top"> Her Birthday Gift </a></li><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=choosing_the_perfect_anniversary_gift" target="_top"> Anniversary Gifts </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -213,7 +213,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/ambigrams/1001
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/diamond-jewelry-100328--1/1003280000/100112/1/0/0/0/100112.100114.100328">Diamond Jewelry</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100114|1001140000|1|0|||100112|100112.100114">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" target="_top"> Ring Size Help </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');
@@ -232,7 +232,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/previously-own
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/super-values-100134--1/1001340000/100130/1/0/0/0/100130.100131.100134">Super Values</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100131|1001310000|1|0|||100130|100130.100131">View All</a></li>');
 writeMegaMenu('</ul>');
-writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="//www.kay.com/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=clearance_and_more" target="_top"> Clearance and More </a></li></ul>');
+writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=clearance_and_more" target="_top"> Clearance and More </a></li></ul>');
 writeMegaMenu('</div>');
 writeMegaMenu('</div>');
 writeMegaMenu('</li>');

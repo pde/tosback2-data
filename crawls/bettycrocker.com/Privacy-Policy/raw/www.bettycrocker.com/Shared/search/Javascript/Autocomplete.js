@@ -261,13 +261,18 @@ function getParameterByName(name) {
 function fireEventTagAndRedirect(event) {
     event.preventDefault();
     try {
-        var searchText = jQuery(".searchTextBox:first").val();
-        ntptEventTag("ev=PredictiveSearch_" + event.data.autocompleteType + "&SiteKeyword=" + searchText);
+        var searchText = jQuery(this).text();
+        ntptEventTag("ev=PredictiveSearch_" + event.data.autocompleteType + "&SiteKeyword=" + searchText + '&ActionType=Search');
     }
     catch (ex) {
     }
-    window.location = jQuery(this).attr("href");
+    var href = jQuery(this).attr("href");
+    setTimeout(function () {
+        //wait a bit to let the eventtag fire over the network
+        window.location.href = href;
+    }, 100);
 }
+
 
 //  added to fix url issue in serach hint
 jQuery("li.search a").live("click", function () {

@@ -240,7 +240,7 @@ OmnitureTag.base = TagImpl.prototype;
 OmnitureTag.enabled = TagImpl.enableTagByParameter("omnitag", true);
 
 // Parameters for OmnitureTag.executeEvent() function
-OmnitureTag.eventForm = null;
+OmnitureTag.eventForm = true;
 OmnitureTag.eventName = null;
 OmnitureTag.eventValue = null;
 OmnitureTag.eventProducts = null;
@@ -302,7 +302,7 @@ OmnitureTag.prototype.filter = function()
 
 OmnitureTag.prototype.executeEvent = function()
 {
-  if(OmnitureTag.enabled && !isEmpty(OmnitureTag.eventName))
+  if((OmnitureTag.enabled && !isEmpty(OmnitureTag.eventName)) && document.referrer.indexOf("paypal") == -1)
   {
     try
     {
@@ -323,7 +323,7 @@ OmnitureTag.prototype.executeEvent = function()
       }
 
       if(!isEmpty(OmnitureTag.eventValue))
-        eval("s." + OmnitureTag.eventName + "=" + OmnitureTag.eventValue);
+        eval("s." + OmnitureTag.eventName + "='" + OmnitureTag.eventValue +"'");
 
       if(!isEmpty(OmnitureTag.eventVarName) && !isEmpty(OmnitureTag.eventVarValue))
       {
@@ -331,7 +331,7 @@ OmnitureTag.prototype.executeEvent = function()
         s.tl(OmnitureTag.eventForm,'o',OmnitureTag.eventVarValue);
       }
       else
-        s.tl(OmnitureTag.eventForm,'o',OmnitureTag.eventName);
+        s.tl(OmnitureTag.eventForm,'o',OmnitureTag.eventValue);
     }
     catch(error)
     {
@@ -471,7 +471,7 @@ OmnitureTag.prototype.setVariables = function()
         }
       }
 
-      if(!this.Tag.isAnyTypes([PageTypes.CHECKOUT, PageTypes.CART, PageTypes.PRODUCT]))
+      if(!this.Tag.isAnyTypes([PageTypes.CHECKOUT, PageTypes.ONEPAGECHECKOUT, PageTypes.CART, PageTypes.PRODUCT]))
       {
         s.eVar4 = s.prop4;
         s.eVar5 = s.prop5;
@@ -592,8 +592,6 @@ OmnitureTag.prototype.setVariables = function()
         s.events = "event15";
       else if(s.pageName == PageTypes.PAY)
         s.events = "event16";
-      else if(s.pageName && s.pageName.indexOf('Sign In') != -1)
-        s.events = "event14";
 
       if(s.pageName == PageTypes.ADDRESS || s.pageName == PageTypes.SHIP || s.pageName == PageTypes.PAY)
       {
@@ -605,8 +603,17 @@ OmnitureTag.prototype.setVariables = function()
         s.prop5 = s.pageName;
         s.prop6 = s.pageName;
         s.prop7 = s.pageName;
-        s.eVar4 = s.prop4;
-        s.eVar5 = s.prop5;
+      }
+
+      if(s.pageName == PageTypes.ONEPAGECHECKOUT)
+      {
+        s.pageName = ("Checkout : " + s.pageName);
+        s.prop4 = s.pageName;
+        s.prop5 = s.pageName;
+        s.prop6 = s.pageName;
+        s.prop7 = s.pageName;
+      s.eVar4 = "";
+      s.eVar5 = "";
       }
 
       checkBillingAddress(this);
@@ -656,7 +663,7 @@ function checkBillingAddress(omniTagObj)
 
 OmnitureTag.prototype.execute = function()
 {
-  if(OmnitureTag.enabled)
+  if(OmnitureTag.enabled && document.referrer.indexOf("paypal") == -1)
   {
     try
     {
@@ -733,8 +740,6 @@ function setMonetateTag()
 
 RichRelevanceTag.prototype.base = function()
 {
-  setMonetateTag();
-
   if(RichRelevanceTag.enabled)
   {
     try
@@ -770,8 +775,16 @@ RichRelevanceTag.prototype.initialize = function()
       if(this.Tag.isType(PageTypes.PRODUCT))
       {
         R3_COMMON.addPlacementType('item_page.rvi');
-        R3_COMMON.addPlacementType('item_page.left');
-        R3_COMMON.addPlacementType('item_page.left2');
+        //Sprint3 - Cognizant new RR catridges -- start
+        R3_COMMON.addPlacementType("item_page.content");
+        R3_COMMON.addPlacementType("item_page.content2");
+        R3_COMMON.addPlacementType("item_page.content3");
+        R3_COMMON.addPlacementType("item_page.content4");
+        R3_COMMON.addPlacementType("item_page.content5");
+        R3_COMMON.addPlacementType("item_page.content6");
+        R3_COMMON.addPlacementType("item_page.content7");
+        R3_COMMON.addPlacementType("item_page.content8");
+        //Sprint3 - Cognizant new RR catridges -- end
 
         R3_COMMON.addClickthruParams(0, 'CROSSSELL_PRODUCT');
 
@@ -873,7 +886,7 @@ RichRelevanceTag.prototype.initialize = function()
         R3_COMMON.addPlacementType("search_page.content");
         R3_COMMON.addPlacementType("search_page.content2");
         R3_COMMON.addPlacementType("search_page.content3");
-	R3_COMMON.addPlacementType("search_page.content4");
+  R3_COMMON.addPlacementType("search_page.content4");
         R3_COMMON.addPlacementType("search_page.content5");
         R3_COMMON.addPlacementType("search_page.content6");
         R3_COMMON.addPlacementType("search_page.content7");
@@ -919,8 +932,9 @@ RichRelevanceTag.prototype.initialize = function()
       else if(this.Tag.isType(PageTypes.CART))
       {
           R3_COMMON.addPlacementType('cart_page.rvi');
-          R3_COMMON.addPlacementType('cart_page.right');
           R3_COMMON.addPlacementType('cart_page.content');
+          R3_COMMON.addPlacementType('cart_page.content2');
+          R3_COMMON.addPlacementType('cart_page.content3');
           R3_COMMON.addClickthruParams(0, 'CROSSSELL_CART');
 
           R3_CART = new r3_cart();
@@ -976,10 +990,22 @@ RichRelevanceTag.prototype.placement = function(position)
     }
       else if(this.Tag.isType(PageTypes.PRODUCT))
       {
-        if(position == 0)
-          r3_placement("item_page.left");
-        else if(position == 1){
-          r3_placement("item_page.left2");
+        if(position == 0){
+          r3_placement("item_page.content");
+        }else if(position == 1){
+          r3_placement("item_page.content2");
+        }else if(position == 2){
+          r3_placement("item_page.content3");
+        }else if(position == 3){
+          r3_placement("item_page.content4");
+        }else if(position == 4){
+          r3_placement("item_page.content5");
+        }else if(position == 5){
+          r3_placement("item_page.content6");
+        }else if(position == 6){
+          r3_placement("item_page.content7");
+        }else if(position == 7){
+          r3_placement("item_page.content8");
         }
       }
       else if(this.Tag.isType(PageTypes.HOME) && position == 0){
@@ -1014,16 +1040,16 @@ RichRelevanceTag.prototype.placement = function(position)
       }
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 3){
           r3_placement("category_page.sub_content4");
-	}
+  }
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 4){
           r3_placement("category_page.sub_content5");
-	}
+  }
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 5){
           r3_placement("category_page.sub_content6");
-	}
-      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 6){	
+  }
+      else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY]) && position == 6){
           r3_placement("category_page.sub_content7");
-	}
+  }
       else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 0){
           r3_placement("search_page.content");
       }
@@ -1035,16 +1061,16 @@ RichRelevanceTag.prototype.placement = function(position)
       }
         else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 3){
             r3_placement("search_page.content4");
-	}
+  }
         else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 4){
             r3_placement("search_page.content5");
-	}
+  }
         else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 5){
             r3_placement("search_page.content6");
-	}
+  }
         else if(this.Tag.isAnyTypes([PageTypes.SEARCH]) && position == 6){
             r3_placement("search_page.content7");
-	}
+  }
       else if(this.Tag.isType(PageTypes.DEPT) && position == 0){
           r3_placement("category_page.content3");
       }
@@ -1070,11 +1096,14 @@ RichRelevanceTag.prototype.placement = function(position)
         r3_placement("category_page.content6");
       }
       else if(this.Tag.isType(PageTypes.CART) && position == 0){
-        r3_placement("cart_page.right");
+        r3_placement("cart_page.content3");
       }
       else if(this.Tag.isType(PageTypes.CART) && position == 1){
         r3_placement("cart_page.content");
       }
+      else if(this.Tag.isType(PageTypes.CART) && position == 2){
+          r3_placement("cart_page.content2");
+        }
     }
     catch(error)
     {
@@ -1249,10 +1278,22 @@ RichRelevanceTag.prototype.fixProductRecs = function(position)
     {
       if(this.Tag.isType(PageTypes.PRODUCT))
       {
-        if(position == 0)
-          r3_placement("item_page.left");
-        else if(position == 1){
-          r3_placement("item_page.left2");
+          if(position == 0){
+              r3_placement("item_page.content");
+            }else if(position == 1){
+              r3_placement("item_page.content2");
+            }else if(position == 2){
+              r3_placement("item_page.content3");
+            }else if(position == 3){
+              r3_placement("item_page.content4");
+            }else if(position == 4){
+              r3_placement("item_page.content5");
+            }else if(position == 5){
+              r3_placement("item_page.content6");
+            }else if(position == 6){
+              r3_placement("item_page.content7");
+            }else if(position == 7){
+              r3_placement("item_page.content8");
         }
       }
       else if(this.Tag.isType(PageTypes.HOME)){
@@ -1264,8 +1305,14 @@ RichRelevanceTag.prototype.fixProductRecs = function(position)
       else if(this.Tag.isAnyTypes([PageTypes.SUBDEPT, PageTypes.CATEGORY, PageTypes.SEARCH])){
         //r3_placement("category_page.sub_content");
       }
+      else if(this.Tag.isType(PageTypes.CART) && position == 0){
+        r3_placement("cart_page.content3");
+      }
       else if(this.Tag.isType(PageTypes.CART) && position == 1){
-        r3_placement("cart_page.content");
+          r3_placement("cart_page.content1");
+        }
+      else if(this.Tag.isType(PageTypes.CART) && position == 2){
+          r3_placement("cart_page.content2");
       }
     }
     catch(error)
@@ -1503,7 +1550,7 @@ TrackingPixelTag.prototype = new TagImpl();
 TrackingPixelTag.base = TagImpl.prototype;
 TrackingPixelTag.production = Tag.production;
 TrackingPixelTag.enabled = TagImpl.enableTagByParameter("tptag", true);
-TrackingPixelTag.liveChatEnabled = TagImpl.enableTagByParameter("livechat", true);
+TrackingPixelTag.liveChatEnabled = TagImpl.enableTagByParameter("livechat", false);
 
 TrackingPixelTag.prototype.setConfirmPagePixels = function()
 {
@@ -1522,6 +1569,8 @@ TrackingPixelTag.prototype.execute = function()
 {
 try
 {
+   checkFirearms();
+
   if(!TrackingPixelTag.liveChatEnabled && (s.pageName.toLowerCase() == "no results search" || s.pageName.toLowerCase() == "404 error"))
   {
     RightNow.Client.Controller = null;
@@ -1559,16 +1608,16 @@ catch(ignoreErr)
     {
       initUpdateSelect("");
 
-	var hasSwatchCode = "";
+  var hasSwatchCode = "";
 
-	try
-	{
-		hasSwatchCode = $('[id^="swatch_color_"]');
-	}
-	catch(noswatches)
-	{
-		hasSwatchCode = "";
-	}
+  try
+  {
+    hasSwatchCode = $('[id^="swatch_color_"]');
+  }
+  catch(noswatches)
+  {
+    hasSwatchCode = "";
+  }
 
       if(ppdType != "C" && hasSwatchCode.length == 0)
       {
@@ -1581,12 +1630,59 @@ catch(ignoreErr)
     }
 };
 
+try
+{
+    document.getElementsByClass = function(classname)
+    {
+        var myArray = [];
+        var tags = document.getElementsByTagName("*");
+        var regex = new RegExp("(^|\\s)" + classname + "(\\s|$)");
+
+    for(var i = 0; i < tags.length; i++)
+    {
+            if(regex.test(tags[i].className))
+    {
+                myArray.push(tags[i]);
+            }
+        }
+
+        return myArray;
+    };
+}
+catch(ignore)
+{}
+
+function switchTextElementsByClass(targetClass, replacedClass)
+{
+  try
+  {
+    var hideElements = document.getElementsByClass(targetClass);
+
+    if(isArray(hideElements))
+    {
+      for(var i = 0; i < hideElements.length; i++)
+      {
+        hideElements[i].className = replacedClass;
+      }
+    }
+  }
+  catch(ignore)
+  {}
+}
+
 // Google Firearms Affiliation Code
 function updateFirearms(tag)
 {
   // Removes Firearms, Shooting Accessories, Fine Gun Room, Ammunition, Reloading, Black Powder, and Air Gun/Paint-ball categories.
   if(hasURLParameter("affcode_c="))
     clearTextElementsByName("faLink");
+}
+
+function checkFirearms()
+{
+  // Removes Firearms, Shooting Accessories, Fine Gun Room, Ammunition, Reloading, Black Powder, and Air Gun/Paint-ball categories.
+  if(hasURLParameter("affcode_c="))
+    switchTextElementsByClass("paidSearch", "paidSearchHidden");
 }
 
 //====================================
@@ -1668,16 +1764,16 @@ function chartSelect()
       var itemNum = "";
       var numChildren = 0 ;
       var resolvedCatentryId = "";
-	var minPrice=0.0;
-	var maxPrice=0.0;
-	var regMinPrice=0.0;
-	var regMaxPrice=0.0;
-	var isClearance = false;
-	var isRebate = false;
-	var isDropShip = false;
-	var isBuyable = true;
-	var quantityLimit="";
-	var firstSKU=true;
+  var minPrice=0.0;
+  var maxPrice=0.0;
+  var regMinPrice=0.0;
+  var regMaxPrice=0.0;
+  var isClearance = false;
+  var isRebate = false;
+  var isDropShip = false;
+  var isBuyable = true;
+  var quantityLimit="";
+  var firstSKU=true;
 
       $.each(skuList, function(index, aSku)
       {
@@ -1688,7 +1784,7 @@ function chartSelect()
           itemNum = aSku.itemNumber;
           $("#sku_"+aSku.pkey).show();
 
-	 var thisPrice = parseFloat(aSku.price);
+   var thisPrice = parseFloat(aSku.price);
         var thisRegPrice = parseFloat(aSku.regPrice);
 
         if(firstSKU)
@@ -1752,238 +1848,251 @@ function chartSelect()
 
     var priceText="";
 
+  try
+  {
+    $("#your-price-value").text("");
+    $("#reg-price-value").text("");
+
+    document.getElementById("your-reg-label").style.display = "none";
+    document.getElementById("your-clearance-label").style.display = "none";
+    document.getElementById("your-sale-label").style.display = "none";
+    document.getElementById("your-clearance-starting-label").style.display = "none";
+    document.getElementById("your-sale-starting-label").style.display = "none";
+  }
+  catch(ignore)
+  {}
+
     if(minPrice==maxPrice)
     {
-	try
-	{
-      		$("#your-price-sale").text("");
-      		$("#offer-price-sale").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price-sale").text("");
+          $("#offer-price-sale").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+  }
+  catch(ignore)
+  {}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-		try
-		{
-     	  		$("#your-price").text("Your Price:");
-        		$("#offer-price").text("$"+minPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+             $("#your-price").text("Your Price:");
+            $("#offer-price").text("$"+minPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+        $("#your-price-value").text("$"+minPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
       }
 
       if(isClearance)
       {
-		try
-		{
-        		$("#your-price").text("");
-        		$("#offer-price").text("");
-        		$("#offer-price-clearance").text("$"+minPrice.toFixed(2));
-        		$("#your-price-clearance").text("Clearance Price");
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#your-price").text("");
+            $("#offer-price").text("");
+            $("#offer-price-clearance").text("$"+minPrice.toFixed(2));
+            $("#your-price-clearance").text("Clearance Price");
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
-			document.getElementById("your-clearance-label").className = "clearance price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
+      document.getElementById("your-clearance-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
       }
     }
     else
     {
-	try
-	{
-      		$("#your-price-sale").text("");
-      		$("#offer-price-sale").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price-sale").text("");
+          $("#offer-price-sale").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+  }
+  catch(ignore)
+  {}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-		try
-		{
-     		  	$("#your-price").text("Your Price:");
-      	  		$("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+             $("#your-price").text("Your Price:");
+              $("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
-			document.getElementById("your-starting-label").className = "starting price";
-		}
-		catch(ignore)
-		{}
-	}
+    try
+    {
+        $("#your-price-value").text("$"+minPrice.toFixed(2));
+
+  if(!isClearance)
+  {
+          document.getElementById("your-starting-label").style.display = "block";
+  }
+  else
+  {
+    document.getElementById("your-starting-label").style.display = "none";
+  }
+    }
+    catch(ignore)
+    {}
+  }
 
       if(isClearance)
       {
-		try
-		{
-       		$("#your-price").text("");
-       		$("#offer-price").text("");
-      			$("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-       		$("#your-price-clearance").text("Clearance Price");
-		}
-		catch(ignore)
-		{}
+    try
+    {
+           $("#your-price").text("");
+           $("#offer-price").text("");
+          $("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+           $("#your-price-clearance").text("Clearance Price");
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-			document.getElementById("your-clearance-label").className = "clearance price";
-			document.getElementById("your-clearance-starting-label").className = "starting clearance price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+      document.getElementById("your-clearance-label").style.display = "block";
+      document.getElementById("your-clearance-starting-label").style.display = "block";
+      document.getElementById("your-starting-label").style.display = "none";
+    }
+    catch(ignore)
+    {}
       }
     }
 
-    if(minPrice!=regMinPrice)
+    if(minPrice!=regMinPrice || maxPrice!=regMaxPrice)
     {
-	try
-	{
-      		$("#your-price").text("");
-      		$("#offer-price").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-      		$("#offer-price-clearance").text("");
-      		$("#your-price-clearance").text("");
-	}
-	catch(ignore)
-	{}
-
-	try
-	{
-		$("#your-price-value").text("");
-		$("#reg-price-value").text("");
-		document.getElementById("your-reg-label").className = "regular price dynamic";
-		document.getElementById("your-clearance-label").className = "clearance price dynamic";
-		document.getElementById("your-sale-label").className = "sale price dynamic";
-		document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
-		document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price").text("");
+          $("#offer-price").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+          $("#offer-price-clearance").text("");
+          $("#your-price-clearance").text("");
+  }
+  catch(ignore)
+  {}
 
       if(minPrice==maxPrice)
       {
-		try
-		{
-			$("#your-price-sale").text("SALE Price");
-			$("#offer-price-sale").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-sale").text("SALE Price");
+      $("#offer-price-sale").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-        		{
-          			$("#your-price-sale").text("Clearance Price");
-        		}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+            {
+                $("#your-price-sale").text("Clearance Price");
+            }
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-			{
-				document.getElementById("your-clearance-label").className = "clearance price";
-			}
-			else
-			{
-				document.getElementById("your-sale-label").className = "sale price";
-			}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+      {
+        document.getElementById("your-clearance-label").style.display = "block";
       }
       else
       {
-		try
-		{
-        		$("#your-price-sale").text("SALE Price");
-        		$("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+        document.getElementById("your-sale-label").style.display = "block";
+      }
+    }
+    catch(ignore)
+    {}
+      }
+      else
+      {
+    try
+    {
+            $("#your-price-sale").text("SALE Price");
+            $("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
 
-        		if(isClearance)
-        		{
- 				$("#your-price-sale").text("Clearance Price");
-			}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+            {
+         $("#your-price-sale").text("Clearance Price");
+      }
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-			{
-				document.getElementById("your-clearance-starting-label").className = "starting clearance price";
-			}
-			else
-			{
-				document.getElementById("your-sale-starting-label").className = "starting sale price";
-			}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+      {
+        document.getElementById("your-clearance-starting-label").style.display = "block";
+        document.getElementById("your-clearance-label").style.display = "none";
+        document.getElementById("your-starting-label").style.display = "none";
+      }
+      else
+      {
+        document.getElementById("your-sale-starting-label").style.display = "block";
+        document.getElementById("your-starting-label").style.display = "none";
+      }
+    }
+    catch(ignore)
+    {}
       }
 
       if(regMinPrice==regMaxPrice)
       {
-		try
-		{
-        		$("#regularpricetext").text("Regular Price:");
-        		$("#regularprice").text("$"+regMinPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#regularpricetext").text("Regular Price:");
+            $("#regularprice").text("$"+regMinPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
-			document.getElementById("your-reg-label").className = "regular price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+      document.getElementById("your-reg-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
       }
       else
       {
-		try
-		{
-        		$("#regularpricetext").text("Regular Price:");
-        		$("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
-
-		try
-		{
-        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
-			document.getElementById("your-reg-label").className = "regular price";
-		}
-		catch(ignore)
-		{}
-      	}
+    try
+    {
+            $("#regularpricetext").text("Regular Price:");
+            $("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
     }
+    catch(ignore)
+    {}
+
+    try
+    {
+            $("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+      document.getElementById("your-reg-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
+      }
+  }
     }
     catch(ignore)
     {}
@@ -2053,7 +2162,7 @@ function hideSelect()
       selectedAttrNVPairs[i] = attrNVPairs;
     }
 
-    var activeAttrs = new Array()
+    var activeAttrs = new Array();
 
     for(var i = 0; i < skuList.length; i++)
     {
@@ -2190,6 +2299,7 @@ function hideSelect()
     var disclaimerText = '';
     var resolvedCatentryId = "";
     var showDisclaimer = false;
+    var hasDisclaimer = false;
     var firstSKU=true;
 
     $.each(skuList, function(index, aSku)
@@ -2269,6 +2379,7 @@ function hideSelect()
         if(aSku.disclaimerBoxInnerHtml != null && aSku.disclaimerBoxInnerHtml != "" && numChildren == 1)
         {
           showDisclaimer = true;
+	   hasDisclaimer = true;
           disclaimerText = aSku.disclaimerBoxInnerHtml;
         }
         else
@@ -2289,400 +2400,434 @@ function hideSelect()
 
     if(minPrice==maxPrice)
     {
-	try
-	{
-      		$("#your-price-sale").text("");
-      		$("#offer-price-sale").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price-sale").text("");
+          $("#offer-price-sale").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+  }
+  catch(ignore)
+  {}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-		try
-		{
-     	  		$("#your-price").text("Your Price:");
-        		$("#offer-price").text("$"+minPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+             $("#your-price").text("Your Price:");
+            $("#offer-price").text("$"+minPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+        $("#your-price-value").text("$"+minPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
       }
 
       if(isClearance)
       {
-		try
-		{
-        		$("#your-price").text("");
-        		$("#offer-price").text("");
-        		$("#offer-price-clearance").text("$"+minPrice.toFixed(2));
-        		$("#your-price-clearance").text("Clearance Price");
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#your-price").text("");
+            $("#offer-price").text("");
+            $("#offer-price-clearance").text("$"+minPrice.toFixed(2));
+            $("#your-price-clearance").text("Clearance Price");
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
-			document.getElementById("your-clearance-label").className = "clearance price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
+      document.getElementById("your-clearance-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
       }
     }
     else
     {
-	try
-	{
-      		$("#your-price-sale").text("");
-      		$("#offer-price-sale").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price-sale").text("");
+          $("#offer-price-sale").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+  }
+  catch(ignore)
+  {}
 
       if(minPrice.toFixed(2) > 0.00)
       {
-		try
-		{
-     		  	$("#your-price").text("Your Price:");
-      	  		$("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+             $("#your-price").text("Your Price:");
+              $("#offer-price").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-	  		$("#your-price-value").text("$"+minPrice.toFixed(2));
-			document.getElementById("your-starting-label").className = "starting price";
-		}
-		catch(ignore)
-		{}
-	}
+    try
+    {
+        $("#your-price-value").text("$"+minPrice.toFixed(2));
+
+  if(!isClearance)
+  {
+          document.getElementById("your-starting-label").style.display = "block";
+  }
+  else
+  {
+    document.getElementById("your-starting-label").style.display = "none";
+  }
+    }
+    catch(ignore)
+    {}
+  }
 
       if(isClearance)
       {
-		try
-		{
-       		$("#your-price").text("");
-       		$("#offer-price").text("");
-      			$("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-       		$("#your-price-clearance").text("Clearance Price");
-		}
-		catch(ignore)
-		{}
+    try
+    {
+           $("#your-price").text("");
+           $("#offer-price").text("");
+            $("#offer-price-clearance").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+           $("#your-price-clearance").text("Clearance Price");
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
-			document.getElementById("your-clearance-label").className = "clearance price";
-			document.getElementById("your-clearance-starting-label").className = "starting clearance price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+      document.getElementById("your-clearance-label").style.display = "block";
+      document.getElementById("your-clearance-starting-label").style.display = "block";
+      document.getElementById("your-starting-label").style.display = "none";
+    }
+    catch(ignore)
+    {}
       }
     }
 
     if(minPrice!=regMinPrice)
     {
-	try
-	{
-      		$("#your-price").text("");
-      		$("#offer-price").text("");
-      		$("#regularpricetext").text("");
-      		$("#regularprice").text("");
-      		$("#offer-price-clearance").text("");
-      		$("#your-price-clearance").text("");
-	}
-	catch(ignore)
-	{}
+  try
+  {
+          $("#your-price").text("");
+          $("#offer-price").text("");
+          $("#regularpricetext").text("");
+          $("#regularprice").text("");
+          $("#offer-price-clearance").text("");
+          $("#your-price-clearance").text("");
+  }
+  catch(ignore)
+  {}
 
-	try
-	{
-		$("#your-price-value").text("");
-		$("#reg-price-value").text("");
-		document.getElementById("your-reg-label").className = "regular price dynamic";
-		document.getElementById("your-clearance-label").className = "clearance price dynamic";
-		document.getElementById("your-sale-label").className = "sale price dynamic";
-		document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
-		document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
-	}
-	catch(ignore)
-	{}
+  try
+  {
+    $("#your-price-value").text("");
+    $("#reg-price-value").text("");
+
+    document.getElementById("your-reg-label").style.display = "none";
+    document.getElementById("your-clearance-label").style.display = "none";
+    document.getElementById("your-sale-label").style.display = "none";
+    document.getElementById("your-clearance-starting-label").style.display = "none";
+    document.getElementById("your-sale-starting-label").style.display = "none";
+  }
+  catch(ignore)
+  {}
 
       if(minPrice==maxPrice)
       {
-		try
-		{
-			$("#your-price-sale").text("SALE Price");
-			$("#offer-price-sale").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-sale").text("SALE Price");
+      $("#offer-price-sale").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-        		{
-          			$("#your-price-sale").text("Clearance Price");
-        		}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+            {
+                $("#your-price-sale").text("Clearance Price");
+            }
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-			{
-				document.getElementById("your-clearance-label").className = "clearance price";
-			}
-			else
-			{
-				document.getElementById("your-sale-label").className = "sale price";
-			}
-		}
-		catch(ignore)
-		{}
+      if(isClearance)
+      {
+        document.getElementById("your-clearance-label").style.display = "block";
       }
       else
       {
-		try
-		{
-        		$("#your-price-sale").text("SALE Price");
-        		$("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
+        document.getElementById("your-sale-label").style.display = "block";
+      }
+    }
+    catch(ignore)
+    {}
+      }
+      else
+      {
+    try
+    {
+            $("#your-price-sale").text("SALE Price");
+            $("#offer-price-sale").text("$"+minPrice.toFixed(2)+" - $"+ maxPrice.toFixed(2));
 
-        		if(isClearance)
-        		{
- 				$("#your-price-sale").text("Clearance Price");
-			}
-		}
-		catch(ignore)
-		{}
+            if(isClearance)
+            {
+         $("#your-price-sale").text("Clearance Price");
+      }
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			$("#your-price-value").text("$"+minPrice.toFixed(2));
+    try
+    {
+      $("#your-price-value").text("$"+minPrice.toFixed(2));
 
-        		if(isClearance)
-			{
-				document.getElementById("your-clearance-starting-label").className = "starting clearance price";
-			}
-			else
-			{
-				document.getElementById("your-sale-starting-label").className = "starting sale price";
-			}
-		}
-		catch(ignore)
-		{}
+      if(isClearance)
+      {
+        document.getElementById("your-clearance-starting-label").style.display = "block";
+        document.getElementById("your-starting-label").style.display = "none";
+      }
+      else
+      {
+        document.getElementById("your-sale-starting-label").style.display = "block";
+        document.getElementById("your-starting-label").style.display = "none";
+      }
+    }
+    catch(ignore)
+    {}
       }
 
       if(regMinPrice==regMaxPrice)
       {
-		try
-		{
-        		$("#regularpricetext").text("Regular Price:");
-        		$("#regularprice").text("$"+regMinPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#regularpricetext").text("Regular Price:");
+            $("#regularprice").text("$"+regMinPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
-			document.getElementById("your-reg-label").className = "regular price";
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+      document.getElementById("your-reg-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
       }
       else
       {
-		try
-		{
-        		$("#regularpricetext").text("Regular Price:");
-        		$("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
-		}
-		catch(ignore)
-		{}
+    try
+    {
+            $("#regularpricetext").text("Regular Price:");
+            $("#regularprice").text("$"+regMinPrice.toFixed(2)+" - $"+ regMaxPrice.toFixed(2));
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-        		$("#reg-price-value").text("$"+regMinPrice.toFixed(2));
-			document.getElementById("your-reg-label").className = "regular price";
-		}
-		catch(ignore)
-		{}
-      	}
+    try
+    {
+            $("#reg-price-value").text("$"+regMinPrice.toFixed(2));
+      document.getElementById("your-reg-label").style.display = "block";
+    }
+    catch(ignore)
+    {}
+        }
     }
 
-    	initUpdateSelect(itemNum);
+    try
+    {
+    if(isClearance)
+    {
+        document.getElementById("your-starting-label").style.display = "none";
+    }
+    else
+    {
+        document.getElementById("your-clearance-label").style.display = "none";
+        document.getElementById("your-clearance-starting-label").style.display = "none";
+    }
+    }
+    catch(ignore)
+    {}
 
-	try
-	{
-    		if(isRebate)
-      			$("#rebate").text("Rebate");
-    		else
-      			$("#rebate").text("");
-	}
-	catch(ignore)
-	{}
+      initUpdateSelect(itemNum);
 
-	try
-	{
-    		if(showDisclaimer)
-    		{
-      			$("#shippingDisclaimerInner").html(disclaimerText);
-      			$("#shipL").css('visibility', 'visible');
-    		}
-    		else
-    		{
-      			$("#shippingDisclaimerInner").html("");
-      			$("#shipL").css('visibility', 'hidden');
-    		}
-	}
-	catch(ignore)
-	{}
+  try
+  {
+        if(isRebate)
+            $("#rebate").text("Rebate");
+        else
+            $("#rebate").text("");
+  }
+  catch(ignore)
+  {}
 
-    	if(aux1Enabled && numChildren == 1 && !isEmpty(auxDesc1))
-    	{
-		try
-		{
-  			document.getElementById("prod_level_stock").innerHTML = auxDesc1;
-      			$("#prod_outof_stock").text("");
-  			$("#dropship").text("");
-		}
-		catch(ignore)
-		{}
+  try
+  {
+        if(hasDisclaimer)
+        {
+            $("#shippingDisclaimerInner").html(disclaimerText);
+            $("#shipL").css('visibility', 'visible');
+	     document.getElementById('shipL').style.visibility = 'visible';
+	     document.getElementById('shipL').style.display = 'block';
+	     document.getElementById('important-notice').style.display = 'block';
+        }
+        else
+        {
+            $("#shippingDisclaimerInner").html("");
+            $("#shipL").css('visibility', 'hidden');
+        }
+  }
+  catch(ignore)
+  {}
 
-		try
-		{
-  			document.getElementById("stock-message").innerHTML = auxDesc1;
-			document.getElementById("stock-message-class").className = "stock message out";
-		}
-		catch(ignore)
-		{}
-	}
-    	else if(numChildren == 1)
-    	{
-		try
-		{
-    	  		if(hasAtLeastOneInStock && !hasAtLeastOneOutOfStock)
-			{
-     		 		$("#prod_outof_stock").text("");
-        			$("#prod_level_stock").text("In stock");
-      			}
-			else if(!hasAtLeastOneInStock && hasAtLeastOneOutOfStock)
-			{
-        			$("#prod_level_stock").text("");
-        			$("#prod_outof_stock").text("Out of stock");
-      			}
-			else
-			{
-        			$("#prod_outof_stock").text("");
-        			$("#prod_level_stock").text("");
-      			}
+      if(aux1Enabled && numChildren == 1 && !isEmpty(auxDesc1))
+      {
+    try
+    {
+        document.getElementById("prod_level_stock").innerHTML = auxDesc1;
+            $("#prod_outof_stock").text("");
+        $("#dropship").text("");
+    }
+    catch(ignore)
+    {}
 
-      			if(isDropShip)
-      			{
-        			$("#dropship").text("Ships from Manufacturer");
-    				$("#prod_level_stock").text("");
-      			}
-      			else
-      			{
-        			$("#dropship").text("");
-      			}
-		}
-		catch(ignore)
-		{}
-    	}
-	else
-	{
-		try
-		{
-			$("#prod_outof_stock").text("");
-			$("#prod_level_stock").text("");
-			$("#dropship").text("");
-		}
-		catch(ignore)
-		{}
-	}
+    try
+    {
+        document.getElementById("stock-message").innerHTML = auxDesc1;
+      document.getElementById("stock-message-class").className = "stock message out";
+    }
+    catch(ignore)
+    {}
+  }
+      else if(numChildren == 1)
+      {
+    try
+    {
+            if(hasAtLeastOneInStock && !hasAtLeastOneOutOfStock)
+      {
+              $("#prod_outof_stock").text("");
+              $("#prod_level_stock").text("In stock");
+            }
+      else if(!hasAtLeastOneInStock && hasAtLeastOneOutOfStock)
+      {
+              $("#prod_level_stock").text("");
+              $("#prod_outof_stock").text("Out of stock");
+            }
+      else
+      {
+              $("#prod_outof_stock").text("");
+              $("#prod_level_stock").text("");
+            }
 
-    	if(numChildren==1)
-    	{
-		try
-		{
-      			$("#item_num_prod_level").text(itemNum);
-      			skuResolved=true;
-      			$('#resolvedItemNum').val(itemNum);
-      			$('#quantityLimit').val(quantityLimit);
-      			$('#catEntryId').val(resolvedCatentryId);
-		}
-		catch(ignore)
-		{}
+            if(isDropShip)
+            {
+              $("#dropship").text("Ships from Manufacturer");
+            $("#prod_level_stock").text("");
+            }
+            else
+            {
+              $("#dropship").text("");
+            }
+    }
+    catch(ignore)
+    {}
+      }
+  else
+  {
+    try
+    {
+      $("#prod_outof_stock").text("");
+      $("#prod_level_stock").text("");
+      $("#dropship").text("");
+    }
+    catch(ignore)
+    {}
+  }
 
-		try
-		{
-			$("#catalog-number").text(itemNum);
-      			skuResolved=true;
-			document.getElementById("catalog-number-class").className = "catalog item number";
-		}
-		catch(ignore)
-		{}
+      if(numChildren==1)
+      {
+    try
+    {
+            $("#item_num_prod_level").text(itemNum);
+            skuResolved=true;
+            $('#resolvedItemNum').val(itemNum);
+            $('#quantityLimit').val(quantityLimit);
+            $('#catEntryId').val(resolvedCatentryId);
+    }
+    catch(ignore)
+    {}
 
-		if(!isBuyable)
-		{
-			try
-			{
-				document.getElementById("add-to-cart").className = "cart button container dynamic";
-			}
-			catch(ignore)
-			{}
-		}
-		else
-		{
-			try
-			{
-				document.getElementById("add-to-cart").className = "cart button container";
-			}
-			catch(ignore)
-			{}
-		}
+    try
+    {
+      $("#catalog-number").text(itemNum);
+            skuResolved=true;
+      document.getElementById("catalog-number-class").className = "catalog item number";
+    }
+    catch(ignore)
+    {}
 
-		try
-		{
-			document.getElementById("your-starting-label").className = "starting price dynamic";
-			document.getElementById("your-clearance-starting-label").className = "starting clearance price dynamic";
-			document.getElementById("your-sale-starting-label").className = "starting sale price dynamic";
-		}
-		catch(ignore)
-		{}
-    	}
-    	else
-    	{
-		try
-		{
-      			$("#item_num_prod_level").text("");
-      			skuResolved=false;
-		}
-		catch(ignore)
-		{}
+    if(!isBuyable)
+    {
+      try
+      {
+        document.getElementById("add-to-cart").className = "cart button container dynamic";
+        document.getElementById('add-to-cart').style.display = 'none';
+        document.getElementById('add-to-wish-list').style.display = 'none';
+      }
+      catch(ignore)
+      {}
+    }
+    else
+    {
+      try
+      {
+        document.getElementById("add-to-cart").className = "cart button container";
+        document.getElementById('add-to-cart').style.display = 'block';
+        document.getElementById('add-to-wish-list').style.display = 'block';
+      }
+      catch(ignore)
+      {}
+    }
 
-		try
-		{
-      			$("#catalog-number").text("");
-      			skuResolved=false;
-			document.getElementById("catalog-number-class").className = "catalog item number dynamic";
-  			document.getElementById("stock-message").innerHTML = "";
-			document.getElementById("stock-message-class").className = "stock message dynamic out";
-		}
-		catch(ignore)
-		{}
-    	}
+    try
+    {
+      document.getElementById("your-starting-label").style.display = "none";
+      document.getElementById("your-clearance-starting-label").style.display = "none";
+      document.getElementById("your-sale-starting-label").style.display = "none";
+    }
+    catch(ignore)
+    {}
+      }
+      else
+      {
+    try
+    {
+            $("#item_num_prod_level").text("");
+            skuResolved=false;
+    }
+    catch(ignore)
+    {}
+
+    try
+    {
+            $("#catalog-number").text("");
+            skuResolved=false;
+      document.getElementById("catalog-number-class").className = "catalog item number dynamic";
+        document.getElementById("stock-message").innerHTML = "";
+      document.getElementById("stock-message-class").className = "stock message dynamic out";
+    }
+    catch(ignore)
+    {}
+      }
    }
 }
 catch(error)
@@ -2714,220 +2859,224 @@ var defaultFixOnce = true;
 
 function initUpdateSelect(itemNumVal)
 {
-	try
-	{
-		if(ppddEnabled)
-		{
-			if(itemNumVal.toString().indexOf("object") != -1)
-			{
-    				if(!swatchEnabled)
-      					return true;
+  try
+  {
+    if(ppddEnabled)
+    {
+      if(itemNumVal.toString().indexOf("object") != -1)
+      {
+            if(!swatchEnabled)
+                return true;
 
-    				var swatchCount = 0;
+            var swatchCount = 0;
 
-    				if(defaultFixOnce == true)
-    				{
-    					try
-    					{
-    						$('[id^="swatch_color_"]').each(function()
-    						{
-              					var swatchColorEvent = $(this)[0].getAttribute('onclick').toString();
-      							var swatchColor = null;
-      							var swStart = swatchColorEvent.indexOf("'");
-      							swStart = swatchColorEvent.indexOf("'", ++swStart);
-      							swStart = swatchColorEvent.indexOf("'", ++swStart);
-      							var swEnd = swatchColorEvent.indexOf("'", ++swStart);
+            if(defaultFixOnce == true)
+            {
+              try
+              {
+                $('[id^="swatch_color_"]').each(function()
+                {
+                        var swatchColorEvent = $(this)[0].getAttribute('onclick').toString();
+                    var swatchColor = null;
+                    var swStart = swatchColorEvent.indexOf("'");
+                    swStart = swatchColorEvent.indexOf("'", ++swStart);
+                    swStart = swatchColorEvent.indexOf("'", ++swStart);
+                    var swEnd = swatchColorEvent.indexOf("'", ++swStart);
 
-      							if(swStart > -1 && swEnd > swStart)
-        							swatchColor = swatchColorEvent.substring(swStart, swEnd);
+                    if(swStart > -1 && swEnd > swStart)
+                      swatchColor = swatchColorEvent.substring(swStart, swEnd);
 
-      							var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
-      							var attrDDId = null;
+                    var attrDropDowns = document.getElementById('OrderItemAddForm').getElementsByTagName('select');
+                    var attrDDId = null;
 
-      							for(var p = 0; p < attrDropDowns.length; p++)
-      							{
-        							if(attrDDId ==  null)
-        							{
-          								for(var r = 0; r < attrDropDowns[p].length; r++)
-          								{
-            									if(swatchColor == attrDropDowns[p][r].value)
-            									{
-              									var tempSWId = attrDropDowns[p][r].id;
+                    for(var p = 0; p < attrDropDowns.length; p++)
+                    {
+                      if(attrDDId ==  null)
+                      {
+                          for(var r = 0; r < attrDropDowns[p].length; r++)
+                          {
+                              if(swatchColor == attrDropDowns[p][r].value)
+                              {
+                                var tempSWId = attrDropDowns[p][r].id;
 
-              									if(tempSWId.length > 13)
-                										attrDDId = tempSWId.substring(13, tempSWId.length);
-              									else
-                										attrDDId = tempSWId;
+                                if(tempSWId.length > 13)
+                                    attrDDId = tempSWId.substring(13, tempSWId.length);
+                                else
+                                    attrDDId = tempSWId;
 
-              									break;
-            									}
-          								}
-        							}
-        							else
-          								break;
-      							}
+                                break;
+                              }
+                          }
+                      }
+                      else
+                          break;
+                    }
 
-      							var newSWColorId = ("swatch_color_" + attrDDId);
-      							var newSWImgId = ("swatch_img_" + attrDDId);
+                    var newSWColorId = ("swatch_color_" + attrDDId);
+                    var newSWImgId = ("swatch_img_" + attrDDId);
 
-      							if(attrDDId != null && newSWColorId != $(this)[0].id.toString())
-      							{
-        							$(this)[0].id = newSWColorId;
-        							$(this)[0].firstChild.id = newSWImgId;
-      							}
-    						});
+                    if(attrDDId != null && newSWColorId != $(this)[0].id.toString())
+                    {
+                      $(this)[0].id = newSWColorId;
+                      $(this)[0].firstChild.id = newSWImgId;
+                    }
+                });
 
-    						// first make all the swatches disabled.
-    						$("#swatch_text_name").text('');
-    						$('[id^="swatch_color_"]').each(function()
-    						{
-              					$(this).removeClass();
-      							$(this).parent().css('display', 'none');
-    						});
+                // first make all the swatches disabled.
+                $("#swatch_text_name").text('');
+                $('[id^="swatch_color_"]').each(function()
+                {
+                        $(this).removeClass();
+                    $(this).parent().css('display', 'none');
+                });
 
-    						defaultFixOnce = false;
-    					}
-    					catch(ignore)
-    					{}
-    				}
+                defaultFixOnce = false;
+              }
+              catch(ignore)
+              {}
+            }
 
-    				// going by the swatch options
-    				var swatchAttrId = itemNumVal.pkey;
-    				var defaultFirstSwatch = null;
+            // going by the swatch options
+            var swatchAttrId = itemNumVal.pkey;
+            var defaultFirstSwatch = null;
 
-    				$("#"+swatchAttrId+" option:not(option:first)").each(function()
-    				{
-      					//get the key
-      					var thisAttrValueKey = this.id.substring(13);
+            $("#"+swatchAttrId+" option:not(option:first)").each(function()
+            {
+                //get the key
+                var thisAttrValueKey = this.id.substring(13);
 
-          				// opt_attr_val_
-          				var swatchLink = document.getElementById("swatch_color_" + thisAttrValueKey);
-          				var swatchImg = document.getElementById("swatch_img_" + thisAttrValueKey);
+                  // opt_attr_val_
+                  var swatchLink = document.getElementById("swatch_color_" + thisAttrValueKey);
+                  var swatchImg = document.getElementById("swatch_img_" + thisAttrValueKey);
 
-      					var newImageSetString = null;
+                var newImageSetString = null;
 
-      					try
-      					{
-          					var clickString = swatchLink.getAttribute('onclick');
-                 				var tempStr1Start = clickString.indexOf("'");
-        					var tempStr1 = clickString.substring(tempStr1Start + 1);
-                 				var endPlace = tempStr1.indexOf("'");
-                 				newImageSetString = tempStr1.substring(0, endPlace);
-      					}
-      					catch(ignore2)
-      					{}
+                try
+                {
+                    var clickString = swatchLink.getAttribute('onclick');
+                         var tempStr1Start = clickString.indexOf("'");
+                  var tempStr1 = clickString.substring(tempStr1Start + 1);
+                         var endPlace = tempStr1.indexOf("'");
+                         newImageSetString = tempStr1.substring(0, endPlace);
+                }
+                catch(ignore2)
+                {}
 
-          				if(this.selected == true && newImageSetString != null)
-         				{
-            					// remove any previous class
-                				$("#swatch_color_" + thisAttrValueKey).removeClass();
+                  if(this.selected == true && newImageSetString != null)
+                 {
+                      // remove any previous class
+                        $("#swatch_color_" + thisAttrValueKey).removeClass();
 
-                				// make this swtach active
-               				$("#swatch_color_" + thisAttrValueKey).addClass('swatch-select');
+                        // make this swtach active
+                       $("#swatch_color_" + thisAttrValueKey).addClass('swatch-select');
 
-             					// set the text
-                 				$("#swatch_text_name").text(this.text);
+                       // set the text
+                         $("#swatch_text_name").text(this.text);
 
-                 				setImageSet("BassPro/" + newImageSetString);
-        					$("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
+                         setImageSet("BassPro/" + newImageSetString);
+                  $("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
 
-        					swatchCount++;
-        					defaultFirstSwatch = null;
-           				}
-					else
-					{
-               				// remove any previous class
-                 				$("#swatch_color_" + thisAttrValueKey).removeClass();
+                  swatchCount++;
+                  defaultFirstSwatch = null;
+                   }
+          else
+          {
+                       // remove any previous class
+                         $("#swatch_color_" + thisAttrValueKey).removeClass();
 
-        					if(newImageSetString != null)
-        					{
-          						// make this swatch active
-          						$("#swatch_color_" + thisAttrValueKey).addClass('swatch-available');
-          						$("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
+                  if(newImageSetString != null)
+                  {
+                      // make this swatch active
+                      $("#swatch_color_" + thisAttrValueKey).addClass('swatch-available');
+                      $("#swatch_color_" + thisAttrValueKey).parent().css('display', 'block');
 
-          						if(swatchCount == 0)
-            							defaultFirstSwatch = swatchLink;
+                      if(swatchCount == 0)
+                          defaultFirstSwatch = swatchLink;
 
-          						swatchCount++;
-        					}
-          				}
-    				});
+                      swatchCount++;
+                  }
+                  }
+            });
 
-    				if(defaultFirstSwatch != null && defaultSelectFirst)
-    				{
-      					defaultFirstSwatch.click();
-      					defaultSelectFirst = false;
-    				}
+            if(defaultFirstSwatch != null && defaultSelectFirst)
+            {
+                defaultFirstSwatch.click();
+                defaultSelectFirst = false;
+            }
 
-    				return false;
-    			}
-    			else if(itemNumVal != "")
-    			{
-				for(var i = 0; i < skuList.length; i++)
-				{
-					if(skuList[i].itemNumber == itemNumVal && skuList[i].buyable == 'false')
-					{
-						document.getElementById('addToCartBtn').style.display = 'none';
-						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-						break;
-					}
-					else
-					{
-						document.getElementById('addToCartBtn').style.display = 'block';
-						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-					}
-				}
-    			}
-			else
-			{
-				if(ppdType != "C" && skuList.length == 1 && skuList[0].buyable == 'false')
-				{
-					hideSelect2();
-				}
+            return false;
+          }
+          else if(itemNumVal != "")
+          {
+        for(var i = 0; i < skuList.length; i++)
+        {
+          if(skuList[i].itemNumber == itemNumVal && skuList[i].buyable == 'false')
+          {
+            document.getElementById('addToCartBtn').style.display = 'none';
+            document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+            break;
+          }
+          else
+          {
+            document.getElementById('addToCartBtn').style.display = 'block';
+            document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+          }
+        }
+          }
+      else
+      {
+        if(ppdType != "C" && skuList.length == 1 && skuList[0].buyable == 'false')
+        {
+          hideSelect2();
+        }
 
-				if(skuList.length == 1 && skuList[0].buyable == 'false')
-				{
-					try
-					{
-						document.getElementById('addToCartBtn').style.display = 'none';
-						document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
-					}
-					catch(ignore)
-					{}
+        if(skuList.length == 1 && skuList[0].buyable == 'false')
+        {
+          try
+          {
+            document.getElementById('addToCartBtn').style.display = 'none';
+            document.getElementById('prod_outof_stock').className = 'attribute-out-of-stock';
+          }
+          catch(ignore)
+          {}
 
-					try
-					{
-						document.getElementById('add-to-cart').className = 'cart button container dynamic';
-					}
-					catch(ignore)
-					{}
-				}
-				else
-				{
-					try
-					{
-						document.getElementById('addToCartBtn').style.display = 'block';
-					}
-					catch(ignore)
-					{}
+          try
+          {
+            document.getElementById('add-to-cart').className = 'cart button container dynamic';
+            document.getElementById('add-to-cart').style.display = 'none';
+            document.getElementById('add-to-wish-list').style.display = 'none';
+          }
+          catch(ignore)
+          {}
+        }
+        else
+        {
+          try
+          {
+            document.getElementById('addToCartBtn').style.display = 'block';
+          }
+          catch(ignore)
+          {}
 
-					try
-					{
-						document.getElementById('add-to-cart').className = 'cart button container';
-					}
-					catch(ignore)
-					{}
-				}
+          try
+          {
+            document.getElementById('add-to-cart').className = 'cart button container';
+            document.getElementById('add-to-cart').style.display = 'block';
+            document.getElementById('add-to-wish-list').style.display = 'block';
+          }
+          catch(ignore)
+          {}
+        }
 
-				hideSelect();
-   			}
- 		}
-	}
-	catch(error)
-	{
-	    ppException = true;
-	    errorHandler(js_filename, "initUpdateSelect()", error);
-	}
+        hideSelect();
+         }
+     }
+  }
+  catch(error)
+  {
+      ppException = true;
+      errorHandler(js_filename, "initUpdateSelect()", error);
+  }
 }
 
 function updateSelect()

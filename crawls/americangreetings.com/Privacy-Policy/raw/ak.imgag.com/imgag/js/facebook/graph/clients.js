@@ -1,5 +1,5 @@
 /*
-    $Rev: 151962 $
+    $Rev: 172688 $
     XXX: REQUIREMENTS
         -- OOP.js
         -- facebook/graph/base.js
@@ -28,6 +28,17 @@ var AGI_FB = {
             var poster = basePoster.extend(SelfPoster);
 
             return new poster(pageAttrs, FBAttrs);
+        }
+    },
+
+    JW: {
+        AllBirthdayReminders: function(pageAttrs, FBAttrs) {
+            var friendRenderer = new (new OOP.Class(BaseFriendRenderer));
+            var baseInterface = new OOP.Class(CommonInterface);
+            var baseBirthdays = baseInterface.extend(BaseBirthdayReminders);
+            var birthdays = baseBirthdays.extend(JustWinkBirthdayReminders);
+
+            return new birthdays(friendRenderer, pageAttrs, FBAttrs);
         }
     },
 
@@ -195,5 +206,15 @@ var AGI_FB = {
             return new poster(friendRenderer, pageAttrs, FBAttrs);
         }
 
+    },
+    BMAV: {
+        BirthdayReminders: function(pageAttrs, FBAttrs) {
+            var friendRenderer = new (new OOP.Class(BaseFriendRenderer));
+            var baseInterface = new OOP.Class(CommonInterface);
+            var baseBirthdays = baseInterface.extend(BaseBirthdayReminders);
+            var birthdays = baseBirthdays.extend(BMABirthdayVReminders);
+
+            return new birthdays(friendRenderer, pageAttrs, FBAttrs);
+        }
     }
 };

@@ -12,8 +12,9 @@ var ord = Math.random()*10000000000000000;
  *  refreshAds({option:"alwaysrefresh",positions: adpositionName}) // individual position, without adding a counter
  *  refreshAds({option:"alwaysrefresh", positions: adpositionName, notracking: true}) // individual position, without adding a counter and without omniture tracking
  */
- 
+
 var refreshAds = function (){
+	ord = Math.floor(Math.random()*10e12);
 	if ( !!arguments[0] && arguments[0].notracking )
 	{
 		$h.console.warn("adrefresh tracking ignored");

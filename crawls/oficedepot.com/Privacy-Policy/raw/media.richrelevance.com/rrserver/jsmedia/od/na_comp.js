@@ -83,8 +83,8 @@ function populatePrices(a) {
 				$(".rrPriceElement" + a.prices[b].pid).html(rrPriceBlock.join('')); // join the elements of the array
 				$(".item_atc_rrSKU" + a.prices[b].pid).html(a.prices[b].pidForDisplay); // update the pid for display
             if (a.prices[b].mapPrice !== '$0.00'){
-                $("ul.rrAddCartBtn" + a.prices[b].pid).addClass('map_pricing_block').html('<li><a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Lower Price in Cart</a></li>').show();
-//				$("ul.rrAddCartBtn" + a.prices[b].pid).html('<a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Lower Price in Cart</a>').show(); // show the MAP price
+                $("ul.rrAddCartBtn" + a.prices[b].pid).addClass('map_pricing_block').html('<li><a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Sale Price in Cart</a></li>').show();
+//				$("ul.rrAddCartBtn" + a.prices[b].pid).html('<a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Sale Price in Cart</a>').show(); // show the MAP price
             } else if (rrCT !== "") { 
 				$("div.moduleStructContent .rrCustomBtn" + a.prices[b].pid).show(); // if there's a customize button show it
 			} else { // show the regular pricing data

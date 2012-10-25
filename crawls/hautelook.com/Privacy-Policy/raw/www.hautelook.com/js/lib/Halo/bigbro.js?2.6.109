@@ -1,0 +1,184 @@
+if (typeof $Halo === 'undefined') {
+    var $Halo = {};
+}
+
+/**
+ * HauteLook pub/sub implementation.
+ *
+ * Bigbro manages all subscriptions and notifications between modules.
+ */
+$Halo.bigbro = (function() {
+    var subscriptions = {},
+		notifications = {},
+		api = function() {},
+		allCalls = [],
+		
+		log = function(message, object) {
+			if ((typeof siteDebug !== 'undefined') && siteDebug) {
+				debug.log(message + object);
+			}
+			allCalls.push([message, object]);
+		},
+		
+		notify = function(event, args, should_cache) {
+			var data = [];
+			
+			for (var x = 1; x < args.length; x++) {
+				data[x - 1] = args[x];
+			}
+			
+			if (should_cache) {
+				notifications[event] = data;
+			}
+			
+			if (typeof subscriptions[event] !== 'undefined')  {
+				var good_subs = [];
+				
+				for (x = 0; x < subscriptions[event].length; x++) {
+					if (subscriptions[event][x].flag) {
+						subscriptions[event][x].cb.apply(subscriptions[event][x].scope || window, data);
+						good_subs.push(subscriptions[event][x]);
+					}
+				}
+				
+				subscriptions[event] = good_subs;
+			}
+		};
+
+    /**
+     * Notify subscribers that event has occurred.
+     *
+     * Notifications are cached so the user does not have to worry about the
+     * notification occurring before something subscribes.
+     *
+     * To maintain backwards compatibility with the legacy Sandbox object, this
+     * function accepts a variable number of parameters for data.
+     *
+     * @param {String} event 	The event that has occurred.
+     */
+    api.notify = function(event/*, data1, data2, ... */) {
+        log('notify: ', event);
+
+        notify(event, arguments, true);
+    };
+
+    /**
+     * DO NOT USE THIS!
+     * Notify subscribers that event has occurred.
+     *
+     * To maintain backwards compatibility with the legacy Sandbox object, this
+     * function accepts a variable number of parameters for data.
+     *
+     * @param {String} event 	The event that has occurred.
+     */
+    api.notifyOnce = function(event /*, data1, data2, ... */) {
+        log('notifyOnce: ', event);
+
+        notify(event, arguments, false);
+    };
+
+    /**
+     * DO NOT USE THIS!
+     * This only exist to work around a serious problem with the existing
+     * overlay system and how about the brand was designed.
+     */
+    api.clearNotifications = function() {
+        log('clearNotifications');
+
+        notifications = {};
+    };
+
+    /**
+     * Execute callback when notified of an event.
+     *
+     * The callback function will be executed when {@link api.notify} is called
+     * with the specific event or if the even has already happened. If the event
+     * has already happened, the callback function will immediately be executed
+     * and will still listen for any future notifications of that event.
+     *
+     * @param {String} event 	The event to listen for.
+     * @param {function} callback 	The callback to execute when notified.
+     * @param {function} [context] 	The scope to execute the callback in.
+     */
+    api.subscribe = function (event, callback, context) {
+        log('subscribe: ', event);
+
+        subscriptions[event] = subscriptions[event] || [];
+        subscriptions[event].push({cb: callback, scope: context, flag: true});
+        if (typeof notifications[event] !== 'undefined') {
+            var data = notifications[event];
+            callback.apply(context, data);
+        }
+    };
+
+    /**
+     * Subscribe to an event only once.
+     *
+     * Once notified of the event, the subscriber will unsubscribe from
+     * the event.
+     *
+     * See {@link api.subscribe} for parameter information.
+     */
+    api.subscribeOnce = function (event, callback, context) {
+        log('subscribeOnce: ', event);
+		
+        var cb = function (data) {
+            api.unsubscribe(event, cb);
+            callback.apply(this, [data]);
+        };
+		
+        api.subscribe(event, cb, context);
+    };
+
+
+    /**
+     * Unsubscribe callback from event.
+     *
+     * @param {String} event 	The event to unsubscribe from.
+     * @param {function} callback 	The callback to remove from subscription.
+     */
+    api.unsubscribe = function (event, callback) {
+        log('unsubscribe: ', event);
+		
+        if(typeof subscriptions[event] != 'undefined') {
+            for(var x = 0; x < subscriptions[event].length; x++) {
+                if(subscriptions[event][x].cb === callback) {
+					subscriptions[event][x].flag = false;
+                }
+            }
+        }
+    };
+	
+	
+	/**
+     * Dump all active notifications. For testing
+     */
+	api.dumpAllNotifications = function() {
+        return notifications;
+    };
+	
+	/**
+     * Dump all active subscriptions. For testing
+     */
+	api.dumpAllSubscriptions = function() {
+        return subscriptions;
+    };
+	
+	/**
+     * Dump all bigbro calls on page so far. For testing
+     *
+     * @param str 	If == 'string' then turn the dump array into a string (for IE)
+     */
+	api.dumpAllCalls = function(str) {
+        if (str == 'string') {
+			var allCallsString = allCalls.toString();
+			return allCallsString;
+		}
+		else {
+			return allCalls;
+		}
+    };
+	
+
+    return api;
+}());

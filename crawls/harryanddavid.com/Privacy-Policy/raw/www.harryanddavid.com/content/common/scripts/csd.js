@@ -762,14 +762,16 @@ var media = (function ($) {
 $(function () {
   "use strict";
   var $breadcrumb, $image, $map;
-  $breadcrumb     = $('#breadcrumb');
+  $breadcrumb     = $('#progress');
   $image          = $breadcrumb.find('> img[usemap]');
   $map            = $($image.attr('usemap'));
 
   if ($image.length === 1 && $map.length === 1) {
     $map.find('area').each(function (index, element) {
       index++;
-      $(this).hover(function () { $breadcrumb.addClass('rollover-' + index); }, function () { $breadcrumb.removeClass('rollover-' + index); });
+      $(this)
+      .css('cursor','pointer')
+      .hover(function () { $breadcrumb.addClass('rollover-' + index); }, function () { $breadcrumb.removeClass('rollover-' + index); });
     });
   }
 });

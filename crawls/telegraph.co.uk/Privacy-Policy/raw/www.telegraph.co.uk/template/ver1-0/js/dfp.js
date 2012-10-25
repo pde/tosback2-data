@@ -1,5 +1,11 @@
 // 5.00 - 2012-08-31 - BUG: Fixed the reg bar not showing when adkill is activated
 // 5.01 - 2012-08-31 - Cleaned up code 
+// 5.02 - fix bug - Uncaught ReferenceError: $ is not defined - in Wordpress as it doesn;t like the $ jquery declaration
+//        added suppot for pfadx as well as adx calls
+// 5.03 - Added dc_ref= instead of the old dom value, removed dom= from urls 
+//        added geo=XX taken from tmgads.geo metatag, fixes bug with Ooyala HTNL5 video player
+//        added support for pfadx
+// 5.04 - Added fix for embeded videos hcih still call the adx method, changes this to pfadx if adtype = vid
 // INITIALISE tmgAds object
 var tmgAds = new tmgAdsInitAdsData();
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +33,7 @@ function tmgAdsInitAdsData(){
   this.pagetype = tmgAdsGetMetaTag("tmgads.pagetype");
   this.level    = tmgAdsGetMetaTag("tmgads.level");
   this.articleid= tmgAdsGetMetaTag("tmgads.articleid");
+  this.geo      = tmgAdsGetMetaTag("tmgads.geo");
   this.tile     = 0;
   if(document.all){
     this.biw = document.documentElement.offsetWidth;
@@ -234,6 +241,10 @@ function tmgGetAdVisibility(i){
 }
 ///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
+  // fix the issue with the old embedded videos still having adx calls
+  if(adType==="vid" && adScriptType==="adx"){
+    adScriptType="pfadx";
+  }
   ++tmgAds.tile;
   tmgAds.renderTime[tmgAds.tile]      = new Array(); // hold details of ad renderingtimes etc
   //force an ad invocation type, adi or adj only
@@ -275,6 +286,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pt="  + tmgAds.pagetype;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pg="  + tmgAds.articleid;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";lvl=" + tmgAds.level;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";geo=" + tmgAds.geo;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";biw=" + tmgAds.biw;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";bih=" + tmgAds.bih;
   if(typeof tmgAds.orientation === "number"){
@@ -295,7 +307,8 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.gsSegments;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.keywords;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.ppCookies;
-  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dom=" + tmgAds.page['domain'];
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dc_ref=" + encodeURIComponent(tmgAds.page['url']);
+  //tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dom=" + tmgAds.page['domain'];
   // Add Yeidlex u= targeting here; NB: the adtype has already been ascertained at the top of this function
   tmgAds.ads[tmgAds.tile]['dfp']['logging'] = tmgAds.ads[tmgAds.tile]['dfp']['logging'].substr(0,tmgAds.ads[tmgAds.tile]['dfp']['logging'].length-1);
   tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|sz="  + adSize;
@@ -359,7 +372,10 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
       tmgAds.ads[tmgAds.tile]['tag'] = "<scr"+"ipt type=\"text/javascript\" id=\""+tmgAds.ads[tmgAds.tile]['id_script']+"\" src=\""+tmgAds.ads[tmgAds.tile]['url']+"\"><\/scr"+"ipt>"; 
       break
     case "adx":
-      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url']; 
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url'];
+      break
+    case "pfadx":
+      tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url'];
       break
     default:
       tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url']; 
@@ -404,7 +420,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[tmgAds.tile]['tagPreScript'] = "<scr"+"ipt type=\"text/javascript\">" + tmgAds.ads[tmgAds.tile]['tagPreScript'] + "</scr"+"ipt>";
   tmgAds.ads[tmgAds.tile]['tagPostScript']= "<scr"+"ipt type=\"text/javascript\">" + tmgAds.ads[tmgAds.tile]['tagPostScript']+ "</scr"+"ipt>";
   // build the final taga and return this, for adx calls make sure the response is ONLY a url otherwise will break apps
-  if(adScriptType==="adx"){
+  if(adScriptType==="adx" || adScriptType==="pfadx"){
     tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url'];
   } else {
     // Fix Fashion gallries, only return IFRAME tag, don't wrap with timer tags sc=fashion-galleries and iframe adi call
@@ -418,7 +434,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
 ///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsGetAdSlotInfo(i){
     // some ads don't have this, eg; video adx calls, use else rather than set vars default first as quicker/less steps.
-    if(tmgAds.ads[i]['func']['invoc']!="adx" && tmgAds.urlParams['adkill']!="on" && tmgAds.pagetype!="gallery"){
+    if((tmgAds.ads[i]['func']['invoc']!="adx" && tmgAds.ads[i]['func']['invoc']!="pfadx") && tmgAds.urlParams['adkill']!="on" && tmgAds.pagetype!="gallery"){
       tmgAds.ads[i]['divW']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetWidth;    
       tmgAds.ads[i]['divH']   = document.getElementById(tmgAds.ads[i]['id_div']).offsetHeight;   
       tmgAds.ads[i]['pos']    = tmgAdsGetAdPos(document.getElementById(tmgAds.ads[i]['id_div']));
@@ -454,7 +470,8 @@ function tmgAdsDebugShowWindow(){
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 // DEBUG ads, do these after page has loaded so add to the window.ready event.
-$(document).ready(function() {
+(function($) {
+ $(document).ready(function() {
   tmgAds['jquery'] = $().jquery;
   // amend tmgAds with post window.ready data
   for(var i=1;i<=tmgAds.ads.length-1;i++){
@@ -478,4 +495,5 @@ $(document).ready(function() {
       }
     }  
   }
-});
+ });
+})(jQuery);

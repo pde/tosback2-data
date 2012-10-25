@@ -20,7 +20,10 @@ function gvpUtils() {
 	var body;
 	var mFooterButton = '';
 	var gvpVersion = '';
+	var headerStr = '';
+	var contentStr = '';
 	var metaData = {};
+	
 	
 	this.popOnLoad = function popOnLoad(p_QArray) {
 		if(p_QArray.gvpFile) {	
@@ -874,9 +877,11 @@ function gvpUtils() {
 	// param: title, modal or not, close button or not (T/F)
 	// return: nothing
 	this.showPopUp = function showPopUp(title, blockBG, closeButton, playerType, mSkuOrPath) {
+
 		gvp.beginLoadTime = new Date();
 		gvpVersion = '_2.2.2';
 		body = document.getElementsByTagName('body')[0];
+		
 		if(arguments.length >= 4) {
 			
 			if(arguments.length >= 5) {
@@ -1041,11 +1046,22 @@ function gvpUtils() {
 						p_locEnv = '/media/gvp/';
 					}
 					if(this.mobile.isMobile) {
-						this.mobile.setContentStr(pConfig, p_locEnv);
-						this.mobile.openModal(this);
-					} else if (!this.getFlashVersion()) {
+						
+						if(this.mobile.isDeviceScreenSmall()) {
+							var background = document.getElementById("gvp_overlayDiv");
+							background.parentNode.removeChild(background);
+							this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
+							
+						} 
+						else {
+							this.mobile.setContentStr(pConfig, p_locEnv);
+							this.mobile.openModal(this);
+						}
+					} 
+					else if (!this.getFlashVersion()) {
 						this.rplFlash('noFlash');
-					} else {
+					} 
+					else {
 						if( pConfig.indexOf('gvpLgFormat') == -1 ) {
                         	this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="415" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="movie" value="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" allowfullscreen="true" id="gvp_pop_embed" quality="high" bgcolor="#ffffff" width="516" height="415" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
                         } else {
@@ -1316,7 +1332,7 @@ The subclass gvpUtils.mobile is defined below.  It encapsulates all mobile funct
 
 The two main functions of this class are setContentStr and openModal.  setContentStr runs first and creates the appropriate HTML containing a video tag for the detected device and stores it in the contentStr variable.  The contents of this function are exactly the same for gvpUtils and gvpUtils_HR.  openModal opens a modal window and injects the HTML stored in the contentStr into it.  Adding support for a new device entails adding device detection, adding a case to the if/else block in setContentStr for the device, and possibly adding device-specific behavior to openModal.
 
-Currently Android devices are being detected and being shown the default "no video available" image.  This will be replaced with proper Android support in the future.
+Currently 3 types of devices are being detected: IOS, Kindle, and Android.  Kindle's can identify themselves as Androids if the browser is in mobile optimization mode.  Therefore, it is critical that Kindle comes before Android in the if/else statement in setContentStr().
 */
 gvpUtils.prototype.mobile = new function () {
 
@@ -1325,12 +1341,13 @@ gvpUtils.prototype.mobile = new function () {
 	var isKindle = /silk/i.test(navigator.userAgent);
 	var isAndroid = /android/i.test(navigator.userAgent);
 	this.isMobile = isIOS || isKindle || isAndroid;
-	
+	var screenSizeLimit = 800;
 	//other variables
 	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
 	var closeModal = 'gvp.closePopup();';
 	var contentStr;
 	var h264FileName;
+	var noVideo; 
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
@@ -1371,7 +1388,7 @@ gvpUtils.prototype.mobile = new function () {
 			var androidVidEl = document.createElement('video');
 			
 			androidVidEl.setAttribute('id', 'currEmbStream');
-			androidVidEl.setAttribute('style', 'display:block; position:absolute; height:288px; width:512px;');
+			androidVidEl.setAttribute('style', 'display:block; position:absolute;');
 			androidVidEl.setAttribute('poster', 'http://www.att.com/media/gvp/global_resources/defaultMedia/GVP_Poster.jpg');
 
 			// Create and identify the child elements for the video element. Do not insert a "type" attribute. Android does not accept that attribute.
@@ -1406,19 +1423,119 @@ gvpUtils.prototype.mobile = new function () {
 			video.style.display = 'block';
 		}
 	};
-}();
+		// SMALL MOBILE PHONE DEVICES ONLY
+	// Return the device screen's diagonal measurement using density independent pixels.
+	// Example: 800 X 360, ratio 1.5 yields a diagonal of about 658.
+	this.calcScreenDiagonal = function () {
+		var dsPixelRatio = window.devicePixelRatio;
+		var dsWidth = window.outerWidth;
+		var dsHeight = window.outerHeight;
+		var diagonalDim =  Math.sqrt( (dsWidth * dsWidth) + (dsHeight * dsHeight) ) / dsPixelRatio;
+		return diagonalDim;
+	};
+	
+	// If the device has a small screen, return true.
+	this.isDeviceScreenSmall = function () {
+		var screenDiagonal = this.calcScreenDiagonal();
+		return(screenDiagonal < screenSizeLimit);
+	};
+	
+	// Build the H.264 filename.
+	this.buildH264Filename = function (pConfig, p_locEnv) {
+		// Remove extraneous parameters.
+		var paramStart = pConfig.indexOf('&');
+		if (paramStart !== -1) {
+			pConfig = pConfig.substring(0, paramStart);
+		}
+
+		// Remove directory prefix and file type.
+		var nameStart = pConfig.lastIndexOf('/')+1;
+		var nameEnd = pConfig.indexOf('.',nameStart);
+
+		return(pConfig.substring(nameStart, nameEnd));
+	};
+	
+	// Build the image element for no video.
+	this.buildNoVideoImgEl = function (p_locEnv) {
+		var noVideoImgFrag = document.createDocumentFragment();
+		var imgEl = document.createElement('img');
+		imgEl.setAttribute('src', p_locEnv + 'global_resources/defaultMedia/GVP_iPhone_noVideo.jpg');
+		imgEl.setAttribute('border', '0');
+		imgEl.setAttribute('onclick', 'closeModal');
+		noVideoImgFrag.appendChild(imgEl);
+		return noVideoImgFrag;
+	}
+	// Build a video element for a device and particular operating system.
+	this.buildVideoElement = function (pConfig, p_locEnv) {
+		var h264fn = this.buildH264Filename(pConfig, p_locEnv);
+		
+		// If no filename is available, return with the No Video image element.
+		if (h264fn === '') {
+			// Set up to show the No Video image.
+			noVideo = true;
+			return this.buildNoVideoImgEl(p_locEnv);
+		}
+		
+		// Set up elements common to playing video with and without modal dialog.
+		var vidFrag = document.createDocumentFragment();		
+		var videoEl = document.createElement('video');
+		videoEl.setAttribute('id', 'currEmbStream');
+		videoEl.setAttribute('style', 'display:block; position:absolute;');
+		
+		// Create child elements for the video element. 
+		var videoSourceEl = document.createElement('source');
+		videoSourceEl.setAttribute('src',h264PathMarker + h264fn + '.mp4');
+		if(!isAndroid) {
+			// Android does not accept the "type" attribute and fails.
+			videoSourceEl.setAttribute('type','video/mp4');
+		}
+		
+		videoEl.setAttribute('poster',p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg');
+		videoEl.setAttribute('width','1');
+		videoEl.setAttribute('height','1');
+		videoEl.setAttribute('onended','closeModal');
+			 
+		// Append child elements of the video element.
+		videoEl.appendChild(videoSourceEl);								
+		vidFrag.appendChild(videoEl);
+		
+		document.getElementsByTagName('body')[0].appendChild(vidFrag);	
+		videoEl.addEventListener('load',function() {videoEl.play();},true);
+		// IOS needs the load event to invoke the event listener
+		if(isIOS) {
+			videoEl.load();
+			videoEl.play();
+			gvp.closePopup();
+		}
+	};
+	
+	
+	// Insert a video element into the page.
+	this.insertVideoElemInPage = function (pConfig, p_locEnv) {
+		
+		var voidVid = document.getElementById("currEmbStream");
+		if (voidVid === null){
+			this.buildVideoElement(pConfig, p_locEnv);
+			this.overLayDiv(false);
+		}
+		else {
+			voidVid.parentNode.removeChild(voidVid);
+			this.buildVideoElement(pConfig, p_locEnv);
+			this.overLayDiv(false);
+		}
+	};
+};
 
 gvp = new gvpUtils();
-//var gvpVerRand = (Math.random() * 6);
-//gvp.incFile('/media/gvp/global_resources/gvpver.json?'+gvpVerRand);
+
 //set page event handlers
 if (window.attachEvent) {
 	window.attachEvent("onload", function(){
-		var t=setTimeout("gvp.parseQstring(true);",1000);
+		var t=setTimeout("gvp.parseQstring(true);",500);
 	});
 } else {
 	window.addEventListener('load',function(){
-		var t=setTimeout("gvp.parseQstring(true);",1000);
+		var t=setTimeout("gvp.parseQstring(true);",500);
 	},false);
 }
 

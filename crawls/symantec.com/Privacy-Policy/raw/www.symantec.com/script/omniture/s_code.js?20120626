@@ -25,6 +25,7 @@ Changes 2012-4-24: Connect Utility Stacking prop62 - remove connect_utility: to 
 Changes 2012-6-19: Updated prop59/evar59 to not set page name to None when missing meta data.
 Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. comment out prop61&62, enough data to analyze.
 also removed om_sem_copy prop28 due conflict with demand base setup.
+Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
 */
 
 var s_account=metaData['repsuite']
@@ -482,12 +483,241 @@ var s_sv_gather_root = "survey.112.2o7.net/survey/gather"
 s.Survey.suites = "veritasnonconsumer"
 
 
+
+
+
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
 s.trackingServer="om.symantec.com"
 s.trackingServerSecure="oms.symantec.com"
 s.dc=112
+
+
+
+
+/* Demandbase code
+ *
+
+Added by Rob Perez October 15, 2012
+
+*/
+
+
+/* BEGIN ADD IN */
+/************************** PLUGINS SECTION *************************/
+
+
+/* Demandbase Plugin Start - 9/20/2012 */
+window.wasErrorInDemandbasePlugin = false;
+window.gmtInThirtyMinutes = (function () {var d = new Date(); d.setTime(d.getTime() + 18E5); return d.toGMTString();}());
+window.dbData = {}; //global demandbase data
+var demandbasePlugin = {
+	rCookie: function(cn) {
+		return (function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})(cn);
+	},
+	wCookie: function(cname,cvalue,expire) {
+		document.cookie = (cname+'='+cvalue+'; domain = .symantec.com; path=/'+(expire)?';expires='+expire.toGMTString():'');
+	},
+	dataIsStored: function() {
+		var dRef;
+		if(1 == 2) {
+			dRef = sessionStorage.sessync;
+			if (dRef) {
+				if (dRef.substr(dRef.indexOf('expires')+10,13) < Date.now()) {
+					return false; //no:expired, need to update
+				} else {
+					return true; //yes:data stored <30 min
+				}
+			}
+			return false; //no:session data sessync
+		} else { //no HTML5 storage support - check cookies
+			if (demandbasePlugin.rCookie('sessync')) {
+				return true; //yes:if cookie exists then it hasn't expired
+			} else {
+				return false; //no:missing cookie data
+			}
+		}
+	},
+	checkAndReturnSameOrErrorValue: function(variableToCheck, isDetailed, errorValue, detailedErrorValue) {
+		errorValue = (this.isDefinedAndNotEmpty(errorValue)) ? errorValue : "ISP Visitor";
+		detailedErrorValue = (this.isDefinedAndNotEmpty(detailedErrorValue)) ? detailedErrorValue : "Error";
+		if (this.isDefinedAndNotEmpty(variableToCheck)) {
+			return variableToCheck;
+		} else {
+			if (isDetailed) {
+				return detailedErrorValue;
+			} else {
+				return errorValue;
+			}
+		}
+	},
+	isDefinedAndNotEmpty: function(variableToCheck) {
+		if ((typeof(variableToCheck) !== 'undefined') && variableToCheck !== '' && variableToCheck !== null) {
+			return true;
+		}
+		return false;
+	},
+	storeData: function (dataObject) {
+		var dataString = JSON.stringify(dataObject),
+			inThirtyMinutes = (function () {var d = new Date(); d.setTime(d.getTime() + 18E5); return d;}());
+		if (1 == 2) {
+			dataString = dataString.replace('{','{"expires":"'+inThirtyMinutes+'",');
+			sessionStorage.sessync = dataString;
+		} else {
+			wCookie('sessync',dataString,inThirtyMinutes);
+		}
+	},
+	demandbase_parse: function(dbInfo) {
+		try {
+			var isExternalIP = true,
+				isDetailed = (dbInfo.information_level === 'Detailed')?'true':'false',
+                isExternalIP = true,
+				local = 'Internal Testing'; //message set for internal traffic;
+
+			if (dbInfo.error && dbInfo.status) {
+				if (dbInfo.error === 'Not Found' && dbInfo.status === '404') {
+					isExternalIP = false;
+				}
+			}
+			if (isExternalIP) {
+				dbData.companyName = this.checkAndReturnSameOrErrorValue(dbInfo.company_name, isDetailed);
+				dbData.employeeCount = this.checkAndReturnSameOrErrorValue(dbInfo.employee_count, isDetailed);
+				dbData.accountStatus = this.checkAndReturnSameOrErrorValue(dbInfo.account_status, isDetailed);
+				dbData.primaryIndustry = this.checkAndReturnSameOrErrorValue(dbInfo.industry, isDetailed);
+				dbData.subIndustry = this.checkAndReturnSameOrErrorValue(dbInfo.sub_industry, isDetailed);
+				dbData.employeeBand = this.checkAndReturnSameOrErrorValue(dbInfo.employee_range, isDetailed);
+				dbData.revenueBand = this.checkAndReturnSameOrErrorValue(dbInfo.revenue_range, isDetailed);
+				dbData.state = this.checkAndReturnSameOrErrorValue(dbInfo.state, isDetailed);
+				dbData.countryName = this.checkAndReturnSameOrErrorValue(dbInfo.country_name, isDetailed);
+				dbData.fortune1000 = this.checkAndReturnSameOrErrorValue(dbInfo.fortune_1000, isDetailed);
+				dbData.website = this.checkAndReturnSameOrErrorValue(dbInfo.web_site, isDetailed);
+				dbData.demandbaseID = this.checkAndReturnSameOrErrorValue(dbInfo.demandbase_sid, isDetailed);
+				dbData.audience = this.checkAndReturnSameOrErrorValue(dbInfo.audience, isDetailed);
+				dbData.audienceSegment = this.checkAndReturnSameOrErrorValue(dbInfo.audience_segment, isDetailed);
+
+			} else if (!isExternalIp) {
+				dbData.companyName = local;
+				dbData.employeeCount = local;
+				dbData.accountStatus = local;
+				dbData.primaryIndustry = local;
+				dbData.subIndustry = local;
+				dbData.employeeBand = local;
+				dbData.revenueBand = local;
+				dbData.state = local;
+				dbData.countryName = local;
+				dbData.fortune1000 = local;
+				dbData.website = local;
+				dbData.demandbaseID = local;
+				dbData.audience = local;
+				dbData.audienceSegment = local;
+			}
+			//write any updates back out to data storage
+			demandbasePlugin.storeData(dbData);
+		} catch (err) {
+			wasErrorInDemandbasePlugin = true;
+		}
+	},
+	getStoredData: function() {
+		if(1 == 2) {
+			if (sessionStorage.sessync) {
+				return JSON.parse(sessionStorage.sessync);
+			}
+		} else {
+			try{
+				if (demandbasePlugin.rCookie('sessync')) {
+					return JSON.parse(demandbasePlugin.rCookie('sessync'));
+				}
+			}
+			catch(ex){
+				return false;
+			}
+		}
+	},
+	setDataObject: function(){
+		var sesData = demandbasePlugin.getStoredData();
+		//parse sesData to dbObject
+		dbData.companyName = sesData.companyName;
+		dbData.employeeCount = sesData.employeeCount;
+		dbData.accountStatus = sesData.accountStatus;
+		dbData.primaryIndustry = sesData.primaryIndustry;
+		dbData.subIndustry = sesData.subIndustry;
+		dbData.employeeBand = sesData.employeeBand;
+		dbData.revenueBand = sesData.revenueBand;
+		dbData.state = sesData.state;
+		dbData.countryName = sesData.countryName;
+		dbData.fortune1000 = sesData.fortune1000;
+		dbData.website = sesData.website;
+		dbData.demandbaseID = sesData.demandbaseID;
+		dbData.audience = sesData.audience;
+		dbData.audienceSegment = sesData.audienceSegment;
+	}
+
+};
+if (!demandbasePlugin.dataIsStored()){
+	/* Demandbase API Call */
+	var scr = document.createElement('script');
+	scr.src = "https://api.demandbase.com/api/v2/ip.json?key=09884c914277626561f7b4e7cff7fa13edf3b423&query=&var=dbInfo&callback=demandbasePlugin.demandbase_parse";
+	document.getElementsByTagName('head')[0].appendChild(scr);
+} else { //Data Stored, set data object for use w/omniture tracking
+	demandbasePlugin.setDataObject();
+}
+
+trackDemandBase = function(){
+		var dbTracked=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('dbtracked');
+		if(dbTracked.indexOf('db')==-1){
+			try{
+				s.linkTrackVars = 'prop28,prop51,prop55,prop63,eVar15';
+				s.prop28 = dbData.companyName;
+				s.prop51 = dbData.audienceSegment;
+				s.eVar15 = dbData.employeeCount;
+				s.prop55 = dbData.primaryIndustry;
+				s.prop63 = dbData.subIndustry;
+				void(s.tl(this,'o','DB2SC'));
+				document.cookie = ('dbtracked=|db ;domain = .symantec.com; path=/; expires='+gmtInThirtyMinutes);
+				return true;
+			}
+			catch (ex){
+			}
+		}
+	else{
+		return false;
+	}
+}
+
+fireDemandBaseTracking = function(){
+	if(typeof(metaData['page_name'])!= "undefined"){
+		var myPageName = metaData['page_name'];
+	// if we're not en/us, we're done.
+		if(myPageName.indexOf('en/us')<0){
+			return false;
+		}
+		else{	// we are en/us. Test return true if any conditions are met
+			if(myPageName == "en/us: biz: symantec"){ // homepage
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: products:')>-1){ //product pages
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: solutions:')>-1){ //solutions pages
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: theme:')>-1){ //theme pages
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: cmp:')>-1){ //campaign pages
+				return true;
+			}
+		}
+	}
+	return false; //no conditions met? Return false and do not invoke demandbase.
+}
+
+if(fireDemandBaseTracking()){
+	var tdb = setTimeout("trackDemandBase();","3000");
+}
+
+/* end demandbase code */
 
 /****************************** MODULES *****************************/
 /* Module: Survey */

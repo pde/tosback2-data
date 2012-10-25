@@ -56,7 +56,6 @@ z=z.replace(/^([a-z]+)_([a-z]+)\/([a-z]+)$/i,"mob/$1__$2__$3");if($('#ad-'+n+'-s
 $(function(){$('.ad-now').width('auto').height('auto');$('.ad-load').each(function(){var s=$('#'+this.id+'-spot');if(s.length)
 s.width('auto').height('auto')
 .get(0).appendChild(this);});var a=$('#ad-mpu1-spot');var c=$('#right-col').get(0);if(a.length&&a.height()>500&&typeof RegArticle!='undefined'&&!RegArticle.bms){if(c)c.insertBefore(a.get(0),c.firstChild);}
-else if(a.length&&a.height()>500&&window.location.pathname.split("/")[1]==""){var h=$('#hot').get(0);if(c&&h)c.insertBefore(h,c.firstChild);}
 if(a.length&&a.height()<2)a.css('margin-top',0);if(typeof RegWpTl!='undefined')
 $('.wptl').html(RegWpTl[Math.floor(Math.random()*RegWpTl.length)]);});function google_ad_request_done(G){var N=G.length;$(function(){var wp=$('#whitepapers');var A=wp.length?wp:$('#article');if(A.length){if(!N)
 A.after('<img src="http://go.theregister.com/k/google_ua_na" width=1 height=1 alt="">');else if(G[0].type=='text'){G=$.map(G,function(_,i){var v=_.visible_url;var e=N==1?'p':'li';var c=i%2==0?' class=row-start':'';var h=' href="'+_.url+

@@ -323,10 +323,10 @@ else{
     }
    }
   }
-  else {
+  else if (adsMob){
    try{
-    wi=f.contentWindow.document.body.scrollHeight;
-    h=f.contentWindow.document.body.scrollWidth;
+    wi=f.contentWindow.document.body.scrollWidth;
+    h=f.contentWindow.document.body.scrollHeight;
    }
    catch(e){}
   } 

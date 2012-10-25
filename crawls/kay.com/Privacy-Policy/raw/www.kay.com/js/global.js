@@ -468,6 +468,12 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 	var userInput = gup("userInput");
 	var storeLocatorPage = false;
 	
+	// This condition is to set the default value to make it work for single store zoom.
+	// Actual logic exist in StoreMap.js to make zoom out work for single store. 
+	if(subSequentSearch) {
+		storeMap.canSingleStoreZoom = false;
+	}	
+	
 	// Get address from find a store in store locator view.
 	if(address == undefined || address == "" || address == "Enter a location" || address == null) {
 		address = $("input[name=input_location_results_view]").val();

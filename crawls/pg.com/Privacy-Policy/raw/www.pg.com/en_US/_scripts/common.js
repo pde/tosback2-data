@@ -299,3 +299,21 @@ $(function() {
   });
 
 });
+
+/*
+ * INVESTOR NEWS/EVENTS EXPANDER
+ */
+$(function() {
+	$('#investor-relations .box-container:eq(1).section .featured').each(function(){
+		$(this).find('p,h4,hr').not(':nth-child(1),:nth-child(2)').wrapAll('<div class="hidden_"></div>'); 
+	});
+	
+	$('.hidden_').after('<a href="#" class="showmore">Show more...</a>').hide();
+	$('.showmore').on('click', function(e){
+		$(this).fadeOut(300,function(){
+			$(this).prev('.hidden_').fadeIn();
+		});
+		e.preventDefault();
+	});
+	
+});

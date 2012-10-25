@@ -22,7 +22,7 @@ $(document).ready(function() {
 function tb_init(domChunk) {
     var initTB = true;
     if ($(domChunk).hasClass("thickboxDesk")) {
-        var deviceWidth = window.screen.width;
+        var deviceWidth = window.screen.width;        
         if ((typeof deviceWidth != 'undefined') && deviceWidth != null && deviceWidth < 600) {
             //alert("low width");
             initTB = false;
@@ -31,7 +31,8 @@ function tb_init(domChunk) {
     }
 
     if (initTB == true) {
-        $(domChunk).unbind("click").click(function() {
+        $(domChunk).unbind("click").bind("click", function() {
+             //alert("bound for the thickbox");
             if ((navigator.userAgent.match(/iPad/i))) {
                 $(window).scrollTop(0);
             }
@@ -39,6 +40,7 @@ function tb_init(domChunk) {
             var a = this.href || this.alt || $(this).attr("href");
             var g = this.rel || false;
             tb_show(t, a, g);
+           
             this.blur();
             return false;
         });

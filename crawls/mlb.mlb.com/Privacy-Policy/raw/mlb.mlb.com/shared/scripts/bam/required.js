@@ -13,7 +13,8 @@ if (!window.bam) {
 		IS_NUMERIC = /^\-?(0|[1-9]\d{0,2}(,?\d{3})*)(\.\d+)?$/,
 		ModuleError, RequireError,
 		everythingAfterLastSlash = /\/([^\/]*)$/,
-		REQUIRE_VARIABLE_REGEX = /^function([\s]+)?\(([\s]+)?([\w]+)/;
+		requireVariableRegExp = /^function([\s]+)?\(([\s]+)?([\w]+)/,
+		commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
 
 
 	/**
@@ -54,8 +55,8 @@ if (!window.bam) {
 	})();
 
 	function getDependenciesFromFunction(fn) {
-		var fnString = fn.toString();
-		var requireVariable = REQUIRE_VARIABLE_REGEX.exec(fnString)[3];
+		var fnString = fn.toString().replace(commentRegExp, '');
+		var requireVariable = requireVariableRegExp.exec(fnString)[3];
 		if (requireVariable) {
 			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
 			var dependencies = fnString.match(requireRegex) || [];
@@ -64,6 +65,9 @@ if (!window.bam) {
 		// normalize dependency array
 		dependencies.forEach(function(dependency, i) {
 			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
+				if (dependency.charAt(0) !== '/') {
+					dependency = '/'+dependency;
+				}
 				var name = everythingAfterLastSlash.exec(dependency)[1];
 				dependencies[i] = {};
 				dependencies[i][name] = dependency;
@@ -215,7 +219,7 @@ if (!window.bam) {
 				//If current version listed in manifest is greater than the version used
 				if (manifestEntry) {
 					if (manifestEntry.atbat + '' > version) {
-						console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
+						window.console && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
 						bam.trackDeprecated({
 							module: module,
 							version: version,
@@ -223,7 +227,7 @@ if (!window.bam) {
 						});
 						//Else, check if a possible upgrade version is available
 					} else if ((onDeck in manifestEntry) && version < manifestEntry.ondeck + '') {
-						console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
+						window.console && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
 					}
 				}
 				version = IS_NUMERIC.test(version) ? parseFloat(version) : version;
@@ -300,7 +304,12 @@ if (!window.bam) {
 			if (registeredModule) {
 				//Get the isolated version of the module (protects cached value from being overriden)
 				this.context[module.name] = isolate(registeredModule);
-				promise.trigger("onModuleReady", [module, that.context[module.name]]);
+				that.context[module.name].ver = module.version;
+				(function(module) {
+					setTimeout( function() {
+						promise.trigger("onModuleReady", [module, that.context[module.name]]);
+					}, 0);
+				})(module)
 			} else {
 				//Get a path to module (ex.: /shared/scripts/bam/module/1.0/module) ".js" is ommited
 				scriptUrl = module.path;

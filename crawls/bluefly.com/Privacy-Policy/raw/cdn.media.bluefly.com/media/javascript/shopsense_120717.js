@@ -39,7 +39,8 @@
 		}	
 	}
 
-        jQuery(function() {
+function shopsenseInit()
+	{
         	squish_zIndex_bug_shopsense();
         	var pastlove_overlay_open = false;
 
@@ -118,7 +119,10 @@
 		//if ( shopsense_container != undefined ) {
         	//	shopsense_container.css({width: 635});
 		//}
-        });
+	}
+        jQuery(function() {
+			shopsenseInit();
+        });        
 
 	function squish_zIndex_bug_shopsense(){
     		jQuery('.shopsafeProductContainer').each(

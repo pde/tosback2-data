@@ -1,4 +1,5 @@
 /*global jQuery, $, Modernizr */
+
 //Douglas Crockford's json2.js
 var JSON;if(!JSON){JSON={};}
 (function(){"use strict";function f(n){return n<10?'0'+n:n;}
@@ -468,6 +469,7 @@ HDM.ads = {
         try { _vrtrack(); } catch(e) {}
     },
 	refreshAds: function(forceRefresh, pageName){
+		ord = Math.floor(Math.random()*10e12);
 		var self = HDM.ads,
 			//check to see if the dapMgr object exists and we're on delish.. if so we're gonna call a different function
 			isMSN = (typeof dapMgr === 'object') && window.location.hostname.match('delish.com');

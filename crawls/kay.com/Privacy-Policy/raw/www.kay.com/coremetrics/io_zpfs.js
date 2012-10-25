@@ -543,7 +543,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 					catentryMap = the_object["catentryMap"];
 					// Ratings icon path with products.
 					loadPDPRecs(priceArray, ratingsMap,catentryMap);		
-					document.getElementById(div_id).innerHTML = html;
+					//document.getElementById(div_id).innerHTML = html;
 					//if (symbolic !== '_NR_')
 						//loadQV();
 				}
@@ -567,7 +567,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 		var n_recs = a_product_ids.length;
 		var lines = [];
 		loadHPRecs();
-		//document.getElementById(div_id).innerHTML = html;		
+		document.getElementById(div_id).innerHTML = html;		
 	}
 
 	//To load recommendations.
@@ -584,6 +584,11 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var seoUrl = rec_attributes[ii][3];
 				var ratings = rec_attributes[ii][4];
 				var style = rec_attributes[ii][5];
+				var isModelThree = false;
+				
+				if (style && style != rec_prod_id) {
+					isModelThree = true;
+				}
 				
 				productName = productName.replace(/\|/g, "<br/>");
 				
@@ -596,7 +601,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				}
 				
 				var selected_href = "";
-				if (style) {
+				if (isModelThree) {
 					selected_href = "/personalizedProduct|" + storeId + "|" + catalogId + "|"+ langId + "||||||||||" + rec_prod_id.replace(style, "") + "|" + style;
 				}
 				else {
@@ -655,7 +660,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				lines.push("<div><span class='rating'><a href='" + selected_href + "?reviews'>" + 
 						"<img src='" + ratingImg + "'>"+ "</a></span></div>");
 				
-				if (!style) {
+				if (!isModelThree) {
 					lines.push("<p><label for='compare-123abc'>" +
 							"<input type='checkbox' id='check_" + compareCatentryId + "' name='checkboxid' " +
 							"onclick='JavaScript:categoryDisplayJS.Add2CompareAjax(\""+compareCatentryId+"\" , \""+thumbnailImg
@@ -709,6 +714,11 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				var seoUrl = rec_attributes[ii][3];
 				var ratings = rec_attributes[ii][4];
 				var style = rec_attributes[ii][5];
+				var isModelThree = false;
+				
+				if (style && style != rec_prod_id) {
+					isModelThree = true;
+				}
 				
 				productName = productName.replace(/\|/g, "<br/>");
 				imageAlt = productName.replace(/\<br\/\>/g, " ");
@@ -718,7 +728,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				}
 				
 				var selected_href = "";
-				if (style) {
+				if (isModelThree) {
 					selected_href = "/personalizedProduct|" + storeId + "|" + catalogId + "|"+ langId + "||||||||||" + rec_prod_id.replace(style, "") + "|" + style;
 				}
 				else {
@@ -742,8 +752,8 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 		html += lines.join("\n") + "<\/div\>";
 		
 		if(n_recs > 0) {
-			//document.getElementById("hp_io_zone").removeAttribute("style");
-			//document.getElementById("coremetrics_title").removeAttribute("style");
+			document.getElementById("hp_io_zone").removeAttribute("style");
+			document.getElementById("coremetrics_title").removeAttribute("style");
 		}	
 	}	
 }

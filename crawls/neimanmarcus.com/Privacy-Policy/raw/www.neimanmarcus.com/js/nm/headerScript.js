@@ -72,7 +72,6 @@ nm.headerScript = (function($) {
 	}
 	
 	function invokeFiftyOneWelcomeMat(ev){
-		alert("!!!"+ev);
 		var getFragmentReq = new GetFragmentReq();
 //		getFragmentReq[GetFragmentReq_url] = ev;
 		getFragmentReq[GetFragmentReq_url] = 'https://sandbox.fiftyone.com/welcome/welcome.srv?merchId=3646&countryId=IN&setCookie=Y';
@@ -80,7 +79,8 @@ nm.headerScript = (function($) {
 	}
 	
 	function invokeRestrictionModal(ev){
-		var url = '/page/service/shoppingBagRestrictionPage.jsp?shoppingBagErrorMessage=' + ev;
+		ev = ev.replace(/&#039;+/g,"\'");
+		var url = "/page/service/shoppingBagRestrictionPage.jsp?shoppingBagErrorMessage=" + ev;
 			var getFragmentReq = new GetFragmentReq();
 			getFragmentReq[GetFragmentReq_url] = url;
 			defaultGateway.ajaxService(getFragmentReq, showFragLightbox, onError, null, this);

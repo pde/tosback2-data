@@ -3,34 +3,34 @@ jQuery.noConflict();
 
 
 /* earnings */
-var currQuarter = '2Q12';
-var currPID = '282';
+var currQuarter = '3Q12';
+var currPID = '290';
 
 function renderEarningsLP() {
 document.write('<div class="top-content"><ul class="more_links" id="top_content">'
 						 + '<li><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=113088&amp;p=irol-sec" title="SEC Filings">SEC Filings</a></li>'
 						 + '<li class="last">Results and Non-GAAP Reconciliations: <a href="/Investor/Earnings/'
-						 + '2q12/master_2q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
-						 + '2q12/master_2q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
+						 + '3q12/master_3q12.pdf" target="_blank" title="Financial and Operational Results PDF">Adobe PDF</a> &ndash; <a href="/Investor/Earnings/'
+						 + '3q12/master_3q12.xls" title="Non-GAAP Reconciliations (MS Excel)" target="_blank">MS Excel</a></li>'
 						 + '</ul></div>');
 }
 
 /* earnings */
 function renderEarningsList() {
-	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
+	document.write('<li><a href="http://www.att.com/gen/investor-relations?pid=290" title="3Q 2012">3Q 2012</a></li>'
+				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
-				 + '<li><a href="http://www.att.com/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
 				 + '<li><a href="http://www.att.com/earnings" title="Quarterly Earnings">More</a></li>');
 }
 
 
 function renderQuarterlyTabs() {
 	document.write('<ul id="navContainer" class="tabs">'
+					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2012">3Q 2012</a></li>'
 					+  '<li id="tab1A"'); if(pid=='282') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=282" title="2Q 2012">2Q 2012</a></li>'
 					+  '<li id="tab4A"'); if(pid=='268') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=268" title="1Q 2012">1Q 2012</a></li>'
 					+  '<li id="tab3A"'); if(pid=='262') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=262" title="4Q 2011">4Q 2011</a></li>'
-					+  '<li id="tab2A"'); if(pid=='290') { document.write(' class="active" '); } document.write('><a href="/gen/investor-relations?pid=290" title="3Q 2011">3Q 2011</a></li>'
 					+  '</ul>');
 	}
 	

@@ -9,6 +9,15 @@ $(document).ready(function(){
 		'type': 'iframe'
 	});
 });
+/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
+
+/**
+ * @(#)posterprofile.js
+ * 
+ * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
+ * 
+ * @author rray
+ */
 /* $Id: videobelt.js 4074 2012-07-18 18:23:57Z agersho $ */
 
 $(document).ready(function(){
@@ -234,81 +243,6 @@ $(document).ready(function() {
 	});
 });
 /* $Id: versiona.js 3823 2012-07-03 18:18:05Z rray $ */
-
-$(window).load(function() {
-	loadPanels('customer picksPanel');
-	
-	// Tab Control
-	$('.homepageshopping .tabs li').click(function() {
-		// Tabs
-		$(this).siblings().removeClass('active');
-		$(this).addClass('active');
-		
-		//used for authoring experience; check rel tag on li, if not undefined; reload page with current location plus rel attribute 
-		if ($(this).attr('rel') !== undefined) {
-			window.location = window.location.pathname + $(this).attr('rel');
-		}
-		
-		// Panels
-		var target = $(this).attr('target');
-		$('.'+target).siblings().removeClass('active');
-		$('.'+target).addClass('active');
-		
-		// get panel id and pass to panel load handler
-		var targetid = $(this).attr('id');
-		targetid = targetid.replace('Tab','Panel');
-		loadPanels(targetid);
-		
-	});
-	
-
-	
-});
-
-function loadPanels(panelID) {
-	switch(panelID)
-		{
-		case 'customer picksPanel':
-		  if ($('.homepageTabs #mboxCarouselRegion').css('top') === '-9000px') 
-		  {
-			  $('.homepageTabs #mboxCarouselRegion').after('<div class="loader"><img src="http://www.rei.com/pix/common/ajaxloader_transparent.gif" alt="loading" />Loading...</div>');
-			  setTimeout(function() {
-				$('.loader').remove();
-				$('.homepageTabs #mboxCarouselRegion').css('top','0');
-				},2500);
-			}
-		  break;
-		case 'rei staff picksPanel':
-		  
-		  break;
-		case 'by activityPanel':
-		  
-		  break;
-		case 'by brandPanel':
-		  
-		  if ($('#byBrandCarousel').children('div').hasClass('parsys'))
-			{
-				var tempDOM = $('#byBrandCarousel .parbase.bybrandsitem li');
-				prepAuthorDom(tempDOM);
-			}
-		  break;
-		}
-}
-
-function prepAuthorDom(domBlock) {
-	$('#byBrandCarousel par.parsys').remove();
-	$('#byBrandCarousel').html(domBlock);
-	addCarousel();
-}
-
-function addCarousel() {
-	$('#byBrandCarousel').jcarousel({
-		scroll: 5,
-		buttonNextHTML: '<div id="jcarousel-next" class="carousel-btn" title="Next"></div>',
-		buttonPrevHTML: '<div id="jcarousel-prev" class="carousel-btn"></div>'
-	}); 
-	$('.jcarousel-container').addClass('mbox recommendations5');
-}
 // set a cookie for a particular name
 function setCookie(name, value) {
    var docLocation = document.URL;
@@ -859,16 +793,30 @@ BEGIN: these funcs are used to update the leftSideBar Store Listing as the map i
 		},
 		function (reiStores) {
 			$(reiStores).find("stateCodeZoomLevels").each(function () {
-				
+				debugAlert('dState: ' + dState);	
 				var stateNode = $(this).find(dState);
-				
+				var stateNodeCenter = stateNode.text();
 				if (stateNode.attr('zoom')) {
-					geoCodeAddress(trim(stateNode.text()), true, stateNode.attr('zoom'));
+					debugAlert('zoom attribute: true');
+					if (stateNodeCenter == '') {
+						for (var ii = 0; ii < arrStoreInfo.length; ii++) {
+							if (arrStoreInfo[ii][6] == dState) {
+								map.setCenter(new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3]));
+								map.setZoom(parseInt(stateNode.attr('zoom')));
+								switchMaps(false, 'from searchState()');
+								isValidState = true;
+								break;
+							}
+						}
+					} else {
+						geoCodeAddress(trim(stateNode.text()), true, stateNode.attr('zoom'));
+					}
 				} else {
+					debugAlert('zoom attribute: false');
 					for (var ii = 0; ii < arrStoreInfo.length; ii++) {
 						if (arrStoreInfo[ii][6] == dState) {
 							map.setCenter(new google.maps.LatLng(arrStoreInfo[ii][2], arrStoreInfo[ii][3]));
-							map.setZoom(parseInt(stateNode.text()));
+							map.setZoom(parseInt(stateNode.attr('zoom')));
 							switchMaps(false, 'from searchState()');
 							isValidState = true;
 							break;
@@ -1295,8 +1243,7 @@ $(document).ready(function () {
 							
 							//-- Make the Marker
 							latlng = new google.maps.LatLng(arrStore[2], arrStore[3]);
-								var newIcon = storeIcon[$(this).find('icon').attr('type')] || {};
-							
+							var newIcon = storeIcon[$(this).find('icon').attr('type')] || {};
 							
 							//-- if storePageLink sent the request
 							if(parseInt(linkedStore)>0){
@@ -1314,9 +1261,6 @@ $(document).ready(function () {
 								title: arrStore[0] + ' REI Store',
 								visible: showMarkers
 							});
-							
-							
-							
 							
 							//-- check store rental info and save it to storeRentals >> arrStore[17]							
 							var storeRentalsXml = [], storeRentals = '', rentalFlag = false;
@@ -1352,9 +1296,6 @@ $(document).ready(function () {
 								'<a href="' + arrStore[8] + '">' + arrStore[0] + ' REI Store</a>' + '</strong> <br/>' +
 								arrStore[4] + '<br/>' + arrStore[5] + ', ' + arrStore[6] + ' ' + arrStore[7] + '<br/>' + arrStore[9] +
 								'<br/><a href="#mapTop" onClick="getDirections(\'' + arrStore[0] + '\', \'' + arrStore[14] + '\');">Get Directions</a><br/><br/>' +
-								'<b>Store Hours:</b>' +
-								'<ul class="linkList bullets"><li>' + arrStore[11] + '</li>' + '<li>' + arrStore[12] + '</li><li>' + arrStore[13] + '</li></ul>' +
-								'<a href="/stores/store_events.jsp?store=' + arrStore[14] + '">Store Events</a><br/>' +
 								'<a href="/stores/' + arrStore[14] + '">More About this REI Store</a><br/><br/></div>' +
 								'<a class="storeImgLink" href="' + arrStore[8] + '">' +
 								'<img src="/pix/stores/storePictures/email/' + arrStore[14] + '.jpg" height="127" width="127" border="0" />' +
@@ -1436,8 +1377,14 @@ $(document).ready(function () {
 	//end init
 	
 	google.setOnLoadCallback(initialize);
+	
 });
 //end document.ready
+
+function getReqParam(name){
+	if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+		return decodeURIComponent(name[1]);
+}
 
 
 
@@ -1492,6 +1439,19 @@ $(window).load(function () {
 	$('.mapDirections', '.frmDirections').click(function () {
 		calcRoute(document.frmDirections.travelMode.selectedIndex);
 	});
+	
+	var z = getReqParam('z');
+	if (z && z.match(/^\d{5}$/)) {
+		$('#zipInput').val(z);
+		
+		// Wait for GeoCoder to become available
+		var waitForGeocoder = setInterval(function() {
+			if (geoCoder) {
+				getFrmFindInfo(false, 'click');
+				clearInterval(waitForGeocoder);
+			}
+		}, 500);
+	}
 });
 /* $Id: ticker.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
@@ -1505,24 +1465,6 @@ $(document).ready(function() {
 /**
  * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights 
  * reserved.
- * 
- * @author rray
- */
-/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
-
-/**
- * @(#)posterprofile.js
- * 
- * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
- * 
- * @author rray
- */
-/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
-
-/**
- * @(#)posterprofile.js
- * 
- * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
  * 
  * @author rray
  */
@@ -2238,24 +2180,6 @@ $( document ).ready( function () {
     } );
 
 } );
-/* $Id: flag.js 1918 2012-03-30 17:55:27Z jowilso $ */
-
-/**
- * @(#)flag.js
- * 
- * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
- * 
- * @author rray
- */
-$(document).ready(function() {
-	
-	// Decide which interface to display
-	if (loggedIn) {
-		$('#flag-authenticated-link').show();		
-	} else {
-		$('#flag-unauthenticated-link').show();
-	}
-});
 /* $Id: roll.js 1918 2012-03-30 17:55:27Z jowilso $ */
 /* $Id: postlist.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
@@ -2541,15 +2465,6 @@ $( document ).ready( function() {
 
     window.resizeTo( width, height );
 } );
-/* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
-
-/**
- * @(#)posterprofile.js
- * 
- * COPYRIGHT (c) 2012 by Recreational Equipment Incorporated. All rights reserved.
- * 
- * @author rray
- */
 /* $Id: videottt.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $(document).ready(function() {
@@ -2565,7 +2480,7 @@ $(document).ready(function() {
 });
 $( document ).ready( function() {
     jQuery( '.reiDifference-popupLauncher' ).fancybox( {
-        'height': 600,
+        'height': 615,
         'padding': 10,
         'width': 690,
         'scrolling':'no',
@@ -2593,7 +2508,7 @@ REIFunctions.setActiveTab = function(el){
 }
 
 $(document).ready(function() {
-	$('a[href*="climbing.html#"]').each(function(index){
+	$('a[href*=".html#"]').each(function(index){
 		$(this).bind('click', function(){
 			try{
 				var hash = '#' + $(this).attr('href').split('#')[1];
@@ -2704,7 +2619,7 @@ $( function() {
 } );
 $( document ).ready( function() {
     jQuery( '.reiDifference-popupLauncher' ).fancybox( {
-        'height': 600,
+        'height': 615,
         'padding': 10,
         'width': 690,
         'scrolling':'no',
@@ -2756,6 +2671,7 @@ $( document ).ready( function() {
             'width': width,
             'padding': 25,
             'type': 'iframe',
+            'titleShow': false,
             'scrolling': scroll
         } );
     } );
@@ -2788,12 +2704,6 @@ rei.hover = {
 			$('.js-hover',$src).addClass('is-hidden');
 		}
 };
-
-/* $Id: script.js 1958 2012-04-02 21:29:19Z mgraham $ */
-	$(document).ready(function(){
-		$("#Lookup").validate();
-	});
-
 /* $Id: posterprofile.js 2270 2012-04-12 19:27:33Z rray $ */
 
 /**
@@ -3090,6 +3000,10 @@ jQuery(document).ready(function($) {
 	// start collection
 	initCollections();
 });
+//  collections grid UI script
+jQuery(document).ready(function($) {
+	
+});
 $(document).ready(function() {
 	$('.sizechart').fancybox({
 	'padding': 0,
@@ -3099,6 +3013,7 @@ $(document).ready(function() {
 	'type': 'iframe'
 	});
 });
+
 /* $Id: shippingtimelinetable.js 1918 2012-03-30 17:55:27Z jowilso $ */
 
 $( document ).ready( function() {

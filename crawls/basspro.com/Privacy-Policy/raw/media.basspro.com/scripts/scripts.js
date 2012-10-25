@@ -33,11 +33,11 @@ $(document).ready(function(){
 		
 		
 		//added 10/11/11 - ssauer - reorder LI and DIV z-index for IE7 fix
-		var zIndexNumber = 1000;
-		$('li').each(function() {
-			$(this).css('zIndex', zIndexNumber);
-			zIndexNumber -= 2;
-		});
+		// var zIndexNumber = 1000;
+		// $('li').each(function() {
+			// $(this).css('zIndex', zIndexNumber);
+			// zIndexNumber -= 2;
+		// });
 		
 		
 		$('#slideshow_698_test').cycle({

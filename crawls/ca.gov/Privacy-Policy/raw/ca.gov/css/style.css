@@ -249,14 +249,13 @@ header, #main_content, footer {
 }
 
 header {
-	min-height:188px;
 	/* background: #000 url(../images/template2012/header_day_hot_air_balloon.jpg) no-repeat 50% 30%; */
 	/* background-size: cover; */
 	position:relative;
 	z-index:10;
 }
 .home header {
-	/* min-height:390px; */
+	min-height:0;
 	/* background-position:50% 10%; */
 }
 
@@ -265,26 +264,30 @@ header {
 }
 .logo_and_banner {
 	position:relative;
-	width:90%;
-	max-width:379px; /* 94 + 16 + 269 */
 	height:74px;
-	margin:0 auto;
-	
 	padding:5px 0 0 0;
 }
 .head_cagov_logo { /* 94 x 74 */
-	float:left;
-	width:24.802% /* 94/379 */
+	width:60px; /* 94/379 */
+	position:relative;
+	top:4px;
+	margin:0 auto;
 }
 .head_organization_banner { /* 269 x 39 */
+	display:none;
 	float:left;
 	padding-left:4.221%; /* 16px */
 	position:relative;
-	top:25px;
+	top:20px;
 	width:70.976% /* 269/379 */
 }
 .logo_and_banner img {
 	width:100%;
+}
+.phone_hdr {
+	background-color: rgba(0, 0, 0, 0.5);
+	height:69px;
+	margin-bottom:2px;
 }
 
 
@@ -294,9 +297,9 @@ header {
 	font-size:0.9em;
 	text-align:right;
 	position:relative;
-	top:-22px;
 	right:16px;
 	/* line-height:1em; */
+	padding:2px 0 4px 0; /* no weather */
 }
 #weather_container .weather_icon {
 	position:relative;
@@ -677,11 +680,11 @@ Navigation - Mega Drop-Down
 	overflow:hidden;
 	position:relative;
 
-	-moz-transition: height 1s; /* Firefox 4 */
+	/* -moz-transition: height 1s; /* Firefox 4 */
 	/* -webkit-transition: height 1s; */ /* Safari and Chrome */
-	-o-transition: height 1s; /* Opera */
-	-ms-transition: height 1s; /* IE 10 */
-	transition: height 1s;
+	/* -o-transition: height 1s; /* Opera */
+	/* -ms-transition: height 1s; /* IE 10 */
+	/* transition: height 1s; */
 }
 .ie7 #navigation {
 	height:auto;
@@ -699,27 +702,62 @@ Navigation - Mega Drop-Down
 	display:none;
 }
 
+/* more phone nav changes */
+
+.phone_hd_left {
+	position:relative;
+	float:left;
+	z-index:10;
+}
+
+.phone_hd_right {
+	top:0;
+	right:0;
+	position:absolute;
+	z-index:10;
+}
+.phone_hd_left img, .phone_hd_right img {
+	padding:16px 6px 8px 6px;
+	cursor:pointer;
+}
+.phone_hd_left a {
+	float:left;
+}
+#mobile_gallery_button {
+	display:block;
+	width:41px;
+	height:33px;
+	background:transparent url(../images/mobile/mobileappgallery_home_gallery.png) no-repeat 0 0;
+	margin:16px 6px 8px 6px;
+}
+#mobile_gallery_button:hover {
+	/* background:transparent url(/images/mobile/mobileappgallery_home_gallery.png) no-repeat 0 -50px; */
+}
+
+#head_search {
+	display:none;
+}
+#head_search.phone_show_search {
+	display:block;
+}
+
+#weather_container {
+	/* background-color: rgba(0, 0, 0, 0.5);
+	display:none; */
+}
+
+.hide_from_phones {
+	display:none;
+}
+
 /* end phone nav update */
 
 
-.home #img_ribbon {
-	width:100%;
-	height:95px;
-	background:transparent url(../images/template2012/ribbon_home.png) no-repeat 70.3125% 0%;
-}
-.home #main_content {
-	padding-top:38px; /* reserve space for ribbon */
-}
 
 
 
 #main_content {
 	background:#fff url(../images/template2012/nav_shadow.png) repeat-x;
-	padding-bottom:20px;
-}
-.home #main_content {
-	background:#fff url(../images/template2012/footer_bg.png) no-repeat 70.3125% 100%;
-	padding-bottom:65px;
 }
 .ie7 #main_content {
 	background:#fff;
@@ -729,21 +767,19 @@ Navigation - Mega Drop-Down
 	min-height:100px;
 	background:#fff url(../images/template2012/nav_shadow.png) repeat-x;
 	margin:0;
-	padding:1px 0 0 0;
-}
-.home .content_left_column {
-	background:#fff;
+	padding:1px 0 20px 0;
 }
 .content_right_column {
 	background:#f1ede4;
 	min-height:150px;
+	padding-bottom:20px;
 }
 
 .add_padding {
 	padding:0 5%;
 }
 .content_left_column .add_padding {
-	padding:0 5% 0 8%;
+	padding:0 5% 0 1%;
 }
 
 
@@ -754,10 +790,10 @@ footer {
 
 	padding-top:18px;
 	box-shadow: inset 0 10px 6px -6px black;
+	line-height:2.5;
 }
-.home footer {
-	padding-top:0;
-	box-shadow:none;
+#google_translate_element {
+	line-height:normal;
 }
 
 footer a, footer a:hover, footer a:visited {
@@ -950,6 +986,10 @@ h5 {
 }
 .half_width_column li {
 	padding-bottom: 1em;
+}
+
+.container_style_1 li a, .container_style_3 li a, .container_style_5 li a {
+	display:block;
 }
 
 

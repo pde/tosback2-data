@@ -1,4 +1,5 @@
 /*global jQuery, $, Modernizr */
+
 //Douglas Crockford's json2.js
 var JSON;if(!JSON){JSON={};}
 (function(){"use strict";function f(n){return n<10?'0'+n:n;}
@@ -468,6 +469,7 @@ HDM.ads = {
         try { _vrtrack(); } catch(e) {}
     },
 	refreshAds: function(forceRefresh, pageName){
+		ord = Math.floor(Math.random()*10e12);
 		var self = HDM.ads,
 			//check to see if the dapMgr object exists and we're on delish.. if so we're gonna call a different function
 			isMSN = (typeof dapMgr === 'object') && window.location.hostname.match('delish.com');
@@ -502,19 +504,19 @@ HDM.ads = {
 	},
 	//renderAds takes a position name and a target jQuery object
 	//it makes a call to page-ads for the positionName and renders the ad inside the target
-	renderAd: function(positionName,$target){
+	renderAd: function(positionName,$target,parentWidth,parentHeight,browserPath){
 		var self = HDM.ads;
 		//if a target wasn't passed, look for an element with the same id as the position name
 		if (typeof target === 'undefined'){
 			target = $(document.getElementById(positionName));
 		}
 		self.getAds(function(adjson){ //get the ad, passing in the position name
-			self.renderAdJSON(adjson,$target); //render the ad
-		},positionName);
+			self.renderAdJSON(adjson,$target,parentWidth,parentHeight); //render the ad
+		},positionName,browserPath);
 	},
 	//all this really does it take a string and wrap it in jQuery then append it to the container
 	//need to look for the document.write doubleclick stuff and handle that appropriately
-	renderAdJSON: function(adjson,$target){
+	renderAdJSON: function(adjson,$target,parentWidth,parentHeight){
 		$.each(adjson,function(i,val){
 			//if there's a target passed, that's out container.. otherwise get the element with the id of our ad object
 			var $container = (typeof $target === 'undefined') ? $(document.getElementById(i)) : $target,
@@ -523,7 +525,7 @@ HDM.ads = {
 				isAdDebug = val.match('FOR PREVIEW ONLY - Ad Ops Debug'), //look for preview ads for testing the refresh
 				isDoubleClick = val.match('ad.doubleclick.net/adj/'); //matches doubleclick javascript ads.. we need to turn them into iframe ads
 			if ( isDoubleClick ){ //if it's a doubleclick ad.. handle it
-				val = HDM.ads.handleDoubleclickAd(val); //swap the document.write for an iframe
+				val = HDM.ads.handleDoubleclickAd(val,parentWidth,parentHeight); //swap the document.write for an iframe
 			}
 			$adHTML = $(val); //wrap the string in jquery and poof we have an ad
 			if ( isAdDebug ){ //if it's a preview ad..
@@ -533,7 +535,7 @@ HDM.ads = {
 			$container.html($adHTML); //insert the ad html into the container
 		});
 	},
-	handleDoubleclickAd: function(adCode){
+	handleDoubleclickAd: function(adCode,parentWidth,parentHeight){
 		//finds the document.write line in the doubleclick ad
 		var doubleclickReg = /document\.write\(\'<script[\s\w="]+src="([\w\s\:\/\.;=,'\+-?]+)"[\s\w="\/]+><\\\/script>'\);/,
 			sizeCodeReg = /\d{2,4}x\d{2,4}/g, //looking for size codes like 336x280, 1024x90, etc..
@@ -541,10 +543,10 @@ HDM.ads = {
 			varNameReg = /\w+/, //matches the variable name in the string being replaced abovedoubleclickURL,
 			doubleclickURL, //will hold our doubleclick iframe url
 			variablesToReplace, //array for the variables we need to replace
-			tempVar, //temp var to hold the variable names
-			sizeArray, //array for the ad size codes
-			tempSize, //temp var to hold the sizes
-			styleString = ""; //style string for the iframe	
+			tempVar; //temp var to hold the variable names
+			//sizeArray, //array for the ad size codes
+			//tempSize, //temp var to hold the sizes
+			//styleString = ""; //style string for the iframe	
 			
 		doubleclickURL = doubleclickReg.exec(adCode)[1]; //the url for our doubleclick ad tag
 		doubleclickURL = doubleclickURL.replace('/adj/','/adi/'); //swap adj (js document.write implementaion) for adi (iframe implementation)
@@ -561,10 +563,15 @@ HDM.ads = {
 		tempSize = sizeArray[0].split('x'); //get [width,height]
 		styleString = "width:" + tempSize[0] + "px;height:" + tempSize[1] + "px;border:none;";
 		//add our iframe tag into the ad string
-		adCode += '<iframe src="' + doubleclickURL + '" width="' + tempSize[0] + '" height="' + tempSize[1] + '" style="' + styleString + '" frameborder="0" scrolling="no"></iframe>';
+		if (parentWidth) {
+			console.log("parentWidth: " + parentWidth);
+			adCode += '<iframe src="' + doubleclickURL + '" width="' + parentWidth + '" height="' + parentHeight + '" style="border:0 none;" frameborder="0" scrolling="no"></iframe>';
+		} else {
+			adCode += '<iframe src="' + doubleclickURL + '" width="' + tempSize[0] + '" height="' + tempSize[1] + '" style="' + styleString + '" frameborder="0" scrolling="no"></iframe>';
+		}
 		return adCode; //return it
 	},
-	getAds: function(callback,positionName){
+	getAds: function(callback,positionName,browserPath){
 		var self = HDM.ads,
 			pageAdsParams = $.extend({},self.pageAdsParams); //get a temporary pageAds Params object
 		if (typeof callback !== 'function'){
@@ -573,6 +580,9 @@ HDM.ads = {
 		//if we passed in a position, overwrite the temp position list
 		if (typeof positionName === 'string'){
 			pageAdsParams.position_list = positionName;
+		}
+		if (typeof browserPath === 'string'){ 
+			pageAdsParams.browser_path = browserPath;
 		}
 		//get the ads
 		$.ajax({
@@ -619,6 +629,19 @@ HDM.registration = {
 	},
 	init : function(fbAppID){// lives in here because I don't know where mike may call this elsewhere. In any case, this is more legacy than anything..
 		// make sure this code isn't run twice..
+		
+		// this function is about to handle the profile picture pickup
+		window.parent.preview = function (o) { 
+			var profilePic = document.querySelector("#profileImage img"); 
+			if (o.type === 'file') { 
+				profilePic.src = (o.files) ? o.files[0].getAsDataURL() : 'file:///' + o.value; 
+			} else { 
+				profilePic.src = o.value || original; 
+			} 
+			$imageInputs = $("#upload_user_icon, #url_user_icon"); 
+			$imageInputs.not(o).attr('value', ''); 
+		}
+		
 		try{
 			if (!this._vars.initialized){
 				this._vars.initialized = true;
@@ -1752,7 +1775,7 @@ slideModule - jQuery Plugin
 HDM.promoPlayer
 	Namespace for promo players
 ****************************/
-HDM.promoPlayer = function (id,interval,speed,pPlayerAd,afterSlide) {
+HDM.promoPlayer = function (id,interval,speed,pPlayerAd,afterSlide,browserPath) {
 	//initialize vars than can be created without the needing the DOM ready
 	var playerContainerId = id;
 	var slideInterval = interval || 5000;
@@ -1797,7 +1820,7 @@ HDM.promoPlayer = function (id,interval,speed,pPlayerAd,afterSlide) {
 				left: slidePosition
 				},transitionSpeed,function() {
 					if ($('#ppad').length != 0 && current == afterSlide) {
-						HDM.ads.renderAd(pPlayerAd,$('#ppad'));
+						HDM.ads.renderAd(pPlayerAd,$('#ppad'),$('#ppad').width(),$('#ppad').height(),browserPath);
 					} else if ($('#ppad').length != 0 && current > afterSlide) {
 						removePplayerAd();
 					}

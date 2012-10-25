@@ -11,7 +11,7 @@ return true;return false;};if(userAgent==null){userAgent=navigator.userAgent;}
 var dev=INSTART.features.browser(userAgent);var enable=false;if(dev.os.name=='ios'||dev.os.name=='android'){var bounds=INSTART.features.approvedBrowsers[dev.os.name];enable=cmp_gte(bounds.min,dev.os.ver)&&cmp_gte(dev.os.ver,bounds.max);}else if(dev.browser.name=='chrome'||dev.browser.name=='firefox'||dev.browser.name=='msie'||dev.browser.name=='safari'){var bounds=INSTART.features.approvedBrowsers[dev.browser.name];enable=cmp_gte(bounds.min,dev.browser.ver)&&cmp_gte(dev.os.ver,bounds.max);}
 return enable;};INSTART.features.use_whitelist=false;INSTART.features.okpath=function(){if(INSTART.features.use_whitelist){if(window.location.pathname in INSTART.features.onlytouching){return true;}
 return false;}else{if(window.location.pathname in INSTART.features.notouching){return false;}
-return true;}};INSTART.features.enabled=function(){if(INSTART.features.testbrowser()&&INSTART.features.okpath()){console.log('instart enabled');return true;}else{console.log('instart disabled');return false;}};})();if(INSTART.features.enabled()){if(typeof INSTART=='undefined'){INSTART={};}
+return true;}};INSTART.features.enabled=function(){if(INSTART.features.testbrowser()&&INSTART.features.okpath()){return true;}else{return false;}};})();if(INSTART.features.enabled()){if(typeof INSTART=='undefined'){INSTART={};}
 INSTART.nologging=true;if(typeof INSTART=='undefined'){INSTART={};}
 if(typeof INSTART.log==='undefined'){INSTART.log=(function(){if(typeof INSTART.nologging!=='undefined'&&INSTART.nologging==true){return function(msg){}}
 try{var a=console.log;a('');return console.log;}catch(e){return function(msg){console.log(msg);}}})();}

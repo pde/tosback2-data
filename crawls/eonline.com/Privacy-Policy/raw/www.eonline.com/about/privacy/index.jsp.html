@@ -113,7 +113,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1350908104282 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1351167257338 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -369,7 +369,6 @@ pageTracker._trackPageview();
 
 
 
-
 <style type="text/css">
 	.social-links{min-width:205px;}
 	.social-links ul li{display:block;}
@@ -395,7 +394,32 @@ pageTracker._trackPageview();
 	
 	
 		<li class="facebook-like">
+			<div id="fb-root"></div>
 			<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName:nav:header:facebook_button'}"></div>
+			<script type="text/javascript">
+				// Custom eonline.com implementation of the FB Like DOM insertion code, since Facebook keeps breaking their like buttons.
+				window.fbAsyncInit = function() {
+					FB.init({
+						"appId": "195662528604", // App ID
+						"status": "true", // check login status
+						"cookie": "true", // enable cookies to allow the server to access the session
+						"xfbml": "true" // parse XFBML
+					});
+				};
+
+				var js = document.createElement('script');
+					js.async = true;
+					js.id = 'facebook-jssdk';
+					js.src = '//connect.facebook.net/en_US/all.js#xfbml=1&appId=195662528604';
+				var obj = document.getElementById('facebook-jssdk');
+				if (!obj) {
+					if (document.head) {
+						document.head.appendChild(js);
+					} else if (document.getElementsByTagName('head')) { // IE 7
+						document.getElementsByTagName('head')[0].appendChild(js);
+					}
+				}
+			</script>
 		</li>
 	
 	
@@ -480,6 +504,8 @@ pageTracker._trackPageview();
 	};
 	jQuery(window).load(ActivateCallout());
 </script>
+
+
 				<div id="content_interior" class="clear">
 		 		<div class="content">
 		 			
@@ -958,6 +984,9 @@ The information learned from the Website's users, members and customers helps E!
                
                
                         
+
+
+
 
 
 
