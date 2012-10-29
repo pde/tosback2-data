@@ -28,7 +28,7 @@ $(document).ready (function () {
 		if (eCommerceYes == 'Y') {
 			var dr_productModelCode = omn_ss_productModelCode;
 			dr_productModelCode = dr_productModelCode.replace('/', '_');
-			dr_DisplayDRProductInfo_url = dr_store_domain +'/store/samsung/DisplayDRProductInfo/externalReferenceID.'+ dr_productModelCode +'/output.JSON/content.sku+stockStatus+buyLink/';
+			dr_DisplayDRProductInfo_url = dr_store_domain +'/store/samsung/DisplayDRProductInfo/externalReferenceID.'+ dr_productModelCode +'/output.JSON/content.sku+stockStatus+buyLink+productInventory/';
 			$.ajax({
 				url: dr_DisplayDRProductInfo_url,
 				dataType: 'jsonp',
@@ -151,7 +151,9 @@ function callbackDRCartSummary(cartSummaryData) {
 function callbackDRProductInfo(productInfo) {
 	if (productInfo && !$.isArray(productInfo) && !productInfo.error) {
 		var stockStatus = productInfo.stockStatus;
-		if (stockStatus == 'Yes') {
+		var preOrder = productInfo.productInventory.preOrder;
+        var backOrder = productInfo.productInventory.backOrder;
+		if (stockStatus == 'Yes' || preOrder || backOrder ) {
 			var link = productInfo.buyLink.href + '/quantity.1';
 			$('.product-marketplace .twocol .two-col-top .col-two a.lg-btn').attr('href', link).find('span').text('ADD TO CART');
 			$('div.product-marketplace div.twocol:first-child > h2').text('Buy Direct From Samsung');

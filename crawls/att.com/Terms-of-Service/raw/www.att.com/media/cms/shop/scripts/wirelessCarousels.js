@@ -45,6 +45,16 @@ ATT.WirelessCarousels = new function() {
 
 	}
 	
+	var typeNoBox_itemLoaded = this.typeNoBox_itemLoaded = function(carousel, state) {
+			
+		var carouselClass = 'wirelessCarouselTypeNoBox';
+		if (state != 'init' || (typeof carousel.hasLoaded  != 'undefined' && carousel.hasLoaded == 'true'))
+			return; 
+		var initCatId = carousel.list.parents('.carouselDiv').find('.carouselCatalogId').html();
+		ATT.WirelessCarousels.itemLoaded_common(carousel, initCatId, carouselClass);
+
+	}
+	
 	var populate = this.populate = function(carousel, first, last, data, carouselClass) {
 		
 		if (jQuery('.' + carouselClass).data('jcarousel')) {
@@ -111,6 +121,21 @@ ATT.WirelessCarousels = new function() {
 		           itemLoadCallback: ATT.WirelessCarousels.typeNoTab_itemLoaded,
 		           scroll: 1,
 		           itemFallbackDimension: 412
+		        });
+	        });
+        }
+	}
+	
+	var setupNoBox = this.setupNoBox = function() {
+			
+		var noboxCarousels = $('.wirelessCarouselTypeNoBox');
+				
+		if (!!noboxCarousels) {
+			jQuery.when(ATT.util.pluginReady("jcarousel")).then(function() {
+		        noboxCarousels.jcarousel({
+		           itemLoadCallback: ATT.WirelessCarousels.typeNoBox_itemLoaded,
+		           scroll: 1,
+		           itemFallbackDimension: 275
 		        });
 	        });
         }

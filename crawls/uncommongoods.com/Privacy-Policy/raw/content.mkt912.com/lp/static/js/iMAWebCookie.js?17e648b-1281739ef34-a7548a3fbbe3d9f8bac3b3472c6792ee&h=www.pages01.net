@@ -8,13 +8,13 @@
  */
 
 (function() {
-    var version = 1.15,
+    var version = 1.17,
             page = {},
             cookiespace = 'com.silverpop.iMA',
             vtrendzCookieSpace = 'com.vtrenz.iMA',
             metaspace = 'com.silverpop.',
             webTrackingOptInPrefix = 'webtrackingoptin',
-            pageVisitCookiePrefix = '.page_visit.',
+            pageVisitCookie = '.page_visit',
             websyncTTL = 1000  * 24 * 60 * 60 * 1000, /*1000 days*/
             sessionTTL = 20 * 60 * 1000, /*20 minutes*/
             clickStreamKeys = ["spMailingID", "spUserID", "spJobID", "spReportId"],
@@ -207,6 +207,11 @@
             functions.isUrlStartsWith =  isUrlStartsWith;
             functions.isUrlStartsWithBrandDomainScheme = isUrlStartsWithBrandDomainScheme;
             functions.isBrandedDomain = isBrandedDomain;
+            functions.isFirstPageVisit = isFirstPageVisit;
+            functions.recordPageVisit = recordPageVisit;
+            functions.containsPage = containsPage;
+            functions.addPage = addPage;
+            functions.hashString = hashString;
             return functions;
         }
     };
@@ -224,12 +229,13 @@
         page.websync = websync();
         page.pageName = pagename();
         var trackedSession = (existingSession) ? existingSession : ((cachedSession) ? cachedSession : session(true));
-        var firstPageVisit = isFirstPageVisit();
+        var newPageVisit = isFirstPageVisit();
+        recordPageVisit();
 
         http(endpoint() + $tx({
             session : trackedSession,
             webSync : page.websync,
-            newPageVisit : firstPageVisit
+            newPageVisit : newPageVisit
         },'pageview'));
 
         //make sure that the action tag uses a domain that is part of the branded domains listed in the meta tag
@@ -255,7 +261,7 @@
                     pathname : resourceUri,
                     pagename : resourceName,
                     trackedExternalFormPost : '1',
-                    newPageVisit : firstPageVisit
+                    newPageVisit : newPageVisit
                 },'pageview'));
             }
         }
@@ -595,7 +601,7 @@
 
         if (s.uid == '') {
             //new session!
-            deletePageVisitCookies(); //clear page visit cookies since session cookie may have timed out before browser session
+            deleteCookie(cookiespace + pageVisitCookie);
 
             //create session guid & cookie:
             s.uid = _guid();
@@ -627,36 +633,71 @@
         return false;
     }
 
-    function deletePageVisitCookies() {
-        var cookies = d.cookie ? d.cookie.split('; ') : [];
-        var cookieName = cookiespace + pageVisitCookiePrefix;
-        for (var i = 0; i < cookies.length; i++) {
-            if (cookies[i].indexOf(cookieName) == 0)
-                deleteCookie(cookies[i].split('=')[0]);
-        }
-    }
-
     function cookiesEnabled() {
-        if (n && n.cookieEnabled) {
-            return true;
-        }
-
-        return false;
+        return n && n.cookieEnabled;
     }
 
     function isFirstPageVisit() {
-        var cookieName = pageVisitCookiePrefix + l.pathname;
-        var value = readCookie(cookieName);
-        if (!value) {
-            var pageVisitCookie = {
-                uid: "1",
-                name: cookiespace + cookieName
-            };
-            createCookie(pageVisitCookie);
+        var visitedPages = readCookie(pageVisitCookie, cookiespace);
+        if (containsPage(visitedPages, l.pathname)) {
+            return "0";
+        } else {
             return "1";
         }
+    }
 
-        return "0";
+    function containsPage(visitedPages, page) {
+        var pageId = hashString(page);
+        var visitedPageIds = visitedPages.split(',');
+        return indexOf(visitedPageIds, pageId) >= 0;
+    }
+
+    function hashString(str) {
+        var hash = 0;
+        if (str.length > 0) {
+            for (var i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash = hash & hash; // Convert to 32bit integer
+            }
+        }
+        return hash + "";
+    }
+
+    function indexOf(array, item) {
+        if (Array.prototype.indexOf) {
+            return array.indexOf(item);
+        } else {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i] === item) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+    function recordPageVisit() {
+        var visitedPages = readCookie(pageVisitCookie, cookiespace);
+        visitedPages = addPage(visitedPages, l.pathname);
+        if (visitedPages) {
+            var batter = {
+                name:cookiespace + pageVisitCookie,
+                ttl:sessionTTL,
+                uid:visitedPages};
+            createCookie(batter);
+        }
+    }
+
+    function addPage(visitedPages, page) {
+        var pageId = hashString(page);
+        var visitedPageIds = visitedPages.split(',');
+        if (indexOf(visitedPageIds, pageId) == -1) {
+            visitedPageIds.unshift(pageId);
+            var cookieSizeLimit = 1024;
+            return visitedPageIds.toString().substr(0, cookieSizeLimit);
+        } else {
+            return null;
+        }
     }
 
     function getBrandedDomains() {

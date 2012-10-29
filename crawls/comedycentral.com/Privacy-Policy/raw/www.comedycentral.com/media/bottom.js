@@ -3924,7 +3924,7 @@ $Crabapple.extend($Crabapple.Module, $CC.Auction, {
 					linkType:'o',
 					eVar9:pageName,
 					events:'event9',
-					eVar16:item,
+					eVar16:item
 				});
 			}
 				
@@ -5957,7 +5957,53 @@ $(function() {
     	var destinationUrl = document.URL;
     	autoLinkTrackEvent('overlay_redirect_skipped', destinationUrl);
     });
-       
+    
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// AXE SPLITTING HAIRS CLICK TRACKING Oct 2012 //////////////
+//////////////////////////////////////////////////////////////////////////////////////    
+    
+    // Required 3rd Party Tracking Pixels per Vendor
+    if ($('body').attr('id').toLowerCase() == ('axe_hair_presents_splitting_hairs').toLowerCase()) {
+    	var axePagePixelName = 'axePagePixel'; //Unique identifier for the page call
+    	var $axeTrackDiv = $('body').append('<div id="axeTrack" style="display:none" width="1px" height="1px">&nbsp</div>');
+    	var axeTrackDiv = document.getElementById('axeTrack');
+		// Specific to this Campaign
+		var type = 'axeha928';
+		var cat = 'axeha544';
+    	
+    	
+    	function fireAxeTracking(pixName) {
+
+    		
+    		// Fire page load tag
+        	console.log('FIRED AXE: '+pixName);
+        	var axel = Math.random() + "";
+        	var a = axel * 10000000000000;
+        	//var axeIFrame='<iframe id="axeIFrame" src="http://fls.doubleclick.net/activityi;src=12345678;type=' + type + ';cat=' + cat + ';u1=' + u1 + ';ord=' + a + '?" width="1" height="1" frameborder="0"><\/iframe>';
+        	var axeIFrame='<iframe src="http://1608225.fls.doubleclick.net/activityi;src=1608225;type=' + type + ';cat=' + cat + ';u1=' + pixName + ';ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>';
+        	axeTrackDiv.innerHTML = axeIFrame;
+    	}
+    	
+    	
+    	//document.write('<iframe src="http://1608225.fls.doubleclick.net/activityi;src=1608225;type=axeha928;cat=axeha544;ord=' + a + '?" width="1" height="1" frameborder="0" style="display:none"></iframe>');
+    	
+    	fireAxeTracking(axePagePixelName);
+    	
+    	// Attach Axe 3rd Party Trackig to Video Thumbnail
+    	$('div.miniplayer .tabs-wrapper li a.video_thumb').live('click', function() {
+    		var pixName = (typeof $(this).attr('data-videoid') != 'undefined') ? $(this).attr('data-videoid') : 'no_unique_pixel_name';
+    		fireAxeTracking(pixName);
+    	});
+    } else {
+    	console.log('NOT AXE SPLITTING HAIRS');
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// END AXE SPLITTING HAIRS CLICK TRACKING Oct 2012 //////////
+//////////////////////////////////////////////////////////////////////////////////////    
+    
+    
+
 	// All other auto link tracking
 	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel|video-web_video_carousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
@@ -6031,7 +6077,8 @@ $(function () {
 	if( typeof leaderboardWidth == 'undefined' || typeof leaderboardWidth == 'null' || leaderboardWidth <= 728){
 		$('.visible_header .ad_companion').show();
 	} else {
-		$('.visible_header .ad_companion').hide();
+		// IE issue with .hide() so we'll use this instead
+		$('.visible_header .ad_companion').attr("style", "display: none;");
 		if (leaderboardWidth == 970) {
 			$('.visible_header .middle .ad_holder').css({"padding":"0 5px"}); // Center for a 970px add
 		}

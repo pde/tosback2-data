@@ -202,7 +202,7 @@ function determineMainMaster(decide)
 }
 
 // coremetrics init routines
-function CoremetricsInit(pName, cName, cpvConfigValue, cpvTagOnSearchPage, cmSearch, cmSearchResults)
+function CoremetricsInit(pName, cName, cpvConfigValue, cpvTagOnSearchPage, cmSearch, cmSearchResults, attribute)
 {
     var cmSearchTerm = "";
     if (typeof(cpvTagOnSearchPage)=="undefined") {
@@ -229,12 +229,12 @@ function CoremetricsInit(pName, cName, cpvConfigValue, cpvTagOnSearchPage, cmSea
         }
         if (CoremetricsPageViewTagOnSearchPage !="false") 
         {
-    	    cmCreatePageviewTag(wtSearchpName,cName, cmSearchTerm,cmSearchResults);
+    	    cmCreatePageviewTag(wtSearchpName,cName, cmSearchTerm,cmSearchResults, attribute);
         }
     }
     else
     {
-        cmCreatePageviewTag(pName,cName, null);
+        cmCreatePageviewTag(pName,cName, null, null, attribute);
     }
 }
 

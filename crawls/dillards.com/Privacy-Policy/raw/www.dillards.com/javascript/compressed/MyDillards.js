@@ -185,6 +185,7 @@ changeBodyMargin();
 */
 
 // A/B Testing -- Run this function to show My Dillard's bar and rearrange header
+/*
 function myDillardsABtest() {
 	var countryCode = $.cookie("country");
 	var myDillardsTest = $.cookie("MYDILLARDS_AB_TEST");
@@ -208,3 +209,32 @@ function myDillardsABtest() {
 		$("#header-spot,#utility-nav,#fiftyOneContext").show();
 	}
 }
+*/
+
+// Show My Dillard's bar, rearrange header accordingly
+function displayByDillardsBar(){
+	var countryCode = $.cookie("country");
+	if(countryCode == 'US' || countryCode == '' || countryCode == null){
+		$("#fiftyOneContext, #utility-nav #mini-cart, #utility-nav #my-account, #utility-nav #wishlist").hide();
+		$("#myDillardsContainer").show();
+		$("body").css("padding-top", $("#myDillardsBar").css("height"));
+		$("#search").css("clear","right").css("position","relative").css("top","-3px");
+		$("#utility-nav").css("clear","right");
+		$("#utility-nav .genericESpot").css("margin-right","-10px");
+		$("#header-spot #barIsOff").hide();
+		$("#header-spot #barIsOn").show();
+		$("#header-spot").css("margin","0").css("width","auto").css("float","none").css("margin","0").css("position","absolute").css("bottom","12px").css("right","421px");
+		// If eSpot contains an image, position it one way -- if there is no image, position it another way
+		if($("#header-spot #barIsOn img").eq(0).length > 0){
+			$("#header-spot").css("margin-right","23px");
+		}else{
+			$("#header-spot").css("margin-bottom","12px");
+		}
+	} else {
+		$("#fiftyOneContext").show();
+	}
+	$("#header-spot,#utility-nav").show();
+}
+$(document).ready(function(){
+	displayByDillardsBar();
+});

@@ -193,6 +193,12 @@
         }
         return wpAd.cache.locExpSponsor;
       })();
+    },
+    ppwidget: function(){
+      return wpAd.cache.hasOwnProperty('ppwidget') ? wpAd.cache.ppwidget : (function(){
+        wpAd.cache.ppwidget = wpAd.tools.urlCheck('tid', {type:'variable'}) === 'pp_stream' ? '1' : '';
+        return wpAd.cache.ppwidget;
+      })();
     }
   };
 

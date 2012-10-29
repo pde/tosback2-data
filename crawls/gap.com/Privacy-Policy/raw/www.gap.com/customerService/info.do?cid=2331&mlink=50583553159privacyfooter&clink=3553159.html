@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/25/2012 08:09 AM",
+            DATE_IN_USE: "10/29/2012 08:11 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -2334,6 +2334,7 @@ if( location.pathname == "/browse/category.do") {
 
 <!-- container 5 -->
 <!-- BEGIN Content Item File: /content/0005/538/624/cn5538624.html -->
+
 
 <!-- begin CSS Hot Fix contentOverride  -->
 <style type="text/css">
@@ -3843,6 +3844,12 @@ navigationService.controller.managers.categoryFacetedSearchManager.util.facetFly
 		var elChildren = $el.childElements();
 		var closePanelElem = "";
 		if(!explicitContract && (!$el.hasClassName('flyout_activated') || explicitExpand)){
+			// CNOV-15 support
+			if ($('size_facet_icon')) {
+				$('size_facet_icon').hide();
+			}
+
+
 		    	var flyoutPanel = null;
 		    	$el.addClassName('flyout_activated');
 		          elChildren.each(function(elChild,i){
@@ -3864,6 +3871,11 @@ navigationService.controller.managers.categoryFacetedSearchManager.util.facetFly
 		          }
 		          categoryFacetedSearchManager.util.flyoutPositionInBrowserWindow($el,flyoutPanel);						          
 		    } else {
+			  // CNOV-15 support
+			  if ($('size_facet_icon')) {
+				$('size_facet_icon').show();
+			  }
+
 		          elChildren.each(function(elChild,i){
 		                $el.removeClassName('flyout_activated');
 		                if(elChild.hasClassName('facet-invisible-edge')){
@@ -3886,6 +3898,11 @@ navigationService.controller.managers.categoryFacetedSearchManager.util.facetFly
 		    var closePanelElem = "";
 
 		    if(!$el.hasClassName('flyout_activated')){
+			// CNOV-15 support
+			if ($('size_facet_icon')) {
+				$('size_facet_icon').hide();
+			}
+
 		    	var flyoutPanel = null;
 		    	$el.addClassName('flyout_activated');
 		          elChildren.each(function(elChild,i){
@@ -3907,6 +3924,11 @@ navigationService.controller.managers.categoryFacetedSearchManager.util.facetFly
 		          }
 		          categoryFacetedSearchManager.util.flyoutPositionInBrowserWindow($el,flyoutPanel);						          
 		    } else {
+			  // CNOV-15 support
+			  if ($('size_facet_icon')) {
+				$('size_facet_icon').show();
+			  }
+
 		          elChildren.each(function(elChild,i){
 		                $el.removeClassName('flyout_activated');
 		                if(elChild.hasClassName('facet-invisible-edge')){
@@ -3936,6 +3958,12 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 							var sizeFacetOptionElements = sizeFlyoutBody.select('li.size_option label input');
 							var sizeFacetOptionElementsCache = cache['FACET_OPTION_ELEMENTS'];
 							
+							// CNOV-15 integration (A/B testing)
+							var snavSegment = gidLib.getCookieVar("mktUniversalPersist", "NAV2FACETS_1210A_v1_SIZE_TEST");
+		
+							var isSegCD = ( snavSegment == "navFacetsSEGC" || snavSegment == "navFacetsSEGD");
+							var isSegEF = ( snavSegment == "navFacetsSEGE" || snavSegment == "navFacetsSEGF");
+
 							var element = null;
 							for(var i=0, sizeFacetOptionsSize = sizeFacetOptionElements.length; i<sizeFacetOptionsSize; i++) {
 								element = sizeFacetOptionElements[i];
@@ -3955,21 +3983,70 @@ navigationService.controller.managers.categoryFacetedSearchManager.controller.fa
 											if (target.id == 'facet_size' ||
 												target.id == 'facet_size_flyout' ||
 												target.id == 'size_name' ||
-												target.id == 'size_instr_copy') {
+												target.id == 'size_instr_copy' ||
+												// CNOV-15 support
+												target.id == 'size_facet_button' ||
+												target.id == 'size_facet_icon') {
 												categoryFacetedSearchManager.util.facetFlyoutExpandContractIPad.call(flyout);
 												event.stop();
 											}
 										}
-									);					        
+								);					        
+
+								if ($('size_facet_button')) {
+									$('size_facet_button').observe('click',
+										function(event) {
+											categoryFacetedSearchManager.util.facetFlyoutExpandContractIPad.call(flyout);
+											event.stop();
+										});
+								}
 							} else {
-								flyout.observe('mouseenter',  categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
-								$('size_instr_copy').observe('focus',categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
-								$('size_close_flyout').observe('focus', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
-					        }
-							flyout.observe('mouseleave', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+								if (isSegCD) {
+									if ($('size_facet_button')) {
+										$('size_facet_button').observe('click',
+											categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,false,event));
+									}
+								} else if (isSegEF) {
+									// CNOV-15 support
+									var facetManagers = navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers;
+									var expandContractFunction = function(explicitExpand,explicitContract,event) {
+										var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+										categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,explicitExpand,explicitContract,event)();		
+										if (explicitExpand) {
+											$('size_facet_icon').src = "/assets/common/clear.gif";
+										} else if (explicitContract) {
+											$('size_facet_icon').src = navAB.contentPath + navAB.sizeIconSrc;
+										}
+									};
+									flyout.observe('mouseenter',  expandContractFunction.bind(flyout,true,false));
+									$('size_instr_copy').observe('focus',expandContractFunction.bind(flyout,true,false));
+									$('size_close_flyout').observe('focus', expandContractFunction.bind(flyout,false,true));
+
+									flyout.observe('mouseleave', expandContractFunction.bind(flyout,false,true));
+
+								} else {
+
+									flyout.observe('mouseenter',  categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
+									$('size_instr_copy').observe('focus',categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,true,false));
+									$('size_close_flyout').observe('focus', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+									flyout.observe('mouseleave', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
+
+								}
+					        	}
+
 							var flyout_close = $(cache['SIZE_FLYOUT_CLOSE_BUTTON']); // mouse leave facet_flyout_close_button
 							flyout_close.observe('click', categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(flyout,false,true));
 							
+							if (!isIpad) {
+								var sizeFlyoutCloseA = $('size_flyout_close_button');
+								sizeFlyoutCloseA.style.display = "inline-block";
+								sizeFlyoutCloseA.style.position = "absolute";
+								sizeFlyoutCloseA.style.width = "40px";
+								sizeFlyoutCloseA.style.height = "40px";
+								sizeFlyoutCloseA.style.top = "15px";
+								sizeFlyoutCloseA.style.right = "20px";
+							}
+
 							var sizeVariants = $(cache['VARIANT_PANEL']);
 							cache['VARIANT_PANEL'] = sizeVariants;
 							var variantCheckBoxes = sizeVariants.select('input');
@@ -4751,6 +4828,213 @@ if( window['siteNavigation'] ) {
 
 <!-- container 8 -->
 <!-- BEGIN Content Item File: /content/0005/673/404/cn5673404.html -->
+
+<!-- CNOV-15: A/B test for size facet engagement-->
+<script type="text/javascript">
+// <![CDATA[
+
+var NAV2TestCookieCutter = Class.create();
+NAV2TestCookieCutter.prototype = {
+	initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
+		this.EvarToUse = theEvar != "" ? theEvar : false;
+		this.CookieVariableName = CookieVarName;
+		this.CookieUsed = CookieUsedName;
+		this.CookieValueBase = CookieValueBase;
+		this.SegBreakdown = SegmentBreakdown.split("-");
+		this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
+		this.QuickSegment = '';
+		this.piperlimeException = plExcept;
+		this.userNeedsSync = false;
+		this.ForcedModeBase = ForcedModeBaseName;
+		this.ModeArrayIndex = this.SegBreakdown.length;
+		this.modeArray = new Array();
+		this.modeArray[0] = "a";
+		this.modeArray[1] = "b";
+		this.modeArray[2] = "c";
+		this.modeArray[3] = "d";
+		this.modeArray[4] = "e";
+		this.modeArray[5] = "f";
+		
+		if (location.href.indexOf(this.ForcedModeBase) >= 1) {
+			this.forcedMode();
+		}else{
+			this.cookieScanner();
+		}
+	},
+
+	forcedMode:function() {
+		for (i = 0; i < this.ModeArrayIndex; i++) {
+			if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+
+		userNeedsSync = true;
+	},
+
+	cookieScanner:function() {
+		if (this.DoesTheCookieExist) {
+			if (this.EvarToUse) {
+				this.setABTestVariable(this.RetrievedCookieValue);
+			}
+
+			for (i = 0; i < this.ModeArrayIndex; i++) {
+				if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
+					this.QuickSegment = this.modeArray[i].toUpperCase();
+					break;
+				}
+			}
+		} else {
+			this.tagManager();
+		}
+	},
+
+	tagManager:function() {
+		this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
+		this.FloorThreshold = 0;
+		this.TopThreshold = 0;
+		
+		for (i = 0; i < this.ModeArrayIndex; i++){
+			this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
+			if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
+				this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
+				this.QuickSegment = this.modeArray[i].toUpperCase();
+				break;
+			} else {
+				this.FloorThreshold = this.TopThreshold;
+			}
+		}
+		
+		gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
+
+		if (this.EvarToUse) {
+			this.setABTestVariable(this.UserSegment);
+		}
+	},
+	
+	setABTestVariable: function(setValue) {
+		thisEvar = 'eVar' + this.EvarToUse;
+		ABTestVariables[thisEvar] = setValue;
+	}
+};
+
+
+var navCookieCutter = new NAV2TestCookieCutter('NAV2FACETS_1210A_v1_SIZE_TEST', 'mktUniversalPersist', 'navFacetsSEG', 'navForceMode', '17-17-17-17-16-16', '41', '');
+
+var NavABTest = Class.create();
+NavABTest.prototype = {
+    	emptyString : '',
+	emptyStringFunc : function() { return this.emptyString; },
+
+	// Replace [[PATH_TO_CONTENT]] with path to brand content.
+	// Example: "/content/0004/479/005"
+	contentPath : '/content/0005/673/404/assets/',
+	
+	sizeButtonSrc : 'size_facet_btn_GOL.png',
+	sizeIconSrc : 'size_facet_alpha.png',
+
+	initialize : function() {},
+
+	getFacetManagers : function() {
+		return navigationService.controller.managers.categoryFacetedSearchManager.controller.facetManagers;
+    	},
+
+	hideExistingSideFacetLeftRailFeatures : function() {
+		$$('#size_name .open-flyout-arrow')[0].hide();
+		$('facet_size_flyout').style.height = "57px";
+	},
+
+	segmentCDSpecificCode : function() {
+		this.hideExistingSideFacetLeftRailFeatures();
+
+		$('size_instr_copy').replace('<img id="size_facet_button" src="http://www.gap.com/customerService/'&#32;+&#32;this.contentPath&#32;+&#32;this.sizeButtonSrc&#32;+&#32;'" style="cursor:pointer;">');
+
+		var isIpad = navigationService.productGridHelper.model.isIpad;  
+		if(!isIpad){ //remove the hideOffScreen lass from the close element
+			$('size_facet_button').observe('click',
+				categoryFacetedSearchManager.util.facetFlyoutExpandContract.bind(
+				categoryFacetedSearchManager.controller.facetManagers.categorySizeFacetManager.model.cache['SIZE_FLYOUT'], false,false)); 
+		} else {
+			$('size_facet_button').observe('click',
+				function(event) {
+					categoryFacetedSearchManager.util.facetFlyoutExpandContractIPad.call(flyout);
+					event.stop();
+			});
+		}
+	},
+
+	segmentEFSpecificCode : function() {
+		this.hideExistingSideFacetLeftRailFeatures();
+
+		$('size_instr_copy').replace('<img id="size_facet_icon" src="http://www.gap.com/customerService/'&#32;+&#32;this.contentPath&#32;+&#32;this.sizeIconSrc&#32;+&#32;'">');
+
+		var facetManagers = this.getFacetManagers();
+		facetManagers.categorySizeFacetManager.view.sizeFlyoutExpand = 
+			facetManagers.categorySizeFacetManager.view.sizeFlyoutExpand.wrap(function(originalMethod) {
+				originalMethod();		
+				$('size_facet_icon').hide();
+		});
+
+		facetManagers.categorySizeFacetManager.view.sizeFlyoutContract = 
+			facetManagers.categorySizeFacetManager.view.sizeFlyoutContract.wrap(function(originalMethod) {
+				originalMethod();
+				$('size_facet_icon').show();
+
+		});
+
+	},
+
+	// A = baseline no change
+	// B = baseline with only style & size facets
+	executeSegmentSpecificCode : function() {
+
+		var facetManagers = this.getFacetManagers();
+		var snavSegment = gidLib.getCookieVar("mktUniversalPersist", "NAV2FACETS_1210A_v1_SIZE_TEST");
+		
+		if ( snavSegment == "navFacetsSEGB" || snavSegment == "navFacetsSEGD" || snavSegment == "navFacetsSEGF" ) {
+			
+			facetManagers.categoryColorFacetManager.view.renderFacet =
+				facetManagers.categoryPriceFacetManager.view.renderFacet = this.emptyStringFunc;
+			facetManagers.categoryPriceFacetManager.view.initializePriceWidget = this.emptyStringFunc;
+		}
+
+		if ( snavSegment == "navFacetsSEGC" || snavSegment == "navFacetsSEGD") {
+			navigationService.controller.managers.categoryFacetedSearchManager.view.renderSideNavFacetHtml = 
+				navigationService.controller.managers.categoryFacetedSearchManager.view.renderSideNavFacetHtml.wrap(function(originalMethod,facetsContentHtml,searchFacetList) {
+					originalMethod(facetsContentHtml,searchFacetList);
+
+					navAB.segmentCDSpecificCode();
+			});
+		} else if ( snavSegment == "navFacetsSEGE" || snavSegment == "navFacetsSEGF") {
+			navigationService.controller.managers.categoryFacetedSearchManager.view.renderSideNavFacetHtml = 
+				navigationService.controller.managers.categoryFacetedSearchManager.view.renderSideNavFacetHtml.wrap(function(originalMethod,facetsContentHtml,searchFacetList) {
+					originalMethod(facetsContentHtml,searchFacetList);
+
+					navAB.segmentEFSpecificCode();
+			});
+		}
+	}	
+};
+
+var navAB = new NavABTest();
+
+
+if (location.pathname == "/browse/category.do" || location.pathname == "/browse/categorySearch.do") {	
+
+	Event.observe(document, "dom:loaded", function () {
+		navAB.executeSegmentSpecificCode(); 
+	});
+}
+// ]]>
+</script>
+<!-- End CNOV-15 -->
 
 <!-- Begin Reveal Outfits Code -->
 <script type="text/javascript">
@@ -6347,11 +6631,42 @@ if( (location.pathname == '/browse/product.do') ) {
 <!-- BEGIN Content Item File: /content/0005/667/313/cn5667313.html -->
 <div id="contentItemContainer10000425" class="5667313" >
 
+<div style="position:absolute; top:0px; left:0px; z-index:200; width:450px; height:50px; display:none;" id="EDFSPostageContainer">
+    <a onclick="gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs">
+	  <img alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/313/assets/10-25_EDFSFR_UnivHeader_animate.gif">
+	</a>
+</div>
+
 <div id="EDFS-container" style="width:450px;height:45px;margin-top:3px;">
 	<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
 		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/313/assets/10-25_EDFSFR_UnivHeader_animate.gif" alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." />
 	</a>
 </div>
+
+<style type="text/css">
+#universalMarketingContainerTop{overflow:visible !important;*overflow:visible !important;_overflow:hidden !important;}
+</style>
+
+<script type="text/javascript">
+
+var EDFSiPadBannerPlacement = function() {
+	var targetOffsetArray = $("universalMarketingContainerTop").cumulativeOffset();
+	var targetOffsetLeft = targetOffsetArray[0];
+	var targetOffsetTop = targetOffsetArray[1];
+	//alert(targetOffsetLeft + ", " + targetOffsetTop);
+	var bannerElement = $("EDFSPostageContainer");
+	$('universalBar').insert( { top: bannerElement } )
+	bannerElement.style.left = (targetOffsetLeft-2) + "px";
+	bannerElement.style.top = targetOffsetTop + "px";
+	bannerElement.style.display = "block";
+} 
+
+var isThisAnIpadWeNeedToFixBanner = navigator.userAgent;
+if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
+	Event.observe(window,"load",EDFSiPadBannerPlacement);
+}
+
+</script>
 
 
 </div>
@@ -6861,8 +7176,9 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/651/334/cn5651334.html -->
-<div id="contentItemContainer10000395" class="5651334" >
+    	<!-- BEGIN Content Item File: /content/0005/718/647/cn5718647.html -->
+<div id="contentItemContainer10000395" class="5718647" >
+
 
 <style type="text/css">
 #globalBanner {
@@ -6923,26 +7239,27 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/651/334/assets/102312_30off_GB_US.png" alt="shoptoberfest 30% off your purchase! ends thursday, 10/25. Online only. Enter GAPFEST. Details" usemap="#gbMap" />
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/718/647/assets/102812_KB_25off_GB_US.png" alt="25% off your kids &amp; baby purchase! hurry, ends 10/29! Online and in stores. Enter GAPKIDDO." title="25% off your kids &amp; baby purchase! hurry, ends 10/29! Online and in stores. Enter GAPKIDDO." usemap="#gbMap">
 		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="288,15,437,60" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:300});">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="307,7,461,56" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:300});">
 		</map>
 	</div><!-- /Global Banner Text -->
 
 	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;"> 
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/651/334/assets/102312_30off_DISR_US.gif" alt="shoptoberfest 30% off your purchase! ends thursday, 10/25. Online only. Enter GAPFEST. Details" usemap="#disruptorMap" />
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/718/647/assets/102812_KB_25off_DISR_US.gif" alt="Little ones, rejoice! 25% off your kids &amp; baby purchase! Hurry, ends 10/29. Online and in stores. Enter GAPKIDDO at checkout." usemap="#disruptorMap">
 		<map name="disruptorMap">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/651/334/assets/legal.html',id:'legal',width:350,height:250});" alt="details" />
-		</map>
+			<area shape="rect" class="noHideDisruptor" coords="57,280,255,299" href="http://pages.email.gap.com/page.aspx?QS=330c754b5e92df74faad66fd5989a1d47adbb536640b6fac" target="_new" alt="print to redeem offer in stores.">
+		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:250});" alt="click for details">
+        </map>
 	</div><!-- /Global Banner Disruptor -->
 
 </div>
 <script type="text/javascript">
 Event.observe(window, 'load', function() {
 	// Initiliaze disruptor object
-	globalBannerDisruptor.init('102312_GB');
+	globalBannerDisruptor.init('102812_GB');
 });
 
 // Hide disruptor when out of activation area
@@ -7063,7 +7380,7 @@ var globalBannerDisruptor = {
 
 
 </div>
-<!-- END Content Item File: /content/0005/651/334/cn5651334.html -->
+<!-- END Content Item File: /content/0005/718/647/cn5718647.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9344,7 +9661,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5095770,5651334,5691102,5106701,5451526,5667166,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5095770,5718647,5691102,5106701,5451526,5667166,5125295,5217025";
 	 </script>
 	
 	<noscript>

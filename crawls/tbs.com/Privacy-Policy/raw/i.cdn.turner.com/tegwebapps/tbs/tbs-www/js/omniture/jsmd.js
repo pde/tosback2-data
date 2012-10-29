@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.184.1870.20121001",
+	version: "tbs.180.1870.20120925",
 	release: "0",
 	dictionary: {
 		init: {
@@ -238,7 +238,7 @@ var _jsmd_default={
 				account: function() {
 					var host = window.location.hostname;
 					var rsid = "";
-					if( (host.indexOf("tbs.com") > -1) ||
+					if( (host.indexOf("tbs.com") > -1 && host.indexOf("reftest") == -1) ||
 						(host.indexOf("comedyfestival.com") > -1) ||
 						(host.indexOf("veryfunnyads.com") > -1) ||
 						(host.indexOf("justforlaughschicago.com") > -1) ||
@@ -256,7 +256,7 @@ var _jsmd_default={
 					}else{
 						rsid = "tcm-tbs-adbp-dev";
 					}
-					if(host.indexOf("reftest") > -1 || host.indexOf("dev.") > -1 || host.indexOf("pre-prod") > -1 || host.indexOf("qa-ext") > -1 || host.indexOf("dev-ext") > -1){
+					if(host.indexOf("reftest") > -1 || host.indexOf("dev.") > -1 || host.indexOf("pre-prod") > -1){
 						rsid = "tcm-tbs-adbp-dev";
 					}
 					return rsid;

@@ -26,10 +26,11 @@ Privacy | This Is My Jam        </title>
         <link rel="apple-touch-icon" sizes="114x114" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@2x.png" />
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <link rel="stylesheet" href="../static04.thisismyjam.com/css/all_e43888547d27d64680aacff0227af8b9c6a912c9.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="../static02.thisismyjam.com/css/all_e07d2b47d12b57338df5d37331fd8f425faed15a.css" type="text/css" media="all"/>
     
     <link rel="stylesheet" href="includes/css/search-header.css" type="text/css" media="all" />
     <link rel="stylesheet" href="includes/css/retina.css" type="text/css" media="screen and min-device-pixel-ratio: 2" />
+    <link rel="stylesheet" href="includes/css/flashblock.css" type="text/css" media="all" />
 
         
         <script type="text/javascript" src="includes/js/lib/custom.modernizr.2.5.3.js"></script>
@@ -307,7 +308,7 @@ Privacy | This Is My Jam        </title>
 </section>   </div>
 
 
-        <script src="../static03.thisismyjam.com/js/all_72ab0b147442a26d4f18aabf0fd8b67f93cf01a7.js"></script>
+        <script src="../static03.thisismyjam.com/js/all_7262b33891a5bea3b90180cd8bdd9f725cbaad2d.js"></script>
     
 <script>
     window.realtime = new Realtime('ec2-50-19-158-76.compute-1.amazonaws.com', 8080);
@@ -403,19 +404,37 @@ window.sexyPreloadAnImg = function(urlArr){
     }
   }
 }
-
+var smTimeouts = 0;
 soundManager.url = '/includes/swf/';
 soundManager.flashVersion = 9; // optional: shiny features (default = 8)
-soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+soundManager.useFlashBlock = true; // optionally, enable when you're ready to dive in
 soundManager.useHighPerformance = true; // keep flash on screen, boost performance
 soundManager.wmode = 'transparent'; // transparent SWF, if possible
 soundManager.useFastPolling = true; // increased JS callback frequency
 soundManager.useHTML5Audio = true;
 soundManager.preferFlash = true;
-soundManager.flashLoadTimeout = 8e4; // 80 seconds for user to click before trying flash out again in flashblock mode
+soundManager.flashLoadTimeout = 4000; // 4 seconds to load
 soundManager.debugMode = false;
 soundManager.consoleOnly = true;
-
+soundManager.ontimeout(function(status) {
+    //console.log("TIMEOUT",status);
+    if(status.error.type == 'FLASHBLOCK'){
+        soundManager.useFlashBlock = false;
+        soundManager.flashLoadTimeout = 0;
+        JamError.show('Oops, Flash may be blocked in your browser. Check your browser settings to enable playback.', 2e4); // show this message
+        var $clicker = $('#sm2-container');
+            $clicker.parent().on('click',function(e){
+                soundManager.reboot();
+                return true;
+            });
+        JamError.$box.append($clicker);
+    } else {
+        smTimeouts++;
+        //console.log(soundManager.flashLoadTimeout * smTimeouts);
+        soundManager.onerror = {}; // Prevent an infinite loop, in case it's not flashblock
+        soundManager.flashLoadTimeout = soundManager.flashLoadTimeout * smTimeouts; // Keep bumpin.
+    }
+});
 
 window.ytPlayer = new YoutubePlayer('ytPlayer', $("#ytContainer"), !window.hasFlash());
 

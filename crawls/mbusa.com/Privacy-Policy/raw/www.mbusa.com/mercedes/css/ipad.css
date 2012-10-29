@@ -25,6 +25,19 @@ THIS WAS COMMENTED OUT TO FIX 7327
 .modal-content-wrapper.narrow {
     width: 520px;
 }*/
+/* WL 10/22/12: This was added to fix bugs related to the modal where the modal was not showing up in the middle of the page. It looks like this only happened
+  on pages that do not have the standard 920px width (such as fashion page, byo, homepage, etc). It's basically the same fix as the one commented above but I 
+  used max-device-width instead of max-width, and removed the top value from .modal-content-wrapper */
+@media only screen and (max-device-width:768px) {
+  .modal-shield { width:1200px!important;}
+  .modal-content-wrapper {
+   margin-left: 110px !important;
+   width: 980px;   
+  }
+  .modal-content-wrapper.narrow {
+      width: 520px;
+  }
+}
 .video-modal-container .modal-content-wrapper {
     /*  Fixes modal video issue on GL campaign. MBAGILE-10138
     */

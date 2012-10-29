@@ -13,21 +13,21 @@ function includeJSUtf8(jsPath){
 	document.write('<script type="text/javascript" charset="utf-8" src="' + jsPath + '"></scr' + 'ipt>');
 }
 
-includeJS('/wcsstore/Coach_US/scripts/jquery-latest.js');
-includeJS("/wcsstore/Coach_US/scripts/thickbox.js");
+//includeJS('/wcsstore/Coach_US/scripts/jquery-latest.js');
+includeJS("/wcsstore/Coach_US/scripts/thickbox.min.js");
 includeJS("/wcsstore/Coach_US/scripts/jquery.expaNav.js");
 includeJS("/wcsstore/Coach_US/scripts/swfobject.js");
 includeJS('/wcsstore/Coach_US/scripts/myAccount.js');
-includeJS('/wcsstore/Coach_US/scripts/flexcroll-uncompressed.js');
+includeJS('/wcsstore/Coach_US/scripts/flexcroll-uncompressed.min.js');
 includeJS('/wcsstore/Coach_US/scripts/coach.js');
-includeJS('/wcsstore/Coach_US/scripts/jqModal.js');
-includeJS('/wcsstore/Coach_US/scripts/jquery.timers.js');
+includeJS('/wcsstore/Coach_US/scripts/jqModal.min.js');
+includeJS('/wcsstore/Coach_US/scripts/jquery.timers.min.js');
 //includeJS('/wcsstore/Coach_US/scripts/s_code.js');
 includeJS('/wcsstore/Coach_US/scripts/Util.js');
 includeJS('/wcsstore/Coach_US/scripts/jquery.customScroller-1.2.js');
-includeJS('/wcsstore/Coach_US/scripts/jquery.mousewheel.js');
-includeJS('/wcsstore/Coach_US/scripts/jquery.wresize.js');
-includeJS('/wcsstore/Coach_US/scripts/jquery-ui.js');
+includeJS('/wcsstore/Coach_US/scripts/jquery.mousewheel.min.js');
+includeJS('/wcsstore/Coach_US/scripts/jquery.wresize.min.js');
+includeJS('//ajax.googleapis.com/ajax/libs/jqueryui/1.5.2/jquery-ui.min.js');
 
 if(navigator.userAgent.toLowerCase().indexOf("msie 6.")!=-1)
 	includeJS('/wcsstore/Coach_US/scripts/DD_belatedPNG.js');

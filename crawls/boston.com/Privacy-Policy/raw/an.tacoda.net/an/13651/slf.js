@@ -1,5 +1,5 @@
-// 2012/10/19 14:44:56
-var ANV='6.4.5';
+// 2012/10/25 15:39:53
+var ANV='6.4.6';
 var ANAXCD=24;
 var ANDCC='adg';
 var ANDPEFA;
@@ -82,6 +82,7 @@ var ATSYNCFRURL='http://an.tacoda.net/an/atids.html';
 var ANBYODE='bk';
 var ANBYODS='bk,^100[0-9]{3}$';
 var ANBYODO='bk';
+var ANTPX='[24]';
 function safeVar(variable){
 var ret;
 try{
@@ -172,9 +173,9 @@ re=eval('/'+p[x][1]+'/i');
 if(id!='tc'){
 if(a[i].search(re)!=-1){
 if(id in s){
-s[id]+=d+a[i];
+s[id]+=d+a[i]+ANTPX;
 }else{
-s[id]=id+'='+a[i];
+s[id]=id+'='+a[i]+ANTPX;
 }
 m=true;
 }
@@ -183,9 +184,9 @@ x--;
 }
 if(m==false&&a[i].length>=5){
 if(tcs==null){
-tcs='tc='+a[i];
+tcs='tc='+a[i]+ANTPX;
 }else{
-tcs+=d+a[i];
+tcs+=d+a[i]+ANTPX;
 }
 }
 }

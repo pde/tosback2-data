@@ -172,6 +172,8 @@ var glossary = {
 	Checking_elipse: "Checking...",
 	Unavailable_excl: "Unavailable!",
 	Available_excl: "Available!",
+	Invalid_chars: "Please remove invalid characters",
+	Invalid_tld: "Please remove your domain type",
 	click_here_to_get_domain: "Click here to get this domain name",
 	is_available_excl: "is available!",
 	is_unavailable_per: "is unavailable.",

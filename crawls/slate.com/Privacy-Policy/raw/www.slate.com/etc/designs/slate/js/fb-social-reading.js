@@ -16,7 +16,7 @@ var clog = function(msg) {
 };
 SG.config = {
         PAGE_SIZE : 5,
-        getUserAPI : "http://my.slate.com/users/api/v1/user/?format=jsonp",
+        getUserAPI : "http://my.slate.com/users/slate_page_info/?format=jsonp",
         newUserAPI : "http://my.slate.com/reads/add_user/",
         updateUserAPI : "http://my.slate.com/reads/update_user/",
         myReadsAPI : "http://my.slate.com/reads/list_reads/",
@@ -335,13 +335,6 @@ SG.fbLoginManager = {
             success: function(d){
                 clog('[fbLoginManager loadFromServer] getUserAPI request successful. Data:');
                 clog(d);
-                /*try{
-                    SG.FBSR.fbUid = d.objects[0].fb_uid;//NEW, STATIC FB UID
-                }catch(e){
-                    clog('WARNING: [fbLoginManager loadFromServer] setting SG.FBSR.fbUid failed. : ' + e);
-                    SG.FBSR.fbUid = null;//NEW, STATIC FB UID
-                }*/
-                
                 if(isFBUser){
                     self.forceActivate(d)
                 }
@@ -359,10 +352,10 @@ SG.fbLoginManager = {
     forceActivate : function(res){
         clog("[fbLoginManager forceActivate]DATA:");
         clog(res);
-        if ((res.objects != undefined) && (res.objects.length > 0)) {
+        if (res.user != undefined) {
             SG.config.isUser = true;
-            clog("[fbLoginManager forceActivate] 'res' arg has objects property. Process with enableReading(false,res.uid)");
-            SG.fbLoginManager.enableReading(false, res.objects[0]['fb_uid']);
+            clog("[fbLoginManager forceActivate] 'res' arg has user property. Process with enableReading(false,res.uid)");
+            SG.fbLoginManager.enableReading(false, res.user['fb_uid']);
         } else {
             clog("[fbLoginManager forceActivate] could not get fb_uid from getUserAPI. Trying FB.getLoginStatus.");
             //hit the API to get FB id
@@ -393,11 +386,11 @@ SG.fbLoginManager = {
     },
     getUserCB : function (res) {
         clog(res);
-        if ((res.objects != undefined) && (res.objects.length > 0)) {
-            var srFlag = res.objects[0][SG.config.SR];
-            var sreFlag = res.objects[0][SG.config.SRE];
-            var srnFlag = res.objects[0][SG.config.SRN];
-            var fbUid = res.objects[0][SG.config.fbUserCookieName];
+        if (res.user != undefined) {
+            var srFlag = res.user[SG.config.SR];
+            var sreFlag = res.user[SG.config.SRE];
+            var srnFlag = res.user[SG.config.SRN];
+            var fbUid = res.user[SG.config.fbUserCookieName];
             SG.config.isUser = true;
             clog("srFlag::" + srFlag + "-sreFlag::" + sreFlag +
                     "-srnFlag::" + srnFlag);

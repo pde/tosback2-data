@@ -47,7 +47,6 @@ SG.FBWrapper = {
         clog("Checking: " + this.permissions_to_check + " " + this.uid);
         if (this.uid < 0) {return;}
         clog('[FBWrapper loadPermissions]');
-        clog('[FB AJAX REQUEST]\nFB.Data.query("select {0} from permissions where uid={1}", ' + SG.FBWrapper.permissions_to_check + ', '+ SG.FBWrapper.uid +')');
         FB.api('/me/permissions', function(response) {
 			if (response && response.data) {
 				var permissions = response.data.shift();

@@ -53,15 +53,25 @@ if (e9Manager === undefined || e9Manager.init === false)
          { 
            var             	rVal = "";
            var             	pVal = "";
+	   var 			pIndex = "";
+	   var 			adParamsArray = [];
+
          
 	   if (adParams)
 	    { 
-	      var pIndex = adParams.indexOf(param+"=");
-	      var adParamsArray = adParams.substring(pIndex+param.length+1).split('&');
-	      rVal = adParams.substring(0,pIndex-1)
-	      if (adParamsArray.length > 1)
+	      pIndex = adParams.indexOf(param+"=");
+	      if (pIndex > -1)
+	       {      
+	         adParamsArray = adParams.substring(pIndex+param.length+1).split('&');
+	         rVal = adParams.substring(0,pIndex-1)
 	         rVal +=  "&"+ adParamsArray.slice(1).join('&');
-	      pVal = adParamsArray[0];
+	         pVal = adParamsArray[0];
+	       }
+	      else
+	       {
+		 rVal = adParams;
+		 pVal = "";
+	       }
 	    }
 	   return { adParams : rVal, param : pVal };
 	 }
@@ -491,7 +501,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 	   	   window.parent.e9Manager = manager;
 
                 e9Page.adResponse = adResponse;                
-                e9Page.processWaitingSlotsQueue()                
+                e9Page.processWaitingSlotsQueue();                
               },
 
 	   setSingleAdResponse:
@@ -531,10 +541,14 @@ if (e9Manager === undefined || e9Manager.init === false)
 	   tagKey: "1883697412",
 	   enabledRichAdInIframe: true,
 	   enabledAdChoices: true,
+	   enabledSnackBarInIframe: false,
 	   tagOptions: {},
            
 	   isIE: (navigator.appVersion.indexOf("MSIE") !== -1),
 	   isIEOrOpera : (navigator.appVersion.indexOf("MSIE") !== -1) || (navigator.userAgent.indexOf("Opera") !== -1),
+	   isSafari : (navigator.vendor && (navigator.vendor.indexOf('Apple') != -1)),
+	   isMobileDevice: navigator.userAgent.match(/iPhone|iPad/i) ? true : false,
+           snackBarSizeMap : {iphone : "320x50", ipad: "768x90"},
 
 	   init: 
              function()
@@ -705,6 +719,123 @@ if (e9Manager === undefined || e9Manager.init === false)
 		return adSpec;
 	      },
 
+	   canServeSnackBar:
+	     function()
+	      {
+                var             p = this;
+		var		isTopAccessible = false;
+
+                try
+	         {
+                   if (window.top.location.href !== undefined)
+                      isTopAccessible = true;
+                 }
+                 catch(e) { }
+                        
+		 if (     (isTopAccessible === true)
+                      &&  (p.isMobileDevice === true)
+		      &&  (! /OS [1-3](.*) like Mac OS X/i.test(navigator.userAgent))
+                      &&  (p.isSafari === true)
+		      &&  (    top === self 
+                            || p.enabledSnackBarInIframe === true)
+		      &&  (window.top.isSnackBarServedOnPage === undefined)
+		      &&  (     (typeof p.tagOptions.snackBar === "undefined")
+                            || (   (    p.tagOptions.snackBar.serveSnackBar  === undefined
+                                     || p.tagOptions.snackBar.serveSnackBar === true)
+                                && (    p.tagOptions.snackBar.mobileOptimizedSite === undefined
+                                     || p.tagOptions.snackBar.mobileOptimizedSite  === false)))  )
+                 {
+                   return true;
+                 }
+
+                return false;
+              },
+
+	   drawSnackBarTags:
+	     function()
+	      {
+		var     p = this;
+		var	deviceName = navigator.userAgent.match(/iPad|iPhone/i)[0].toLowerCase();
+		var	snackBannerSize = p.snackBarSizeMap[deviceName];
+		var	snackBarClose = false;
+		var	content;
+
+		window.top.isSnackBarServedOnPage = true;
+
+                if (   p.tagOptions.snackBar != undefined
+		    && p.tagOptions.snackBar.snackBarClose != undefined )
+                 {
+		   snackBarClose = p.tagOptions.snackBar.snackBarClose;
+                 }
+
+                content = '<scr' + 'ipt type="text/javascript"> ' +
+			      'var e9 = new Object(); ' +
+			          'e9.snackbar=true; '  +
+                                  'e9.snackbarclose='   + snackBarClose + ';' +
+				  'e9.size="' + snackBannerSize + '";' +
+			          'e9.noAd = 1; '  + 
+			   '<\/sc' + 'ript>' +
+			  '<scr' + 'ipt type="text/javascript" src="' + p.getRealTagsScript({}) + '"><\/sc' + 'ript>';
+
+		if (top === self)
+                 {
+	           document.write(content);
+                 }
+                else
+                 {
+          	   var	        iframeID = p.getFrameID(top);
+                   var	        width = snackBannerSize.split("x")[0];
+                   var	        height = snackBannerSize.split("x")[1];
+                   var	        iframe = p.createSameDomainIframeNode(iframeID,0,0);
+
+                   top.document.body.appendChild(iframe);
+                   p.writeContentInIframe(top,iframeID,content);
+                 }
+              },
+
+           getRealTagsScript: 
+             function(e9Obj) 
+	      {
+	        var 	t =this; 
+		return "http://" +  "a.tribalfusion.com/real/" + t.getCurrentTagsScript(e9Obj);            
+	      },
+
+           getCurrentTagsScript: 
+             function (e9Obj) 
+               {
+                 var		scriptsOnthePage = document.getElementsByTagName('script');
+                 var		numScripts = scriptsOnthePage.length;
+                 var		tagsScriptName = "/tags.js";
+		 var        	tagsScriptLen = tagsScriptName.length;
+		 var        	asyncTagsScriptName = "asyncTags.js";
+		 var        	asyncTagsScriptLen = asyncTagsScriptName.length;
+
+		 for (var i = numScripts - 1; i >= 0; i--)
+		  {
+		    var     	scriptSrc = scriptsOnthePage[i].src;
+		    var     	tagsScriptSrc;
+
+		    if (scriptSrc.substr(scriptSrc.length - asyncTagsScriptLen) === asyncTagsScriptName) 
+	             {
+	               if (    (e9Obj.site !== undefined) 
+                            && (e9Obj.adSpace !== undefined))
+		          return "/tags/" + e9Obj.site + "/" + e9Obj.adSpace + "/tags.js";
+                       return "";
+	             } 
+                    else if (scriptSrc.substr(scriptSrc.length - tagsScriptLen) === tagsScriptName) 
+	             {
+                       if (scriptSrc.indexOf("/real/") >= 0)
+                          tagsScriptSrc = scriptSrc.split("/").slice(4).join("/")
+                       else
+			  tagsScriptSrc = scriptSrc.split("/").slice(3).join("/")
+
+		       return tagsScriptSrc;
+                     }
+	          }
+	          return "";
+               },	 		   
+
+	   
 	   pageBuildAdSlotsFromE9Slots:
 	     function(e9AdSlots)
 	      {
@@ -890,7 +1021,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 				    "300x600", "425x600",  "180x150",  "0x0",
                                     "320x480", "1024x768", "320x50",   "768x66",
                                     "1024x66", "300x50",   "1024x90",  "768x60",
-                                    "480x32" ],
+                                    "768x90" ],
 
                    filterSizeToFrameWxH:
 		     function(size,frame)
@@ -1170,6 +1301,11 @@ if (e9Manager === undefined || e9Manager.init === false)
 			else
 			   t.drawTags();
 
+			if (p.canServeSnackBar() === true)
+                         {
+                           p.drawSnackBarTags();
+                         }			
+
 			if (adSpec.debug === 1)
 			   inspectNameObj("e9Ad",t);
 		      },
@@ -1420,6 +1556,11 @@ if (e9Manager === undefined || e9Manager.init === false)
                 iframe.setAttribute("vspace", "0");
                 iframe.setAttribute("id" ,iframeID);
 
+		if (width === 0 && height === 0)
+                 {
+                   iframe.setAttribute("style","position:absolute; top:-15000px; left:-15000px;");
+                 }
+
                 return iframe;
               },
         
@@ -1492,14 +1633,14 @@ if (e9Manager === undefined || e9Manager.init === false)
 			 inspectNameObj(slotName + ".adResponse",adResponse);
 		       }
 
-		      iframe = p.createSameDomainIframeNode(iframeID,frameWidth,frameHeight);
+                       if (p.canServeSnackBar() === true)
+		          p.drawSnackBarTags();
 
-		      frameWindow.document.getElementById(divID).appendChild(iframe);		
-
-                      content = p.buildContentFromResponse(adResponse);
-
-		      p.writeContentInIframe(frameWindow,iframeID,content);
-		      p.displayFlags[slotName] = 1;
+                       iframe = p.createSameDomainIframeNode(iframeID,frameWidth,frameHeight);
+                       frameWindow.document.getElementById(divID).appendChild(iframe);
+                       content = p.buildContentFromResponse(adResponse);
+                       p.writeContentInIframe(frameWindow,iframeID,content);
+                       p.displayFlags[slotName] = 1;		      
 		    }  
                  }
               },

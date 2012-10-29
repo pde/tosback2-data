@@ -114,6 +114,23 @@ var BB = {
     }
 };
 
+/**
+ * Simple function to create a namespace if needed.
+ */
+BB.createNamespace = function (namespace) {
+    var space = namespace.split('.'), i, currentSpace = BB, spaceName;
+    for (i = 0; i < space.length; i += 1) {
+        spaceName = space[i];
+        if (spaceName !== 'BB') {
+            if (!currentSpace[spaceName]) {
+                currentSpace[spaceName] = {};
+            }
+            currentSpace = currentSpace[spaceName];
+        }
+    }
+    return currentSpace;
+};
+
 /*
  * BAsic prototype extension for various objects
  */

@@ -543,7 +543,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 					catentryMap = the_object["catentryMap"];
 					// Ratings icon path with products.
 					loadPDPRecs(priceArray, ratingsMap,catentryMap);		
-					//document.getElementById(div_id).innerHTML = html;
+					document.getElementById(div_id).innerHTML = html;
 					//if (symbolic !== '_NR_')
 						//loadQV();
 				}
@@ -622,16 +622,16 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 				if (image) {
 					thumbnailImg = image_prefix + image.substring(0, image.indexOf("_")) + "_MV_TB" + image.substring(image.length-4, image.length);
 				}
-				
+
 				var ratingImg = "/img/bv/small/rating-0_0.gif";
 				if (ratings) {
+					var iRating = parseInt(ratings*10)/10;
+					ratings = iRating.toString();
+				
 					if (ratings.indexOf(".") < 0) {
 						ratings += ".0";
 					}
-					else {
-						var iRating = parseInt(ratings*10)/10;
-						ratings = iRating.toString();
-					}
+					
 					ratingImg = "/img/bv/small/rating-" + ratings.toString().replace(".","_") + ".gif";
 				}
 				
@@ -647,9 +647,9 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 					+ rec_prod_id+ "&amp;topCat="+ topCatId+"&amp;bcCatIds="+ bcCatIds+ "&amp;io="+ zone
 					+"&amp;productName="+ imageAlt.replace("<br/>", "");
 				
-				lines.push("<div class='img-wrap'><a class='tips' href='"+quickViewURL+"' " 
+				lines.push("<div class='img-wrap'><a class='tips' onclick='return false;' href='"+quickViewURL+"' " 
 						+ "rel='"+quickViewURL+"' aria-hidden='true' role='presentation' tabindex='-1'>"
-						+ "<img alt='' role='presentation' src='" + image
+						+ "<img alt='' onclick='return false;' oncontextmenu='return false;' role='presentation' src='" + image
 						+ "' class='img-product-border'></img>"
 						+ "</a></div>");
 				
@@ -666,17 +666,23 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 							"onclick='JavaScript:categoryDisplayJS.Add2CompareAjax(\""+compareCatentryId+"\" , \""+thumbnailImg
 							+"\",\""+catEntryDisplayUrl+"\", \""+compareImageDescription+"\")'>&nbsp;Compare</label></p>");
 				}
-				if (labels != null && labels.indexOf("CLEARANCE") > -1) {
-					lines.push("<br /><img src='/img/products/clearancetag_icon_purple.jpg' border='0' alt='Clearance'/>");
-				}
-				if (labels != null && labels.indexOf("SUPER VALUE") > -1) {
-					lines.push("<br /><img src='/img/products/supervaluetag.gif' border='0' alt='Super Value'/>");
-				}
 				if (labels != null && labels.indexOf("PREVIOUSLY OWNED") > -1) {
-					lines.push("<br /><img src='/img/products/previouslyowned_icon_black.gif' border='0' alt='Previously Owned'/>");
+					lines.push("<br/><span class='flag-name'><span alt='Previously Owned'>Previously Owned</span></span>");
 				}
-				if (labels != null && labels.indexOf("RETIRED") > -1) {
-					lines.push("<br /><img src='/img/products/retired_tag_KAY.GIF' border='0' alt='Retired'/>");
+				else if (labels != null && labels.indexOf("CLEARANCE") > -1) {
+					lines.push("<br/><span class='flag-name'><span alt='Clearance'>Clearance</span></span>");
+				}
+				else if (labels != null && labels.indexOf("SUPER VALUE") > -1) {
+					lines.push("<br/><span class='flag-name'><span alt='Super Value'>Super Value</span></span>");
+				}
+				else if (labels != null && labels.indexOf("ENGRAVABLE") > -1) {
+					lines.push("<br/><span class='flag-name'><span alt='Engravable'>Engravable</span></span>");
+				}
+				else if (labels != null && labels.indexOf("PERSONALIZED") > -1) {
+					lines.push("<br/><span class='flag-name'><span alt='Personalized'>Personalized</span></span>");
+				}
+				else if (labels != null && labels.indexOf("RETIRED") > -1) {
+					lines.push("<br/><span class='flag-name'><span alt='Retired'>Retired</span></span>");
 				}
 				lines.push("</li>");				
 			}			
@@ -688,7 +694,7 @@ function io_zpfs(a_product_ids, zone, symbolic, target_id, category,
 		/* If there is one product or more to display in more products to love section 
 		   remove "display:none" property from the more-products-love div*/
 		if(n_recs > 0) {
-			//document.getElementById("more-products-love").removeAttribute("style");
+			document.getElementById("more-products-love").removeAttribute("style");
 		}	
 	}	
 	

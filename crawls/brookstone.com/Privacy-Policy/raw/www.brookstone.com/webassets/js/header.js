@@ -3,7 +3,7 @@
 // to load when the end JSP for a page has loaded.
 //<!-- CR 199 - Add  Monetate to the headers of the page -->
 //<!-- Begin Monetate tag v6. Place at start of document head. DO NOT ALTER. -->
-/*
+
 try {
 var monetateT = new Date().getTime();
 (function() {
@@ -15,5 +15,5 @@ var monetateT = new Date().getTime();
 })();
 } catch (e) {}
 var g_b_Monetate_Loded = true;
-*/
+
 // End Monetate tag.

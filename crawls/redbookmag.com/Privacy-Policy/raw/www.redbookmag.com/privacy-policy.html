@@ -1523,65 +1523,42 @@ if(document.location.protocol=='http:'){
 
 <!-- fbconnect xs_fbconnect_modalwindows.tmpl -->
 
-<div class="hfbconnect_confirmation_box" style="display:none" hfbconnect="confirmation">
-    <div class="title">Thanks for joining</div>
-    Your information has been saved and an account has been created for you giving you full access to everything redbook.com and Hearst Digital Media Network have to offer. To change your username and/or password or complete your profile, <a href="http://www.redbookmag.com/registration/editProfile.html">click here</a>
-    <div id="hfbconfirmbut" class="right"><span class="arrowStart">&nbsp;</span><a onclick="$h.FB.modal.confirmAutoReg.hide();" href="privacy-policy.html#" class="arrowFill"><span class="continue_txt">Continue</span></a><span class="arrowEnd">&nbsp;</span></div>
-    <a class="hfbconfirmlittlex" onclick="$h.FB.modal.confirmAutoReg.hide();" href="privacy-policy.html#"><div class="closeb"></div></a>
-</div>
-
-<div class="hfbconnect_confirmation_box" style="display:none" hfbconnect="confirmation_ninjoin">
-    <div class="title">Your accounts are now linked</div>
-    You now have full access to everything redbook.com and Hearst Digital Media Network have to offer. To change your settings or profile, <a href="http://www.redbookmag.com/registration/editProfile.html">click here</a>
-    <div id="hfbconfirmbut" class="right"><span class="arrowStart">&nbsp;</span><a onclick="$h.FB.modal.confirmNinLink.hide();" href="privacy-policy.html#" class="arrowFill"><span class="continue_txt">Continue</span></a><span class="arrowEnd">&nbsp;</span></div>
-    <a class="hfbconfirmlittlex" onclick="$h.FB.modal.confirmNinLink.hide();" href="privacy-policy.html#"><div class="closeb"></div></a>
-</div>
-
-
-<div id="hfbconnect_login_box"  hfbconnect="login" style="display: none">
-    <img id="fb_image" src="privacy-policy.html" height="50" width="50"/>
-    <div id="lyatf">Link Your <i>Redbook</i> Account to Facebook</div>
-    <div id="wname">Welcome, <span id="fb_name"></span>!</div>
-    <form name="login" id="amin" onsubmit="$h.FB.modal.loginForm.submit(); return false;">
-        
-        
-            <b>Link my Redbook account to Facebook</b>
-            <br />
-            Sign in to redbook.com below and we'll link your facebook account to your existing Redbook account
-        
-        <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-        <input id="hfbloginnexturl" type="hidden" name="next_url" value=""/>
-        <input type="hidden" name="login" value="1" />
-        <input type="hidden" name="search_term" value="" />
-        <input type="hidden" name="remember_me" value="1" />
-        <div id="usernamelab">
-            
-            
-                Email:
-            
+    <div class="hdmModal" id="connectEmailExists">
+        <div class="hdmFacebookPic"></div>
+        <div class="title">Link Your <em>Redbook</em> Account to Facebook</div>
+        <div class="welcome">Welcome!</div>
+        <div class="modalActions clearfix">
+            <form name="hdmConnectLogin" id="hdmConnectLogin" action="http://www.redbookmag.com/registration/login" method="post" class="g-6">
+                <p class="infoText">Redbook already has an account with this email address. Link your account to use Facebook to sign in to Redbook. To insure we protect your account, please fill in your password below.</p>
+                <p><label><span>Username or email:</span> <input type="text" name="user_name" /></label></p>
+                <p><label><span>Password:</span> <input type="password" name="password" /></label></p>
+                <p class="submit">
+                    <button type="submit">Sign In</button>
+                    <a href="http://www.redbookmag.com/registration/forgotPassword.html" class="forgotPassword buttonLink">Forgot Password?</a></a>
+                </p>
+            </form>
+            <div class="dontLink g-6 g-last">
+                <p>No thanks, continue without linking accounts.</p>
+                <a href="privacy-policy.html#" class="cancelLink">Continue</a>
+            </div>
         </div>
-        <input name="user_name" id="user_name" type="text" class="text" value="" />
-        <div id="passwordlab">Password:</div>
-        <input name="password" id="password" type="password" class="password" />
-
-        <div id="button" class="right">
-                <span class="arrowStart">&nbsp;</span>
-                <a href="privacy-policy.html#" class="arrowFill" onclick="$h.FB.modal.loginForm.submit();"><span class="signin_txt">sign in</span></a>
-                <span class="arrowEnd">&nbsp;</span>
-        </div>
-        <a id="forgotpassword" href="http://www.redbookmag.com/registration/forgotPassword.html">
-            
-            
-                Forgot<br />Password?
-            
-        </a>
-    </form>
-    <div id="nothanks">
-        No Thanks, continue without linking accounts
     </div>
-    <div id="nothanksbutton" class="right"><span class="arrowStart">&nbsp;</span><a href="privacy-policy.html#" class="arrowFill" onclick="$h.FB.modal.loginForm.hide(); return false;"><span class="continue_txt">continue</a></span><span class="arrowEnd">&nbsp;</span></div>
-    <a class="hfbconfirmlittlex" onclick="$h.FB.modal.loginForm.hide();" href="privacy-policy.html#"><div class="closeb"></div></a>
-</div>
+    <div class="hdmModal" id="thanksForJoining">
+        <div class="title">Thanks for Joining</div>
+        <p>Your information has been saved and an account has been created for you giving you full access to everything redbook.com and Hearst Digital Media Network have to offer. To change your username and/or password or complete your profile, <a href="http://www.redbookmag.com/registration/editProfile.html">click here</a>.</p>
+        <a href="privacy-policy.html#" class="continue">Continue</a>
+    </div>
+    <div class="hdmModal" id="accountsLinked">
+        <div class="title">Your accounts are now linked</div>
+        <p>You now have full access to everything Redbook and Hearst Digital Media Network have to offer. To change your settings or profile, <a href="http://www.redbookmag.com/registration/editProfile.html">click here</a>.</p>
+        <a href="privacy-policy.html#" class="continue">Continue</a>
+    </div>
+
+
+
+    <div class="hdmModal" id="editProfileModal">
+    </div>
+
 
 <!-- /fbconnect xs_fbconnect_modalwindows.tmpl -->
 

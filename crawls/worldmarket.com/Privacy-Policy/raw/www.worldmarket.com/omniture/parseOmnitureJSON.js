@@ -53,10 +53,10 @@
                                     var event = "";
                                     for(event in oOmnitureJSON[key][i]["events"]) {
                                         if(eventString.length > 0){
-                                            eventString += ";";
+                                            eventString += "|";
                                         }
                                         if(event.length > 0){
-                                            eventString += "event" + "=" + event;
+                                            eventString += event + "=" + oOmnitureJSON[key][i]["events"][event];
                                             }
                                             }
                                         }
@@ -66,7 +66,7 @@
                                     var eVar = "";
                                     for(eVar in oOmnitureJSON[key][i]["eVars"]) {
                                         if(eVarString.length > 0){
-                                            eVarString += ";";
+                                            eVarString += "|";
                                         }
                                         if(oOmnitureJSON[key][i]["eVars"][eVar] != null){
                                             eVarString += eVar + "=" + oOmnitureJSON[key][i]["eVars"][eVar];
@@ -79,8 +79,15 @@
                                     productString += eventString + ";";
                                 }
                                 if(eVarString.length > 0){
+									if(eventString=="")
+									productString += ";" +eVarString + ";";
+									else
                                     productString += eVarString + ";";
                                 }
+								//Fix for WOMA-917
+								if(productString.length > 0){
+									productString=productString.substr(0,productString.length - 1);
+								}
                                 aProds[aProds.length] = productString;
                             }
 
@@ -92,7 +99,7 @@
                             }
 
                             // add the gathered events (joined by a "|") to the aProds array
-                            if (aEventKeyValues.length > 0) aProds[aProds.length] = ";;;;" + aEventKeyValues.join("|")
+                            /*if (aEventKeyValues.length > 0) aProds[aProds.length] = ";;;;" + aEventKeyValues.join("|")*/
 
                             // build the final string by joining the aProds array with a ","
                             sKeyVal += '"'+ escapeChars(aProds.join(",")) +'"';
@@ -110,9 +117,19 @@
                             var oSubObject = oOmnitureJSON[key]; // the event's object var
 
                             // loop through the event object's properties, adding the key names to the aEventKeys array
-                            for(subKey in oSubObject) {
-                                aEventKeys[aEventKeys.length] = subKey
-                            }
+							//special case for order confirmation page -WOMA-917
+							if(oOmnitureJSON["purchaseID"]!=null){
+								for(subKey in oSubObject) {									
+									if(oOmnitureJSON["events"][subKey]!=null && oOmnitureJSON["events"][subKey].length > 0)
+									aEventKeys[aEventKeys.length] = subKey +"="+oOmnitureJSON["events"][subKey];
+									else
+									aEventKeys[aEventKeys.length] = subKey
+								}
+							}else{
+								for(subKey in oSubObject) {									
+									aEventKeys[aEventKeys.length] = subKey
+								}
+							}
 
                             // build the final string by joining the aEventKeys array with a ","
                             sKeyVal += '"'+ aEventKeys.join(",") +'"';
@@ -229,14 +246,14 @@
 			 // send data to parseOmnitureJSON()
             parseOmnitureJSON({"prop16":sTabName,"eVar31":sLinkName});
 			//WOMA-784
-			/*if(typeof(oProducts)){
+			if(typeof(oProducts)){
 				for (var i=0; i<oProducts.length; i++){            
 				 var sEvent = oProducts[i]["events"]; 
 				 if(typeof(sEvent))
 				 oProducts[i]["events"]=null;
 				 oProducts[i]["eVars"]["eVar31"]=sLinkName;
 				}
-			}*/			
+			}		
             // special case for customer reviews
             if (sTabID == "tab_99") {
                 parseOmnitureJSON({"events":{"event25":null}});
@@ -262,7 +279,7 @@
                 sTrackEvents=",events";				
             }            
 			  // send the data to Omniture
-		    s.linkTrackVars="prop16,eVar31,products" +sTrackEvents;
+		    s.linkTrackVars="prop16,products" +sTrackEvents;
             s.tl(true,'o',"Product Detail Pg Interactions");
 
             // set the tab id in oTabViews so we don't send the data again
@@ -292,6 +309,59 @@
         s.tl(true,'o',sLinkName);
     }
 
+	/**
+	* This function is used for tracking call to 
+	* social media buttons WOMA-786
+	**/
+	function trackSocialMedia(socialTagName){		
+		var s=s_gi(getId());		
+		var oProducts = oOmnitureJSON["products"];		
+		var sTrackEvents = "";				
+		// send data to parseOmnitureJSON()		
+		parseOmnitureJSON({"eVar45":socialTagName});			
+		if(typeof(oProducts)){
+				for (var i=0; i<oProducts.length; i++){
+				 oProducts[i]["events"]=null;
+				 //WOMA-1088
+				 if(typeof(oProducts[i]["eVars"]["eVar30"]))
+					oProducts[i]["eVars"]["eVar30"]=null;
+				if(typeof(oProducts[i]["eVars"]["eVar33"]))
+					oProducts[i]["eVars"]["eVar33"]=null;
+				 oProducts[i]["eVars"]["eVar45"]=socialTagName;
+				}
+			}
+			parseOmnitureJSON({"products":oProducts});
+		//FaceBook Likes
+		if(socialTagName=="Facebook Likes"){
+		parseOmnitureJSON({"events":{"event64":null}});
+		s.linkTrackEvents="event64";
+		}
+		//FaceBook Comments
+		if(socialTagName=="Facebook Comments"){
+		parseOmnitureJSON({"events":{"event68":null}});
+		s.linkTrackEvents="event68";
+		}
+		//Twitter
+		if(socialTagName=="Twitter Tweets"){
+		parseOmnitureJSON({"events":{"event65":null}});
+		s.linkTrackEvents="event65";
+		}
+
+		//Google Plus
+		if(socialTagName=="Google +1 Shares"){
+		parseOmnitureJSON({"events":{"event66":null}});	
+		s.linkTrackEvents="event66";
+		}
+		//Pinterest
+		if(socialTagName=="Pinterest Pins"){
+		parseOmnitureJSON({"events":{"event67":null}});
+		s.linkTrackEvents="event67";
+		}
+						
+		sTrackEvents=",events";	
+		s.linkTrackVars="products" +sTrackEvents;
+		s.tl(true,'o','Social Media');
+	}
     /**
      * Handle "onload type" tracking, or tracking that requires the modification of DOM elements,
      * such as adding click event tracking to links.
@@ -307,7 +377,7 @@
      * Method for tracking linked images (generated by marketlive display) within kickers and fillslots
      * 1) Checks for images with the "mlfsimg" CSS class.
      * 2) Grab the image name and assign an onclick event to the image's link.
-     * 3) Set and send the Omniture vars.//WOMA-1004
+     * 3) Set and send the Omniture vars.
      */
     function trackLinkedFillslotImages(){
         jQuery(".mlfsimg").each(function (i){
@@ -320,13 +390,13 @@
                     "eVar2":sImgName,
                     "prop12":sImgName,
                     "assignments":{
-                        "eVar16":"pageName",
+                    	"eVar16":"pageName",
                         "prop13":"pageName",
                         "eVar17":"prop1",
                         "prop14":"prop1"}
                     });
 
-                // send the data to Omniture-Modified for WOMA-1004
+                // send the data to Omniture - Modified for WOMA-1004
                 var s=s_gi(getId());
                 s.linkTrackVars="eVar2,prop12,eVar16,prop13,eVar17,prop14";
                 s.tl(jQuery(this)[0],'o','Content Slot Tracking');
@@ -366,4 +436,25 @@
 
         // return the Omniture JSON object
         return oOmnitureJSON;
+    }
+	/**
+     * Sets the events for bazarrvoice rating and link name (WOMA-1082)
+     * to parseOmnitureJSON to instantiate the appropriate Omniture vars.
+     */
+    function reportBazarrVoiceReview(){		
+        var s=s_gi(getId());
+		var sLinkName = "Bazarrvoice Review";
+		var oProducts = oOmnitureJSON["products"];
+        var sTrackEvents = "";
+        // send data to parseOmnitureJSON()
+		if(typeof(oProducts)){
+			parseOmnitureJSON({"products":oProducts});
+		}		
+        parseOmnitureJSON({"events":{"event24":null}});
+        s.linkTrackEvents="event24";
+        sTrackEvents=",events";
+
+        // send the data to Omniture
+		s.linkTrackVars="products" +sTrackEvents;
+        s.tl(true,'o',sLinkName);
     }

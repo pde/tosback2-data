@@ -221,12 +221,14 @@ function BVinit(){
 	Badgeville.Settings.signUp = function(){
 		setBadgevCookie('sNation', 'true');
 	  	
-		location.href = '/us/support/account';
+		//location.href = '/us/support/account';
+		gnblogin("N");
 	}
 
 	Badgeville.Settings.signIn = function(){
 		
-		location.href = '/us/support/account';
+		//location.href = '/us/support/account';
+		gnblogin("N");
 	}  
 var __setDefaults = Badgeville.$.bv.showcase.prototype._setDefaults;
 Badgeville.widget('bv.showcase', Badgeville.$.bv.showcase, {

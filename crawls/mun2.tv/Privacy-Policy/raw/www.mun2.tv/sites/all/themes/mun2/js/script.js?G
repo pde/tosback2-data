@@ -1,0 +1,32 @@
+$(function () {
+  $("#superfish ul.menu").superfish();
+  $("#comment-form label").inFieldLabels();
+}); 
+
+Drupal.behaviors.mun2Theme = function () {
+  //$('select').selectmenu({style:'dropdown'});
+  $('.status-options a').hover(function (){
+    $('.status-options .status-update').addClass('inactive');
+  },
+  function () {
+    $('.status-options .status-update').removeClass('inactive');
+  })
+};
+
+function mun2_load_video(url) {
+  window.location.href = url;
+};
+
+Drupal.behaviors.modifylogout = function(context) {
+	$('#block-menu-primary-links a,#block-mun2_blocks-footer_links a').each(function() {
+		if ($(this).attr('href') == '/logout') {
+			// append destination to redirect
+			var path = document.location.pathname;
+			var indx = path.indexOf('/');
+			if (indx >= 0) {
+				path = path.substring(indx+1);
+			}
+			$(this).attr('href', '/logout?destination='+path);
+		}
+	});
+};

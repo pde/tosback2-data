@@ -216,6 +216,15 @@ if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opM
 		optimost.displayModule(opModulesArray[i]);
 	}
 }
+
+function gnblogin(myacc){
+	var frmLogin = document.myAccountLogin;
+	frmLogin.myaccount.value = myacc;
+	frmLogin._host.value = window.location.host;
+	frmLogin._path.value = window.location.pathname;
+	frmLogin._query.value = window.location.search;
+	frmLogin.submit();
+}
 //-->
 </script>
 
@@ -240,12 +249,18 @@ if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opM
 
 		 <a id="logout" href="http://sso-us.samsung.com/sso/logout" onclick="return clearCookiesAndMakeFinalURL(this.href);">Logout</a></li>
 
-		<li id="gnbLogInArea" style="display:none;"><a href="privacy.html#" 		onclick="location.href='/us/support/myAccountYourProducts.do';">Login</a></li>
+		<li id="gnbLogInArea" style="display:none;"><a href="privacy.html#" 		onclick="gnblogin('N')">Login</a></li>
 		<li id="gnbHelpOrder"><a id="helpOrder" href="http://www.samsung.com/us/support/customer-services">Help with my Order</a></li>
 		<li id="gnbMiniCart" class="last"><a>Cart (<span>0</span>)</a></li>
 	</ul>
 	<div id="miniCart" style="display: none;"></div>
 </div>
+<form name="myAccountLogin" method="post" action="http://www.samsung.com/us/support/account">
+<input type="hidden" name="myaccount" />
+<input type="hidden" name="_host" />
+<input type="hidden" name="_path" />
+<input type="hidden" name="_query" />
+</form>
 <ul class="main">
 	<li class="products" id="flyout-trigger"><a onclick="ss_link_click_track_2('','','','','top nav','o','products');" href="privacy.html#" title="PRODUCTS" class="active">SHOP PRODUCTS</a>
 
@@ -374,7 +389,7 @@ if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opM
 			<div id="flyout-bottom"></div>     
 	          </div>
 	          </li>
-	          			<li class="myaccount"><a onclick="ss_link_click_track_2('','','','','top nav','o','my account');" href="http://www.samsung.com/us/support/account" title="MY ACCOUNT">MY ACCOUNT</a></li>
+						<li class="myaccount"><a onclick="ss_link_click_track_2('','','','','top nav','o','my account');gnblogin('Y');" href="privacy.html#" title="MY ACCOUNT">MY ACCOUNT</a></li>
 	                    <li class="support"><a onclick="ss_link_click_track_2('','','','','top nav','o','support');" href="http://www.samsung.com/us/support" title="SUPPORT">SUPPORT</a></li>
 	                    </ul>
 

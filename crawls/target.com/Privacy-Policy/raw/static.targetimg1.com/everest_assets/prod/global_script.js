@@ -1,12 +1,7 @@
 /* js file */
 
 $(document).ready(function(){
-	
-	if($('body').hasClass("components-testnewLayout")){
-		$('body').removeClass("components-testnewLayout");
-		$('body').addClass("components-test");
-		$('body').addClass("newLayout");
-	}
+
 	//$("#MainMenu .home-link a").attr("href", "/");
 	//setTimeout(function(){$("#MainMenu .home-link a").attr("href", "/")});
 	try{
@@ -227,5 +222,34 @@ $(document).ready(function(){
 		}});		
 		Target.controller.header.setMenuControls();	
 	}	
+
+	var $body		= $('body'),
+		ishubPage	= $('#Other_Cmas_102812_HEROCON_C');
+	
+	if($body.hasClass("components-testnewLayout")){
+	
+		$body.removeClass("components-testnewLayout");
+		$body.addClass("components-test");
+		$body.addClass("newLayout");
 		
+	}
+	
+	if(!$body.hasClass("home-underlay") && !$body.hasClass("checkout") && (ishubPage.length === 0)) {
+		$body.addClass('holidayhub');
+	} else if ($body.hasClass("home-underlay")) {
+		
+		if(typeof gomez !== "undefined" && gomez.pgId == "Home Page") {
+			/**
+			$('head').append('<link rel="stylesheet" type="text/css" href="//static.targetimg1.com/2012/holidaystyleguide/css/holiday_style_2012_static_minified.css" />');
+			$('head').append('<link rel="stylesheet" type="text/css" href="//static.targetimg1.com/2012/holidaystyleguide/css/holiday_style_2012_logo_minified.css" />');
+			Target.util.loadScript({
+				src: '//static.targetimg1.com/2012/holidaystyleguide/js/holiday_bootstrap_logo_minified.js', 
+				delayLoad: true,
+				cache : true
+			});
+			*/	
+		} else {
+			$body.addClass('holidayhub');
+		}
+	}
 });

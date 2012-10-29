@@ -596,6 +596,30 @@ else {
       return '';
    }();
 
+   s.prop14 = function ()
+   {
+      var c;
+      var s;
+      var scripts;
+
+      scripts = document.getElementsByTagName('script');
+
+      c = 0;
+
+      for (s = 0; s < scripts.length; s++)
+         if (scripts[s].src && scripts[s].src.match(/mcclatchyinteractive\.tt\.omtrdc\.net/i))
+            c++;
+
+      return (c) ?
+      [
+         'mbox',
+         c,
+         mistats.bizunit,
+         location.hostname.toLowerCase(),
+         'limit=' + ((mistats.mitntrules && mistats.mitntrules.limit) ? mistats.mitntrules.limit : 'unknown')
+      ].join(': ') : '';
+   }();
+
 	// IMG tag call
 	// Double Tag Check - Added 11/31/2007 - JJ
 	<!-- ** DO NOT ALTER ANYTHING BELOW THIS LINE ** -->

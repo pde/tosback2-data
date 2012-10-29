@@ -1,9 +1,4 @@
 // common js code for network
-//Clear inherited frames
-
-if (parent != self) {
-                top.location=self.document.location;
-}
 
 //random number for dc
 var ord = (ord != null ? ord : Math.random()*10000000000000000 );

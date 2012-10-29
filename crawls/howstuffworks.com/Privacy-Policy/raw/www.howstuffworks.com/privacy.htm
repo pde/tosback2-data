@@ -22,12 +22,12 @@
 	//-->
 	</script>
 	<title>Howstuffworks "Privacy Policy"</title>
-	<link href="css/index/m/reset.css%252CbasicV3.css%252CutilityV3.css%252ClayoutV3.css%252Cads.css%252CnavV4.css%252Carticle.css%252CheaderSiteWide.css/v/en-us/r/220105.css" rel="stylesheet" type="text/css" />
+	<link href="css/index/m/reset.css%252CbasicV3.css%252CutilityV3.css%252ClayoutV3.css%252Cads.css%252CnavV4.css%252Carticle.css%252CheaderSiteWide.css/v/en-us/r/10114.css" rel="stylesheet" type="text/css" />
 		<!--[if lt IE 7]>
-	<link href="http://www.howstuffworks.com/css/index/m/nav_ie6.css%252Cie6.css/v/en-us/r/220105" rel="stylesheet" type="text/css" />
+	<link href="http://www.howstuffworks.com/css/index/m/nav_ie6.css%252Cie6.css/v/en-us/r/10114" rel="stylesheet" type="text/css" />
 	<![endif]-->
-	<script type="text/javascript" src="js/index/m/jquery162.js%252Chsw.js%252Cmodal.js%252CpanelHover.js/v/en-us/r/220105"></script>
-		<script type="text/javascript" src="js/index/m/ads.js/v/en-us/r/220105"></script>
+	<script type="text/javascript" src="js/index/m/jquery162.js%252Chsw.js%252Cmodal.js%252CpanelHover.js/v/en-us/r/10114"></script>
+		<script type="text/javascript" src="js/index/m/ads.js/v/en-us/r/10114"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="imagetoolbar" content="no" />
 
@@ -380,7 +380,7 @@ HSW.ads.render("MedRect");
 	var s_account="hswprod,hswprodhsw";
 </script>
 <div style="display: none;">
-<script type="text/javascript" src="js/index/m/s_code.js/v/en-us/r/220105"></script>
+<script type="text/javascript" src="js/index/m/s_code.js/v/en-us/r/10114"></script>
 </div>
 
 
@@ -405,14 +405,14 @@ function inArray(tag,lookupArray)
 {if(tag.indexOf(lookupArray[key])>=0)
 {found=true;break;}}
 return found;}
-function sendTags(tag,vars,current,eventObj,noRedirect,pageNbr)
+function sendTags(tag,vars,current,eventObj,noRedirect,pageNbr,redirectUrl)
 {if(tag!='')
 {var hswOmniImage=document.getElementById('hswOmniImage');var omniImageData="http://metrics.howstuffworks.com/b/ss/"+s_account+"/1/H.17/s45086097826030?";var gotoAction=''
 var tagName='';var timestamp=new Date();var year=timestamp.getFullYear();var month=timestamp.getMonth()+1;var day=timestamp.getDate();var hours=timestamp.getHours();var mins=timestamp.getMinutes();var secs=timestamp.getSeconds();var weekday=timestamp.getDay();var timezoneOffset=timestamp.getTimezoneOffset();var gValue=location.protocol+'//'+location.hostname;var omniPrefix='';if(location.pathname)
 {gValue+=location.pathname;}
 omniImageData+='&AQB=1';omniImageData+='&t='+month+'/'+day+'/'+year+' '+hours+':'+mins+':'+secs+' '+weekday+' '+timezoneOffset;omniImageData+='&vmt='+'4467DB86';omniImageData+='&ns='+'hswmedia';var subDomain=location.href;subDomain=subDomain.substring(7,subDomain.indexOf('.',7));if(vars)
 {omniImageData+=vars;}
-if((tag.indexOf('Next : Top')>=0)||(tag.indexOf('Next : Bottom')>=0)||(tag.indexOf('Prev : Top')>=0)||(tag.indexOf('Prev : Bottom')>=0)||(tag.indexOf('Countdown : Top')>=0)||(tag.indexOf('Deep Link : Bottom')>=0))
+if((tag.indexOf('Next : Inline')>=0)||(tag.indexOf('Prev : Inline')>=0)||(tag.indexOf('Next : Top')>=0)||(tag.indexOf('Next : Bottom')>=0)||(tag.indexOf('Prev : Top')>=0)||(tag.indexOf('Prev : Bottom')>=0)||(tag.indexOf('Countdown : Top')>=0)||(tag.indexOf('Deep Link : Bottom')>=0))
 {var hash=eventObj.currentTarget.hash;var nextPageNbr=(typeof hash.split('=')[1]=='undefined')?'':hash.split('=')[1];var path=window.location.pathname.split('/');var pageStem=path[path.length-1].replace('.htm','');var pageUrl=[window.location.hostname,window.location.pathname,].join('').replace('.htm','');gValue=pageUrl+((pageNbr>0)?pageNbr:'')+'.htm';omniImageData+='&c7='+pageStem+nextPageNbr+'.htm';omniImageData+='&v9='+pageStem+nextPageNbr+'.htm';}
 if((tag.indexOf('Up Next Link')>=0))
 {var path=window.location.pathname.split('/');var pageStem=path[path.length-1].replace('.htm','');var targetHref;if($(current).attr('href')){targetHref=$(current).attr('href');}
@@ -457,8 +457,12 @@ else if(_href)
 {gotoAction=_href;gotoTarget=current.target;tagName=current.nodeName||'';if(omniImageData.indexOf('pev1=')<0)
 {omniImageData+='&pev1='+encodeURIComponent(gotoAction);omniImageData+='&oid='+encodeURIComponent(gotoAction);}
 omniImageData+='&ot='+tagName;writeImage('url',omniImageData,gotoAction,current);}
+else if(redirectUrl!=undefined)
+{gotoAction=redirectUrl;tagName=current.nodeName||'';if(omniImageData.indexOf('pev1=')<0)
+{omniImageData+='&pev1='+encodeURIComponent(gotoAction);omniImageData+='&oid='+encodeURIComponent(gotoAction);}
+omniImageData+='&ot='+tagName;writeImage('url',omniImageData,gotoAction,current);}
 else if(eventObj.target.href)
-{gotoAction=eventObj.target.href;tagName=current.nodeName||'';if(omniImageData.indexOf('pev1=')<0)
+{gotoAction=(redirectUrl!=undefined)?redirectUrl:eventObj.target.href;tagName=current.nodeName||'';if(omniImageData.indexOf('pev1=')<0)
 {omniImageData+='&pev1='+encodeURIComponent(gotoAction);omniImageData+='&oid='+encodeURIComponent(gotoAction);}
 omniImageData+='&ot='+tagName;writeImage('url',omniImageData,gotoAction,current);}
 else
