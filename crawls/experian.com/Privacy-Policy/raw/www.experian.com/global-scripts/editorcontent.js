@@ -772,33 +772,18 @@ if($(".slidebox").length > 0){
 	
 	getCarouselScripts = function(){
 			var scriptCount = 0;
-			$.getScript("/global-scripts/jquery.bt.min.js",function(){
+			$.getScript("/global-scripts/jquery-1.6.2.min.js",function(){
 					++scriptCount;
 					carouselReady(scriptCount);
 			});
-			
-			$.getScript("/global-scripts/excanvas.js",function(){
-					++scriptCount;
-					carouselReady(scriptCount);
-			});
-			
-			$.getScript("/global-scripts/jquery.easing.1.3.js",function(){
-					++scriptCount;
-					carouselReady(scriptCount);
-			});
-			
-			$.getScript("/global-scripts/carousel.js",function(){
-					++scriptCount;
-					carouselReady(scriptCount);
-			});		
 	}
-	
 	carouselReady = function(scriptCount){
-		if(scriptCount == 4){
-			initCarousel(carousel);
+		if(scriptCount == 1){
+				$.getScript("/global-scripts/jquery.flexslider.js",function(){
+				/*do nothing */
+			});	
 		}
 	};
-	
 	getCarouselScripts();
 }
 });

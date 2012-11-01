@@ -3850,55 +3850,52 @@ TNF.assisted_search = {
 	}
 };
 
-TNF.email_updates = {
-	input: false,
-	form: false,
-	empty: '',
-	error: false,
-	regex: /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
-	init: function() {
-		TNF.email_updates.form = $('#subscribe form');
-		TNF.email_updates.input = $('.email', TNF.email_updates.form);
-		
-		if( !TNF.email_updates.input.length ) return;
-		
-		TNF.email_updates.empty = TNF.email_updates.input.val();
-		TNF.email_updates.error = $('<div class="error-message"></div>');
-		TNF.email_updates.error.append('<span>' + TNF.lang.EMAIL.get('ENTER_VALID_EMAIL') + '</span>');
-		TNF.email_updates.form.append(TNF.email_updates.error);
-		
-		TNF.email_updates.input.bind('focus', TNF.email_updates.focus);
-		TNF.email_updates.input.bind('blur', TNF.email_updates.blur);
-		
-		TNF.email_updates.form.bind('submit', TNF.email_updates.submit);
-	},
-	focus: function(){
-		if( TNF.email_updates.input.val() === TNF.email_updates.empty ) {
-			TNF.email_updates.input.val('');
-		}
-	},
-	blur: function(){
-		if( TNF.email_updates.input.val() === '' ) {
-			TNF.email_updates.input.val(TNF.email_updates.empty);
-		}
-	},
-	submit: function(event){
-		event.preventDefault();
-		if( TNF.email_updates.input.val().match( TNF.email_updates.regex ) && TNF.email_updates.input.val()!=TNF.email_updates.empty ) {
-			TNF.email_updates.error.hide();
-			$.colorbox({
-                transition: 'none',
-				title: '&nbsp;&nbsp;' + TNF.lang.EMAIL.get('EMAIL_UPDATES'),
-				href: TNF.env.URL.get('EMAIL_SIGNUP') + '&email='+TNF.email_updates.input.val(),
-				width: 720,
-				height: 720,
-				iframe: true
-			});
-		} else {
-			TNF.email_updates.error.show();
-			TNF.email_updates.input.focus();
-		}
-	}
+TNF.email_updates = function(selector) {
+	this.form = $(selector);
+  	this.input = $('.email', this.form);
+
+  	if (!this.input.length) return;
+
+  	this.empty = this.input.val();
+  	this.error = $('<div class="error-message" />');
+  	this.error.append('<span>' + TNF.lang.EMAIL.get('ENTER_VALID_EMAIL') + '</span>');
+  	this.form.append(this.error);
+  	this.input.focus($.proxy(this.focus, this));
+  	this.input.blur($.proxy(this.blur, this));
+  	this.form.submit($.proxy(this.submit, this));
+};
+
+TNF.email_updates.regex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i;
+
+TNF.email_updates.prototype.focus = function() {
+  	if (this.input.val() === this.empty) {
+    	this.input.val('');
+  	}
+};
+
+TNF.email_updates.prototype.blur = function() {
+  	if (this.input.val() === '') {
+    	this.input.val(this.empty);
+  	}
+};
+
+TNF.email_updates.prototype.submit = function(event) {
+  	event.preventDefault();
+  	if (this.input.val().match(TNF.email_updates.regex) && this.input.val() != this.empty) {
+    	this.error.hide();
+    	TNF.email_drawer.hide();
+    	$.colorbox({
+      		transition: 'none',
+      		title: '&nbsp;&nbsp;' + TNF.lang.EMAIL.get('EMAIL_UPDATES'),
+      		href: TNF.env.URL.get('EMAIL_SIGNUP') + '&email=' + this.input.val(), /**ZCG: use & instead of ? */
+      		width: 720,
+      		height: 720,
+      		iframe: true
+    	});
+  	} else {
+    	this.error.show();
+    	this.input.focus();
+  	}
 };
 
 TNF.store_locator = {
@@ -3974,6 +3971,66 @@ TNF.store_locator = {
     this.$address.html(html);
   }
 };
+
+TNF.email_drawer = {
+  	timer: -1,
+  	link: false,
+  	drawer: false,
+  	close: false,
+
+  	init: function() {
+   		TNF.email_drawer.link = $('.email-dropdown', TNF.toolbar);
+    	TNF.email_drawer.drawer = $('.email-dropdown-drawer', TNF.toolbar);
+    	TNF.email_drawer.close = $('.close', TNF.email_drawer.drawer);
+
+    	TNF.email_drawer.bindHovers();
+    	TNF.email_drawer.close.click(TNF.email_drawer.closeHandler);
+
+    	TNF.email_drawer.drawer.css('left', TNF.email_drawer.link.position().left - 100);
+  	},
+
+  	bindHovers: function() {
+    	TNF.email_drawer.link.mouseenter(TNF.email_drawer.show);
+    	TNF.email_drawer.link.mouseleave(TNF.email_drawer.hide);
+  	},
+
+  	show: function(event) {
+    	clearTimeout(TNF.email_drawer.timer);
+    	TNF.email_drawer.drawer.slideDown(300);
+  	},
+
+  	reset: function() {
+   		var str = $(".email-dropdown-drawer .error-message").attr("style"),
+        match = ( str !== undefined && str !== null ) ? str.match(/block/) : null;
+
+    	// if the user entered an email address, but it is not valid then maintain the error messaging 
+    	if( $(".email-dropdown-drawer form input").val() && ( match !== null ) ) {
+      		$(".email-dropdown-drawer form input").blur();
+    	}
+    	// otherwise remove the error message and reset the input
+    	else {
+      		$(".email-dropdown-drawer .error-message").hide();
+      		$(".email-dropdown-drawer form input").blur();
+    	}
+    
+  	},
+
+  	hide: function(event) {
+    	TNF.email_drawer.timer = setTimeout(function() {
+      		TNF.email_drawer.drawer.slideUp(300);
+      		TNF.email_drawer.reset();
+    	}, TNF.dropdownDelay);
+  	},
+
+  	closeHandler: function(event) {
+   		TNF.email_drawer.link.unbind('mouseenter mouseleave');
+    	TNF.email_drawer.drawer.slideUp(300, function() {
+      		TNF.email_drawer.bindHovers();
+    	});
+    	event.preventDefault();
+  	}
+};
+
 $(function(){
   /* Grab important elements */
   TNF.store_locator_element = $('#locate');
@@ -4072,5 +4129,7 @@ $(function(){
 	
   TNF.minicart.init();
   TNF.assisted_search.init();
-  TNF.email_updates.init();
+  TNF.email_drawer.init();
+  new TNF.email_updates('#subscribe form');
+  new TNF.email_updates('.email-dropdown-drawer form');
 });

@@ -1,0 +1,69 @@
+if (typeof $Halo === 'undefined') {
+    var $Halo = {};
+}
+
+/**
+ * Parse a date string into a Date object
+ *
+ * This converts the date object into Pacific Time always. This means that the
+ * date object may CLAIM to be in something like Eastern Time, but really the
+ * values are in representing Pacific Time. This may seem odd, but it is really
+ * what we want.
+ * 
+ * Example: 2011-11-04T08:00:00-07:00
+ * We want the above to parse out with an hours value of 8 always.
+ *
+ * @param {String} dateString - date string to parse
+ *
+ * @return {Date} Date object
+ */
+$Halo.date = function (dateString) {
+
+    "use strict";
+    var iso8601_pattern, date, tz_offset;
+
+    tz_offset = 19;
+    iso8601_pattern = /^(\d{4}|[+\-]\d{6})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{3,}))?)?(?:(Z)|([+\-])(\d{2})(?::?(\d{2}))?))?/;
+    
+    function iso8601(dateString) {
+        var dtcomps, d;
+
+        dtcomps = iso8601_pattern.exec(dateString);
+
+        // modify month between 1 based ISO8601 and 0 based Date
+        dtcomps[2] = dtcomps[2] - 1;
+
+        d = new Date(
+            dtcomps[1], // year
+            dtcomps[2], // month
+            dtcomps[3], // date
+            dtcomps[4], // hours
+            dtcomps[5], // minutes
+            dtcomps[6], // seconds
+            0 // milliseconds
+        );
+
+        return d;
+    }
+
+    function isIso8601(dateString) {
+        if (dateString === undefined || dateString.match(iso8601_pattern) === null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    date = false;
+    if (isIso8601(dateString)) {
+        if (dateString.length <= tz_offset) {
+            throw "Must specify timezone";
+        }
+
+        date = iso8601(dateString);
+    } else {
+        date = new Date(dateString);
+    }
+
+    return date;
+};

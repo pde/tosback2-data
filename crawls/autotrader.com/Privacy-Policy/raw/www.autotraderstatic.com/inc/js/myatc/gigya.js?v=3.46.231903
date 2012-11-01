@@ -1,0 +1,66 @@
+(function($, window, undefined) {
+
+    window.conf=
+    {
+        APIKey: '2_S9yQ4k4sutW0IemTk38sKxXJ7K9Je1ZPaMFEgQQlyVWGwmHEFUOig3kJt1Qlawfa'
+        ,enabledProviders: 'facebook'
+    }
+    window.login_params=
+    {
+        provider: 'facebook'
+        ,callback: function(response){
+            if(response.status == "FAIL"){
+                // Facebook login failed.
+            }
+        }
+        ,redirectURL: (parseInt(window.location.port) > 443 ? "http" : "https") + "://" + window.location.host + "/myatc/social_login.xhtml"
+    }
+    $(document).ready(function(){
+
+        $.ajax({
+            url:(window.location.protocol == "https:" ? "https://cdns" : "http://cdn") + ".gigya.com/js/socialize.js?apiKey=" + conf.APIKey,
+            dataType: "script",
+            complete: function(){
+
+            $(".social-line a").click(function(e){
+                e.preventDefault();
+                console.log("social clicked");
+
+                if(typeof gigya == "undefined"){
+                    $(".social-line a .error").show();
+                    return false;
+                }
+
+                var return_page = window.location.href;
+
+                if(window.location.pathname.indexOf("/myatc/index.xhtml") == 0 || window.location.pathname.indexOf("/myatc/register.xhtml") == 0){
+                    return_page = "";
+                }
+                else if(window.location.pathname.indexOf("/cars-for-sale/partial/myatc/") == 0 || window.location.pathname.indexOf("/myautotrader/partial/myatc/signup-or-signin.xhtml") == 0){
+                    return_page = window.parent.location.href;
+                }
+
+                return_page = return_page.split("?loggedOut=true").join("?").split("&loggedOut=true").join("");
+
+
+                if(return_page == ""){
+                    gigya.services.socialize.login(conf, login_params);
+                }
+                else{
+                    gigya.services.socialize.shortenURL(conf, {URL: return_page, callback: function(r){
+                        if(r.errorCode != 0){
+                            $(".social-line a .error").show();
+                            return false;
+                        }
+                        login_params.redirectURL += "?referer_url=" + r.shortURL;
+                        gigya.services.socialize.login(conf, login_params);
+                    }});
+                }
+            });
+                if (gigya && window.initGigya) {
+                    window.initGigya();
+                }
+        }
+        });
+    })
+})(jQuery, window);

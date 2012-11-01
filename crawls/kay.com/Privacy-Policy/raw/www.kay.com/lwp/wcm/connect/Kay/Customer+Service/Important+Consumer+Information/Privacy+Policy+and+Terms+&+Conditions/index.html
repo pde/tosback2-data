@@ -10,7 +10,9 @@
 
 			<title>Engagement Rings, Wedding Rings, Diamonds, Charms. Jewelry from Kay Jewelers, your trusted Jewelry Store</title>
 			<meta name="description" content="Shop our selection of engagement rings, wedding rings, diamonds, gemstones, metals, watches and more.  Kay Jewelers carries a wide selection of looks, from classic to modern"/>    
-    <!-- Foresee Survey BEGIN -->
+    
+	<meta name="msvalidate.01" content="BFC509C5E44FB1F36D6347E58F98E4C2" />
+<!-- Foresee Survey BEGIN -->
 	<script type="text/javascript" src="../../../../../../../foresee/foresee-trigger.js"></script>
 <!-- Foresee Survey END --><!-- Start Google Analytics Code -->
 		<script type="text/javascript">
@@ -201,83 +203,6 @@ function getStyleDirectoryPath()
 	<div class="util-nav">
   			
 	<script type="text/javascript" src="../../../../../../../../maps.googleapis.com/maps/api/js%3Fclient=gme-sterlingjewelers&amp;v=3.5&amp;sensor=false&amp;libraries=geometry,places&amp;region=US"></script>						
-	
-	<script type="text/javascript">
-		var refreshSuggestions = true; // Did user key input since we last filtered suggestions?
-		
-		/**
-		*	An MVCObject for filtering autocomplete predictions to exclude international results
-		*/
-		function AutocompleteWidget(suggestions, autocomplete) {
-	  		this.set('suggestions', suggestions);
-	  		this.set('autocomplete', autocomplete);
-		}
-		AutocompleteWidget.prototype = new google.maps.MVCObject();
-		
-		/**
-		* Update the suggestions when the predictions have changed.
-		*/
-		AutocompleteWidget.prototype.suggestions_changed = function() {
-			//this.set('radius', this.get('distance') * 1000);
-			
-			// Hide suggestions list until filtering is done
-
-			var array = this.get('suggestions');
-			var filtered = [];
-			for (var i = 0; i < array.length; i++) {
-				var valid = true;
-				////console.log("UNFILTERED RESULTS");
-				////console.log(array[i].name);
-				////console.log(array[i].mf);
-				////console.log(array[i].address_components); // undefined
-				////console.log(array[i].types); // For countries, this is ["country", "political", "geocode"]
-				
-				// Filter suggestions and update autocomplete predictions
-				// Omit result if it is a country.
-				if (array[i].types.indexOf("country") > -1) {
-					//console.log("invalid: " + array[i].name);
-					valid = false;
-				} else {
-					// Split string on commas.  Omit result if last token is not a US state.  Google uses 2 char abbrevition for state.
-					var tokens = array[i].mf.split(",");
-					var state = tokens[tokens.length - 1];
-					state = $.trim(state);
-					//console.log("state: " + state);
-					//console.log("length: " + state.length);
-					if (state.length > 2) {
-						//console.log("invalid: " + state);
-						valid = false;
-					}
-					
-					// (Optional) Omit result if it is a neighborhood.
-				}
-				
-				if (valid) {
-					//console.log("adding to filtered: " + encoded);					
-					filtered.push(array[i].mf);
-				}
-			}
-			
-			/*
-			for (var i = 0; i < filtered.length; i++) {
-				//console.log("FILTERED RESULTS");
-				//console.log(filtered[i].name);
-				//console.log(filtered[i].mf);
-				////console.log(filtered[i].address_components); // undefined
-				//console.log(filtered[i].types); // For countries, this is ["country", "political", "geocode"]
-			}
-			*/
-			
-			//alert(refreshSuggestions);
-			//alert(this.get('autocomplete'));
-			//if (refreshSuggestions && this.get('autocomplete') != undefined) {
-			if (this.get('autocomplete') != undefined) {
-				setAutocompleteSuggestions(this.get('autocomplete'), filtered);
-			} else {
-				////console.log("FINE: autocomplete is undefined");
-			}
-		};
-	</script>
 	
 		<script type="text/javascript">
 			var findStoreActive = false;
@@ -543,10 +468,11 @@ function getStyleDirectoryPath()
 					}
 				});
 				
-				autocompleteWidget = new AutocompleteWidget([], autocomplete);
+				// Commented out to disable US-only autosuggest
+				//autocompleteWidget = new AutocompleteWidget([], autocomplete);
 				
 				// Add listener to filter autocomplete results
-				setTimeout("filterAutocomplete()", 2000);
+				//setTimeout("filterAutocomplete()", 2000);
 				
 			});
 			
@@ -968,60 +894,7 @@ function search(){
 <link rel="stylesheet"  type="text/css" href="../../../../../../../css/AutoSuggestSearch.css" />
 
 <!--  change the following url to SEO friendly wcf when we have a pattern for StoreLocator : SEO -->
-<script>
 
-$(document).ready(function() {	
-
-	//select all the a tag with name equal to modal
-	$('a[name=ContactUsModal]').click(function(e) {
-		//Cancel the link behavior
-		e.preventDefault();
-		
-		//Get the A tag
-		var id = $(this).attr('href');
-	
-		//Get the screen height and width
-		var maskHeight = $(document).height();
-		var maskWidth = $(window).width();
-	
-		//Set heigth and width to mask to fill up the whole screen
-		//$('#mask').css({'width':maskWidth,'height':maskHeight});
-		
-		//transition effect		
-		$('#maskContactUs').fadeIn(1000);	
-		$('#maskContactUs').fadeTo("slow",0.8);	
-		
-		//Get the window height and width
-		var winH = $(document).height();
-		var winW = $(window).width();
-              
-		//Set the popup window to center
-		$(id).css('top',  '55%');
-		$(id).css('left', '9%');
-	
-		//transition effect
-		$(id).fadeIn(1000); 
-	
-	});
-	
-	//if close button is clicked
-	$('.windowCS .close').click(function (e) {
-		//Cancel the link behavior
-		e.preventDefault();
-		
-		$('#maskContactUs').hide();
-		$('.windowCS').hide();
-	});		
-	
-	//if mask is clicked
-	$('#maskContactUs').click(function () {
-		$(this).hide();
-		$('.windowCS').hide();
-	});			
-	
-});
-
-</script>
 
  
 <div class="logo">
@@ -1051,7 +924,7 @@ $(document).ready(function() {
 	
 		<div class="tool">
 		  	<div class="storelocator" id="storebuttonarea">
-				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=&landing=1">FIND A STORE</a>
+				<a id="btnFindAStore" href="http://www.kay.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=10101&catalogId=10001&langId=-1&landing=1">FIND A STORE</a>
 			</div>
 			
 			
@@ -1144,7 +1017,7 @@ $(document).ready(function() {
 			<form name="CatalogSearchForm" action="http://www.kay.com/en/SterlingSearch" method="get" id="CatalogSearchForm">
 			    <input type="hidden" name="storeId" value='10101' id="WC_CachedHeaderDisplay_FormInput_storeId_In_CatalogSearchForm_1"/>
 				<input type="hidden" name="catalogId" value='10001' id="WC_CachedHeaderDisplay_FormInput_catalogId_In_CatalogSearchForm_1"/>
-				<input type="hidden" name="langId" value='' id="WC_CachedHeaderDisplay_FormInput_langId_In_CatalogSearchForm_1"/>
+				<input type="hidden" name="langId" value='-1' id="WC_CachedHeaderDisplay_FormInput_langId_In_CatalogSearchForm_1"/>
 				<input type="hidden" name="searchText" value="" id="searchText" />  
 		
 				
@@ -1152,7 +1025,7 @@ $(document).ready(function() {
 					<span id="searchTextHolder" class="nodisplay"></span>
 					<span class="spanacce"></span>
 					
-					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="SEARCH" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="combobox" tabindex="0"/>
+					<input type="text" accesskey="0" size="28" name="globalSearchText" id="SimpleSearchForm_SearchTerm" aria-label="search" value="SEARCH" onclick="this.value=''" oncontextmenu="this.value=''"  onfocus="this.style.color = '#660066';" onblur="fillSearchField();" onkeyup='doAutoSuggest(event, "AutoSuggestView?storeId=10101&langId=-1&catalogId=10001&count=5&coreName=&serverURL=", this.value);' onkeypress = "return onEnterKeySearch(event.keyCode);" autocomplete="off" maxlength="65" role="combobox" tabindex="0"/>
 					<input type="submit" onclick="return validateSearchSubmit();" value=" ">
 					<div id="autoSuggest_Container">
 						<div id="autoSuggest_Result_div" class="autoSuggestBox1" onmouseover="autoSuggestHover = true;" onmouseout="autoSuggestHover = false; document.getElementById('SimpleSearchForm_SearchTerm').focus();" style="display:none;">
@@ -1272,11 +1145,7 @@ $(document).ready(function() {
 
 <div class="espot-header">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<strong>Customers in those areas impacted by Hurricane Sandy may experience shipping delays.</strong>
-
-
-
-<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<strong>Customers in those areas impacted by Hurricane Sandy may experience shipping delays.</strong><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
 
 <div class="homecontent clearfix "> 
@@ -1294,20 +1163,20 @@ $(document).ready(function() {
 <div class="clear"></div>
 <div class="sbanner">
 	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<img src="../../../../../../../espots/hero/kay_maindfeature_Oct26-30.jpg" alt="Charmed Memories" width="1000" height="433" border="0" usemap="#Map" style="position: absolute; top: 0; left:0;" />
-    <map name="Map" id="Map">
-      <area shape="rect" coords="16,19,369,166" href="http://www.kay.com/en/kaystore/charmed-memories®/1000820000/100063/1/0/0/0/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-logo" />
-      <area shape="rect" coords="373,20,716,316" href="http://www.kay.com/en/kaystore/charmed-memories®/1000820000/100063/1/0/0/0/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-shop_now" />
-      <area shape="rect" coords="91,315,208,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-pumpkin-charm-sterling-silver-811364708--1/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811364708" />
-      <area shape="rect" coords="208,315,293,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-skull-charm-sterling-silver/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811316203" />
-      <area shape="rect" coords="293,315,376,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-murano-glass-charm-sterling-silver-811287301--1/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811287301" />
-      <area shape="rect" coords="376,315,461,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-orange-murano-glass-charm-sterling-silver-811376704--1/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811376704" />
-      <area shape="rect" coords="461,315,556,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-murano-glass-charm-sterling-silver-811370903--1/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811370903" />
-      <area shape="rect" coords="556,315,649,412" href="http://www.kay.com/en/kaystore/gold--silver---other-jewelry/charmed-memories®-swarovski-elements-charm-sterling-silver-811298708--1/100063/100063.100066.100082?cm_sp=hp_hero_banner-_-CHARMEDMEMORIES-_-811298708" />
+	<img src="../../../../../../../espots/hero/kay_maindfeature_Nov1-3_shipping.jpg" alt="Color Obsession" width="1000" height="433" border="0" usemap="#COBCMap" style="position: absolute; top: 0; left:0;" />
+    <map name="COBCMap" id="COBCMap">
+      <area shape="rect" coords="15,82,66,124" href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=kay_instant_rewards&amp;cm_sp=hp_hero_banner-_-COLOROBSESSION-_-Instant_Rewards" />
+      <area shape="rect" coords="37,136,189,386" href="http://www.kay.com/en/kaystore/diamonds---gemstones/pink-swarovski-elements-heart-necklace-sterling-silver/100020/100020.100023.100060?cm_sp=hp_hero_banner-_-COBC-_-373306303" alt="Pink SWAROVSKI ELEMENTS Heart Necklace Sterling Silver" title="Pink SWAROVSKI ELEMENTS Heart Necklace Sterling Silver" />
+      <area shape="rect" coords="193,270,348,407" href="http://www.kay.com/en/kaystore/diamonds---gemstones/pink-swarovski-elements-sterling-silver-ring/100020/100020.100023.100060?cm_sp=hp_hero_banner-_-COLOROBSESSION-_-373306606" alt="Pink SWAROVSKI ELEMENTS Sterling Silver Ring" title="Pink SWAROVSKI ELEMENTS Sterling Silver Ring" />
+      <area shape="rect" coords="615,44,709,324" href="http://www.kay.com/en/kaystore/diamonds---gemstones/swarovski-elements-violet---clear-sterling-silver-necklace/100020/100020.100023.100060?cm_sp=hp_hero_banner-_-COLOROBSESSION-_-373298304" alt="SWAROVSKI ELEMENTS Violet & Clear Sterling Silver Necklace " title="SWAROVSKI ELEMENTS Violet & Clear Sterling Silver Necklace" />
+      <area shape="rect" coords="534,221,626,423" href="http://www.kay.com/en/kaystore/diamonds---gemstones/swarovski-elements-dangle-earrings-sterling-silver/100020/100020.100023.100060?cm_sp=hp_hero_banner-_-COLOROBSESSION-_-373306000" alt="SWAROVSKI ELEMENTS Dangle Earrings Sterling Silver " title="SWAROVSKI ELEMENTS Dangle Earrings Sterling Silver " />
+      <area shape="rect" coords="371,301,504,347" href="http://www.kay.com/en/kaystore/color-obsession-made-with-swarovski-elements%C2%99/1000600000/100020/1/0/0/0/100020.100023.100060?cm_sp=hp_hero_banner-_-COLOROBSESSION-_-Shop_Now" alt="Shop Now" title="Shop Now" />
+      <area shape="rect" coords="628,14,720,45" href="http://www.kay.com/ContentView?catalogId=10001&amp;langId=-1&amp;storeId=10101&amp;cmsId=delivery_to_your_door&amp;cm_sp=hp_hero_banner-_-COLOROBSESSION-_-Free_Shipping" alt="Learn More" title="Learn More" />
     </map><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	<div class="sbanner1">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=Stackable&#32;Ring&amp;searchText=Stackable&#32;Ring?cm_sp=hp_espot-_-Stackable_Rings"><img src="../../../../../../../espots/carousel/stackables.jpg" width="253" height="129" alt="Stackable Rings" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.facebook.com/KayJewelers?cm_sp=hp_espot-_-
+Facebook"><img src="../../../../../../../espots/carousel/hp_espot_music_download.jpg" width="253" height="129" alt="Like us on Facebook" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 	<div class="sbanner2">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
@@ -1316,7 +1185,7 @@ $(document).ready(function() {
 	</div>
 	<div class="sbanner3">
 		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/tolkowsky%C2%AE-100052--1/1000520000/100020/1/0/0/0/100020.100023.100052?cm_sp=hp_espot-_-Tolkowsky"><img src="../../../../../../../espots/carousel/hp_espot_tolkowsky.jpg" width="253" height="129" alt="Tolkowsky" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/SterlingSearch?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=Citizen&#32;Eco&#32;Drive&amp;searchText=Citizen&#32;Eco&#32;Drive&amp;cm_sp=hp_espot-_-Citizen_Watches"><img src="../../../../../../../espots/carousel/hp_espot_citizen.jpg" width="253" height="129" alt="Citizen Eco Drive Sale" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 	</div>
 </div>
 <div class="container_39 clearfix" >
@@ -1386,23 +1255,22 @@ $(document).ready(function() {
             </div>
 		<div class="grid_7 prefix_1">
 	       	<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/le-vian®/1000550000/100020/1/0/0/0/100020.100023.100055?cm_sp=hp_espot-_-Levian"><img 
-src="../../../../../../../espots/collections/kay_levian_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="LeVian" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/charmed-memories®/1000820000/100063/1/0/0/0/100063.100066.100082?cm_sp=hp_espot-_-Charmed_Memories"><img src="../../../../../../../espots/collections/kay_chrmdMem_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Charmed Memories" border="0"></a>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
         <div class="grid_7 prefix_1">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/en/kaystore/the-leo-diamond®-100050--1/1000500000/100020/1/0/0/0/100020.100023.100050?cm_sp=hp_espot-_-Leo_Diamond"><img src="../../../../../../../espots/collections/kay_Leo_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Leo Diamond" 
-border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/loves-embrace®/1000540000/100020/1/0/0/0/100020.100023.100054?cm_sp=hp_espot-_-Loves_Embrace"><img src="../../../../../../../espots/collections/hp_dsnrs_lovesembrace.jpg" width="180" height="150" alt="Love's Embrace" border="0"></a>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
 		<div class="grid_7 prefix_1">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://www.kay.com/SearchResultsView?storeId=10101&amp;catalogId=10001&amp;langId=-1&amp;globalSearchText=open&#32;hearts&#32;by&#32;jane&#32;seymour&amp;N=4294966876&amp;No=&amp;Ns=&amp;Nso=&amp;itemsPerPage=20&amp;searchRefinement=true&amp;searchText=open&#32;hearts&#32;by&#32;jane&#32;Seymour"><img src="../../../../../../../espots/collections/kay_openHearts_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="OPen Hearts by 
-Jane Seymour" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
+	<a href="http://www.kay.com/en/kaystore/le-vian®/1000550000/100020/1/0/0/0/100020.100023.100055?cm_sp=hp_espot-_-Levian"><img 
+src="../../../../../../../espots/collections/kay_levian_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="LeVian" border="0"></a><!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
 		<div class="grid_7 prefix_1 omega">
 			<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- <h4>Content</h4> -->
-	<a href="http://design.kay-diamonds.com/engagement-rings?Nic=null&cm_sp=hp_espot-_-
-design_ring"><img src="../../../../../../../espots/collections/kay_DAR_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Design a Ring" border="0"></a>
+	<a href="http://www.kay.com/DAR_Unavailable.html"><img src="../../../../../../../espots/collections/kay_DAR_r3HP_dsgnrsClctns.jpg" width="180" height="150" alt="Design a Ring" border="0"></a>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 		</div>
 	</div>
@@ -1804,32 +1672,33 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 		else {
 			$('#footerChatLink').html('Live Chat');
 		}
-	}); 
-	// Server returned 200, set the onclick
-	if ($('#live_chat').is(":visible")) {
-		var PROD = 'true';
-		
-		if(PROD == 'true') {
-			$('.chatCMSItem').click(function() {
-				window.open("https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer="+escape(document.location),"_blank","resizable= no,width=680,height=450,scrollbars=yes"); 
-				cmCreateManualLinkClickTag("Click to Chat - Header","Click to Chat - Header","");
-				cmCreateElementTag("Click to Chat - Header", "Click to Chat - Header", "");
-				return false;
-			});
+	 
+		// Server returned 200, set the onclick
+		if ($('#live_chat').is(":visible")) {
+			var PROD = 'true';
+			
+			if(PROD == 'true') {
+				$('.chatCMSItem').click(function() {
+					window.open("https://chat.kay.com/netagent/cimlogin.aspx?questid=A1FBD52D-D1E4-4B0F-AF69-7B108401498F&portid=07F71C96-4565-4BA0-8FBE-8B19EB461DBA&nareferer="+escape(document.location),"_blank","resizable= no,width=680,height=450,scrollbars=yes"); 
+					cmCreateManualLinkClickTag("Click to Chat - Header","Click to Chat - Header","");
+					cmCreateElementTag("Click to Chat - Header", "Click to Chat - Header", "");
+					return false;
+				});
+			}
+			else {
+				$('.chatCMSItem').click(function() {
+					window.open("https://sterlingtest.ehosts.net/netagent/cimlogin.aspx?questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&nareferer="+escape(document.location),"_blank","resizable=no,width=680,height=450,scrollbars=yes"); 
+					cmCreateManualLinkClickTag("Click to Chat - Header","Click to Chat - Header","");
+					cmCreateElementTag("Click to Chat - Header", "Click to Chat - Header", "");
+					return false;
+				});
+			}
 		}
+		// Server returned 500
 		else {
-			$('.chatCMSItem').click(function() {
-				window.open("https://sterlingtest.ehosts.net/netagent/cimlogin.aspx?questid=1801D4EC-4F45-474F-B724-86ACDA5EA01A&portid=8E0DF218-DA49-4C70-8A95-A66BF983C7AE&nareferer="+escape(document.location),"_blank","resizable=no,width=680,height=450,scrollbars=yes"); 
-				cmCreateManualLinkClickTag("Click to Chat - Header","Click to Chat - Header","");
-				cmCreateElementTag("Click to Chat - Header", "Click to Chat - Header", "");
-				return false;
-			});
+			$('#footerChatLink').html('Live Chat (Unavailable)');
 		}
-	}
-	// Server returned 500
-	else {
-		$('#footerChatLink').html('Live Chat (Unavailable)');
-	}
+	});
 </script>
 <!-- this code needs to go in CMS 
 					<span>
@@ -1936,6 +1805,61 @@ onclick="javascript:cmCreateElementTag('Twitter Follow','Twitter Follow','');cmC
 </div>
 
 
+
+<script>
+var $ = jQuery.noConflict();
+$(document).ready(function() {	
+
+	//select all the a tag with name equal to modal
+	$('#contact_us').click(function(e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		
+		//Get the A tag
+		var id = $(this).attr('href');
+	
+		//Get the screen height and width
+		var maskHeight = $(document).height();
+		var maskWidth = $(window).width();
+	
+		//Set heigth and width to mask to fill up the whole screen
+		//$('#mask').css({'width':maskWidth,'height':maskHeight});
+		
+		//transition effect		
+		$('#maskContactUs').fadeIn(1000);	
+		$('#maskContactUs').fadeTo("slow",0.8);	
+		
+		//Get the window height and width
+		var winH = $(document).height();
+		var winW = $(window).width();
+              
+		//Set the popup window to center
+		$(id).css('top',  '55%');
+		$(id).css('left', '9%');
+	
+		//transition effect
+		$(id).fadeIn(1000); 
+	
+	});
+	
+	//if close button is clicked
+	$('.windowCS .close').click(function (e) {
+		//Cancel the link behavior
+		e.preventDefault();
+		
+		$('#maskContactUs').hide();
+		$('.windowCS').hide();
+	});		
+	
+	//if mask is clicked
+	$('#maskContactUs').click(function () {
+		$(this).hide();
+		$('.windowCS').hide();
+	});			
+	
+});
+
+</script>
 
 <div class="final">
     <!--<a href="" class="verisign"></a>

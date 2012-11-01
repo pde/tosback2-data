@@ -134,8 +134,7 @@ if (e.keyCode == 13)
     $("#popupSignIn #signIn").trigger('click');
 
 });
-	$("#signIn").click(function(e){	
-		e.preventDefault();
+	$("#signIn").click(function(){	
 		var e = $("#email_id").attr('value');
 		var f = $(".backgroundPopup #password").attr('value'); 
 		var atpos=e.indexOf("@");

@@ -11,133 +11,6 @@ $(document).on('click', '.expand', function (event){
 $(document).ready(function(){
     $('.faq-tree-item.' + (CQ_Analytics.ProfileDataMgr.getProperty('region') || "NYC")).removeClass('hidden');
 });
-//hide and show script
-$(function() {
-    $('.multi-form + form .form_button_submit').hide();
-    if (window.location.href.match('status')) {
-        $('.multi-form').find('.thankYou').css({ display: "block" });
-    } else {
-        $('.zipBox').css({ display: "block" });
-    }
-    $('.toggle').click(function(e) {
-        fetchGeoLocationData();
-        e.preventDefault();
-        return false;
-
-    });
-    $('.call-back-form').click(function() {
-        callMymoveServlet();
-    });
-});
-//check to see if the zipcode is in TWC footprint
-
-
-function fetchGeoLocationData() {
-
-    var x = $('input.zip_code').val();
-    if (validateZipCode(x)) {
-        $('input#zip_code2').val(x);
-        $.getJSON('/bin/services/geolocation.json' + '?zip=' + $('#zip_code1').val(), function(data) {
-            if (data.region) {geoLocateInRegion(true);}
-            else {geoLocateInRegion(false);}
-        }).error(function() {
-            geoLocateInRegion(false);
-        });
-    } else {
-        alert("Zip Code must be filled out");
-        return false;
-    }
-}
-
-function geoLocateInRegion(inRegion) {
-    if (inRegion) {
-        $('.multi-form').find('.success').css({ display: "block" });
-    } else {
-        $('.multi-form').find('.fail').css({ display: "block" });
-    }
-}
-
-//submit callback form and sendout thank you email
-
-
-function callMymoveServlet() {
-    var validation = validateForm();
-    if (validation == true) {
-        var mailTo = $('#email_addr').val();
-        $('<input type="hidden" value="' + mailTo + '" name="mailTo"/>').appendTo('.multi-form+form');
-        $.getJSON('/bin/mymove.json' + '?FirstName=' + $('#first_name').val() + '&LastName=' + $('#last_name').val() + '&PhoneNumber=' + $('#area_code').val() + $('#prefix').val() + $('#line_number').val() + '&AlternateNumber=' + $('#alt_area_code').val() + $('#alt_prefix').val() + $('#alt_line_number').val() + '&Email=' + $('#email_addr').val(), function() {
-            $('.multi-form+form input.form_button_submit').trigger('click');
-        }).error(function() {
-            alert("Callback form couldn't submit.");
-        });
-    }
-}
-
-function validateForm() {
-    var x = $('input.zip_code').val();
-    if (!validateZipCode(x)) {
-        alert("Zip Code must be filled out");
-        return false;
-    }
-
-    x = $('input#first_name').val();
-    if (x == null || x == "") {
-        alert("First name must be filled out");
-        return false;
-    }
-
-    x = $('input#last_name').val();
-    if (x == null || x == "") {
-        alert("First name must be filled out");
-        return false;
-    }
-
-    x = $('input#email_addr').val();
-    if (!validateEmail(x)) {
-        alert("Email must be filled out");
-        return false;
-    }
-
-    x = $('.phone input#area_code').val();
-    y = $('.phone input#prefix').val();
-    z = $('.phone input#line_number').val();
-    var phone = x + y + z;
-    if (!validatePhoneNumber(phone)) {
-        alert("Phone number must be filled out");
-        return false;
-    }
-    return true;
-}
-
-function validateEmail(elementValue) {
-    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    return emailPattern.test(elementValue);
-}
-
-function validatePhoneNumber(elementValue) {
-    var phoneNumberPattern = /^\d{10}$|^\d{10}-\d{4}$/;
-    return phoneNumberPattern.test(elementValue);
-}
-
-function validateZipCode(elementValue) {
-    var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
-    return zipCodePattern.test(elementValue);
-}
-
-
-$(document).ready(function () {
-    //onfocus of zip field if someone hits return trigger click on the a tag
-    $('#zip_code1').keypress(function(e) {
-        var code =null;
-        code= (e.keyCode ? e.keyCode : e.which);
-
-        if (code==13) {
-            $('.toggle').click();
-            e.preventDefault();
-            return false;
-        }
-    })
-})
 CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
 
 ;(function($){
@@ -333,7 +206,7 @@ $(document).ready(function(){
 $(document).ready(function() {
     var ALL_PAGES = '/etc/tags/twc/lob';
     var ALL_REGIONS = '/etc/tags/twc/location/region';
-    var self = $('.alerts .display-alerts');
+    var alertSelf = $('.alerts .display-alerts');
 
     var isPathMatched = function(arr, matchVal, rootMatch) {
         var match = false;
@@ -355,25 +228,27 @@ $(document).ready(function() {
         return isPathMatched(alert.pageTags, page, ALL_PAGES);
     };
 
-    if (self.length>0) {
-        var url = self.attr('data-alert-src')+'/jcr:content.json';  /* passed in from component html */
-        $.getJSON(url, function(data){
-            var items = [];
-            var pageFilter = self.attr('data-page-filter'); /* passed in from component html */
-            var regionFilter = typeof(ClientContext)==='object' ? ClientContext.get('profile/region') : "no region";
+    if (alertSelf.length>0) { // if component on page
+        //read in from HTML; defaults to 'default' from JSP
+        var src = alertSelf.attr('data-alert-src');
+        var pageFilter = alertSelf.attr('data-alert-filter');
+        if (src!=='default' && pageFilter!=='default') { // if component configured
+            $.getJSON(src+'/jcr:content.json', function(data){
+                var items = [];
+                var regionFilter = typeof(ClientContext)==='object' ? ClientContext.get('profile/region') : "none";
 
-            for (var idx in data.alerts) {
-                var alert = data.alerts[idx];
-                if (isInRegion(alert, regionFilter)===true && isOnPage(alert, pageFilter)===true ) {
-                    items.push('<li>'+alert.message+'</li>');
-                }// else { console && console.log("excluding alert: "+alert.id); }
-
-            }
-            if (items.length > 0) {
-                self.find('.alert-messages').html(items.join(''));
-                self.removeClass('hidden');
-            }
-        });
+                for (var idx in data.alerts) {
+                    var alert = data.alerts[idx];
+                    if (isInRegion(alert, regionFilter)===true && isOnPage(alert, pageFilter)===true ) {
+                        items.push('<li>'+alert.message+'</li>');
+                    }// else { console && console.log("excluding alert: "+alert.id); }
+                }
+                if (items.length > 0) {
+                    alertSelf.find('.alert-messages').html(items.join(''));
+                    alertSelf.removeClass('hidden');
+                }
+            });
+        }
     }
 });
 ;
@@ -1224,30 +1099,51 @@ chatPromptIdleTime = 0;
 chatPrompt.presetTime = 1000; // setting time to go by milliseconds
 var chatIdleInterval;
 var chatModalLink = "";
+var enabledVal = "";
 chatTimerLength = 180;
 $(document).ready(function () {
-	if ($('#chat-prompt-module').length > 0) {
-		var disabled = $('#disabled').val();
-		if (disabled !== 'true') {
-			if(! $.cookie('chatPromptCookie')) {
-                chatModalLink = $('#modalLink').val();
-                chatTimerLength = $('#timerlength').val();
+    if ($('#chat-prompt-module').length > 0) {
+        var currentSoaId;
+        
+        //Zero the idle timer on mouse movement.
+        $(this).mousemove(function (e) {
+            chatPromptIdleTime = 0;
+        });
+        $(this).keypress(function (e) {
+            chatPromptIdleTime = 0;
+        });
 
-                if (chatModalLink !== '') {
-                    //Increment the idle time counter
-                    chatIdleInterval = setInterval("timerIncrement()", chatPrompt.presetTime);
+        // get users soaid and if they have not entered one use default New York soaid
+        var soaid = CQ_Analytics.ProfileDataMgr.getProperty('soaId');
+        if (typeof(soaid)==='string' && soaid!=='') {
+            currentSoaId = soaid;
+        } else {
+            currentSoaId = "NYC.8150";
+        }
 
-                    //Zero the idle timer on mouse movement.
-                    $(this).mousemove(function (e) {
-                        chatPromptIdleTime = 0;
-                    });
-                    $(this).keypress(function (e) {
-                        chatPromptIdleTime = 0;
-                    });
+        $.getJSON('/content/bin/soaid/proactiveChatPrompt', function(data) {
+            var soaObj = data[currentSoaId];
+            var chatObj = soaObj["proactiveChatPrompt"];
+            enabledVal = chatObj["enabled"].toString();
+            
+            if (enabledVal === 'true'){
+                var disabled = $('#disabled').val();
+                if (disabled !== 'true') {
+                    if(! $.cookie('chatPromptCookie')) {
+                        chatModalLink = $('#modalLink').val();
+                        chatTimerLength = $('#timerlength').val();
+
+                        if (chatModalLink !== '') {
+                            //Increment the idle time counter
+                            chatIdleInterval = setInterval("timerIncrement()", chatPrompt.presetTime);
+
+                           
+                        }
+                    }
                 }
             }
-		}
-	}
+        });
+    }
 })
 function timerIncrement() {
     chatPromptIdleTime = chatPromptIdleTime + 1;
@@ -1821,6 +1717,14 @@ function timerIncrement() {
     }
 
 }(jQuery, this));
+$(document).ready(function () {
+    if ($('.chatpromptadmin').length > 0) {
+        if (!$('#globaldisable').is(":checked"))
+        {
+          $(".soaids").show();
+        }
+    }
+})
 //gatewayCookie.js
 $(document).ready(function(){
     var options = {
@@ -6277,6 +6181,157 @@ var globalVars = {};
             break;
     }
 })();
+jQuery.extend( jQuery.easing,
+{
+	customEasing: function (x, t, b, c, d, s) {
+		if (s == undefined) s = 1;
+		return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+	}
+});
+
+function displayCaps()
+{
+	$('.caption1, .caption2, .caption3, .popArr').hide();
+	$('.slide:visible .caption1').delay(100).show('scale', { percent: 100, easing: 'customEasing' }, 500, function(){$(this).find('.popArr').fadeIn(200);});
+	$('.slide:visible .caption2').delay(500).show('scale', { percent: 100, easing: 'customEasing' }, 500, function(){$(this).find('.popArr').fadeIn(200);});
+	$('.slide:visible .caption3').delay(900).show('scale', { percent: 100, easing: 'customEasing' }, 500, function(){$(this).find('.popArr').fadeIn(200);});
+}
+
+//return site tour section based off of slide number
+function getTourSectionName(slideNum)
+{
+	var slide = "slide" + slideNum;
+	var sectionName = "";
+	
+	//map of each slide, it's title section and page number in the section
+	var tourMap =
+	{
+			"slide1":"Gateway  > 1",
+			"slide2":"Residential Homepage > 1",
+			"slide3":"Residential Homepage > 2",
+			"slide4":"Residential Homepage > 3",
+			"slide5":"Residential Homepage > 4",
+			"slide6":"Packages > 1",
+			"slide7":"Packages > 2",
+			"slide8":"Packages > 3",
+			"slide9":"Packages > 4",
+			"slide10":"Packages > 5",
+			"slide11":"Packages > 6",
+			"slide12":"Packages > 7",
+			"slide13":"Products > 1",
+			"slide14":"Products > 2",
+			"slide15":"Products > 3",
+			"slide16":"Products > 4",
+			"slide17":"Products > 5",
+			"slide18":"TWC TV > 1",
+			"slide19":"TWC TV > 2"
+	};
+	
+	sectionName = tourMap[slide];
+	
+	return sectionName;
+}
+
+$(document).ready(function () {
+    var body = document.body, html = document.documentElement;
+    var isRunning = false;   
+ 	
+    $('#infoVeil').css("height", Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) + "px");
+    //Resize the background veil to fit the window when resized
+    $(window).resize(function () {
+        $('#infoVeil').css("height", Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight) + "px");
+    });
+
+    //On hover shift
+    $('#sideNub').hover(
+		function () { $('#sideNubBtn').stop().animate({ left: '-10px' }, 50, function () { }); },
+		function () { $('#sideNubBtn').stop().animate({ left: '5px' }, 50, function () { }); }
+	);
+
+    //Popup opened
+    $('#sideNub').click(function () {
+     	//analytics - track when site tour pop up first opens
+     	if (typeof(s) !== 'undefined' && !isRunning) {
+     		
+     		isRunning = true;
+     		var sectionName = getTourSectionName(1);
+			var oldPageName = s.pageName;  //underlying page
+			
+			s.eVar59 = oldPageName;
+			s.eVar57 = "";  // clear this to prevent conflicts
+            s.eVar63 = sectionName;
+            s.prop63 = sectionName;
+            s.events = "event92";
+			s.pageName = "Site Tour";
+			runOnce = true;
+			s.t();
+     	}    	
+    	
+    	$('#infoSlider').css("top", (document.body.scrollTop + 15) + "px");
+
+            setTimeout( displayCaps, 1000 );
+        $('#sideNub').fadeOut();
+        $('#infoVeil').fadeIn();
+        $('#infoSlider').fadeIn();
+    });
+
+    //Popup Closed
+    $('.closeSlides').click(function () {
+        $('#sideNub').fadeIn();
+        $('#infoVeil').fadeOut();
+        $('#infoSlider').fadeOut();
+    });
+	
+	$(document).keyup(function(e) {
+	  if (e.keyCode == 27 && $("#infoVeil").is(":visible")) { 
+        $('#sideNub').fadeIn();
+        $('#infoVeil').fadeOut();
+        $('#infoSlider').fadeOut();
+	  }   // esc
+	});
+
+    //Slider Start
+    $('#slides').slides({
+        preload: true,
+        preloadImage: 'img/loading.gif',
+        play: 0,
+        pause: 2500,
+        hoverPause: true,
+        currentClass: 'current',
+        paginationClass: 'slidePaging',
+        animationStart: function (current) {
+            //Hide previous captions
+			$('.caption1, .caption2, .caption3').hide();
+        },
+        animationComplete: function (current) {
+            //set styling to currently displaying item (current is the index)
+            $('.slideVis').hide();
+            $('.link').removeClass("current");
+            $('.link' + current).addClass("current").parent().show();
+
+            //animate captions 
+            setTimeout( displayCaps, 300 );
+            
+            //analytics - for each slide in the tour other then the first time it loads
+            if (typeof(s) !== 'undefined') {
+            	var sectionName = getTourSectionName(current);
+            	
+            	s.linkTrackVars="events,eVar63,prop63";
+                s.linkTrackEvents="event92";
+                s.eVar63 = sectionName;
+                s.prop63 = sectionName;
+                s.events = "event92";
+                s.tl (this, 'o', 'Site Tour');            	        
+            }
+            
+        },
+		slidesLoaded: function() {
+			//set styling to first displaying item
+			$('.caption1, .caption2, .caption3').hide();
+			$(".link1").addClass("current").parent().show();
+		}
+    });
+});
 /*
     json2.js
     2011-10-19
@@ -11490,6 +11545,26 @@ _animate:function(){var a=+new Date,b=a-this._animateStartTime>this._parameters.
 b&&(this._angle=this._parameters.animateTo,this._rotate(this._angle),this._parameters.callback.call(this._rootObj))},_rotate:function(){var a=Math.PI/180;return i?function(a){this._angle=a;this._container.style.rotation=a%360+"deg"}:d?function(a){this._angle=a;this._img.style[d]="rotate("+a%360+"deg)"}:function(b){this._angle=b;b=b%360*a;this._canvas.width=this._width+this._widthAdd;this._canvas.height=this._height+this._heightAdd;this._cnv.translate(this._widthAddHalf,this._heightAddHalf);this._cnv.translate(this._widthHalf,
 this._heightHalf);this._cnv.rotate(b);this._cnv.translate(-this._widthHalf,-this._heightHalf);this._cnv.scale(this._aspectW,this._aspectH);this._cnv.drawImage(this._img,0,0)}}()};i&&(Wilq32.PhotoEffect.prototype.createVMLNode=function(){document.createStyleSheet().addRule(".rvml","behavior:url(#default#VML)");try{return!document.namespaces.rvml&&document.namespaces.add("rvml","urn:schemas-microsoft-com:vml"),function(a){return document.createElement("<rvml:"+a+' class="rvml">')}}catch(a){return function(a){return document.createElement("<"+
 a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
+/*
+* Slides, A Slideshow Plugin for jQuery
+* Intructions: http://slidesjs.com
+* By: Nathan Searles, http://nathansearles.com
+* Version: 1.1.9
+* Updated: September 5th, 2011
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+* http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+(function(a){a.fn.slides=function(b){return b=a.extend({},a.fn.slides.option,b),this.each(function(){function w(g,h,i){if(!p&&o){p=!0,b.animationStart(n+1);switch(g){case"next":l=n,k=n+1,k=e===k?0:k,r=f*2,g=-f*2,n=k;break;case"prev":l=n,k=n-1,k=k===-1?e-1:k,r=0,g=0,n=k;break;case"pagination":k=parseInt(i,10),l=a("."+b.paginationClass+" li."+b.currentClass+" a",c).attr("href").match("[^#/]+$"),k>l?(r=f*2,g=-f*2):(r=0,g=0),n=k}h==="fade"?b.crossfade?d.children(":eq("+k+")",c).css({zIndex:10}).fadeIn(b.fadeSpeed,b.fadeEasing,function(){b.autoHeight?d.animate({height:d.children(":eq("+k+")",c).outerHeight()},b.autoHeightSpeed,function(){d.children(":eq("+l+")",c).css({display:"none",zIndex:0}),d.children(":eq("+k+")",c).css({zIndex:0}),b.animationComplete(k+1),p=!1}):(d.children(":eq("+l+")",c).css({display:"none",zIndex:0}),d.children(":eq("+k+")",c).css({zIndex:0}),b.animationComplete(k+1),p=!1)}):d.children(":eq("+l+")",c).fadeOut(b.fadeSpeed,b.fadeEasing,function(){b.autoHeight?d.animate({height:d.children(":eq("+k+")",c).outerHeight()},b.autoHeightSpeed,function(){d.children(":eq("+k+")",c).fadeIn(b.fadeSpeed,b.fadeEasing)}):d.children(":eq("+k+")",c).fadeIn(b.fadeSpeed,b.fadeEasing,function(){a.browser.msie&&a(this).get(0).style.removeAttribute("filter")}),b.animationComplete(k+1),p=!1}):(d.children(":eq("+k+")").css({left:r,display:"block"}),b.autoHeight?d.animate({left:g,height:d.children(":eq("+k+")").outerHeight()},b.slideSpeed,b.slideEasing,function(){d.css({left:-f}),d.children(":eq("+k+")").css({left:f,zIndex:5}),d.children(":eq("+l+")").css({left:f,display:"none",zIndex:0}),b.animationComplete(k+1),p=!1}):d.animate({left:g},b.slideSpeed,b.slideEasing,function(){d.css({left:-f}),d.children(":eq("+k+")").css({left:f,zIndex:5}),d.children(":eq("+l+")").css({left:f,display:"none",zIndex:0}),b.animationComplete(k+1),p=!1})),b.pagination&&(a("."+b.paginationClass+" li."+b.currentClass,c).removeClass(b.currentClass),a("."+b.paginationClass+" li:eq("+k+")",c).addClass(b.currentClass))}}function x(){clearInterval(c.data("interval"))}function y(){b.pause?(clearTimeout(c.data("pause")),clearInterval(c.data("interval")),u=setTimeout(function(){clearTimeout(c.data("pause")),v=setInterval(function(){w("next",i)},b.play),c.data("interval",v)},b.pause),c.data("pause",u)):x()}a("."+b.container,a(this)).children().wrapAll('<div class="slides_control"/>');var c=a(this),d=a(".slides_control",c),e=d.children().size(),f=d.children().outerWidth(),g=d.children().outerHeight(),h=b.start-1,i=b.effect.indexOf(",")<0?b.effect:b.effect.replace(" ","").split(",")[0],j=b.effect.indexOf(",")<0?i:b.effect.replace(" ","").split(",")[1],k=0,l=0,m=0,n=0,o,p,q,r,s,t,u,v;if(e<2)return a("."+b.container,a(this)).fadeIn(b.fadeSpeed,b.fadeEasing,function(){o=!0,b.slidesLoaded()}),a("."+b.next+", ."+b.prev).fadeOut(0),!1;if(e<2)return;h<0&&(h=0),h>e&&(h=e-1),b.start&&(n=h),b.randomize&&d.randomize(),a("."+b.container,c).css({overflow:"hidden",position:"relative"}),d.children().css({position:"absolute",top:0,left:d.children().outerWidth(),zIndex:0,display:"none"}),d.css({position:"relative",width:f*3,height:g,left:-f}),a("."+b.container,c).css({display:"block"}),b.autoHeight&&(d.children().css({height:"auto"}),d.animate({height:d.children(":eq("+h+")").outerHeight()},b.autoHeightSpeed));if(b.preload&&d.find("img:eq("+h+")").length){a("."+b.container,c).css({background:"url("+b.preloadImage+") no-repeat 50% 50%"});var z=d.find("img:eq("+h+")").attr("src")+"?"+(new Date).getTime();a("img",c).parent().attr("class")!="slides_control"?t=d.children(":eq(0)")[0].tagName.toLowerCase():t=d.find("img:eq("+h+")"),d.find("img:eq("+h+")").attr("src",z).load(function(){d.find(t+":eq("+h+")").fadeIn(b.fadeSpeed,b.fadeEasing,function(){a(this).css({zIndex:5}),a("."+b.container,c).css({background:""}),o=!0,b.slidesLoaded()})})}else d.children(":eq("+h+")").fadeIn(b.fadeSpeed,b.fadeEasing,function(){o=!0,b.slidesLoaded()});b.bigTarget&&(d.children().css({cursor:"pointer"}),d.children().click(function(){return w("next",i),!1})),b.hoverPause&&b.play&&(d.bind("mouseover",function(){x()}),d.bind("mouseleave",function(){y()})),b.generateNextPrev&&(a("."+b.container,c).after('<a href="#" class="'+b.prev+'">Prev</a>'),a("."+b.prev,c).after('<a href="#" class="'+b.next+'">Next</a>')),a("."+b.next,c).click(function(a){a.preventDefault(),b.play&&y(),w("next",i)}),a("."+b.prev,c).click(function(a){a.preventDefault(),b.play&&y(),w("prev",i)}),b.generatePagination?(b.prependPagination?c.prepend("<ul class="+b.paginationClass+"></ul>"):c.append("<ul class="+b.paginationClass+"></ul>"),d.children().each(function(){a("."+b.paginationClass,c).append('<li><a href="#'+m+'">'+(m+1)+"</a></li>"),m++})):a("."+b.paginationClass+" li a",c).each(function(){a(this).attr("href","#"+m),m++}),a("."+b.paginationClass+" li:eq("+h+")",c).addClass(b.currentClass),a("."+b.paginationClass+" li a",c).click(function(){return b.play&&y(),q=a(this).attr("href").match("[^#/]+$"),n!=q&&w("pagination",j,q),!1}),a("a.link",c).click(function(){return b.play&&y(),q=a(this).attr("href").match("[^#/]+$")-1,n!=q&&w("pagination",j,q),!1}),b.play&&(v=setInterval(function(){w("next",i)},b.play),c.data("interval",v))})},a.fn.slides.option={preload:!1,preloadImage:"/img/loading.gif",container:"slides_container",generateNextPrev:!1,next:"next",prev:"prev",pagination:!0,generatePagination:!0,prependPagination:!1,paginationClass:"pagination",currentClass:"current",fadeSpeed:350,fadeEasing:"",slideSpeed:350,slideEasing:"",start:1,effect:"slide",crossfade:!1,randomize:!1,play:0,pause:0,hoverPause:!1,autoHeight:!1,autoHeightSpeed:350,bigTarget:!1,animationStart:function(){},animationComplete:function(){},slidesLoaded:function(){}},a.fn.randomize=function(b){function c(){return Math.round(Math.random())-.5}return a(this).each(function(){var d=a(this),e=d.children(),f=e.length;if(f>1){e.hide();var g=[];for(i=0;i<f;i++)g[g.length]=i;g=g.sort(c),a.each(g,function(a,c){var f=e.eq(c),g=f.clone(!0);g.show().appendTo(d),b!==undefined&&b(f,g),f.remove()})}})}})(jQuery)
 /* ----------------------------------
  *	Plugin: fromTemplate Plugin v0.1.0
  *
@@ -11676,6 +11751,22 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 			} 
 			else {
 				$(this).css('margin-top', 0);
+			}
+		});
+	};
+})(jQuery);
+
+(function($) {	   
+	$.fn.vAlignPercent = function(percent) {
+		return this.each(function(i){
+			var oh = $(this).parent().height();
+			var mh = (oh * (percent * .01));
+
+			if(mh>0) {
+				$(this).css('padding-top', mh);
+			} 
+			else {
+				$(this).css('padding-top', 0);
 			}
 		});
 	};
@@ -16649,6 +16740,25 @@ $(document).ready(function() {
         return false;
     })
 })
+$(document).ready(function() {
+	$(document).on('click','.faqItem .collapsible-heading',function () { 
+
+        // expect div.parsys div.faqItem li a.collapsible-heading, div.parsys div.faqItem li div.faq-answer
+        if ($(this).parent('li').hasClass('current')) {
+            $(this).parent('li').find('.faq-answer').slideUp('slow', function() {
+                $(this).parent('li').removeClass('current');
+            });
+        } else {
+            $(this).parents('.faqItem').find('li.current .faq-answer').slideUp('slow', function() {
+                $(this).parent('li').removeClass('current');
+            });
+            $(this).parent('li').find('.faq-answer').slideDown('slow', function() {
+                $(this).parent('li').addClass('current');
+            });
+        }
+        return false;
+    });
+})
 /*! http://mths.be/placeholder v2.0.7 by @mathias 
     from this plugin https://github.com/mathiasbynens/jquery-placeholder 
     called from the mini-login-form      */
@@ -16808,3 +16918,179 @@ $(document).ready(function() {
     }
 
 }(this, document, jQuery));
+//hide and show script
+$(function() {
+    $('.multi-form + form .form_button_submit').hide();
+    if (window.location.href.match('status')) {
+    	 $('.zipCheck').css({ display: "none" });
+        $('.multi-form').find('.thankYou').css({ display: "block" });
+    } else {
+        $('.zipCheck').css({ display: "block" });
+    }
+    $('.toggle').click(function(e) {
+        fetchGeoLocationData();
+        e.preventDefault();
+        return false;
+
+    });
+    $('.call-back-form').click(function() {
+        callMymoveServlet();
+    });
+});
+//check to see if the zipcode is in TWC footprint
+
+
+function fetchGeoLocationData() {
+
+    var x = $('input.zip_code').val();
+    if (validateZipCode(x)) {
+        $('input#zip_code2').val(x);
+        $.getJSON('/bin/services/geolocation.json' + '?zip=' + $('#zip_code1').val(), function(data) {
+            if (data.region) {
+                geoLocateInRegion(true);
+
+                // Zip code check - serviceable
+                s.linkTrackVars="events,eVar7,prop19,eVar59";
+                s.linkTrackEvents="event48";
+                s.eVar7 = "check availability by zip code - zip code serviceable";
+                s.prop19 = "check availability by zip code - zip code serviceable";
+                s.eVar59 = s.pageName;
+                s.events = "event48";
+                s.tl (this, 'o', 'check availability by zip code - zip code serviceable');
+            } else {
+                geoLocateInRegion(false);
+
+                // zip code check not serviceable
+                s.linkTrackVars="events,eVar7,prop19,eVar59";
+                s.linkTrackEvents="event48";
+                s.eVar7 = "check availability by zip code - zip code not serviceable";
+                s.prop19 = "check availability by zip code - zip code not serviceable";
+                s.eVar59 = s.pageName;
+                s.events = "event48";
+                s.tl (this, 'o', 'check availability by zip code - zip code not serviceable');
+            }
+        }).error(function() {
+            geoLocateInRegion(false);
+
+            // Zip code database connectivity problems/etc
+            s.linkTrackVars="events,eVar54,eVar59";
+            s.linkTrackEvents="event82";
+            s.eVar54 = "my move zip code lookup error";
+            s.eVar59 = s.pageName;
+            s.events = "event82";
+            s.tl (this, 'o', 'my move zip code lookup error');
+        });
+    } else {
+        alert("Zip Code must be filled out");
+        return false;
+    }
+}
+
+function geoLocateInRegion(inRegion) {
+    if (inRegion) {
+   	 	$('.multi-form').find('.fail').css({ display: "none" });
+        $('.multi-form').find('.success').css({ display: "block" });
+    } else {
+    	 $('.multi-form').find('.success').css({ display: "none" });
+        $('.multi-form').find('.fail').css({ display: "block" });
+    }
+}
+
+//submit callback form and sendout thank you email
+
+
+function callMymoveServlet() {
+    var validation = validateForm();
+    if (validation == true) {
+        var mailTo = $('#email_addr').val();
+        $('<input type="hidden" value="' + mailTo + '" name="mailTo"/>').appendTo('.multi-form+form');
+        $.getJSON('/bin/mymove.json' + '?FirstName=' + $('#first_name').val() + '&LastName=' + $('#last_name').val() + '&PhoneNumber=' + $('#area_code').val() + $('#prefix').val() + $('#line_number').val() + '&AlternateNumber=' + $('#alt_area_code').val() + $('#alt_prefix').val() + $('#alt_line_number').val() + '&ZipCode=' + $('#zip_code2').val() + '&Email=' + $('#email_addr').val(), function() {
+            $('.multi-form+form input.form_button_submit').trigger('click');
+
+            // call back submit success
+            s.linkTrackVars="events,eVar7,prop19,eVar59";
+            s.linkTrackEvents="event48";
+            s.eVar7 = "My Move Get a Call Back Submit success";
+            s.prop19 = "My Move Get a Call Back Submit success";
+            s.eVar59 = s.pageName;
+            s.events = "event48";
+            s.tl (this, 'o', 'my move get a callback submit success');
+        }).error(function() {
+            alert("Callback form couldn't submit.");
+
+            // Get a call back back end/database/etc problems
+            s.linkTrackVars="events,eVar54,eVar59";
+            s.linkTrackEvents="event82";
+            s.eVar54 = "My Move Get a Call Back Submit error";
+            s.eVar59 = s.pageName;
+            s.events = "event82";
+            s.tl (this, 'o', 'my move get a callback submit error');
+        });
+    }
+}
+
+function validateForm() {
+    var x = $('input.zip_code').val();
+    if (!validateZipCode(x)) {
+        alert("Zip Code must be filled out");
+        return false;
+    }
+
+    x = $('input#first_name').val();
+    if (x == null || x == "") {
+        alert("First name must be filled out");
+        return false;
+    }
+
+    x = $('input#last_name').val();
+    if (x == null || x == "") {
+        alert("Last name must be filled out");
+        return false;
+    }
+
+    x = $('input#email_addr').val();
+    if (!validateEmail(x)) {
+        alert("Email must be filled out");
+        return false;
+    }
+
+    x = $('.phone input#area_code').val();
+    y = $('.phone input#prefix').val();
+    z = $('.phone input#line_number').val();
+    var phone = x + y + z;
+    if (!validatePhoneNumber(phone)) {
+        alert("Phone number must be filled out");
+        return false;
+    }
+    return true;
+}
+
+function validateEmail(elementValue) {
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(elementValue);
+}
+
+function validatePhoneNumber(elementValue) {
+    var phoneNumberPattern = /^\d{10}$|^\d{10}-\d{4}$/;
+    return phoneNumberPattern.test(elementValue);
+}
+
+function validateZipCode(elementValue) {
+    var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
+    return zipCodePattern.test(elementValue);
+}
+
+
+$(document).ready(function () {
+    //onfocus of zip field if someone hits return trigger click on the a tag
+    $('#zip_code1').keypress(function(e) {
+        var code =null;
+        code= (e.keyCode ? e.keyCode : e.which);
+
+        if (code==13) {
+            $('.toggle').click();
+            e.preventDefault();
+            return false;
+        }
+    })
+})

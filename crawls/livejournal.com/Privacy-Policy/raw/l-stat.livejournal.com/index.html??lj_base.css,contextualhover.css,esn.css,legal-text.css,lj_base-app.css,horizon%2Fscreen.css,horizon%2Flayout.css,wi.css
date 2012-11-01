@@ -2000,6 +2000,9 @@ BODY div .b-helplink:active {
 	.b-msgsystem-error {
 		display: none;
 		}
+	.b-msgsystem-errorbox-show .b-msgsystem-error-ajax {
+		display: block;
+		}
 .b-msgsystem-errorbox-errors {
 	display: block;
 	}
@@ -2034,6 +2037,9 @@ BODY div .b-helplink:active {
 	}
 	.b-msgsystem-message {
 		display: none;
+		}
+	.b-msgsystem-messagebox-show .b-msgsystem-message-ajax {
+		display: block;
 		}
 .b-msgsystem-messagebox-messages {
 	display: block;
@@ -2843,13 +2849,13 @@ HTML BODY .i-ljuser {
 	border: 0;
 	-moz-border-radius: 9px;
 	border-radius: 9px;
-	background: #DCFBFF;
-	background: #DCFBFF -moz-linear-gradient(top,  #DCFBFF 0%, #CDE7FE 100%);
-	background: #DCFBFF -webkit-gradient(linear, left top, left bottom, color-stop(0%,#DCFBFF), color-stop(100%,#CDE7FE));
-	background: #DCFBFF -webkit-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
-	background: #DCFBFF -o-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
-	background: #DCFBFF -ms-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
-	background: #DCFBFF linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
+	background: #CDE7FE;
+	background: #CDE7FE -moz-linear-gradient(top,  #DCFBFF 0%, #CDE7FE 100%);
+	background: #CDE7FE -webkit-gradient(linear, left top, left bottom, color-stop(0%,#DCFBFF), color-stop(100%,#CDE7FE));
+	background: #CDE7FE -webkit-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
+	background: #CDE7FE -o-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
+	background: #CDE7FE -ms-linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
+	background: #CDE7FE linear-gradient(top,  #DCFBFF 0%,#CDE7FE 100%);
 	*zoom: 1;
 	}
 .b-panel:before {
@@ -4296,19 +4302,24 @@ UL.likes-list {
     padding: 0;
     vertical-align: baseline;
 }
+#NoUserpic img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	}
 #NoUserpic a span {
-    position: absolute;
-    top: 80px;
-    left: 0px;
+	display: table-cell;
+    position: relative;
     font-size: .8em;
     text-decoration: none;
     color: #036;
     cursor: pointer;
-    display: block;
     width: 100px;
-    text-align: center;
-    margin: 0;
+	height: 100px;
+	margin: 0;
     padding: 0;
+	vertical-align: middle;
+    text-align: center;
 }
 
 /* Change Userpic (Profile LR) */
@@ -4678,237 +4689,6 @@ UL.likes-list {
     margin-top: 5px;
     padding-bottom: 25px;
 }
-
-/* Search Form Style Goes Here
--------------------------------------- */
-
-
-/* Search Results
--------------------------------------- */
-.search-result-wrap {
-        font-family: Arial, sans-serif;
-        }
-        .search-result {
-                float:left;
-                width:100%;
-                margin-right:-100%;
-                }
-                .search-result-in {
-                        color: #333;
-                        }
-                        .search-result-in A {
-                                color: #3333D6;
-                                }
-        .search-result-aside {
-                float: right;
-                width: 300px;
-                margin-top: 90px;
-                }
-                
-.pages-list {
-        margin-bottom: 15px;
-        border-bottom: 3px solid #3E5A8B;
-        }
-        .pages-list LI I {
-            display: none;
-            }
-            .pages-list LI.cur I {
-                display: none;
-                }
-        .pages-list:after {
-                content: ".";
-                display: block;
-                height: 0;
-                clear: both;
-                visibility: hidden;
-                }
-        .pages-list LI {
-                float: left;
-                line-height: 1.2em;
-                margin-bottom: -3px;
-                padding: 0;
-                background: #69c;
-                text-align: center;
-                color: #fff;
-                border-bottom: 3px solid #3E5A8B;
-                white-space: nowrap;
-                overflow: hidden;
-                }
-                .search-result .pages-list LI {
-                    width: 18% !important;
-                    }
-                .search-result .pages-list LI.profiles {
-                    width: 28% !important;
-                    }
-                .pages-list LI A {
-                        display: block;
-                        padding: 5px;
-                        color: #fff;
-                        border-right: 2px solid #fff;
-                        }
-                        .pages-list LI A:visited {
-                                color: #fff;
-                                }
-                .pages-list LI STRONG {
-                        display: block;
-                        border-right: 2px solid #fff;
-                        }
-        .pages-list .cur,
-        .pages-list .cur-last {
-                padding: 0;
-                background: #3e5a8b !important;
-                border-bottom: 3px solid #3E5A8B;
-                }
-        .pages-list .last,
-        .pages-list .cur-pre {
-                margin-right: 0;
-                background: #69c;
-                }
-        .pages-list .cur STRONG {
-                background: none;
-                margin: 0;
-                padding: 5px;
-                border-bottom: 0;
-                }
-        .pages-list .last A,
-        .pages-list .last STRONG,
-        .pages-list .cur-last STRONG {
-                border-right: none;
-                white-space: nowrap;
-                }
-
-.search-result H1 {
-        margin: 0 0 0.4em 0;
-        padding: 0;
-        font: bold normal x-large Arial, sans-serif !important;
-        color: #036;
-        }
-
-
-/* Paging
--------------------------------------- */
-.paging DD UL UL A,
-.paging DD UL UL SPAN,
-.paging DD UL UL STRONG {
-        float:left;
-        padding:.1em .4em .1em;
-        text-decoration: none;
-        }
-.paging DD UL UL A,
-.paging DD UL UL STRONG {
-        border:solid 1px #CCC;
-        line-height:1;
-        color:#404040;
-        }
-.paging DD UL UL A:hover {
-        background:#CCC;
-        }
-.paging DD UL UL STRONG {
-        background:#829DBF;
-        border-color:#829DBF;
-        color:#FFF;
-        }
-
-        .tagged-list DT .search-meta {
-                font-size: 0.846em;
-                }
-                .tagged-list DT .search-meta A {
-                        font-size: 1em;
-                        }
-                .tagged-list BLOCKQUOTE {
-                        line-height:1.3;
-                        font-size: 1.077em;
-                        }
-                .tagged-list BLOCKQUOTE B {
-                        color:#000;
-                        }
-
-.search-result-extra .ico IMG,
-.tagged-list .ico IMG {
-        border:none;
-        vertical-align: text-bottom;
-        }
-.search-result-extra .ljuser,
-.tagged-list .ljuser {
-        white-space:nowrap;
-        word-spacing:-.1em;
-        margin-right:.1em;
-        }
-
-.search-result-extra .header {
-        background: none;
-        padding: 0;
-        margin: 0;
-        font-size:0.769em;
-        border-bottom: 1px solid #959595;
-        color:#959595;
-        text-transform: uppercase;
-        font-style:normal;
-        font-weight:normal;
-        }
-.search-result-extra A {
-        color: #3333D6;
-        }
-.search-result-extra .content {
-        background: none;
-        padding: 0;
-        }
-        .search-result-extra .content:after {
-                content: ".";
-                display: block;
-                height: 0;
-                clear: both;
-                visibility: hidden;
-                }
-        .search-result-extra .content .user-list {
-                margin: 0;
-                }
-        .search-result-extra .user-list .vcard {
-                padding: 0;
-                }
-.search-result-extra P A {
-        font-size: 0.923em;
-        }
-
-
-/* FAQ Search */
-.faq-list {
-        margin-left:0;
-        }
-        .faq-list P BIG {
-                font-weight:normal;
-                }
-                .faq-list P BIG B {
-                        font-style:italic;
-                        }
-        .faq-list P SMALL A:link,
-        .faq-list P SMALL A:visited {
-                font-size: 1.073em;
-                }
-
-/* FOR IE7 */
-.search-type,
-.pages-list,
-.search-precise,
-.paging {
-        zoom: 1;
-        }
-/* Fix jumping floats in tabs */
-*+html .pages-list .last,
-*+html .pages-list .cur-last {
-    margin-right: -2px;
-    }
-*+html .pages-list LI A {
-    overflow: hidden;
-    }
-*+html .tagged-list LI {
-    zoom:1;
-    }
-
-.basic .search-submit BUTTON {
-        top:0;
-        }
-
 
 /* 10 years header mod */
 

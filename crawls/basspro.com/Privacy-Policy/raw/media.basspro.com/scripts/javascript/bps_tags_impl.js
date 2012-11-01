@@ -1550,7 +1550,7 @@ TrackingPixelTag.prototype = new TagImpl();
 TrackingPixelTag.base = TagImpl.prototype;
 TrackingPixelTag.production = Tag.production;
 TrackingPixelTag.enabled = TagImpl.enableTagByParameter("tptag", true);
-TrackingPixelTag.liveChatEnabled = TagImpl.enableTagByParameter("livechat", false);
+TrackingPixelTag.liveChatEnabled = TagImpl.enableTagByParameter("livechat", true);
 
 TrackingPixelTag.prototype.setConfirmPagePixels = function()
 {
@@ -2299,7 +2299,6 @@ function hideSelect()
     var disclaimerText = '';
     var resolvedCatentryId = "";
     var showDisclaimer = false;
-    var hasDisclaimer = false;
     var firstSKU=true;
 
     $.each(skuList, function(index, aSku)
@@ -2379,7 +2378,6 @@ function hideSelect()
         if(aSku.disclaimerBoxInnerHtml != null && aSku.disclaimerBoxInnerHtml != "" && numChildren == 1)
         {
           showDisclaimer = true;
-	   hasDisclaimer = true;
           disclaimerText = aSku.disclaimerBoxInnerHtml;
         }
         else
@@ -2672,7 +2670,7 @@ function hideSelect()
 
   try
   {
-        if(hasDisclaimer)
+        if(showDisclaimer)
         {
             $("#shippingDisclaimerInner").html(disclaimerText);
             $("#shipL").css('visibility', 'visible');

@@ -111,12 +111,10 @@
 					var offPath = $("img", this).attr("src");
 					var onPath = offPath.replace("_off", "_on");
 					new lib.obj.button({
-						off: offPath,
-						on: onPath,
-						hover: onPath,
-						hasClick: true,
-						hasHover: true,
+						cssButton: true,
 						activeId: "js-defaultHeaderButtonActive",
+						cssOn: "menuitemHover",
+						cssHover: "menuitemHover",
 						buttonSelector: $("img", this),
 						buttonCollectionSelector : ".js-defaultHeaderNavigation img"
 					});
@@ -438,14 +436,8 @@ $(function() {
 	/* Footer Email Address Field */
 	lib.input.defaultText(".js-footerEmailInput", { defaultText : "enter e-mail address" });
 	
-	/* if its not in an iframe */
-	if(site.data.hideMegaMenu != "true"){
-		/* Intialize the Header Navigation Buttons */
-		site.init.headerButtons();
-	
-		/* Initialize the "MegaMenu" functionality */
-		site.init.megaMenu();
-	} else {
+	/* if its in an iframe */
+	if(site.data.hideMegaMenu == "true"){
 		// if the header and footer are in an iframe, make forms and links break out of the iframe
 		$("#defaultHeader a").add("#defaultHeader form").add("#defaultFooter a").add("#defaultFooter form");
 		$("#defaultHeader a").not("[href*!='openWindowBig']").remove("a[target='_top']").attr('target', '_blank');

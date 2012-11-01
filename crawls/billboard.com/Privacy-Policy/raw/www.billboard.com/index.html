@@ -13,6 +13,9 @@
 
 <meta name="keywords" content="music, free music, music news, music reviews, music articles, music information, music news online" />
 <meta name="description" content="Billboard provides music charts, top songs & artist photo galleries. Discover new music, free videos and photos from your favorite artists and bands." />
+
+<!-- logic for all pages with 'charts' section -->
+
 <meta name="fb_app_id" content="101853036291"/>
 <meta property="fb:admins" content="100000057434849" />
 <meta property="fb:page_id" content="75791669580" />
@@ -63,6 +66,54 @@
 
 
 	<!-- artists -->
+
+
+
+<script type="text/javascript" src="../admin.brightcove.com/js/BrightcoveExperiences_all.js"></script>
+<script type="text/javascript">
+    var bcExp;
+    var modExp;
+    var modCue;
+    var modVid;
+    var queuedTime;
+	
+ function onTemplateLoaded(experienceId) {
+	bcExp = brightcove.getExperience(experienceId);
+	modExp = bcExp.getModule(APIModules.EXPERIENCE);
+	modCue = bcExp.getModule(APIModules.CUE_POINTS);
+	modVid = bcExp.getModule(APIModules.VIDEO_PLAYER);
+	modExp.addEventListener(BCExperienceEvent.CONTENT_LOAD, onContentLoad);
+ }
+	
+ function onContentLoad(event) {
+	var chaptersElem = document.getElementById("chapters");
+	chaptersElem.innerHTML = "";
+	var cuepoints = modCue.getCuePoints(modVid.getCurrentVideo().id);
+	for (var i=0; i < cuepoints.length; i++) {
+		if (cuepoints[i].type == 1) {
+			if (chaptersElem.children.length > 0) {
+				chaptersElem.innerHTML += " | ";
+			}
+		chaptersElem.innerHTML += "<a href='javascript:void();' onclick='seek(" + cuepoints[i].time + ");'>" + cuepoints[i].name + "</a>";
+		}
+	}
+ }
+
+ function seek(time) {
+	if (modVid.isPlaying()) {
+		modVid.seek(time);
+	} else {
+		queuedTime = time;
+		modVid.addEventListener(BCMediaEvent.PROGRESS, onProgress);
+		modVid.play();
+	}
+ }
+	
+ function onProgress(event) {
+	modVid.removeEventListener(BCMediaEvent.PROGRESS, onProgress);
+	seek(queuedTime);
+ }
+</script>
 
 
 
@@ -633,7 +684,48 @@ try{
 
                           
         <div id="content-container">
-            <div id="body-class" style="display:none;">homepage</div>
+            <div id = "initial-page-title" style = "display:none">Billboard - Music Charts, Music News, Artist Photo Gallery &amp; Free Video</div>
+
+
+
+
+
+
+
+	
+    
+    
+    
+    
+    
+    
+    
+    
+	
+
+	
+    
+    	
+    
+
+
+
+
+ 
+
+
+
+	
+
+
+
+    
+	
+	
+	
+
+
+<div id="body-class" style="display:none;">homepage</div>
 <div id="page-title" style="display:none;">Billboard - Music Charts, Music News, Artist Photo Gallery & Free Video</div>
 <div id="section" style="display:none;">home</div>
 <div id="subsection" style="display:none;"></div>
@@ -702,7 +794,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="1"><a class = "no-ajax" href="http://www.billboard.com/photogalleries/pop-zombies-photos-of-musicians-as-the-walking-1007992422.story" ><img src="photos/promo/promoImage1024.jpg%3Ftimestamp=1351512854175" width="962" height="478" imageCount="1" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="1"><a class = "no-ajax" href="http://www.billboard.com/features/the-top-10-halloween-songs-1005445412.story" ><img src="photos/stylus/1266059-thriller-michael-jackson-962-478-2.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="1" countSize="6"/></a></li>
                 
                    
                 
@@ -721,7 +813,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="2"><a class = "no-ajax" href="http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story" ><img src="photos/promo/promoImage1019.jpg%3Ftimestamp=1351512854175" width="962" height="478" imageCount="2" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="2"><a class = "no-ajax" href="http://www.billboard.com/news/taylor-swift-s-red-sells-1-21-million-biggest-1007994382.story" ><img src="photos/stylus/2610989-taylor-swift-Brian-Doben-962-478.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="2" countSize="6"/></a></li>
                 
                    
                 
@@ -740,7 +832,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="3"><a class = "no-ajax" href="http://www.billboard.com/features/psy-s-gangnam-style-the-billboard-cover-1007992382.story" ><img src="photos/promo/promoImage1022.jpg%3Ftimestamp=1351512854175" width="962" height="478" imageCount="3" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="3"><a class = "no-ajax" href="http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story" ><img src="photos/promo/promoImage1022.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="3" countSize="6"/></a></li>
                 
                    
                 
@@ -759,7 +851,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="4"><a class = "no-ajax" href="http://www.billboard.com/features/world-series-showdown-music-of-detroit-vs-1007990292.story" ><img src="photos/stylus/2614689-madonna-santana-detroit-san-francisco-617-409.psd%3Ftimestamp=1351512854175" width="962" height="478" imageCount="4" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="4"><a class = "no-ajax" href="http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story" ><img src="photos/promo/promoImage1023.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="4" countSize="6"/></a></li>
                 
                    
                 
@@ -778,7 +870,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="5"><a class = "no-ajax" href="http://www.billboard.com/news/carly-rae-jepsen-named-billboard-s-rising-1007990562.story" ><img src="photos/promo/promoImage1020.jpg%3Ftimestamp=1351512854175" width="962" height="478" imageCount="5" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="5"><a class = "no-ajax" href="http://www.billboard.com/news/hurricane-sandy-20-musician-twitter-reactions-1007994222.story" ><img src="photos/promo/promoImage1021.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="5" countSize="6"/></a></li>
                 
                    
                 
@@ -797,7 +889,7 @@ try{
               
                  
                  
-                <li class="featureHomePageItem" id="6"><a class = "no-ajax" href="http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story" ><img src="photos/promo/promoImage1023.jpg%3Ftimestamp=1351512854175" width="962" height="478" imageCount="6" countSize="6"/></a></li>
+                <li class="featureHomePageItem" id="6"><a class = "no-ajax" href="http://www.billboard.com/features/nba-players-favorite-music-los-angeles-lakers-1007993532.story" ><img src="photos/stylus/2617659-lakers-players-962-478.jpg%3Ftimestamp=1351773836712" width="962" height="478" imageCount="6" countSize="6"/></a></li>
                 
                    
                 
@@ -836,13 +928,13 @@ try{
               
               
                  
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox1','http://www.billboard.com/#/http://www.billboard.com/photogalleries/pop-zombies-photos-of-musicians-as-the-walking-1007992422.story');" href ="http://www.billboard.com/photogalleries/pop-zombies-photos-of-musicians-as-the-walking-1007992422.story">
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox1','http://www.billboard.com/#/http://www.billboard.com/features/the-top-10-halloween-songs-1005445412.story');" href ="http://www.billboard.com/features/the-top-10-halloween-songs-1005445412.story">
                     
                 
               
-                  <h3>Superstar Zombies Attack!</h3></a>
+                  <h3>Top 10 Halloween Songs</h3></a>
                     <p>
-                      Would your favorite pop stars survive the zombie apocalypse? Probably not. But they&#039;d keep making music, even with decaying skin and a craving for brains. See how Weezy, Britney, Gaga, PSY and more would look as part of the walking dead.
+                      As you prepare your Halloween party playlists, we&#039;re helping to make sure that you don&#039;t miss a single graveyard smash, as we present our creepy countdown of Billboard&#039;s Top Halloween Songs. Because when it comes to Halloween, these are the songs you wouldn&#039;t want to be caught ... dead ... without.
                     </p>
                 </div>
                 </li>
@@ -861,11 +953,36 @@ try{
               
               
                  
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox2','http://www.billboard.com/#/http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story');" href ="http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story">
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox2','http://www.billboard.com/#/http://www.billboard.com/news/taylor-swift-s-red-sells-1-21-million-biggest-1007994382.story');" href ="http://www.billboard.com/news/taylor-swift-s-red-sells-1-21-million-biggest-1007994382.story">
                     
                 
               
-                  <h3>Stars in Halloween Costumes</h3></a>
+                  <h3>Taylor Swift&#039;s &#039;Red&#039; Sells 1.21 Million</h3></a>
+                    <p>
+                      It&#039;s official: Taylor Swift&#039;s &#034;Red&#034; sold a whopping 1.208 million copies last week in the U.S. That&#039;s more than any album has sold in a single week since 2002, when Eminem&#039;s &#034;The Eminem Show&#034; sold 1.322 million in its first full week.
+                    </p>
+                </div>
+                </li>
+               	 
+                <li>
+                <div class="text home-text news-border">
+                
+                
+                
+                
+                    
+              
+                     
+                  
+                   
+              
+              
+                 
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox3','http://www.billboard.com/#/http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story');" href ="http://www.billboard.com/photogalleries/halloween-costumes-photos-of-musicians-spookiest-1004124291.story">
+                    
+                
+              
+                  <h3>Stars in Halloweeen Costumes</h3></a>
                     <p>
                       With Halloween here, have a look at our gallery of famous folks in fabulous costumes, from Katy Perry&#039;s red-eyed vampire to Beyonce as Spider-Woman. Trick or treat!
                     </p>
@@ -886,88 +1003,63 @@ try{
               
               
                  
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox3','http://www.billboard.com/#/http://www.billboard.com/features/psy-s-gangnam-style-the-billboard-cover-1007992382.story');" href ="http://www.billboard.com/features/psy-s-gangnam-style-the-billboard-cover-1007992382.story">
-                    
-                
-              
-                  <h3>PSY&#039;s &#039;Style&#039;: The Billboard Cover Story</h3></a>
-                    <p>
-                      More than 500 million YouTube views of &#034;Gangnam Style&#034; later, PSY is a global phenomenon and the unexpected face of a Korean music industry that&#039;s been looking for an international voice for years.
-                    </p>
-                </div>
-                </li>
-               	 
-                <li>
-                <div class="text home-text news-border">
-                
-                
-                
-                
-                    
-              
-                     
-                  
-                   
-              
-              
-                 
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox4','http://www.billboard.com/#/http://www.billboard.com/features/world-series-showdown-music-of-detroit-vs-1007990292.story');" href ="http://www.billboard.com/features/world-series-showdown-music-of-detroit-vs-1007990292.story">
-                    
-                
-              
-                  <h3>Which World Series City Has Better Music? </h3></a>
-                    <p>
-                      As the Detroit Tigers and San Francisco Giants face off in the fall classic, Billboard offers a lineup of the nine most successful artists from each city. Does Detroit or San Francisco have the more storied musical history? Vote now in our poll!
-                    </p>
-                </div>
-                </li>
-               	 
-                <li>
-                <div class="text home-text news-border">
-                
-                
-                
-                
-                    
-              
-                     
-                  
-                   
-              
-              
-                 
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox5','http://www.billboard.com/#/http://www.billboard.com/news/carly-rae-jepsen-named-billboard-s-rising-1007990562.story');" href ="http://www.billboard.com/news/carly-rae-jepsen-named-billboard-s-rising-1007990562.story">
-                    
-                
-              
-                  <h3>Carly Rae Named Billboard&#039;s &#039;Rising Star&#039;</h3></a>
-                    <p>
-                      Carly Rae Jepsen has been named Billboard&#039;s &#034;Rising Star&#034; for 2012 following a year of dizzying success for the &#034;Call Me Maybe&#034; singer-songwriter. Her award will be presented at the 2012 Billboard Women in Music event in NYC.
-                    </p>
-                </div>
-                </li>
-               	 
-                <li>
-                <div class="text home-text news-border">
-                
-                
-                
-                
-                    
-              
-                     
-                  
-                   
-              
-              
-                 
-                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox6','http://www.billboard.com/#/http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story');" href ="http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story">
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox4','http://www.billboard.com/#/http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story');" href ="http://www.billboard.com/photogalleries/photos-of-the-week-1005356442.story">
                     
                 
               
                   <h3>Photos of the Week</h3></a>
                     <p>
-                      Justin Bieber hung out with Oprah, Eddie Vedder did a surprise set at an EB benefit, Taylor Swift rocked a red mic on GMA in Times Square, Adam Levine prepped for Halloween on the set of &#034;American Horror Story,&#034; and more. See the week&#039;s best pics!
+                      Nicki Minaj put on a pink pout, Usher played with puppies, Adam Lambert got crazy on Halloween, Katy Perry hung out with Michelle Obama, Justin Bieber smiled with Oprah, and more. See the week&#039;s best pics!
+                    </p>
+                </div>
+                </li>
+               	 
+                <li>
+                <div class="text home-text news-border">
+                
+                
+                
+                
+                    
+              
+                     
+                  
+                   
+              
+              
+                 
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox5','http://www.billboard.com/#/http://www.billboard.com/news/hurricane-sandy-20-musician-twitter-reactions-1007994222.story');" href ="http://www.billboard.com/news/hurricane-sandy-20-musician-twitter-reactions-1007994222.story">
+                    
+                
+              
+                  <h3>Hurricane Sandy: 20 Musician Tweets</h3></a>
+                    <p>
+                      Katy Perry, Lady Gaga, Justin Bieber, Nicki Minaj and many other stars took to Twitter to share their reactions to the super storm.
+                    </p>
+                </div>
+                </li>
+               	 
+                <li>
+                <div class="text home-text news-border">
+                
+                
+                
+                
+                    
+              
+                     
+                  
+                   
+              
+              
+                 
+                       <a class = "no-ajax" onclick="googleA.trackEvent(6,'Flashbox6','http://www.billboard.com/#/http://www.billboard.com/features/nba-players-favorite-music-los-angeles-lakers-1007993532.story');" href ="http://www.billboard.com/features/nba-players-favorite-music-los-angeles-lakers-1007993532.story">
+                    
+                
+              
+                  <h3>Lakers Stars Share Their Personal Playlists</h3></a>
+                    <p>
+                      With the NBA season set to tip off, some of the Los Angeles Lakers have shared their favorite music cuts with Billboard. What is Dwight Howard blasting on his way to the gym? And which British singer-songwriter is Metta World Peace addicted to? Check out these exclusive Q&amp;As.
                     </p>
                 </div>
                 </li>
@@ -1074,7 +1166,7 @@ try{
               
               
                  
-                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/new-releases/sex-pistols-never-mind-the-bollocks-at-35-1007992482.story');" href ="http://www.billboard.com/new-releases/sex-pistols-never-mind-the-bollocks-at-35-1007992482.story"><img src="photos/stylus/2616529-sexpistols-bollocks-promo.jpg" />
+                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/column/chartbeat/50-years-of-monster-mash-the-story-behind-1007994552.story');" href ="http://www.billboard.com/column/chartbeat/50-years-of-monster-mash-the-story-behind-1007994552.story"><img src="photos/promo/promoImage1025.jpg" />
                     
                 
                                 
@@ -1121,7 +1213,7 @@ try{
               
               
                  
-                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/features/true-blood-s-janina-gavankar-exclusive-video-1007991422.story');" href ="http://www.billboard.com/features/true-blood-s-janina-gavankar-exclusive-video-1007991422.story"><img src="photos/stylus/2615129-TrueBlood-JaninaGavankar-Promo.jpg" />
+                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/photogalleries/pop-zombies-photos-of-musicians-as-the-walking-1007992422.story');" href ="http://www.billboard.com/photogalleries/pop-zombies-photos-of-musicians-as-the-walking-1007992422.story"><img src="photos/promo/promoImage1012.jpg" />
                     
                 
                                 
@@ -1168,7 +1260,7 @@ try{
               
               
                  
-                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/features/abigail-washburn-nature-conservancy-video-1007990522.story');" href ="http://www.billboard.com/features/abigail-washburn-nature-conservancy-video-1007990522.story"><img src="photos/promo/promoImage1012.jpg" />
+                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/features/never-shout-never-all-mine-exclusive-song-1007993962.story');" href ="http://www.billboard.com/features/never-shout-never-all-mine-exclusive-song-1007993962.story"><img src="photos/stylus/2618279-never-shout-never-302-200.jpg" />
                     
                 
                                 
@@ -1215,7 +1307,7 @@ try{
               
               
                  
-                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/features/win-grace-potter-s-guitar-1007988722.story');" href ="http://www.billboard.com/features/win-grace-potter-s-guitar-1007988722.story"><img src="photos/promo/promoImage1025.jpg" />
+                     <a class = "no-ajax" onclick="googleA.trackEvent(6,'HomePagePromo','http://www.billboard.com/#/http://www.billboard.com/new-releases/calvin-harris-18-months-track-by-track-review-1007993042.story');" href ="http://www.billboard.com/new-releases/calvin-harris-18-months-track-by-track-review-1007993042.story"><img src="photos/stylus/2617669-calvin-harris-18-months-302.jpg" />
                     
                 
                                 
@@ -1265,44 +1357,47 @@ try{
                     <div class="feature homepage-video-block">
                         
                                 <div id="main-video-block-0" class="main-video" >
-                                        <object id="myExperience1925319112001" class="BrightcoveExperience">
+                                        <object id="myExperience1935126615001" class="BrightcoveExperience">
   <param name="bgcolor" value="#FFFFFF" />
   <param name="width" value="466" />
   <param name="height" value="265" />
-  <param name="playerID" value="1864418612001" />
-  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zvmVEfcQxfTr7DFcClcCsF" />
+  <param name="playerID" value="1872634597001" />
+  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zDg44BsmQMSy0GnV8jALpx" />
   <param name="isVid" value="true" />
   <param name="isUI" value="true" />
   <param name="dynamicStreaming" value="true" />
-  <param name="@videoPlayer" value="1925319112001" />
+  
+  <param name="@videoPlayer" value="1935126615001" />
 </object>
                                 </div>
                         
                                 <div id="main-video-block-1" class="main-video" style="display:none">
-                                        <object id="myExperience1920500078001" class="BrightcoveExperience">
+                                        <object id="myExperience1932876116001" class="BrightcoveExperience">
   <param name="bgcolor" value="#FFFFFF" />
   <param name="width" value="466" />
   <param name="height" value="265" />
-  <param name="playerID" value="1864418612001" />
-  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zvmVEfcQxfTr7DFcClcCsF" />
+  <param name="playerID" value="1872634597001" />
+  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zDg44BsmQMSy0GnV8jALpx" />
   <param name="isVid" value="true" />
   <param name="isUI" value="true" />
   <param name="dynamicStreaming" value="true" />
-  <param name="@videoPlayer" value="1920500078001" />
+  
+  <param name="@videoPlayer" value="1932876116001" />
 </object>
                                 </div>
                         
                                 <div id="main-video-block-2" class="main-video" style="display:none">
-                                        <object id="myExperience1922978924001" class="BrightcoveExperience">
+                                        <object id="myExperience1924934135001" class="BrightcoveExperience">
   <param name="bgcolor" value="#FFFFFF" />
   <param name="width" value="466" />
   <param name="height" value="265" />
-  <param name="playerID" value="1864418612001" />
-  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zvmVEfcQxfTr7DFcClcCsF" />
+  <param name="playerID" value="1872634597001" />
+  <param name="playerKey" value="AQ~~,AAAAAEMcC3Y~,NII8yi9nN4zDg44BsmQMSy0GnV8jALpx" />
   <param name="isVid" value="true" />
   <param name="isUI" value="true" />
   <param name="dynamicStreaming" value="true" />
-  <param name="@videoPlayer" value="1922978924001" />
+  
+  <param name="@videoPlayer" value="1924934135001" />
 </object>
                                 </div>
                         

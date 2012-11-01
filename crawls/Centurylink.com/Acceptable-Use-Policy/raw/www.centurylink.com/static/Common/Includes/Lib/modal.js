@@ -26,8 +26,8 @@
 					//console.log("successful");
 					setModalOmnitureVars("ctl|corp|zam","corp","unknown","zam_modal","event46","locator|zam","corp_"+linkType+"_zam:"+profile_zipCode,"");
 					//console.log("getUrl.url: " + getUrl.url );
-					if (linkType=="Click2Chat") {
-						window.open(getUrl.url,'Click_2_Chat','height=450,width=400,resizable=no,scrollbars=no,toolbar=no,location=no');
+					if (linkType=="Click2Chat" || linkType=="clickToCall" ) {
+						window.open(getUrl.url,'CenturyLinkPopWin','height=450,width=400,resizable=no,scrollbars=no,toolbar=no,location=no');
 					} else {
 						window.location = getUrl.url;
 					}
@@ -180,6 +180,7 @@
 					return false;
 				}
 			});
+			$("#siteSearch > input[type='image']").addClass("loadZAMmodal search");
 			
 			//add click events for ZAM
 			$.each($(".loadZAMmodal"), function(i,thisElem) {
@@ -200,7 +201,7 @@
 					if( strHTML == "Contact Customer Service" ) modalType = "support";
 					if( strHTML == "Move My Services" ) modalType = "moveMyServices";
 					if( strHTML == "Get help with moving" ) modalType = "moveMyServices";
-					if( strHTML == "Click Here for Live Help" ) modalType = "moveMyServices";
+					if( strHTML == "Click Here for Live Help" ) modalType = "clickToCall";
 					if( strHTML == "My Account FAQs" ) modalType = "myAccountFAQs";
 					if( strHTML == "Click2Chat" ) modalType = "Click2Chat";
 					if( strHTML == "Find a Store" ) { window.location = "http://storelocator.centurylinkapps.com/"; }
@@ -257,6 +258,16 @@
 					return false;
 				});
 			});
+			
+			//add click events for Notify Me Prism
+			$.each($(".loadNotifyMePrismModal"), function(i,thisElem) {
+				$(thisElem).attr("href","#");
+				$(thisElem).click(function() {
+					loadModal('/static/Pages/Modals/NotifyMePrismModal.txt','NotifyMe');
+					return false;
+				});
+			});
+			
 			
 			//add click events for Monthly Charges
 			$("#loadMonthlyChargesModal").click(function() {

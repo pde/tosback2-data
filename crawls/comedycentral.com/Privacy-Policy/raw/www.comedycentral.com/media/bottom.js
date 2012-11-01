@@ -6312,214 +6312,176 @@ $(function () {
 $(function () {
 	$CC('.follow .tweetriver').tweetriver({feedUrl: $CC('.follow .tweetriver').data('feed')});
 });/* hpcarousel.js */
-$(function() {		
-	var player_ready = false;
-	function init()
-	{
-		$carousel = $('#carousel');		
-		if ($('#video_player_box').length) {		
+$(function() {
+	var player_ready = false,
+		playerTimer;
+	function init() {
+		$carousel = $('#carousel');
+		if ($('#video_player_box').length) {
 			$video_player = $Crabapple.playerA.player.video_player_box;
-			
-			/*
-			$video_player.events.onReady = function() {
-				player_ready = true;							
-			}	
-			$video_player.events.onMetadata = function() {					
-				if ($.cookie('playerSound') != 'true') {			
-					$('#carouser_wrapper a.mute').removeClass('on');
-					$video_player.mute();
-					$.cookie('playerSound','false');
-				} else {
-					$('#carouser_wrapper a.mute').addClass('on');
-					$video_player.unmute();
-					$.cookie('playerSound','true');			
-				}	
-				$video_player.events.onMetadata = function() {};
-			}
-			$video_player.events.onPlaylistComplete	= function() {
-				if (player_ready == true) { 
-					hidePlayer();
-				}
-				goNext();				
-				if ($autoplay_time == "0")
-				{
-					$carousel.attr('data-autoplay',5000);
-				}
-			}
-			*/
-			
+
 			//Player API updated.  New Way to bind Events.  See http://mtvn-player.github.com/embed-api/docs/#!/api/MTVNPlayer.Events
 			$video_player.bind("onReady",function(event) {
 				player_ready = true;
-			 });
-			
+			});
+
 			$video_player.bind("onMetadata",function(event) {
-				if ($.cookie('playerSound') != 'true') {			
+				if ($.cookie('playerSound') != 'true') {
 					$('#carouser_wrapper a.mute').removeClass('on');
 					$video_player.mute();
 					$.cookie('playerSound','false');
 				} else {
 					$('#carouser_wrapper a.mute').addClass('on');
 					$video_player.unmute();
-					$.cookie('playerSound','true');			
+					$.cookie('playerSound','true');
 				}
 				$video_player.bind("onReady",function(event){});
-			 });
-			
+			});
+
 			$video_player.bind("onPlaylistComplete",function(event) {
-				if (player_ready == true) { 
+				if (player_ready == true) {
 					hidePlayer();
 				}
-				goNext();				
+				goNext();
 				if ($autoplay_time == "0")
 				{
 					$carousel.attr('data-autoplay',5000);
 				}
-			 });
-			
+			});
+
 		} else {
 			player_ready = false;
-		}	
+		}
 		//autoplay detect
 		if (!$('#adExpand').length)
-		{		
+		{
 			autoplay($carousel);
 			$autoplay_time = $carousel.attr('data-autoplay');
-		}				
+		}
 		$carousel.find('li a').click(function() {
-		
-			if (player_ready == true) { 
-				$video_player.pause();				
-			}			
-		
+
+			if (player_ready == true) {
+				$video_player.pause();
+			}
+
         	if ($(this).parent().hasClass('active')) {
         		return;
             } else {
 				// stop rotation
-				$carousel.attr('data-autoplay',0);			
+				$carousel.attr('data-autoplay',0);
 				//hide the player
-				if (player_ready == true) { 
-					hidePlayer();				
-				}			
+				if (player_ready == true) {
+					hidePlayer();
+				}
 				// make current li active
-				$active = $(this).parent();		
-				animate($active);		
-				return false;        			
-            }						
-		});			
+				$active = $(this).parent();
+				animate($active);
+				return false;
+            }
+		});
 		$('#carouser_wrapper a.mute').click(function() {
-			if ($.cookie('playerSound') == 'true') {			
+			if ($.cookie('playerSound') == 'true') {
 				$(this).removeClass('on');
 				$video_player.mute();
 				$.cookie('playerSound','false');
 			} else {
 				$(this).addClass('on');
 				$video_player.unmute();
-				$.cookie('playerSound','true');			
+				$.cookie('playerSound','true');
 			}
 			return false;
-		})
-		$('.hpcarousel .video_wrapper .link_overlay_disabled, .hpcarousel ul li:last .full_info, .hpcarousel .video_wrapper #video_player_box').live({mouseenter:
-			function() {
-				$carousel.find('li:last').addClass('hovered');},
-			mouseleave: function() {
-				$carousel.find('li:last').removeClass('hovered');}	
 		});
-	}	
-	function autoplay($carousel) {			
-		//console.log("autoplay");		
-		$autoplay_seconds = $carousel.attr('data-autoplay');		
+		$('.hpcarousel .video_wrapper .link_overlay_disabled, .hpcarousel ul li:last .full_info, .hpcarousel .video_wrapper #video_player_box').live({
+			mouseenter: function() {
+				$carousel.find('li:last').addClass('hovered');
+			},
+			mouseleave: function() {
+				$carousel.find('li:last').removeClass('hovered');
+			}
+		});
+	}
+
+	function autoplay($carousel) {
+		$autoplay_seconds = $carousel.attr('data-autoplay');
 		if ($autoplay_seconds != 0) {
 			setTimeout(function() {
-				if ($carousel.attr('data-autoplay') > 0) {					
+				if ($carousel.attr('data-autoplay') > 0) {
 					goNext();
 				}
 			}, 5000);
 		}
 	}
-	
+
 	function animate($active) {
-		//console.log("animate");
 		$active.animate({
 			width: 480
-		}, 150, function() {move($active)});								
+		}, 150, function() {move($active)});
 	}
-	
-	function move($active) {	
-		//console.log("move");
+
+	function move($active) {
 		//remove all active classes
-		$('li').removeClass('active');				
-		$active.addClass('active');				
+		$('li').removeClass('active');
+		$active.addClass('active');
 		$active.nextAll().css('width','34').prependTo('#carousel');
 		$active_link = $active.find('a').attr('href');
-		$('.link_overlay_disabled').attr('href',$active_link);		
-	        
+		$('.link_overlay_disabled').attr('href',$active_link);
+
 		// do we have a video?
 		mgid = $active.attr('data-mgid');
-		
-		if(typeof(mgid) != "undefined" && mgid !== null) {	
-	    	player_state = $video_player.state;	
-	    	//console.log(player_state);
+
+		if(typeof(mgid) != "undefined" && mgid !== null) {
+	    	player_state = $video_player.state;
 			if (player_ready == true) {
-			
+
 				id = mgid;
 				item_id = id.substr(33,37);
-				
+
 				id_2 = $video_player.currentMetadata.rss.guid;
-				item_id_2 = id_2.substr(33,37);				
-			
+				item_id_2 = id_2.substr(33,37);
+
 				$carousel.attr('data-autoplay', '0');
 				showPlayer();
-				
+
 				if (item_id == item_id_2) {
-					$video_player.play();					
-				} else {
-					$video_player.playURI(mgid);
-				}
-				
-				/*
-				if (player_state == "playing") {
-					alert("playing");
-					$video_player.playURI(mgid);
-				} else if (player_state == "paused") {
-					alert("paused");
-					$video_player.playURI(mgid);
-				} else {
-					alert("it is a mystery");
 					$video_player.play();
+				} else {
+					$video_player.playURI(mgid);
 				}
-				*/		
-			} 
-		} else {	
+			}
+		} else {
 			$autoplay_time = $carousel.attr('data-autoplay');
 			autoplay($carousel);
 			if ($autoplay_time == "0")
 			{
 				$carousel.attr('data-autoplay',5000);
-			}		
-		}	
+			}
+		}
 	}
+
 	function goNext() {
-		//console.log("goNext");
-		$carousel.attr('data-autoplay',5000);		
+		$carousel.attr('data-autoplay',5000);
 		animate($carousel.find('li:eq(4)'));
 	}
+
 	function hidePlayer() {
-		//console.log("hidePlayer");
-		if (player_ready == true) { 
-			$video_player.pause();					
+		if (player_ready == true) {
+			$video_player.pause();
 		}
-		$('#carouser_wrapper').css('opacity','0.01');
+		clearTimeout(playerTimer);
+		$('.hpcarousel .video_wrapper').css('opacity','0.01')
+			.find('embed,object').hide();
 	}
+
 	function showPlayer() {
-		//console.log("showPlayer");
-		setTimeout(function(){
-		    $('#carouser_wrapper').css('opacity','1');
+		playerTimer = setTimeout(function(){
+		    $('.hpcarousel .video_wrapper').css('opacity','1')
+			.find('embed,object').show();
 		},650);
 	}
-	if 	($('.hpcarousel').length) {
+
+	if ($('.hpcarousel').length > 0) {
 		init();
-	}	
+	}
 });/* jquery.tinyscrollbar.min.js */
 (function(a){a.tiny=a.tiny||{};a.tiny.scrollbar={options:{axis:"y",wheel:40,scroll:true,lockscroll:true,size:"auto",sizethumb:"auto",invertscroll:false}};a.fn.tinyscrollbar=function(d){var c=a.extend({},a.tiny.scrollbar.options,d);this.each(function(){a(this).data("tsb",new b(a(this),c))});return this};a.fn.tinyscrollbar_update=function(c){return a(this).data("tsb").update(c)};function b(q,g){var k=this,t=q,j={obj:a(".viewport",q)},h={obj:a(".overview",q)},d={obj:a(".scrollbar",q)},m={obj:a(".track",d.obj)},p={obj:a(".thumb",d.obj)},l=g.axis==="x",n=l?"left":"top",v=l?"Width":"Height",r=0,y={start:0,now:0},o={},e=("ontouchstart" in document.documentElement)?true:false;function c(){k.update();s();return k}this.update=function(z){j[g.axis]=j.obj[0]["offset"+v];h[g.axis]=h.obj[0]["scroll"+v];h.ratio=j[g.axis]/h[g.axis];d.obj.toggleClass("disable",h.ratio>=1);m[g.axis]=g.size==="auto"?j[g.axis]:g.size;p[g.axis]=Math.min(m[g.axis],Math.max(0,(g.sizethumb==="auto"?(m[g.axis]*h.ratio):g.sizethumb)));d.ratio=g.sizethumb==="auto"?(h[g.axis]/m[g.axis]):(h[g.axis]-j[g.axis])/(m[g.axis]-p[g.axis]);r=(z==="relative"&&h.ratio<=1)?Math.min((h[g.axis]-j[g.axis]),Math.max(0,r)):0;r=(z==="bottom"&&h.ratio<=1)?(h[g.axis]-j[g.axis]):isNaN(parseInt(z,10))?r:parseInt(z,10);w()};function w(){var z=v.toLowerCase();p.obj.css(n,r/d.ratio);h.obj.css(n,-r);o.start=p.obj.offset()[n];d.obj.css(z,m[g.axis]);m.obj.css(z,m[g.axis]);p.obj.css(z,p[g.axis])}function s(){if(!e){p.obj.bind("mousedown",i);m.obj.bind("mouseup",u)}else{j.obj[0].ontouchstart=function(z){if(1===z.touches.length){i(z.touches[0]);z.stopPropagation()}}}if(g.scroll&&window.addEventListener){t[0].addEventListener("DOMMouseScroll",x,false);t[0].addEventListener("mousewheel",x,false)}else{if(g.scroll){t[0].onmousewheel=x}}}function i(A){a("body").addClass("noSelect");var z=parseInt(p.obj.css(n),10);o.start=l?A.pageX:A.pageY;y.start=z=="auto"?0:z;if(!e){a(document).bind("mousemove",u);a(document).bind("mouseup",f);p.obj.bind("mouseup",f)}else{document.ontouchmove=function(B){B.preventDefault();u(B.touches[0])};document.ontouchend=f}}function x(B){if(h.ratio<1){var A=B||window.event,z=A.wheelDelta?A.wheelDelta/120:-A.detail/3;r-=z*g.wheel;r=Math.min((h[g.axis]-j[g.axis]),Math.max(0,r));p.obj.css(n,r/d.ratio);h.obj.css(n,-r);if(g.lockscroll||(r!==(h[g.axis]-j[g.axis])&&r!==0)){A=a.event.fix(A);A.preventDefault()}}}function u(z){if(h.ratio<1){if(g.invertscroll&&e){y.now=Math.min((m[g.axis]-p[g.axis]),Math.max(0,(y.start+(o.start-(l?z.pageX:z.pageY)))))}else{y.now=Math.min((m[g.axis]-p[g.axis]),Math.max(0,(y.start+((l?z.pageX:z.pageY)-o.start))))}r=y.now*d.ratio;h.obj.css(n,-r);p.obj.css(n,y.now)}}function f(){a("body").removeClass("noSelect");a(document).unbind("mousemove",u);a(document).unbind("mouseup",f);p.obj.unbind("mouseup",f);document.ontouchmove=document.ontouchend=null}return c()}}(jQuery));/* latest_photo.js */
 $(function() {
@@ -7359,11 +7321,11 @@ $(document).ready(function(){
 					$(this).addClass('number' + iteration);
 					$(this).find(title).each(function() {
 						if ($(this).height() > currentTallest) {
-						 currentTallest = $(this).height(); 
+							currentTallest = $(this).height();
 						}
-					})
+					});
 					$(this).find(title).css({'height': currentTallest});
-				})
+				});
 			}
 		};
 		$CCSU.Archive.init();

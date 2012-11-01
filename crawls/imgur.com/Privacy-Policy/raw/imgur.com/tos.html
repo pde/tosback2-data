@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>	Terms of Service - Imgur</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -8,7 +8,7 @@
 	<meta name="description" content="Imgur is used to share photos with social networks and online communities, and has the funniest pictures from all over the Internet." />
 	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;" />
 	<link rel="alternate" type="application/rss+xml" title="Imgur Gallery" href="http://feeds.feedburner.com/ImgurGallery?format=xml" />
-	<link rel="stylesheet" type="text/css" href="../s.imgur.com/min/global_css%3F1350455375.css" />
+	<link rel="stylesheet" type="text/css" href="../s.imgur.com/min/global_css%3F1351371045.css" />
 	
 			<!--[if IE 9]><link rel="stylesheet" href="http://s.imgur.com/include/css/ie-sucks.css?0" type="text/css" /><![endif]-->
 	
@@ -40,8 +40,9 @@
 
             <div id="main-nav">
                 <ul>
-                    <li><a  href="http://imgur.com/gallery">gallery</a></li>
-					<li class="random-button " title="random mode"><span class="button-outline"><a href="http://imgur.com/gallery/random"><span class="random-icon"></span></a></span></li>
+                    
+		    <li class="random-button title-n " title="random mode"><span class="button-outline"><a href="http://imgur.com/random"><span class="random-icon"></span></a></span></li>
+                    <li class="upload-button disabled title-n" title="upload images"><div id="upload-global-top-bar-mini-progress"></div><span class="button-outline"><a href="javascript:void(0);"><span class="upload-icon"></span><span class="upload-queue-length">23</span></a></span></li>
                 </ul>
             </div>
 
@@ -119,24 +120,209 @@
 
 			
 
-                    <div id="global-message" class="relative">
-                <a href="javascript:;" onclick="Imgur.StaticUtilities.getInstance().closeMessage($(this))" class="close-message title" title="close this message">&times;</a>
-
-                Brace yourself, a new Imgur is coming that lets you upload
-                directly into our gallery! <a href="http://imgur.com/beta/enable">Click here to try it out</a>, and, for
-                more information, check out our <a href="http://imgur.com/blog/2012/10/22/tutorial-the-new-gallery/">blog</a>.
-            </div>
-        
-
 		
 	
 
-	
+            <a href="javascript:;" id="upload-global-album-tipsy" class="title-nw nodisplay" title="You can't create an album with just one image"></a>
 
-	<div class="nodisplay">
-		Imgur is used to share photos with social networks and online
-		communities, and has the funniest pictures from all over the Internet.
-	</div>
+<div id="upload-global" class="popup">
+    <form method="post" id="upload-global-form" enctype="multipart/form-data" action="http://imgur.com/upload">
+        <h1>
+            <span id="upload-global-title">Upload images</span>
+            
+        </h1>
+
+        <div id="upload-global-buttons">
+            <div id="upload-global-upload-loader" class="textbox">
+                Loading...
+            </div>
+
+            <div id="upload-global-file-wrapper">
+                <span class="computerIcon"></span>
+                <span class="green">browse</span> your computer
+
+                <input type="file" name="Filedata" multiple="multiple" id="upload-global-file">
+            </div>
+
+            <div class="left">
+                <div id="upload-global-url">
+                    <span class="webIcon"></span>
+                    <input type="text" id="upload-global-link-input" class="placeholder-onkeydown" title="enter URLs to upload from web" />
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+            <div id="upload-global-dragdrop">
+                <span class="dragdropIcon"></span>
+                <span class="green">drag and drop</span> here
+            </div>
+
+            <div class="left">
+                <div id="upload-global-clipboard">
+                    <div style="text-align: center"><span class="clipboardIcons">Ctrl + V</span></div>
+                    <span class="green">paste</span> from your clipboard
+                </div>
+            </div>
+
+            <div class="clear"></div>
+
+        </div>
+
+        <div class="textbox center" id="upload-global-instructions"></div>
+
+        <!-- gallery submit vars -->
+        <input type="hidden" name="current_upload" value="0"/>
+        <input type="hidden" name="total_uploads" value="0"/>
+        <input type="hidden" name="terms" value="0"/>
+
+        <div id="upload-global-errors" class="textbox error" style="display: none;"></div>
+
+        <div id="upload-global-queue-description" class="textbox nodisplay"></div>
+
+        <div id="upload-global-start-upload">
+            <div class="panel">
+                <div>
+
+                    <table id="upload-global-actions">
+                        <tbody>
+                            <tr>
+
+                                <td width="50.1%">
+
+                                    <div id="upload-global-album-checkbox-div">
+                                        <input type="hidden" name="gallery_submit" value="0"/>
+
+                                        <button id="upload-global-gallery-checkbox" type="button">
+                                            <span class="gallery-icon"></span>add to gallery
+                                        </button>
+
+                                        <div id="upload-global-gallery-checkbox-overlay"></div>
+
+                                        <input type="hidden" name="create_album" value="0"/>
+
+                                        <button id="upload-global-album-checkbox" type="button">
+                                            <span class="createAlbum-icon"></span>create album
+                                        </button>
+
+                                    </div>
+
+                                </td>
+                                <td width="49.9%">
+                                    <button type="button" id="upload-global-start-button" class="button-big green" type="submit">
+                                        <span class="start-btn-icon"></span>
+                                        Start Upload
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div id="upload-global-album-options">
+                    
+
+
+
+
+
+
+
+
+
+<table id="upload-global-album-layout">
+	<tr>
+        <td id="upload-global-album-td">
+            <input name="album_title" type="text" title="Optional Album Title" class="placeholder-onkeydown" id="upload-global-album-title" maxlength="55" />
+        </td>
+
+		<td class="center title" title="<table><tr><td style='vertical-align: middle'>&lt;img src=&#039;http://s.imgur.com/images/album-layout-blog.png&#039; style=&#039;padding-right: 2px;&#039;/&gt;</td><td>&lt;h1&gt;Blog Layout&lt;/h1&gt;Shows all the images on one page in a blog post style layout. Best for albums with a small to medium amount of images.</td></tr></table>">
+            <input id="blog" type="radio" name="layout" value="b" checked="checked"/>
+            <label for="blog">Blog</label>
+		</td>
+
+		<td class="center title" title="<table><tr><td style='vertical-align: middle'>&lt;img src=&#039;http://s.imgur.com/images/album-layout-vertical.png&#039;  style=&#039;padding-right: 6px;&#039;/&gt;</td><td>&lt;h1&gt;Vertical Layout&lt;/h1&gt;Shows one image at a time in a traditional style, with thumbnails to the right. Good for almost any album.</td></tr></table>">
+			<input id="vertical" type="radio" name="layout" value="v"/>
+			<label for="vertical">Vertical</label>
+		</td>
+
+		<td class="center title" title="<table><tr><td style='vertical-align: middle'>&lt;img src=&#039;http://s.imgur.com/images/album-layout-horizontal.png&#039;  style=&#039;padding-right: 6px;&#039;/&gt;</td><td>&lt;h1&gt;Horizontal Layout&lt;/h1&gt;Shows one image at a time in a traditional style, with thumbnails on top. Best for albums that have high resolution photos.</td></tr></table>">
+			<input id="horizontal" type="radio" name="layout" value="h"/>
+			<label for="horizontal">Horizontal</label>
+		</td>
+
+		<td class="center title" title="<table><tr><td style='vertical-align: middle'>&lt;img src=&#039;http://s.imgur.com/images/album-layout-grid.png&#039;  style=&#039;padding-right: 6px;&#039;/&gt;</td><td>&lt;h1&gt;Grid Layout&lt;/h1&gt;Shows all the images on one page as thumbnails that expand when clicked on. Best for albums with lots of images.</td></tr></table>">
+			<input id="grid" type="radio" name="layout" value="g"/>
+			<label for="grid">Grid</label>
+		</td>
+
+        <td width="15"></td>
+	</tr>
+</table>
+
+                </div>
+                <div id="upload-global-image-options">
+                    <table id="upload-global-submission-title">
+                        <tr>
+                            <td>
+                                <input name="gallery_title" type="text" class="placeholder-onkeydown" title="Gallery submission title (required)" id="upload-global-gallery-submission-title" maxlength="55" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="textbox list">
+                    <table id="upload-global-file-list-header">
+                        <tr class="top-tr">
+                            <td width="40"></td>
+                            <td><h2>Images <span class="upload-queue-length">(0)</span></h2></td>
+                            <td width="45" class="edit-td"><h2>Edit</h2></td>
+                        </tr>
+                    </table>
+
+                    <table id="upload-global-file-list">
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="upload-global-progress-wrapper">
+            <div id="upload-global-progressbar">
+                <div class="progressBarBG">
+                    <div class="progressBar"></div>
+                </div>
+            </div>
+            <div id="upload-global-upload-queue"></div>
+        </div>
+    </form>
+</div>
+
+<div id="upload-global-FF-paste-box" contenteditable="true"></div>
+
+<div id="hiddenDropZone" class="nodisplay"></div>
+
+<div class="nodisplay">
+    <div id="upload-global-image-formats">
+         That file type is not supported!
+
+        <div class="textbox supported-formats">
+            Supported formats: JPEG, GIF, PNG, APNG, TIFF, BMP, PDF, XCF
+        </div>
+    </div>
+</div>
+
+<div id="upload-global-flash-container" title="upload images from your computer">
+    <div id="upload-global-flash-browse"></div>
+</div>
+
+    
+
+            <div class="nodisplay">
+            Imgur is used to share photos with social networks and online
+            communities, and has the funniest pictures from all over the Internet.
+        </div>
+    
 
 		<div id="clickable-logo">
 		<a href="http://imgur.com/"><img src="../s.imgur.com/images/imgur.gif" /></a>
@@ -332,12 +518,11 @@
 <div id="footer-links">
 	
 	<a href="http://imgur.com/blog/" class="title" title="the simple imgur blog">blog</a>
+    <a href="http://imgur.com/help" class="title" title="answers to your questions">help</a>
 	<a href="http://imgur.com/stats" class="title" title="view site statistics">site stats</a>
 	<a href="http://imgur.com/apps" class="title" title="uploading apps">apps</a>
 	<a href="http://imgur.userecho.com/" class="title" title="have something to say?">feedback</a>
-	<a href="http://imgur.com/faq" class="title" title="have a question?">faq</a>
 	<a href="http://imgur.com/removalrequest" class="title" title="submit an image removal request">request deletion</a>
-	<a href="http://imgur.com/contact" class="title" title="contact imgur">contact</a>
 	<a href="tos.html" class="title" title="terms of service">terms</a>
 			<a href="http://imgur.com/register/upgrade" class="title" title="imgur pro">go pro</a>
 	
@@ -353,10 +538,12 @@
 
 	
 
-			<script type="text/javascript" src="../s.imgur.com/min/global_js%3F1350455375"></script>
+			<script type="text/javascript" src="../s.imgur.com/min/global_js%3F1351719135"></script>
 		<script type="text/javascript">
 			var imgur = Imgur.getInstance();
 			imgur.init({
+				
+				isDev  : 0,
 				host   : 'imgur.com',
 				cdnUrl : 'http://i.imgur.com',
 				signed : false

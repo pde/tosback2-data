@@ -122,7 +122,7 @@ return ajax.apply(this, arguments);
 /*
 * Autocomplete - jQuery plugin 1.0.2
 *
-* Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, Jörn Zaefferer
+* Copyright (c) 2007 Dylan Verheul, Dan G. Switzer, Anjesh Tuladhar, JÃ¶rn Zaefferer
 *
 * Dual licensed under the MIT and GPL licenses:
 * http://www.opensource.org/licenses/mit-license.php
@@ -970,7 +970,7 @@ if(typeof btg=="undefined")var btg = {};
 btg.config={
 version:'3.3.80.149',
 defferedAdLoading: false,
-enablePOE: true,
+enablePOE: false,
 Omniture:{
 enabled: true,
 account: (typeof com_mtvi_mtv2flag!="undefined"&&com_mtvi_mtv2flag==true?'viamtv,viamtv2onmtv':'viamtv'),
@@ -4080,6 +4080,10 @@ else if (typeof($j(".flux4Widget").flux4) == "function") $j(".flux4Widget").flux
 
 });
 
+}
+
+MTV.load6x6POE = function() {
+$j.getScript(mtvn.btg.Controller.getAdUrl({size: "6x6" , contentType:"adj"}));
 }
 function postedDateTime(postedDateTime) {
 var utc = new Date(postedDateTime);

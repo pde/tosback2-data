@@ -310,10 +310,17 @@ if (navigator.userAgent.match(/(iPhone);.*CPU.*OS 6_\d/i))
 	//alert("NOT iOS6 : " + navigator.userAgent )
 }
 
-
-if (navigator.userAgent.match(/Android/i)){
-	isAndroid = true;
+if (navigator.userAgent.match(/Android/i)){		
+	var strAndroid  = navigator.userAgent.indexOf("Android ");
+	var aVersion = navigator.userAgent.substr(strAndroid+8,1);		
+	aVersion > 3 ? (did="2", isMobile = true) : isAndroid = true;	
+	var androidTab = navigator.userAgent.match(/Tablet/i) ? (isAndroid = true, did="2"): false;		
 }
+if (navigator.userAgent.match(/Silk/i)){
+	did = "2";
+	isMobile = true;	
+}
+
 //for testing mobile on Chrome
 //did = "2";
 //isMobile = true;

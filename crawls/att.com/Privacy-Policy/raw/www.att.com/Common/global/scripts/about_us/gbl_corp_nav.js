@@ -723,7 +723,7 @@ function bn_enterprise_solutions_nav() {
 				 + '<li><a href="' + site + '/gen/press-room?pid=9659" title="IP VPN">IP VPN</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=2941" title="Enterprise Security">Enterprise Security</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=9389" title="BusinessDirect">BusinessDirect</a></li>'
-				 + '<li><a href="' + site + '/gen/press-room?pid=19852" title="Business Continuity Study">Business Continuity Study</a></li>'
+				 + '<li><a href="' + site + '/gen/press-room?pid=22863" title="Business Continuity Study">Business Continuity Study</a></li>'
 				 + '<li><a href="' + site + '/gen/press-room?pid=20106" title="Cloud News">Cloud News</a></li>'
 				
 				 + '</ul>'

@@ -1,1 +1,1 @@
-document.write("472,856 Likes");
+document.write("475,070 Likes");

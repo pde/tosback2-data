@@ -1353,7 +1353,13 @@ function adjustCheckoutUI(callingMethod)
           var cardBrandValue = document.PaymentMethodForm.cardBrand.value;
 
 		if( (document.forms[formName].cardBrand.selectedIndex == 0) && (registerType != 'G'  &&  profilesListTotal >0 )){
-		 document.PaymentMethodForm.cardBrand.value=document.getElementById('selectedCardBrand').value;
+			/*#21996 - 7.5 MAML-In dropdown for Payment Type, the text "Select Payment Type", should default but it instead blank fixed here*/
+			if(document.getElementById('selectedCardBrand').value == ""){
+				document.PaymentMethodForm.cardBrand.value="-1";
+			}else{
+				document.PaymentMethodForm.cardBrand.value=document.getElementById('selectedCardBrand').value;
+			}
+		
 		 document.PaymentMethodForm.cardHolderName.value=document.getElementById('selectedCardHoldername').value;
 		 document.PaymentMethodForm.cardNumberDisplayValue.value=document.getElementById('selectedCardNumberDisplayValue').value;
 		 document.PaymentMethodForm.cardNumberOriginalDisplayValue.value=document.getElementById('selectedCardNumberOriginalDisplayValue').value;

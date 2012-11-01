@@ -20,16 +20,17 @@ var cm_TrackImpressions = "";
 
 function cmStripIllegals(s){
 	if (typeof(s)=="undefined" || !s){return null;}
+	s = s.replace('\xAE', '').replace('\xA9', '').replace('\xF4', ''); //use hexadecimal index for special characters.
 	var amparray = s.split(/&[^;]*;/);
-    	s = amparray.join("");    
+    	s = amparray.join("");  
  	var retStr="";
-	var bad="\t\r\n\"'$&*^,%™©®";
+	var bad="\t\r\n\"'$&*^,%";
     	for (var i=0;i<s.length;i++){
        	   var c=s.charAt(i);
 	   if (bad.indexOf(c)<0)
 		retStr+=c;
     }
-    return retStr;    
+    return retStr;  
 }
 
 function cmCreateForeseeTag(respondentID, surveyName) {

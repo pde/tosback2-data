@@ -87,7 +87,7 @@ i4+="&pc="+zd_pbchan;
 else{
 i4+="&pc="+zflag_pbch;
 }
-zflag_pbch=0;
+zflag_pbch="0";
 }
 if(typeof zflag_pbr!='undefined'){
 i4+="&pr="+zflag_pbr;

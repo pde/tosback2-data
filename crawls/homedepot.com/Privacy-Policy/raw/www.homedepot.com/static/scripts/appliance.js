@@ -5,6 +5,7 @@ var partsServicesCheckResponseText = "";
 var numPolls = 0;
 var maxPolls = 5;
 var addressCounter = 0;
+
 ///////////////////////////////////////////////////////////
 // 
 ///////////////////////////////////////////////////////////
@@ -250,14 +251,13 @@ function RelatedServicesCallback(text) {
 
 ///////////////////////////////////////////////////////////
 function RelatedServicesCheck (form) {
- 
-	zipCode = document.getElementById('zipCode').value; 	
- 	modelNumber = document.getElementById('modelNumber').value;
- 	vendorNumber = document.getElementById('vendorNumber').value;
- 	classNumber = document.getElementById('classNumber').value;
- 	subClassNumber = document.getElementById('subClassNumber').value;
- 	storeId = document.getElementById('storeId').value;	
- 	productId = document.getElementById('productId').value;
+ var   zipCode = document.partsServicesForm.zipCode.value,
+       modelNumber = document.getElementById('modelNumber').value,
+       vendorNumber = document.getElementById('vendorNumber').value,
+       classNumber = document.getElementById('classNumber').value,
+       subClassNumber = document.getElementById('subClassNumber').value,
+       storeId = document.getElementById('storeId').value,
+       productId = document.getElementById('productId').value;
  
  if (zipCodeValidator(zipCode)) {   
     document.getElementById('psDisplayArea').innerHTML = '<img src=\"/static/images/pleasewait_3a.gif\" width=\"335\" height=\"65\" />';

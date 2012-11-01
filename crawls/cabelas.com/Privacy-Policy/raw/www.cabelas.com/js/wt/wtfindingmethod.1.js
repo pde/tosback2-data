@@ -10,7 +10,7 @@ function FindingMethod() {
 	/**
 	 * Method to initialize the object.
 	 */
-	var init = function() {
+	this.init = function() {
 		// Set the bind function based on the browser
 		this.bindFunc = ($.browser.msie?"click":"mousedown");
 		
@@ -147,24 +147,6 @@ function FindingMethod() {
 			}, this, fm));
 		});
 		
-		// MegaMenu tracking
-		$('.megaMenuList a, .otherWaysToShop a').each(function(index) {
-			// Try to first fetch from the webTrendsCategoryId hidden value
-			catId = $(this).parents(".js-navLink").children(".webTrendsCategoryId").val();
-			if (catId == undefined) {
-				caturl = fm.parseUrl($(this).parents(".js-navLink").children('a:first-child'));
-				if (caturl.params != null && caturl.params['categoryId'] != null) {
-					catId = "cat"+caturl.params['categoryId'];
-				}
-			}
-			if (catId == undefined || catId == null) catId = "";
-			url = fm.parseUrl($(this).attr('href'));
-			if (fm.isValidLink(url)) {
-				url.params['WTz_l'] = 'SBC;MM'+catId;
-				$(this).attr('href', $.url.build(url));
-			}
-		});
-
 		// Footer!
 		$('#siteFooter a').each(function(index) {
 			$(this).bind(fm.bindFunc, fm.bind(function() {
@@ -334,6 +316,28 @@ function FindingMethod() {
 				$(this).attr('href', $.url.build(url));
 			}
 		});
+		
+		//handle siteGlobalPromotion link
+		$('.siteGlobalPromotion a').each(function(index) {
+		       $(this).bind(fm.bindFunc, fm.bind(function() {
+			        url = fm.parseUrl($(this).attr('href'));
+			        if (fm.isValidLink(url)) {
+					url.params['WTz_l'] = "GlobalBanner";
+					$(this).attr('href', $.url.build(url));
+				}
+			}, this, fm));
+		});
+		
+		//handle RightRail 
+	        $('.RightRail a').each(function(index) {
+		        $(this).bind(fm.bindFunc, fm.bind(function() {
+				 url = fm.parseUrl($(this).attr('href'));
+		                if (fm.isValidLink(url)) {
+				        url.params['WTz_l'] = "RightRail";
+					$(this).attr('href', $.url.build(url));
+			         }
+		        }, this, fm));		       
+	         });
 		
 		// Inject an input param into the CQO search form
 		$('form[name="cqoItemSearchForm"]').append("<input type=\"hidden\" name=\"WTz_l\" id=\"cqoWTz_l\" value=\"CQO\" />");
@@ -513,11 +517,31 @@ function FindingMethod() {
 		return url;
 	}
 
+	// MegaMenu tracking
+	this.tagMegaMenu = function() {
+		$('.megaMenuList a, .otherWaysToShop a').each(function(index) {
+			// Try to first fetch from the webTrendsCategoryId hidden value
+			catId = $(this).parents(".js-navLink").children(".webTrendsCategoryId").val();
+			if (catId == undefined) {
+				caturl = fm.parseUrl($(this).parents(".js-navLink").children('a:first-child'));
+				if (caturl.params != null && caturl.params['categoryId'] != null) {
+					catId = "cat"+caturl.params['categoryId'];
+				}
+			}
+			if (catId == undefined || catId == null) catId = "";
+			url = fm.parseUrl($(this).attr('href'));
+			if (fm.isValidLink(url)) {
+				url.params['WTz_l'] = 'SBC;MM'+catId;
+				$(this).attr('href', $.url.build(url));
+			}
+		});
 
-	init();
+	}
+
 	return this;
 }
 
+fm=new FindingMethod();
 $(document).ready(function() {
-	fm=new FindingMethod();
+	fm.init();
 });

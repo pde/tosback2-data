@@ -1,0 +1,36 @@
+function getOmnitureCookie(c_name)
+{
+if (document.cookie.length>0)
+  {
+  var c_start=document.cookie.indexOf(c_name + "=");
+  var c_end;
+  if (c_start!=-1)
+    {
+    c_start=c_start + c_name.length+1;
+    c_end=document.cookie.indexOf(";",c_start);
+    if (c_end==-1) c_end=document.cookie.length;
+    var result = unescape(document.cookie.substring(c_start,c_end));
+    
+    //delete the hlo[events] cookie so metrics aren't skewed by page refreshes.
+    if(c_name == 'hlo[events]'){
+        setCookie('hlo[events]','','-1');
+    }
+    if (result){ 
+        result = ","+result;
+    }
+    return result;
+    }
+  }
+return " ";
+}
+
+
+function setCookie(c_name,value,expiredays)
+{
+var exdate=new Date();
+exdate.setDate(exdate.getDate()+expiredays);
+document.cookie=c_name+ "=" +escape(value)+
+((expiredays==null) ? "" : ";expires="+exdate.toGMTString())+
+";path=/;domain=.hautelook.com"; 
+}
+

@@ -94,7 +94,8 @@ function s_doPlugins(s)
                if (!ad
                 && divs[d].childNodes[c].nodeName === 'SCRIPT'
                 && divs[d].childNodes[c].src
-                && divs[d].childNodes[c].src.match(/https*:\/\/ad\.doubleclick\.net\/adj\/\w+/))
+                && divs[d].childNodes[c].src.match(/https*:\/\/ad\.doubleclick\.net\/adj\/\w+/)
+                && !divs[d].childNodes[c].tracked)
                {
                   size = divs[d].childNodes[c].src.match(/sz=[^\;]+/);
                   if (!size)
@@ -105,6 +106,7 @@ function s_doPlugins(s)
                   size = size[0].toLowerCase().replace(/sz=/, '');
                   pos = pos[0].replace(/pos=/, '');
                   ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
+                  divs[d].childNodes[c].tracked = true;
                }
                if (ad
                 && divs[d].childNodes[c].nodeName === 'A'
@@ -120,6 +122,16 @@ function s_doPlugins(s)
             if (ad)
                ads[ads.length] = ad;
          }
+      };
+
+      function findAdsBelow()
+      {
+         var h;
+
+         ads = [];
+         findAds(window);
+         h = location.href.replace(/https*:\/{2}/i, '').replace(/^www\./i, '').replace(/(#|\?).*$/, '').replace(/\/$/, '');
+         s.c_w('mi_adlst', ((ads.length) ? ([h, pl, ads.join(',')].join('|')) : ''));
       };
 
       if (s.prop3)
@@ -144,6 +156,14 @@ function s_doPlugins(s)
       if (pl !== 'P')
          findAds(window);
 
+      if (typeof mitagsent === 'undefined' || !mitagsent)
+      {
+         if (window.addEventListener)
+            window.addEventListener('load', findAdsBelow, false);
+         else if (window.attachEvent)
+            window.attachEvent('onload', findAdsBelow);
+      }
+
       iframes = document.getElementsByTagName('iframe');
       for (i = 0; i < iframes.length; i++)
          try
@@ -156,8 +176,6 @@ function s_doPlugins(s)
 
       return (ads.length) ? (pl + '|' + ads.join(',') + ',') : '';
    }();
-
-   s.eVar3 = s.prop38;
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

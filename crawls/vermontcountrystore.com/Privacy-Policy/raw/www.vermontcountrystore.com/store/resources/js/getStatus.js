@@ -35,14 +35,14 @@ function showStatus(profile, context){
         requestURL = profile.requestURL;
         var liveHelpURL = 'onclick="' + "window.open('https://service.liveperson.net/hc/88287119/?cmd=file&file=visitorWantsToChat&site=88287119&imageUrl=http://service.liveperson.net/hcp/Gallery/ChatButton-Gallery/English/General/1a&referrer=" + requestURL + queryString + "', 'liveHelp','height=320,width=472')" + ';"';
 		if (status == '1'){			
-			welcomeMsg = 'Welcome, '+ firstName +'. <a href="/store/?_DARGS=/store/views/common/header/header.jsp_AF&_dynSessConf='+sc+'&/vcs/userprofiling/VCSProfileFormHandler.logout=true&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=+&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logout=+&/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=logoutSuccessURL">(Not '+ firstName +'?)</a> <a href="' + profileUrl + '" class="account-link">My Account</a> | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
+			welcomeMsg = 'Welcome, '+ firstName +'. <a href="/store/?_DARGS=/store/views/common/header/header.jsp_AF&_dynSessConf='+sc+'&/vcs/userprofiling/VCSProfileFormHandler.logout=true&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=+&_D%3A/vcs/userprofiling/VCSProfileFormHandler.logout=+&/vcs/userprofiling/VCSProfileFormHandler.logoutSuccessURLCode=logoutSuccessURL">(Not '+ firstName +'?)</a> <a href="' + profileUrl + '" class="account-link">My Account</a> ';
 		} else {
-			welcomeMsg = '<a href="' + loginUrl + '">Sign In</a> / <a href="' + loginUrl + '">Register</a> now | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
+			welcomeMsg = '<a href="' + loginUrl + '">Sign In</a> / <a href="' + loginUrl + '">Register Now</a>';
 		}
 		$('#loginState').html(welcomeMsg);
 		$('#shopping-bag-text').html("<a href='" + context + "'>Shopping Bag ("  + cartCount + ")</a>");
 	} else {
-		welcomeMsg = '<a href="' + loginUrl + '">Sign In</a> / <a href="' + loginUrl + '">Register</a> now | <a href="#" ' + liveHelpURL + '>Live Help<span class="livehelpicon"> </span> </a>';
+		welcomeMsg = '<a href="' + loginUrl + '">Sign In</a> / <a href="' + loginUrl + '">Register Now</a>';
 		$('#loginState').html(welcomeMsg);
 		$('#shopping-bag-text').html("<a href='" + context + "'>Shopping Bag (0)</a>");
 	}

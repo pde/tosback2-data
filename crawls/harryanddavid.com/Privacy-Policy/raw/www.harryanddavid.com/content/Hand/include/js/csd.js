@@ -117,6 +117,7 @@ dojo.addOnLoad(function () {
     { id: 'FRSHP',      type: 'coupon' },
     { id: 'FSDEL',      type: 'coupon' },
     { id: 'GIVE',       type: 'coupon' },
+    { id: 'GIFTS',      type: 'coupon' },
     { id: 'H66',        type: 'coupon' },
     { id: 'HAPPY',      type: 'coupon' },
     { id: 'HD10P',      type: 'coupon' },

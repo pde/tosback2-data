@@ -507,7 +507,7 @@ var wpAd, placeAd2;
 
         return i;
       },
-      interstitial : function(){
+      interstitial: function(){
         if(doc.cookie && !/no_interstitials|reload\=true/gi.test(location.search)){
           var name = 'wp_pageview', 
           cookieVal = wpAd.tools.getCookie(name), 
@@ -523,6 +523,27 @@ var wpAd, placeAd2;
           return rv;
         }
         return false;
+      },
+      //async load script with optional callback function as 2nd arg
+      //potentially replace wpAd.tools.addScript with this
+      loadScript: function(src) {
+        var s = doc.createElement('script'),
+          target = doc.body || doc.getElementsByTagName('head')[0] || false,
+          callback = arguments[1] || false;
+        if(target){
+          s.type = 'text/' + (src.type || 'javascript');
+          s.src = src.src || src;
+          if(typeof callback === 'function'){
+            s.onreadystatechange = s.onload = function() {
+              var state = s.readyState;
+              if (!callback.done && (!state || /loaded|complete/.test(state))) {
+                callback.done = true;
+                callback();
+              }
+            };
+          }
+          target.appendChild(s);
+        }
       },
       log: function () {
         try {
@@ -1058,9 +1079,9 @@ var wpAd, placeAd2;
 
     //a bit hacky but temporary, until we phase out tile flight manager for opening/closing tiffany tiles:
     if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.site === 'wpni' && !/js_tiff/.test(location.search)) {
-      //would be interesting to try figure out a way to just include tile_flights.js, and integrate it into  wpAd.templates...
-      wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', 'http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
-
+      wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', function(){
+        wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
+      });
       return false;
     }
 

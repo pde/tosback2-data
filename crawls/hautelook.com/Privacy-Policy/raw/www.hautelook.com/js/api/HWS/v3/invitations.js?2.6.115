@@ -1,0 +1,31 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.invitations = {};
+
+HWS.v3.invitations.get = function(params) {
+    $.ajax({
+        url: '/v3/member/' + params.memberid + '/invitations',
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: function(response) {
+            if (typeof params.onFail == 'function') {
+                params.onFail(response);
+            }    
+	},
+
+        haloSuccess: function(response, status, XHR) {
+            if (typeof params.onSuccess == 'function') {
+                params.onSuccess(response);
+            }
+        }
+    });
+};

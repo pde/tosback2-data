@@ -1,3 +1,6 @@
+var to;
+var to2;
+
 function makeHttpRequest(url, callback_function, return_xml)
 {
    var http_request = false;
@@ -42,7 +45,6 @@ function makeHttpRequest(url, callback_function, return_xml)
 
 function loadBanner(xml)
 {
-	var to;
 	var now = new Date();
     var html_content = xml.getElementsByTagName('content').item(0).firstChild.nodeValue;
     var reload_after = xml.getElementsByTagName('reload').item(0).firstChild.nodeValue;
@@ -54,7 +56,6 @@ function loadBanner(xml)
 	$(document).ready(function(){
 		$("#ajax-banner").fadeOut(750, function () {
 		  document.getElementById("ajax-banner").innerHTML = html_content;
-		  //$(this).html(html_content);
 		  $(this).fadeIn("normal");
 		});
 	});
@@ -68,7 +69,6 @@ function loadBanner(xml)
 
 function loadBanner2(xml)
 {
-	var to;
 	var now = new Date();
     var html_content = xml.getElementsByTagName('content').item(0).firstChild.nodeValue;
     var reload_after = xml.getElementsByTagName('reload').item(0).firstChild.nodeValue;
@@ -86,9 +86,20 @@ function loadBanner2(xml)
 	});
 	
 	try {
-		clearTimeout(to);
+		clearTimeout(to2);
 	} catch (e) {}
 
-	to = setTimeout("nextAd2()", parseInt(reload_after));
+	to2 = setTimeout("nextAd2()", parseInt(reload_after));
+}
+
+// pause ads on mouse over
+function pauseAds() {
+	clearTimeout(to);
+	clearTimeout(to2);
+}
+// resume ads on mouse out
+function resumeAds() {
+	to=setTimeout("nextAd()", 2000);
+	to2=setTimeout("nextAd2()", 2000);
 }
 

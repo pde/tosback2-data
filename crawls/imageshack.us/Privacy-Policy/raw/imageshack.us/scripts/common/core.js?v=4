@@ -21,6 +21,7 @@ function get_scaled_size(width, height, max_width, max_height, crop)
 }
 
 $(document).ready(function() {
+
     $('ul.sf-menu').superfish(); 
     $('#language').bind('change', function() {
         $.cookie('lang', $(this).val(), {expires:365, path:'/', domain:'.imageshack.us'});
@@ -212,6 +213,12 @@ $(document).ready(function() {
         e.stopPropagation();
         e.preventDefault();
     });
+
+    if ($("#sign_in_now").val() == 1)
+    {
+        $.cookie('wheretogo', 'http://imageshack.us/v_images.php', {expires:365, path:'/', domain:'.imageshack.us'});
+        $('#login_dialog').dialog('open');
+    }
 
 });
 

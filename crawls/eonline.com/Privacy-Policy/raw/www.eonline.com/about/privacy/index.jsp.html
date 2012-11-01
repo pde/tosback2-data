@@ -113,7 +113,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1351512993383 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1351774022498 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -122,6 +122,7 @@
 			
 <!-- Default header -->
 		 	
+
 
 
 
@@ -312,28 +313,111 @@ pageTracker._trackPageview();
 	    	<ul id="Header_NavBlock_List" class="">
 	    		<li id="Header_NavItem_All" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/" data-omniture='trackWidgetClick|{"linkName":"nav:header:all","products":"eVar16=\"nav\""}'>All</a>
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
 	    		<li id="Header_NavItem_News" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/news" data-omniture='trackWidgetClick|{"linkName":"nav:header:news","products":"eVar16=\"nav\""}'>News</a> 
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
 	    		<li id="Header_NavItem_Photos" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/photos" data-omniture='trackWidgetClick|{"linkName":"nav:header:photos","products":"eVar16=\"nav\""}'>Photos</a>
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
 	    		<li id="Header_NavItem_Videos" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/videos" data-omniture='trackWidgetClick|{"linkName":"nav:header:videos","products":"eVar16=\"nav\""}'>Videos</a>
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
 	    		<li id="Header_NavItem_TVScoop" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/news/tv" data-omniture='trackWidgetClick|{"linkName":"nav:header:tvscoop","products":"eVar16=\"nav\""}'>TV Scoop</a>
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
+
+	    		<li id="Header_NavItem_Trends" class = "Header_NavItem ">
+	    			<a href="http://www.eonline.com/trends" data-omniture='trackWidgetClick|{"linkName":"nav:header:trends","products":"eVar16=\"nav\""}'>Trends</a>
+	    			
+
+
+
+
+
+
+
+
+
+	    		</li>
+
 
 	    		<li id="Header_NavItem_EShows" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/shows" data-omniture='trackWidgetClick|{"linkName":"nav:header:shows","products":"eVar16=\"nav\""}'>E! Shows</a>
+					
+
+
+
+
+
+
+
 
 
 	    		</li>
 
 	    		<li id="Header_NavItem_RedCarpet" class = "Header_NavItem ">
 	    			<a href="http://www.eonline.com/redcarpet" data-omniture='trackWidgetClick|{"linkName":"nav:header:redcarpet","products":"eVar16=\"nav\""}'>Red Carpet</a>
+	    			
+
+
+
+
+
+
+
+
+
 	    		</li>
 	    	</ul>
 	    </div>
@@ -367,6 +451,13 @@ pageTracker._trackPageview();
 
 
 
+
+
+
+	
+		
+	
+	
 
 
 <style type="text/css">
@@ -419,6 +510,14 @@ pageTracker._trackPageview();
 						document.getElementsByTagName('head')[0].appendChild(js);
 					}
 				}
+
+				// Binds the data to the Polls.
+				if ((typeof(eonline) !== 'undefined') && (typeof(eonline.polls) !== 'undefined')) {
+					// Don't use JSON here, as some properties are already setup in the eonline.polls object. See /resources/widgets/js/polls.js.
+					eonline.polls.strSharedUrl = 'http://www.facebook.com/eonline';
+					eonline.polls.strShowSend = '';
+					eonline.polls.strSocialTracking = 'nav:header';
+				}
 			</script>
 		</li>
 	
@@ -461,6 +560,28 @@ pageTracker._trackPageview();
 <script type="text/javascript" src="../../../apis.google.com/js/plusone.js">
 	{parsetags: 'explicit'}
 </script>
+
+
+<script>
+(function($){
+	$(document).ready(function() {
+		//var contentURL = 'http://www.facebook.com/eonline';
+		var contentURL = '';
+		var emailSubj = 'EOnline Video/Article Suggestion For You';
+		$(".email").bind("click", function(e){
+			//$(".social-Send-Email").empty();
+			$(".social-Send-Email").css("visibility","visible");
+			$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+contentURL));
+			$("#overlay").show();
+							
+		});
+		$('.emailOverlay').click(function() {
+			$(".social-Send-Email").css("visibility","hidden");
+			$(".emailOverlay").hide();
+		});
+	});
+})(jQuery.noConflict());  
+</script>
 	    	
 	        
 		</div>
@@ -491,18 +612,6 @@ pageTracker._trackPageview();
 			return true;
 		}
 	};
-</script>
-<script type="text/javascript">
-	function ActivateCallout(){
-		if ("" != "") {
-			if ( jQuery("#").length != 0 ) {
-				//we have a spot to align... 
-				jQuery("#Header_Callout").css("display", 'block');
-				//align the caret 
-			}
-		}
-	};
-	jQuery(window).load(ActivateCallout());
 </script>
 
 
@@ -732,7 +841,7 @@ The information learned from the Website's users, members and customers helps E!
 			</div>
 			
 			<div class ="footerSpot">
-				<a href="http://www.eonline.com/shows/jonas" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_2","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/2012715/MJ_Footer.jpg" /></a>
+				<a href="http://www.thesouptv.com/" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_2","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/2012715/The_soup_footer.jpg" /></a>
 			</div>
 			
 			<div class ="footerSpot">
@@ -744,9 +853,9 @@ The information learned from the Website's users, members and customers helps E!
 			<a href="http://www.eonline.com/" data-omniture='trackWidgetClick|{"linkName":"nav:footer:main","products":"eVar16=\"nav\""}'><div id = "Footer_LogoBlock">
 			</div></a>
 			<div id ="Footer_Stripes"></div>
-
+<!-- c:if test="true" -->
 			<div id = "Footer_LogoRight"></div>
-
+<!-- /c:if -->
 
  
 
@@ -852,20 +961,24 @@ The information learned from the Website's users, members and customers helps E!
 					<div class="Footer_TabBlock_Body">
 						<span>Click an RSS Feed to Subscribe</span>
 						<section id="rssHolder">
-	
-	
 
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:headlines","products":"eVar16=\"nav\""}'>Headlines</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/movienews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:Movie_Headlines","products":"eVar16=\"nav\""}'>Movie Headlines</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/tvnews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:tv_headlines","products":"eVar16=\"nav\""}'>TV Headlines</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/celebritynews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:celebrity_headlines","products":"eVar16=\"nav\""}'>Celebrity Headlines</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/fashion.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:fashion","products":"eVar16=\"nav\""}'>Fashion</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/redcarpet.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:red_carpet_blog","products":"eVar16=\"nav\""}'>Red Carpet Blog</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/video/index.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:cebrity_videos","products":"eVar16=\"nav\""}'>Celebrity Videos</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/thesoup.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:the_soup_blog","products":"eVar16=\"nav\""}'>The Soup Blog</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/kristin.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:watch_with_kristin","products":"eVar16=\"nav\""}'>Watch with Kristin</a></div>
-							<div class="rssLink"><a href="http://www.eonline.com/everywhere/rss/index.jsp#ixzz1vAOqWOnV" data-omniture='trackWidgetClick|{"linkName":"nav:footer:read_more","products":"eVar16=\"nav\""}'>Read More...</a></div>
-						
+
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/topstories.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:headlines","products":"eVar16=\"nav\""}'>E! News</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/tvnews.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:tv_headlines","products":"eVar16=\"nav\""}'>TV Scoop</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/celebrityphotos.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:celebrity_headlines","products":"eVar16=\"nav\""}'>Celebrity Photos</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/redcarpet.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:red_carpet_blog","products":"eVar16=\"nav\""}'>Red Carpet</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/video/index.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:cebrity_videos","products":"eVar16=\"nav\""}'>Videos</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/fashion.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:fashion","products":"eVar16=\"nav\""}'>Fashion Police</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/answer.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:ask","products":"eVar16=\"nav\""}'>Ask E!</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/syndication/feeds/rssfeeds/thesoup.xml" data-omniture='trackWidgetClick|{"linkName":"nav:footer:the_soup_blog","products":"eVar16=\"nav\""}'>The Soup</a></div>
+							<div class="rssLink"><a href="http://www.eonline.com/everywhere/rss/index.jsp" data-omniture='trackWidgetClick|{"linkName":"nav:footer:read_more","products":"eVar16=\"nav\""}'>Read More...</a></div>
+	
+	
+		
+		
+		
+	
+	
 						</section>
 					</div>
 				</div>

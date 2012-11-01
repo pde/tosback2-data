@@ -158,6 +158,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setClient("WORLDMARKET");
 	mybuys.enableZones();
 
+
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
 	mybuys.setStyle('.mblegend','text-align','left');
 	mybuys.setStyle('.mbitem','width','145px', 'PADDING-RIGHT', '4px', 'PADDING-LEFT', '4px');
@@ -235,10 +236,10 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 
 	
 	//mobile zone styling
-	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbslider_x5','width','293px','padding','0px 20px','margin','0px');
-	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbitem','width','124px','padding','10px 11px 0px');
-	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbCarousellist','float','left','width','146px !important','padding','10px 0px 0px');
-	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbrightnav','width','28px','position','relative','right','-298px','top','-227px','padding','0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbslider_x5','width','260px','padding','0px 20px','margin','0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbitem','width','124px','padding','10px 2px 0px');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbCarousellist','float','left','width','130px !important','padding','10px 0px 0px !important');
+	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbrightnav','width','28px','position','relative','left','260px','top','-227px','padding','0px');
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbleftnav','left','-29px','top','-171px');
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbtitleimg','padding','0px','text-align','left','font-family','SofiaProLight,Verdana,Geneva,Helvetic,sans-serif','color','#1B9990','font-size','12px','font-weight','bold','position','static');
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbnamelink:link','font-size','10px');

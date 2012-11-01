@@ -1,0 +1,65 @@
+var FB_APP_ID = (window.location.host.indexOf("wix.com") != -1) ? "106270215428" : "132009063521038";
+
+function publishToFacebook(username, docname, url, thumbnail, description, flashvars) {
+    var attachment = null;
+    var wixurl = 'http://www.wix.com/html5webbuilder/share?utm_campaign=vir_fb_pub_f&experiment_id=';
+
+    if (url.indexOf("http://") != 0) {
+        wixurl = wixurl + url;
+    }
+    else {
+        wixurl = wixurl + url.substr(7, url.length);
+    }
+
+
+    if (url.indexOf("http://") != 0) {
+        url = "http://" + url;
+    }
+
+    if (thumbnail) {
+        attachment = {
+            'name': docname,
+            'caption': "{*actor*} has updated " + docname,
+//            'description': description,
+            'description': '',
+            //            'properties': {
+            //                'Category':{'text':'pets','href':'http://www.youtube.com/browse?s=mp&t=t&c=15'},
+            //                'Ratings':'5 stars'},
+            //            'media': [{'type': 'flash', 'swfsrc': 'http://static.wix.com/client/app.swf', 'imgsrc': thumbnail, 'width': '80', 'height': '60', 'expanded_width': '400', 'expanded_height': '300', 'flashvars': 'pageId=YlfFZAP9D9Y-a&embedFormat=normal&embedID=qcDmAPjAoWV7rXWWvmEWoKKsNxCjX_4gaJA2leZcQvVJvNLH5hg9wXGg6at2urwha&partner_id=WMGs4POB1ko-a'}]
+            'media': [
+                {'type':'image', 'src':thumbnail, 'href':url}
+            ]
+        };
+    }
+    FB.ui({
+        method: "feed",
+        name: docname,
+        link: url,
+        //,
+        description: description,
+            //"Hi everybody, checkout the new update to my Wix site.",
+       // properties: attachment,
+        actions: [
+            { name: 'Create a Free Website', link: wixurl}
+        ]
+       //,
+       // user_prompt_message: "Write a personal message to your friends' wall:"
+    },
+            function(response) {
+
+            });
+}
+
+function shareOnFacebook(name, url, thumbnail, message) {
+    if (url.indexOf("http://") != 0) {
+        url = "http://" + url;
+    }
+    var share = {
+        method: 'stream.share',
+        u: url,
+        t: name
+    };
+
+    FB.ui(share, function(response) {
+    });
+}

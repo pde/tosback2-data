@@ -901,7 +901,7 @@
 	<script type="text/javascript">
 		// Activation of the navigationService and associated Managers
 		navigationService.model.isActive = ('true' === 'true')
-                || ('false' === 'true')
+                || ('true' === 'true')
                 || ('true' === 'true')
                 || ('true' === 'true');
 		navigationService.paginationHelper.constants.MAX_PRODUCTS_PER_PAGE = 300;
@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "10/29/2012 08:11 AM",
+            DATE_IN_USE: "11/01/2012 08:40 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -990,14 +990,14 @@
 <!-- isProductCategoryFacetedSearchActive = true -->
 <!-- searchEnabled = true -->
 <!-- isFacetedCategoryActive = true -->
-<!-- isFacetedCategorySearchActive = false -->
+<!-- isFacetedCategorySearchActive = true -->
 <!-- brandTemplateServiceActive = true -->
 <!-- categoryPageCachingActive = true -->
 <!-- isStoreLocationsActive  = true -->
 <!-- isMerchLocatorActive  = true -->
 <!-- shippingOptionsFeatureActive  = true -->
 <!-- isLoggingServiceActive  = false -->
-<!-- catalogCategoryFeaturesEnabled  = power_reviews,quick_links,cj_feed,top_left_nav,ecom_rest_services,categories -->
+<!-- catalogCategoryFeaturesEnabled  = power_reviews,quick_links,cj_feed,top_left_nav,ecom_rest_services,categories,local_static_data_cache -->
 <!-- localCacheActive  = false -->
 <!-- isLocalCacheDisabled  = true -->
 <!-- isPageContentDataActive  = true -->
@@ -1018,7 +1018,7 @@
 <!-- faceted category black list =  -->
 <!-- isSolrEnabled = false -->
 <!-- isFaceted = true -->
-<!-- isCategorySearchFaceted  = false -->
+<!-- isCategorySearchFaceted  = true -->
 <!-- isOptimizedProductPageActive  = false -->
 
 <!-- isClientStateManagementActive  = true -->
@@ -3827,6 +3827,12 @@ if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === t
 </script>
 <!--  END content override CNOV-5 JS -->
 
+<!-- BEGIN content override CNOV-15 post CNOV-13 -->
+<script type="text/javascript">
+var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+</script>
+<!-- END content override CNOV-15 post CNOV-13-->
+
 <!-- BEGIN content override CNOV-10 JS-->
 <script type="text/javascript">
 if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === true) && (brandConst.IS_NAV2_ENABLED === 'true' || brandConst.IS_NAV2_ENABLED === true) && window["navigationService"]) {
@@ -4157,206 +4163,63 @@ function swapSignInFormTarget() {
 </script>
 <!-- END content override CNOV-9 JS -->
 
-<!-- CNOV-13: ProductSearch retry -->
+<!-- BEGIN content override CNOV- -->
 <script type="text/javascript">
-if (navigationService && navigationService.controller && navigationService.controller.managers && navigationService.controller.managers.categoryFacetedSearchManager && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
-	var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-	categoryFacetedSearchManager.constants.MAX_REQUEST_RETRY_COUNT = 2;
 
-	categoryFacetedSearchManager.model.requestParams = {};
+	if (location.href.indexOf(".app.gidapps.com") > 0 && 
+		(location.pathname == "/browse/category.do" || 
+		location.pathname == "/browse/search.do" || 
+		location.pathname == "/browse/categorySearch.do" || 
+		location.pathname == "/browse/mpp.do")) {
 
-	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.timeoutHandler = 
-		function(response, e, timedOut) {
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+		var facetsToggler = {
+			isFacetsOn : null,
+			toggle : function() {
+				if (facetsToggler.isFacetsOn) {
+					var params = "&categoryFacetsEnabled=false&isProductCategoryFacetedSearchActive=false&isFacetedCategoryActive=false&isIgnoreCookiesActive=false";
+				} else {
+					var params = "&categoryFacetsEnabled=true&isProductCategoryFacetedSearchActive=true&isFacetedCategoryActive=true&isIgnoreCookiesActive=true";
+				}
+				
+				if (location.href.indexOf("&categoryFacetsEnabled") > 0) {
+					location.href = location.href.substring(0,location.href.indexOf("&categoryFacetsEnabled")) + params;
+				} else {
+					location.href = location.href + params;
+				}
+			
+			},
+			
+			init : function() {
+				if ($('sideNavFacets')) {
+					facetsToggler.isFacetsOn = true;
+				} else {
+					facetsToggler.isFacetsOn = false;
+				}
 
-		categoryFacetedSearchManager.model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
-					
-		// Met the max number of retries
-		if (categoryFacetedSearchManager.model.retryCount >= categoryFacetedSearchManager.constants.MAX_REQUEST_RETRY_COUNT) {
-			var handlers= categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers;
-			handlers.exceptionHandler(response, e, timedOut);
-		} else {
-			var log = loggingService.api.getLog();
-			log.error("Retrying URL due to timeout: [" + categoryFacetedSearchManager.model.latestFacetRequestUrl + "]\n\n");
-						
-			var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
-			viewManager.model.isRetry = true;
-			viewManager.controller.getReportRequest();
-						
-			categoryFacetedSearchManager.model.retryCount++;
-						
-			var pageId = categoryFacetedSearchManager.model.requestParams.pageId;
-			var url = categoryFacetedSearchManager.model.requestParams.url;
-						
-			categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(pageId,url);						
+				
+				if (facetsToggler.isFacetsOn != null) {
+					if (facetsToggler.isFacetsOn) {
+						var buttonText = "enable legacy category";
+					} else {
+						var buttonText = "enable facet category";
+					}
+					try {
+						$('previewContent').select('form')[1].select('li')[1].parentNode.insert('<li><input id="facetsToggleButton" type="button" value="' + buttonText + '" onclick="facetsToggler.toggle(); return false;"></input></li>')
+					} catch(e) {
+					}
+				}
+			
+			}
 		}
-	};
-
-	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler.wrap(function(originalMethod,response,e,timedOut) {
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-
-		// Cleanup request-related variables
-		categoryFacetedSearchManager.model.retryCount = 0;
-		categoryFacetedSearchManager.model.requestParams.pageId = null;
-		categoryFacetedSearchManager.model.requestParams.url = null;
 		
-		originalMethod(response,e,timedOut);
-	});
-
-	categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler.wrap(function(originalMethod,transport) {
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-
-		// Cleanup request-related variables
-		categoryFacetedSearchManager.model.retryCount = 0;
-		categoryFacetedSearchManager.model.requestParams.pageId = null;
-		categoryFacetedSearchManager.model.requestParams.url = null;
+		Event.observe(window,"load", facetsToggler.init);
 		
-		originalMethod(transport);
-	});
+	}
 
-	categoryFacetedSearchManager.controller.getCategoryFacetedSearchData = function(pageId,url) {
-
-		var categoryFacetedSearchManager = 
-			navigationService.controller.managers.categoryFacetedSearchManager,
-			model = categoryFacetedSearchManager.model,
-			constants = categoryFacetedSearchManager.constants,
-			elementIds = categoryFacetedSearchManager.constants.elementIds,
-			productGridId = elementIds.PRODUCT_GRID,
-			getCategoryFacetedSearchDataHandlers = categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers;
-
-		// record current parameters for potential retries
-		model.requestParams.pageId = pageId;
-		model.requestParams.url = url;
-			
-		var productSearchServiceUrl = url || UrlBuilder.getProductSearchServiceUrl(pageId);
-		categoryFacetedSearchManager.model.latestFacetRequestUrl = productSearchServiceUrl;
-			
-		var requestOptions = {
-			method : 'get',
-			onSuccess : getCategoryFacetedSearchDataHandlers.successHandler,
-			onException : getCategoryFacetedSearchDataHandlers.exceptionHandler,
-			onFailure : getCategoryFacetedSearchDataHandlers.timeoutHandler,
-			onCreate: getCategoryFacetedSearchDataHandlers.createHandler,
-		    onComplete: getCategoryFacetedSearchDataHandlers.completeHandler
-		};
-
-		if (model.dataRequestStatus === constants.requestStatus.BEGIN) return;
-		
-		model.dataRequestStatus = constants.requestStatus.BEGIN;
-		var log = loggingService.api.getLog();
-		log.info('starting AJAX request for URL [ ' + productSearchServiceUrl + ' ]');
-		
-		document.fire("categoryFacetedSearchDataRequest:begin");
-		new Ajax.Request(productSearchServiceUrl, requestOptions);
-		log.info('completed AJAX request for URL [ ' + productSearchServiceUrl + ' ]');
-	};
-
-
-	categoryFacetedSearchManager.controller.getCategoryFacetedSearchView = categoryFacetedSearchManager.controller.getCategoryFacetedSearchView.wrap(function(originalMethod) {
-		var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
-		viewManager.model.isRetry = false;
-		
-		originalMethod();
-	});
-
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportTransmissionVars = function() {
-		var facetMetrics = this.getFacetMetrics(),
-		    	pathName = window.location.pathname,
-			parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
-			model = parent.model,
-			isEngaged = facetMetrics.prop13.length > 0,
-			isMpp = pathName.indexOf('mpp.do') >= 0, 
-			isSearchModel = model.isSearch,
-			isSearch = isSearchModel === true || isSearchModel === 'true',
-			errSuffix = ' : isEngaged=' + isEngaged + ' : ' + 
-			(((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
-			 (isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName),
-			parentModel = parent.model,
-			shouldUseMaxValue = parentModel.maxOptionsSelectedCount > facetMetrics.totalOptionsSelected;
-
-                if (isSearch) {
-			s.events = 'event39';
-
-			var searchAppManager = reportingService.controller.appManagers.searchAppManager;
-    				searchAppManager.setSiteSearchActive(true);
-
-    			model.searchKeyword = searchAppManager.getSiteSearchActiveKeyword();
-    			s.prop17 = searchAppManager.getSiteSearchActiveKeyword();
-
-			data = parent.facetSearchManager.model.data;
-    				
-    			if (data != undefined) {
-    				s.prop18 = data.productCategoryFacetedSearch.totalItemCount;
-    			
-    				if (model.hasNoProducts) {
-    					s.events += ",event37";
-    				}
-    			}
-                } else {
-			s.events = isMpp ? '' : 'event38';
-                }
-		          
-                var tmpProp51='';
-            	if (model.isRetry) {
-			var delaySuffix = ' : isEngaged=' + isEngaged + ' : ' + (((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
-				(isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName);
-            		delaySuffix += this.getHashWithoutSizeAndBrand();
-            		
-            		tmpProp51="delay:" + delaySuffix;
-            	} else if (model.isException) {
-                	if (model.timedOut) {
-				var timeoutSuffix = ' : isEngaged=' + isEngaged + ' : ' + (((gidLib.getQuerystringParam('cid')||'').match(/\d+/)||[]).join('') ||
-					(isSearch ? ('search | keyword: ' + model.searchKeyword)  : pathName)||pathName);
-                		timeoutSuffix += this.getHashWithoutSizeAndBrand();
-                		
-                		tmpProp51="timeout:" + timeoutSuffix;
-                	} else {
-                		tmpProp51=model.exceptionType + errSuffix;
-                	}
-                } else  if (model.hasNoProducts) {
-                	tmpProp51 = (isEngaged ? 'no results-facets' : 'no products available') + errSuffix;
-                } else if (navigationService.paginationHelper.api.getUrlPageId() > 0) {
-                	tmpProp51 = "Pagination: " + navigationService.paginationHelper.api.getUrlPageId();
-                }
-                
-                s.prop51 = tmpProp51;
-                s.pageName = model.commonCurrentPageName + model.commonVariantStyle;
-                s.prop20 = model.previousPage;
-                s.prop21 = model.previousURL;
-                
-                if (!shouldUseMaxValue) {
-                	parentModel.maxProp13Value = facetMetrics.prop13;
-                	parentModel.maxProp14Value = facetMetrics.prop14;
-                	parentModel.maxProp12Value = facetMetrics.prop12;
-                	parentModel.maxProp16Value = facetMetrics.prop16;
-                	parentModel.maxOptionsSelectedCount = facetMetrics.totalOptionsSelected;
-                }
-
-                
-                s.prop13 = parentModel.maxProp13Value;
-                s.prop14 = parentModel.maxProp14Value;
-                s.prop12 = s.eVar19 = parentModel.maxProp12Value;
-                s.prop3 = isEngaged ? parent.strHierarchy : '';
-                s.prop15 = isSearch ? 'search' : (isMpp ? '' : 'category');
-                s.prop16 = parentModel.maxProp16Value;
-                
-                s.eVar15 = isEngaged ? s.prop3 : parent.notEngagedMessage;
-
-                this.setFSInCookie('cookieName', s.eVar15);
-                this.setFSInCookie('facetRefinementCookieName', s.prop19);
-                reportingService.api.setViewTypeReportParameter(model.viewType);
-
-	};
-
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp.wrap(function(originalMethod) {
-		parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
-		parent.model.isRetry = false;
-
-		originalMethod();
-	});
-}
 </script>
-<!-- End CNOV-13 -->
+<!-- END content override CNOV- -->
+
+
 
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
 
@@ -5036,597 +4899,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 </script>
 <!-- End CNOV-15 -->
 
-<!-- Begin Reveal Outfits Code -->
-<script type="text/javascript">
-	var outfitCategorizer = {
 
-		validOutfitCategories : {
-			'1'  : ['63506','63507','78110','69588','58426','62313','62314','82959','63507','86251','69588','87139','87444','87445']
-		},
-		
-		validOutfitKeyItems : {
-			// GOL
-				'914636012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20634/outfit/gp-otf-out20634odv01.jpg','Cute as a Pumpkin'],											
-				'914631002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20635/outfit/gp-otf-out20635odv01.jpg','Handsome like a Devil'],											
-				'914592002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19781/outfit/gp-otf-out19781odv01.jpg','Full of Charm'],											
-				'914589002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19941/outfit/gp-otf-out19941odv01.jpg','Earn His Stripes'],											
-				'182160002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19944/outfit/gp-otf-out19944odv01.jpg','Lobster Roll'],											
-				'214377002':['/Asset_Archive/GPWeb/Assets/Outfit/196/OUT19689/outfit/gp-otf-out19689odv01.jpg','A Short of Pink'],											
-				'214373002':['/Asset_Archive/GPWeb/Assets/Outfit/196/OUT19694/outfit/gp-otf-out19694odv01.jpg','Seeing Stripes (and Dots!)'],											
-				'214198002':['/Asset_Archive/GPWeb/Assets/Outfit/196/OUT19697/outfit/gp-otf-out19697odv01.jpg','Sweeter in Sweaters'],											
-				'214294002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19782/outfit/gp-otf-out19782odv01.jpg','Here a Spot, There a Dot'],											
-				'914961002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19784/outfit/gp-otf-out19784odv01.jpg','Bright Blooms'],											
-				'183517002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19938/outfit/gp-otf-out19938odv01.jpg','Little Blooms'],											
-				'140104002':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17279/outfit/gp-otf-out17279odv01.jpg','Impulse Jersey Demi Bra & Shirred Lace-Trim Hipster (navy blooms)'],										
-				'139931012':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17280/outfit/gp-otf-out17280odv01.jpg','Rose Lace Uplift Balconette Bra & Sexy Lace Tanga (ivy shadow)'],										
-				'134528032':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17286/outfit/gp-otf-out17286odv01.jpg','Rose Lace Plunge Demi Bra & Stretch Lace Thong (cupid pink)'],										
-				'139960012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23652/outfit/gp-otf-out23652odv01.jpg','Daisy Lace Longline Demi Bra & Daisy Lace String Thong (peach whip)'],										
-				'139914002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23654/outfit/gp-otf-out23654odv01.jpg','Favorite Floral Uplift Bra & Ultra Sheer Floral Hipster (sketched milk blooms)'],										
-				'139915002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23655/outfit/gp-otf-out23655odv01.jpg','Favorite Poppy Lace Uplift Bra & Poppy Lace Hipster Tanga (margate sand)'],										
-				'139898002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23657/outfit/gp-otf-out23657odv01.jpg','Favorite Floral T-Shirt Bra & Floral String Thong (true black blooms)'],										
-				'134528042':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23658/outfit/gp-otf-out23658odv01.jpg','Rose Lace Plunge Demi Bra & Stretch Lace Thong (dark shadow)'],										
-				'651648382':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23660/outfit/gp-otf-out23660odv01.jpg','Favorite T-Shirt Bra & Sexy Lace Tanga (ivy shadow)'],										
-				'140344012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23661/outfit/gp-otf-out23661odv01.jpg','Softest Modal Ruffle Tank & Softest Modal Ruffle Girl Shorts (glowing pink)'],										
-				'140344002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23662/outfit/gp-otf-out23662odv01.jpg','Softest Modal Ruffle Tank & Softest Modal Ruffle Girl Shorts (lagoon teal)'],										
-				'653900302':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23664/outfit/gp-otf-out23664odv01.jpg','Favorite T-Shirt Bra & Sexy Lace Girl Shorts (sugar plum)'],										
-				'140361002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23665/outfit/gp-otf-out23665odv01.jpg','Modal Wide Lace Cami & Modal Wide Lace Knee Legging (true black)'],										
-				'139954002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23666/outfit/gp-otf-out23666odv01.jpg','Daisy Lace Plunge Demi Bra & Daisy Lace String Thong (peach whip)'],										
-				'139954012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23667/outfit/gp-otf-out23667odv01.jpg','Daisy Lace Plunge Demi Bra & Daisy Lace String Thong (sugar plum)'],										
-				'139958002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23668/outfit/gp-otf-out23668odv01.jpg','Daisy Lace Uplift Balconette Bra & Daisy Lace Girl Shorts (dazzling blue)'],										
-				'139936022':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23669/outfit/gp-otf-out23669odv01.jpg','Rose Lace Longline Demi Bra & Rose Lace Hipster (true black)'],										
-				'139931002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23670/outfit/gp-otf-out23670odv01.jpg','Rose Lace Uplift Balconette Bra & Shirred Contrast Lace Hipster (iconic blue)'],										
-				'139936012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23673/outfit/gp-otf-out23673odv01.jpg','Rose Lace Longline Demi Bra & Rose Lace Hipster (margate sand)'],										
-				'139937002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23674/outfit/gp-otf-out23674odv01.jpg','Contrast Lace Wireless Bralette & Sexy Lace Girl Shorts (dark shadow)'],										
-				'139929002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23675/outfit/gp-otf-out23675odv01.jpg','Contrast Lace Wireless Bra & Contrast Lace Hipster Tanga (true black)'],										
-				'139929022':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23676/outfit/gp-otf-out23676odv01.jpg','Contrast Lace Wireless Bra & Contrast Lace Hipster Tanga (grateful grape)'],										
-				'139929012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23677/outfit/gp-otf-out23677odv01.jpg','Contrast Lace Wireless Bra & Contrast Lace Hipster Tanga (margate sand)'],										
-				'139926002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23678/outfit/gp-otf-out23678odv01.jpg','Favorite Floral Wireless Bra & Ultra Sheer Floral Hipster (sketched pink blooms)'],										
-				'140105002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23679/outfit/gp-otf-out23679odv01.jpg','Impulse Lace Bralette & Lace-Trim Skinny Bikini (navy stripe)'],										
-				'644693212':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23680/outfit/gp-otf-out23680odv01.jpg','Favorite Wireless Bra & Stretch Lace Thong  (dazzling blue)'],										
-				'644693202':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23681/outfit/gp-otf-out23681odv01.jpg','Favorite Wireless Bra & Stretch Lace Thong  (dark shadow)'],										
-				'139960002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23682/outfit/gp-otf-out23682odv01.jpg','Daisy Lace Longline Demi Bra & Daisy Lace Girl Shorts (true black)'],										
-				'140104012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23683/outfit/gp-otf-out23683odv01.jpg','Impulse Jersey Demi Bra & Shirred Lace-Trim Hipster (adorable pink)'],										
-				'139912002':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23684/outfit/gp-otf-out23684odv01.jpg','Favorite Lace Printed Plunge Demi Bra & Lace Printed Girl Shorts (ivy shadow)'],										
-				'653900312':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23685/outfit/gp-otf-out23685odv01.jpg','Favorite T-Shirt Bra & Sexy Lace Tanga (rose verbana)'],										
-				'139936022':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23686/outfit/gp-otf-out23686odv01.jpg','Favorite Uplift Bra & Lace-Trim Hipster (twinkling lilac)'],										
-				'139937012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23687/outfit/gp-otf-out23687odv01.jpg','Contrast Lace Wireless Bralette & Sexy Lace Tanga (panama blue)'],										
-				'140105012':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23688/outfit/gp-otf-out23688odv01.jpg','Impulse Lace Bralette & Lace-Trim Hipster (cupid pink)'],										
-				'140354022':['/Asset_Archive/GPWeb/Assets/Outfit/236/OUT23696/outfit/gp-otf-out23696odv01.jpg','Softest Modal Lace Cami & Softest Modal Lace Girl Shorts (sketched pink blooms)'],										
-				'140354012':['/Asset_Archive/GPWeb/Assets/Outfit/237/OUT23700/outfit/gp-otf-out23700odv01.jpg','Softest Modal Lace Cami & Softest Modal Lace Girl Shorts (rose verbana)'],										
-				'140354002':['/Asset_Archive/GPWeb/Assets/Outfit/237/OUT23701/outfit/gp-otf-out23701odv01.jpg','Softest Modal Lace Cami & Softest Modal Lace Girl Shorts (capri pink)'],										
-				'912943002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16666/outfit/gp-otf-out16666odv01.jpg','Junior Varsity'],										
-				'141063002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16668/outfit/gp-otf-out16668odv01.jpg','Color Coded'],										
-				'184083022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16669/outfit/gp-otf-out16669odv01.jpg','Model Student'],										
-				'145148042':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16671/outfit/gp-otf-out16671odv01.jpg','Hue Knew'],										
-				'914476022':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18256/outfit/gp-otf-out18256odv01.jpg','Smarty Pants'],										
-				'912956002':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18258/outfit/gp-otf-out18258odv01.jpg','First Mate'],										
-				'184110002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19744/outfit/gp-otf-out19744odv01.jpg','Book Smarts'],										
-				'912942002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19745/outfit/gp-otf-out19745odv01.jpg','Boys Only'],
-				'184090002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16667/outfit/gp-otf-out16667odv01.jpg','Rugby Rules'],											
-				'141041002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19747/outfit/gp-otf-out19747odv01.jpg','Star Athlete'],		
-				'145024012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19749/outfit/gp-otf-out19749odv01.jpg','Cool Cadet'],											
-				'911162002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19940/outfit/gp-otf-out19940odv01.jpg','A is for Apple'],											
-				'170756022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16670/outfit/gp-otf-out16670odv01.jpg','Neon Casual'],											
-				'173320002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19738/outfit/gp-otf-out19738odv01.jpg','Statement Maker: Tweed!'],											
-				'172476002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19739/outfit/gp-otf-out19739odv01.jpg','So Now: Shorts+Footless Tights+Booties'],											
-				'172480002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19740/outfit/gp-otf-out19740odv01.jpg','What\'s Cool: Sparkle on Her Collar'],											
-				'910479002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19742/outfit/gp-otf-out19742odv01.jpg','Put It in Print'],											
-				'910488002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19748/outfit/gp-otf-out19748odv01.jpg','White Hot...Denim'],											
-				'172463012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19750/outfit/gp-otf-out19750odv01.jpg','Spotted! The Leopard Skirt'],											
-				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19786/outfit/gp-otf-out19786odv01.jpg','Mix This: Denim & Tulle'],											
-				'172482002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19787/outfit/gp-otf-out19787odv01.jpg','Sparkle Shine Cozy Knits'],
-				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22218/outfit/gp-otf-out22218odv01.jpg','Perfect Fit'],											
-				'910512002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22219/outfit/gp-otf-out22219odv01.jpg','A Leg Up'],											
-				'762719002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22758/outfit/gp-otf-out22758odv01.jpg','Jump for Jeans'],											
-				'910510022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22760/outfit/gp-otf-out22760odv01.jpg','Best Right Foot'],											
-				'173326002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22762/outfit/gp-otf-out22762odv01.jpg','Be Spotted'],											
-				'175401002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22763/outfit/gp-otf-out22763odv01.jpg','Play Dress Up'],											
-				'762717002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22764/outfit/gp-otf-out22764odv01.jpg','Cute to Boot'],											
-				'146096022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22778/outfit/gp-otf-out22778odv01.jpg','Great American Painter'],											
-				'171684012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22780/outfit/gp-otf-out22780odv01.jpg','Editor-in-Chief'],											
-				'151064032':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19165/outfit/gp-otf-out19165odv01.jpg','Cowlneck Tunic & Smocked Skirt'],											
-				'455136002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19774/outfit/gp-otf-out19774odv01.jpg','Military Jacket & Embroidered Dress'],											
-				'187367002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19776/outfit/gp-otf-out19776odv01.jpg','Striped Shirt & 1969 Real Straight Cropped Jean'],											
-				'915669002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20829/outfit/gp-otf-out20829odv01.jpg','Polka Dot Dress'],											
-				'915671012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20830/outfit/gp-otf-out20830odv01.jpg','Nautical Shift'],											
-				'182119002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19783/outfit/gp-otf-out19783odv01.jpg','Get Cozy'],											
-				'914731002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21060/outfit/gp-otf-out21060odv01.jpg','Biker Boy'],											
-				'297137002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21070/outfit/gp-otf-out21070odv01.jpg','Clubhouse Prep'],											
-				'914725002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21071/outfit/gp-otf-out21071odv01.jpg','Get Your Kicks!'],											
-				'148781002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20621/outfit/gp-otf-out20621odv01.jpg','A League of His Own'],											
-				'149542032':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20622/outfit/gp-otf-out20622odv01.jpg','Varsity Cool'],											
-				'148784012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20623/outfit/gp-otf-out20623odv01.jpg','Class Act'],											
-				'149651002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20212/outfit/gp-otf-out20212odv01.jpg','Anchors Our Way'],											
-				'149622012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20213/outfit/gp-otf-out20213odv01.jpg','Ahoy, Sea Captain!'],											
-				'914698032':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21066/outfit/gp-otf-out21066odv01.jpg','Cobalt + Cable'],											
-				'914699002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Orange + Stripes'],											
-				'183847002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20862/outfit/gp-otf-out20862odv01.jpg','Forest Green + Cable'],											
-				'183844002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20863/outfit/gp-otf-out20863odv01.jpg','Khaki + Leather'],											
-				'181106012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20617/outfit/gp-otf-out20617odv01.jpg','Uptown Downtown'],											
-				'181127012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20618/outfit/gp-otf-out20618odv01.jpg','See You at the Show'],											
-				'180713002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20619/outfit/gp-otf-out20619odv01.jpg','Ready, Set, Style!'],											
-				'912919002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20851/outfit/gp-otf-out20851odv01.jpg','Desert Sands'],											
-				'913279002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20856/outfit/gp-otf-out20856odv01.jpg','Desert, First'],											
-				'914549002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21072/outfit/gp-otf-out21072odv01.jpg','Desert Sunset'],											
-				'912924002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21065/outfit/gp-otf-out21065odv01.jpg','Cozy + Coral'],											
-				'914560002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20857/outfit/gp-otf-out20857odv01.jpg','Attention Party Girls!'],											
-				'914566002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20865/outfit/gp-otf-out20865odv01.jpg','A Little Bit Mod'],											
-				'912934002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21057/outfit/gp-otf-out21057odv01.jpg','Fit to be Tied'],											
-				'914560012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21058/outfit/gp-otf-out21058odv01.jpg','A Spot of Charm'],											
-				'912932002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21059/outfit/gp-otf-out21059odv01.jpg','Style Cycle'],											
-				'181204002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19910/outfit/gp-otf-out19910odv01.jpg','Retro Fitted'],											
-				'180574012':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19995/outfit/gp-otf-out19995odv01.jpg','Stir it Up'],											
-				'180577002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19996/outfit/gp-otf-out19996odv01.jpg','Precious Jewel Tones'],											
-				'914558002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Hot Pink + Fur'],											
-				'266967022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21067/outfit/gp-otf-out21067odv01.jpg','Sparkle + Hearts'],											
-				'914558022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21068/outfit/gp-otf-out21068odv01.jpg','White + Stripes'],											
-				'913684002':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17282/outfit/gp-otf-out17282odv01.jpg','Cherry Print Dress & Schoolboy Bag'],											
-				'243726002':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17287/outfit/gp-otf-out17287odv01.jpg','Piped Academy Blazer & Rugby Stripe T'],											
-				'153025002':['/Asset_Archive/GPWeb/Assets/Outfit/172/OUT17288/outfit/gp-otf-out17288odv01.jpg','Striped Logo T & 1969 Ankle Zip Legging Jean'],											
-				'297021032':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18184/outfit/gp-otf-out18184odv01.jpg','Leather Moto Jacket & Striped Shirtdress'],											
-				'243726002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18186/outfit/gp-otf-out18186odv01.jpg','Fitted Boyfriend Shirt & 1969 Always Skinny Jean'],											
-				'153013002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18187/outfit/gp-otf-out18187odv01.jpg','Striped Henley & 1969 Long & Lean Jean'],											
-				'243791002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18189/outfit/gp-otf-out18189odv01.jpg','Logo Sweatshirt & 1969 Original Fit Jean'],											
-				'243739002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18191/outfit/gp-otf-out18191odv01.jpg','Colorblock Sweater & 1969 Denim Mini Skirt'],											
-				'153028002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18192/outfit/gp-otf-out18192odv01.jpg','Painterly Stripe Cardi & Tassel Loafer'],											
-				'243695062':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18194/outfit/gp-otf-out18194odv01.jpg','Terry Hoodie & 1969 Ankle Zip Legging Jean'],											
-				'317223012':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18196/outfit/gp-otf-out18196odv01.jpg','Piped Academy Blazer & Striped Pullover'],											
-				'312952002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18197/outfit/gp-otf-out18197odv01.jpg','Perfect Oxford Shirt & 1969 Real Straight Jean'],											
-				'243458002':['/Asset_Archive/GPWeb/Assets/Outfit/181/OUT18199/outfit/gp-otf-out18199odv01.jpg','Gap Pure Scoop & 1969 Sexy Boyfriend Jean'],											
-				'243730002':['/Asset_Archive/GPWeb/Assets/Outfit/183/OUT18329/outfit/gp-otf-out18329odv01.jpg','1969 Denim Jacket & Broken-In Khaki'],											
-				'911676002':['/Asset_Archive/GPWeb/Assets/Outfit/188/OUT18831/outfit/gp-otf-out18831odv01.jpg','Terry Pullover & Studded Sandal'],											
-				'243695042':['/Asset_Archive/GPWeb/Assets/Outfit/201/OUT20130/outfit/gp-otf-out20130odv01.jpg','Fitted Boyfriend Popover & 1969 Ankle Zip Legging Jean'],											
-				'913700012':['/Asset_Archive/GPWeb/Assets/Outfit/201/OUT20142/outfit/gp-otf-out20142odv01.jpg','Print Bird Dress & Military Jacket'],											
-				'331528072':['/Asset_Archive/GPWeb/Assets/Outfit/201/OUT20144/outfit/gp-otf-out20144odv01.jpg','Mercer T & Wedge Sandal'],											
-				'252479012':['/Asset_Archive/GPWeb/Assets/Outfit/201/OUT20145/outfit/gp-otf-out20145odv01.jpg','1969 Denim Blazer & Nautical Shift'],											
-				'331226032':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20240/outfit/gp-otf-out20240odv01.jpg','Short Parka & Striped Crew'],											
-				'140178012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20241/outfit/gp-otf-out20241odv01.jpg','Striped Crew & Slim Cropped Pant'],											
-				'296031042':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21171/outfit/gp-otf-out21171odv01.jpg','Pocket Top & 1969 Ankle Zip Legging Jean'],											
-				'317250012':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21172/outfit/gp-otf-out21172odv01.jpg','Elbow-Patch Cardigan & 1969 Pleated Shorts'],											
-				'913558002':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21175/outfit/gp-otf-out21175odv01.jpg','Academy Blazer & 1969 Modern Trouser Jean'],											
-				'243964042':['/Asset_Archive/GPWeb/Assets/Outfit/212/OUT21215/outfit/gp-otf-out21215odv01.jpg','The Cadet Blazer & t-Strap Sandal'],											
-				'289758002':['/Asset_Archive/GPWeb/Assets/Outfit/212/OUT21217/outfit/gp-otf-out21217odv01.jpg','The Perfect Shirtdress & Skinny Belt'],											
-				'243899002':['/Asset_Archive/GPWeb/Assets/Outfit/212/OUT21218/outfit/gp-otf-out21218odv01.jpg','The Leather Bomber & 1969 Legging Jean'],											
-				'311944002':['/Asset_Archive/GPWeb/Assets/Outfit/212/OUT21219/outfit/gp-otf-out21219odv01.jpg','The Academy Blazer & 1969 Plaid Pant'],											
-				'243695012':['/Asset_Archive/GPWeb/Assets/Outfit/212/OUT21221/outfit/gp-otf-out21221odv01.jpg','The Angora Crewneck & Leather Messenger'],											
-				'321941002':['/Asset_Archive/GPWeb/Assets/Outfit/213/OUT21377/outfit/gp-otf-out21377odv01.jpg','The Poncho Sweater & 1969 Always Skinny Cord'],											
-				'243784012':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21419/outfit/gp-otf-out21419odv01.jpg','The Leather Moto Jacket & 1969 Plaid Pant'],											
-				'243886032':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21420/outfit/gp-otf-out21420odv01.jpg','1969 Leather Jacket & Polka Dot Scarf'],											
-				'297021032':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21421/outfit/gp-otf-out21421odv01.jpg','The French Terry Peacoat & Striped Logo Top'],											
-				'911678002':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21422/outfit/gp-otf-out21422odv01.jpg','The 1969 Pocket Jacket & French Terry Dress'],											
-				'252442062':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21423/outfit/gp-otf-out21423odv01.jpg','The French Terry Moto Jacket & 1969 Cord Mini'],											
-				'140453012':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21424/outfit/gp-otf-out21424odv01.jpg','The Wide Brim Hat & Raglan Graphic T'],											
-				'312662002':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21425/outfit/gp-otf-out21425odv01.jpg','1969 Cord Jacket & Terry Sweatshirt'],											
-				'252492002':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21426/outfit/gp-otf-out21426odv01.jpg','The Plaited Cardi & Broken-In Khaki'],											
-				'243837022':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21428/outfit/gp-otf-out21428odv01.jpg','The Plaited Cardi & 1969 Sexy Boyfriend Cord'],											
-				'297021062':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21429/outfit/gp-otf-out21429odv01.jpg','The Studio Sweater & Striped Shirtdress'],											
-				'289723032':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21430/outfit/gp-otf-out21430odv01.jpg','The Long Cardi & Metallic Logo T'],											
-				'317223002':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21431/outfit/gp-otf-out21431odv01.jpg','The Angora Open Cardi & Lace-Up Bootie'],											
-				'243696002':['/Asset_Archive/GPWeb/Assets/Outfit/214/OUT21432/outfit/gp-otf-out21432odv01.jpg','The Cocoon T & 1969 Always Skinny Jean'],											
-				'331551062':['/Asset_Archive/GPWeb/Assets/Outfit/218/OUT21812/outfit/gp-otf-out21812odv01.jpg','The Suede Satchel & Broken-In Khaki'],											
-				'243696002':['/Asset_Archive/GPWeb/Assets/Outfit/218/OUT21813/outfit/gp-otf-out21813odv01.jpg','The Animal Print Sweater & Chambray Shirt'],											
-				'153028002':['/Asset_Archive/GPWeb/Assets/Outfit/218/OUT21814/outfit/gp-otf-out21814odv01.jpg','The Boyfriend Sweater & Leather Tote'],											
-				'903300002':['/Asset_Archive/GPWeb/Assets/Outfit/219/OUT21945/outfit/gp-otf-out21945odv01.jpg','The Classic Trench & 1969 Real Straight Jean'],											
-				'153165002':['/Asset_Archive/GPWeb/Assets/Outfit/219/OUT21946/outfit/gp-otf-out21946odv01.jpg','The Peasant Dress & Studded Sandal'],											
-				'903295002':['/Asset_Archive/GPWeb/Assets/Outfit/219/OUT21947/outfit/gp-otf-out21947odv01.jpg','The Twill Parka & Striped Shift'],											
-				'889161002':['/Asset_Archive/GPWeb/Assets/Outfit/219/OUT21948/outfit/gp-otf-out21948odv01.jpg','The Plaid Shirt & 1969 Sexy Boyfriend Jean'],											
-				'243718002':['/Asset_Archive/GPWeb/Assets/Outfit/219/OUT21950/outfit/gp-otf-out21950odv01.jpg','The Colorblock Sweater & Minnetonka Bootie'],											
-				'252530002':['/Asset_Archive/GPWeb/Assets/Outfit/223/OUT22304/outfit/gp-otf-out22304odv01.jpg','Wide-Stripe Sweater & 1969 Always Skinny Jean'],											
-				'289699002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22770/outfit/gp-otf-out22770odv01.jpg','Classic Blazer & Perfect Dot Shirt'],											
-				'913558002':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23305/outfit/gp-otf-out23305odv01.jpg','Wide-Brim Hat & 1969 Modern Trouser Jean'],											
-				'243695032':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23342/outfit/gp-otf-out23342odv01.jpg','Striped Cardi & Leather Ballet Flat'],											
-				'243695022':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23343/outfit/gp-otf-out23343odv01.jpg','Terry Moto Jacket & Striped Henley'],											
-				'289728012':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23344/outfit/gp-otf-out23344odv01.jpg','Cable Sweater & Slim Cropped Pant'],											
-				'289728022':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23345/outfit/gp-otf-out23345odv01.jpg','Chambray Shirt & Suede Satchel'],											
-				'153037002':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23346/outfit/gp-otf-out23346odv01.jpg','Fitted Boyfriend Shirt & Striped Belt'],											
-				'243695052':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23347/outfit/gp-otf-out23347odv01.jpg','Crewneck Sweater & Boyfriend Shirt'],
-				'296681002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20636/outfit/gp-otf-out20636odv01.jpg','Pop Goes the (Bright) Color'],			
-				'914812022':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21104/outfit/gp-otf-out21104odv01.jpg','Splash of Lime'],			
-				'914616002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21092/outfit/gp-otf-out21092odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/24)'],			
-				'914796012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21087/outfit/gp-otf-out21087odv01.jpg','Softly, Sweetly'],			
-				'913422002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21090/outfit/gp-otf-out21090odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 9/26)'],			
-				'915113002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20629/outfit/gp-otf-out20629odv01.jpg','Puppy Love'],			
-				'915115002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20630/outfit/gp-otf-out20630odv01.jpg','The Littlest Lady'],			
-				'915121002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20631/outfit/gp-otf-out20631odv01.jpg','A Bit of Lime, A Lot of Grape'],			
-				'915116002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20632/outfit/gp-otf-out20632odv01.jpg','A Dot Here, A Bow There'],			
-				'915129002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21085/outfit/gp-otf-out21085odv01.jpg','Candy-Coated Stripes'],			
-				'185822002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20628/outfit/gp-otf-out20628odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/1)'],			
-				'912943002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16666/outfit/gp-otf-out16666odv01.jpg','Junior Varsity'],			
-				'153037002':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23346/outfit/gp-otf-out23346odv01.jpg','Fitted Boyfriend Shirt & Striped Belt'],			
-				'243695052':['/Asset_Archive/GPWeb/Assets/Outfit/233/OUT23347/outfit/gp-otf-out23347odv01.jpg','Crewneck Sweater & Boyfriend Shirt'],			
-				'349771002':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20450/outfit/gp-otf-out20450odv01.jpg','The Twill Parka & Super Skinny Pant'],			
-				'914029022':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20453/outfit/gp-otf-out20453odv01.jpg','The Cashmere Cardi & Drop-Shoulder Shirtdress'],			
-				'245334052':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20452/outfit/gp-otf-out20452odv01.jpg','The Patterned Sweater & Biker Boot'],			
-				'349771012':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20451/outfit/gp-otf-out20451odv01.jpg','The Military Cape & Striped Pullover'],			
-				'349771022':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19171/outfit/gp-otf-out19171odv01.jpg','The Tweed Moto & Plaid Scarf'],			
-				'244966012':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15825/outfit/gp-otf-out15825odv01.jpg','The Quilted Leather Jacket & Fluid Shirtdress'],			
-				'246470002':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15826/outfit/gp-otf-out15826odv01.jpg','The Turtleneck Sweater & Slim Cropped Pant'],			
-				'914476052':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20607/outfit/gp-otf-out20607odv01.jpg','Bright Green + Graphics'],			
-				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],			
-				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],			
-				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],			
-				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!'],			
-				'173905002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20871/outfit/gp-otf-out20871odv01.jpg','Lime + Cozy'],			
-				'301589002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20870/outfit/gp-otf-out20870odv01.jpg','Coral + Cable'],			
-				'914417082':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20866/outfit/gp-otf-out20866odv01.jpg','Grape + Fringe'],			
-				'914417092':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20867/outfit/gp-otf-out20867odv01.jpg','Aqua + Fur'],			
-				'292607002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20868/outfit/gp-otf-out20868odv01.jpg','Flower Girl'],			
-				'292606002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20873/outfit/gp-otf-out20873odv01.jpg','Perfect Your Party'],			
-				'292621002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20872/outfit/gp-otf-out20872odv01.jpg','All that Glitters'],			
-				'914408012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20874/outfit/gp-otf-out20874odv01.jpg','We Love Houndstooth'],			
-				'912282012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20869/outfit/gp-otf-out20869odv01.jpg','A Shot of Pink'],			
-				'914400002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20875/outfit/gp-otf-out20875odv01.jpg','Sparkle + Shine'],
-				'317288002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22828/outfit/gp-otf-out22828odv01.jpg','Flocked Velvet Hidden Underwire Balconette Bra & Flocked Velvet High-Waist Bikini (true black)'],			
-				'317280002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22849/outfit/gp-otf-out22849odv01.jpg','Flocked Velvet Plunge Demi Bra & Flocked Velvet Hipster (true black)'],			
-				'317287002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22850/outfit/gp-otf-out22850odv01.jpg','Flocked Velvet Uplift Balconette Bra & Flocked Velvet Hipster (true black)'],
-				'245957032':['/Asset_Archive/GPWeb/Assets/Outfit/165/OUT16584/outfit/gp-otf-out16584odv01.jpg','The Moss Stitch Hat & Plaid Scarf'],			
-				'243964112':['/Asset_Archive/GPWeb/Assets/Outfit/165/OUT16582/outfit/gp-otf-out16582odv01.jpg','The Dot Pullover & 1969 Legging Cord'],
-				'246378012':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16233/outfit/gp-otf-out16233odv01.jpg','The Stripe Top & 1969 Real Straight Jean'],			
-				'243974092':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16234/outfit/gp-otf-out16234odv01.jpg','The Raglan Cardigan & Print Pocket Top'],			
-				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift'],
-				'317284002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22813/outfit/gp-otf-out22813odv01.jpg','Tea Rose Lace Uplift Bra & Tea Rose Lace Thong (waterdrop)'],																	
-				'317286002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22812/outfit/gp-otf-out22812odv01.jpg','Favorite Lace Uplift Bra & Ultra Sheer Printed Girl Shorts (pink floral)'],																	
-				'317275012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22862/outfit/gp-otf-out22862odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (pink papillions)'],																	
-				'317275002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22878/outfit/gp-otf-out22878odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (yellow butterflies)'],																	
-				'139926012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22861/outfit/gp-otf-out22861odv01.jpg','Favorite Floral Wireless Bra & Ultra Sheer Printed Girl Shorts (fog blooms)'],																	
-				'317282012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22831/outfit/gp-otf-out22831odv01.jpg','Mesh Lace plunge Demi Bra & Mesh Lace Hipster Tanga (clean lime)'],																	
-				'317277002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22834/outfit/gp-otf-out22834odv01.jpg','Mesh Lace Wireless Bra & Mesh Lace Girl Shorts (waterdrop)'],																	
-				'317289012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22835/outfit/gp-otf-out22835odv01.jpg','Mesh Lace Sexy Plunge Bra & Mesh Lace Girl Shorts (neon violet)'],																	
-				'322315002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22827/outfit/gp-otf-out22827odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (light heather pink)'],																	
-				'322315012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22877/outfit/gp-otf-out22877odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (true indigo)'],																	
-				'322375002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22895/outfit/gp-otf-out22895odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (peony fog)'],																	
-				'322375012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22793/outfit/gp-otf-out22793odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (abyss)'],																	
-				'322375022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22894/outfit/gp-otf-out22894odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (true black)'],
-				'912943002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16666/outfit/gp-otf-out16666odv01.jpg','Junior Varsity'],											
-				'184090002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16667/outfit/gp-otf-out16667odv01.jpg','Rugby Rules'],											
-				'141063002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16668/outfit/gp-otf-out16668odv01.jpg','Color Coded'],											
-				'184083022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16669/outfit/gp-otf-out16669odv01.jpg','Model Student'],											
-				'145148042':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16671/outfit/gp-otf-out16671odv01.jpg','Hue Knew'],											
-				'914476022':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18256/outfit/gp-otf-out18256odv01.jpg','Smarty Pants'],											
-				'912956002':['/Asset_Archive/GPWeb/Assets/Outfit/182/OUT18258/outfit/gp-otf-out18258odv01.jpg','First Mate'],											
-				'184110002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19744/outfit/gp-otf-out19744odv01.jpg','Book Smarts'],											
-				'912942002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19745/outfit/gp-otf-out19745odv01.jpg','Boys Only'],											
-				'141060012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19746/outfit/gp-otf-out19746odv01.jpg','Video Game Creator'],											
-				'141041002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19747/outfit/gp-otf-out19747odv01.jpg','Star Athlete'],											
-				'145024012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19749/outfit/gp-otf-out19749odv01.jpg','Cool Cadet'],											
-				'911162002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19940/outfit/gp-otf-out19940odv01.jpg','A is for Apple'],											
-				'317284002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22813/outfit/gp-otf-out22813odv01.jpg','Tea Rose Lace Uplift Bra & Tea Rose Lace Thong (waterdrop)'],											
-				'317286002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22812/outfit/gp-otf-out22812odv01.jpg','Favorite Lace Uplift Bra & Ultra Sheer Printed Girl Shorts (pink floral)'],											
-				'317275012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22862/outfit/gp-otf-out22862odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (pink papillions)'],											
-				'317275002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22878/outfit/gp-otf-out22878odv01.jpg','Favorite Mesh Lace T-shirt Bra & Mesh Lace Hipster Tanga (yellow butterflies)'],											
-				'139926012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22861/outfit/gp-otf-out22861odv01.jpg','Favorite Floral Wireless Bra & Ultra Sheer Printed Girl Shorts (fog blooms)'],											
-				'317282012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22831/outfit/gp-otf-out22831odv01.jpg','Mesh Lace plunge Demi Bra & Mesh Lace Hipster Tanga (clean lime)'],											
-				'317277002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22834/outfit/gp-otf-out22834odv01.jpg','Mesh Lace Wireless Bra & Mesh Lace Girl Shorts (waterdrop)'],											
-				'317289012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22835/outfit/gp-otf-out22835odv01.jpg','Mesh Lace Sexy Plunge Bra & Mesh Lace Girl Shorts (neon violet)'],											
-				'322315002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22827/outfit/gp-otf-out22827odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (light heather pink)'],											
-				'322315012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22877/outfit/gp-otf-out22877odv01.jpg','Ribbed Satin-Trim Henley & Ribbed Satin-Trim Leggings (true indigo)'],											
-				'322375002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22895/outfit/gp-otf-out22895odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (peony fog)'],											
-				'322375012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22793/outfit/gp-otf-out22793odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (abyss)'],											
-				'322375022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22894/outfit/gp-otf-out22894odv01.jpg','Modal Lace Triangle Cami & Modal Lace Shorts (true black)'],											
-				'170756022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16670/outfit/gp-otf-out16670odv01.jpg','Neon Casual'],											
-				'173320002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19738/outfit/gp-otf-out19738odv01.jpg','Statement Maker: Tweed!'],											
-				'172476002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19739/outfit/gp-otf-out19739odv01.jpg','So Now: Shorts+Footless Tights+Booties'],											
-				'172480002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19740/outfit/gp-otf-out19740odv01.jpg','What\'s Cool: Sparkle on Her Collar'],											
-				'910479002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19742/outfit/gp-otf-out19742odv01.jpg','Put It in Print'],											
-				'910488002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19748/outfit/gp-otf-out19748odv01.jpg','White Hot...Denim'],											
-				'172463012':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19750/outfit/gp-otf-out19750odv01.jpg','Spotted! The Leopard Skirt'],											
-				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19786/outfit/gp-otf-out19786odv01.jpg','Mix This: Denim & Tulle'],											
-				'172482002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19787/outfit/gp-otf-out19787odv01.jpg','Sparkle+Shine+Cozy Knits'],											
-				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22218/outfit/gp-otf-out22218odv01.jpg','Perfect Fit'],											
-				'910512002':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22219/outfit/gp-otf-out22219odv01.jpg','A Leg Up'],											
-				'762719002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22758/outfit/gp-otf-out22758odv01.jpg','Jump for Jeans'],											
-				'910510022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22760/outfit/gp-otf-out22760odv01.jpg','Best Right Foot'],											
-				'173326002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22762/outfit/gp-otf-out22762odv01.jpg','Be Spotted'],											
-				'175401002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22763/outfit/gp-otf-out22763odv01.jpg','Play Dress Up'],											
-				'762717002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22764/outfit/gp-otf-out22764odv01.jpg','Cute to Boot'],											
-				'146096022':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22778/outfit/gp-otf-out22778odv01.jpg','Great American Painter'],											
-				'171684012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22780/outfit/gp-otf-out22780odv01.jpg','Editor-in-Chief'],											
-				'173905002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20871/outfit/gp-otf-out20871odv01.jpg','Lime + Cozy'],											
-				'301589002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20870/outfit/gp-otf-out20870odv01.jpg','Coral + Cable'],											
-				'914417082':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20866/outfit/gp-otf-out20866odv01.jpg','Grape + Fringe'],											
-				'914417092':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20867/outfit/gp-otf-out20867odv01.jpg','Aqua + Fur'],											
-				'292607002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20868/outfit/gp-otf-out20868odv01.jpg','Flower Girl'],											
-				'292606002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20873/outfit/gp-otf-out20873odv01.jpg','Perfect Your Party'],											
-				'292621002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20872/outfit/gp-otf-out20872odv01.jpg','All that Glitters'],											
-				'914408012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20874/outfit/gp-otf-out20874odv01.jpg','We Love Houndstooth'],											
-				'912282012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20869/outfit/gp-otf-out20869odv01.jpg','A Shot of Pink'],											
-				'914400002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20875/outfit/gp-otf-out20875odv01.jpg','Sparkle + Shine'],											
-				'211907002':['/Asset_Archive/GPWeb/Assets/Outfit/188/OUT18824/outfit/gp-otf-out18824odv01.jpg','Layer it: Dots + Color'],											
-				'910474002':['/Asset_Archive/GPWeb/Assets/Outfit/188/OUT18822/outfit/gp-otf-out18822odv01.jpg','Precious Metal'],											
-				'317288002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22828/outfit/gp-otf-out22828odv01.jpg','Flocked Velvet Hidden Underwire Balconette Bra & Flocked Velvet High-Waist Bikini (true black)'],											
-				'317280002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22849/outfit/gp-otf-out22849odv01.jpg','Flocked Velvet Plunge Demi Bra & Flocked Velvet Hipster (true black)'],											
-				'317287002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22850/outfit/gp-otf-out22850odv01.jpg','Flocked Velvet Uplift Balconette Bra & Flocked Velvet Hipster (true black)'],											
-				'296681002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20636/outfit/gp-otf-out20636odv01.jpg','Pop Goes the (Bright) Color'],											
-				'914812022':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21104/outfit/gp-otf-out21104odv01.jpg','Splash of Lime'],											
-				'914809002':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21105/outfit/gp-otf-out21105odv01.jpg','Puppy Love'],											
-				'914808002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20876/outfit/gp-otf-out20876odv01.jpg','Plaid Rocks!'],											
-				'296639002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21088/outfit/gp-otf-out21088odv01.jpg','Classic Gingham + (Bright!) Red Cords'],											
-				'914616002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21092/outfit/gp-otf-out21092odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/24) plaza view'],											
-				'914796012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21087/outfit/gp-otf-out21087odv01.jpg','Softly, Sweetly'],											
-				'185831002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21091/outfit/gp-otf-out21091odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/1) boy sleepwear'],											
-				'913422002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21090/outfit/gp-otf-out21090odv01.jpg','Puff Love'],											
-				'297823002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20626/outfit/gp-otf-out20626odv01.jpg','Creamy Cable Knit + (Bright!) Red Dots'],											
-				'185822002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20628/outfit/gp-otf-out20628odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/1) girl sleepwear'],											
-				'915113002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20629/outfit/gp-otf-out20629odv01.jpg','Puppy Love'],											
-				'915115002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20630/outfit/gp-otf-out20630odv01.jpg','The Littlest Lady'],											
-				'915121002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20631/outfit/gp-otf-out20631odv01.jpg','A Bit of Lime, A Lot of Grape'],											
-				'915116002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20632/outfit/gp-otf-out20632odv01.jpg','A Dot Here, A Bow There'],											
-				'915129002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21085/outfit/gp-otf-out21085odv01.jpg','Candy-Coated Stripes'],											
-				'299738002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21086/outfit/gp-otf-out21086odv01.jpg','A Bright Spot, or Two!'],											
-				'915110002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21096/outfit/gp-otf-out21096odv01.jpg','Do the Polka Dot'],											
-				'914974012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20627/outfit/gp-otf-out20627odv01.jpg','Puff Love'],											
-				'915156002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20242/outfit/gp-otf-out20242odv01.jpg','Waiting Studio to upload &� Copy to name (per studio to be uploaded 10/24) plaza view'],											
-				'915147022':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20625/outfit/gp-otf-out20625odv01.jpg','Play with Pastel'],											
-				'151064032':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19165/outfit/gp-otf-out19165odv01.jpg','Cowlneck Tunic & Smocked Skirt'],											
-				'455136002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19774/outfit/gp-otf-out19774odv01.jpg','Military Jacket & Embroidered Dress'],											
-				'187367002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19776/outfit/gp-otf-out19776odv01.jpg','Striped Shirt & 1969 Real Straight Cropped Jean'],											
-				'915669002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20829/outfit/gp-otf-out20829odv01.jpg','Polka Dot Dress'],											
-				'915671012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20830/outfit/gp-otf-out20830odv01.jpg','Nautical Shift'],											
-				'302428022':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16688/outfit/gp-otf-out16688odv01.jpg','Lived-In Wash Gingham Shirt + 1969 Five-Pocket Cord'],											
-				'302423012':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16689/outfit/gp-otf-out16689odv01.jpg','Lived-In Wash Plaid Shirt + Lived-In Slim Khaki'],											
-				'252368002':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14185/outfit/gp-otf-out14185odv01.jpg','Merino Cardigan + Gap 1969 T + Lived-In Slim Khaki'],											
-				'239524002':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14191/outfit/gp-otf-out14191odv01.jpg','Marled Henley + Lived-In Slim Khaki '],											
-				'302436002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16690/outfit/gp-otf-out16690odv01.jpg','Flannel Gingham Shirt + Gap 1969 T + 1969 Authentic Skinny Fit'],											
-				'246566012':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16692/outfit/gp-otf-out16692odv01.jpg','Flannel Gingham Shirt + Cable knit sweater + 1969 Authentic Skinny Fit Jeans'],											
-				'240373002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16691/outfit/gp-otf-out16691odv01.jpg','Four-Pocket Jacket + Cable Knit Sweater + 1969 Straight Fit Jeans'],											
-				'239545012':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14189/outfit/gp-otf-out14189odv01.jpg','Marled Striped T + 1969 Slim Fit Jeans + Cable Knit Beanie'],											
-				'302434022':['/Asset_Archive/GPWeb/Assets/Outfit/148/OUT14806/outfit/gp-otf-out14806odv01.jpg','Modern Oxford Shirt + Marled Pocket T + 1969 Slim Fit Jeans'],											
-				'302362022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13939/outfit/gp-otf-out13939odv01.jpg','Brushed Fleece Cardigan + Lived-In Wash Plaid Shirt + 1969 Slim Fit Jeans'],											
-				'911839012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13938/outfit/gp-otf-out13938odv01.jpg','Quilted Puffer Vest + Rugby Sweater + 1969 five-pocket cord'],											
-				'321835042':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13940/outfit/gp-otf-out13940odv01.jpg','Brushed Fleece Hooded Henley + Flannel Plaid Shirt + 1969 Selvage Straight Jeans'],											
-				'239693022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13943/outfit/gp-otf-out13943odv01.jpg','Plaited Waffle Crewneck + Lived-In Slim Khaki + Cable Knit Beanie'],											
-				'240158002':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13937/outfit/gp-otf-out13937odv01.jpg','Admiral Blazer + Merino Cardigan + Non-Iron Shirt + 1969 Selvage Slim Fit Jeans'],											
-				'302452012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13936/outfit/gp-otf-out13936odv01.jpg','Non-Iron Shirt + Tweed Tie + Lived-In Moleskin Pants'],											
-				'244874032':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13935/outfit/gp-otf-out13935odv01.jpg','Rugby Sweater + Lived-In Wash Plaid Shirt + 1969 Selvage Authentic Skinny Fit Jeans '],											
-				'279596002':['/Asset_Archive/GPWeb/Assets/Outfit/161/OUT16195/outfit/gp-otf-out16195odv01.jpg','The Twill Parka & Striped Sweater'],											
-				'218347002':['/Asset_Archive/GPWeb/Assets/Outfit/173/OUT17304/outfit/gp-otf-out17304odv01.jpg','The Leather Moto Jacket & Belted Dress'],											
-				'249627012':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17856/outfit/gp-otf-out17856odv01.jpg','The Dot Pullover & Animal Print Scarf'],											
-				'249631002':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17860/outfit/gp-otf-out17860odv01.jpg','The Oxford Shirt & 1969 Always Skinny Cord'],											
-				'279629002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19778/outfit/gp-otf-out19778odv01.jpg','The Printed Wrap Dress'],											
-				'914690002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20858/outfit/gp-otf-out20858odv01.jpg','Suit Up, Superman!'],											
-				'914731002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21060/outfit/gp-otf-out21060odv01.jpg','Biker Boy'],											
-				'297137002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21070/outfit/gp-otf-out21070odv01.jpg','Clubhouse Prep'],											
-				'914725002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21071/outfit/gp-otf-out21071odv01.jpg','Get Your Kicks!'],											
-				'148781002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20621/outfit/gp-otf-out20621odv01.jpg','A League of His Own'],											
-				'149542032':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20622/outfit/gp-otf-out20622odv01.jpg','Varsity Cool'],											
-				'148784012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20623/outfit/gp-otf-out20623odv01.jpg','Class Act'],											
-				'149651002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20212/outfit/gp-otf-out20212odv01.jpg','Anchors Our Way'],											
-				'149622012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20213/outfit/gp-otf-out20213odv01.jpg','Ahoy, Sea Captain!'],											
-				'914698032':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21066/outfit/gp-otf-out21066odv01.jpg','Cobalt + Cable'],											
-				'914699002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Orange + Stripes'],											
-				'183847002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20862/outfit/gp-otf-out20862odv01.jpg','Forest Green + Cable'],											
-				'183844002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20863/outfit/gp-otf-out20863odv01.jpg','Khaki + Leather'],											
-				'915035002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21063/outfit/gp-otf-out21063odv01.jpg','Waiting Studio to upload &  Copy to name'],											
-				'914688002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20860/outfit/gp-otf-out20860odv01.jpg','Waiting Studio to upload &  Copy to name'],											
-				'183852002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21062/outfit/gp-otf-out21062odv01.jpg','Warm, Warmer, Warmest!'],											
-				'181106012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20617/outfit/gp-otf-out20617odv01.jpg','Uptown Downtown'],											
-				'181127012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20618/outfit/gp-otf-out20618odv01.jpg','See You at the Show'],											
-				'180713002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20619/outfit/gp-otf-out20619odv01.jpg','Ready, Set, Style!'],											
-				'912919002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20851/outfit/gp-otf-out20851odv01.jpg','Desert Sands'],											
-				'913279002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20856/outfit/gp-otf-out20856odv01.jpg','Desert, First'],											
-				'914549002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21072/outfit/gp-otf-out21072odv01.jpg','Desert Sunset'],											
-				'912924002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21065/outfit/gp-otf-out21065odv01.jpg','Cozy + Coral'],											
-				'914560002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20857/outfit/gp-otf-out20857odv01.jpg','Spotted: Sweaters Everywhere!'],											
-				'914566002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20865/outfit/gp-otf-out20865odv01.jpg','A Little Bit Mod'],											
-				'912934002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21057/outfit/gp-otf-out21057odv01.jpg','Fit to be Tied'],											
-				'914560012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21058/outfit/gp-otf-out21058odv01.jpg','A Spot of Charm'],											
-				'912932002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21059/outfit/gp-otf-out21059odv01.jpg','Style Cycle'],											
-				'181204002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19910/outfit/gp-otf-out19910odv01.jpg','Retro Fitted'],											
-				'180574012':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19995/outfit/gp-otf-out19995odv01.jpg','Stir it Up'],											
-				'180577002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19996/outfit/gp-otf-out19996odv01.jpg','Precious Jewel Tones'],											
-				'914558002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Hot Pink + Fur'],											
-				'266967022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21067/outfit/gp-otf-out21067odv01.jpg','Sparkle + Hearts'],											
-				'914558022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21068/outfit/gp-otf-out21068odv01.jpg','White + Stripes'],											
-				'294597002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20859/outfit/gp-otf-out20859odv01.jpg','Waiting Studio to upload &  Copy to name'],											
-				'294553002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21064/outfit/gp-otf-out21064odv01.jpg','Waiting Studio to upload &  Copy to name'],											
-				'180780002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21061/outfit/gp-otf-out21061odv01.jpg','Warm, Warmer, Warmest!'],											
-				'349771002':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20450/outfit/gp-otf-out20450odv01.jpg','The Twill Parka & Super Skinny Pant'],											
-				'914029022':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20453/outfit/gp-otf-out20453odv01.jpg','The Cashmere Cardi & Drop-Shoulder Shirtdress'],											
-				'245334052':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20452/outfit/gp-otf-out20452odv01.jpg','The Patterned Sweater & Biker Boot'],											
-				'349771012':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20451/outfit/gp-otf-out20451odv01.jpg','The Military Cape & Striped Pullover'],											
-				'349771022':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19171/outfit/gp-otf-out19171odv01.jpg','The Tweed Moto & Plaid Scarf'],											
-				'244966012':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15825/outfit/gp-otf-out15825odv01.jpg','The Quilted Leather Jacket & Fluid Shirtdress'],											
-				'246470002':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15826/outfit/gp-otf-out15826odv01.jpg','The Turtleneck Sweater & Slim Cropped Pant'],											
-				'914476052':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20607/outfit/gp-otf-out20607odv01.jpg','Bright Green + Graphics'],											
-				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],											
-				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],											
-				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],											
-				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!'],
-				'912942002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19745/outfit/gp-otf-out19745odv01.jpg','Boys Only'],														
-				'762719002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22758/outfit/gp-otf-out22758odv01.jpg','Jump for Jeans'],														
-				'912282012':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20869/outfit/gp-otf-out20869odv01.jpg','A Shot of Pink'],														
-				'914812022':['/Asset_Archive/GPWeb/Assets/Outfit/211/OUT21104/outfit/gp-otf-out21104odv01.jpg','Splash of Lime'],														
-				'915116002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20632/outfit/gp-otf-out20632odv01.jpg','A Dot Here, A Bow There'],														
-				'240373002':['/Asset_Archive/GPWeb/Assets/Outfit/166/OUT16691/outfit/gp-otf-out16691odv01.jpg','Four-Pocket Jacket + Cable Knit Sweater + 1969 Straight Fit Jeans'],														
-				'239545012':['/Asset_Archive/GPWeb/Assets/Outfit/141/OUT14189/outfit/gp-otf-out14189odv01.jpg','Marled Striped T + 1969 Slim Fit Jeans + Cable Knit Beanie'],														
-				'302434022':['/Asset_Archive/GPWeb/Assets/Outfit/148/OUT14806/outfit/gp-otf-out14806odv01.jpg','Modern Oxford Shirt + Marled Pocket T + 1969 Slim Fit Jeans'],														
-				'302362022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13939/outfit/gp-otf-out13939odv01.jpg','Brushed Fleece Cardigan + Lived-In Wash Plaid Shirt + 1969 Slim Fit Jeans'],														
-				'911839012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13938/outfit/gp-otf-out13938odv01.jpg','Quilted Puffer Vest + Rugby Sweater + 1969 five-pocket cord'],														
-				'321835042':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13940/outfit/gp-otf-out13940odv01.jpg','Brushed Fleece Hooded Henley + Flannel Plaid Shirt + 1969 Selvage Straight Jeans'],														
-				'239693022':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13943/outfit/gp-otf-out13943odv01.jpg','Plaited Waffle Crewneck + Lived-In Slim Khaki + Cable Knit Beanie'],														
-				'240158002':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13937/outfit/gp-otf-out13937odv01.jpg','Admiral Blazer + Merino Cardigan + Non-Iron Shirt + 1969 Selvage Slim Fit Jeans'],														
-				'302452012':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13936/outfit/gp-otf-out13936odv01.jpg','Non-Iron Shirt + Tweed Tie + Lived-In Moleskin Pants'],														
-				'244874032':['/Asset_Archive/GPWeb/Assets/Outfit/139/OUT13935/outfit/gp-otf-out13935odv01.jpg','Rugby Sweater + Lived-In Wash Plaid Shirt + 1969 Selvage Authentic Skinny Fit Jeans '],														
-				'279596002':['/Asset_Archive/GPWeb/Assets/Outfit/161/OUT16195/outfit/gp-otf-out16195odv01.jpg','The Twill Parka & Striped Sweater'],														
-				'218347002':['/Asset_Archive/GPWeb/Assets/Outfit/173/OUT17304/outfit/gp-otf-out17304odv01.jpg','The Leather Moto Jacket & Belted Dress'],														
-				'249627012':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17856/outfit/gp-otf-out17856odv01.jpg','The Dot Pullover & Animal Print Scarf'],														
-				'249631002':['/Asset_Archive/GPWeb/Assets/Outfit/178/OUT17860/outfit/gp-otf-out17860odv01.jpg','The Oxford Shirt & 1969 Always Skinny Cord'],														
-				'279629002':['/Asset_Archive/GPWeb/Assets/Outfit/197/OUT19778/outfit/gp-otf-out19778odv01.jpg','The Printed Wrap Dress'],														
-				'914690002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20858/outfit/gp-otf-out20858odv01.jpg','Suit Up, Superman!'],														
-				'914731002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21060/outfit/gp-otf-out21060odv01.jpg','Biker Boy'],														
-				'297137002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21070/outfit/gp-otf-out21070odv01.jpg','Clubhouse Prep'],														
-				'914725002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21071/outfit/gp-otf-out21071odv01.jpg','Get Your Kicks!'],														
-				'148781002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20621/outfit/gp-otf-out20621odv01.jpg','A League of His Own'],														
-				'149542032':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20622/outfit/gp-otf-out20622odv01.jpg','Varsity Cool'],														
-				'148784012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20623/outfit/gp-otf-out20623odv01.jpg','Class Act'],														
-				'149651002':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20212/outfit/gp-otf-out20212odv01.jpg','Anchors Our Way'],														
-				'149622012':['/Asset_Archive/GPWeb/Assets/Outfit/202/OUT20213/outfit/gp-otf-out20213odv01.jpg','Ahoy, Sea Captain!'],														
-				'914698032':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21066/outfit/gp-otf-out21066odv01.jpg','Cobalt + Cable'],														
-				'914699002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Orange + Stripes'],														
-				'183847002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20862/outfit/gp-otf-out20862odv01.jpg','Forest Green + Cable'],														
-				'183844002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20863/outfit/gp-otf-out20863odv01.jpg','Khaki + Leather'],														
-				'915035002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21063/outfit/gp-otf-out21063odv01.jpg','Waiting Studio to upload &  Copy to name'],														
-				'914688002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20860/outfit/gp-otf-out20860odv01.jpg','Waiting Studio to upload &  Copy to name'],														
-				'183852002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21062/outfit/gp-otf-out21062odv01.jpg','Warm, Warmer, Warmest!'],														
-				'181106012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20617/outfit/gp-otf-out20617odv01.jpg','Uptown Downtown'],														
-				'181127012':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20618/outfit/gp-otf-out20618odv01.jpg','See You at the Show'],														
-				'180713002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20619/outfit/gp-otf-out20619odv01.jpg','Ready, Set, Style!'],														
-				'912919002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20851/outfit/gp-otf-out20851odv01.jpg','Desert Sands'],														
-				'913279002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20856/outfit/gp-otf-out20856odv01.jpg','Desert, First'],														
-				'914549002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21072/outfit/gp-otf-out21072odv01.jpg','Desert Sunset'],														
-				'912924002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21065/outfit/gp-otf-out21065odv01.jpg','Cozy + Coral'],														
-				'914560002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20857/outfit/gp-otf-out20857odv01.jpg','Spotted: Sweaters Everywhere!'],														
-				'914566002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20865/outfit/gp-otf-out20865odv01.jpg','A Little Bit Mod'],														
-				'912934002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21057/outfit/gp-otf-out21057odv01.jpg','Fit to be Tied'],														
-				'914560012':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21058/outfit/gp-otf-out21058odv01.jpg','A Spot of Charm'],														
-				'912932002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21059/outfit/gp-otf-out21059odv01.jpg','Style Cycle'],														
-				'181204002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19910/outfit/gp-otf-out19910odv01.jpg','Retro Fitted'],														
-				'180574012':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19995/outfit/gp-otf-out19995odv01.jpg','Stir it Up'],														
-				'180577002':['/Asset_Archive/GPWeb/Assets/Outfit/199/OUT19996/outfit/gp-otf-out19996odv01.jpg','Precious Jewel Tones'],														
-				'914558002':['/Asset_Archive/GPWeb/Assets/Outfit/208/OUT20861/outfit/gp-otf-out20861odv01.jpg','Hot Pink + Fur'],														
-				'266967022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21067/outfit/gp-otf-out21067odv01.jpg','Sparkle + Hearts'],														
-				'914558022':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21068/outfit/gp-otf-out21068odv01.jpg','White + Stripes'],														
-				'180780002':['/Asset_Archive/GPWeb/Assets/Outfit/210/OUT21061/outfit/gp-otf-out21061odv01.jpg','Warm, Warmer, Warmest!'],														
-				'349771002':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20450/outfit/gp-otf-out20450odv01.jpg','The Twill Parka & Super Skinny Pant'],														
-				'914029022':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20453/outfit/gp-otf-out20453odv01.jpg','The Cashmere Cardi & Drop-Shoulder Shirtdress'],														
-				'245334052':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20452/outfit/gp-otf-out20452odv01.jpg','The Patterned Sweater & Biker Boot'],														
-				'349771012':['/Asset_Archive/GPWeb/Assets/Outfit/204/OUT20451/outfit/gp-otf-out20451odv01.jpg','The Military Cape & Striped Pullover'],														
-				'349771022':['/Asset_Archive/GPWeb/Assets/Outfit/191/OUT19171/outfit/gp-otf-out19171odv01.jpg','The Tweed Moto & Plaid Scarf'],														
-				'244966012':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15825/outfit/gp-otf-out15825odv01.jpg','The Quilted Leather Jacket & Fluid Shirtdress'],														
-				'246470002':['/Asset_Archive/GPWeb/Assets/Outfit/158/OUT15826/outfit/gp-otf-out15826odv01.jpg','The Turtleneck Sweater & Slim Cropped Pant'],														
-				'914476052':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20607/outfit/gp-otf-out20607odv01.jpg','Bright Green + Graphics'],														
-				'914476042':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20608/outfit/gp-otf-out20608odv01.jpg','Cobalt + Stripes'],														
-				'914476002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20610/outfit/gp-otf-out20610odv01.jpg','Chocolate + Plaid'],														
-				'914476062':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20606/outfit/gp-otf-out20606odv01.jpg','Orange + Fair Isle'],														
-				'912973002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20603/outfit/gp-otf-out20603odv01.jpg','Layer On!'],														
-				'243974092':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16234/outfit/gp-otf-out16234odv01.jpg','The Raglan Cardigan & Print Pocket Top'],														
-				'245471002':['/Asset_Archive/GPWeb/Assets/Outfit/162/OUT16232/outfit/gp-otf-out16232odv01.jpg','The Academy Blazer & Colorblock Shift'],														
-				'240733032':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22830/outfit/gp-otf-out22830odv01.jpg','The Fedora & Striped Sweater Dress'],														
-				'245930002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22829/outfit/gp-otf-out22829odv01.jpg','The Animal Print Scarf & Herringbone Blazer'],														
-				'322428022':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22836/outfit/gp-otf-out22836odv01.jpg','The Twill Parka & Biker Boot'],														
-				'243718002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22867/outfit/gp-otf-out22867odv01.jpg','The Washed Leather Jacket & Dot Pullover'],														
-				'911668002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22815/outfit/gp-otf-out22815odv01.jpg','The Chambray Shirt & Striped Henley'],														
-				'243740002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22864/outfit/gp-otf-out22864odv01.jpg','The Academy Blazer & 1969 Sexy Boyfriend Jean'],														
-				'243964042':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22818/outfit/gp-otf-out22818odv01.jpg','The Houndstooth Sweater & 1969 Legging Cord'],														
-				'243964142':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22819/outfit/gp-otf-out22819odv01.jpg','The Wool Puffer & Lace-Up Bootie'],														
-				'245792012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22858/outfit/gp-otf-out22858odv01.jpg','The Striped Cowlneck & 1969 Always Skinny Jean'],														
-				'322428012':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22796/outfit/gp-otf-out22796odv01.jpg','The Twill Parka & Arch Logo Sweater'],														
-				'245485002':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22797/outfit/gp-otf-out22797odv01.jpg','The 1969 Western Shirt & Wool Mini'],														
-				'914035002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22893/outfit/gp-otf-out22893odv01.jpg','The Cashmere Striped Sweater & Fluid Blouson Dress'],														
-				'252416112':['/Asset_Archive/GPWeb/Assets/Outfit/227/OUT22798/outfit/gp-otf-out22798odv01.jpg','Puffer Vest & 1969 Legging Jean'],														
-				'914028012':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22821/outfit/gp-otf-out22821odv01.jpg','The Printed Dress & Opaque Tight'],														
-				'243974032':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22804/outfit/gp-otf-out22804odv01.jpg','The Military Coat & 1969 Skinny Boot Cord'],														
-				'243964122':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22859/outfit/gp-otf-out22859odv01.jpg','The Diamond Cable Sweater & Canvas Loafer'],														
-				'322673002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22866/outfit/gp-otf-out22866odv01.jpg','The Eversoft Striped Sweater & Ballet Flat'],														
-				'153134052':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22868/outfit/gp-otf-out22868odv01.jpg','The Eversoft Turtleneck & 1969 Real Straight Jean'],														
-				'245934002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22817/outfit/gp-otf-out22817odv01.jpg','The Classic Pea Coat & Striped Pullover'],														
-				'245747002':['/Asset_Archive/GPWeb/Assets/Outfit/228/OUT22822/outfit/gp-otf-out22822odv01.jpg','The Diamond Cable Sweater & Shirtdress'],														
-				'912292022':['/Asset_Archive/GPWeb/Assets/Outfit/222/OUT22214/outfit/gp-otf-out22214odv01.jpg','Sweatshirt Chic'],														
-				'152402002':['/Asset_Archive/GPWeb/Assets/Outfit/223/OUT22332/outfit/gp-otf-out22332odv01.jpg','Puff Love'],														
-				'914350002':['/Asset_Archive/GPWeb/Assets/Outfit/206/OUT20605/outfit/gp-otf-out20605odv01.jpg','Get Down']															
-		},
-
-
-		
-		init : function() {
-			var categories = this.validOutfitCategories[brandConst.BRAND_CODE];
-			var cid = gidLib.getQuerystringParam("cid");
-			var isOutfitCategory = false;
-
-			if (categories) {
-				var isOutfitCategory = categories.find(function(c) {
-					return (c == cid ? true : false);
-				});
-			}
-
-			if (isOutfitCategory) {
-				this.modifyNavigationService();
-				Event.observe(document, 'categoryProductGrid:ready', this.hideFacets.bind(this));
-			}
-		},
-		
-		hideFacets : function() {
-			$('sideNavFacetsHeader','sideNavFacets','productToolsLineTop').invoke('hide');
-			$('productToolsLineBottom').style.visibility = "hidden";
-		},
-
-		modifyNavigationService : function() {
-			navigationService.productGridHelper.api.buildProductElementHelper = function(product, index, productContractObj) {
-				var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-
-				// set up local vars
-				var cidId = productContractObj.get('cidIdParam');
-				// continue to next iteration if this is an outfit
-				if (Object.isUndefined(product.businessCatalogItemId)) {
-					domDisplayException = new categoryFacetedSearchManager.view.DomDisplayException("InvalidProductBusinessCatalogItemIdNotFound");
-					throw domDisplayException;
-				}
-
-				var pid = product.businessCatalogItemId;
-				var brandNumber = gidBrandSiteConstruct.currentBrandCode;
-
-				// set the product name if vendor property exists add vendor name
-				var productName = '';
-				var unstyledProductName = '';
-
-
-				/* The main product is actually derived from a variable (in either the product
-				 * or the product.defaultStyleColor) called quicklookImage.  this variable has
-				 * nothing to do with quicklook and the name is misleading.  It is the main 
-				 * product image.
-				 */ 
-				var productImagePath = "";
-				var scid = "";
-				var quickLookParam1 = "";
-				var productImgId = "";
-				if (!Object.isUndefined(product.defaultProductStyleColor)) {
-					scid = product.defaultProductStyleColor.businessCatalogItemId;
-					quickLookParam1 = product.defaultProductStyleColor.parentBusinessCatalogItemId;
-					productImgId = quickLookParam1 + cidId + '_' + index;
-				} else {
-					scid = pid;
-					quickLookParam1 = product.parentBusinessCatalogItemId;
-					productImgId = quickLookParam1 + '_' + pid + cidId + '_' + index;
-				}
-				
-
-				productContractObj.set('pid', pid);
-				productContractObj.set('scid', scid);
-				
-				productContractObj.set('productImgId', productImgId);
-				productContractObj.set('brandName', brandNumber);
-
-				var outfitData = outfitCategorizer.validOutfitKeyItems[scid];
-				if (outfitData) {
-					isOutfit = true;
-				} else {
-					return "";
-				}
-				
-				if (isOutfit) {
-					productContractObj.set('categoryProductName', outfitData[1]);
-					productContractObj.set('variantName', '');
-					productContractObj.set('categoryUnstyledProductName', outfitData[1]);
-					productContractObj.set('productImagePath', outfitData[0]);
-					productContractObj.set('mupAndMarketing', null);
-					productContractObj.set('qlParam1', null);
-					productContractObj.set('pricingHTML', null);
-					productContractObj.set('mouseEventHandlers', null);
-					productContractObj.set('categoryProductLink', '/browse/outfit.do?cid='+gidLib.getQuerystringParam('cid')+'&oid=OUT-'+scid);
-				}
-
-				
-				return productContractObj;
-			};
-		}
-	};
-
-	if (location.pathname == "/browse/category.do" && window["navigationService"] && brandConst.IS_NAV2_ENABLED && location.href.indexOf("noOutfits") == -1) {
-		outfitCategorizer.init();
-	}
-
-</script>
-<!-- End Reveal Outfits Code -->
 
 
 <!-- BEGIN: contentOverride116 -- GOL Department Facet Suppression-->
@@ -5999,14 +5272,14 @@ UniversalCookieCutter0723.prototype = {
 	}
 };
 /* /browse/division.do?cid=5001&forcedModeFIST=c */	
-var promoCookieCutter = new UniversalCookieCutter0723("0912REALFindInStoreAB","mktUniversalPersist","0912REALFindInStoreAB_SEG","forcedModeFIST","75-0-25","8","none");
+var promoCookieCutter = new UniversalCookieCutter0723("1031REALFindInStoreAB","mktUniversalPersist","1031REALFindInStoreAB_SEG","forcedModeFIST","100-0-0","8","none");
 
 	function VolControlABTestMain() {
 
-		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "0912REALFindInStoreAB");
+		var VolControlSegment = gidLib.getCookieVar("mktUniversalPersist", "1031REALFindInStoreAB");
 		
 		//SEGA &forcedModeFIST=a
-		if( VolControlSegment == "0912REALFindInStoreAB_SEGA" ) {
+		if( VolControlSegment == "1031REALFindInStoreAB_SEGA" ) {
 			if ($('findInStoreTabWindow')){
 			$('findInStoreTabWindow').setStyle({display: 'block'});
 			}
@@ -6014,7 +5287,7 @@ var promoCookieCutter = new UniversalCookieCutter0723("0912REALFindInStoreAB","m
 				
 		
 		//SEGB &forcedModeFIST=b
-		if( VolControlSegment == "0912REALFindInStoreAB_SEGB" ) {
+		if( VolControlSegment == "1031REALFindInStoreAB_SEGB" ) {
 			/*
 			if ($('findInStoreTabWindow')){
 			$('findInStoreTabWindow').setStyle({display: 'block'}); 
@@ -6040,7 +5313,7 @@ var promoCookieCutter = new UniversalCookieCutter0723("0912REALFindInStoreAB","m
 		}
 
 		//SEGC &forcedModeFIST=c
-		if( VolControlSegment == "0912REALFindInStoreAB_SEGC" ) {
+		if( VolControlSegment == "1031REALFindInStoreAB_SEGC" ) {
 			//do nothing
 		}
 
@@ -7176,8 +6449,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/718/647/cn5718647.html -->
-<div id="contentItemContainer10000395" class="5718647" >
+    	<!-- BEGIN Content Item File: /content/0005/749/689/cn5749689.html -->
+<div id="contentItemContainer10000395" class="5749689" >
 
 
 <style type="text/css">
@@ -7188,6 +6461,7 @@ Event.observe(window,"load",function(){
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
+	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -7195,7 +6469,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000000;
+	color: #000745;
 	text-decoration: none;
 }
 
@@ -7211,27 +6485,14 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: black;
+	background-color: #000745;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerActivator {
-	margin-top: 6px;
-	display: inline-block;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
+#globalBannerText {
+	padding-top: 6px;
 }
 </style>
 
@@ -7239,148 +6500,18 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/718/647/assets/102812_KB_25off_GB_US.png" alt="25% off your kids &amp; baby purchase! hurry, ends 10/29! Online and in stores. Enter GAPKIDDO." title="25% off your kids &amp; baby purchase! hurry, ends 10/29! Online and in stores. Enter GAPKIDDO." usemap="#gbMap">
-		<map name="gbMap">
-			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="307,7,461,56" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:300});">
-		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:300});">
-		</map>
+		<a href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/749/689/assets/legal.html',id:'legal',width:350,height:300});">
+			SUPER! <span class="promoPercent">15% OFF</span> YOUR PURCHASE!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
 	</div><!-- /Global Banner Text -->
 
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/718/647/assets/102812_KB_25off_DISR_US.gif" alt="Little ones, rejoice! 25% off your kids &amp; baby purchase! Hurry, ends 10/29. Online and in stores. Enter GAPKIDDO at checkout." usemap="#disruptorMap">
-		<map name="disruptorMap">
-			<area shape="rect" class="noHideDisruptor" coords="57,280,255,299" href="http://pages.email.gap.com/page.aspx?QS=330c754b5e92df74faad66fd5989a1d47adbb536640b6fac" target="_new" alt="print to redeem offer in stores.">
-		    <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/718/647/assets/legal.html',id:'legal',width:350,height:250});" alt="click for details">
-        </map>
-	</div><!-- /Global Banner Disruptor -->
-
 </div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('102812_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/718/647/cn5718647.html -->
+<!-- END Content Item File: /content/0005/749/689/cn5749689.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -9661,7 +8792,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5095770,5718647,5691102,5106701,5451526,5667166,5125295,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5095770,5749689,5691102,5106701,5451526,5667166,5125295,5217025";
 	 </script>
 	
 	<noscript>

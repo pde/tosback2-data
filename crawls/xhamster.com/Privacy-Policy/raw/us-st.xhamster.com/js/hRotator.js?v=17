@@ -20,7 +20,6 @@ hRotator.start = function(e) {
     hRotator.curr = t;
     hRotator.id = t.attr('id');
     hRotator.curr.css('background-position','0 0');
-    //console.log('start: '+hRotator.id);
     if (!hRotator.cache[hRotator.id]) {
         img = new Image();
         img.loaded = false;
@@ -36,11 +35,9 @@ hRotator.start = function(e) {
     } else {
         hRotator.begin();
     }
-    //console.log('start: done');
 }
 
 hRotator.stop = function() {
-    //console.log('stop: '+hRotator.id+' stopped('+hRotator.stopped+')');
     hRotator.stopped = true;
     clearTimeout(hRotator.timer);
     if (hRotator.curr) {
@@ -61,17 +58,14 @@ hRotator.onTime =  function(num) {
     }
     num++;
     if (num>9) num=0;
-    //console.log('onTime: '+num);
     pos = (num*-160)+'px 0px';
     hRotator.curr.css({'background-position':pos});
     hRotator.timer = setTimeout('hRotator.onTime('+num+')',500);
 }
 
 hRotator.onLoad = function(e) {
-    //console.log('onload: '+this.src);
     this.loaded = true;
     if (this.vid != hRotator.id) {
-        //console.log('onload error: id='+hRotator.id+' img.id='+this.vid);
         return true;
     }
     hRotator.begin();

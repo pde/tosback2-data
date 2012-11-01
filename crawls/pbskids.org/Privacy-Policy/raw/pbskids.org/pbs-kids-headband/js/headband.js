@@ -11,6 +11,21 @@
  */
 
 
+function conditional_function(events, func){
+    //Executes function func only 
+    //after all events have been triggered
+    var _events = events;
+    var _collected_events = Array();
+    
+    var _func = function(e, args){
+	_collected_events.push(e);
+	if (_.intersection(_collected_events, _events).length == _events.length ){
+	    return func(args)
+	}
+    }
+    return _func;
+}
+
 if (typeof PBS == 'undefined'){
     var PBS = {
 	'KIDS' : {}
@@ -23,6 +38,8 @@ else {
 }
  
 PBS.KIDS.Headband = (function(){
+
+    var dispatcher;
 
     //Sites blacklist
     //A list of regex
@@ -61,8 +78,6 @@ PBS.KIDS.Headband = (function(){
 	    /^\/fetch\/mobile/,
 	    /^\/martha\/mobile/,
 	    /^\/sesame\/videoPlayer/,
-	    /^\/curiousgeorge\/games\/glass_palace/,
-	    /^\/curiousgeorge\/games\/on_the_job/,
 	    /^\/itsmylife\/games\/story_strips_print.html/
     ];
 
@@ -212,6 +227,17 @@ PBS.KIDS.Headband = (function(){
     //'condition' and 'callback'  are anonymous functions
     //When condition() evaluates to true, callback is executed
     var _dependencies = [
+	{'url': _cdn_base + '/pbs-kids-headband/js/underscore/underscore-min.js',
+	 'condition': function(){ return typeof _ != 'undefined' },  
+	 'callback': function(){ _load_next() }
+	},
+	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.eventDispatcher.js',
+	 'condition': function(){ return typeof PBS.KIDS.eventDispatcher != 'undefined' },  
+	 'callback': function(){ dispatcher = PBS.KIDS.eventDispatcher(); 
+				 dispatcher.addEventListener('headband-ready', _conditional_show_user_block),
+				 dispatcher.addEventListener('headband-dependencies-loaded', _conditional_show_user_block),
+				 _load_next() }
+	},
 	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.jquery-1.4.2.min.js',
 	 'condition': function(){ return typeof PBS.KIDS.$_auth != 'undefined' },  
 	 'callback': function(){ _setup(); _load_next() }
@@ -245,11 +271,10 @@ PBS.KIDS.Headband = (function(){
 	 'callback': function(){ _load_next() } 
 	},
 	{'url': _cdn_base + '/pbs-kids-headband/js/auth/PBS.KIDS.auth.min.js', 
-	 'condition': function(){ return typeof PKG != "undefined"}, 
+	 'condition': function(){ return typeof PKG != "undefined" && PKG.loaded  === true }, 
 	 'callback': function(){ _load_callback(); _send_event('body', 'headband-dependencies-loaded') }
 	}
     ];
-
 
     
     //Creates the <script> element
@@ -283,6 +308,7 @@ PBS.KIDS.Headband = (function(){
 	if ( typeof jQuery != 'undefined' ){
 	    jQuery(el).trigger(event);
 	}
+	dispatcher.dispatchEvent(event);
     }
 
     var _load_overrides = function(context){
@@ -395,15 +421,16 @@ PBS.KIDS.Headband = (function(){
                 PBS.KIDS.$_auth('body').trigger('init.go');
 	    }, overlayClose: false
         });
-	
+
 	PBS.KIDS.$_auth("#pbskids-headband.login #headband-user-block").show();
 	PBS.KIDS.$_auth("#pbskids-headband").addClass('login-ready');
     }
 
+    //Show the user block after headband markup is ready AND all the dependencies havs been loaded
+    var _conditional_show_user_block = conditional_function(['headband-ready', 'headband-dependencies-loaded'], _show_user_block);
+
     var _init_UI = function($){
 
-	$("body").bind("headband-dependencies-loaded", function(){ _show_user_block() });
-	
 	//Define the behaviour of menu/buttons
 	var siteHEX = '#3C9ECE';
 	var $siteButtonColors = _config['buttons_color'] || siteHEX; // Default Value. Change this var to change right button colors
@@ -644,7 +671,6 @@ PBS.KIDS.Headband = (function(){
     return {
 	init: function(){ _init() },
 	reload: function(){ 
-	    PBS.KIDS.$_auth("body").bind('headband-ready', function(){ _show_user_block() }); 
 	    _load_headband(); 
 	},
 	button: function(hex){

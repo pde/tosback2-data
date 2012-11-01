@@ -80,6 +80,7 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 			
 			if(ci_pagetype=='home'){
 				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_HOME&clientID=1344&key=segment&returnType=js');
+				ci_FP('r.turn.com/r/beacon?b2=Gb-YJy0BD3vIgXWzGOUtTVPOdGXKomfA1R33Fv3gaAP0JyeSbBHm2m2_ttLI-29KkMT54kXJZjSigSwtwBfhQA&cid=');
 			}
 			if(ci_pagetype=='category'){
 				ci_FP_SCRIPT('segment-pixel.invitemedia.com/pixel?code=VID_16481822_CAT&clientID=1344&key=segment&returnType=js');

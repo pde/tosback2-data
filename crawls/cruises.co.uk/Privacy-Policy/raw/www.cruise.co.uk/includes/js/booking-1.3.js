@@ -149,6 +149,27 @@ $(document).ready(function() {
 					$('.cat-' + cabin_grade + '.smoking_policy').show();
 			}
 	});
+
+	// Passenger details middle name
+	function sync_middle_name_state()
+	{
+		var $tickbox = $(this);
+		var $textfield = $('[name="' + $tickbox.attr('name').replace('no_middle_name', 'middle_name') + '"]');
+		
+		if ( $tickbox.is(':checked') )
+		{
+			$textfield.val('').attr('disabled', 'disabled');
+		}
+		else
+		{
+			$textfield.removeAttr('disabled', 'disabled');
+		}
+	}
+	// When ticking the "no middle name" box, blank and disable the middle name field
+	$('[name$="[no_middle_name]"]')
+		.bind('click', sync_middle_name_state)
+		// also run once on load, to handle state rendered in PHP/Smarty
+		.each(sync_middle_name_state);
 	
 	// fix table layouts for IE6
 	if ($.browser.msie && $.browser.version.substr(0,1)<8)

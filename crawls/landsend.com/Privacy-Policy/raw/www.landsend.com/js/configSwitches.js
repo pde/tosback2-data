@@ -277,8 +277,12 @@ metric.sendCommissionJunction = function() {
 		document.write(tag);
 		
 		var beaconTag = '<iframe height="1" width="1" frameborder="0" scrolling="no" src="/coradiant/beacon-event.!cm?appid=OrderConfirm&evid=123&name=iFrameLoaded&random=' + Math.floor(Math.random() * 1000000) +'"></iframe>';
+
 		document.write(beaconTag);
-		Instrumentation.sendBeacon(Events.app_end);
+		
+		setTimeout(function(){
+			Instrumentation.sendBeacon(Events.app_end);
+		}, 	1000);
 	}	
 };
 

@@ -2,13 +2,12 @@
 //  This file is included on all pages (legacy & new) and will provide a
 //  collection of functions to be used throughout as well as auto run certain 
 //  functions.
-
 //  $Last Updated: 08/09/2011 12:27:52  $
-
 // Ensure the document.domain
-var docDomainParts = document.domain.split('.'), docDomainPartsLen = docDomainParts.length;
+var docDomainParts = document.domain.split('.'),
+	docDomainPartsLen = docDomainParts.length;
 if (docDomainPartsLen > 2) {
-	document.domain = docDomainParts[docDomainPartsLen-2]+"."+docDomainParts[docDomainPartsLen-1];
+	document.domain = docDomainParts[docDomainPartsLen - 2] + "." + docDomainParts[docDomainPartsLen - 1];
 }
 docDomainPartsLen = docDomainParts = null;
 
@@ -18,56 +17,86 @@ docDomainPartsLen = docDomainParts = null;
 //  the Video ID.
 overlayConfigs = {};
 overlayConfigs.modal = { // Generic Modal
-	'autoDimensions':true,
-	'autoScale' : false,
+	'autoDimensions': true,
+	'autoScale': false,
 	'centerOnScroll': true,
 	'enableEscapeButton': true,
-	'height':'auto',
+	'height': 'auto',
 	'hideOnOverlayClick': true,
-	'margin':0,
-	'modal':false,
+	'margin': 0,
+	'modal': false,
 	'overlayColor': '#666',
 	'overlayOpacity': 0.7,
-	'padding':0,
-	'scrolling' : 'no',
-	"showCloseButton":false,
-	"titleShow":false,
+	'padding': 0,
+	'scrolling': 'no',
+	"showCloseButton": false,
+	"titleShow": false,
 	'showNavArrows': false,
-	'transitionIn' : 'none',
-	'transitionOut' : 'none',
-	'width':'auto'
+	'transitionIn': 'none',
+	'transitionOut': 'none',
+	'width': 'auto'
 };
 overlayConfigs.nonModal = { // Generic Non-Modal
-	'autoDimensions':true,
+	'autoDimensions': true,
 	'enableEscapeButton': true,
-	'height':'auto',
+	'height': 'auto',
 	'hideOnOverlayClick': true,
-	'margin':0,
-	'modal':false,
+	'margin': 0,
+	'modal': false,
 	'overlayShow': true,
 	'overlayColor': 'transparent',
 	'overlayOpacity': 0,
-	'padding':0,
-	"showCloseButton":false,
+	'padding': 0,
+	"showCloseButton": false,
 	'showNavArrows': false,
-	"titleShow":false,
-	'transitionIn' : 'none',
-	'transitionOut' : 'none',
-	'width':'auto'
+	"titleShow": false,
+	'transitionIn': 'none',
+	'transitionOut': 'none',
+	'width': 'auto'
 };
 
 // Quickview Overlay
 overlayConfigs.quickview = $.extend(true, {}, overlayConfigs.modal, {
-	'width' : 622,
-	'height' : 500,
-	'type' : 'iframe'
+	'width': 710,
+	'height': 520,
+	'modal': false,
+	'centerOnScroll': false,
+	'overlayOpacity': 0,
+	'type': 'iframe'
 });
 
+// Gallery Overlay
 overlayConfigs.gallery = $.extend(true, {}, overlayConfigs.modal, {
-	'width':898,
-	'height':601,
+	'width': 898,
+	'height': 601,
+	'type': 'iframe'
+});
 
-	'type':'iframe'
+// Bopis 2 Overlay
+
+var currentStore;
+var newStore;
+overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
+	'padding':15,
+	'width': 795,
+	'height': 710,
+	'type': 'iframe',
+	'modal': false,
+	'overlayOpacity': 0,
+	'centerOnScroll': false,
+	'showCloseButton':true,
+	"onComplete": function() {
+		currentStore = readCookie('THD-LOC-STORE');
+		
+	},
+	"onClosed": function() {
+		newStore = readCookie('THD-LOC-STORE');
+		if ( newStore != currentStore ){
+			
+			window.location.reload();		
+		}
+		
+	}
 });
 
 // Quickview Overlay
@@ -92,7 +121,7 @@ overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 				theHeight = $dctm_content_overlay.height()+'px';
 
 			$dctm_content_overlay.parent().css({'height':'auto'});
-			$('#fancybox-content').css({'height':'auto'})
+			$('#fancybox-content').css({'height':'auto'});
 			if(jQuery.fancybox) jQuery.fancybox.resize();
 
 			//Hide the preloader and finally show the fancybox wrap. qc-14889
@@ -106,190 +135,103 @@ overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 	}
 });
 
-// Bopis 2 Overlay
-overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
-	"onComplete": function(currentArray, currentIndex, currentOpts) {
-		active_BOPISFBConfig = currentOpts;
-
-		// Re-attach the FB for needed links
-		attachOverlays('#bopis2 .modal_overlay');
-
-		// Add the show / hide store info toggle.
-		$('#bopis2 .store_info_toggle').click(function(e) {
-			e.preventDefault();
-			mom = $(this).parent();
-			if (mom.hasClass('single')) {
-				mom.removeClass('single').addClass('double');
-				$(this).text('Hide Store Info');
-			} else {
-				$(this).text('Show Store Info');
-				mom.addClass('single').removeClass('double');
-			}
-			$('#bopis2 .bopis_store.double').not(mom).addClass('single').removeClass('double').find('.store_info_toggle').text('Show Store Info');
-			if(jQuery.fancybox) jQuery.fancybox.resize();
-		});
-
-		// Toggle between Multi-store input and single store.
-		$('#bopis2 .multistore_toggle').toggle(function() { /* first click, need to show multistore */
-				$('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
-				$('#bopis_one_store').hide();
-				$('#bopis_multi_store').show();
-				$(this).text("Don't Split the Order");
-				if(jQuery.fancybox) jQuery.fancybox.resize();
-			}, function() { /* Second click, need to show single Store */
-				$('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
-				$('#bopis_multi_store').hide();
-				$('#bopis_one_store').show();
-				$(this).text("Split this order among multiple stores");
-				if(jQuery.fancybox) jQuery.fancybox.resize();
-			}
-		);
-
-
-		// ZipCode Search
-		$('#bopis2 #bopis_middle form').submit(function (e){
-
-			var curParams, $zipCodetxt, myURL, new_zip, new_url;
-
-			e.preventDefault();
-
-			// Grab the URL of the current BOPiS FB. 
-			myURL = active_BOPISFBConfig.href.split('?',2);
-
-			// Kill the function if we do not have a URL.
-			if (!myURL) {
-				$('#bopis_error').text('Failed to grab URL for current BOPiS Page!');
-				return;
-			}
-
-			// Get the new zipcode, validate, and reload
-			$zipCodetxt = $('#tb_zipcode');
-			new_zip = $zipCodetxt.val();
-
-			if (f_isOnlyNumChars(new_zip) && new_zip.length == 5) {
-
-				// Now, get the URL params of the current page, alter them and reload the page.
-				curParams = f_getUrlParamsObj(myURL[1]);
-
-				if (curParams) {
-					curParams.mode = 'zipcode';
-					curParams.searchSessionId = '';
-					curParams.searchOriginId = '';
-					curParams.zipcode = new_zip;
-					new_url = myURL[0]+"?"+f_makeUrlParamsFromObj(curParams);
-
-					if(jQuery.fancybox) {
-						active_BOPISFBConfig.href=new_url;
-						$.fancybox(active_BOPISFBConfig);
-					}
-				} else {
-					$('#bopis_error').text("Failed to get FancyBox parameters.");
-				}
-			} else {
-				$('#bopis_error').text("You must enter a valid zip code.");
-			}
-		})
-		// /Zip Code Search
-
-		// Add the close functionality
-		$('#bopis2 .close').click(function() {
-			if(jQuery.fancybox) { $.fancybox.close() }
-		});
-
-		// Unbind the MouseWheel
-		$("#fancybox-wrap").unbind('mousewheel.fb');
-	}
-});
 //PLUGIN THAT TAKES PARENT EL & CHILD EL TO MAKE EQUAL HEIGHT COLS
 //USED IN FIXPODHEIGHTS
-function _EqualColHeights(parentElement,childElement){
-     $(parentElement).each(function(index){
-  		thisParentsChild = $(this).children(childElement);
-          	var numOfChildern = thisParentsChild.length;
-			if(numOfChildern > 1){
-               childHeights = new Array(); 
-                    thisParentsChild.each(function(i){
-                         ThisHeight = $(this).height(); 
-                         childHeights[i]=ThisHeight;
-                    });
-               tallestChild = Math.max.apply(Math, childHeights); // find tallest height out of this row's array
-               thisParentsChild.height(tallestChild); //give all this row's child pods the height of tallest pod
-          }
-     });
-};
+function _EqualColHeights(parentElement, childElement) {
+	$(parentElement).each(function(index) {
+		thisParentsChild = $(this).children(childElement);
+		var numOfChildern = thisParentsChild.length;
+		if (numOfChildern > 1) {
+			childHeights = new Array();
+			thisParentsChild.each(function(i) {
+				ThisHeight = $(this).height();
+				childHeights[i] = ThisHeight;
+			});
+			tallestChild = Math.max.apply(Math, childHeights); // find tallest height out of this row's array
+			thisParentsChild.height(tallestChild); //give all this row's child pods the height of tallest pod
+		}
+	});
+}
 
 
 // Call on window.load by default. Can also be called any time to dynamically
 // adjust the heights of all the pods.
-function fixPodHeights(){
-	$('.row').each(function(index){
-          //first check to see if row has a rail
-          if($(this).find('.rail').length > 0){
-               var $rail = $(this).find('.rail'),
-                   $mainC = $(this).find('.mainContent');
-               var railHeight = $rail.height(),
-                   mainContentHeight = $mainC.height();
-               if(railHeight > mainContentHeight){
-				   $mainC.css('min-height',railHeight); 
-                              //$mainC.height(railHeight);               
-               }else if(railHeight < mainContentHeight){
-				   				$rail.css('min-height',mainContentHeight);
-                                //$rail.height(mainContentHeight);
-               }
 
-          };
-     });
 
-     _EqualColHeights(".row",".pod");
-     _EqualColHeights(".pod",".pod");
-     $('.rail .pod').attr('style','');//remove all inline styles of rail pods quickfix
-};
+function fixPodHeights() {
+	$('.row').each(function(index) {
+		//first check to see if row has a rail
+		if ($(this).find('.rail').length > 0) {
+			var $rail = $(this).find('.rail'),
+				$mainC = $(this).find('.mainContent');
+			var railHeight = $rail.height(),
+				mainContentHeight = $mainC.height();
+			if (railHeight > mainContentHeight) {
+				$mainC.css('min-height', railHeight);
+			} else if (railHeight < mainContentHeight) {
+				$rail.css('min-height', mainContentHeight);
+			}
+
+		}
+	});
+
+	_EqualColHeights(".row", ".pod");
+	_EqualColHeights(".pod", ".pod");
+	$('.rail .pod').attr('style', ''); //remove all inline styles of rail pods quickfix
+}
 
 function attachOverlays(context) {
-	var $overlays = (context)?$('.overlayTrigger',context):$('.overlayTrigger');
+	var $overlays = (context) ? $('.overlayTrigger', context) : $('.overlayTrigger');
 
-	$overlays.each(function(i){
-		var $this = $(this), useConfig='',
-		theRel = ($this.attr('rel'))?$this.attr('rel').toLowerCase():'';
+	$overlays.each(function(i) {
+		var $this = $(this),
+			useConfig = '',
+			theRel = ($this.attr('rel')) ? $this.attr('rel').toLowerCase() : '';
 
 		switch (theRel) {
-			case 'bopis':
-				bopisHrefReplace(); //defect #15052
-				useConfig = overlayConfigs.bopis;
-				break;
-			case 'quickview':
-				useConfig = overlayConfigs.quickview;
-				break;
-			case 'gallery':
-				useConfig = overlayConfigs.gallery;
-				break;
-			case 'modal':
-				useConfig = overlayConfigs.modal;
-				break;
-			case 'content':
-				useConfig = overlayConfigs.content;
-				break;
-			case 'custom': // Does not attach Fancybox
-				$this.click(HD_lightbox);
-				break;
+		case 'bopis':
+			bopisHrefReplace(); //defect #15052
+			useConfig = overlayConfigs.bopis;
+			break;
+		case 'quickview':
+			useConfig = overlayConfigs.quickview;
+			break;
+		case 'gallery':
+			useConfig = overlayConfigs.gallery;
+			break;
+		case 'modal':
+			useConfig = overlayConfigs.modal;
+			break;
+		case 'content':
+			useConfig = overlayConfigs.content;
+			break;
+		case 'custom':
+			// Does not attach Fancybox
+			$this.click(HD_lightbox);
+			break;
 			// All all new types above here otherwise you will mess up the default.
-			case 'nonmodal': // fall through
-			default:
-				useConfig = overlayConfigs.nonModal;
-				break;
+		case 'nonmodal':
+			// fall through
+		default:
+			useConfig = overlayConfigs.nonModal;
+			break;
 		}
 
 		if (useConfig) {
 			$this.fancybox(useConfig);
 		}
-		$this.css({"visibility":"visible"});
+		$this.css({
+			"visibility": "visible"
+		});
 
 	});
 }
 
 //A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes 
 //an href value so that bopis modal won't degrade if clicked prior to doc ready.
-function bopisHrefReplace(){
+
+
+function bopisHrefReplace() {
 	var hrefValue = $("a.bopis_button").attr("data-bopis");
 	$("a.bopis_button").attr('href', hrefValue);
 }
@@ -297,9 +239,14 @@ function bopisHrefReplace(){
 
 
 function attachQuickViewButtons() {
-	$(".dynamic.product").hover(function(){
-		$(this).find('.quickview_button').toggleClass('hide');
-	})
+	$(".dynamic.product").live({
+		mouseenter : function () {
+			$(this).find('.quickview_button').removeClass('hide');
+		},
+		mouseleave : function () {
+			$(this).find('.quickview_button').addClass('hide');
+		}
+	});
 }
 
 //	LazyLoadJS
@@ -313,15 +260,17 @@ function attachQuickViewButtons() {
 //	Debugging:
 //		Call LazyLoadJS.debug() to see the list of files in console.log() as
 //		well as weather or not load() was called.
-LazyLoadJS = (function(){
+LazyLoadJS = (function() {
 	var files = [],
-	    loadCalled = false;
+		loadCalled = false;
 
-	function _add(file) { files.push(file); }
+	function _add(file) {
+		files.push(file);
+	}
 
 	function _load() {
 		loadCalled = true;
-		for (var i=0,l=files.length; i<l; i++) {
+		for (var i = 0, l = files.length; i < l; i++) {
 			document.write("<scr" + "ipt src=" + "\"" + files[i] + "\" type=\"text/javascript\"" + "></sc" + "ript>" + "\n");
 		}
 	}
@@ -330,66 +279,90 @@ LazyLoadJS = (function(){
 		try {
 			console.log("files:\n", files.join("\n"));
 			console.log("loadCalled:", loadCalled);
-		} catch(e){
-			
+		} catch (e) {
+
 		}
 	}
 
 	return {
-		"add" : function(file){ _add(file); },
-		"load" : function(){ _load(); }, 
-		"debug" : function(){ _debug(); }
-	}
+		"add": function(file) {
+			_add(file);
+		},
+		"load": function() {
+			_load();
+		},
+		"debug": function() {
+			_debug();
+		}
+	};
 })();
 
-//   	This function takes the shop all departments menu on the homepage
+//  This function takes the shop all departments menu on the homepage
 //	and auto expands it
-function expandSAD (){
+
+
+function expandSAD() {
 	$('body.homepage .switches').addClass('expanded');
 };
 
-function stripedTables (){
+function stripedTables() {
 	$('table.tablePod tr:even').addClass('even');
 };
 
+//dynamic product ratings display
+function dynamicRatings(){
+	var obj = $('.reviews .stars');
+	$(obj).each(function (i){
+			var avgRating = $(this).attr('rel');
+			var RatingNumber = avgRating * 20;
+			if(avgRating == 'noRating' || RatingNumber == "0.0"){
+					$(this).parent().css('background-position','0px -62px');
+					$(this).width('0px');
+			} else{
+				$(this).css('width', RatingNumber+"%" );
+			}
+	});
+}
 
-$(window).load(function(){
+$(window).load(function() {
 	fixPodHeights();
 	attachOverlays();
 	attachQuickViewButtons();
 	stripedTables();
-	//expandSAD();
-
+	dynamicRatings();
 	// Add the fancybox close catcher
-	$('.fbClose a').live('click', function(){ $.fancybox.close(); return false; });
+	$('.fbClose a').live('click', function() {
+		$.fancybox.close();
+		return false;
+	});
 
 });
 
 
 /* FED Cookie Generic Cookie handling code */
-function fed_CreateCookie(name,value,days) {
+
+function fed_CreateCookie(name, value, days) {
 	if (days) {
 		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
+		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+		var expires = "; expires=" + date.toGMTString();
+	} else var expires = "";
+	document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 function fed_ReadCookie(name) {
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
+	for (var i = 0; i < ca.length; i++) {
 		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+		while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
 	}
 	return null;
 }
 
 function fed_EraseCookie(name) {
-	fed_CreateCookie(name,"",-1);
+	fed_CreateCookie(name, "", -1);
 }
 
 
@@ -399,55 +372,51 @@ function fed_EraseCookie(name) {
 */
 function HD_lightbox() {
 	var galleryOutput = '<div id="gallery_wrapper" class="clearfix"><a class="close_btn" href="#">CLOSE X</a><div id="galleryPlaceHolder">{{GALERY_HERE}}</div></div>',
-	    ieWidthFix,
-		galleryOverlayConfig, theLink;
+		ieWidthFix, galleryOverlayConfig, theLink;
 
 	theLink = $(this).attr('href');
 	$.ajax({
 		url: theLink,
-		async:false,
-		success: function(newHTML){
-			var newHTML = newHTML.replace(/[\n\t\r]/g,'').match(/<body>(.*)<\/body>/)[1],
-			    matches;
-			galleryOutput = galleryOutput.replace('{{GALERY_HERE}}',newHTML);
+		async: false,
+		success: function(newHTML) {
+			var newHTML = newHTML.replace(/[\n\t\r]/g, '').match(/<body>(.*)<\/body>/)[1],
+				matches;
+			galleryOutput = galleryOutput.replace('{{GALERY_HERE}}', newHTML);
 			//if ($.browser.msie) {
-				//matches = newHTML.match(/width="(\d+).*"/))[1];
-				//if (matches) {
-					//ieWidthFix = matches+'px';
-				//}
-				
+			//matches = newHTML.match(/width="(\d+).*"/))[1];
+			//if (matches) {
+			//ieWidthFix = matches+'px';
+			//}
 			//}
 		}
 	});
 
-	galleryOverlayConfig = $.extend(true, {}, overlayConfigs.modal,{
+	galleryOverlayConfig = $.extend(true, {}, overlayConfigs.modal, {
 		'onComplete': function() {
-			$('.close_btn','#fancybox-wrap').click(function(){
+			$('.close_btn', '#fancybox-wrap').click(function() {
 				$.fancybox.close();
 				return false;
 			});
 		},
-		'padding':0,
-		'autoScale':false,
-		'transitionIn':'none',
-		'transitionOut':'none',
-		'scrolling':'no',
-		'showCloseButton':false,
-		'overlayOpacity':.70,
-		'overlayColor' : '#666'
+		'padding': 0,
+		'autoScale': false,
+		'transitionIn': 'none',
+		'transitionOut': 'none',
+		'scrolling': 'no',
+		'showCloseButton': false,
+		'overlayOpacity': .70,
+		'overlayColor': '#666'
 	});
 
 	//if ($.browser.msie) {
-		//galleryOverlayConfig = $.extend(true, {}, galleryOverlayConfig,{
-			//'width':ieWidthFix
-		//});
+	//galleryOverlayConfig = $.extend(true, {}, galleryOverlayConfig,{
+	//'width':ieWidthFix
+	//});
 	//}
-
 	$.fancybox(galleryOutput, galleryOverlayConfig);
 	return false;
 }
 
-	
 
 
 /* BOPIS 2 SUPPORT! NEED TO THINK THIS THROUGH!  */
@@ -459,10 +428,9 @@ function HD_lightbox() {
 //
 // For now, we are designating the functions as FED controled with a prefix of "f_" 
 //
-
 /*
  * bool f_isOnlyNumChars( val [, (bool) allowExtras] )
- * 
+ *
  * Tests if val consists of only numeric characters.
  * +   An optional 2nd param allows dash(-), comma(,) and decimal(.)
  * +   Any non-false value will allow the extras. Leave out completely to avoid extras
@@ -482,14 +450,17 @@ function HD_lightbox() {
  *
  * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
  */
+
 function f_isOnlyNumChars(val, allowExtras) {
-	if (allowExtras) { val = val.replace(/[-\.,]/g, '') }
-	return Boolean(!(val.replace(/\d/g,'')));
+	if (allowExtras) {
+		val = val.replace(/[-\.,]/g, '')
+	}
+	return Boolean(!(val.replace(/\d/g, '')));
 }
 
 /*
  * bool f_isNumeric( val )
- * 
+ *
  * Tests if val is a number.
  * Ex:
  *    f_isNumeric("67.09") = true
@@ -501,11 +472,14 @@ function f_isOnlyNumChars(val, allowExtras) {
  *
  * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
  */
-function f_isNumeric(val) {return Boolean(((val-0)==val)&&(val.length>0));}
+
+function f_isNumeric(val) {
+	return Boolean(((val - 0) == val) && (val.length > 0));
+}
 
 /*
  * bool f_isAlpha( val [, (bool) allowSpaces] )
- * 
+ *
  * Tests if val consists of only alphabetic characters.
  * +   An optional 2nd param allows spaces, tabs, and new lines characters
  * +   Any non-false value will allow spaces. Leave out completely to avoid extras
@@ -519,9 +493,12 @@ function f_isNumeric(val) {return Boolean(((val-0)==val)&&(val.length>0));}
  *
  * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
  */
+
 function f_isAlpha(val, allowSpaces) {
-	if (allowSpaces) { val = val.replace(/\s/g, '') }
-	return Boolean(!(val.replace(/[a-z]/ig,'')));
+	if (allowSpaces) {
+		val = val.replace(/\s/g, '')
+	}
+	return Boolean(!(val.replace(/[a-z]/ig, '')));
 }
 
 /*
@@ -532,26 +509,29 @@ function f_isAlpha(val, allowSpaces) {
  *   f_getUrlParamsObj('?bob=val1&name2=val3') = {"bob":"val2", "name2":"val3"} *
  *
  * Notes: Automatically unescapes characters
- * 
+ *
  * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
  */
-function f_getUrlParamsObj( inStr ) {
+
+function f_getUrlParamsObj(inStr) {
 	var p, n, tmpOP, retObj = false;
 	if (inStr) {
 		retObj = {};
 		// First remove the leading '?' if needed.
-		inStr = inStr.replace(/^\?/,'');
+		inStr = inStr.replace(/^\?/, '');
 
 		// Explode the string into "name=val" portions.
 		p = inStr.split('&');
 		tmpOP = "{";
-		for (var i=0; i<p.length; i++) {
-			if (i>0) { tmpOP += ', '; }
+		for (var i = 0; i < p.length; i++) {
+			if (i > 0) {
+				tmpOP += ', ';
+			}
 			n = p[i].split('=');
-			tmpOP += '"'+n[0]+'":"'+unescape(n[1]).replace(/\\/g,'\\\\').replace(/\"/g,"\\\"").replace(/\'/g,"\\'")+'"';
+			tmpOP += '"' + n[0] + '":"' + unescape(n[1]).replace(/\\/g, '\\\\').replace(/\"/g, "\\\"").replace(/\'/g, "\\'") + '"';
 		}
 		tmpOP += '}'
-		retObj = eval("("+tmpOP+")");
+		retObj = eval("(" + tmpOP + ")");
 	}
 	return retObj;
 }
@@ -559,15 +539,16 @@ function f_getUrlParamsObj( inStr ) {
 /*
  * str f_makeUrlParamsFromObj ( inObj )
  *
- * Returns string 
+ * Returns string
  * Ex:
  *   f_getUrlParamsObj({"bob":"val2", "name2":"val3"}) = 'bob=val1&name2=val3'
  *
  * Notes: Automatically escapes characters
- * 
+ *
  * Author: John Jimenez (johnajimenez_at_gmail_dot_com)
  */
-function f_makeUrlParamsFromObj( inObj ) {
+
+function f_makeUrlParamsFromObj(inObj) {
 
 	var retStr = false;
 
@@ -575,25 +556,12 @@ function f_makeUrlParamsFromObj( inObj ) {
 		retStr = '';
 		for (var i in inObj) {
 			if (inObj.hasOwnProperty(i)) {
-				if (retStr) { retStr+='&'; }
-				retStr += escape(i)+'='+escape(inObj[i])
+				if (retStr) {
+					retStr += '&';
+				}
+				retStr += escape(i) + '=' + escape(inObj[i]);
 			}
 		}
 	}
 	return retStr;
 }
-
-//dynamic product ratings display
-function dynamicRatings(){
-	var obj = $('.reviews .stars');
-	$(obj).each(function (i){
-			var avgRating = $(this).attr('rel');
-			var RatingNumber = avgRating * 20;
-			if(avgRating == 'noRating' || RatingNumber == "0.0"){						
-					$(this).parent().css('background-position','0px -62px');
-					$(this).width('0px');
-			} else{
-			  $(this).css('width', RatingNumber+"%" );
-			}
-	});
-};

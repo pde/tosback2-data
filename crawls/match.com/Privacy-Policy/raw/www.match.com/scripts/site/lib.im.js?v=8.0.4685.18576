@@ -1,0 +1,243 @@
+window.chatwin = null;
+var alertsY;
+
+function MatchChatAddConvo(IMsiteaction) {
+    if (IMsiteaction != "") {
+        // pause computer until child has had a chance to recreate connection, if appropriate
+        pausecomp(51);
+
+        // hide alert
+        HideAlert('divChatAlert');
+
+        if (IMsiteaction == "") {
+            return false;
+        }
+        // chat window vars
+        var chatwinURL = "/chat/conv.aspx";
+        var chatwinFeatures = "";
+        chatwinFeatures += "width=558"; 	// width
+        chatwinFeatures += ",height=475"; // height
+        chatwinFeatures += ",scrollbars=no"; // scrollbars
+        chatwinFeatures += ",status=no"; // statusbar
+        chatwinFeatures += ",resizable=no"; // resizable
+        chatwinFeatures += ",toolbar=no"; // toolbar
+        chatwinFeatures += ",menubar=no"; // menubar
+        var chatwinName = "imconv";
+
+        // chat vars
+        var myid = getStringParam('idto', IMsiteaction, false);
+        var theirid = getStringParam('idfrom', IMsiteaction, false);
+        var convoid = IMsiteaction.toLowerCase().indexOf('convoid') >= 0 ? getStringParam('convoid', IMsiteaction.toLowerCase(), false) : "0";
+        var serverid = IMsiteaction.toLowerCase().indexOf('srid') >= 0 ? getStringParam('srid', IMsiteaction.toLowerCase(), false) : "0";
+
+        var IsUserBusy = true;
+        $jq.ajax({
+            url: '/games/IsUserBusy/',
+            type: 'POST',
+            data: { userId: myid },
+            async: false,
+            success: function (response) {
+                IsUserBusy = response == "True";
+            },
+            failure: function (response) {
+                alert(response);
+            }
+        });
+
+        if (IsUserBusy == true) {
+            window.open("/site/UserBusy/?userid=" + myid, "ImPlaceholder", chatwinFeatures);
+        }
+        else if (window.chatwin == null || window.chatwin.closed) {
+            // open new window && let onload handle add convo
+            window.chatwin = window.open(IMsiteaction, chatwinName, chatwinFeatures);
+        } else {
+            var callback = function() {
+                if (window.chatwin == null || window.chatwin.addConvo == null) {
+                    setTimeout(arguments.callee, 50);
+                    return;
+                }
+
+                // add new conversation to child window
+                window.chatwin.addConvo(myid, theirid, convoid, serverid);
+            }
+            setTimeout(callback, 50);
+
+            window.chatwin.focus();
+        }
+    }
+    return false;
+}
+
+function loseHandle() {
+    window.chatwin = null;
+}
+
+function HideAlert(divHide) {
+    var HideDiv;
+    HideDiv = document.getElementById(divHide);
+    if (HideDiv != null) {
+        HideDiv.style.display = "none";
+    }
+}
+
+function getSubString(thestring, pointFrom, pointTo) {
+    if (pointFrom != null && pointFrom != '') {
+        var start = thestring.indexOf(pointFrom) + pointFrom.length;
+        var secondString = thestring.substring(start, thestring.length);
+    } else {
+        var secondString = thestring;
+    }
+    var end = secondString.indexOf(pointTo);
+    if (pointTo != '' && end >= 0) {
+        var finalString = secondString.substring(0, end);
+    } else {
+        var finalString = secondString;
+    }
+    return finalString;
+}
+
+// paramName == parameter name to get
+// myString == if using custom string, pass here
+// qsbool == if using querystring, pass true
+// return string value
+function getStringParam(paramName, myString, qsbool) {
+
+    if (qsbool == true) {
+        myString = String(window.location);
+    }
+    var paramValue = getSubString(myString, paramName + '=', '&');
+    return paramValue;
+}
+
+
+// www.sean.co.uk<br><br>
+function pausecomp(millis) {
+    var date = new Date();
+    var curDate = null;
+
+    do { curDate = new Date(); }
+    while (curDate - date < millis);
+}
+
+function showChatBubble(user, IMURL) {
+    if (IMURL != '') {
+        chatBubble = document.getElementById(user);
+        chatBubble.className = 'div_chatBubbleHover';
+    }
+}
+
+function showChatBubbleDetail(user, IMURL) {
+    if (IMURL != '') {
+        chatBubble = document.getElementById(user);
+        chatBubble.className = 'div_chatBubbleHoverDetail';
+    }
+}
+
+function hideChatBubble(user) {
+    chatBubble = document.getElementById(user);
+    chatBubble.className = 'div_chatBubble';
+}
+
+var ruto;
+function rollAlertDown() {
+    var to;
+    var ftlObj = document.getElementById("divChatAlertWrapper");
+    var startY = -40;
+    var endY = alertsY;
+    var currentY = -40;
+
+    window.stayTopLeft = function stayTopLeft() {
+        if (currentY <= endY) {
+            currentY += (endY - startY) / 7;
+            ftlObj.style.top = currentY + "px";
+            to = setTimeout("stayTopLeft()", 100);
+        }
+        else {
+            clearTimeout(to);
+            ruto = setTimeout("rollAlertUp()", 5000);
+        }
+    }
+    stayTopLeft();
+}
+
+function rollAlertUp() {
+    clearTimeout(ruto);
+    var to;
+    var ftlObj = document.getElementById("divChatAlertWrapper");
+    var startY = alertsY;
+    var endY = -200;
+    var currentY = alertsY;
+
+    window.stayBottomLeft = function stayBottomLeft() {
+        if (currentY >= endY) {
+            currentY -= (startY - endY) / 7;
+            ftlObj.style.top = currentY + "px";
+            to = setTimeout("stayBottomLeft()", 100);
+        }
+        else {
+            clearTimeout(to);
+        }
+
+    }
+
+    stayBottomLeft();
+}
+
+
+$jq.namespace('MatchCore.UI.Site.IM');
+
+MatchCore.UI.Site.IM.toast = function () {
+    var _container;
+    var _slider;
+    var _toasts;
+    var _interval = null;
+    var _duration = 5000;
+    var _activeChats = 0;
+    var _isSub = false;
+
+    var _hideToasts = function () {
+        _slider.slideUp('slow');
+        _clearIM();
+    };
+
+    var _clearIM = function () {
+        window.clearTimeout(_interval);
+        _interval = null;
+    };
+
+    var wireUpControls = function () {
+        $jq('#activeChats', _container).html('(' + _activeChats + ')');
+        if (_toasts.length > 0 && _activeChats > 0) {
+            $jq(_container).show().bind('mouseenter', function () {
+                if (_interval != null) {
+                    _clearIM();
+                    $jq(this).bind('mouseleave', function () {
+                        _hideToasts();
+                    });
+                }
+            });
+            _slider.slideDown('slow')
+            _interval = window.setTimeout(_hideToasts, _duration);
+        } else if (_toasts.length < 1 && _activeChats > 0) {
+            $jq(_container).show();
+        }
+    };
+
+    var self = {
+        init: function (opts) {
+            if (opts && opts.container) {
+                _container = opts.container;
+                _slider = $jq("#toasts", _container);
+                _toasts = $jq("ul", _container);
+
+                if (opts.meta) {
+                    _duration = opts.meta.duration;
+                    _activeChats = opts.meta.activeChats;
+                    _isSub = opts.meta.isSub;
+                }
+            }
+            wireUpControls();
+        }
+    };
+    return self;
+}

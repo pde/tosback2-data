@@ -1,0 +1,367 @@
+(function() {
+    var cookieStorage = BrowserStorage.setStorageEngines('cookie');
+    Halo.setTrackingCookiesFromUrl();
+    if(cookieStorage.get('hlmt') !== null) {
+	
+        var args = arguments,
+			member = Sandbox.getMember(),
+			
+			redirectFunc = function() {    
+				var redirect = "",
+					whiteList = [
+						'',
+						'campaigns',
+						'invite',
+						'index',
+						'canada',
+						'australia',
+						'nordstromrack'
+					],
+					
+					curPath = window.location.pathname.toString(),
+					curSearch = window.location.search.toString(),
+					
+					pathnameChunks = curPath.split('/');
+				
+				if(arrayIndexOf.call(whiteList, pathnameChunks[1]) != -1){
+				
+					if (curSearch.length > 0){
+						
+						var queryChunks = curSearch.substring(1).split('&');
+						
+						for (var i; i < queryChunks.length; i++) {
+							var temp = queryChunks[i].split('=');
+							temp[1] = temp[1].split('#')[0];
+							
+							switch (temp[0]){
+								case 'event_id':
+									redirect = "/event/" + temp[1];
+									break;
+								case 'inventory_id':
+									redirect = "/product/" + temp[1];
+									break;
+								case 'u':
+									redirect = temp[1];
+									break;
+								case 'content':
+									redirect = "/content/" + temp[1];
+									break;
+								default:
+									redirect = "/events";
+									break;
+							}
+							
+							if(redirect != '/events'){
+								break;
+							}
+							
+						}
+					}
+					
+					/**
+					* if there's no query string or if the query string didn't provide anything useful... try
+					* using the zend-style query string instead.
+					*/
+					if(!redirect || redirect == '/events'){                    
+						var pathnameChunks = curPath.split('/');
+						
+						for(var i; i < pathnameChunks.length; i++){
+							switch (pathnameChunks[i]){
+								case 'event_id':
+									redirect = "/event/" + pathnameChunks[+i+1];
+									break;
+								case 'inventory_id':
+									redirect = "/product/" + pathnameChunks[+i+1];
+									break;
+								case 'u':
+									redirect = pathnameChunks[+i+1];
+									break;
+								case 'content':
+									redirect = "/content/" + pathnameChunks[+i+1];
+									break;
+								default:
+									redirect = "/events";
+									break;
+							}
+							if(redirect != '/events'){
+								break;
+							}
+						}
+					}
+					
+					if (redirect){
+						window.location.href = redirect;    
+					}
+				}
+			}//end redirectFunc
+		
+        if(!member) {
+            Sandbox.forceMemberUpdate(
+                args.callee, // Failure callback
+                redirectFunc // Success Callback
+            );
+        }
+        else if(member.expirationTS && member.expirationTS > (+new Date())) {
+            Sandbox.setMember(false);
+            arguments.callee();
+            return;
+        }
+        else{
+            redirectFunc();
+        }
+    }
+	// if no hlmt cookie
+    else {        
+        var redirect = "",
+			whiteList = [
+				'returns-policy',
+				'return-policy',
+				'about',
+				'support',
+				'careers',
+				'affiliate',
+				'help',
+				'unsubscribe',
+				'giftreturns',
+				'forgot-password',
+				'press',
+				'apps',
+				'apps/iphone',
+				'logout',
+				'login'
+			],
+			
+			whiteList2 = [
+				'',
+				'campaigns',
+				'index',
+				'canada',
+				'australia',
+				'nordstromrack'
+			],
+			
+			path = window.location.pathname.split('/');
+    
+        if(arrayIndexOf.call(whiteList, path[1]) != -1) {
+            Sandbox.setMember(false);
+            $Halo.bigbro.notify('memberNotLoggedIn');
+            return;
+        }
+        
+        if (window.location.pathname != '/')
+        {
+            cookieStorage.set('RETURN_URL', window.location.pathname);
+        }
+            
+        if(cookieStorage.get('HLMEMBER') !== null && path[1] != 'login') {
+            /*setTimeout(function(){
+                window.location.href = '/login';    
+            },5000);*/
+            window.location.href = '/login';
+        }
+        else if (arrayIndexOf.call(whiteList2, path[1]) == -1 && cookieStorage.get('HLMEMBER') === null) {
+            window.location.href = '/';
+        } else {
+            //if the code gets here, that means there's been no redirect and the user is on reg 
+            $().ready(function(){
+                $(".hidden").removeClass('hidden');
+            });
+                
+        }
+    }
+})();
+
+
+var checkLogin = function(){    
+    var params = {
+        'controller_name' : "",
+        'action_name' : "",
+        "url" : "",
+        "format" : "json"
+    },
+		popup = false;
+    
+    return function(controller_name, action_name, url){
+        var that = this;
+        
+        params.controller_name = controller_name;
+        params.action_name = action_name;
+        params.url = url;
+        
+        $.ajax({
+            type: "POST",
+            url: '/login/check-login',
+            dataType: 'json',
+            data: params,
+
+             success: function(result) {
+				try{
+					if(result && typeof result.success != 'undefined' && result.success == true) {
+						window.location.href = result.data.return_url; 
+					}
+					else{
+						throw new Error("Response from login/check-login was invalid.");
+					}
+				}
+				catch(e){
+					this.error();
+				}
+            },
+			
+			error: function(){
+				Shadowbox.close();
+				$.getScript("/js/app/modules/loaders/overlays/soft-login.js", function() {
+					if (Sandbox.moduleStatus('overlays/login/soft-login') === 'active') {
+						$Halo.bigbro.notify('softLoginOverlayDisplay');
+					}
+					else {
+						setTimeout(arguments.callee, 25);
+					}
+				});
+			}
+        });
+        return false;
+    }
+}();
+
+
+(function() {
+    var ga = document.createElement('script');     ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:'   == document.location.protocol ? 'https://ssl'   : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+
+
+// wrap the Google Analytics object to prevent tracking
+// from firing if user does not have allowed role
+var _haq = _haq || [],
+	_gaq = _gaq || [];
+
+(function() {
+	
+	var iterateHaqArray = function(member) {
+		// 0 = Guest ; 1 = Member ; if no member obj, assume normal member and track via _gaq
+		if (!member || member.role === 0 || member.role === 1) {
+			// for the GA calls that have been made before the member data has been returned
+			if (_haq.length > 0 && typeof _haq !== "undefined") {
+				for (var i = 0; i < _haq.length; i++) {
+					_gaq.push(_haq[i]);
+				}
+			}
+			
+			_haq = {};
+			
+			_haq.push = function() {
+				if (typeof _haq !== "undefined") {
+					var args = Array.prototype.slice.call(arguments, 0);
+					_gaq.push(args[0]);
+				}
+			};
+		}
+		// if not guest nor regular member, only allow callbacks thru, not _gaq calls
+		else {
+			var pushHaqCallbacks = function() {
+				if (typeof _haq !== "undefined") {
+					var args = Array.prototype.slice.call(arguments, 0);
+					if (typeof args[0] == "function") {
+						args[0].call();
+					}
+				}
+			};
+			
+			// for the GA calls that have been made before the member data has been returned
+			if (_haq.length > 0 && typeof _haq !== "undefined") {
+				for (var i = 0; i < _haq.length; i++) {
+					pushHaqCallbacks(_haq[i]);
+				}
+			}
+			
+			_haq = {};
+			
+			_haq.push = function() {
+				var args = Array.prototype.slice.call(arguments, 0);
+				pushHaqCallbacks(args[0]);
+			}
+		}
+	};
+	
+	Sandbox.getMemberAsync({
+		success: function(member) {
+			iterateHaqArray(member);
+		},
+		
+		error: function() {
+			iterateHaqArray();
+		}
+	});
+})();
+
+
+$(document).ready(function(){
+    /**
+    * heading to checkout
+    */
+    $("#headerCheckout .btn, #moduleCartInner div.checkout_btn").live('click', function() { 
+		var loc = window.document.location,
+			checkoutUrl = 'https://' + loc.toString().split("//")[1].split('/')[0] + '/checkout';
+        return checkLogin('checkout', 'index', checkoutUrl);
+    });
+	$("#ModulePaypalOverlay #paypal_ok").live('click', function() {
+		window.location.href='/paypal/set-express-checkout';
+    });
+
+    /**
+    * heading to any other https page.
+    */
+
+    $(".ssl_link").live(
+        'click', 
+        function (){
+            var params = {
+                controller_name: "member",
+                action_name: "",
+                url: ""
+            },
+				
+				href = $(this).attr('href').substring(1);
+            
+            //the if condition is because IE7 is retarded, and treats relative links as having absolute href attributes.
+            if(($.browser.msie && ($.browser.version.indexOf('7') == 0 || $.browser.version.indexOf('6') == 0)) && href.indexOf('.com') != -1)
+            {
+                href = href.substring(+(href.indexOf('.com')) + 5);    
+            }
+            
+            switch(href){
+                case 'orders':
+                    params.action_name = 'orders';
+                    params.url = '/orders';
+                    break;
+                case 'returns':
+                    params.action_name = 'returns';
+                    params.url = '/returns';
+                    break;
+                case 'shipping':
+                    params.action_name = 'shipping';
+                    params.url = '/shipping';
+                    break;
+                case 'invites':
+                    params.action_name = 'invites';
+                    params.url = '/invites';
+                    break;
+                case 'credit':
+                    params.action_name = 'credit';
+                    params.url = '/credit';
+                    break;
+                //account is the default, so it falls through to default.
+                case 'account':
+                default:
+                    params.action_name = 'account';
+                    params.url = '/account';
+                    break;
+            }
+            
+            return checkLogin(params.controller_name, params.action_name, params.url);
+            
+        }
+    );
+});  

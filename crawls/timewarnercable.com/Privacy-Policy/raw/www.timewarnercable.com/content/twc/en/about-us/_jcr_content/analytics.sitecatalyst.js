@@ -338,7 +338,7 @@ s.getObjectID = s_getObjectID
 
 /* added for CQ */               
 /* change to prod report suite if necessary */
-var isDev = (/webapps/.test(document.domain) || /localhost/.test(document.domain));
+var isDev = (/webapps/.test(document.domain) || /localhost/.test(document.domain) || /contentmanager/.test(document.domain));
 if (!isDev) {
 	s.sa('tsg2resglobal');
 } 
@@ -349,15 +349,17 @@ s.usePlugins = true;
 var noneIndex;
 function s_doPlugins(s) {
 
-		/*s_code date*/
-		s.prop48="9/18/12";
+        /*s_code date*/
+        s.prop48="10/15/12";
+                
+        if ((!s.prop3) && (!s.eVar6)) {
+            s.eVar6 = s.prop3 = "corporate";
+        }
                 
         /* Populate  the FAQ prop16 based on prop9 and prop1 */
         // this will work for CQ pages, but need to provide case for FAQ handling on non-CQ platforms without conflicting with this logic
         if (s.prop9 && /\/residential-home\/support\/faqs/.test(document.URL) ) // FAQ page
         {
-
-
             // added for cq
            if (/\/residential-home\/support\/faqs\.html/.test(document.URL)) { // listing page
                 s.pageName = "faqs > all faqs";
@@ -396,9 +398,9 @@ function s_doPlugins(s) {
 				s.prop1=str[0] + " > " + str[1]
 				s.prop2=str[0] + " > " + str[1] + " > " + str[2]
 			}
-			if (s.pageName)					{ s.hier1 	= s.repl(s.pageName, " > ", "|");};
-			if (s.prop3)					{ s.prop5 	= s.prop3 + ": " + s.pageName;};
-			if (s.prop9)					{ s.prop16 = s.prop1 + ": " + s.prop9; s.eVar49 = s.prop16; };
+			if (s.pageName)	{ s.hier1 	= s.repl(s.pageName, " > ", "|");};
+			if (s.prop3)	{ s.prop5 	= s.prop3 + ": " + s.pageName;};
+			if (s.prop9)	{ s.prop16 = s.prop1 + ": " + s.prop9; s.eVar49 = s.prop16; };
 	}		
 		
 	/*Add eVar6 to all hits*/

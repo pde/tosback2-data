@@ -3445,8 +3445,10 @@ if(("loaded"===b.readyState||"complete"===b.readyState)&&!b.onloadDone){d()
 }};
 c.body.appendChild(b)
 }else{a()
-}},loadStyle:function(b){function a(){if(!nike.stylesToInclude||nike.stylesToInclude.length==0){nike.dispatchEvent(nike.EVENT_REQUESTED_STYLES_LOADED)
-}}if(b){jQuery("head").children().first().before(jQuery("<link rel='Stylesheet' type='text/css' href='"+b+"' />"));
+}},loadStyle:function(b){var c;
+function a(){if(!nike.stylesToInclude||nike.stylesToInclude.length==0){nike.dispatchEvent(nike.EVENT_REQUESTED_STYLES_LOADED)
+}}if(b){c=jQuery("<link>",{rel:"Stylesheet",type:"text/css",href:b});
+jQuery("head").children().first().before(jQuery(c));
 if(nike.stylesToInclude){nike.loadStyle(nike.stylesToInclude.shift())
 }}},addLoadedScript:function(e,b){var c,a;
 var d=false;
@@ -3511,8 +3513,8 @@ nike.requireDependency("nike");
 nike.requireDependency("Class");
 nike.requireDependency("nike.fonts.glyphPolyfill");
 nike.fonts.Selector=Class.extend({getZhRequirements:function(){var a={};
-if(nike.COUNTRY.toLowerCase()==="cn"){a={css:"nike.fonts.chinese_simplified",js:"http://fast.fonts.com/jsapi/f935798c-448b-4612-8ba3-450bdd2446f2.js"}
-}else{a={css:"nike.fonts.chinese_traditional",js:"http://fast.fonts.com/jsapi/5452647f-de40-42e2-a4d2-b757313925a4.js"}
+if(nike.COUNTRY.toLowerCase()==="cn"){a={css:"nike.fonts.chinese_simplified"}
+}else{a={css:"nike.fonts.chinese_traditional"}
 }return a
 },init:function(a){this.requirements=nike.fonts.Selector.LANGUAGE_REQUIREMENTS[a];
 if(!this.requirements){this.requirements=nike.fonts.Selector.LANGUAGE_REQUIREMENTS["default"]
@@ -3520,7 +3522,7 @@ if(!this.requirements){this.requirements=nike.fonts.Selector.LANGUAGE_REQUIREMEN
 }},loadLanguageRequirements:function(){if(this.requirements.css){nike.requestStyles(this.requirements.css)
 }if(this.requirements.js){nike.loadExternalResources(this.requirements.js)
 }}});
-nike.fonts.Selector.LANGUAGE_REQUIREMENTS={"default":{css:"nike.fonts.latin"},tr:{css:"nike.fonts.latin_extended"},ru:{css:"nike.fonts.cyrillic",js:"http://fast.fonts.com/jsapi/c01aa828-e613-406e-b8ee-e7e7090b5e31.js"},ko:{css:"nike.fonts.korean",js:"http://fast.fonts.com/jsapi/512d97de-865e-43f6-b447-1a7a307130be.js"},ja:{css:"nike.fonts.japanese",js:"http://fast.fonts.com/jsapi/963bcd39-1170-4e96-8f5a-2fc748381821.js"},th:{css:"nike.fonts.thai",js:"http://fast.fonts.com/jsapi/530ab2a5-9cc3-4a6b-906d-910e391085f5.js"},zh:nike.fonts.Selector.prototype.getZhRequirements};
+nike.fonts.Selector.LANGUAGE_REQUIREMENTS={"default":{css:"nike.fonts.latin"},tr:{css:"nike.fonts.latin_extended"},ru:{css:"nike.fonts.cyrillic",js:"//fast.fonts.com/jsapi/c01aa828-e613-406e-b8ee-e7e7090b5e31.js"},ko:{css:"nike.fonts.korean"},ja:{css:"nike.fonts.japanese"},th:{css:"nike.fonts.thai",js:"//fast.fonts.com/jsapi/530ab2a5-9cc3-4a6b-906d-910e391085f5.js"},zh:nike.fonts.Selector.prototype.getZhRequirements};
 !function(b){try{var d=nike.LOCALE.substr(0,nike.LOCALE.indexOf("_")).toLowerCase()||"default";
 var a=new b(d);
 a.loadLanguageRequirements()
@@ -3560,29 +3562,28 @@ if(f.hoverIntent_s==1){f.hoverIntent_t=setTimeout(function(){i(g,f)
 return this.bind("mouseenter",b).bind("mouseleave",b)
 }
 })(jQuery);
-jQuery.hoverIntent=$.fn.hoverIntent;nike.namespace("jQuery.growAndShow");
+jQuery.hoverIntent=$.fn.hoverIntent;
+nike.namespace("jQuery.growAndShow");
 nike.requireDependency("jQuery");
 (function(b){var a=function(c){this.settings=c;
 return this
 };
 a.prototype={open:function(c){var d=this;
-if(!c.children(d.settings.selector).length){return false
-}if(c.children(d.settings.selector).is(".is-hidden")){c.addClass("is-active").show().height(c.height()).children().not(d.settings.selector).fadeTo(d.settings.speed,0,function(){b(this).removeClass("is-active").addClass("is-hidden").hide(function(){b(this).css({display:"",opacity:""})
-})
-}).delay(d.settings.speed).end().filter(d.settings.selector).removeClass("is-hidden").hide().end().end().animate({height:c.children(d.settings.selector).outerHeight()},d.settings.speed,function(){c.css("height","").children(d.settings.selector).addClass("is-active").fadeTo(d.settings.speed,1,function(){b(this).css({display:"",opacity:""})
-});
+if(c.children(d.settings.selector).length&&c.children(d.settings.selector).is(".is-hidden")){if(c.children(".is-active").length){c.children().not(d.settings.selector).fadeTo(d.settings.speed,0,function(){b(this).removeClass("is-active").addClass("is-hidden").css({display:"",opacity:""})
+}).end().end().delay(d.settings.speed)
+}c.removeClass("is-hidden").height(c.height()).children(d.settings.selector).hide().removeClass("is-hidden").end().animate({height:c.children(d.settings.selector).outerHeight()},d.settings.speed,function(){c.addClass("is-active").css("height","").children(d.settings.selector).addClass("is-active").fadeTo(d.settings.speed,1,function(){b(this).css({display:"",opacity:""});
 d.settings.callback.apply(c)
 })
-}},close:function(c){var d=this;
-c.height(c.height()).children().fadeTo(d.settings.speed,0,function(){b(this).removeClass("is-active").addClass("is-hidden").hide(function(){b(this).css({display:"",opacity:""})
 })
-}).end().delay(d.settings.speed).animate({height:0},d.settings.speed,function(){b(this).css("height","").removeClass("is-active");
+}},close:function(c){var d=this;
+c.height(c.height()).children().fadeTo(d.settings.speed,0,function(){b(this).removeClass("is-active").addClass("is-hidden").css({display:"",opacity:""})
+}).end().delay(d.settings.speed).animate({height:0},d.settings.speed,function(){b(this).removeClass("is-active").addClass("is-hidden").css("height","");
 d.settings.callback.apply(d)
 })
 },toggle:function(c){var d=this;
 c.stop().children().stop();
-if(c.children(d.settings.selector).is(".is-hidden")){d.open(c)
-}else{d.close(c)
+if(c.children(d.settings.selector).is(".is-active")){d.close(c)
+}else{d.open(c)
 }}};
 b.fn.growAndShow=function(c,f,e,g){var d={};
 if(typeof c==="object"){d=c
@@ -4012,9 +4013,22 @@ break
 }return a(this)
 }})
 })(jQuery)
-};window.requestAnimFrame=(function(){return window.requestAnimationFrame||window.webkitRequestAnimationFrame||window.mozRequestAnimationFrame||window.oRequestAnimationFrame||window.msRequestAnimationFrame||function(a){window.setTimeout(a,1000/60)
+};(function(){var b=0;
+var c=["ms","moz","webkit","o"];
+for(var a=0;
+a<c.length&&!window.requestAnimationFrame;
+++a){window.requestAnimationFrame=window[c[a]+"RequestAnimationFrame"];
+window.cancelAnimationFrame=window[c[a]+"CancelAnimationFrame"]||window[c[a]+"CancelRequestAnimationFrame"]
+}if(!window.requestAnimationFrame){window.requestAnimationFrame=function(h,e){var d=new Date().getTime();
+var f=Math.max(0,16-(d-b));
+var g=window.setTimeout(function(){h(d+f)
+},f);
+b=d+f;
+return g
 }
-})();nike.namespace("nike.Event");
+}if(!window.cancelAnimationFrame){window.cancelAnimationFrame=function(d){clearTimeout(d)
+}
+}}());nike.namespace("nike.Event");
 nike.Event.ADD_TO_CART="addToCartEvent";
 nike.Event.ADD_TO_CART_SUCCESS="addToCartSuccessEvent";
 nike.Event.ADD_TO_CART_FAIL="addToCartFailEvent";
@@ -4208,6 +4222,9 @@ nike.Event.SWIPABLE_STARTED="swipableStarted";
 nike.Event.SWIPABLE_ENDED="swipableEnded";
 nike.Event.GIFT_CARD_LINK_CLICKED="giftCardLinkClickEvent";
 nike.Event.PROFILE_MENU_ITEM_CLICKED="profileMenuItemClickedEvent";
+nike.Event.SMARTCART_QUEUE_EXIT="smartCartQueueExitEvent";
+nike.Event.SMARTCART_BUTTON_CLICK="smartCartButtonClickEvent";
+nike.Event.SMARTCART_MODAL_PAGE_VIEW="smartCartModalPageView";
 Date.prototype.format=function(e){var d="";
 var c=Date.replaceChars;
 for(var b=0;
@@ -4492,54 +4509,61 @@ return true
 };
 nike.Validation.validateForm=function(d,c){var f=true;
 var a=d.find("input[required]").add(d.find("select[required]"));
-a.each(function(s,j){var y=$(j);
-var z=y.val();
-var k=(y.context.form!=null)?y.context.form:d;
-if(y.is("input[name=password]")){if(k&&(k.name=="register-form"||k.name=="passwordUpdater-form")){var g=nike.Validation.validatePassword(y.val());
-if(!g.allReqMet){e(y)
-}else{b(y)
-}}else{if(y.parents(".change_password_form")){var g=nike.Validation.validatePassword(y.val());
-if(!g.allReqMet){e(y)
-}else{b(y)
-}}}}else{if(y.is("input[name=passwordConfirm]")||y.is("input[name=confirmPassword]")){var h=(d.closest("form").find("input[name=password]").length>0)?d.closest("form").find("input[name=password]"):d.find("input[name=password]"),m=(d.find("input[name=passwordConfirm]").length>0)?d.find("input[name=passwordConfirm]"):d.find("input[name=confirmPassword]");
-if((h.val()!==m.val())||(h.val()=="")){e(y)
-}else{b(y)
-}}else{if(y.is("input[name=firstName]")){var t=d.find("input[name=firstName]");
-if(t.val()==""){e(y)
-}else{if(!nike.Validation.validateFirstName(t.val())){var x=(y.is("select.selectBox")&&(y.css("display")==="none"))?y.next():y;
+a.each(function(t,k){var z=$(k);
+var A=z.val();
+var l=(z.context.form!=null)?z.context.form:d;
+if(z.is("input[name=password]")){if(l&&(l.name=="register-form"||l.name=="passwordUpdater-form")){var g=nike.Validation.validatePassword(z.val());
+if(!g.allReqMet){e(z)
+}else{b(z)
+}}else{if(z.parents(".change_password_form")){var g=nike.Validation.validatePassword(z.val());
+if(!g.allReqMet){e(z)
+}else{b(z)
+}}}}else{if(z.is("input[name=passwordConfirm]")||z.is("input[name=confirmPassword]")){var j=(d.closest("form").find("input[name=password]").length>0)?d.closest("form").find("input[name=password]"):d.find("input[name=password]"),n=(d.find("input[name=passwordConfirm]").length>0)?d.find("input[name=passwordConfirm]"):d.find("input[name=confirmPassword]");
+if((j.val()!==n.val())||(j.val()=="")){e(z)
+}else{b(z)
+}}else{if(z.is("input[name=firstName]")){var u=d.find("input[name=firstName]");
+if(u.val()==""){e(z)
+}else{if(!nike.Validation.validateFirstName(u.val())){var y=(z.is("select.selectBox")&&(z.css("display")==="none"))?z.next():z;
 f=false;
-x.addClass("invalid");
-if(y.attr("data-error-at")){nike.Validation.notifyState(x,y.attr("data-error-at"))
-}}else{b(y)
-}}}else{if(y.is("input[name=phoneNumber]")){var p=d.find("input[name=phoneNumber]");
-if(p.val()==""||!nike.Validation.validatePhoneNumber(p.val())){e(y)
-}else{b(y)
-}}else{if(y.is("input[name=emailConfirm]")){var q=d.closest("form").find("input[name=email]");
-if(q.val()!==y.val()){e(y)
-}else{b(y)
-}}else{if(y.is("input[name=postalCode]")){var r=(null!=$(k).find("[name=country]").val())?$(k).find("[name=country]").val():nike.COUNTRY;
-var v=nike.Validation.regex.homeAddress["postalCode"+r.toUpperCase()];
-if((v&&(v.test(z)===false))||v&&z==""||z==""){e(y)
-}else{b(y)
-}}else{if(y.is("input[type=email]")){var u=nike.Validation.regex.email;
-if(u.test(z)===false){e(y)
-}else{b(y)
-}}else{if(y.is(":radio")){if(d.find("input[name="+y.attr("name")+"]:checked").exists()===false){e(y)
-}else{b(y)
-}}else{if(y.attr("pattern")){var l=new RegExp(y.attr("pattern"),y.attr("data-patternFlag"));
-if(l.test(z)===false){e(y)
-}else{b(y)
-}}else{if(y.is("select.dob-dropdown")){var o=$(k).find("select[name=dobMonth]").val();
-var n=$(k).find("select[name=dobDay]").val();
-var w=$(k).find("select[name=dobYear]").val();
+y.addClass("invalid");
+if(z.attr("data-error-at")){nike.Validation.notifyState(y,z.attr("data-error-at"))
+}}else{b(z)
+}}}else{if(z.is("input[name=screenName]")){var h=d.find("input[name=screenName]");
+var q=$.trim(h.val());
+if(q==""){e(z)
+}else{if(!nike.Validation.validateScreenName(q)){var y=(z.is("select.selectBox")&&(z.css("display")==="none"))?z.next():z;
+f=false;
+y.addClass("invalid");
+if(z.attr("data-error-space")){nike.Validation.notifyState(y,z.attr("data-error-space"))
+}}else{b(z)
+}}}else{if(z.is("input[name=phoneNumber]")||z.is("input[name=additionalPhoneNumber]")||z.is("input[name=mobileNumber")){if(z.val()==""||!nike.Validation.validatePhoneNumber(z.val())){e(z)
+}else{b(z)
+}}else{if(z.is("input[name=emailConfirm]")){var r=d.closest("form").find("input[name=email]");
+if(r.val()!==z.val()){e(z)
+}else{b(z)
+}}else{if(z.is("input[name=postalCode]")){var s=(null!=$(l).find("[name=country]").val())?$(l).find("[name=country]").val():nike.COUNTRY;
+var w=nike.Validation.regex.homeAddress["postalCode"+s.toUpperCase()];
+if((w&&(w.test(A)===false))||w&&A==""||A==""){e(z)
+}else{b(z)
+}}else{if(z.is("input[type=email]")){var v=nike.Validation.regex.email;
+if(v.test(A)===false){e(z)
+}else{b(z)
+}}else{if(z.is(":radio")){if(d.find("input[name="+z.attr("name")+"]:checked").exists()===false){e(z)
+}else{b(z)
+}}else{if(z.attr("pattern")){var m=new RegExp(z.attr("pattern"),z.attr("data-patternFlag"));
+if(m.test(A)===false){e(z)
+}else{b(z)
+}}else{if(z.is("select.dob-dropdown")){var p=$(l).find("select[name=dobMonth]").val();
+var o=$(l).find("select[name=dobDay]").val();
+var x=$(l).find("select[name=dobYear]").val();
+p=p?parseInt(p,10):"";
 o=o?parseInt(o,10):"";
-n=n?parseInt(n,10):"";
-w=w?parseInt(w):"";
-if(o&&n&&w&&nike.Validation.validateDate(w,o,n)){b(y)
-}else{e(y)
-}}else{if(z==""){e(y)
-}else{b(y)
-}}}}}}}}}}}});
+x=x?parseInt(x):"";
+if(p&&o&&x&&nike.Validation.validateDate(x,p,o)){b(z)
+}else{e(z)
+}}else{if(A==""){e(z)
+}else{b(z)
+}}}}}}}}}}}}});
 function e(g){var h=(g.is("select.selectBox")&&(g.css("display")==="none"))?g.next():g;
 f=false;
 nike.Validation.notifyState(h,g.attr("data-error"));
@@ -4611,8 +4635,12 @@ nike.Validation.validateFirstName=function(b){var a=false;
 a=!(nike.Validation.regex.firstname.test(b));
 return a
 };
+nike.Validation.validateScreenName=function(a){var b=false;
+b=!(nike.Validation.regex.screenname.test(a));
+return b
+};
 nike.Validation.validatePhoneNumber=function(a){var b=false;
-if(a.length>=8){b=true
+if(a.length>=8){b=nike.Validation.regex.phoneNum.test(a)
 }return b
 };
 nike.Validation.validateDate=function(d,e,a){if(isNaN(d)||isNaN(e)||isNaN(a)){return false
@@ -4622,16 +4650,15 @@ if((e===4||e===6||e===9||e===11)&&a===31){c=false
 if(a>29||(a===29&&!b)){c=false
 }}}return c
 };
-nike.Validation.regex={homeAddress:{postalCodeUS:new RegExp(/(^\d{5}$)|(^\d{5}-\d{4}$)/),postalCodeCA:new RegExp(/^([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/)},shippingAddress:{postalCodeUS:new RegExp(/(^\d{5}$)|(^\d{5}-\d{4}$)/),postalCodeAT:new RegExp(/(a|A)?(\s|-)?\d{4}/i),postalCodeBE:new RegExp(/(b|B)?(\s|-)?\d{4}/i),postalCodeCA:new RegExp(/^([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/),postalCodeCH:new RegExp(/\d{4}/i),postalCodeCZ:new RegExp(/\d{5}/i),postalCodeDE:new RegExp(/(d|D)?(\s|-)?\d{5}/i),postalCodeDK:new RegExp(/(dk|DK)?(\s|-)?\d{3,4}/i),postalCodeFI:new RegExp(/(fin|FIN)?(\s|-)?\d{5}/i),postalCodeFR:new RegExp(/(fr|FR)?(\s|-)?\d{5}/i),postalCodeGB:new RegExp(/(GIR 0AA)|(BFPO|bfpo) (\d{1,4}$)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9])[\ ]{0,1}[0-9][ABD-HJLNP-UW-Z]{2})/),postalCodeGR:new RegExp(/\d{5}/i),postalCodeHU:new RegExp(/\d{4}/i),postalCodeIT:new RegExp(/\d{5}/i),postalCodeLU:new RegExp(/(l)?(\s|-)?\d{4}/i),postalCodeNL:new RegExp(/\d{4} ?[a-zA-Z]{2}/),postalCodeNO:new RegExp(/(no|NO)?(\s|-)?\d{4}/i),postalCodePL:new RegExp(/\d{5}/i),postalCodePT:new RegExp(/\d{5,7}/i),postalCodeSI:new RegExp(/\d{4}/i),postalCodeES:new RegExp(/\d{5}/i),postalCodeSE:new RegExp(/^(se|SE)?\d{5}/i)},email:new RegExp(/^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}$/i),commaSeparatedEmails:new RegExp(/^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}(\s*,\s*[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})*$/i),register:{hasNum:new RegExp(/([0-9])/),hasUppercase:new RegExp(/([A-Z])/),hasLowercase:new RegExp(/[a-z]/)},firstname:new RegExp(/(@)/)};nike.NavigationUtil=Class.extend({country:undefined,locale:undefined,init:function(a){$.extend(this,a)
+nike.Validation.regex={homeAddress:{postalCodeUS:new RegExp(/(^\d{5}$)|(^\d{5}-\d{4}$)/),postalCodeCA:new RegExp(/^([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/)},shippingAddress:{postalCodeUS:new RegExp(/(^\d{5}$)|(^\d{5}-\d{4}$)/),postalCodeAT:new RegExp(/(a|A)?(\s|-)?\d{4}/i),postalCodeBE:new RegExp(/(b|B)?(\s|-)?\d{4}/i),postalCodeCA:new RegExp(/^([ABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Z]{1} *\d{1}[A-Z]{1}\d{1}$)/),postalCodeCH:new RegExp(/\d{4}/i),postalCodeCZ:new RegExp(/\d{5}/i),postalCodeDE:new RegExp(/(d|D)?(\s|-)?\d{5}/i),postalCodeDK:new RegExp(/(dk|DK)?(\s|-)?\d{3,4}/i),postalCodeFI:new RegExp(/(fin|FIN)?(\s|-)?\d{5}/i),postalCodeFR:new RegExp(/(fr|FR)?(\s|-)?\d{5}/i),postalCodeGB:new RegExp(/(GIR 0AA)|(BFPO|bfpo) (\d{1,4}$)|(((A[BL]|B[ABDHLNRSTX]?|C[ABFHMORTVW]|D[ADEGHLNTY]|E[HNX]?|F[KY]|G[LUY]?|H[ADGPRSUX]|I[GMPV]|JE|K[ATWY]|L[ADELNSU]?|M[EKL]?|N[EGNPRW]?|O[LX]|P[AEHLOR]|R[GHM]|S[AEGKLMNOPRSTY]?|T[ADFNQRSW]|UB|W[ADFNRSV]|YO|ZE)[1-9]?[0-9]|((E|N|NW|SE|SW|W)1|EC[1-4]|WC[12])[A-HJKMNPR-Y]|(SW|W)([2-9]|[1-9][0-9])|EC[1-9][0-9])[\ ]{0,1}[0-9][ABD-HJLNP-UW-Z]{2})/),postalCodeGR:new RegExp(/\d{5}/i),postalCodeHU:new RegExp(/\d{4}/i),postalCodeIT:new RegExp(/\d{5}/i),postalCodeLU:new RegExp(/(l)?(\s|-)?\d{4}/i),postalCodeNL:new RegExp(/\d{4} ?[a-zA-Z]{2}/),postalCodeNO:new RegExp(/(no|NO)?(\s|-)?\d{4}/i),postalCodePL:new RegExp(/\d{5}/i),postalCodePT:new RegExp(/\d{5,7}/i),postalCodeSI:new RegExp(/\d{4}/i),postalCodeES:new RegExp(/\d{5}/i),postalCodeSE:new RegExp(/^(se|SE)?\d{5}/i)},email:new RegExp(/^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}$/i),commaSeparatedEmails:new RegExp(/^[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4}(\s*,\s*[A-Z0-9._%+-]+@(?:[A-Z0-9-]+\.)+[A-Z]{2,4})*$/i),register:{hasNum:new RegExp(/([0-9])/),hasUppercase:new RegExp(/([A-Z])/),hasLowercase:new RegExp(/[a-z]/)},firstname:new RegExp(/(@)/),phoneNum:new RegExp(/^((\+\(?\d{1,3}\)?(-| |\s|\.)?\(?\d\)?(-| |\.)?\d{1,5})|(\d?\(?\d{1,6}\)?)|(\d{1}?(\.| |-)?\d{1,6})|(\d{1,6})|(\+\(\d{3}\))|(\d{1,3})?)(-| |\.)?(\d{3,4})(-| |\.)?(\d{4})(( )?(ext|extn|x)(:| |_|-)?(\d{1,4}))?$/i),screenname:new RegExp(/\s/i)};nike.NavigationUtil=Class.extend({country:undefined,locale:undefined,init:function(a){$.extend(this,a)
 },redirectToRegionalHomepage:function(){var a=window.location;
-window.location=a.protocol+"//"+a.host+"/"+this.country+"/"+this.locale
+window.location=nike.getServiceUrl("nikestore","baseBrandURL")+this.country+"/"+this.locale
 },getUnsecuredRegionalHomepageUrl:function(){var a=window.location;
 return"http://"+a.host+"/"+this.country+"/"+this.locale
 },delayLink:function(d,a){var e=$(d.currentTarget);
 if(!e.attr("href")){e=e.find("[href]")
 }var b=e.attr("href");
-if(!b){nike.error("nike.NavigationUtil#delayLink","Unable to delay an event because no href was found.  Will try the default behavior.");
-return
+if(!b||(b==="#")||(b.indexOf("javascript:")>=0)){return
 }d.preventDefault();
 var c=!!e.attr("target")&&(e.attr("target").toLowerCase()==="_blank");
 if(c){window.open(b)
@@ -4797,6 +4824,7 @@ break
 nike.requireDependency("nike.Event");
 nike.requireDependency("nike.ServiceUtil");
 nike.requireDependency("jQuery.CookieUtil");
+nike.requireDependency("nike.gadget.Event");
 nike.requireTunnelForUrl(nike.getSecureRootUrl(nike.DEFAULT_APP_NAME));
 nike.requireTunnelForUrl(nike.getRootUrl(nike.DEFAULT_APP_NAME));
 nike.Cart.CART_SUMMARY_COOKIE="cartSummary";
@@ -4817,34 +4845,69 @@ function c(g,i,h){nike.dispatchEvent(nike.Event.POPULATE_SKUS_FAIL,{element:i,re
 c(b,d,a)
 })
 }};
-nike.Cart.addToCart=function(e,b,h,a){var d;
-if(!b){nike.error('Gadget "element" must be defined when calling addToCart')
-}else{var g=nike.getGadgetAppName($(b));
-e.action="addItem";
-e.rt="json";
-e.view=3;
-if(e.skuAndSize){d=e.skuAndSize.split(":");
-e.skuId=d[0];
-if(d[1]){e.displaySize=d[1]
-}}var f=undefined;
-if(e.trackProduct){f=$.extend({},true,e.trackProduct);
-f.qty=e.qty;
-f.price=f.price||e.price;
-delete (e.trackProduct)
-}else{f={productId:e.productId,qty:e.qty,siteId:undefined,price:e.price}
-}f.sku=e.skuId;
-nike.dispatchEvent(nike.Event.ADD_TO_CART,{data:e,element:b,trackProduct:f});
-function c(j,k){var i={element:k,response:j,requestData:e,trackProduct:f};
-nike.dispatchEvent(nike.Event.ADD_TO_CART_FAIL,i);
-if(a){a(i)
-}}$.ajax({dataType:"jsonp",url:nike.getServiceUrl(g,"jsonCartService"),data:e,success:function(j){if(j.status==="success"){var i={element:b,response:j,productId:e.productId,requestData:e,trackProduct:f};
-if(!nike.Cart.order||j.order.itemQuantity>nike.Cart.order.order.itemQuantity){nike.dispatchEvent(nike.Event.ADD_TO_CART_SUCCESS,i);
-if(h){h(i)
-}}nike.Cart.order=j
-}else{if((typeof j.order.itemQuantity!="undefined")&&(j.order.itemQuantity>0)){nike.dispatchEvent(nike.Event.ADD_TO_CART_SUCCESS,{response:j})
-}c(j,b)
-}},error:function(i){c(i,b)
+nike.Cart.addToCart=function(d,e,m,b){var h;
+var j;
+var l;
+var c;
+if(!e){nike.error('Gadget "element" must be defined when calling addToCart')
+}else{l=nike.getGadgetAppName($(e));
+d.action="addItem";
+d.rt="json";
+d.view=3;
+if(d.skuAndSize){h=d.skuAndSize.split(":");
+d.skuId=h[0];
+if(h[1]){d.displaySize=h[1]
+}}j=function(){var n=undefined;
+if(d.trackProduct){n=$.extend({},true,d.trackProduct);
+n.qty=d.qty;
+delete (d.trackProduct)
+}else{n={productId:d.productId,qty:d.qty,siteId:undefined,price:undefined}
+}n.sku=d.skuId;
+return n
+}();
+nike.dispatchEvent(nike.Event.ADD_TO_CART,{data:d,element:e,trackProduct:j});
+function i(o,p){var n={element:p,response:o,requestData:d,trackProduct:j};
+nike.dispatchEvent(nike.Event.ADD_TO_CART_FAIL,n);
+if(b){b(n)
+}}function k(o){var n=d;
+n.pil=o.pil;
+n.psh=o.psh;
+var p;
+if(!c){c=$(".smart-cart")
+}var s=c.data("smartCartInstanceObject");
+nike.dispatchEvent(nike.gadget.Event.HIDE_LOADING_SCREEN,{});
+if(typeof s===undefined||typeof s==="undefined"){var q=c.find(".message-template");
+var r=q.attr("isSmartCartModal");
+s=new nike.SmartCart(c,q,r);
+c.data("smartCartInstanceObject",s)
+}switch(o.status){case"success":s.showSuccess();
+nike.Cart.clearCartSummary();
+nike.gadget.CartCount.setup($('[data-gadget="nike.gadget.OneNikeNav"]'));
+break;
+case"waitSoldOut":s.showOutOfStock();
+break;
+case"waitOutOfStock":case"wait":p=o.ewt*1000;
+s.showWait();
+setTimeout(function(){if(s.isStillWaiting){f()
+}},p);
+break;
+default:g(o);
+break
+}}function g(o){var p=$(".smart-cart").data("smartCartInstanceObject");
+if(typeof p!==undefined&&typeof p!=="undefined"){p.closeModalClickHandler()
+}if(o.status==="success"){var n={element:e,response:o,productId:d.productId,requestData:d,trackProduct:j};
+if(!nike.Cart.order||o.order.itemQuantity>nike.Cart.order.order.itemQuantity){nike.dispatchEvent(nike.Event.ADD_TO_CART_SUCCESS,n);
+if(m){m(n)
+}}}else{if(o.exceptions[0].errorcode==="notEnoughStockMessage"){nike.dispatchEvent(nike.Event.ADD_TO_CART_SUCCESS,{response:o})
+}i(o,e)
+}}function a(n){if(!nike.SmartCart){nike.requestScripts(["nike.SmartCart","nike.SmartCart.templates.HtmlTemplates"],function(){k(n)
+})
+}else{k(n)
+}}function f(){$.ajax({dataType:"jsonp",url:nike.getServiceUrl(l,"jsonCartService"),data:d,success:function(n){if(n.pil){a(n)
+}else{g(n)
+}},error:function(n){i(n,e)
 }})
+}f()
 }};
 nike.Cart.addGiftCardToCart=function(d,a){if(!a){nike.error('Gadget "element" must be defined when calling addGiftCardToCart')
 }else{var c={success:false};
@@ -5065,7 +5128,7 @@ nike.listen(nike.EVENT_GADGET_LOADED,function(a,b){if(b&&b.gadgetName=="nike.gad
 }});
 nike.namespace("nike.store.ui.widgets.ModalDialog");
 nike.requireDependency("Class");
-nike.store.ui.widgets.ModalDialog=Class.extend({contentEl:undefined,onCloseDispatchEvents:undefined,showAction:"show",hideAction:"remove",bindEvents:true,blockContent:true,hideOthers:true,autoShow:true,noDestroy:false,positionAbsolute:false,blockerBaseClass:"modalBlock",blockerExtClass:"",modalBaseClass:"modal",modalExtClass:"",modalCloserClass:"modalClose",offscreenClass:"offscreen",blockerClickCloses:true,escKeyCloses:true,insertionPoint:undefined,maskEl:undefined,showing:false,init:function(b){var a=this;
+nike.store.ui.widgets.ModalDialog=Class.extend({contentEl:undefined,onCloseDispatchEvents:undefined,showAction:"show",hideAction:"remove",bindEvents:true,blockContent:true,hideOthers:true,autoCenter:false,listenToResize:false,naturalClose:true,autoShow:true,noDestroy:false,positionAbsolute:false,blockerBaseClass:"modalBlock",blockerExtClass:"",modalBaseClass:"modal",modalExtClass:"",modalCloserClass:"modalClose",offscreenClass:"offscreen",blockerClickCloses:true,escKeyCloses:true,insertionPoint:undefined,maskEl:undefined,showing:false,init:function(b){var a=this;
 a.insertionPoint=$("body");
 $.extend(a,b);
 a.hideAction=a.noDestroy?"hide":"remove";
@@ -5081,9 +5144,10 @@ a.setContent(a.containerEl);
 if(a.bindEvents){a.doBindEvents()
 }if(a.autoShow){a.show()
 }nike.listen(nike.Event.PAGE_LAYOUT,function(e,f){a.center()
-})
-},setContent:function(a){a.append(this.contentEl)
-},onBeforeShow:nike.emptyFn,onShow:nike.emptyFn,onBeforeClose:nike.emptyFn,onModalCloseClicked:nike.emptyFn,onClose:function(){if(this.onCloseDispatchEvents){for(var b=0,a=this.onCloseDispatchEvents.length;
+});
+if(a.listenToResize){this.resizeListen()
+}},setContent:function(a){a.append(this.contentEl)
+},onBeforeShow:nike.emptyFn,onShow:nike.emptyFn,onBeforeClose:nike.emptyFn,onModalCloseClicked:nike.emptyFn,onResize:nike.emptyFn,onClose:function(){if(this.onCloseDispatchEvents){for(var b=0,a=this.onCloseDispatchEvents.length;
 b<a;
 b++){nike.dispatchEvent.apply(nike,this.onCloseDispatchEvents[b])
 }}},mask:function(){this.insertionPoint.prepend(this.maskEl)
@@ -5092,7 +5156,8 @@ b++){nike.dispatchEvent.apply(nike,this.onCloseDispatchEvents[b])
 var b=d.height();
 var a=d.width();
 var c=b-this.containerEl.outerHeight();
-this.containerEl.css({top:Math.max(0,c/2),left:Math.max(0,(a-this.containerEl.outerWidth())/2)});
+if(c>(b-50)){c=20
+}this.containerEl.css({top:Math.max(0,c/2),left:Math.max(0,(a-this.containerEl.outerWidth())/2)});
 if(this.positionAbsolute===false){this.containerEl.removeClass("positionAbsolute")
 }if(c<0){this.containerEl.addClass("positionAbsolute").css({top:d.scrollTop()})
 }},show:function(){this.onBeforeShow();
@@ -5104,6 +5169,9 @@ this.containerEl[this.showAction]();
 this.center();
 this.showing=true;
 this.onShow()
+},resizeListen:function(){nike.Util.windowResizeListen($.proxy(function(){this.center();
+this.onResize()
+},this))
 },close:function(a){if(this.showing===false){return false
 }this.onBeforeClose();
 if(this.escKeyCloses){this.unbindEscEvent()
@@ -5111,11 +5179,11 @@ if(this.escKeyCloses){this.unbindEscEvent()
 this.showing=false;
 this.onClose(a)
 },doBindEvents:function(){var a=this;
-this.containerEl.on(nike.interactionType.click,"."+this.modalCloserClass,function(b){b.preventDefault();
+this.containerEl.on("click","."+this.modalCloserClass,function(b){b.preventDefault();
 a.onModalCloseClicked();
-a.close(this)
-});
-if(this.blockerClickCloses){this.maskEl.on(nike.interactionType.click,function(b){b.preventDefault();
+if(a.naturalClose){a.close(this)
+}});
+if(this.blockerClickCloses){this.maskEl.on("click",function(b){b.preventDefault();
 if(a.blockerClickCloses){a.close(this)
 }})
 }},bindEscEvent:function(){var a=this;
@@ -5150,13 +5218,16 @@ if(a.data("layout")!=g){c.setLayout(g)
 }}e.unbind("resize",c.checkResize);
 setTimeout(b,c.TIMEOUT_CHECK)
 }};
-nike.page.OneNikePageLayout.init();nike.namespace("ios-orientationchange-fix");
-/*! A fix for the iOS orientationchange zoom bug.
- Script by @scottjehl, rebound by @wilto.
- MIT / GPLv2 License.
- */
+nike.page.OneNikePageLayout.init();nike.namespace("iOS-quirks-fix");
 (function(n){var d=navigator.userAgent;
-if(!(/iPhone|iPad|iPod/.test(navigator.platform)&&/OS [1-5]_[0-9_]* like Mac OS X/i.test(d)&&d.indexOf("AppleWebKit")>-1)){return
+if(/iPhone|iPad|iPod/.test(navigator.platform)&&/OS [5-6]_[0-9_]* like Mac OS X/i.test(d)){window.onpageshow=function(p){if(p.persisted){document.body.style.display="none";
+location.reload()
+}};
+/*! A fix for the iOS orientationchange zoom bug.
+   Script by @scottjehl, rebound by @wilto.
+   MIT / GPLv2 License.
+   */
+}if(!(/iPhone|iPad|iPod/.test(navigator.platform)&&/OS [1-5]_[0-9_]* like Mac OS X/i.test(d)&&d.indexOf("AppleWebKit")>-1)){return
 }var m=n.document;
 if(!m.querySelector){return
 }var o=m.querySelector("meta[name=viewport]"),a=o&&o.getAttribute("content"),l=a+",maximum-scale=1",e=a+",maximum-scale=10",h=true,k,j,i,c;
@@ -5173,14 +5244,73 @@ if((!n.orientation||n.orientation===180)&&(k>7||((i>6&&j<8||i<8&&j>6)&&k>5))){if
 }}else{if(!h){g()
 }}}n.addEventListener("orientationchange",g,false);
 n.addEventListener("devicemotion",f,false)
-})(this);nike.namespace("nike.gadget.OneNikeNav");
+})(this);
+
+nike.namespace("nike.geo.BaseConfiguration");
+nike.requireDependency("nike.Util");
+nike.geo.BaseConfiguration=Class.extend({COUNTRY_URL_MAP:undefined,COUNTRIES:undefined,REGION_MAP:undefined,ZONED_COUNTRIES:undefined,ZONE_MAP:undefined,LANGUAGES:undefined,init:function(a){if(a){nike.Util.apply(this,a)
+}else{nike.error("Initialized an unknown geo configuration.")
+}},getCountryConfiguration:function(a){if(a&&a.toUpperCase){return this.COUNTRIES[a.toUpperCase()]
+}return null
+},getCountryZone:function(a){var b=this.getZonedCountryConfiguration(a);
+if(b){return b.zone
+}return null
+},getZonedCountryConfiguration:function(a){if(a&&a.toUpperCase){return this.ZONED_COUNTRIES[a.toUpperCase()]
+}return null
+},getZoneConfiguration:function(a){if(a&&a.toUpperCase){return this.ZONE_MAP[a.toUpperCase()]
+}return null
+},getConfiguration:function(a){if(this.isSupportedCountry(a)){return this.getCountryConfiguration(a)
+}else{if(this.isZonedCountry(a)){return this.getZonedCountryConfiguration(a)
+}else{if(this.isSupportedZone(a)){return this.getZoneConfiguration(a)
+}else{return null
+}}}},isSupportedCountry:function(a){return !!this.getCountryConfiguration(a)
+},isSupported:function(a){return this.isSupportedCountry(a)||this.isSupportedZone(a)
+},isSupportedZone:function(a){if(a&&a.toUpperCase){return !!this.ZONE_MAP[a.toUpperCase()]
+}else{return null
+}},isZonedCountry:function(a){return !!this.getCountryZone(a)
+},isSupportedLanguage:function(c,d){var a=this.getConfiguration(c);
+if(a&&a.supportedLanguages){var b=a.supportedLanguages;
+return $.inArray(nike.geo.Util.formatLangLocale(d),b)>-1
+}else{return false
+}},getDisplayName:function(b){var a=this.getConfiguration(b);
+if(a){return a.displayName
+}else{return null
+}},getDefaultLanguage:function(b){var a=this.getConfiguration(b);
+if(a&&a.supportedLanguages&&a.supportedLanguages.length>0){return a.supportedLanguages[0]
+}else{nike.error("nike.geo.configuration","unsupported country",b);
+return null
+}},isSameRegion:function(a,d){if(a&&d&&a===d){return true
+}var c=this.getCountryConfiguration(a);
+var b=this.getCountryConfiguration(d);
+return c&&b&&c.region===b.region
+},getRegionName:function(b){var a=this.getCountryConfiguration(b);
+if(a&&a.region){return a.region.displayName
+}},getSupportedLanguages:function(c){var a=null;
+var b=this.getCountryConfiguration(c);
+if(b&&b.supportedLanguages){a=[];
+var d=this.LANGUAGES;
+$.each(b.supportedLanguages,function(e,g){var f=d[g];
+if(f){a.push(f)
+}})
+}return a
+}});nike.namespace("nike.geo.OneNikeConfigurationData");
+nike.geo.OneNikeConfigurationData.storeRoot=nike.getServiceUrl(nike.DEFAULT_APP_NAME,"baseStoreURL");
+nike.geo.OneNikeConfigurationData.COUNTRY_URL_MAP={};
+nike.geo.OneNikeConfigurationData.REGION_MAP={NA:{displayName:"North America",countries:["US","CA"]},EU:{displayName:"Europe",countries:["GB","BE","AT","CZ","DK","FI","FR","DE","GR","HU","IE","IL","IT","LU","NL","NO","PL","PT","RU","SI","ES","SE","CH","TR"]},AS:{displayName:"Asia",countries:["CN","JP","HK","IN","ID","KR","MY","PH","SG","VN","TH","TW"]},SA:{displayName:"South America",countries:["BR","AR"]},OC:{displayName:"Pacific",countries:["AU","NZ"]},AF:{displayName:"Africa",countries:["ZA"]}};
+nike.geo.OneNikeConfigurationData.COUNTRIES={US:{displayName:"United States",region:nike.geo.OneNikeConfigurationData.REGION_MAP.NA,supportedLanguages:["en_US"],isCommerce:true},AR:{displayName:"Argentina",region:nike.geo.OneNikeConfigurationData.REGION_MAP.SA,supportedLanguages:["es_AR"],isCommerce:false},AU:{displayName:"Australia",region:nike.geo.OneNikeConfigurationData.REGION_MAP.OC,supportedLanguages:["en_GB"],isCommerce:false},AT:{displayName:"Austria",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["de_DE","en_GB"],isCommerce:true},BE:{displayName:"Belgium",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB","fr_FR","de_DE"],isCommerce:true},BR:{displayName:"Brasil",region:nike.geo.OneNikeConfigurationData.REGION_MAP.SA,supportedLanguages:["pt_BR"],isCommerce:false},CA:{displayName:"Canada",region:nike.geo.OneNikeConfigurationData.REGION_MAP.NA,supportedLanguages:["en_CA","fr_CA"],isCommerce:false},CN:{displayName:"China",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["zh_CN"],isCommerce:false},CZ:{displayName:"Czech Republic",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},DK:{displayName:"Denmark",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},FI:{displayName:"Finland",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},FR:{displayName:"France",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["fr_FR"],isCommerce:true},DE:{displayName:"Germany",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["de_DE"],isCommerce:true},GR:{displayName:"Greece",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},HK:{displayName:"Hong Kong",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},HU:{displayName:"Hungary",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},IN:{displayName:"India",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},ID:{displayName:"Indonesia",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},IE:{displayName:"Ireland",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},IL:{displayName:"Israel",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:false},IT:{displayName:"Italy",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["it_IT"],isCommerce:true},JP:{displayName:"Japan",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["ja_JP"],isCommerce:false},KR:{displayName:"Korea",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["ko_KR"],isCommerce:false},LU:{displayName:"Luxembourg",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB","fr_FR","de_DE"],isCommerce:true},MY:{displayName:"Malaysia",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},NL:{displayName:"Netherlands",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},NZ:{displayName:"New Zealand",region:nike.geo.OneNikeConfigurationData.REGION_MAP.OC,supportedLanguages:["en_GB"],isCommerce:false},NO:{displayName:"Norway",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:false},PH:{displayName:"Philippines",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},PL:{displayName:"Poland",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},PT:{displayName:"Portugal",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},RU:{displayName:"Russia",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["ru_RU"],isCommerce:false},SG:{displayName:"Singapore",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false},SI:{displayName:"Slovenia",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},ZA:{displayName:"South Africa",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AF,supportedLanguages:["en_GB"],isCommerce:false},ES:{displayName:"Spain",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["es_ES"],isCommerce:true},SE:{displayName:"Sweden",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},CH:{displayName:"Switzerland",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB","fr_FR","de_DE","it_IT"],isCommerce:false},TW:{displayName:"Taiwan",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["zh_TW"],isCommerce:false},TH:{displayName:"Thailand",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["th_TH"],isCommerce:false},TR:{displayName:"Turkey",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["tr_TR"],isCommerce:false},GB:{displayName:"United Kingdom",region:nike.geo.OneNikeConfigurationData.REGION_MAP.EU,supportedLanguages:["en_GB"],isCommerce:true},VN:{displayName:"Vietnam",region:nike.geo.OneNikeConfigurationData.REGION_MAP.AS,supportedLanguages:["en_GB"],isCommerce:false}};
+nike.geo.OneNikeConfigurationData.LANGUAGES={en_US:{lang:"en",locale:"US",displayName:"English"},en_GB:{lang:"en",locale:"GB",displayName:"English"},it_IT:{lang:"it",locale:"IT",displayName:"Italian"},fr_FR:{lang:"fr",locale:"FR",displayName:"French"},es_ES:{lang:"es",locale:"ES",displayName:"Spanish"},de_DE:{lang:"de",locale:"DE",displayName:"German"}};
+nike.geo.OneNikeConfigurationData.ZONE_MAP={XM:{displayName:"Middle East",countries:[],supportedLanguages:["en_GB"]},XF:{displayName:"Africa",countries:[],supportedLanguages:["en_GB"]},XL:{displayName:"Latin America",countries:[],supportedLanguages:["es_LA"]}};
+nike.geo.OneNikeConfigurationData.ZONED_COUNTRIES={BH:{displayName:"Bahrain",zone:"XM",supportedLanguages:["en_GB"]},IQ:{displayName:"Iraq",zone:"XM",supportedLanguages:["en_GB"]},IR:{displayName:"Iran",zone:"XM",supportedLanguages:["en_GB"]},JO:{displayName:"Jordan",zone:"XM",supportedLanguages:["en_GB"]},KW:{displayName:"Kuwait",zone:"XM",supportedLanguages:["en_GB"]},LB:{displayName:"Lebanon",zone:"XM",supportedLanguages:["en_GB"]},MX:{displayName:"Mexico",zone:"XL",supportedLanguages:["es_LA"]},OM:{displayName:"Oman",zone:"XM",supportedLanguages:["en_GB"]},PL:{displayName:"Palestine",zone:"XM",supportedLanguages:["en_GB"]},QA:{displayName:"Qatar",zone:"XM",supportedLanguages:["en_GB"]},SA:{displayName:"Saudi Arabia",zone:"XM",supportedLanguages:["en_GB"]},SY:{displayName:"Syria",zone:"XM",supportedLanguages:["en_GB"]},AE:{displayName:"United Arab Emirates",zone:"XM",supportedLanguages:["en_GB"]},YE:{displayName:"Yemen",zone:"XM",supportedLanguages:["en_GB"]}};nike.namespace("nike.geo.OneNikeConfiguration");
+nike.requireDependency("nike.geo.BaseConfiguration");
+nike.requireDependency("nike.geo.OneNikeConfigurationData");
+nike.geo.configuration=new nike.geo.BaseConfiguration(nike.geo.OneNikeConfigurationData);nike.namespace("nike.gadget.OneNikeNav");
 nike.requireDependency("Class");
 nike.requireDependency("Modernizr");
 nike.requireDependency("jQuery");
 nike.requireDependency("jQuery.hoverIntent");
 nike.requireDependency("jQuery.growAndShow");
 nike.requireDependency("jQuery.selectBox");
-nike.requireDependency("requestAnimFrame");
+nike.requireDependency("requestAnimationFrame");
 nike.requireDependency("nike");
 nike.requireDependency("nike.Event");
 nike.requireDependency("nike.Util");
@@ -5193,96 +5323,101 @@ nike.requireDependency("nike.gadget.CartCount");
 nike.requireDependency("nike.fonts.Selector");
 nike.requireDependency("nike.store.ui.widgets.ModalDialog");
 nike.requireDependency("nike.page.OneNikePageLayout");
-nike.requireDependency("ios-orientationchange-fix");
+nike.requireDependency("iOS-quirks-fix");
+nike.requireDependency("nike.geo.OneNikeConfiguration");
 nike.gadget.OneNikeNav.TRACKING_ATTRIBUTE="data-nav-tracking";
 nike.gadget.OneNikeNav.TRACK_CLICK_ATTRIBUTE="data-track-click";
 nike.gadget.OneNikeNav.SUB_NAV_ATTRIBUTE="data-subnav";
 nike.gadget.OneNikeNav.CURRENT_SECTION_HIGHLIGHT_CLASS="curr-section";
 nike.gadget.OneNikeNav.IGNORE_SECTION={nikeplus:true,mynikeplus:true};
-nike.gadget.OneNikeNav.init=function(e){var a=$(e);
-var c=this;
-c.containerElement=$(".gnav");
-c.containerElement.data("state","closed");
-c.scrollTop=$(window).scrollTop();
-c.winWidth=$(window).outerWidth();
-c.transEndEventNames={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd",msTransition:"MSTransitionEnd",transition:"transitionend"};
-c.isScrolling=false;
-c.transEndEventName=c.transEndEventNames[Modernizr.prefixed("transition")];
-c.containerElement.on(nike.interactionType.click,".tier0 [data-subnav] a",function(g){g.preventDefault()
+nike.gadget.OneNikeNav.redirectsEnabled=true;
+nike.gadget.OneNikeNav.init=function(b){var g=$(b);
+var i=this;
+var e;
+var a=nike.COUNTRY;
+var h;
+i.containerElement=$(".gnav");
+i.containerElement.data("state","closed");
+i.scrollTop=$(window).scrollTop();
+i.winWidth=$(window).outerWidth();
+i.transEndEventNames={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd",msTransition:"MSTransitionEnd",transition:"transitionend"};
+i.isScrolling=false;
+i.transEndEventName=i.transEndEventNames[Modernizr.prefixed("transition")];
+i.containerElement.on(nike.interactionType.click,".tier0 [data-subnav] a",function(j){j.preventDefault()
 });
-if(Modernizr.touch){c.containerElement.on(nike.interactionType.click,".tier0 [data-subnav]",function(g){c.toggleSubNav($(this).data("subnav"))
-}).on(nike.interactionType.down,"*",function(g){$(this).addClass("touch-active")
+h=nike.geo.configuration.getCountryConfiguration(a);
+e=/Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent);
+if(!h||(!h.isCommerce)&&e){i.containerElement.find(".tier0 .search").remove()
+}if(Modernizr.touch){i.containerElement.on(nike.interactionType.click,".tier0 [data-subnav]",function(j){i.toggleSubNav($(this).data("subnav"))
+}).on(nike.interactionType.down,"*",function(j){$(this).addClass("touch-active")
 }).on(nike.interactionType.up,"*",function(){$(this).removeClass("touch-active")
 })
-}else{c.containerElement.find(".tier0 [data-subnav]").hoverIntent({over:function(g){if(c.currentSectionHighlight!=null){c.currentSectionHighlight.removeClass(c.CURRENT_SECTION_HIGHLIGHT_CLASS)
+}else{i.containerElement.find(".tier0 [data-subnav]").hoverIntent({over:function(j){if(i.currentSectionHighlight!=null){i.currentSectionHighlight.removeClass(i.CURRENT_SECTION_HIGHLIGHT_CLASS)
 }nike.dispatchEvent(nike.gadget.Event.SUB_NAV_VISIBLE,{subnav:$(this).data("subnav")})
-},out:function(g){}}).end().hoverIntent({over:function(g){},timeout:600,out:function(g){if(c.currentSectionHighlight!=null){c.currentSectionHighlight.addClass(c.CURRENT_SECTION_HIGHLIGHT_CLASS)
+},out:function(j){}}).end().hoverIntent({over:function(j){},timeout:600,out:function(j){if(i.currentSectionHighlight!=null){i.currentSectionHighlight.addClass(i.CURRENT_SECTION_HIGHLIGHT_CLASS)
 }nike.dispatchEvent(nike.gadget.Event.SUB_NAV_HIDDEN,{})
 }})
-}c.animloop();
-$(window).load(function(){c.updateSearch()
+}i.animloop();
+$(window).load(function(){i.updateSearch()
 });
-setTimeout(function(){c.updateSearch()
+setTimeout(function(){i.updateSearch()
 },250);
-nike.listen(nike.gadget.Event.SUB_NAV_HIDDEN,function(g,h){nike.gadget.OneNikeNav.closeSubNav()
+nike.listen(nike.gadget.Event.SUB_NAV_HIDDEN,function(j,k){nike.gadget.OneNikeNav.closeSubNav()
 });
-nike.listen(nike.gadget.Event.SUB_NAV_VISIBLE,function(g,h){nike.gadget.OneNikeNav.openSubNav(h.subnav)
+nike.listen(nike.gadget.Event.SUB_NAV_VISIBLE,function(j,k){nike.gadget.OneNikeNav.openSubNav(k.subnav)
 });
-nike.listen(nike.gadget.Event.MINI_CART_OPEN,function(g,h){nike.dispatchEvent(nike.gadget.Event.SUB_NAV_HIDDEN);
-c.containerElement.find(".tier0 .cart").addClass("is-active")
+nike.listen(nike.gadget.Event.MINI_CART_OPEN,function(j,k){nike.dispatchEvent(nike.gadget.Event.SUB_NAV_HIDDEN);
+i.containerElement.find(".tier0 .cart").addClass("is-active")
 });
-nike.listen(nike.gadget.Event.MINI_CART_CLOSE,function(g,h){c.containerElement.find(".tier0 .cart").removeClass("is-active")
+nike.listen(nike.gadget.Event.MINI_CART_CLOSE,function(j,k){i.containerElement.find(".tier0 .cart").removeClass("is-active")
 });
-nike.listen(nike.Event.LOGIN_STATE_UPDATED,function(g,h){nike.gadgetListensToEach("nike.gadget.OneNikeNav",h.element,function(){nike.gadget.CartCount.setup($(this))
+nike.listen(nike.Event.LOGIN_STATE_UPDATED,function(j,k){nike.gadgetListensToEach("nike.gadget.OneNikeNav",k.element,function(){nike.gadget.CartCount.setup($(this))
 })
 });
-c.containerElement.find(".tier0 .cart a").attr("href",function(){var g=window.location.href;
-return $(this).attr("href")+"&site="+nike.getAppName()+"&returnURL="+encodeURI(g).replace("#","%23")
+i.containerElement.find(".tier0 .cart a").attr("href",function(){var j=window.location.href;
+return $(this).attr("href")+"&site="+nike.getAppName()+"&returnURL="+encodeURI(j).replace("#","%23")
 });
-c.containerElement.on("focusin",".search-container.should-expand input",function(l){var g=$(this).closest(".search-container"),j=g.width(),i=g.outerWidth(),k=g.outerWidth()-j,h=$(window).outerWidth();
-g.off(c.transEndEventName).css({width:j,right:h-g.offset().left-i});
-setTimeout(function(){g.addClass("is-expanded").css({width:h-k,right:"0"})
+i.containerElement.on("focusin",".search-container.should-expand input",function(o){var j=$(this).closest(".search-container"),m=j.width(),l=j.outerWidth(),n=j.outerWidth()-m,k=$(window).outerWidth();
+j.off(i.transEndEventName).css({width:m,right:k-j.offset().left-l});
+setTimeout(function(){j.addClass("is-expanded").css({width:k-n,right:"0"})
 },1)
-}).on("focusout",".search-container.should-expand input",function(k){var g=$(this).closest(".search-container"),j=g.parent(),i=j.width()-(g.outerWidth()-g.width()),h=$(window).outerWidth()-j.offset().left-j.outerWidth();
-setTimeout(function(){if($(".gsearch").is(":focus")||!g.hasClass("is-expanded")){return
-}if(c.transEndEventName){g.css({width:i,right:h}).one(c.transEndEventName,function(){$(this).removeClass("is-expanded").css({"min-width":"",right:""});
+}).on("focusout",".search-container.should-expand input",function(n){var j=$(this).closest(".search-container"),m=j.parent(),l=m.width()-(j.outerWidth()-j.width()),k=$(window).outerWidth()-m.offset().left-m.outerWidth();
+setTimeout(function(){if($(".gsearch").is(":focus")||!j.hasClass("is-expanded")){return
+}if(i.transEndEventName){j.css({width:l,right:k}).one(i.transEndEventName,function(){$(this).removeClass("is-expanded").css({"min-width":"",right:""});
 nike.gadget.OneNikeNav.updateSearch()
 })
-}else{g.removeClass("is-expanded").css("width","");
+}else{j.removeClass("is-expanded").css("width","");
 nike.gadget.OneNikeNav.updateSearch()
 }},200)
-}).on("keyup blur focus",".gsearch",function(g){$(".search-container").toggleClass("has-text",$(this).val()!=="")
-}).on("focusin",".gsearch",function(){$(".search-container").addClass("has-focus")
-}).on("blur",".gsearch",function(){$(".search-container").removeClass("has-focus")
-}).on(nike.interactionType.down,".search .clear",function(g){g.preventDefault();
+}).on("keyup blur focus",".gsearch",function(j){$(".search-container").toggleClass("has-text",$(this).val()!=="")
+}).on("focusin",".gsearch",function(){$(".search-container").addClass("has-focus");
+if($.browser.msie){$(this).prop("readonly",false)
+}}).on("blur",".gsearch",function(){$(".search-container").removeClass("has-focus");
+if($.browser.msie){$(this).prop("readonly",true)
+}}).on(nike.interactionType.down,".search .clear",function(j){j.preventDefault();
 $(this).closest(".search").find(".gsearch").val("").focus()
-}).on(nike.interactionType.click,".search .focus",function(g){g.preventDefault();
+}).on(nike.interactionType.click,".search .focus",function(j){j.preventDefault();
 $(this).closest(".search").find("form").trigger("submit")
-}).on("submit",".search form",function(l){l.preventDefault();
-var m=$(this).find(".gsearch"),g=m.val().trim().replace(/<|>|&|"/g,""),j=/.+/;
-if(g.match(j)!==null){var k="?l=shop,pwp,f-50191/sl-"+g;
-var i=nike.getLocalizedRootUrl("nikestore")+k;
-var h=true;
-if(a.data()&&a.data().searchRedirect==false){h=false
-}nike.dispatchEvent(nike.gadget.Event.SEARCH,{searchTerm:g,query:i,element:m});
-if(h){setTimeout(function(){window.location=i
+}).on("submit",".search form",function(n){n.preventDefault();
+var o=$(this).find(".gsearch"),j=o.val().trim().replace(/<|>|&|"|#/g,"");
+if(j.length>0){var m="?l=shop,pwp,f-50191/sl-"+j,l=nike.getLocalizedRootUrl("nikestore")+m,k=g.data("searchRedirect")!==false;
+nike.dispatchEvent(nike.gadget.Event.SEARCH,{searchTerm:j,query:l,element:o});
+if(k){setTimeout(function(){window.location=l
 },300)
-}}m.focus();
-m.val("");
-m.trigger("blur");
+}}o.focus().trigger("blur");
 return false
-}).on(nike.interactionType.click,".placeholder",function(g){$(this).parent().find(".gsearch").focus()
+}).on(nike.interactionType.click,".placeholder",function(j){$(this).parent().find(".gsearch").focus()
 });
 if(!Modernizr["display-table"]){this.NoDisplayTableNavFix()
-}c.nikePlusSetup();
-var b=this.containerElement.find("a"),d=b.filter(function(g){return decodeURI(window.location.href).indexOf(decodeURI($(this).attr("href")))>-1
+}i.nikePlusSetup();
+var f=this.containerElement.find("a"),d=f.filter(function(j){return decodeURI(window.location.href).indexOf(decodeURI($(this).attr("href")))>-1
 });
-b.filter(function(g){return $(this).attr(c.TRACK_CLICK_ATTRIBUTE)==="true"
-}).on(nike.Event.GLOBAL_NAV_CLICK,$.proxy(this,"navigate"));
+this.containerElement.on(nike.Event.GLOBAL_NAV_CLICK,"a["+i.TRACK_CLICK_ATTRIBUTE+'="true"]:not([href="#"])',$.proxy(this.navigate,this));
+this.containerElement.find('a[href="#"]').attr("href","javascript:void(0);");
 this.currentSectionHighlight=null;
-if(d.length>0){var f=d.parents(".subnav["+this.SUB_NAV_ATTRIBUTE+"]").attr(this.SUB_NAV_ATTRIBUTE);
-if(f&&!this.IGNORE_SECTION[f]){this.currentSectionHighlight=this.containerElement.find(".tier0 ["+this.SUB_NAV_ATTRIBUTE+'="'+f+'"]').find("span").addClass(this.CURRENT_SECTION_HIGHLIGHT_CLASS)
-}}nike.gadget.CartCount.setup(c.containerElement);
+if(d.length>0){var c=d.parents(".subnav["+this.SUB_NAV_ATTRIBUTE+"]").attr(this.SUB_NAV_ATTRIBUTE);
+if(c&&!this.IGNORE_SECTION[c]){this.currentSectionHighlight=this.containerElement.find(".tier0 ["+this.SUB_NAV_ATTRIBUTE+'="'+c+'"]').find("span").addClass(this.CURRENT_SECTION_HIGHLIGHT_CLASS)
+}}nike.gadget.CartCount.setup(i.containerElement);
 nike.gadget.OneNikeNav.loadProfileAPI()
 };
 nike.gadget.OneNikeNav.loadProfileAPI=function(){var a=window.location.host;
@@ -5290,19 +5425,20 @@ var b=window.location.search;
 if(b&&b.indexOf("l=shop,profile")!==-1){nike.gadget.OneNikeNav.setupCompleteProfile()
 }else{nike.gadget.OneNikeNav.setUpBasicProfile()
 }};
-nike.gadget.OneNikeNav.navigate=function(f,a){f.preventDefault();
-var h=$(f.currentTarget);
-var d=h;
-var g=[];
-var c=h.attr("href");
-var e=!!h.attr("target")&&(h.attr("target").toLowerCase()==="_blank");
+nike.gadget.OneNikeNav.navigate=function(e,a){e.preventDefault();
+e.stopPropagation();
+var g=$(e.currentTarget);
+var d=g;
+var f=[];
+var c=g.attr("href");
 var b;
-while(!d.is(this.containerElement)){b=d.attr(this.TRACKING_ATTRIBUTE);
-if(b){g.unshift(b.replace(/<\/?.*?>/g,""))
+if(!a){a=300
+}while(!d.is(this.containerElement)){b=d.attr(this.TRACKING_ATTRIBUTE);
+if(b){f.unshift(b.replace(/<\/?.*?>/g,""))
 }d=d.parent()
-}nike.dispatchEvent(nike.gadget.Event.STORE_NAV_CHANGED,{navItems:g,clicked:true,query:c});
-nike.navUtil.delayLink(f,a)
-};
+}nike.dispatchEvent(nike.gadget.Event.STORE_NAV_CHANGED,{navItems:f,clicked:true,query:c});
+if(nike.gadget.OneNikeNav.redirectsEnabled){nike.navUtil.delayLink(e,a)
+}};
 nike.gadget.OneNikeNav.onScroll=function(){var b=this.containerElement.find(".tier0 .facet.is-active"),a=this,c=a.containerElement.find(".gsearch");
 if(Modernizr.touch&&c.is(":focus")){c.trigger("blur")
 }if(b.length){a.closeSubNav()
@@ -5342,14 +5478,17 @@ if(c.is(".is-active")){nike.dispatchEvent(nike.gadget.Event.SUB_NAV_HIDDEN,{})
 }};
 nike.gadget.OneNikeNav.NoDisplayTableNavFix=function(){var c=this.containerElement,g=c.find(".tier0"),f=g.find(".search, .l-spacer-cell"),e=f.siblings(),d=e.filter(":visible");
 if(f.nextAll().filter(":visible").length>0){var a=function(){var i=0,h=0,j=c.outerWidth();
+d=e.filter(":visible");
 d.each(function(){i+=$(this).outerWidth()
 });
 h=j-i-2;
-f.css({width:h,"float":"left"});
-console.log("search: "+h)
+f.css({width:h,"float":"left"})
 };
 a();
 e.on("propertychange",".facet-label",function(){a()
+});
+e.each(function(){this.attachEvent("onpropertychange",function(){a()
+})
 });
 nike.Util.windowResizeListen(function(){a()
 })
@@ -5386,7 +5525,7 @@ b++
 nike.loadExternalResources([nike.getRootUrl("staticAssets")+"cms/global-onenike-profile-basic.js"],a);
 nike.loadExternalResources([nike.getRootUrl("staticAssets")+"cms/global-onenike-profile-basic.css"])
 };
-nike.gadget.OneNikeNav.animloop=function(){requestAnimFrame(nike.gadget.OneNikeNav.animloop);
+nike.gadget.OneNikeNav.animloop=function(){requestAnimationFrame(nike.gadget.OneNikeNav.animloop);
 if(nike.gadget.OneNikeNav.scrollTop!==$(window).scrollTop()){nike.gadget.OneNikeNav.isScrolling=true;
 nike.gadget.OneNikeNav.onScroll();
 nike.gadget.OneNikeNav.scrollTop=$(window).scrollTop()
@@ -5428,8 +5567,9 @@ var a=f.find(".scripts");
 var e=f.find(".styles");
 if(a.length||e.length){nike.gadget.OneNikeFooter.setupDependencies(a,e)
 }nike.listen(nike.Event.LOGIN_STATE_UPDATED,function(h,i){if(i.loggedIn&&i.isSwoosh){c.$regFooter.hide();
-c.$swooshFooter.show()
-}else{c.$regFooter.show();
+c.$swooshFooter.show();
+if($(".nike-cq-global-footer-container").length){nike.cq.PES.GlobalFooter.init()
+}}else{c.$regFooter.show();
 c.$swooshFooter.hide()
 }})
 };
@@ -5446,18 +5586,20 @@ nike.listen(nike.EVENT_GADGET_LOADED,function(a,b){if(b&&b.gadgetName=="nike.gad
 }});
 nike.addLoadedScript('nike.Cart', true);
 nike.addLoadedScript('jQuery.growAndShow', true);
-nike.addLoadedScript('ios-orientationchange-fix', true);
 nike.addLoadedScript('jQuery.CookieUtil', true);
+nike.addLoadedScript('nike.geo.OneNikeConfiguration', true);
 nike.addLoadedScript('Array', true);
 nike.addLoadedScript('easyXDM', true);
 nike.addLoadedScript('nike.page.OneNikePageLayout', true);
 nike.addLoadedScript('nike.store.ui.widgets.ModalDialog', true);
 nike.addLoadedScript('nike.gadget.OneNikeNav', false);
 nike.addLoadedScript('Date', true);
-nike.addLoadedScript('requestAnimFrame', true);
+nike.addLoadedScript('nike.geo.OneNikeConfigurationData', true);
 nike.addLoadedScript('jQuery.hoverIntent', true);
+nike.addLoadedScript('nike.geo.BaseConfiguration', true);
 nike.addLoadedScript('nike.Event', true);
 nike.addLoadedScript('nike.fonts.Selector', false);
+nike.addLoadedScript('requestAnimationFrame', true);
 nike.addLoadedScript('jQuery.url', true);
 nike.addLoadedScript('JSON', true);
 nike.addLoadedScript('nike.gadget.CartCount', true);
@@ -5475,5 +5617,6 @@ nike.addLoadedScript('nike.Util', true);
 nike.addLoadedScript('jQuery', true);
 nike.addLoadedScript('nike.Validation', true);
 nike.addLoadedScript('nike.interactionType', true);
+nike.addLoadedScript('iOS-quirks-fix', true);
 
 

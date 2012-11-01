@@ -366,6 +366,7 @@ var ieVer = "0";
 var isFF = new Boolean(false);
 var isPC = new Boolean(false);
 var isMobile = new Boolean(false);
+var isAndroid = new Boolean(false);
 var autoScroll = new Boolean(true);
 //production
 var baseURL = "http://widget.newsinc.com/_cfvp/playlist16x9_player.html";
@@ -510,6 +511,17 @@ if (navigator.userAgent.match(/(iphone|ipod|ipad)/i)){
 	//test
 	//baseURL = "http://dev.assets.newsinc.com/players/mobile/16x9/player.html";
 }
+if (navigator.userAgent.match(/Android/i)){		
+	var strAndroid  = navigator.userAgent.indexOf("Android ");
+	var aVersion = navigator.userAgent.substr(strAndroid+8,1);		
+	aVersion > 3 ? (did="2", isMobile = true, baseURL = "http://widget.newsinc.com/_mob/16x9/player.html") : isAndroid = true;	
+}
+if (navigator.userAgent.match(/Silk/i)){
+	did = "2";
+	isMobile = true;	
+	baseURL = "http://widget.newsinc.com/_mob/16x9/player.html";
+}
+
 //alert(navigator.userAgent.match(/iPad/i));
 //alert(navigator.userAgent.match(/iPhone OS 3_1_3/i));
 

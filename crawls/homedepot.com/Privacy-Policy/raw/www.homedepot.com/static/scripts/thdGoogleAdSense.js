@@ -1,7 +1,7 @@
 /* Google AdSense request and callback functions */
 
  function construct_google_csa_request(pPage, googlepropsObj, adblockLeft, adblockBottom ){	 
-	if(googlepropsObj != ""){
+	if(googlepropsObj != "" && (typeof google !== 'undefined')){
 		 // NoResultsPage has only one Ad Block at the bottom
 		 if(pPage == "NoResultsPage" &&  adblockBottom != ""){
 			 new google.ads.search.Ads(googlepropsObj, adblockBottom );

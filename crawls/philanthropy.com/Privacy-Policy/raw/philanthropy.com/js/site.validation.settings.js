@@ -6,7 +6,10 @@
  */
 $.validator.setDefaults({
     submitHandler: function(form) {
-        form.submit();
+      if ($('.subspaybutton').length) {
+        $('.subspaybutton').attr('disabled',true);
+      }
+      form.submit();
     },
     onfocusout: function(element) {
         if (this.objectLength(this.submitted) > 0 ) {

@@ -1,9 +1,12 @@
-﻿/* var mobileRedirect = getCookie("mobileRedirect");
+﻿// NOTE: script depends on & calls methods in mdetect.js -- That script MUST be loaded earlier in page
+
+var mobileRedirect = getCookie("mobileRedirect");
 if (mobileRedirect != "0") {
 
-    var smartDeviceList = /iphone|ipod|series60|symbian|android|windows ce|blackberry|palm|windows phone os|iemobile/;
-    var uagent = navigator.userAgent.toLowerCase();
-    if (uagent.search(smartDeviceList) > -1) {
+//    var smartDeviceList = /iphone|ipod|series60|symbian|android|windows ce|blackberry|palm|windows phone os|iemobile/;
+//    var uagent = navigator.userAgent.toLowerCase();
+//    if (uagent.search(smartDeviceList) > -1) {
+    if (DetectMobileQuick()) {
         var currentPageUrl = window.location.href;
         var currentPageQueryStrings = window.location.search.substring(1);            
             if (seoRoutesNativeUrl != null && seoRoutesNativeUrl != '') {
@@ -55,4 +58,3 @@ function setCookie(c_name, value, expiredays) {
     document.cookie = c_name + "=" + escape(value) +
             ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString()) + ";path=/";
 }
-*/

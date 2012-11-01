@@ -141,7 +141,7 @@
 					+	"<crumb type=\"R\" alias=\"FEATURE_THROTTLE\"   name=\"C34\"  exp=\"86400\"></crumb>"
 					+	"<crumb type=\"R\" alias=\"THD_LIVEPERSON_ERRORCOUNT\"   name=\"C35\"  exp=\"86400\"></crumb>"
 					+   "<crumb type=\"R\" alias=\"THD_GEOLOCATION_INFO\" name=\"C36\" exp=\"-1\"></crumb>"
-					//+   "<crumb type=\"R\" alias=\"THD_CONTACTEMAIL\" name=\"C37\" exp=\"-1\"></crumb>" Can use this.  Sorry!
+					+	"<crumb type=\"R\" alias=\"THD_AUTOLOCALIZED_SESSION\" name=\"C37\" exp=\"-1\"></crumb>"
 					+"</crumbs>"
 				   +"</cookieJar>";
 		
@@ -1925,19 +1925,16 @@
 		image.src = "CaptchaView?storeId=10051&catalogId=10053&"+ (new Date().getTime());
 	}
 	
-	
 	/**
-	 * 
-	 * PARAMETER: searchTerm - This is the input html object and not the value being searched for : Modified as a part of INTERSEARCPRO-rxg8229
-	 */
-	 // Added WCS7Up CodeMerge 4.5.2 STARTS
-	/**
-	 * 
+	 * Added WCS7Up CodeMerge 4.5.2 STARTS
 	 * PARAMETER: rxg8229 searchTerm - This is the input html object and not the value being searched for : Modified as a part of INTERSEARCPRO-rxg8229
 	 */
+  // this is used in several search functions below
+  var searchFieldText = 'Enter Keyword or SKU';
+
   function validateSearchRequest(searchTerm,searchUrl){
 		    searchTerm.value = searchTerm.value.replace(/^\s+|\s+$/g,'');
-			if(searchTerm.value != '' && searchTerm.value != 'Enter Keyword or SKU'){
+			if(searchTerm.value != '' && searchTerm.value != searchFieldText){
 				try{
 					lpAddVars('session','SearchKeyword', searchTerm.value);
 				}catch(err){}	
@@ -1950,11 +1947,11 @@
 				 {
 					 selectedCategory = selectedCategory.replace(/ /g,'');
 					 var newCategoryname = selectedCategory.split("&");
-					 selectedCategory = newCategoryname[0]+'+'+encodeURIComponent("&")+'+'+newCategoryname[1];
+					 selectedCategory = newCategoryname[0]+encodeURIComponent("&")+newCategoryname[1];
 				 }
 				 else
 				 {
-					 selectedCategory = selectedCategory.replace(/ /g,'+');
+					 selectedCategory = selectedCategory.replace(/ /g,'');
 				 }
 				 if(category_name!="SEARCH ALL"){	
 				    var selectedVal = $("#encodedNVal").val(); 
@@ -1975,10 +1972,16 @@
 					var urlParams = 'keyword='+ encodeURIComponent(searchTerm.value)+'&Ns=None&Ntpr=1&Ntpc=1&selectedCatgry='+ selectedCategory;
 				    var formActionURL = searchUrl+urlParams;
 				}
+
+				// Used to add analytics tracking of Google SAYT usage
+				if ($('#searchFocus').attr('data-typeAheadMode') === 'SAYT') {
+					formActionURL += '&sayt=sayt';
+				}
+
 				document.location= formActionURL;
 				 return true;
 			}else{
-				searchTerm.value = "Enter Keyword or SKU";
+				searchTerm.value = searchFieldText;
 				return false;
 			}
 	}
@@ -2039,7 +2042,7 @@ function makeHeaderagain(HeaderTitle,EncodedValue,index) {
 	
 	function validateSearchRequestagain(searchTerm,searchUrl){
 		    searchTerm.value = searchTerm.value.replace(/^\s+|\s+$/g,'');
-			if(searchTerm.value != '' && searchTerm.value != 'Enter Keyword or SKU'){
+			if(searchTerm.value != '' && searchTerm.value != searchFieldText){
 				try{
 				lpAddVars('session','SearchKeyword', searchTerm.value);
 				}catch(err){}
@@ -2070,7 +2073,7 @@ function makeHeaderagain(HeaderTitle,EncodedValue,index) {
 				   $('#searchBoxFormagain').attr("action",formActionURL);
 				   return true;
 			}else{
-				searchTerm.value = "Enter Keyword or SKU";
+				searchTerm.value = searchFieldText;
 				return false;
 			}
 	}
@@ -2078,11 +2081,11 @@ function makeHeaderagain(HeaderTitle,EncodedValue,index) {
 
 function validateSearchReq(searchTerm){
 	    searchTerm.value = searchTerm.value.replace(/^\s+|\s+$/g,'');
-		if(searchTerm.value != '' && searchTerm.value != 'Enter Keyword or SKU'){
+		if(searchTerm.value != '' && searchTerm.value != searchFieldText){
 			lpAddVars('session','SearchKeyword', searchTerm.value);
 			return true;
 		}else{
-			searchTerm.value = "Enter Keyword or SKU";
+			searchTerm.value = searchFieldText;
 			return false;
 		}
 	}

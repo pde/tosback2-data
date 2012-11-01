@@ -112,7 +112,7 @@ function HD_lightbox(openFile,newWidth,newHeight) {
 
 function centerPlayer(){
     var $scrollingDiv = $("#videoPlaceHolder");
-        $(window).scroll(function(){            
+        $(window).scroll(function(){
             $scrollingDiv
                 .css('top','0')
                 .stop()
@@ -120,7 +120,7 @@ function centerPlayer(){
                     {"marginTop": ($(window).scrollTop() + 202) + "px"},
                     "slow",
                     "swing"
-                    );          
+                    );
         });
 }
 
@@ -132,189 +132,6 @@ function animateOut(item){
     $(item).hide();
 
 } 
-/* ----- BOPiS 2 Magic ---------------------------------------------------------- */
-
-// BOPiS Phase 2 FancyBox Configuration Object
-active_BOPISFBConfig = 'No fancybox called';
-
-var bopisFBConfig = {
-    "padding":0,
-    "margin":0,
-    "onComplete": bopis_overlay_init,
-    "scrolling":"no",
-    "titleShow":false,
-    "showCloseButton":false,
-    "showNavArrows": false,
-    "modal":true,
-    "autoScale":false,
-    //"overlayColor": "#333",
-    "overlayOpacity":"0",
-    "transitionIn": "none",
-    "transitionOut":"none",
-    "speedIn":1,
-    "speedOut":1,
-    "autoDimensions":true
-}
-
-// This just adds the fancybox events to the page.
-// This should be rolled up into some lib somewhere so it is included on all pages.
-$('document').ready(function() {
-    attachBopis();
-})
-
-function attachBopis() {
-    // This is to add the BOPiS fancybox functionality
-    // The link must have a class of "modal_overlay" and a rel of "bopis"
-    // example:
-    // <a href="path/to/bopis/overlay/for/this/product.html" class="modal_overlay" rel="bopis">Check Store availability!</a>
-    $('.modal_overlay').each(function(i,ele) {
-        $thisEle = $(ele);
-        if ($thisEle.attr("rel").toLowerCase() == 'bopis') {
-            $thisEle.fancybox(bopisFBConfig);
-            $thisEle.css({"visibility":"visible"});
-        }
-    });
-
-}
-
-// This function is called every time the bopis overlay is created.
-function bopis_overlay_init(currentArray, currentIndex, currentOpts) {
-
-    active_BOPISFBConfig = currentOpts;
-
-    // Re-attach the FB for needed links
-    $('#bopis2 .modal_overlay').each(function(i,ele) {
-        $thisEle = $(ele);
-        if ($thisEle.attr("rel").toLowerCase() == 'bopis') { $thisEle.fancybox(bopisFBConfig) }
-    });
-
-
-    if (isIE6 ) {
-        // weird ie6 issue with the iframe getting a height and causing a blank overlay.
-        $("#fancybox-hide-sel-frame").css({"z-index":"4999"});
-        $("#fancybox-inner").css({"z-index":"5000"});
-        $("#fancybox-content").css({"z-index":"5000"});
-        $("#fancybox-content div:first").css({"zoom":"1"});
-        $("#fancybox-left-ico").hide();
-    }
-    
-
-    // Add the show / hide store info toggle.
-    $('#bopis2 .store_info_toggle').click(function(e) {
-        e.preventDefault();
-        mom = $(this).parent();
-        if (mom.hasClass('single')) {
-            mom.removeClass('single').addClass('double');
-            $(this).text('Hide Store Info');
-        } else {
-            $(this).text('Show Store Info');
-            mom.addClass('single').removeClass('double');
-        }
-        $('#bopis2 .bopis_store.double').not(mom).addClass('single').removeClass('double').find('.store_info_toggle').text('Show Store Info');
-        if(jQuery.fancybox) jQuery.fancybox.resize();
-    });
-
-    // Toggle between Multi-store input and single store.
-    $('#bopis2 .multistore_toggle').toggle(function() { /* first click, need to show multistore */
-            $('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
-            $('#bopis_one_store').hide();
-            $('#bopis_multi_store').show();
-            $(this).text("Don't Split the Order");
-            if(jQuery.fancybox) jQuery.fancybox.resize();
-        }, function() { /* Second click, need to show single Store */
-            $('#bopis2 .bopis_store.double').addClass('single').removeClass('double');
-            $('#bopis_multi_store').hide();
-            $('#bopis_one_store').show();
-            $(this).text("Split this order among multiple stores");
-            if(jQuery.fancybox) jQuery.fancybox.resize();
-        }
-    );
-
-
-    // ZipCode Search
-    $('#bopis2 #bopis_middle form').submit(function (e){
-
-        var curParams, $zipCodetxt, myURL, new_zip, new_url;
-
-        e.preventDefault();
-
-        // Grab the URL of the current BOPiS FB. 
-        myURL = active_BOPISFBConfig.href.split('?',2);
-
-        // Kill the function if we do not have a URL.
-        if (!myURL) {
-            $('#bopis_error').text('Failed to grab URL for current BOPiS Page!');
-            return;
-        }
-
-        // Get the new zipcode, validate, and reload
-        $zipCodetxt = $('#tb_zipcode');
-        new_zip = $zipCodetxt.val();
-
-        if (f_isOnlyNumChars(new_zip) && new_zip.length == 5) {
-
-            // Now, get the URL params of the current page, alter them and reload the page.
-            curParams = f_getUrlParamsObj(myURL[1]);
-
-            if (curParams) {
-                curParams.mode = 'zipcode';
-                curParams.searchSessionId = '';
-                curParams.searchOriginId = '';
-                curParams.zipcode = new_zip;
-                new_url = myURL[0]+"?"+f_makeUrlParamsFromObj(curParams);
-
-                if(jQuery.fancybox) {
-                    active_BOPISFBConfig.href=new_url;
-                    $.fancybox(active_BOPISFBConfig);
-                }
-            } else {
-                $('#bopis_error').text("Failed to get FancyBox parameters.");
-            }
-        } else {
-            $('#bopis_error').text("You must enter a valid zip code.");
-        }
-    })
-    // /Zip Code Search
-
-    // Multi-store validation
-    /*
-    $('#bopis_multi_store form').submit(function(){
-        var $qtyBoxes = $('#bopis_multi_store .quantity_box'),
-            retVal = true,
-            totalQuantity = 0;
-
-        // reset previous errors
-        $qtyBoxes.removeClass('error');
-        retVal = $qtyBoxes.each(function(index,ele){
-        $ele = $(ele);
-            var testVal,tvLen;
-            testVal = $ele.val();
-            if (!testVal) {
-                testVal = 0;
-                $ele.val(0);
-            }
-            tvLen = testVal.length;
-            if ( tvLen > 3 || tvLen < 0 || f_isOnlyNumChars(testVal)){
-                $ele.addClass('error');
-                return false;
-            } else {
-                totalQuantity += (testVal*1);
-            }
-        });
-        return retVal;
-    });
-    */
-
-    // Add the close functionality
-    $('#bopis2 .close').click(function() {
-        if(jQuery.fancybox) { $.fancybox.close() }
-    });
-
-    // Unbind the MouseWheel
-    $("#fancybox-wrap").unbind('mousewheel.fb');
-}
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // This is the start of what should be in a lib.js file.

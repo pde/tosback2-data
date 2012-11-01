@@ -128,68 +128,68 @@
 		countryCodeArray[101]="UNITED STATES|US|USD|1|0";
 
 	var currencyCodeArray = new Array();
-		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504400000|2|28083031";
-		currencyCodeArray[1]="Argentine Peso|ARS|5.1081200000|2|28083032";
-		currencyCodeArray[2]="Australian Dollar|AUD|1.0267200000|1|28083033";
-		currencyCodeArray[3]="Barbados Dollar|BBD|2.1402600000|2|28083034";
-		currencyCodeArray[4]="Taka|BDT|87.8689000000|2|28083035";
-		currencyCodeArray[5]="Bulgarian Lev|BGN|1.6313300000|2|28083036";
-		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4055200000|2|28083037";
-		currencyCodeArray[7]="Boliviano|BOB|7.5930700000|2|28083038";
-		currencyCodeArray[8]="Brazilian Real|BRL|2.1785400000|1|28083039";
-		currencyCodeArray[9]="Belize Dollar|BZD|2.1079900000|2|28083040";
-		currencyCodeArray[10]="Canadian Dollar|CAD|1.0446600000|2|28083041";
-		currencyCodeArray[11]="Swiss Franc|CHF|1.0089300000|1|28083042";
-		currencyCodeArray[12]="Chilean Peso|CLP|517.8560000000|-1|28083043";
-		currencyCodeArray[13]="Yuan Renminbi|CNY|6.7208400000|2|28083044";
-		currencyCodeArray[14]="Colombian Peso|COP|1955.8100000000|-2|28083045";
-		currencyCodeArray[15]="Costa Rican Colon|CRC|540.1200000000|2|28083046";
-		currencyCodeArray[16]="Czech Koruna|CZK|20.7960000000|0|28083047";
-		currencyCodeArray[17]="Danish Krone|DKK|6.2231000000|0|28083048";
-		currencyCodeArray[18]="Dominican Peso|DOP|42.5900000000|2|28083049";
-		currencyCodeArray[19]="Egyptian Pound|EGP|6.5675800000|1|28083050";
-		currencyCodeArray[20]="Euro|EUR|0.8225210000|2|28083051";
-		currencyCodeArray[21]="British Pound|GBP|0.6584250000|2|28083052";
-		currencyCodeArray[22]="Quetzal|GTQ|8.4857500000|2|28083053";
-		currencyCodeArray[23]="Hong Kong Dollar|HKD|8.3359300000|2|28083054";
-		currencyCodeArray[24]="Lempira|HNL|21.1875000000|2|28083055";
-		currencyCodeArray[25]="Hungarian Forint|HUF|235.5030000000|0|28083056";
-		currencyCodeArray[26]="Indonesian Rupiah|IDR|10335.6000000000|-2|28083057";
-		currencyCodeArray[27]="Israeli Shekel|ILS|4.1772700000|1|28083058";
-		currencyCodeArray[28]="Indian Rupee|INR|57.6041000000|0|28083059";
-		currencyCodeArray[29]="Jamaican Dollar|JMD|97.9787000000|2|28083060";
-		currencyCodeArray[30]="Jordanian Dinar|JOD|0.7627490000|2|28083061";
-		currencyCodeArray[31]="Japanese Yen|JPY|84.6512000000|0|28083062";
-		currencyCodeArray[32]="Riel|KHR|4347.2000000000|2|28083063";
-		currencyCodeArray[33]="Korean Won|KRW|1180.5500000000|0|28083064";
-		currencyCodeArray[34]="Kuwaiti Dinar|KWD|0.3029160000|2|28083065";
-		currencyCodeArray[35]="Cayman Islands Dollar|KYD|0.8819150000|2|28083066";
-		currencyCodeArray[36]="Sri Lanka Rupee|LKR|139.7080000000|2|28083067";
-		currencyCodeArray[37]="Lithuanian Litas|LTL|2.8799900000|2|28083068";
-		currencyCodeArray[38]="Latvian Lats|LVL|0.5808810000|2|28083069";
-		currencyCodeArray[39]="Rufiyaa|MVR|16.8532000000|2|28083071";
-		currencyCodeArray[40]="Mexican Peso|MXN|14.0303000000|0|28083072";
-		currencyCodeArray[41]="Cordoba Oro|NIO|25.7164000000|2|28083073";
-		currencyCodeArray[42]="Norwegian Krone|NOK|6.2350300000|0|28083074";
-		currencyCodeArray[43]="New Zealand Dollar|NZD|1.3119100000|1|28083076";
-		currencyCodeArray[44]="Omani Rial|OMR|0.4141130000|2|28083077";
-		currencyCodeArray[45]="Balboa|PAB|1.0675000000|2|28083078";
-		currencyCodeArray[46]="Peruvian Nuevo Sol|PEN|2.7812600000|1|28083079";
-		currencyCodeArray[47]="Philippine Peso|PHP|44.5120000000|0|28083080";
-		currencyCodeArray[48]="Pakistan Rupee|PKR|103.1950000000|2|28083081";
-		currencyCodeArray[49]="Polish Zloty|PLN|3.4618400000|2|28083082";
-		currencyCodeArray[50]="Guarani|PYG|4829.0300000000|0|28083083";
-		currencyCodeArray[51]="Qatari Riyal|QAR|3.9159200000|2|28083084";
-		currencyCodeArray[52]="New Romanian Leu|RON|3.8048200000|2|28083085";
-		currencyCodeArray[53]="Russian Ruble|RUB|33.8860000000|2|28083086";
-		currencyCodeArray[54]="Saudi Riyal|SAR|4.0333700000|1|28083087";
-		currencyCodeArray[55]="Swedish Krona|SEK|7.2387000000|0|28083088";
-		currencyCodeArray[56]="Singapore Dollar|SGD|1.3151300000|1|28083089";
-		currencyCodeArray[57]="Thai Baht|THB|33.0826000000|0|28083091";
-		currencyCodeArray[58]="Turkish Lira|TRY|1.9434400000|1|28083092";
-		currencyCodeArray[59]="Taiwan Dollar|TWD|31.5167000000|0|28083093";
-		currencyCodeArray[60]="US Dollar|USD|1.0000000000|2|28083095";
-		currencyCodeArray[61]="South African Rand|ZAR|9.4099300000|1|28083096";
+		currencyCodeArray[0]="United Arab Emirates Dirham|AED|3.9504400000|2|28145390";
+		currencyCodeArray[1]="Argentine Peso|ARS|5.1247900000|2|28145391";
+		currencyCodeArray[2]="Australian Dollar|AUD|1.0212800000|1|28145392";
+		currencyCodeArray[3]="Barbados Dollar|BBD|2.1617700000|2|28145393";
+		currencyCodeArray[4]="Taka|BDT|87.3849000000|2|28145394";
+		currencyCodeArray[5]="Bulgarian Lev|BGN|1.6170300000|2|28145395";
+		currencyCodeArray[6]="Bahraini Dinar|BHD|0.4054980000|2|28145396";
+		currencyCodeArray[7]="Boliviano|BOB|7.5930700000|2|28145397";
+		currencyCodeArray[8]="Brazilian Real|BRL|2.1816600000|1|28145398";
+		currencyCodeArray[9]="Belize Dollar|BZD|2.1617700000|2|28145399";
+		currencyCodeArray[10]="Canadian Dollar|CAD|1.0444500000|2|28145400";
+		currencyCodeArray[11]="Swiss Franc|CHF|0.9986080000|1|28145401";
+		currencyCodeArray[12]="Chilean Peso|CLP|514.6300000000|-1|28145402";
+		currencyCodeArray[13]="Yuan Renminbi|CNY|6.7082600000|2|28145403";
+		currencyCodeArray[14]="Colombian Peso|COP|1975.7100000000|-2|28145404";
+		currencyCodeArray[15]="Costa Rican Colon|CRC|538.1830000000|2|28145405";
+		currencyCodeArray[16]="Czech Koruna|CZK|20.7175000000|0|28145406";
+		currencyCodeArray[17]="Danish Krone|DKK|6.1673900000|0|28145407";
+		currencyCodeArray[18]="Dominican Peso|DOP|42.6761000000|2|28145408";
+		currencyCodeArray[19]="Egyptian Pound|EGP|6.5772600000|1|28145409";
+		currencyCodeArray[20]="Euro|EUR|0.8149970000|2|28145410";
+		currencyCodeArray[21]="British Pound|GBP|0.6578540000|2|28145411";
+		currencyCodeArray[22]="Quetzal|GTQ|8.4298200000|2|28145412";
+		currencyCodeArray[23]="Hong Kong Dollar|HKD|8.3355000000|2|28145413";
+		currencyCodeArray[24]="Lempira|HNL|21.1875000000|2|28145414";
+		currencyCodeArray[25]="Hungarian Forint|HUF|234.7830000000|0|28145415";
+		currencyCodeArray[26]="Indonesian Rupiah|IDR|10335.6000000000|-2|28145416";
+		currencyCodeArray[27]="Israeli Shekel|ILS|4.1751200000|1|28145417";
+		currencyCodeArray[28]="Indian Rupee|INR|57.8730000000|0|28145418";
+		currencyCodeArray[29]="Jamaican Dollar|JMD|97.6345000000|2|28145419";
+		currencyCodeArray[30]="Jordanian Dinar|JOD|0.7614580000|2|28145420";
+		currencyCodeArray[31]="Japanese Yen|JPY|84.6512000000|0|28145421";
+		currencyCodeArray[32]="Riel|KHR|4339.6700000000|2|28145422";
+		currencyCodeArray[33]="Korean Won|KRW|1173.2400000000|0|28145423";
+		currencyCodeArray[34]="Kuwaiti Dinar|KWD|0.3024640000|2|28145424";
+		currencyCodeArray[35]="Cayman Islands Dollar|KYD|0.8926700000|2|28145425";
+		currencyCodeArray[36]="Sri Lanka Rupee|LKR|140.2460000000|2|28145426";
+		currencyCodeArray[37]="Lithuanian Litas|LTL|2.8538500000|2|28145427";
+		currencyCodeArray[38]="Latvian Lats|LVL|0.5758270000|2|28145428";
+		currencyCodeArray[39]="Rufiyaa|MVR|16.8532000000|2|28145430";
+		currencyCodeArray[40]="Mexican Peso|MXN|14.0218000000|0|28145431";
+		currencyCodeArray[41]="Cordoba Oro|NIO|25.7301000000|2|28145432";
+		currencyCodeArray[42]="Norwegian Krone|NOK|6.1171600000|0|28145433";
+		currencyCodeArray[43]="New Zealand Dollar|NZD|1.3076100000|1|28145435";
+		currencyCodeArray[44]="Omani Rial|OMR|0.4141020000|2|28145436";
+		currencyCodeArray[45]="Balboa|PAB|1.0675000000|2|28145437";
+		currencyCodeArray[46]="Peruvian Nuevo Sol|PEN|2.7990100000|1|28145438";
+		currencyCodeArray[47]="Philippine Peso|PHP|44.2840000000|0|28145439";
+		currencyCodeArray[48]="Pakistan Rupee|PKR|103.1520000000|2|28145440";
+		currencyCodeArray[49]="Polish Zloty|PLN|3.4185000000|2|28145441";
+		currencyCodeArray[50]="Guarani|PYG|4829.0300000000|0|28145442";
+		currencyCodeArray[51]="Qatari Riyal|QAR|3.9162400000|2|28145443";
+		currencyCodeArray[52]="New Romanian Leu|RON|3.7530800000|2|28145444";
+		currencyCodeArray[53]="Russian Ruble|RUB|33.6612000000|2|28145445";
+		currencyCodeArray[54]="Saudi Riyal|SAR|4.0335800000|1|28145446";
+		currencyCodeArray[55]="Swedish Krona|SEK|7.1110300000|0|28145447";
+		currencyCodeArray[56]="Singapore Dollar|SGD|1.3116900000|1|28145448";
+		currencyCodeArray[57]="Thai Baht|THB|32.9858000000|0|28145450";
+		currencyCodeArray[58]="Turkish Lira|TRY|1.9301000000|1|28145451";
+		currencyCodeArray[59]="Taiwan Dollar|TWD|31.4048000000|0|28145452";
+		currencyCodeArray[60]="US Dollar|USD|1.0000000000|2|28145454";
+		currencyCodeArray[61]="South African Rand|ZAR|9.3450800000|1|28145455";
 
 	function setCookies(cookieName,codeValue){
 		$.cookie(cookieName, codeValue,{ path: '/', domain: '.dillards.com' });
@@ -463,7 +463,7 @@
 				if ($(this).is("#cart-area")) {
 					$("form").each(function (index) {
 						if($(this).is("#ShopCartForm")){
-							$(this).attr("action","FiftyOneXML");
+							$(this).prop("action","FiftyOneXML");
 						}
 					});
 				}
@@ -522,7 +522,7 @@
 							$(this).children('div').children('span').children('a').each(function () {
 								if($(this).is('#track-inter-order')){
 									$(this).removeAttr("href");
-									$(this).attr("href", trackingUrlString);
+									$(this).prop("href", trackingUrlString);
 								}
 							});
 						}
@@ -558,7 +558,7 @@
 					$(this).children('div').children('div').children('ul').children('li').children('a').each(function () {
 						if($(this).is('#track-inter-order')){
 							$(this).removeAttr("href");
-							$(this).attr("href", trackingUrlString);
+							$(this).prop("href", trackingUrlString);
 						}
 					});
 				}
@@ -612,7 +612,7 @@
 						var holdRightString = text.split("[");
 						var text1 = holdRightString[0];
 						var navQty = holdRightString[1];
-						var resetURL = $(this).find('.fiftyOne-filtered-category a:first').attr('href');
+						var resetURL = $(this).find('.fiftyOne-filtered-category a:first').prop('href');
 						$(this).find('.fiftyOne-filtered-category').empty();
 						$(this).find('.fiftyOne-filtered-category').replaceWith(text1 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 					}
@@ -1006,7 +1006,7 @@
 							var navPrice1 = holdRightString[0].replace('$','').replace(',',''); 
 							var navQty = holdRightString[1]; 
 							var newPrice1 = calculateNewPrice(navPrice1,exchangeRate,FLC,roundMethod,1); 
-							var resetURL = $(this).find('a:first').attr('href');
+							var resetURL = $(this).find('a:first').prop('href');
 							$(this).empty();
 							$(this).append("Under" + "&nbsp;" + newPrice1 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 						}
@@ -1021,7 +1021,7 @@
 								var navQty = holdRightString[1]; 
 								var newPrice1 = calculateNewPrice(navPrice1,exchangeRate,FLC,roundMethod,1); 
 								var newPrice2 = calculateNewPrice(navPrice2,exchangeRate,FLC,roundMethod,1); 
-								var resetURL = $(this).find('a:first').attr('href');
+								var resetURL = $(this).find('a:first').prop('href');
 								$(this).empty();
 								$(this).append(newPrice1+ "&nbsp;-&nbsp;" + newPrice2 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 							}
@@ -1033,7 +1033,7 @@
 							var navPrice1 = holdRightString[0].replace('$','').replace(',',''); 
 							var navQty = holdRightString[1]; 
 							var newPrice1 = calculateNewPrice(navPrice1,exchangeRate,FLC,roundMethod,1); 
-							var resetURL = $(this).find('a:first').attr('href');
+							var resetURL = $(this).find('a:first').prop('href');
 							$(this).empty();
 							$(this).append("Over" + "&nbsp;" + newPrice1 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 						}
@@ -1048,7 +1048,7 @@
 									var navPrice2 = holdRightString[0].replace('$','').replace(',',''); 
 									var newPrice1 = calculateNewPrice(navPrice1,exchangeRate,FLC,roundMethod,1); 
 									var newPrice2 = calculateNewPrice(navPrice2,exchangeRate,FLC,roundMethod,1); 
-									var resetURL = $(this).find('a:first').attr('href');
+									var resetURL = $(this).find('a:first').prop('href');
 									$(this).empty();
 									$(this).append(navLeftStringPortion + "&nbsp;" + "(" + currencyCode + ")"  + "&nbsp;" +newPrice1+ "-" + newPrice2 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 								}
@@ -1059,7 +1059,7 @@
 									var holdRightString = navRightStringPortion.split("[");
 									var navPrice1 = holdRightString[0].replace('$','').replace(',',''); 
 									var newPrice1 = calculateNewPrice(navPrice1,exchangeRate,FLC,roundMethod,1); 
-									var resetURL = $(this).find('a:first').attr('href');
+									var resetURL = $(this).find('a:first').prop('href');
 									$(this).empty();
 									$(this).append(navLeftStringPortion + "&nbsp;" + "(" + currencyCode + ")" + "&nbsp;" + newPrice1 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 								}
@@ -1070,7 +1070,7 @@
 							var holdRightString = text.split("[");
 							var text1 = holdRightString[0];
 							var navQty = holdRightString[1];
-							var resetURL = $(this).find('.fiftyOne-filtered-category a:first').attr('href');
+							var resetURL = $(this).find('.fiftyOne-filtered-category a:first').prop('href');
 							$(this).find('.fiftyOne-filtered-category').empty();
 							$(this).find('.fiftyOne-filtered-category').replaceWith(text1 + "&nbsp;" + "<a href=\"" + resetURL + "\"rel=\"nofollow\"><div class=\"exitBtn\"></div></a>");
 						}
@@ -1503,7 +1503,7 @@
 	function loadInternationalSwatchPrices(exchangeRate,FLC,roundMethod,currencyCode){
 		$("div").each(function (index) {
 			// Start: (All Product Display Pages containing swatches)
-				if ($(this).is(".attrs")) {
+				if ($(this).is(".props")) {
 					$(this).children('div').children('div').children('ul').children('li').each(function () {
 						if($(this).children(this).text().indexOf("$") != -1){
 							var ddDisplayPrice = $(this).children(this).text().split("$");
@@ -1522,7 +1522,7 @@
 					});
 				}
 
-				if ($(this).is(".attr-section")) {
+				if ($(this).is(".prop-section")) {
 					$(this).children('div').children('div').children('ul').children('li').each(function () {
 						if($(this).children(this).text().indexOf("$") != -1){
 							var ddDisplayPrice = $(this).children(this).text().split("$");
@@ -1602,54 +1602,54 @@
 						}
 					});
 					$(this).children('div').children('ul').each(function () {
-						if($(this).attr("title").indexOf("$") != -1){
-							var itemPrice =$(this).attr("title").replace('$','').replace(',','');
+						if($(this).prop("title").indexOf("$") != -1){
+							var itemPrice =$(this).prop("title").replace('$','').replace(',','');
 							var newPrice = calculateNewPrice(itemPrice,exchangeRate,FLC,roundMethod,1);
-							$(this).attr("title",newPrice);
+							$(this).prop("title",newPrice);
 							$(this).children('li').each(function () {
-								if($(this).attr("id").indexOf("$") != -1){
-									var id = $(this).attr("id").split("$");
+								if($(this).prop("id").indexOf("$") != -1){
+									var id = $(this).prop("id").split("$");
 									var idText1 = id[0];
 									var idText2 = id[1];
 									var idPrice = 0;
 									if (typeof id[2] != "undefined") {
 										idPrice = id[2].replace('$','').replace(',','');
 										var newTextPrice = calculateNewPrice(idPrice,exchangeRate,FLC,roundMethod,1);
-										$(this).attr("id",idText1+idText2+"$"+newTextPrice);
+										$(this).prop("id",idText1+idText2+"$"+newTextPrice);
 									}
 									else{
 										idPrice = id[1].replace('$','').replace(',','');
 										var newTextPrice = calculateNewPrice(idPrice,exchangeRate,FLC,roundMethod,1);
-										$(this).attr("id",idText1+"$"+newTextPrice);
+										$(this).prop("id",idText1+"$"+newTextPrice);
 									}
 								}
-								if($(this).attr("title").indexOf("$") != -1){
-									var title = $(this).attr("title").split("$");
+								if($(this).prop("title").indexOf("$") != -1){
+									var title = $(this).prop("title").split("$");
 									if (typeof title[1] != "undefined") {
 										var titleText = title[0];
 										var titlePrice = title[1].replace('$','').replace(',','');
 										var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-										$(this).attr("title",titleText+"$"+newPrice);
+										$(this).prop("title",titleText+"$"+newPrice);
 									}
 									else{
 										var titlePrice = title[0].replace('$','').replace(',','');
 										var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-										$(this).attr("title","$"+newPrice);
+										$(this).prop("title","$"+newPrice);
 									}
 								}
 								$(this).children('img').each(function () {
-									if($(this).attr("title").indexOf("$") != -1){
-										var title = $(this).attr("title").split("$");
+									if($(this).prop("title").indexOf("$") != -1){
+										var title = $(this).prop("title").split("$");
 										if (typeof title[1] != "undefined") {
 											var titleText = title[0];
 											var titlePrice = title[1].replace('$','').replace(',','');
 											var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-											$(this).attr("title",titleText+"$"+newPrice);
+											$(this).prop("title",titleText+"$"+newPrice);
 										}
 										else{
 											var titlePrice = title[0].replace('$','').replace(',','');
 											var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-											$(this).attr("title","$"+newPrice);
+											$(this).prop("title","$"+newPrice);
 										}
 									}
 								});
@@ -1657,40 +1657,40 @@
 						}
 						else if ($(this).is(".swatches-all")) {
 							$(this).children('li').each(function () {
-							if($(this).attr("id").indexOf("$") != -1){
-								var id = $(this).attr("id").split("$");
+							if($(this).prop("id").indexOf("$") != -1){
+								var id = $(this).prop("id").split("$");
 								var idText1 = id[0];
 								var idText2 = id[1].replace('$','').replace(',','');
 								var newTextPrice = calculateNewPrice(idText2,exchangeRate,FLC,roundMethod,1);
-								$(this).attr("id",idText1+"$"+newTextPrice);
+								$(this).prop("id",idText1+"$"+newTextPrice);
 							}
-							if($(this).attr("title").indexOf("$") != -1){
-								var title = $(this).attr("title").split("$");
+							if($(this).prop("title").indexOf("$") != -1){
+								var title = $(this).prop("title").split("$");
 								if (typeof title[1] != "undefined") {
 									var titleText = title[0];
 									var titlePrice = title[1].replace('$','').replace(',','');
 									var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-									$(this).attr("title",titleText+"$"+newPrice);
+									$(this).prop("title",titleText+"$"+newPrice);
 								}
 								else{
 									var titlePrice = title[0].replace('$','').replace(',','');
 									var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-									$(this).attr("title","$"+newPrice);
+									$(this).prop("title","$"+newPrice);
 								}
 							}
 							$(this).children('img').each(function () {
-								if($(this).attr("title").indexOf("$") != -1){
-									var title = $(this).attr("title").split("$");
+								if($(this).prop("title").indexOf("$") != -1){
+									var title = $(this).prop("title").split("$");
 									if (typeof title[1] != "undefined") {
 										var titleText = title[0];
 										var titlePrice = title[1].replace('$','').replace(',','');
 										var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-										$(this).attr("title",titleText+"$"+newPrice);
+										$(this).prop("title",titleText+"$"+newPrice);
 									}
 									else{
 										var titlePrice = title[0].replace('$','').replace(',','');
 										var newPrice = calculateNewPrice(titlePrice,exchangeRate,FLC,roundMethod,1); 
-										$(this).attr("title","$"+newPrice);
+										$(this).prop("title","$"+newPrice);
 									}
 								}
 							});

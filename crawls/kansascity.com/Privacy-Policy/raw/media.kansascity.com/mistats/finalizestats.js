@@ -620,6 +620,9 @@ else {
       ].join(': ') : '';
    }();
 
+   s.prop15 = s.c_r('mi_adlst');
+   s.c_w('mi_adlst', '');
+
 	// IMG tag call
 	// Double Tag Check - Added 11/31/2007 - JJ
 	<!-- ** DO NOT ALTER ANYTHING BELOW THIS LINE ** -->

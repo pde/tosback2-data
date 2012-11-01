@@ -18,7 +18,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,/,.paypal.com,.worldmarket.com,.marketlive.com"
+	s.linkInternalFilters="javascript:,/,.paypal.com,.worldmarket.com,.marketlive.com"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
@@ -36,7 +36,7 @@ function s_doPlugins(s) {
 /******************** BEGIN PLUGINS *****************************/
 /************************BEGIN CHANNEL MANAGER**************************/
 s.channelManager('camp','','s_cm','','s_cmdl','180');
-if(s._channel=="Typed/Bookmarked")
+if(s._channel=="Typed/Bookmarked") 
 	s._channel=s._referrer=s._referringDomain=s._campaign="Direct Load"
 s.campaign=s._campaign;
 s.eVar4=s._channel;
@@ -66,7 +66,7 @@ s.eVar50=s.getQueryParam('RRID');
 
    /********************INTERNAL CAMPAIGNS BEGIN********************/ 
 if(!s.eVar14) { 
-  s.eVar14=s.getQueryParam('ab'); 
+  s.eVar14=s.getQueryParam('ab');
   s.prop22 =s.eVar14;
 } 
 /********************INTERNAL CAMPAIGNS END**********************/    
@@ -78,7 +78,7 @@ s.eVar29=s.purchaseID;
 /**********************************************************************/
 /*Configure the crossVisitParticipation plugin*/
 /**********************************************************************/
-s.eVar7=s.crossVisitParticipation(s.eVar4,'s_ev7','30','5','>','',1);
+	s.eVar7=s.crossVisitParticipation(s.eVar4,'s_ev7','30','5','>','',1);
 /**New vs Repeat Conversion**/
 //s.eVar37=s.getNewRepeat();
 s.eVar37 = s.getNewRepeat(730);
@@ -100,6 +100,7 @@ s_timepart=s_day+"|"+s_hour;
 
 /********Time Parting Begin***********/
 s.eVar38=s_timepart.toLowerCase();
+
 /********Time Parting End************/
 
 /*********Optimizely SiteCatalyst Integration*****************/
@@ -108,6 +109,9 @@ window.optimizely.push("sc_activate")
 
 /***GET VISIT NUMER***/
 s.eVar42=s.getVisitNum(365);
+/***WOMA-1081****/
+if(s.eVar15)
+	s.prop4=s.eVar15;
 }
 s.doPlugins=s_doPlugins
 /************************   END PLUGINS *****************************/
@@ -206,10 +210,10 @@ s.getTimeToComplete=new Function("v","cn","e",""
 +"3600,tm=60,r=5,u,un;if(v>td){u=td;un='days';}else if(v>th){u=th;un="
 +"'hours';}else if(v>tm){r=2;u=tm;un='minutes';}else{r=.2;u=1;un='sec"
 +"onds';}v=v*r/u;return (Math.round(v)/r)+' '+un;}}return '';");
-
 /*
  * Plugin: Visit Number By Month 2.0 - Return the user visit number
  */
+
 s.getVisitNum=new Function(""
 +"var s=this,e=new Date(),cval,cvisit,ct=e.getTime(),c='s_vnum',c2='s"
 +"_invisit';e.setTime(ct+30*24*60*60*1000);cval=s.c_r(c);if(cval){var"
@@ -291,7 +295,6 @@ s.seList="google.,googlesyndication.com|q,as_q|Google>yahoo.com,yahoo"
 +"|Yandex.ru>search.cnn.com|query|CNN Web Search>search.earthlink.net"
 +"|q|Earthlink Search>search.comcast.net|q|Comcast Search>search.rr.c"
 +"om|qs|RoadRunner Search>optimum.net|q|Optimum Search";
-
 /*
  * Plugin Utility: Replace v1.0
  */

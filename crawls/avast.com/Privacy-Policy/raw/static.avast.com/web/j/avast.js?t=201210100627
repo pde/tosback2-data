@@ -382,7 +382,7 @@ if( typeof jQuery != 'undefined' ){
 			showDelay:550,
 			arrowHeight:30,
 			leftDis:30,
-			noApplyArr:[".no-tooltip","h1 span","h1","#tabs-navigation ul li a span"]
+			noApplyArr:[".no-tooltip","h1 span","h1","#tabs-navigation ul li a span",".annotation"]
 		},
 		/**
 		 * Initialization
@@ -406,9 +406,9 @@ if( typeof jQuery != 'undefined' ){
 					   /*xmlTooltip = new ActiveXObject("Microsoft.XMLDOM");
 					   xmlTooltip.async = false;
 					   xmlTooltip.loadXML(data);*/
-					    xmlTooltip = root.parseXML(data);
+					    root.xmlTooltip = root.parseXML(data);
 					 } else {
-						 xmlTooltip = data;
+					    root.xmlTooltip = data;
 					 }
 					 //var imgPreload = root.imagesPreloading;
 					 //$("body").append(imgPreload);
@@ -480,6 +480,7 @@ if( typeof jQuery != 'undefined' ){
 		 */
 		handleTooltip:function(disable){
 			var home = false;
+			var root = this;
 			if(disable === undefined) disable = "";
 			else{
 				var disStr = "";
@@ -491,7 +492,7 @@ if( typeof jQuery != 'undefined' ){
 			if($("#home").length > 0){
 				home = true;
 			}
-			$(xmlTooltip).find('i').each(function(){
+			$(root.xmlTooltip).find('i').each(function(){
 				searchTerm = $(this).attr('title');
 				searchRegex  = new RegExp("(^\|[ \n\r\t.,'\(\)\"\+!?-]+)("+searchTerm+")([ \n\r\t.,'\(\)\"\+!?-]+\|$)", "gi");
 				if(!home){
@@ -528,7 +529,7 @@ if( typeof jQuery != 'undefined' ){
 			if($("#"+key).length > 0){
 				$(this.options.tooltipDomEl+" em").html($("#"+key).html());
 			}else{
-				$(this.options.tooltipDomEl+" em").html($(xmlTooltip).find("i[title='"+key+"']").text());
+				$(this.options.tooltipDomEl+" em").html($(root.xmlTooltip).find("i[title='"+key+"']").text());
 			}
 			
 			$(this.options.tooltipDomEl)

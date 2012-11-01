@@ -13,7 +13,7 @@
 			</style>
 		<![endif]-->
 
-		<link href="../../assets.cabelas.com/css/screen.css" rel="stylesheet" type="text/css" media="screen,print"/><link href="../../assets.cabelas.com/css/cms.css" rel="stylesheet" type="text/css" media="screen,print"/><script type="text/javascript">
+		<link href="../../assets.cabelas.com/css/screen.css" rel="stylesheet" type="text/css" media="screen,print"/><link href="../../assets.cabelas.com/assets/css/cabelas.css" rel="stylesheet" type="text/css" media="screen,print"/><link href="../../assets.cabelas.com/css/cms.css" rel="stylesheet" type="text/css" media="screen,print"/><script type="text/javascript">
 			document.write('<style type="text/css">.jsOnlyDisplayInline { display: inline; } .jsOnlyDisplayBlock { display: block; } .jsOffOnlyDisplayBlock, .jsOffOnlyDisplayInline { display: none; } </style>');
 		</script>
 		<link href="../../assets.cabelas.com/css/print.css" rel="stylesheet" type="text/css" media="print"/></head>
@@ -102,24 +102,89 @@ switchToLang: function(url) {
 <!-- mp_trans_disable_end -->   
 };
 
+<!-- start 5.0 --> 
+<!-- mp_trans_disable_start --> 	
+cStr = "";
+pCOOKIES = new Array();
+pCOOKIES = document.cookie.split('; ');
+count=0;
+sscount=0;
+for(i = 0; i < pCOOKIES.length; i++){		
+	NmeVal  = new Array();
+	NmeVal  = pCOOKIES[i].split('=');		
+	if(NmeVal[0] && NmeVal[0]=='SITE_COOKIE')		
+	   count++;
+
+	 if(NmeVal[0] && NmeVal[0]=='SECURE_SESSION_ID')						
+	   sscount++;
+}
+
+if(count > 1 || sscount > 1){	
+	newCOOKIES = new Array();
+	newCOOKIES = document.cookie.split('; ');		
+	for(i = 0; i < newCOOKIES.length; i++){		
+		newNmeVal  = new Array();
+		newNmeVal  = pCOOKIES[i].split('=');		
+		if(newNmeVal[0] && newNmeVal[0]=='SITE_COOKIE')
+			eraseCookie('SITE_COOKIE');
+		
+		if(newNmeVal[0] && newNmeVal[0]=='SECURE_SESSION_ID')
+			eraseCookie('SECURE_SESSION_ID');		
+	}
+	count=0;		
+}
+
+function eraseCookie(name){
+	  value='';
+	  path='/';
+	  domain='.www.cabelas.com';
+	  
+	  var cookie=name+'='+escape(value);
+	  if(path)cookie+='; path='+path;
+	  if(domain)cookie+='; domain='+domain;
+	  var now=new Date();
+	  now.setTime(0);
+	  cookie+='; expires='+now.toUTCString();
+	  document.cookie=cookie;	 
+	}
+
+<!-- mp_trans_disable_end --> 
 </script>
 <style>
 .googleSafe { display: none}
 </style>
 
-<div class="logo">
 <table cellpadding="0" cellspacing="0" border="0">
-<tr><td><a href="http://www.cabelas.com/home.jsp" class="logo"><img alt="Cabela's.com Homepage" src="../assets/images/NewCabLogo.png" title="Cabela's.com Homepage" class="ie6png"></a></td></tr>
-</table>
+<tr>
+<td>
+<div class="logo NewCabLogo spriteitem">
+<a href="http://www.cabelas.com/home.jsp">
+<img alt="Cabela's.com Homepage" src="../assets/images/btn/headerNavigation/frontPageImages.png" title="Cabela's.com Homepage" class="ie6png">
+</a>
 </div>
+</td>
+</tr>
+</table>
+
+
 
 <div>
 <table cellpadding="0" cellspacing="0" border="0">
 <tr><td align="left">
 <a mporgnav href="http://espanol.cabelas.com/" onclick="return switchLanguage('es'); function switchLanguage(lang) { MP.SrcUrl=unescape('mp_js_orgin_url');MP.UrlLang='mp_js_current_lang';MP.init(); MP.switchLanguage(MP.UrlLang==lang?'en':lang);return false;}" class="defaultHeader espanol">Cambiar a espa&#241;ol</a>
-<a href="http://www.cabelas.com/custserv/custserv.jsp" class="customerService"><img alt="Contact Cabela's Customer Service" src="../assets/cms/img/homepage/030111_GH_CService.png" title="Contact Cabela's Customer Service" class="ie6png"></a>
+<div class="customerService N030111_GH_CService spriteitem ie6png">
+<a href="http://www.cabelas.com/custserv/custserv.jsp">
+<img alt="Contact Cabela's Customer Service" src="../assets/images/btn/headerNavigation/frontPageImages.png" title="Contact Cabela's Customer Service">
+</a>
+</div>
 </td></tr>
-<tr><td><a href="https://www.cabelasclubvisa.com/?WTz_l=HeaderRight" class="clubvisa"><img alt="Cabela's Club Visa" src="../assets/cms/img/homepage/030111_GH_ClubVisa.png" title="Cabela's Club Visa" class="ie6png"></a></td></tr>
+<tr><td>
+<div class="clubvisa N030111_GH_ClubVisa spriteitem ie6png">
+<a href="https://www.cabelasclubvisa.com/?WTz_l=HeaderRight">
+<img alt="Cabela's Club Visa" src="../assets/images/btn/headerNavigation/frontPageImages.png" title="Cabela's Club Visa"/>
+</a>
+</div>
+</td></tr>
 </table>
 </div>
 
@@ -190,782 +255,39 @@ switchToLang: function(url) {
 #defaultHeader .christmasLink { color: #800000; text-decoration: underline; font-weight: bold;}
 </style></div>
 	</div>
+  	<script type="text/javascript">
+	$(document).ready(function(){
+	    try{
+            
+					$('#MegaMenuHeader').load('/includes/megamenu.jsp');
+                
+	    }catch(ex){}
+	});
+    </script>
 	<div id="MegaMenuHeader">
-	<ul class="navigation js-defaultHeaderNavigation">
-        <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104791680" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100002"><img env="images" alt="Hunting" src="../assets/images/btn/headerNavigation/btn-hunting_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100003">Archery</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100053">Optics</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100176">Trail Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100083">Decoys</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100093">Game Calls</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105017">Hunting Bags & Packs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100101">Treestands</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100109">Blinds</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100118">Waterfowl Boating & Blinds</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100126">Hunting Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100115">Scents & Scent Eliminators</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100143">Survival & Navigation</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100152">Handheld GPS & Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100169">Two-Way Radios</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100170">Lights</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100135">Outfitter's Camp</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100157">Knives & Tools</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100180">After the Shot</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100175">Scouting & Feeders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104237">Dog Training & Supplies</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100943">Men's Hunting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102519">Men's Hunting Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101198">Men's Hunting Waders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102496">Women's Hunting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103988">Kid's Camo & Hunting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100188">Ammunition</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100187">Shooting</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101292">Food Processing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102985">Gun Library</a></li>
-    <li><a href="http://www.cabelasoutdooradventures.com">Hunting Trips</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103361">ATV Shop</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105542">Deer Nation</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Hunting:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104381">New 2012 Bows</a></li>
-    <li><a href="http://www.cabelas.com/browse.cmd?categoryId=105991380">Optics Sale</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105414">New Hunting Clothing</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104792580" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100187"><img src="../assets/images/btn/headerNavigation/btn-shooting_off.gif" alt="Shooting" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100188">Ammunition</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100193">Reloading</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100199">Black Powder</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100210">Gun Storage</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1102323">Gun Maintenance</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100222">Shooting Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100236">Firearm Components</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100244">Optics</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100274">Tactical Gear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100292">Cowboy Action</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100282">Airguns & Slingshots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102336">Handguns</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102331">Centerfire Rifles</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102340">Rimfire Rifles</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102345">Shotguns</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106023">Civil War Firearms</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102562">Shooting & Reloading<br>DVDs & Videos</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102555">Shooting & Reloading Books</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100230">Shooting Vests</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102620">Shooting Gloves</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101010">Shooting Shirts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100132">Hearing Protection</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102985">Gun Library</a></li>
-    <li><a href="http://www.cabelasoutdooradventures.com">Hunting Trips</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Shooting:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105397">Ammo Sale</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106634">2012 Tactical Gear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106415">AR-15 Shop</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106787">Home & Personal Defense</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104793480" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100297"><img alt="Fishing" src="../assets/images/btn/headerNavigation/btn-fishing_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100309">Rod & Reel Combos</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100298">Fishing Rods</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100303">Fishing Reels</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100383">Fishing Line</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100367">Terminal Tackle</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100319">Hard Baits</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100333">Soft Baits</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100349">Swimbaits</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100353">Fishing Jigs & Rigs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100361">Fish Attractant & Bait</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100421">Fly Fishing</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100466">Saltwater Fishing</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100511">Beginner Fishing</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100501">Ice Fishing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102355">Rod & Reel Storage</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100377">Tackle Storage</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100407">Tackle Craft</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100392">Fishing Tools</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100515">Boating</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100551">Trolling Gear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102590">Men's Fishing Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101196">Men's Waders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102495">Women's Fishing Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101222">Women's Waders & Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102972">Sunglasses</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelasoutdooradventures.com">Fishing Trips</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102932">Boats & Boat Centers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Fishing:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105555">Fishing Sale</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103059">New for 2012</a></li>
-    <li><a href="http://www.cabelas.com/browse.cmd?categoryId=112303080">Umbrella Rigging</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104794380" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100515"><img alt="Boating" src="../assets/images/btn/headerNavigation/btn-boating_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100516">Boating Electronics</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100544">Electric Trolling Motors</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100551">Trolling Gear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100531">Outboards & Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100619">Boat Covers</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100613">Boat Seats</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100595">Boating Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100563">Batteries & Chargers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100630">Boat Lighting</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100626">Carpet & Floor Coverings</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100589">Life Jackets & Vests</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100580">Watersports</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100569">Canoes, Kayaks, & Small Boats</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100659">Waterfowl Boating & Blinds</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100639">Livewells, Bilge Pumps, & Hatches</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100634">Rod Holders & Storage</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100649">Trailer Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100643">Anchoring & Docking</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100667">Storage Canopies</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100794">Travel Trailers & RV</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100801">Towing & Performance</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100143">Survival & Navigation</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102972">Sunglasses</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107614">Men's Boat & Water Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101215">Women's Boat & Water Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100876">Men's Rainwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102482">Women's Rainwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102932">Boats & Boat Centers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103361">ATV Shop</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Boating:</li>
-    <li><b>New for 2012:</b>&nbsp<a href="http://www.cabelas.com/catalog/browse/_/N-1106035">Electronics</a>&nbsp&nbsp&nbsp<a href="http://www.cabelas.com/catalog/browse/_/N-1106036">Accessories</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104795280" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100668"><img alt="Camping" src="../assets/images/btn/headerNavigation/btn-camping_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100669">Tents & Shelters</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100675">Sleeping Bags</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100676">Cots, Pads, & Beds</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105512">Camping Combos</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100686">Camp Essentials</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104665">Camp Furniture</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100699">Lights</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100681">Packs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100754">Luggage & Travel</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100704">Outdoor Cooking</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100723">Knives & Tools</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100735">Survival & Navigation</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107300">Handheld GPS & Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100721">Two Way Radios</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100722">Binoculars</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100744">Outdoor Living</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100759">Outdoor Games & Toys</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100794">Travel Trailers & RV</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100569">Canoes & Kayaks</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102972">Sunglasses</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100830">Men's Casual Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101101">Women's Casual Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101186">Men's Hiking Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101218">Women's Hiking Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103361">ATV Shop</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102932">Boats & Boat Centers</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Camping:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103629">Camping Sale</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104145">Lighting Sale</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104796180" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100760"><img alt="Auto and ATV" src="../assets/images/btn/headerNavigation/btn-autoAndAtv_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent">
-<div class="megaMenuBackground">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100761">Auto Interior</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100771">Auto Exterior</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102385">GPS & Radar Detectors</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100801">Trailering & Performance</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100807">Garage & Auto Maintenance</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102380">Batteries & Chargers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105538">Generators & Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100813">ATV & UTV Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100826">Mowers & Implements</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100827">Winter Sports & Snow Removal</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100794">5th Wheel & RV</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100801">Trailering & Performance</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1100812">Storage Canopies</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102389">Snowmobile Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100828">Golf Cart Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100143">Survival & Navigation</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100569">Canoes, Kayaks, & Small Boats</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100649">Trailer Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100754">Luggage & Travel </a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100759">Outdoor Games & Toys</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100169">Two Way Radios</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100011">Action Cameras</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102932">Boats & Boat Centers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103361">ATV Shop</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Auto &amp; ATV:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105391">Severe Weather Products</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104174">Auto/ATV Sale</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104797080" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1100829"><img src="../assets/images/btn/headerNavigation/btn-clothing_off.gif" alt="Clothing" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent ThreeColLight">
-<div class="megaMenuBackground ThreeColLight">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1100830">
-    Men&rsquo;s Casual</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100831">Casual Shirts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100843">Sweatshirts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100839">T-Shirts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104251">Sweaters</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100851">Casual Pants</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100855">Jeans</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100861">Shorts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102391">Outerwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100876">Rainwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102604">Workwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102590">Fishing Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100900">Base Layers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102402">Gloves</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100892">Headwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100920">Sleepwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100924">Belts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102412">Socks</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100923">Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1100943">
-    Men&rsquo;s Hunting</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100944">Lightweight Camo</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100954">Camo Rainwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101049">Specialty Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101019">Scent Control</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101012">Waterfowl</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101005">Upland</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100985">Layering</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100959">Cold Weather Camo</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101000">Blaze Orange</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101029">Base Layers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102619">Shooting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100994">Vests</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102625">Tactical & Military</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102425">Gloves</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102432">Headwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102450">Socks</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101053">Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101101">
-    Women&rsquo;s</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101102">Casual Tops</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101111">Pants, Shorts, & Skirts</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102475">Outerwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101133">Activewear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102497">Workwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101129">Sleepwear & Base Layer</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102487">Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102495">Fishing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102496">Hunting</a></li>
-    <br>
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101149">Kid's</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103988">Camo Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104869">Boys' Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104870">Boys' Outerwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104871">Girls' Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104872">Girls' Outerwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104873">Infant & Toddler Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104874">Infant & Toddler Outerwear</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102508">Men's Casual Footwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102519">Men's Hunting Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101196">Men's Waders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101212">Women's Footwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101226">Kids' Footwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100744">Outdoor Living</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100754">Luggage & Travel</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Clothing:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106713">2012 Workwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104691">Cabela's Logo Shop</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1105414">New Hunting Clothing</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104797980" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1101172"><img alt="Footwear" src="../assets/images/btn/headerNavigation/btn-footwear_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent ThreeColLight">
-<div class="megaMenuBackground ThreeColLight">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101173">
-    Men&rsquo;s</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101186">Hiking Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102519">Hunting Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107989">Pac & Winter Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102525">Rubber Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107632">Tactical & Duty</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101191">Work & Western</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102508">Casual</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107611">Athletic Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107614">Boat & Water Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107612">Sandals</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107613">Slippers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101196">Waders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102528">Socks</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101212">
-    Women&rsquo;s</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102536">Casual</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101214">Athletic</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101215">Boat & Water Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101216">Sandals</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101217">Slides & Clogs</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101218">Hiking Boots & Shoes</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102537">Hunting Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102538">Work, Western & Casual Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101221">Winter Footwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101222">Waders & Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101223">Slippers & Moccasins</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102539">Socks</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101225">Wader Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList">
-    <li class="title underlined endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1101226">Kids' Footwear</a></li>
-    <br>
-    <li class="title underlined endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1101234">Snowshoes & Accessories</a></li>
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101233">Footwear Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100943">Men's Hunting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102496">Women's Hunting Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100830">Men's Casual Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101101">Women's Clothing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101149">Kids' Clothing</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-    <li><a href="http://www.cabelas.com/catalog/catalog_request_destination.jsp">Free Catalogs</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Footwear:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106713">2012 Workwear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1107822">Hunting Boots</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106502">Cabela's Exclusive Footwear</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104798880" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1101235"><img alt="Home and Cabin" src="../assets/images/btn/headerNavigation/btn-homeAndCabin_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent ThreeColLight">
-<div class="megaMenuBackground ThreeColLight">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101236">Bed & Bath</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101242">Home & Cabin Decor</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101266">Furniture</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101259">Lighting & Candles</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101283">Kitchen & Dining</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101322">Outdoor Living</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104415">Yard & Garden</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101280">Weather Instruments</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101308">Food</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1101311">Outdoor Cooking</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101332">Luggage & Travel </a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102551">Personal Items</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106731">Dog Supplies</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList">
-    <li class="title underlined"><a href="http://www.cabelas.com/catalog/browse/_/N-1101292">
-    Food Processing</a>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101293">Food Grinders</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101294">Slicers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101295">Food Dehydrators</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101299">Canning & Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101300">Smokers & Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101302">Vacuum Sealers</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101305">Butchering Knives & Tools</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101297">Jerky Making</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101296">Sausage Making</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102557">Cooking & Food Processing Books</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102565">Butchering & Food Processing DVD's & Videos</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101361">Hobbies</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100807">Garage & Auto Maintenance</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Home &amp; Cabin:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106787">Home & Personal Defense</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="divider"><!--  --></li>
-                <li class="js-navLink"><input type="hidden" class="webTrendsCategoryId" value="cat104799780" />
-<a href="http://www.cabelas.com/catalog/browse/_/N-1101361"><img alt="Hobbies" src="../assets/images/btn/headerNavigation/btn-hobbies_off.gif" /></a>
-<div class="js-megaMenu isOffScreen">
-<div class="CMSMegaMenu">
-<div class="megaMenuContent ThreeColLight">
-<div class="megaMenuBackground ThreeColLight">
-<div id="megaMenuColumn1" class="column1 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101385">Games & Toys</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1101387">Video Games</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101372">DVDs & Videos</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1101362">Books & Calendars</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103557">Radios</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101402">Weather Instruments</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn2" class="column2 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102971">Eyewear</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104087">Watches & Jewelry</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1102551">Personal Items</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101405">Metal Detectors & Gold Prospecting</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101398">Golf Cart Accessories</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn3" class="column3 fl">
-<ul class="megaMenuList">
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1106631">Birding</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101406">Rock Polishing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101407">Winemaking & Brewing</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101400">Astronomy</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103625">Blowguns</a></li>
-</ul>
-</div>
-<div id="megaMenuColumn4" class="column4 fl">
-<ul class="megaMenuList listWithBullets">
-    <li class="title">
-    <h4>Related Categories</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1102487">Women's Casual Clothing Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1100923">Men's Casual Clothing Accessories</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-    <li class="endGroup"><a href="http://www.cabelas.com/catalog/browse/_/N-1107064">CLUB Visa Gear Guide</a></li>
-    <li class="title">
-    <h4>See Also</h4>
-    </li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1103334">Outdoor Information</a></li>
-</ul>
-</div>
-<div class="clr"><!-- --></div>
-</div>
-</div>
-<div class="MegaMenuOtherWaysShop">  
-<ul class="otherWaysToShop">
-    <li class="heading">Other Ways to Shop Hobbies:</li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1101387">Cabela's Video Games</a></li>
-    <li><a href="http://www.cabelas.com/catalog/browse/_/N-1104961">Emergency Readiness</a></li>
-</ul>
-</div>
-</div>
-</div></li>
-                <li class="bargainCave"><a href="http://www.cabelas.com/catalog/browse/bargain-cave/_/N-1102576"><img env="images" alt="Bargain Cave" src="../assets/images/btn/headerNavigation/btn-barginCave_off.gif" /></a></li>
-                <li class="clr"><!--  --></li>
-            </ul>
-	</div>
+        <ul class="navigation">
+          <li class="btn-hunting_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100002"><img env="images" alt="Hunting" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-shooting_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100187"><img env="images" alt="Shooting" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-fishing_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100297"><img env="images" alt="Fishing" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-boating_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100515"><img env="images" alt="Boating" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-camping_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100668"><img env="images" alt="Camping" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-autoAndAtv_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100760"><img env="images" alt="Auto and ATV" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-clothing_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1100829"><img env="images" alt="Clothing" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-footwear_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1101172"><img env="images" alt="Footwear" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-homeAndCabin_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1101235"><img env="images" alt="Home and Cabin" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="divider"><!--  --></li>
+          <li class="btn-hobbies_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1101361"><img env="images" alt="Hobbies" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="bargainCave btn-barginCave_off spriteitem"><a href="http://www.cabelas.com/catalog/browse/_/N-1102576"><img env="images" alt="Bargain Cave" src="../assets/images/btn/headerNavigation/frontPageImages.png" /></a></li>
+          <li class="clr"><!--  --></li>
+	</ul></div>
 </div>
 
 </div>
@@ -1199,7 +521,61 @@ We post customer testimonials on our web site which may contain personally ident
 	</div>
 	<div class="clr"><!--  --></div>
 </div></div>
-<script type="text/javascript">
+
+<!--Start Dotomi Tag -->
+        <script type="text/javascript">
+            <!--
+             var dtmSrc = window.location.protocol + "//"+'login.dotomi.com/ucm/UCMController' + "?dtm_com=28&dtm_fid=101&dtm_cid=2122&dtm_cmagic=abdbeb&dtm_format=5&dtmc_ver=1";
+            var source ='' ;
+            try {
+                if (WT.mc_id) {
+                    source = WT.mc_id;
+                }
+            } catch (err) {
+                /*WT.mc_id not defined, use default value*/
+                source = 'nonPaid';
+            }
+            var dtmTag = {
+                /* custom fields SUBSTITUTE DYNAMIC VALUES ONLY IN THIS BLOCK */
+                'cli_promo_id': '28',
+                'dtm_user_id': '',
+                'dtmc_cat': '',
+                'dtmc_cat_id': '',
+                'dtmc_prod': '',
+                'dtmc_prod_id': '',
+                'dtmc_brand': '',
+                'dtmc_prod_img': '',
+                'dtmc_session_id': 'F3FD37FB0E1BF9695EAF162B99C1D78A.ap0',
+                'dtmc_customer_type': 'New',
+                'dtmc_source': source
+                /* custom fields end */
+            };
+            dtmTag.dtmc_ref = document.referrer;
+            dtmTag.dtmc_loc = document.location.href;
+            for (var item in dtmTag) {
+                if (typeof dtmTag[item] != "function" && typeof dtmTag[item] != "object")
+                    dtmSrc += "&" + item + "=" + escape(dtmTag[item]);
+            }
+            
+            document.write('<div id="dtmdiv" style="display:none;"></div>');
+
+            (function() {
+                function async_load(){
+                    setTimeout('timeOutDotomi()', 2000);
+                    document.getElementById("dtmdiv").innerHTML = '<iframe name="response_frame" src="' + dtmSrc + '"></iframe>';
+                }
+                if (window.attachEvent)
+                    window.attachEvent('onload', async_load);
+                else
+                    window.addEventListener('DOMContentLoaded', async_load, false);
+            })();
+            
+            function timeOutDotomi() {
+                document.getElementById("dtmdiv").innerHTML = "";
+            }//-->
+        </script>
+        <!--End Dotomi Tag -->
+    <script type="text/javascript">
 	$(document).ready(function() {
 		dcsMultiTrack('DCS.dcsuri','/CustServ.html','WT.ti','CustServ', 'WT.dl','40', 'WT.z_st', 'Cust_Serv', 'WT.z_stn', 'PrivacyPolicy');
 	});
@@ -1209,10 +585,7 @@ We post customer testimonials on our web site which may contain personally ident
 		
 		<div id="siteFooter">
 			<div class="siteLayoutFrame">
-				<script type="text/javascript">
-    site.data.hideMegaMenu = ""; //set when iframing header for investor relations pages
-</script>
-<div id="defaultFooter">
+				<div id="defaultFooter">
 
 	<div class="grid column4Medium">
 		
@@ -1226,7 +599,15 @@ function openMap(url, name) {
 </script>
 <div class="column CMSdefaultFooterColumn">
 <div class="content">
-<h4><a href="http://www.cabelas.com/custserv/custserv.jsp"><img src="../assets/cms/img/homepage/ftrhdr_custserv.png" border="0" alt="Customer Service" style="padding-bottom: 3px;"></a></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 3px;">
+<div class="ftrhdr_custserv spriteitem ie6png">
+<a href="http://www.cabelas.com/custserv/custserv.jsp">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Customer Service">
+</a>
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li>Call 1-800-237-4444</li>
     <li><a href="https://cabelas.custhelp.com/cgi-bin/cabelas.cfg/php/enduser/ask.php">E-mail</a></li>
@@ -1255,12 +636,19 @@ End Learn more-->
 </div>
 <div class="column CMSdefaultFooterColumn">
 <div class="content">
-<h4><img src="../assets/cms/img/homepage/ftrhdr_shopresource.png" border="0" alt="Shopping Resources" style="padding-bottom: 2px;"></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 2px;">
+<div class="ftrhdr_shopresource spriteitem">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Shopping Resources">
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=105591780">Bargain Cave</a></li>
     <li><a href="http://www.cabelas.com/stores/stores_home.jsp">Retail Stores</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=106042680">Gift Cards</a></li>
     <li><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=SpecialOrders">Special Orders</a></li>
+    <li><a href="http://www.cabelas.com/browse.cmd?categoryId=162117180">Cabela's Gear Lists</a></li>
 </ul>
 <ul>
     <li><a href="http://www.cabelas.com/catalog/catalog_quick_order.jsp">Catalog Quick Order</a></li>
@@ -1278,14 +666,30 @@ End Learn more-->
 </div>
 <div class="column CMSdefaultFooterColumn">
 <div class="content">
-<h4><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=clubhome"><img src="../assets/cms/img/homepage/ftrhdr_cabelasclub1.png" border="0" alt="Cabela's CLUB" style="padding-bottom: 3px;"></a></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 3px;">
+<div class="ftrhdr_cabelasclub1 spriteitem ie6png">
+<a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=clubhome">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Cabela's CLUB">
+</a>
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=clubhome">Cabela&rsquo;s CLUB Visa</a></li>
     <li><a href="https://www.cabelasclubvisa.com/?WTz_l=Footer">Pay My Visa</a></li>
     <li><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=rewardshome">Cabela&rsquo;s CLUB REWARDS</a></li>
     
 </ul>
-<h4><a href="http://www.cabelas.com/content.jsp?pageName=AboutUs"><img src="../assets/cms/img/homepage/ftrhdr_aboutus.png" border="0" alt="About Us" style="padding-bottom: 3px;"></a></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 3px;">
+<div class="ftrhdr_aboutus spriteitem ie6png">
+<a href="http://www.cabelas.com/content.jsp?pageName=AboutUs">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="About Us">
+</a>
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li><a href="http://www.cabelas.com/content.jsp?pageName=history">Our History</a></li>
     <li><a href="http://phx.corporate-ir.net/phoenix.zhtml?c=177739&p=irol-irhome">Investor Relations</a></li>
@@ -1297,12 +701,87 @@ End Learn more-->
     <li><a href="http://www.cabelas.com/content.jsp?pageName=SponsoredEvents">Sponsored Events</a></li>
     <li><a href="javascript:window.open('https://information.cabelas.com/support', 'Support', 'scrollbars=yes,resizable,width=840,height=800').focus();">Support & Advertising</a></li>
 </ul>
-<h4><img src="../assets/cms/img/homepage/ftr_hdr_GetConnected1.png" border="0" alt="Outdoor Information" style="padding-bottom: 5px;"></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 3px;">
+<div class="ftr_hdr_GetConnected1 spriteitem">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Get Connected">
+</div>
+</td></tr></table>
+</h4>
 <ul>
-	<li style="padding-bottom: 3px;"><a href="http://www.cabelas.com/facebook" target="_blank"><img src="../assets/cms/img/homepage/ftr_iconFacebook.png" width="12" height="12" border="0" title="Facebook" alt="Facebook" style="padding-right: 2px;">Like us on Facebook</a></li>
-	<li style="padding-bottom: 3px;"><a href="http://www.cabelas.com/twitter" target="_blank"><img src="../assets/cms/img/homepage/ftr_iconTwitter_New1.png" width="12" height="12" border="0" title="Twitter" alt="Twitter" style="padding-right: 2px;">Follow us on Twitter</a></li>
-	<li style="padding-bottom: 3px;"><a href="http://www.youtube.com/cabelas" target="_blank"><img src="../assets/cms/img/homepage/ftr_iconYouTube.png" width="12" height="12" border="0" title="YouTube" alt="YouTube" style="padding-right: 2px;">Watch us on YouTube</a></li>
-	<li style="padding-bottom: 3px;"><a href="http://pinterest.com/Cabelas/" target="_blank"><img src="../assets/cms/img/homepage/ftr_iconPinterest.png" width="12" height="12" border="0" title="Pinterest" alt="Pinterest" style="padding-right: 2px;">Follow us on Pinterest</a></li>
+	
+<li>
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="padding-right: 2px; padding-bottom: 2px;">
+<div class="ftr_iconFacebook spriteitem">
+<a href="http://www.cabelas.com/facebook" target="_blank" >
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" title="Facebook" alt="Facebook">
+</a>
+</div>
+</td>
+<td style="padding-left: 2px; padding-bottom: 2px;">
+<div>
+<a href="http://www.cabelas.com/facebook" target="_blank" >
+Find us on Facebook
+</a>
+</div>
+</td>
+</tr></table>
+</li>
+	
+<li>
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="padding-right: 2px; padding-bottom: 2px;">
+<a href="http://www.cabelas.com/twitter" target="_blank" >
+<img src="../assets/cms/img/homepage/ftr_iconTwitter_New1.png" width="12" height="12" border="0" title="Twitter" alt="Twitter">
+</a>
+</td>
+<td style="padding-left: 2px; padding-bottom: 2px;">
+<div>
+<a href="http://www.cabelas.com/twitter" target="_blank" >
+Follow us on Twitter
+</a>
+</div>
+</td>
+</tr></table>
+</li>
+	
+<li>
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="padding-right: 2px; padding-bottom: 2px;">
+<div class="ftr_iconYouTube spriteitem">
+<a href="http://www.youtube.com/cabelas" target="_blank" >
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" title="YouTube" alt="YouTube">
+</a>
+</div>
+</td>
+<td style="padding-left: 2px; padding-bottom: 2px;">
+<div>
+<a href="http://www.youtube.com/cabelas" target="_blank" >
+Watch us on YouTube
+</a>
+</div>
+</td>
+</tr></table>
+</li>
+
+<li>
+<table cellpadding="0" cellspacing="0"><tr>
+<td style="padding-right: 2px; padding-bottom: 2px;">
+<a href="http://pinterest.com/Cabelas/" target="_blank">
+<img src="../assets/cms/img/homepage/ftr_iconPinterest.png" width="12" height="12" border="0" title="Pinterest" alt="Pinterest">
+</a>
+</td>
+<td style="padding-left: 2px; padding-bottom: 2px;">
+<div>
+<a href="http://pinterest.com/Cabelas/" target="_blank">
+Follow us on Pinterest
+</a>
+</div>
+</td>
+</tr></table>
+</li>
+	
 </ul>
 
 </div>
@@ -1310,16 +789,29 @@ End Learn more-->
 		</div>
 		
 		<div class="columnSpan2">
-			<div class="column CMSdefaultFooterColumn">
+		
+            <div class="column CMSdefaultFooterColumn">
 <div class="content">
-<h4><img src="../assets/cms/img/homepage/ftr_hdr_StoreDepts.png" border="0" alt="Store Departments" style="padding-bottom: 2px;"></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 2px;">
+<div class="ftr_hdr_StoreDepts spriteitem">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Store Departments">
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li id="GLFooter"><a href="http://www.cabelas.com/browse.cmd?categoryId=103792680">Gun Library</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=105879780">Boats &amp; Boat Centers</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=112248180">ATV Shops</a></li>
     <li><a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=banquetrooms">Banquet Facilities</a></li>
 </ul>
-<h4><img src="../assets/cms/img/homepage/ftrhdr_otherdepts.png" border="0" alt="Other Departments" style="padding-bottom: 2px;"></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 2px;">
+<div class="ftrhdr_otherdepts spriteitem">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Other Departments">
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li><a href="http://www.cabelasoutdooradventures.com">Outdoor Adventures</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=106200180">Travel Service</a></li>
@@ -1335,7 +827,15 @@ End Learn more-->
 </div>
 <div class="column lastColumn CMSdefaultFooterColumn">
 <div class="content">
-<h4><a href="http://www.cabelas.com/browse.cmd?categoryId=105924780"><img src="../assets/cms/img/homepage/ftrhdr_outdoorinfo.png" border="0" alt="Outdoor Information" style="padding-bottom: 3px;"></a></h4>
+<h4>
+<table cellpadding="0" cellspacing="0"><tr><td  style="padding-bottom: 3px;">
+<div class="ftrhdr_outdoorinfo spriteitem ie6png">
+<a href="http://www.cabelas.com/browse.cmd?categoryId=105924780">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" alt="Outdoor Information">
+</a>
+</div>
+</td></tr></table>
+</h4>
 <ul>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=109817280">Deer Nation&#8482;</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=157676580">Waterfowl Nation&#8482;</a></li>
@@ -1344,19 +844,37 @@ End Learn more-->
     <li><a href="http://www.cabelas.com/content.jsp?pageName=GameFishInfo">Game &amp; Fish Info</a></li>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=105919380">Trophy Room</a></li>
     <li><a href="http://www.cabelas.com/content.jsp?pageName=ProStaff">Pro Staff</a></li>
-    <li><br><a href="http://www.cabelas.com/browse.cmd?categoryId=111168180"><img src="../assets/cms/img/homepage/fs_ol_bottom.gif" width="147" height="45" border="0" title="Field & Stream and Outdoor Life" alt="Field & Stream and Outdoor Life" style="padding-right: 2px;"></a></li>
+    <li><br>
+	<div class="fs_ol_bottom spriteitem ie6png">
+    <a href="http://www.cabelas.com/browse.cmd?categoryId=111168180">
+    <img src="../assets/images/btn/headerNavigation/frontPageImages.png" border="0" title="Field & Sream and Outdoor Life" alt="Field & Sream and Outdoor Life" style="padding-right: 2px;">
+    </a>
+	</div>
+    </li>
 </ul>
 <ul>
     <li><a href="http://www.cabelas.com/browse.cmd?categoryId=105627780">Affiliate Programs</a></li>
 </ul>
-<script type="text/javascript">
-    var GLFooterRid = $.urlParam("rid");
-    if (GLFooterRid != null && GLFooterRid != "") {
-        $('#GLFooter').hide();
-    }
-</script>
 </div>
-</div><div class="clr"><!--  --></div>
+</div>
+
+<!-- Google Code for Remarketing tag -->
+<!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1057926193;
+var google_conversion_label = "Ft8vCKPr9wMQsdi6-AM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="../../www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="../../googleads.g.doubleclick.net/pagead/viewthroughconversion/1057926193/index.html%3Fvalue=0&amp;label=Ft8vCKPr9wMQsdi6-AM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript><div class="clr"><!--  --></div>
 		
 			<div id="emailSignupArea">
 				<div class="content">
@@ -1369,23 +887,57 @@ End Learn more-->
 	</div>
 	 
 	<script type="text/javascript" id="mpelid" src="../../espanol.cabelas.com/mpel/mpel.js"></script>
-<div id="CMSfooterCopyright">
-		<img src="../assets/images/img/img-cabelasLogoFooter.gif" alt="Cabela's" />
-		<p>
-			&copy;1996-2012 Cabela's Inc. All Rights Reserved.
-			<br />Please read Cabela's <a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=PrivacyPolicy">Privacy Policy</a> and <a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=LegalNotices">Legal Notices</a>. 
-		</p>
-		<div class="clr"><!--  --></div>
-	</div>
-	<ul class="CMSfooterIcons">
-                <li><a target="_blank" href="http://www.mcafeesecure.com/RatingVerify?ref=www.cabelas.com"><img border="0" src="../../images.scanalert.com/meter/www.cabelas.com/13.gif" title="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams"alt="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;"></a>&nbsp;&nbsp;&nbsp;
-	<a href="javascript:openWindowBig('https://www.entrust.net/customer/profile.cfm?domain=www.cabelas.com')">
-    <img src="../assets/images/tmp/entrust-badge-1.png" title="Entrust" alt="Entrust" width="70" height="70">
-</a>&nbsp;&nbsp;
+<div id="CMSfooterdefaultCopyright">
 
-	<a href="http://www.truste.org/ivalidate.php?url=www.cabelas.com&amp;sealid=101" title="Validate TRUSTe privacy certification" target="_blank"><img style="border: none" src="../assets/cms/img/homepage/seal_m.png" alt="TRUSTe online privacy certification"/></a></li>
-		<li class="clr"><!--  --></li>
-	</ul></div>
+<table>
+<tr>
+<td>
+<div class="img-cabelasLogoFooter spriteitem">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" alt="Cabela's" />
+</div>
+</td>
+<td>
+<p>
+&copy;1996-2012 Cabela's Inc. All Rights Reserved.
+<br />Please read Cabela's <a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=PrivacyPolicy">Privacy Policy</a> and <a href="http://www.cabelas.com/custserv/custserv.jsp?pageName=LegalNotices">Legal Notices</a>.
+</p> 
+</td>
+</tr>
+</table>
+<div class="clr"><!--  --></div>
+</div>
+
+<ul class="CMSfooterIcons">
+<li>
+<table>
+<tr>
+<td>
+<a target="_blank" href="http://www.mcafeesecure.com/RatingVerify?ref=www.cabelas.com">
+<img border="0" src="../../images.scanalert.com/meter/www.cabelas.com/13.gif" title="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams"alt="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" oncontextmenu="alert('Copying Prohibited by Law - McAfee Secure is a Trademark of McAfee, Inc.'); return false;">
+</a>
+</td>
+
+<td style="padding-left: 6px; padding-right: 6px">
+<div class="entrust-badge-1 spriteitem ie6png">
+<a href="javascript:openWindowBig('https://www.entrust.net/customer/profile.cfm?domain=www.cabelas.com')">
+<img src="../assets/images/btn/headerNavigation/frontPageImages.png" title="Entrust" alt="Entrust" >
+</a>
+</div>
+</td>
+
+<td>
+<div class="seal_m spriteitem ie6png">
+<a href="http://www.truste.org/ivalidate.php?url=www.cabelas.com&amp;sealid=101" title="Validate TRUSTe privacy certification" target="_blank">
+<img style="border: none" src="../assets/images/btn/headerNavigation/frontPageImages.png" alt="TRUSTe online privacy certification"/>
+</a>
+</div>
+</td>
+
+</tr>
+</table>
+</li>
+<li class="clr"><!--  --></li>
+</ul></div>
 <script src="../../assets.cabelas.com/js/foresee/foresee-trigger.js" type="text/javascript"></script></div>
 		</div>
 		
@@ -1395,7 +947,7 @@ End Learn more-->
           document.getElementsByTagName('html')[0].style.display='block';
          </script> 
          <!-- facebook fb_xd_fragment Bug End -->
-		<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-3.newrelic.com","c4d53a6e08","808624","YwZQNURUVkUHW0cLWVpMeDJmGltDFUxAB0RCTFEURUFLUxROHQhFRA==",0,9,new Date().getTime(),"","","","",""]);</script></body>
+		<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-3.newrelic.com","c4d53a6e08","808624","YwZQNURUVkUHW0cLWVpMeDJmGltDFUxAB0RCTFEURUFLUxROHQhFRA==",0,7,new Date().getTime(),"","","","",""]);</script></body>
 		</html>
 
 	
