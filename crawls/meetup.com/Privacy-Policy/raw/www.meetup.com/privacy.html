@@ -55,11 +55,14 @@
 
 </head>
 
-<!--[if lt IE 7 ]> <body id="meetupBody" class="ie6 "> <![endif]-->
-<!--[if IE 7 ]>  <body id="meetupBody" class="ie7 "> <![endif]-->
-<!--[if IE 8 ]> <body id="meetupBody" class="ie8 "> <![endif]-->
-<!--[if IE 9 ]> <body id="meetupBody" class="ie9 "> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <body id="meetupBody" class=""> <!--<![endif]-->
+
+
+
+<!--[if lt IE 7 ]> <body id="meetupBody" class="ie6 hasAnnouncement"> <![endif]-->
+<!--[if IE 7 ]>  <body id="meetupBody" class="ie7 hasAnnouncement"> <![endif]-->
+<!--[if IE 8 ]> <body id="meetupBody" class="ie8 hasAnnouncement"> <![endif]-->
+<!--[if IE 9 ]> <body id="meetupBody" class="ie9 hasAnnouncement"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <body id="meetupBody" class="hasAnnouncement"> <!--<![endif]-->
 
 <div class="interstitialblock" id="interstitialblock"><!--[if lte IE 6.5]><iframe src="javascript:false;"></iframe><![endif]--></div>
 <script type="text/javascript">document.body.className += (!document.body.className) ? 'hasJS' : ' hasJS';</script>
@@ -262,6 +265,10 @@ New York, NY 10012</p>
 </ul>
 
 </div>
+
+<div id="C_yellowbarHolder"></div>
+
+
 
 <div id="C_globalNav">
 
@@ -749,7 +756,7 @@ Meetup.DomDeco.applyByTagAndClass('input', 'horizUrfInput', Meetup.DomDeco.TextI
 );
 });
 
-connect(window,"onload",function(){Meetup.GA.load("alien","","","","")});Meetup.FB.errors=false;if(Meetup.Data===undefined){Meetup.Data={}}Meetup.Data.path_api="http://www.meetup.com/api/";Meetup.Data.path_fb_tie="http://www.meetup.com/facebook_account_tie/";Meetup.Data.path_xdpath="http://www.meetup.com/fbconnect/xd.html";Meetup.FB.afterAuthUri="http://www.meetup.com/fb/?loginForm=true";Meetup.FB.returnUri="";(function(){var e=document.createElement("script");e.async=true;e.src=document.location.protocol+"//connect.facebook.net/en_US/all.js";document.getElementById("fb-root").appendChild(e)}());window.fbAsyncInit=function(){Meetup.FB.init("2403839689")};
+Meetup.DOMReady.ready(function(){$("C_yellowbarHolder").innerHTML='<div id="C_announcement" yellowbarid="1205602"><div id="C_announceBody"><div id="C_announceMsg" class="ad_alert"><a href="javascript:void(0);" id="C_announcementClose" title="Hide this message"><img src="../img2.meetupstatic.com/94038890976300987/img/sprites/1x1.gif" alt="Hide this message" class="sprite sprite_pixel cancel_icon" /></a> Rebuilding after Sandy: <a href="http://hurricane.meetup.com/cities/us/11201/?psize=30&radius=6000&events=true&show=results">Find a Relief Meetup</a> or <a href="http://meetupblog.meetup.com/post/34925680808/relief-meetups-a-sandy-update-from-meetup-hq">Start a Relief Meetup</a></div></div></div>';connect($("C_announcementClose"),"onclick",function(elm){var _barId=getNodeAttribute($("C_announcement"),"yellowbarid");removeElementClass(document.body,"hasAnnouncement");removeElement("C_yellowbarHolder");setCookie("yellowbar_"+_barId,"true",14,"/",".meetup.com",false)})});connect(window,"onload",function(){Meetup.GA.load("alien","","","","")});Meetup.FB.errors=false;if(Meetup.Data===undefined){Meetup.Data={}}Meetup.Data.path_api="http://www.meetup.com/api/";Meetup.Data.path_fb_tie="http://www.meetup.com/facebook_account_tie/";Meetup.Data.path_xdpath="http://www.meetup.com/fbconnect/xd.html";Meetup.FB.afterAuthUri="http://www.meetup.com/fb/?loginForm=true";Meetup.FB.returnUri="";(function(){var e=document.createElement("script");e.async=true;e.src=document.location.protocol+"//connect.facebook.net/en_US/all.js";document.getElementById("fb-root").appendChild(e)}());window.fbAsyncInit=function(){Meetup.FB.init("2403839689")};
 
 </script>
 

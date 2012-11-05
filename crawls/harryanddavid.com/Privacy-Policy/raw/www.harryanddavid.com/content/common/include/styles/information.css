@@ -32,7 +32,7 @@
 .dijitTextBox                  { background-color: #fff; }
 .dijitTextBox .dijitInputInner { padding: 1px 2px 1px 0; }
 
-.dijitTextBoxError                      { border-color: #C00; }
+.dijitTextBoxError                      { background-color: #F8d2d4 !important; border-color: #C00 !important; }
 .dijitTextBoxError .dijitValidationIcon { display: none; }
 
 .dijitTextBoxDisabled,
@@ -60,7 +60,7 @@
       .dijitComboBoxFocused .dijitArrowButtonInner { background-position:-70px 53%; border: 0 none; }
 .ie_7 .dijitComboBoxFocused .dijitButtonNode       { padding: 3px 1px; }
 
-.dijitComboBoxError                      { border-color: #C00; }
+.dijitComboBoxError                      { background-color: #F8d2d4 !important; border-color: #C00 !important; }
 .dijitComboBoxError .dijitValidationIcon { display: none; }
 
 div.dijitComboBoxDisabled .dijitArrowButtonInner { background-position:0px 50%; background-color:#f1f1f1; }
@@ -68,7 +68,7 @@ div.dijitComboBoxDisabled .dijitArrowButtonInner { background-position:0px 50%; 
 
 /* dijit CheckBox ****************************************************************************************************/
 
-.dijitCheckBoxError { border-color: #C00; }
+.dijitCheckBoxError { background-color: #F8d2d4 !important; border-color: #C00 !important; }
 
 
 /* Buttons ***********************************************************************************************************/
@@ -232,7 +232,7 @@ table.dijitComboButton {
 
 .dijitCheckBoxError,
 .adTCConfirmChkBx .dijitCheckBoxError,
-.dijitCheckBoxError .dijitCheckBoxInput{ border: 1px solid #D46464 !important; }
+.dijitCheckBoxError .dijitCheckBoxInput{ background-color: #F8d2d4 !important; border: 1px solid #D46464 !important; }
 
 
 .dijitCheckBox,
@@ -288,7 +288,7 @@ table.dijitComboButton {
 }
 
 .dijitRadioError {
-	border: 1px solid red;
+	background-color: #F8d2d4 !important; border-color: #C00 !important;
 }
 
 .dijitToggleButton .dijitRadioIcon {
@@ -514,7 +514,7 @@ table.dijitComboButton {
 
 .dijitTitlePaneTextNode { margin-left: 4px; margin-right: 4px; }
 
-.dijitTitlePaneError { border: 1px solid #D46464 !important; }
+.dijitTitlePaneError { background-color: #F8d2d4 !important; border: 1px solid #D46464 !important; }
 
 
 /* Dijit Tab *********************************************************************************************************/
@@ -526,7 +526,7 @@ table.dijitComboButton {
 .ie_6 .dijitInputContainer { display: inline; zoom: 1; }
       .dijitPlaceHolder    { position: absolute; top: 0; left: 0; font-style: italic; color: #AAAAAA; }
 .ie_6 .dijitPlaceHolder    { filter: ""; }
-      .dijitTextAreaError  { border-color: #D46464; }
+      .dijitTextAreaError  { border-color: #C00 !important; }
 
 /*********************************************************************************************************************/
 /*  End : bec-dijit-part.css                                                                                         */
@@ -1966,35 +1966,54 @@ input::-webkit-inner-spin-button {
 /* Start: product-display-part.css                                                                                   */
 /*********************************************************************************************************************/
 
-
 .product-display .group,
-.product-display .spacer { float: left; }
-.product-display .group  { position: relative; width: 140px; }
-.product-display .spacer { width: 24px; height: 24px; }
+.product-display .spacer                     { float: left; }
+.product-display .group                      { position: relative; width: 140px; }
+.product-display .spacer                     { width: 24px; height: 24px; }
 
-.product-display .group .title         { font-size:15px; font-weight:bold; margin:10px; text-align:center; }
-.product-display .group .quickViewLink { display: none; position: absolute; top: 5px; left: 5px;
-                                         margin: 0; font-size: 0; }
+.product-display .group .title               { font-size:15px; font-weight:bold; margin:10px; text-align:center; }
 
-.product-display.horizontal .group   { float: none; width: 350px; }
-.product-display.horizontal .spacer  { float: none; }
-.product-display.horizontal .image   { float: left; width: 140px; height: 140px; }
-.product-display.horizontal .details { float: right; width: 203px; }
+.product-display .group .image               { position: relative; overflow: hidden; }
+.product-display .quickViewLinkX,
+.product-display .quickViewLink              { display: block; position: absolute; top: -100px; right: 0;
+                                               padding: 10px 20px; width: auto; height: auto;
+                                               font-size: 10px; font-weight: bold;
+                                               text-decoration: none; text-transform: uppercase; text-shadow: 1px 1px 0 #000;
+                                               color: #fff; background: rgb(90,90,90); background: rgba(60,60,60,.8); }
+.product-display .quickViewLinkX a,
+.product-display .quickViewLink a            { font-weight: bold;
+                                               text-decoration: none; text-transform: uppercase; text-shadow: 1px 1px 0 #000;
+                                               color: #fff; }
 
-.product-display .item-number { color: #000; }
+.product-display.horizontal .group           { float: none; width: 350px; }
+.product-display.horizontal .spacer          { float: none; }
+.product-display.horizontal .image           { float: left; width: 140px; height: 140px; }
+.product-display.horizontal .details         { float: right; width: 203px; }
 
-.pricing .normal  { display: inline-block; font-weight: bold; }
-.pricing .full    { display: inline-block; padding: 0 0.6em 0 0;color: #777; text-decoration: line-through; }
-.pricing .sale    { display: inline-block; padding: 0 0.6em 0 0; font-weight: bold; }
-.pricing .percent { display: inline-block; font-weight: bold; color: #CD202C; }
+.product-display .item-number                { color: #000; }
 
-.product-display .rating              { margin-top: 5px; }
-.product-display .rating img          { padding-right: 5px; vertical-align: middle; }
-.product-display .ratingCount         { vertical-align: middle; }
+.product-display .group .name                { margin-bottom: 5px; }
+.product-display .group .name a              { text-decoration: none; }
+.product-display .group .name a:hover        { text-decoration: underline; }
+
+.pricing .normal                             { display: inline-block; font-weight: bold; }
+.pricing .full                               { display: inline-block; padding: 0 0.6em 0 0;color: #777; text-decoration: line-through; }
+.pricing .sale                               { display: inline-block; padding: 0 0.6em 0 0; font-weight: bold; }
+.pricing .percent                            { display: inline-block; font-weight: bold; color: #CD202C; }
+
+.product-display .group .rating              { margin-top: 5px; }
+.product-display .group .rating img          { padding-right: 5px; vertical-align: middle; }
+.product-display .group .ratingCount         { vertical-align: middle; }
+.product-display .group .ratingCount a       { text-decoration: none; }
+.product-display .group .ratingCount a:hover { text-decoration: underline; }
+
+.product-display .group .compare             { margin-top: 5px; }
+.product-display .group .compare input       { margin: 0; padding: 00; vertical-align: middle; }
+.product-display .group .compare a           { display: inline-block; margin-left: 3px; text-decoration: none; vertical-align: middle; cursor: pointer; }
+.product-display .group .compare a:hover     { text-decoration: underline; }
 
 .product-display.vertical .group,
-.product-display.vertical .spacer  { float: none; }
-
+.product-display.vertical .spacer            { float: none; }
 
 /*********************************************************************************************************************/
 /*  End : product-display-part.css                                                                                   */

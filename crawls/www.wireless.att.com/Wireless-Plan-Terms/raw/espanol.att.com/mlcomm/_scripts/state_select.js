@@ -25,7 +25,7 @@ function renderStateSelectMenu() {
 									'texas':'Texas',
 									'illinois':'Illinois',
 									'nevada':'Nevada',
-									'wisconsin':'Wisconisn',
+									'wisconsin':'Wisconsin',
 									'indiana':'Indiana'}
 									
 									
@@ -71,6 +71,13 @@ function renderStateSelectMenu() {
       $('#ssmenu li#' + index).html('<a href="/residential_customers/thank_you.html?id=' + index  + '" title="Ordena Ahora" class="initCap">' + value + '</a>');
     }); 
 	 }
+	 
+	 //WIRELESS
+	else if($('#chooseState').is('.wireless_home')) {
+	 $.each(allStates, function(index, value) {  
+      $('#ssmenu li#' + index).html('<a href="/residential_customers/att_wireless/index.html?id=' + index  + '" title="Wireless" class="initCap">' + value + '</a>');
+    }); 
+	 } 
 	 
 	 //INTERNET
 	else if($('#chooseState').is('.internet_home')) {
@@ -550,14 +557,6 @@ function renderStateSelectMenu() {
 	else if($('#chooseState').is('.juanes')) {
 	 $.each(allStates, function(index, value) {  
       $('#ssmenu li#' + index).html('<a href="/juanes/index.html?id=' + index  + '" title="Juanes P.A.R.C.E." class="initCap">' + value + '</a>');
-    }); 
-	 }
-	 
-	
-	 //CPNI
-	else if($('#chooseState').is('.cpni')) {
-	 $.each(allStates, function(index, value) {  
-      $('#ssmenu li#' + index).html('<a href="/cpni.html?id=' + index  + '" title="cpni" class="initCap">' + value + '</a>');
     }); 
 	 }
 	  

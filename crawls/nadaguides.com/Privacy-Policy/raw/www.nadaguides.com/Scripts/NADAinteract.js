@@ -69,6 +69,11 @@ function clearHINText(HINjqObject) {
         $(HINjqObject).val('');
     }
 };
+function clearText(jqObject, initText) {
+    if ($(jqObject).val() == initText) {
+        $(jqObject).val('');
+    }
+};
 //regex test only
 function validZipCode(myzip) {
     var objRegExp = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -93,6 +98,8 @@ $(function() {
         $(this).removeClass("partner-go-roll").addClass("partner-go");
     });
 });
+
+var optList = '';
 
 //TODO change all of the above into the NADAjs namespace
 var NADAjs = {
@@ -133,6 +140,8 @@ var NADAjs = {
                 $("#opt-conflict").dialog("open");
             }
         }
+
+
         var toggleBoxes = function(optdata) {
             $('input:checked').attr("checked", false);
             $('.opt-img').attr("src", "http://images.nadaguides.com/shared/shim.gif").attr("alt", "");
@@ -158,8 +167,41 @@ var NADAjs = {
                             $('input[optcode=' + this.code + ']').attr("checked", true);
                             break;
                     }
+
                 });
             });
+        }
+
+        var updateShare = function(optCode) {
+            shareUpdated = true;
+
+            if (optList == '')
+                optList += optCode;
+            else
+                optList += '|' + optCode;
+
+            var printParams = '?options=' + optList;
+            var destination = document.location.href + printParams;
+            if (optList != '') {
+                $('#sharebutton').html('');
+
+                stWidget.addEntry({
+                    "service": "sharethis",
+                    "element": document.getElementById('sharebutton'),
+                    "url": destination,
+                    "title": $('h2').html(),
+                    "type": "chicklet",
+                    "summary": $('title').html(),
+                    "text": "share"
+                });
+
+                $('#sharebutton').children('span').first().css('padding-top', '2px');
+                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
+                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
+                $('#emailFriend-dialog').css('padding-bottom', '2px');
+            }
+
+            document.getElementById('optParams').value = optList;
         }
 
         var buildSumm = function() {
@@ -216,7 +258,6 @@ var NADAjs = {
         }
 
         var toggleOpt = function(vehId, optCode) {
-
             $('#opt-summ-optlist').html('');
             $('.opt-summ-working').show();
             sending = true;
@@ -226,8 +267,10 @@ var NADAjs = {
                 url: "/Cars/ToggleOption/" + vehId,
                 data: { 'changedOptionCode': optCode },
                 dataType: "json",
-                async: true,
-                error: function(data) { /*$.modal.close();*/ },
+                async: false,
+                error: function(data) {
+                    /*$.modal.close();*/
+                },
                 success: function(data) {
                     changePrices(data);
                     optState = $(data.optData);
@@ -235,7 +278,7 @@ var NADAjs = {
                     handleConflicts(data.optConflict);
                     toggleBoxes(optState);
                     buildSumm();
-
+                    updateShare(optCode);
                 }
             });
 
@@ -257,6 +300,7 @@ var NADAjs = {
         this.isSending = getSendingVal;
         this.setPaintColor = setColor;
         this.gotoDealerQuote = gotoQuote;
+        this.updateShare = updateShare;
 
     },
     PSCompare: new function() {
@@ -457,6 +501,56 @@ var NADAjs = {
         this.addNewOption = addOption;
         this.removeNewOption = removeOption;
     },
+
+    RVsNewOptions: new function() {
+        var toggleOption = function(trim, option, config, configInputId, cbSelector, isAdd) {
+            var togType = 'remove';
+            if (isAdd)
+                togType = 'add';
+            $('.opt-working').modal({ opacity: 0, overlayCss: { backgroundColor: '#fff' }, containerId: 'opt-modal' });
+            $.ajax({
+                type: 'POST',
+                url: '/RVs/Async/ToggleNewOption',
+                dataType: 'json',
+                data: {
+                    trimId: trim,
+                    optionId: option,
+                    currentConfig: config,
+                    toggleType: togType
+                },
+                error: function(data) { $.modal.close(); },
+                success: function(data) {
+                    $('#' + configInputId).val(data.optstate);
+                    $('#' + cbSelector).each(function() {
+                        $(this).attr('checked', false);
+                    });
+                    $(data.list).each(function() {
+                        //uncheck all
+                        if (this.state == 'SELECTED') {
+                            $('#' + this.id).attr('checked', true);
+                        }
+                        else if (this.state == 'EXCLUDED') {
+                            //do something
+                        }
+                    });
+                    $.modal.close();
+                }
+            });
+        }
+
+        var addOption = function(trim, option, config, configInputId, cbSelector) {
+            toggleOption(trim, option, config, configInputId, cbSelector, true);
+        }
+        var removeOption = function(trim, option, config, configInputId, cbSelector) {
+            toggleOption(trim, option, config, configInputId, cbSelector, false);
+        }
+
+        //public
+        this.addNewOption = addOption;
+        this.removeNewOption = removeOption;
+    },
+
+
     VDPVehicleInfo: new function() {
         var toggleInfoOptions = function() { //maybe rewrite to be a little more modular...?
             $('#optionlist').css('overflow', 'visible').css('display', 'block');
@@ -838,7 +932,197 @@ var NADAjs = {
 
         this.Init = init;
         this.TrackExtLink = trackExtLink;
+    },
+
+    PartnerBoxes: new function() {
+        var _routeID;
+        var init = function(routeID) {
+            _routeID = routeID;
+
+            //onload tracking
+            $("input[data-ga-category], a[data-ga-category]").each(function() {
+            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load', 
+                           buildGALabel($(this)), 1, true]);
+            });
+
+            //onclick tracking
+            $("input[data-ga-category], a[data-ga-category]").click(function() {
+                //alert(buildGALabel($(this)));
+            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
+                          buildGALabel($(this)), 1, false]);
+            });
+        }
+
+        var buildGALabel = function(element) {
+            return element.attr('data-ga-label') + ' ' + element.attr('data-extLinkId') + ' | ' + _routeID;
+        }
+
+        this.Init = init;
+    }, //PartnerBoxes
+
+    AutoTraderWidget: new function() {
+        var _link = "";
+        var _ATBodyStyle = "";
+        var _Year = "";
+        var _ATMake = "";
+        var _ATModel = "";
+        var _Zip = "";
+        var _UsedCarMakeId = "";
+        var _UsedCarModelId = "";
+        var _CarCount = 0;
+
+        var _NoValResult = false;
+        var _GOExtLinkID = "";
+        var _LinkExtLinkID = "";
+        var _doneInit = false;
+
+        var init = function(ATvars) {
+            _CarCount = parseInt(ATvars.CarCount);
+            _link = ATvars.link;
+            if (_Zip == "")
+                _Zip = ATvars.ZipCode;
+            _ATBodyStyle = ATvars.ATBodyStyle;
+            _ATMake = ATvars.ATMake;
+            _ATModel = ATvars.ATModel;
+            _UsedCarMakeId = ATvars.UsedCarMakeId;
+            _UsedCarModelId = ATvars.UsedCarModelId;
+            _Year = ATvars.Year;
+            _GOExtLinkID = ATvars.GOExtLinkID;
+            _LinkExtLinkID = ATvars.LinkExtLinkID;
+            
+            if (_CarCount > 0) {
+                //results found on the server-side
+                hideWaitPanel();
+                $("#atw-msg-found").show();
+            }
+            else {
+                if (_CarCount == -1 || !validateInput()) {
+                    //noval - not enough info to search or ivalid params
+                    _NoValResult = true;
+                    hideWaitPanel();
+                    $("#atw-msg-noVal").show();
+                }
+                else {
+                    //search
+                    getAtCars(50);
+                }
+            }
+
+            $("#atw-btn-go").click(function(event) {
+                event.preventDefault();
+                goAutoTrader($(this).attr('data-extLinkId'));
+            });
+
+            $("#atw-link").click(function(event) {
+                event.preventDefault();
+                goAutoTrader($(this).attr('data-extLinkId'));
+            });
+
+            _doneInit = true;
+        } //init
+        
+        var validateInput = function() {
+        if (_Zip == "" || _UsedCarMakeId == "" || _UsedCarModelId == "" || _Year == "" || _ATMake == "" || _ATModel == "") //_ATBodyStyle == "" ||
+                return false;
+            else if (isNaN(parseInt(_UsedCarMakeId)) || isNaN(parseInt(_UsedCarModelId)) || isNaN(parseInt(_Year)))
+                return false;
+            else
+                return true;
+
+        } //validateInput
+        
+        var goAutoTrader = function(extLinkId) {
+            if (_link.length != 0) {
+                $("form#formATWidget input[name='extLinkId']").val(extLinkId);
+                $("#formATWidget").submit();
+            }
+        }
+
+        var hideWaitPanel = function() {
+            $("#atw-searching").hide();
+            $("#atw-btn-go-wrap").show();
+            $("#atw-link-wrap").show();
+        }
+
+        var getAtCars = function(radius) {
+            $.ajax(
+                { type: "GET",
+                    url: '/Cars/' + _Year + '/' + _ATMake + '/' + _ATModel + '/' +
+                    _ATBodyStyle + '/' + _Zip + '/' + radius + '/' + _UsedCarMakeId + '/' + _UsedCarModelId + '/' + 'GetATCarCount',
+                    dataType: 'json',
+                    timeout: 210000,
+                    cache: false,
+                    error: function(xhr, textStatus, errorThrown) {
+                        hideWaitPanel();
+                        $("#atw-msg-noVal").show();
+                    },
+                    success: function(atwidgetdata) {
+                        var newcarcnt = parseInt(atwidgetdata.carCount);
+
+                        //Found cars or done the last search... display, done
+                        if (newcarcnt > 0 | radius == 200) {
+                            hideWaitPanel();
+                            $("#linkATWidget").val(atwidgetdata.link);
+                            _link = atwidgetdata.link;
+                            $("#atw-radius").html(radius);
+                            $("#atw-found-count").html(newcarcnt);
+                            $("#atw-msg-found").show();
+
+                        }
+                        else {
+                            //increase the radius and search again
+                            if (radius < 200) {
+                                if (radius == 25) {
+                                    getAtCars(50);
+                                } else if (radius == 50) {
+                                    getAtCars(75);
+                                } else if (radius == 75) {
+                                    getAtCars(100);
+                                } else if (radius == 100) {
+                                    getAtCars(200);
+                                }
+                            }
+                        }
+                    }
+                });
+        } //getAtCars
+
+        var searchNewZip = function(zip) {
+            if (!_doneInit) {
+                _Zip = zip;
+            }
+            else if (_Zip != zip) {
+                _Zip = zip;
+                if (validateInput()) {
+                    $("#atw-searching").show();
+                    $("#atw-msg-found").hide();
+                    $("#atw-msg-noVal").hide();
+                    //reset from NoVal IDs
+                    $("form#formATWidget .btn-go").attr('data-extLinkId', _GOExtLinkID);
+                    $("form#formATWidget #atw-link").attr('data-extLinkId', _LinkExtLinkID);
+                    getAtCars(25);
+                }
+            }
+        } //searchNewZip
+
+        this.Init = init;
+        this.SearchNewZip = searchNewZip;
+
+    }, //AutoTraderWidget
+
+    Marketing: new function() {
+
+        var boldMakeLinks = function() {
+            $("#makelist a:contains('Hyundai')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Jaguar')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Land Rover')").css({ 'font-weight': 'bold' });
+            $("#makelist a:contains('Scion')").css({ 'font-weight': 'bold' });
+        }
+
+
+        this.BoldMakeLinks = boldMakeLinks;
     }
+
 };
 
 
@@ -861,4 +1145,47 @@ function killsChildNodes2(another_element) {
             killsChildNodes(another_element.firstChild);
         }
     }
+}
+
+
+function SetupModelDetailTableEvents() {
+
+    $("#content_models tr.detailrow").click(function() {
+
+        if ($('tr.selectedColor').length == 0) {
+            $(this).removeClass("detailrow").removeClass('even').removeClass('highlightColor');
+            $(this).find('td').removeClass('even');
+            $(this).addClass("selectedColor");
+            var url = $(this).find('td:first').find('div a').attr('href');
+            if (url != '' && url != undefined)
+                window.open(url, '_self', '');
+        }
+    });
+
+    $("#content_models tr.detailrow").hover(
+        function() {
+            if ($(this).find('td').hasClass('even')) {
+                $(this).find('td').addClass('highlightColoreven');
+            } else {
+                $(this).find('td').addClass('highlightColor');
+            }
+
+            if ($(this).find('td').hasClass('even')) {
+                $(this).find('td').addClass('waseven').removeClass('even');
+            }
+        },
+        function() {
+            if ($(this).hasClass('detailrow')) {
+                $(this).find('td').removeClass('highlightColor').removeClass('highlightColoreven');
+
+                if ($(this).find('td').hasClass('waseven')) {
+                    $(this).find('td').addClass('even');
+                    $(this).find('td').removeClass('waseven');
+                }
+            }
+        }
+    );
+
+    $("#content_models tr.detailrow td:nth-child(1)").addClass('borderRight');
+
 }

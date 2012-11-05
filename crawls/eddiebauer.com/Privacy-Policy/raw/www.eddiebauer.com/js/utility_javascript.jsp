@@ -732,9 +732,9 @@ if(isSecure == "true"){
 /*
  * popup a FAQ window and jump to the designated section
  */
-function PopUpFAQ(section){		
+function PopUpFAQ (section) {		
 	var faqId = section.replace('#','');
-	fb.start('/assets/html/modalContent/faq/faq_'+faqId+'.html', 'width:500');  
+	fb.start('/assets/html/modalContent/faq/faq_'+faqId+'.html', 'width:500');
 }
 /*
  * popup a window and jump to the designated section for emailing a wishlist
@@ -1109,7 +1109,7 @@ function takeAction(actionType, soaCookieString){
 		if(soaCookieString.indexOf('cartempty=false') == -1) {
 			if(soaCookieString.indexOf('firstorderofsession=true') > -1){
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoanow', 'oessoacart=' );
-				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '11/01/2012 05:10:02 EST');
+				soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '11/05/2012 06:10:01 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmcnow', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvennow', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatnow', 'cmcatcart=');
@@ -1118,7 +1118,7 @@ function takeAction(actionType, soaCookieString){
 				soaCookieString = changeSEOString(soaCookieString, 'cartempty', 'false');
 			}else {
 				soaCookieString = replaceSEOString(soaCookieString, 'oessoacartbak', 'oessoacart=');
-			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '11/01/2012 05:10:02 EST');
+			   soaCookieString = changeSEOString(soaCookieString, 'oessoacarttm', '11/05/2012 06:10:01 EST');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmmmccartbak', 'cmmmccart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmvencartbak', 'cmvencart=');
 				soaCookieString = replaceSEOString(soaCookieString, 'cmcatcartbak', 'cmcatcart=');
@@ -1144,9 +1144,9 @@ function browseSOAUpdates(soaCookieString) {
 function deleteCartSOAUpdates(soaCookieString) {
 	soaCookieString = updateSEOString(soaCookieString, 'DOM', 'www.eddiebauer.com');
 	soaCookieString = updateSEOString(soaCookieString, 'cartempty', 'true');
-   soaCookieString = updateSEOString(soaCookieString, 'clearinitonnextsess', 'true');
-   soaCookieString = updateSEOString(soaCookieString, 'oessoacart', '');
-   soaCookieString = updateSEOString(soaCookieString, 'oessoacarttm', '');
+   	soaCookieString = updateSEOString(soaCookieString, 'clearinitonnextsess', 'true');
+   	soaCookieString = updateSEOString(soaCookieString, 'oessoacart', '');
+   	soaCookieString = updateSEOString(soaCookieString, 'oessoacarttm', '');
 	soaCookieString = updateSEOString(soaCookieString, 'cmmmccart', '');
 	soaCookieString = updateSEOString(soaCookieString, 'cmvencart', '');
 	soaCookieString = updateSEOString(soaCookieString, 'cmcatcart', '');
@@ -1430,3 +1430,5 @@ var ajaxCallBackMonogramColorsTimeOut=24000;
 var ajaxCallBackLoadGiftBoxTimeOut=24000;
 var ajaxCallBackLoadMonogramTimeOut=24000;
 var ajaxCallBackLoadMonogramModalTimeOut=24000;
+
+var utag_data = {};

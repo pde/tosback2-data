@@ -108,6 +108,7 @@ dojo.addOnLoad(function () {
     { id: 'DISCOUNT20', type: 'coupon' },
     { id: 'DISCOVER',   type: 'coupon' },
     { id: 'FAMILY',     type: 'coupon' },
+    { id: 'FAM',        type: 'coupon' },
     { id: 'FFM',        type: 'coupon' },
     { id: 'FLAG',       type: 'coupon' },
     { id: 'FREE50',     type: 'coupon' },

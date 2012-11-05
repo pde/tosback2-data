@@ -277,9 +277,9 @@ var sprintHomePageModuleOpen = false; //This is a flag that will be used by the 
 			
 			//On window load, switch to the first item
 			$(window).bind("load", function() {
-			
-				switchToItem(promoMenuItems.eq(0));
-
+				if($('#splashPromoMenu').length>0){
+					switchToItem(promoMenuItems.eq(0));
+				}
 			});
 			
 			//If a user clicks on the promo indicator / timer while it's above a promo, stop auto-rotation

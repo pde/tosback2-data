@@ -53,7 +53,7 @@ blueKai.blueKai = {
 		var siteId = this.getSiteId(siteIds);
 		this.makeFrame();
 		bk_doSendData(siteId, limit, false);
-		this.sendKrux();
+//		this.sendKrux();
 		var url = document.URL.toLowerCase();
 		if(url.indexOf('bluekaidebug=yes')>0) this.showData();
 	},

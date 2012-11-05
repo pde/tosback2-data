@@ -197,9 +197,10 @@
 	}
 	function addItemToCartHandler (e) {
 		var curElement = this;
-		dcsMultiTrack('WT.si_n','ShoppingCart','WT.si_x','2','DCSext.Add2CartRefer',document.location.href);
+		
 		showOverlay(curElement,addItemToCart);
 		e.preventDefault();
+		
 	}
 
 	
@@ -371,6 +372,23 @@
 					detailsDiv.append(buttonDiv);
 					
 					overlay.append(detailsDiv);
+					dcsMultiTrack('WT.si_n','ShoppingCart','WT.si_x','2','DCSext.Add2CartRefer',document.location.href,'WT.tx_e','a','WT.pn_sku',skuid,'WT.tx_u',quantity);	
+					var cartId = $(curElement).attr("data-oid");
+					var s,f,c=document.cookie;
+					
+					s=c.indexOf("ed87362384");
+					if(s==-1) 
+					{
+						s=c.indexOf("eds87362384")
+					};
+					if (s>-1) 
+					{
+						c=c.substring(s+1);
+						c=c.substring(c.indexOf("=")+1); 
+						e=c.indexOf(";");
+						f=c.substring(0,e==-1? c.length:e);
+						var edialog = $('<div><img src="https://pd.ed10.net/w/0G/3OY6I7H/RU?CEDID='+f+'&et=CartAdd&pk='+cartId+'"</div>');
+					}
 				 	}else{				 		
 				 		var overlay = $('<div id="modalDialogBoxBor"></div>');
 				 		var headerDiv=$('<div class="mdboxHeader"><p>Basket error</p></div>');

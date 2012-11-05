@@ -2349,6 +2349,8 @@ body .sprint ul.contentTabs li.firstSelected a {
 .sprint ul.pageList {
 	float: right;
 	padding: 0.2727em 3px;
+	clear:both;
+	margin-bottom:10px;
 }
 .sprint ul.pageList li {
 	display: inline;
@@ -2363,6 +2365,7 @@ body .sprint ul.contentTabs li.firstSelected a {
 .sprint ul.pageList li a:link,
 .sprint ul.pageList li a:visited {
 	border: 1px solid #e6e6e6;
+	background-color:#fff;
 	/* pseudoclasses in ie6.css */
 }
 .sprint ul.pageList li a:hover,
@@ -4444,33 +4447,71 @@ body .sprint .disclosure {
 .sprint .personal_right_col.moduleInset{
 }
 
-/* Plan Wall & Phone Wall */
+
+.sprint .personal_phones.personal_wall .containerHalfRow{
+	width: 300px;
+	height:114px;
+	float: left;
+	margin: 0 0 2.7272em 20px;
+}
+
+.sprint .personal_phones.personal_wall div:first-child{
+	margin-left:0px !important;
+}
+
+
+.sprint .personal_phones.personal_wall .clearfix{
+	margin-bottom:18px;
+}
 
 .sprint .personal_wall .clearfix{
 	clear:both;
 }
 
 .sprint .personal_wall .moduleDefault{
+	height:150px;
 }
 
+
+/* Plan Wall & Phone Wall */
 .sprint .personal_wall .containerOneColumn{
 	padding:18px !important;
 	width: 124px;
+	height:114px;
 	float: left;
 }
 
 .sprint .personal_wall .containerTwoColumn{
 	width: 304px !important;
+	height:150px;
 	float: left;
 	margin: 0 20px 2.7272em 0;
 	padding:18px !important;
 }
+
+
+.sprint #deviceWall_Phones .personal_wall .containerHalfRow,
+.sprint #deviceWall_Phones .personal_wall .containerTwoColumn{
+	width: 295px !important;
+	height:150px;
+	float: left;
+	margin: 0 0 2.7272em 0;
+	padding:0px 18px !important;
+}
+
+.sprint #deviceWall_Phones .personal_wall .containerTwoColumn p{
+	width:173px;
+}
+
+.sprint #deviceWall_Phones .personal_wall .containerThreeColumn{
+	width:480px !important;
+}
 		
 .sprint .personal_wall .containerThreeColumn{
 	padding:18px !important;
-	width:504px !important;
+	width: 520px;
 	height:114px;
-	float:left;
+	float: left;
 }
 .sprint .personal_wall .containerHalfRow{
 	padding:18px !important;
@@ -4503,9 +4544,31 @@ body .sprint .disclosure {
 	margin-bottom:8px;
 }
 
+.sprint .personal_wall .customBgModule h3{
+	margin-bottom:0px !important;
+}
+
 .sprint .personal_wall .personal_wall_image{
 	float:right;
 	margin:0px 10px;
+}
+
+/* Custom Background Image Module */
+
+
+/* Custom Module Text Width and Top Pos (doesn't address diff heights per module size) */
+.sprint .personal_wall .customBgModule p{
+	margin: 0;
+	width:100%;
+  font-size:1.1em;
+  line-height: auto;
+ 	color:#444;
+ }
+
+/* Custom Module Text For Single Column (IE7+) */
+.sprint .personal_wall .containerOneColumn.customBgModule p,
+.sprint .personal_wall .containerOneColumnRt.customBgModule p {
+	width:100%;
 }
 
 
@@ -4544,6 +4607,12 @@ body .sprint .disclosure {
 
 /* PHONE WALL */
 
+/* 6169: JSP TODO */
+.sprint #personalizationPhoneWall.personal_wall .moduleDefault{
+	border:0 !important;
+	padding:0 !important;
+	margin:0 !important;
+}
 
 .sprint #personalizationPhoneWall.personal_wall .containerHalfRow{
 	padding:18px !important;
@@ -4588,7 +4657,21 @@ body .sprint .disclosure {
 
 
 /* ACCOUNT LANDING */
+.sprint #accountLanding .personal_wall .customBgModule,
+.sprint .personal_wall .customBgModule{
+	position:relative;
+	z-index:100;
+	overflow:hidden;
+}
 
+/* 6169: UPDATE AND REMPOVE W/JSP */
+.sprint #accountLanding .personal_wall img.personal_wall_image_only,
+.sprint .personal_wall .customBgModule img{
+	position:absolute;
+	left:0;
+	top:0;
+	z-index:-1;
+}
 .sprint #accountLanding .personal_wall .containerOneColumn{
 	width:124px !important;
 	margin-right:10px !important;
@@ -4615,6 +4698,10 @@ body .sprint .disclosure {
 	margin-bottom:20px !important;
 }
 
+.sprint #accountLanding .personal_wall .customBgModule img{
+	padding:0px;
+}
+
 .sprint #accountLanding .personal_wall .containerOneColumn p{
 	margin-top:-5px !important;
 }
@@ -4622,7 +4709,7 @@ body .sprint .disclosure {
 /* Plan Wall */
 
 .sprint #planSelect .personal_wall .containerTwoColumn{
-	width: 316px !important;
+	width: 304px !important;
 	height:114px;
 	float: left;
 	margin: 0 0 2.7272em 20px;
@@ -4642,7 +4729,7 @@ body .sprint .disclosure {
 }
 
 .sprint #planSelect .personal_wall div:first-child{
-	margin-right:20px !important;
+	margin-right:0px;
 	margin-left:2px;
 }
 
@@ -4650,6 +4737,11 @@ body .sprint .disclosure {
 	margin-right:0px !important;
 }
 
+.sprint #planSelect .personal_wall .containerTwoColumn{
+	width: 320px !important;
+ }
+
+/* */
 .sprint #planSelect .personal_wall .containerTwoColumn p{
 	width: 200px !important;
  }
@@ -4714,6 +4806,7 @@ body .sprint .disclosure {
 	margin-top:11px;
 }
 
+/* Common to Multiple Pages */
 
 .sprint #personalizationBBModal .customBgModule h3,
 .sprint #accountLanding .personal_wall .customBgModule h3,
@@ -4767,8 +4860,6 @@ body .sprint .disclosure {
 	font-family:arial !important;
 	color:#000 !important;
 }
-
-
  
 /* MySprint - Contract Modal */
 
@@ -4810,6 +4901,7 @@ body .sprint .disclosure {
 }
 
 /* MySprint - BuyBack/Upgrade Modal */
+
 
 .sprint #personalizationBBModal .proactiveBBSubHeading{
 	font-weight:normal;
@@ -4873,8 +4965,7 @@ body .sprint .disclosure {
 
 /* (547808) ul cta to img.button1 */
 .modalContent #personalizationPhoneWall .modulePlain ul.forwardLink,
-#proactiveBuybackModal #personalizationPhoneWall .modulePlain ul.forwardLink,
-.sprint #personalizationBBModal ul.forwardLink{
+#proactiveBuybackModal #personalizationPhoneWall .modulePlain ul.forwardLink{
 	position:relative;
 	top:20px;
 }

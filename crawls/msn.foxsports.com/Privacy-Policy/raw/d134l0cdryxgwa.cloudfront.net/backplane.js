@@ -237,7 +237,7 @@ Backplane.setCookieChannels = function() {
 
 Backplane.resetCookieChannel = function() {
     delete this.channelByBus[this.config.busName];
-    if (localStorage) {
+    if (window.localStorage) {
         this.log("removing cached backplane messages");
         localStorage.removeItem("cachedMessages");
         localStorage.removeItem("cachedMessagesIndex");
@@ -318,7 +318,7 @@ Backplane.request = function() {
 
         // if no since parameter exists, check cache and play those back
         // rather than hitting the server
-        if (localStorage && !self.since) {
+        if (window.localStorage && !self.since) {
             // should cache be expired?
             var cacheExpiresString = localStorage.getItem("cacheExpires");
             if (cacheExpiresString) {
@@ -396,7 +396,7 @@ Backplane.response = function(messages) {
                 delete this.cachedMessages[this.cachedMessagesIndex[0]];
                 this.cachedMessagesIndex.splice(0,1);
             }
-            if (localStorage) {
+            if (window.localStorage) {
                 localStorage.setItem("cachedMessages", JSON.stringify(this.cachedMessages));
                 localStorage.setItem("cachedMessagesIndex", JSON.stringify(this.cachedMessagesIndex));
                 var expiresDate = new Date();

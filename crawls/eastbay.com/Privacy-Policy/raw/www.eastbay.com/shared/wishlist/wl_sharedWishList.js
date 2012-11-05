@@ -115,8 +115,6 @@ function sendWishList() {
 	var recipientEmailArray = new Array();
 	
 	arguments.dsnname = dsnname;
-	//arguments.sharedwishlist_fromName 	= $("#sharedWishList_fromName").val();
-	//arguments.sharedwishlist_fromEmail = $("#sharedWishList_fromEmail").val();
 	
 	var totalrecipient = 0;
 	for (var j=1; j<=RecipientCount; j++) {
@@ -132,8 +130,8 @@ function sendWishList() {
 	//create dotomiXML
 	var dotomiXML = constructWishlistShareXML(recipientEmailArray);
 	
-	arguments.recipientNames = recipientNameArray
-	arguments.recipientEmails = recipientEmailArray
+	arguments.recipientNames = recipientNameArray.toString();
+	arguments.recipientEmails = recipientEmailArray.toString();
 	arguments.wishlistid 			= $("#wishlistid").val();
 	arguments.wishlistname 			= $("#wishlistName").val();
 	arguments.sharedwishlist_msg 		= $("#sharedWishList_msg").val();
@@ -171,28 +169,26 @@ function sendWishList() {
 				var endPosition   = startPosition + 2;
 				//vaidateResponse 11 if true, 00 if false, 22 is illegal words found
 				var validateResponse = data.substring(startPosition,endPosition);
-					$("#sharedWishList_content").removeClass("loading");
+				$("#sharedWishList_content").removeClass("loading");
+
 				if (textStatus != "success") {
 					alert("There was problem sending the e-mail. Please try back again later.");
 					$("#postcard").show();
-				}
-				else if (textStatus == "success" && validateResponse == "00"){
-					alert("There was a spam attempt detected in sending the e-mail. Please try back again later.");
-					$("#postcard").show();
-				}	
-				else if (textStatus == "success" && validateResponse == "11"){
+				} else {
+					if (validateResponse == "11") {
 						$("#sharedWishList_content").prepend('<div id="sharedWishList_sent"><h1>Email Sent!</h1><div>Your friend will receive the email shortly.</div><img src="'+ dotomiWishListSharePixel + dotomiXML +'"></div>');
-
-					if (doCoreMetrix)
-						{
+	
+						if (doCoreMetrix) {
 							cmCreatePageviewTag("Wish List Email Sent", "Wish List: Successful email");
 							cmCreateConversionEventTag('ShareWishList', 2, 'Email Wish List', 0);
 						}
-					
-				}
-				else if (textStatus  == "success" && validateResponse == "22"){
-					alert("There were illegal word(s) detected in the e-mail. Please try back again later.");
-					$("#postcard").show();
+					} else if (validateResponse == "22") {
+						alert("There were illegal word(s) detected in the e-mail. Please try back again later.");
+						$("#postcard").show();
+					} else {
+						alert("There was problem sending the e-mail. Please try back again later.");
+						$("#postcard").show();
+					}
 				}
 			}
 	);

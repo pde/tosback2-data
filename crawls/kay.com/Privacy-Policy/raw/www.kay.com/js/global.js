@@ -409,7 +409,6 @@ function getR2netRedirectUrl(url) {
 		appendChar = "&";
 	}
 	var R2netUrl = url + appendChar + 'Nic=' + GetCookie('Nic');
-	
         // INC0004470 - DAR site unavailable due to Hurricane Sandy
         //document.location.href = R2netUrl;
         document.location.href = "/DAR_Unavailable.html";
@@ -470,6 +469,7 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 	var response = new Object();
 	var userInput = gup("userInput");
 	var storeLocatorPage = false;
+	var suggestionClicked = false;
 	
 	// This condition is to set the default value to make it work for single store zoom.
 	// Actual logic exist in StoreMap.js to make zoom out work for single store. 
@@ -493,13 +493,19 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 	
 	// Use selected suggestion if clicked
 	if (selectedSuggestion >= 0) {
+		suggestionClicked = true;
 		address = storeMap.suggestions[selectedSuggestion];
 		userInput = "";
+		if ($.inArray(address, storeMap.stateSuggestions) > -1)
+			storeMap.stateSuggestion = true;
 	} else if ((address == "Enter a location" || address == "" || address == null) && userInput != "") {
 		// Entering store locator page with no exact match for location.  Display suggestions.
 		storeLocatorPage = true;
 		address = userInput;
 	}
+	
+	if (typeof storeMap != 'undefined')
+		storeMap.address = address;
 	
 	geocoder = new google.maps.Geocoder();
 	geocoder.geocode({'address': address}, function(results, status) {
@@ -602,8 +608,7 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 					}
 				}
 				
-				if (validResults == 1 || userInput == "" || storeMap.stateSuggestion) {
-					
+				if (validResults == 1 || userInput == "" || suggestionClicked) {
 					if (validResults == 1) {
 						// User clicked city in suggestions.  Use latitude longitude from selected suggestion.
 						// Refresh store list
@@ -616,6 +621,16 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 					} else {	
 						// User clicked State in suggestions.Use latitude longitude from selected suggestion.
 						// Refresh store list
+						
+						var supplemental = supplementalSuggestions(address);
+						if (typeof supplemental != 'undefined') {
+							var state = supplemental[0].item[0];
+							if(state == "Washington") {
+								stateLat = supplemental[0].item[3];
+								stateLang = supplemental[0].item[5];
+							}
+						}
+						
 						storeLocatorJS.submitFindAStore(stateLat, stateLang, radius, address);
 					
 						// Refresh map
@@ -623,6 +638,7 @@ function findStores(selectedSuggestion, radius, subSequentSearch) {
 						storeMap.longitude = stateLang;
 						initialize(new google.maps.LatLng(stateLat, stateLang), 0);						
 					}
+					storeMap.stateSuggestion = false;
 				} else {
 					// User has arrived on store locator page with no exact location match. Display suggestions.
 					hideLoading();

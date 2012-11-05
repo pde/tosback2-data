@@ -25,7 +25,7 @@
  * 17-Sep-2009 Josh Bowser     Moved client settings to cmdatatagutils from eluminate
  * 09-Dec-2009 Josh Bowser     Apply updates for AdTarget
  * 12-Jul-2010 Josh Bowser     Remove certain QVC customizations (approved by Mike Ross)
- 
+ * 24-Oct-2012 Sameer Churi	   Added order number check into the __cmGetPIPC() method
  */
  
 var cm_exAttr=new Array();  
@@ -178,7 +178,7 @@ var __sArray = new Array();
 var __skuString = "";
 var __ex=new Array();
 
-function __cmGetPIPC(__pr,__cg) {
+function __cmGetPIPC(__pr,__cg,__ord) {
 	var __pI, i;
 	var cmAttr1=new Array();
 	var cmAttr2=new Array();
@@ -193,10 +193,16 @@ function __cmGetPIPC(__pr,__cg) {
 			}
 	
 			if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9] && cmAttr1==cmAttr2){
-				return __pI;
+				if (__ord == __sArray[__pI][15]) {
+					return __pI;
+				}
 			}
 		} else {
-		if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9]) return __pI;
+		if (__pr == __sArray[__pI][1] && __cg == __sArray[__pI][9]) {
+			if (__ord == __sArray[__pI][15]) {
+					return __pI;
+			}
+		}
 	}
 	}
 	return -1;
@@ -204,7 +210,7 @@ function __cmGetPIPC(__pr,__cg) {
 
 function cmAddShop(__v) {
 
-	var __i = __cmGetPIPC(__v[1],__v[9]);
+	var __i = __cmGetPIPC(__v[1],__v[9],__v[15]);
 	if (__i == -1) {
 		if (__ex.length>0){
 			for (var i=0; i<__ex.length; ++i){

@@ -13,7 +13,7 @@ $(document).ready(function() {
 		// Open fly-out
 		if ($(contentBox).css("display") == "none") {
 			if(hasBeenOpened==false) {
-				//$("#myDillardsRightFrame").prop("src","https://"+$("#myDillardsRightFrame").data("host")+"/webapp/wcs/stores/servlet/MyDillardsiFrameView?storeId=301&langId=-1&catalogId=301");
+				$("#myDillardsRightFrame").prop("src","https://"+$("#myDillardsRightFrame").data("host")+"/webapp/wcs/stores/servlet/MyDillardsiFrameView?storeId=301&langId=-1&catalogId=301");
 				setTimeout(function(){$("#myDillardsRightFrame").fadeIn(250);},500);
 			}
 			cmCreateConversionEventTag("Clicked","2","My Dillards Bar");

@@ -1,5 +1,5 @@
 
-var k_button_js_revision='$Rev: 19014 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
+var k_button_js_revision='$Rev: 19046 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
 this.newwindow.location.href=url;else
 {if(!this.window_width)
 this.window_width=440;if(!this.window_height)
@@ -73,7 +73,8 @@ this.loader_url='/feedback_form/ff-feedback-form.php?';var protocol=document.loc
 {protocol="http:";}
 ff_url=protocol+'//'+main_url+this.loader_url+ff_params+ff_link_rel;}
 if(window.pageTracker&&window.pageTracker._trackEvent)
-{var vectors=this.generate_pre_id();window.pageTracker._trackEvent("KampyleFeedback","NewFeedback",vectors);if(!this.extra_params)
+{var vectors=k_button.vectors;if(typeof(vectors)=="undefined")
+vectors=this.generate_pre_id();window.pageTracker._trackEvent("KampyleFeedback","NewFeedback",vectors);if(!this.extra_params)
 this.extra_params={};this.extra_params.vectors=vectors;}
 if(this.extra_params)
 {var extra_params=this.make_query_string(this.extra_params);ff_url=ff_url+'&'+extra_params;}
@@ -108,7 +109,7 @@ document.getElementsByTagName("head")[0].appendChild(fileref);},"callSiteCatalys
 {vectors=k_button.generate_pre_id();k_button.Set_Cookie("k_vectors",vectors,0,"/",k_button.get_main_domain(),'');}
 if(!k_button.extra_params)
 {k_button.extra_params={};}
-k_button.extra_params.vectors=vectors;sc_instance.linkTrackVars=sc_evar;sc_instance[sc_evar]=vectors;sc_instance.tl(true,"o","Feedback Form");}
+k_button.extra_params.vectors=k_button.vectors=vectors;sc_instance.linkTrackVars=sc_evar;sc_instance[sc_evar]=vectors;sc_instance.tl(true,"o","Feedback Form");}
 catch(e)
 {window.k_sc_error=e;}},"setCustomVariable":function(paramId,paramValue)
 {if(!k_button.extra_params)

@@ -360,14 +360,16 @@ function ch_mm() {
 
     ch_screen = "" + screen.width + "x" + screen.height;
     // Get window size and visible page size; accessed differently for MSIE vs. standards-compliant browsers
-    if (navigator.appName.indexOf("Microsoft") !== -1 &&
-        navigator.userAgent.match(/MSIE ([^\.]+)/)[1]*1 < 9) {
-        ch_window = document.documentElement.clientWidth + "x" + document.documentElement.clientHeight;
-        ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
-    } else {
-        ch_window = window.innerWidth + "x" + window.innerHeight;
-        ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
-    }
+    try{
+        if (navigator.appName.indexOf("Microsoft") !== -1 &&
+            navigator.userAgent.match(/MSIE ([^\.]+)/)[1]*1 < 9) {
+            ch_window = document.documentElement.clientWidth + "x" + document.documentElement.clientHeight;
+            ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
+        } else {
+            ch_window = window.innerWidth + "x" + window.innerHeight;
+            ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
+        }
+    }catch(e){}
 
     ch_aue('w', w.ch_width);
     ch_aue('h', w.ch_height);

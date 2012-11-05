@@ -131,25 +131,20 @@ function tellafriend(model_nbr, sku) {
 			,	arguments
 			,	function(data, textStatus) {
 					//alert(data);
-					var startPosition = data.indexOf('aaaa') + 4;
+					var startPosition = data.indexOf('bxbxb') + 5;
 					var endPosition   = startPosition + 2;
 					//vaidateResponse 11 if true, 00 if false
 					var validateResponse = data.substring(startPosition,endPosition);
 					$("#tellafriend_content").removeClass("loading");
-					if (textStatus != "success") {
+					if (textStatus == "success" && validateResponse == "11"){
+						$("#tellafriend_content").prepend('<div id="tellafriend_sent"><h1>Email Sent!</h1><div>Your friend will receive the email shortly.</div></div>');
+						if (doCoreMetrix) {
+							cmCreatePageviewTag("Tell A Friend Sent Email", "Tell A Friend: Successful email");
+						}
+					} else {
 						alert("There was problem sending the e-mail. Please try back again later.");
 						$("#postcard").show();
-					}
-					else if (textStatus == "success" && validateResponse == "00"){
-						alert("There was a spam attempt detected in sending the e-mail. Please try back again later.");
-						$("#postcard").show();
-					}	
-					else if (textStatus == "success" && validateResponse == "11"){
-						$("#tellafriend_content").prepend('<div id="tellafriend_sent"><h1>Email Sent!</h1><div>Your friend will receive the email shortly.</div></div>');
-						if (doCoreMetrix)
-							{cmCreatePageviewTag("Tell A Friend Sent Email", "Tell A Friend: Successful email");}
-						
-					}
+					} 
 				}
 		);
 	}

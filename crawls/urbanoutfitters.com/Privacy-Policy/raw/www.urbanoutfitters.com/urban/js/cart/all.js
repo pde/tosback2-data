@@ -1284,6 +1284,16 @@ function setPersistantCat() {
 		alert("setPersistantCat(): " + e);
 	}
 }
+
+function logEvent(jsComponent, logLevel, message) {
+	var ajaxUrl = "/urban/checkout/log.jsp?jsComponent=" + jsComponent + "&logLevel=" + logLevel + "&message=" + message;
+   
+   new Ajax.Request(ajaxUrl, {
+	   method: 'get'
+	});
+}
+
+
 // call on page load
 Event.observe(window,"load",setPersistantCat);
 

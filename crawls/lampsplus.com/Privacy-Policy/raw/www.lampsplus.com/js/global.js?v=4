@@ -101,7 +101,7 @@ $(function () {
             over: navDropdownsOver,
             timeout: 400,
             out: navDropdownsOut
-        })
+        });
     } else {
         $(topNavSelectors).children("a.aNavBtn").removeAttr("href");
         $(aTopNavSelectors).click(function () {
@@ -147,9 +147,9 @@ $(function () {
         }
     });
     $("#search").usableLabelField({
-		labelID: "searchLabel",
-		btnID: "searchBtn"
-	});
+        labelID: "searchLabel",
+        btnID: "searchBtn"
+    });
 
     //On Click of update kiosk store number Button
     $("#txtUpdateStoreNumber").click(function () {
@@ -215,36 +215,40 @@ function fncReformatCatalogPrefix(strInput) {
     return strRetVal;
 }
 
-var LP = {};
+var LP = LP || {};
 
-LP.log = function (message) {
+LP.log = function(message) {
     if (window.console)
         console.log(message + ":" + new Date().toTimeString());
-}
+};
+
+LP.isLocal = function () {
+    return document.location.hostname == "localhost";
+};
 
 LP.keepAlive = function () {
-    var aliveUrl = "/keep-me-alive.ashx";
+    var aliveUrl = LP.isLocal() ? "/keep-me-alive.ashx" : 'https://secure.lampsplus.com/keep-me-alive.ashx';
     var interval = 60 * 1000 * 10;
     var that = {};
     var alive = false;
     var timer;
 
-    that.isActive = function () {
+    that.isActive = function() {
         alive = true;
-    }
+    };
 
     that.sendKeepAlive = function () {
         if (alive) {
             jQuery.ajax({
                 url: aliveUrl,
-                type: "GET",
+                type: "POST",
                 success: function () {
                     LP.log("sent keep alive");
                     alive = false;
                 }
             });
         }
-    }
+    };
 
     that.start = function () {
         var allTextareas = $('textarea');
@@ -254,10 +258,30 @@ LP.keepAlive = function () {
         allLinks.live('click mouseover', that.isActive);
 
         timer = setInterval(that.sendKeepAlive, interval);
-    }
+    };
 
     return that;
-}
+};
+
+LP.user = {};
+LP.user.isAuthenticated = function () {
+    var result = false;
+    var authCheckUrl = LP.isLocal() ? '/is-user-authenticated.ashx' : 'https://secure.lampsplus.com/is-user-authenticated.ashx';
+    $.ajax({
+        url: authCheckUrl,
+        type: 'POST',
+        async: false,
+        statusCode: {
+            200: function () {
+                result = true;
+            },
+            401: function () {
+                result = false;
+            }
+        }
+    });
+    return result;
+};
 
 var alive = LP.keepAlive();
 alive.start();

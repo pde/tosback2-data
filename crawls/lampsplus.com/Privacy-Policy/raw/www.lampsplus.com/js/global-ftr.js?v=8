@@ -141,6 +141,20 @@ function readCookie(name) {
 
 GetPortfolioItemCount();
 
+// function parentWindowSameDomain(currentWin) {
+
+//     var sameOrigin;
+//     try
+//     {
+//         sameOrigin = currentWin.parent.location.host == currentWin.location.host;
+//     }
+//     catch (e)
+//     {
+//         sameOrigin = false;
+//     }
+//     return sameOrigin;
+// }
+
 
 // jQuery Tools 1.2.7
 // [tabs, tooltip, scrollable]
@@ -149,8 +163,8 @@ GetPortfolioItemCount();
 (function(a){a.tools=a.tools||{version:"v1.2.7"},a.tools.tooltip={conf:{effect:"toggle",fadeOutSpeed:"fast",predelay:0,delay:30,opacity:1,tip:0,fadeIE:!1,position:["top","center"],offset:[0,0],relative:!1,cancelDefault:!0,events:{def:"mouseenter,mouseleave",input:"focus,blur",widget:"focus mouseenter,blur mouseleave",tooltip:"mouseenter,mouseleave"},layout:"<div/>",tipClass:"tooltip"},addEffect:function(a,c,d){b[a]=[c,d]}};var b={toggle:[function(a){var b=this.getConf(),c=this.getTip(),d=b.opacity;d<1&&c.css({opacity:d}),c.show(),a.call()},function(a){this.getTip().hide(),a.call()}],fade:[function(b){var c=this.getConf();!a.browser.msie||c.fadeIE?this.getTip().fadeTo(c.fadeInSpeed,c.opacity,b):(this.getTip().show(),b())},function(b){var c=this.getConf();!a.browser.msie||c.fadeIE?this.getTip().fadeOut(c.fadeOutSpeed,b):(this.getTip().hide(),b())}]};function c(b,c,d){var e=d.relative?b.position().top:b.offset().top,f=d.relative?b.position().left:b.offset().left,g=d.position[0];e-=c.outerHeight()-d.offset[0],f+=b.outerWidth()+d.offset[1],/iPad/i.test(navigator.userAgent)&&(e-=a(window).scrollTop());var h=c.outerHeight()+b.outerHeight();g=="center"&&(e+=h/2),g=="bottom"&&(e+=h),g=d.position[1];var i=c.outerWidth()+b.outerWidth();g=="center"&&(f-=i/2),g=="left"&&(f-=i);return{top:e,left:f}}function d(d,e){var f=this,g=d.add(f),h,i=0,j=0,k=d.attr("title"),l=d.attr("data-tooltip"),m=b[e.effect],n,o=d.is(":input"),p=o&&d.is(":checkbox, :radio, select, :button, :submit"),q=d.attr("type"),r=e.events[q]||e.events[o?p?"widget":"input":"def"];if(!m)throw"Nonexistent effect \""+e.effect+"\"";r=r.split(/,\s*/);if(r.length!=2)throw"Tooltip: bad events configuration for "+q;d.on(r[0],function(a){clearTimeout(i),e.predelay?j=setTimeout(function(){f.show(a)},e.predelay):f.show(a)}).on(r[1],function(a){clearTimeout(j),e.delay?i=setTimeout(function(){f.hide(a)},e.delay):f.hide(a)}),k&&e.cancelDefault&&(d.removeAttr("title"),d.data("title",k)),a.extend(f,{show:function(b){if(!h){l?h=a(l):e.tip?h=a(e.tip).eq(0):k?h=a(e.layout).addClass(e.tipClass).appendTo(document.body).hide().append(k):(h=d.next(),h.length||(h=d.parent().next()));if(!h.length)throw"Cannot find tooltip for "+d}if(f.isShown())return f;h.stop(!0,!0);var o=c(d,h,e);e.tip&&h.html(d.data("title")),b=a.Event(),b.type="onBeforeShow",g.trigger(b,[o]);if(b.isDefaultPrevented())return f;o=c(d,h,e),h.css({position:"absolute",top:o.top,left:o.left}),n=!0,m[0].call(f,function(){b.type="onShow",n="full",g.trigger(b)});var p=e.events.tooltip.split(/,\s*/);h.data("__set")||(h.off(p[0]).on(p[0],function(){clearTimeout(i),clearTimeout(j)}),p[1]&&!d.is("input:not(:checkbox, :radio), textarea")&&h.off(p[1]).on(p[1],function(a){a.relatedTarget!=d[0]&&d.trigger(r[1].split(" ")[0])}),e.tip||h.data("__set",!0));return f},hide:function(c){if(!h||!f.isShown())return f;c=a.Event(),c.type="onBeforeHide",g.trigger(c);if(!c.isDefaultPrevented()){n=!1,b[e.effect][1].call(f,function(){c.type="onHide",g.trigger(c)});return f}},isShown:function(a){return a?n=="full":n},getConf:function(){return e},getTip:function(){return h},getTrigger:function(){return d}}),a.each("onHide,onBeforeShow,onShow,onBeforeHide".split(","),function(b,c){a.isFunction(e[c])&&a(f).on(c,e[c]),f[c]=function(b){b&&a(f).on(c,b);return f}})}a.fn.tooltip=function(b){var c=this.data("tooltip");if(c)return c;b=a.extend(!0,{},a.tools.tooltip.conf,b),typeof b.position=="string"&&(b.position=b.position.split(/,?\s/)),this.each(function(){c=new d(a(this),b),a(this).data("tooltip",c)});return b.api?c:this}})(jQuery);
 
 // lp modal plugin
-(function($){
-    $.fn.lpModal = function(options) {
+(function ($) {
+    $.fn.lpModal = function (options) {
 
         //default options
         var defaults = {
@@ -161,6 +175,7 @@ GetPortfolioItemCount();
             content: $("#content"),     //html element that contains content on page
             bgColor: "#fff",            //background color of modal
             src: "",                    //url source of iframe to be embedded
+            iframeHeight: '600px',      //if an iframe is used, a height should be specified for iPad
             openEvt: function(){},      //function to be run when modal opens
             closeEvt: function(){}      //function to be ran after close has been run
         }
@@ -168,24 +183,24 @@ GetPortfolioItemCount();
         //combine defaults and passed in options
         var o = $.extend(defaults, options);
 
-        this.each(function() {
+        this.each(function () {
 
-            function initiateModal(){
+            function initiateModal() {
 
                 var modalTemplate = "<div id='lpModal'><a href='#' id='lpModalClose'></a><div id='lpModalContent'></div></div><div id='lpModalBackdrop'></div>";
 
                 //if we're using content on the page
-                if(o.src.length == 0){
+                if (o.src.length == 0) {
                     //if there is a form tag on the page
-                    if($('form').length > 0){
+                    if ($('form').length > 0) {
                         //append template to form
                         $('form').append(modalTemplate);
-                    //if there is no form on the page
+                        //if there is no form on the page
                     } else {
                         //append template to body
                         $('body').append(modalTemplate);
                     }
-                //if we're using an iframe
+                    //if we're using an iframe
                 } else {
                     //append template to body
                     $('body').append(modalTemplate);
@@ -203,26 +218,26 @@ GetPortfolioItemCount();
                     windowHeight     = Math.floor($(window).height());
 
                 //if modal is not fullscreen
-                if(!o.fullScreen){
+                if (!o.fullScreen) {
 
                     //check if width and height are larger than window
                     //if width is more than window width
-                    if(o.width+modalOuterWidth > windowWidth){
+                    if (o.width + modalOuterWidth > windowWidth) {
                         //change width to fit window
-                        o.width = windowWidth-modalOuterWidth;
+                        o.width = windowWidth - modalOuterWidth;
                     }
                     //if height is more than window height
-                    if(o.height+modalOuterHeight > windowHeight){
+                    if (o.height + modalOuterHeight > windowHeight) {
                         //change height to fit window
-                        o.height = windowHeight-modalOuterHeight;
+                        o.height = windowHeight - modalOuterHeight;
                         //add 25 to accomodate vertical scrollbar
                         o.width += 25;
                     }
 
-                //if modal is supposed to be fullscreen
+                    //if modal is supposed to be fullscreen
                 } else {
-                    o.width = windowWidth-modalOuterWidth;
-                    o.height = windowHeight-modalOuterHeight;
+                    o.width = windowWidth - modalOuterWidth;
+                    o.height = windowHeight - modalOuterHeight;
                 }
 
                 //if modal is using on page content
@@ -230,15 +245,26 @@ GetPortfolioItemCount();
                     var a = o.content.clone().empty();
                     modalContent.append(a).children().append(o.content.html()).show();
 
-                //if modal is embedding an iframe
+                    //if modal is embedding an iframe
                 } else {
-                    $("<iframe width='100%' height='100%' src='"+o.src+"' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
+                    //enable scrolling an iFrame in a modal on a touch device
+                    if(isIpad()){
+                        $("<iframe width='100%' height='" + o.iframeHeight + "' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
+                        modalContent.find('iframe').load(function(){
+                            modalContent.css({
+                                'overflow': 'auto',
+                                '-webkit-overflow-scrolling': 'scroll'
+                            });
+                        });
+                    } else {
+                        $("<iframe width='100%' height='100%' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
+                    }
                 }
 
                 //set width, height, and background color values for #lpModal
                 modal.css({
-                    "width": o.width+"px",
-                    "height": o.height+"px",
+                    "width": o.width + "px",
+                    "height": o.height + "px",
                     "background-color": o.bgColor
                 });
 
@@ -246,20 +272,20 @@ GetPortfolioItemCount();
                 var offsetX = modal.outerWidth() / 2,
                     offsetY = modal.outerHeight() / 2;
                 modal.css({
-                    "margin": "-"+offsetY+"px 0 0 -"+offsetX+"px"
+                    "margin": "-" + offsetY + "px 0 0 -" + offsetX + "px"
                 });
 
                 //set height value for #lpModalContent
-                modalContent.css({"height": o.height+"px"});
+                modalContent.css({ "height": o.height + "px" });
 
                 //hide scrollbar
                 htmlBody.css("overflow", "hidden");
 
                 //fade in backdrop and modal popup
-                backdrop.fadeTo(500, 0.6, function(){
-                    modal.fadeIn(700, function(){
+                backdrop.fadeTo(500, 0.6, function () {
+                    modal.fadeIn(700, function () {
                         //ugly bug in ie8 requires any iframe with flash in it to be reloaded after fading in
-                        if($('body').hasClass('ie8') || $('html').hasClass('ie8')){
+                        if ($('body').hasClass('ie8') || $('html').hasClass('ie8')) {
                             var refreshSrc = modalContent.children('iframe').attr('src');
                             modalContent.children('iframe').attr('src', refreshSrc);
                         }
@@ -270,18 +296,18 @@ GetPortfolioItemCount();
                 o.openEvt();
 
                 //close modal functionality
-                function closeModal(){
+                function closeModal() {
 
                     //fade out backdrop and modal popup
-                    modal.fadeOut(300, function(){
-                        backdrop.fadeOut(200, function(){
+                    modal.fadeOut(300, function () {
+                        backdrop.fadeOut(200, function () {
                             //remove overlay hidden from body
                             htmlBody.css("overflow", "auto");
                         });
                     });
 
                     //using setTimeout so div removal happens AFTER popup fades out
-                    setTimeout(function() {
+                    setTimeout(function () {
                         modal.remove();
                         backdrop.remove();
                         o.closeEvt();
@@ -290,26 +316,26 @@ GetPortfolioItemCount();
                 }
 
                 //close button and backdrop click
-                var closeSelectors = [closeBtn.selector,backdrop.selector].join(", ");
-                $(closeSelectors).on("click", function(){
+                var closeSelectors = [closeBtn.selector, backdrop.selector].join(", ");
+                $(closeSelectors).on("click", function () {
                     closeModal();
                     return false;
                 });
 
                 //escape key press
-                $(document).keyup(function(e) {
+                $(document).keyup(function (e) {
                     if (e.keyCode == 27) { closeModal(); }
                 });
 
             }
 
             //if modal should open on code run
-            if(o.onInit){
+            if (o.onInit) {
                 initiateModal();
 
-            //if not then make it run on click
+                //if not then make it run on click
             } else {
-                $(this).click(function(){
+                $(this).click(function () {
                     initiateModal();
                     return false;
                 });
@@ -320,7 +346,7 @@ GetPortfolioItemCount();
     };
 
     //close function available to outside world
-    $.fn.lpModalClose = function(closeOptions){
+    $.fn.lpModalClose = function (closeOptions) {
 
         var closeDefaults = {
             onInit: true    //should close happen when called?
@@ -330,151 +356,477 @@ GetPortfolioItemCount();
         var cO = $.extend(closeDefaults, closeOptions);
 
         //if onInit is true run closeModal now
-        if(cO.onInit){
+        if (cO.onInit) {
             $("#lpModalClose").click();
 
-        //else tie click event to element passed in
+            //else tie click event to element passed in
         } else {
-            $(this).click(function(){
+            $(this).click(function () {
                 $("#lpModalClose").click();
                 return false;
             })
         }
 
     }
+
+    // resize function available to the whole universe
+    $.fn.lpModalResize = function (resizeOptions) {
+
+        var resizeDefaults = {
+            url: null,
+            action: 'resize'
+        }
+        
+        // combine defaults and passed in options
+        var rO = $.extend(resizeDefaults, resizeOptions);
+
+        if (rO.action == "childSecure") {
+            setTimeout(function (){
+				window.location = "/controls/ResizeModalNonSecure.aspx?width=" + rO.width + "&height=" + rO.height + "&url=" + rO.url;
+			}, 1500);
+			
+        }
+
+        if (rO.action == "childNonSecure") {
+            window.location = "/secure/controls/ResizeModalSecure.aspx?width=" + rO.width + "&height=" + rO.height + "&url=" + rO.url;
+        }
+
+        if (rO.action == "resize") {
+
+            var modal = window.parent.$("#lpModal");
+
+            var offsetX = (rO.width + parseInt(modal.css("padding-left")) + parseInt(modal.css("padding-right")) + parseInt(modal.css("border-left-width")) + parseInt(modal.css("border-right-width"))) / 2,
+                offsetY = (rO.height + parseInt(modal.css("padding-top")) + parseInt(modal.css("padding-bottom")) + parseInt(modal.css("border-top-width")) + parseInt(modal.css("border-bottom-width"))) / 2;
+
+            window.parent.$("#lpModalContent").animate({
+                width: rO.width,
+                height: rO.height
+            }, 500);
+
+            // resize modal
+            window.parent.$("#lpModal").animate({
+                width: rO.width,
+                height: rO.height,
+                'margin-left': "-" + offsetX + "px",
+                'margin-top': "-" + offsetY + "px"
+            }, 500, function () {
+
+                setTimeout(function (){
+                    if (rO.url != null) {
+                        if (rO.url.indexOf('?') >= 0) {
+                            window.location = rO.url + "&resized=true";
+                        } else {
+                            window.location = rO.url + "?resized=true";
+                        }
+                    }
+                }, 200);
+                
+            });
+        }
+
+    }
+
 })(jQuery);
 
 // lp tooltip plugin - relies on jquery and hoverintent plugin
 (function($) {
 
     $.fn.lpTooltip = function(options) {
-
         if (!this.length) { return this; }
 
         //default options
-        var defaults = {
-            tooltip: $('#tooltip'),    // tooltip element to be used
-            position: 'top',           // position of tooltip - options are top, right, bottom, left, topright, topleft, bottomright, bottomleft
-            offsetX: 0,                // offset the position of the tooltip on the x axis - use positive or negative integers
-            offsetY: 0,                // offset the position of the tooltip on the y axis - use positive or negative integers
-            disableHover: false,
-            hoverDelay: 400,           // delay for tooltip to be shown after hovering over trigger element
-            tooltipFadeIn: 200,        // how long fade in animation takes
-            tooltipFadeOut: 100,       // how long fade out animation takes
-            openEvt: function(){},     // function to be run when tooltip opens
-            closeEvt: function(){}     // function to be run when tooltip closes
-        }
+        var defaults  = {
+                            tooltip: $('#tooltip'),    // tooltip element to be used
+                            horzAlign: 'center',       // horizontal position of tooltip - options are left, center, and right
+                            vertAlign: 'top',          // vertical position of tooltip - options are top, middle, and bottom
+                            arrow: false,              // want an arrow on the tooltip?
+                            arrowSize: 10,             // px size of arrow
+                            arrowColor: '#fff',        // color of arrow - can accept any css border-color property value (hex, rgb, rgba, gradient) - can't accept more than one value though so no vendor prefixes or fallbacks
+                            screenEdgePadding: 10,     // padding from side of screen to be used when tooltip needs to be moved
+                            offsetX: 0,                // offset the position of the tooltip on the x axis - use positive or negative integers
+                            offsetY: 0,                // offset the position of the tooltip on the y axis - use positive or negative integers
+                            evtType: 'hover',          // event to fire tooltip - options are hover and click
+                            hoverDelay: 400,           // delay for tooltip to be shown after hovering over trigger element
+                            tooltipFadeIn: 200,        // how long fade in animation takes
+                            tooltipFadeOut: 100,       // how long fade out animation takes
+                            openEvt: function(){},     // function to be run when tooltip opens
+                            closeEvt: function(){}     // function to be run when tooltip closes
+                        },
+            o         = $.extend(defaults, options),   //combine defaults and passed in options
+            tooltipOn = { val: false };
 
-        //combine defaults and passed in options
-        var o = $.extend(defaults, options);
-
-        this.each(function() {
+        this.each(function(ttNum) {
+            var $this        = $(this);
             
-            var $this = $(this);
+            if (o.tooltip.length > 1){
+                var $thisTooltip = $(o.tooltip[ttNum]);
+            } else {
+                var $thisTooltip = o.tooltip;
+            }
 
-            function over(e){
+            function tooltipGetMeasurements() { 
+                var $window            = $(window),
+                    m                  = {};
+                    m.elPos            = $this.offset();
+                    m.elWidth          = $this.outerWidth();
+                    m.elHeight         = $this.outerHeight();
+                    m.tooltipWidth     = $thisTooltip.outerWidth();
+                    m.tooltipHeight    = $thisTooltip.outerHeight();
+                    m.elToolDiffWidth  = Math.abs(m.elWidth - m.tooltipWidth);
+                    m.elToolDiffHeight = Math.abs(m.elHeight - m.tooltipHeight);
+                    m.winSizeWidth     = $window.width();
+                    m.winSizeHeight    = $window.height();
 
-                var elPos            = $this.offset(),
-                    elWidth          = $this.outerWidth(),
-                    elHeight         = $this.outerHeight(),
-                    toolTipWidth     = o.tooltip.outerWidth(),
-                    toolTipHeight    = o.tooltip.outerHeight(),
-                    elToolDiffWidth  = Math.abs(elWidth - toolTipWidth),
-                    elToolDiffHeight = Math.abs(elHeight - toolTipHeight);
+                return m;
+            }
 
-                o.tooltip.css({
+            function addArrow(side){
+                if (!$('#lpTooltipArrow').is('*')){
+                    $thisTooltip.prepend('<div id="lpTooltipArrow" style=""></div>');
+                }
+
+                var $lpTooltipArrow = $('#lpTooltipArrow');
+
+                if(side === 'top'){
+                    $lpTooltipArrow.css({
+                        borderLeft: o.arrowSize + 'px solid transparent',
+                        borderRight: o.arrowSize + 'px solid transparent',
+                        borderBottom: o.arrowSize + 'px solid ' + o.arrowColor,
+                        borderTop: '0',
+                        position: 'absolute'
+                    });
+                } else if (side === 'bottom'){
+                    $lpTooltipArrow.css({
+                        borderLeft: o.arrowSize + 'px solid transparent',
+                        borderRight: o.arrowSize + 'px solid transparent',
+                        borderTop: o.arrowSize + 'px solid ' + o.arrowColor,
+                        borderBottom: '0',
+                        position: 'absolute'
+                    });
+                } else if (side === 'left'){
+                    $lpTooltipArrow.css({
+                        borderBottom: o.arrowSize + 'px solid transparent',
+                        borderTop: o.arrowSize + 'px solid transparent',
+                        borderRight: o.arrowSize + 'px solid ' + o.arrowColor,
+                        borderLeft: '0',
+                        position: 'absolute'
+                    });
+                } else if (side === 'right'){
+                    $lpTooltipArrow.css({
+                        borderBottom: o.arrowSize + 'px solid transparent',
+                        borderTop: o.arrowSize + 'px solid transparent',
+                        borderLeft: o.arrowSize + 'px solid ' + o.arrowColor,
+                        borderRight: '0',
+                        position: 'absolute'
+                    });
+                }
+            }
+
+            function arrowPosition(axis, pos){
+                var $lpTooltipArrow = $('#lpTooltipArrow');
+
+                if (axis === 'x'){
+                    $lpTooltipArrow.css('left', pos);
+                } else if (axis === 'y'){
+                    $lpTooltipArrow.css('top', pos);
+                }
+            }
+
+            function isOutOfViewportYTop(y){
+                var $winScrollTop = $(window).scrollTop(),
+                    viewResults   = {};
+
+                if (y < $winScrollTop){
+                    viewResults.fits = false;
+                    viewResults.distToMoveDown = $winScrollTop - y + o.screenEdgePadding;
+                    return viewResults;
+                } else {
+                    viewResults.fits = true;
+                    return viewResults;
+                }
+            }
+
+            function isOutOfViewportYBottom(y){
+                var $winScrollTop = $(window).scrollTop(),
+                    $winHeight    = $(window).height(),
+                    viewResults   = {};
+
+                if (y > $winScrollTop + $winHeight){
+                    viewResults.fits = false;
+                    viewResults.distToMoveUp = y - ($winScrollTop + $winHeight) + o.screenEdgePadding;
+                    return viewResults;
+                } else {
+                    viewResults.fits = true;
+                    return viewResults;
+                }
+            }
+
+            function isOutOfViewportXLeft(x){
+                var $winScrollLeft = $(window).scrollLeft(),
+                    viewResults    = {};
+
+                if (x < $winScrollLeft){
+                    viewResults.fits = false;
+                    viewResults.distToMoveRight = $winScrollLeft - x + o.screenEdgePadding;
+                    return viewResults;
+                } else {
+                    viewResults.fits = true;
+                    return viewResults;
+                }
+            }
+
+            function isOutOfViewportXRight(x){
+                var $winScrollLeft = $(window).scrollLeft(),
+                    $winWidth      = $(window).width(),
+                    viewResults    = {};
+
+                if (x > ($winScrollLeft + $winWidth)){
+                    viewResults.fits = false;
+                    viewResults.distToMoveLeft = x - ($winScrollLeft + $winWidth) + o.screenEdgePadding;
+                    return viewResults;
+                } else {
+                    viewResults.fits = true;
+                    return viewResults;
+                }
+            }
+
+            function toolTipPosition() {
+                var m = tooltipGetMeasurements();
+
+                if (o.arrow){
+                    if (o.vertAlign === 'top' && o.horzAlign === 'center'){
+                        addArrow('bottom');
+                    } else if (o.vertAlign === 'bottom' && o.horzAlign === 'center'){
+                        addArrow('top');
+                    } else if (o.vertAlign === 'middle' && o.horzAlign === 'left'){
+                        addArrow('right');
+                    } else if (o.vertAlign === 'middle' && o.horzAlign === 'right'){
+                        addArrow('left');
+                    }
+                }
+
+                if (o.vertAlign === 'top'){
+                    var yTop       = m.elPos.top - (m.tooltipHeight + o.offsetY),
+                        inViewYTop = isOutOfViewportYTop(yTop);
+
+                    // if the tooltip can fit or if the space above the element is larger than or equal to the space below it
+                    if (inViewYTop.fits || m.elPos.top - $(window).scrollTop() >= Math.abs( Math.abs( m.elPos.top + m.elHeight - $(window).scrollTop() ) - m.winSizeHeight )){
+                        $thisTooltip.css({
+                            top: yTop + 'px'
+                        });
+                        if (o.arrow){
+                            var borderTopWid       = $thisTooltip.css('border-top-width'),
+                                borderBottomWid    = $thisTooltip.css('border-bottom-width'),
+                                intBorderTopWid    = parseInt(borderTopWid.replace('px', '')),
+                                intBorderBottomWid = parseInt(borderBottomWid.replace('px', ''));
+
+                            arrowPosition('y', m.tooltipHeight - intBorderTopWid - intBorderBottomWid);
+                        }
+                    } else {
+                        o.vertAlign = 'bottom';
+                        toolTipPosition();
+                        o.vertAlign = 'top';
+                    }
+                }
+
+                if (o.vertAlign === 'bottom'){
+                    var yBottom       = m.elPos.top + m.elHeight + m.tooltipHeight + o.offsetY,
+                        inViewYBottom = isOutOfViewportYBottom(yBottom);
+
+                    // if the tooltip can fit or if the space below the element is larger than or equal to the space above it
+                    if (inViewYBottom.fits || m.elPos.top - $(window).scrollTop() <= Math.abs( m.winSizeHeight - Math.abs( m.elPos.top + m.elHeight - $(window).scrollTop() ) )){
+                        $thisTooltip.css({
+                            top: m.elPos.top + (m.elHeight + o.offsetY) + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('y', 0 - o.arrowSize);
+                        }
+                    } else {
+                        o.vertAlign = 'top';
+                        toolTipPosition();
+                        o.vertAlign = 'bottom';
+                    }
+                }
+
+                if (o.vertAlign === 'middle'){
+                    var yTop          = m.elPos.top + (m.elHeight / 2) - (m.tooltipHeight / 2) + o.offsetY,
+                        inViewYTop    = isOutOfViewportYTop(yTop),
+                        yBottom       = m.elPos.top + (m.elHeight / 2) + (m.tooltipHeight / 2) + o.offsetY,
+                        inViewYBottom = isOutOfViewportYBottom(yBottom);
+
+                    if ((inViewYTop.fits && inViewYBottom.fits) || (!inViewYTop.fits && !inViewYBottom.fits)){
+                        $thisTooltip.css({
+                            top: m.elPos.top - (m.elToolDiffHeight / 2) + o.offsetY + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('y', (m.tooltipHeight / 2) - o.arrowSize);
+                        }
+                    } else if (inViewYTop.fits && !inViewYBottom.fits){
+                        $thisTooltip.css({
+                            top: m.elPos.top - (m.elToolDiffHeight / 2) - inViewYBottom.distToMoveUp + o.offsetY + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('y', (m.tooltipHeight / 2) + inViewYBottom.distToMoveUp - o.arrowSize);
+                        }
+                    } else if (!inViewYTop.fits && inViewYBottom.fits){
+                        $thisTooltip.css({
+                            top: m.elPos.top - (m.elToolDiffHeight / 2) + inViewYTop.distToMoveDown + o.offsetY + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('y', (m.tooltipHeight / 2) - inViewYTop.distToMoveDown - o.arrowSize);
+                        }
+                    }
+                }
+
+                if (o.horzAlign === 'left'){
+                    var xLeft       = m.elPos.left - m.tooltipWidth + o.offsetX,
+                        inViewXLeft = isOutOfViewportXLeft(xLeft);
+
+                    // if the tooltip can fit or if the space to the left of the element is larger than or equal to the space to the right of the element
+                    if (inViewXLeft.fits || m.elPos.left - $(window).scrollLeft() >= Math.abs( m.winSizeWidth - Math.abs(m.elPos.left + m.elWidth - $(window).scrollLeft()) )){
+                        $thisTooltip.css({
+                            left: m.elPos.left - (m.tooltipWidth + o.offsetX) + 'px'
+                        });
+                        if (o.arrow){
+                            var borderLeftWid     = $thisTooltip.css('border-left-width'),
+                                borderRightWid    = $thisTooltip.css('border-right-width'),
+                                intBorderLeftWid  = parseInt(borderLeftWid.replace('px', '')),
+                                intBorderRightWid = parseInt(borderRightWid.replace('px', ''));
+
+                            arrowPosition('x', m.tooltipWidth - intBorderLeftWid - intBorderRightWid);
+                        }
+                    } else {
+                        o.horzAlign = 'right';
+                        toolTipPosition();
+                        o.horzAlign = 'left';
+                    }
+                }
+
+                if (o.horzAlign === 'right'){
+                    var xRight       = m.elPos.left + m.elWidth + m.tooltipWidth + o.offsetX,
+                        inViewXRight = isOutOfViewportXRight(xRight);
+
+                    // if the tooltip can fit or if the space to the left of the element is larger than or equal to the space to the right of the element
+                    if (inViewXRight.fits || m.elPos.left - $(window).scrollLeft() <= Math.abs( Math.abs( m.elPos.left + m.elWidth - $(window).scrollLeft() ) - m.winSizeWidth )){
+                        $thisTooltip.css({
+                            left: m.elPos.left + (m.elWidth + o.offsetX) + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('x', 0 - o.arrowSize);
+                        }
+                    } else {
+                        o.horzAlign = 'left';
+                        toolTipPosition();
+                        o.horzAlign = 'right';
+                    }
+                }
+
+                if (o.horzAlign === 'center'){
+                    var xLeft        = m.elPos.left + (m.elWidth / 2) - (m.tooltipWidth / 2) + o.offsetX,
+                        inViewXLeft  = isOutOfViewportXLeft(xLeft),
+                        xRight       = m.elPos.left + (m.elWidth / 2) + (m.tooltipWidth / 2) + o.offsetX,
+                        inViewXRight = isOutOfViewportXRight(xRight);
+
+                    if ((inViewXLeft.fits && inViewXRight.fits) || (!inViewXLeft.fits && !inViewXRight.fits)){
+                        $thisTooltip.css({
+                            left: m.elPos.left - (m.elToolDiffWidth / 2) + o.offsetX + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('x', (m.tooltipWidth / 2) - o.arrowSize);
+                        }
+                    } else if (inViewXLeft.fits && !inViewXRight.fits){
+                        $thisTooltip.css({
+                            left: m.elPos.left - (m.elToolDiffWidth / 2) + o.offsetX - inViewXRight.distToMoveLeft + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('x', (m.tooltipWidth / 2) + inViewXRight.distToMoveLeft - o.arrowSize);
+                        }
+                    } else if (!inViewXLeft.fits && inViewXRight.fits){
+                        $thisTooltip.css({
+                            left: m.elPos.left - (m.elToolDiffWidth / 2) + o.offsetX + inViewXLeft.distToMoveRight + 'px'
+                        });
+                        if (o.arrow){
+                            arrowPosition('x', (m.tooltipWidth / 2) - inViewXLeft.distToMoveRight - o.arrowSize);
+                        }
+                    }
+                }
+            }
+
+            function over() {
+                $thisTooltip.css({
                     position: 'absolute',
                     zIndex: '99'
                 });
 
-                if (o.position === 'top'){
-                    o.tooltip.css({
-                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
-                        left: elPos.left - (elToolDiffWidth / 2) + o.offsetX + 'px'
-                    });
-                } else if (o.position === 'right'){
-                    o.tooltip.css({
-                        top: elPos.top - (elToolDiffHeight / 2) + o.offsetY + 'px',
-                        left: elPos.left + (elWidth + o.offsetX) + 'px'
-                    });
-                } else if (o.position === 'bottom'){
-                    o.tooltip.css({
-                        top: elPos.top + (elHeight + o.offsetY) + 'px',
-                        left: elPos.left - (elToolDiffWidth / 2) + o.offsetX + 'px'
-                    });
-                } else if (o.position === 'left'){
-                    o.tooltip.css({
-                        top: elPos.top - (elToolDiffHeight / 2) + o.offsetY + 'px',
-                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
-                    });
-                } else if (o.position === 'topleft'){
-                    o.tooltip.css({
-                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
-                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
-                    });
-                } else if (o.position === 'topright'){
-                    o.tooltip.css({
-                        top: elPos.top - (toolTipHeight + o.offsetY) + 'px',
-                        left: elPos.left + (elWidth + o.offsetX) + 'px'
-                    });
-                } else if (o.position === 'bottomleft'){
-                    o.tooltip.css({
-                        top: elPos.top + (elHeight + o.offsetY) + 'px',
-                        left: elPos.left - (toolTipWidth + o.offsetX) + 'px'
-                    });
-                } else if (o.position === 'bottomright'){
-                    o.tooltip.css({
-                        top: elPos.top + (elHeight + o.offsetY) + 'px',
-                        left: elPos.left + (elWidth + o.offsetX) + 'px'
-                    });
-                }
+                toolTipPosition();
 
-                o.tooltip.fadeIn(o.tooltipFadeIn, o.openEvt($this));
-
-            }
-
-            var tooltipOn = false;
-            function out(){
-                if (tooltipOn){
-                    // do nothing
-                } else {
-                    tooltipOn = false;
-                    o.tooltip.fadeOut(o.tooltipFadeOut, o.closeEvt($this));
-                }
-            }
-
-            if(o.disableHover) {
-                $this.click(function() {
-                    o.tooltip.hide(o.closeEvt($this));
-
-                    over();
-
-                    $('a.close').css('display', 'block').click(function() {
-                        o.tooltip.fadeOut(o.tooltipFadeOut, o.closeEvt($this));
-                        event.preventDefault();
-                    });
+                $thisTooltip.fadeIn(o.tooltipFadeIn, function() {
+                    o.openEvt($this);
                 });
-                
-            } else {
+
+                $thisTooltip.on('mousedown', function(e) {
+                    e.stopPropagation();
+                });
+                $('html').on('mousedown', function(){
+                    out();
+                });
+
+                $(window).resize(function() {
+                    toolTipPosition();
+                });
+            }
+
+            function out(callback){
+                if(!tooltipOn.val){
+                    o.tooltip.fadeOut(o.tooltipFadeOut, function(){
+                        $('#lpTooltipArrow').remove();
+
+                        o.closeEvt($this);
+
+                        if (typeof(callback) === 'function'){
+                            callback();
+                        }
+                    });
+                }
+            }
+
+            if (o.evtType === 'click') {
+
+                $this.click(function(e) {
+                    e.preventDefault();
+                    setTimeout(function(){
+                        over();
+                    }, 100);
+                });
+
+                $('a.close').on('click', function(e) {
+                    e.preventDefault();
+                    out();
+                });
+
+            } else if (o.evtType === 'hover') {
+
                 $this.hoverIntent({
                     interval: o.tooltipFadeIn + 50,
                     over: over,
                     timeout: o.hoverDelay,
                     out: out
                 });
-            
-                o.tooltip.mouseenter(function() {
-                    tooltipOn = true;
+                
+                var timeout;
+                $thisTooltip.mouseenter(function() {
+                    tooltipOn.val = true;
+                    clearTimeout(timeout);
                 });
 
-                o.tooltip.mouseleave(function() {
-                    setTimeout(function(){
-                        tooltipOn = false;
+                $thisTooltip.mouseleave(function() {
+                    timeout = setTimeout(function(){
+                        tooltipOn.val = false;
                         out();
                     }, o.hoverDelay);
                 });
+
             }
-        
         });
 
         return this;
@@ -586,6 +938,17 @@ $(function () {
         });
         return false;
     });
+
+    //on Enter, submit the Kiosk Employee Store Number Update
+    if($('.storeNum').is('*')) {
+        $('.storeNum').first().keydown(function(e){
+            if(e.which == 13){
+                e.preventDefault();
+                $('.storeUpdate').first().click();
+                return false;
+            }
+        });
+    }
 
     //add side column to sort page/landing pages/any page needing it
     if($(".siteSideCol").length){

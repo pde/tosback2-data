@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.184.1870.20121001",
+	version: "tbs.193.1870.20121024",
 	release: "0",
 	dictionary: {
 		init: {
@@ -3606,19 +3606,19 @@ function sendVideoProgress(vidInfo) {
 	} catch(e){}
 }
 
-function sendSocialClick(site,action,target){
-	if(action == undefined && target == undefined){
+function sendSocialClick(namespace,site,action,target){
+	if(site == undefined && action == undefined && target == undefined){
 		try {
 			trackMetrics({
 				type: "social-click",
-				data: {	socialType: site }
+				data: {	socialType: namespace }
 			});
 		} catch(e){}
 	} else {
 		try {
 			trackMetrics({
 				type: "social-click",
-				data: {	socialType: (site ? site : "no site") + " : " + (action ? action : "no action") + " : " + (target ? target : "no target") }
+				data: {	socialType: (namespace ? namespace : "no namespace") + " : " + (site ? site : "no site") + " : " + (action ? action : "no action") + " : " + (target ? target : "no target") }
 			});
 		} catch(e){}
 	}

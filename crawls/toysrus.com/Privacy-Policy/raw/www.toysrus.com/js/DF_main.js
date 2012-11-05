@@ -688,8 +688,14 @@ Object.extend(Array.prototype, {
 	shift: function() {
 		var result = this[0];
 		for (var i = 0; i < this.length - 1; i++)
-		 	 this[i] = this[i + 1];
-		this.length--;
+            try {
+		 	    this[i] = this[i + 1];
+            }
+            catch(RangeError) {
+                //most likely caused by invalid length
+            }
+        if(this.length > 0)
+            this.length--;
 		return result;
 	},
 	

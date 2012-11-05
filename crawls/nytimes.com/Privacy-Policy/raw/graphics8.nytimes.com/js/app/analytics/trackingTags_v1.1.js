@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 113184 2012-10-08 18:28:22Z reed.emmons $
+* $Id: trackingTags_v1.1.js 114847 2012-11-01 15:39:13Z utzc $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -324,6 +324,187 @@ if (window.addEventListener) {
 } else if (window.attachEvent) {
   window.attachEvent('onload', NYTD.UPTracker.check);
 }
+
+NYTD.EventTracker = (function () {
+    'use strict';
+    var lastEventTime = 0;
+    var nextCallbackNum = 0;
+    var wtMetaExcludes = {
+        'wt.z_nyts': 1,
+        'wt.z_nytd': 1,
+        'wt.z_ref': 1,
+        'wt.z_rmid': 1
+    };
+
+    var buildUrl = function (url, params) {
+        var key;
+        var qs = '';
+        for (key in params) if (params.hasOwnProperty(key)) {
+            qs += (qs ? '&' : '') + key + '=' + encodeURIComponent(params[key]);
+        }
+        if (qs.length > 0) {
+            return url + '?' + qs;
+        } else {
+            return url;
+        }
+    };
+
+    var copyObject = function (obj) {
+        var key;
+        var objCopy = {};
+        for (key in obj) if (obj.hasOwnProperty(key)) {
+            objCopy[key] = obj[key];
+        }
+        return objCopy;
+    };
+
+    var extractMetaTags = function (obj) {
+        var name, nameLower, content, i;
+        var tags = document.getElementsByTagName('meta');
+        obj = obj || {};
+        for (i = 0; i < tags.length; i += 1) {
+            name = tags[i].getAttribute('name');
+            content = tags[i].getAttribute('content');
+            if (typeof name === 'string' && typeof content === 'string') {
+                nameLower = name.toLowerCase();
+                if (nameLower.substr(0, 3) === 'wt.' && 
+                    !wtMetaExcludes[nameLower]) {
+                    obj[name] = content;
+                }
+            }
+        }
+        return obj;
+    };
+
+    return function () {
+        var trackNow;
+        var that = this;
+        var datumId = null;
+        var firedFirstEvent = false;
+        var scripts = [];
+        var queue = [];
+
+        if (this instanceof NYTD.EventTracker === false) {
+            return new NYTD.EventTracker();
+        }
+
+        trackNow = function (evt, options) {
+            var scriptElem, oldScriptElem;
+            var callbackNum = nextCallbackNum;
+
+            nextCallbackNum += 1;
+
+            NYTD.EventTracker['cb' + callbackNum] = function (result) {
+                var i;
+                delete NYTD.EventTracker['cb' + callbackNum];
+                if (result.status && result.status === 'OK') {
+                    if (!datumId && options.buffer) {
+                        datumId = result.datumId;
+                        for (i = 0; i < queue.length; i += 1) {
+                            trackNow(queue[i].evt, queue[i].options);
+                        }
+                    }
+                    if (options.callback) {
+                        options.callback(null, result);
+                    }
+                } else {
+                    if (options.callback) {
+                        options.callback(new Error('Event tracking failed'), 
+                            result);
+                    }
+                }
+            };
+
+            evt = copyObject(evt);
+            if (!options.buffer) {
+                evt.instant = '1';
+            }
+            evt.callback = 'NYTD.EventTracker.cb' + callbackNum;
+            if (datumId && options.buffer) {
+                evt.datumId = datumId;
+            }
+
+            if (options.sendMeta) {
+                extractMetaTags(evt);
+            }
+
+            scriptElem = document.createElement('script');
+            scriptElem.src = buildUrl((document.location.protocol || 'http:') +
+                '//et.nytimes.com/', evt);
+            document.body.appendChild(scriptElem);
+
+            scripts.push(scriptElem);
+            if (scripts.length > 5) {
+                oldScriptElem = scripts.shift();
+                document.body.removeChild(oldScriptElem);
+            }
+        };
+
+        this.track = function (evt, options) {
+            options = options || {};
+            if (!options.background) {
+                lastEventTime = (new Date()).valueOf();
+            }
+            if (!options.buffer) {
+                trackNow(evt, options);
+            } else if (datumId || !firedFirstEvent) {
+                firedFirstEvent = true;
+                trackNow(evt, options);
+            } else {
+                queue.push({
+                    evt: copyObject(evt),
+                    options: copyObject(options)
+                });
+            }
+        };
+
+        this.hasTrackedEventRecently = function () {
+            return ((new Date()).valueOf() - lastEventTime) < 960000;
+        };
+
+        this.getDatumId = function () {
+            return datumId;
+        };
+    };
+})();
+
+NYTD.createPageEventTracker = function () {
+    'use strict';
+    var tracker = new NYTD.EventTracker();
+    var startTime = (new Date()).valueOf();
+    var setUpdateTimeout = function () {
+        setTimeout(function () {
+            if (!tracker.getDatumId()) {
+                setUpdateTimeout();
+                return;
+            } else if (!tracker.hasTrackedEventRecently()) {
+                return;
+            }
+            tracker.track({
+                subject: 'page',
+                url: document.location.href,
+                referrer: document.referrer,
+                totalTime: (new Date()).valueOf() - startTime
+            }, {
+                background: true,
+                buffer: true,
+                callback: setUpdateTimeout
+            });
+        }, 15000);
+    };
+    tracker.track({
+        subject: 'page',
+        url: document.location.href,
+        referrer: document.referrer,
+        totalTime: 0
+    }, {
+        sendMeta: true,
+        buffer: true,
+        callback: setUpdateTimeout
+    });
+
+    return tracker;
+};
 
 /* END ANALYTICS TRACKING */
 /* NOTE: ALL NEW CODE NEEDS TO BE ADDED ABOVE THIS LINE */

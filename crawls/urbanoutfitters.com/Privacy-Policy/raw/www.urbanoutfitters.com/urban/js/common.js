@@ -6,6 +6,59 @@
  
 (function($) {
     $(document).ready(function() {
+    	// enable datepickers on egiftcard and shopping cart pages
+	    $(".giftCardDatepicker").datepicker({ 
+	    	minDate: 0, 
+	    	maxDate: 90,
+	    	onSelect: function( selectedDate ) {
+	    		
+	    		// create variable to check selection against;  if it is today's date, convert it to 'Now'
+	    		var currentTime = new Date();
+	    		var currentDate = currentTime.getMonth() + 1;
+	    		currentDate += "/";
+	    		currentDate += currentTime.getDate();
+				currentDate += "/";
+				currentDate += currentTime.getFullYear();
+				
+				if ( currentDate == selectedDate ) {
+					 $(".giftCardDatepicker").val("Now");
+				}
+	    	}
+    	});
+
+    	// end datepicker 
+    	// begin email address checker for egift card page
+    	$('#giftRecipientEmail').on('blur', function() {
+			  $(this).mailcheck({
+			    // domains: domains,                       // optional
+			    // topLevelDomains: topLevelDomains,       // optional
+			    // distanceFunction: superStringDistance,  // optional
+			    suggested: function(element, suggestion) {
+			    	
+			    	$("#email-suggestion").append("<p style='color: blue;'><img src='/urban/images/2007_holiday/error_alert.png'> Email suggestion - Did you mean " + suggestion.full + "?</p>");
+			    	$("#email-suggestion").slideDown();
+			      // callback code
+			    },
+			    empty: function(element) {
+			    	$("#email-suggestion").slideUp().empty();
+			    }
+			  });
+			});
+    	// end email address checker
+
+    	// limit chars in egiftcard textarea
+    	$('#egiftCardMessage').keypress(function(e) {
+		    var tval = $('#egiftCardMessage').val(),
+		        tlength = tval.length,
+		        set = 100,
+		        remain = parseInt(set - tlength);
+		   
+		    if (remain <= 0 && e.which !== 0 && e.charCode !== 0) {
+		        $('#egiftCardMessage').val((tval).substring(0, tlength - 1))
+		    }
+		});
+		// end limit chars in egiftcard textarea
+		
         $.fn.placeholders();
     });
     
@@ -483,11 +536,6 @@ function addItemToBag(frmName){
 	document[frmName].submit();
 }	
 
-/* Trac 3247 */   
-function addItemToLookBookBag(frmName){
-		document[frmName].action.value = "addToBagLookBook";		
-		document[frmName].submit();
-		}
 /* Trac 3247 */  
 
 	function addItemToWishlist(frmName){

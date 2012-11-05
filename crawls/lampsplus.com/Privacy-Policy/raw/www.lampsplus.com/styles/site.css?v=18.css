@@ -15,7 +15,7 @@ a{color:#000;cursor:pointer;}
 a:hover{color:#900;}
 /*END RESET*/
 #lpContainer {width:960px;margin:auto;position:relative;}
-.globalSprite {background:url("../img/global/global-sprite.png%3Fv=4") no-repeat;overflow:hidden;display:block;}
+.globalSprite {background:url("../img/global/global-sprite.png%3Fv=5") no-repeat;overflow:hidden;display:block;}
 
 /* header */
 #hdr { margin-bottom: 0; width:100%; }
@@ -42,7 +42,7 @@ a:hover{color:#900;}
 					text-align: center;
 					width: 26px;
 				}
-				.storeUpdate { font-size: 12px; margin: -2px 0 0; }
+				.storeUpdate { font-size: 9px; margin: -2px 0 0; }
 			.portal ul {
 				float: right;
 				list-style: none;
@@ -432,11 +432,11 @@ a.gray{font-weight:bold;font-size:10px;color:gray;text-decoration:none;}
 .salepricevalue{font-size:8pt;font-weight:bold;color:#900;}
 .SSalePriceSortPage{font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#900;font-weight:bold;}
 .PSalePriceSortPage{font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#900;font-weight:bold;}
-#pnlBreadCrumb {text-align:left;}
-.breadcrumbSort {width:650px;}
-.breadcrumb{font-size:12px;text-transform:capitalize;font-family:Arial, Helvetica, sans-serif;padding-top:4px;}
-    .breadcrumb a {text-decoration:none;color:#666;}
-    .breadcrumb a:hover {color:#900;}
+#pnlBreadCrumb{text-align:left;}
+.breadcrumbSort{width:650px;}
+.breadcrumb { color: #666; font-size: 12px; text-transform: capitalize; font-family: Arial, Helvetica, Verdana sans-serif; padding-top: 4px; }
+    .breadcrumb a { text-decoration: none; color: #666; }
+    	.breadcrumb a:hover { color: #900; }
 #copyright a{text-decoration:none;color:#666;}
 #copyright a:hover{text-decoration:underline;color:#900;}
 .border2{border:2px solid #CCC;}
@@ -775,6 +775,8 @@ a span.arw {
 		color: #fff;
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e00000', endColorstr='#b10000',GradientType=0 );
 	}
+	a.calloutBtn span.arw { border-color: transparent transparent transparent #fff; }
+	a.calloutBtn span.arw { border-color: transparent transparent transparent #fff; }
 	.calloutBtn.xxSmall { font-size: 10px; line-height: 21px; padding: 0 11px; }
 	.calloutBtn.xSmall { font-size: 11px; line-height: 22px; padding: 0 12px; }
 	.calloutBtn.small { font-size: 12px; line-height: 23px; padding: 0 13px; }
@@ -806,3 +808,48 @@ a span.arw {
 			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b2b2b2', endColorstr='#494949',GradientType=0 );
 		}
 	.calloutBtn .arw { border-color: transparent transparent transparent #fff; }
+
+/* Kiosk Printing Employee Snippet */
+#kioskPrintHdr { margin: 10px auto 0; width: 670px; }
+	#kioskPrintStore { float: left; width: 340px; padding: 10px 0 0; }
+		#kioskPrintStore span { display: block; font-size: 11px; }
+		span#kioskPrintStoreAddress { font-size: 14px; line-height: 18px; margin: 0 0 5px; }
+		span#kioskPrintStoreNum { display: inline; margin: 0 5px 0 0; text-transform: uppercase; }
+		span#kioskPrintStorePhone { display: inline; }
+	#kioskPrintStoreEmp { float: right; width: 330px; }
+		#kioskPrintStoreEmpInfo { float: right; margin: 0 12px 0 0; padding: 10px 0 0; width: 234px; }
+			#kioskPrintStoreEmpInfo span {
+				display: block;
+				text-align: right;
+				font-size: 14px;
+				line-height: 18px;
+			}
+		#kioskPrintStoreEmp img { float: right; }
+	#kioskPrintEmp { padding: 10px 0 0; }
+		#kioskPrintEmp img { float: left; margin: 0 12px 0 0; }
+		#kioskPrintEmpInfo { float: left; }
+			#kioskPrintEmpNameEmail { font-size: 14px; }
+			#kioskPrintEmpPhone	{
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+				margin: 0 0 6px;
+			}
+			.kioskPrintEmpHourTitle { font-size: 11px; text-transform: uppercase; display: block; }
+			.kioskPrintEmpHours { font-size: 11px; margin: 0 0 3px; display: block; }
+/* end Kiosk Printing Employee Snippet */
+
+@media print {
+	* {
+		background: transparent !important;
+		text-shadow: none !important;
+		filter: none !important;
+		-ms-filter: none !important;
+	}
+	tr, img { page-break-inside: avoid; }
+	body { position: absolute; }
+	.hdrPortal,
+	#cartSearchContainer,
+	#navWrapper,
+	#footer { display: none; }
+}

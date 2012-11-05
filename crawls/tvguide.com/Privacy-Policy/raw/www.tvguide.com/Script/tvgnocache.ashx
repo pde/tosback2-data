@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,10,1,12,46,36,0);
+var tvgServerTimeUTC = new Date(2012,10,5,14,3,3,0);
 
-var dServerET = new Date(2012,10,1,8,46,36,0);
+var dServerET = new Date(2012,10,5,9,3,3,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,10,1);
-dSrvrTime.setUTCHours(12,46,36,0);
+dSrvrTime.setUTCFullYear(2012,10,5);
+dSrvrTime.setUTCHours(14,3,3,0);
 
-var dLocalTime = new Date(2012,10,1,8,46,36,0);
-var dGridStart = new Date(2012,10,1,8,0,0,0);
+var dLocalTime = new Date(2012,10,5,9,3,3,0);
+var dGridStart = new Date(2012,10,5,9,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= d8e2f7c09bcdcfc06848f4306fca8556a826f30d 1351773996';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 9392610c1c4519c035daefd9a0c0bd80d77e9efa 1352124183';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,19 +50,19 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 11/1/2012 12:30:00 PM GMT */
+/* TVGSVC02 11/5/2012 1:45:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-11-01)*/
+/* Listings: In-Grid and Close-Up Ads (2012-11-05)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/Shores_Top_New.jpg";
-var magicBotImage = "/listings/images/topchan/Shores_Bottom_SUNDAYS_New.jpg";
-var magicLogo = "/listings/images/topchan/Shores_Middle_New.jpg";
-var magicLink = "https://www.facebook.com/TVGuideNetwork/app_153855648022942";
+var magicTopImage = "/listings/images/topchan/Shores_Top_10.31.jpg";
+var magicBotImage = "/listings/images/topchan/Shores_Bottom_SUNDAYS_10.31.jpg";
+var magicLogo = "/listings/images/topchan/Shores_Middle_10.31.jpg";
+var magicLink = "http://www.facebook.com/TVGuideNetwork/app_153855648022942";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 640;
@@ -76,19 +76,19 @@ var magicChannelLocation = "top";
 
 /* New! Franchise Channel Check-Ins */
 var franchiseCheckin = new Object();
-franchiseCheckin.Enabled = false;
-franchiseCheckin.ObjectID = 0;
-franchiseCheckin.ProgramID = 0;
-franchiseCheckin.CategoryID = 0;
+franchiseCheckin.Enabled = true;
+franchiseCheckin.ObjectID = 381222;
+franchiseCheckin.ProgramID = 21016498;
+franchiseCheckin.CategoryID = 9;
 franchiseCheckin.SeriesID = 0;
 franchiseCheckin.SportsNonEvent = false;
-franchiseCheckin.ProgramTitle = "";
+franchiseCheckin.ProgramTitle = "2012 Emmy Awards Fashion Wrap";
 franchiseCheckin.EpisodeTitle = "";
-franchiseCheckin.ObjectUrl = "";
-franchiseCheckin.CallLetters = "";
-franchiseCheckin.StartTime = "198001011200";
+franchiseCheckin.ObjectUrl = "http://www.tvguide.com/tvshows/2012-emmy-awards-fashion-wrap/381222";
+franchiseCheckin.CallLetters = "TVGN";
+franchiseCheckin.StartTime = "201209240800";
 franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 0;
+franchiseCheckin.LeftOffset = 520;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");

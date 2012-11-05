@@ -1,3 +1,18 @@
+ mi.commenting = new mi.Commenting();
+ // If necessary, you can add configuration overrides here.
+ mi.commenting.setConf('accountName','anchoragedailynews');
+
+ var disqus_config = function () {
+     this.sso = {
+         name:    "ADN",
+         button:  "http://media.adn.com/static/images/dsq-login-button-mi.png",
+         url:     "http://registration.adn.com/static/insite/disqus_login.html",
+         logout:  "http://registration.adn.com/reg-bin/tint.cgi?mode=logout",
+         width:   "600",
+         height:  "375"
+     };
+ };
+
 /** $Id: MI_AdDrivers.js 2966 2012-07-10 20:45:10Z scowles $ */
 /******************************************************************
  * @fileoverview Class for implementing the side scroll ad, used to provide the

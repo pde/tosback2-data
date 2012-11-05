@@ -87,6 +87,9 @@ function s_doPlugins(s)
 		if (s.getQueryParam('tid')) {
 			s.prop20=s.getQueryParam('tid');
 		}
+		if (s.getQueryParam('utm_medium') == "sm") {
+			s.prop20=s.getQueryParam('utm_medium') + "_" + s.getQueryParam('utm_source') + "_" + s.getQueryParam('utm_campaign');
+		}
 		s.eVar20=s.prop20;
 		
 		/* s.prop39 -- commercial node */

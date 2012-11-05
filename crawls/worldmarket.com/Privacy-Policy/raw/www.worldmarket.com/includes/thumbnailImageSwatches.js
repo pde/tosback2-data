@@ -45,9 +45,9 @@ window.MarketLive.ThumbnailSwatches = window.MarketLive.ThumbnailSwatches || {};
 	ns.addThumbnailSwatchBehaviors = function (context) {
 
 		$('.thumbSwatchMaxSwatches .swatchUnSelected, .thumbSwatchMaxSwatches .swatchSelected, .thumbSwatchMaxSwatches .swatchHover, .thumbSwatchTooltip .swatchUnSelected, .thumbSwatchTooltip .swatchSelected, .thumbSwatchTooltip .swatchHover', context).each(function(){
-			var src = $(this).attr('src'), alt = $(this).attr('alt'), href = $(this).closest('a').attr('href'), parent = $(this).parents().has('.thumbcontainer').first(), img = parent.find('.thumbcontainer img').first();
+			var src = $(this).attr('src'), alt = $(this).attr('alt'), href = $(this).closest('a').attr('imghref'), parent = $(this).parents().has('.thumbcontainer').first(), img = parent.find('.thumbcontainer img').first();
 			var allSwatches = parent.find('.swatchUnSelected, .swatchSelected, .swatchHover');
-			var swatch = allSwatches.filter(function(){return ($(this).attr('src') ==  src) && ($(this).attr('alt') ==  alt) && ($(this).closest('a').attr('href') == href);});
+			var swatch = allSwatches.filter(function(){return ($(this).attr('src') ==  src) && ($(this).attr('alt') ==  alt) && ($(this).closest('a').attr('imghref') == href);});
 
 			// event handlers for swatches
 			swatch.unbind('mouseenter.sw').bind('mouseenter.sw', function(){
@@ -71,7 +71,7 @@ window.MarketLive.ThumbnailSwatches = window.MarketLive.ThumbnailSwatches || {};
 					swatch.removeClass('swatchUnSelected swatchSelected swatchHover').addClass('swatchUnSelected');
 				}
 			}).unbind('click.sw').bind('click.sw', function(evt){
-				evt.preventDefault();
+				//evt.preventDefault();
 				img.removeData('lastSrc');
 				img.attr('src', href);
 				if (!swatch.hasClass('swatchSelected')) {
@@ -93,7 +93,7 @@ window.MarketLive.ThumbnailSwatches = window.MarketLive.ThumbnailSwatches || {};
 						$('body').append(hidden);
 					}
 					imgs.each(function(){
-						var url = $(this).closest('a').attr('href');
+						var url = $(this).closest('a').attr('imghref');
 						if (url) {
 							$('<img/>', {'src': url}).appendTo(hidden);
 						}

@@ -89,7 +89,7 @@ var filterByDate = (function () {
 
 
 /*********************************************************************************************************************/
-/* Buttons                                                                                                           */
+/* onReady                                                                                                           */
 /*********************************************************************************************************************/
 
 try {
@@ -490,18 +490,21 @@ var media = (function ($) {
       }
     },
     quickview: function (options) {
-      var $img;
+      var $img, $parent, $target;
       options = $.extend({}, media.options.quickview, options);
 
       if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) { return; }
 
-      if (options.target !== undefined) {
+      if (options.parent !== undefined && options.target !== undefined) {
         if (options.id) {
           options.regular = Scene7.createURL({ id: options.id, type: 'image', kind: 'regular', modifiers: options.modifiers});
           options.large = Scene7.createURL({ id: options.id, type: 'image', kind: 'large' });
         }
 
-        if ($((options.parent !== undefined ? options.parent + ' ' : '') + options.target).length !== 0) {
+        $parent = $(options.parent);
+        $target = $parent.find(options.target);
+        
+        if ($target.length !== 0) {
           // Build the link with the zoomer options
           media.quickview.$zoomer = $('<a></a>');
           if (options.id) { media.quickview.$zoomer.attr('id',    options.id); }
@@ -516,13 +519,12 @@ var media = (function ($) {
           media.quickview.$zoomer.append($img);
         }
 
-        $(options.target)
-          .find(options.hide).hide().end()
-          .prepend(media.quickview.$zoomer)
-          .find(options.show).show().end();
+        $parent.find(options.hide).hide();
+        $target.prepend(media.quickview.$zoomer);
+        $parent.find(options.show).show();
 
         // Activate the zoomer
-        $((options.parent !== undefined ? options.parent + ' ' : '') + '.cloud-zoom').CloudZoom();
+        $parent.find('.' + options.className).CloudZoom();
       }
 
       return media.quickview.$zoomer;

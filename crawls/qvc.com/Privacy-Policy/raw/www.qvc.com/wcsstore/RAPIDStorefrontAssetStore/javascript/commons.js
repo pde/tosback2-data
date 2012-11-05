@@ -1719,9 +1719,8 @@ function makeCoremetricsCalls() {
 		if (tags['shop9'] && tags['shop9'].length > 0) {
 			for (i=0; i<tags['shop9'].length; i++) {
 				try { eval(tags['shop9'][i]); } catch(e) { /*alert('exception:'+e);*/ }
-				cmDisplayShop9s();
 			}
-			
+			cmDisplayShop9s();
 		}
 		
 		if (tags['order'] && tags['order'].length > 0) {

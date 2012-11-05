@@ -720,7 +720,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 	      },
 
 	   canServeSnackBar:
-	     function()
+	     function(adSpec)
 	      {
                 var             p = this;
 		var		isTopAccessible = false;
@@ -732,7 +732,8 @@ if (e9Manager === undefined || e9Manager.init === false)
                  }
                  catch(e) { }
                         
-		 if (     (isTopAccessible === true)
+		 if (    (adSpec.size != "1x1")
+                      && (isTopAccessible === true)
                       &&  (p.isMobileDevice === true)
 		      &&  (! /OS [1-3](.*) like Mac OS X/i.test(navigator.userAgent))
                       &&  (p.isSafari === true)
@@ -773,7 +774,6 @@ if (e9Manager === undefined || e9Manager.init === false)
 			          'e9.snackbar=true; '  +
                                   'e9.snackbarclose='   + snackBarClose + ';' +
 				  'e9.size="' + snackBannerSize + '";' +
-			          'e9.noAd = 1; '  + 
 			   '<\/sc' + 'ript>' +
 			  '<scr' + 'ipt type="text/javascript" src="' + p.getRealTagsScript({}) + '"><\/sc' + 'ript>';
 
@@ -1301,7 +1301,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 			else
 			   t.drawTags();
 
-			if (p.canServeSnackBar() === true)
+			if (p.canServeSnackBar(adSpec) === true)
                          {
                            p.drawSnackBarTags();
                          }			
@@ -1633,7 +1633,7 @@ if (e9Manager === undefined || e9Manager.init === false)
 			 inspectNameObj(slotName + ".adResponse",adResponse);
 		       }
 
-                       if (p.canServeSnackBar() === true)
+                       if (p.canServeSnackBar(adSpec) === true)
 		          p.drawSnackBarTags();
 
                        iframe = p.createSameDomainIframeNode(iframeID,frameWidth,frameHeight);
