@@ -7088,7 +7088,7 @@ google.load('ads.search', '2');
         }
     }
 })(jQuery);
-/*jquery.adloader:22506006.19*/
+/*jquery.adloader:22506006.20*/
 
 /**
  * User: l.bilharz@global-communication.de
@@ -7105,7 +7105,7 @@ google.load('ads.search', '2');
         FLAG_ALL = 15;
     //on document ready: take given array of iframeData and bind handlers
     $(function() {
-        if($.browser.msie && parseInt($.browser.version) < 9) { 
+        if($.browser.msie && parseInt($.browser.version) < 9) {
             var tif = $("#adSlot_skyscraper2");
             tif.attr("allowtransparency", "true");
             var d = tif.contents().get(0);
@@ -7113,8 +7113,8 @@ google.load('ads.search', '2');
             d.open();
             d.write('<html><body style="background:transparent;"></body></html>');
             d.close();
-            tif.css("visibility", "visible");
             }
+            tif.css("visibility", "visible");
         }
         if (!window.de || !window.de.bild) return;
         var data = window.de.bild.iframeData;
@@ -7122,7 +7122,7 @@ google.load('ads.search', '2');
         for (var i = 0, l = data.length; i < l; i++) {
             var o = data[i],
                 $$ = $("#" + o.id + " iframe");
-            if ($$.inSight() == FLAG_ALL) {
+            if ($$.inSight() != 0) {
                 // element is already in viewport: load script
                 loadJavaScript.call($$.get(0), o.url, o.arParams);
             } else {
@@ -7136,7 +7136,7 @@ google.load('ads.search', '2');
      * load javascript in iframe first time that at least one pixel enters browser viewport.
      */
     function handleInSight(e, visible) {
-        if (visible == FLAG_ALL) {
+        if (visible != 0) {
             loadJavaScript.call(this, e.data.url, e.data.arParams);
             $(this).unbind(INSIGHT_CHECK_EVENT, handleInSight);
         }
@@ -7150,13 +7150,13 @@ google.load('ads.search', '2');
     function loadJavaScript(url, arParams) {
         // add a random number to the ad request url
         //url = urlAppend(url, Math.round(Math.random() * new Date().getTime()));
-       
+      
         // iframe mit load belegen
         var iframe = $(this);
         iframe.load(function() {
             check();
         });
-       
+      
         function check() {
             if(iframe.data("isLoaded") != "true") {
                 if(!checkNOAD()) {
@@ -7174,7 +7174,7 @@ google.load('ads.search', '2');
                 }
             }
         }
-       
+      
         function checkNOAD() {
             if(iframe[0].contentWindow["sas_noad"] == true) {
                 return true;
@@ -7183,7 +7183,7 @@ google.load('ads.search', '2');
                 return false
             }
         }
-       
+      
         // find iframe document
         var doc = iframe.contents().get(0);
         doc.open();

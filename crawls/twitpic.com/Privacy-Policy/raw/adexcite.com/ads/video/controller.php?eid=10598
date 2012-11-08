@@ -5,278 +5,353 @@ window.top.LiveRailParameters = {
     LR_LAYOUT_SKIN_ID: 2,
     LR_VERTICALS: 'vslider',
     LR_PARTNERS: 707676,
-	LR_AUTOPLAY:1,
-	LR_URL: 'http://twitpic.com/privacy.do',
-	LR_CONTENT:6,
-	LR_TITLE:'adexcitecontent',
-	LR_VIDEO_ID:'adexcitecontent',
-	LR_LAYOUT_LINEAR_PAUSEONCLICKTHRU: 0,
-	LR_TAGS: '_rt_Hyundai_AT_LiveRail, _rt_hyundai_at, rt_Hyundai_NN_LiveRail, _rt_hyundai_nn'
+    LR_AUTOPLAY:1,
+    LR_URL: 'http://twitpic.com/privacy.do',
+    LR_CONTENT:6,
+    LR_TITLE:'adexcitecontent',
+    LR_VIDEO_ID:'adexcitecontent',
+    LR_LAYOUT_LINEAR_PAUSEONCLICKTHRU: 0,
+    LR_TAGS: '_rt_Hyundai_AT_LiveRail, _rt_hyundai_at, rt_Hyundai_NN_LiveRail, _rt_hyundai_nn',
+    MANUAL_HOUR_LIMIT: 1,
+    MANUAL_SET_SIZE: 1,
+    MANUAL_STRIKE_IMPRESSION: 1,
+    CAP_TYPE: 'none'
 };
+var q1Forward = false;
+(function(){
+    var impressionCount,
+        q1Date,
+        //localOrCookie, //uncommentMe when you are ready to track video end for desktop
+        q1DateObject = new Date(),
+        q1Day = q1DateObject.getDate(),
+        q1Month = q1DateObject.getMonth(),
+        q1Year = q1DateObject.getFullYear(),
+        q1Expiry = new Date(q1DateObject.getTime() + 365 * 24 * 3600 * 1000),
+	HourLimit,
+	StrikeImpression,
+	CapType,
+	SetSize;
+        
+    q1Date = q1Day+" "+q1Month+" "+q1Year;
+    
+    LiveRailParameters = window.top.LiveRailParameters;
+    
+    //Get Frequency Cap Params
+    HourLimit = LiveRailParameters.MANUAL_HOUR_LIMIT? LiveRailParameters.MANUAL_HOUR_LIMIT : 24;
+    StrikeImpression = LiveRailParameters.MANUAL_STRIKE_IMPRESSION? LiveRailParameters.MANUAL_STRIKE_IMPRESSION : 2;
+    CapType = LiveRailParameters.CAP_TYPE? LiveRailParameters.CAP_TYPE : "impressions";
+    SetSize = LiveRailParameters.MANUAL_SET_SIZE? LiveRailParameters.MANUAL_SET_SIZE : 7;
+    if (CapType == "none"){
+	q1Forward = true;
+    }else{
+	if (localStorage) {
+	    
+	    impressionCount = localStorage.getItem('Q1-impressionCount') ? (parseInt(localStorage.getItem('Q1-impressionCount')) + 1) : 1;
+	    if(localStorage.getItem("Q1-Date")){
+		if (localStorage.getItem("Q1-Date") != q1Date) {
+		    impressionCount = 1;
+		}
+	    }
+	    localStorage.setItem('Q1-Date', q1Date);
+	    
+	    if (impressionCount >= (SetSize + 1)) impressionCount = 1;
+	    localStorage.setItem('Q1-impressionCount',impressionCount);
+	    if (impressionCount == StrikeImpression ){
+		q1Forward = true;
+	    }
+	}else{
+	    function setCookie(name, value) {
+		document.cookie=name + "=" + escape(value) + "; path=/; expires=" + q1Expiry.toGMTString();
+	    }
+	    
+	    function getCookie(name) {
+		var re = new RegExp(name + "=([^;]+)");
+		var value = re.exec(document.cookie);
+		return (value != null) ? unescape(value[1]) : null;
+	    }
+	    
+	    impressionCount = getCookie('q1impressionCount') ? (parseInt(getCookie('q1impressionCount')) + 1) : 1;
+	    if(getCookie("q1Date")){
+		if (getCookie("q1Date") != q1Date){
+		    impressionCount = 1;
+		}
 
+		setCookie("q1Date", q1Date);
 
-/**
+		if (impressionCount >= (SetSize + 1)) impressionCount = 1;
+		setCookie('q1impressionCount',impressionCount);
+		if (impressionCount == StrikeImpression ){
+		    q1Forward = true;
+		} 
+	    }else{            
+		setCookie("q1Date", q1Date);
+		setCookie("q1impressionCount", 1);
+		//setCookie("q1SeenAdCount", form.field1.value); //uncommentME when ready to begin tracking seen ad count
+	    }
+	}
+    }
+}())/**
  * AdExcite Slider library - LiveRail implementation
  * Latest build: 9 June 2012
  * Depends on jQuery 1.4+
  */
 
-LiveRailParameters = window.top.LiveRailParameters;
-
-(function () {
-
-    var LiveRailObject = {},
-            loaderElement,
-            targetDocument;
-
-    // Determine target document
-    try {
-        if(top === self) {
-            targetDocument = document;
-        } else {
-            targetDocument = window.top.document;
-        }
-        if (!targetDocument) {
-            // there is no valid document, fail
+if(q1Forward === true){
+    (function () {
+    
+        var LiveRailObject = {},
+                loaderElement,
+                targetDocument;
+    
+        // Determine target document
+        try {
+            if(top === self) {
+                targetDocument = document;
+            } else {
+                targetDocument = window.top.document;
+            }
+            if (!targetDocument) {
+                // there is no valid document, fail
+                return;
+            }
+        } catch(e) {
+            // window.top is not accessible, fail
             return;
         }
-    } catch(e) {
-        // window.top is not accessible, fail
-        return;
-    }
-
-
-    function inclJS(source) {
-        var script = document.createElement("script");
-        script.src = source;
-        document.getElementsByTagName('head')[0].appendChild(script);
-    }
-
-    function pollJS() {
-        if(typeof jQuery == 'function') {
-            clearInterval(pollInt);
-            if( typeof $$$$ != 'undefined' && jQuery !== $$$$ ) {
-                console.log("$ variable reset");
-                jQuery.noConflict();
-            }
-            preloadCornerAd();
-            loadLiveRail(function() {
-                var width, height, creativeData = {}, environmentVars = {}, i;
-
-                LiveRailObject.subscribe(function() {
-                    jQuery(targetDocument.getElementById('container-ad-excite')).css({
-                        'bottom':-450
-                    });
-                    LiveRailObject.setAdVolume(LiveRailParameters.AE_VOLUME);
-                    LiveRailObject.startAd();
-                }, 'AdLoaded');
-
-                LiveRailObject.subscribe(function() {
-                }, 'AdStarted');
-
-                LiveRailObject.subscribe(function() {
-                    generateCornerAd();
-                    closeCountdown();
-                }, 'AdImpression');
-
-                LiveRailObject.subscribe(function() {
-                    unloadCornerAd();
-                }, 'AdStopped');
-
-                LiveRailObject.subscribe(function() {
-                    unloadCornerAd();
-                }, 'AdError');
-
-                width = targetDocument.getElementById('vidPlayer').offsetWidth;
-                height = targetDocument.getElementById('vidPlayer').offsetHeight;
-                environmentVars = {
-                    LR_ENVIRONMENT: 'flash',
-                    LR_COMPANIONS: '300:250:corner-ad-excite'
-                };
-                for (i in LiveRailParameters) {
-                    if (LiveRailParameters.hasOwnProperty(i)) {
-                        environmentVars[i] = LiveRailParameters[i];
-                    }
-                }
-                environmentVars.slot = targetDocument.getElementById('vidPlayer');
-
-                LiveRailObject.initAd(width, height, '', '', creativeData, environmentVars);
-            });
+    
+    
+        function inclJS(source) {
+            var script = document.createElement("script");
+            script.src = source;
+            document.getElementsByTagName('head')[0].appendChild(script);
         }
-    }
-
-    function preloadCornerAd() {
-
-        // Establish ad layout elements
-        jQuery('<div id="container-ad-excite"/>').css({
-            'position':'fixed',
-            'bottom':-241,
-            'right':5,
-            'z-index':21e8,
-            'font':'12px "Trebuchet MS", Arial, Helvetica, sans-serif'
-        }).append(
-                jQuery('<span id="close-corner-ad"></span>')
-        ).append(
-                jQuery('<div id="video-creative"/>').append(
-                        jQuery('<div id="vidPlayer"></a>').css({
-                            'width':430,
-                            'height':242
-                        })
-                ).css({
-                            'clear':'right'
-                        })
-        ).appendTo(targetDocument.body);
-
-        // *** Add companion
-
-        jQuery(targetDocument.getElementById('video-creative')).before(
-                jQuery('<div id="corner-ad-excite"></div>')
-        );
-		 jQuery(targetDocument.getElementById('video-creative')).before(
-                jQuery('<div id="comscore-ad-excite"><img src="http://b.scorecardresearch.com/p?C1=1&C2=13014539&C5=01"></div>')
-        );
-
-        jQuery(targetDocument.getElementById('corner-ad-excite')).css('display','none');
-    }
-
-    function generateCornerAd() {
-
-        // Add skin to add layout
-        jQuery(targetDocument.getElementById('close-corner-ad')).html('You may close this ad in <span id="ctr">'+LiveRailParameters.AE_CLOSE_WAIT+'</span> second<span id="pl">s</span>.</span>').css({
-            'position':'absolute',
-            'background':'black url("http://c400517.r17.cf1.rackcdn.com/adexcite_x.png") 0 50px no-repeat',
-            'bottom':'0%',
-            'right':1,
-            'padding':'0 3px',
-            'color':'#777'
-        });
-
-        jQuery(targetDocument.getElementById('video-creative')).css({
-            'border-width':'2px 2px 0px 2px',
-			'border-style':'solid',
-            'border-color':'#333',
-		    '-moz-box-shadow':'0 2px 5px 2px #777', 
-			'box-shadow':'0 2px 5px 2px #777'
-           });
-
-        jQuery(targetDocument.getElementById('corner-ad-excite')).css({
-            'position':'fixed',
-            'bottom':-255,
-            'right':5,
-            'z-index':21e9
-			});
-
-        jQuery(targetDocument.getElementById('vidPlayer')).children(':first-child').css({
-            'z-index':21e8
-        });
-
-        jQuery(targetDocument.getElementById('container-ad-excite')).animate({'bottom':0}, 900, 'linear');
-    }
-
-    function closeCountdown() {
-        closeCountdown.intv = setInterval(function () {
-            var ctr = jQuery(targetDocument.getElementById('ctr')), sec = parseInt(ctr.text())-1;
-
-            if(sec <= 0) { // *** show close buton
-                jQuery(targetDocument.getElementById('close-corner-ad')).css({
-                    'width':17,
-                    'height':17,
-                    'background-position':'0 0',
-                    'background-color':'transparent',
-                    'padding':0,
-                    'cursor':'pointer'
-                }).html('').click(function () {
-                            LiveRailObject.stopAd();
+    
+        function pollJS() {
+            if(typeof jQuery == 'function') {
+                clearInterval(pollInt);
+                if( typeof $$$$ != 'undefined' && jQuery !== $$$$ ) {
+                    console.log("$ variable reset");
+                    jQuery.noConflict();
+                }
+                preloadCornerAd();
+                loadLiveRail(function() {
+                    var width, height, creativeData = {}, environmentVars = {}, i;
+    
+                    LiveRailObject.subscribe(function() {
+                        jQuery(targetDocument.getElementById('container-ad-excite')).css({
+                            'bottom':-450
                         });
-                clearInterval(closeCountdown.intv);
-                return;
-            } else
-                ctr.text(sec);
-
-            if(sec == 1) jQuery(targetDocument.getElementById('pl')).remove(); // *** De-pluralize 'seconds' if only 1 remaining.
-        }, 1000);
-    }
-
-    function unloadCornerAd() {
-        var container = targetDocument.getElementById('container-ad-excite');
-
-        jQuery(targetDocument.getElementById('close-corner-ad')).html('').css({ 'display':'none' });
-        jQuery(targetDocument.getElementById('video-creative')).css({
-            'border-width':'0px 0px 0px 0px',
-            'border-style':'none',
-            'border-color':'transparent',
-            'background-color':'transparent',
-            'bottom':-450
-        });
-
-        jQuery(container).css({ 'display':'none' });
-        window.setTimeout( function() {
-            try {
-                jQuery(container).remove();
-                jQuery(loaderElement).remove();
-            } catch(e) {}
-        }, 2000);
-    }
-
-    function loadLiveRail(onload) {
-        var onFrameLoad;
-        loaderElement = targetDocument.createElement('iframe');
-        loaderElement.style.display = 'none';
-        onFrameLoad = function() {
-            var LiveRailAPI, onApiLoad, i, vpaidFrameDocument, vpaidFrameWindow;
-            try {
-                vpaidFrameWindow = loaderElement.contentWindow;
-                vpaidFrameDocument = vpaidFrameWindow.document;
-            } catch(e) {
-                vpaidFrameDocument = loaderElement.document;
-                vpaidFrameWindow = vpaidFrameDocument.parentWindow;
-            }
-            try {
-                LiveRailAPI = vpaidFrameDocument.createElement('script');
-                LiveRailAPI.src = 'http://cdn-static.liverail.com/js/LiveRail.AdManager-1.0.js';
-                onApiLoad = function() {
-                    if (typeof vpaidFrameWindow.getVPAIDAd === 'function') {
-                        LiveRailObject = vpaidFrameWindow.getVPAIDAd();
-                        if (typeof onload === 'function') {
-                            onload();
+                        LiveRailObject.setAdVolume(LiveRailParameters.AE_VOLUME);
+                        LiveRailObject.startAd();
+                    }, 'AdLoaded');
+    
+                    LiveRailObject.subscribe(function() {
+                    }, 'AdStarted');
+    
+                    LiveRailObject.subscribe(function() {
+                        generateCornerAd();
+                        closeCountdown();
+                    }, 'AdImpression');
+    
+                    LiveRailObject.subscribe(function() {
+                        unloadCornerAd();
+                    }, 'AdStopped');
+    
+                    LiveRailObject.subscribe(function() {
+                        unloadCornerAd();
+                    }, 'AdError');
+    
+                    width = targetDocument.getElementById('vidPlayer').offsetWidth;
+                    height = targetDocument.getElementById('vidPlayer').offsetHeight;
+                    environmentVars = {
+                        LR_ENVIRONMENT: 'flash',
+                        LR_COMPANIONS: '300:250:corner-ad-excite'
+                    };
+                    for (i in LiveRailParameters) {
+                        if (LiveRailParameters.hasOwnProperty(i)) {
+                            environmentVars[i] = LiveRailParameters[i];
                         }
                     }
-                };
-                if (LiveRailAPI.readyState) {
-                    LiveRailAPI.onreadystatechange = function() {
-                        if (this.readyState === 'loaded' || this.readyState === 'complete') {
-                            onApiLoad();
+                    environmentVars.slot = targetDocument.getElementById('vidPlayer');
+    
+                    LiveRailObject.initAd(width, height, '', '', creativeData, environmentVars);
+                });
+            }
+        }
+    
+        function preloadCornerAd() {
+    
+            // Establish ad layout elements
+            jQuery('<div id="container-ad-excite"/>').css({
+                'position':'fixed',
+                'bottom':-241,
+                'right':5,
+                'z-index':21e8,
+                'font':'12px "Trebuchet MS", Arial, Helvetica, sans-serif'
+            }).append(
+                    jQuery('<span id="close-corner-ad"></span>')
+            ).append(
+                    jQuery('<div id="video-creative"/>').append(
+                            jQuery('<div id="vidPlayer"></a>').css({
+                                'width':430,
+                                'height':242
+                            })
+                    ).css({
+                                'clear':'right'
+                            })
+            ).appendTo(targetDocument.body);
+    
+            // *** Add companion
+    
+            jQuery(targetDocument.getElementById('video-creative')).before(
+                    jQuery('<div id="corner-ad-excite"></div>')
+            );
+                     jQuery(targetDocument.getElementById('video-creative')).before(
+                    jQuery('<div id="comscore-ad-excite"><img src="http://b.scorecardresearch.com/p?C1=1&C2=13014539&C5=01"></div>')
+            );
+    
+            jQuery(targetDocument.getElementById('corner-ad-excite')).css('display','none');
+        }
+    
+        function generateCornerAd() {
+    
+            // Add skin to add layout
+            jQuery(targetDocument.getElementById('close-corner-ad')).html('You may close this ad in <span id="ctr">'+LiveRailParameters.AE_CLOSE_WAIT+'</span> second<span id="pl">s</span>.</span>').css({
+                'position':'absolute',
+                'background':'black url("http://c400517.r17.cf1.rackcdn.com/adexcite_x.png") 0 50px no-repeat',
+                'bottom':'0%',
+                'right':1,
+                'padding':'0 3px',
+                'color':'#777'
+            });
+    
+            jQuery(targetDocument.getElementById('video-creative')).css({
+                'border-width':'2px 2px 0px 2px',
+                            'border-style':'solid',
+                'border-color':'#333',
+                        '-moz-box-shadow':'0 2px 5px 2px #777', 
+                            'box-shadow':'0 2px 5px 2px #777'
+               });
+    
+            jQuery(targetDocument.getElementById('corner-ad-excite')).css({
+                'position':'fixed',
+                'bottom':-255,
+                'right':5,
+                'z-index':21e9
+                            });
+    
+            jQuery(targetDocument.getElementById('vidPlayer')).children(':first-child').css({
+                'z-index':21e8
+            });
+    
+            jQuery(targetDocument.getElementById('container-ad-excite')).animate({'bottom':0}, 900, 'linear');
+        }
+    
+        function closeCountdown() {
+            closeCountdown.intv = setInterval(function () {
+                var ctr = jQuery(targetDocument.getElementById('ctr')), sec = parseInt(ctr.text())-1;
+    
+                if(sec <= 0) { // *** show close buton
+                    jQuery(targetDocument.getElementById('close-corner-ad')).css({
+                        'width':17,
+                        'height':17,
+                        'background-position':'0 0',
+                        'background-color':'transparent',
+                        'padding':0,
+                        'cursor':'pointer'
+                    }).html('').click(function () {
+                                LiveRailObject.stopAd();
+                            });
+                    clearInterval(closeCountdown.intv);
+                    return;
+                } else
+                    ctr.text(sec);
+    
+                if(sec == 1) jQuery(targetDocument.getElementById('pl')).remove(); // *** De-pluralize 'seconds' if only 1 remaining.
+            }, 1000);
+        }
+    
+        function unloadCornerAd() {
+            var container = targetDocument.getElementById('container-ad-excite');
+    
+            jQuery(targetDocument.getElementById('close-corner-ad')).html('').css({ 'display':'none' });
+            jQuery(targetDocument.getElementById('video-creative')).css({
+                'border-width':'0px 0px 0px 0px',
+                'border-style':'none',
+                'border-color':'transparent',
+                'background-color':'transparent',
+                'bottom':-450
+            });
+    
+            jQuery(container).css({ 'display':'none' });
+            window.setTimeout( function() {
+                try {
+                    jQuery(container).remove();
+                    jQuery(loaderElement).remove();
+                } catch(e) {}
+            }, 2000);
+        }
+    
+        function loadLiveRail(onload) {
+            var onFrameLoad;
+            loaderElement = targetDocument.createElement('iframe');
+            loaderElement.style.display = 'none';
+            onFrameLoad = function() {
+                var LiveRailAPI, onApiLoad, i, vpaidFrameDocument, vpaidFrameWindow;
+                try {
+                    vpaidFrameWindow = loaderElement.contentWindow;
+                    vpaidFrameDocument = vpaidFrameWindow.document;
+                } catch(e) {
+                    vpaidFrameDocument = loaderElement.document;
+                    vpaidFrameWindow = vpaidFrameDocument.parentWindow;
+                }
+                try {
+                    LiveRailAPI = vpaidFrameDocument.createElement('script');
+                    LiveRailAPI.src = 'http://cdn-static.liverail.com/js/LiveRail.AdManager-1.0.js';
+                    onApiLoad = function() {
+                        if (typeof vpaidFrameWindow.getVPAIDAd === 'function') {
+                            LiveRailObject = vpaidFrameWindow.getVPAIDAd();
+                            if (typeof onload === 'function') {
+                                onload();
+                            }
                         }
                     };
-                } else {
-                    LiveRailAPI.onload = function() {
-                        onApiLoad();
-                    };
-                }
-                vpaidFrameDocument.body.appendChild(LiveRailAPI);
-            } catch(error) {}
-        };
-        loaderElement.onload = function() { onFrameLoad(); }
-        if (typeof loaderElement.onload !== 'function') {
-            loaderElement.onreadystatechange = function() {
-                if (this.readyState === 'loaded' || this.readyState === 'complete') {
-                    onFrameLoad();
-                }
+                    if (LiveRailAPI.readyState) {
+                        LiveRailAPI.onreadystatechange = function() {
+                            if (this.readyState === 'loaded' || this.readyState === 'complete') {
+                                onApiLoad();
+                            }
+                        };
+                    } else {
+                        LiveRailAPI.onload = function() {
+                            onApiLoad();
+                        };
+                    }
+                    vpaidFrameDocument.body.appendChild(LiveRailAPI);
+                } catch(error) {}
             };
+            loaderElement.onload = function() { onFrameLoad(); }
+            if (typeof loaderElement.onload !== 'function') {
+                loaderElement.onreadystatechange = function() {
+                    if (this.readyState === 'loaded' || this.readyState === 'complete') {
+                        onFrameLoad();
+                    }
+                };
+            }
+            targetDocument.body.appendChild(loaderElement);
         }
-        targetDocument.body.appendChild(loaderElement);
-    }
-
-    // *** Include required Javascript before doing anything.
-    var jqueryScript = "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js";
-    $$$$ = window.$;
-    if(window.jQuery && window.jQuery.fn.jquery) {
-        if(parseFloat(jQuery.fn.jquery) < 1.4)
+    
+        // *** Include required Javascript before doing anything.
+        var jqueryScript = "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js";
+        $$$$ = window.$;
+        if(window.jQuery && window.jQuery.fn.jquery) {
+            if(parseFloat(jQuery.fn.jquery) < 1.4)
+                inclJS(jqueryScript);
+        } else {
             inclJS(jqueryScript);
-    } else {
-        inclJS(jqueryScript);
-    }
-
-    var pollInt = setInterval(pollJS, 200);
-
-})();
+        }
+    
+        var pollInt = setInterval(pollJS, 200);
+    
+    })();
+}

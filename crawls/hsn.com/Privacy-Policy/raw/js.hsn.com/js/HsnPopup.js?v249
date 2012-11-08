@@ -1,0 +1,358 @@
+﻿/// <reference path="~/js/library/prototype.js"/>
+/// <reference path="~/js/library/scriptaculous.js"/>
+
+var myHsnPopup = Class.create({
+    HsnPopupDraggable: null,
+    Popup: null,
+    Container: null,
+    Title: null,
+    TitleDiv: null,
+    TitleText: null,
+    Modal: false,
+    UpdateDiv: null,
+    CloseButton: null,
+    Draggable: true,
+    HideCloseButton: false,
+    PassedDiv: null,
+    Shim: null,
+    style: null,
+    FitInViewableArea: true,
+
+    UpdateTitle: function (newTitle) {
+        this.TitleText.update(newTitle);
+        this.Title = newTitle;
+    },
+
+    Resize: function () {
+        if (this.Modal && $('darkenScreenObject') && this.Popup.getStyle('display') === 'block') {
+            var h = $(document.body).getHeight() + 'px';
+            var w = ($(document.body).getWidth() < 993 ? 993 : $(document.body).getWidth()) + 'px';
+            $('darkenScreenObject').setStyle({ height: h, width: w });
+        }
+
+        var top = document.viewport.getScrollOffsets().top;
+        var bottom = top + document.viewport.getHeight();
+        var height = document.viewport.getDimensions().height;
+
+        var content = this.UpdateDiv.firstDescendant();
+        if (content.getHeight() > height && this.FitInViewable) {
+            this.UpdateDiv.setStyle({ height: ((height - 80) + 'px'), overflowY: 'scroll', overflowX: 'hidden' });
+        } else {
+            this.UpdateDiv.setStyle({ height: 'auto', width: 'auto', overflowY: 'hidden', overflowX: 'hidden' });
+        }
+        var styleTop = (((height / 2) + top) - (this.Popup.getHeight() / 2));
+        if (styleTop < top) {
+            this.style.top = (top + 20) + 'px'
+        }
+        else {
+            this.style.top = styleTop + 'px';
+        }
+        this.style.left = ((document.viewport.getDimensions().width / 2) - (this.Popup.getWidth() / 2)) + 'px';
+        this.Popup.setStyle(this.style);
+
+    },
+
+    Close: function () {
+        this.Popup.fade({ duration: 0.3 });
+        if (this.Modal) {
+            if ($('darkenScreenObject'))
+                $('darkenScreenObject').setStyle({ display: 'none' });
+        }
+
+        window.setTimeout(function () {
+            if (this.PassedDiv) {
+                this.PassedDiv.setStyle({ display: 'none' });
+                $(document.body).insert(this.PassedDiv);
+            }
+
+            if (this.Popup.id && this.Popup.id === 'HsnPopup') {
+                this.Popup.remove();
+                HsnPopup = new myHsnPopup('HsnPopup');
+            } else {
+                this.Popup.remove();
+            }
+            Hsn.Com.RemoveEventListener(window, 'resize', this.Resize);
+
+        } .bind(this), 500);
+    },
+
+    getPosition: function () {
+        //this.style = {};
+        if (arguments[0].top) {
+            var top = document.viewport.getScrollOffsets().top;
+            top += new Number((arguments[0].top.substr(0, arguments[0].top.indexOf('px'))));
+            this.style.top = top + 'px';
+        }
+        if (arguments[0].right)
+            this.style.right = arguments[0].right;
+        if (arguments[0].left && !arguments[0].right)
+            this.style.left = arguments[0].left;
+        if (arguments[0].bottom && !arguments[0].top)
+            this.style.bottom = arguments[0].bottom;
+        if (!arguments[0].left && !arguments[0].right)
+            this.style.left = ((document.viewport.getWidth() / 2) -
+                             (this.Popup.getWidth() / 2) + 'px');
+
+        if (arguments[0].position)
+            this.style.position = arguments[0].position;
+
+        //return style;
+    },
+
+    Show: function () {
+        if (this.Popup.getStyle('display') != 'block') {
+            Hsn.Com.zIndex.Increment();
+            this.Popup.setStyle({ zIndex: Hsn.Com.zIndex.Value() });
+            this.style = {};
+            if (typeof (arguments[0]) != 'undefined' && typeof (arguments[0]) == 'string') {
+                if (!this.UpdateDiv.select('#' + arguments[0])[0]) {
+                    this.UpdateDiv.update("");
+                    this.PassedDiv = $(arguments[0]);
+                    this.PassedDiv.setStyle({ display: 'block', position: 'relative' });
+                    this.UpdateDiv.insert(this.PassedDiv);
+                }
+            }
+            if (typeof (arguments[0]) != 'undefined' && typeof (arguments[0]) == 'object') {
+                this.getPosition(arguments[0]);
+            }
+            if (typeof (arguments[1]) != 'undefined' && typeof (arguments[1]) == 'object') {
+                this.getPosition(arguments[1]);
+            }
+            if (this.HideCloseButton) {
+                this.CloseButton.setStyle({ display: 'none' });
+                this.Container.setStyle({ padding: '5px 5px 5px 5px' });
+            }
+
+            if (this.Title) {
+                this.TitleDiv.update(this.Title);
+                this.TitleDiv.setStyle({ display: 'block' });
+            }
+
+            this.Popup.appear({ duration: 0.3 });
+
+            //debugger;
+            if (this.Modal) {
+                if (!$('darkenScreenObject')) {
+                    $(document.body).insert(new Element('div', { 'id': 'darkenScreenObject' }));
+                }
+
+                $('darkenScreenObject').setStyle({
+                    height: $(document.body).getHeight() + 'px',
+                    width: $(document.body).getWidth() + 'px',
+                    opacity: 0.3,
+                    display: 'block'
+                })
+            }
+
+            setTimeout(function () {
+                //determine if the popup is bigger than the visible area.
+                var top = document.viewport.getScrollOffsets().top;
+                var bottom = top + document.viewport.getHeight();
+                var height = document.viewport.getDimensions().height;
+
+                if (this.Popup.getHeight() > height && height > 0 && this.FitInViewableArea) {
+                    var popupheight = (height - 80) + 'px';
+                    this.UpdateDiv.setStyle({ height: popupheight, overflowY: 'scroll' });
+                } else if (this.Draggable) {
+                    try {
+                        this.HsnPopupDraggable = new Draggable(this.Popup, { zindex: this.Popup.getStyle('zIndex') });
+                        this.Popup.setStyle({ cursor: 'url(' + scImageServer + '/images/formatting/grabbing.cur), move' });
+                        this.Popup.setStyle({ cursor: 'url(' + scImageServer + '/images/formatting/grab.cur), move' });
+                        this.Container.observe('mousedown', function (e) {
+                            this.Popup.setStyle({ cursor: 'url(' + scImageServer + '/images/formatting/grabbing.cur), move' });
+                        } .bind(this));
+                        this.Container.observe('mouseup', function (e) {
+                            this.Popup.setStyle({ cursor: 'url(' + scImageServer + '/images/formatting/grab.cur), move' });
+                        } .bind(this));
+                    } catch (ignore) { }
+                }
+                //debugger;
+                if (!this.style.top) {
+                    //Vertically center the popup.
+                    this.style.top = (((height / 2) + top) - (this.Popup.getHeight() / 2)) + 'px';
+                }
+                //determine if the popup is below the visible area.
+                var popupTop = new Number(this.style.top.substr(0, this.style.top.indexOf('px')));
+                //debugger;
+                if (popupTop >= bottom || ((popupTop + this.Popup.getHeight()) > bottom)) {
+                    this.style.top = bottom - this.Popup.getHeight() + 'px';
+                }
+                //Horizontally center the popup.
+                this.style.left = ((document.viewport.getDimensions().width / 2) - (this.Popup.getWidth() / 2)) + 'px';
+                this.Popup.setStyle(this.style);
+
+                if (!this.style.top) {
+                    //Vertically center the popup.
+                    var height = document.viewport.getScrollOffsets().top + document.viewport.getDimensions().height;
+                    this.style.top = ((height / 2) - (this.Popup.getHeight() / 2)) + 'px';
+                }
+                //determine if the popup is below the visible area.
+                var bottom = document.viewport.getScrollOffsets().top + document.viewport.getHeight();
+                var top = new Number(this.style.top.substr(0, this.style.top.indexOf('px')));
+                //debugger;
+                if (top >= bottom || ((top + this.Popup.getHeight()) > bottom)) {
+                    this.style.top = bottom - this.Popup.getHeight() + 'px';
+                }
+                //Horizontally center the popup.
+                this.style.left = ((document.viewport.getDimensions().width / 2) - (this.Popup.getWidth() / 2)) + 'px';
+                this.Popup.setStyle(this.style);
+
+                //this.Popup.setStyle({ position: 'fixed' });
+                if (isIE6) {
+                    setTimeout(function () {
+                        this.Shim.setStyle({
+                            height: (this.Popup.getHeight() - 2) + 'px',
+                            width: (this.Popup.getWidth() - 2) + 'px'
+                        });
+                    } .bind(this), 5);
+                }
+                Hsn.Com.AddEventListener(window, 'resize', this.Resize.bind(this));
+            } .bind(this), 10);
+        }
+    },
+
+    AjaxUpdater: function (url, params, options) {
+        $(document.body).setStyle({ cursor: 'wait' });
+        var cacheBuster = 'R=' + Math.floor(Math.random() * 100000);
+        url += (url.indexOf('?') > -1 ? '&' + cacheBuster : '?' + cacheBuster);
+        new Ajax.Updater(this.UpdateDiv,
+            url,
+            {
+                evalScripts: true,
+                method: 'get',
+                parameters: params,
+                onSuccess: function (t) {
+                    if (this.Popup.getStyle('display') !== 'block') {
+                        if (options && options.position)
+                            this.Show(options.position);
+                        else
+                            this.Show();
+                    } else if (isIE6) {
+                        setTimeout(function () {
+                            this.Shim.setStyle({
+                                height: (this.Popup.getHeight() - 2) + 'px',
+                                width: (this.Popup.getWidth() - 2) + 'px'
+                            });
+                        } .bind(this), 5);
+                    }
+                    $(document.body).setStyle({ cursor: 'default' });
+                    if (options && typeof (options.onSuccess) === 'function') {
+                        setTimeout(function () { options.onSuccess(); }, 500);
+                    }
+                    cmCreateAjaxTags(this.Popup);
+                } .bind(this),
+                onComplete: function (t) {
+                    if (options && typeof (options.onComplete) === 'function') {
+                        setTimeout(function () { options.onComplete(t); }, 500);
+                    }
+                },
+                onFailure: function (t) {
+                    $(document.body).setStyle({ cursor: 'default' });
+                    //debugger;
+                    if (options && typeof (options.onFailure) === 'function') {
+                        options.onFailure(t);
+                    }
+                    else {
+                        alert('Error occured in Popup.AjaxUpdater!');
+                    }
+                }
+            }
+        );
+    },
+
+    initialize: function (id) {
+
+        if (typeof (Effect) == 'undefined') {
+
+            var effectsJS = new Element('script',
+                    {
+                        'type': 'text/javascript',
+                        'src': scJSServer + '/js/library/effects.js'
+                    });
+            $(document.body).insert(effectsJS);
+        }
+
+        if (typeof (Draggable) == 'undefined') {
+
+            var dragJS = new Element('script',
+                    {
+                        'type': 'text/javascript',
+                        'src': scJSServer + '/js/library/dragdrop.js'
+                    });
+            $(document.body).insert(dragJS);
+        }
+
+        //var popup = new Element('div', { 'id': "HsnPopup" }).setStyle({ display: 'none', maxWidth: '825px' });
+        if (id) {
+            if (id === 'TaazMakeover') {
+                this.Popup = new Element('div', { 'id': id, 'class': 'HsnPopup' }).setStyle({ display: 'none' });
+            } else {
+                this.Popup = new Element('div', { 'id': id, 'class': 'HsnPopup' }).setStyle({ display: 'none', maxWidth: '850px' });
+            }
+        } else {
+            this.Popup = new Element('div', { 'class': 'HsnPopup' }).setStyle({ display: 'none', maxWidth: '850px' });
+        }
+        var table = new Element('table', { 'border': '0', 'cellspacing': '0', 'cellpadding': '0' })
+                .setStyle({ position: 'relative' });
+
+        if (isIE6) {
+            //var shim = new Element('iframe', { 'id': "HsnPopupShim" }).setStyle({ position: 'absolute', zIndex: 1 });
+            this.Shim = new Element('iframe').setStyle({ position: 'absolute', zIndex: 1 });
+            this.Popup.insert(this.Shim);
+            table.setStyle({ zIndex: 2 });
+        }
+
+        var tBody = new Element('tbody');
+        table.insert(tBody);
+        var top = new Element('tr');
+        top.insert(new Element('td', { 'class': 'HsnPopupTopLeft' }));
+        top.insert(new Element('td', { 'class': 'HsnPopupBackground' }));
+        top.insert(new Element('td', { 'class': 'HsnPopupTopRight' }));
+        tBody.insert(top);
+
+        var middle = new Element('tr');
+        middle.insert(new Element('td', { 'class': 'HsnPopupBackground' }));
+        var content = new Element('td').setStyle({ backgroundColor: 'white', padding: '5px', overflow: 'hidden' });
+        middle.insert(content);
+        middle.insert(new Element('td', { 'class': 'HsnPopupBackground' }));
+        tBody.insert(middle);
+
+        var bottom = new Element('tr');
+        bottom.insert(new Element('td', { 'class': 'HsnPopupBottomLeft' }));
+        bottom.insert(new Element('td', { 'class': 'HsnPopupBackground' }));
+        bottom.insert(new Element('td', { 'class': 'HsnPopupBottomRight' }));
+        tBody.insert(bottom);
+
+        this.Popup.insert(table);
+
+        //var innerDiv = new Element('div', { 'id': 'HsnPopupContainer' });
+        //content.insert(innerDiv);
+        this.Container = new Element('div', { 'class': 'HsnPopupContainer' });
+        content.insert(this.Container);
+
+        this.TitleDiv = new Element('div', { 'class': 'HsnPopupTitle' }).setStyle({ display: 'block' });
+        this.Container.insert(this.TitleDiv);
+
+        this.TitleText = new Element('span', { 'class': 'HsnPopupTitleText' }).setStyle({ margin: '0 0 0 5px' });
+        this.TitleDiv.insert(this.TitleText);
+
+        this.CloseButton = new Element('div', { 'class': 'HsnPopupClose' }).update('close')
+            .observe('click', this.Close.bind(this));
+        this.Container.insert(this.CloseButton);
+
+        this.UpdateDiv = new Element('div', { 'class': "ajModelessUpdateDiv" }).setStyle({ position: 'relative' });
+        this.Container.insert(this.UpdateDiv);
+
+        $(document.body).insert(this.Popup);
+        //alert('HsnPopup created');
+    }
+});
+var HsnPopup;
+if (document.readyState && document.readyState != 'complete') {
+    HsnAddLoadEvent(function() {
+        HsnPopup = new myHsnPopup('HsnPopup');
+    } .bind(this));
+}
+else {
+    HsnPopup = new myHsnPopup('HsnPopup');
+}

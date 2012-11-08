@@ -113,7 +113,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1352124213771 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1352383951437 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -483,6 +483,7 @@ pageTracker._trackPageview();
 			<a id="" href="http://www.eonline.com/everywhere/rss/index.jsp" class="" title="RSS Feeds" ><img src="../../resources/images/header_footer/black-rss.png" alt="Mobile" /></a>
 		</li>
 	
+
 	
 		<li class="facebook-like">
 			<div id="fb-root"></div>
@@ -541,6 +542,7 @@ pageTracker._trackPageview();
 
 
 
+
 <script type="text/javascript">
 	// Create a new <script type="text/javascript"> tag.
 	var js = document.createElement('script');
@@ -565,17 +567,29 @@ pageTracker._trackPageview();
 <script>
 (function($){
 	$(document).ready(function() {
-		//var contentURL = 'http://www.facebook.com/eonline';
-		var contentURL = '';
-		var emailSubj = 'EOnline Video/Article Suggestion For You';
 		$(".email").bind("click", function(e){
-			//$(".social-Send-Email").empty();
+			var pageURL ="noURL";
+			var newsURL = '';
+			if(newsURL != null && pageURL != ''){
+				newsURL = '/news/'+newsURL;
+				pageURL = newsURL;
+			}
+			var videoURL = '';
+			if(videoURL != null && videoURL != ''){
+				videoURL ='/videos'+videoURL;
+				pageURL = videoURL;
+			}
+			var emailSubj = 'EOnline Video/Article Suggestion For You';
 			$(".social-Send-Email").css("visibility","visible");
-			$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+contentURL));
+			$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+pageURL));
 			$("#overlay").show();
 							
 		});
-		$('.emailOverlay').click(function() {
+		$('.emailOverlay').live("click", function() {
+			$(".social-Send-Email").css("visibility","hidden");
+			$(".emailOverlay").hide();
+		});
+		$(".emailClose").live("click", function(){
 			$(".social-Send-Email").css("visibility","hidden");
 			$(".emailOverlay").hide();
 		});

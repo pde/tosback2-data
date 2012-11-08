@@ -314,8 +314,7 @@
         
         
         
-        
-/* Page Name Plugin Config */
+        /* Page Name Plugin Config */
 s.siteID=""            // leftmost value in pagename
 s.defaultPage="overview"       // filename to add when none exists
 s.queryVarsList=""     // query parameters to keep
@@ -349,13 +348,12 @@ s.usePlugins = true;
 var noneIndex;
 function s_doPlugins(s) {
 
-        /*s_code date*/
-        s.prop48="10/15/12";
+		/*s_code date*/
+		s.prop48="10/24/12";
                 
-        if ((!s.prop3) && (!s.eVar6)) {
+		if ((!s.prop3) && (!s.eVar6)) {
             s.eVar6 = s.prop3 = "corporate";
         }
-                
         /* Populate  the FAQ prop16 based on prop9 and prop1 */
         // this will work for CQ pages, but need to provide case for FAQ handling on non-CQ platforms without conflicting with this logic
         if (s.prop9 && /\/residential-home\/support\/faqs/.test(document.URL) ) // FAQ page
@@ -365,11 +363,11 @@ function s_doPlugins(s) {
                 s.pageName = "faqs > all faqs";
            }
            else  { // detail and category listing page
-		var faqPath1 = document.URL.split("/residential-home/support/"); 
-		var faqPath2 = faqPath1[1].split("/"); 
-		faqPath2[faqPath2.length-1] = s.prop9;  
-		s.pageName = faqPath2.join(" > ");
-		if (s.prop9.indexOf(" ") == -1 )  { s.prop9 = ""; }
+				var faqPath1 = document.URL.split("/residential-home/support/"); 
+				var faqPath2 = faqPath1[1].split("/"); 
+				faqPath2[faqPath2.length-1] = s.prop9;  
+				s.pageName = faqPath2.join(" > ");
+				if (s.prop9.indexOf(" ") == -1 )  { s.prop9 = ""; }
            }
                 
         }
@@ -398,15 +396,15 @@ function s_doPlugins(s) {
 				s.prop1=str[0] + " > " + str[1]
 				s.prop2=str[0] + " > " + str[1] + " > " + str[2]
 			}
-			if (s.pageName)	{ s.hier1 	= s.repl(s.pageName, " > ", "|");};
-			if (s.prop3)	{ s.prop5 	= s.prop3 + ": " + s.pageName;};
-			if (s.prop9)	{ s.prop16 = s.prop1 + ": " + s.prop9; s.eVar49 = s.prop16; };
+			if (s.pageName)					{ s.hier1 	= s.repl(s.pageName, " > ", "|");};
+			if (s.prop3)					{ s.prop5 	= s.prop3 + ": " + s.pageName;};
+			if (s.prop9)					{ s.prop16 = s.prop1 + ": " + s.prop9; s.eVar49 = s.prop16; };
 	}		
 		
 	/*Add eVar6 to all hits*/
 	noneIndex= s.linkTrackVars.indexOf("None")
-	if(noneIndex >= 0) s.linkTrackVars="eVar6";
-	if(noneIndex < 0) s.linkTrackVars=s.apl(s.linkTrackVars,"eVar6",",",2);
+	if(noneIndex >= 0) s.linkTrackVars="eVar6,eVar75";
+	if(noneIndex < 0) s.linkTrackVars=s.apl(s.linkTrackVars,"eVar6,eVar75",",",2);
 	/* Call to Days Since LastVisit Plugin */
 	if(s.c_r('s_lastvisit')){
 		if(!s.c_r('s_lastvisit_s')){
@@ -417,33 +415,35 @@ function s_doPlugins(s) {
 	}
 	s.eVar20 = s.getDaysSinceLastVisit('s_lastvisit');
 
-	/* Getting the Off-site campaign code */
-	if (s.getQueryParam('cid'))
-	{
-		s.campaign = s.getValOnce(s.getQueryParam('cid'), 'cid_cookie', 0);
-	}
 	
-	if (s.getHashParam('cid','','',1))
-	{
-		s.campaign = s.getValOnce(s.getHashParam('cid','','',1), 'cid_cookie', 0);
-	}
+	/* Getting the Off-site campaign code */
+	if (!s.campaign)s.campaign = s.getQueryParam('cid');
+	if (!s.campaign)s.campaign = s.getHashParam('cid','','',1);
 	/*Get Light Server call cookie*/
 	if(!s.campaign){
 		s.campaign=s.getLightCookie("s_mtd","v13");
 		//account for URL encoding.
 		if(s.campaign && s.campaign.indexOf('%3A') > -1)s.campaign = s.repl(s.campaign, "%3A", ":");
+	}	
+	/*get it from the referrer*/
+	if(!s.campaign){
+		if(document.URL.indexOf("ids.rr.com") > 0){
+			s.campaign = s.getQueryParam('cid','',document.referrer);
+		}
 	}
+	/*Get ValOnce on Campaign*/
+	s.campaign = s.getValOnce(s.campaign,'cid_cookie', 0);
 
 	/* Getting the internal campaign code */
-	if (s.getQueryParam('iid'))
-	{
-		s.eVar17 = s.getValOnce(s.getQueryParam('iid'), 'iid_cookie', 0);
+	if (!s.eVar17)s.eVar17 = s.getQueryParam('iid');
+	if (!s.eVar17)s.eVar17 = s.getHashParam('iid','','',1);
+	if (!s.eVar17){
+		if(document.URL.indexOf("ids.rr.com") > 0){
+			s.eVar17 = s.getQueryParam('iid','',document.referrer);
+		}
 	}
-
-	if (s.getHashParam('iid','','',1))
-	{
-		s.eVar17 = s.getValOnce(s.getHashParam('iid','','',1), 'iid_cookie', 0);
-	}
+	s.eVar17 = s.getValOnce(s.eVar17, 'iid_cookie', 0);
+	
 	if (s.getQueryParam('iidpos'))
 	{
 		s.eVar53 = s.getValOnce(s.getQueryParam('iidpos'), 'iidpos_cookie', 0);
@@ -490,7 +490,7 @@ function s_doPlugins(s) {
 	}
 	
 	/*add sub pageviews in Omega Pathing*/
-	if(s.eVar63 && s.prop54.indexOf("D=pageName") > 0)s.prop54="D=v63";
+	if(s.eVar63 && s.prop54.indexOf("D=pageName") >= 0)s.prop54="D=v63";
 
 		
 	/* Populate prop11 based on either prop7 or prop8 */
@@ -581,6 +581,9 @@ function s_doPlugins(s) {
 		}
 		s.c_w('popPage','')
 	}
+	
+	/*Get and persist 75*/
+	s.eVar75=s.getAndPersistValue(s.eVar75,'s_v75',365);
 
 	/*Lowercasing Variables*/
 	for(n in s) {

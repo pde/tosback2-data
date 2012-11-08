@@ -1,0 +1,1771 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/26/robert-shrum-why-obama-will-win.html",' +
+                '"title": "Robert Shrum: Why Obama Will Win",' +
+                '"rubric": "The Route to 270",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e73bf4df5d33a25e0c0642b79a7b99a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/17/mitt-romney-s-binders-full-of-women-comment-sets-internet-ablaze.html",' +
+                '"title": "Mitt Romney&rsquo;s &lsquo;Binders Full of Women&rsquo; Comment Sets Internet Ablaze",' +
+                '"rubric": "Gender Gaffe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ab2220f05ccb194a9df951fb83419131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/vanessa-paradis-on-cafe-de-flore-her-new-album-johnny-depp-more.html",' +
+                '"title": "Vanessa Paradis On &lsquo;Caf&eacute; de Flore,&rsquo; Her New Album, Johnny Depp &amp; More",' +
+                '"rubric": "Private Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "644138c13a99ccc53869b37985f9fe62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/the-uproar-over-no-doubt-s-native-american-video-gaffe.html",' +
+                '"title": "The Uproar Over No Doubt&rsquo;s Native American Video Gaffe",' +
+                '"rubric": "Not So Hot",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "53f93862ea347d50f0f50058e3a23cdb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/the-road-to-victoria-jackson-s-election-meltdown-on-twitter.html",' +
+                '"title": "The Road to Victoria Jackson&rsquo;s Election Meltdown on Twitter",' +
+                '"rubric": "Not So Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7df7db5828e61e7df76b1c3151f5e26e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/hurricane-sandy-will-be-dwarfed-by-an-earthquake.html",' +
+                '"title": "Hurricane Sandy Will Be Dwarfed by an Earthquake",' +
+                '"rubric": "Take Cover",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50e54591f64d4407eed3ba7f45277589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/nightmare-scenario-ohio-s-provisional-ballots-may-be-2012-s-hanging-chads.html",' +
+                '"title": "Nightmare Scenario&mdash;Ohio&rsquo;s Provisional Ballots May Be 2012&rsquo;s Hanging Chads",' +
+                '"rubric": "Provisional Ballots",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6b70fb9620e4fdf84cba488f2b6ba8f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/23/obama-vs-romney-presidential-debate-fact-check-part-3-who-lied.html",' +
+                '"title": "Obama vs. Romney Presidential Debate Fact-Check Part 3: Who Lied?",' +
+                '"rubric": "Fact Check",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8e3bbe73812ee351dce0aa83304039e4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/obama-lands-quietly-on-air-force-one-as-campaign-winds-down.html",' +
+                '"title": "Obama Lands Quietly on Air Force One as Campaign Winds Down",' +
+                '"rubric": "Campaign Finale",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "aac04cc6987c387eff8465269d57ca31"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/a-kinder-gentler-purpler-mitt.html",' +
+                '"title": "A Kinder, Gentler, Purpler Mitt",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7c06cf02987dacb8355027cad9313405"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mark-mckinnon-s-hopes-for-obama-s-second-term0.html",' +
+                '"title": "Mark McKinnon&rsquo;s Hopes for Obama&rsquo;s Second Term",' +
+                '"rubric": "Forward",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "500f4006f9a29e3bc445889313c8ab36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/obama-victory-signals-new-democratic-dominance-in-u-s-politics.html",' +
+                '"title": "Obama Victory Signals New Democratic Dominance in U.S. Politics",' +
+                '"rubric": "Obama as FDR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "69033be0a307f4098d77dd69b5da6eb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/elizabeth-the-great-warren-s-sweet-victory-in-massachusetts.html",' +
+                '"title": "Elizabeth the Great: Warren&rsquo;s Sweet Victory in Massachusetts",' +
+                '"rubric": "MASSACHUSETTS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fe68b8656a91999fab725e2b3d5aee58"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/nightmare-scenario-ohio-s-provisional-ballots-may-be-2012-s-hanging-chads.html",' +
+                '"title": "Nightmare Scenario&mdash;Ohio&rsquo;s Provisional Ballots May Be 2012&rsquo;s Hanging Chads",' +
+                '"rubric": "Provisional Ballots",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6b70fb9620e4fdf84cba488f2b6ba8f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/mitt-romney-s-iowa-problem.html",' +
+                '"title": "Mitt Romney\'s Iowa Problem",' +
+                '"rubric": "Energy",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a7b1e8ca59684a7ce66a051e5dac377d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-night-2012-fashion-of-jubilation-and-mourning.html",' +
+                '"title": "Election Night 2012: Fashion of Jubilation And Mourning",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "e234f9344dddd4a8e4187460916a6131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-wild-races-for-women-warren-hassan-prevail-mcmahon-takes-a-pricey-hit.html",' +
+                '"title": "Three Wild Races for Women: Warren, Hassan Win; McMahon Takes Pricey Hit",' +
+                '"rubric": "Gender Matters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0d850a2bda0a196cf13df8f782dd0a18"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/obama-lands-quietly-on-air-force-one-as-campaign-winds-down.html",' +
+                '"title": "Obama Lands Quietly on Air Force One as Campaign Winds Down",' +
+                '"rubric": "Campaign Finale",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "aac04cc6987c387eff8465269d57ca31"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/governing-with-a-hidden-hand.html",' +
+                '"title": "Governing With a Hidden Hand",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "dbc9d69cddca35431bb78074dffafe25"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/11/05/hurricane-sandy-will-be-dwarfed-by-an-earthquake.html",' +
+                '"title": "Hurricane Sandy Will Be Dwarfed by an Earthquake",' +
+                '"rubric": "Take Cover",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50e54591f64d4407eed3ba7f45277589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/obama-romney-lawyers-spoiling-for-recount-as-election-day-unfolds.html",' +
+                '"title": "Obama, Romney Lawyers Spoiling for Recount as Election Day Unfolds",' +
+                '"rubric": "Another 2000?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9647ed4184b78dc8d4266d2cf769ebd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/mayor-bloomberg-s-response-to-sandy-leaves-many-new-yorkers-out-in-the-cold.html",' +
+                '"title": "Mayor Bloomberg&rsquo;s Response to Sandy Leaves Many New Yorkers Out in the Cold",' +
+                '"rubric": "Sandy Outrage",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "175e706f33bd75961d236d1d162ce948"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/much-of-the-media-is-calling-the-presidential-race-for-barack-obama.html",' +
+                '"title": "Much of the Media Is Calling the Presidential Race for Barack Obama",' +
+                '"rubric": "Election Oracle",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee51d96b298b146ea7fbbb79162102a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/team-obama-s-election-day-anxiety-fear-of-a-big-white-vote.html",' +
+                '"title": "Team Obama&rsquo;s Election Day Anxiety: Fear of a Big White Vote",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c3ef75123cb368fa2fd8f09563e8a02"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/a-kinder-gentler-purpler-mitt.html",' +
+                '"title": "A Kinder, Gentler, Purpler Mitt",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7c06cf02987dacb8355027cad9313405"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/the-uproar-over-no-doubt-s-native-american-video-gaffe.html",' +
+                '"title": "The Uproar Over No Doubt&rsquo;s Native American Video Gaffe",' +
+                '"rubric": "Not So Hot",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "53f93862ea347d50f0f50058e3a23cdb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/first-lady-fashion-fatigue.html",' +
+                '"title": "First Lady Fashion Fatigue",' +
+                '"rubric": "Flotus",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "a34772b239f1d63585e73cee03a67cb1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/nightmare-scenario-ohio-s-provisional-ballots-may-be-2012-s-hanging-chads.html",' +
+                '"title": "Nightmare Scenario&mdash;Ohio&rsquo;s Provisional Ballots May Be 2012&rsquo;s Hanging Chads",' +
+                '"rubric": "Provisional Ballots",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6b70fb9620e4fdf84cba488f2b6ba8f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/vanessa-paradis-on-cafe-de-flore-her-new-album-johnny-depp-more.html",' +
+                '"title": "Vanessa Paradis On &lsquo;Caf&eacute; de Flore,&rsquo; Her New Album, Johnny Depp &amp; More",' +
+                '"rubric": "Private Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "644138c13a99ccc53869b37985f9fe62"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/the-road-to-victoria-jackson-s-election-meltdown-on-twitter.html",' +
+                '"title": "The Road to Victoria Jackson&rsquo;s Election Meltdown on Twitter",' +
+                '"rubric": "Not So Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7df7db5828e61e7df76b1c3151f5e26e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/martha-plimpton-on-women-s-rights-sandra-fluke-and-organization-a-is-for.html",' +
+                '"title": "Martha Plimpton on Women&rsquo;s Rights, Sandra Fluke, and Organization A is For",' +
+                '"rubric": "SCARLET LETTERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "3d59d3a754fd8b3850ed5577c23ee629"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/top-chef-seattle-shows-signs-of-returning-the-culinary-series-to-its-strengths.html",' +
+                '"title": "&lsquo;Top Chef: Seattle&rsquo; Shows Signs of Returning the Culinary Series to Its Strengths",' +
+                '"rubric": "TOP DRAWER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3123983c62255ef3821485b9c08d8069"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/vanessa-paradis-on-cafe-de-flore-her-new-album-johnny-depp-more.html",' +
+                '"title": "Vanessa Paradis On &lsquo;Caf&eacute; de Flore,&rsquo; Her New Album, Johnny Depp &amp; More",' +
+                '"rubric": "Private Star",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "644138c13a99ccc53869b37985f9fe62"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/the-uproar-over-no-doubt-s-native-american-video-gaffe.html",' +
+                '"title": "The Uproar Over No Doubt&rsquo;s Native American Video Gaffe",' +
+                '"rubric": "Not So Hot",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "53f93862ea347d50f0f50058e3a23cdb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/05/no-doubt-pulls-racist-video.html",' +
+                '"title": "Is This No Doubt Video Racist?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "039986d7de6c258036ee8c9c45f51e93"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/is-selena-gomez-worthy-of-woman-of-the-year.html",' +
+                '"title": "Is Selena Gomez Worthy of &lsquo;Woman of the Year&rsquo;?",' +
+                '"rubric": "COVER GIRL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c9bb93b601a2e3a6ea1cc338a6a32eff"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/real-housewives-of-beverly-hills-brandi-glanville-on-her-book-kim-and-kyle-more.html",' +
+                '"title": "&lsquo;Real Housewives of Beverly Hills&rsquo;: Brandi Glanville on Her Book, Kim and Kyle, &amp; More",' +
+                '"rubric": "Desperate Housewife",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7223bb2e5f5133825d1e8dc72975d9be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/07/colbert-doesn-t-want-spoilers.html",' +
+                '"title": "Colbert Doesn\'t Want Spoilers",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "086c4a4381a84c9deaccb6356ca30dec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/06/meet-the-presidential-losers.html",' +
+                '"title": "Meet the Presidential Losers",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7dd742bbaf029f4a66c813c64bc954c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/boy-meets-world-spinoff-is-blaspehmy-tgif-is-long-dead.html",' +
+                '"title": "Boy Meets World Spinoff Is Blaspehmy! TGIF Is Long Dead",' +
+                '"rubric": "Class Dismissed",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "263da33c1c32165147221b1e7f277e19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/04/chris-christie-s-snl-message.html",' +
+                '"title": "Chris Christie\'s \'SNL\' Warning",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "abf336d5bdb68263e27d24d39f450e9a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-night-2012-fashion-of-jubilation-and-mourning.html",' +
+                '"title": "Election Night 2012: Fashion of Jubilation And Mourning",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "e234f9344dddd4a8e4187460916a6131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/07/a-hate-ad-already.html",' +
+                '"title": "A Hate Ad Already?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b7cf76ac90e5b4c0230cea3520c78ea7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/06/voting-machine-favors-romney.html",' +
+                '"title": "Voting Machine Favors Romney?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6d5891a77c575d1476808d87d264b82a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/hurricane-sandy-will-be-dwarfed-by-an-earthquake.html",' +
+                '"title": "Hurricane Sandy Will Be Dwarfed by an Earthquake",' +
+                '"rubric": "Take Cover",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50e54591f64d4407eed3ba7f45277589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/06/president-obama-tears-up.html",' +
+                '"title": "President Obama Tears Up",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bca676e6ad5e81d41f17dfbd9df0155c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/the-road-to-victoria-jackson-s-election-meltdown-on-twitter.html",' +
+                '"title": "The Road to Victoria Jackson&rsquo;s Election Meltdown on Twitter",' +
+                '"rubric": "Not So Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7df7db5828e61e7df76b1c3151f5e26e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/elizabeth-the-great-warren-s-sweet-victory-in-massachusetts.html",' +
+                '"title": "Elizabeth the Great: Warren&rsquo;s Sweet Victory in Massachusetts",' +
+                '"rubric": "MASSACHUSETTS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fe68b8656a91999fab725e2b3d5aee58"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/obama-victory-signals-new-democratic-dominance-in-u-s-politics.html",' +
+                '"title": "Obama Victory Signals New Democratic Dominance in U.S. Politics",' +
+                '"rubric": "Obama as FDR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "69033be0a307f4098d77dd69b5da6eb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2012/05/17/5-alternatives-to-obama-and-romney-in-the-presidential-race.html",' +
+                '"title": "5 Alternatives to Obama and Romney in the Presidential Race",' +
+                '"rubric": "Prohibitionist for President?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9e5646a2d6397629417981d1f8afbd2a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-night-2012-fashion-of-jubilation-and-mourning.html",' +
+                '"title": "Election Night 2012: Fashion of Jubilation And Mourning",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "e234f9344dddd4a8e4187460916a6131"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/nightmare-scenario-ohio-s-provisional-ballots-may-be-2012-s-hanging-chads.html",' +
+                '"title": "Nightmare Scenario&mdash;Ohio&rsquo;s Provisional Ballots May Be 2012&rsquo;s Hanging Chads",' +
+                '"rubric": "Provisional Ballots",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6b70fb9620e4fdf84cba488f2b6ba8f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/mitt-romney-s-iowa-problem.html",' +
+                '"title": "Mitt Romney\'s Iowa Problem",' +
+                '"rubric": "Energy",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a7b1e8ca59684a7ce66a051e5dac377d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/a-kinder-gentler-purpler-mitt.html",' +
+                '"title": "A Kinder, Gentler, Purpler Mitt",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7c06cf02987dacb8355027cad9313405"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/02/17/eastbound-and-down-s-kenny-powers-lists-his-favorite-things.html",' +
+                '"title": "Eastbound &amp; Down&rsquo;s Kenny Powers Lists His Favorite Things",' +
+                '"rubric": "You&rsquo;re F**king Out!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f21fb24d10b691b640c0dc7c44b7a6c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/elizabeth-the-great-warren-s-sweet-victory-in-massachusetts.html",' +
+                '"title": "Elizabeth the Great: Warren&rsquo;s Sweet Victory in Massachusetts",' +
+                '"rubric": "MASSACHUSETTS",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fe68b8656a91999fab725e2b3d5aee58"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/barack-obama-s-win-benjamin-netanyahu-s-loss.html",' +
+                '"title": "Barack Obama&rsquo;s Win, Benjamin Netanyahu&rsquo;s Loss",' +
+                '"rubric": "Allies",' +
+                '"topic": "World",' +
+                '"urlHashCode": "2f18dfb3f1ab1dbfc6558309b9ec4620"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mark-mckinnon-s-hopes-for-obama-s-second-term0.html",' +
+                '"title": "Mark McKinnon&rsquo;s Hopes for Obama&rsquo;s Second Term",' +
+                '"rubric": "Forward",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "500f4006f9a29e3bc445889313c8ab36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/obama-victory-signals-new-democratic-dominance-in-u-s-politics.html",' +
+                '"title": "Obama Victory Signals New Democratic Dominance in U.S. Politics",' +
+                '"rubric": "Obama as FDR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "69033be0a307f4098d77dd69b5da6eb0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/03/vote-the-bums-out-the-eight-worst-congressmen.html",' +
+                '"title": "Vote the Bums Out: the Eight Worst Members of Congress",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f863c3132d964a01067ce2db02f95cb8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/03/mitt-romney-s-delusions-of-victory.html",' +
+                '"title": "Mitt Romney&rsquo;s Delusions of Victory",' +
+                '"rubric": "FIGHTING WINDMILLS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "780a74163068cca90bf33e33cc319a07"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/much-of-the-media-is-calling-the-presidential-race-for-barack-obama.html",' +
+                '"title": "Much of the Media Is Calling the Presidential Race for Barack Obama",' +
+                '"rubric": "Election Oracle",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee51d96b298b146ea7fbbb79162102a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/hurricane-sandy-will-be-dwarfed-by-an-earthquake.html",' +
+                '"title": "Hurricane Sandy Will Be Dwarfed by an Earthquake",' +
+                '"rubric": "Take Cover",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "50e54591f64d4407eed3ba7f45277589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/virginia-ohio-florida-what-to-watch-for-on-election-night-2012.html",' +
+                '"title": "Virginia, Ohio, Florida: What to Watch For on Election Night 2012",' +
+                '"rubric": "Election Returns",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1506482998948f51e1d7dfc7391ca95b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/forget-ohio-september-jobs-report-was-romney-s-undoing.html",' +
+                '"title": "Forget Ohio&mdash;September Jobs Report Was Romney&rsquo;s Undoing",' +
+                '"rubric": "ONE DIRECTION",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "18a15136108a8ebc42749db989cf4598"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/a-kinder-gentler-purpler-mitt.html",' +
+                '"title": "A Kinder, Gentler, Purpler Mitt",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7c06cf02987dacb8355027cad9313405"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/team-obama-s-election-day-anxiety-fear-of-a-big-white-vote.html",' +
+                '"title": "Team Obama&rsquo;s Election Day Anxiety: Fear of a Big White Vote",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c3ef75123cb368fa2fd8f09563e8a02"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/obama-romney-lawyers-spoiling-for-recount-as-election-day-unfolds.html",' +
+                '"title": "Obama, Romney Lawyers Spoiling for Recount as Election Day Unfolds",' +
+                '"rubric": "Another 2000?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d9647ed4184b78dc8d4266d2cf769ebd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/robert-gibbs-plans-a-good-cry.html",' +
+                '"title": "Robert Gibbs Plans a Good Cry",' +
+                '"rubric": "Teary",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45979e59f0565ca7d000603bd05e23ca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/nightmare-scenario-ohio-s-provisional-ballots-may-be-2012-s-hanging-chads.html",' +
+                '"title": "Nightmare Scenario&mdash;Ohio&rsquo;s Provisional Ballots May Be 2012&rsquo;s Hanging Chads",' +
+                '"rubric": "Provisional Ballots",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6b70fb9620e4fdf84cba488f2b6ba8f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/mayor-bloomberg-s-response-to-sandy-leaves-many-new-yorkers-out-in-the-cold.html",' +
+                '"title": "Mayor Bloomberg&rsquo;s Response to Sandy Leaves Many New Yorkers Out in the Cold",' +
+                '"rubric": "Sandy Outrage",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "175e706f33bd75961d236d1d162ce948"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/mitt-romney-s-iowa-problem.html",' +
+                '"title": "Mitt Romney\'s Iowa Problem",' +
+                '"rubric": "Energy",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a7b1e8ca59684a7ce66a051e5dac377d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/michelle-obama-s-signs-of-fashion-restraint-on-election-night.html",' +
+                '"title": "Michelle Obama&rsquo;s Signs of Fashion Restraint on Election Night",' +
+                '"rubric": "Four More Years",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "8ca651a0d790edc634118d07a76fd085"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/intrade-an-ohio-story-dek-why-is-intrade-so-relatively-cautious-ask-ohio.html",' +
+                '"title": "Intrade: An Ohio Story",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "2dc968363b241f4a9c9ce7791a7e4b8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/obama-lands-quietly-on-air-force-one-as-campaign-winds-down.html",' +
+                '"title": "Obama Lands Quietly on Air Force One as Campaign Winds Down",' +
+                '"rubric": "Campaign Finale",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "aac04cc6987c387eff8465269d57ca31"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/obama-victory-signals-new-democratic-dominance-in-u-s-politics.html",' +
+                '"title": "Obama Victory Signals New Democratic Dominance in U.S. Politics",' +
+                '"rubric": "Obama as FDR",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "69033be0a307f4098d77dd69b5da6eb0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/11/05/much-of-the-media-is-calling-the-presidential-race-for-barack-obama.html",' +
+                '"title": "Much of the Media Is Calling the Presidential Race for Barack Obama",' +
+                '"rubric": "Election Oracle",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0ee51d96b298b146ea7fbbb79162102a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/07/a-hate-ad-already.html",' +
+                '"title": "A Hate Ad Already?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b7cf76ac90e5b4c0230cea3520c78ea7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/why-mitt-romney-loss-would-yield-deeper-recriminations-in-gop.html",' +
+                '"title": "Why Mitt Romney Loss Would Yield Deeper Recriminations in GOP",' +
+                '"rubric": "Election Recriminations",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e849b687f3133562b55eb2cfec9ddf8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/revenge-of-the-nerd-nate-silver-is-2012-s-other-winner.html",' +
+                '"title": "Revenge of the Nerd: Nate Silver Is 2012&rsquo;s Other Winner",' +
+                '"rubric": "Statistician-in-Chief",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5dc9356023f4cdf66fdb8f6511d6458b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/from-mars-attacks-to-the-west-wing-watch-the-best-and-worst-fictional-presidents-from-tv-and-film-video.html",' +
+                '"title": "From &lsquo;Mars Attacks!&rsquo; to &lsquo;The West Wing&rsquo;: Watch the Best and Worst Fictional Presidents from TV and Film (VIDEO)",' +
+                '"rubric": "Fake Presidents",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6b038b3743de05f0ec5f3744a349ed21"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/04/is-delegate-counter-josh-putnam-the-nate-silver-of-the-2012-race.html",' +
+                '"title": "Is Delegate Counter Josh Putnam the Nate Silver of the 2012 Race?",' +
+                '"rubric": "Newbie",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2f297cc702c6cd64a9c179d488531456"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/10/29/homeland-showtime-s-thriller-gets-fact-checked-by-an-intelligence-expert.html",' +
+                '"title": "&lsquo;Homeland&rsquo;: Showtime&rsquo;s Thriller Gets Fact Checked by an Intelligence Expert",' +
+                '"rubric": "Fact Check",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9c5c8d5d31e3bf534345a16d99fdd82c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/three-lessons-the-gop-should-take-away-from-last-night-s-defeat.html",' +
+                '"title": "Three Lessons the GOP Should Take Away From Last Night&rsquo;s Defeat",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5c712d84869b43d37b516fab8386f539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/the-road-to-victoria-jackson-s-election-meltdown-on-twitter.html",' +
+                '"title": "The Road to Victoria Jackson&rsquo;s Election Meltdown on Twitter",' +
+                '"rubric": "Not So Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7df7db5828e61e7df76b1c3151f5e26e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/an-anxious-mood-at-an-obama-field-office-in-chicago.html",' +
+                '"title": "An Anxious Mood at an Obama Field Office in Chicago",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0717372db8fe8f300cfe0a520ec1bea1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/05/what-it-feels-like-to-lose-a-presidential-election.html",' +
+                '"title": "What It Feels Like to Lose a Presidential Election",' +
+                '"rubric": "ORAL HISTORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "afd5bc50d7a07c240f30071c212fcaf6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/election-2012-myths-lies-and-losers.html",' +
+                '"title": "Election 2012: Myths, Lies, and Losers",' +
+                '"rubric": "THAT\'S A WRAP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "301c5ff050ddd41ea28b5fb8ce152d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/paul-ryan-was-a-dud-as-romney-vp-but-has-a-bright-political-future.html",' +
+                '"title": "Paul Ryan Was a Dud as Romney VP but Has a Bright Political Future",' +
+                '"rubric": "No Game Changer",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7fbd67d4cb69551e2eaa89b0988981f8"' +
+            '}' +
+        ']' +
+    '}'
+);

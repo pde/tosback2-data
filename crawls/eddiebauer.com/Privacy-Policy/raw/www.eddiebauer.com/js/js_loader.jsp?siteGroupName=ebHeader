@@ -1683,12 +1683,13 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	Version: 1.0
 	Date: 3/9/2012 
 	*/
-	var initProductModuleFlag = false;
+	
 	var styleChangedFlag = false;
 	var setPDPRadioButtons = false;
 	var getInformationFlag = false;
+	var initProductModuleFlag = false;
 	
-	jQuery.fn.ProductModule = function(options) {					
+	jQuery.fn.ProductModule = function(options) {			
 		var thresholdQty = 10;		
 		var validFlag = false;
 		var selectionsFlag = false;
@@ -2170,14 +2171,23 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var data_link_name = jQuery(this).attr("data-link-name");
 					var videoSrc = jQuery(this).attr("data-image-static");
 					var youtubeValue = jQuery(this).attr("data-youtube-value");
-					var utoobVideoSrc = 'http://www.youtube.com/v/'+youtubeValue+'?enablejsapi=1&playerapiid=video&version=3fs=1&hl=en_US&rel=0&autoplay=1';
-					var videoHtml ='<div class="product_page_link"><a name="static:image:videomodal" class="floatbox" rev="centerOnResize:true autoFitHTML:true width:664 height:402 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#video'+ youtubeValue +'" style="text-decoration:none !important; display:inline-block;"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" style="margin-top:10px;margin-right:5px;vertical-align:bottom;padding-bottom:1px;"></a><a id="video"'+ youtubeValue +'\" style="font-size:12px;font-weight:bold;" name="static:link:videomodal" class="floatbox" rev="centerOnResize:true autoFitHTML:true width:664 height:402 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#video'+ youtubeValue +'">'+ data_link_name +'</a></div><div class="ppv_container" style="display:none;"><div id="video'+ youtubeValue +'" style="width:664px;height:448px;background-image:url('+ videoSrc +');"><div style="position:absolute;padding-left:550px;padding-top:12px;width:105px;"><a name="static:image:closemodal" href="javascript:jQuery.fancybox.close();"><img src="/assets/ocp/site/shim.gif" width="100" height="20"></a></div><div style="position:absolute;top:50px;left:12px;"><object width="640" height="385"> <param name="wmode" value="transparent"></param><param name="movie" value=test></param> <param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed wmode="transparent" src='+ utoobVideoSrc +' type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object></div></div></div>';
+					var utoobVideoSrc = 'http://www.youtube.com/v/'
+						+ youtubeValue
+						+ '?enablejsapi=1&playerapiid=video&version=3fs=1&hl=en_US&rel=0&autoplay=1';
+					var videoHtml ='<div class="product_page_link"><a name="static:image:videomodal" class="floatbox" rev="centerOnResize:true autoFitHTML:true width:640 height:339 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#video'+ youtubeValue +'" style="text-decoration: none !important; display: inline-block;"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" style="margin-top: 10px; margin-right: 5px; vertical-align: bottom; padding-bottom: 1px;"></a><a id="video" style="font-size:12px;font-weight:bold;" name="static:link:videomodal" class="floatbox" rev="centerOnResize:true autoFitHTML:true width:640 height:339 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#video'+ youtubeValue +'">' + data_link_name + '</a></div><div class="ppv_container" style="display: none;"><div id="video'+ youtubeValue +'" style="width: 664px; height: 448px; background-image: url('+ videoSrc +');"> <style>#fbBox #fbtrPanel{height:29px !important;right:-36px !important;top:-14px !important;width:29px !important;}</style><div style="position: absolute; padding-left: 550px; padding-top: 12px; width: 105px;"><div style="position: absolute; top: 50px; left: 12px;"><object id="myytplayer" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="640" height="385"><param name="wmode" value="transparent" /><param name="movie" value='+ utoobVideoSrc +' /><param name="allowFullScreen" value="true" /><param name="allowscriptaccess" value="always" /><embed name="myytplayer" wmode="transparent" src='+ utoobVideoSrc +' type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385" /></object></div></div></div></div>';
 					//alert( videoHtml);
 					jQuery(this).append(videoHtml);
 					//var testIfVideoAlreadyExists = jQuery(['.product_page_video'.attr("data-youtube-value")~=youtubeValue]);
 					//alert (testIfVideoAlreadyExists);
 				});
-				
+			}
+			triggerStopVideo = function() {
+				jQuery('head').append('<script type="text/javascript" src="https://www.google.com/jsapi"></script>');
+				var ytplayer = document.getElementById('myytplayer');
+				//alert(ytplayer.id);
+				//ytplayer.stopVideo();
+				//jQuery(objectWrapper).removeClass('selected').css(
+						//'display', 'none');
 			}
 			jQuery(targetPage+"#fancybox-close").live('click', function () {
 				//jQuery("#video").stopVideo();
@@ -3710,22 +3720,33 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			monogramCheck ="";
 		}
 		resetProductPage = function(){	
-			// reset any vars here
+			// reset any vars here			
 			if(!initProductModuleFlag){
 	            jQuery(targetPage+'input[name=selectedSizeId]').val("");
 	            jQuery(targetPage+'input[name=selectedColorId]').val("");   
 	            jQuery(targetPage+'#monogramCheck').attr('checked', false);
-	            jQuery(targetPage+'#giftboxCheck').attr('checked', false);
+	            jQuery(targetPage+'#giftboxCheck').attr('checked', false);	           
 	            if (!eob){
 	            	jQuery(targetPage+'input[name=cut]:first').attr('checked', true);
-	            }else{
+	            }else{	            	
 	            	var itemNumber = jQuery(targetPage+'input[name=itemNumber]').val();
 	            	var selectedRadioButton =  jQuery(targetPage+'input:radio[data-item-number*='+itemNumber+']'); 	            	
 	            	if(selectedRadioButton){	            		
 	            		selectedRadioButton.attr('checked', true);
 	            		updateInseamLength();
-	            	}
+	            	}	            	
 	            }
+			}else{
+				if(editMode){
+					var itemNumber = jQuery(targetPage+'input[name=itemNumber]').val();
+	            	var selectedRadioButton =  jQuery(targetPage+'input:radio[data-item-number*='+itemNumber+']'); 	            	
+	            	if(selectedRadioButton){	            		
+	            		selectedRadioButton.attr('checked', true);
+	            		updateInseamLength();
+	            	}	
+				}else{
+					jQuery(targetPage+'input[name=cut]:first').attr('checked', true);
+				}
 			}
             
             // private        

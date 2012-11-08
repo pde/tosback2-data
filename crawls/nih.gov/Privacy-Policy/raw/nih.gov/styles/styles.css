@@ -1751,6 +1751,46 @@ table td.indent {
 #rightcolumn .pagetools ul li a.multimedia {
 	background: url(../images/pagetools-multimedia.gif) no-repeat 0 1px;
 }
+
+#rightcolumn li {  /* ADDED BY RJB 11-06-12 */
+	position: relative;
+}
+#rightcolumn li .externalllinktooltip {  /* ADDED BY RJB 11-06-12 */
+	position: absolute;
+	left: -3000px;
+	top: -40px;
+	text-align: center;
+	width: 266px;
+	height: 35px;
+	padding: 10px 6px 0 6px;
+	background: transparent url(../images/externalllinktooltip.png) no-repeat left top;
+	z-index: 999999;
+	/* border: 1px solid #bbb;
+	-moz-border-radius-topleft: 4px;
+	border-top-left-radius: 4px;
+	-moz-border-radius-topright: 4px;
+	border-top-right-radius: 4px;
+	-moz-border-radius-bottomleft: 4px;
+	border-bottom-left-radius: 4px;
+	-moz-border-radius-bottomright: 4px;
+	border-bottom-right-radius: 4px; */
+}
+#rightcolumn li .externalllinktooltip {  /* ADDED BY RJB 11-06-12 */
+	background: transparent url(../images/externalllinktooltip.png) no-repeat 0 -45px;
+}
+#rightcolumn li:hover .externalllinktooltip {  /* ADDED BY RJB 11-06-12 */
+	display: block; /* Necessary to work in IE7 & IE8 */
+	left: -218px;
+}
+#rightcolumn li:hover .externalllinktooltip {  /* ADDED BY RJB 11-06-12 */
+	left: 38px;
+}
+#rightcolumn li .externalllinktooltip a {  /* ADDED BY RJB 11-06-12 */
+	display: inline;
+	height: auto;
+	padding: 0;
+}
+
 #singlecolumn {
 	float: left;
 	width: 904px;
@@ -1900,6 +1940,7 @@ ul.news_inline_nav li.last a {
 ul.featuredvideos, 
 ul.featuredradio, 
 ul.featuredphotos {
+	overflow: hidden; /* Forces parent block to expand to contain floated images  */
 	padding: 0;
 	margin: 0;
 	list-style-type: none;
@@ -1911,7 +1952,7 @@ ul.featuredphotos li {
 	float: left;
 	width: 227px;
 	padding: 0;
-	padding-bottom: 01em;
+	padding-bottom: 1em;
 	margin: 0;
 	margin-right: 10px;
 }
@@ -1964,6 +2005,31 @@ ul.moremultimedialist li.last a {
 }
 
 /* End Multimedia Gallery Styles */
+
+
+/* Begin Videos from NIH Styles */
+
+ul.videosfromnih {
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	list-style-image: none;
+	overflow: hidden; /* Forces parent block to expand to contain floated images  */
+}
+ul.videosfromnih li {
+	float: left;
+	width: 220px;
+	padding: 0;
+	padding-bottom: 0.8em;
+	margin: 0;
+	margin-right: 10px;
+}
+ul.videosfromnih li p {
+	padding-bottom: 0.7em;
+	margin-bottom: 0;
+}
+
+/* End Videos from NIH Styles */
 
 ul.datelist {
 	list-style-image: none;
@@ -2182,6 +2248,34 @@ a.toolbox {
 	padding-top: 2px;
 	padding-left: 23px;
 	background: transparent url(../images/icon-toolbox.gif) no-repeat left top;
+}
+#rightcolumn a.blog {
+	display: block;
+	height: 18px;
+	padding-top: 2px;
+	padding-left: 23px;
+	background: transparent url(../images/icon-color-blog.gif) no-repeat left top;
+}
+#rightcolumn a.twitter {
+	display: block;
+	height: 18px;
+	padding-top: 2px;
+	padding-left: 23px;
+	background: transparent url(../images/icon-color-twitter.gif) no-repeat left top;
+}
+#rightcolumn a.email {
+	display: block;
+	height: 18px;
+	padding-top: 2px;
+	padding-left: 23px;
+	background: transparent url(../images/icon-color-email.gif) no-repeat left top;
+}
+#rightcolumn a.rss {
+	display: block;
+	height: 18px;
+	padding-top: 2px;
+	padding-left: 23px;
+	background: transparent url(../images/icon-color-rss.gif) no-repeat left top;
 }
 
 a.bookmark { /* For all uses of the bookmark icon outside of the social media bar */
@@ -2882,7 +2976,9 @@ ul.azindex li a.letterdisabled:hover, #globalnav ul li ul.azindex li a.letterdis
 .js .accordion {
 	visibility: hidden;
 }
+.js .accordion .expand, 
 .accordion .expand {
+	/* display: table !important; */ /* Will open all accordion items if this is not commented out */
 }
 .accordion .collapse {
 	padding-left: 17px;

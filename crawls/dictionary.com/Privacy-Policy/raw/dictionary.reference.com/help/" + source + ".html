@@ -867,8 +867,8 @@
     
     var DaisyInfo = window.DaisyInfo || {};
     DaisyInfo.clickURL = "app.reference.com";
-    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=03D2E7A15E3106789BAEDC7CE0F395A2&clkpage=dictionaryproxy&clkimpr=UJfGZELreTJqzqE5&clkld=0&clkorgn=0&clkref=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
-    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=03D2E7A15E3106789BAEDC7CE0F395A2&pageName=dictionaryproxy&impressionId=UJfGZELreTJqzqE5&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
+    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=F63EE7C00489B698FEDBBEF7A351ED2C&clkpage=dictionaryproxy&clkimpr=UJu84ULreVwAQZff&clkld=0&clkorgn=0&clkref=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
+    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=F63EE7C00489B698FEDBBEF7A351ED2C&pageName=dictionaryproxy&impressionId=UJu84ULreVwAQZff&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
 </script>
 
 
@@ -1299,7 +1299,7 @@ fancybox_init = function() {};
 
 
 <script type="text/javascript">
-var _todaysDate= "November 5, 2012";
+var _todaysDate= "November 8, 2012";
 
 ask.dict.loggedIn=false;
 
@@ -2255,6 +2255,7 @@ var takeOverEnabled = false;
 
 
 
+
     
     
     
@@ -2322,89 +2323,7 @@ if(typeof $j != 'undefined'){
             }
         }
     }   
-    updateRecentCookie();	 
-	function stickystaticFooterAd(adtag,placement,href) {
-    var tag = 'http://static.sfdict.com/assets/712-7551554-0.png' ;
-    var closeVal='mkt';
-    var placement=placement || "default";
-    if(placement=="ad"){
-        closeVal='ad';
-    }
-    var shown = 'false';
-    if (tag!=null) {
-        if ($j('#rightRail').length !== 0 && $j('#rightRail')[0] !== 'undefined') {
-            $j("div#rightRail:last").css('margin-bottom', '15px');
-            $j(".ftsp").css({
-                 position: 'relative',
-                top: '-241px',
-                display: 'block',
-                left: '15px',
-                height: '250px'
-            });
-
-            $j(".ftsp").html("<div id=\"adclose\" onmousedown=\"closead("+closeVal+");\" style=\"z-index:1;display:none;float: right;top:-15px; position: absolute;right: 45px;\"></div><div id=\"slider\" style=\"height:300px;display:block;\"></div>");
-            $j(".ftsp").append("<a href="http://dictionary.reference.com/help/+href+" target=\"_blank\" ><div id=\"stickad\"  style=\"position:relative;display:block;\"></div></a>");
-
-            var appendTag= "document.write('<img  id=\"rrad\" src="\&quot;&quot;+tag+&quot;\&quot;/index.html">')";
-
-            (function ($) {
-                $.fn.rightrailad = function () {
-                    ghostwriter("stickad", {
-                        insertType: "append",
-                        script: {
-                            text: appendTag
-                        },
-                        done:function(){
-                           // $j("#adclose").css('display', 'block');
-                        }
-                    });
-                }
-            })(jQuery);
-
-            $j(window).scroll(function () {
-                var scrollht = ($j('html').scrollTop() > ($j('#rightRail').height() - 100)) ? true : false;
-                var scrollup = ($j('html').scrollTop() < ($j('#rightRail').height() - 100)) ? true : false;
-                 var footModuleShow=(($j('#nfotr').position().top- $j(window).height() )+210) < ($j(window).scrollTop()) ? true:false;
-                if ($j.browser.safari) {
-                    scrollht = ($j(window).scrollTop() > ($j('#rightRail').height() - 100)) ? true : false;
-                    scrollup = ($j(window).scrollTop() < $j('#rightRail').height()) ? true : false;
-                    footModuleShow=(($j('#nfotr').position().top- $j(window).height() )+210) < ($j(window).scrollTop()) ? true :false;
-                }
-
-                if (shown == 'false' && scrollht) {
-                    $j(".ftsp").rightrailad();
-                    setTimeout(function () {
-                        $j('#slider').slideUp('slow');
-                    }, 2000);
-                    setTimeout(function () {
-                        $j("#adclose").css('display', 'block');
-
-                    }, 5000);
-                    shown = 'true';
-
-                } else {
-                    if(footModuleShow && shown == 'true'){
-                        $j("#stickad").css('display', 'none');
-                        $j("#adclose").css('display', 'none');
-                        $j(".ftsp").css('display', 'none');
-                    } else if (scrollht && shown == 'true') {
-                        $j(".ftsp").css('display', 'block');
-                        $j("#stickad").css('display', 'block');
-                        $j("#adclose").css('display', 'block');
-                        if($j("#slider").is(':hidden')){
-                         $j("#adclose").css('display', 'block');
-                        }
-                    } else if (scrollup && shown == 'true') {
-                        $j("#stickad").css('display', 'none');
-                        $j("#adclose").css('display', 'none');
-                        $j(".ftsp").css('display', 'none');
-                    }
-                }
-            });
-        }
-    }
-	}
-	
+    updateRecentCookie();	 	
 	</script>
 <script type="text/javascript">
 var loc=window.location.toString();

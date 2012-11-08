@@ -572,10 +572,12 @@ _vrq.push(['track', function(){}]);
     x.parentNode.insertBefore(s, x);
 })(document, 'script');
 
-function constantContact (){setTimeout(function(){checkNowPlaying()}, 60000);}
+var radioType = "header";
+function constantContact (){
+    setTimeout(function(){checkNowPlaying()}, 60000);
+}
 
 function scrollerDome() {
-
     $('.scrollMeAway').bind('marquee', function() {
         var ob = $(this);
         var tw = ob.width();
@@ -585,11 +587,11 @@ function scrollerDome() {
             ob.trigger('marquee');
         });
     }).trigger('marquee');
-
 }
 
-var radioType = "header";
 function checkNowPlaying () {
+    if (radioType != 'none')
+    {
     var randomMeAway = Math.floor(Math.random()*101);
     var jsonURL = 'http://www.boston.com/ae/radio/nowplaying.json?check=' + randomMeAway;
     $.getJSON(jsonURL,
@@ -606,6 +608,7 @@ function checkNowPlaying () {
                              });
 
     constantContact();
+    }
 }
 
 $(function() {checkNowPlaying();})

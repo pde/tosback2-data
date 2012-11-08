@@ -65,11 +65,27 @@
 			//this.util.iframe.closeDoc(doc, 0);
 			
 		},
-		create_iframe_ad : function(id,url,w,h,params,xparams){
-			var ifram = this.util.iframe.create(w,h,id);
+		create_iframe_ad : function(id,url,w,h,params,xparams,refresh){
+			var this_ = this,reload = false;
+			var ifram = this_.util.iframe.create(w,h,id);
 			$.extend(params,xparams);
-			ifram.src  = url+';'+ this.util.get_doubleclick_params(params) +';ord=' + this.ord +'?';
-			$('#'+id).append(ifram);
+			function setupIframe (){
+				this.reload = reload;
+				var ord = Math.ceil( Math.random() * 10000000000000000);
+				ifram.src  = url+';'+ this_.util.get_doubleclick_params(params) +';ord=' + ord +'?';
+				$('#'+id).append(ifram);
+				if(this.reload){
+					setTimeout(setupIframe,10.*60*1000);
+				}
+			}
+			var refresh_ = refresh || false;
+			if(refresh_ && refresh_.enabled == true){
+				reload = true;
+				setupIframe();
+			}else{
+				reload = false;
+				setupIframe();
+			}
 		},
 		create_takeover_ad : function(takeover){
 			takeover = takeover||false;

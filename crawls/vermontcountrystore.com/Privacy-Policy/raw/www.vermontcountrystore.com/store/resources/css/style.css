@@ -18,7 +18,7 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
-
+body { position:relative; }
 /* line 34, ../../../src/sass/lib/_reset.scss */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -386,7 +386,7 @@ ol {
 
 /* line 63, ../../../src/sass/partials/common/layout/_header.scss */
 .site-header-alt {
-  padding: 10px 0 0;
+  padding: 10px 0 0; /*top was 10*/
 }
 /* line 65, ../../../src/sass/partials/common/layout/_header.scss */
 .site-header-alt .site-logo-wrap {
@@ -560,7 +560,9 @@ ol {
   top:0;
   left:0;
 }
-
+.site-header-alt #site-logo {
+	position:relative;
+}
 /* line 200, ../../../src/sass/partials/common/layout/_header.scss */
 #header-tools {
   float: right;
@@ -989,6 +991,11 @@ ol {
   font-size: 12px;
   color: #333;
 }
+
+.detail .breadcrumb {
+	padding-top:2px; /*to line up with nav*/
+}
+
 /* line 118, ../../../src/sass/partials/common/layout/_content.scss */
 .filter-category .breadcrumb {
 	margin-left: 5px;
@@ -1379,6 +1386,11 @@ ol {
 .search-box .input-wrap-inner {
   padding: 4px 5px 0;
 }
+
+.search-box .input-wrap-head {
+    background: none repeat scroll 0 0 #FEEFD4;
+}
+
 /* line 38, ../../../src/sass/partials/common/layout/_aside.scss */
 .search-box input {
   width: 100%;
@@ -1386,7 +1398,7 @@ ol {
   margin: 0;
   font-size: 13px;
   color: #5C5041;
-  background: none;
+  background: none repeat scroll 0 0 #FEEFD4;
   border: none;
 }
 /* line 47, ../../../src/sass/partials/common/layout/_aside.scss */
@@ -2952,7 +2964,7 @@ fieldset.error input, fieldset.error select, fieldset.error textarea {
 /* line 231, ../../../src/sass/partials/scoped/_product.scss */
 .detail .product-header {
   font-family: "Times New Roman", Times, serif;
-  margin: 5px 0 0;
+  margin: 5px 0 0 3px;
 }
 /* line 235, ../../../src/sass/partials/scoped/_product.scss */
 .detail .product-header .new-label {
@@ -4376,6 +4388,12 @@ div.bvstars {
   margin-top:10px;
   position: relative;
 }
+.ie7 #checkout #container {
+  margin-top:0px;
+}
+#checkout.cart #container {
+	margin-top:0;
+}
 /* line 8, ../../../src/sass/partials/scoped/_checkout.scss */
 #checkout .checkout-footer {
   *zoom: 1;
@@ -5260,7 +5278,7 @@ div.bvstars {
   *zoom: 1;
   font-family: arial, sans-serif;
   padding: 8px 0 0 35px;
-  margin: 0 0 54px;
+  margin: 0 0 10px 0;/* 0 54px;*/
 }
 /* line 22, c:/Ruby187/lib/ruby/gems/1.8/gems/compass-0.10.6/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
 .shipping-methods .method-list:after {
@@ -5352,10 +5370,10 @@ div.bvstars {
 .shipping-methods .note {
   font-size: 14px;
   line-height: 16px;
-  margin: 0 0 18px 10px;
+  margin: 0 0 10px 35px;
   font-family: arial, sans-serif;
 }
-.shipping-methods .method-list .noteleft {
+.shipping-methods .noteleft {
 	clear:both;
 	display:inline-block;
 	float:left;
@@ -5367,7 +5385,7 @@ div.bvstars {
 	width:115px;
 	word-wrap:break-word;
 }
-.shipping-methods .method-list .noteright {
+.shipping-methods .noteright {
 	display:inline-block;
 	float:left;
 	font-size:18px;
@@ -7997,6 +8015,7 @@ A.close, A.printThisPage
 
 .search-box .input-wrap-inner LABEL
 {
+	padding-top:0;
 	width:100%;
 }
 
@@ -8385,12 +8404,27 @@ form.prefCenter
 
 .portal-v2 .aside
 {
-	margin-top:26px;
+	margin-top:3px;
 }
 
 body.register, body.regstep
 {
 	background:none;
+}
+
+#account.register
+{
+	background:url(../images/bg/bodybg.jpg) repeat-x 0 -1px;
+}
+
+#account.bvreg
+{
+	background-image:none;
+}
+
+.success-modal {
+    position: absolute !important;
+    top: 280px;
 }
 
 .filter-main .Privacy-and-Security,
@@ -8404,4 +8438,34 @@ body.register, body.regstep
 {
 	margin-left:10px;
 	width:790px;
+}
+
+.ie7 .search-box INPUT.placeholder, .ie8 .search-box INPUT.placeholder, .ie9 .search-box INPUT.placeholder
+{
+	width:150px;
+}
+
+.bvoice-sign-in
+{
+	margin-top:20px;
+}
+
+.ie7 .bvoice-sign-in
+{
+	display:inline-block;
+}
+
+#account.bvreg .actionbutton
+{
+	width:210px;
+}
+
+.ie7 #account.bvreg .actionbutton
+{
+	width:270px;
+}
+
+.ie7 #account.bvreg .bvactioncancel
+{
+	float:left;
 }

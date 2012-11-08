@@ -124,4 +124,4 @@ bnTagManager.registerTagHandler(bnObserver.myType,bnObserver);bnEvent.addHandler
 function isSearchPage(){var current_url=window.location.href;if(current_url.indexOf('searchString=')>0)
 baynote_tag.fireVisit="true";}
 baynote_tag.server="http://ebay-help.baynote.net";baynote_tag.customerId="ebay";baynote_tag.code="help";baynote_tag.type="baynoteObserver";isSearchPage();baynote_tag.show();
-// b=15511926 -->
+// b=15523833 -->

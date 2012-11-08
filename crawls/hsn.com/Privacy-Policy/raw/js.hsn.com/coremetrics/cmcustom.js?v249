@@ -1,0 +1,276 @@
+/* 
+* $Id: cmcustom-10030502-90028889-032111.txt 166875 2011-03-21 15:51:49Z whbird $
+* $Revision: 166875 $
+*
+* Version 4.2.0
+*
+* Coremetrics Tag v4.0, 8/7/2006
+* COPYRIGHT 1999-2002 COREMETRICS, INC. 
+* ALL RIGHTS RESERVED. U.S.PATENT PENDING
+*
+* The following functions aid in the creation of Coremetrics data tags.
+*
+*/
+
+//Mandatory helper function, do not leave out!
+function cmIndexOfParameter(parameter) {
+    return document.location.href.toLowerCase().indexOf(parameter.toLowerCase());
+}
+
+var cmEndecaSearchTerm = new Array();
+var cmEndecaDimension = new Array();
+var cmEndecaDimensionValue = new Array();
+var cmEndecaCounter = 0;
+
+function cmCreateEndecaSearch(searchTerm, dimension, dimensionValue) {
+
+    cmEndecaSearchTerm[cmEndecaCounter] = searchTerm;
+    cmEndecaDimension[cmEndecaCounter] = dimension;
+    cmEndecaDimensionValue[cmEndecaCounter] = dimensionValue;
+    cmEndecaCounter++;
+}
+
+function cmDisplayEndecaSearch() {
+
+    var i;
+
+    var datestamp = new Date();
+    var stamp = (Math.floor(Math.random() * 11111111)) + datestamp.valueOf();
+
+    for (i = 0; i < cmEndecaCounter; i++) {
+        var cm = new _cm("tid", "7", "vn2", "e4.0");
+
+        cm.li = 10100;
+        cm.ps1 = cmEndecaSearchTerm[i];
+        cm.ps2 = cmEndecaDimension[i];
+        cm.ps3 = cmEndecaDimensionValue[i];
+        cm.ps4 = stamp;
+        cm.writeImg();
+    }
+
+    cmEndecaCounter = 0;
+}
+
+function cmCreateEndecaClick(searchTerm, dimension, dimensionValue) {
+
+    cmEndecaSearchTerm[cmEndecaCounter] = searchTerm;
+    cmEndecaDimension[cmEndecaCounter] = dimension;
+    cmEndecaDimensionValue[cmEndecaCounter] = dimensionValue;
+    cmEndecaCounter++;
+}
+
+function cmDisplayEndecaClick() {
+
+    var i;
+
+    var datestamp = new Date();
+    var stamp = (Math.floor(Math.random() * 11111111)) + datestamp.valueOf();
+
+    for (i = 0; i < cmEndecaCounter; i++) {
+        var cm = new _cm("tid", "7", "vn2", "e4.0");
+
+        cm.li = 10101;
+        cm.ps1 = cmEndecaSearchTerm[i];
+        cm.ps2 = cmEndecaDimension[i];
+        cm.ps3 = cmEndecaDimensionValue[i];
+        cm.ps4 = stamp;
+        cm.writeImg();
+    }
+
+    cmEndecaCounter = 0;
+}
+
+if (defaultNormalize == null) {
+    var defaultNormalize = null;
+}
+function myNormalizeURL(url, isHref) {
+    var newURL = url;
+    var pageURL = document.URL;
+    if (isHref) {
+        if ((pageURL.toLowerCase().indexOf("/searchresults/") > -1 || pageURL.toLowerCase().indexOf("/shopping_cart/") > -1 || pageURL.toLowerCase().indexOf("/order_confirm/") > -1) && (newURL.toLowerCase().indexOf("/prod/") > -1 || newURL.toLowerCase().indexOf("/searchresults/") > -1)) {
+            var whiteList = ["cm_re=", "cm_re_o=", "cm_sp=", "cm_sp_o=", "cm_mmc=", "cm_mmc_o="];
+            var paramString;
+            var paramIndex = newURL.indexOf("?");
+            var params;
+            var keepParams = new Array();
+
+            if (paramIndex > 0) {
+                paramString = newURL.substring(paramIndex + 1);
+                newURL = newURL.substring(0, paramIndex);
+                params = paramString.split("&");
+                for (var i = 0; i < params.length; i++) {
+                    for (var j = 0; j < whiteList.length; j++) {
+                        if (params[i].toLowerCase().indexOf(whiteList[j].toLowerCase()) == 0) {
+                            keepParams[keepParams.length] = params[i];
+                        }
+                    }
+                }
+                newURL += "?" + keepParams.join("&");
+            }
+            else {
+                var blackList = ["O=", "I=", "Sourceid=", "Rdr-1="];
+                var paramString;
+                var paramIndex = newURL.indexOf("?");
+                var params;
+                var keepParams = new Array();
+                var goodParam;
+
+                if (paramIndex > 0) {
+                    paramString = newURL.substring(paramIndex + 1);
+                    newURL = newURL.substring(0, paramIndex);
+                    params = paramString.split("&");
+
+                    for (var i = 0; i < params.length; i++) {
+                        goodParam = true;
+                        for (var j = 0; j < blackList.length; j++) {
+                            if (params[i].toLowerCase().indexOf(blackList[j].toLowerCase()) == 0) {
+                                goodParam = false;
+                            }
+                        }
+                        if (goodParam == true) {
+                            keepParams[keepParams.length] = params[i];
+                        }
+                    }
+
+                    newURL += "?" + keepParams.join("&");
+
+                }
+            }
+
+            if (defaultNormalize != null) {
+                newURL = defaultNormalize(newURL, isHref);
+            }
+        }
+        return newURL;
+    }
+
+    if (defaultNormalize != null) {
+        newURL = defaultNormalize(newURL, isHref);
+    }
+    return newURL;
+}
+
+if (document.cmTagCtl != null) {
+    var func = "" + document.cmTagCtl.normalizeURL;
+    if (func.indexOf('myNormalizeURL') == -1) {
+        defaultNormalize = document.cmTagCtl.normalizeURL;
+        document.cmTagCtl.normalizeURL = myNormalizeURL;
+    }
+}
+
+function cmSafeFormSubmit(id) {
+    CI();
+    cO(id, "S");
+    CA(1);
+    CJ(1);
+    CE();
+
+    return true;
+}
+
+function cP(e) {
+    CI();
+    if (typeof e == typeof e123_x) {
+        var e = this;
+    }
+    else {
+        var e = CG(e);
+    }
+    cO(e ? e.cM1 : -1, "S");
+    CA(1);
+    CJ(1);
+    CE();
+}
+
+function C9(e) {
+    cGI = "";
+    cGJ = "";
+    cGK = "";
+    var type = e.tagName.toUpperCase();
+    var sParams = "";
+    if (type == "AREA") {
+        cGJ = e.href ? e.href : "";
+        var p = e.parentElement ? e.parentElement : e.parentNode;
+        if (p != null)
+            cGI = p.name ? p.name : "";
+    }
+    else {
+        while (type != "A" && type != "HTML") {
+            if (!e.parentElement)
+                e = e.parentNode;
+            else
+                e = e.parentElement;
+            if (e)
+                type = e.tagName.toUpperCase();
+        }
+        if (type == "A") {
+            // put your code here              
+
+            if (e.attributes["sParams"] != null) {
+                sParams = e.attributes["sParams"].value;
+                e.attributes["sParams"].value = '';
+
+                //add coremtrics to params
+                if (cmValues != null && cmValues != "") {
+                    sParams = sParams + "&ccm=" + cmValues;
+                }
+            }
+            else if (e.attributes["sparams"] != null) {
+                sParams = e.attributes["sparams"].value;
+                e.attributes["sparams"].value = '';
+
+                //add coremtrics to params
+                if (cmValues != null && cmValues != "") {
+                    sParams = sParams + "&ccm=" + cmValues;
+                }
+            }
+            else {
+                //add coremtrics to params
+                if (cmValues != null && cmValues != "") {
+                    sParams = "ccm=" + cmValues;
+
+                }
+            }
+
+            e.href = GetUrlWithEnvironment(e.href, sParams);
+
+            cGJ = e.href ? e.href : "";
+            cGI = e.name ? e.name : "";
+        }
+    }
+    var man_cm_re = e.getAttribute("manual_cm_re");
+    if (man_cm_re) {
+        cGJ = cGJ + ((cGJ.indexOf("?") > -1) ? "&" : "?") + "cm_re=" + man_cm_re;
+    }
+    var man_cm_sp = e.getAttribute("manual_cm_sp");
+    if (man_cm_sp) {
+        cGJ = cGJ + ((cGJ.indexOf("?") > -1) ? "&" : "?") + "cm_sp=" + man_cm_sp;
+    }
+    cGJ = cG7.normalizeURL(cGJ, true);
+    if (cV(cGJ) == true) {
+        var dt = new Date();
+        cGK = dt.getTime();
+        cM(cm_ClientTS, cGK, cGI, cGJ, false);
+    } else {
+        cGJ = "";
+    }
+}
+
+function cmCreateAjaxTags(Element) {
+    //CI();
+    var i, lnk, imp, trackSP, trackRE, lnks;
+    imp = cm_TrackImpressions;
+    trackSP = (imp.indexOf("S") != -1);
+    trackRE = (imp.indexOf("R") != -1);
+    lnks = Element.getElementsByTagName("a");
+    for (i = 0; i < lnks.length; i++) {
+        lnk = lnks[i];
+        if (lnk.tagName.toLowerCase() == "a") {
+            if (cm_SkipHandlerReg.indexOf("L") == -1) {
+                cmAddNewEvent(lnk, "click", cW);
+            }
+            CK(lnk.href, trackSP, trackRE);
+        }
+    }
+    //CJ(1);
+}

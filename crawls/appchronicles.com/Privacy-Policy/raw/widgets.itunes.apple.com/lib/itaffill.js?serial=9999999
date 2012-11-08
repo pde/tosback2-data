@@ -101,6 +101,12 @@ itw.redrawHeight=  function redrawHeight() {
           $('#search_field').val("");
 		  $('#load_screen').addClass("hide");
 	  }
+	  
+	  if (itw.widgettype==13) {
+            $('#description_payload').css({"height":(itw.widget_height-170)+"px"});
+            $('#load_screen').addClass("hide");
+         }
+	  
       if ( $('#btn_back').hasClass("hide") ) {
          $('#container').css({"height":itw.widget_height+"px"});
          $('#payload_background').css({"height":(itw.widget_height-26)+"px"});
@@ -233,7 +239,7 @@ itw.populateMe=  function populateMe() {
 		});
 	};
 	
-	if ((itw.widgettype==2) || (itw.widgettype==3)|| (itw.widgettype==5)  ) {
+	if ((itw.widgettype==2) || (itw.widgettype==3) || (itw.widgettype==5) || (itw.widgettype==14) ) {
 		$('#selector_type').change( function(e) { 
 			itw.album_artist_song=$('#selector_type option:selected').val();
 			itw.performSearch(itw.dummyE);
@@ -266,7 +272,7 @@ itw.populateMe=  function populateMe() {
 
 	itw.redrawHeight();
 
-  if (itw.widgettype==0) {
+  if (itw.widgettype==0 || itw.widgettype==13) {
     $('#footer').removeClass("hide");
   };
 
@@ -376,7 +382,22 @@ itw.populateMe=  function populateMe() {
 	  $('#playlist_description').html(itw.dvar);
 
 	  break;
-	
+	  case "13":
+        $('#container').removeClass("search").addClass("item");
+        break;
+    case "14":
+          $('#container').removeClass("item").addClass("search");
+          break;
+          case "15":
+            $('#container').removeClass("item").removeClass("search").addClass('playlist');
+        	  itw.fetchPodcastPlaylist(itw.get_param('pl'));
+        	  $('#playlist_view').removeClass("hide");
+        	  $('#load_screen').addClass("hide");
+        	  $('#footer').removeClass("hide");
+        		$('#trackcount').removeClass("hide");
+        	  $('#playlist_title').html(itw.tvar);
+        	  $('#playlist_description').html(itw.dvar);
+            break;
 
       default:
       }
@@ -595,7 +616,8 @@ itw.buildBookRow= function buildBookRow(index,value) {
     return(ret);  
 }
 
-itw.buildAppRow= function buildAppRow(index,value) {
+
+itw.buildAppRow = function buildAppRow(index,value) {
     var ret="";
     var collection_id=value['collectionId'];
     if (collection_id==null) { collection_id=value['trackId'] };
@@ -605,16 +627,18 @@ itw.buildAppRow= function buildAppRow(index,value) {
     return(ret);  
 }
 
-itw.buildSongRow= function buildSongRow(index,value) {
+
+itw.buildMacAppRow = function buildMacAppRow(index,value) {
     var ret="";
     var collection_id=value['collectionId'];
     if (collection_id==null) { collection_id=value['trackId'] };
-    ret="<tr role=\"row\" metrics-loc=\"Track_\" adam-id=\""+value.trackId+"\"  audio-preview-url=\""+value['previewUrl']+"\"   >";
+    ret="<tr role=\"row\">";
     ret=ret+"<td class=\"icon\"><div class=\"list_icon\"><img src=\""+value['artworkUrl60']+"\"></div></td>";
-    ret=ret+"<td  role=\"gridcell\" class=\"index ascending\" sort-value=\""+(index+1)+"\" >";
-    ret=ret+"<span class=\"index\"><div class=\"circular-preview-control\"><div class=\"center-control-state\"></div></div></span></td><td class=\"meta\"><div class=\"meta\"><div class=\"play_widget\"></div><h1 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\" >"+value['artistName']+"</h1><h2 onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  >"+value['trackName']+"</h2><div class=\"btn_itunes_gray\" onClick=\"itw.app_url='"+value['collectionViewUrl']+"';itw.openiTunes();\"  ></div></div></td></tr>"; 
+    ret=ret+"<td class=\"meta\"><div class=\"meta\"><h1 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+value['trackName']+"</h1><h2 onClick=\"iTunesWidget.showBackAndGetItem("+collection_id+")\" >"+value['genres'][0]+"</h2><div class=\"btn_view\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"></div></div></td></tr>"; 
     return(ret);  
 }
+
+
 
 itw.openiTunes= function openiTunes() {
  /*@param url the url to open if iTunes is installed
@@ -682,6 +706,13 @@ itw.getItem= function getItem(app_id) {
 		case 12:
 		case "12":
 		itw.getTune(app_id);
+		break;
+		case 13:
+		case "13":
+		case 14:
+		case "14":
+		itw.getMacApp(app_id);
+        break;
     };
 }
 
@@ -763,6 +794,49 @@ itw.getApp= function getApp(app_id) {
     }
     );
 }
+
+
+itw.getMacApp= function getMacApp(app_id) {
+	url='http://itunes.apple.com/lookup?id='+app_id+'&country='+itw.country+'&callback=?';
+	
+    if (itw.widgettype==0) $('#load_screen').removeClass("hide");
+	
+    $.getJSON(url,
+    function(json) {
+	$('#app_price').html( itw.formatCurrency(json.results[0]['price'],json.results[0]['currency'] ) );
+        $('#app_name').html(json.results[0]['trackName']);
+        $('#app_category').html(json.results[0]['genres'][0]);
+        itw.app_url=json.results[0]['trackViewUrl'];
+	
+        var icn=json.results[0]['artworkUrl100'];
+        if (icn.indexOf(".tif")  >10 ) { icn=json.results[0]['artworkUrl60'];  };
+        $('#app_item .icon').html("<img src='" + icn + "'>");
+        $('#app_description').html(json.results[0]['description']+"<br />\n<br />\n");
+	$("#search_results").addClass("hide");
+          $("#app_empty_search_results").addClass("hide");
+	  $("#scrollbar").removeClass('hide');
+          $('#container').removeClass("search").addClass("item");
+          if (itw.widgettype==1 || itw.widgettype==11) {
+	          $('#container').removeClass("search").removeClass("playlist").addClass("item");
+		  		$('#btn_back').removeClass('hide');
+				$('#trackcount').addClass("hide");
+				$('#description_scrollbar').addClass('back_option');
+          }
+	  var v=$("#description_payload").css('height');
+	  v=parseInt(v.substring(0,v.length-2));
+	  if (itw.widgettype < 1) {v=v+4;};
+    	  $("#app_item").tinyscrollbar({ size: (v-20) });
+    	  $("#description_scrollbar").removeClass("hide");
+	  var ad=$('#app_description').css('height');
+          ad=ad.substring(0,ad.length-2);
+          if (parseInt(ad)<(parseInt(v)-12)) {  $("#description_scrollbar").addClass("hide"); };
+          $('#load_screen').addClass("hide");
+    }
+    );
+}
+
+
+
 
 itw.getTvShow= function getTvShow(app_id) {
     $('#thetbody').html("");
@@ -1045,7 +1119,7 @@ itw.performSearch= function performSearch(e, appendmode ) {
        if (((itw.widgettype>2)&&(itw.widgettype<5))||(itw.widgettype==9)) { 
            media="&country="+itw.country;
 
-           switch (itw.album_artist_song) {
+    switch (itw.album_artist_song) {
 	   case 0:
 	   case "0":
 	       entity="&entity=album";
@@ -1061,6 +1135,7 @@ itw.performSearch= function performSearch(e, appendmode ) {
 	       entity="&entity=song&version=2";
 	       break;
 	   };
+	   
 	   switch (itw.tv_movie) {
 		   case 0:
 		   case "0":
@@ -1088,6 +1163,13 @@ itw.performSearch= function performSearch(e, appendmode ) {
 	 entity="&entity=ebook";
 	 itw.album_artist_song=99;
      };
+     
+     if (itw.widgettype==14) { 
+ 	 media="&country="+itw.country;
+ 	 entity="&entity=macSoftware";
+ 	 itw.album_artist_song=99;
+      };
+     
 
      if (itw.widgettype==1) { searchlimit = 5 };
      
@@ -1119,6 +1201,10 @@ itw.performSearch= function performSearch(e, appendmode ) {
 				    if ( value['kind']=="music-video") {elem="";};
 				    break;
 				};
+				
+				if(itw.widgettype==14) {
+				elem="<li><img src='"+value['artworkUrl60']+"' /><div class=\"meta\"><a href=\"#\" onClick=\"iTunesWidget.showBackAndGetItem('"+value['trackId']+"')\"><h1>"+value['trackName']+"</h1><h2>"+value['genres'][0]+"</h2></a><div class=\"btn_view_app_gray\" onClick=\"itw.app_url='"+value['trackViewUrl']+"';itw.openiTunes();\"  ></a></div></div></li>";
+				}
 
 				if (itw.widgettype==5) { 
 				    var price = value['price'] == null ? null : itw.formatCurrency(value['price'],value['currency'] );
@@ -1144,7 +1230,8 @@ itw.performSearch= function performSearch(e, appendmode ) {
 			    };
 			    sr=sr+elem;
 			});
-	            itw.searching=false;
+	        
+	        itw.searching=false;
 
 		    if (!( (itw.widgettype==1) && (itw.all_iph_ipad==0) )) {
 
@@ -1202,7 +1289,7 @@ itw.performSearch= function performSearch(e, appendmode ) {
 		    var v=$('#search_results').css('height');
 		    v=v.substring(0,v.length-2);
 		    v=v-8;
-                    $('#footer').removeClass("hide");
+            $('#footer').removeClass("hide");
 		    $("#scrollbar").removeClass('hide');
 		    var rl=$('#results_list').css('height');
 		    if (parseInt(rl)<parseInt(v)) {

@@ -13,3 +13,11 @@ _marinTrack.trackPage();
 <img src="http://tracker.marinsm.com/tp?act=1&cid=2189qtj21231&script=no" >
 </noscript>
 <!-- end Copyright Marin Software -->
+<!-- Code for Action: Fairpoint - Homepage Tracking - 092012 -->
+<img src='http://p.rfihub.com/ca.gif?rb=2589&ca=20493631&ra=[%Random%]' height=0 width=0 style='display:none' alt='Rocket Fuel'/>
+ 
+<!-- Code for Action: Fairpoint - Landing Page Tracking - 092012 -->
+<img src='http://p.rfihub.com/ca.gif?rb=2589&ca=20493633&ra=[%Random%]' height=0 width=0 style='display:none' alt='Rocket Fuel'/>
+ 
+<!-- Code for Action: Fairpoint - Conversion - 092012 -->
+<img src='http://p.rfihub.com/ca.gif?rb=2589&ca=20493635&ra=[%Random%]' height=0 width=0 style='display:none' alt='Rocket Fuel'/>

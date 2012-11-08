@@ -166,25 +166,6 @@ function getNextDateTime() {
   for (var i=gNextTime;i<gNextTime+250;i++){gNextDate = new Date(); i=gNextDate.getTime();}
 }
 
-function checkPageID(pageID) {
-
-   var metaTags = document.all ? document.all.tags("meta") : document.getElementsByTagName("meta");
-   for (var i=1; i<=metaTags.length;i++){
-      metaTag = metaTags.item(i-1);
-      if (metaTag.name === 'DCSext.pPID'){
-      	return metaTag.content.indexOf(pageID) == 0;
-      }         	
-   }	
-   
-   return false;
-}
-
-function callSSDC() {
-  dcsMeta();
-  dcsVar();
-  dcsTag(gDomain,gApps);	
-}
-
 var enable=1;
 var ckLd=0;
 var gApps=new Object();
@@ -204,14 +185,8 @@ if (enable==1) {
   var gDcsId="dcslnrz6vne3g9s37bjvj8khc_2v8x";
   DCSext.WBPM_ver="1.0.12";
   DCSext.WBPM_ac="0";
-  var isMyChoice = checkPageID('tracking/mce/umc_reg');
-  var isJqueryLoaded = (typeof jQuery != 'undefined');
 
-  if( isJqueryLoaded && isMyChoice ) {
-     $(document).ready(function(){ 
-     	callSSDC();
-     });
-  } else {
-     callSSDC();
-  }
+  dcsMeta();
+  dcsVar();
+  dcsTag(gDomain,gApps);	
 }

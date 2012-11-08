@@ -63,7 +63,7 @@ $.addBrowser(V.getBrowserById("ff35-osx"));$.addBrowser(V.getBrowserById("ff36pl
 $.setFontFilterSet(W);if(Z&&Z.ba.__webfonttypekitmodule__){Z.I($);Z.load()}else window.Typekit.addKit($);
 })(this,document);
 window.Typekit.config={"p":"//p.typekit.net/p.gif?s=1&k=tlt5baf&ht=tk&h={host}&f=10884&a=224107&_={_}"};
-/*{"k":"1.1.0","created":"2012-08-20T20:46:40Z"}*/
+/*{"k":"1.1.2","created":"2012-11-01T21:23:06Z"}*/
 ;(function(window,document,undefined){
 function e(a){this.a=a}e.prototype=function(a){this.a=a}.prototype;function f(a){var b=new Image(1,1);b.src=a;b.onload=function(){b.onload=null}}function g(){this.c=window.Typekit.config.p}function h(a,b,c){var d=c||{},a=a.c.replace(/\{\/?([^*}]*)(\*?)\}/g,function(a,b,c){return c&&d[b]?"/"+d[b].join("/"):d[b]||""});a.match(/^\/\//)&&(a=(b?"https:":"http:")+a);return a.replace(/\/*\?*($|\?)/,"$1")}window.Typekit||(window.Typekit={});var i=new e(document),j=new function(){this.b=new g},k=!1;
 function l(){if(!k)for(var a=document.getElementsByTagName("link"),b=0;b<a.length;b++){var c=a[b].getAttribute("href");if(c&&0<=c.indexOf("use.typekit")){a=j;b=i;a.b&&(c=(c=window.__adobewebfontsappname__)?c.toString().substr(0,20):"",f(h(a.b,"https:"==b.a.location.protocol,{host:encodeURIComponent(b.a.location.hostname),app:encodeURIComponent(c),_:(+new Date).toString()})));k=!0;break}}}var m=window.Typekit.load;window.Typekit.load=function(){m&&m.apply(window.Typekit,arguments);l()};

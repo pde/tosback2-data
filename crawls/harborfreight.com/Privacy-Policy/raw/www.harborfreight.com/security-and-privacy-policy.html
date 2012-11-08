@@ -35,7 +35,7 @@
 <link rel="stylesheet" type="text/css" href="skin/frontend/enterprise/hft/css/feedback.css" media="all" />
 <link rel="stylesheet" type="text/css" href="skin/frontend/enterprise/hft/css/category.css" media="all" />
 <link rel="stylesheet" type="text/css" href="skin/frontend/enterprise/hft/css/print.css" media="print" />
-<script type="text/javascript" src="media/js/657503f4e7034cd800efa262bc4f08b1.js"></script>
+<script type="text/javascript" src="media/js/570ecc2b831adf7b7d2ce97268a09707.js"></script>
 <!--[if lt IE 9]>
 <link rel="stylesheet" type="text/css" href="http://www.harborfreight.com/skin/frontend/enterprise/hft/css/styles-ie8.css" media="all" />
 <![endif]-->
@@ -122,8 +122,22 @@ optionalZipCountries = [];
         
 		
 </script>
-
-<div id="top-bar">
+<style type="text/css">
+    #upgrade{
+        padding:10px;
+        color:#000000;
+        text-align:center;
+        font-size:14px;
+        font-weight:bold;
+    }
+</style>
+<script>
+    jQuery(document).ready(function(){
+        if (jQuery.browser.msie && (jQuery.browser.version < 8 )) {
+            jQuery("<div id='upgrade'>You are using an old version of an Internet browser &mdash; some features may not operate properly. Upgrade or use a different browser to experience full functionality.</div>").insertBefore("#top-bar");
+        }
+    });
+</script><div id="top-bar">
     <div class="top-bar-conten">
         <style>
 .help-menu li {z-index: 1000;}
@@ -280,8 +294,6 @@ div.bar-center {
 
 </script>    </div>
 </div>
-
-
 <div id="head">
     <div class="search" style="padding-top: 20px;height: 48px;">
         <div id="topLogoDiv" style="width: 360px;float: left;">
@@ -311,7 +323,7 @@ function searchSubmit(){
     }
    var userSearch = document.getElementById('searchInputField').value;
    var checkSearch = userSearch.replace(/\s/g, "");
-   var pattern = /^([a-zA-Z0-9 _-]+)$/;
+    var pattern = /^([\/\,\.\"\'\#\$&a-zA-Z0-9 _-]+)$/;
    var resultPassed=pattern.test(checkSearch);
   if(userSearch != "" && checkSearch != "" && resultPassed ){
    window.location = submitPath+"?q="+userSearch;
@@ -1009,9 +1021,7 @@ ul.fx_submenu { max-height: 48px; line-height: 48px; }
             </li>
         </ul>
     </li>
-</ul>
-    </div><!--nav-top-->
-
+</ul>    </div><!--nav-top-->
 </div>
 
             <div id="wrap-conten">
@@ -1197,236 +1207,6 @@ We thank you for your business.</div>
 
                                 
 
-<div class="clear"></div>
-<div class="overlay_custom" id="overlay_custom" style="height: 2715px;display:none"></div>
-
-<script>
-    document.write('<div  id="feedback_overlay"   style="top: 26px; left: 50%; margin-left:-326px ; position: absolute;  opacity: 1; cursor: auto;display: none;z-index:4200">');
-</script>
- <form action="http://www.harborfreight.com/redesignfeedback/index/send/" id="redesignfeedbackForm" name="redesignfeedbackForm" method="post">
-  <div id="feedbackWindow">
-   <div id="feedbackHeader">
-    <img src="skin/frontend/enterprise/hft/images/feedback_logo.png" alt="HFT Feedback" width="210px" height="66px"/>
-    <a id="feedbackWindowClose" href="security-and-privacy-policy.html#" onclick="closeoverlay()"></a>
-  </div>
-  <div class="feedbackQ">
-    <p>1.What is the main reason for your visit today?</p>
-
-      <ul class="feedbackA">
-        <li><input type="radio" name="reason" value="Checking prices before visiting a store." id="reason1" onclick="setElementVisibility()">Checking prices before visiting a store</li>
-        <li><input type="radio" name="reason" value="Just looking" id="reason2" onclick="setElementVisibility()">Just looking</li>
-        <li><input type="radio" name="reason" value="Buying something online" id="reason3"  onclick="setElementVisibility()">Buying something online</li>
-      </ul>
-
-  </div>
-  <div class="feedbackQ">
-    <p>2. Have you ever been to a Harbor Freight store or harborfreight.com before?</p>
-      <ul class="feedbackA">
-        <li><input type="radio" name="visited" value="Store" id="visited1" disabled="true" onclick="setElementVisibility()" >Store</li>
-        <li><input type="radio" name="visited" value="Both" id="visited2" disabled="true" onclick="setElementVisibility()">Both</li>
-        <li><input type="radio" name="visited" value="Website" id="visited3"  disabled="true" onclick="setElementVisibility()">Website</li>
-        <li><input type="radio" name="visited" value="Neither"  id="visited4"  disabled="true" onclick="setElementVisibility()">Neither</li>
-      </ul>
-  </div>
-  <div class="feedbackQ">
-    <p>3. Did you find what you were looking for?</p>
-      <ul class="feedbackA">
-        <li><input type="radio" name="found" value="Yes" id="found1" disabled="true" onclick="setElementVisibility()" >Yes</li>
-        <li><input type="radio" name="found" value="No" id="found2" disabled="true" onclick="setElementVisibility()">No</li>
-      </ul>
-    <label for="notFound">If "no", what were you looking for?:</label>
-<!--    <input name="notFound" type="text" disabled="true" onchange="setElementVisibility()" id="notFound">-->
-    <textarea name="notFound" type="text" disabled="true" onchange="setElementVisibility()" onkeydown="setElementVisibility()" id="notFound" style="height: 30px;"></textarea>
-  </div>
-  <div class="feedbackQ">
-    <p>4.  What could we do to make your online shopping experience better?</p>
-    <textarea name="feebackSuggest" id="feebackSuggest" disabled="true" onchange="setElementVisibility()"></textarea>
-  </div>
-  <div id="loadingmask" style="display: none;padding-left:300px;margin-top:10px;">
-        <div class="loader" id="loading-mask-loader"><img src="skin/frontend/enterprise/default/images/opc-ajax-loader.gif"/></div>
-  </div>
-  <button type="button" id="btnFeedbackSubmit" disabled="true">Submit Feedback</button>
-</div>
-</form>
-</div>
-
-<script type="text/javascript">
-//<![CDATA[
-    var redesignfeedbackForm = new VarienForm('redesignfeedbackForm', true);
- //]]>
-</script>
-
-
-
-<script>
-    jQuery(function($){
-    		 $('#btn_feedback').click(function() {
-
-                         document.getElementById('overlay_custom').style.display = "block";
-                         document.getElementById('overlay_custom').style.opacity = 0.7;
-                         document.getElementById('feedback_overlay').style.display = "block";
-                         //document.getElementById('success-msg').style.display = "none";
-                         document.getElementById("redesignfeedbackForm").reset();
-                         setDefaultFeedback();
-                });
-
-                $('#btnFeedbackSubmit').click(function() {
-                    var isValid =  setElementVisibility();
-                    if(isValid) {
-                        var url = "http://www.harborfreight.com/redesignfeedback/index/send/";
-
-                        document.getElementById('loadingmask').style.display = "block";
-                        document.getElementById('btnFeedbackSubmit').disabled = true;
-                        redesignForm = document.forms["redesignfeedbackForm"];
-
-                        var reason   = getRadioValue(redesignForm.reason);
-                        var visited  = getRadioValue(redesignForm.visited);
-                        var found    = getRadioValue(redesignForm.found);
-                        var notFound = document.getElementById('notFound').value;
-                        var suggest  = document.getElementById('feebackSuggest').value;
-
-                        new Ajax.Request(url, {
-                            method: 'post',
-                            parameters: "reason=" + reason + "&visited=" + visited + "&found=" + found + "&notFound=" + notFound + "&suggest=" + suggest,
-                            onComplete: function(transport) {
-                                 var response = transport.responseText.evalJSON();
-                                 if(response.error == true) {
-                                    closeoverlay();
-                                 }
-                                 document.getElementById('loadingmask').style.display = "none";
-                                 closeoverlay();
-                            }
-                        });
-
-                    }
-
-                });
-
-      });
-
-      function getRadioValue(feedbackObj)
-      {
-        var elementLength = feedbackObj.length;
-        var value = "";
-        for(var i = 0; i < elementLength; i++) {
-    		if(feedbackObj[i].checked) {
-                 value = feedbackObj[i].value;
-    		}
-    	}
-        return value;
-      }
-
-         function closeoverlay()
-        {
-            document.getElementById('feedback_overlay').style.display = "none";
-            document.getElementById('overlay_custom').style.opacity = 0;
-            document.getElementById('overlay_custom').style.display = "none";
-
-        }
-
-
-
-     function setDefaultFeedback()
-     {
-        var redesignForm = document.forms["redesignfeedbackForm"];
-        var visitedFeedbackObj= redesignForm.visited;
-        var foundObj= redesignForm.found;
-        var suggestObj= redesignForm.feebackSuggest;
-
-        allowElement('visited', visitedFeedbackObj.length, true);
-        allowElement('found', foundObj.length, true);
-        document.getElementById('notFound').disabled = true;
-        document.getElementById('feebackSuggest').disabled = true;
-        document.getElementById('btnFeedbackSubmit').disabled = false;
-     }
-
-
-
-     function setElementVisibility()
-        {
-            var redesignForm = document.forms["redesignfeedbackForm"];
-            var reasonFeedbackObj= redesignForm.reason;
-            var visitedFeedbackObj= redesignForm.visited;
-            var foundObj= redesignForm.found;
-            var suggestObj= redesignForm.feebackSuggest;
-
-            var reasonFeedbackObjLength = reasonFeedbackObj.length;
-            var visitedFeedbackLength   = visitedFeedbackObj.length;
-            var foundFeedbackObjLength  = foundObj.length;
-
-            var reasonPass = false;
-            var visitedPass = false;
-            var foundPass = false;
-            var notfoundPass = false;
-            var suggestPass = false;
-
-            //Check for reason feedback radio button
-        	for(var i = 0; i < reasonFeedbackObjLength; i++) {
-        		if(reasonFeedbackObj[i].checked) {
-                    reasonPass = true;
-        		}
-        	}
-            if(reasonPass == true) {
-                allowElement('visited', visitedFeedbackLength, false);
-            }
-
-
-
-           //Check for visited feedback radio button
-        	for(var i = 0; i < visitedFeedbackLength; i++) {
-        		if(visitedFeedbackObj[i].checked) {
-                    visitedPass = true;
-        		}
-        	}
-
-            if(visitedPass == true) {
-               allowElement('found', foundFeedbackObjLength, false);
-            }
-
-
-           if(foundObj[0].checked) {
-                document.getElementById('feebackSuggest').disabled = false;
-                document.getElementById('notFound').disabled = true;
-                document.getElementById('notFound').value = "";
-                foundPass = true;
-                notfoundPass = true;
-           }
-           else if(foundObj[1].checked) {
-                foundPass = true;
-                document.getElementById('notFound').disabled = false;
-                if( document.getElementById('notFound').value != "") {
-                    document.getElementById('feebackSuggest').disabled = false;
-                    notfoundPass = true;
-                }
-                else {
-                    document.getElementById('feebackSuggest').disabled = true;
-                    document.getElementById('feebackSuggest').value = "";
-                    notfoundPass = false;
-                }
-           }
-
-          var suggest = suggestObj.value;
-          if(suggest.split(' ').join('') !="" ){
-              suggestPass = true;
-          }
-
-            if(reasonPass && visitedPass && foundPass && notfoundPass && suggestPass) {
-                document.getElementById('btnFeedbackSubmit').disabled = false;
-                return true;
-            }
-            else {
-                document.getElementById('btnFeedbackSubmit').disabled = false;
-                 return false;
-            }
-        }
-
-        function allowElement(elementName,elementLength, action)
-        {
-             for(var i=1;i<= elementLength;i++) {
-                document.getElementById(elementName + i ).disabled = action;
-             }
-        }
-</script>
 <div class="footer-items">
 
 <!--<div class="HFTBrands fullwidth" style="display: none;">
@@ -1536,7 +1316,7 @@ We thank you for your business.</div>
         <div class="cop cop2">
           <p>&copy; Copyright 2012 Harbor Freight Tools, All Rights Reserved. <span>MATERIAL AND PHOTOS ON THIS SITE ARE THE COPYRIGHTED PROPERTY OF HARBOR FREIGHT TOOLS AND MAY NOT BE USED WITHOUT THE PRIOR WRITTEN PERMISSION OF HARBOR FREIGHT TOOLS.</span></p>
         </div>
-        <div id="mcAffeeSealDiv" class="cop cop3" style="padding-right: 30px;"> <a href="https://www.mcafeesecure.com/RatingVerify?ref=origin3.harborfreight.com" target="_blank"><img src="../images.scanalert.com/meter/origin3.harborfreight.com/22.gif" border="0" alt="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" width="119" height="34" /></a> </div>
+        <div id="mcAffeeSealDiv" class="cop cop3" style="padding-right: 30px;"> <a href="https://www.mcafeesecure.com/RatingVerify?ref=origin3.harborfreight.com" target="_blank" title="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams"><img src="../images.scanalert.com/meter/origin3.harborfreight.com/22.gif" border="0" alt="McAfee SECURE sites help keep you safe from identity theft, credit card fraud, spyware, spam, viruses and online scams" width="119" height="34" /></a> </div>
       </div>
 <div class="disclaimer"><p>Harbor Freight does not endorse any other business or organization or any technique in any customer video.  Always follow all of the instructions and warnings included with our products.  Harbor Freight makes no representation or warranty of any kind by including this video on its website.</p><p>LIFETIME WARRANTY<br />Lifetime Warranty on Hand Tools! We guarantee our Hand Tools to be free from defects in material and workmanship for the life of the product. Limitations apply.</p><p>ABOUT HARBOR FREIGHT TOOLS<br/>At Harbor Freight Tools you'll find one of the largest selections of brand-name discount tools, including hand tools, power tools...anything that fits into your tool box, and bigger equipment too! Make Harbor Freight Tools your first stop for the best prices on: Chicago Electric, Pittsburgh, Central Machinery, Central Hydraulic, Central Forge...then load-up your tool box! What customers like best about Harbor Freight Tools is that they won't find better discount tools, including hand tools and power tools, for lower prices anywhere else! Plus we're so sure you'll love the value of our hand tools, we back them with a lifetime warranty on all our hand tools!</p></div></div>
 
@@ -1575,6 +1355,188 @@ _marinTrack.trackPage();
 <img width="1" height="1" src="../tracker.marinsm.com/tp%3Fact=1&amp;cid=2vjjvednv0&amp;script=no" >
 </noscript>
 <!-- end Copyright Marin Software -->
+<script type="text/javascript">
+    var $j = jQuery.noConflict();
+    jQuery(function($j) {
+        if (!$j.cookie('hftref') && findcjparam(document.URL)) {
+            $j.cookie('hftref', 'cj', {expires:90, domain:'.harborfreight.com'});
+        }
+    });
+
+    function findcjparam(url) {
+        if(url.search('hftref=cj')>0)
+            return true;
+        else {
+            return false;
+        }
+    }
+</script>
+<style>
+    #recaptcha_area {
+        width:200px;
+        margin-left:30px;
+    }
+    .feedbackQ {
+        margin-top: 20px;
+    }
+</style>
+<div id="redesignfeedbackForm-wrapper" style="display:none">
+    <div id="redesignfeedbackForm-overlay">
+        <form action="security-and-privacy-policy.html" id="redesignfeedbackForm" name="redesignfeedbackForm" method="post">
+            <div id="feedbackWindow">
+                <div id="feedbackHeader">
+                    <img src="media/logo_hft.png" alt="HFT Feedback" />
+                    <a id="feedbackWindowClose" href="security-and-privacy-policy.html#"></a>
+                </div>
+                <div class="feedbackQ">
+                    <p>1.What is the main reason for your visit today?</p>
+
+                    <ul class="feedbackA">
+                        <li><input type="radio" class="validate-one-required-by-name" name="reason" value="Checking prices before visiting a store." id="reason1" />Checking prices before visiting a store</li>
+                        <li><input type="radio" class="validate-one-required-by-name"name="reason" value="Just looking" id="reason2" />Just looking</li>
+                        <li><input type="radio" class="validate-one-required-by-name"name="reason" value="Buying something online" id="reason3" />Buying something online</li>
+                    </ul>
+
+                </div>
+
+                <div class="feedbackQ">
+                    <p>2. Have you ever been to a Harbor Freight store or harborfreight.com before?</p>
+                    <ul class="feedbackA">
+                        <li><input type="radio" class="validate-one-required-by-name" name="visited" value="Store" id="visited1"  />Store</li>
+                        <li><input type="radio" class="validate-one-required-by-name" name="visited" value="Both" id="visited2" />Both</li>
+                        <li><input type="radio" class="validate-one-required-by-name" name="visited" value="Website" id="visited3" />Website</li>
+                        <li><input type="radio" class="validate-one-required-by-name" name="visited" value="Neither"  id="visited4" />Neither</li>
+                    </ul>
+                </div>
+                <div class="feedbackQ">
+                    <p>3. Did you find what you were looking for?</p>
+                    <ul class="feedbackA">
+                        <li><input type="radio" class="validate-one-required-by-name" name="found" value="Yes" id="found1" /> Yes</li>
+                        <li><input type="radio" class="validate-one-required-by-name" name="found" value="No" id="found2" />No</li>
+                    </ul>
+                    <label for="notFound">If "no", what were you looking for?:</label>
+                    <textarea name="notFound" type="text" id="notFound" style="height: 30px;"></textarea>
+                </div>
+                <div class="feedbackQ" style="min-height:20px;">
+                    <label for="emailFeedback">4. Your Email:</label>
+                    <textarea  class="required-entry validate-email" name="emailFeedback" type="text" id="emailFeedback" style="height: 30px" ></textarea>
+                </div>
+                <div class="feedbackQ">
+                    <p>5.  What could we do to make your online shopping experience better?</p>
+                    <textarea name="feebackSuggest" id="feebackSuggest" ></textarea>
+                </div>
+                <div class="clear"></div>
+                <div id="recaptcha_widget_div" style="margin-top:15px;">
+                    
+
+
+    <div style="margin-bottom: 10px;"></div>
+    <script> var RecaptchaOptions = { theme : 'clean', lang : 'en' }; </script><script type="text/javascript" src="../api.recaptcha.net/challenge%3Fk=6LdkbQsAAAAAAIrMBCmesnmQ3wazTWaY4u33cQfb"></script>
+
+	    <noscript>
+  		    <iframe src="../api.recaptcha.net/noscript%3Fk=6LdkbQsAAAAAAIrMBCmesnmQ3wazTWaY4u33cQfb.html" height="300" width="500" frameborder="0"></iframe><br/>
+  		    <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+  		    <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
+	    </noscript>
+                </div>
+                
+                <div class="clear"></div>
+                <div id="advice-required-entry-captcha" class="validation-advice" style="margin-left:29px;display:none;">The code you entered does not match the image</div>
+                <input type="button" id="btnFeedbackSubmit" value="Submit Feedback" />
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    //<![CDATA[
+    var redesignfeedbackForm = new VarienForm('redesignfeedbackForm', true);
+    //]]>
+
+    jQuery.noConflict();
+    (function($) {
+       $("#btn_feedback").colorbox({
+            inline:true,
+            href:"#redesignfeedbackForm-overlay",
+            width:710,
+            height: 1190,
+            close:'',
+            display:"block",
+            onOpen:function(){
+                $('#redesignfeedbackForm')[0].reset();
+                $('#colorbox').css('background','none');
+                $('#cboxWrapper').css('background','none');
+                $('#cboxContent').css('background','none');
+                $('#recaptcha_response_field').addClass('required-entry');
+                $('#feedbackWindow li input').removeClass('validation-passed');
+            },
+            onComplete: function(){
+                $('#cboxClose').css('display','none');
+            },
+            onClosed: function(){
+                $('#colorbox').css('background','white');
+                $('#cboxWrapper').css('background','white');
+                $('#cboxContent').css('background','white');
+                $('#advice-required-entry-captcha').css('display', 'none');
+                $('#recaptcha_response_field').removeClass("validation-failed");
+            }
+        });
+        $('#feedbackWindowClose').click(function(){
+            $("#btn_feedback").colorbox.close();
+        });
+        $('#found1').click(function(){
+            $('#notFound').val('');
+            $('#notFound').removeClass('required-entry');
+            $('#notFound').removeClass('validation-failed');
+            $('#advice-required-entry-notFound').hide();
+
+        });
+        $('#found2').click(function(){
+            $('#notFound').addClass('required-entry');
+        });
+        $('#btnFeedbackSubmit').click(function(){
+            $('#error_captcha').css("display", "none");
+            var validator = new Validation(redesignfeedbackForm.form);
+            if (validator.validate()) {
+                var url = "http://www.harborfreight.com/redesignfeedback/index/send/";
+                var reason = $('input:radio[name=reason]:checked').val();
+                var visited = $('input:radio[name=visited]:checked').val();
+                var found = $('input:radio[name=found]:checked').val();
+                var recaptcha_response_field = $('#recaptcha_response_field').val();
+                var notFound = $('#notFound').val();;
+                var feebackSuggest = $('#feebackSuggest').val();
+                var emailFeedback = $('#emailFeedback').val();
+                var recaptcha_challenge_field = $('#recaptcha_challenge_field').val();
+                $("#redesignfeedbackForm :input").attr("disabled", true);
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: "json",
+                    data: {
+                            "reason":reason,
+                            "visited":visited,
+                            "found":found,
+                            "notFound":notFound,
+                            "feebackSuggest":feebackSuggest,
+                            "recaptcha_response_field": recaptcha_response_field,
+                            "recaptcha_challenge_field": recaptcha_challenge_field,
+                            "emailFeedback": emailFeedback
+                        },
+                    success: function(html){
+                        $("#redesignfeedbackForm :input").attr("disabled", false);
+                        if(html.captcha == false) {
+                            Recaptcha.reload();
+                            $('#advice-required-entry-captcha').css("display", "block");
+                            $('#recaptcha_response_field').addClass("validation-failed");
+                        }
+                        else {
+                            $("#btn_feedback").colorbox.close();
+                        }
+                    }
+                });
+            }
+        });
+    })(jQuery);
+</script>
 <!-- BEGIN MERCENT TRACKING CODE -->
 <script type="text/javascript">
 //<![CDATA[

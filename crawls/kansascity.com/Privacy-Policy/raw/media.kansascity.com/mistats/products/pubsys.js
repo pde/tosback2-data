@@ -55,6 +55,156 @@ if(baseURL.match(/-p[2-9]/g))
 // the following line is depcrecated for this file, not sure if its needed elsewhere though - GD 8/19/08
 var internalSearch = window.location.hash;
 
+// Server date/time
+mistats.Date = function ()
+{
+   var to;
+
+   function init()
+   {
+      var ct;
+      var x;
+
+      to = document.cookie.match(/mi_to=-*\d+/);
+      to = (to) ? parseInt(to[0].replace(/mi_to=/, '')) : 0;
+
+      if (!to)
+      {
+         if (typeof XMLHttpRequest === 'undefined')
+            return null;
+
+         ct = new Date();
+         x = new XMLHttpRequest();
+
+         x.onreadystatechange = function ()
+         {
+            if (to || x.readyState < 2)
+               return;
+
+            to = x.getResponseHeader('date');
+
+            if (to)
+            {
+               x.abort();
+               to = Date.parse(to) - ct.getTime();
+               s.c_w('mi_to', to, (new Date(ct.getTime() + 1209600000)));
+            }
+         };
+         x.open('get', '/mistats/timestamp.txt', true);
+         x.send(null);
+      }
+   };
+
+   this.getDate = function ()
+   {
+      return new Date((new Date()).getTime() + to);
+   };
+
+   this.getOffset = function ()
+   {
+      return to;
+   };
+
+   init();
+};
+
+mistats.date = new mistats.Date();
+
+// Audience Counts
+mistats.audienceCounts =
+{
+   event: 'event17',
+
+   nextWeek: function (pDate)
+   {
+      var d;
+      var t;
+
+      d = 0;
+      t = pDate.getDay();
+
+      while (t)
+      {
+         if (++t === 7)
+            t = 0;
+         d++;
+      }
+
+      t = pDate;
+      t.setTime(t.getTime() + (d * 86400000));
+
+      return new Date((new Date(t.getFullYear(), t.getMonth(), t.getDate())).getTime() - mistats.date.getOffset());
+   },
+
+   nextMonth: function (pDate)
+   {
+      var m;
+      var y;
+
+      m = pDate.getMonth() + 1;
+      y = pDate.getFullYear();
+
+      if (m === 12)
+      {
+         m = 0;
+         y++;
+      }
+
+      return new Date((new Date(y, m, 1)).getTime() - mistats.date.getOffset());
+   },
+
+   updateProducts: function (pName, pCount)
+   {
+      s.products = (s.products) ? s.products.replace(new RegExp(',*;' + pName + ' \d+;;;' + this.event + '=-*\d+', 'g'), '').split(',') : [];
+      if (pCount > 1)
+         s.products[s.products.length] = ';' + pName + ' ' + (pCount - 1) + ';;;' + this.event + '=-1';
+      s.products[s.products.length] = ';' + pName + ' ' + pCount + ';;;' + this.event + '=1';
+      s.products = s.products.join(',');
+
+      s.events = (s.events) ? s.events.replace(new RegExp(',*' + this.event, 'g'), '').split(',') : [];
+      s.events[s.events.length] = this.event;
+      s.events = s.events.join(',');
+   },
+
+   updateCount: function (pLabel, pCookie, pValidate)
+   {
+      var c;
+      var cm;
+      var cw;
+      var d;
+
+      if (!pValidate)
+         return;
+
+      d = new Date();
+      cm = pCookie + '_m';
+      cw = pCookie + '_w';
+
+      c = s.c_r(cw).match(/\d+/);
+      c = (c) ? parseInt(c[0]) : 0;
+      s.c_w(cw, ++c, (new Date(this.nextWeek(d))));
+      this.updateProducts('Weekly ' + pLabel, c);
+
+      c = s.c_r(cm).match(/\d+/);
+      c = (c) ? parseInt(c[0]) : 0;
+      s.c_w(cm, ++c, (new Date(this.nextMonth(d))));
+      this.updateProducts('Monthly ' + pLabel, c);
+   },
+
+   updateAll: function ()
+   {
+      this.updateCount('PVs', 'mi_pc', true);
+      this.updateCount('Stories', 'mi_sc', mistats.pagelevel && mistats.pagelevel.match(/story/i));
+      this.updateCount('Visits', 'mi_vc', function ()
+      {
+         var r;
+         r = s.c_r('mi_vs');
+         s.c_w('mi_vs', '1', (new Date((new Date()).getTime() + 1200000)));
+         return !r;
+      }());
+   }
+};
+
 // Interaction Tracking object == 2012-01-31 JG
 mistats.InteractionTracker = function ()
 {
@@ -67,7 +217,6 @@ mistats.InteractionTracker = function ()
    var sessionStorage;
    var listeners;
    var types;
-   var origEvents;
 
    types =
    {
@@ -107,12 +256,6 @@ mistats.InteractionTracker = function ()
       s[cPagename] = '';
       s[cChannel] = '';
 
-      if (origEvents)
-         s.events = origEvents;
-
-      if (s.products)
-         s.products = '';
-
       pending = false;
    };
 
@@ -130,18 +273,28 @@ mistats.InteractionTracker = function ()
             }
    };
 
-   function generateProductsString()
+   function generateProductsString(pCopy)
    {
       var type;
       var products;
 
-      products = [];
+      products = (s.products && pCopy) ? s.products.split(',') : [];
 
       for (type in counts)
          if (types[type].product && counts[type])
             products[products.length] = ';' + ((mistats.sitename) ? mistats.sitename : 'Unknown') + ': ' + types[type].product + ';;;' + cEvent + '=' + counts[type];
 
       return products.join(',');
+   };
+
+   function generateEventsString()
+   {
+      var events;
+
+      events = (s.events) ? s.events.replace(new RegExp(',*' + cEvent, 'g'), '').split(',') : [];
+      events[events.length] = cEvent;
+
+      return events.join(',');
    };
 
    function sendCountsNow(pEvent)
@@ -153,13 +306,11 @@ mistats.InteractionTracker = function ()
       if (!pending)
          return;
 
-      evtStr = (s.events) ? [s.events] : [];
-      evtStr[evtStr.length] = cEvent;
-      evtStr = evtStr.join(',');
+      evtStr = generateEventsString();
 
       newVars =
       {
-         products:        generateProductsString(),
+         products:        generateProductsString(false),
          events:          evtStr,
          linkTrackEvents: evtStr,
          linkTrackVars:   ['events', 'products', cPagename, cChannel].join(',')
@@ -184,14 +335,12 @@ mistats.InteractionTracker = function ()
       if (!pending || (typeof mitagsent !== 'undefined' && mitagsent))
          return false;
 
-      s.products = generateProductsString();
+      s.products = generateProductsString(true);
       if (!s.products)
          return clearStoredStats();
-      
-      if (s.events && s.events.length)
-         origEvents = s.events;
 
-      s.events     = (origEvents) ? [origEvents, cEvent].join(',') : cEvent;
+      s.events = generateEventsString();
+
       s[cPagename] = s.c_r('mi_ppn');
       s[cChannel]  = s.c_r('mi_pch');
 

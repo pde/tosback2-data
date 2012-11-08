@@ -201,6 +201,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/necklaces---pe
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bracelets-100117--1/1001170000/100112/1/0/0/0/100112.100113.100117">Bracelets</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/earrings-100118--1/1001180000/100112/1/0/0/0/100112.100113.100118">Earrings</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/accessories-100120--1/1001200000/100112/1/0/0/0/100112.100113.100120">Accessories</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/anklets-100330--1/1003300000/100112/1/0/0/0/100112.100113.100330">Anklets</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100113|1001130000|1|0|||100112|100112.100113">View All</a></li>');
 writeMegaMenu('</ul>');
 writeMegaMenu('<ul class="submenu-list">');

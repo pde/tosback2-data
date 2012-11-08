@@ -335,7 +335,7 @@ function attachStickyView() {
     populateGET();
     var newsize = (window.get['view']) ? window.get['view'] : getCookie('viewsizecookie');
     if (newsize) {
-   		newsize = (newsize == 99) ? 'all' : newsize; /* another Polo USA patch */ 
+   		newsize = (newsize == 'all') ? '99' : newsize; /* another Polo USA patch */ 
         setCookie('viewsizecookie', newsize, 365);
         jQuery('a[href*="family"]').each(function (index) {
             var href = jQuery(this).attr('href');

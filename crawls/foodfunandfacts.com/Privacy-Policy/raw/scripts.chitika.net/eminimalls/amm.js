@@ -5,7 +5,7 @@ String.prototype.ltrim = function() {
 ch_ad_url = '';
 ch_oeh = window.onerror;
 ch_chitika_loaded = true;
-ch_amm_version = "1.13.2";
+ch_amm_version = "1.13.3";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
@@ -67,6 +67,18 @@ function ch_add_script(url) {
     return s;
 }
 
+function get_text(node) {
+    var r = '';
+
+    if (node.innerText !== undefined) {
+        r = node.innerText;
+    } else if (node.textContent !== undefined) {
+        r = node.textContent;
+    }
+
+    return r;
+}
+
 function ch_get_snippet(){
     try{
         var snippetPriority = new Array('title', 'h1', 'keywords', 'description');
@@ -85,7 +97,11 @@ function ch_get_snippet(){
                 }
             }
             if (document.title){ snippetData['title'] = document.title; }
-            if (document.getElementsByTagName('h1').length > 0) { snippetData['h1'] = document.getElementsByTagName('h1')[0].innerHTML.replace(/(<([^>]+)>)/ig, '') }
+
+            var tags = document.getElementsByTagName('h1');
+            if (tags.length > 0) {
+                snippetData['h1'] = get_text(tags[0]);
+            }
         }
         var snipCount = 0;
         for ( var snip in snippetPriority ) {

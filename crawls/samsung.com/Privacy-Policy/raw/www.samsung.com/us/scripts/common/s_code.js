@@ -202,8 +202,19 @@ if(typeof(omn_ss_division) != 'undefined' && omn_ss_division.length > 0)
     s.prop30 = s.eVar54 = omn_ss_division.toLowerCase();
 
 
-if(typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype.length > 0)
+if(typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype.length > 0){
+	
+	var urlVal = String(window.location.href);      
+	var urlValSplit = urlVal.split('/');
+	if (urlValSplit[6] != undefined &&  
+			(urlValSplit[6] == 'HT-E5500W' || urlValSplit[6] == 'HT-E6500W' || urlValSplit[6] == 'HT-E6730W'
+			|| urlValSplit[6] == 'HW-E550' || urlValSplit[6] == 'HW-E551')){
+		
+		omn_ss_pagetype = "2012 Black Friday product pages";
+		
+	} 
 	s.prop22 = s.eVar52 = omn_ss_pagetype.toLowerCase();
+}
 
 if(typeof(omn_ss_searchResultCount) != 'undefined' && omn_ss_searchResultCount.toString().length > 0)
 {

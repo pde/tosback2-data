@@ -137,6 +137,29 @@ function goLink(linkwwcm){
 		
 }
 
+// American Redcross Sandy
+function popSandy(){
+$('#DivContainer').prepend('<div id="SandyDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeSandy()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="SandyFrame" id="SandyFrame" src="/us/redcross_sandy/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	  
+	 // REPOSITION DIV
+	divname = 'SandyDiv';
+	divwidth = 842;
+	divheight = 557;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Coach Foundation and American Redcross";
+	s.eVar16 = "Coach Foundation and American Redcross";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeSandy() {
+	$('#SandyFrame').remove();
+	$('#SandyDiv').remove();
+	window.onresize = null; 
+}
+
 // Men Form and Function DIV
 function popFFWomen(){
 $('#DivContainer').prepend('<div id="FFWomenDiv" style="visibility:visible; width:842px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeFFWomen()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:842px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="FFWomenFrame" id="FFWomenFrame" src="/us/201210/ff_women/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
@@ -254,6 +277,32 @@ alert('this will pop the duffle video');
 function closeDuffleVideo() {
 	$('#duffleFrame').remove();
 	$('#duffleDiv').remove();
+	window.onresize = null; 
+}
+
+// Anna Scroll
+function popAnnaScroll(){
+	if (navigator.userAgent.indexOf('iPad') != -1) {
+		$('#DivContainer').prepend('<div id="AnnaScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeAnnaScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="AnnaScrollFrame" id="AnnaScrollFrame" src="/us/201211/anna_scroll/indexIpad.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	} else {
+		$('#DivContainer').prepend('<div id="AnnaScrollDiv" style="visibility:visible; width:850px; top: 60px; *top:-80px; height:550px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2600;border: 1px solid #000000;  background-image:url(\'/js/preloader/coach-loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeAnnaScroll()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:850px; height:550px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="AnnaScrollFrame" id="AnnaScrollFrame" src="/us/201211/anna_scroll/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+	}
+	 // REPOSITION DIV
+	divname = 'AnnaScrollDiv';
+	divwidth = 850;
+	divheight = 550;
+	window.onresize =  divPos;
+	divPos();	
+ 
+	//OMNITURE TRACKER	
+	s.pageName = "Anna Scroll";
+	s.eVar16 = "Anna Scroll";
+	var s_code=s.t();
+	if(s_code)document.write(s_code);
+}
+function closeAnnaScroll() {
+	$('#AnnaScrollFrame').remove();
+	$('#AnnaScrollDiv').remove();
 	window.onresize = null; 
 }
 
@@ -2278,6 +2327,12 @@ window.onload = function () {
 		//fire the function, else log the error
 		var popdiv = result.toLowerCase();
 		switch(popdiv){
+			case "redcross_sandy":
+				popSandy();
+				break;
+			case "anna_scroll":
+				popAnnaScroll();
+				break;
 			case "ff_men":
 				popFFMen();
 				break;

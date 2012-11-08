@@ -409,9 +409,7 @@ function getR2netRedirectUrl(url) {
 		appendChar = "&";
 	}
 	var R2netUrl = url + appendChar + 'Nic=' + GetCookie('Nic');
-        // INC0004470 - DAR site unavailable due to Hurricane Sandy
-        //document.location.href = R2netUrl;
-        document.location.href = "/DAR_Unavailable.html";
+        document.location.href = R2netUrl;
 }
 
 //Cookie functions

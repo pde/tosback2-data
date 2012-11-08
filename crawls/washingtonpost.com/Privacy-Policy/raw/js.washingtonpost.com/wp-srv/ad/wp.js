@@ -246,6 +246,16 @@
     
     if(/washingtonpost\.com/.test(tempcase.where) && window.jQuery){
       if(tempcase.what === 'flex_bb_hp'){
+      
+        //20481
+        /*if(win.estNowWithYear.substr(0,8) === '20121106' && !wpAd.tools.urlCheck('/regional')){
+          //fix gap in masthead
+          $('#masthead-v4').css({marginBottom: '2px'});
+          
+          //fix gap in body above right flex ad
+          $('#content div.wp-row.no-margin.margin-top').first().removeClass('margin-top');
+        }*/
+        
         $(function(){
           var $target = $('#eyeDiv');
           if($target.length){

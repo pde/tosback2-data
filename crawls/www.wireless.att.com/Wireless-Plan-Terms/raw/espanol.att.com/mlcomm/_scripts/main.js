@@ -640,6 +640,75 @@ function renderMoveRightCol() {
 						document.write('</div>');
 }
 
+//this include pulls into the contact us page
+function renderLlamanosCol() {
+		document.write('<div class="bottom-col">');
+		document.write('<p class="header"><img src="/mlcomm/_images/help/contact/header_llamanos.jpg" width="300" height="115" alt="Call Us" /></p>');
+		document.write('<p>Para servicio al cliente en espa&ntilde;ol, llama al <span class="orange-txt-col"></span> <strong>877-677-1330</strong> y 611  desde tu tel&eacute;fono m&oacute;vil.</p>');
+		document.write('<p><span class="orange-txt-col">Star Services (*Services)</span> se ofrecen en cualquier equipo m&oacute;vil AT&amp;T. Esta funci&oacute;n es GRATIS y le permite a los clientes tener f&aacute;cil acceso a informaci&oacute;n sobre su cuenta desde sus tel&eacute;fonos m&oacute;vil.</p>');
+		document.write('<p><em>Hay cuatro *servicios que se ofrecen en espa&ntilde;ol:</em></p>');
+		document.write('<p><span class="orange-txt-col">Marca *USO# (*876#) y presiona Send</span> - Consulta tus minutos disponibles</p>');
+		document.write('<p><span class="orange-txt-col">Marca *DATO# (*3286#) y presiona Send</span> - Consulta el saldo actual de tu plan de datos</p>');
+		document.write('<p><span class="orange-txt-col">Marca *SAL# (*725#) y presiona Send</span> - Consulta tu factura y el &uacute;ltimo pago recibido</p>');
+		document.write('<p><span class="orange-txt-col">Marca *PAGAR# (*72427#) y presiona Send</span> - Realiza el pago de una factura</p>');
+		document.write('</div>');		
+}
+
+//this include pulls into the facebook tab
+function renderLlamanosColFB() {
+		document.write('<div class="bottom-col">');
+		document.write('<p class="header"><img src="https://www.att.com/Common/world_att/sp/mlcomm/_images/help/contact/header_llamanos.jpg" width="300" height="115" alt="Call Us" /></p>');
+		document.write('<p>Para servicio al cliente en espa&ntilde;ol, llama al <span class="orange-txt-col"></span> <strong>877-677-1330</strong> y 611  desde tu tel&eacute;fono m&oacute;vil.</p>');
+		document.write('<p><span class="orange-txt-col">Star Services (*Services)</span> se ofrecen en cualquier equipo m&oacute;vil AT&amp;T. Esta funci&oacute;n es GRATIS y le permite a los clientes tener f&aacute;cil acceso a informaci&oacute;n sobre su cuenta desde sus tel&eacute;fonos m&oacute;vil.</p>');
+		document.write('<p><em>Hay cuatro *servicios que se ofrecen en espa&ntilde;ol:</em></p>');
+		document.write('<p><span class="orange-txt-col">Marca *USO# (*876#) y presiona Send</span> - Consulta tus minutos disponibles</p>');
+		document.write('<p><span class="orange-txt-col">Marca *DATO# (*3286#) y presiona Send</span> - Consulta el saldo actual de tu plan de datos</p>');
+		document.write('<p><span class="orange-txt-col">Marca *SAL# (*725#) y presiona Send</span> - Consulta tu factura y el &uacute;ltimo pago recibido</p>');
+		document.write('<p><span class="orange-txt-col">Marca *PAGAR# (*72427#) y presiona Send</span> - Realiza el pago de una factura</p>');
+		document.write('</div>');		
+}
+
+//this include pulls into the contact us page
+function renderPreguntasCol() {
+		document.write('<div class="bottom-col">');
+		document.write('<p class="header"><img src="/mlcomm/_images/help/contact/header_preguntas_frecuentes.jpg" width="327" height="114" alt="FAQs" /></p>');
+		document.write('<p> &iquest;Tienes dudas sobre tus opciones de facturaci&oacute;n y pago, servicios disponibles para tu mudanza, u otros temas de inter&eacute;s? En esta secci&oacute;n podr&aacute;s encontrar las respuestas a las preguntas m&aacute;s comunes relacionadas a estos temas.<br />');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/faqs/billing.html?id=' + state + '" title="Facturaci&oacute;n" class="arrow">Facturaci&oacute;n</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/conectada/index.html?id=' + state + '" title="Casa Conectada" class="arrow">Casa Conectada</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/faqs/area_codes.html?id=' + state + '" title="C&oacute;digos de &aacute;rea" class="arrow">C&oacute;digos de &aacute;rea</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/att_move/index.html?id=' + state + '" title="Mudanza" class="arrow">Mudanza</a>');
+		document.write('</p>');                  
+		document.write('</div>');
+}
+
+//this include pulls into the facebook tab
+function renderPreguntasColFB() {
+		document.write('<div class="bottom-col">');
+		document.write('<p class="header"><img src="https://www.att.com/Common/world_att/sp/mlcomm/_images/help/contact/header_preguntas_frecuentes.jpg" width="327" height="114" alt="FAQs" /></p>');
+		document.write('<p> &iquest;Tienes dudas sobre tus opciones de facturaci&oacute;n y pago, servicios disponibles para tu mudanza, u otros temas de inter&eacute;s? En esta secci&oacute;n podr&aacute;s encontrar las respuestas a las preguntas m&aacute;s comunes relacionadas a estos temas.<br />');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/faqs/billing.html?id=' + state + '" title="Facturaci&oacute;n" class="arrow">Facturaci&oacute;n</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/conectada/index.html?id=' + state + '" title="Casa Conectada" class="arrow">Casa Conectada</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/faqs/area_codes.html?id=' + state + '" title="C&oacute;digos de &aacute;rea" class="arrow">C&oacute;digos de &aacute;rea</a>');
+		document.write('</p>');
+		document.write('<p>');
+		document.write('<a href="/help/att_move/index.html?id=' + state + '" title="Mudanza" class="arrow">Mudanza</a>');
+		document.write('</p>');                  
+		document.write('</div>');
+}
 
 
 function renderFooter() {

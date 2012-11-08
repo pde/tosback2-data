@@ -1626,7 +1626,7 @@
 				$.ad.coms.pre(d);
 
 				//quant pixel
-				$.ad.dc.quant.pre();
+				//$.ad.dc.quant.pre();
 
 				//nielsen
 				$.ad.niel.pre(d);

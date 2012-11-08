@@ -60,7 +60,7 @@ if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
 
 
 s=d.createElement('SCRIPT');
-u='http://content.dl-rms.com/dt/s/'+n['nid']+'/s.js';
+u='//content.dl-rms.com/dt/s/'+n['nid']+'/s.js';
 s.src=u;
 s.type='text/javascript';
 d.getElementsByTagName('head')[0].appendChild(s);

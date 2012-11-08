@@ -203,16 +203,17 @@ $(document).ready(function(){
     }
 });
 ;
-$(document).ready(function() {
+jQuery(document).ready(function() {
     var ALL_PAGES = '/etc/tags/twc/lob';
     var ALL_REGIONS = '/etc/tags/twc/location/region';
     var alertSelf = $('.alerts .display-alerts');
 
-    var isPathMatched = function(arr, matchVal, rootMatch) {
+    var doesMatch = function(tagArray, matchVal, matchAll) {
         var match = false;
-        for (var idx in arr) {
-            var cmpPath = arr[idx].path;
-            if (cmpPath===matchVal || cmpPath===rootMatch) {
+        var arrLen = tagArray.length;
+        for (var i=0; i<arrLen; i++) {
+            var cmpPath = tagArray[i].path;
+            if (cmpPath===matchAll || cmpPath===matchVal || matchVal===tagArray[i].title) {
                 match = true;
                 break;
             }
@@ -220,28 +221,29 @@ $(document).ready(function() {
         return match;
     };
 
-    var isInRegion = function(alert, region) {
-        return isPathMatched(alert.regionTags, region, ALL_REGIONS);
+    var isInRegion = function(alertMsg, region) {
+        return typeof(alertMsg.regionTags)==='undefined' ? false : doesMatch(alertMsg.regionTags, region, ALL_REGIONS);
     };
 
-    var isOnPage = function(alert, page) {
-        return isPathMatched(alert.pageTags, page, ALL_PAGES);
+    var isOnPage = function(alertMsg, page) {
+        return typeof(alertMsg.pageTags)==='undefined' ? false : doesMatch(alertMsg.pageTags, page, ALL_PAGES);
     };
 
     if (alertSelf.length>0) { // if component on page
-        //read in from HTML; defaults to 'default' from JSP
+        //read in from HTML; defaults to 'default' from JSP (data-alert-* defaults to "default")
         var src = alertSelf.attr('data-alert-src');
         var pageFilter = alertSelf.attr('data-alert-filter');
         if (src!=='default' && pageFilter!=='default') { // if component configured
             $.getJSON(src+'/jcr:content.json', function(data){
                 var items = [];
-                var regionFilter = typeof(ClientContext)==='object' ? ClientContext.get('profile/region') : "none";
+                var alertLen = typeof(data.alerts)==='undefined' ? 0 : data.alerts.length;
+                var regionFilter = typeof(ClientContext)==='object' ? ClientContext.get('profile/region') : ALL_REGIONS;
 
-                for (var idx in data.alerts) {
-                    var alert = data.alerts[idx];
-                    if (isInRegion(alert, regionFilter)===true && isOnPage(alert, pageFilter)===true ) {
-                        items.push('<li>'+alert.message+'</li>');
-                    }// else { console && console.log("excluding alert: "+alert.id); }
+                for (var i=0; i<alertLen; i++) {
+                    var alertMsg = data.alerts[i];
+                    if (isInRegion(alertMsg, regionFilter) && isOnPage(alertMsg, pageFilter) ) {
+                        items.push('<li>'+alertMsg.message+'</li>');
+                    } else { console && console.log(".display-alerts excluding: "+alertMsg.id); }
                 }
                 if (items.length > 0) {
                     alertSelf.find('.alert-messages').html(items.join(''));
@@ -1717,6 +1719,197 @@ function timerIncrement() {
     }
 
 }(jQuery, this));
+CQ_Analytics.ClientContextUtils.onStoreRegistered('profile', function() {});
+
+;(function($){
+    "use strict";
+
+    $.fn.geolocation = function(opts) {
+        CQ_Analytics.ClientContextUtils.onStoreInitialized('profile', function() {
+            if(typeof ClientContext.get('/profile/zip') === "undefined" &&
+                typeof ClientContext.get('/profile/city') === "undefined" &&
+                typeof ClientContext.get('/profile/state') === "undefined" &&
+                typeof ClientContext.get('/profile/soaId') === "undefined" &&
+                typeof ClientContext.get('/profile/region') === "undefined"){
+                var geoLocation = getGeoLocationFromCookie();
+                updateGeoLocationProfile(geoLocation);
+            }
+        }, true);
+
+        var options = $.extend({
+            cookieName: 'twc-user-profile',
+            cookie: {
+                path: '/',
+                /* domain: 'timewarnercable.com', */
+                expires: 365
+            },
+            geoLocationServletURI: '/bin/services/geolocation.json',
+            updateOnLoad: true,
+            defaultGeoLocation: {
+                city:       'New York',
+                state:      'NY',
+                postalCode: '10019',
+                soaID:      'NYC.8150',
+                region:     'NYC'
+            }
+        }, opts);
+
+        /* Dyamically determine domain if not defined */
+        if(! options.cookie.domain && location.hostname.match(/[\w\-]+\.[\w\-]+$/)) {
+            options.cookie['domain'] = location.hostname.match(/[\w\-]+\.[\w\-]+$/)[0];
+        }
+
+        var locationEl = $(this).find('#twc-location-popup');
+
+        function setGeoLocation() {
+            var geoLocation = getGeoLocationFromCookie();
+
+            if(hasGeoLocationCookie()) {
+                if(inFootprint(geoLocation)) {
+                    updateLocationHeader(buildLocationString(geoLocation));
+                }
+                else if(! $.cookie('locerrorclosed')) {
+                    showError("oof");
+                }
+            }
+            else {
+                geoLocation = options.defaultGeoLocation;
+                if(! $.cookie('locerrorclosed'))
+                    showError("noc");
+            }
+
+            CQ_Analytics.CCM.addListener('configloaded', function(){console.log('configloaded'); updateGeoLocationProfile(geoLocation)}, CQ_Analytics.ProfileDataMgr);
+        }
+
+        function inFootprint(geoLocation) {
+            return(geoLocation && geoLocation.region && geoLocation.region.length > 0);
+        }
+
+        function hasGeoLocationCookie() {
+            return(getGeoLocationFromCookie());
+        }
+
+        function handleChangeLocation() {
+            eraseCookie();
+            fetchGeoLocationData();
+        }
+
+        function getGeoLocationFromCookie() {
+            var geoData = jQuery.parseJSON(getCookie());
+
+            if(geoData && typeof(geoData['city']) === 'string') {
+                geoData.city = geoData.city.replace(/\+/g, ' ');
+            }
+
+            return(geoData);
+        }
+
+        function fetchGeoLocationData() {
+            $.getJSON(options.geoLocationServletURI + '?zip=' + $('#locationText').val(), function(geoLocation) {
+                writeGeoLocationCookie(geoLocation);
+                updateGeoLocationProfile(geoLocation);
+                location.reload(); // reload page so geo-aware components can initialize properly.
+            }).error(function() {
+                handleLocationChangeError();
+            });
+        }
+
+        function handleLocationChangeError() {
+            showError("geo");
+        }
+
+        function buildLocationString(geoLocation) {
+            return(geoLocation ? geoLocation['city'] + ", " + geoLocation['state'] + " " + geoLocation['postalCode'] : "");
+        }
+
+        function updateLocationHeader(str) {
+            if(str) {
+                $('#twc-location').html(str);
+            }
+        }
+
+        function updateGeoLocationProfile(geoLocation) {
+            if(geoLocation) {
+                CQ_Analytics.ProfileDataMgr.setProperty('city', geoLocation['city']);
+                CQ_Analytics.ProfileDataMgr.setProperty('state', geoLocation['state']);
+                CQ_Analytics.ProfileDataMgr.setProperty('zip', geoLocation['postalCode']);
+                CQ_Analytics.ProfileDataMgr.setProperty('soaId', geoLocation['soaID']);
+                CQ_Analytics.ProfileDataMgr.setProperty('region', geoLocation['region']);
+            }
+        }
+
+        function writeGeoLocationCookie(locationData) {
+            setCookie(JSON.stringify(locationData));
+        }
+
+        function setCookie(data) {
+            $.cookie(options.cookieName, data, options.cookie);
+        }
+
+        function getCookie() {
+            return($.cookie(options.cookieName));
+        }
+
+        function eraseCookie() {
+            $.cookie(options.cookieName, null, options.cookie);
+        }
+
+        function hideErrors() {
+            locationEl.removeClass('error');
+            $('#twc-location-popup .message').addClass('hidden').hide();
+        }
+
+        function showError(errorID) {
+            // Persist error window until closed manually
+            $.cookie('locerrorclosed', errorID, {expires: 365, path: '/'});
+
+            locationEl.addClass('error');
+            $('#twc-location-popup .message').addClass('hidden').hide();
+            $('#' + errorID + '-error').removeClass('hidden').show();
+
+            $('ul.location li.last').addClass('hover');
+            $('#twc-location-popup').removeClass('hidden').show();
+        }
+
+        return this.each(function() {
+            $(this).data('initialized', true);
+
+            // Set the location text initially (on page reload)
+            setGeoLocation();
+
+            $(this).find('#locationText').on({
+                focus: function() {
+                    // Maintain the visible state of the drop-down while cursor focus is in the location input element
+                    jQuery.noop();
+                },
+                blur: function() {
+                    // Hide the change-location drop down when focus on input text element is lost
+                    jQuery.noop();
+                },
+                keydown: function(e) {
+                    // Listen for enter key...
+                    e.which === 13 ? handleChangeLocation() : false;
+                },
+                keyup: function(e) {
+                    // Hide error message if input element is cleared out
+                    if(!e.target.value) {
+                        hideErrors();
+                    }
+                }
+            });
+
+            $(this).find('button:first').on('click', handleChangeLocation);
+        });
+    }
+})(jQuery);
+
+$(document).ready(function(){
+    var locationEl = $('ul.location:first');
+    // Kludge because of multiple document.ready events :\
+    if(locationEl.data('initialized') !== true) {
+        locationEl.geolocation();
+    }
+});
 $(document).ready(function () {
     if ($('.chatpromptadmin').length > 0) {
         if (!$('#globaldisable').is(":checked"))
@@ -12666,11 +12859,11 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 
         function autoSelect(currSlideElement, nextSlideElement, options, forwardFlag){
             var $navItem = $(nextSlideElement).find('.slide-item:first');
+            $navItem.removeClass("active");
             $navItem.trigger('click');
         }
 
         return this.each(function() {
-
             var $container = $(this);
 
             var $slider = $container.find('ul.slides');
@@ -13543,11 +13736,32 @@ console.log("click");
 				.find(goto_id)
 				// .stop(true, true)
 				.fadeIn('slow', function(){
-						$(this).addClass('active');
+						//$(this).addClass('active');
 					})
 				.siblings()
 				.hide()
 				.removeClass('active');
+			var $focus = $(this).find('a');
+			var panelID = ($focus.prop('hash') || '#').replace('#', '.multipanel-');
+			var $multipanelParent = $(this).closest('.multipanel-tabs').children('.multipanel-container');
+			var $visiblePanel = $multipanelParent.children(panelID);
+			var $navItem = $visiblePanel.find('.slide-item:first');
+			$navItem.removeClass('active');
+			$navItem.trigger('click');
+		}
+		
+		/* Main function that Reveals the content */
+		function ShowPanelOrLinkDetails() {
+			var $this = $(this);
+			// see if this tab is active.  If so, go to the details url
+			if ($this.hasClass("active") && $(this).data('detailsurl')!=undefined){
+				var detailsUrl = $(this).data('detailsurl');
+				location.href=detailsUrl;
+			}
+			else
+			{
+				ShowPanel.call($this);
+			}
 		}
 
 		/* Helper function to generated .class based IDs for the tab containers */
@@ -13604,7 +13818,9 @@ console.log("click");
 			/* Bind ShowPanel to click event  */
 			$tab_ul.find('li').each(function(){
 				var showTab = $.proxy(ShowPanel, $(this));
-				$(this).unbind('click.multiPanelTabs').bind( 'click.multiPanelTabs', showTab);
+				var showTabOrLinkDetails = $.proxy(ShowPanelOrLinkDetails, $(this));
+				$(this).unbind('click.multiPanelTabs').bind( 'click.multiPanelTabs', showTabOrLinkDetails);
+
 			});
 
 			/* On init find the tab that is active, if none are select first tab and display content */
@@ -13618,11 +13834,10 @@ console.log("click");
 				}
 
 				if ($active.is(':visible')) {
-					$active.triggerHandler('click');
-					//ShowPanel.call($active);
+					//$active.triggerHandler('click');
+					ShowPanel.call($active);
 				}
 			});
-
 
 			// Tab module nav has no click functionality, 
 			// removing default function and event propagation for any clicks on the links

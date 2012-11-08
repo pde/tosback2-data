@@ -34,6 +34,23 @@ if (domain.substring(0, 6) == "stage.") {
 } else if (domain.substring(0, 4) == "dev." || domain.indexOf(".dev.") > 1) {
     nbcu.config.addParam("nbcuEnvironment", "dev");
 }
+
+if (getQuery("_mode") == "app" || NBC.cookie("_mode") == "app") {
+    NBC("header.global, footer.global, header.site, footer.site").hide();
+    NBC.cookie("_mode", "app");
+}
+
+function getQuery(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if(results == null)
+        return "";
+    else
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
 /* -------------------------------------------------------------------------*/
 /* MYNBC INTERACTIVE ACTIONS */
 function initMyNBC() {
@@ -124,8 +141,12 @@ function loadGlobalDropdown() {
         if (dropdown_global_request) {
             dropdown_global_request.abort();
         }
+        var globalDropdownUrl = '/assets/core/themes/2012/nbc/includes/auto-generated/dropdowns-global.shtml';
+        if (SITE.globalDropdownUrl !== undefined && SITE.globalDropdownUrl !== "") {
+            globalDropdownUrl = SITE.globalDropdownUrl;
+        }
         dropdown_global_request = NBC.ajax({
-            url: '/assets/core/themes/2012/nbc/includes/auto-generated/dropdowns-global.shtml',
+            url: globalDropdownUrl,
             cache: (nbcu.config.getParam("nbcuEnvironment") == "dev") ? false : true
         }).done(function(data) {
             dropdown_global = data;
@@ -306,8 +327,8 @@ function initSiteDropdown() {
         }
     });
 
-    // detaching shop link from the dropdowns
-    NBC('a.dropdown-site-link[data-target="#dropdown-site-shop"]').removeClass('dropdown-site-link').attr('target','_blank');
+    // detaching shop and vote link from the dropdowns
+    NBC('a.dropdown-site-link[data-target="#dropdown-site-shop"], a.dropdown-site-link[data-target="#dropdown-site-vote"]').removeClass('dropdown-site-link').attr('target','_blank');
 
     NBC('#dropdowns-site').bind('click', function(event){
         event.stopPropagation();

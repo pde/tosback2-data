@@ -30,11 +30,11 @@ function buildDropdown() {
 	document.writeln('<li class="all"><a href="/brands/Women/_/N-lfx6?cm_sp=womens-_-ddtb-_-vac+021412">VIEW ALL WOMEN\'S BRANDS</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
-	document.writeln('<li><a href="/shop/Women/_/N-lfx6Z1jl/Ntk-all/Ntt-made+in+italy/Nty-1?cm_sp=womens-_-ddf-_-made+in+italy+1+110312">Made in Italy: Cashmere</a></li>');
+	document.writeln('<li><a href="/shop/Women/_/N-lfx6Z1jl/Ntk-all/Ntt-made+in+italy/Nty-1?cm_sp=womens-_-ddf-_-made+in+italy+1+110312">Made in Italy: Antonio Melani</a></li>');
 	document.writeln('<li><a href="/shop/Women-Dresses-Cocktail-Dresses/_/N-ydnr/Rpp-1?cm_sp=womens-_-ddf-_-cocktail+dressess+2+102812">Cocktail Dresses</a></li>');
 	document.writeln('<li><a href="/content/women-wedding-bridal-shop?cm_sp=womens-_-ddf-_-weddind+shop+3+110112">The Wedding Shop</a></li>');
 	document.writeln('<li><a href="/shop/Women-Dresses-Mother-of-the-Bride-Dresses/_/N-ydnz?cm_sp=womens-_-ddf-_-mob+dresses+4+072812">Mother of the Bride Dresses</a></li>');
-	document.writeln('<li><a href="/shop/Women-Dresses-Dresses-Under-150/_/N-yzo8?cm_sp=womens-_-ddf-_-dresses+under150+5+082312">Dresses Under $150</a></li>');
+	document.writeln('<li><a href="/shop/Women-Coats-Cashmere/_/N-zpglZ1jl/Ns-p_best_sellers_rank%7C1/Ntk-all/Ntt-Coats/Nty-1/Rpp-1?cm_sp=womens-_-ddf-_-cashmere+coats+5+110612">Cashmere Coats</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<div class="promo"><a href="/content/Women-Bridge-Week?cm_sp=womens-_-ddpromo-_-boutique+chic+110412" >BOUTIQUE CHIC WEEK: RECEIVE A $50 GIFT CARD WITH ANY REGULAR PRICE PURCHASE OF $250 OR MORE FROM SELECT BRANDS  ></a></div>');
 	document.writeln('</div>');
@@ -214,7 +214,7 @@ function buildDropdown() {
 	document.writeln('<li class="all"><a href="/brands/Accessories/_/N-lfxv?cm_sp=accessories-_-ddtb-_-vab+021312">VIEW ALL ACCESSORY BRANDS</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
-	document.writeln('<li><a href="/shop/Accessories-Leggings/_/N-z5su?Ntx=mode+matchboolean&cm_sp=accessories-_-ddf-_-fall+perfect+accessory+leggings+1+093012">Fall\'s Perfect Accessory: LEGGINGS</a></li>');
+	document.writeln('<li><a href="/shop/Pretty-Polly/Accessories/_/N-174pqZlfxv?cm_sp=accessories-_-ddf-_-pretty+polly+21+110712">PRETTY POLLY: Iconic British Tights</a></li>');
 	document.writeln('<li><a href="/content/bridal-shop-wedding-accessories?cm_sp=accessories-_-ddf-_-bridal+wedding+style+2+093012">BRIDAL & WEDDING Style</a></li>');
 	document.writeln('<li><a href="/shop/COACH/Accessories-Watches/_/N-1738wZlgaw/Ns-p_coach_active_date%7C1/Rpp-1?cm_sp=accessories-_-ddf-_-new+COACH+watches+3+102612">New COACH Watches</a></li>');
 	document.writeln('<li><a href="/shop/Accessories-Jewelry-Bracelets-Cuff/_/N-z447/Rpp-1?cm_sp=accessories-_-ddf-_-cuff+love+4+102612">Trending Now: CUFF LOVE</a></li>');
@@ -266,7 +266,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/content/sleepwear-buy-two-save?cm_sp=lingerie-_-ddf-_-buy2andsave+4+110412">Buy 2 and SAVE</a></li>');
 	document.writeln('<li><a href="/product/TC-Fine-Shapewear-Even-More-Wonderful-Edge%AE-Strapless-Bra-Slip_301_-1_301_500659843?cm_sp=lingerie-_-ddf-_-pick+of+the+week+5+102612">OUR PICK OF THE WEEK</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/content/spanx-slimming-solutions-guide?cm_sp=lingerie-_-ddpromo-_-spanx+slimming+shaping+guide+051212" >SPANX SHOPPER\'S GUIDE TO SLIMMING SOLUTIONS ></a></div>');
+	document.writeln('<div class="promo"><a href="/content/perfect-fit-to-support-feeding-america-lingerie-fit-event?cm_sp=lingerie-_-ddpromo-_-feeding+america+perfect+fit+event+110712" >Support Feeding America® on November 9 at Dillard\'s ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Wacoal/Lingerie-Shapewear/_/N-1736tZza2t?cm_sp=lingerie-_-ddimage-_-wacoal+iPant+102012"><img src="/images/dropDownImages/102012banner_dd_wacoal.jpg"></a>');
@@ -355,10 +355,10 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z15p/Ns-p_best_sellers_rank|1?cm_sp=mens-_-ddf-_-new+arrivals+1+080312">NEW ARRIVALS in Men\'s</a></li>');
 	document.writeln('<li><a href="/content/mensaccessories?splashlink=dd_m_tr2_watchesBagsAccessories_112211&cm_sp=mens-_-ddf-_-watches+bags+accessories+2+112211">Watches, Sunglasses, Bags & Accessories</a></li>');
 	document.writeln('<li><a href="/shop/Men-Polos-Tees-Sportshirts-Tees/_/N-yetlZ1jl/Ns-p_best_sellers_rank%7C1/Ntk-all/Ntt-long-sleeve/Nty-1/Rpp-1?cm_sp=mens-_-ddf-_-great+tees+layering+3+110312">GREAT TEES for Layering</a></li>');
-	document.writeln('<li><a href="/shop/Roundtree-Yorke-Gold-Label/Men/_/N-173emZlfy5Z1jl/Ntk-all/Ntt-no-iron+dress+shirt/Nty-1?cm_sp=mens-_-ddf-_-roundtree+yorke+gold+no+iron+dress+shitr+4+090112">ROUNDTREE & YORKE Gold Label No-Iron Dress Shirts</a></li>');
-	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-under+armour+jacket/Nty-1?cm_sp=mens-_-ddf-_-under+armour+jackets+5+101712">UNDER ARMOUR Jackets</a></li>');
+	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-under+armour+jacket/Nty-1?cm_sp=mens-_-ddf-_-under+armour+jackets+4+101712">UNDER ARMOUR Jackets</a></li>');
+	document.writeln('<li><a href="/shop/Men-Outerwear-Cold-Weather-Gear/_/N-rz6g/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=mens-_-ddf-_-best+selling+coats+coldweather+4+110612">Best-Selling COATS and COLDWEATHER</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Men-Outerwear-Cold-Weather-Gear/_/N-rz6g/Ns-p_best_sellers_rank%7C1/Rpp-1?cm_sp=mens-_-ddpromo-_-most+popular+coats+coldweather+accessories+110312" >Our Most Popular Coats and Coldweather Accessories</a></div>');
+	document.writeln('<div class="promo"><a href="/content/mens-polo-ralph-lauren-basics-underwear-sale?cm_sp=mens-_-ddpromo-_-polo+underwear+sale+110612" >Polo Ralph Lauren Basics 25% off Event</a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-travel+smart+twill/Nty-1?cm_sp=mens-_-ddimage-_-roundtree+yorke+travel+smart+twill+expander+pants+102712"><img src="/images/dropDownImages/102712drop_down_mens_roundtree.jpg"></a>');

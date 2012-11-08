@@ -383,7 +383,8 @@ function changeStore() {
 // Gets called after DOM is ready
 $(document).ready(function () {
     //localize popUP
-    loadBannerPopup();
+	/*Commented to disable poup load*/
+    //loadBannerPopup();
 
     // displays the header WHY tooltip mouseover		
     $('#why').mouseover(function (e) {

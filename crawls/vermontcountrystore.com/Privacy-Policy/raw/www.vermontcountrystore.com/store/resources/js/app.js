@@ -280,7 +280,8 @@ var Util = {
 							title	   : 'An item has been added to your bag : ',
 							autoOpen	: true,
 							width	   : 415,
-							dialogClass : 'success-modal'
+							dialogClass : 'success-modal',
+							position: ['middle', 250]
 						};
 					Util.modal.init(settings, modalUrl);
 				},

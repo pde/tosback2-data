@@ -238,6 +238,39 @@ $(document).ready(function(){
 			$('#continueShoppingPayload').hide();
 		});
 	
+	$('.toggleSecondCard').on('click',function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		
+		if (window.secCardCache == undefined) {
+			secCardCache = {};
+			secCardCache.mainTrigger = $('#showSecondCardTrigger');
+			secCardCache.target = $('#secondCreditCard');
+			secCardCache.amountsInput = $('.writeableAmount');
+			secCardCache.amountsRO = $('.readOnlyAmount');
+			secCardCache.cardSelects = $('.cardPicker');
+			
+		}
+
+		if (secCardCache.target.is(':visible')) {
+			// Hiding the second card.
+			// Reset it's value to blanks, revert the 1st card's amount, display RO amount, show main trigger
+			secCardCache.mainTrigger.removeClass('hideMe');
+			secCardCache.amountsInput.eq(0).hide().val(MULTICARD_ORDER_TOTAL);
+			secCardCache.amountsRO.show();
+			secCardCache.cardSelects.eq(1).val("");
+			newCCChange(secCardCache.cardSelects[1]);
+			secCardCache.amountsInput.eq(1).val("0.00");
+		} else {
+			// Showing Second Card
+			// Turn 1st card's amount into editable text, hide main trigger
+			secCardCache.mainTrigger.addClass('hideMe');
+			secCardCache.amountsRO.hide();
+			secCardCache.amountsInput.eq(0).show();
+		}
+		secCardCache.target.toggle();
+	});
+	
 });  // DOC READY
 
 ajaxLoginForm = function(){
@@ -368,10 +401,13 @@ function confirmItemRemoval() {
 	function changePaymentMethod(otherField){
 		var theForm = $("#paymentForm");
 		//$("#paymentChoices input").val("");
-		$("#"+otherField).val("");
-		$("#nextPage").val("-1");
+		//$("#"+otherField).val("");
+		$("#nextPage").val("0");
+		
+		prepPaymentFormFor('clearSavedCard',theForm[0]);
 		prepPaymentFormFor('removePrevPaymentType',theForm[0]);
-		prepPaymentFormFor('droptopayment',theForm[0]);
+		prepPaymentFormFor('clearcc',theForm[0]);
+		prepPaymentFormFor('droptocode',theForm[0]);
 		theForm.submit();
 		
 		//if(field.form.elements['nextPage']){field.form.elements['nextPage'].value="-1";}
@@ -396,13 +432,15 @@ function confirmItemRemoval() {
 			return false;
 		}
 		else {
-			// everything is ok check the fields, ie using if (document.... .lenght == 0) alert...
+			// everything is ok check the fields, ie using if (document.... .length == 0) alert...
 			submitted = true ;
 		}
 		skippedFields = new RegExp("(prefixId|nextPage|shipToId|businessFlag)");
-		for(x=0; x<formObject.length;x++){//loop through each form object
-			if(!(skippedFields.test(formObject.elements[x].name))){
-				if(formObject.elements[x].value.length > 0 && formObject.elements[x].value!="Keyword, Item #"){
+		for(x = 0; x < formObject.length; x++)//loop through each form object
+		{
+			var next_element = formObject.elements[x];
+			if(!(skippedFields.test(next_element.name)) && (next_element.type != "hidden")){
+				if(next_element.value.length > 0 && next_element.value!="Keyword, Item #"){
 					return true;
 				}
 			}
@@ -583,8 +621,9 @@ function confirmItemRemoval() {
 		if ($paymentTypeId.length>0) {
 			$paymentTypeId.val('');
 		}
-		$('#payRecord').val('');
-		prepPaymentFormFor('droptopayment',$theForm[0]);
+		prepPaymentFormFor('stopPayment',$theForm[0]);
+		prepPaymentFormFor('clearSavedCard',$theForm[0]);
+		prepPaymentFormFor('droptocode',$theForm[0]);
 		$theForm.submit();
 	}
 	
@@ -638,18 +677,21 @@ function confirmItemRemoval() {
 
 function applyCatalogKeyCode(theForm){
 		prepPaymentFormFor('stopPayment',theForm);
-		prepPaymentFormFor('droptopayment',theForm);
+		prepPaymentFormFor('droptocode',theForm);
 		$("#paymentForm").submit();
 }
 
 function applyPromoCode(theForm){
 	if (theForm.promoCodeTemp.value !="" && checkPromoCode(theForm)) {
 		prepPaymentFormFor('stopPayment',theForm);
-		prepPaymentFormFor('droptopayment',theForm);
+		prepPaymentFormFor('droptocode',theForm);
 		$("#paymentForm").submit();
 	}
 }
 
+function applyNonCreditCardPayment(theForm){
+	
+}
 
 /**
  * used to clear the payment form of fields that will produce
@@ -661,25 +703,61 @@ function applyPromoCode(theForm){
  */
 function prepPaymentFormFor(action, theForm) {
 	var fields=[],selects=[],cbs=[],proceed=true,clearExtra=false;
+	var removeFromReg = /#(payment|codes)/;
+	var gcFields = {
+		'fields':['IdNumberpayment','PINpayment','Amountpayment'],
+		'selects':['GCpaymentTypeId'],
+		'cbs':['ignore']
+	};
+	var ccFields = {
+		'fields':['card1_IdNumberpayment','card1_Amountpayment','card2_IdNumberpayment','card2_Amountpayment'],
+		'selects':['card1_cc_type','card1_monthExpDatepayment','card1_yearExpDatepayment','card2_cc_type','card2_monthExpDatepayment','card2_yearExpDatepayment'],
+		'cbs':['card1_saveCC','card2_saveCC']
+	};
+	var savedCardFields = {
+		'fields':['payRecord','card1_Amountpayment'],
+		'selects':[],
+		'cbs':[]
+	}
+	
 	switch (action) {
 		case 'stopPayment':
 			clearExtra = true;
-			fields = ['savedAmount','IdNumberpayment','Amountpayment','PINpayment','paymentTypeId'];
-			selects = ['monthExpDatepayment','yearExpDatepayment','CCpaymentTypeId','GCpaymentTypeId'];
-			cbs = ['saveCC','tcAccept','ignore'];
+			fields = [].concat(gcFields.fields, ccFields.fields, savedCardFields.fields);
+			selects = [].concat(gcFields.selects, ccFields.selects, savedCardFields.selects);
+			cbs = [].concat(gcFields.cbs, ccFields.cbs, savedCardFields.cbs);
 			break;
 		
 		case 'droptopayment':
-			var frmAction = theForm.action;
-			if (!frmAction.match(/#payment/)) {
-				theForm.action = theForm.action+'#payment';
-			}
+			clearExtra = false;
+			theForm.action.replace(removeFromReg,'');
+			theForm.action=theForm.action+'#payment'
 			proceed = false;
+			break;
+		
+		case 'droptocode':
+			clearExtra = false;
+			theForm.action.replace(removeFromReg,'');
+			theForm.action=theForm.action+'#codes'
+			proceed = false;
+			break;
+		
+		case 'clearcc':
+			clearExtra = false;
+			fields = ccFields.fields;
+			selects =  ccFields.selects;
+			cbs =  ccFields.cbs;
 			break;
 
 		case 'removePrevPaymentType':
 			clearExtra = false;
 			fields = ['paymentTypeId','Amountpayment'];
+			proceed = true;
+			break;
+		
+		case 'clearSavedCard':
+			clearExtra = false;
+			fields = savedCardFields.fields;
 			proceed = true;
 			break;
 		
@@ -712,7 +790,227 @@ function prepPaymentFormFor(action, theForm) {
 		for (var i=cbs.length; i>-1 ; --i) {
 			var ele = theForm[cbs[i]];
 			if (ele) { ele.checked=false; }
-		}		
+		}
 
+	}
+}
+
+function  newCCChange(ele){
+	var $ele = $(ele),
+	eleId = $ele.attr('id'),
+	selectedCard = $ele.val(),
+	$mom = $ele.parents('.CreditCardEntryContainer'),
+	$sccField = $mom.find('.savedCardInput'),
+	$sccNum = $mom.find('.savedNumber'),
+	$ccnumField = $mom.find('.ccNumber'),
+	$expWrapper = $mom.find('.expDateCont'),
+	$noExpWrapper = $mom.find('.expDate_notNeed'),
+	$expDateFields = $mom.find('.expDateSel'),
+	$roAmount = $mom.find('.readOnlyAmount'),
+	$hasSCC = $sccField.length,
+	$sccRow = $mom.find('.saveCardRow'),
+	$sccCB = $sccRow.find('.saveCC'),
+	$pdRows = $mom.find('.paymentDetailsRow'),
+	$wAmount = $mom.find('.writeableAmount'),
+	$visaToS = $('#tosBox'),
+	hideClass = 'hideMe';
+	
+	var resetCC = function(){
+		// Show & Reset
+		$ccnumField.removeClass(hideClass).val('');
+		$expWrapper.removeClass(hideClass);
+		$sccRow.removeClass(hideClass);
+		$pdRows.removeClass(hideClass);
+		$expDateFields.val('');
+		$sccCB.removeAttr('checked');
+		$roAmount.removeClass(hideClass);
+		
+		// Hide & Reset
+		$sccNum.addClass(hideClass).text('');
+		$noExpWrapper.addClass(hideClass).text('');
+		$wAmount.addClass(hideClass);
+		$sccField.val('');
+		
+		
+		if ($('#secondCreditCard').is(':visible')) {
+			$wAmount.removeClass(hideClass);
+			$roAmount.addClass(hideClass);
+		} else {
+			$wAmount.addClass(hideClass);
+			$roAmount.removeClass(hideClass);
+		}
+		
+	}
+	
+	if(selectedCard != "") {
+		if (selectedCard.indexOf('saved_card_') != -1 && $hasSCC) {
+			var sId = selectedCard.replace('saved_card_','');
+			resetCC();
+
+			// Show and Set
+			$sccNum.removeClass(hideClass).text('****-****-****-'+HDC_SCI[sId].lastFour);
+			$noExpWrapper.removeClass(hideClass).text(HDC_SCI[sId].expDate);
+			$pdRows.removeClass(hideClass)
+			$sccField.val(sId);
+			
+			// Hide & reset
+			$ccnumField.addClass(hideClass).val('');
+			$expWrapper.addClass(hideClass);
+			$sccRow.addClass(hideClass);
+			$expDateFields.val('');
+
+		} else {
+			resetCC();
+			if (selectedCard == '19') {
+				$expDateFields.val('');
+				$expWrapper.addClass(hideClass);
+				$noExpWrapper.removeClass(hideClass).text("N/A");
+			}
+		}
+	} else {
+		resetCC();
+		$pdRows.addClass(hideClass);
+		if (eleId == 'chosenCard1' && $('#secondCreditCard').is(':visible')) {
+			$('.toggleSecondCard').eq(0).click();
+		}
+	}
+	
+	// Single place to show/hide the Visa ToS
+	var $visaToS = $('#tosBox'),
+	    $cards = $('.cardPicker'),
+	    showToS = false;
+	for (var i=0,l=$cards.length; i<l; i++) {
+		var card = $cards[i].options[$cards[i].selectedIndex].text,
+		isVisa = card.match(/visa/i);
+		if (isVisa) {
+			showToS = true;
+			break;
+		}
+	}
+	if (showToS) {
+		$visaToS.removeClass(hideClass);
+	} else {
+		$visaToS.addClass(hideClass);
+		$('#tcAccept').removeAttr('checked');
+	}
+	
+}
+
+function submitCCards() {
+	var $theFrm = $('#paymentForm'),
+	$gcField = $('#GCpaymentTypeId');
+	$amountFields = $theFrm.find('.writeableAmount'),
+	$theCards = $theFrm.find('.cardPicker'),
+	total = 0, overUnder=0, msg='', errorClass = 'errorInput', add=0,
+	doTheMath=true, weHaveAnError=false, $addErrors = $(), cardCount=0,
+	isToSChecked = $('#tcAccept').is(':checked');
+	
+	if ($gcField.val() != "") {
+		option = $gcField[0].options[$gcField[0].selectedIndex].text;
+		weHaveAnError = true;
+		msg = "Please Apply or Cancel "+option+".";
+	} else {
+		$theFrm.find('.'+errorClass).each(function(){$(this).removeClass(errorClass);});
+		
+		for (var i=0,l=$theCards.length; i<l; i++) {
+			var $theCard = $theCards.eq(i),
+			$cardNum = $theCard.parents('.CreditCardEntryContainer').find('.ccNumber').eq(0),
+			cardNumVal = $cardNum.val(),
+			theCardVal = $theCard.val(),
+			theCardName = $theCard[0].options[$theCard[0].selectedIndex].text;
+			if ( theCardVal != '') {
+				cardCount++;
+				if (theCardVal.indexOf('saved_card')!=0 && cardNumVal == '') {
+					$addErrors = $addErrors.add($cardNum);
+					weHaveAnError = true;
+					doTheMath = false;
+					msg = "Missing credit card number.";
+				}
+				if (theCardName.match(/visa/i) && !isToSChecked) {
+					$addErrors = $addErrors.add($('#visatc'));
+					weHaveAnError = true;
+					doTheMath = false;
+					if (msg) {
+						msg += '<br />';
+					}
+					msg += "Please click checkbox to accept policy.";
+				}
+			}
+		}
+		if (cardCount==0) {
+			$addErrors = $addErrors.add($theCards);
+			weHaveAnError = true;
+			doTheMath = false;
+			msg = "Please apply a payment to the order.";
+		}
+		
+		if (!weHaveAnError) {
+			for (var i=0,l=$amountFields.length; i<l; i++) {
+				add = $amountFields.eq(i).val();
+		
+				if (!add || (add.replace(/[^0-9\.]/g) != add)) { add = '0.00'; }
+		
+				add = parseFloat(add).toFixed(2);
+				var myCardVal = $amountFields.eq(i).parents('.CreditCardEntryContainer').find('.cardPicker').eq(0).val();
+		
+				if ((add=="" || add < 0.01) && myCardVal!="") {
+					$addErrors = $addErrors.add($amountFields);
+					weHaveAnError = true;
+					doTheMath = false;
+					msg = 'Please apply amount to both cards.<br />To pay with one card, remove second payment.';
+					break;
+				}
+				total += (add*1); 
+			}
+		}
+		
+		if (doTheMath) { 
+			overUnder = (((MULTICARD_ORDER_TOTAL*1).toFixed(2) - total)*1).toFixed(2); 
+			
+			if (overUnder == 0) {
+				$('#nextPage').val('0');
+				checkPromoCode(document.forms['paymentForm']);
+				prepPaymentFormFor('droptopayment', $theFrm[0]);
+				$theFrm.submit();
+			} else {
+				weHaveAnError = true;
+				$addErrors = $addErrors.add($amountFields);
+				if (overUnder>0) {
+					msg = 'Payment is less than amount due.<br /> Please increase amount by $'+(overUnder*1).toFixed(2);
+				} else if (overUnder<0) {
+					msg = 'Payment exceeds amount due.<br /> Please decrease amount by $'+(overUnder*-1).toFixed(2);
+				}
+	
+			}
+		}
+	}
+
+	if (weHaveAnError) {
+		$('#orderPaymentError').html(msg);
+		$addErrors.addClass(errorClass);
+	}
+
+} // submitCCards
+
+function prettyNumber(inNum) {
+	inNum = inNum.toString().split('.');
+	if (inNum[1]) {
+		if (inNum[1] < 10) {
+			inNum[1] = inNum[1]+'0'+'';
+		} else if (inNum[1].length>2) {
+			inNum[1] = inNum[1].substring(0,2);
+		}
+	} else {
+		inNum[1] = '00';
+	}
+	return inNum.join('.');
+}
+
+function saveCCValidate(theEle) {
+	var $saveCCs = $('.saveCC:checked');
+	for (var i=0,l=$saveCCs.length; i<l; i++) {
+		if ($saveCCs[i] != theEle) {
+			$saveCCs.eq(i).removeAttr('checked');
+		}
 	}
 }

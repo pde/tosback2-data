@@ -176,6 +176,12 @@ function s_doPlugins(s)
 
       return (ads.length) ? (pl + '|' + ads.join(',') + ',') : '';
    }();
+
+   setTimeout(function ()
+   {
+      s.products = '';
+      s.events = 'event7';
+   }, 50);
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

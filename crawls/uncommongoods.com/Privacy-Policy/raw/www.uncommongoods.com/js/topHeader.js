@@ -213,10 +213,10 @@ function urlRedirect(form) {
 		keywords += "&gf_categories=" + categories;
 	}
 	if ($.browser.msie) {
-		dataString = "?displayedproducts=12&q=*" + keywords
+		dataString = "?displayedproducts=48&q=*" + keywords
 				+ "&source=giftfinder";
 	} else {
-		dataString = "?displayedproducts=12&q=*" + keywords
+		dataString = "?displayedproducts=48&q=*" + keywords
 				+ "&source=giftfinder";
 	}
 	if (keywords == "") {

@@ -244,6 +244,9 @@ else {
 	s.events = "event7";
 	s.eVar4 = s.pageName;
 
+   if (mistats.bizunit && mistats.bizunit === 'KEN' && mistats.audienceCounts)
+      mistats.audienceCounts.updateAll();
+
    // Update conversion variable with TNT Campaign information
    if (typeof mitnt_campaign !== 'undefined' && typeof mitnt_recipe !== 'undefined' && mitnt_campaign.length && mitnt_recipe.length)
       s.eVar7 = mitnt_campaign + ': ' + mitnt_recipe;

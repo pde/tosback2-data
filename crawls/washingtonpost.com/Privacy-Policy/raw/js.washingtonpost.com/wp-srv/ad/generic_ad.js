@@ -710,13 +710,15 @@ var wpAd, placeAd2;
           VideoStory: "video"
         },
         subsection: function(){
-          return win.wp_meta_data && wp_meta_data.subsection ? '/' + wp_meta_data.subsection.toString() : '';
+          return win.wp_meta_data && wp_meta_data.subsection ? '/' + this.valid(wp_meta_data.subsection) : '';
         },
         name: function () {
-          return wp_meta_data.contentName ? '/' + this.valid() + wp_meta_data.contentName : '';
+          return wp_meta_data.contentName ? '/' + this.valid(wp_meta_data.contentName) : '';
         },
-        valid: function () {
-          return(wp_meta_data.contentName[0].charAt(0).match(/[^a-z]/gi)) ? 'c' : '';
+        valid: function (a) {
+          a = typeof a === 'string' ? a : a[0];
+          a = a.replace(/[^0-9a-zA-Z_\-]/g, '');
+          return a.charAt(0).match(/[^a-z]/gi) ? 'c' + a : a;
         },
         exec: function () {
           var a = wp_meta_data.contentType;
