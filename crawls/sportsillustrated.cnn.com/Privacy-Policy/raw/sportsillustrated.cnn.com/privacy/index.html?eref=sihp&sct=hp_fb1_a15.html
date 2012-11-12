@@ -87,7 +87,7 @@ try{
 				};
 				for ( box in generic_boxes ){
 					el = generic_boxes[ box ];
-					title = $( el ).setVRTitle() || '';
+					title = $( el ).setVRTitle();
 					$(el).attr('data-vr-zone', title);
 					
 					//since we are already in the Generic Boxes, go ahead and set the contentbox
@@ -108,7 +108,21 @@ try{
 				
 				$('DIV.cnnBreakingNews DIV.cnnBreakingNewsHolder DIV').attr('data-vr-contentbox', '');	//Breaking News
 				
-				$('DIV#cnnT1Holder DIV.cnnT1Pane').attr('data-vr-contentbox', '');  //T1
+				//$('DIV#cnnT1Holder DIV.cnnT1Pane').attr('data-vr-contentbox', '');  //T1
+				$('DIV#cnnT1Holder DIV.cnnT1Pane').each(function(){
+					var contentbox = 'T1A';
+					switch( $(this).attr('class') ){
+						case 'cnnT1Pane t1_1': contentbox = 'T1A'; break;
+						case 'cnnT1Pane t1_2': contentbox = 'T1B'; break;
+						case 'cnnT1Pane t1_3': contentbox = 'T1C'; break;
+						case 'cnnT1Pane t1_4': contentbox = 'T1D'; break;
+						case 'default': break;
+					}
+					var nextElAfterTabs = $(this).find('DIV.cnnTabs').next().get(0);
+					if( nextElAfterTabs.tagName == 'A'){
+						$(nextElAfterTabs).attr('data-vr-contentbox', contentbox);
+					}
+				});
 				$('DIV#cnnT1Holder DIV.cnnT1Pane DIV.cnnBullets').attr('data-vr-contentbox', '');  //T1 Bullets
 								
 				$('DIV.cnnT2s ul li a').attr('data-vr-contentbox', '');				//T2
@@ -442,13 +456,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle" style="border-top: 0px none;">Latest News</div>
 		<ul>
 <li>
-<a href="http://www.nationalfootballpost.com/Hey-Andy-dont-lose-that-locker-room-in-Philly-3675.html?eref=sircrc"><strong>NFP:</strong> Reid has to be careful not to lose locker room</a>
+<a href="http://nba.si.com/2012/11/12/mike-dantoni-lakers-coach-phil-jackson/?eref=sircrc">Lakers pass on Jackson, hire D'Antoni as coach</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/daily-jolt/11/08/November-8-daily-jolt/index.html?eref=sircrc">Vikes fans want Ponder benched</a>
+<a href="http://sportsillustrated.cnn.com/football/nfl/gameflash/2012/11/11/5037/index.html#recap?&eref=sircrc">Texans knock out Cutler, stump Bears</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2012/11/07/32852_recap.html?eref=sircrc">Kobe pours in 29 but Jazz drop Lakers to 1-4</a>
+<a href="http://sportsillustrated.cnn.com/football/nfl/gameflash/2012/11/11/5032/index.html#recap?eref=sircrc">Brees, Saints hand Falcons first loss</a>
 </li>
 
 		</ul>
@@ -457,14 +471,14 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">Video</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 		<tr>
-		<td><a href="http://sportsillustrated.cnn.com/video/ncaaf_video/2012/11/07/100712.staples-midweek-alabama-texasam.SportsIllustrated/index.html">
+		<td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/11/12/111212-adrian-peterson-andrew-perloff-nfl-sunday-breakdown.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/ncaaf_video/2012/11/07/JM_124&#32;12.25.18&#32;PM.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">College football Week 11 preview</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/11/07/110712-peyton-manning-mario-williams-peter-king.SportsIllustrated/index.html">
+<img src="../../i2.cdn.turner.com/si/video/nfl/2012/11/12/adrian-peterson-124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">AD for MVP?</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/2012/11/12/111212-falcons-giants-dolphins-49ers-nfl-sunday.SportsIllustrated/index.html">
 <div>
-<img src="../../i2.cdn.turner.com/si/video/nfl/2012/11/07/mario.124.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">King: The best and worst offseason moves</div>
+<img src="../../i2.cdn.turner.com/si/video/nfl/2012/11/12/alex.124.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Sunday's surprises</div>
 </a></td>
 
 		</tr>
@@ -474,13 +488,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Writers</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/richard_rothschild/11/07/texas-coach-darrell-royal-dies/index.html?eref=sircrc"><strong>Richard Rothschild:</strong> Innovative Royal remembered as one of sport's signature coaches</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/david_komer/11/12/fantasy-football-awards-week10/index.html?eref=sircrc"><strong>David Komer:</strong> Peterson leads fantasy football Week 10 awards</a>
 </li>
 <li>
-<a href="http://nhl-red-light.si.com/2012/11/07/hockeys-the-most-photogenic-of-sports/?eref=sircrc">SI.com 100 greatest sports photos needs more hockey</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/don_banks/11/12/texans-bears/index.html?eref=sircrc"><strong>Don Banks:</strong> Texans prove they're ready for the elements</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/2012/writers/tim_tuttle/11/07/Ricky-Stenhouse-Jr-Elliott-Sadler-Nationwide-Series/index.html?eref=sircrc"><strong>Tim Tuttle:</strong> Nationwide title fight between Elliot Sadler, Ricky Stenhouse Jr. a replay of last year</a>
+<a href="http://sportsillustrated.cnn.com/2012/writers/cliff_corcoran/11/11/rookie-of-the-year-preview/index.html?eref=sircrc"><strong>Cliff Corcoran:</strong> Awards week begins with Trout, Harper favorites for top rookie</a>
 </li>
 
 		</ul>
@@ -489,18 +503,18 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Photos</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 			<tr>
-<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1211/tom-brady-fashion-icon/content.1.html?eref=sircrc">
+<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1203/2012.nascar.cup.winners/content.1.html?eref=sircrc">
 <div>
-<img title="Tom Brady: Fashion Icon" alt="Tom Brady: Fashion Icon" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1211/tom-brady-fashion-icon/images/thumb.jpg"></div>
-<div>Tom Brady: Fashion Icon</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1211/this-week-si-issue-110712/content.1.html?eref=sircrc">
+<img title="2012 NASCAR Sprint Cup Winners" alt="2012 NASCAR Sprint Cup Winners" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1203/2012.nascar.cup.winners/images/keselowski-thumb.jpg"></div>
+<div>2012 NASCAR Sprint Cup Winners</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1211/cfb-top-25-review-week-11/content.1.html?eref=sircrc">
 <div>
-<img title="This Week's SI" alt="This Week's SI" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1211/this-week-si-issue-110712/images/00-cody-zeller-si-cover-thumb.jpg"></div>
-<div>This Week's SI</div>
-</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1211/cfb-did-you-see-that-10/content.1.html?eref=sircrc">
+<img title="College Football Top 25 Review" alt="College Football Top 25 Review" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1211/cfb-top-25-review-week-11/images/florida-state-thumb.jpg"></div>
+<div>College Football Top 25 Review</div>
+</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1211/did-you-see-that-110912/content.1.html?eref=sircrc">
 <div>
-<img title="Did You See That? - College Football" alt="Did You See That? - College Football" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1211/cfb-did-you-see-that-10/images/thumb_Oklahoma_at_Iow.jpg"></div>
-<div>Did You See That? - College Football</div>
+<img title="Did You See That?" alt="Did You See That?" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1211/did-you-see-that-110912/images/thumb(2).jpg"></div>
+<div>Did You See That?</div>
 </a></td>
 
 			</tr>
@@ -523,7 +537,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnnRight">
 			<dl>
 				<dt><a href="http://sportsillustrated.cnn.com/"><img src="../../i.cdn.turner.com/si/.element/img/4.1/global/footer_logo.jpg" alt="SI.com" title="SI.com"/></a></dt>
-				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2012/11/07/32852_recap.html" title="Lakers"class="cnnFirst">Lakers</a>   <a href="http://nba.si.com/2012/11/07/heat-nets-lebron-james-billy-knight-rashard-lewis/" title="LeBron James" target="new" >LeBron James</a>   <a href="http://sportsillustrated.cnn.com/2012/baseball/mlb/11/08/rockies-weiss.ap/index.html" title="Walt Weiss">Walt Weiss</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/don_banks/11/07/nfl-week-9-power-rankings/index.html" title="NFL Power Rankings">NFL Power Rankings</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/richard_deitsch/11/07/charles-barkley-broadcasting-michael-jordan-lebron-james/index.html" title="Charles Barkley">Charles Barkley</a>   <a href="http://sportsillustrated.cnn.com/specials/100greatestphotos/" title="100 Greatest Photos">100 Greatest Photos</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
+				<dd><span>Hot Topics:</span>   <a href="http://sportsillustrated.cnn.com/2012/writers/don_banks/11/11/nfl-week-10-giants/index.html" title="NFL Week 10"class="cnnFirst">NFL Week 10</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/cary_estes/11/11/five-things-phoenix/index.html" title="Brad Keselowski">Brad Keselowski</a>   <a href="http://sportsillustrated.cnn.com/2012/writers/stewart_mandel/11/11/texas-am-sec-bcs-overtime/index.html" title="College Football">College Football</a>   <a href="http://tennis.si.com/2012/11/11/roger-federer-ends-andy-murrays-year-will-play-novak-djokovic-in-finals-done/" title="Roger Federer" target="new" >Roger Federer</a>   <a href="http://sportsillustrated.cnn.com/specials/100greatestphotos/" title="100 Greatest Photos">100 Greatest Photos</a>   <a href="http://sportsillustrated.cnn.com/swimsuit/" title="Swimsuit">Swimsuit</a> </dd>
 			</dl>
 			<div class="cnnClear"></div>
 			<ul>
@@ -555,7 +569,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 				<br/> <a href="http://sportsillustrated.cnn.com/interactive_legal.html" rel="nofollow">Terms</a> under which this service is provided to you. Read our <a href="http://sportsillustrated.cnn.com/privacy/" rel="nofollow">privacy guidelines</a>, <a href="https://subscription.timeinc.com/storefront/privacy/si/generic_privacy_new.html?dnp-source=E#california" rel="nofollow">your California privacy rights</a>, and <a href="http://subscription-assets.timeinc.com/prod/assets/themes/magazines/default/template-resources/html/legal/ti-corp-behavioral.html">ad choices<img src="../../i.cdn.turner.com/si/.element/img/4.1/global/logo_adchoices.gif" id="cnnFooterAdOpt"/></a>.
 			</div>
 		</div>
-		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11914/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/1029_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href="http://www.sicovers.com/ils.aspx?p=SPR20121029LAK&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
+		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11934/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/1112_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href="http://www.sicovers.com/ils.aspx?p=SPR20121112INDK&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
 </div>
 	</div>
 </div>

@@ -457,7 +457,7 @@ SearchAsYouType.prototype.addEventHandlers_ = function() {
     searchAsYouTypeBind(this.handleInputKeyPress, this);
   this.inputFieldEl.onkeydown = 
     searchAsYouTypeBind(this.handleInputKeyDown, this);
-  this.inputFieldEl.onfocus = searchAsYouTypeBind(this.handleInputFocus, this);
+  //this.inputFieldEl.onfocus = searchAsYouTypeBind(this.handleInputFocus, this);
   this.inputFieldEl.onblur = searchAsYouTypeBind(this.handleInputBlur, this);
   this.inputFieldEl.onclick = searchAsYouTypeBind(this.handleInputClick, this);
   this.inputFieldEl.onmousedown =  searchAsYouTypeBind(this.handleInputMouseDown, this);

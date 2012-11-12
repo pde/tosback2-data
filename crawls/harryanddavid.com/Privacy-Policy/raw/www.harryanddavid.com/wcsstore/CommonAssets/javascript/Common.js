@@ -184,6 +184,15 @@ function openLogonPanel()
 	}
 	becLogonPanel.open();	
 }
+function openCreateAccountPanel()
+{
+	becLogon = null;
+	if (!becLogonPanel)
+	{
+		becLogonPanel = new bec.user.LogonPanel();
+	}
+	becLogonPanel.loadCreateAccount();	
+}
 function openLogonPopup(url)
 {
 	becLogonPanel = null;

@@ -359,7 +359,7 @@
                         param.utm_campaign = SmtrRmkr.getFirstParam([SmtrRmkr.campaignKey, "utm_campaign", "cid"]);
                         param.modalme = SmtrRmkr.getParam("modalme");
                         param.modalcte = SmtrRmkr.getParam("modalcte");
-                        param.ctid = SmtrRmkr.getParam("om_rid");
+                        param.ctid = SmtrRmkr.getFirstParam(["smtrctid", "om_rid"]);
                         param.loiid = SmtrRmkr.getParam("loiid");
                         param.scenarioid = SmtrRmkr.getParam("scenarioid");
                         param.pt = SmtrRmkr.pageType;
@@ -667,7 +667,7 @@
                         }
                         cn = 'Back To School: ' + h;
                         cid = 'b2s_' + h;
-                        
+
                         if (SmtrRmkr.btsWired == false) {
                             SmtrRmkr.btsWired = true;
                             $(document).ready(function () {
@@ -1076,7 +1076,7 @@
             isCartPage: function () {
                 return SmtrRmkr.isPage('/store/checkout/cart.jsp');
             }
-        };  //end SmtrRmkr
+        };   //end SmtrRmkr
 
         if (!window.addListener) {
             window.addListener = function(element, type, expression, bubbling) {

@@ -1,5 +1,5 @@
 
-var k_button_js_revision='$Rev: 19046 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
+var k_button_js_revision='$Rev: 19256 $';var k_button={"ff_link":document.getElementById("kampylink"),"host_server":document.getElementById("k_host_server"),"help_button":document.getElementById("k_help_button"),"k_slogan":document.getElementById("k_slogan"),"close_button":document.getElementById("k_close_button"),"extra_params":null,"use_colorbox":false,"newwindow":'',"popitup":function(url,longUrl){if(!this.newwindow.closed&&this.newwindow.location)
 this.newwindow.location.href=url;else
 {if(!this.window_width)
 this.window_width=440;if(!this.window_height)
@@ -34,7 +34,7 @@ else
 else
 {main_domain=domain;}}}
 return main_domain;},"generate_pre_id":function()
-{var vector1=Math.floor(Math.random()*(Math.pow(2,48)));var vector2=new Date().getTime();return vector1+"_"+vector2;},"last_open_ff":0,"open_ff":function(ff_params,url)
+{var vector1=Math.floor(Math.random()*(Math.pow(2,48)));var vector2=new Date().getTime();return vector1+"_"+vector2;},"last_open_ff":0,"open_ff":function(ff_params,url,protocol)
 {var currentTime=(new Date()).getTime()
 if(currentTime-k_button.last_open_ff<500)
 return false;k_button.last_open_ff=currentTime;try
@@ -46,7 +46,7 @@ try
 {var js_element=document.createElement('script');js_element.setAttribute('type','text/javascript');js_element.setAttribute('src',k_track.getDomain()+'/track/k_track.js?site_code='+k_track.getSiteCode());document.body.appendChild(js_element);}
 catch(e)
 {window.k_track_error=e}
-var main_domain=k_button.get_main_domain();var cookie_expiration_time_yes=21;k_button.Set_Cookie('k_push8','1',cookie_expiration_time_yes,'/',main_domain,'');var urlObject=this.create_ff_url(ff_params,url);this.popitup(urlObject.shortUrl,urlObject.longUrl);},"create_ff_url":function(ff_params,url,form_data)
+var main_domain=k_button.get_main_domain();var cookie_expiration_time_yes=21;k_button.Set_Cookie('k_push8','1',cookie_expiration_time_yes,'/',main_domain,'');var urlObject=this.create_ff_url(ff_params,url,protocol);this.popitup(urlObject.shortUrl,urlObject.longUrl);},"create_ff_url":function(ff_params,url,protocol)
 {var stats_kvp=[];var matches=false;if(typeof(k_button_js_revision)!='undefined')
 {matches=k_button_js_revision.match(/\d+/);if(matches!==false)
 {stats_kvp.push('k_button_js_revision='+matches[0]);}}
@@ -69,7 +69,8 @@ var main_url='';if((k_button.host_server)&&k_button.host_server.value){main_url=
 else if((k_button.ff_link)&&k_button.ff_link.getAttribute('ref_server')!==null){var urlParts=k_button.ff_link.getAttribute('ref_server').split("/");main_url=urlParts[2];}
 else{main_url='www.kampyle.com';}
 if(!this.loader_url)
-this.loader_url='/feedback_form/ff-feedback-form.php?';var protocol=document.location.protocol;if(protocol!="http:"&&protocol!="https:")
+this.loader_url='/feedback_form/ff-feedback-form.php?';if(typeof(protocol)=="undefined"||!protocol)
+protocol=document.location.protocol;if(protocol!="http:"&&protocol!="https:")
 {protocol="http:";}
 ff_url=protocol+'//'+main_url+this.loader_url+ff_params+ff_link_rel;}
 if(window.pageTracker&&window.pageTracker._trackEvent)

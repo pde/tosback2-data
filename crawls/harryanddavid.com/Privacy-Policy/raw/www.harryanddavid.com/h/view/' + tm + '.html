@@ -118,59 +118,40 @@ tmParams = {
 	});
 </script>
 <!-- BEGIN CoremetricsBase.jspf -->
-			<script language="javascript1.1" src="../../../libs.coremetrics.com/eluminate.js" type="text/javascript"></script>
-			<script language="javascript1.1" src="../../wcsstore/CommonAssets/javascript/cmcustom.js" type="text/javascript"></script>
-			<script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/bec/analytics/Coremetrics/Common.js"></script>
-			<script language="javascript1.5" type="text/javascript"><!-- 
-				var cmCommon = new bec.analytics.Coremetrics.Common();
-				
-				// Coremetrics: Common variables.
-				if(typeof cmPageName === "undefined")
-					var cmPageName = ""; 
-				
-				var becCoremetrics = null;
-				var cmPassCoremetrics = 'PROD';
-				var cmPrice;  //Item Price
-				var cmItemName;  //Item Short Description
-				var cmCategory = "";
-				var cm_merch_cat = "";
-				var virtual_cat = null;
-				var clear_virtual_cat = false;		
-				var cmSearch = "";
-				var cmSearchResults = "";
-				var cmAttributes = "";
-				var rememberMeShopper = false;
-				
-				// Initialize Coremetrics
-				dojo.addOnLoad(function() {
-					becCoremetrics = new bec.analytics.Coremetrics();		
-				});
-				
-				if('PROD'.length > 0){
-					cmPassCoremetrics = 'PROD';
-				}
-				
-				if(cmPassCoremetrics != 'OFF'){
-					cmSetClientID("90047110",false,"1.harryanddavid.com","harryanddavid.com");		
-				}
-				
-				
-				function cmAppendESiteID(idVal)
-				{		
-					if(idVal != "" && !(jsStoreIdent == "Hand"
-										|| jsStoreIdent == "Hand2" 
-										|| jsStoreIdent == "Wolf" 
-										|| jsStoreIdent == "Cush"))
-					{
-						idVal = jsStoreIdent + ": " + idVal;
-					}
-					
-					return idVal;
-				}
-				
-				
-			//--></script>
-		<!-- END CoremetricsBase.jspf --><script type="text/javascript" src="../../content/common/scripts/jquery-bec-all.js"></script>
+
+<script language="javascript1.1" src="../../../libs.coremetrics.com/eluminate.js" type="text/javascript"></script>
+<script language="javascript1.1" src="../../wcsstore/CommonAssets/javascript/cmcustom.js" type="text/javascript"></script>
+<script type="text/javascript" src="../../wcsstore/CommonAssets/javascript/bec/analytics/Coremetrics/Common.js"></script>
+<script language="javascript1.5" type="text/javascript"><!-- 
+	var cmCommon = new bec.analytics.Coremetrics.Common();
+	var becCoremetrics = null;
+	var cmPassCoremetrics = 'PROD';
+	
+	// Coremetrics: Common variables.
+	if(typeof cmPageName === "undefined")
+		var cmPageName = "";
+	
+	var cmPrice;  //Item Price
+	var cmItemName;  //Item Short Description
+	var cmCategory = "";
+	var cm_merch_cat = "";
+	var virtual_cat = null;
+	var clear_virtual_cat = false;		
+	var cmSearch = "";
+	var cmSearchResults = "";
+	var cmAttributes = "";
+	var rememberMeShopper = false;
+	
+	// Initialize Coremetrics
+	dojo.addOnLoad(function() {
+		becCoremetrics = new bec.analytics.Coremetrics();		
+	});
+	
+	cmSetClientID("90047110",false,"1.harryanddavid.com","harryanddavid.com");
+	
+	
+//--></script>	
+<!-- END CoremetricsBase.jspf --><script type="text/javascript" src="../../content/common/scripts/jquery-bec-all.js"></script>
 <script type="text/javascript" src="../../content/common/scripts/csd.js"></script>
 <script type="text/javascript" src="../../content/Hand/include/js/csd.js"></script>
 
@@ -200,14 +181,23 @@ tmParams = {
 		/* Setting unit and language to define (LOB) line of business */
 	    lpMTagConfig.vars.push(["page","unit","sales-had"]);
 	    lpMTagConfig.vars.push(["session","language","english"]);	  		
-	</script><!-- END IMPORT: liveperson.jspf --><!--  BEGIN Content Spot espotHTMLHead --><!--  END Content Spot espotHTMLHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHead -->
+	</script><!-- END IMPORT: liveperson.jspf --><!-- BEGIN: janrainconfig -->
+	<script type="text/javascript">
+		dojo.addOnLoad(function()
+		{
+		    becJanrain = new bec.vendors.Janrain();
+		    becJanrain.setEngageJSHttp('http://widget-cdn.rpxnow.com/js/lib/jrlogin.harryanddavid.com/engage.js');
+            becJanrain.setEngageJSHttps('https://rpxnow.com/js/lib/jrlogin.harryanddavid.com/engage.js');
+		});
+	</script>
+<!-- END: janrainconfig --><!--  BEGIN Content Spot espotHTMLHead --><!--  END Content Spot espotHTMLHead --><!--  BEGIN Partner Feed PartnerFeedSiteWideHead -->
 <script type="text/javascript">
 dojo.addOnLoad(function(){try{
     /* _______________ can edit below this line _______________ */                              
-    janrain.settings.tokenUrl = '';
+    janrain.settings.tokenUrl = 'https://www.harryanddavid.com/gifts/store/BECIntegratedLogon?catalogId=10002&langId=-1&storeId=10455';
    janrain.settings.type = 'embed';
     janrain.settings.appId = 'elifoagpijenakneekeo';
-    janrain.settings.appUrl = '';
+    janrain.settings.appUrl = 'https://jrlogin.harryanddavid.com';
     janrain.settings.providers = [
 	'facebook',
 	'google',
@@ -353,6 +343,16 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		width="270"
 		focusField="userName_logonId"
 		></div>
+	
+	<div id="createAccountDropDown" 
+		dojoType="bec.widget.PopupPanel" 
+		panelURL="UserArea/AccountSection/RegistrationSubsection/BECLightRegistrationForm.jsp"
+		parentId="signInContainer"
+		titleText="Create Account"
+		placementContainerId="header"
+		width="405"
+		focusField="email1_2"
+	></div>	
 </div>
 
 <div id="emailDropDown" 
@@ -375,6 +375,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 	dojoParse("signInContainer", "bec.widget.PopupPanelContainer");
 	dojoParse("signInDropDown", "bec.widget.PopupPanel");
 	dojoParse("forgotPassword", "bec.widget.PopupPanel");
+	dojoParse("createAccountDropDown", "bec.widget.PopupPanel");
 </script>
 <!-- End TopUtilityRight.jsp -->
 	</div>	
@@ -488,9 +489,13 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 		<li><a href="'&#32;+&#32;tm&#32;+&#32;'.html#catalogQuickOrder" onclick="catalogQuickOrder.openCQOFrame();return false;">Catalog Quick Shop</a></li>            
         
 	        <li><a href="http://www.harryanddavid.com/h/view/ecatalog">View Catalog Online</a></li>
-	    
-	    <li><a href="http://www.harryanddavid.com/h/view/gc-giftcardland">Gift Cards</a></li>
-        <li><a href="http://www.harryanddavid.com/h/view/harry-david-coupons">Harry and David Coupons</a></li>   
+	    <!--  BEGIN Content Spot espotGiftCardsFooter --><li>
+    <a href="http://www.harryanddavid.com/h/view/gc-giftcardland">Gift Cards</a>
+</li><!--  END Content Spot espotGiftCardsFooter -->
+        <li><a href="http://www.harryanddavid.com/h/view/harry-david-coupons">Harry and David Coupons</a></li>
+        <li><a href="http://www.harryanddavid.com/h/view/sausage-cheese-gifts">Cheese and Sausage Gifts</a></li>
+        <li><a href="http://www.harryanddavid.com/h/view/chocolate-dipped-fruit">Chocolate Dipped Fruit</a></li>
+        <li><a href="http://www.harryanddavid.com/h/view/edible-fruit-gifts">Edible Fruit Gifts</a></li>  
         <li class="more"><a href="http://www.harryanddavid.com/h/view/gift-services">&gt; more</a></li>     
       </ul>
     </li>
@@ -505,7 +510,7 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
     <li>
       <h4><a href="http://www.harryanddavid.com/h/view/corporategifts">Corporate Gifts</a></h4>
       <ul>
-        <li><a href="http://www.harryanddavid.com/h/view/b2b-largeorder">Large Order Services</a></li>
+        <li><a href="http://www.harryanddavid.com/h/view/corporategifts">Large Order Services</a></li>
         <li><a href="http://www.harryanddavid.com/h/business-corporate-gifts/favorite-business-corporate-gifts">Shop Business Gifts</a></li>
         <li class="more"><a href="http://www.harryanddavid.com/h/view/corporategifts">&gt; more</a></li>
       </ul>
@@ -513,6 +518,9 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
     <li class="last">
       <h4><a href="http://www.harryanddavid.com/h/view/information">Community Information</a></h4>
       <ul>
+        
+        	<li><a href="http://blog.harryanddavid.com">Harry &amp; David Blog</a></li>
+        
         <li><a href="http://www.harryanddavid.com/h/view/s-recipe">Recipes</a></li>
         <li><a href="http://www.harryanddavid.com/h/view/harvest-report">Harvest Report &amp; Club<br/>Arrival Updates</a></li>
 		<li><a href="http://www.harryanddavid.com/h/view/about01">About Us</a></li>
@@ -648,20 +656,16 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 	{
 		console.error("bec.analytics.Coremetrics._processPageName() Exception: " + e);
 	}
-//--></script>
-
-</div>
-</div>
-<script language="javascript" type="text/javascript">
+	
 	
 	function cmInitiateElementTag(elementID, category)
 	{
-		if(cmPassCoremetrics != 'OFF'){cmCreatePageElementTag(elementID, cmAppendESiteID(category));}
+		if(cmPassCoremetrics != 'OFF'){cmCreatePageElementTag(elementID, cmCommon.appendESiteID(category));}
 	}
 	
 	function cmInitiatePageViewTag(cmPageName,cmPageCat,cmSearchSLI,cmSearchSLIResults,cmPVAttributes)
 	{
-		if(cmPassCoremetrics != 'OFF'){cmCreatePageviewTag(cmAppendESiteID(cmPageName),cmPageCat,cmSearchSLI,cmSearchSLIResults,cmPVAttributes);}
+		if(cmPassCoremetrics != 'OFF'){cmCreatePageviewTag(cmCommon.appendESiteID(cmPageName),cmPageCat,cmSearchSLI,cmSearchSLIResults,cmPVAttributes);}
 	}
 	
 	function cmInitiateConversionEvent(cmEventID,cmActionType,cmCategoryID,cmPoints,cmEAttributes)
@@ -678,7 +682,11 @@ document.write('<scr' + 'ipt type="text/javascript" src="/content/Hand/include/f
 	{
 		if(cmPassCoremetrics != 'OFF'){cmCreateManualLinkClickTag(cmHref, cmLinkName, cmPageName);	}
 	}
-</script>
+//--></script>
+
+</div>
+</div>
+
 
 	<script language="javascript" type="text/javascript">
 		var sliJsProtocol = (("https:" == document.location.protocol) ? "https:" : "http:");

@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "11/08/2012 09:03 AM",
+            DATE_IN_USE: "11/12/2012 08:13 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -2472,7 +2472,7 @@ var jbox = {
   closeID: "close",
   iframeContainerID: "iframeContainer",
   iframeID: "iframe",
-  iframeName: "jbox",
+  iframeName: "jboxIframe",
 
   // hold default options for fallback
   defaultOptions:
@@ -2489,7 +2489,7 @@ var jbox = {
     closeID: "close",
     iframeContainerID: "iframeContainer",
     iframeID: "iframe",
-    iframeName: "jbox"
+    iframeName: "jboxIframe"
   },
 
   // set passed in options
@@ -2522,7 +2522,7 @@ var jbox = {
       var options = {};
       options.width = $(thisElement).getAttribute('data-jbox-width');
       options.height = $(thisElement).getAttribute('data-jbox-height');
-      options.url = $(thisElement).getAttribute('href');
+      options.url = $(thisElement).getAttribute('data-jbox-url');
       options.title = $(thisElement).getAttribute('data-jbox-title');
       options.jboxID = $(thisElement).getAttribute('data-jbox-jboxID');
       options.backdropID = $(thisElement).getAttribute('data-jbox-backdropID');
@@ -2554,7 +2554,7 @@ var jbox = {
     // we take the width/2, height/2, and set them as negative margins for top and left respectively.
     // Also note that the "X" for the close button is wrapped in a span tag, this is incase you
     // need to hide the "X" and use your own image - you can do so through CSS
-    $(document.body).insert('<div id="' + this.jboxID + '" style="opacity:0;">' +
+    $(document.body).insert('<div id="' + this.jboxID + '" style="display:none;">' +
         '<div id="' + this.backdropID + '"></div>' +
 
         '<div id="' + this.boxID + '" style="width: ' + this.width + 'px; height: ' + this.height + 'px; margin: -' + (this.height/2) + 'px 0 0 -' + (this.width/2) + 'px;">' +
@@ -2567,7 +2567,7 @@ var jbox = {
 
           '</div>' +
 
-          '<div id="' + this.iframeContainerID + '" style="width:' + this.width + 'px;height:' + this.height + 'px;"><iframe id="' + this.iframeID + '" scrolling name="' + this.iframeName + '" src="http://www.gap.com/customerService/'&#32;+&#32;this.url&#32;+&#32;'" style="opacity:0;width:' + this.width + 'px;height:' + this.height + 'px;" frameborder="0"></iframe></div>'+
+          '<div id="' + this.iframeContainerID + '" style="width:' + this.width + 'px;height:' + this.height + 'px;"><iframe id="' + this.iframeID + '" scrolling name="' + this.iframeName + '" src="http://www.gap.com/customerService/'&#32;+&#32;this.url&#32;+&#32;'" style="display:none;width:' + this.width + 'px;height:' + this.height + 'px;" frameborder="0"></iframe></div>'+
 
         '</div>' +
 
@@ -2581,12 +2581,8 @@ var jbox = {
 
   open : function()
   {
-    // fade it all in
-    new Effect.Opacity(jbox.jboxID, {
-      duration: .3,
-      from: 0,
-      to: 1.0
-    });
+    // show jbox as its initially hidden
+    $(jbox.jboxID).show();
     
     // in order to properly center the title
     // we take its width/2 and set as negative left margin
@@ -2602,17 +2598,10 @@ var jbox = {
 
   close : function()
   {
-    // fade it all out
-    // remove the html markup after fade
-    new Effect.Opacity(jbox.jboxID, {
-      duration: .3,
-      from: 1.0,
-      to: 0,
-      afterFinish: function()
-      {
-        $(jbox.jboxID).remove();
-      }
-    });
+  	// we blank out the src as a workaround for IE
+  	$(jbox.iframeID).src = "";
+    // remove the html markup
+    $(jbox.jboxID).remove();
   },
 
   checkLoading : function()
@@ -2625,26 +2614,10 @@ var jbox = {
     Event.observe(jbox.iframeID, "load", function()
     {
       // when loading is complete
-      // fade the loading text out
-      new Effect.Opacity('loading', { 
-        duration: .3,
-        from: 1.0, 
-        to: 0,
-        afterFinish: function()
-        {
-          // after the loading text is hidden
-          // remove the markup completely
-          $('loading').remove();
-
-          // fade in the iframe#iframeID
-          new Effect.Opacity(jbox.iframeID, {
-            duration: .3,
-            from: 0,
-            to: 1.0
-          });
-        }
-      });
-      
+      // remove the markup completely
+      $('loading').remove();
+      // show iframe, as its initially hidden
+      $(jbox.iframeID).show();
     });
   },
 
@@ -4086,17 +4059,6 @@ if (typeof productStyleService != 'undefined') {
 </script>
 <!-- end contentOverride140 -->
 
-<!-- begin contentOverride144 -->
-<script type="text/javascript">
-if (window["navigationService"] && location.pathname == "/browse/category.do") {
-	navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView = navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView.wrap(function(om) {
-		om();
-		document.fire("newCategoryFacetedSearchGrid:ready");
-	});
-}
-</script>
-<!-- end contentOverride144 -->
-
 <!-- begin contentOverride151.2 -->
 <script type="text/javascript">
 	pixelManagementService.controller.eventHandlers.domLoadedHandler = function () {
@@ -4818,6 +4780,17 @@ if (window['reportingService'] && reportingService.controller.viewManagers.categ
 
 </script>
 <!-- END content override CNOV-17 JS -->
+
+<!-- begin contentOverride 144 -->
+<script type="text/javascript">
+if (window["navigationService"] && location.pathname == "/browse/category.do") {
+	navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView = navigationService.controller.managers.categoryFacetedSearchManager.view.setCategoryFacetedSearchDataToView.wrap(function(om) {
+		om();
+		document.fire("newCategoryFacetedSearchGrid:ready");
+	});
+}
+</script>
+<!-- end contentOverride 144 -->
 
 
 <!-- END Content Item File: /content/0005/538/624/cn5538624.html -->
@@ -7319,13 +7292,209 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
-<div id="contentItemContainer10000395" class="4281898" >
+    	<!-- BEGIN Content Item File: /content/0005/750/428/cn5750428.html -->
+<div id="contentItemContainer10000395" class="5750428" >
 
+<style type="text/css">
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+}
+
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
+
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+.promoCode {
+	background-color: black;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerActivator {
+	margin-top: 6px;
+	display: inline-block;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+}
+</style>
+
+<div id="globalBanner">
+
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/750/428/assets/110812_ALL_gapFriends_GB_US.png" alt="30% off your entire purchase. ends 11/12. online and in stores. enter GAPFRIENDS" title="30% off your entire purchase. ends 11/12. online and in stores. enter GAPFRIENDS" usemap="#gbMap">
+		<map name="gbMap">
+			<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="132,11,279,55" href="javascript:void(0);" alt="hover for more info" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/750/428/assets/legal.html',id:'legal',width:350,height:300});">
+		  	<area class="noHideDisruptor" shape="rect" coords="-3,-6,523,103" href="javascript:void(0);" alt="click for details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/750/428/assets/legal.html',id:'legal',width:350,height:300});">
+		</map>
+	</div><!-- /Global Banner Text -->
+
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/750/428/assets/110812_ALL_gapFriends_DISR_US.jpg" alt="the gap friends event 30% off your entire purchase. ends 11/12. online and in stores. enter GAPFRIENDS. Exclusions apply." title="the gap friends event 30% off your entire purchase. ends 11/12. online and in stores. enter GAPFRIENDS. Exclusions apply." usemap="#disruptorMap">
+		<map name="disruptorMap">
+		  <area shape="rect" class="noHideDisruptor" coords="-10,-1,419,353" href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/750/428/assets/legal.html',id:'legal',width:350,height:250});" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
+</div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('110912_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
+<!-- END Content Item File: /content/0005/750/428/cn5750428.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7378,492 +7547,7 @@ Event.observe(window,"load",function(){
 	</div>		
 </div>
 <div id="topNavBottomBannerContainer" class="clearfix floatLeft">
-  	<!-- BEGIN Content Item File: /content/0005/691/102/cn5691102.html -->
-<div id="contentItemContainer10000394" class="5691102" >
-
-<style type="text/css">
-
-#storeLocatorBannerWrapper, #storeLocatorBannerWrapperImage, #storeLocatorBannerWrapperImageLink {
-	width: 988px;
-	height: 153px;
-	display: block;
-}
-
-/* GQ VIDEO POPUP STYLE */
-
-#gqVideoPopup-container {
-    background-color: #231F20;
-    box-shadow: 4px 4px 25px rgba(0,0,0,.5);
-    -moz-box-shadow: 4px 4px 25px rgba(0,0,0,.5);
-    -webkit-box-shadow: 4px 4px 25px rgba(0,0,0,.5);
-}
-
-#gqVideoPopup-closeButtonContainer {
-    float: right;
-    top: 6px;
-    right: 5px;
-    position: relative;
-}
-
-#gqVideoPopup-closeButton {
-    cursor: pointer;
-    display: inline-block;
-    width: 9px;
-    height: 12px;
-    background: url('http://www.gap.com/Asset_Archive/GPWeb/content/0005/554/600/assets/092712_MEN_GQvideoplayer_vid_US_close.png') center no-repeat;
-}
-
-#gqVideoPopup-closeButtonContainer > a > span {
-    display: none;
-}
-
-#gqVideoPopup-topHeader {
-    height: 20px;
-}
-
-#gqVideoPopup-mainContent { 
-}
-
-#gqVideoPopup-leftBorder {
-    width: 20px;
-    float: left;
-    display: inline-block;
-}
-
-#gqVideoPopup-rightBorder {
-    width: 21px;
-    float: right;
-    display: inline-block;
-}
-
-#gqVideoPopup-bottom {
-    height: 22px;    
-}
-
-</style>
-<div id="storeLocatorBannerWrapper" style="display: none;">
-<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#storelist" onClick=" return gqVideoPopup.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=86376',id:'gq_store_locator_popup',width:457,height:435,style:{name:'gqVideoPlayer'},interstitial:{ color:'#000000', opacity:'0.7', buzz: false }});"><img id="storeLocatorBannerWrapperImage" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/691/102/assets/092712_ALL_gqstore_BANNER_US2.gif" alt="gap x gq: exclusive menswear collection. now available exclusively online and in select stores. find the collection near you." /></a>
-</div>
-
-<script type="text/javascript">
-//Display GQ Stores list on Store Locator only
-function displayGQBanner() {
-	var gqBanner = $('storeLocatorBannerWrapper');
-	if (gqBanner) {
-		gqBanner.setStyle({display: 'block'});
-	}
-}
-
-if (location.pathname == '/customerService/storeLocator.do') {
-	Event.observe(window,"load",function(){
-		displayGQBanner();
-	});
-}
-
-// GQ VIDEO POPUP CODE
-var GQ_VIDEO_POPUP_CLASS = Class.create();
-
-GQ_VIDEO_POPUP_CLASS.prototype = {    
-    initialize:function() {},
-    /**
-     * layeredPopup is a subclass of GidLib for all things related to layered popup functionality
-     * @base GidLib
-     *
-     * @author Byung Kim
-     * @date 10/24/2007
-     */
-    layeredPopup: {
-        isOpen:false,
-        popupId:"",
-
-        /**
-         * layeredPopups can have different styles.  Each object within styles contains everything required to display differently.
-         *
-         * @author Byung Kim
-         * @date 1/8/2008
-         */
-        styles : {
-
-            /**
-             * commonTemplates contains templates that are common to all styles
-             *
-             * @author Byung Kim
-             * @date 1/8/2008
-             */
-            commonTemplates : {
-                iFrameContentTemplate : new Template('<iframe id="#{id}PopupContent" scrolling="no" name="#{id}PopupContent" src="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#{src}" class="content" style="width:#{width}px;height:#{height}px;overflow:hidden;" frameborder="0"></iframe>'),
-                markupContentTemplate : new Template('<div id="#{id}PopupContent" class="content" style="width:#{width}px;height:#{height}px;">#{content}</div>')
-            },
-
-            /**
-             * gqVideoPlayer is a style type for layeredPopup display
-             * added by Jacob Moretti for custom template - mostly copied code from universalPopup
-             * 
-             * @author Byung Kim
-             * @date 1/8/2008
-             */
-            gqVideoPlayer : {
-                constants : {
-                    LAYERED_POPUP_COMBINED_BORDER_WIDTH: 41, // left and right border combined widths
-                    LAYERED_POPUP_COMBINED_BORDER_HEIGHT: 42, // top and bottom border combined heights
-                    LAYERED_POPUP_MAIN_WIDTH_OFFSET: 12 // close window button width
-                },
-                templates : {
-                    mainTemplate : new Template(
-                        '<div id="gqVideoPopup-container" style="width:#{popupWidth}px;">' +
-                            '<div id="gqVideoPopup-closeButtonContainer"><a id="gqVideoPopup-closeButton" href="javascript:void(0);" onclick="return gqVideoPopup.layeredPopup.closeLayeredPopup();"><span>close</span></a></div>' +
-                            '<div id="gqVideoPopup-topHeader" class="clearfix"></div>' +
-                            '<div id="gqVideoPopup-mainContent" class="clearfix">' +
-                                '<div id="gqVideoPopup-leftBorder" style="height:#{borderHeight}px;"></div>' +
-                                '#{content}' +
-                                '<div id="gqVideoPopup-rightBorder" style="height:#{borderHeight}px;"></div>' +
-                            '</div>' +
-                            '<div id="gqVideoPopup-bottom" class="clearfix">' +
-                            '</div>' +
-                        '</div>'
-                    )
-                },
-
-                /**
-                 * getMarkup returns the markup for universalPopup styled popups
-                 *
-                 * @author Byung Kim
-                 * @date 1/8/2008
-                 */
-                getMarkup:function(useIFrame, width, height, title, strContent, id, style, scrolling) {
-                    var constants = this.constants;
-                    var templates = this.templates;
-                    var commonTemplates = gqVideoPopup.layeredPopup.styles.commonTemplates;
-                    var content = "";
-                    var topCloseButton = commonTemplates.closeAnchorTemplate;
-
-                    if (useIFrame) {
-                        content = commonTemplates.iFrameContentTemplate.evaluate({
-                            id:id,
-                            src:gidLib.addCurrentDomain(strContent),
-                            width:width,
-                            height:height,
-                            scrolling:scrolling
-                        });
-                    } else {
-                        content = commonTemplates.markupContentTemplate.evaluate({
-                            id:id,
-                            content:strContent,
-                            width:width,
-                            height:height
-                        });
-                    }
-
-                    return templates.mainTemplate.evaluate({
-                        popupWidth:width + constants.LAYERED_POPUP_COMBINED_BORDER_WIDTH,
-                        topWidth:width-constants.LAYERED_POPUP_MAIN_WIDTH_OFFSET,
-                        innerContentWidth:width,
-                        borderHeight:height,
-                        content:content,
-                        topCloseButton:topCloseButton
-                    });
-                }
-            }
-
-        },
-
-        /**
-         * openLayeredPopup opens a DHTML layer that looks like a popup.
-         * @param {object} argsGraph The JSON object with values for the popup
-         *         str : The content of the layered Popup.  This can be a string of HTML, a URL to open, or a form to submit
-         *         id : The id for the layer parent element
-         *         width : The width of the popup
-         *         height : The height of the popup
-         *         title : The title to display in the fake titlebar
-         *         left : The x coordinate to position the popup
-         *         top : The y coordinate to position the popup
-         *         calleeElement : The calling element for the event
-         *        isDraggable : Whether the popover is draggable by clicking on it
-         *         style : A JSON object for the look and feel of the popup.
-         *             name : which template to use (optional, default is the brandedPopup template)
-         *             hasCloseButton : whether to display the close button for the universalPanel (optional, default is true)
-         *             callout : used for displaying a callout for the universalPanel. values are 'left' or 'bottom' (optional, default is no callout)
-         *             calloutOffset : used to offset the callout on the left or top depending on which is used.
-         *            isDraggable : Whether the poopup is draggagle (defaults to true)
-         *        scrolling : The scrolling attribute of the iframe popup (eg: yes no, auto)
-         *         interstitial : JSON object -- when it exists, display as an interstitial (rest of the page greys out)
-         *             color: hex value color of the interstitial (e.g. "#fff")
-         *             opacity: opacity of the interstitial (e.g. "0.7" is 70%)
-         *             buzz: whether to buzz the popup if a user clicks on the interstitial (e.g. true or false)
-         *         effects : JSON object describing how to show and hide the layeredPopup.  Default is CSS visibility visible/hidden
-         *             show : JSON object for showing the layered popup
-         *                 method : Scriptaculous Effect method
-         *                 args : JSON object of arguments for the method
-         *             hide : JSON object for hiding the layered popup
-         *                 method : Scriptaculous Effect method
-         *                 args : JSON object of arguments for the method
-         *
-         *
-         * Modified 12/19/2007 Byung Kim - converted method arguments to JSON with legacy API support
-         * Modified 1/1/2008 Byung Kim - reorganized to accept different styles
-         * Modified 1/8/2008 Byung Kim - updated FORM submit implementation
-         * Modified 1/31/2008 Byung Kim - added interstitial option
-         * Modified 7/25/2008 Byung Kim - added effects option for showing / hiding layered popup
-         * Modified 7/31/2008 Byung Kim - added callee element arg for returning focus to the callee once the popup closes
-         * Modified 9/17/2010 Prabhakar Doraisamy - added scrolling arg to turn on or off the iframe scrolling (for IEs)
-         *
-         * TODO: refactor implementation to use only JSON
-         * TODO: implement a dynamic root element for the popups
-         *
-         * @author Byung Kim
-         * @date 10/24/2007
-         */
-        openLayeredPopup:function(argsGraph) {
-            var args = arguments;
-            if (args.length > 1) {
-                // FOR LEGACY SUPPORT ONLY.  New implementations should use JSON object graph for arguments
-                var str = args[0];
-                var id = args[1];
-                var width = args[2];
-                var height = args[3];
-                var title = args[4];
-                var left = args[5];
-                var top = args[6];
-            } else {
-                var str = argsGraph.str;
-                var id = argsGraph.id;
-                var width = argsGraph.width;
-                var height = argsGraph.height;
-                var title = argsGraph.title;
-                var left = argsGraph.left;
-                var top = argsGraph.top;
-                var scrolling = argsGraph.scrolling;
-                var isDraggable = argsGraph.isDraggable;
-                var style = argsGraph.style;
-                var interstitial = argsGraph.interstitial;
-                this.effects = argsGraph.effects;
-                this.calleeElement = argsGraph.calleeElement;
-            }
-            var popup = $("popupContent");
-
-            var layerStyle = this.styles[(style && style.name ? style.name : "gqVideoPlayer")];
-            var constants = layerStyle.constants;
-            var useIFrame = false;
-            var isForm = false;
-            var strContent = "";
-            var strIgnoredFormTypes = "submit,button,image,file,reset";
-            this.popupId = id;
-
-            popup.setStyle({visibility:"hidden",display:"block"});
-
-            if (str.match(/^(\/|http|about)/)) {
-                useIFrame = true;
-                strContent = str;
-                var cid = str.substr(str.indexOf('?')+1, str.length);
-            } else {
-                var targetElement = $(str);
-                if (targetElement) {
-                    if (targetElement.tagName && targetElement.tagName.toLowerCase() == 'form') {
-                        useIFrame = true;
-                        isForm = true;
-                        strContent = "/gid/html/en/blank.html";
-                        targetElement.target = id + "PopupContent";
-                    } else {
-                        // Copy the innerHTML
-                        strContent = targetElement.innerHTML;
-                    }
-                } else {
-                    // Copy the string literally
-                    strContent = str;
-                }
-            }
-            popup.update(layerStyle.getMarkup(useIFrame,width,height,title,strContent,id,style,scrolling));
-            if (!useIFrame && isDraggable) {
-                gidLib.setButtonEvents("popupContent");
-                this.dragger = new Draggable('popupContent',{handle:'layeredPopupFrameTop'});
-            }
-            this.hiddenDropDowns = gidLib.hideDropDownsUnderElement(popup);
-            if (interstitial) this.openInterstitialDisplay(interstitial);
-            this.setPosition(popup,left,top);
-            this.launchLayeredPopup(id);
-            if (isForm) targetElement.submit();
-            return false;
-        },
-
-        /**
-         * setPosition sets the position of the layeredPopup
-         *
-         * Modified 7/23/2008 - Byung Kim : removed scrollTop, scrollLeft calculation on x,y coordinates.  values passed to openlayeredpopup should account for the scroll values
-         *
-         * @author Byung Kim
-         * @date 1/8/2008
-         */
-        setPosition : function(popup,x,y) {
-            var popupX = parseInt(x);
-            var popupY = parseInt(y);
-            var dimensions = popup.getDimensions();
-            if (isNaN(popupX) || isNaN(popupY)) {
-                var clientWidth = (document.documentElement && document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth);
-                var clientHeight = (document.documentElement && document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);
-                var scrollLeft = (document.documentElement && document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-                var scrollTop = (document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-                if (clientBrowser.isSafari) {
-                    /*
-                    TD 14933: Safari does not seem to properly support the document.documentElement.clientHeight -
-                    reporting a constant value of 1330.
-                    */
-                    var clientHeight = window.innerHeight;
-                }
-                popupX = Math.max(0,clientWidth/2 - dimensions.width/2)+scrollLeft;
-                popupY = Math.max(0,clientHeight/2 - dimensions.height/2)+scrollTop;
-                // alert("clientBrowser.isSafari = " + clientBrowser.isSafari + "\rwindow.innerHeight = " + window.innerHeight + "\rdocument.documentElement.clientHeight = " + document.documentElement.clientHeight + "\r\rclientHeight = " + clientHeight + "\rclientWidth = " + clientWidth + "\r\rpopupX = " + popupX + "\rpopupY = " + popupY);
-            }
-            gidLib.setObjPosition(popup,popupX,popupY);
-        },
-
-        /**
-         * launchLayeredPopup reveals the layered popup
-         *
-         * @author Byung Kim
-         * @date 7/25/2008
-         */
-        launchLayeredPopup : function(id) {
-            var effects = this.effects;
-            var popup = $("popupContent");
-
-            var afterFinish = function(id) {
-                setTimeout("gidLib.setFocus($('popupContent'))",100);
-                this.isOpen = true;
-            };
-
-            if (effects && effects.show && effects.show.method) {
-                popup.setStyle({display:"none",visibility:"visible"});
-                var method = effects.show.method;
-                var args = effects.show.args;
-                var aF = {afterFinish:afterFinish.bind(this,id)};
-                if (args) {
-                    Object.extend(args,aF);
-                    method(popup,args);
-                } else {
-                    method(popup,aF);
-                }
-            } else {
-                popup.setStyle({visibility:"visible",display:"block"});
-                afterFinish(id);
-            }
-        },
-
-        /**
-         * closeLayeredPopup closes the layered popup
-         *
-         * Modified 7/25/2008 Byung Kim - added effect
-         * Modified 7/31/2008 Byung Kim - added returning focus to the callee element
-         *
-         * @author Byung Kim
-         * @date 10/24/2007
-         */
-        closeLayeredPopup:function() {
-            var popup = $("popupContent");
-            this.closeInterstitialDisplay();
-            var afterFinish = function() {
-                while(popup.hasChildNodes()) {
-                    popup.removeChild(popup.firstChild);
-                }
-                gidLib.showDropDowns(this.hiddenDropDowns);
-                this.hiddenDropDowns = null;
-                if (this.dragger) this.dragger.destroy();
-                if (this.calleeElement) {
-                    gidLib.setFocus(this.calleeElement);
-                }
-                this.isOpen = false;
-                this.popupId = "";
-            };
-
-            var effects = this.effects;
-            if (effects && effects.hide && effects.hide.method) {
-                var method = effects.hide.method;
-                var args = effects.hide.args;
-                var aF = {afterFinish:afterFinish.bind(this)};
-                if (args) {
-                    Object.extend(args,aF);
-                    method(popup,args);
-                } else {
-                    method(popup,aF);
-                }
-            } else {
-                popup.setStyle({visibility:"hidden",display:"block"});
-                afterFinish();
-            }
-            return false;
-        },
-
-        /**
-         * openInterstitialDisplay adds an interstitial layer behind the layeredPopup to grey out the page.
-         *
-         * @author Byung Kim
-         * @date 1/30/2008
-         */
-        openInterstitialDisplay:function(args) {
-            var color = (args.color ? args.color : "#fff");
-            var opacity = (args.opacity ? args.opacity : "0.65");
-            this.hasBuzz = (args.buzz != undefined ? args.buzz : true);
-            var id = "layeredPopupInterstitial";
-            var interstitial = $(id);
-            if (!interstitial) {
-                var interstitial = $(document.createElement("div"));
-                interstitial.id = id;
-                document.body.appendChild(interstitial);
-                Event.observe(interstitial,"click",this.interstitialBuzzEffect.bind(this));
-            }
-            var clientWidth = (document.documentElement && document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth);
-            var clientHeight = (document.documentElement && document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight);
-            var scrollLeft = (document.documentElement && document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            var scrollTop = (document.documentElement && document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            var docW = clientWidth + scrollLeft;
-            var docH = (clientBrowser.isIE ? document.body.offsetHeight : (document.documentElement ? document.documentElement.offsetHeight : document.body.offsetHeight));
-            if (clientHeight > docH) docH = clientHeight;
-            interstitial.setStyle({
-                position:"absolute",
-                top:"0px",
-                left:"0px",
-                width:docW+"px",
-                height:docH+"px",
-                display:"block",
-                background:color,
-                zIndex:"98",
-                opacity:opacity,
-                filter:"alpha(opacity=" + (opacity*100) + ")"
-            });
-        },
-
-        /**
-         * closeInterstitialDisplay hides the interstitial layer
-         *
-         * @author Byung Kim
-         * @date 1/30/2008
-         */
-        closeInterstitialDisplay:function() {
-            var interstitial = $("layeredPopupInterstitial");
-            if (interstitial) {
-                interstitial.setStyle({display:"none"});
-                Event.stopObserving(interstitial,"click",this.interstitialBuzzEffect.bind(this));
-            }
-        },
-
-        /**
-         * interstitialBuzzEffect does the effect for the popup
-         *
-         * @author Byung Kim
-         * @date 1/31/2008
-         */
-        interstitialBuzzEffect:function(hasBuzz) {
-            if (this.hasBuzz) Effect.Shake("popupContent");
-        }
-    }
-}
-
-var gqVideoPopup = new GQ_VIDEO_POPUP_CLASS();
-</script>
-
-
-</div>
-<!-- END Content Item File: /content/0005/691/102/cn5691102.html -->
-
+  	
  	<div id="sandybanner" style="width:988px;height:100px;background-color:white;overflow:hidden;display:block;margin-bottom:10px;"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/303/008/assets/hurricaneSandy_banner_988widthNEW.gif" usemap="#imapSandyRelief"/></div>
 
 <map name="imapSandyRelief">
@@ -9638,7 +9322,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5746824,4281898,5691102,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5746824,5750428,5754165,5746856,5667166,5746857,5217025";
 	 </script>
 	
 	<noscript>

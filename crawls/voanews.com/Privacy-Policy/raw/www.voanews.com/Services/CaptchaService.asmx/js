@@ -15,6 +15,8 @@ CaptchaContactUsSendComment:function(widgetInstanceID,title,email,emailTo,commen
 return this._invoke(this._get_path(), 'CaptchaContactUsSendComment',false,{widgetInstanceID:widgetInstanceID,title:title,email:email,emailTo:emailTo,comment:comment,txt:txt,kd:kd},succeededCallback,failedCallback,userContext); },
 IsCaptchaValid:function(enteredCaptchaValue,realCaptchaValue,captchaKeyName,succeededCallback, failedCallback, userContext) {
 return this._invoke(this._get_path(), 'IsCaptchaValid',false,{enteredCaptchaValue:enteredCaptchaValue,realCaptchaValue:realCaptchaValue,captchaKeyName:captchaKeyName},succeededCallback,failedCallback,userContext); },
+IsCaptchaValidNoCheck:function(enteredCaptchaValue,realCaptchaValue,ThreadId,ArticleID,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'IsCaptchaValidNoCheck',false,{enteredCaptchaValue:enteredCaptchaValue,realCaptchaValue:realCaptchaValue,ThreadId:ThreadId,ArticleID:ArticleID},succeededCallback,failedCallback,userContext); },
 GetCaptchaBody:function(captchaType,controlNumber,succeededCallback, failedCallback, userContext) {
 return this._invoke(this._get_path(), 'GetCaptchaBody',false,{captchaType:captchaType,controlNumber:controlNumber},succeededCallback,failedCallback,userContext); }}
 www.rferl.org.Services.CaptchaService.registerClass('www.rferl.org.Services.CaptchaService',Sys.Net.WebServiceProxy);
@@ -36,4 +38,5 @@ www.rferl.org.Services.CaptchaService.get_jsonpCallbackParameter = function() { 
 www.rferl.org.Services.CaptchaService.set_path("/Services/CaptchaService.asmx");
 www.rferl.org.Services.CaptchaService.CaptchaContactUsSendComment= function(widgetInstanceID,title,email,emailTo,comment,txt,kd,onSuccess,onFailed,userContext) {www.rferl.org.Services.CaptchaService._staticInstance.CaptchaContactUsSendComment(widgetInstanceID,title,email,emailTo,comment,txt,kd,onSuccess,onFailed,userContext); }
 www.rferl.org.Services.CaptchaService.IsCaptchaValid= function(enteredCaptchaValue,realCaptchaValue,captchaKeyName,onSuccess,onFailed,userContext) {www.rferl.org.Services.CaptchaService._staticInstance.IsCaptchaValid(enteredCaptchaValue,realCaptchaValue,captchaKeyName,onSuccess,onFailed,userContext); }
+www.rferl.org.Services.CaptchaService.IsCaptchaValidNoCheck= function(enteredCaptchaValue,realCaptchaValue,ThreadId,ArticleID,onSuccess,onFailed,userContext) {www.rferl.org.Services.CaptchaService._staticInstance.IsCaptchaValidNoCheck(enteredCaptchaValue,realCaptchaValue,ThreadId,ArticleID,onSuccess,onFailed,userContext); }
 www.rferl.org.Services.CaptchaService.GetCaptchaBody= function(captchaType,controlNumber,onSuccess,onFailed,userContext) {www.rferl.org.Services.CaptchaService._staticInstance.GetCaptchaBody(captchaType,controlNumber,onSuccess,onFailed,userContext); }

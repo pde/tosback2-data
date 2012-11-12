@@ -438,24 +438,24 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "WWE RAW",
-							"url" : usa_baseUrlDomain + "/sports/wwe/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
-							"tuneIn" : "MONDAY 9/8C"
-						},
-						/* Featured Slot 2 */
-						{
 							"title" : "Covert Affairs",
 							"url" : usa_baseUrlDomain + "/series/covertaffairs/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_ca.png",
-							"tuneIn" : "ALL NEW EPISODES TUESDAY 10/9C"
+							"tuneIn" : "TUESDAYS 10/9C"
 						},
-						/* Featured Slot 3 */
+						/* Featured Slot 2 */
 						{
 							"title" : "Burn Notice",
 							"url" : usa_baseUrlDomain + "/series/burnnotice/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_bn.png",
-							"tuneIn" : "RETURNS NOV 8 THURSDAY 9/8C"
+							"tuneIn" : "THURSDAYS 10/9C"
+						},
+						/* Featured Slot 3 */
+						{
+							"title" : "WWE RAW",
+							"url" : usa_baseUrlDomain + "/sports/wwe/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
+							"tuneIn" : "MONDAY 9/8C"
 						},
 						/* Featured Slot  - LAST */
 						{
@@ -586,24 +586,24 @@ var usa_globalMenu = {
 					"title" : "Exclusives",
 					"items" : [
 						{
+							"title" : "SHADOW RECRUIT",
+							"url" : "http://www.usanetwork.com/series/burnnotice/games/shadowrecruit/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_shadowrecruit.png"
+						},
+						{
+							"title" : "INTERACTIVE OFFICE",
+							"url" : "http://www.usanetwork.com/series/covertaffairs/features/dpdoffice/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_interactiveoffice.png"
+						},
+						{
 							"title" : "GRAPHIC NOVEL",
 							"url" : "http://www.usanetwork.com/series/burnnotice/downloads/app/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_bngraphicnovel.png"
 						},
 						{
-							"title" : "SUITS RECRUITS",
-							"url" : "http://suitsrecruits.usanetwork.com/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_suitsrecruits.png"
-						},
-						{
-							"title" : "NEAL&rsquo;S STASH",
-							"url" : "http://nealsstash.usanetwork.com/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_nealsstash.png"
-						},
-						{
-							"title" : "ROYAL PAINS CHATTER",
-							"url" : "http://characterchatter.usanetwork.com/show/royalpains",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_rpchatter.png"
+							"title" : "HARVEY'S TRIVIA",
+							"url" : "http://www.usanetwork.com/series/suits/games/harveysworld/index.html",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/exc_harveytrivia.png"
 						}
 					]
 				}
@@ -690,28 +690,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "RESIDENT EVIL: AFTERLIFE",
-							"subtitle" : "SUN OCT 29 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/residentevil/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_residentevil.png"
+							"title" : "THE COLOR PURPLE",
+							"subtitle" : "SATURDAY NOV 17 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_colorpurple.png"
 						},
 												{
-							"title" : "THE UGLY TRUTH",
-							"subtitle" : "SUNDAY NOVEMBER 3 9/8C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
-						},
-						{
-							"title" : "CASINO ROYALE",
-							"subtitle" : "SUN NOVEMBER 3 11/10C",
+							"title" : "EAT PRAY LOVE",
+							"subtitle" : "SATURDAY NOV 17 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/casinoroyale/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_casinoroyale.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_eatpraylove.png"
 						},
 						{
-							"title" : "QUANTUM OF SOLACE",
-							"subtitle" : "SUNDAY NOVEMBER 4 11/10C",
+							"title" : "IT'S COMPLICATED",
+							"subtitle" : "SUNDAY NOV 18 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/quantumofsolace/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_quantumofsolace.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_itscomplicated.png"
+						},
+						{
+							"title" : "FAST & FURIOUS",
+							"subtitle" : "FRIDAY NOV 23 9/8C",
+							"url" : usa_baseUrlDomain + "/movies/fastandfurious/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_fastandfurious.png"
 						}
 					]
 				}

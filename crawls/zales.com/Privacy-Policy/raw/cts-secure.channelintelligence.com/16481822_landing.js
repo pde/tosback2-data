@@ -132,6 +132,14 @@ if(window.location.protocol.toLowerCase() == 'http:'||window.location.href.toLow
 			ci_FP('idcs.interclick.com/Segment.aspx?sid=8d1a234c-1208-4ddb-9f08-c900b0eeebb6');
 		}catch(err){CI_LogError(err, 'landing_Yahoo');}
 		
+		//Google Retargeting
+		try{
+			var google_conversion_id = 1071236797;
+			var google_conversion_label = "oDZRCLOL3AMQvY3n_gM";
+			var google_custom_params = window.google_tag_params;
+			var google_remarketing_only = true;
+			CI_ExternalJS('http://www.googleadservices.com/pagead/conversion.js');
+		}catch(err){CI_LogError(err, 'landing_Google');}
 		
 		try{
 			if(ci_cpncode!==null){

@@ -1,0 +1,1639 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/alleged-petraeus-mistress-suggested-she-was-privy-to-state-secrets.html",' +
+                '"title": "Alleged Petraeus Mistress Suggested She Was Privy to State Secrets",' +
+                '"rubric": "All In, Indeed",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dd473bdb1bd7cc09f17c116ce70c3423"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/the-new-rules-of-the-game-for-ceos.html",' +
+                '"title": "The New Rules of the Game for CEOs",' +
+                '"rubric": "C-Suite",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6c2c6a9161aea6aca39ab6596cc53bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/09/alleged-petraeus-mistress-on-daily-show.html",' +
+                '"title": "Alleged Petraeus Mistress On \'Daily Show\'",' +
+                '"rubric": "null",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1b76768e6f36f949b9c2a88dcefed242"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/six-absurd-republican-excuses-for-mitt-romney-s-defeat.html",' +
+                '"title": "Six Absurd Republican Excuses for Mitt Romney&rsquo;s Defeat",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f63dbb41d5831de504d4be1fedb25b8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/the-road-to-victoria-jackson-s-election-meltdown-on-twitter.html",' +
+                '"title": "The Road to Victoria Jackson&rsquo;s Election Meltdown on Twitter",' +
+                '"rubric": "Not So Funny",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7df7db5828e61e7df76b1c3151f5e26e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/10-politicians-who-turned-on-the-tears-in-public-from-obama-to-muskie.html",' +
+                '"title": "10 Politicians Who Turned on the Tears in Public From Obama to Muskie",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e0b19660ee227701a84988cb51311d3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/porn-star-james-deen-speaks-out-against-california-s-measure-b.html",' +
+                '"title": "Porn Star James Deen Speaks Out Against California&rsquo;s Measure B",' +
+                '"rubric": "No Condoms!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "675865c28f55d247ff315b1e181ad537"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/5-amazing-fox-news-freak-outs-karl-rove-megyn-kelly-bill-o-reilly-and-more.html",' +
+                '"title": "Five Amazing Fox News Freak-Outs: Karl Rove, Megyn Kelly, Bill O&rsquo;Reilly, and More",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "22bad1c6cb26a685b35e72165547b05b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/michael-tomasky-on-how-the-right-is-still-racist.html",' +
+                '"title": "Michael Tomasky on How the Right Is Still Racist",' +
+                '"rubric": "SAME OLD STORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eb8b61ef09c73a9ead4b3414e2175da8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/the-new-rules-of-the-game-for-ceos.html",' +
+                '"title": "The New Rules of the Game for CEOs",' +
+                '"rubric": "C-Suite",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6c2c6a9161aea6aca39ab6596cc53bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-danes-royal-drama-gets-its-hollywood-moment.html",' +
+                '"title": "The Danes&rsquo; Royal Drama Gets Its Hollywood Moment",' +
+                '"rubric": "UPHEAVAL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e9fac4ca63a17be6feb43660d56f80e5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/sunday-talk-dianne-feinstein-lindsey-graham-bob-woodward-on-the-petraeus-aftershocks-video.html",' +
+                '"title": "Sunday Talk: Dianne Feinstein, Lindsey Graham &amp; Bob Woodward on the Petraeus Aftershocks (VIDEO)",' +
+                '"rubric": "What You Missed",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7f8ff61ec634edf185f4c178254fa5d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/pot-psychology-the-stoners-guide-to-life.html",' +
+                '"title": "&lsquo;Pot Psychology&rsquo;: The Stoners&rsquo; Guide to Life",' +
+                '"rubric": "420 101",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4e511149dfdd37b7799a26912f64032d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/six-absurd-republican-excuses-for-mitt-romney-s-defeat.html",' +
+                '"title": "Six Absurd Republican Excuses for Mitt Romney&rsquo;s Defeat",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f63dbb41d5831de504d4be1fedb25b8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/10-politicians-who-turned-on-the-tears-in-public-from-obama-to-muskie.html",' +
+                '"title": "10 Politicians Who Turned on the Tears in Public From Obama to Muskie",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e0b19660ee227701a84988cb51311d3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/who-s-skewed-now-beaten-gop-wakes-up-to-the-real-america.html",' +
+                '"title": "Who&rsquo;s Skewed Now? Beaten GOP Wakes Up to the Real America",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a1be5dc9797eafbdc193b2c445af72c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/literary-bond-superior-to-movie-version.html",' +
+                '"title": "Literary Bond Superior to Movie Version",' +
+                '"rubric": "Flemingway",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "dfef3e3a126f31e3a77a7b0fe3ca11d4"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/11/09/apple-s-falling-stock-has-analysts-questioning-the-company-s-dominance.html",' +
+                '"title": "Apple&rsquo;s Falling Stock Has Analysts Questioning the Company&rsquo;s Dominance",' +
+                '"rubric": "Bear",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a9a92a1ae48f7a7e70eaf3c6c2099974"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/from-katrina-to-sandy-fema-rumors-and-failures-keep-swirling.html",' +
+                '"title": "From Katrina To Sandy, FEMA Rumors and Failures Keep Swirling",' +
+                '"rubric": "Disaster Strikes",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "0e4592c382d08e5f64c387d7bf9a49c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/the-new-rules-of-the-game-for-ceos.html",' +
+                '"title": "The New Rules of the Game for CEOs",' +
+                '"rubric": "C-Suite",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6c2c6a9161aea6aca39ab6596cc53bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/pot-psychology-the-stoners-guide-to-life.html",' +
+                '"title": "&lsquo;Pot Psychology&rsquo;: The Stoners&rsquo; Guide to Life",' +
+                '"rubric": "420 101",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "4e511149dfdd37b7799a26912f64032d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/obama-s-next-inner-circle-who-will-fill-the-new-cabinet.html",' +
+                '"title": "Obama&rsquo;s Next Inner Circle: Who Will Fill the New Cabinet?",' +
+                '"rubric": "Transition Team",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5aa14c31e1b53f7ff22afbb1a21f49b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/alleged-petraeus-mistress-suggested-she-was-privy-to-state-secrets.html",' +
+                '"title": "Alleged Petraeus Mistress Suggested She Was Privy to State Secrets",' +
+                '"rubric": "All In, Indeed",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "dd473bdb1bd7cc09f17c116ce70c3423"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-danes-royal-drama-gets-its-hollywood-moment.html",' +
+                '"title": "The Danes&rsquo; Royal Drama Gets Its Hollywood Moment",' +
+                '"rubric": "UPHEAVAL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e9fac4ca63a17be6feb43660d56f80e5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/sunday-talk-dianne-feinstein-lindsey-graham-bob-woodward-on-the-petraeus-aftershocks-video.html",' +
+                '"title": "Sunday Talk: Dianne Feinstein, Lindsey Graham &amp; Bob Woodward on the Petraeus Aftershocks (VIDEO)",' +
+                '"rubric": "What You Missed",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7f8ff61ec634edf185f4c178254fa5d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/michael-j-morell-introducing-the-cia-s-new-acting-director.html",' +
+                '"title": "Michael J. Morell: Introducing the CIA&rsquo;s New Acting Director",' +
+                '"rubric": "Petraeus&rsquo;s Replacement",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6eae735336c19a5fcbb4867c81b62217"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/michael-tomasky-on-how-the-right-is-still-racist.html",' +
+                '"title": "Michael Tomasky on How the Right Is Still Racist",' +
+                '"rubric": "SAME OLD STORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eb8b61ef09c73a9ead4b3414e2175da8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/literary-bond-superior-to-movie-version.html",' +
+                '"title": "Literary Bond Superior to Movie Version",' +
+                '"rubric": "Flemingway",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "dfef3e3a126f31e3a77a7b0fe3ca11d4"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2012/11/10/sotomayor-princess-is-not-a-career.html",' +
+                '"title": "Sotomayor: \'Princess\' Is Not A Career",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "14ce5b27eeaabeec90eb488660641b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-danes-royal-drama-gets-its-hollywood-moment.html",' +
+                '"title": "The Danes&rsquo; Royal Drama Gets Its Hollywood Moment",' +
+                '"rubric": "UPHEAVAL",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e9fac4ca63a17be6feb43660d56f80e5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/11/snl-s-romney-consolation.html",' +
+                '"title": "Mitt Romney\'s Wild Milk Binge",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "43735311508f7d9aa2752084052d6fe2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/is-skyfall-the-best-and-gayest-james-bond-movie-yet.html",' +
+                '"title": "Is &lsquo;Skyfall&rsquo; the Best (and Gayest) James Bond Movie Yet?",' +
+                '"rubric": "&lsquo;Skyfall&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "156019a71ca733833552a3f2676abe42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/literary-bond-superior-to-movie-version.html",' +
+                '"title": "Literary Bond Superior to Movie Version",' +
+                '"rubric": "Flemingway",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "dfef3e3a126f31e3a77a7b0fe3ca11d4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/11/obama-s-election-thank-you-list.html",' +
+                '"title": "Obama\'s Election Thank-You List",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0cc16b1059e175f27501b1839081f5ae"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/09/pat-robertson-50-shades-is-porn.html",' +
+                '"title": "Pat Robertson: \'50 Shades\' Is Porn",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cf60a1f532e201063cab83332e31bd00"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/10/megyn-kelly-s-maddest-moments.html",' +
+                '"title": "Megyn Kelly\'s Maddest Moments",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2960c1160b2ef3ac50e5a0ff4a771f4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/09/alleged-petraeus-mistress-on-daily-show.html",' +
+                '"title": "Alleged Petraeus Mistress On \'Daily Show\'",' +
+                '"rubric": "null",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "1b76768e6f36f949b9c2a88dcefed242"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/10/sotomayor-princess-is-not-a-career.html",' +
+                '"title": "Sotomayor: \'Princess\' Is Not A Career",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "14ce5b27eeaabeec90eb488660641b72"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/09/presidential-jacket-envy.html",' +
+                '"title": "Presidential &ldquo;Jacket Envy?&rdquo;",' +
+                '"rubric": "Fashion",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "16ff4c9f2a38c9f68f180fa9d8edfe29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/are-twentysomethings-too-afraid-of-missing-out.html",' +
+                '"title": "Are Twentysomethings Too Afraid of Missing Out?",' +
+                '"rubric": "Late to the Party",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "974df807182b9962dd8e204abdca1eaa"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/six-absurd-republican-excuses-for-mitt-romney-s-defeat.html",' +
+                '"title": "Six Absurd Republican Excuses for Mitt Romney&rsquo;s Defeat",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f63dbb41d5831de504d4be1fedb25b8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/10/02/charlie-cook-puts-his-money-on-obama.html",' +
+                '"title": "Charlie Cook Puts His Money on Obama",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5c19a1f5fe02f9e778b0a14916b61d3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/10/andrew-sullivan-in-the-west-there-is-one-rogue-outlying-fanatical-party-and-it-s-called-the-republicans.html",' +
+                '"title": "Andrew Sullivan: Republicans \'Fanatical Party\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "70bbbf5a2922b1ccd05380f5a0015d13"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/11/snl-s-romney-consolation.html",' +
+                '"title": "Mitt Romney\'s Wild Milk Binge",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "43735311508f7d9aa2752084052d6fe2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/war-games-microsoft-invades-liechtenstein-for-halo-4-blowout.html",' +
+                '"title": "War Games: Microsoft Invades Liechtenstein for Halo 4 Blowout",' +
+                '"rubric": "Geek Out!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "78a5a27e2a72e4911d14155fc4a02782"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/the-new-rules-of-the-game-for-ceos.html",' +
+                '"title": "The New Rules of the Game for CEOs",' +
+                '"rubric": "C-Suite",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6c2c6a9161aea6aca39ab6596cc53bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/11/08/florida-s-messy-democracy.html",' +
+                '"title": "Florida&rsquo;s Messy Democracy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "767e546ac3758979f5c0fb043851f62d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/michael-tomasky-on-how-the-right-is-still-racist.html",' +
+                '"title": "Michael Tomasky on How the Right Is Still Racist",' +
+                '"rubric": "SAME OLD STORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eb8b61ef09c73a9ead4b3414e2175da8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/the-new-rules-of-the-game-for-ceos.html",' +
+                '"title": "The New Rules of the Game for CEOs",' +
+                '"rubric": "C-Suite",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "e6c2c6a9161aea6aca39ab6596cc53bb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/six-absurd-republican-excuses-for-mitt-romney-s-defeat.html",' +
+                '"title": "Six Absurd Republican Excuses for Mitt Romney&rsquo;s Defeat",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f63dbb41d5831de504d4be1fedb25b8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/sunday-talk-dianne-feinstein-lindsey-graham-bob-woodward-on-the-petraeus-aftershocks-video.html",' +
+                '"title": "Sunday Talk: Dianne Feinstein, Lindsey Graham &amp; Bob Woodward on the Petraeus Aftershocks (VIDEO)",' +
+                '"rubric": "What You Missed",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7f8ff61ec634edf185f4c178254fa5d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/who-s-skewed-now-beaten-gop-wakes-up-to-the-real-america.html",' +
+                '"title": "Who&rsquo;s Skewed Now? Beaten GOP Wakes Up to the Real America",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a1be5dc9797eafbdc193b2c445af72c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/mitt-romney-s-victory-party-a-bust.html",' +
+                '"title": "Mitt Romney&rsquo;s Victory Party a Bust",' +
+                '"rubric": "Party Foul",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff494a2bd84be16583c6df7c5a8881ac"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/michael-tomasky-on-how-the-right-is-still-racist.html",' +
+                '"title": "Michael Tomasky on How the Right Is Still Racist",' +
+                '"rubric": "SAME OLD STORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eb8b61ef09c73a9ead4b3414e2175da8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/who-s-skewed-now-beaten-gop-wakes-up-to-the-real-america.html",' +
+                '"title": "Who&rsquo;s Skewed Now? Beaten GOP Wakes Up to the Real America",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a1be5dc9797eafbdc193b2c445af72c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/03/vote-the-bums-out-the-eight-worst-congressmen.html",' +
+                '"title": "Vote the Bums Out: the Eight Worst Members of Congress",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f863c3132d964a01067ce2db02f95cb8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/rip-lever-voting-machines.html",' +
+                '"title": "RIP, Lever Voting Machines: Where Did Old Booths Go?",' +
+                '"rubric": "Cast Away",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a59ddf8263cde6c1c17862958bf9d023"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/10/david-frum-it-s-like-giving-antibiotics-to-someone-suffering-from-depression.html",' +
+                '"title": "David Frum: \'It\'s Like Giving Antibiotics to Someone Suffering From Depression\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c076e0357012a38d412e17d0e7b3793"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/11/09/obama-s-next-inner-circle-who-will-fill-the-new-cabinet.html",' +
+                '"title": "Obama&rsquo;s Next Inner Circle: Who Will Fill the New Cabinet?",' +
+                '"rubric": "Transition Team",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5aa14c31e1b53f7ff22afbb1a21f49b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/the-week-s-best-longreads-the-daily-beast-picks-for-november-10-2012.html",' +
+                '"title": "The Week&rsquo;s Best Longreads: The Daily Beast Picks for November 10, 2012",' +
+                '"rubric": "Longreads",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "78c02e7151cc0d1f0599f9e800cd4aac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/13-must-see-moments-from-election-night-video.html",' +
+                '"title": "13 Must-See Moments From Election Night (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "631a292410bae82a60339f11a00642b2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/six-absurd-republican-excuses-for-mitt-romney-s-defeat.html",' +
+                '"title": "Six Absurd Republican Excuses for Mitt Romney&rsquo;s Defeat",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f63dbb41d5831de504d4be1fedb25b8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/warm-up-cook-recharge-a-smart-tool-born-of-hurricane-sandy-aftermath.html",' +
+                '"title": "Warm Up, Cook, Recharge: A Smart Tool Born of Hurricane Sandy Aftermath",' +
+                '"rubric": "Hurricane Recovery",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "da7339f190a7f4a58990d1f71d2cc7b1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/06/paul-begala-on-the-five-stages-of-gop-grief.html",' +
+                '"title": "Paul Begala on the Five Stages of GOP Grief",' +
+                '"rubric": "IT&rsquo;S OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "646ab3e04374db42b654ac4e0a3e6665"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/who-s-skewed-now-beaten-gop-wakes-up-to-the-real-america.html",' +
+                '"title": "Who&rsquo;s Skewed Now? Beaten GOP Wakes Up to the Real America",' +
+                '"rubric": "Sore Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a1be5dc9797eafbdc193b2c445af72c5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/bbc-scandal-blows-up-as-director-george-entwistle-resigns.html",' +
+                '"title": "BBC Scandal Blows Up as Director George Entwistle Resigns",' +
+                '"rubric": "Fallout",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5c0ac8947b96e5fd7b7c724818a83647"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/from-katrina-to-sandy-fema-rumors-and-failures-keep-swirling.html",' +
+                '"title": "From Katrina To Sandy, FEMA Rumors and Failures Keep Swirling",' +
+                '"rubric": "Disaster Strikes",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "0e4592c382d08e5f64c387d7bf9a49c1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/michael-tomasky-on-how-the-right-is-still-racist.html",' +
+                '"title": "Michael Tomasky on How the Right Is Still Racist",' +
+                '"rubric": "SAME OLD STORY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "eb8b61ef09c73a9ead4b3414e2175da8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/07/what-harvard-s-grant-study-reveals-about-happiness-and-life.html",' +
+                '"title": "What Harvard&rsquo;s Grant Study Reveals about Happiness and Life",' +
+                '"rubric": "Researching Life",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "1326832d4f78516758b094cbbe0b9609"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/florida-s-messy-democracy.html",' +
+                '"title": "Florida&rsquo;s Messy Democracy",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "767e546ac3758979f5c0fb043851f62d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/republicans-learn-the-cost-of-alienating-women-voters.html",' +
+                '"title": "Republicans Learn the Cost of Alienating Women Voters",' +
+                '"rubric": "Gender Gap",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0a164436b6d4d496e00d3370d29c3d3b"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/11/10/is-the-cult-of-karl-over.html",' +
+                '"title": "Is the Cult of Karl Rove Over?",' +
+                '"rubric": "R.I.P.",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "816ce2192fcfa3532ae7f7f1fb044b3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/why-i-started-fivethirtyeight.html",' +
+                '"title": "Nate Silver: Why I Started FiveThirtyEight",' +
+                '"rubric": "United States of Arithmetic",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "6d96f9c81304c93a1e31889f6a9ae086"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2010/10/14/tracy-breaks-on-30-rock-live.html",' +
+                '"title": "Live From New York, It\'s \'30 Rock\'!",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cd9b6f8a21a6141abf1b3f32552c5dc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/after-a-crushing-defeat-the-religious-right-still-won-t-get-it-right.html",' +
+                '"title": "After a Crushing Defeat, the Religious Right Still Won&rsquo;t Get It Right",' +
+                '"rubric": "INTROSPECTION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6be53e6c9ea0dee9fb1b534614945ef8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/25/should-teens-be-jailed-for-sex-offenses-a-growing-parental-rebellion-says-no.html",' +
+                '"title": "Laws Gone Wild: As Teen Sweethearts Go to Prison for Sex, Mothers Rebel",' +
+                '"rubric": "Misplaced Justice",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "45733f34c78569f5079074facc6e9538"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/the-romney-campaign-s-ground-game-fiasco.html",' +
+                '"title": "The Romney Campaign&rsquo;s Ground Game Fiasco",' +
+                '"rubric": "Election Snafu",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ff43170580845ba80a02cfe03fc56754"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/10/david-frum-it-s-like-giving-antibiotics-to-someone-suffering-from-depression.html",' +
+                '"title": "David Frum: \'It\'s Like Giving Antibiotics to Someone Suffering From Depression\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9c076e0357012a38d412e17d0e7b3793"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/gen-david-petraeus-s-resignation-fuels-conspiracy-theories.html",' +
+                '"title": "Gen. David Petraeus&rsquo;s Resignation Fuels Conspiracy Theories",' +
+                '"rubric": "SHOCKING MOVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "aa8d7e0ef1eb29b6f8133650206410f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/07/08/china-s-dog-dyeing-craze-once-shunned-pet-pooches-now-embraced.html",' +
+                '"title": "China&rsquo;s Dog-Dyeing Craze: Once Shunned, Pet Pooches Now Embraced",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "9c25e8dca67bf5238414578534414439"' +
+            '}' +
+        ']' +
+    '}'
+);

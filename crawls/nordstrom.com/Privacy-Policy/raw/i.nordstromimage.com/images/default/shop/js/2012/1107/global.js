@@ -49,7 +49,8 @@ $('#ir-shipping-returns-flydown').hover(function(){mouse_is_inside=true;},functi
 function open_popReturnsLink(){var parentUrl=PageParameters.secureUrl+"ReturnsAndExchange.aspx?origin=flydown";window.parent.location=parentUrl;}
 function openPrivacyPolicy()
 {window.name="popup";var feature=window.open(getContentURL()+"popup/shopwithconfidence/protect-main.asp","feature",'toolbar=no,status=no,width=636,height=430,resize=no,scrollbars=yes,menubar=no');}
-if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){$.getScript('//media.richrelevance.com/rrserver/js/1.0/p13n.js',rrListener);}
+var scriptCacheDate='';function setScriptCache(){var date=new Date();var day=date.getDay();if(day===4){scriptCacheDate=date.toString().replace(/\s/g,"").substring(3,12);}}
+setScriptCache();if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){$.ajax({type:"GET",url:'//media.richrelevance.com/rrserver/js/1.0/p13n.js?ts='+scriptCacheDate,success:rrListener,dataType:"script",cache:true})}
 function rrListener(){if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){window.R3_COMMON=new r3_common();R3_COMMON.setClickthruServer(window.location.protocol+'//'+window.location.host);if(PageParameters.hasOwnProperty('RRAPIKey')){R3_COMMON.setApiKey(PageParameters.RRAPIKey);}
 if(PageParameters.hasOwnProperty('RREnvironment')){R3_COMMON.setBaseUrl(window.location.protocol+'//'+PageParameters.RREnvironment+'.richrelevance.com/rrserver/');}
 if(PageParameters.hasOwnProperty('SessionId')){R3_COMMON.setSessionId(PageParameters.SessionId);}

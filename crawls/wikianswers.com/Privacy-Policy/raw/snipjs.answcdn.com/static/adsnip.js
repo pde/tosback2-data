@@ -802,7 +802,7 @@ var Adsnip = (function(){
 // Global error handling
 window.is_error_handling = false;
 
-window.onerror = function(msg, url, line_no) {
+window.adsnip_error_handler = function(msg, url, line_no) {
 	if(!window.is_error_handling) {
 		window.is_error_handling = true;
 

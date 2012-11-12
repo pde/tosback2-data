@@ -1,0 +1,1492 @@
+if( typeof jQuery != 'undefined' ){
+	
+	/**
+	 * Avast superclass
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	var avast = {
+		/**
+		 * Avast default options
+		 * @var boolean disableSlider - disable default slider
+		 * @var boolean disableTabs - disable default tabs
+		 * @var boolean disableMenu - disable default menu
+		 * @var boolean disableTooltip - disable default tooltip
+		 * @var boolean disableLanguageSelector - disable default language selector 
+		 * @var boolean disableCounter - disable default counter
+		 * @var boolean disableNavigation - disable default navigation
+		 * @var boolean disableFilter - disable default product filtering
+		 * @var boolean disableGaTracking - disable default google analytics tracking
+		 * @var string locale - default locale (rewriten in AvastConfig snippet)
+		 * @var string rootPath - default path to root of the website (rewriten in AvastConfig snippet)
+		 */
+		options:{
+			disableSlider:false,
+			disableTabs:false,
+			disableMenu:false,
+			disableTooltip:false,
+			disableLanguageSelector:false,
+			disableCounter:false,
+			disableNavigation:false,
+			disableFilter:false,
+			disableGaTracking:false,
+			disableHadd:false,
+			disableUpdatePrice:false,
+			locale:"en-ww",
+			rootPath:""
+		},
+		/**
+		 * Set language cookie
+		 * @param string lang - desired language region to set in cookie
+		 */
+		setLanguage:function(lang){
+		    var d=new Date();
+		    d.setDate(d.getDate() + 365);
+		    document.cookie = "avastComLocale="+lang+";path=/;EXPIRES=" + d.toGMTString();
+		},
+		/**
+		 * Returns user operating system
+		 * @param string appOS - user operating system
+		 */
+		getOS:function(){
+			var appOS = "Unknown";
+			if(navigator !== undefined && navigator.appVersion !== undefined){
+				if (navigator.appVersion.indexOf("Win") != -1) appOS = "Windows";
+				if (navigator.appVersion.indexOf("Mac") != -1) appOS = "MacOS";
+				if (navigator.appVersion.indexOf("X11") != -1) appOS = "UNIX";
+				if (navigator.appVersion.indexOf("Linux") != -1) appOS = "Linux";
+			}
+			return appOS;
+		},
+		/**
+		 * Returns user Windows version
+		 * @param string winVer - user operating system
+		 */
+		getWinVersion:function(){
+			var winVer = "Unknown";
+			if(navigator !== undefined && navigator.userAgent !== undefined){
+				if (navigator.userAgent.indexOf("Win") != -1){
+          if (navigator.userAgent.indexOf("NT 6.1") != -1) winVer = "Win7";
+          if (navigator.userAgent.indexOf("NT 6.0") != -1) winVer = "Vista";
+          if (navigator.userAgent.indexOf("NT 5.1") != -1) winVer = "XP";
+        }
+			}
+			return winVer;
+		}
+	};
+	
+	/**
+	 * Avast language selector class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	avast.languageSelector = avast.prototype = {
+		/**
+		 * Language selector default options
+		 * @var string startDomEl - DOM element that shows selector on click
+		 * @var string closeDomEl - DOM element that close selector on click
+		 * @var string contentDomEl - DOM element with content of the selector to show in lightbox
+		 * @var string lightboxID - ID of the lightbox element
+		 * @var string langLoaderDomEl - DOM element that is visible until background picture is not loaded
+		 * @var float opacity - opacity of the lightbox
+		 * @var string backgroundImage - uri to the background of the selector
+		 */
+		options:{
+			startDomEl:".region",
+			closeDomEl:"#close_selector",
+			contentDomEl:"#lang_selector",
+			lightboxID:"language_lightbox",
+			langLoaderDomEl:"#lang_loader",
+			opacity:0.6,
+			backgroundImage:"http://static.avast.com/web/i/background-language-selector.jpg"
+		},
+		/**
+		 * Initialization
+		 * @param object params - parameters rewriting default options
+		 */
+		init:function(params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			$(root.options.startDomEl).click(function(e){
+		        root.show();
+		        return false;
+		    });
+		    $(root.options.closeDomEl).click(function(e){
+		        root.hide();                              
+		        return false;
+		    });
+		},
+		/**
+		 * Method showing language selector
+		 */
+		show:function(){
+			var root = this;
+			if (!document.all) $('body').css({'overflow':'hidden'});
+			var message = $(this.options.contentDomEl);
+		    var scr = "<div id='"+this.options.lightboxID+"'></div>";
+		    
+		    var iebody=(document.compatMode && document.compatMode != "BackCompat")? document.documentElement : document.body;
+		    var topPosition=document.all? iebody.scrollTop : pageYOffset;
+		            
+		    $('body').append(message);
+		    $('body').append(scr);
+		    $("#"+this.options.lightboxID).css({opacity:0,'width':$(document).width(),'height':$(document).height()});
+		    $("#"+this.options.lightboxID).css({opacity: root.options.opacity});
+		    message.show();
+		        
+		    var leftPosition = ($(document).width()/2)-(message.width()/2);
+		    message.css({'display': 'block', 'top': topPosition+125, 'left': leftPosition});
+		    document.body.onscroll = function(e){
+		        var iebody=(document.compatMode && document.compatMode != "BackCompat")? document.documentElement : document.body;
+		        var topPosition=document.all? iebody.scrollTop : pageYOffset;
+		        
+		        message.animate({'top': topPosition +125},1);
+		    };
+		    var img = new Image();
+		    $(img)
+		        .load(function(){
+		            $(root.options.langLoaderDomEl).fadeOut(500);
+		        })
+		        .attr('src', root.options.backgroundImage);
+		    
+		    $("#"+this.options.lightboxID).click(function(){root.hide();});
+		    
+		    /*s=s_gi('avast-dev');
+		    s.linkTrackVars='eVar4';
+		    s.pageName='Region Selector';  //overlay pagename
+		    s.eVar4='D=pageName'
+		    s.tl(true,'o','D=pageName');  //no time delay
+		    */
+		},
+		/**
+		 * Method hiding selector
+		 */
+		hide:function(){
+			var message = $(this.options.contentDomEl);
+		    var scr = $("#"+this.options.lightboxID);
+		    message.hide();
+		    scr.remove();
+		    if (!document.all) $('body').css({'overflow':'auto'});
+		}
+	};
+	
+	avast.gaTracking = avast.prototype = {
+		init:function(){
+			$("a").each(function(){
+	            if($(this).attr('href') != undefined) {
+	                if(($(this).attr('href').indexOf('store.avast.co.jp') != -1 && $(this).attr('onclick') == undefined) || ($(this).attr('href').indexOf('dr-store.avast.com') != -1 && $(this).attr('onclick') == undefined)){
+	                    $(this).click(function(e){
+	                        var url = $(this).attr('href');
+	                        if(pageTracker !== undefined) pageTracker._link(url);
+	                        e.preventDefault();
+	                        return false;
+	                    });
+	                }
+	            }
+	        });
+		}
+	}
+	
+	/**
+	 * Avast slider class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	avast.slider = avast.prototype = {
+		/**
+		 * @var bxSlider slider - instance of slider
+		 */
+		slider:null,
+		/**
+		 * Slider default options
+		 * @var boolean pager - creating pager or not
+		 * @var boolean controls - creating controls(prev/next) or not
+		 * @var boolean auto - start scrolling or not
+		 * @var int pause - pause between scrolling
+		 */
+		options:{
+			pager: true,
+		    controls:false,
+		    auto:true,
+		    pause:20000,
+		    prevDomEl:".prev",
+		    nextDomEl:".next",
+		    subheaderDomEl:"#subheader ul.home li"
+		},
+		/**
+		 * Initialization
+		 * @param string type - choosing predefined slider
+		 * @param string cDomEl - slider contnet wrapper
+		 * @param object params - parameters rewriting default options 
+		 */
+		init:function(type,cDomEl,params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			
+			if(type == null) type = "";
+			switch(type){
+				case "hp":
+					this.options.onBeforeSlide = function(currentSlide, totalSlides){
+						$(root.options.subheaderDomEl).removeClass('active');
+		    			var i = currentSlide + 1;
+						$(root.options.subheaderDomEl+':nth-child('+i+')').addClass('active');
+					};
+					this.slider = $(cDomEl).bxSlider(this.options);
+					$(root.options.prevDomEl).click(function(){
+		    			root.slider.goToPreviousSlide();
+		    			$(root.options.subheaderDomEl).removeClass('active');
+		    			var i = root.slider.getCurrentSlide() + 1;
+		    			$(root.options.subheaderDomEl+':nth-child('+i+')').addClass('active');
+		    			return false;
+		    		});
+		    		
+		    		$(root.options.nextDomEl).click(function(){
+		    			root.slider.goToNextSlide();
+		    			$(root.options.subheaderDomEl).removeClass('active');
+		    			var i = root.slider.getCurrentSlide() + 1;
+		    			$(root.options.subheaderDomEl+':nth-child('+i+')').addClass('active');
+		    			return false;
+		    		});
+		    		
+		    		$(this.options.subheaderDomEl).live('click',function(){
+		    		    var thumbIndex = $(root.options.subheaderDomEl).index(this);
+		    		    root.slider.goToSlide(thumbIndex);
+		    		  
+		    		    return false;
+	    		    });
+
+	    		    $(this.options.subheaderDomEl+':first').addClass('active');
+					break;
+				case "product-tab":
+					this.slider = $(cDomEl).bxSlider(this.options);
+					  
+            $(root.options.prevDomEl).click(function(){
+		    			root.slider.goToPreviousSlide();
+		    			return false;
+		    		});
+		    		
+		    		$(root.options.nextDomEl).click(function(){
+		    			root.slider.goToNextSlide();
+		    		  return false;
+		    		});
+					break;
+				case "product":
+					if($(cDomEl + " img").length > this.options.displaySlideQty){
+						this.slider = $(cDomEl).bxSlider(this.options);
+						if(this.slider.getSlideCount() >= this.options.displaySlideQty){
+							$(root.options.prevDomEl).click(function(){
+				    			root.slider.goToPreviousSlide();
+				    			return false;
+				    		});
+				    		
+				    		$(root.options.nextDomEl).click(function(){
+				    			root.slider.goToNextSlide();
+				    			return false;
+				    		});
+						}
+						else{
+							$(root.options.prevDomEl).hide();
+							$(root.options.nextDomEl).hide();
+						}
+					}else{
+						this.options.displaySlideQty = $(cDomEl + " img").length;
+						this.slider = $(cDomEl).bxSlider(this.options);
+						$(root.options.prevDomEl).hide();
+						$(root.options.nextDomEl).hide();
+					}
+	    		    break;
+				default:
+					this.slider = $(cDomEl).bxSlider(this.options);
+					break;
+			}
+			return this.slider;
+		},
+		getSlider:function(){
+			return this.slider;
+		}
+	};
+	
+	/**
+	 * Avast tooltip class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	avast.tooltip = avast.prototype = {
+		/**
+		 * @var xml xmlTooltip - xml DOM with all translatable words
+		 */
+		xmlTooltip:null,
+		/**
+		 * @var string searchTerm - term to search in loop
+		 */
+		searchTerm:null,
+		/**
+		 * @var string searchRegex - Regex for searching the word
+		 */
+		searchRegex:null,
+		/**
+		 * @var timeout tt - timeout for tooltip appearing
+		 */
+		tt:null,
+		/**
+		 * @var string ttFile - php file with tooltips
+		 */
+		ttFile:"tooltip.php",
+		/**
+		 * Tooltip default options
+		 * @var string wordDomEl - DOM element for tooltip word
+		 * @var string tooltipDomEl - DOM element for tooltip container
+		 * @var string contentHolderDomEl - DOM element for tooltip content
+		 * @var string tooltipWrapper - structure of content
+		 * @var string imagesPreloading - html DOM structure for preloading images
+		 * @var int fadeInSpeed - appearing speed of tooltip
+		 * @var int hideDelay - delay before hiding tooltip
+		 * @var int showDelay - delay before showing tooltip
+		 * @var int arrowHeight - height of upper arrow of tooltip
+		 * @var int leftDis - left distance of tooltip   
+		 */
+		options:{
+			wordDomEl:".tooltip-w",
+			tooltipDomEl:"#tooltip",
+			contentHolderDomEl:"#content-holder",
+			tooltipWrapper:"<div id=\"tooltip\" style='position: absolute;z-index: 99999;width: 271px ;background: transparent url(http://static.avast.com/web/i/tooltip-bg.png) left top repeat-y;'>"+
+								"<img src=\"http://static.avast.com/web/i/tooltip-pointer.png\" style='position: absolute;left: 30px;top: -19px;z-index: 9999;' />"+
+								"<span class=\"tt-top\" style='position: absolute;left: 0px;width: 271px;height: 9px;top: -9px;background: transparent url(http://static.avast.com/web/i/tooltip-top.png) left bottom no-repeat;'></span>"+
+								"<em style='font-style:normal;display:block !important;margin: 0px 3px 0px !important;background: #ecedee url(http://static.avast.com/web/i/tooltip-grad.png) left top repeat-x !important;padding:5px 15px !important;color:#000 !important;font-size:12px !important;font-weight:normal !important;line-height: 16px !important;'></em>"+
+								"<span class=\"tt-bottom\" style='position: absolute;left: 0px;width: 271px;height: 9px;bottom: -9px;background: transparent url(http://static.avast.com/web/i/tooltip-bottom.png) left top no-repeat;'></span>"+
+							"</div>",
+			/*imagesPreloading:"<img src='http://static.avast.com/web/i/tooltip-bg.png' style='display:none' />" +
+				              "<img src='http://static.avast.com/web/i/tooltip-pointer.png' style='display:none' />" +
+							  "<img src='http://static.avast.com/web/i/tooltip-top.png' style='display:none' />" +
+							  "<img src='http://static.avast.com/web/i/tooltip-grad.png' style='display:none' />" +
+							  "<img src='http://static.avast.com/web/i/tooltip-bottom.png' style='display:none' />",*/
+			imagesPreloading:['tooltip-bg.png',
+			                  'tooltip-pointer.png',
+			                  'tooltip-top.png',
+			                  'tooltip-grad.png',
+			                  'tooltip-bottom.png'],
+			fadeInSpeed:300,
+			hideDelay:150,
+			showDelay:550,
+			arrowHeight:30,
+			leftDis:30,
+			noApplyArr:[".no-tooltip","h1 span","h1","#tabs-navigation ul li a span",".annotation"]
+		},
+		/**
+		 * Initialization
+		 * @param object params - parameters rewriting default options 
+		 */
+		init:function(params){
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			var root = this;
+			$.ajax({
+				type: "POST",
+				url: avast.rootPath + root.ttFile,
+				cache: false,
+				data: "locale="+avast.locale,
+				dataType: "xml",
+				success:function(data){
+					//if ($.browser.msie) {
+					   /*xmlTooltip = new ActiveXObject("Microsoft.XMLDOM");
+					   xmlTooltip.async = false;
+					   xmlTooltip.loadXML(data);*/
+					    //root.xmlTooltip = root.parseXML(data);
+					 //} else {
+					    root.xmlTooltip = data;
+					 //}
+					 //var imgPreload = root.imagesPreloading;
+					 //$("body").append(imgPreload);
+					
+					for(var i = 0; i < root.options.imagesPreloading.length; i++){
+						root.preloadImage("http://static.avast.com/web/i/"+root.options.imagesPreloading[i]);
+					}
+					root.handleTooltip(root.options.noApplyArr);
+				}
+			});
+			$(this.options.wordDomEl).live('mouseover',function(e){
+				var kkey = $(this).attr('vocw');
+				if(root.tt != null){
+					clearTimeout(root.tt);
+				}
+				root.tt = setTimeout(function(){root.showTooltip(e,kkey);}, root.options.showDelay);
+			});
+			$(this.options.wordDomEl).live('mouseout',function(e){
+				if(root.tt != null){
+					clearTimeout(root.tt);
+				}
+				root.tt = setTimeout(function(){root.hideTooltip();}, root.options.hideDelay);
+			});
+			$(this.options.tooltipDomEl).live('mouseover',function(e){
+				if(root.tt != null){
+					clearTimeout(root.tt);
+				}
+			});
+			$(this.options.tooltipDomEl).live('mouseout',function(e){
+				if(root.tt != null){
+					clearTimeout(root.tt);
+				}
+				root.tt = setTimeout(function(){root.hideTooltip();}, root.options.hideDelay);
+			});
+		},
+		parseXML: function( data ) { 
+		    var xml, tmp; 
+		    if ( !data || typeof data !== "string" ) { 
+			return null; 
+		    }
+		    try { 
+			if ( window.DOMParser ) { // Standard 
+			    tmp = new DOMParser(); 
+			    xml = tmp.parseFromString( data , "text/xml" ); 
+			} else { // IE 
+			    xml = new ActiveXObject( "Microsoft.XMLDOM" ); 
+			    xml.async = "false"; 
+			    xml.loadXML( data ); 
+			}
+		    } catch( e ) { 
+			    xml = undefined; 
+		    }
+
+		    if ( !xml || !xml.documentElement || xml.getElementsByTagName( "parsererror" ).length ) { 
+			jQuery.error( "Invalid XML: " + data ); 
+		    }
+		    return xml;
+		},
+		preloadImage:function(file){
+			var img = new Image();
+		    $(img)
+		        .load(function(){
+		        })
+		        .attr('src', file);
+		},
+		/**
+		 * Method for handling tooltip
+		 * @param array disable - array of DOM elements to disable tooltip integration 
+		 */
+		handleTooltip:function(disable){
+			var home = false;
+			var root = this;
+			if(disable === undefined) disable = "";
+			else{
+				var disStr = "";
+				for(var i = 0; i < disable.length; i++){
+					if(i!=disable.length-1) disStr += disable[i]+", "+disable[i]+" *,";
+					else disStr += disable[i]+", "+disable[i]+" *";
+				}
+			}
+			if($("#home").length > 0){
+				home = true;
+			}
+			$(root.xmlTooltip).find('i').each(function(){
+				searchTerm = $(this).attr('title');
+				searchRegex  = new RegExp("(^\|[ \n\r\t.,'\(\)\"\+!?-]+)("+searchTerm+")([ \n\r\t.,'\(\)\"\+!?-]+\|$)", "gi");
+				if(!home){
+					if(disStr != ""){
+						$("#content-holder *:not("+disable+")").replaceText( searchRegex, '$1<span class="tooltip-w" vocw="'+searchTerm+'" style="font-size:inherit !important; font-weight:inherit !important; color:inherit !important; cursor:help !important; padding:0 !important;	margin:0 !important; border-bottom:1px dotted #000 !important; display:inline !important;">$2</span>$3');
+					}else{
+						$("#content-holder *").replaceText( searchRegex, '$1<span class="tooltip-w" vocw="'+searchTerm+'" style="font-size:inherit !important; font-weight:inherit !important; color:inherit !important; cursor:help !important; padding:0 !important;	margin:0 !important; border-bottom:1px dotted #000 !important;">$2</span>$3');
+					}
+				}
+			});
+		},
+		/**
+		 * Method for showing tooltip
+		 * @param object e - object event that fired method
+		 * @param string kkey - key word 
+		 */
+		showTooltip:function(e,kkey){
+			var root = this;
+			var to = $(e.target);
+			var key = kkey;
+			
+			var cHolder = $(this.options.contentHolderDomEl);
+			var cTop = cHolder.offset().top;
+			var cLeft = cHolder.offset().left;
+			
+			var top = to.offset().top - cTop + to.outerHeight() + root.options.arrowHeight/2;
+			var left = to.offset().left - cLeft - root.options.leftDis;
+			$(this.options.tooltipDomEl).remove();
+			
+			var tDiv = this.options.tooltipWrapper;
+						
+			cHolder.append(tDiv);
+			
+			if($("#"+key).length > 0){
+				$(this.options.tooltipDomEl+" em").html($("#"+key).html());
+			}else{
+				$(this.options.tooltipDomEl+" em").html($(root.xmlTooltip).find("i[title='"+key+"']").text());
+			}
+			
+			$(this.options.tooltipDomEl)
+				.css({
+					'top':top+113+"px",
+					'left':left+"px"
+				})
+				.fadeIn(root.options.fadeInSpeed);
+		},
+		/**
+		 * Method for hiding tooltip
+		 */
+		hideTooltip:function(){
+			$(this.options.tooltipDomEl).hide();
+		}
+	};
+	
+	/**
+	 * Avast tabs class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	avast.tabs = avast.prototype = {
+		/**
+		 * @var string nId - DOM element that has connected tabs
+		 */
+		nId:null,
+		/**
+		 * Tabs default options
+		 * @var boolean animate - animate on change or not
+		 * @var string tabs - css selector of relative position of main list in tabs container
+		 */
+		options:{
+			animate: true,
+			tabs: "> div#tabs-navigation > ul > li"
+		},
+		/**
+		 * Initialization
+		 * @param string eId - DOM element where tabs are included
+		 * @param object params - parameters rewriting default options 
+		 */
+		init:function(eId,params){
+			this.nId = eId;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			$(this.nId).easytabs(this.options);
+		},
+		/**
+		 * Method for selecting specific tab
+		 * @param string sHref - id of the desired tab with perfix '#' e.g. '#tab3'
+		 */
+		select:function(sHref){
+			$(this.nId).easytabs('select',sHref);
+		}
+	};
+	
+	/**
+	 * Avast counter class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 */
+	avast.counter = avast.prototype = {
+		options:{
+			counterValueDomEl:".counter-value"
+		},
+		init:function(params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			if($(this.options.counterValueDomEl).length > 0 && $("#home").length == 0) 
+		    {
+		        $(this.options.counterValueDomEl).each(function(){
+		            root.setCounter($(this));
+		        });
+		    }
+		},
+		setCounter:function(el)
+		{   
+		    var campaign = el.attr('id');
+		    var parentID = campaign.substr(1);
+		    if(campaign != 'undefined'){
+		        $.ajax({
+		                type: "POST",
+		                url: RootPath + "countdown.php",
+		                cache: false,
+		                data:"campaign="+campaign,
+		                beforeSend: function(){
+		                },
+		                success: function(html){
+		                    if(html != "-1")el.html(html);
+		                    else $("#counter"+parentID).hide();
+		                },
+		                error:function(){
+		                    $("#counter"+parentID).hide();
+		                }
+		        });
+		    }
+		}
+	};
+	
+	/**
+	 * Avast seconds counter class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2012
+	 */
+	avast.secondsCounter = avast.prototype = {
+		startingSeconds:60,
+		actualSeconds:60,
+		timer:null,
+		closed:false,
+		options:{
+			counterValueDomEl:".counter-seconds-value",
+			onComplete:""
+		},
+		init:function(params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			if($(this.options.counterValueDomEl).length > 0){
+				var val = parseInt($(this.options.counterValueDomEl).html());
+				if(!isNaN(val)){
+					this.startingSeconds = val;
+					this.actualSeconds = val;
+				}
+				$(this.options.counterValueDomEl).html(this.actualSeconds);
+				this.timer = setInterval(function(){
+					root.processCount();
+				},1000);
+			}
+		},
+		processCount:function(){
+			this.actualSeconds--;
+			$(this.options.counterValueDomEl).html(this.actualSeconds);
+			if(this.actualSeconds <= 0) {
+				clearInterval(this.timer);
+				this.onComplete(this.options.onComplete);
+			}
+		},
+		onComplete:function(func){
+			func();
+		}
+	};
+	
+	/**
+	 * Avast graphic counter class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2012
+	 */
+	avast.graphicCounter = avast.prototype = {
+		startingSeconds:60,
+		secondsCounter:60,
+		cycles:0,
+		timer:null,
+		closed:false,
+		options:{
+			counterValueDomEl:".counter-seconds-value",
+			hideValueDomEl:true,
+			counterHeight:25,
+			counterImages:1200,
+			displayText:true,
+			textLeft: "77px",
+			textTop: "12px",
+			onComplete:""
+		},
+		init:function(params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			if($(this.options.counterValueDomEl).length > 0){
+				var val = parseInt($(this.options.counterValueDomEl).html());
+				if(!isNaN(val)){
+					this.startingSeconds = val;
+					this.secondsCounter = val;
+					//this.startingSeconds = 20;
+					//this.cycles = this.options.counterImages;
+				}
+				if(this.options.hideValueDomEl){
+				    $(this.options.counterValueDomEl).hide();
+				}
+				var speed = this.startingSeconds * 1000 / this.options.counterImages;
+				
+				$(this.options.counterValueDomEl).closest(".timer-small").html('<div class="graph">0/1200</div>');
+				
+				$.fn.peity.defaults.pie = {
+				    colours: ["#FFEDD5", "#FE9900"],
+				    delimeter: "/",
+				    diameter: 60
+				}
+				$("div.graph").peity("pie");
+				var pos = $("div.graph canvas").offset();
+				if(this.options.displayText){
+          $("div.graph").parent().append("<div class='graph-text' style='position:absolute; font-weight:bold; font-size:26px;'>"+this.startingSeconds+"</div>");
+  				$("div.graph-text").css({
+            'top':root.options.textTop,
+            'left':root.options.textLeft
+          });
+        }
+				this.timer = setInterval(function(){
+					root.processCount();
+				},speed);
+			}
+		},
+		processCount:function(){
+			this.cycles++;
+			$("div.graph").text(this.cycles+"/"+this.options.counterImages).change();
+			if(this.options.displayText && this.cycles%(Math.floor(this.options.counterImages/this.startingSeconds)) == 0){
+        this.secondsCounter;
+        if(this.secondsCounter > 0){
+          this.secondsCounter--;
+          var s = this.secondsCounter;
+          if(s < 10) s = "0"+s;
+          $("div.graph-text").html(s);
+        }
+      }
+			if(this.cycles >= this.options.counterImages) {
+				clearInterval(this.timer);
+				this.onComplete(this.options.onComplete);
+			}
+		},
+		reload:function(){
+       $("div.graph").peity("pie");
+    },
+		onComplete:function(func){
+			func();
+		}
+	};
+	
+	/**
+	 * Avast hadd manipulation class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2012
+	 */
+	avast.hadd = avast.prototype = {
+	    options:{
+		regexS:"[\\?&]hadd=([^&#]*)",
+		providers:["dr-store.avast.com","store.avast.com"]
+	    },
+	    init:function(params){
+		    var root = this;
+		    if(params !== undefined){
+			    for(var param in params){
+				    this.options[param] = params[param];
+			    }
+		    }
+		    
+		    var regex = new RegExp(this.options.regexS,"i");
+		    var results = regex.exec(window.location.href);
+		    
+		    if(results == null){
+			return 1;
+		    }
+		    else{
+			var href;
+			var providers = this.options.providers;
+			var param;
+			$("a").each(function(){
+			    href = $(this).attr('href');
+			    for(var i=0;i<providers.length;i++){
+				if(href.indexOf(providers[i]) != -1){
+				    if(i == 0){
+					    var regIDS = "[\\?&]PRODUCT([^&#=]*)";
+					    var regID = new RegExp(regIDS,"i");
+					    var ids = regID.exec(href);
+					    if(ids == null){}
+					    else{
+						    param = "HADD"+ids[1]+"[ADDITIONAL1]="+results[1];
+						    if(href.indexOf("?") == -1)
+							    href = href + "?" + param;
+						    else
+							    href = href + "&" + param;
+						    $(this).attr('href',href);
+					    }
+				    }
+				    else if(i == 1){
+					    var regIDS = "productID[\.]([^&#=\/]*)[\/]";
+					    var regID = new RegExp(regIDS,"i");
+					    var ids = regID.exec(href);
+					    if(ids == null){}
+					    else{
+						    param = "/HADD."+ids[1]+"/ADDITIONAL1."+results[1];
+						    href = href + param;
+						    $(this).attr('href',href);
+					    }
+				    }
+				}
+			    }
+			});
+		    }
+	    }
+	};
+	
+	//TODO - lightbox
+	
+	avast.numberFormat = avast.prototype = {
+		options:{
+			decimal:0
+		},
+		translate:function(number,decimal){
+			var root = this;
+			if(decimal !== undefined) this.options.decimal = decimal;
+			else this.options.decimal = 0;
+			if(!isNaN(number) && avast.numberDecimalSeparator !== undefined && avast.numberThousandSeparator !== undefined){
+				var ds = avast.numberDecimalSeparator;
+				var ts = avast.numberThousandSeparator;
+				if(ds && ds){
+					var val = $().number_format(
+						   number, 
+						   {
+							   numberOfDecimals:root.options.decimal, 
+							   decimalSeparator: ds,
+							   thousandSeparator: ts,
+							   symbol: ""
+						   });
+					return val;
+				}
+				else{
+					return number;
+				}
+			}
+			else{
+				return number;
+			}
+		}
+	};
+	
+	/**
+	 * Avast navigation class
+	 * @version 1.0
+	 * @author Milan Adam
+	 * @copyright Avast Software s.r.o &copy;2011
+	 * @comment ident structure - level_parentLevel_parentItemNumber
+	 */
+	avast.navigation = avast.prototype = {
+		defaultNav:null,
+		uniqueId:0,
+		objTemp:{},
+		pagefile:"",
+		defaultSubheader:null,
+		secondLevelTimer:null,
+		thirdLevelTimer:null,
+		overFirstLevel:false,
+		options:{
+			header:"#header",
+			headerNavDomEl:"#header ul",
+			subheader:"#subheader",
+			subheaderNavDomEl:"#subheader .AVsizer",
+			subnavheaderNavDomEl:"#subnav",
+			subnavheaderNavDomId:"subnav",
+			hideTimeout:200,
+			navContent:""
+		},
+		init:function(params){
+			var root = this;
+			if(params !== undefined){
+				for(var param in params){
+					this.options[param] = params[param];
+				}
+			}
+			
+			this.defaultNav = $(this.options.subheaderNavDomEl);
+			this.defaultSubheader = $(this.options.subheader + " ul").outerHTML();
+			
+			root.updateSecondLevelPosition($(root.options.headerNavDomEl + " li.active"),$(root.options.subheaderNavDomEl + " ul"));
+			var file = window.location.pathname;
+			var n = file.lastIndexOf('/');
+			if (n >= 0) {
+			    file = file.substring(n + 1);
+			}
+			
+			this.pagefile = file;
+			/*
+			$(this.options.headerNavDomEl + " li").live('mouseover',function(e){
+				if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				var par = $(this).attr("id");
+				var id = par.split("-")[1];
+				
+				var con = $("#temp-navigation ul.navparent-"+id).outerHTML();
+				if(con.indexOf('href="'+root.pagefile+'"') != -1) con = root.defaultSubheader
+				$(root.options.subheaderNavDomEl).css('visibility','hidden').html(con);
+				
+				root.updateSecondLevelPosition($(this),$(root.options.subheaderNavDomEl + " ul"));
+				$(root.options.subheaderNavDomEl).css('visibility','visible');
+				$(root.options.subnavheaderNavDomEl).hide();
+			});
+			
+			$(this.options.headerNavDomEl + " li").live('mouseleave',function(e){
+				if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				root.secondLevelTimer = setTimeout(function(){
+					root.hideSecondLevel();
+				},root.options.hideTimeout);
+				root.hideThirdLevel();
+			});
+			
+			$(this.options.subheader).live('mouseleave',function(e){
+				if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				root.secondLevelTimer = setTimeout(function(){
+					root.hideSecondLevel();
+				},root.options.hideTimeout);
+				if(root.thirdLevelTimer != null) clearTimeout(root.thirdLevelTimer);
+				root.thirdLevelTimer = setTimeout(function(){
+					root.hideThirdLevel();
+				},root.options.hideTimeout);
+			});
+			
+			$(this.options.subheader).live('mouseenter',function(e){
+				if(root.secondLevelTimer != null && $(root.options.subheader + " ul").length > 0) clearTimeout(root.secondLevelTimer);
+			});
+			*/
+			$(this.options.subheaderNavDomEl + " li").live('mouseenter',function(e){ 
+				$(root.options.subheaderNavDomEl).find("li").removeClass("hover");
+				//if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				if(root.thirdLevelTimer != null) clearTimeout(root.thirdLevelTimer);
+				root.hideThirdLevel();
+				var cObj = $(e.target);
+				
+				if($(root.options.subnavheaderNavDomEl).length < 1) {
+					if ($.browser.msie  && parseInt($.browser.version, 10) === 7) {
+						$("body").append("<div id='"+root.options.subnavheaderNavDomId+"' style='position:absolute;top:0;left:0'>" +
+											"<div id='subnav-content-container' style='width:100%; padding-bottom:15px;'>" +
+												"<div id='subnav-content' style='width:100%;'></div>" +
+											"</div>" +
+										"</div>");
+					}else{
+						$("body").append("<div id='"+root.options.subnavheaderNavDomId+"' style='position:absolute;top:0;left:0;overflow:hidden'>" +
+											"<div id='subnav-wrapper' style='position:absolute;left:0;top:0'>" +
+											"<div id='subnav-content-container'>" +
+												"<div id='subnav-content'></div>" +
+											"</div>" +
+											"<div class='subnav-footer'>" +
+												"<span class='subnav-footer-left'></span>" +
+												"<span class='subnav-footer-right'></span>" +
+											"</div>" +
+											"</div>" +
+										"</div>");
+					}
+					
+				}
+				if(e.target.nodeName == "SPAN"){
+					cObj = cObj.parent();
+				}
+				
+				var pos = cObj.offset();
+				var navHeight = $(root.options.subheader+" ul").height();
+				var navLiWidth = cObj.outerWidth();
+				
+				var par = $(this).attr("id");
+				var id = par.split("-")[1];
+				
+				if($("#baseMenuNavigation ul.navparent-"+id).length > 0) {
+					if ($.browser.msie  && parseInt($.browser.version, 10) === 7) {
+						$(root.options.subnavheaderNavDomEl + " #subnav-content").html($("#baseMenuNavigation ul.navparent-"+id).outerHTML());
+						$(root.options.subnavheaderNavDomEl + " #subnav-content ul.navparent-"+id+" li").css('width','100%');
+						if($(root.options.subnavheaderNavDomEl).outerWidth() < navLiWidth){
+							$(root.options.subnavheaderNavDomEl).css('width',navLiWidth);
+						}
+						
+						$(root.options.subnavheaderNavDomEl).css({'top':pos.top + navHeight,'left':pos.left}).show();
+					}
+					else{
+						$(root.options.subnavheaderNavDomEl).show().css('width','inherit');
+						$(root.options.subnavheaderNavDomEl + " #subnav-wrapper").css('width','inherit');
+						$(root.options.subnavheaderNavDomEl + " #subnav-content").html($("#baseMenuNavigation ul.navparent-"+id).outerHTML());
+						$(root.options.subnavheaderNavDomEl + " #subnav-wrapper").css({'top':'-9999px','left':'-9999px'}).show();
+						
+						var subnavWidth = $("#subnav-wrapper").outerWidth() + 10;
+						var subnavHeight = $("#subnav-wrapper").outerHeight();
+						var subnavMinPos = subnavHeight * -1; 
+	
+						$(root.options.subnavheaderNavDomEl).css({'top':pos.top + navHeight,'left':pos.left,'width':subnavWidth,'height':subnavHeight}).show();
+						if($(root.options.subnavheaderNavDomEl + " #subnav-wrapper").outerWidth() < navLiWidth){ 
+							$(root.options.subnavheaderNavDomEl+ " #subnav-wrapper").css('width',navLiWidth);
+							$(root.options.subnavheaderNavDomEl).css('width',navLiWidth);
+						}
+						$(root.options.subnavheaderNavDomEl + " #subnav-wrapper").stop().css({'top':subnavMinPos,'left':'0'}).show().animate({'top':0},350);
+					}
+				}
+				
+				else root.hideThirdLevel();
+			});
+			
+			$(this.options.subheaderNavDomEl + " li").live('mouseleave',function(e){
+				if(root.thirdLevelTimer != null) clearTimeout(root.thirdLevelTimer);
+				root.thirdLevelTimer = setTimeout(function(){
+					root.hideThirdLevel();
+				},root.options.hideTimeout);
+			});
+			
+			$(root.options.subnavheaderNavDomEl).live('mouseleave',function(e){
+				/*if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				root.secondLevelTimer = setTimeout(function(){
+					root.hideSecondLevel();
+				},root.options.hideTimeout);*/
+				if(root.thirdLevelTimer != null) clearTimeout(root.thirdLevelTimer);
+				root.thirdLevelTimer = setTimeout(function(){
+					root.hideThirdLevel();
+				},root.options.hideTimeout);
+			});
+			
+			$(root.options.subnavheaderNavDomEl).live('mouseenter',function(e){
+				if(root.thirdLevelTimer != null) clearTimeout(root.thirdLevelTimer);
+				//if(root.secondLevelTimer != null) clearTimeout(root.secondLevelTimer);
+				$(root.options.subheaderNavDomEl).find("li").removeClass("hover");
+				var cl = $(root.options.subnavheaderNavDomEl).find("ul").attr("class");
+				var id = cl.split("-")[1];
+				$(root.options.subheaderNavDomEl).find("li#navid-"+id).addClass("hover");
+			});
+			
+			//var xml = $.json2xml(this.options.navContent, {formatOutput: true});
+			/*var xml = this.options.navContent;
+			var xmlDoc;
+			if ($.browser.msie) {
+			   xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+			   xmlDoc.async = false;
+			   xmlDoc.loadXML(xml);
+			 } else {
+			   xmlDoc = xml;
+			 }
+			this.prepareObjectFromXML($(xmlDoc).children(),1);
+			this.closeMenuLists();
+			$("body").append("<div id='temp-navigation' style='display:none'></div>");
+			for(var l in this.objTemp){
+				$("body div#temp-navigation").append(root.objTemp[l].content);
+			}*/
+		},
+		prepareObjectFromXML:function(node, ulId){
+			var root = this;
+			//root.uniqueId++;
+			node.each(function(index,element){
+				if(element.nodeName != "TITLE" && element.nodeName != "title"){
+					var tTitle = ($(this).find('title').length > 0)?$(this).find('title').eq(0).text():"none";
+					var tUrl;
+					if($(this).attr("url") !== undefined){
+						var tempUrl = $(this).attr("url");
+						if(tempUrl.indexOf("http://") != -1 || tempUrl.indexOf("https://") != -1){
+							tUrl = tempUrl;
+						}else{
+							tUrl = avast.rootPath + tempUrl;
+						}
+					}else{
+						tUrl = "none";
+					}
+					var tId = ($(this).attr("id") !== undefined)?$(this).attr("id"):"none";
+					var tParentId = ($(this).attr("parentId") !== undefined && $(this).attr("parentId") != "")?$(this).attr("parentId"):"none";
+					var tLevel = ($(this).attr("level") !== undefined)?$(this).attr("level"):"none";
+					
+					if(root.objTemp[tParentId] === undefined){
+						root.objTemp[tParentId] = {};
+						//root.objTemp[tParentId].content = "<ul class='navlevel-"+tLevel+" navparent-"+tParentId+"'>";
+						root.objTemp[tParentId].content = "<ul class='navparent-"+tParentId+"'>";
+					}
+					var tClass = "";
+					if(index==1 && tLevel==2) tClass = " class='first'";
+					
+					root.objTemp[tParentId].content += "<li id='navid-"+tId+"' ><a href='"+tUrl+"'"+tClass+">"+tTitle+"</a></li>";
+					if($(this).children().size() > 1){
+						root.prepareObjectFromXML($(this).children(),ulId+1);
+					}
+				}
+			});
+		},
+		closeMenuLists:function(){
+			var root = this;
+			var menus = this.objTemp;
+			if(menus !== undefined){
+				for(var level in menus){
+					if (menus.hasOwnProperty(level)) {
+						menus[level].content += "</ul>";
+					}
+				}
+			}
+		},
+		updateSecondLevelPosition:function(firstLevelEl,secondLevelEl){
+			if(firstLevelEl.length > 0 && secondLevelEl.length > 0){
+				var topRight = firstLevelEl.offset().left + firstLevelEl.width();
+				var list = secondLevelEl;
+				if(list.length > 0){
+					var subLeft = list.offset().left;
+					var subRight = subLeft + list.width();
+					if(subRight < topRight){
+						var leftPos = topRight - subRight;
+						list.css("left",leftPos);
+					}
+				}
+			}
+		},
+		/*hideSecondLevel:function(){
+			$(this.options.subheaderNavDomEl).html(this.defaultSubheader);
+			this.updateSecondLevelPosition($(this.options.headerNavDomEl + " li.active"),$(this.options.subheaderNavDomEl + " ul"));
+		},*/
+		hideThirdLevel:function(){
+			var el = $(this.options.subnavheaderNavDomEl);
+			el.hide();
+			$(this.options.subheaderNavDomEl).find("li").removeClass("hover");
+		}
+	};
+	
+	
+	
+	$.fn.replaceText = function( search, replace, text_only ) {
+	    return this.each(function(){
+	      var node = this.firstChild,
+	        val,
+	        new_val,
+	        remove = [];
+	      if ( node ) {
+	    	do {
+	        	if ( node.nodeType === 3) {
+	            val = node.nodeValue;
+				new_val = val.replace( search, replace );
+	            
+				if ( new_val !== val ) {
+	              if ( !text_only && /</.test( new_val ) ) {
+	                $(node).before( new_val );
+	                remove.push( node );
+	              } else {
+	                node.nodeValue = new_val;
+	              }
+	            }
+	          }
+	        } while ( node = node.nextSibling );
+	      }
+	      remove.length && $(remove).remove();
+	    });
+	  };  
+	 
+	 jQuery.fn.removeHighlight = function() {
+		 return this.find("span.tooltip").each(function() {
+			  with (this.parentNode) {
+					replaceChild(this.firstChild, this);
+			  }
+		 }).end();
+	};
+	
+	$.fn.expandCollapse = function(el){
+		this.live('click',function(e){
+			e.preventDefault();
+			$(el).slideToggle();
+			return false;
+		}).css('cursor','pointer');
+	};
+	
+	$.fn.outerHTML = function(val){
+	    if(val){
+	        $(val).insertBefore(this);
+	        $(this).remove();
+	    }
+	    else{ return $("<div>").append($(this).clone()).html(); }
+	};
+}
+
+
+/*
+ * avastJS core plugin
+ * @ver 1.1
+ * @copyright: AVAST Software a.s.
+ * @author: Mirek Ratman
+ */
+if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
+	avast.core = avast.prototype = {
+
+		/* getMaxMin method
+		 * method will find the MAX and MIN value form given values 
+		 * 
+		 * @var el array of int
+		 * @result object
+		 */
+		getMaxMin : function( el ){
+			return {min:Math.min.apply( null, el ), max:Math.max.apply( null, el )};
+		},
+		
+
+		/* getRatio method
+		 * method will calculate ratio from given values 
+		 * 
+		 * @var v int
+		 * @var ref int
+		 * @var max int
+		 * @result int
+		 */
+		getRatio : function( v, ref, max ){
+			// do not use v === 0, max === 0, ref === 0 instead ... == 0 - is not working correctly in IE6!
+			if( v == 0 || v === undefined || v === '' || v === null || isNaN(v) ){
+				v = 0;
+			}
+			if( max == 0 || max === undefined || isNaN(max) ){
+				max = 100;
+			}
+			if( ref == 0 || ref === null || isNaN(ref) ){
+				ref = 1;
+			}
+
+			return v * ref/max;
+		},
+
+		/* attachEl method
+		 * method will attach destination element (elId) to source element (sElId) - set the position of destination el close to source el
+		 * 
+		 * @var sElId string - source element ID
+		 * @var elId string - destination element ID
+		 * @var p string - params;
+		 *		$xPos string - left/right position of attached element
+		 *		$yPos string - top/bottom position of attached element
+		 *		$xFix int - X value fix
+		 *		$yFix int - Y value fix
+		 */
+		attachEl : function( sElId, elId, p ){
+			if( p.xPos === undefined ){
+				p.xPos = 'center';
+			}
+			if( p.yPos === undefined ){
+				p.yPos = 'center';
+			}
+			if( p.xFix === undefined ){
+				p.xFix = 0;
+			}
+			if( p.yFix === undefined ){
+				p.yFix = 0;
+			}
+
+			var sPos = sElId.position();
+			if( $(elId).css('position') == 'absolute' ){
+				sPos = sElId.offset();
+			}
+			var sPosFixed = sElId.offset();
+
+			//center possition
+			var cTop = sPos.top + Math.floor( $(sElId).outerHeight() / 2 );
+			var cLeft = sPos.left + Math.floor( $(sElId).outerWidth() / 2 );
+
+			var leftPos = cLeft;
+			switch( p.xPos ){
+				case 'left':
+					leftPos = sPos.left;
+				break;
+				case 'right':
+					leftPos = sPos.left + $(sElId).outerWidth();
+				break;
+				case 'center':
+					letfPos = sPos.left + Math.floor( $(sElId).outerHeight() / 2 );
+				break;
+			}
+
+			var topPos = cTop;
+			switch( p.yPos ){
+				case 'top':
+					topPos = sPos.top - $(elId).outerHeight() - $(sElId).outerHeight();
+				break;
+				case 'bottom':
+					topPos = sPos.top + $(sElId).outerHeight();
+				break;
+				case 'center':
+					topPos = sPos.top + $(elId).outerHeight() + Math.floor( $(sElId).outerHeight() / 2 );
+				break;
+			}
+
+			//fix for window size
+			topPos = ( $(window).scrollTop() + $(elId).outerHeight() >  $('body').height() ? topPos + $(elId).outerHeight() + sElId.height() - p.yFix : topPos + p.yFix );
+			leftPos = ( sPosFixed.left + $(elId).outerWidth() >  $('body').width() ? leftPos - $(elId).outerWidth() + sElId.width() : leftPos );
+
+			$(elId)
+				.css( 'top', topPos + p.yFix )
+				.css( 'left', leftPos + p.xFix );
+				
+		},
+
+		/* sortDropDownListByText method
+		 * method will sort dropdown list by text taken from <option> elements
+		 * 
+		 * @var elId string - source dropdown selectbox element ID
+		 * @var order string - order (asc/desc)
+		 * @var excludeFirst boolean - include/exclude first element in sorting procedure (usefull when we have first <option>-- select --</option>
+		 */
+		sortDropDownListByText : function( elId, order, excludeFirst ) {
+			var pDesc = 1;
+			var pAsc = -1;
+			var opt = null;
+
+			if( excludeFirst === undefined ){
+				excludeFirst = false;
+			}
+
+			if( order === undefined || order == 'asc' ){
+				pDesc = -1;
+				pAsc = 1;
+			}
+
+			if( excludeFirst === true ){
+				var dOpt = $( elId + ' option:first');
+				opt = $( elId + ' option:not(:first)').sort( function(a,b){
+				   return a.text == b.text ? 0 : a.text < b.text ? pDesc : pAsc;
+				});
+				$( elId ).html( opt ).prepend( dOpt );
+			}
+			else{
+				opt = $( elId + ' option').sort( function(a,b){
+				   return a.text == b.text ? 0 : a.text < b.text ? pDesc : pAsc;
+				});
+				$( elId ).html( opt );
+			}
+		},
+
+		/* showEffect method
+		 * Method will create custom effect for display/hide action
+		 * 
+		 * @var el string - id of element to be animated
+		 * @var effect string - name of effect
+		 * @var type string - effect will be processed on START or END 
+		 * @var remove boolean - remove element if TRUE
+		 */
+		showEffect : function( el, effect, type, remove ){
+			if( el === undefined ){
+				return false;
+			}
+			if( type === undefined ){
+				type = 'show';
+			}
+			if( type === undefined ){
+				type = 'start';
+			}
+
+			switch( effect ){
+				case 'fade':
+					( type == 'start' ? $(el).fadeIn() : $(el).fadeOut() );
+				break;
+				case 'show':
+					( type == 'start' ? $(el).show() : $(el).hide() );
+				break;
+				case 'slide':
+					( type == 'start' ? $(el).slideDown() : $(el).slideUp() );
+				break;
+				default:
+					( type == 'start' ? $(el).show() : $(el).hide() );
+				break;
+			}
+			if( remove !== undefined ){
+				$(el).remove();
+			}
+		}
+
+	};
+}
+
+
+
+ /*
+ * avastJS sharebox plugin
+ * @ver 1.0
+ * @copyright: AVAST Software a.s.
+ * @author: Mirek Ratman
+ */
+if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
+	avast.sharebox = avast.prototype = {
+
+		conf : {
+			delay : 2000,
+			title : '',
+			alias : '',
+			msg : '',
+			img : '',
+			ref : document.location.href
+		},
+
+		/* add method
+		 * Method will add and display sharebox for partidular source element (sElId)
+		 * 
+		 * @var sElId string - id of source element that was clicked or hoovered
+		 * @var elId string - id of destination box
+		 * @var params array - array of parameters
+		 *			- $title string - text for title
+		 *			- $msg string - text for message
+		 *			- $alias string - alias url
+		 *			- $img string - image
+		 *			- $ref string - referer url
+		 *			- $delay int - delay after destination tag will be hidden
+		 *			- $toRemove array - array of tags to remove from destination tag
+		 *			- $effect string - fade, show, slide
+		 *			- $xPos int - left/right position of sharebox
+		 *			- $yPos int - top/bottom position of sharebox
+		 */
+		add : function( sElId, elId, params ){
+			if( params.delay !== undefined ){
+				avast.sharebox.conf.delay = params.delay;
+			}
+			if( params.toRemove !== undefined ){
+				$(params.toRemove).each( function(i,v){
+					$(elId).find(v).remove();
+				});
+			}
+
+			var overTimer = null;
+
+			$(elId)
+				.find( 'a:not(.bntClose)' )
+				.each( function(){
+					var v = $(this).attr( 'href' );
+
+					$(this)
+						.attr( 'href', function(){
+							return v.replace( /\b__title__\b/gi, ( params.title !== undefined ? params.title : avast.sharebox.conf.title ) )
+								.replace( /\b__msg__\b/gi, ( params.msg !== undefined ? params.msg : avast.sharebox.conf.msg ) )
+								.replace( /\b__alias__\b/gi, ( params.alias !== undefined ? params.alias : avast.sharebox.conf.alias ) )
+								.replace( /\b__img__\b/gi, ( params.img !== undefined ? params.img : avast.sharebox.conf.img ) )
+								.replace( /\b__ref__\b/gi, ( params.ref !== undefined ? params.ref : avast.sharebox.conf.ref ) );
+						});
+				});
+			$(elId)
+				.find('a#btnCloseShare')
+				.bind( 'click', function(e){
+					avast.core.showEffect(elId,params.effect,'end');
+					clearTimeout(overTimer);
+					e.preventDefault();
+				});
+			$(elId)
+				.find('a.print')
+				.bind( 'click', function(e){
+					$(elId).hide('fast', function(){
+						window.print();
+					});
+					e.preventDefault();
+				});
+			$(sElId)
+				.bind( 'mouseout', function(){
+					overTimer = setTimeout( function(){
+							avast.core.showEffect(elId,params.effect,'end');
+						}, avast.sharebox.conf.delay ); 
+				})
+				.bind( 'mouseover', function(){
+					clearTimeout(overTimer);
+				});
+			$(elId)
+				.bind( 'mouseout', function(){
+					overTimer = setTimeout( function(){
+							avast.core.showEffect(elId,params.effect,'end');
+						}, avast.sharebox.conf.delay ); 
+				})
+				.bind( 'mouseover', function(){
+					clearTimeout(overTimer);
+				});
+			avast.core.attachEl(sElId, elId, { xPos : params.xPos, yPos : params.yPos, xFix : params.xFix, yFix : params.yFix} );
+			avast.core.showEffect(elId,params.effect,'start');
+		}
+	};
+}

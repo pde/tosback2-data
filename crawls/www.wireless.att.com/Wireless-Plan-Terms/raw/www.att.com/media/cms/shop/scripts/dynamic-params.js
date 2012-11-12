@@ -83,7 +83,7 @@ function setDynamicParams(profileData) {
 		
 	}
 
-	if (addressId == '') {
+	if (typeof addressId == "undefined") {
 		addressId = addressCookieValue;
 	} 
 	if (json.homePhoneNumber) {

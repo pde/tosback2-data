@@ -31,6 +31,7 @@ dojo.addOnLoad(function () {
     { id: '20OFF',      type: 'coupon', name: 'twentyoff' },
     { id: 'BDAY',       type: 'coupon' },
     { id: 'FAMILY',     type: 'coupon' },
+    { id: 'FAM',        type: 'coupon' },
     { id: 'FFM',        type: 'coupon' },
     { id: 'FREEFSD',    type: 'coupon' },
     { id: 'GIFTS',      type: 'coupon' },

@@ -94,7 +94,7 @@ if(PGUtil.hasFlash) {
 */
 $(document).ready(function() {
 	// added 2012/11/02 by rsmith@vsapartners.com
-	$('.heritage #sidebar-content').append('<div><div class="active-box"><h2 class="nav-header" style="cursor:default;">175th Anniversary</h2><ul class="tertiary-navigation"><li><a href="http://news.pg.com/blog/heritage/birth-icon-tide">Birth of an Icon: TIDE</a></li><li><a href="http://news.pg.com/blog/175th-anniversary/partners-show-creativity-commemorating-our-175th-anniversary">Commemorating Our 175th</a></li><li><a href="http://news.pg.com/blog/heritage/dear-son-william">Dear Son William</a></li></ul></div></div>');
+	//$('.heritage #sidebar-content').append('<div><div class="active-box"><h2 class="nav-header" style="cursor:default;">175th Anniversary</h2><ul class="tertiary-navigation"><li><a href="http://news.pg.com/blog/heritage/birth-icon-tide">Birth of an Icon: TIDE</a></li><li><a href="http://news.pg.com/blog/175th-anniversary/partners-show-creativity-commemorating-our-175th-anniversary">Commemorating Our 175th</a></li><li><a href="http://news.pg.com/blog/heritage/dear-son-william">Dear Son William</a></li></ul></div></div>');
 
 	/*
 	 * FIX VIDEO TRACKING FOR IE

@@ -4651,6 +4651,53 @@ $.support.transition = (function(){
   })();
   $.TNF.BRAND.startupManager.registerController(Ustream);
 }).call(this);
+(function() {
+  var AutoProductSwapper;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  AutoProductSwapper = (function() {
+    AutoProductSwapper.selector = '#auto-product-swapper';
+    AutoProductSwapper.bootstrap = function(element) {
+      return new AutoProductSwapper(element);
+    };
+    function AutoProductSwapper(element) {
+      this.element = element;
+      this.rotate = __bind(this.rotate, this);
+      this.index = 0;
+      this.setupElements();
+      this.bindEvents();
+      this.autoRotate();
+    }
+    AutoProductSwapper.prototype.setupElements = function() {
+      this.pack = this.element.find('#pack');
+      this.vest = this.element.find('#vest');
+      return this.products = [this.pack, this.vest];
+    };
+    AutoProductSwapper.prototype.bindEvents = function() {
+      this.element.bind('mouseenter', this.pauseAutoRotation);
+      return this.element.bind('mouseleave', this.resumeAutoRotation);
+    };
+    AutoProductSwapper.prototype.autoRotate = function() {
+      return this.rotationInterval = setInterval(this.rotate, 5000);
+    };
+    AutoProductSwapper.prototype.rotate = function() {
+      if (this.paused) {
+        return;
+      }
+      return this.products[this.index].fadeOut(__bind(function() {
+        this.index = this.index === 0 ? 1 : 0;
+        return this.products[this.index].fadeIn();
+      }, this));
+    };
+    AutoProductSwapper.prototype.pauseAutoRotation = function() {
+      return this.paused = true;
+    };
+    AutoProductSwapper.prototype.resumeAutoRotation = function() {
+      return this.paused = false;
+    };
+    return AutoProductSwapper;
+  })();
+  $.TNF.BRAND.startupManager.registerController(AutoProductSwapper);
+}).call(this);
 (function($) {
   $(function() {
     $.interface.initialize();

@@ -1,0 +1,137 @@
+$(function() {
+    function track_link(link, async) {
+        // Omniture blocks, so do it after any user facing javascript happens
+        var run = function() {
+            try {
+                var s = s_gi(s_account);
+                s.events = "event1";
+                s.tl(true, 'o',  link);
+            } catch(e) {
+                // Too bad, no tracking
+                if(window.console && window.console.log) {
+                    console.log('Omniture Error ' + e);
+                }
+            }
+        }
+        if(async) {
+            window.setTimeout(run, 10);
+        } else {
+            run();
+        }
+    }
+
+    /*
+    Parser
+
+    Commands: 
+        @property -> element[@property]
+        t -> text of element
+        e'expression' -> Evaluates "expression", `this` bound to element
+        l.prop -> window.location[prop]
+        $ -> Element position
+        $(filter) -> Element position of parent filter
+        'Raw' -> "Raw"
+    */
+
+    var parse = (function() {
+        var rx = /(@)([^,]+)|(e|r)'([^']+)'|(l|w).([\w]+)|(\$|t)([^,]*)/;
+        return function(raw) {
+            var commands = [];
+            while(true) {
+                var pieces = rx.exec(raw);
+                if(pieces === null) return commands;
+                for(var i = 1; i < pieces.length; i += 2) {
+                    if(pieces[i]) {
+                        commands.push([pieces[i], pieces[i+1]]);
+                        break;
+                    }
+                }
+                raw = raw.substr(pieces[0].length + 1);
+            }
+        }
+    })();
+
+    function evaluate_cmd(elem, command, argument) {
+        switch(command) {
+            case "@":
+                return $(elem).attr(argument);
+
+            case "t":
+                if(argument) {
+                    return $(argument).text()
+                }
+                return $(elem).text();
+
+            case "e":
+                return (function(argument) {
+                    return eval(argument);
+                }).call(this, argument);
+                break;
+
+            case "l":
+                return window.location[argument];
+
+            case "$":
+                var $e = $(elem);
+                if(argument) {
+                    $e = $e.parents(argument);
+                }
+                return $e.index();
+
+            case "r":
+                return argument;
+
+            default:
+                if(window['console'] !== undefined && window.console.log) {
+                    console.log("Invalid command `"+command+"`.");
+                } 
+                return "";
+        }
+    }
+
+    function find_next_omni_click(elem) {
+        var expr;
+        // Trace through and find the element
+        while(elem.tagName !== "HTML") {
+            expr = $(elem).attr('data-omni-click');
+            if(expr !== undefined) break;
+            elem = elem.parentNode;
+        }
+
+        // Are we inheriting?
+        if(/^inherit/.test(expr)) {
+            // Do we have a reference?
+            var search_elem = elem.parentNode;
+            var selector = /inherit:(.*)/.exec(expr);
+            if( selector != null) {
+                // Grab the element from the selector
+                var $s= $(selector);
+                search_elem = $s.length === 0 ? document.body : $s[0];
+            } 
+            expr = find_next_omni_click(search_elem).expr;
+        }
+        return {elem: elem, expr: expr};
+    }
+
+    // On body click, check to see if we need to track links
+    $(document.body).click(function(e) {
+        var r = find_next_omni_click(e.target);
+        var elem = r.elem,
+            expr = r.expr;
+
+        if(expr === undefined || elem.tagName !== 'A') return;
+
+        // Parse the commands from the data string
+        var commands = parse(expr);
+
+        // Evaluate the commands
+        var response = [];
+        for(var i = 0; i < commands.length; i++) {
+            var c = commands[i][0],
+                arg = commands[i][1];
+            response.push( evaluate_cmd.apply(e.target, [elem, c, arg]) );
+        }
+        var r = response.join('`');
+        track_link(r, false);
+    });
+});

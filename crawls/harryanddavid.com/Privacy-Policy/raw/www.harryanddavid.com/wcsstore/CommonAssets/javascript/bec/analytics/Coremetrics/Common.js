@@ -15,38 +15,77 @@ dojo.declare("bec.analytics.Coremetrics.Common", null,
 			var categoryName = category;
 			var type = "standard";
 			
-			if(typeof virtual_cat !== "undefined" && virtual_cat !== null) {
+			/**
+			 * Did we find a virtual_cat JS var on the page with a valid value?
+			 */
+			if(typeof virtual_cat !== "undefined" && virtual_cat !== null) 
+			{
 				if(virtual_cat != '')
 					scope.updateCookie('virtCatCM', virtual_cat);
 			}
 			
-			//Determine if virtual category passed on URL string		
+			/**
+			 * Determine if virtual category passed on URL string.
+			 * Override virtual_cat JS var is URL param is found.
+			 */ 
 			var urlParamsArr = location.search.substring(1).split('&');	
 			for(var i = 0; i < urlParamsArr.length; i++)
-			{ 	var pos = urlParamsArr[i].indexOf('urlVirtualCat');
-				if (pos == -1) continue;
-				var vcValue = urlParamsArr[i].substr(urlParamsArr[i].indexOf('=')+1);
-					if(vcValue != "") scope.updateCookie('virtCatCM', vcValue);
+			{ 	
+				// Check for presence of "baseProductId" to handle Product Page Up-Sell navigation.
+				// Clear virtual cat if baseProductId URL param is found.
+				var baseProductIdpos = urlParamsArr[i].indexOf('baseProductId');
+				if (baseProductIdpos != -1) {
+					scope.expireCookie("virtCatCM");
+					continue;
+				}
+				
+				// Check for virtual category value on URL
+				var pos = urlParamsArr[i].indexOf('urlVirtualCat');
+				if (pos == -1) // Not Found, move on.
+				{
+					continue;
+				}
+				else // Virtual Cat found
+				{
+					var vcValue = urlParamsArr[i].substr(urlParamsArr[i].indexOf('=')+1);
+					if(vcValue != "")
+					{ 
+						scope.updateCookie('virtCatCM', vcValue);
+					}
+				}
 			}
 			
-			//Determine if sliSearch value passed on URL string
+			/**
+			 * Determine if sliSearch value passed on URL string
+			 */
 			for(var i = 0; i < urlParamsArr.length; i++)
 			{ 	var pos = urlParamsArr[i].indexOf('sliSearch');
 				if (pos != -1)
 					cmSearch = urlParamsArr[i].substr(urlParamsArr[i].indexOf('=')+1);	
 			}
-		
+			
+			/**
+			 * Should we clear the Virtual Category?
+			 */
 			if(clear_virtual_cat)
 			{
 				scope.expireCookie("virtCatCM");
 				console.debug("Coremetrics: Generate Category - virtual category cleared");
 			}
+			
+			/**
+			 * Does a Virtual Category cookie exist?
+			 * 	If so, set categoryName to cookie value.
+			 */
 			else if(scope.readCookie('virtCatCM'))
 			{
 				categoryName = scope.readCookie('virtCatCM');
 				type = "virtual";
 			}
-		
+			
+			/**
+			 * No Category name set, do we have a cm_merch_cat var (Category page)?
+			 */
 			if((categoryName == "") || (categoryName == null))
 			{
 				if(typeof cm_merch_cat != "undefined") {
@@ -55,6 +94,9 @@ dojo.declare("bec.analytics.Coremetrics.Common", null,
 				}
 			}
 			
+			/**
+			 * Did we ever find a category name?
+			 */
 			if(categoryName != "")
 			{
 				cmCategory = scope.appendESiteID(categoryName);

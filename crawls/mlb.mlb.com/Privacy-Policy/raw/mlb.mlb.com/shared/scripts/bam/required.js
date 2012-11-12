@@ -219,7 +219,7 @@ if (!window.bam) {
 				//If current version listed in manifest is greater than the version used
 				if (manifestEntry) {
 					if (manifestEntry.atbat + '' > version) {
-						window.console && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
+						window.console && console.warn && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
 						bam.trackDeprecated({
 							module: module,
 							version: version,
@@ -227,7 +227,7 @@ if (!window.bam) {
 						});
 						//Else, check if a possible upgrade version is available
 					} else if ((onDeck in manifestEntry) && version < manifestEntry.ondeck + '') {
-						window.console && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
+						window.console && console.warn && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
 					}
 				}
 				version = IS_NUMERIC.test(version) ? parseFloat(version) : version;

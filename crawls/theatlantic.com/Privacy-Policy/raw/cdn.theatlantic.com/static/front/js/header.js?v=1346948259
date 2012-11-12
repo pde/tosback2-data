@@ -1,0 +1,33 @@
+$(function() {
+    // Wire up nav-channels on hover, on ie
+    if($.browser.msie && $.browser.msie.version < 9) {
+        $lis.hover(function hoverIn() {
+            $(this).addClass('hovered');
+        },
+        function hoverOut() {
+            $(this).removeClass('hovered');
+        });
+    }
+
+    // The search bar should wait a beat before hiding again.
+    $('#nav-social .search-icon').each(function() {
+        var tid = null;
+        $(this).hover(function hoverIn() {
+            if(tid !== null) {
+                window.clearTimeout(tid);
+                tid = null;
+            }
+            $(this).addClass('hovered');
+        },
+        function hoverOut() {
+            if(tid === null) {
+                var obj = this;
+                tid = window.setTimeout(function() {
+                    $(obj).removeClass('hovered');
+                    obj = null; // For the love of IE!
+                }, 500);
+            }
+        });
+    });
+});
+

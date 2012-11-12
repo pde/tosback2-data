@@ -29,7 +29,7 @@
     <link href="../css/ext-all.css" type= "text/css" rel="stylesheet">
     <link href="../css/xtheme-gray.css" type= "text/css" rel="stylesheet">
     <link href="../css/global.css" type= "text/css" rel="stylesheet">
-    <link href="../css/privacy.css%3F1349388586.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../css/privacy.css%3F1352420388.css" media="screen" rel="stylesheet" type="text/css" />
     
     <link rel="stylesheet" media="all and (max-device-width: 480px)" href="../css/global-iphone.css"> 
     <link rel="stylesheet" media="all and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait)" href="../css/global-ipad-portrait.css"> 
@@ -41,9 +41,9 @@
     <!-- Default CSS -->
     <!-- IE -->
     <!--[if IE]>
-        <link href="/css/global-ie.css?1349388586" media="screen" rel="stylesheet" type="text/css" />
+        <link href="/css/global-ie.css?1352420385" media="screen" rel="stylesheet" type="text/css" />
         <link href="/css/privacy-ie.css" media="screen" rel="stylesheet" type="text/css" />
-        <script src="/js/global.js?1349388601" type="text/javascript"></script>
+        <script src="/js/global.js?1352420391" type="text/javascript"></script>
         <script src="/js/lib/excanvas.js?1349388601" type="text/javascript"></script>
     <![endif]-->
     <!-- IE 7 Specific -->
@@ -60,14 +60,26 @@
     <script>var SM2_DEFER = true;</script>
     <script src="../js/lib/adapter/ext/ext-base.js%3F1349388601" type="text/javascript"></script>
     <script src="../js/lib/ext-all.js%3F1349388601" type="text/javascript"></script>
-    <script src="../js/global.js%3F1349388601" type="text/javascript"></script>
-    <script src="http://www.warnerbros.com/js/privacy.js" type="text/javascript"></script>
+    <script src="../js/global.js%3F1352420391" type="text/javascript"></script>
+    <script src="../js/privacy.js%3F1352420393" type="text/javascript"></script>
     <script src="../../ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js" type="text/javascript"></script>
     <script src="../../www.kaltura.com/p/357521/sp/35752100/embedIframeJs/uiconf_id/2858382/partner_id/357521" type="text/javascript"></script>
-      <script type="text/javascript">Ext.onReady(initGlobal, this, {single: true});</script>
       <link href="../css/privacyprint.css" type= "text/css" rel="stylesheet" media="print">
+    <script type="text/javascript">
+      Ext.onReady(init, this, {single: true});
+
+      window.onload = checkAllImages;
+
+      //Ready callback for Kaltura player
+      function jsCallbackReady() {
+          try {
+              document.getElementById('videoPlayerSwf').addJsListener("playerPlayEnd", "changeMedia");
+          } catch(e) {}
+      }
+    </script>
+    
     <meta name="csrf-param" content="authenticity_token"/>
-<meta name="csrf-token" content="pgCO1Tq8xjJZ7AHJeBArW1jcs1jxX6/rDpynqZtp9bw="/>
+<meta name="csrf-token" content="gL6SKKBFT4SVbHMTqEyvkOHXJPb7qIvyvVXYd3CugMo="/>
 
     <!-- Google Analytics -->
 <script type="text/javascript">

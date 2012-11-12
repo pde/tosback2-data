@@ -85,12 +85,18 @@ BI.OAS = (function(w,undefined) {
 				url = url.replace(/-/g,'/');
 				OAS_sitepage += '/'+url;
 			}
+
+            // todo post is a BAD name its really pagetype since we use it below for targeting
 			if (typeof post != 'undefined' && post === 'story') {
 				post = 'post';
 			} 
-            // if url is bi.com/category/BLAH then make it /category BI-496
+
+            // custom targeting rules for specific page types:
+            // if url is bi.com/category/BLAH then make the page type /category BI-496
             if (window.location.pathname.substring(0, 9) == '/category'){
 				post = 'category';
+            } else if (window.location.pathname.substring(0, 21) == "/trending_on_linkedin"){
+				post = 'linkedin';
             }
         
             switch (typeof post){

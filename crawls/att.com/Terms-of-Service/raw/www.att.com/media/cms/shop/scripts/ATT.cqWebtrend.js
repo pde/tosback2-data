@@ -114,7 +114,7 @@ ATT.cqWebtrend = new function ($, doc) {
                 	 clickid = clickid ? clickid + '~~'+loc : '';
                  }
                 
-                wtargs = ['DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip()];
+                wtargs = ['DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip(), 'DCSext.wtCustType', 'Consumer'];
                 
 				// if the anchor is given a data-linkName then the wtLinkLoc and wtLinkName are added to the wtargs for the click event.
 				if($target.data('linkName')) {
@@ -129,6 +129,11 @@ ATT.cqWebtrend = new function ($, doc) {
 				} else {
 					wtargs.push('DCSext.wtCQClickId');
 					wtargs.push(clickid);
+				}
+				
+				if($target.data('dcsuri')) { 
+					wtargs.push('DCS.dcsuri');
+					wtargs.push($target.data('dcsuri'));
 				}
 				
                 if(clickid || $target.data('linkName')){

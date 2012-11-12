@@ -91,7 +91,7 @@ function createExperience(config, flashVersion) {
          configItems+
          "&externalAds="+escapeValue(externalAds)+
          "&sendReports="+escapeValue(sendReports)+
-         "&buildNumber=" + 169 +
+         "&buildNumber=" + 173 +
          "&ranNum=" + Math.floor(Math.random()*1000000);   
 
     if (!DetectFlashVer(8,0,0)) {

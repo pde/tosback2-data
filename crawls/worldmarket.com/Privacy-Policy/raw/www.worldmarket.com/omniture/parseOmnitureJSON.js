@@ -97,9 +97,9 @@
                                     aEventKeyValues[aEventKeyValues.length] = subKey +"="+oOmnitureJSON["events"][subKey];
                                 }
                             }
-
+							//Reverted back the changes for WOMA-1366
                             // add the gathered events (joined by a "|") to the aProds array
-                            /*if (aEventKeyValues.length > 0) aProds[aProds.length] = ";;;;" + aEventKeyValues.join("|")*/
+                            if (aEventKeyValues.length > 0) aProds[aProds.length] = ";;;;" + aEventKeyValues.join("|")
 
                             // build the final string by joining the aProds array with a ","
                             sKeyVal += '"'+ escapeChars(aProds.join(",")) +'"';
@@ -118,18 +118,19 @@
 
                             // loop through the event object's properties, adding the key names to the aEventKeys array
 							//special case for order confirmation page -WOMA-917
-							if(oOmnitureJSON["purchaseID"]!=null){
+							//Reverted back the changes for WOMA-1366
+							/*if(oOmnitureJSON["purchaseID"]!=null){
 								for(subKey in oSubObject) {									
 									if(oOmnitureJSON["events"][subKey]!=null && oOmnitureJSON["events"][subKey].length > 0)
 									aEventKeys[aEventKeys.length] = subKey +"="+oOmnitureJSON["events"][subKey];
 									else
 									aEventKeys[aEventKeys.length] = subKey
 								}
-							}else{
+							}else{*/
 								for(subKey in oSubObject) {									
 									aEventKeys[aEventKeys.length] = subKey
 								}
-							}
+							//}
 
                             // build the final string by joining the aEventKeys array with a ","
                             sKeyVal += '"'+ aEventKeys.join(",") +'"';

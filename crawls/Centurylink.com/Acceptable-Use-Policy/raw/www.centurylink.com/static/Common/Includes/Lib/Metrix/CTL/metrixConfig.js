@@ -81,24 +81,12 @@ function genFloodlight_onClick(srcStr) {
 		var setU6 = "GLOBAL";
 	}
 
-/*
-	This DART tag is removed to mitigate a mixed security warning IN IE 9.
-	This mixed security warning was causing multiple usability issues throughout centurylink.com,
-	Including several serious issues on www.centurylink.com/prismtv
-
-	//Start of Rosetta DoubleClick Floodlight Tag: Please do not remove
-	//Activity name of this tag: Global Footer Tag
-	//URL of the webpage where the tag is expected to be placed: http://www.centurylink.com/
-	//This tag must be placed between the <body> and </body> tags, as close as possible to the opening tag.
-	//Creation Date: 12/16/2010
-	var axel = Math.random() + "";
-	var a = axel * 10000000000000;
-	document.write('<iframe src="https://fls.doubleclick.net/activityi;src=2833013;type=shared;cat=globa539;u7='+currDateStr+';u5='+currPage+';u6='+setU6+';u2=Page;ord=' + a + '?" width="1" height="1" frameborder="0"></iframe>');
-
- */
 
 /*** Omniture SiteCatalyst ***/
 document.write('<script type="text/javascript" src="/static/Common/Includes/Lib/Metrix/CTL/s_code.js"></'+'script>');
+
+/*** Ignition One tracking code for paid search marketing campaigns ***/
+document.write('<script type="text/javascript" src="/static/Common/Includes/Lib/Metrix/CTL/ignitionOne.js"></'+'script>');
 
 /*** iCROSSING i2a global tracking code ***/
 document.write('<script type="text/javascript" src="/static/Common/Includes/Lib/Metrix/CTL/i2a.js"></'+'script>');

@@ -90,6 +90,11 @@
 		ATT.cqWebtrend.wtRTIOther(); 
     }); 
 </script> 
+		<!-- OPTIMOST ATTRIBUTE CODE --> 
+		<script language="javascript1.1" type="text/javascript"> 
+			var opPage = "/shop/wireless/devices/cellphones.html"; 
+		</script> 
+		<script type="text/javascript" src="../../../media/cms/shop/scripts/optimost/optimostCode.min.js"></script> 
 </head> 
 <body id="top"> 
 	<!-- cqlibs.jsp- file require to add include for targeted content. --> 
@@ -511,7 +516,7 @@
 	<div id="underNav"> 
 <div id="undernav-right"> 
     <div id="mini-cart-link-container"> 
-        <a id="minicart-link" href="cellphones.html#" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">My Wireless Cart  
+        <a id="minicart-link" href="cellphones.html#" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">My Wireless Cart  
             <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt=""/> 
             <span id="minicart-count"></span> 
         </a><br/> 
@@ -531,6 +536,7 @@
 		var wirelessDeviceFilterCount = 0; 
 		ATT.listPage.pageName('DevicesCellphone'); 
 		function fixToggle() { 
+			return; 
 			var activeGridViewVal = jQuery("#viewGridIconSelected:visible").length + jQuery("#viewLineIconDeselected:visible").length; 
 			var activeListViewVal = jQuery("#viewLineIconSelected:visible").length + jQuery("#viewGridIconDeselected:visible").length; 
 			var includeView = 'deviceListGridView'; 
@@ -546,13 +552,11 @@
 		function toggleToDeviceLine(clickFlag) { 
 			//ATT.modalSpinner.show(); 
 			jQuery.when(ATT.globalVars.cartPromise).done(function(){ 
-				listViewType = 'grid'; 
-				jQuery('#viewGridIconSelected').css('display','none');  
-				jQuery('#viewLineIconDeselected').css('display','none');  
-				jQuery('#viewGridIconDeselected').css('display','block');  
-				jQuery('#viewLineIconSelected').css('display','block'); 
+				var listViewType = 'grid'; 
+				var newURL = ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListLineView.xhr.html','Cellphone', 'postpaid'); 
+				window.localStorage.setItem(ATT.listPage.pageName() + "ViewPref", newURL); 
 				if (clickFlag == 'true') { 
-					ATT.listPage.setUrl(ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListLineView.xhr.html','Cellphone', 'postpaid')); 
+					ATT.listPage.setUrl(newURL); 
 					ATT.listPage.setDivId('deviceLayout'); 
 					ATT.listPage.getItemInfo(); 
 				} 
@@ -561,13 +565,11 @@
 		function toggleToDeviceGrid(clickFlag) { 
 			//ATT.modalSpinner.show(); 
 			jQuery.when(ATT.globalVars.cartPromise).done(function(){ 
-				listViewType = 'line'; 
-				jQuery('#viewGridIconSelected').css('display','block');  
-				jQuery('#viewLineIconDeselected').css('display','block');  
-				jQuery('#viewGridIconDeselected').css('display','none');  
-				jQuery('#viewLineIconSelected').css('display','none');  
+				var listViewType = 'line'; 
+				var newURL = ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListGridView.xhr.html','Cellphone', 'postpaid'); 
+				window.localStorage.setItem(ATT.listPage.pageName() + "ViewPref", newURL); 
 				if (clickFlag == 'true') { 
-					ATT.listPage.setUrl(ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListGridView.xhr.html','Cellphone', 'postpaid')); 
+					ATT.listPage.setUrl(newURL); 
 					ATT.listPage.setDivId('deviceLayout'); 
 					ATT.listPage.getItemInfo(); 
 				} 
@@ -696,23 +698,23 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="clear"></div> 
 	<ul id="commitmentTerm" class="styled_forms"> 
 			<li> 
-					<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter/filteroptions/0" id="commitmentTerm1" type="radio" class="listFilterGroup" name="commitmentTerm" value="ALL" default="true" checked="checked" /> 
+					<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_1/filteroptions/0" id="commitmentTerm1" type="radio" class="listFilterGroup" name="commitmentTerm" value="ALL" default="true" checked="checked" /> 
 					<label for="commitmentTerm1" >All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Contract Length" data-tokencontent="2-year contract" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter/filteroptions/1" id="commitmentTerm2" type="radio" class="listFilterGroup" name="commitmentTerm" value="24" /> 
+					<input data-tokencategory="Filter by Contract Length" data-tokencontent="2-year contract" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_1/filteroptions/1" id="commitmentTerm2" type="radio" class="listFilterGroup" name="commitmentTerm" value="24" /> 
 					<label for="commitmentTerm2" >2-year contract</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Contract Length" data-tokencontent="1-year contract" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter/filteroptions/2" id="commitmentTerm3" type="radio" class="listFilterGroup" name="commitmentTerm" value="12" /> 
+					<input data-tokencategory="Filter by Contract Length" data-tokencontent="1-year contract" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_1/filteroptions/2" id="commitmentTerm3" type="radio" class="listFilterGroup" name="commitmentTerm" value="12" /> 
 					<label for="commitmentTerm3" >1-year contract</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Contract Length" data-tokencontent="No commitment" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter/filteroptions/3" id="commitmentTerm4" type="radio" class="listFilterGroup" name="commitmentTerm" value="1" /> 
+					<input data-tokencategory="Filter by Contract Length" data-tokencontent="No commitment" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_1/filteroptions/3" id="commitmentTerm4" type="radio" class="listFilterGroup" name="commitmentTerm" value="1" /> 
 					<label for="commitmentTerm4" >No commitment</label> 
 			</li> 
 	<li class="filterItemToggle" style="display:none;"> 
-		<a href="cellphones.html#" onclick="toggleFilterItems('commitmentTerm');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter;2012108"> 
+		<a href="cellphones.html#" onclick="toggleFilterItems('commitmentTerm');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_1;2012305"> 
 			Show  
 			<span class="filterItemToggleMore">more</span> 
 			<span class="filterItemToggleLess">less</span> 
@@ -723,50 +725,47 @@ a:hover.listPage-left-nav-link.selected {
 </form> 
 <div class="clear"></div> 
 				</div> 
-<div class="radiobuttonrangedfilter parbase section filterbase"> 
+<div class="checkboxesfilter parbase section filterbase"> 
 <form class="filterBy">  
 	<h3> 
-		<input type="image" class="filterCollapseControl" id="filter-collapse-rangePricing" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('rangePricing'); return false" /> 
-		<input type="image" class="filterExpandControl"   id="filter-expand-rangePricing" alt="expand" style="display:none" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('rangePricing'); return false" />				 
-		<span onclick="filterCollapseExpand('rangePricing'); return false">Filter by Pricing</span> 
+		<input type="image" class="filterCollapseControl" id="filter-collapse-priceRange" alt="collapse" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-collapse.gif" onclick="filterCollapseExpand('priceRange'); return false" /> 
+		<input type="image" class="filterExpandControl"   id="filter-expand-priceRange" style="display:none" alt="expand" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/filter-expand.gif" onclick="filterCollapseExpand('priceRange'); return false" /> 
+		<span onclick="filterCollapseExpand('priceRange'); return false">Filter by Pricing</span> 
 	</h3> 
-			<div class="clear"></div> 
-	<ul id="rangePricing" class="styled_forms"> 
+	<ul id="priceRange" class="styled_forms"> 
 			<li> 
-				<input id="rangePricing1" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/0" type="radio" default="true" class="listFilterGroup" value="" name="rangePricing" begin="0" end="10000"  default="true" checked="checked"/> 
-				<label for="rangePricing1">All</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="All" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/0" id="priceRange1" type="checkbox" class="listFilterGroup" name="priceRange" value="ALL" checked="checked" /> 
+					<label for="priceRange1" >All</label>						 
 			</li> 
 			<li> 
-				<input data-tokencategory="Filter by Pricing" data-tokencontent="Under $1.00" id="rangePricing2" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/1" type="radio" class="listFilterGroup" value="" name="rangePricing" begin="0" end="0.99"  /> 
-				<label for="rangePricing2">Under $1.00</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="0 - .99" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/1" id="priceRange2" type="checkbox" class="listFilterGroup" name="priceRange" value="0 -.99" /> 
+					<label for="priceRange2" >0 - .99</label> 
 			</li> 
 			<li> 
-				<input data-tokencategory="Filter by Pricing" data-tokencontent="$1.00-$49.99" id="rangePricing3" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/2" type="radio" class="listFilterGroup" value="" name="rangePricing" begin="1" end="49.99"  /> 
-				<label for="rangePricing3">$1.00-$49.99</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="1 - 49.99" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/2" id="priceRange3" type="checkbox" class="listFilterGroup" name="priceRange" value="1-49.99" /> 
+					<label for="priceRange3" >1 - 49.99</label> 
 			</li> 
 			<li> 
-				<input data-tokencategory="Filter by Pricing" data-tokencontent="$50.00-$99.99" id="rangePricing4" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/3" type="radio" class="listFilterGroup" value="" name="rangePricing" begin="50" end="99.99"  /> 
-				<label for="rangePricing4">$50.00-$99.99</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="50 - 99.99" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/3" id="priceRange4" type="checkbox" class="listFilterGroup" name="priceRange" value="50-99.99" /> 
+					<label for="priceRange4" >50 - 99.99</label> 
 			</li> 
 			<li> 
-				<input data-tokencategory="Filter by Pricing" data-tokencontent="$100.00-$199.99" id="rangePricing5" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/4" type="radio" class="listFilterGroup" value="" name="rangePricing" begin="100" end="199.99"  /> 
-				<label for="rangePricing5">$100.00-$199.99</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="100 - 199.99" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/4" id="priceRange5" type="checkbox" class="listFilterGroup" name="priceRange" value="100-199.99" /> 
+					<label for="priceRange5" >100 - 199.99</label> 
 			</li> 
 			<li> 
-				<input data-tokencategory="Filter by Pricing" data-tokencontent="$200.00 +" id="rangePricing6" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil/filteroptions/5" type="radio" class="listFilterGroup" value="" name="rangePricing" begin="200" end="10000"  /> 
-				<label for="rangePricing6">$200.00 +</label> 
+					<input data-tokencategory="Filter by Pricing" data-tokencontent="200.00+" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3/filteroptions/5" id="priceRange6" type="checkbox" class="listFilterGroup" name="priceRange" value="200.00-1000" /> 
+					<label for="priceRange6" >200.00+</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('rangePricing');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonrangedfil;2012264"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('priceRange');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_3;2012305"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
 			</a> 
 		</li> 
 	</ul> 
-			<div class="clear"></div> 
 </form> 
-<div class="clear"></div> 
 </div> 
 <div class="radiobuttonfilter parbase section filterbase"> 
 <form class="filterBy">  
@@ -778,19 +777,19 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="clear"></div> 
 	<ul id="skuCondition" class="styled_forms"> 
 			<li> 
-					<input id="skuCondition1" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_0/filteroptions/0" type="radio" class="listFilterGroup" name="skuCondition" value="ALL" default="true" checked="checked" /> 
+					<input id="skuCondition1" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_2/filteroptions/0" type="radio" class="listFilterGroup" name="skuCondition" value="ALL" default="true" checked="checked" /> 
 					<label for="skuCondition1" >All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Condition" data-tokencontent="New" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_0/filteroptions/1" id="skuCondition2" type="radio" class="listFilterGroup" name="skuCondition" value="NEW" /> 
+					<input data-tokencategory="Filter by Condition" data-tokencontent="New" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_2/filteroptions/1" id="skuCondition2" type="radio" class="listFilterGroup" name="skuCondition" value="NEW" /> 
 					<label for="skuCondition2" >New</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Condition" data-tokencontent="Refurbished" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_0/filteroptions/2" id="skuCondition3" type="radio" class="listFilterGroup" name="skuCondition" value="refurbished" /> 
+					<input data-tokencategory="Filter by Condition" data-tokencontent="Refurbished" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_2/filteroptions/2" id="skuCondition3" type="radio" class="listFilterGroup" name="skuCondition" value="refurbished" /> 
 					<label for="skuCondition3" >Refurbished</label> 
 			</li> 
 	<li class="filterItemToggle" style="display:none;"> 
-		<a href="cellphones.html#" onclick="toggleFilterItems('skuCondition');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_0;2011312"> 
+		<a href="cellphones.html#" onclick="toggleFilterItems('skuCondition');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/radiobuttonfilter_2;2012305"> 
 			Show  
 			<span class="filterItemToggleMore">more</span> 
 			<span class="filterItemToggleLess">less</span> 
@@ -810,27 +809,27 @@ a:hover.listPage-left-nav-link.selected {
 	</h3> 
 	<ul id="taxoOperatingSystem" class="styled_forms"> 
 			<li> 
-						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2" id="taxoOperatingSystem0" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="All" checked="checked" /> 
+						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4" id="taxoOperatingSystem0" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="All" checked="checked" /> 
 				<label for="taxoOperatingSystem0">All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Operating System" data-tokencontent="Android" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2/filteroptions/0" id="taxoOperatingSystem1" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-ANDROID" /> 
+					<input data-tokencategory="Filter by Operating System" data-tokencontent="Android" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4/filteroptions/0" id="taxoOperatingSystem1" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-ANDROID" /> 
 					<label for="taxoOperatingSystem1" >Android</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Operating System" data-tokencontent="Apple&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2/filteroptions/1" id="taxoOperatingSystem2" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-APPLE" /> 
+					<input data-tokencategory="Filter by Operating System" data-tokencontent="Apple&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4/filteroptions/1" id="taxoOperatingSystem2" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-APPLE" /> 
 					<label for="taxoOperatingSystem2" >Apple&reg;</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Operating System" data-tokencontent="BlackBerry&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2/filteroptions/2" id="taxoOperatingSystem3" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-BLACKBERRY" /> 
+					<input data-tokencategory="Filter by Operating System" data-tokencontent="BlackBerry&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4/filteroptions/2" id="taxoOperatingSystem3" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-BLACKBERRY" /> 
 					<label for="taxoOperatingSystem3" >BlackBerry&reg;</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Operating System" data-tokencontent="Windows Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2/filteroptions/3" id="taxoOperatingSystem4" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-WINDOWS-PHONE" /> 
+					<input data-tokencategory="Filter by Operating System" data-tokencontent="Windows Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4/filteroptions/3" id="taxoOperatingSystem4" type="checkbox" class="listFilterGroup" name="taxoOperatingSystem" value="OS-WINDOWS-PHONE" /> 
 					<label for="taxoOperatingSystem4" >Windows Phone</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('taxoOperatingSystem');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_2;2012256"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('taxoOperatingSystem');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_4;2012305"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
@@ -848,23 +847,23 @@ a:hover.listPage-left-nav-link.selected {
 	</h3> 
 	<ul id="taxoStyle" class="styled_forms"> 
 			<li> 
-						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1" id="taxoStyle0" type="checkbox" class="listFilterGroup" name="taxoStyle" value="All" checked="checked" /> 
+						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_6" id="taxoStyle0" type="checkbox" class="listFilterGroup" name="taxoStyle" value="All" checked="checked" /> 
 				<label for="taxoStyle0">All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Style" data-tokencontent="Quick Messaging" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/0" id="taxoStyle1" type="checkbox" class="listFilterGroup" name="taxoStyle" value="QUICK-MESSAGING" /> 
+					<input data-tokencategory="Filter by Style" data-tokencontent="Quick Messaging" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_6/filteroptions/0" id="taxoStyle1" type="checkbox" class="listFilterGroup" name="taxoStyle" value="QUICK-MESSAGING" /> 
 					<label for="taxoStyle1" >Quick Messaging</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Style" data-tokencontent="SIM card" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/1" id="taxoStyle2" type="checkbox" class="listFilterGroup" name="taxoStyle" value="SIM-CARD" /> 
+					<input data-tokencategory="Filter by Style" data-tokencontent="SIM card" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_6/filteroptions/1" id="taxoStyle2" type="checkbox" class="listFilterGroup" name="taxoStyle" value="SIM-CARD" /> 
 					<label for="taxoStyle2" >SIM card</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Style" data-tokencontent="Smartphones" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/2" id="taxoStyle3" type="checkbox" class="listFilterGroup" name="taxoStyle" value="SMARTPHONES" /> 
+					<input data-tokencategory="Filter by Style" data-tokencontent="Smartphones" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_6/filteroptions/2" id="taxoStyle3" type="checkbox" class="listFilterGroup" name="taxoStyle" value="SMARTPHONES" /> 
 					<label for="taxoStyle3" >Smartphones</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('taxoStyle');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1;2012257"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('taxoStyle');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_6;2012305"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
@@ -882,59 +881,55 @@ a:hover.listPage-left-nav-link.selected {
 	</h3> 
 	<ul id="taxoFeatures" class="styled_forms"> 
 			<li> 
-						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0" id="taxoFeatures0" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="All" checked="checked" /> 
+						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1" id="taxoFeatures0" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="All" checked="checked" /> 
 				<label for="taxoFeatures0">All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="4G HSPA+" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/0" id="taxoFeatures1" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="HSPA" /> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="4G HSPA+" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/0" id="taxoFeatures1" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="HSPA" /> 
 					<label for="taxoFeatures1" >4G HSPA+</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="4G LTE" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/1" id="taxoFeatures2" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="LTE" /> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="4G LTE" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/1" id="taxoFeatures2" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="LTE" /> 
 					<label for="taxoFeatures2" >4G LTE</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Camera" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/2" id="taxoFeatures3" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA" /> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Camera" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/2" id="taxoFeatures3" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA" /> 
 					<label for="taxoFeatures3" >Camera</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Dual Camera" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/3" id="taxoFeatures4" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA-DUAL" /> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Dual Camera" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/3" id="taxoFeatures4" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="CAMERA-DUAL" /> 
 					<label for="taxoFeatures4" >Dual Camera</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Eco-design" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/4" id="taxoFeatures5" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="ECO-DESIGN" /> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Eco-design" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/4" id="taxoFeatures5" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="ECO-DESIGN" /> 
 					<label for="taxoFeatures5" >Eco-design</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Expandable Memory" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/5" id="taxoFeatures6" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="EXPANDABLE-MEMORY" /> 
-					<label for="taxoFeatures6" >Expandable Memory</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Flip" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/5" id="taxoFeatures6" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="FLIP" /> 
+					<label for="taxoFeatures6" >Flip</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Flip" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/6" id="taxoFeatures7" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="FLIP" /> 
-					<label for="taxoFeatures7" >Flip</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Full QWERTY Keyboard" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/6" id="taxoFeatures7" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="FULL-KEYBOARD" /> 
+					<label for="taxoFeatures7" >Full QWERTY Keyboard</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Full QWERTY Keyboard" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/7" id="taxoFeatures8" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="FULL-KEYBOARD" /> 
-					<label for="taxoFeatures8" >Full QWERTY Keyboard</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Push to Talk" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/7" id="taxoFeatures8" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="PTT" /> 
+					<label for="taxoFeatures8" >Push to Talk</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Push to Talk" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/8" id="taxoFeatures9" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="PTT" /> 
-					<label for="taxoFeatures9" >Push to Talk</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Rugged" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/8" id="taxoFeatures9" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="RUGGED" /> 
+					<label for="taxoFeatures9" >Rugged</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Rugged" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/9" id="taxoFeatures10" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="RUGGED" /> 
-					<label for="taxoFeatures10" >Rugged</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Touchscreen" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/9" id="taxoFeatures10" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="TOUCH-SCREEN" /> 
+					<label for="taxoFeatures10" >Touchscreen</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Touchscreen" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/10" id="taxoFeatures11" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="TOUCH-SCREEN" /> 
-					<label for="taxoFeatures11" >Touchscreen</label> 
-			</li> 
-			<li> 
-					<input data-tokencategory="Filter by Feature" data-tokencontent="Wi-Fi" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/11" id="taxoFeatures12" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="WIFI" /> 
-					<label for="taxoFeatures12" >Wi-Fi</label> 
+					<input data-tokencategory="Filter by Feature" data-tokencontent="Wi-Fi" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1/filteroptions/10" id="taxoFeatures11" type="checkbox" class="listFilterGroup" name="taxoFeatures" value="WIFI" /> 
+					<label for="taxoFeatures11" >Wi-Fi</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('taxoFeatures');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0;2012257"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('taxoFeatures');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_1;2012305"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
@@ -952,51 +947,51 @@ a:hover.listPage-left-nav-link.selected {
 	</h3> 
 	<ul id="taxoManu" class="styled_forms"> 
 			<li> 
-						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter" id="taxoManu0" type="checkbox" class="listFilterGroup" name="taxoManu" value="All" checked="checked" /> 
+						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0" id="taxoManu0" type="checkbox" class="listFilterGroup" name="taxoManu" value="All" checked="checked" /> 
 				<label for="taxoManu0">All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Apple&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/0" id="taxoManu1" type="checkbox" class="listFilterGroup" name="taxoManu" value="APPLE" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Apple&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/0" id="taxoManu1" type="checkbox" class="listFilterGroup" name="taxoManu" value="APPLE" /> 
 					<label for="taxoManu1" >Apple&reg;</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="AT&T" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/1" id="taxoManu2" type="checkbox" class="listFilterGroup" name="taxoManu" value="ATT" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="AT&T" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/1" id="taxoManu2" type="checkbox" class="listFilterGroup" name="taxoManu" value="ATT" /> 
 					<label for="taxoManu2" >AT&T</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="BlackBerry&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/2" id="taxoManu3" type="checkbox" class="listFilterGroup" name="taxoManu" value="BLACKBERRY" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="BlackBerry&reg;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/2" id="taxoManu3" type="checkbox" class="listFilterGroup" name="taxoManu" value="BLACKBERRY" /> 
 					<label for="taxoManu3" >BlackBerry&reg;</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="HTC" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/3" id="taxoManu4" type="checkbox" class="listFilterGroup" name="taxoManu" value="HTC" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="HTC" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/3" id="taxoManu4" type="checkbox" class="listFilterGroup" name="taxoManu" value="HTC" /> 
 					<label for="taxoManu4" >HTC</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="LG" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/4" id="taxoManu5" type="checkbox" class="listFilterGroup" name="taxoManu" value="LG" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="LG" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/4" id="taxoManu5" type="checkbox" class="listFilterGroup" name="taxoManu" value="LG" /> 
 					<label for="taxoManu5" >LG</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Motorola" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/5" id="taxoManu6" type="checkbox" class="listFilterGroup" name="taxoManu" value="MOTOROLA" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Motorola" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/5" id="taxoManu6" type="checkbox" class="listFilterGroup" name="taxoManu" value="MOTOROLA" /> 
 					<label for="taxoManu6" >Motorola</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Nokia" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/6" id="taxoManu7" type="checkbox" class="listFilterGroup" name="taxoManu" value="NOKIA" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Nokia" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/6" id="taxoManu7" type="checkbox" class="listFilterGroup" name="taxoManu" value="NOKIA" /> 
 					<label for="taxoManu7" >Nokia</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Pantech" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/7" id="taxoManu8" type="checkbox" class="listFilterGroup" name="taxoManu" value="PANTECH" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Pantech" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/7" id="taxoManu8" type="checkbox" class="listFilterGroup" name="taxoManu" value="PANTECH" /> 
 					<label for="taxoManu8" >Pantech</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Samsung" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/8" id="taxoManu9" type="checkbox" class="listFilterGroup" name="taxoManu" value="SAMSUNG" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Samsung" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/8" id="taxoManu9" type="checkbox" class="listFilterGroup" name="taxoManu" value="SAMSUNG" /> 
 					<label for="taxoManu9" >Samsung</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Sony" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/9" id="taxoManu10" type="checkbox" class="listFilterGroup" name="taxoManu" value="SONY" /> 
+					<input data-tokencategory="Filter by Manufacturer" data-tokencontent="Sony" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0/filteroptions/9" id="taxoManu10" type="checkbox" class="listFilterGroup" name="taxoManu" value="SONY" /> 
 					<label for="taxoManu10" >Sony</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('taxoManu');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter;2012257"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('taxoManu');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_0;2012306"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
@@ -1014,19 +1009,19 @@ a:hover.listPage-left-nav-link.selected {
 	</h3> 
 	<ul id="availability" class="styled_forms"> 
 			<li> 
-						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_5" id="availability0" type="checkbox" class="listFilterGroup" name="availability" value="All" checked="checked" /> 
+						<input data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter" id="availability0" type="checkbox" class="listFilterGroup" name="availability" value="All" checked="checked" /> 
 				<label for="availability0">All</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Availability" data-tokencontent="Currently available" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_5/filteroptions/0" id="availability1" type="checkbox" class="listFilterGroup" name="availability" value="current" /> 
+					<input data-tokencategory="Filter by Availability" data-tokencontent="Currently available" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/0" id="availability1" type="checkbox" class="listFilterGroup" name="availability" value="current" /> 
 					<label for="availability1" >Currently available</label> 
 			</li> 
 			<li> 
-					<input data-tokencategory="Filter by Availability" data-tokencontent="Pre-order" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_5/filteroptions/1" id="availability2" type="checkbox" class="listFilterGroup" name="availability" value="preorder" /> 
+					<input data-tokencategory="Filter by Availability" data-tokencontent="Pre-order" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter/filteroptions/1" id="availability2" type="checkbox" class="listFilterGroup" name="availability" value="preorder" /> 
 					<label for="availability2" >Pre-order</label> 
 			</li> 
 		<li class="filterItemToggle" style="display:none;"> 
-			<a href="cellphones.html#" onclick="toggleFilterItems('availability');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter_5;2011278"> 
+			<a href="cellphones.html#" onclick="toggleFilterItems('availability');return false;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content/filterparsys/checkboxesfilter;2012305"> 
 				Show  
 				<span class="filterItemToggleMore">more</span> 
 				<span class="filterItemToggleLess">less</span> 
@@ -1041,7 +1036,7 @@ a:hover.listPage-left-nav-link.selected {
 			<div id="right-body" > 
 				<div id="gridListControl"> 
 					<div class="noThanksCtrlSection row-seam hide"> 
-						<a href="cellphones.html#" onclick="return false;" class="noThanksCart arrowRt" data-extra-params="continueWithoutMarking=true" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="cellphones.html#" onclick="return false;" class="noThanksCart arrowRt" data-extra-params="continueWithoutMarking=true" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							Continue with device currently in cart 
 						</a> 
 					</div> 
@@ -1053,7 +1048,7 @@ a:hover.listPage-left-nav-link.selected {
 							<span class="deviceTextDevices">devices</span> 
 						</div> 
 						<div id="deviceShowAll" style="display:none;"> 
-							<a title="Show all" id="deviceShowAllLink" href="javascript:void(0);" onclick="jQuery('input#showMore').attr('value',wirelessDeviceFilterSize);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Show all</a> 
+							<a title="Show all" id="deviceShowAllLink" href="javascript:void(0);" onclick="ATT.listPage.setShowMorePref(wirelessDeviceFilterSize);jQuery('input#showMore').attr('value',wirelessDeviceFilterSize);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Show all</a> 
 						</div> 
 					</div> 
 					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
@@ -1072,8 +1067,8 @@ a:hover.listPage-left-nav-link.selected {
 					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 					<div id="viewByLabel">View as:</div> 
 						<div id="viewGridIconSelected" style="display:block;"><img title="Grid View - Current" height="18" alt="GRID" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-grid-selected.png"></img></div> 
-						<div id="viewLineIconDeselected" style="display:block;"><a href="javascript:void(0);" title="List View" onclick="toggleToDeviceLine('true');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"><img title="LIST" height="18" alt="LIST" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-list-deselected.gif"></img></a></div> 
-						<div id="viewGridIconDeselected" style="display:none;"><a href="javascript:void(0);" title="Grid View" onclick="toggleToDeviceGrid('true');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"><img title="GRID" height="18" alt="GRID" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-grid-deselected.gif"></img></a></div> 
+						<div id="viewLineIconDeselected" style="display:block;"><a href="javascript:void(0);" title="List View" onclick="toggleToDeviceLine('true');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"><img title="LIST" height="18" alt="LIST" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-list-deselected.gif"></img></a></div> 
+						<div id="viewGridIconDeselected" style="display:none;"><a href="javascript:void(0);" title="Grid View" onclick="toggleToDeviceGrid('true');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"><img title="GRID" height="18" alt="GRID" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-grid-deselected.gif"></img></a></div> 
 						<div id="viewLineIconSelected" style="display:none;"><img title="List View - Current" height="18" alt="LIST" width="18" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/devices/list/view-list-selected.png"></img></div> 
 					<div class="hidden" style="visibility:hidden;display:none;" > 
 						<input id="sortBy" title="Sort by" checked="true" type="checkbox" class="listFilterGroup" name="sortByProperties" value="" /> 
@@ -1082,7 +1077,7 @@ a:hover.listPage-left-nav-link.selected {
 					<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 					<div id="gridControlCompare"> 
 						<div class="pageCompareDevicesButton"> 
-							<a title="Click to Compare Selected Devices" id="compareUrl" href="javascript:void(0);" class="clickStreamGroupDone" onclick="processCompareDevices('/shop/en/wireless/devices/comparephone.html');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">	 
+							<a title="Click to Compare Selected Devices" id="compareUrl" href="javascript:void(0);" class="clickStreamGroupDone" onclick="processCompareDevices('/shop/en/wireless/devices/comparephone.html');" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">	 
 								<img id="btnCompareDevices" title="Button to Compare Selected Devices" height="29" alt="Click to compare the selected devices" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/btn/btn-en-compare-blu29.gif" border="0"></img> 
 							</a> 
 						</div> 
@@ -1114,7 +1109,10 @@ a:hover.listPage-left-nav-link.selected {
 					<div id="yellowMessage" style="display:none;"> 
 						<div id="compatibilityMessage"></div> 
 						<div id="filterAttributeDisplay"> 
-							<span id="filterAttributeLabel">Filtered Categories:</span> 
+							<div id="filterAttributeLabel"> 
+								Filter Selections: 
+								<a id="clearFilterTokens" href="cellphones.html#" class="clearFilter" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Clear all filters</a> 
+							</div> 
 							<div id="filterTokens"></div> 
 						</div> 
 					</div> 
@@ -1124,6 +1122,10 @@ a:hover.listPage-left-nav-link.selected {
 		var sortProperties = ''; 
 		var currentMessage = ''; 
 		jQuery(document).ready(function() { 
+			jQuery('#viewGridIconSelected').css('display','block');  
+			jQuery('#viewLineIconDeselected').css('display','block');  
+			jQuery('#viewGridIconDeselected').css('display','none');  
+			jQuery('#viewLineIconSelected').css('display','none');  
 			jQuery.when(ATT.globalVars.cartPromise).done(function(){ 
 				var shopAssistURL = "/shop/wireless/devices/cellphones.shoppingassistant.xhr.html?pageType=deviceList&paymentType=postpaid&deviceType=Cellphone"; 
 				ATT.listPage.setUrl(ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListGridView.xhr.html','Cellphone', 'postpaid') + ';' + shopAssistURL); 
@@ -1132,9 +1134,9 @@ a:hover.listPage-left-nav-link.selected {
 		}); 
 	</script> 
 							<script type="text/javascript"> 
-								wirelessDeviceFilterSize  = 48; 
+								wirelessDeviceFilterSize  = 46; 
 								jQuery('div#count .countInfo span.deviceCount').html('?'); 
-								jQuery('div#count .countInfo span.deviceSize').html('48'); 
+								jQuery('div#count .countInfo span.deviceSize').html('46'); 
 								jQuery('div#count .countInfo span.deviceTextOf').html('of'); 
 								jQuery.when(ATT.globalVars.cartPromise).done(updateCompatibilityMessage); 
 							</script> 
@@ -1143,13 +1145,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" data-sku="sku6290270" title="Pre-Order Information for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" data-sku="sku6290270" title="Details for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Nokia Lumia 920 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="listGrid-review"> 
-							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html#tab4" class="clickStreamSingleItem" data-pid="prod6210393" title="Reviews for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html#tab4" class="clickStreamSingleItem" data-pid="prod6210393" title="Reviews for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								Write a review 
 							</a> 
 						</div> 
@@ -1163,8 +1165,8 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" title="Pre-Order Information for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku6290270" class="inStockOpacity" alt="Pre-Order Information for Nokia Lumia 920" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;920-high&#32;gloss&#32;red-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6290270" class="inStockOpacity" alt="Details for Nokia Lumia 920" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;920-high&#32;gloss&#32;red-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 				<div class="listGrid-colorSelector"> 
 					<div class="colorsAvailable"> 
@@ -1175,22 +1177,22 @@ a:hover.listPage-left-nav-link.selected {
 													<div class="specific_color"  id="sku6290270_swatch" style="background-color:#bc252a;" name="useBubbleToolTip" title="High Gloss Red" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290310&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - Matte Cyan" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290310&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - Matte Cyan" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6290310_swatch" style="background-color:#00c1e3; cursor:pointer;" name="useBubbleToolTip" title="Matte Cyan"  ></div> 
 													</a> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290311&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - High Gloss Yellow" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290311&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - High Gloss Yellow" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6290311_swatch" style="background-color:#f5ed00; cursor:pointer;" name="useBubbleToolTip" title="High Gloss Yellow"  ></div> 
 													</a> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290309&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - High Gloss White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290309&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - High Gloss White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6290309_swatch" style="background-color:#FFFFFF; cursor:pointer;" name="useBubbleToolTip" title="High Gloss White"  ></div> 
 													</a> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290312&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - Matte Black" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6210393').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6210393&skuId=sku6290312&viewType=grid&panelDivId=device_prod6210393&existingSkuId=sku6290270&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920 - Matte Black" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6290312_swatch" style="background-color:#000000; cursor:pointer;" name="useBubbleToolTip" title="Matte Black"  ></div> 
 													</a> 
 								</div> 
@@ -1223,14 +1225,79 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6290270" name="skuId" id="sku6290270" class="clickStreamGroupItem" data-pid="prod6210393" title="Compare Nokia Lumia 920" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6290270','check');" /> 
 				<label class="deviceCompare" for="sku6290270"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290270:not(:checked)').click();jQuery.uniform.update('input#sku6290270');checkCompareSelectionCount('sku6290270','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290270:not(:checked)').click();jQuery.uniform.update('input#sku6290270');checkCompareSelectionCount('sku6290270','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" title="Pre-Order Information for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Pre-Order Information for Nokia Lumia 920" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-preorder-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-high-gloss-red.html" class="clickStreamSingleItem" data-pid="prod6210393" title="Details for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for Nokia Lumia 920" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div> 
+		</div> 
+	</div> 
+								</div> 
+							</div> 
+							<div id="device_prod6190501" class="listGrid-devicePanel" > 
+								<div id="item_sku6280765" class="listGrid-item"> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-titleInfo"> 
+		<div class="listGrid-title">  
+			<a href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html" class="clickStreamSingleItem" data-pid="prod6190501" data-sku="sku6280765" title="Details for Windows® Phone 8X by HTC®" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+				Windows Phone 8X by HTC 
+			</a> 
+		</div> 
+		<div class="listGrid-rating"> 
+			<div class="clear" ></div> 
+		</div> 
+				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-imagePrice"> 
+		<div class="listGrid-image"> 
+				<div class="listGrid-newArrival"> 
+					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
+				</div> 
+					<a href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html" class="clickStreamSingleItem" data-pid="prod6190501" title="Details for Windows® Phone 8X by HTC®" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6280765" class="inStockOpacity" alt="Details for Windows® Phone 8X by HTC®" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-windows&#32;phone&#32;8x&#32;8gb-california&#32;blue-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+		<div class="listGrid-priceInfo"> 
+				<div class="listGrid-price"> 
+									<div class="gridPrice">$99.99 <span class='multiDevicePrice-to'>to</span> $199.99</div> 
+									<div class="gridMultiDevicePrice">8 to 16 GB</div> 
+				</div> 
+			<!-- 
+					<div class="commitmentTerm">2-year contract & new activation required.</div> 
+						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
+			--> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
+		</div> 
+	</div> 
+	<div class="listGrid-barSection"> 
+			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
+				<div class="listGrid-activationShippingBar hidden">					 
+					<div class="clear listGrid-barGap hidden"></div> 
+				</div> 
+	</div> 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6280765');" onmouseout="contractFinePrint('#item_sku6280765');" > 
+		<div class="gridFinePrint"> 
+		</div> 
+		<div class="listGrid-qtyView" > 
+			<div class="listGrid-compare "> 
+						<input type="checkbox" value="sku6280765" name="skuId" id="sku6280765" class="clickStreamGroupItem" data-pid="prod6190501" title="Compare Windows Phone 8X by HTC" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280765','check');" /> 
+				<label class="deviceCompare" for="sku6280765"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280765:not(:checked)').click();jQuery.uniform.update('input#sku6280765');checkCompareSelectionCount('sku6280765','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						Compare 
+					</a> 
+				</label> 
+			</div> 
+			<div class="listGrid-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/htc/windows-phone-8x-by-htc-8gb-california-blue.html" class="clickStreamSingleItem" data-pid="prod6190501" title="Details for Windows® Phone 8X by HTC®" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for Windows® Phone 8X by HTC®" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -1242,7 +1309,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" data-sku="sku6260384" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" data-sku="sku6260384" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Apple iPhone 5 
 			</a> 
 		</div> 
@@ -1254,7 +1321,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6260384" class="inStockOpacity" alt="Details for Apple iPhone 5 - 16GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;5&#32;-&#32;16gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -1267,9 +1334,6 @@ a:hover.listPage-left-nav-link.selected {
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                 <div class="listGrid-activationShippingBar hidden"> 
-                                    <div class="clear listGrid-barGap hidden"></div> 
-                                </div> 
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
@@ -1292,7 +1356,7 @@ a:hover.listPage-left-nav-link.selected {
 		</div> 
 		<div class="listGrid-qtyView" > 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black.html" class="clickStreamSingleItem" data-pid="prod6170279" title="Details for Apple iPhone 5 - 16GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Apple iPhone 5 - 16GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -1305,7 +1369,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" data-sku="sku5370395" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" data-sku="sku5370395" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Apple iPhone 4 - 8 GB 
 			</a> 
 		</div> 
@@ -1316,7 +1380,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku5370395" class="inStockOpacity" alt="Details for Apple iPhone 4 - 8 GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;4&#32;-&#32;8&#32;gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 				<div class="listGrid-colorSelector"> 
@@ -1328,7 +1392,7 @@ a:hover.listPage-left-nav-link.selected {
 													<div class="specific_color"  id="sku5370395_swatch" style="background-color:#000000;" name="useBubbleToolTip" title="Black" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5280487').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5280487&skuId=sku5370396&viewType=grid&panelDivId=device_prod5280487&existingSkuId=sku5370395&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB - White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5280487').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5280487&skuId=sku5370396&viewType=grid&panelDivId=device_prod5280487&existingSkuId=sku5370395&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB - White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku5370396_swatch" style="background-color:#FFFFFF; cursor:pointer;" name="useBubbleToolTip" title="White"  ></div> 
 													</a> 
 								</div> 
@@ -1365,7 +1429,7 @@ a:hover.listPage-left-nav-link.selected {
 		</div> 
 		<div class="listGrid-qtyView" > 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black.html" class="clickStreamSingleItem" data-pid="prod5280487" title="Details for Apple iPhone 4 - 8 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Apple iPhone 4 - 8 GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -1378,7 +1442,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" data-sku="sku5370402" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" data-sku="sku5370402" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Apple iPhone 4S - 16 GB 
 			</a> 
 		</div> 
@@ -1390,7 +1454,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku5370402" class="inStockOpacity" alt="Details for Apple iPhone 4S - 16 GB" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;4s&#32;-&#32;16&#32;gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 				<div class="listGrid-colorSelector"> 
@@ -1402,7 +1466,7 @@ a:hover.listPage-left-nav-link.selected {
 													<div class="specific_color"  id="sku5370402_swatch" style="background-color:#000000;" name="useBubbleToolTip" title="Black" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5280499').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5280499&skuId=sku5370403&viewType=grid&panelDivId=device_prod5280499&existingSkuId=sku5370402&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB - White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5280499').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5280499&skuId=sku5370403&viewType=grid&panelDivId=device_prod5280499&existingSkuId=sku5370402&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB - White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku5370403_swatch" style="background-color:#FFFFFF; cursor:pointer;" name="useBubbleToolTip" title="White"  ></div> 
 													</a> 
 								</div> 
@@ -1421,7 +1485,7 @@ a:hover.listPage-left-nav-link.selected {
 					<span></span> 
 				</div> 
 					<div class="viewPackages"> 
-						<a href="http://www.att.com/shop/wireless/packages/apple-iphone-4s-16-gb-sku5370394.html" title="Packages for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">View packages</a> 
+						<a href="http://www.att.com/shop/wireless/packages/apple-iphone-4s-16-gb-sku5370394.html" title="Packages for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">View packages</a> 
 					</div> 
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
@@ -1445,90 +1509,8 @@ a:hover.listPage-left-nav-link.selected {
 		</div> 
 		<div class="listGrid-qtyView" > 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-16gb-black.html" class="clickStreamSingleItem" data-pid="prod5280499" title="Details for Apple iPhone 4S - 16 GB" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Apple iPhone 4S - 16 GB" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-						</a> 
-			</div> 
-		</div> 
-	</div> 
-								</div> 
-							</div> 
-							<div id="device_prod5890250" class="listGrid-devicePanel" > 
-								<div id="item_sku5980268" class="listGrid-item"> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-titleInfo"> 
-		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/htc/one-x-white.html" class="clickStreamSingleItem" data-pid="prod5890250" data-sku="sku5980268" title="Details for HTC One&trade; X " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-				HTC One&trade; X  
-			</a> 
-		</div> 
-		<div class="listGrid-rating"> 
-						<div class="reviewStars s4_4"> 
-							<a href="http://www.att.com/shop/wireless/devices/htc/one-x-white.html#tab4" class="clickStreamSingleItem" data-pid="prod5890250" title="Reviews for HTC One&trade; X " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(124)</span> 
-							</a> 
-						</div> 
-			<div class="clear" ></div> 
-		</div> 
-				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-	</div> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-imagePrice"> 
-		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/htc/one-x-white.html" class="clickStreamSingleItem" data-pid="prod5890250" title="Details for HTC One&trade; X " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku5980268" class="inStockOpacity" alt="Details for HTC One&trade; X " src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-one&#32;x-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-					</a> 
-				<div class="listGrid-colorSelector"> 
-					<div class="colorsAvailable"> 
-						Available colors: 
-					</div> 
-					<div class="colorSwatches"> 
-								<div class="swatch" style="background-image:url('../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/colorSwatch_highlight.gif');background-repeat:no-repeat;" > 
-													<div class="specific_color"  id="sku5980268_swatch" style="background-color:#FFFFFF;" name="useBubbleToolTip" title="White" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
-								</div> 
-								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5890250').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5890250&skuId=sku5980289&viewType=grid&panelDivId=device_prod5890250&existingSkuId=sku5980268&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5890250" title="Details for HTC One (TM) X - Gray" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-														<div class="specific_color"  id="sku5980289_swatch" style="background-color:#3A3A3A; cursor:pointer;" name="useBubbleToolTip" title="Gray"  ></div> 
-													</a> 
-								</div> 
-					</div> 
-				</div> 
-		</div> 
-		<div class="listGrid-priceInfo"> 
-				<div class="listGrid-price"> 
-									$99.99 
-				</div> 
-			<!-- 
-					<div class="commitmentTerm">2-year contract & new activation required.</div> 
-						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
-			--> 
-                <div class="listGrid-activationShippingBar hidden"> 
-                    <div class="clear listGrid-barGap hidden"></div> 
-                </div> 
-		</div> 
-	</div> 
-	<div class="listGrid-barSection"> 
-			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
-				<div class="listGrid-activationShippingBar hidden">					 
-					<div class="clear listGrid-barGap hidden"></div> 
-				</div> 
-	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku5980268');" onmouseout="contractFinePrint('#item_sku5980268');" > 
-		<div class="gridFinePrint"> 
-		</div> 
-		<div class="listGrid-qtyView" > 
-			<div class="listGrid-compare "> 
-						<input type="checkbox" value="sku5980268" name="skuId" id="sku5980268" class="clickStreamGroupItem" data-pid="prod5890250" title="Compare HTC One&trade; X " label="Compare" onclick="javascript:checkCompareSelectionCount('sku5980268','check');" /> 
-				<label class="deviceCompare" for="sku5980268"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5980268:not(:checked)').click();jQuery.uniform.update('input#sku5980268');checkCompareSelectionCount('sku5980268','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						Compare 
-					</a> 
-				</label> 
-			</div> 
-			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/htc/one-x-white.html" class="clickStreamSingleItem" data-pid="prod5890250" title="Details for HTC One&trade; X " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Details for HTC One&trade; X " src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -1540,13 +1522,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" data-sku="sku5920251" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" data-sku="sku5920251" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				HTC TITAN&trade; II 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s4_4"> 
-							<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod5800229" title="Reviews for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod5800229" title="Reviews for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(47)</span> 
 							</a> 
@@ -1558,7 +1540,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku5920251" class="inStockOpacity" alt="Details for HTC TITAN&trade; II" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-titan&#32;ii-blue&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -1591,13 +1573,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku5920251" name="skuId" id="sku5920251" class="clickStreamGroupItem" data-pid="prod5800229" title="Compare HTC TITAN&trade; II" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5920251','check');" /> 
 				<label class="deviceCompare" for="sku5920251"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5920251:not(:checked)').click();jQuery.uniform.update('input#sku5920251');checkCompareSelectionCount('sku5920251','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5920251:not(:checked)').click();jQuery.uniform.update('input#sku5920251');checkCompareSelectionCount('sku5920251','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for HTC TITAN&trade; II" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -1610,13 +1592,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" data-sku="sku6300258" title="Pre-Order Information for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" data-sku="sku6300258" title="Details for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Nokia Lumia 820 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="listGrid-review"> 
-							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6210575" title="Reviews for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6210575" title="Reviews for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								Write a review 
 							</a> 
 						</div> 
@@ -1630,8 +1612,8 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" title="Pre-Order Information for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku6300258" class="inStockOpacity" alt="Pre-Order Information for Nokia Lumia 820" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;820-matte&#32;black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" title="Details for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6300258" class="inStockOpacity" alt="Details for Nokia Lumia 820" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;820-matte&#32;black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 		<div class="listGrid-priceInfo"> 
@@ -1660,14 +1642,14 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6300258" name="skuId" id="sku6300258" class="clickStreamGroupItem" data-pid="prod6210575" title="Compare Nokia Lumia 820" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6300258','check');" /> 
 				<label class="deviceCompare" for="sku6300258"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6300258:not(:checked)').click();jQuery.uniform.update('input#sku6300258');checkCompareSelectionCount('sku6300258','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6300258:not(:checked)').click();jQuery.uniform.update('input#sku6300258');checkCompareSelectionCount('sku6300258','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" title="Pre-Order Information for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Pre-Order Information for Nokia Lumia 820" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-preorder-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html" class="clickStreamSingleItem" data-pid="prod6210575" title="Details for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for Nokia Lumia 820" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -1676,21 +1658,18 @@ a:hover.listPage-left-nav-link.selected {
 							</div> 
 							<div id="device_prod6190465" class="listGrid-devicePanel" > 
 								<div id="item_sku6280720" class="listGrid-item"> 
-		<div class="listGrid-webOnly"> 
-			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
-		</div> 
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
-		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" data-sku="sku6280720" title="Pre-Order Information for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+		<div class="listGrid-title">  
+			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" data-sku="sku6280720" title="Details for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Samsung Galaxy Note® II 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s5_0"> 
-							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod6190465" title="Reviews for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod6190465" title="Reviews for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(1)</span> 
+								<span class="numOfReviews">(3)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1703,9 +1682,24 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" title="Pre-Order Information for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku6280720" class="inStockOpacity" alt="Pre-Order Information for Samsung Galaxy Note® II" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;note&#32;ii-titanium&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" title="Details for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6280720" class="inStockOpacity" alt="Details for Samsung Galaxy Note® II" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;note&#32;ii-titanium&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
+				<div class="listGrid-colorSelector"> 
+					<div class="colorsAvailable"> 
+						Available colors: 
+					</div> 
+					<div class="colorSwatches"> 
+								<div class="swatch" style="background-image:url('../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/colorSwatch_highlight.gif');background-repeat:no-repeat;" > 
+													<div class="specific_color"  id="sku6280720_swatch" style="background-color:#536376;" name="useBubbleToolTip" title="Titanium Gray" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
+								</div> 
+								<div class="swatch" style="" > 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod6190465').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod6190465&skuId=sku6300323&viewType=grid&panelDivId=device_prod6190465&existingSkuId=sku6280720&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod6190465" title="Details for Samsung Galaxy Note® II - Marble White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+														<div class="specific_color"  id="sku6300323_swatch" style="background-color:#FFFFFF; cursor:pointer;" name="useBubbleToolTip" title="Marble White"  ></div> 
+													</a> 
+								</div> 
+					</div> 
+				</div> 
 		</div> 
 		<div class="listGrid-priceInfo"> 
 				<div class="listGrid-price"> 
@@ -1733,14 +1727,14 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6280720" name="skuId" id="sku6280720" class="clickStreamGroupItem" data-pid="prod6190465" title="Compare Samsung Galaxy Note® II" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280720','check');" /> 
 				<label class="deviceCompare" for="sku6280720"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280720:not(:checked)').click();jQuery.uniform.update('input#sku6280720');checkCompareSelectionCount('sku6280720','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280720:not(:checked)').click();jQuery.uniform.update('input#sku6280720');checkCompareSelectionCount('sku6280720','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" title="Pre-Order Information for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Pre-Order Information for Samsung Galaxy Note® II" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-preorder-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html" class="clickStreamSingleItem" data-pid="prod6190465" title="Details for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for Samsung Galaxy Note® II" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -1752,15 +1746,15 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" data-sku="sku6290299" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" data-sku="sku6290299" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Sony Xperia&trade; TL 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
-						<div class="reviewStars s4_5"> 
-							<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6200296" title="Reviews for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<div class="reviewStars s4_6"> 
+							<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6200296" title="Reviews for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(2)</span> 
+								<span class="numOfReviews">(3)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1773,7 +1767,7 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6290299" class="inStockOpacity" alt="Details for Sony Xperia&trade; TL" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/sony-xperia&#32;tl-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -1803,13 +1797,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6290299" name="skuId" id="sku6290299" class="clickStreamGroupItem" data-pid="prod6200296" title="Compare Sony Xperia&trade; TL" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6290299','check');" /> 
 				<label class="deviceCompare" for="sku6290299"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290299:not(:checked)').click();jQuery.uniform.update('input#sku6290299');checkCompareSelectionCount('sku6290299','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290299:not(:checked)').click();jQuery.uniform.update('input#sku6290299');checkCompareSelectionCount('sku6290299','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/sony/xperia-tl-black.html" class="clickStreamSingleItem" data-pid="prod6200296" title="Details for Sony Xperia&trade; TL" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Sony Xperia&trade; TL" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -1822,13 +1816,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" data-sku="sku6280653" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" data-sku="sku6280653" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Samsung Galaxy Rugby Pro&trade; 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s5_0"> 
-							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6190435" title="Reviews for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6190435" title="Reviews for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(2)</span> 
 							</a> 
@@ -1843,7 +1837,7 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6280653" class="inStockOpacity" alt="Details for Samsung Galaxy Rugby Pro&trade;" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;rugby&#32;pro-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -1873,13 +1867,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6280653" name="skuId" id="sku6280653" class="clickStreamGroupItem" data-pid="prod6190435" title="Compare Samsung Galaxy Rugby Pro&trade;" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280653','check');" /> 
 				<label class="deviceCompare" for="sku6280653"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280653:not(:checked)').click();jQuery.uniform.update('input#sku6280653');checkCompareSelectionCount('sku6280653','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280653:not(:checked)').click();jQuery.uniform.update('input#sku6280653');checkCompareSelectionCount('sku6280653','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-rugby-pro-black.html" class="clickStreamSingleItem" data-pid="prod6190435" title="Details for Samsung Galaxy Rugby Pro&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Samsung Galaxy Rugby Pro&trade;" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -1892,15 +1886,15 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" data-sku="sku6280453" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" data-sku="sku6280453" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				LG Optimus G&trade; 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
-						<div class="reviewStars s4_3"> 
-							<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6190347" title="Reviews for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<div class="reviewStars s4_7"> 
+							<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6190347" title="Reviews for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(3)</span> 
+								<span class="numOfReviews">(8)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1913,7 +1907,7 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6280453" class="inStockOpacity" alt="Details for LG Optimus G&trade;" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lg-optimus&#32;g-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -1943,76 +1937,14 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6280453" name="skuId" id="sku6280453" class="clickStreamGroupItem" data-pid="prod6190347" title="Compare LG Optimus G&trade;" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280453','check');" /> 
 				<label class="deviceCompare" for="sku6280453"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280453:not(:checked)').click();jQuery.uniform.update('input#sku6280453');checkCompareSelectionCount('sku6280453','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280453:not(:checked)').click();jQuery.uniform.update('input#sku6280453');checkCompareSelectionCount('sku6280453','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/lg/optimus-g-black.html" class="clickStreamSingleItem" data-pid="prod6190347" title="Details for LG Optimus G&trade;" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for LG Optimus G&trade;" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-						</a> 
-			</div> 
-		</div> 
-	</div> 
-								</div> 
-							</div> 
-							<div id="device_prod5530258R" class="listGrid-devicePanel" > 
-								<div id="item_sku5630222" class="listGrid-item"> 
-		<div class="listGrid-webOnly"> 
-			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
-		</div> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-titleInfo"> 
-		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-64gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5530258" data-sku="sku5630222" title="Details for Apple iPhone 4S - 64 GB - (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-				Apple iPhone 4S - 64 GB - (Refurbished) 
-			</a> 
-		</div> 
-		<div class="listGrid-rating"> 
-			<div class="clear" ></div> 
-		</div> 
-				<div class="listGrid-speed"><img alt="4G" title="4G" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-30px.png"/></div> 
-	</div> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-imagePrice"> 
-		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-64gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5530258" title="Details for Apple iPhone 4S - 64 GB - (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku5630222" class="inStockOpacity" alt="Details for Apple iPhone 4S - 64 GB - (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;4s&#32;refurb-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-					</a> 
-		</div> 
-		<div class="listGrid-priceInfo"> 
-				<div class="listGrid-price"> 
-									$249.99 
-				</div> 
-			<!-- 
-					<div class="commitmentTerm">2-year contract & new activation required.</div> 
-						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
-			--> 
-                                 <div class="listGrid-activationShippingBar hidden"> 
-                                    <div class="clear listGrid-barGap hidden"></div> 
-                                </div> 
-                                 <div class="listGrid-activationShippingBar hidden"> 
-                                    <div class="clear listGrid-barGap hidden"></div> 
-                                </div> 
-                <div class="listGrid-activationShippingBar hidden"> 
-                    <div class="clear listGrid-barGap hidden"></div> 
-                </div> 
-		</div> 
-	</div> 
-	<div class="listGrid-barSection"> 
-			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
-				<div class="listGrid-activationShippingBar hidden">					 
-					<div class="clear listGrid-barGap hidden"></div> 
-				</div> 
-	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku5630222');" onmouseout="contractFinePrint('#item_sku5630222');" > 
-		<div class="gridFinePrint"> 
-		</div> 
-		<div class="listGrid-qtyView" > 
-			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4s-64gb-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5530258" title="Details for Apple iPhone 4S - 64 GB - (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Details for Apple iPhone 4S - 64 GB - (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -2024,13 +1956,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" data-sku="sku5660225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" data-sku="sku5660225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				AT&T Wireless Home Phone 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s3_7"> 
-							<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html#tab4" class="clickStreamSingleItem" data-pid="prod5560225" title="Reviews for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html#tab4" class="clickStreamSingleItem" data-pid="prod5560225" title="Reviews for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(7)</span> 
 							</a> 
@@ -2041,7 +1973,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku5660225" class="inStockOpacity" alt="Details for AT&T Wireless Home Phone" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/at&amp;t-wireless&#32;home&#32;phone-silver-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -2056,7 +1988,7 @@ a:hover.listPage-left-nav-link.selected {
 					<span></span> 
 				</div> 
 					<div class="viewPackages"> 
-						<a href="http://www.att.com/shop/wireless/packages/att-wireless-home-phone-package-sku6260235.html" title="Packages for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">View packages</a> 
+						<a href="http://www.att.com/shop/wireless/packages/att-wireless-home-phone-package-sku6260235.html" title="Packages for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">View packages</a> 
 					</div> 
                 <div class="listGrid-activationShippingBar hidden"> 
                     <div class="clear listGrid-barGap hidden"></div> 
@@ -2076,13 +2008,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku5660225" name="skuId" id="sku5660225" class="clickStreamGroupItem" data-pid="prod5560225" title="Compare AT&T Wireless Home Phone" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5660225','check');" /> 
 				<label class="deviceCompare" for="sku5660225"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5660225:not(:checked)').click();jQuery.uniform.update('input#sku5660225');checkCompareSelectionCount('sku5660225','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5660225:not(:checked)').click();jQuery.uniform.update('input#sku5660225');checkCompareSelectionCount('sku5660225','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/att/wireless-home-phone-silver.html" class="clickStreamSingleItem" data-pid="prod5560225" title="Details for AT&T Wireless Home Phone" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for AT&T Wireless Home Phone" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -2098,13 +2030,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" data-sku="sku6220317" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" data-sku="sku6220317" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Nokia Lumia 900 (Refurbished) 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s4_7"> 
-							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5770227" title="Reviews for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5770227" title="Reviews for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(4)</span> 
 							</a> 
@@ -2116,7 +2048,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6220317" class="inStockOpacity" alt="Details for Nokia Lumia 900 (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;900-white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 				<div class="listGrid-colorSelector"> 
@@ -2128,12 +2060,12 @@ a:hover.listPage-left-nav-link.selected {
 													<div class="specific_color"  id="sku6220317_swatch" style="background-color:#FFFFFF;" name="useBubbleToolTip" title="White" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku6220315&viewType=grid&panelDivId=device_prod5770227R&existingSkuId=sku6220317&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Cyan - (Refurbished) " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku6220315&viewType=grid&panelDivId=device_prod5770227R&existingSkuId=sku6220317&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Cyan - (Refurbished) " data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6220315_swatch" style="background-color:#38A3C3; cursor:pointer;" name="useBubbleToolTip" title="Cyan"  ></div> 
 													</a> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku6220316&viewType=grid&panelDivId=device_prod5770227R&existingSkuId=sku6220317&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Matte Black - (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku6220316&viewType=grid&panelDivId=device_prod5770227R&existingSkuId=sku6220317&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Matte Black - (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6220316_swatch" style="background-color:#000000; cursor:pointer;" name="useBubbleToolTip" title="Matte Black"  ></div> 
 													</a> 
 								</div> 
@@ -2152,7 +2084,7 @@ a:hover.listPage-left-nav-link.selected {
 					<span></span> 
 				</div> 
 					<div class="viewPackages"> 
-						<a href="http://www.att.com/shop/wireless/packages/nokia-lumia-900-package-sku5910224.html" title="Packages for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">View packages</a> 
+						<a href="http://www.att.com/shop/wireless/packages/nokia-lumia-900-package-sku5910224.html" title="Packages for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">View packages</a> 
 					</div> 
                 <div class="listGrid-activationShippingBar hidden"> 
                     <div class="clear listGrid-barGap hidden"></div> 
@@ -2172,13 +2104,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6220317" name="skuId" id="sku6220317" class="clickStreamGroupItem" data-pid="prod5770227" title="Compare Nokia Lumia 900 (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6220317','check');" /> 
 				<label class="deviceCompare" for="sku6220317"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6220317:not(:checked)').click();jQuery.uniform.update('input#sku6220317');checkCompareSelectionCount('sku6220317','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6220317:not(:checked)').click();jQuery.uniform.update('input#sku6220317');checkCompareSelectionCount('sku6220317','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Nokia Lumia 900 (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -2191,13 +2123,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" data-sku="sku6290339" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" data-sku="sku6290339" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Samsung Focus® 2 (Refurbished) 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="listGrid-review"> 
-							<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5980223" title="Reviews for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5980223" title="Reviews for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								Write a review 
 							</a> 
 						</div> 
@@ -2211,7 +2143,7 @@ a:hover.listPage-left-nav-link.selected {
 				<div class="listGrid-newArrival"> 
 					<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/device-list-starburst-new-en.png" title="New Arrival" alt="New Arrival" border="0"/> 
 				</div> 
-					<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6290339" class="inStockOpacity" alt="Details for Samsung Focus® 2 (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-focus&#32;2-glossy&#32;pure&#32;white-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -2241,13 +2173,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6290339" name="skuId" id="sku6290339" class="clickStreamGroupItem" data-pid="prod5980223" title="Compare Samsung Focus® 2 (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6290339','check');" /> 
 				<label class="deviceCompare" for="sku6290339"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290339:not(:checked)').click();jQuery.uniform.update('input#sku6290339');checkCompareSelectionCount('sku6290339','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6290339:not(:checked)').click();jQuery.uniform.update('input#sku6290339');checkCompareSelectionCount('sku6290339','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Samsung Focus® 2 (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -2263,13 +2195,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" data-sku="sku6000238" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" data-sku="sku6000238" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				Pantech Burst&trade; (Refurbished) 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="reviewStars s3_8"> 
-							<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5500252" title="Reviews for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5500252" title="Reviews for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
 								<span class="numOfReviews">(7)</span> 
 							</a> 
@@ -2281,7 +2213,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6000238" class="inStockOpacity" alt="Details for Pantech Burst&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/pantech-burst-titanium-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 				<div class="listGrid-colorSelector"> 
@@ -2293,7 +2225,7 @@ a:hover.listPage-left-nav-link.selected {
 													<div class="specific_color"  id="sku6000238_swatch" style="background-color:#242426;" name="useBubbleToolTip" title="Titanium" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
 								</div> 
 								<div class="swatch" style="" > 
-													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5500252R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5500252&skuId=sku6000235&viewType=grid&panelDivId=device_prod5500252R&existingSkuId=sku6000238&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst (TM) - Ruby Red (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5500252R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5500252&skuId=sku6000235&viewType=grid&panelDivId=device_prod5500252R&existingSkuId=sku6000238&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst (TM) - Ruby Red (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 														<div class="specific_color"  id="sku6000235_swatch" style="background-color:#7C2627; cursor:pointer;" name="useBubbleToolTip" title="Ruby Red"  ></div> 
 													</a> 
 								</div> 
@@ -2329,13 +2261,13 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6000238" name="skuId" id="sku6000238" class="clickStreamGroupItem" data-pid="prod5500252" title="Compare Pantech Burst&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6000238','check');" /> 
 				<label class="deviceCompare" for="sku6000238"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6000238:not(:checked)').click();jQuery.uniform.update('input#sku6000238');checkCompareSelectionCount('sku6000238','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6000238:not(:checked)').click();jQuery.uniform.update('input#sku6000238');checkCompareSelectionCount('sku6000238','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for Pantech Burst&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
@@ -2343,27 +2275,32 @@ a:hover.listPage-left-nav-link.selected {
 	</div> 
 								</div> 
 							</div> 
-							<div id="device_prod5520220R" class="listGrid-devicePanel" > 
-								<div id="item_sku5600230" class="listGrid-item"> 
+							<div id="device_prod5830225R" class="listGrid-devicePanel" > 
+								<div id="item_sku6280476" class="listGrid-item"> 
 		<div class="listGrid-webOnly"> 
 			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
 		</div> 
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5520220" data-sku="sku5600230" title="Details for Apple iPhone 4 - 8 GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-				Apple iPhone 4 - 8 GB (Refurbished) 
+			<a href="http://www.att.com/shop/wireless/devices/lg/a340-gray-refurb.html" class="clickStreamSingleItem" data-pid="prod5830225" data-sku="sku6280476" title="Details for LG A340 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+				LG A340 (Refurbished) 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
+						<div class="listGrid-review"> 
+							<a href="http://www.att.com/shop/wireless/devices/lg/a340-gray-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5830225" title="Reviews for LG A340 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+								Write a review 
+							</a> 
+						</div> 
 			<div class="clear" ></div> 
 		</div> 
 	</div> 
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5520220" title="Details for Apple iPhone 4 - 8 GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-						<img id="image-sku5600230" class="inStockOpacity" alt="Details for Apple iPhone 4 - 8 GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;4&#32;-&#32;8&#32;gb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					<a href="http://www.att.com/shop/wireless/devices/lg/a340-gray-refurb.html" class="clickStreamSingleItem" data-pid="prod5830225" title="Details for LG A340 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6280476" class="inStockOpacity" alt="Details for LG A340 (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lg-a340-gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 		<div class="listGrid-priceInfo"> 
@@ -2372,20 +2309,7 @@ a:hover.listPage-left-nav-link.selected {
 				</div> 
 			<!-- 
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
-						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-				<div class="dottedLineDivider"> 
-					<span></span> 
-				</div> 
-					<div class="viewPackages"> 
-						<a href="http://www.att.com/shop/wireless/packages/apple-iphone-4-8-gb-refurb-package-sku5610229.html" title="Packages for Apple iPhone 4 - 8 GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">View packages</a> 
-					</div> 
-                                 <div class="listGrid-activationShippingBar hidden"> 
-                                    <div class="clear listGrid-barGap hidden"></div> 
-                                </div> 
-                                 <div class="listGrid-activationShippingBar hidden"> 
-                                    <div class="clear listGrid-barGap hidden"></div> 
-                                </div> 
                 <div class="listGrid-activationShippingBar hidden"> 
                     <div class="clear listGrid-barGap hidden"></div> 
                 </div> 
@@ -2397,13 +2321,21 @@ a:hover.listPage-left-nav-link.selected {
 					<div class="clear listGrid-barGap hidden"></div> 
 				</div> 
 	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku5600230');" onmouseout="contractFinePrint('#item_sku5600230');" > 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6280476');" onmouseout="contractFinePrint('#item_sku6280476');" > 
 		<div class="gridFinePrint"> 
 		</div> 
 		<div class="listGrid-qtyView" > 
+			<div class="listGrid-compare "> 
+						<input type="checkbox" value="sku6280476" name="skuId" id="sku6280476" class="clickStreamGroupItem" data-pid="prod5830225" title="Compare LG A340 (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280476','check');" /> 
+				<label class="deviceCompare" for="sku6280476"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280476:not(:checked)').click();jQuery.uniform.update('input#sku6280476');checkCompareSelectionCount('sku6280476','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						Compare 
+					</a> 
+				</label> 
+			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/4-8gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod5520220" title="Details for Apple iPhone 4 - 8 GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
-							<img alt="Details for Apple iPhone 4 - 8 GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/lg/a340-gray-refurb.html" class="clickStreamSingleItem" data-pid="prod5830225" title="Details for LG A340 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for LG A340 (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -2418,13 +2350,13 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" data-sku="sku6280500" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+			<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" data-sku="sku6280500" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 				LG Xpression&trade; (Refurbished) 
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
 						<div class="listGrid-review"> 
-							<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5890244" title="Reviews for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+							<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5890244" title="Reviews for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 								Write a review 
 							</a> 
 						</div> 
@@ -2434,7 +2366,7 @@ a:hover.listPage-left-nav-link.selected {
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-					<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						<img id="image-sku6280500" class="inStockOpacity" alt="Details for LG Xpression&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/lg-xpression-red-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
@@ -2463,14 +2395,115 @@ a:hover.listPage-left-nav-link.selected {
 			<div class="listGrid-compare "> 
 						<input type="checkbox" value="sku6280500" name="skuId" id="sku6280500" class="clickStreamGroupItem" data-pid="prod5890244" title="Compare LG Xpression&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6280500','check');" /> 
 				<label class="deviceCompare" for="sku6280500"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280500:not(:checked)').click();jQuery.uniform.update('input#sku6280500');checkCompareSelectionCount('sku6280500','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6280500:not(:checked)').click();jQuery.uniform.update('input#sku6280500');checkCompareSelectionCount('sku6280500','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 						Compare 
 					</a> 
 				</label> 
 			</div> 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"> 
+						<a href="http://www.att.com/shop/wireless/devices/lg/xpression-red-refurb.html" class="clickStreamSingleItem" data-pid="prod5890244" title="Details for LG Xpression&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
 							<img alt="Details for LG Xpression&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div> 
+		</div> 
+	</div> 
+								</div> 
+							</div> 
+							<div id="device_prod5770227" class="listGrid-devicePanel" > 
+								<div id="item_sku6200371" class="listGrid-item"> 
+		<div class="listGrid-webOnly"> 
+			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
+		</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-titleInfo"> 
+		<div class="listGrid-titleWithBanner">  
+			<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html" class="clickStreamSingleItem" data-pid="prod5770227" data-sku="sku6200371" title="Details for Nokia Lumia 900" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+				Nokia Lumia 900 
+			</a> 
+		</div> 
+		<div class="listGrid-rating"> 
+						<div class="reviewStars s3_7"> 
+							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html#tab4" class="clickStreamSingleItem" data-pid="prod5770227" title="Reviews for Nokia Lumia 900" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(31)</span> 
+							</a> 
+						</div> 
+			<div class="clear" ></div> 
+		</div> 
+				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-imagePrice"> 
+		<div class="listGrid-image"> 
+					<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						<img id="image-sku6200371" class="inStockOpacity" alt="Details for Nokia Lumia 900" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/nokia-lumia&#32;900-pink-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+				<div class="listGrid-colorSelector"> 
+					<div class="colorsAvailable"> 
+						Available colors: 
+					</div> 
+					<div class="colorSwatches"> 
+								<div class="swatch" style="background-image:url('../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/colorSwatch_highlight.gif');background-repeat:no-repeat;" > 
+													<div class="specific_color"  id="sku6200371_swatch" style="background-color:#EA496B;" name="useBubbleToolTip" title="Pink" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
+								</div> 
+								<div class="swatch" style="" > 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku6000234&viewType=grid&panelDivId=device_prod5770227&existingSkuId=sku6200371&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - White" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+														<div class="specific_color"  id="sku6000234_swatch" style="background-color:#FFFFFF; cursor:pointer;" name="useBubbleToolTip" title="White"  ></div> 
+													</a> 
+								</div> 
+								<div class="swatch" style="" > 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku5870225&viewType=grid&panelDivId=device_prod5770227&existingSkuId=sku6200371&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Matte Black" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+														<div class="specific_color"  id="sku5870225_swatch" style="background-color:#000000; cursor:pointer;" name="useBubbleToolTip" title="Matte Black"  ></div> 
+													</a> 
+								</div> 
+								<div class="swatch" style="" > 
+													<a href="javascript:void(0);" onclick="javascript:jQuery('#device_prod5770227').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5770227&skuId=sku5870227&viewType=grid&panelDivId=device_prod5770227&existingSkuId=sku6200371&commitmentTerm=24');" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900 - Cyan" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+														<div class="specific_color"  id="sku5870227_swatch" style="background-color:#38A3C3; cursor:pointer;" name="useBubbleToolTip" title="Cyan"  ></div> 
+													</a> 
+								</div> 
+					</div> 
+				</div> 
+		</div> 
+		<div class="listGrid-priceInfo"> 
+				<div class="listGrid-price"> 
+									$0.99 
+				</div> 
+			<!-- 
+					<div class="commitmentTerm">2-year contract & new activation required.</div> 
+						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
+			--> 
+				<div class="dottedLineDivider"> 
+					<span></span> 
+				</div> 
+					<div class="viewPackages"> 
+						<a href="http://www.att.com/shop/wireless/packages/nokia-lumia-900-package-sku5910224.html" title="Packages for Nokia Lumia 900" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">View packages</a> 
+					</div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
+		</div> 
+	</div> 
+	<div class="listGrid-barSection"> 
+			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
+				<div class="listGrid-activationShippingBar hidden">					 
+					<div class="clear listGrid-barGap hidden"></div> 
+				</div> 
+	</div> 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6200371');" onmouseout="contractFinePrint('#item_sku6200371');" > 
+		<div class="gridFinePrint"> 
+		</div> 
+		<div class="listGrid-qtyView" > 
+			<div class="listGrid-compare "> 
+						<input type="checkbox" value="sku6200371" name="skuId" id="sku6200371" class="clickStreamGroupItem" data-pid="prod5770227" title="Compare Nokia Lumia 900" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6200371','check');" /> 
+				<label class="deviceCompare" for="sku6200371"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6200371:not(:checked)').click();jQuery.uniform.update('input#sku6200371');checkCompareSelectionCount('sku6200371','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+						Compare 
+					</a> 
+				</label> 
+			</div> 
+			<div class="listGrid-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-900-pink.html" class="clickStreamSingleItem" data-pid="prod5770227" title="Details for Nokia Lumia 900" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"> 
+							<img alt="Details for Nokia Lumia 900" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -2498,13 +2531,13 @@ a:hover.listPage-left-nav-link.selected {
 										<div class="showMoreDevicesCount"></div> 
 										<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 										<div class="showMoreGroup"> 
-											<span id="showMoreDevicesText"><a href="javascript:void(0);" title="SHOW 18 MORE CELL PHONES" onclick="jQuery('input#showMore').attr('value',36);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">SHOW 18 MORE CELL PHONES</a></span> 
-											<span id="showMoreDevicesImage"><a href="javascript:void(0);" title="SHOW 18 MORE CELL PHONES" onclick="jQuery('input#showMore').attr('value','36');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show More Devices"/></a></span> 
+											<span id="showMoreDevicesText"><a href="javascript:void(0);" title="SHOW 18 MORE CELL PHONES" onclick="ATT.listPage.setShowMorePref(36);jQuery('input#showMore').attr('value',36);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">SHOW 18 MORE CELL PHONES</a></span> 
+											<span id="showMoreDevicesImage"><a href="javascript:void(0);" title="SHOW 18 MORE CELL PHONES" onclick="ATT.listPage.setShowMorePref(36);jQuery('input#showMore').attr('value','36');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show More Devices"/></a></span> 
 										</div> 
 										<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 										<div class="showAllGroup"> 
-											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="jQuery('input#showMore').attr('value',48);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">SHOW ALL CELL PHONES</a></span> 
-											<span id="showAllDevicesImage"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="jQuery('input#showMore').attr('value','48');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show All Devices"/></a></span> 
+											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(46);jQuery('input#showMore').attr('value',46);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">SHOW ALL CELL PHONES</a></span> 
+											<span id="showAllDevicesImage"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(46);jQuery('input#showMore').attr('value','46');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show All Devices"/></a></span> 
 										</div> 
 									</div> 
 								</div> 
@@ -2529,15 +2562,11 @@ a:hover.listPage-left-nav-link.selected {
 	</div> 
 	<div class="bg-gr-bottom-shadow"></div> 
 	<script type="text/javascript"> 
-		function refreshProducts(){ 
-			jQuery.when(ATT.globalVars.cartPromise).done(function(){ 
-				if(ATT.util.attPLCookie() || !!ATT.globalVars.cartContents.userZip){ 
-					ATT.listPage.setUrl(ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListGridView.xhr.html','Cellphone', 'postpaid')); 
-					ATT.listPage.setDivId('deviceLayout'); 
-					ATT.listPage.getItemInfo(); 
-					return true; 
-				} 
-			}); 
+		function refreshProducts(forceRefresh){ 
+			if(forceRefresh || ATT.util.attPLCookie() || !!ATT.globalVars.cartContents.userZip){ 
+				ATT.listPage.getItemInfo(); 
+				return true; 
+			} 
 		} 
 		function setCurrentCommitmentTerm () { 
 			var changed = false; 
@@ -2555,19 +2584,23 @@ a:hover.listPage-left-nav-link.selected {
 			} 
 			return changed; //did we get a new set? 
 		} // end of setCurrentCommitmentTerm 
-		jQuery(window).load(function () { 
-			var v_referer = '';  
-			if (v_referer != "" && (v_referer.indexOf('/devices/') == -1) && (v_referer.indexOf('/packages/') == -1)) {  
-				ATT.listPage.removeAllFilterCookies('listFilterDevices');  
-			} 
-			var updateCommitmentFlag = setCurrentCommitmentTerm(); 
-			var gotNewSet = false; 
+		jQuery.when(ATT.globalVars.cartPromise).done(function(){ 
+			var listSize, listSizePref, defaultView, preferredView, needNewView, updateCommitmentFlag, gotNewSet; 
+			//get stored preferences and determine if we need to force a refresh 
+			listSizePref = ATT.listPage.getShowMorePref(); 
+			listSize = jQuery('input#showMore').attr('value'); 
+			defaultView = ATT.listPage.constructUserSpecificUrl('/shop/wireless/devices/cellphones.deviceListGridView.xhr.html','Cellphone', 'postpaid'); 
+			preferredView = window.localStorage.getItem(ATT.listPage.pageName() + "ViewPref"); 
+			needNewView = preferredView != null && (defaultView != preferredView); 
+			updateCommitmentFlag = setCurrentCommitmentTerm(); 
+			gotNewSet = false; 
+			if(listSizePref != listSize){needNewView = true; jQuery('input#showMore').attr('value', listSizePref)} 
+			ATT.listPage.setUrl(preferredView || defaultView); 
+			ATT.listPage.setDivId('deviceLayout'); 
 			gotNewSet = ATT.listPage.setFilter();  
-				if (!gotNewSet){gotNewSet = refreshProducts()} 
-			ATT.log('v_referer ' + v_referer); 
-			jQuery.when(ATT.globalVars.cartPromise).done(function() { 
-				ATT.listPage.setFilterDefaultFromCookie(); 
-			})			 
+			if (!gotNewSet || needNewView){ 
+				gotNewSet = refreshProducts(needNewView); 
+			} 
 			jQuery('#shoppingassistant').load('/shop/wireless/devices/cellphones.shoppingassistant.xhr.html?pageType=deviceList&paymentType=postpaid&deviceType=Cellphone&planType=&sku=');				 
 			fixToggle(); 
 		}); 
@@ -2582,17 +2615,17 @@ a:hover.listPage-left-nav-link.selected {
 	 color:#3381B7; 
 	} 
 </style> 
-	<a href="../../../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Wireless Legal Site</a> | 
-	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Wireless Customer Agreement</a> | 
-	<a class="last" href="../../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Cell Phone Records Security</a> 
-		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Other Monthly Charges</a>| 
-			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Plan Terms</a>| 
-			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Online Pricing</a>| 
+	<a href="../../../wirelesslegal.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Wireless Legal Site</a> | 
+	<a href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Wireless Customer Agreement</a> | 
+	<a class="last" href="../../../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Cell Phone Records Security</a> 
+		   |<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=postpaidMonthlyCharges" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Other Monthly Charges</a>| 
+			<a class="postPaidLegalLink" href="http://www.att.com/shop/en/legalterms.html?toskey=wirelessCustomerAgreement-list" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Plan Terms</a>| 
+			<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=onlinePrice" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Online Pricing</a>| 
 			<div class='secondRow'> 
-				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Returns Policy &amp; Early Termination Fee</a>| 
-				<a class="postPaidLegalLink" href="../../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Additional  
+				<a class="openModal modalXLarge" href="http://www.att.com/shop/wireless/modals/wirelessmodals/jcr:content/mainpar/genericmodal_6.html" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Returns Policy &amp; Early Termination Fee</a>| 
+				<a class="postPaidLegalLink" href="../../../../www.wireless.att.com/learn/articles-resources/wireless-legal-charges.jsp.html" target="_blank" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Additional  
 Messaging &amp; Data Charges</a>| 
-				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012264">Shipping Information</a> 
+				<a class="openModal modal505" href="http://www.att.com/shop/wireless/modals/legalmodals.html?toskey=shippingInformation" data-cqpath="/content/att/shop/en/wireless/devices/cellphones/jcr:content;2012310">Shipping Information</a> 
 			</div> 
 </div> 
 	</div> 
@@ -2605,6 +2638,12 @@ Messaging &amp; Data Charges</a>|
 		element.src='https://view.atdmt.com/jaction/cntcin_PackagesandDealsDetailsUAT_4';  
 		document.body.appendChild(element); 
 	}); 
+jQuery(document).ready(function(){ 
+        ATT.ui.rtiListOOS.oosVar.outofstock = 'OUT OF STOCK'; 
+        ATT.ui.rtiListOOS.oosVar.url = '/shop/wireless/devices/cellphones.outofstockskus.html'; 
+        ATT.ui.rtiListOOS.oosVar.list = 'device'; 
+        ATT.ui.rtiListOOS.init(); 
+}); 
 </script> 
 <noscript style="display:none"> 
 	<iframe src="../../../../view.atdmt.com/iaction/cntcin_PackagesandDealsDetailsUAT_4.html"  
@@ -2715,7 +2754,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 335223233955903617878710816997425182570 --> 
+		 <!--X-Renderer: 101145504192647587148198490128013719559 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -2888,7 +2927,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","NGvJQbbP4Xw5YLGyvBJr8JlK!-1244965528!1352342287023"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","R2ZzQd1Bvmh3jLgbf1BplR4Z!-1787072244!1352531873155"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -2913,33 +2952,22 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 	<div class="atlastag"> 
 </div> 
 	<!--  To create CLT cookies in existing customer flow --> 
+	<!-- OPTIMOST --> 
+	<!-- B2C-120711 Place Optimost Code on att.com pages -->   
+	<!--- 
+	Cell Phones Page, http://www.att.com/shop/wireless/devices/cellphones.html  
+	Individual Plans Page, http://www.att.com/shop/wireless/plans/individualplans.html  
+	Data Plans Page, http://www.att.com/shop/wireless/data-plans.html  
+	Device page, http://www.att.com/shop/wireless/devices.html  
+	--> 
+		<!-- B2C-120711 Place Optimost Code on att.com pages -->  				 
+		<!-- OPTIMOST UNIVERSAL MODULE --> 
+		<script language="javascript" type="text/javascript"><!-- 
+		if (typeof(optimost) == "object" && typeof(opModulesArray) != "undefined" && opModulesArray.length){ 
+			for(var i=0;i<opModulesArray.length;i++){ 
+				optimost.displayModule(opModulesArray[i]); 
+			} 
+		} 
+		//--></script> 
 </body> 
-	<script type="text/javascript">  
-		jQuery(window).load(function(){  
-			var element = document.createElement('script');   
-			element.type='text/javascript';   
-			element.async = true;   
-			element.src='https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10';   
-			document.body.appendChild(element);  
-		});  
-	</script>  
-	<noscript style="display:none">  
-		<iframe src="http://www.att.com/shop/wireless/devices/'https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10"   
-			width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
-		</iframe>  
-	</noscript> 
-	<script type="text/javascript">  
-		jQuery(window).load(function(){  
-			var element = document.createElement('script');   
-			element.type='text/javascript';   
-			element.async = true;   
-			element.src='https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10';   
-			document.body.appendChild(element);  
-		});  
-	</script>  
-	<noscript style="display:none">  
-		<iframe src="http://www.att.com/shop/wireless/devices/'https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10"   
-			width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
-		</iframe>  
-	</noscript> 
 </html> 

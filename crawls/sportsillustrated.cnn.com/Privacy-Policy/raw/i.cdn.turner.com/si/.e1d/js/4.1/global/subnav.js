@@ -265,7 +265,7 @@ siNav.load({
 		{ "u":"/podcasts/nba/?eref=sinav",					"l":"Podcasts" }
 	],
 	"ncaabb" : [
-		{ "u": "/basketball/ncaa/men/scoreboards/ncaa64/today/?eref=sinav",			"l":"Scores",
+		{ "u": "/basketball/ncaa/men/scoreboards/top25/today/?eref=sinav",			"l":"Scores",
 			"s": [
 				{ "u":"/basketball/ncaa/men/scoreboards/top25/today/?eref=sinav",			"l":"Top 25" },
 				{ "u":"/basketball/ncaa/men/scoreboards/maac/today/?eref=sinav",			"l":"MAAC" },

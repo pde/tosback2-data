@@ -69,6 +69,11 @@ function clearHINText(HINjqObject) {
         $(HINjqObject).val('');
     }
 };
+function clearText(jqObject, initText) {
+    if ($(jqObject).val() == initText) {
+        $(jqObject).val('');
+    }
+};
 //regex test only
 function validZipCode(myzip) {
     var objRegExp = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -928,6 +933,182 @@ var NADAjs = {
         this.Init = init;
         this.TrackExtLink = trackExtLink;
     },
+
+    PartnerBoxes: new function() {
+        var _routeID;
+        var init = function(routeID) {
+            _routeID = routeID;
+
+            //onload tracking
+            $("input[data-ga-category], a[data-ga-category]").each(function() {
+            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load', 
+                           buildGALabel($(this)), 1, true]);
+            });
+
+            //onclick tracking
+            $("input[data-ga-category], a[data-ga-category]").click(function() {
+                //alert(buildGALabel($(this)));
+            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
+                          buildGALabel($(this)), 1, false]);
+            });
+        }
+
+        var buildGALabel = function(element) {
+            return element.attr('data-ga-label') + ' ' + element.attr('data-extLinkId') + ' | ' + _routeID;
+        }
+
+        this.Init = init;
+    }, //PartnerBoxes
+
+    AutoTraderWidget: new function() {
+        var _link = "";
+        var _ATBodyStyle = "";
+        var _Year = "";
+        var _ATMake = "";
+        var _ATModel = "";
+        var _Zip = "";
+        var _UsedCarMakeId = "";
+        var _UsedCarModelId = "";
+        var _CarCount = 0;
+
+        var _NoValResult = false;
+        var _GOExtLinkID = "";
+        var _LinkExtLinkID = "";
+        var _doneInit = false;
+
+        var init = function(ATvars) {
+            _CarCount = parseInt(ATvars.CarCount);
+            _link = ATvars.link;
+            if (_Zip == "")
+                _Zip = ATvars.ZipCode;
+            _ATBodyStyle = ATvars.ATBodyStyle;
+            _ATMake = ATvars.ATMake;
+            _ATModel = ATvars.ATModel;
+            _UsedCarMakeId = ATvars.UsedCarMakeId;
+            _UsedCarModelId = ATvars.UsedCarModelId;
+            _Year = ATvars.Year;
+            _GOExtLinkID = ATvars.GOExtLinkID;
+            _LinkExtLinkID = ATvars.LinkExtLinkID;
+            
+            if (_CarCount > 0) {
+                //results found on the server-side
+                hideWaitPanel();
+                $("#atw-msg-found").show();
+            }
+            else {
+                if (_CarCount == -1 || !validateInput()) {
+                    //noval - not enough info to search or ivalid params
+                    _NoValResult = true;
+                    hideWaitPanel();
+                    $("#atw-msg-noVal").show();
+                }
+                else {
+                    //search
+                    getAtCars(50);
+                }
+            }
+
+            $("#atw-btn-go").click(function(event) {
+                event.preventDefault();
+                goAutoTrader($(this).attr('data-extLinkId'));
+            });
+
+            $("#atw-link").click(function(event) {
+                event.preventDefault();
+                goAutoTrader($(this).attr('data-extLinkId'));
+            });
+
+            _doneInit = true;
+        } //init
+        
+        var validateInput = function() {
+        if (_Zip == "" || _UsedCarMakeId == "" || _UsedCarModelId == "" || _Year == "" || _ATMake == "" || _ATModel == "") //_ATBodyStyle == "" ||
+                return false;
+            else if (isNaN(parseInt(_UsedCarMakeId)) || isNaN(parseInt(_UsedCarModelId)) || isNaN(parseInt(_Year)))
+                return false;
+            else
+                return true;
+
+        } //validateInput
+        
+        var goAutoTrader = function(extLinkId) {
+            if (_link.length != 0) {
+                $("form#formATWidget input[name='extLinkId']").val(extLinkId);
+                $("#formATWidget").submit();
+            }
+        }
+
+        var hideWaitPanel = function() {
+            $("#atw-searching").hide();
+            $("#atw-btn-go-wrap").show();
+            $("#atw-link-wrap").show();
+        }
+
+        var getAtCars = function(radius) {
+            $.ajax(
+                { type: "GET",
+                    url: '/Cars/' + _Year + '/' + _ATMake + '/' + _ATModel + '/' +
+                    _ATBodyStyle + '/' + _Zip + '/' + radius + '/' + _UsedCarMakeId + '/' + _UsedCarModelId + '/' + 'GetATCarCount',
+                    dataType: 'json',
+                    timeout: 210000,
+                    cache: false,
+                    error: function(xhr, textStatus, errorThrown) {
+                        hideWaitPanel();
+                        $("#atw-msg-noVal").show();
+                    },
+                    success: function(atwidgetdata) {
+                        var newcarcnt = parseInt(atwidgetdata.carCount);
+
+                        //Found cars or done the last search... display, done
+                        if (newcarcnt > 0 | radius == 200) {
+                            hideWaitPanel();
+                            $("#linkATWidget").val(atwidgetdata.link);
+                            _link = atwidgetdata.link;
+                            $("#atw-radius").html(radius);
+                            $("#atw-found-count").html(newcarcnt);
+                            $("#atw-msg-found").show();
+
+                        }
+                        else {
+                            //increase the radius and search again
+                            if (radius < 200) {
+                                if (radius == 25) {
+                                    getAtCars(50);
+                                } else if (radius == 50) {
+                                    getAtCars(75);
+                                } else if (radius == 75) {
+                                    getAtCars(100);
+                                } else if (radius == 100) {
+                                    getAtCars(200);
+                                }
+                            }
+                        }
+                    }
+                });
+        } //getAtCars
+
+        var searchNewZip = function(zip) {
+            if (!_doneInit) {
+                _Zip = zip;
+            }
+            else if (_Zip != zip) {
+                _Zip = zip;
+                if (validateInput()) {
+                    $("#atw-searching").show();
+                    $("#atw-msg-found").hide();
+                    $("#atw-msg-noVal").hide();
+                    //reset from NoVal IDs
+                    $("form#formATWidget .btn-go").attr('data-extLinkId', _GOExtLinkID);
+                    $("form#formATWidget #atw-link").attr('data-extLinkId', _LinkExtLinkID);
+                    getAtCars(25);
+                }
+            }
+        } //searchNewZip
+
+        this.Init = init;
+        this.SearchNewZip = searchNewZip;
+
+    }, //AutoTraderWidget
 
     Marketing: new function() {
 

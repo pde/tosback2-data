@@ -61,7 +61,14 @@
 				//chuck norris was here
 				if($('meta[name="dc.identifier"]').attr("content") == "urn:uuid:1f5745b035869310VgnVCM100000d7c1a8c0RCRD"){
 					data.dc.site = "fnc.entertainment/faithfamfreedom";		
-				};				
+				};
+				
+				var url = this.url(window.location.pathname) + this.kw(window.location, true) + this.ref(true) + cus;
+				if(url == ""){
+					var loc = location.hostname.split(".");
+					loc.pop(); loc.pop();
+					url = loc.join(".");
+				}					
 				
 				//Collective Calls
 				if(szs.indexOf("728x90") > -1 || szs.indexOf("300x250") > -1 || szs.indexOf("300x100") > -1){
@@ -70,7 +77,7 @@
 						tagStr = valJoin([ 
 							this.dcopt(tile), "cmn=fn", "comp=" + this.adv(window.location, true),
 							"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid,
-							"url=" + this.url(window.location.pathname) + this.kw(window.location, true) + this.ref(true) + cus,
+							"url=" + url,
 							this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,",").replace("300x100","300x251,300x100"), "tile=" + tile + this.u(data, id) + "|",
 							"ord=" + $.ad.ord + "?"
 						]);
@@ -85,7 +92,7 @@
 					tagStr = valJoin([
 						this.dcopt(tile), "comp=" + this.adv(window.location, true),
 						"pos=" + idd[0], "ctype=" + $.ad.meta().ctype, "ptype=" + data.ptype + this.c() + this.fmt(true) + pageid, 
-						"url=" + this.url(window.location.pathname) + this.kw(window.location, true) + this.ref(true) + cus,
+						"url=" + url,
 						this.sid(true) + this.reginfo(), "sz=" + idd[1].replace(/_/g,","), "tile=" + tile + this.u(data, id) + "|",
 						"ord=" + $.ad.ord + "?"
 					]);
@@ -1626,7 +1633,7 @@
 				$.ad.coms.pre(d);
 
 				//quant pixel
-				//$.ad.dc.quant.pre();
+				// $.ad.dc.quant.pre();
 
 				//nielsen
 				$.ad.niel.pre(d);
