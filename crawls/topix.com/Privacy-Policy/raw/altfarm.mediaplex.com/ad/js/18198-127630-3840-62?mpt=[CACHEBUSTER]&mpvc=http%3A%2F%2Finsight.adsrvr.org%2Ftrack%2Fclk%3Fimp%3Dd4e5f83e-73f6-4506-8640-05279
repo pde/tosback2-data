@@ -1,0 +1,92 @@
+/* 
+ * Mediaplex Flash template, flash_new
+ * Maintained By: Christopher D. Robison (cdr@cdr2.com) and 
+ * Heath Matthew Kornblum (heathkornblum@gmail.com) 
+ * Last Modified: 6/14/2012 9:45 am
+ *
+*/
+(function(){
+	var mojopro = window.location.protocol;
+	if (mojopro == "https:") {
+		mojopro = "https://secure.img-cdn.mediaplex.com/0/";
+	}	else  {
+		mojopro = "http://img-cdn.mediaplex.com/0/";
+  	};  
+	var mpvce = '<mpvce/>';
+	mpenhanced = "",
+	mpenhancedurl = "" || "http://www.mediaplex.com/ad-choices";
+	if (mpvce == 1) {
+		mpvclick = encodeURIComponent("http://insight.adsrvr.org/track/clk?imp=d4e5f83e-73f6-4506-8640-05279b7885ca&ag=719aowb&crid=zlvqcc6&fq=0&td_s=www.topix.com&rcats=y29,jte&mcat=&mste=topix.com&mfld=4&mssi=yr33pw9&mfsi=iynvgau&sv=openx&uhow=101&agsa=0xCF19187A&rgco=United%20States&rgre=California&rgme=807&rgci=San%20Francisco&dt=PC&osf=Windows&os=WindowsXP&br=Firefox&svpid=&dur=&r=");
+		mpvc = mpvclick;
+	}
+	else if (mpvce == 2) {
+		mpvclick2 = encodeURIComponent("http://insight.adsrvr.org/track/clk?imp=d4e5f83e-73f6-4506-8640-05279b7885ca&ag=719aowb&crid=zlvqcc6&fq=0&td_s=www.topix.com&rcats=y29,jte&mcat=&mste=topix.com&mfld=4&mssi=yr33pw9&mfsi=iynvgau&sv=openx&uhow=101&agsa=0xCF19187A&rgco=United%20States&rgre=California&rgme=807&rgci=San%20Francisco&dt=PC&osf=Windows&os=WindowsXP&br=Firefox&svpid=&dur=&r=");
+		mpvc = encodeURIComponent(mpvclick2);
+	}
+	else
+  	{
+		mpvc = ("http%3A%2F%2Finsight.adsrvr.org%2Ftrack%2Fclk%3Fimp%3Dd4e5f83e-73f6-4506-8640-05279b7885ca%26ag%3D719aowb%26crid%3Dzlvqcc6%26fq%3D0%26td_s%3Dwww.topix.com%26rcats%3Dy29%2Cjte%26mcat%3D%26mste%3Dtopix.com%26mfld%3D4%26mssi%3Dyr33pw9%26mfsi%3Diynvgau%26sv%3Dopenx%26uhow%3D101%26agsa%3D0xCF19187A%26rgco%3DUnited%2520States%26rgre%3DCalifornia%26rgme%3D807%26rgci%3DSan%2520Francisco%26dt%3DPC%26osf%3DWindows%26os%3DWindowsXP%26br%3DFirefox%26svpid%3D%26dur%3D%26r%3D");
+  	}
+	var mpcke = '<mpcke/>';
+	if (mpcke == 1) {
+		mpcclick = encodeURIComponent("altfarm.mediaplex.com%2Fad%2Fck%2F18198-127630-3840-62%3Fmpt%3D%5BCACHEBUSTER%5D");
+		mpck = "http://" + mpcclick;
+	}
+	else if (mpcke == 2) {
+		mpcclick2 = encodeURIComponent("altfarm.mediaplex.com%2Fad%2Fck%2F18198-127630-3840-62%3Fmpt%3D%5BCACHEBUSTER%5D");
+		mpck = "http://" + encodeURIComponent(mpcclick2);
+	}
+	else
+  	{
+		mpck = ("http://altfarm.mediaplex.com%2Fad%2Fck%2F18198-127630-3840-62%3Fmpt%3D%5BCACHEBUSTER%5D");
+  	}
+	var mp_swver = 0, mp_html = "";
+	mp_html += "<div id='mp_wrapper11050751' style='position:relative;display:inline-block;width:728px;height:90px;'>";
+	if( navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"] && navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin ) {
+  		if( navigator.plugins && navigator.plugins["Shockwave Flash"] ) {
+    		mp_swver = (navigator.plugins["Shockwave Flash"].description.split( " " ))[2];
+  		}
+	} else if ( navigator.userAgent && navigator.userAgent.indexOf("MSIE") >= 0 && ( navigator.userAgent.indexOf("Windows") >= 0 ) ) {
+		var mp_axo,e;
+  		for( var mp_i = 11; mp_i > 6; mp_i-- ) {
+			try {
+				mp_axo = new ActiveXObject("ShockwaveFlash.ShockwaveFlash." + mp_i );
+				mp_swver = mp_i;
+				break;
+			} catch (e) {}
+		}
+	}
+	if( mp_swver >= 6 ) {
+  		mp_html +=  '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" ';
+  		mp_html += ' codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" id="11050751" name="movie11050751" width="728" height="90">';
+  		if( mp_swver > 5 ) {
+			mp_html += '<param name="FlashVars" value="clickTAG=' + mpvc + mpck +'&clickTag=' + mpvc + mpck + '&clickTag1=' + mpvc + mpck + '">';
+			mp_html += '<param name="movie" value="' + mojopro + '18198/127630/728_november_bcsffd.swf">';
+			mp_html += '<param name="wmode" value="opaque">';
+			mp_html += '<param name="allowscriptaccess" value="always">';
+  		} 
+  		else {
+			mp_html += '<param name="movie" value="' + mojopro + '18198/127630/728_november_bcsffd.swf?clickTAG=' + mpvc + mpck +'&clickTag=' + mpvc + mpck + '&clickTag1=' + mpvc + mpck + '">';
+			mp_html += '<param name="wmode" value="opaque">';
+			mp_html += '<param name="allowscriptaccess" value="always">';
+  		}
+  		if( mp_swver > 5 ) {
+			mp_html += '<embed wmode="opaque" allowscriptaccess="always" name="18198/127630/728_november_bcsffd." src="' + mojopro + '18198/127630/728_november_bcsffd.swf" FlashVars="clickTAG=' + mpvc + mpck  +'&clickTag=' + mpvc + mpck  +'&clickTag1=' + mpvc + mpck  + '"';
+		}
+ 		else {
+    		mp_html += '<embed wmode="opaque" allowscriptaccess="always" NAME="18198/127630/728_november_bcsffd." src="' + mojopro + '18198/127630/728_november_bcsffd.swf?clickTAG=' + mpvc + mpck  +'&clickTag=' + mpvc + mpck  +'&clickTag1=' + mpvc + mpck  + '"';
+		}
+ 		mp_html += ' swLiveConnect="false" width="728" height="90" type="application/x-shockwave-flash" pluginspage="">';
+  		mp_html += '</embed>';
+  		mp_html += '</object>';
+  		mp_html += (mpenhanced) ? "<div style='position:absolute;z-index:10500;top:0px;right:1px;width:17px;height15px;z-index:999999;overflow:hidden;' onmouseover='this.style.width = \"75px\";document.getElementById(\"en_sm_11050751\").style.display=\"none\";document.getElementById(\"en_lg_11050751\").style.display=\"inline\";' onmouseout='this.style.width = \"17px\";document.getElementById(\"en_sm_11050751\").style.display=\"inline\";document.getElementById(\"en_lg_11050751\").style.display=\"none\";'><a href='" + mpenhancedurl + "' target='_blank'><img src='" + mojopro + "16179/109012/IconOnlyCollisionMarker.png' border='0'  id='en_sm_11050751'  style='display:inline'/><img src='" + mojopro + "16179/109012/CollisionAdMarker.png' border='0' id='en_lg_11050751'  style='display:none' /></a></div>" : "";
+	
+  		mp_html += '</div>';
+    		document.write( mp_html );
+	} else if( !( navigator.appName && navigator.appName.indexOf("Netscape") >= 0 && navigator.appVersion.indexOf("2.") >= 0 ) ) {
+
+  		document.write('<a href="http://insight.adsrvr.org/track/clk?imp=d4e5f83e-73f6-4506-8640-05279b7885ca&ag=719aowb&crid=zlvqcc6&fq=0&td_s=www.topix.com&rcats=y29,jte&mcat=&mste=topix.com&mfld=4&mssi=yr33pw9&mfsi=iynvgau&sv=openx&uhow=101&agsa=0xCF19187A&rgco=United%20States&rgre=California&rgme=807&rgci=San%20Francisco&dt=PC&osf=Windows&os=WindowsXP&br=Firefox&svpid=&dur=&r=http://altfarm.mediaplex.com/ad/ck/18198-127630-3840-62?mpt=[CACHEBUSTER]" target="_blank"><img src="http://img-cdn.mediaplex.com/0/18198/127630/728_november_bcsffd.jpg" width="728" height="90" border="0" alt=""></a>');
+	}
+})();
+//-->
+

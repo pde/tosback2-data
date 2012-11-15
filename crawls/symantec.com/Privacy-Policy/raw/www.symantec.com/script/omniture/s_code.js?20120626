@@ -26,6 +26,7 @@ Changes 2012-6-19: Updated prop59/evar59 to not set page name to None when missi
 Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. comment out prop61&62, enough data to analyze.
 also removed om_sem_copy prop28 due conflict with demand base setup.
 Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
+Changes 2012-11-14: Combined audience and audience_segment in demandbase and added .rpm to the list of linkDownloadFileTypes
 */
 
 var s_account=metaData['repsuite']
@@ -39,7 +40,7 @@ s.currencyCode="USD"
 s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
-s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,gz,gg,iso,kmz,xml,mp4,m4a,air,ppt,pptx,docx,xlsx,m4v,tar,txt,jpg,jpeg,png,gif,tiff,bmp,rar,msi"
+s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,gz,gg,iso,kmz,xml,mp4,m4a,air,ppt,pptx,docx,xlsx,m4v,tar,txt,jpg,jpeg,png,gif,tiff,bmp,rar,msi,rpm"
 s.linkInternalFilters="javascript:,symantec.com,symantecstore.com,symantecstore.jp,symantec.co,digitalriver.com,veritas.com,altiris.com,enterprisevault.com,brightmail.com,backup.com,symantecvision2011.com,itindustrytrends.com,symanteccloud.com,messagelabs.com,pctools.com,verite.com,backupexec.com,messagelabs.co.uk,messagelabs.com.au,messagelabs.co.jp,messagelabs.com.sg,messagelabs.co.nz,messagelabs.in,messagelabs.it,de.messagelabs.com,messagelabs.de,messagelabs.com.hk,messagelabs.se,messagelabs.no,messagelabs.nl,messagelabs.fr,messagelabs.dk,messagelabs.be,messagelabs.tw,messagelabs.es,messagelabs.org,messagelabs.ch,betterbackupforall.com,techcenter.symantec.com,symantecpartners.vportal.net,symantec-corporation.com,symantec.partnermarketing.com,symantecenterprise.rsys3.net,symantec1.secure"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
@@ -595,6 +596,10 @@ var demandbasePlugin = {
 				dbData.demandbaseID = this.checkAndReturnSameOrErrorValue(dbInfo.demandbase_sid, isDetailed);
 				dbData.audience = this.checkAndReturnSameOrErrorValue(dbInfo.audience, isDetailed);
 				dbData.audienceSegment = this.checkAndReturnSameOrErrorValue(dbInfo.audience_segment, isDetailed);
+				dbData.audiencePlusSegment = dbData.audience;
+				if(dbData.audienceSegment !== ""){
+					dbData.audiencePlusSegment += " > " + dbData.audienceSegment;
+				}
 
 			} else if (!isExternalIp) {
 				dbData.companyName = local;
@@ -651,6 +656,7 @@ var demandbasePlugin = {
 		dbData.demandbaseID = sesData.demandbaseID;
 		dbData.audience = sesData.audience;
 		dbData.audienceSegment = sesData.audienceSegment;
+		dbData.audiencePlusSegment = sesData.audiencePlusSegment
 	}
 
 };
@@ -669,7 +675,7 @@ trackDemandBase = function(){
 			try{
 				s.linkTrackVars = 'prop28,prop51,prop55,prop63,eVar15';
 				s.prop28 = dbData.companyName;
-				s.prop51 = dbData.audienceSegment;
+				s.prop51 = dbData.audiencePlusSegment;
 				s.eVar15 = dbData.employeeCount;
 				s.prop55 = dbData.primaryIndustry;
 				s.prop63 = dbData.subIndustry;
@@ -706,6 +712,12 @@ fireDemandBaseTracking = function(){
 				return true;
 			}
 			if(myPageName.indexOf('en/us: biz: cmp:')>-1){ //campaign pages
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: resources:')>-1){ //resources pages
+				return true;
+			}
+			if(myPageName.indexOf('en/us: biz: services:')>-1){ //services pages
 				return true;
 			}
 		}

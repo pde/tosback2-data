@@ -1947,6 +1947,9 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
          * @param i {Number} The index of the element.
          */
         get: function(i) {
+            if( i === undefined || i === 'NaN'){
+                return;
+            }
             return $('>.jcarousel-item-' + i, this.list);
         },
 
@@ -2108,7 +2111,7 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
          * @param fv {Boolean} Whether to force last item to be visible.
          */
         pos: function(i, fv) {
-            var pos  = $jc.intval(this.list.css(this.lt));
+            var pos  = $jc.intval(this.list[0].style[this.lt]);
 
             if (this.locked || this.animating) {
                 return pos;
@@ -2144,7 +2147,9 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 
                 c = e;
                 d = this.dimension(e);
-
+                if(this.options.defaultItemWidth) {
+                    d = this.options.defaultItemWidth;
+                }
                 if (p) {
                     l += d;
                 }
@@ -2433,7 +2438,7 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 
             if (this.buttonPrev.size() > 0) {
                 this.buttonPrev.unbind(this.options.buttonPrevEvent + '.jcarousel', this.funcPrev);
-
+ 
                 if (p) {
                     this.buttonPrev.bind(this.options.buttonPrevEvent + '.jcarousel', this.funcPrev);
                 }
@@ -3502,6 +3507,445 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 
 	$.pluginize('player', $Crabapple.Player, $Crabapple);
 
+}) (jQuery);/* super_footy.js */
+/**
+ * Used by http://confluence.mtvi.com/display/ENT/SuperFooty+-+Functional+Spec
+ * @author: $author$
+ */
+
+var superFooty = {
+	playerVisible : true,
+	raisePlayer : "+=300",
+	lowerPlayer : "-=300",
+	presentsuper_footy : "+=383",
+	playerLowered : "-296px",
+	animationDuration : 2000,
+
+	init : function() {
+		this.getPlayers();
+		
+		$('.super_footy .player_button_holder .button_holder').click(function () {
+			superFooty.raiseLowerPlayer();
+		});
+		
+		var fn = this.msg;
+		if ($.cookie("super_footy") != '' && $.cookie("super_footy") != "seen"){
+			$.cookie("super_footy", "seen", { expires: 1 });
+			fn = function(){ superFooty.reorderUp() };
+			this.closeButton("up");
+		}else{
+			this.setPlayerDown();
+		}
+		this.animate('.super_footy .middle', this.presentsuper_footy, fn);		
+	},
+
+	raiseLowerPlayer : function(){
+		try{
+			this.super_footyPlayer.pause();
+		}catch(e){ this.msg ("no player yet") }
+		var direction = this.playerVisible ? this.lowerPlayer : this.raisePlayer;
+		var fn = this.msg;
+		if (direction == this.lowerPlayer){
+			this.reorderDown();
+			fn = function(){superFooty.closeButton("down");}
+		}else{
+			fn = function(){ superFooty.reorderUp(); superFooty.pausePlayer();superFooty.closeButton("up"); };
+		}
+		this.animate('.super_footy .player_button_holder', direction, fn);
+		this.playerVisible = !this.playerVisible;
+	},
+	
+	closeButton : function(whichWay){
+		if (whichWay == "down"){
+			$('.super_footy .button_holder').removeClass('top');
+		} else {
+			$('.super_footy .button_holder').addClass('top');
+		}
+	},
+	
+	reorderUp : function (){
+		this.setZIndex('.video_player_holder', 15);
+		this.setZIndex('.promo', 16);
+	},
+	
+	reorderDown : function (){
+		this.setZIndex('.video_player_holder', 5);
+		this.setZIndex('.promo', 3);
+	},
+	
+	getPlayers : function (){
+		var players = MTVNPlayer.getPlayers();
+		this.super_footyPlayer = players[0];
+		
+		if (players.length > 1){
+			this.msg ("binding event to superfooty");
+			this.otherPlayer = players[1];
+			this.super_footyPlayer.bind ("onStateChange",function(state){ 
+				superFooty.pausePlayer();
+			});
+			
+			this.bindPauseToPlayer();
+		};
+		
+	},
+	
+	bindPauseToPlayer : function(){
+		this.msg ("trying to binding event handler to player");
+		if (typeof $video_player == "object" || typeof this.otherPlayer == "object") {
+			this.msg ("BINDING event to player");
+			if (typeof $video_player == "object"){
+				this.msg ("$video_player");
+				$video_player.bind ("onStateChange",function(state){ 
+					superFooty.super_footyPlayer.pause();
+				});
+			}else{
+				this.msg ("the other player");
+				this.otherPlayer.bind ("onStateChange",function(state){ 
+					superFooty.super_footyPlayer.pause();
+				});
+			}
+		}else{
+			this.msg("trying to bind again in 5 seconds");
+			setTimeout (function(){superFooty.bindPauseToPlayer()},5000)
+		}
+	},
+	
+	pausePlayer: function (){
+		if (typeof $video_player == "object"){
+			this.msg ("pausing $video_player");
+			$video_player.pause();
+		}else if (typeof this.otherPlayer == "object"){
+			this.msg ("pausing other player");
+			this.otherPlayer.pause();
+		};
+	},
+
+	setZIndex : function (whichObj, toWhat){
+		$('.super_footy ' + whichObj).css({ "z-index" : toWhat });
+	},
+
+	setPlayerDown : function (){
+		$('.super_footy .player_button_holder').css({ "bottom": this.playerLowered });
+		this.closeButton("down");
+		this.playerVisible = false;
+	},
+
+	animate : function (what, howMuch, fn){
+		 $(what).animate({
+		    bottom: howMuch,
+		  	}, this.animationDuration, fn
+		  );
+	},
+
+	msg : function (txt) {
+		if (typeof console != "undefined"){
+			console.info (txt);
+		}
+	}
+
+}
+		
+$(function () {
+	if($('.super_footy').length > 0) superFooty.init();
+});/* web_show-video_carousel.js */
+/**
+ * You should define _createItemHtml and _makeFakeUrl
+ * functions when you will extend from this module.
+ * required options: ajaxUrl
+ * optional option: _showShareDropdown
+ **/
+(function($) {
+	$Crabapple.WebVideoCarousel = function () {};
+
+	$Crabapple.extend($Crabapple.Module, $Crabapple.WebVideoCarousel, {
+		
+		players: {},
+
+		init: function() {
+			var self = this;
+			this._cacheDOMElements();
+			this._initHistory();
+			this._initCarousel();
+			this._addEventHandlers();
+			setTimeout(function(){
+				self._initPlayerHandler();
+			}, 10000);
+		},
+
+
+		_cacheDOMElements: function() {
+			//here is the objects
+			this.module = $(this.elem);
+			this.ajaxSpinner = this.module.find('.ajax_spinner');
+			//here is the jquery selectors
+			this.previousLink = '.previous';
+			this.nextLink = '.next';
+			this.videoContainer = '.videoWrapper';
+			this.videoThumbnail = this.videoContainer + ' img';
+			this.player = '#video_player_box';
+			this.playBtn = '.videoWrapper .arrow';
+			this.currentClass = 'current';
+			this.blankClass = 'blank';
+			this.currentItem = '.' + this.currentClass;
+			this.loadDescriptionLink = '.load_description';
+			this.descriptionContent = '.meta';
+			this.loadFbCommentsLink =  '.load_comments';
+			this.fbComments = '.fb-comments';
+			this.shareBtn = '.share_button_container .share_button';
+			this.shareDropdown = '.share_button_dropdown';
+		},
+
+		_initCarousel: function() {
+			var self = this,
+				$startItem = this.module.find(this.currentItem).prev();
+			this.module.carouFredSel({
+				items: {
+					visible: 3,
+					start: $startItem,
+					height: 'variable'
+				},
+				scroll: {
+					onBefore: function(oldItems, newItems) {
+						var $current = $(newItems[1]);
+						if (self.module.hasClass('notSendAjax')) {
+							self.module.removeClass('notSendAjax');
+							self._replacePlayer($current.find(self.videoThumbnail));
+						} else {
+							self.ajaxSpinner.show();
+							self.options.History.pushState({
+								'videoId': $current.attr('id')
+							}, null, self._makeFakeUrl($current.data('url')));
+						}
+					},
+					items: 1
+				},
+				auto: false,
+				prev: this.previousLink,
+				next: this.nextLink,
+				height: 'variable',
+				circular: false,
+				infinite: false
+			});
+		},
+
+		_hidePlayer: function($item) {
+			$item.find(this.player).remove();
+			$item.find(this.videoThumbnail).show();
+			$item.find(this.playBtn).show();
+		},
+
+		_initPlayerHandler: function() {
+			MTVNPlayer.onPlayer(function (player) {
+				player.bind('onPlaylistComplete', function() {
+					self.module.trigger('slideTo', [self.module.find(this.currentItem), 1]);
+				});
+			});
+		},
+
+		_initHistory: function() {
+			var self = this;
+			this.options.History = window.History;
+			this.options.History.Adapter.bind(window,'statechange',function() {
+				var State = self.options.History.getState();
+				self._sendAjax(State.data.videoId);
+			});
+		},
+
+		_addEventHandlers: function() {
+			var self = this;
+			this.module.delegate(this.loadDescriptionLink, 'click', function(event) {
+				self._loadContent($(this), event, self.descriptionContent);
+			});
+			this.module.delegate(this.loadFbCommentsLink, 'click', function(event) {
+				self._loadContent($(this), event, self.fbComments);
+			});
+			this.module.delegate(this.videoContainer, 'click', function() {
+				if (!$(this).find(self.player).length) {
+					self._replacePlayer($(this));
+				}
+			});
+			this.module.find(this.shareBtn).unbind('click');
+			this.module.delegate(this.shareBtn, 'click', function(event) {
+				self._initSharing(event, $(this));
+			});
+			this._addFbEventHandlers();	
+},
+
+		_addFbEventHandlers: function() {
+			var self = this;
+			setInterval(function () {
+				self._resizeFbComments();
+			}, 500);
+		},
+
+		_resizeFbComments: function() {
+			var $carousel = this.module.parent(),
+				height = $carousel.height(),
+				currentHeight = this.module.find(this.currentItem).height();
+			if (currentHeight != this.visibleHeight) {
+				$carousel.height(height + currentHeight - this.visibleHeight);
+				this.visibleHeight = $carousel.height();
+			}
+		},
+
+		_initSharing: function(event, $elem) {
+			var timeout = null,
+				self = this;
+			event.preventDefault();
+			$elem.toggleClass('openButton');
+			if (!this.options.excepted_elem) {
+				this.options.excepted_elem = $elem.next()
+					.addClass('web_carousel_sharing')
+					.hide();
+				$('#content_holder').append(this.options.excepted_elem);
+			}
+			// dynamically adjust position of share dropdown
+			if (typeof this.options._showShareDropdown == 'function') {
+				this.options._showShareDropdown(this.options.excepted_elem);
+			} else {
+				this.options.excepted_elem.slideToggle();
+			}
+			$(this.shareDropdown + ', ' + this.shareBtn).hover(function() {
+				clearTimeout(timeout);
+			}, function(){
+				if(self.options.excepted_elem){
+					timeout = setTimeout(function() {
+						$elem.removeClass('openButton');
+						self.options.excepted_elem.hide();
+					}, 500);
+				}
+			});	
+		},
+
+		_replacePlayer: function($videoWrapper) {
+			var html = $videoWrapper.html(),
+				id = $videoWrapper.parent().attr('id');
+			$videoWrapper.html(html + this.players[id]);
+			$videoWrapper.find('img').hide();
+			$videoWrapper.find('.arrow').hide();
+		},
+
+		_makeFakeUrl: function(link) {
+			return link;
+		},
+
+		_loadContent: function($link, event, selector) {
+			var $content = $link.parent().parent().find(selector),
+				$carousel = this.module.parent(),
+				height = $carousel.height();
+			event.preventDefault();
+			$link.find('.triangle').toggleClass('opened');
+			if ($content.hasClass('hidden')) {
+				$carousel.height(height + $content.outerHeight());
+			} else {
+				$carousel.height(height - $content.outerHeight());
+			}
+			this.visibleHeight = $carousel.height();
+			$content.toggleClass('hidden').toggleClass('shown');
+		},
+
+		_sendAjax: function(videoId) {
+			var self = this,
+				feedUrl;
+			if (typeof this.options.ajaxUrl == 'function') {
+				feedUrl = this.options.ajaxUrl() + videoId;
+			} else {
+				feedUrl = this.options.ajaxUrl + videoId;
+			}
+			if (this.options.xhr && this.options.xhr.readyState != 4) {
+				this.options.xhr.abort();
+			}
+			this.options.xhr = $.ajax({
+				url: feedUrl,
+				success: function(data) {
+					self._ajaxSuccess(data);
+				}
+			});
+		},
+
+		getVideoById: function(videoId, url) {
+			this.ajaxSpinner.show();
+			this.module.addClass('notSendAjax');
+			this.options.History.pushState({
+				'videoId': videoId
+			}, null, this._makeFakeUrl(url));
+		},
+
+		_ajaxSuccess: function(data) {
+			this.ajaxSpinner.hide();
+			var jsonObj = $.parseJSON(data),
+				isScroll = false;
+			this._storePlayers(jsonObj);
+			this._addItems(jsonObj, this.module.hasClass('notSendAjax'));
+		},
+
+		_addItems: function(jsonObj, isScroll) {
+			this._addCarouselItem(jsonObj.currentVideo, true);
+			if (jsonObj.nextVideo) {
+				for (video in jsonObj.nextVideo) {
+					this._addCarouselItem(jsonObj.nextVideo[video], false);
+				}
+			}
+			if (jsonObj.previousVideo) {
+				for (video in jsonObj.previousVideo) {
+					this._addCarouselItem(jsonObj.previousVideo[video], false);
+				}
+			}
+			if (isScroll) {
+				this.module.trigger('slideTo', this.module.find(this.currentItem).prev());
+			}
+			FB.XFBML.parse();
+			this._initEmbedBtn();
+		},
+
+		_addCarouselItem: function(videoObject, isCurrent) {
+			var $container = $('#' + videoObject.id),
+				$oldItem;
+			if ($container.hasClass(this.blankClass)) {
+				$container.removeClass(this.blankClass).data('url', videoObject.url);
+				$container.html(this._createItemHtml(videoObject));
+			}
+			if (isCurrent) {
+				$oldItem = this.module.find(this.currentItem);
+				$oldItem.removeClass(this.currentClass);
+				this._hidePlayer($oldItem);
+				$container.addClass(this.currentClass);
+			}
+		},
+
+		_createItemHtml: function(video) {
+			return '';
+		},
+
+		_storePlayers: function(jsonObj) {
+			this._savePlayerForVideos(jsonObj.nextVideo);
+			this._savePlayerForVideos(jsonObj.previousVideos);
+			if (!this.players[jsonObj.currentVideo.id]) {
+				this.players[jsonObj.currentVideo.id] = jsonObj.currentVideo.player;
+			}
+		},
+
+		_savePlayerForVideos: function(videosObject) {
+			if (videosObject) {
+				for (video in videosObject) {
+					if (!this.players[videosObject[video].id]) {
+						this.players[videosObject[video].id] = videosObject[video].player;
+					}
+				}
+			}
+		},
+		
+		_initEmbedBtn: function() {
+			$(".ec_text_response").hide();
+			$(".ec_text").show();
+			var unsetEmbeds = $('.share_bar .embed_btn:visible').not(':has(embed,object)');
+			if (unsetEmbeds.length > 0) {
+				unsetEmbeds.each(function(){
+					$CC(this).sharebar();
+				});
+			}
+		}
+	});
 }) (jQuery);/* overlay.js */
 /**
  * Crabapple Entertainment Overlay Code
@@ -5792,6 +6236,56 @@ function autoLinkTrackEvent(promoName, destinationUrl, extraReportingObjs){
 			mtvn.btg.Controller.sendLinkEvent(baseReportingObj);
 	}
 }
+
+function autoLinkTrackEventFootyPlayer(promoName, destinationUrl){
+	var destinationUrl = (typeof destinationUrl != 'undefined') ? destinationUrl : 'no_destination_url';
+	
+	if (destinationUrl.substr(0,1) == '/') {
+		destinationUrl = window.location.protocol + "//" + window.location.host + destinationUrl;
+	}
+	
+	promoName = promoName.toLowerCase();
+	destinationUrl = destinationUrl.toLowerCase();
+	
+	if (typeof(mtvn) != 'undefined') {
+			mtvn.btg.Controller.sendLinkEvent({
+			linkName:promoName + '|' + pageName,
+			linkType:'o',
+			prop8:repCallObject.prop8,
+			prop25:promoName,
+			prop26:promoName + '|' + pageName,
+			prop27:destinationUrl,
+			prop48:'footy_player',
+			eVar5:destinationUrl,
+			eVar6:repCallObject.eVar6,
+			eVar7:promoName,
+			eVar8:promoName + '|' + pageName,
+			eVar9:pageName,
+			eVar31:'footy_player'
+		});
+	}
+}
+
+
+(function($) {
+	
+	$(".super_footy .promo_1").click(function(){
+		autoLinkTrackEvent('super_footy_1', $(this).attr('href'));
+	});
+	
+	$(".super_footy .promo_2").click(function(){
+		autoLinkTrackEvent('super_footy_2', $(this).attr('href'));
+	});
+	
+	$(".super_footy .video_player_holder").click(function(){
+		autoLinkTrackEventFootyPlayer('super_footy_video', $(this).attr('href'));
+	});
+	
+	$(".super_footy .button_holder").click(function(){
+		autoLinkTrackEvent('super_footy_exit', $(this).attr('href'));
+	});
+	
+}) (jQuery);
 
 function shareBarLinkTracking (shareService, uniqueID) {
 	var shareService = 'share_'+shareService;

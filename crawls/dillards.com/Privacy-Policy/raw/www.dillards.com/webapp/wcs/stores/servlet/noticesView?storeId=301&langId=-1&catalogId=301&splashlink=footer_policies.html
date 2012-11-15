@@ -36,7 +36,7 @@
 	<script type="text/javascript" src="../../../../javascript/compressed/jquery.js"></script>
 	<script language="javascript" src="../../../../javascript/compressed/global.js" ></script>
 	<script type="text/javascript" src="../../../../javascript/dropdown.js"></script>
-	<script type="text/javascript" src="../../../../javascript/compressed/foresee-trigger.js"></script>   
+ 	   
 
 	<link rel="stylesheet" href="../../../../css/compressed/MyDillards.css"/>
 	<script type="text/javascript" src="../../../../javascript/compressed/MyDillards.js"></script>
@@ -739,6 +739,9 @@ function getCookie(c_name)
 </span>
 <span id="wishlist">
 	<a href="http://www.dillards.com/webapp/wcs/stores/servlet/InterestItemDisplay?catalogId=301&amp;storeId=301&amp;langId=-1&amp;cm_sp=Header-_-WishList-_-TextLink">Wish List</a>
+</span>
+<span id="registry" style="display:none">
+<a href="http://www.dillards.com/registry/ManageRegistry.do?cm_sp=Header-_-Registry-_-TextLink">Back to Registry &#9658;</a>
 </span><!--
         1: 43832ES_Consolidated_Header_Cnt
 			<table>
@@ -765,6 +768,9 @@ function getCookie(c_name)
 &lt;/span&gt;
 &lt;span id=&#034;wishlist&#034;&gt;
 	&lt;a href=&#034;/webapp/wcs/stores/servlet/InterestItemDisplay?catalogId=301&amp;storeId=301&amp;langId=-1&amp;cm_sp=Header-_-WishList-_-TextLink&#034;&gt;Wish List&lt;/a&gt;
+&lt;/span&gt;
+&lt;span id=&#034;registry&#034; style=&#034;display:none&#034;&gt;
+&lt;a href=&#034;/registry/ManageRegistry.do?cm_sp=Header-_-Registry-_-TextLink&#034;&gt;Back to Registry &amp;#9658;&lt;/a&gt;
 &lt;/span&gt; </td></tr>
 	        		<tr><td>Location:</td> <td>  </td></tr>
 		         
@@ -1103,6 +1109,9 @@ checkCookie();
 				</div>	
 				<div id="SuggestionListDiv"></div>
 				<button type="submit" id="search-btn" class="primary">Search</button>
+					
+			
+	    
 			<script type="text/javascript">
 
 			var typeAheadContents;
@@ -1222,44 +1231,46 @@ checkCookie();
 					queue:'clear',cacheResponse:false,maxRequests:1,abortOld:true
 				});
 				
-				$("#search-input").keyup(function() {			
-					if ($("#search-input").val().length >= 3){
-						getContent();
-			  		} 
-			  		else  {
-			  			//$("#typeAheadContents").hide();
-			  			getSavedSearchContent();
-			  		}
-				});
-				
-				//$("#search-input").keypress(function() {
-				//  if ($("#search-input").val().length < 3) { 
-			  			//$("#typeAheadContents").hide();
-			  //			getSavedSearchContent();
-			  	//	}
-				//});
-				
-				$("#search-input").focus(function() {
-					if ($("#search-input").val().length >= 3){
-						getContent();
-			  		} 
-			  		else {
-			  			//$("#typeAheadContents").hide();
-			  			//alert("EXECUTE SAVED SEARCH FUNCTION!");
-			  			getSavedSearchContent();
-			  		}
-				});
-				
-				//$("#search-input").mouseenter(function() {
-				//	if ($("#search-input").val().length < 3){
-					//	getContent();
-			  		//} else {
-			  			//$("#typeAheadContents").hide();
-			  			//alert("EXECUTE SAVED SEARCH FUNCTION!");
-			  	//		getSavedSearchContent();
-			  	//	}
-				//});
-				
+				if( 'true' == 'true' )
+				{
+					$("#search-input").keyup(function() {			
+						if ($("#search-input").val().length >= 3){
+							getContent();
+				  		} 
+				  		else  {
+				  			//$("#typeAheadContents").hide();
+				  			getSavedSearchContent();
+				  		}
+					});
+					
+					//$("#search-input").keypress(function() {
+					//  if ($("#search-input").val().length < 3) { 
+				  			//$("#typeAheadContents").hide();
+				  //			getSavedSearchContent();
+				  	//	}
+					//});
+					
+					$("#search-input").focus(function() {
+						if ($("#search-input").val().length >= 3){
+							getContent();
+				  		} 
+				  		else {
+				  			//$("#typeAheadContents").hide();
+				  			//alert("EXECUTE SAVED SEARCH FUNCTION!");
+				  			getSavedSearchContent();
+				  		}
+					});
+					
+					//$("#search-input").mouseenter(function() {
+					//	if ($("#search-input").val().length < 3){
+						//	getContent();
+				  		//} else {
+				  			//$("#typeAheadContents").hide();
+				  			//alert("EXECUTE SAVED SEARCH FUNCTION!");
+				  	//		getSavedSearchContent();
+				  	//	}
+					//});
+				};
 			});
 			</script>
 			</div>
@@ -1495,13 +1506,17 @@ checkCookie();
 			
 					<span class="openClose">My Dillard's</span>
 				
+			|<span id="holidayScheduleOpener" style="padding:0 6px;">
+				<img alt="" src="../../../../images/wreath.png"/>
+				<span>Holiday Shipping Dates</span>
+			</span>
 			|<span style="margin-left:6px;" id="myDillardsCountry">
 				<img alt="" src="../../../../images/flags/US.gif"/>
 				<span id="myDillardsCountryText">
 					<a href="http://www.dillards.com/webapp/wcs/stores/servlet/ContextChooserView?storeId=301&catalogId=301&langId=-1" id="chooseCountry">Change Country</a>
 				</span>
 			</span>
-			|<a style="margin-left:6px;" id="headerCartInfo" href="http://www.dillards.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=301&catalogId=301&langId=-1&URL=OrderItemDisplay&updatePrices=1&calculationUsageId=-1&calculationUsageId=-2&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag<span style="margin-left:6px;" class="fiftyOne-cartTotalItems">(0)</span><span style="margin-left:6px;" class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
+			|<a style="margin-left:6px;" id="headerCartInfo" href="https://www.dillards.com/webapp/wcs/stores/servlet/OrderCalculate?storeId=301&catalogId=301&langId=-1&URL=OrderItemDisplay&updatePrices=1&calculationUsageId=-1&calculationUsageId=-2&orderId=.&cm_sp=Header-_-ShoppingBag-_-TextLink">Shopping Bag<span style="margin-left:6px;" class="fiftyOne-cartTotalItems">(0)</span><span style="margin-left:6px;" class="fiftyOne-cartTotalDollarSign">$</span><span class="fiftyOne-cartTotal">0.00</span></a>
 		</div>
 	</div>
 	<div id="myDillardsContent">
@@ -1511,6 +1526,66 @@ checkCookie();
 			<div class="rightSide">
 				<iframe scrolling="no" name="myDillardsRightFrame" id="myDillardsRightFrame" src="noticesView%3FstoreId=301&amp;langId=-1&amp;catalogId=301&amp;splashlink=footer_policies.html" frameBorder="0" allowTransparency="true" data-host="www.dillards.com"></iframe>
 			</div>
+	</div>
+	<div id="holidayScheduleDropDown">
+		<!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --><!-- Start of JSTLEnvironmentSetup.jspf --><!-- End - JSPF File Name: JSTLEnvironmentSetup.jspf -->
+
+
+<div class="genericESpot"><!--<div class="caption" style="display:none">[HOLIDAY_SHIPPING_2012]</div>--> 
+<!--
+	<table>
+	<tr><td>MarketingSpotIdentifier UniqueID:</td> <td> 100301 </td></tr>
+	<tr><td>MarketingSpotIdentifier Name:</td> <td> HOLIDAY_SHIPPING_2012 </td></tr>
+	</table>			
+-->
+
+<!-- <h4>Categories</h4> -->
+
+	<!-- <h4>Catalog Entries</h4> -->
+
+	<!-- <h4>Content</h4> -->
+  
+ 
+	<div style="font-weight:bold;margin-bottom:3px;">2012 Holiday Season</div>
+	<div>Dec. 5 - Cutoff for APO/FPO/International delivery</div>
+	<div>Dec. 18 (Midnight) - Cutoff for standard delivery</div>
+	<div>Dec. 20 (3:00 PM CST) - Cutoff for expedited delivery</div>
+
+<!-- CHANGE VALUE OF DATA-NEEDEDHEIGHT TO MAKE DROP DOWN TALLER OR SHORTER, TO FIT CONTENT -->
+	<span id="holidayScheduleHeight" data-neededheight="63px" style="display:none;"></span><!--
+        1: 104331HOLIDAY_SHIPPING_2012_CNT
+			<table>
+				<tr><td>Name:</td> <td> HOLIDAY_SHIPPING_2012_CNT </td></tr>
+			  	<tr><td>DataType:</td> <td> MarketingContent </td></tr>
+			  	<tr><td>ActivityIdentifier UniqueID:</td> <td> 0 </td></tr>
+			  	<tr><td>ActivityIdentifier Name:</td> <td>  </td></tr>
+			  	<tr><td>CampaignName:</td> <td>  </td></tr>
+			  	<tr><td>ActivityFormat:</td> <td>  </td></tr>
+			  	<tr><td>ActivityPriority:</td> <td> 1 </td></tr>
+		        <tr><td>Url Link:</td> <td>  </td></tr>	
+		        			
+	        		<tr><td>Marketing Text:</td> <td> &lt;div style=&#034;font-weight:bold;margin-bottom:3px;&#034;&gt;2012 Holiday Season&lt;/div&gt;
+	&lt;div&gt;Dec. 5 - Cutoff for APO/FPO/International delivery&lt;/div&gt;
+	&lt;div&gt;Dec. 18 (Midnight) - Cutoff for standard delivery&lt;/div&gt;
+	&lt;div&gt;Dec. 20 (3:00 PM CST) - Cutoff for expedited delivery&lt;/div&gt;
+
+&lt;!-- CHANGE VALUE OF DATA-NEEDEDHEIGHT TO MAKE DROP DOWN TALLER OR SHORTER, TO FIT CONTENT --&gt;
+	&lt;span id=&#034;holidayScheduleHeight&#034; data-neededheight=&#034;63px&#034; style=&#034;display:none;&#034;&gt;&lt;/span&gt; </td></tr>
+	        		<tr><td>Location:</td> <td>  </td></tr>
+		         
+		        <tr><td>Format UniqueID:</td> <td> 2 </td></tr>
+		        <tr><td>Format Name:</td> <td> Text </td></tr>      	
+		        <tr><td>Content Mime Type:</td> <td>  </td></tr>    
+		        <tr><td>Name:</td> <td>  </td></tr>      	      	      	
+		        <tr><td>Short Description:</td> <td>  </td></tr>      	      	      	      	
+		        <tr><td>Image:</td> <td>  </td></tr>           
+		            
+	      	</table>       	      	 	      	      	      	
+        --> 
+			
+
+</div>
+<!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp --> 
 	</div>
 </div>
 
@@ -4261,7 +4336,7 @@ More info available at http://www.omniture.com -->
 	s.server=document.domain;
 	s.prop7=document.domain;
 	
-	s.prop15="17F823E62CCB102C32D0F909ED49B13B";
+	s.prop15="5029DA682F26102F9128E0447F5D037D";
 	s.campaign=s.getQueryParam('campaign');
 	s.eVar9=s.getQueryParam('Catalog');
 	s.eVar29=s.getQueryParam('ezine');
@@ -4331,7 +4406,7 @@ More info available at http://www.omniture.com -->
  
 	<ul>
 <li class="first"><a href="http://www.dillards.com/shop/Home-Gifts-Gift-Cards/_/N-ydky?cm_sp=EspotFooterBar-_-GiftCards-_-TextLink0212">Dillard's Gift Cards</a></li>
-<li class="second"><a href="http://www.dillards.com/registry?cm_sp=EspotFooterBar-_-Registry-_-TextLink0212">Wedding & Gift Registries</a></li>
+<li class="second"><a href="http://www.dillards.com/registry?cm_sp=EspotFooterBar-_-Registry-_-TextLink0212">Wedding & Baby Registry</a></li>
 <li class="third"><a href="http://catalogs.shoplocal.com/dillards/" onClick="cmCreateConversionEventTag('CatalogsAds', '2', 'Exit Links');">Catalogs & Ads</a></li>
 <li class="fourth"><a href="http://www.dillards.com/webapp/wcs/stores/servlet/StoreLocatorView?storeId=301&amp;catalogId=301&amp;langId=-1&amp;cm_sp=EspotFooterBar-_-StoreLocator-_-TextLink0212">Store Locator & Events</a></li>
 <li class="fifth"><a href="https://www.onlinecreditcenter2.com/eapplygen2/load.do?cHash=733216883&subActionId=1000&siteCode=home0506" target="self" onClick="cmCreateConversionEventTag('ApplyDillardsCard', '2', 'Exit Links');">Apply for a Dillard's Card</a></li>
@@ -4349,7 +4424,7 @@ More info available at http://www.omniture.com -->
 		        			
 	        		<tr><td>Marketing Text:</td> <td> &lt;ul&gt;
 &lt;li class=&#034;first&#034;&gt;&lt;a href=&#034;/shop/Home-Gifts-Gift-Cards/_/N-ydky?cm_sp=EspotFooterBar-_-GiftCards-_-TextLink0212&#034;&gt;Dillard&#039;s Gift Cards&lt;/a&gt;&lt;/li&gt;
-&lt;li class=&#034;second&#034;&gt;&lt;a href=&#034;/registry?cm_sp=EspotFooterBar-_-Registry-_-TextLink0212&#034;&gt;Wedding &amp; Gift Registries&lt;/a&gt;&lt;/li&gt;
+&lt;li class=&#034;second&#034;&gt;&lt;a href=&#034;/registry?cm_sp=EspotFooterBar-_-Registry-_-TextLink0212&#034;&gt;Wedding &amp; Baby Registry&lt;/a&gt;&lt;/li&gt;
 &lt;li class=&#034;third&#034;&gt;&lt;a href=&#034;http://catalogs.shoplocal.com/dillards/&#034; onClick=&#034;cmCreateConversionEventTag(&#039;CatalogsAds&#039;, &#039;2&#039;, &#039;Exit Links&#039;);&#034;&gt;Catalogs &amp; Ads&lt;/a&gt;&lt;/li&gt;
 &lt;li class=&#034;fourth&#034;&gt;&lt;a href=&#034;/webapp/wcs/stores/servlet/StoreLocatorView?storeId=301&amp;catalogId=301&amp;langId=-1&amp;cm_sp=EspotFooterBar-_-StoreLocator-_-TextLink0212&#034;&gt;Store Locator &amp; Events&lt;/a&gt;&lt;/li&gt;
 &lt;li class=&#034;fifth&#034;&gt;&lt;a href=&#034;https://www.onlinecreditcenter2.com/eapplygen2/load.do?cHash=733216883&amp;subActionId=1000&amp;siteCode=home0506&#034; target=&#034;self&#034; onClick=&#034;cmCreateConversionEventTag(&#039;ApplyDillardsCard&#039;, &#039;2&#039;, &#039;Exit Links&#039;);&#034;&gt;Apply for a Dillard&#039;s Card&lt;/a&gt;&lt;/li&gt;
@@ -5106,7 +5181,22 @@ $(document).ready(function() {
 	
 </div>
 
-
+<!-- Show/Hide Registry Link in Header -->
+<script type="text/javascript">
+$(document).ready(function() {
+	var cookieValue = getCookie("WL_HEADER");
+	if (cookieValue != null){
+		var start = cookieValue.indexOf("NUM:") + 4;
+		var stop = cookieValue.indexOf("OPTION:");
+		
+		var optionValue = cookieValue.substring(cookieValue.indexOf("OPTION:") + 7, cookieValue.indexOf("OPTION:") + 8);
+		
+		if ((stop-start) > 0 && optionValue == 'M'){
+			$('#registry').show();
+		}
+	}
+});
+</script>
 	</div><!-- :footer -->
 	<div class="clear">&nbsp;</div>
 </div>

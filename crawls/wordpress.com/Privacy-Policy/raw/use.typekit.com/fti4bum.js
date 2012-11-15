@@ -1,3 +1,6 @@
+/*
+ * For font license information, see the CSS file loaded by this JavaScript.
+ */
 if(!window.Typekit)window.Typekit={};window.Typekit.config={"c":[".tk-skolar","\"skolar\",serif",".tk-open-sans","\"open-sans\",sans-serif"],"f":"//use.typekit.com/c/039771/skolar:n6:i6:n4:i4,open-sans:i4:n3:i3:n4,skolar:n3:i3.Mzf:F:2,PTb:F:2,QyQ:F:2,QyT:F:2,VvD:F:2,VvF:F:2,VvG:F:2,VvH:F:2,WnQ:F:2,WnR:F:2/{format}{/extras*}?3bb2a6e53c9684ffdc9a98f5185b2a629cddff5c0ece98a5fcb52e7f22b4da69c7081f4a71c2b9462303c8fd76b00ba0cc41203147932088f8a7b6c030de9db8d786796053deff4f1b5041b014be286cde05e14ea57c85fb8c5bb1e3664e87e9f7721027061beb79e1931eb3751a89a8eaae90a7faecf258826c4f805c8750490cd3fae0d8a7f0a2395b8999a9a17e9e7721c6d2133e7ac37c8be343ceedf7d9e651b675e960a68a7805605021bdb85d29242dff01d3361badae925cdc58309fde40117102417653b9ca6cdbbeeb76322c7b13a8d1c26d40645a0b56d803d16a93fd943e59380b07","fn":["open-sans",["i4","n4","n3","i3"],"skolar",["i4","n4","i6","n6","n3","i3"]],"k":"//use.typekit.com/{id}.js","p":"//p.typekit.net/p.gif?s=1&k=fti4bum&ht=tk&h={host}&f=67.65.6860.68.15541.15542.14545.14548.14546.14547&a=28&_={_}","w":"fti4bum"};
 /*{"k":"1.1.0","created":"2012-08-20T20:46:29Z"}*/
 ;(function(window,document,undefined){

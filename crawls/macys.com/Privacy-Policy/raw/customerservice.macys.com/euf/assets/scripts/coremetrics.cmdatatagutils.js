@@ -872,9 +872,9 @@ function cm_binb_sha1(x, len)
 
   var w = Array(80);
   var a =  1732584193;
-  var b = -271733879;
+  var b = -*********;
   var c = -1732584194;
-  var d =  271733878;
+  var d =  *********;
   var e = -1009589776;
 
   for(var i = 0; i < x.length; i += 16)
@@ -919,7 +919,7 @@ function cm_sha1_ft(t, b, c, d)
 function cm_sha1_kt(t)
 {
   return (t < 20) ?  1518500249 : (t < 40) ?  1859775393 :
-         (t < 60) ? -1894007588 : -899497514;
+         (t < 60) ? -1894007588 : -*********;
 }
 
 function cm_safe_add(x, y)

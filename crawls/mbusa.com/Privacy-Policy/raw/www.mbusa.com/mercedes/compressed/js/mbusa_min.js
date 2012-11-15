@@ -6342,6 +6342,7 @@ this.VIDEO_DISPLAY_STATE="videoDisplayState";
 this.VIDEO_CAN_PLAY="videoCanPlay";
 this.VIDEO_LOAD_START="videoLoadStart";
 this.VIDEO_EMBED_ERROR="videoEmbedError";
+this.VIDEO_CURRENT_TIME="videoCurrentTime";
 this.ENGINE_READY="engineReady";
 this.ENGINE_INITIALIZED="engineInited";
 this.ENGINE_INITIALIZE_ERROR="engineInitError";
@@ -6360,6 +6361,8 @@ this.FB_INITED="FB_INITED";
 this.PREFERRED_DEALER_UPDATED="preferredDealerUpdated";
 this.GALLERY_MEDIA_LOADED="galleryMediaLoaded";
 this.GALLERY_MEDIA_PRE_LOAD="galleryMediaPreLoad";
+this.GALLERY_NEXT_MEDIA="galleryNextMedia";
+this.GALLERY_PREV_MEDIA="galleryPrevMedia";
 this.HASH_UPDATED="hashUpdated";
 this.CAMPAIGN_HERO_ITEM_READY="campaignHeroItemReady"
 })();var LOG=1,DEBUG=2,INFO=3,WARN=4,ERROR=5,logLevelConsole={LOG:LOG,DEBUG:DEBUG,INFO:INFO,WARN:WARN,ERROR:ERROR},LOG_LEVEL=typeof LOG_LEVEL_CONSOLE==="undefined"?INFO:logLevelConsole[LOG_LEVEL_CONSOLE],WARN_LOG_LEVEL=LOG_LEVEL===WARN?true:false;
@@ -9732,7 +9735,7 @@ mb.logger.debug(o)
 }mb.campaign.register(o)
 },error:function(n,p,o){mb.logger.log("Campaign data error:"+o)
 }})
-}},register:function(k){var j=k.mbDocument.getProperty("contextPath");
+}},register:function(k){var j=(typeof k.mbDocument.getProperty("siteshareContextPath")!="undefined")&&(k.mbDocument.getProperty("siteshareContextPath")!="")?k.mbDocument.getProperty("siteshareContextPath"):k.mbDocument.getProperty("contextPath");
 if(k.mbDocument.getProperty("combineMinify")==="true"){j+="/compressed"
 }d.getScript(j+"/js/campaigns/"+k.campaign.toLowerCase()+".js",function(m,p,o){if(mb.logger.level<=DEBUG){mb.logger.debug(p+" - "+o.status+" - "+k.campaign.toLowerCase()+".js load was performed")
 }try{var l=new mb.campaign.factory();

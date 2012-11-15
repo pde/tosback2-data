@@ -22,7 +22,7 @@
 
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
-  wpAd.flags.hpRefresh = !!wpAd.tools.urlCheck('reload=true');
+  wpAd.flags.vi_test = !!wpAd.tools.urlCheck('vi_test');
   
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -225,6 +225,18 @@
     })();
   };
 
+  wpAd.tools.initVITest = function(what){
+    $('#slug_' + what).viewableImpression({}, function(el){
+      wpAd.tools.addPixel(wpAd.tools.vi_pixels[what][1], what + ' viewed');
+    });
+  };
+  
+  wpAd.tools.vi_pixels = {
+    'inline_bb': [
+      'http://ad.doubleclick.net/ad/wpni.test/view1;sz=1x1;ord=' + Math.floor(Math.random() * 1E5),
+      'http://ad.doubleclick.net/ad/wpni.test/view2;sz=1x1;ord=' + Math.floor(Math.random() * 1E5)
+    ]
+  };
   
   //homepage refresh modification:
   win.TWP = win.TWP || {};
@@ -348,9 +360,21 @@
       tempcase.keyvalues['!c'].push('media');
     }
 
+    if(tempcase.what === 'inline_bb' && wpAd.flags.vi_test && wpAd.tools.vi_pixels[tempcase.what]){
+      wpAd.tools.addPixel(wpAd.tools.vi_pixels[tempcase.what][0], tempcase.what + ' impression');
+      $(function(){
+        if(!$.fn.viewableImpression){
+          wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js', function(){
+            wpAd.tools.initVITest(tempcase.what);
+          });
+        } else {
+          wpAd.tools.initVITest(tempcase.what);
+        }
+      });
+    }
+    
     return tempcase;
   };
-  
 
   win.wpTiles = win.wpTiles || {};
   wpTiles.nnHasAd = function () {

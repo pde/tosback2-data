@@ -1,0 +1,1661 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/eight-biggest-elmo-scandals-kevin-clash-katy-perry-more-video.html",' +
+                '"title": "Eight Biggest Elmo Scandals: Kevin Clash, Katy Perry &amp; More (VIDEO)",' +
+                '"rubric": "Move Over, Big Bird!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "aeb48fb983f365a1b3a19852c363db3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/john-allen-the-other-general.html",' +
+                '"title": "John Allen, the Other General",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2107c92e2ee4d79b675908721c2347dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/president-obama-at-news-conference-finesses-questions-on-david-petraeus-scandal.html",' +
+                '"title": "President Obama, at News Conference, Finesses Questions on David Petraeus Scandal",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e2eb9a83fb6ee03ee13a949bec20669"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/in-praise-of-holly-petraeus-and-other-military-spouses.html",' +
+                '"title": "In Praise of Holly Petraeus and Other Military Spouses",' +
+                '"rubric": "THE GOOD WIFE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "681cc2072dc397d76b800893841c739f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/partisan-journalists-are-following-the-money-all-too-literally.html",' +
+                '"title": "Partisan Journalists Are Following the Money All Too Literally",' +
+                '"rubric": "SHORT CHANGED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d92232c18d3c8b6b95823e2af9d8a3b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/president-obama-at-news-conference-finesses-questions-on-david-petraeus-scandal.html",' +
+                '"title": "President Obama, at News Conference, Finesses Questions on David Petraeus Scandal",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e2eb9a83fb6ee03ee13a949bec20669"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-liberals-want-in-second-obama-term.html",' +
+                '"title": "What Liberals Want in Second Obama Term",' +
+                '"rubric": "Wish List",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "200e059def22696899ee8d312715b239"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/john-allen-the-other-general.html",' +
+                '"title": "John Allen, the Other General",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2107c92e2ee4d79b675908721c2347dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/corporate-america-and-the-fiscal-cliff-ceos-woo-obama.html",' +
+                '"title": "Corporate America and the Fiscal Cliff: CEOs Woo Obama",' +
+                '"rubric": "Money&nbsp;",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "aac1176859d1f3681344606cffcdcd9f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/eight-biggest-elmo-scandals-kevin-clash-katy-perry-more-video.html",' +
+                '"title": "Eight Biggest Elmo Scandals: Kevin Clash, Katy Perry &amp; More (VIDEO)",' +
+                '"rubric": "Move Over, Big Bird!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "aeb48fb983f365a1b3a19852c363db3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/fiscal-cliff-hostage-situation-should-the-rich-get-soaked.html",' +
+                '"title": "Fiscal Cliff Hostage Situation: Should the Rich Get Soaked?",' +
+                '"rubric": "TAXES, MAN",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "105c2f5262e384d87ba98af16ad84557"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/let-alpha-males-like-david-petraeus-cheat.html",' +
+                '"title": "Let Alpha Males Like David Petraeus Cheat!",' +
+                '"rubric": "No Scandal",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "52b07e31d0ee413429092895dc538ea7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/in-praise-of-holly-petraeus-and-other-military-spouses.html",' +
+                '"title": "In Praise of Holly Petraeus and Other Military Spouses",' +
+                '"rubric": "THE GOOD WIFE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "681cc2072dc397d76b800893841c739f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/11/14/eight-biggest-elmo-scandals-kevin-clash-katy-perry-more-video.html",' +
+                '"title": "Eight Biggest Elmo Scandals: Kevin Clash, Katy Perry &amp; More (VIDEO)",' +
+                '"rubric": "Move Over, Big Bird!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "aeb48fb983f365a1b3a19852c363db3d"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/michael-j-morell-introducing-the-cia-s-new-acting-director.html",' +
+                '"title": "Michael J. Morell: Introducing the CIA&rsquo;s New Acting Director",' +
+                '"rubric": "Petraeus&rsquo;s Replacement",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6eae735336c19a5fcbb4867c81b62217"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/10-fictional-replacements-for-cia-chief-david-petraeus.html",' +
+                '"title": "10 Fictional Replacements for CIA Chief David Petraeus",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6544ff0da9460f5b2a78d10a79b4cd1c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-david-petraeus-s-biographer-is-allegedly-his-mistress.html",' +
+                '"title": "Paula Broadwell, David Petraeus&rsquo;s Biographer, Is Allegedly His Mistress",' +
+                '"rubric": "Mystery Woman",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2719e49d1d6bda0fa521b4a3a10a58b3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-liberals-want-in-second-obama-term.html",' +
+                '"title": "What Liberals Want in Second Obama Term",' +
+                '"rubric": "Wish List",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "200e059def22696899ee8d312715b239"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/in-praise-of-holly-petraeus-and-other-military-spouses.html",' +
+                '"title": "In Praise of Holly Petraeus and Other Military Spouses",' +
+                '"rubric": "THE GOOD WIFE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "681cc2072dc397d76b800893841c739f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/john-allen-the-other-general.html",' +
+                '"title": "John Allen, the Other General",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2107c92e2ee4d79b675908721c2347dd"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/in-hollywood-where-are-the-best-actress-oscar-nominees.html",' +
+                '"title": "In Hollywood, Where Are the Best Actress Oscar Nominees?",' +
+                '"rubric": "Oscar Fever",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fbe6915d4df81b6a61abb4ee0d4d1c7f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/eight-biggest-elmo-scandals-kevin-clash-katy-perry-more-video.html",' +
+                '"title": "Eight Biggest Elmo Scandals: Kevin Clash, Katy Perry &amp; More (VIDEO)",' +
+                '"rubric": "Move Over, Big Bird!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "aeb48fb983f365a1b3a19852c363db3d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/why-homeland-spartacus-and-louie-explode-tv-viewers-expectations.html",' +
+                '"title": "Why &lsquo;Homeland,&rsquo; &lsquo;Spartacus,&rsquo; and &lsquo;Louie&rsquo; Explode TV Viewers&rsquo; Expectations",' +
+                '"rubric": "Vox Populi",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d60e03ed4ecc8afea8e2c84024297cea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/abc-s-scandal-women-in-washington-political-power-holly-petraeus.html",' +
+                '"title": "ABC&rsquo;s &lsquo;Scandal&rsquo;: Women in Washington, Political Power, and Holly Petraeus",' +
+                '"rubric": "Gender Politics",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "abdd82ff84634a1e4dc7ffbaa0cb0a93"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/elmo-finds-a-few-new-voices.html",' +
+                '"title": "Elmo Finds A Few New Voices",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9df4ab282236ed865d9d6c5f91c1d96d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/chris-tucker-s-journey-from-tax-problems-to-silver-linings-playbook.html",' +
+                '"title": "Chris Tucker&rsquo;s Journey From Tax Problems to &lsquo;Silver Linings Playbook&rsquo;",' +
+                '"rubric": "&lsquo;Silver Linings&rsquo;&nbsp;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3afb1ca69438f38313627ff005c68715"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/14/petraeus-gets-promoted.html",' +
+                '"title": "Petraeus Gets Promoted",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7062a2696a3a3998d38b9b392197c191"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/life-after-barney-how-kids-tv-grew-up-and-embraced-parental-co-viewing.html",' +
+                '"title": "Life After &lsquo;Barney&rsquo;: How Kids&rsquo; TV Grew Up and Embraced Parental Co-Viewing",' +
+                '"rubric": "LITTLE BOXES",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9a790c12da7a66df3c3379f36366229b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/hey-sexy-lady.html",' +
+                '"title": "Hey, Sexy Lady",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59ef2d93eee3866e2b7a98a75be8383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/david-geffen-s-opposition-towards-dadt.html",' +
+                '"title": "Exclusive: David Geffen\'s DADT Disappointment",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6d41709898d8435f472ecf41a78c2e0f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/12/obama-put-a-ring-on-it.html",' +
+                '"title": "Obama: Put a Ring on It",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "1ffb492949ae2dfa0e500ec3c7391d2a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/marc-jacobs-masturbation-ad.html",' +
+                '"title": "What Is Marc Jacobs Thinking?",' +
+                '"rubric": "Fashion",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "62caddb643a5808fce2d5b6d1f382594"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/in-praise-of-holly-petraeus-and-other-military-spouses.html",' +
+                '"title": "In Praise of Holly Petraeus and Other Military Spouses",' +
+                '"rubric": "THE GOOD WIFE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "681cc2072dc397d76b800893841c739f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/the-number-1-9-percent0.html",' +
+                '"title": "The Number: 1.9%",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "54c04d872807997fb3a69f9196e4522a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/hey-sexy-lady.html",' +
+                '"title": "Hey, Sexy Lady",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59ef2d93eee3866e2b7a98a75be8383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/partisan-journalists-are-following-the-money-all-too-literally.html",' +
+                '"title": "Partisan Journalists Are Following the Money All Too Literally",' +
+                '"rubric": "SHORT CHANGED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d92232c18d3c8b6b95823e2af9d8a3b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/12/the-number-6.html",' +
+                '"title": "The Number: 6",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "ade2df55927ff5578d82dc65c4de7713"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/dilworth-charlotte-mistressville-u-s-a.html",' +
+                '"title": "Dilworth, Charlotte: Mistressville, U.S.A.?",' +
+                '"rubric": "REAL ESTATE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2f81f525cc19978c1b3f7126b68b5806"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-liberals-want-in-second-obama-term.html",' +
+                '"title": "What Liberals Want in Second Obama Term",' +
+                '"rubric": "Wish List",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "200e059def22696899ee8d312715b239"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/05/11/uganda-anti-homosexual-bill-inspired-by-american-evangelicals.html",' +
+                '"title": "The Uganda Anti-Gay Bill\'s U.S. Roots",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5fac1da71573eb283ece5ec574f21bdc"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/11/12/the-republicans-fallacy-about-latino-voters-and-what-motivates-them.html",' +
+                '"title": "The Republicans&rsquo; Fallacy About Latino Voters and What Motivates Them",' +
+                '"rubric": "WRONGHEADED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bcfdad62a3962f943106afd3300511be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/how-xxx-porn-s-domain-name-made-hundreds-of-millions.html",' +
+                '"title": "How &ldquo;.XXX,&rdquo; Porn&rsquo;s Domain Name, Made Hundreds of Millions",' +
+                '"rubric": "Sexy!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8fe8f1e65f85c9360f4b584514c885c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/partisan-journalists-are-following-the-money-all-too-literally.html",' +
+                '"title": "Partisan Journalists Are Following the Money All Too Literally",' +
+                '"rubric": "SHORT CHANGED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d92232c18d3c8b6b95823e2af9d8a3b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/why-is-no-one-watching-abc-s-critically-acclaimed-drama-nashville.html",' +
+                '"title": "Why Is No One Watching ABC&rsquo;s Critically Acclaimed Drama &lsquo;Nashville&rsquo;?",' +
+                '"rubric": "Country Weak",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "bce2bb30289803d86c40665abd3e41d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/corporate-america-and-the-fiscal-cliff-ceos-woo-obama.html",' +
+                '"title": "Corporate America and the Fiscal Cliff: CEOs Woo Obama",' +
+                '"rubric": "Money&nbsp;",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "aac1176859d1f3681344606cffcdcd9f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/dilworth-charlotte-mistressville-u-s-a.html",' +
+                '"title": "Dilworth, Charlotte: Mistressville, U.S.A.?",' +
+                '"rubric": "REAL ESTATE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "2f81f525cc19978c1b3f7126b68b5806"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/early-signs-of-gen-petraeus-extramarital-affair.html",' +
+                '"title": "Early Signs of General Petraeus&rsquo;s Extramarital Affair",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7ed71768b8fcd758aa4020febc7e5255"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/president-obama-at-news-conference-finesses-questions-on-david-petraeus-scandal.html",' +
+                '"title": "President Obama, at News Conference, Finesses Questions on David Petraeus Scandal",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e2eb9a83fb6ee03ee13a949bec20669"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/11/11/what-they-could-have-bought-better-uses-for-campaign-spending.html",' +
+                '"title": "What They Could Have Bought: Better Uses for Campaign Spending",' +
+                '"rubric": "Campaign Spending",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a8722eb89cd4890c8a6ef83100182d49"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/corporate-america-and-the-fiscal-cliff-ceos-woo-obama.html",' +
+                '"title": "Corporate America and the Fiscal Cliff: CEOs Woo Obama",' +
+                '"rubric": "Money&nbsp;",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "aac1176859d1f3681344606cffcdcd9f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/bill-clinton-s-new-gig-ending-breast-cancer.html",' +
+                '"title": "Bill Clinton&rsquo;s New Gig: Curing Breast Cancer",' +
+                '"rubric": "Onward",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7051d1d2ca7d98093fdb4162fdd1a8df"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/partisan-journalists-are-following-the-money-all-too-literally.html",' +
+                '"title": "Partisan Journalists Are Following the Money All Too Literally",' +
+                '"rubric": "SHORT CHANGED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d92232c18d3c8b6b95823e2af9d8a3b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/is-obama-the-lucky-general-or-master-of-the-game.html",' +
+                '"title": "Is Obama the Lucky General or Master of the Game?",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "f8accf61d9eab4394e427a7ff71569ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/11/13/david-geffen-s-opposition-towards-dadt.html",' +
+                '"title": "Exclusive: David Geffen\'s DADT Disappointment",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6d41709898d8435f472ecf41a78c2e0f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-s-behind-nancy-pelosi-s-big-post-election-announcement.html",' +
+                '"title": "What&rsquo;s Behind Nancy Pelosi&rsquo;s Big Post-Election Announcement",' +
+                '"rubric": "Old Guard",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7db361a593111e6fcf17480476c2763f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-s-behind-nancy-pelosi-s-big-post-election-announcement.html",' +
+                '"title": "What&rsquo;s Behind Nancy Pelosi&rsquo;s Big Post-Election Announcement",' +
+                '"rubric": "Old Guard",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7db361a593111e6fcf17480476c2763f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/nancy-pelosi-decides-to-stay-as-democratic-leader-maps-out-women-s.html",' +
+                '"title": "Nancy Pelosi Decides to Stay as Democratic Leader, Maps Out Women&rsquo;s Future",' +
+                '"rubric": "Back in Power",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a6054b460505575b2522fc3d8f18be1a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/11/jill-kelley-5-facts-about-the-petraeus-affair-s-mystery-woman.html",' +
+                '"title": "Jill Kelley: Five Facts About the Petraeus Affair&rsquo;s Mystery Woman",' +
+                '"rubric": "PERSON OF INTEREST",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "db2a552d37f88451871b21672973ab63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/david-petraeus-s-secret-trip-to-libya-after-the-benghazi-attack.html",' +
+                '"title": "David Petraeus&rsquo;s Secret Trip to Libya After the Benghazi Attack",' +
+                '"rubric": "UNDISCLOSED MISSION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "28d69336aeabb95694a11ec7b5de7e1d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/a-scarlet-letter-the-monica-lewinsky-ing-of-paula-broadwell.html",' +
+                '"title": "A Scarlet Letter&mdash;the Monica Lewinsky-ing of Paula Broadwell",' +
+                '"rubric": "VICTIM BLAMING",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f9c3f33c1c08b0457109fcac03956221"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/doctors-as-doormats-in-the-david-petraeus-scandal.html",' +
+                '"title": "Doctors as Doormats in the David Petraeus Scandal",' +
+                '"rubric": "BAD MEDICINE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4dbb456cba95fcb6bd3060117f17a5ba"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-mysteries-about-david-petraeus-paula-broadwell-jill-kelley.html",' +
+                '"title": "Six Mysteries About David Petraeus, Paula Broadwell &amp; Jill Kelley",' +
+                '"rubric": "CIA SCANDAL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "23fbd71e0b0d9bdff0c6252439fb2547"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/rules-david-petraeus-broke-seven-tips-for-a-top-secret-affair.html",' +
+                '"title": "Rules David Petraeus Broke: Seven Tips for a Top-Secret Affair",' +
+                '"rubric": "One-Up the General",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9c729df84424b23b1b266910fdcd7ed7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/the-republicans-fallacy-about-latino-voters-and-what-motivates-them.html",' +
+                '"title": "The Republicans&rsquo; Fallacy About Latino Voters and What Motivates Them",' +
+                '"rubric": "WRONGHEADED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bcfdad62a3962f943106afd3300511be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/08/mitt-romney-s-fast-fade-after-losing-the-2012-presidential-race.html",' +
+                '"title": "Mitt Romney&rsquo;s Fast Fade After Losing the 2012 Presidential Race",' +
+                '"rubric": "Historical Footnote?",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "4d283790945e7681cb37f826c5761d9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/scott-broadwell-adventure-junkie-husband-of-alleged-petraeus-mistress.html",' +
+                '"title": "Scott Broadwell, &lsquo;Adventure Junkie&rsquo; Husband of Alleged Petraeus Mistress",' +
+                '"rubric": "Petraeus Affair",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d8253eb754e086cef89a2ee162dcf1d5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/riots-erupt-in-jordan-the-end-of-absolute-monarchy.html",' +
+                '"title": "Riots Erupt in Jordan: The End of Absolute Monarchy",' +
+                '"rubric": "Kings and Queens",' +
+                '"topic": "World",' +
+                '"urlHashCode": "550519d2d95b3874e90c4c1088b276ab"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/obama-s-dirty-little-secret-to-winning-the-2012-presidential-election.html",' +
+                '"title": "Obama&rsquo;s Dirty Little Secret to Winning the 2012 Presidential Election",' +
+                '"rubric": "PETTY STRATEGY",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "47d791bdebad105992656525cc5efa17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/partisan-journalists-are-following-the-money-all-too-literally.html",' +
+                '"title": "Partisan Journalists Are Following the Money All Too Literally",' +
+                '"rubric": "SHORT CHANGED",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d92232c18d3c8b6b95823e2af9d8a3b4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/what-liberals-want-in-second-obama-term.html",' +
+                '"title": "What Liberals Want in Second Obama Term",' +
+                '"rubric": "Wish List",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "200e059def22696899ee8d312715b239"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/02/r-i-p-mitt-romney.html",' +
+                '"title": "R.I.P., Mitt Romney",' +
+                '"rubric": "It&rsquo;s Over",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ae3cae0be38fd3154c6a95bfcf88f99c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/holly-petraeus-the-woman-behind-the-general.html",' +
+                '"title": "Holly Petraeus: The Woman Behind the General",' +
+                '"rubric": "JILTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "964c04386c2335720f82f98297c0d5c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/10/paula-broadwell-is-she-petraeus-s-other-woman.html",' +
+                '"title": "Paula Broadwell: Is She Petraeus&rsquo;s &lsquo;Other Woman&rsquo;?",' +
+                '"rubric": "Person of Interest",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f877134967858c81c23cc7268af9393b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/five-best-jokes-about-the-petraeus-scandal-video.html",' +
+                '"title": "Five Best Jokes About the Petraeus Scandal (VIDEO)",' +
+                '"rubric": "All In",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3096f2006fee1a8c9c8eb5f7fd43f516"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/fiscal-cliff-hostage-situation-should-the-rich-get-soaked.html",' +
+                '"title": "Fiscal Cliff Hostage Situation: Should the Rich Get Soaked?",' +
+                '"rubric": "TAXES, MAN",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "105c2f5262e384d87ba98af16ad84557"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/president-obama-at-news-conference-finesses-questions-on-david-petraeus-scandal.html",' +
+                '"title": "President Obama, at News Conference, Finesses Questions on David Petraeus Scandal",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2e2eb9a83fb6ee03ee13a949bec20669"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/09/29/hanna-rosin-s-the-end-of-men-turned-me-into-a-caricature.html",' +
+                '"title": "Hanna Rosin&rsquo;s The End of Men Turned Me Into a Caricature",' +
+                '"rubric": "REBUTTAL",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "d45077f30c93d08a8c8fa3e14765e458"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/michael-tomasky-on-how-mitt-romney-finally-killed-reaganomics.html",' +
+                '"title": "Michael Tomasky on How Mitt Romney Finally Killed Reaganomics",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "e93e40cd9766e26bdb6218ba15685933"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/13/paul-ryan-s-catholic-problem.html",' +
+                '"title": "Paul Ryan&rsquo;s Catholic Problem",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6eacf60b7690813f53d0d5b750192915"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/09/michael-j-morell-introducing-the-cia-s-new-acting-director.html",' +
+                '"title": "Michael J. Morell: Introducing the CIA&rsquo;s New Acting Director",' +
+                '"rubric": "Petraeus&rsquo;s Replacement",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6eae735336c19a5fcbb4867c81b62217"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/04/11/george-rr-martin-game-of-thrones-writers-top-10-fantasy-films.html",' +
+                '"title": "George R.R. Martin\'s Top 10 Fantasy Films",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "adbd3c8f0e354a309295d1e45b0445c4"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/large-israeli-offensive-in-gaza-looms-after-hamas-rocket-attacks.html",' +
+                '"title": "Large Israeli Offensive in Gaza Looms After Hamas Rocket Attacks",' +
+                '"rubric": "Hamas Attacks",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4d8d7bd0e09244cd3b5e2e2e0f9dabdd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/new-tea-party-news-network-defining-conservative-brand-and-mission.html",' +
+                '"title": "New Tea Party News Network Defining Conservative Brand and Mission",' +
+                '"rubric": "Conservative Voice",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b8987a5b5157764a281854ac96e1c87c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/14/jill-kelley-s-campaign-to-befriend-petraeus-allen-and-other-top-brass.html",' +
+                '"title": "Jill Kelley&rsquo;s Campaign to Befriend Petraeus, Allen, and Other Top Brass",' +
+                '"rubric": "Star-Studded Strategy",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "bef391cad62bb98ef8f3a4aa72469014"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/12/bright-future-for-fox-news-anchor-megyn-kelly-election-night-star.html",' +
+                '"title": "Bright Future for Fox News Anchor Megyn Kelly, Election Night Star",' +
+                '"rubric": "Election Star",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7edc81b48b380c5ff7dc2cc8448004fc"' +
+            '}' +
+        ']' +
+    '}'
+);

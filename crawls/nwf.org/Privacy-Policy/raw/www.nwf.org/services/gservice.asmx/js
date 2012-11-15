@@ -1,0 +1,47 @@
+var GService=function() {
+GService.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+GService.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return GService._staticInstance.get_path();},
+SetLatLon:function(pID,pLatitude,pLongitude,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'SetLatLon',false,{pID:pID,pLatitude:pLatitude,pLongitude:pLongitude},succeededCallback,failedCallback,userContext); },
+RecenterMapComplete:function(succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'RecenterMapComplete',false,{},succeededCallback,failedCallback,userContext); },
+GetGoogleObject:function(succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetGoogleObject',false,{},succeededCallback,failedCallback,userContext); },
+GetOptimizedGoogleObject:function(succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetOptimizedGoogleObject',false,{},succeededCallback,failedCallback,userContext); }}
+GService.registerClass('GService',Sys.Net.WebServiceProxy);
+GService._staticInstance = new GService();
+GService.set_path = function(value) { GService._staticInstance.set_path(value); }
+GService.get_path = function() { return GService._staticInstance.get_path(); }
+GService.set_timeout = function(value) { GService._staticInstance.set_timeout(value); }
+GService.get_timeout = function() { return GService._staticInstance.get_timeout(); }
+GService.set_defaultUserContext = function(value) { GService._staticInstance.set_defaultUserContext(value); }
+GService.get_defaultUserContext = function() { return GService._staticInstance.get_defaultUserContext(); }
+GService.set_defaultSucceededCallback = function(value) { GService._staticInstance.set_defaultSucceededCallback(value); }
+GService.get_defaultSucceededCallback = function() { return GService._staticInstance.get_defaultSucceededCallback(); }
+GService.set_defaultFailedCallback = function(value) { GService._staticInstance.set_defaultFailedCallback(value); }
+GService.get_defaultFailedCallback = function() { return GService._staticInstance.get_defaultFailedCallback(); }
+GService.set_enableJsonp = function(value) { GService._staticInstance.set_enableJsonp(value); }
+GService.get_enableJsonp = function() { return GService._staticInstance.get_enableJsonp(); }
+GService.set_jsonpCallbackParameter = function(value) { GService._staticInstance.set_jsonpCallbackParameter(value); }
+GService.get_jsonpCallbackParameter = function() { return GService._staticInstance.get_jsonpCallbackParameter(); }
+GService.set_path("/services/gservice.asmx");
+GService.SetLatLon= function(pID,pLatitude,pLongitude,onSuccess,onFailed,userContext) {GService._staticInstance.SetLatLon(pID,pLatitude,pLongitude,onSuccess,onFailed,userContext); }
+GService.RecenterMapComplete= function(onSuccess,onFailed,userContext) {GService._staticInstance.RecenterMapComplete(onSuccess,onFailed,userContext); }
+GService.GetGoogleObject= function(onSuccess,onFailed,userContext) {GService._staticInstance.GetGoogleObject(onSuccess,onFailed,userContext); }
+GService.GetOptimizedGoogleObject= function(onSuccess,onFailed,userContext) {GService._staticInstance.GetOptimizedGoogleObject(onSuccess,onFailed,userContext); }
+var gtc = Sys.Net.WebServiceProxy._generateTypedConstructor;
+Type.registerNamespace('Nwf.Code.Google');
+if (typeof(Nwf.Code.Google.GoogleObject) === 'undefined') {
+Nwf.Code.Google.GoogleObject=gtc("Nwf.Code.Google.GoogleObject");
+Nwf.Code.Google.GoogleObject.registerClass('Nwf.Code.Google.GoogleObject');
+}

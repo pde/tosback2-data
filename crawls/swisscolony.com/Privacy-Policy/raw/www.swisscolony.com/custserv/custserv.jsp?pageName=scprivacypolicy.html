@@ -27,14 +27,41 @@
 		<meta name="verify-v1" content="RJ8lHvRU3p0aK5poK/VvED07PpcyTai5OBJ1IXxSljM="/>
 
 		<script type="text/javascript">
-		      SetCookie('USER_SESSION_VALIDATE_COOKIE', 'false', '', '/');
-		   </script>
-		<script type="text/javascript">
-		      SetCookie('CREDIT_PLAN_FLAG_COOKIE', '28', '400', '/');
-		   </script>
-		<script type="text/javascript">
-		      SetCookie('REFERRING_URL', 'direct', '', '/');
-		   </script>
+            var cart_base = window.location.protocol + "//" + window.location.hostname;
+            var requestURL = cart_base + "/js/cookie_manager.jsp";
+            var queryParams = window.location.search;
+            var params = queryParams.replace("?","");
+            $.ajax({
+                type: "POST",
+                url: requestURL,
+                data: params,
+                dataType: "html",
+                timeout: 15000,
+                success: function(data) {
+                    return true;
+                },
+                error: function() {
+                    return false;
+                }
+            });
+
+            $(document).ready(function() {
+            //Referring Url logic
+            var dummyCookie = GetCookie('isFirstRequest');
+            if (dummyCookie != null && dummyCookie != ''){
+                SetCookie('REFERRING_URL', '', '-1', '/', 'swisscolony.com');
+                SetCookie('isFirstRequest', 'false', '', '/', 'swisscolony.com');
+            } else {
+                var referrer = document.referrer;
+                if (referrer == null || referrer == '' || referrer.indexOf(cart_base) > -1){
+                    referrer = 'direct';
+                }
+                SetCookie('isFirstRequest', 'true', '', '/', 'swisscolony.com');
+                SetCookie('REFERRING_URL', referrer, '', '/', 'swisscolony.com');
+            }
+         });
+       </script>
+
 		<script type="text/javascript" src="../js/ocpsdk/aggregator/script_source.jsp%3Fgkey=sG_2971081364293832346&amp;hash=-3750763034362895579"></script>
 
 <script type="text/javascript">
@@ -62,16 +89,6 @@
 _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
 
 </script>
-
-<script type="text/javascript">
-
-      SetCookie('sli_user_name ', '', '', '/', '.swisscolony.com');
-
-      SetCookie('sli_cart_items ', '0', '', '/', '.swisscolony.com');
-
-      SetCookie('SLI_PIPELINE_SESSION_ID', 'f4c3691bc0a8786550c7833c6d5ffd8d', '', '/', '.swisscolony.com');
-
-   </script>
 
 <link type="text/css" media="screen" href="../../assets.resultspage.com/autosuggest/autosuggest.css" rel="stylesheet">
 
@@ -167,7 +184,6 @@ _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
 		<ul>
 		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/Birthday/index.cat">Birthday</a></li>
 		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/Breakfast/index.cat">Breakfast</a></li>
-		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/Halloween/index.cat">Halloween</a></li>
 		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/Thanksgiving/index.cat">Thanksgiving</a></li>
 		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/Christmas/index.cat">Christmas</a></li>
 		<li><a href="http://www.swisscolony.com/Shop-By-Occasion/All-Occasion-Gifts/index.cat">All Occasion Gifts</a></li>
@@ -276,7 +292,7 @@ function searchProductItem(srchForm){
   top: 147px;
 }
 </style>
-<a href="http://www.swisscolony.com/custserv/custserv.jsp?pageName=rntholidaydelivery"><img src="../assets/images/swiss/header_nav/shipdates-thanksgiving2012.gif" alt="" /></a></div><!-- /ideas -->
+<a href="http://www.swisscolony.com/custserv/custserv.jsp?pageName=rntholidaydelivery"><img src="../assets/images/swiss/header_nav/shipdates-thanksgiving2012-1.jpg" alt="" /></a></div><!-- /ideas -->
 			<br class="clear" />
         </div>
 		  </div><!-- /templateHeader -->

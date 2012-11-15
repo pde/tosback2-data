@@ -1,3 +1,6 @@
+/*
+ * For font license information, see the CSS file loaded by this JavaScript.
+ */
 if(!window.Typekit)window.Typekit={};window.Typekit.config={"c":[".tk-proxima-nova","\"proxima-nova\",sans-serif",".tk-kepler-std-caption","\"kepler-std-caption\",sans-serif"],"f":"//use.typekit.com/c/def88d/proxima-nova:n4:i4:n6:n7:i7,kepler-std-caption:n7:n4.W0V:F:2,W0W:F:2,W0X:F:2,W0Y:F:2,W0Z:F:2,XZt:F:2,XZx:F:2/{format}{/extras*}?3bb2a6e53c9684ffdc9a9aff1b5b2a6276adde0ff798449a3bfbdbbef9fb655ae4b57dc29be954eb9c69dcf73cae6e8d68dd8eee43f7365f20ddebcee5fffd9d84da4c4d9e8c16d33d7bb269dbb6910fd21a599740cc7aa0934a7a","fn":["kepler-std-caption",["n4","n7"],"proxima-nova",["i7","i4","n4","n7","n6"]],"k":"//use.typekit.com/{id}.js","p":"//p.typekit.net/p.gif?s=1&k=jda4hsx&ht=tk&h={host}&f=140.176.175.139.173.14584.14586&a=435472&_={_}","w":"jda4hsx"};
 /*{"k":"1.1.2","created":"2012-11-01T21:22:55Z"}*/
 ;(function(window,document,undefined){

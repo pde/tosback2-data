@@ -235,7 +235,6 @@ else {
 	s.prop31 = mistats.pubdate;
 	s.prop32 = mistats.moddate;
 	s.prop37 = mistats.popular;
-//	s.prop38 = mistats.adposition;
 	s.prop39 = mistats.querystring;
 	s.prop47 = mistats.widgets;
 	s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
@@ -244,12 +243,14 @@ else {
 	s.events = "event7";
 	s.eVar4 = s.pageName;
 
+   s.prop15 = s.c_r('mi_adlst');
+   s.c_w('mi_adlst', '');
+
    if (mistats.bizunit && mistats.bizunit === 'KEN' && mistats.audienceCounts)
       mistats.audienceCounts.updateAll();
 
-   // Update conversion variable with TNT Campaign information
-   if (typeof mitnt_campaign !== 'undefined' && typeof mitnt_recipe !== 'undefined' && mitnt_campaign.length && mitnt_recipe.length)
-      s.eVar7 = mitnt_campaign + ': ' + mitnt_recipe;
+   if (mistats.adTracker)
+      mistats.adTracker.track(mistats.bizunit && mistats.bizunit === 'KEN');
 
 	// Improper Vendor Tracking Code
 	// Added 09/06/09
@@ -388,8 +389,8 @@ else {
       }
    };
 
-   // Interaction Tracking for MIA pilot test -- 2012-01-31 JG
-   if (mistats.bizunit && mistats.bizunit.match(/NAO|SAC|MER|MIA|ELN|KEN|IDA|CDT|BRA|LED|MAC|RHH|TCH|TBH|SUN|BEL|CLT|NAO|SLO|ADN/) && mistats.InteractionTracker)
+   // Interaction Tracker
+   if (mistats.InteractionTracker)
       mistats.interactionTracker = new mistats.InteractionTracker();
 
    // Track surveywall on CharlotteObserver
@@ -405,12 +406,6 @@ else {
       {
          if (mistats.interactionTracker)
             mistats.interactionTracker.increment('gallery_views');
-         else if (mistats.GalleryTracker)
-         {
-            if (!mistats.galleryTracker)
-               mistats.galleryTracker = new mistats.GalleryTracker();
-            mistats.galleryTracker.increment(1);
-         }
 
          if (mistats.gcsTracker)
             mistats.gcsTracker.track(true);
@@ -622,9 +617,6 @@ else {
          'limit=' + ((mistats.mitntrules && mistats.mitntrules.limit) ? mistats.mitntrules.limit : 'unknown')
       ].join(': ') : '';
    }();
-
-   s.prop15 = s.c_r('mi_adlst');
-   s.c_w('mi_adlst', '');
 
 	// IMG tag call
 	// Double Tag Check - Added 11/31/2007 - JJ

@@ -286,23 +286,12 @@ GlobalNav = {
 					var content, firstCol, firstColImage, firstColImageAnchor, firstColContent;
 				
 					content = GlobalNav.util.jMerge(document.createElement("div"));    
-					firstCol = jQuery(document.createElement("div"))
-					firstColImage = jQuery(document.createElement("img"))
-					firstColImageAnchor = jQuery(GlobalNav.util.createAdvancedAnchor(item))
-					firstColContent = jQuery(document.createElement("div"))
+
 					
 					content.css("display", "none");
 					content.addClass("trayContentItem tray" + GlobalNav.util.numberToWord[item.columns.length] + "Col");
 					content.append(firstCol);
 					
-					firstCol.addClass("firstColumn");
-					firstColImage.attr({"src": item.image, "alt": item.displayName});
-					firstColContent.addClass("columnContent");
-					
-					firstColImageAnchor.text("");
-					firstColImageAnchor.append(firstColImage);
-					firstColContent.append(firstColImageAnchor);
-					firstCol.append(firstColContent);
 					
 					jQuery.each(item.columns, function(index, col){
 					
@@ -317,8 +306,13 @@ GlobalNav = {
 						trayHeaderAnchor.attr("name",primaryMenuList.id.split("_")[1] + "_" + item.displayName + "_" + col.displayName);
 						
 						trayContentDiv.addClass("columnContent");
-						if(col.specialTreatment == "myAtt"){trayCol.addClass("myAttCol")}
-						trayCol.addClass("secondColumn");
+						if(col.specialTreatment == "myAtt"){trayCol.addClass("myAttCol");}
+
+						if (index == "0"){
+							trayCol.addClass("firstColumn");
+						} else {
+							trayCol.addClass("secondColumn");
+						}
 						
 						trayMenu.addClass("trayNoBullet");
 						
@@ -668,7 +662,7 @@ GlobalNav = {
 			GlobalNav.SecondaryNav.show.apply(this);
 		},
 		show: function(){
-			if(!this.mouseInside)return
+			if(!this.mouseInside)return;
 			if(!!GlobalNav.SecondaryNav.animation && GlobalNav.SecondaryNav.animation.active){GlobalNav.SecondaryNav.animation.cancel()}
 			
 			if(!this.data("subMenu").hasClass("selected")){
@@ -787,7 +781,7 @@ GlobalNav = {
 			}
 			if (zip) {
 				jQuery.ajax({
-					url:"http://localization.att.com/loc/controller",
+					url:"//localization.att.com/loc/controller",
 					type: "GET",
 					data: { ltype: "rev", zip: zip, segment: seg },
 					dataType: "jsonp",

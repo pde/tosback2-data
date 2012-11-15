@@ -1,0 +1,160 @@
+/* Copyright (C) YOOtheme GmbH, YOOtheme Proprietary Use License (http://www.yootheme.com/license) */
+
+/*
+ * General Widgetkit Style Sheet
+ */
+
+
+/* Grid and Clearing Tools
+----------------------------------------------------------------------------------------------------*/
+
+.clearfix:before,
+.clearfix:after {
+	content: "";
+    display: table;
+}
+.clearfix:after { clear: both; }
+
+/* Grid Units */
+.width20 { width: 20%; }
+.width25 { width: 25%; }
+.width33 { width: 33.333%; }
+.width50 { width: 50%; }
+
+
+/* Content Helpers
+----------------------------------------------------------------------------------------------------*/
+
+/* Fluid images + Removes gap to image containers */
+.wk-slideshow img,
+.wk-gallery img,
+.spotlight img,
+a[data-lightbox] img {
+	max-width: 100%;
+	height: auto;
+	vertical-align: middle;
+}
+
+.wk-slideset img,
+.wk-slideshow canvas { vertical-align: middle; }
+
+/* Force non-fluid image */
+.wk-slideset img { max-width: none; }
+
+/* Force Block element */
+.wk-content > a:first-child { display: block; }
+
+/* Remove margin */
+.wk-content > *:first-child { margin-top: 0;}
+.wk-content > *:last-child { margin-bottom: 0;}
+
+
+/* Widget: Slideshow
+----------------------------------------------------------------------------------------------------*/
+
+.wk-slideshow { visibility: hidden; }
+
+.wk-slideshow,
+.wk-slideshow .slides { position: relative; }
+
+.wk-slideshow .slides,
+.wk-slideshow .nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wk-slideshow .slides > li { position: absolute; }
+.wk-slideshow .slides > li > a { display: block; }
+
+.wk-slideshow .nav li { cursor: pointer; }
+.wk-slideshow .nav span { display: block; }
+
+.wk-slideshow .next,
+.wk-slideshow .prev {
+	position: absolute;
+	z-index: 5;
+	cursor: pointer;
+}
+
+.wk-slideshow .caption {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 5;
+	padding: 10px;
+	background: rgba(0,0,0,0.5);
+}
+
+.wk-slideshow .captions { display: none; }
+.wk-slideshow .caption,
+.wk-slideshow .caption a { color: #fff; }
+.wk-slideshow .caption a { text-decoration: underline; }
+
+
+/* Widget: Slideset
+----------------------------------------------------------------------------------------------------*/
+
+.wk-slideset { visibility: hidden; }
+
+.wk-slideset .sets { overflow: hidden; }
+
+.wk-slideset .set,
+.wk-slideset .nav {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wk-slideset .set {
+	display: none;
+	position: relative;
+	text-align: center;
+	-webkit-transform-origin: left top;
+	-moz-transform-origin: left top;
+	-ms-transform-origin: left top;
+	-o-transform-origin: left top;
+	transform-origin: left top;
+}
+.wk-slideset .set:first-child { display: block; }
+
+.wk-slideset .set > li { position: absolute; }
+
+.wk-slideset .nav span {
+	display: block;
+	cursor: pointer;
+}
+
+.wk-slideset .next,
+.wk-slideset .prev {
+	position: absolute;
+	z-index: 5;
+	cursor: pointer;
+}
+
+
+/* Widget: Accordion
+----------------------------------------------------------------------------------------------------*/
+
+.wk-accordion .toggler {
+	margin: 0;
+	cursor: pointer;
+}
+
+
+/* Responsive
+----------------------------------------------------------------------------------------------------*/
+
+.wk-accordion,
+.wk-map { max-width: 100%; }
+
+/* Only Phones */
+@media (max-width: 767px) {
+
+	.wk-slideshow .caption {
+		font-size: 10px;
+		line-height: 14px;
+	}
+
+}

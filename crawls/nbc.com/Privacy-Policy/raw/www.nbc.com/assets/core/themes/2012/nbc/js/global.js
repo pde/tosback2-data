@@ -161,6 +161,7 @@ function loadGlobalDropdown() {
             loadGlobalDropdownShop();
         });
     }
+	bindNavLinkTracking();
 }
 function loadGlobalDropdownShop() {
     var shopHeader = NBC('#dropdown-global-extras .shop'),

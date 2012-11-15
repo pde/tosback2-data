@@ -125,10 +125,13 @@ jQuery(function($){
 	if($('.ajaxtabs').length != 0){
 		$.getScript('/esupport/javascript/jquery.tabs.js', ajaxtabs, true);
 	}
-
-	if($('form').length != 0){
-		$.getScript('/esupport/javascript/jquery.uniform.js', morphForms, true);
-	}
+   /*Committed changes For PROD12-2676 
+    /javascript/jquery.uniform.js has already been included in /javascript/jquery.combined.js
+     if it doesn't work then please revert the change */
+	
+	//if($('form').length != 0){
+		//$.getScript('/esupport/javascript/jquery.uniform.js', morphForms, true);
+	//}
 	
 	if($('.toggle').length != 0) toggle();
 	if($('.toggleAll').length != 0) toggleAll();

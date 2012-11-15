@@ -34,7 +34,7 @@ loadBORISWidget();window.scrollTo(0,0);}
 function isaQVCloseCallback(){var t=this;$("#QV_size option[value='"+$isaSize+"']").attr("selected","true");try{quickViewBindBackgroundClose();}
 catch(e){;}
 window.scrollTo(0,$("#quickview").offset().top);}
-function isaCartCloseCallback(){var lineID=$("#overlayLineItemId").val();$("#radioShipOption_"+lineID+"[value=HOME]").click();}
+function isaCartCloseCallback(){var lineID=$("#overlayLineItemId").val();shoppingCart.update(lineID);}
 function getRandom(){var d=new Date();return d.getTime()+''+Math.floor((Math.random()*10)+1);}
 function resizeOverlay(){var documentWidth=$(window).width()+22;var documentHeight=$(window).height()+22;$("#modal-overlay").css({left:getViewpointLeft(),top:getViewpointTop(),width:documentWidth,height:documentHeight});var bodyWidth=$("body").width();var offsetLeft=getViewpointLeft()+((bodyWidth-$("#modal-overlay").width())/2);var offsetTop=getViewpointTop()+((getViewpointHeight()-$("#modal-overlay").height())/2);$("#modal-overlay").css({left:offsetLeft,top:offsetTop});}
 function onChangeStoresLinkClick(){cmCreateConversionEventTag("ChangeStorepickup",1,"PDP");registerConversionEvent("PDP","ChangeStorepickup");}

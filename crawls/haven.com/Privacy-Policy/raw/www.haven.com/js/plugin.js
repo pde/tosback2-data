@@ -527,7 +527,14 @@ if (totalRecords > options.pageSize)
       
       $(".pageNav a").click(function(ev)
       {
-      window.scrollTo(0,0);
+	  var $resCount = $(".result-count");
+	  var offsetTop = 0;
+	  if($resCount.length > 0)
+	  {
+		 offsetTop = $resCount.offset().top;
+	  }
+	  
+      window.scrollTo(0,offsetTop);
       ev.preventDefault();
         
               if($(this).attr("rel")=='prev')
@@ -651,11 +658,11 @@ if (totalRecords > options.pageSize)
       $('.pageNav').children().hide();
       for (i=start; i<=end; i++) {
         if (i == end) {
-          $('.prev').hide();
-          $('.next').show();
+          $('#parksMainHolidayFinder .prev').hide();
+          $('#parksMainHolidayFinder .next').show();
         } else if (i == start) {
-          $('.next').hide();
-          $('.prev').show();
+          $('#parksMainHolidayFinder .next').hide();
+          $('#parksMainHolidayFinder .prev').show();
         }
         
         $('.pageNav'+i).show();
@@ -679,18 +686,18 @@ if (totalRecords > options.pageSize)
         
         if (clickedLink > 1 && clickedLink < liSize)
          {
-        $('.prev').show();
-        $('.next').show();
+        $('#parksMainHolidayFinder .prev').show();
+        $('#parksMainHolidayFinder .next').show();
         }
         else if(clickedLink == 1)
         {
-        $('.prev').hide();
-        $('.next').show();
+        $('#parksMainHolidayFinder .prev').hide();
+        $('#parksMainHolidayFinder .next').show();
         }
         else if(clickedLink == liSize)
         {
-        $('.prev').show();
-        $('.next').hide();
+        $('#parksMainHolidayFinder .prev').show();
+        $('#parksMainHolidayFinder .next').hide();
         }
         if($(this).text()=='Previous')
          {
@@ -717,13 +724,13 @@ if (totalRecords > options.pageSize)
             
              if (clickedLink > 1 && clickedLink < liSize)
              {
-             $('.prev').show();
-             $('.next').show();
+             $('#parksMainHolidayFinder .prev').show();
+             $('#parksMainHolidayFinder .next').show();
              }
              else
              {
-              $('.prev').hide();
-              $('.next').show();
+              $('#parksMainHolidayFinder .prev').hide();
+              $('#parksMainHolidayFinder .next').show();
              }
             
             
@@ -760,13 +767,13 @@ if (totalRecords > options.pageSize)
              {
              if (clickedLink < liSize)
              {
-             $('.prev').show();
-             $('.next').show();
+             $('#parksMainHolidayFinder .prev').show();
+             $('#parksMainHolidayFinder .next').show();
              }
              else
              {
-              $('.prev').show();
-              $('.next').hide();
+              $('#parksMainHolidayFinder .prev').show();
+              $('#parksMainHolidayFinder .next').hide();
               }
             }
           
@@ -2162,7 +2169,7 @@ if (totalRecords > options.pageSize)
 
         autoScale: true,
         autoDimensions: true,
-        centerOnScroll: true,
+        centerOnScroll: false,
 
         ajax: {},
         swf: { wmode: 'transparent' },
@@ -3292,6 +3299,8 @@ WEBABACUS.addEvent(window, "open", function() {
 /* natsearch.js ########################################################### */
 // haven natural traffic switcher by arena quantum /////////
 // checks domain on common content to show correct script //
+/* Disable this - DC */
+
 var Host = (("https:" == document.location.protocol) ? "https:" : "http:"); // is current connection secure?
 var siteName = document.domain; // get current domain
 siteName = siteName.split("."); // split domain at full-stops
@@ -3305,7 +3314,7 @@ else if(siteName == 'caravancamping') { // write touring script to the browser
 }
 else { // if current domain neither haven nor caravancamping do nothing...
 }
-
+/* */
 
 
 /* RedWeb - Carousel Animation plugin */

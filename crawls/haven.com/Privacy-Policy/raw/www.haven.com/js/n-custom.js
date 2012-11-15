@@ -840,12 +840,12 @@ $("div#banner-tour #show-tour").load(virtualTourPath);
     {
         if ($("#atAGlance #glanceMore, #atAGlancePopUp #glanceMore, #atAGlanceNew #glanceMore") == null || $("#atAGlance #glanceMore, #atAGlancePopUp #glanceMore, #atAGlanceNew #glanceMore").length == 0)
         {
-          $("#atAGlance .glanceBoxDiv, #atAGlancePopUp #glanceBoxPopUp, #atAGlanceNew .glanceBoxDivNew").html($("#atAGlance .glanceBoxDiv, #atAGlancePopUp #glanceBoxPopUp, #atAGlanceNew .glanceBoxDivNew").html() +  "<div id=\"glanceMore\"><a href=\"Javascript:showAtAGlance();\" onmouseover=\"Javascript:showAtAGlance();\">Show All&gt;</a></div>");
+          $("#atAGlance .glanceBoxDiv, #atAGlancePopUp #glanceBoxPopUp, #atAGlanceNew .glanceBoxDivNew").html($("#atAGlance .glanceBoxDiv, #atAGlancePopUp #glanceBoxPopUp, #atAGlanceNew .glanceBoxDivNew").html() +  "<div id=\"glanceMore\"><a href=\"Javascript:showAtAGlance();\" onmouseover=\"Javascript:showAtAGlance();\">Show All></a></div>");
 
         }
         else
         {
-          $("#atAGlance  #glanceMore, #atAGlancePopUp  #glanceMore, #atAGlanceNew  #glanceMore").html("<a href=\"Javascript:showAtAGlance();\" onmouseover=\"Javascript:showAtAGlance();\">Show All&gt;</a>");
+          $("#atAGlance  #glanceMore, #atAGlancePopUp  #glanceMore, #atAGlanceNew  #glanceMore").html("<a href=\"Javascript:showAtAGlance();\" onmouseover=\"Javascript:showAtAGlance();\">Show All></a>");
         }
     }
    }
@@ -854,7 +854,7 @@ $("div#banner-tour #show-tour").load(virtualTourPath);
    {
     $("#atAGlance .glanceTextDiv li, #atAGlancePopUp #glanceTextPopUp li").removeClass("hiddenDiv");
     $("#atAGlanceNew .glanceBoxDivNew .glanceTextDivNew li").removeClass("hiddenDiv");
-    $("#atAGlance #glanceMore, #atAGlancePopUp #glanceMore, #atAGlanceNew #glanceMore").html("<a href=\"Javascript:partiallyHideAtAGlance();\">Hide&gt;</a>");
+    $("#atAGlance #glanceMore, #atAGlancePopUp #glanceMore, #atAGlanceNew #glanceMore").html("<a href=\"Javascript:partiallyHideAtAGlance();\">Hide></a>");
     //$(".glanceBoxDiv #glanceMore, #glanceBoxPopUp #glanceMore").addClass("hiddenDiv");
    }
    
@@ -1288,7 +1288,7 @@ var loadHFJSCSSDetect = 0;
 if(aDayInLifePath != null || aDayInLifePath != "")
 {
 
-$("#life").attr("href", aDayInLifePath+"?KeepThis=true&amp;TB_iframe=true&amp;height="+aDayInLifePathHeight+"&amp;width="+aDayInLifePathWidth);
+$("#life").attr("href", aDayInLifePath+"?KeepThis=true&TB_iframe=true&height="+aDayInLifePathHeight+"&width="+aDayInLifePathWidth);
 }
 if(aDayInLifePath == null || aDayInLifePath == "")
 {
@@ -2886,7 +2886,7 @@ $(this).hover(function(){
 
 var insideHTML = $(this).html();
 insideHTML = insideHTML.replace(/\s+/g, "");
-insideHTML = insideHTML.replace("&amp;", "and");
+insideHTML = insideHTML.replace("&", "and");
 var matchParks = insideHTML.match("Park");
 if (matchParks == "Park")
 {
@@ -2976,7 +2976,7 @@ var prkCode=prkClass.replace("PARK", "");
 
 var text = $(this).html();
 
-text = text.replace("&amp;", "&");
+text = text.replace("&", "&");
 //alert(text);
  //$("SELECT#myselect").append( new Option(text,value) ); 
  if (len1 !=0)
@@ -3170,7 +3170,7 @@ if (rhsOfferLinkHref != null && rhsOfferLinkHref != "")
   //alert(pId);
   //alert($("#"+pId).attr("title"));
   var descVal = $("#"+pId).attr("title"); 
-  descVal = descVal.replace("&amp;", "and");
+  descVal = descVal.replace("&", "and");
   descVal = descVal.replace("/\s/", "");
   descVal = descVal.replace("-", "");
   WEBABACUS.logclientdata('0',urlPathNameParks+'|?desc='+descVal+'&action=PromoBox');
@@ -3486,23 +3486,23 @@ bindCalendar();
 //debugger;
 });
 
-var minCalDate = new Date();   
+var minCalDate = new Date(2013, 3 - 1, 15)   
 //change this min date to +0 after 1st march to avoid showing old dates
 
 function bindCalendar(){
 
 
-    $(".searchBoxElement .txtDateCls").datepicker({ yearRange: "2011-2012", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 &amp; 7 nights</div>", weekStatus: "" });
-    $(".txtDateClsNoRes").datepicker({ yearRange: "2011-2012", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 &amp; 7 nights</div>", weekStatus: "" });
+    $(".searchBoxElement .txtDateCls").datepicker({ yearRange: "2013", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 & 7 nights</div>", weekStatus: "" });
+    $(".txtDateClsNoRes").datepicker({ yearRange: "2013", minDate: new Date(StartDates), maxDate: new Date(EndDates), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: noWeekendsOrHolidays, showStatus: false, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: "<div class='dpHelpText' style='font-size:0.8em;text-align:left;background-color:#FAEAC8;'><strong>Standard Arrival Dates</strong><br />Monday 4 nights | Saturday 7 nights<br />Friday 3 & 7 nights</div>", weekStatus: "" });
     
-    $(".arrDtTextBox").datepicker({ yearRange: "2011-2012", minDate: minCalDate, maxDate: new Date(2012, 10 - 1, 26), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
+    $(".arrDtTextBox").datepicker({ yearRange: "2013", minDate: minCalDate, maxDate: new Date(2013, 10 - 1, 31), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
     
     //$(".arrivalDateContainerTxtBox").datepicker({yearRange:"2011-2012",minDate:minCalDate,maxDate:new Date(2012,10-1,26),defaultDate:"",dateFormat:"dd/mm/yy",nextText:"N",prevText:"P",hideIfNoPrevNext:true,beforeShowDay:nationalDays,showStatus:true,firstDay:1,changeFirstDay:false,initStatus:"",dayStatus:"",statusForDate:describeDate,helpText:'<div class="holidayHelpText">Bank Holidays are marked in yellow</div>',weekStatus:""});
-    $(".arrivalDateContainerTxtBox").datepicker({ yearRange: "2012", minDate: new Date(2012, 3 - 1, 16), maxDate: new Date(2012, 11 - 1, 04), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
+    $(".arrivalDateContainerTxtBox").datepicker({ yearRange: "2013", minDate: minCalDate, maxDate: new Date(2013, 10 - 1, 31), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
 
-    $(".rightLocationBookThirdDdl .ddlYear").datepicker({ yearRange: "2011-2012", minDate: minCalDate, maxDate: new Date(2012, 10 - 1, 26), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
+    $(".rightLocationBookThirdDdl .ddlYear").datepicker({ yearRange: "2013", minDate: minCalDate, maxDate: new Date(2013, 10 - 1, 31), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
 
-    $(".rightLocationBookFirstDdlNew .ddlYear").datepicker({ yearRange: "2011-2012", minDate: minCalDate, maxDate: new Date(2012, 10 - 1, 26), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
+    $(".rightLocationBookFirstDdlNew .ddlYear").datepicker({ yearRange: "2013", minDate: minCalDate, maxDate: new Date(2013, 10 - 1, 31), defaultDate: "", dateFormat: "dd/mm/yy", nextText: "N", prevText: "P", hideIfNoPrevNext: true, beforeShowDay: nationalDays, showStatus: true, firstDay: 1, changeFirstDay: false, initStatus: "", dayStatus: "", statusForDate: describeDate, helpText: '<div class="holidayHelpText">Bank Holidays are marked in yellow</div>', weekStatus: "" });
     
     $(".arrDtTextBox").attr("readOnly",true);$(".arrivalDateContainerTxtBox").attr("readOnly",true);
     
@@ -3534,7 +3534,6 @@ disabledDateLength = disabledDays.length;
 }
 
 natDays = [
-/*2011*/[1, 3, 2011, "NYD", "New Year Day"], [4, 22, 2011, "GFD", "Good Friday"], [4, 25, 2011, "ESD", "Easter Monday"], [4, 29, 2011, "ESD", "Royal Wedding Holiday"], [5, 2, 2011, "EMD", "Early May Bank Holiday"], [5, 30, 2011, "SPH", "Spring Bank Holiday"], [8, 29, 2011, "SUM", "Summer Bank Holiday"], [12, 26, 2011, "CHD", "Christmas Day"], [12, 27, 2011, "BXD", "Boxing Day"],
 /*2012*/[1, 2, 2012, "NYD", "New Year Day"], [4, 6, 2012, "GFD", "Good Friday"], [4, 9, 2012, "ESD", "Easter Monday"], [5, 7, 2012, "EMD", "Early May Bank Holiday"], [6, 4, 2012, "SPH", "Spring Bank Holiday"], [6, 5, 2012, "SPH", "Queens Diamond Jubilee"], [8, 27, 2012, "SUM", "Summer Bank Holiday"], [12, 25, 2012, "CHD", "Christmas Day"], [12, 26, 2012, "BXD", "Boxing Day"]
 ];
 
@@ -3606,7 +3605,7 @@ function nationalDays(B)
 //alert(B);
     var C="";
     var A=true;
-    if((B.getMonth()==0)||(B.getMonth()==1)||(B.getMonth()==11)||(B.getFullYear()==2012 & (B.getMonth()==2)&&(B.getDate()<16)) || (B.getFullYear()==2011 & (B.getMonth()==2)&&(B.getDate()<18)))
+    if((B.getMonth()==0)||(B.getMonth()==1)||(B.getMonth()==10)||(B.getMonth()==11)||(B.getFullYear()==2013 & (B.getMonth()==2)&&(B.getDate()<15)) || (B.getFullYear()==2011 & (B.getMonth()==2)&&(B.getDate()<18)))
     {
         C="DisabledDate";
         A=false;

@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+<title>Shopping Spree</title>
+<script type="text/javascript" src="../../../js/lib/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../style/v0/fnet.css" media="all" />
+
+<script type="text/javascript">
+
+function submitShoppingSpree() {
+    if ( validateEmail($('#spree_email').val()) && $('#spree_name').val()){
+        $.ajax({
+            type: 'POST',
+            data: $('#spree').serialize()+ '&enter_contest=1',
+            url: window.location.protocol + '//' + window.location.host + '/f/net/contest.html',
+            success: function(){
+                $('#shoppingSpreeName').css('color', '#000');
+                $('#shoppingSpreeEmail').css('color', '#000');
+                parent.window.postMessage('close_popups','*');
+            }
+        });
+    }
+    else {
+        if (!$('#spree_name').val()) { $('#shoppingSpreeName').css('color', '#f00'); }
+        $('#shoppingSpreeEmail').css('color', '#f00'); 
+    }
+}
+
+function validateEmail(elementValue){
+   var emailPattern = /^\s*[\w\.\+-]+@[a-zA-Z0-9\.-]+\.[a-zA-Z]{2,4}\s*$/;
+   return emailPattern.test(elementValue);
+}
+</script>
+</head>
+<body>
+<div id="shoppingSpree" class="popup pop282">
+<form action="shopping_spree.html#" method="post" id="spree" style="padding: 5px 0 0 0;">
+    <div>
+        <span class="req">*</span> = required field
+        <fieldset>
+            <label for="spree_name"><span id="shoppingSpreeName">Enter Name</span> <span class="req">*</span></label>
+            <input tabindex="1" type="text" class="text" name="spree_name" id="spree_name" value="" size="15" />
+        </fieldset>
+        <fieldset>
+            <label for="spree_email"><span id="shoppingSpreeEmail">Enter Email Address</span> <span class="req">*</span></label>
+            <input tabindex="2" type="text" class="text" name="spree_email" id="spree_email" value="" size="15" />
+        </fieldset>
+        <fieldset>
+            <label for="spree_fav_frag">Enter Favorite Fragrance:</label>
+            <input tabindex="3" type="text" class="text" id="spree_fav_frag" name="fav_frag" />
+        </fieldset>
+        <fieldset class="opts clear">
+            <input tabindex="4" type="radio" id="spree_input3" name="gender" value="m" />
+            <label for="spree_input3">Mens</label>
+            <input tabindex="5" type="radio" id="spree_input4" name="gender" value="w" />
+            <label for="spree_input4">Womens</label>
+        </fieldset>
+        <fieldset>
+            <a href="shopping_spree.html#" onclick="submitShoppingSpree(); return false;">
+                <img src="../../../images/btn/btn.submit.green.png" style="width: 69px; height: 24px;" alt="Submit" />
+            </a>
+        </fieldset>
+    </div>
+</form>
+</div>
+</body>
+</html>

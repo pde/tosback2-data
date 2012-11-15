@@ -32,7 +32,7 @@ $(document).ready(function(){
 			if(eDate != undefined)
 		 		date = new Date(eDate).getTime() ;
 
-		 	if(date >=  new Date("11/1/2012").getTime() && date <=  new Date("11/14/2012").getTime() )
+		 	if(date >=  new Date("11/1/2012").getTime() && date <=  new Date("11/15/2012").getTime() )
 			{
 				$('.sponsorLink').attr('href', 'http://www.samsclub.com/sams/windows-8/4680101.cp?pid=20121022');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/win8.png');
@@ -43,22 +43,22 @@ $(document).ready(function(){
 			// 	// $('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Coke/Vitamin-Angels/');
 			// 	$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/coke.png');
 			// }
-			if(date >=  new Date("11/15/2012").getTime() && date <=  new Date("11/21/2012").getTime() )
+			if(date >=  new Date("11/15/2012").getTime() && date <=  new Date("11/22/2012").getTime() )
 			{
 				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Showcase/Samsung_Showcase.aspx');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/samsung.png');
 			}
-			if(date >=  new Date("11/22/2012").getTime() && date <=  new Date("11/28/2012").getTime() )
+			if(date >=  new Date("11/22/2012").getTime() && date <=  new Date("11/29/2012").getTime() )
 			{
 				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Showcase/Serta-Showcase.aspx');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/serta.png');
 			}
-			if(date >=  new Date("11/29/2012").getTime() && date <=  new Date("12/12/2012").getTime() )
+			if(date >=  new Date("11/29/2012").getTime() && date <=  new Date("12/13/2012").getTime() )
 			{
 				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Del-Monte/Holiday/');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/delmonte.png');
 			}
-			if(date >=  new Date("12/13/2012").getTime() && date <=  new Date("12/26/2012").getTime() )
+			if(date >=  new Date("12/13/2012").getTime() && date <=  new Date("12/27/2012").getTime() )
 			{
 				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Unilever/AXE/');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/unilever.png');
@@ -70,6 +70,8 @@ $(document).ready(function(){
 				var startDate = new Date(eventArr[i].PromoStart).getTime();
 				var endDate = new Date(eventArr[i].PromoEnd).getTime();
 
+
+
 				if(date >= startDate && date <= endDate)
 				{
 					if(eventArr[i].Type == "Event")
@@ -78,6 +80,10 @@ $(document).ready(function(){
 						var eventEndDate = "- " + eventArr[i].EventEnd.replace("/2012", "");
 						if(eventEndDate == "- ")
 							eventEndDate = "";
+						if(eventEndDate == undefined)
+							eventEndDate = "";
+						if(eventStartDate == undefined)
+							eventStartDat = "";
 
 						$('.flexSliderEvent').find('ul').append('<li>\
 							<div class="event"> \
@@ -99,7 +105,7 @@ $(document).ready(function(){
 								<h2>'+eventArr[i].Title+'</h2>\
 								<p>'+eventArr[i].Notes+'</p>\
 								<img src="'+eventArr[i].Image+'" class="prodImg">\
-								<a href="'+eventArr[i].URL+'" class="shopNow"><img src="images/shopNow.png"></a>\
+								<a href="'+eventArr[i].URL+'" class="shopNow" target="_top"><img src="images/shopNow.png"></a>\
 							</div>\
                        	</listName>')
 					}
@@ -127,9 +133,18 @@ $(document).ready(function(){
 					}	 
 					if(eventArr[i].Type == "Promo")
 					{
+						var eventStartDate = eventArr[i].EventStart.replace("/2012", "")
+						var eventEndDate = "- " + eventArr[i].EventEnd.replace("/2012", "");
+						if(eventEndDate == "- ")
+							eventEndDate = "";
+						if(eventEndDate == undefined)
+							eventEndDate = "";
+						if(eventStartDate == undefined)
+							eventStartDat = "";
+						
 						$('.flexSliderEvent').find('ul').append('<li>\
 							<div class="catalog"> \
-								<h2>'+eventArr[i].Title+'</h2>\
+								<h2>'+eventArr[i].Title+'<br/> <span>' +eventStartDate + eventEndDate +'</span></h2>\
 								<p>'+eventArr[i].Notes+'</p>\
 								<img src="'+eventArr[i].Image+'" class="prodImg">\
 								<a href="'+eventArr[i].URL+'"  target="_top"><img src="images/ViewEvent.png"></a>\

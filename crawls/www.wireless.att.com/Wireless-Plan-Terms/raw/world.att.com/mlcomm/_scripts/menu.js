@@ -7,6 +7,14 @@
 $('#chooseState').lightBox();
 });
 
+function showLanguageDrop(sel) {
+	value = sel.options[sel.selectedIndex].value;
+	dropLang = '#' + value; 
+	$('#lang-drop option').removeClass('lightboxon');
+	$(dropLang).addClass('lightboxon');
+	$("#chooseLang").trigger('click');
+}
+
 browser = navigator.userAgent;
 checkMac = browser.indexOf('Macintosh');
 if(checkMac !='-1'){checkMacFF = browser.indexOf('Firefox')}

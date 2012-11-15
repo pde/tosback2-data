@@ -7,6 +7,7 @@ var newUser = false;
 
 if (getCookie("__utma") == null) {
     newUser = true;
+    setCookie("newuser", 1);
 }
 
 /* New google analytics functions - need to wire in on a per page basis */
@@ -23,8 +24,31 @@ $(document).ready(function() {
     wireCruiseSearchResultItem();
     wireCruiseDetailsPage();
     removeSurveyFromMobile();
+    loadCompBox();
+    wireWorldWizard();
 });
 
+function loadCompBox() {
+    if ($("body#home, body.ExperienceDefault").length < 1) {
+        if ($("#floatingCompBox #compPlaceholder").length > 0) {
+            if (getCookie("floatingcompbox") == null) {
+                $("#compPlaceholder").load('/templates/pando/ajax/homepagecompbox.aspx?id=' + Math.random(), function() {
+                    $("#floatingCompBox").show(0);
+                    $("#floatingCompBox #compPlaceholder A.thickboxDesk IMG").attr("src", "/Images/btn_EnterNow_flashing.gif");
+                    var rg = $("#floatingCompBox").width();
+                    var tr = $("#nav").width(); // $("#nav").offset().left + 
+                    rg = (tr - rg) - parseInt($("#floatingCompBox").css("padding-right"), 10);
+                    $("#floatingCompBox").css({ left: rg + "px" });
+                    tb_init('#floatingCompBox A.thickboxDesk');
+                    setCookie("floatingcompbox", 1, 3650);
+                    $("#floatingCompBox .closeFloatBox").click(function() {
+                        $("#floatingCompBox").hide(0);
+                    });
+                });
+            }
+        }
+    }
+}
 
 function removeSurveyFromMobile() {
     var deviceWidth = window.screen.width;
@@ -48,6 +72,66 @@ function downton() {
     }
 }
 
+function wireWorldWizard() {
+    var page = "";
+    var stepcount = $("div.WizardController div.step").length;
+    if (stepcount == 2) {
+        page = 'World Wizard Index Page';
+    }
+    if (stepcount == 3) {
+        page = 'World Wizard Results Page';
+    }
+    if (stepcount > 0) {
+        // tag search criteria independent of page
+        $("div.WizardController").delegate("div.step_1 li, div.step_2 li","click", function(event) {
+            var tmp = $(this).children("a");
+            // console.log(tmp.attr("title"));
+            _gaq.push(['_trackEvent', page, 'Search', tmp.attr("title")]);
+        });
+        
+        $("div#holder a.btn-back").click(function(event) {
+            _gaq.push(['_trackEvent', page, 'To main site', 'To main site']);
+        });
+
+        $("div.fixer ul.tabs li A").click(function(event) {
+            var tmp = $(this).parent("li");
+            tmp = tmp.attr("id");
+            tmp = tmp.replace("-", " ");
+            tmp = tmp.replace("imap", "map");
+            // console.log("tab = " + tmp);
+            _gaq.push(['_trackEvent', page, 'Tab', tmp]);
+        });
+
+        $("a.bx-next").click(function(event) {
+            _gaq.push(['_trackEvent', page, 'RHS Next Cruise arrow on click/swipe', 'Next Cruise (RHS)']);
+        });
+        $("a.bx-prev").click(function(event) {
+            _gaq.push(['_trackEvent', page, 'LHS Prev Cruise arrow on click/swipe', 'Prev Cruise (LHS)']);
+        });
+
+        $("div.WizardController").delegate("a.btn", "click", function(event) {
+            _gaq.push(['_trackEvent', page, 'Cruise details page', $(this).attr("rel")]);
+        });
+
+        $("div.WizardController").delegate("btnNext", "click", function(event) {
+            _gaq.push(['_trackEvent', page, 'Next set', 'Next cruises']);
+        });
+        
+        $("div.WizardController").delegate("btnPrev", "click", function(event) {
+            _gaq.push(['_trackEvent', page, 'Previous set', 'Previous cruises']);
+        });
+
+        $("div.WizardController").delegate("div.step_3 ul.options li input,div.step_3 ul.options li label","click",function(event) {
+            var selected = [];
+            $("div.WizardController div.step_3 ul.options input:checked").each(function() {
+                selected.push($(this).next().children("p").text());
+            });
+            var tmp = selected.join(",");
+            // console.log(tmp);
+            _gaq.push(['_trackEvent', page, 'Filter by Region', tmp]);
+        });                
+    }
+}
 
 function wireHeaderNav() {
     $("#main-nav").click(function(event) {
@@ -2299,43 +2383,7 @@ function getFooterFeaturedCruises(query) {
     }
 }
 
-function chkUnchkAllParks(allAirportID)
-{
-        var strAllAirportID=allAirportID;
-       
-//     var status=$("ul.ulDepartureAirports span input[name='All_airports']").attr('checked');
-        var status=$("ul.ulDepartureAirports span input#"+strAllAirportID).prop('checked');
-       
-        if(status==true)
-        {        
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").prop('checked',true);
-             
-        }
-        if(status==false)
-        {
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input").prop('checked',false);
-            $(".hdnCaribbeanFlyCruises").val("");   
-            $(".hdnAirport").val(""); 
-            $(".hdnAllAirports").val("");           
-        }
-}
 
-function unchkAllAirports(airportID)
-{
-        var strAirportID=airportID;
-       
-//     var status=$("ul.ulDepartureAirports span input[name='All_airports']").attr('checked');
-        var status=$("ul.ulDepartureAirports span input#"+strAirportID).prop('checked');
-        
-        var allAirportStatus= $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").prop('checked');
-       
-        if(status==false && allAirportStatus==true)
-        {     
-        
-            $("ul.ulDepartureAirports span.chkBoxDepartureAirportsCruise input#FindBookCruisesUC_All_airports").prop('checked',false);
-             
-        }        
-}
 
 /*function chkUnchkAllChildFreeShips(childFreeShipsID)
 {
@@ -2871,8 +2919,8 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
       if(len>0)
       {
           //alert("inside");
-          
-            $("DIV#divCruisePageTagging").html("<iframe src=\"http://fls.doubleclick.net/activityi;src=2056259;type=pocru750;cat=searc815;qty=1;cost=;u2="+cruiseID+";ord=\" HEIGHT=\"1\" WIDTH=\"1\" FRAMEBORDER=\"0\"></iframe>");
+
+          $("DIV#divCruisePageTagging").html("<iframe src=\"http://fls.doubleclick.net/activityi;src=2056259;type=p0201820;cat=po-se409;u2=" + cruiseID + ";ord=5341943086438.775?\" HEIGHT=\"1\" WIDTH=\"1\" FRAMEBORDER=\"0\"></iframe>");
         }
         
    }
@@ -4816,3 +4864,51 @@ function deleteCookie(name) {
 
 })(window.CookieController = window.CookieController || {}, jQuery);
 /* cookie controller class */
+
+
+/**New search box **/
+
+var searchControl = searchControl || {};
+
+searchControl.bindFilterLinks = function () {
+    //alert("Binding");
+    $("nav .step li a").unbind("click").bind("click", function(event) {
+        event.preventDefault();
+        $checkbox = $(this).parent().find("input[type='checkbox']");
+        if ($checkbox.length > 0) {
+            //alert("checkbox found");
+            if ($checkbox.is(':checked')) {
+                $(this).removeClass("active");
+            }
+            else {
+                $(this).addClass("active");
+            }
+            $checkbox.trigger("click");
+        }
+    });
+}
+
+searchControl.activateFilterLinks =  function () {
+    $("nav .step li a").removeClass("active");
+    $("nav .step li input[type='checkbox']:checked").each(function() {
+        $anchor = $(this).parents("li").find("a");
+        if ($anchor.length > 0) {
+            $anchor.addClass("active");
+        }
+    });
+}
+
+searchControl.showSearchLoading = function (htSelector, margin) {
+    setTimeout("searchControl.displayAJAXGif('" + htSelector + "', " + margin + ");", searchControl.AJAXLoadingDelay);
+}
+
+searchControl.displayAJAXGif =  function (htSelector, margin) {
+    if (searchControl.ajaxLoading) {
+        ht = $(htSelector).height() + margin;
+        $(".loadingDiv").css("height", ht + "px");
+        $(".loadingDiv").css("display", "block");
+    }
+}
+searchControl.hideSearchLoading = function() {
+    $(".loadingDiv").css("display", "none");
+}

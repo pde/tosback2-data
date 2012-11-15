@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html>
+<head>
+<title>Coupon Popup</title>
+<script type="text/javascript" src="../../../js/lib/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../style/v0/fnet.css" media="all" />
+
+<script type="text/javascript">
+function runSlideSubmission(code,coupon,token){
+    if (!code)
+        code = '';
+    if (validateEmail($('#offerPopup input[name=email]').val())){
+        $.ajax({
+            type: 'POST',
+            url: window.location.protocol + '//' + window.location.host + '/f/net/slider_request.html',
+            data: $('#offerPopup form').serialize()+'&data='+escape(coupon),
+            success: function(){
+                if (code)
+                    window.location = window.location.protocol + '//' + window.location.host + '/f/net/coupon.html?coupon_id=' +code+ '&coupon_token='+token;
+                else{
+                    $('#offerPopup form')[0].reset();
+                    $('#offerPopup .couponPopEmailLabel').css('color', '#333');
+                    $('#offerPopup span.errorSpan').hide();
+                    parent.window.postMessage('close_popups','*');
+                }
+            }
+        });
+    }
+    else {
+        $('#offerPopup .couponPopEmailLabel').css('color', '#f00');
+        $('#offerPopup span.errorSpan').show();
+    }
+}
+
+function validateEmail(elementValue){
+   var emailPattern = /^\s*[\w\.\+-]+@[a-zA-Z0-9\.-]+\.[a-zA-Z]{2,4}\s*$/;
+   return emailPattern.test(elementValue);
+}
+</script>
+</head>
+<body>
+<div id="offerPopup" class="popup pop282">
+<form action="coupon_form.html%3Faction=runSlideSubmission('6a4c6b35010fba3e','7a8a248eb05fa5769a93977a76d8e735a74d6bcaa6360ed685dd25c2359b173c.html#" method="post" class="joinlist" style="padding: 5px 0 0 0;" onsubmit="runSlideSubmission('6a4c6b35010fba3e','7a8a248eb05fa5769a93977a76d8e735a74d6bcaa6360ed685dd25c2359b173cf5d76e9dfda6714773b41210dba6922423295947bd130a63666ea257b7483dcb4f9f24a3ff91cb61de4ca734816cbfde6238a07386840aad76fac702569963679120b48a0f2c576ec28507416cce21b5','7a96f69ea85d7f50312e40d8ac38b9e260f45fef'); return false;">
+    <div> 
+        <span class="req">*</span> = required field
+        <fieldset>
+            <label for="email"><span class="couponPopEmailLabel">Enter Email Address</span> <span class="req">*</span><span class="errorSpan" style="display: none;">(Please double check)</span></label>
+            <input tabindex="1" type="text" class="text"  name="email" />
+        </fieldset>
+        <fieldset>
+            <label for="fav_frag">Enter Favorite Fragrance</label>
+            <input tabindex="2" type="text" class="text" name="fav_frag" />
+        </fieldset>
+        <fieldset class="opts clear">
+            <input tabindex="3" type="radio"  name="gender" value="m" />
+            <label for="input3">Mens</label>
+            <input tabindex="4" type="radio"  name="gender" value="w" />
+            <label for="input4">Womens</label>
+        </fieldset>
+        <fieldset>
+          <input type="image" src="../../../images/btn/btn.submit.green.png" width="69" height="24" alt="Submit" />
+        </fieldset>
+        <input type="hidden" name="slider_signup" value="1" />
+    </div>
+</form>
+</div>
+</body>
+</html>

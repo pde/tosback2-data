@@ -64,8 +64,7 @@ function containsclass(obj,className)
 return true;}
 return false;}
 function openBMLWindow(url,height){var iwidth=500,iheight=height;popUpWin=window.open(url,'NewWindow','toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=1,resizable=0,width='+(iwidth+15)+',height='+(iheight+40));}
-function viewCartBannerLink(){registerConversionEvent("Shopping Cart","View Shopping Cart")
-cmCreateConversionEventTag("View Shopping Cart",1,'Shopping Cart',0);return true;}
+function viewCartBannerLink(){registerConversionEvent("Shopping Cart","View Shopping Cart");return true;}
 $(document).ready(function(){$(".ViewCartBannerLink").click(viewCartBannerLink);if($.browser.msie){var originalTitle=document.title.split("#")[0];document.attachEvent('onpropertychange',function(evt){if(evt.propertyName==='title'&&document.title!==originalTitle){setTimeout(function(){document.title=originalTitle;},1);}});}});function isUSCountry(country){return(country=="US"||isUSTerritory(country));}
 function isUSTerritory(country){var USTerrAbbr="AS,GU,MP,PR,PW,VI,FM";return(USTerrAbbr.indexOf(country)>=0);}
 function isUSContigState(state){var USStates="AL,AR,AZ,CA,CO,CT,DE,FL,GA,IA,ID,IL,IN,KS,KY,LA,MA,MD,ME,MI,MN,MO,MS,MT,NC,ND,NE,NH,NJ,NM,NV,NY,OH,OK,OR,PA,RI,SC,SD,TN,TX,UT,VA,VT,WA,WI,WV,WY";return(USStates.indexOf(state)>=0);}
@@ -206,7 +205,8 @@ if(cmConversionCookie==null){cmConversionTags=new Array();}else{cmConversionTags
 found=false;finishArray=new Array();if(cmConversionTags instanceof Array){for(i=0;i<cmConversionTags.length;i++){if(cmConversionTags[i]==(categoryID+"~"+eventID)){found=true;if(!deleteEvent){finishArray.push("\""+cmConversionTags[i]+"\"");}}else{finishArray.push("\""+cmConversionTags[i]+"\"");}}
 createCookie("CM_EVENT",escape("["+finishArray.toString()+"]"));}
 return found;}
-function runCMConversionEventTag(data){cmCreateConversionEventTag(data.conversionEvent,1,data.conversionCategory,0);registerConversionEvent(data.conversionCategory,data.conversionEvent);}
+function runCMConversionEventTag(data){if(data.conversionEvent!="Continue Shopping"){cmCreateConversionEventTag(data.conversionEvent,1,data.conversionCategory,0);}
+registerConversionEvent(data.conversionCategory,data.conversionEvent);}
 function add2cartJS(data,callback){try{if(!data.cm)
 data.cm='JSATC';if(data.cm_pageId&&data.cm_categoryId)
 cmCreatePageviewTag(data.cm_pageId,data.cm_categoryId);$.post("/catalog/addToCartJSON.cfm",data,callback,"json");}

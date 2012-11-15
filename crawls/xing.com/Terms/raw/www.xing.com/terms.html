@@ -11,10 +11,9 @@
 
 
 
+<link rel="shortcut icon" href="img/v/xing_r1.ico" type="image/ico">
 
 <link rel="search" type="application/opensearchdescription+xml" title="XING" href="http://www.xing.com/media/xing-opensearch.xml">
-
-<link rel="shortcut icon" href="img/v/xing_r1.ico" type="image/ico">
 
 <link rel="apple-touch-icon" href="https://www.xing.com/img/n/xing_icon_apple.png">
 
@@ -26,7 +25,7 @@
 
 
 
-<link rel="stylesheet" media="all" href="css/v/10224/general.min.css">
+<link rel="stylesheet" media="all" href="css/v/10225/general.min.css">
 
 
 <link rel="stylesheet" media="all" href="css/v/10091/loggedout.min.css">
@@ -40,22 +39,22 @@
 
 <!--[if IE 8]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10066/ie8.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10067/ie8.min.css">
 
 <![endif]-->
 <!--[if IE 7]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10161/ie7.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10162/ie7.min.css">
 
 <![endif]-->
 <!--[if lte IE 6]>
 
-<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10167/ie6.min.css">
+<link rel="stylesheet" media="all" href="https://www.xing.com/css/v/10168/ie6.min.css">
 
 <![endif]-->
 
 
-<script src="js/v/10112/xing.min.js"></script>
+<script src="js/v/10113/xing.min.js"></script>
 
 <script src="js/v/10047/loggedout.min.js"></script>
 
@@ -63,7 +62,7 @@
 
 <!--[if IE]>
 
-<script src="https://www.xing.com/js/v/10003/ie.min.js"></script>
+<script src="https://www.xing.com/js/v/10004/ie.min.js"></script>
 
 <![endif]-->
 
@@ -84,6 +83,17 @@ type: "/adi",
 unit: "/xing"
 },
 
+
+preloadAssets: [
+"/css/v/10023/startpage.min.css",
+"/css/v/10008/xing/controls/tag_list.css",
+"/js/v/10016/home.min.js",
+"/js/v/10052/news_feed.min.js",
+"/js/v/10006/form_empty_inputs.min.js",
+"/js/v/10036/profile.min.js"
+],
+
+
 confirmPresets: {
 "delete": {
 title: "Wirklich löschen?",
@@ -94,7 +104,7 @@ okLabel: "Ja, bitte löschen."
 ;(function() {
 var monthnames = "Januar,Februar,März,April,Mai,Juni,Juli,August,September,Oktober,November,Dezember".split(","),
 daynames = "Mo,Di,Mi,Do,Fr,Sa,So".split(",");
-$.extend(Date, {
+xing.mixIn(Date, {
 MONTH_NAMES: monthnames,
 DAY_NAMES:   daynames,
 FORMAT:      "DD.MM.YYYY",
@@ -111,18 +121,10 @@ CLOSE:       "Schließen"
 $(function() {
 xing.controls.TopScroller.observe("Nach oben");
 });
-;(function(d) {
-d.createElement("details");
-d.createElement("summary");
-d.createElement("output");
-d.createElement("section");
-})(document);
 </script>
 
-
-
 </head>
-<body class="  logged-out"  >
+<body class="  logged-out">
 
 
 
@@ -158,9 +160,9 @@ d.createElement("section");
 <div id="login-dropdown">
 <form accept-charset="UTF-8" action="https://login.xing.com/login" class="clfx" method="post">
 
-<script src="../login.xing.com/check%3Flogged_out_sid=366442ddebfff20749093c84c13bfbcf%3Bdest_url=https%253a%252f%252fwww.xing.com%252fapp%252fuser%253fop%253dlogin%253bdest%253d%252" defer></script>
+<script src="../login.xing.com/check%3Flogged_out_sid=2861b85f8690979b65084523be3fe92e%3Bdest_url=https%253a%252f%252fwww.xing.com%252fapp%252fuser%253fop%253dlogin%253bdest%253d%252" defer></script>
 <input name="utf8" type="hidden" value="&#x2713;">
-<input name="logged_out_sid" type="hidden" value="366442ddebfff20749093c84c13bfbcf">
+<input name="logged_out_sid" type="hidden" value="2861b85f8690979b65084523be3fe92e">
 <input name="locale" type="hidden" value="de">
 <input name="login_form[dest_url]" type="hidden" value="https://www.xing.com/app/user?op=login;dest=%2fterms">
 <input name="login_form[section]" type="hidden" value="core">
@@ -562,7 +564,7 @@ Sprache: <a href="http://www.xing.com/app/settings?op=language_landingpage">Deut
 $(function() {
 if ($("#mini-signup").length) {
 new xing.controls.MiniSignup("#mini-signup", {
-PASSWORD_LESS_THAN_FOUR_CHARS: "Bitte geben Sie ein Passwort mit mindestens 4 Zeichen ein.",
+PASSWORD_LESS_THAN_FOUR_CHARS: "Bitte wählen Sie ein Passwort (mind. 4 Zeichen).",
 PASSWORD_SAME_AS_FIRSTNAME: "Zu Ihrer Sicherheit sollten Sie ein anderes Passwort wählen als Ihren\nVornamen\n",
 PASSWORD_SAME_AS_LASTNAME: "Zu Ihrer Sicherheit sollten Sie ein anderes Passwort wählen als Ihren\nNachnamen\n",
 PASSWORD_SAME_AS_EMAIL: "Zu Ihrer Sicherheit sollten Sie ein anderes Passwort wählen als Ihre E-Mail-Adresse\n"
@@ -637,7 +639,7 @@ ivwUrl: "https://xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm?r=&d="
 });
 </script>
 
-<img src="../xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm%3Fr=&amp;d=7240919" alt="" width="1" height="1" id="ivw-pixel">
+<img src="../xing.ivwbox.de/cgi-bin/ivw/CP/corpcomm%3Fr=&amp;d=583309764" alt="" width="1" height="1" id="ivw-pixel">
 
 
 

@@ -307,7 +307,7 @@ function addGlobalSharedParams(scope){
      }
 
     params = params +   "&productVariantId=" + productVariantId +
-                        "&shipTo=" + shipTo +
+                        "&shipTo=" + encodeURIComponent(shipTo) +
                         "&productId=" + $("input[type=hidden][name=productId]", scope).val() +
                         "&categoryId=" + $("input[type=hidden][name=categoryId]", scope).val() +
                         "&pCategoryId=" + $("input[type=hidden][name=pCategoryId]", scope).val() +
@@ -341,8 +341,8 @@ function addSharedParams(scope){
                         "&dest=" + $("input[type=hidden][name=dest]", scope).val() +
                         "&giftRegistryIds=" + $("input[type=hidden][name=giftRegistryIds]", scope).val() +
                         "&destinationShipTo=" + encodeURIComponent($("input[type=hidden][name=destinationShipTo]", scope).val()) +
-                        "&shipToFirstName=" + $("input[type=text][name=shipToFirstName]", scope).val() +
-                        "&shipToLastName=" + $("input[type=text][name=shipToLastName]", scope).val() +
+                        "&shipToFirstName=" + encodeURIComponent($("input[type=text][name=shipToFirstName]", scope).val()) +
+                        "&shipToLastName=" + encodeURIComponent($("input[type=text][name=shipToLastName]", scope).val()) +
                         "&shipToZipCode=" + $("input[type=text][name=shipToZipCode]", scope).val() +
                         "&shipToPOBox=" + $("input[type=checkbox][name=shipToPOBox]", scope).val();
                         

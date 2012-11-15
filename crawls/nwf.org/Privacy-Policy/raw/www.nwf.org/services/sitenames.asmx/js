@@ -1,0 +1,32 @@
+var SiteNames=function() {
+SiteNames.initializeBase(this);
+this._timeout = 0;
+this._userContext = null;
+this._succeeded = null;
+this._failed = null;
+}
+SiteNames.prototype={
+_get_path:function() {
+ var p = this.get_path();
+ if (p) return p;
+ else return SiteNames._staticInstance.get_path();},
+GetSiteNames:function(prefixText,count,succeededCallback, failedCallback, userContext) {
+return this._invoke(this._get_path(), 'GetSiteNames',false,{prefixText:prefixText,count:count},succeededCallback,failedCallback,userContext); }}
+SiteNames.registerClass('SiteNames',Sys.Net.WebServiceProxy);
+SiteNames._staticInstance = new SiteNames();
+SiteNames.set_path = function(value) { SiteNames._staticInstance.set_path(value); }
+SiteNames.get_path = function() { return SiteNames._staticInstance.get_path(); }
+SiteNames.set_timeout = function(value) { SiteNames._staticInstance.set_timeout(value); }
+SiteNames.get_timeout = function() { return SiteNames._staticInstance.get_timeout(); }
+SiteNames.set_defaultUserContext = function(value) { SiteNames._staticInstance.set_defaultUserContext(value); }
+SiteNames.get_defaultUserContext = function() { return SiteNames._staticInstance.get_defaultUserContext(); }
+SiteNames.set_defaultSucceededCallback = function(value) { SiteNames._staticInstance.set_defaultSucceededCallback(value); }
+SiteNames.get_defaultSucceededCallback = function() { return SiteNames._staticInstance.get_defaultSucceededCallback(); }
+SiteNames.set_defaultFailedCallback = function(value) { SiteNames._staticInstance.set_defaultFailedCallback(value); }
+SiteNames.get_defaultFailedCallback = function() { return SiteNames._staticInstance.get_defaultFailedCallback(); }
+SiteNames.set_enableJsonp = function(value) { SiteNames._staticInstance.set_enableJsonp(value); }
+SiteNames.get_enableJsonp = function() { return SiteNames._staticInstance.get_enableJsonp(); }
+SiteNames.set_jsonpCallbackParameter = function(value) { SiteNames._staticInstance.set_jsonpCallbackParameter(value); }
+SiteNames.get_jsonpCallbackParameter = function() { return SiteNames._staticInstance.get_jsonpCallbackParameter(); }
+SiteNames.set_path("/services/sitenames.asmx");
+SiteNames.GetSiteNames= function(prefixText,count,onSuccess,onFailed,userContext) {SiteNames._staticInstance.GetSiteNames(prefixText,count,onSuccess,onFailed,userContext); }

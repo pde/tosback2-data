@@ -521,7 +521,12 @@ if($('#quickDTVProg').is('.lightboxon')) {
 	
 	if(setLanguage == 'russian') {
 	var allStatesRu  = {   
-									'california-ru' : '&#1050;&#1072;&#1083;&#1080;&#1092;&#1086;&#1088;&#1085;&#1080;&#1103;'
+									'california-ru' : '&#1050;&#1072;&#1083;&#1080;&#1092;&#1086;&#1088;&#1085;&#1080;&#1103;',
+									'illinois-ru':'&#1048;&#1083;&#1083;&#1080;&#1085;&#1086;&#1081;&#1089;', 
+									'indiana-ru':'&#1048;&#1085;&#1076;&#1080;&#1072;&#1085;&#1072;', 
+									'michigan-ru':'&#1052;&#1080;&#1095;&#1080;&#1075;&#1072;&#1085;',
+									'ohio-ru':'&#1054;&#1075;&#1072;&#1081;&#1086;',
+									'wisconsin-ru':'&#1042;&#1080;&#1089;&#1082;&#1086;&#1085;&#1089;&#1080;&#1085;',
 									}	 										   
 									$.each(allStatesRu, function(index, value) {  
 									   if(($('#state-display').text() != index)) {$('#state-display').text('')}
@@ -543,11 +548,16 @@ if($('#quickDTVProg').is('.lightboxon')) {
 	if(setLanguage == 'polish') {
 	var allStatesPo  = {   
 									'california-po' : 'Kalifornia',
-									'indiana-po':'Indiana',
-									'ohio-po':'Ohio',
-									'illinois-po':'Illinois', 
 									'michigan-po':'Michigan',   
-									'wisconsin-po':'Wisconsin'
+									'illinois-po':'Illinois', 
+									'ohio-po':'Ohio',
+									'indiana-po':'Indiana',
+									'wisconsin-po':'Wisconsin',
+									//'texas-po':'Texas',
+//									'oklahoma-po':'Oklahoma',
+//									'arkansas-po':'Arkansas',
+//									'missouri-po':'Missouri',
+//									'kansas-po':'Kansas',
 									}										   
 									$.each(allStatesPo, function(index, value) {  
 									   if(($('#state-display').text() != index)) {$('#state-display').text('')}

@@ -1,0 +1,939 @@
+var theTicketTophatCookie = "tpg-theticket-newsletter-tophat";
+var theTicketInArticleCookie = "tpg-theticket-newsletter-inarticle";
+var theTicketDialogCookie = "tpg-theticket-newsletter-dialog";
+var theTicketHeaderCookie = "tpg-theticket-newsletter-header";
+var footerOverlayCookie = "tpg-footer-overlay";
+
+
+Drupal.behaviors.TheMagazine = function(context) {
+  $('.tm_blk_config').each(function() {
+      Drupal.TheMagazine.initAdministration(this);
+    });
+
+  $('.big-board-display li').each(function() {
+    Drupal.TheMagazine.initBigBoard(this);
+    });
+  //$('.bigboard-link').hover(Drupal.TheMagazine.bigBoardMouseOver($(this)), Drupal.TheMagazine.bigBoardMouseOut($(this)));
+
+   jQuery.event.add(window, "load", Drupal.TheMagazine.resizeClickableWallpaper);
+   jQuery.event.add(window, "resize", Drupal.TheMagazine.resizeClickableWallpaper);
+   jQuery.event.add(window, "load", Drupal.TheMagazine.initFormFields);
+   jQuery.event.add(window, "load", Drupal.TheMagazine.resizeModalBackground);
+   jQuery.event.add(window, "resize", Drupal.TheMagazine.resizeModalBackground);
+};
+// adding links to blocks for configuration
+Drupal.TheMagazine = {};
+Drupal.TheMagazine.initAdministration = function (link) {
+  var container = $(link).parent();
+  $(container).bind('mouseover', function(){$(this).addClass('tm-admin-hover');});
+  $(container).bind('mouseout', function(){$(this).removeClass('tm-admin-hover');});
+};
+
+Drupal.TheMagazine.initBigBoard = function(item) {
+  $(item).bind('mouseenter', function(){
+    Drupal.TheMagazine.bigBoardMouseOver(this);
+  });
+  $(item).bind('mouseleave', function(){
+    Drupal.TheMagazine.bigBoardMouseOut(this);
+  });
+};
+
+Drupal.TheMagazine.bigBoardMouseOver = function(item) {
+  $(item).addClass('bb-hover-active');
+  var fader = $(item).find('.bigboard-opacity');
+  //var fader = $(item).find('a.bigboard-link');
+
+  if (!$(fader).hasClass('animating')) {
+    $(fader).addClass('animating');
+    $(fader).fadeIn('fast', function() {
+      $(this).removeClass('animating');
+      var parent = $(this).parents('li:eq(0)');
+      if (!$(parent).hasClass('bb-hover-active')) {
+        Drupal.TheMagazine.bigBoardMouseOut(parent);
+      }
+    });
+  }
+};
+
+Drupal.TheMagazine.bigBoardMouseOut = function(item) {
+  $(item).removeClass('bb-hover-active');
+  var fader = $(item).find('.bigboard-opacity');
+  //var fader = $(item).find('a.bigboard-link');
+
+  if (!$(fader).hasClass('animating')) {
+    $(fader).fadeOut('fast', function() {
+      $(this).removeClass('animating');
+      var parent = $(this).parents('li:eq(0)');
+      if ($(parent).hasClass('bb-hover-active')) {
+        Drupal.TheMagazine.bigBoardMouseOver(parent);
+      }
+    });
+  }
+};
+
+Drupal.TheMagazine.resizeClickableWallpaper = function(item)
+{
+    var h = $("#page-container").height() + $("#yahoo-header-wrap").height() + $('#footer').height();
+    //var h = $(document).height();
+    var w = $(window).width();
+    // If safari or chrome, reduce width by 15
+    if (jQuery.browser.safari == true)
+    {
+       w = w - 15;
+    }
+
+    $("#clickable-wallpaper-area").css('height', h);
+    $("#clickable-wallpaper-area").css('width', w);
+};
+
+Drupal.TheMagazine.showClickableWallpaper = function(imageURL, destinationURL, imageTracker, backgroundColor)
+{
+   backgroundColor = typeof(backgroundColor) != 'undefined' ? backgroundColor : '#DADDE1';
+   imageTracker = typeof(imageTracker) != 'undefined' ? imageTracker : '';
+
+   // Set image URL on body style
+   var backgroundStyle = "url(" + imageURL + ") no-repeat fixed center top " + backgroundColor;
+   $('body').css('background', backgroundStyle);
+
+   // Set destination URL for background-clickable-area link
+   $("#clickable-wallpaper-area").attr("href", destinationURL);
+   $("#clickable-wallpaper-area").html(imageTracker);
+
+   // Show wallpaper
+   $("#clickable-wallpaper-container").show();
+};
+
+Drupal.TheMagazine.autoResize = function(id){
+    var newheight;
+    var newwidth;
+
+    if(document.getElementById){
+        newheight=document.getElementById(id).contentWindow.document .body.scrollHeight;
+        newwidth=document.getElementById(id).contentWindow.document .body.scrollWidth;
+    }
+
+    document.getElementById(id).height= (newheight) + "px";
+    document.getElementById(id).width= (newwidth) + "px";
+};
+
+var refreshAdFunctions = [];
+
+var refreshAds = function()
+{
+   OAS_rn = '001234567890'; OAS_rns = '1234567890';
+   OAS_rn = new String (Math.random()); OAS_rns = OAS_rn.substring (2, 11);
+
+   $.each(refreshAdFunctions, function(index, value) {
+      value();
+   });
+}
+
+/* Dialogs */
+Drupal.TheMagazine.showDialog = function(dialogId, dimmed)
+{
+   if (dimmed)
+   {
+      $('#pageModalDimmed').show();
+   }
+   dialogId.show();
+}
+Drupal.TheMagazine.hideDialog = function(dialogId)
+{
+   $('#pageModalDimmed').hide();
+   dialogId.hide();
+}
+Drupal.TheMagazine.showBlockDialog = function(dialogId, dimmed)
+{
+   if (dimmed)
+   {
+      $('#blockModalDimmed').show();
+   }
+   dialogId.show();
+}
+Drupal.TheMagazine.hideBlockDialog = function(dialogId)
+{
+   $('#pageBlockDimmed').hide();
+   dialogId.hide();
+}
+
+
+/* Newsletter */
+
+/* Cookie */
+Drupal.TheMagazine.setSignedUpForNewsletterCookie = function(){
+   $.cookie(theTicketTophatCookie, "confirmed", {path: '/', expires: 3650});
+   $.cookie(theTicketInArticleCookie, "confirmed", {path: '/', expires: 3650});
+   $.cookie(theTicketDialogCookie, "confirmed", {path: '/', expires: 3650});
+   $.cookie(theTicketHeaderCookie, "confirmed", {path: '/', expires: 3650});
+};
+Drupal.TheMagazine.delaySignUpForNewsletterCookie = function(){
+   $.cookie(theTicketTophatCookie, "notconfirmed", {path: '/', expires: 7});
+   $.cookie(theTicketInArticleCookie, "notconfirmed", {path: '/', expires: 7});
+   $.cookie(theTicketDialogCookie, "notconfirmed", {path: '/', expires: 7});
+   $.cookie(theTicketHeaderCookie, "notconfirmed", {path: '/', expires: 7});
+};
+Drupal.TheMagazine.delaySignUpForNewsletterUntilNextSessionTophatCookie = function(){
+   $.cookie(theTicketTophatCookie, "tophathidden", {path: '/', expires: 1});
+};
+Drupal.TheMagazine.delaySignUpForNewsletterUntilNextSessionDialogCookie = function(){
+   $.cookie(theTicketDialogCookie, "dialoghidden", {path: '/', expires: 1});
+};
+Drupal.TheMagazine.setUnsubscribedNewsletterCookie = function(){
+   $.cookie(theTicketTophatCookie, "unsubscribed", {path: '/', expires: 183});
+   $.cookie(theTicketInArticleCookie, "unsubscribed", {path: '/', expires: 183});
+   $.cookie(theTicketDialogCookie, "unsubscribed", {path: '/', expires: 183});
+   $.cookie(theTicketHeaderCookie, "unsubscribed", {path: '/', expires: 183});
+};
+
+/* Show and close top hat */
+Drupal.TheMagazine.hideNewsletterSignUpTopHat = function(){
+   var bar = $(".newsletter-signup-top-hat-container");
+   if (bar.length > 0){
+	   bar.stop().animate({"top" : "-145px"}, 500);
+   }
+
+   // Unbind scroll event handler
+   $(window).unbind("scroll");
+};
+Drupal.TheMagazine.showNewsletterSignUpTopHat = function(){
+   var bar = $(".newsletter-signup-top-hat-container");
+   if (bar.length > 0){
+      var top = bar.css("top");
+      $(window).scroll(function() {
+	      if($(this).scrollTop() > 75) {
+		      bar.stop().animate({"top" : "0px"}, 500);
+	      }
+      });
+   }
+};
+Drupal.TheMagazine.showNewsletterSignUpInArticle = function(){
+   $(".newsletter-signup-inarticle-container").show();
+};
+
+/* Tests to show dialog signup */
+Drupal.TheMagazine.userHasNewsletterDialogCookie = function(){
+   var dialogCookie = $.cookie(theTicketDialogCookie);
+   var inarticleCookie = $.cookie(theTicketInArticleCookie);
+   if ((dialogCookie && dialogCookie.length > 0) || (inarticleCookie && inarticleCookie.length > 0))
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+/* Tests to show dialog signup */
+Drupal.TheMagazine.userHasNewsletterHeaderCookie = function(){
+   var headerCookie = $.cookie(theTicketHeaderCookie);
+   if (headerCookie && headerCookie.length > 0)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+
+/* Tests to show top hat and inarticle signup */
+Drupal.TheMagazine.userHasNewsletterTophatCookie = function(){
+   var tophatCookie = $.cookie(theTicketTophatCookie);
+   var inarticleCookie = $.cookie(theTicketInArticleCookie);
+   if ((tophatCookie && tophatCookie.length > 0) || (inarticleCookie && inarticleCookie.length > 0))
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+
+/* Tests to show footer overlay */
+Drupal.TheMagazine.userHasFooterOverlayCookie = function(){
+   var footerCookie = $.cookie(footerOverlayCookie);
+   if (footerCookie && footerCookie.length > 0)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+Drupal.TheMagazine.doShowFooterOverlay = function(){
+   if (Drupal.TheMagazine.userHasFooterOverlayCookie() == false)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+
+Drupal.TheMagazine.setFooterOverlayClosed = function(){
+   $("#footer-overlay-container").hide();
+   $.cookie(footerOverlayCookie, "closed", {path: '/', expires: 2});
+};
+
+Drupal.TheMagazine.doShowTheTicketNewsletterSignUpDialog = function(){
+   /* Here, for the signup dialog, we're going to check the tophat cookie to see if the user if already confirmed.
+    * If they're already confirmed, we'll update the dialog cookie appropriately*/
+   if ($.cookie(theTicketTophatCookie) == "confirmed")
+   {
+      $.cookie(theTicketDialogCookie, "confirmed", {path: '/', expires: 3650});
+   }
+
+   if (Drupal.TheMagazine.userHasNewsletterDialogCookie() == false)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+Drupal.TheMagazine.doShowTheTicketNewsletterSignUpHeader = function(){
+   /* Here, for the header dialog, we're going to check the tophat cookie to see if the user if already confirmed.
+    * If they're already confirmed, we'll update the dialog cookie appropriately*/
+   if ($.cookie(theTicketTophatCookie) == "confirmed")
+   {
+      $.cookie(theTicketHeaderCookie, "confirmed", {path: '/', expires: 3650});
+   }
+
+   if (Drupal.TheMagazine.userHasNewsletterHeaderCookie() == false)
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+Drupal.TheMagazine.doShowTheTicketNewsletterSignUpTopHat = function(){
+   var inArticle = $(".newsletter-signup-inarticle-container");
+   if ((Drupal.TheMagazine.userHasNewsletterTophatCookie() == false) && (inArticle.length == 0))
+   {
+      return true;
+   }
+   else
+   {
+      return false;
+   }
+};
+Drupal.TheMagazine.doShowTheTicketNewsletterSignUpInArticle = function(){
+
+   // If we have the inarticle cookie, that means we've either signed up, or the signup is pending 1 or 7 days.
+   // If we don't have an in-article cookie (regardless of the status of the tophat cookie, we can display
+   // the in-article module.
+   var inarticleCookie = $.cookie(theTicketInArticleCookie);
+
+   if (inarticleCookie && inarticleCookie.length > 0)
+   {
+      return false;
+   }
+   else
+   {
+      return true;
+   }
+};
+
+/* Show and hide dialogs */
+Drupal.TheMagazine.hideNewsletterSignUpSuccessDialog = function(){
+   // Close Dialog
+   Drupal.TheMagazine.hideDialog($("#newsletterSignUpSuccessDialog"));
+
+   // Don't show top hat for a short amount of time
+	Drupal.TheMagazine.delaySignUpForNewsletterCookie();
+
+   // Close Top Hat
+   Drupal.TheMagazine.hideNewsletterSignUpTopHat();
+
+   // Reset Top Hat Form
+   $('#mc-embedded-subscribe-form').each(function(){
+      this.reset();
+   });
+};
+Drupal.TheMagazine.hideNewsletterSignUpConfirmationSuccessDialog = function(){
+	// Close Dialog
+   Drupal.TheMagazine.hideDialog($("#newsletterSignUpConfirmationSuccessDialog"));
+
+   // Refresh to the homepage
+//   var newURL = window.location.protocol + "://" + window.location.host + "/" + window.location.pathname;
+   // We'll just use pathname to refresh to /
+   window.location.replace(window.location.pathname);
+};
+Drupal.TheMagazine.hideNewsletterSignUpErrorDialog = function(){
+	// Close Dialog
+   Drupal.TheMagazine.hideDialog($("#newsletterSignUpErrorDialog"));
+};
+Drupal.TheMagazine.showNewsletterSignUpErrorDialog = function(msg){
+	// Remove links from error message and set error message within dialog
+   $('#newsletterSignUpErrorMessage').html(msg);
+   $("#newsletterSignUpErrorMessage a").empty();
+
+   // Scroll to top of page
+   //Drupal.TheMagazine.scrollToTop();
+
+	// Show Dialog
+   Drupal.TheMagazine.showDialog($("#newsletterSignUpErrorDialog"), true);
+};
+Drupal.TheMagazine.showNewsletterSignUpSuccessDialog = function(){
+   // Scroll to top of page
+   //Drupal.TheMagazine.scrollToTop();
+
+	// Show Dialog
+   Drupal.TheMagazine.showDialog($("#newsletterSignUpSuccessDialog"), true);
+};
+Drupal.TheMagazine.showNewsletterSignUpConfirmationSuccessDialog = function(){
+   // Scroll to top of page
+   //Drupal.TheMagazine.scrollToTop();
+
+	// Show Dialog
+   Drupal.TheMagazine.showDialog($("#newsletterSignUpConfirmationSuccessDialog"), true);
+};
+Drupal.TheMagazine.showNewsletterUnsubscribeDialog = function(){
+   // Scroll to top of page
+   //Drupal.TheMagazine.scrollToTop();
+
+	// Show Dialog
+   Drupal.TheMagazine.showDialog($("#newsletterUnsubscribeDialog"), true);
+
+};
+Drupal.TheMagazine.hideNewsletterUnsubscribeDialog = function(){
+	// Close Dialog
+   Drupal.TheMagazine.hideDialog($("#newsletterUnsubscribeDialog"));
+
+   // Refresh to the homepage
+   window.location.replace(window.location.pathname);
+};
+
+Drupal.TheMagazine.hideNewsletterSignUpDialog = function(){
+   // Scroll to top of page
+   //Drupal.TheMagazine.scrollToTop();
+
+	// Close Dialog
+   Drupal.TheMagazine.hideDialog($("#newsletterSignUpDialog"));
+};
+
+
+/* Mail Chimp Functions */
+function clearMCESubmitMessages()
+{
+   $('#mce-success-response').html("");
+   $('#mce-error-response').html("");
+}
+function isMCESubmitSuccess()
+{
+   return $('#mce-success-response').html() != "" ;
+}
+
+function isMCESubmitError()
+{
+   return $('#mce-error-response').html() != "" ;
+}
+
+
+function mce_init_form(){
+    jQuery(document).ready( function($) {
+      options = { url: 'http://thepostgame.us2.list-manage.com/subscribe/post-json?u=6192fc874f8ba21d848500dcd&id=94982e4978&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                    beforeSubmit: function(){
+                        // Clear Messages from MCE
+                        clearMCESubmitMessages();
+                    },
+                    success: mce_success_cb
+                };
+      $('#mc-embedded-subscribe-form').ajaxForm(options);
+
+      // Set OAS_RNS value
+      $('#mce-OAS_RNS').val(OAS_rns);
+    });
+}
+
+function mce_init_dialog_form(){
+    jQuery(document).ready( function($) {
+      options = { url: 'http://thepostgame.us2.list-manage.com/subscribe/post-json?u=6192fc874f8ba21d848500dcd&id=94982e4978&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                    beforeSubmit: function(){
+                        // Clear Messages from MCE
+                        clearMCESubmitMessages();
+                    },
+                    success: mce_success_dialog_cb
+                };
+      $('#mc-embedded-subscribe-dialog-form').ajaxForm(options);
+
+      // Set OAS_RNS value
+      $('#mce-OAS_RNS').val(OAS_rns);
+    });
+}
+
+function mce_init_header_form(){
+    jQuery(document).ready( function($) {
+      options = { url: 'http://thepostgame.us2.list-manage.com/subscribe/post-json?u=6192fc874f8ba21d848500dcd&id=94982e4978&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                    beforeSubmit: function(){
+                        // Clear Messages from MCE
+                        clearMCESubmitMessages();
+                    },
+                    success: mce_success_header_cb
+                };
+      $('#mc-embedded-subscribe-header-form').ajaxForm(options);
+
+      // Set OAS_RNS value
+      $('#mce-OAS_RNS').val(OAS_rns);
+    });
+}
+
+function mce_init_footer_form(){
+    jQuery(document).ready( function($) {
+      options = { url: 'http://thepostgame.us2.list-manage.com/subscribe/post-json?u=6192fc874f8ba21d848500dcd&id=94982e4978&c=?', type: 'GET', dataType: 'json', contentType: "application/json; charset=utf-8",
+                    beforeSubmit: function(){
+                        // Clear Messages from MCE
+                        clearMCESubmitMessages();
+                    },
+                    success: mce_success_footer_cb
+                };
+      $('#mc-embedded-subscribe-footer-form').ajaxForm(options);
+
+      // Set OAS_RNS value
+      $('#mce-OAS_RNS').val(OAS_rns);
+    });
+}
+
+function mce_success_cb(resp){
+    $('#mce-success-response').hide();
+    $('#mce-error-response').hide();
+    if (resp.result=="success"){
+        //$('#mce-'+resp.result+'-response').show();
+        $('#mce-'+resp.result+'-response').html(resp.msg);
+
+      // Popup success message dialog
+      Drupal.TheMagazine.showNewsletterSignUpSuccessDialog();
+
+      // Clear form
+      $('#mc-embedded-subscribe-form').each(function(){
+           this.reset();
+      });
+
+    } else {
+        var index = -1;
+        var msg;
+        try {
+            var parts = resp.msg.split(' - ',2);
+            if (parts[1]==undefined){
+                msg = resp.msg;
+            } else {
+                i = parseInt(parts[0]);
+                if (i.toString() == parts[0]){
+                    index = parts[0];
+                    msg = parts[1];
+                } else {
+                    index = -1;
+                    msg = resp.msg;
+                }
+            }
+        } catch(e){
+            index = -1;
+            msg = resp.msg;
+        }
+        try{
+            if (index== -1){
+                //$('#mce-'+resp.result+'-response').show();
+                $('#mce-'+resp.result+'-response').html(msg);
+            } else {
+                err_id = 'mce_tmp_error_msg';
+                html = '<div id="'+err_id+'" style="'+err_style+'"> '+msg+'</div>';
+
+                var input_id = '#mc_embed_signup';
+                var f = $(input_id);
+                if (ftypes[index]=='address'){
+                    input_id = '#mce-'+fnames[index]+'-addr1';
+                    f = $(input_id).parent().parent().get(0);
+                } else if (ftypes[index]=='date'){
+                    input_id = '#mce-'+fnames[index]+'-month';
+                    f = $(input_id).parent().parent().get(0);
+                } else {
+                    input_id = '#mce-'+fnames[index];
+                    f = $().parent(input_id).get(0);
+                }
+                if (f){
+                    $(f).append(html);
+                    $(input_id).focus();
+                } else {
+                    //$('#mce-'+resp.result+'-response').show();
+                    $('#mce-'+resp.result+'-response').html(msg);
+                }
+            }
+        } catch(e){
+            //$('#mce-'+resp.result+'-response').show();
+            $('#mce-'+resp.result+'-response').html(msg);
+        }
+
+        // Popup error message dialog
+        Drupal.TheMagazine.showNewsletterSignUpErrorDialog(msg);
+    }
+}
+function mce_success_header_cb(resp){
+    $('#mce-success-response').hide();
+    $('#mce-error-response').hide();
+    if (resp.result=="success"){
+        //$('#mce-'+resp.result+'-response').show();
+        $('#mce-'+resp.result+'-response').html(resp.msg);
+
+      // Popup success message dialog
+      Drupal.TheMagazine.showNewsletterSignUpSuccessDialog();
+
+      // Clear form
+      $('#mc-embedded-subscribe-header-form').each(function(){
+           this.reset();
+      });
+
+    } else {
+        var index = -1;
+        var msg;
+        try {
+            var parts = resp.msg.split(' - ',2);
+            if (parts[1]==undefined){
+                msg = resp.msg;
+            } else {
+                i = parseInt(parts[0]);
+                if (i.toString() == parts[0]){
+                    index = parts[0];
+                    msg = parts[1];
+                } else {
+                    index = -1;
+                    msg = resp.msg;
+                }
+            }
+        } catch(e){
+            index = -1;
+            msg = resp.msg;
+        }
+        try{
+            if (index== -1){
+                //$('#mce-'+resp.result+'-response').show();
+                $('#mce-'+resp.result+'-response').html(msg);
+            } else {
+                err_id = 'mce_tmp_error_msg';
+                html = '<div id="'+err_id+'" style="'+err_style+'"> '+msg+'</div>';
+
+                var input_id = '#mc_embed_signup';
+                var f = $(input_id);
+                if (ftypes[index]=='address'){
+                    input_id = '#mce-'+fnames[index]+'-addr1';
+                    f = $(input_id).parent().parent().get(0);
+                } else if (ftypes[index]=='date'){
+                    input_id = '#mce-'+fnames[index]+'-month';
+                    f = $(input_id).parent().parent().get(0);
+                } else {
+                    input_id = '#mce-'+fnames[index];
+                    f = $().parent(input_id).get(0);
+                }
+                if (f){
+                    $(f).append(html);
+                    $(input_id).focus();
+                } else {
+                    //$('#mce-'+resp.result+'-response').show();
+                    $('#mce-'+resp.result+'-response').html(msg);
+                }
+            }
+        } catch(e){
+            //$('#mce-'+resp.result+'-response').show();
+            $('#mce-'+resp.result+'-response').html(msg);
+        }
+
+        // Popup error message dialog
+        Drupal.TheMagazine.showNewsletterSignUpErrorDialog(msg);
+    }
+}
+
+function mce_success_footer_cb(resp){
+    $('#mce-success-response').hide();
+    $('#mce-error-response').hide();
+    if (resp.result=="success"){
+        //$('#mce-'+resp.result+'-response').show();
+        $('#mce-'+resp.result+'-response').html(resp.msg);
+
+      // Popup success message dialog
+      Drupal.TheMagazine.showNewsletterSignUpSuccessDialog();
+
+      // Clear form
+      $('#mc-embedded-subscribe-footer-form').each(function(){
+           this.reset();
+      });
+
+    } else {
+        var index = -1;
+        var msg;
+        try {
+            var parts = resp.msg.split(' - ',2);
+            if (parts[1]==undefined){
+                msg = resp.msg;
+            } else {
+                i = parseInt(parts[0]);
+                if (i.toString() == parts[0]){
+                    index = parts[0];
+                    msg = parts[1];
+                } else {
+                    index = -1;
+                    msg = resp.msg;
+                }
+            }
+        } catch(e){
+            index = -1;
+            msg = resp.msg;
+        }
+        try{
+            if (index== -1){
+                //$('#mce-'+resp.result+'-response').show();
+                $('#mce-'+resp.result+'-response').html(msg);
+            } else {
+                err_id = 'mce_tmp_error_msg';
+                html = '<div id="'+err_id+'" style="'+err_style+'"> '+msg+'</div>';
+
+                var input_id = '#mc_embed_signup';
+                var f = $(input_id);
+                if (ftypes[index]=='address'){
+                    input_id = '#mce-'+fnames[index]+'-addr1';
+                    f = $(input_id).parent().parent().get(0);
+                } else if (ftypes[index]=='date'){
+                    input_id = '#mce-'+fnames[index]+'-month';
+                    f = $(input_id).parent().parent().get(0);
+                } else {
+                    input_id = '#mce-'+fnames[index];
+                    f = $().parent(input_id).get(0);
+                }
+                if (f){
+                    $(f).append(html);
+                    $(input_id).focus();
+                } else {
+                    //$('#mce-'+resp.result+'-response').show();
+                    $('#mce-'+resp.result+'-response').html(msg);
+                }
+            }
+        } catch(e){
+            //$('#mce-'+resp.result+'-response').show();
+            $('#mce-'+resp.result+'-response').html(msg);
+        }
+
+        // Popup error message dialog
+        Drupal.TheMagazine.showNewsletterSignUpErrorDialog(msg);
+    }
+}
+
+function mce_success_dialog_cb(resp){
+    $('#mce-success-response').hide();
+    $('#mce-error-dialog-response').hide();
+    if (resp.result=="success"){
+        //$('#mce-'+resp.result+'-response').show();
+        $('#mce-'+resp.result+'-response').html(resp.msg);
+
+      // Hide signup dialog
+      Drupal.TheMagazine.hideNewsletterSignUpDialog(msg);
+
+      // Popup success message dialog
+      Drupal.TheMagazine.showNewsletterSignUpSuccessDialog();
+
+      // Clear form
+      $('#mc-embedded-subscribe-dialog-form').each(function(){
+           this.reset();
+      });
+
+    } else {
+        var index = -1;
+        var msg;
+        try {
+            var parts = resp.msg.split(' - ',2);
+            if (parts[1]==undefined){
+                msg = resp.msg;
+            } else {
+                i = parseInt(parts[0]);
+                if (i.toString() == parts[0]){
+                    index = parts[0];
+                    msg = parts[1];
+                } else {
+                    index = -1;
+                    msg = resp.msg;
+                }
+            }
+        } catch(e){
+            index = -1;
+            msg = resp.msg;
+        }
+        try{
+            if (index== -1){
+                //$('#mce-'+resp.result+'-response').show();
+                $('#mce-'+resp.result+'-response').html(msg);
+            } else {
+                err_id = 'mce_tmp_error_msg';
+                html = '<div id="'+err_id+'" style="'+err_style+'"> '+msg+'</div>';
+
+                var input_id = '#mc_embed_signup';
+                var f = $(input_id);
+                if (ftypes[index]=='address'){
+                    input_id = '#mce-'+fnames[index]+'-addr1';
+                    f = $(input_id).parent().parent().get(0);
+                } else if (ftypes[index]=='date'){
+                    input_id = '#mce-'+fnames[index]+'-month';
+                    f = $(input_id).parent().parent().get(0);
+                } else {
+                    input_id = '#mce-'+fnames[index];
+                    f = $().parent(input_id).get(0);
+                }
+                if (f){
+                    $(f).append(html);
+                    $(input_id).focus();
+                } else {
+                    //$('#mce-'+resp.result+'-response').show();
+                    $('#mce-'+resp.result+'-response').html(msg);
+                }
+            }
+        } catch(e){
+            //$('#mce-'+resp.result+'-response').show();
+            $('#mce-'+resp.result+'-response').html(msg);
+        }
+
+        msg = "Error found: " + msg + "</br>Please try again.";
+        $('#mce-error-response').html(msg);
+        $("#mce-error-response a").empty();
+        $('#newsletterSignUpDialog #mce-error-response').show();
+    }
+}
+
+/* Fields */
+Drupal.TheMagazine.initFormFields = function()
+{
+	Drupal.TheMagazine.clearFormFields({
+		clearInputs: true,
+		clearTextareas: false,
+		passwordFieldText: false,
+		addClassFocus: "focus",
+		filterClass: "default"
+	});
+};
+Drupal.TheMagazine.clearFormFields = function(o)
+{
+	if (o.clearInputs == null) o.clearInputs = true;
+	if (o.clearTextareas == null) o.clearTextareas = true;
+	if (o.passwordFieldText == null) o.passwordFieldText = false;
+	if (o.addClassFocus == null) o.addClassFocus = false;
+	if (!o.filterClass) o.filterClass = "default";
+	if(o.clearInputs) {
+		var inputs = document.getElementsByTagName("input");
+		for (var i = 0; i < inputs.length; i++ ) {
+			if(((inputs[i].type == "text" || inputs[i].type == "password") && inputs[i].className.indexOf(o.filterClass) == -1) && (inputs[i].className == "text")) {
+				inputs[i].valueHtml = inputs[i].value;
+				inputs[i].onfocus = function ()	{
+					if(this.valueHtml == this.value) this.value = "";
+					if(this.fake) {
+						inputsSwap(this, this.previousSibling);
+						this.previousSibling.focus();
+					}
+					if(o.addClassFocus && !this.fake) {
+						this.className += " " + o.addClassFocus;
+						this.parentNode.className += " parent-" + o.addClassFocus;
+					}
+				}
+				inputs[i].onblur = function () {
+					if(this.value == "") {
+						this.value = this.valueHtml;
+						if(o.passwordFieldText && this.type == "password") inputsSwap(this, this.nextSibling);
+					}
+					if(o.addClassFocus) {
+						this.className = this.className.replace(o.addClassFocus, "");
+						this.parentNode.className = this.parentNode.className.replace("parent-"+o.addClassFocus, "");
+					}
+				}
+				if(o.passwordFieldText && inputs[i].type == "password") {
+					var fakeInput = document.createElement("input");
+					fakeInput.type = "text";
+					fakeInput.value = inputs[i].value;
+					fakeInput.className = inputs[i].className;
+					fakeInput.fake = true;
+					inputs[i].parentNode.insertBefore(fakeInput, inputs[i].nextSibling);
+					inputsSwap(inputs[i], null);
+				}
+			}
+		}
+	}
+	if(o.clearTextareas) {
+		var textareas = document.getElementsByTagName("textarea");
+		for(var i=0; i<textareas.length; i++) {
+			if(textareas[i].className.indexOf(o.filterClass) == -1) {
+				textareas[i].valueHtml = textareas[i].value;
+				textareas[i].onfocus = function() {
+					if(this.value == this.valueHtml) this.value = "";
+					if(o.addClassFocus) {
+						this.className += " " + o.addClassFocus;
+						this.parentNode.className += " parent-" + o.addClassFocus;
+					}
+				}
+				textareas[i].onblur = function() {
+					if(this.value == "") this.value = this.valueHtml;
+					if(o.addClassFocus) {
+						this.className = this.className.replace(o.addClassFocus, "");
+						this.parentNode.className = this.parentNode.className.replace("parent-"+o.addClassFocus, "");
+					}
+				}
+			}
+		}
+	}
+	function inputsSwap(el, el2) {
+		if(el) el.style.display = "none";
+		if(el2) el2.style.display = "inline";
+	}
+};
+Drupal.TheMagazine.resizeModalBackground = function()
+{
+   $("#pageModalDimmed").css("height", $(document).height());
+   $("#pageModalDimmed").css("width", $(document).width());
+};
+Drupal.TheMagazine.setModalBackground = function()
+{
+   $("#pageModalDimmed").css("height", $(document).height());
+   $("#pageModalDimmed").css("width", $(document).width());
+};
+Drupal.TheMagazine.scrollToTop = function()
+{
+   // Scroll to top of page
+   if($.browser.safari)
+      bodyelem = $("body");
+   else
+      bodyelem = $("html,body");
+   bodyelem.scrollTop(0);
+};
+
+Drupal.TheMagazine.showLoading = function(loadingId, modalId)
+{
+    $(modalId).show();
+    $(loadingId).show();
+}
+Drupal.TheMagazine.hideLoading = function(loadingId, modalId)
+{
+    $(loadingId).hide();
+    $(modalId).hide();
+}
+
+Drupal.TheMagazine.htmlEscape = function(str) {
+    return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, "\\'")
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+Drupal.TheMagazine.showFootnote = function(num)
+{
+    // Get footnote position
+    var footnote_top = $("#footnote-" + num).position().top;
+    var footnote_left = $("#footnote-" + num).position().left;
+
+    // Get footnote popup height
+    var footnote_popup_height = $("#footnote-popup-" + num).height() + 32;
+
+    $("#footnote-popup-" + num).css({"top": (footnote_top - footnote_popup_height) + "px"});
+    $("#footnote-popup-" + num).css({"left": (footnote_left - 142) + "px"});
+
+    $("#footnote-popup-" + num).show();
+}
+

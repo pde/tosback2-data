@@ -224,7 +224,7 @@ siNav.load({
 				{ "u":"/basketball/nba/teams/new-york-knicks/?eref=sinav",			"l":"Knicks" },
 				{ "u":"/basketball/nba/teams/chicago-bulls/?eref=sinav",			"l":"Bulls" },
 				{ "u":"/basketball/nba/teams/atlanta-hawks/?eref=sinav",			"l":"Hawks" },
-				{ "u":"/basketball/nba/teams/new-jersey-nets/?eref=sinav",			"l":"Nets" },
+				{ "u":"/basketball/nba/teams/brooklyn-nets/?eref=sinav",			"l":"Nets" },
 				{ "u":"/basketball/nba/teams/cleveland-cavaliers/?eref=sinav",			"l":"Cavaliers" },
 				{ "u":"/basketball/nba/teams/miami-heat/?eref=sinav",			"l":"Heat" },
 				{ "u":"/basketball/nba/teams/toronto-raptors/?eref=sinav",			"l":"Raptors" },

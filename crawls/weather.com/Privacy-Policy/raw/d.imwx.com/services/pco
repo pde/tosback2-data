@@ -601,7 +601,7 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 			prvlgd.setUser("initDeclarations",oldDeclareArray);
 		
 			$.cookie("a",null,{path:"/",domain:"weather.com"});
-			
+			TWC.Events.locations_changed.notify();
 			
 		
 			
@@ -970,6 +970,8 @@ try{console.log()}catch(e){}
 			prvlgd.set("user.preferredDeclarationFamily", val);
 		}else if(node=="backTo"){
 			prvlgd.set("user.backTo",val);
+		}else if(node=="lotame"){
+			prvlgd.set("user.lotame",val);
 		}else if(node.match(/Locations/)){
 			if(node=="initAllLocations"){
 				initAllLocations(val);
@@ -1301,6 +1303,27 @@ try{console.log()}catch(e){}
 			
 		}
 		
+		function addLotame(){
+			
+			var user = prvlgd.get("user");
+			if (user){			
+				buildkw("lot_age",user.age); 
+				buildkw("lot_gender",user.gender);
+				var lotame=user.lotame;
+				if (user.lotame!=null && typeof (user.lotame) !="undefined") {				
+					buildkw("lot_tpid",lotame.tpid);
+					buildkw("lot_id",lotame.id);
+					buildkw("lot_abbr",lotame.abbr);
+                }				
+			} else {
+				 buildkw("lot_age","nl"); 
+				 buildkw("lot_gender","nl");
+				 buildkw("lot_tpid","nl");
+				 buildkw("lot_id","nl");
+				 buildkw("lot_abbr","nl");				
+			}			
+		}
+		
 		function addDeclKeywords(){
 			if (prvlgd.get("user") && prvlgd.get("ad") ) {
 	    		
@@ -1428,10 +1451,16 @@ try{console.log()}catch(e){}
 							loc=currloc.zip;
 							zip=currloc.zip;
 						}
+						
+					
 				  
 						if(loc && loc.indexOf(":") !=-1){
 							loc = loc.replace(":","$");
 						} 
+						var city = currloc.locname;
+						if (city){
+							city=city.replace(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+						}
 						
 						dma=currloc.dma || 'nl';
 						stateCd=currloc.state || 'nl';
@@ -1444,6 +1473,10 @@ try{console.log()}catch(e){}
 						buildkw('cc',countryCd.toLowerCase());
 						buildkw('cid',cid);
 						buildkw("zip",zip);
+						buildkw("lat",((currloc.lat + "") || 'nl'));
+						buildkw("lon",((currloc.lon + "")  || 'nl'));
+						buildkw("ct",(city || 'nl'));
+						
 						addGPR(currloc);
 				}else{
 					buildkw('loc','nl');
@@ -1452,6 +1485,9 @@ try{console.log()}catch(e){}
 					buildkw('cc','nl');
 					buildkw('cid','nl');
 					buildkw('intl','nl');
+					buildkw('ct','nl');
+					buildkw('lat','nl');
+					buildkw('lon','nl');
 				}
 					
 					
@@ -1466,6 +1502,7 @@ try{console.log()}catch(e){}
 		addForecastKeywords();
 		addDeclKeywords();
 		addUserKeywords();
+		addLotame();
 		addASI();
 		addFV();
 		addScatter();

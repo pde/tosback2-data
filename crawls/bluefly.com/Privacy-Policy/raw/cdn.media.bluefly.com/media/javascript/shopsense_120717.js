@@ -319,10 +319,10 @@ $(function() {
 $(function() {
 	var el = $('#productRecommendationArea').find('.ui-tabs-nav');
 	el.addClass( 'new-tabs-layout' );
-	el.parent().css("width",  690 + "px");
+	el.parent().css("width",  689 + "px");
 	var len = el.children().length;
 	if( len > 0)  {
-	    width = (690 - len)/len;
+	    width = (689 - len)/len;
 	    width = width - 1;
 		    el.children().css("width",  width + "px"); 
 		    el.children().find('a').css("width",  width + "px"); 

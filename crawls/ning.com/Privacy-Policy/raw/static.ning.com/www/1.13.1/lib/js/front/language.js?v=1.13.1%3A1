@@ -1,0 +1,84 @@
+(function ($) {
+    $(document).ready(function () {
+
+        // --- language dropdown --- //
+        var $dropTrigger = $(".dropdown dt a");
+        var $languageList = $(".dropdown dd ul");
+
+        // open and close list when button is clicked
+        $dropTrigger.toggle(function () {
+            $languageList.slideDown(200);
+            $dropTrigger.addClass("active");
+        }, function () {
+            $languageList.slideUp(200);
+            $(this).removeAttr("class");
+        });
+
+        // close list when anywhere else on the screen is clicked
+        $(document).bind('click', function (e) {
+            var $clicked = $(e.target);
+            if (!$clicked.parents().hasClass("dropdown")) {
+                $languageList.slideUp(200);
+                $dropTrigger.removeAttr("class");
+            }
+        });
+
+        /**
+         * Posts using a form submission (as opposed to Ajax).
+         *
+         * @param url  the URL to post to
+         * @param content  key-value pairs for the post body (optional)
+         */
+        var postSynchronously = function (url, content) {
+            content = content || {};
+            var form = $('<form method="post"></form>').attr('action', url);
+            for (name in content) {
+                form.append($('<input type="hidden"/>').attr('name', name).attr('value', content[name]));
+            }
+            form.appendTo(document.body).submit();
+        };
+
+        // when a language is clicked, make the selection and then hide the list
+        $(".dropdown dd ul li a").click(function (e) {
+            e.preventDefault();
+            var clickedValue = $(this).parent().attr("class");
+            var clickedTitle = $(this).find("em").html();
+            $("#target dt").removeClass().addClass(clickedValue);
+            $("#target dt em").html(clickedTitle);
+            $languageList.hide();
+            $dropTrigger.removeAttr("class");
+            var target = location.href.
+                    replace(/[?&]$/, '');
+            var data = {locale: clickedValue, target: target};
+            var $select = $('#country-options');
+            if ($select.length == 1) {
+                var form = $select.get(0).form;
+                if (form && form['xp_token'] && form['xp_token'].value) {
+                    data['xp_token'] = form['xp_token'].value;
+                }
+            }
+            postSynchronously('/main/ajax?area=ChangeLanguage', data);
+        });
+    });
+
+    // actual function to transform select to definition list
+    function createDropDown() {
+        var $form = $("div#country-select form");
+        $form.hide();
+        var source = $("#country-options");
+        source.removeAttr("autocomplete");
+        var selected = source.find("option:selected");
+        var options = $("option", source);
+        $("#country-select").append('<dl id="target" class="dropdown"></dl>');
+        // Adding carat to signify clickability
+        $("#target").append('<dt class="' + selected.val() + '"><a href="#"><em>' + selected.text() + '</em></a></dt>');
+        $("#target").append('<dd><ul></ul></dd>')
+        options.each(function () {
+            $("#target dd ul").append('<li class="' + $(this).val() + '"><a href="#"><em>' + $(this).text() + '</em></a></li>');
+        });
+    }
+
+    // turn select into dl
+    createDropDown();
+
+})(jQuery);

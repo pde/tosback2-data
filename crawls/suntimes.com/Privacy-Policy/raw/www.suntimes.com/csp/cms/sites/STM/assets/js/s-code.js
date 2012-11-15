@@ -11,15 +11,11 @@ var communityName='suntimes.com';
 var linkInternalFilters="javascript:,www.suntimes.com,legacy.suntimes.com";
 if (document.URL.match(/rogerebert\./i)) {
     communityName='ebert';		s_account='digchrogerebert';
-} else if (document.URL.match(/blogs\.suntimes\.com\/ebert/i)) {
+} else if (document.URL.match(/blogs\.suntimes\.com\/ebert/i) || document.URL.match(/blogs\.suntimes\.com\/shales/i)) {
     communityName='ebert';		s_account='digchrogerebert';
-} else if (document.URL.match(/blogs\.suntimes\.com\/scharres/i)) {
+} else if (document.URL.match(/blogs\.suntimes\.com\/scharres/i) || document.URL.match(/blogs\.suntimes\.com\/demand/i)) {
     communityName='ebert';		s_account='digchrogerebert';
-} else if (document.URL.match(/blogs\.suntimes\.com\/demand/i)) {
-    communityName='ebert';		s_account='digchrogerebert';
-} else if (document.URL.match(/blogs\.suntimes\.com\/foreignc/i)) {
-    communityName='ebert';		s_account='digchrogerebert';
-} else if (document.URL.match(/blogs\.suntimes\.com\/shannon/i)) {
+} else if (document.URL.match(/blogs\.suntimes\.com\/foreignc/i) || document.URL.match(/blogs\.suntimes\.com\/shannon/i)) {
     communityName='ebert';		s_account='digchrogerebert';
 } else if (document.URL.match(/blogs\.suntimes\.com\/scanners/i)) {
     communityName='ebert';		s_account='digchrogerebert';

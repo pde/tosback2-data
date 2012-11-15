@@ -36,7 +36,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1352710802565,
+	timeStamp: 1352970003822,
 	
 
 	DEF_LANG_ID: '-1',
@@ -115,7 +115,7 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Nov 12, 2012 08:19:35'),
+	isChatOpen: chatActive('Nov 15, 2012 08:20:23'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
@@ -123,7 +123,7 @@ function chatActive(dateStamp) {
 	analyticsSwitch: 'ON',
 
     	
-	socialLeaderBoardSwitch: 'OFF',	
+	socialLeaderBoardSwitch: 'ON',	
 	socialLeaderBoardSecurePagesSwitch: 'OFF',
 	      
 		

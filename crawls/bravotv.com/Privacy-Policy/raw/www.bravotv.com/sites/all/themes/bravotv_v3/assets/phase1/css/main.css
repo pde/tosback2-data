@@ -1,6 +1,6 @@
-/**
- * navigation
- */
+/* $Id: main.css 15800 2012-11-13 17:50:14Z kimanh.le@nbcuni.com $ */
+
+/* navigation */
 
 /* header show colors */
 /* blue (default) */
@@ -601,7 +601,7 @@ header,
 }
 .phase-1 .column-right {
   float: left;
-  margin: 23px 0 0 0px;
+  margin: 23px 0 0;
   width: 360px;
 }
 .phase-1 .content-header { margin-bottom: 35px; }
@@ -844,7 +844,8 @@ header,
 .phase-1.hub .ad-300x250 { margin-bottom: 75px; }
 .phase-1 .block h3 a { color: #474747; }
 .phase-1 .column-right .block .block-title,
-.phase-1 .block h6 {
+.phase-1 .block h6,
+.phase-1 .view-id-section h6 {
   background: url("../images/bg-fadedown.gif") left top repeat-x;
   border-top: 1px solid #ccc;
   color: #464646;
@@ -1383,7 +1384,10 @@ footer.phase-1 { background-color: #efefef; }
   position: relative;
   width: 16px;
 }
-.phase-1 .promote .video span.icon { background: url("../images/bravo-web-sprite-icons.png") 0px -332px no-repeat; }
+.phase-1 .promote .video span.icon,
+.phase-1 .promote .playlist span.icon{
+  background: url("../images/bravo-web-sprite-icons.png") 0 -332px no-repeat;
+}
 .phase-1 .promote .photo span.icon { background: url("../images/bravo-web-sprite-icons.png") -25px -332px no-repeat; }
 .phase-1 .promote .blog span.icon { background: url("../images/bravo-web-sprite-icons.png") -51px -332px no-repeat; }
 
@@ -1413,7 +1417,8 @@ footer.phase-1 { background-color: #efefef; }
   margin: 29px 0 0;
   width: 660px;
 }
-.phase-1 .sidebar li {
+.phase-1 .sidebar li,
+.phase-1 .column-right .promo li {
   border: 1px solid #fff;
   border-bottom: 1px dashed #ccc;
   margin-bottom: 0;
@@ -1422,24 +1427,31 @@ footer.phase-1 { background-color: #efefef; }
   border-bottom: 1px dashed #ccc;
 }
 .phase-1 .sidebar li:hover,
-.phase-1 .primary .promote:hover {
+.phase-1 .primary .promote:hover,
+.phase-1.custom-playlist .promo-box .promote:hover,
+.phase-1.custom-playlist .column-right .promo li:hover {
   background-color: #ebf8fd;
   border: 1px solid #daf3fd;
   -webkit-border-radius: 1px;
   border-radius: 1px;
 }
-.phase-1 .sidebar li:hover {
+.phase-1 .sidebar li:hover,
+.phase-1.custom-playlist .column-right .promo li:hover {
   border-bottom: 1px dashed #ccc;
 }
 .phase-1 .sidebar li.last:hover {
   border-bottom: 1px solid #daf3fd;
 }
-.phase-1 .sidebar li a {
+.phase-1 .sidebar li a,
+.phase-1.custom-playlist .column-right li a {
   display: block;
+  min-height: 50px;
   padding: 12px 10px 12px 5px;
 }
 .phase-1 .sidebar li:hover a,
-.phase-1 .promote:hover a {
+.phase-1 .promote:hover a,
+.phase-1.custom-playlist .promo-box .promote:hover a,
+.phase-1.custom-playlist .column-right .promo li:hover a {
   text-decoration: none;
 }
 .phase-1 .footer-promotes a:hover {
@@ -1447,7 +1459,8 @@ footer.phase-1 { background-color: #efefef; }
 }
 .phase-1 .sidebar li:hover .headline,
 .phase-1 .promote:hover .title,
-.phase-1 .promote:hover .headline {
+.phase-1 .promote:hover .headline,
+.phase-1.custom-playlist .column-right .promo li:hover .headline {
   color: #00aeef !important;
 }
 .phase-1 .footer-promotes .promote:hover .headline {
@@ -1455,6 +1468,7 @@ footer.phase-1 { background-color: #efefef; }
 }
 .phase-1 .primary .promote-img img {
   margin-bottom: 10px;
+  width:156px;
 }
 .phase-1 .sidebar .promote-img {
   float: left;
@@ -1463,7 +1477,8 @@ footer.phase-1 { background-color: #efefef; }
 .phase-1 .sidebar .promote-img img {
   border: 1px solid #e5e5e5;
 }
-.phase-1 .sidebar .headline {
+.phase-1 .sidebar .headline,
+.phase-1 .column-right .promo .headline {
   display: block;
   font-size: .75em;
   font-weight: bold;
@@ -1490,7 +1505,8 @@ footer.phase-1 { background-color: #efefef; }
   margin-top: 0;
   margin-bottom: 0.5em;
 }
-.phase-1 .primary .promote {
+.phase-1 .primary .promote,
+.phase-1.custom-playlist .promo-box .promote {
   float: left;
   background-color: #efefef;
   border: 1px solid #efefef;
@@ -1501,14 +1517,18 @@ footer.phase-1 { background-color: #efefef; }
   position: relative;
   margin-bottom: 15px;
 }
-.phase-1 .primary .promote.last { margin-right: 0; }
+.phase-1 .primary .promote.last,
+.phase-1.custom-playlist .promo-box .promote.last {
+  margin-right: 0;
+}
 .phase-1 .carousel.carousel-active .promote.last { margin-right: 9px; }
 .phase-1 .primary .promote a {
   display: block;
   height: 186px;
   padding-bottom: 10px;
 }
-.phase-1 .primary .promote-img {
+.phase-1 .primary .promote-img,
+.phase-1.custom-playlist .promo-box .promote-img img {
   margin-bottom: 10px;
 }
 .phase-1 .primary .promote.video .promote-img {
@@ -1516,12 +1536,9 @@ footer.phase-1 { background-color: #efefef; }
   height: 104px;
   overflow: hidden;
 }
-.phase-1 .primary .promote-img img {
-  border: 1px solid #efefef;
-  width:156px;
-}
 .phase-1 .primary .promote .title,
-.phase-1 .primary .promote .headline {
+.phase-1 .primary .promote .headline,
+.phase-1.custom-playlist .promo-box .promote .headline {
   font-size: 1.05em;
   font-weight: bold;
   display: block;
@@ -1541,10 +1558,10 @@ footer.phase-1 { background-color: #efefef; }
   bottom: 5px;
 }
 .phase-1 .promote.video span.icon {
-  background: url("../images/bravo-web-sprite-icons.png") 0px -332px no-repeat;
+  background: url("../images/bravo-web-sprite-icons.png") 0 -332px no-repeat;
 }
 .phase-1 .promote.video:hover span.icon {
-  background: url("../images/bravo-web-sprite-icons.png") 0px -352px no-repeat;
+  background: url("../images/bravo-web-sprite-icons.png") 0 -352px no-repeat;
 }
 .phase-1 .promote.photo span.icon,
 .phase-1 .promote.gallery span.icon {
@@ -1736,7 +1753,7 @@ footer.phase-1 { background-color: #efefef; }
   display: inline-block;
 }
 .phase-1.shows .hero .title a.hover,
-.phase-1.shows .hero .title a:hover {
+.phase-1.shows .hero .title a:hover{
   color: #ccc;
   text-decoration: none;
 }
@@ -1747,7 +1764,7 @@ footer.phase-1 { background-color: #efefef; }
   position: relative;
   width: 34px;
 }
-.hero .video span.icon { background: url("../images/bravo-web-sprite-icons.png") 0px -92px no-repeat; }
+.hero .video span.icon { background: url("../images/bravo-web-sprite-icons.png") 0 -92px no-repeat; }
 .hero .photo span.icon { background: url("../images/bravo-web-sprite-icons.png") -68px -92px no-repeat; }
 .hero .blog span.icon { background: url("../images/bravo-web-sprite-icons.png") -137px -92px no-repeat; }
 .hero .game span.icon { background: url("../images/bravo-web-sprite-icons.png") -208px -92px no-repeat; }
@@ -2081,4 +2098,253 @@ footer.phase-1 { background-color: #efefef; }
   margin-left: 76px;
   margin-bottom: 5px;
   color: #333;
+}
+
+/* Custom shows section */
+.custom-section ul {
+  margin: 0;
+  padding: 0;
+}
+.custom-section .section-header .section a,
+.custom-playlist .section-header .section a {
+  color: #333;
+  font-size: .75em;
+  text-transform: uppercase;
+}
+.custom-section h1,
+.custom-playlist h1 {
+  float: left;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.custom-section .sponsored,
+.custom-playlist .sponsored {
+  float: right;
+  margin-bottom: 10px;
+}
+.custom-section .comment-count {
+  display: none;
+}
+.custom-section h2,
+.custom-section h2 p {
+  margin-top: 0;
+}
+.custom-section .stream .title a:hover {
+  color: #00abe2;
+}
+.custom-section .stream .promote-meta,
+.custom-section .stream .teaser,
+.custom-section .stream .comment-count {
+  display: none;
+}
+.custom-section .stream .promote.ad {
+  background-color: #efefef;
+  margin-top: -15px;
+  padding-top: 15px;
+}
+.custom-section .stream .ad .promote-meta {
+  display: inline;
+}
+.custom-section .hero {
+  margin: 2px auto 30px;
+  position: relative;
+  width: 980px;
+}
+.custom-section .hero .ad-placement {
+  background: url('../images/bg-hero-ad.png') right top repeat-y;
+  height: 353px;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+}
+.custom-section .hero .ad-300x250 {
+  height: 250px;
+  margin: 0 !important;
+  padding: 37px 17px 36px;
+}
+.custom-section .hero ul {
+  height: 353px;
+  position: relative;
+  z-index: 4;
+}
+.custom-section .hero .promote-details-wrapper {
+  bottom: 0;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1em;
+  position: absolute;
+  width: 646px;
+}
+.custom-section .hero .promote-details {
+  background: url('../images/bg-hero-details.png') left top repeat-y;
+  padding: 22px 22px 15px;
+}
+.custom-section .hero .topic,
+.custom-section .hero .sep,
+.custom-section .hero .date {
+  display: inline-block;
+  font-size: .7em;
+  text-transform: uppercase;
+  text-shadow: 0px 0px 6px #000;
+}
+.custom-section .hero .title {
+  color: #fff;
+  display: block;
+  font-size: 2.3em;
+  font-weight: bold;
+  line-height: 1.1em;
+  margin-bottom: 5px;
+  text-shadow: 0px 0px 6px #000;
+}
+.custom-section .hero .title a {
+  color: #fff;
+  display: inline-block;
+}
+.custom-section .hero .title a:hover {
+  color: #ccc;
+  text-decoration: none;
+}
+.custom-section .hero span.icon {
+  display: inline-block;
+  height: 34px;
+  margin-left: 7px;
+  position: relative;
+  width: 34px;
+}
+.custom-section .hero .btn-sm {
+  background: #F9D72C;
+  color: #6c4d1e;
+  display: inline-block;
+  font-size: .7em;
+  font-weight: bold;
+  padding: 1px 5px;
+  text-transform: uppercase;
+}
+.custom-section .hero .btn-sm.hover,
+.custom-section .hero .btn-sm:hover {
+  background: #ddf5fe;
+  color: #195794;
+  text-decoration: none;
+}
+.custom-section .column-right .title,
+.custom-section .column-right p {
+  font-size: .75em;
+}
+.custom-section .column-right .block,
+.custom-playlist .column-right .block {
+  margin-bottom: 35px;
+  border-bottom: none;
+}
+.custom-section .right-sponsor-container {
+  position: relative;
+}
+.custom-section .right-sponsor-bg {
+  position: absolute;
+  right: 0;
+  top: 5px;
+}
+.custom-section .stream .video .title:hover span.icon {
+  background: url("../images/bravo-web-sprite-icons.png") 0 -352px no-repeat;
+}
+.custom-section .stream .photo .title:hover span.icon,
+.custom-section .stream .gallery .title:hover span.icon {
+  background: url("../images/bravo-web-sprite-icons.png") -25px -352px no-repeat;
+}
+.custom-section .stream .blog .title:hover span.icon {
+  background: url("../images/bravo-web-sprite-icons.png") -51px -352px no-repeat;
+}
+.custom-section .stream .game .title:hover span.icon {
+  background: url("../images/bravo-web-sprite-icons.png") -74px -352px no-repeat;
+}
+
+/* custom playlist */
+.phase-1.custom-playlist .column-left .block {
+  border-bottom: 0;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
+}
+.phase-1 .column-right ul.promo {
+  padding: 0;
+}
+.phase-1.custom-playlist .video-container {
+  margin: 0 auto;
+  width: 525px;
+}
+.phase-1.custom-playlist .video-player {
+  margin-bottom: 10px;
+  position: relative;
+}
+.phase-1.custom-playlist .share {
+  float: right;
+}
+.phase-1.custom-playlist .promo-container {
+  margin: 0 auto;
+  width: 440px;
+}
+.phase-1.custom-playlist .promo-box.w209 .promote {
+  width: 209px;
+  height: 222px;
+}
+.phase-1.custom-playlist .promo-box .promote a {
+  display: block;
+  height: 212px;
+  padding-bottom: 10px;
+}
+.phase-1.custom-playlist .comments-header h2 {
+  border-bottom: 1px dashed #ccc;
+  padding-bottom: 15px;
+}
+.phase-1.custom-playlist .column-right li {
+  list-style: none;
+  margin-bottom: 0;
+  position: relative;
+}
+
+#video-playlist-content .video span.icon {
+  bottom: 0;
+  display: inline-block;
+  height: 15px;
+  margin-left: 7px;
+  position: relative;
+  right: 0;
+  top: 5px;
+  width: 16px;
+  background: url("../images/bravo-web-sprite-icons.png") 0 -332px no-repeat;
+}
+
+.hs-widget.hs-playlist {
+  width: 360px;
+  height: 190px;
+  overflow: auto;
+  position: relative;
+}
+.hs-widget.hs-playlist ul {
+  margin: 0 15px 0 0;
+}
+.hs-widget.hs-playlist ul li {
+  border-bottom: 1px dashed #ccc;
+  overflow: hidden;
+  display: block;
+}
+.hs-widget.hs-playlist ul li.hs-current {
+  background-color: #ebf8fd;
+  border: 1px solid #daf3fd;
+  -webkit-border-radius: 1px;
+  border-radius: 1px;
+}
+.hs-widget.hs-playlist ul li .hs-image {
+  float: left;
+  margin-right: 10px;
+}
+.hs-widget.hs-playlist ul li h3 {
+  font-size: 0.75em;
+  font-weight: bold;
+  line-height: 1.1em;
+  margin: 3px 5px 0 0;
+}
+.hs-widget.hs-playlist ul li h3 a {
+  color: #195794;
+}
+.hs-widget.hs-playlist ul li p {
+  display: none;
 }

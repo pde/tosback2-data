@@ -1,4 +1,4 @@
-//tealium universal tag - utag.loader ut4.003.201211091937, Copyright 2012 Tealium.com Inc. All Rights Reserved. 
+//tealium universal tag - utag.loader ut4.003.201211142317, Copyright 2012 Tealium.com Inc. All Rights Reserved. 
 var utag_condload=false;try{(function(){function ul(src,a,b){a=document;b=a.createElement('script');b.language='javascript';b.type='text/javascript';b.src=src;a.getElementsByTagName('head')[0].appendChild(b)};if((""+document.cookie).match("utag_env_tealium_main=([^\S;]*)")){if(RegExp.$1.indexOf("/prod/") === -1) {ul(RegExp.$1);utag_condload=true;}}})();}catch(e){};
 if (typeof utag == "undefined" && !utag_condload) {
   var utag = {
@@ -425,7 +425,7 @@ if (typeof utag == "undefined" && !utag_condload) {
   };
   utag.o['tealium.main']=utag;
   utag.cfg = {
-    v: "ut4.003.201211091937",
+    v: "ut4.003.201211142317",
     session_timeout: 1800000,
     readywait: 0,
     noload: 0,
@@ -437,7 +437,7 @@ if (typeof utag == "undefined" && !utag_condload) {
 utag.pre=function(){utag.data=(typeof utag_data!='undefined')?utag_data:{};try{utag.loader.RD(utag.data);}catch(e){}};
 utag.loader.GET=function(){utag.cl={'_all_':1};utag.pre();
   utag.handler.extend=[];
-  utag.loader.cfg={"1":{load:1,send:1,wait:1,tid:7001},"2":{load:1,send:1,wait:1,tid:18016}};
+  utag.loader.cfg={"1":{load:1,send:1,wait:1,tid:7001}};
 try{if(typeof utag.data['cp.OPTOUTMULTI']!='undefined'){var i,j,p,c=utag.loader.cfg,o=decodeURI(utag.data['cp.OPTOUTMULTI']).split('|');for(i=0;i<o.length;i++){p=o[i].split(':');if(p[1]*1!==0){for(j in utag.loader.GV(c)){if(c[j].tid==p[0])c[j].load=0}}}}}catch(e){}
 }
 

@@ -1,4 +1,4 @@
-/*global commercialNode:true,wp_meta_data:true,escape,unescape,TWP,estNowWithYear,dfpcomp,spec_ord,console*/
+/*global commercialNode:true,wp_meta_data:true,escape,unescape,TWP,estNowWithYear,dfpcomp,spec_ord,console,$*/
 var wpAd, placeAd2;
 
 (function (win, doc, undefined) {
@@ -19,8 +19,12 @@ var wpAd, placeAd2;
     exec: {
       vi: function(){
         if(!wpAd.viewableImpressions){
-          wpAd.viewableImpressions=wpAd.viewableImpressions || [];
-          wpAd.tools.addScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js');
+          wpAd.viewableImpressions = [];
+          if(!$.fn.viewableImpression){
+            wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js', wpAd.tools.initViewableImpressions);
+          } else {
+            wpAd.tools.initViewableImpressions();
+          }
         }
         var slug = doc.getElementById('slug_' + wpAd.briefcase.pos);
         if(slug){
@@ -183,6 +187,16 @@ var wpAd, placeAd2;
           }
         }
         return el;
+      },
+      addPixel: function(url){
+        var i = doc.createElement('img');
+        i.src = url;
+        i.width = '1';
+        i.height = '1';
+        i.alt = arguments[1] || '';
+        i.style.display = 'none';
+        i.style.border = '0';
+        doc.body.appendChild(i);
       },
       addScript: function(){
         var l = arguments.length,
@@ -507,10 +521,17 @@ var wpAd, placeAd2;
 
         return i;
       },
+      initViewableImpressions: function(){
+        $(function(){
+          if(wpAd.viewableImpressions){ //wpAd.viewableImpressions Array
+            $(wpAd.viewableImpressions).viewableImpression(); //initialise the plugin
+          }
+        });
+      },
       interstitial: function(){
-        if(doc.cookie && !/no_interstitials|reload\=true/gi.test(location.search)){
+        if(doc.cookie && !wpAd.flags.hpRefresh && !wpAd.flags.no_interstitials){
           var name = 'wp_pageview', 
-          cookieVal = wpAd.tools.getCookie(name), 
+          cookieVal = wpAd.tools.getCookie(name),
           rv = true, 
           time = new Date(parseInt(new Date().getTime(), 10) + 432E5).toString();
           if(cookieVal){
@@ -893,7 +914,7 @@ var wpAd, placeAd2;
         }
       },
       dcopt: function () {
-        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif')) {
+        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !wpAd.flags.no_interstitials) {
           wpAd.cache.dcopt = true;
           return ['ist'];
         } else {
@@ -1126,11 +1147,13 @@ var wpAd, placeAd2;
     dcnode: wpAd.tools.urlCheck('dcnode', {type: 'variable'}),
     test_ads: wpAd.tools.urlCheck('test_ads', {type: 'variable'}),
     testads: wpAd.tools.urlCheck('testads', {type: 'variable'}),
+    no_interstitials: !!wpAd.tools.urlCheck('no_interstitials'),
     no_ads: !!/no_ads/.test(location.search),
     allAds: !!/allAds/i.test(location.search),
     IE: !!/msie/i.test(navigator.userAgent),
     test_fif: !!/test_fif/i.test(location.search),
     debugAds: !!/debugAds/i.test(location.search),
+    hpRefresh: !!wpAd.tools.urlCheck('reload=true'),
     is_local: wpAd.tools.checkCookieVal('WPATC', 'C=1:'),
     network_id: wpAd.tools.urlCheck('network_id', {type: 'variable'}) || (wpAd.tools.urlCheck('network_id') ? 'N328291' : false)
   };

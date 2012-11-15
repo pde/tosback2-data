@@ -114,6 +114,8 @@ function s_doPlugins(s) {
   if(s.prop15&&!s.eVar26) s.eVar26=s.prop15;
   if(s.prop21&&!s.eVar32) s.eVar32=s.prop21;
   if(s.prop22&&!s.eVar33) s.eVar33=s.prop22;
+  if(s.prop28&&!s.eVar34) s.eVar34=s.prop28;
+
 
   s.prop19=s.eVar19 = s.getNewRepeat(45);
 

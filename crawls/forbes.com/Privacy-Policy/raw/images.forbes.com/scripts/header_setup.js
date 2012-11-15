@@ -647,7 +647,7 @@ function fdcWincolAlert(){
 		if ((ver == "Microsoft Internet Explorer")&&(num >= 4)&&(myagent.indexOf('mac') < 0)) {
 			_doBookmarkWindow();
 		}
-		_doAlertsWindow();
+                forbes_dart.ad('text', '300x250,300x600,336x850,336x280');
 		document.write("<BR>");
 	}
 	function escapeSingleQuote(myline) {

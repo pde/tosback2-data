@@ -1,0 +1,696 @@
+// slidRegistrationV2.js
+// Copyright: Copyright (c) 2012
+// Company: AT&T Inc
+
+var isAlreadySubmitted = false;
+var hasBeenSubmitted = false;
+function enableNextButton(){
+	document.getElementById('enbNextBtn').style.display='block';
+	document.getElementById('dsbNextBtn').style.display='none';
+}
+
+function disableNextButton(){
+	document.getElementById('enbNextBtn').style.display='none';
+	document.getElementById('dsbNextBtn').style.display='block';
+}
+
+function verifySelectAccount() {
+	var form = document.getElementById('frmSelectAccount');
+	var f_selectedAccountId = document.getElementById('selectedAccountId');
+	var accountId = f_selectedAccountId.value;
+	var f_zipCode = document.getElementById( 'zipCode' );
+
+	var zipCode = "";
+	if ( f_zipCode ) {
+		zipCode = f_zipCode.value;
+	}
+	
+	var f_selectedAccountType = document.getElementById( 'selectedAccountType' );
+	var linkType = f_selectedAccountType.value
+
+	var checkZip = false;
+	
+	if (linkType == "wireline"){
+		accountId = filterForTN(accountId);
+		var re = /^[a-zA-Z0-9]{10}$/;
+		var re2 = /^[a-zA-Z0-9]{13}$/;
+		if (!re.test(accountId) && !re2.test(accountId)){
+			displayErrorMessage( alertMessageMap['ErrorMessageWirelessNumberValidation'] );
+			return false;
+		}
+		checkZip = true;
+		
+	} else if (linkType == "wireless") {
+		accountId = filterForTN(accountId);
+		var re = /^\d{10}$/;
+		if (!re.test(accountId)){
+			displayErrorMessage( alertMessageMap['ErrorMessage6'] );
+			return false;
+		}
+		checkZip = true;
+		
+	} else if (linkType == "uverse"){
+		checkZip = true
+		var re4 = /^\d{9}$/;
+		var re2 = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+		//var re3 = /^sbciptv/;
+		if(!re4.test(accountId) && !re2.test(accountId)){
+			displayErrorMessage( alertMessageMap['ErrorMessageUverseMemberIDValidation'] );
+			return false;
+		}
+//	} else if (linkType == "attemail"){
+//		var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+//		if (!re.test(checkId('acctSelectVal').value)){
+//			alert("please enter your attemail");
+//			return false;
+//		}
+	}
+
+	if(checkZip){
+		var re3 = /^\d{5}(-\d{4})?$/;
+		if( !re3.test(zipCode) ) {
+			displayErrorMessage( alertMessageMap['ErrorBillingZipCode'] );
+			return false;
+		}
+	}
+
+	disableNextButton();
+	if (!isAlreadySubmitted){
+		//form.submit();
+		return true;
+	}
+	return false;
+}
+
+function verifyAccountCheckValues(flowType){
+
+	if ( hasBeenSubmitted ) {
+        return false;
+	}
+    /*
+	// If checked, we're good to submit
+	var alreadyHaveOrcField = document.getElementById("f_alreadyHaveOrc");
+	if ( alreadyHaveOrcField && alreadyHaveOrcField.checked ) return true;
+	*/
+	
+	/*Error message from the hidden field set in the JSP*/
+/*	var  ssnErrormsg = document.getElementById("ssnErrormsg").value;
+	var  ssn4Errormsg = document.getElementById("ssn4Errormsg").value;
+	var  custCodeErrormsg = document.getElementById("custCodeErrormsg").value;
+	var  custCode3Errormsg = document.getElementById("custCode3Errormsg").value;
+	var  zipCodeErrormsg = document.getElementById("zipCodeErrormsg").value;
+	var  invalidZipcode =  document.getElementById("invalidZipcode").value;
+	var  invalidpasscode = document.getElementById("invalidpasscode").value;*/
+	
+	//checking the for the element exists or not CustCode doesn't exist in wireless flow
+	if(flowType == 1){
+		//Wireless Flow
+		/*Get Error message from the hidden field set in the Wireless JSP*/
+	//	var fanErrormsg = "Enter FAN";
+	//	var fan4Errormsg = "FAN must be of 4 digits";
+	//	var zipCodeErrormsg = "Enter ZIP";
+	//	var invalidZipcode = "Zip is Invalid";
+	//	var ssnErrormsg = "Enter SSN"
+	//	var ssn4Errormsg = "SSN must be of 4 digits"
+		var invalidpasscode = document.getElementById("errormsg1").innerHTML;
+		
+		//Checking elements only eligible for wireless
+	//	var fanField = document.getElementById("f_last4Fan");
+	/*	if (  fanField ) {
+			var fan = slidreg2trim( fanField.value );
+			if ( fan == null || fan.length == 0 ) {
+				
+				displayErrorMessage(fanErrormsg, fanField);
+				return false;
+			}
+			
+			if ( !fan.match( /^\d{4}$/ ) ) {
+				displayErrorMessage(fan4Errormsg, fanField);
+				return false;
+			}
+		}
+		*/
+		/*var zipCodeField = document.getElementById("f_zipCode");
+		if ( zipCodeField ) {
+
+			var zip = slidreg2trim(zipCodeField.value);
+			if ( zip == null || zip.length == 0 ) {
+				displayErrorMessage(zipCodeErrormsg, zipCodeField);
+				return false;
+			}
+		
+			if ( !zip.match( /^(\d{5}|\d{9}|\d{5}\-\d{4})$/ ) ) {
+				displayErrorMessage(invalidZipcode, zipCodeField);
+				return false;
+			}
+		}*/
+		
+	/*	var ssnField = document.getElementById("f_last4Ssn");
+		if (  ssnField ) {
+			var ssn = slidreg2trim( ssnField.value );
+			if ( ssn == null || ssn.length == 0 ) {
+				
+				displayErrorMessage(ssnErrormsg, ssnField);
+				return false;
+			}
+			
+			if ( !ssn.match( /^\d{4}$/ ) ) {
+				displayErrorMessage(ssn4Errormsg, ssnField);
+				return false;
+			}
+		}*/
+		
+		var passcodeField = document.getElementById("f_passcode");
+		if ( passcodeField ) {
+			
+			var passcode = slidreg2trim(passcodeField.value);		
+			if ( passcode == null || passcode.length == 0 ) {
+				displayErrorMessage( invalidpasscode, passcodeField);
+				return false;
+			}
+		}
+	}
+	
+	if(flowType == 2){
+		// Wireline/Dryloop Flow
+		/*Get Error message from the hidden field set in the Wireline JSP*/
+		var SelectARadioButton = "Select radio button (CMS Missing)";
+		var ssnErrormsg = document.getElementById("ssnErrormsg").value;
+		var ssn4Errormsg = document.getElementById("ssn4Errormsg").value;
+		var custCodeErrormsg = document.getElementById("custCodeErrormsg").value;
+		var custCode3Errormsg = document.getElementById("custCode3Errormsg").value;
+		var invalidpasscode = document.getElementById("invalidpasscode").value;
+		
+		//Checking elements only eligible for wireline/Dryloop
+		var form = document.getElementById("frmVerifyAccount");
+		
+		var options = form['selectedValidationOption'];
+		if( options ){
+			var selected = false;
+			var i;
+			for(i=0;i<options.length;i++) {
+				if ( options[i].checked ) {
+					selected = true;
+					break;
+				}
+			}
+
+			if ( !selected ) {
+				displayErrorMessage(SelectARadioButton);
+				return false;
+			}
+
+			var radioCustCode = document.getElementById("radioCustCode");
+			var radioSSN = document.getElementById("radioSSN");
+
+			var ssnField = document.getElementById("f_last4Ssn");
+			if (ssnField != null && radioSSN.checked ) {
+				var ssn = slidreg2trim( ssnField.value );
+				if ( ssn == null || ssn.length == 0 ) {
+
+					displayErrorMessage(ssnErrormsg, ssnField);
+					return false;
+				}
+
+				if ( !ssn.match( /^\d{4}$/ ) ) {
+					displayErrorMessage(ssn4Errormsg, ssnField);
+					return false;
+				}
+			}
+			
+			var customerCodeField = document.getElementById("f_customerCode");
+			if (customerCodeField!=null && radioCustCode.checked ) {
+				var custCode = slidreg2trim(customerCodeField.value);
+				if ( custCode == null || custCode.length == 0 ) {
+					displayErrorMessage( custCodeErrormsg, customerCodeField);
+					return false;
+				}
+			
+				if ( !custCode.match( /^\d{3}$/ ) ) {
+					displayErrorMessage(custCode3Errormsg, customerCodeField);
+					return false;
+				}
+			}
+		}
+		var passcodeField = document.getElementById("f_passcode");
+		if ( passcodeField ) {
+			
+			var passcode = slidreg2trim(passcodeField.value);		
+			if ( passcode == null || passcode.length == 0 ) {
+				displayErrorMessage( invalidpasscode, passcodeField);
+				return false;
+			}
+		}
+		
+		var customerCodeField = document.getElementById("f_custCode");
+		if (  customerCodeField ) {
+			var custCode = slidreg2trim(customerCodeField.value);
+			if ( custCode == null || custCode.length == 0 ) {
+				displayErrorMessage( custCodeErrormsg, customerCodeField);
+				return false;
+			}
+		
+			if ( !custCode.match( /^\d{3}$/ ) ) {
+				displayErrorMessage(custCode3Errormsg, customerCodeField);
+				return false;
+			}
+		}
+	}
+
+	// Dry loop needs one or the other - indicated by both fields being present
+	//var checkSSN = true;
+	//var checkCustCode = true;
+	/*
+	if ( customerCodeField && ssnField ) {
+		
+		var custCode = slidreg2trim(customerCodeField.value);
+		var ssn = slidreg2trim( ssnField.value );
+
+		if ( (ssn == null || ssn.length == 0) &&
+ 			( custCode == null || custCode.length == 0 ) ) {
+			
+			displayErrorMessage(custCodeErrormsg, customerCodeField);
+			return false;
+
+		}
+
+		// Specify which to check based on values having been set
+		// Normal check routines hit below.
+		if ( ssn == null || ssn.length == 0 ) checkSSN = false;
+		if ( custCode == null || custCode.length == 0 ) checkCustCode = false;
+	
+	} */
+	
+	document.getElementById("showNext").style.display="none";
+	document.getElementById("blockNext").style.display="block";
+	
+	hasBeenSubmitted=true;
+	return true;
+}
+
+function accountTypeSelectionChange( selectObj, onPageLoad ) {
+	
+	//console.log( "Changed to:" + selectObj.value);
+	document.getElementById("wireless").style.display = "none";
+	document.getElementById("wireline").style.display = "none";
+	document.getElementById("uverse").style.display = "none";
+	document.getElementById("inputText").style.display = "none";
+	
+	var eWirelessCTNLinkingNote = document.getElementById("WirelessCTNLinkingNote");
+	if ( eWirelessCTNLinkingNote ) {
+		eWirelessCTNLinkingNote.style.display="none";
+	}
+	
+	document.getElementById("UverseMemberIDLinkedToATTAID").style.display = "none";
+	document.getElementById("LinkAccountsToManageUsingOneID").style.display = "block";
+	
+	if(document.getElementById("acctZip")!=null)
+		document.getElementById("acctZip").style.display = "none";
+	
+//	if(document.getElementById("divAlreadyHaveORC")!=null)
+//		document.getElementById("divAlreadyHaveORC").style.display = "none";
+
+	if( onPageLoad == null){
+		var errBackendDiv = document.getElementById("serverSideErrors");
+		if(errBackendDiv)
+			errBackendDiv.style.display = "none";
+	}
+	
+	document.getElementById("wirelessExample").style.display = "none";
+	document.getElementById("wirelineExample").style.display = "none";
+	document.getElementById("uverseExample").style.display = "none";
+	
+	if ( !onPageLoad ) {
+		document.getElementById("selectedAccountId").value = "";
+		document.getElementById("zipCode").value = "";
+	}
+	
+	var selected = selectObj.value;
+	var enableNext = true;
+	var fieldSelectedAccountId = document.getElementById('selectedAccountId');
+	if (selected == "wireless"){
+		//fieldSelectedAccountId.setAttribute("maxlength",12);
+		document.getElementById('selectedAccountId').maxLength = 12;
+		document.getElementById("wireless").style.display = "inline";
+	//	document.getElementById("inputText").className = "float-left w320";
+		document.getElementById("acctZip").style.display = "block";
+//		document.getElementById("divAlreadyHaveORC").style.display = "block";
+		document.getElementById("wirelessExample").style.display = "inline";
+		if ( eWirelessCTNLinkingNote ) eWirelessCTNLinkingNote.style.display="block";
+	}else if (selected == "wireline"){
+	//	fieldSelectedAccountId.setAttribute("maxlength",16);
+		document.getElementById('selectedAccountId').maxLength = 16;
+		document.getElementById("wireline").style.display = "inline";
+	//	document.getElementById("inputText").className = "float-left w180";
+		document.getElementById("acctZip").style.display = "block";
+//		document.getElementById("divAlreadyHaveORC").style.display = "block";
+		document.getElementById("wirelineExample").style.display = "block";
+	}else if (selected == "uverse"){
+	//	fieldSelectedAccountId.setAttribute("maxlength",50);
+		document.getElementById('selectedAccountId').maxLength = 50;
+		document.getElementById("uverse").style.display = "inline";
+//		document.getElementById("inputText").className = "float-left w180";
+		document.getElementById("acctZip").style.display = "block";
+		document.getElementById("uverseExample").style.display = "block";
+//		document.getElementById("LinkAccountsToManageUsingOneID").style.display = "none";
+//		document.getElementById("UverseMemberIDLinkedToATTAID").style.display = "block";
+//	}else if (selected == "attemail"){
+//		document.getElementById("email").style.display = "inline";
+//		document.getElementById("aemaillbl").style.display = "inline";
+	} else {
+		enableNext = false;
+	}
+	
+	if ( enableNext ) {
+		var inputText = document.getElementById("inputText");
+		inputText.style.display = "inline";
+		enableNextButton();
+	} else {
+		disableNextButton();
+	}
+
+	return true;
+}
+
+
+//
+// slidReg2SendOrcOptions
+//
+// checks whether we can submit the form or not.
+function selectOptionCheckValues() {
+	var sendORCMethod1;
+	var sendORCMethod2;
+	var enterORCWireline;
+	var SelectARadioButton;
+	var MakeaSelection ;
+
+	if ( hasBeenSubmitted ) {
+        return false;
+	}
+	
+
+	sendORCMethod1 = document.getElementById("sendORCMethod1").value;
+	sendORCMethod1 = replaceAll(sendORCMethod1, "\\'", "&#39;");
+	sendORCMethod2 = document.getElementById("sendORCMethod2").value;
+	sendORCMethod2 = replaceAll(sendORCMethod2, "\\'", "&#39;");
+	
+	//alert("sendORCMethod1"+sendORCMethod1);
+	
+	//alert("inside the selectOptionCheckValues");
+	
+	var f = document.getElementById("frmSelectOption");
+
+	var f_unavailableorc = document.getElementById("unavailableorc");
+	var f_availableorc = document.getElementById("availableorc");
+	
+	if ( f_unavailableorc.checked ) {
+		
+		var selected = checkIfSendOrcOptionSelected();
+
+		if ( !selected ) {
+			displayErrorMessage(sendORCMethod1);
+			return false;
+		}
+	}
+	
+	if ( f_availableorc.checked ) {
+		
+		var f_orc = document.getElementById("orc");
+		var orc = slidreg2trim( f_orc.value );
+		if ( orc == "" ) {
+			displayErrorMessage("Please enter your Online Registration Code(needs cms)", f_orc);
+			return false;
+		}
+	}
+	
+	disableNextButton();
+	hasBeenSubmitted=true;
+	return true;
+	
+}
+
+// Helper to check the orcMethod radio button element to see if any are selected
+function checkIfSendOrcOptionSelected() {
+	var f = document.getElementById("frmSelectOption");
+
+	var methods = f['orcMethod'];
+	var selected = false;
+	var i;
+	if ( !methods.length ) { // Only 1 radio button
+		selected = methods.checked;
+	} else {
+		for(i=0;i<methods.length;i++) {
+			if ( methods[i].checked ) {
+				selected = true;
+				break;
+			}
+		}
+	}
+	
+	return selected;
+
+}
+
+// called when the radio button elements are change to toggle the displayed sections
+function haveNeedOrcChanged() {
+
+	var f_unavailableorc = document.getElementById("unavailableorc");
+	var f_availableorc = document.getElementById("availableorc");
+	
+	var sec_unavailableorc = document.getElementById("unavailableorc_section");
+	var sec_availableorc = document.getElementById("availableorc_section");
+
+	if ( f_unavailableorc.checked ) {
+		sec_unavailableorc.style.display="block";
+		sec_availableorc.style.display="none";
+		if ( checkIfSendOrcOptionSelected() ) {
+			enableNextButton();
+		} else {
+			disableNextButton();
+		}
+	} else if ( f_availableorc.checked ) {
+		sec_unavailableorc.style.display="none";
+		sec_availableorc.style.display="block";
+		//enableNextButton();
+		enableDisableNextOnType( document.getElementById("orc") );
+	} else {
+		sec_unavailableorc.style.display="none";
+		sec_availableorc.style.display="none";
+		disableNextButton();
+	}
+	
+}
+
+// Utility function to enable/disable the next button based on whether
+// the given form object has a value or not
+function enableDisableNextOnType( object ) {
+
+	if ( !object ) return;
+	
+	var v = object.value;
+	if ( v && v != "" ) {
+		enableNextButton();
+	} else {
+		disableNextButton();
+	}
+}
+
+// Called when the orc method is changed to update the display
+function orcMethodChanged( o ) {
+
+	var smsSelected = (o.value == "SMS");
+	var aoSelected = (o.value == "AO");
+	var emailSelected = (o.value == "EMAIL");
+	var postalmailSelected = (o.value =="USMAIL");
+
+	/* var divEnterORC = document.getElementById("divEnterORC"); */
+	
+	if(smsSelected){
+
+		//	if ( divEnterORC ) divEnterORC.style.display="none";
+		if(document.getElementById("EMAILdescp")!=null){
+			document.getElementById("EMAILdescp").style.display="none";
+		}
+		if(document.getElementById("TELEPHONEdescp")!=null){
+			document.getElementById("TELEPHONEdescp").style.display="none";
+		}
+		if(document.getElementById("POSTALMAILEdescp")!=null){
+			document.getElementById("POSTALMAILEdescp").style.display="none";
+		}
+		if(document.getElementById("SMSdescp")!=null){
+			document.getElementById("SMSdescp").style.display="block";
+		}
+
+
+	}else if(aoSelected){
+
+		//	if ( divEnterORC ) divEnterORC.style.display="none";
+
+		if(document.getElementById("EMAILdescp")!=null){
+			document.getElementById("EMAILdescp").style.display="none";
+		}
+		if(document.getElementById("TELEPHONEdescp")!=null){
+			document.getElementById("TELEPHONEdescp").style.display="block";
+		}
+		if(document.getElementById("POSTALMAILEdescp")!=null){
+			document.getElementById("POSTALMAILEdescp").style.display="none";
+		}
+		if(document.getElementById("SMSdescp")!=null){
+			document.getElementById("SMSdescp").style.display="none";
+		}
+
+
+	}else if(emailSelected){
+		//		if ( divEnterORC ) divEnterORC.style.display="none";
+		if(document.getElementById("EMAILdescp")!=null){
+			document.getElementById("EMAILdescp").style.display="block";
+		}
+		if(document.getElementById("TELEPHONEdescp")!=null){
+			document.getElementById("TELEPHONEdescp").style.display="none";
+		}
+		if(document.getElementById("POSTALMAILEdescp")!=null){
+			document.getElementById("POSTALMAILEdescp").style.display="none";
+		}
+		if(document.getElementById("SMSdescp")!=null){
+			document.getElementById("SMSdescp").style.display="none";
+		}
+
+
+	}else if(postalmailSelected){
+		//alert("4");
+		//		if ( divEnterORC ) divEnterORC.style.display="none";
+
+
+		if(document.getElementById("EMAILdescp")!=null){
+			document.getElementById("EMAILdescp").style.display="none";
+		}
+		if(document.getElementById("TELEPHONEdescp")!=null){
+			document.getElementById("TELEPHONEdescp").style.display="none";
+		}
+		if(document.getElementById("POSTALMAILEdescp")!=null){
+			document.getElementById("POSTALMAILEdescp").style.display="block";
+		}
+		if(document.getElementById("SMSdescp")!=null){
+			document.getElementById("SMSdescp").style.display="none";
+		}
+	}		
+
+	enableNextButton();
+	
+	enableDisableIfPresent( "f_selectedSMSNumber", smsSelected );
+	enableDisableIfPresent( "f_selectedEmailAddress", emailSelected ); 
+	enableDisableIfPresent( "f_selectedTelephoneNumber", aoSelected );  
+}
+
+function enterOrcCheckValues() {
+	//Enter ORC WIRELESS
+	//alert("enterOrcCheckValues ===="+ a);
+	if ( hasBeenSubmitted ) {
+        return false;
+	}
+        
+	var invalidEnterORCWireless =document.getElementById("errormsg1").innerHTML;
+	
+	var orcField = document.getElementById("f_orc");
+	var orc = slidreg2trim(orcField.value);
+	if ( orc == null || orc.length == 0) {
+		displayErrorMessage(invalidEnterORCWireless, orcField);
+		return false;
+	}
+
+	document.getElementById("showNext").style.display="none";
+	document.getElementById("blockNext").style.display="block";
+	hasBeenSubmitted=true;
+	return true;
+}
+
+//Start for CR-1203-0834. Added new funtion filterForTN( string )
+function filterForTN( str ) {
+	str = str.split(' ').join('');
+	str = str.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+	var tempstr = str.split('-').join('');
+	tempstr = tempstr.split('.').join('');
+	tempstr = tempstr.split('_').join('');
+	if(!isNaN(tempstr))
+	{
+		str = tempstr;
+	}
+	return str;
+}
+//End changes for CR-1203-0834
+
+function displayErrorMessage(message, field) {
+	
+	// If we had Server side errors, hide them
+	var sse = document.getElementById("serverSideErrors");
+	if ( sse ) {
+		sse.style.display="none";
+	}
+	
+	var jsErrMsg = document.getElementById("jsErrMsg");
+	jsErrMsg.innerHTML= "<p class='botMar0'>"+ message+"</p>";
+	jsErrMsg.className = "errorMsg box botMar20";
+	
+	document.getElementById("clientSideErrors").style.display = "block";
+	
+	if ( field ) field.focus();
+	
+}
+
+
+function enableDisableIfPresent( id, enabled ) {
+	var field = document.getElementById(id);
+	if ( field ) 
+		field.disabled = !enabled;
+}
+
+
+function showAllOptions()
+{
+	//alert("in showAllOption");
+	var smsValue=document.getElementById("smdId").value;
+	var telephoneId =document.getElementById("telephoneId").value;
+	var usmailId=document.getElementById("usmailId").value;
+	var emailId=document.getElementById("emailId").value;
+	document.getElementById("OtherOptionDiv").style.display="block";
+	document.getElementById("moreOptionShowhide").style.display="none";
+
+}
+
+function slidreg2trim(str) {
+	
+	str = str.replace(/(^\s*)|(\s*$)/gi,"");
+	str = str.replace(/[ ]{2,}/gi," "); 
+	str = str.replace(/\n /,"\n");
+	
+	return str;
+}
+
+function confirmationPageCheckValues(){
+	if ( hasBeenSubmitted ) {
+        return false;
+	}
+	var form = document.getElementById("frmConfirmationPage");
+	var checkboxes = form['chkbox'];
+	var selected = false;
+	var i;
+	for(i=0;i<checkboxes.length;i++) {
+		if ( checkboxes[i].checked ) {
+			selected = true;
+			break;
+		}
+	}
+	if(!selected){
+		displayErrorMessage("Please select a checkbox"); //Hardcoded waiting for CMS updation
+		return false;
+	}
+	
+	document.getElementById("showNext").style.display="none";
+	document.getElementById("blockNext").style.display="block";
+	hasBeenSubmitted = true;
+	return true;
+}
+
+function replaceAll(txt, replace, with_this) {
+	return txt.replace(new RegExp(replace, 'g'),with_this);
+}

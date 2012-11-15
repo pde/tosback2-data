@@ -55,6 +55,22 @@ if(baseURL.match(/-p[2-9]/g))
 // the following line is depcrecated for this file, not sure if its needed elsewhere though - GD 8/19/08
 var internalSearch = window.location.hash;
 
+mistats.unbind = function (pObj, pType, pCallout)
+{
+   if (pObj.removeEventListener)
+      pObj.removeEventListener(pType, pCallout, false);
+   else if (pObj.detachEvent)
+      pObj.detachEvent('on' + pType, pCallout);
+};
+
+mistats.bind = function (pObj, pType, pCallout)
+{
+   if (pObj.addEventListener)
+      pObj.addEventListener(pType, pCallout, false);
+   else if (pObj.attachEvent)
+      pObj.attachEvent('on' + pType, pCallout);
+};
+
 // Server date/time
 mistats.Date = function ()
 {
@@ -204,6 +220,205 @@ mistats.audienceCounts =
       }());
    }
 };
+
+mistats.AdTracker = function ()
+{
+   var cEvent = 'event18';
+
+   var allAds;
+   var pl;
+
+   function getPageLevel()
+   {
+      if (s.prop3)
+      {
+         if (s.prop3.match(/home/i))
+            return 'H';
+         if (s.prop3.match(/section/i))
+            return 'F';
+         if (s.prop3.match(/story/i))
+            return 'S';
+         if (s.prop3.match(/gallery/i))
+            return 'G';
+         if (s.prop3.match(/postload/i))
+            return 'P';
+         if (s.prop3.match(/cgi/i))
+            return 'C';
+         if (s.prop3.match(/static/i))
+            return 'T';
+      }
+      
+      return 'U';
+   };
+
+   function scanObj(pObj)
+   {
+      var ad;
+      var ads;
+      var c;
+      var d;
+      var divs;
+      var pos;
+      var size;
+
+      if (!pObj)
+         pObj = window;
+
+      ads = [];
+      divs = pObj.document.getElementsByTagName('div');
+      for (d = 0; d < divs.length; d++)
+      {
+         ad = null;
+         for (c = 0; c < divs[d].childNodes.length; c++)
+         {
+            if (!ad
+             && divs[d].childNodes[c].nodeName === 'SCRIPT'
+             && divs[d].childNodes[c].src
+             && divs[d].childNodes[c].src.match(/https*:\/\/ad\.doubleclick\.net\/adj\/\w+/)
+             && !divs[d].childNodes[c].tracked)
+            {
+               size = divs[d].childNodes[c].src.match(/sz=[^\;]+/);
+               if (!size)
+                  break;
+
+               pos = divs[d].childNodes[c].src.match(/pos=\d+/);
+               if (!pos)
+                  break;
+
+               size = size[0].toLowerCase().replace(/sz=/, '');
+               pos = pos[0].replace(/pos=/, '');
+               ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
+
+               divs[d].childNodes[c].tracked = true;
+            }
+            if (ad
+             && divs[d].childNodes[c].nodeName === 'A'
+             && divs[d].childNodes[c].href
+             && divs[d].childNodes[c].href.match(/https*:\/\/ad\.doubleclick\.net\/click\;/)
+             && divs[d].childNodes[c].innerHTML
+             && divs[d].childNodes[c].innerHTML.match(/https*:\/\/s0\.2mdn\.net\/viewad\/817-grey\.gif/))
+            {
+               ad += 'D';
+               break;
+            }
+         }
+         if (ad)
+            ads[ads.length] = ad;
+      }
+
+      return ads;
+   };
+
+   function scanIframe(pEvent)
+   {
+      var ads;
+      var thisObj;
+      
+      thisObj = (pEvent.srcElement || pEvent.target) || pEvent;
+
+      try
+      {
+         ads = scanObj(thisObj.contentWindow).join(',');
+         if (thisObj.parentNode.nodeName !== 'BODY')
+            thisObj = thisObj.parentNode;
+         if (ads)
+            thisObj.setAttribute('mi_ads', ads);
+      } catch (miError)
+      {
+      }
+   };
+
+   function scanIframes()
+   {
+      var ads;
+      var i;
+      var obj;
+      var objs;
+
+      objs = document.getElementsByTagName('iframe');
+      for (i = 0; i < objs.length; i++)
+         if (objs[i].contentWindow)
+         {
+            scanIframe(objs[i]);
+            obj = (objs[i].parentNode.nodeName !== 'BODY') ? objs[i].parentNode : objs[i];
+            ads = obj.getAttribute('mi_ads');
+            if (ads)
+               allAds = allAds.concat(ads.split(','));
+            obj.setAttribute('mi_ads', '');
+            mistats.unbind(objs[i], 'load', scanIframe);
+            mistats.bind(objs[i], 'load', scanIframe);
+         }
+   };
+
+   function fillAdArray()
+   {
+      var ads;
+
+      pl = getPageLevel();
+      ads = scanObj(window);
+      allAds = [ads.length] ? ads : [];
+      scanIframes();
+   };
+
+   function updateProducts()
+   {
+      var dict;
+      var i;
+
+      dict = {};
+
+      for (i = 0; i < allAds.length; i++)
+      {
+         if (!dict[allAds[i]])
+            dict[allAds[i]] = 0;
+         dict[allAds[i]]++;
+      }
+
+      s.products = (s.products) ? s.products.replace(/,*;\w+;;;event18=\d+/g, '').split(',') : [];
+      for (i in dict)
+         s.products[s.products.length] = ';' + pl + '|' + i + ';;;event18=' + dict[i];
+      s.products = s.products.join(',');
+
+      s.events = (s.events) ? s.events.replace(/,*event18/g, '').split(',') : [];
+      s.events[s.events.length] = 'event18';
+      s.events = s.events.join(',');
+   };
+
+   function track(pProd)
+   {
+      fillAdArray();
+      s.prop38 = '';
+
+      if (!allAds.length)
+         return;
+         
+      s.prop38 = pl + '|' + allAds.join(',') + ',';
+      if (pProd)
+         updateProducts();
+   };
+
+   function onload()
+   {
+      var a;
+      var h;
+
+      fillAdArray();
+
+      h = location.href.replace(/https*:\/{2}/i, '').replace(/^www\./i, '').replace(/(#|\?).*$/, '').replace(/\/$/, '');
+      s.c_w('mi_adlst', ((allAds.length) ? ([h, pl, allAds.join(',')].join('|')) : ''));
+   };
+
+   function init()
+   {
+      iframes = {};
+      mistats.bind(window, 'load', onload);
+   };
+
+   this.track = track;
+   init();
+};
+
+mistats.adTracker = new mistats.AdTracker();
 
 // Interaction Tracking object == 2012-01-31 JG
 mistats.InteractionTracker = function ()
@@ -501,7 +716,9 @@ mistats.InteractionTracker = function ()
    {
       var tmp;
 
-      console.log(pType);
+      if (typeof console !== 'undefined')
+         console.log(pType);
+
       if (!(pType in types))
          return false;
 
@@ -515,12 +732,7 @@ mistats.InteractionTracker = function ()
          tmp = sessionStorage.getItem(types[pType].key);
          counts[pType] = (!tmp || isNaN(tmp)) ? 1 : tmp;
       }
-/*
-      if (counts[pType])
-         counts[pType]++;
-      else
-         counts[pType] = 1;
-*/
+
       sessionStorage.setItem(types[pType].key, counts[pType]);
 
       if (!pending)
@@ -534,7 +746,9 @@ mistats.InteractionTracker = function ()
 
    this.setCount = function (pType, pCount)
    {
-      console.log(pType);
+      if (typeof console !== 'undefined')
+         console.log(pType);
+
       if (!(pType in types))
          return false;
 
@@ -566,161 +780,6 @@ mistats.InteractionTracker = function ()
    return this;
 };
 
-// Gallery tracking object -- 2011-12-07 JG
-mistats.GalleryTracker = function ()
-{
-   var count;
-   var clicked;
-   var clickTimer;
-
-   function updateTracking(pEvent)
-   {
-      var newVars;
-      var thisObj;
-
-      if (!count || clicked)
-         return;
-
-      if (pEvent.target)
-         thisObj = pEvent.target;
-      else if (pEvent.srcElement)
-         thisObj = pEvent.srcElement;
-
-      if (!thisObj)
-         thisObj = document;
-
-      newVars =
-      {
-         channel:         mistats.sitename + ': ' + mistats.channel,
-         events:          'event7,event21',
-         linkTrackEvents: 'event7,event21',
-         linkTrackVars:   'events,products,channel,eVar4,eVar6',
-         products:        ';' + ((mistats.sitename) ? mistats.sitename : 'Unknown') + ': Gallery Views;;;event21=' + count.toString(),
-         eVar4:           mistats.pagename,
-         eVar6:           '+' + count.toString()
-      };
-
-      try
-      {
-         s.tl(thisObj, 'o', 'Gallery Views', newVars);
-         count = 0;
-      } catch (miError)
-      {
-         try
-         {
-            s.tl(true, 'o', 'Gallery Views', newVars);
-            count = 0;
-         } catch (miError)
-         {
-            if (typeof console === 'object')
-               if (console.log)
-                  console.log('s.tl() failed. Event: "' + pEvent.type + '"');
-         };
-      };
-   };
-
-   function beforeUnload(pEvent)
-   {
-      var href;
-      var hashIdx;
-      var thisObj;
-
-      if (pEvent.type.match(/mouse|click/))
-      {
-         thisObj = pEvent.target;
-
-         if (pEvent.button > 1 || thisObj.nodeName.match(/OBJECT|EMBED/))
-            return;
-
-         while (thisObj && !thisObj.nodeName.match(/BODY|#document/) && !(thisObj.href || thisObj.action))
-            thisObj = thisObj.parentNode;
-
-         if (thisObj.href)
-         {
-            href = thisObj.href.toLowerCase();;
-            if (href.length)
-            {
-               if (!href.search(/^javascript:|^#/))
-                  return;
-               hashIdx = href.indexOf('#');
-               if (hashIdx !== -1)
-                  href = href.substring(0, hashIdx);
-               if (href == location.href.toLowerCase())
-                  return;
-            }
-         } else
-            return;
-      }
-
-      setTimeout(function ()
-      {
-         updateTracking(pEvent);
-      }, 0);
-   };
-
-   function init()
-   {
-      var evtTest;
-
-      count   = 0;
-      clicked = false;
-
-      if (window.addEventListener)
-      {
-         if (!('ontouchstart' in window))
-         {
-            window.addEventListener('mousedown', beforeUnload, false);
-            window.addEventListener('blur', beforeUnload, false);
-
-            evtTest = document.createElement('iframe');
-            evtTest.style.display = 'none';
-            document.getElementsByTagName('body')[0].appendChild(evtTest);
-            evtTest.contentWindow.addEventListener('beforeunload', function ()
-            {
-               window.removeEventListener('blur', beforeUnload, false);
-               window.removeEventListener('mousedown', beforeUnload, false);
-            }, false);
-            evtTest.contentWindow.location.reload(true);
-            setTimeout(function ()
-            {
-               evtTest.parentNode.removeChild(evtTest);
-            }, 0);
-         } else
-            window.addEventListener('pagehide', updateTracking, false);
-
-         window.addEventListener('unload', updateTracking, false);
-         window.addEventListener('beforeunload', updateTracking, false);
-      } else if (window.attachEvent)
-      {
-         if (window != top)
-            document.body.attachEvent('ondeactivate', updateTracking);
-         window.attachEvent('onunload', updateTracking);
-         window.attachEvent('onbeforeunload', updateTracking);
-      }
-
-      return true;
-   };
-
-   this.increment = function (pCount)
-   {
-      count += pCount;
-
-      clicked = true;
-
-      if (clickTimer)
-         clearTimeout(clickTimer);
-
-      clickTimer = setTimeout(function ()
-      {
-         clicked = false;
-      }, 1000);
-   };
-
-   init();
-
-   return this;
-}
-
 // View Tracker
 mistats.ViewTracker = function ()
 {
@@ -736,22 +795,6 @@ mistats.ViewTracker = function ()
 
    var cCookie = 'mi_ppv';
    var cTTL = 604800000;
-
-   function unbind(pObj, pType, pCallout)
-   {
-      if (pObj.removeEventListener)
-         pObj.removeEventListener(pType, pCallout, false);
-      else if (pObj.detachEvent)
-         pObj.detachEvent('on' + pType, pCallout);
-   };
-
-   function bind(pObj, pType, pCallout)
-   {
-      if (pObj.addEventListener)
-         pObj.addEventListener(pType, pCallout, false);
-      else if (pObj.attachEvent)
-         pObj.attachEvent('on' + pType, pCallout);
-   };
 
    function trackView(pEvent)
    {
@@ -819,9 +862,9 @@ mistats.ViewTracker = function ()
       {
          if (events)
          {
-            unbind(window, 'scroll', trackView);
-            unbind(window, 'resize', trackView);
-            unbind(window, 'zoom', trackView);
+            mistats.unbind(window, 'scroll', trackView);
+            mistats.unbind(window, 'resize', trackView);
+            mistats.unbind(window, 'zoom', trackView);
 
             events = false;
          }
@@ -844,9 +887,9 @@ mistats.ViewTracker = function ()
 
       trackView();
 
-      bind(window, 'scroll', trackView);
-      bind(window, 'resize', trackView);
-      bind(window, 'zoom', trackView);
+      mistats.bind(window, 'scroll', trackView);
+      mistats.bind(window, 'resize', trackView);
+      mistats.bind(window, 'zoom', trackView);
 
       events = true;
    };
@@ -877,22 +920,6 @@ mistats.GCSTracker = function ()
    var prompt;
    var responses;
 
-   function unbind(pObj, pType, pCallout)
-   {
-      if (pObj && pObj.removeEventListener)
-         pObj.removeEventListener(pType, pCallout, false);
-      else if (pObj && pObj.detachEvent)
-         pObj.detachEvent('on' + pType, pCallout);
-   };
-
-   function bind(pObj, pType, pCallout)
-   {
-      if (pObj && pObj.addEventListener)
-         pObj.addEventListener(pType, pCallout, false);
-      else if (pObj && pObj.attachEvent)
-         pObj.attachEvent('on' + pType, pCallout);
-   };
-
    function getElementLikeId(pStr, pObj)
    {
       var a;
@@ -921,7 +948,7 @@ mistats.GCSTracker = function ()
       var binder;
       var host;
 
-      binder = (pState)? bind : unbind;
+      binder = (pState)? mistats.bind : mistats.unbind;
 
       host = location.hostname.split('.');
       host.splice(0, ((host.length > 2) ? (host.length - 2) : 0));
@@ -980,7 +1007,7 @@ mistats.GCSTracker = function ()
          if (!msg || !msg.innerHTML.match || !msg.innerHTML.match(/confirmation/i))
             return;
 
-         unbind(thisObj, evtType, trackSignup);
+         mistats.unbind(thisObj, evtType, trackSignup);
          mistats.interactionTracker.increment('gcs_signup');
          mistats.interactionTracker.setCount('gcs_abandon', 0);
          bindToAnchors(false);
@@ -999,7 +1026,7 @@ mistats.GCSTracker = function ()
 
       if (responses && responses.length)
          for (r = 0; r < responses.length; r++)
-            unbind(responses[r], pEvent.type, surveyTrack);
+            mistats.unbind(responses[r], pEvent.type, surveyTrack);
 
       bindToAnchors(false);
    };
@@ -1015,8 +1042,8 @@ mistats.GCSTracker = function ()
       for (r = 0; r < responses.length; r++)
          if (responses[r].className && responses[r].className.match(/response|ratings|menuitem/i))
          {
-            unbind(responses[r], 'mouseup', surveyTrack);
-            bind(responses[r], 'mouseup', surveyTrack);
+            mistats.unbind(responses[r], 'mouseup', surveyTrack);
+            mistats.bind(responses[r], 'mouseup', surveyTrack);
          }
 
       return true;
@@ -1033,9 +1060,29 @@ mistats.GCSTracker = function ()
 
       signup = prompt.getElementsByTagName('iframe');
       if (signup)
-         bind(getElementLikeId(/Submit/i, signup[0].contentWindow.document), 'click', trackSignup);
+      {
+         pollCnt = 0;
+         pollPtr = setInterval(function ()
+         {
+            var submit;
 
-      bind(getElementLikeId(cAnother, prompt), 'click', askAnother);
+            if (++pollCnt > cPollLim)
+            {
+               clearInterval(pollPtr);
+               pollPtr = null;
+            }
+
+            submit = getElementLikeId(/Submit/i, signup[0].contentWindow.document);
+            if (!submit)
+               return;
+
+            mistats.bind(submit, 'click', trackSignup);
+            clearInterval(pollPtr);
+            pollPtr = null;
+         }, 500);
+      }
+
+      mistats.bind(getElementLikeId(cAnother, prompt), 'click', askAnother);
       bindResponses();
    };
 
@@ -1051,7 +1098,15 @@ mistats.GCSTracker = function ()
       var p;
 
       if (pReset)
+      {
          resetPoller();
+         if (typeof mitnt === 'object')
+         {
+            mitnt.createCookie('mi_gcsGallery', '1', 14);
+            if (!mitnt.isInitialized)
+               mitnt.load();
+         }
+      }
 
       prompt = getElementLikeId(cFrameId);
 
@@ -1090,7 +1145,7 @@ mistats.GCSTracker = function ()
 
       pollCnt = 0;
 
-      bind(window, 'load', function ()
+      mistats.bind(window, 'load', function ()
       {
          if (typeof mi !== 'undefined' && mi.surveywall && mi.surveywall.getConf('enabled'))
             track(true);

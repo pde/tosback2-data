@@ -1048,9 +1048,9 @@ function gvpUtils() {
 					if(this.mobile.isMobile) {
 						
 						if(this.mobile.isDeviceScreenSmall()) {
-							var background = document.getElementById("gvp_overlayDiv");
-							background.parentNode.removeChild(background);
-							this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
+						var background = document.getElementById("gvp_overlayDiv");
+						background.parentNode.removeChild(background);
+						this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
 							
 						} 
 						else {
@@ -1340,8 +1340,13 @@ gvpUtils.prototype.mobile = new function () {
 	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
 	var isKindle = /silk/i.test(navigator.userAgent);
 	var isAndroid = /android/i.test(navigator.userAgent);
-	this.isMobile = isIOS || isKindle || isAndroid;
-	var screenSizeLimit = 800;
+	var isWindows = /iemobile/i.test(navigator.userAgent);
+	var isBlackBerry = /blackberry/i.test(navigator.userAgent);
+	this.isMobile = isIOS || isKindle || isAndroid || isWindows || isBlackBerry;
+	
+	//mobile device screen size limit.
+	var screenSizeLimit = 900;
+	
 	//other variables
 	var h264PathMarker = 'http://www.wireless.att.com/home/video_progressive/gvp/mp4/';
 	var closeModal = 'gvp.closePopup();';
@@ -1351,6 +1356,7 @@ gvpUtils.prototype.mobile = new function () {
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
+	//strip off parameters
 		var nameStart = pConfig.lastIndexOf('/')+1;
 		var nameEnd = pConfig.indexOf('.',nameStart);
 		h264FileName = pConfig.substring(nameStart, nameEnd);
@@ -1430,8 +1436,19 @@ gvpUtils.prototype.mobile = new function () {
 		var dsPixelRatio = window.devicePixelRatio;
 		var dsWidth = window.outerWidth;
 		var dsHeight = window.outerHeight;
-		var diagonalDim =  Math.sqrt( (dsWidth * dsWidth) + (dsHeight * dsHeight) ) / dsPixelRatio;
-		return diagonalDim;
+		var screenArea = (dsWidth * dsWidth) + (dsHeight * dsHeight);
+		var diagonalDim;
+		if (isIOS){
+			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
+			}
+		else if (isWindows){
+			var diagonalDim = Math.sqrt(screenArea) / 2;
+		}
+		else{
+			var diagonalDim = Math.sqrt(screenArea);
+		}
+		
+		return (diagonalDim);
 	};
 	
 	// If the device has a small screen, return true.
@@ -1480,7 +1497,8 @@ gvpUtils.prototype.mobile = new function () {
 		var vidFrag = document.createDocumentFragment();		
 		var videoEl = document.createElement('video');
 		videoEl.setAttribute('id', 'currEmbStream');
-		videoEl.setAttribute('style', 'display:block; position:absolute;');
+		videoEl.setAttribute('style', 'display:block; position:absolute;left:-1px;');
+		videoEl.setAttribute('autoplay', 'autoplay');
 		
 		// Create child elements for the video element. 
 		var videoSourceEl = document.createElement('source');
@@ -1500,15 +1518,34 @@ gvpUtils.prototype.mobile = new function () {
 		vidFrag.appendChild(videoEl);
 		
 		document.getElementsByTagName('body')[0].appendChild(vidFrag);	
-		videoEl.addEventListener('load',function() {videoEl.play();},true);
+		
 		// IOS needs the load event to invoke the event listener
 		if(isIOS) {
+			videoEl.addEventListener('load',function() {
+				videoEl.play();
+			},true);
 			videoEl.load();
 			videoEl.play();
-			gvp.closePopup();
+			var elem = document.getElementById("currEmbStream");
+			elem.webkitEnterFullScreen();	
+		}
+		else if(isWindows){ 
+			videoEl.addEventListener('load',function() {videoEl.play();},true);
+			videoEl.load();
+			videoEl.play();
+		}
+		else{
+			function callback () {
+				document.querySelector('video').play();
+			}
+			window.addEventListener("load", callback, false);
+			videoEl.load();
+			videoEl.play();	
+			var elem = document.getElementById("currEmbStream");
+			//requres W3C fullscreen API for Android devices 3.0,4.0 and 4.1
+			elem.webkitEnterFullScreen();			
 		}
 	};
-	
 	
 	// Insert a video element into the page.
 	this.insertVideoElemInPage = function (pConfig, p_locEnv) {

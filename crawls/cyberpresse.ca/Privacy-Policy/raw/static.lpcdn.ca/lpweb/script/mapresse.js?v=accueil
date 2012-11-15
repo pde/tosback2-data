@@ -60,14 +60,47 @@
         return true;
     });
 
+
+    //Init FB
+    //Hook fb response and add activity stream
     var initMPLike = function() {
+        
         FB.Event.subscribe('edge.create', function(response) {
+            
+            if (document.FBLikeTrys == undefined) document.FBLikeTrys = 0;
+
             var m = response.match(/(\d{2})-(\d+)-[^/]+.php$/);
-            if (m) {
+            var w = response.match(/[a-z]+\/\d{4}\/\d{2}\/\d{2}\/[-a-z0-9]+/);
+            
+            if (m && document.FBLikeTrys == 0) {
+                ++document.FBLikeTrys;
                 var p = getScriptParameters();
                 $j.getJSON(
                     '/mapresse/?controllerName=Recommend&assetType=' + m[1] +'&assetId=' + m[2] + '&recommend_uqid=' + p['recommend_uqid'],
                     function(data) {
+                        
+                    }
+                );
+            }else if (w && document.FBLikeTrys == 0){
+                ++document.FBLikeTrys;
+                $j.getJSON(
+                        'feed/?feed=json&fields[]=id&fields[]=dataURL&fields[]=title&fields[]=excerpt&fields[]=blogId&fields[]=date&fields[]=date&fields[]=commentsNumber',
+                    function(data) {
+                        
+                        var dataURL = data[0]['dataURL'];
+                        dataURL = dataURL.toLowerCase();
+                        
+                        var du = dataURL.match(/^\/([a-z]+)\/([a-z]+)\/([-0-9]+)$/);
+                        
+                        var p = getScriptParameters(); 
+                        
+                        $j.getJSON(
+                        '/mapresse/?controllerName=Recommend&assetType=' + du[1] + '&assetId='+ du[3] + '&recommend_uqid=' + p['recommend_uqid'],
+                            function(data) {
+                               
+                            }
+                        );
+                        
                     }
                 );
             }

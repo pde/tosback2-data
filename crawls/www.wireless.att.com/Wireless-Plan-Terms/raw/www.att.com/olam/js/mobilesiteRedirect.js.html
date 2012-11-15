@@ -1,0 +1,93 @@
+var isMobileSiteRedirectOn=false;
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = 'https://m.att.com/'; 
+
+	//***Start Mobile Detection Steps*** 
+	//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+	function getURLParam(pName) 
+	{ 
+		var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+		if (pName) 
+		{ 
+			if (queryString.indexOf(pName) != -1) 
+			{ 
+				startPos = queryString.indexOf(pName) + pName.length + 1; 
+				stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+				pValue = queryString.substring(startPos, stopPos); 
+				pValue = unescape(pValue); 
+			} 
+		} 
+		return pValue; 
+	} 
+	var mobile = getURLParam('mobile'); 
+	//Check URL for mobile=false. Set FulSiteView=True if found. 
+	if (mobile =="false") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+	} 
+	else 
+	{ 
+		//Check for HTML5 storage support 
+		if(typeof(Storage)!=="") 
+		{ 
+		// Yes! localStorage and sessionStorage support! 
+		// Test for FullSiteView=True 
+			fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+			if (fullSiteView == "True") 
+			{ 
+			//do nothing 
+			} 
+			else 
+			{ 
+				DetectMobile(); //start mobile detection 
+			} 
+		} 
+		else 
+		{ 
+		// Sorry! No web storage support.. 
+			DetectMobile(); 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{ 
+		// Switch check for Mobile Site Redirect
+		if(!isMobileSiteRedirectOn) return;
+		
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		var isVaildUrl = (window.location.href.indexOf("/olam/loginAction.olamexecute")!=-1) ? true : false;
+		//Check if device is mobile and check for valid URL
+		if (isVaildUrl && uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+		} 
+	}
+	
+	function stringEndsWith(str, suffix) {
+	    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+	}
+
+	//***End Mobile Detection Steps***        
+	//]]> 
+	

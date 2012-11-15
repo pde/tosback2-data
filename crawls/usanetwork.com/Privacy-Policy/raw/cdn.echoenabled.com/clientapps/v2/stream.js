@@ -2909,7 +2909,8 @@ Echo.Stream.prototype.childrenRequestItems = function(unique) {
 		data.entries = self.actualizeChildrenList(item, data.entries);
 		self.publish("Stream.onDataReceive", self.prepareBroadcastParams({
 			"entries": data.entries,
-			"initial": false
+			"initial": false,
+			"type": "children"
 		}));
 		var children = [];
 		$.each(data.entries, function(i, entry) {
@@ -3154,7 +3155,8 @@ Echo.Stream.prototype.handleInitialResponse = function(data, visualizer) {
 	data.entries = data.entries || [];
 	this.publish("Stream.onDataReceive", self.prepareBroadcastParams({
 		"entries": data.entries,
-		"initial": !this.hasInitialData
+		"initial": !this.hasInitialData,
+		"type": this.hasInitialData ? "more" : "initial"
 	}));
 	$.each(data.entries, function(i, entry) {
 		entry = self.normalizeEntry(entry);

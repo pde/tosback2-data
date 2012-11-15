@@ -55,7 +55,6 @@
 
   //slate specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/www\.dev\.slate\.com|http:\/\/pub1\.dev\.slate\.com/);
-  wpAd.flags.hpRefresh = !!wpAd.tools.urlCheck('reload=true');
 
   //called on first placeAd2 call, before wpAd.cache.init is called
   //conditional ad flights, etc., can be added here

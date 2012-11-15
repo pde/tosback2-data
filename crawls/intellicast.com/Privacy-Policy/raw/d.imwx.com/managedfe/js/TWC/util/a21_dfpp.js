@@ -65,7 +65,16 @@ window.A21 = window.A21 || {};
 	 */
 	function debugMode()
 	{
-		return TWC.pco.get("ad.debug");
+		var isdebug=TWC.pco.get("ad.debug");
+		if (!isdebug){
+			//try debug param
+			var param = document.URL.split('#')[1];
+			if (param && param=="adstest"){
+				isdebug=true;
+			}
+		}
+	
+		return isdebug ;
 	}
 
 

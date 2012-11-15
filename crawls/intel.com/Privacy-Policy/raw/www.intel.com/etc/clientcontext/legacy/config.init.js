@@ -1,4 +1,9 @@
 
+
+
+
+
+
 if (CQ_Analytics && CQ_Analytics.ProfileDataMgr) {
     CQ_Analytics.ProfileDataMgr.addListener("update", function(event, property) {
         var authorizableId = this.getProperty("authorizableId");
@@ -13,6 +18,8 @@ if (CQ_Analytics && CQ_Analytics.ProfileDataMgr) {
 
     
         CQ_Analytics.ProfileDataMgr.loadInitProperties({
+  "membershipGroup": "anonymous",
+  "membershipGroup_xss": "anonymous",
   "avatar": "/etc/designs/default/images/collab/avatar.png",
   "path": "/home/users/a/anonymous/profile",
   "isLoggedIn": false,
@@ -45,6 +52,6 @@ if( CQ_Analytics && CQ_Analytics.SurferInfoMgr) {
 
 if( CQ_Analytics && CQ_Analytics.PageDataMgr) {
     CQ_Analytics.PageDataMgr.loadInitProperties({
-  "random": "0.78"
+  "random": "0.39"
 }, true);
 }

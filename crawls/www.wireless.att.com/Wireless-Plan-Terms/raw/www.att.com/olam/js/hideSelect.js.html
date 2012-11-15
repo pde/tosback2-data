@@ -1,0 +1,43 @@
+var isIE6 = navigator.userAgent.toLowerCase().indexOf('msie 6') != -1;
+function hideSelects(){
+	if(isIE6){
+		var aSelects = document.getElementsByTagName( "select" );
+		var nSelects = aSelects.length;
+		for( var i=0; i<nSelects; i++ ){
+			eSelect = aSelects[ i ];
+			eSelect.style.visibility = "hidden";
+		}
+	}
+}
+
+function showSelects(){
+	if(isIE6){
+		var aSelects = document.getElementsByTagName( "select" );
+		var nSelects = aSelects.length;
+		for( var i=0; i<nSelects; i++ ){
+			eSelect = aSelects[ i ];
+			eSelect.style.visibility = "visible";
+		}
+	}
+}
+
+/*
+ * 
+ * This function is added to 
+ * disable buttons which are defined as 
+ * submit images. In this function need to pass
+ * Image Name and true/false whether image needs to
+ * be disabled or enabled. If passed as true then 
+ * image button it will be disabled.
+ */
+
+function disableSubmitImage(imageID, enableDisableFlag){
+	//alert(imageID);
+	//alert(enableDisableFlag);
+	document.getElementById(imageID).setAttribute('disabled', enableDisableFlag);
+}
+
+function toggleSubmitImage(imageID, enableDisableFlag, toggleImagePath){
+    document.getElementById(imageID).setAttribute('disabled', enableDisableFlag);
+    document.getElementById(imageID).src = toggleImagePath;     
+}

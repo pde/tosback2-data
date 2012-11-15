@@ -106,19 +106,19 @@ function renderAnalyticsCode() {
 
 document.write('<script>');
 
-document.write(' url = location.href; ');
+document.write(' var _gaq = _gaq || []; ');
 
-document.write('checkLive = url.indexOf(\'english-asian-redesign-att.fhstage1.com\');  ');  
+document.write('_gaq.push([\'_setAccount\', \'UA-273710-14\']);  ');  
 
-document.write(' if(checkLive != \'-1\') { ');
+document.write(' _gaq.push([\'_trackPageview\']);');
 
-document.write('_uacct = "UA-273710-14"; ');
-
-document.write('urchinTracker(); ');
-
-document.write('}   ');
-
-document.write('</script>');
+document.write(" (function() {"); 
+document.write("    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;"); 
+document.write("    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';"); 
+document.write("    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);"); 
+document.write("  })();"); 
+document.write("}  "); 
+document.write("</script>"); 
 
 }
 

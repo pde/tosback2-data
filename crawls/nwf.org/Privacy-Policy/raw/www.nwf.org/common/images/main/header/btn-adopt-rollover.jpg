@@ -1,0 +1,45 @@
+﻿using System;
+using Sitecore.Jobs;
+using System.Reflection;
+using Sitecore.Data.Items;
+using System.Collections.Specialized;
+
+namespace Nwf.Custom
+{
+    public partial class PublishQueueViewer : System.Web.UI.Page
+    {
+        public void GetProp(object mType)
+        {
+            Type type = mType.GetType();
+            PropertyInfo[] properties = type.GetProperties();
+            Response.Write("<br/>" + mType.ToString() + ":<br/>");
+            foreach (PropertyInfo p in properties)
+            {
+                switch (p.Name)
+                {
+                    case "RootItem":
+                        var temp = p.GetValue(mType, null);
+                        Response.Write(p.Name + ": " + ((temp != null) ? ((Item)temp).ID.ToString() : "null") + "<br/>");
+                        break;
+                    case "Messages":
+                        var tempMessages = p.GetValue(mType, null);
+                        if (tempMessages != null)
+                        {
+                            foreach (var str in (StringCollection)tempMessages)
+                            {
+                                Response.Write(p.Name + ": " + str + "<br/>");    
+                            }
+                        }
+                        break;
+                    default:
+                        Response.Write(p.Name + ": " + p.GetValue(mType, null) + "<br/>");
+                        break;
+                }
+            }
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            var jobs = JobManager.GetJobs();
+            Response.Write("SysTime: " + DateTime.Now.ToString() + " | UtcSysTime: " + DateTime.UtcNow.ToString() + " Jobs list:<br>");
+  

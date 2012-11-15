@@ -35,6 +35,18 @@ $(document).ready(function() {
 			});
 		}
 	});
+	
+	// Holiday schedule fly-out toggle
+	$("#holidayScheduleOpener, #holidayScheduleDropDown").hoverIntent(function(){
+		$("#holidayScheduleDropDown").css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":$("#holidayScheduleHeight").data("neededheight"), "opacity":"1.0"}, slideTime, function() {
+			// no invisible wall
+		});
+	},function(){
+		$("#holidayScheduleDropDown").stop().animate({"height":"0px", "opacity":"0.0"}, slideTime * .7, function() {
+			$("#holidayScheduleDropDown").css("display", "none");
+			// no insivible wall
+		});
+	});
 
 	// Swap tab panels
 	var thePanels = ["#myDillardsRightFrameContent .shoppingBag", "#myDillardsRightFrameContent .wishList", "#myDillardsRightFrameContent .savedSearch", "#myDillardsRightFrameContent .orderHistory"], theSelector = thePanels.join(", ");
@@ -54,7 +66,7 @@ $(document).ready(function() {
 				$(thePanels[i]+"Panel").removeClass("activePanel");
 			}
 		}
-		countItemRows($(this).attr("class"));
+		countItemRows($(this).prop("class"));
 	});
 	
 	// Remove item
@@ -216,7 +228,7 @@ function myDillardsABtest() {
 */
 
 // Show My Dillard's bar, rearrange header accordingly
-function displayByDillardsBar(){
+function displayMyDillardsBar(){
 	var countryCode = $.cookie("country");
 	if(countryCode == 'US' || countryCode == '' || countryCode == null){
 		$("#fiftyOneContext, #utility-nav #mini-cart, #utility-nav #my-account, #utility-nav #wishlist").hide();
@@ -230,7 +242,7 @@ function displayByDillardsBar(){
 		$("#header-spot").css("margin","0").css("width","auto").css("float","none").css("margin","0").css("position","absolute").css("bottom","12px").css("right","421px");
 		// If eSpot contains an image, position it one way -- if there is no image, position it another way
 		if($("#header-spot #barIsOn img").eq(0).length > 0){
-			$("#header-spot").css("margin-right","23px");
+			$("#header-spot").css("margin-right","187px");
 		}else{
 			$("#header-spot").css("margin-bottom","12px");
 		}
@@ -240,5 +252,17 @@ function displayByDillardsBar(){
 	$("#header-spot,#utility-nav").show();
 }
 $(document).ready(function(){
-	displayByDillardsBar();
+	displayMyDillardsBar();
 });
+
+function openMyDillardsFlyOut(){
+	$("#myDillardsRightFrame").prop("src","https://"+$("#myDillardsRightFrame").data("host")+"/webapp/wcs/stores/servlet/MyDillardsiFrameView?storeId=301&langId=-1&catalogId=301");
+	setTimeout(function(){$("#myDillardsRightFrame").fadeIn(250);},500);
+	hasBeenOpened = true;
+	retrieveMyDillardsLinksLogin();
+	$("#myDillardsRightFrame").addClass("openedUp");
+	$("#myDillardsContent").css("height", "0px").css("opacity", "0.0").css("display", "block").stop().animate({"height":"325px", "opacity":"1.0"}, 250, function() {
+		$("#myDillardsInvisibleWall").css("display", "block");
+		$("#myDillardsEmailAddress").focus();
+	});
+}

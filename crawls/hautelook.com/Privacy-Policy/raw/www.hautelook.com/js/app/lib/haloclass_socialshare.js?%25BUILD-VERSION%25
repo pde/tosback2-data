@@ -1,0 +1,397 @@
+$Halo.Social = $Halo.Social || {};
+
+$Halo.Social.loadFbApi = $Halo.Social.loadFbApi || function(){
+	$(document).ready(function(){
+		if(window.FB){
+			$Halo.bigbro.notify("Facebook_ApiReady");
+			return;
+		}
+		
+		var fb_root = $("#fb-root");
+		
+		if(fb_root.size() === 0){
+			fb_root = Halo.createEl({type:"div", opts: {id: "fb-root"}});
+		}
+		
+		var fbscript = Halo.createEl({
+			type: 'script',
+			opts: {src: '//connect.facebook.net/en_US/all.js', async: "true"}
+		});
+		
+		fb_root.append(fbscript);
+		
+		window.fbAsyncInit = function(){
+			FB.init({appId: '294902430988', status: true, cookie: true, xfbml: true, oauth: true});
+			$Halo.bigbro.notify("Facebook_ApiReady");
+		};
+		
+		$("body").append(fb_root);
+		fb_root = null;
+		fbscript = null;
+	});
+};
+
+$Halo.Social.baseHref = "http://" + window.location.host + "/index/index/mk/invite";
+$Halo.Social.enableFbLike = (typeof $Halo.Social.enableFbLike === 'undefined') ? 1 : 0;
+$Halo.Social.hidePlaxo = ($.browser.msie == true && $.browser.version.substr(0, 1) == "8");
+$Halo.Social.hidePlaxo = $Halo.Social.hidePlaxo || ($.browser.opera == true);
+$Halo.Social.shareTypes = {
+	catalog:{
+		popupText: 'Get a $10 credit each time a friend you invite makes their first purchase. Your message to friends will be, "#eventTitle is on sale at HauteLook!"',
+		popupTitle: 'Enter the email addresses of your friends',
+		twitterCopy: 'Look what I found on @HauteLook. Check out #eventTitle now! '
+	},
+	product:{
+		popupText: 'Get a $10 credit each time a friend you invite makes their first purchase. Your message to friends will be, "Check out this item from #eventTitle now!"',
+		popupTitle: 'Enter the email addresses of your friends',
+		twitterCopy: 'Look what I found on @HauteLook. Check out this item from #eventTitle now! '
+	}
+};
+$Halo.Social.shareTypes.about = $Halo.Social.shareTypes.catalog;
+
+$Halo.ShareBar = $Halo.ShareBar || function(pObj){
+	var obj = pObj || {};
+	this.shareType = obj.shareType || obj.share_type || "invalid";
+	if(this.shareType in $Halo.Social.shareTypes){
+		for(var prop in $Halo.Social.shareTypes[this.shareType]){
+			this[prop] = $Halo.Social.shareTypes[this.shareType][prop];
+		}
+	}
+	this.dom = obj.dom || false;
+	this.data = obj.data || {};
+	this.useFbLike = ($Halo.Social.enableFbLike && obj.useFbLike);
+};
+
+$Halo.ShareBar.prototype = new $Halo.Obj();
+$Halo.ShareBar.prototype.copyInserts = ["eventTitle"];
+$Halo.ShareBar.prototype.likeUrl = "";
+$Halo.ShareBar.prototype.shareUrl = "";
+$Halo.ShareBar.prototype.twitterLink = "";
+$Halo.ShareBar.prototype.fbLink = "";
+$Halo.ShareBar.prototype.emailUrl = "/member-invites/email-share/";
+$Halo.ShareBar.prototype.urlBuild = {
+	"contentId": '/content/',
+	"eventTitle": '/title/',
+	"eventCode": '/event_code/',
+	"eventId": '/event_id/',
+	"productImage": "/product_image/",
+	"inventoryId": "/inventory_id/"
+};
+
+$Halo.ShareBar.prototype.init = function(){
+	if(!this.dom){
+		throw new Error("ShareBar Error: Cannot render because this.dom is not a valid node.");
+	}
+	else{
+		this.dom = $(this.dom);
+	}
+	
+	if(!this.member){
+		$Halo.ShareBar.prototype.member = Sandbox.getMember();
+		if(!this.member){
+			Sandbox.forceMemberUpdate(false, $.proxy(this.init, this));
+			return;
+		}
+	}
+	this.likeUrl = "";
+	this.likeUrl += $Halo.Social.baseHref;
+	for(var name in this.data){
+		if(name in this.urlBuild){
+			this.likeUrl += this.urlBuild[name] + encodeURIComponent(this.data[name].replace(/\//g,'@').replace(/&/g,"%26").replace(/ /g, "%20"));
+		}
+	}
+	this.shareUrl = "";
+	this.shareUrl += this.likeUrl + "/inv_code/" + this.member.invitation_code;
+
+	for(var i = 0; i < this.copyInserts.length; i++){
+		if(this.copyInserts[i] in this.data){
+			re = new RegExp("#" + this.copyInserts[i], "g");
+			this.popupText = this.popupText.replace(re, this.data[this.copyInserts[i]]);
+			this.popupTitle = this.popupTitle.replace(re, this.data[this.copyInserts[i]]);
+			this.twitterCopy = this.twitterCopy.replace(re, this.data[this.copyInserts[i]].replace(/&/g,"%26"));
+		}
+	}
+	
+	this.fbLink = "http://www.facebook.com/sharer.php?u=" + this.shareUrl + "?sid=99991";
+	this.twitterLink = "/twitter/index/base/" + encodeURIComponent(this.twitterCopy) + "/url/" + encodeURIComponent(this.shareUrl) + "?sid=99992";
+	this._bindEvents();
+};
+
+$Halo.ShareBar.prototype._bindEvents = function(){
+	this.dom.find("a.share_link").bindOnce("click.socialshare", $.proxy(function(){
+		this.showOverlay();
+		return false;
+	}, this));
+	this.dom.find("a.share_twitter").removeAttr("href").attr("href", this.twitterLink);
+	this.dom.find("a.share_fb").removeAttr("href").attr("href", this.fbLink);
+	if(this.useFbLike){
+		this.like = this.like || new $Halo.FbLike();
+		this.like.dom = this.dom;
+		this.like.url = this.likeUrl;
+		$Halo.bigbro.subscribe("Facebook_ApiReady", function(){
+			$Halo.bigbro.unsubscribe("Facebook_ApiReady", arguments.callee);
+			this.like.render();
+			FB.XFBML.parse();
+		}, this);
+		$Halo.Social.loadFbApi();
+	}
+	
+};
+
+$Halo.ShareBar.prototype.overlay = false;
+$Halo.ShareBar.prototype.overlayContent = false;
+$Halo.ShareBar.prototype.getOverlay = function(){
+	if(this.overlay){
+		this.showOverlay();
+		return;
+	}
+	$.ajax({
+		url: '/modules/html/module/overlays%2Fsocial-share?' + buildVersion,
+		type: 'GET',
+		dataType: 'html',
+		success: $.proxy(function(response){
+			$Halo.bigbro.subscribe("socialOverlayReady", function(overlay){
+				$Halo.ShareBar.prototype.overlay = overlay;
+				$Halo.ShareBar.prototype.overlayContent = $(response);
+				if($Halo.Social.hidePlaxo){
+					$Halo.ShareBar.prototype.overlayContent.find("#plaxo_container").remove();
+				}
+				$(document).bind("overlayReady.social",$.proxy(function(){
+					$(document).unbind("overlayReady.social")
+					this.showOverlay();
+				}, this));
+				this.overlay.loadHTML(this.overlayContent);
+				
+			}, this);
+			
+			$Halo.bigbro.notify("newOverlay", "social", {
+				minHeight: 266,
+				minWidth: 425,
+				displayLoader: false
+			});
+		}, this)
+	});
+};
+
+$Halo.ShareBar.prototype.loadPlaxo = function(){
+	if(!$Halo.Social.hidePlaxo){
+		var $pop = $(this.overlayContent);
+		$.getScript('/js/plaxoloader.js', function(){
+			$pop.find("#plaxo_container").bindOnce("click.social", function(){
+				try{
+					showPlaxoABChooser('invite_email_list', '/plaxo');
+				}
+				catch(e){
+					Halo.errors.add(e);
+				}
+				
+				if (typeof _haq !== "undefined") {
+					_haq.push(['_trackEvent', 'Invite popup', 'Plaxo']);
+				}
+				return true;
+			});
+		});
+	}
+}
+
+$Halo.ShareBar.prototype.resetOverlay = function(){
+	var $pop = $(this.overlayContent);
+	$pop.find(".invite_copy").html(this.popupText);
+	$pop.find(".invite_title").text(this.popupTitle);
+	
+	$pop.find(".twitter_btn")
+		.attr("href", this.twitterLink)
+		.bindOnce('click.social', function() {
+			if (typeof _haq !== "undefined") {
+				_haq.push(['_trackEvent', 'Invite popup', 'Twitter']);
+			}
+		}
+	);
+	
+	$pop.find(".fb_btn")
+		.attr("href", this.fbLink)
+		.bindOnce('click.social', function() {
+			if (typeof _haq !== "undefined") {
+				_haq.push(['_trackEvent', 'Invite popup', 'Facebook']);
+			}
+		}
+	);
+	
+	var that = this;
+	
+	$pop.find(".invite_cancel").bindOnce("click.social", function() {
+		$("#moduleOverlayClose").click();
+	});
+	$pop.find(".invite_send").bindOnce("click.social", function() {
+		if (typeof _haq !== "undefined") {
+			_haq.push(['_trackEvent', 'Invite popup', 'Email']);
+		}
+		that.sendEmail(that);
+	});
+	
+	$pop.find("#invite_email_list").attr("value", "");
+	$pop.find('.invite_response').text("").addClass('hidden').removeClass("red");
+};
+
+$Halo.ShareBar.prototype.showOverlay = function(){
+	if(this.overlay){
+		if($("#sb-container:visible").size() !== 0){
+			$("#sb-nav-close").click();
+		}
+		this.resetOverlay();
+		this.loadPlaxo();
+		this.overlay.display();
+	}
+	else{
+		$.getScript("/css/app/modules/default/overlays/social-share.css", $.proxy(this.getOverlay, this), undefined, 'css');
+	}
+};
+
+$Halo.ShareBar.prototype.sendEmail = function(){
+	var overlay = this.overlay;
+	var $pop = $(this.overlayContent);
+	//cleans whitespace, special characters
+	$pop.find('.invite_response').text("").addClass("hidden").removeClass("red");
+	var emailList = $pop.find("#invite_email_list").val().replace(/[\s&\?=<>\(\):`]/g,"").replace(/"[^"]*"/g,"");
+	var send_data = "referral_data[friend_emails]=" + emailList;
+	send_data += "&referral_data[url]=" + this.shareUrl;
+	send_data += "&referral_data[shareEmailType]=" + this.shareType;
+	send_data += "&referral_data[brand_name]=" + encodeURIComponent(this.data.eventTitle);
+	send_data += "&referral_data[event_id]=" + (this.data.eventId || this.data.contentId);
+	
+	$.ajax({
+		url: this.emailUrl,
+		type: 'post',
+		data: send_data,
+		dataType: 'json',
+		
+		success: function(response) {
+			if(response && response.message) {
+				$pop.find('.invite_response').text(response.message).removeClass('hidden');
+				if(+response.success === 1){
+					$pop.find('.invite_response').addClass("red");
+					$pop.find("#invite_email_list").attr("value", "");
+				}
+			}
+			overlay.resize();
+		}
+	});
+};
+
+$Halo.FbLike = $Halo.FbLike || function(pObj){
+	var obj = pObj || {};
+	this.dom = (obj.dom) ? $(obj.dom) : false;
+	this.node = false;
+	this.url = obj.url || false;
+};
+
+$Halo.FbLike.prototype = new $Halo.Obj();
+
+$Halo.FbLike.prototype.render = function(){
+	if(!this.url || !this.dom || !this.dom.size()){
+		throw new Error("Cannot render Facebook Like, invalid data");
+	}
+	if(this.node){
+		$(this.node).remove();
+		this.node = null;
+	}
+	this.node = Halo.createEl({
+		into: this.dom,
+		type: 'fb:like',
+		opts: {
+			show_faces:'false',
+			href: this.url,
+			font: 'arial'
+		}
+	});
+}
+
+$Halo.InviteBar = $Halo.InviteBar || function(pObj){
+	var obj = pObj || {};
+	this.dom = obj.dom || false;
+	this.emailDefault = obj.emailDefault || "";
+};
+
+$Halo.InviteBar.prototype = new $Halo.ShareBar();
+$Halo.InviteBar.prototype.twitterCopy = 'I find amazing deals every day on HauteLook. Check it out! ';
+$Halo.InviteBar.prototype.popupText = 'Get a $10 credit each time a friend you invite makes their first purchase.<br /><br />Your message to friends will be, "Come join me on HauteLook!"<br /><br />';
+$Halo.InviteBar.prototype.popupTitle = "Enter the email addresses of your friends";
+$Halo.InviteBar.prototype.data = {};
+$Halo.InviteBar.prototype.useFbLike = 0;
+$Halo.InviteBar.prototype.copyInserts = [];
+$Halo.InviteBar.prototype.emailUrl = '/member-invites/email-invites/';
+
+$Halo.InviteBar.prototype._bindEvents = function(){
+	this.dom.children("img, div.btn").bindOnce("click.social", $.proxy(function(){
+		var emailVal = this.dom.find("#headerInviteEmail").val();
+		if(emailVal !== "" && emailVal !== this.emailDefault){
+			this.showOverlay = function(){
+				if(!this.overlay){
+					$.getScript("/css/app/modules/default/overlays/social-share.css", $.proxy(this.getOverlay, this), undefined, 'css');
+					return;
+				}
+				this.resetOverlay();
+				$(this.overlayContent).find("#invite_email_list").attr("value", emailVal);
+				this.dom.find("#headerInviteEmail").attr("value", "");
+				this.loadPlaxo();
+				this.sendEmail();
+				delete this.showOverlay;
+			};
+		}
+		this.showOverlay();
+		return false;
+	},this));
+	$Halo.bigbro.notify("SocialBound");
+	
+	this.dom.children("#headerInviteEmail").bindOnce("keydown.social", $.proxy(function(ev){
+		if (+ev.keyCode == 13) {
+			this.dom.find("div.btn").click();
+		}
+	},this));
+};
+
+$Halo.InviteBar.prototype.sendEmail = function(){
+	var overlay = this.overlay;
+	var $pop = $(this.overlayContent);
+	//cleans whitespace, special characters
+	var emailList = $pop.find("#invite_email_list").val().replace(/[\s&\?=<>\(\):`]/g,"").replace(/"[^"]*"/g,"");
+	$pop.find('.invite_response').text("").addClass("hidden").removeClass("red");
+	var send_data = "referral_data[friend_emails]=" + emailList;
+	send_data += "&referral_data[url]=" + this.shareUrl;
+	send_data += "&referral_data[personal_msg]=" + escape("Come join me on HauteLook!");
+	
+	$.ajax({
+		url: this.emailUrl,
+		type: 'post',
+		data: send_data,
+		dataType: 'json',
+		
+		success: $.proxy(function(response) {
+			if(response && response.message) {
+				$pop.find('.invite_response').text(response.message).removeClass('hidden');
+				if(+response.success === 1){
+					$pop.find('.invite_copy').html('Enter more friends\' email addresses to get more $10 credits each time one of them makes their first purchase. <br /><br />Your message to friends will be, "Come join me on HauteLook!"<br /><br />');
+					$pop.find('.invite_title').text("Invitation sent!");
+					$pop.find("#invite_email_list").attr("value", "");
+				}
+				else{
+					$pop.find('.invite_response').addClass("red");
+					$pop.find('.invite_copy').html(this.popupText);
+					$pop.find('.invite_title').text(this.popupTitle);
+				}
+			}
+			
+			var resize = ($("#moduleOverlayLoadedContent").size() === 1);
+			resize = resize && ($("#moduleOverlayLoadedContent").data("overlay").name == overlay.name);
+			if(resize){
+				overlay.resize();
+			}
+			else{
+				if($("#sb-container:visible").size() !== 0){
+					$("#sb-nav-close").click();
+				}
+				overlay.display();
+			}
+		},this)
+	});
+};

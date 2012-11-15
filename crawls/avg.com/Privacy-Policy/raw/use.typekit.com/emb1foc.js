@@ -1,3 +1,6 @@
+/*
+ * For font license information, see the CSS file loaded by this JavaScript.
+ */
 if(!window.Typekit)window.Typekit={};window.Typekit.config={"c":[".tk-ff-din-web-pro","\"ff-din-web-pro-1\",\"ff-din-web-pro-2\",sans-serif"],"f":"//use.typekit.com/c/1cf0ed/ff-din-web-pro-1:n6.Tlx:F:1/{format}{/extras*}?3bb2a6e53c9684ffdc9a98f31b5b2a62f234c83bca9ebb8991615aa11a84a6b81edd6c5f23e9c966e86de2999c573cfaa189ae1d0a982b45601f28b9baee491435c9b88c74ccd815f59f3a5b4a4fd74d3e74c34e17ef594ce5c0ddba9fab02e75957f839ffc91fb934772aa9db9d56bb2312537d122ddd47dfb8020cc004e0e9d70951be16ffb103a11a2654724b24f6fe66d46c1a38566b183237b133f24dff6e03dc18e7d9a3ae713f216255ee23d6048cf9cf1e6a759da0e1ca0343084135229d1133add888d0a3d5db29c254b1f18a4e2fd3b14235b7917fe1fa8af7dc701d6697b1fb989c66f6917d62c04366345ace78b827bf349ee91294","fn":["ff-din-web-pro-1",["n6"]],"k":"//use.typekit.com/{id}.js","p":"//p.typekit.net/p.gif?s=1&k=emb1foc&ht=tk&h={host}&f=4980&a=224441&_={_}","si":1,"st":1,"w":"emb1foc"};
 /*{"k":"1.1.0","created":"2012-08-20T20:46:29Z"}*/
 ;(function(window,document,undefined){

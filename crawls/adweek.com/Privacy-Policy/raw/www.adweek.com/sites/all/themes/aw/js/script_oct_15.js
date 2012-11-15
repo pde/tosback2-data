@@ -105,7 +105,7 @@ var adweek = function(){
         });
 
         $(function() {
-            var element = $(".mod.block.block-addthis");
+ /*           var element = $("left-share-bar-wrapper");
             var offset = element.offset();
             var header = $("#shell .inner .subheader").offset();
             var footer = $(".article-footer").offset();
@@ -126,6 +126,7 @@ var adweek = function(){
                     });
                 }
             });
+            */
         });
     });
 
@@ -769,7 +770,7 @@ var adweek = function(){
             img_src = img_src.replace('imagecache/node-detail/', '');
             img.attr('src', img_src);
             img.removeAttr('width');
-            img.removeAttr('height');
+            img.removeAttr('height'); 
 			if (img_src == undefined) {
 				img.attr('src', img.attr('rel'));
                 var img_rel = img.attr('src');
@@ -801,7 +802,7 @@ var adweek = function(){
    }
    /* end of navigation sanitize */
 			if (!hashchange)
-				window.location.hash = lb_pagenumber;
+				window.location.hash = lb_pagenumber; 
 		}
 
 		function updateCurrent(elem) {

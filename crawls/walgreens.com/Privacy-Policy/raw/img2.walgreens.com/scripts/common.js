@@ -635,7 +635,7 @@ function QuickLook(el){
                 left: (size - 55),
                 display: 'none',
                 position: 'absolute',
-                top: (size + 10),
+                top: (size-10),
                 width: '107px'
             }
         })

@@ -1,0 +1,29 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+HWS.models = {};
+
+/**
+ * Defines a contact object and converts the passed in format into the one
+ * utilized by the rest of the front-end site.
+ *
+ * @param data
+ */
+HWS.models.contact = function(data) {
+    this.fullname = data.first_name != null ? data.first_name : '';
+    this.fullname += " ";
+    this.fullname += data.last_name != null ? data.last_name : '';
+
+    this.member = data.member;
+    this.invited = data.invited;
+
+    if (data.email.length > 0) {
+        this.email = data.email[0].address;
+    }
+
+    if (this.fullname == " " && this.email != undefined) {
+        var emailHead = this.email.split("@");
+        this.fullname = emailHead[0];
+    }
+};

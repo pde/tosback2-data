@@ -1771,3 +1771,34 @@ function cbFormatter(list, attribute, opt)
 }
 
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* Coded added to put click ID in a cookie*/
+var Request = { 
+    parameter: function(name) {
+        return this.parameters()[name];
+    },
+    
+    parameters: function() {
+        var result = {};
+        var url = window.location.href;
+        var parameters = url.slice(url.indexOf('?') + 1).split('&');
+        
+        for(var i = 0;  i < parameters.length; i++) {
+            var parameter = parameters[i].split('=');
+            result[parameter[0]] = parameter[1];
+        }
+        return result;
+    }
+ }
+ 
+function setCookie(c_name, value, exdays) {
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+    document.cookie=c_name + "=" + c_value;
+}
+
+ var CLICK_ID = Request.parameter('clickid');
+ if (CLICK_ID && CLICK_ID != null && CLICK_ID != "") {
+     setCookie("CLICK_ID", CLICK_ID, null);
+ }

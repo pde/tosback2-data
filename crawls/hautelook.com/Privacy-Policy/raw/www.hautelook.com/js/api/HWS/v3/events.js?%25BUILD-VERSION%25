@@ -1,0 +1,214 @@
+if (typeof HWS === 'undefined') {
+    var HWS = {};
+}
+
+if (typeof HWS.v3 === 'undefined') {
+    HWS.v3 = {};
+}
+
+HWS.v3.events = {};
+
+/**
+ * Defines an Event object and converts the passed in format into the one
+ * utilized by the rest of the front-end site.
+ *
+ * @param data
+ */
+HWS.v3.events.object = function(data) {
+    // Convert the array that v3_events sends back into the currently expected
+    // bit field.  In the future, when there's more time, we should refactor this
+    // by converting the various places looking at event_type to utilize an array
+    // of types. Gotta love writing legacy code in real time  - JD Smith
+    var arrayToBits = function(arr) {
+        var bitfield = 0;
+
+        for (var i = 0; i < arr.length; i++) {
+            var name = arr[i].name;
+
+            if (name == 'Women') {
+                bitfield |= 1;
+            } else if (name == 'Beauty') {
+                bitfield |= 2;
+            } else if (arr[i].name == 'Home') {
+                bitfield |= 4;
+            } else if (arr[i].name == 'Kids') {
+                bitfield |= 8;
+            } else if (arr[i].name == 'Men') {
+                bitfield |= 16;
+            } else if (arr[i].name == 'Getaways') {
+                bitfield |= 64;
+            }
+        }
+
+        return bitfield;
+    };
+
+    this.event_id = data.event_id;
+    this.title = data.title;
+    this.tagline = data.tagline;
+    this.event_code = data.event_code;
+    this.img_url = data.image_url;
+    this.brand_name = data.title;
+    this.category = data.tagline;
+    this.event_type = arrayToBits(data.event_types);
+    this.event_display_format = data.event_display_format;
+    this.meta = data.meta;
+    this.coa = data.coa;
+
+    // In v2/events the meta.msa was only passed back when there actually was
+    // an msa present;  v3 does not follow the same convention thus broke the
+    // logic within All Events tab.  This hack is to make the data still work
+    // without updating the logic elsewhere. - JD Smith
+    if (this.meta['msa'].length == 0) {
+        delete this.meta.msa;
+    }
+
+    // v2 sent back miliseconds with no respect to timezone while v3 sends back
+    // a timezone aware ISO-8601 date;  let's do the ISO-8601 conversion then
+    // convert to milliseconds and add the timezone offset back into the value
+    // so that the rest of the code which relies on calculating said offset will
+    // just continue to work...  hacky as hell but it is what it is. - JD Smith
+    this.start_date = $Halo.date(data.start_date);
+    this.raw_start_date = $Halo.date(data.start_date);
+    this.end_date = $Halo.date(data.end_date);
+    this.raw_end_date = $Halo.date(data.end_date);
+    this.start_date = this.start_date.getTime() + (this.start_date.getTimezoneOffset() * 60);
+    this.end_date = this.end_date.getTime() + (this.end_date.getTimezoneOffset() * 60);
+};
+
+/**
+ * This method fetches and massages data returned from the /v3/events API
+ * method.  The format utilized below is the format expected by the existing
+ * front end code.
+ *
+ * This method should be used as if it were an ajax call;  simply pass in
+ * success, fail, and complete handlers as needed and continue as normal.
+ *
+ * The result will be a structure exactly like the one passed back by v2/events
+ *
+ * @param {object} params - Object containing optional onFailure, onSuccess,
+ * and complete callbacks.
+ *
+ * @return void
+ */
+
+HWS.v3.events.buildEventData = function(section) {
+    var events = [];
+    var event_dates = [];
+    var date_num = 0;
+
+    for (var i = 0; i < section.length; i++) {
+        var event = section[i];
+
+        if (typeof event_dates[event.start_date] == 'undefined') {
+            event_dates[event.start_date] = date_num;
+            date_num++;
+        }
+
+        var index = event_dates[event.start_date];
+
+        if (typeof events[index] == 'undefined') {
+            events[index] = [];
+        }
+
+        events[index].push({});
+        events[index][events[index].length - 1][event.event_id] = event;
+    }
+
+    return events;
+};
+
+HWS.v3.events.events = function(params) {
+    var convertEvents = function(response) {
+        var i = 0;
+        var current = [];
+        for (i = 0; i < response.events.today.length; i++) {
+            current.push(new HWS.v3.events.object(response.events.today[i].event));
+        }
+
+        var coming_soon = [];
+        for (i = 0; i < response.events.upcoming.length; i++) {
+            coming_soon.push(new HWS.v3.events.object(response.events.upcoming[i].event));
+        }
+
+        var yesterday = [];
+        for (i = 0; i < response.events.ending_soon.length; i++) {
+            yesterday.push(new HWS.v3.events.object(response.events.ending_soon[i].event));
+        }
+
+        var events = {};
+        events.current = HWS.v3.events.buildEventData(current);
+        events.coming_soon = HWS.v3.events.buildEventData(coming_soon);
+        events.yesterday = HWS.v3.events.buildEventData(yesterday);
+
+        return events;
+    };
+    
+    var get_url = '/v3/events';
+    
+    if (params.upcoming_soon_days) {
+    	get_url += '?upcoming_soon_days=' + params.upcoming_soon_days;
+    } 
+
+    $.ajax({
+        url: get_url,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+            if (typeof params.onSuccess == 'function') {
+                var events = response;
+
+                if (typeof params.dont_convert === 'undefined') {
+                    events = convertEvents(events);
+                }
+
+                params.onSuccess(events, status, XHR);
+            }
+        },
+
+        complete: params.complete
+    });
+};
+
+/**
+ * This method fetches and massages data returned from the /v3/event API
+ * method.  The format utilized below is the format expected by the existing
+ * front end code.
+ *
+ * This method should be used as i fit was an ajax call;  simply pass in
+ * success, fail, and complete handlers as needed and continue as normal.
+ *
+ * The result will be a properly formatted object containing multiple arrays
+ * of events.
+ *
+ * @param {object} params - Object containing optional onFailure, onSuccess,
+ * and complete callbacks as wel as a required event_id.
+ *
+ * @return void
+ */
+HWS.v3.events.event = function(params) {
+    $.ajax({
+        url: '/v3/event/' + params.event_id,
+        type: 'get',
+        dataType: 'json',
+        useREST: true,
+        haloHandleAjaxResponse: true,
+
+        haloFail: params.onFailure,
+
+        haloSuccess: function(response, status, XHR) {
+            var event = new HWS.v3.events.object(response.event);
+
+            if (typeof params.onSuccess == 'function') {
+                params.onSuccess(HWS.v3.events.buildEventData([event]), status, XHR);
+            }
+        },
+
+        complete: params.complete
+    });
+};

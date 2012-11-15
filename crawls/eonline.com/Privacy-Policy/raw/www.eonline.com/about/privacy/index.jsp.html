@@ -113,7 +113,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1352726341752 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1352985401238 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -567,31 +567,69 @@ pageTracker._trackPageview();
 <script>
 (function($){
 	$(document).ready(function() {
+		if (typeof(eol) === 'undefined') { eol = {}; }
+
+		function resetFlag() { // This and the eol.isRunning code will stop the duplicate event listeners from running, when the email dialog's close X button is pressed or the dialog's close link is clicked on.
+			setTimeout(function() {
+				eol.isRunning = undefined;
+			}, 500);
+		}
+
+		/* Email Button's onClick / Open Dialog State.
+		 * Known Trigger Locations: 
+		 * 1. Video Detail Page's Email Button.
+		 * 2. Possible other locations would be in widgets or show packages or anywhere there is a horizontal social media icons bar. Unknown at this time.
+		 */
+		$(".email").unbind('click'); // Stops multiple event listeners from being bound to the same email button, when this tag is initialized 2+ times. This bind was running 2x when the email button was clicked on.
 		$(".email").bind("click", function(e){
-			var pageURL ="noURL";
-			var newsURL = '';
-			if(newsURL != null && pageURL != ''){
-				newsURL = '/news/'+newsURL;
-				pageURL = newsURL;
+			if (typeof(eol.isRunning) === 'undefined') {
+				eol.isRunning = true;
+				//console.log('clicked A');
+				var pageURL ="noURL";
+				var newsURL = '';
+				if(newsURL != null && pageURL != ''){
+					newsURL = '/news/'+newsURL;
+					pageURL = newsURL;
+				}
+				var videoURL = '';
+				if(videoURL != null && videoURL != ''){
+					videoURL ='/videos'+videoURL;
+					pageURL = videoURL;
+				}
+				var emailSubj = 'EOnline Video/Article Suggestion For You';
+				$(".social-Send-Email").css("visibility","visible");
+				$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+pageURL));
+				$("#overlay").show();
 			}
-			var videoURL = '';
-			if(videoURL != null && videoURL != ''){
-				videoURL ='/videos'+videoURL;
-				pageURL = videoURL;
+			resetFlag();
+		});
+
+		// Unknown
+		$(".emailOverlay").unbind("click");
+		$(document).on("click", ".emailOverlay", function() { // Replaces the $("...").live() function which is now deprecated in jQuery 1.7+.
+			if (typeof(eol.isRunning) === 'undefined') {
+				eol.isRunning = true;
+				//console.log('clicked B');
+				$(".social-Send-Email").css("visibility","hidden");
+				$(".emailOverlay").hide();
 			}
-			var emailSubj = 'EOnline Video/Article Suggestion For You';
-			$(".social-Send-Email").css("visibility","visible");
-			$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+pageURL));
-			$("#overlay").show();
-							
+			resetFlag();
 		});
-		$('.emailOverlay').live("click", function() {
-			$(".social-Send-Email").css("visibility","hidden");
-			$(".emailOverlay").hide();
-		});
-		$(".emailClose").live("click", function(){
-			$(".social-Send-Email").css("visibility","hidden");
-			$(".emailOverlay").hide();
+		
+		/* Dialog Close State. 
+		 * Known Trigger Locations: 
+		 * 1. Email Dialog's Close X Button or 
+		 * 2. Email Dialog's Thank You Form "close" link.
+		 */
+		$(".emailClose").unbind("click");
+		$(document).on("click", ".emailClose", function(){ // Replaces the $("...").live() function which is now deprecated in jQuery 1.7+.
+			if (typeof(eol.isRunning) === 'undefined') {
+				eol.isRunning = true;
+				//console.log('clicked C');
+				$(".social-Send-Email").css("visibility","hidden");
+				$(".emailOverlay").hide();
+			}
+			resetFlag();
 		});
 	});
 })(jQuery.noConflict());  

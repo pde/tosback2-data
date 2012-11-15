@@ -21,46 +21,69 @@
 
 
 
-  
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	 <title>AT&T</title>
-		
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>AT&T</title>
+  	<title>AT&T</title>
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Cache-Control" content="no-cache='set-cookie', no-store" />
 	<meta http-equiv="Expires" content="-1" />
 	<meta name="robots" content="all" />
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
-	<meta http-equiv="imagetoolbar" content="" />
-
-
+	<meta http-equiv="imagetoolbar" content="no" />
+	
+	
 	<link rel="stylesheet" type="text/css" href="https://www.att.com/styles/global-styles.css" media="screen, projection, print" />
 	<link rel="stylesheet" type="text/css" href="../styles/gbl.css" />
-
-	<!--[if IE 7]>
-		<link rel="stylesheet" type="text/css" href="//www.att.com/styles/global-ie7.css" media="screen, projection, print" />
-	<![endif]-->
-	<!--[if IE 6]>
-		<link rel="stylesheet" type="text/css" href="//www.att.com/styles/global-ie6.css" media="screen, projection, print" />
-		<link rel="stylesheet" href="//www.att.com/styles/gbl_ie.css" type="text/css" />
-	<![endif]-->
 	
-	<link rel="stylesheet" type="text/css" href="../styles/print.css" media="print" />	
+	<!--[if lte IE 8]><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><![endif]-->
 
-				
-
+	
+	
 		
-		
-		<link rel="stylesheet" type="text/css" href="css/myatt-dashboard.css" media="screen, projection, print" />
+			<!--[if IE 7]>
+				<link rel="stylesheet" type="text/css" href="//www.att.com/styles/global-ie7.css" media="screen, projection, print" />
+			<![endif]-->
+			<!--[if IE 6]>
+				<link rel="stylesheet" type="text/css" href="//www.att.com/styles/global-ie6.css" media="screen, projection, print" />
+				<link rel="stylesheet" href="//www.att.com/styles/gbl_ie.css" type="text/css" />
+			<![endif]-->
+			<link rel="stylesheet" type="text/css" href="../styles/print.css" media="print" />
 		
 		
 	
+
 	
+		<link rel="stylesheet" type="text/css" href="../styles/print.css" media="print" />
+	
+	
+		
+		<link rel="stylesheet" type="text/css" href="css/myatt-services.css" media="screen, projection, print" />
+		
+			
+			
+				<link rel="stylesheet" type="text/css" href="css/myatt-dashboard.css" media="screen, projection, print" />
+			
+		
+		
+	
+	
+	
+		
 
 
 
@@ -69,12 +92,37 @@
 </style>
 <script type="text/javascript" src="https://www.att.com/media/gvp/gvpUtils.js"></script>
 	
+		
 	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
 
 	
 	
 	
 	
+
+		
+		
 
 		
 			<script type="text/javascript" src="js/prototype.js.html"></script>
@@ -89,8 +137,16 @@
 	
 	
 	
+
+
+	<script type="text/javascript">
+		var lpMTagConfig = lpMTagConfig || {}; lpMTagConfig.vars = lpMTagConfig.vars || [];
+		lpMTagConfig.lpNumber = '65595271';
+		lpMTagConfig.deploymentID = 'sso-english';
+	</script>
 	
-  <!-- Main page layout -->
+	
+	<!-- Main page layout -->
 
 
 
@@ -269,35 +325,455 @@ function openPopUpManageFeatures(){
 
 </div>		
 
+
+
+
+
+
 </head>
 
 
-	<script src='js/mtagconfig_sso.js.html' type="text/Javascript"></script>
+<script src='js/mtagconfig_sso.js.html' type="text/Javascript"></script>
+
+	
+	
+		<body id='main' onload="javascript:triggerSessionTimoutTimer()" class="extend3o ">
+	
+	<!--BACKGROUND POPUP-->
+	
 
 
 
 
 
+	
+	<script type="text/javascript">
+	var message = "";
+	var deleteFormId = "deleteForm";
+	
+	function deleteMessages() {
+		var aa= document.getElementById( deleteFormId );
+		
+		if (message != "") {
+			aa.messageId.value = message;
+		}		
+		aa.submit();
+	}
+	
+	function deleteConfirm( formId ) {
+		deleteFormId = formId;
+		if (!validateDelete( formId )) {
+			noMessage();
+		} else {
+			hideSelects();
+			document.getElementById('messageDeletePopup').style.display='block';
+			document.getElementById('messageDeleteBg').style.display='block';
+		}
+	}
+	
+	checked=false;
+	function checkAll( formId ) {
+		   		   
+		var aa= document.getElementById(formId).deleteMessages;
+		if (checked == false) {
+	    	checked = true
+	    } else {
+	        checked = false
+	    }
+	    
+		for (var i =0; i < aa.length; i++) {
+			
+			aa[i].checked = checked;
+			
+		}
+		 
+	}
+	
+	/*function selectAll(formId) {	
+		if (checked == false){
+		    checked = true;
+		} else {
+		    checked = false;
+		}
+	//Added as the fix for WUP00551769 in 1108
+		var aa= document.getElementById( formId );
+
+		for (var i =0; i < aa.elements.length; i++) {
+			aa.elements[i].checked = checked;			
+
+		}
+		//commented the below code as fix for WUP00551769 in 1108
+					
+	   	/*var bb=document.getElementsByTagName("div");
+	    for (var i =0; i < bb.length; i++){
+		   	var cc = bb[i].getElementsByTagName("span");
+		  	for (var k =0; k < cc.length; k++){					
+				var chek = cc[k].getElementsByTagName("input");
+				for(var t=0; chek.length; t++){
+					if(chek[t].type=="checkbox"  && chek[t].id=="nobox" ){											   											  
+						chek[t].checked = checked;
+						if (checked == true) {
+							cc[k].className = "checked";
+						} else {
+							cc[k].className = "";
+						}									     
+						break;
+					}
+				}									                                      
+								 				  					 
+			 }									
+		 }*/
+	//}
+
+function selectAllUser(form) {
+
+	if (checked == false){
+		checked = true;
+		} else {
+		checked = false;
+	}
+		var myForm = document.forms[form];
+		for( var i=0; i < myForm.length; i++ ) {
+
+			if(checked) {
+                myForm.elements[i].checked = "checked";
+                myForm.elements[i].parentNode.className="checked";
+			} else {
+			    myForm.elements[i].checked = "";
+			    myForm.elements[i].parentNode.className="";
+			}
+			
+			/*if(checked) {
+
+					myForm.elements[i].checked = "checked";
+					myForm.elements[i].style.opacity = "1";
+					myForm.elements[i].style.filter = "beta(opacity=10)";
+
+				}
+				else {
+
+					myForm.elements[i].checked = "";
+					myForm.elements[i].style.opacity = "1";
+					myForm.elements[i].style.filter = "beta(opacity=10)";
+			}*/
+		}
+
+	}
+
+	checkedSlid = false;
+
+function selectAllSlid(form) {
+
+		if (checkedSlid == false){
+			checkedSlid = true;
+		} else {
+		checkedSlid = false;
+		}
+		var myForm = document.forms[form];
+			for( var i=0; i < myForm.length; i++ ) {
+
+				if(checkedSlid) {
+	                myForm.elements[i].checked = "checked";
+	                myForm.elements[i].parentNode.className="checked";
+				} else {
+				    myForm.elements[i].checked = "";
+				    myForm.elements[i].parentNode.className="";
+				}
+	/*			
+		if(checkedSlid) {
+
+			myForm.elements[i].checked = "checked";
+			myForm.elements[i].style.opacity = "1";
+			myForm.elements[i].style.filter = "beta(opacity=10)";
+
+		}
+		else {
+
+			myForm.elements[i].checked = "";
+			myForm.elements[i].style.opacity = "1";
+			myForm.elements[i].style.filter = "beta(opacity=10)";
+		}
+				*/
+	}
+
+}
+	
+	function validateDelete( formId ) {
+		if (message == "") {
+			var aa= document.getElementById( formId );
+			
+			for (var i =0; i < aa.elements.length; i++) {
+				if (aa.elements[i].checked) {			
+					return true;
+				}
+			}
+			return false;
+		}
+		return true;
+		
+	}
+		
+	function noMessage(){
+		hideSelects();
+		document.getElementById('noMessagePopup').style.display='block';
+		document.getElementById('noMessageBg').style.display='block'
+	}
+	
+	function postwith(to, p) {
+
+		//Report
+		
+		
+			new Ajax.Request("/olam/unauth/reportMessageCenter.myworld?reportActionEvent=A_SVC_CHECK_VOICEMAIL", {});
+		
+		
+		var myForm = document.createElement("form");
+	
+		var randomNumber = Math.floor(Math.random()*899999999) + 100000000;
+	
+		myForm.name = "impersonationForm";
+		myForm.method = "post";
+		myForm.action = to;
+		for (var k in p) {
+			var myInput = document.createElement("input");
+			myInput.setAttribute("name", k);
+			myInput.setAttribute("value", p[k]);
+		
+			myForm.appendChild(myInput);
+		}
+
+		var caseIdInput = document.createElement("input");
+		caseIdInput.setAttribute("name", "caseId");
+		caseIdInput.setAttribute("value", randomNumber);
+
+		myForm.appendChild(caseIdInput);
+
+		document.body.appendChild(myForm);
+
+		myForm.submit();
+
+		document.body.removeChild(myForm);
+	}
+
+	function reportEmailClick() {
+		new Ajax.Request("/olam/unauth/reportMessageCenter.myworld?reportActionEvent=A_SVC_CHECK_EMAIL", {});
+		return true;
+	}
+			
+	</script>	
+	
+	
+
+<style type="text/css">
+/* DIV-LAYER ONLY
+--------------------------------------------------------------------- */
+
+#messageDeleteBg, .ie6 #messageDeleteBg {
+	display: none;
+	width: 2500px;
+	height: 2500px;
+	background-color: #333;
+	z-index: 100001;
+	-moz-opacity: 0.4;
+	opacity: .40;
+	filter: alpha(opacity=40);
+	right: 0px; 
+	bottom: 0px;
+	}
+
+#messageDeleteBg {
+	position: fixed;
+	}
+
+.ie6 #messageDeleteBg {
+	position: absolute;
+	}
+
+div#messageDeleteBg {
+	left: expression( ( 0 - messageDeleteBg.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: expression( ( 0 - messageDeleteBg.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	}
+
+</style>	
+	
+	
+
+<style type="text/css">
+/* DIV-LAYER ONLY
+--------------------------------------------------------------------- */
+
+#messageDeletePopup, .ie6 #messageDeletePopup {
+	display: none;
+	width: 2500px;
+	height: 2500px;
+	background-color: #333;
+	z-index: 100001;
+	-moz-opacity: 0.4;
+	opacity: .40;
+	filter: alpha(opacity=40);
+	right: 0px; 
+	bottom: 0px;
+	}
+
+#messageDeletePopup {
+	position: fixed;
+	}
+
+.ie6 #messageDeletePopup {
+	position: absolute;
+	}
+
+div#messageDeletePopup {
+	left: expression( ( 0 - messageDeletePopup.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: expression( ( 0 - messageDeletePopup.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	}
+
+</style>	
+	
+	
+	<!--POPUP BG 1--> 
+	<div id="messageDeleteBg"><a href="javascript:void(0)" onclick="showSelects();document.getElementById('messageDeleteBg').style.display='none';document.getElementById('messageDeletePopup').style.display='none'"><img src="English/images/shim.gif" alt="" width="100%" height="100%" border="0" /></a></div> 
+	<!--/POPUP BG 1--> 
+	
+	<!--POPUP 1--> 
+	<div id="messageDeletePopup" class="popupDetails" style="top:20%;left:20%;background:#fff;"> 
+
+		<!--POPUP GLOBAL TITLE-->
+
+		<div class="popupGlobal-titleContainer">
+			<a href="javascript:void(0)" onclick="showSelects();document.getElementById('messageDeleteBg').style.display='none';document.getElementById('messageDeletePopup').style.display='none'"></a>
+		</div>
+		<!--/POPUP GLOBAL TITLE-->
+			
+		<!--POPUP GLOBAL CLOSE BUTTON-->
+		<div class="popupGlobal-close"><a href="javascript:void(0)" onclick="showSelects();document.getElementById('messageDeleteBg').style.display='none';document.getElementById('messageDeletePopup').style.display='none'"><img src="English/images/img_closeWin.gif" alt="" /></a></div>
+		<div class="clear"></div>
+		<!--/POPUP GLOBAL CLOSE BUTTON-->
+
+	
+		<!--POPUP DETAILS--> 
+		<div class="msg" style="padding-top:0;padding-bottom:20px;background:#fff;color:#666;"> 
+			<div style="border-bottom:1px solid #ccc;padding-bottom:15px;margin-bottom:18px;"> 
+				<p><strong style="text-transform:uppercase;"></strong></p> 
+				<p></p> 
+			</div> 
+			<div style="float:left;"><a href="javascript:deleteMessages()"><img src="English/images/bt/bt_yes.gif" alt="" /></a></div> 
+			<div style="float:left;"><a href="javascript:void(0)" onclick="showSelects();document.getElementById('messageDeleteBg').style.display='none';document.getElementById('messageDeletePopup').style.display='none'"><img src="English/images/bt/bt_no.gif" alt="" /></a></div> 
+			<div class="clear"></div> 
+		</div> 
+		<div class="clear"></div> 
+		<!--/POPUP DETAILS--> 
+	
+	</div> 
+	<!--/POPUP 1--> 
+
+	
+
+<style type="text/css">
+/* DIV-LAYER ONLY
+--------------------------------------------------------------------- */
+
+#noMessageBg, .ie6 #noMessageBg {
+	display: none;
+	width: 2500px;
+	height: 2500px;
+	background-color: #333;
+	z-index: 100001;
+	-moz-opacity: 0.4;
+	opacity: .40;
+	filter: alpha(opacity=40);
+	right: 0px; 
+	bottom: 0px;
+	}
+
+#noMessageBg {
+	position: fixed;
+	}
+
+.ie6 #noMessageBg {
+	position: absolute;
+	}
+
+div#noMessageBg {
+	left: expression( ( 0 - noMessageBg.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: expression( ( 0 - noMessageBg.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	}
+
+</style>	
+	
+	
+
+<style type="text/css">
+/* DIV-LAYER ONLY
+--------------------------------------------------------------------- */
+
+#noMessagePopup, .ie6 #noMessagePopup {
+	display: none;
+	width: 2500px;
+	height: 2500px;
+	background-color: #333;
+	z-index: 100001;
+	-moz-opacity: 0.4;
+	opacity: .40;
+	filter: alpha(opacity=40);
+	right: 0px; 
+	bottom: 0px;
+	}
+
+#noMessagePopup {
+	position: fixed;
+	}
+
+.ie6 #noMessagePopup {
+	position: absolute;
+	}
+
+div#noMessagePopup {
+	left: expression( ( 0 - noMessagePopup.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: expression( ( 0 - noMessagePopup.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	}
+
+</style>	
+	
+	
+	<!--POPUP BG-->
+	<div id="noMessageBg"><a href="javascript:void(0)" onclick="showSelects();document.getElementById('noMessageBg').style.display='none';document.getElementById('noMessagePopup').style.display='none'"><img src="English/images/shim.gif" alt="" width="100%" height="100%" border="0" /></a></div>
+	<!--/POPUP BG-->
+	
+	<!--POPUP-->
+	<div id="noMessagePopup" class="popupDetails" style="top:20%;left:20%;">
+
+		<!--POPUP GLOBAL TITLE-->
+		<div class="popupGlobal-titleContainer">
+			<a href="javascript:void(0)" onclick="showSelects();document.getElementById('noMessageBg').style.display='none';document.getElementById('noMessagePopup').style.display='none'"></a>
+
+		</div>
+		<!--/POPUP GLOBAL TITLE-->
+			
+		<!--POPUP GLOBAL CLOSE BUTTON-->
+		<div class="popupGlobal-close"><a href="javascript:void(0)" onclick="showSelects();document.getElementById('noMessageBg').style.display='none';document.getElementById('noMessagePopup').style.display='none'"><img src="https://www.att.com/olam/unauth/images/img_closeWin.gif" alt="" /></a></div>
+		<div class="clear"></div>
+		<!--/POPUP GLOBAL CLOSE BUTTON-->
+
+		<!--POPUP DETAILS-->
+		<div class="msg" style="padding-top:0;padding-bottom:20px;height:200px;">
+
+			<div>
+				<p></p>
+			</div>
+		</div>
+		<div class="clear"></div>
+		<!--/POPUP DETAILS-->
+
+	</div>
+	<!--/POPUP-->
 
 
 
-
-
-
-
-
-<script type="text/javascript">
-	var lpMTagConfig = lpMTagConfig || {}; lpMTagConfig.vars = lpMTagConfig.vars || [];
-	lpMTagConfig.lpNumber = '65595271';
-	lpMTagConfig.deploymentID = 'sso-english';
-</script>
-
-
-
-
-
-	<body id='main' onload="javascript:triggerSessionTimoutTimer()" class='extend3o dashboardModal '>
-
+<script type="text/javascript" src="js/hideSelect.js.html"></script>
+<script type="text/javascript" src="js/tool-tips.js.html"></script>
+	<!--BACKGROUND POPUP-->
+	
 <!--[if lte IE 8]><div id="ie"><![endif]-->
 <!--[if lte IE 6]><div id="ie6"><![endif]-->
     <!-- Moved the fallowing tag, from here to Head Section to enhance functionality.
@@ -306,14 +782,12 @@ function openPopUpManageFeatures(){
 	
 	<!--PAGE LEVEL-->
 		<!--SKIP NAV-->
-		
 			<a href="slidRegistrationAction.olamexecute.html#content" class="off-page">Skip to Main Content</a>
 			
 		<!--/SKIP NAV-->
 			
 			
 			
-
 
 		<!--GLOBAL NAV-->
 		
@@ -399,39 +873,41 @@ return true;
  
 
 
-
-
-
-
-
-
-
-	<script type="text/javascript" src="https://www.att.com/scripts/foresee_global/foresee-trigger-global.js"></script>
-	
-	<script type="text/javascript">ForeSee.CPPS.fsr$set('customer_type','current')</script>
-	
 	
 	
 		
-				
 		
 		
 		
+		
+		
+		
+			<script type="text/javascript" src="../scripts/foresee_global/foresee-trigger-global.js"></script>
+			
+			<script type="text/javascript">ForeSee.CPPS.fsr$set('customer_type','current')</script>
+			
+			
 			
 				
+						
+				
+				
+				
+					
+						
+				
+			
+			
+			
+			
+				<script type="text/javascript">
+					var user_type="N";
+					ForeSee.CPPS.fsr$set('user_type','N');
+				</script>
+			
+			
 		
 	
-	
-	
-	
-		<script type="text/javascript">
-			var user_type="N";
-			ForeSee.CPPS.fsr$set('user_type','N');
-		</script>
-	
-	
-
-
 <!-- GLOBAL NAV -->
 
 <div id="globalNav" style="height:150px">
@@ -441,13 +917,20 @@ return true;
 
 
 
-<!-- Page Name = [slidRegEnterProfile] isGNDisabled true disableGN true-->
+
+<!-- Page Name = [slidReg2SelectAccount] isGNDisabled true disableGN true-->
 	<div id="globalNavInterface">
-		<div id="segMenuBar"><div id="stub">&nbsp;</div></div>
-		<div id="globalNavUserInfo"></div>
+	<!-- Added check to hide or not to display the Segment menu bar if user is coming through WG env -->
+		
+			<div id="segMenuBar"><div id="stub">&nbsp;</div></div>
+			<div id="globalNavUserInfo"></div>
 		
 		
-		<div id="greyNav"> </div>
+		
+			
+			<!-- Added check to send a parameter to decide the hiding of the login-logout button if user is coming through WG env -->
+				
+		<div id="greyNav"></div>
 		
 		
 	</div>
@@ -471,16 +954,26 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 </script>
 
 		
-		<!--/GLOBAL NAV-->	
-		
+		<!--/GLOBAL NAV-->
+<script language="JavaScript" type="text/JavaScript">    
+jQuery(document).ready(function() {
+	jQuery("a.openModal").click(function(){
+	modalURL = jQuery(this).attr('href');
+	jQuery.colorbox({iframe:true, height:268, width:796, scrolling:false, href: modalURL, close:"", overlayClose:false});
+	return false;
+	});
+	
+	
+	});
+</script>
+
+
 		<!-- WRAPPER -->
 		<div id='wrapper' >
 		
-
-		
        <!--MAIN CONTAINER-->
 		<div id='main-container' >
-			
+			 
 
 
 
@@ -502,50 +995,51 @@ var globalNavDefaultSelections = {"primary" : "020000"}
 
 
 
-<!--This gives you access to the ATG User Profile-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<script language="javascript">
-jQuery(document).ready(function() {
-	jQuery("a.openModalCart").click(function(){
-	modalURL = jQuery(this).attr('href');
-	jQuery.colorbox({iframe:true, height:350, width:670, scrolling:false, href: modalURL});
-	return false;
-	});
-	jQuery("form.openModalCart").click(function(){
-		modalURL = jQuery(this).attr('action');
-		jQuery.colorbox({iframe:true, height:350, width:800, scrolling:false, href: modalURL});
+	
+	
+	<!--This gives you access to the ATG User Profile-->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<script language="javascript">
+	jQuery(document).ready(function() {
+		jQuery("a.openModalCart").click(function(){
+		modalURL = jQuery(this).attr('href');
+		jQuery.colorbox({iframe:true, height:350, width:670, scrolling:false, href: modalURL});
 		return false;
 		});
-	});
+		jQuery("form.openModalCart").click(function(){
+			modalURL = jQuery(this).attr('action');
+			jQuery.colorbox({iframe:true, height:350, width:800, scrolling:false, href: modalURL});
+			return false;
+			});
+		});
+	
+	</script>
+	
+	
+	
 
-</script>
-
-
-
-
-
-
-			<div class='bg-top-shadow'></div>
+			 <div class='bg-top-shadow'></div>
 					<div class='bg-mid-shadow'>
-						<div id='content' class=''>
-						
-						
-						
-							
+					<div id='content' class=''>
+								
+								
+									
+								
+									
 
 
 
@@ -572,26 +1066,30 @@ jQuery(document).ready(function() {
 
 	<div id="breadcrumb"><p></p></div>
 
+								
+								
 						
-			
+					            
+							
 							<!-- Timout popup -->
 							<div id="boxthing" class="full" title="This is a pre-warning session timeout message" style="display:none;">
-									<div class="errorMsg box">
-										<form name="cd">
-											<P>Your Session is about to time out. To continue, please click&nbsp;<a href="JavaScript:location.reload(true);"><strong>here</strong></a> 
-											<strong>Session Times Out In : </strong> <input id="timer2" readonly="true" type="text" value="2:00" style="background-color:yellow;" border="0" name="disp" SIZE="3"></P>
-										</form>
-									</div>
+								<br/><br/>
+								<div class="errorMsg box">
+									<form name="cd">
+										<P>Your Session is about to time out. To continue, please click&nbsp;<a href="JavaScript:location.reload(true);"><strong>here</strong></a>
+										<strong>Session Times Out In : </strong> <input id="timer2" readonly="true" type="text" value="2:00" style="background-color:yellow;" border="0" name="disp" SIZE="3"></P>
+									</form>
+								</div>
 							</div>
 							<!-- /Timout popup -->
-							
-							
-							              
-													
-							<!-- PAGE TITLE -->
-							
-							
-							
+	         
+	         
+ 	         												
+				
+			<!-- PAGE TITLE -->
+			
+			
+				
 
 
 
@@ -599,14 +1097,12 @@ jQuery(document).ready(function() {
 
 
 
-<div class="page-title ie7botMar0" style="width:680px;">
-	<h1>Create an AT&amp;T Access ID</h1>
+<div class="page-title ie7botMar0">
+	<h1>Select the Account You'd Like To Manage</h1>
 	
 	
-	<div class="ClearNew"></div>
 	
-	
-	<div class="btnRt MarTop10 minHeight1Px"><a href="../accounts/index.html%3Fsource=IC4425j4900s2000.html">Already have an AT&amp;T Access ID?</a></div>
+	<div class="btnRt MarTop10 minHeight1Px"></div>
  
     
 	
@@ -615,9 +1111,10 @@ jQuery(document).ready(function() {
 	
 </div>
 
-							<!-- /PAGE TITLE -->
-							
-			  				
+		
+			  <!-- /PAGE TITLE -->
+			  	
+				
 
 
 
@@ -657,11 +1154,14 @@ jQuery(document).ready(function() {
 <!--<br></br>-->
 
  
-<div >
+<div class="full noBG" style="margin-bottom:0px" >
 	<div id="errorDiv">
 
 	  <div class="errorMsg box" id="errorJavascriptDisabled">
 	  		<P>Javascript is disabled in your browser.  Please enable Javascript then attempt to log in again. <br>(LU0611)<!--UserDisplayError:LU0611--></P>
+	  		<script type="text/javascript">
+	  			document.getElementById("errorJavascriptDisabled").style.display="none";
+	  		</script>
 	  </div>
 	
 	  <div class="errorMsg box" style="display:none" id="errorCookieDisabled">
@@ -670,9 +1170,7 @@ jQuery(document).ready(function() {
 	  
 	  <!-- Supress Of above Error Due to TeaLeaf -->
 	  <script type="text/javascript">
-	  	jQuery("#errorJavascriptDisabled").html("");
-	  	jQuery("#errorJavascriptDisabled").hide();
-	  	if(navigator.cookieEnabled)
+	  	if(navigator!=null && navigator.cookieEnabled)
 	  	{
 	  		jQuery("#errorCookieDisabled").html("");
 	  	}
@@ -697,21 +1195,23 @@ jQuery(document).ready(function() {
 <!-- end ERRORS DISPLAY-->
 
 
-							<!--  Boxes -->
-			  					
-							 <!-- /Boxes -->
-							
-							<!-- Selection Modules -->				
-								
-								
-								
-								
-								
-							<!-- /Selection Modules -->
+			  <!--  Boxes -->
+			  		
+			  		
+			  <!-- /Boxes -->
+			 
+			    <!-- Selection Modules -->				
+					
+					
+					
+					
+					
+				<!-- /Selection Modules -->
 				
-							<!-- Primary Content Section -->
-							<div id='primary-content' class = ''>
-								
+				<!--  Primary Content Section -->			
+				<div id='primary-content' class = ''>	
+				
+					
 
 
 
@@ -725,617 +1225,310 @@ jQuery(document).ready(function() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-<META NAME="WT.cg_n" CONTENT="Online Care" />
-<META NAME="WT.cg_s" CONTENT="OLAM" />
-
-
-
-<script type="text/javascript" src="js/slidRegEnterProfile.js.html"></script>
-<script type="text/javascript" src="js/passwordStrengthMeter.js.html"></script>
-<script type="text/javascript" src="js/json2.min.js.html"></script>
-<script type="text/javascript" src="js/Ajax.js.html"></script>
-<script type="text/javascript" src="js/slidRegEnterprofiledynamicetooltip.js.html"></script>
-<script type="text/javascript" src="js/jquery.colorbox.js.html"></script>
-
-
+<script type="text/javascript" src="js/slidRegistrationV2.js.html"></script>
+<script type="text/javascript" src="js/myatt-gvp.js.html"></script>
+<script src="https://www.att.com/media/gvp/gvpUtils.js" type="text/javascript" ></script>
+<script type="text/javascript" charset="utf-8">
+	jQuery(document).ready(function() {
+				var gvpLanguage = 'en_US'; 
+				var gvpUrl="";
+				getGvpMetaData(gvpLanguage,gvpUrl);
+			});	
+</script>
 <script type="text/javascript">
 
-var rootPath='/olam/English';
+    alertMessageMap = [];
+   alertMessageMap['ErrorMessage1']="The wireless number you have entered is for a small business account and cannot be registered for an AT&amp;T Access ID. Please <a href="https://www.att.com/olam/unauth/\&quot;http://www.wireless.att.com/businesscenter/premier/\&quot;">register your small business wireless service</a>.";
+   alertMessageMap['ErrorMessage4']="This account is not available for registration at this time. The primary account holder must first convert their wireless ID to an AT&amp;T Access ID.";
+   alertMessageMap['ErrorMessage11']="Please enter the billing phone number.";
+   alertMessageMap['ErrorMessage10']="This account is not available for registration at this time. The primary account holder must first convert their home phone and internet ID to an AT&amp;T Access ID. More information is available.";
+   alertMessageMap['ErrorMessage6']="Please enter your complete 10 digit wireless number. This is a required field.";
+   alertMessageMap['ErrorMessage5']="You have exceeded the number of attempts allowed. Please";
+   alertMessageMap['ErrorMessage7']="Please select the Account Type from the drop down menu.";
+   alertMessageMap['ErrorBillingZipCode']="Billing ZIP Code is a required field. Please enter a valid ZIP code.";
+   alertMessageMap['OR']="or";
+   alertMessageMap['ErrorMessageUverseMemberIDValidation']="Please enter your billing account number or U-verse member ID.";
+   alertMessageMap['ErrorMessage12']="You have exceeded the number of attempts allowed to verify that you are the primary account holder for this account. This account must be linked to the primary account holder's AT&amp;T Access ID before online access can be granted to another AT&amp;T Access ID. We have notified the primary account holder that access has been requested. Please ask the primary account holder to let you know when you can link the account to your AT&amp;T Access ID.";
+   alertMessageMap['UverseLinkFlowTitanBANError']="Before linking your account, please";
+   alertMessageMap['ErrorBillingZipNumeric']="The Billing ZIP Code must contain numbers only. Please enter a valid ZIP code that is 5 numbers in length.";
+   alertMessageMap['ErrorMessageWirelessNumberValidation']="Please enter a valid 10-digit phone number or 13-digit account number.";
+   alertMessageMap['WirelessTitanNonActivatedErrorPart2']="here to get started now.";
+   alertMessageMap['WirelessTitanNonActivatedErrorPart1']="The account you are trying to link qualifies for quick account registration, but is pending completion by the primary account holder. Please refer to the confirmation emails you received when you placed your order for instructions on registering a new AT&amp;T Access ID. This is a required action and all other account access is limited until the bill payer completes the quick online account registration process.<br /><br />Please refer to these instructions and";
 
-function closeValidate() {
-	jQuery.colorbox.close();
-	var d = document.getElementById("slid");
-	if ( d ) d.value = "";
 
-	setPasswordFieldsEnabled( true ); 
-	
+window.onload = function(){
+	var selectedAccountType = document.getElementById("selectedAccountType");
+	accountTypeSelectionChange (selectedAccountType,"onPageLoad") ;
 }
 
-function clickedOpen(a){
-	var urlValue=null;
-	var value=null;
-	if(a==1){
-		//alert("1");
-		urlValue="/olam/slidRegistrationAction.olamexecute?actionEvent=displayOverlay&which=terms&rootPath=/olam/English";
-		jQuery.colorbox({iframe:true, height:400, width:706, scrolling:false, href:urlValue});
-		}
-	if(a==2){
-		//alert("2");
-		value=document.getElementById('cancelUrl').value;
-		urlValue="/olam/slidRegistrationAction.olamexecute?actionEvent=displayOverlay&which=cancel&rootPath=/olam/English&cancelUrl="+value;
-		jQuery.colorbox({iframe:true, height:250, width:650, scrolling:false, href:urlValue});
-		}
-	if(a==3){
-		var slid =document.getElementById("slid").value;
-		var memberIdEmailAddress = document.getElementById("memberIdEmailAddress").value;
-		var cancelLink = document.getElementById("cancelLink").value;
-		urlValue="/olam/slidRegistrationAction.olamexecute?actionEvent=displayOverlay&which=validateMID&rootPath=/olam/English&slidEnter="+slid+"&memberIDaddress="+memberIdEmailAddress+"&cancelLink="+cancelLink;
-		jQuery.colorbox({iframe:true, height:400, width:850, scrolling:false, overlayClose:false,href:urlValue});
-	}
-	if(a==4){
-		var urlValue=null;
-		urlValue="/olam/slidRegistrationAction.olamexecute?actionEvent=displayOverlay&which=slidRegInProgress&rootPath=/olam/English";
-		jQuery.colorbox({iframe:true, height:225, width:725, scrolling:false, overlayClose:false, href:urlValue});
-	}
-	if(a==5){
-		urlValue="/olam/slidRegistrationAction.olamexecute?actionEvent=displayOverlay&which=emailWarning&rootPath=/olam/English";
-		jQuery.colorbox({iframe:true, height:400, width:630, scrolling:false, overlayClose:false, href:urlValue});
-	}
-	return false;
+function clickedCancel(){
+	
+	jQuery.colorbox({iframe:true, height:300, width:650, scrolling:false, href: "/olam/unauth/displayCancelDialogRegistration.myworld"});
 }
 
-function clickPassword(){
-	var obj = {};
-	obj.actionEvent = "passWordEvent";
-	remoteAJAXCall('/olam/slidRegistrationAction.olamexecute',obj,null);
-	window.open("/OLAM_PROD_CMS//English/staticContent/html/help_passwd_restrictions_cms.html","passwordrestriction","width=618, height=485, resizable=yes, scrollbars=yes");
+function stripCharacters( obj ){
+	var str= obj.value;
+	var str = str.split(' ').join('');
+	str = str.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+	var tempstr = str.split('-').join('');
+	tempstr = tempstr.split('.').join('');
+	tempstr = tempstr.split('_').join('');
+	if(!isNaN(tempstr))
+	{
+		str = tempstr;
 	}
-</script>
-<script type="text/javascript" src="js/myatt-gvp.js.html"></script>
-<script type="text/javascript" src="https://www.att.com/media/gvp/gvpUtils.js"></script>
-<script type="text/javascript" charset="utf-8">
-		jQuery(document).ready(function() {	
-
-			var gvpLanguage = 'en_US';
-			//alert("gvpLanguage 1 == "+ gvpLanguage);	
-									
-			//var gvpUrl="http://portalmigration.att.net/MyATT_3.0/GVP_json.txt";
-			var gvpUrl="";
-			getGvpMetaData(gvpLanguage,gvpUrl);
-		});	
+	obj.value=str;
+}
 </script>
 
-<input type="hidden" id="cancelUrl" value='http://www.wireless.att.com/learn/articles-resources/wireless-terms.jsp'></input>
-<script type="text/javascript"> 
-//window.onload=checkAvailabilityOnLoad;
-var valueChk1=null
-var valueChk=null;
-var map = new Object(); 
 
-map['ErrorMsgYouMustAcceptTermsConditions'] = "<strong>Error Message:</strong> You must accept the AT&amp;T Access ID terms and conditions before you can proceed. Please check the box in order to provide acceptance and click continue.";
 
-map['ErrorMsgPleaseEnterUserID'] = "<strong>Error Message:</strong> Please enter your AT&amp;T Access ID.";
+ 	<div class="primary-row-seamless">
 
-map['ErrorMsgPleaseEnterYourPassword'] = "<strong>Error Message:</strong> Please enter your password. This is a required field that will allow you to access all your products and services with AT&amp;T.";
+		<div style="display: none;" id="clientSideErrors">
+			<div id="jsErrMsg"></div>
+		</div> 
 
-map['ErrorMsgYourPasswordMustContainAtLeast1NumberAnd1Letter'] = "The password you entered is not acceptable. Select <strong>Password restrictions</strong> to review the exceptions, and then enter a new password.";
-
-map['ErrorMsgYourAnswerMustBeAtLeast4AndNotMoreThan80CharactersLong'] = "<strong>Error Message:</strong> Your answer must contain between 4 and 26 characters.";
-
-map['ErrorMsgYourPasswordCanNotBeTheSameAsYourMemberId'] = "<strong>Error Message:</strong> Your password cannot be the same as your User ID.";
-
-map['ThePasswordEnteredIsNotAValidPasswordFormat'] = "The password you entered is not acceptable. Select <strong>Password restrictions</strong> to review the exceptions, and then enter a new password.";
-
-map['ErrorMsgPleaseMakeSureThatThePasswordAndPasswordConfirmationMatch'] = "<strong>Error Message:</strong> Please make sure your entry in the <strong>Re-type Password</strong> field matches your <strong>New Password.</strong>";
-
-map['ErrorMsgPleaseEnterYourFirstName'] = "<strong>Error Message:</strong> Please enter your first name. This is a required field.";
-
-map['ErrorMsgInvalidCharacterInFirstName'] = "<strong>Error Message:</strong> The first name you entered contains an invalid character. Please check your entry and re-enter your first name.";
-
-map['ErrorMsgPleaseEnterYourLastName'] = "<strong>Error Message:</strong> Please enter your last name. This is a required field.";
-
-map['ErrorMsgInvalidCharacterInLastName'] = "<strong>Error Message:</strong> The last name entered must contain only letters.";
-
-map['ErrorMsgPleaseEnterANickName'] = "<strong>Error Message:</strong> You must accept the AT&amp;T Access ID terms and conditions before you can proceed. Please check the box in order to provide acceptance and click continue.";
-
-map['ErrorMsgTheNickNameEnteredIsNotAValidNickName'] = "<strong>Error Message:</strong> The nickname you have entered is invalid. Your nickname may contain alphanumeric characters and the following special characters: '.', '-', and '_' and spaces. Please try again.";
-
-map['ErrorMsgPleaseEnterYourEmailAddress'] = "<strong>Error Message:</strong> Please enter your email address. This is a required field.";
-
-map['ErrorMsgYourEmailAddressMustBeEnteredInAValidFormat'] = "<strong>Error Message:</strong> Please enter your AT&amp;T-associated email address and AT&amp;T Yahoo! ID (for example, johnsmith@sbcglobal.net or mary.smith@att.net).";
-
-map['ErrorMsgTheEmailAddressDoesNotMatch'] = "<strong>Error Message:</strong> The contact email address you entered in the <strong>Confirm Contact Email Address</strong> box does not match what you entered in the <strong>Contact Email Address</strong> box.";
-
-map['ErrorMsgPleaseSelectAnOnlineSecurityQuestion1'] = "<strong>Error Message:</strong> Please select your first security question.";
-
-map['ErrorMsgPleaseEnterAnAnswerForSecurityQuestion1'] = "<strong>Error Message:</strong> Please enter your answer for Security Question 1.";
-
-map['ErrorMsgYourAnswerMustBeAtLeast4AndNotMoreThan80CharactersLong'] = "<strong>Error Message:</strong> Your answer must contain between 4 and 80 characters.";
-
-map['ErrorMsgPleaseSelectAnOnlineSecurityQuestion2'] = "<strong>Error Message:</strong> Please select your second security question.";
-
-map['ErrorMsgPleaseEnterYourAnswerToSecretQuestion2'] = "<strong>Error Message:</strong> Please enter your answer for Security Question 2.";
-
-map['ErrorMsgYourUserIDMustContainOnlyLettersAndNumbers'] = "<strong>Error Message:</strong> Your User ID must contain only letters and numbers.";
-
-map['ErrorMsgMemberIDCannotBeUsed'] = "<strong>Error Message:</strong> Enter your desired AT&amp;T Access ID in one of the following correct formats:<ul><li>johnsmith@sbcglobal.net</li><li>mary.smith@att.net</li><li>johnsmith123</li></ul><span>You may use alpha and numeric characters and the following special characters: periods (.), underscores (_), hyphens (-), or at symbols (@).</span>";
-
-map['ErrorMsgAccessIDNotInRequiredFormat'] = "<strong>Error Message:</strong> The value entered in the AT&amp;T Access ID field does not meet the required format. An AT&amp;T Access ID must be at least 5 characters long and start with a letter. It can also include numbers and any of the following special characters: periods (.), underscores (_), hyphens (-).  The at symbol (@) is also allowed when using a valid email address as your AT&amp;T Access ID.";
-
-map['ErrorMsgMissingValues'] = "<strong>Error Message:</strong> Please complete the following fields to continue:<ul style=\"list-style-type: none;\"><li>Contact Email Address</li><li>Confirm Contact Email Address</li><li>Last Name</li></ul>";
-
-map['ErrorMsgValuesNotInRequiredFormat'] = "The values entered in the following fields do not meet the required format. Please update to continue:<ul style=\"list-style-type: none;\"><li>* Contact Email Address:<ul style=\"list-style-type: none;\"><li>Invalid email format (correct format: abc123@domain.com)</li></ul></li><li>* Confirm Contact Email Address:<ul style=\"list-style-type: none;\"><li>Invalid email format (correct format: abc123@domain.com)</li></ul></li></ul>";
-
-map['ErrorMsgEnterConfirmEmail'] = "<strong>Error Message:</strong> Please enter your confirmation email address.";
-
-map['ErrorMsgTheFirstNameEnteredMustBeAtLeast1CharacterAndNotMoreThan50CharactersLong'] = "<strong>Error Message:</strong> The first name entered must contain between one and fifty characters.";
-
-map['ErrorMsgTheLastNameEnteredMustBeAtLeast1CharacterAndNotMoreThan50CharactersLong'] = "<strong>Error Message:</strong> The last name entered must contain between one and fifty characters.";
-
-map['AgreeToAccessIDTnC'] = "To create your AT&amp;T Access ID, please select the checkbox below to acknowledge that you understand and agree to the AT&amp;T Access ID terms and conditions.";
-
-map['ConsecutiveSpecialCharactersNotAllowed'] = "If you use periods (.), underscores (_), hyphens (-), or @ symbols in your AT&amp;T Access ID, be sure that each one is separated by a letter or a number. These characters should not appear consecutively.";
-
-map['AccessIDShouldNotBeAllNumeric'] = "<strong>Error Message:</strong> The value entered in the AT&amp;T Access ID field does not meet the required format. An AT&amp;T Access ID must be at least 5 characters long and start with a letter. It can also include numbers and any of the following special characters: periods (.), underscores (_), hyphens (-).  The at symbol (@) is also allowed when using a valid email address as your AT&amp;T Access ID.";
-
-map['ThereMustBeOnlyOneAtTheRateSign'] = "Your AT&amp;T Access ID can contain only one @ symbol.";
-
-map['ValidateISPAccountWithValidPassword'] = "Please verify your AT&amp;T Internet account password and try again.";
-
-map['LegacyMemberIdAsContactEmailAddress'] = "This contact email address matches the Member ID you used to log in to your account.";
-
-</script>
-
-<noscript>
-
-</noscript>
-
-
-
-
-<form id="slidRegistrationActionForm12"  name="popupAddMemberAlias"  method="POST" >
-	<input type="hidden" name="reportActionEvent" value="A_REG_SLID_MID_PSWD_SUB"/>
-	<input type="hidden" name="memberId" value=""/>
-	<input type="hidden" name="memberIdPassword" value=""/>
-	<input type="hidden" name="memberIdEmailAddressValue" value=""/>
-	<input type="hidden" name="isValidatedMidAsSlid" value=""/>
-</form>
-
-
-<form name="slidRegistrationActionForm" method="post" action="https://www.att.com/olam/slidRegistrationAction.doview" onsubmit="return checkValues(this,map);">
-	<input type="hidden" name="actionEvent" value="submitProfile">
-	<input type="hidden" name="checkAvailabilityStatus" value="" id="checkAvailabilityStatus">
-	<input type="hidden" name="unacceptablePasswordText" value='Strength: Unacceptable'></input>
-	<input type="hidden" name="unacceptablePasswordDescription"  value='Password you entered is not acceptable, Please enter new password.'></input>
-	<input type="hidden" id="weakPasswordText" value='Strength: Weak'></input>
-	<input type="hidden" id="goodPasswordText" value='Strength: Good'></input>
-	<input type="hidden" id="excellentPasswordText" value='Strength: Excellent'></input>
-	<input type="hidden" id="noPasswordDescription" value='Use this ID Strength Meter as a guide to increase the overall security of your password.'></input>
-	<input type="hidden" id="weakPasswordDescription" value='The strength of your password is based on the number of characters in the password, the use of upper/lower case characters, and the randomness of the character sequence. The password a123456b would be considered a weak password since it has 6 consecutive numbers.'></input>
-	<input type="hidden" id="goodPasswordDescription" value='The strength of your password is based on the number of characters in the password, the use of upper/lower case characters, and the randomness of the character sequence. The password a123456b would be considered a weak password since it has 6 consecutive numbers.'></input>
-	<input type="hidden" id="excellentPasswordDescription" value='The strength of your password is based on the number of characters in the password, the use of upper/lower case characters, and the randomness of the character sequence. The password a123456b would be considered a weak password since it has 6 consecutive numbers.'></input>
-	<input type="hidden" id="flowType" value='false'>
-	<input type="hidden" id="loginLabel" value='Log In now'>
-	
-			<input type="hidden" id="loginMailID" value=null>
-	
-    <input type="hidden" id="nonForeignDomains" value='ameritech.net,att.net,attworld.com,bellsouth.net,flash.net,nvbell.net,pacbell.net,portal.att.net,prodigy.net,sbcglobal.net,snet.net,swbell.net,wans.net'>
-    <input type="hidden" id="slidInavlidDomains" value='attworld.com,myaccount.bellsouth.net,slid.dum'>
-    <input type="hidden" id="memberIdEmailAddress" value='false'>
-    <input type="hidden" id="cancelLink" value='Cancel'>
-    <input type="hidden" id="rootPath" value='/olam/English'>
-	<input type="hidden" id="isMemberIdValidateSucess" value='false'>
-	
-	<input type="hidden" id="slidChecked" value="">
-	
-
-
-
-
-
-<div id="validateMemberId" style="display:none;">
-</div>
-<!-- PRIMARY CONTENT -->
-               
-                <!-- CCC content 1207 -->
-                        
-                <!-- END OF CCC 1207 -->
-              	
-                    <div id="jsErrMsg"></div>
-
-                    <div class="box" >
-                        <div class="section-title">
-                            <h2>Create One User ID and Password to Access Your Linked Accounts</h2>
-                             <ul>
-                              <li class="left">  </li>
-                            </ul>
-                            
-                        </div>
-
-                        <div class="row-seamless MarTop20 botMar12">
-                        
-                            <p class="w80per botMar0">AT&amp;T Access ID is a NEW and unique User ID that replaces all other AT&amp;T User IDs. Link all of your AT&amp;T accounts to manage them together with one User ID and password.
-<br /><br />
-Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this time.
-<br /><br /></p> 	
-                            
-                           <div class="ClearNew"></div>
-                           
-                            <p class="botMar7">
-								Play video:
-								<a href="slidRegistrationAction.olamexecute.html#" id="4300103_SSO_B_Register" class="GVPVideoIcon">Create an AT&amp;T Access ID</a>
-							</p>
-							
-                        </div>
-                        
-                        <!-- GROUP -->
-                        <div class="row-seamless">
-
-                        <div class="styled_forms">
-                            <div>
-                                <label for="slid">AT&amp;T Access ID<span class="colorOrange">*</span></label>
-                                <input type="text" name="slid" size="38" tabindex="1" value="" onblur="checkAvailability(); return false;" onfocus="clearSuggestion();" style="" autocomplete="off" id="slid">
-                                <a href="slidRegistrationAction.olamexecute.html#tip10" class="lnk-help tooltips"><img src="../images/global/icn-help.png" alt=""  /></a>
-                                <span class="tips" id="tip10">The NEW AT&amp;T Access ID replaces all other AT&amp;T User IDs. Use it to manage all of your linked AT&amp;T accounts.</span>
-                             
-                                
-                                <div class="checkAvailMessage MarTop10">
-	                                <dl>
-		                               	<dd class="botMar20">
-												You may use letters, numbers, periods (.), underscores (_), hyphens, or at symbols (@).
-		                                </dd>
-	                               	</dl>
-                               	</div>
-                                <div class="checkAvailMessage MarTop10">
-                                
-									<dl id="suggestedHandleDiv" style="display: none;">
-										<dd class="redtxt botMar20"  id="notAvailableHandleSpan">
-										<b id="isNotAvailableHandleSpan"></b>&#160;is not available, but the following ID's are available
-										</dd>
-										<dd class="radio4px"  id="forCheckAvailability_1" style="display: none">
-										<div id="uniform-radioavailable" class="radio"  id="radio">
-											<span>
-												<div class="radio" id="uniform-radioavailable">
-													<span>
-													 <input style="opacity: 0;" id="option1" name="selectedSuggestion" type="radio" value="" tabindex="13" OnClick="setHandleValue()" />
-													</span>
-												</div>
-											</span>
-										</div>
-										<label for="radioavailable"><span id="radio1_label"></span></label>
-										</dd>
-										<dd class="radio4px"  id="forCheckAvailability_2" style="display: none">
-											<div id="uniform-radioavailable" class="radio"  id="radio">
-												<span>
-													<div class="radio" id="uniform-radioavailable">
-														<span>
-														<input style="opacity: 0;" id="option2" name="selectedSuggestion" type="radio" value="" tabindex="13" OnClick="setHandleValue()" />
-														</span>
-													</div>
-												</span>
-											</div>
-										 <label for="radioavailable"><span id="radio2_label"></span></label>
-										</dd>
-										<dd class="radio4px"  id="forCheckAvailability_3" style="display: none">
-											<div id="uniform-radioavailable" class="radio"  id="radio">
-												<span>
-													<div class="radio" id="uniform-radioavailable">
-														<span>
-														<input style="opacity: 0;" id="option3" name="selectedSuggestion" type="radio" value="" tabindex="13" OnClick="setHandleValue()" />
-														</span>
-													</div>
-												</span>
-											</div>
-										   <label for="radioavailable"><span id="radio3_label"></span></label>
-										</dd>
-
-									</dl>
-								    <dl class="botMar20" id="handleIsAvailabileDiv" style="display: none;">
-										<dd>
-											<b id="isAvailableHandleSpan"></b>&#160;is available
-										</dd>
-									</dl>
-                                </div>
-                              	
-                            </div>
-
-							<div class="row-seamless MarTop20 botMar12" id="passwordNoteField" style="display: none;">
-								<p class="w80per botMar0"><strong>Note:</strong> You will continue to use your Member ID password when logging in with your new AT&amp;T Access ID. You can change this password at any time by managing your AT&amp;T Access ID profile.</p>
-							</div>
-                                                
-                            <div class="MarTop5">
-                                <label for="password">New Password<span class="colorOrange">*</span></label> 
-                               <input type="password" name="password" tabindex="2" value="" onkeyup="checkStrengthWithVerifyslidreg('password', 'slidRegistrationActionForm', 'tip100');" onblur="checkStrengthWithVerifyslidreg('password', 'slidRegistrationActionForm', 'tip100');" id="password">
-                                <div class="passwordStrengthMeter">
-								<div id="passwordStrengthImage" >
-									<div class="graphBorder">
-                        					<div class="graphBkgrd" style="width:0%"><img src="images/transparent.gif" /></div>
-                    				</div>
-                    			</div> 
-									<a class="lnk-help tooltipsDynamic" href="slidRegistrationAction.olamexecute.html#tip100" title="">
-									<img alt="" src="../images/global/icn-help.png" class="helpImg"></a>
-									 
-									<span id="tip100" class="tips"> Use this ID Strength Meter as a guide to increase the overall security of your password.</span>
-		                            
-								</div>	
-								
-                            </div>
-                            <div class="MarTop5">
-                                <label for="passwordVerify">Re-type Password<span class="colorOrange">*</span></label> 
-                               <input type="password" name="passwordVerify" tabindex="3" value="" id="passwordVerify">								
-                                <span class="passwordStrengthMeter">
-								     <a href="slidRegistrationAction.olamexecute.html#" onclick='clickPassword()'>Password restrictions</a>                             
-                                </span>								
-                                <div class="checkAvailMessage">
-                                
-                                <dl>
-                                    <dd class="botMar30">
-                                		Your password must include at least 6 characters, 1 number, and 1 letter. It can also include underscores (_), or hyphens (-).
-                                    </dd>
-                                 </dl>
-                                 </div>
-                            </div>
-
-                        
-                        </div>
-                        </div>
-                        <!--/GROUP-->
-                        <div class="row-seamless">
-                            <p><span class="passDisclaimer"><a href="slidRegistrationAction.olamexecute.html#" title="" onclick='window.open("/OLAM_PROD_CMS//English/staticContent/html/help_passwd_restrictions_cms.html",
-									"passwordrestriction","width=618, height=485, resizable=yes, scrollbars=yes")'>See Password requirements and recommendations</a></span></p>
-                        </div>
-                    
-                    <!-- /BOX CONTAINER -->
-
-                    
-                    <!-- BOX CONTAINER-->
-                    <div class="section-divider">
-                        <div class="group-title">
-                            <h2>User Information</h2>
-                            <ul>
-                                <li class="left"><a href='slidRegistrationAction.olamexecute.html#' onclick="window.open('/OLAM_PROD_CMS//English/staticContent/html/help_personalInfoContactPreferences_cms.html','window3','width=618,height=485,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes');return false;">What's this?</a>
-                            </ul>
-                        </div>
-
-                     </div>
-                        <div class="row-seamless botMar10">
-                            <p>Please complete the following fields with your personal information and preferences.</p>
-                        </div>
-                        
-                        <div class="row-seamless">
-                        <!-- GROUP -->
-                        <div class="styled_forms botMar30">
-                            <div>
-
-                                <label for="firstName">First Name</label>
-                              	 <input type="text" name="firstName" size="38" tabindex="4" value="" id="firstName">
-                            </div>
-                            <div class="MarTop5">
-                                <label for="lastName">Last Name</label>
-                                <input type="text" name="lastName" size="38" tabindex="5" value="" id="lastName">
-                            </div>
-
-                            <div class="tipPad MarTop5">
-                                <label for="emailAddress">Contact Email Address</label>
-                                <a href="slidRegistrationAction.olamexecute.html#tip51" class="lnk-help tooltips"><img src="../images/global/icn-help.png" alt=""  /></a> <span class="tips" id="tip51">This is the email address where you will receive notifications regarding your new AT&amp;T Access ID.</span>
-                                <input type="text" name="emailAddress" size="38" tabindex="6" value="" id="emailAddress">
-                            </div>
-
-                            <div class="tipPad MarTop5">
-                                <label for="emailAddressVerify">Confirm Contact Email Address</label>
-                                <a href="slidRegistrationAction.olamexecute.html#tip52" class="lnk-help tooltips"><img src="../images/global/icn-help.png" alt=""  /></a> <span class="tips" id="tip52">Please confirm your Contact Email Address to ensure that your entry is valid.</span>
-                                <input type="text" name="emailAddressVerify" size="38" tabindex="7" value="" id="emailAddressVerify">
-                                
-                            </div>
-
-                        </div>
-                        <!--/GROUP-->
-                        </div>
-                        
-               
-                    <!-- /BOX CONTAINER -->
-
-                    
-                    <!-- BOX CONTAINER-->
-                    <div class="section-divider">
-                        <div class="group-title">
-                        <h2>Security Questions and Answers</h2>
-                           
-                            <ul>
-                               <li class="left"> </li>
-                            </ul>
-                         </div>
-
-                     </div>
-                        <div class="row-seamless botMar10">
-                            <p>Select two questions from the dropdown lists, and provide your answers for our records.
-</p>
-                        </div>
-                        <div class="row-seamless">
-                        <!-- GROUP -->
-                        <div class="styled_forms botMar30">
-                             <div>
-                                <label for="securityQuestion1">Security Question 1</label>
-                                 <select name="securityQuestion1" tabindex="8" class="w435" id="securityQuestion1"><option value="26">What was the make and model of your first car?</option>
-<option value="27">What is your dream job?</option>
-<option value="28">What is the last name of the most famous person you&#39;ve ever met?</option>
-<option value="14">Last name of your favorite elementary school teacher?</option>
-<option value="15">What was the name of your favorite childhood pet?</option>
-<option value="16">What is your favorite hobby?</option>
-<option value="17">What is your favorite film?</option>
-<option value="18">Who is your favorite author?</option></select>
-                            </div>
-                            <div class="tipPad MarTop5">
-                                <label for="securityAnswer1">Answer to Security Question 1</label> 
-                                <a href="slidRegistrationAction.olamexecute.html#tip53" class="lnk-help tooltips"><img src="../images/global/icn-help.png" alt="" /></a>
-                                <span class="tips" id="tip53">The online security questions and answers are used when validating your identity online.</span>
-                                <input type="text" name="securityAnswer1" size="38" tabindex="9" value="" style="" autocomplete="off" id="securityAnswer1">
-                               
-                            </div>
-
-                             <div>
-                                <label for="securityQuestion2">Security Question 2</label>
-                                <select name="securityQuestion2" tabindex="10" class="w435" id="securityQuestion2"><option value="29">What was the first concert you attended?</option>
-<option value="19">What was the last name of your childhood best friend?</option>
-<option value="20">What country would you like to visit?</option>
-<option value="21">Who is a famous person you&#39;d most like to meet (living/dead)?</option>
-<option value="22">What is the farthest from home you have traveled?</option>
-<option value="23">Where did you meet your spouse for the first time? (full name of city only)</option>
-<option value="30">What was your first job?</option>
-<option value="31">Where did you go on your best vacation?</option></select>
-                            </div>
-                             <div class="tipPad MarTop5">
-                                <label for="securityAnswer2">Answer to Security Question 2</label>
-                                <a href="slidRegistrationAction.olamexecute.html#tip54" class="lnk-help tooltips"><img src="../images/global/icn-help.png" alt=""  /></a>
-                                <span class="tips" id="tip54">The online security questions and answers are used when validating your identity online.</span>
-                                <input type="text" name="securityAnswer2" maxlength="80" size="38" tabindex="11" value="" style="" autocomplete="off" id="securityAnswer2">
-                            </div>
-                            
-                        </div>
-
-                        <!--/GROUP-->
-                        </div>
-                    
-                    <!-- /BOX CONTAINER -->
-                    
-                    <div class="section-divider">
-                        <div class="group-title">
-                            <h2>Terms &amp; Conditions</h2>
-                          
-                            <ul>
-                                <li class="left"> </li>
-                               
-                            </ul>
-                          
-                        </div>
-                     </div>   
-                        <!-- GROUP -->
-                        <div class="row-seamless botMar25">
-                            
-                            <div class="styled_forms">
-                              <input type="checkbox" name="acceptTerms" tabindex="12" value="on" id="acceptTerms">
-
-                                <label for="acceptTerms" class="text"> <a href="slidRegistrationAction.olamexecute.html#" title="" onclick="return clickedOpen(1);" >I agree to the AT&amp;T Access ID Terms &amp; Conditions</a></label>
-    						</div>
-                        </div>
-                        <!--/GROUP-->
-             
-                        
-                        <!-- BUTTONS -->
-                        
-                            <div class="btn">
-                                <div class="btnLt">                                
-                                  <a href="slidRegistrationAction.olamexecute.html#" onclick="return clickedOpen(2);" tabindex="14">Cancel</a>                               	
-                                </div>
-                                
-                                <div class="btnRt" id="showSubmit">
-									<input type="image" src="English/brand30/bt/btnContinue.gif" alt="" class="btn-pad" tabindex="15"/>
-								</div>
-								<div class="btnRt" id="blockSubmit" style="display: none;">
-									<input type="image" src="English/brand30/bt/btnContinueDisabled.png.html" alt="NONE" class="btn-pad" />
-								</div>
-                         
-                                <div class="clear"></div>
-                            </div>
-                     
-                        <!-- /BUTTONS -->
-                    </div>
- </form>
-
-
-
-
-	
-	
-	
-	
-	
-
-
-
-
-
-
-								
-								
-								
-							</div>
-							
-							<!-- Secondary Content -->
-							
-							
-							
-							
-								<div id='secondary-content'  class=''>
-									
-
-
-
-
-
+		<div id="serverSideErrors">
+		
+		</div>	
+	</div>
 
 
  
-
-
+ 	
+ 	
+ 		<div class="msg box botMar20 ForcePadTop10 MarTop20" id="LinkAccountsToManageUsingOneID">
+ 			<p><strong>Note</strong> that myAT&amp;T registration is only for consumer accounts, not <a href="../shop/wireless/gophone.html" target="_blank">prepaid</a> or <a href="../gen/general%3Fpid=11627.html" target="_blank">business</a> accounts.</p>
+ 		</div>
+ 	
+ 	
+ 	
+ 		<div class="msg box botMar20 ForcePadTop10 MarTop20" style="display:none;" id="UverseMemberIDLinkedToATTAID">
+ 			<p><strong>Note:</strong> When you link a U-verse member ID to your AT&amp;T Access ID, you will have access to your email and other included features.</p>
+ 		</div>
+ 	
+ 	
+ 
+<div class="box"> 
 		
+					<div class="section-title"> 
+						<h2>Provide Account Information</h2> 
+						    			
+					</div>                                       
+                    <p class="MarTop20 MarLeft25">Tell us which AT&T account you'd like to register for online account management. You'll need your account information, and you'll need to be able to receive an email or text message from us.
+<br />
+<br />
+Later in this process you'll create an AT&T Access ID-- a single User ID and password you'll be able to use to manage all your AT&T accounts.</p>                   
 
-
-
-
-
-
-
-
-
-
-		 <!-- STEP INDICATOR - BEGINS --> 
-             <div class="box steps">	
-			
 					
-									             
-		                        <div class="row-seam current top-round">
-		                          <h4 class="step1">Create AT&amp;T Access ID</h4>            		
-		                        </div>
-		                       
-		                        <div class="row-seam">
-		                          <h4 class="step2">Link Accounts</h4>            		
-		                        </div>
-		                        <div class="row-seam last">
-		                           <h4 class="step3">Confirmation</h4>            		
-		                        </div>                        
-		                    
 					
+					<p class="MarTop20 MarLeft25" style="display:none;" id="WirelessCTNLinkingNote">&nbsp;</p>
+
+        
+<form id="frmSelectAccount" name="frmSelectAccount" onsubmit="return verifySelectAccount();" action="https://www.att.com/olam/unauth/submitAccountRegistration.myworld" method="post">
+	<div class="styled_forms modalForms">
+		<div class="row-seamless botMar0">
+
+			<div class="tipPad safariComp botMar15">
+				<div class=" right MarRight5 float-left w260">
+
+					<label title="acctype" class="top0" for="selectedAccountType">Account Type</label>
+				</div>
+				<div class=" MarTop3 ie7MarTop0 helpDiv ">
+				&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce" href="slidRegistrationAction.olamexecute.html#tip53"><img title="" alt="help"
+						src="../images/global/icn-help.png" class=""></a><span
+						id="tip53" class="tips">	Please select the type of personal account you want to link to your AT&T Access ID.  Each personal account will be linked individually.  After linking, you can access all of your linked accounts by logging in with your AT&T Access ID.</span>
+						
+				</div>
+				<div class="">
+
+					
+						
+
+					<select name="selectedAccountType" id="selectedAccountType" title="selectedAccountType" onkeyup="return accountTypeSelectionChange(this);" onchange="return accountTypeSelectionChange(this);">
+    <option value="">Select Account</option>
+    <option value="wireless">Wireless</option>
+    <option value="uverse">U-verse TV, Internet &amp; Voice</option>
+    <option value="wireline">Home Phone, Internet &amp; Digital TV</option>
+
+
+</select>
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+			<div class="tipPad safariComp botMar15">
+				<div id="wireless" style="display: none;">
+					<div class=" right MarRight5 float-left w260">
+						<label title="wireless number" class="top0"
+							for="selectedAccountId">Wireless Number</label>
+					</div>
+					<div class=" MarTop3 ie7MarTop0 helpDiv ">
+						&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce"
+							href="slidRegistrationAction.olamexecute.html#tip54"><img title="" alt="help"
+							src="../images/global/icn-help.png" class=""></a> <span
+							id="tip54" class="tips">Please enter your personal wireless phone number to link your wireless account to your AT&T Access ID.</span>
+						
+					</div>
+				</div>
+				<div id="wireline" style="display: none;">
+					<div class=" right MarRight5 float-left w260">
+
+						<label title="Wirelinephone" class="top0" for="selectedAccountId">Billing Account Number or Phone Number</label>
+					</div>
+					<div class=" MarTop3 ie7MarTop0 helpDiv ">
+						&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce"
+							href="slidRegistrationAction.olamexecute.html#tip58"><img title="" alt="help"
+							src="../images/global/icn-help.png" class=""></a> <span
+							id="tip58" class="tips">Please enter your phone or internet billing account number or your billing telephone number to link your account to your AT&T Access ID.</span>
+						
+					</div>
+				</div>
+
+				<div id="uverse" style="display: none;">
+					<div class=" right MarRight5 float-left w260">
+
+						<label title="UverseAcc" class="top0" for="selectedAccountId">Billing Account Number or Email Address</label>
+					</div>
+					<div class=" MarTop3 ie7MarTop0 helpDiv ">
+						&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce"
+							href="slidRegistrationAction.olamexecute.html#tip56"><img title="" alt="help"
+							src="../images/global/icn-help.png" class=""></a> <span
+							id="tip56" class="tips">Please enter the billing account number or Email address (Member ID) for your AT&T U-verse account to link this account to your AT&T Access ID.</span>
+						
+					</div>
+				</div>
+
+				<div id="inputText" class="float-left MarRight10" style="display: none;">
+					<input type="text" name="selectedAccountId" size="25" maxlength="50" value="" id="selectedAccountId" class="text" title="selectedAccountId" onblur="stripCharacters(this);" autocomplete="off"/>			
+				</div>
+				
+						
+				<div class="float-left w150" id="wirelessExample" style="display: none;"><label class="normalFont italicFont">Example: 212-555-2255</label></div>
+				<div class="float-left w150" id="uverseExample" style="display: none;"><label  class="normalFont italicFont ">Example: 1234567890 or jks@att.net</label></div>
+				<div id="wirelineExample" style="display: none;" class="float-left w150"><label title="eg" class="normalFont italicFont">Example: 212-555-2255 or 212-555-2255 123</label></div>
+
+				<div class="clear"></div>
+
+			</div>
+
+			<div id="acctZip" style="display: none;"
+				class="tipPad safariComp botMar15">
+				<div class=" right MarRight5 float-left w260">
+
+					<label title="zipCode" class="top0" for="uverseZip">Billing Zip Code</label>
+				</div>
+				<div class=" MarTop3 ie7MarTop0 helpDiv ">
+					&nbsp;<a name="help" class="lnk-help tooltips ie7Top4pxForce"
+						href="slidRegistrationAction.olamexecute.html#tip57"><img title="" alt="help"
+						src="../images/global/icn-help.png" class=""></a> <span
+						id="tip57" class="tips">This is the ZIP Code shown on your bill each month.</span>
+					
+				</div>
+				<div class="float-left w320">
+
+					<input type="text" name="zipCode" size="15" maxlength="5" value="" id="zipCode" class="text" title="zip code" autocomplete="off"/>
+				</div>
+
+				<div class="clear"></div>
+
+			</div>
+
+
+		</div>
+	</div> 
+	<div class="section-divider">
+		<!-- BUTTONS -->
+
+		<div class="btn MarTop15 botMar0">
+			<div class="btnLt">
+				<a href="slidRegistrationAction.olamexecute.html#" class="textLink" title="" onclick="clickedCancel()">Cancel</a></span>
+			</div>
+			<div class="btnRt" id="mynext">
+
+				<div id="divForNext">
+					<!-- <a id="enbNextBtn" href="#" style="display: none" title=""
+						onclick="verifySelectAccount();return false;"><img
+						src="/olam/English/brand30/bt/btnNext.png" alt="" /></a>  -->
+						<input type="image" id="enbNextBtn" src="English/brand30/bt/btnNext.png.html" alt='Next' />
+						<span
+						id="dsbNextBtn" style="display: none;"><img
+						src='English/brand30/bt/btnNextDisabled.png.html' alt='' /></span>
+						
+				</div>
+				<script type="text/javascript">
+											onEnterFunction="next";
+										</script>
+
+
+			</div>
+			<div class="clear"></div>
+		</div>
+
+		<!-- /BUTTONS -->
+	</div>
+	</form>
+
+
+
 			
-			</div> 
-            <!-- STEP INDICATOR - ENDS --> 	
+</div> <!-- end box div -->
+
+
+
+<div class='clear'></div>
+<div class="note box">
+	<p>
+		Note: If you are linking your account so that you can view <strong>DSL or Dial Internet</strong> billing information, please select "Home Phone, Internet, & Digital TV" as the account type. If you have already created an online Home Phone account, please provide the Username associated with that account on the screens that follow.
+	</p>
+</div>
+<div class='clear'></div>
+
+					
+					
+					
+				</div>
+				
+				<!-- Secondary Content -->
+				
+				
+				
+					<div id='secondary-content'  class=''>
+						
+
+
+
+
+
+
+
+ 		
+
+
+
+
+
+
+
+
+
+
+<div class="box steps">
+	<div class="row-seam current">
+		<h4 class="step1">Select Account</h4>
+	</div>
+
+	<div class="row-seam ">
+		<h4 class="step2">Create ID and Password</h4>
+	</div>
+	<div class="row-seam  last">
+		<h4 class="step3">Confirmation</h4>
+	</div>
+</div>
+	
+ 		
 	 	
 
 
@@ -1375,7 +1568,7 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
       
-			<!-- BCC Page Name slidRegEnterProfile -->
+			<!-- BCC Page Name slidReg2SelectAccount -->
        
  
 
@@ -1516,6 +1709,7 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 	
 	<!-- RHC AccountLogin/RightHandCallouts -->
 		
+		<!-- SlotPageName [/olam/jsp/tiles/common_includes/atg/callout.jsp]-->
 			
    			
 	   		
@@ -1581,6 +1775,23 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
         
 
 
+	
+    
+    
+    
+    
+    
+	
+	
+
+	
+    
+	    
+    	<!-- No Result -->
+    
+        
+
+
 
 
 
@@ -1603,127 +1814,115 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 	  		
 	  		
 	  	
+	  	
 
-<div style="clear:both"></div>
-								</div>
-							
-							<!-- /Secondary Content -->
-							
-							
-								<div class='clear'> </div>
-							
-							
-							</div>
-						<!--/CONTENT -->
-							
-							
-							
-						<!-- PRE FOOTER -->
-							<div id='preFooter' class=''>
-								
+<div class="clear"></div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-	
-	<!-- Begin LP Custom Variables-->
-	
-	<script type="Text/javascript">
-	
-		lpMTagConfig.vars.push(['session','sessionId','WbyMQg3pm1wyhkw1cPgZL0WGJPslfHSGnFgkyKJrFh9VRbnpxWn5']);
-		lpMTagConfig.vars.push(['session','stack','p2eam1m86']);
-		lpMTagConfig.vars.push(['session','CTN','']);
-		
-		lpMTagConfig.vars.push(['session','upgradeEligibilityFlag','']);
-		
-		lpMTagConfig.vars.push(['page','Category','']);//Pass the secondary navigation category of the site the visitor is currently on
-		
-		lpMTagConfig.vars.push(['page','PageName','slidRegEnterProfile']);//Pass the page name for the page visitor is currently on
-		lpMTagConfig.vars.push(['page','PhoneDevice','']);//Pass the phone device name for current account visitor is currently on
-		lpMTagConfig.vars.push(['page','FeatureConversionStage','']);//Pass the pagenames that make up the Feature Conversion Process
-		lpMTagConfig.vars.push(['page','Feature_OrderTotal','']);//Pass the Monthly RMR of the total for features added to the account visitor is currently on
-		lpMTagConfig.vars.push(['page','CustomerType','']);//Pass the secondary navigation category of the site the visitor is currently on
-		
- 		  
-			lpMTagConfig.vars.push(["page","unit","sso"]);
-		 
-		lpMTagConfig.vars.push(["page","Section","registration"]); 
-		lpMTagConfig.vars.push(["session","language","english"]);
-		
-	
-			
-		
-		lpSendData();
-		
-	</script>
-	<noscript><p>Script section containing code for Liveperson Chat Solution</p></noscript>
-	<!--Immediate Data Submission function-->
-	<!--<input type=button value="Immediate Data Submission" onClick="javascript:lpSendData('<Scope:page/session/visitor>','<Variable Name>','<Variable Value>');">-->
-	<!-- End LP Custom Variables-->
-
-
-<!-- CE PRE FOOTER -->
-	
-			
-			<p>			
-				
-					<a class="" title="AT&amp;T U-verse Offer Details" href="https://uma.att.com/assets/files/legal_disclaimer.html" target="_blank">AT&amp;T U-verse Offer Details</a>
-						|
-				
-					<a class="" title="U-verse Terms of Service" href="https://uma.att.com/general/109-AMSS-X-DMA1-POPUP.html" target="_blank">U-verse Terms of Service</a>
-						|
-				
-					<a class="" title="Contract (Wireless)" href="../wirelessterms.html" target="_blank">Contract (Wireless)</a>
-						|
-				
-					<a class="" title="Cell Phone Records Security" href="../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" target="_blank">Cell Phone Records Security</a>
-						|
-				
-					<a class="" title="Wireless Legal Site" href="../wirelesslegal.html" target="_blank" target="_blank">Wireless Legal Site</a>
-						
-							
-			</p>
-		
-
-<!-- /CE PRE FOOTER -->
-							</div>
-						<!-- /PRE FOOTER-->	
 					</div>
-					<div class='bg-gr-bottom-shadow'></div>
+				
+				<!-- /Secondary Content -->
+				<div class="clear"></div>
+			</div>
+			<!--/CONTENT -->
+			<!--  PRE FOOTER -->
+				<div id='preFooter' class=''>
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+<!-- Added check to hide or not display the pre-footer section on the pages if user is coming through WG env -->
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		<!-- Begin LP Custom Variables-->
+		
+		<script type="Text/javascript">
+		
+			lpMTagConfig.vars.push(['session','sessionId','WYCFQkrZMdnH1dvqZwvKv4GHFTB3Th7VGt1l0fpbTTD29vH32spX']);
+			lpMTagConfig.vars.push(['session','stack','p1eam1m4']);
+			lpMTagConfig.vars.push(['session','CTN','']);
+			
+			lpMTagConfig.vars.push(['session','upgradeEligibilityFlag','']);
+			
+			lpMTagConfig.vars.push(['page','Category','']);//Pass the secondary navigation category of the site the visitor is currently on
+			
+			lpMTagConfig.vars.push(['page','PageName','slidReg2SelectAccount']);//Pass the page name for the page visitor is currently on
+			lpMTagConfig.vars.push(['page','PhoneDevice','']);//Pass the phone device name for current account visitor is currently on
+			lpMTagConfig.vars.push(['page','FeatureConversionStage','']);//Pass the pagenames that make up the Feature Conversion Process
+			lpMTagConfig.vars.push(['page','Feature_OrderTotal','']);//Pass the Monthly RMR of the total for features added to the account visitor is currently on
+			lpMTagConfig.vars.push(['page','CustomerType','']);//Pass the secondary navigation category of the site the visitor is currently on
+			
+	 		  
+				lpMTagConfig.vars.push(["page","unit","sso"]);
+			 
+			lpMTagConfig.vars.push(["page","Section","registration"]); 
+			lpMTagConfig.vars.push(["session","language","english"]);
+			
+		
+				
+		</script>
+		<noscript><p>Script section containing code for Liveperson Chat Solution</p></noscript>
+		<!--Immediate Data Submission function-->
+		<!--<input type=button value="Immediate Data Submission" onClick="javascript:lpSendData('<Scope:page/session/visitor>','<Variable Name>','<Variable Value>');">-->
+		<!-- End LP Custom Variables-->
+	
+	
+	<!-- CE PRE FOOTER -->
+		
+				
+				<p>			
+					
+						<a class="" title="Contract (Wireless)" href="../wirelessterms.html" target="_blank">Contract (Wireless)</a>
+							|
+					
+						<a class="" title="Cell Phone Records Security" href="../../www.wireless.att.com/learn/articles-resources/records-security.jsp.html" target="_blank">Cell Phone Records Security</a>
+							|
+					
+						<a class="" title="Wireless Legal Site" href="../wirelesslegal.html" target="_blank" target="_blank">Wireless Legal Site</a>
+							
+								
+				</p>
+			
+	
+<!-- /CE PRE FOOTER -->
 				</div>
-				
-				<!-- /MAIN CONTAINER -->
-				
-				<!--FOOTER-->
-				
-				<div id='footer'>
-				
-
-
+			<!--  /PRE FOOTER-->
+			</div>
+			<div class='bg-gr-bottom-shadow'></div>
+		</div>
+		
+		<!-- /MAIN CONTAINER -->
+		
+		<!--FOOTER-->
+		
+		<div id='footer'>
+		
 
 
 
@@ -1746,8 +1945,14 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
 
-<!-- Moved include from CEPreFooter.jsp to CEFooter.jsp for WUP00491571  -->
 
+
+<!-- Added check to hide or not display the footer section on the page if user is coming through WG env -->
+
+	
+		
+		<!-- Moved include from CEPreFooter.jsp to CEFooter.jsp for WUP00491571  -->
+		
 
 
 
@@ -1780,147 +1985,97 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
 
-
-
-
-
-
-
-
-
-
-<!-- Page Event ID|Screen Name = [P_REG_SLID_CREATE|Create SLID Pg] -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-	<!--CALL LOGGER Rel 8.6-->
-	
-	
-	
-	
-	
-	    
-	      
-	
-
-<!--CALL LOGGER Rel 8.6-->
-
-
-
-
-
-
-	<!--CE FOOTER -->
 		
-		<div class="group">
-			<div class="w346 left dotSites padBot30"> 
-				<span class="dotCom">
-				<a href="../index.html">
-			 		<img src="../media/att/2011/global/nav/en_US/logoATTdotcom.png" width="133px" height="24px" alt="Shop, Service, Support." />
-			 	</a>
-			 	</span>
+		
+		
+		
+		
+		
+		
+		<!-- Page Event ID|Screen Name = [P_REGS_LINK_ACCNT_SELECT|Registration Link Account Selection Pg] -->
+		
+		
+		
+		
+		
+		
+			<!--CE FOOTER -->
 				
-				<span class="dotNet">
-				<a href="../../www.att.net/index.html">
-			  	<img src="../media/att/2011/global/nav/en_US/logoATTdotnet.png" width="173px" height="21px" alt="E-mail - News - Weather &amp; More" /></a>
-			  	</span>
-			</div>	
-			<div class="clear"></div>
-			<div class="left">
-				<p class="separator botMar0">
-					
-						<a class="begin" title="Privacy Policy" href="../privacy/index.html" >Privacy Policy</a> 
-					
-						<a  title="Careers" href="../../www.att.jobs/index.html" >Careers</a> 
-					
-						<a  title="Contact Us" href="https://www.att.com/econtactus" >Contact Us</a> 
-					
-						<a  title="Terms of Use" href="../gen/general%3Fpid=11561.html" >Terms of Use</a> 
-					
-						<a  title="Site Map" href="../sitemap/index.html" >Site Map</a> 
-					
-						<a  title="Accessibility " href="../gen/general%3Fpid=10190.html" >Accessibility </a> 
-					
-						<a  title="Wireless Emergency Alerts" href="../gen/public-affairs%3Fpid=20107.html" >Wireless Emergency Alerts</a> 
-					
-						<a  title="Advertising Choices" href="../internal/adchoices.html" >Advertising Choices</a> 
-					
-						<a  title="Broadband Information" href="../internal/broadbandinfo.html" class="end">Broadband Information</a> 
-					
-					<br class="clear"/>	
-				</p>
-				<p class="copyright"><a href="../gen/privacy-policy%3Fpid=2587.html">&copy;2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506</p>
-			</div>
-		</div>
-		<div class="logos">
+				<div class="group">
+					<div class="w346 left dotSites padBot30"> 
+						<span class="dotCom">
+						<a href="../index.html">
+					 		<img src="../media/att/2011/global/nav/en_US/logoATTdotcom.png" width="133px" height="24px" alt="Shop, Service, Support." />
+					 	</a>
+					 	</span>
+						
+						<span class="dotNet">
+						<a href="../../www.att.net/index.html">
+					  	<img src="../media/att/2011/global/nav/en_US/logoATTdotnet.png" width="173px" height="21px" alt="E-mail - News - Weather &amp; More" /></a>
+					  	</span>
+					</div>	
+					<div class="clear"></div>
+					<div class="left">
+						<p class="separator botMar0">
+							
+								<a class="begin" title="Privacy Policy" href="../privacy/index.html" >Privacy Policy</a> 
+							
+								<a  title="Careers" href="../../www.att.jobs/index.html" >Careers</a> 
+							
+								<a  title="Contact Us" href="https://www.att.com/econtactus" >Contact Us</a> 
+							
+								<a  title="Terms of Use" href="../gen/general%3Fpid=11561.html" >Terms of Use</a> 
+							
+								<a  title="Site Map" href="../sitemap/index.html" >Site Map</a> 
+							
+								<a  title="Accessibility " href="../gen/general%3Fpid=10190.html" >Accessibility </a> 
+							
+								<a  title="Wireless Emergency Alerts" href="../gen/public-affairs%3Fpid=20107.html" >Wireless Emergency Alerts</a> 
+							
+								<a  title="Advertising Choices" href="../internal/adchoices.html" >Advertising Choices</a> 
+							
+								<a  title="Broadband Information" href="../internal/broadbandinfo.html" class="end">Broadband Information</a> 
+							
+							<br class="clear"/>	
+						</p>
+						<p class="copyright"><a href="../gen/privacy-policy%3Fpid=2587.html">&copy;2012 AT&amp;T Intellectual Property</a>. All rights reserved. AT&amp;T, the AT&amp;T logo and all other AT&amp;T marks contained herein are trademarks of AT&amp;T Intellectual Property and/or AT&amp;T affiliated companies. AT&amp;T 36USC220506</p>
+					</div>
+				</div>
+				<div class="logos">
+				
+					<a class="firstLogo" href="../../www.ctia.org/index.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoCTIA.png" alt="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." width="78px" height="100px"/>
+					</a>	
+				
+					<a  href="../../www.bbb.org/online/consumer/cks.aspx%3Fid=110020911221.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoBBB.png" alt="Click to verify BBB accreditation and to see a BBB report." title="Click to verify BBB accreditation and to see a BBB report." />
+					</a>	
+				
+					<a  href="../../clicktoverify.truste.com/pvr.php%3Fpage=validate&amp;companyName=AT%2526T&amp;sealid=101.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoTRUSTe.png" alt="This site is certified by TRUSTe" title="This site is certified by TRUSTe" />
+					</a>	
+				
+					<a  href="../../www.yellowpages.com/index.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoYP.png" alt="YELLOWPAGES.COM" title="YELLOWPAGES.COM" />
+					</a>	
+				
+					<a  href="../../www.realpageslive.com/index.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoDigitalWhiteYellowPages.png" alt="Digital White and Yellow Pages" title="Digital White and Yellow Pages" />
+					</a>	
+				
+					<a  href="../../www.att.net/teamusa.html" target="_blank" target="_blank">
+						<img  src="../media/att/2011/global/nav/en_US/logoOlympics.png" alt="USA Proud Sponsor of the U.S. Olympic Team" title="USA Proud Sponsor of the U.S. Olympic Team" />
+					</a>	
+				
+			
+				
+				 	
+				 </div>
+			<!-- WebTrends Base Tag : include only at end of page -->
+			
+			
+			
 		
-			<a class="firstLogo" href="../../www.ctia.org/index.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoCTIA.png" alt="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." title="The first nationwide carrier to be awarded the Seal of Wireless Quality. For details, visit www.ctia.org." width="78px" height="100px"/>
-			</a>	
-		
-			<a  href="../../www.bbb.org/online/consumer/cks.aspx%3Fid=110020911221.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoBBB.png" alt="Click to verify BBB accreditation and to see a BBB report." title="Click to verify BBB accreditation and to see a BBB report." />
-			</a>	
-		
-			<a  href="../../clicktoverify.truste.com/pvr.php%3Fpage=validate&amp;companyName=AT%2526T&amp;sealid=101.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoTRUSTe.png" alt="This site is certified by TRUSTe" title="This site is certified by TRUSTe" />
-			</a>	
-		
-			<a  href="../../www.yellowpages.com/index.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoYP.png" alt="YELLOWPAGES.COM" title="YELLOWPAGES.COM" />
-			</a>	
-		
-			<a  href="../../www.realpageslive.com/index.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoDigitalWhiteYellowPages.png" alt="Digital White and Yellow Pages" title="Digital White and Yellow Pages" />
-			</a>	
-		
-			<a  href="../../www.att.net/teamusa.html" target="_blank" target="_blank">
-				<img  src="../media/att/2011/global/nav/en_US/logoOlympics.png" alt="USA Proud Sponsor of the U.S. Olympic Team" title="USA Proud Sponsor of the U.S. Olympic Team" />
-			</a>	
-		
-	
-		
-		 	
-		 </div>
-	<!-- WebTrends Base Tag : include only at end of page -->
-	
-	
-	
-
 
 
 
@@ -1953,7 +2108,7 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
 <script language="JavaScript" type="text/javascript">
-	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"slidRegEnterProfile","ap":"p2eam1m86","sc":"OLAM","pn":"slidRegEnterProfile","se":"AccountLogin","si":"WbyMQg3pm1wyhkw1cPgZL0WGJPslfHSGnFgkyKJrFh9VRbnpxWn5!-1868378842!1352726462695"}};
+	var VirtuOzVars = {"ui":{"ui":"0","wii":"0","wi":"0","uw":"0","as":"0"},"bi":{"it":"User","cp":"slidReg2SelectAccount","ap":"p1eam1m4","sc":"OLAM","pn":"slidReg2SelectAccount","se":"AccountLogin","si":"WYCFQkrZMdnH1dvqZwvKv4GHFTB3Th7VGt1l0fpbTTD29vH32spX!1871413309!1352985497916"}};
 </script>
 <!--  VirtuOzLoader.js file included for RD2113 - Virtual Expert - 1104-->
 <script type="text/javascript" src="virtuOz/scripts/VirtuOzLoader.js.html"></script>
@@ -2016,10 +2171,10 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 		document.cookie = curCookie; 
 	}
 	</script>
-
-
-<!-- Send NRT and CSR Report Events by AJAX -->
-
+		
+		
+		<!-- Send NRT and CSR Report Events by AJAX -->
+		
 
 
 
@@ -2043,17 +2198,17 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
 
-
-
-
-
-
-	
+		
+		
+		
+		
+			
 
 
 
 	<script type="text/javascript">
 	var PASSTHROUGH_URL = "passthroughAction.myworld";
+	var WEBTREND_APPID = "myATT";
 	var array = [ "wt_Header", "wt_MainNav", "wt_SubNav", "wt_LeftNav","wt_RightNav", "wt_Body", "wt_BodyAlerts", "wt_BodyQuickLinks", "wt_BodyModal", "wt_Footer" ];
 	var specificWebtrendClasses = "a.wt_Header, a.wt_MainNav, a.wt_SubNav, a.wt_LeftNav, a.wt_RightNav, a.wt_Body, a.wt_BodyAlerts, a.wt_BodyQuickLinks, a.wt_BodyModal, a.wt_Footer";
 	var globalWebtrendClasses = "div.wt_Header, div.wt_MainNav, div.wt_SubNav, div.wt_LeftNav, div.wt_RightNav, div.wt_Body, div.wt_BodyAlerts, div.wt_BodyQuickLinks, div.wt_BodyModal, div.wt_Footer";
@@ -2125,36 +2280,60 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 	
 	function getWebtrendLinkName(elementEvent)
 	{
-		if(jQuery(elementEvent).attr("linkName") !=null)
-		{
-			return jQuery(elementEvent).attr("linkName");			
+		var linkName = null;
+		if(jQuery(elementEvent).attr("linkName") !=null) {
+			linkName = jQuery(elementEvent).attr("linkName");			
 		}
 		else if(jQuery(elementEvent) !=null
 				&& jQuery(elementEvent).has('img').length 
-				&& jQuery(elementEvent).children('img') !=null)
-		{
-			return jQuery.trim(jQuery(elementEvent).children('img').attr('alt'));
+				&& jQuery(elementEvent).children('img') !=null) {
+			linkName = jQuery.trim(jQuery(elementEvent).find('img:first').attr('alt'));
 		}
-		else
-		{
-			return jQuery.trim(jQuery(elementEvent).text());	
+		else {
+			linkName = jQuery.trim(jQuery(elementEvent).text());	
 		}
+		return getValidWebtrendLinkName(linkName);
 	}
 	
+	function getValidWebtrendLinkName(linkName)
+	{
+		try{
+			if(linkName !=null){
+				linkName = linkName.split('-').join('');
+				if(!isNaN(linkName) && linkName.length >= 10){
+					return null;
+				}
+			}
+		}
+		catch(e){
+			// Do Nothing
+		}
+		return linkName;
+	}
 	function getLinkLocationFromClassName(className)
 	{
-		if(className.indexOf('wt_Header')!=-1) return "Header";
-		if(className.indexOf('wt_MainNav')!=-1) return "MainNav";
-		if(className.indexOf('wt_SubNav')!=-1) return "SubNav";
-		if(className.indexOf('wt_LeftNav')!=-1) return "LeftNav";
-		if(className.indexOf('wt_RightNav')!=-1) return "RightNav";
-		if(className.indexOf('wt_BodyAlerts')!=-1) return "Body_Alerts";
-		if(className.indexOf('wt_BodyQuickLinks')!=-1) return "Body_QuickLinks";
-		if(className.indexOf('wt_BodyModal')!=-1) return "Body_Modal";
-		if(className.indexOf('wt_Body')!=-1) return "Body";
-		if(className.indexOf('wt_Footer')!=-1) return "Footer";
+		var classLinkLoc = null;	
+		if(className.indexOf('wt_Header')!=-1) classLinkLoc = "Header";
+		else if(className.indexOf('wt_MainNav')!=-1) classLinkLoc = "MainNav";
+		else if(className.indexOf('wt_SubNav')!=-1) classLinkLoc = "SubNav";
+		else if(className.indexOf('wt_LeftNav')!=-1) classLinkLoc = "LeftNav";
+		else if(className.indexOf('wt_RightNav')!=-1) classLinkLoc = "RightNav";
+		else if(className.indexOf('wt_BodyAlerts')!=-1) classLinkLoc = "Body_Alerts";
+		else if(className.indexOf('wt_BodyQuickLinks')!=-1) classLinkLoc = "Body_QuickLinks";
+		else if(className.indexOf('wt_BodyModal')!=-1) classLinkLoc = "Body_Modal";
+		else if(className.indexOf('wt_Body')!=-1) classLinkLoc = "Body";
+		else if(className.indexOf('wt_Footer')!=-1) classLinkLoc = "Footer";
 		
-		return null;
+		if(classLinkLoc!=null)
+		{
+			if(jQuery('#DCSextwtPN')!=null
+					&& jQuery('#DCSextwtPN').val()!=null)
+			{
+				var pageName = ((jQuery('#DCSextwtPN').val()).split(' ').join(''));
+				return (WEBTREND_APPID + "_" + pageName + "_" + classLinkLoc);
+			}
+		}
+		return classLinkLoc;
 	}
 	
 	function addQuotes(string) 
@@ -2190,18 +2369,10 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 		try
 		{
 			var array = new Array();
-			var refURL = window.location.href;
-			// Referrer URL
-			array.push("DCS.dcsref");
-			array.push(addQuotes(refURL));
-			
 			// Link URI for the desitination
-			var dcsuri = getWebtrendLinkURI(elementEvent);
-			if(jQuery.trim(dcsuri) != null && jQuery.trim(dcsuri) != '')
-			{
-				array.push("DCS.dcsuri");
-				array.push(addQuotes(dcsuri));
-			}
+			var dcsuri = window.location.href;
+			/* array.push("DCS.dcsuri");
+			array.push(addQuotes(dcsuri)); -- As per David Request , We are removing "DCS.dcsuri" from the webtrend reporting. */ 
 
 			// wtUrlExt To pass Query Parameter if, Passthrough URL
 			if(dcsuri !=null
@@ -2247,16 +2418,20 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 				array.push(addQuotes(jQuery(this).attr("value")));
 			});
 		
-			dcsMultiTrack.apply(this, array);
+			// This is due to Iphone defect - where we need not send Phone number
+			if(jQuery.trim(linkName) != null && jQuery.trim(linkName) != '')
+			{
+				dcsMultiTrack.apply(this, array);
+			}
 		}
 		catch(exception){}
 	}
 	
 	</script>
 
-<input type='hidden' name='DCS.dcssip'	webtrendTagAttr='true'	value='www.att.com'/>
-<input type='hidden' name='DCSext.wtNoHit'	webtrendTagAttr='true'	value='1'/>
-<input type='hidden' name='DCSext.wtPN'	webtrendTagAttr='true'	value='Create SLID Pg'/>
+<input type='hidden' name='DCS.dcssip'	id='DCSdcssip'	webtrendTagAttr='true'	value='www.att.com'/>
+<input type='hidden' name='DCSext.wtNoHit'	id='DCSextwtNoHit'	webtrendTagAttr='true'	value='1'/>
+<input type='hidden' name='DCSext.wtPN'	id='DCSextwtPN'	webtrendTagAttr='true'	value='Registration Link Account Selection Pg'/>
 
 
 
@@ -2265,34 +2440,36 @@ Note: Small business accounts cannot be linked to an AT&amp;T Access ID at this 
 
 
 
-
-
-<!-- Page Name should be after execution of WebtrendReporting -->
-
-	<meta name="DCSext.wtPN" content='Create SLID Pg' escapeXml="false"/>
-
-
-	<script>
-	   // the below block of code is very important; it clears all the prototype
-	   // javascript functions that otherwise get added as webtrends query paramaters
-		if (window.webTrendTag_unprototype) webTrendTag_unprototype();
-	</script>
-	<script src="../webtrends/scripts/dcs_tag.js" type="text/javascript"></script>
-
-<script language="JavaScript" type="text/JavaScript">
-jQuery(document).ready(function() {
-jQuery('#secondary-content div:first-child').css('margin-top','0px');
-});
-</script>
-
+		
+		<!-- Page Name should be after execution of WebtrendReporting -->
+		
+			<meta name="DCSext.wtPN" content='Registration Link Account Selection Pg' escapeXml="false"/>
+		
+		
+			<script>
+			   // the below block of code is very important; it clears all the prototype
+			   // javascript functions that otherwise get added as webtrends query paramaters
+				if (window.webTrendTag_unprototype) webTrendTag_unprototype();
+			</script>
+			<script src="../webtrends/scripts/dcs_tag.js" type="text/javascript"></script>
+		
+		<script language="JavaScript" type="text/JavaScript">
+		jQuery(document).ready(function() {
+		jQuery('#secondary-content div:first-child').css('margin-top','0px');
+		});
+		</script>
+	
+	
+	
 	<!-- /CE FOOTER -->
-				</div>
-				
-				<!--/FOOTER-->
-				
-				
-				<!--/PAGE LEVEL-->
-				</div>
+		</div>
+		
+		<!--/FOOTER-->
+
+
+	<!--/PAGE LEVEL-->
+	</div>
+	</div>
 	<!-- /WRAPPER -->
 		<!--[if lte IE 6]></div><![endif]--> 
 <!--[if lte IE 8]></div><![endif]-->

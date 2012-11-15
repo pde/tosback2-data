@@ -1,280 +1,316 @@
 
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:og="http://opengraphprotocol.org/schema/" 
+      xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-	<title>PeekYou | Business Solutions | Privacy Policy</title>
+	<title>Free People Search | People Search | Search For People At PeekYou</title>
 	<link rel="icon" href="http://www.peekyou.com/favicon.ico" type="/image/vnd.microsoft.icon" />
-	<link rel="stylesheet" media="screen" href="../../../../css/main.css" type="text/css" />
-	<link rel="stylesheet" media="screen" href="../../../../css/results.css" type="text/css" />
+        <link rel="stylesheet" media="screen" href="../../../../css/main.css" type="text/css" />	
+	<link rel="stylesheet" media="screen" href="../../../../css/results.css" type="text/css" />	
+    	<script type="text/javascript" src="../../../../js/jquery-1.6.1.min.js"></script>
+    	<script type="text/javascript" src="../../../../js/scripts.js"></script>
+		<script type="text/javascript" src="../../../../js/jquery.dimensions.js"></script>
 
 
-		<link rel="stylesheet" media="screen" href="../../../../css/about_section.css" type="text/css" />
-	<link rel="stylesheet" media="screen" href="../../../../css/intermid.css" type="text/css" />
-	<!--[if lte IE 6]>
-	<link rel="stylesheet" media="screen" href="css/ie6andbelow.css" type="text/css" />
-	<![endif]-->
-
+	<meta name="keywords" content="people search peekyou, people search free, find people for free" />       
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="title" content="People Search | About Us | PeekYou | Corporate Information" />
-	<meta name="description" content="Learn more about the people behind PeekYou" />
-	<meta name="keywords" content="people search peekyou" />
-	<link href="../../../../css/3/gb_styles.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../../../../js/68/prototype-min.js"></script>
+	<meta name="description" content="PeekYou's free people search engine allows you to find and contact anyone online. Find social links, photos, work history, alumni info, family and more." />
+     
+        <meta name="google-site-verification" content="dPt0VLB8PXj4vrjEd04bu4URvKZ3zkL46pPYrc6YS4E" />
+       	
+       	<meta name="msvalidate.01" content="042BB1536EE8147F47AE90C50B277EC3" />
 
-	<link href="../../../../css/gb_styles.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript" src="../../../../js/68/externallinks.js"></script>
- 	<script type="text/javascript" src="../../../../js/68/greybox/AJS.js"></script>
- 	<script type="text/javascript" src="../../../../js/68/greybox/AJS_fx.js"></script>
-
-	<script type="text/javascript" src="../../../../js/layout.js"></script>
-
-
-	<script type="text/javascript">
-	var search = $H({});
-	var search_hash = $H({});
-	var tosearch = new Array('first','last','username','tag','country','region','city');
-	if(!is_profile) var is_profile = true;
-	var is_edit=false;
-	var is_map=false;
-
-	</script>
-
-</head>
-
-<body id="generic"> <!-- generic -->
-<div id="container">
-
-<!-- header - needed to leave space for our positioned elements -->
-<div class="header"></div>
-<!-- header end -->
-
-
-<div id="PeekSearchBox" class="searchPanelInputs">
-	<form method="get" onsubmit="return false;" id="searchform">
-		<div class="topRow">
-
-		<input type="text" name="first_name" autocomplete="off" id="first_name" onfocus="$F('first_name')=='First Name'?$('first_name').value='':void(0);foc=this.id; $('last_name_c').innerHTML = '';" onkeydown="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;
-		if((code == 9) &amp;&amp; this.value != '' &amp;&amp; !firstNSet &amp;&amp; $('first_name_c').visible()){
-				var xyy = 0;
-				if(downPress &amp;&amp; arrowPos!=0) xyy = arrowPos - 1;
-				else if(upPress &amp;&amp; arrowPos!=0) xyy = arrowPos;
-				$('li_'+xyy).onclick();
-				$('first_name_c').hide();
-				$('first_name_c').value = '';
-				downPress = false; upPress = false;
-				firstNSet = true;
-			}" onkeyup="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;
-		if(code!=9&amp;&amp;code!=13&amp;&amp;code!=40&amp;&amp;code!=38){ startAutocomplete(this.value,'first_name'); arrowPos=0;downPress=false;upPress=false; }
-		else {
-			if(code==13 &amp;&amp; firstNSet) { doNewSearch();}
-			if(code==40 &amp;&amp; this.value != '') {
-				if(arrowPosMax != 'undefined' &amp;&amp; arrowPosMax &gt; arrowPos){
-					downPress = true; if(upPress){arrowPos++; upPress=false;} $('li_'+(arrowPos)).className = 'selected'; if(arrowPos &gt; 0){$('li_'+(arrowPos-1)).className = '';} arrowPos++;
-				}
-			}
-			else if(code==38 &amp;&amp; this.value != ''){
-				upPress=true; if(downPress){downPress = false; arrowPos = arrowPos-2}else{arrowPos--;} if(arrowPos&lt;0)arrowPos=0; $('li_'+arrowPos).className = 'selected'; if(arrowPos &gt;= 0) $('li_'+(arrowPos+1)).className = '';
-			}
-			else if((code == 9 || code == 13) &amp;&amp; this.value != '' &amp;&amp; !firstNSet &amp;&amp; $('first_name_c').visible()){
-				var xyy = 0;
-				if(downPress &amp;&amp; arrowPos!=0) xyy = arrowPos - 1;
-				else if(upPress &amp;&amp; arrowPos!=0) xyy = arrowPos;
-
-				$('li_'+xyy).onclick();
-				$('first_name_c').hide();
-				$('first_name_c').value = '';
-				downPress = false; upPress = false;
-				firstNSet = true;
-			}
-		}" onblur="if(!auto_sugg_clicked) {$('first_name_c').hide(); $('first_name_c').innerHTML = ''; } search_hash.set('first',$F('first_name'));foc='';if($('first_name').value != 'First Name')$('first_name').addClassName('entered');else $('first_name').removeClassName('entered');" value="First Name" size="8">
-
-
-		<input type="text" name="middle_name" autocomplete="off" id="middle_name" onfocus="$F('middle_name')=='Middle'?$('middle_name').value='':void(0);foc=this.id; firstNSet = false;lastNSet = false;" onblur="/*new Effect.Fade('middle_name_c',{duration:0.15});*/search_hash.set('middle',$F('middle_name'));foc='';if($('middle_name').value != 'Middle'){$('middle_name').addClassName('entered');}else{$('middle_name').removeClassName('entered');}" value="Middle" size="8">
-
-
-        <input type="text" name="last_name" autocomplete="off" id="last_name" onfocus="$('last_name').value=='Last Name'?$('last_name').value='':void(0);foc=this.id;$('first_name_c').innerHTML = '';" onkeydown="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;
-		if((code == 9) &amp;&amp; this.value != '' &amp;&amp; !lastNSet &amp;&amp; $('last_name_c').visible()){
-				var xyy = 0;
-				if(downPress &amp;&amp; arrowPos!=0) xyy = arrowPos - 1;
-				else if(upPress &amp;&amp; arrowPos!=0) xyy = arrowPos;
-				$('li_'+xyy).onclick();
-				$('last_name_c').hide();
-				$('last_name_c').value = ''; downPress = false; upPress = false;
-				lastNSet = true;
-			}" onkeyup="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;
-		if(code!=9&amp;&amp;code!=13&amp;&amp;code!=40&amp;&amp;code!=38){ startAutocomplete(this.value,'last_name'); arrowPos=0;downPress=false;upPress=false; }
-		else {
-			if(code==13 &amp;&amp; lastNSet) { doNewSearch();}
-			if(code==40 &amp;&amp; this.value != '') {
-				if(arrowPosMax != 'undefined' &amp;&amp; arrowPosMax &gt; arrowPos){
-					downPress = true; if(upPress){arrowPos++; upPress=false;} $('li_'+(arrowPos)).className = 'selected'; if(arrowPos &gt; 0){$('li_'+(arrowPos-1)).className = '';} arrowPos++;
-				}
-			}
-			else if(code==38 &amp;&amp; this.value != ''){
-				upPress=true; if(downPress){downPress = false; arrowPos = arrowPos-2}else{arrowPos--;} if(arrowPos&lt;0)arrowPos=0; $('li_'+arrowPos).className = 'selected'; if(arrowPos &gt;= 0) $('li_'+(arrowPos+1)).className = '';
-			}
-			else if((code == 9 || code == 13) &amp;&amp; this.value != '' &amp;&amp; !lastNSet &amp;&amp; $('last_name_c').visible()){
-				var xyy = 0;
-				if(downPress &amp;&amp; arrowPos!=0) xyy = arrowPos - 1;
-				else if(upPress &amp;&amp; arrowPos!=0) xyy = arrowPos;
-
-				$('li_'+xyy).onclick();
-				$('last_name_c').hide();
-				$('last_name_c').value = ''; downPress = false; upPress = false;
-				lastNSet = true;
-			}
-		}" onblur="if(!auto_sugg_clicked) {$('last_name_c').hide();$('last_name_c').innerHTML = '';}search_hash.set('last', $F('last_name'));foc='';if($('last_name').value != 'Last Name')$('last_name').addClassName('entered');else $('last_name').removeClassName('entered');" value="Last Name" size="8">
-
-		<input type="text" autocomplete="off" name="username" id="username" onfocus="$('username').value=='or username'?$('username').value='':void(0);foc=this.id; firstNSet = false;lastNSet = false;" onkeyup="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;if(code!=9&amp;&amp;code!=13)startAutocomplete(this.value,'username');if(code==13)doNewSearch();" onblur="/*new Effect.Fade('username_c',{duration:0.15});*/search_hash.set('username',$F('username'));foc='';" value="or username" size="12">
-
-
-    <select id="loc_drop" name="loc_drop">
-    <option value="">World</option>
-    <option value="/usa">USA</option>
-    <option title="Alaska" value="/usa/alaska">AK</option><option title="Alabama" value="/usa/alabama">AL</option><option title="Arkansas" value="/usa/arkansas">AR</option><option title="Arizona" value="/usa/arizona">AZ</option><option title="California" value="/usa/california">CA</option><option title="Colorado" value="/usa/colorado">CO</option><option title="Connecticut" value="/usa/connecticut">CT</option><option title="District of Columbia" value="/usa/district_of_columbia">DC</option><option title="Delaware" value="/usa/delaware">DE</option><option title="Florida" value="/usa/florida">FL</option><option title="Georgia" value="/usa/georgia">GA</option><option title="Hawaii" value="/usa/hawaii">HI</option><option title="Idaho" value="/usa/idaho">ID</option><option title="Illinois" value="/usa/illinois">IL</option><option title="Indiana" value="/usa/indiana">IN</option><option title="Iowa" value="/usa/iowa">IA</option><option title="Kansas" value="/usa/kansas">KS</option><option title="Kentucky" value="/usa/kentucky">KY</option><option title="Louisiana" value="/usa/louisiana">LA</option><option title="Maine" value="/usa/maine">ME</option><option title="Maryland" value="/usa/maryland">MD</option><option title="Massachussets" value="/usa/massachusetts">MA</option><option title="Michigan" value="/usa/michigan">MI</option><option title="Minnesota" value="/usa/minnesota">MN</option><option title="Mississippi" value="/usa/mississippi">MS</option><option title="Missouri" value="/usa/missouri">MO</option><option title="Montana" value="/usa/montana">MT</option><option title="Nebraska" value="/usa/nebraska">NE</option><option title="Nevada" value="/usa/nevada">NV</option><option title="New Hampshire" value="/usa/new_hampshire">NH</option><option title="New Jersey" value="/usa/new_jersey">NJ</option><option title="New Mexico" value="/usa/new_mexico">NM</option><option title="New York" value="/usa/new_york">NY</option><option title="North Carolina" value="/usa/north_carolina">NC</option><option title="North Dakota" value="/usa/north_dakota">ND</option><option title="Ohio" value="/usa/ohio">OH</option><option title="Oklahoma" value="/usa/oklahoma">OK</option><option title="Oregon" value="/usa/oregon">OR</option><option title="Pennsylvania" value="/usa/pennsylvania">PA</option><option title="Puerto Rico" value="/usa/puerto_rico">PR</option><option title="Rhode Island" value="/usa/rhode_island">RI</option><option title="South Carolina" value="/usa/south_carolina">SC</option><option title="South Dakota" value="/usa/south_dakota">SD</option><option title="Tennessee" value="/usa/tennessee">TN</option><option title="Texas" value="/usa/texas">TX</option><option title="Utah" value="/usa/utah">UT</option><option title="Vermont" value="/usa/vermont">VT</option><option title="Virginia" value="/usa/virginia">VA</option><option title="Washington" value="/usa/washington">WA</option><option title="West Virginia" value="/usa/west_virginia">WV</option><option title="Wisconsin" value="/usa/wisconsin">WI</option><option title="Wyoming" value="/usa/wyoming">WY</option><option title="US Minor Outlying Islands" value="/usa/us_minor_outlying_islands">UM</option><option value="/usa/others">Others</option>
-    <option disabled="disabled" value="">-----</option>
-    <option value="/canada">CAN</option>
-    <option title="Alberta" value="/canada/alberta">AB</option><option title="British Columbia" value="/canada/british_columbia">BC</option><option title="Manitoba" value="/canada/manitoba">MB</option><option title="New Brunswick" value="/canada/new_brunswick">NB</option><option title="Newfoundland" value="/canada/newfoundland">NL</option><option title="Nova Scotia" value="/canada/nova_scotia">NS</option><option title="Northwest Territory" value="/canada/northwest_territory">NT</option><option title="Nunavut" value="/canada/nunavut">NU</option><option title="Ontario" value="/canada/ontario">ON</option><option title="Prince Edward Island" value="/canada/prince_edward_island">PE</option><option title="Quebec" value="/canada/quebec">QC</option><option title="Saskatchewan" value="/canada/saskatchewan">SK</option><option title="Yukon Territory" value="/canada/yukon_territory">YT</option>
-    <option disabled="disabled" value="">-----</option>
-    <option value="/united_kingdom">UK</option>
-    <option value="/ireland">IRE</option>
-    <option value="/australia">AUS</option>
-    <option value="/new_zealand">NZ</option>
-    <option value="/india">IND</option>
-    <option value="/china">CHI</option>
-</select>
-
-		<!--input size="10" type="text" onblur="new Effect.Fade('tag_c',{duration:0.15});search_hash.set('tag',$F('tag'));foc='';" onkeyup="if(event.keyCode)code=event.keyCode;else if(event.which)code=event.which;if(code!=9&&code!=13)startAutocomplete(this.value,'tag');if(code==13)doNewSearch();" value="tags" autocomplete="off" onfocus="$('tag').value=='tags'?$('tag').value='':void(0);foc=this.id;" id="tag" name="tag" /-->
-		<div class="clearThis"></div>
-		</div>
-		<div style="display: none;" class="autocomplete" id="first_name_c"><ul id="first_name_cc"></ul></div>
-		<div style="display: none;" class="autocomplete" id="last_name_c"><ul id="last_name_cc"></ul></div>
-        <!--div id='username_c' class="autocomplete" style="display:none;"><ul id='username_cc'></ul></div-->
-        <div style="display: none;" class="autocomplete" id="tag_c"><ul id="tag_cc"></ul></div>
-        <input type="hidden" name="form" value="true">
-
-        <input type="submit" value="Peek!" onclick="doNewSearch();" id="searchSubmit">
-
-	</form>
-</div>
-
-
-<!-- content -->
-<div class="whiteContainerMid aboutMidContainer">
-    <div class="about_navigation">
-        <ul>
-           <li ><a href="http://www.peekyou.com/about/corporate/site/">PeekYou.com</a></li>
-            <li ><a href="http://www.peekyou.com/about/corporate/site/faq/">FAQ</a></li>
-			<li><a href="http://www.peekyou.com/about/corporate/site/privacy_pledge/">Privacy Pledge</a></li>
-            <li class="about_selected"><a href="index.html">Privacy Policy</a></li>
-            <li ><a href="http://www.peekyou.com/about/corporate/site/terms_of_use/">Terms of Use</a></li>
-            <li ><a href="http://www.peekyou.com/about/corporate/site/site_map/">Site Map</a></li>
-        </ul>
-    </div>
-
-    <div class="about_container">
-        <div class="navitar"><p><a href="http://www.peekyou.com/about/">About</a> > <a href="http://www.peekyou.com/about/corporate/site/">Site</a> > Privacy Policy</p></div>
-		<div class="content_about">
-			<p><a href="http://www.peekyou.com"><img src="../../../../images/faq_top.png" alt="People Search"></a></p>
-			<h2>PeekYou.com's Privacy Policy</h2>
-			<h4>Overview</h4>
-			<p>This policy describes the types of personal information we may collect about you and how we collect, use, share, access, and secure such information.</p>
-			<p>By using PeekYou.com or any of the other websites owned by PeekYou LLC, you agree to the collection and use of your personal information as described in this policy as well as to PeekYou's terms of service. Any significant changes to this policy will be posted on PeekYou's website (www.peekyou.com).</p>
-			<p>If you wish to learn more about our data-collection practices or the technology that powers PeekYou's crawlers and matching algorithms, please read our Privacy Pledge and Frequently Asked Questions, respectively. If you have any questions or concerns about our privacy policy, e-mail our privacy team at <a href="mailto:info@peekyou.com">info@peekyou.com</a>. You may also contact us by mail at 265 West 37th Street, Suite 610, New York, NY 10018.</p>
-			<h4>No Information from Children under 13</h4>
-			<p>We are committed to the strict protection of the privacy of the very young. To comply with the Children's Online Privacy Protection Act, at this time, PeekYou is only available to users who are at least 13 years old. If you are under 13, please do not use PeekYou's services. If we learn that we have collected personal information from a child under the age of 13, we will delete that information as quickly as possible. If you believe that we might have indexed any information from a child under 13, please e-mail us at <a href="mailto:info@peekyou.com">info@peekyou.com</a> to report it.</p>
-			<h4>Use of Personally Identifiable Information</h4>
-			<p>Information we collect about your usage of PeekYou, by which you might be personally identified, is only used internally by PeekYou's team to improve our service. This information is never published, sold to third parties, or otherwise disclosed in any form that might be used to personally identify you. To the extent that we may share any of this data, we do so only after completely "anonymizing" it - i.e., removing any reference, whether direct or indirect, to your identity. But we may share with third parties non-personally identifying information about you, which could include demographics, interests, and other online habits from your PeekYou Page or recorded activity on our website.</p>
-			<h4>Access Device and Browser Information</h4>
-			<p>When you access PeekYou from a computer, mobile phone, or other device, we may collect information from that device about your browser type, location, and IP address, as well as the pages you visit.</p>
-			<h4>Site Activity Information</h4>
-			<p>We keep track of some of the actions you take on PeekYou, such as if you click on an advertisement or third-party link, how often and for how long you visit any page of our website, your search history, and other information related to your use of PeekYou's services. We use this information to deliver the best possible service to you, improve PeekYou's user interface, deliver personalized search suggestions, etc.</p>
-			<h4>Information from Cookies & Web Beacons</h4>
-			<p>We use "cookies" (small pieces of data we store for an extended period of time on your computer, mobile phone, or other device) and "web beacons" (small objects embedded in a web page or e-mail, which are usually invisible to the user but make it possible to track whether that user has viewed the page or e-mail) to make PeekYou easier to use, to make our advertising better, and to protect both you and PeekYou. For example, we use them to measure our traffic, to determine which pages or sections of our website you like best, to tailor your experience on our site to your preferences, etc. We also use them to learn know you interact with PeekYou applications and tools, our widgets and share buttons, and our advertisements. You can configure your browser to remove or block cookies, but doing so might result in an inferior user experience at PeekYou.</p>
-			<h4>Links to Third-Party Websites</h4>
-			<p>PeekYou's search results may contain links to third-party websites or to a cached copy of the third party's web-page that temporarily resides on our servers. If you click on any of these links you may leave our site. Once you do so, we are not responsible for your privacy or subsequent user experience at the third-party website, which may collect personal information about you. Even in those cases when the third parties in question are affiliated with us, they operate by separate privacy and data-collection practices independent of those of PeekYou. Since we are not responsible for, or have any control over, the content or the privacy policies of those third-party websites, we encourage all users to read the privacy policies of each and every website linked to by PeekYou.com.</p>
-			<h4>Advertisements</h4>
-			<p>Sometimes the advertisers who present ads on PeekYou use technological methods to measure the effectiveness of their ads and to personalize advertising content. You may opt-out of the placement of cookies by many of these advertisers <a href="http://www.networkadvertising.org/optout_nonppii.asp">here</a>. You may also use your browser cookie settings to limit or prevent the placement of cookies by advertising networks. PeekYou does not share personally identifying information with advertisers without your express permission.</p>
-			<h4>Responding to Legal Requests and Preventing Harm</h4>
-			<p>We may disclose personal information pursuant to subpoenas, court orders, or other requests (including criminal and civil matters) if we have a good faith belief that the response is required by law. This may include respecting requests from jurisdictions outside of the United States where we have a good faith belief that the response is required by law under the local laws in that jurisdiction, apply to users from that jurisdiction, and are consistent with generally accepted international standards. We may also share information when we have a good faith belief it is necessary to prevent fraud or other illegal activity, to prevent imminent bodily harm, or to protect ourselves and you from people violating our <a href="http://www.peekyou.com/terms">Terms or Service</a>. This may include sharing information with other companies, lawyers, courts or other government entities.</p>
-			<h4>Transfer in the Event of Sale or Change of Control</h4>
-			<p>If the ownership of all or substantially all of our business changes, we may transfer your information to the new owner so that the service can continue to operate. In such a case, your information would remain subject to the promises made in any pre-existing Privacy Policy.</p>
-			<h4>Security</h4>
-			<p>PeekYou maintains websites and all associated data with technical, administrative, and physical safeguards to protect against loss, unauthorized access, destruction, misuse, modification, and improper disclosure. No computer system or information can ever be fully protected against every possible hazard, but PeekYou.com is committed to providing reasonable and appropriate security controls to protect its websites and their information against foreseeable hazards.</p>
-			<p>We take reasonable precautions against unauthorized access to our systems and to prevent data from being disclosed to unauthorized parties. Nevertheless, we cannot guarantee the absolute security of your information. </p>
-			<h4>Removal & Opt-Out</h4>
-			<p>PeekYou only contacts users who have given us express permission to send them communication. Every e-mail communication from PeekYou contains an opt-out option. If you no longer wish to receive newsletters or promotional communications from us, please follow the instructions enclosed in the communication to opt out. After we receive your request, we will send you an e-mail message to confirm that you have been unsubscribed.</p>
-			<p>You may also request that PeekYou remove your public listing on its website by filling out <a href="http://www.peekyou.com/about/contact/optout/">our removal form</a>.</p>
-			<p style="margin-right: auto; margin-left: -40px; width: 728px;">
-				<!-- PrivacyPage Display Ad 728x90 
-				<div id="google_ads_div_PrivacyPage">
-					<span>
-						<script type="text/javascript">
-							var rdTag = new Object();
-							rdTag.size = "728x90";
-							rdTag.urlName = "Privacy";
-							peekyouclicktracking = "http://adclick.g.doubleclick.net/aclk%3Fsa%3DL%26ai%3DBUqwAAv1GTYK2GYeBlgfI8MmtCr7RueEBAAAAEAEgxrXHBTgAWKbpydIYYMnGqYvApNgPsgEPd3d3LnBlZWt5b3UuY29tugEJNzI4eDkwX2FzyAEJ2gEeaHR0cDovL3d3dy5wZWVreW91LmNvbS9wcml2YWN5mAKIJ8ACAuACAOoCC1ByaXZhY3lQYWdl-ALy0R6QA6QDmAOkA6gDAeAEAQ%26num%3D0%26sig%3DAGiWqty-ZGH6C_eJSKsDfQL_xEegdODq7A%26client%3Dca-pub-2699582672565328%26adurl%3D";
-						</script>	
-						<script src="http://www.reputationdefender.com/js/marketing/ad/rDotComTags.js" type="text/javascript"></script>
-					</span>
-				</div>
-                                -->
-			</p>
-			<h4>Additional Terms & Conditions</h4>
-			<p>PeekYou enters into contracts with business clients for use of its products and services. These contracts may further govern the use of personal information collected and maintained by PeekYou.</p>
-			<h4>Changes to this Privacy Policy</h4>
-			<p>From time to time, we may update our Privacy Policy to properly reflect changes that have occured on our site.</p>
-			<p style="text-align: right;">Last update: April 25, 2011</p>
-		</div>
-	</div>
-</div>
-
-	<div id="cont_about_footer">Copyright 2012 <a href="http://www.peekyou.com/">PeekYou</a>. | <a href="http://www.peekyou.com/about/business_solutions/peek_api/">Business Solutions</a> | <a href="index.html">Privacy Policy</a> | <a href="http://www.peekyou.com/about/corporate/site/terms_of_use/">Terms of Use</a></div>
-    <div id="cont_about_footer_mini">A Patent Pending People Search Process. <a href="http://nytm.org/made/" style="font-weight: normal;color:gray;">Made in NY</a> All Rights Reserved.</div>
-
-<!-- content end -->
-
-<!-- searchPanel -->
-<!-- end of searchPanel -->
-</div>
-<!-- accessibility menu at very top of page -->
-    <ul class="topMenu">
-	<li style="padding: 4px 10px;"><div id="logo"><a title="People Search" href="http://www.peekyou.com"></a></div></li><li class="name"><a href="http://www.peekyou.com">People Search</a></li>
-    <li class="interests"><a href="http://www.peekyou.com/interests">Interests</a></li><li class="work"><a href="http://www.peekyou.com/work">Work</a></li><li class="school"><a href="http://www.peekyou.com/school">School</a></li>
-    <li class="locations"><a href="http://www.peekyou.com/city">City</a></li>
-    <li class="google"><a href="http://google.peekyou.com">Google</a></li><li class="phone"><a href="http://www.peekyou.com/phone">Phone</a></li><li class="email"><a href="http://www.peekyou.com/email">Email</a></li><!--li class="zeitgeist"><a href="">Zeitgeist</a></li-->
-	</ul>
-    <ul class="topMenuRight">
-					<li><a href="http://www.peekyou.com/about/corporate/site/privacy_pledge/">Privacy Pledge</a> |</li><li><a href="http://blog.peekyou.com">Blog</a> |</li><li><a href="http://score.peekyou.com/">PeekScore</a> |</li><li><a href="http://www.peekyou.com/about/business_solutions/advertising/">Advertise Here</a> |</li><li><a href="http://www.peekyou.com/about">About</a></li>
-								</ul>
-<!-- end of accessibility menu -->
+        <meta name="msvalidate.01" content="518CECD7651F0B0159E7C30F6EA399A4" />
+        <meta name="alexaVerifyID" content="s2qCpyX8z2oeEZg9IwZSrcUO-oE" />
     
-   <!-- Google Analytics Code -->
+	    <meta property="fb:page_id" content="394796576415" />
+	
+        <!-- Meta Tags FB -->
+        <meta property="og:title" content="Free People Search | People Search | Search For People At PeekYou"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="http://www.peekyou.com/"/>
+        <meta property="og:image" content="/images/peekyou.gif"/>
+        <meta property="og:site_name" content="PeekYou.com"/>
+        <meta property="fb:admins" content="195204575,507704094"/>
+	
+         
+        <!-- Google Analtyics -->
+	<style type="text/css">
+	.loading-small {
+		 background:url(../../../../images/large_loading_w.gif) no-repeat 115px 10px;
+		 height: 43px;
+	 }
+	#floatMenu {
+		position:absolute;
+		top:285px;
+		left:67%;
+	}
+	</style>
+	<script language="javascript">
+	var name = "#floatMenu";
+	var menuYloc = null;
+	var intialElTop = 285;
 
-   
+		$(document).ready(function(){
+			menuYloc = parseInt($(name).css("top").substring(0,$(name).css("top").indexOf("px"))-(intialElTop-5))
+			$(window).scroll(function () {
+				offset = menuYloc+$(document).scrollTop()+"px";
+				offSet = parseInt(offset)
+				if(offSet >= intialElTop) {
+					$(name).animate({top:offset},{duration:500,queue:false});
+				} else {
+					$(name).animate({top:intialElTop},{duration:500,queue:false});
+				}
+
+			});
+		});
+	 </script>
     <script type="text/javascript">
 
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-6537675-1']);
+
+      
       _gaq.push(['_trackPageview']);
+      _gaq.push(['_trackPageLoadTime']);
 
       (function() {
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+	window.onerror = function(message, file, line) {
+	   var sFormattedMessage = '[' + file + ' (' + line + ')] ' + message;
+	   _gaq.push(['_trackEvent', 'Exceptions', 'Application', sFormattedMessage, null, true]);
+	}
+
+        var pageTracker = {
+                _trackPageview: function (url) {
+                        _gaq.push(['_trackPageview', url])
+                }
+        }
+
 
     </script>
 
-         
-       
-    <script type='text/javascript'>
+	<script type='text/javascript'>
+		var googletag = googletag || {};
+		googletag.cmd = googletag.cmd || [];
+		(function() {
+		var gads = document.createElement('script');
+		gads.async = true;
+		gads.type = 'text/javascript';
+		var useSSL = 'https:' == document.location.protocol;
+		gads.src = (useSSL ? 'https:' : 'http:') + 
+		'//www.googletagservices.com/tag/js/gpt.js';
+		var node = document.getElementsByTagName('script')[0];
+		node.parentNode.insertBefore(gads, node);
+		})();
+	</script>
+	<script type='text/javascript'>
+		googletag.cmd.push(function() {
+			googletag.defineSlot('/2974398/Search72890', [728, 90], 'div-gpt-ad-1351797240040-0').addService(googletag.pubads());
+			googletag.defineSlot('/2974398/scrolling_300x250_below_fold', [300, 250], 'div-gpt-ad-1351797274024-0').addService(googletag.pubads());
+			googletag.pubads().enableSingleRequest();
+			googletag.enableServices();
+	}	);
+	</script>
+    <!-- Quantcast P1-->
+    <!-- 
+    <script type="text/javascript">
+    _qoptions={qacct:"p-8f3IpECSxZr7g"};
+    </script>
+    <script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+    -->
+ 	<!-- Quantcast Tag, part 1 --> 
+	<script type="text/javascript">
+	  var _qevents = _qevents || [];
+
+	  (function() {
+	   var elem = document.createElement('script');
+
+	   elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+	   elem.async = true;
+	   elem.type = "text/javascript";
+	   var scpt = document.getElementsByTagName('script')[0];
+	   scpt.parentNode.insertBefore(elem, scpt);  
+	  })();
+	</script>    
+
+
+
+</head>
+
+
+<body  id="name" class="index">
+<div style="position:relative">
+<ul class="topMenu">
+		<li style="padding:4px 10px"><div id="logo"><a href="http://www.peekyou.com" title="People Search"></a></div></li>
+		<li style="margin-left:-7px;" class="name"><a href="http://www.peekyou.com">People Search - Backup Site</a></li>
+
+     
+	</ul>
+
+<div id="container">
+
+<div class="searchPanelInputs">
+        <form method="get" onsubmit="return false;" id="searchform">
+		<div class="topRow">
+		<input size="8" type="text"  value="aboutcorporatesiteprivacy" id="first_name" autocomplete="off" name="first_name" onfocus="this.value=''" onblur="this.value=this.value==''?'First Name':this.value;" />
+		<input size="8" type="text"  value="policy"  id="last_name" autocomplete="off" name="last_name"   onfocus="this.value=''" onblur="this.value=this.value==''?'Last Name':this.value;" />
+		<input size="8" type="text"  value="Username"  id="username" autocomplete="off" name="username"   onfocus="this.value=''" onblur="this.value=this.value==''?'Username':this.value;" />
+		
+		<div class="clearThis"></div>
+		</div>
+		<div id='first_name_c' class="autocomplete" style="display:none;"><ul id='first_name_cc'></ul></div>
+		<div id='last_name_c' class="autocomplete" style="display:none;"><ul id='last_name_cc'></ul></div>
+		<div id='tag_c' class="autocomplete" style="display:none;"><ul id='tag_cc'></ul></div>
+		<input type='hidden' value='true' name='form' />
+		<input type="submit" id="searchSubmit" value="Peek!" />
+
+	</form>
+</div>
+
+	<!-- Search72890 -->
+	<div id='div-gpt-ad-1351797240040-0' style="margin:0 auto 35px;width:728px;">
+		<script type='text/javascript'>
+			googletag.cmd.push(function() { googletag.display('div-gpt-ad-1351797240040-0'); });
+		</script>
+	</div>           	       
+    <!-- this header is needed to leave space for our positioned elements -->
+
+	<div id="main">
+
+
+		<div id="resultsContainer" class="resultsContainer" >
+ 
+			<div class="matches">
+				<div id="div_num_results"><p id='number_of_results'></p><p>Web Results for Aboutcorporatesiteprivacy Policy  </p></div>
+				<div class="clearThis"></div>
+			</div>
+			<div id="liveWebResults">
+			
+						
+						
+			    <h3>Public Records & Background Checks</h3>
+			
+				<div id="intelius">
+				<div id="intelius_results">
+					<p>
+						<a href="http://www.intelius.com/redir.php?refer=3117&adword=main+page+people+search&qf=aboutcorporatesiteprivacy&qn=policy&qs=">
+						<img class="webResultSprite inteliusSprite" height="16" src="../../../../images/spriteMe.gif" alt="" rel="nofollow">
+							Intelius
+						</a>
+					</p>
+				</div>
+				</div>
+				<div id="pro">
+				<div id="pro_results">
+					<p>
+						<a href="http://www.peoplesearchpro.com/PSP.aspx?_act=step2bgc&cam=816&firstName=aboutcorporatesiteprivacy&lastName=policy&State=">
+						<img class="webResultSprite peopleSearchSprite" height="16" src="../../../../images/spriteMe.gif" alt="" rel="nofollow">
+							PeopleSmart
+						</a>
+					</p>
+				</div>
+				</div>
+				<div id="spokeo">
+				<div id="spokeo_results">
+					<p>
+						<a href="http://www.spokeo.com/?g=name_peekyou_scd_city01">
+						<img class="webResultSprite spokeoSprite" height="16" src="../../../../images/spriteMe.gif" alt="" rel="nofollow">
+							Spokeo
+						</a>
+					</p>
+				</div>
+				</div>
+				
+				<div id="beenverified">
+				<div id="beenverified_results">
+					<p>
+						<a href="http://results.beenverified.com/o.php?fn=aboutcorporatesiteprivacy&ln=policy&city=&state=&bvcid=peekyou-teaser-affiliate">
+						<img class="webResultSprite beenverifiedSprite" height="16" src="../../../../images/spriteMe.gif" alt="" rel="nofollow">
+							BeenVerified
+						</a>
+					</p>
+				</div>
+				</div>
+				
+				
+					
+				<div id="uss">
+				<div id="uss_results">
+					<p>
+						<a href="http://www.ussearch.com/search/start.cgi?adID=205-0000000025">
+						<img class="webResultSprite ussSearchSprite" height="16" src="../../../../images/spriteMe.gif" alt="" rel="nofollow">
+							USSearch
+						</a>
+					</p>
+				</div>
+				</div>
+							
+						
+			
+			</div> 
+		</div>  
+		
+		<div id="floatMenu" class="sideCol">
+			<div id="adsenseFloater">
+				<script type="text/javascript"><!--
+				google_ad_client = "ca-pub-2699582672565328";
+				/* 300x250floater */
+				google_ad_slot = "7792392505";
+				google_ad_width = 300;
+				google_ad_height = 250;
+				//-->
+				</script>
+				<script type="text/javascript"
+				src="../../../../../pagead2.googlesyndication.com/pagead/show_ads.js">
+				</script>
+			</div>
+			<div>&nbsp;</div>
+			<div id="tribalfusionFloater">
+			<script type="text/javascript"><!--
+				e9 = new Object();
+				e9.size = "300x250";
+			//--></script>
+			<script type="text/javascript" src="../../../../../tags.expo9.exponential.com/tags/PeekYou/ROS/tags.js"></script>
+			</div>
+			<div>&nbsp;</div>
+		 <div id="spokeoGrid"></div>  
+		
+		</div>  	
+		<div style="clear:both"></div>
+
+	</div>  
+
+</div>  
+
+</div>  
+
+	
+</div> 
+<!-- Footer Container -->
+<div style="margin-top:18px;padding-left: 0px;" class="homeFooter">
+  
+  <p>Copyright 2012 PeekYou.com ( Backup Site ). A Patent Pending People Search Process. <a target="_blank" href="http://nytm.org/made/" style="font-weight: normal;">Made in NY</a>. All Rights Reserved.</p>
+
+<!-- End of Footer Contrainer -->
+
+</div> 
+<!-- Chartbeat -->
+
+<script type='text/javascript'>
       var _sf_async_config={};
       /** CONFIGURATION START **/
       _sf_async_config.uid = 14718;
       _sf_async_config.domain = 'peekyou.com';
             _sf_async_config.sections = '';
       _sf_async_config.authors = '';
+     _sf_async_config.path = '/?web06';
+
             /** CONFIGURATION END **/
       (function(){
         function loadChartbeat() {
@@ -292,40 +328,68 @@
            loadChartbeat : function() { oldonload(); loadChartbeat(); };
       })();
   </script>
-       
-   
-        
-    <!-- Get Clicky Code -->
-      <div style="display:none;">
-        <script src="../../../../../static.getclicky.com/js" type="text/javascript"></script>
-        <script type="text/javascript">clicky.init(264075);</script>
-      </div>
-    
-   <!-- oNscore tag -->
-        <div style="display:none;">
-        <script>
-          var _comscore = _comscore || [];
-          _comscore.push({ c1: "2", c2: "8428994" });
-          (function() {
-            var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
-            s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
-            el.parentNode.insertBefore(s, el);
-          })();
-        </script>
-        <noscript>
-          <img src="../../../../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=8428994&amp;cv=2.0&amp;cj=1" />
-        </noscript>
-      </div>
-     
-   <!--  Quantcast tag -->
-       <script type="text/javascript">
-    _qoptions={qacct:"p-8f3IpECSxZr7g"};
-    </script>
+   <script type="text/javascript">
+  function addSpokeoMap() {
+   console.log('addSpokeoMap')
+       var container = document.getElementById('mapLocation');
+       if(container) {
+	   console.log('addSpokeoMap')
+           var script = document.createElement("script");
+           script.type = 'text/javascript';
+           script.src = 'http://www.spokeo.com/javascripts/widget_loader.js';      
+           script.text = '{"title" : "Find Aboutcorporatesiteprivacy Policy by Location with Spokeo.com", "name" : "Aboutcorporatesiteprivacy Policy","loc" : "usa", "width" : 600, "height" : 400, "type" : "map", "mapkey" : "ABQIAAAA7mT48NuGCcX0GH9hyT1LxBTGyxsxh5WXui-LF4VKQrwAT9twEhR3cA16NCqIje2ogQgb3TH8GqaxIA","link" : "",   "pagecode" : "main"  }';
+           container.appendChild(script);
+    }
+   };addSpokeoMap();
+</script>
+ <script type="text/javascript">
+   function addSpokeoGrid() {
+        var container = document.getElementById('spokeoGrid');
+        if(container) {
+            var script = document.createElement("script");
+            script.type = 'text/javascript';
+            script.src = 'http://www.spokeo.com/javascripts/widget_loader.js';      
+            script.text = '{"name" : "Aboutcorporatesiteprivacy Policy","loc" : "usa", "width" : 300, "height" : 250, "type" : "list", "link" : "" }';
+            container.appendChild(script);
+     }
+    };addSpokeoGrid();
+ </script>
+<!-- Begin comScore Tag -->
+<div style="display:none;">
+<script>
+  var _comscore = _comscore || [];
+  _comscore.push({ c1: "2", c2: "8428994" });
+  (function() {
+    var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+    s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+    el.parentNode.insertBefore(s, el);
+  })();
+</script>
+<noscript>
+  <img src="../../../../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=8428994&amp;cv=2.0&amp;cj=1" />
+</noscript>
+</div>
+<!-- End comScore Tag -->
 
-    <script type="text/javascript" src="../../../../../edge.quantserve.com/quant.js"></script>
-    <noscript>
-    <img src="../../../../../pixel.quantserve.com/pixel/p-8f3IpECSxZr7g.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/>
-    </noscript>
-    
+<!-- Start Quantcast p2 -->
+
+<!-- Quantcast Tag, part 2 -->
+<script type="text/javascript">
+_qevents.push( { qacct:"p-8f3IpECSxZr7g"} );
+</script>
+<noscript>
+<div style="display: none;"><img src="../../../../../pixel.quantserve.com/pixel/p-8f3IpECSxZr7g.gif" height="1" width="1" alt="Quantcast"/></div>
+</noscript>
+		  
+<!--noscript>
+<img src="http://pixel.quantserve.com/pixel/p-8f3IpECSxZr7g.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"/>
+</noscript-->
+
+<!-- End Quantcast tag -->
+
+
+
+
 </body>
 </html>
+

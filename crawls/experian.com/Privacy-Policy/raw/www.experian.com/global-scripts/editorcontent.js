@@ -760,10 +760,9 @@ $("img.dynamicClose").click(function () {
 });
 
 // for eloqua test
-//if(location.host == "www.experian.com"){
-	//$.getScript('/global-scripts/marketing-operations/elqCfg.js');
-	//$.getScript('/global-scripts/marketing-operations/elqImg.js');
-//}
+if(location.host == "www.experian.com"){
+	$.getScript('/global-scripts/marketing-operations/marketing-automation.js');
+}
 	
 // init carousels
 if($(".slidebox").length > 0){

@@ -1,0 +1,737 @@
+var tGuardOn ;
+var phoneNumberPattern = /^\(?(\d*)\)?[- .]?(\d*)[- .]?(\d+)$/; 
+
+function UserBoxFocusImgChange()
+{	
+	jQuery('#userNameDiv span.textInput-wrapper').addClass('focus');
+	jQuery('#userNameDiv span.textInput-wrapper span').addClass('focus');
+}
+
+function UserBoxFocusOutImgChange()
+{
+	jQuery('#userNameDiv span.textInput-wrapper').removeClass('focus');
+	jQuery('#userNameDiv span.textInput-wrapper span').removeClass('focus');	
+	
+	//tGuardOn = jQuery('#isCgateProtected').val();
+	userIDOnBlur();
+}
+
+function PasswordBoxFocusImgChange()
+{	
+	jQuery('#pwdDiv span.textInput-wrapper').addClass('focus');
+	jQuery('#pwdDiv span.textInput-wrapper span').addClass('focus');
+}
+
+function PasswordBoxFocusOutImgChange()
+{
+	jQuery('#pwdDiv span.textInput-wrapper').removeClass('focus');
+	jQuery('#pwdDiv span.textInput-wrapper span').removeClass('focus');		
+	passwordOnBlur();
+}
+
+function SelectAccount()
+{
+	var id = jQuery(this).attr("id");
+	jQuery("#MainTab li").each(function(){
+		var tempid = jQuery(this).attr("id").replace("-","");
+		jQuery("#"+tempid).children("span.OrangeSpan").removeClass("current");
+		jQuery("#"+tempid+"Title").hide();
+		jQuery("#"+tempid+"Text").hide();
+		jQuery("#"+tempid+"Img").hide();
+	});
+	
+	jQuery("#"+id).children("span.OrangeSpan").addClass("current");
+	jQuery("#"+id+"Title").show();
+	jQuery("#"+id+"Text").show();
+	jQuery("#"+id+"Img").show();
+	if(id == "Wireless")
+	{	
+		reFormatCTN();
+	}
+	else
+	{	
+		removeFormatting();
+	}
+}
+
+/**************************--- Login Validation Starts Here--********************************/
+
+jQuery(document).ready(function(event) 
+{
+	isCookieEnabled();
+	browserCompatabilityMsg();
+	populateUserIDFromCookie();
+	populateWirelessNumber(); 	// CR 51003 overrides the value if present with the 
+	formatCTN(getUserID(),event);
+	try
+	{
+		getUserID().bind('paste', function(event)
+		{
+			setTimeout(function() { formatCTN(getUserID(),event); }, 10);
+		});
+		getUserID().bind('cut', function(event)
+		{
+			setTimeout(function() { formatCTN(getUserID(),event); }, 10);
+		});
+		if(!jQuery.browser.mobile)
+		{
+			jQuery("#password").iphonePassword();
+		}
+	}
+	catch(e)
+	{
+	
+	}
+});
+
+function isCgateProtected()
+{
+	var isProtected = jQuery.trim(jQuery("#isCgateProtected").val())
+	return ("true" === isProtected || "True"===isProtected);
+}
+
+function getCgateLoginUrl()
+{
+	return jQuery.trim(jQuery("#cGateLoginUrl").val())
+}
+
+function getLoginUrl()
+{
+	return "/olam/loginAction.doview";
+}
+function getUserID()
+{
+	tGuardOn = jQuery('#isCgateProtected').val();
+	if(tGuardOn == "false") {
+		return jQuery("#wireless_num");
+	}
+	else{
+		return jQuery("#userID");
+	}	
+}
+
+
+function doLogin()
+{
+	
+	var returnObj = checkFormValues();
+	if(returnObj != null && returnObj == true)
+	{
+		removeFormatting();
+		eraseUnwantedCookieForAllBrowser();
+		eraseUnwantedCookieForSpecificBrowser();
+		eraseUnwantedCookieByRegExp();
+		jQuery("#cancelURL").val(window.location);
+		setRememberMeVal();
+		if(isCgateProtected())
+		{
+			jQuery("#login").attr("action",getCgateLoginUrl());
+		}
+		else
+		{
+			jQuery("#login").attr("action",getLoginUrl());
+		}
+		clearErrorDivs();
+	    openPopup();
+		persistUserId();
+	    return true;
+	} 
+	else
+	{
+		return false;
+	}	
+}
+
+
+function browserCompatabilityMsg()
+{
+	if(jQuery("#errorListValue").val() != "true")
+	{
+		if ((BrowserDetect.browser=='Explorer' && BrowserDetect.version < 7) || 
+				(BrowserDetect.browser=='Firefox' && BrowserDetect.version < 4 ) || 
+				(BrowserDetect.browser=='Chrome' && BrowserDetect.version < 7) || 
+				(BrowserDetect.browser=='Safari' && BrowserDetect.version < 4) || 
+				(BrowserDetect.browser=='Opera' && BrowserDetect.version < 7.54) || 
+				(BrowserDetect.browser=='Netscape' && BrowserDetect.version < 7))  
+		{	
+			jQuery("#errorDiv").attr("className" ,"errorMsg box");	
+			jQuery("#errorDiv").html(jQuery("#browserVersionError").val());
+		}
+	}
+}
+
+function userIDOnBlur()
+{
+	var userID = getUserID().val();
+	if(userID != null && userID!= "")
+	{
+		if(!phoneNumberPattern.test(userID))
+		{
+			userID = userID.split(' ').join('');
+			if(userID.indexOf('@')==-1)
+			{
+				userID = userID.replace(/[^a-zA-Z 0-9 @._ -]+/g,"");
+				var userIDtemp = userID.split('-').join('');
+				userIDtemp = userIDtemp.split('.').join('');
+				//userIDtemp = userIDtemp.split('_').join('');
+				if(!isNaN(userIDtemp))
+				{
+					userID = userIDtemp;
+				}
+			}
+		}
+		getUserID().val(userID);
+	}
+	var isErrorVisible =  jQuery("#userAlertDiv").is(":visible");
+	if(isErrorVisible) {
+	   if(userID != null && userID != "" && (userID.indexOf('@')==-1 || isValidEmail(userID)) && !phoneNumberPattern.test(userID))
+		{
+				jQuery("#userAlertDiv").hide();
+				jQuery("#userNameDiv").removeClass("error");
+		} 
+	}
+	if(getSelectedAccount() == "Wireless" && phoneNumberPattern.test(userID))
+	{
+		var ctnLegnth=getAllDigites(userID).length;
+		if(ctnLegnth < 10)
+			{
+			   jQuery("#userAlertDiv").show();
+			   jQuery("#userNameDiv").addClass("error");
+			   jQuery("#userIDErrMsg").html(jQuery("#ctnLengthError").val());
+			}
+	} 
+}
+
+function passwordOnBlur() //this func prev name is showPasswordTextDiv
+{
+	var password = trim(jQuery("#password").val()); 
+	
+	var isErrorVisible =  jQuery("#PasswordAlertsDiv").is(":visible");
+	if(isErrorVisible)
+	{
+		if(password != null && password != "" && password.length>3)
+		{
+		 	jQuery("#PasswordAlertsDiv").hide();
+		 	jQuery("#pwdErrDiv").hide();
+	    	jQuery("#pwdstub").hide();
+	    	jQuery("#pwdDiv").removeClass("error");		
+		}
+	}
+}
+
+function checkFormValues()
+{
+	tGuardOn = jQuery('#isCgateProtected').val();
+	var userID;
+	var password;
+	var retVal = false;
+	var isUserVal = true;
+	var isPwdVal =true;
+	var realPass = "";
+	
+		userID = getUserID().val(); 
+		password = trim(jQuery("#password").val());
+		if(jQuery("#password").attr("real")!=null){
+			realPass = trim(jQuery("#password").attr("real"));
+		}
+		
+	if (userID == "") 
+	{
+		jQuery("#userAlertDiv").show();
+		jQuery("#userNameDiv").addClass("error");
+		jQuery("#userIDErrMsg").html(jQuery("#blankUserID").val());
+	
+		isUserVal= false;
+	}
+	else if(userID.indexOf("@")!=-1 && !(isValidEmail(userID)))
+	{
+		jQuery("#userAlertDiv").show();
+		jQuery("#userIDErrMsg").html(jQuery("#invalidEmailID").val());
+		jQuery("#userNameDiv").addClass("error");
+		//jQuery("#userNameDiv").attr("className","w211 rel error");
+	
+		isUserVal=false;
+	}
+	
+	if (password == null || password == "" || (!jQuery.browser.mobile && jQuery("#password").attr("real")!=null && realPass == "")) 
+	{
+		if(jQuery("#capsLockDiv").is(":visible")){
+			jQuery("#pwdstub").show();
+		}
+		else{ 
+			jQuery("#pwdstub").hide();
+		}
+		jQuery("#password").attr("real" , realPass);
+		jQuery("#password").val("");
+		jQuery("#PasswordAlertsDiv").show();
+		jQuery("#pwdErrDiv").show();
+		jQuery("#passwordErrMsg").html(jQuery("#blankPassword").val());
+		jQuery("#pwdDiv").addClass("error");
+		//jQuery("#pwdDiv").attr("className","w211 rel error");	
+		//jQuery("#password").focus();
+		isPwdVal=false;
+	
+	}
+	else if (password.length < 4) 
+    {
+		jQuery("#PasswordAlertsDiv").show();
+		jQuery("#pwdErrDiv").show();
+		jQuery("#passwordErrMsg").html(jQuery("#passwordLessChars").val());
+		jQuery("#pwdDiv").addClass("error");
+		if(jQuery("#capsLockDiv").is(":visible"))jQuery("#pwdstub").show(); else jQuery("#pwdstub").hide();
+	//	jQuery("#pwdDiv").attr("className","w211 rel error");	
+		//jQuery("#password").focus();
+		isPwdVal=false;
+    }
+	
+	if(isUserVal && isPwdVal)retVal = true;
+	else if (!isUserVal)getUserID().focus();
+	else if (!isPwdVal)jQuery("#password").focus();
+	else if (!(isUserVal || isPwdVal))getUserID().focus();
+	if (isUserVal && (phoneNumberPattern.test(userID) && getAllDigites(userID).length ==10 && getAllDigites(userID).length < 7 )) 
+	{
+			jQuery("#userNameDiv").removeClass("error");
+			jQuery("#userAlertDiv").hide();
+		
+	}
+    if (isPwdVal) {
+    	jQuery("#PasswordAlertsDiv").hide();
+    	jQuery("#pwdErrDiv").hide();
+    	jQuery("#pwdstub").hide();
+    	jQuery("#pwdDiv").removeClass("error");
+    }
+    
+    // To TRIM the Password on submission :: 
+    if(retVal && !jQuery.browser.mobile){
+    		try{
+    			iphonePassForm.iphoneOptions.pass.val(jQuery.trim(iphonePassForm.iphoneOptions.pass.val()));
+    		}
+    		catch(exception){}
+    	}
+	return retVal;
+}
+
+function trim(stringToTrim) 
+{
+	return stringToTrim.replace(/^\s+|\s+$/g,"");
+}
+function ltrim(stringToTrim) 
+{
+	return stringToTrim.replace(/^\s+/,"");
+}
+function rtrim(stringToTrim) 
+{
+	return stringToTrim.replace(/\s+$/,"");
+}
+
+function isValidEmail(emailAddress) 
+{
+	// Since one of the Prod Account has abcded..o@sbcglobal.net
+	//Since one of the Prod Account has abcded--o@sbcglobal.net
+	//  Hence removing the dots and hyphen before validation.
+    if(emailAddress !=null 
+            && emailAddress.indexOf("@")!=-1)
+    {
+        var temp = new Array();
+        temp = emailAddress.split("@");
+        if(temp.length==2)
+        {
+        	
+        	emailAddress = temp [0].split('.').join('');
+        	emailAddress = emailAddress.split('-').join('') + "@" + temp [1];
+        } 
+    }
+	return (/^\w+([\+\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(emailAddress));
+}
+
+function getSelectedAccount()
+{
+	
+	var selectedAccount = jQuery("#MainTab li span.current").attr('name');
+	return selectedAccount;
+
+}
+function validateCapsLock(e)
+{
+	kc = e.keyCode?e.keyCode:e.which;
+	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
+	if(((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk))
+	{	
+		jQuery("#PasswordAlertsDiv").show();
+		if(jQuery("#pwdErrDiv").is(":visible"))
+		{
+			jQuery("#pwdstub").show();
+        }
+		jQuery("#capsLockDiv").show();
+		jQuery("#pwdDiv").addClass("error");
+	}
+	else
+	{
+		if(jQuery("#pwdErrDiv").is(":visible")){
+			jQuery("#pwdstub").hide();
+			jQuery("#capsLockDiv").hide();
+			//jQuery("#pwdDiv").removeClass("error");
+		}
+			else
+		{
+			jQuery("#PasswordAlertsDiv").hide();
+			jQuery("#pwdstub").hide();
+			jQuery("#capsLockDiv").hide();
+			jQuery("#pwdDiv").removeClass("error");
+		}
+	}
+	
+}
+
+function hideEmptyPasswordError()
+{
+	jQuery("#pwdErrDiv").hide();
+}
+
+function populateUserIDFromCookie()
+{
+	var cookieArray = getCOLAMCookieArray();
+	if(cookieArray != null 
+			&& cookieArray['rme']!=null 
+			&& cookieArray['rme']=='Y')
+	{
+		if(cookieArray['uid']!=null 
+				&& cookieArray['uid'] !=""
+				&& jQuery.trim(getUserID().val())=="")
+		{
+			getUserID().val(cookieArray['uid']);
+		}
+	}
+	checkRememberMe();
+	preselectAccountType();
+}
+
+function preselectAccountType()
+{
+	var cookieArray = getCOLAMCookieArray();
+	var lgnType = null;
+	if(cookieArray != null 
+			&& cookieArray['rme']!=null 
+			&& cookieArray['rme']=='Y'
+			&& cookieArray['lgn'] !=null)
+	{
+		lgnType = cookieArray['lgn'];
+	}
+	else if (jQuery("#selectAccType") !=null
+				&& jQuery("#selectAccType").val() !="")
+	{
+		lgnType = jQuery("#selectAccType").val();
+	}
+	else if (jQuery("#lastLoginUserId") !=null
+			  && jQuery("#lastLoginUserId").val() !=null)
+	{
+		
+		if(!isNaN(jQuery("#lastLoginUserId").val()))
+		{
+			lgnType = "W";
+		}
+		else
+		{
+			lgnType = "S";
+		}	
+	}
+	
+	if(lgnType=="S")
+	{
+		jQuery('#Combined').click();
+	}
+	else if(lgnType=="W")
+	{
+		jQuery('#Wireless').click();
+	}
+	else if(lgnType=="U")
+	{
+		jQuery('#Uverse').click();
+	}
+	else if(lgnType=="T")
+	{
+		jQuery('#HomePhone').click();
+	}
+	else if(lgnType=="I")
+	{
+		jQuery('#HomePhone').click();
+	}
+}
+
+function checkRememberMe()
+{
+	var cookieArray = getCOLAMCookieArray();
+	if(cookieArray == null 
+			|| (cookieArray['rme'] == null || (cookieArray['rme']!=null && cookieArray['rme']=='Y')))
+	{
+		jQuery("#rememberMe").attr('checked','checked');
+		jQuery("#uniform-rememberMe span").addClass("checked");
+	}
+	else
+	{
+		jQuery("#rememberMe").removeAttr('checked');
+		jQuery("#uniform-rememberMe span").removeClass("checked");
+	}
+}
+
+function getCOLAMCookieArray()
+{
+	  var colamCtnCookie = getCOLAMCookie("colam_ctn");
+	  var cookieArray = new Array();	  
+	  if (colamCtnCookie!=null) 
+	  {
+		  if (colamCtnCookie.indexOf(";") != -1) 
+		  {
+			  tmpArray = colamCtnCookie.split(";");
+			  for (var i = 0; i < tmpArray.length; i++) 
+			  {
+				  keyValuePair = tmpArray[i].split("=");
+				  cookieArray[keyValuePair[0]] = keyValuePair[1];
+			  }			  
+		  }
+		  else if (colamCtnCookie.indexOf("=") != -1) 
+		  {
+			  keyValuePair = colamCtnCookie.split("=");
+			  cookieArray[keyValuePair[0]] = keyValuePair[1];
+		  }
+	  }	  
+	  return cookieArray; 
+}
+
+function getCOLAMCookie(name)
+{
+	var dc = document.cookie;
+	var prefix = name + "=";
+	var begin = dc.indexOf("; " + prefix);
+	if (begin == -1) 
+	{
+		begin = dc.indexOf(prefix);
+		if (begin != 0) return null;
+	}
+	else
+	{
+		begin += 2;
+	}
+	var end = document.cookie.indexOf(";", begin);
+	if (end == -1)
+	{
+		end = dc.length;
+	}
+	return unescape(dc.substring(begin + prefix.length, end));
+}
+function clearErrorDivs()
+{
+	// UserID
+	jQuery("#userAlertDiv").hide();
+	jQuery("#userNameDiv").removeClass("error");
+	// jQuery("#userNameDiv").attr("className","w211 rel");
+	// Password
+	jQuery("#PasswordAlertsDiv").hide();
+	// jQuery("#pwdDiv").attr("className","w211 rel");
+}
+
+function setRememberMeVal()
+{
+	var isChecked =  jQuery("#rememberMe").is(":checked");
+	if(isChecked)
+	{
+		 jQuery("#remember_me").val('Y');
+	}
+	else
+	{
+		jQuery("#remember_me").val('N');
+	}
+}
+
+function openPopup()
+{
+	jQuery.colorbox({iframe:true, height:500, width:600, scrolling:false, overlayClose:false, href:'/olam/jsp/login/inProgress.jsp?rootPath='+document.loginForm.rootPath.value+''});
+	return false;
+}
+
+
+function persistUserId()
+{
+	try
+	{
+		var urlToPersistUserId = "/olam/unauth/performAjaxTopersistUserID.myworld";
+		var userID = getUserID().val();
+		var lgnType = null;
+		if(jQuery("#Wireless").children("span.OrangeSpan").hasClass("current"))
+		{
+			lgnType = "W";
+		}
+		else if(jQuery("#Uverse").children("span.OrangeSpan").hasClass("current"))
+		{
+			lgnType = "U";
+		}
+		else if(jQuery("#HomePhone").children("span.OrangeSpan").hasClass("current"))
+		{
+			lgnType = "T";
+		}
+		else if(jQuery("#Combined").children("span.OrangeSpan").hasClass("current"))
+		{
+			lgnType = "S";
+		}
+		
+		jQuery.ajax( 
+		{
+					type : "POST",
+					url : urlToPersistUserId,
+					async : false,
+					cache: false,
+					data : "userName=" + userID + "&accountType="+lgnType
+		});
+	}
+	catch(exception){}
+}
+
+var isCTN = false;
+function formatCTN(userID,event)
+{
+	if((event.keyCode<=40 && event.keyCode >= 33)  || event.keyCode == 45 ||  event.keyCode == 16) {
+		return;
+	}
+	var selStart= jQuery(userID).getSelectionStart();
+	var selEnd= jQuery(userID).getSelectionEnd();
+	if((selEnd-selStart) > 0 ){
+	  return;
+	}
+	if(getSelectedAccount() == "Wireless")
+	{
+		var nonForStrLength=jQuery(userID).val().length;
+		var tempVal =   jQuery(userID).val().replace(/[^a-zA-Z0-9_@]+/g,'');
+		var forStrLength=tempVal.length;
+		var dif = nonForStrLength-forStrLength;
+		var ctnDigites= getAllDigites(jQuery(userID).val());
+		if(((!phoneNumberPattern.test(tempVal) || ctnDigites.length < 7) && isCTN == true) )
+		{
+			var cursorPos = jQuery(userID).getCursorPosition();
+			jQuery(userID).val(jQuery(userID).val().replace(/[^a-zA-Z0-9_.@]+/g,''));
+			if(event.keyCode == 46 && cursorPos>= 4) {
+			    jQuery(userID).setCursorPosition(cursorPos-3);
+			} else if(event.keyCode == 46) {
+				jQuery(userID).setCursorPosition(cursorPos-1);
+			} else if(cursorPos <= 5) {
+				jQuery(userID).setCursorPosition(cursorPos-1);
+			} else if(cursorPos > 5 && cursorPos < 10  ) {
+				jQuery(userID).setCursorPosition(cursorPos-3);
+			}  else {
+				//alert(cursorPos);
+				jQuery(userID).setCursorPosition(cursorPos-4);
+			}
+			isCTN = false;
+			jQuery("#userAlertDiv").hide();
+			jQuery("#userNameDiv").removeClass("error");
+		}
+		if(!isAndriodDevice() && ctnDigites.length > 6 && phoneNumberPattern.test(tempVal))
+		{
+			var curSorPos = jQuery(userID).getCursorPosition();
+			jQuery(userID).val("("+ctnDigites.substr(0,3)+") "+ ctnDigites.substr(3,3)+"-"+ctnDigites.substr(6));
+			if(event.keyCode != 46){
+				if(isCTN==false && curSorPos >= 7 )
+				{
+					curSorPos=curSorPos+4-dif;
+				} else if(isCTN==false && curSorPos >= 4 )
+				{
+					curSorPos=curSorPos+3-dif;
+				} else if(isCTN==false) {
+					curSorPos=curSorPos+1-dif;
+				}
+			   jQuery(userID).setCursorPosition(curSorPos);
+			}
+			if(event.keyCode == 46 && curSorPos >= 4 && curSorPos < 7 && isCTN==false ){
+				curSorPos=curSorPos+3-dif;
+				jQuery(userID).setCursorPosition(curSorPos);
+			} else if(event.keyCode == 46 && curSorPos > 6 && isCTN==false ){
+				curSorPos=curSorPos+4-dif;
+				jQuery(userID).setCursorPosition(curSorPos);
+			} else if(event.keyCode == 46 && isCTN==false ){
+				curSorPos=curSorPos+1-dif;
+			 	jQuery(userID).setCursorPosition(curSorPos);
+		    } else if(event.keyCode == 46 ){
+			 	jQuery(userID).setCursorPosition(curSorPos);
+		    }
+			isCTN= true;
+		} 
+		if(ctnDigites.length <= 10 &&  phoneNumberPattern.test(jQuery(userID).val())) {
+			jQuery("#userAlertDiv").hide();
+			jQuery("#userNameDiv").removeClass("error");
+		}
+		if(ctnDigites.length > 10 &&  phoneNumberPattern.test(jQuery(userID).val()) ) {
+			jQuery("#userAlertDiv").show();
+			jQuery("#userIDErrMsg").html(jQuery("#ctnLengthError").val());
+			jQuery("#userNameDiv").addClass("error");
+		} 
+	}
+}
+
+function getAllDigites(inputValue){
+	var digites="";
+	for(i=0 ; i < inputValue.length ; i++)
+	{
+	 if(inputValue.charCodeAt(i) >= 48 && inputValue.charCodeAt(i) <= 57) {
+		 digites = digites + inputValue.substr(i,1);
+	 }
+	}
+	return digites;
+}
+
+/*To remove the CTN formating*/
+function removeFormatting(){
+	var userID = getUserID().val();
+	
+	if(userID!=null &&  phoneNumberPattern.test(userID)) {
+		userID = userID.replace(/[^a-zA-Z0-9_@]+/g,'');
+		getUserID().val(userID);
+		jQuery("#userAlertDiv").hide();
+		jQuery("#userNameDiv").removeClass("error");
+		//jQuery("#userAlertDiv").hide();
+	}
+}
+/*To reformat CTN as (xxx) xxx-xxxxxx*/
+function reFormatCTN()
+{
+	var userID = getUserID().val();
+	if(userID!=null &&  phoneNumberPattern.test(userID)) {
+		var ctnDigites= getAllDigites(userID);
+		if(!isAndriodDevice() && ctnDigites.length > 6 && phoneNumberPattern.test(userID))
+		{
+			userID = "("+ctnDigites.substr(0,3)+") "+ ctnDigites.substr(3,3)+"-"+ctnDigites.substr(6);
+		} 
+		
+		if((ctnDigites.length == 10 &&  phoneNumberPattern.test(userID))) {
+		jQuery("#userAlertDiv").hide();
+		jQuery("#userNameDiv").removeClass("error");
+			//jQuery("#userNameDiv").attr("className","w211 rel");
+		}
+		
+		if(phoneNumberPattern.test(userID))
+		{
+			var ctnLegnth=getAllDigites(userID).length;
+			if(ctnLegnth != 10)
+				{
+				   jQuery("#userAlertDiv").show();
+				   jQuery("#userNameDiv").addClass("error");
+				   jQuery("#userIDErrMsg").html(jQuery("#ctnLengthError").val());
+				}
+		} 
+		getUserID().val(userID);
+	}
+}
+
+
+function isCookieEnabled()
+{
+	if(!navigator.cookieEnabled)
+	{
+		jQuery("#errorCookieDisabled").show();
+	}
+}
+
+jQuery.fn.getCursorPosition = function(){ if(this.lengh == 0) return -1; return jQuery(this).getSelectionStart(); }  
+jQuery.fn.setCursorPosition = function(position){ if(this.lengh == 0) return this; return jQuery(this).setSelection(position, position); }  
+jQuery.fn.getSelection = function(){ if(this.lengh == 0) return -1; var s = jQuery(this).getSelectionStart(); var e = jQuery(this).getSelectionEnd(); return this[0].value.substring(s,e); }  
+jQuery.fn.getSelectionStart = function(){ if(this.lengh == 0) return -1; input = this[0]; var pos = input.value.length; if (input.createTextRange) { var r = document.selection.createRange().duplicate(); r.moveEnd('character', input.value.length); if (r.text == '') pos = input.value.length; pos = input.value.lastIndexOf(r.text); } else if(typeof(input.selectionStart)!="undefined") pos = input.selectionStart; return pos; }  
+jQuery.fn.getSelectionEnd = function(){ if(this.lengh == 0) return -1; input = this[0];  var pos = input.value.length;  if (input.createTextRange) { var r = document.selection.createRange().duplicate(); r.moveStart('character', -input.value.length); if (r.text == '') pos = input.value.length; pos = input.value.lastIndexOf(r.text); } else if(typeof(input.selectionEnd)!="undefined") pos = input.selectionEnd;  return pos; }
+jQuery.fn.setSelection = function(selectionStart, selectionEnd) { if(this.lengh == 0) return this; input = this[0];  if (input.createTextRange) { var range = input.createTextRange(); range.collapse(true); range.moveEnd('character', selectionEnd); range.moveStart('character', selectionStart); range.select(); } else if (input.setSelectionRange) { input.focus(); input.setSelectionRange(selectionStart, selectionEnd); }  return this; }

@@ -22,6 +22,16 @@ function SetCookie (name, value, expires, path, domain, secure) {
       ((secure) ? "; secure" : "");
 }
 
+function GetCookie(name){
+  var start=document.cookie.indexOf(name+'=');
+  if(start < 0) return null;
+  start=start+name.length+1;
+  var end=document.cookie.indexOf(';', start);
+  if(end < 0) end=document.cookie.length;
+  while (document.cookie.charAt(start)==' '){ start++; }
+  return unescape(document.cookie.substring(start,end));
+}
+
 function imgOn(imgName) {
 	if (utilityBrowserVer >= 3) {
    	imgOnString = eval(imgName + "_on.src");

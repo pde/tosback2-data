@@ -790,8 +790,8 @@ de.bild.settings = (function(){
              }
              return false;
          },
-         'widgetCssFile' : '/code/xoz-bild-widget,24288058.2.bild.css',
-         'cssFile' : '/code/xoz-bild,23582754.14.bild.css',
+         'widgetCssFile' : '/code/xoz-bild-widget,24288058.3.bild.css',
+         'cssFile' : '/code/xoz-bild,23582754.15.bild.css',
          'swfFile' : '/media/videoplayer2012-23583578/Flash/18.bild.swf' 
         
        };
@@ -7090,7 +7090,7 @@ google.load('ads.search', '2');
         }
     }
 })(jQuery);
-/*jquery.adloader:22506006.20*/
+/*jquery.adloader:22506006.21*/
 
 /**
  * User: l.bilharz@global-communication.de
@@ -7107,23 +7107,28 @@ google.load('ads.search', '2');
         FLAG_ALL = 15;
     //on document ready: take given array of iframeData and bind handlers
     $(function() {
-        if($.browser.msie && parseInt($.browser.version) < 9) {
-            var tif = $("#adSlot_skyscraper2");
-            tif.attr("allowtransparency", "true");
-            var d = tif.contents().get(0);
-            if(d){
-            d.open();
-            d.write('<html><body style="background:transparent;"></body></html>');
-            d.close();
-            }
-            tif.css("visibility", "visible");
-        }
         if (!window.de || !window.de.bild) return;
         var data = window.de.bild.iframeData;
         if (!$.isArray(data)) return;
+        
+        var isOldIE = ($.browser.msie && parseInt($.browser.version) < 9);
+        
         for (var i = 0, l = data.length; i < l; i++) {
             var o = data[i],
                 $$ = $("#" + o.id + " iframe");
+            $$.css("visibility", "hidden");
+            // IE < 9 Transparenz setzen
+            if(isOldIE) {
+                $$.attr("allowtransparency", "true");
+                var d = $$.contents().get(0);
+                if(d){
+                    d.open();
+                    d.write('<html><body style="background:transparent;"></body></html>');
+                    d.close();
+                }
+                //$$.css("visibility", "visible");
+            }
+            
             if ($$.inSight() != 0) {
                 // element is already in viewport: load script
                 loadJavaScript.call($$.get(0), o.url, o.arParams);
@@ -7162,10 +7167,15 @@ google.load('ads.search', '2');
         function check() {
             if(iframe.data("isLoaded") != "true") {
                 if(!checkNOAD()) {
-                    //iframe sichtbar machen
-                    if(iframe.attr("id") == "adSlot_skyscraper2") {
-                        iframe.css("visibility", "visible");
+                    // Klasse bei Id #ressortSuperBanner_ setzten
+                    var $dv = iframe.parent();
+                    var cls = $dv.attr("id");
+                    if(cls.indexOf("ressortSuperBanner_") != -1) {
+                        $dv.addClass("slh");
+                        $("body, html").css("background", "#E2E2E2");
                     }
+                    // Sichtbar machen
+                    iframe.css("visibility", "visible");
                     iframe.unbind("load");
                     iframe.data("isLoaded", "true")
                 }
