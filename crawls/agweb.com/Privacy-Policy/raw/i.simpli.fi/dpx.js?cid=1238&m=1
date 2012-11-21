@@ -1,6 +1,6 @@
 (function(win) {
 
-    var hostname_as_int = parseInt(location.hostname || "local", 36);
+    var hostname_as_int = parseInt((location.hostname || "local").substring(0,10), 36);
 
     if (typeof win['dpx_'+hostname_as_int] != 'undefined') {
         win['dpx_'+hostname_as_int].run();

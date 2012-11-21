@@ -110,9 +110,12 @@ function renderXp1PrimaryNav(ebcUrl, primaryNavDivId) {
 		return;
 	}
 	
+	var result = getPostObj(ebcUrl);
+	
 	$.ajax({
-			type: "GET", //get instead of post
-			url: ebcUrl, //reg exp to trim to check for
+			type: "POST", //get instead of post
+			url: result.url, //reg exp to trim to check for
+			data: result.data,
 			success: function (navContent) {
 				if (navContent && navContent != '' && navContent.indexOf("DoNotShow") == -1) {
 					$('#' + primaryNavDivId).css("visibility", "hidden");
@@ -137,9 +140,12 @@ function invokeVsPageTaggingAjaxCall(vsPageTagUrl) {
 }
 
 function renderVsPageTagging(vsPageTagWwwUrl) {
+	var result = getPostObj(vsPageTagWwwUrl);
+
 	$.ajax({
-			type: "GET", //get instead of post
-			url: vsPageTagWwwUrl, //reg exp to trim to check for
+			type: "POST", //get instead of post
+			url: result.url, //reg exp to trim to check for
+			data: result.data,
 			success: function (vsPageTagAjaxUrl) {
 				if (vsPageTagAjaxUrl && vsPageTagAjaxUrl != '' ) {
 					invokeVsPageTaggingAjaxCall(vsPageTagAjaxUrl);
@@ -149,9 +155,12 @@ function renderVsPageTagging(vsPageTagWwwUrl) {
 }
 
 function invokeSiteCatalystScript(scTagWwwUrl) {
+	var result = getPostObj(scTagWwwUrl);
+	
 	$.ajax({
-			type: "GET", //get instead of post
-			url: scTagWwwUrl, //reg exp to trim to check for
+			type: "POST", //get instead of post
+			url: result.url, //reg exp to trim to check for
+			data: result.data,
 			success: function (scTagAjaxResponse) {
 				if (scTagAjaxResponse && scTagAjaxResponse != '' ) {
 					renderVsScTagging(scTagAjaxResponse);
@@ -168,9 +177,12 @@ function renderVsScTagging(scTagAjaxResponse) {
 }
 
 function invokeDoubleClickScript(xp1DoubleClickTaggingUrl) {
+	var result = getPostObj(xp1DoubleClickTaggingUrl);
+
 	$.ajax({
-			type: "GET", //get instead of post
-			url: xp1DoubleClickTaggingUrl,
+			type: "POST", //get instead of post
+			url: result.url,
+			data: result.data,
 			success: function (doubleClickAjaxResponse) {
 				if (doubleClickAjaxResponse && doubleClickAjaxResponse != '' ) {
 					scriptText = $("div #xp1DoubleClick").html();
@@ -180,6 +192,37 @@ function invokeDoubleClickScript(xp1DoubleClickTaggingUrl) {
 				}
 			}
 	});
+}
+
+function getPostObj(url) {	
+	var loc = url;
+	var result = new Object();
+	
+	if (url != null) {	
+		var paramStart = loc.indexOf('?');
+		var data = {};
+		if (paramStart > -1) {
+			//get query string
+			var params = loc.substr(paramStart + 1);
+			
+			//reset url to just the path
+			loc = loc.substr(0, paramStart);
+			
+			var p = params.split('&');
+			
+			for (x in p) {
+				var pair = p[x];
+				var vals = pair.split('=');
+				
+				data[vals[0]] = unescape(vals[1]);
+			}
+		}
+		
+		result.url = loc;
+		result.data = data;
+	}
+	
+	return result;
 }
 
 

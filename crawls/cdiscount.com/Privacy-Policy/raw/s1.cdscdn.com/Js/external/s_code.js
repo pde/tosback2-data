@@ -1,21 +1,12 @@
 /* SiteCatalyst code version:	H.243Enc
-Cdiscount code version:			CD.28
+Cdiscount code version:			CD.29
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 /************************ ADDITIONAL FEATURES ************************
-//Canal Ref Nat Inconnu (google enc + moteur sans mot clé)
-//Correction Referrers (moteur sans mot clé)
-//Corrections erreur JS (refnat + events)
-//Correct ajout panier sur moteur
-//Simplification list marque (iso tablette)
-//Retrait Hierarchie 2 (sans pagename - iso tablette)
-//eVar57 quantité & montant panier (capé 20 produits et 3000 Euros)
-//event49 Création panier magasin + (plugin multigetvalonce)
-//Mise a jour liste moteurs (version simplifiée iso tablette)
-//Encrypted core Code H243 (iso tablette)
-//Reduction taille fichier 63K
+//Correction affectation Google Image
+//Ajout Plugin XFA (delay 2500) + s.Integrate
+//Correction setuplinkTrackPlugin
 */
-
 
 var s = s_gi(s_account);
 /************************** CONFIG SECTION **************************/
@@ -86,6 +77,9 @@ function s_doPlugins(s) {
     if (!s.eVar2) { s.eVar2 = s.getQueryParam('bn'); }
     if (s.eVar2) { s.eVar2 = s.getValOnce(s.eVar2, 'cm_sp', 0); }
 
+    /*icmp*/
+    if (!s.eVar63) { s.eVar63 = s.getQueryParam('icmp'); }
+    if (s.eVa63) { s.eVar63 = s.getValOnce(s.eVar63, 'icmp', 0); }
 
     /*Collect Tracking code : cm_mmc*/
     s.campaign = s.getQueryParam('cm_mmc');
@@ -212,14 +206,6 @@ function s_doPlugins(s) {
 
 
 
-    /*Google Images*/
-    if (s._referringDomain) {
-        if (s._referringDomain.indexOf("imgres", 0) > -1 && s._referringDomain.indexOf("google", 0) > -1) {
-            s._partner = "Google Images"; s._channel = refnat;
-            if (s._keywords == "n/a") { s._keywords = "Mot Cle Inconnu"; }
-        }
-    }
-
 
     if (s._channel == 'Natural Search') { s._channel = refnat; }
     if (s._channel == 'Referrers') { s._channel = 'Site Referant'; }
@@ -272,6 +258,14 @@ function s_doPlugins(s) {
     }
 
 
+    /*Google Images*/
+    if (s._referringDomain) {
+        if (s._referringDomain.indexOf("imgres", 0) > -1 && s._referringDomain.indexOf("google", 0) > -1) {
+            s._partner = "Google Images"; if (s.eVar17) { s._channel = s.eVar17; }
+            if (s._keywords == "n/a") { s._keywords = "Mot Cle Inconnu"; }
+        }
+    }
+
 
     currDate = new Date();
     var TimeChannel = currDate.getTime();
@@ -313,7 +307,7 @@ function s_doPlugins(s) {
 
     /*Partner*/
     if (!s.eVar18) {
-        if (s.eVar17 == refnat || s.eVar17 == refmark || s.eVar17 == 'Referencement Payant')
+        if (s.eVar17 == refnat || s.eVar17 == refmark || s.eVar17 == refinc || s.eVar17 == 'Referencement Payant')
         { s.eVar18 = s.eVar17 + ":" + s._partner; }
         else {
             if (s.eVar17) {
@@ -753,10 +747,9 @@ s.getPPVSetup = new Function("", ""
 + "lc);}");
 s.getPPVSetup();
 
-
 /*
-* Plugin: setupLinkTrack 2.0 - without pageName and non case-sensitive
-*         (requires s.split and s.apl)
+* Plugin: setupLinkTrack 2.0 - return links for HBX-based link
+*         tracking in SiteCatalyst (requires s.split and s.apl)
 */
 s.setupLinkTrack = new Function("vl", "c", ""
 + "var s=this;var l=s.d.links,cv,cva,vla,h,i,l,t,b,o,y,n,oc,d='';cv=s."
@@ -765,7 +758,7 @@ s.setupLinkTrack = new Function("vl", "c", ""
 + "o&&!s.lnk)return '';o=s.eo?s.eo:s.lnk;y=s.ot(o);n=s.oid(o);if(s.eo&"
 + "&o==s.eo){while(o&&!n&&y!='BODY'){o=o.parentElement?o.parentElement"
 + ":o.parentNode;if(!o)return '';y=s.ot(o);n=s.oid(o);}for(i=0;i<4;i++"
-+ ")if(o.tagName)if(o.tagName.toLowerCase()!='a')if(o.tagName.toLowerC"
++ ")var ltp=setTimeout(function(){},10);if(o.tagName)if(o.tagName.toLowerCase()!='a')if(o.tagName.toLowerC"
 + "ase()!='area')o=o.parentElement;}b=s._LN(o);o.lid=b[0];o.lpos=b[1];"
 + "if(s.hbx_lt&&s.hbx_lt!='manual'){if((o.tagName&&s._TL(o.tagName)=='"
 + "area')){if(!s._IL(o.lid)){if(o.parentNode){if(o.parentNode.name)o.l"
@@ -778,6 +771,7 @@ s.setupLinkTrack = new Function("vl", "c", ""
 + "i=h.indexOf('?');h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);l"
 + "=s.linkName?s.linkName:s._hbxln(h);t=s.linkType?s.linkType.toLowerC"
 + "ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=(o.lid=o.lid?o.lid:'n"
+
 + "o &lid')+'^^'+o.lpos;if(t&&(h||l)){cva=s.split(cv,'^^');vla=s.split"
 + "(vl,',');for(x in vla)s._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}else if("
 + "!t&&oc.indexOf('.tl(')<0){s.c_w(c,cv,0);}else return ''");
@@ -811,7 +805,6 @@ s._NA = new Function("a", "var s=this;return new Array(a?a:0)");
 s._hbxm = new Function("m", "var s=this;return (''+m).indexOf('{')<0");
 s._hbxln = new Function("h", "var s=this,n=s.linkNames;if(n)return s.pt("
 + "n,',','lnf',h);return ''");
-
 
 
 
@@ -878,6 +871,62 @@ s.p_fo = new Function("n", ""
 + "new Object;return 1;}else {return 0;}");
 
 
+/************************** DFA VARIABLES **************************/
+var dfaConfig = {
+    CSID: '1524119', // DFA Client Site ID
+    SPOTID: '3597115', // DFA Spotlight ID
+    tEvar: 'eVar71', // Transfer variable, typically the "View Through" eVar.
+    errorEvar: 'eVar73', // DFA error tracking (optional)
+    timeoutEvent: 'event64', // Tracks timeouts/empty responses (optional)
+    requestURL: "http://fls.doubleclick.net/json?spot=[SPOTID]&src=[CSID]&var=[VAR]&host=integrate.112.2o7.net%2Fdfa_echo%3Fvar%3D[VAR]%26AQE%3D1%26A2S%3D1&ord=[RAND]", // the DFA request URL
+    maxDelay: "2500", // The maximum time to wait for DFA servers to respond, in milliseconds.
+    visitCookie: "s_dfa", // The name of the visitor cookie to use to restrict DFA calls to once per visit.
+    clickThroughParam: "idfa", // A query string paramter that will force the DFA call to occur.
+    searchCenterParam: undefined, // SearchCenter identifier.
+    newRsidsProp: undefined //"prop34" // Stores the new report suites that need the DFA tracking code. (optional)
+};
+/************************ END DFA Variables ************************/
+
+s.maxDelay = dfaConfig.maxDelay;
+s.loadModule("Integrate")
+s.Integrate.onLoad = function (s, m) {
+    var dfaCheck = s.partnerDFACheck(dfaConfig);
+    if (dfaCheck) {
+        s.Integrate.add("DFA");
+        s.Integrate.DFA.tEvar = dfaConfig.tEvar;
+        s.Integrate.DFA.errorEvar = dfaConfig.errorEvar;
+        s.Integrate.DFA.timeoutEvent = dfaConfig.timeoutEvent;
+        s.Integrate.DFA.CSID = dfaConfig.CSID;
+        s.Integrate.DFA.SPOTID = dfaConfig.SPOTID;
+        s.Integrate.DFA.get(dfaConfig.requestURL);
+        s.Integrate.DFA.setVars = function (s, p) {
+            if (window[p.VAR]) { // got a response
+                if (!p.ec) { // no errors
+                    s[p.tEvar] = "DFA-" + (p.lis ? p.lis : 0) + "-" + (p.lip ? p.lip : 0) + "-" + (p.lastimp ? p.lastimp : 0) + "-" + (p.lastimptime ? p.lastimptime : 0) + "-" + (p.lcs ? p.lcs : 0) + "-" + (p.lcp ? p.lcp : 0) + "-" + (p.lastclk ? p.lastclk : 0) + "-" + (p.lastclktime ? p.lastclktime : 0)
+                } else if (p.errorEvar) { // got an error response, track
+                    s[p.errorEvar] = p.ec;
+                }
+            } else if (p.timeoutEvent) { // empty response or timeout
+                s.events = ((!s.events || s.events == '') ? '' : (s.events + ',')) + p.timeoutEvent; // timeout event
+            }
+        }
+    }
+}
+
+
+
+/*
+* Partner Plugin: DFA Check 1.0 - Restrict DFA calls to once a visit, per report suite, per click 
+* through. Used in conjunction with VISTA. Deduplicates SCM hits.
+*/
+s.partnerDFACheck = new Function("cfg", ""
++ "var s=this,c=cfg.visitCookie,src=cfg.clickThroughParam,scp=cfg.searchCenterParam,p=cfg.newRsidsProp,tv=cfg.tEvar,dl=',',cr,nc,q,g,gs,i,j,k,fnd,v=1,t=new Date,cn=0,ca=new Array,aa=new Array,cs=new A"
++ "rray;t.setTime(t.getTime()+1800000);cr=s.c_r(c);if(cr){v=0;}ca=s.split(cr,dl);aa=s.split(s.un,dl);for(i=0;i<aa.length;i++){fnd = 0;for(j=0;j<ca.length;j++){if(aa[i] == ca[j]){fnd=1;}}if(!fnd){cs[cn"
++ "]=aa[i];cn++;}}if(cs.length){for(k=0;k<cs.length;k++){nc=(nc?nc+dl:'')+cs[k];}cr=(cr?cr+dl:'')+nc;s.vpr(p,nc);v=1;}q=s.wd.location.search.toLowerCase();q=s.repl(q,'?','&');g=q.indexOf('&'+src.toLow"
++ "erCase()+'=');gs=(scp)?q.indexOf('&'+scp.toLowerCase()+'='):-1;if(g>-1){s.vpr(p,cr);v=1;}else if(gs>-1){v=0;s.vpr(tv,'SearchCenter Visitors');}if(!s.c_w(c,cr,t)){s.c_w(c,cr,0);}if(!s.c_r(c)){v=0;}r"
++ "eturn v>=1;");
+
+
 
 /* WARNING: Changing any of the below variables will cause drastic
 changes to how your visitor data is collected.  Changes should only be
@@ -886,6 +935,18 @@ s.visitorNamespace = "cdiscount"
 s.trackingServer = "metrics.cdiscount.com"
 s.trackingServerSecure = "smetrics.cdiscount.com"
 s.dc = "122"
+
+/****************************** MODULES *****************************/
+/* Module: Integrate */
+s.m_Integrate_c = "=function(~`L,m=p._m~p.disable~.substring(~;i<m.l`W;i++){p=m[m.l[i]]`6p&&!~){var m=this,~;if(~Integrate~&&(!s.isopera||`I7)~};m.~||!`E.prototype~m._fu(p,u)~=new ~m.s.loadModule(~Obje"
++ "ct~p._d~_'+p._~return ~s.apv>=~tm.getTime()~=u.indexOf('~){var p=this~'http~Math.~_'+m._in+'_~beacon~script~p[f](s,p)}~m.s.wd[o]~delay~ready~m.onLoad~.length~p._c++;~;for(i=~;p.RAND~random~floor(~s"
++ ".rep(~!v)v='~~var m=s.m_i('`7');m.add`0n,o`5p`6!o)o='s_`7_'+n`6!`S)`S`C`E;m[n]`C`E;p=m[n];p._n=n;p._m=m;p._c=0;`F=0;`2=0;p.get=m.get;p.`T=m.`T;p.`U=m.`U;p.`P=m.`P;p.`Q=m.`Q;m.l[m.l`W]=n`9_g`0t`5s=m"
++ ".s,i,p,f=(t?'use':'set')+'Vars',tcf`Y0`4`2&&p[f]){if(`I5`8){tcf`CFunction('s','p','f','var e;try{`Rcatch(e){}');tcf(s,p,f)}else `R}`9_t`0){this._g(1)`9_fu`0p,u`5s=m.s,v,x,y,z,tm`CDate`6u.toLowerCas"
++ "e()`30,4) != `M')u=`M://'+u`6s.ssl)u=`cu,`M:',`Ms:')`Z=Math&&`N`a?`N`b`N`a()*10000000000000):`J`Z+=`N`b`J/10800000)%10;x=0;while(x>=0){x`K[',x)`6x>=0){y`K]',x)`6y>x){z=u`3x+1,y)`6z`W>2&&z`30,2)=='s"
++ ".'){v=s[z`32)]`6`d'}else{v=''+p[z]`6!(v==p[z]||parseFloat(v)==p[z]))z=0}if(z)u=u`30,x)+`cescape(v),'+','%2B')+u`3y+1);x=y}}}`Hu`9get`0u,v`1`6!`2){if(`ds`O`7`Gn+'_get`Gc;`Xp.VAR=v;`F++;`D'`7:'+v,`B,"
++ "0,1,p._n)}`9`T`0`L`6`F<=0)`F=1`9`U`0`1;`F=0`6!`2)m.s.dlt()`9_d`0`5i,p`Y0`4`2&&`F>0)`H1}`H0`9_x`0d,n`L[n],x`6!`2){for(x in d)if(x&&(!`E`A||!`E.prototype[x]))p[x]=d[x];`F--}`9`P`0u`1,s=m.s,imn='s_i`O"
++ "`7`Gn+'`Gc,im`6!`2&&s.d.images&&`I3`8&&(s.ns6<0||`I6.1)){`Xim=s.wd[imn]`CImage;im.src=`B}`9`Q`0u`1`6!`2)`D0,`B,0,1)`9l`CArray`6`V)`V(s,m)";
+s.m_i("Integrate");
 
 /************* DO NOT ALTER ANYTHING BELOW THIS LINE ! **************/
 var s_code = '', s_objectID; function s_gi(un, pg, ss) {

@@ -29,6 +29,13 @@ jQuery.fn.redraw = function(){
 };
 
 
+/**
+  generic tracking function used to post arbitrary data to an arbitrary url for tracking purposes
+*/
+function track(url,params){
+    
+}
+
 /* martyk: functions used to generate and download pdfs and notebooks */
 function downloadPDF(id, input, search) {
 	var pdf_pos = $("#downloadpdf").offset();
@@ -191,6 +198,19 @@ function getAuthCookiesParams(){
     "at" : autht
   });
 }
+
+function getAuthCookiesParamsObj(){
+	  var ins = getAuthIns();
+	  var auths = $.cookie("wa_pro_s"+ins);
+	  var authu = $.cookie("wa_pro_u"+ins);
+	  var autht = $.cookie("wa_pro_t"+ins);
+	  return {
+	    "as" : auths,
+	    "au" : authu,
+	    "at" : autht
+	  };
+}
+
 // no last arg most of the time
 function getColoProofURL(u, s){
   if ($.browser.msie || $.browser.opera) {
@@ -250,15 +270,41 @@ function removeURLAnchor(str){
   return str.substring(0, str.lastIndexOf("#"));
 }
 
-function getAuthCookiesParamsObj(){
-	  var ins = getAuthIns();
-	  var auths = $.cookie("wa_pro_s"+ins);
-	  var authu = $.cookie("wa_pro_u"+ins);
-	  var autht = $.cookie("wa_pro_t"+ins);
-	  return {
-	    "as" : auths,
-	    "au" : authu,
-	    "at" : autht
-	  };
+function SelectText(element) {
+    var doc = document;
+    var text = element;    
+    if (doc.body.createTextRange) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(text);
+        range.select();
+    } else if (window.getSelection) {
+        var selection = window.getSelection();        
+        var range = document.createRange();
+        range.selectNodeContents(text);
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+}
+
+function setupFiledrop(selector, dropfn, enterfn, leavefn) {
+  var el = $(selector);
+  if (el.length < 1) return false;
+  el = el.get(0);
+  if (typeof enterfn == "function")
+  el.addEventListener("dragover", enterfn, false);
+  if (typeof leavefn == "function")
+  el.addEventListener("dragleave", leavefn, false);
+  if (typeof dropfn == "function")
+  el.addEventListener("drop", dropfn, false);
+}
+
+function getTopDomain() {
+  var pieces = window.location.host.split(".");
+  return pieces.splice(pieces.length-2, pieces.length).join(".");
+}
+
+function getQueryURL() {
+  // temporary implementation -- only works when run on results page
+  return window.location.pathname;
 }
 

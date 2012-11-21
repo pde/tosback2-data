@@ -54,7 +54,7 @@
             
             
                 
-                    <link rel="stylesheet" type="text/css" href="../static4.fitbit.com/combined.s-css-css.h219dfe81148630863b981c99e934a9a2.pack%3Fitems=%252Fjs%252Flib%252Fjqueryui%252F1.8.1%252Fthemes%252Fbase%252Fjquery.ui.core.css" charset="utf-8"/>
+                    <link rel="stylesheet" type="text/css" href="../static3.fitbit.com/combined.s-css-css.h21a80b717cbe4fd7801ad3c736a59c70.pack%3Fitems=%252Fjs%252Flib%252Fjqueryui%252F1.8.1%252Fthemes%252Fbase%252Fjquery.ui.core.css" charset="utf-8"/>
                 
                 
                 
@@ -63,7 +63,7 @@
 
             
             
-                <link rel="stylesheet" type="text/css" href="../static6.fitbit.com/combined.s-css-css.h39dddf2c984347f3093c2415803ad39d.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
+                <link rel="stylesheet" type="text/css" href="../static0.fitbit.com/combined.s-css-css.hac6f05ef0d0b9b501a1f4236e713f615.pack%3Fitems=%252Fcss%252Fapp%252Fcommon%252Fbuttons.css%252C%252Fcss%252Fapp%252Fcommon%252Ff.css" charset="utf-8"/>
                 
             
 
@@ -959,7 +959,7 @@ http://help.fitbit.com/#product_aria">Aria Scale Help</a>
     
         
         
-            <script type="text/javascript"  src="../static5.fitbit.com/combined.s-jsyui-js.hda1a68d5dae6a6bf234b386d8259279b.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fjquery.fitbitCommon.js%252C%252Fjs%252Fswfobj"  charset="utf-8" ></script>
+            <script type="text/javascript"  src="../static0.fitbit.com/combined.s-jsyui-js.h042e7c1d02c1d1be7c2ee94f5bffed92.pack%3Fitems=%252Fjs%252Ffitbit%252Fapp%252Fjquery.fitbitCommon.js%252C%252Fjs%252Fswfobj"  charset="utf-8" ></script>
             
    		
 
@@ -1461,7 +1461,7 @@ fitbit.i18n.setResource('com.fitbit.app.user.friends.label.empty_state_notificat
 
     
     
-        <script type="text/javascript"  src="../static3.fitbit.com/combined.s-jsyui-js.h8410cc5adf3faa07afca5d9fbf7b4437.pack%3Fitems=%252Fjs%252Flib%252Fobjs%252F2.1.2%252Fobjs.js%252C%252Fjs%252Ffitbit%252Fapp%252F"  charset="utf-8" ></script>
+        <script type="text/javascript"  src="../static0.fitbit.com/combined.s-jsyui-js.h5f622a3fa4c2415434e5ae78d9aa570f.pack%3Fitems=%252Fjs%252Flib%252Fobjs%252F2.1.2%252Fobjs.js%252C%252Fjs%252Ffitbit%252Fapp%252F"  charset="utf-8" ></script>
         
     
 
@@ -1841,6 +1841,7 @@ http://google-code-updates.blogspot.com/2009/03/steve-souders-lifes-too-short-wr
                         var trackEventData = trackEventString.split( fitbit.app.googleAnalytics.eventParamDelimiter );
                         //log event
                         _gaq.push([ "_trackEvent" , trackEventData[0] , trackEventData[1] , trackEventData[2] ]);
+                        _gaq.push([ "t._trackEvent" , trackEventData[0] , trackEventData[1] , trackEventData[2] ]);
                     } catch(e) {
 
                     }
@@ -1907,7 +1908,7 @@ http://google-code-updates.blogspot.com/2009/03/steve-souders-lifes-too-short-wr
 function gaSSDSLoad (acct) {
     var _gaq = window._gaq || [];
     if(document.domain) {
-        _gaq.push(['_setDomainName', document.domain])
+        _gaq.push(['_setDomainName', document.domain]);
         console.log(JSON.stringify(_gaq));
     }
   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."),
@@ -1963,6 +1964,75 @@ function gaSSDSLoad (acct) {
   }
 
 </script>
+
+
+    
+
+
+
+
+<script type="text/javascript">
+(function() {
+    /**
+    * @param acct is GA account number, i.e. "UA-5555555-1"
+    */
+    function gaSSDSLoad (acct) {
+        if (!window._gaq) {
+            window._gaq = [];
+        }
+        var _gaq = window._gaq;
+        _gaq.push(['t._setAccount', acct]);
+        if (document.domain) {
+            _gaq.push(['t._setDomainName', document.domain]);
+        }
+        _gaq.push(['t._setCustomVar', 1, "visitorType", "notloggedin", 1]);
+        _gaq.push(['t._setCustomVar', 2, "country", "en_US", 1]);
+        
+
+        
+
+        
+        
+        
+            
+                
+            
+            
+        
+        
+        var pageURI = window.location.pathname;
+
+        
+            
+            
+            
+            
+                _gaq.push(['t._trackPageview']);
+            
+        
+
+        
+
+        
+        
+    }
+
+    // and run it
+    if (document.location.host === "qa1.fitbit.com") {
+        gaSSDSLoad("UA-22636088-4");
+    } else if (document.location.host === "qa2.fitbit.com") {
+        gaSSDSLoad("UA-22636088-4");
+    } else if (document.location.host === "qa3.fitbit.com") {
+        gaSSDSLoad("UA-22636088-4");
+    } else if (document.location.host === "local.fitbit.com") {
+        gaSSDSLoad("UA-22636088-4");
+    } else {
+        // www.fitbit.com ga accou1nt
+        gaSSDSLoad("UA-22636088-4");
+    }
+})();
+</script>
+
 
 <script type="text/javascript">
 	var mpq = [];
@@ -2080,7 +2150,7 @@ function gaSSDSLoad (acct) {
     
     
     
-    	BOOMR.addVar("requestId", "app4.fitbit.com_1352984963375_09515");
+    	BOOMR.addVar("requestId", "app10.fitbit.com_1353503376643_00232");
     
     </script>
 
@@ -2099,7 +2169,11 @@ function gaSSDSLoad (acct) {
 
 
 
-<script type="text/javascript"  src="../static5.fitbit.com/simple.s-jsyui-js.hfa9af5d8811f58059c741c0ad9454eb8.pack%3Fitems=%252Fjs%252Fga-tracker.js"  charset="utf-8" ></script>
+    
+    <script type="text/javascript"  src="../static1.fitbit.com/simple.s-jsyui-js.h64b004c88e12e4d842dfe137b6d052f2.pack%3Fitems=%252Fjs%252Fga-tracker-admins.js"  charset="utf-8" ></script>
+
+
+<script type="text/javascript"  src="../static4.fitbit.com/simple.s-jsyui-js.hbf0ecf109137ea8354db20236a7fb574.pack%3Fitems=%252Fjs%252Fga-tracker.js"  charset="utf-8" ></script>
 
 
     <script type="text/javascript">
@@ -2124,7 +2198,7 @@ function gaSSDSLoad (acct) {
 
 
         
-        
+         
         
 
 
@@ -2136,13 +2210,10 @@ function gaSSDSLoad (acct) {
     
 
 
- 
-	<!--[if lte IE 9]>
-		<script type="text/javascript"  src="http://static2.fitbit.com/simple.s-jsyui-js.hd4e4826d804506cd2237d1512e4968b6.pack?items=%2Fjs%2Flib%2Fpolyfills%2Fjquery.placeholder.js"  charset="utf-8" ></script>
-	<![endif]-->
-
-
-        <iframe height=1 width=1 style="left: -10000px" src="../static1.fitbit.com/tools/cookieEater.html" />
+<!--[if lte IE 9]>
+	<script type="text/javascript"  src="http://static2.fitbit.com/simple.s-jsyui-js.hd4e4826d804506cd2237d1512e4968b6.pack?items=%2Fjs%2Flib%2Fpolyfills%2Fjquery.placeholder.js"  charset="utf-8" ></script>
+<![endif]-->
+        <iframe height="1" width="1" style="left: -10000px;" src="../static1.fitbit.com/tools/cookieEater.html"></iframe>
         
         <!-- Accept-Language: null;
  locationService.getCountry: US;

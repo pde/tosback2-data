@@ -175,8 +175,10 @@ if(n&&n.length==5){var b=n[2];
 m+="site="+b+";!category="+b+";";
 if(b=="nickatnite"){c="nan.nol"
 }else{if(b=="spongebob"){c="spongebob.nol"
-}else{if(b=="teennick"){c="teennick.nol"
-}}}}var l=location.search;
+}else{if(b=="teennick"){c="teennick.nol";
+if(location.pathname.indexOf("/kids-choice-awards")>-1){c="nick.kca"
+}else{if(KIDS.get("fccRelatedShow").indexOf("halo-awards")>-1){c="teennick.halo"
+}}}}}}var l=location.search;
 if(l.length>0){l=l.replace("?","");
 f=l.split("&");
 for(var d=0;
@@ -3307,15 +3309,14 @@ KIDS.reporting.omnifunctions.sendReportingCall=function(b){try{if(b==null){b=KID
 }}var a=btg.config.Omniture.account;
 if(btg.String.isDefined(b.setting.name)){btg.config.Omniture.account=b.setting.name
 }btg.Controller.init();
-if(typeof KIDS.reporting.abTest!="undefined"){var c=new btg.ABTest(KIDS.reporting.abTest.abtestId,KIDS.reporting.abTest.abtestGroups);
-KIDS.reporting.abTest.currentGroup=c.getGroup();
-KIDS.utils.doLog("abTest.getGroup():"+KIDS.reporting.abTest.currentGroup);
+if(typeof KIDS.reporting.abTest!="undefined"){KIDS.reporting.abTest.currentGroup="Control Group";
+KIDS.utils.doLog("KIDS.reporting.abTest.currentGroup:"+KIDS.reporting.abTest.currentGroup);
 if(KIDS.reporting.abTest.currentGroup.indexOf("Control")>-1){b.setting.prop32="NickRec Impression"
 }else{b.setting.prop32="CS Impression"
 }}btg.Controller.sendPageCall(b.setting);
 if(btg.String.isDefined(b.setting.name)){btg.config.Omniture.account=a
 }btg.Controller.init()
-}catch(d){KIDS.utils.doLog(d.toString())
+}catch(c){KIDS.utils.doLog(c.toString())
 }};
 KIDS.reporting.omnifunctions.sendLinkEvent=function(d,b){try{var a=btg.config.Omniture.account;
 if(btg.String.isDefined(d)){btg.config.Omniture.account+=","+d;

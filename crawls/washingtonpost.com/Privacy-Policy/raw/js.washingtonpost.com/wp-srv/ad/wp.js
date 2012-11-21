@@ -22,7 +22,7 @@
 
   //wp specific flags
   wpAd.flags.testEnv = !!wpAd.tools.urlCheck(/http:\/\/devprev\.|http:\/\/qaprev\.|http:\/\/prodprev\./);
-  wpAd.flags.vi_test = !!wpAd.tools.urlCheck('vi_test');
+  wpAd.flags.vi_test = /vi_test/.test(location.search) && win.wp_meta_data && win.wp_meta_data.contentType && /CompoundStory/i.test(win.wp_meta_data.contentType.toString());
   
   //Friendly Iframe supported domains and URL's:
   wpAd.config.fifDomains = {
@@ -225,16 +225,22 @@
     })();
   };
 
-  wpAd.tools.initVITest = function(what){
-    $('#slug_' + what).viewableImpression({}, function(el){
-      wpAd.tools.addPixel(wpAd.tools.vi_pixels[what][1], what + ' viewed');
-    });
+  wpAd.tools.initVITest = function(elements){
+    //doing it this way, since waiting for document ready may miss the leaderboard view:
+    if($.fn.viewable){
+      $(elements).viewable({}, function(el, options){
+        var what = el.id.replace('slug_', '');
+        wpAd.tools.addPixel(wpAd.tools.vi_pixels[what][1], what + ' viewed');
+      });
+    } else{
+      setTimeout(function(){ wpAd.tools.initVITest(elements); }, 100);
+    }
   };
   
   wpAd.tools.vi_pixels = {
-    'inline_bb': [
-      'http://ad.doubleclick.net/ad/wpni.test/view1;sz=1x1;ord=' + Math.floor(Math.random() * 1E5),
-      'http://ad.doubleclick.net/ad/wpni.test/view2;sz=1x1;ord=' + Math.floor(Math.random() * 1E5)
+    'extra_bb': [
+      'http://ad.doubleclick.net/ad/wpni.test/view1;sz=1x1;ord=[timestamp]',
+      'http://ad.doubleclick.net/ad/wpni.test/view2;sz=1x1;ord=[timestamp]'
     ]
   };
   
@@ -246,7 +252,7 @@
   };
 
   
-  // last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
+  //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {
 
     //important that we clone this
@@ -309,8 +315,7 @@
     //Viewable Impression unique zone + exclusions:
     if(tempcase.delivery === 'vi'){
       tempcase.where += '/viewable';
-      tempcase.keyvalues['!c'].push('media');
-      tempcase.keyvalues['!c'].push('intrusive');
+      tempcase.keyvalues['!c'].push('media', 'intrusive');
     }
 
     //19882-criteo implementation
@@ -359,20 +364,20 @@
     if(wpAd.tools.mediaPage()) {
       tempcase.keyvalues['!c'].push('media');
     }
-
-    if(tempcase.what === 'inline_bb' && wpAd.flags.vi_test && wpAd.tools.vi_pixels[tempcase.what]){
-      wpAd.tools.addPixel(wpAd.tools.vi_pixels[tempcase.what][0], tempcase.what + ' impression');
-      $(function(){
-        if(!$.fn.viewableImpression){
-          wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js', function(){
-            wpAd.tools.initVITest(tempcase.what);
-          });
-        } else {
-          wpAd.tools.initVITest(tempcase.what);
-        }
-      });
-    }
     
+    //viewable impression pixel test:
+    if(wpAd.tools.vi_pixels[tempcase.what] && wpAd.flags.vi_test){
+      wpAd.tools.addPixel(wpAd.tools.vi_pixels[tempcase.what][0], tempcase.what + ' impression');
+      
+      if(!wpAd.flags.vi_script_loaded && !$.fn.viewable){
+        wpAd.flags.vi_script_loaded = true;
+        wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/$.viewable.js');
+      }
+
+      wpAd.tools.initVITest('#slug_' + tempcase.what);
+
+    }
+
     return tempcase;
   };
 

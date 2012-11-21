@@ -975,14 +975,14 @@ if (typeof COMSCORE.SiteRecruit == "undefined") {
 				
 			start: function() {
 				//If Mobile browser NOT detected then run init() function
-				if((/iphone|ipad|ipod|android|opera mini|blackberry|windows(phone|ce)|iemobile|htc|nokia/i.test(navigator.userAgent)) && (/\/\/[\w\.]+\/windowsphone/i.test(SR_url))){
+				if(/iphone|ipad|ipod|android|opera (mini|mobi)|blackberry|windows (phone|ce)|iemobile|htc|nokia|mobile/i.test(navigator.userAgent)){
 				 //Disable recruitment for mobile
 				}else if (/[\w\.]+\/en-us\/dynamics/i.test(SR_url)) {
 					// CUSTOM CODE - Check for AR Already Asked cookie
 					var projectId = "p100339422";
 					var cookieName = "ar_s_" + projectId;
 					var callback = "COMSCORE.SiteRecruit.Broker.init";
-					var readCookieURL = "http://ar.voicefive.com/b/rc.pli?n=" + cookieName + "&func=" + callback + "&" + (new Date()).getTime();
+					var readCookieURL = document.location.protocol + "//ar.voicefive.com/b/rc.pli?n=" + cookieName + "&func=" + callback + "&" + (new Date()).getTime();
 					_utils.loadScript(readCookieURL, false);
 					// END CUSTOM
         }else {

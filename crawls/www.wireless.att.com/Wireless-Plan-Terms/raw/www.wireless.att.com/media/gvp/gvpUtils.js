@@ -1438,14 +1438,11 @@ gvpUtils.prototype.mobile = new function () {
 		var dsHeight = window.outerHeight;
 		var screenArea = (dsWidth * dsWidth) + (dsHeight * dsHeight);
 		var diagonalDim;
-		if (isIOS){
-			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
-			}
-		else if (isWindows){
+		if (isWindows){
 			var diagonalDim = Math.sqrt(screenArea) / 2;
 		}
 		else{
-			var diagonalDim = Math.sqrt(screenArea);
+			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
 		}
 		
 		return (diagonalDim);

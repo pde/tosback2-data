@@ -23,7 +23,7 @@ if(loginStatus==="False"){Bootstrapper.dataObject.addData("loggedIn",false,"visi
 else{Bootstrapper.dataObject.addData("loggedIn",true,"visitor","global");}}
 try{var currDate=new Date();Bootstrapper.dataObject.global.page.today=currDate.format("MM/dd/yyyy");}catch(e){}
 var gaCookie=Bootstrapper.Cookies.get("__utmz");if(gaCookie!==undefined&&gaCookie.length>0){var cmParams=("utmcsr="+gaCookie.split("utmcsr=")[1]).split("|");var tempObj={};for(i=0;i<cmParams.length;i++){var keyVal=cmParams[i].split("=");tempObj[keyVal[0]]=keyVal[1];}
-if(Bootstrapper.dataObject&&Bootstrapper.dataObject.global){Bootstrapper.dataObject.global.campaign=tempObj;}}
+if(Bootstrapper.dataObject&&Bootstrapper.dataObject.global){Bootstrapper.dataObject.global.gaCampaign=tempObj;}}
 var langPosCookie=Bootstrapper.Cookies.get("LangPos").split("&");var pageURI=Bootstrapper.dataObject.global.page.URI;var queryString=document.location.search.slice(1);var pos,lang;(function(){var langCode,posCode;var langCodeInputField=document.getElementById("hdnLangCode");if(langCodeInputField){langCode=langCodeInputField.value;if(langCode.length>0){if(langCode.indexOf("-")>0){langCode=langCode.split("-")[0];}
 lang=langCode;}}
 var POSInputField=document.getElementById("hdnPOS");if(POSInputField){posCode=POSInputField.value;if(posCode.length>0){pos=posCode;}}

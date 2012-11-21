@@ -282,6 +282,7 @@ function getProducts() {
 }
 var js_lightbox_error_text = "Oops! We can't find the content for this lightbox.";
 var js_lightbox_close_button_alt_text = "Close";
+var corousel_speed = "9";
 
 IRW.search.localConfig = {
     maxEntries: 10,
@@ -407,4 +408,14 @@ DI.initialState.annaUS = {
 com.ikea.irw.askAnna.Settings.default_locale = 'USEN';
 com.ikea.irw.askAnna.Settings.active = true;
 com.ikea.irw.askAnna.Settings.reference = 'US';
+
+
+
+
+
+$namespace('com.ikea.irw.GUI');
+ com.ikea.irw.GUI.Tran = {
+    linkText : "UP",
+    altText : "UP"
+};
 

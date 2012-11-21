@@ -54,25 +54,52 @@ if (!window.bam) {
 		};
 	})();
 
-	function getDependenciesFromFunction(fn) {
+	function getDependenciesFromFunction(fn, modulePathAndName) {
 		var fnString = fn.toString().replace(commentRegExp, '');
 		var requireVariable = requireVariableRegExp.exec(fnString)[3];
 		if (requireVariable) {
 			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
 			var dependencies = fnString.match(requireRegex) || [];
-			dependencies.forEach(function(dep, i){ dependencies[i] = dep.substring(requireVariable.length+3, dep.length-2)});
+			for ( var i = 0, dependency; dependency = dependencies[i]; i++ ) {
+				dependencies[i] = dependency.substring(requireVariable.length+3, dependency.length-2);
+			}
+		}
+
+		var modulePathArray;
+		var lastSlash = modulePathAndName.lastIndexOf('/');
+		if (lastSlash !== -1) {
+			//modulePath = '/'+modulePathAndName.substr(0, lastSlash);
+			modulePathArray = modulePathAndName.substr(0, lastSlash).split('/');
+		} else {
+			modulePathArray = [];
 		}
 		// normalize dependency array
-		dependencies.forEach(function(dependency, i) {
+		for (var i = 0, dependency; dependency = dependencies[i]; i++ ) {
 			if(typeof dependency === 'string' && dependency.indexOf('/') !== -1) {
-				if (dependency.charAt(0) !== '/') {
-					dependency = '/'+dependency;
+				if (dependency.charAt(0) === '/') {
+					window.console && console.warn && console.warn('Please remove leading slashes from require() calls.\nModule: '+modulePathAndName+'\nrequire('+dependency+')');
+					dependency = dependency.substr(1);
 				}
 				var name = everythingAfterLastSlash.exec(dependency)[1];
+				
+				if (dependency.charAt(0) === '.') {
+					var dependencyArray = dependency.split('/');
+					var depModulePath = modulePathArray.slice();
+					while (dependencyArray[0] === '.') {
+						dependencyArray.shift();
+					}
+					while (dependencyArray[0] === '..') {
+						dependencyArray.shift();
+						depModulePath.pop();
+					}
+					dependency = depModulePath.concat(dependencyArray).join('/');
+				}
+				dependency = '/'+dependency;
+
 				dependencies[i] = {};
 				dependencies[i][name] = dependency;
 			}
-		});
+		};
 		return dependencies;
 	}
 
@@ -219,7 +246,7 @@ if (!window.bam) {
 				//If current version listed in manifest is greater than the version used
 				if (manifestEntry) {
 					if (manifestEntry.atbat + '' > version) {
-						window.console && console.warn && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
+						window.console && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
 						bam.trackDeprecated({
 							module: module,
 							version: version,
@@ -227,7 +254,7 @@ if (!window.bam) {
 						});
 						//Else, check if a possible upgrade version is available
 					} else if ((onDeck in manifestEntry) && version < manifestEntry.ondeck + '') {
-						window.console && console.warn && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
+						window.console && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
 					}
 				}
 				version = IS_NUMERIC.test(version) ? parseFloat(version) : version;
@@ -271,7 +298,7 @@ if (!window.bam) {
 		// if the first argument is a function, find its dependencies.
 		if ($.isFunction(modules)) {
 			opt = modules;
-			modules = getDependenciesFromFunction(opt);
+			modules = getDependenciesFromFunction(opt, 'bam.require statement');
 		}
 
 		//Second argument is now treated as configuration options if its an Object
@@ -435,7 +462,7 @@ if (!window.bam) {
 		if (typeof dependencies === 'function') {
 			// get dependencies from constructor.toString();
 			constructor = dependencies;
-			dependencies = getDependenciesFromFunction(constructor);
+			dependencies = getDependenciesFromFunction(constructor, identifier);
 		} else if (constructor === undefined) {
 			// dependencies was not passed in
 			// the constructor is not a function
@@ -443,6 +470,12 @@ if (!window.bam) {
 			constructor = dependencies;
 			dependencies = [];
 		}
+
+		var lastSlash = identifier.lastIndexOf('/');
+		if (lastSlash !== -1) {
+			identifier = identifier.substr(lastSlash+1);
+		}
+		
 
 		// get the version from the identifier so it can be declared
 		var splitId = identifier.split('-');

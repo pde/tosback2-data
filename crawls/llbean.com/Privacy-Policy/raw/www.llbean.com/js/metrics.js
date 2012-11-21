@@ -1,5 +1,32 @@
 /*requires s_code.js*/
 
+function passMetricObjectAndSendPageTag ( objRef ) {
+     for (key in objRef ){
+         s_o_sc[key]=objRef[key];
+     }
+     sendMetricTag();
+}
+
+
+function sendMetricTag () {
+   // for layer calls
+   if (typeof ll_o=="object"){
+      for (var key in ll_o ) {
+        s_o_sc[key] = ll_o[key];
+      }
+    }
+   var s_code = s_o_sc.t(); 
+}
+
+function sendMetricTagCheckoutSBTag () {
+  s_o_sc.pageName = 'Shopping Bag - Continue CheckOut Button';
+  s_o_sc.events = 'scCheckout';
+  s_o_sc.prop4+=' Checkout Button';
+  s_o_sc.prop7+=' Checkout Button';
+  sendMetricTag();
+
+}
+
 if (typeof ll_o!="object") var ll_o=new Object();
 ll_o.url=document.URL;
 ll_o.ref=document.referrer;
@@ -450,12 +477,41 @@ function getMemberId(){
 
 
 s_o_sc.eVar41="D=c1";
-s_o_sc.eVar42=ll_o.prop10;
+s_o_sc.eVar42=s_o_sc.prop10;
 s_o_sc.eVar43=getMemberId();
 
 //personalization 
 s_o_sc.eVar49=gcookie("LLBVAT");
-if(s_o_sc.eVar49==null)s_o_sc.eVar49='';
+if(s_o_sc.eVar49==null){
+      s_o_sc.eVar49='';
+}else{
+      var vatArray = s_o_sc.eVar49.split(":");
+      s_o_sc.eVar32 = (vatArray[2]=="true") ? "Yes" : "No";
+      s_o_sc.eVar33 = (vatArray[3]=="true") ? "Yes" : "No";
+      s_o_sc.eVar34 = vatArray[10];  //nbr cpns
+
+      switch (vatArray[4])
+      {
+            case '1': 
+                  s_o_sc.eVar31 = "One Year";
+                  break;
+            case '2': 
+                  s_o_sc.eVar31 = "Lapsed";
+                  break;
+            case '3': 
+                  s_o_sc.eVar31 = "Prospect";
+                  break;
+            case '5': 
+                  s_o_sc.eVar31 = "Unknown First";
+                  s_o_sc.eVar32 = s_o_sc.eVar33 = "Unknown";
+                  break;
+            case '99': 
+                  s_o_sc.eVar31 = "Unknown Return";
+                  s_o_sc.eVar32 = s_o_sc.eVar33 = "Unknown";
+                  break;
+            default:
+      }
+}
 
 ll_o.vpc=gcookie('LLBVPC');
 if(ll_o.vpc!=null){
@@ -567,7 +623,14 @@ var google_conversion_value = 0;
 
 llg_ab.writeTag=function(lbl){
    google_conversion_label = llg_ab[lbl];
-   document.writeln("<script type='text/javascript' src='http://www.googleadservices.com/pagead/conversion.js'></script>");
+   //document.writeln("<script type='text/javascript' src='"+ location.protocol +"//www.googleadservices.com/pagead/conversion.js'></script>");
+   var conversionjs = document.createElement('script');
+   conversionjs.setAttribute('src', '//www.googleadservices.com/pagead/conversion.js');
+   var head = document.getElementsByTagName('head')[0];
+   head.appendChild(conversionjs);
+   if ( typeof util.hideGoogleAdd === 'function' ) {
+      util.hideGoogleAdd();
+   }
 }
 
 llg_ab.handleSegCookie = function(pgm,seg){
@@ -629,3 +692,31 @@ if (llJSP != "homepage" && llJSP!="orderthanks" && document.cookie.toString().to
 
 
 s_o_sc.eVar30="D=User-Agent";
+
+function sendMetricsTagLoginLayer () {
+
+   s_o_sc.pageName='Log In (LoginLayer)';
+   s_o_sc.prop4='LogInLayer';
+   s_o_sc.prop7='LogInLayer';
+   s_o_sc.events='';
+
+   sendMetricTag();
+
+}
+
+function setBuyBuddyPixel() {
+//Potential flag to turn the js off
+	var currentSC = gcookie('LLBEAN').split(':')[0];
+
+  var sourceCode = currentSC.toLowerCase(),
+  lowerBuyBuddySourceCode = buyBuddySourceCode.toLowerCase();
+
+	if ( buyBuddyPixelActive == 1 && sourceCode.indexOf(lowerBuyBuddySourceCode) != -1) {
+		buddyImageSrc = "//track.brighteroption.com/b?p=sx2vsj&l=0&sb_v=";
+		buddyImageSrc += netBalance.replace('.','');
+		buddyImg = document.createElement("img");
+		buddyImg.onload = function() { return; };
+		buddyImg.src =buddyImageSrc;
+		buddyImg.setAttribute('style' ,'left: -9999px; top: -9999px; position:absolute;');
+	}
+}

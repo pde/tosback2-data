@@ -382,7 +382,7 @@ CIM.cookie = (function () {
              if (typeof options['days'] !== "undefined") {
                 expires = setExpiresString(options.days);
             }
-            
+
             if (typeof options['path'] !== 'undefined') {
                 path = 'path=' + options.path;
             }
@@ -614,14 +614,14 @@ CIM.cookie = (function () {
             }
             return results.join('&'); // join key=value pairs into ampersand delimited string
         },
-        
+
          /*
          * Method: clear
          *
          * Removes all cookies from a domain.
          *
          * Returns:
-         *    
+         *
         */
         clear: function() {
             var cookies = document.cookie.split(";");

@@ -10,6 +10,21 @@
   }
 })();
 
+//floodlight tag global function
+function fireFloodlight(src, type, cat, url, delay, target) {
+	var axel = Math.random() + "";
+	var a = axel * 10000000000000;
+	$('body').append('<iframe id="fFrame" name="fFrame" src="" width="1" height="1" frameborder="0" style="display:none;"></iframe>');
+	$('#fFrame').attr('src', 'https://1782317.fls.doubleclick.net/activityi;src=' + src + ';type=' + type + ';cat=' + cat + ';ord=1;num=' + a + '?');
+	
+
+	if(url){
+		if(target===1) setTimeout(window.open(url),delay);
+		else setTimeout("window.location.href = '"+url+"';", delay);
+	}
+}
+
+
 
 function setDelay(delay)
 {
@@ -1875,7 +1890,7 @@ $(document).ready(function(){
 		});
 	}
 	
-	if (urlValueSplit[6].match('SCH-I905MSAVZW') || urlValueSplit[6].match('SCH-I905ZWAVZW') || urlValueSplit[6].match('SCH-I905UKAVZW') || urlValueSplit[6].match('SCH-I905UWAVZW') || urlValueSplit[6].match('SPH-D710ZKASPR') || urlValueSplit[6].match('SGH-I777ZKAATT') || urlValueSplit[6].match('SCH-I405LKAVZW') || urlValueSplit[6].match('SGH-I677DAAATT') || urlValueSplit[6].match('SGH-T989ZKBTMB') || urlValueSplit[6].match('SCH-I405ZWBVZW') || urlValueSplit[6].match('SGH-T989ZWBTMB') || urlValueSplit[6].match('SCH-I515MSAVZW') || urlValueSplit[6].match('SGH-I727MSAATT') || urlValueSplit[6].match('SGH-I727ZWAATT') || urlValueSplit[6].match('SPH-D710ZWASPR') || urlValueSplit[6].match('SGH-I717RWAATT') || urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('NP-NF310-A01US') || urlValueSplit[6].match('SCH-R760IBAUSC') || urlValueSplit[6].match('NP900X3B-A01US') || urlValueSplit[6].match('NP900X3B-A02US') || urlValueSplit[6].match('NP900X4B-A02US') || urlValueSplit[6].match('SPH-L700ZKASPR') || urlValueSplit[6].match('NP700G7C-S01US') || urlValueSplit[6].match('XE550C22-H01US') || urlValueSplit[6].match('XE550C22-H02US')  || urlValueSplit[6].match('XE550C22-A01US') || urlValueSplit[6].match('XE550C22-A02US') || urlValueSplit[6].match('XE300M22-A01US') || urlValueSplit[6].match('XE300M22-A02US') || urlValueSplit[6].match('PN64E8000GFXZA') || urlValueSplit[6].match('PN60E8000GFXZA') || urlValueSplit[6].match('PN51E8000GFXZA')){
+	if (urlValueSplit[6].match('SCH-I905MSAVZW') || urlValueSplit[6].match('SCH-I905ZWAVZW') || urlValueSplit[6].match('SCH-I905UKAVZW') || urlValueSplit[6].match('SCH-I905UWAVZW') || urlValueSplit[6].match('SPH-D710ZKASPR') || urlValueSplit[6].match('SGH-I777ZKAATT') || urlValueSplit[6].match('SCH-I405LKAVZW') || urlValueSplit[6].match('SGH-I677DAAATT') || urlValueSplit[6].match('SGH-T989ZKBTMB') || urlValueSplit[6].match('SCH-I405ZWBVZW') || urlValueSplit[6].match('SGH-T989ZWBTMB') || urlValueSplit[6].match('SCH-I515MSAVZW') || urlValueSplit[6].match('SGH-I727MSAATT') || urlValueSplit[6].match('SGH-I727ZWAATT') || urlValueSplit[6].match('SPH-D710ZWASPR') || urlValueSplit[6].match('SGH-I717RWAATT') || urlValueSplit[6].match('SGH-I717ZBAATT') || urlValueSplit[6].match('NP-NF310-A01US') || urlValueSplit[6].match('SCH-R760IBAUSC') || urlValueSplit[6].match('NP900X3B-A01US') || urlValueSplit[6].match('NP900X3B-A02US') || urlValueSplit[6].match('NP900X4B-A02US') || urlValueSplit[6].match('SPH-L700ZKASPR') || urlValueSplit[6].match('NP700G7C-S01US') || urlValueSplit[6].match('XE550C22-H01US') || urlValueSplit[6].match('XE550C22-H02US')  || urlValueSplit[6].match('XE550C22-A01US') || urlValueSplit[6].match('XE550C22-A02US') || urlValueSplit[6].match('XE300M22-A01US') || urlValueSplit[6].match('XE300M22-A02US') || urlValueSplit[6].match('PN64E8000GFXZA') || urlValueSplit[6].match('PN60E8000GFXZA') || urlValueSplit[6].match('PN51E8000GFXZA') || urlValueSplit[6].match('DP500A2D-A01UB') || urlValueSplit[6].match('DP500A2D-A02UB')){
 	$('.hero #flagship-content').append('<div id="underlay_nav"></div>');
 		$('.hero .underlay_list').cycle({
 			fx: 'fade',

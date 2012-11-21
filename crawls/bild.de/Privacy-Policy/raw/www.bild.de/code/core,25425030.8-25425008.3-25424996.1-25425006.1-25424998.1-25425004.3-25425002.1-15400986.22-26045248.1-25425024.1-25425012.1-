@@ -3135,7 +3135,7 @@ de.bild.social = (function($){
 /*de.bild.social:25798986.1*/
 
 
-/*de.bild.community:22104118.39*/
+/*de.bild.community:22104118.40*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -3430,7 +3430,7 @@ de.bild.community = (function($){
             right: '0'
         });
 
-		//ContactList = 160, subComment = 10 else $loadingLayer.width() / 2 - halfPic;
+ //ContactList = 160, subComment = 10 else $loadingLayer.width() / 2 - halfPic;
         marginLeft = isSubComment ? 10 : isContactList ? 160 :$loadingLayer.width() / 2 - halfPic;
         $img = $('img', $loadingLayer);
 
@@ -3610,82 +3610,82 @@ de.bild.community = (function($){
      * @private
      */
 
-	function setupCommunityCenter() {
-		//only if logged Out
-		if(de.bild.sso.isLoggedIn())
-			return false;
-		//init the two Lists
-		var activityList = $('.latest-usr-feed .usr-feed>ol');
-		var activities = activityList.children('li');
-		//if not enough elements to rotate -> return
-		if(activities.length <= settings.comCenterElems)
-			return false;
+ function setupCommunityCenter() {
+ //only if logged Out
+ if(de.bild.sso.isLoggedIn())
+ return false;
+ //init the two Lists
+ var activityList = $('.latest-usr-feed .usr-feed>ol');
+ var activities = activityList.children('li');
+ //if not enough elements to rotate -> return
+ if(activities.length <= settings.comCenterElems)
+ return false;
 
-		var hidden = activityList.children('li:gt(' + settings.comCenterElems + ')');
-		var rotateElem = activityList.parent();
-		rotateElem.css('top', 0);
-		activities = activities.not(hidden);
-		var rotationTimer = null;
+ var hidden = activityList.children('li:gt(' + settings.comCenterElems + ')');
+ var rotateElem = activityList.parent();
+ rotateElem.css('top', 0);
+ activities = activities.not(hidden);
+ var rotationTimer = null;
 
-		rotateOneItem();
+ rotateOneItem();
 
-		/**
-		 * Rotationfunction
-		 */
+ /**
+  * Rotationfunction
+  */
 
-		function rotateOneItem() {
-			//First clear Timeout and animation
-			clearTimeout(rotationTimer);
-			activityList.parent().stop();
-			
-			//Only do s.th if there is no bcard active
-			if($card == null) {
-				//Normal rotate
-				if(parseInt(rotateElem.css('top')) == 0) {
-					var $elem = hidden.first();
-					$elem.removeClass('hide');
-					activityList.prepend($elem);
-					var height = $elem.height();
-					//calculate a constant speed
-					var speed = height * 20;
-					rotateElem.css('top', -height - 20).animate({
-						'top' : 0
-					}, speed, 'linear', function() {
-						rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
-					});
-					hidden = hidden.not(hidden.first()).add(activities.last());
-					activities = activities.not(activities.last()).add($elem);
-				}
-				//finish the rotation
-				else {
-					var speed = -1 * parseInt(rotateElem.css('top')) * 15;
-					rotateElem.animate({
-						'top' : 0
-					}, speed, 'linear', function() {
-						rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
-					});
-				}
-			}
+ function rotateOneItem() {
+ //First clear Timeout and animation
+ clearTimeout(rotationTimer);
+ activityList.parent().stop();
 
-		}
+ //Only do s.th if there is no bcard active
+ if($card == null) {
+ //Normal rotate
+ if(parseInt(rotateElem.css('top')) == 0) {
+ var $elem = hidden.first();
+ $elem.removeClass('hide');
+ activityList.prepend($elem);
+ var height = $elem.height();
+ //calculate a constant speed
+ var speed = height * 20;
+ rotateElem.css('top', -height - 20).animate({
+ 'top' : 0
+ }, speed, 'linear', function() {
+ rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
+ });
+ hidden = hidden.not(hidden.first()).add(activities.last());
+ activities = activities.not(activities.last()).add($elem);
+ }
+ //finish the rotation
+ else {
+ var speed = -1 * parseInt(rotateElem.css('top')) * 15;
+ rotateElem.animate({
+ 'top' : 0
+ }, speed, 'linear', function() {
+ rotationTimer = setTimeout(rotateOneItem, settings.comCenterSlideDelay);
+ });
+ }
+ }
 
-		//Start/Stop on Hover 
-		rotateElem.parent().on('mouseenter.comCenter', function() {
-			$(this).data('over',true);							
-			clearTimeout(rotationTimer);
-			activityList.parent().stop();
-		}).on('mouseleave.comCenter', function() {
-			$(this).data('over',false);			
-			rotateOneItem();		
-		})
-		
-		rotateElem.parent().on('autorotate.comCenter',function(){
-			if($(this).data('over')==false){
-				rotateOneItem();
-			}
-		})
-		
-	}
+ }
+
+ //Start/Stop on Hover 
+ rotateElem.parent().on('mouseenter.comCenter', function() {
+ $(this).data('over',true);
+ clearTimeout(rotationTimer);
+ activityList.parent().stop();
+ }).on('mouseleave.comCenter', function() {
+ $(this).data('over',false);
+ rotateOneItem();
+ })
+
+ rotateElem.parent().on('autorotate.comCenter',function(){
+ if($(this).data('over')==false){
+ rotateOneItem();
+ }
+ })
+
+ }
 
 
 /* ================================================================================================================ ENDE COMMUNITY CENTER */
@@ -4116,8 +4116,8 @@ de.bild.community = (function($){
                
                
                if(userlink){
-               	userlink = userlink.split('/');
-               	userlink = userlink.length>0?userlink[userlink.length-1]:null;
+                userlink = userlink.split('/');
+                userlink = userlink.length>0?userlink[userlink.length-1]:null;
                }
                
                
@@ -4132,14 +4132,14 @@ de.bild.community = (function($){
 
                     /* if the card is active and the url is the same then we're dealing with the same bubble */
                     if ($parent.data('isCardActive') === true && cardUrl === url) {
-                    	
-                    	//maybe the cursor changed to from profile pic to username so only adjust the card
-                    	pos = $activeCardElement.offset();
-                    	$card.css({
+                    
+                     //maybe the cursor changed to from profile pic to username so only adjust the card
+                     pos = $activeCardElement.offset();
+                     $card.css({
                         'top' : pos.top - $card.height() -30,
                         'left' : pos.left + 5
-                   		});
-                    	
+                    });
+                    
                         return false;
                     }
 
@@ -4161,9 +4161,9 @@ de.bild.community = (function($){
                    
                    
                     $card.show();
-					if(cardRequest){
-	                	 cardRequest.abort();
-	                }
+ if(cardRequest){
+                   cardRequest.abort();
+                 }
                    
                   cardRequest=de.bild.httpFist.load({
                         'url' : cardUrl,
@@ -4182,9 +4182,9 @@ de.bild.community = (function($){
                     });
                 }
                 else{
-                	if($card){
-                		$card.remove();
-                	}
+                 if($card){
+                 $card.remove();
+                 }
                     $parent.data('isCardActive', false);
                 }
                                 
@@ -4199,7 +4199,7 @@ de.bild.community = (function($){
                         $card = null;
                         $activeCardElement = null;
                         //start Communitycenter Rotation
-                  		$('.latest-usr-feed').trigger('autorotate.comCenter');
+                   $('.latest-usr-feed').trigger('autorotate.comCenter');
                     }
                 }, settings.layerDelay);
                
@@ -4224,7 +4224,7 @@ de.bild.community = (function($){
                         $card = null;
                         $activeCardElement = null;
                         //start Communitycenter Rotation
-                  		$('.latest-usr-feed').trigger('autorotate.comCenter');
+                   $('.latest-usr-feed').trigger('autorotate.comCenter');
                     }
                 }, settings.layerDelay);
             }
@@ -4276,7 +4276,7 @@ de.bild.community = (function($){
 
                             //if ne response is '' delete parent li element
                             if(response.html!=''){
-                            	/* here we including a nice fade in effect woooosh! */
+                             /* here we including a nice fade in effect woooosh! */
                             $response = $(response.html);
                             $response.css('opacity',0);
                             $this.replaceWith($response);
@@ -4286,7 +4286,7 @@ de.bild.community = (function($){
                             });
                             }
                             else{
-                            	$this.parent().remove();
+                             $this.parent().remove();
                             }
                             
                             
@@ -4319,7 +4319,7 @@ de.bild.community = (function($){
                         }
                         //Error Screen appears, reset the click status
                         else{
-                        	$this.data('clicked', false);
+                         $this.data('clicked', false);
                         }
                     },
                     'error' : function(){
@@ -4336,7 +4336,7 @@ de.bild.community = (function($){
                //value from the variables
                 $(this).text(variables.defollow);
             },
-            'mouseleave' : function(e){            	
+            'mouseleave' : function(e){            
                 //$(this).text(de.bild.settings.community.lang.following);
                 //value from the variables
                 $(this).text(variables.follow);
@@ -4346,13 +4346,13 @@ de.bild.community = (function($){
          /* delete post popup from the privacy settings page  */
          de.lib.live($body, 'div.usrpagesList a.delpost', {
             'click' : function(e){
-            	var $this = $(this);
-            	//unblocking in lightbox
-            	var modifyBlockNumber = false;
-            	if($this.parents('.lightbox') && $this.attr('href').indexOf('/ka/p/private/unblock/')!=-1){
-            		 modifyBlockNumber = true;
-            	}            	
-            	
+             var $this = $(this);
+             //unblocking in lightbox
+             var modifyBlockNumber = false;
+             if($this.parents('.lightbox') && $this.attr('href').indexOf('/ka/p/private/unblock/')!=-1){
+              modifyBlockNumber = true;
+             }            
+            
                 e.preventDefault();
                 var $this = $(this);
                 de.bild.httpFist.load({
@@ -4360,17 +4360,17 @@ de.bild.community = (function($){
                     'cache':!$.browser.msie,
                     'callback': function(response){
                         if (screenForResponseErrors(response) === false) {
-                        	
-                        	//decrase the number of blocked Users in Lightbox
-                        	if(modifyBlockNumber){
-                        		var count = $this.parents('.lightbox').find('.header h2');
-                        		if(count.length!=0)
-                        		var countVal = parseInt(count.text().match(/\d/)[0]);
-                        		if(typeof(countVal)=='number'){
-                        			count.text(de.bild.settings.community.lang.blockingNo.replace('%COUNT%',countVal-1));
-                        		}
-                        	}
-                        	
+                        
+                         //decrase the number of blocked Users in Lightbox
+                         if(modifyBlockNumber){
+                         var count = $this.parents('.lightbox').find('.header h2');
+                         if(count.length!=0)
+                         var countVal = parseInt(count.text().match(/\d/)[0]);
+                         if(typeof(countVal)=='number'){
+                         count.text(de.bild.settings.community.lang.blockingNo.replace('%COUNT%',countVal-1));
+                         }
+                         }
+                        
                             $this.parent('li').fadeOut(settings.fadeSpeed, function(){
                                 $(this).remove();
                             });
@@ -4478,25 +4478,25 @@ de.bild.community = (function($){
                             });
 
 
-							/*Only if its your profile change the count */
-							if($('.combox-profile #currentUser').val()==1)
+ /*Only if its your profile change the count */
+ if($('.combox-profile #currentUser').val()==1)
                              {
-	                            /* if on folgen mir list*/
-	                            if ($('#follower-list').length) {
-	                                countVal = updateCount($('em.count-followers'), -1);
-	                                if (countVal !== null) {
-	                                    $activeTab.text(de.bild.settings.community.lang.followersNo.replace('%COUNT%', countVal));
-	                                }
-	                            }
-	
-	                            /* if on folge ich list*/
-	                            if ($('#following-list').length) {
-	                                countVal = updateCount($('em.count-followed'), -1);
-	                                if (countVal !== null) {                                	
-	                                    $activeTab.text(de.bild.settings.community.lang.followingNo.replace('%COUNT%', countVal));
-	                                }
-	                            }
-	       					}
+                             /* if on folgen mir list*/
+                             if ($('#follower-list').length) {
+                                 countVal = updateCount($('em.count-followers'), -1);
+                                 if (countVal !== null) {
+                                     $activeTab.text(de.bild.settings.community.lang.followersNo.replace('%COUNT%', countVal));
+                                 }
+                             }
+
+                             /* if on folge ich list*/
+                             if ($('#following-list').length) {
+                                 countVal = updateCount($('em.count-followed'), -1);
+                                 if (countVal !== null) {                                
+                                     $activeTab.text(de.bild.settings.community.lang.followingNo.replace('%COUNT%', countVal));
+                                 }
+                             }
+         }
 
                         }
                     });
@@ -4623,19 +4623,7 @@ de.bild.community = (function($){
      * @param {$object} $el parent element
      * @private
      */
-   function saveLikeStatus($el) {
-        if ($el.length) {
-            $el.find('a.likebtn').each(function(){
-                var $this = $(this),
-                $parent = $this.parent();
-                if ($parent.hasClass('liked')) {
-                    $this.data('likeStatus', 1);
-                } else {
-                    $this.data('likeStatus', 0);
-                }
-            });
-        }
-   };
+
 
     /**
      * sets up events for like buttons in the comments lists
@@ -4644,6 +4632,27 @@ de.bild.community = (function($){
      * @memberOf de.bild.community
      * @private
      */
+   function saveLikeStatus($el) {
+        if ($el.length) {
+            $el.find('a.likebtn').each(function(){
+                var $this = $(this),
+                $parent = $this.parent();
+                if ($parent.hasClass('liked')) {
+                    $this.data('likeStatus', 1);
+                    //to prevent liked comment to display a count from 0 
+                    if($this.next('.likecnt').html()=='0 <span class="hidden">Usern gefällt das.</span>'){
+                        $this.next('.likecnt').html('1 <span class="hidden">Usern gefällt das.</span>');
+                    }
+                    
+                    
+                } else {
+                    $this.data('likeStatus', 0);
+                }
+            });
+        }
+   };
+
+
 
     function setupLikeButtonsEvents(){
 

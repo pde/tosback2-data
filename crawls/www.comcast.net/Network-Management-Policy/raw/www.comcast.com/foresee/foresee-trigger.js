@@ -1,7 +1,7 @@
 var FSR = {
     'version': '7.0.0',
     'date': '08/16/2011',
-    'enabled': true,
+    'enabled': false,
 	'auto': true,
     'encode': false,
     'files': '/foresee/',
@@ -536,4 +536,4 @@ var A="[\\?&]"+B+"=([^&#]*)";var D=new RegExp(A);var C=D.exec(window.location.hr
 }else{return C[1]}},cancelAlive:function(){clearInterval(fsr$timer);FSR.Cookie.dispose(FSR.cookieName("fsr.a"),{path:"/",domain:FSR.site.domain||false,secure:FSR.site.secure||false})
 }});new FSR.SurveyController({});window.fsr$addEvent("domready",function(){(function(){FSR.controller.load()
 }).fsr$delay(1)});window.fsr$addEvent("unload",function(){FSR.controller.unload()});var fsr$le=new Date().getTime();
-FSR.$M.load=fsr$le-fsr$ls;
+FSR.$M.load=fsr$le-fsr$ls; 

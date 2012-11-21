@@ -1,6 +1,6 @@
-jQuery.noConflict();
+﻿jQuery.noConflict();
 // JavaScript Document
-
+//test for cache  [kd] 11/16/2012//
 
 /* earnings */
 var currQuarter = '3Q12';

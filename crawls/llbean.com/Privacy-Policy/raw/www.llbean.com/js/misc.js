@@ -106,7 +106,16 @@ function openit(sURL,tWidth,tHeight,showToolbar,windowName) {
 	var windowName = windowName ? windowName : 'popup'; // allows more than one popup to be opened from common parent window
 
 	var newwindow = miscUtils.openSimpleWindow(sURL ,windowName, {width:tWidth, height:tHeight, toolbar: toolbar});
+	
+	// code changing focus is throwing an error in IE8, skipping if IE	
+	
+	var isIE = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;	
+	
+	if(!isIE){
+	
 	if(newwindow.focus) {newwindow.focus();} // bring window to front if already open
+
+	} 
 } 
 
 // used to display popup help windows
@@ -297,8 +306,8 @@ Code to detect flash plug-in and version
 Based on  moock fpi [f.lash p.layer i.nspector]
  version: 1.3.5
  written by colin moock
-code maintained at: http://www.moock.org/webdesign/flash/detection/moockfpi/
- terms of use posted at: http://www.moock.org/terms/
+code maintained at: http://"ec"+"webs01".moock.org/webdesign/flash/detection/moockfpi/
+ terms of use posted at: http://"ec"+"webs01".moock.org/terms/
 */
 // #############################################
 // these are the user defined globals
@@ -922,7 +931,7 @@ function processURL(url, maxLen){
 var llb_ab_cookie={
    'name' : 'LLBAC',
    'ck_domain' : '.llbean.com',
-   'ck_expiration' : new Date('November 11, 2012'),
+   'ck_expiration' : new Date('July 14, 2013'),
    'e_var' :'eVar46',
    'domain' : '.llbean.com',
    'vSeg' : ['LLBAC A Text', 'LLBAC B Image', 'LLBAC C Hybrid', 'LLB Search']
@@ -963,73 +972,48 @@ llb_ab_cookie.setMetricVar=function(mvar,val) {
     }
 }
 
-if (llb_ab_cookie.getVal(llb_ab_cookie.name) != null) {
-			
-			llb_ab_cookie.val= llb_ab_cookie.getVal(llb_ab_cookie.name);
-		
-			if (llb_ab_cookie.val) {		
-			
-					llb_ab_cookie.val = llb_ab_cookie.val.substr(0,1);
-			
-					llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
+//gets the random number and based on business prefrence, autocomplete versions are segmented
+function cookieValSegmentation() {
+    // Random number 0 - 9
+    var varRandy = llb_ab_cookie.getRandInt(10);
 
-			} else {
-
-			var varRandy = llb_ab_cookie.getRandInt(10);
-
-			// Hybrid - greater than 6 or 40%  (9,8,7,6) - 4 values = 40%
-			if (varRandy > 5){
-				llb_ab_cookie.val= 2;
-
-			// Image - greater than 1 or 40% (2,3,4,5) - 4 values = 40%
-			} else if (varRandy > 1){
-				llb_ab_cookie.val= 1;
-						
-			// Text - equal to 1 or 10% (1) - 1 value = 10%
-			} else if (varRandy == 1){
-				llb_ab_cookie.val= 0;
-			
-			// Control - else or (must be zero) 10%  (0) - 1 values 10%
-			} else {
-				llb_ab_cookie.val= 3;
-			}
-						
-			llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
-
-			}
-			
-} else	{
-			var varRandy = llb_ab_cookie.getRandInt(10);
-
-			// Hybrid - greater than 6 or 40%  (9,8,7,6) - 4 values = 40%
-			if (varRandy > 5){
-				llb_ab_cookie.val= 2;
-
-			// Image - greater than 1 or 40% (2,3,4,5) - 4 values = 40%
-			} else if (varRandy > 1){
-				llb_ab_cookie.val= 1;
-						
-			// Text - equal to 1 or 10% (1) - 1 value = 10%
-			} else if (varRandy == 1){
-				llb_ab_cookie.val= 0;
-			
-			// Control - else or (must be zero) 10%  (0) - 1 values 10%
-			} else {
-				llb_ab_cookie.val= 3;
-			}
-			
-			llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
-
-		}
-		
-if (llb_ab_cookie.urlParm('llbac_seg')!= null){
+    // Image - greater than 5 or 40%  (9,8,7,6, 5) - 5 values = 50%
+	    if (varRandy >= 5) {
+		llb_ab_cookie.val = 1;
 	
+		// Department - greater than 1 or 40% (1,2,3,4) - 4 values = 40%  - Not used
+	    //   } else if (varRandy > 1) {
+		//llb_ab_cookie.val = 3;
+	
+		// Text - equal to 1,2, 3, 4 or 40% (1) - 1 value = 40%
+	    } else if (varRandy > 0){
+		llb_ab_cookie.val= 0;
+		
+		// Control - else or (must be zero) 10%  (0) - 1 values 10%
+	    } else {
+		llb_ab_cookie.val = 4;
+	    }
+
+    llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
+}
+
+if (llb_ab_cookie.getVal(llb_ab_cookie.name) != null) {
+	llb_ab_cookie.val = llb_ab_cookie.getVal(llb_ab_cookie.name);
+
+	if (llb_ab_cookie.val) {
+		llb_ab_cookie.val = llb_ab_cookie.val.substr(0, 1);
+		llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
+	} else {
+		cookieValSegmentation();
+	}
+} else {
+	cookieValSegmentation();
+}
+
+if (llb_ab_cookie.urlParm('llbac_seg') != null) {
 	llb_ab_cookie.val = llb_ab_cookie.urlParm('llbac_seg');
 	llb_ab_cookie.setVal(llb_ab_cookie.name, llb_ab_cookie.val, llb_ab_cookie.ck_expiration, '/', llb_ab_cookie.domain);
-
-	}	
-		
+}
 
 llb_ab_cookie.setMetricVar(llb_ab_cookie.e_var, llb_ab_cookie.vSeg[llb_ab_cookie.val]);
-
 

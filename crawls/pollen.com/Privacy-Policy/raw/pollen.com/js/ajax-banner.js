@@ -1,5 +1,6 @@
 var to;
 var to2;
+var blHold = false;
 
 function makeHttpRequest(url, callback_function, return_xml)
 {
@@ -50,6 +51,12 @@ function loadBanner(xml)
     var reload_after = xml.getElementsByTagName('reload').item(0).firstChild.nodeValue;
 	var rand = Math.floor(Math.random()*10000);
 
+	// hold ads reload if the last ad
+	if(parseInt(reload_after) > 500000)
+	{
+		blHold = true;
+	}
+
 	// cache-busting
 	html_content = html_content.replace(/\[timestamp\]/g,now.getTime()+''+rand);
 	
@@ -73,6 +80,12 @@ function loadBanner2(xml)
     var html_content = xml.getElementsByTagName('content').item(0).firstChild.nodeValue;
     var reload_after = xml.getElementsByTagName('reload').item(0).firstChild.nodeValue;
 	var rand = Math.floor(Math.random()*10000);
+	
+	// hold ads reload if the last ad
+	if(parseInt(reload_after) > 500000)
+	{
+		blHold = true;
+	}
 
 	// cache-busting
 	html_content = html_content.replace(/\[timestamp\]/g,now.getTime()+''+rand);
@@ -99,7 +112,9 @@ function pauseAds() {
 }
 // resume ads on mouse out
 function resumeAds() {
-	to=setTimeout("nextAd()", 2000);
-	to2=setTimeout("nextAd2()", 2000);
+	if(!blHold) {
+		to=setTimeout("nextAd()", 2000);
+		to2=setTimeout("nextAd2()", 2000);	
+	}
 }
 

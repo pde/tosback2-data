@@ -35,7 +35,7 @@
 		} else if (typeof(products_number) != 'undefined' &&  products_number > 0) {
 			set_sipp(products_number);
 		} else {
-			sipp = 10;
+			sipp = 40;
 		}	
 	}
 

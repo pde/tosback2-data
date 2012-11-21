@@ -459,6 +459,367 @@ if (active && surveyAcceptsCookies() && surveyNewSession() && !surveyExceptionUr
 		inviteLine3["th"] = "\u0e16\u0e49\u0e32\u0e15\u0e01\u0e25\u0e07\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21\u0e17\u0e33\u0e08\u0e30\u0e40\u0e23\u0e34\u0e48\u0e21\u0e41\u0e1a\u0e1a\u0e2a\u0e33\u0e23\u0e27\u0e08\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e04\u0e38\u0e13\u0e40\u0e2a\u0e23\u0e47\u0e08\u0e2a\u0e34\u0e49\u0e19\u0e01\u0e32\u0e23\u0e40\u0e02\u0e49\u0e32\u0e0a\u0e21 IKEA.com \u0e27\u0e31\u0e19\u0e19\u0e35\u0e49";
 		inviteYes["th"] = "\u0e40\u0e02\u0e49\u0e32\u0e23\u0e48\u0e27\u0e21";
 		inviteNo["th"] = "\u0e44\u0e21\u0e48\u0e25\u0e48\u0e30 \u0e02\u0e2d\u0e1a\u0e43\u0e08";
+		
+        //language invite text - amended sept 2012
+
+	//21092012
+        inviteLine1["th"] = "&#3594;&#3656;&#3623;&#3618;&#3648;&#3619;&#3634;&#3611;&#3619;&#3633;&#3610;&#3611;&#3619;&#3640;&#3591;!";
+	inviteLine2["th"] = "&#3588;&#3640;&#3603;&#3605;&#3657;&#3629;&#3591;&#3585;&#3634;&#3619;&#3619;&#3656;&#3623;&#3617;&#3605;&#3629;&#3610;&#3649;&#3610;&#3610;&#3626;&#3635;&#3619;&#3623;&#3592;&#3627;&#3619;&#3639;&#3629;&#3652;&#3617;&#3656; &#3649;&#3610;&#3610;&#3626;&#3635;&#3619;&#3623;&#3592;&#3609;&#3637;&#3657;&#3592;&#3632;&#3651;&#3594;&#3657;&#3648;&#3623;&#3621;&#3634;&#3611;&#3619;&#3632;&#3617;&#3634;&#3603; 10 &#3609;&#3634;&#3607;&#3637;"
+	inviteLine3["th"] = "&#3606;&#3657;&#3634;&#3605;&#3585;&#3621;&#3591;&#3648;&#3586;&#3657;&#3634;&#3619;&#3656;&#3623;&#3617;&#3607;&#3635; &#3592;&#3632;&#3648;&#3619;&#3636;&#3656;&#3617;&#3649;&#3610;&#3610;&#3626;&#3635;&#3619;&#3623;&#3592;&#3648;&#3617;&#3639;&#3656;&#3629;&#3588;&#3640;&#3603;&#3648;&#3626;&#3619;&#3655;&#3592;&#3626;&#3636;&#3657;&#3609;&#3585;&#3634;&#3619;&#3648;&#3586;&#3657;&#3634;&#3594;&#3617; IKEA.co.th &#3623;&#3633;&#3609;&#3609;&#3637;&#3657;";
+	inviteYes["th" ] = "&#3648;&#3586;&#3657;&#3634;&#3619;&#3656;&#3623;&#3617;";
+	inviteNo["th"] = "&#3652;&#3617;&#3656;&#3621;&#3656;&#3632; &#3586;&#3629;&#3610;&#3651;&#3592;";
+        
+        //21092012
+   	inviteLine1["bg"] = "&#1055;&#1086;&#1084;&#1086;&#1075;&#1085;&#1077;&#1090;&#1077; &#1085;&#1080; &#1076;&#1072; &#1089;&#1090;&#1072;&#1085;&#1077;&#1084; &#1087;&#1086;-&#1076;&#1086;&#1073;&#1088;&#1080;!";
+    	inviteLine2["bg"] = "&#1041;&#1080;&#1093;&#1090;&#1077; &#1083;&#1080; &#1078;&#1077;&#1083;&#1072;&#1083;&#1080; &#1076;&#1072; &#1091;&#1095;&#1072;&#1089;&#1090;&#1074;&#1072;&#1090;&#1077; &#1074; &#1085;&#1072;&#1096;&#1077;&#1090;&#1086; &#1087;&#1088;&#1086;&#1091;&#1095;&#1074;&#1072;&#1085;&#1077;? &#1055;&#1088;&#1086;&#1091;&#1095;&#1074;&#1072;&#1085;&#1077;&#1090;&#1086; &#1097;&#1077; &#1042;&#1080; &#1086;&#1090;&#1085;&#1077;&#1084;&#1077; &#1086;&#1082;&#1086;&#1083;&#1086; 10 &#1084;&#1080;&#1085;&#1091;&#1090;&#1080;, &#1079;&#1072; &#1076;&#1072; &#1075;&#1086; &#1087;&#1086;&#1087;&#1098;&#1083;&#1085;&#1080;&#1090;&#1077;.";
+    	inviteLine3["bg"] = "&#1040;&#1082;&#1086; &#1089;&#1090;&#1077; &#1089;&#1098;&#1075;&#1083;&#1072;&#1089;&#1085;&#1080; &#1076;&#1072; &#1091;&#1095;&#1072;&#1089;&#1090;&#1074;&#1072;&#1090;&#1077;, &#1087;&#1088;&#1086;&#1091;&#1095;&#1074;&#1072;&#1085;&#1077;&#1090;&#1086; &#1097;&#1077; &#1079;&#1072;&#1087;&#1086;&#1095;&#1085;&#1077;, &#1082;&#1086;&#1075;&#1072;&#1090;&#1086; &#1079;&#1072;&#1074;&#1098;&#1088;&#1096;&#1080;&#1090;&#1077; &#1076;&#1085;&#1077;&#1096;&#1085;&#1086;&#1090;&#1086; &#1089;&#1080; &#1087;&#1086;&#1089;&#1077;&#1097;&#1077;&#1085;&#1080;&#1077; &#1085;&#1072; IKEA.com";
+    	inviteYes["bg" ] = "&#1042;&#1079;&#1080;&#1084;&#1072;&#1084; &#1091;&#1095;&#1072;&#1089;&#1090;&#1080;&#1077;";
+    	inviteNo["bg"] = "&#1053;&#1077;, &#1073;&#1083;&#1072;&#1075;&#1086;&#1076;&#1072;&#1088;&#1103;";
+
+        //21092012
+        inviteLine1["en"] = "Help us to improve!";
+        inviteLine2["en"] = "Would you like to participate in our survey? The survey will take approximately 10 minutes to complete.";
+        inviteLine3["en"] = "If you agree to take part the survey will start when you finish your visit to IKEA.com today";
+        inviteYes["en" ] = "Take Part";
+        inviteNo["en"] = "No thanks";
+
+	//21092012  
+      	inviteLine1["fr"] = "Aidez-nous &#224; nous am&#233;liorer !";
+      	inviteLine2["fr"] = "Souhaiteriez-vous participer &#224; notre enqu&#234;te ? Elle vous prendra environ 10 minutes.";
+      	inviteLine3["fr"] = "Si vous acceptez de participer, l'enqu&#234;te ne commencera qu'&#224; la fin de votre visite sur IKEA.com";
+      	inviteYes["fr"] = "Participer";
+      	inviteNo["fr"] = "Non, merci";
+    	 	
+ 	
+ 	//21092012 alternative french for belgium site	
+	if (inviteCountry == "be"){
+	inviteLine1["fr"] = "Aidez-nous &#224; nous am&#233;liorer !";
+	inviteLine2["fr"] = "Souhaiteriez-vous participer &#224; notre enqu&#234;te ? Elle vous prendra environ 10 minutes.";
+	inviteLine3["fr"] = "Si vous acceptez de prendre part, l'enqu&#234;te commencera aujourd'hui &#224; la fin de votre visite sur IKEA.com";
+	inviteYes["fr"] = "Prendre part";
+	inviteNo["fr"] = "Non, merci";
+ 	}
+ 	
+        //21092012
+        inviteLine1["da"] = "Hj&#230;lp os med at blive bedre!";
+	inviteLine2["da"] = "Har du lyst til at deltage i vores unders&#248;gelse? Unders&#248;gelsen tager ca. 10 minutter.";
+	inviteLine3["da"] = "Hvis du vil v&#230;re med, starter unders&#248;gelsen, n&#229;r du afslutter dit bes&#248;g hos IKEA.com i dag";
+	inviteYes["da"] = "Deltag";
+	inviteNo["da"] = "Nej tak";
+        
+        //21092012
+        inviteLine1["cs"] = "Pomozte n&#225;m zlep&#353;it se!";
+	inviteLine2["cs"] = "&#8222;Cht&#283;l/a byste se z&#250;&#269;astnit na&#353;eho pr&#367;zkumu? Jeho vypln&#283;n&#237; zabere p&#345;ibli&#382;n&#283; 10 minut.&#8220;";
+	inviteLine3["cs"] = "&#8222;Pokud se chcete z&#250;&#269;astnit, pr&#367;zkum za&#269;ne, jakmile ukon&#269;&#237;te dne&#353;n&#237; n&#225;v&#353;t&#283;vu internetov&#233; str&#225;nky www.IKEA.cz &#8220;";
+	inviteYes["cs"] = "Z&#250;&#269;astn&#237;m se";
+	inviteNo["cs"] = "Ne, d&#283;kuji";
+
+        //21092012
+        inviteLine1["fi"] = "Kerro mielipiteesi!";
+	inviteLine2["fi"] = "Haluaisitko osallistua kyselyymme? Kyselyyn vastaaminen kest&#228;&#228; noin 10 minuuttia.";
+	inviteLine3["fi"] = "Jos haluat osallistua, kysely k&#228;ynnistyy, kun poistut IKEA-sivustolta.";
+	inviteYes["fi"] = "Haluan osallistua";
+	inviteNo["fi"] = "Ei kiitos";
+        
+        //21092012
+        inviteLine1["el"] = "&#914;&#959;&#951;&#952;&#942;&#963;&#964;&#949; &#956;&#945;&#962; &#957;&#945; &#946;&#949;&#955;&#964;&#953;&#969;&#952;&#959;&#973;&#956;&#949;!";
+	inviteLine2["el"] = "&#920;&#945; &#952;&#941;&#955;&#945;&#964;&#949; &#957;&#945; &#955;&#940;&#946;&#949;&#964;&#949; &#956;&#941;&#961;&#959;&#962; &#963;&#964;&#951;&#957; &#941;&#961;&#949;&#965;&#957;&#940; &#956;&#945;&#962;; &#913;&#960;&#945;&#953;&#964;&#959;&#973;&#957;&#964;&#945;&#953; &#960;&#949;&#961;&#943;&#960;&#959;&#965; 10 &#955;&#949;&#960;&#964;&#940; &#947;&#953;&#945; &#964;&#951; &#959;&#955;&#959;&#954;&#955;&#942;&#961;&#969;&#963;&#951; &#964;&#951;&#962; &#941;&#961;&#949;&#965;&#957;&#945;&#962;.";
+	inviteLine3["el"] = "&#917;&#940;&#957; &#963;&#965;&#956;&#966;&#969;&#957;&#942;&#963;&#949;&#964;&#949; &#957;&#945; &#955;&#940;&#946;&#949;&#964;&#949; &#956;&#941;&#961;&#959;&#962;, &#951; &#941;&#961;&#949;&#965;&#957;&#945; &#952;&#945; &#958;&#949;&#954;&#953;&#957;&#942;&#963;&#949;&#953; &#972;&#964;&#945;&#957; &#964;&#949;&#961;&#956;&#945;&#964;&#943;&#963;&#949;&#964;&#949; &#964;&#951;&#957; &#949;&#960;&#943;&#963;&#954;&#949;&#968;&#942; &#963;&#945;&#962; &#963;&#964;&#959; IKEA.com &#963;&#942;&#956;&#949;&#961;&#945;";
+	inviteYes["el"] = "&#920;&#945; &#955;&#940;&#946;&#969; &#956;&#941;&#961;&#959;&#962;";
+	inviteNo["el"] = "&#908;&#967;&#953;, &#949;&#965;&#967;&#945;&#961;&#953;&#963;&#964;&#974;";
+
+          
+        inviteLine1["he"] = "&#1506;&#1494;&#1493;&#1512; &#1500;&#1504;&#1493; &#1500;&#1492;&#1513;&#1514;&#1508;&#1512;!";
+        inviteLine2["he"] = "&#1492;&#1488;&#1501; &#1492;&#1497;&#1497;&#1514; &#1512;&#1493;&#1510;&#1492; &#1500;&#1492;&#1513;&#1514;&#1514;&#1507; &#1489;&#1505;&#1511;&#1512; &#1492;&#1511;&#1510;&#1512; &#1513;&#1500;&#1504;&#1493;?";
+        inviteLine3["he"] = "&#1488;&#1501; &#1514;&#1505;&#1499;&#1497;&#1501; &#1500;&#1511;&#1495;&#1514; &#1495;&#1500;&#1511; &#1489;&#1505;&#1511;&#1512;, &#1492;&#1493;&#1488; &#1497;&#1514;&#1495;&#1497;&#1500; &#1499;&#1513;&#1514;&#1505;&#1497;&#1497;&#1501; &#1488;&#1514; &#1492;&#1489;&#1497;&#1511;&#1493;&#1512; &#1513;&#1500;&#1498; &#1489;-IKEA.com &#1492;&#1497;&#1493;&#1501;";
+        inviteYes["he"] = "&#1500;&#1511;&#1495;&#1514; &#1495;&#1500;&#1511; &#1489;&#1505;&#1511;&#1512;";
+        inviteNo["he"] = "&#1500;&#1488; &#1514;&#1493;&#1491;&#1492;";
+
+       
+	//21092012	        
+        inviteLine1["hu"] = "Seg&#237;ts benn&#252;nket a fejl&#337;d&#233;sben!";
+	inviteLine2["hu"] = "Szeretn&#233;l r&#233;szt venni felm&#233;r&#233;s&#252;nkben? A felm&#233;r&#233;s kit&#246;lt&#233;se k&#246;r&#252;lbel&#252;l 10 percig tart.";
+	inviteLine3["hu"] = "Ha beleegyezel a r&#233;szv&#233;telbe, a felm&#233;r&#233;s akkor kezd&#337;dik meg, ha befejezted mai l&#225;togat&#225;sodat az IKEA.com oldalon.";
+	inviteYes["hu"] = "R&#233;szt veszek";
+	inviteNo["hu"] = "K&#246;sz&#246;n&#246;m, nem";
+	
+	//21092012	
+	inviteLine1["it"] = "Aiutaci a migliorare!";
+	inviteLine2["it"] = "Vuoi partecipare al nostro sondaggio? Per completarlo sono sufficienti 10 minuti circa ."; 
+	inviteLine3["it"] = "Se accetti di partecipare, il sondaggio verr&#224; lanciato al termine della tua visita di oggi su IKEA.com.";
+	inviteYes["it"] = "Partecipa";
+	inviteNo["it"] = "No, grazie";
+	
+	 
+	//21092012        
+        inviteLine1["no"] = "Hjelp oss &#229; bli bedre!";
+	inviteLine2["no"] = "Har du lyst til &#229; delta i v&#229;r unders&#248;kelse? Unders&#248;kelsen tar ca 10 minutter &#229; fullf&#248;re.";
+	inviteLine3["no"] = "Hvis du velger &#229; delta, starter unders&#248;kelsen n&#229;r du avslutter dagens bes&#248;k p&#229; IKEA.no.";
+	inviteYes["no"] = "Delta";
+	inviteNo["no"] = "Nei takk";
+        
+        //21092012
+        inviteLine1["pl"] = "Prosimy o pomoc w podniesieniu jako&#347;ci naszych us&#322;ug!";
+	inviteLine2["pl"] = "Czy chcia&#322;(a)by Pan(i) wzi&#261;&#263; udzia&#322; w naszej ankiecie? Wype&#322;nienie ankiety zajmie ok. 10 minut."; 
+	inviteLine3["pl"] = "Je&#380;eli wyrazi Pan(i) zgod&#281;, ankieta rozpocznie si&#281; po zako&#324;czeniu Pana/i dzisiejszej wizyty w IKEA.com.";
+	inviteYes["pl"] = "Chc&#281; wzi&#261;&#263; udzia&#322;";
+	inviteNo["pl"] = "Nie, dzi&#281;kuj&#281; ";
+
+	//21092012
+        inviteLine1["rm"] = "Ajuta&#355;i-ne s&#259; fim mai buni!";
+	inviteLine2["rm"] = "Dori&#355;i s&#259; participa&#355;i la sondajul nostru? Completarea chestionarului dureaz&#259; aproximativ 10 minute";
+	inviteLine3["rm"] = "Dac&#259; sunte&#355;i de acord s&#259; participa&#355;i, sondajul va &#238;ncepe la &#238;ncheierea vizitei dumneavoastr&#259; de ast&#259;zi de pe IKEA.com";
+	inviteYes["rm"] = "Vreau s&#259; particip";
+	inviteNo["rm"] = "Nu, mul&#355;umesc ";
+
+ 
+        //21092012
+        inviteLine1["sl"] = "Pomagajte se nam izbolj&#353;ati!";
+	inviteLine2["sl"] = "Si &#382;elite sodelovati v na&#353;i anketi? Anketa traja pribli&#382;no 10 minut.";
+	inviteLine3["sl"] = "&#268;e se boste strinjali, se bo anketa za&#269;ela, ko boste kon&#269;ali z dana&#353;njim obiskom spletnega mesta IKEA.com.";
+	inviteYes["sl"] = "&#381;elim sodelovati";
+	inviteNo["sl"] = "Ne, hvala";
+	
+        //21092012  usa spanish	
+	inviteLine1["es-us"] = "&#161;Ay&#250;denos a mejorar!";
+	inviteLine2["es-us"] = "&#191;Le gustar&#237;a participar en nuestra encuesta? La encuesta le llevar&#225; unos 10 minutos aproximadamente.";
+	inviteLine3["es-us"] = "Si acepta participar, la encuesta comenzar&#225; cuando termine su visita a IKEA.com hoy.";
+	inviteYes["es-us"] = "Participar";
+	inviteNo["es-us"] = "No, gracias";
+
+
+	//290912 - dom republic spanish
+	if (inviteCountry == "do"){
+	
+	inviteLine1["es-us"] = "&#161;Ay&#250;danos a mejorar!"
+	inviteLine2["es-us"] = "&#191;Te gustar&#237;a participar en nuestra encuesta? Responder a la misma te llevar&#225; aproximadamente 10 minutos.";
+	inviteLine3["es-us"] = "Si aceptas participar, la encuesta comenzar&#225; hoy, cuando termine tu visita a IKEA.com.do.";
+	inviteYes["es-us"] = "Participar";
+	inviteNo["es-us"] = "No, gracias";
+	}
+	
+	
+	//21092012
+	inviteLine1["fr-ca"] = "Aidez-nous &#224; nous am&#233;liorer!";
+	inviteLine2["fr-ca"] = "Aimeriez-vous participer &#224; notre sondage ? Il vous prendra environ 10 minutes.";
+	inviteLine3["fr-ca"] = "Si vous acceptez de participer, le sondage commencera lorsque vous aurez termin&#233; de visiter IKEA.com";
+	inviteYes["fr-ca"] = "Je d&#233;sire participer";
+	inviteNo["fr-ca"] = "Non, merci";
+
+        
+      	//21092012  
+        inviteLine1["ru"] = "&#1055;&#1086;&#1084;&#1086;&#1075;&#1080;&#1090;&#1077; &#1085;&#1072;&#1084; &#1089;&#1090;&#1072;&#1090;&#1100; &#1083;&#1091;&#1095;&#1096;&#1077;!";
+	inviteLine2["ru"] = "&#1042;&#1099; &#1093;&#1086;&#1090;&#1077;&#1083;&#1080; &#1073;&#1099; &#1087;&#1088;&#1080;&#1085;&#1103;&#1090;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1080;&#1077; &#1074; &#1085;&#1072;&#1096;&#1077;&#1084; &#1080;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1080;? &#1048;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1077; &#1079;&#1072;&#1081;&#1084;&#1077;&#1090; &#1087;&#1088;&#1080;&#1084;&#1077;&#1088;&#1085;&#1086; 10 &#1084;&#1080;&#1085;&#1091;&#1090;";
+	inviteLine3["ru"] = "&#1045;&#1089;&#1083;&#1080; &#1074;&#1099; &#1089;&#1086;&#1075;&#1083;&#1072;&#1089;&#1080;&#1090;&#1077;&#1089;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1074;&#1086;&#1074;&#1072;&#1090;&#1100;, &#1090;&#1086; &#1089;&#1084;&#1086;&#1078;&#1077;&#1090;&#1077; &#1087;&#1088;&#1080;&#1089;&#1090;&#1091;&#1087;&#1080;&#1090;&#1100; &#1082; &#1080;&#1089;&#1089;&#1083;&#1077;&#1076;&#1086;&#1074;&#1072;&#1085;&#1080;&#1102;, &#1082;&#1086;&#1075;&#1076;&#1072; &#1079;&#1072;&#1082;&#1088;&#1086;&#1077;&#1090;&#1077; &#1089;&#1072;&#1081;&#1090; IKEA.com. ";
+	inviteYes["ru"] = "&#1055;&#1088;&#1080;&#1085;&#1103;&#1090;&#1100; &#1091;&#1095;&#1072;&#1089;&#1090;&#1080;&#1077;";
+	inviteNo["ru"] = "&#1053;&#1077;&#1090;, &#1089;&#1087;&#1072;&#1089;&#1080;&#1073;&#1086;";
+  
+    
+      	//21092012
+      	inviteLine1["zh-hk"] = "&#24171;&#21161;&#25105;&#20497;&#25913;&#21892;&#65281;";
+      	inviteLine2["zh-hk"] = "&#24744;&#39000;&#24847;&#21443;&#21152;&#25105;&#20497;&#30340;&#35519;&#26597;&#21966;&#65311;&#23436;&#25104;&#26412;&#35519;&#26597;&#38656;&#35201; 10 &#20998;&#37912;&#24038;&#21491;&#30340;&#26178;&#38291;&#12290;"; 
+      	inviteLine3["zh-hk"] = "&#22914;&#26524;&#24744;&#21516;&#24847;&#21443;&#33287;&#65292;&#21063;&#22312;&#24744;&#36896;&#35370;&#23436; IKEA.com &#24460;&#65292;&#21363;&#38283;&#22987;&#26412;&#35519;&#26597;";
+      	inviteYes["zh-hk"] = "&#21443;&#33287;";
+      	inviteNo["zh-hk"] = "&#19981;&#21443;&#33287;&#65292;&#35613;&#35613;";
+
+      
+	//21092012	
+	inviteLine1["zh-tw"] = "&#24744;&#30340;&#24847;&#35211;&#26159;&#25105;&#20497;&#36914;&#27493;&#30340;&#21205;&#21147;&#65281;";
+	inviteLine2["zh-tw"] = "&#24744;&#39000;&#24847;&#21443;&#21152;&#25105;&#20497;&#30340;&#35519;&#26597;&#21966;&#65311;&#23436;&#25104;&#26412;&#35519;&#26597;&#38656;&#35201;&#22823;&#32004; 10 &#20998;&#37912;&#30340;&#26178;&#38291;&#12290;"; 
+	inviteLine3["zh-tw"] = "&#22914;&#26524;&#24744;&#39000;&#24847;&#21443;&#21152;&#65292;&#21839;&#21367;&#35519;&#26597;&#23559;&#26371;&#22312;&#24744;&#28687;&#35261;&#23436;IKEA&#32178;&#31449;&#12289;&#38626;&#38283;&#25110;&#38364;&#38281;&#35222;&#31383;&#24460;&#38283;&#22987;&#36914;&#34892;&#12290;";
+	inviteYes["zh-tw"] = "&#25105;&#39000;&#24847;&#21443;&#21152;";
+	inviteNo["zh-tw"] = "&#19981;&#29992;&#20102;&#65292;&#35613;&#35613;";
+
+	//21092012
+        inviteLine1["zh-cn"] = "&#24110;&#21161;&#25105;&#20204;&#25913;&#36827;&#65281;";
+	inviteLine2["zh-cn"] = "&#24744;&#26159;&#21542;&#24895;&#24847;&#21442;&#19982;&#25105;&#20204;&#30340;&#35843;&#26597;&#65311;&#23436;&#25104;&#35813;&#35843;&#26597;&#38656;&#35201;&#22823;&#32422; 10 &#20998;&#38047;&#12290;";
+	inviteLine3["zh-cn"] = "&#22914;&#26524;&#21516;&#24847;&#21442;&#19982;&#65292;&#24744;&#29616;&#22312;&#27983;&#35272;&#23436; IKEA.com &#21518;&#21363;&#21487;&#24320;&#22987;&#20570;&#35843;&#26597;&#38382;&#21367;";
+	inviteYes["zh-cn"] = "&#21442;&#19982;";
+	inviteNo["zh-cn"] = "&#19981;&#65292;&#35874;&#35874;";
+	
+	
+	//21092012 chinese singapore
+	if (inviteCountry == "sg"){
+	
+	inviteLine1["zh-cn"] = "&#24110;&#21161;&#25105;&#20204;&#25913;&#36827;&#65281;";
+	inviteLine2["zh-cn"] = "&#24744;&#26159;&#21542;&#24895;&#24847;&#21442;&#19982;&#25105;&#20204;&#30340;&#35843;&#26597;&#65311;&#23436;&#25104;&#35813;&#35843;&#26597;&#38656;&#35201;&#22823;&#32422; 10 &#20998;&#38047;&#12290;";
+	inviteLine3["zh-cn"] = "&#22914;&#26524;&#21516;&#24847;&#21442;&#19982;&#65292;&#24744;&#29616;&#22312;&#27983;&#35272;&#23436; IKEA.com &#21518;&#21363;&#21487;&#24320;&#22987;&#20570;&#35843;&#26597;&#38382;&#21367;";
+	inviteYes["zh-cn"] = "&#21442;&#19982;";
+	inviteNo["zh-cn"] = "&#19981;&#65292;&#35874;&#35874;";
+	}
+	
+
+        //21092012
+        inviteLine1["is"] = "Hj&#225;lpa&#240;u okkur a&#240; b&#230;ta okkur?";
+	inviteLine2["is"] = "Viltu taka &#254;&#225;tt &#237; stuttri k&#246;nnun okkar?; K&#246;nnunin mun taka um 10 m&#237;n&#250;tur a&#240; fylla &#250;t.";	
+	inviteLine3["is"] = "Ef &#254;&#250; sam&#254;ykkir a&#240; taka &#254;&#225;tt mun k&#246;nnunin hefjast &#254;egar &#254;&#250; l&#253;kur heims&#243;kn &#254;inni &#225; IKEA.is &#237; dag";
+	inviteYes["is"] = "Taka &#254;&#225;tt";
+	inviteNo["is"] = "Nei takk";
+   
+        //21092012
+        inviteLine1["ja"] = "&#12469;&#12540;&#12499;&#12473;&#25913;&#21892;&#12395;&#12372;&#21332;&#21147;&#19979;&#12373;&#12356;&#12290;";
+	inviteLine2["ja"] = "&#24330;&#31038;&#12398;&#35519;&#26619;&#12395;&#12372;&#21332;&#21147;&#38914;&#12369;&#12414;&#12377;&#12363;?  &#12371;&#12398;&#35519;&#26619;&#12398;&#25152;&#35201;&#26178;&#38291;&#12399;&#32004;10&#20998;&#38291;&#12391;&#12377;&#12290;"; 
+	inviteLine3["ja"] = "&#35519;&#26619;&#12408;&#12398;&#12372;&#21442;&#21152;&#12395;&#21516;&#24847;&#12373;&#12428;&#12383;&#22580;&#21512;&#12399;&#12289;&#12362;&#23458;&#27096;&#12364;&#26412;&#26085;IKEA.com &#12408;&#12398;&#12450;&#12463;&#12475;&#12473;&#12434;&#32066;&#20102;&#12375;&#12383;&#24460;&#12391;&#35519;&#26619;&#12364;&#22987;&#12414;&#12426;&#12414;&#12377;&#12290;";
+	inviteYes["ja"] = "&#21442;&#21152;&#12377;&#12427;";
+	inviteNo["ja"] = "&#21442;&#21152;&#12375;&#12394;&#12356;";
+    
+        //21092012
+        inviteLine1["tr"] = "Geli&#351;memiz i&#231;in bize yard&#305;m edin!";
+	inviteLine2["tr"] = "Anketimize kat&#305;lmak ister misiniz? Anketin tamamlanmas&#305; yakla&#351;&#305;k 10 dakika s&#252;recektir."; 
+	inviteLine3["tr"] = "Ankete kat&#305;lmay&#305; kabul etti&#287;iniz takdirde, anket IKEA.com.tr'den &#231;&#305;kt&#305;&#287;&#305;n&#305;z zaman ba&#351;layacakt&#305;r.";
+	inviteYes["tr"] = "Kat&#305;l";
+	inviteNo["tr"] = "Hay&#305;r, te&#351;ekk&#252;r ederim.";
+
+	//21092012
+	inviteLine1["se"] = "Hj&#228;lp oss att bli b&#228;ttre!";
+	inviteLine2["se"] = "Vill du delta i v&#229;r unders&#246;kning? Unders&#246;kningen tar ungef&#228;r 10 minuter.";
+	inviteLine3["se"] = "Om du vill delta s&#229; b&#246;rjar unders&#246;kningen n&#228;r du har avslutat ditt bes&#246;k p&#229; IKEA.com i dag.";
+	inviteYes["se"] = "Delta";
+	inviteNo["se"] = "Nej, tack";
+          
+        //21092012
+        inviteLine1["nl"] = "Help ons te verbeteren!";
+	inviteLine2["nl"] = "Wilt u meedoen aan ons onderzoek? Het onderzoek duurt ca. 10 minuten.";
+	inviteLine3["nl"] = "Als u meedoet, begint het onderzoek wanneer u de IKEA website verlaat.";
+	inviteYes["nl"] = "Ik doe mee";
+	inviteNo["nl"] = "Nee, bedankt";
+
+	//21092012
+	inviteLine1["pt"] = "Ajude-nos a melhorar!";
+	inviteLine2["pt"] = "Gostaria de participar no nosso inqu&#233;rito? O inqu&#233;rito demora cerca de 10 minutos."; 
+	inviteLine3["pt"] = "Se concordar em participar, o inqu&#233;rito ter&#225; in&#237;cio assim que concluir a sua visita a IKEA.com hoje";
+	inviteYes["pt"] = "Participar";
+	inviteNo["pt"] = "N&#227;o, obrigado(a)";
+
+ 	
+	//21092012
+	inviteLine1["ar"] = "&#1587;&#1575;&#1593;&#1583;&#1606;&#1575; &#1601;&#1610; &#1578;&#1591;&#1608;&#1610;&#1585; &#1571;&#1606;&#1601;&#1587;&#1606;&#1575;!";
+	inviteLine2["ar"] = "&#1607;&#1604; &#1578;&#1585;&#1610;&#1583; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1610; &#1583;&#1585;&#1575;&#1587;&#1578;&#1606;&#1575;&#1567; &#1610;&#1587;&#1578;&#1594;&#1585;&#1602; &#1573;&#1603;&#1605;&#1575;&#1604; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; 10 &#1583;&#1602;&#1575;&#1574;&#1602; &#1578;&#1602;&#1585;&#1610;&#1576;&#1611;&#1575;.&#1563";
+	inviteLine3["ar"] = "&#1573;&#1584;&#1575; &#1603;&#1606;&#1578; &#1578;&#1608;&#1575;&#1601;&#1602; &#1593;&#1604;&#1609; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1587;&#1578;&#1576;&#1583;&#1571; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1593;&#1606;&#1583; &#1575;&#1604;&#1575;&#1606;&#1578;&#1607;&#1575;&#1569; &#1605;&#1606; &#1586;&#1610;&#1575;&#1585;&#1578;&#1603; &#1604;&#1605;&#1608;&#1602;&#1593; IKEA.com &#1575;&#1604;&#1610;&#1608;&#1605;";
+	inviteYes["ar"] = "&#1587;&#1571;&#1588;&#1575;&#1585;&#1603;";
+	inviteNo["ar"] = "&#1604;&#1575; &#1588;&#1603;&#1585;&#1575;";
+	
+	
+	//24/09/2012 uae arabic
+	if (inviteCountry == "ae"){
+
+	inviteLine1["ar"] = "&#1587;&#1575;&#1593;&#1583;&#1606;&#1575; &#1601;&#1610; &#1578;&#1591;&#1608;&#1610;&#1585; &#1571;&#1606;&#1601;&#1587;&#1606;&#1575;!";
+	inviteLine2["ar"] = "&#1607;&#1604; &#1578;&#1585;&#1610;&#1583; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1610; &#1583;&#1585;&#1575;&#1587;&#1578;&#1606;&#1575;&#1567; &#1610;&#1587;&#1578;&#1594;&#1585;&#1602; &#1573;&#1603;&#1605;&#1575;&#1604; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; 10 &#1583;&#1602;&#1575;&#1574;&#1602; &#1578;&#1602;&#1585;&#1610;&#1576;&#1611;&#1575;.&#1563";
+	inviteLine3["ar"] = "&#1573;&#1584;&#1575; &#1603;&#1606;&#1578; &#1578;&#1608;&#1575;&#1601;&#1602; &#1593;&#1604;&#1609; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1587;&#1578;&#1576;&#1583;&#1571; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1593;&#1606;&#1583; &#1575;&#1604;&#1575;&#1606;&#1578;&#1607;&#1575;&#1569; &#1605;&#1606; &#1586;&#1610;&#1575;&#1585;&#1578;&#1603; &#1604;&#1605;&#1608;&#1602;&#1593; IKEA.com &#1575;&#1604;&#1610;&#1608;&#1605;";
+	inviteYes["ar"] = "&#1587;&#1571;&#1588;&#1575;&#1585;&#1603;";
+	inviteNo["ar"] = "&#1604;&#1575; &#1588;&#1603;&#1585;&#1575;";
+	}
+	
+	
+	//24/09/2012 saudi arabia arabic
+	if (inviteCountry == "sa"){
+	
+	inviteLine1["ar"] = "&#1587;&#1575;&#1593;&#1583;&#1606;&#1575; &#1601;&#1610; &#1578;&#1591;&#1608;&#1610;&#1585; &#1571;&#1606;&#1601;&#1587;&#1606;&#1575;!";
+	inviteLine2["ar"] = "&#1607;&#1604; &#1578;&#1585;&#1610;&#1583; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1610; &#1583;&#1585;&#1575;&#1587;&#1578;&#1606;&#1575;&#1567; &#1610;&#1587;&#1578;&#1594;&#1585;&#1602; &#1573;&#1603;&#1605;&#1575;&#1604; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; 10 &#1583;&#1602;&#1575;&#1574;&#1602; &#1578;&#1602;&#1585;&#1610;&#1576;&#1611;&#1575;.&#1563";
+	inviteLine3["ar"] = "&#1573;&#1584;&#1575; &#1603;&#1606;&#1578; &#1578;&#1608;&#1575;&#1601;&#1602; &#1593;&#1604;&#1609; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1587;&#1578;&#1576;&#1583;&#1571; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1593;&#1606;&#1583; &#1575;&#1604;&#1575;&#1606;&#1578;&#1607;&#1575;&#1569; &#1605;&#1606; &#1586;&#1610;&#1575;&#1585;&#1578;&#1603; &#1604;&#1605;&#1608;&#1602;&#1593; IKEA.com &#1575;&#1604;&#1610;&#1608;&#1605;";
+	inviteYes["ar"] = "&#1587;&#1571;&#1588;&#1575;&#1585;&#1603;";
+	inviteNo["ar"] = "&#1604;&#1575; &#1588;&#1603;&#1585;&#1575;";
+	}
+	
+	
+	//24/09/2012 kuwait arabia arabic
+	if (inviteCountry == "kw"){
+	
+	inviteLine1["ar"] = "&#1587;&#1575;&#1593;&#1583;&#1606;&#1575; &#1601;&#1610; &#1578;&#1591;&#1608;&#1610;&#1585; &#1571;&#1606;&#1601;&#1587;&#1606;&#1575;!";
+	inviteLine2["ar"] = "&#1607;&#1604; &#1578;&#1585;&#1610;&#1583; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1610; &#1583;&#1585;&#1575;&#1587;&#1578;&#1606;&#1575;&#1567; &#1610;&#1587;&#1578;&#1594;&#1585;&#1602; &#1573;&#1603;&#1605;&#1575;&#1604; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; 10 &#1583;&#1602;&#1575;&#1574;&#1602; &#1578;&#1602;&#1585;&#1610;&#1576;&#1611;&#1575;.&#1563";
+	inviteLine3["ar"] = "&#1573;&#1584;&#1575; &#1603;&#1606;&#1578; &#1578;&#1608;&#1575;&#1601;&#1602; &#1593;&#1604;&#1609; &#1575;&#1604;&#1605;&#1588;&#1575;&#1585;&#1603;&#1577; &#1601;&#1587;&#1578;&#1576;&#1583;&#1571; &#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1593;&#1606;&#1583; &#1575;&#1604;&#1575;&#1606;&#1578;&#1607;&#1575;&#1569; &#1605;&#1606; &#1586;&#1610;&#1575;&#1585;&#1578;&#1603; &#1604;&#1605;&#1608;&#1602;&#1593; IKEA.com &#1575;&#1604;&#1610;&#1608;&#1605;";
+	inviteYes["ar"] = "&#1587;&#1571;&#1588;&#1575;&#1585;&#1603;";
+	inviteNo["ar"] = "&#1604;&#1575; &#1588;&#1603;&#1585;&#1575;";
+
+	}
+	
+	
+        //21092012
+        inviteLine1["de"] = "Wir m&#246;chten noch besser werden. Helfen Sie uns dabei!";
+	inviteLine2["de"] = "M&#246;chten Sie an unserer Umfrage teilnehmen? Die Beantwortung der Fragen dauert ca. 10 Minuten."; 
+	inviteLine3["de"] = "Wenn Sie an der Umfrage teilnehmen m&#246;chten, startet diese, sobald Sie Ihren heutigen Besuch bei IKEA.com beendet haben.";
+	inviteYes["de"] = "Teilnehmen";
+	inviteNo["de"] = "Nein danke";
+	
+
+	//21092012 - alternative german, french and italian for swiss site	
+	if (inviteCountry == "ch"){
+		inviteLine1["de"] = "Wir m&#246;chten noch besser werden. Helfen Sie uns dabei!";
+		inviteLine2["de"] = "M&#246;chten Sie an unserer  Umfrage teilnehmen? Sie dauert ungef&#228;hr 10&#160;Minuten.";
+		inviteLine3["de"] = "Wenn Sie an der Umfrage teilnehmen m&#246;chten, startet diese, sobald Sie Ihren heutigen Besuch bei IKEA.com beendet haben.";
+		inviteYes["de"] = "Teilnehmen";
+		inviteNo["de"] = "Nein danke";
+		
+		
+		inviteLine1["fr"] = "Aidez-nous &#224; nous am&#233;liorer !";
+		inviteLine2["fr"] = "Aimeriez-vous prendre part &#224; notre enqu&#234;te? Il faut environ dix minutes pour y r&#233;pondre.";
+		inviteLine3["fr"] = "Si vous acceptez de prendre part, l'enqu&#234;te commencera aujourd'hui &#224; la fin de votre visite sur IKEA.com";
+		inviteYes["fr"] = "Prendre part";
+		inviteNo["fr"] = "Non, merci";
+		
+		
+		inviteLine1["it"] = "Ci aiuti a migliorare?";
+		inviteLine2["it"] = "Vuole partecipare al nostro sondaggio? Per completarlo sono necessari circa 10 minuti."; 
+		inviteLine3["it"] = "Se accetta di partecipare, il sondaggio verr&#224; lanciato al termine della sua visita di oggi su IKEA.com.";
+		inviteYes["it"] = "Partecipa";
+		inviteNo["it"] = "No, grazie";
+
+
+	}
+
+        //21092012
+        inviteLine1["es"] = "&#161;Ay&#250;denos a mejorar!";
+	inviteLine2["es"] = "&#191;Le gustar&#237;a participar en nuestra encuesta? Le llevar&#225; aproximadamente 10 minutos."; 
+	inviteLine3["es"] = "Si desea participar, la encuesta empezar&#225; cuando termine la visita de hoy a IKEA.com.";
+	inviteYes["es"] = "Participar";
+	inviteNo["es"] = "No, gracias";
+	
+	
+	//21092012 - spanish island spanish amend
+	if (inviteCountry == "esi"){
+	
+		inviteLine1["es"] = "&#161;Ay&#250;denos a mejorar!";
+		inviteLine2["es"] = "&#191;Te gustar&#237;a participar en nuestra encuesta? Te llevar&#225; aproximadamente 10 minutos."; 
+		inviteLine3["es"] = "Si deseas participar, la encuesta empezar&#225; cuando termines la visita de hoy a www.islas.ikea.es.";
+		inviteYes["es"] = "Participar";
+		inviteNo["es"] = "No, gracias";
+	}
+	
+
+        //21092012
+        inviteLine1["sk"] = "Pom&#244;&#382;te n&#225;m zlep&#353;i&#357; sa!";
+	inviteLine2["sk"] = "&#8222;Chceli by ste sa z&#250;&#269;astni&#357;  n&#225;&#353;ho prieskumu? Vyplnenie prieskumu trv&#225; pribli&#382;ne 10 min&#250;t.&#8220;";
+	inviteLine3["sk"] = "Ak sa chcete prieskumu z&#250;&#269;astni&#357;, za&#269;ne sa hne&#271; po skon&#269;en&#237; va&#353;ej dne&#353;nej n&#225;v&#353;tevy IKEA.sk";
+	inviteYes["sk"] = "Z&#250;&#269;astn&#237;m sa";
+	inviteNo["sk"] = "Nie, &#271;akujem";
+      
+        
+        //25092012
+        inviteLine1["my"] = "Bantulah kami untuk meningkatkan perkhidmatan!";
+	inviteLine2["my"] = "Adakah anda ingin menyertai kaji selidik kami? Kaji selidik ini mengambil masa kira-kira 10 minit untuk dilengkapkan."; 
+	inviteLine3["my"] = "Jika anda bersetuju untuk ikut serta, kaji selidik ini akan bermula setelah kunjungan anda ke IKEA.com hari ini selesai";
+	inviteYes["my"] = "Ikut serta";
+	inviteNo["my"] = "Tidak, terima kasih";
+
+ 
+        //21092012
+        inviteLine1["nl-be"] = "Help ons te verbeteren!";
+	inviteLine2["nl-be"] = "Wilt u meedoen aan onze enqu&#234;te? Het zal ongeveer 10 minuten duren om de enqu&#234;te in te vullen.";
+	inviteLine3["nl-be"] = "Als u meedoet, begint de enqu&#234;te wanneer u de IKEA-site verlaat";
+	inviteYes["nl-be"] = "Ik doe mee";
+	inviteNo["nl-be"] = "Nee, bedankt";
+
+        
+	//25092012	        
+        inviteLine1["de-at"] = "Wir m&#246;chten noch besser werden. Helfen Sie uns dabei!";
+	inviteLine2["de-at"] = "M&#246;chten Sie an unserer Umfrage teilnehmen? Die Beantwortung der Fragen dauert ca. 10 Minuten."; 
+	inviteLine3["de-at"] = "Wenn Sie an der Umfrage teilnehmen m&#246;chten, startet diese, sobald Sie Ihren heutigen Besuch bei IKEA.com beendet haben.";
+	inviteYes["de-at"] = "Teilnehmen";
+	inviteNo["de-at"] = "Nein danke";
+
+        
+       
+        //END OF INVITE SECTION 
         
         if (inviteIncidence > -1) {
             INCIDENCE = inviteIncidence;

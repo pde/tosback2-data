@@ -1096,19 +1096,21 @@ function replaceHREF(unsecure, repUnSecure, secure, repSecure) {
 }
 
 function replaceIMGHREF(unsecure, secure, isSecure) {
-   //alert("unsecure= " + unsecure + "  + " secure= " +secure);
-   var imgTags = document.getElementsByTagName("img");
+	   //alert("unsecure= " + unsecure + "  + " secure= " +secure);
+	   var imgTags = document.getElementsByTagName("img");
 
-   for (var i = 0; i < imgTags.length ; i++) {
-      src = imgTags[i].src;
-      //alert("src=" + src);
-      if (isSecure) {
-         imgTags[i].src = replace(src, unsecure, secure);
-      } else {
-         imgTags[i].src = replace(src, secure, unsecure);
-      }
-   }
-}
+	   for (var i = 0; i < imgTags.length ; i++) {
+	      src = imgTags[i].src;
+	      //alert("src=" + src);
+	      if (isSecure) {
+	    	 if(src.indexOf('https') == -1) {	    		
+	         	imgTags[i].src = replace(src, unsecure, secure);
+	    	 }
+	      } else {
+	         imgTags[i].src = replace(src, secure, unsecure);
+	      }
+	   }
+	}
 
 function replaceContentImgSrc(myText, unsecure, secure, isSecure) {
 	if (isSecure == "true") {

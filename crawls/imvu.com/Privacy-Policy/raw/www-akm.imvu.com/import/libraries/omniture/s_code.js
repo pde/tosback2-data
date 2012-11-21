@@ -144,6 +144,13 @@ function s_doPlugins(s) {
     if(s.prop16) {
         s.eVar29=s.prop16;
     }
+
+    // Set creative, placement, target if have been set by G. 
+    s.eVar54=s.getQueryParam('imvu_creative');
+    s.eVar55=s.getQueryParam('imvu_keyword');
+    s.eVar56=s.getQueryParam('imvu_placement');
+    s.eVar57=s.getQueryParam('imvu_target');
+
 }
 s.doPlugins=s_doPlugins
 /************************** PLUGINS SECTION *************************/

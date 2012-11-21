@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,10,15,13,16,19,0);
+var tvgServerTimeUTC = new Date(2012,10,21,13,17,6,0);
 
-var dServerET = new Date(2012,10,15,8,16,19,0);
+var dServerET = new Date(2012,10,21,8,17,6,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,10,15);
-dSrvrTime.setUTCHours(13,16,19,0);
+dSrvrTime.setUTCFullYear(2012,10,21);
+dSrvrTime.setUTCHours(13,17,6,0);
 
-var dLocalTime = new Date(2012,10,15,8,16,19,0);
-var dGridStart = new Date(2012,10,15,8,0,0,0);
+var dLocalTime = new Date(2012,10,21,8,17,6,0);
+var dGridStart = new Date(2012,10,21,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 56041c5ad0e070f6d01794aac0b725dba3f44b69 1352985379';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 050fc80bb400a45d6494e37f564d3eced66995df 1353503826';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,28 +50,28 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 11/15/2012 1:00:00 PM GMT */
+/* TVGSVC02 11/21/2012 1:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-11-15)*/
+/* Listings: In-Grid and Close-Up Ads (2012-11-21)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/SIS_S2_Top.jpg";
-var magicBotImage = "/listings/images/topchan/SIS_S2_Bottom_SAT.jpg";
-var magicLogo = "/listings/images/topchan/SIS_S2_Middle.jpg";
-var magicLink = "http://www.facebook.com/TVGuideNetwork/app_442173232497007";
+var magicTopImage = "/listings/images/topchan/770x25_top_11.19.jpg";
+var magicBotImage = "/listings/images/topchan/770x25_bottom_11.19.jpg";
+var magicLogo = "/listings/images/topchan/francise_unit_02_11.19.jpg";
+var magicLink = "http://ad.doubleclick.net/click;h=v2|4008|0|0|%2a|j;265246698;0-0;0;85977124;31-1|1;51513299|51479797|1;;%3fhttp://www.hallmarkchannel.com/christmas";
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
-var magicLeftOffset = 640;
-var magicSources = [4678,12013];
+var magicLeftOffset = 520;
+var magicSources = [1216];
 var magicIDtype = 0;
 var magicRepeat = true;
-var magicHpImage = "/listings/images/topchan/TVGuide-Network-100x40.jpg";
-var magicHpBkgnd = "#CD2833";
-var magicTrackingPixel = "";
+var magicHpImage = "/listings/images/topchan/100x40.jpg";
+var magicHpBkgnd = "#A20109";
+var magicTrackingPixel = "http://ad.doubleclick.net/imp;v1;f;265246698;0-0;0;85977124;1|1;51513299|51479797|1;;cs=p;%3fhttp://ad.doubleclick.net/dot.gif?[timestamp]";
 var magicChannelLocation = "top";
 
 /* New! Franchise Channel Check-Ins */
@@ -88,7 +88,7 @@ franchiseCheckin.ObjectUrl = "";
 franchiseCheckin.CallLetters = "";
 franchiseCheckin.StartTime = "198001011200";
 franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 500;
+franchiseCheckin.LeftOffset = 520;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");
@@ -105,13 +105,13 @@ var slot_banner_top = 0;
 var slot_box_300x250 = 0;
 var bEnableWallpaperAds_HP = true;
 var bEnableRichmediaAds_HP = true;
-var slot_banner_top_HP = 0;
+var slot_banner_top_HP = 1;
 var slot_box_300x250_HP = 0;
 var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
 var slot_banner_top_LST = 0;
 var slot_banner_top_NT = 0;
-var slot_box_300x250_NT = 1;
+var slot_box_300x250_NT = 0;
 
 /* Delayed Ad Loading */
 var bEnableDelayedAds = false;

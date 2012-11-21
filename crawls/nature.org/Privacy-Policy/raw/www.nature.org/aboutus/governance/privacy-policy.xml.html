@@ -12,6 +12,44 @@
 
 
 	
+<!-- Gigya -->
+<script type="text/javascript" src="../../../cdn.gigya.com/js/socialize.js%3FapiKey=2_3p13mR1Agf7GxjbYElqZ1Zs-TlqRZQWd3xlukhhWW-YPCDWbRHSMKjc4wR8ooy8d">
+{
+	siteName: 'nature.org'
+	,enabledProviders: 'facebook,twitter,google,linkedin,yahoo,messenger,myspace,aol,foursquare,orkut,wordpress,openid'
+}
+</script>
+<script>
+	    function onLoad() {
+	        // get user info
+	        gigya.socialize.getUserInfo({ callback: renderUI });
+
+	        // register for connect status changes
+	        gigya.socialize.addEventHandlers({ onConnectionAdded: renderUI, onConnectionRemoved: renderUI });
+
+	    }
+    </script>
+<script>
+        function renderUI(res) {
+            if (res.user != null && res.user.isConnected) {
+                document.getElementById("name").innerHTML = res.user.firstName;
+                if (res.user.thumbnailURL.length > 0)
+                    document.getElementById("photo").src = res.user.thumbnailURL;
+                else
+                    document.getElementById("photo").src
+                                = "http://cdn.gigya.com/site/images/bsAPI/Placeholder.gif";
+                document.getElementById("profile").style.display = "block";
+                document.getElementById("log-out-item").style.display = "block";
+                document.getElementById("componentDiv").style.display = "none";
+                document.getElementById("log-in").style.display = "none";
+            } else {
+                document.getElementById("profile").style.display = "none";
+                document.getElementById("log-in").style.display = "block";
+                document.getElementById("log-out-item").style.display = "none";
+                document.getElementById("componentDiv").style.display = "block";
+            }
+        }	    
+	</script>
 <link rel="stylesheet" type="text/css" href='../../idc/groups/webasset/documents/webasset/css_en-us_main.css' media="screen,print" />
 <script type="text/javascript" src="../../idc/groups/webasset/documents/webasset/js_en-us_mobile.js"></script>
 <script type="text/javascript" src="../../idc/groups/webasset/documents/webasset/js_nature_jquery.js" language="javascript"></script>
@@ -65,7 +103,7 @@ _gaq.push(['_trackPageview']);
 <script type="text/javascript" src="../../../use.typekit.com/aod3scy.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 </head>
-<body>
+<body onload="onLoad()">
 <div id="container">
   <header id="header" class="clearfix">
 			<div class="h1">
@@ -90,11 +128,26 @@ _gaq.push(['_trackPageview']);
 							</fieldset>
 						</form>
 						<ul class="add-nav">
-							<li><a href="http://www.nature.org/">www.nature.org</a></li>
 							<li><a href='http://www.nature.org/about-us/index.htm'>About Us</a></li>
 							<li><a href='http://www.nature.org/newsfeatures/index.htm'>News &amp; Media</a></li>
 							<li><a href='http://www.nature.org/ourscience/index.htm'>Science</a></li>
-							<li><a href="javascript:void();" id="log-in">Log In</a></li>
+							<li class="log-in-item"><div id="profile"><img id="photo" src="privacy-policy.xml.html" width="20" height="20" align="left" /> <span id="logInWelcome">Hi, <span id="name" ></span></span></div><span id="log-in" style="display: block;color:#643c15;"><a href="javascript:void();">Log In</a> or use your:</span> 
+							<script type="text/javascript">
+							var login_params=
+								{
+								showTermsLink: 'false'
+								,height: 30
+								,width: 100
+								,containerID: 'componentDiv'
+								,UIConfig: '<config><body><controls><snbuttons buttonsize="20" /></controls></body></config>'
+								,autoDetectUserProviders: 'facebook'
+								,facepilePosition: 'none'
+								,hideGigyaLink: 'true'
+								}
+							</script>
+							<div id="componentDiv"></div>
+							<script type="text/javascript">gigya.socialize.showAddConnectionsUI(login_params);</script></li>
+							<li id="log-out-item"><a href="privacy-policy.xml.html#" onclick="gigya.socialize.removeConnection();">Log Out</a></li>
 							<li><a href="http://my.nature.org">My Nature Page</a></li>
 							<li id="add-nav-language"><a href="http://www.nature.org/">English</a><ul>
 									<li><a href="http://espanol.tnc.org/">Espa&ntilde;ol</a></li>
@@ -134,7 +187,7 @@ onclick="s_regStart()" />
 					</div>
 					<div class="navbar">
 					<ul id="right-links" class="links sf-menu">
-  						<li class="first-child"><a class="yellow" href="http://shop.nature.org" link_id="header"><span>Shop</span></a></li>
+  						<li class="first-child"><a class="yellow" href="https://support.nature.org/site/SPageNavigator/gift_catalog_landing.html" link_id="header"><span>Shop</span></a></li>
   						<li><a class="orange" href="http://my.nature.org/membership/" link_id="header"><span>Membership</span></a>
     						<ul class="nav-column">
       							<li><a href="http://my.nature.org/membership/become-member.html">Become a Member</a></li>
@@ -150,7 +203,7 @@ onclick="s_regStart()" />
       							<li><a href="http://my.nature.org/donate/monthly-giving/" link_id="header">Monthly Giving</a></li>
       							<li><a href="http://my.nature.org/donate/tribute-giving.html" link_id="header">Memorial and Tribute Giving</a></li>
       							<li><a href="http://www.nature.org/gifts/" link_id="header">Gift Ideas</a></li>
-      							<li><a href="http://my.nature.org/membership/" link_id="header">More Ways to Give</a></li>
+      							<li><a href="http://my.nature.org/donate/" link_id="header">More Ways to Give</a></li>
     						</ul>
   						</li>
 					</ul>
@@ -528,6 +581,29 @@ Pacific</a></li>
 </span><!--/sptop-->
 <div id="rcLeft">
 <span class="spLeft">
+<!-- Share Bar -->
+<div id="interiorShareButtons"></div>
+					<script language="javascript">
+    				var ua = new gigya.socialize.UserAction(); 
+					ua.setLinkBack("http://www.nature.org/about-us/governance/privacy-policy.xml"); 
+					ua.setTitle("About the Website Privacy Policy");
+					ua.setDescription("The Nature Conservancy's Privacy Policy - Online Privacy Statement");			
+					ua.setActionName("shared");
+					var params ={ 
+					userAction:ua,
+					shareButtons:'facebook-like,google-plusone,share,facebook,twitter-tweet,email', 
+					containerID: 'interiorShareButtons',
+					iconsOnly: 'true',
+					operationMode: 'multiSelect',
+					scope: 'both',
+					privacy: 'public',
+					feedID: 'hpActivity',
+        			cid:''
+					};
+	
+    				gigya.socialize.showShareBarUI(params);
+					</script><div style="clear:both;"></div>
+<!-- // Share Bar -->
 <div class="feature">
 
 <div class="featureHighlights" style="display:none;">
@@ -572,8 +648,6 @@ March 02, 2012
 <!--/rcLeft -->
 <div id="rcRight">
 <span class="spRight">
-      <h4 class="share">Share</h4>
-<div id="shareBox"><span class="st_facebook_hcount" displayText=""></span><span class="st_twitter_hcount" displayText="Tweet"></span><span class="st_sharethis"></span></div>
       
       
 <div id="callToAction">
@@ -794,7 +868,7 @@ the next lines. */
 s.pageName = "NATURE_GOVERNANCE/privacy-policy.xml"; 
 s.hier1="Nature|About Us|Our Governance";
 s.channel=window.location.hostname;
-s.server="consumption2";
+s.server="consumption1";
 s.pageType="";
 
 s_site_section="About Us";

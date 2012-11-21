@@ -846,350 +846,344 @@ return typeof reviver==="function"?walk({"":j},""):j
 }
 }}());
 if(!window.UPX){window.UPX={}
-}(function(f,l,c){var h=f.document,n=f.navigator,o=f.location,q={postal_code:"postalCode",us_military:"usMilitary",state:"state",city:"city",orga:"orga",country:"country"},m="firstName",g="lastName",b="postalCode",d="city",j="state",i="emailAddress",p="line1",k="line2",a=["city","state","postalCode","orga","country","usMilitary"],e=(function(){var M=/\S/,ac=/^\s+/,R=/\s+$/,F=/\d/,ad=/^<(\w+)\s*\/?>(?:<\/\1>)?$/,v=/^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/,al=/^[\],:{}\s]*$/,u=/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,G=/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,E=/(?:^|:|,)(?:\s*\[)+/g,z=Object.prototype.toString,H=Object.prototype.hasOwnProperty,ag=Array.prototype.push,K=Array.prototype.slice,s=String.prototype.trim,N=Array.prototype.indexOf,ae,an,X,L,B,t,U={},Y,W,Q="session-data",T=true,J,A="/api/session-service/1/uopx/session/",S=[],af={},w={},aa={authenticated:false,roles:null,authId:c,sessionReady:false,get:function(ar,ap,au){var av,at,aq;
-if(typeof au==="undefined"){au={};
-if(typeof ap==="undefined"){ap=ar;
-ar=c
-}else{if(typeof ap==="function"){au.callback=ap;
-ap=ar;
-ar=c
-}else{if(typeof ap==="boolean"){au.defaults=ap;
-ap=ar;
-ar=c
-}}}if(typeof au.defaults==="undefined"){au.defaults=false
-}}else{if(jQuery.type(au)==="object"){au.defaults=au.defaults||false
-}else{if(jQuery.type(au)==="function"){at=au;
-au={callback:at,defaults:false}
-}else{if(jQuery.type(au)==="boolean"){av=au;
-au={defaults:av}
-}}}if(typeof ap==="undefined"){ap=ar;
-ar=c
-}}if(typeof ap==="undefined"){aq=Array.prototype.slice.call(arguments);
-aq.push("get");
-D.apply(this,aq);
+}(function(f,l,c){var h=f.document,n=f.navigator,o=f.location,q={postal_code:"postalCode",us_military:"usMilitary",state:"state",city:"city",orga:"orga",country:"country"},m="firstName",g="lastName",b="postalCode",d="city",j="state",i="emailAddress",p="line1",k="line2",a=["city","state","postalCode","orga","country","usMilitary"],e=(function(){var O=/\S/,ae=/^\s+/,T=/\s+$/,F=/\d/,af=/^<(\w+)\s*\/?>(?:<\/\1>)?$/,w=/^(?:[^#<]*(<[\w\W]+>)[^>]*$|#([\w\-]*)$)/,ao=/^[\],:{}\s]*$/,v=/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g,G=/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g,E=/(?:^|:|,)(?:\s*\[)+/g,A=Object.prototype.toString,H=Object.prototype.hasOwnProperty,ai=Array.prototype.push,L=Array.prototype.slice,s=String.prototype.trim,P=Array.prototype.indexOf,ag,aq,Z,N,B,u,W={},aa,Y,S="session-data",V=true,K,al="session-id",t="revision",I="/api/session-service/1/uopx/session/",U=[],ah={},x={},ac={authenticated:false,roles:null,authId:c,sessionReady:false,get:function(av,at,ax){var ay,aw,au;
+if(typeof ax==="undefined"){ax={};
+if(typeof at==="undefined"){at=av;
+av=c
+}else{if(typeof at==="function"){ax.callback=at;
+at=av;
+av=c
+}else{if(typeof at==="boolean"){ax.defaults=at;
+at=av;
+av=c
+}}}if(typeof ax.defaults==="undefined"){ax.defaults=false
+}}else{if(jQuery.type(ax)==="object"){ax.defaults=ax.defaults||false
+}else{if(jQuery.type(ax)==="function"){aw=ax;
+ax={callback:aw,defaults:false}
+}else{if(jQuery.type(ax)==="boolean"){ay=ax;
+ax={defaults:ay}
+}}}if(typeof at==="undefined"){at=av;
+av=c
+}}if(typeof at==="undefined"){au=Array.prototype.slice.call(arguments);
+au.push("get");
+D.apply(this,au);
 return
-}return ab(ar,ap,au)
-},set:function(at,ap,aq,au){var ar;
-if(typeof au!=="function"){if(typeof aq==="function"){au=aq;
-if(typeof ap==="object"){aq=c
-}else{aq=ap;
-ap=at;
-at=c
-}}else{if(typeof ap==="function"){au=ap;
-ap=at;
-at=aq=c
-}else{if(typeof aq==="undefined"){au=c;
-if(jQuery.type(ap)==="object"){}else{if(typeof ap!=="undefined"){aq=ap;
-ap=at;
-at=c
-}else{ap=at;
-at=aq=c
-}}}}}}return ao(at,ap,aq,au)
-},clearSession:function(aq){var ap="";
-U={};
-$.extend(U,Y);
-ap=z(U);
-I(sessioncookie,ap,365);
+}return ad(av,at,ax)
+},set:function(aw,at,au,ax){var av;
+if(typeof ax!=="function"){if(typeof au==="function"){ax=au;
+if(typeof at==="object"){au=c
+}else{au=at;
+at=aw;
+aw=c
+}}else{if(typeof at==="function"){ax=at;
+at=aw;
+aw=au=c
+}else{if(typeof au==="undefined"){ax=c;
+if(jQuery.type(at)==="object"){}else{if(typeof at!=="undefined"){au=at;
+at=aw;
+aw=c
+}else{at=aw;
+aw=au=c
+}}}}}}return ar(aw,at,au,ax)
+},clearSession:function(au){var at="";
+W={};
+$.extend(W,aa);
+at=A(W);
+J(sessioncookie,at,365);
 return true
-},clear:function(ap,aq){return aa.remove(ap,aq)
-},remove:function(at,au){var ar,aq=A+ae,aw,ap,ax="application/json",av="revision";
-if(typeof au==="undefined"){ar=U;
-au=at;
-at=c
-}else{if(typeof at==="string"){ar=U[at]
-}else{ar=U
-}}if(jQuery.type(au)==="array"){jQuery.each(au,function(ay,az){ap=delete ar[az]
+},clear:function(at,au){return ac.remove(at,au)
+},remove:function(aw,ax){var av,au=I+ag,ay,at,az="application/json";
+if(typeof ax==="undefined"){av=W;
+ax=aw;
+aw=c
+}else{if(typeof aw==="string"){av=W[aw]
+}else{av=W
+}}if(jQuery.type(ax)==="array"){jQuery.each(ax,function(aA,aB){at=delete av[aB]
 })
-}else{ap=delete ar[au]
-}if(ap){aw=JSON.stringify(U);
-jQuery.ajax({url:aq,type:"PUT",contentType:ax,data:aw,cache:false,success:function(ay){W=parseInt(ay,10);
-I(av,W,365,J,"/")
-},error:function(az,aA,ay){if(console){console.log(ay)
+}else{at=delete av[ax]
+}if(at){ay=JSON.stringify(W);
+jQuery.ajax({url:au,type:"PUT",contentType:az,data:ay,cache:false,success:function(aA){Y=parseInt(aA,10);
+J(t,Y,365,K,"/")
+},error:function(aB,aC,aA){if(console){console.log(aA)
 }}})
-}},ready:function(ap){if(aa.sessionReady){ap()
-}else{S.push(ap)
-}},dump:function(ap){if(ap==="session"){return U
-}else{if(ap==="data"){return af
-}}},bind:function(ar,ap,aq){if(typeof aq==="function"){if(typeof ar==="undefined"&&typeof ap==="undefined"){throw new D(K.call(arguments),"bind")
-}if(ar&&jQuery.type(ar)!=="string"&&jQuery.type(ar)!=="array"){throw new D(K.call(arguments),"bind")
-}}else{if(typeof ap==="function"){aq=ap;
-ap=ar;
-ar=c
-}else{throw new x()
-}}return P(ar,ap,aq)
-},trigger:function(aq,ar){var ap=K.call(arguments),at=ap.length;
-if(typeof ar==="undefined"){ar=aq;
-aq=c
-}r(aq,ar)
+}},ready:function(at){if(ac.sessionReady){at()
+}else{U.push(at)
+}},dump:function(at){if(at==="session"){return W
+}else{if(at==="data"){return ah
+}}},bind:function(av,at,au){if(typeof au==="function"){if(typeof av==="undefined"&&typeof at==="undefined"){throw new D(L.call(arguments),"bind")
+}if(av&&jQuery.type(av)!=="string"&&jQuery.type(av)!=="array"){throw new D(L.call(arguments),"bind")
+}}else{if(typeof at==="function"){au=at;
+at=av;
+av=c
+}else{throw new y()
+}}return R(av,at,au)
+},trigger:function(au,av){var at=L.call(arguments),aw=at.length;
+if(typeof av==="undefined"){av=au;
+au=c
+}r(au,av)
 }};
-function aj(){var ap;
-while(S.length>0){ap=S.pop();
-ap()
-}S=[]
-}function P(av,ar,au){var ap,at,aq;
-if(typeof av==="string"){av=av.split(" ")
-}if(typeof ar==="string"){ar=ar.split(" ")
-}if(jQuery.type(ar)!=="array"){return
-}if(jQuery.type(av)==="array"){jQuery.each(av,function(ax,aw){ap=af[aw]||(af[aw]={});
-for(aq=ar.length-1;
-aq>=0;
-aq=aq-1){at=ar[aq];
-if(jQuery.type(ap[at])!=="array"){ap[at]=[]
-}(ap[at]).push(au)
+function am(){var at;
+while(U.length>0){at=U.pop();
+at()
+}U=[]
+}function R(ay,av,ax){var at,aw,au;
+if(typeof ay==="string"){ay=ay.split(" ")
+}if(typeof av==="string"){av=av.split(" ")
+}if(jQuery.type(av)!=="array"){return
+}if(jQuery.type(ay)==="array"){jQuery.each(ay,function(aA,az){at=ah[az]||(ah[az]={});
+for(au=av.length-1;
+au>=0;
+au=au-1){aw=av[au];
+if(jQuery.type(at[aw])!=="array"){at[aw]=[]
+}(at[aw]).push(ax)
 }})
-}else{ap=af;
-for(aq=ar.length-1;
-aq>=0;
-aq=aq-1){at=ar[aq];
-if(jQuery.type(ap[at])!=="array"){ap[at]=[]
-}(ap[at]).push(au)
+}else{at=ah;
+for(au=av.length-1;
+au>=0;
+au=au-1){aw=av[au];
+if(jQuery.type(at[aw])!=="array"){at[aw]=[]
+}(at[aw]).push(ax)
 }}return
-}function r(aq,ar){var ap,at;
-if(typeof aq==="undefined"){ap=af;
-at=U
-}else{ap=af[aq];
-at=U[aq]
-}if(typeof ar==="string"){ar=ar.split(" ")
-}if(jQuery.type(ar)!=="array"){return
-}jQuery(ar).each(function(av,ay){var aw,au=0,ax;
-if(typeof ap!=="undefined"&&H.call(ap,ay)){fnsArray=ap[ay];
-ax=fnsArray.length;
+}function r(au,av){var at,aw;
+if(typeof au==="undefined"){at=ah;
+aw=W
+}else{at=ah[au];
+aw=W[au]
+}if(typeof av==="string"){av=av.split(" ")
+}if(jQuery.type(av)!=="array"){return
+}jQuery(av).each(function(ay,aB){var az,ax=0,aA;
+if(typeof at!=="undefined"&&H.call(at,aB)){fnsArray=at[aB];
+aA=fnsArray.length;
 for(;
-au<ax;
-au++){(fnsArray[au]).call(this,ay,at[ay])
+ax<aA;
+ax++){(fnsArray[ax]).call(this,aB,aw[aB])
 }}})
-}function D(ap,aq){this.arg=ap;
-this.method=aq;
+}function D(at,au){this.arg=at;
+this.method=au;
 this.message=" arguments passed are not in expected format/type for the method ";
 this.toString=function(){return this.arg+this.message+'"'+this.method+'"'
 }
-}function x(ap){var aq;
-if(ap){aq="Passed in arguments:"+ap+"; missing one/more of required parameters"
-}else{aq="Insufficient arguments were passed to the method"
-}this.message=aq;
+}function y(at){var au;
+if(at){au="Passed in arguments:"+at+"; missing one/more of required parameters"
+}else{au="Insufficient arguments were passed to the method"
+}this.message=au;
 this.toString=function(){return this.message
 }
-}function V(aw,au){var aq,at="=",ar,ax,ap=[],av={};
-au=au||",";
-if(aw===c||aw===null){return av
-}aq=aw.split(au);
-for(ar=aq.length-1;
-ar>=0;
-ar=ar-1){ax=aq[ar];
-ap=typeof ax==="string"?aq[ar].split(at):null;
-if(ap!==null){av[ap[0]]=ap.length>1?ap[1]:null
-}}return av
-}function O(ar){var aq="",ap;
-if(typeof ar==="string"){return ar
-}for(ap in ar){if(H(ar,ap)){aq+=ap+"="+ar[ap]+","
-}}aq=aq.substring(0,aq.length-1);
-return aq
-}function C(at){var au,av,aq=null,aw,ap,ar;
-au=decodeURIComponent(h.cookie);
-if(typeof at==="undefined"){aq=au;
-return aq
-}else{at=at+"=";
-av=new RegExp(at,"ig");
-ap=au.split(";");
-for(ar=ap.length-1;
-ar>-1;
-ar=ar-1){aw=ap[ar];
-aw=aw.replace(ac,"").replace(R,"");
-if(aw.search(av)===0){aq=aw.substring(at.length,aw.length)
-}}return aq
-}}function I(aq,ax,ar,aw,ay,ap){var av,au=new Date(),at="";
-aw=";domain="+(aw||".phoenix.edu");
-ap=ap?";secure":"";
-ay=";path="+(ay||"/");
-if(typeof aq!=="string"){return false
-}av=aq+"="+ax;
-if(ar){au.setTime(au.getTime()+(ar*24*60*60*1000));
-at="; expires="+au.toGMTString()
-}h.cookie=av+at+ay+aw+ap;
+}function X(az,ax){var au,aw="=",av,aA,at=[],ay={};
+ax=ax||",";
+if(az===c||az===null){return ay
+}au=az.split(ax);
+for(av=au.length-1;
+av>=0;
+av=av-1){aA=au[av];
+at=typeof aA==="string"?au[av].split(aw):null;
+if(at!==null){ay[at[0]]=at.length>1?at[1]:null
+}}return ay
+}function Q(av){var au="",at;
+if(typeof av==="string"){return av
+}for(at in av){if(H(av,at)){au+=at+"="+av[at]+","
+}}au=au.substring(0,au.length-1);
+return au
+}function C(aw){var ax,ay,au=null,az,at,av;
+ax=decodeURIComponent(h.cookie);
+if(typeof aw==="undefined"){au=ax;
+return au
+}else{aw=aw+"=";
+ay=new RegExp(aw,"ig");
+at=ax.split(";");
+for(av=at.length-1;
+av>-1;
+av=av-1){az=at[av];
+az=az.replace(ae,"").replace(T,"");
+if(az.search(ay)===0){au=az.substring(aw.length,az.length)
+}}return au
+}}function J(au,aA,av,az,aB,at){var ay,ax=new Date(),aw="";
+az=";domain="+(az||f.location.host);
+at=at?";secure":"";
+aB=";path="+(aB||"/");
+if(typeof au!=="string"){return false
+}ay=au+"="+aA;
+if(av!=-1){ax.setTime(ax.getTime()+(av*24*60*60*1000));
+aw="; expires="+ax.toGMTString()
+}h.cookie=ay+aw+aB+az+at;
 return true
-}function ah(ap){I(ap,"",-1)
-}function ab(av,ax,ar){var at,aw,au,ap,az,aq=false;
-if(typeof av!=="undefined"&&av!=="profile"){if(jQuery.inArray(av,l.pageComponents)==-1&&T){if(!w[av]){w[av]=[];
-jQuery.ajax(A+ae+"/keys/"+av,{success:function(aC,aD,aB){var aA;
-l.pageComponents.push(av);
-if(aC.$curRevision){U[av]=aC[av]
-}while(w[av].length){aA=w[av].shift();
-ab(aA.cname,aA.fields,aA.settings)
-}delete w[av]
-},error:function(aB,aD,aC){var aA;
-l.pageComponents.push(av);
-while(w[av].length){aA=w[av].shift();
-if(H.call(aA.settings,"defaults")&&aA.settings.defaults===true){ab(aA.cname,aA.fields,aA.settings)
-}if(H.call(aA.settings,"callback")&&typeof aA.settings.callback==="function"){aA.settings.callback.call(this,aC,ar.data)
-}}delete w[av]
+}function aj(at){J(at,"",-1,K)
+}function ad(ay,aA,av){var aw,az,ax,at,aC,au=false;
+if(typeof ay!=="undefined"&&ay!=="profile"){if(jQuery.inArray(ay,l.pageComponents)==-1&&V){if(!x[ay]){x[ay]=[];
+jQuery.ajax(I+ag+"/keys/"+ay,{success:function(aF,aG,aE){var aD;
+l.pageComponents.push(ay);
+if(aF.$curRevision){W[ay]=aF[ay]
+}while(x[ay].length){aD=x[ay].shift();
+ad(aD.cname,aD.fields,aD.settings)
+}delete x[ay]
+},error:function(aE,aG,aF){var aD;
+l.pageComponents.push(ay);
+while(x[ay].length){aD=x[ay].shift();
+if(H.call(aD.settings,"defaults")&&aD.settings.defaults===true){ad(aD.cname,aD.fields,aD.settings)
+}if(H.call(aD.settings,"callback")&&typeof aD.settings.callback==="function"){aD.settings.callback.call(this,aF,av.data)
+}}delete x[ay]
 },dataType:"json",type:"GET",cache:false})
-}w[av].push({cname:av,fields:ax,settings:ar});
-aq=true;
+}x[ay].push({cname:ay,fields:aA,settings:av});
+au=true;
 return
-}}try{if(typeof av==="string"){aw=U[av]
-}else{aw=U
-}if(jQuery.type(ax)==="array"){at={};
-for(au=ax.length-1;
-au>=0;
-au=au-1){az=ax[au];
-if(typeof aw!=="undefined"&&H.call(aw,az)){at[az]=aw[az]
-}if(typeof at[az]==="undefined"&&ar.defaults===true){at[az]=U.essentials[az]
-}}}else{if(typeof aw!=="undefined"){at=aw[ax]
-}if((typeof at==="undefined"||typeof at==="null")&&(ar.defaults===true||typeof av==="undefined")){at=U.essentials[ax]
-}}return(H.call(ar,"callback")&&typeof ar.callback==="function"&&!aq)?ar.callback.call(this,"success",at,ar.data):at
-}catch(ay){if(console){console.log(ay);
-console.log(ay.stack)
-}}}function ao(ap,aB,aq,ax){var aK,at,aL="",aC,av=false,aw,aI="application/json",aF="revision",aN={},ay=false,aM,ar,aD=0,au,az,aA,aH,aG={},aE=[b,j,d,m,g,i,p,k,"id","smUserId","financialCalcTempData","homePhoneAreaCode","homePhonePhoneNumber","homePhoneExtension","mobilePhoneAreaCode","mobilePhonePhoneNumber","mobilePhoneExtentsion"];
-try{if(!H.call(U,"essentials")){U.essentials={}
-}if(typeof ap==="string"&&U[ap]!==c){aK=U[ap];
-if(ap==="profile"){ay=true
-}ar=af[ap]
-}else{if(typeof ap==="string"){aK=U[ap]={};
-ar=af[ap];
-if(ap==="profile"){ay=true
-}}else{aK=U.essentials;
-ar=af
-}}if(jQuery.type(aB)==="object"){for(at in aB){if(H.call(aB,at)){aC=aB[at];
-aK[at]=aC;
-if(jQuery.inArray(at,a)!=-1){U.essentials[at]=aC
-}if(ap==="profile"&&aa.authenticated&&H.call(ProfileService.profile,at)){ProfileService.profile[at]=aC;
-av=true
-}if(typeof ar!=="undefined"&&H.call(ar,at)){aM=ar[at];
-au=aM.length;
+}}try{if(typeof ay==="string"){az=W[ay]
+}else{az=W
+}if(jQuery.type(aA)==="array"){aw={};
+for(ax=aA.length-1;
+ax>=0;
+ax=ax-1){aC=aA[ax];
+if(typeof az!=="undefined"&&H.call(az,aC)){aw[aC]=az[aC]
+}if(typeof aw[aC]==="undefined"&&av.defaults===true){aw[aC]=W.essentials[aC]
+}}}else{if(typeof az!=="undefined"){aw=az[aA]
+}if((typeof aw==="undefined"||typeof aw==="null")&&(av.defaults===true||typeof ay==="undefined")){aw=W.essentials[aA]
+}}return(H.call(av,"callback")&&typeof av.callback==="function"&&!au)?av.callback.call(this,"success",aw,av.data):aw
+}catch(aB){if(console){console.log(aB);
+console.log(aB.stack)
+}}}function ar(at,aE,au,aA){var aM,aw,aN="",aF,ay=false,az,aK="application/json",aP={},aB=false,aO,av,aG=0,ax,aC,aD,aJ,aI={},aH=[b,j,d,m,g,i,p,k,"id","smUserId","financialCalcTempData","homePhoneAreaCode","homePhonePhoneNumber","homePhoneExtension","mobilePhoneAreaCode","mobilePhonePhoneNumber","mobilePhoneExtentsion"];
+try{if(!H.call(W,"essentials")){W.essentials={}
+}if(typeof at==="string"&&W[at]!==c){aM=W[at];
+if(at==="profile"){aB=true
+}av=ah[at]
+}else{if(typeof at==="string"){aM=W[at]={};
+av=ah[at];
+if(at==="profile"){aB=true
+}}else{aM=W.essentials;
+av=ah
+}}if(jQuery.type(aE)==="object"){for(aw in aE){if(H.call(aE,aw)){aF=aE[aw];
+aM[aw]=aF;
+if(jQuery.inArray(aw,a)!=-1){W.essentials[aw]=aF
+}if(at==="profile"&&ac.authenticated&&H.call(ProfileService.profile,aw)){ProfileService.profile[aw]=aF;
+ay=true
+}if(typeof av!=="undefined"&&H.call(av,aw)){aO=av[aw];
+ax=aO.length;
 for(;
-aD<au;
-aD++){(aM[aD]).call(this,at,aC)
-}}if(typeof af!=="undefined"&&H.call(af,at)){aM=af[at];
-au=aM.length;
+aG<ax;
+aG++){(aO[aG]).call(this,aw,aF)
+}}if(typeof ah!=="undefined"&&H.call(ah,aw)){aO=ah[aw];
+ax=aO.length;
 for(;
-aD<au;
-aD++){(aM[aD]).call(this,at,aC)
-}}}}if(!ay){if(typeof ap!=="undefined"){aN[ap]=aK;
-aN.essentials=U.essentials
-}else{aN.essentials=aK
-}aN=JSON.stringify(aN)
-}}else{aK[aB]=aq;
-if(jQuery.inArray(aB,a)!=-1){U.essentials[aB]=aq
-}if(!ay){if(typeof ap!=="undefined"){aN[ap]=aK;
-aN.essentials=U.essentials
-}else{aN.essentials=aK
-}aN=JSON.stringify(aN)
-}if(ap==="profile"&&aa.authenticated&&H.call(ProfileService.profile,aB)){if(jQuery.inArray(aB,aE)==-1){U.essentials[aB]=aq
-}ProfileService.profile[aB]=aq;
-av=true
-}if(typeof ar!=="undefined"&&H.call(ar,aB)){aM=ar[aB];
-au=aM.length;
+aG<ax;
+aG++){(aO[aG]).call(this,aw,aF)
+}}}}if(!aB){if(typeof at!=="undefined"){aP[at]=aM;
+aP.essentials=W.essentials
+}else{aP.essentials=aM
+}aP=JSON.stringify(aP)
+}}else{aM[aE]=au;
+if(jQuery.inArray(aE,a)!=-1){W.essentials[aE]=au
+}if(!aB){if(typeof at!=="undefined"){aP[at]=aM;
+aP.essentials=W.essentials
+}else{aP.essentials=aM
+}aP=JSON.stringify(aP)
+}if(at==="profile"&&ac.authenticated&&H.call(ProfileService.profile,aE)){if(jQuery.inArray(aE,aH)==-1){W.essentials[aE]=au
+}ProfileService.profile[aE]=au;
+ay=true
+}if(typeof av!=="undefined"&&H.call(av,aE)){aO=av[aE];
+ax=aO.length;
 for(;
-aD<au;
-aD++){(aM[aD]).call(this,aB,aq)
-}}if(typeof af!=="undefined"&&H.call(af,aB)){aM=af[aB];
-au=aM.length;
+aG<ax;
+aG++){(aO[aG]).call(this,aE,au)
+}}if(typeof ah!=="undefined"&&H.call(ah,aE)){aO=ah[aE];
+ax=aO.length;
 for(;
-aD<au;
-aD++){(aM[aD]).call(this,aB,aq)
-}}}if(av){ProfileService.update(function(aO){U.profile=ProfileService.profile;
-if(typeof ax==="function"){ax.call(this,aO)
+aG<ax;
+aG++){(aO[aG]).call(this,aE,au)
+}}}if(ay){ProfileService.update(function(aQ){W.profile=ProfileService.profile;
+if(typeof aA==="function"){aA.call(this,aQ)
 }})
-}else{if(T){aw=A+ae;
-jQuery.ajax({url:aw,type:"PUT",contentType:aI,data:aN,cache:false,success:function(aO){W=parseInt(aO,10);
-I(aF,W,365,J,"/");
-if(typeof ax==="function"){ax.call(this,"success","200")
-}},error:function(aP,aQ,aO){if(typeof ax==="function"){ax.call(this,"failed to update",aO,aP)
+}else{if(V){az=I+ag;
+jQuery.ajax({url:az,type:"PUT",contentType:aK,data:aP,cache:false,success:function(aQ){Y=parseInt(aQ,10);
+J(t,Y,365,K,"/");
+if(typeof aA==="function"){aA.call(this,"success","200")
+}},error:function(aR,aS,aQ){if(aQ.toLowerCase()==="bad request"||aQ.toLowerCase()==="not found"){M()
+}else{aI.essentials=W.essentials;
+aJ=JSON.stringify(aI);
+J(S,aJ,365,K,"/")
+}if(typeof aA==="function"){aA.call(this,"failed to update",aQ,aR)
 }}})
-}else{aG.essentials=U.essentials;
-aH=JSON.stringify(aG);
-I(Q,aH,365,J,"/")
-}}return true
-}catch(aJ){if(console){console.log(aJ);
-console.log(aJ.stack)
-}}}function ai(at,ar){var aq={},ap,au;
-for(ap in at){if(H.call(at,ap)){au=ar[ap];
-aq[au]=at[ap]
-}}return aq
-}function Z(aq,ap){var at,ar=[b,j,d,m,g,i,p,k,"id","smUserId","financialCalcTempData","homePhoneAreaCode","homePhonePhoneNumber","homePhoneExtension","mobilePhoneAreaCode","mobilePhonePhoneNumber","mobilePhoneExtentsion"];
-for(at in ap){if(at&&typeof ap[at]==="string"){if((at===b||at===j||at===d)&&ap.postalCode!==""&&ap.state!==""&&ap.city!==""){aq.essentials[at]=ap[at]
-}if(jQuery.inArray(at,ar)==-1){if(!aq.essentials[at]&&ap[at]){aq.essentials[at]=ap[at]
-}}}}return aq
-}function am(aq){var au="https://",at=o.host,ap=au+at+"/auth.is_authenticated.jsonp",ar=au+at+"/auth.info.jsonp?callback=?";
-jQuery.ajax(ap,{success:function(av,ax,aw){if(ax==="success"){aa.authenticated=av.authenticated==="true"
-}},error:function(){},complete:function(av,aw){if(aa.authenticated===true){jQuery.ajax(ar,{success:function(ax,az,ay){aa.authId=ax.user_info.username;
-aa.roles=ax.user_info.roles
-},complete:function(ax,ay){aq()
+}else{aI.essentials=W.essentials;
+aJ=JSON.stringify(aI);
+J(S,aJ,365,K,"/");
+if(typeof aA==="function"){aA.call(this,"success","200")
+}}}return true
+}catch(aL){if(console){console.log(aL);
+console.log(aL.stack)
+}}}function ak(aw,av){var au={},at,ax;
+for(at in aw){if(H.call(aw,at)){ax=av[at];
+au[ax]=aw[at]
+}}return au
+}function ab(au,at){var aw,av=[b,j,d,m,g,i,p,k,"id","smUserId","financialCalcTempData","homePhoneAreaCode","homePhonePhoneNumber","homePhoneExtension","mobilePhoneAreaCode","mobilePhonePhoneNumber","mobilePhoneExtentsion"];
+for(aw in at){if(aw&&typeof at[aw]==="string"){if((aw===b||aw===j||aw===d)&&at.postalCode!==""&&at.state!==""&&at.city!==""){au.essentials[aw]=at[aw]
+}if(jQuery.inArray(aw,av)==-1){if(!au.essentials[aw]&&at[aw]){au.essentials[aw]=at[aw]
+}}}}return au
+}function ap(au){var ax="https://",aw=o.host,at=ax+aw+"/auth.is_authenticated.jsonp",av=ax+aw+"/auth.info.jsonp?callback=?";
+jQuery.ajax(at,{success:function(ay,aA,az){if(aA==="success"){ac.authenticated=ay.authenticated==="true"
+}},error:function(){},complete:function(ay,az){if(ac.authenticated===true){jQuery.ajax(av,{success:function(aA,aC,aB){ac.authId=aA.user_info.username;
+ac.roles=aA.user_info.roles
+},complete:function(aA,aB){au()
 },cache:false})
-}else{aq()
+}else{au()
 }},dataType:"jsonp",jsonpCallback:"callback",cache:false})
-}function y(){if(L&&B&&t){if(typeof Y!=="undefined"){Y=ai(Y,q);
-U.essentials={};
-jQuery.extend(U.essentials,Y)
-}if(typeof an!=="undefined"){jQuery.extend(true,U,an)
-}if(typeof X!=="undefined"){U.profile=X;
-Z(U,X)
-}aa.sessionReady=true;
-aj()
-}}(function ak(){var at=0,aq,aw,au="profile",ax="session-id",av="revision",ar=o.host.split("."),ap="/public/bin/servlet/altcloud/UserServlet.location.json?",ay=C(au);
-J=ar[ar.length-2]+"."+ar[ar.length-1];
+}function M(at){jQuery.ajax(I,{success:function(au){ag=au.$id;
+W.$id=au.$id;
+Y=au.$curRevision;
+J(al,ag,365,K,"/");
+J(t,Y,365,K,"/")
+},complete:function(au,av){if(typeof at==="function"){at.call(this,av)
+}},dataType:"json",type:"POST",cache:false})
+}function z(){if(N&&B&&u){if(typeof aa!=="undefined"){aa=ak(aa,q);
+W.essentials={};
+jQuery.extend(W.essentials,aa)
+}if(typeof aq!=="undefined"){jQuery.extend(true,W,aq)
+}if(typeof Z!=="undefined"){W.profile=Z;
+ab(W,Z)
+}ac.sessionReady=true;
+am()
+}}(function an(){var ax=0,ay,au,av="profile",aw=o.host.split("."),az="/public/bin/servlet/altcloud/UserServlet.location.json?",at=C(av);
+K=aw[aw.length-2]+"."+aw[aw.length-1];
 if(l.editmode){return
-}ae=C(ax);
-W=parseInt(C(av),10);
-T=l.sessionservice;
-an=C(Q);
-if(!T||(typeof an==="string"&&an!=="")){an=an?JSON.parse(an):{};
-L=true;
-y();
-if(T){if(ae===null||ae.trim()===""){jQuery.ajax(A,{success:function(az){ae=az.$id;
-U.$id=az.$id;
-W=az.$curRevision;
-I(ax,ae,365,J,"/");
-I(av,W,365,J,"/");
-L=true;
-y()
-},error:function(){L=true;
-y()
-},dataType:"json",type:"POST",cache:false})
-}ah(Q)
-}}else{if(ae===null||ae.trim()===""){jQuery.ajax(A,{success:function(az){ae=az.$id;
-U.$id=az.$id;
-W=az.$curRevision;
-I(ax,ae,365,J,"/");
-I(av,W,365,J,"/");
-L=true;
-y()
-},error:function(){L=true;
-y()
-},dataType:"json",type:"POST",cache:false})
-}else{if(W>1){aw=A+ae+"/keys/";
-aq=l.pageComponents.length;
+}ag=C(al);
+Y=parseInt(C(t),10);
+V=l.sessionservice;
+aq=C(S);
+if(!V||(typeof aq==="string"&&aq!=="")){aq=aq?JSON.parse(aq):{};
+N=true;
+z();
+if(V){if(ag===null||ag.trim()===""){M(function(aA){N=true;
+z()
+})
+}aj(S)
+}}else{if(ag===null||ag.trim()===""){M(function(aA){N=true;
+z()
+})
+}else{if(Y>1){au=I+ag+"/keys/";
+ay=l.pageComponents.length;
 for(;
-at<aq;
-at=at+1){aw+=l.pageComponents[at]+","
-}aw+="essentials";
+ax<ay;
+ax=ax+1){au+=l.pageComponents[ax]+","
+}au+="essentials";
 l.pageComponents.push("essentials");
-jQuery.ajax(aw,{success:function(az){an=az
-},complete:function(){L=true;
-y()
+jQuery.ajax(au,{success:function(aA){aq=aA
+},complete:function(){N=true;
+z()
 },dataType:"json",type:"GET",cache:false})
 }else{l.pageComponents.push("essentials");
-U.$id=ae;
-L=true;
-y()
-}}}jQuery.getJSON(ap,function(az,aA){if(aA==="success"&&jQuery.type(az)==="object"){Y=az;
-t=true;
-y()
+W.$id=ag;
+N=true;
+z()
+}}}jQuery.getJSON(az,function(aA,aB){if(aB==="success"&&jQuery.type(aA)==="object"){aa=aA;
+u=true;
+z()
 }});
-am(function(){if(o.protocol==="https:"&&aa.authenticated===true){if(ay!==null){X=V(ay,"||");
-aa.profileReady=true;
+ap(function(){if(o.protocol==="https:"&&ac.authenticated===true){utils.checkProfileService(function(){Z=jQuery.extend({},ProfileService.profile);
 B=true;
-y()
-}utils.checkProfileService(function(){X=jQuery.extend({},ProfileService.profile);
-B=true;
-aa.profileReady=true;
-y()
+ac.profileReady=true;
+z()
 })
 }else{B=true;
-y()
+z()
 }})
 }());
-return aa
+return ac
 }());
 l.dataMgr=e
 }(window,UPX));
@@ -1255,30 +1249,30 @@ var UPXHeaderAlternate=function(){var f=undefined,d=undefined,c=undefined,e,g,b=
 function h(){d.removeClass("hover");
 $("#flyoutWrapper").slideUp("fast");
 $("#flyoutWrapper img.flyoutArrow").slideUp(55)
-}function a(){d=$(b).addClass("hover");
-var s="#"+i();
-var q=$(s+" .flyoutArrow");
-$("#flyoutWrapper").show();
-$("#flyoutWrapper").css("left",e);
-var j="#"+i();
-c=$(j).removeClass("hide");
-var k,o,l,n,v,p,u,t,m=33;
-$("#flyoutWrapper").slideDown(50);
-$("#flyoutWrapper").find("img.flyoutArrow").slideDown(50);
-k=$(b).outerWidth();
+}function a(){var s,q,k,o,l,n,v,p,u,t,m=33,r,j;
+j=$("#flyoutWrapper");
+d=$(b);
+s="#"+i();
+q=$(s+" .flyoutArrow");
+c=$(s);
+d.addClass("hover");
+c.removeClass("hide");
+j.removeClass("hide").css("left",e).slideDown(50,function(){});
+q.slideDown(50);
+k=d.outerWidth();
 u=$(".skeleton .header").outerWidth();
-v=$("#flyoutWrapper").outerWidth();
+v=j.outerWidth();
 p=Math.floor(v/2);
-o=$(b).position().left;
+o=d.position().left;
 l=k+o;
-n=$("#flyoutWrapper").position().left;
-e=e||$("#flyoutWrapper").css("left");
-var r=(l-p-m);
+n=j.position().left;
+e=e||j.css("left");
+r=(l-p-m);
 if((r+v)>u){r=u-v
 }else{if(r<0){r=0
-}}$("#flyoutWrapper").css("left",r+"px");
-t=l-$("#flyoutWrapper").position().left-m;
-$("#flyoutWrapper .flyoutArrow").css("left",t+"px")
+}}j.css("left",r+"px");
+t=l-j.position().left-m;
+q.css("left",t+"px")
 }function i(){var j=$(b).children("a").prop("class");
 if(j!==undefined){j=j.slice(0,j.length-3);
 return j

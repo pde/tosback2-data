@@ -3517,7 +3517,7 @@ var superFooty = {
 	playerVisible : true,
 	raisePlayer : "+=300",
 	lowerPlayer : "-=300",
-	presentsuper_footy : "+=383",
+	presentSuperfooty : "+=383",
 	playerLowered : "-296px",
 	animationDuration : 2000,
 
@@ -3531,12 +3531,12 @@ var superFooty = {
 		var fn = this.msg;
 		if ($.cookie("super_footy") != '' && $.cookie("super_footy") != "seen"){
 			$.cookie("super_footy", "seen", { expires: 1 });
-			fn = function(){ superFooty.reorderUp() };
+			fn = function(){ superFooty.reorder(15,16) };
 			this.closeButton("up");
 		}else{
 			this.setPlayerDown();
 		}
-		this.animate('.super_footy .middle', this.presentsuper_footy, fn);		
+		this.animate('.super_footy .middle', this.presentSuperfooty, fn);		
 	},
 
 	raiseLowerPlayer : function(){
@@ -3546,10 +3546,10 @@ var superFooty = {
 		var direction = this.playerVisible ? this.lowerPlayer : this.raisePlayer;
 		var fn = this.msg;
 		if (direction == this.lowerPlayer){
-			this.reorderDown();
+			this.reorder(5,3);
 			fn = function(){superFooty.closeButton("down");}
 		}else{
-			fn = function(){ superFooty.reorderUp(); superFooty.pausePlayer();superFooty.closeButton("up"); };
+			fn = function(){ superFooty.reorder(15,16); superFooty.pausePlayer();superFooty.closeButton("up"); };
 		}
 		this.animate('.super_footy .player_button_holder', direction, fn);
 		this.playerVisible = !this.playerVisible;
@@ -3563,23 +3563,18 @@ var superFooty = {
 		}
 	},
 	
-	reorderUp : function (){
-		this.setZIndex('.video_player_holder', 15);
-		this.setZIndex('.promo', 16);
-	},
-	
-	reorderDown : function (){
-		this.setZIndex('.video_player_holder', 5);
-		this.setZIndex('.promo', 3);
+	reorder : function (holder, promo){
+		this.setZIndex('.video_player_holder', holder);
+		this.setZIndex('.promo', promo);
 	},
 	
 	getPlayers : function (){
 		var players = MTVNPlayer.getPlayers();
-		this.super_footyPlayer = players[0];
+		this.super_footyPlayer = this.determinePlayer(players,"super_footy_video_player_box");
 		
 		if (players.length > 1){
 			this.msg ("binding event to superfooty");
-			this.otherPlayer = players[1];
+			this.otherPlayer = this.determinePlayer(players,"video_player_box");
 			this.super_footyPlayer.bind ("onStateChange",function(state){ 
 				superFooty.pausePlayer();
 			});
@@ -3589,32 +3584,29 @@ var superFooty = {
 		
 	},
 	
+	determinePlayer: function (players,whichOne){
+		for (var x = 0; x < players.length; x++){
+			if (players[x].id == whichOne){
+				this.msg ("matched " + whichOne + " " + x)
+				return players[x];
+			}
+		}
+		this.msg (whichOne + " not found");
+		return null;
+	},
+	
 	bindPauseToPlayer : function(){
 		this.msg ("trying to binding event handler to player");
-		if (typeof $video_player == "object" || typeof this.otherPlayer == "object") {
+		if (typeof this.otherPlayer == "object") {
 			this.msg ("BINDING event to player");
-			if (typeof $video_player == "object"){
-				this.msg ("$video_player");
-				$video_player.bind ("onStateChange",function(state){ 
-					superFooty.super_footyPlayer.pause();
-				});
-			}else{
-				this.msg ("the other player");
-				this.otherPlayer.bind ("onStateChange",function(state){ 
-					superFooty.super_footyPlayer.pause();
-				});
-			}
-		}else{
-			this.msg("trying to bind again in 5 seconds");
-			setTimeout (function(){superFooty.bindPauseToPlayer()},5000)
+			this.otherPlayer.bind ("onStateChange",function(state){ 
+				superFooty.super_footyPlayer.pause();
+			});
 		}
 	},
 	
 	pausePlayer: function (){
-		if (typeof $video_player == "object"){
-			this.msg ("pausing $video_player");
-			$video_player.pause();
-		}else if (typeof this.otherPlayer == "object"){
+		if (typeof this.otherPlayer == "object"){
 			this.msg ("pausing other player");
 			this.otherPlayer.pause();
 		};
@@ -3632,7 +3624,7 @@ var superFooty = {
 
 	animate : function (what, howMuch, fn){
 		 $(what).animate({
-		    bottom: howMuch,
+		    bottom: howMuch
 		  	}, this.animationDuration, fn
 		  );
 	},
@@ -3663,6 +3655,8 @@ $(function () {
 
 		init: function() {
 			var self = this;
+			if ($(this).data('initialized')) { return; }
+			$(this).data('initialized','true');
 			this._cacheDOMElements();
 			this._initHistory();
 			this._initCarousel();
@@ -3677,6 +3671,10 @@ $(function () {
 			//here is the objects
 			this.module = $(this.elem);
 			this.ajaxSpinner = this.module.find('.ajax_spinner');
+			//css classes
+			this.currentClass = 'current';
+			this.blankClass = 'blank';
+			this.openArrowClass = 'opened';
 			//here is the jquery selectors
 			this.previousLink = '.previous';
 			this.nextLink = '.next';
@@ -3684,8 +3682,6 @@ $(function () {
 			this.videoThumbnail = this.videoContainer + ' img';
 			this.player = '#video_player_box';
 			this.playBtn = '.videoWrapper .arrow';
-			this.currentClass = 'current';
-			this.blankClass = 'blank';
 			this.currentItem = '.' + this.currentClass;
 			this.loadDescriptionLink = '.load_description';
 			this.descriptionContent = '.meta';
@@ -3693,6 +3689,7 @@ $(function () {
 			this.fbComments = '.fb-comments';
 			this.shareBtn = '.share_button_container .share_button';
 			this.shareDropdown = '.share_button_dropdown';
+			this.triangleArrow = '.triangle';
 		},
 
 		_initCarousel: function() {
@@ -3834,7 +3831,7 @@ $(function () {
 				$carousel = this.module.parent(),
 				height = $carousel.height();
 			event.preventDefault();
-			$link.find('.triangle').toggleClass('opened');
+			$link.find(this.triangleArrow).toggleClass(this.openArrowClass);
 			if ($content.hasClass('hidden')) {
 				$carousel.height(height + $content.outerHeight());
 			} else {
@@ -3876,6 +3873,7 @@ $(function () {
 			var jsonObj = $.parseJSON(data),
 				isScroll = false;
 			this._storePlayers(jsonObj);
+			this.module.find(this.triangleArrow + '.'  + this.openArrowClass).click();
 			this._addItems(jsonObj, this.module.hasClass('notSendAjax'));
 		},
 
@@ -3941,12 +3939,13 @@ $(function () {
 			var unsetEmbeds = $('.share_bar .embed_btn:visible').not(':has(embed,object)');
 			if (unsetEmbeds.length > 0) {
 				unsetEmbeds.each(function(){
-					$CC(this).sharebar();
+					$(this).sharebar();
 				});
 			}
 		}
 	});
-}) (jQuery);/* overlay.js */
+}) (jQuery);
+/* overlay.js */
 /**
  * Crabapple Entertainment Overlay Code
  * 
@@ -4565,83 +4564,67 @@ $(function() {
 });/* cc.collection_player.js */
 /* cc.collection_player.js */
 var collectionPlayer = {
-		
-		init : function () {
-			
-			// onload, show current video meta data
-			current = $('.meta_holder').attr('data-current');	
+	current : 0,
+	player : null,
+	init : function () {
 
-			meta_class = "#meta_" + current;
-			current_meta = "#meta_bottom_" + current;		
-			
-			$(meta_class).show();
-			$(current_meta).addClass("current");	
-			
-			$(".meta_bottom_holder a").live('click', function (event) {
-				collectionPlayer.videoClick(this);
-				event.preventDefault();
-			});				
-			
-			player = $Crabapple.playerA.player.video_player_box;					
-			/*
-			player.events = {
-				onReady:collectionPlayer.onPlayerLoaded,
-				onStateChange:collectionPlayer.onStateChange
-			};
-			*/
-			
-			//Player API updated.  New Way to bind Events.  See http://mtvn-player.github.com/embed-api/docs/#!/api/MTVNPlayer.Events
-			player.bind("onReady", collectionPlayer.onPlayerLoaded);
-			player.bind("onStateChange", collectionPlayer.onStateChange);
-		},
-		
-		onPlayerLoaded : function() {
-			//alert("playing!");
-			//collectionPlayer.playVideo(current);
-		},
-		
-		onStateChange : function (event) {
-			var state = event.data;
-			
-			switch (state) {
-				case 'playing':
-					if (isAd == false) {
-						current = player.playlistMetadata.index;
-						collectionPlayer.highlightCurrent();						
-					}
-				break;
-				
-				case 'paused':
-				break;
-		
-				case 'initializing media':
-				break;
+		// onload, show current video meta data
+		this.current = $('.meta_holder').attr('data-current');
 
-				case 'stopped':
-				break;				
-				
-			}
-		},	
-				
-		videoClick : function (elm) {	
-			current = $(elm).parents("li").attr('data-current');		
-			collectionPlayer.playVideo(current);
-		},
+		meta_class = "#meta_" + this.current;
+		current_meta = "#meta_bottom_" + this.current;
 
-		highlightCurrent : function () {	
-			var current_id = "#meta_" + current;	
-			var current_meta_id = "#meta_bottom_" + current;
-			var current_page = current + 1;
-			$(".video_description").hide();
-			$(current_id).show();
-			$(".collection_showcase li").removeClass("current");	
-			$(current_meta_id).addClass("current");	
-			$("#collection_page_count").html(current_page);
-		},
-		
-		playVideo : function (index) {
-			player.playIndex(index);
-		}
+		$(meta_class).show();
+		$(current_meta).addClass("current");
+
+		$(".meta_bottom_holder a").live('click', function (event) {
+			collectionPlayer.videoClick(this);
+			event.preventDefault();
+		});
+
+		this.player = $Crabapple.playerA.player.video_player_box;
+		/*
+		player.events = {
+			onReady:collectionPlayer.onPlayerLoaded,
+			onStateChange:collectionPlayer.onStateChange
+		};
+		*/
+
+		//Player API updated.  New Way to bind Events.  See http://mtvn-player.github.com/embed-api/docs/#!/api/MTVNPlayer.Events
+		this.player.bind("onReady", collectionPlayer.onPlayerLoaded);
+		this.player.bind('onIndexChange', collectionPlayer.onIndexChange);
+		//player.bind("onStateChange", collectionPlayer.onStateChange);
+	},
+
+	onPlayerLoaded : function() {
+		//alert("playing!");
+		//collectionPlayer.playVideo(current);
+	},
+
+	onIndexChange : function(event) {
+		collectionPlayer.current = event.data;
+		collectionPlayer.highlightCurrent();
+	},
+
+	videoClick : function (elm) {
+		this.current = $(elm).parents("li").attr('data-current');
+		this.playVideo(this.current);
+	},
+
+	highlightCurrent : function () {
+		var current_id = "#meta_" + this.current;
+		var current_meta_id = "#meta_bottom_" + this.current;
+		var current_page = this.current + 1;
+		$(".video_description").hide();
+		$(current_id).show();
+		$(".collection_showcase li").removeClass("current");
+		$(current_meta_id).addClass("current");
+		$("#collection_page_count").html(current_page);
+	},
+
+	playVideo : function (index) {
+		this.player.playIndex(index);
+	}
 };
 
 $(function() {
@@ -4903,83 +4886,58 @@ $(function () {
 	$CC('.visible_header .twitter_posts').tweetriver();
 });/* cc.miniplayer.js */
 /* cc.miniplayer.js */
-var current;
-var isAd = false;
 
 var CCminiPlayer = {
+
+		module: null,
+
+		thumbnails: null,
 		
-		init : function () {
-			miniPlayer = $Crabapple.playerA.player.video_player_box;		
-			current = 0;
-			
-			var current_class = "#show_video_" + current;
-			$(current_class).addClass("current");
-			
-			$(".miniplayer .video_thumb").live('click', function (event) {
-				CCminiPlayer.videoClick(this);
-				event.preventDefault();
-			});			
-			/*
-			miniPlayer.events = {
-				onReady:CCminiPlayer.onPlayerLoaded,
-				onStateChange:CCminiPlayer.onStateChange
-			};
-			*/
-			
+		currentVideoIndex: 0,
+
+		miniPlayer: null,
+
+		init : function (moduleName, playerInstance) {
+
+			this.module = $(moduleName);
+			this.thumbnails = this.module.find(".video_thumb");
+			this.miniPlayer = playerInstance;
+			this.highlightCurrent(this.currentVideoIndex);
 			//Player API updated.  New Way to bind Events.  See http://mtvn-player.github.com/embed-api/docs/#!/api/MTVNPlayer.Events
-			miniPlayer.bind("onReady", CCminiPlayer.onPlayerLoaded);
-			miniPlayer.bind("onStateChange", CCminiPlayer.onStateChange);
-			
+			this.miniPlayer.bind("onReady", CCminiPlayer.onPlayerLoaded);
+			this.miniPlayer.bind("onIndexChange", CCminiPlayer.onIndexChange);
 		},
 		
 		onPlayerLoaded : function() {
-			
+			CCminiPlayer.thumbnails.live('click', function () {
+				CCminiPlayer.videoClick(this);
+				return false;
+			});
 		},
 		
-		onStateChange : function (event) {
-			var state = event.data;
-			
-			switch (state) {
-				case 'playing':
-					if (isAd == false) {
-						current = miniPlayer.playlistMetadata.index;
-						CCminiPlayer.highlightCurrent();						
-					}
-				break;
-				
-				case 'paused':
-				break;
-		
-				case 'initializing media':
-				break;
+		onIndexChange: function(event){
+			CCminiPlayer.highlightCurrent(event.data);
+		},
 
-				case 'stopped':
-				break;				
-				
-			}
-		},	
-				
-		videoClick : function (video) {	
-			$(".video_thumb").removeClass("current");
-			index = video.getAttribute("data-videoindex");
-			miniPlayer.pause();
+		videoClick : function (video) {
+			var index = video.getAttribute("data-videoindex");
 			CCminiPlayer.playVideo(index);
 		},
 
-		highlightCurrent : function () {		
-			$(".video_thumb").removeClass("current");
-			var current_id = "#show_video_" + current;	
-			$(current_id).addClass("current");
+		highlightCurrent : function (index) {
+			CCminiPlayer.thumbnails.removeClass("current");
+			$(this.thumbnails[index]).addClass("current");
 		},
 		
 		playVideo : function (index) {
-			miniPlayer.playIndex(index);
+			CCminiPlayer.miniPlayer.playIndex(index);
+			CCminiPlayer.highlightCurrent(index);
 		}
 };
 
 $(function() {
 	if ($(".module.miniplayer").length) {
-		CCminiPlayer.init();
+		CCminiPlayer.init(".module.miniplayer", $Crabapple.playerA.player.video_player_box);
 	}
 });/* cc.photo_gallery.js */
 $(function () {
@@ -8470,6 +8428,30 @@ $(document).ready(function(){
 			});
 		});
 	}
+});/* web_series_list.js */
+/*  web_series_list.js */
+
+$(document).ready(function(){
+	var mosiacOnclickPattern = /(.*mosiacShareBarTracking\([^,]+,)([^,]+)(,.*)/;
+	
+	if($('.web_series_list').length) {					
+		var	regLink     = new RegExp('http:\\/\\/\\S+', 'g'),
+			regHashtag  = new RegExp('\\B#([_a-zA-Z0-9]+)', 'g'),
+			regReply    = new RegExp('\\B@([_a-zA-Z0-9]+)', 'g'),
+			$content    = $('.web_series_list .description');
+			/* colorize hashtags */
+			$content.each(function() {
+				var result = $(this).text().replace(regLink, function (link) {
+					return '<span class="hash_tag">' + link + '</span>';
+				}).replace(regHashtag, function (hashtag) {
+					return '<span class="hash_tag">' + hashtag + '</span>';
+				}).replace(regReply, function (reply) {
+					return '<span class="hash_tag">' + reply + '</span>';
+				});
+				$(this).html(result);
+			});
+	}
+
 });/* tag_results.js */
 /**
  * Tag Results Module

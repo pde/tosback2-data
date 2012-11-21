@@ -8,7 +8,7 @@ function CLog(message) {
             panel.empty();
         });
 
-    } 
+    }
 
     panel.append('<p>' + message + '</p>');
 
@@ -102,9 +102,20 @@ var navMenu = {
         return $('<a/>').attr('href', url)[0].pathname.replace(/^[^\/]/, '/');
     },
     hideDockedSection: function ($mainMenu, $secondNavMenu) {
+
+
+        var $stickyNav = $('#sticky_top_nav_Container');
+        if ($stickyNav.length > 0) {
+            $stickyNav.hide();
+            //$('#topNavContainer #hyundaiLogo').find('> a').show();
+            return;
+        }
+
+
         var $subVehicleIDIn = $("#subVehicleIDIn", $mainMenu);
         var $currentPageIn = $("#currentPageIn", $mainMenu);
         var $dockedSectionIn = $("#dockedSectionIn", $mainMenu);
+
 
 
         var vehicleSuvMenu = false;
@@ -146,6 +157,14 @@ var navMenu = {
     },
     showDockedSection: function ($mainMenu, $secondNavMenu) {
 
+
+        var $stickyNav = $('#sticky_top_nav_Container');
+        if ($stickyNav.length > 0) {
+            $secondNavMenu.css({ 'top': '33px' });
+            $stickyNav.show();
+            //$('#topNavContainer #hyundaiLogo').find('> a').hide();
+            return;
+        }
 
         var $dockedSectionIn = $("#dockedSectionIn", $mainMenu);
         var $currentPageIn = $("#currentPageIn", $mainMenu);
@@ -366,8 +385,7 @@ var navMenu = {
                 $mainMenu.data('menuHoverOutInterval', null);
 
 
-
-                if ($dockedSectionIn.val() != '') {
+                if ($dockedSectionIn.val() != '' || $('#sticky_top_nav_Container').length > 0) {
                     navMenu.showDockedSection($mainMenu, $secondNavMenu);
                 } else {
                     // $secondNavMenu.position().top >= 73 ==> fix chrome when we zoom in/out view of browser

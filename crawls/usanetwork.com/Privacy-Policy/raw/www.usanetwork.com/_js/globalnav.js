@@ -391,13 +391,17 @@ var usa_globalMenu = {
 							"url" : usa_baseUrlDomain + "/series/fairlylegal/"
 						},
 						{
-							"title" : "Graceland",
+							"title" : "Graceland (New)",
 							"url" : usa_baseUrlDomain + "/series/graceland/"
 						},
 						{
 							"title" : "In Plain Sight",
 							"url" : usa_baseUrlDomain + "/series/inplainsight/"
-						},					
+						},
+						{
+							"title" : "The Moment (New)",
+							"url" : usa_baseUrlDomain + "/series/themoment/"
+						},
 						{
 							"title" : "Necessary Roughness",
 							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
@@ -438,31 +442,31 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "Covert Affairs",
-							"url" : usa_baseUrlDomain + "/series/covertaffairs/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_ca.png",
-							"tuneIn" : "TUESDAYS 10/9C"
-						},
-						/* Featured Slot 2 */
-						{
 							"title" : "Burn Notice",
 							"url" : usa_baseUrlDomain + "/series/burnnotice/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_bn.png",
 							"tuneIn" : "THURSDAYS 10/9C"
 						},
-						/* Featured Slot 3 */
+						/* Featured Slot 2 */
 						{
 							"title" : "WWE RAW",
-							"url" : usa_baseUrlDomain + "/sports/wwe/",
+							"url" : usa_baseUrlDomain + "/series/wwe/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
-							"tuneIn" : "MONDAY 9/8C"
+							"tuneIn" : "MONDAYS 8/7C"
+						},
+						/* Featured Slot 3 */
+						{
+							"title" : "Suits",
+							"url" : usa_baseUrlDomain + "/sports/suits/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
+							"tuneIn" : "RETURNS JAN 17 10/9C"
 						},
 						/* Featured Slot  - LAST */
 						{
-							"title" : "Suits",
-							"url" : usa_baseUrlDomain + "/series/suits/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
-							"tuneIn" : "RETURNS THIS JANUARY"
+							"title" : "White Collar",
+							"url" : usa_baseUrlDomain + "/series/whitecollar/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wc.png",
+							"tuneIn" : "RETURNS JAN 22 10/9C"
 						}
 
 					]

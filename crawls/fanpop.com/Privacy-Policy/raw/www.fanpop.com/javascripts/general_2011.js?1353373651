@@ -1,0 +1,540 @@
+function stopProp(event)
+{
+	var event = event || window.event
+	event.cancelBubble = true;
+	if (event.stopPropagation) event.stopPropagation();
+}
+
+/* Search Hint JS START */
+var search_hint_selected = -1;
+var search_hints_max_num = 10;
+function search_hint_keymove(event) {
+	if (window.event) {
+		key = window.event.keyCode; //IE
+	} else {
+		key = event.which; // !IE
+	}
+	if (key == 38 || key == 40 || key == 13) {
+		switch (key) {
+			case 13:
+				if (search_hint_selected >= 0 && search_hint_selected < search_hints_max_num ) {
+					obj = document.getElementById("search_club_hint_row_"+search_hint_selected);
+					if (obj) {
+						obj.onclick();
+					}
+				} else {
+					obj = document.getElementById("search");
+					if (obj) {
+						obj.submit();
+					}
+				}
+				break;
+			case 38:
+				if (search_hint_selected > 0) {
+					search_hint_highlight_hint(search_hint_selected - 1);
+				} else {
+					search_hint_highlight_hint(0);
+				}
+				break;
+			case 40:
+				if (search_hint_selected < search_hints_max_num) {
+					search_hint_highlight_hint(search_hint_selected + 1);
+				} else {
+					search_hint_highlight_hint(search_hints_max_num);
+				}
+				break;
+		}
+	}
+	return (key != 13 && key != 38 && key != 40);
+}
+function search_hint_unhighlight_all_hints() {
+	search_hint_selected = -1;
+	for (i=0; i<search_hints_max_num; i++) {
+		if (document.getElementById("search_club_hint_row_"+i)) {
+			document.getElementById("search_club_hint_row_"+i).style.backgroundColor=null;
+		}
+	}
+}
+function search_hint_highlight_hint(num) {
+	obj = document.getElementById("search_club_hint_row_"+num);
+	if (obj) {
+		search_hint_unhighlight_all_hints();
+		obj.style.backgroundColor="#F0F0FF";
+		search_hint_selected = num;
+	}
+}
+function search_hint_hide() {
+	obj = document.getElementById("search_hints");
+	if (obj) {
+		$('#search ul').fadeOut( 'fast', function(){$(this).css('left', "-999em" );} );
+	}
+	obj = document.getElementById("leaderad_unit");
+	if (obj) {
+		obj.style.display="block";
+	}
+}
+var prevent_search_hint_blur = false;
+function search_hint_onblur() {
+	if (prevent_search_hint_blur==false) {
+		search_hint_hide();
+	}
+	prevent_search_hint_blur = false;
+}
+function prevent_sh_blur() {
+	prevent_search_hint_blur = true;
+}
+/* Search Hint JS END */
+
+/* User Wall */
+function expand_wall_mess() {
+	check_mess();
+	elem = document.getElementById("wf_message");
+	elem2 = document.getElementById("wf_message_h");
+	temp = elem.value.replace(/  /g, " &nbsp;");
+	temp = temp.replace(/[\n]/g, "<br />");
+	temp = temp.replace(/[\r]/g, "");
+
+	elem2.innerHTML = temp + "&nbsp;";
+	elem.style.height = (elem2.offsetHeight-22)+"px"; /* remove border and padding size */
+}
+function check_mess() {
+	max_message_length = 500;
+	elem = document.getElementById("wf_message");
+	charsleft = (max_message_length - elem.value.length);
+	countelem = document.getElementById("wf_count");
+	if (charsleft == max_message_length) {
+		countelem.innerHTML = charsleft + " remaining";
+		countelem.style.color = "#C0C0C0";
+		document.getElementById("wf_post_button").disabled=true;
+	} else if (charsleft > 50) {
+		countelem.innerHTML = charsleft + " remaining";
+		countelem.style.color = "#C0C0C0";
+		document.getElementById("wf_post_button").disabled=false;
+	} else if (charsleft > 0) {
+		countelem.innerHTML = charsleft + " remaining";
+		countelem.style.color = "#C08080";
+		document.getElementById("wf_post_button").disabled=false;
+	} else if (charsleft == 0) {
+		countelem.innerHTML = charsleft + " remaining";
+		countelem.style.color = "#000000";
+		document.getElementById("wf_post_button").disabled=false;
+	}
+	else {
+		countelem.innerHTML = -1*charsleft + " over";
+		countelem.style.color = "#FF4040";
+		document.getElementById("wf_post_button").disabled=true;
+	}
+}
+function wf_toggle_emote() {
+	obj = document.getElementById("wf_emote_menu");
+	if (obj) {
+		if (obj.style.display=="block") {
+			obj.style.display = "none";
+			document.getElementById("options_error").innerHTML = "";
+			$('#wf_emote_button').removeClass("selected");
+			$('#wf_url_button').removeClass("selected");
+			$('#wf_prop_button').removeClass("selected");
+			$('#wf_club_button').removeClass("selected");
+		} else {
+			obj.style.display = "block";
+			document.getElementById("options_error").innerHTML = "";
+			if (document.getElementById("wf_prop_menu")) {
+				document.getElementById("wf_prop_menu").style.display = "none";
+			}
+			if (document.getElementById("url_attachment") && parseInt(document.getElementById("url_attachment").value) == 0) {
+				if (document.getElementById("wf_url_form")) {
+					document.getElementById("wf_url_form").style.display = "none";
+				}
+			}
+			if (document.getElementById("urlname") && document.getElementById("urlname").value == "") {
+				if (document.getElementById("wf_club_form")) {
+					document.getElementById("wf_club_form").style.display = "none";
+				}
+			}
+			$('#wf_emote_button').addClass("selected");
+			$('#wf_url_button').removeClass("selected");
+			$('#wf_prop_button').removeClass("selected");
+			$('#wf_club_button').removeClass("selected");
+		}
+	}
+}
+function wf_select_emoticon(uid, emoticon_number, form_obj) {
+	if (document.getElementById(form_obj).value == emoticon_number) {
+		wf_clear_emoticon(uid, form_obj);
+	} else {
+		wf_clear_emoticon(uid, form_obj);
+		obj = document.getElementById("emoticon_"+uid+"_"+emoticon_number);
+		if (obj) {
+			obj.style.border = "2px solid #9999FF";
+			//obj.style.backgroundColor="#E0FFE0";
+			document.getElementById(form_obj).value = emoticon_number;
+		}
+		obj2 = document.getElementById("wf_emote_button");
+		if (obj2) {
+			obj2.src=obj.src;
+		}
+	}
+}
+function wf_clear_emoticon(uid, form_obj) {
+	elem_list = document.getElementsByName("emoticon_img_"+uid);
+	for (i=0; i< elem_list.length; i++) {
+		elem_list[i].style.border="2px solid #FFFFFF";
+		elem_list[i].style.backgroundColor="#FFFFFF";
+	}
+	document.getElementById(form_obj).value = "0";
+	obj2 = document.getElementById("wf_emote_button");
+	if (obj2) {
+		obj2.src="http://images.fanpop.com/images/emoticons/gsmile.jpg";
+	}
+}
+
+function wf_toggle_url() {
+	obj = document.getElementById("wf_url_form");
+	obj2 = document.getElementById("url_attachment");
+	if (obj) {
+		if (obj2 && parseInt(obj2.value) == 0) {
+			if (obj.style.display=="block") {
+				obj.style.display = "none";
+				document.getElementById("options_error").innerHTML = "";
+				$('#wf_emote_button').removeClass("selected");
+				$('#wf_url_button').removeClass("selected");
+				$('#wf_prop_button').removeClass("selected");
+				$('#wf_club_button').removeClass("selected");
+			} else {
+				if (document.getElementById("prop_type") && document.getElementById("prop_type").value != "") {
+					document.getElementById("options_error").innerHTML = "Links cannot be attached while giving a prop. Please remove the prop to attach a link.";
+				} else if (document.getElementById("urlname") && document.getElementById("urlname").value != "") {
+					document.getElementById("options_error").innerHTML = "Links cannot be attached to posts on club walls. Please remove the club to attach a link.";
+				} else {
+					obj.style.display = "block";
+					if (document.getElementById("wf_emote_menu")) {
+						document.getElementById("wf_emote_menu").style.display = "none";
+					}
+					if (document.getElementById("wf_prop_menu")) {
+						document.getElementById("wf_prop_menu").style.display = "none";
+					}
+					if (document.getElementById("urlname") && document.getElementById("urlname").value == "") {
+						if (document.getElementById("wf_club_form")) {
+							document.getElementById("wf_club_form").style.display = "none";
+						}
+					}
+					document.getElementById("options_error").innerHTML = "";
+					$('#wf_emote_button').removeClass("selected");
+					$('#wf_url_button').addClass("selected");
+					$('#wf_prop_button').removeClass("selected");
+					$('#wf_club_button').removeClass("selected");
+				}
+			}
+		}
+	}
+}
+function wf_clear_url_attachment() {
+	if (document.getElementById('url_attachment')) {
+		document.getElementById('url_attachment').value='0';
+	}
+	if (document.getElementById('wf_url_button')) {
+		document.getElementById('wf_url_button').src='http://images2.fanpop.com/image/wall/link.jpg';
+		document.getElementById("wf_url_button").style.cursor="pointer";
+	}
+	document.getElementById("options_error").innerHTML = "";
+}
+function wf_toggle_prop() {
+	obj = document.getElementById("wf_prop_menu");
+	if (obj) {
+		if (document.getElementById("url_attachment") && parseInt(document.getElementById("url_attachment").value)!=0) {
+			document.getElementById("options_error").innerHTML = "Props cannot have links attached. Please remove the link to give a prop.";
+		} else if (document.getElementById("urlname") && document.getElementById("urlname").value != "") {
+			document.getElementById("options_error").innerHTML = "Props cannot be given to a club. Please remove the club to give a prop instead.";
+		} else {
+			if (obj.style.display=="block") {
+				obj.style.display = "none";
+				document.getElementById("options_error").innerHTML = "";
+				$('#wf_emote_button').removeClass("selected");
+				$('#wf_url_button').removeClass("selected");
+				$('#wf_prop_button').removeClass("selected");
+				$('#wf_club_button').removeClass("selected");
+			} else {
+				obj.style.display = "block";
+				document.getElementById("options_error").innerHTML = "";
+				if (document.getElementById("wf_emote_menu")) {
+					document.getElementById("wf_emote_menu").style.display = "none";
+				}
+				if (document.getElementById("url_attachment") && parseInt(document.getElementById("url_attachment").value) == 0) {
+					if (document.getElementById("wf_url_form")) {
+						document.getElementById("wf_url_form").style.display = "none";
+					}
+				}
+				if (document.getElementById("urlname") && document.getElementById("urlname").value == "") {
+					if (document.getElementById("wf_club_form")) {
+						document.getElementById("wf_club_form").style.display = "none";
+					}
+				}
+				$('#wf_emote_button').removeClass("selected");
+				$('#wf_url_button').removeClass("selected");
+				$('#wf_prop_button').addClass("selected");
+				$('#wf_club_button').removeClass("selected");
+			}
+		}
+	}
+}
+function wf_toggle_club() {
+	obj = document.getElementById("wf_club_form");
+	obj2 = document.getElementById("urlname");
+	if (obj) {
+		if (obj2 && obj2.value == "") {
+			if (obj.style.display == "block") {
+				obj.style.display = "none";
+				$('#wf_emote_button').removeClass("selected");
+				$('#wf_url_button').removeClass("selected");
+				$('#wf_prop_button').removeClass("selected");
+				$('#wf_club_button').removeClass("selected");
+			} else {
+				if (document.getElementById("url_attachment") && parseInt(document.getElementById("url_attachment").value)!=0) {
+					document.getElementById("options_error").innerHTML = "Posts to club walls cannot have links attached. Please remove the link to post on a club wall.";
+				} else if (document.getElementById("prop_type") && document.getElementById("prop_type").value != "") {
+					document.getElementById("options_error").innerHTML = "Props cannot be given to a club. Please remove the prop to post on a club wall.";
+				} else {
+					obj.style.display = "block";
+					if (document.getElementById("wf_emote_menu")) {
+						document.getElementById("wf_emote_menu").style.display = "none";
+					}
+					if (document.getElementById("url_attachment") && parseInt(document.getElementById("url_attachment").value) == 0) {
+						if (document.getElementById("wf_url_form")) {
+							document.getElementById("wf_url_form").style.display = "none";
+						}
+					}
+					if (document.getElementById("wf_prop_menu")) {
+						document.getElementById("wf_prop_menu").style.display = "none";
+					}
+					document.getElementById("options_error").innerHTML = "";
+					$('#wf_emote_button').removeClass("selected");
+					$('#wf_url_button').removeClass("selected");
+					$('#wf_prop_button').removeClass("selected");
+					$('#wf_club_button').addClass("selected");
+				}
+			}
+		}
+	}
+}
+function wf_clear_wall_club() {
+	if (document.getElementById('wf_club_chosen_area')) {
+		document.getElementById('wf_club_chosen_area').style.display="none";
+	}
+	if (document.getElementById('wf_club_form_area')) {
+		document.getElementById('wf_club_form_area').style.display="block";
+	}
+	if (document.getElementById('urlname')) {
+		document.getElementById('urlname').value='';
+	}
+	if (document.getElementById('club_about')) {
+		document.getElementById('club_about').style.display="none";
+	}
+	if (document.getElementById('wf_club_button')) {
+		document.getElementById('wf_club_button').src='http://images2.fanpop.com/image/wall/star.jpg';
+		document.getElementById("wf_club_button").style.cursor="pointer";
+	}
+	document.getElementById("options_error").innerHTML = "";
+}
+function wf_set_club(urlname, img, name) {
+	if (document.getElementById('urlname')) {
+		document.getElementById('urlname').value = urlname;
+	}
+	if (document.getElementById('wf_club_button')) {
+		document.getElementById('wf_club_button').src='http://images2.fanpop.com/image/wall/greenstar.jpg';
+		document.getElementById("wf_club_button").style.cursor="default";
+	}
+	if (document.getElementById('wf_club_form_area')) {
+		document.getElementById('wf_club_form_area').style.display="none";
+	}
+	if (document.getElementById('wf_club_chosen_img')) {
+		document.getElementById('wf_club_chosen_img').innerHTML="<im"+"g src='"+img+"' alt='"+name+"' width='25' height='25' class='border' />";
+	}
+	if (document.getElementById('wf_club_chosen')) {
+		document.getElementById('wf_club_chosen').innerHTML=name;
+	}
+	if (document.getElementById('wf_club_chosen_area')) {
+		document.getElementById('wf_club_chosen_area').style.display="block";
+	}
+}
+function wf_select_prop_type(prop_type) {
+	wf_clear_prop_types();
+	obj = document.getElementById(prop_type);
+	obj2 = document.getElementById("prop_type");
+	if (obj) {
+		if (obj2.value!=prop_type) {
+			obj.style.border="2px solid #9999FF";
+			obj.style.backgroundColor="#E0FFE0";
+			obj2.value=prop_type;
+			document.getElementById("wf_prop_button").src=document.getElementById(prop_type).src;
+		} else {
+			obj2.value="";
+			document.getElementById("wf_prop_button").src="http://images2.fanpop.com/image/wall/prop.jpg";
+			document.getElementById("options_error").innerHTML = "";
+		}
+	}
+}
+function wf_clear_prop_types() {
+	elem_list = document.getElementsByName("prop_type_img");
+	for (i=0; i< elem_list.length; i++) {
+		elem_list[i].style.border="2px solid #FFFFFF";
+		elem_list[i].style.backgroundColor="#FFFFFF";
+	}
+}
+
+var wall_club_hint_selected = -1;
+var maximum_club_search_hints = 10;
+function wfc_keymove(event) {
+	if (window.event) {
+		key = window.event.keyCode; //IE
+	} else {
+		key = event.which; // !IE
+	}
+	if (key == 38 || key == 40 || key == 13) {
+		switch (key) {
+			case 13:
+				if (wall_club_hint_selected >= 0 && wall_club_hint_selected < maximum_club_search_hints) {
+					obj = document.getElementById("club_hint_row_"+wall_club_hint_selected);
+					if (obj) {
+						obj.onclick();
+					}
+				}
+				break;
+			case 38:
+				if (wall_club_hint_selected > 0) {
+					wfc_highlight_hint(wall_club_hint_selected - 1);
+				} else {
+					wfc_highlight_hint(0);
+				}
+				break;
+			case 40:
+				if (wall_club_hint_selected < maximum_club_search_hints) {
+					wfc_highlight_hint(wall_club_hint_selected + 1);
+				} else {
+					wfc_highlight_hint(maximum_club_search_hints);
+				}
+				break;
+		}
+	}
+	return (key != 13 && key != 38 && key != 40);
+}
+function wfc_unhighlight_all_hints() {
+	wall_club_hint_selected = -1;
+	for (i=0; i< maximum_club_search_hints; i++) {
+		if (document.getElementById("club_hint_row_"+i)) {
+			document.getElementById("club_hint_row_"+i).style.backgroundColor="#FFFFFF";
+		}
+	}
+}
+function wfc_highlight_hint(num) {
+	obj = document.getElementById("club_hint_row_"+num);
+	if (obj) {
+		wfc_unhighlight_all_hints();
+		obj.style.backgroundColor="#F0F0FF";
+		wall_club_hint_selected = num;
+	}
+}
+
+/* End user wall */
+
+/* Start forum reply / comments */
+function reply_toggle_emote() {
+	alert("THIS SHOULDN'T RUN");
+	obj = document.getElementById("reply_emote_menu");
+	if (obj) {
+		if (obj.style.display=="block") {
+			obj.style.display = "none";
+			document.getElementById("options_error").innerHTML = "";
+			$('#reply_emote_button').removeClass("selected");
+		} else {
+			obj.style.display = "block";
+			document.getElementById("options_error").innerHTML = "";
+			$('#reply_photo_button').removeClass("selected");
+			$('#reply_emote_button').addClass("selected");
+			if (document.getElementById("img_filename_top_0") && (document.getElementById("img_filename_top_0").value == '' || parseInt(document.getElementById("img_filename_top_0").value) == 0) ) {
+				if (document.getElementById("reply_photo_menu")) {
+					document.getElementById("reply_photo_menu").style.display = "none";
+				}
+			}
+		}
+	}
+}
+function reply_select_emoticon(uid, emoticon_number, form_obj) {
+	if (document.getElementById(form_obj).value == emoticon_number) {
+		reply_clear_emoticon(uid, form_obj);
+	} else {
+		reply_clear_emoticon(uid, form_obj);
+		obj = document.getElementById("emoticon_"+uid+"_"+emoticon_number);
+		if (obj) {
+			obj.style.border = "2px solid #9999FF";
+			document.getElementById(form_obj).value = emoticon_number;
+		}
+		obj2 = document.getElementById("reply_emote_button");
+		if (obj2) {
+			obj2.src=obj.src;
+		}
+	}
+}
+function reply_clear_emoticon(uid, form_obj) {
+	elem_list = document.getElementsByName("emoticon_img_"+uid);
+	for (i=0; i< elem_list.length; i++) {
+		elem_list[i].style.border="2px solid #FFFFFF";
+		elem_list[i].style.backgroundColor="#FFFFFF";
+	}
+	document.getElementById(form_obj).value = "0";
+	obj2 = document.getElementById("reply_emote_button");
+	if (obj2) {
+		obj2.src="http://images.fanpop.com/images/emoticons/gsmile.jpg";
+	}
+}
+function reply_toggle_photo() {
+	obj = document.getElementById("reply_photo_menu");
+	if (obj) {
+		if (obj.style.display=="block") {
+			obj.style.display = "none";
+			document.getElementById("options_error").innerHTML = "";
+			$('#reply_photo_button').removeClass("selected");
+		} else {
+			obj.style.display = "block";
+			document.getElementById("options_error").innerHTML = "";
+			$('#reply_emoticon_button').removeClass("selected");
+			$('#reply_photo_button').addClass("selected");
+			if (document.getElementById("reply_emote_menu")) {
+				document.getElementById("reply_emote_menu").style.display = "none";
+			}
+		}
+	}
+}
+
+function reveal_comments(revealname, concealid) {
+	var all_divs = document.getElementsByTagName("div");
+	for(var i = 0; i < all_divs.length; i++) {
+		if(all_divs[i].getAttribute("name")==revealname) {
+			all_divs[i].style.display="";
+		}
+	}
+	document.getElementById(concealid).style.display="none";
+}
+
+function simple_reveal_comments(masterid) {
+	document.getElementById("comments_hidden_"+masterid).style.display="block";
+	document.getElementById("commentshide_"+masterid).style.display="none";
+}
+
+function comments_load_hide_show(masterid,a,z) {
+	obj = document.getElementById('commentshide_'+masterid+'_'+a+'_'+z);
+	if (obj) {
+		obj.style.display='none';
+	}
+	obj = document.getElementById('commentshideup_'+masterid+'_'+a+'_'+z);
+	if (obj) {
+		obj.style.display='none';
+	}
+	obj = document.getElementById('commentshidedown_'+masterid+'_'+a+'_'+z);
+	if (obj) {
+		obj.style.display='none';
+	}
+	obj = document.getElementById('commentshideload_'+masterid+'_'+a+'_'+z);
+	if (obj) {
+		obj.style.display='block';
+	}
+}

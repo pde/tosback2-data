@@ -1088,21 +1088,16 @@ gvpUtils.prototype.mobile = new function () {
 	// Return the device screen's diagonal measurement using density independent pixels.
 	// Example: 800 X 360, ratio 1.5 yields a diagonal of about 658.
 	this.calcScreenDiagonal = function () {
-	
 		var dsPixelRatio = window.devicePixelRatio;
 		var dsWidth = window.outerWidth;
 		var dsHeight = window.outerHeight;
 		var screenArea = (dsWidth * dsWidth) + (dsHeight * dsHeight);
 		var diagonalDim;
-		if (isIOS){
-			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
-			}
-		else if (isWindows){
-		
+		if (isWindows){
 			var diagonalDim = Math.sqrt(screenArea) / 2;
 		}
 		else{
-			var diagonalDim = Math.sqrt(screenArea);
+			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
 		}
 		
 		return (diagonalDim);

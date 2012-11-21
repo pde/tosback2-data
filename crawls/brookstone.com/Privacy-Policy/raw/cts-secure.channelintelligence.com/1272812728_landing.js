@@ -48,12 +48,6 @@ function ci_PIX(loc,eid,tid,src,sku,tag){
 	return ci_FP(url, 'http');
 }
 	
-// Criteo
-function loadCriteo(){var ci_pagetype=CI_GetValue('CI_PageType',null);var ci_itemid=CI_GetValue('CI_ItemID',null);
-if(ci_pagetype=='HOME'){try{var cto_conf='t1=sendEvent&c=2&p=3215';var cto_conf_event='v=2&wi=7714124&pt1=0&pt2=1';var CRITEO=function(){var b={Load:function(d){var c=window.onload;window.onload=function(){if(c){c()}d()}}};function a(e){if(document.createElement){var c=document.createElement((typeof(cto_container)!='undefined'&&cto_container=='img')?'img':'iframe');if(c){c.width='1px';c.height='1px';c.style.display='none';c.src=e;var d=document.getElementsByTagName('body');if(!d||d.length==0)return;d=d[0];if(d!=null&&d.appendChild){d.appendChild(c)}}}}return{Load:function(c){c+='&'+cto_conf;var f='';if(typeof(cto_conf_event)!='undefined')f=cto_conf_event;if(typeof(cto_container)!='undefined'){if(cto_container=='img')c+='&resptype=gif'}if(typeof(cto_params)!='undefined'){for(var key in cto_params){if(key!='kw'&&(typeof(cto_params[key])=='string'))f+='&'+key+'='+encodeURIComponent(cto_params[key])}if(cto_params['kw']!=undefined)c+='&kw='+encodeURIComponent(cto_params['kw'])}c+='&p1='+encodeURIComponent(f);c+='&cb='+Math.floor(Math.random()*99999999999);try{c+='&ref='+encodeURIComponent(document.referrer)}catch(err){}try{c+='&sc_r='+encodeURIComponent(screen.width+'x'+screen.height)}catch(err){}try{c+='&sc_d='+encodeURIComponent(screen.colorDepth)}catch(err){}a(c.substring(0,2000))}}}();CRITEO.Load(document.location.protocol+'//dis.us.criteo.com/dis/dis.aspx?')}catch(err){}}
-if(ci_pagetype=='PRODUCT'&&ci_itemid!==null&&ci_itemid!==''){try{var cto_params=[];cto_params["i"]=ci_itemid;var cto_conf='t1=sendEvent&c=2&p=3215';var cto_conf_event='v=2&wi=7714124&pt1=2';var CRITEO=function(){var b={Load:function(d){var c=window.onload;window.onload=function(){if(c){c()}d()}}};function a(e){if(document.createElement){var c=document.createElement((typeof(cto_container)!='undefined'&&cto_container=='img')?'img':'iframe');if(c){c.width='1px';c.height='1px';c.style.display='none';c.src=e;var d=document.getElementsByTagName('body');if(!d||d.length==0)return;d=d[0];if(d!=null&&d.appendChild){d.appendChild(c)}}}}return{Load:function(c){c+='&'+cto_conf;var f='';if(typeof(cto_conf_event)!='undefined')f=cto_conf_event;if(typeof(cto_container)!='undefined'){if(cto_container=='img')c+='&resptype=gif'}if(typeof(cto_params)!='undefined'){for(var key in cto_params){if(key!='kw'&&(typeof(cto_params[key])=='string'))f+='&'+key+'='+encodeURIComponent(cto_params[key])}if(cto_params['kw']!=undefined)c+='&kw='+encodeURIComponent(cto_params['kw'])}c+='&p1='+encodeURIComponent(f);c+='&cb='+Math.floor(Math.random()*99999999999);try{c+='&ref='+encodeURIComponent(document.referrer)}catch(e){}try{c+='&sc_r='+encodeURIComponent(screen.width+'x'+screen.height)}catch(e){}try{c+='&sc_d='+encodeURIComponent(screen.colorDepth)}catch(e){}a(c.substring(0,2000))}}}();CRITEO.Load(document.location.protocol+'//dis.us.criteo.com/dis/dis.aspx?')}catch(err){}}
-}
-
 if(window.location.protocol.toLowerCase() == 'http:'){	
 	try {
 		var ci_cpncode=ci_RQV('cpncode');
@@ -68,6 +62,7 @@ if(window.location.protocol.toLowerCase() == 'http:'){
 		var ci_tid=ci_UID(ci_sku);
 		var ci_pagetype=CI_GetValue('CI_PageType',null);
 		var ci_itemid=CI_GetValue('CI_ItemID',null);
+		var ci_catname=CI_GetValue('CI_CatName',null);
 		
 		if(document.referrer.toLowerCase().indexOf('yahoo')>-1){
 			ci_CC('ci_pixmgr','yahoo',7);
@@ -99,10 +94,70 @@ if(window.location.protocol.toLowerCase() == 'http:'){
 	    GoogleLoad=window.setInterval("if(typeof(urchinTracker)=='function'){_uacct='UA-225484-1'; urchinTracker(); window.clearInterval(GoogleLoad);}",500);
 		}
 		
-		//Criteo Home Page
-		document.write("<div id='cto_mg_div' style='display:none;'></div>"); 
-		window.setTimeout( "loadCriteo();", 1000 );
-
+		//Tellapart
+		try{
+		  	if(ci_ITD()===false){
+		  	if(ci_pagetype == 'HOME'||ci_pagetype == 'CAT'||ci_pagetype == 'PRODUCT'){
+				var __cmbLoaded = false,
+					__cmbRunnable = null;
+				(function () {
+					try {
+						var b;
+						var actionType = "pv";
+						function d() {
+							var action = TellApartCrumb.makeCrumbAction("BSHrQRAc8Xxh", actionType);
+							//Home Page
+							if (ci_pagetype == 'HOME') {
+								action.setActionAttr("PageType", "ProductCategory");
+								action.setActionAttr("ProductCategoryPath", "HOME");
+							}
+							if (ci_pagetype == 'CAT') {
+								action.setActionAttr("PageType", "ProductCategory");
+								action.setActionAttr("ProductCategoryPath", ci_catname);
+							}
+							if (ci_pagetype == 'PRODUCT') {
+								action.setActionAttr("PageType", "Product");
+								action.setActionAttr("SKU", ci_itemid);
+								action.setActionAttr("ProductCategoryPath", ci_catname);
+							}
+							action.finalize()
+						};
+					
+					if ("https:" == document.location.protocol) b = "https://sslt.tellapart.com/crumb.js";
+					else {
+						for (var g = navigator.userAgent, h = 0, e = 0, i = g.length; e < i; e++) h ^= g.charCodeAt(e);
+						b = "http://static.tellaparts.com/crumb" + h % 10 + ".js"
+					}
+					if (actionType === "tx") {
+						__cmbRunnable = d;
+						document.write("\x3Cscript type='text/java" + "script' src='" + b + "'\x3E\x3C/script\x3E");
+						__cmbLoaded = true
+					} else {
+						var a = document.createElement("script");
+						a.src = b;
+						a.onload = function () {
+							__cmbLoaded = true;
+							d()
+						};
+						a.onreadystatechange = function () {
+							if (/loaded|complete/.test(a.readyState)) {
+								__cmbLoaded = true;
+								d()
+							}
+						};
+						var s = document.getElementsByTagName("script")[0];
+						s.parentNode.insertBefore(a, s)
+					}
+				} catch (j) {}
+				})();
+				if (__cmbRunnable != null) {
+					__cmbRunnable();
+					__cmbRunnable = null
+				};
+			}
+			}
+		}catch(err){}
+		
 		if(ci_cmven!==null){ci_tag=ci_cmven;}
 		
 		if(ci_ITD()===false){

@@ -263,9 +263,9 @@ function setCartItemCount(elementName, singular, plural, isRecursive) {
 }
 
 function getBloomreachContent(url, pageType, searchTerm, prodId, prodName, 
-		status, userAgent, relatedContentWrapper, moreResultsWrapper) 
+		status, userAgent, referrer, relatedContentWrapper, moreResultsWrapper) 
 {
-	$j.get("/fetchBloomreachContent.jsp?url=" + url + "&pageType=" + pageType + "&searchTerm=" + searchTerm + "&prodId=" + prodId + "&prodName=" + prodName + "&status=" + status + "&userAgent=" + userAgent,
+	$j.get("/fetchBloomreachContent.jsp?url=" + url + "&pageType=" + pageType + "&searchTerm=" + searchTerm + "&prodId=" + prodId + "&prodName=" + prodName + "&status=" + status + "&userAgent=" + userAgent + "&referrer=" + referrer, 
 			function(data) {
 				if (data && (data.relatedContent || data.moreResults)) {
 					if (data.relatedContent) {
@@ -283,6 +283,11 @@ function getBloomreachContent(url, pageType, searchTerm, prodId, prodName,
 						}
 					}
 				}
+				try {
+					var tracker = BrTrk.getTracker(0.2, br_data);
+					tracker.enableTracking();
+				}
+				catch(err) { }
 			},
 			"json");
 }

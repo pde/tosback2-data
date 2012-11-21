@@ -97,6 +97,12 @@ PBS.KIDS.Headband = (function(){
     if (_host.match(/.*soup.*/)) {
         _cdn_host = "soup-tc.pbskids.org";
     }
+    if (_host.match(/.*dev.*/)) {
+        _cdn_host = "dev.pbskids.org";
+    }
+    if (_host.match(/.*stage.*/)) {
+        _cdn_host = "stage.pbskids.org";
+    }
     if (_host.match(/.*localhost.*/)) {
         _cdn_host = "localhost";
     }
@@ -238,7 +244,7 @@ PBS.KIDS.Headband = (function(){
 				 dispatcher.addEventListener('headband-dependencies-loaded', _conditional_show_user_block),
 				 _load_next() }
 	},
-	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.jquery-1.4.2.min.js',
+	{'url': _cdn_base + '/pbs-kids-headband/js/PBS.KIDS.jquery-1.8.3.js',
 	 'condition': function(){ return typeof PBS.KIDS.$_auth != 'undefined' },  
 	 'callback': function(){ _setup(); _load_next() }
 	},
@@ -270,8 +276,40 @@ PBS.KIDS.Headband = (function(){
 	 'condition': function(){ return typeof PBS.KIDS.$_auth.fn.colorbox != "undefined" }, 
 	 'callback': function(){ _load_next() } 
 	},
+    {'url': _cdn_base + '/includes/progresstracker/js/json2.js',
+     'condition': function(){ return typeof JSON != 'undefined' },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/RxJS/rx.min.js',
+     'condition': function(){ return typeof Rx != 'undefined' },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/RxJS/rx.time.min.js',
+     'condition': function(){ return true },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/uuid.js',
+     'condition': function(){ return typeof UUID != 'undefined' },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/utils.js',
+     'condition': function(){ return typeof PBS.KIDS.utils != 'undefined' },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/identity-0.2.js',
+     'condition': function(){ return typeof PBS.KIDS.identity != 'undefined' && PBS.KIDS.identity.loaded === true },
+     'callback': function(){ _load_next(); PBS.KIDS.identity.init(_load_headband); }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/queuingLibrary.js',
+     'condition': function(){ return typeof PBS.KIDS.bufferedQueue != 'undefined' },
+     'callback': function(){ _load_next() }
+    },
+    {'url': _cdn_base + '/includes/progresstracker/js/tracker.js',
+     'condition': function(){ return true },
+     'callback': function(){ _load_next() }
+    },
 	{'url': _cdn_base + '/pbs-kids-headband/js/auth/PBS.KIDS.auth.min.js', 
-	 'condition': function(){ return typeof PKG != "undefined" && PKG.loaded  === true }, 
+	 'condition': function(){ return typeof PKG != 'undefined' && PKG.loaded  === true },
 	 'callback': function(){ _load_callback(); _send_event('body', 'headband-dependencies-loaded') }
 	}
     ];
@@ -413,15 +451,6 @@ PBS.KIDS.Headband = (function(){
     }
 
     var _show_user_block = function(){
-	PBS.KIDS.$_auth('a[href*="/go/apps/auth/"]:not([href*="logout"])').colorbox({
-	    onCleanup: function() {
-                soundManager.pauseAll();
-	    },
-	    onComplete: function() {
-                PBS.KIDS.$_auth('body').trigger('init.go');
-	    }, overlayClose: false
-        });
-
 	PBS.KIDS.$_auth("#pbskids-headband.login #headband-user-block").show();
 	PBS.KIDS.$_auth("#pbskids-headband").addClass('login-ready');
     }

@@ -32,6 +32,7 @@ dojo.require("bec.widget.PopupPanel");
 dojo.require("bec.espot.ClickInfo");
 dojo.require("bec.widget.iScroller");
 dojo.require("dojox.fx.scroll");
+dojo.require("bec.user.EmailSignUp");
 
 dojo.require("bec.widget.form.SelectDropDown"); //for overriding filtering select for tablets
 
@@ -45,6 +46,7 @@ var becLogonPanel;
 var becLogon;
 var resetPassword;
 var resetPasswordPopup;
+var emailSignUp;
 
 var LOADING_MESSAGE = 
 	'<span class="dijitContentPaneLoading"><img class="loadingImage" src="' + eSiteImgDir + '/loading_2.gif"/></span>';
@@ -57,7 +59,8 @@ dojo.addOnLoad(function()
 	
     try
     {
-        popup = new bec.widget.PopupDialog({loadingMessage: LOADING_MESSAGE}); 
+        popup = new bec.widget.PopupDialog({loadingMessage: LOADING_MESSAGE});        
+        emailSignUp = new bec.user.EmailSignUp();
     }
     catch(e)
     {
@@ -166,15 +169,24 @@ function isRequestSubmitted()
 //---------------------------------------------------------------------------------------
 //Sign In Service - most of this moved to Logon.js and ResetPassword.js
 //---------------------------------------------------------------------------------------
-function showEmailPanel()
-{
-	dijit.byId('emailDropDown').show();
+function showEmailSignUpDialog(type)
+{	
+	if(type == "FirstTime")  //Must wait for page load as additional JS objects are required.
+	{
+		dojo.addOnLoad(function() 
+		{	
+			if(typeof emailSignUp !== 'undefined')
+			{
+				emailSignUp.show("FirstTime");
+			}
+		});	
+	}		
+	else //No addOnLoad required as page loading has already completed.
+	{
+		emailSignUp.show(type);
+	} 	
 }
 
-function hideEmailPanel()
-{
-	dijit.byId('emailDropDown').hide();
-}
 function openLogonPanel()
 {
 	becLogon = null;

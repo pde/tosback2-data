@@ -87,6 +87,15 @@ var filterByDate = (function () {
   return obj;
 }());
 
+function setEqualHeight(elements) {
+  "use strict";
+  var max;
+  max      = 0;
+  elements = $(elements);
+  elements.each(function (index, element) { element = $(element).height(); if (element > max) { max = element; } });
+  elements.height(max);
+}
+
 
 /*********************************************************************************************************************/
 /* onReady                                                                                                           */
@@ -94,9 +103,10 @@ var filterByDate = (function () {
 
 try {
   $(window).bind('load', function (e) {
+    "use strict";
     $('body').addClass('ready');
   });
-} catch(e) {}
+} catch (e) {}
 
 
 /*********************************************************************************************************************/
@@ -378,8 +388,8 @@ function initHomeFeature() {
   function initCycle() {
     var $pause;
 
-    function pause() { $cycle.cycle('pause'); $pause.attr('class', 'sprite-slideshow-play'); paused = true; }
-    function resume() { $cycle.cycle('resume'); $pause.attr('class', 'sprite-slideshow-pause'); paused = false; }
+    function pause() { $cycle.cycle('pause'); $pause.attr('class', 'play'); paused = true; }
+    function resume() { $cycle.cycle('resume'); $pause.attr('class', 'pause'); paused = false; }
 
     $cycle.cycle({
       delay:                 -2500,
@@ -388,24 +398,22 @@ function initHomeFeature() {
       slideResize:           0,
       pager:                 '#content .homeFeature .pager',
       allowPagerClickBubble: true,
-      pagerAnchorBuilder:    function (index, element) { return '<a href="#" class="sprite-slideshow-normal"></a>'; },
-      updateActivePagerLink: function (pager, index) {
-        $pager
-          .find('.sprite-slideshow-active').attr('class', 'sprite-slideshow-normal').end()
-          .find('.sprite-slideshow-normal').eq(index).attr('class', 'sprite-slideshow-active').end();
-      }
+      pagerAnchorBuilder:    function (index, element) { return '<a href="#" class="indicator"></a>'; },
+      updateActivePagerLink: function (pager, index) { $pager.find('.indicator').removeClass('on').eq(index).addClass('on'); }
     });
 
     if ($pager.is(':empty')) {
       $pager.hide();
     } else {
       $pager.find('a').click(pause);
-      $pause = $('<a class="sprite-slideshow-pause"></a>')
+      $pause = $('<a class="pause"></a>')
         .css('cursor', 'pointer')
         .appendTo($pager)
-        .click(function () { if (paused) { resume(); } else { pause(); } });
+        .on('click', function () { if (paused) { resume(); } else { pause(); } });
       $pager.show();
     }
+    
+    $pager.css('left', (($cycle.outerWidth() - $pager.outerWidth())/2) + 'px');
   }
 
   $(function () {
@@ -503,7 +511,7 @@ var media = (function ($) {
 
         $parent = $(options.parent);
         $target = $parent.find(options.target);
-        
+
         if ($target.length !== 0) {
           // Build the link with the zoomer options
           media.quickview.$zoomer = $('<a></a>');
@@ -780,8 +788,8 @@ $(function () {
     $map.find('area').each(function (index, element) {
       index++;
       $(this)
-      .css('cursor','pointer')
-      .hover(function () { $breadcrumb.addClass('rollover-' + index); }, function () { $breadcrumb.removeClass('rollover-' + index); });
+        .css('cursor', 'pointer')
+        .hover(function () { $breadcrumb.addClass('rollover-' + index); }, function () { $breadcrumb.removeClass('rollover-' + index); });
     });
   }
 });
@@ -870,10 +878,3 @@ function isRememberMe() {
 
   return result;
 }
-
-
-/*********************************************************************************************************************/
-/* Google +1                                                                                                         */
-/*********************************************************************************************************************/
-
-$(function () { "use strict"; $.getScript('https://apis.google.com/js/plusone.js'); });

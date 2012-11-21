@@ -1,3 +1,4 @@
+var bild_smart_test=1; //var fuer bild.de 
 sas_tmstp=Math.round(Math.random()*10000000000);sas_masterflag=1;
 sas_skyexcluded = 0;
 

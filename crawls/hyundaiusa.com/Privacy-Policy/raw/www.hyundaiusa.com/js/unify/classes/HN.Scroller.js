@@ -23,8 +23,8 @@ HN.Scroller = new function () {
                 $content.wrap('<div class="scrollwrapper" id="'+id+'" style="overflow:hidden;position:relative;width:100%;z-index:9999;height:'+height+'px"></div>');
                 var $scrollerDiv = $content.parent();
                 $scrollerDiv.append('<div class="scrollbar scroller" style="height:'+height+'px"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>');
-                $scrollerDiv.tinyscrollbar({size:height});
-                
+               // $scrollerDiv.tinyscrollbar({size:height});
+                $scrollerDiv.tinyscrollbar({ size: height, sizethumb: 50 });
             });
             
                 

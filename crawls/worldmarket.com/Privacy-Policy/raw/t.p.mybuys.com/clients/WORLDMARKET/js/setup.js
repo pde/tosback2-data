@@ -27,9 +27,9 @@ function loadScript(url, callback) {
 }
 
 
-function initCarousel(visibleitems,scrollitems) {
+function initCarousel(visibleitems,scrollitems,dimension) {
 	jQuery('#mbcarousel').mbcarousel({
-		itemFallbackDimension:172,
+		itemFallbackDimension:dimension,
 		wrap: 'circular',
 		visible: visibleitems,
 		scroll: scrollitems,
@@ -105,6 +105,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 		}
 	if(this.pagetype != "pie") {
 		visibleitems = scrollitems = 0;
+		dimension = 172;
 		if (this.params.wrz == 1 || this.params.wrz != 1) {
 			if(this.pagetype == "CATEGORY" || this.pagetype == "HIGH_LEVEL_CATEGORY" || this.pagetype == "SEARCH_RESULTS") {
 				visibleitems = scrollitems = 3;
@@ -114,6 +115,10 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 				if (this.params.wrz == 10) {
 					visibleitems = scrollitems = 2;
 				}
+				if (this.pagetype == "HOME") {
+					visibleitems = scrollitems = 8;
+					dimension = 116;
+				}
 			}
 		}
 		if (typeof jQuery == 'undefined') {
@@ -121,7 +126,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 				function() {
 					loadCarousel(
 						function() {
-							initCarousel(visibleitems,scrollitems);
+							initCarousel(visibleitems,scrollitems,dimension);
 						}
 					)
 				}
@@ -129,34 +134,17 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 		} else if (typeof jQuery.mbcarousel == 'undefined') {
 				loadCarousel(
 					function() {
-						initCarousel(visibleitems,scrollitems);
+						initCarousel(visibleitems,scrollitems,dimension);
 					}	
 				)
 		}
 	}
 };
 
-(function(){
-	mybuys.sendBeacon = function(mburl) {
-							var mbimg=document.getElementById("mbbeacon");
-							if (mbimg) {
-								mbimg.setAttribute("src",mburl);
-							} else {
-								var mbimg=document.createElement("img")
-								mbimg.setAttribute("id","mbbeacon");
-								mbimg.style.display="none";
-								mbimg.setAttribute("height","1");
-								mbimg.setAttribute("width","1");
-								mbimg.setAttribute("src",mburl);
-								mbimg.setAttribute("alt","");
-								mbimg.setAttribute("title","");
-								if (this.mybuysContainer)
-									this.mybuysContainer.appendChild(mbimg);
-							}
-						}
 
 	mybuys.setClient("WORLDMARKET");
 	mybuys.enableZones();
+
 
 
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
@@ -217,24 +205,13 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.setStyle('.mbslider_x5 .mbbacksquare','width','933px','height','150%','position','absolute','right','12px','top','13px','padding','0px','background-color','#FFFFFF');
 	mybuys.setStyle('.mbslider_x5 .mbtitleimg','width','200px','padding','0px','position','relative','top','-12px','right','-360px');
 
-	
-	mybuys.setStyle('.mbslider_x5_title','width','640px','border','0','position','relative','padding','0 18px','overflow','hidden');
-	mybuys.setStyle('.mbslider_x5_title .mbitem','width','130px','border','0','padding','0 22px');
-	mybuys.setStyle('.mbslider_x5_title .mbimgspan','margin-bottom','5px');
-	mybuys.setStyle('.mbslider_x5_title .mbimg','border','1px solid #e8e6d9 !important');
-	mybuys.setStyle('.mbslider_x5_title .mbpricerowspan','margin','0 0 5px 0','padding','0');
-	mybuys.setStyle('.mbslider_x5_title .mbpricerowleft','display','none');
-	mybuys.setStyle('.mbslider_x5_title .mbpricerowright','width','100%','text-align','center');
-	mybuys.setStyle('.mbslider_x5_title .mbnamelink','font-size','12px','color','#796243','text-decoration','none','line-spacing','13px');
-	mybuys.setStyle('.mbslider_x5_title .mbpricelink','font-size','12px','font-weight','bold','color','#796243','text-decoration','none','line-spacing','13px');
-	mybuys.setStyle('.mbslider_x5_title .mbleftnav','width','14px','position','absolute','left','0','top','0','padding','50px 18px 0 0');
-	mybuys.setStyle('.mbslider_x5_title .mbrightnav','width','14px','position','absolute','right','0','top','0','padding','50px 0 0 18px');
-	mybuys.setStyle('.mbslider_x5_title .mbleftnavbtn','cursor','pointer');
-	mybuys.setStyle('.mbslider_x5_title .mbrightnavbtn','cursor','pointer');
-	mybuys.setStyle('.mbslider_x5_title .mbCarousellist','float','left','width','174px !important');
-	mybuys.setStyle('.mbzone_slider_x5 .mblegend','text-align','left !important','font-size','15px !important','font-weight','bold !important','color','#796243 !important','font-family','Arial !important');
+	//home zone styling
+	mybuys.setStyleByPageType('HOME','ul#mbcarousel','width','2784px','overflow','hidden');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbitem','width','116px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbCarousellist','width','116px !important','padding','0 !important');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbleftnav','width','28px','position','relative','left','-35px','top','-96px','padding','0px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbrightnav','width','28px','position','relative','right','-930px','top','-148px','padding','0px');
 
-	
 	//mobile zone styling
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbslider_x5','width','260px','padding','0px 20px','margin','0px');
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbitem','width','124px','padding','10px 2px 0px');
@@ -255,6 +232,5 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	mybuys.applyStyles();
 
 	mybuys.setFailOverMsecs(5000);
-	return false;
-})();
+
 

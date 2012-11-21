@@ -139,17 +139,21 @@ $(document).ready( function(){
 	var login = "https://support.nature.org/site/SPageServer?pagename=login_xx&s_NEXTURL=" + window.location;
 	var c_cookie = {'c_id':null,'c_greeting':null,'c_first':null,'c_last':null,'c_email':null,'c_emailStatus':null,'c_isSubscribed':null};
 
-	$("#log-in").click(function(){
+	$("#log-out-item").click(function(){
+		
+			api.callConsAPI('logout',getLogout,null);
+		})
+	$("#log-in a").click(function(){
 		if ($(this).text()=="Log Out") {
 			var api = new ConvioApiClient(apiKey, clientChannel, format);
 			function getLogout(responseObject, status) {
 				if (status == 200) {
-					$("#log-in").text("Log In");
+					// $("#log-in").text("Log In");
 					$("#pixelServer").remove();
-					$("p.welcome").text(" ");
-					$("#newsletterSignUpBox").show();
-					$("#newsletterArchiveBox").hide();
-					$("#newsletterUpdateBox").hide();
+					// $("p.welcome").text(" ");
+					// $("#newsletterSignUpBox").show();
+					// $("#newsletterArchiveBox").hide();
+					// $("#newsletterUpdateBox").hide();
 					for (c in c_cookie)
 						delCookie(c);
 				}
@@ -197,11 +201,31 @@ $(document).ready( function(){
 		}
 	});
 	
+	$("#log-out-item a").click(function(){
+		
+			var api = new ConvioApiClient(apiKey, clientChannel, format);
+			function getLogout(responseObject, status) {
+				if (status == 200) {
+					$("#log-in").html("<a href='javascript:void();'>Log In</a> or use your:");
+					$("#pixelServer").remove();
+					$("p.welcome").text(" ");
+					$("#newsletterSignUpBox").show();
+					$("#componentDiv").show();
+					$("#log-out-item").hide();
+					$("#newsletterUpdateBox").hide();
+					for (c in c_cookie)
+						delCookie(c);
+				}
+			}
+			api.callConsAPI('logout',getLogout,null);
+		
+	});
+		
 	function checkCookie() {
 		var c_id = readCookie("c_id");
 		var c_isSubscribed = readCookie("c_isSubscribed");
 		if ( c_id != null ) {
-			$("#log-in").click();
+			$("#log-in a").click();
 		} else {		
 			var api = new ConvioApiClient(apiKey, clientChannel, format);
 			

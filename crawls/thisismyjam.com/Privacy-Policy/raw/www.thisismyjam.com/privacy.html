@@ -26,7 +26,7 @@ Privacy | This Is My Jam        </title>
         <link rel="apple-touch-icon" sizes="114x114" href="http://www.thisismyjam.com/includes/image/apple-touch-icon@2x.png" />
         <meta name="viewport" content="width=device-width,initial-scale=1">
 
-        <link rel="stylesheet" href="../static03.thisismyjam.com/css/all_d0874ba8776e1e52648263451ca3446f7338253b.css" type="text/css" media="all"/>
+        <link rel="stylesheet" href="../static04.thisismyjam.com/css/all_260ab89e605ca5e3501551c4aa18fe510313fb12.css" type="text/css" media="all"/>
     
     <link rel="stylesheet" href="includes/css/search-header.css" type="text/css" media="all" />
     <link rel="stylesheet" href="includes/css/retina.css" type="text/css" media="screen and min-device-pixel-ratio: 2" />
@@ -43,8 +43,7 @@ Privacy | This Is My Jam        </title>
             _gaq.push(['_setAccount', 'UA-3675615-25']);
             // custom variables
                           _gaq.push(['_setCustomVar', 1, "Logged-in", "No", 2]);
-                                          _gaq.push(['_setCustomVar', 3, "Drive-by", "a", 2]);
-                                          // NOTE: pageview tracking now happens in general.js
+                                                // NOTE: pageview tracking now happens in general.js
             (function() {
               var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
               ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
@@ -308,14 +307,14 @@ Privacy | This Is My Jam        </title>
 </section>   </div>
 
 
-        <script src="../static02.thisismyjam.com/js/all_c1e19c2885ee11bdca9e837c1d1c4a4dda4493fc.js"></script>
+        <script src="../static04.thisismyjam.com/js/all_a346b7d649468d24b861c3746c94c17796a2662e.js"></script>
     
 <script>
     window.realtime = new Realtime('ec2-50-19-158-76.compute-1.amazonaws.com', 8080);
 </script>
 
 
-<script>window.mvgroup = 'a';</script>
+<script>window.mvgroup = null;</script>
 
     <script>
           var user_scrobbles = false;
@@ -383,11 +382,13 @@ function userIsConnectedToFacebook() {
   <div id="ytPlayer"></div>
 </div>
 
+<div class="vimeoContainer" id="vimeoContainer">
+</div>
+
 
 <div class="ytContainer" id="jamYtContainer">
   <div id="jamYtPlayer"></div>
 </div>
-
 
 <script type="text/javascript">
 
@@ -439,6 +440,7 @@ soundManager.ontimeout(function(status) {
 });
 
 window.ytPlayer = new YoutubePlayer('ytPlayer', $("#ytContainer"), !window.hasFlash());
+window.vimeoPlayer = new VimeoPlayer($("#vimeoContainer"), !window.hasFlash());
 
 if(!window.hasFlash() || window.isIOS()) {
     // insert html5 video api script tag
@@ -451,8 +453,14 @@ if(!window.hasFlash() || window.isIOS()) {
 $(function() {
     window.player.init();
 });
-window.youtubePlaybackHandler = window.isIOS() ?
-    new IOSYoutubePlaybackHandler() : new YoutubePlaybackHandler();
+
+if(window.isIOS())
+    window.iosVideoPlaybackHandler = new IOSVideoPlaybackHandler();
+
+window.youtubePlaybackHandler = window.isIOS() ? 
+    window.iosVideoPlaybackHandler : new YoutubePlaybackHandler();
+window.vimeoPlaybackHandler = window.isIOS() ?
+    window.iosVideoPlaybackHandler : new VimeoPlaybackHandler();
 window.audioPlaybackHandler = new AudioPlaybackHandler();
 window.player = new Player();
 window.player.muted = 0;

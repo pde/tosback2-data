@@ -1,0 +1,56 @@
+function $$(id) {
+	return document.getElementById(id);
+}
+
+var ajax_debounce = "";
+var ajax_debounce_time = 0;
+function ajax_complex(url, target, data, with_param, loading, loaded, before) {
+
+	/* Debounce check */	
+	timeinmsec = new Date().getTime();
+	serialized_data = ""
+	serialized_with = ""
+	if (data) {
+		serialized_data = $.param(data);
+	}
+	if (with_param) {
+		serialized_with = $.param(with_param);
+	}
+	ajax_debounce_test = ":" + url + ":" + target + ":" + serialized_data + ":" + serialized_with + ":" + loading + ":" + loaded + ":" + before
+	if (timeinmsec - ajax_debounce_time <= 1000) { /* if the last ajax command was less than a second from the previous one, check for duplicate */
+		if (ajax_debounce == ajax_debounce_test) { /* if the last ajax command was the same as the current one, then don't run it */
+			return;
+		}
+	}
+	ajax_debounce = ajax_debounce_test;
+	ajax_debounce_time = timeinmsec;
+	/* Debounce check end */
+	
+	if (before) {
+		before();
+	}
+	if (with_param) {
+		joiner = '?';
+		if (url.match(/\?/)) {
+			joiner = '&'
+		}
+		url = url + joiner + with_param();
+	}
+	if (loading) {
+		loading();
+	}
+	if (loaded && data) {
+		$("#"+target).load(url,data,loaded);
+	} else if (loaded) {
+		$("#"+target).load(url,loaded);
+	} else if (data) {
+		$("#"+target).load(url,data);
+	} else {
+		$("#"+target).load(url);
+	}
+	return false;
+}
+function ajax(url, target) {
+	ajax_complex(url, target, null, null, null, null);
+}
+

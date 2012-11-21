@@ -45,12 +45,12 @@ $(document).ready(function(){
 			// }
 			if(date >=  new Date("11/15/2012").getTime() && date <=  new Date("11/22/2012").getTime() )
 			{
-				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Showcase/Samsung_Showcase.aspx');
+				$('.sponsorLink').attr('href', 'http://www.samsclub.com/sams/samsung-showcase/1110159.cp');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/samsung.png');
 			}
 			if(date >=  new Date("11/22/2012").getTime() && date <=  new Date("11/29/2012").getTime() )
 			{
-				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Showcase/Serta-Showcase.aspx');
+				$('.sponsorLink').attr('href', 'http://www.samsclub.com/sams/serta-free-box-offer/4830109.cp');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/serta.png');
 			}
 			if(date >=  new Date("11/29/2012").getTime() && date <=  new Date("12/13/2012").getTime() )
@@ -60,7 +60,7 @@ $(document).ready(function(){
 			}
 			if(date >=  new Date("12/13/2012").getTime() && date <=  new Date("12/27/2012").getTime() )
 			{
-				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Unilever/AXE/');
+				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Unilever/Axe/');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/unilever.png');
 			}
 

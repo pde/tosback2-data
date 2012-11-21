@@ -603,6 +603,21 @@ function checkFormValues(formObj)
 		}
 		return  false;
     }
+	
+	// Check for Passwrod and Copy over
+	// To TRIM the Password on submission :: 
+    if(!jQuery.browser.mobile){
+		try{
+			var realPass = null;
+			if(jQuery("#password")!=null && jQuery("#password").attr("real")!=null){
+				realPass = trim(jQuery("#password").attr("real")); // take the password
+			}
+			if(realPass!=null && jQuery('[name="password"]')!=null && (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
+				jQuery('[name="password"]').val(realPass); // copy over the password
+			}
+		}
+		catch(exception){}
+    }
 	return true;
 }
 function setRememberMeVal()

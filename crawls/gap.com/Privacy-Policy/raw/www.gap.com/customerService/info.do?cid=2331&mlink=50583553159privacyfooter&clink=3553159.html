@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "11/15/2012 08:11 AM",
+            DATE_IN_USE: "11/21/2012 08:12 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1801,7 +1801,7 @@ if (reportingService && reportingService.controller && reportingService.controll
 
 
 <!-- container 3 -->
-<!-- BEGIN Content Item File: /content/0005/630/580/cn5630580.html -->
+<!-- BEGIN Content Item File: /content/0005/805/074/cn5805074.html -->
 
 <script type="text/javascript">
 /*begin override to update Return Policy link on shopping bag to new CS Returns Page */
@@ -1846,6 +1846,7 @@ if( location.pathname == "/profile/sign_in.do" ) {
 
 
 /* BEGIN Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
+/* Added Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
 
 document.observe("dom:loaded",function() {
 
@@ -1860,6 +1861,12 @@ document.observe("dom:loaded",function() {
 	//update left nav Petite and Womens links in Tall Division
 	var tallDirPetiteLink = $('categoryNav85044');
 	var tallDirWomLink = $('categoryNav85046');
+	
+	//update left nav Big & Tall link in Men's Division
+	var bigTallLink = $('categoryNav87386');
+	
+	//update left nav Men's link in MBT Division
+	var mDirLink = $('categoryNav87395');
 	
 	
 		if (wDirPetiteLink) {
@@ -1883,18 +1890,34 @@ document.observe("dom:loaded",function() {
 			tallDirWomLink.firstDescendant().href="/browse/subDivision.do?cid=5646";
 		}
 		
+		
+		if (bigTallLink) {
+			bigTallLink.firstDescendant().href="/browse/division.do?cid=87388";
+		}
+				
+		if (mDirLink) {
+			mDirLink.firstDescendant().href="/browse/subDivision.do?cid=5065";
+		}
 
 });
+
+/* END Added Big & Tall Left Nav linking override to link to Big & Tall(87388) division -JP 11/16/2012 */
 /* END Petite/Tall Lef Nav linking override to link to Petite (85032) /Tall (85035) divisions -JP 08/22/2012 */
 
 /* BEGIN OVERRIDE to HIGHLIGHT "WOMEN" in Top Navigation for Petite and Tall Divisions - JP 08/22/2012 */
+/* ADDED HIGHLIGHT "MEN" in Top Navigation for Big & Tall Division - JP 11/16/2012 */
+
 document.observe("dom:loaded",function() {
 
 var womensDivision = $('division5643');
+var mensDivision = $('division5063');
 var thisDivision = "";
 		
 		if(window['reportingService']){
 			thisDivision = reportingService.controller.viewManagers.commonViewManager.model.commonChannelName;
+			thisDivision = thisDivision.replace(/&amp;/g, '');//remove '&amp;' since they can't be used in the url
+			thisDivision = thisDivision.replace(/&/g, ''); //remove '&' since they can't be used in the url
+			thisDivision = thisDivision.replace(/^\s+|\t+|\n+| |\s+$/g, '') ; //remove space ex "Big Tall" now "BigTall"
 		}
 		
 		//console.log (thisDivision);
@@ -1909,7 +1932,23 @@ var thisDivision = "";
 			
 			}
 		} 
+		
+		
+		if (thisDivision == "BigTall") {
+			if (mensDivision){
+			
+				thisState = mensDivision.className;
+				if (thisState.indexOf('_notSelected') > 0) {
+ 					mensDivision.className = thisState.replace('_notSelected', '_selected');
+				}
+			
+			}
+		} 
+		
+		
 });
+
+/* END HIGHLIGHT "MEN" in Top Navigation for Big & Tall Division - JP 11/16/2012 */
 /* END OVERRIDE to HIGHLIGHT "WOMEN" in Top Navigation for Petite and Tall Divisions - JP 08/22/2012 */
 </script>
 
@@ -2040,7 +2079,7 @@ if (location.pathname == "/browse/category.do") {
 
 
 
-<!-- END Content Item File: /content/0005/630/580/cn5630580.html -->
+<!-- END Content Item File: /content/0005/805/074/cn5805074.html -->
 
 
 
@@ -4156,7 +4195,7 @@ if ((brandConst.IS_FACET_ENABLED === 'true' || brandConst.IS_FACET_ENABLED === t
 
 <!-- BEGIN content override CNOV-15 post CNOV-13 -->
 <script type="text/javascript">
-var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+if (window["navigationService"]) var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
 </script>
 <!-- END content override CNOV-15 post CNOV-13-->
 
@@ -4417,7 +4456,7 @@ function swapSignInFormTarget() {
 <!-- BEGIN content override CNOV-16 -->
 <script type="text/javascript">
 
-	if (location.href.indexOf(".app.gidapps.") > 0 && 
+	if (location.hostname.indexOf(".app.gidapps.") > 0 && 
 		(location.pathname == "/browse/category.do" || 
 		location.pathname == "/browse/search.do" || 
 		location.pathname == "/browse/categorySearch.do" || 
@@ -4426,17 +4465,23 @@ function swapSignInFormTarget() {
 		var facetsToggler = {
 			isFacetsOn : null,
 			toggle : function() {
+				var url = "http://" + location.hostname + location.pathname;
+			
 				if (facetsToggler.isFacetsOn) {
 					var params = "&categoryFacetsEnabled=false&isProductCategoryFacetedSearchActive=false&isFacetedCategoryActive=false&isIgnoreCookiesActive=false";
 				} else {
 					var params = "&categoryFacetsEnabled=true&isProductCategoryFacetedSearchActive=true&isFacetedCategoryActive=true&isIgnoreCookiesActive=true";
 				}
 				
-				if (location.href.indexOf("&categoryFacetsEnabled") > 0) {
-					location.href = location.href.substring(0,location.href.indexOf("&categoryFacetsEnabled")) + params;
+				if (location.search.indexOf("&categoryFacetsEnabled") > 0) {
+					url += location.search.substring(0,location.search.indexOf("&categoryFacetsEnabled")) + params;
 				} else {
-					location.href = location.href + params;
+					url += location.search + params;
 				}
+				
+				url += location.hash;
+				
+				location.href = url;
 			
 			},
 			
@@ -4472,246 +4517,285 @@ function swapSignInFormTarget() {
 
 <!-- CNOV-17: ProductSearch "}}" workaround -->
 <script type="text/javascript">
-if (window['reportingService'] && reportingService.controller.viewManagers.categoryFacetedSearchViewManager && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
-
-	/**
-	 * Tries to parse for a doubled '}}' at the end of the json.  If that succeeds, then process and report 
-	 * "malformedJSONFixed".  Otherwise report "malformedJSON" and retry once.  If still failing, report 
-	 * "malformedJSONTwice" and display an error to the user.
-	 **/
-	navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.malformedJSONHandler = function(response,e) {
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var model = categoryFacetedSearchManager.model;
-		var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;	
-
-		var returnErrorToUser = false;
-
-		// If doubled trailing "}}"
-		if (/}}$/.test(response.transport.responseText)) {
-			var newJSON = response.transport.responseText.substring(0,response.transport.responseText.length-1);
-			try { 
-				response.responseJSON = newJSON.evalJSON();
-			} catch (e) {
-				if (!model.isRetry) {
-
-					// Note that we're attempting a retry
-					model.isRetry = true;
-	
-					document.fire("categoryFacetedSearchDataRequest:end");	
-					model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
-
-					viewManager.model.exceptionType = "malformedJSON";	
-					viewManager.controller.getReportRequest();
-
-					categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(null,model.latestFacetRequestUrl + "&retry=true");
-
-					return;	
-				} else {
-					// Retry also failed
-					returnErrorToUser = true;
-					viewManager.model.exceptionType = "malformedJSONTwice";	
-
-				}
-			}
-
-			// Re-parse worked
-
-			model.isRetry = false;
-
-			if (!returnErrorToUser) {
-				viewManager.model.exceptionType = "malformedJSONFixed";			
-				response.transport.response = newJSON;
-			}
-		} else {
-
-			if (!model.isRetry) {
-
-				// Note that we're attempting a retry
-				model.isRetry = true;
-	
-				document.fire("categoryFacetedSearchDataRequest:end");	
-				model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
-
-				viewManager.model.exceptionType = "malformedJSON";	
-				viewManager.controller.getReportRequest();
-
-				categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(null,model.latestFacetRequestUrl + "&retry=true");
-			} else {
-				returnErrorToUser = true;
-				viewManager.model.exceptionType = "malformedJSONTwice";
-
-				// clear retry
-				model.isRetry = false;
-			}
-		}
-
-		// Have to report error to user
-		if (returnErrorToUser) {
-			var view = categoryFacetedSearchManager.view;
-		
-			if (categoryFacetedSearchManager.model.isDomReady) {
-				view.renderExceptionErrorMessage();
-			} else {
-				Event.observe(window, 'load', view.renderExceptionErrorMessage);
-			}
-		}
-
-	};
 
 
 
-	navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = function(transport) {
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var model = categoryFacetedSearchManager.model;
 
-		if (!model.isDomReady) return;
-		var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
-               	if(!spinner.hasClassName('hideMe')){
-			spinner.addClassName('hideMe');
-		}
-	};
+//CNOV-17
+if (brandConst.IS_NAV2_ENABLED === 'true' && brandConst.IS_FACET_ENABLED === 'true' && window['reportingService'] && reportingService.controller.viewManagers.categoryFacetedSearchViewManager && reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller) {
 
+    /**
+     * Tries to parse for a doubled '}}' at the end of the json.  If that succeeds, then process and report
+     * "malformedJSONFixed".  Otherwise report "malformedJSON" and retry once.  If still failing, report
+     * "malformedJSONTwice" and display an error to the user.
+     **/
+    navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.malformedJSONHandler = function (response, e) {
+        var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+        var model = categoryFacetedSearchManager.model;
+        var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
 
-	navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.successHandler = function(response) {
-	
-		// Workaround for "fixed" bad JSON
-		if (response.responseJSON == undefined) {
-			// Should have been previously handled as an exception
-			if ( response.request.responseJSON == null) {
-				return;
-			}
+        var returnErrorToUser = false;
 
-			response.responseJSON = response.request.responseJSON;
-			response.responseText = response.request.responseText;
-		}	
+        // If doubled trailing "}}"
+        if (/}}$/.test(response.transport.responseText)) {
+            var newJSON = response.transport.responseText.substring(0, response.transport.responseText.length - 1);
+            try {
+                response.responseJSON = newJSON.evalJSON();
+            } catch (e) {
+                if (!model.isRetry) {
 
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+                    // Note that we're attempting a retry
+                    model.isRetry = true;
 
-		
-		var model = categoryFacetedSearchManager.model;
-		var constants = categoryFacetedSearchManager.constants;
-		
-		// Cleanup request-related variables
-		model.isRetry = false;
-		
-		var log = loggingService.api.getLog();
-		log.info('loading response for URL [ ' + response.responseJSON.resourceUrl + ' ]');
-		
-		model.data = response.responseJSON; 
-		model.requestedLocale = model.data.localeInfo.requestedLocale;
+                    document.fire("categoryFacetedSearchDataRequest:end");
+                    model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
 
-		if (!categoryFacetedSearchManager.controller.handlers.isResponseForLatestRequest(response)) return;
+                    viewManager.model.exceptionType = "malformedJSON";
+                    viewManager.controller.getReportRequest();
 
-		model.isDataReady = true;
-		var productCategory = model.data.productCategoryFacetedSearch.productCategory;
+                    categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(null, model.latestFacetRequestUrl + "&retry=true");
 
-		model.hasSearchResults = (!Object
-				.isUndefined(productCategory.childCategories) || !Object
-				.isUndefined(productCategory.childProducts));
-		model.dataRequestStatus = constants.requestStatus.READY;
-		if (model.isDomReady) {
-			document.fire("categoryFacetedSearchData:ready");
-			
-			var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
-                  	if(!spinner.hasClassName('hideMe')){
-		        	spinner.addClassName('hideMe');
-			}
-	        }
+                    return;
+                } else {
+                    // Retry also failed
+                    returnErrorToUser = true;
+                    viewManager.model.exceptionType = "malformedJSONTwice";
 
-		var areAllSubCatsOutfit = model.data.productCategoryFacetedSearch.productCategory.areAllSubCatsOutfit == "true";
-		var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
-			 
-	    	if (!areAllSubCatsOutfit) {
-			var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
-			$(productToolsLineBottom).appear();
-	    	}
-			
-		if(navigationService.preview && navigationService.preview.productHighlight.isPreviewEnable()) {
-			if(objPreview.previewMode == "WIP") {
-				objPreview.togglePreview(true);
-				navigationService.preview.productHighlight.setElementHighLighter();
-			}
-		}
-			
-	        categoryFacetedSearchManager.view.fixSizeFacetVariantName();
-			
-	};
+                }
+            }
 
-	navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler = function(response, e, timedOut) {
+            // Re-parse worked
 
-		var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
-		var model = categoryFacetedSearchManager.model;
-		model.data = response.responseJSON;
+            model.isRetry = false;
 
-		var malformedJSONRegExp = /^Badly formed JSON string/;	
-		var malformedJSON = (e != undefined && malformedJSONRegExp.test(e.message));
-			
-		if (!malformedJSONRegExp && !timedOut && 
-				!categoryFacetedSearchManager.controller.handlers.isResponseForLatestRequest(response)) {
-			return;
-		}
-		
-		var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+            if (!returnErrorToUser) {
+                viewManager.model.exceptionType = "malformedJSONFixed";
+                response.transport.response = newJSON;
+            }
+        } else {
 
-		if (timedOut) {
-			model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
-			viewManager.model.timedOut = true;
-		} else if (malformedJSON) {
-			categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.malformedJSONHandler(response,e);
-			return;
-		} else if (response && response.status == 404) {
-			viewManager.model.exceptionType = "404";
-		}
+            if (!model.isRetry) {
 
-		var view = categoryFacetedSearchManager.view;
-		
-		if (categoryFacetedSearchManager.model.isDomReady) {
-			view.renderExceptionErrorMessage();
-		} else {
-			Event.observe(window, 'load', view.renderExceptionErrorMessage);
-		}
+                // Note that we're attempting a retry
+                model.isRetry = true;
 
-	};
+                document.fire("categoryFacetedSearchDataRequest:end");
+                model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
+
+                viewManager.model.exceptionType = "malformedJSON";
+                viewManager.controller.getReportRequest();
+
+                categoryFacetedSearchManager.controller.getCategoryFacetedSearchData(null, model.latestFacetRequestUrl + "&retry=true");
+            } else {
+                returnErrorToUser = true;
+                viewManager.model.exceptionType = "malformedJSONTwice";
+
+                // clear retry
+                model.isRetry = false;
+            }
+        }
+
+        // Have to report error to user
+        if (returnErrorToUser) {
+            var view = categoryFacetedSearchManager.view;
+
+            if (categoryFacetedSearchManager.model.isDomReady) {
+                view.renderExceptionErrorMessage();
+            } else {
+                Event.observe(window, 'load', view.renderExceptionErrorMessage);
+            }
+        }
+
+    };
 
 
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportModel = function() {
-		// report managers
-		var parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
 
-                var objKeyword = parent.searchAppManager.objKeyword,
-                    data = parent.facetSearchManager.model.data,
-                    model = parent.model;
+    navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.completeHandler = function (transport) {
+        var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+        var model = categoryFacetedSearchManager.model;
 
-                parent.searchAppManager.setSearchProcessorKeywordValues();
+        if (!model.isDomReady) return;
+        var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
+        if (!spinner.hasClassName('hideMe')) {
+            spinner.addClassName('hideMe');
+        }
+    };
 
-                Object.extend(model, {
-                    originalSEvent : s.events,
-                    viewType : model.reportName,
-                    searchKeyword : objKeyword.strValue,
-                    searchDivision : objKeyword.strDivision,
-                    previousPage : objKeyword.strPageName,
-                    previousURL : objKeyword.strPath,
-                    numberOfSearchResults : parent.facetedSearchAppManager.getNumberOfSearchResults(),
-                    hasNoProducts: data != null && data.productCategoryFacetedSearch.totalItemCount == 0
-		});
 
-		if (model.exceptionType != undefined) {
-			model.isException = true;
-		}
+    navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.successHandler = function (response) {
 
-	}.bind(reportingService.controller.viewManagers.categoryFacetedSearchViewManager);
+        // Workaround for "fixed" bad JSON
+        if (response.responseJSON == undefined) {
+            // Should have been previously handled as an exception
+            if (response.request.responseJSON == null) {
+                return;
+            }
 
-	reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp = 
-		reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp.wrap(function(originalMethod) {
-		reportingService.controller.viewManagers.categoryFacetedSearchViewManager.model.exceptionType = undefined;
+            response.responseJSON = response.request.responseJSON;
+            response.responseText = response.request.responseText;
+        }
 
-		originalMethod();
-	});
+        var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+
+
+        var model = categoryFacetedSearchManager.model;
+        var constants = categoryFacetedSearchManager.constants;
+
+        // Cleanup request-related variables
+        model.isRetry = false;
+
+        var log = loggingService.api.getLog();
+        log.info('loading response for URL [ ' + response.responseJSON.resourceUrl + ' ]');
+
+        model.data = response.responseJSON;
+        model.requestedLocale = model.data.localeInfo.requestedLocale;
+
+        if (!categoryFacetedSearchManager.controller.handlers.isResponseForLatestRequest(response)) return;
+
+        model.isDataReady = true;
+        var productCategory = model.data.productCategoryFacetedSearch.productCategory;
+
+        model.hasSearchResults = (!Object.isUndefined(productCategory.childCategories) || !Object.isUndefined(productCategory.childProducts));
+        model.dataRequestStatus = constants.requestStatus.READY;
+        if (model.isDomReady) {
+            document.fire("categoryFacetedSearchData:ready");
+
+            var spinner = navigationService.productGridHelper.cachedElements.loadingSpinner;
+            if (!spinner.hasClassName('hideMe')) {
+                spinner.addClassName('hideMe');
+            }
+        }
+
+        var areAllSubCatsOutfit = model.data.productCategoryFacetedSearch.productCategory.areAllSubCatsOutfit == "true";
+        var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+
+        if (!areAllSubCatsOutfit) {
+            var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+            var productToolsLineBottomEle = $(productToolsLineBottom);
+            if (productToolsLineBottomEle) productToolsLineBottomEle.appear();
+        }
+
+        if (navigationService.preview && navigationService.preview.productHighlight.isPreviewEnable()) {
+            if (objPreview.previewMode == "WIP") {
+                objPreview.togglePreview(true);
+                navigationService.preview.productHighlight.setElementHighLighter();
+            }
+        }
+
+        categoryFacetedSearchManager.view.fixSizeFacetVariantName();
+
+    };
+
+    
+
+    navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.createHandler = function (transport) {
+        var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+        var model = categoryFacetedSearchManager.model;
+
+        if (!model.isDomReady) return;
+
+        var productHighlights = $$('.productHighlight');
+        productHighlights && productHighlights.each(function(highlight, index) {highlight.remove();});
+
+        var productToolsLineBottom = categoryFacetedSearchManager.constants.elementIds.PRODUCT_SEARCH_HELPER_TOOLS_CONTAINER_BOTTOM;
+        var productGridHelper = navigationService.productGridHelper;
+
+        if(quickLook.isQuickLookOpen) { quickLook.closeQuickLook(); }
+
+        productGridHelper.api.renderProductGrid({childProducts: null, childCategories: []});
+
+        var cachedElements = productGridHelper.cachedElements;
+        if (model.isInitialPageLoad) {
+            cachedElements.loadingSpinner.addClassName('hideMe');
+        } else {
+            cachedElements.loadingSpinner.removeClassName('hideMe');
+        }
+        var productToolaBottomEle = $(productToolsLineBottom);
+        if (productToolaBottomEle) productToolaBottomEle.setStyle('display:none');
+
+        cachedElements.productGrid.update("");
+
+    };
+
+    navigationService.controller.managers.categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.exceptionHandler = function (response, e, timedOut) {
+
+        var categoryFacetedSearchManager = navigationService.controller.managers.categoryFacetedSearchManager;
+        var model = categoryFacetedSearchManager.model;
+        model.data = response.responseJSON;
+
+        var malformedJSONRegExp = /^Badly formed JSON string/;
+        var malformedJSON = (e != undefined && malformedJSONRegExp.test(e.message));
+
+        if (!malformedJSONRegExp && !timedOut && !categoryFacetedSearchManager.controller.handlers.isResponseForLatestRequest(response)) {
+            return;
+        }
+
+        var viewManager = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+        var viewManagerModel = viewManager.model || {};
+        viewManagerModel.exceptionType = (model.data || {}).exceptionType;
+
+        if (timedOut) {
+            model.dataRequestStatus = categoryFacetedSearchManager.constants.requestStatus.END;
+            viewManagerModel.timedOut = true;
+        } else if (malformedJSON) {
+            categoryFacetedSearchManager.controller.handlers.getCategoryFacetedSearchDataHandlers.malformedJSONHandler(response, e);
+            return;
+        } else if (response && response.status == 404) {
+            viewManagerModel.exceptionType = "404";
+        } else {
+            var error = e != undefined ? ('js exception: ' + e.message) : 'no js exception'; 
+
+            if (viewManagerModel.exceptionType == undefined) {
+                viewManagerModel.exceptionType = error;
+            } else {
+                viewManagerModel.exceptionType += ('|' + error)
+            }
+        }
+
+        var view = categoryFacetedSearchManager.view;
+
+        if (categoryFacetedSearchManager.model.isDomReady) {
+            view.renderExceptionErrorMessage();
+        } else {
+            Event.observe(window, 'load', view.renderExceptionErrorMessage);
+        }
+
+    };
+
+
+    reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setReportModel = function () {
+        // report managers
+        var parent = reportingService.controller.viewManagers.categoryFacetedSearchViewManager;
+
+        var objKeyword = parent.searchAppManager.objKeyword,
+            data = parent.facetSearchManager.model.data,
+            model = parent.model;
+
+        parent.searchAppManager.setSearchProcessorKeywordValues();
+
+        Object.extend(model, {
+            originalSEvent: s.events,
+            viewType: model.reportName,
+            searchKeyword: objKeyword.strValue,
+            searchDivision: objKeyword.strDivision,
+            previousPage: objKeyword.strPageName,
+            previousURL: objKeyword.strPath,
+            numberOfSearchResults: parent.facetedSearchAppManager.getNumberOfSearchResults(),
+            hasNoProducts: data != null && data.productCategoryFacetedSearch.totalItemCount == 0
+        });
+
+        if (model.exceptionType != undefined) {
+            model.isException = true;
+        }
+
+    }.bind(reportingService.controller.viewManagers.categoryFacetedSearchViewManager);
+
+    reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp = reportingService.controller.viewManagers.categoryFacetedSearchViewManager.controller.setCleanUp.wrap(function (originalMethod) {
+        reportingService.controller.viewManagers.categoryFacetedSearchViewManager.model.exceptionType = undefined;
+
+        originalMethod();
+    });
 }
-
-
-
-
 
 
 
@@ -4990,14 +5074,14 @@ if( window['siteNavigation'] ) {
 
 
 <!-- container 7 -->
-<!-- BEGIN Content Item File: /content/0004/582/221/cn4582221.html -->
+<!-- BEGIN Content Item File: /content/0005/802/967/cn5802967.html -->
 
 <!-- begin contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
 <script type="text/javascript">
 
 	// Everyday Free Ship EDFS code - v3 11.04 adjustments
 	// BH 2/3/12 update
-	// 2100 - 7-9 - FREE option (over $50, etc)
+	// 2012 - 7-10 - FREE option (over $50, etc)
 	// 2101 - 3-5 - $7
 	// 2109 - 2 day - $17
 	// 2111 - 1 day $22	
@@ -5007,7 +5091,7 @@ if( window['siteNavigation'] ) {
 	var shoppingBagSubTotalForEDFS = 0;
 	var productArray = pixelManagementService.model.metricsLibrary.shoppingBag.productList;
 	var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
-	var shipOption1_7To9Day = "2100";
+	var shipOption1_7To9Day = "2012";
 	var shipOption2_3To5Day = "2101";
 	var shipOption3_2Day = "2109";
 	var shipOption4_1Day = "2111";
@@ -5017,7 +5101,7 @@ if( window['siteNavigation'] ) {
 		var optionToUpdate_7To9 = 'shippingOptionsRadioText' + shipOption1_7To9Day;
 		var optionToUdpate_3To5 = 'shippingOptionsRadioText' + shipOption2_3To5Day;
 		if( $( optionToUpdate_7To9 ) ) {
-			$( optionToUpdate_7To9 ).update("7-9 business days - FREE Every Day ($50 min)");
+			$( optionToUpdate_7To9 ).update("7-10 business days - FREE Every Day ($50 min)");
 		}
 		if( $("shoppingBagSummaryContainer") ) {
 			var ShipMessageContainer = $("shoppingBagSummaryContainer").select("div.shippingOptionLearnMoreLink");
@@ -5089,7 +5173,7 @@ if( window['siteNavigation'] ) {
 		// Function to create HTML for promo popup
 		var createPopWindowWithMessage = function() {
 			messageStringTitle = "&nbsp;Congratulations!";
-			messageStringBody = "Your order qualifies for <strong>FREE<\/strong> Shipping and will arrive in 5-6 business days (actual delivery time is subject to change; for the most current delivery schedule, check the shipping options listed in the Shopping Bag ). If you need your order to arrive sooner, select a different delivery option in the Shipping section (additional charges will apply).";
+			messageStringBody = "Your order qualifies for <strong>FREE<\/strong> Shipping and will arrive in 7-10 business days (actual delivery time is subject to change; for the most current delivery schedule, check the shipping options listed in the Shopping Bag ). If you need your order to arrive sooner, select a different delivery option in the Shipping section (additional charges will apply).";
 			PopWindowMessageTitleP = new Element('div',{'id':'popWindowContainerTitleP'}).update(messageStringTitle);
 			PopWindowMessageBodyP = new Element('div',{'id':'popWindowContainerBodyP'}).update(messageStringBody);
 			PopWindowMessageDiv = new Element('div',{'id' : 'popWindowContainerDiv'});
@@ -5198,7 +5282,7 @@ if( window['siteNavigation'] ) {
 </script>
 <!-- end contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
 
-<!-- END Content Item File: /content/0004/582/221/cn4582221.html -->
+<!-- END Content Item File: /content/0005/802/967/cn5802967.html -->
 
 
 
@@ -5942,279 +6026,6 @@ if( (location.pathname == '/browse/product.do') ) {
 
 
 <!-- container 15 -->
-<!-- BEGIN Content Item File: /content/0005/746/635/cn5746635.html -->
-
-<style type="text/css">
-	#shoppingBagSummaryContainer li.subTotal {
-		line-height: 18px;
-	}
-</style>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <script type="text/javascript">
-/*
-	Universal Cookie Cutter
-	Version 2.1
-	Created to streamline cross-brand A/B testing
-	New version modularizes variables
-	
-	instantiate new object:
-	
-	MyCookieCutter = new universalCookieCutter([CookieVarName],      // name of your cookie variable
-											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
-											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
-											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
-											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
-											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
-											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
-											   );
-	A sample instantiation:
-	
-	ONBRABCookieCutter = new universalCookieCutter("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
-											   
-	*/
-	
-	var universalCookieCutter = Class.create();
-	
-	
-	universalCookieCutter.prototype = {
-	
-		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-	
-			//Keeping it neat by having two discreet variables that check for and gather cookie information
-			this.EvarToUse = theEvar != "" ? theEvar : false;
-			this.CookieVariableName = CookieVarName;
-			this.CookieUsed = CookieUsedName;
-			this.CookieValueBase = CookieValueBase;
-			this.SegBreakdown = SegmentBreakdown.split("-");
-			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.QuickSegment = '';
-			this.piperlimeException = plExcept;
-			this.userNeedsSync = false;
-			this.ForcedModeBase = ForcedModeBaseName;
-			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
-			this.modeArray = new Array();
-			this.modeArray[0] = "a";
-			this.modeArray[1] = "b";
-			this.modeArray[2] = "c";
-			this.modeArray[3] = "d";
-			this.modeArray[4] = "e";
-			this.modeArray[5] = "f";
-			this.modeArray[6] = "g";
-			//alert(this.piperlimeException);
-			
-			
-			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-				this.forcedMode();
-			}else{
-				this.cookieScanner();
-			}
-		},
-	
-	
-		forcedMode:function() {
-			
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-			
-				if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-					//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
-					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-				}
-				
-			}
-			
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			if (this.EvarToUse) {
-				
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			userNeedsSync = true;
-			//alert("Forced: Cookie set.");
-			
-		
-		},
-	
-		cookieScanner:function() {
-			
-			//If the cookie isn't available, bake one!
-			if (this.DoesTheCookieExist) {
-	
-				if (this.EvarToUse) {
-					this.setABTestVariable(this.RetrievedCookieValue);
-				}
-	
-				for (i = 0; i < this.ModeArrayIndex; i++) {
-					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-						break;
-					}
-				}
-	
-			} else {
-				this.tagManager();
-			}
-	
-		},
-	
-	
-		tagManager:function() {
-	
-		
-			//Breaking out the segmentation into specified percentages
-			
-			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-			//alert("Seg: " + this.Segmentation);	
-			this.FloorThreshold = 0;
-			this.TopThreshold = 0;
-			
-			for (i = 0; i < this.ModeArrayIndex; i++){
-	
-				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-	
-				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-					// put me in this segment
-					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				} else {
-					// add top to floor and try next segment
-					this.FloorThreshold = this.TopThreshold;
-				}
-					
-			}
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-	
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			//userNeedsSync = true;
-			//alert("Tag Manager: Cookie set.");
-			
-		},
-		
-			setABTestVariable: function(setValue) {
-			thisEvar = 'eVar' + this.EvarToUse;
-			ABTestVariables[thisEvar] = setValue;
-		}
-	
-		
-	};
-//  Shopping Bag Savings A/B - evar 36	
-
-	ShoppingBagSavingsAB = new universalCookieCutter("BagSave","mktUniversalPersist","BagSave_11_01Seg","bagmode","34-33-33","36","none");
-
-// Shopping Bag Savings A/B test
-
-
-var shoppingBagDiscountWidget = function(segment) {
-	var discount = 0;
-	var subtotal = 0;
-	var minimumThresh = 0;
-	var priceContainerArr = $("mainContent").select("ol.lineItemDisplay")[0].select("dd[class=productDetails]");
-	if (priceContainerArr.length > 0) {
-		for(i = 0; i < priceContainerArr.length; i++) { // iterate through each price container
-			var pricesObj = priceContainerArr[i].select("dd[id^=productUnitPrice]")[0];
-			var pricesArr = pricesObj.select("span");
-			var regPrice = "";
-			var salePrice = "";
-			if (pricesArr.length > 0) {
-				regPrice = pricesArr[1].innerHTML;
-				salePrice = pricesArr[3].innerHTML;
-				var quantity = priceContainerArr[i].select("dd[id^=productQty]")[0].innerHTML;
-				subtotal += shoppingBagSubtotalWidgetCalculate(regPrice,quantity);
-//console.info("reg: " + pricesArr[1].innerHTML + " sale: " + pricesArr[3].innerHTML + " qty: " + quantity);
-				discount += shoppingBagDiscountWidgetCalculate(salePrice,regPrice,quantity);						
-			} else {
-				var quantity = priceContainerArr[i].select("dd[id^=productQty]")[0].innerHTML;
-				var sub = priceContainerArr[i].innerHTML;
-				subtotal +=  shoppingBagSubtotalWidgetCalculate(sub,quantity);
-			}
-		}
-		if ($("selectedShippingMethod2100")){
-			if ($("selectedShippingMethod2100").checked) {
-				discount += 7.00
-			}
-		}
-//console.info("Your Discount is: " + discount + " subtotal: " + subtotal);
-		discount = Math.round(discount*Math.pow(10,2))/Math.pow(10,2);
-		subtotal = Math.round(subtotal*Math.pow(10,2))/Math.pow(10,2);
-		minimumThresh = shoppingBagDiscountWidgetThreshold(subtotal,discount);
-
-		if (minimumThresh) {
-			if(segment == "c") {
-				$("marketingSlotMiddle").insert("<div style='float:right; height:300px;'><img style='margin-top:36px; font-size:0px;' src='http://www.gap.com/Asset_Archive/GPWeb/content/0005/746/635/assets/youSaved.png' alt='you saved:' /></div>");
-			}
-			var bagElementBefore = $("shoppingBagSummaryContainer").select("li.subTotal")[0];
-			var bagSubtotal = $("shoppingBagSummaryContainer").select("div.priceLabel")[0];
-			var bagQTY = $("shoppingBagSummaryContainer").select("div.rightCol")[0];
-			bagSubtotal.update("You pay");			
-			bagElementBefore.insert({ before: "<li id='subtotalMessage' class='subTotal clearfix' style='background:#B1ABA5;'><div class='leftCol clearfix' style='color: white; font-size:11px;'><div class='priceLabel'>Original price</div><div id='shoppingBagSubTotalNewValue' class='priceValue'><strike>$" + formatShoppingBagCurrency(subtotal) + "</strike> </div></div><div class='rightCol' style='color: white; font-size:10px; text-align:right;' id='shoppingBagSubTotalSavings'>" + bagQTY.innerHTML + "</div></li>"});
-			bagElementBefore.insert({ after: "<li id='discountMessage' class='subTotal clearfix' style='background:#f47529;'><div class='leftCol clearfix' style='color: white; font-size:11px; font-weight: bold;'><div class='priceLabel'>Savings so far</div><div id='shoppingBagSubTotalDiscValue' class='priceValue'>$" + formatShoppingBagCurrency(discount) + "</div></div><div class='rightCol' style='color: white; font-size:11px;' id='shoppingBagSubTotalSavings'>&nbsp;</div></li>"});
-			$("discountMessage").insert({ after: "<li id='discountFP' class='subTotal clearfix' style='background:#f47529;'><div class='leftCol clearfix' style='color: white; font-size: 9px; width:318px;'>Have a promo code? Enter it at checkout for additional savings.</div></li>"});		
-			bagQTY.update();
-		}
-	}
-// console.info("End Discount Widget");
-
-}
-
-var shoppingBagDiscountWidgetCalculate = function(salePrice,regPrice,qty) {
-	// all are strings - must make into numbers...
-	var sale = parseFloat(salePrice.split("$")[1]) * 100;
-	var reg = parseFloat(regPrice.split("$")[1]) * 100;
-	var qty = parseInt(qty);
-	var discount = ((reg - sale) * qty)/100;
-	return discount;
-}
-
-var shoppingBagSubtotalWidgetCalculate = function(regPrice,qty) {
-	// all are strings - must make into numbers...
-	var reg = parseFloat(regPrice.split("$")[1]) * 100;
-	var qty = parseInt(qty);
-	var subtotal = (reg * qty)/100;
-//console.info("Subtotal: " + subtotal);
-	return subtotal;
-}
-
-var shoppingBagDiscountWidgetThreshold = function(s,d) {
-	var threshold = false;
-	var percentage = (d/s)*100;
-	var difference = s-d;	
-//console.info("%:" + percentage + " diff: " + difference);
-	if ((percentage > 10) && (difference > 5)) {
-		threshold = true;
-	}
-	return threshold;
-}
-
-var formatShoppingBagCurrency = function(num) {
-    //num = isNaN(num) || num === '' || num === null ? 0.00 : num;
-    return parseFloat(num).toFixed(2);
-}
-
-// configure and launch A/B function
-var shoppingBagSegment = "a";
-var shoppingBagCookieValue = gidLib.getCookieVar("mktUniversalPersist", "BagSave");
-if (shoppingBagCookieValue == "BagSave_11_01SegB") {
-	shoppingBagSegment = "b";
-} else if (shoppingBagCookieValue == "BagSave_11_01SegC") {
-	shoppingBagSegment = "c";
-}
-
-if (shoppingBagSegment != "a") {
-	var discountShoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
-	if (discountShoppingBagUrls.include(location.pathname)){
-		Event.observe(window,"load",function() { shoppingBagDiscountWidget(shoppingBagSegment); });
-	}
-}
-</script>
-
-<!-- END Content Item File: /content/0005/746/635/cn5746635.html -->
 
 
 
@@ -6477,18 +6288,18 @@ if (shoppingBagSegment != "a") {
 						
 						<!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.universalBar.10000522.region1") -->
 
-<!-- BEGIN Content Item File: /content/0005/667/313/cn5667313.html -->
-<div id="contentItemContainer10000425" class="5667313" >
+<!-- BEGIN Content Item File: /content/0005/800/207/cn5800207.html -->
+<div id="contentItemContainer10000425" class="5800207" >
 
 <div style="position:absolute; top:0px; left:0px; z-index:200; width:450px; height:50px; display:none;" id="EDFSPostageContainer">
     <a onclick="gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs">
-	  <img alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/313/assets/10-25_EDFSFR_UnivHeader_animate.gif">
+	  <img alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/207/assets/1025_EDFSFR_UnivHeader_animate_LightsOn.gif">
 	</a>
 </div>
 
-<div id="EDFS-container" style="width:450px;height:45px;margin-top:3px;">
+<div id="EDFS-container" style="width:450px;height:50px;margin-top:5px;">
 	<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
-		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/313/assets/10-25_EDFSFR_UnivHeader_animate.gif" alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." />
+		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/207/assets/1025_EDFSFR_UnivHeader_animate_LightsOn.gif" alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." />
 	</a>
 </div>
 
@@ -6519,7 +6330,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 
 
 </div>
-<!-- END Content Item File: /content/0005/667/313/cn5667313.html -->
+<!-- END Content Item File: /content/0005/800/207/cn5800207.html -->
 
 
 
@@ -6799,7 +6610,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 <style type="text/css">
 #topNav #universalTopNav .division {float:left;}
 
-#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/110/149/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
+#divisionContainer .division img {background-image:url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/877/assets/2012_Fall_Refresh_Sprite.png); background-repeat: no-repeat; width: 0px;}
 
 /*Womens*/
 #divisionContainer .division .topnavSprite_division5643_off, #divisionContainer .division .topnavSprite_division5643_notSelected { background-position: -235px -234px; width: 45px; height: 38px; margin: 0 39px 0 8px;} 
@@ -7025,8 +6836,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/770/808/cn5770808.html -->
-<div id="contentItemContainer10000395" class="5770808" >
+    	<!-- BEGIN Content Item File: /content/0005/789/178/cn5789178.html -->
+<div id="contentItemContainer10000395" class="5789178" >
 
 
 <style type="text/css">
@@ -7076,7 +6887,7 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/770/808/assets/legal.html',id:'legal',width:350,height:300});">
+		<a href="javascript:void(0);" onclick="return gidLib.layeredPopup.openLayeredPopup({str:'/Asset_Archive/GPWeb/content/0005/789/178/assets/legal.html',id:'legal',width:350,height:300});">
 			SUPER! <span class="promoPercent">20% OFF</span> YOUR PURCHASE!
 			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
 			<br /><span class="detailsLink">DETAILS</span>
@@ -7087,7 +6898,7 @@ Event.observe(window,"load",function(){
 
 
 </div>
-<!-- END Content Item File: /content/0005/770/808/cn5770808.html -->
+<!-- END Content Item File: /content/0005/789/178/cn5789178.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7096,7 +6907,7 @@ Event.observe(window,"load",function(){
           <div id="searchInputWrapper" class="posRel">						
             <input type="text" id="topSearchText" class="searchTextStandard" name="searchText" value="Keyword / Style #" onfocus="objSearchBox.checkSearchText(this);" maxlength="100" />
             <div id="searchInputButtonDiv" class="posAbs">							
-              <input type="image" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/110/149/assets/fall_2012_hp_FINAL_US_searcharrow.png" name="submit" id="topSearchGoButton"/>																
+              <input type="image" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/877/assets/fall_2012_hp_FINAL_US_searcharrow.png" name="submit" id="topSearchGoButton"/>																
             </div>
           </div>																														
         </form>							
@@ -7140,15 +6951,8 @@ Event.observe(window,"load",function(){
 	</div>		
 </div>
 <div id="topNavBottomBannerContainer" class="clearfix floatLeft">
-  	
- 	<div id="sandybanner" style="width:988px;height:100px;background-color:white;overflow:hidden;display:block;margin-bottom:10px;"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/303/008/assets/hurricaneSandy_banner_988widthNEW.gif" usemap="#imapSandyRelief"/></div>
-
-<map name="imapSandyRelief">
-<area alt="GAP INC DONATIONS &gt;" coords="346,32,611,64" href="http://gapinc.com/content/gapinc/html/media/pressrelease/2012/med_pr_Gap_Inc_to_Aid_Recovery_Effort_Hurricane_Sandy110212.html" target="_new" />
-<area alt="RED CROSS &gt;" coords="643,56,734,87" href="http://www.redcross.org" target="_new"/>
-<area alt="RED CROSS &gt;" coords="826,13,982,88" href="http://www.redcross.org" target="_new"/>
-</map>
-
+  	<!--Container 2 -->
+	<!--Container 3 -->
 </div>
 
 
@@ -7809,33 +7613,6 @@ Event.observe(window,"load",function(){
 	        
 	        
 	        
-	            <li class="category" id="categoryNav2326"><a href="http://www.gap.com/customerService/info.do?cid=2326" class="category">Online Returns</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
 	            <li class="category" id="categoryNav40965"><a href="http://www.gap.com/customerService/info.do?cid=40965" class="category">Gift and Gift Card Returns</a></li>
 	      
 	        
@@ -8442,6 +8219,23 @@ max-width: none;
 	
 <div id="footer_BrandContainer">
 	<div id="footer_brand_region1"><!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.brand.footers.region1") -->
+<div id="brandftr4_10000510">
+		<!-- BEGIN Content Item File: /content/0005/800/833/cn5800833.html -->
+<div id="contentItemContainer10000510" class="5800833" >
+
+<div id="sandybanner" style="width:988px;height:100px;background-color:white;overflow:hidden;display:block;margin-bottom:10px;"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/833/assets/hurricaneSandy_banner_988widthNEW.gif" usemap="#imapSandyRelief"/></div>
+
+<map name="imapSandyRelief">
+<area alt="GAP INC DONATIONS &gt;" coords="346,32,611,64" href="http://gapinc.com/content/gapinc/html/media/pressrelease/2012/med_pr_Gap_Inc_to_Aid_Recovery_Effort_Hurricane_Sandy110212.html" target="_new" />
+<area alt="RED CROSS &gt;" coords="643,56,734,87" href="http://www.redcross.org" target="_new"/>
+<area alt="RED CROSS &gt;" coords="826,13,982,88" href="http://www.redcross.org" target="_new"/>
+</map>
+
+
+</div>
+<!-- END Content Item File: /content/0005/800/833/cn5800833.html -->
+
+</div>
 <div id="brandFooter_Region1" class="clearfix" style="width:990px;border-bottom: 1px solid #000000;margin-top:0px;padding:0px;">
 	<div id="brandftr2_10000514">
 		<!--override annotation set up for email footer for w, m, mat, kids, and baby -->
@@ -8656,29 +8450,25 @@ function validateFormGapFooter()
 
 		</div>	
 	<div id="brandftr3_10000513">
-		<!-- BEGIN Content Item File: /content/0005/667/166/cn5667166.html -->
-<div id="contentItemContainer10000513" class="5667166" >
+		<!-- BEGIN Content Item File: /content/0005/800/208/cn5800208.html -->
+<div id="contentItemContainer10000513" class="5800208" >
 
 <div style="width:988px;overflow:hidden;border-top:1px solid black;display:block;padding:0;margin-bottom:-2px;" class="clearfix">
-	<div style="float:left;width:50%;">
-		<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
-			<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/667/166/assets/10-25_EDFSFR_UnivFooter.jpg" alt="Free shipping on all orders over $50. No code. No hassle. Free returns on all orders. Details" />
-		</a>
-	</div>
-	<div style="float:left;width:50%;">
-		<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#internationalShipping" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
-			<p style="font-size:13px;text-align:center;padding:18px 0 0 0;margin:0;">
-				Introducing <strong>INTERNATIONAL SHIPPING</strong> to over 80 countries <span style="display: inline-block; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 4px solid black;"></span>
-			</p>
-		</a>
-	</div>
+	<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/208/assets/1112_EDFS_Footer.png" alt="Free shipping on all orders over $50. No code. No hassle. Free returns on all orders." usemap="#edfsFooterMap" />
+	<map name="edfsFooterMap">
+		<area shape="rect" coords="15,17,524,61" href="javascript:void(0);" alt="details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
+		<area shape="rect" coords="540,17,979,62" href="javascript:void(0);" alt="introducing international shipping to over 80 countries" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
+	</map>
 </div>
 
 
 </div>
-<!-- END Content Item File: /content/0005/667/166/cn5667166.html -->
+<!-- END Content Item File: /content/0005/800/208/cn5800208.html -->
 
 	</div>
+</div>
+<div id="brandftr5_10000511">
+		
 </div>
 </div>
 </div>
@@ -8915,7 +8705,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5667313,5746824,5770808,5754165,5746856,5667166,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5800207,5746824,5789178,5754165,5800833,5746856,5800208,5746857,5217025";
 	 </script>
 	
 	<noscript>
@@ -10066,7 +9856,7 @@ var fireVVDisruptor = function() {
 							} 
 //console.info("Firing VV main code!");
 							Event.fire(document, "personalizationService:renderCustomerAttributes"); 
-							document.write('<style type="text/css"> #rewards { display: block; } </style>');
+							$("rewards").style.display = "block";
 //console.info("VV Main code complete!");							
 						}, 10000);
 

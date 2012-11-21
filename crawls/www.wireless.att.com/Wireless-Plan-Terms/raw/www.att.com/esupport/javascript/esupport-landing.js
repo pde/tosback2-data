@@ -53,15 +53,25 @@ var esupportCarousel = {
             return;
           }
           used[value] = 1;
+		  var vTitle=video.title;
+		  if (vTitle == undefined ){
+			vTitle ="";
+		  }
+		  if(vTitle.indexOf("&amp;") != -1){
+				vTitle=vTitle.replace("&amp;","&");
+			}
+		  if (video.videoLength  == undefined){
+				video.videoLength ="0:00";
+		   }	
           var playVideo = function () {
             var videoPath = video.xmlFileName.replace(/^\/media\/gvp/, '');
             gvp.showPopUp('Please wait...', true, true, 'gvp', videoPath + '&gvpEnv=//www.att.com/media/gvp/');
           };
             $('<li>').append($('<div>').addClass('video-thumb-container')
-			        .append($('<a>').append($('<img>').attr({src:video.thumbFilePath,width:110,height:62,alt:video.title,style:'display:block'}))
+			        .append($('<a>').append($('<img>').attr({src:video.thumbFilePath,width:110,height:62,alt:vTitle,style:'display:block'}))
 				      .addClass('thumbnail')
 				      .append(  $('<span>').addClass('overlay').addClass('persist').attr({alt:'Play button'}) ).click(playVideo)  )
-                .append($('<h4>').append($('<a>').text(self.formatTitle(video.title)).click(playVideo)).attr('title', video.title).attr('style', 'margin-top: 10px;'))
+                .append($('<h4>').append($('<a>').text(self.formatTitle(vTitle)).click(playVideo)).attr('title', vTitle).attr('style', 'margin-top: 10px;'))
                 .append($('<p>').text('(' + video.videoLength + ')')))
               .keypress(function(e) {if (e.which == 13) {playVideo(true);}})
 		          .appendTo($('#vidCarousel'));

@@ -6,6 +6,52 @@
 
 $(document).ready(function(){
 
+// rotation for home page during 2012 holidays
+	$(function() {
+
+	    $('#slideshow-content').cycle({
+								fx:      'fade',
+								pause: 1,
+								speed: 500,
+								easeIn: null,
+								easeOut: null,
+								timeout:  5000,        
+								prev:    '#slideshow-prev',
+								next:    '#slideshow-next',
+								pager:   '#slideshow-navi',
+								// callback fn that creates a thumbnail to use as pager anchor 
+								pagerAnchorBuilder: function(idx, slide) {
+        var img = jQuery(slide).find("img").attr("alt");
+        return '<li><a href="#">' + img + '</a></li>';
+    } 
+    });
+
+    function pagerFactory(idx, slide) {
+        var s = idx > 50 ? ' style="display:none"' : '';
+        return '<li'+s+' class="navi"><a href="#">'+(idx+1)+'</a></li>';
+								//$('.sublevel-navigation').hide();
+    };
+				//$('.sublevel-navigation').hide();
+				
+				
+				$('.pause').click(function() { 
+					$('#slideshow-content').cycle('pause'); 
+				});
+				
+				$('.resume').click(function() { 
+					$('#slideshow-content').cycle('resume', true); 
+				}); 
+				
+				
+				/*   
+    */
+	});
+
+
+
+
+
+
   $("#pop-back-pdp").click(function () {
     $("#pop-back-pdp").css({
             "display": "none"
@@ -138,38 +184,38 @@ function loadTopNavigation() {
     if(tabval=="tab1-nav"){
         $("#sublevel-bar").css("background-color","#354b1a");
     }
-				/*
-				// 1Source
-				else if (tabval=="tab2-nav"){
+        /*
+        // 1Source
+        else if (tabval=="tab2-nav"){
         $("#sublevel-bar").css("background-color","#990000");
     }
-				*/
-				// Stores
-				else if (tabval=="tab2-nav"){
+        */
+        // Stores
+        else if (tabval=="tab2-nav"){
         $("#sublevel-bar").css({"background-color":"#67604c","height":"6px"});
     }
-				// Tracker
-				else if (tabval=="tab3-nav"){
+        // Tracker
+        else if (tabval=="tab3-nav"){
       $("#sublevel-bar").css("background-color","#343434");
     }
-				// NYI (not yet implemented)
-				else if (tabval=="tab4-nav"){
+        // NYI (not yet implemented)
+        else if (tabval=="tab4-nav"){
       $("#sublevel-bar").css("background-color","#354b1a");
     }
-				// NYI (not yet implemented)
-				else if (tabval=="tab4-nav"){
+        // NYI (not yet implemented)
+        else if (tabval=="tab4-nav"){
       $("#sublevel-bar").css("background-color","#354b1a");
     }
-				// NYI (not yet implemented)
-				else if (tabval=="tab5-nav"){
+        // NYI (not yet implemented)
+        else if (tabval=="tab5-nav"){
       $("#sublevel-bar").css("background-color","#990000");
     }
-				// NYI (not yet implemented)
-				else if (tabval=="tab6-nav"){
+        // NYI (not yet implemented)
+        else if (tabval=="tab6-nav"){
       $("#sublevel-bar").css("background-color","#005693");
     }
-				// NYI (not yet implemented)
-				else if (tabval=="tab7-nav"){
+        // NYI (not yet implemented)
+        else if (tabval=="tab7-nav"){
       $("#sublevel-bar").css("background-color","#354b1a");
     }
 
@@ -230,18 +276,6 @@ function loadTopNavigation() {
             $("#additional-address").center("300px").fadeIn("slow");
             return false;
         });
-
-
-        //BILLING ADDRESSES
-
-        $("#pop-billing-address").ready(function (e) {
-            $("#pop-back").css({
-                "opacity": "0.85"
-            }).fadeIn("slow");
-            $("#billing-address").center("1000px").fadeIn("slow");
-            return false;
-        });
-
 
 
         $("#pop-billing-address2").click(function (e) {

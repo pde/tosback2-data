@@ -5636,7 +5636,7 @@ return s(u+e.scroll)
 }}if(e.auto){m()
 }function r(){return n.slice(u).slice(0,l)
 }function s(v){if(!h){if(e.beforeStart){e.beforeStart.call(this,r())
-}if(e.circular){if(v<l-1){o.css(f,-((j-(l*2))*x)+"px");
+}if(e.circular){if((l===e.start&&(v<=e.start-l-1))||(l!==e.start&&(v<l-1))){o.css(f,-((j-(l*2))*x)+"px");
 u=v==e.start-l-1?j-(l*2)-1:j-(l*2)-e.scroll
 }else{if(v>=j-l+1){o.css(f,-((l)*x)+"px");
 u=v==j-l+1?l+1:l+e.scroll
@@ -6118,6 +6118,8 @@ e.vehicleBodyStyle=c(".page-properties .pp-vehicle-body-style").text();
 e.campaignCode=c(".page-properties .pp-campaign-code").text();
 e.comingSoonClasses=c.parseJSON(c(".page-properties .pp-coming-soon-classes").text());
 e.combineMinify=c(".page-properties .pp-combine-minify").text();
+e.sharedHostUrl=c(".page-properties .pp-shared-host-url").text();
+e.sharedHostContext=c(".page-properties .pp-shared-host-context").text();
 b.generateCookies(e);
 b.addToRecentlyViewedClassesFromUrl();
 var f=new mb.Document(c("#wrapper"));
@@ -6149,8 +6151,8 @@ var e=f.substring(o);
 f=q+"&embed=false"+e
 }else{f+="?embed=false"
 }}}window.location.href=f
-}}}else{if(p.embed!="true"){c.cookie("embed","true",{path:"/"})
-}}};
+}}}else{if(f.indexOf("facebook")==-1){if(p.embed!="true"){c.cookie("embed","true",{path:"/"})
+}}}};
 b.addToRecentlyViewedClassesFromUrl=function(){var g="class";
 var f="";
 var e=window.location.href;
@@ -6361,6 +6363,7 @@ this.FB_INITED="FB_INITED";
 this.PREFERRED_DEALER_UPDATED="preferredDealerUpdated";
 this.GALLERY_MEDIA_LOADED="galleryMediaLoaded";
 this.GALLERY_MEDIA_PRE_LOAD="galleryMediaPreLoad";
+this.GALLERY_MEDIA_WIRED="galleryMediaWired";
 this.GALLERY_NEXT_MEDIA="galleryNextMedia";
 this.GALLERY_PREV_MEDIA="galleryPrevMedia";
 this.HASH_UPDATED="hashUpdated";
@@ -6576,182 +6579,191 @@ try{h=a[f]
 }catch(g){}return h
 };
 if(e){c.setNode(e)
-}};mb.header=new (function(c){var b=this;
+}};if(window.mb===undefined){mb={}
+}mb.header=(function(e,c){var b={};
 var d=0;
 var a=c("#overlay-nav li").length;
-mb.broadcaster.addListener(mb.events.INITED,function(){mb.header.init()
+e.broadcaster.addListener(e.events.INITED,function(){e.header.init()
 });
-b.init=function(){mb.logger.info("header.init()");
-mb.broadcaster.addListener(mb.events.PAGE_LOADED,function(g,f){mb.header.onPageLoaded(g)
+b.init=function(){if(e.logger.level<=DEBUG){e.logger.debug("mb.header.init()")
+}e.broadcaster.addListener(e.events.PAGE_LOADED,function(g,f){e.header.onPageLoaded(g)
 })
 };
-b.onPageLoaded=function(x){mb.logger.info("header.init()");
-var n=(typeof x.getProperty("siteshareContextPath")!="undefined")&&(x.getProperty("siteshareContextPath")!="")?x.getProperty("siteshareContextPath"):x.getProperty("contextPath");
-if(c(".find-btn-url")[0]!=undefined){var p=c(".find-btn-url")[0].href
-}if(c(".find-btn-ov-url")[0]!=undefined){var q=c(".find-btn-ov-url")[0].href
-}var f='<div class="FindaDealer hide  "><form id="locDealerForm" action="'+n+'/dealers/locator" method="get"><ul class="nav-find-dealer"><li><input name="radius" type="hidden" value="25" /><input name="expandRadius" type="hidden" value="true" /><input type="hidden" name="searchType" value="byZip" /><input id="zipInput" name="zip" type="text" value="Enter ZIP Code" maxlength="5"/><button id="btn-find-zip" class="btn-round-grey" type="submit">Find</button></li><li><a id="all-dealers" href="'+n+'/dealers/state">Browse all Dealers</a></li><li class="errorTxt">The ZIP code must be 5 digits.</li></ul></form></div>';
-if(p!=undefined){c("div.FINDADEALER ").replaceWith(f)
-}if(c.cookie("MBUSA_PREFERRED_ZIP")!=null&&typeof(c.cookie("MBUSA_PREFERRED_ZIP"))!="undefined"&&c.cookie("MBUSA_PREFERRED_ZIP")!="0"){var l=c.cookie("MBUSA_PREFERRED_ZIP");
-c("#zipInput").val(l)
-}c("#locDealerForm input[name=zip]").bind("keydown",mb.numbersOnly);
-c("#locDealerForm").bind("submit",function(B){mb.metrics.trackInteraction({linkName:"DealerLocator",linkSource:"Header"});
-mb.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"ZipCode-Header-Click",label:c("#zipInput").val()+"-Search"});
-mb.metrics.trackAtlasInteraction({action:"MBU_LCP_Find_a_dealer_page",atc4:c("#zipInput").val()});
+b.setUp=function(y){if(e.logger.level<=DEBUG){e.logger.info("mb.header.setUp()")
+}var o=(y.getProperty("siteshareContextPath")===undefined)||(y.getProperty("siteshareContextPath")==="")?y.getProperty("contextPath"):y.getProperty("siteshareContextPath");
+var q;
+if(c(".find-btn-url")[0]!==undefined){q=c(".find-btn-url")[0].href
+}if(c(".find-btn-ov-url")[0]!==undefined){var r=c(".find-btn-ov-url")[0].href
+}var g='<div class="FindaDealer hide  "><form id="locDealerForm" action="'+o+'/dealers/locator" method="get"><ul class="nav-find-dealer"><li><input name="radius" type="hidden" value="25" /><input name="expandRadius" type="hidden" value="true" /><input type="hidden" name="searchType" value="byZip" /><input id="zipInput" name="zip" type="text" value="Enter ZIP Code" maxlength="5"/><button id="btn-find-zip" class="btn-round-grey" type="submit">Find</button></li><li><a id="all-dealers" href="'+o+'/dealers/state">Browse all Dealers</a></li><li class="errorTxt">The ZIP code must be 5 digits.</li></ul></form></div>';
+if(q!==undefined){c("div.FINDADEALER ").replaceWith(g)
+}if(c.cookie("MBUSA_PREFERRED_ZIP")!==null&&c.cookie("MBUSA_PREFERRED_ZIP")!==undefined&&c.cookie("MBUSA_PREFERRED_ZIP")!=="0"){var m=c.cookie("MBUSA_PREFERRED_ZIP");
+c("#zipInput").val(m)
+}c("#locDealerForm input[name=zip]").bind("keydown",e.numbersOnly);
+c("#locDealerForm").bind("submit",function(C){e.metrics.trackInteraction({linkName:"DealerLocator",linkSource:"Header"});
+e.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"ZipCode-Header-Click",label:c("#zipInput").val()+"-Search"});
+e.metrics.trackAtlasInteraction({action:"MBU_LCP_Find_a_dealer_page",atc4:c("#zipInput").val()});
 if(c(this).find("input[name=zip]").val().length<5||c(this).find("input[name=zip]").val().length>5){c(this).find(".errorTxt").show();
 return false
 }c.cookie("MBUSA_PREFERRED_ZIP",c(this).find("input[name=zip]").val(),{path:"/",expires:new Date(2042,1,1)})
 });
-c("#all-dealers").click(function(){mb.metrics.trackInteraction({linkName:"Browse all Dealers",linkSource:"Header"});
-mb.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"Header-Click",label:"Browse All Dealers"})
+c("#all-dealers").click(function(){e.metrics.trackInteraction({linkName:"Browse all Dealers",linkSource:"Header"});
+e.metrics.trackGAInteraction({trackType:"_trackEvent",category:"Dealer Selects",action:"Header-Click",label:"Browse All Dealers"})
 });
-c("#zipInput").click(function(){var B=c("#zipInput").attr("value");
-if(isNaN(B)){c("#zipInput").attr("value","")
+c("#zipInput").click(function(){var C=c("#zipInput").attr("value");
+if(isNaN(C)){c("#zipInput").attr("value","")
 }});
-c("#header .gsa-suggest-form").submit(function(){if(c.trim(c(".gsa-suggest-form input[name='q']").val())==""){return false
+c("#header .gsa-suggest-form").submit(function(){if(c.trim(c(".gsa-suggest-form input[name='q']").val())===""){return false
 }return true
 });
-var z='<div id="modal" class="modal-container"><div class="modal-shield-alpha"></div></div>';
-var j=c(".class-link.active").parent().parent().prev();
-c(j).addClass("hLight");
-c(".overlay-item").each(function(B,C){c(this).attr("id","navoverlay-"+B)
+var A='<div id="modal" class="modal-container"><div class="modal-shield-alpha"></div></div>';
+var k=c(".class-link.active").parent().parent().prev();
+c(k).addClass("hLight");
+c(".overlay-item").each(function(C,D){c(this).attr("id","navoverlay-"+C)
 });
-var w=new Array();
-c(".nav-body-gp-children").each(function(C){var B=C;
-w[B]="."+C+"";
-B=B+"";
-c("a",this).addClass(B)
+var x=[];
+c(".nav-body-gp-children").each(function(D){var C=D;
+x[C]="."+D.toString();
+c("a",this).addClass(C.toString())
 });
-c("#overlay-nav").jCarouselLite({circular:false,visible:1,btnGo:w,btnNext:".btn-next",btnPrev:".btn-prev",goOnHover:true,beforeStart:function(){},afterEnd:h});
-var v=parseInt(c(".class-bodystyle p").css("border-bottom-width"));
-c.each(c(".overlay-item"),function(D,C){if(c(".class-bodystyle",c(C)).length){var B=c(".class-bodystyle",c(C)).height()/c(".class-bodystyle p",c(C)).length-v;
-c(".class-bodystyle p",c(C)).height(B);
-var E=c(".class-bodystyle p:last-child",c(C));
-E.height(E.height()+v).css("border","none");
-var F=(B-parseInt(c(".class-bodystyle p a",c(C)).css("font-size")))/2;
-c(".class-bodystyle p a",c(C)).css("padding",F+"px 0")
-}});
-c(".overlay-wrap").hide().css("visibility","visible");
-function h(B){var D=c(B[0]).attr("id");
-D=D.split("-")[1];
-var C=c("a.class-link:eq("+D+")");
-g();
-C.addClass("hover");
-i(C);
-if(!mb.isIpad()){setTimeout(u,100)
-}d=D;
-e(D);
-r()
-}function i(B){var C=B.parent().parent().prev();
-C.addClass("hover")
-}function u(){o(false);
-s();
+function n(){c(".class-link").parent().parent().prev().removeClass("hover")
+}function h(){c("a").removeClass("hover");
+n()
+}function j(C){var D=C.parent().parent().prev();
+D.addClass("hover")
+}function p(C){if(C){if(c(".rt-nav-body-gp-title div.FindaDealer.pin").length===0){c(".rt-nav-body-gp-title div.FindaDealer").addClass("pin").show()
+}if(c(".rt-nav-body-gp-title a#link-FINDADEALER.hover").length===0){c(".rt-nav-body-gp-title a#link-FINDADEALER").addClass("hover")
+}}else{c("#link-FINDADEALER").removeClass("hover");
+c(".rt-nav-body-gp-title div.FindaDealer").removeClass("pin").hide();
+c("div.overlay-wrap").hide();
+c(".modal-container").each(function(){e.modal.hide(c(this))
+})
+}}function t(){c("div.suggestions-wrapper .suggestions-tooltip").css("display","none");
+c("div.suggestions-wrapper #search_suggest").css("visibility","hidden")
+}function z(){c("div.overlay-wrap").hide();
+c(".modal-container").each(function(){e.modal.hide(c(this))
+});
+h()
+}function w(){p(false);
+t();
 c(".overlay-wrap").show();
-if(mb.isIe7()||mb.isIe8()){c("div#nav-container div#overlay-nav").css({behavior:"url("+n+"/js/lib/PIE.htc);"})
+if(e.isIe7()||e.isIe8()){c("div#nav-container div#overlay-nav").css({behavior:"url("+o+"/js/lib/PIE.htc);"})
 }if(c(".modal-container").length>0){return
-}else{mb.modal.show(z,"type1")
-}c(".modal-container, .nav-body-gp-title h3").hover(function(){y()
+}else{e.modal.show(A,"type1")
+}c(".modal-container, .nav-body-gp-title h3").hover(function(){z()
 },function(){});
-c("div.overlay-wrap").each(function(B){c(this).hover(function(C){},function(C){if(!c(C.relatedTarget).parent().attr("class").match(/nav-body-gp-children/ig)){g();
-y()
+c("div.overlay-wrap").each(function(C){c(this).hover(function(D){},function(D){if(!c(D.relatedTarget).eq(0).parent().attr("class").match(/nav-body-gp-children/ig)){h();
+z()
 }})
 });
 c("div.gp-info-av-mod, div.gp-info-av-mod-ch").each(function(){c("a.amg-spacing:first",this).addClass("first-AMG")
 });
-if(c("#nav-container").height()==70){c(this).css("overflow","visible")
-}}c(".gsa-query ").click(function(){y()
-});
-function s(){c("div.suggestions-wrapper .suggestions-tooltip").css("display","none");
-c("div.suggestions-wrapper #search_suggest").css("visibility","hidden")
-}function r(){c(".group .class-bodystyle p").removeClass("active");
-c(".group .class-bodystyle p a").removeClass("active");
-c(".overlay-container .group .nav-gp-info-cont").removeClass("show");
-c(".group .class-bodystyle p:first-child").addClass("active").find("a").addClass("active");
-c(".overlay-container .group").find(".nav-gp-info-cont:first").addClass("show")
-}function y(){c("div.overlay-wrap").hide();
-c(".modal-container").each(function(){mb.modal.hide(c(this))
-});
-g()
-}function g(){c("a").removeClass("hover");
-m()
-}function m(){c(".class-link").parent().parent().prev().removeClass("hover")
-}function e(B){var C=c("#navoverlay-"+B);
-if(c(C).hasClass("group")){c("#navoverlay-"+B+" .nav-gp-info-cont").each(function(D){if(c(".bg-img-class",this)[D]){return
-}else{var H=c("#navoverlay-"+B+" .nav-gp-info-cont")[D];
+if(c("#nav-container").height()===70){c("#nav-container").css("overflow","visible")
+}}function f(C){var D=c("#navoverlay-"+C);
+if(c(D).hasClass("group")){c("#navoverlay-"+C+" .nav-gp-info-cont").each(function(E){if(c(".bg-img-class",this)[E]){return
+}else{var I=c("#navoverlay-"+C+" .nav-gp-info-cont")[E];
+var H=c(".overlay-bg-img",this);
+var G=c(H)[0].href;
+var F='<img class="bg-img-class" src="'+G+'">';
+c(I).prepend(F)
+}})
+}else{c(D).each(function(){if(c(".bg-img-class",this)[0]){return
+}else{var H=c(".nav-gp-info-cont",this);
 var G=c(".overlay-bg-img",this);
 var F=c(G)[0].href;
 var E='<img class="bg-img-class" src="'+F+'">';
 c(H).prepend(E)
 }})
-}else{c(C).each(function(){if(c(".bg-img-class",this)[0]){return
-}else{var G=c(".nav-gp-info-cont",this);
-var F=c(".overlay-bg-img",this);
-var E=c(F)[0].href;
-var D='<img class="bg-img-class" src="'+E+'">';
-c(G).prepend(D)
-}})
-}}c(".group .class-bodystyle a").each(function(B){c(this).hoverIntent(function(){c(".group .class-bodystyle a").removeClass("active");
+}}function s(){c(".group .class-bodystyle p").removeClass("active");
+c(".group .class-bodystyle p a").removeClass("active");
+c(".overlay-container .group .nav-gp-info-cont").removeClass("show");
+c(".group .class-bodystyle p:first-child").addClass("active").find("a").addClass("active");
+c(".overlay-container .group").find(".nav-gp-info-cont:first").addClass("show")
+}function i(C){var E=c(C[0]).attr("id");
+E=E.split("-")[1];
+var D=c("a.class-link:eq("+E+")");
+h();
+D.addClass("hover");
+j(D);
+if(!e.isIpad()){setTimeout(w,100)
+}d=E;
+f(E);
+s();
+if(c.browser.msie&&c.browser.version<=6){if(c("a.C-lnk").hasClass("hover")){c("a.btn-prev").css("visibility","hidden")
+}else{c("a.btn-prev").css("visibility","visible")
+}if(c("a.SLS-lnk").hasClass("hover")){c("a.btn-next").css("visibility","hidden")
+}else{c("a.btn-next").css("visibility","visible")
+}}}c("#overlay-nav").jCarouselLite({circular:false,visible:1,btnGo:x,btnNext:".btn-next",btnPrev:".btn-prev",goOnHover:true,beforeStart:function(){},afterEnd:i});
+var v=parseInt(c(".class-bodystyle p").css("border-bottom-width"),10);
+c.each(c(".overlay-item"),function(E,D){if(c(".class-bodystyle",c(D)).length){var C=c(".class-bodystyle",c(D)).height()/c(".class-bodystyle p",c(D)).length-v;
+c(".class-bodystyle p",c(D)).height(C);
+var F=c(".class-bodystyle p:last-child",c(D));
+F.height(F.height()+v).css("border","none");
+var G=(C-parseInt(c(".class-bodystyle p a",c(D)).css("font-size"),10))/2;
+c(".class-bodystyle p a",c(D)).css("padding",G+"px 0")
+}});
+c(".overlay-wrap").hide().css("visibility","visible");
+c(".gsa-query ").click(function(){z()
+});
+c(".group .class-bodystyle a").each(function(C){c(this).hoverIntent(function(){c(".group .class-bodystyle a").removeClass("active");
 c(".group .nav-gp-info-cont").removeClass("show");
 c(".group .class-bodystyle p").removeClass("active");
 c(this).addClass("active").parent().addClass("active");
-var C=c(".group .nav-gp-info-cont")[B];
-c(C).addClass("show")
+var D=c(".group .nav-gp-info-cont")[C];
+c(D).addClass("show")
 },function(){return false
 })
 });
-r();
-c(".rt-nav-body-gp-title").each(function(B){c(".rt-nav-body-gp-title a#link-FINDADEALER").click(function(C){if(c(".rt-nav-body-gp-title div.FindaDealer").hasClass("pin")){o(false)
-}else{o(true)
-}C.stopPropagation()
+s();
+c(".rt-nav-body-gp-title").each(function(C){c(".rt-nav-body-gp-title a#link-FINDADEALER").click(function(D){if(c(".rt-nav-body-gp-title div.FindaDealer").hasClass("pin")){p(false)
+}else{p(true)
+}D.stopPropagation()
 });
-c(".rt-nav-body-gp-title div.FindaDealer").click(function(C){o(true);
-C.stopPropagation()
+c(".rt-nav-body-gp-title div.FindaDealer").click(function(D){p(true);
+D.stopPropagation()
 });
-c(".rt-nav-body-gp-title div.FindaDealer #zipInput").keypress(function(){o(true)
+c(".rt-nav-body-gp-title div.FindaDealer #zipInput").keypress(function(){p(true)
 });
-c("body").click(function(C){c("#link-FINDADEALER").removeClass("hover");
+c("body").click(function(D){c("#link-FINDADEALER").removeClass("hover");
 c(".rt-nav-body-gp-title div.FindaDealer").removeClass("pin").hide();
-s()
+t()
 });
-c(this).hoverIntent(function(C){c(".modal-container").each(function(){mb.modal.hide(c(this))
+c(this).hoverIntent(function(D){c(".modal-container").each(function(){e.modal.hide(c(this))
 });
-y();
-if(c(".rt-nav-body-gp-title div.FindaDealer:visible").length>0&&c("a",this).attr("id")!="link-FINDADEALER"){o(false)
+z();
+if(c(".rt-nav-body-gp-title div.FindaDealer:visible").length>0&&c("a",this).attr("id")!=="link-FINDADEALER"){p(false)
 }c("a",this).addClass("hover");
 c("div",this).show();
 if(c(".modal-container").length>0){return
-}else{mb.modal.show(z,"type1")
+}else{e.modal.show(A,"type1")
 }if(c("div.FindaDealer",this).length>0){c("div.FindaDealer input[type=text]").focus();
-c("div.FindaDealer input[type=text]").mouseout(function(D){D.stopPropagation()
+c("div.FindaDealer input[type=text]").mouseout(function(E){E.stopPropagation()
 })
-}},function(){if(c("div.FindaDealer.pin",this).length==0){c("div",this).hide();
+}},function(){if(c("div.FindaDealer.pin",this).length===0){c("div",this).hide();
 if(c("div.FindaDealer",this).length>0){c("div.FindaDealer input[type=text]").blur()
-}y()
+}z()
 }})
 });
-c("div#nav-container li.rt-nav-body-gp ul.rt-nav-cont li.rt-nav-body-gp-title div.FindaDealer form ul.nav-find-dealer li a#all-dealers").click(function(){var B={type:"GA",trackType:"_trackEvent",category:"Dealer Selects",action:"find_dealer",label:"browse_all"};
-mb.metrics.trackInteraction(B)
+c("div#nav-container li.rt-nav-body-gp ul.rt-nav-cont li.rt-nav-body-gp-title div.FindaDealer form ul.nav-find-dealer li a#all-dealers").click(function(){var C={type:"GA",trackType:"_trackEvent",category:"Dealer Selects",action:"find_dealer",label:"browse_all"};
+e.metrics.trackInteraction(C)
 });
-c("#btn-find-zip").click(function(){k();
-return false
-});
-function k(){var B=c(":input#zipInput").val();
-if(t(B)){A()
+function u(C){if(C.match(/^\d+$/)===null){return false
+}else{return true
+}}function l(){var C=c(":input#zipInput").val();
+if(u(C)){B()
 }else{c("li.errorTxt").css("display","block")
 }return false
-}function A(){var B={type:"GA",trackType:"_trackEvent",category:"Dealer Selects",action:"find_dealer",label:"find_by_zip:"+c("#zipInput").val()};
-mb.metrics.trackInteraction(B);
+}function B(){c("#btn-find-zip").click(function(){l();
+return false
+});
+var C={type:"GA",trackType:"_trackEvent",category:"Dealer Selects",action:"find_dealer",label:"find_by_zip:"+c("#zipInput").val()};
+e.metrics.trackInteraction(C);
 c("#locDealerForm").submit()
-}function t(B){if(B.match(/^\d+$/)==null){return false
-}else{return true
-}}function o(B){if(B){if(c(".rt-nav-body-gp-title div.FindaDealer.pin").length==0){c(".rt-nav-body-gp-title div.FindaDealer").addClass("pin").show()
-}if(c(".rt-nav-body-gp-title a#link-FINDADEALER.hover").length==0){c(".rt-nav-body-gp-title a#link-FINDADEALER").addClass("hover")
-}}else{c("#link-FINDADEALER").removeClass("hover");
-c(".rt-nav-body-gp-title div.FindaDealer").removeClass("pin").hide();
-c("div.overlay-wrap").hide();
-c(".modal-container").each(function(){mb.modal.hide(c(this))
-})
-}}}
-})(jQuery);if(typeof(window.mb)=="undefined"){mb={}
+}};
+b.onPageLoaded=function(f){if(e.logger.level<=DEBUG){e.logger.info("header.onPageLoaded()")
+}b.setUp(f)
+};
+return b
+}(window.mb=window.mb||{},jQuery));if(typeof(window.mb)=="undefined"){mb={}
 }mb.metrics=new (function(h){var f=this;
 var e=new Array();
 var d=-1;
@@ -8167,7 +8179,7 @@ if(!g.browser.msie){h=g(h).attr("src",j+"/images/loader_uxp2.png").addClass("loa
 }if(typeof m!="undefined"){var n=g(m).position(),l=n.left+((g(m).width()/2)|0),k=n.top+((g(m).height()/2)|0),h='<img src="">';
 g(m).wrapInner('<div style="visibility:hidden;" class="js-loading-container" />');
 g(".modal-loader").css("position","absolute");
-g(".modal-loader").clone().appendTo(m).addClass("js-loading-mode").css("top",k+"px").css("left",l+"px").show()
+g(".modal-loader").first().clone().appendTo(m).addClass("js-loading-mode").css("top",k+"px").css("left",l+"px").show()
 }else{g(".modal-loader").css("position","fixed");
 g(".modal-loader").show()
 }};
@@ -9012,13 +9024,14 @@ return
 }var paramModel=$('[name="vehicleModel"]').val();
 var paramClass=$('[name="vehicleClass"]').val();
 var paramYear=$('[name="modelYear"]').val();
+var paramVehicleDescription=$('[name="vehicleDescriptionPre"]').val();
 if(paramModel==null||paramModel=="undefined"||paramModel==""){paramModel=$('[name="vehicleModelPre"]').val()
 }if(paramClass==null||paramClass=="undefined"||paramClass==""){paramClass=$('[name="vehicleClassPre"]').val()
 }if(paramYear==null||paramYear=="undefined"||paramYear==""){paramYear=$('[name="vehicleModelYearPre"]').val()
 }var vehicleImage=mb.vehicleModelImagesLarge[$('[name="vehicleModelPre"]').val()];
 var buildable=true;
 if($('[name="vehicleBuildablePre"]').val()=="false"){buildable=false
-}if($("body").hasClass("special-offers")&&(buildable==false||vehicleImage==null||vehicleImage=="undefined"||vehicleImage=="")&&(paramYear!=null)&&(!$("body").hasClass("cpo"))){var mod=$("[name='vehicleModelPre']").val();
+}if($("body").hasClass("special-offers")&&(buildable==false||vehicleImage==null||vehicleImage=="undefined"||vehicleImage=="")&&(paramVehicleDescription!=null&&paramVehicleDescription!="undefined"&&paramVehicleDescription!="")&&(paramYear!=null)&&(!$("body").hasClass("cpo"))){var mod=$("[name='vehicleModelPre']").val();
 if(mod!=""){$("#appearance-header #change-vehicle").hide();
 $("#img-vehicle-picker .rep-disclaimer").hide();
 $(".vehicle-selector #vehicle-class-select option[value="+paramClass+"]").attr("selected","selected");

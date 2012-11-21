@@ -1,5 +1,5 @@
 /*jslint browser: true, indent: 2 */
-/*global $: false, dojo: false, popup: false, button: false */
+/*global $: false, dojo: false, popup: false, button: false, setEqualHeight: false */
 
 /*********************************************************************************************************************/
 /* Popups                                                                                                            */
@@ -23,8 +23,8 @@ dojo.addOnLoad(function () {
     { id: 'GUAR',                title: 'Our Guarantee'                                                    },
     { id: 'RIPENING',            title: 'Ripening and Storage'                                             },
     { id: 'SHIPTO',              title: 'Countries we ship to:'                                            },
-    { id: 'TENOFFFORTY',         title: 'Terms &amp; Conditions' 							               },
-    { id: 'TWENTYFIVEOFF',       title: 'Terms &amp; Conditions' 							               },
+    { id: 'TENOFFFORTY',         title: 'Terms &amp; Conditions'                                           },
+    { id: 'TWENTYFIVEOFF',       title: 'Terms &amp; Conditions'                                           },
     { id: 'WINESHIP',            title: 'Wine Shipping Details'                                            },
     { id: '9HM',        type: 'coupon', name: 'ninehj' },
     { id: '9HM',        type: 'coupon', name: 'ninehk' },
@@ -38,9 +38,13 @@ dojo.addOnLoad(function () {
     { id: 'FREEFSD',    type: 'coupon' },
     { id: 'GIFTS',      type: 'coupon' },
     { id: 'HDGIFT',     type: 'coupon' },
+    { id: 'JOY',        type: 'coupon' },
+    { id: 'JOYFUL',     type: 'coupon' },
+    { id: 'JOYOUS',     type: 'coupon' },
     { id: 'SHIPPING',   type: 'coupon' },
     { id: 'SHIPPING49', type: 'coupon' },
     { id: 'THANKS',     type: 'coupon' },
+    { id: 'TWENTYOFF',  type: 'coupon' },
     { id: 'WED',        type: 'coupon' },
     { id: 'WrappingPaper',   title: 'Wrapping Paper Showcase', callback: function () { $('#dialog-WrappingPaper .widget').cyclable(); } },
     { id: 'EMAIL',           title: 'Email Sign-up',           callback: function () {
@@ -54,4 +58,37 @@ dojo.addOnLoad(function () {
         .bind('blur',  function () { if ($email.val() === '') { $email.val(starting); } });
     } }
   ]);
+});
+
+/*********************************************************************************************************************/
+/* Home Page                                                                                                         */
+/*********************************************************************************************************************/
+
+$(function () {
+  "use strict";
+
+  var homeFeature, body, clear, nav, homeCat, top, bottom;
+  homeFeature = $('#content .homeFeature');
+  body        = $('body');
+  if (homeFeature.length !== 0) {
+    if ((body.hasClass('ie_7') || body.hasClass('ie_8'))) {
+      nav     = $('#content .homeFeature .nav');
+      homeCat = $('#content .homeCat');
+
+      // Remove all the comments that annoy IE
+      clear   = homeCat.add(nav);
+      clear.contents().filter(function (index, element) { return element.nodeType === 8; }).remove();
+      clear.children().not('.caption').hide().show();
+
+      // Add a first and last for the nav
+      nav.children(':first').addClass('first');
+      nav.children(':last').addClass('last');
+    }
+
+    // match the community banners heights.
+    top    = $('#content .homeCommunity .top a');
+    bottom = $('#content .homeCommunity .bottom a');
+    if (top.length !== 0) { setEqualHeight(top); }
+    if (bottom.length !== 0) { setEqualHeight(bottom); }
+  }
 });

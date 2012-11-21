@@ -12,10 +12,10 @@ if (typeof ot_ti===ot_un) {
 ot_ti=escape(ot_ti);if (ot_ti.indexOf('%u')!=-1) ot_ti=escape(ot_ti);
 ot_mj=parseInt(navigator.appVersion);if(ot_mj>=5){if(ot_d.referrer.indexOf(ot_r.location.hostname)==-1)ot_r=ot_d;}else{ot_r=document;}
 if(ot_c.cookie.indexOf('machine-id')!=-1)ot_ac=true;else{
- if(ot_c.cookie.indexOf('machine-id')==-1) f_sc("machine-id","64.147.188.8:1352984970128",ot_cd,"/");
+ if(ot_c.cookie.indexOf('machine-id')==-1) f_sc("machine-id","64.147.188.8:1353503384387",ot_cd,"/");
  if(ot_c.cookie.indexOf('machine-id')!=-1)ot_ac=true;
 }
-ot_rc=f_rc("machine-id");ot_lc=escape((typeof ot_url===ot_un)?ot_d.location:ot_url);ot_t0=1352984970128;
+ot_rc=f_rc("machine-id");ot_lc=escape((typeof ot_url===ot_un)?ot_d.location:ot_url);ot_t0=1353503384387;
 
 function f_log() {
 

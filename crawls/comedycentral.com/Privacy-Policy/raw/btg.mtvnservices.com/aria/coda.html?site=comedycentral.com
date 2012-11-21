@@ -4,6 +4,46 @@
 	
 
 
+		
+   
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+   
+
+     
+
+
+//Device detection 
+(function(){
+	var _h = location.hostname;
+	var _d = /^www./.test(_h) ? _h.substring(4) : _h;
+	if(document.cookie.indexOf("btg_device=") == -1){
+		document.cookie = "btg_device="
+			+ "m:" + (+false)
+			+ ",t:" + (+false)
+			+ ";path=/; expires=" + (new Date("December 31, 2038")).toUTCString() 
+			+ ";domain=" + _h;
+	}
+})();
+
+
 
 
 

@@ -594,7 +594,9 @@ function userInfoOnHover(jqueryObj) {
 function camHover() {
     $("img.campic").hover(
         function(e) {
-            $("#snapshot_switcher").css('left', $(this).offset().left+120).css('top', $(this).offset().top).attr('model', $(this).attr('model')).show();
+            if ($(this).hasClass('mini')) var plus_left=80;
+            else var plus_left=120;
+            $("#snapshot_switcher").css('left', $(this).offset().left+plus_left).css('top', $(this).offset().top).attr('model', $(this).attr('model')).show();
         },
         function(e) {
             $("#snapshot_switcher").hide();

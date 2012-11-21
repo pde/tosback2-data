@@ -8,12 +8,20 @@ var s_account="sheplersdev"
 	{
 		s_account='sheplersprod';
 	}
+	else if(document.URL.indexOf('fry.com/mobile/')>-1)
+	{
+		s_account='sheplersmobileev';
+	}
 	else if(document.URL.indexOf('shp-stg.ms.fry.com')>-1)
 	{
 		s_account='sheplersstaging';
 	}
+	else if(document.URL.indexOf('m.sheplers.com')>-1)
+	{
+		s_account='sheplersmobileprod';
+	}
 	var s=s_gi(s_account)
- 
+
 /************************** CONFIG SECTION **************************/
 /* You may add or alter any code config here. */
 /* Link Tracking Config */
@@ -86,7 +94,7 @@ function s_doPlugins(s)
 	if(s.visitstart&&s.visitstart==1)
 		s.firstPage='firstpage';
 	s.clickPast(s.firstPage,'event4','event5');
-	
+
 	/* manageQueryParam for SearchCenter */
 	s.pageURL=s.manageQueryParam('s_kwcid',1,1);
 
@@ -99,7 +107,7 @@ function s_doPlugins(s)
 	if(!s.campaign)
 		s.campaign=s.getQueryParam('cid,source');
 	s.campaign=s.getValOnce(s.campaign,'s_campaign',0);
-	
+
 	// Silverpop Integration
 	s.eVar18=s.getQueryParam('sp_rid');
 	s.eVar19=s.getQueryParam('sp_mid');
@@ -190,7 +198,7 @@ function s_doPlugins(s)
 				break;
 			default:
 				s.eVar22=s._campaignID!='n/a'?s._channel+': '+s._campaignID:s._channel+': '+s._referringDomain;
-				s.eVar26=s.eVar22;				
+				s.eVar26=s.eVar22;
 		}
 		s.eVar23=s.crossVisitParticipation(s.eVar21,'s_ev21','90','5',' > ','',1);
 		s.eVar24=s.crossVisitParticipation(s.eVar22,'s_ev22','90','5',' > ','',1);
@@ -232,7 +240,7 @@ function s_doPlugins(s)
 		s.eVar7='D=v4';
 		s.eVar8='non-cross sell';
 		s.eVar9='D=v8';
-	}	
+	}
 	else if(s.eVar2&&s.eVar2!='non-search')
 	{
 		s.eVar1='internal keyword search';
@@ -317,10 +325,10 @@ function s_doPlugins(s)
 	}
 	if(s.c_r('productnum')&&s.events.indexOf('purchase')>-1)
 		s.c_w('productnum','0',0);
-	
+
 	//time parting (central time)
 	s.eVar16=s.getTimeParting('d','-6') + ' - ' + s.getTimeParting('h','-6');
-	
+
 	//For Site-wide Metrics
 	s.eVar27='Site-wide Metrics';
 
@@ -333,23 +341,23 @@ function s_doPlugins(s)
 
 	//Setup Clickmap Object IDs
 	s.setupDynamicObjectIDs();
-	
+
 	if(!s.eVar30){
 	s.eVar30=s.getQueryParam('promoCode');
 	s.eVar30=s.getValOnce(s.eVar30,'s_ev30',0);
-	}	
+	}
 
-	
+
 	if(!s.prop10){
 	s.prop10=window.location.href
 	}
 
-	
+
 	if(!s.prop11){
 	s.prop11=readCookie("PIPELINE_SESSION_ID");
 	s.prop11=s.getValOnce(s.prop11,'s_prop11',0);
 	}
-	
+
 	//Get rid of browser plugins.  Not used in SC15/not needed
 	s.plugins='';
 }
@@ -363,7 +371,7 @@ s.doPlugins=s_doPlugins;
  * when a recommended item is clicked
  */
 function s_crossSell()
-{ 
+{
 	s.linkTrackVars='eVar8,eVar9,events,products';
 	s.eVar8=s.pageName;
 	s.eVar9=s.products?s.products.substring(1):'non-product cross-sell click';
@@ -371,8 +379,8 @@ function s_crossSell()
 }
 
 /*
- * Plugin: manageQueryParam v1.2 - correct parameters in query string  
- */ 
+ * Plugin: manageQueryParam v1.2 - correct parameters in query string
+ */
 s.manageQueryParam=new Function("p","w","e","u",""
 +"var s=this,x,y,i,qs,qp,qv,f,b;u=u?u:(s.pageURL?s.pageURL:''+s.wd.lo"
 +"cation);u=u=='f'?''+s.gtfs().location:u+'';x=u.indexOf('?');qs=x>-1"
@@ -649,7 +657,7 @@ s.channelManager=new Function("a","b","c","d","e","f",""
 +"}X=P+l+t;c=c?c:'c_m';if(c!='0')X=s.getValOnce(X,c,0);if(X){s._refer"
 +"rer=p?p:'n/a';s._referringDomain=t?t:'n/a';s._partner=N?N:'n/a';s._"
 +"campaignID=O?O:'n/a';s._campaign=u?u:'n/a';s._keywords=l?l:N?'Keywo"
-+"rd Unavailable':'n/a';s._channel=P?P:'n/a';}"); 
++"rd Unavailable':'n/a';s._channel=P?P:'n/a';}");
 
 /* Top 130 - Grouped */
 s.seList="altavista.co,altavista.de|q,r|AltaVista>.aol.,suche.aolsvc"

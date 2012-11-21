@@ -1,4 +1,5 @@
 // JavaScript Document
+//second test for cache  [kd] 11/16/2012//
 //alert(document.documentMode + ' | ' + document.compatMode);
 
 jQuery(document).ready(function() {

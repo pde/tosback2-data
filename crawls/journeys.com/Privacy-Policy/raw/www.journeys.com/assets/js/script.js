@@ -509,6 +509,9 @@ JY = {
                 $('ul#check-size-list a').removeClass('chosen');
                 $(this).addClass('chosen');
             });
+            if ( $('ul#size-list li').length == 1 ){
+                $('ul#size-list li:first').find('a').click();
+            }
             $('a#btn-check-store').click(function(e) {
                 e.preventDefault();
                 var sku = $('ul#check-size-list').find('a.chosen').data('size');
@@ -628,6 +631,9 @@ JY = {
                 $('ul#size-list a').removeClass('chosen');
                 link.addClass('chosen');
             });
+            if ( $('ul#size-list li').length == 1 ){
+                $('ul#size-list li:first').find('a').click();
+            }
             if (JY.screenWidth < 768) {
                 $('a#lnk-zoom').hide();
                 $('div#description-wrap').insertAfter($('a#lnk-zoom'));

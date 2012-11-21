@@ -5,7 +5,19 @@
 //  Change Log
 //  DATE           WHO                CHANGE
 //---------------------------------------------------------------------
+//  2012-11-01     Joe Heasly	      allow 'rs' as valid domain extension
+//---------------------------------------------------------------------
+//  2012-07-09     Joe Heasly	      restored use of build-in alert(), which had been lost in merges
+//                                    restored trailing comma at end of domain_types string
+//
+//---------------------------------------------------------------------
+//  2012-06-18     JCherbonneau       Allowed att.com as vaild domain
+//          
+//---------------------------------------------------------------------
 //  2012-03-14     JCherbonneau       Allowed "." for AOL & MSN in name of email
+//          
+//---------------------------------------------------------------------
+//  2012-03-09     Mario Rodriguez    removed domain validations
 //          
 //---------------------------------------------------------------------
 //  2011-12-07     Joe Heasly         added edits for common domain typos
@@ -123,27 +135,18 @@ var emedt_msg_010 = "The email address you entered is invalid.\n\nPlease reenter
 var emedt_msg_011 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Invalid Role Based Local Portions
 var emedt_msg_012 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Obsolete Domains Check
 var emedt_msg_013 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Invalid Domain Check
-var emedt_msg_014 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Yahoo domain related checks
-var emedt_msg_015 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Hotmail domain related checks
-var emedt_msg_016 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  AOL domain related checks
-var emedt_msg_017 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Domain Typos Check
+var emedt_msg_014 = "The email address you entered is invalid.\n\nPlease reenter your email address. Example: name@llbean.com";		//  Domain Typos Check
 //EndExternalization
 
 // valid_domains, obsolete_domains and domain_typos use exact match. So we need to start and end the keyword with comma(,). which will be the delimiter
-var valid_domains = ",aero,arpa,biz,com,coop,edu,gov,info,int,usa,mil,mobi,museum,name,net,org,pro,ac,ad,ae,af,ag,ai,al,am,an,ao,aq,ar,as,at,au,ax,aw,az,ba,bb,bd,be,bf,bg,bh,bi,bj,bm,bn,bo,br,bs,bt,bv,bw,by,bz,ca,cc,cd,cf,cg,ch,ci,ck,cl,cm,cn,co,cr,cs,cu,cv,cx,cy,cz,de,dj,dk,dm,do,dz,ec,ee,eg,eh,er,es,et,eu,fi,fj,fk,fm,fo,fr,ga,gb,gd,ge,gf,gg,gh,gi,gl,gm,gn,gp,gq,gr,gs,gt,gu,gw,gy,hk,hm,hn,hr,ht,hu,id,ie,il,im,in,io,iq,ir,is,it,je,jm,jo,jobs,jp,ke,kg,kh,ki,km,kn,kp,kr,kw,ky,kz,la,lb,lc,li,lk,lr,ls,lt,lu,lv,ly,ma,mc,md,me,mg,mh,mk,ml,mm,mn,mo,mp,mq,mr,ms,mt,mu,mv,mw,mx,my,mz,na,nc,ne,nf,ng,ni,nl,no,np,nr,nu,nz,om,pa,pe,pf,pg,ph,pk,pl,pm,pn,pr,ps,pt,pw,py,qa,re,ro,ru,rw,sa,sb,sc,sd,se,sg,sh,si,sj,sk,sl,sm,sn,so,sr,st,su,sv,sy,sz,tc,td,tf,tg,th,tj,tk,tl,tm,tn,to,tp,tr,travel,tt,tv,tw,tz,ua,ug,uk,um,us,uy,uz,va,vc,ve,vg,vi,vn,vu,wf,ws,ye,yt,yu,za,zm,zw,";
+var valid_domains = ",aero,arpa,biz,com,coop,edu,gov,info,int,usa,mil,mobi,museum,name,net,org,pro,ac,ad,ae,af,ag,ai,al,am,an,ao,aq,ar,as,at,au,ax,aw,az,ba,bb,bd,be,bf,bg,bh,bi,bj,bm,bn,bo,br,bs,bt,bv,bw,by,bz,ca,cc,cd,cf,cg,ch,ci,ck,cl,cm,cn,co,cr,cs,cu,cv,cx,cy,cz,de,dj,dk,dm,do,dz,ec,ee,eg,eh,er,es,et,eu,fi,fj,fk,fm,fo,fr,ga,gb,gd,ge,gf,gg,gh,gi,gl,gm,gn,gp,gq,gr,gs,gt,gu,gw,gy,hk,hm,hn,hr,ht,hu,id,ie,il,im,in,io,iq,ir,is,it,je,jm,jo,jobs,jp,ke,kg,kh,ki,km,kn,kp,kr,kw,ky,kz,la,lb,lc,li,lk,lr,ls,lt,lu,lv,ly,ma,mc,md,me,mg,mh,mk,ml,mm,mn,mo,mp,mq,mr,ms,mt,mu,mv,mw,mx,my,mz,na,nc,ne,nf,ng,ni,nl,no,np,nr,nu,nz,om,pa,pe,pf,pg,ph,pk,pl,pm,pn,pr,ps,pt,pw,py,qa,re,ro,rs,ru,rw,sa,sb,sc,sd,se,sg,sh,si,sj,sk,sl,sm,sn,so,sr,st,su,sv,sy,sz,tc,td,tf,tg,th,tj,tk,tl,tm,tn,to,tp,tr,travel,tt,tv,tw,tz,ua,ug,uk,um,us,uy,uz,va,vc,ve,vg,vi,vn,vu,wf,ws,ye,yt,yu,za,zm,zw,";
 var obsolete_domains = ",home.com,altavista.net,ivillage.net,";
-var domain_typos = ",verison.net,yaho.com,hotmial.com,hotmail.co,yahoo.co,concast.net,aol.co,gmial.com,msm.com,gmail.co,ayhoo.com,oal.com,att.com,";
+var domain_typos = ",verison.net,yaho.com,hotmial.com,hotmail.co,yahoo.co,concast.net,aol.co,gmial.com,msm.com,gmail.co,ayhoo.com,oal.com";
 
 // invalid_roles checks for the keyword any where in the email local address. So we dont' need to start and end the keyword with comma(,). which will be the delimiter
 var invalid_roles = "abuse,postmaster,alerts,blacklist,blackhole,mailer-daemon,nospam,privacy,security,spam,spamtrap,webmaster";
 
-//R29: added the theEmailId parameter for email1 and email2 error handling scenerios in shipping,billing pages
-
-
-function editEmail (theEmailAddr,theEmailAddrFieldName,isRequired,debug,isAlert,theEmailId) {
-
-//R29: Replaced alert() function with customAlert() function for email error handling in shipping and billing pages
-
+function editEmail(theEmailAddr,theEmailAddrFieldName,isRequired,debug,isAlert) {
 
 // lower case the e-mail address.  there are no rules for case sensitivity.
 theEmailAddr=theEmailAddr.toLowerCase();
@@ -175,7 +178,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   if (theEmailAddr.length < 1)  {
           if (isRequired == 1)  {
                   if (isAlert == 1) 
-                  	{ customAlert(emedt_msg_001,theEmailId); }
+                  	{ alert(emedt_msg_001); }
                   return false;
       }
           return true;
@@ -194,7 +197,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (theEmailAddr.length < 6) {
     if (isAlert == 1) 
-    	{ customAlert(emedt_msg_002,theEmailId); }
+    	{ alert(emedt_msg_002); }
     return false;
   }
   
@@ -203,7 +206,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if ( theEmailAddr.length > 70 ) {
    if (isAlert == 1)  
-   	{ customAlert(emedt_msg_003,theEmailId); }
+   	{ alert(emedt_msg_003); }
     return false;
   }
 
@@ -219,12 +222,12 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   }
   if ( atCounter == 0 ) {
     if (isAlert == 1) 
-    	{ customAlert(emedt_msg_002,theEmailId); }
+    	{ alert(emedt_msg_002); }
     return false;
   }
   if ( atCounter > 1 ) {
     if (isAlert == 1) 
-    	{ customAlert(emedt_msg_002,theEmailId); }
+    	{ alert(emedt_msg_002); }
     return false;
   }
 
@@ -234,14 +237,14 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   if (  (theEmailAddr.charAt(theEmailAddr.length - 1 ) == ".") 
      || (theEmailAddr.charAt(0) == ".") ) {
       if (isAlert == 1) 
-      	{ customAlert(emedt_msg_005,theEmailId); }
+      	{ alert(emedt_msg_005); }
       return false;
   }   
      
   if (  (theEmailAddr.charAt(theEmailAddr.length - 1 ) == "@")
      ||   (theEmailAddr.charAt(0) == "@")                     ) {
       if (isAlert == 1) 
-      	{ customAlert(emedt_msg_005,theEmailId);  }
+      	{ alert(emedt_msg_005);  }
       return false;
   }
   
@@ -251,7 +254,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if ( theEmailAddr.indexOf(",") > -1 ) {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_006,theEmailId); }
+   	{ alert(emedt_msg_006); }
     return false;
   }
 
@@ -326,11 +329,11 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
     } else if 
        ( invalidCh.length == 1 ) {
    if (isAlert == 1)  
-   	{ customAlert(emedt_msg_007,theEmailId); }
+   	{ alert(emedt_msg_007); }
     return false;
     } else {
    if (isAlert == 1)  
-   	{ customAlert(emedt_msg_007,theEmailId); }
+   	{ alert(emedt_msg_007); }
     return false;
     }
 
@@ -342,7 +345,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   dbltrouble = (dbltrouble == '..');
   if (dbltrouble) {
     if (isAlert == 1) 
-    	{ customAlert(emedt_msg_002,theEmailId); }
+    	{ alert(emedt_msg_002); }
     return false;
   }
 
@@ -356,7 +359,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
 
   if(cur_domain.length < 4)	// Checks whether the length is greater than 4 characters
   {
-     if (isAlert == 1) { customAlert(emedt_msg_008,theEmailId); }
+     if (isAlert == 1) { alert(emedt_msg_008); }
      return false;
   }
 
@@ -365,7 +368,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (theEmailAddr.indexOf(".@") > -1) {
    if (isAlert == 1)  
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -375,7 +378,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (theEmailAddr.indexOf("@-") > -1) {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -384,7 +387,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (theEmailAddr.indexOf("@_") > -1) {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -393,7 +396,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (theEmailAddr.indexOf(".-") > -1) {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -402,7 +405,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   //----------------------------------------------
   if (addrdomain.indexOf("._") > -1) {  	
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -413,7 +416,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   if ( (theEmailAddr.indexOf(" ") < theEmailAddr.length)
      && (theEmailAddr.indexOf(" ") >= 0)) {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_010,theEmailId); }
+   	{ alert(emedt_msg_010); }
     return false;
   }
 
@@ -424,12 +427,12 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   if ( debug == 1 ) 
   {
      if (isAlert == 1) 
-     	{ customAlert (emedt_msg_004+domain,theEmailId ); }
+     	{ alert (emedt_msg_004+domain ); }
   }
   if (domain.indexOf(".") < 1 ) 
   {
    if (isAlert == 1) 
-   	{ customAlert(emedt_msg_009,theEmailId); }
+   	{ alert(emedt_msg_009); }
     return false;
   }
 
@@ -445,7 +448,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
   {
 	if(local_addr == invalidrole[i])
 	{
-	    if (isAlert == 1) { customAlert(emedt_msg_011,theEmailId); }
+	    if (isAlert == 1) { alert(emedt_msg_011); }
 	    return false;
 	}
    }
@@ -458,7 +461,7 @@ var local_addr = theEmailAddr.substr(0,theEmailAddr.indexOf("@"));
 if ( obsolete_domains.match(","+cur_domain+",") != null)
 {
    	if (isAlert == 1) 
-   		{ customAlert(emedt_msg_012,theEmailId); }
+   		{ alert(emedt_msg_012); }
 	return false;
 }
 
@@ -470,7 +473,7 @@ if ( obsolete_domains.match(","+cur_domain+",") != null)
 if ( domain_typos.match(","+cur_domain+",") != null)
 {
    	if (isAlert == 1) 
-   		{ customAlert(emedt_msg_017,theEmailId); }
+   		{ alert(emedt_msg_014); }
 	return false;
 }
 
@@ -507,7 +510,7 @@ while((i=temp.indexOf(".") ) >=0 ) // checks every domain
 
  if(valid_domains.match(","+dom+",") == null || valid_domains.match(","+dom+",") == "")
  {
-   if (isAlert == 1) { customAlert(emedt_msg_013,theEmailId); }
+   if (isAlert == 1) { alert(emedt_msg_013); }
    return false;
  }
 
@@ -521,7 +524,7 @@ function optinCheck(formname)
   {
     if (formname.saemail_optin_flg.checked && formname.saemail1.value== "" )
     {
-               customAlert(emedt_msg_001,theEmailId);
+               alert(emedt_msg_001);
                return false;
      }
     return true;

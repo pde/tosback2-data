@@ -555,6 +555,7 @@ var tooltip = {
 	'isFF' : platform.browser == 'firefox' || false,*/
 	'isIE6' : '',
 	'isIE' : '',
+	'isIE7' : '',
 	'isFF' : '',
 	'isOpening' : false,
 	'isOpen' : false,
@@ -566,6 +567,7 @@ var tooltip = {
 	init : function (o){
 		if (!tooltip.platforms) {
 			tooltip.isIE6 = (platform.browser == 'msie' && platform.version < 7) || false;
+			tooltip.isIE7 = (platform.browser == 'msie' && platform.version < 8 && (document.documentMode < 8 || typeof(document.documentMode) == 'undefined') ) || false;
 			tooltip.isIE = platform.browser == 'msie' || false;
 			tooltip.isFF = platform.browser == 'firefox' || false;
 			tooltip.platforms = true;
@@ -658,9 +660,17 @@ var tooltip = {
 				if (tooltip.isFF) {
 					ttArr.style.top = (element.findY(ttDiv) - 6) + 'px';
 				} else {
-					ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+					if (tooltip.isIE7) {
+						ttArr.style.top = (element.findY(ttDiv) - 20) + 'px';
+					} else {
+						ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+					}
 				}
-				ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+				if (tooltip.isIE7) {
+					ttArrB.style.top = (element.findY(ttDiv) - 22) + 'px';
+				} else {
+					ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+				}
 			} else {
 				ttDiv.style.top = (element.findY(tooltip.element) - element.fullHeight(ttDiv) - 12) + 'px';
 				if (tooltip.isFF) {
@@ -683,9 +693,17 @@ var tooltip = {
 				if (tooltip.isFF) {
 					ttArr.style.top = (element.findY(ttDiv) - 6) + 'px';
 				} else {
-					ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+					if (tooltip.isIE7) {
+						ttArr.style.top = (element.findY(ttDiv) - 20) + 'px';
+					} else {
+						ttArr.style.top = (element.findY(ttDiv) - 5) + 'px';
+					}
 				}
-				ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+				if (tooltip.isIE7) {
+					ttArrB.style.top = (element.findY(ttDiv) - 22) + 'px';
+				} else {
+					ttArrB.style.top = (element.findY(ttDiv) - 7) + 'px';
+				}
 			} else {
 				ttDiv.style.top = (element.findY(tooltip.element) - element.fullHeight(ttDiv) - 12) + 'px';
 				if (tooltip.isFF) {

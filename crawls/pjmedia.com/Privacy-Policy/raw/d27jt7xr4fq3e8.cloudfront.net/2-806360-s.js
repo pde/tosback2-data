@@ -79,7 +79,7 @@
 
 		if( ! whence_i_came){return [-15,'no guess at top domain']}
 
-		if(/(^|\.)(bing|google|yahoo)(\.|$)/i.test(whence_i_came)){return [-17,'blacklisted domain '+whence_i_came]}
+		if(/(^|\.)(bing|google|yahoo|autoscout24)(\.|$)/i.test(whence_i_came)){return [-17,'blacklisted domain '+whence_i_came]}
 
 		var strategy,all_strategies=['sk','mm'];
 		if( ! learned[whence_i_came] || ! learned[whence_i_came]['preferred']){

@@ -1151,7 +1151,7 @@ function onAdvSearchClick(keywordsWatermark, requiredLabelId, requiredErrorMessa
         alert(requiredErrorMessage);
     }
     else {
-        ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + jQuery("[id$=KeywordsTextBox]").val().toLowerCase());
+        ApplyUnicaEventTag('ev=search_BT&sitekeyword=' + jQuery("[id$=KeywordsTextBox]").val().toLowerCase() + '&ActionType=Search');
         var facetval = searchFactesFilter.getFacetFilterValues();
         var rsltUrl = jQuery("[id$=AdvSearchRsltPageHiddenField]").val() + "?term=" + jQuery("[id$=KeywordsTextBox]").val();
         rsltUrl += "&st=7&ads=1";
@@ -1572,7 +1572,7 @@ var Pagination = {
         });
 
         jQuery("#ResultsPerPage").live("change", function () {
-            alert("DropDown Change");
+            //alert("DropDown Change");
             count = 0;
             resultEngine.maxResults = jQuery(this).val();
             resultEngine.pageIndex = 1;

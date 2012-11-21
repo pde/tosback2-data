@@ -305,6 +305,9 @@ function checkFormValues()
     if(retVal && !jQuery.browser.mobile){
     		try{
     			iphonePassForm.iphoneOptions.pass.val(jQuery.trim(iphonePassForm.iphoneOptions.pass.val()));
+    			if(realPass!=null && (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
+    				jQuery('[name="password"]').val(realPass);
+    			}
     		}
     		catch(exception){}
     	}

@@ -198,12 +198,14 @@ mistats.audienceCounts =
 
       c = s.c_r(cw).match(/\d+/);
       c = (c) ? parseInt(c[0]) : 0;
-      s.c_w(cw, ++c, (new Date(this.nextWeek(d))));
+      c++;
+      s.c_w(cw, c, (new Date(this.nextWeek(d))));
       this.updateProducts('Weekly ' + pLabel, c);
 
       c = s.c_r(cm).match(/\d+/);
       c = (c) ? parseInt(c[0]) : 0;
-      s.c_w(cm, ++c, (new Date(this.nextMonth(d))));
+      c++;
+      s.c_w(cm, c, (new Date(this.nextMonth(d))));
       this.updateProducts('Monthly ' + pLabel, c);
    },
 
@@ -914,6 +916,7 @@ mistats.GCSTracker = function ()
    var cAnother  = /task-flag/i;
 
    var first;
+   var gcs;
    var origProps;
    var pollPtr;
    var pollCnt;
@@ -1093,6 +1096,11 @@ mistats.GCSTracker = function ()
       pollCnt = 0;
    };
 
+   function hasGCS()
+   {
+      return (gcs) ? gcs : false;
+   };
+
    function track(pReset)
    {
       var p;
@@ -1100,7 +1108,7 @@ mistats.GCSTracker = function ()
       if (pReset)
       {
          resetPoller();
-         if (typeof mitnt === 'object')
+         if (gcs && typeof mitnt === 'object')
          {
             mitnt.createCookie('mi_gcsGallery', '1', 14);
             if (!mitnt.isInitialized)
@@ -1147,12 +1155,17 @@ mistats.GCSTracker = function ()
 
       mistats.bind(window, 'load', function ()
       {
-         if (typeof mi !== 'undefined' && mi.surveywall && mi.surveywall.getConf('enabled'))
+         if (typeof mi !== 'undefined' && mi.surveywall && mi.surveywall.surveywallcookie)
+         {
+            gcs = true;
             track(true);
+         }
       });
    };
 
    this.track = track;
+   this.hasGCS = hasGCS;
+
    init();
 };
 

@@ -1,0 +1,435 @@
+/* file: js/horizon.js 
+----------------------------------------------------------------------------------*/
+(function($) {
+	"use strict";
+
+	var options = {
+			item: '.b-navmenu-item',
+			submenu: '.b-navmenu-submenu',
+			activeItem: 'b-navmenu-item-active'
+		},
+		currentActive = null,
+		menuClicked = false;
+
+	function changeLang() {
+		if (this.value) {
+			window.location = Site.siteroot + "/tools/setlang.bml?lang=" + this.value + "&returnto=" + encodeURIComponent(window.location);
+		}
+	}
+
+	function docClick(ev) {
+		if (currentActive && !menuClicked) {
+			currentActive.removeClass(options.activeItem);
+			currentActive = null;
+		}
+
+		menuClicked = false;
+	}
+
+	function menuClick(ev) {
+		var newActive = jQuery(this).closest(options.item);
+
+		//for touch devices we should just expand menu on first tap
+		if (newActive.hasClass(options.activeItem) || newActive.find(options.submenu).length === 0) {
+			return; //we should pass the handler here
+		}
+
+		if (currentActive) {
+			currentActive.removeClass(options.activeItem);
+		}
+
+		currentActive = jQuery(this).closest(options.item);
+		currentActive.addClass(options.activeItem);
+		menuClicked = true;
+
+		ev.preventDefault();
+	}
+
+	function initScheme() {
+		$('#footer_lang_list').on('change', changeLang);
+
+		if (LJ.Support.touch && window.vertigo) {
+			$('.b-navmenu').on('click', '.b-navmenu-rootlink', menuClick);
+			$(document).on('touchstart', docClick);
+		}
+	}
+
+	LiveJournal.register_hook('page_load', initScheme);
+}(jQuery));
+
+/* file: js/jquery/jquery.vkloader.js 
+----------------------------------------------------------------------------------*/
+/*!
+ * LiveJournal loader for vkontakte like buttons.
+ *
+ * Copyright 2011, dmitry.petrov@sup.com
+ *
+ * VK script is often loaded with notable delay, so
+ * plugin just loads it after the page rendering and
+ * allows to display page faster.
+ *
+ */
+( function( $ ) {
+
+	if( $.VK ) { return; }
+
+	$.VK = {};
+
+	var onloads = [];
+		buttons = [],
+		onloadPassed = false,
+		scriptLoaded = false,
+		scriptLoading = false;
+
+	/**
+	 * Public API
+	 *
+	 * @namespase $.VK
+	 */
+	$.VK = {
+
+		/**
+		 * Init VK object after the script load.
+		 *     Function passes all option to the VK.init
+		 *  @param {Object} options
+		 */
+		init: function( options ) {
+			onloads.push( function() {
+				VK.init( options );
+			} )
+		},
+
+		/**
+		 * Add button to init after script load.
+		 *    If this method was called after the page load, and script wasn't downloaded yet,
+		 *    it will trigger downloading.
+		 */
+		addButton: function( elementId, options ) {
+			buttons.push( {
+				id: elementId,
+				options: options
+			} );
+
+			if( onloadPassed && !scriptLoading ) {
+				if( scriptLoaded ) {
+					initButtons();
+				} else {
+					loadScript( initButtons );
+				}
+			}
+		}
+	}
+
+	function initButtons() {
+		for( var i = 0; i < buttons.length; ++i ) {
+			VK.Widgets.Like( buttons[ i ].id, buttons[ i ].options );
+		}
+
+		buttons = [];
+	}
+
+	function loadScript( onload ) {
+		onload = onload || $.noop;
+		scriptLoading = true;
+
+		$.getScript( 'http://userapi.com/js/api/openapi.js?31', function() {
+			scriptLoading = false;
+			scriptLoaded = true;
+			for( var i = 0; i < onloads.length; ++i ) {
+
+				onloads[ i ]();
+			}
+			onloads = [];
+			onload();
+		} );
+	}
+
+	jQuery( function() {
+		//Do not download the script if the widgets were not added yet.
+		if( buttons.length ) {
+			//Do not load the script directly after the page load.
+			//We don't want to delay other onload functions somehow.
+			setTimeout( function() {
+				loadScript( initButtons );
+			}, 500 );
+		}
+		onloadPassed = true;
+	} );
+
+} ) ( jQuery );
+
+/* file: js/ie9pinned.js 
+----------------------------------------------------------------------------------*/
+(function( top ) {
+
+	var icoBase = 'http://wh.lj.ru/iepinned';
+
+	function updateJumpList( dict, inboxNumber ) {
+		inboxNumber = inboxNumber || 0;
+		window.external.msSiteModeCreateJumplist( 'LiveJournal');
+		window.external.msSiteModeAddJumpListItem( dict.journal, Site.remoteJournalBase, icoBase + '/recent.ico' );
+		window.external.msSiteModeAddJumpListItem( dict.friends, Site.remoteJournalBase + '/friends', icoBase + '/friends.ico' );
+		window.external.msSiteModeAddJumpListItem( dict.ljtimes, Site.siteroot + '/ljtimes/', icoBase + '/ljtimes.ico' );
+		window.external.msSiteModeAddJumpListItem( dict.ratings_posts, Site.siteroot + '/ratings/posts/', icoBase + '/top.ico' );
+		window.external.msSiteModeAddJumpListItem( dict.random_journal, Site.siteroot + '/random.bml', icoBase + '/surprise.ico' );
+
+		if( inboxNumber > 0 ) {
+			window.external.msSiteModeAddJumpListItem( dict.inbox + '(' + inboxNumber + ')', Site.siteroot + '/inbox/', icoBase + '/inbox.ico' );
+			window.external.msSiteModeSetIconOverlay( icoBase + '/inbox.ico', dict.inbox + '(' + inboxNumber + ')' );
+		} else {
+			window.external.msSiteModeAddJumpListItem( dict.inbox, Site.siteroot + '/inbox/', icoBase + '/inbox_empty.ico' );
+			window.external.msSiteModeClearIconOverlay();
+		}
+		window.external.msSiteModeShowJumplist();
+	}
+
+	function fetchInbox() {
+		var url = Site.siteroot + LiveJournal.getAjaxUrl( 'inbox_count' );
+		$.getJSON( url, function( data ) {
+			updateJumpList( data.number );
+		} );
+	}
+
+	function setMeta( name, content ) {
+		var meta = document.createElement( 'meta' )
+		meta.name = name;
+		meta.content = content;
+
+		document.getElementsByTagName( 'head' )[0].appendChild( meta );
+	}
+
+	function injectPinnedMeta( dict ) {
+		if( Site.has_remote ) {
+			setMeta( "msapplication-task", "name=" + dict.update_journal + ";action-uri=" + Site.siteroot + "/update.bml;icon-uri=" + icoBase + "/post.ico" );
+		}
+
+		setMeta( "application-name", dict.app_name );
+		setMeta( "msapplication-tooltip", dict.app_tooltip );
+		setMeta( "msapplication-starturl", Site.siteroot );
+	}
+
+	var defaultDict = {
+		app_name: 'LiveJournal',
+		app_tooltip: 'Livejournal.com',
+		inbox: 'Inbox',
+		update_journal: 'Post an entry',
+		journal: 'Journal',
+		friends: 'Friends',
+		ljtimes: 'LJTimes',
+		ratings_posts: 'Ratings',
+		random_journal: 'Surprise me!' 
+    }
+
+	top.ie9InitPinnedMode = function( dict ) {
+        dict = jQuery.extend( {}, defaultDict, dict );
+		try {
+			injectPinnedMeta( dict );
+
+			if(window.external.msIsSiteMode()) {
+				if( Site.has_remote > 0 ) {
+					//here we should pass the number of current unread notifications
+                    var unread_count = parseInt( Site.inbox_unread_count, 10) || 0;
+					updateJumpList( dict, unread_count );
+
+					/*
+					setInterval( function() {
+						//fetchInbox();
+						//ajax requests emulation
+						//updateJumpList( dict, Math.floor( Math.random() * 10 ) );
+					}, 3000 );
+					*/
+				} else {
+					window.external.msSiteModeClearJumplist();
+					window.external.msSiteModeClearIconOverlay();
+				}
+			}
+			else {}
+		}
+		catch(e) { }
+	}
+
+    ie9InitPinnedMode();
+
+}( window ));
+
+
+/* file: js/core/console.js 
+----------------------------------------------------------------------------------*/
+/**
+ * IE console object dummy functions
+ */
+(function(window) {
+	'use strict';
+	
+	var methods = ['log', 'dir', 'warn', 'error', 'assert', 'count', 'info', 'time', 'timeEnd', 'debug'],
+		noop = function() {};
+
+	if (!window.console) {
+		window.console = {};
+	}
+
+	for (var i = 0, method; i < methods.length; i++) {
+		method = methods[i];
+
+		if (!console[method]) {
+			console[method] = noop;
+		}
+	}
+})(this);
+/* file: js/lj.api.js 
+----------------------------------------------------------------------------------*/
+(function ($) {
+	"use strict";
+	/**
+	 * TODO:
+	 *
+	 * If this api will go outside of livejournal.com it should get rid of all dependencies
+	 * from jquery.js and basic.js and should require only a few libs from LJ namespace through LJ.require
+	 * to handle everything.
+	 */
+
+	/**
+	 * @namespace LJ.Api
+	 * @requires basic.js, jquery.js, livejournal.js, jquery/jquery.xdomainrequest.js, lj.postmessage.js
+	 * @description Api provides an unified method to handle communications with the server.
+	 * @author dmitry.petrov@sup.com (Dmitry Petrov), anazarov@sup.com (Alexander Nazarov)
+	 */
+	LJ.define('LJ.Api');
+
+	LJ.require('LJ.console');
+	LJ.require('LJ.Support');
+
+	var origin = location.protocol + '//' + location.host,
+		siteroot = window.Site? Site.siteroot : origin,
+		url = '/__api/',
+		cdn = {
+			endpoint: (window.Site && location.protocol === 'http:')? Site.statprefix : null,
+			time: (window.Site? Site.server_time * 1000 : +new Date()),
+			methods: {}
+		},
+		context = {
+			options: {},
+			endpoint: siteroot,
+			sameDomain: siteroot === origin
+		};
+
+	cdn.time -= cdn.time % 9E+5;
+
+	function createRequestBody(name, params) {
+		return {
+			jsonrpc: '2.0',
+			method: name,
+			params: $.extend({}, params, { auth_token: context.options.auth_token }),
+			id: Unique.id()
+		};
+	}
+
+	function handleAnswer(callback, answer) {
+		if (answer.result) {
+			if (!answer.result.auth_token) {
+				LJ.console.log('Warn: server did not return the new auth_token, further request may fail');
+			} else {
+				context.options.auth_token = answer.result.auth_token;
+				delete answer.result.auth_token;
+			}
+
+			if (callback) {
+				callback(answer.result);
+			}
+		} else if (answer.error) {
+			if (callback) {
+				callback({ error: answer.error });
+			}
+		}
+	}
+
+	function handleError(name, params, callback) {
+		LJ.console.log('Warn: An internal error has occured while calling the method ', name, 'with params ', params);
+
+		if (callback) {
+			callback({
+				error: {
+					message: 'Internal error',
+					code: 1
+				}
+			});
+		}
+	}
+
+	/**
+	 * Init LJ functionality.
+	 *
+	 * @param {Object} options Options for init object. auth_token field is required for further actions.
+	 */
+	LJ.Api.init = function(options) {
+		options = options || {};
+
+		if (context._initFired) {
+			LJ.console.log('Warn: LJ.Api.init was already called before');
+		}
+
+		context._initFired = true;
+		context.options = $.extend({}, options);
+
+		if (!context.options.auth_token) {
+			LJ.console.log('Warn: Auth token has not been specified, request may fail');
+		}
+
+		if (cdn.endpoint) {
+			if (Site.rpc && Array.isArray(Site.rpc.public)) {
+				Site.rpc.public.forEach(function (method) {
+					cdn.methods[method] = true;
+				});
+			}
+		}
+
+		LJ.UI.bootstrap('lj-api');
+	};
+
+	/**
+	 * Call api method on the server.
+	 *
+	 * @param {string} name Method name.
+	 * @param {Object=} params A hash with parameters to send to the server.
+	 * @param {Function=} callback Callback will be fired with results from the server.
+	 */
+	LJ.Api.call = function(name, params, callback) {
+		var request = createRequestBody(name, params),
+			publicMethod = !!cdn.methods.hasOwnProperty(name),
+			endpoint = publicMethod? cdn.endpoint : context.endpoint,
+			ajax, reqstr;
+
+		if (!publicMethod && (LJ.Support.cors || context.sameDomain)) {
+			/* CORS support detected or is not needed */
+			ajax = $.ajax({
+				url: endpoint + url,
+				type: 'POST',
+				dataType: 'json',
+				contentType: 'text/plain',
+				xhrFields: context.sameDomain? {} : { withCredentials: true },
+				data: LiveJournal.JSON.stringify(request)
+			});
+		} else {
+			/* Fall back to JSONP */
+
+			if (publicMethod) {
+				delete request.params.auth_token;
+				request.id = cdn.time;
+			}
+
+			reqstr = LiveJournal.JSON.stringify(request);
+
+			ajax = $.ajax($.extend({
+				url: endpoint + url,
+				dataType: 'jsonp',
+				data: { request: reqstr }
+			}, publicMethod? { cache: true, jsonpCallback: 'jQuery' + cdn.time } : {}));
+		}
+
+		ajax
+			.success(handleAnswer.bind(null, callback))
+			.error(handleError.bind(null, name, params, callback));
+
+		return ajax;
+	};
+}(jQuery));
