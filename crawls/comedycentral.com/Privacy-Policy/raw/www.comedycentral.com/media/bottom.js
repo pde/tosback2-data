@@ -7322,20 +7322,31 @@ $(function() {
 });/* show_carousel.js */
 $(function() {
 	// setup ul.tabs to work as tabs for each li directly under ul.content + enabling autoplay
-	$Crabapple(".show-carousel .tabs").tabs(".show-carousel .content > li", {
-		event: 'mouseover',
+	$showCarouselTabs = $Crabapple(".show-carousel .tabs")
+	$showCarouselTabs.tabs(".show-carousel .content > li", {
+		event: "mouseover",
 		rotate: true,
-		tabs: 'li'
+		tabs: "li"
 	})
 	.slideshow({
 		autoplay: true,
 		interval: 4000,
 		clickable: false
-	});
+	})
+
+
+	$Crabapple(".show-carousel").hover(
+		function(){
+			$showCarouselTabs.data("slideshow").stop();
+		},
+		function(){
+			$showCarouselTabs.slideshow({interval: 4000}).play();
+		}
+	);
 	
 	// Workaround for Firefox "mouseover" bug for links with href - emulating "open link in new window".
 	$Crabapple(".show-carousel .tabs a").click(function() {
-		window.open($(this).children('.link').html(), '_self');
+		window.open($(this).children(".link").html(), "_self");
 	});
 });/* ccstu.js */
 /**

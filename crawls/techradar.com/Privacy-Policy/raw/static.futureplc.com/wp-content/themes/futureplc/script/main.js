@@ -1,7 +1,7 @@
 var formHasReset = false;
 var thisPageActiveTab = 0;
 var bDisableTabbedNavJs = false;
-jQuery(document).ready(function() {
+jQuery(document).ready(function($){
 
 //	jQuery("#ajaxSharePriceBox").load("/ajax/?sharePriceBox",null,function(){
 //		jQuery(this).show('slow');
@@ -40,45 +40,35 @@ jQuery(document).ready(function() {
 
 	}
 
-	/* Search box */
+    function showDefaultTabbedContent ()
+    {
 
-	jQuery("#search_query").click( function () {
+    	jQuery('.tabbedBox').each(function(e){
+    		jQuery(this).find('.tabbedNav li').removeClass('selected');
+    		jQuery(this).find('.tabbedNav li').eq(0).addClass('selected');
+    		jQuery(this).find('.tabbedContent').hide();
+    		jQuery(this).find('.tabbedContent').eq(0).show();
+    	});
 
-		if (false == formHasReset) {
-			jQuery("#search_query").val('');
-			jQuery("#search_query").removeClass('faded');
-			formHasReset = true;
-		}
+    }
 
-	});
+    function showTabbedContent (iTabId)
+    {
+        var tabClass = jQuery('.tabbedNav li').eq(iTabId).parent().attr('class');
+        if ( tabClass ) {
+        	if ('hasLinks' == tabClass.split(' ').slice(-1)) {
+        		return true;
+        	}
+        }
+
+    	jQuery('.tabbedNav li').eq(iTabId).parent().children().removeClass('selected');
+    	jQuery('.tabbedNav li').eq(iTabId).addClass('selected');
+
+    	jQuery('.tabbedNav li').eq(iTabId).parent().parent().parent().children('.tabbedContent').hide();
+    	jQuery('.tabbedContent').eq(iTabId).show();
+
+    	return false;
+
+    }
 
 });
-
-function showDefaultTabbedContent ()
-{
-
-	jQuery('.tabbedBox').each(function(e){
-		jQuery(this).find('.tabbedNav li').removeClass('selected');
-		jQuery(this).find('.tabbedNav li').eq(0).addClass('selected');
-		jQuery(this).find('.tabbedContent').hide();
-		jQuery(this).find('.tabbedContent').eq(0).show();
-	});
-
-}
-
-function showTabbedContent (iTabId)
-{
-
-	if ('hasLinks' == jQuery('.tabbedNav li').eq(iTabId).parent().attr('class').split(' ').slice(-1)) {
-		return true;
-	}
-
-	jQuery('.tabbedNav li').eq(iTabId).parent().children().removeClass('selected');
-	jQuery('.tabbedNav li').eq(iTabId).addClass('selected');
-
-	jQuery('.tabbedNav li').eq(iTabId).parent().parent().parent().children('.tabbedContent').hide();
-	jQuery('.tabbedContent').eq(iTabId).show();
-
-	return false;
-
-}

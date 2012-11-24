@@ -18,7 +18,7 @@ dojo.addOnLoad(function () {
     { id: 'FOMCFRUITS',          title: 'Fruit of the Month Club&reg;'                                     },
     { id: 'FOMCLIST',            title: 'Fruit of the Month Club&reg; Collection'                          },
     { id: 'FOREIGN',             title: 'Foreign Countries We Ship To'                                     },
-    { id: 'FOODWINE',            title: 'Terms &amp; Conditions'      		                               },
+    { id: 'FOODWINE',            title: 'Terms &amp; Conditions'                                           },
     { id: 'GC-Terms',            title: 'Gift Card Terms &amp; Conditions', name: 'GC_Terms'               },
     { id: 'GUAR',                title: 'Our Guarantee'                                                    },
     { id: 'RIPENING',            title: 'Ripening and Storage'                                             },
@@ -46,7 +46,6 @@ dojo.addOnLoad(function () {
     { id: 'THANKS',     type: 'coupon' },
     { id: 'TWENTYOFF',  type: 'coupon' },
     { id: 'WED',        type: 'coupon' },
-    { id: 'WrappingPaper',   title: 'Wrapping Paper Showcase', callback: function () { $('#dialog-WrappingPaper .widget').cyclable(); } },
     { id: 'EMAIL',           title: 'Email Sign-up',           callback: function () {
       var $email, starting;
       $email   = $('#dialog-EMAIL input:text');
@@ -68,13 +67,14 @@ $(function () {
   "use strict";
 
   var homeFeature, body, clear, nav, homeCat, top, bottom;
-  homeFeature = $('#content .homeFeature');
-  body        = $('body');
-  if (homeFeature.length !== 0) {
-    if ((body.hasClass('ie_7') || body.hasClass('ie_8'))) {
-      nav     = $('#content .homeFeature .nav');
-      homeCat = $('#content .homeCat');
 
+  homeFeature = $('#content .homeFeature');
+  if (homeFeature.length !== 0) {
+    homeCat = $('#content .homeCat');
+    nav     = $('#content .homeFeature .nav');
+
+    body    = $('body');
+    if ((body.hasClass('ie_7') || body.hasClass('ie_8'))) {
       // Remove all the comments that annoy IE
       clear   = homeCat.add(nav);
       clear.contents().filter(function (index, element) { return element.nodeType === 8; }).remove();
@@ -84,6 +84,15 @@ $(function () {
       nav.children(':first').addClass('first');
       nav.children(':last').addClass('last');
     }
+
+    // name the navigation caps
+    nav.children('a:first').addClass('first');
+    nav.children('a:last').addClass('last');
+    
+    // name the home category spots
+    homeCat.children('a').each(function (index, element) {
+      $(element).addClass('homeCat-' + index);
+    });
 
     // match the community banners heights.
     top    = $('#content .homeCommunity .top a');

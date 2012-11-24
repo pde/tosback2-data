@@ -21,6 +21,7 @@ function WebTrends(){
 	this.i18n=false;
 	this.fpc="WT_FPC";
 	this.paidsearchparams="gclid";
+	this.dcsETCallAdded = false;
 	// end: user modifiable
 	this.DCS={};
 	this.WT={};
@@ -28,11 +29,12 @@ function WebTrends(){
 	this.images=[];
 	this.index=0;
 	this.exre=(function(){return(window.RegExp?new RegExp("dcs(uri)|(ref)|(aut)|(met)|(sta)|(sip)|(pro)|(byt)|(dat)|(p3p)|(cfg)|(redirect)|(cip)","i"):"");})();
-	this.re=(function(){return(window.RegExp?(that.i18n?{"%25":/\%/g}:{"%09":/\t/g,"%20":/ /g,"%23":/\#/g,"%26":/\&/g,"%2B":/\+/g,"%3F":/\?/g,"%5C":/\\/g,"%22":/\"/g,"%7F":/\x7F/g,"%A0":/\xA0/g}):"");})();
+	//NBR561997 - White Space is replaced with \s
+	this.re=(function(){return(window.RegExp?(that.i18n?{"%25":/\%/g}:{"%09":/\t/g,"%20":/\s/g,"%23":/\#/g,"%26":/\&/g,"%2B":/\+/g,"%3F":/\?/g,"%5C":/\\/g,"%22":/\"/g,"%7F":/\x7F/g,"%A0":/\xA0/g}):"");})();
 }
 WebTrends.prototype.dcsGetId=function(){
 	if (this.enabled&&(document.cookie.indexOf(this.fpc+"=")==-1)&&(document.cookie.indexOf("WTLOPTOUT=")==-1)){
-		document.write("<scr"+"ipt type='text/javascript' src='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+this.domain+"/"+this.dcsid+"/wtid.js"+"'><\/scr"+"ipt>");
+		document.write("<scr"+"ipt type='text/javascript' src='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+":/"+"/"+this.domain+"/"+this.dcsid+"/wtid.js"+"'><\/scr"+"ipt>");
 	}
 }
 WebTrends.prototype.dcsGetCookie=function(name){
@@ -368,8 +370,13 @@ WebTrends.prototype.dcsAdv=function(){
 		{
 			// The load listener added below fails on RIA pages because the load event
 			// has already passed when dcsAdv is called.  Instead, use execOnPageReady
-			// to make the call when the page is ready.
-			vg.util.execOnPageReady(this.dcsET.wtbind(this));
+			// to make the call when the page is ready.  We only want to do this the first
+			// time that dcsCollect is called
+			if(!this.dcsETCallAdded)
+			{
+				vg.util.execOnPageReady(this.dcsET.wtbind(this));
+				this.dcsETCallAdded = true;
+			}
 		}
 		else
 		{
@@ -395,16 +402,18 @@ WebTrends.prototype.dcsVar=function(){
 		WT.cd=navigator.appName=="Netscape"?screen.pixelDepth:screen.colorDepth;
 		WT.sr=screen.width+"x"+screen.height;
 	}
-	if (typeof(navigator.javaEnabled())=="boolean"){
-		WT.jo=navigator.javaEnabled()?"Yes":"No";
+	var isJavaEnabled = navigator.javaEnabled();
+	if (typeof(isJavaEnabled)=="boolean"){
+		WT.jo=isJavaEnabled?"Yes":"No";
 	}
-	if (document.title){
+	var docTitle = document.title;
+	if (docTitle){
 		if (window.RegExp){
 			var tire=new RegExp("^"+window.location.protocol+"//"+window.location.hostname+"\\s-\\s");
-			WT.ti=document.title.replace(tire,"");
+			WT.ti=docTitle.replace(tire,"");
 		}
 		else{
-			WT.ti=document.title;
+			WT.ti=docTitle;
 		}
 	}
 	WT.js="Yes";
@@ -453,18 +462,19 @@ WebTrends.prototype.dcsVar=function(){
 		return jv;
 	})();
 	WT.ct="unknown";
-	if (document.body&&document.body.addBehavior){
+	var docBody = document.body;
+	if (docBody&&docBody.addBehavior){
 		try{
-			document.body.addBehavior("#default#clientCaps");
-			WT.ct=document.body.connectionType||"unknown";
-			document.body.addBehavior("#default#homePage");
-			WT.hp=document.body.isHomePage(location.href)?"1":"0";
+			docBody.addBehavior("#default#clientCaps");
+			WT.ct=docBody.connectionType||"unknown";
+			docBody.addBehavior("#default#homePage");
+			WT.hp=docBody.isHomePage(location.href)?"1":"0";
 		}
 		catch(e){
 		}
 	}
 	if (document.all){
-		WT.bs=document.body?document.body.offsetWidth+"x"+document.body.offsetHeight:"unknown";
+		WT.bs=docBody?docBody.offsetWidth+"x"+docBody.offsetHeight:"unknown";
 	}
 	else{
 		WT.bs=window.innerWidth+"x"+window.innerHeight;
@@ -482,9 +492,12 @@ WebTrends.prototype.dcsVar=function(){
 			}
 		}
 		else if (navigator.plugins&&navigator.plugins.length){
-			for (i=0;i<navigator.plugins.length;i++){
-				if (navigator.plugins[i].name.indexOf('Shockwave Flash')!=-1){
-					return navigator.plugins[i].description.split(" ")[2];
+			var plugins = navigator.plugins;
+			var pluginLength = plugins.length;
+			for (i=0;i<pluginLength;i++){
+				var thisPlugin = plugins[i];
+				if (thisPlugin.name.indexOf('Shockwave Flash')!=-1){
+					return thisPlugin.description.split(" ")[2];
 				}
 			}
 		}
@@ -538,18 +551,20 @@ WebTrends.prototype.dcsVar=function(){
 	WT.tv="8.6.1";
 //	WT.sp="@@SPLITVALUE@@";
 	WT.dl="0";
-	WT.ssl=(window.location.protocol.indexOf('https:')==0)?"1":"0";
+	var winLocation = window.location;
+	WT.ssl=(winLocation.protocol.indexOf('https:')==0)?"1":"0";
 	DCS.dcsdat=dCurrent.getTime();
-	DCS.dcssip=window.location.hostname;
-	DCS.dcsuri=window.location.pathname;
+	DCS.dcssip=winLocation.hostname;
+	DCS.dcsuri=winLocation.pathname;
 	WT.es=DCS.dcssip+DCS.dcsuri;
-	if (window.location.search){
-		DCS.dcsqry=window.location.search;
+	if (winLocation.search){
+		DCS.dcsqry=winLocation.search;
 	}
 	if (DCS.dcsqry){
 		var dcsqry=DCS.dcsqry.toLowerCase();
 		var params=this.paidsearchparams.length?this.paidsearchparams.toLowerCase().split(","):[];
-		for (var i=0;i<params.length;i++){
+		var paramLength = params.length;
+		for (var i=0;i<paramLength;i++){
 			if (dcsqry.indexOf(params[i]+"=")!=-1){
 				WT.srch="1";
 				break;
@@ -606,8 +621,9 @@ WebTrends.prototype.dcsEncode=function(S){
 }
 WebTrends.prototype.dcsCreateImage=function(dcsSrc){
 	if (document.images){
-		this.images[this.index]=new Image();
-		this.images[this.index].src=dcsSrc;
+		var newImg = new Image();
+		newImg.src=dcsSrc;
+		this.images[this.index]=newImg;
 		this.index++;
 	}
 	else{
@@ -625,9 +641,10 @@ WebTrends.prototype.dcsMeta=function(){
 	if (typeof(elems)!="undefined"){
 		var length=elems.length;
 		for (var i=0;i<length;i++){
-			var name=elems.item(i).name;
-			var content=elems.item(i).content;
-			var equiv=elems.item(i).httpEquiv;
+			var thisItem = elems.item(i);
+			var name=thisItem.name;
+			var content=thisItem.content;
+			var equiv=thisItem.httpEquiv;
 			if (name.length>0){
 				if (name.toUpperCase().indexOf("WT.")==0){
 					this.WT[name.substring(3)]=content;

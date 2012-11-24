@@ -22,7 +22,7 @@
             clearError();
         }
         function setSweepTimer() {            
-            if (null != sweepTimer) {
+            id},clean!= sweepTimer) {
                 window.clearTimeout(sweepTimer);
             }
             if (usrClicked == 0) {

@@ -1,4 +1,4 @@
-﻿//put non critical interaction scripts in here (like button hover, etc)
+//put non critical interaction scripts in here (like button hover, etc)
 //TODO move this stuff into the NADAjs namespace!
 function validATCFYCForm() {
     //var objRegExp = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
@@ -56,7 +56,7 @@ function validPartnersBoxForm() {
 
 //takes in a jquery input object.  i.e. $('#idofinput')
 function clearVINText(VINjqObject) {
-    if ($(VINjqObject).val() == "Press GO or Enter VIN") {
+    if ($(VINjqObject).val() == "Press GO or Enter VIN" || $(VINjqObject).val() == "Enter VIN(optional)") {
         $(VINjqObject).val('');
     }
     if ($(VINjqObject).val() == "Enter VIN (optional)") {
@@ -97,6 +97,7 @@ $(function() {
     function() {
         $(this).removeClass("partner-go-roll").addClass("partner-go");
     });
+    
 });
 
 var optList = '';
@@ -182,24 +183,24 @@ var NADAjs = {
 
             var printParams = '?options=' + optList;
             var destination = document.location.href + printParams;
-            if (optList != '') {
-                $('#sharebutton').html('');
+//            if (optList != '') {
+//                $('#sharebutton').html('');
 
-                stWidget.addEntry({
-                    "service": "sharethis",
-                    "element": document.getElementById('sharebutton'),
-                    "url": destination,
-                    "title": $('h2').html(),
-                    "type": "chicklet",
-                    "summary": $('title').html(),
-                    "text": "share"
-                });
+//                stWidget.addEntry({
+//                    "service": "sharethis",
+//                    "element": document.getElementById('sharebutton'),
+//                    "url": destination,
+//                    "title": $('h2').html(),
+//                    "type": "chicklet",
+//                    "summary": $('title').html(),
+//                    "text": "share"
+//                });
 
-                $('#sharebutton').children('span').first().css('padding-top', '2px');
-                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
-                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
-                $('#emailFriend-dialog').css('padding-bottom', '2px');
-            }
+//                $('#sharebutton').children('span').first().css('padding-top', '2px');
+//                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
+//                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
+//                $('#emailFriend-dialog').css('padding-bottom', '2px');
+//            }
 
             document.getElementById('optParams').value = optList;
         }
@@ -272,13 +273,13 @@ var NADAjs = {
                     /*$.modal.close();*/
                 },
                 success: function(data) {
-                    changePrices(data);
+                    //changePrices(data);
                     optState = $(data.optData);
                     $("#opt-conflict").dialog("close");
                     handleConflicts(data.optConflict);
                     toggleBoxes(optState);
-                    buildSumm();
-                    updateShare(optCode);
+                    //buildSumm();
+                    //updateShare(optCode);
                 }
             });
 
@@ -300,6 +301,7 @@ var NADAjs = {
         this.isSending = getSendingVal;
         this.setPaintColor = setColor;
         this.gotoDealerQuote = gotoQuote;
+
         this.updateShare = updateShare;
 
     },
@@ -769,6 +771,7 @@ var NADAjs = {
             if (presetCarInfo || callGetPmt) {
                 setCarInfo(styleID, isNew, carDisplayName, cost, retail, mileage);
             }
+
             //set pmt - WS
             if (callGetPmt) {
                 getDTDefaultPayment(linkName, linkContainerName);
@@ -844,6 +847,7 @@ var NADAjs = {
 
         //show calc
         var showDTCalculator = function(onCloseURL) {
+
             $('#calc-modal').modal({
                 persist: false,
                 autoResize: false,
@@ -941,14 +945,14 @@ var NADAjs = {
 
             //onload tracking
             $("input[data-ga-category], a[data-ga-category]").each(function() {
-            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load', 
-                           buildGALabel($(this)), 1, true]);
+                _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load',
+                           buildGALabel($(this)), 0, true]);
             });
 
             //onclick tracking
             $("input[data-ga-category], a[data-ga-category]").click(function() {
                 //alert(buildGALabel($(this)));
-            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
+                _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
                           buildGALabel($(this)), 1, false]);
             });
         }
@@ -989,7 +993,7 @@ var NADAjs = {
             _Year = ATvars.Year;
             _GOExtLinkID = ATvars.GOExtLinkID;
             _LinkExtLinkID = ATvars.LinkExtLinkID;
-            
+
             if (_CarCount > 0) {
                 //results found on the server-side
                 hideWaitPanel();
@@ -1020,9 +1024,9 @@ var NADAjs = {
 
             _doneInit = true;
         } //init
-        
+
         var validateInput = function() {
-        if (_Zip == "" || _UsedCarMakeId == "" || _UsedCarModelId == "" || _Year == "" || _ATMake == "" || _ATModel == "") //_ATBodyStyle == "" ||
+            if (_Zip == "" || _UsedCarMakeId == "" || _UsedCarModelId == "" || _Year == "" || _ATMake == "" || _ATModel == "") //_ATBodyStyle == "" ||
                 return false;
             else if (isNaN(parseInt(_UsedCarMakeId)) || isNaN(parseInt(_UsedCarModelId)) || isNaN(parseInt(_Year)))
                 return false;
@@ -1030,7 +1034,7 @@ var NADAjs = {
                 return true;
 
         } //validateInput
-        
+
         var goAutoTrader = function(extLinkId) {
             if (_link.length != 0) {
                 $("form#formATWidget input[name='extLinkId']").val(extLinkId);
@@ -1060,7 +1064,7 @@ var NADAjs = {
                         var newcarcnt = parseInt(atwidgetdata.carCount);
 
                         //Found cars or done the last search... display, done
-                        if (newcarcnt > 0 | radius == 200) {
+                        if (newcarcnt > 0) {
                             hideWaitPanel();
                             $("#linkATWidget").val(atwidgetdata.link);
                             _link = atwidgetdata.link;
@@ -1081,6 +1085,13 @@ var NADAjs = {
                                 } else if (radius == 100) {
                                     getAtCars(200);
                                 }
+                            }
+                            else {
+                                //show No Val message on zero results
+                                $("#linkATWidget").val(atwidgetdata.link);
+                                _link = atwidgetdata.link;
+                                hideWaitPanel();
+                                $("#atw-msg-noVal").show();
                             }
                         }
                     }
@@ -1121,8 +1132,480 @@ var NADAjs = {
 
 
         this.BoldMakeLinks = boldMakeLinks;
-    }
+    },
 
+    NewVDPPayment: new function() {
+        var init = function(isNewCar, dTShowLease) {
+            $("img.dealertrack").hover(function() {
+                $(this).attr("src", "http://images.nadaguides.com/redesign/Large-QuickFinancing-Grey-Button.gif");
+            },
+            function() {
+                $(this).attr("src", "http://images.nadaguides.com/redesign/Large-QuickFinancing-Blue-Button.gif");
+            });
+
+            var IsNewCar = (isNewCar.toLowerCase() == "true");
+            var DTShowLease = (dTShowLease.toLowerCase() == "true");
+            //loan 
+            $("#frmCalcLoan").validate({ errorPlacement: function(error, element) { } });
+            $("#frmCalcLoan").find("#LoanTerm").live("click", function() {
+                hideLoanPayment();
+            });
+            $('#ZipCode').hide();
+            getLoanPayment();
+            $("#btnCalcLoan").click(function() {
+                getLoanPayment();
+            });
+            $('#frmCalcLoan :input[type=text]').live("keyup", function() {
+                hideLoanPayment();
+            });
+
+            $('a.help').cluetip({
+                splitTitle: '|',
+                showTitle: true,
+                cluetipClass: 'jtip',
+                width: "320px"
+            });
+
+            if (IsNewCar && DTShowLease) {
+                //lease
+                $("#frmCalcLease").validate({ errorPlacement: function(error, element) { } });
+                $("#frmCalcLease").find("#LeaseTerm").val(36).live("click", function() {
+                    hideLeasePayment();
+                });
+                $("#frmCalcLease").find("#LeaseMilage").val(36).live("click", function() {
+                    hideLeasePayment();
+                });
+                getLeasePayment();
+                $("#btnCalcLease").click(function() {
+                    getLeasePayment();
+                });
+
+                $('#frmCalcLease :input[type=text]').live("keyup", function() {
+                    hideLeasePayment();
+                });
+
+            }
+
+            /*   $('#ZipCode').live('keyup', function(e) {
+            hideLoanPayment();
+            hideLeasePayment();
+            var isValid = validateZip();
+            if (e.keyCode == 13) {
+            if (isValid) {
+            $('#ZipCode').hide();
+            $('#nvdp-a-zip').html($('#ZipCode').val());
+            $('#nvdp-a-zip').show();
+            getLoanPayment();
+            getLeasePayment();
+            }
+            return false;
+            }
+            }); */
+
+            $('#ZipCode').live('keyup', function(e) {
+                var isValid = validateZip();
+                if (isValid) {
+                    $('#ZipCode').hide();
+                    $('#nvdp-a-zip').html($('#ZipCode').val());
+                    $('#nvdp-a-zip').show();
+                    $.ajax({
+                        type: 'POST',
+                        url: "/Page/ZipCode",
+                        data: { zipCode: $('#ZipCode').val() },
+                        success: function() {
+                            window.location = window.location.pathname;
+                        },
+                        error: function() {
+                        }
+                    });
+                }
+                else
+                    return false;
+            });
+
+            $("input[name='LeaseMileage']").imageTick({
+                tick_image_path: {
+                10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-10k.gif",
+                12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-12k.gif",
+                15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-15k.gif",
+                20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-20k.gif"
+                },
+                no_tick_image_path: {
+                10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-10k.gif",
+                12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-12k.gif",
+                15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-15k.gif",
+                20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-20k.gif"
+                },
+                image_tick_class: "LeaseMileage"
+            });
+            $('#LeaseMileage label').click(function() {
+                $(this).addClass('selected').siblings().removeClass('selected');
+            });
+
+            $("input[name='LeaseTerm']").imageTick({
+                tick_image_path: {
+                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
+                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
+                39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-39.gif",
+                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif"
+                },
+                no_tick_image_path: {
+                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
+                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
+                39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-39.gif",
+                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif"
+                },
+                image_tick_class: "LeaseTerm"
+            });
+            $('#LeaseTerm label').click(function() {
+                $(this).addClass('selected').siblings().removeClass('selected');
+
+            });
+
+            $("input[name='LoanTerm']").imageTick({
+                tick_image_path: {
+                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
+                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
+                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif",
+                60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-60.gif",
+                72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-72.gif",
+                84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-84.gif"
+                },
+                no_tick_image_path: {
+                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
+                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
+                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif",
+                60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-60.gif",
+                72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-72.gif",
+                84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-84.gif"
+                },
+                image_tick_class: "LoanTerm"
+            });
+            $('#LoanTerm label').click(function() {
+                $(this).addClass('selected').siblings().removeClass('selected');
+
+            });
+
+            $("input[name='rebateRadio']").bind('click mousedown', (function() {
+                var isChecked;
+                return function(event) {
+                    if (event.type == 'click') {
+                        if (isChecked) {
+                            isChecked = this.checked = false;
+                            $('input[name=rebateRadio]:radio:checked').val('0');
+                        } else {
+                            isChecked = true;
+                        }
+                        getLoanPayment();
+                        getLeasePayment();
+                    } else {
+                        isChecked = this.checked;
+                    }
+                }
+            })());
+
+        } //init
+
+        var showZipTextBox = function() {
+            $('#ZipCode').show();
+            $('#nvdp-a-zip').hide();
+        }
+        var hideLoanPayment = function(speed) {
+            $("#LoanPayment").fadeOut('slow');
+            $("#LoanDetails").fadeOut('slow');
+
+        }
+        var hideLeasePayment = function(speed) {
+            $("#LeasePayment").fadeOut('slow');
+            $("#LeaseDetails").fadeOut('slow');
+
+        }
+        var validateZip = function() {
+            var isValid = false;
+            var zipcode = $('#ZipCode').val();
+            if (zipcode.length == 5) {
+                isValid = /^\d{5}$/.test(zipcode);
+            }
+            if (isValid) {
+                $("#zip-error").hide();
+            }
+            else {
+                $("#zip-error").show();
+            }
+            return isValid;
+        }
+
+        var getLoanPayment = function() {
+
+            var validFormInput = true;
+            if (!$("#frmCalcLoan").valid()) {
+                $("#LoanValidation").show();
+                validFormInput = false;
+            }
+            else {
+                $("#LoanValidation").hide();
+            }
+            if (!validateZip() || !validFormInput) {
+                return;
+            }
+
+            var LoanPayment = $("#LoanPayment");
+            var LoanDetails = $("#LoanDetails");
+
+            LoanPayment.html('');
+            LoanDetails.html('');
+
+            $("#nvdp-pmt-loan").css("background-color", "#ffffff");
+            $("#loan-wait").show();
+            var formdata = $("#frmCalcLoan").serialize();
+            formdata += "&ZipCode=" + $("#ZipCode").val() + "&FinanceTypeID=Loan" + "&Term=" + $("input[name='LoanTerm']:checked").val() + "&SelectedIncentiveID=" + $('input[name=rebateRadio]:radio:checked').val();
+            //alert(formdata);
+            $.ajax(
+            {
+                type: "POST",
+                url: '/Cars/Ajax/getPayment',
+                data: formdata,
+                dataType: 'json',
+                timeout: 210000,
+                error: function(xhr, textStatus, errorThrown) {
+                    $("#loan-wait").hide();
+                    $("#nvdp-pmt-loan").css("background-color", "#dbdbdd");
+                    //alert(xhr.responseText);
+                    alert("Sorry, an error occurred while processing your request.");
+                },
+                success: function(data) {
+
+                    $("#loan-wait").hide();
+                    $("#nvdp-pmt-loan").css("background-color", "#dbdbdd");
+                    if (data.Message != null && data.Message != "") {
+                        LoanPayment.html(" ").removeClass("nvdp-calc-pmt").css({ 'padding-top': '10px' }).fadeIn('fast');
+                        alert(data.Message);
+                    }
+                    else if (data.MonthlyPayment != null) {
+                        var pay_detail = "";
+                        LoanPayment.html(data.MonthlyPayment + " <span style='font-weight:none; font-size:14px'>/mo<span><div style='font-weight:normal;font-size:10px;'>" + data.DueAtSigning + "</div>").addClass("nvdp-calc-pmt").fadeIn('fast');
+                        if (data.PmtDetails != null && data.PmtDetails.length > 0) {
+                            var pmtDetails = $.map(data.PmtDetails, function(detail, i) {
+                                if (i==0)
+                                    return "<div style='padding-top:20px;font-size:12px;'>" + detail + "</div>";
+                                else return "<div style='font-size:12px;'>" + detail + "</div>";
+                            });
+                            LoanDetails.html(pmtDetails.join("")).fadeIn('fast');
+                        }
+                        $("#frmCalcLoan").find("#DownPayment").val(data.DownPayment);
+                    }
+                }
+            })
+        }
+        var getLeasePayment = function() {
+
+            var validFormInput = true;
+            if (!$("#frmCalcLease").valid()) {
+                $("#LeaseValidation").show();
+                validFormInput = false;
+            }
+            else {
+                $("#LeaseValidation").hide();
+            }
+            if (!validateZip() || !validFormInput) {
+                return;
+            }
+
+            var LeasePayment = $("#LeasePayment");
+            LeasePayment.html('');
+            var LeaseDetails = $("#LeaseDetails");
+            LeaseDetails.html('');
+            $("#nvdp-pmt-lease").css("background-color", "#ffffff");
+            $("#lease-wait").show();
+            var formdata = $("#frmCalcLease").serialize();
+            formdata += "&ZipCode=" + $("#ZipCode").val() + "&FinanceTypeID=Lease" + "&Term=" + $("input[name='LeaseTerm']:checked").val() + "&LeaseAnnualMileage=" + $("input[name='LeaseMileage']:checked").val() + "&SelectedIncentiveID=" + $('input[name=rebateRadio]:radio:checked').val();
+
+            $.ajax(
+            {
+                type: "POST",
+                url: '/Cars/Ajax/getPayment',
+                data: formdata,
+                dataType: 'json',
+                timeout: 210000,
+                error: function(xhr, textStatus, errorThrown) {
+                    $("#lease-wait").hide();
+                    $("#nvdp-pmt-lease").css("background-color", "#dbdbdd");
+                    //alert(xhr.responseText);
+                    alert("Sorry, an error occurred while processing your request.");
+                },
+                success: function(data) {
+                    $("#lease-wait").hide();
+                    $("#nvdp-pmt-lease").css("background-color", "#dbdbdd");
+                    if (data.Message != null && data.Message != "") {
+                        LeasePayment.html(" ").removeClass("nvdp-calc-pmt").css({ 'padding-top': '10px' }).fadeIn('fast');
+                        alert(data.Message);
+                    }
+                    else if (data.MonthlyPayment != null) {
+                        LeasePayment.html(data.MonthlyPayment + " <span style='font-weight:none; font-size:14px'>/mo</span><div style='font-weight:normal;font-size:10px;'>" + data.DueAtSigning + "</div>").addClass("nvdp-calc-pmt").fadeIn('fast');
+                        if (data.PmtDetails != null && data.PmtDetails.length > 0) {
+                            var pmtDetails = $.map(data.PmtDetails, function(detail, i) {
+                                if (i==0)
+                                    return "<div style='padding-top:20px;font-size:12px;'>" + detail + "</div>";
+                                else return "<div style='font-size:12px;'>" + detail + "</div>";
+                            });
+                            LeaseDetails.html(pmtDetails.join("")).fadeIn('fast');
+                        }
+                        $("#frmCalcLease").find("#DownPayment").val(data.DownPayment);
+
+                    }
+                }
+            })
+        }
+        this.Init = init;
+        this.HideLoanPayment = hideLoanPayment;
+        this.HideLeasePayment = hideLeasePayment;
+        this.ValidateZip = validateZip;
+        this.GetLoanPayment = getLoanPayment;
+        this.GetLeasePayment = getLeasePayment;
+        this.ShowZipTextBox = showZipTextBox;
+
+    }, //NewVDPPayment
+
+    NewVDPCostToOwn: new function() {
+
+        var init = function() {
+            $('a.help').cluetip({
+                splitTitle: '|',
+                showTitle: true,
+                cluetipClass: 'jtip',
+                width: "320px"
+            });
+            $("#nvdp-years-select").change(function(e) { return $('#nvdp-years-select').blur(); });
+            $("#nvdp-miles-select").change(function(e) { return $('#nvdp-miles-select').blur(); });
+            
+        } //init
+
+        var ctoSubmit = function() {
+            if (validZipCode($('#txtCTOZip').val())) {
+                $('#txtCTOZip').attr('disabled', 'disabled');
+                $('#nvdp-ctoSubmitBtn').hide();
+                $('#ctoProcessing').show();
+                $.ajax({
+                    type: 'POST',
+                    url: "/Page/ZipCode",
+                    data: { zipCode: $("#txtCTOZip").val() },
+                    success: function() {
+                        var version = $('#nvdp-miles-select option:selected').val() + $('#nvdp-years-select option:selected').val();
+                        var path = window.location.pathname;
+                        if (path.substr(path.lastIndexOf('/') + 1, path.length).length == 8)
+                            path = path.substr(0, path.lastIndexOf('/'));
+                        window.location = path + '/' + version + $('#txtCTOZip').val();
+                    },
+                    error: function() {
+                        $('#txtCTOZip').removeAttr('disabled');
+                        $('#nvdp-ctoSubmitBtn').show();
+                        $('#ctoProcessing').hide();
+                    }
+                });
+            }
+            else
+                alert('Please enter a valid zip code');
+        }
+        this.Init = init;
+        this.CtoSubmit = ctoSubmit;
+    }, //NewVDPCostToOwn
+
+    NewVDPPictures: new function() {
+        var config = {
+            play: false,
+            slideSpeed: 3000,
+            thumbWrapperId: 'nvdp-pic-thumbs',
+            fullImgId: 'nvdp-pic-full',
+            picIndexId: 'currpic',
+            selectedClass: 'selected'
+        };
+
+        var thumbWrap;
+        var fullImg;
+        var slideShowOn;
+        var picIndexElem;
+
+        //public
+        var next = function() {
+            var nextThumb = getSelected().nextAll('img:first');
+            if (nextThumb.length == 0) {
+                nextThumb = thumbWrap.find('img:first-child');
+            }
+            showImg(nextThumb);
+        };
+
+        var prev = function() {
+            var prevThumb = getSelected().prevAll('img:first');
+            if (prevThumb.length == 0) {
+                prevThumb = thumbWrap.find('img:last-child');
+            }
+            showImg(prevThumb);
+        };
+
+        var showImg = function(thumbElem) {
+            if (!$(thumbElem).hasClass(config.selectedClass)) {
+                fullImg.fadeOut(250, function() {
+                    var bigImgSrc = $(thumbElem).attr('data-big');
+                    var selectedClass = config.selectedClass;
+                    getSelected().removeClass(selectedClass);
+                    $(thumbElem).addClass(selectedClass);
+                    fullImg.attr('src', bigImgSrc);
+                    fullImg.fadeIn(500);
+                    setPicCount();
+                });
+
+            }
+        };
+
+        var playSlideshow = function() {
+            slideShowOn = true;
+            slideshowNext();
+        };
+
+        var pauseSlideshow = function() {
+            slideShowOn = false;
+        };
+
+        var init = function(userConfig) {
+            $.extend(config, userConfig);
+            thumbWrap = $('#' + config.thumbWrapperId);
+            fullImg = $('#' + config.fullImgId);
+            slideShowOn = config.play;
+            picIndexElem = $('#' + config.picIndexId);
+        };
+
+        //private
+        var slideshowNext = function() {
+            if (slideShowOn) {
+                next();
+                setPicCount();
+                setTimeout(function() { slideshowNext(); }, config.slideSpeed);
+            }
+        };
+
+        var getSelected = function() {
+            return thumbWrap.find('.' + config.selectedClass);
+        };
+
+        var setPicCount = function() {
+            var picNum = 1;
+            $(thumbWrap).children('img').each(function() {
+                if ($(this).hasClass(config.selectedClass)) {
+                    picIndexElem.html(picNum);
+                    return false;
+                } else {
+                    picNum++;
+                }
+            });
+        };
+
+        this.playSlideshow = playSlideshow;
+        this.pauseSlideshow = pauseSlideshow;
+        this.next = next;
+        this.prev = prev;
+        this.showImg = showImg;
+        this.init = init;
+    }
 };
 
 
@@ -1188,4 +1671,22 @@ function SetupModelDetailTableEvents() {
 
     $("#content_models tr.detailrow td:nth-child(1)").addClass('borderRight');
 
+}
+
+function featureDetectionIEShadow() {
+    var flagDetection = false;
+    function shadowDetection($handle, css) {
+        try {
+            var shadow = $handle.css(css);
+            if (shadow != 'null' && shadow != '') {
+                var regTest = String(shadow.match(/AAAAAA/i));
+                if (regTest != '') {
+                    flagDetection = true;
+                }
+            }
+        } catch (err) { };
+    }
+    var $testIE = $('<div></div>').css('box-shadow', '0px 0px 8px 5px #AAAAAA');
+    shadowDetection($testIE, 'box-shadow');
+    return flagDetection;
 }

@@ -292,7 +292,7 @@
 				
 				
 				
-				if(typeof $.ad._meta["classification"] == "string"){
+				if(typeof $.ad._meta["classificationISA"] == "string"){
 					var c = $.ad._meta["classificationISA"];
 					c = c.replace(/[ ]/g,"");
 					//u=ptype|adv|ctype|pos|url|classification 

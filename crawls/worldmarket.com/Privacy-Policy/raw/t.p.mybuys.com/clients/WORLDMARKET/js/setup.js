@@ -207,6 +207,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 
 	//home zone styling
 	mybuys.setStyleByPageType('HOME','ul#mbcarousel','width','2784px','overflow','hidden');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5','position','relative');
 	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbitem','width','116px');
 	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbCarousellist','width','116px !important','padding','0 !important');
 	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbleftnav','width','28px','position','relative','left','-35px','top','-96px','padding','0px');

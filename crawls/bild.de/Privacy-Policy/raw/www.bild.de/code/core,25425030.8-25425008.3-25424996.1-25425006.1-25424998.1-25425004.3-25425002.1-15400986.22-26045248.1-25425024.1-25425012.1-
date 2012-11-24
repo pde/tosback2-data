@@ -6798,7 +6798,7 @@ this.options.range,b=this.options,c=this,f=!this._animateOff?b.animate:false,e,j
 g+"%"},{queue:false,duration:b.animate})}else{if(h===0)c.range.stop(1,1)[f?"animate":"css"]({bottom:e+"%"},b.animate);if(h===1)c.range[f?"animate":"css"]({height:e-g+"%"},{queue:false,duration:b.animate})}g=e});else{k=this.value();l=this._valueMin();i=this._valueMax();e=i!==l?(k-l)/(i-l)*100:0;j[c.orientation==="horizontal"?"left":"bottom"]=e+"%";this.handle.stop(1,1)[f?"animate":"css"](j,b.animate);if(a==="min"&&this.orientation==="horizontal")this.range.stop(1,1)[f?"animate":"css"]({width:e+"%"},
 b.animate);if(a==="max"&&this.orientation==="horizontal")this.range[f?"animate":"css"]({width:100-e+"%"},{queue:false,duration:b.animate});if(a==="min"&&this.orientation==="vertical")this.range.stop(1,1)[f?"animate":"css"]({height:e+"%"},b.animate);if(a==="max"&&this.orientation==="vertical")this.range[f?"animate":"css"]({height:100-e+"%"},{queue:false,duration:b.animate})}}});d.extend(d.ui.slider,{version:"1.8.16"})})(jQuery);
 ;
-/*de.bild.onDemand:23480840.2*/
+/*de.bild.onDemand:23480840.4*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -6815,8 +6815,8 @@ de.bild.onDemand = (function($) {
     $imgsToLoad;
     function init($context) {
         if ($context.length) {
-            // nur Bilder mit einem Longdesc-Attribut
-            $imgsToLoad = $context.find('img.ondemand[longdesc]');
+            // Bilder mit der Klasse "ondemand"
+            $imgsToLoad = $context.find('img.ondemand');
             if ($imgsToLoad.length) {
                 $imgsToLoad.each(function(){
                     var $this = $(this),
@@ -6842,7 +6842,7 @@ de.bild.onDemand = (function($) {
                 }
                 
                 // Namespace ".onDemand" um nicht andere handler von window zu löschen
-                $window.on('scroll.onDemand touchmove.onDemand', function() {
+                $window.on('scroll.onDemand touchend.onDemand', function() {
                     checkCurrent();
                 });
                 // do it
@@ -6860,8 +6860,10 @@ de.bild.onDemand = (function($) {
         bottomPos = scrollTop + wHeight + settings.margin,
         startInd = Math.floor(topPos / settings.areaSize),
         endInd = Math.floor(bottomPos / settings.areaSize);
+        
         startInd = startInd < 0 ? 0 : startInd;
         endInd = endInd < 0 ? 0 : endInd;
+        
         for(var i = startInd; i < endInd; i++) {
             if(typeof picCont[i] !== 'undefined' && picCont[i] !== null) {
                 loadImgs(i);
@@ -6869,29 +6871,35 @@ de.bild.onDemand = (function($) {
         }
     };
     
-    // Alle Bilder in einer Schublade werden geladen und das longdesc entfernt
+    // Alle Bilder in einer Schublade werden geladen
     function loadImgs(index) {
         if (typeof index === 'number') {
             var $imgs = $(picCont[index]),
             imgsLeng = $imgs.length;
             $imgs.each(function(_index){
                 var $this = $(this),
-                _longdesc = $.trim($this.attr('longdesc'));
+                _imgSrc = $.trim($this.attr('data-img-src'));
                 
-                if(typeof _longdesc !== 'undefined' && _longdesc !== null) {
-                    $this.attr("src", _longdesc); 
+                /* FALLBACK */
+                if(typeof _imgSrc === 'undefined' || _imgSrc === null || _imgSrc === '') {
+                    _imgSrc = $.trim($this.attr('longdesc'));
+                }
+                /* FALLBACK ENDE */
+                
+                if(typeof _imgSrc !== 'undefined' && _imgSrc !== null) {
+                    $this.attr("src", _imgSrc); 
                 }
                 // we are doing to prevent race conditions
                 if (_index >= imgsLeng-1) {
                     setTimeout(function(){
-                        $imgs.attr('longdesc','');
+                        $imgs.attr('data-img-src','').attr('longdesc','');
                     },1500);
                 }
             });
             delete picCont[index];
             countLoaded++;
             if(countLoaded >= picCountLength) {
-                $window.off('scroll.onDemand touchmove.onDemand');
+                $window.off('scroll.onDemand touchend.onDemand');
                 // aufraeumen
                 picCont = [];
             }
@@ -6899,7 +6907,10 @@ de.bild.onDemand = (function($) {
        } 
     };
     
-
+    // document.ready => run!
+    $(function(){
+       init($('#contentWrapper'));
+    });
     
     // Interface
     return {

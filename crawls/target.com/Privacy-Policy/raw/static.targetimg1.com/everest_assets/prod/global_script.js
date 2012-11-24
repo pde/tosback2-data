@@ -5,6 +5,9 @@
 if (Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=true"){
 	Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
 }
+if (Target.globals.AjaxGlobalNavPath == "https://www.target.com/AjaxGlobalNavView?isThirdParty=true"){
+	Target.globals.AjaxGlobalNavPath = "https://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
+}
 
 $(document).ready(function(){
 	//$("#MainMenu .home-link a").attr("href", "/");
@@ -157,6 +160,13 @@ $(document).ready(function(){
 		} else {
 			$body.addClass('holidayhub');
 		}
+	}
+	if($('.hp_hz_slots-8').length !== 0 && $.browser.webkit && !Target.support.isTouch) {
+		$body.addClass('position-fixed');
+		setTimeout(function() {
+			$body.removeClass('position-fixed');
+			$body.find('a:first').focus();
+		},100);
 	}
 	
 });

@@ -4,8 +4,8 @@
 
 
 
-var chat_switch = "ON";
-var chat_open_time = "08:00";
+var chat_switch = "OFF";
+var chat_open_time = "06:00";
 var chat_closed_time = "20:00";
 var chat_open_days = "23456";
 		
@@ -36,7 +36,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1353488286087,
+	timeStamp: 1353747603116,
 	
 
 	DEF_LANG_ID: '-1',
@@ -115,8 +115,8 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Nov 21, 2012 08:21:14'),
-		masterChatSwitch: 'ON',
+	isChatOpen: chatActive('Nov 24, 2012 08:17:47'),
+		masterChatSwitch: 'OFF',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
 		

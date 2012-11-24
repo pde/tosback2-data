@@ -7,6 +7,7 @@ function passMetricObjectAndSendPageTag ( objRef ) {
      sendMetricTag();
 }
 
+
 function sendMetricTag () {
    // for layer calls
    if (typeof ll_o=="object"){
@@ -15,6 +16,15 @@ function sendMetricTag () {
       }
     }
    var s_code = s_o_sc.t(); 
+}
+
+function sendMetricTagCheckoutSBTag () {
+  s_o_sc.pageName = 'Shopping Bag - Continue CheckOut Button';
+  s_o_sc.events = 'scCheckout';
+  s_o_sc.prop4+=' Checkout Button';
+  s_o_sc.prop7+=' Checkout Button';
+  sendMetricTag();
+
 }
 
 if (typeof ll_o!="object") var ll_o=new Object();
@@ -613,7 +623,14 @@ var google_conversion_value = 0;
 
 llg_ab.writeTag=function(lbl){
    google_conversion_label = llg_ab[lbl];
-   document.writeln("<script type='text/javascript' src='"+ location.protocol +"//www.googleadservices.com/pagead/conversion.js'></script>");
+   //document.writeln("<script type='text/javascript' src='"+ location.protocol +"//www.googleadservices.com/pagead/conversion.js'></script>");
+   var conversionjs = document.createElement('script');
+   conversionjs.setAttribute('src', '//www.googleadservices.com/pagead/conversion.js');
+   var head = document.getElementsByTagName('head')[0];
+   head.appendChild(conversionjs);
+   if ( typeof util.hideGoogleAdd === 'function' ) {
+      util.hideGoogleAdd();
+   }
 }
 
 llg_ab.handleSegCookie = function(pgm,seg){
@@ -685,4 +702,21 @@ function sendMetricsTagLoginLayer () {
 
    sendMetricTag();
 
+}
+
+function setBuyBuddyPixel() {
+//Potential flag to turn the js off
+	var currentSC = gcookie('LLBEAN').split(':')[0];
+
+  var sourceCode = currentSC.toLowerCase(),
+  lowerBuyBuddySourceCode = buyBuddySourceCode.toLowerCase();
+
+	if ( buyBuddyPixelActive == 1 && sourceCode.indexOf(lowerBuyBuddySourceCode) != -1) {
+		buddyImageSrc = "//track.brighteroption.com/b?p=sx2vsj&l=0&sb_v=";
+		buddyImageSrc += netBalance.replace('.','');
+		buddyImg = document.createElement("img");
+		buddyImg.onload = function() { return; };
+		buddyImg.src =buddyImageSrc;
+		buddyImg.setAttribute('style' ,'left: -9999px; top: -9999px; position:absolute;');
+	}
 }

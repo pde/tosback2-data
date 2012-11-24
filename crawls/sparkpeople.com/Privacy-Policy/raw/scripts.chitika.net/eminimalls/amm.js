@@ -448,6 +448,10 @@ function ch_mm() {
         ch_au('prerender', 1);
     }
 
+    if (document.location.href.indexOf('##chitika_ab=') !== -1) {
+        ch_au('ab_overlay_which', document.location.href.match(/##chitika_ab=([^&]+)/)[1]);
+    }
+
     var r = Math.round(Math.random() * 1000);
     ch_au('cb', r);
 

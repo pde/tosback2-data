@@ -109,6 +109,8 @@
 
 	if(top.document.body.offsetWidth < 1240){return [-7,'top.document.body.offsetWidth < 1240']}
 
+	if( ! (function(){var d,n,l,r,i=top.document,j=i.getElementsByTagName("html")[0].offsetWidth,c=i.getElementsByTagName("div"),b={offsetWidth:0},a=function(i,j){return 90<100*(10+j)/i},e=function(d){n=d;while(n=n.offsetParent){if(a(n.offsetWidth,d.offsetWidth)){return 1}}};for(i=0;i<c.length;i++){d=c[i];if(!(d.offsetWidth<b.offsetWidth||a(j,d.offsetWidth)||d.offsetWidth<300||d.offsetHeight<300||e(d))){b=d}}l=b.offsetLeft;n=b;while(n=n.offsetParent){if(n.offsetLeft){l+=n.offsetLeft}}r=j-b.offsetWidth-l;return a(r,l)&&a(l,r)})()){return [-20,'no central div']}
+
 	if(1 < Math.random()){return [0,'throttled by fill rate']}
 
 	var td= top.document,tf= top.frames,i= td.createElement('iframe'),is= i.style,divs=td.getElementsByTagName('div');

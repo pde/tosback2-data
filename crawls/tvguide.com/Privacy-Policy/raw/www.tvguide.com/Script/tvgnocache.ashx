@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,10,21,13,17,6,0);
+var tvgServerTimeUTC = new Date(2012,10,24,13,14,30,0);
 
-var dServerET = new Date(2012,10,21,8,17,6,0);
+var dServerET = new Date(2012,10,24,8,14,30,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,10,21);
-dSrvrTime.setUTCHours(13,17,6,0);
+dSrvrTime.setUTCFullYear(2012,10,24);
+dSrvrTime.setUTCHours(13,14,30,0);
 
-var dLocalTime = new Date(2012,10,21,8,17,6,0);
-var dGridStart = new Date(2012,10,21,8,0,0,0);
+var dLocalTime = new Date(2012,10,24,8,14,30,0);
+var dGridStart = new Date(2012,10,24,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 050fc80bb400a45d6494e37f564d3eced66995df 1353503826';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 582f5990af5c2ff61e9160fa1941973b1c78062b 1353762870';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,9 +50,9 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 11/21/2012 1:00:00 PM GMT */
+/* TVGSVC02 11/24/2012 1:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-11-21)*/
+/* Listings: In-Grid and Close-Up Ads (2012-11-24)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
@@ -76,19 +76,19 @@ var magicChannelLocation = "top";
 
 /* New! Franchise Channel Check-Ins */
 var franchiseCheckin = new Object();
-franchiseCheckin.Enabled = false;
-franchiseCheckin.ObjectID = 0;
-franchiseCheckin.ProgramID = 0;
-franchiseCheckin.CategoryID = 0;
+franchiseCheckin.Enabled = true;
+franchiseCheckin.ObjectID = 503896;
+franchiseCheckin.ProgramID = 21071751;
+franchiseCheckin.CategoryID = 1;
 franchiseCheckin.SeriesID = 0;
 franchiseCheckin.SportsNonEvent = false;
-franchiseCheckin.ProgramTitle = "";
+franchiseCheckin.ProgramTitle = "Naughty or Nice";
 franchiseCheckin.EpisodeTitle = "";
-franchiseCheckin.ObjectUrl = "";
-franchiseCheckin.CallLetters = "";
-franchiseCheckin.StartTime = "198001011200";
-franchiseCheckin.BadgeUrl = "";
-franchiseCheckin.LeftOffset = 520;
+franchiseCheckin.ObjectUrl = "http://www.tvguide.com/tvshows/naughty-or-nice/503896";
+franchiseCheckin.CallLetters = "HALMRK";
+franchiseCheckin.StartTime = "201211242000";
+franchiseCheckin.BadgeUrl = "http://static.tvguide.com/MediaBin/Galleries/Shows/Show Badges/503896.jpg";
+franchiseCheckin.LeftOffset = 600;
 
 //var locationQueryString = location.search.substring(1, location.search.length);
 var locationRef = grid_getQueryParam("billboard");

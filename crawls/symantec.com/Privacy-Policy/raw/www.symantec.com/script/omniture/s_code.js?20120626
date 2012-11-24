@@ -53,7 +53,7 @@ s.usePlugins=true
 
 
 function s_doPlugins(s) {
-	var url=s.linkHandler('.exe|.zip|.wav|.mp3|.mov|.mpg|.avi|.wmv|.doc|.pdf|.xls|.gz|.gg|.iso|.kmz|.xml|.mp4|.m4a|.air|.ppt|.pptx|.docx|.xlsx|.m4v|.tar|.txt|.jpg|.jpeg|.png|.gif|.tiff|.bmp|.rar','d');
+	var url=s.linkHandler('.exe|.zip|.wav|.mp3|.mov|.mpg|.avi|.wmv|.doc|.pdf|.xls|.gz|.gg|.iso|.kmz|.xml|.mp4|.m4a|.air|.ppt|.pptx|.docx|.xlsx|.m4v|.tar|.txt|.jpg|.jpeg|.png|.gif|.tiff|.bmp|.rar|.msi|.rpm','d');
 
 	if(url) {
 		s.events="event1";
@@ -597,7 +597,7 @@ var demandbasePlugin = {
 				dbData.audience = this.checkAndReturnSameOrErrorValue(dbInfo.audience, isDetailed);
 				dbData.audienceSegment = this.checkAndReturnSameOrErrorValue(dbInfo.audience_segment, isDetailed);
 				dbData.audiencePlusSegment = dbData.audience;
-				if(dbData.audienceSegment !== ""){
+				if(dbData.audienceSegment !== "" && dbData.audienceSegment !== "error" && dbData.audienceSegment !== "ISP Visitor"){
 					dbData.audiencePlusSegment += " > " + dbData.audienceSegment;
 				}
 
@@ -618,6 +618,7 @@ var demandbasePlugin = {
 				dbData.audienceSegment = local;
 			}
 			//write any updates back out to data storage
+			doTracking();
 			demandbasePlugin.storeData(dbData);
 		} catch (err) {
 			wasErrorInDemandbasePlugin = true;
@@ -725,8 +726,10 @@ fireDemandBaseTracking = function(){
 	return false; //no conditions met? Return false and do not invoke demandbase.
 }
 
-if(fireDemandBaseTracking()){
-	var tdb = setTimeout("trackDemandBase();","3000");
+function doTracking(){
+	if(fireDemandBaseTracking()){
+		trackDemandBase();
+	}
 }
 
 /* end demandbase code */

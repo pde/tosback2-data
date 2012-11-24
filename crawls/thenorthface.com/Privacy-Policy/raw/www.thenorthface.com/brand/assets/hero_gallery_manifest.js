@@ -926,41 +926,77 @@ var Class = (function() {
       this.element.bind('loaded_TNF_heroSpot', this.countDownHeroSpotLoaders.bind(this));
 
       this.items = [];
+
+      this.width = this.element.width();
       items.each(function(i, element) {
         var type = $(element).data('type');
 
         // It shouldn't be possible to get undefined if the data is accurate,
         // but data is unlikely to be accurate on integration - opting to make
         // the implementation less brittle.
-        var object = (type === 'standard' || type === undefined) ? $.TNF.BRAND.HeroGallery.Standard : $.TNF.BRAND.HeroGallery.Rotator;
+        var object = (type === 'standard' || type == 'linked-carousel' || type === undefined) ? $.TNF.BRAND.HeroGallery.Standard : $.TNF.BRAND.HeroGallery.Rotator;
         this.items.push(new object.Item($(element)));
       }.bind(this));
 
-      // add in the markup we'll need for pagination
-      this.paginatable = this.items.length > 1;
-      if (this.paginatable) {
-        this.element.append('\
-               <a class="hero-gallery-arrow-left arrow-box-left ' + this.shortClass + '"><div class="arrow"></div></a>\
-               <a class="hero-gallery-arrow-right arrow-box ' + this.shortClass + '"><div class="arrow"></div></a>');
-        this.element.append('<div class="hero-gallery-paginator"><em></em>' + (new Array(this.items.length + 1).join('<a></a>')) + '</div>');
+      // REFACTOR: The "linkedCarousel" is actually another carousel - the
+      // concept of a Carousel deserves an abstraction of its own -AN
+      this.linkedCarousel = false;
+      if (this.element.hasClass('linked-carousel')) {
+        this.linkedCarousel = true;
+        this.alternateScroller = $('.hero-gallery-mini-scroller');
+
+        // Given a scroller with n visible items,
+        // A standard scroller needs to be wide enough to fit n items
+        // An infinite scroller needs to be wide enough to fit n+1 items
+        var alternateScrollerItems = this.alternateScroller.find('.linked-carousel-mini-item'),
+            altItemWidth = alternateScrollerItems.width(),
+            slotCount = alternateScrollerItems.length + 1;
+
+        // Need to take margin into account to appropriately size the scroller
+        // container.
+        //
+        // REFACTOR: (MAGIC NUMBER) Research cross-browser-compatible method of
+        // reliably calculating margins, in a way that takes units into
+        // account instead of hard-coding based on the current known
+        // implementation.
+        var itemMargin = 4;
+        this.alternateScroller.width((altItemWidth * slotCount) + (itemMargin * slotCount));
+
+        // Make sure that a cloned item is available when scrolling.
+        var clone = alternateScrollerItems.first().clone();
+        this.alternateScroller.append(clone);
+
+        // Make sure that the first item is hidden.
+        this.alternateScroller.css('left', '-478px');
+
+        // Memoize list of items
+        this.alternateScrollerItems = alternateScrollerItems.add(clone);
+      } else {
+        // REFACTOR: pagination controller can be its own object
+        // add in the markup we'll need for pagination
+        this.paginatable = this.items.length > 1;
+        if (this.paginatable) {
+          this.element.append('\
+                 <a class="hero-gallery-arrow-left arrow-box-left ' + this.shortClass + '"><div class="arrow"></div></a>\
+                 <a class="hero-gallery-arrow-right arrow-box ' + this.shortClass + '"><div class="arrow"></div></a>');
+          this.element.append('<div class="hero-gallery-paginator"><em></em>' + (new Array(this.items.length + 1).join('<a></a>')) + '</div>');
+        }
+
+        // find the elements we'll use for pagination
+        this.prevButton = this.element.find('a.hero-gallery-arrow-left');
+        this.nextButton = this.element.find('a.hero-gallery-arrow-right');
+        this.paginator = this.element.find('div.hero-gallery-paginator');
+        this.pageIndicator = this.element.find('div.hero-gallery-paginator em');
+
+        // center the paginator
+        this.paginator.css('left', (this.width / 2) - (this.paginator.outerWidth() / 2));
       }
 
-      // find the elements we'll use for pagination
-      this.prevButton = this.element.find('a.hero-gallery-arrow-left');
-      this.nextButton = this.element.find('a.hero-gallery-arrow-right');
-      this.paginator = this.element.find('div.hero-gallery-paginator');
-      this.pageIndicator = this.element.find('div.hero-gallery-paginator em');
       this.scroller = this.element.find('div.hero-gallery-scroller');
-
-      // get some widths
-      this.width = this.element.width();
       this.itemWidth = this.element.find('div.hero-gallery-item').width();
 
       // size the scroller
       this.scroller.width(this.itemWidth * this.items.length);
-
-      // center the paginator
-      this.paginator.css('left', (this.width / 2) - (this.paginator.outerWidth() / 2));
     },
 
     setupObservers: function() {
@@ -987,38 +1023,169 @@ var Class = (function() {
         } catch (e) {}
       }.bind(this));
 
-      // left and right pagination
-      this.prevButton.click(this.prevPage.bind(this));
-      this.nextButton.click(this.nextPage.bind(this));
+      // REFACTOR: I can has polymorphism?
+      if (this.linkedCarousel) {
+        this.alternateScrollerItems.bind('click', this.activateMiniCarouselItem.bind(this));
+      } else {
+        // left and right pagination
+        this.prevButton.click(this.prevPage.bind(this));
+        this.nextButton.click(this.nextPage.bind(this));
 
-      // page indicator pagination
-      this.paginator.find('a').click(function(e) {
-        this.jumpToPage($(e.target).prevAll('a').length);
-      }.bind(this));
+        // page indicator pagination
+        this.paginator.find('a').click(function(e) {
+          this.jumpToPage($(e.target).prevAll('a').length);
+        }.bind(this));
 
-      $("body").bind('hero_gallery_popup_opened', function(e) {
-        this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
-      }.bind(this));
+        // REFACTOR: Paginator, flyout, nextButton & prevButton are all
+        // candidates for separate objects
+        $("body").bind('hero_gallery_popup_opened', function(e) {
+          this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
+        }.bind(this));
 
-      $("body").bind('hero_gallery_popup_closed', function(e) {
-        this.paginator.show();
-        this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
-      }.bind(this));
+        $("body").bind('hero_gallery_popup_closed', function(e) {
+          this.paginator.show();
+          this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
+        }.bind(this));
 
-      // if the flyout opens or closes, we should move our paging arrow
-      $("body").bind('hero_gallery_flyout_opened', function(e) {
-        this.nextButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.nextButton.hide(); }.bind(this));
-        this.prevButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.prevButton.hide(); }.bind(this));
-        this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
-      }.bind(this));
+        // if the flyout opens or closes, we should move our paging arrow
+        $("body").bind('hero_gallery_flyout_opened', function(e) {
+          this.nextButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.nextButton.hide(); }.bind(this));
+          this.prevButton.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.prevButton.hide(); }.bind(this));
+          this.paginator.animate({opacity: 0}, 200, 'easeInOutSine', function() { this.paginator.hide(); }.bind(this));
+        }.bind(this));
 
-      $("body").bind('hero_gallery_flyout_closed', function(e) {
-        this.nextButton.show();
-        this.prevButton.show();
-        this.paginator.show();
-        this.nextButton.animate({opacity: 1}, 200, 'easeInOutSine');
-        this.prevButton.animate({opacity: 1}, 200, 'easeInOutSine');
-        this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
+        $("body").bind('hero_gallery_flyout_closed', function(e) {
+          this.nextButton.show();
+          this.prevButton.show();
+          this.paginator.show();
+          this.nextButton.animate({opacity: 1}, 200, 'easeInOutSine');
+          this.prevButton.animate({opacity: 1}, 200, 'easeInOutSine');
+          this.paginator.animate({opacity: 1}, 200, 'easeInOutSine');
+        }.bind(this));
+      }
+    },
+
+    // Internal: Responds to Linked Carousel item click behavior.
+    //
+    // event - jQuery event
+    //
+    activateMiniCarouselItem: function(event) {
+      if (typeof event.preventDefault === 'function') {
+        event.preventDefault();
+      }
+
+      // prevent hyper-clicking
+      if (this.alternateScroller.is(':animated')) {
+        return false;
+      }
+
+      // Trigger the "main" hero gallery to scroll
+      var targetElement = $(event.target).attr('href'),
+          targetIndex   = $(targetElement).index();
+
+      this.jumpToPage(targetIndex);
+    },
+
+    // Internal: Updates "mini" scroller to activate element specified by
+    // selectedElement
+    //
+    // - selectedElement - jQuery element that should be selected
+    //
+    // REFACTOR: Code Smell Alert! This next bit of code is what makes
+    // the "mirrored" or "mini" carousel animate and update. Had to
+    // plow my way through this and resist refactoring, so here's some
+    // documentation in hopes that it will help.
+    //
+    // Usage
+    //
+    // How It Works:
+    // -------------
+    //
+    // Given a scroll container (this.alternateScroller) with n items
+    // (this.alternateScrollerItems), the scroll container is given a width
+    // to accomodate n+1 items.
+    //
+    // An extra clone of the first item is appended to the container so that
+    // it is ready to show if the carousel moves in that direction.
+    //
+    // When an item is selected, it must be "dismissed" from view, as its
+    // absence indicates active state. To do so, the container moves one
+    // "space" to the left or right, hiding the selected item and revealing
+    // another.
+    //
+    // To cleanup, it removes the DOM element that has been pushed furthest
+    // out-of-view and prepares a new clone.
+    //
+    // A visual might help:
+    // --------------------
+    //
+    //    Initial state:
+    //
+    //    |x|.|.|x|
+    //
+    //    |x| = Hidden DOM element
+    //    |.| = Visible DOM element
+    //
+    //    After clicking left-most visible element:
+    //
+    //    Initial state:                 |x|.|.|x|
+    //    Slide to the left:           |x|x|.|.|
+    //    Remove "extra" node:           |x|.|.|
+    //    Append clone:                  |x|.|.|x|
+    //
+    //    After clicking right-most visible element:
+    //
+    //    Initial state:                 |x|.|.|x|
+    //    Slide to the right:              |.|.|x|x|
+    //    Remove "extra" node:             |.|.|x|
+    //    Append clone:                  |x|.|.|x|
+    //
+    // REFACTOR: Magic numbers:
+    //           - left-css value hard-coded to width of 1 "mini" linked carousel item (478)
+    //           - animation duration in milliseconds (500) -- consider using animation libs
+    // REFACTOR: non-scalable implementation (might not work w/ more items)
+    selectMiniCarouselIndex: function(selectedElement) {
+      var firstItem     = this.alternateScrollerItems.eq(0),
+          lastItem      = this.alternateScrollerItems.eq(this.alternateScrollerItems.length - 1);
+          miniIndex     = selectedElement.index();
+
+      // Shift in a direction
+      if (miniIndex == 1) {
+        var pixelsToLeft      = '-=478px',
+            deletedItemFilter = ':eq(0)',
+            cloneMethod       = 'append';
+      } else if (miniIndex == 2) {
+        var pixelsToLeft      = '+=478px',
+            deletedItemFilter = ':eq(' + (this.alternateScrollerItems.length - 1) + ')',
+            cloneMethod       = 'prepend';
+      }
+
+      this.alternateScroller.animate({'left': pixelsToLeft}, 500, 'easeInOutSine', function() {
+        // Remove item at index 0 or n (where n is number of items - 1)
+        // REFACTOR: Not sure why, but it seems we can't use jQuery's remove
+        // method directly, or at least it doesn't seem to behave as I would
+        // expect.
+        //
+        // wanted this:
+        // this.alternateScrollerItems = this.alternateScrollerItems.remove('eq(' + deletedItemIndex + ')');
+        var deletedItem = this.alternateScrollerItems.filter(deletedItemFilter);
+            deletedItem.remove();
+        this.alternateScrollerItems = this.alternateScrollerItems.not(deletedItemFilter);
+
+        // Make a clone at index 0 or n+1
+        var clone = selectedElement.clone();
+
+        // Activate the clone's click behavior
+        clone.bind('click', this.activateMiniCarouselItem.bind(this));
+
+        // Attach clone to the DOM
+        this.alternateScroller[cloneMethod](clone);
+
+        // Update reference to include the clone
+        this.alternateScrollerItems = this.alternateScrollerItems.add(clone);
+
+        // Reset "viewport"
+        this.alternateScroller.css('left', '-478px');
       }.bind(this));
     },
 
@@ -1039,7 +1206,15 @@ var Class = (function() {
       this.jumpToPage(this.currentPage + 1);
     },
 
+    // REFACTOR: Make this implementation more robust. Currently, this accepts
+    // an index (integer) - methods that invoke this message could be cleaned
+    // up by allowing this to accept EITHER an index OR an element (if passed
+    // an element, this method would then be responsible for determining the
+    // index) -AN
     jumpToPage: function(page) {
+      // do nothing if asked to jump to same page as current
+      if (page == this.currentPage) return;
+
       if (page > this.items.length - 1) page = 0;
       if (page < 0) page = this.items.length - 1;
       this.currentPage = page;
@@ -1049,18 +1224,39 @@ var Class = (function() {
 
       // move the scroller and the page indicator
       this.scroller.animate({'left': -(page * this.itemWidth)}, 500, 'easeInOutSine');
-      this.pageIndicator.animate({'left': (page * 19)}, 500, 'easeInOutSine');
+
+      // REFACTOR: Make polymorphic!
+      if (this.pageIndicator) {
+        // REFACTOR: Extract magic number (19)
+        this.pageIndicator.animate({'left': (page * 19)}, 500, 'easeInOutSine');
+      }
+
+      // REFACTOR: Make polymorphic!
+      if (this.linkedCarousel) {
+        // get index of matching linkedCarousel
+        // OPTIMIZE: requerying here when we shouldn't need to
+        var items = this.element.find('div.hero-gallery-item'),
+            itemId = items.eq(this.currentPage).attr('id'),
+            matchingMini = this.alternateScrollerItems.filter('[href="#' + itemId + '"]');
+
+        this.selectMiniCarouselIndex(matchingMini);
+      }
     },
 
     dispose: function() {
       this.element.data('hero_gallery', null);
 
-      this.prevButton.unbind('click').remove();
-      this.nextButton.unbind('click').remove();
-      this.paginator.remove();
+      if (this.linkedCarousel) {
+        this.prevButton.unbind('click').remove();
+        this.nextButton.unbind('click').remove();
+        this.paginator.remove();
 
-      for (var item in this.items) {
-        this.items[item].dispose();
+        for (var item in this.items) {
+          this.items[item].dispose();
+        }
+      } else {
+        this.alternateScroller.remove();
+        this.alternateScrollerItems.remove();
       }
 
       this.element = null;
@@ -1383,7 +1579,7 @@ var Class = (function() {
       this.activateCtaRollover();
 
       // make the call to action open the flyout
-      $('.cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
+      $('.hot-region, .cta a.arrow-box, .hero-cta a.hero-arrow-box', this.element).click(function(e) {
         var element = $(e.currentTarget);
         if (element.data('embed-code')) {
           e.preventDefault();
@@ -1523,43 +1719,64 @@ var Class = (function() {
 
     positionPopup: function() {
       var popupWidth = this.popup.outerWidth(),
-          popupHeight = this.popup.outerHeight();
+          popupHeight = this.popup.outerHeight(),
+          markerSpacing = (this.markerSize / 2),
+          threshold = 10,
+          left = 0,
+          top = 0;
 
-      // find the top, and adjust if there isn't enough room
-      var top = this.position['top'] - popupHeight - 30;
-      var left = 0;
-      if (top <= 10) {
-        top = this.position['top'] + (this.markerSize / 2);
+      // REFACTOR: Mixing of concerns
+      // REFACTOR: WAY too much branching logic
+      if (this.element.parents('.linked-carousel').length > 0) {
+        // Default "textured" callouts to the left
+        top  = this.position['top'] - (popupHeight / 2);
+        left = this.position['left'] - popupWidth;
 
-        // not enough room below, so move to the right
-        if (top + popupHeight + 30 > this.containerHeight) {
+        // 2nd choice for "textured" callouts is to the right
+        if (left < threshold) { left = this.position['left']; }
+        if (top <= threshold) { top = threshold; }
 
-          top = (this.containerHeight - popupHeight) / 2;
-          if (top <= 10) top = 10;
-          left = this.position['left'] + 30;
+      } else {
+        // find the top, and adjust if there isn't enough room
+        top = this.position['top'] - popupHeight - markerSpacing;
 
-          // not enough room on the right, so move to the left
-          if (left + popupWidth + 30 > this.containerWidth) {
+        if (top <= threshold) {
+          top = this.position['top'] + markerSpacing;
+
+          // not enough room below, so move to the right
+          if (top + popupHeight + markerSpacing > this.containerHeight) {
 
             top = (this.containerHeight - popupHeight) / 2;
-            if (top <= 10) top = 10;
-            left = this.position['left'] - popupWidth - 30;
+            if (top <= threshold) {
+              top = threshold;
+            }
+            left = this.position['left'] + markerSpacing;
 
-            this.popup.addClass('hero-gallery-callout-popup-left');
-            this.setArrowTop(top);
+            // not enough room on the right, so move to the left
+            if (left + popupWidth + markerSpacing > this.containerWidth) {
+
+              top = (this.containerHeight - popupHeight) / 2;
+              if (top <= threshold) {
+                top = threshold;
+              }
+              left = this.position['left'] - popupWidth - markerSpacing;
+
+              this.popup.addClass('hero-gallery-callout-popup-left');
+              this.setArrowTop(top);
+            } else {
+              this.popup.addClass('hero-gallery-callout-popup-right');
+              this.setArrowTop(top);
+            }
+
           } else {
-            this.popup.addClass('hero-gallery-callout-popup-right');
-            this.setArrowTop(top);
+            left = this.positionPopupLeft(popupWidth);
+            this.popup.addClass('hero-gallery-callout-popup-bottom');
           }
 
         } else {
           left = this.positionPopupLeft(popupWidth);
-          this.popup.addClass('hero-gallery-callout-popup-bottom');
+          this.popup.addClass('hero-gallery-callout-popup-top');
         }
-
-      } else {
-        left = this.positionPopupLeft(popupWidth);
-        this.popup.addClass('hero-gallery-callout-popup-top');
       }
 
       // position the popup
