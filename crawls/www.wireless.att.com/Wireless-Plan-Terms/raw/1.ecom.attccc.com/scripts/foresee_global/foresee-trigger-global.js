@@ -1,7 +1,7 @@
 var $$FSR = {
    'timestamp': 'September 24, 2012 @ 2:27 PM',
    'version': '12.3.0',
-   'configuration_version': '107A',
+   'configuration_version': '108A',
    'enabled': true,
    'sessionreplay': true,
    'auto' : true,

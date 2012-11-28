@@ -165,7 +165,7 @@ $(document).ready(function(){
 		$body.addClass('position-fixed');
 		setTimeout(function() {
 			$body.removeClass('position-fixed');
-			$body.find('a:first').focus();
+			//$body.find('a:first').focus();
 		},100);
 	}
 	

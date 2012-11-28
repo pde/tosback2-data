@@ -441,7 +441,7 @@ function onloadBadgevilleInit() {
 
 		//Black friday campaign tagging
 		
-		if (typeof(badgev_isBlackFriday) != 'undefined' && badgev_isBlackFriday){
+		if (typeof(badgev_isBlackFridaydeals) != 'undefined' && badgev_isBlackFridaydeals){
 			badgev_params.event = 'blackfriday';
 		}
 		// GS2 tagging

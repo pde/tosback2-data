@@ -1234,7 +1234,7 @@
 					var x, channel = $.ad._meta.channel, ret = true;				
 					ret =  (channel.indexOf("fnc/")===0 || channel.indexOf("fbn/")===0 || channel.indexOf("fsb/")===0 || channel.indexOf("fnl/")===0 ) ? true : false;
 									// RESTRICT FIF on these channels
-					var restrict =  ["fnc/insider","fnc/entertainment/blogs/entertainment","fnc/radio","fnc/junior-reporters"];
+					var restrict =  ["fnc/entertainment/blogs/entertainment","fnc/radio","fnc/junior-reporters"];
 					
 					for (x = 0; x < restrict.length; x++) {
 						if (channel.indexOf(restrict[x]) > -1) { ret = false; break; }

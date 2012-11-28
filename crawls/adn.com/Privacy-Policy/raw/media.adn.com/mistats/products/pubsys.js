@@ -1118,7 +1118,7 @@ mistats.GCSTracker = function ()
 
       prompt = getElementLikeId(cFrameId);
 
-      if (!prompt)
+      if (!(prompt && prompt.style.display === ''))
       {
          if (++pollCnt < cPollLim)
             pollPtr = setTimeout(track, 250);

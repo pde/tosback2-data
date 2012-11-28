@@ -3303,7 +3303,21 @@ KIDS.ads.refresh.KCALiveShowOn()
 $(document).bind(NICK.kca.dos.EVENT_DOS_OFF,function(){KIDS.reporting.omnifunctions.KCA2012LiveShowOff();
 KIDS.ads.refresh.KCALiveShowOff()
 })
-}}});
+}}$(document).bind("NICK.listings.selectDropdownFilter.dropdown-by-show",function(){KIDS.reporting.omnifunctions.sortListingEvent("dropdown-by-show")
+});
+$(document).bind("NICK.listings.selectDropdownFilter.dropdown-by-type",function(){KIDS.reporting.omnifunctions.sortListingEvent("dropdown-by-type")
+})
+});
+KIDS.reporting.omnifunctions.sortListingEvent=function(b){try{var a=(b.indexOf("show")>-1)?" by Show Filter":" by Type Filter";
+if(KIDS.get("type")=="game"){a="Games"+a
+}else{if(KIDS.get("type")=="quiz"){a="Quizes"+a
+}else{a=KIDS.get("type")+a
+}}var c=$("#"+b+" option:selected").val();
+c=(c.indexOf("/")>-1)?c.substring(0,c.indexOf("/")):c;
+c=a+" | "+c;
+btg.Controller.sendLinkEvent({linkName:a+" Click Tracking",linkType:"o",eVar13:c,prop2:c})
+}catch(d){KIDS.utils.doLog(d)
+}};
 KIDS.reporting.omnifunctions.sendReportingCall=function(b){try{if(b==null){b=KIDS.reporting.config
 }if(b.getPageName()!=null&&b.getPageName()!=""){if(b.getEVar(16)==null||b.getEVar(16)==""){b.setEVar(16,b.getPageName())
 }}var a=btg.config.Omniture.account;

@@ -12,6 +12,9 @@ JY = {
             });
             //window.log('JY.common.init();');
             UTILS.setScreenSize();
+            if ( JY.screenWidth < 960 ){
+                $('img.btn-quickshop').remove();
+            }
             //UTILS.rotateIt(document);
             UTILS.setBrand();
             $('input[type=checkbox]').not($('div.rev-attr input[type="checkbox"]')).prettyCheckboxes();
@@ -1137,6 +1140,20 @@ JY = {
             });
             $('table#table-wishlist a.icon-delete').click(function(e) {
                 var itemID = $(this).data('id');
+                $.ajax({
+                    dataType: 'json',
+                    url: '/ajx/wishlist.aspx',
+                    data: 'wlID=' + itemID,
+                    type: 'get',
+                    success: function(data){
+                        if ( data.message === "ok" ){
+                            $('table#table-wishlist a.icon-delete[data-id="' + itemID + '"]').parent('td').parent('tr').slideUp(300, function(){$(this).remove();});
+                        }
+                    },
+                    error: function(a,b,c){
+                        window.log('wishlist remove error', a, b, c);
+                    }
+                });
             });
         },
         finalize: function() {

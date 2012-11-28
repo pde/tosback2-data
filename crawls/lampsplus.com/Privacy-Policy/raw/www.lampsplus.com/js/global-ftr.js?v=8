@@ -175,7 +175,6 @@ GetPortfolioItemCount();
             content: $("#content"),     //html element that contains content on page
             bgColor: "#fff",            //background color of modal
             src: "",                    //url source of iframe to be embedded
-            iframeHeight: '600px',      //if an iframe is used, a height should be specified for iPad
             openEvt: function(){},      //function to be run when modal opens
             closeEvt: function(){}      //function to be ran after close has been run
         }
@@ -242,22 +241,19 @@ GetPortfolioItemCount();
 
                 //if modal is using on page content
                 if(o.src.length == 0){
-                    var a = o.content.clone().empty();
-                    modalContent.append(a).children().append(o.content.html()).show();
+                    modalContent.append(o.content.show());
 
                     //if modal is embedding an iframe
                 } else {
                     //enable scrolling an iFrame in a modal on a touch device
+                    $("<iframe width='100%' height='100%' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
                     if(isIpad()){
-                        $("<iframe width='100%' height='" + o.iframeHeight + "' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
                         modalContent.find('iframe').load(function(){
                             modalContent.css({
                                 'overflow': 'auto',
-                                '-webkit-overflow-scrolling': 'scroll'
+                                '-webkit-overflow-scrolling': 'touch'
                             });
                         });
-                    } else {
-                        $("<iframe width='100%' height='100%' src='" + o.src + "' scrolling='auto' horizontalscrolling='no' verticalscrolling='no' frameborder='0'></iframe>").appendTo(modalContent);
                     }
                 }
 
@@ -283,13 +279,18 @@ GetPortfolioItemCount();
 
                 //fade in backdrop and modal popup
                 backdrop.fadeTo(500, 0.6, function () {
-                    modal.fadeIn(700, function () {
-                        //ugly bug in ie8 requires any iframe with flash in it to be reloaded after fading in
-                        if ($('body').hasClass('ie8') || $('html').hasClass('ie8')) {
-                            var refreshSrc = modalContent.children('iframe').attr('src');
-                            modalContent.children('iframe').attr('src', refreshSrc);
-                        }
-                    });
+                    // iframe needs reload after fade in - IE8 for Flash and Firefox for full screen
+                    if ($('body').hasClass('ie8') || $('html').hasClass('ie8') || $.browser.mozilla) {
+                        var modalIframe = modalContent.children('iframe'),
+                        refreshSrc = modalIframe.attr('src');
+
+                        modalIframe.attr('src','');
+                        modal.fadeIn(700, function () {
+                           modalIframe.attr('src', refreshSrc);
+                        });
+                    } else {
+                        modal.fadeIn(700);
+                    }
                 });
 
                 //run openEvt function if there is one
@@ -376,15 +377,12 @@ GetPortfolioItemCount();
             url: null,
             action: 'resize'
         }
-        
+
         // combine defaults and passed in options
         var rO = $.extend(resizeDefaults, resizeOptions);
 
         if (rO.action == "childSecure") {
-            setTimeout(function (){
-				window.location = "/controls/ResizeModalNonSecure.aspx?width=" + rO.width + "&height=" + rO.height + "&url=" + rO.url;
-			}, 1500);
-			
+            window.location = "/controls/ResizeModalNonSecure.aspx?width=" + rO.width + "&height=" + rO.height + "&url=" + rO.url;
         }
 
         if (rO.action == "childNonSecure") {
@@ -401,27 +399,24 @@ GetPortfolioItemCount();
             window.parent.$("#lpModalContent").animate({
                 width: rO.width,
                 height: rO.height
-            }, 500);
+            }, 200);
 
-            // resize modal
             window.parent.$("#lpModal").animate({
                 width: rO.width,
                 height: rO.height,
                 'margin-left': "-" + offsetX + "px",
                 'margin-top': "-" + offsetY + "px"
-            }, 500, function () {
+            }, 200);
 
-                setTimeout(function (){
-                    if (rO.url != null) {
-                        if (rO.url.indexOf('?') >= 0) {
-                            window.location = rO.url + "&resized=true";
-                        } else {
-                            window.location = rO.url + "?resized=true";
-                        }
+            setTimeout(function() {
+                if (rO.url != null) {
+                    if (rO.url.indexOf('?') >= 0) {
+                        window.location = rO.url + "&resized=true";
+                    } else {
+                        window.location = rO.url + "?resized=true";
                     }
-                }, 200);
-                
-            });
+                }
+            }, 400);
         }
 
     }
@@ -457,14 +452,14 @@ GetPortfolioItemCount();
 
         this.each(function(ttNum) {
             var $this        = $(this);
-            
+
             if (o.tooltip.length > 1){
                 var $thisTooltip = $(o.tooltip[ttNum]);
             } else {
                 var $thisTooltip = o.tooltip;
             }
 
-            function tooltipGetMeasurements() { 
+            function tooltipGetMeasurements() {
                 var $window            = $(window),
                     m                  = {};
                     m.elPos            = $this.offset();
@@ -812,7 +807,7 @@ GetPortfolioItemCount();
                     timeout: o.hoverDelay,
                     out: out
                 });
-                
+
                 var timeout;
                 $thisTooltip.mouseenter(function() {
                     tooltipOn.val = true;

@@ -780,11 +780,11 @@
 						//get the link for this game, and the date on which it occurs
 						var url = $(gamestate).attr("href");
 						var onclick = "";
-						
+
 						//FIXME: when do CFB and NFL statfox links show up?
 						//if ((url == "") && (Math.abs((gamedate - (new Date()))/86400000) < 7)) {
 						//if ((url.indexOf("preview.asp") >= 0 || url == "") && (gamedatestamp == todaystamp) && (data.sport.toUpperCase() != "NFL") && (status2 != 'Ppnd') && (status2 != 'PPD')) {
-						if ((url.indexOf("preview.asp") >= 0 || url == "") && ((gamedatestamp == todaystamp && data.sport.toUpperCase() != "NFL") || (this.defaultPeriod == data.period && (data.sport.toUpperCase() == "NFL" || data.sport.toUpperCase() == "CFB"))) && (status2 != 'Ppnd') && (status2 != 'PPD')) {
+						if ((url.indexOf("preview.asp") >= 0 || url == "") && ((gamedatestamp == todaystamp && data.sport.toUpperCase() != "NFL") || (this.defaultPeriod == data.period && (data.sport.toUpperCase() == "NFL" || data.sport.toUpperCase() == "CFB"))) && (status2 != 'Ppnd') && (status2 != 'PPD') && (status2 != 'Canc')) {
 						//document.write(status2); document.write(status1);
 							//this is a preview link or no link, and the game is today.  Replace it with a statfox link if we have that info
 							var sf = ticker.statfoxData[data.sport.toUpperCase()];
@@ -812,7 +812,7 @@
 						}
 						//alert(this.defaultPeriod + " | " + data.period);
 						//if (url == "" || (status2 == "PPD") || (((data.sport.toUpperCase() == "NHL") || (data.sport.toUpperCase() == "NBA") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
-						if (url == "" || (status2 == "PPD") || (((data.sport.toUpperCase() == "NHL") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
+						if (url == "" || (status2 == "PPD") || (status2 == 'Canc') || (((data.sport.toUpperCase() == "NHL") || ((data.sport.toUpperCase() == "MLB") && (url == ""))) && $(tickerent).attr("gametype") == 'Preseason')) {
 							if (data.sport.toUpperCase() == "NFL") {
 								if (data.period < 0) {
 									url="http://scores.nbcsports.msnbc.com/fb/scoreboard.asp?week="+ Math.abs(data.period) + "&seasontype=pre";							

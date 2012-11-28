@@ -144,9 +144,11 @@ $(document).ready(function(){
 	function highlightNav()	{
 		var pathname 	= $(location).attr('pathname');
 		if(stristr(pathname,'/products/'))				{$('#nav-products .trigger').addClass("active");}
-		else if(stristr(pathname,'/business/'))			{$('#nav-business-case .trigger').addClass("active");}	
 		else if(stristr(pathname,'/company/'))			{$('#nav-company .trigger').addClass("active");}	
-		else if(stristr(pathname,'/contact/'))			{$('#nav-contact .trigger').addClass("active");}
+		else if(stristr(pathname,'/customers/'))		{$('#nav-customers .trigger').addClass("active");}
+		else if(stristr(pathname,'/partners/'))			{$('#nav-partners .trigger').addClass("active");}		
+		else if(stristr(pathname,'/business/'))		{$('#nav-resources .trigger').addClass("active");}		
+		else if(stristr(pathname,'/news/'))				{$('#nav-news .trigger').addClass("active");}		
 		else {}
 	
 	}

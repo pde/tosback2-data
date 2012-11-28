@@ -11,7 +11,7 @@ if (url.indexOf('bild.de/auto') != -1) {
         vm_ipid=21753;
 } else if (url.indexOf('bild.de/unterhaltung/leute') != -1) {
         vm_ipid=21754;
-} else if (url.indexOf('bild.de/unterhaltung/TV') != -1) {
+} else if (url.indexOf('bild.de/unterhaltung/tv') != -1) {
         vm_ipid=21755;
 } else if (url.indexOf('bild.de/unterhaltung/kino') != -1) {
         vm_ipid=21756;
@@ -21,7 +21,7 @@ if (url.indexOf('bild.de/auto') != -1) {
         vm_ipid=27858;
 } else if ((url.indexOf('bild.de/lifestyle/reise') != -1) || (url.indexOf('bild.de/reise') != -1)) {
         vm_ipid=27859;
-} else if ((url.indexOf('bild.de/ratgeber/gesund-fit') != -1) || (url.indexOf('bild.de/ratgeber/diaet') != -1)) {
+} else if ((url.indexOf('bild.de/ratgeber/gesundheit') != -1) || (url.indexOf('bild.de/ratgeber/diaet') != -1)) {
         vm_ipid=27860;
 } else if ((url.indexOf('bild.de/ratgeber/geld-karriere') != -1) || (url.indexOf('bild.de/geld/sparen') != -1) || (url.indexOf('bild.de/geld/versicherungen') != -1)) {
         vm_ipid=27857;
@@ -39,4 +39,3 @@ if (url.indexOf('bild.de/auto') != -1) {
         '>' +
         '</SCR'+'IPT>'
     );
-

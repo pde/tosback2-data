@@ -108,6 +108,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 
 
 .top_menu {position: absolute; top: 0; left: 0; right: 0; height: 79px; border-bottom: 1px solid #ccc;}
+*:first-child+html .top_menu {z-index: 1;}
 .top_menu #logo {float: left; width: 200px !important; margin: 14px 0 0 0 !important;}
 
 .top_menu .login_block {float: right; margin: 26px 0 0 0; font-size: 14px; position: relative;}
@@ -167,6 +168,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .index_upload .choose_folder {padding-bottom: 0;}
 .index_upload .folder_dropdown {text-align: left;}
 .index_upload .linkbox_new, .index_upload .linkbox_msg {right: 7px !important;}
+.index_upload .linkbox_new {width: 430px !important;}
 
 .index_upload .uploadform {text-align: center; width: 100%;}
 .index_upload .uploadform .button {display: inline-block; width: 250px; }
@@ -912,6 +914,7 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 #bonuser_paid_request_block button { padding:1px 2px }
 #bonuser_paid_request_block .msg { font-size:80%; margin-top:5px; margin-right:2px }
 
+body.page_files .content_body {padding-bottom: 34px;}
 body.page_files p {margin:0}
 body.page_files .folders li a { text-decoration: none; color: #000 }
 body.page_files .folders ul { width: 100%; list-style: none; margin: 0; cursor: default }
@@ -938,7 +941,7 @@ body.page_files .containers .container.active { display: block; padding: 10px 20
 .choose_folder { padding: 15px 5px 15px 5px; height: 18px }
 .choose_folder .text { float: left }
 .choose_folder .dropdown, #depositbox a.selected { margin-left: 5px; font-weight: bold; color: #f0370e; padding-right: 15px; border-bottom: 1px dotted #f0370e; background: url(../images/dropdown_arrow.gif) right center no-repeat; text-decoration: none; position: relative !important; cursor: pointer; display: inline-block }
-*:first-child+html .choose_folder .dropdown {zoom: 1; display: inline;}
+*:first-child+html .choose_folder .dropdown {zoom: 1; display: inline; z-index: 1;}
 
 body.page_files .folderlist, #depositbox .folderlist { height: 180px; border: 1px solid #ccc; background: #fff; overflow:auto }
 ol.filenumed { width: 95%; margin: 0 }
@@ -974,9 +977,14 @@ body.page_files .action_folder_msg p {margin-bottom:1em; }
 body.page_files .upload .progressWrapper .status { display:block; position: absolute; right: 0; top: 10px }
 body.page_files .upload .progressWrapper .status a { display:block; color: #5a9d00; position: absolute; right: 0; top: 0; font-weight: bold }
 body.page_files .upload .progressWrapper .error .status { color: #ff3c3c; font-weight: bold }
-body.page_files .upload .linkbox { position: absolute; top: 15px; z-index: 999; right: -57px; width: 420px; background: #f2f2f2; border: 1px solid #666; padding: 7px }
-body.page_files .upload .linkbox .item { height: 25px; position: relative }
-body.page_files .upload .linkbox .item input { position: absolute; right: 0; top: 0; width: 350px }
+body.page_files .upload .linkbox {position: absolute; top: 15px; z-index: 999; right: -57px; width: 420px; background: #f2f2f2; border: 1px solid #666; padding: 7px;}
+/*
+body.page_files .upload .linkbox .item {height: 25px; position: relative;}
+body.page_files .upload .linkbox .item input {position: absolute; right: 0; top: 0; width: 350px;}
+*/
+body.page_files .upload .linkbox .item {float: left; width: 100%; margin: 0 0 5px 0;}
+body.page_files .upload .linkbox .item input {width: 350px; float: right;}
+body.page_files .upload .linkbox .item b {float: left; margin: 3px 5px 3px 0;}
 
 body.page_files .upload .linkbox_new {right: 0;}
 body.page_files .upload .linkbox_msg {right: 0; text-align: center;}
@@ -1035,25 +1043,33 @@ body.page_filemanager .header, body.page_filemanager .header * { font-size: 32px
 body.page_filemanager .header span { color: #f30 }
 body.page_filemanager .header em { font-style:normal; font-size:85%; }
 body.page_filemanager .subhead { font-size: 18px; padding: 0 0 30px 0; font-weight: bold }
-body.page_filemanager .advert { font-size: 14px; padding: 0 0 25px 0; font-weight: bold }
-body.page_filemanager ul.features { padding: 9px 5px 5px 10px; margin: 0 20px 35px 0; background-color: #E7E7E7 }
-body.page_filemanager ul.features li { font-size: 18px; padding: 0 0 5px 5px; list-style: disc inside }
-body.page_filemanager .descr { font-size: 14px; margin-bottom: 10px }
-body.page_filemanager .descr ul { margin: 15px 0 25px 0 }
-body.page_filemanager .descr ul li { font-size: 12px; padding: 0 40px 5px 0; list-style: disc outside; margin-left: 20px }
-body.page_filemanager .free { font-size: 14px; padding: 0 0 5px 0; color: #f30; text-align: center; font-weight: bold }
+body.page_filemanager .advert {font-size: 14px; font-weight: bold;}
+body.page_filemanager ul.features {list-style: disc inside; margin: 0 20px 35px 0; padding: 9px 5px 5px 10px; background-color: #e7e7e7;}
+body.page_filemanager ul.features li {padding: 0 0 5px 5px; font-size: 18px;}
+body.page_filemanager .descr {margin-bottom: 10px; font-size: 14px;}
+body.page_filemanager .descr ul {list-style: disc outside; margin: 15px 0 15px 20px;}
+body.page_filemanager .descr ul li {padding: 0 40px 5px 0; font-size: 12px;}
+body.page_filemanager .free {font-size: 14px; color: #f30; text-align: center; font-weight: bold;}
+body.page_filemanager p.free {margin: 15px 0; font: bold 25px Tahoma;}
 body.page_filemanager a.download { display: block; width: 155px; margin: 15px auto; color: #f30; font: bold 22px Tahoma }
-body.page_filemanager .faq { font-size: 14px;  padding: 10px 0 20px 0; text-align: center }
+body.page_filemanager .faq_note {font-size: 14px; padding: 10px 0 20px 0; text-align: center;}
 body.page_filemanager .disclaim { font-size: 11px; padding: 0 0 5px 0; text-align: center }
 body.page_filemanager .adv_leftside { float: left; padding: 0 0 40px 0; width: 650px }
 body.page_filemanager .adv_rightside { float: right; padding: 0 0 40px 0; width: 300px }
 body.page_filemanager .adv_rightside a.download { width: auto; padding: 0 25px 25px 50px }
 body.page_filemanager .rfaq { padding: 0px 0px 25px 25px }
 body.page_filemanager .rfaq a { font-size: 17px; color: #f30 }
-body.page_filemanager .adv_rightside p { text-align: center; padding-right: 30px }
-body.page_filemanager ul.features.right { padding: 10px 20px 20px 20px; width: 220px }
-body.page_filemanager ul.features.right li { padding: 0; font-size: 13px }
-body.page_filemanager ul.features.right li.head { font: bold 18px Tahoma; list-style: none; margin-bottom: 15px }
+body.page_filemanager .adv_rightside .informer {text-align: center;}
+body.page_filemanager ul.features.right {margin: 0 0 40px 0; padding: 15px;}
+body.page_filemanager ul.features.right li {padding: 0; font-size: 13px;}
+body.page_filemanager .features_head {font: bold 18px Tahoma;}
+
+.filemanager_faq {}
+.filemanager_faq .faq_head {margin: 0 0 25px 0; font-size: 18px; font-weight: bold;}
+.filemanager_faq dl {margin: 0 0 40px 0;}
+.filemanager_faq dt {margin: 0 0 15px 0; font-size: 14px; font-weight: bold;}
+.filemanager_faq dd {margin: 0 0 25px 0;}
+.filemanager_faq dl p {margin: 0 0 5px 0;}
 
 body.page_advertise .content { clear: both }
 body.page_advertise #main { padding-bottom: 25px }
@@ -1276,10 +1292,19 @@ body.page_payment_help .content ol li hr { border:0; border-top:2px solid black;
 body.page_other_payment_methods .content ul { margin:0 }
 body.page_other_payment_methods .content ul li { list-style:none; margin:1em 0 }
 
+/*
 body.page_filemanager_first_steps .static img { display:block; margin:0.5em auto 1em }
 body.page_filemanager_first_steps .static em { font-style:normal; color:red }
 body.page_filemanager_first_steps .static ol { margin:0 }
 body.page_filemanager_first_steps .static ol li hr { border:0; border-top:2px solid black; height:1px }
+*/
+
+.fm_firststeps {} 
+.fm_firststeps .steps {margin: 0;}
+.fm_firststeps .steps li {}
+.fm_firststeps .steps li .subtitle {margin: 0 0 10px 0;}
+
+
 
 body.page_filemanager .dfmenu a { display: inline-block; padding: 0 5px 10px 5px }
 body.page_filemanager .dfmenu div { margin: 10px 0 }
@@ -1477,7 +1502,7 @@ div.static p { margin-bottom: 5px }
 div.static a:link,.static a:visited,.static a:hover { color:#f30 }
 div.static ol.complaint { padding:5px 0 5px 25px }
 div.static ol.complaint ul { list-style:none; padding:0 0 0 10px }
-div.static ul, .static ol { margin:1em 0; margin-left:1em }
+div.static ul, .static ol { margin:1em 0; margin-left:1.2em }
 div.static ol{ margin-left:2em }
 div.static ol ol{ list-style-type:lower-alpha }
 
@@ -1678,7 +1703,8 @@ body.page_payment .left { float: none }*/
 .downloadblock_immediately .string { margin-top:-26px }
 .downloadblock_with_mirrors .downloadbeginlinks .repeat { text-align:center }
 .downloadblock_with_mirrors .downloadbeginlinks td { width:33% }
-.downloadblock_gold .download_started_info_msg { border:3px double #f30; margin:1em auto; width:450px; color:#444 }
+.downloadblock_gold .download_started_info_msg {width:450px; margin: 1em auto; padding: 0 10px; border: 3px double #f30; color: #444;}
+.downloadblock_gold .download_started_info_msg.storage_msg ol {text-align: left;}
 .downloadblock_guest .download_started_info_msg a, .downloadblock_guest .download_started_info_msg a:visited, .downloadblock_guest .download_started_info_msg a:hover, .downloadblock_guest .download_started_info_msg a:link { display:block; text-decoration:none; color:#444 !important }
 
 table.choose_download { width:100%;font-size:11px;padding:10px 0 15px 0;margin-bottom:1em }
@@ -1835,7 +1861,7 @@ body.page_bonus_program .statistic h1 { font-size: 16px }
 * html #preload_general { display: none }
 * html body.main_index .login_form .forget{ display:inline }
 * html .downloadblock .choose { height:620px }
-* html ol.filenumed { list-style: none }
+* html ol.filenumed, *:first-child+html ol.filenumed {list-style: none;}
 * html .blender { display: none !important }
 * html .containers .active { display: block; padding: 10px 20px 10px 20px; position: relative }
 * html .tabs .active { position: static !important }

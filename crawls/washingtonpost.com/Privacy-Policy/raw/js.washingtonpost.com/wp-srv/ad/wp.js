@@ -297,6 +297,13 @@
         });
       }
     }
+    
+    if(tempcase.what === 'featrent' && window.jQuery){
+      $('#wpni_adi_featrent').css({
+        background: 'none',
+        padding: '0'
+      });
+    }
 
     //20007-CD
     if(tempcase.what === 'pushdown' && /washingtonpost\.com/.test(tempcase.where)){

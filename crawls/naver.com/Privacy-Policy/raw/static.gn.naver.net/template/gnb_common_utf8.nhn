@@ -1,0 +1,797 @@
+var gnb_user_layer_html = " <div class=\"skin_usr\" id=\"gnb_user\" onmouseover=\"gnb_user_layer.show_menu();\" onmouseout=\"gnb_user_layer.hide_menu();\" style=\"display:none;\"> <div class=\"bx_layer\"> <h1 class=\"blind\">사용자 링크</h1> <ul> <li><a href=\"http://blog.naver.com/MyBlog.nhn\" target=\"_top\">내 블로그</a></li> <li><a href=\"#\" onclick=\"try{check_me2day();return false;}catch(e){return false;}\" id=\"gnb_myme2\" target=\"_top\">내 미투데이</a></li> <li><a href=\"http://ndrive.naver.com/\" target=\"_top\">내 N드라이브</a></li> <li class=\"las\"><a target=\"_top\" href=\"https://nid.naver.com/user/help.nhn?todo=main\">내 정보관리</a></li></ul> </div> </div>" ;
+var gnb_more_layer_html = "<div class=\"more_skin\" id=\"gnb_more\" style=\"display:none\"><div class=\"gnb_more_svc\"><dl class=\"gnb_more_lst\"><dt><em class=\"gnb_word\">ㄱ</em><span>-</span><em class=\"gnb_word\">ㅁ</em></dt><dt> </dt><dd><a href=\"http://moneybook.naver.com\">가계부</a></dd><dd><a href=\"http://health.naver.com\">건강</a></dd><dd><a href=\"http://game.naver.com\">게임</a></dd><dd><a href=\"http://traffic.map.naver.com\">교통</a></dd><dd><a href=\"http://weather.naver.com\">날씨</a></dd><dd><a href=\"http://news.naver.com\">뉴스</a></dd><dd><a href=\"http://comic.naver.com\">만화/웹툰</a></dd><dd><a href=\"http://music.naver.com\">뮤직</a></dd><dd><a href=\"http://tools.naver.com/service/mediaplayer/index.nhn\">미디어 플레이어</a></dd><dd><a href=\"http://me2day.net\">미투데이</a></dd></dl><dl class=\"gnb_more_lst2\"><dt><em class=\"gnb_word\">ㅂ</em><span>-</span><em class=\"gnb_word\">ㅇ</em></dt><dt> </dt><dd><a href=\"http://tools.naver.com/service/vaccine/index.nhn\">백신</a></dd><dd><a href=\"http://land.naver.com\">부동산</a></dd><dd><a href=\"http://boom.naver.com\">붐</a></dd><dd><a href=\"http://dic.naver.com\">사전</a></dd><dd><a href=\"http://shop.naver.com/main/introduction/introduce\">샵N</a></dd><dd><a href=\"http://news.naver.com/sports\">스포츠</a></dd><dd><a href=\"http://movie.naver.com\">영화</a></dd><dd><a href=\"http://wingbus.naver.com\">윙버스</a></dd><dd><a href=\"http://www.wingspoon.com\">윙스푼</a></dd></dl><dl class=\"gnb_more_lst3\"><dt><em class=\"gnb_word\">ㅈ</em><span>-</span><em class=\"gnb_word\">ㅋ</em></dt><dt> </dt><dd><a href=\"http://auto.naver.com\">자동차</a></dd><dd><a href=\"http://file.naver.com\">자료실</a></dd><dd><a href=\"http://stock.naver.com\">증권</a></dd><dd><a href=\"http://map.naver.com\">지도</a></dd><dd><a href=\"http://shopping.naver.com\">지식쇼핑</a></dd><dd><a href=\"http://kin.naver.com\">지식iN</a></dd><dd><a href=\"http://mail.naver.com/note\">쪽지</a></dd><dd><a href=\"http://book.naver.com\">책</a></dd><dd><a href=\"http://toolbar.naver.com/intro/index.nhn?menuId=16\">캡처</a></dd><dd><a href=\"http://kitchen.naver.com\">키친</a></dd></dl><dl class=\"gnb_more_lst4\"><dt><em class=\"gnb_word\">ㅌ</em><span>-</span><em class=\"gnb_word2\">기타</em></dt><dt> </dt><dd><a href=\"http://tools.naver.com/service/toolbar/index.nhn\">툴바</a></dd><dd><a href=\"http://tools.naver.com/service/photoviewer/index.nhn\">포토뷰어</a></dd><dd><a href=\"http://photo.ndrive.naver.com\">포토앨범</a></dd><dd><a href=\"http://happybean.naver.com/\">해피빈</a></dd><dd><a href=\"http://ndrive.naver.com\">N드라이브</a></dd><dd><a href=\"http://tvguide.naver.com\">TV편성표</a></dd><dd><a href=\"http://qr.naver.com\">QR코드</a></dd>         </dl><dl class=\"gnb_more_lst5\"><dt><em class=\"gnb_word2\">신규서비스</em></dt><dt> </dt><dd><a href=\"http://myshelf.naver.com/main.nhn\">내서재</a></dd><dd><a href=\"http://mileage.naver.com/customer/home\">마일리지</a></dd><dd><a href=\"http://vndic.naver.com\">베트남어사전</a></dd><dd><a href=\"http://campaign.naver.com/line\">라인</a></dd><dd><a href=\"http://mobile.naver.com/service/camera\">카메라앱</a></dd><dd><a href=\"https://calendar.naver.com\">캘린더</a></dd><dd><a href=\"http://news.naver.com/sports/index.nhn?category=baseball\">프로야구</a></dd><dd><a href=\"http://nstore.naver.com\">N스토어</a></dd></dl><a class=\"gnb_more_all\" id=\"gnb_view_all\" href=\"http://www.naver.com/more.html\">전체보기</a>  </div></div>";
+var gnb_naverme_layer_html = "\n<div class=\"me_layer\" id=\"gnb_naverme_layer\" style=\"display:none\"></div>";
+var gnb_html = "<div id=\"gnb_utility\"> <div id=\"account\"> <a href=\"#\" class=\"trc\" id=\"gnb_nicknm\" style=\"display:none;\"><strong></strong><img width=\"13\" height=\"13\" src=\"http://static.naver.net/common/gnb/101111/default/btn_arr.gif\" alt=\"\" class=\"arr\" /></a>" + gnb_user_layer_html + "<span style=\"display:none;\" id=\"gnb_btn_login\"> <a href=\"#\" id=\"gnb_login\" ><img width=\"51\" height=\"18\" src=\"http://static.naver.net/common/gnb/101111/default/btn_gnb_login.gif\" alt=\"로그인\" title=\"로그인\" id=\"gnb_login_btn_img\" /></a></span>   </div> <ul class=\"lst_svc\"> <li class=\"first\"><a href=\"http://www.naver.com/\" target=\"_top\">네이버</a></li> <li class=\"me_menu\" id=\"gnb_me_menu\"><a href=\"http://me.naver.com\" target=\"_top\" class=\"go_me\">me</a><a href=\"#\" onclick=\"gnbNaverMeLayer.clickToggle(); return false;\" title=\"네이버me 알림 개수\" class=\"lnk_me\" id=\"gnb_lnk_me\"  style=\"display:none\"><em id=\"gnb_bubble\">0</em></a>" + gnb_naverme_layer_html + "</li> <li><a href=\"http://mail2.naver.com/\" target=\"_top\">메일</a></li> <li><a href=\"http://section.cafe.naver.com/\" target=\"_top\">카페</a></li> <li><a href=\"http://blog.naver.com/\" target=\"_top\">블로그</a></li> <li class=\"more_menu\" onmouseout=\"gnb_more_layer.hide_top();\" onmouseover=\"gnb_more_layer.show_top();\"> <a class=\"more\" id=\"more\" href=\"#\">더보기</a> " + gnb_more_layer_html + "</li> </ul> <form name=\"search\" style=\"display:none\" id=\"gnb_searchbox\" method=\"get\" onsubmit=\"gnb_more_layer.go_search(this);\" action=\"http://search.naver.com/search.naver\" target=\"_new\"> <input type=\"hidden\" name=\"sm\" value=\"gnb_hty.gn\" />  <fieldset class=\"gnb_search\"> <legend>네이버 통합검색</legend> <input type=\"hidden\" name=\"ie\" value=\"utf-8\"> <input id=\'gnb_query\' type=\"text\" name=\"query\" onclick=\"gnb_more_layer.clear_text(this)\" onblur=\"gnb_more_layer.back_text(this)\" maxlength=\"255\" value=\"&#53685;&#54633;&#44160;&#49353;\" class=\"box_window\" /><input type=\"image\" src=\"http://static.naver.net/header/gnb/btn_gnb_search.gif\" alt=\"&#44160;&#49353;\" class=\"btn_window\" />  </fieldset> </form> </div>";
+
+var gnb_style = "#gnb ul,#gnb li,#gnb form,#gnb fieldset,#gnb legend,#gnb input{margin:0;padding:0;font-family:'돋움',dotum,Helvetica,sans-serif}\n";
+gnb_style += "#gnb{position:relative;z-index:2147483647;color:#444;font-family:'돋움',dotum,Helvetica,sans-serif;font-size:12px;text-align:left}\n";
+gnb_style += "#gnb img{border:0;vertical-align:top}\n";
+gnb_style += "#gnb fieldset{border:0}\n";
+gnb_style += "#gnb ul{list-style:none}\n";
+gnb_style += "#gnb em{font-style:normal}\n";
+gnb_style += "#gnb a{color:#444;text-decoration:none}\n";
+gnb_style += "#gnb a:hover,#gnb a:active,#gnb a:focus{color:#438a01;text-decoration:underline}\n";
+gnb_style += "#gnb legend{display:none}\n";
+gnb_style += "#gnb input[type=text]{-webkit-appearance:none;-webkit-border-radius:0}\n";
+gnb_style += "#gnb .blind{visibility:hidden;overflow:hidden;position:absolute;top:0;left:0;width:1px;height:1px;font-size:0;line-height:0}\n";
+gnb_style += "#gnb #gnb_utility{float:right;position:relative;z-index:10}\n";
+gnb_style += "#gnb #account{display:inline;float:left;position:relative;margin-left:3px;padding:2px 0 0 20px}\n";
+gnb_style += "#gnb #account img{vertical-align:middle}\n";
+gnb_style += "#gnb #account a.trc{display:inline-block;position:relative;margin:2px 1px 0 0;*margin-top:1px;vertical-align:middle}\n";
+gnb_style += "#gnb #account a.trc strong{margin-right:4px;font-weight:normal;cursor:pointer}\n";
+gnb_style += "#gnb #account a.trc .arr{margin-left:-2px;vertical-align:-2px}\n";
+gnb_style += "#gnb #account a.trc:hover{border:0;text-decoration:none}\n";
+gnb_style += "#gnb #account a.trc:hover strong{text-decoration:underline}\n";
+gnb_style += "#gnb #account a:hover *{color:#438a01}\n";
+gnb_style += "#gnb #account .secret_warning{position:relative;margin-right:4px;vertical-align:middle}\n";
+gnb_style += "#gnb .lst_svc{float:left;padding:4px 0 0 1px}\n";
+gnb_style += "#gnb .lst_svc li{float:left;padding:1px 7px 0 8px;background:url(http://static.naver.com/header/gnb/bg_bar01.gif) 0 2px no-repeat;letter-spacing:-1px;line-height:15px}\n";
+gnb_style += "#gnb .lst_svc li.first{background:none !important}\n";
+gnb_style += "#gnb .lst_svc li.more_menu{position:relative;z-index:20;padding-right:0}\n";
+gnb_style += "#gnb .lst_svc li.more_menu a.more{padding-right:8px;background:url(http://static.naver.com/common/gnb/sp_arr.gif) 100% -16px no-repeat}\n";
+gnb_style += "#gnb .lst_svc li.me_menu{padding-top:0}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .go_me{margin:0 5px 0 0}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me{display:inline-block;position:relative;width:24px;height:15px;margin-right:1px;background:url(http://static.naver.com/common/gnb/sp_bg_me20120723v4.png) no-repeat 0 0;_background:url(http://static.naver.com/common/gnb/sp_bg_me20120723v4ie6.gif) no-repeat 0 0;font-family:tahoma;font-size:10px;font-weight:bold;line-height:14px;letter-spacing:0;text-indent:0;text-align:center;text-decoration:none;cursor:pointer}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me em{font-family:tahoma,sans-serif}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me *{line-height:14px;color:#fff !important}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me:visited *{color:#fff}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me span{font-family:tahoma;font-size:10px;font-weight:normal}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me em{font-family:tahoma;font-size:10px;font-weight:bold;*margin-left:1px}\n";
+gnb_style += "#gnb .lst_svc li.me_menu .lnk_me.zero{background-position:0 -16px;_background-position:0 -16px}\n";
+gnb_style += "#gnb form{float:left;margin-left:10px;padding:1px 1px 0 0}\n";
+gnb_style += "#gnb .gnb_search{width:129px;padding:1px 0 1px 3px;border:0;background:#6eb93b}\n";
+gnb_style += "#gnb .box_window{width:105px;height:15px;padding:0 1px 0 4px;margin:2px 0 0 0;_margin:1px 0 0 0;border:0;color:#888;font-size:12px;line-height:16px;vertical-align:top}\n";
+gnb_style += ":root #gnb .box_window{height:14px \\0/IE9; padding-top:1px \\0/IE9;}\n";
+gnb_style += "#gnb .btn_window{border:1px solid #6eb93b;border-left:0;vertical-align:middle;*vertical-align:top}\n";
+gnb_style += "#gnb .skin_usr{position:absolute;top:22px;right:56px;z-index:19}\n";
+gnb_style += "#gnb .bx_layer{width:92px;border:1px solid #777;background:#fff}\n";
+gnb_style += "#gnb .bx_layer ul{float:none;margin:8px 8px 7px 9px;padding:0}\n";
+gnb_style += "#gnb .bx_layer ul li{float:none;margin-bottom:5px;padding:0;background:none !important;line-height:16px}\n";
+gnb_style += "#gnb .bx_layer ul li a{color:#444}\n";
+gnb_style += "#gnb .bx_layer ul li a:hover{color:#438a01}\n";
+gnb_style += "#gnb .bx_layer ul li.las{border-top:1px solid #ebebeb;margin-top:5px;padding-top:5px}\n";
+gnb_style += "#gnb_more{overflow:hidden;position:absolute;top:18px;right:0;z-index:101;width:490px;height:210px;padding:12px 0 11px 11px;border:1px solid #696e77;background:#fff}\n";
+gnb_style += "#gnb_more .gnb_more_svc{position:relative;width:490px;height:209px}\n";
+gnb_style += "#gnb_more dl{float:left;width:92px;height:209px;padding-left:6px;border-left:1px solid #ededed;line-height:11px}\n";
+gnb_style += "#gnb_more dl dt,#gnb_more dl dd{letter-spacing:0}\n";
+gnb_style += "#gnb_more dl.gnb_more_lst{left:-1px;padding:0;border:none}\n";
+gnb_style += "#gnb_more dl dt{position:relative;top:-1px;left:-2px;margin:0;padding:0 0 5px;font-size:12px;font-weight:bold;line-height:11px;color:#390}\n";
+gnb_style += "#gnb_more .gnb_more_svc2 dl dt{padding:0 0 4px}\n";
+gnb_style += "#gnb_more dl dt *{font-weight:bold;line-height:11px;color:#390}\n";
+gnb_style += "#gnb_more dl dd{padding-bottom:8px;font-size:12px;line-height:12px;color:#2f3743}\n";
+gnb_style += "#gnb_more dl dd *{line-height:12px}\n";
+gnb_style += "#gnb #gnb_more .gnb_more_svc dl dd a,#gnb #gnb_more dl dd a:link,#gnb #gnb_more dl dd a:visited{color:#2f3743}\n";
+gnb_style += "#gnb #gnb_more .gnb_more_svc dl dd a:hover{color:#390}\n";
+gnb_style += "#gnb_more dl.gnb_more_lst,#gnb_more dl.gnb_more_lst5{width:91px}\n";
+gnb_style += "#gnb_more dl.gnb_more_lst5 dt{left:0}\n";
+gnb_style += "#gnb_more .gnb_word2{position:relative;top:1px}\n";
+gnb_style += "#gnb_more dt span{font-size:12px;color:#99cc7f}\n";
+gnb_style += "#gnb_more dt .gnb_word2,#gnb_more .gnb_more_lst5 dt{font-size:11px}\n";
+gnb_style += "#gnb #gnb_more .gnb_more_svc .gnb_more_all{display:block;position:absolute;top:199px;right:12px;width:45px;background:url(http://static.naver.net/www/sp_rgt20120501v2.png) no-repeat 100% -233px;font-size:11px;line-height:12px;_line-height:13px;color:#999;letter-spacing:-1px}\n";
+gnb_style += "#gnb #gnb_more .gnb_more_svc .gnb_more_all:hover{background-position:100% -218px;color:#390}\n";
+gnb_style += "#gnb #gnb_more .gnb_more_svc .gnb_more_all:visited{color:#999}\n";
+gnb_style += ".skin01{height:19px;border-top:4px solid #ddd;background:#fff}\n";
+gnb_style += "#gnb.skin01 #gnb_utility{margin-top:-4px;background:#fff url(http://static.naver.com/header/gnb/bg_square01.gif) 0 0 no-repeat}\n";
+gnb_style += "#gnb.skin01 .search_on_me_layer{right:322px;_right:324px}\n";
+gnb_style += "#gnb .me_layer{position:absolute;top:22px;right:179px;_right:178px;z-index:19;width:262px;border:1px solid #777;background:#fff}\n";
+gnb_style += "#gnb .me_layer *{font-size:11px}\n";
+gnb_style += "#gnb .me_layer br{line-height:20px}\n";
+gnb_style += "#gnb .me_cclist_cont{overflow:hidden;position:relative;width:262px}\n";
+gnb_style += "#gnb .me_layer_lst{position:relative;width:262px;overflow:auto;overflow-x:hidden;zoom:1}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli{position:relative;zoom:1}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li.me_lst0{border-top:none;padding-top:8px}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li a{display:inline-block;font-size:12px}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li.n{background-color:#fffee8}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li{float:none;position:relative;height:36px;margin:0;padding:7px 8px 1px 9px;border-top:1px solid #eaeaea;background:none;font-size:0;font-size:12px;zoom:1}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li *{line-height:16px}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li .e{border-bottom:0 none}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li a:hover{text-decoration:none}\n";
+gnb_style += "#gnb .me_layer .me_layer_lst .me_layer_ccli li a:hover .me_layer_txt{text-decoration:underline}\n";
+gnb_style += "#gnb .me_layer_cclk em{font-weight:bold}\n";
+gnb_style += "#gnb .me_layer .me_layer_txt{display:inline-block;overflow:hidden;margin-right:3px;padding-right:2px;font-size:12px;color:#444;white-space:nowrap;text-overflow:ellipsis}\n";
+gnb_style += "#gnb .me_layer .me_layer_txt strong{font-size:12px;font-weight:normal}\n";
+gnb_style += "#gnb .me_layer_cclk .me_layer_ccdt .me_layer_by{color:#ADADAD}\n";
+gnb_style += "#gnb .me_layer_num{display:inline-block;position:relative;top:-1px;overflow:hidden;font-size:11px;font-family:tahoma;font-size:9px;font-weight:bold;letter-spacing:0;color:#f3250f}\n";
+gnb_style += "#gnb .me_layer_cchr{padding-right:2px;font-size:11px;color:#e6e7e8}\n";
+gnb_style += "#gnb .me_layer_ccdt{font-size:11px;color:#adadad;letter-spacing:-1px}\n";
+gnb_style += "#gnb .me_layer_ccdt em{padding-right:2px;color:#888}\n";
+gnb_style += "#gnb em.me_layer_ccif{font-size:11px;font-weight:normal;color:#888}\n";
+gnb_style += "#gnb .me_layer_ccli a:hover,.ccli a:hover *{border:none}\n";
+gnb_style += "#gnb .me_layer_cclk.vis *{color:#aaa !important}\n";
+gnb_style += "#gnb .me_layer .me_nomessage{padding:21px 0 18px}\n";
+gnb_style += "#gnb .me_layer .me_nomessage strong{display:block;margin:0 0 7px;font-size:12px;font-weight:bold;line-height:12px;color:#2f3743;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_nomessage p{width:156px;margin:0 auto;color:#aaa;font-size:11px;line-height:14px;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_groupid{padding:16px 0 15px}\n";
+gnb_style += "#gnb .me_layer .me_groupid p.group_message{display:block;margin:0 0 5px;font-size:12px;font-weight:bold;line-height:16px;color:#2f3743;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_groupid p.group_message em{font-size:12px;line-height:16px;color:#390;font-weight:bold}\n";
+gnb_style += "#gnb .me_layer .me_groupid p{margin:0 auto;color:#aaa;font-size:11px;line-height:14px;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_loading{padding:31px 0 30px;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_loading strong{display:block;margin:10px 0 0;font-size:12px;font-weight:bold;line-height:12px;color:#2f3743;text-align:center}\n";
+gnb_style += "#gnb .me_layer .me_new{border-top:1px solid #eaeaea}\n";
+gnb_style += "#gnb .me_layer .me_new p{width:142px;margin:0 auto;padding:15px 0 13px;color:#aaa;font-size:11px;line-height:16px;text-align:left}\n";
+gnb_style += "#gnb .me_layer .me_new p span{display:inline-block;margin-left:2px;width:5px;height:16px;background:url(http://static.naver.com/common/gnb/sp_rgt20120723.gif) no-repeat 100% -49px;text-indent:-9999em}\n";
+gnb_style += "#gnb .me_layer_cclist_page{position:relative;width:262px;height:28px;border-top:1px solid #d2d2d2;background:#fff;font-size:11px;line-height:11px;vertical-align:top}\n";
+gnb_style += "#gnb .me_layer_cclist_page .me_layer_btn_nme{display:block;width:81px;margin:8px 0 0 8px;background:url(http://static.naver.com/common/gnb/sp_rgt20120723.gif) no-repeat 100% -14px;*background-position:100% -12px;font-size:11px;line-height:14px;color:#696e77 !important;text-decoration:none}\n";
+gnb_style += "#gnb .me_layer_cclist_page .me_layer_btn_nme:hover{text-decoration:none}\n";
+gnb_style += "#gnb .me_layer_cclist_page .me_layer_btn_close{display:block;position:absolute;top:5px;right:5px;width:30px;height:18px;background:url(http://static.naver.com/common/gnb/sp_btn_closed120723.gif) no-repeat 0 0;text-indent:-9999em}\n";
+
+var gnb_style_element = document.createElement('style');
+gnb_style_element.setAttribute('id', 'gnb_style');
+gnb_style_element.setAttribute('type', 'text/css');
+if(gnb_style_element.styleSheet){
+	gnb_style_element.styleSheet.cssText = gnb_style;
+} else {
+	var textnode = document.createTextNode(gnb_style);
+	gnb_style_element.appendChild(textnode);
+}
+document.getElementsByTagName('head')[0].appendChild(gnb_style_element);
+
+try {
+	document.getElementById('gnb').innerHTML = gnb_html;
+} catch (e) {
+	var new_gnb = document.createElement('div');
+	new_gnb.innerHTML = gnb_html;
+	var current_gnb = document.getElementById('gnb');
+	current_gnb.appendChild(new_gnb);
+}
+
+document.getElementById('gnb').className = "skin01";
+
+var gnb_more_layer = {
+	_mouseover_top: false,
+	_mouseover_menu: false,
+	_callback_flag: false,
+	_gnb_login: "https://nid.naver.com/nidlogin.login",
+	_click_toggle: false,
+	
+	
+	clickToggle: function () {
+		if(gnb_more_layer._click_toggle == true){
+			gnb_more_layer._click_toggle = false;
+			document.getElementById('gnb_more').style.display = 'none';
+			document.getElementById('gnb_more')._hiding = true;
+			this.close_callback();
+		} else {
+			gnb_more_layer._click_toggle = true;
+			gnb_more_layer.showelement();
+		}
+	},
+	showelement: function () {
+		this.open_callback();
+		document.getElementById('gnb_more').style.position = "absolute";
+		document.getElementById('gnb_more')._hiding = false;
+		document.getElementById('gnb_more').style.display = 'block';
+		gnb_more_layer._click_toggle = true;
+	},
+	hideelement: function () {
+		if (gnb_more_layer._mouseover_top == false && gnb_more_layer._mouseover_menu == false) {
+			document.getElementById('gnb_more').style.display = 'none';
+			document.getElementById('gnb_more')._hiding = true;
+			gnb_more_layer._click_toggle = false;
+			this.close_callback();
+		}
+	},
+	show_top: function () {
+		gnb_more_layer._mouseover_top = true;
+		gnb_more_layer.showelement();
+	},
+	show_menu: function () {
+		gnb_more_layer._mouseover_menu = true;
+		gnb_more_layer.showelement();
+	},
+	hide_top: function () {
+		gnb_more_layer._mouseover_top = false;
+		setTimeout('gnb_more_layer.hideelement()', 300);
+	},
+	hide_menu: function () {
+		gnb_more_layer._mouseover_menu = false;
+		setTimeout('gnb_more_layer.hideelement()', 300);
+	},
+	clear_text: function () {
+		if (document.getElementById('gnb_query').value == "통합검색") {
+			document.getElementById('gnb_query').value = "";
+		}
+	},
+	back_text: function () {
+		if (document.getElementById('gnb_query').value == "") {
+			document.getElementById('gnb_query').value = "통합검색";
+		}
+	},
+	go_search: function () {
+		try {
+			var obj = document.createElement("SCRIPT");
+			obj.src = 'http://www.naver.com/goSearch';
+		} catch (e) {
+		}
+	},
+	open_callback : function() {
+		try {
+			if(this._callback_flag == false) {
+				gnb_more_layer_open_callback();
+				this._callback_flag = true;
+			}
+		} catch (e) {
+		}
+	},
+	close_callback : function() {
+		try {
+			if(this._callback_flag == true) {
+				gnb_more_layer_close_callback();
+				this._callback_flag = false;
+			}
+		} catch (e) {
+		}
+	}
+}
+
+var gnb_user_layer = {
+	_mouseover_top: false,
+	_mouseover_menu: false,
+	_gnb_me2day_url: "https://nid.naver.com/new_me2day/new_me2day.nhn?consumer_name=me2day&service_name=commcast&ret_url=",
+    _click_toggle: false,
+    clickToggle: function () {
+        if(gnb_user_layer._click_toggle == true){
+            gnb_user_layer._click_toggle = false;
+            document.getElementById('gnb_user').style.display = 'none';
+            document.getElementById('gnb_user')._hiding = true;
+        } else {
+            gnb_user_layer._click_toggle = true;
+            gnb_user_layer.showelement();
+        }
+    },
+	showelement: function () {
+		document.getElementById('gnb_user').style.position = "absolute";
+		document.getElementById('gnb_user')._hiding = false;
+		document.getElementById('gnb_user').style.display = 'block';
+		gnb_user_layer._click_toggle = true;
+	},
+	hideelement: function () {
+		if (gnb_user_layer._mouseover_top == true || gnb_user_layer._mouseover_menu == true) {} else {
+			document.getElementById('gnb_user').style.display = 'none';
+			document.getElementById('gnb_user')._hiding = true;
+			gnb_user_layer._click_toggle = false;
+		}
+	},
+	show_top: function () {
+		gnb_user_layer._mouseover_top = true;
+		gnb_user_layer.showelement();
+	},
+	show_menu: function () {
+		gnb_user_layer._mouseover_menu = true;
+		gnb_user_layer.showelement();
+	},
+	hide_top: function () {
+		gnb_user_layer._mouseover_top = false;
+		setTimeout('gnb_user_layer.hideelement()', 300);
+	},
+	hide_menu: function () {
+		gnb_user_layer._mouseover_menu = false;
+		setTimeout('gnb_user_layer.hideelement()', 300);
+	}
+}
+
+var gnbNaverMeLayer = {
+	show : false,
+	isGroupId : false,
+	isLoading : false,
+	callbackFlag: false,
+	meNotiListScriptId : "gnb_naverme_data",
+	meReadNotiScriptId : "gnb_naverme_read_noti",
+	meLayerElement : document.getElementById('gnb_naverme_layer'),
+	clickToggle : function () {
+		this.toggle();
+		
+		if(this.show) {
+			if(this.isGroupId) {
+				this.appendGroupIdNotSupportHtml();
+				this.registerCloseButtonEvent();
+				this.showLayer();
+				this.openCallback();
+			} else {
+				this.requestNoti();
+				this.showProgressLayer();
+			}
+		} else {
+			this.hideLayer();
+		}
+	},
+	toggle : function() {
+		this.show = !this.show;
+	},
+	showLayer : function() {
+		this.show = true;
+		this.meLayerElement.style.display = "block";
+	},
+	showProgressLayer : function() {
+		var progressDivHTML = "<div class=\"me_cclist_loading\"><div class=\"me_loading\"><span><img width=\"17\" height=\"17\" alt=\"\" title=\"로딩중\" src=\"http://static.naver.com/common/gnb/loading_green.gif\"></span><strong>목록을 가져오는 중입니다</strong></div><div class=\"me_layer_cclist_page\"><a class=\"me_layer_btn_close\" href=\"#\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>";
+		this.meLayerElement.innerHTML = progressDivHTML;
+		this.registerCloseButtonEvent();
+		this.showLayer();
+	},
+	callback : function(naverMeData) {
+		try{
+			this.validateApiResult(naverMeData);
+			
+			if("logout" == naverMeData.result) {
+				this.showLogoutNotiLayer();
+			} else {
+				showMeCount(naverMeData.meCount);
+				this.appendMeLayer(naverMeData);
+			}
+		} catch (e) {
+			this.showErrorLayer();
+		}
+		this.cleanNotiJSONP();
+		this.registerCloseButtonEvent();
+		this.openCallback();
+		gnbNClicks.registerNClicksEvent('gnb_naverme_layer');
+	},
+	hideLayer : function() {
+		this.show = false;
+		this.meLayerElement.style.display = "none";
+		this.closeCallback();
+	},
+	requestNoti : function() {
+		gnbJSONP.read(this.meNotiListScriptId, "http://me.naver.com/noticenter/main.nhn?callback=gnbNaverMeLayer.callback");
+	},
+	appendMeLayer : function(naverMeData) {
+		var isEmptyNoti = (naverMeData.listCount <= 0);
+		
+		if(isEmptyNoti) {
+			this.appendEmptyNaverMeLayerInnerHtml();
+		} else {
+			this.appendNaverMeLayerInnerHtml(naverMeData);
+		}
+	},
+	cleanNotiJSONP : function() {
+		gnbJSONP.clean(this.meNotiListScriptId);
+	},
+	appendNaverMeLayerInnerHtml : function(naverMeData) {
+		var moreNotiHtml = "";
+		if(10 <= naverMeData.listCount) {
+			moreNotiHtml = "<div class=\"me_new\"><p>me 알림을 더 보려면<br/>내 알림 전체보기를 눌러보세요.</p></div>";
+		}
+		
+		var notiHtml = naverMeData.noti;
+		if (naverMeData.listCount == 0) {
+			notiHtml = "";
+		}
+		
+		this.meLayerElement.innerHTML = "<div class=\"me_cclist_cont\"><div class=\"me_layer_lst\" id=\"gnb_me_layer_list\">" + notiHtml + moreNotiHtml + "</div><div class=\"me_layer_cclist_page\" id=\"gnb_me_layer_cclist\"><a href=\"http://me.naver.com/tab/noti.nhn\" class=\"me_layer_btn_nme\" target=\"_top\" id=\"gnb_me_layer_view_all\">내 알림 전체보기</a><a href=\"#\" class=\"me_layer_btn_close\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>";
+		
+		if(5 < naverMeData.listCount) {
+			this.fixLayerHeight();
+		}
+	},
+	appendEmptyNaverMeLayerInnerHtml : function() {
+		this.meLayerElement.innerHTML = "<div class=\"me_cclist_nomessage\"><div class=\"me_nomessage\"><strong>새로운 알림이 없습니다.</strong><p>네이버me에서<br>나의 활동 소식, 친구들의 새소식을<br>받아보세요.</p></div><div class=\"me_layer_cclist_page\" id=\"gnb_me_layer_cclist\"><a href=\"http://me.naver.com/index.nhn?openConfig=noti\" class=\"me_layer_btn_nme\" target=\"_top\" id=\"gnb_me_layer_set_noti\">내 알림 설정하기</a><a href=\"#\" class=\"me_layer_btn_close\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>";
+	},
+	appendGroupIdNotSupportHtml : function() {
+		this.meLayerElement.innerHTML = "<div class=\"me_cclist_groupid\"><div class=\"me_groupid\"><p class=\"group_message\">죄송합니다.<br>네이버me 서비스는 <em>단체아이디</em>를<br>지원하지 않습니다.</p><p>개인아이디로 다시 로그인해주세요.</p></div><div class=\"me_layer_cclist_page\"><a href=\"#\" class=\"me_layer_btn_close\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>";
+	},
+	showLogoutNotiLayer : function() {
+		this.showNotiLayer("<div class=\"me_cclist_groupid\"><div class=\"me_groupid\"><p class=\"group_message\"><em>로그아웃</em> 되었습니다.</p><p>로그인 후 다시 이용해 주세요.</p></div><div class=\"me_layer_cclist_page\"><a href=\"#\" class=\"me_layer_btn_close\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>");
+	},
+	showErrorLayer : function() {
+		this.showNotiLayer("<div class=\"me_cclist_groupid\"><div class=\"me_groupid\"><p class=\"group_message\">죄송합니다.<br>현재 서비스 접속이<br><em>원할하지 않습니다.</em></p><p>잠시 후 다시 이용해 주세요.</p></div><div class=\"me_layer_cclist_page\"><a href=\"#\" class=\"me_layer_btn_close\" id=\"gnb_me_layer_btn_close\">닫기</a></div></div>");
+	},
+	showNotiLayer : function(html) {
+		this.meLayerElement.innerHTML = html;
+		this.showLayer();		
+	},
+	registerCloseButtonEvent : function() {
+		var closeButton = document.getElementById('gnb_me_layer_btn_close');
+		if(closeButton != null) {
+			closeButton.onclick = function() {
+				gnbNaverMeLayer.clickToggle();
+				gnbNaverMeLayer.cleanNotiJSONP();
+				return false;
+			};
+		}
+	},
+	fixLayerHeight : function() {
+		document.getElementById('gnb_me_layer_list').style.height = "269px";
+	},
+	markSubscriptionFlag : function(params) {
+		var apiUrl = "http://me.naver.com/noticenter/read.nhn?callback=gnbNaverMeLayer.cleanSubscriptionFlagJSONP&" + params;
+		gnbJSONP.read(this.meReadNotiScriptId, apiUrl);
+	},
+	cleanSubscriptionFlagJSONP : function() {
+		gnbJSONP.clean(this.meReadNotiScriptId);
+	},
+	validateApiResult : function(naverMeData) {
+		var check0 = naverMeData.hasMore;
+		var check1 = naverMeData.listCount;
+		var check2 = naverMeData.meCount;
+		if("success" ==  naverMeData.result || "logout" == naverMeData.result) {
+			return;
+		} else {
+			throw "api fail.";
+		}
+	},
+	getLayerSize : function() {
+		return {"left":this.meLayerElement.offsetLeft, "top":this.meLayerElement.offsetTop, "width":this.meLayerElement.offsetWidth,"height":this.meLayerElement.offsetHeight};
+	},
+	openCallback : function() {
+		try{
+			if(this.callbackFlag == false) {
+				gnb_naverme_layer_open_callback();
+				this.callbackFlag = true;
+			}
+		} catch(ex) {
+		}
+	},
+	closeCallback : function() {
+		try{
+			if(this.callbackFlag == true) {
+				gnb_naverme_layer_close_callback();
+				this.callbackFlag = false;
+			}
+		} catch(ex) {
+		}
+	}
+}
+
+var gnbJSONP = {
+	read : function(elementId, apiUrl) {
+		this.loading = true;
+		this.padScript(elementId, apiUrl);
+	},
+	clean : function(elementId) {
+		var head = document.getElementsByTagName('head')[0];
+		var scriptElement = document.getElementById(elementId);
+		if(scriptElement != null) {
+			head.removeChild(scriptElement);
+		}
+	},
+	padScript : function(elementId, apiUrl) {
+		var scriptElement = document.createElement('script');
+		scriptElement.setAttribute('src', apiUrl);
+		scriptElement.setAttribute('id', elementId);
+		
+		var head = document.getElementsByTagName('head')[0];
+		head.appendChild(scriptElement);
+	}
+};
+
+var gnbNClicks = {
+	idNClicksNamePair : [
+		[ "gnb_nicknm", "gnb.nick" ],
+		[ "gnb_nicknm_txt", "gnb.nick" ],
+		[ "gnb_nicknm_arr", "gnb.nick" ],
+		[ "gnb_lnk_me", "gnb.menum" ],
+		[ "gnb_bubble", "gnb.menum" ],
+		[ "gnb_me_layer_btn_close", "mel.close" ],
+		[ "gnb_me_layer_view_all", "mel.me" ],
+		[ "gnb_me_layer_set_noti", "mel.set" ]
+	],
+	classNClicksNamePair : [
+		["me_layer_cclk", "mel.list"],
+		["me_layer_cclk  vis", "mel.list"],
+		["me_layer_txt", "mel.list"],
+		["me_layer_num", "mel.list"],
+		["me_layer_ccdt", "mel.list"],
+		["me_layer_ccif", "mel.list"],
+		["me_layer_cchr", "mel.list"],
+		["me_layer_by", "mel.list"]
+	],
+	anchorTextNClicksNamePair : [
+		[ "내 블로그", "nml.blog" ],
+		[ "내 미투데이", "nml.me2" ],
+		[ "내 N드라이브", "nml.ndrive" ],
+		[ "내 정보관리", "nml.info" ],
+		[ "네이버", "gnb.naver" ],
+		[ "me", "gnb.me" ],
+		[ "메일", "gnb.mail" ],
+		[ "카페", "gnb.cafe" ],
+		[ "블로그", "gnb.blog" ],
+		[ "더보기", "gnb.more" ],
+		[ "가계부", "mor.mybook" ],
+		[ "건강", "mor.health" ],
+		[ "게임", "mor.game" ],
+		[ "교통", "mor.traffic" ],
+		[ "날씨", "mor.weather" ],
+		[ "뉴스", "mor.news" ],
+		[ "만화/웹툰", "mor.cartoon" ],
+		[ "뮤직", "mor.music" ],
+		[ "미디어 플레이어", "mor.mediaplayer" ],
+		[ "미투데이", "mor.me2day" ],
+		[ "백신", "mor.vaccine" ],
+		[ "부동산", "mor.land" ],
+		[ "붐", "mor.boom" ],
+		[ "사전", "mor.dictionary" ],
+		[ "샵N", "mor.shopn" ],
+		[ "스포츠", "mor.sports" ],
+		[ "영화", "mor.movie" ],
+		[ "윙버스", "mor.wingbus" ],
+		[ "윙스푼", "mor.wingspoon" ],
+		[ "자동차", "mor.auto" ],
+		[ "자료실", "mor.file" ],
+		[ "증권", "mor.finance" ],
+		[ "지도", "mor.map" ],
+		[ "지식쇼핑", "mor.shopping" ],
+		[ "지식iN", "mor.kin" ],
+		[ "책", "mor.book" ],
+		[ "캡처", "mor.capture" ],
+		[ "키친", "mor.kitchen" ],
+		[ "툴바", "mor.toolbar" ],
+		[ "포토뷰어", "mor.photoviewer" ],
+		[ "포토앨범", "mor.nphoto" ],
+		[ "해피빈", "mor.happybean" ],
+		[ "N드라이브", "mor.ndrive" ],
+		[ "TV편성표", "mor.tvguide" ],
+		[ "QR코드", "mor.qrcode" ],
+		[ "내서재", "mor.myshelf" ],
+		[ "마일리지", "mor.mileage" ],
+		[ "베트남어사전", "mor.vndic" ],
+		[ "라인", "mor.line" ],
+		[ "카메라앱", "mor.cameraapp" ],
+		[ "캘린더", "mor.calendar" ],
+		[ "프로야구", "mor.baseball" ],
+		[ "N스토어", "mor.nstore" ],
+		[ "전체보기", "mor.sitemap" ]
+	],
+	installNClicks : function() {
+		if (typeof ncd != 'undefined') {
+			return;
+		}
+		
+		gnbJSONP.padScript("gnb_clickcrD", "http://gn.naver.com/js/clickcrD.js");
+	},
+	registerNClicksEvent : function(rootElementId) {
+		var anchorTags = document.getElementById(rootElementId).getElementsByTagName('A');
+	
+		for(var i = 0, len = anchorTags.length; i < len; i++) {
+			if(anchorTags[i].attachEvent) {
+				anchorTags[i].attachEvent("onclick",	gnbNClicks.nClicksEventHandler);
+			} else if(anchorTags[i].addEventListener) {
+				anchorTags[i].addEventListener("click",	gnbNClicks.nClicksEventHandler, false);
+			}
+		}
+	},
+	nClicksEventHandler : function(e){
+		try {
+			var anchorText = null;
+			var isMSIE = window.navigator.userAgent.indexOf("MSIE ") != -1;
+			var eventSrcElement = null;
+		
+			if(isMSIE) {
+				eventSrcElement = e.srcElement;
+				anchorText = eventSrcElement.innerHTML;
+			} else {
+				eventSrcElement = this;
+				anchorText = this.firstChild.wholeText;
+			}
+	
+			var eventSrcAnchorElement = gnbNClicks.getClickedAnchorElement(eventSrcElement);
+			var nvl = function(arg) { return arg == null ? "" : arg; };
+			
+			var elementId = nvl(eventSrcAnchorElement.getAttribute("id"));
+			var elementClass = nvl(eventSrcAnchorElement.getAttribute("class"));
+			var nClicksCode = gnbNClicks.getNClicksCode(anchorText, elementId, elementClass);
+			if(nClicksCode != null) {	
+				ncd.clickcrD('gnb.all', eventSrcAnchorElement, nClicksCode, '', 1, e);
+			}
+		} catch(ex) {
+		}
+	},
+	getClickedAnchorElement : function(eventElement) {
+		if(eventElement.tagName == "A") {
+			return eventElement;
+		}
+		
+		var limitDepth = 3;
+		var currentElement = eventElement
+		for(var i = 0; i < limitDepth; i++) {
+			if(currentElement.parentElement.tagName == "A") {
+				return currentElement.parentElement;
+			}
+			currentElement = currentElement.parentElement;
+		}
+
+		return eventElement;
+	},
+	getNClicksCode : function(anchorText, elementId, elementClass) {
+		var nClicksCode = null;
+		
+		nClicksCode = gnbNClicks.findValue(gnbNClicks.classNClicksNamePair, elementClass);
+		if(nClicksCode != null) {
+			return nClicksCode;
+		}	
+	
+		var nClicksCode = gnbNClicks.findValue(gnbNClicks.idNClicksNamePair, elementId);
+		if(nClicksCode != null) {
+			return nClicksCode;
+		}
+	
+		return gnbNClicks.findValue(gnbNClicks.anchorTextNClicksNamePair, anchorText);
+	},
+	findValue : function(dataMap, dataKey) {
+			var KEY_INDEX = 0;
+			var VALUE_INDEX = 1;
+	
+			for(var i = 0, len = dataMap.length; i < len; i++) {
+				if(dataKey == dataMap[i][KEY_INDEX]) {
+					return dataMap[i][VALUE_INDEX];
+				}
+			}
+	
+			return null;
+	}
+};
+
+function check_me2day() {
+	switch (gnb_user_layer._gnb_me2day_url) {
+		case 'http://nid.naver.com/new_me2day/me2day_sso.nhn':
+			parent.location.replace(gnb_user_layer._gnb_me2day_url);
+			break;
+		default:
+			openWindow(gnb_user_layer._gnb_me2day_url)
+				return;
+	}
+}
+
+function openWindow(target) {
+	var centerWidth = (window.screen.width - 450) / 2;
+	var centerHeight = (window.screen.height - 500) / 2;
+	window.open(target, '_blank', 'width=440,height=400' + ',left=' + centerWidth + ',top=' + centerHeight + ',status=no,scrollbars=no,resizable=no,menubar=no,toolbar=no,location=no');
+}
+
+function showGNB(data) {
+	var loginUrl = "https://nid.naver.com/nidlogin.logout";	
+	var loginNClicksEvent = function(e) {
+			try{
+				ncd.clickcrD('gnb.all', this, data.loginStatus == 'Y' ? "gnb.logout" : "gnb.login", '', 1, e);
+			} catch (ex) {
+			}
+			return true;
+	}
+
+	if (data.loginStatus == 'Y') {
+		document.getElementById('gnb_login_btn_img').src = "http://static.naver.net/common/gnb/101111/default/btn_gnb_logout.gif";
+		document.getElementById('gnb_login_btn_img').title="로그아웃";
+		document.getElementById('gnb_login_btn_img').alt="로그아웃";
+		document.getElementById('gnb_nicknm').innerHTML = "<strong id=\"gnb_nicknm_txt\">"+ data.nickName + "님</strong><img id=\"gnb_nicknm_arr\" height=\"13\" width=\"13\" class=\"arr\" alt=\"\" src=\"http://static.naver.net/common/gnb/101111/default/btn_arr.gif\">";
+		gnb_user_layer._gnb_me2day_url = data.me2dayUrl;
+
+		try{
+			if(gnb_shortnick == "on" ){
+				shortNick('gnb_nicknm');
+			}
+		} catch (e) {} 
+
+		showMeCount(data.meCount + data.talkCount);
+		document.getElementById('gnb_nicknm').style.display = "inline-block";
+		
+		var isGroupId = ((typeof data.loginGroupId != "undefined") && (0 < data.loginGroupId.length))
+		if(isGroupId){
+			gnbNaverMeLayer.isGroupId = true;
+		}
+	} else {
+		loginUrl = "https://nid.naver.com/nidlogin.login";
+		document.getElementById('gnb_nicknm').style.display = "none";
+	}
+
+	try {
+		if (gnb_searchbox == "on") {
+			document.getElementById('gnb_naverme_layer').className = "me_layer search_on_me_layer";
+			document.getElementById('gnb_searchbox').style.display = "inline-block";
+		} else {
+			document.getElementById('gnb_searchbox').style.display = "none";
+		}
+	} catch (e) {
+		document.getElementById('gnb_searchbox').style.display = "none";
+	}
+
+	document.getElementById('gnb_btn_login').style.display = "inline-block";
+	document.getElementById('gnb_utility').style.zIndex = 104;
+	document.getElementById('gnb_login').onclick = loginNClicksEvent;
+	setLoginUrl(loginUrl, (data.loginStatus == 'Y'));
+	
+	registerGNBLayerEventAll();
+	gnbNClicks.installNClicks();
+	gnbNClicks.registerNClicksEvent('gnb');
+}
+
+function registerGNBLayerEventAll() {
+	registerGNBLayerEvent('more', gnb_more_layer);
+	registerGNBLayerEvent('gnb_nicknm', gnb_user_layer);
+
+	document.getElementById('gnb_login').onfocus = function() {
+		gnb_user_layer.hide_top();
+	};
+	document.getElementById('gnb_view_all').onblur = function() {
+		gnb_more_layer.hide_top();
+	};
+}
+
+function registerGNBLayerEvent(layerId, layerEventObj) {
+	var moreLayer = document.getElementById(layerId);
+
+	moreLayer.onmouseover = function() {
+		layerEventObj.show_top();
+		gnbNaverMeLayer.hideLayer();
+	};
+
+	moreLayer.onmouseout = function() {
+		layerEventObj.hide_top();
+	};
+
+	moreLayer.onclick = function() {
+		layerEventObj.clickToggle();
+		return false;
+	};
+
+	moreLayer.onfocus = function() {
+		layerEventObj.showelement();
+		gnbNaverMeLayer.hideLayer();
+	};
+
+	moreLayer.onkeydown = function(e) {
+		var event = e ? e : window.event;
+		var TAB_KEY_CODE = 9;
+		if(event.keyCode == TAB_KEY_CODE && event.shiftKey) {
+			layerEventObj.hide_top();
+		}
+	};
+}
+
+function showMeCount(totalCount) {
+	var gnb_mecountplus = "";
+	if (totalCount > 99) {
+		gnb_mecountplus = "<span>+</span>";
+		totalCount = 99;
+	}
+	
+	if(totalCount == 0) {
+		document.getElementById('gnb_me_menu').className="me_menu zero";
+		document.getElementById('gnb_lnk_me').className="lnk_me zero";
+	} else {
+		document.getElementById('gnb_me_menu').className="me_menu";
+		document.getElementById('gnb_lnk_me').className="lnk_me";
+	}
+		
+	document.getElementById('gnb_lnk_me').innerHTML = "<em id='gnb_bubble'>" + totalCount + gnb_mecountplus + "</em>";
+	document.getElementById('gnb_lnk_me').style.display = "inline-block";
+}
+
+function setLoginUrl(loginUrl, isLogin) {
+	var loginAndReturnUrl = "";
+	var isGnbLoginDefined = (typeof gnb_login == "string") && (gnb_login != "");
+	var isGnbLogoutDefined = (typeof gnb_logout == "string") && (gnb_logout != "");
+
+	try {
+		if (isLogin && isGnbLogoutDefined) {
+			loginAndReturnUrl = loginUrl + "?returl=" + gnb_logout;
+		} else if (!isLogin && isGnbLoginDefined) {
+			loginAndReturnUrl = loginUrl + "?url=" + gnb_login;
+		} else {
+			loginAndReturnUrl = loginUrl;
+		}
+	} catch(e) {
+		loginAndReturnUrl = loginUrl;
+	}
+
+	gnb_more_layer._gnb_login = loginAndReturnUrl;
+	document.getElementById('gnb_login').href = gnb_more_layer._gnb_login;
+}
+
+function getGNB() {
+	var gnb_svcname;
+	var gnb_tmplname;
+	try{ gnb_svcname=gnb_service;} catch(e) {}
+	try{ gnb_tmplname=gnb_template;} catch(e) {}
+	var gnb_url = "http://gn.naver.com/getLoginStatus.nhn?callback=showGNB&charset=utf8&svc="+gnb_svcname+"&template="+gnb_tmplname;
+	
+	gnbJSONP.read('gnb_user_data', gnb_url);
+}
+
+function shortNick(fm){
+	var nickNameNode = document.getElementById(fm).childNodes[0].childNodes[0];
+	var nickName = nickNameNode.data;
+
+	if (nickName.length > 10) {
+		var shortened = nickName.substr(0, 10) + "...님";
+		nickNameNode.data = shortened;
+	}
+}

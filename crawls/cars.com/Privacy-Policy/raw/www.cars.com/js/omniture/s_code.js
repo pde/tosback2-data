@@ -48,6 +48,19 @@ s_clven.eVar58="D=User-Agent";
 //Get Action Depth
 s_clven.ActionDepthTest=true
 
+//Special Tracking for Competitors SEM Landing Pages//
+var pathnameSpec = window.location.pathname;
+if (pathnameSpec.indexOf('comparison1')!=-1) {
+  s_clven.eVar74="comparison test";
+}
+else
+{
+  if (pathnameSpec.indexOf('comparison')!=-1) {
+    s_clven.eVar74="comparison control";
+  }
+
+}
+
 /************************** DFA VARIABLES **************************/
 var dfa_CSID='1518042'; // DFA Client Site ID
 var dfa_SPOTID='2388676'; // DFA Spotlight ID

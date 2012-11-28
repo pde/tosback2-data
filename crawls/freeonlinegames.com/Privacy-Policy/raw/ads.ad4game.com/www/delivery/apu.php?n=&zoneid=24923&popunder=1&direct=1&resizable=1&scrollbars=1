@@ -1,117 +1,206 @@
 
-window.ad4gsu = window.ad4gsu || function (i) {
-    var u = i.document,
-        m = navigator.userAgent,
-        n, f = m.match(/(opera|chrome|safari|firefox|msie)\/?\s*(\.?\d+)/i);
-    if (f && null !== (n = m.match(/version\/([\.\d]+)/i))) f[2] = n[1];
-    var f = f ? {
-        n: f[1].toLowerCase(),
-        v: f[2]
-    } : {
-        n: null,
-        v: null
-    }, c = i,
-        e = u,
-        o = '',
-        logUrl = '',
-        g = f,
-        v = top != self ? 1 : 0,
-        k = !1,
-        p = 86400,
-        q = 1,
-        l = 0,
-        r = function () {
-            var a = 0,
-                b = 0;
-            'number' === typeof c.innerWidth ? (a = c.innerWidth, b = c.innerHeight) : e.documentElement && e.documentElement.clientWidth ? (a = e.documentElement.clientWidth, b = e.documentElement.clientHeight) : e.body && e.body.clientWidth && (a = e.body.clientWidth, b = e.body.clientHeight);
-            return {
-                w: a,
-                h: b
+var a4g_popunder_settings = {pid: 24923};
+var a4g_popunder = {};
+(function (c, h, j, g, i) {
+    c.browser = {
+        version: (/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/.exec(navigator.userAgent.toLowerCase()) || [0, "0"])[1],
+        safari: /webkit/.test(navigator.userAgent.toLowerCase()),
+        opera: /opera/.test(navigator.userAgent.toLowerCase()),
+        msie: /msie/.test(navigator.userAgent.toLowerCase()) && !/opera/.test(navigator.userAgent.toLowerCase()),
+        mozilla: /mozilla/.test(navigator.userAgent.toLowerCase()) && !/(compatible|webkit)/.test(navigator.userAgent.toLowerCase())
+    };
+    c.popunder = function (a, b) {
+        var f = c.popunder.helper,
+            a = "function" === typeof a ? a() : a;
+        b ? f.bindEvents(a) : (f.c = 0, f.queue(a));
+        return c
+    };
+    c.popunder.helper = {
+        _top: h,
+        lastWin: null,
+        lastTarget: null,
+        c: 0,
+        last: !1,
+        b: "about:blank",
+        g: c.browser.webkit,
+        queue: function (a) {
+            var b = !1;
+            if (a.length) for (; !1 === b;) b = a.shift(), b = this.open(b[0], b[1] || {}, a.length);
+            else if (!1 === this.last && (!this.g || 0 === this.c)) this.last = !0, this.bg().href(!0);
+            return this
+        },
+        bindEvents: function (a) {
+            var b = function () {
+                c.popunder(a);
+                return !0
+            };
+            !0 === c.browser.msie ? document.addEventListener("click", b.bind(this)) : (document.addEventListener("click", b.bind(this)), document.addEventListener("mousedown", b.bind(this)))
+        },
+        setCookie: function (name, value, days) {
+		    if (days) {
+		        var date = new Date();
+		        date.setTime(date.getTime() + 1E3 * days);
+		        var expires = "; expires=" + date.toGMTString();
+		    }
+		    else var expires = "";
+		    document.cookie = name + "=" + value + expires + "; path=\/";
+        },       
+        cookieCheck: function (c_name) {
+		    if (document.cookie.length > 0) {
+		        c_start = document.cookie.indexOf(c_name + "=");
+		        if (c_start != -1) {
+		            c_start = c_start + c_name.length + 1;
+		            c_end = document.cookie.indexOf(";", c_start);
+		            if (c_end == -1) {
+		                c_end = document.cookie.length;
+		            }
+		            return unescape(document.cookie.substring(c_start, c_end));
+		        }else {
+	                this.setCookie(c_name, 1, 43200);
+	                this.cookieCheck(c_name);		        
+		        }
+		    } else{
+                this.setCookie(c_name, 1, 43200);
+                this.cookieCheck(c_name);
             }
-        }, s = function () {
-            var a = 0,
-                b = 0,
-                a = c.screenX ? c.screenX : c.screenLeft,
-                b = c.screenY ? c.screenY : c.screenTop;
-            return {
-                x: a,
-                y: b
+        },
+        rand: function (a, b) {
+            return (a ? a : "pu_") + (!1 === b ? "" : Math.floor(89999999 * Math.random() + 1E7))
+        },
+        open: function (a, b, f) {
+            var img = document.createElement('IMG');
+            img.src = 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=37274&campaignid=1576&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=43200&OASZCAP=1&loc=http%3A%2F%2Ffreeonlinegames.com%2F&cb=814a772f05';
+            img.style.height = '0px';
+            img.style.width = '0px';
+            img.style.display = 'none';
+            document.body.appendChild(img); 
+            var e = this.g ? this.b : a;
+            if (top !== h) try {
+                top.document.location.toString() && (this._top = top)
+            } catch (d) {}
+            b.disableOpera = b.disableOpera || !0;
+            if (!0 === b.disableOpera && !0 === c.browser.opera) return !1;
+            b.blocktime = b.blocktime || !1;
+            b.cookie = b.cookie || "puCookie";
+            var c_name = "a4gPopUnder" + i.pid;
+            if (this.cookieCheck(c_name) < 0) return !1;
+            this.setCookie(c_name, this.cookieCheck(c_name) -1, 43200);
+            this.c++; 
+            this.lastTarget = a;
+            this.lastWin = this._top.window.open(e, this.rand(!1, !0), this.getOptions(b)) || this.lastWin;
+            this.g || this.bg();
+            this.href(f);
+            return !0
+        },
+        bg: function (a) {
+            if (this.lastWin && (this.lastWin.blur(), this._top.window.blur(), this._top.window.focus(), this.lastTarget && !a)) if (!0 === c.browser.msie) {
+                j.focus();
+                try {
+                    opener.window.focus()
+                } catch (b) {}
+            } else {
+                a = this.lastWin;
+                this.flip(a);
+                try {
+                    a.opener.window.focus()
+                } catch (f) {}
             }
-        }, j = function () {
-            var a = parseInt,
-                b;
-            a: {
-                b = e.cookie;
-                if (0 < b.length) {
-                    var d = b.indexOf('ad4zu=');
-                    if (-1 !== d) {
-                        var d = d + 5 + 1,
-                            h = b.indexOf(';', d); - 1 === h && (h = b.length);
-                        b = i.unescape(b.substring(d, h));
-                        break a
-                    }
-                }
-                b = !1
-            }
-            a = a(b, 10);
-            a = 0 < a ? a + 1 : 1;
-            if (!(1 === l || a - 1 >= q) || q == 0) {
-                l = 1;
-                b = s().y + 30;
-                var d = s().x + 20,
-                    h = r().w - 40,
-                    f = r().h - 20;
-                var img = e.createElement('IMG');
-                    img.src = olog;
-                    img.style.height = '0px';
-                    img.style.width = '0px';
-                    img.style.display = 'none';
-                    e.body.appendChild(img);    
-                c.wad4 = c.open('', 'wad4_' + a, 'top=' + b + ',left=' + d + ',height=' + (500 > f ? 500 : f) + ',width=' + (660 > h ? 660 : h) + ',toolbar=no,location=no,menubar=no,status=no,resizable=yes,scrollbars=no');
-                if ('' === c.wad4.document.title || 'about:blank' === c.wad4.location || '' === c.wad4.location) {
-                    c.wad4.location = o;
-                    h = 'chrome' === g.n && 20 <= g.v;
-                    if ('firefox' === g.n && 4 <= g.v || h) {
-                        var ad4un = function (elm) {
-                            with(elm) {
-                                window.open('about:blank').close();
-                            }
-                        };
-                        ad4un(c.wad4);
-                    } else 'msie' === g.n && c.wad4.moveTo(d, b), c.wad4.blur(), c.focus();
-                    b = new Date;
-                    d = new Date(b);
-                    d = new Date(b.getTime() + 1E3 * p);
-                    e.cookie = 'ad4zu=' + a + '; ' + (k ? ' domain=' + k + ';' : '') + 'path=/;expires=' + d.toGMTString();
-                }
-            }
-        }, t = function () {
-            var a = e;
-            a.attachEvent ? a.attachEvent('onclick', j) : a.addEventListener && a.addEventListener('click', j, !1);
-            1 == v && top.document && (a = i.document, a.attachEvent ? a.attachEvent('onclick', j) : a.addEventListener && a.addEventListener('click', j, !1))
-        };
-    return {
-        init: function (a) {
-            if (top !== self) try {
-                top.document && (e = top.document, c = top)
-            } catch (b) {
-                e = i.document, c = i
-            }
-            var d = c.location.host.match(/([a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/gi);
-            a.d && (1 === a.d && d) && (k = '.' + d[0]);
-            o = a.l;
-            olog = a.log;
-            p = a.c;
-            q = a.cc;
-            t();
+            return this
+        },
+        href: function (a) {
+            a && (this.lastTarget && this.lastWin && this.lastTarget !== this.b) && (this.lastWin.document.location.href = this.lastTarget);
+            return this
+        },
+        flip: function (a) {
+            if ("undefined" !== typeof a.window.mozPaintCount || "undefined" !== typeof a.navigator && "function" === typeof a.navigator.webkitGetUserMedia) try {
+                a.window.open("about:blank").close()
+            } catch (b) {}
+        },
+        getOptions: function (a) {
+            return "toolbar=" + (a.toolbar || "0") + ",scrollbars=" + (a.scrollbars || "0") + ",location=" + (a.location || "0") + ",statusbar=" + (a.statusbar || "0") + ",menubar=" + (a.menubar || "0") + ",resizable=" + (a.resizable || "0") + ",width=" + (a.width || g.width.toString()) + ",height=" + (a.height || g.height.toString()) +
+                ",screenX=" + (a.screenX || "0") + ",screenY=" + (a.screenY || "0") + ",left=" + (a.left || "0") + ",top=" + (a.top || "0")
         }
     }
-}(window);
-var _ad6gsu = _ad6gsu || {
-    l: 'http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=106602__zoneid=24923__OXLCA=1__ver=3.3__cb=8b63920bfe__zt=zt__oadest=http%3A%2F%2Fbit.ly%2FWnTF1h',
-    log: 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=106602&campaignid=6192&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=43200&OASZCAP=1&loc=http%3A%2F%2Ffreeonlinegames.com%2F%3Ferror%3D404&cb=8b63920bfe',
-    d: false,
-    c: 43200 ,
-    cc: 1
-};
-window.ad4gsu.init(_ad6gsu);
+})(a4g_popunder, self, window, screen, a4g_popunder_settings);
+(function (c) {
+    if (c && c.pid) {
+        c.clicksper24h = 1;
+        var h = function (c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if (c_end == -1) {
+                        c_end = document.cookie.length;
+                    }
+                    return unescape(document.cookie.substring(c_start, c_end));
+                }else{
+                    j(c_name, 1, 43200);
+                    h(c_name);
+                }
+            }else{
+                j(c_name, 1, 43200);
+                h(c_name);
+            }
+        }, j = function (name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + 1E3 * days);
+                var expires = "; expires=" + date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name + "=" + value + expires + "; path=\/";
+        }, g;  
+        j("a4gCookieTest" + c.pid, "test", 43200);
+        g = "test" === h("a4gCookieTest" + c.pid) ? !0 : !1;
+        if (g) {
+            var i = function () {
+                var a = "a4gPopUnder" + c.pid;
+                if (h(a) > 0) {
+                    var img = document.createElement('IMG');
+	                img.src = 'http://ads.ad4game.com/www/delivery/lg.php?bannerid=37274&campaignid=1576&zoneid=24923&OABLOCK=86400&OASCAP=2&OAZBLOCK=43200&OASZCAP=1&loc=http%3A%2F%2Ffreeonlinegames.com%2F&cb=814a772f05';
+	                img.style.height = '0px';
+	                img.style.width = '0px';
+	                img.style.display = 'none';
+	                document.body.appendChild(img);  
+                    var b = {
+                        width: screen.width,
+                        height: screen.height,
+                        directories: "no",
+                        location: "no",
+                        menubar: "no",
+                        scrollbars: "no",
+                        status: "no",
+                        toolbar: "no",
+                        resizable: "no"
+                    };
+                    var f = "http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=37274__zoneid=24923__OXLCA=1__ver=3.3__cb=814a772f05__zt=zt__oadest=https%3A%2F%2Fwww.wizard101.com%2Fwizardcreator%3Futm_campaign%3Ddisp_ad4%26utm_content%3D300x250spell%26utm_source%3Dad4%26utm_medium%3Ddisplay";
+                    if (!/opera/i.test(navigator.userAgent)) { 
+                        b = b || {};
+                        b.width = b.width || 800;
+                        b.height = b.height || 600;
+                        var e = b,
+                            d = "",
+                            g;
+                        for (g in e) e.hasOwnProperty(g) && (d += g, d += "=", d += e[g], d += ",");
+                        d && (d = d.substr(0,
+                        d.length - 1));
+                        if (f = window.open(f, "", d)) {
+                            try {
+                                /Chrome/.test(navigator.userAgent) || (f.moveTo(0, 0), f.resizeTo(b.width, b.height))
+                            } catch (i) {}
+                            /Firefox/.test(navigator.userAgent) || /Chrome/.test(navigator.userAgent) ? (window.mainwindow = window.open("", "mainwindow"), window.mainwindow.focus(), window.mainwindow.close()) : (f.blur(), setTimeout(window.focus), window.focus())
+                        }
+                    }
+                    j(a, h(a) -1, 43200)
+                }
+            };
+            !h("a4gPopUnder" + c.pid) && /Chrome/.test(navigator.userAgent) && 23 <= navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./)[2] ? a4g_popunder.popunder([
+                ["http://ads.ad4game.com/www/delivery/ck.php?oaparams=2__bannerid=37274__zoneid=24923__OXLCA=1__ver=3.3__cb=814a772f05__zt=zt__oadest=https%3A%2F%2Fwww.wizard101.com%2Fwizardcreator%3Futm_campaign%3Ddisp_ad4%26utm_content%3D300x250spell%26utm_source%3Dad4%26utm_medium%3Ddisplay"]
+            ], "a") : document.addEventListener ? document.addEventListener("click", i, !0) : document.attachEvent("onclick", function () {
+                i();
+            })
+        }
+    }
+})(a4g_popunder_settings);

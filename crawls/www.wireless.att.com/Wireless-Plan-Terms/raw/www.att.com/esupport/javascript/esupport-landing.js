@@ -57,9 +57,12 @@ var esupportCarousel = {
 		  if (vTitle == undefined ){
 			vTitle ="";
 		  }
-		  if(vTitle.indexOf("&amp;") != -1){
+		 /* if(vTitle.indexOf("&amp;") != -1){
 				vTitle=vTitle.replace("&amp;","&");
 			}
+			*/
+			
+			vTitle= self.formattedHTMLTitle(vTitle);
 		  if (video.videoLength  == undefined){
 				video.videoLength ="0:00";
 		   }	
@@ -67,7 +70,7 @@ var esupportCarousel = {
             var videoPath = video.xmlFileName.replace(/^\/media\/gvp/, '');
             gvp.showPopUp('Please wait...', true, true, 'gvp', videoPath + '&gvpEnv=//www.att.com/media/gvp/');
           };
-            $('<li>').append($('<div>').addClass('video-thumb-container')
+			$('<li>').append($('<div>').addClass('video-thumb-container')
 			        .append($('<a>').append($('<img>').attr({src:video.thumbFilePath,width:110,height:62,alt:vTitle,style:'display:block'}))
 				      .addClass('thumbnail')
 				      .append(  $('<span>').addClass('overlay').addClass('persist').attr({alt:'Play button'}) ).click(playVideo)  )
@@ -157,10 +160,23 @@ var esupportCarousel = {
           $('img', value).attr('src', index == currentPage ? self.pageButtonSrcOn : self.pageButtonSrcOff);
       });
     },
-    
-    formatTitle : function(input) {
-      return input.length > 40 ? input.substring(0,40) + '...' : input;
-    }
+
+	
+	formatTitle : function(input) {
+	return input.length > 40 ? input.substring(0,40) + '...' : input;
+	},
+
+	formattedHTMLTitle : function(input) {
+		var formattedTitle = input ;
+		if(formattedTitle.indexOf("&amp;") != -1){
+		formattedTitle=formattedTitle.replace("&amp;","&");
+		}
+
+		if(formattedTitle.indexOf("&#174;") != -1){
+			formattedTitle=formattedTitle.replace("&#174;","\u00AE");			
+		}
+		return formattedTitle;
+	}
 };
 
 

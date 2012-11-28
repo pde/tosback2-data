@@ -147,6 +147,7 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 
 
 
+	
 	mybuys.assembleTemplate ("mbbling,mbimage,mbname,mblistcenteralign,mbsalecenteralign");
 	mybuys.setStyle('.mblegend','text-align','left');
 	mybuys.setStyle('.mbitem','width','145px', 'PADDING-RIGHT', '4px', 'PADDING-LEFT', '4px');
@@ -208,10 +209,11 @@ mybuys.processResponseHTML = function(zoneHtmls) {
 	//home zone styling
 	mybuys.setStyleByPageType('HOME','ul#mbcarousel','width','2784px','overflow','hidden');
 	mybuys.setStyleByPageType('HOME','.mbslider_x5','position','relative');
-	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbitem','width','116px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbitem','width','116px', 'margin-top', '20px');
 	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbCarousellist','width','116px !important','padding','0 !important');
-	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbleftnav','width','28px','position','relative','left','-35px','top','-96px','padding','0px');
-	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbrightnav','width','28px','position','relative','right','-930px','top','-148px','padding','0px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbleftnav','width','28px','position','absolute','left','-15px','top','50px','padding','0px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbrightnav','width','28px','position','absolute','right','-15px','top','50px','padding','0px');
+	mybuys.setStyleByPageType('HOME','.mbslider_x5 .mbtitleimg','width','200px','padding','0px','position','absolute','top','-12px','right','385px','z-index','1');
 
 	//mobile zone styling
 	mybuys.setStyleByPageType('PRODUCT_DETAILS','#mybuyspagezone10 .mbslider_x5','width','260px','padding','0px 20px','margin','0px');

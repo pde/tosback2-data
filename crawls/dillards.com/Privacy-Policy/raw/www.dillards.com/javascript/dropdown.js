@@ -18,7 +18,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Women-Outerwear/_/N-y3cg?cm_sp=womens-_-ddtc-_-coat+shop+2+0102012">Coats</a></li>');
 	document.writeln('<li><a href="/shop/Women-Plus/_/N-lhzv?cm_sp=womens-_-ddtc-_-plus+3+021412">Plus</a></li>');
 	document.writeln('<li><a href="/shop/Women-Petite/_/N-lgbi?cm_sp=womens-_-ddtc-_-petites+4+021412">Petites</a></li>');
-	document.writeln('<li><a href="/shop/Women-Contemporary-Shop/_/N-za1p?cm_sp=womens-_-ddtc-_-the+edge+5+081012">Contemporary Shop</a></li>');
+	document.writeln('<li><a href="/shop/Women-Contemporary-Shop/_/N-za1p?cm_sp=womens-_-ddtc-_-the+edge+5+081012">Contemporary</a></li>');
 	document.writeln('<li class="all"><a href="/shop/Women/_/N-lfx6?cm_sp=womens-_-ddtc-_-vac+021412">VIEW ALL WOMEN\'S CATEGORIES</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
@@ -33,7 +33,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Women-Dresses/_/N-lgamZ1jl/Ntk-all/Ntt-Sequin+Dress/Nty-1/Rpp-1?cm_sp=womens-_-ddf-_-sequin+dresses+1+111512">Sequin Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Women-Dresses-Cocktail-Dresses/_/N-ydnr/Rpp-1?cm_sp=womens-_-ddf-_-cocktail+dressess+2+102812">Cocktail Dresses</a></li>');
 	document.writeln('<li><a href="/shop/UGG-Australia/Women-Coats/_/N-173koZy3cgZ1jl/Ns-p_coach_active_date%7C1/Ntk-all/Ntt-Coats/Nty-1/Rpp-1?cm_sp=womens-_-ddf-_-ugg+coats+3+111612">UGG Australia Coats</a></li>');
-	document.writeln('<li><a href="/content/Women-coats-thanksgiving?cm_sp=womens-_-ddf-_-99+coats+4+112212">$99 Coats</a></li>');
+	document.writeln('<li><a href="/shop/Women-Christmas-Apparel/_/N-ltar/Rpp-1?cm_sp=womens-_-ddf-_-christmas+sweaters+4+112612">Christmas Sweaters & Tops</a></li>');
 	document.writeln('<li><a href="/content/women-holiday-dresses?cm_sp=womens-_-ddf-_-holiday+dresses+5+111912">Holiday Dresses</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<div class="promo"><a href="/shop/Women-Dresses-Special-Occasion/_/N-zo9b/Rpp-1?cm_sp=womens-_-ddpromo-_-special+occasion+dresses+112212" >Holiday Glamour: Shop Special Occasion Dresses    ></a></div>');
@@ -174,7 +174,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/product/Kate-Landry-Social-Peacock-Minaudiere-Clutch-Evening-Bag_301_-1_301_503500771?cm_sp=handbags-_-ddf-_-kate+landry+peacock+clutch+pick+of+the+week+4+102612">OUR PICK OF THE WEEK</a></li>');
 	document.writeln('<li><a href="/shop/MICHAEL-Michael-Kors/Handbags/_/N-1738nZlfyu/Ns-p_coach_active_date%7C1?cm_sp=handbags-_-ddf-_-new+michael+kors+5+100212">NEW from MICHAEL KORS</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Handbags/_/N-z70c/Ntk-all?cm_sp=handbags-_-ddpromo-_-thanksgiving+sale+112212" >Shop Our Thanksgiving Limited Time Savings Event ></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Handbags/Color-Red/_/N-lfyuZ1z141y6/Rpp-1?cm_sp=handbags-_-ddpromo-_-red+hot+handbags+102612" >Red Hot: Handbag Color of the Season ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/COACH/_/N-1738wZlfu5?cm_sp=handbags-_-ddimage-_-coach+111712"><img src="/images/dropDownImages/111612dropdown_hb_coach.jpg"></a>');
@@ -218,9 +218,9 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Betsey-Johnson/Accessories/_/N-173f7Zlfxv?cm_sp=accessories-_-ddf-_-betsey+johnson+2+112212">BETSEY JOHNSON Bling</a></li>');
 	document.writeln('<li><a href="/shop/Accessories-Fashion-Scarves-Wraps-Scarves-Infinity-Scarves/_/N-zpwl?cm_sp=accessories-_-ddf-_-infinity+scarves+3+112212">MUST HAVE Infinity Scarves</a></li>');
 	document.writeln('<li><a href="/content/bridal-shop-wedding-accessories?cm_sp=accessories-_-ddf-_-bridal+wedding+style+4+112212">BRIDAL & WEDDING Style</a></li>');
-	document.writeln('<li><a href="/shop/Dogeared/Accessories/_/N-174u2Zlfxv?cm_sp=accessories-_-ddf-_-dogeared+5+112212">Dogeared JEWELS & GIFTS: Give Good Karma</a></li>');
+	document.writeln('<li><a href="/shop/BCBGeneration/Accessories/_/N-173uvZlfxv?cm_sp=accessories-_-ddf-_-bcbg+5+112712">BCBGeneration AFFIRMATION BRACELETS</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Accessories/_/N-z70d?cm_sp=accessories-_-ddpromo-_-thanksgiving+sale+112212" >Shop Our Thanksgiving Limited Time Savings Event ></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Accessories-Cold-Weather-Wear/_/N-ywv7?cm_sp=accessories-_-ddpromo-_-perfect+cold+weather+111912" >Keep Warm: Shop Perfect Cold Weather Accessories ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Accessories-Cold-Weather-Wear/_/N-ywv7?cm_sp=accessories-_-ddimage-_-echo+cold+weather+112112"><img src="/images/endeca/banners/112112dropdown_coldweather2.jpg"></a>');
@@ -266,7 +266,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/content/sleepwear-buy-two-save?cm_sp=lingerie-_-ddf-_-buy2andsave+4+110412">Buy 2 and SAVE</a></li>');
 	document.writeln('<li><a href="/shop/Soho/Lingerie/_/N-1748rZlfz4?cm_sp=lingerie-_-ddf-_-pick+of+the+week+5+slippers+112212">OUR PICK OF THE WEEK</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Lingerie/_/N-z70e?cm_sp=lingerie-_-ddpromo-_-thanksgiving+sale+112212" >Shop Our Thanksgiving Limited Time Savings Event ></a></div>');
+	document.writeln('<div class="promo"><a href="/content/spanx-slimming-solutions-guide?cm_sp=lingerie-_-ddpromo-_-spanx+slimming+shaping+guide+051212" >SPANX SHOPPER\'S GUIDE TO SLIMMING SOLUTIONS ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Accessories-Socks-Footwear/_/N-lmxn?cm_sp=lingerie-_-ddimage-_-get+cozy+socks+111412"><img src="/images/dropDownImages/112212dd_l_socks.jpg"></a>');
@@ -315,7 +315,7 @@ function buildDropdown() {
 	document.writeln('<div class="promo"><a href="/shop/Beauty-Special-Offers/_/N-z4nt/Rpp-1?cm_sp=beauty-_-ddpromo-_-black+friday+special+offers+112212" >LIMITED TIME SPECIAL OFFERS  ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/product/Estee-Lauder-ULTIMATE-COLOR-Blockbuster_301_-1_301_503522986?cm_sp=beauty-_-ddimage-_-estee+lauder+blockbuster+112412"><img src="/images/dropDownImages/111512_ddimage_lauder_blockbuster.jpg"></a>');
+	document.writeln('<a href="/product/Estee-Lauder-Michael-Kors-Special-Offer_301_-1_301_503530087?beauty-_-ddimage-_-estee+lauder+michael+kors+special+offer+112712"><img src="/images/dropDownImages/111512_ddimage_mk_pwp.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -358,7 +358,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Men-Polos-Tees-Sportshirts-Tees/_/N-yetlZ1jl/Ns-p_best_sellers_rank%7C1/Ntk-all/Ntt-long-sleeve/Nty-1/Rpp-1?cm_sp=mens-_-ddf-_-great+tees+layering+4+111712">GREAT TEES for Layering</a></li>');
 	document.writeln('<li><a href="/shop/Men/_/N-lfy5Z1jl/Ntk-all/Ntt-under+armour+jacket/Nty-1?cm_sp=mens-_-ddf-_-under+armour+jackets+5+111712">UNDER ARMOUR Jackets</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/content/mens-after-thanksgiving-sales-values?cm_sp=mens-_-ddpromo-_-thanksgiving+sales+values++toe+sock+25+112212" >Shop Our Thanksgiving Holiday Limited Time Sale Events</a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Gold-Toe/Men/_/N-1731vZlfy5Z1jl/Ntk-all/Ntt-gold+toe/Nty-1/Rpp-1?cm_sp=childrens-_-ddpromo-_-gold+toe+socks+25+off+event+112712" >Gold Tock Socks 25% Off Event</a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Men-Gift-Ideas-Novelty-Gadgets/_/N-y3j8/Rpp-1?cm_sp=mens-_-ddimage-_-shop+mens+novelty+gadgets+112212"><img src="/images/dropDownImages/112012dropdown_mens_gifts.jpg"></a>');
@@ -450,7 +450,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Home/_/N-lfyaZ1jl/Ntk-all/Ntt-waterford+2012+ornament+bonus/Nty-1?cm_sp=home-_-ddf-_-waterford+gwp+4+111912">Waterford Crystal FREE GIFT with Purchase</a></li>');
 	document.writeln('<li><a href="/content/home-special-offers?cm_sp=home-_-ddf-_-special+offers+from+home+5+090212">SPECIAL OFFERS</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Home/_/N-z70i?cm_sp=home-_-ddpromo-_-thanksgiving+sale+112212" >Shop Our Thanksgiving Limited Time Savings Event ></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Lenox/Gorham/Dansk/Home/_/N-1733fZ1731tZ1730kZlfya?cm_sp=home-_-ddpromo-_-lenox+gorham+dansk+mir+112612" >Lenox, Gorham & Dansk:  Buy More, Save More Rebate ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Home-Kitchen/_/N-wnsq?cm_sp=home-_-ddimage-_-southern+living+cookbook+kitchen+112212"><img src="/images/dropDownImages/112212dd_hm_southernliving.jpg"></a>');

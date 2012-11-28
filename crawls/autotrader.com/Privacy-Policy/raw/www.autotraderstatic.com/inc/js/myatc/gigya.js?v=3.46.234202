@@ -1,0 +1,93 @@
+(function($, window, undefined) {
+    if(typeof atc.gigya == "undefined"){
+        atc.namespace("atc.gigya");
+
+        $.extend(atc.gigya, {
+            init: function(){
+                window.conf=
+                {
+                    APIKey: '2_S9yQ4k4sutW0IemTk38sKxXJ7K9Je1ZPaMFEgQQlyVWGwmHEFUOig3kJt1Qlawfa'
+                    ,enabledProviders: 'facebook'
+                };
+                window.login_params=
+                {
+                    provider: 'facebook'
+                    ,callback: function(response){
+                        if(typeof response != "undefined"){
+                            if(response.status == "FAIL"){
+                                // Facebook login failed.
+                            }
+                            else if(response.status == "OK"){
+                                var redirectURL = (parseInt(window.location.port) > 443 ? "http" : "https") + "://" + window.location.host + "/myatc/social_login.xhtml";
+                                var return_page = window.location.href;
+                                var is_iframed = false;
+
+                                if(window.location.pathname.indexOf("/myatc/index.xhtml") == 0 || window.location.pathname.indexOf("/myatc/register.xhtml") == 0){
+                                    return_page = "";
+                                }
+                                else if(window.location.pathname.indexOf("/cars-for-sale/partial/myatc/") == 0 || window.location.pathname.indexOf("/myautotrader/partial/myatc/signup-or-signin.xhtml") == 0){
+                                    return_page = window.parent.location.href;
+                                    is_iframed = true;
+                                }
+                                return_page = encodeURIComponent(return_page.split("?loggedOut=true").join("?").split("&loggedOut=true").join(""));
+
+                                redirectURL += "?referer_url=" + return_page
+                                             + "&provider=" + this.provider
+                                             + "&UID=" + encodeURIComponent(response.UID)
+                                             + "&UIDSig=" + encodeURIComponent(response.UIDSig)
+                                             + "&timestamp=" + encodeURIComponent(response.timestamp)
+                                             + "&UIDSignature=" + encodeURIComponent(response.UIDSignature)
+                                             + "&signatureTimestamp=" + encodeURIComponent(response.signatureTimestamp)
+                                             + "&loginProviderUID=" + encodeURIComponent(response.loginProviderUID)
+                                             + "&isSiteUID" + encodeURIComponent(response.isSiteUID)
+                                             + "&signature" + encodeURIComponent(response.signature)
+                                             + "&" + $.param(response.user);
+
+                                if(!is_iframed){
+                                    window.location = redirectURL;
+                                }
+                                else{
+                                    window.parent.location = redirectURL;
+                                }
+                            }
+                        }
+                    }
+                };
+                $(document).ready(function(){
+                    var prepare_facebook_login_click = function(){
+                        $(".social-line a").click(function(e){
+                            e.preventDefault();
+                            console.log("social clicked");
+    
+                            if(typeof gigya == "undefined"){
+                                $(".social-line a .error").show();
+                                return false;
+                            }
+    
+                            gigya.services.socialize.login(conf, login_params);
+                        });
+    
+                        if (gigya && window.initGigya){
+                            window.initGigya();
+                        }
+                    };
+    
+                    if(typeof gigya == "undefined"){
+                        $.ajax({
+                            url:(window.location.protocol == "https:" ? "https://cdns" : "http://cdn") + ".gigya.com/js/socialize.js?apiKey=" + conf.APIKey,
+                            dataType: "script",
+                            complete: prepare_facebook_login_click
+                        });
+                    }
+                    else{
+                        prepare_facebook_login_click();
+                    }
+                });
+            }
+        });
+        
+        if(typeof atc.renderedThirdPartyContent == "undefined" || atc.renderedThirdPartyContent){
+            atc.gigya.init();
+        }
+    }
+})(jQuery, window);

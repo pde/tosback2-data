@@ -1,0 +1,467 @@
+$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+if ($.browser.chrome) {
+  $.browser.safari = false
+}
+
+function Utils() {
+  return this;
+}
+
+Utils.isHtml5UploadSupport = !!('multiple' in document.createElement('input'));
+
+Utils.checkMultiupload = function(){
+  return $.browser.safari || !('multiple' in document.createElement('input')) || !UploadModule.FileSupported() || !UploadModule.XhrUploadSupported()
+}
+
+Utils.isFunctionExists = function(functionName) {
+  return (eval('typeof ' + functionName) == 'function');
+}
+
+Utils.fixEventCoords = function(e) {
+  // Calculate pageX/Y if missing and clientX/Y available
+  // note: IE seems to be the only one that needs this because
+  //       jQuery will add it for others. Don't know why not
+  //       for IE.
+  if (e.pageX == null && e.clientX != null) {
+    var e = document.documentElement, b = document.body
+    e.pageX = e.clientX + (e && e.scrollLeft || b.scrollLeft || 0)
+    e.pageY = e.clientY + (e && e.scrollTop || b.scrollTop || 0)
+  }
+
+  return e
+}
+
+Utils.getFlashVersion = function() {
+  var version;
+
+  try {
+    version = navigator.plugins['Shockwave Flash'];
+    version = version.description;
+  } catch (e1) {
+    try {
+      version = new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
+    } catch (e2) {
+      version = '0.0';
+    }
+  }
+
+  version = version.match(/\d+/g);
+
+  return parseFloat(version[0] + '.' + version[1]);
+}
+
+Utils.getCpuArch = function() {
+  try {
+    var cpu = window.navigator.oscpu
+    if (!cpu)
+      cpu = window.navigator.cpuClass
+
+    return cpu.indexOf('64') > 0 ? 64 : 32
+  } catch (err) {
+    return 64
+  }
+}
+
+Utils.getSelection = function() {
+  if (window.getSelection) {
+    return window.getSelection().toString()
+  } else if(document.getSelection) {
+    return document.getSelection()
+  } else if(document.selection) {
+    return document.selection.createRange().text
+  }
+}
+
+Utils.validateUrl = function(url) {
+  return (/^([a-z0-9]([a-z]|\d|\+|-|\.)*):?(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url))
+}
+
+Utils.toShortString = function(str, limit) {
+  return str.length <= limit ? str : (str.substring(0, limit) + '...')
+}
+
+Utils.indexOf = function(arr, obj) {
+  if (arr.indexOf) {
+    return arr.indexOf(obj)
+  }
+
+  for(var i = 0; i < arr.length; i++) {
+    if (arr[i] == obj) {
+      return i
+    }
+  }
+
+  return -1
+}
+
+Utils.copyToClipboard = function(meintext) {
+  if (window.clipboardData)
+    window.clipboardData.setData("Text", meintext)
+  else if (window.netscape) {
+    netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect')
+
+    var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard)
+    if (!clip)
+      return false
+
+    var trans = Components.classes['@mozilla.org/widget/transferable;1'].createInstance(Components.interfaces.nsITransferable)
+    if (!trans)
+      return false
+
+    trans.addDataFlavor('text/unicode')
+    var str = new Object()
+    var len = new Object()
+    var str = Components.classes["@mozilla.org/supports-string;1"].createInstance(Components.interfaces.nsISupportsString)
+    str.data = meintext
+    trans.setTransferData("text/unicode", str, meintext.length * 2)
+    var clipid = Components.interfaces.nsIClipboard
+    if (!clipid)
+      return false;
+
+    clip.setData(trans, null, clipid.kGlobalClipboard)
+  }
+  return false;
+}
+
+Utils.getSearchName = function(string) {
+  if (typeof(string) != 'string') return string
+  string = $.trim(string.replace(/\\/g, '').replace(/\//g, ''))
+  return encodeURIComponent(getSearchNameForSeo(string)).replace(/%2B/g, '+')
+
+  function getSearchNameForSeo(string) {
+    if (!Config.isReplaceSearchNameForSeo) return string
+    var arr = string.split("")
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i] == " ") arr[i] = "-"
+      else if (arr[i] == "+") arr[i] = "-"
+      else if (arr[i] == "-") arr[i] = "+"
+    }
+    return arr.join("")
+  }
+}
+
+Utils.convertToPlainArray = function(arrObj){
+  if(arrObj.length){
+    if(arrObj == Array)
+      return arrObj;
+    else{
+      var res = [];
+      for(var i=0; i<arrObj.length; i++){
+        res.push(arrObj[i]);
+      }
+      return res;
+    }
+  } else {
+    return [arrObj];
+  }
+}
+
+Utils.getFilesAndFolderIds = function(files){
+  var fileIdsArr = [];
+  var folderIdsSet = {};
+  for(var i=0; i<files.length; i++){
+    if(files[i]._fileId) fileIdsArr.push(files[i]._fileId);
+    folderIdsSet[files[i]._uploadDir] = true;
+  }
+  var folderIdsArr = [];
+  for(var i  in folderIdsSet){
+    folderIdsArr.push(i);
+  }
+  return {fileIdsArr : fileIdsArr, folderIdsArr: folderIdsArr};
+}
+
+Utils.clearInput = function(input){
+  $(input).replaceWith($(input).clone(true).val(""));
+}
+
+Utils.stopFrame = function(iframe, remove){
+  iframe = $(iframe);
+  iframe.attr('src','');
+  if(remove){
+    iframe.remove();
+  }
+}
+
+Utils.getTime = function(){
+  return new Date().getTime();
+}
+
+Utils.timeLeftCalculator =  function(ratesDeep, minDeep){
+
+  var stats = [];
+  var startTime = Utils.getTime();
+
+  var progressTime = 0, progressLoaded = 0, statTotalTime = 0, statTotalLoaded = 0;
+
+  ratesDeep = ratesDeep ? ratesDeep : 20;
+
+  minDeep = minDeep || 15;
+
+
+  this.getCurrentStatisticDeep = function(){
+    return rates.length;
+  }
+
+  this.calculateTimeLeft = function(loaded, total){
+
+    var currTime = Utils.getTime();
+
+    var elapsedTime = currTime - startTime;
+    progressTime = elapsedTime - progressTime;
+    progressLoaded = loaded - progressLoaded;
+
+    statTotalTime+=progressTime;
+    statTotalLoaded+=progressLoaded;
+
+    stats.push({progressTime:progressTime, progressLoaded:progressLoaded});
+
+    if(stats.length>ratesDeep){
+      var statForRemove = stats.shift();
+      statTotalTime-=statForRemove.progressTime;
+      statTotalLoaded-=statForRemove.progressLoaded;
+    }
+
+    var rate = statTotalTime ? statTotalLoaded / (statTotalTime / 1000) : 0;
+    var leftTime = rate ? (total-loaded)/rate : 0;
+
+    if(leftTime && stats.length>=minDeep){
+      return {
+        leftTime : leftTime,
+        rate : rate
+      }
+    } else {
+      return {};
+    }
+  }
+
+}
+
+Utils.median = function(values){
+    values.sort( function(a,b) {return a - b;} );
+
+    var half = Math.floor(values.length/2);
+
+    if(values.length % 2)
+      return values[half];
+    else
+      return (values[half-1] + values[half]) / 2.0;
+
+};
+
+Utils.readablizeBytes = function (bytes) {
+  if (bytes == 0) return '0 bytes'
+
+  var str = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  var index = Math.floor(Math.log(bytes) / Math.log(1024));
+  bytes = (bytes / Math.pow(1024, Math.floor(index)));
+  bytes = (index > 1) ? bytes.toFixed(1) : Math.floor(bytes);
+
+  return bytes + " " + str[index];
+}
+
+Utils.readablizeTime = function(seconds, options) {
+
+  options = options || {}
+
+  options = $.extend(true,{
+    i18n : {
+      seconds : 'sec',
+      minutes : 'min',
+      hours : 'hours'
+    }
+  }, options)
+
+  seconds = Math.round(seconds);
+
+  if (seconds < 56)
+    return seconds + " " + options.i18n.seconds;
+
+  if (seconds < 3600) {
+    var mins = Math.round(seconds / 60) || 0;
+    mins++;
+    return mins + " " + options.i18n.minutes
+  }
+
+  var hours = Math.floor(seconds / 3600)
+  var mins = Math.floor((seconds - hours * 3600) / 60);
+  return hours + " " + options.i18n.hours + " " + mins + " " + options.i18n.minutes;
+};
+
+Utils.checkConnectionAvaliable = function (callback, sync) {
+  $.ajax({
+    type: 'get',
+    url: '/blank.jsp',
+    async : !sync,
+    success: function() {
+      callback(true)
+    },
+    error: function() {
+      callback(false)
+    }
+  });
+};
+
+(function( $ ){
+
+  $.fn.dragTip = function( options ) {
+
+    if($.browser.msie)return;
+
+    var settings = $.extend( {
+      beforeShow  : function(){},
+      afterHide   : function(){},
+      showJustForFile : true,
+      tipElement  : '',
+      droppedEventName : 'fileDropped'
+    }, options);
+
+    settings.tipElement = $(settings.tipElement);
+
+    function isFileDrag(event){
+      if (!event.originalEvent.dataTransfer) return false;
+      var dataTransfer = event.originalEvent.dataTransfer;
+
+      if(dataTransfer.files && dataTransfer.files.length) return true;
+
+      if(dataTransfer.types){
+        for(var i=0; i<dataTransfer.types.length; i++){
+          if(dataTransfer.types[i].toLowerCase()=='files')return true;
+        }
+      }
+      return false;
+    }
+
+    function isValid(event){
+      return (!settings.showJustForFile || (settings.showJustForFile && isFileDrag(event))) && !(settings.beforeShow()===false)
+    }
+
+    function showDragUpload(event) {
+      if(isValid(event)){
+        settings.tipElement.show();
+      }
+    }
+
+    function hideDragUpload(event) {
+      settings.tipElement.hide();
+      settings.afterHide(event)
+    }
+
+    return this.each(function() {
+      var $this = $(this)
+
+      var stepEnter = [];
+      var timer = null;
+
+      $this.bind('dragenter', function (event) {
+        if (!stepEnter.length) showDragUpload(event)
+        stepEnter.push(event.target)
+        event.stopPropagation();
+      })
+
+      $this.bind('dragleave', function (event) {
+        stepEnter.pop();
+        if(!$.browser.webkit){
+          if(!$(stepEnter[stepEnter.length-1]).is(':visible'))stepEnter.pop()
+        }
+        if(timer)clearTimeout(timer);
+        timer = setTimeout(function () {
+          if (!stepEnter.length){
+            hideDragUpload(event);
+            stepEnter = [];
+          }
+        }, 100)
+        event.stopPropagation();
+      })
+
+
+      $(document).bind(settings.droppedEventName, function (event) {
+        stepEnter = []
+        hideDragUpload(event);
+      })
+
+
+      $(document).bind('mouseout', function(event){
+        if(stepEnter.length){
+          stepEnter = []
+          hideDragUpload(event);
+        }
+      })
+
+
+    });
+
+  };
+})( jQuery );
+
+
+Utils.Timer = function(options){
+  options = $.extend({
+    countDownElement : null,
+    onTimeOut : function(){},
+    time : 10000,
+    timeStep : 1000,
+    usePrettyTimePrint : true
+  }, options);
+
+  var timeToLeft = options.time;
+
+  if(options.countDownElement){
+    var lcTimeout = options.usePrettyTimePrint ? Utils.readablizeTime(timeToLeft/1000, true) : timeToLeft
+    $(options.countDownElement).text(lcTimeout).show();
+  }
+
+  var timeout = setTimeout(function(){
+    processTimer()
+  }, options.timeStep);
+
+  function processTimer(){
+    if((timeToLeft-=options.timeStep)<=0){
+      if(options.countDownElement){
+        $(options.countDownElement).hide();
+      }
+      clearTimeout(timeout);
+      options.onTimeOut();
+    } else {
+      if(options.countDownElement){
+        var lcTimeout = options.usePrettyTimePrint ? Utils.readablizeTime(timeToLeft/1000, true) : timeToLeft
+        $(options.countDownElement).text(lcTimeout).show();
+      }
+      timeout = setTimeout(function(){
+        processTimer()
+      }, options.timeStep);
+    }
+
+  }
+
+  this.getTimeoutTimeInMiliSeconds = function(){
+    return options.time;
+  }
+
+  this.getTimeToLeftInMiliSeconds = function(){
+    return timeToLeft;
+  }
+
+  this.stopTimer = function(){
+    clearTimeout(timeout);
+    if(options.countDownElement){
+      $(options.countDownElement).hide();
+    }
+  }
+}
+
+Utils.getDomain = function (url) {
+  return url.match(/\/\/(.[^/]+)/)[1];
+};
+
+
+(function(){
+  Utils.unload = false;
+
+  Utils.isUnload = function(){
+    return Utils.unload;
+  }
+
+  $(window).bind("beforeunload unload", function(){
+    Utils.unload = true;
+  });
+})();

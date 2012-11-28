@@ -20,7 +20,392 @@
 * 12/04/2011 S Gadhiraju    DIGI-73 Replacing the hardcoded Disqus forum id with the section parameter value.
 * 01/06/2011   Harish K M   DIGI-628 When the video loads at the moment there is no sound, despite the volume being set to maximum. Sound only appears when you adjust the volume.
 ***************************************************************************/
-if(document.domain == "telegraph.co.uk"){
+
+
+
+/************************************************************************
+* Hot topics
+************************************************************************/
+$(document).ready(function () {
+
+	var hotTopicLiAll = $('#tmglMenu #tmglHotTopics .mainNav li').filter(function () {
+		return (! $(this).find('a').html().match(/^more/i));
+	});
+	
+	hotTopicLi = hotTopicLiAll.filter(function() {
+		return $(this).find('.hotTopicsContent h5').length != 0;
+	});
+	hotTopicLi.filter('.htFirst').addClass('active');
+	$('#tmglMenu #tmglHotTopics .secondaryNav .hotTopicsContent').html($('#tmglMenu #tmglHotTopics .mainNav .active .hotTopicsContent').html());
+
+	var interval = 6000,
+		hotTopicsInt = setInterval(rotateHotTopics, interval);
+	
+	// Removing unwanted LIs from the DOM
+	$('#tmglMenu #tmglHotTopics .mainNav li').each(function() {
+		$(this).remove();
+	});
+	
+	// Adding the filtered LIs to the DOM for HotTopics to iterate
+	hotTopicLi.each(function(){
+		$('#tmglMenu #tmglHotTopics .mainNav').append($(this));
+	});
+	
+	function rotateHotTopics () {
+		
+		// oldActive = hotTopicLi.parent().find('.active');
+		
+		//var newActive = hotTopicLi.find('.active').next("li");
+		
+		var counti = 0;
+		var oldActive;
+		var newActive;
+		hotTopicLi.each(function(){
+			if($(this).hasClass("active")){			
+				oldActive = $(this);		
+				return false;
+			}
+			counti++;
+		});
+		newActive = hotTopicLi.eq(counti+1);
+		
+		if (newActive.length === 0 || typeof (newActive.find('a').html()) === 'string' && newActive.find('a').html().match(/^more/i)) {
+			newActive = hotTopicLi.filter('.htFirst');
+		}
+		$('.mainNav li').removeClass('active');
+		newActive.addClass('active');
+	
+	    $('#tmglMenu #tmglHotTopics .secondaryNav .hotTopicsContent').fadeOut(function(){
+	    	$(this).html($('#tmglMenu #tmglHotTopics .mainNav .active .hotTopicsContent').html()).fadeIn();	
+	    	
+	    });    	
+	}
+
+	hotTopicLi.hover(function() {
+		clearInterval(hotTopicsInt);
+		var oldActive = hotTopicLi.filter('.active');
+		var newActive = $(this);
+		oldActive.removeClass('active');
+		$(this).addClass('active');
+		$('#tmglMenu #tmglHotTopics .secondaryNav .hotTopicsContent').html($('#tmglMenu #tmglHotTopics .mainNav .active .hotTopicsContent').html());
+		
+	}, function() {
+		hotTopicsInt = setInterval(rotateHotTopics, interval);
+	});
+	
+	$('.hotTopicsContent').hover(function() {
+		clearInterval(hotTopicsInt);
+	}, function() {
+		hotTopicsInt = setInterval(rotateHotTopics, interval);
+	});
+
+});
+
+
+
+/**********************************************************************************************
+*            this aligns the label if the article is live, latest or new      				  *
+***********************************************************************************************/
+$(document).ready(function(){
+	
+	//live label
+	var liveSpanTopStoriesFiveSixths = $('.newPortal .fiveSixths .summaryMedium span.live'),
+		liveSpanTopStoriesFSSumBig = $('.newPortal .fiveSixths .summaryBig span.live'),
+		liveSpanTopStoriesOneThird = $('.gutterUnder .oneThird .summaryMedium span.live'),	
+		liveSpanTopStoriesTwoThird = $('.gutterUnder .twoThirds .summaryMedium span.live'),
+	
+	//latest label
+		latestSpanTopStoriesFiveSixths = $('.newPortal .fiveSixths .summaryMedium span.latest'),	
+		latestSpanTopStoriesOneThird = $('.gutterUnder .oneThird .summaryMedium span.latest'),
+		latestSpanTopStoriesTwoThird = $('.gutterUnder .twoThirds .summaryMedium span.latest'),
+	
+	//new label
+		newSpanTopStoriesFiveSixths = $('.newPortal .fiveSixths .summaryMedium span.new'),
+		newSpanTopStoriesOneThird = $('.gutterUnder .oneThird .summaryMedium span.new'),
+		newSpanTopStoriesTwoThird = $('.gutterUnder .twoThirds .summaryMedium span.new');
+	
+	$('.minusVid').siblings('p').width('380');
+	
+	//live 
+	adjustLabelPosition(liveSpanTopStoriesFiveSixths, 1);
+	adjustLabelPosition(liveSpanTopStoriesFSSumBig, 2);
+	adjustLabelPosition(liveSpanTopStoriesOneThird, 1);
+	adjustLabelPosition(liveSpanTopStoriesTwoThird, 1);
+	
+	//latest
+	adjustLabelPosition(latestSpanTopStoriesFiveSixths, 1);
+	adjustLabelPosition(latestSpanTopStoriesOneThird, 1);
+	adjustLabelPosition(latestSpanTopStoriesTwoThird, 1);
+	
+	//new
+	adjustLabelPosition(newSpanTopStoriesFiveSixths, 1);
+	adjustLabelPosition(newSpanTopStoriesOneThird, 1);
+	adjustLabelPosition(newSpanTopStoriesTwoThird, 1);
+});
+
+
+function adjustLabelPosition(section, siblingFlag){	
+	if (section.length > 0) {  
+		section.each(function() {
+			var p = (siblingFlag == 1) ? $(this).next('p') : $(this).siblings('p').not('.comments');
+			$(this).prependTo(p);
+	    });		
+	}
+}
+
+/************************************************************
+*   hover in/out behaviour for editorial puffs
+*
+*   We manually set the css properties here using animate
+*   instead of defining a class and using addClass because
+*   addClass appears not to work in IE7/8
+************************************************************/
+$(document).ready(function () {
+	$('.headlineImageCentreAbstractPuff.small').hover(function () {
+		$(this).find('.puffRollOver').animate({height:'100%'}, 200);
+	}, function () {
+        $(this).find('.puffRollOver').animate({height:'24px'}, 200);
+	});
+});
+
+
+
+/************************************************************
+*   hover in/out behaviour for the large editorial puffs 
+************************************************************/
+$(document).ready(function () {
+	
+	var largePuffTextParagraghHeight = $('.large p').height();
+	var largePuffTextH5Height = $('.large h5').height();
+	var totalHeight = largePuffTextParagraghHeight + largePuffTextH5Height + 20;
+	var headingHeight =  $('.large h5').height() + 10;	
+	
+	$('.headlineImageCentreAbstractPuff.large .puffRollOver').css("height",headingHeight + "px");		
+	
+	$('.headlineImageCentreAbstractPuff.large').hover(function () {
+		$(this).find('.puffRollOver').animate({height: totalHeight + "px"}, 200);
+	}, function () {
+	    $(this).find('.puffRollOver').animate({height: headingHeight + "px"}, 200);
+	});
+	
+});
+
+/***********************************************************************
+    *              Big carousel v2 Gallery                    *
+    ***********************************************************************/
+
+   $(document).ready(function(){
+
+   		var slide = 200;
+
+        //calculates the margin-left to move the image in the middle
+        var item_width = $('.carv2Gallery ul li').width();
+        item_padding = parseInt($('.carv2Gallery ul li').css('padding-left'), 10) + parseInt($('.carv2Gallery ul li').css('padding-right'), 10);
+        item_border = parseInt($('.carv2Gallery ul li').css('borderLeftWidth'), 10) + parseInt($('.carv2Gallery ul li').css('borderRightWidth'), 10);
+        
+        var margin_left = parseInt($(".carv2Gallery ul li").css("marginLeft"));	
+    	margin_left = margin_left*2;
+    
+        item_width = item_width - item_border - item_padding;
+        var left_value = item_width * (-1) +10;				
+		
+        $(".carv2Gallery ul li:first").before($('.carv2Gallery ul li:last'));
+
+        //move left the first image with the calculated value
+       	//set the "left" attribute as to show partially the first image of the carousel
+        $(".carv2Gallery ul").css({"left" : left_value});
+
+       //adds styles to the selected image and its not-selected siblings
+        $(".carv2Gallery ul li:first").next().addClass("selected");
+        $(".carv2Gallery ul li:first").next().siblings().addClass("unselected");
+
+        //adds styles to the selected dot and its not-selected siblings. 
+    //    $(".dotsGallery span:first").next().addClass("active");
+     //   $(".dotsGallery span:first").next().siblings().addClass("notActive");
+         
+        //The first dot is selected as default
+        $(".dotsGallery span:first").addClass("active");
+        $(".dotsGallery span:first").siblings().addClass("notActive");
+     
+                      
+        //handles the right click and the dot animation
+        $(".rightButtonGallery").click(function(){
+
+        	//this check prevents the slideshow to be too fast on click and to mess up the images
+        	if (!$(".carv2Gallery ul").is(':animated')) {
+
+	        	var li_selected = $(".carv2Gallery ul").find(".selected");
+	        	$(li_selected).removeClass("selected").addClass("unselected");
+	        	$(li_selected).next().removeClass("unselected").addClass("selected");    	
+	        	  
+	            var left_indent = parseInt($(".carv2Gallery ul").css("left")) - item_width - margin_left;
+       
+	            //get the dot selected
+	            var dot_selected = $(".dotsGallery").find(".active");
+	            
+	            //the below handles the dots css while animated
+	            if($(dot_selected).is(":last-child")){
+	           	    $(dot_selected).removeClass("active").addClass("notActive");
+	        	    $(".dotsGallery span").first().removeClass("notActive").addClass("active");
+	            }
+	            else{
+	                $(dot_selected).removeClass("active").addClass("notActive");
+	        	    $(dot_selected).next().removeClass("notActive").addClass("active");
+	            }
+	            //this handles the carousel animation
+	            $(".carv2Gallery ul").animate({"left" : left_indent},slide,function(){
+	                $(".carv2Gallery ul li:last").after($(".carv2Gallery ul li:first"));
+	                 //set back the left attribute value to keep the same distance from the left margin
+	                $(".carv2Gallery ul").css({"left" : left_value});
+	                
+	                dcsRebuild();
+         		    dcsMultiTrack('DCSext.embeddedSlideshowImage',$('.carv2Gallery ul li.selected').find('img').attr('src'),"WT.dl","53");
+	            });
+	         }
+         });
+
+  
+		//handles the left click
+        $(".leftButtonGallery").click(function(){
+        	var div = $(".carv2Gallery");
+
+        	//this check prevents the slideshow to be too fast on click and to mess up the images
+        	if (!$(".carv2Gallery ul").is(':animated')) {
+	        	var li_selected = $(".carv2Gallery ul").find(".selected");
+	        	$(li_selected).removeClass("selected").addClass("unselected");
+	        	$(li_selected).prev().removeClass("unselected").addClass("selected");
+
+	            var left_indent = parseInt($(".carv2Gallery ul").css("left")) + item_width + margin_left;
+	            	         
+	            //get the dot selected
+	            var dot_selected = $(".dotsGallery").find(".active");
+
+	            if($(dot_selected).is(":first-child")){
+	           	    $(dot_selected).removeClass("active").addClass("notActive");
+	        	    $(".dotsGallery span").last().removeClass("notActive").addClass("active");
+	            }
+	            else{
+	                $(dot_selected).removeClass("active").addClass("notActive");
+	        	    $(dot_selected).prev().removeClass("notActive").addClass("active");
+	            }
+
+	            div.find('ul').animate({"left" : left_indent},slide,function(){
+	            	div.find("ul li:first").before(div.find(" ul li:last"));
+	            	div.find("ul").css({"left" : left_value});
+
+	                dcsRebuild();
+         		    dcsMultiTrack('DCSext.embeddedSlideshowImage',$('.carv2Gallery ul li.selected').find('img').attr('src'),"WT.dl","53");
+	            });
+            }
+
+        });
+
+
+        //the below handles the dots onclick
+        $("div.dotsGallery > span.notActive").live("click",function(){
+
+       		var slide_dot = 200
+       		var prevAll_element_counter = 0;
+       		var nextAll_element_counter = 0;
+       		var flag_prev = false;
+       		var flag_next = false;
+
+       	    //counts how many siblings found on the left of the selected element until the active one
+       		//it calculates how many elements to skip
+       		$(this).prevAll().each(function(){
+       			prevAll_element_counter++;
+       			if($(this).hasClass('active')){
+       				flag_prev = true;
+       				return false;
+       			}
+			 });
+
+			 if(prevAll_element_counter != 0 && flag_prev){
+			 	
+		 		 var left_indent = parseInt($(".carv2Gallery ul").css("left")) - item_width*prevAll_element_counter - margin_left; 		 		
+	             var li_selected = $(".carv2Gallery ul").find(".selected");
+             	 $(li_selected).removeClass("selected").addClass("unselected");
+
+	             //adds styles to the selected dot and its not-selected siblings
+			     $(this).addClass("active").removeClass("notActive");
+			     $(this).siblings().removeClass("active").addClass("notActive");
+
+		 		 if(prevAll_element_counter > 1){
+
+			 		    $(".carv2Gallery ul").animate({"left" : left_indent},slide_dot,function(){
+				 		   	for(i = 0; i < prevAll_element_counter; i++ ){
+				 		   	    li_selected = $(li_selected).next();
+				 		   		$(".carv2Gallery ul li:last").after($(".carv2Gallery ul li:first"));
+				 		   		$(".carv2Gallery ul").css({"left" : left_value});
+				 		   	}
+			 		        $(li_selected).removeClass("unselected").addClass("selected");
+	        	   		    $(li_selected).siblings().removeClass("selected").addClass("unselected");
+			 		    });
+		 		  }
+		 		  else{		 			  
+		        	    $(li_selected).next().removeClass("unselected").addClass("selected");
+			 		    $(".carv2Gallery ul").animate({"left" : left_indent},slide_dot,function(){
+			               $(".carv2Gallery ul li:last").after($(".carv2Gallery ul li:first"));
+			                //set back the left attribute value to keep the same distance from the left margin
+			               $(".carv2Gallery ul").css({"left" : left_value});
+		                });
+	           	  }
+			 }
+			
+			 //counts how many siblings found on the right of the selected element until the active one
+       		//it calculates how many elements to skip
+       		 $(this).nextAll().each(function(){
+       			nextAll_element_counter++;
+       			if($(this).hasClass('active')){
+       				flag_next = true;
+       				return false;
+       			}
+			 });
+
+			 if(nextAll_element_counter != 0 && flag_next){
+
+			 	var left_indent = parseInt($(".carv2Gallery ul").css("left")) + item_width*nextAll_element_counter + margin_left;
+			 	
+                var li_selected = $(".carv2Gallery ul").find(".selected");
+             	$(li_selected).removeClass("selected").addClass("unselected");
+        	
+                //adds styles to the selected dot and its not-selected siblings
+		        $(this).addClass("active").removeClass("notActive");
+		        $(this).siblings().removeClass("active").addClass("notActive");
+
+		         if(nextAll_element_counter > 1){
+
+		 		    $(".carv2Gallery ul").animate({"left" : left_indent},slide_dot,function(){
+
+			 		   	for(i = 0; i < nextAll_element_counter; i++ ){
+			 		   		li_selected = $(li_selected).prev();
+			 		   	    $(".carv2Gallery ul li:first").before($(".carv2Gallery ul li:last"));
+			 		   	    $(".carv2Gallery ul").css({"left" : left_value});
+			 		   	}
+			 		    $(li_selected).removeClass("unselected").addClass("selected");
+	        	   		$(li_selected).siblings().removeClass("selected").addClass("unselected");
+		 		    });
+
+		 		   }
+		 		   else{
+	       	    		$(li_selected).prev().removeClass("unselected").addClass("selected");
+			 		    $(".carv2Gallery ul").animate({"left" : left_indent},slide_dot,function(){			 		    
+			                $(".carv2Gallery ul li:first").before($(".carv2Gallery ul li:last"));
+			                $(".carv2Gallery ul").css({"left" : left_value});
+			            });
+			 	   }
+		     }
+
+         });
+
+    });
+
+
+
+
+
+
+if (window.location.host.indexOf('telegraph.co.uk') !== -1) {
 	document.domain="telegraph.co.uk";
 }
 
@@ -292,12 +677,14 @@ $(function() {
 
 		//Issue: If the user clicks the tab b/w the "timeout" two slides are showing up in the page.
 		//One solution: Intercepting the selection of the tab and resetting it in such a way that only slide shown at a time.
+/*
 		$('#armageddon').tabs({
 		    select: function(event, ui) {
 		        resetTab(ui.panel);
 		        return true;
 		    }
 		});
+*/
 
 	/***********************************************************************
 	*                  Armageddon 2 grid  (World Cup)                      *
@@ -1035,7 +1422,136 @@ $(function() {
 		dsq.src = 'http://'+dsAcc+'.disqus.com/embed.js';
 		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
 	}
-
+    
+    /********************************************
+     *   Comments and Blogs Carousel on Portal 4   *
+     ********************************************/
+// 	if ($('.commentContainerCarousel').length > 0) {
+	    var container = $('.commentContainerCarousel'),
+	 		btnFwd = container.find('.slideForward'),
+	 		btnBack = container.find('.slideBack'),
+	 		thisCntUl, thisCntUlLIs, thisCntDots, viewArea, totalLiWidth = 0,
+	 		initialLftMargin, marginToSlide = 0, count = 0;
+	 	
+	 	// set variable values for each comments and blogs widget, also create the dots
+	 	container.each(function() {
+	 		thisCntUl = $(this).find('ul.commentsSlider');
+	 		thisCntULLIs = thisCntUl.children('li');
+	 		viewArea = thisCntULLIs.outerWidth(true) * 4;
+	 		totalLiWidth = thisCntULLIs.outerWidth(true) * thisCntULLIs.length;
+	 		initialLftMargin = parseInt(thisCntUl.css('marginLeft'));
+	 		dotsToCreate = Math.ceil((thisCntULLIs.length / 4) -1);
+	
+	 		thisCntUl.width((totalLiWidth <= viewArea) ? viewArea : totalLiWidth); // set width of the UL to equal total number of LIs width
+	
+	 		// update the arrow states
+	 		/* Removing active/inactive state with hovers only
+		 		if (totalLiWidth > viewArea) {
+		 			btnFwd.css({'backgroundColor':'#C00'});
+		 		} 
+		 	*/
+	 		// create and append dots to the container
+	 		thisCntDots = thisCntUl.siblings('.navDots');
+	 		thisCntDots.append(function() {
+	 			var spans = "";
+	 			for (i=0; i<dotsToCreate; i++) {
+	 				spans += '<span class="dot"></span>';
+	 			}
+	 			return spans;
+	 		});
+	 		dotClickHandles(thisCntDots.children('span'));
+	 	});
+	 	
+	 	// handle back forward arrows and navigation dot clicks
+	 	btnFwd.click(function() {
+	 		return clickHandlers('fwd', $(this));
+	 	});
+	 	
+	 	btnBack.click(function() {
+	 		return clickHandlers('bk', $(this));
+	 	});
+	 	
+	 	function dotClickHandles(thisCntDots) {
+	 		thisCntDots.click(function() {
+	 			var clicked = $(this),
+	 				prevPos = thisCntDots.index(thisCntDots.filter('.selectedDot')), // previously selected dot position
+	 				newPos = thisCntDots.index(clicked), // new selected dot position
+	 				direction = '', shiftToPage = 0;
+	 			
+	 			if (newPos > prevPos) { direction = 'fwd'; } 
+	 			else if (newPos < prevPos) { direction = 'bk'; }
+	 			shiftToPage = newPos - prevPos;
+	 			
+	 			clickHandlers(direction, clicked.parents('.navDots'), shiftToPage);
+	 			_updateDots(clicked);
+	 		});
+	 	}
+	 	
+	 	function clickHandlers(direction, el, shiftPages) {
+	 		var shiftPages;
+	 		
+	 		// forward
+	 		if (direction == 'fwd' && marginToSlide < (totalLiWidth - viewArea - initialLftMargin)) {
+	 			shiftPages = shiftPages || 1;
+	 			marginToSlide += (viewArea * shiftPages);
+	 			if (count == 0) marginToSlide = (viewArea * shiftPages) - initialLftMargin;
+	 			count += shiftPages;
+	 			_animateComments(el, -marginToSlide); // slide the comments and blogs
+	 			
+	 			/* Removing active/inactive state with hovers only
+		 		 	btnBack.css({'backgroundColor':'#C00'});
+		 			if (marginToSlide >= (totalLiWidth - viewArea - initialLftMargin)) { // change fwd button colour (setting to inactive)
+		 				btnFwd.css({'backgroundColor':'#E9E9DF'});
+		 			}
+	 			*/
+	 		}
+	 		
+	 		// back
+	 		if (direction == 'bk' && marginToSlide > initialLftMargin) {
+	 			shiftPages = shiftPages || -1;
+	 			marginToSlide -= (viewArea * -shiftPages);
+	 			count += shiftPages;
+	 			if (count == 0) {
+	 				marginToSlide = -initialLftMargin;
+	 				/* Removing active/inactive state with hovers only
+	 					btnBack.css({'backgroundColor':'#E9E9DF'});
+	 					btnFwd.css({'backgroundColor':'#C00'});
+	 				*/
+	 			} /* else { btnFwd.css({'backgroundColor':'#C00'}); } */
+	 			_animateComments(el, -marginToSlide); // slide the comments and blogs
+	 			
+	 			/* Removing active/inactive state with hovers only
+		 			if (marginToSlide <= initialLftMargin) {
+		 				btnBack.css({'backgroundColor':'#E9E9DF'});
+		 			}
+		 		*/
+	 		}
+	 		
+	 		return false;
+	 	}
+	
+	 	function _animateComments(el, newMargin) {
+	 		el.siblings('ul.commentsSlider').animate({'marginLeft': newMargin});
+	 		updateAllDots(el.siblings('.navDots').find('span'), count); // update dots display
+	 	}
+	 	
+	 	function updateAllDots(dots, position) {
+	 		dots.each(function(i) {
+	 			if (i == position) {
+	 				_updateDots($(this));
+	 			}
+	 		});
+	 	}
+	 	
+	 	function _updateDots(el) {
+	 		el.addClass('selectedDot').siblings('.dot').removeClass('selectedDot');
+	 	}
+// 	}
+	 
+	// Entertainment Reviews in Portal 4
+	$('.label.entReview').parent().each(function() {
+		$(this).children('.entReview').first().css({'borderTop':'0', 'paddingTop':'0','marginTop':'-1px'});
+	});
 });
 
 
@@ -1353,6 +1869,32 @@ function hideEditorsChoiceDiv() {
     
     
 }
+
+
+function MpuSelector() {
+		
+    if ($('.admpu').height() <= 250) {
+    	if ($(".comPuff") != null) {
+    		$(".comPuff").show();   		
+    	}
+    	if ($(".featuredVideoContainer") != null) {
+    		$(".featuredVideoContainer").show();   		
+    	}
+    }
+    
+    if ($('.admpu').height() >= 600) {
+    	$(".comPuff").hide(1);
+    	$(".featuredVideoContainer").hide(1);
+    }
+    
+    
+}
+
+$(window).load(function() {
+	 MpuSelector();
+});
+
+
 $(document).ready(function() {
 	setTimeout(hideEditorsChoiceDiv, 1000);
 	$('.borderRollover').parent().parent().parent().addClass("padDown");
@@ -1380,4 +1922,311 @@ function loadScript(url, callback) {
     };
     head.appendChild(script);
 }
+
+/************************************************************
+*   most viewed/commented/etc tabs
+*
+************************************************************/
+$(document).ready(function () {
+    $('#mostviewed li').click(function () {
+    	if ($(this).hasClass('current')) {
+            return false;
+        } else {
+        	$(this).parent().find('li.current').removeClass('current');
+        	$(this).addClass('current');
+        }
+    });
+});
+
+
+/************************************************************
+* callback function passed to gigya.socialize.getProviderShareCounts() that displays total number of shares
+*
+* populates p with id="X", where X is provided in response.context object
+************************************************************/
+function gigyaShareCountDisplay(response) {
+	
+	if ( response.errorCode == 0 ) {
+        var total = 0;
+        
+        // add up all social counts returned
+        for (var key in response.shareCounts) {
+           if (response.shareCounts.hasOwnProperty(key)) {
+             total += response.shareCounts[key];
+           }
+        }
+
+        // if count is 0, don't display at all
+        if (total > 0) {
+        	var shareClass = $('.' + response.context.displayElementId),
+        		commentsLength = shareClass.prev('.comments').length,
+        		shareCountMajorNews = shareClass.parents('#newsAlert').length;
+        	
+			shareClass.html('Shared ' + total + ( total === 1 ? ' time' : ' times' ));
+			
+        	if(commentsLength != 0) { // if comments are displayed for the article
+        		shareClass.css({'borderLeft':function() { return (shareCountMajorNews > 0) ? '1px solid #D1D1A6' : '1px solid #EEEEEC'; },
+        				'margin':'-1px 0 0 6px','paddingLeft':'24px','backgroundPosition':function() { return (shareCountMajorNews > 0) ? '6px -2231px' : '6px -1325px'; }
+        		});
+    		}
+    		adjustPosition();
+        } else {
+        	$('.' + response.context.displayElementId).remove();
+        }
+    } else {
+        alert('Error :' + response.errorMessage);
+    }
+	
+	function adjustPosition() { // if the width of comment count and share count is > than width of the column
+		var shareCountWidth = (shareClass.outerWidth() + parseInt(shareClass.css('marginLeft').replace('px',''))),
+			commentWidth = (commentsLength > 0) ? shareClass.prev('.comments').outerWidth() : 0;
+		if((commentWidth + shareCountWidth) >= shareClass.parent().outerWidth()) {
+			shareClass.prev('.comments').css('float','none');
+			shareClass.css({'float':'none','display':'block','margin-left':'0','border-left':'0','padding-left':'19px','backgroundPosition':function() { return (shareCountMajorNews > 0) ? '0 -2231px' : '0 -1325px'; } });
+		}
+	}
+}
+
+
+
+
+
+/***********************************************************************
+	*              Small carousel v2                    *
+    ***********************************************************************/
+
+	function switchCarousel(carouselType){
+  
+        var carouselDivId = "#"+carouselType;   
+        var slide=100;
+        var li_counter = 0;
+        var li_height = 0;
+        var item_margin = 0;
+        var left_value = 0;
+     //   var flagAnimateIt = false;
+   
+        $(carouselDivId+" ul li:first").before($(carouselDivId+" ul li:last"));
+                 
+        //calculates the margin-left
+        var item_width = $(carouselDivId+" ul li").width();
+        var item_padding = parseInt($(carouselDivId+" ul li").css('padding-left'), 10) + parseInt($(carouselDivId+" ul li").css('padding-right'), 10);
+        var item_border = parseInt($(carouselDivId+" ul li").css('borderLeftWidth'), 10) + parseInt($(carouselDivId+" ul li").css('borderRightWidth'), 10);
+   
+        //checks where to place the nav arrows according to which carousel is selected      
+        if(carouselType != "carv620"){                  
+
+            var divContainer = $("<div/>").addClass("gallery300Container");
+            $(carouselDivId).append(divContainer);
+            divContainer.append($(carouselDivId+" ul"));
+            var padding_bottom_h4 = parseInt($(carouselDivId+" h4").css('padding-bottom'), 10);
+            var padding_bottom_mainDiv = parseInt($(carouselDivId).css('padding-top'), 10);
+                    
+            var div_height = $(carouselDivId).height();
+            var h4_height = $(carouselDivId+" h4").height() + padding_bottom_h4 + padding_bottom_mainDiv;
+            li_height = h4_height;      
+            
+            $(carouselDivId+" ul li").each(function(){
+                li_counter++;
+            });             
+            //calculates the margin only for the small carousel to move the first image to its centre
+            item_margin = parseInt($(carouselDivId+" ul li").css('marginRight'), 10);
+            item_margin = item_margin*li_counter;       
+        }
+        else if(carouselType == "carv620"){ 
+        	
+	            li_height = $(carouselDivId+" ul li").height()/2 - $(carouselDivId+" .carv2button").height()/2;
+	      
+	            //set the caption position according to the height of the images shown in the carousel
+	            var captionTopPos = $(carouselDivId+" ul li").height() - $(carouselDivId+" ul li .imageCaption").height();
+	            $(carouselDivId+" ul li .imageCaption").css("top",captionTopPos);  
+	          //  flagAnimateIt = true;
+	            
+        } 
+        //set top position to the nav arrows and make them visible as not visible before loading the page. This is just to avoid showing the arrows while moving down.
+        $(carouselDivId+" .carv2button").css("top",li_height);
+        $(carouselDivId+" .carv2button").css("display","block");
+         
+        item_width = item_width; //- item_border - item_padding - item_margin;
+        
+     
+        if(li_counter > 2){       
+        	left_value = item_width * (-1);  
+        	//$(carouselDivId+" .carv2button").css("background-color","#C00000");       
+        	//flagAnimateIt = true;
+        } 
+        else{       
+        	left_value = 7;  
+        }
+        
+        //set the "left" attribute as to show partially the first image of the carousel
+        $(carouselDivId+" ul").css({"left" : left_value});
+    
+        
+      //  if(flagAnimateIt){
+        
+	        //click right animation
+        	 var carouselUI = (function() {
+             	var displayImg = 0;
+             	
+             	Number.prototype.mod = function(n) {
+             		return ((this%n)+n)%n;
+             	}
+             	
+             	var imgTotal = $(carouselDivId+" img").length;
+             	var imgEls = $(carouselDivId+" img");
+             	
+     	        $(carouselDivId+ " .rightButton").click(function(){
+     				if (!$(carouselDivId+" ul").is(':animated')) {
+     					var left_indent = parseInt($(carouselDivId+" ul").css("left")) - item_width;
+     		            $(carouselDivId+" ul").stop(true,true).animate({"left" : left_indent},slide,function(){
+     		               $(carouselDivId+" ul li:last").after($(carouselDivId+" ul li:first"));
+     		               //set back the left attribute value to keep the same distance from the left margin
+     		               $(carouselDivId+" ul").css({"left" : left_value});
+     		            });
+     		        }
+     				displayImg ++;
+     			    displayImg=displayImg.mod(imgTotal);
+     			    var el = $(carouselDivId+" img").get(displayImg);
+     			    dcsRebuild();
+         		    dcsMultiTrack('DCSext.embeddedSlideshowImage',$(el).attr('src'),"WT.dl","53");
+     			});
+     	
+     			//click left animation
+     			$(carouselDivId+" .leftButton").click(function(){
+     		       if (!$(carouselDivId+" ul").is(':animated')) {
+     	
+     				    var left_indent = parseInt($(carouselDivId+" ul").css("left")) + item_width;
+     		            $(carouselDivId+" ul").stop(true,true).animate({"left" : left_indent},slide,function(){
+     		               $(carouselDivId+" ul li:first").before($(carouselDivId+" ul li:last"));
+     		               $(carouselDivId+" ul").css({"left" : left_value});
+     		            });
+     	            }
+     		       displayImg --;
+     		       displayImg=displayImg.mod(imgTotal);
+     		       var el = $(carouselDivId+" img").get(displayImg);
+     		       dcsRebuild();
+     		       dcsMultiTrack('DCSext.embeddedSlideshowImage',$(el).attr('src'),"WT.dl","53");
+     			});
+             }());
+        
+       // }
+        
+
+        //if the big carousel is selected don't use the opacity when over the pics
+        if(carouselType != "carv620"){
+            $(carouselDivId+" li").hover(function() {
+          $(this).stop().animate({opacity: "0.8"}, 'fast');
+        },
+        function() {
+          $(this).stop().animate({opacity: "1"}, 'fast');
+        });
+       }
+
+    }
+
+ 
+ 
+ 
+/***********************************************************************
+	*              boldSideBar script                                    *
+	*  it finds all the sidebars in the page which require to be in bold *
+***********************************************************************/
+
+$(document).ready(function(){
+	$('.sidebars h3').each(function(){		
+		if($(this).hasClass('boldSidebar')){			
+			$(this).css("font-weight","bold");
+		}
+	});
+});
+
+
+/**********************************************************************************************
+	*        This allows to control the accordion nav arrow icons  							  *
+***********************************************************************************************/
+$(document).ready(function(){
+	 $(".accordion h3").each(function(index){ 	
+	 	$(this).addClass("beforeActiveArrow");
+	 });
+		
+	$(".accordion h3").mouseover(
+		function(){			
+		   var prevAll_element_counter = 0;
+       	   var nextAll_element_counter = 0;
+		   if($(this).hasClass('ui-state-active')){
+				$(this).removeClass("beforeActiveArrow");
+				$(this).removeClass("afterActiveArrow");
+				$(this).siblings().removeClass("beforeActiveArrow");
+				$(this).siblings().removeClass("afterActiveArrow");
+				
+				$(this).prevAll('h3').each(function(){
+	       			prevAll_element_counter++;
+	       	    });	       	    
+	       	    $(this).nextAll('h3').each(function(){
+	       			nextAll_element_counter++;
+	       	    });			
+				if(prevAll_element_counter > 0){
+					
+			    	$(this).prevAll('h3').addClass("beforeActiveArrow"); 
+			    }		 
+			    if(nextAll_element_counter >0){
+		        	$(this).nextAll('h3').addClass("afterActiveArrow");
+		        }						
+	       } 
+	    }
+	);
+});
+
+
+/**********************************************************************************************
+*            this moves the comment label next to the paragraph    				              *
+***********************************************************************************************/
+$(document).ready(function(){	
+	var p = $(".subTitle span p");
+	var spanComments = $(".subTitle span.comments");
+	p.append(spanComments);
+});
+
+
+
+/**********************************************************************************************
+*            this adds the vertical line between the News and Business Section   			  *
+***********************************************************************************************/
+$(document).ready(function(){	
+	var heights = $(".oneThirdSpacer .oneThird").map(function ()
+    {
+     return $(this).height();
+    }).get(),
+
+    maxHeight = Math.max.apply(null, heights);
+	$(".oneThirdSpacer .newsBusBorder").css("height",maxHeight);
+});
+
+
+
+
+
+
+/**************************************************************************************************
+*            this removes the header bottom border in case the next sibling is the abstract puff  *
+***************************************************************************************************/
+$(document).ready(function(){		
+	$(".headerOne").each(function(){			
+		if($(this).next().hasClass("headlineImageCentreAbstractPuff")){		
+			$(this).addClass("noPuffBorder");		
+		}
+    });	       	    	
+});
+
+
+/***********************************************************
+*            this removes the share count left border      *
+************************************************************/
+$(document).ready(function(){			 	    
+	$(".shareCount").each(function(){			
+		if(!($(this).prev().hasClass("comments"))){		
+			$(this).attr("id","shareCountNoLeftBorder");					                  
+		}			
+    });	     
+});
 

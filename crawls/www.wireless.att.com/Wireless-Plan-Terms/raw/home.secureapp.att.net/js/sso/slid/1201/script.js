@@ -60,29 +60,29 @@ $(document).ready(function() {
 
 	// TURNER DETECTION (in app experience)
 	if (!!agent.match(/iPad/i)) {
-					var referer = gup('REFERER');
+		var referer = gup('REFERER');
 
-					if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i)) {
-									var turnerURL = 0;
+		if (referer.match(/adultswim/i) || referer.match(/cartoonnetwork/i) || referer.match(/trutv/i) || referer.match(/cnn/i) || referer.match(/fox/i) || referer.match(/btn2go/i) || referer.match(/nbcolympics/i) || referer.match(/starzplay/i) || referer.match(/encoreplay/i)) {
+			var turnerURL = 0;
 
-									//For form sheet modal need to reset the meta tag
-									if (window.innerWidth < 560) {
-													$('meta[name=viewport]').attr('content', 'width=100%');
-									}
+			//For form sheet modal need to reset the meta tag
+			if (window.innerWidth < 560) {
+				$('meta[name=viewport]').attr('content', 'width=100%');
+			}
 
-									$('head').append('<link rel="stylesheet" href="https://home.secureapp.att.net/css/sso/slid/1201/mobile.css" type="text/css" />');
-									$('#loginWrap').css('background:#eee');
-					}
+			$('head').append('<link rel="stylesheet" href="https://home.secureapp.att.net/css/sso/slid/1201/mobile.css" type="text/css" />');
+			$('#loginWrap').css('background:#eee');
+		}
 	}
 	function gup(name) {
-					name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-					var regexS = "[\\?&]" + name + "=([^&#]*)";
-					var regex = new RegExp(regexS);
-					var results = regex.exec(window.location.href);
-					if (results == null)
-									return "";
-					else
-									return results[1];
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regexS = "[\\?&]" + name + "=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(window.location.href);
+		if (results == null)
+			return "";
+		else
+			return results[1];
 	}
 
     // DEVICE DETECTION

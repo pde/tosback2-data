@@ -1,0 +1,12 @@
+function editPageID(pageID){var url=document.URL;if(url.indexOf("boards.petco.com")!=-1){pageID="Boards: "+pageID;
+}if(url.indexOf("clubs.petco.com")!=-1){pageID="Clubs: "+pageID;}return pageID;}function cmCreateTechPropsTag(pageID,categoryID,linkID,attributes){pageID=editPageID(pageID);
+cmMakeTag(["tid","6","pi",pageID,"cg",categoryID,"pc","Y","pv1",linkID,"cmAttributes",attributes]);
+}function cmCreatePageviewTag(pageID,categoryID,linkID,searchString,searchResults,attributes){cmMakeTag(["tid","1","pi",pageID,"cg",categoryID,"se",searchString,"sr",searchResults,"pv1",linkID,"cmAttributes",attributes]);
+}function cmCreateProductviewTag(productID,productName,categoryID,linkID,attributes,cm_pageViewCount){if(cm_pageViewCount){cm_pageViewCount="N";
+}else{cm_pageViewCount="Y";}cmMakeTag(["tid","5","pi","PRODUCT: "+productName+" ("+productID+")","pr",productID,"pm",productName,"cg",categoryID,"pc",cm_pageViewCount,"pv1",linkID,"cm_vc",cmExtractParameter("cm_vc",document.location.href),"cmAttributes",attributes]);
+}function cmCreateOrderTag(orderID,orderTotal,orderShipping,customerID,customerCity,customerState,customerZIP,sku_data,promo_code,discount,recipeID,attributes){var pattern=/[^\-0-9\.]/gi;
+orderShipping=orderShipping.toString().replace(pattern,"");orderTotal=orderTotal.toString().replace(pattern,"");
+cmMakeTag(["tid","3","osk",__skuString,"on",orderID,"tr",orderTotal,"sg",orderShipping,"cd",customerID,"ct",customerCity,"sa",customerState,"zp",customerZIP,"or1",promo_code,"or2",discount,"or3",sku_data,"or4",recipeID,"cmAttributes",attributes]);
+__skuString="";}function cmCreateRegistrationTag(customerID,customerEmail,customerCity,customerState,customerZIP,newsletterName,subscribe,firstName,petType,dog,cat,fish,bird,reptile,smallAnimal,bowlInfo,offlineCustomer,Sweepstakes,NewsletterNames){cmMakeTag(["tid","2","cd",customerID,"em",customerEmail,"ct",customerCity,"sa",customerState,"zp",customerZIP,"nl",newsletterName,"sd",subscribe,"fn",firstName,"rg1",dog,"rg2",cat,"rg3",fish,"rg4",bird,"rg5",reptile,"rg6",smallAnimal,"rg11",petType,"rg12",offlineCustomer,"rg13",bowlInfo,"rg14",Sweepstakes,"rg15",NewsletterNames]);
+}function cmCreateNewsletterTag(cust_id,newsletterName,subscribe){cmMakeTag(["tid","7","li",1,"pc","N","ps1","Newsletter","ps2",cust_id,"ps3",newsletterName,"ps4",subscribe]);
+}

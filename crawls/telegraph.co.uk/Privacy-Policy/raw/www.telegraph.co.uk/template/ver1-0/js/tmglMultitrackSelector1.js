@@ -294,12 +294,23 @@ $("#div-THIS_WEEK a").click(function() {
 $("#div-THIS_MONTH a").click(function() {
 	getNavPos($(this).attr("href"), 'mostpop-thismonth');
 });
-$(".editorsChoice a").click(function() { 
+$(".editorsChoice a, .edtChoice a").click(function() { 
 	getNavPos($(this).attr("href"),'mostpop-editorschoice'); 
 }); 
+
+/* Most / Most / Most on Portal 4 */
+$('#div-VIEWED a').click(function() {
+	getNavPos($(this).attr("href"), 'mostpop-today-portal');
+});
+$('#div-SHARED a').click(function() {
+	getNavPos($(this).attr("href"), 'mostshared-today-portal');
+});
+$('#div-COMMENTED a').click(function() {
+	getNavPos($(this).attr("href"), 'mostcommented-today-portal');
+});
+
 function getNavPos(href,nav) {	
 	if((href.indexOf("http://")==0)||(href.indexOf("/")==0)){		
 		$.cookie('tmg_navPos', nav, { path: '/', domain: 'telegraph.co.uk'});
 	}
 }
-

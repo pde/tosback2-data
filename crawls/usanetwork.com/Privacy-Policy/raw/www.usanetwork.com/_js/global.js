@@ -21,7 +21,7 @@ var touchOS = ('ontouchstart' in document.documentElement) ? true : false;
 // iPhone and iPad can be reliably identified with the navigator.platform
 // string, which is currently only available on these devices.
 var iOS = ((navigator.platform).toLowerCase().indexOf("iphone") != -1) ||
-        ((navigator.platform).toLowerCase().indexOf("ipad") != -1) || 
+        ((navigator.platform).toLowerCase().indexOf("ipad") != -1) ||
         ((agent).toLowerCase().indexOf("iphone") != -1) ||
         ((agent).toLowerCase().indexOf("ipad") != -1) ? true : false;
 // If the user agent string contains "android" then it's Android. If it
@@ -53,7 +53,7 @@ var usa_freewheel = {
 // default fw_config for show pages
 function fw_config()
 {
-	return { 
+	return {
 		networkId : usa_freewheel.networkId,
 		cb_profile : usa_freewheel.cb_profile,
 		siteSectionNetworkId : usa_freewheel.siteSectionNetworkId,
@@ -124,7 +124,7 @@ function usa_loadPrefs()
 		{
 			loadedPrefs = loadedPrefs.split(',');
 		}
-		
+
 		usa_sitePrefs.chatter = loadedPrefs;
 	}
 }
@@ -155,19 +155,19 @@ function usa_handleOrientationChange()
   switch(orientation) {
     case 0:
         /* Add a descriptive message on "Handling iPhone or iPod touch Orientation Events"  */
-        break;  
+        break;
     case 90:
         /* If in landscape mode with the screen turned to the left, sets the body's class attribute to landscapeLeft. In this case, all style definitions matching the
            body[class="landscapeLeft"] declaration in the iPhoneOrientation.css file will be selected and used to style "Handling iPhone or iPod touch Orientation Events". */
         break;
-    case -90:  
-        /* If in landscape mode with the screen turned to the right, sets the body's class attribute to landscapeRight. Here, all style definitions matching the 
+    case -90:
+        /* If in landscape mode with the screen turned to the right, sets the body's class attribute to landscapeRight. Here, all style definitions matching the
            body[class="landscapeRight"] declaration in the iPhoneOrientation.css file will be selected and used to style "Handling iPhone or iPod touch Orientation Events". */
-    	
+
     	break;
     case 180:
     	/* Add a descriptive message on "Handling iPhone or iPod touch Orientation Events"  */
-        break;  
+        break;
   }
 }
 
@@ -222,7 +222,7 @@ function usa_refreshChatterScroll()
 		}, 500);
 		//setTimeout("usa_refreshChatterScroll()", 5000);
 	}
-	
+
 	if (typeof usa_chatterPageType != 'undefined')
 	{
 		if (usa_chatterPageType == 'FULL')
@@ -245,10 +245,10 @@ function usa_setChatterDisplay(type)
 		$('#usa_chatter').removeClass('expanded');
 		$('#usa_chatter').removeClass('closed');
 		$('#usa_chatter').addClass('open');
-		
+
 		$('#usa_chatterBody').css('height', 80);
 		$('#usa_outerContainer').css('bottom', 180);
-		
+
 		if (document.getElementById('chatterAd300x250iframe'))
 		{
 			document.getElementById('chatterAd300x250iframe').src = "javascript:'<html></html>'";
@@ -264,7 +264,7 @@ function usa_setChatterDisplay(type)
 		var newHeight = $(window).height() - $('#usa_header').height() - $('#usa_headFootContainer').height() - 40;
 		$('#usa_chatterBody').css('height', String(newHeight) + 'px');
 		$('#usa_outerContainer').css('bottom', 180);
-		
+
 		var setChatterScroll = true;
 		if (typeof usa_chatterPageType != 'undefined')
 		{
@@ -273,19 +273,19 @@ function usa_setChatterDisplay(type)
 				setChatterScroll = false;
 			}
 		}
-		
+
 		if ((iOS || android) && setChatterScroll)
 		{
-			chatterScroll = new iScroll('usa_chatterBodyWrapperOuter', {  zoom: true, hScrollbar: false, vScrollbar: false  });			
+			chatterScroll = new iScroll('usa_chatterBodyWrapperOuter', {  zoom: true, hScrollbar: false, vScrollbar: false  });
 			//usa_refreshChatterScroll();
 			setTimeout("usa_refreshChatterScroll()", 1000);
 		}
-		
+
 		if (document.getElementById('chatterAd300x250iframe'))
 		{
 			document.getElementById('chatterAd300x250iframe').src = '/_inc/ad.html?size=300x250';
 		}
-		
+
 		if (typeof usa_chatterRefreshAd == 'function')
 		{
 			chatterAdTimeout = setTimeout(usa_chatterRefreshAd, 1000 * 60);
@@ -295,7 +295,7 @@ function usa_setChatterDisplay(type)
 			chatterAdTimeout = setTimeout(usa_refreshAd, 1000 * 60);
 		}
 	}
-	
+
 	$('#usa_chatterFooter').css('height', 5);
 	if (typeof pageScroll != 'undefined')
 	{
@@ -319,12 +319,12 @@ function usa_expandChatter()
 			s.pageName = "Chatter";
 			void (s.t());
 		}
-		
+
 		usa_setChatterDisplay('expanded');
-		
+
 		usa_sitePrefs.chatter = 2;
 		usa_savePrefs();
-		
+
 		if (typeof EchoRiverClient == 'undefined')
 		{
 			usa_initChatter('expanded');
@@ -339,10 +339,10 @@ function usa_expandChatter()
 	else
 	{
 		usa_setChatterDisplay('condensed');
-		
+
 		usa_sitePrefs.chatter = 1;
 		usa_savePrefs();
-		
+
 		if (typeof EchoRiverClient == 'undefined')
 		{
 			usa_initChatter('condensed');
@@ -353,7 +353,7 @@ function usa_expandChatter()
 			EchoRiverClient.config.set("maxBodyCharacters", "60");
 			EchoRiverClient.refresh();
 		}
-		
+
 		if (typeof s_gi != 'undefined')
 		{
 			var s=s_gi('nbcuglobal,nbcuusanetworkd,nbcuusanetbu');
@@ -368,7 +368,7 @@ function usa_expandChatter()
 			s.pageName = usa_omniturePageName;
 		}
 	}
-	
+
 	usa_lastChatterView = '';
 }
 
@@ -378,13 +378,13 @@ function usa_collapseChatter()
 	if (typeof EchoRiverClient != 'undefined')
 	{
 		EchoRiverClient.activities.paused = true;
-		EchoRiverClient.rerender("state"); 
+		EchoRiverClient.rerender("state");
 	}
-	
+
 	if ($('#usa_chatter').hasClass('expanded'))
 	{
 		usa_lastChatterView = 'expanded';
-		
+
 		var s=s_gi('nbcuglobal,nbcuusanetworkd,nbcuusanetbu');
 		if (typeof usa_omnitureSprop3 == 'undefined')
 		{
@@ -400,29 +400,29 @@ function usa_collapseChatter()
 	{
 		usa_lastChatterView = 'condensed';
 	}
-	
+
 	$('#usa_chatter').removeClass('expanded');
 	$('#usa_chatter').removeClass('open');
 	$('#usa_chatter').addClass('closed');
-	
+
 	$('#usa_chatterBody').css('height', 0);
 	$('#usa_chatterFooter').css('height', 0);
 	usa_expandHeightOfContent();
-	
+
 	if (document.getElementById('chatterAd300x250iframe'))
 	{
 		document.getElementById('chatterAd300x250iframe').src = "javascript:'<html></html>'";
 	}
 	clearTimeout(chatterAdTimeout);
-	
+
 	var newHeight = 100 + $('#usa_chatterContent').height();
 	$('#usa_outerContainer').css('bottom', newHeight);
-	
+
 	if (typeof pageScroll != 'undefined')
 	{
 		pageScroll.refresh();
 	}
-	
+
 	usa_sitePrefs.chatter = 0;
 	usa_savePrefs();
 }
@@ -504,7 +504,7 @@ function usa_initChatter(type)
 		maxChars = 2000;
 		query = usa_chatterObj.allQuery;
 	}
-	
+
 	if (usa_goto == 'liveEvent' && usa_liveChat)
 	{
 		query = usa_chatterObj.questionsQuery;
@@ -517,7 +517,7 @@ function usa_initChatter(type)
 	{
 		query = usa_chatterObj.curatedQuery;
 	}
-	
+
    EchoRiverClient = new Echo.Stream({
           "target": document.getElementById("echo-stream"),
           "appkey": "prod.usanetwork",
@@ -546,7 +546,7 @@ function usa_initChatter(type)
     	      	"name": "Reply",
     	      	"nestedPlugins": [{
     	              "name": "FormAuth",
-    	              "identityManagerLogin": identityManager, 
+    	              "identityManagerLogin": identityManager,
     	              "identityManagerSignup": identityManager,
     	              "identityManagerEdit": identityManager,
     	              "submitPermissions": "forceLogin"
@@ -568,7 +568,7 @@ function usa_initChatter(type)
 				EchoSubmit.rerender("shareContainer");
 		    }
 		);
-   
+
    if (typeof usa_chatterPageType == 'undefined')
    {
 	  	Echo.Broadcast.subscribe("Stream.onReady",
@@ -582,7 +582,7 @@ function usa_initChatter(type)
 	  			setTimeout("usa_refreshChatterScroll()", 1000);
 			}
 		);
-	
+
 		Echo.Broadcast.subscribe("Stream.onMoreButtonPress",
 			function(topic, data, contextId) {
 				usa_streamLoading = true;
@@ -623,11 +623,11 @@ function usa_refreshBannerAd()
 		var iFrameID = $(this).attr('id');
 		document.getElementById(iFrameID).src = document.getElementById(iFrameID).src;
 	});
-	
+
 	// omniture
 	if (typeof s_gi != 'undefined')
 	{
-		var s=s_gi('nbcuglobal,nbcuusanetworkd,nbcuusanetbu'); 
+		var s=s_gi('nbcuglobal,nbcuusanetworkd,nbcuusanetbu');
 		void (s.t());
 	}
 }
@@ -654,13 +654,13 @@ function usa_buildCharactersModule(options)
 		'basePath' : '',
 		'data' : ''
 	}
-	
+
 	// override defaults with arguments
 	for (var index in default_args)
 	{
 		if (typeof options[index] == "undefined") options[index] = default_args[index];
 	}
-	
+
 	if (typeof options['data'] == 'object')
 	{
 		var html = '';
@@ -669,7 +669,7 @@ function usa_buildCharactersModule(options)
 			var name = options['data'].character[i].attributes.name;
 			var thumb = options['basePath'] + options['data'].character[i].attributes.thumb;
 			var url = options['basePath'] + options['data'].character[i].attributes.url;
-			
+
 			html += '<div class="character"><a href="'+url+'"><img src="'+thumb+'" /><span>'+name+'</span></a></div>';
 		}
 		html += '<div class="clear"></div>';
@@ -686,15 +686,15 @@ function usa_buildScheduleModule(options)
 		'data' : '',
 		'max' : 4
 	}
-	
+
 	// override defaults with arguments
 	for (var index in default_args)
 	{
 		if (typeof options[index] == "undefined") options[index] = default_args[index];
 	}
-	
+
 	var max = (options['data'].item.length < options['max']) ? options['data'].item.length : options['max'];
-	
+
 	if (typeof options['data'] == 'object')
 	{
 		var html = '';
@@ -704,7 +704,7 @@ function usa_buildScheduleModule(options)
 			var showDay = options['data'].item[i].showday;
 			var showDescription = options['data'].item[i].showdescription;
 			var showTime = options['data'].item[i].showtime;
-			
+
 			html += '<div class="showing"><div class="date">'+showDay+', '+showDate+', '+showTime+'</div><div class="episode">'+showDescription+'</div></div>';
 		}
 		html += '<div class="clear"></div>';
@@ -726,7 +726,7 @@ function usa_columnAlign()
 			tallestColumnID = $(this).attr('id');
 		}
 	})
-	
+
 	contentBody.find(".usa_column").each(function(index) {
 		if ($(this).attr('id') != tallestColumnID)
 		{
@@ -741,11 +741,11 @@ function usa_columnAlign()
 }
 
 $(document).ready(function(){
-	
+
 	$("ul.topnav li").click(function() { //When trigger is clicked...
 		// hide all open so far
 		$("ul.topnav").find("ul.subnav").hide();
-	
+
 		if ($(this).hasClass("subhover"))
 		{
 			$(this).removeClass("subhover");
@@ -756,7 +756,7 @@ $(document).ready(function(){
 		{
 			$(this).addClass("subhover");
 		}
-		
+
 		//Following events are applied to the subnav itself (moving subnav up and down)
 		$(this).find("ul.subnav").slideDown('fast').show(); //Drop down the subnav on click
 
@@ -771,7 +771,7 @@ $(document).ready(function(){
 		}, function(){	//On Hover Out
 			$(this).removeClass("subhover"); //On hover out, remove class "subhover"
 	});
-	
+
 	$("ul.topnav li").mouseenter(function() { //When trigger is clicked...
 
 		//Following events are applied to the subnav itself (moving subnav up and down)
@@ -808,12 +808,12 @@ function usa_showTabFeature(id)
 {
 	usa_debugOut('fn: usa_showTabFeature('+id+')');
 	usa_debugOut(id);
-	
+
 	usa_nextHomeFeatureId = id;
 	$('#tabFeatureContainer_' + usa_currentHomeFeatureId).fadeOut('fast', function() {
 		$('#tabFeatureContainer_' + usa_currentHomeFeatureId).removeClass('selected');
 		$('#tabFeatureNav_' + usa_currentHomeFeatureId).removeClass('selected');
-		
+
 		$('#tabFeatureContainer_' + usa_nextHomeFeatureId).fadeIn('fast');
 		usa_currentHomeFeatureId = usa_nextHomeFeatureId;
 		$('#tabFeatureContainer_' + usa_currentHomeFeatureId).addClass('selected');
@@ -825,36 +825,36 @@ function usa_buildHomeTabFeature(options)
 {
 	usa_debugOut('fn: usa_buildHomeTabFeature()');
 	usa_debugOut(options);
-	
+
 	// setup main defaults
 	var default_args = {
 		'target' : '',
 		'data' : ''
 	}
-	
+
 	// override defaults with arguments
 	for (var index in default_args)
 	{
 		if (typeof options[index] == "undefined") options[index] = default_args[index];
 	}
-	
+
 	if (typeof options['data'] == 'object')
 	{
 		var navHtml = '';
 		var tabHtml = '';
-		
+
 		navHtml += '<div class="tabFeatureNav">';
-		
+
 		if (typeof options['data'].tabFeature.length == 'undefined')
 		{
 			// we have one tab
 			var cssClass = ' selected';
 			navHtml += '<a href="javascript:usa_showTabFeature(0);" id="tabFeatureNav_0" class="'+cssClass+'"><span class="l"></span><span class="m">'+options['data'].tabFeature.attributes.title+'</span><span class="r"></span><span class="arrow"></span></a>';
-			
+
 			if (typeof options['data'].tabFeature.feature.length != 'undefined')
 			{
 				tabHtml += '<div id="tabFeatureContainer_0" class="tabFeatureContainer tabFeature'+options['data'].tabFeature.feature.length+cssClass+'">';
-				
+
 				for (var j=0 ; j<options['data'].tabFeature.feature.length ; j++)
 				{
 					tabHtml += '<a href="'+options['data'].tabFeature.feature[j].attributes.link+'" class="tabFeatureItem'+(j+1)+'"><span class="tabFeatureImage"><img src="'+options['data'].tabFeature.feature[j].attributes.src+'" /></span><span class="tabFeatureText">'+options['data'].tabFeature.feature[j].title+'</span></a>';
@@ -866,7 +866,7 @@ function usa_buildHomeTabFeature(options)
 				tabHtml += '<div id="tabFeatureContainer_0" class="tabFeatureContainer tabFeature1'+cssClass+'">';
 				tabHtml += '<a href="'+options['data'].tabFeature.feature.attributes.link+'" class="tabFeatureItem1"><span class="tabFeatureImage"><img src="'+options['data'].tabFeature.feature.attributes.src+'" /></span><span class="tabFeatureText">'+options['data'].tabFeature.feature.title+'</span></a>';
 			}
-			
+
 			tabHtml += '</div>';
 		}
 		else
@@ -876,11 +876,11 @@ function usa_buildHomeTabFeature(options)
 			{
 				var cssClass = (i==0) ? ' selected' : '';
 				navHtml += '<a href="javascript:usa_showTabFeature('+i+');" id="tabFeatureNav_'+i+'" class="'+cssClass+'"><span class="l"></span><span class="m">'+options['data'].tabFeature[i].attributes.title+'</span><span class="r"></span><span class="arrow"></span></a>';
-				
+
 				if (typeof options['data'].tabFeature[i].feature.length != 'undefined')
 				{
 					tabHtml += '<div id="tabFeatureContainer_'+i+'" class="tabFeatureContainer tabFeature'+options['data'].tabFeature[i].feature.length+cssClass+'">';
-					
+
 					for (var j=0 ; j<options['data'].tabFeature[i].feature.length ; j++)
 					{
 						tabHtml += '<a href="'+options['data'].tabFeature[i].feature[j].attributes.link+'" class="tabFeatureItem'+(j+1)+'"><span class="tabFeatureImage"><img src="'+options['data'].tabFeature[i].feature[j].attributes.src+'" /></span><span class="tabFeatureText">'+options['data'].tabFeature[i].feature[j].title+'</span></a>';
@@ -892,12 +892,12 @@ function usa_buildHomeTabFeature(options)
 					tabHtml += '<div id="tabFeatureContainer_'+i+'" class="tabFeatureContainer tabFeature1'+cssClass+'">';
 					tabHtml += '<a href="'+options['data'].tabFeature[i].feature.attributes.link+'" class="tabFeatureItem1"><span class="tabFeatureImage"><img src="'+options['data'].tabFeature[i].feature.attributes.src+'" /></span><span class="tabFeatureText">'+options['data'].tabFeature[i].feature.title+'</span></a>';
 				}
-				
+
 				tabHtml += '</div>';
 			}
 		}
 		tabHtml += '<div class="clear"></div>';
-		
+
 		navHtml += '<div class="clear"></div></div>';
 		$(options['target']).html(navHtml + tabHtml);
 	}
@@ -917,12 +917,12 @@ function usa_setupMeebo()
 {
 	var url = window.location.href;
 	var meeboNetwork = 'usanetwork';
-	
+
 	if (!usa_meeboEnableMeebo)
 	{
 		return;
 	}
-	
+
 	if (url.indexOf('www.usanetwork.com') != -1 || url.indexOf('test.usanetwork.com') != -1 || url.indexOf('3.44.121.221') != -1)
 	{
 		// valid location
@@ -936,7 +936,7 @@ function usa_setupMeebo()
 		// invalid location
 		return;
 	}
-	
+
 	if (iOS || android)
 	{
 		// no HTML5 yet
@@ -999,7 +999,7 @@ function usa_setupMeebo()
 	        iframe: "http://characterchatter.usanetwork.com/widget-meebo.php?show=" + usa_meeboChatterShowName
 		});
 	}
-	
+
 	// Character Arcade
 	usa_meeboButtons.buttons.push({
 		id: "usa-games-button",
@@ -1008,8 +1008,17 @@ function usa_setupMeebo()
         label: "Games",
         onClick: function(){ parent.location.href = 'http://www.characterarcade.com/'; }
 	});
-	
+
 	// Featured Graphic Promote
+	usa_meeboButtons.buttons.push({
+		id: "usa-featured_2-button",
+        type: "action",
+        isIcon: true,
+        icon: "/_img/suitscatchup_150x30.png",
+        label: "",
+        onClick: function(){ parent.location.href = '/videos/Suits/Full Episodes'; }
+	});
+	/*
 	usa_meeboButtons.buttons.push({
 		id: "usa-featured_1-button",
         type: "widget",
@@ -1036,14 +1045,15 @@ function usa_setupMeebo()
             {
             	element.contentWindow.showVideo();
             }
-        },
+        }
 	});
-	
+	*/
+
 	var usa_meeboSectionValue = ad_section + ((ad_subcategory != '') ? ('_' + ad_subcategory) : '');
 	Meebo.partnerTakeover = {section:usa_meeboSectionValue};
-	
+
 	Meebo('domReady');
-	
+
 	if (typeof Meebo != 'undefined')
 	{
 		if (typeof usa_meeboButtons != 'undefined')
@@ -1073,12 +1083,12 @@ function usa_setupMeebo()
 						icon: usa_meeboButtons.buttons[i].icon,
 						label: usa_meeboButtons.buttons[i].label,
 						onClick: usa_meeboButtons.buttons[i].onClick,
-						isIcon: (usa_meeboButtons.buttons[i].isIcon) ? usa_meeboButtons.buttons[i].isIcon : false 
+						isIcon: (usa_meeboButtons.buttons[i].isIcon) ? usa_meeboButtons.buttons[i].isIcon : false
 					});
 				}
 			}
 		}
-		
+
 		clearTimeout(usa_meeboTimeout);
 	}
 	else
@@ -1093,14 +1103,14 @@ function usa_setupWebspectator()
 {
 	$('#ad300x250').addClass('wsz');
 	$('#ad300x250').attr('data-pid', '547');
-	
+
 	$('#usa_ad_728x90').addClass('wsz');
 	$('#usa_ad_728x90').attr('data-pid', '548');
-	
-	$('#ad160x600').addClass('wsz');
-	$('#ad160x600').attr('data-pid', '549');
-	
-	
+
+	$('#ad160x600 div.modBody').addClass('wsz');
+	$('#ad160x600 div.modBody').attr('data-pid', '549');
+
+
 	var wid = 'WS-USNET';
 	var scr = document.createElement('script');
 	scr.type = 'text/javascript';
@@ -1110,6 +1120,14 @@ function usa_setupWebspectator()
 	x.parentNode.insertBefore(scr, x);
 }
 
+function usa_fireOmniture(newPageName)
+{
+	if (typeof s != 'undefined')
+	{
+		s.pageName = newPageName;
+		void (s.t());
+	}
+}
 
 
 

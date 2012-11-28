@@ -154,7 +154,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/movado-100095-
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/victorinox-swiss-army/1003400000/100090/1/0/0/0/100090.100094.100340">Victorinox Swiss Army</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/citizen-100096--1/1000960000/100090/1/0/0/0/100090.100094.100096">Citizen</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/citizen-signature-100100--1/1001000000/100090/1/0/0/0/100090.100094.100100">Citizen Signature</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/drive-by-citizen-eco-drive/1003390000/100090/1/0/0/0/100090.100094.100339">Drive by Citizen Eco-Drive</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/drive-by-citizen-eco-drive/1003390000/100090/1/0/0/0/100090.100094.100339">Drive from Citizen Eco-Drive</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bulova-100097--1/1000970000/100090/1/0/0/0/100090.100094.100097">Bulova</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100094|1000940000|1|0|||100090|100090.100094">View All</a></li>');
 writeMegaMenu('</ul>');

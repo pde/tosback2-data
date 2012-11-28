@@ -32,16 +32,16 @@ function navDropdownsOut() {
 }
 
 //global variables for main nav functionality
-var idOfLastSelectedMenuItem = "";
-var idOfLastSelectedDropDownDiv = "";
-var boolSomethingIsSelected = false;
+var idOfLastSelectedMenuItem = "",
+    idOfLastSelectedDropDownDiv = "",
+    boolSomethingIsSelected = false;
 
-//Rick's jQuery plugin for label overlay hide/show on input fields
+//label overlay hide/show on input fields
 (function($){
 	$.fn.usableLabelField = function(options) {
-		var o = $.extend(options);
-		var labelIDSelector = $("#"+o.labelID);
-		var btnIDSelector = $("#"+o.btnID);
+		var o               = $.extend(options),
+            labelIDSelector = $("#"+o.labelID),
+            btnIDSelector   = $("#"+o.btnID);
 		labelIDSelector.css("cursor", "text");
 		if ($(this).val() != "") {
 			labelIDSelector.hide();
@@ -56,14 +56,14 @@ var boolSomethingIsSelected = false;
 				labelIDSelector.fadeTo(500, 1);
 			}
 		});
-		$(this).keydown(function () {
-			if (event.keyCode == 13) {
+		$(this).keydown(function (e) {
+			if (e.keyCode == 13) {
 				return false;
 			}
 			else{labelIDSelector.hide();}
 		});
-		$(this).keyup(function (event) {
-			if (event.keyCode == 13) {
+		$(this).keyup(function (e) {
+			if (e.keyCode == 13) {
 				btnIDSelector.click();
 				return false;
 			}
@@ -158,7 +158,7 @@ $(function () {
         if (objStoreNumberTextBox != null) {
             strKioskStoreNumber = objStoreNumberTextBox.val();
             strKioskStoreNumber = strKioskStoreNumber.trim();
-            window.location = "http://" + location.host + "/SECURE/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + document.URL;
+            window.location = "http://" + location.host + "/SECURE/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + encodeURIComponent(document.URL);
         } else {
             return;
         }
@@ -227,26 +227,32 @@ LP.isLocal = function () {
 };
 
 LP.keepAlive = function () {
-    var aliveUrl = LP.isLocal() ? "/keep-me-alive.ashx" : 'https://secure.lampsplus.com/keep-me-alive.ashx';
+    var aliveUrl = LP.isLocal() ? "/keep-me-alive.ashx" : 'https://secure.lampsplus.com/secure/keep-me-alive.ashx';
     var interval = 60 * 1000 * 10;
     var that = {};
     var alive = false;
     var timer;
 
-    that.isActive = function() {
+    that.isActive = function () {
         alive = true;
     };
 
+    that.removeTrackingIframeIfPresent = function () {
+        var frame = document.getElementById('keep-alive-iframe');
+        if (frame) {
+            document.body.removeChild(frame);
+        }
+    };
     that.sendKeepAlive = function () {
         if (alive) {
-            jQuery.ajax({
-                url: aliveUrl,
-                type: "POST",
-                success: function () {
-                    LP.log("sent keep alive");
-                    alive = false;
-                }
-            });
+            that.removeTrackingIframeIfPresent();
+            var frame = document.createElement('iframe');
+            frame.setAttribute('src', aliveUrl);
+            frame.setAttribute('id', 'keep-alive-iframe');
+            frame.setAttribute('style', 'display:none');
+            document.body.appendChild(frame);
+
+            alive = false;
         }
     };
 
@@ -284,7 +290,7 @@ LP.user.isAuthenticated = function () {
 };
 
 var alive = LP.keepAlive();
-//alive.start();
+alive.start();
 
 function ReloadParent(){
     var strHref = window.parent.location.href;

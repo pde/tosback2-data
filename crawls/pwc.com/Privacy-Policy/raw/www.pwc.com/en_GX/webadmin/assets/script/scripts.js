@@ -35,12 +35,14 @@ $(document).ready(function(){
 		$("#intllayer").toggle();
 		if (document.getElementById('intllink').href == "#") { return false; }
 	});
+	/*
 	if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
 		if ($('meta[name=pwcDB]').attr("content") == 'homepage' || $('meta[name=pwcDB]').attr("content") == 'home') {
 			if (typeof followbar == 'undefined') { $('body').append(followbarhtml); }
 			$('#followhide').click(function() { $('#followbar').fadeOut(500); });
 		};
 	};
+	*/
 
 	$('#morecontactsbutton').click(function() { 
 		$("#morecontacts").slideDown("medium");
@@ -137,19 +139,20 @@ function openpopup() {
 
 
 /*** START Primary nav hover function for IE ***/
-
-sfHover = function() {
-	var sfEls = document.getElementById("nav").getElementsByTagName("LI");
-	for (var i=0; i<sfEls.length; i++) {
-		sfEls[i].onmouseover=function() {
-			this.className+=" sfhover";
-		}
-		sfEls[i].onmouseout=function() {
-			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+if (document.getElementById('nav')) {
+	sfHover = function() {
+		var sfEls = document.getElementById("nav").getElementsByTagName("LI");
+		for (var i=0; i<sfEls.length; i++) {
+			sfEls[i].onmouseover=function() {
+				this.className+=" sfhover";
+			}
+			sfEls[i].onmouseout=function() {
+				this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+			}
 		}
 	}
+	if (window.attachEvent) window.attachEvent("onload", sfHover);
 }
-if (window.attachEvent) window.attachEvent("onload", sfHover);
 
 /*** START Countries selector ***/
 
@@ -338,7 +341,7 @@ function hidelivesearch(evt) {
 
 }
 
-/* Homepage Follow bar */
+/* Homepage Follow bar 
 var followbarhtml = "<div id='followbar'><div id='followinner'><span>Follow us:</span>";
 
 if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
@@ -405,13 +408,14 @@ if ($('meta[name=pwcCountry]').attr("content") == 'rm') {
 		arr_follow [5][5] = "_new";
 	}
 	*/
-		
+/*
 	for (i=0;i<arr_follow.length; i++) {
 		 followbarhtml += "<a href='" + arr_follow[i][1] + "&title=" + arr_follow[i][2] + "' onclick='" + arr_follow[i][4] + "' target='_blank'><img src='" + arr_follow[i][0] + "' border='0' alt='" + arr_follow[i][3] + "' /></a>";
 	}
 }
 	followbarhtml += "<a id='followhide'>Hide</a></div></div>"
 
+*/
 /*** START Send & share global defaults ***/
 
   if (sharetitle === undefined) { var sharetitle = "Share"; }
