@@ -826,7 +826,7 @@ var $window = $(window),
         function distance(p1, p2, unit) {
             var R = 6371; // Radius of the earth in km
             var dLat = (p2.lat - p1.lat).toRad();  // Javascript functions in radians
-            var dLon = (p2.lon - p2.lon).toRad();
+            var dLon = (p2.lon - p1.lon).toRad();
             var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(Number(p1.lat).toRad()) * Math.cos(Number(p2.lat).toRad()) * Math.sin(dLon/2) * Math.sin(dLon/2);
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             var d = R * c; // Distance in km
@@ -1056,6 +1056,7 @@ $(document).on('change', '.faq-navigator #nav-selector', function() {
 		s.linkTrackVars='prop19';
 		s.prop19='contact category > '+optionText;
 		s.tl(this,'o',s.prop19);
+		s.prop19 = "";
 	}
 });
 
@@ -1078,6 +1079,9 @@ $(document).on('click', '.faq-navigator a.cat', function() {
 		s.prop19='contact topic > '+catText;
 		s.prop37 = s.eVar48 = catText;
 		s.tl(this,'o',s.prop19);
+		s.prop19 = "";
+		s.prop37 = "";
+		s.eVar48 = "";
 	}
 	return false;	//prevent browser reload
 });
@@ -12536,12 +12540,12 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
  *  Plugin: flyoutInit
  *
  *  - Init's the flyout functionality
- * 
+ *
  *  UsedBy: anything that wants a flyout...just add the class addflyout to a link
  *
  *  Uses:   jquery
  *
- * --------------------------------- */ 
+ * --------------------------------- */
 
 ;(function($) {
     $.fn.flyoutInit = function() {
@@ -12550,7 +12554,7 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 
                 //close all other flyouts
                 var dataTooltip = $(this).attr('data-flyout');
-                
+
                 if(typeof dataTooltip != "undefined"){
                     //check if already in dom if not create it
                     var tooltipObject = $.parseJSON(dataTooltip);
@@ -12575,13 +12579,14 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
                         var tooltipH3 = $('<h3/>', {
                             text: tooltipObject.heading
                         });
-                        var tooltipP = $('<p/>', {
-                            text: tooltipObject.body
-                        });
-                        var tooltipLink = $('<a/>', {
-                            href: tooltipObject.link,
-                            text: tooltipObject.linktext || "Learn More"
-                        });
+                        var tooltipP = $('<p/>').html(tooltipObject.body);
+                        var tooltipLink = undefined;
+                        if (tooltipObject.link) {
+	                        tooltipLink = $('<a/>', {
+	                            href: tooltipObject.link,
+	                            text: tooltipObject.linktext || "Learn More"
+	                        });
+                        }
                         var tooltipClose = $('<a/>', {
                             href: "javascript:void(0);",
                             "class": "close",
@@ -12593,7 +12598,9 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
                         divWrap.append(tooltipClose);
                         divWrap.append(tooltipH3);
                         divWrap.append(tooltipP);
-                        divWrap.append(tooltipLink);                    
+                        if (tooltipLink) {
+                            divWrap.append(tooltipLink);
+                        }
                         flyoutDiv.append(divWrap);
                         flyoutDiv.css('display', 'none');
                         flyoutDiv.appendTo(itemParent);
@@ -12614,7 +12621,7 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
                         $(this).parent().find('.flyout').stop(true, true).show('slide', {direction: slideDirection}, 500);
                     }
                 }
-                
+
             }
         );
     } // $.fn.toolTipInit
@@ -12650,19 +12657,23 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 				return $tab_ul.children(jqDef).addClass('active').find('a').prop('hash') || jqDef;
 			})(DefaultTab);
 
-			$tabs.find(goto_id).fadeIn('slow', function(){$(this).addClass('active');}).siblings().hide().removeClass('active');
+			$tabs.find(goto_id).fadeIn('slow', function(){$(this).addClass('active');}).parent().siblings().children(".tab").hide().removeClass('active');
 
 		}
+		if (0 == $tabs.children('.active').length) {
+			
+			$tabs.find(':nth-child(2)').addClass('active').siblings().removeClass('active');
 
+		}
 		/* Bind hover action */
 		$tab_nav.find('li').hover(
 			function() {
 			
 				var $hovered = $(this);
-				var goto_id = $hovered.find('a').prop('hash');				
+				var goto_id = $hovered.find('a').prop('hash');	
 				
 				$hovered.addClass('active').siblings().removeClass('active');
-				$tabs.find(goto_id).css({'visibility':'visible'}).stop(true,true).fadeIn('slow', function(){$(this).addClass('active');}).siblings().hide().removeClass('active');
+				$tabs.find(goto_id).css({'visibility':'visible'}).stop(true,true).fadeIn('slow', function(){$(this).addClass('active');}).parent().siblings().children(".tab").hide().removeClass('active');
 
 			});
 

@@ -92,3 +92,12 @@ function PDFGenStats(data){
 		}
 	}
 }
+
+// This function is for the view all / view less button on the global tax newsletter index pages. D.Montana 29-NOV-2012
+$(function(){
+	if( $("div.issue-by-month:gt(5)").hide().length) $("#showControl").show();
+	$("#showControl a").click(function(){
+		$("#showControl a, div.issue-by-month:gt(5) ").toggle();
+		return false;
+	});
+});

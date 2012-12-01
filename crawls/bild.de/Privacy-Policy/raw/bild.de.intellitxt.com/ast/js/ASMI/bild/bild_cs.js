@@ -17,12 +17,26 @@ if (url.indexOf('bild.de/auto') != -1) {
         vm_ipid=21756;
 } else if (url.indexOf('bild.de/unterhaltung/musik') != -1) {
         vm_ipid=21757;
+} else if (url.indexOf('bild.de/unterhaltung/kultur') != -1) {
+        vm_ipid=47379;
+} else if ((url.indexOf('bild.de/ratgeber/gesundheit') != -1) || (url.indexOf('bild.de/ratgeber/diaet') != -1)) {
+        vm_ipid=27860;
 } else if ((url.indexOf('bild.de/geld/wirtschaft') != -1) || (url.indexOf('bild.de/geld/boerse') != -1)) {
         vm_ipid=27858;
 } else if ((url.indexOf('bild.de/lifestyle/reise') != -1) || (url.indexOf('bild.de/reise') != -1)) {
         vm_ipid=27859;
 } else if ((url.indexOf('bild.de/ratgeber/gesundheit') != -1) || (url.indexOf('bild.de/ratgeber/diaet') != -1)) {
         vm_ipid=27860;
+} else if (url.indexOf('bild.de/sport') != -1) {
+        vm_ipid=47380;
+} else if (url.indexOf('bild.de/ratgeber/job-karriere') != -1) {
+        vm_ipid=47381;
+} else if (url.indexOf('bild.de/lifestyle/wellness-fitness') != -1) {
+        vm_ipid=47382;
+} else if (url.indexOf('bild.de/lifestyle/essen-trinken') != -1) {
+        vm_ipid=47383;
+} else if (url.indexOf('bild.de/lifestyle/haus-garten') != -1) {
+        vm_ipid=47384;
 } else if ((url.indexOf('bild.de/ratgeber/geld-karriere') != -1) || (url.indexOf('bild.de/geld/sparen') != -1) || (url.indexOf('bild.de/geld/versicherungen') != -1)) {
         vm_ipid=27857;
 } else if ((url.indexOf('bild.de/digital/internet') != -1) || (url.indexOf('bild.de/digital/computer') != -1)) {

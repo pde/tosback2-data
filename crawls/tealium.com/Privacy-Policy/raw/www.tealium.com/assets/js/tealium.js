@@ -147,7 +147,7 @@ $(document).ready(function(){
 		else if(stristr(pathname,'/company/'))			{$('#nav-company .trigger').addClass("active");}	
 		else if(stristr(pathname,'/customers/'))		{$('#nav-customers .trigger').addClass("active");}
 		else if(stristr(pathname,'/partners/'))			{$('#nav-partners .trigger').addClass("active");}		
-		else if(stristr(pathname,'/business/'))		{$('#nav-resources .trigger').addClass("active");}		
+		else if(stristr(pathname,'/resources/'))		{$('#nav-resources .trigger').addClass("active");}		
 		else if(stristr(pathname,'/news/'))				{$('#nav-news .trigger').addClass("active");}		
 		else {}
 	

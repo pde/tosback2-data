@@ -1129,5 +1129,20 @@ function usa_fireOmniture(newPageName)
 	}
 }
 
+function usa_refreshBannerAdNewPageName(newPageName)
+{
+	usa_debugOut('fn: usa_refreshBannerAdNewPageName()');
+	// get all IFRAME ads on the page
+	var adRoot = $('body');
+	adRoot.find(".usa_adIframe.refresh").each(function(index) {
+		var iFrameID = $(this).attr('id');
+		document.getElementById(iFrameID).src = document.getElementById(iFrameID).src;
+	});
 
-
+	// omniture
+	if (typeof s != 'undefined')
+	{
+		s.pageName = newPageName;
+		void (s.t());
+	}
+}

@@ -9,7 +9,7 @@ ch_amm_version = "1.13.3";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
-function ch_aue(p,v) { if (v) { ch_au(p,escape(v)); } }
+function ch_aue(p,v) { if (v) { ch_au(p,encodeURIComponent(v)); } }
 function ch_def(v, def) { return (v) ? v : def; }
 
 function ch_ad_render_search(response) {

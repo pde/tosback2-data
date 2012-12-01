@@ -529,14 +529,6 @@ GlobalNav = {
 		initialize: function(){
 			jQuery.each(this.initFunctions, function(){arguments[1]()});
 			
-			this.menuListItems.bind("click", function(){
-				if(!this.hasClass("hasURL")){return}
-				GlobalNav.SegMenu.activeItem = this;
-				GlobalNav.SegMenu.menuListItems.removeClass("selected");
-				GlobalNav.SegMenu.menuListItems.removeClass("selectedChevron");
-				if(this != GlobalNav.SegMenu.visibleItem){this.addClass(this.hasClass("hasSubMenu") ? "selectedChevron" : "selected")};
-			});
-			
 			jQuery.each(this.menuListItems, function(index, menuItem){
 				menuItem = GlobalNav.util.jMerge(menuItem);
 				menuItem.attr("name", jQuery(menuItem).text());

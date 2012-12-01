@@ -40,6 +40,7 @@ More info available at http://www.omniture.com */
  *30/7/12 added evar6 - tests tracking
  *21/9/12 added store.avast.ru (Milan)
  *10/10/12 update s_code to version vH.25 (Ales)
+ *20/11/12 added escape(c_ot); in Tracking ID section (Jarda)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -492,6 +493,8 @@ function s_doPlugins(s) {
 		/* Create concatenated tracking ID value (max 50 characters) */
 		c_ot=lob+">"+sc+">"+ele+">"+vr;
 		c_ot=c_ot.toLowerCase();
+        c_ot=escape(c_ot);
+        
 		/* Write cookie value */
 		if(window.location.hostname.search("www.avast.co.jp") != -1)
 			document.cookie="osc_ot="+c_ot+";domain=.avast.co.jp;path=/;";

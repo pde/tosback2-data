@@ -22,3 +22,16 @@ $(document).ready(function() {
 		}
 	});
 });
+$(window).load(function(){  
+		$(".slidingDiv").hide();  
+	$('.show_hide').click(function(){  
+	$(".slidingDiv").slideToggle(); 
+	if ($(this).text()=='Show Video Transcript'){
+    	$(this).text('Hide Video Transcript'); 
+		$('.show_hide').removeClass('arrw-dwn').addClass('arrw-up');	  
+    		}else{
+     	$(this).text('Show Video Transcript'); 
+		$('.show_hide').removeClass('arrw-up').addClass('arrw-dwn');	
+		}
+	});  
+});  

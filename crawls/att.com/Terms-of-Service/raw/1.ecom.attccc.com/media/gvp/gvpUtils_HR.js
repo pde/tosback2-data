@@ -970,6 +970,7 @@ The two main functions of this class are setContentStr and openModal.  setConten
 Currently 3 types of devices are being detected: IOS, Kindle, and Android.  Kindle's can identify themselves as Androids if the browser is in mobile optimization mode.  Therefore, it is critical that Kindle comes before Android in the if/else statement in setContentStr().
 */
 gvpUtils.prototype.mobile = new function () {
+		
 	
 	//device detection
 	var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -1095,6 +1096,7 @@ gvpUtils.prototype.mobile = new function () {
 		var diagonalDim;
 		if (isWindows){
 			var diagonalDim = Math.sqrt(screenArea) / 2;
+			
 		}
 		else{
 			var diagonalDim = Math.sqrt(screenArea) / dsPixelRatio;
@@ -1165,7 +1167,7 @@ gvpUtils.prototype.mobile = new function () {
 		videoEl.setAttribute('poster',p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg');
 		videoEl.setAttribute('width','1');
 		videoEl.setAttribute('height','1');
-		videoEl.setAttribute('onended','closeModal');
+		videoEl.setAttribute('onended','webkitExitFullscreen();');
 		
 		if(isIOS) {
 			videoSourceEl.setAttribute('onsuspend','gvp.mobile.iosOnSuspend();');

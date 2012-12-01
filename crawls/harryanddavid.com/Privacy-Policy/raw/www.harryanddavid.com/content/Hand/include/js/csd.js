@@ -26,27 +26,33 @@ dojo.addOnLoad(function () {
     { id: 'TENOFFFORTY',         title: 'Terms &amp; Conditions'                                           },
     { id: 'TWENTYFIVEOFF',       title: 'Terms &amp; Conditions'                                           },
     { id: 'WINESHIP',            title: 'Wine Shipping Details'                                            },
-    { id: '9HM',        type: 'coupon', name: 'ninehj' },
-    { id: '9HM',        type: 'coupon', name: 'ninehk' },
-    { id: '9HM',        type: 'coupon', name: 'ninehl' },
-    { id: '9HM',        type: 'coupon', name: 'ninehm' },
-    { id: '20OFF',      type: 'coupon', name: 'twentyoff' },
-    { id: 'BDAY',       type: 'coupon' },
-    { id: 'FAMILY',     type: 'coupon' },
-    { id: 'FAM',        type: 'coupon' },
-    { id: 'FFM',        type: 'coupon' },
-    { id: 'FREEFSD',    type: 'coupon' },
-    { id: 'GIFTS',      type: 'coupon' },
-    { id: 'HDGIFT',     type: 'coupon' },
-    { id: 'JOY',        type: 'coupon' },
-    { id: 'JOYFUL',     type: 'coupon' },
-    { id: 'JOYOUS',     type: 'coupon' },
-    { id: 'SHIPPING',   type: 'coupon' },
-    { id: 'SHIPPING49', type: 'coupon' },
-    { id: 'THANKS',     type: 'coupon' },
-    { id: 'TWENTYOFF',  type: 'coupon' },
-    { id: 'WED',        type: 'coupon' },
-    { id: 'EMAIL',           title: 'Email Sign-up',           callback: function () {
+    { id: '9HM',            type: 'coupon', name: 'ninehj' },
+    { id: '9HM',            type: 'coupon', name: 'ninehk' },
+    { id: '9HM',            type: 'coupon', name: 'ninehl' },
+    { id: '9HM',            type: 'coupon', name: 'ninehm' },
+    { id: '20OFF',          type: 'coupon', name: 'twentyoff' },
+    { id: 'BDAY',           type: 'coupon' },
+    { id: 'FAMILY',         type: 'coupon' },
+    { id: 'FAM',            type: 'coupon' },
+    { id: 'FFM',            type: 'coupon' },
+    { id: 'FREEFSD',        type: 'coupon' },
+    { id: 'FREESHIPPING',   type: 'coupon' },
+    { id: 'FREESHIPPING49', type: 'coupon' },
+    { id: 'GIFTS',          type: 'coupon' },
+    { id: 'GOLDEN',         type: 'coupon' },
+    { id: 'HDGIFT',         type: 'coupon' },
+    { id: 'HOLIDAYSAVINGS', type: 'coupon' },
+    { id: 'JOY',            type: 'coupon' },
+    { id: 'JOYFUL',         type: 'coupon' },
+    { id: 'JOYOUS',         type: 'coupon' },
+    { id: 'SHIPPING',       type: 'coupon' },
+    { id: 'SHIPPING49',     type: 'coupon' },
+    { id: 'THANKS',         type: 'coupon' },
+    { id: 'TWENTYOFF',      type: 'coupon' },
+    { id: 'TWENTYOFF49',    type: 'coupon' },
+    { id: 'TWENTYOFFNOMIN', type: 'coupon' },
+    { id: 'WED',            type: 'coupon' },
+    { id: 'EMAIL', title: 'Email Sign-up', callback: function () {
       var $email, starting;
       $email   = $('#dialog-EMAIL input:text');
       starting = 'Enter Your Email';
@@ -88,7 +94,7 @@ $(function () {
     // name the navigation caps
     nav.children('a:first').addClass('first');
     nav.children('a:last').addClass('last');
-    
+
     // name the home category spots
     homeCat.children('a').each(function (index, element) {
       $(element).addClass('homeCat-' + index);

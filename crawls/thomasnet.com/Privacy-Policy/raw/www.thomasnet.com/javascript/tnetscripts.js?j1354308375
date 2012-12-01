@@ -1,0 +1,1393 @@
+function popContact(url){
+	var pc	= window.open(url,'popcontact','toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width=400,height=650');
+	pc.focus();
+}
+
+function popWin(url, name, width, height){
+	var pw	= window.open(url,name,'toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width='+width+',height='+height);
+	pw.focus();
+}
+
+function rollImage(imageid){
+	var curimg	= document.getElementById(imageid).src;
+	var newimg	= curimg.replace('normal','rollover');
+	if(newimg==curimg)	{ newimg = curimg.replace('rollover','normal'); }
+	document.getElementById(imageid).src	= newimg;
+}
+
+function confirmOOL(oolurl){
+	if(oolurl){
+		var Ret	= confirm("We are directing you to the supplier's online catalog\nwhere you can purchase this product online.");
+		if(Ret) {
+			window.open(oolurl,'psool');
+			window.focus();
+		}
+	}
+}
+
+function psConfigure(){
+	alert("This feature is still in development");
+}
+
+var RecaptchaOptions = {
+   theme : 'white'
+};
+
+function getElement (id){
+	return document.all ? document.all(id) : document.getElementById ? document.getElementById(id) : document.layers ? document.layers[id] : null;
+}
+
+window.name = "thomasnet";
+var screenW = 640, screenH = 480;
+if (parseInt(navigator.appVersion)>3) {
+	screenW = screen.width;
+	screenH = screen.height;
+} else if (navigator.appName == "Netscape" && parseInt(navigator.appVersion)==3 && navigator.javaEnabled()){
+	var jToolkit = java.awt.Toolkit.getDefaultToolkit();
+	var jScreenSize = jToolkit.getScreenSize();
+	creenW = jScreenSize.width;
+	screenH = jScreenSize.height;
+}
+
+// this function handles the mouseover for "prev" and "next" page nav links
+function pgnavHover(el, type, stat){
+	var imgid	= type+"pg";
+	var classnm	= "";
+	if(stat=="on"){ classnm = "pghover"; }
+	el.className	= classnm;
+	document.getElementById(imgid).src  = "http://cdn.thomasnet.com/images/images/"+type+"_"+stat+".png";
+}
+
+function popUnder(url, params){
+	if(!params){ params = "height=600,width=800,RESIZABLE=1,TOOLBAR=0,MENUBAR=0,LOCATION=0,STATUS=0,DIRECTORIES=0,SCROLLBARS=0"; }
+	var popunder	= window.open(url,'tnetpromo',params);
+	popunder.blur();
+	window.focus();
+}
+
+function viewContent(url, cid, origin, params){
+	var theURL	= "/viewcontent.html?framesrc="+escape(url);
+	if(cid > '')	{ theURL += "&cid="+cid; }
+	if(origin > '')	{ theURL += "&WTZO="+escape(origin); }
+	if(params > '')	{ theURL += "&"+params; }
+	var features    = "height=600,width="+(screenW-50)+",RESIZABLE=1,TOOLBAR=0,MENUBAR=0,LOCATION=0,STATUS=0,DIRECTORIES=0,SCROLLBARS=0";
+	newwin=window.open(theURL,'tnetview',features);
+	newwin.creator  = self;
+	if (window.focus) {newwin.focus()}
+	return false;
+}
+
+function viewProdSearchPDF(url, cid, what, title){
+	var theURL	= "/productsearch/viewpdf.html?what="+escape(what)+"&title="+escape(title)+"&alink="+escape(url);
+	if(cid > '')  { theURL += "&cid="+cid; }
+	theURL += "&framesrc="+escape(url);
+	var features    = "height=600,width="+(screenW-50)+",RESIZABLE=1,TOOLBAR=0,MENUBAR=0,LOCATION=0,STATUS=0,DIRECTORIES=0,SCROLLBARS=0";
+	newwin=window.open(theURL,'tnetview',features);
+	newwin.creator  = self;
+	if (window.focus) {newwin.focus()}
+	return false;
+}
+
+function userRank(star,fldname){
+	var imgid	= "img_"+fldname;
+	var curstar	= document.getElementById(fldname).value;
+	if(curstar==star)	{ star = 0; }
+	document.getElementById(imgid).src="http://cdn.thomasnet.com/images/images/stars_"+star+".png";
+	document.getElementById(fldname).value	= star;
+	//alert("image id: "+imgid+"\nold star: "+curstar+"\nnew star: "+star);
+}
+
+function chgImage(id,src){
+	document.getElementById(id).src	= src;
+}
+
+function rankStars(el,event){
+	x=event.clientX;
+	ol = el.offsetLeft;
+	cpos	= x-ol;
+	star	= 0;
+	formname	= document.getElementById('profnotes');
+	fldname	= el.id;
+	fldname	= fldname.substring(4, fldname.length);
+	if(cpos < 18)	{ star=1; }
+	else if(cpos < 36) { star=2; }
+	else if(cpos < 54) { star=3; }
+	else if(cpos < 72) { star=4; }
+	else if(cpos < 90) { star=5; }
+	curstar	= document.getElementById(fldname).value;
+	alert(cpos+"\n"+curstar+"\n"+star);
+	if(curstar==star)	{ star = 0; }
+	el.src="http://cdn.thomasnet.com/images/images/stars_"+star+".png";
+	document.getElementById(fldname).value	= star;
+	alert(el.id+"\nX coords: " + x +"\noffsetLeft: "+ol+"\ncursor: "+cpos+"\nstar: "+star);
+}
+
+function rankStarsOld(el,event){
+	x=event.clientX;
+	ol = el.offsetLeft;
+	cpos	= x-ol;
+	star	= 0;
+	formname	= document.getElementById('profnotes');
+	fldname	= el.id;
+	fldname	= fldname.substring(4, fldname.length);
+	if(cpos < 18)	{ star=1; }
+	else if(cpos < 36) { star=2; }
+	else if(cpos < 54) { star=3; }
+	else if(cpos < 72) { star=4; }
+	else if(cpos < 90) { star=5; }
+	el.src="http://cdn.thomasnet.com/images/images/stars_"+star+".png";
+	document.getElementById(fldname).value	= star;
+	//alert(el.id+"\nX coords: " + x +"\noffsetLeft: "+ol+"\ncursor: "+cpos+"\nstar: "+star);
+}
+
+function shareNotes(submitpage){
+	formname	= document.getElementById('profnotes');
+	formname.action	= submitpage;
+	formname.submit();
+}
+
+function bookmarkSite(title, url){
+ 
+	if (window.sidebar) {
+		window.sidebar.addPanel(title, url, "");
+	} else if(window.opera && window.print) {
+		var elem = document.createElement('a');
+		elem.setAttribute('href',url);
+		elem.setAttribute('title',title);
+		elem.setAttribute('rel','sidebar');
+		elem.click();
+	} else if(document.all) {
+		window.external.AddFavorite(url, title);
+	}
+ 
+}
+
+function isValidURL(urlval) {
+        splitval1 = urlval.split("?");
+        domain  = splitval1[0];
+        qstring = splitval1[1];
+        splitval2 = domain.split("#");
+        url     = splitval2[0];
+        var v   = new RegExp();
+	v.compile("^[A-Za-z]+://[A-Za-z0-9-_]+\\.[A-Za-z0-9-,~\(\)!_%&[\\]\?\$\*\:\+\/.=]+$");
+        if(!v.test(url)) { return false; }
+        else { return true; }
+}
+
+function homeLogo(el){ el.src	= homelogo; }
+function backLogo(el){ el.src	= backlogo; }
+
+function moreChev(stat){
+	var color	= "orange";
+	if(stat=="on"){ color = "green"; }
+	var moreimg	= "http://cdn.thomasnet.com/images/images/"+color+"_arrow.gif";
+	document.getElementById('morechev').src = moreimg;
+}
+
+function JumpURL(selection) {
+        var tempIndex, selectedURL;
+        tempIndex = selection.selectedIndex;
+        selectedURL = selection.options[tempIndex].value;
+        location.href = selectedURL;
+}
+
+function radioURL(selection) {
+	var selectedURL = selection.value;
+	location.href = selectedURL;
+}
+
+function Set_Cookie(name,value,expiredays,path,domain,secure) { 
+	if(expiredays == ""){
+		expires = "";
+	} else {
+		expires = new Date();
+		expires.setDate(expires.getDate() + expiredays);
+	}
+	var cookieString = name + "=" +escape(value) + 
+	( (expires) ? ";expires=" + expires.toGMTString() : "") + 
+	( (path) ? ";path=" + path : "") + 
+	( (domain) ? ";domain=" + domain : "") + 
+	( (secure) ? ";secure" : ""); 
+	document.cookie = cookieString; 
+}
+
+function getCookie(c_name){
+	if (document.cookie.length>0){
+		c_start=document.cookie.indexOf(c_name + "=")
+		if (c_start!=-1){ 
+			c_start=c_start + c_name.length+1 
+			c_end=document.cookie.indexOf(";",c_start)
+			if (c_end==-1) c_end=document.cookie.length
+			return unescape(document.cookie.substring(c_start,c_end))
+		} 
+	}
+	return "";
+}
+
+function swapMenu (show, noshow) {
+	document.getElementById(show).style.display = "block";
+	document.getElementById(noshow).style.display = "none";
+}
+
+function swapInline (show, noshow) {
+	document.getElementById(show).style.display = "inline";
+	document.getElementById(noshow).style.display = "none";
+}
+
+function swapProformTabs (show, noshow) {
+	var tabon  = show+"tab";
+	var taboff = noshow+"tab";
+	document.getElementById(show).style.display = "block";
+	document.getElementById(noshow).style.display = "none";
+	document.getElementById(tabon).className = "active";
+	document.getElementById(taboff).className = "";
+}
+
+function swapRow (show, noshow) {
+	document.getElementById(show).style.display = "table-row";
+	document.getElementById(noshow).style.display = "none";
+}
+
+function togglePlusMinBox (el){
+	var pmimgid	= "pm-"+el;
+	var pmbodyid	= "body-"+el;
+	var imgsrc	= document.getElementById(pmimgid).src;
+	if(imgsrc.indexOf("plus") > 0){
+		document.getElementById(pmimgid).src	= imgsrc.replace('plus','minus');
+		document.getElementById(pmbodyid).style.display = "block";
+	} else {
+		document.getElementById(pmimgid).src	= imgsrc.replace('minus','plus');
+		document.getElementById(pmbodyid).style.display = "none";
+	}
+}
+
+function toggleHomeBox (el, browse) {
+	var curclass	= document.getElementById(el).className;
+	var newclass	= "openedbox";
+	if(browse)	{ newclass="openedbrowsebox"; }
+	var pmimgid	= "pm-"+el;
+	var pmimg	= "http://cdn.thomasnet.com/images/images/minus.png";
+	if(curclass==newclass){
+		newclass="closedbox";
+		if(browse)	{ newclass="closedbrowsebox"; }
+		pmimg	= "http://cdn.thomasnet.com/images/images/plus.png";
+	}
+	document.getElementById(el).className = newclass;
+	document.getElementById(pmimgid).src = pmimg;
+}
+
+function swapCompare(fld, ids) {
+	var idno=ids.split(","); 
+	// find out which is being displayed
+	var firstid	= fld+idno[0];
+	var curDisp	= document.getElementById(firstid).style.display;
+	var plusminus	= fld+"-pm";
+	var moreless	= fld+"-more";
+	var moreDisp	= "";
+	var lessDisp	= "";
+	if(curDisp=="none"){
+		lessDisp= "inline";
+		moreDisp= "none";
+		document.getElementById(plusminus).innerHTML = "+";
+		document.getElementById(moreless).innerHTML = "more";
+	} else {
+		lessDisp= "none";
+		moreDisp= "inline";
+		document.getElementById(plusminus).innerHTML = "&#8211;";
+		document.getElementById(moreless).innerHTML = "less";
+	}
+	for (i=0; i < idno.length; i++)  {
+		cid = idno[i];
+		var lessField = fld+cid;
+		var moreField = fld+cid+"-all";
+		document.getElementById(lessField).style.display = lessDisp;
+		document.getElementById(moreField).style.display = moreDisp;
+	}
+}
+
+function swapOther(fld, ids) {
+	var idno=ids.split(","); 
+	// find out which is being displayed
+	var firstid	= "other-"+idno[0];
+	var curDisp	= document.getElementById(firstid).style.display;
+	var plusminus	= fld+"-opm";
+	var moreless	= fld+"-oml";
+	var oDisp	= "";
+	if(curDisp=="none"){
+		oDisp= "";
+		document.getElementById(plusminus).innerHTML = "&#8211;";
+		document.getElementById(moreless).innerHTML = "less";
+	} else {
+		oDisp= "none";
+		document.getElementById(plusminus).innerHTML = "+";
+		document.getElementById(moreless).innerHTML = "more";
+	}
+	for (i=0; i < idno.length; i++)  {
+		key = idno[i];
+		var oField = "other-"+key;
+		//alert(oField);
+		document.getElementById(oField).style.display = oDisp;
+	}
+}
+
+function toggleDisplay (elid) {
+	var curDisp	= document.getElementById(elid).style.display;
+	var newDisp	= "none";
+	if(curDisp=="none" || !curDisp)	{ newDisp = "block"; }
+	document.getElementById(elid).style.display = newDisp;
+}
+
+function showElement(elid, newDisp) {
+	if(!newDisp)	{ newDisp="block"; }
+	document.getElementById(elid).style.display = newDisp;
+}
+
+function hideElement(elid, newDisp) {
+	if(!newDisp)	{ newDisp="none"; }
+	document.getElementById(elid).style.display = newDisp;
+}
+
+function trim(str) { 
+	return str.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+} 
+
+
+function survey200609(){
+	window.open('/survey/200609/index.html','survey200609','toolbar=0,location=0,status=0,menubar=0,scrollbars=1,resizable=1,width=650,height=600');
+	window.focus();
+}
+
+function isNumber(InString){
+        if(InString.length==0)
+                return (false);
+        RefString="1234567890";
+        for (Count=0; Count < InString.length; Count++)  {
+                TempChar= InString.substring (Count, Count+1);
+                if (RefString.indexOf (TempChar, 0)==-1)
+                        return (false);
+        }
+        return (true);
+}
+
+function isValidUname(InString){
+        if(InString.length==0)
+                return (false);
+        RefString="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        for (Count=0; Count < InString.length; Count++)  {
+                TempChar= InString.substring (Count, Count+1);
+                if (RefString.indexOf (TempChar, 0)==-1)
+                        return (false);
+        }
+        return (true);
+}
+
+function isEmail (emailStr) {	// updated 4/22/2008
+	var checkTLD=1;	// 1 to check for two-letter country or well-known TLD - 0 to ignore
+	var knownDomsPat=/^(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum)$/;
+	var emailPat=/^(.+)@(.+)$/;
+	var specialChars="\\(\\)><@,;:\\\\\\\"\\.\\[\\]";
+	var validChars="\[^\\s" + specialChars + "\]";
+	var quotedUser="(\"[^\"]*\")";
+	var ipDomainPat=/^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
+	var atom=validChars + '+';
+	var word="(" + atom + "|" + quotedUser + ")";
+	var userPat=new RegExp("^" + word + "(\\." + word + ")*$");
+	var domainPat=new RegExp("^" + atom + "(\\." + atom +")*$");
+
+	var matchArray=emailStr.match(emailPat);
+
+	if (matchArray==null) { return false; }	// Email address seems incorrect (check @ and .'s)
+	var user=matchArray[1];
+	var domain=matchArray[2];
+
+	for (i=0; i<user.length; i++) {
+		if (user.charCodeAt(i)>127) { return false; }	// The username contains invalid characters
+	}
+	for (i=0; i<domain.length; i++) { 
+		if (domain.charCodeAt(i)>127) { return false; }	// The domain name contains invalid characters
+	}
+
+	if (user.match(userPat)==null) { return false; }	// The username is invalid
+
+	var IPArray=domain.match(ipDomainPat);
+	if (IPArray!=null) {	// this is an IP address
+		for (var i=1;i<=4;i++) {
+			if (IPArray[i]>255) { return false; }	// Destination IP address is invalid
+		}
+		return true;
+	}
+
+	var atomPat=new RegExp("^" + atom + "$");
+	var domArr=domain.split(".");
+	var len=domArr.length;
+	for (i=0;i<len;i++) {
+		if (domArr[i].search(atomPat)==-1) { return false; }	// The domain name is invalid
+	}
+
+	if (checkTLD && domArr[domArr.length-1].length!=2 && domArr[domArr.length-1].search(knownDomsPat)==-1) {
+		return false;	// The address must end in a well-known domain or two letter country code
+	}
+
+	if (len<2) { return false; }	// This address is missing a hostname
+	return true;
+}
+
+
+function OLDisEmail(str) {
+        var supported = 0;
+        if (window.RegExp) {
+                var tempStr = "a";
+                var tempReg = new RegExp(tempStr);
+                if (tempReg.test(tempStr)) supported = 1;
+        }
+        if (!supported) 
+                return (str.indexOf(".") > 2) && (str.indexOf("@") > 0);
+        var r1 = new RegExp("(@.*@)|(\\.\\.)|(@\\.)|(^\\.)");
+        var r2 = new RegExp("^.+\\@(\\[?)[a-zA-Z0-9\\-\\.]+\\.([a-zA-Z]{2,4}|[0-9]{1,4})(\\]?)$");
+        return (!r1.test(str) && r2.test(str));
+}
+
+function MM_openBrWindow(theURL,winName,features) { //v2.0
+	window.open(theURL,winName,features);
+}
+
+function MM_preloadImages() { //v3.0
+	var d=document; 
+	if(d.images){ 
+		if(!d.MM_p) d.MM_p=new Array();
+		var i,j=d.MM_p.length,a=MM_preloadImages.arguments; 
+		for(i=0; i<a.length; i++){
+			if (a[i].indexOf("#")!=0){ 
+				d.MM_p[j]=new Image; 
+				d.MM_p[j++].src=a[i];
+			}
+		}
+	}
+}
+
+function isNumberString (InString)  {
+	if(InString.length==0) 
+		return (false);
+	RefString="1234567890";
+	for (Count=0; Count < InString.length; Count++)  {
+		TempChar= InString.substring (Count, Count+1);
+		if (RefString.indexOf (TempChar, 0)==-1)  
+			return (false);
+	}
+	return (true);
+}
+
+function validsearch(search){
+	search.what.value	= trim(search.what.value);
+	if(search.what.value.length==0){
+		alert("Please enter a search term\n(Example: Valves)");
+		search.what.select();
+		search.what.focus();
+		return false;
+	}
+}
+
+function validadvsearch(search){
+	if(search.advwhat.value.length==0){
+		alert("Please enter a search term\n(Example: Valves)");
+		search.advwhat.select();
+		search.advwhat.focus();
+		return false;
+	}
+}
+
+function validfeedback(fbform){
+	Selected = false;
+	for (Count = 0; Count < 5; Count++){
+		if (fbform.rank[Count].checked){
+          		Selected = true;
+          		break;
+        	}
+      	}
+	if((fbform.comments.value.length==0 || fbform.comments.value=="Type your comments here.") && !Selected){
+		alert("Please rate these search results\nor enter \"Comments\"");
+		fbform.rank[2].focus();
+		return false;
+	}
+}
+
+function validfeedbackNS(fbform){
+	if(fbform.comments.value.length==0 || fbform.comments.value=="Type your comments here."){
+		alert("Please enter your \"Comments\"");
+		fbform.comments.select();
+		fbform.comments.focus();
+		return false;
+	}
+}
+
+function isNumeric (InString)  {
+	if(InString.length==0)
+		return (false);
+	RefString="1234567890.-";
+	for (Count=0; Count < InString.length; Count++)  {
+		TempChar= InString.substring (Count, Count+1);
+		if (RefString.indexOf (TempChar, 0)==-1)
+			return (false);
+	}
+	return (true);
+}
+
+function isInteger (InString)  {
+	if(InString.length==0)
+		return (false);
+	RefString="1234567890";
+	for (Count=0; Count < InString.length; Count++)  {
+		TempChar= InString.substring (Count, Count+1);
+		if (RefString.indexOf (TempChar, 0)==-1)
+			return (false);
+	}
+	return (true);
+}
+
+function isValidYear(InString)  {
+	if(InString.length!=4 || InString < 1000)
+		return (false);
+	RefString="1234567890";
+	for (Count=0; Count < InString.length; Count++)  {
+		TempChar= InString.substring (Count, Count+1);
+		if (RefString.indexOf (TempChar, 0)==-1)
+			return (false);
+	}
+	return (true);
+}
+
+function isValidZip(InString)  {
+	InString = InString.toUpperCase();
+	reZip = new RegExp(/((^\d{5}$)|(^\d{5}([- |]\d{4})?$)|(^[A-Z]\d[A-Z][- |]\d[A-Z]\d$))/);
+	if(!reZip.test(InString)) { return (false); }
+	return (true);
+}
+
+function isValidPhone(InString)  {
+	rePhone = new RegExp(/^(\()?(\d{3})([\)-\. ])?(\d{3})([-\. ])?(\d{4})$/);
+	if(!rePhone.test(InString)) { return (false); }
+	return (true);
+}
+
+function toggleModGroupPM(groupid){
+	var curadir	= "";
+	var curdisp	= document.getElementById(groupid).style.display;
+	if(curdisp!="block"){
+		curdisp	= "block";
+		curadir	= "minus";
+	} else {
+		curdisp	= "none";
+		curadir	= "plus";
+	}
+	var imgid	= groupid+"-img";
+	var arrow	= "http://cdn.thomasnet.com/images/images/"+curadir+"10.png";
+	document.getElementById(groupid).style.display	= curdisp;
+	document.getElementById(imgid).src	= arrow;
+}
+
+function toggleModGroup(groupid){
+	var curadir	= "";
+	var curdisp	= document.getElementById(groupid).style.display;
+	if(curdisp!="block"){
+		curdisp	= "block";
+		curadir	= "down";
+	} else {
+		curdisp	= "none";
+		curadir	= "right";
+	}
+	var imgid	= groupid+"-img";
+	var arrow	= "http://cdn.thomasnet.com/images/images/gray_arrow_"+curadir+".gif";
+	document.getElementById(groupid).style.display	= curdisp;
+	document.getElementById(imgid).src	= arrow;
+}
+
+// valid date character, minimum year and maximum year
+var dtCh= "/";
+var minYear=1900;
+var maxYear=2200;
+
+function trimNumber(s) {
+	while (s.substr(0,1) == '0' && s.length>1) { s = s.substr(1,9999); }
+	return s;
+}
+
+
+function isDateError(dtStr){
+	dtStr   = trim(dtStr);
+	if(dtStr=="mm/dd/yyyy") { return false; }
+	var pos1=dtStr.indexOf(dtCh)
+	var pos2=dtStr.indexOf(dtCh,pos1+1)
+	var strMonth=dtStr.substring(0,pos1)
+	var strDay=dtStr.substring(pos1+1,pos2)
+	var strYear=dtStr.substring(pos2+1)
+
+	strMonth=trimNumber(strMonth);
+	strDay=trimNumber(strDay);
+	strYear=trimNumber(strYear);
+
+	month=parseInt(strMonth);
+	day=parseInt(strDay);
+	year=parseInt(strYear);
+	if (pos1==-1 || pos2==-1){
+		return "The date format should be mm/dd/yyyy";
+	}
+	if (month<1 || month>12){
+		return "Please enter a valid month";
+	}
+	if (day<1 || day>31){
+		return "Please enter a valid day";
+	}
+	if (year<minYear || year>maxYear){
+		return "Please enter a valid 4 digit year between "+minYear+" and "+maxYear;
+	}
+	return false;
+}
+
+function createRequest() {
+  var request = null;
+  try {
+    request = new XMLHttpRequest();
+  } catch (trymicrosoft) {
+    try {
+      request = new ActiveXObject("Msxml2.XMLHTTP");
+    } catch (othermicrosoft) {
+      try {
+        request = new ActiveXObject("Microsoft.XMLHTTP");
+      } catch (failed) {
+        request = null;
+      }
+    }
+  }
+
+  if (request == null) {
+    alert("Error creating request object!");
+  } else {
+    return request;
+  }
+}
+
+request = createRequest();
+
+function todayOnTnet(pg, usr) {
+	if(usr){ news_timer_is_on = 0; clearTimeout(tots); }
+	var url = "todayontnet.php?pg="+pg;
+	request.open("GET", url, true);
+	request.onreadystatechange = updateHomeNews;
+	request.send(null);
+}
+
+function updateHomeNews() {
+	if (request.readyState == 4) {
+		if (request.status == 200) {
+			document.getElementById('todayontnet').innerHTML = request.responseText;
+		}
+	}
+}
+
+var browsebg	= "";
+function showBrowseCats(tab) {
+	var tabbg	= new Array()
+	tabbg["all"]	= "products";
+	tabbg["cats"]	= "catalogs";
+	tabbg["products"]	= "catalogs";
+	tabbg["cad"]	= "cad";
+
+	browsebg	= "url(http://cdn.thomasnet.com/images/images/browse_"+tabbg[tab]+".png)";
+
+	var url = "browsebycat.html?tab=" +tab;
+	request.open("GET", url, true);
+	request.onreadystatechange = updateBrowse;
+	request.send(null);
+}
+
+function updateBrowse() {
+	if (request.readyState == 4) {
+		if (request.status == 200) {
+			var catList = request.responseText;
+			document.getElementById("browsecats").innerHTML = catList;
+			document.getElementById("browsetabs").style.backgroundImage = browsebg;
+		} else {
+			/*alert("Error! Request status is " + request.status); */
+		}
+	}
+}
+var coselect = new Array();
+function compareSuppliers(qs){
+	var selected = cntSelComps();
+	if(selected > 5){
+		alert("You may not select more than 5 companies.");
+	} else if(selected < 2){
+		alert("Please select between 2 and 5 companies to compare.");
+	} else if(selected){
+		location.href = "/compare.html?"+qs;
+	}
+}
+
+function cntSelComps(){
+	// shove all previously selected companies in array
+	var selct = 0;
+	var preselco = getCookie('_selco');
+	var preseldata = preselco.split("|");
+	for(x=0; x < preseldata.length; x++){
+		var idpos = preseldata[x].indexOf('-');
+		var copos = preseldata[x].indexOf('-', idpos+1);
+		var rk = preseldata[x].substring(0,idpos);
+		var id = preseldata[x].substring(idpos+1,copos);
+		var nm = preseldata[x].substring(copos+1);
+		if(id){ selct++; }
+	}
+	return selct;
+}
+
+function preSelComps(rank){
+	// shove all previously selected companies in array
+	var selno = 0;
+	var preselco = getCookie('_selco');
+	var preseldata = preselco.split("|");
+	for(x=0; x < preseldata.length; x++){
+		var idpos = preseldata[x].indexOf('-');
+		var copos = preseldata[x].indexOf('-', idpos+1);
+		var rk = preseldata[x].substring(0,idpos);
+		var id = preseldata[x].substring(idpos+1,copos);
+		var nm = preseldata[x].substring(copos+1);
+		if(rank != rk && id){ coselect[rk] = id+"-"+nm; selno++; }
+	}
+}
+
+function compareSuppliersCnt(chkbox, rank, coname){
+	var acct  = chkbox.value;
+	preSelComps(rank);
+	var selected = cntSelComps();
+	if(chkbox.checked){ selected++; }
+	if(selected > 5){
+		alert("You may not select more than 5 companies.");
+		chkbox.checked = 0;
+	}
+	var rowid	= "row"+acct;
+	if(chkbox.checked){
+		coselect[rank] = acct+"-"+coname;
+		//document.getElementById(rowid).className = 'hlrslt';
+		document.getElementById(rowid).style.backgroundColor = '#e6e6e6';
+	} else {
+		delete coselect[rank];
+		var rowElement = document.getElementById(rowid);
+		if (rowElement != null){
+			document.getElementById(rowid).style.backgroundColor = '#fff';
+		}
+	}
+	showSelCookie();
+	showSelComps();
+}
+
+function showSelCookie(){
+	var newselco = "";
+	for(j=0; j < coselect.length; j++){
+		if(coselect[j]){
+			var data = coselect[j];
+			if(newselco){ newselco += "|"; }
+			newselco += j+"-"+data;
+		}
+	}
+	Set_Cookie('_selco', newselco,'','/','thomasnet.com','');
+}
+
+function showSelComps(){
+	var cohtml = ihtml = "";
+	var preselco	= getCookie('_selco');
+	var preseldata	= preselco.split("|");
+	for(x=0; x < preseldata.length; x++){
+		var idpos	= preseldata[x].indexOf('-');
+		var copos	= preseldata[x].indexOf('-', idpos+1);
+		var rk	= preseldata[x].substring(0,idpos);
+		var id	= preseldata[x].substring(idpos+1,copos);
+		var nm	= preseldata[x].substring(copos+1);
+		nm	= nm.replace(/\+/g, ' ')
+		if(id && nm){
+			cohtml += "<a href=\"#\" onclick=\"delSelComp('"+id+"','"+rk+"');\"><img src=\"http://cdn.thomasnet.com/images/images/undomod.gif\" class=\"undo\" alt=\"Undo\"></a> "+nm+"<br />\n";
+		}
+	}
+	if(cohtml)	{
+		ihtml	= "<div class=\"selcomp\"><span class=\"orangetxt\">Suppliers Selected</span><br />\n";
+		ihtml  += cohtml;
+		if(x > 1){ ihtml  += "<div id=\"compbtn\">"+compBtn+"</div>"; }
+		ihtml  += "</div>\n";
+		getElement('complist').innerHTML = ihtml;
+		document.getElementById('complist').style.display = "block";
+	} else {
+		document.getElementById('complist').style.display = "none";
+	}
+}
+
+function psRequestInfo(){
+	alert("This feature is not available yet");
+}
+
+function toggleRows(clsnm){
+	myBody = document.getElementsByTagName("body")[0];
+	myTableRows = myBody.getElementsByTagName("tr");
+	showClass	= clsnm;
+	hideClass	= clsnm+"-off";
+	for (var i = 0; i < myTableRows.length; i++) {
+		newClass	= "";
+		if(myTableRows[i].className == showClass)	{ newClass = hideClass; }
+		else if(myTableRows[i].className == hideClass)	{ newClass = showClass; }
+		if(newClass)	{ myTableRows[i].className = newClass; }
+	}
+}
+
+function rfi_Multi(qs) { // isRFIDev
+	// Get cids stored in the _selco cookie.
+	var preselco = getCookie('_selco').split("|");
+	// We want the middle of the three dash-delimited values in each array occurrence.
+	var cids = $(preselco).map(function() { if (this.length) { return this.match(/-(.*?)-/)[1]; }}).get().unique();
+	if(cids.length < 1) { alert("You have not selected any companies yet."); }
+	else {
+		window.location = "/rfi/rfi_main.html?" + qs + "&cids=" + cids.join(',');
+	}
+}
+
+function rfi_rfqMulti(){ // isRFIDev: When making live, change actual action in /web/tnet/include/compare_supp.inc the form instead of replacing.
+	var cids = $("input[name='multi[]']:checked").map(function() { return this.value; }).get().unique();
+	if(cids.length < 1) { alert("You have not selected any companies yet."); }
+	else {
+		var frm = $("form[name=rfqsupp]");
+		frm.append('<input type="hidden" name="cids" value="' + cids.join(',') +  '" />');
+		var act = frm.attr("action").replace( /\/multirfq\.html/g, "/rfi/rfi_main.html");
+		frm.attr("action",act);
+		frm.submit();
+		return false;
+	}
+}
+
+function rfqMulti(){
+	var selno = 0;
+	var isQS  = 0;
+	var qsk	= 0;
+	var qsacct = new Array();
+	with(document.rfqsupp){
+		var qs	= qsaccts.value.split(",");
+		for(var i = 0; i < qs.length; i++){
+			qsk	= qs[i];
+			qsacct[qsk] = 1;
+		}
+		for (var i = 0; i < elements.length; i++) {
+			if(elements[i].name.substring(0,5)=="multi" && elements[i].checked){
+				qsk = elements[i].value;
+				if(qsacct[qsk] > 0)	{ isQS++; }
+				selno++;
+			}
+		}
+		if(selno < 1){ alert("You have not selected any companies yet."); }
+		else	{
+			if(isQS > 0){ action = action.replace( /multirfq\.html/g, "quickspec_multifrq.html"); }
+			//alert(action);
+			document.rfqsupp.submit();
+		}
+	}
+}
+
+function OLDrfqMulti(){
+	var selno = 0;
+	with(document.rfqsupp){
+		for (var i = 0; i < elements.length; i++) {
+			if(elements[i].name.substring(0,5)=="multi" && elements[i].checked){ selno++; }
+		}
+		if(selno < 1){ alert("You have not selected any companies yet."); }
+		else	{ document.rfqsupp.submit(); }
+	}
+}
+
+function chkRfq(chkbox){
+	var chkval = chkbox.checked;
+	with(document.rfqsupp){
+		for (var i = 0; i < elements.length; i++) {
+			if(elements[i].name.substring(0,5)=="multi" && elements[i].value==chkbox.value){
+				elements[i].checked = chkval;
+			}
+		}
+	}
+}
+
+function delSelComp(cid,rk){
+	preSelComps(rk);
+	delete coselect[rk];
+	var rowid	= "row"+cid;
+	var rowElement = document.getElementById(rowid);
+	if (rowElement != null){
+		document.getElementById(rowid).style.backgroundColor = '#fff';
+	}
+	with(document.comparesupp){
+		for (var i = 0; i < elements.length; i++) {
+			//if(i < 5){alert(i+"\n"+elements[i].name+"\n"+elements[i].value+"\n"+cid); }
+			if(elements[i].name=="selectco" && elements[i].value==cid){ elements[i].checked = 0; }
+		}
+	}
+	showSelCookie();
+	showSelComps();
+}
+
+
+function rfqSuppliers(){
+	//alert("This feature is not available yet");
+	var selno = 0;
+	var preselco = getCookie('_selco');
+	var preseldata = preselco.split("|");
+	var multirfq = new Array();
+	for(x=0; x < preseldata.length; x++){
+		var idpos = preseldata[x].indexOf('-');
+		var copos = preseldata[x].indexOf('-', idpos+1);
+		var rk = preseldata[x].substring(0,idpos);
+		var id = preseldata[x].substring(idpos+1,copos);
+		var nm = preseldata[x].substring(copos+1);
+		if(id){
+			multirfq[selno] = id;
+			selno++;
+		}
+	}
+	if(selno < 1){ alert("You have not selected any companies yet."); }
+	else	{
+		document.comparesupp.multirfq.value = multirfq;
+		document.comparesupp.submit();
+	}
+}
+
+function validWebinarReg(formname){
+	with(formname){
+		for(i=0; i < elements.length; i++){ elements[i].value = trim(elements[i].value); }
+		email.value	= email.value.toLowerCase();
+		confirmemail.value	= confirmemail.value.toLowerCase();
+		var ErrMsg	= "";
+		var ErrField	= "";
+		if(zip.value==''){
+			ErrMsg	= "\"Zip/Postal Code\" is a required field\n\n"+ErrMsg;
+			ErrField= zip;
+		}
+		if(!isEmail(email.value) || email.value==""){
+			ErrMsg	= "Please enter a valid \"E-mail Address\"\n\n"+ErrMsg;
+			ErrField= email;
+		} else if(confirmemail.value!=email.value){
+			ErrMsg	= "Your e-mail addresses do not match\n\n"+ErrMsg;
+			confirmemail.value	= "";
+			ErrField= confirmemail;
+		}
+		if(company.value==''){
+			ErrMsg	= "\"Company\" is a required field\n\n"+ErrMsg;
+			ErrField= company;
+		}
+		if(title.value==''){
+			ErrMsg	= "\"Title\" is a required field\n\n"+ErrMsg;
+			ErrField= title;
+		}
+		if(lname.value==''){
+			ErrMsg	= "\"Last Name\" is a required field\n\n"+ErrMsg;
+			ErrField= lname;
+		}
+		if(fname.value==''){
+			ErrMsg	= "\"First Name\" is a required field\n\n"+ErrMsg;
+			ErrField= fname;
+		}
+		if(ErrMsg!=""){
+			alert("The following information is missing or incomplete:\n\n" + ErrMsg);
+			ErrField.focus();
+			return false;
+		}
+	}
+}
+
+function validRange(formname){
+	with(formname){
+		for(i=0; i < elements.length; i++){ elements[i].value = trim(elements[i].value); }
+		var ErrMsg      = "";
+		var ErrField    = "";
+		var ErrSel      = 0;
+		Item = rangeattr.selectedIndex;
+		var s = rangeattr.options[Item].value.split("|");
+		navname = s[0];
+		navunit = s[1];
+		minval  = s[2];
+		maxval  = s[3];
+		if(Item < 1){
+			ErrMsg  = "You must select an attribute to use the range filter\n\n"+ErrMsg;
+			ErrField	= rangeattr;
+		} else {
+			if(!isNumeric(navmax.value)){
+				ErrMsg  = "\"No more than\" must be a numeric value\n(maximum available = "+maxval+")\n\n"+ErrMsg;
+				ErrField= navmax;
+				ErrSel++;
+			}
+			if(!isNumeric(navmin.value)){
+				ErrMsg  = "\"At least\" must be a numeric value\n(minimum available = "+minval+")\n\n"+ErrMsg;
+				ErrField= navmin;
+				ErrSel++;
+			}
+			if(parseInt(navmin.value) > parseInt(navmax.value)){
+				ErrMsg  = "\"At least\" must be less than \"No more than\"\n\n"+ErrMsg;
+				ErrField= navmin;
+				ErrSel++;
+			}
+		}
+		if(ErrMsg!=""){
+			alert("The following information is missing or incomplete:\n\n" + ErrMsg);
+			ErrField.focus();
+			if(ErrSel){ ErrField.select(); }
+			return false;
+		}
+	}
+}
+
+
+function reqInfoChk(chkbox,rowid){
+	var selected	= 0;
+	with(document.reqinfo){
+		for(var i = 0; i < elements.length; i++){
+			if(elements[i].type=="checkbox" && elements[i].name.substring(0,8)=="riselect" && elements[i].checked){
+				selected++;
+			}
+		}
+	}
+	if(selected > 5){
+		alert("Please select between 1 and 5 products to Request Information.");
+		chkbox.checked = 0;
+	}
+	/*if(chkbox.checked){
+		document.getElementById(rowid).style.backgroundColor = '#e6e6e6';
+	} else {
+		var rowElement = document.getElementById(rowid);
+		if (rowElement != null){
+			document.getElementById(rowid).style.backgroundColor = '#fff';
+		}
+	}*/
+}
+
+function rfi_reqInfoSubmit() { // isRFIDev
+	var selections = $("input[name='riselect[]']:checked");
+	if(selections.length > 5 || selections.length < 1) { alert("Please select between 1 and 5 products to Request Information."); }
+	else {
+		var cids = selections.map(function() { return this.value.split('|')[0]; }).get().unique();
+		var items = $("input[name='riselect[]']:checked").map(function() { return this.value.split('|')[1]; }).get().unique();
+		var frm = $("form[name=reqinfo]");
+		frm.append('<input type="hidden" name="cids" value="' + cids.join(',') +  '" />');
+		frm.append('<input type="hidden" name="items" value="" />');
+		$("input[name='items']").val(JSON.stringify(items));
+		//console.log($("input[name='items']").val());
+		//return false;
+		// When making live, change the actual action in:
+		// /www/tnet/results.html, /www/tnet/catnav/proditems.php, and /www/tnet/productsearch/proditems.php instead of replacing.
+		var act = frm.attr("action").replace( /\/multicontact.html/g, "/rfi/rfi_main.html");
+		frm.attr("action",act);
+		frm.submit();
+		return false;
+	}
+}
+
+function reqInfoSubmit(){
+	var selected	= 0;
+	with(document.reqinfo){
+		for(var i = 0; i < elements.length; i++){
+			if(elements[i].type=="checkbox" && elements[i].name.substring(0,8)=="riselect" && elements[i].checked){
+				selected++;
+			}
+		}
+	}
+	if(selected > 5 || selected < 1){
+		alert("Please select between 1 and 5 products to Request Information.");
+	} else {
+		document.reqinfo.submit();
+	}
+}
+
+function aribaInfoChk(chkbox,rowid){
+	var selected	= 0;
+	with(document.reqinfo){
+		for(var i = 0; i < elements.length; i++){
+			if(elements[i].type=="checkbox" && elements[i].name.substring(0,8)=="riselect" && elements[i].checked){
+				selected++;
+			}
+		}
+	}
+	if(selected > 5){
+		alert("You may not select more than 5 catalogs");
+		chkbox.checked = 0;
+	}
+	if(chkbox.checked){
+		document.getElementById(rowid).style.backgroundColor = '#e6e6e6';
+	} else {
+		var rowElement = document.getElementById(rowid);
+		if (rowElement != null){
+			document.getElementById(rowid).style.backgroundColor = '#fff';
+		}
+	}
+}
+
+function aribaInfoSubmit(formtype){
+	var selected	= 0;
+	with(document.reqinfo){
+		for(var i = 0; i < elements.length; i++){
+			if(elements[i].type=="checkbox" && elements[i].name.substring(0,8)=="riselect" && elements[i].checked){
+				selected++;
+			}
+		}
+	}
+	if(selected > 5){
+		alert("You may not select more than 5 catalogs");
+	} else if(selected < 1){
+		alert("You must select at least 1 catalog");
+	} else if(formtype=='reqinfo') {
+		document.reqinfo.submit();
+	} else if(formtype=='realm') {
+		document.reqinfo.action	= '/invite.html?' + document.reqinfo.psqs.value;
+		document.reqinfo.submit();
+	}
+}
+
+function aribaSuppliers(qs){
+	var selected = cntSelComps();
+	if(selected > 5){
+		alert("You may not select more than 5 suppliers");
+	} else if(selected < 1){
+		alert("You must select at least 1 supplier");
+	} else if(selected){
+		location.href = "/invite.html?"+qs;
+	}
+}
+
+var covarea = 'NA';
+function getUNSPSC(what, which) {
+	var url = "/search/unspsc-count.php?what="+escape(what)+"&which="+which;
+	request.open("GET", url, true);
+	request.onreadystatechange = showUNSPSC;
+	request.send(null);
+}
+
+function getUNSPSCresults(what, which, cov) {
+	if(cov==''){ cov='NA'; }
+	var url = "/search/unspsc-count.php?cov="+cov+"&what="+escape(what)+"&which="+which;
+	request.open("GET", url, true);
+	request.onreadystatechange = showUNSPSC;
+	request.send(null);
+	covarea	= cov;
+}
+
+function showUNSPSC() {
+	var vals	= new Array();
+	if (request.readyState == 4 && request.status == 200) {
+		vals	= request.responseText.split("|");
+		var what= vals[0];
+		var ct	= parseInt(vals[1]);
+		var id	= vals[2];
+		var which	= vals[3];
+		var newurl	= vals[4];
+		if(ct==1 && id > ''){
+			var url	= which=='products' ? '/productsearch/results.html?searchx=true&which=products&pstype=unspsc&' : '/commodityresults.html?searchx=true&which=unspsc&';
+			url += 'unspscid='+id+'&what='+escape(what)+'&WTZO=Header+Search&cov='+covarea;
+			if(newurl)	{ url = newurl+'&WTZO=Header+Search'; }
+			location.href=url;
+			return false;
+		}
+		newurl	= '/commodities.html?searchx=true&cov='+covarea+'&what='+escape(what)+'&which='+which+'&WTZO=Header+Search&cov='+covarea;
+		if(which=='products')	{ newurl += '&pstype=unspsc'; }
+		$.fn.colorbox({title:'UNSPSC Commodity Matches', href:newurl, width:800, height:550, iframe:true});
+	}
+}
+
+function ps_integration_load(srchstr) {
+
+	function get_psib(srchstr) {
+		var prox = pos - $(window).scrollTop();
+		if (prox < 2000 && !psib_launched) {
+			psib_launched = 1; // Stop scrolling acton from kicking off AJAX process more than once.
+			var spin = '<tr id="psib_spin_tr"><td></td><td style=\"text-align: center;\"><img src=\"http://cdn.thomasnet.com/images/images/loading.gif\" alt=\"\" /></td></tr>';
+			$('#ps_integration_block').before(spin);
+			$.get(
+				'/gateway/ps_integration_block_ajax.php',
+				{ srchstr: srchstr },
+				function (response) {
+					if (response.hasOwnProperty('ok') && response.ok == 1) {
+						if (response.html != '') {
+							var html = '<tr class=\"psrow\"><td></td><td>' + response.html + '</td></tr>';
+							$('script#ps_integration_block').after(html);
+						}
+					}
+				},
+				'JSON'
+			)
+			.complete(function() { $('#psib_spin_tr').remove(); });
+		}
+	}
+
+	var ws = $('script#ps_integration_block');
+	if (srchstr == 'undefined' || !ws.length ) return false; 
+	var psib_launched = 0;
+	$('script#ps_integration_block').before("<span class=\"psib_loc\"></span>");
+	var pos = $(".psib_loc").offset().top;
+	$(".psib_loc").remove();
+	get_psib(srchstr);
+	$(window).scroll(function () { get_psib(srchstr); });
+}
+
+function interim_load(ref_script_tag, types) {
+	this.i_log = function (message) {
+		try { console.log(message); }
+		catch(e){}
+	}
+
+	this.urlParams = '';
+	this.interim_types = new Array();
+
+	this.getUrlVars = function() {
+	    var vars = {}, hash;
+	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++) {
+	        hash = hashes[i].split('=');
+	        var val = unescape(hash[1].replace(/\+/g,' '));
+	        vars[hash[0]] = val;
+	    }
+	    return vars;
+	}
+
+	this.push_type = function(typ) {
+		var show = 0;
+		var aborted = 0;
+		var objCont = $("#"+typ); // Locate the div for this search type.
+		if(objCont.length != 1) { aborted = 1; } // Div doesn't exist? Abort the search type.
+		else if (!typ.match("_ajax$")) {
+			if ($.trim(objCont.html()) == '') { aborted = 1; } // No HTML to see? Abort the search type.
+			else { show = 1; } // Non-AJAX divs should show immediately.
+		}
+		var obj = { 'show' : show, 'displayed' : 0, 'aborted' : aborted, 'cont' : objCont };
+		this.interim_types.push(typ);
+		this.interim_types[typ] = obj;
+	}
+
+	this.canDisplay = function(typ) {
+		var canDisp = 0;
+		// Store the index of the occurrence that holds the passed-in search type.
+		var dispPos = $.inArray(typ,this.typeArray);
+		if (dispPos == 0) canDisp = 1; // We can always display the first position - no wait.
+		else if (dispPos > 0) {
+			// Find the search type that goes into the prior display position.
+			var prevTyp = this.typeArray[dispPos-1];
+			// Get the type object associated with the type
+			var prevTypObj = this.interim_types[prevTyp];
+			if (prevTypObj['displayed'] == 1 || prevTypObj['aborted'] == 1) { 
+				canDisp = 1;
+			}
+		}
+		return canDisp;
+	}
+
+	this.displayNoResults = function(html) {
+		if (html == '') {
+			html = "<div style=\"text-align: center; font-weight: bold;\">Sorry, we found no matches in your search.</div>";
+		}
+		$("#srch_spinner").before(html);
+		$("#srch_spinner").remove();
+	}
+
+	this.getNoResults = function() {
+		var oThis = this;
+		var prms = this.urlParams;
+		prms['typ'] = 'noresults';
+		var html = '';
+		// Do AJAX call.
+		$.get(
+			'search/search_ajax.php',
+			prms,
+			function (response,status) {
+				if (response.hasOwnProperty('ok') && response.ok == 1) {
+					oThis.displayNoResults(response.html);
+				} else { oThis.displayNoResults(''); }
+			},
+			'JSON'
+		)
+		.error(function(data,status) { oThis.displayNoResults(''); })
+	}	
+	
+	this.showDivs = function(isAjax) {
+		var oThis = this;
+		this.typeArray.each(function(idx, val) {
+			if (oThis.interim_types.hasOwnProperty(val)) {
+				typObj = oThis.interim_types[val];
+				if (typObj['show'] == 1 && typObj['displayed'] == 0 && oThis.canDisplay(val)) {
+					typObj['displayed'] = 1;
+					typObj['cont'].slideDown('slow', function() {
+						oThis.showDivs();
+					});
+				}
+			}
+		});
+		// Check counts to see if we're done.
+		var itAborted = 0;
+		var itDisplayed = 0;
+		var itObj = this.interim_types;
+		for (var i in itObj) {
+    		if (itObj[i].aborted) {itAborted++; }
+    		if (itObj[i].displayed) { itDisplayed++; }
+		}
+		// If we've got no more search types to display, do cleanup.
+		//this.i_log('itDisplayed: ' + itDisplayed + '       itAborted: ' + itAborted );
+		if (this.interim_types.length == (itDisplayed + itAborted)) {
+			//this.i_log(itObj);
+			if (itDisplayed == 0) { oThis.getNoResults(); }
+			else { $("#srch_spinner").remove(); }
+		}
+	}
+
+	this.execAjax = function(oThis,typ) {
+		var typObj = oThis.interim_types[typ];
+		var prms = oThis.urlParams;
+		prms['typ'] = typ;
+		var abortObj = function(typ) {
+			typObj.aborted = 1;
+		}
+		// Do AJAX call.
+		$.get(
+			'search/search_ajax.php',
+			prms,
+			function (response,status) {
+				if (response.hasOwnProperty('ok') && response.ok == 1 && response.html != '') {
+					typObj['cont'].html(response.html);
+					typObj['show'] = 1;
+				} else {
+					abortObj(typ);
+				}
+			},
+			'JSON'
+		)
+		.error(function(data,status) {
+			abortObj(typ); 
+		})
+		.complete(function(data,status) {
+			oThis.showDivs(1);
+		});
+	}
+
+	this.init = function(ref_script_tag, types) {
+		oThis = this;
+		$.ajaxSetup({'timeout': 17000 });
+		// Show spinner.
+		var spin = '<div id=\"srch_spinner\" style=\"text-align: center;\"><img src=\"http://cdn.thomasnet.com/images/images/loading.gif\" alt=\"\" /></div>';
+		$(".srchrslts").last().after(spin);
+		// Make an array out of the search types.
+		this.typeArray = $(types.split(","));
+		// Store URL Params
+		this.urlParams = this.getUrlVars();
+		// Create buckets to corresond to the search type divs.
+		var oThis = this;
+		this.typeArray.each(function(idx, val) {
+		    oThis.push_type(val);
+		});
+		// Show any divs that should be shown on load (non-AJAX).
+		this.showDivs();
+		// Kick off AJAX processes.
+		this.typeArray.each(function(idx, val) {
+		    if (val.match("ajax$")) {
+		    	oThis.execAjax(oThis,val);
+		    }
+		});
+		// Remove the script tag that kicked off this initialize.
+		$("#"+ref_script_tag).remove();
+	}
+
+	this.init(ref_script_tag,types);
+}

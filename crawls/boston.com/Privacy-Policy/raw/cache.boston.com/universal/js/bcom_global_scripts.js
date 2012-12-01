@@ -718,14 +718,6 @@ var bcom_regi = {
 };
 
 $(document).ready(function(){
-
     // Set the pathUrl cookie
     bcom_cookie.set('pathUrl', document.location.href);
-    
-    // Check wall status of the page
-    if( bcom_regi.page_status() ){
-	// Check user status
-	bcom_regi.check_login();
-    }
-
 });

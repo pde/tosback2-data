@@ -16,7 +16,7 @@ function getAccount() {
 			"m.blog.nature.org"      :"tncmobile",
 			"m.change.nature.org"    :"tncmobile",
 			"m.voice.nature.org"     :"tncmobile",
-			"mstage.nature.org" :"tncmobilestage",
+			"mstage.nature.org" 	:"tncmobilestage",
 			"mstage.change.nature.org" :"tncmobilestage",
 			"mstage.blog.nature.org"   :"tncmobilestage",
 			"mstage.help.nature.org"   :"tncmobilestage",
@@ -38,7 +38,6 @@ function getAccount() {
 			"voice.nature.org"	:"tncglobalprod1",
 			"vote.nature.org"	:"tncoucmtest",
 			"www.adoptanacre.org"	:"tncglobalprod1",
-			"www.conserveca.org"	:"tncconserveca",
 			"www.greatriverspartnership.org"   : "tncgreatrivers",
 			"www.natureaustralia.org.au"   :"tncglobalprod1",
 			"www.natureconservancy.planyourlegacy.org" :"tncglobalprod1",
@@ -67,7 +66,7 @@ s.trackingServer="thenatureconservancy.112.2o7.net"
 /* Dynamically select report suite */
 s.dynamicAccountSelection=false;
 s.dynamicAccountMatch=window.location.hostname;
-s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,conserveca.org";
+s.dynamicAccountList="tncprod=nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au";
 
 s.charSet="UTF-8"
 /* Conversion Config */
@@ -77,7 +76,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,docx,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au,conserveca.org"
+s.linkInternalFilters="javascript:,nature.org,tnc.org,natureconservancy.planyourlegacy.org,adoptanacre.org,plantabillion.org,greatriverspartnership.org,secure.artezpacific.com,natureaustralia.org.au"
 /* tncfire.org no longer in use -- now in Gateway.     */
 /* nature.planyourlegacy.org no longer in use     */
 
@@ -499,10 +498,6 @@ s.doPlugins=s_doPlugins
 
 s_carbonCalculatorInitiation = function() {s.events=s.apl(s.events,'event15',',',1);}
 
-/* s_homepagePopup = function() {s.events=s.apl(s.events,'event28',',',1);} */
-
-
-
 s_pageAdImpression = function(ad_ID_list) 
 {
 	if(ad_ID_list && s_adsShown.indexOf(ad_ID_list+',')==-1 && ((typeof s.products=='undefined') || s.products=='')) {
@@ -542,8 +537,8 @@ s_carbonCalculatorOffsetClicks = function () {s_setEvent('offset carbon',18);}
 s_bequestLead = function () {s_setEvent('bequest lead', 19);}
 s_giftPlanningLead = function () {s_setEvent('gift planning lead', 20);}
 s_contactUs = function () {s_setEvent('contact us', 21);}
-s_homepagePopup = function () {s_setEvent('homepage popups', 28);}
-s_popupClicks = function () {s_setEvent('homepage popup clicks', 29);}
+s_homepagePopup = function () {s_setEvent('lightbox open', 28);}
+s_popupClicks = function () {s_setEvent('lightbox click', 29);}
 s_earthdayRSVP = function () {s_setEvent('earthday rsvp', 32);}
 s_earthdayEmail = function () {s_setEvent('earthday email', 33);}
 
@@ -625,17 +620,32 @@ s_adClick = function(adID) {
 	s.events=s.products='';
 }
 
+s_lightboxTrack = function(lightBoxID) {
+    var s_linkTrackVarsTemp = s.linkTrackVars;
+    var s_linkTrackEventsTemp = s.linkTrackEvents;
+    s.linkTrackVars='events,prop10,eVar10,prop50,eVar50,prop54,eVar54';  
+    s.linkTrackEvents='event28';
+    s.events='event28';
+    s.prop50=s.pageName;
+    s.eVar50=s.pageName;
+	s.prop54=lightBoxID;
+    s.eVar54=lightBoxID;
+    s.tl(true, 'o', 'lightbox open');
+    s.linkTrackVars = s_linkTrackVarsTemp;
+    s.linkTrackEvents = s_linkTrackEventsTemp;
+}
+
 s_regStart = function() {
     var s_linkTrackVarsTemp = s.linkTrackVars;
     var s_linkTrackEventsTemp = s.linkTrackEvents;
     s.linkTrackVars='events,prop10,eVar10,prop50,eVar50';  
-                s.linkTrackEvents='event30';
-                s.events='event30';
-                s.prop50=s.pageName;
-                s.eVar50=s.pageName;
-                s.tl(true, 'o', 'get_involved');
-                s.linkTrackVars = s_linkTrackVarsTemp;
-                s.linkTrackEvents = s_linkTrackEventsTemp;
+    s.linkTrackEvents='event30';
+    s.events='event30';
+    s.prop50=s.pageName;
+    s.eVar50=s.pageName;
+    s.tl(true, 'o', 'get_involved');
+    s.linkTrackVars = s_linkTrackVarsTemp;
+    s.linkTrackEvents = s_linkTrackEventsTemp;
  
 }
 
@@ -643,13 +653,13 @@ s_buttonTest = function() {
     var s_linkTrackVarsTemp = s.linkTrackVars;
     var s_linkTrackEventsTemp = s.linkTrackEvents;
     s.linkTrackVars='events,prop10,eVar10,prop51,eVar51';  
-                s.linkTrackEvents='event31';
-                s.events='event31';
-                s.prop51=s.pageName;
-                s.eVar51=s.pageName;
-                s.tl(true, 'o', 'cta_button_test');
-                s.linkTrackVars = s_linkTrackVarsTemp;
-                s.linkTrackEvents = s_linkTrackEventsTemp;
+    s.linkTrackEvents='event31';
+    s.events='event31';
+    s.prop51=s.pageName;
+    s.eVar51=s.pageName;
+    s.tl(true, 'o', 'cta_button_test');
+    s.linkTrackVars = s_linkTrackVarsTemp;
+    s.linkTrackEvents = s_linkTrackEventsTemp;
  
 }
 

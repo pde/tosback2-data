@@ -951,7 +951,7 @@ mistats.GCSTracker = function ()
       var binder;
       var host;
 
-      binder = (pState)? mistats.bind : mistats.unbind;
+      binder = (pState) ? mistats.bind : mistats.unbind;
 
       host = location.hostname.split('.');
       host.splice(0, ((host.length > 2) ? (host.length - 2) : 0));
@@ -1020,9 +1020,27 @@ mistats.GCSTracker = function ()
       }, 500);
    };
 
+   function next()
+   {
+      track();
+   };
+
    function surveyTrack(pEvent)
    {
       var r;
+      var thisObj;
+      
+      thisObj = pEvent.srcElement || pEvent.target;
+
+      if (thisObj.className && thisObj.className.match(/disabled/i))
+      {
+         mistats.interactionTracker.setCount('gcs_abandon', 0);
+         setTimeout(function ()
+         {
+            mistats.interactionTracker.setCount('gcs_abandon', 1);
+         }, 50);
+         return true;
+      }
 
       mistats.interactionTracker.increment('gcs_survey');
       mistats.interactionTracker.setCount('gcs_abandon', 0);
@@ -1032,6 +1050,7 @@ mistats.GCSTracker = function ()
             mistats.unbind(responses[r], pEvent.type, surveyTrack);
 
       bindToAnchors(false);
+      setTimeout(next, 1500);
    };
 
    function bindResponses()
@@ -1043,7 +1062,9 @@ mistats.GCSTracker = function ()
          return false;
 
       for (r = 0; r < responses.length; r++)
-         if (responses[r].className && responses[r].className.match(/response|ratings|menuitem/i))
+         if (responses[r].className
+          && responses[r].className.match(/response|ratings|menuitem/i)
+          && !responses[r].className.match(/check/i))
          {
             mistats.unbind(responses[r], 'mouseup', surveyTrack);
             mistats.bind(responses[r], 'mouseup', surveyTrack);
@@ -1120,6 +1141,9 @@ mistats.GCSTracker = function ()
 
       if (!(prompt && prompt.style.display === ''))
       {
+         if (mistats.interactionTracker.getCount('gcs_abandon'))
+            mistats.interactionTracker.setCount('gcs_abandon', 0);
+
          if (++pollCnt < cPollLim)
             pollPtr = setTimeout(track, 250);
 
@@ -1128,16 +1152,20 @@ mistats.GCSTracker = function ()
 
       resetPoller();
 
-      s.pageName = 'GallerySurvey Form' + ((first) ? '' : ': First');
-      s.channel  = mistats.sitename + ': GallerySurvey: ' + mistats.channel;
-      s.prop3    = 'GallerySurvey';
+      if (arguments.callee.caller != next)
+      {
+         s.pageName = 'GallerySurvey Form' + ((first) ? '' : ': First');
+         s.channel  = mistats.sitename + ': GallerySurvey: ' + mistats.channel;
+         s.prop3    = 'GallerySurvey';
 
-      s.t();
+         s.t();
 
-      for (p in origProps)
-         s[p] = origProps[p];
+         for (p in origProps)
+            s[p] = origProps[p];
 
-      first = true;
+         first = true;
+      }
+
       prompt = prompt.contentWindow.document;
       trackContents();
    };

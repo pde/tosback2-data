@@ -36,7 +36,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1354093087632,
+	timeStamp: 1354352401663,
 	
 
 	DEF_LANG_ID: '-1',
@@ -115,7 +115,7 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Nov 28, 2012 08:21:51'),
+	isChatOpen: chatActive('Dec 01, 2012 08:21:18'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',
@@ -249,7 +249,7 @@ function chatActive(dateStamp) {
 		weeklyDeals: 'Weekly Deals',
 		previouslyPurchasedItems: 'Previously Purchased Items',
 		brandDepartmentResultsSwitch:true,
-		productResultsSwitch:false,
+		productResultsSwitch:true,
 		maxProdLinks : '3',
 		brandDepartmentURL: '/ws/tpahead-json',
 		productURL: '/office/supplies/StaplesB2CPAS/cat/autocompletedata.jsp',

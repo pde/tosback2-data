@@ -1,0 +1,116 @@
+
+var ooyalaVASTCompanionAds = function (){
+    
+    var _currentAd;
+    var _currentIFrame;
+    
+    function onIframeLoad() {
+      var doc = null;
+      if(_currentIFrame.contentDocument)
+        // Firefox, Opera
+        doc = _currentIFrame.contentDocument;
+      else if(_currentIFrame.contentWindow)
+        // Internet Explorer
+        doc = _currentIFrame.contentWindow.document;
+      else if(_currentIFrame.document)
+        // Others?
+        doc = _currentIFrame.document;
+    
+      doc.body.onclick = function () { window.open(_currentAd["clickThroughUrl"]); };
+    }
+
+    function setIframAds(containerId, ad, width, height) {
+       var iframe;
+       iframe = document.createElement("iframe");
+       iframe.id = "ooyalaVASTCompanionAdIframe";
+       iframe.width = width;
+       iframe.height = height;
+       iframe.marginWidth="0";
+       iframe.marginHeight="0";
+       iframe.scrolling="no";
+
+       iframe.style.left="0px";
+       iframe.style.top="0px";
+
+       _currentIFrame = iframe;
+       _currentAd = ad;
+       if (_currentIFrame.addEventListener){
+          _currentIFrame.addEventListener("load", onIframeLoad, false);
+       }else if (_currentIFrame.attachEvent) {
+          _currentIFrame.detachEvent("onload", onIframeLoad);
+          _currentIFrame.attachEvent("onload", onIframeLoad);
+       }
+
+       iframe.src = ad["url"];
+       var containerDom = document.getElementById(containerId);
+       containerDom.appendChild(iframe);
+       
+
+    }
+    
+    function setStaticAdsHTML(containerId, ad) {
+      var containerDom = document.getElementById(containerId);
+      var array = [];
+      array.push('<a target="_blank" href="');
+      array.push(ad["clickThroughUrl"]);
+      array.push('"><img src="');
+      array.push(ad["url"]);
+      array.push('"/></a>');
+      containerDom.innerHTML = array.join('');
+    }
+    
+    function setScriptAdsHTML(containerId, ad, width, height) {
+      
+      var array = [];
+      array.push('<script type="text/javascript" src="');
+      array.push(ad["url"]);
+      array.push('"></script>');
+      
+      var domID = '#' + containerId;
+
+      $(domID).html(writeCapture.sanitize(array.join(''),
+                                          {
+                                            asyncAll: true,                                     
+                                            done: function () { }
+                                          }));
+
+     
+    }
+    
+    function setHtmlCode(containerId, ad) {
+      var containerDom = document.getElementById(containerId);
+      containerDom.innerHTML = ad['htmlCode'];
+    }
+
+    function isStaticType(ad) {
+      return (ad["resourceType"]=="static" || ad["resourceType"]=="iframe");
+    }
+    
+    function isImageCreative(creativeType) {
+      var value = creativeType.toLowerCase();
+      if (value.indexOf("image") == 0) return true;
+      if (["jpeg", "jpg", "gif", "png", "tiff"].indexOf(value) >= 0) return true;
+      return false; 
+    }
+    
+    return {
+        ooyalaShowVASTCompanionAd : function (containerId, ad, width, height) {
+          if (ad["htmlCode"]) {
+             setHtmlCode(containerId, ad);
+          }else if (isStaticType(ad)){
+            var creativeType = ad["creativeType"] || "";
+            if (isImageCreative(creativeType)) {
+              setStaticAdsHTML(containerId, ad);
+            }else {
+              setIframAds(containerId, ad, width, height);
+            } 
+          } else{
+            setScriptAdsHTML(containerId, ad, width, height);
+          }        
+        },
+        setCompanionAds : function (containerId, ad, width, height) {
+
+        }
+        
+    }
+}();

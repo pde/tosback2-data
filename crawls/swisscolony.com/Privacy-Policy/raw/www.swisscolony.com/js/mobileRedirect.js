@@ -47,7 +47,7 @@ isUAMobile = navigator.userAgent.match(/(iPhone)|(iPod)|(android)|(webOS)/i) ? t
 // Check if the referrer was a mobile page (probably the user clicked "Go to full site") or in the
 // querystring there is a parameter to avoid the redirection such as "?mobile_redirect=false"
 // (in that case we need to set a variable in the sessionStorage or in the cookie)
-if (document.referrer.indexOf("mobile") >= 0 || queryValue === "Y" ) {
+if (document.referrer.indexOf("/mobile/") >= 0 || queryValue === "Y" ) {
 
     if (window.sessionStorage) {
         window.sessionStorage.setItem(redirection_param, true);
@@ -74,13 +74,11 @@ if (isUAMobile && !(isCookieSet || isSessionStorage)) {
 	while(path.length && !path[0].length ) path.shift();
 	var search = location.search;
 
-    if (path.indexOf("index.cat") > -1) {
-        path = ["mobile", "catalog", "browse.jsp"];
-    } else if (path.indexOf("custserv.jsp") > -1) {
-        path = ["mobile", "custserv" ,"custserv.jsp"];
-    } else {
-        path = ["mobile", "home.jsp"];
+    if (path == ""){
+        path = ["home.jsp"];
     }
+
+    path.unshift("mobile");
 	
 	if(path[path.length-1].search(/\./) == -1){
 		path.push("");

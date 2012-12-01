@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "11/28/2012 08:12 AM",
+            DATE_IN_USE: "12/01/2012 08:10 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -1800,9 +1800,25 @@ if ( (location.pathname == "/browse/product.do") || (location.pathname == "/brow
 
 
 <!-- container 3 -->
-<!-- BEGIN Content Item File: /content/0005/805/074/cn5805074.html -->
+<!-- BEGIN Content Item File: /content/0005/828/541/cn5828541.html -->
 
 <script type="text/javascript">
+/* BEGIN - 022112 patch to remove "1969 denim boutique" listing from product pages */
+if (location.pathname == "/browse/product.do") {
+	//objO = {};  // removes sizing links
+	productPage.loadProduct = productPage.loadProduct.wrap(function(originalMethod){
+		originalMethod();
+		var myLI = $("tabWindow").select('li');
+		for (i=0; i<myLI.length; i++) {
+			if (myLI[i].innerHTML.include("1969 denim boutique") ){
+				myLI[i].hide();
+				
+			}
+		}    
+	});
+}
+/* END - 022112 patch to remove "1969 denim boutique" listing from product pages */
+
 /*begin override to update Return Policy link on shopping bag to new CS Returns Page */
 
 if( location.pathname == "/buy/shopping_bag.do" ) {
@@ -2078,7 +2094,7 @@ if (location.pathname == "/browse/category.do") {
 
 
 
-<!-- END Content Item File: /content/0005/805/074/cn5805074.html -->
+<!-- END Content Item File: /content/0005/828/541/cn5828541.html -->
 
 
 
@@ -5448,6 +5464,7 @@ if (location.pathname == "/browse/category.do" || location.pathname == "/browse/
 				'84830',
 				'89903',
 				'88920',
+				'89697',
 				
 			'']),
 
@@ -6046,279 +6063,6 @@ if( (location.pathname == '/browse/product.do') ) {
 
 
 <!-- container 15 -->
-<!-- BEGIN Content Item File: /content/0005/746/635/cn5746635.html -->
-
-<style type="text/css">
-	#shoppingBagSummaryContainer li.subTotal {
-		line-height: 18px;
-	}
-</style>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <script type="text/javascript">
-/*
-	Universal Cookie Cutter
-	Version 2.1
-	Created to streamline cross-brand A/B testing
-	New version modularizes variables
-	
-	instantiate new object:
-	
-	MyCookieCutter = new universalCookieCutter([CookieVarName],      // name of your cookie variable
-											   [CookieUsedName],     // name of cookie used (usually 'mktUniversalPersist')
-											   [CookieValueBase],    // name of base cookie value so AB tests can be distinguished (ONOctFSEG)
-											   [ForcedModeBaseName], // distinct base string for forced mode, (oldnavyabmode), etc
-											   [SegmentBreakdown]    // segment breakdowns separated by "-" (80-10-10) highest to lowest values
-											   [eVar you are using]  // OPTIONAL can be either ABTestVariables.eVar24 or ABTestVariables.eVar36 - enter either "24", "36" or "" (blank)
-											   [Piperlime-only segment] // Piperlime often doesn't segment, scan for this variable and overwrite it. 
-											   );
-	A sample instantiation:
-	
-	ONBRABCookieCutter = new universalCookieCutter("ONBRAB","mktUniversalPersist","ONBRDecXSEG","onbrabmode","70-10-10-5-5","24","0625FSSegE");
-											   
-	*/
-	
-	var universalCookieCutter = Class.create();
-	
-	
-	universalCookieCutter.prototype = {
-	
-		initialize:function(CookieVarName,CookieUsedName,CookieValueBase,ForcedModeBaseName,SegmentBreakdown,theEvar,plExcept) {
-	
-			//Keeping it neat by having two discreet variables that check for and gather cookie information
-			this.EvarToUse = theEvar != "" ? theEvar : false;
-			this.CookieVariableName = CookieVarName;
-			this.CookieUsed = CookieUsedName;
-			this.CookieValueBase = CookieValueBase;
-			this.SegBreakdown = SegmentBreakdown.split("-");
-			this.DoesTheCookieExist = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.RetrievedCookieValue = gidLib.getCookieVar(this.CookieUsed, this.CookieVariableName);
-			this.QuickSegment = '';
-			this.piperlimeException = plExcept;
-			this.userNeedsSync = false;
-			this.ForcedModeBase = ForcedModeBaseName;
-			this.ModeArrayIndex = this.SegBreakdown.length; //segment breakdown determines how many segments too!
-			this.modeArray = new Array();
-			this.modeArray[0] = "a";
-			this.modeArray[1] = "b";
-			this.modeArray[2] = "c";
-			this.modeArray[3] = "d";
-			this.modeArray[4] = "e";
-			this.modeArray[5] = "f";
-			this.modeArray[6] = "g";
-			//alert(this.piperlimeException);
-			
-			
-			if (location.href.indexOf(this.ForcedModeBase) >= 1) {
-				this.forcedMode();
-			}else{
-				this.cookieScanner();
-			}
-		},
-	
-	
-		forcedMode:function() {
-			
-			for (i = 0; i < this.ModeArrayIndex; i++) {
-			
-				if (location.href.indexOf(this.ForcedModeBase + "=" + this.modeArray[i]) >= 1) {
-					//alert('you are in segment ' + this.modeArray[i].toUpperCase() + ' / ' + this.SegBreakdown[i] + '% of the population');
-					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-				}
-				
-			}
-			
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-			if (this.EvarToUse) {
-				
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			userNeedsSync = true;
-			//alert("Forced: Cookie set.");
-			
-		
-		},
-	
-		cookieScanner:function() {
-			
-			//If the cookie isn't available, bake one!
-			if (this.DoesTheCookieExist) {
-	
-				if (this.EvarToUse) {
-					this.setABTestVariable(this.RetrievedCookieValue);
-				}
-	
-				for (i = 0; i < this.ModeArrayIndex; i++) {
-					if (this.RetrievedCookieValue == (this.CookieValueBase + this.modeArray[i].toUpperCase())) {
-						this.QuickSegment = this.modeArray[i].toUpperCase();
-						break;
-					}
-				}
-	
-			} else {
-				this.tagManager();
-			}
-	
-		},
-	
-	
-		tagManager:function() {
-	
-		
-			//Breaking out the segmentation into specified percentages
-			
-			this.Segmentation = Math.floor((Math.random()*100)+1); // chooses 1 to 100
-			//alert("Seg: " + this.Segmentation);	
-			this.FloorThreshold = 0;
-			this.TopThreshold = 0;
-			
-			for (i = 0; i < this.ModeArrayIndex; i++){
-	
-				this.TopThreshold = this.FloorThreshold + parseInt(this.SegBreakdown[i]);
-	
-				if ((this.Segmentation > this.FloorThreshold) && (this.Segmentation <= this.TopThreshold)){
-					// put me in this segment
-					this.UserSegment = this.CookieValueBase + this.modeArray[i].toUpperCase();
-					this.QuickSegment = this.modeArray[i].toUpperCase();
-					break;
-				} else {
-					// add top to floor and try next segment
-					this.FloorThreshold = this.TopThreshold;
-				}
-					
-			}
-			
-			gidLib.setCookieVar(this.CookieUsed,this.CookieVariableName,this.UserSegment);
-	
-			if (this.EvarToUse) {
-				this.setABTestVariable(this.UserSegment);
-			}
-	
-			//userNeedsSync = true;
-			//alert("Tag Manager: Cookie set.");
-			
-		},
-		
-			setABTestVariable: function(setValue) {
-			thisEvar = 'eVar' + this.EvarToUse;
-			ABTestVariables[thisEvar] = setValue;
-		}
-	
-		
-	};
-//  Shopping Bag Savings A/B - evar 36	
-
-	ShoppingBagSavingsAB = new universalCookieCutter("BagSave","mktUniversalPersist","BagSave_11_01Seg","bagmode","34-33-33","36","none");
-
-// Shopping Bag Savings A/B test
-
-
-var shoppingBagDiscountWidget = function(segment) {
-	var discount = 0;
-	var subtotal = 0;
-	var minimumThresh = 0;
-	var priceContainerArr = $("mainContent").select("ol.lineItemDisplay")[0].select("dd[class=productDetails]");
-	if (priceContainerArr.length > 0) {
-		for(i = 0; i < priceContainerArr.length; i++) { // iterate through each price container
-			var pricesObj = priceContainerArr[i].select("dd[id^=productUnitPrice]")[0];
-			var pricesArr = pricesObj.select("span");
-			var regPrice = "";
-			var salePrice = "";
-			if (pricesArr.length > 0) {
-				regPrice = pricesArr[1].innerHTML;
-				salePrice = pricesArr[3].innerHTML;
-				var quantity = priceContainerArr[i].select("dd[id^=productQty]")[0].innerHTML;
-				subtotal += shoppingBagSubtotalWidgetCalculate(regPrice,quantity);
-//console.info("reg: " + pricesArr[1].innerHTML + " sale: " + pricesArr[3].innerHTML + " qty: " + quantity);
-				discount += shoppingBagDiscountWidgetCalculate(salePrice,regPrice,quantity);						
-			} else {
-				var quantity = priceContainerArr[i].select("dd[id^=productQty]")[0].innerHTML;
-				var sub = priceContainerArr[i].innerHTML;
-				subtotal +=  shoppingBagSubtotalWidgetCalculate(sub,quantity);
-			}
-		}
-		if ($("selectedShippingMethod2100")){
-			if ($("selectedShippingMethod2100").checked) {
-				discount += 7.00
-			}
-		}
-//console.info("Your Discount is: " + discount + " subtotal: " + subtotal);
-		discount = Math.round(discount*Math.pow(10,2))/Math.pow(10,2);
-		subtotal = Math.round(subtotal*Math.pow(10,2))/Math.pow(10,2);
-		minimumThresh = shoppingBagDiscountWidgetThreshold(subtotal,discount);
-
-		if (minimumThresh) {
-			if(segment == "c") {
-				$("marketingSlotMiddle").insert("<div style='float:right; height:300px;'><img style='margin-top:36px; font-size:0px;' src='http://www.gap.com/Asset_Archive/GPWeb/content/0005/746/635/assets/youSaved.png' alt='you saved:' /></div>");
-			}
-			var bagElementBefore = $("shoppingBagSummaryContainer").select("li.subTotal")[0];
-			var bagSubtotal = $("shoppingBagSummaryContainer").select("div.priceLabel")[0];
-			var bagQTY = $("shoppingBagSummaryContainer").select("div.rightCol")[0];
-			bagSubtotal.update("You pay");			
-			bagElementBefore.insert({ before: "<li id='subtotalMessage' class='subTotal clearfix' style='background:#B1ABA5;'><div class='leftCol clearfix' style='color: white; font-size:11px;'><div class='priceLabel'>Original price</div><div id='shoppingBagSubTotalNewValue' class='priceValue'><strike>$" + formatShoppingBagCurrency(subtotal) + "</strike> </div></div><div class='rightCol' style='color: white; font-size:10px; text-align:right;' id='shoppingBagSubTotalSavings'>" + bagQTY.innerHTML + "</div></li>"});
-			bagElementBefore.insert({ after: "<li id='discountMessage' class='subTotal clearfix' style='background:#f47529;'><div class='leftCol clearfix' style='color: white; font-size:11px; font-weight: bold;'><div class='priceLabel'>Savings so far</div><div id='shoppingBagSubTotalDiscValue' class='priceValue'>$" + formatShoppingBagCurrency(discount) + "</div></div><div class='rightCol' style='color: white; font-size:11px;' id='shoppingBagSubTotalSavings'>&nbsp;</div></li>"});
-			$("discountMessage").insert({ after: "<li id='discountFP' class='subTotal clearfix' style='background:#f47529;'><div class='leftCol clearfix' style='color: white; font-size: 9px; width:318px;'>Have a promo code? Enter it at checkout for additional savings.</div></li>"});		
-			bagQTY.update();
-		}
-	}
-// console.info("End Discount Widget");
-
-}
-
-var shoppingBagDiscountWidgetCalculate = function(salePrice,regPrice,qty) {
-	// all are strings - must make into numbers...
-	var sale = parseFloat(salePrice.split("$")[1]) * 100;
-	var reg = parseFloat(regPrice.split("$")[1]) * 100;
-	var qty = parseInt(qty);
-	var discount = ((reg - sale) * qty)/100;
-	return discount;
-}
-
-var shoppingBagSubtotalWidgetCalculate = function(regPrice,qty) {
-	// all are strings - must make into numbers...
-	var reg = parseFloat(regPrice.split("$")[1]) * 100;
-	var qty = parseInt(qty);
-	var subtotal = (reg * qty)/100;
-//console.info("Subtotal: " + subtotal);
-	return subtotal;
-}
-
-var shoppingBagDiscountWidgetThreshold = function(s,d) {
-	var threshold = false;
-	var percentage = (d/s)*100;
-	var difference = s-d;	
-//console.info("%:" + percentage + " diff: " + difference);
-	if ((percentage > 10) && (difference > 5)) {
-		threshold = true;
-	}
-	return threshold;
-}
-
-var formatShoppingBagCurrency = function(num) {
-    //num = isNaN(num) || num === '' || num === null ? 0.00 : num;
-    return parseFloat(num).toFixed(2);
-}
-
-// configure and launch A/B function
-var shoppingBagSegment = "a";
-var shoppingBagCookieValue = gidLib.getCookieVar("mktUniversalPersist", "BagSave");
-if (shoppingBagCookieValue == "BagSave_11_01SegB") {
-	shoppingBagSegment = "b";
-} else if (shoppingBagCookieValue == "BagSave_11_01SegC") {
-	shoppingBagSegment = "c";
-}
-
-if (shoppingBagSegment != "a") {
-	var discountShoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
-	if (discountShoppingBagUrls.include(location.pathname)){
-		Event.observe(window,"load",function() { shoppingBagDiscountWidget(shoppingBagSegment); });
-	}
-}
-</script>
-
-<!-- END Content Item File: /content/0005/746/635/cn5746635.html -->
 
 
 
@@ -6581,18 +6325,18 @@ if (shoppingBagSegment != "a") {
 						
 						<!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.universalBar.10000522.region1") -->
 
-<!-- BEGIN Content Item File: /content/0005/800/207/cn5800207.html -->
-<div id="contentItemContainer10000425" class="5800207" >
+<!-- BEGIN Content Item File: /content/0005/828/520/cn5828520.html -->
+<div id="contentItemContainer10000425" class="5828520" >
 
 <div style="position:absolute; top:0px; left:0px; z-index:200; width:450px; height:50px; display:none;" id="EDFSPostageContainer">
-    <a onclick="gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs">
-	  <img alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/207/assets/1025_EDFSFR_UnivHeader_animate_LightsOn.gif">
+    <a onclick="gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:540});" href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs">
+	  <img alt="Free shipping on all orders over $50. Get it by Christmas! Order by 12/19 for 12/24 delivery." title="Free shipping on all orders over $50. Free returns on all orders." src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/520/assets/11302012_Us_LDTS_UnivON_header.gif">
 	</a>
 </div>
 
 <div id="EDFS-container" style="width:450px;height:50px;margin-top:5px;">
-	<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
-		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/207/assets/1025_EDFSFR_UnivHeader_animate_LightsOn.gif" alt="Free shipping on all orders over $50. Free returns on all orders. Details" title="Free shipping on all orders over $50. Free returns on all orders." />
+	<a href="info.do%3Fcid=2331&amp;mlink=50583553159privacyfooter&amp;clink=3553159.html#edfs" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:540});">
+		<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/520/assets/11302012_Us_LDTS_UnivON_header.gif" alt="Free shipping on all orders over $50. Get it by Christmas! Order by 12/19 for 12/24 delivery." title="Free shipping on all orders over $50. Get it by Christmas! Order by 12/19 for 12/24 delivery." />
 	</a>
 </div>
 
@@ -6623,7 +6367,7 @@ if (isThisAnIpadWeNeedToFixBanner.indexOf("iPad") != -1) {
 
 
 </div>
-<!-- END Content Item File: /content/0005/800/207/cn5800207.html -->
+<!-- END Content Item File: /content/0005/828/520/cn5828520.html -->
 
 
 
@@ -7129,13 +6873,204 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0004/281/898/cn4281898.html -->
-<div id="contentItemContainer10000395" class="4281898" >
+    	<!-- BEGIN Content Item File: /content/0005/815/576/cn5815576.html -->
+<div id="contentItemContainer10000395" class="5815576" >
 
+<style type="text/css">
+#globalBanner {
+	width: 581px;
+	height: 62px;
+	position: relative;
+	display: block;
+	font-size: 10pt;
+	z-index: 50;
+}
+
+#globalBanner a:link, 
+#globalBanner a:hover,
+#globalBanner a:visited, 
+#globalBanner a:active
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+.detailsLink {
+	font-size: 8pt; 
+	text-decoration: underline;
+}
+
+.promoCode, 
+.promoPercent 
+{
+	font-weight: bold;
+}
+
+.promoCode {
+	background-color: black;
+	color: white;
+	padding: 2px 6px;
+	font-size: 11px;
+}
+
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
+}
+</style>
+
+<div id="globalBanner">
+
+	<!-- Global Banner Text -->
+	<div id="globalBannerText">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/815/576/assets/112912_ALL_BrightIdea_GB_US.png" alt="25% off all regular price items includes new arrivals. ends 12/2. online and in stores. enter GAP25." title="25% off all regular price items includes new arrivals. ends 12/2. online and in stores. enter GAP25." usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="246,16,377,60" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+			<area class="noHideDisruptor" shape="rect" coords="-135,-11,478,98" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
+		</map>
+	</div><!-- /Global Banner Text -->
+
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/815/576/assets/112912_ALL_BrightIdea_DISR_US.png" alt="in stores & online 25% off all regular price items includes new arrivals. ends sunday, 12/2. online: enter GAP25 at checkout. in stores: discount taken at register." title="in stores & online 25% off all regular price items includes new arrivals. ends sunday, 12/2. online: enter GAP25 at checkout. in stores: discount taken at register." usemap="#disruptorMap">
+		<map name="disruptorMap">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
+</div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('112912_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0004/281/898/cn4281898.html -->
+<!-- END Content Item File: /content/0005/815/576/cn5815576.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8687,20 +8622,20 @@ function validateFormGapFooter()
 
 		</div>	
 	<div id="brandftr3_10000513">
-		<!-- BEGIN Content Item File: /content/0005/800/208/cn5800208.html -->
-<div id="contentItemContainer10000513" class="5800208" >
+		<!-- BEGIN Content Item File: /content/0005/828/521/cn5828521.html -->
+<div id="contentItemContainer10000513" class="5828521" >
 
 <div style="width:988px;overflow:hidden;border-top:1px solid black;display:block;padding:0;margin-bottom:-2px;" class="clearfix">
-	<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/208/assets/1112_EDFS_Footer.png" alt="Free shipping on all orders over $50. No code. No hassle. Free returns on all orders." usemap="#edfsFooterMap" />
+	<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/521/assets/113012-Us_LDTS_Univ_footer.gif" alt="free shipping on all orders over $50. free returns on all orders." usemap="#edfsFooterMap" />
 	<map name="edfsFooterMap">
-		<area shape="rect" coords="15,17,524,61" href="javascript:void(0);" alt="details" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:410});">
-		<area shape="rect" coords="540,17,979,62" href="javascript:void(0);" alt="introducing international shipping to over 80 countries" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
-	</map>
+<area alt="free shipping on all orders over $50. get it by christmas! order by 12/19 for 12/24 delivery. free returns on all orders. details." coords="2,2,518,76" href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:540});">
+<area coords="520,3,989,77" href="javascript:void(0);" alt="introducing international shipping to over 80 countries" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
+</map>
 </div>
 
 
 </div>
-<!-- END Content Item File: /content/0005/800/208/cn5800208.html -->
+<!-- END Content Item File: /content/0005/828/521/cn5828521.html -->
 
 	</div>
 </div>
@@ -8942,7 +8877,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5800207,5746824,4281898,5754165,5800833,5746856,5800208,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5815576,5754165,5800833,5746856,5828521,5746857,5217025";
 	 </script>
 	
 	<noscript>
@@ -9104,30 +9039,45 @@ function validateFormGapFooter()
 
 
 <!-- container 16 -->
-<!-- BEGIN Content Item File: /content/0004/618/951/cn4618951.html -->
-<div id="contentItemContainer212633" class="4618951" >
+<!-- BEGIN Content Item File: /content/0005/828/540/cn5828540.html -->
+<div id="contentItemContainer212633" class="5828540" >
 
-<!-- BEGIN - 022112 patch to remove "1969 denim boutique" listing from product pages-->
+<!-- Shopping Bag Inserts -->
 <script type="text/javascript">
-if (location.pathname == "/browse/product.do") {
-	//objO = {};  // removes sizing links
-	productPage.loadProduct = productPage.loadProduct.wrap(function(originalMethod){
-		originalMethod();
-		var myLI = $("tabWindow").select('li');
-		for (i=0; i<myLI.length; i++) {
-			if (myLI[i].innerHTML.include("1969 denim boutique") ){
-				myLI[i].hide();
-				
-			}
-		}    
-	});
-}
-</script>
-<!-- END - 022112 patch to remove "1969 denim boutique" listing from product pages-->
+var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
+if (shoppingBagUrls.include(location.pathname)){
+		Event.observe(window,"load",function(){
+ 
+           var containerDiv = $('marketingSlotMiddle');
+           if(containerDiv){
+               containerDiv.innerHTML = ""
+			   + "<div id='Gap_120312SitewideWCDCode_ShoppingBagOverride' class='5828540'>"
+               + "<div style='margin-left:0px;width:411px;height:275px;display:block;' class='clearfix'>"
+               + "  <img src='http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/540/assets/113012_LDTS_ShopBag_US.gif' alt='' width='411' height='275' border='0' usemap='#imap5828540'/> "
+			   + "<\/div>"
+               + "<\/div>";
+           }
+           
+          
+            
+   });  
+   
+} 
+</script> 
+ 
+<map name="imap5828540" id="imap5828540">
+<area alt="get it by christmas! click for details." coords="6,5,403,270" href="http://www.gap.com/browse/info.do?cid=76493" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'shippingLDTSOptions',width:490,height:540});">
+</map>
+<!-- END: Shopping Bag Inserts --> 
+
+
+
+
+
 
 
 </div>
-<!-- END Content Item File: /content/0004/618/951/cn4618951.html -->
+<!-- END Content Item File: /content/0005/828/540/cn5828540.html -->
 
 
 <!-- container 17 -->

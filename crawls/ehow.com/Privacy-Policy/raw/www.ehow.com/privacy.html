@@ -8,7 +8,7 @@
 <meta name="format-detection" content="telephone=no" /><meta name="y_key" content="4d4cb4ef1ad334cb" />
 <meta name="alexaVerifyID" content="xlJch1oUHrXNtOQBpiuUCV0-rlc" />
 <meta name="msvalidate.01" content="5F1B06EBE88583F1C05B9114514366ED" />
-<meta name="cachetime" content="201211280522" />
+<meta name="cachetime" content="201212010520" />
 <meta name="robots" content="noarchive" />
 <meta property="fb:app_id" content="63203377906" />
 <meta property="fb:admins" content="63203377906" />
@@ -353,7 +353,29 @@ Copyright &copy; 1999-2012 Demand Media, Inc.<br />Use of this web site constitu
 </script>
 <!-- BEGIN dmtracker -->
 <noscript><img src="../vs.dmtracker.com/images/zig.gif%3FLog=1" alt="zig"/></noscript>
-<script src="../vs.dmtracker.com/tags/vs.js"></script>
+<div id="dmOmni"></div>
+<script async defer="defer">
+(function() {
+	var ua = navigator.userAgent.toLowerCase();
+	var dmTrackUrl = "vs.dmtracker.com";
+	var jsUrl = "vs.js";
+	if (ua.indexOf('safari') != -1) { 
+		if (ua.indexOf('chrome')  > -1) {
+			// Not on Safari
+		} else {
+			dmTrackUrl = "bit.ehow.com";
+			dmjs.urls.dmtracker = "bit.ehow.com";
+			jsUrl = "bit.js";
+		}
+	}
+	var dmJSUrl = "http://"+dmTrackUrl+"/tags/"+jsUrl;
+	
+	var dmTrack = document.createElement('script');
+	dmTrack.async = true;
+	dmTrack.src = dmJSUrl;
+	var s = document.getElementById('dmOmni'); s.parentNode.insertBefore(dmTrack, s);
+})();
+</script>
 <!-- END dmtracker -->
 <script>
 	var _comscore = _comscore || [];

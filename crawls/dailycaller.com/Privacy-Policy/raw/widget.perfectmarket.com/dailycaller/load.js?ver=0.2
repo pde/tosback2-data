@@ -1,9 +1,9 @@
-var _pmep = 'http://widget.perfectmarket.com/';var _pmpmk = 'dailycaller/pmk-1.5.js';var bbVer = getBBVersion();
+var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'dailycaller/pmk-1.7.js';var bbVer = getBBVersion();
 if (bbVer == null || parseInt(bbVer) > 5) {
 var pm_ppy="dailycaller";var pm_ver="0.2";
 var pmk,pmglb,pmfa,pmad,pmdebug_c;pmglb=pmglb||null;pmfa=pmfa||null;pmad=pmad||null;pmdebug_c=pmdebug_c||null;pmk=pmk||null;
 var _pmenv = getUrlParameter('pmenv');
-if(_pmenv && _pmenv == 'sandbox') {_pmep=_pmep.replace('http://widget.perfectmarket.com', 'http://widget.sandbox.perfectmarket.com');}
+if(_pmenv && _pmenv == 'sandbox') {_pmep=_pmep.replace('http://widget.perfectmarket.com', 'http://widget.sandbox.perfectmarket.com');_pmep_geo=_pmep_geo.replace('http://geo.perfectmarket.com', 'http://geo.sandbox.perfectmarket.com');}
 
 (function(){
   var sc='script',doc=document;
@@ -14,6 +14,12 @@ function pmws_request_done(){
   var sc="script",doc=document;
   if (doc.all && !window.opera){doc.write('<'+sc+' type="text/javascript" id="pm_contentloadtag" defer="defer" src="javascript:void(0)"><\/'+sc+'>');var pm_contentloadtag = doc.getElementById("pm_contentloadtag");if(pm_contentloadtag)pm_contentloadtag.onreadystatechange = function() { if (this.readyState=="complete") return; } }
   doc.writeln('<'+sc+' src='+_pmep+_pmpmk+'></'+sc+'>');
+  /*window.onload = function() {
+      var body = doc.getElementsByTagName('body')[0];
+      var newE = document.createElement('script');
+      newE.setAttribute('src', _pmep + _pmpmk);
+      body.insertBefore(newE, body.firstChild);
+      };*/
 }
 
 }

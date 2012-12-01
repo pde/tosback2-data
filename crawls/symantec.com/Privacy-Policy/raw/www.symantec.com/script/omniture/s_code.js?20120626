@@ -27,6 +27,7 @@ Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. co
 also removed om_sem_copy prop28 due conflict with demand base setup.
 Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
 Changes 2012-11-14: Combined audience and audience_segment in demandbase and added .rpm to the list of linkDownloadFileTypes
+Changes 2012-11-28: Demandbase fixes.
 */
 
 var s_account=metaData['repsuite']
@@ -597,7 +598,7 @@ var demandbasePlugin = {
 				dbData.audience = this.checkAndReturnSameOrErrorValue(dbInfo.audience, isDetailed);
 				dbData.audienceSegment = this.checkAndReturnSameOrErrorValue(dbInfo.audience_segment, isDetailed);
 				dbData.audiencePlusSegment = dbData.audience;
-				if(dbData.audienceSegment !== "" && dbData.audienceSegment !== "error" && dbData.audienceSegment !== "ISP Visitor"){
+				if(dbData.audienceSegment !== "" && dbData.audienceSegment !== "Error" && dbData.audienceSegment !== "ISP Visitor"){
 					dbData.audiencePlusSegment += " > " + dbData.audienceSegment;
 				}
 
@@ -657,7 +658,8 @@ var demandbasePlugin = {
 		dbData.demandbaseID = sesData.demandbaseID;
 		dbData.audience = sesData.audience;
 		dbData.audienceSegment = sesData.audienceSegment;
-		dbData.audiencePlusSegment = sesData.audiencePlusSegment
+		dbData.audiencePlusSegment = sesData.audiencePlusSegment;
+		doTracking();
 	}
 
 };

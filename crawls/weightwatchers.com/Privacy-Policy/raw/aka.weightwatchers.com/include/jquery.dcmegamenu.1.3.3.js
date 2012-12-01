@@ -14,7 +14,7 @@
     $.fn.dcMegaMenu = function (options) {
         //set default options  
         var defaults = {
-            classParent: 'dc-mega',
+            classParent: 'ww',
             classContainer: 'sub-container',
             classSubParent: 'mega-hdr',
             classSubLink: 'mega-hdr',
@@ -118,7 +118,7 @@
                                 }
                             });
 
-                            $arrow = '<a class="dc-mega-icon" aria-label="open menu" href="#">&#9660;</a>';
+                            $arrow = '';
                             $beginmenu = '<span class="hidden" aria-hidden="true" tabindex="0">Beginning of ' + $primaryLink.text() + ' menu</span>';
                             $endmenu = '<span class="hidden" aria-hidden="true" tabindex="0">End of ' + $primaryLink.text() + ' menu</span>';
                             $closemenu = '<a class="hidden close_menu" aria-hidden="true" href="#">Close ' + $primaryLink.text() + ' menu</a>';
@@ -182,7 +182,7 @@
                                 if (mr < ml) {
                                     params = { right: '-2px' };
                                 } else {
-                                    params = { left: '-2px' };
+                                   // params = { left: '-2px' };
                                 }
                             }
                             $('.' + clContainer, this).css(params);
@@ -198,11 +198,12 @@
                         } else {
                             $('.' + clContainer, this).addClass('non-mega').css('left', '-2px', pl + 'px');
                         }
-                    }
+						
                     $primaryLink.after($arrow);
                     $('.' + clContainer, this).find('.row').prepend($beginmenu);
                     $('.' + clContainer, this).find('.row').append($endmenu);
                     $('.' + clContainer, this).find('.row').append($closemenu);
+                    }
                 });
 
                 // Set position of mega dropdown to bottom of main menu

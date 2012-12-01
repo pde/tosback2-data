@@ -2171,9 +2171,16 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	    	}
 		}
 	    
-	    var youtubeVideo = jQuery(targetPage+'.product_page_video');
-	    if (youtubeVideo) {
-			jQuery.fn.onYouTubePlayerReady(youtubeVideo);
+	    if (PPL) {
+		    var youtubeVideo = jQuery(targetPage+'.product_page_video');
+		    if (youtubeVideo) {
+				jQuery.fn.onYouTubePlayerReady(youtubeVideo);
+			}
+		} else if (PP) {
+			var youtubeVideo = jQuery(targetPage+'.product_page_video');
+			if (youtubeVideo) {
+				jQuery.fn.onYouTubePlayerReady(youtubeVideo);
+			}
 		}
 		
 		jQuery("#aboutGiftBox #closeButton input[name=submit]").live('click', function () {
@@ -2312,7 +2319,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				shoppingBagFull();
 			}else if (selectionsFlag == true && editMode == true){
 				// allow save from shopping bag
-			}			
+			}
 		}
 		updateItemsInBagMessage = function(){
 			// update maxItem Number, totlal and items over maxItem number here
@@ -2467,7 +2474,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var product_id = jQuery(targetPage+'input[name=productId]').val() || "-1";
 				}
 				
-				var selectedColorSizeId = jQuery(targetPage+'input[name=colorsize]').val()
+				var selectedColorSizeId = jQuery(targetPage+'input[name=colorsize]').val();
+				
 			}
 			var siteId = "1";
 			var params = "";
@@ -3018,7 +3026,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}				
 				var selectedSizeId= jQuery(targetPage+'#size').val() || jQuery(targetPage+'input[name=selectedSizeId]').val() || "-1";
 				var selectedColorId= jQuery(targetPage+'input[name=selectedColorId]').val() || "-1";
-				var clearanceFlag = jQuery(targetPage+'input[name=clearanceCategory]').val() || "-1";				
+				var clearanceFlag = jQuery(targetPage+'input[name=clearanceCategory]').val() || "-1";
 			}
 			
 			var siteId = "1";
@@ -3505,6 +3513,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			} else {
 				var sizeValue = jQuery(targetPage+'#size').val();				
 				var colorValue = jQuery(targetPage+'#color').val();
+				
 
 				if (colorValue !=null && colorValue !="null" && colorValue.length != 0){
 					errorTipHide(targetPage+'#color');
@@ -3887,7 +3896,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					//tab 4 mens pant hem styles
 					if (departId == "103"){
 						sections = "1";	
-						selectedSizeChartTab = 3;
+						selectedSizeChartTab = 1;
 						sizeChartName = "men."+siteFlag+".html";	
 						sizeChartUrl = sizeChartUrl + sizeChartName;
 						sizeChartFlag = true;
@@ -3974,7 +3983,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				
 			}			
 			
-			if (sizeChartFlag) {
+			if (sizeChartFlag){
 				var pdpURL = rewirteUrl(sizeChartUrl);	
 				fb.start(pdpURL, 'type:ajax height:600 width:996 doAnimations:false autoFitHTML:true scrolling:no showOuterClose:true boxLeft:10% controlsPos:tr afterItemStart:updateTabs('+selectedSizeChartTab+')');
 			} else {
@@ -4149,50 +4158,52 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				color: '#333333'
 			});
 		}
+		addHiddenInputField = function() {
+			if (jQuery('body.STANDALONE-PRODUCT-PAGE #dossier #dash').find('form#productForm').length) {
+				if (jQuery('.infoModule').find('.ppv_container').length) {
+					var videoId = jQuery('.ppv_container').attr('id').substring(14);
+				}
+				jQuery('#productForm').append('<input type="hidden" value="' + videoId + '" name="videoId" id="videoId">')
+			}
+		}
 		setCoreMetricsProductData = function () {
-            var piValue = '';
-            var isEob = jQuery(targetPage+'#eob').val()
-            if (isEob == 'true') {
-                var pid = jQuery(targetPage+'#deptIndex').val()
-    					+ jQuery(targetPage+'#dept').val() + ' '
-    					+ jQuery(targetPage+'#firstEffort').val() + ' '
-    					+ jQuery(targetPage+'#item').val();
-                piValue = 'T50';
-            } else {
-                var pid = shownEnsembleId;
-                if (YAHOO.ebauer.productUtils.buyAnotherMode === true) {
-                    piValue = 'T429P' + pid;
-                } else {
-                	piValue = document.forms.productForm.pathInfo.value;
-                }
-            }
-
-            var tempURL = GetCookie("REFERRAL_URL");
-
-            if (tempURL == '' || tempURL == null) {
-                tempURL = GetCookie('PREVIOUS');
-            }
-
-            var search = GetCookie("EOB_Search");
-            gPathInfo = piValue; // For ShopAction 5 and 9 tags
-            if (search != '' && search != null) {
-                SetCookie('EOB_Search', '', 1);
-                cmCreateProductviewTag(pid, document.forms.productForm.name.value,piValue, document.forms.productForm.dept.value, '1',document.forms.productForm.host.value, '', tempURL, pid, "1");
-            } else {
-                cmCreateProductviewTag(pid, document.forms.productForm.name.value, piValue, document.forms.productForm.dept.value, '1', document.forms.productForm.host.value, '', tempURL);
-            }
-            
-            var standaloneFlag = jQuery('#standaloneFlag').val();
-
-            if (standaloneFlag === "false") {
-                // SetCookie('REFERRAL_URL', document.location.href);
-                DelCookie("REFERRAL_URL");
-                var theEBPi = escape(document.forms.productForm.name.value + ' ' + pid);
-    			SetCookie('ebPi',theEBPi);	                
-            } else {
-            	SetCookie('PREVIOUS', escape(document.location.href));
-                DelCookie('REFERRAL_URL');
-            }
+			var isMPP = jQuery('#isMPP').val();
+			if (isMPP !== '1') {
+	            var piValue = '';
+	            var isEob = jQuery(targetPage+'#eob').val()
+	            if (isEob == 'true') {
+	                var pid = jQuery(targetPage+'#deptIndex').val()
+	    					+ jQuery(targetPage+'#dept').val() + ' '
+	    					+ jQuery(targetPage+'#firstEffort').val() + ' '
+	    					+ jQuery(targetPage+'#item').val();
+	                piValue = 'T50';
+	            } else {
+	                var pid = shownEnsembleId;
+	                if (YAHOO.ebauer.productUtils.buyAnotherMode === true) {
+	                    piValue = 'T429P' + pid;
+	                } else {
+	                	piValue = document.forms.productForm.pathInfo.value;
+	                }
+	            }
+	
+	            var tempURL = GetCookie("REFERRAL_URL");
+	
+	            if (tempURL == '' || tempURL == null) {
+	                tempURL = GetCookie('PREVIOUS');
+	            }
+		           
+	            var standaloneFlag = jQuery('#standaloneFlag').val();
+	
+	            if (standaloneFlag === "false") {
+	                // SetCookie('REFERRAL_URL', document.location.href);
+	                DelCookie("REFERRAL_URL");
+	                var theEBPi = escape(document.forms.productForm.name.value + ' ' + pid);
+	    			SetCookie('ebPi',theEBPi);	                
+	            } else {
+	            	SetCookie('PREVIOUS', escape(document.location.href));
+	                DelCookie('REFERRAL_URL');
+	            }
+			}
         }
 		faceBookButton = function(){
 			var facebookURL = "//www.facebook.com/plugins/like.php?href=";
@@ -4204,7 +4215,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}
 		
 		// init section
-		init = function() {
+		init = function(){	
 			clearanceFlag = jQuery(targetPage+'#clearanceCategory').val();
             if (!initProductModuleFlag){
             	setCoreMetricsProductData();
@@ -4229,7 +4240,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
-                
+                addHiddenInputField();
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
@@ -4252,6 +4263,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
+                addHiddenInputField();
           }
 		}
 					
@@ -4371,26 +4383,20 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									"data-image-static");
 							var youtubeValue = jQuery(this).attr(
 									"data-youtube-value");
-							
-							var hrefContainer = jQuery('#video.floatbox').attr('href');
-							//var hrefContainer2 = jQuery('#video.floatbox'):nth-child(2).attr('href');
-							
-							if (typeof hrefContainer == 'undefined' ) {
-							} else if ( typeof hrefContainer == 'string' && hrefContainer == '#product_page_video_'+youtubeValue)  {
-								//alert('duplicate on page' + hrefContainer);
-							}
-							
-							var videoLinkHTML = '<div class="product_page_link"><a name="static:image:videomodal" title="Watch Video" class="floatbox" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
-								+ youtubeValue
-								+ '" style="text-decoration: none !important; display: inline-block;"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 4px; margin-right: 5px; vertical-align: bottom;"></a><a id="video" style="font-size:12px;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" class="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
-								+ youtubeValue
-								+ '">'
-								+ data_link_name
-								+ '</a></div>';
+
+							var videoLinkHTML = '<div class="product_page_link_'
+									+ youtubeValue
+									+ '"><a name="static:image:videomodal" title="Watch Video" class="floatbox" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ youtubeValue
+									+ '" style="text-decoration: none !important; display: inline-block;"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a id="video" style="font-size:12px;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" class="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ youtubeValue
+									+ '">'
+									+ data_link_name
+									+ '</a></div>';
 						
 							var videoContainerHTML = '<div id="ppv_container_'
 									+ youtubeValue
-									+ '" style="display: none;"><div class="fbWrapper" style="display: block; visibility: visible;"><div id="product_page_video_'
+									+ '" class="ppv_container" style="display: none;"><div id="product_page_video_'
 									+ youtubeValue
 									+ '" style="width: 664px; height: 448px; background-image: url('
 									+ videoSrc
@@ -4398,10 +4404,17 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									+ youtubeValue
 									+ '" style="display: none;"><div id="ytapiplayer_'
 									+ youtubeValue
-									+ '"></div></div></div></div></div></div></div>';
+									+ '"></div></div></div></div></div></div>';
 							
-							jQuery('.infoModule').append(videoContainerHTML);
-							jQuery(this).append(videoLinkHTML);
+							
+							if (jQuery(this).find('div.product_page_link_'+youtubeValue).length) {
+							} else {
+								jQuery(this).append(videoLinkHTML);
+							}
+							if (jQuery('.infoModule').find('div#ppv_container_'+youtubeValue).length) {
+							} else {
+								jQuery('.infoModule').append(videoContainerHTML);
+							}
 			});
 			
 			jQuery('.floatbox').bind(
@@ -4430,7 +4443,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				var atts = {
 				    id: playerObjId
 				};
-				onYouTubePlayerReady = function(playerId) {
+				function onYouTubePlayerReady(playerObjId) {
 					var ytplayer = document.getElementById(playerObjId);
 					ytplayer.addEventListener("onStateChange",
 							"onytplayerStateChange");
@@ -4458,7 +4471,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						.append(
 								'<style>#fbBox #fbtrPanel{right:-34px !important}</style>');
 			}
-		}
+		}	
 	}
 })(jQuery);
 
@@ -6618,6 +6631,7 @@ var currentQtyForGiftBox = -1;
 var productId = -1;
 
 var ensembleName = '';
+var videoId = '';
 var productStyleName = '';
 var colorIdSelected = -1;
 var sizeIdSelected = -1;
@@ -7477,7 +7491,7 @@ YAHOO.ebauer.productUtils = function () {
             primaryCategoryName = productForm.primaryCategoryName.value;
             gBackToCat = productForm.catName.value;
             gCategoryId = productForm.categoryId.value;
-            //gPathInfo = productForm.pathInfo.value;
+            gPathInfo = productForm.pathInfo.value;
             gCs = productForm.cs.value;
             gCatPath = productForm.catPath.value;
             gProductVariantId = productForm.productVariantId.value;
@@ -7520,6 +7534,7 @@ YAHOO.ebauer.productUtils = function () {
                 ensembleId = productForm.ensembleId.value;
                 gEnsembleId = ensembleId;
                 ensembleName = productForm.ensembleName.value;
+                videoId = productForm.videoId.value;
                 catName = productForm.catName.value;
                 showSizes = productForm.showSizes.value;
                 //inseamFlag = isDisableDisplay($("inseamDetails")) ? "N" : isEnableDisplay($("inseamDetails")) ? "Y" : "N";
@@ -8063,6 +8078,8 @@ function prepareItemForm(isEOBProduct) {
     form.appendChild(input);
 	input = createDOM("input", {type:"hidden",name:"siteCss",value:"EB"});
     form.appendChild(input);
+    input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:""});
+    form.appendChild(input);
     input = createDOM("input", {type:"hidden",name:"primaryCategoryName",value:"EB",id:"primaryCategoryName"});
     form.appendChild(input);
 	var div2 = createDOM("div", {id:"prepareitemform"});
@@ -8102,6 +8119,7 @@ function addAnchorElement(href, title, parent) {
 var bag = "";
 var ensembleId = "";
 var gPromoContent = "";
+var video_id = "";
 
 function createShoppingBag(shoppingBag, siteCss) {
 	YAHOO.ebauer.productUtils.editProductModeType = "";
@@ -8370,6 +8388,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 	}
 
 	dialogSlat = createDOM('div', {'class':'dialog-slat'});
+	var videoValue = itemform.videoId.value;
 	matte.appendChild(dialogSlat);
 	var form = createDOM('form', {'class':'clearfix', 'action':'' + bag.checkoutPage , 'method':'post'});
 	dialogSlat.appendChild(form);
@@ -8394,6 +8413,9 @@ function createShoppingBag(shoppingBag, siteCss) {
     //}
     fieldSet = createDOM('fieldset', {'id':'go_bag'});
 	form.appendChild(fieldSet);
+	video_id = document.itemform.elements['videoId'].value
+	input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:video_id});
+    form.appendChild(input);
 	tag = createDOM('legend', {'class':'ignore'});
 	tag.appendChild(document.createTextNode('Checkout'));
 	fieldSet.appendChild(tag);
@@ -8469,46 +8491,54 @@ function resetPageVars()
 	giftBoxTo = "";
 	giftBoxMsg = "";
 }
-/*function goBackToCat() {
+function goBackToCat() {
 	var pairs = window.location.search.substring(1).split("&"),
     obj = {},
     pair,
     i;
-	if (pairs != "") {
-		for ( i in pairs ) {
-			if ( pairs[i] === "" ) continue;
-			pair = pairs[i].split("=");
-			obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
-			if (obj[ decodeURIComponent( pair[0] ) ] == "ggpCategoryName") {
-				var part4 = decodeURIComponent( pair[1] );
-		    	if (part4 != 'undefined' || part4 != undefined) {
-		    		part4 = "/"+part4;
-		    	} else {
-		    		part4 = "";
-		    	}
-			}
-			if (obj[ decodeURIComponent( pair[0] ) ] == "gpCategoryName") {
-				var part3 = decodeURIComponent( pair[1] );
-			}
-			if (obj[ decodeURIComponent( pair[0] ) ] == "pCategoryName") {
-				var part2 = decodeURIComponent( pair[1] );
-			}
-			if (obj[ decodeURIComponent( pair[0] ) ] == "categoryName") {
-				var part1 = decodeURIComponent( pair[1] );
-			}
-			if(part4 == "undefined" || part4 == undefined) {
-		    	pathName = "/"+part3+"/"+part2+"/"+part1+"/index.cat";
-		    } else {
-		    	pathName = part4+"/"+part3+"/"+part2+"/"+part1+"/index.cat";
-		    }
-		    window.location.href = pathName;
-		}
-	} else {
-		var breadcrumbPath = parent.setBreadCrumbVariable();
-		var pathName = breadcrumbPath.substr(breadcrumbPath.indexOf("m") + 1);
-		window.location.href = pathName;
+	for ( i in pairs ) {
+		if ( pairs[i] === "" ) continue;
+		pair = pairs[i].split("=");
+		obj[ decodeURIComponent( pair[0] ) ] = decodeURIComponent( pair[1] );
+	 
+        for (var key in obj) {
+            key + "=" + obj[key];
+        }
+        
+        if (key == "catPath") {
+        	var categoryPath = obj[key];
+        	if (categoryPath == "") {
+        		var breadcrumbPath = parent.setBreadCrumbVariable();
+        		var pathName = breadcrumbPath.substr(breadcrumbPath.indexOf("m") + 1);
+        		window.location.href = pathName;
+        		return;
+        	}
+        }
+        if (key == "ggpCategoryName") {
+        	var part4 = obj[key];
+        	if (part4 != 'undefined' || part4 != undefined) {
+        		part4 = "/"+part4;
+        	} else {
+        		return "";
+        	}
+        }
+        if (key == "gpCategoryName") {
+        	var part3 = obj[key];
+        }
+        if (key == "pCategoryName") {
+        	var part2 = obj[key];
+        }
+        if (key == "categoryName") {
+        	var part1 = obj[key];
+        }
+        if(part4 == "undefined" || part4 == undefined) {
+        	pathName = "/"+part3+"/"+part2+"/"+part1+"/index.cat";
+        } else {
+        	pathName = part4+"/"+part3+"/"+part2+"/"+part1+"/index.cat";
+        }
+        window.location.href = pathName;
 	}
-}*/
+}
 
 function showNextPage(e) {
 

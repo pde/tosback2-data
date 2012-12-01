@@ -17,6 +17,7 @@ $.ajax({
                 SetCookie(afObject.affiliateCookieName, afObject.affiliateCookieValue, afObject.affiliateCookieExpiration, afObject.path);
             }
             $("#headerItemCount").html(data.itemsCount);
+            $("#ideas").html(data.promoHeader);
         });
         return true;
     },

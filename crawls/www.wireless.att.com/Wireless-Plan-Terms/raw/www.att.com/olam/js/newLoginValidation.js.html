@@ -305,9 +305,13 @@ function checkFormValues()
     if(retVal && !jQuery.browser.mobile){
     		try{
     			iphonePassForm.iphoneOptions.pass.val(jQuery.trim(iphonePassForm.iphoneOptions.pass.val()));
-    			if(realPass!=null && (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
-    				jQuery('[name="password"]').val(realPass);
+    			if(jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() ==""){
+    				if(realPass !=null && jQuery.trim(realPass)!=""){
+    					iphonePassForm.iphoneOptions.pass.val(realPass);
+    					jQuery('[name="password"]').val(realPass);
+    				}
     			}
+    			jQuery("#password").attr("disabled", "disabled");
     		}
     		catch(exception){}
     	}

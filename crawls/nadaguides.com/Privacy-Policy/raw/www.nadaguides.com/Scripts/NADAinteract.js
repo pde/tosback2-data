@@ -1169,10 +1169,10 @@ var NADAjs = {
             if (IsNewCar && DTShowLease) {
                 //lease
                 $("#frmCalcLease").validate({ errorPlacement: function(error, element) { } });
-                $("#frmCalcLease").find("#LeaseTerm").val(36).live("click", function() {
+                $("#frmCalcLease").find("#LeaseTerm").live("click", function() {
                     hideLeasePayment();
                 });
-                $("#frmCalcLease").find("#LeaseMilage").val(36).live("click", function() {
+                $("#frmCalcLease").find("#LeaseMileage").live("click", function() {
                     hideLeasePayment();
                 });
                 getLeasePayment();

@@ -43,6 +43,15 @@ function populatePrices(a) {
       rrCT = rrItemInfo[thisItem].ct; // customize tag
       rrUOM = rrItemInfo[thisItem].uom; // unit of measure
       rrLink = rrItemInfo[thisItem].link; // link
+	  if (typeof rrItemInfo[thisItem].simple != 'undefined' && rrItemInfo[thisItem].simple){
+		rrSeperator = '';
+		rrPriceStyle = ' style="float:left; clear:both;"';
+		rrMapStyle = ' style="text-align: left;"';
+	  } else {
+		rrSeperator = '<br/>';
+		rrPriceStyle = '';
+		rrMapStyle = '';
+	  }
       rrItemInfo[thisItem].pid = a.prices[b].pid; // add pid to object
       rrItemInfo[thisItem].pidForDisplay = a.prices[b].pidForDisplay; // add pid for display to object
 
@@ -52,14 +61,14 @@ function populatePrices(a) {
 				var review_txt = " Reviews ";
 				if (rating > 0){
 					if (a.prices[b].reviewCount == 1) review_txt = " Review ";
+					if (rrSeperator == '') review_txt = "";
 					$("#rrRating" + a.prices[b].pid).addClass("bv" + rating*10);
 					$("#rrReview" + a.prices[b].pid).html("(" + a.prices[b].reviewCount + review_txt + ")");
 					$("#rrRatingBox" + a.prices[b].pid).show();
 				}else{
 					$("#rrRatingBox" + a.prices[b].pid).html('<a href="' + rrLink +'%23reviewTab" class="underline">Write the first review</a>');
 					$("#rrRatingBox" + a.prices[b].pid).show();
-				}
-								
+				}								
 				var bulkStr = "";
 				if (a.prices[b].hasBulkPricingAvailable === "true") { // if has bulk pricing messaging
 					bulkStr = rrStr.asLowAs;
@@ -72,22 +81,22 @@ function populatePrices(a) {
 					$(".rrSKU" + a.prices[b].pid).html(rrStr.item + a.prices[b].pid);
                 }
 				if (a.prices[b].mapPrice !== '$0.00') { 
-					rrPriceBlock.push('<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>');
-					rrPriceBlock.push('<span class="main_price"><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span><br/>' + rrUOM + '</span></span>');
+					if (rrSeperator != '') rrPriceBlock.push('<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>');
+					rrPriceBlock.push('<span class="main_price"'+rrPriceStyle+'><span style="text-decoration:line-through">' + a.prices[b].mapPrice + '</span>' + rrSeperator + rrUOM + '</span></span>');
 				}
 				else if (a.prices[b].price !== undefined) { // just show price
-					rrPriceBlock.push('<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>');
-					rrPriceBlock.push('<span class="main_price">' + a.prices[b].price + '<br/>' + rrUOM + '</span></span>');
+					if (rrSeperator != '') rrPriceBlock.push('<span class="merchPrice"><label class="price_title">' + bulkStr + '</label>');
+					rrPriceBlock.push('<span class="main_price"'+rrPriceStyle+'>' + a.prices[b].price + rrSeperator + rrUOM + '</span></span>');
 				}
 				rrPriceBlock.push('<input type="hidden" value="'+rrGetCMTag(rrLink)+'" name="trackingCategory">'); // add CM input tag to form for tracking
 				$(".rrPriceElement" + a.prices[b].pid).html(rrPriceBlock.join('')); // join the elements of the array
 				$(".item_atc_rrSKU" + a.prices[b].pid).html(a.prices[b].pidForDisplay); // update the pid for display
             if (a.prices[b].mapPrice !== '$0.00'){
-                $("ul.rrAddCartBtn" + a.prices[b].pid).addClass('map_pricing_block').html('<li><a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Sale Price in Cart</a></li>').show();
+                $("ul.rrAddCartBtn" + a.prices[b].pid).addClass('map_pricing_block').html('<li><a href="'+rrLink+'" class="map_title"'+rrMapStyle+'>See Sale Price in Cart</a></li>').show();
 //				$("ul.rrAddCartBtn" + a.prices[b].pid).html('<a href="javascript:void(0);" class="map_title" onclick="od_uielements.loadPromoView('+a.prices[b].pid+')">See Sale Price in Cart</a>').show(); // show the MAP price
             } else if (rrCT !== "") { 
 				$("div.moduleStructContent .rrCustomBtn" + a.prices[b].pid).show(); // if there's a customize button show it
-			} else { // show the regular pricing data
+			} else if (rrSeperator != ''){ // show the regular pricing data
 				$(".rrAddCartBtnDisplay" + a.prices[b].pid).val(rrStr.atc); // get the localized string for add to cart
 				$("ul.rrAddCartBtn" + a.prices[b].pid).show(); // show the add to cart button
 			}

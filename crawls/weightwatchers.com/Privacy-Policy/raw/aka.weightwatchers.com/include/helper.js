@@ -48,11 +48,15 @@ $(function () {
 });
 
 function formatTitle(title, currentArray, currentIndex, currentOpts) {
+    //localization word " of " set as javascript varible in GCMS generic component.
+    if (typeof fancybox_OfLabel === 'undefined' || typeof fancybox_OfLabel === 'null') {
+        fancybox_OfLabel = ' of ';
+    }
     var recipeName = title && title.length ? title : '';
     var pointsValue = $(currentArray[currentIndex]).attr('pointsValue');
     var rcpHref = $(currentArray[currentIndex]).attr('rcpHref');
     var caption = '<div class="rotd-points">' + pointsValue + '</div><div class="rotd-title"><a href="' + rcpHref + '">' + recipeName + '</a></div>';
-    return '<div id="recipes-fancybox-title">' + caption + '</div>' + '<div id="recipes-fancybox-number">' + (currentIndex + 1) + ' of ' + currentArray.length + '</div>';
+    return '<div id="recipes-fancybox-title">' + caption + '</div>' + '<div id="recipes-fancybox-number">' + (currentIndex + 1) + fancybox_OfLabel + currentArray.length + '</div>';
 }
 
 function ShowHideOverlapControls(visibilityValue) {

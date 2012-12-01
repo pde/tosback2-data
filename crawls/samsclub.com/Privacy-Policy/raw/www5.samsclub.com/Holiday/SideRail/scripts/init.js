@@ -55,12 +55,12 @@ $(document).ready(function(){
 			}
 			if(date >=  new Date("11/29/2012").getTime() && date <=  new Date("12/13/2012").getTime() )
 			{
-				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Del-Monte/Holiday/');
+				$('.sponsorLink').attr('href', 'http://www.samsclub.com/sams/del-monte-holiday-food/4830105.cp');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/delmonte.png');
 			}
 			if(date >=  new Date("12/13/2012").getTime() && date <=  new Date("12/27/2012").getTime() )
 			{
-				$('.sponsorLink').attr('href', 'http://www5.samsclub.com/Featured-Brand/Unilever/Axe/');
+				$('.sponsorLink').attr('href', 'http://www.samsclub.com/sams/axe-bonus-pack-3-4-oz-bodyspray-2-1-7-oz-shower-gel/127339.ip');
 				$('.sponsor').find('img').attr('src', '/Holiday/SideRail/images/sponsors/unilever.png');
 			}
 

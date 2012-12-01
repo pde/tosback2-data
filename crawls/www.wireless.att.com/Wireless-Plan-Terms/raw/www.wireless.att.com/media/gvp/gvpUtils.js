@@ -776,7 +776,7 @@ function gvpUtils() {
         	// no rplCode provided, replace with generic error
         	this.getElementObj("gvp_mainPopupBody").innerHTML = '<img src="'+p_locEnv+'global_resources/defaultMedia/GVP_GeneralError.jpg" border="0" onload="gvp.divPopUp(\'gvp_mainPopupDiv\',true);" />';
         }
-    };
+    }; 
 	
 	this.debug = function(p) {
 		v_debug = p;
@@ -929,155 +929,153 @@ function gvpUtils() {
 		try {	
 			var shouldShow = false;
 			var overLayDiv_id, messDivObj, popupDiv, id, buttonDivObj;
-			if (blockBG) {
-				overLayDiv_id = this.overLayDiv(true);
+			if(this.mobile.isMobile && this.mobile.isDeviceScreenSmall()) {
+				this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
 			}
-			if (closeButton == true) {
-				//this.visibleElement("popCloseButton", false);
-			}
-			if (this.getElementObj('gvp_mainPopupDiv')) {
-				this.getElementObj('gvp_mainPopupDiv').show();
-			} else {
-				
-				var pPopDiv = document.createElement('div');
-				pPopDiv.setAttribute('id', 'gvp_mainPopupDiv');
-				pPopDiv.setAttribute('style', 'position:absolute; visibility:hidden; left:100px; top:100px; width:'+pWidth+'px; z-index:500; border:#CCCCCC solid 2px;  background-color:#FFFFFF;');
-				if(IE) {
-					pPopDiv.style.setAttribute('cssText', 'position:absolute; visibility:hidden; left:100px; top:100px; width:'+pWidth+'px; z-index:500; border:#CCCCCC solid 2px;  background-color:#FFFFFF;');
+			else{  
+				if (blockBG) {
+					overLayDiv_id = this.overLayDiv(true);
 				}
-				var pPopDivTitleBG = document.createElement('div');
-				pPopDivTitleBG.setAttribute('id', 'gvp_pPopDivTitleBG');
-				pPopDivTitleBG.setAttribute('style', 'height:37px; background-image:url(//www.att.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;');
-				if(IE) {
-					pPopDivTitleBG.style.setAttribute('cssText', 'height:37px; background-image:url(//www.att.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;');
+				if (closeButton == true) {
+					//this.visibleElement("popCloseButton", false);
 				}
-				var pPopDivTitleWrapper = document.createElement('div');
-				pPopDivTitleWrapper.setAttribute('id', 'gvp_pPopDivTitleWrapper');
-				pPopDivTitleWrapper.setAttribute('style', 'padding:10px;');
-				if(IE) {
-					pPopDivTitleWrapper.style.setAttribute('cssText', 'padding:10px;');
-				}
-				var pPopDivTitle = document.createElement('div');
-				pPopDivTitle.setAttribute('id', 'gvp_pPopDivTitle');
-				pPopDivTitle.setAttribute('style', 'float:left; padding-left:10px;');
-				if(IE) {
-					pPopDivTitle.style.setAttribute('cssText', 'float:left; padding-left:10px;');
-				}
-				var pPopDivTitleText = document.createElement('H1');
-				pPopDivTitleText.setAttribute('id', 'gvp_mainPopUpTitle');
-				pPopDivTitleText.setAttribute('style', 'font-size:14px;');
-				if(IE) {
-					pPopDivTitleText.style.setAttribute('cssText', 'font-size:14px;');
-				}
-				var pPopDivCloseButton = document.createElement('div'); 
-				pPopDivCloseButton.setAttribute('id', 'gvp_popCloseButton');
-				//pPopDivCloseButton.setAttribute('onclick', 'gvp.closePopup()');
-				pPopDivCloseButton.setAttribute('style', 'text-align:right; font-size:11px;');
-				if(IE) {
-					pPopDivCloseButton.style.setAttribute('cssText', 'text-align:right; font-size:11px;');
-				}
-				
-				var pPopDivBody = document.createElement('div'); 
-				pPopDivBody.setAttribute('id', 'gvp_mainPopupBody');
-				pPopDivBody.setAttribute('style', 'border:#CCCCCC solid 1px; margin:10px;');
-				if(IE) {
-					pPopDivBody.style.setAttribute('cssText', 'border:#CCCCCC solid 1px; margin:10px;');
-				}
-				
-				var pPopDivButton = document.createElement('div'); 
-				pPopDivButton.setAttribute('id', 'gvp_mainPopupButton');
-				pPopDivButton.setAttribute('style', 'padding-right:10px;padding-bottom:8px;');
-				if(IE) {
-					pPopDivButton.style.setAttribute('cssText', 'padding-right:10px;padding-bottom:8px;');
-				}
-				
-				body.appendChild(pPopDiv);
-				this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivTitleBG);
-				this.getElementObj('gvp_pPopDivTitleBG').appendChild(pPopDivTitleWrapper);
-				this.getElementObj('gvp_pPopDivTitleWrapper').appendChild(pPopDivTitle);
-				this.getElementObj('gvp_pPopDivTitle').appendChild(pPopDivTitleText);
-				this.getElementObj('gvp_pPopDivTitleWrapper').appendChild(pPopDivCloseButton);
-				this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivBody);
-				this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivButton);
-			}
-				if(title != '') {
-					this.getElementObj("gvp_mainPopUpTitle").innerHTML = title;
+				if (this.getElementObj('gvp_mainPopupDiv')) {
+					this.getElementObj('gvp_mainPopupDiv').show();
 				} else {
-					this.getElementObj("gvp_mainPopUpTitle").innerHTML = 'AT&amp;T Video Player';
+					
+					var pPopDiv = document.createElement('div');
+					pPopDiv.setAttribute('id', 'gvp_mainPopupDiv');
+					pPopDiv.setAttribute('style', 'position:absolute; visibility:hidden; left:100px; top:100px; width:'+pWidth+'px; z-index:500; border:#CCCCCC solid 2px;  background-color:#FFFFFF;');
+					if(IE) {
+						pPopDiv.style.setAttribute('cssText', 'position:absolute; visibility:hidden; left:100px; top:100px; width:'+pWidth+'px; z-index:500; border:#CCCCCC solid 2px;  background-color:#FFFFFF;');
+					}
+					var pPopDivTitleBG = document.createElement('div');
+					pPopDivTitleBG.setAttribute('id', 'gvp_pPopDivTitleBG');
+					pPopDivTitleBG.setAttribute('style', 'height:37px; background-image:url(//www.att.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;');
+					if(IE) {
+						pPopDivTitleBG.style.setAttribute('cssText', 'height:37px; background-image:url(//www.att.com/media/en_US/images/img/img_uverse-gradient-4x37_AA0009R6.gif); background-repeat:repeat-x; border-top:#FFFFFF solid 1px; border-left:#FFFFFF solid 1px; border-right:#FFFFFF solid 1px;');
+					}
+					var pPopDivTitleWrapper = document.createElement('div');
+					pPopDivTitleWrapper.setAttribute('id', 'gvp_pPopDivTitleWrapper');
+					pPopDivTitleWrapper.setAttribute('style', 'padding:10px;');
+					if(IE) {
+						pPopDivTitleWrapper.style.setAttribute('cssText', 'padding:10px;');
+					}
+					var pPopDivTitle = document.createElement('div');
+					pPopDivTitle.setAttribute('id', 'gvp_pPopDivTitle');
+					pPopDivTitle.setAttribute('style', 'float:left; padding-left:10px;');
+					if(IE) {
+						pPopDivTitle.style.setAttribute('cssText', 'float:left; padding-left:10px;');
+					}
+					var pPopDivTitleText = document.createElement('H1');
+					pPopDivTitleText.setAttribute('id', 'gvp_mainPopUpTitle');
+					pPopDivTitleText.setAttribute('style', 'font-size:14px;');
+					if(IE) {
+						pPopDivTitleText.style.setAttribute('cssText', 'font-size:14px;');
+					}
+					var pPopDivCloseButton = document.createElement('div'); 
+					pPopDivCloseButton.setAttribute('id', 'gvp_popCloseButton');
+					//pPopDivCloseButton.setAttribute('onclick', 'gvp.closePopup()');
+					pPopDivCloseButton.setAttribute('style', 'text-align:right; font-size:11px;');
+					if(IE) {
+						pPopDivCloseButton.style.setAttribute('cssText', 'text-align:right; font-size:11px;');
+					}
+					
+					var pPopDivBody = document.createElement('div'); 
+					pPopDivBody.setAttribute('id', 'gvp_mainPopupBody');
+					pPopDivBody.setAttribute('style', 'border:#CCCCCC solid 1px; margin:10px;');
+					if(IE) {
+						pPopDivBody.style.setAttribute('cssText', 'border:#CCCCCC solid 1px; margin:10px;');
+					}
+					
+					var pPopDivButton = document.createElement('div'); 
+					pPopDivButton.setAttribute('id', 'gvp_mainPopupButton');
+					pPopDivButton.setAttribute('style', 'padding-right:10px;padding-bottom:8px;');
+					if(IE) {
+						pPopDivButton.style.setAttribute('cssText', 'padding-right:10px;padding-bottom:8px;');
+					}
+					
+					body.appendChild(pPopDiv);
+					this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivTitleBG);
+					this.getElementObj('gvp_pPopDivTitleBG').appendChild(pPopDivTitleWrapper);
+					this.getElementObj('gvp_pPopDivTitleWrapper').appendChild(pPopDivTitle);
+					this.getElementObj('gvp_pPopDivTitle').appendChild(pPopDivTitleText);
+					this.getElementObj('gvp_pPopDivTitleWrapper').appendChild(pPopDivCloseButton);
+					this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivBody);
+					this.getElementObj('gvp_mainPopupDiv').appendChild(pPopDivButton);
 				}
-				if(playerType == '360') {
-					this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:600px;height:335px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="/media/en_US/360s/gvp360Wrapper.html#' + pSku + '" style="margin-left:-170px;width:740px;height:335px;" frameborder="0" align="left" scrolling="no"></iframe></div>';
-					if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
-					shouldShow = true;
-				} else if(playerType == 'details') {
-					this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:755px;height:440px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="/media/en_US/360s/gvpDeviceDetailsWrapper.html#' + pSku + '" style="margin-top:-100px;margin-left:-125px;width:800px;height:526px;"frameborder="0" align="center" scrolling="no"></iframe></div>';
-					if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
-					shouldShow = true;
-				} else if(playerType == 'inline') {
-					this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:'+pFrameWidth+'px;height:'+pFrameHeight+'px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;">'+ pInlineContent +'</div>';
-					if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
-					shouldShow = true;
-				} else if(playerType == 'vid') { 
-					var singleVidPath;
-					var loc = window.location.href;
-					//alert(loc);
-					if(loc.indexOf('smartphones')!= -1) {
-						singleVidPath = 'std_vid';
-						this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="480" height="360" id="gvp_pop" align="TL"><param name="allowScriptAccess" value="always" /><param name="scale" value="noScale" /><param name="allowFullScreen" value="true" /><param name="FlashVars" value="_vidSrc='+ pVidSrc +'"><param name="movie" value="/media/en_US/360s/'+singleVidPath+'.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="/media/en_US/360s/'+singleVidPath+'.swf" FlashVars="_vidSrc='+pVidSrc+'" allowfullscreen="true" id="gvp_pop" quality="high" bgcolor="#ffffff" width="480" height="360" name="gvp_pop" scale="noScale" align="TL" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
-						shouldShow = true;
+					if(title != '') {
+						this.getElementObj("gvp_mainPopUpTitle").innerHTML = title;
 					} else {
-						singleVidPath = 'gvp_vid';
-						this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="292" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="FlashVars" value="_vidSrc='+ pVidSrc +'"><param name="movie" value="/media/en_US/360s/'+singleVidPath+'.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="/media/en_US/360s/'+singleVidPath+'.swf" FlashVars="_vidSrc='+pVidSrc+'" allowfullscreen="true" style="width:516px;height:292px" id="gvp_pop" quality="high" bgcolor="#ffffff" width="516" height="292" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
-						shouldShow = true;
+						this.getElementObj("gvp_mainPopUpTitle").innerHTML = 'AT&amp;T Video Player';
 					}
-				} else if(playerType == 'div') { 
-					this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:'+pFrameWidth+'px;height:'+pFrameHeight+'px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="' + pFrameSrc + '"width="100%" height="100%" frameborder="0" align="left" scrolling="auto"></iframe></div>';
-					if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
-					shouldShow = true;
-				} else if(playerType == 'gvp'){
-					var p_start = pConfig.indexOf('gvpEnv=');
-					if (p_start != -1) {
-						var p_end = pConfig.indexOf('&', p_start);
-						if(p_end == -1) {
-							p_end = pConfig.length;
+					if(playerType == '360') {
+						this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:600px;height:335px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="/media/en_US/360s/gvp360Wrapper.html#' + pSku + '" style="margin-left:-170px;width:740px;height:335px;" frameborder="0" align="left" scrolling="no"></iframe></div>';
+						if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
+						shouldShow = true;
+					} else if(playerType == 'details') {
+						this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:755px;height:440px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="/media/en_US/360s/gvpDeviceDetailsWrapper.html#' + pSku + '" style="margin-top:-100px;margin-left:-125px;width:800px;height:526px;"frameborder="0" align="center" scrolling="no"></iframe></div>';
+						if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
+						shouldShow = true;
+					} else if(playerType == 'inline') {
+						this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:'+pFrameWidth+'px;height:'+pFrameHeight+'px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;">'+ pInlineContent +'</div>';
+						if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
+						shouldShow = true;
+					} else if(playerType == 'vid') { 
+						var singleVidPath;
+						var loc = window.location.href;
+						//alert(loc);
+						if(loc.indexOf('smartphones')!= -1) {
+							singleVidPath = 'std_vid';
+							this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="480" height="360" id="gvp_pop" align="TL"><param name="allowScriptAccess" value="always" /><param name="scale" value="noScale" /><param name="allowFullScreen" value="true" /><param name="FlashVars" value="_vidSrc='+ pVidSrc +'"><param name="movie" value="/media/en_US/360s/'+singleVidPath+'.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="/media/en_US/360s/'+singleVidPath+'.swf" FlashVars="_vidSrc='+pVidSrc+'" allowfullscreen="true" id="gvp_pop" quality="high" bgcolor="#ffffff" width="480" height="360" name="gvp_pop" scale="noScale" align="TL" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
+							shouldShow = true;
+						} else {
+							singleVidPath = 'gvp_vid';
+							this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="292" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="FlashVars" value="_vidSrc='+ pVidSrc +'"><param name="movie" value="/media/en_US/360s/'+singleVidPath+'.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="/media/en_US/360s/'+singleVidPath+'.swf" FlashVars="_vidSrc='+pVidSrc+'" allowfullscreen="true" style="width:516px;height:292px" id="gvp_pop" quality="high" bgcolor="#ffffff" width="516" height="292" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
+							shouldShow = true;
 						}
-						p_locEnv = pConfig.substring((p_start+7),p_end);
-					} else {
-						p_locEnv = '/media/gvp/';
-					}
-					if(this.mobile.isMobile) {
+					} else if(playerType == 'div') { 
+						this.getElementObj("gvp_mainPopupBody").innerHTML = '<div align="center" style="width:'+pFrameWidth+'px;height:'+pFrameHeight+'px;overflow:hidden;text-align:center;margin-left:auto;margin-right:auto;"><iframe src="' + pFrameSrc + '"width="100%" height="100%" frameborder="0" align="left" scrolling="auto"></iframe></div>';
+						if(! IE){this.getElementObj('gvp_mainPopupBody').focus();}
+						shouldShow = true;
+					} else if(playerType == 'gvp'){
+						var p_start = pConfig.indexOf('gvpEnv=');
+						if (p_start != -1) {
+							var p_end = pConfig.indexOf('&', p_start);
+							if(p_end == -1) {
+								p_end = pConfig.length;
+							}
+							p_locEnv = pConfig.substring((p_start+7),p_end);
+						} else {
+							p_locEnv = '/media/gvp/';
+						}
 						
-						if(this.mobile.isDeviceScreenSmall()) {
-						var background = document.getElementById("gvp_overlayDiv");
-						background.parentNode.removeChild(background);
-						this.mobile.insertVideoElemInPage(pConfig, p_locEnv);
-							
-						} 
-						else {
+						if(this.mobile.isMobile) {						
 							this.mobile.setContentStr(pConfig, p_locEnv);
 							this.mobile.openModal(this);
+						} 
+						
+						else if (!this.getFlashVersion()) {
+							this.rplFlash('noFlash');
+						} 
+						else {
+							if( pConfig.indexOf('gvpLgFormat') == -1 ) {
+								this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="415" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="movie" value="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" allowfullscreen="true" id="gvp_pop_embed" quality="high" bgcolor="#ffffff" width="516" height="415" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
+							} else {
+								this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="415" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="movie" value="'+ p_locEnv +'ATT_GlobalVideoPlayer_640x480'+ gvpVersion +'.swf?configXml=' + pConfig + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="'+ p_locEnv +'ATT_GlobalVideoPlayer_640x480'+ gvpVersion +'.swf?configXml=' + pConfig + '" allowfullscreen="true" id="gvp_pop_embed" quality="high" bgcolor="#ffffff" width="516" height="415" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
+							}
+							shouldShow = true;
 						}
-					} 
-					else if (!this.getFlashVersion()) {
-						this.rplFlash('noFlash');
-					} 
-					else {
-						if( pConfig.indexOf('gvpLgFormat') == -1 ) {
-                        	this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="415" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="movie" value="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="'+ p_locEnv +'ATT_GlobalVideoPlayer'+ gvpVersion +'.swf?configXml=' + pConfig + '" allowfullscreen="true" id="gvp_pop_embed" quality="high" bgcolor="#ffffff" width="516" height="415" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
-                        } else {
-                        	this.getElementObj("gvp_mainPopupBody").innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="//download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="516" height="415" id="gvp_pop" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="true" /><param name="movie" value="'+ p_locEnv +'ATT_GlobalVideoPlayer_640x480'+ gvpVersion +'.swf?configXml=' + pConfig + '" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="'+ p_locEnv +'ATT_GlobalVideoPlayer_640x480'+ gvpVersion +'.swf?configXml=' + pConfig + '" allowfullscreen="true" id="gvp_pop_embed" quality="high" bgcolor="#ffffff" width="516" height="415" name="gvp_pop" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="//www.adobe.com/go/getflashplayer" /></object>';
-                        }
-						shouldShow = true;
 					}
+					this.getElementObj('gvp_popCloseButton').innerHTML = '<a href="javascript: void(0)" onClick="gvp.closePopup();" id="p_CloseButton">Close <img src="//www.att.com/media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif" border="0"/></a>';
+					this.getElementObj('gvp_mainPopupButton').innerHTML = mFooterButton;
+				if (IE6) {
+					//hideSelectOption(true);
 				}
-				this.getElementObj('gvp_popCloseButton').innerHTML = '<a href="javascript: void(0)" onClick="gvp.closePopup();" id="p_CloseButton">Close <img src="//www.att.com/media/en_US/images/btn/btn_close-popup_red_AA0009RA.gif" border="0"/></a>';
-				this.getElementObj('gvp_mainPopupButton').innerHTML = mFooterButton;
-			if (IE6) {
-				//hideSelectOption(true);
-			}
-			if(shouldShow) {
-				this.divPopUp('gvp_mainPopupDiv',true);
-				var t=setTimeout("gvp.doTitleFocus();",1000);
+				if(shouldShow) {
+					this.divPopUp('gvp_mainPopupDiv',true);
+					var t=setTimeout("gvp.doTitleFocus();",1000);
+				}
 			}
 			
 		} catch(e) {
@@ -1353,6 +1351,7 @@ gvpUtils.prototype.mobile = new function () {
 	var contentStr;
 	var h264FileName;
 	var noVideo; 
+	var p_locEnv = '/media/gvp/';
 	
 	//Store the appropriate video HTML in contentStr
 	this.setContentStr = function (pConfig, p_locEnv) {
@@ -1479,8 +1478,10 @@ gvpUtils.prototype.mobile = new function () {
 		noVideoImgFrag.appendChild(imgEl);
 		return noVideoImgFrag;
 	}
+	
 	// Build a video element for a device and particular operating system.
 	this.buildVideoElement = function (pConfig, p_locEnv) {
+	
 		var h264fn = this.buildH264Filename(pConfig, p_locEnv);
 		
 		// If no filename is available, return with the No Video image element.
@@ -1508,7 +1509,7 @@ gvpUtils.prototype.mobile = new function () {
 		videoEl.setAttribute('poster',p_locEnv + 'global_resources/defaultMedia/GVP_iPhone.jpg');
 		videoEl.setAttribute('width','1');
 		videoEl.setAttribute('height','1');
-		videoEl.setAttribute('onended','closeModal');
+		videoEl.setAttribute('onended','webkitExitFullscreen();');
 			 
 		// Append child elements of the video element.
 		videoEl.appendChild(videoSourceEl);								
@@ -1517,6 +1518,9 @@ gvpUtils.prototype.mobile = new function () {
 		document.getElementsByTagName('body')[0].appendChild(vidFrag);	
 		
 		// IOS needs the load event to invoke the event listener
+		videoEl.addEventListener('load',function() {
+				videoEl.play();
+			},true);
 		if(isIOS) {
 			videoEl.addEventListener('load',function() {
 				videoEl.play();
@@ -1550,12 +1554,10 @@ gvpUtils.prototype.mobile = new function () {
 		var voidVid = document.getElementById("currEmbStream");
 		if (voidVid === null){
 			this.buildVideoElement(pConfig, p_locEnv);
-			this.overLayDiv(false);
 		}
 		else {
 			voidVid.parentNode.removeChild(voidVid);
 			this.buildVideoElement(pConfig, p_locEnv);
-			this.overLayDiv(false);
 		}
 	};
 };

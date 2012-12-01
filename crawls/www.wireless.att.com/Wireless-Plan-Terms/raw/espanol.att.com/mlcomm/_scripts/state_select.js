@@ -1,9 +1,15 @@
 // JavaScript Document
 
  
+URL  = location.href
+uprod = URL.split('prod=');
+prod =uprod[1];
+ 
 
 
 function renderStateSelectMenu() {   
+
+
 	//DO NOT CHANGE THE ORDER OF THIS LIST !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!  WHEN ADDING A NEW STATE, PLEASE BE AWARE THAT THE STATES POPULATE HORIZONTALLY ACROSS THE SCREEN
 	var allStates  = { 'alabama':'Alabama',
 									'kansas':'Kansas',
@@ -353,7 +359,12 @@ function renderStateSelectMenu() {
 	 }
 	else if($('#chooseState').is('.disclaimers_internet')) {
 	 $.each(allStates, function(index, value) {  
+		if(prod=="UHSI") {
+      $('#ssmenu li#' + index).html('<a href="/legal_terms/disclaimers/att_internet.html?id=' + index  + '&prod=UHSI" title="AT&amp;T Offer Details - Internet" class="initCap">' + value + '</a>');
+	 } 
+	 else {
       $('#ssmenu li#' + index).html('<a href="/legal_terms/disclaimers/att_internet.html?id=' + index  + '" title="AT&amp;T Offer Details - Internet" class="initCap">' + value + '</a>');
+	 }
     }); 
 	 }
 	else if($('#chooseState').is('.disclaimers_uverse')) {

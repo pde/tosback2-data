@@ -744,3 +744,11 @@ initFeatured();
 initFooter();
 initCompatibility();
 initAutoComplete();
+
+NBC('a.top').click(function(e){
+    e.preventDefault();                                                                                                                                                                                                                                 
+        NBC('body, html, document').animate({
+            scrollTop : 0
+        }, 500);
+        return false;
+});

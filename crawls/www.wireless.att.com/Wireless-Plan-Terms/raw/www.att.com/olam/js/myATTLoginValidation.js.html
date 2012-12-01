@@ -612,9 +612,13 @@ function checkFormValues(formObj)
 			if(jQuery("#password")!=null && jQuery("#password").attr("real")!=null){
 				realPass = trim(jQuery("#password").attr("real")); // take the password
 			}
-			if(realPass!=null && jQuery('[name="password"]')!=null && (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
+			if(realPass!=null && jQuery.trim(realPass)!="" 
+				&& jQuery('[name="password"]')!=null 
+				&& (jQuery('[name="password"]').val() == null || jQuery('[name="password"]').val() =="")){
 				jQuery('[name="password"]').val(realPass); // copy over the password
+				iphonePassForm.iphoneOptions.pass.val(realPass);
 			}
+			jQuery("#password").attr("disabled", "disabled");
 		}
 		catch(exception){}
     }

@@ -26,6 +26,7 @@ $(document).ready(function() {
     removeSurveyFromMobile();
     loadCompBox();
     wireWorldWizard();
+    wireWaveHomePage();
 });
 
 function loadCompBox() {
@@ -70,6 +71,22 @@ function downton() {
         $("#header-phone img.js-header-phone").css("display", "none");
         $("#header-phone img.js-header-phone-downton").css("display", "block");
     }
+}
+
+function wireWaveHomePage() {
+    if ($(".WhatsIncludedBox ul#icons li").length > 0) {
+        $(".WhatsIncludedBox ul#icons li").click(function() {
+            var tmp = $(this).attr("class");
+            tmp = tmp.replace(/icon\d\sicon_/, "");
+            _gaq.push(['_trackEvent', 'Wave homepage (middle)', "What's included: " + tmp, "What's included: " + tmp]);
+        });
+    }
+    if ($("#ExceptionalFeaturedCruises_ExceptionalCruisesInfo").length > 0) {
+        $("#ExceptionalFeaturedCruises_ExceptionalCruisesInfo A").click(function() {
+            _gaq.push(['_trackEvent', 'Wave homepage (bottom)', "View Vantage fare benefits", "View full details"]);
+        });
+    }
+    
 }
 
 function wireWorldWizard() {
@@ -3360,7 +3377,7 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
         }
 
         function searchCatTogggle() {
-            $(".innerCont A.catHead").click(function(ev) {
+            $(".innerCont A.catHead, .innerCont A.catOpen").click(function(ev) {
                 ev.preventDefault();
                 var $baseDiv = $(this).parents(".innerCont");
                 var $chkContainer = $($baseDiv).find(".inLowerSecfFltr");
@@ -3369,6 +3386,7 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
                     $($chkContainer).slideDown(function() {
                         $baseDiv.removeClass("fClose").addClass("fOpen");
                         $chkContainer.css("display", "");
+                        $baseDiv.find("a.catOpen").html("close");
                     });
                 }
                 else {
@@ -3376,6 +3394,7 @@ function LaunchFileManagerBrowser(imagetextBoxClientId) {
                     $($chkContainer).slideUp(function() {
                         $baseDiv.removeClass("fOpen").addClass("fClose");
                         $chkContainer.css("display", "");
+                        $baseDiv.find("a.catOpen").html("open");
                     });
                 }
             }
@@ -4911,4 +4930,14 @@ searchControl.displayAJAXGif =  function (htSelector, margin) {
 }
 searchControl.hideSearchLoading = function() {
     $(".loadingDiv").css("display", "none");
+}
+
+function expandDetailsClickHandler() {
+    $('.ExpandingDetailsLink').click(function() {
+        var contentContainer = $(this).attr('id').replace("S", "H");        
+        $('.ExpandingDetailsHidden').hide(); //hide all other content
+        $('.ExpandingDetailsLink').show();  //show all links
+        $('#' + contentContainer).show();  //show clicked content
+        $(this).hide(); //hide this link       
+    });
 }

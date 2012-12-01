@@ -229,6 +229,8 @@ if (domain.indexOf("fusionfall") != -1) {
 	path1 = "formula-cartoon", path2 = "games";
 } else if (pathname.match(/\/wild-skies\//)) {
 	path1 = "dragons wild skies", path2 = "games";
+} else if (pathname.match(/\/finn-and-jakes-epic-quest\//)) {
+	path1 = "adventure time epic quest", path2 = "games";
 } else if (pathname.match(/^\/video\/problemsolverz/) || pathname.match(/^\/video\/tvmadness/)) {
 	path1 = "list";
 } else if (pathname.match(/^\/accounts\//)) {

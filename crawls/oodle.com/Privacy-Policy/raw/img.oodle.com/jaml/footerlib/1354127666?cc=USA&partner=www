@@ -1,0 +1,2189 @@
+/*!
+ * AmplifyJS 1.0.0 - Core, Store, Request
+ * 
+ * Copyright 2011 appendTo LLC. (http://appendto.com/team)
+ * Dual licensed under the MIT or GPL licenses.
+ * http://appendto.com/open-source-licenses
+ * 
+ * http://amplifyjs.com
+ */
+(function(a,b){var c=[].slice,d={},e=a.amplify={publish:function(a){var b=c.call(arguments,1),e,f,g=0,h;if(!d[a])return!0;for(f=d[a].length;g<f;g++){e=d[a][g],h=e.callback.apply(e.context,b);if(h===!1)break}return h!==!1},subscribe:function(a,b,c,e){arguments.length===3&&typeof c=="number"&&(e=c,c=b,b=null),arguments.length===2&&(c=b,b=null),e=e||10;var f=0,g=a.split(/\s/),h=g.length;for(;f<h;f++){a=g[f],d[a]||(d[a]=[]);var i=d[a].length-1,j={callback:c,context:b,priority:e};for(;i>=0;i--)if(d[a][i].priority<=e){d[a].splice(i+1,0,j);return c}d[a].unshift(j)}return c},unsubscribe:function(a,b){if(!!d[a]){var c=d[a].length,e=0;for(;e<c;e++)if(d[a][e].callback===b){d[a].splice(e,1);break}}}}})(this),function(a,b){function e(a,e){c.addType(a,function(f,g,h){var i,j,k,l,m=g,n=(new Date).getTime();if(!f){m={},l=[],k=0;try{f=e.length;while(f=e.key(k++))d.test(f)&&(j=JSON.parse(e.getItem(f)),j.expires&&j.expires<=n?l.push(f):m[f.replace(d,"")]=j.data);while(f=l.pop())e.removeItem(f)}catch(o){}return m}f="__amplify__"+f;if(g===b){i=e.getItem(f),j=i?JSON.parse(i):{expires:-1};if(j.expires&&j.expires<=n)e.removeItem(f);else return j.data}else if(g===null)e.removeItem(f);else{j=JSON.stringify({data:g,expires:h.expires?n+h.expires:null});try{e.setItem(f,j)}catch(o){c[a]();try{e.setItem(f,j)}catch(o){throw c.error()}}}return m})}var c=a.store=function(a,b,d,e){var e=c.type;d&&d.type&&d.type in c.types&&(e=d.type);return c.types[e](a,b,d||{})};c.types={},c.type=null,c.addType=function(a,b){c.type||(c.type=a),c.types[a]=b,c[a]=function(b,d,e){e=e||{},e.type=a;return c(b,d,e)}},c.error=function(){return"amplify.store quota exceeded"};var d=/^__amplify__/;for(var f in{localStorage:1,sessionStorage:1})try{window[f].getItem&&e(f,window[f])}catch(g){}if(window.globalStorage)try{e("globalStorage",window.globalStorage[window.location.hostname]),c.type==="sessionStorage"&&(c.type="globalStorage")}catch(g){}(function(){if(!c.types.localStorage){var a=document.createElement("div"),d="amplify";a.style.display="none",document.getElementsByTagName("head")[0].appendChild(a),a.addBehavior&&(a.addBehavior("#default#userdata"),c.addType("userData",function(e,f,g){a.load(d);var h,i,j,k,l,m=f,n=(new Date).getTime();if(!e){m={},l=[],k=0;while(h=a.XMLDocument.documentElement.attributes[k++])i=JSON.parse(h.value),i.expires&&i.expires<=n?l.push(h.name):m[h.name]=i.data;while(e=l.pop())a.removeAttribute(e);a.save(d);return m}e=e.replace(/[^-._0-9A-Za-z\xb7\xc0-\xd6\xd8-\xf6\xf8-\u037d\u37f-\u1fff\u200c-\u200d\u203f\u2040\u2070-\u218f]/g,"-");if(f===b){h=a.getAttribute(e),i=h?JSON.parse(h):{expires:-1};if(i.expires&&i.expires<=n)a.removeAttribute(e);else return i.data}else f===null?a.removeAttribute(e):(j=a.getAttribute(e),i=JSON.stringify({data:f,expires:g.expires?n+g.expires:null}),a.setAttribute(e,i));try{a.save(d)}catch(o){j===null?a.removeAttribute(e):a.setAttribute(e,j),c.userData();try{a.setAttribute(e,i),a.save(d)}catch(o){j===null?a.removeAttribute(e):a.setAttribute(e,j);throw c.error()}}return m}))}})(),function(){function d(a){return a===b?b:JSON.parse(JSON.stringify(a))}var a={};c.addType("memory",function(c,e,f){if(!c)return d(a);if(e===b)return d(a[c]);if(e===null){delete a[c];return null}a[c]=e,f.expires&&setTimeout(function(){delete a[c]},f.expires);return e})}()}(this.amplify=this.amplify||{}),function(a,b){function d(a){return{}.toString.call(a)==="[object Function]"}function c(){}a.request=function(b,e,f){var g=b||{};typeof g=="string"&&(d(e)&&(f=e,e={}),g={resourceId:b,data:e||{},success:f});var h={abort:c},i=a.request.resources[g.resourceId],j=g.success||c,k=g.error||c;g.success=function(b,c){c=c||"success",a.publish("request.success",g,b,c),a.publish("request.complete",g,b,c),j(b,c)},g.error=function(b,c){c=c||"error",a.publish("request.error",g,b,c),a.publish("request.complete",g,b,c),k(b,c)};if(!i){if(!g.resourceId)throw"amplify.request: no resourceId provided";throw"amplify.request: unknown resourceId: "+g.resourceId}if(!a.publish("request.before",g))g.error(null,"abort");else{a.request.resources[g.resourceId](g,h);return h}},a.request.types={},a.request.resources={},a.request.define=function(b,c,d){if(typeof c=="string"){if(!(c in a.request.types))throw"amplify.request.define: unknown type: "+c;d.resourceId=b,a.request.resources[b]=a.request.types[c](d)}else a.request.resources[b]=c}}(amplify),function(a,b,c){var d=["status","statusText","responseText","responseXML","readyState"],e=/\{([^\}]+)\}/g;a.request.types.ajax=function(f){f=b.extend({type:"GET"},f);return function(g,h){function q(a,e){b.each(d,function(a,b){try{p[b]=i[b]}catch(c){}}),/OK$/.test(p.statusText)&&(p.statusText="success"),a===c&&(a=null),o&&(e="abort"),/timeout|error|abort/.test(e)?p.error(a,e):p.success(a,e),q=b.noop}var i,j=f.url,k=g.data,l=h.abort,m={},n=[],o=!1,p={readyState:0,setRequestHeader:function(a,b){return i.setRequestHeader(a,b)},getAllResponseHeaders:function(){return i.getAllResponseHeaders()},getResponseHeader:function(a){return i.getResponseHeader(a)},overrideMimeType:function(a){return i.overrideMideType(a)},abort:function(){o=!0;try{i.abort()}catch(a){}q(null,"abort")},success:function(a,b){g.success(a,b)},error:function(a,b){g.error(a,b)}};typeof k!="string"&&(k=b.extend(!0,{},f.data,k),j=j.replace(e,function(a,b){if(b in k){n.push(b);return k[b]}}),b.each(n,function(a,b){delete k[b]})),b.extend(m,f,{url:j,type:f.type,data:k,dataType:f.dataType,success:function(a,b){q(a,b)},error:function(a,b){q(null,b)},beforeSend:function(b,c){i=b,m=c;var d=f.beforeSend?f.beforeSend.call(this,p,m):!0;return d&&a.publish("request.before.ajax",f,g,m,p)}}),b.ajax(m),h.abort=function(){p.abort(),l.call(this)}}};var f=a.request.cache={_key:function(a,b,c){function g(){return c.charCodeAt(e++)<<24|c.charCodeAt(e++)<<16|c.charCodeAt(e++)<<8|c.charCodeAt(e++)<<0}c=b+c;var d=c.length,e=0,f=g();while(e<d)f^=g();return"request-"+a+"-"+f},_default:function(){var a={};return function(b,c,d,e){var g=f._key(c.resourceId,d.url,d.data),h=b.cache;if(g in a){e.success(a[g]);return!1}var i=e.success;e.success=function(b){a[g]=b,typeof h=="number"&&setTimeout(function(){delete a[g]},h),i.apply(this,arguments)}}}()};a.store&&(b.each(a.store.types,function(b){f[b]=function(c,d,e,g){var h=f._key(d.resourceId,e.url,e.data),i=a.store[b](h);if(i){e.success(i);return!1}var j=g.success;g.success=function(d){a.store[b](h,d,{expires:c.cache.expires}),j.apply(this,arguments)}}}),f.persist=f[a.store.type]),a.subscribe("request.before.ajax",function(a){var b=a.cache;if(b){b=b.type||b;return f[b in f?b:"_default"].apply(this,arguments)}}),a.request.decoders={jsend:function(a,b,c,d,e){a.status==="success"?d(a.data):a.status==="fail"?e(a.data,"fail"):a.status==="error"&&(delete a.status,e(a,"error"))}},a.subscribe("request.before.ajax",function(c,d,e,f){function k(a,b){h(a,b)}function j(a,b){g(a,b)}var g=f.success,h=f.error,i=b.isFunction(c.decoder)?c.decoder:c.decoder in a.request.decoders?a.request.decoders[c.decoder]:a.request.decoders._default;!i||(f.success=function(a,b){i(a,b,f,j,k)},f.error=function(a,b){i(a,b,f,j,k)})})}(amplify,jQuery)
+;jQ('body').trigger("amplify.ready");
+/*
+ * commmon js shared by oodle and facebook
+ */
+odl.namespace('common');
+
+//get running instance such as 'eng'
+odl.common.getInstance = function()
+{
+    return "prod";
+};
+
+/*page info, used to set page info that can be referenced later in javascript
+ * 
+ * parameters used so far:
+ *   pageType : the same as jaml.yml file such as 'search', 'detail'
+ *   listingId : used on detail page
+ */
+
+odl.namespace('pageInfo');
+
+odl.namespace("listing_action");
+
+odl.listing_action =
+{
+	mapImpl : 'google',
+
+	setMapImple : function(mapImpl)
+	{
+		odl.listing_action.mapImpl = mapImpl;
+	},
+
+	hideResultMsg:function(divID)
+	{
+		var msgElemnt = document.getElementById(divID);
+
+		if (msgElemnt)
+		{
+			msgElemnt.style.display = 'none';
+		}
+	},
+
+	updateMsg:function(msg, listingID, timeOut)
+	{
+		var divID = listingID + '-action-result';
+		var msgElemnt = document.getElementById(divID);
+
+		if (msgElemnt)
+		{
+			msgElemnt.style.display = 'block';
+			msgElemnt.innerHTML = msg;
+			if (timeOut > 0)
+			{
+				var timeoutID = setTimeout("odl.listing_action.hideResultMsg('" + divID + "')", timeOut);
+				//clearTimeout(timeoutID)
+			}
+		}
+	},
+
+	listingAction:function(listingID, action, source, partner)
+	{
+		var handleSuccess = function (data, status, xhr) {
+			try {
+	   			var formData = data;
+	   			if (formData.result)
+	   			{
+					odl.listing_action.updateMsg(formData.result, listingID, 7000);
+	   			}
+				else
+					odl.listing_action.updateMsg(formData.error['*'], listingID, 7000);
+			}
+			catch (e)
+			{
+			    // Unable to parse data
+			    odl.listing_action.updateMsg('Unable to parse response.', listingID, 7000);
+			}
+		}
+
+		var cObj = jQ.ajax({type: 'POST',
+							url: '/ajax/listingaction/?action=admin&source=' + source +
+								'&type=' + action +'&listing_id=' + listingID + '&partner=' + partner,
+							dataType: 'json',
+							error: function () { odl.listing_action.updateMsg('No response.', listingID, 7000); },
+							success: handleSuccess,
+							timeout: 180000});
+	},
+
+	loadMapDiv:function(mapDiv, data)
+	{
+		var lat = data.lat;
+		var lng = data.lng;
+		var rough = data.rough;
+
+		if (rough) {
+			var mapMessageDiv = document.createElement('div');
+			mapMessageDiv.innerHTML = 'Indicated location is approximate';
+			mapMessageDiv.className = "map-message";
+			mapDiv.appendChild(mapMessageDiv);
+		}
+
+		var gMapDiv = document.createElement('div');
+		gMapDiv.style.width = data.width;
+		gMapDiv.style.height = data.height;
+		gMapDiv.className = "map-div";
+
+		mapDiv.appendChild(gMapDiv);
+		var gmap = new GMap2(gMapDiv);
+
+		gmap.setCenter(new GLatLng(lat, lng), 13);
+		GEvent.addListener(gmap, "moveend", function()
+		{
+			gmap.panTo(new GLatLng(lat, lng));
+		});
+
+		gmap.addControl(new GSmallZoomControl());
+
+		var pin = new GIcon();
+
+		pin.shadow = "http://i.oodleimg.com/a/maps/shadow.png";
+		if (rough)
+			pin.shadow = "http://i.oodleimg.com/a/maps/shadow_rough.png";
+		pin.shadowSize = new GSize(22, 24);
+		pin.iconSize = new GSize(14, 24);
+		pin.iconAnchor = new GPoint(7, 22);
+		pin.infoWindowAnchor = new GPoint(7, 5);
+		pin.image = "http://i.oodleimg.com/a/maps/icon.png";
+		if (rough) {
+			pin.image = "http://i.oodleimg.com/a/maps/icon_rough.png";
+		}
+
+		var marker = new GMarker(new GLatLng(lat, lng), pin);
+		gmap.addOverlay(marker);
+	},
+
+	handleDataSuccess:function(o)
+	{
+		var listingID = o.argument[1];
+  		var bd = o.argument[0];
+  			var html = o.argument[3];
+
+		var data = o.data;
+  		bd.style.background = 'white';
+  		if (o.argument[3])
+  		{
+  			bd.innerHTML = data.html + html;
+  		}
+  		else
+  		{
+			bd.innerHTML = data.html;
+  		}
+  		
+		var callback = function () {
+			var myTabs = new YAHOO.widget.TabView();
+	
+			var tabs = {
+				details: 'Details',
+				md: 'Market Data',
+				contact: 'Contact Seller',
+				share: 'Share',
+				report: 'Report'};
+	
+			var tabIndex = 0;
+			for (index in tabs)
+			{
+				var tabID = listingID + '-' + index;
+				var tabEl = $(tabID);
+	
+				if (tabEl)
+				{
+					var tabObj = new YAHOO.widget.Tab({
+							        label:  '<span id="' + index +'-label">' + tabs[index] + '</span>',
+							        contentEl: tabEl
+							    });
+	
+					tabObj.viewType = index;
+				    myTabs.addTab(tabObj);
+				}
+			}
+	
+			YAHOO.widget.Tab.prototype.ACTIVE_TITLE = '';
+  		
+			var tabView = myTabs;
+	
+		    var container = $(listingID + '-popup');
+		    tabView.appendTo(container);
+	
+		    var handleActiveTabChange = function(e, listingID)
+		    {
+		    	var tab = e.newValue;
+		    	var reCaptcha = listingID + '-' + tab.viewType + '-captcha';
+		    	var reCaptchaEl = $(reCaptcha);
+		    	if (reCaptchaEl) {
+		    		Recaptcha.create(data.captchakey, reCaptcha, {theme: "red"});
+		    	}
+		    }
+	
+		    tabView.addListener('activeTabChange', handleActiveTabChange, listingID);
+			tabView.set('activeIndex', o.argument[2]);
+			odl.listing_action["tab-" + listingID] = tabView;
+	
+			// Set up domain proxy for contact form
+			var domainDiv = $(listingID + '-domain');
+			if (domainDiv)
+			{
+				domainDiv.value = window.location.hostname;
+			}
+	
+			var mapDiv = $('popup-map-' + listingID);
+			if (mapDiv)
+			{
+				var loadMapFunc = function()
+				{
+					if (!window.GBrowserIsCompatible ||
+				    !window.GControl ||
+				    !window.GMap2)
+					{
+						setTimeout(loadMapFunc, 200);
+						return;
+					}
+
+					odl.listing_action.loadMapDiv(mapDiv, data.map);
+				};
+
+				LazyLoad.js(['http://img.oodle.com/jaml/lazyloadmap/1354143727?cc=USA&partner=www'], loadMapFunc, null, null, true);
+			}
+		};
+		odl.legacy_yui2.load(callback);
+	},
+
+	init:function(listingID, activeTabIndex, html, page, category, tabName)
+	{
+		var cmReport = tabName + '-_-' + page + '-_-' + category;
+		cmCreateManualLinkClickTag('/event-conversion.php?cm_sp=' + cmReport);
+		var mediaFlashContianer = $('media-flash-container');
+		
+		if (mediaFlashContianer)
+		{
+			mediaFlashContianer.style.visibility = "hidden";
+		}
+		
+		var divID = 'listing-detail-popup-' + listingID;
+		var popupEl = $(divID);
+		if (!popupEl)
+		{
+			popupEl = document.createElement('div');
+			popupEl.id = divID;
+			popupEl.className = "yui-skin-sam pop-up";
+
+			var bd =  document.createElement('div');
+			bd.id = divID + '-bd';
+			bd.style.height = '490px'
+			bd.className = "bd";
+			popupEl.appendChild(bd);
+			bd.style.background = 'url(http://i.oodleimg.com/a/lightbox-loading.gif) 50% 50% no-repeat white';
+
+			sUrl = '/ajax/popup/?listing_id=' + listingID + '&page=' + page;
+			jQ.ajax({ type: 'GET',
+					  url: sUrl,
+					  dataType: 'json',
+					  timeout: 5000,
+					  failure:  function() {
+					  		bd.style.background = "white";
+					  		bd.innerHTML = 'Oops! There was a communication error. Please reload your page and try again.'
+					  	},
+					  success: function (data) {
+					  		o = {};
+					  		o.argument = [bd, listingID, activeTabIndex, html];
+					  		o.data = data;
+					  		odl.listing_action.handleDataSuccess(o)}});
+		}
+		else
+		{
+			odl.listing_action["tab-" + listingID].set('activeIndex', activeTabIndex);
+		}
+
+		var renderAsIframe = false;
+		if (jQ(document.documentElement).hasClass('ie6'))
+			renderAsIframe = true;
+		
+		var callback = function () { 
+			var popupModal = new YAHOO.widget.Dialog(
+					popupEl,
+					{	width: '480px',
+						iframe: renderAsIframe,
+						draggable : true,
+						zIndex : getTopZIndex(),
+						underlay : 'shadow',
+						fixedcenter: true,
+						modal : true,
+						hideaftersubmit: true,
+						effect : {effect:YAHOO.widget.ContainerEffect.FADE,duration:0.50}
+					});
+	
+			document.body.className = "yui-skin-sam"
+			var hiddenEl = $('hiddenmodals');
+	
+			if (!bd) {
+				bd = $(divID + '-bd');
+			}
+	
+			if (bd)
+			{
+				bd.style.display = 'block';
+				popupModal.cancelEvent.fire = function() {
+					bd.style.display = 'none';
+					if (mediaFlashContianer)
+					{
+						mediaFlashContianer.style.visibility = "visible";
+					}
+				}
+			}
+	
+			popupModal.render(hiddenEl);
+			popupModal.show();
+			if (getWindowHeight() < 550)
+			{
+				popupModal.cfg.setProperty('fixedcenter', false);
+			}
+	
+			if (odl.listing_action.currentModal &&
+				odl.listing_action.currentModal != popupModal)
+			{
+				odl.listing_action.currentModal.hide();
+			}
+			odl.listing_action.currentModal = popupModal;
+		};
+		odl.legacy_yui2.load(callback);
+	},
+
+	resetShareListing:function(listingID, email)
+	{
+	},
+
+	submitShareWithFriend:function(listingID)
+	{
+		var handleSuccess = function(data)
+		{
+			if (data.result)
+			{
+				var listingID = odl.listing_action.listingID;
+				var resultEl = $(listingID + '-share-result');
+				var formEl = $(listingID + '-share-form');
+
+				resultEl.innerHTML = data.result;
+				resultEl.style.display = 'block';
+				formEl.style.display = 'none';
+			}
+			else
+			{
+				Recaptcha.reload();
+			}
+		}
+
+		odl.listing_action.listingID = listingID;
+		odl.form.startRequest(
+				'share-' + listingID,
+				'/ajax/listingaction/?action=emailfriend',
+				handleSuccess);
+	},
+
+	submitReportListing:function(listingID)
+	{
+		var handleSuccess = function(data)
+		{
+			if (data.result)
+			{
+				var listingID = odl.listing_action.listingID;
+				var resultEl = $(listingID + '-report-result');
+				var formEl = $(listingID + '-report-form');
+
+				if (data.result.redirect)
+				{
+					var listingID = data.result.redirect;
+					if (element)
+					{
+						var url = element.attributes.getNamedItem("href").value;
+						window.location = url;
+					}
+				}
+				else
+				{
+					resultEl.innerHTML = data.result.msg;
+					resultEl.style.display = 'block';
+					formEl.style.display = 'none';
+				}
+			}
+		}
+
+		odl.listing_action.listingID = listingID;
+		odl.form.startRequest(
+				'listing_report-' + listingID,
+				'/ajax/listingaction/?action=report',
+				handleSuccess);
+	}
+}
+
+if (typeof Oodle == "undefined" || !Oodle) {
+	Oodle = {};
+}
+
+if (typeof Oodle.Wizard =="undefined" || !Oodle.Wizard) {
+	Oodle.Wizard = {};
+}
+
+Oodle.Wizard.cache = {};
+
+/**
+ * data => {key: value}
+ * 	if key starts with __, it will get passed along
+ * 	the whole wizard flow
+ * @param msgboxParams Object - Parameters to override on the msgbox (e.g. width, anchor_x / anchor_y , etc.)
+ */
+Oodle.Wizard.Show = function(wizID, actionID, data, actions, initEvent, endEvent, msgboxParams)
+{
+	Oodle.Wizard.msgboxParams = msgboxParams;
+	if (actions)
+	{
+		for(var i in actions)
+		{
+			Oodle.Wizard.CacheIt(wizID, actions[i], data, false);
+		}
+	}
+	Oodle.Wizard.CacheIt(wizID, actionID, data, true, endEvent);
+
+	if (initEvent) initEvent();
+
+	Oodle.Wizard.Step = function(wizID, actionID, step)
+	{
+		var url = Oodle.Wizard.GetURL(wizID, actionID, step);
+		var formID = actionID;
+
+		//var buttonEle = Oodle.Wizard.getButtonElement(wizID, actionID);
+		odl.form.startRequest(
+				formID,
+				url,
+				function(data) { Oodle.Wizard.handleSuccess(data, endEvent) },
+				null);
+	}
+
+	Oodle.Wizard.Finish = function()
+	{
+		if (Oodle.Wizard.Dialog)
+		{
+			Oodle.Wizard.Dialog.close();
+			Oodle.Wizard.Dialog = null;
+		}
+
+		if (endEvent) endEvent(false);
+	}
+
+	
+}
+
+/**
+ * Constructs a url to fetch an action
+ */
+Oodle.Wizard.GetURL = function(wizID, actionID, step)
+{
+	var url = '/' + wizID + '/' + actionID + '/' + step + '/';
+	return url;
+}
+
+/**
+ * Create a query string for a request based on the data passed in
+ */
+Oodle.Wizard.CreateQueryString = function(data)
+{
+	var queryString = '&';
+	for(var key in data)
+	{
+		value = data[key];
+		if (value instanceof Object)
+		{
+			for (var childKey in value)
+			{
+				queryString += key + '[' + childKey + ']=' + value[childKey] + '&';
+			}
+		}
+		else
+		{
+			queryString += key + '=' + value + '&';
+		}
+	}
+	return queryString;
+}
+
+/**
+ * Cache the contents of dialogs for future use.
+ *  Used by Oodle.Wizard.Show(), and also callable separately
+ *
+ * @param wizID - the controller
+ * @param actionID - the action
+ * @param data - any data to be included in the request
+ * @param handleSuccess - whether to call into 'Oodle.Wizard.handleSuccess' after fetching the contents
+ *                        which will open the form as display it
+ *
+ * NOTE: this is only appropriate for dialogs opened using Show()
+ *       next() or prev() or skip() should submit and get the results
+ *       from the server each time.
+ *
+ * EXAMPLE:
+ *
+ *   // Cache the twitter, my_space, and facebook tabbed_share 'show' steps
+ *   //   facebook is cached upon load, the rest are cached asynchronously
+ *   <a href="javascript:void(0)" onclick="Oodle.Wizard.CacheIt('tabbed_share', 'twitter'); Oodle.Wizard.CacheIt('tabbed_share', 'my_space'); Oodle.Wizard.Show('tabbed_share', 'facebook')"
+ *
+ * Make the request asynchronously, then cache the result of the request, optionally call into
+ *  Oodle.Wizard.handleSuccess which will render the contents of the response
+ *
+ */
+Oodle.Wizard.CacheIt = function(wizID, actionID, data, handleSuccess, endEvent)
+{
+	var url = Oodle.Wizard.GetURL(wizID, actionID, 'show');
+	if (!data)
+		data = {};
+
+	data['_c'] = wizID;
+	var queryString = Oodle.Wizard.CreateQueryString(data);
+
+	// short circuit if it's already cached
+	if (Oodle.Wizard.cache[url] !== undefined && Oodle.Wizard.cache[url][queryString])
+	{
+		if (handleSuccess)
+			Oodle.Wizard.handleSuccess(Oodle.Wizard.cache[url][queryString], endEvent);
+
+		return;
+	}
+
+	// Call back for the async request
+	var callback = function (data){
+			try {
+				// Get the response
+				var jsonText = data;
+				if (jsonText.indexOf('b64') == 0) {
+					jsonText = jQ.base64Decode(jsonText.substring(3));
+				}
+
+				// Parse the response
+				var formData = jQ.parseJSON(jsonText);
+
+				// Cache the response
+				if (Oodle.Wizard.cache[url] === undefined)
+				{
+					Oodle.Wizard.cache[url] = {};
+				}
+				if (formData.popup && formData.popup.cacheable)
+					Oodle.Wizard.cache[url][queryString] = formData;
+
+				var callback = null;
+				if (formData.init)
+				{
+					callback = function () { eval(formData.init); };
+				}
+
+				if (handleSuccess)
+					Oodle.Wizard.handleSuccess(formData, endEvent, callback);
+
+			}
+			catch (e)
+			{
+				log(e);
+				if (handleSuccess) { Oodle.Wizard.handleFailure('parse', endEvent); }
+			}
+	};
+	
+	var failure = function () {
+		Oodle.Wizard.handleFailure('request', endEvent);
+	}
+
+	// Show the Loading box if appropriate
+	if (handleSuccess)
+	{
+		if (!Oodle.Wizard.msgboxParams)
+			Oodle.Wizard.msgboxParams = {};
+		
+		Oodle.Wizard.Dialog = new odl.msgbox(Oodle.Wizard.getMsgboxParams({singleton: true, skin: 'oodle-lightbox', loading: true, close_x: true, width: 475, overlay: true}));
+	}
+
+	// Make the request
+	jQ.ajax({type: 'POST',
+			url: url,
+			timeout: 40000,
+			success: callback,
+			dataType: 'text',
+			data: queryString,
+			error: failure
+	});
+}
+
+Oodle.Wizard.getMsgboxParams = function (paramsMerge)
+{
+	var retParams = {};
+	
+	for (var i in paramsMerge)
+	{
+		retParams[i] = paramsMerge[i];
+	}
+	
+	if (Oodle.Wizard.msgboxParams)
+	{
+		for (var i in Oodle.Wizard.msgboxParams)
+		{
+			retParams[i] = Oodle.Wizard.msgboxParams[i];			
+		}
+	}
+	return retParams;
+}
+
+Oodle.Wizard.handleSuccess = function (data, endEvent, callback)
+{
+	if (Oodle.Wizard.Dialog && !data.keep_buttons_hidden)
+		Oodle.Wizard.Dialog.hideProgress();
+	
+	if (data.popup)
+	{
+		var header = data.popup.title;
+		var skinny = false;
+		if (data.popup.skinny)
+			skinny = data.popup.skinny;
+
+		// force skinny to be a boolean as dialog seems to care
+		if (skinny)
+			skinny = true;
+		else
+			skinny = false;
+
+		var closeX = false;
+		if (data.popup.close_x)
+			closeX = function () { Oodle.Wizard.Finish(); };
+		
+		var finish = function () {
+			var stepID = data.popup.stepID;
+			var wizID = data.popup.wizID;
+	
+			// Place the buttons at the bottom if not-skinny
+			if (!data.popup.skinny && data.popup.buttons)
+			{
+				var footerButtons = [];
+				for (var type in data.popup.buttons)
+				{
+					var button = data.popup.buttons[type];
+					if (button.label)
+					{
+						var skin = button.style == 'silver' ? 'light' : 'dark';
+						var action;
+						if (button.close)
+							action = function () { Oodle.Wizard.Finish(); };
+						else
+						{
+							action = (function (type) { 
+								return function () { 
+									Oodle.Wizard.Dialog.showProgress(); Oodle.Wizard.Step(wizID, stepID, type); 
+								}; 
+							})(type);
+						}
+						footerButtons.push({text: button.label, skin: skin, click: action});
+					}
+				}
+				Oodle.Wizard.Dialog.adjustButtons({buttons: footerButtons});
+	
+				
+				/***
+				 * Is this code needed anymore? MattM 12/8/2010
+				var footerButtons = $('oodle-modal-footer-contents');
+				var wizButtons = document.createElement('div');
+				wizButtons.className = 'wiz_button';
+				wizButtons.id = 'wiz_new_buttons';
+	
+				// Only put buttons there if they exist
+				if (data.popup && data.popup.button_html)
+					wizButtons.innerHTML = data.popup.button_html;
+	
+				jQ(footerButtons).append(wizButtons);
+				*/
+			}
+			if (callback)
+				callback();
+		}
+
+		// Code to reuse the dialog if it's already open (to avoid flickering)
+		if (!Oodle.Wizard.Dialog)
+		{
+			// Need a new dialog
+			Oodle.Wizard.Dialog = new odl.msgbox(Oodle.Wizard.getMsgboxParams({close_x: closeX, singleton: false, skin: 'oodle-lightbox', header: header, width: 475, content: {fbml_data: data.popup.fbml_content_html}, hide_footer: skinny}));
+			finish();
+		}
+		else
+		{
+			// Adjust the present dialog
+			if (Oodle.Wizard.Dialog.getHideFooter() != skinny)
+				Oodle.Wizard.Dialog.setHideFooter(skinny);
+
+			if (Oodle.Wizard.Dialog.getHeader() != header)
+				Oodle.Wizard.Dialog.setHeader(header);
+
+			Oodle.Wizard.Dialog.setCloseX(closeX);
+			Oodle.Wizard.Dialog.setContent({fbml_data: data.popup.fbml_content_html}, function () { finish(); }); // content_html is prefixed with fbml_ for Facebook
+			Oodle.Wizard.Dialog.center();
+		}		
+	}
+	else if (data.href)
+	{
+		if (endEvent) endEvent(true);
+
+		// If we instead receive an href back, then change the page or reload
+		if (window.location.href == data.url)
+		{
+			// Same url is passed back as we're on, then just refresh the page
+			window.location.reload(true);
+		}
+		else
+		{
+			window.location = data.href;
+		}
+		if (callback)
+			callback();
+	}
+	else if (data.hrefTop) //in an FB iframe, this allows us to change top.location
+	{
+		top.location = data.hrefTop;
+		if (callback)
+			callback();
+	}
+	else if (data.close)
+	{
+		// If we instead receive a close back, then close the dialog
+		Oodle.Wizard.Finish();
+		if (endEvent) endEvent(true);
+		if (callback)
+			callback();
+	}
+	else if(data.func)
+	{
+		Oodle.Wizard.Finish();
+		if (endEvent)
+			endEvent(true);
+		if (jQ.browser.msie)
+		{
+ 			eval("var fn = (" + data.func + ")");			
+		}
+		else
+		{
+			var fn = eval("(" + data.func + ")");
+		}
+
+ 		if (typeof(fn) == 'function')
+ 		{
+ 			fn(data);
+ 		}
+		if (callback)
+			callback();
+	}
+}
+
+Oodle.Wizard.handleFailure = function (code, endEvent)
+{
+	if (Oodle.Wizard.Dialog)
+		Oodle.Wizard.Dialog.hideProgress();
+
+	// Show a dialog with an error message
+	if (Oodle.Wizard.Dialog)
+	{
+		log("wizard error: " + code);
+		Oodle.Wizard.Dialog.showErrorMsg(code);
+	}
+	else
+		Oodle.Wizard.Dialog = new odl.msgbox({error_code: code});
+
+	if (endEvent) endEvent(false);
+}
+
+
+Oodle.Home = {};
+Oodle.Home.HiddenSeoModule = function()
+{
+	jQ("#seo_more").click(function(){
+		if (jQ("#seo_more").text() == "less...")
+		{
+			jQ("#seo_more").text("more...");
+			jQ("#seo_text").hide();
+			jQ("#seo_short_text").show();
+			jQ("#seo_arrow").removeClass("arrow1").addClass("arrow");
+		}
+		else
+		{
+			jQ("#seo_text").css({"display":"block"});
+			jQ("#seo_short_text").hide();
+			jQ("#seo_more").text("less...");
+			jQ("#seo_arrow").removeClass("arrow").addClass("arrow1");
+		}
+		return false;
+	});
+}
+Oodle.Common = {};
+
+Oodle.Common.DropDown = function(divID)
+{
+	// Using oodle tooltip
+	var contentDiv = divID + '-ul';
+	var toolTip = new OodleTooltipTarget($(divID), $(contentDiv), null, { 'left' : 0, 'top' : 0 }, 1, false, true, true);
+
+	$(divID).ToolTipObject = toolTip;
+	$(contentDiv).ToolTipObject = toolTip;
+
+	jQ('#' + divID).click(
+		function() {
+			if (this.ToolTipObject)
+			{
+				this.ToolTipObject.toggle();
+			}
+		}
+	);
+
+	jQ('#' + contentDiv).css('display', 'block').change(
+		function() {
+			this.ToolTipObject.hideTooltip();
+			var value = jQ('#' + this.id + ' option:selected').text();
+			var key = jQ(this).val();
+
+			var selectedText = '#' + divID + '-selected';
+			jQ(selectedText).text(value.substr(0, 10));
+
+			var hiddenElement = '#' + divID + '-hidden';
+			jQ(hiddenElement).val(key);
+		}
+	);
+}
+
+odl.namespace('fb');
+
+/**
+ * @robert needed a way to only check for FB perms without doing any sort of FB connecting / FB logging in
+ *         adapted from http://stackoverflow.com/questions/3388367/check-for-extended-permissions-with-new-facebook-javascript-sdk
+ *         
+ * @param session    almost always the session from FB.getLoginStatus
+ * @param perms      a comma-separated string of perms -- e.g. email,publish_actions
+ * @param callback   a callback function that accepts a boolean and the session
+ */
+odl.fb.hasFBPermissions = function(session, perms, callback) {
+	var query = FB.Data.query('select ' + perms + ' from permissions where uid={0}', session["uid"]);
+	query.wait(function(rows) {
+		var status = true;
+		var permAr = perms.split(',');
+		
+		for (var i = 0; i < permAr.length; i++)
+			status = status && (rows[0][permAr[i]] == 1);
+
+		callback(status, session);
+	});
+};
+
+/**
+ * @robert uses the FB Graph API to get information about the current session FB user
+ * 
+ * @param callback    a callback function that takes in the response from FB
+ */
+odl.fb.getUserInfo = function(callback) {
+	FB.api('/me', function (userResponse) {
+		callback(userResponse);
+	});
+};
+
+
+odl.fb.fbRequiredLink = function(url, permParams)
+{
+	// Depending on type of page, we need to check perm
+	var requestPerms = {scope:permParams};
+
+	FB.login(
+		function(response) 
+		{
+			odl.fb.cookie(response);
+			if (response.authResponse) 
+			{
+				odl.auth2.refresh({
+					callback: function() {
+						if (url)
+						{
+							window.location.href = url;
+						}
+					}
+				});
+			}
+			
+		 }, requestPerms
+	);
+};
+
+odl.fb.fbLogin = function()
+{
+	FB.login(
+		function(response) 
+		{
+			odl.fb.cookie(response);
+			if (response.authResponse) 
+			{
+				// user is logged in and granted some permissions.
+				// 	perms is a comma separated list of granted permissions
+				// window.location.reload(true);
+			}
+			else 
+		  	{
+		  		// user is not logged in
+		  	}
+		 }, { scope: 'email,publish_actions'}
+	);
+};
+
+odl.fb.logout = function()
+{
+	FB.logout(
+		function(response)
+		{
+			window.location.reload();
+		}
+	);
+};
+
+odl.fb.logoutForDisconnect = function (triggerEle, callback)
+{
+	// Need to put a spinner up
+	if (triggerEle)
+	{
+		var progress = odl.form.showProgress(triggerEle);
+	}
+	if (odl.info.fbjs_enabled) {
+		odl.fbready.add(function() {
+			// Log out of facebook if the user is logged in
+			FB.getLoginStatus(function(response) {
+				if (response.authResponse) 
+				{
+					var timeout = setTimeout(callback, 4000);
+					FB.logout(
+						function(response)
+						{
+							clearTimeout(timeout);
+							response.authResponse = null;
+							odl.fb.cookie(response, true);
+							if (callback)
+							{
+								callback();
+							}
+						}
+					);
+				}
+				else
+				{
+					if (callback)
+					{
+						callback();
+					}
+				}
+			});
+		});
+	}
+	else
+	{
+		if (callback)
+		{
+			callback();
+		}
+	}
+}
+
+odl.fb.connect = function(triggerEle, bounceUrl)
+{
+	// Lets replace it with busy spinner
+	var buttonElement = triggerEle || $('fb-connect-connect-row');
+
+	var progress = odl.form.showProgress(buttonElement);
+	FB.login(
+		function(response) 
+		{
+			odl.fb.cookie(response, false);
+			if (response.authResponse) 
+			{
+				// Lets call into the correct ajax to trigger connect
+				var options = {
+					type: 'POST',
+					dataType: 'json',
+					url: '/form/account/connect/quick_connect',
+					success: function(o)
+					{
+						if (o.status == 'oodle_login_error')
+						{
+							alert(o.msg);
+							window.location = '/pro/register/';
+						}
+						else if (o.status == 'fb_login_error')
+						{
+							alert(o.msg);
+						}
+						else if (o.status == 'already_connected')
+						{
+							alert(o.msg);
+							jQ('#fb-connect-connect-row .value').html(o.html);
+						}
+						else
+						{
+							if (bounceUrl)
+							{
+								window.location.href = bounceUrl;
+							}
+							else
+							{
+								window.location.reload();
+							}
+						}
+						
+						odl.form.hideProgress(buttonElement, progress);
+						jQ('#fb-connect-connected-row').toggle(true);
+					},
+					error: function()
+					{
+						odl.form.hideProgress(buttonElement, progress);
+					}
+				};
+				
+				jQ.ajax(options);
+			} 
+			else 
+		  	{
+		  		// user is not logged in
+				alert('You canceled Facebook Connect, click on Connect with Facebook button anytime to connect again.');
+				odl.form.hideProgress(buttonElement, progress);
+		  	}
+		 }
+	);
+};
+
+function scrollTo(x,y){
+	FB.Canvas.scrollTo(x,y);
+}
+
+// Set by meta view
+
+odl.fb.fbFollow = function()
+{
+	var element = document.createElement('div');
+	element.id = 'fb-root';
+	jQ('body').append(element);
+	
+};
+
+odl.fb.stateCached = -1;
+odl.fb.isStateChanged = function(response)
+{
+	if (odl.fb.stateCached == -1)
+	{
+		odl.fb.stateCached = false;
+		if (odl.info.fb_logged_in) {
+			if (!response.authResponse) {
+				odl.fb.stateCached =  true;
+			}
+		}
+		else {
+			if (response.authResponse) {
+				odl.fb.stateCached = true;
+			}
+		}
+	}
+		
+	return odl.fb.stateCached;
+}
+
+odl.fb.is_cookied = false;
+
+odl.fb.cookie = function(response, noRefresh) {
+	var fbCookie = 'fbsr_' + odl.info.fb.appId;
+	var idCookie = 'fbuid_' + odl.info.fb.appId;
+	var cookieDomain = odl.info.domain;
+
+	if (response.authResponse) {
+		var fbsr = response.authResponse.signedRequest;
+		var fbUserID = response.authResponse.userID;
+
+		if (jQ.cookie(idCookie) != fbUserID ||
+		    jQ.cookie(fbCookie) == null)
+		{
+			odl.fb.is_cookied = true;
+			jQ.cookie(idCookie, fbUserID, {
+				domain: cookieDomain, 
+				path: '/'
+			});
+	
+			jQ.cookie(fbCookie, fbsr, {
+				domain: cookieDomain, 
+				path: '/'
+			});
+		}
+		if (!noRefresh)
+		{
+			odl.auth2.refresh();
+		}
+	}
+	else {
+		jQ.cookie(fbCookie, null, {
+			domain: cookieDomain, 
+			path: '/'
+		});
+		
+		jQ.cookie(idCookie, null, {
+			domain: cookieDomain, 
+			path: '/'
+		});
+	}
+};
+
+window.fbAsyncInit = function() {
+
+	odl.info.fb.channelUrl = window.location.protocol + '//' + document.domain + '/pro/fb-channel';
+	if (document.location.protocol == 'https:')
+	{
+		odl.info.fb.channelUrl += '-secure';
+	}
+	
+	if (odl.info.https)
+	{
+		FB._https = true;
+	}
+	FB.init(odl.info.fb);
+	
+	FB.getLoginStatus(function(response) {
+		odl.fb.cookie(response);
+		odl.info.fb_init = true;
+		for (var i in odl.fbready.queue)
+		{
+			odl.fbready.queue[i]();
+		}
+	});
+	
+	FB.Event.subscribe('auth.authResponseChange', function(response) {
+		odl.fb.cookie(response);
+	});
+	
+
+	if (odl.info.is_facebook)
+	{
+		scrollTo(0,0);
+		jQ("body").ready(function() {
+			var prevBodyHeight  = -1;
+			var autoSizeCanvas = function()
+			{
+				var newBodyHeight;
+				if (jQ('#fb-root').find('.fb_dialog_iframe').length > 0)
+				{
+					// FB stream box is shown. Limit the canvas size to make sure uer can see the stream box (#46796).
+					// This is a hack to address the fb API issue: http://bugs.developers.facebook.net/show_bug.cgi?id=10890
+					// TODO: Remove this hack once fb fix the issue.
+					newBodyHeight = 1000;
+				}
+				else
+				{
+					var bodyHeight = jQ('body').height() || 0;
+					var documentHeight = jQ(document).height() || 0;
+					
+					newBodyHeight = ( (documentHeight > (bodyHeight + 50)) ? documentHeight : bodyHeight + 50 );
+				}
+				if (newBodyHeight != prevBodyHeight)
+				{
+					FB.Canvas.setSize({width: 760, height: newBodyHeight});
+					prevBodyHeight = newBodyHeight;
+				}
+				setTimeout(function(){autoSizeCanvas();}, 1000);
+			};
+			autoSizeCanvas();
+		});
+	}
+};
+
+odl.fb.initCalled = false;
+
+odl.fb.init = function()
+{
+	if (!odl.fb.initCalled)
+	{
+		odl.fb.initCalled = true;
+		if (!jQ('#fb-root').length)
+		{
+			var element = document.createElement('div');
+			element.id = 'fb-root';
+			jQ('body').append(element);
+		}
+		
+		var src = window.location.protocol;
+		src = src + '//connect.facebook.net/en_US/all.js';
+		
+		LazyLoad.js(src, null, null, null);
+	}
+};
+if (typeof Oodle.DataGrid =="undefined" || !Oodle.DataGrid)
+{
+	Oodle.DataGrid = {};
+}
+
+Oodle.DataGrid =
+{
+
+	checkAll:function(formID)
+	{
+		var form = document.getElementById(formID);
+		if (form)
+		{
+			var elements = form.elements;
+			var len = elements.length;
+
+			for (var i = 0; i < len; i++)
+			{
+				if (elements[i].type == "checkbox")
+				{
+					elements[i].checked = true;
+					Oodle.DataGrid.updateCheckboxRow(elements[i], false);
+				}
+			}
+		}
+	},
+
+	clearAll:function(formID)
+	{
+		var form = document.getElementById(formID);
+		if (form)
+		{
+			var elements = form.elements;
+			var len = elements.length;
+
+			for (var i = 0; i < len; i++)
+			{
+				if (elements[i].type == "checkbox")
+				{
+					elements[i].checked = false;
+					Oodle.DataGrid.updateCheckboxRow(elements[i], false);
+				}
+			}
+		}
+	},
+
+	// Takes in a checkbox element, tries to add 'highlight' to the row
+	updateCheckboxRow:function(obj, updateCheckAll)
+	{
+		if (!obj)
+			return;
+
+		var parent = obj.parentNode;
+		for (var i = 0 ; i < 5 ; i++)
+		{
+			if (parent.tagName == 'TR')
+			{
+				break;
+			}
+			else
+			{
+				parent = parent.parentNode;
+			}
+		}
+		if (parent.tagName != 'TR')
+		{
+			return;
+		}
+		if (obj.checked)
+		{
+			jQ(parent).addClass('highlight');
+		}
+		else
+		{
+			jQ(parent).removeClass('highlight');
+
+			if (updateCheckAll)
+			{
+				var form = obj.form;
+				if (form)
+				{
+					var elements = form.elements;
+					var len = elements.length;
+
+					for (var i = 0; i < len; i++)
+					{
+						if (elements[i].type == "checkbox")
+						{
+							if (jQ(elements[i]).hasClass('check-all'))
+							{
+								if (elements[i].checked)
+								{
+									elements[i].checked = false;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+}
+
+Oodle.DataGrid.updateGrid = function (params)
+{
+	var page = (params['page']) ? params['page'] : 1;
+	var data = params['data'];
+	var sort = params['sort'];
+
+	var sortFilter = '';
+	if (sort && sort[0] != null)
+	{
+		sortFilter = '&orderBy=' + sort[0]['field'] +
+			'&direction=' + sort[0]['direction'];
+	}
+
+	var filter = '';
+	for (var key in data)
+	{
+		filter += '&' + key + '=' + escape(data[key]);
+	}
+
+	var pageFilter = data['_prefix'] + 'page=' + page;
+
+	var url = data['_url'] + '?' + pageFilter + sortFilter + filter + '&hideHeader=true';
+
+	var gridEle = $(data['_prefix'] + '-wrap');
+	var overlayEle = $(data['_prefix'] + '-overlay');
+
+	if (!Oodle.DataGrid.showOverlay(overlayEle))
+	{
+		Oodle.DataGrid.showBusyDiv(div);
+	}
+
+	var successCallback = function(data)
+	{
+		if (!overlayEle)
+		{
+			jQ(gridEle).removeClass('busy');
+			gridEle.innerHTML = '';
+			gridEle.style.width = "100%";
+		}
+
+		gridEle.innerHTML = data;
+
+		if (!Oodle.DataGrid.hideOverlay(overlayEle))
+			gridEle.style.height = "auto";
+	};
+	var failureCallback = function(xhr, textStatus, errorThrown)
+	{
+		if (!Oodle.DataGrid.hideOverlay(overlayEle))
+		{
+			gridEle.innerHTML = '';
+			gridEle.style.width = "100%";
+			jQ(gridEle).removeClass('busy');
+			gridEle.style.height = "auto";
+		}
+
+		try
+		{
+   			var formData = jQ.parseJSON(xhr.responseText);
+			if (formData.error)
+   			{ 
+				Oodle.DataGrid.displayMsg(data['_prefix'], 'grid-error', formData.error);
+				return;
+			}
+		}
+		catch (e)
+		{
+			// Unable to parse data
+			log(e);
+			Oodle.DataGrid.displayMsg(data['_prefix'], 'grid-error', 'Server error.  Could not refresh the page.  Please notify support.');
+		}
+
+		Oodle.DataGrid.displayMsg(data['_prefix'], 'grid-error', 'The action was performed, however there was a problem refreshing the page.  Please notify support.');
+	};
+
+	var cObj = jQ.ajax({
+		type: 'GET',
+		url: url,
+		dataType: 'text',
+		timeout: 40000,
+		success: successCallback,
+		error: failureCallback});
+
+	return false;
+}
+
+Oodle.DataGrid.showOverlay = function(overlayEle)
+{
+	if (overlayEle)
+	{
+		if (overlayEle.style.display != 'block')
+		{
+			var parentHeight = jQ(overlayEle).parent().height();
+			if (parentHeight)
+				overlayEle.style.height = parentHeight + 'px';
+
+			overlayEle.style.display = 'block';
+		}
+		// If the overlay is already shown, still return true...
+		return true;
+	}
+	return false;
+}
+
+Oodle.DataGrid.hideOverlay = function(overlayEle)
+{
+	if (overlayEle)
+	{
+		overlayEle.style.height = '100%';
+		overlayEle.style.display = 'none';
+		return true;
+	}
+	return false;
+}
+
+Oodle.DataGrid.populateGrid = function (elementID, url)
+{
+	var elementDiv = $(elementID);
+	if (!elementDiv)
+	{
+	}
+	
+	var successCallback = function(data)
+	{
+		elementDiv.innerHTML = data;
+		
+		// Extract out and append scripts
+		setTimeout(function () {
+			jQ(elementDiv).find('script').each(function (idx, e) {
+				console.log(e);
+				var node = document.createElement('script');
+				var val = jQ(e).html();
+				var src = jQ(e).attr('src');
+				if (val)
+				{
+					try {
+						node.appendChild(document.createTextNode(val));
+					}
+					catch (e)
+					{
+						node.text = val;
+					}
+					jQ('body').append(node);
+				}
+				else if (src)
+				{
+					try {
+						node.src = src;
+					}
+					catch (e)
+					{
+						log(e);
+					}
+					jQ('body').append(node);
+				}
+			})
+		}, 10);
+	};
+	
+	var cObj = jQ.ajax({
+			type: 'POST',
+			url: url,
+			dataType: 'text',
+			success: successCallback});
+}
+
+/**
+ * This is a generic Ajax update function which will call 'callback()' on success
+ * (hint: for a grid refresh, make the callback a refresh function that calls updateGrid)
+ */
+Oodle.DataGrid.updateList = function (action, data, url, prefix, busy, callbackFunction, callbackFunctionArg, callbackReceivesResponse)
+{
+	var overlayEle = $(prefix + '-overlay');
+	var successCallback = function (responseData, status, xhr)
+	{
+		if (responseData)
+		{
+			if (responseData.refresh_page)
+			{
+				window.location.reload(true);
+				return;
+			}
+			if (responseData.result)
+			{
+				Oodle.DataGrid.displayMsg(prefix, 'grid-response-msg', responseData.result);
+	
+				if (responseData.init)
+				{
+					// If there's an init script passed back, then add it
+					eval(responseData.init);
+				}
+			}
+			else if (responseData.error)
+			{
+				if (busy)
+				{
+					if (!Oodle.DataGrid.hideOverlay(overlayEle))
+						jQ(div).removeClass('busy');
+				}
+				Oodle.DataGrid.displayMsg(prefix, 'grid-error', responseData.error);
+				return;
+			}
+		}
+
+		if (callbackFunction)
+		{
+			if (callbackFunctionArg)
+			{
+				if (callbackReceivesResponse)
+					callbackFunction(callbackFunctionArg, responseData);
+				else
+					callbackFunction(callbackFunctionArg);
+			}
+			else
+			{
+				if (callbackReceivesResponse)
+					callbackFunction(responseData);
+				else
+					callbackFunction();
+			}
+		}
+		else
+		{
+			if (busy)
+			{
+				if (!Oodle.DataGrid.hideOverlay(overlayEle))
+					jQ(div).removeClass('busy');
+			}
+		}
+
+		return;
+	};
+	
+	var failureCallback = function()
+	{
+		if (!Oodle.DataGrid.hideOverlay(overlayEle))
+			jQ(div).removeClass('busy');
+		Oodle.DataGrid.displayMsg(prefix, 'grid-error', 'Unable to perform the action.  Please notify support.');
+		return;
+	};
+
+	log(prefix);
+
+	div = document.getElementById(prefix + '-wrap');
+	if (!div)
+	{
+		log("No div found.");
+		return;
+	}
+
+	if (busy)
+	{
+		if (!Oodle.DataGrid.showOverlay(overlayEle))
+		{
+			Oodle.DataGrid.showBusyDiv(div);
+		}
+	}
+
+	var queryString = 'action=' + action + '&';
+	for(var key in data)
+	{
+		value = data[key];
+		if (value instanceof Object)
+		{
+			for (var childKey in value)
+			{
+				queryString += key + '[' + childKey + ']=' + value[childKey] + '&';
+			}
+		}
+		else
+		{
+			queryString += key + '=' + value + '&';
+		}
+	}
+	
+	var formObject = $(prefix + '-form');
+	var data = null;
+	if (formObject)
+	{
+		data = jQ(formObject).serialize();
+	}
+
+	var separator = '?';
+	if (url.match(/\?/))
+		separator = '&';
+
+	url = url + separator + queryString;
+	
+	var cObj = jQ.ajax({
+		type: 'POST',
+		url: url,
+		dataType: 'json',
+		timeout: 45000,
+		success: successCallback,
+		error: failureCallback,
+		data: data
+	});
+
+	return false;
+}
+
+Oodle.DataGrid.showBusyDiv = function(div)
+{
+	if (div.innerHTML)
+	{
+		div.innerHTML = '';
+		div.style.width = "100%";
+		div.style.height = "200px";
+		jQ(div).addClass('busy');
+	}
+}
+
+/**
+ * Delete Button functionality
+ */
+Oodle.DataGrid.deleteAction = function (url, prefix, refreshFunction)
+{
+	var form = $(prefix + '-form');
+	if (form)
+	{
+		var elements = form.elements;
+		var len = elements.length;
+		var list = [];
+		for (var i = 0; i < len; i++)
+		{
+			if (elements[i].type == "checkbox")
+			{
+				if (elements[i].name && elements[i].name.substring(0, 4) == 'list')
+				{
+					if (elements[i].checked)
+						list.push(elements[i].value);
+				}
+			}
+		}
+		if (list.length == 0)
+		{
+			Oodle.DataGrid.displayMsg(prefix, 'grid-error', 'Delete: nothing checked.');
+			return;
+		}
+
+		Oodle.DataGrid.updateList('delete', {list: list}, url, prefix, true, refreshFunction, null);
+	}
+}
+
+Oodle.DataGrid.displayMsg = function (prefix, className, msg)
+{
+	msgDiv = document.getElementById(prefix + '-msg');
+	if (!msgDiv)
+	{
+		log('no error div found.');
+		return;
+	}
+	if (msg.indexOf('b64') == 0)
+	{
+		msg = jQ.base64Decode(msg.substring(3));
+	}
+	var newDiv = document.createElement('div');
+	newDiv.innerHTML = msg;
+	newDiv.style.display = 'none';
+	msgDiv.appendChild(newDiv);
+	jQ(newDiv).addClass(className);
+	jQ(newDiv).slideDown();
+	setTimeout(function() {jQ(newDiv).slideUp(); msgDiv.removeChild(newDiv);}, 15000);
+}
+
+// Currently highlights all checkbox rows that should be highlighted, makes sure all checkboxes are checked.
+Oodle.DataGrid.init = function()
+{
+	if (!document.body)
+		return;
+
+	var formElements = document.body.getElementsByTagName('form');
+
+	if (!formElements)
+	{
+		log('no form elements');
+		return;
+	}
+	var len = formElements.length;
+
+	for (var i = 0 ; i < len ; i++)
+	{
+		var cLen = formElements[i].childNodes.length;
+		for (var j = 0 ; j < cLen ; j++)
+		{
+			var child = formElements[i].childNodes[j];
+			if (jQ(child).hasClass('datagrid'))
+			{
+				var elements = formElements[i].elements;
+				var eLen = elements.length;
+
+				for (var k = 0; k < eLen; k++)
+				{
+					if (elements[k].type == "checkbox")
+					{
+						if (jQ(elements[k]).hasClass('check-all'))
+						{
+							if (elements[k].checked)
+							{
+								Oodle.DataGrid.checkAll(formElements[i].id);
+								break;
+							}
+						}
+						else if(elements[k].checked)
+						{
+							Oodle.DataGrid.updateCheckboxRow(elements[k], false);
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
+fire(Oodle.DataGrid.init);
+
+
+odl.namespace('welcome');
+
+
+/*
+ * create a pup window that contains welcome leaving form
+ */
+odl.welcome.popup = function(id)
+{
+	var header = 'Are you sure?';
+	var circleid = id;
+	var contents = '<div id="welcome-closing-message">';
+	contents += '<p>Are you sure you want to close this welcome message?</p>';
+	contents += '</div>';
+	
+	var okCallback = function () { 
+		odl.welcome.killWelcomeMessage(circleid);
+	};
+	
+	if (odl.welcome.popupWin)
+		odl.welcome.popupWin.close();
+	odl.welcome.popupWin = new odl.msgbox({
+		header: header,
+		skin: 'circle-welcome',
+		content: contents,
+		close_x: true,
+		cancel: true,
+		ok: okCallback,
+		hide_footer: false,
+		anchor: jQ('#circle-welcome')
+	});
+};
+
+odl.welcome.killWelcomeMessageKillAction = function(o) {
+	
+	jQ('#circle-welcome').css('display', 'none');
+	odl.welcome.popupWin.close();
+	
+}
+
+odl.welcome.killWelcomeMessage = function(id) {
+    var postData = 'circleId=' + id;
+	var settings = {
+		type : 'POST',
+		url : odl.info.base_path + 'circle/-/kill_welcome',
+		dataType : 'json',
+		success : odl.welcome.killWelcomeMessageKillAction ,
+		data: postData
+	};
+
+	jQ.ajax(settings);
+};
+
+
+
+odl.namespace('invite');
+
+odl.invite.circleID = 0;
+odl.invite.invited = 0;
+odl.invite.inviteContext = 'marketplace';
+
+odl.invite.getInvitePath = function(step, action)
+{
+	var url = odl.info.base_path + 'invite/' + odl.invite.inviteContext;
+	if (odl.invite.circleID)
+	{
+		url += '/' + odl.invite.circleID;
+	}
+	
+	if (step)
+	{
+		url += '/' + step;
+		
+		if (action)
+		{
+			url += '/' + action;
+		}
+	}
+	
+	return url;
+};
+
+odl.invite.inviteToMarketplace = function()
+{
+	odl.invite.circleID = 0;
+	odl.invite.invited = 0;
+	odl.invite.inviteContext = 'marketplace';
+	odl.invite.startInvite();	
+};
+
+odl.invite.inviteToFreecircles = function()
+{
+	odl.invite.circleID = 0;
+	odl.invite.invited = 0;
+	odl.invite.inviteContext = 'freecircles';
+	odl.invite.startInvite();
+};
+
+odl.invite.inviteToCircle = function(circleID)
+{
+	odl.invite.circleID = circleID;
+	odl.invite.invited = 0;
+	odl.invite.inviteContext = 'circle';
+	odl.invite.startInvite();
+};
+
+odl.invite.inviteTo = function(target)
+{
+	if (target == 'mp')
+		odl.invite.inviteToMarketplace();
+	else if (target == 'fc')
+		odl.invite.inviteToFreecircles();
+	else
+		odl.invite.inviteToCircle(target);
+};
+
+odl.invite.startInvite = function()
+{
+	odl.auth2.login({
+		login_mode : 'facebook-direct',
+		start_viral_loop : false,
+		event_params : {
+			event_name : 'InviteLogin',
+			event_page : 'invite'
+		},
+		success: function()
+		{
+			var settings = {
+				type: 'GET',
+				url : odl.invite.getInvitePath(),
+				dataType: 'json',
+				success: odl.invite.inviteCallback
+			};
+			
+			odl.invite.showLoading();
+			
+			jQ.ajax(settings);
+		},
+		failure: function(o) {
+			odl.invite.trackNamed(odl.invite.getReportingParams( {
+				'event_type' : 'fb',
+				'status' : 'no_auth'
+			}));
+			
+			odl.invite.showMsgBox({
+				header: 'Oops!',
+				content: 'You need to be Facebook connected in order to invite your friends.'
+			});
+		}
+	});
+	
+};
+
+odl.invite.inviteCallback = function(result)
+{
+	if (result.invited)
+	{
+		odl.invite.invited += result.invited;
+	}
+	
+	if (result.callback)
+	{
+		eval("var cb = " + result.callback);
+		cb(result.params);
+	}
+	else if (result.content)
+	{
+		odl.invite.showMsgBox(result);
+	}
+	else
+	{
+		odl.invite.closeMsgBox();
+		odl.invite.shareInvite();
+	}
+};
+
+odl.invite.shareInvite = function()
+{
+	if (!odl.invite.invited)
+		return;
+
+	odl.invite.showMsgBox({
+		header: 'Invitations sent!',
+		content: '<p>Thank you for inviting your friends and contacts. Your invitations have been sent.</p>'
+	});
+	
+	setTimeout("odl.invite.closeMsgBox();", 5000);
+	
+	var settings = {
+			type: 'POST',
+			url : odl.invite.getInvitePath('share'),
+			dataType: 'json',
+			data: {invited: odl.invite.invited},
+			success : function()
+			{
+				odl.circle.trackNamed(odl.invite.getReportingParams( {
+					'event_type' : 'shareInvite',
+					'status' : 'success'
+				}));
+			}
+	};
+
+	jQ.ajax(settings);
+};
+
+odl.invite.showLoading = function()
+{
+	odl.invite.showMsgBox({loading:true, close_x: false});
+};
+
+odl.invite.closeMsgBox = function()
+{
+	if (odl.invite.popupWin)
+	{
+		odl.invite.popupWin.close();
+		odl.invite.popupWin = null;
+	}
+};
+
+odl.invite.showMsgBox = function(customParams)
+{
+	var params = {
+		modal: true,
+		overlay: true,
+		close_x: true,
+		ok: true,
+		cancel: false,
+		hide_footer: true,
+		width: 550
+	};
+	
+	if (customParams)
+	{
+		for (var i in customParams)
+		{
+			if (i == 'invite_step')
+			{
+				var close_fn = function() {
+					odl.invite.trackNamed(odl.invite.getReportingParams( {
+						'step' : customParams[i],
+						'event_type' : 'close'
+					}));
+					
+					odl.invite.shareInvite();
+					odl.invite.closeMsgBox();
+				};
+				params['close_x'] = close_fn;
+			}
+			else
+			{
+				params[i] = customParams[i];
+			}
+			
+		}
+	}
+	
+	odl.invite.closeMsgBox();
+
+	odl.invite.popupWin = new odl.msgbox(params);
+};
+
+odl.invite.fbInviteCallback = function(params)
+{
+	odl.invite.closeMsgBox();
+
+	params['method'] = 'apprequests';
+	params['display'] = 'iframe';
+	
+	FB.ui (
+		params,
+		function (response)
+		{
+			if (response && response.request_ids)
+			{
+				var settings = {
+						type: 'POST',
+						url : odl.invite.getInvitePath('fb', 'submit'),
+						dataType: 'json',
+						data: {request_ids: response.request_ids, vta: params['data']['vta']},
+						success: function(o)
+						{
+							odl.invite.inviteCallback(o);
+						}
+				};
+				
+				odl.invite.showLoading();
+
+				jQ.ajax(settings);
+			}
+			else
+			{
+				odl.invite.skipInvite('fb', {vta: params['data']['vta']});
+			}
+		}
+	);
+};
+
+odl.invite.skipInvite = function(step, data)
+{
+	if (!data)
+	{
+		data = {};
+	}
+	var settings = {
+		type: 'POST',
+		url : odl.invite.getInvitePath(step, 'skip'),
+		dataType: 'json',
+		data: data,
+		success: function(o)
+		{
+			odl.invite.inviteCallback(o);
+		}
+	};
+
+	odl.invite.showLoading();
+	jQ.ajax(settings);
+};
+
+odl.invite.submitInvite = function(step)
+{
+	jQ('#invite-form').ajaxSubmit({
+		dataType: 'json',
+		success: odl.invite.inviteCallback
+	});
+	
+	odl.invite.showLoading();
+};
+
+odl.invite.enterKeyPressSubmit = function(e, step)
+{
+	var evt = (e) ? e : (window.event) ? window.event : null;
+	
+	if (evt)
+	{
+		var key = 0;
+		if (evt.charCode)
+		{
+			key = evt.charCode;
+		}
+		else if (evt.keyCode)
+		{
+			key = evt.keyCode;
+		}
+		else if (evt.which)
+		{
+			key = evt.which;
+		}
+		
+		if (key == "13")
+		{
+			odl.invite.submitInvite(step);
+			return false;
+		}
+	}
+	
+	return true;
+};
+
+odl.invite.defaultReportingParams =
+{
+	event_name: 'invite',
+	context: odl.invite.inviteContext
+};
+
+/**
+ * Combines params passed in with the default params
+ */
+odl.invite.getReportingParams = function(params)
+{
+	odl.invite.defaultReportingParams.partner = odl.info.partner_tag;
+	odl.invite.defaultReportingParams.masquerade = odl.info.partner_masquerade;
+
+	var ret = {};
+	for (var i in odl.invite.defaultReportingParams)
+	{
+		ret[i] = odl.invite.defaultReportingParams[i];
+	}
+
+	if (params && typeof(params) === 'object')
+	{
+		for(var i in params)
+		{
+			ret[i] = params[i];
+		}
+	}
+	return(ret);
+};
+
+odl.invite.trackNamed = function(obj) {
+	jQ.ajax( {
+		'url' : odl.info.base_path + 'event/track-named/?'
+				+ jQ.param(obj)
+	});
+};
+
+odl.invite.getUrlVars = function ()
+{
+	if (!odl.invite.urlVars)
+	{
+	    var vars = [], hash;
+	    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+	    for(var i = 0; i < hashes.length; i++)
+	    {
+	        hash = hashes[i].split('=');
+	        vars.push(hash[0]);
+	        vars[hash[0]] = hash[1];
+	    }
+	    odl.invite.urlVars = vars;
+	}
+		
+    return odl.invite.urlVars;
+};
+
+odl.invite.viralCheck = function ()
+{
+	var params;
+	var vars = odl.invite.getUrlVars();
+	
+	if (vars['vt'] && /^[0-9]+$/.test(vars['vt']))		// click from oodle email invite
+	{
+		odl.circle.viralCode = vars['vt'];
+		odl.invite.trackNamed(odl.invite.getReportingParams( {
+			'event_type' : 'clickInvite',
+			'viral_code' : vars['vt'],
+			'inviter_id' : vars['i'] ? vars['i'] : 0,
+			'status' : 'track'
+		}));
+	}
+	var action = (vars['a'] || vars['popup']);	//check 'popup' for backwards compatibility
+	if (action)
+	{
+		var target = 'mp';
+		if (vars['d'])
+			target = vars['d'];
+		else if (odl.circle.circleID)
+			target = odl.circle.circleID;
+		else if (window.location.href.split('/')[3] == 'freecircles')
+			target = 'fc';
+		params = {popup: action, target: target};
+		if (vars['i'])
+			params['inviter_id'] = vars['i'];
+		if (odl.circle.circleID)
+			params['circle_id'] = odl.circle.circleID;	//TODO: need it for backward compatibility. new flow uses target
+		if (vars['from_email'])
+		{
+			params['from_email'] = vars['from_email'];
+			if (vars['token'])
+				params['token'] = vars['token'];
+		}
+	}
+	else if (typeof jQuery.cookie == 'function' && jQuery.cookie('greeting_target'))
+	{
+		params = {popup: 'greeting', target: jQuery.cookie('greeting_target')};
+	}
+
+	if (params)
+		safecall(function() { odl.circle.initFromExternal(params); });
+};
+
+
+jQ(document).ready
+(
+	function()
+	{
+		odl.invite.viralCheck();
+	}
+);
+
+

@@ -455,11 +455,11 @@ function toggle( targetId, signId ) {
 }
 
 /* function to cycle left rail promo */
-var imgs1 = new Array("http://images.medicinenet.com/images/ltnav-promo-adult-skin-problems.jpg",
-					  "http://images.medicinenet.com/images/ltnav-promo-skin-conditions.jpg",
-					  "http://images.medicinenet.com/images/ltnav-promo-ringworm.jpg",
-					  "http://images.medicinenet.com/images/ltnav-promo-adhd-kids.jpg",
-					  "http://images.medicinenet.com/images/ltnav-promo-chronic-fatigue.jpg");
+var imgs1 = new Array("http://images.medicinenet.com/images/module/featured-slideshow-adult-skin-problems.jpg",
+					  "http://images.medicinenet.com/images/module/featured-gallery-skin-conditions.jpg",
+					  "http://images.medicinenet.com/images/module/featured-slideshow-ringworm.jpg",
+					  "http://images.medicinenet.com/images/module/featured-slideshow-adhd-in-children.jpg",
+					  "http://images.medicinenet.com/images/module/featured-slideshow-chronic-fatigue-syndrome.jpg");
 					  
 var lnks1 = new Array("http://www.medicinenet.com/skin-problems-pictures-slideshow/article.htm",
 					  "http://www.medicinenet.com/script/main/art.asp?articlekey=107516",

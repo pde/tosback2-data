@@ -8,8 +8,7 @@ $(document).ready(function(){
 
 // rotation for home page during 2012 holidays
 	$(function() {
-
-	    $('#slideshow-content').cycle({
+$('#slideshow-content').cycle({
 								fx:      'fade',
 								pause: 1,
 								speed: 500,
@@ -20,31 +19,25 @@ $(document).ready(function(){
 								next:    '#slideshow-next',
 								pager:   '#slideshow-navi',
 								// callback fn that creates a thumbnail to use as pager anchor 
-								pagerAnchorBuilder: function(idx, slide) {
+ 								pagerAnchorBuilder: function(idx, slide) {
         var img = jQuery(slide).find("img").attr("alt");
         return '<li><a href="#">' + img + '</a></li>';
     } 
     });
-
+	
     function pagerFactory(idx, slide) {
         var s = idx > 50 ? ' style="display:none"' : '';
         return '<li'+s+' class="navi"><a href="#">'+(idx+1)+'</a></li>';
-								//$('.sublevel-navigation').hide();
     };
-				//$('.sublevel-navigation').hide();
 				
-				
+			
 				$('.pause').click(function() { 
 					$('#slideshow-content').cycle('pause'); 
 				});
 				
-				$('.resume').click(function() { 
+ 				$('.resume').click(function() { 
 					$('#slideshow-content').cycle('resume', true); 
-				}); 
-				
-				
-				/*   
-    */
+				});
 	});
 
 
