@@ -409,84 +409,20 @@ function adjustGlobalCartLayout() {
 			<li>Become a WM Explorer</li>
 		</ul -->
 	<div class="promoSection2">
-		<div class="promoSection2">
-	<div style="text-align:center; margin-top:-11px; width:354px; margin-left:65px; position:relative" class="hoverpopup2">
-		<img src="../text/homepage/wk45/part1/promo2aa.gif" width="354" height="44" alt="">
-		<div class="megapopup" style="position:absolute; left:0px; top:0; z-index:1000;display:none;">
-			<img src="../text/homepage/wk45/part1/megapopup.gif" width="354" height="339" alt="">
-			<a href="http://www.worldmarket.com/category/home-decorating/rugs.do?ab=home:wk45:promo2:nav:1:rugs" style="position:absolute; left:30px; bottom:30px; background:url(../text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:123px; height:28px;"></a>
-			<a href="http://www.worldmarket.com/category/home-decorating/curtains-window-hardware/curtains.do?ab=home:wk45:promo2:nav:2:curtains" style="position:absolute; right:25px; bottom:30px; background:url(../text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:153px; height:28px;"></a>
-			<a href="javascript:openDialogInfo('detailspopup','Free Shipping on Orders over $100')" style="position:absolute; left:150px; bottom:63px; width:57px; height:25px; background:url(../text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px;"></a>
-			<div class="closemegapopup" style="cursor:pointer; position:absolute; right:0px; top:0px; background:url(../text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:70px; height:20px;"></div>
-		</div>
-		<div class="promo2b" style="position:absolute; left:0px; top:0; display:none">
-			<img src="../text/homepage/wk45/part1/promo2bb.gif" width="354" height="44" border="0">
-		</div>
-	</div>
-		
-	<div id="detailspopup" style="display: none;">
-		<p><strong>Limited Time Only!</strong></p>
-		<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
-		<p> Minimum purchase of $100 (before tax, shipping and handling) required to qualify for offer. </p>
-		<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
-		<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
-		<p> To redeem, enter promotion code at checkout.</p>
-	</div>
-<script type="text/javascript">
-		jQuery(document).ready(function(){
-
-			if (!jQuery.cookie("megapopwk45")) {
-				jQuery('.megapopup').show();
-				jQuery.cookie("megapopwk45", "seen", { path: "/"} );
-			}
-			setTimeout(function() {
-				jQuery('.hoverpopup2').attr('class','hoverpopup');
-				jQuery('.hoverpopup').hover(
-					function () {
-    						jQuery('.megapopup').slideDown(function(){jQuery('.megapopup').show()});
-  					},
-  					function () {}
-				);
-			}, 2500);
-			jQuery('.megapopup').delay(2500).fadeOut(800);
-			var swapPromo = function () {
-				jQuery('.promo2b').delay(5000).slideUp(800);
-				jQuery('.promo2b').delay(5000).slideDown(800);
-			};
-			setInterval(swapPromo, 5000);
-			swapPromo();
-			
-			jQuery('.closemegapopup').click(function(){
-				jQuery('.megapopup').hide();
-				
-			});
-			
-		});
-</script>
-</div>
-
-<!--
-<script type="text/javascript">
-		jQuery(document).ready(function($){
-			jQuery('.megapopup').delay(2500).fadeOut(800);
-			jQuery('.hoverpopup').hover(
-				function () {
-    					$('.megapopup').slideDown(function(){$('.megapopup').show()});
-  				},
-  				function () {}
-			);
-			jQuery('.closemegapopup').click(function(){
-				jQuery('.megapopup').hide();
-				jQuery('#cpwm_rollingpromo').removeClass('hoverpopup');
-			});
-
+		<style>
+div#cpwm_rollingpromo {position:relative; height:44px; width:354px; overflow:hidden; left:67px; border:0; margin:0; padding:0;}
+div#cpwm_rollingpromo div {position:absolute; left: 0; top: 44px; display:none; zoom: 1;}
+</style>
+<script>
+	jQuery(function () {
 		var swapPromo = function () {
 			var visible = jQuery("#cpwm_rollingpromo div:visible");
 			var next = visible.next();
-			if (next.size()==0) next = jQuery("#cpwm_rollingpromo div:first");
+				if (next.size()==0) next = jQuery("#cpwm_rollingpromo div:first");
 			var currZindex = jQuery(visible).css('zIndex');
 			jQuery(visible).css({zIndex: currZindex-50});
 			jQuery(next).animate({top: "-1px"}, 600, function () {jQuery(this).animate({top: "0px"}, 40);}).show();
+			
 			jQuery(visible).animate({top: 46}, 600, function () {jQuery(this).css({zIndex: currZindex}).hide();});
 		};
 		var allPromos = jQuery("#cpwm_rollingpromo div");
@@ -494,39 +430,18 @@ function adjustGlobalCartLayout() {
 		allPromos.each(function () {
 			jQuery(this).css({zIndex: baseZindex--})
 		});
-		var promo2Interval = setInterval(function () {if (jQuery("div.modalDialogBox").is(":visible") )return; swapPromo();}, 5000);	
-		});
+
+		var promo2Interval = setInterval(function () {if (jQuery("div.modalDialogBox").is(":visible") )return; swapPromo();}, 5000);
+	});
+
+
 </script>
-<style>
-div#cpwm_rollingpromo {position:relative; height:44px; width:354px; overflow:hidden; left:67px; border:0; margin:0; padding:0;}
-div#cpwm_rollingpromo div {position:absolute; left: 0; top: 44px; display:none; zoom: 1;}
-</style>
-<div id="cpwm_rollingpromo" style="margin-top:-11px" class="hoverpopup">
-	<div style="display: block;top: 0;"><a href="/category/seasonal/christmas.do?ab=home:wk45:promo2:christmas"><img src="/text/homepage/wk45/part1/promo2aa.gif" width="354" height="44" alt=""></a></div>
-	<div name="promo2b"><img src="/text/homepage/wk45/part1/promo2bb.gif" width="354" height="44" border="0">
+<div id="cpwm_rollingpromo" style="margin-top:-11px">
+	<div style="display: block;top: 0;"><a href="http://www.worldmarket.com/category/seasonal/christmas.do?ab=home:wk45:promo2:christmas"><img src="../text/homepage/wk45/part2/promo2b.gif" height="44" width="354" border="0"></a></div>
+	<div name="promo2b"><img src="../text/homepage/wk45/part2/promo2a.gif" height="44" width="354" border="0">
 	</div>
 </div>
-<div class="megapopup" style="position:absolute; left:67px; top:0; z-index:1000;">
-			<img src="/text/homepage/wk45/part1/megapopup.gif" width="354" height="339" alt="">
-			<a href="/category/home-decorating/rugs.do?ab=home:wk45:promo2:nav:1:rugs" style="position:absolute; left:30px; bottom:30px; background:url(/text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:123px; height:28px;"></a>
-			<a href="/category/home-decorating/curtains-window-hardware/curtains.do?ab=home:wk45:promo2:nav:2:curtains" style="position:absolute; right:25px; bottom:30px; background:url(/text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:153px; height:28px;"></a>
-			<a href="javascript:openDialogInfo('detailspopup','Free Shipping on Orders over $100')" style="position:absolute; left:150px; bottom:63px; width:57px; height:25px; background:url(/text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px;"></a>
-			<div class="closemegapopup" style="cursor:pointer; position:absolute; right:0px; top:0px; background:url(/text/homepage/wk45/part1/megapopup.gif) no-repeat -1000px -1000px; width:70px; height:20px;"></div>
-</div>
 
-<div id="detailspopup" style="display: none;">
-		<p><strong>Limited Time Only!</strong></p>
-		<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
-		<p> Minimum purchase of $100 (before tax, shipping and handling) required to qualify for offer. </p>
-		<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
-		<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
-		<p> To redeem, enter promotion code at checkout.</p>
-	</div>
-		
-	
-
-
--->
 
 	</div>
 	</div>
@@ -1187,7 +1102,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "4334427"
+  return "8042465"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>

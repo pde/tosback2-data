@@ -15,7 +15,6 @@ argos.tracking.lister =  (new function(listerPageTag) {
             var recommendedproduct = $('.recommendedproduct a');  
             var promoitem = $('.promoitem a');
             var imageAnchor = $('.lister.searchLister .product .image a');    
-            var Qvptn = $('button.QvpActivator');
             var customerrating = $('#products .customerrating a');
                   
             sortBy.click(function(){
@@ -25,18 +24,9 @@ argos.tracking.lister =  (new function(listerPageTag) {
                         prop18 : argos.tracking.cleanString(optionText).replace(/:/g,""),
                         eVar43 : 'Browse^Bazaarvoice^Ratings And Reviews^sortbyreviews^',
                         var32 : 'search:'+searchterm+':'+optionText //applies to  navigation
-                  });   
-      
-                  argos.tracking.set(this, "Lister Quick View Product  ", {                     
-                        prop4 : qvpProp4+':quickinfo:' 
-                  });   
-                  //setQvpRatingLink();   
+                  });         
             });   
-            Qvptn.click(function(){
-                  argos.tracking.set(this, "Lister Quick View Product  ", {                     
-                        prop4 : qvpProp4+':quickinfo:' 
-                  });                     
-            });
+  
             recommendedproduct.click(function(){
                   var partnum = $(this).parent().parent().find('.partnum').text();              
                   argos.tracking.set(this, "Lister Recommended Product", {                      
@@ -53,59 +43,9 @@ argos.tracking.lister =  (new function(listerPageTag) {
                   argos.tracking.set(this, "Lister Search Custom Link", {                       
                         CUSTOMLINK : 'onclick="var s=s_gi("argosprod");s.tl(this,"o","ar:search:list:thumbnail:")'
                   });   
-            })    
-            
-            /* needs to capture ajax reponse
-            function setQvpRatingLink() {
-                  $('.QvpActivatee.open .close').click(function(){      
-                        argos.tracking.set(this, "Qvp Rating", {                    
-                              eVar43 : 'Quickview^Bazaarvoice^Ratings And Reviews^Action^Read^Default'
-                        });   
-                  })                      
-            }     
-      
-            */          
-            
+            })           
       }     
 });
-
-
-/*******************************************************************************
-* Custom Omniture tagging for QuickInfo
-******************************************************************************/
-argos.tracking.quickinfo = (new function() {
-
-      // update omniture values for quickinfo.
-      this.update = function() {
-          var pdpGroup = $(this).parents(".pdpRelatedInformation").attr("id");
-          switch(pdpGroup){
-            case "pdpEssentialExtras" : s.pageName = "ar:product:essentialextras:"; 
-                  break;
-            case "pdpAdditionalItems" : s.pageName = "ar:product:you:may:also:like:"; 
-                  break;
-            case "pdpPromotions" : s.pageName = "ar:product:specialoffers:"; 
-                  break;
-            case "pdpAlternativeProducts" : s.pageName = "ar:product:alternatives:"; 
-                  break;
-            default : s.pageName = s.pageName || ""; 
-          }
-            s.prop4 = s.pageName + "quickinfo:";
-            s.channel = s.channel + "quickinfo:";
-            // s.prop7 = s.prop7; not updating this now.
-            // console.debug("update: \n" + s.prop4 + "\n" + s.channel + "\n" +
-            // s.prop7);
-      }
-
-      // wrap the omniture send code so that we can nicely call it in our events.
-      this.send = function() {
-            // s_code and s are Global omniture variables.
-            s.linkTrackVars="prop4,prop7";// removed space
-            s.tl(window, 'o', "QuickInfoClick");
-            // console.debug("send: \n" + s_code);
-      }
-
-});
-
 
 /*******************************************************************************
 * Custom Omniture tagging for RVI
@@ -336,19 +276,6 @@ argos.tracking.qvc = (new function() {
       var properties = {};
       var basetag  = "ar:quickview:";
 
-/*
-* this.applyContinue = function(url) { var context = this; var button =
-* $("#loginSubmit", context); button.bind("click", function() { var email =
-* $("#logonId", context).attr("value"); var newUser = $("input[type='radio']",
-* context).filter("#customertype1").get(0).checked; argos.tracking.set(this,
-* "Continue", { prop4 : basetag + (newUser ? "newuser:" : "existinguser:"),
-* prop37 : email, eVar37 : email }); }); }
-* 
- * this.applyForgottenPassword = function() { $("#forgotPassword",
-* this).bind("click", function() { argos.tracking.set(this, "Forgotten
-* Password", { prop25 : basetag + "forgottenpassword:" }); }); }
-*/
-      
       this.captureSubmit = function(url) {
             var newUser = argos.url.getParameter(url, "edit") == "registeruser";
             var user = new argos.classes.User();
@@ -462,34 +389,48 @@ argos.tracking.registration = (new function() {
 argos.tracking.pdp = (new function() {    
 
       this.stockAvailability = function() {
-            var lightBoxStockAvailability = $('#lightBoxStockAvailability');
+    	    var lightBoxStockAvailability = $('#lightBoxStockAvailability');
             var primaryAvailable = lightBoxStockAvailability.find('.storePickup .inStock .stockGood').text().indexOf("In stock,");
             var homeDelivery = lightBoxStockAvailability.find('.homeDelivery .inStock').text().indexOf("In stock");
-            var partNumber = lightBoxStockAvailability.find('#buyOrReserveForm input.partNumber').val();
-            var product, event;
+            var emailPartNumber = lightBoxStockAvailability.find('input[name=partNumber_0]').val();
+            var isLister = $('body').hasClass('lister');
+            var partNumber = isLister ? emailPartNumber : argos.pdp.product.number;
+            var product = '';
             var event = 'event57';
             var container = '';
             var action = '';
             var prefix = 'product:stock';
-
-            if (primaryAvailable <= -1) { //if out of stock in primary              
-                  product = partNumber+';;;event32=1;event40=1;eVar16=512';
-                  event = 'event32,event40,'+event;
-                              
-            }
-            if (homeDelivery <= -1) { //if out of stock in home
-                  product = partNumber+';;;event33=1;eVar16=500';
-                  event = 'event33,'+event;
-            }
-            else if (primaryAvailable <= -1 && homeDelivery <= -1) { //if out of stock for both
-                  product = partNumber+';;;event33=1;eVar16=500;,;'+partNumber+';;;event32=1;eVar16=512';
-                  event = 'event32,event33,'+event;
-            }     
+            var primaryStore = lightBoxStockAvailability.find('input[name=otherStoreNo_1]').val();
+            var csoInStock = lightBoxStockAvailability.find('.storePickup #csoInstock');
+            var separator='';
             
-            argos.tracking.set(this, "Stock-check Lightbox. Store Selected And Results Displayed", {
-                  products : product,
-                  events : event
-            });         
+            if (homeDelivery <= -1) { //if out of stock in home
+            	product = partNumber+';;;event33=1;eVar16=500';
+                event = 'event33,'+event;
+                separator= ';,;';
+            }             
+            
+            if (primaryAvailable <= -1) { //if out of stock in primary             	
+            	if (csoInStock.length){ //and cso
+            		product = product + separator + partNumber+';;;event40=1;eVar16='+primaryStore;
+                    event = 'event40,'+event;
+            	} else { // not cso
+            		product = product + separator + partNumber+';;;event32=1;eVar16='+primaryStore;
+            		event = 'event32,'+event;
+            	}                  
+            }
+            
+            if (product == '') {
+            	argos.tracking.set(this, "Stock-check Lightbox. Store Selected And Results Displayed",{
+            		events : event
+            	});  
+            } else {
+            	argos.tracking.set(this, "Stock-check Lightbox. Store Selected And Results Displayed",{
+            		products : ';'+product, 
+            		events : event
+            	});
+            } 
+                    
             
             /* eVar29 related 
             get container id and pass it to container function, action setVar29() */
@@ -552,12 +493,13 @@ argos.tracking.pdp = (new function() {
       
       
       this.stockCheck = function() {      //Uses CheckStockActivatee.prototype.modifyContent()
-            var status;
+            
+    	  var status
+            var titlePresent = 0;
             var outOfStock = $('.improvedInventory_checkStockInOtherArea');
             var regRes = $('.outOfStock').text();
             var notAvailable = $('.notAvailable').text();
             var buyReserveButton = $('.AddToTrolleyActivator',this); //specify 'this' or it will include all instances
-            var nearbyStock = $('#showOtherNearbyStoresWithStock').length;
             
             //eVar52
             function checkStock() {
@@ -580,16 +522,39 @@ argos.tracking.pdp = (new function() {
       
             
             this.captureLightboxDetails = function() {
-                  if (nearbyStock >= 1) {
-                        var var9 = '1 improved inventory store'
-                  }
-                  var var52 = checkStock();
-                  
-      
-                  argos.tracking.set(this, "Stock Check Details", {
-                        eVar52 : var52,
-                        eVar9 : var9
-                  });   
+            	
+            	$(function() {            	
+            		var title = $('#lightBoxStockAvailability').find('.location');
+                	
+                	title.each(function() {
+                        var $thisText = $(this).text(); 
+                        var var9;
+                        var otherStock = $('#showOtherNearbyStoresWithStock').length;
+                        if ($thisText == 'Nearest store with stock') { //broken
+                        	if (otherStock >= 1) {
+                        		var9 = 'more than 1 improved inventory store';
+                        	} else {
+                        		var9 = '1 improved inventory store';
+                        	}
+                        	
+                        	
+                        	
+                        	argos.tracking.set(this, "Stock Check Details", {
+                                eVar9 : var9
+                          });
+                     
+    		              }                    
+                	}); 
+                	
+                	 var var52 = checkStock();                  
+                     
+                     argos.tracking.set(this, "Stock Check Details", {
+                           eVar52 : var52
+                     });
+                
+            	});
+            	
+                    
                   
             }
             
@@ -703,17 +668,14 @@ argos.tracking.pdp = (new function() {
                   
                   // check first product is oos or in stock 
                   var firstStoreInStock = result[0].isDisabled;
-                  setProducts = ';'+partNumber+';;;'
+                  setProducts = partNumber+';;;'
                   for (var i=0; i < result.length; i++) {                     
                         if (result[i].isDisabled == firstStoreInStock) {
                               setProducts = setProducts + prodEvent +';'+'evar16='+result[i].storeNumber.replace(/:/g, "")+';'
                         }
-                  }
-                  
+                  }  
       
-      
-                  //set up products
-                  
+                  //set up products                  
                   
                   // oos get all stores that are oos plus all values
                   // of not oss get all stores that are oos plus all values
@@ -725,7 +687,7 @@ argos.tracking.pdp = (new function() {
                         eVar16 : setVar16,
                         prop42 : setProp+':',
                         //products : ';'+partNumber+';;;'+setProducts+';'+'evar16='+setVar16.replace(/:/g, "")+';',
-                        products : setProducts,
+                        products : ';'+setProducts,
                         events : setEvents,
                         eVar27 : setVar27
                   });
@@ -776,15 +738,12 @@ argos.tracking.pdp = (new function() {
             var location = argos.tracking.location.get();
             var reviewsAnchor = $('#ratingsReviews .button');
             var alsoLikeAnchor = $('#main h2:contains("You may also like")').parent().find('.product a');
-            var qvpActivator = alsoLikeAnchor.parent().next('.actions').find('.QvpActivator');
             var alsoLikeButton = $('#main h2:contains("You may also like")').parent().find('.product .button');
             var essentialExtras = $('#pdpEssentialExtras a');
-            var essentialQvpActivator = $('#pdpEssentialExtras').find('.QvpActivator');
             var pdpAlternativeProducts = $('#pdpAlternativeProducts .product a');
             var pdpAlternativeProductsButton = $('#pdpAlternativeProducts .button');            
-            var alsoInRangeButton = $('.pdp #pdpAlsoInThisRange .product a');
-            var alsoInRange = $('#pdpAlsoInThisRange .product .button');
-            var alsoInRangeQvpActivator = $('#pdpAlsoInThisRange').find('.QvpActivator');
+            var alsoInRange = $('.pdp #pdpAlsoInThisRange .product a');
+            var alsoInRangeButton = $('#pdpAlsoInThisRange .product .button');
             var chooseProductsButton = $('.button_chooseProduct');
             var addOfferToTrolley = $('.button_buyOrReserve');
             var buyOrReserve = $('.btnbuyreserve.progressive');
@@ -900,14 +859,11 @@ argos.tracking.pdp = (new function() {
             pdpAlternativeProductsButton.bind('click', function() {
                   var breadcrumbs = argos.tracking.breadcrumb();
                   var lowestLevel;
-                  if (breadcrumbs[3] == 'undefined') {
-                        lowestLevel = argos.tracking.cleanString(breadcrumbs[2])
-                  } else {
-                        lowestLevel = argos.tracking.cleanString(breadcrumbs[3])
-                  }     
+                  var lowestLevel = argos.tracking.cleanString(breadcrumbs.pop(-1));    
                   argos.tracking.set(this, "PDP Product Alternatives Button", {
                         eVar46 : basetag+lowestLevel+':'+'alternatives:',
                         eVar49 : basetag+'alternatives:productdetails:',
+                        prop4 : basetag+'product:alternatives:quickinfo:',
                         events : 'scAdd'
                   });   
             });
@@ -915,11 +871,14 @@ argos.tracking.pdp = (new function() {
             
             alsoInRangeButton.bind('click', function() {
                   var breadcrumbs = argos.tracking.breadcrumb();
-                  var lowestLevel = argos.tracking.cleanString(breadcrumbs.pop(-1));            
-                  
+                  var lowestLevel = argos.tracking.cleanString(breadcrumbs.pop(-1)); 
+                  var catNumber = $(this).parent().parent().find('.partnum').text();
+                  var prodCatNumber = $('#pdpInformation').find('#pdpProduct .partnumber').text();
+    
                   argos.tracking.set(this, "PDP Product Also In Range Button", {
-                        eVar46 : basetag+lowestLevel+':'+'alsointhisrange:',
+                        eVar46 : basetag+lowestLevel+':'+'alsointhisrange:'+catNumber.replace(/\//g, "")+':'+prodCatNumber.replace(/\//g, "")+':',
                         eVar49 : basetag+'alsointhisrange:productdetails:',
+                        prop4 : basetag+'product:alsointhisrange:quickinfo:',
                         events : 'scAdd'
                   });   
             });
@@ -927,22 +886,20 @@ argos.tracking.pdp = (new function() {
             alsoLikeAnchor.bind('click', function() {
                   argos.tracking.set(this, "PDP Product You May Also Like Anchor", {
                         prop25 : basetag+'product:youmayalsolike:',
-                        prop4 : basetag+'product:you:mayalsolike:quickinfo:'
+                        prop4 : basetag+'product:youmayalsolike:quickinfo:'
                   });   
             });
             
             alsoLikeButton.bind('click', function() {
                   var breadcrumbs = argos.tracking.breadcrumb();
-                  var lowestLevel;
-                  if (breadcrumbs[3] == 'undefined') {
-                        lowestLevel = argos.tracking.cleanString(breadcrumbs[2])
-                  } else {
-                        lowestLevel = argos.tracking.cleanString(breadcrumbs[3])
-                  }           
+                  var catNumber = $(this).parent().parent().find('.partnum').text();
+                  var prodCatNumber = $('#pdpInformation').find('#pdpProduct .partnumber').text();
+                  var lowestLevel = argos.tracking.cleanString(breadcrumbs.pop(-1));  
+                      
                   argos.tracking.set(this, "PDP Product You May Also Like Button", {
                         prop25 : basetag+'product:youmayalsolike:',
-                        prop4 : basetag+'product:you:mayalsolike:quickinfo:',
-                        eVar46 : basetag+lowestLevel+':'+'youmayalsolike:',
+                        prop4 : basetag+'product:youmayalsolike:quickinfo:',
+                        eVar46 : basetag+lowestLevel+':'+'youmayalsolike:'+catNumber.replace(/\//g, "")+':'+prodCatNumber.replace(/\//g, "")+':',
                         eVar49 : basetag+'youmayalsolike:productdetails:',
                         events : 'scAdd'
                   });   
@@ -959,12 +916,12 @@ argos.tracking.pdp = (new function() {
             addToCart.bind('click', function() {      
       
                   var checkParent = $(this).parents('#pdpAlsoInThisRange').attr('id');
-                  var categoryName = $(this).parents('.content').first().parent().find('h2').text();               
+                  var categoryName = $(this).parents('.content').first().parent().find('h2').text(); 
                   var paging = $(this).parents('.carousel').find('.controller .paging span');
                   var catNumber = $(this).parent().parent().find('.partnum').text();
                   var prodCatNumber = $('#pdpInformation').find('#pdpProduct .partnumber').text();               
-                  if (checkParent != 'pdpAlsoInThisRange') {
-                        var e46 = basetag+argos.tracking.cleanString(categoryName)+':'+catNumber+':'+prodCatNumber+':';
+                  if (checkParent != 'pdpAlsoInThisRange') {                     
+                	  var e46 = basetag+argos.tracking.cleanString(categoryName)+':'+catNumber.replace(/\//g, "")+':'+prodCatNumber.replace(/\//g, "")+':';  
                         if(categoryName == 'Essential extras')
                               e46 = basetag+argos.tracking.cleanString(crumbs.pop(-1))+':essentialextras:'+catNumber.replace("/","")+':'+prodCatNumber.replace("/","")+':'
                         if(categoryName =='Alternative products')
@@ -995,32 +952,7 @@ argos.tracking.pdp = (new function() {
                         events : 'scAdd'
                   });   
             });
-            
-            alsoInRange.bind('click', function() {
-                  argos.tracking.set(this, "PDP Also In This Range", {
-                        prop25 : basetag+'product:alsointhisrange:'                             
-                  });   
-            });
-            
-            essentialQvpActivator.bind('click', function() {
-                  argos.tracking.set(this, "PDP Essential Extras Quick View", {
-                        prop4 : basetag+'product:essentialextras:quickinfo'                           
-                  });   
-            });
-            
-            essentialExtras.bind('click', function() {
-                  argos.tracking.set(this, "PDP Essential Extras", {
-                        prop25 : basetag+'product:essentialextras:'                             
-                  });   
-            });
-            
-            qvpActivator.bind('click', function() {
-                  var more = argos.tracking.delayedGet('.qvpproduct .more.button',100);
-                  argos.tracking.set(this, "PDP Quickview Button", {
-                        prop4 : basetag+'product:essentialextras:quickinfo'                           
-                  });   
-            });         
-
+             
             reviewsAnchor.bind('click', function() {
                   var rating = $(this).find('img').attr('alt');
                   var reviews = $(this).find('.number').text();
@@ -1140,6 +1072,48 @@ argos.tracking.location = (new function() {
       }
 });
 
+/*******************************************************************************
+* Common QVP Lightbox tags for both PDP and Listers called from QVP ACTIVATEE
+******************************************************************************/
+argos.tracking.qvp = (new function() {
+	this.fireTags = function(){
+		var sProducts = ';'+this.product().number;
+		var sProp4;
+		
+		if (argos.page.elements.body.hasClass('searchResults')) {
+			//Search Lister
+			sProp4 ='ar:search:mercadoresultslist:quickinfo:';
+		} else if (argos.page.elements.body.hasClass('lister')){
+			//Browse Lister
+			var location = argos.tracking.location.get();
+			sProp4 = argos.tracking.cleanString(location.join(':'))+':quickinfo:';
+		}  else if (argos.page.elements.body.hasClass('pdp')) {
+			//PDP
+			var pdpGroup = this.property('activator').$node.parents('.pdpRelatedInformation').attr('id');		    
+			sProp4 = _pdpArea(pdpGroup);			
+		}
+		argos.tracking.set(this, "Quick View Page", {
+			prop4: sProp4,
+			products : sProducts                      
+		});
+	}
+	
+	function _pdpArea(pdpGroup) {
+		switch(pdpGroup){
+        case 'pdpEssentialExtras' : sProp4 = 'ar:product:essentialextras:quickinfo:'; 
+        	break;
+        case 'pdpAdditionalItems' : sProp4 = 'ar:product:you:mayalsolike:quickinfo:'; 
+        	break;
+        case 'pdpPromotions' : sProp4 = 'ar:product:specialoffers:quickinfo:'; 
+         	break;
+        case 'pdpAlternativeProducts' : sProp4 = 'ar:product:alternatives:quickinfo:'; 
+        	break;
+        case 'pdpAlsoInThisRange' : sProp4 = 'ar:product:alsointhisrange:quickinfo:'; 
+        	break;
+		}
+		return sProp4;
+	}
+});
 
 /*******************************************************************************
 * Initialise tagging events.
@@ -1192,7 +1166,4 @@ $(window).load(function() {
       if ($body.hasClass("oneClickConfirmation")) {         
             argos.tracking.oneClickConfirmation.init();
       }      
-      
-      
 });
-

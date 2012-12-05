@@ -169,6 +169,8 @@ var gigyaUI = {
 			}
 			,onBeforeScreenLoad:function(e) {
 				//debug.log(e);
+				jQuery('.registration-url').val(context.url);
+				jQuery('.browser-agent').val(navigator.userAgent);
 			}
 			,onFieldChanged:function(e) {
 				//debug.log(e);
@@ -216,6 +218,7 @@ var gigyaUI = {
 				var context = gigyaUI.getContext();
 					context.event = "registration";
 				jQuery('.registration-url').val(context.url);
+				jQuery('.browser-agent').val(navigator.userAgent);
 				gigya.accounts.showScreenSet({
 					screenSet:'Login-web'
 					,mobileScreenSet:'Login-mobile'
@@ -224,6 +227,13 @@ var gigyaUI = {
 					,cid: context.cid
 					,onError:function(e) {
 						debug.error(e);
+						if( undefined !== e.response.validationErrors && 0 < e.response.validationErrors.length ) {
+							var errors = e.response.validationErrors;
+							for(var i=0; i<errors.length; i++) {
+								var error = errors[i];
+								debug.log(error);
+							}							
+						}
 					}
 					,onBeforeScreenLoad:function(e) {
 						//debug.log(e);

@@ -255,6 +255,7 @@ $(document).ready(function(){
 	displayMyDillardsBar();
 });
 
+// Manually open My Dillard's fly-out
 function openMyDillardsFlyOut(){
 	$("#myDillardsRightFrame").prop("src","https://"+$("#myDillardsRightFrame").data("host")+"/webapp/wcs/stores/servlet/MyDillardsiFrameView?storeId=301&langId=-1&catalogId=301");
 	setTimeout(function(){$("#myDillardsRightFrame").fadeIn(250);},500);
@@ -266,3 +267,10 @@ function openMyDillardsFlyOut(){
 		$("#myDillardsEmailAddress").focus();
 	});
 }
+
+// Lock My Dillard's bar to top on mobile devices
+$(document).ready(function(){
+	if(BrowserDetect.OS=="iPad" || BrowserDetect.OS=="iPhone" || BrowserDetect.OS=="Android"){
+		$("#myDillardsContainer").css("position","absolute");
+	}
+});

@@ -1,0 +1,108 @@
+function ie6AdjustBodySize() {
+	$(document.body).setStyle('width', document.getSize().x<980 ? '980px' : 'auto');
+}
+
+window.addEvent('domready', function() {
+	// IE6 does not support the CSS min-width property, so we have
+	// to adjust the page width using JavaScript.
+	if (document.getElement('html').hasClass('ltie7')) {
+		ie6AdjustBodySize();
+		window.addEvent('resize', ie6AdjustBodySize);
+	}
+});
+
+
+var Search=new Class({
+	formEl: null,
+	inputEl: null,
+
+	initialize: function() {
+		if (!this.cacheEls()) return;
+		if (!this.attachEvents()) return;
+
+		this.handleInputBlur();
+	},
+
+	attachEvents: function() {
+		this.formEl.addEvents({
+			'submit': this.handleSubmit.bindWithEvent(this)
+		});
+
+		this.inputEl.addEvents({
+			'blur': this.handleInputBlur.bindWithEvent(this),
+			'focus': this.handleInputFocus.bindWithEvent(this)
+		});
+
+		// IE6 doesn't support the :hover pseudo-class on non-anchor elements.
+		var buttonEl=this.formEl.getElement('.searchButton');
+		if (buttonEl) {
+			buttonEl.addEvents({
+				'mouseenter': buttonEl.addClass.bind(buttonEl, 'searchButtonHover'),
+				'mouseleave': buttonEl.removeClass.bind(buttonEl, 'searchButtonHover')
+			});
+		}
+
+		return true;
+	},
+
+	cacheEls: function() {
+		this.formEl=document.getElement('.searchForm');
+		if (!this.formEl) return false;
+
+		this.inputEl=this.formEl.getElement('.searchInput');
+		if (!this.inputEl) return false;
+
+		return true;
+	},
+
+	getInput: function() {
+		return this.inputEl.get('value').trim();
+	},
+
+	handleInputBlur: function(e) {
+		var input=this.getInput();
+		if (
+			(!input && !this.inputEl.hasClass('prepop'))
+			|| "Find your favorite Apps!"==input
+		) {
+			this.inputEl.addClass('prepop');
+			this.inputEl.set('value', "Find your favorite Apps!");
+		}
+	},
+
+	handleInputFocus: function(e) {
+		var input=this.getInput();
+		if ("Find your favorite Apps!"==input) {
+			this.inputEl.set('value', '');
+			this.inputEl.removeClass('prepop');
+		}
+	},
+
+	handleSubmit: function(e) {
+		var input=this.getInput();
+		e=new Event(e);
+
+		if (!input || "Find your favorite Apps!"===input) e.preventDefault();
+	}
+});
+
+var gSearch;
+
+window.addEvent('domready', function(){
+	gSearch=new Search();
+});
+
+var Analytics=new Class({
+	trackEvent: function(category, action, label, value) {
+		if ('undefined'===typeof window._gaq) window._gaq=[];
+
+		_gaq.push(["_trackEvent", category, action, label, value]);
+	}
+}),
+gAnalytics=null;
+
+window.addEvent('domready', function() {
+	gAnalytics=new Analytics();
+});
+
+

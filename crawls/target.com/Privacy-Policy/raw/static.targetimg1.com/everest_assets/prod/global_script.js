@@ -2,11 +2,6 @@
 
 //Reset the Target.globals for the Third Party Global Nav to static js file on Akamai.
 
-console.log("[global_script.js]");
-
-if (Target.globals.AjaxGlobalNavPath){
-	console.log(Target.globals.AjaxGlobalNavPath);
-}
 
 if((Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=false") && document.domain == "weeklyad.target.com"){
 	Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
@@ -18,12 +13,10 @@ if((Target.globals.AjaxGlobalNavPath == "https://www.target.com/AjaxGlobalNavVie
 
 if (Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=true") {
     Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
-	console.log("Target.globals.AjaxGlobalNavPath: " + Target.globals.AjaxGlobalNavPath);
     
 }
 if (Target.globals.AjaxGlobalNavPath == "https://www.target.com/AjaxGlobalNavView?isThirdParty=true") {
     Target.globals.AjaxGlobalNavPath = "https://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
-	console.log("Target.globals.AjaxGlobalNavPath: " + Target.globals.AjaxGlobalNavPath);
     
 }
 $(document).ready(function() {

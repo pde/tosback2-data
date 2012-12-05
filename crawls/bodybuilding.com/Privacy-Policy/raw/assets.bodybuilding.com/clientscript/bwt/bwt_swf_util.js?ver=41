@@ -1,0 +1,268 @@
+/*************************************************************
+* Document	: bwt_swf_util.js
+* Author	: Wayne J. Earl
+* Created	: 2007-05-18
+* Purpose	: JavaScript functions for swf embedding
+* Comment	: Uses SWFObject from swfobject.js
+*************************************************************/
+/*************************************************************
+* Revised by	: Wayne J. Earl
+* Revised date	: 2007-05-24
+* Description	: Added conditional mouse event handling
+*				  Captures and discards mouse 'click' and 'scroll'
+*					events when panel is visible
+*					EXCEPT 'click' event on 'close link'
+*************************************************************/
+/*************************************************************
+* Revised by	: Wayne J. Earl
+* Revised date	: 2007-08-13
+* Description	: Revised page width/height code to handle
+*					'all' browsers
+*************************************************************/
+/*************************************************************
+* Revised by	: 
+* Revised date	: 
+* Description	: 
+*************************************************************/
+
+SWF_WIDTH = 600;
+SWF_HEIGHT = 400;
+DEFAULT_PAGE_WIDTH = 750;
+DEFAULT_PAGE_HEIGHT = 500;
+SWF_SIZE_FACTOR = .8;
+SWF_IE_WIDTH_ADJUST = 8;
+SWF_LOADING_DELAY = 400;
+SWF_LOADING_IMG_HEIGHT = 100;
+SWF_VER = 6;
+SWF_BACK_COLOR = '#FFFFFF';
+SWF_DIV = 'bwt_swf_embed_container';
+SWF_LOADING_DIV = 'bwt_swf_loading_container';
+BWT_PANEL_CLOSE_LINK = 'bwt_panel_close_link';
+
+chart_width = SWF_WIDTH;
+chart_height = SWF_HEIGHT;
+swf_ref = "";
+swf_name = "bwt_workout_chart";
+/*
+cond_mouse_array = ["bwt_panel_container_mask",
+					"bwt_panel_container_c",
+					"bwt_panel_container",
+					"bwt_panel_bd",
+					"bwt_swf_embed_container",
+					"bwt_workout_chart",
+					"bwt_panel_close_link_wrapper",
+					"bwt_panel_close_link"];
+*/
+
+function showSWFPanel(elem)
+{
+	if (typeof(elem) != "undefined") {
+	
+		swf_ref = elem.href;
+		//swf_name = "";
+		//get img elem
+/*		var elem_img = getFirstChild(elem);
+		if (elem_img) {
+		
+			swf_name = elem_img.alt + "_embed";
+		}
+*/		var elem_embed_container = document.getElementById(SWF_DIV);
+		if (elem_embed_container) {
+		
+			var img_spacing = String(Math.floor((chart_height - SWF_LOADING_IMG_HEIGHT) / 2)) + "px;";
+			var loading_html = "<div class='bwt_loading_container' style='height:" + String(chart_height) + "px;'>";
+			loading_html += "<img alt='Loading...' src='http://assets.bodybuilding.com/images/loadingAnimation.gif' style='margin-top:" + img_spacing + "' />";
+			loading_html += "</div>";
+			elem_embed_container.innerHTML = loading_html;
+		}
+		showPanel();
+		//embedSWF(swf_ref, swf_name);
+		window.setTimeout(embedSWF, SWF_LOADING_DELAY);
+	}
+}
+
+
+function embedSWF()
+{
+	if (typeof(SWFObject) == "function") {
+	
+		var swf_obj = new SWFObject(swf_ref, swf_name, chart_width, chart_height, SWF_VER, SWF_BACK_COLOR);
+	//	swf_obj.addParam("wmode", "opaque");
+	//	swf_obj.addParam("class", "bwt_embed");
+		swf_obj.addParam("onclick", "return false;");
+		swf_obj.write(SWF_DIV);
+/*		var elem = document.getElementById(swf_name);
+		if (elem) {
+		
+			elem.style.zIndex = 20;
+		}
+*/	}
+}
+
+
+function initEmbed()
+{
+	calcEmbedSize();
+
+	var elem = document.getElementById(SWF_DIV);
+	//var elem_loading = document.getElementById(SWF_LOADING_DIV);
+	if (elem) {
+	
+		//set width
+		if (typeof(window.event) == "object") { //IE
+		
+			//elem.style.width = "608px";
+			var width_val = chart_width + SWF_IE_WIDTH_ADJUST;
+			//elem.style.width = String(chart_width + SWF_IE_WIDTH_ADJUST) + "px";
+		}
+		else {
+		
+			//elem.style.width = "600px";
+			var width_val = chart_width;
+			//elem.style.width = String(chart_width) + "px";
+		}
+		elem.style.width = String(width_val) + "px";
+		//elem_loading.style.width = String(width_val) + "px";
+	}
+}
+
+
+function calcEmbedSize()
+{
+//	var elem_page_ref = document.body.parentNode;
+
+//	if (elem_page_ref) {
+	
+		//get browser window dimensions
+	//	var body_width = Math.floor(elem_body.clientWidth * SWF_SIZE_FACTOR);
+	//	var body_height = Math.floor(elem_body.clientHeight * SWF_SIZE_FACTOR);
+		var page_width = DEFAULT_PAGE_WIDTH;
+		var page_height = DEFAULT_PAGE_HEIGHT;
+		if (typeof (window.innerWidth) == 'number') { //'real' browser
+		
+			page_width = window.innerWidth;
+			page_height = window.innerHeight;
+		}
+		else { //IE
+		
+			if ((document.documentElement) && (document.documentElement.clientWidth)) { //IE 6+ - 'standards compliant' mode
+			
+				page_width = document.documentElement.clientWidth;
+				page_height = document.documentElement.clientHeight;
+			}
+			else {
+			
+				page_width = document.body.clientWidth;
+				page_height = document.body.clientHeight;
+			}
+		}
+
+		page_width = Math.floor(page_width * SWF_SIZE_FACTOR);
+		page_height = Math.floor(page_height * SWF_SIZE_FACTOR);
+		
+		//calc aspect ratios
+	//	var body_aspect = body_width / body_height;
+		var page_aspect = page_width / page_height;
+		var chart_aspect = chart_width / chart_height;
+
+		//determine which dimension to use as basis for size calcs
+	//	if (body_aspect <= chart_aspect) { //use body width
+		if (page_aspect <= chart_aspect) { //use page width
+
+		//	chart_width = body_width;
+			chart_width = page_width;
+			chart_height = Math.floor(chart_width / chart_aspect);
+		}
+		else { //use page height
+		
+		//	chart_height = body_height;
+			chart_height = page_height;
+			chart_width = Math.floor(chart_height * chart_aspect);
+		}
+//	}
+}
+
+
+function conditionalMouseEvt(e)
+{
+	var evt = (e) ? e : ((window.event) ? window.event : "");
+	if (evt) {
+
+		if (f_panel_visible) {
+		
+			if (evt.stopPropagation) {
+			
+				evt.stopPropagation();
+			}
+			else if (typeof(evt.cancelBubble) != "undefined") {
+			
+				evt.cancelBubble = true;
+			}
+			var elem_target = getTarget(evt);
+			if (elem_target) {
+			
+				if (evt.type == "click") {
+				
+					if (elem_target.id == BWT_PANEL_CLOSE_LINK) {
+					
+						hidePanel();
+					}
+				}
+			}
+			if (evt.preventDefault) {
+			
+				evt.preventDefault();
+			}
+			else {
+			
+				evt.returnValue = false;
+			}
+		}
+	}
+}
+
+
+function assignConditionalMouse()
+{
+/*
+	//assign default event handlers
+	document.onmousewheel = conditionalMouseEvt;
+	document.onclick = conditionalMouseEvt;
+	document.ondblclick = conditionalMouseEvt;
+	document.onscroll = conditionalMouseEvt;
+
+	return;
+*/	
+/*
+	for (var idx in cond_mouse_array) {
+	
+		var id = cond_mouse_array[idx];
+		var elem = document.getElementById(id);
+		if (elem) {
+		
+			//assign event handler to events
+		//	elem.onmousewheel = conditionalMouseEvt;
+			elem.onclick = conditionalMouseEvt;
+			elem.ondblclick = conditionalMouseEvt;
+		//	window.onscroll = conditionalMouseEvt;
+		//	document.onscroll = conditionalMouseEvt;
+		}
+	}
+*/
+/*
+	if (document.onmousewheel) {
+	
+		document.onmousewheel = conditionalMouseEvt;
+	}
+*/
+	if (document.attachEvent) {
+	
+		document.attachEvent('onmousewheel', conditionalMouseEvt);
+	}
+	else if (document.addEventListener) {
+	
+		document.addEventListener("DOMMouseScroll", conditionalMouseEvt, false);
+	}
+	document.onclick = conditionalMouseEvt;
+	document.ondblclick = conditionalMouseEvt;
+}

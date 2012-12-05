@@ -439,8 +439,13 @@ function onloadBadgevilleInit() {
     			 badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);  
 		}
 
+		//best reviewed
+		if (typeof(badgev_isBestreviewed) != 'undefined' && badgev_isBestreviewed){
+			badgev_params.category = 'bestreviewed';
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',1000);
+		}		
+
 		//Black friday campaign tagging
-		
 		if (typeof(badgev_isBlackFridaydeals) != 'undefined' && badgev_isBlackFridaydeals){
 			badgev_params.event = 'blackfriday';
 		}

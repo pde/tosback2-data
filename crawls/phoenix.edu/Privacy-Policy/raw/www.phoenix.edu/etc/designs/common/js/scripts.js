@@ -207,7 +207,13 @@ if(!f){return false
 }function json2Xml(json){return eval("obj2Xml("+json+");")
 }if(typeof String.prototype.trim!=="function"){String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g,"")
 }
-};
+}$(function(){var a=$("html");
+if(a.hasClass("ie6")||a.hasClass("ie7")||a.hasClass("ie8")){$(document).find("select").on("focus",function(d){var c=$(d.currentTarget),b=c.css("width");
+c.css({width:"auto","min-width":b})
+}).on("blur",function(c){var b=$(c.currentTarget);
+b.css("width",b.css("min-width"))
+})
+}});
 /*  
  *  Font UnStack 0.1
  * 

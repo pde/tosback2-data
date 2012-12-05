@@ -17,6 +17,9 @@ var ga_account="UA-1616916-22";
 // Jump Time account code
 var jt_account="sfgate";
 
+// iCrossing account code
+var ix_account = "c4.iclive.com/pixel-js/c4-pixel.js";
+
 // Domain names of 1st-party cookie servers
 var s_cookieServer="om.sfgate.com";
 var s_cookieServerSecure="som.sfgate.com"; 

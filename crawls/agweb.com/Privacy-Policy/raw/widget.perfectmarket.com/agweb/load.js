@@ -1,17 +1,25 @@
-var bbVer = getBBVersion();
+var _pmep = 'http://widget.perfectmarket.com/';var _pmep_geo = 'http://geo.perfectmarket.com/';var _pmpmk = 'agweb/pmk-1.5.js';var bbVer = getBBVersion();
 if (bbVer == null || parseInt(bbVer) > 5) {
 var pm_ppy="agweb";
 var pmk,pmglb,pmfa,pmad,pmdebug_c;pmglb=pmglb||null;pmfa=pmfa||null;pmad=pmad||null;pmdebug_c=pmdebug_c||null;pmk=pmk||null;
+var _pmenv = getUrlParameter('pmenv');
+if(_pmenv && _pmenv == 'sandbox') {_pmep=_pmep.replace('http://widget.perfectmarket.com', 'http://widget.sandbox.perfectmarket.com');_pmep_geo=_pmep_geo.replace('http://geo.perfectmarket.com', 'http://geo.sandbox.perfectmarket.com');}
 
 (function(){
   var sc='script',doc=document;
-  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-1.4.js"></'+sc+'>');
+  doc.writeln('<'+sc+' src='+_pmep+_pmpmk+'></'+sc+'>');
 })();
 
 function pmws_request_done(){
   var sc="script",doc=document;
-  if (doc.all && !window.opera){doc.write('<'+sc+' type="text/javascript" id="contentloadtag" defer="defer" src="javascript:void(0)"><\/'+sc+'>');var contentloadtag = doc.getElementById("contentloadtag");contentloadtag.onreadystatechange = function() { if (this.readyState=="complete") return; } }
-  doc.writeln('<'+sc+' src="http://widget.perfectmarket.com/agweb/pmk-1.4.js"></'+sc+'>');
+  if (doc.all && !window.opera){doc.write('<'+sc+' type="text/javascript" id="pm_contentloadtag" defer="defer" src="javascript:void(0)"><\/'+sc+'>');var pm_contentloadtag = doc.getElementById("pm_contentloadtag");if(pm_contentloadtag)pm_contentloadtag.onreadystatechange = function() { if (this.readyState=="complete") return; } }
+  doc.writeln('<'+sc+' src='+_pmep+_pmpmk+'></'+sc+'>');
+  /*window.onload = function() {
+      var body = doc.getElementsByTagName('body')[0];
+      var newE = document.createElement('script');
+      newE.setAttribute('src', _pmep + _pmpmk);
+      body.insertBefore(newE, body.firstChild);
+      };*/
 }
 
 }
@@ -20,3 +28,4 @@ function getBBVersion() {
     if (ua.indexOf("BlackBerry") >= 0) {if (ua.indexOf("Version/") >= 0) {vp = ua.indexOf("Version/") + 8;ver = ua.substring(vp, vp + 3);}else {splitUA = ua.split("/"); ver = splitUA[1].substring(0, 3);}}
     return ver;
 }
+function getUrlParameter(name) {var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);return match && decodeURIComponent(match[1].replace(/\+/g, ' '));}

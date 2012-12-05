@@ -258,54 +258,59 @@ mistats.AdTracker = function ()
       var ad;
       var ads;
       var c;
-      var d;
-      var divs;
+      var def;
+      var i;
       var pos;
+      var scripts;
       var size;
+      var src;
 
       if (!pObj)
          pObj = window;
 
       ads = [];
-      divs = pObj.document.getElementsByTagName('div');
-      for (d = 0; d < divs.length; d++)
+      scripts = pObj.document.getElementsByTagName('script');
+      for (i = 0; i < scripts.length; i++)
       {
          ad = null;
-         for (c = 0; c < divs[d].childNodes.length; c++)
+
+         src = (scripts[i].src || '').toLowerCase();
+         if (!src.match(/^https*:\/{2}ad\.doubleclick\.net\/adj\/mi\.\w{3}/) || scripts[i].tracked)
+            continue;
+
+         size = src.match(/sz=[^\;]+/);
+         if (!size)
+            continue;
+
+         pos = src.match(/pos=\d+/);
+         if (!pos)
+            continue;
+
+         size = size[0].replace(/sz=/, '');
+         pos = pos[0].replace(/pos=/, '');
+         ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
+
+         def = scripts[i].nextSibling || null;
+         while (def && def.nodeName.match(/^#/))
+            def = def.nextSibling || null;
+         if (def
+          && def.nodeName === 'A'
+          && (def.href || '').match(/^https*:\/\/ad\.doubleclick\.net\/click\;/i)
+          && (def.innerHTML || '').match(/https*:\/\/s0\.2mdn\.net\/viewad\/817-grey\.gif/))
+            ad += 'D';
+
+         ads[ads.length] = ad;
+
+         if (src.match(/dcopt=ist/))
          {
-            if (!ad
-             && divs[d].childNodes[c].nodeName === 'SCRIPT'
-             && divs[d].childNodes[c].src
-             && divs[d].childNodes[c].src.match(/https*:\/\/ad\.doubleclick\.net\/adj\/\w+/)
-             && !divs[d].childNodes[c].tracked)
-            {
-               size = divs[d].childNodes[c].src.match(/sz=[^\;]+/);
-               if (!size)
-                  break;
-
-               pos = divs[d].childNodes[c].src.match(/pos=\d+/);
-               if (!pos)
-                  break;
-
-               size = size[0].toLowerCase().replace(/sz=/, '');
-               pos = pos[0].replace(/pos=/, '');
-               ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
-
-               divs[d].childNodes[c].tracked = true;
-            }
-            if (ad
-             && divs[d].childNodes[c].nodeName === 'A'
-             && divs[d].childNodes[c].href
-             && divs[d].childNodes[c].href.match(/https*:\/\/ad\.doubleclick\.net\/click\;/)
-             && divs[d].childNodes[c].innerHTML
-             && divs[d].childNodes[c].innerHTML.match(/https*:\/\/s0\.2mdn\.net\/viewad\/817-grey\.gif/))
-            {
-               ad += 'D';
-               break;
-            }
+            if (scripts[i].parentNode.nodeName !== 'BODY')
+               for (ad = null, c = scripts[i].nextSibling; !ad && c; c = c.nextSibling)
+                  if (c.nodeName === '#comment' && (c.data || '').match(/^\s*Begin Interstitial Ad\s*$/i))
+                     ad = true;
+            ads[ads.length] = 'N' + (ad ? '' : '');
          }
-         if (ad)
-            ads[ads.length] = ad;
+
+         scripts[i].tracked = true;
       }
 
       return ads;
@@ -579,6 +584,7 @@ mistats.InteractionTracker = function ()
 
    function beforeUnload(pEvent)
    {
+      var href;
       var thisObj;
 
       if (!pending)
@@ -591,18 +597,35 @@ mistats.InteractionTracker = function ()
 
       if (pEvent.type === 'mousedown')
       {
-         thisObj = (pEvent.srcElement) ? pEvent.srcElement : pEvent.target;
+         thisObj = pEvent.srcElement || pEvent.target;
 
          if (pEvent.button > 1 || thisObj.nodeName.match(/OBJECT|EMBED/))
             return;
 
-         while (thisObj && !thisObj.nodeName.match(/HTML|BODY|A/))
-            thisObj = (thisObj.parentElement) ? thisObj.parentElement : thisObj.parentNode;
+         while (thisObj && thisObj.nodeName !== 'A')
+            thisObj = thisObj.parentNode || null;
 
-         if (!thisObj.href || thisObj.href.match(/^javascript:|^#/i) || (thisObj.target && thisObj.target.match(/_blank/i)))
+         if (!thisObj)
             return;
 
-         if (thisObj.href.toLowerCase().replace(new RegExp('https*://'), '').split('/')[0] == location.hostname.toLowerCase())
+         href = thisObj.getAttribute('href') || '';
+         if (href.match(/^javascript:\s*void\(/i))
+         {
+            thisObj.removeAttribute('href');
+            mistats.bind(thisObj, 'click', function setHref()
+            {
+               setTimeout(function ()
+               {
+                  if (thisObj && thisObj.setAttribute)
+                     thisObj.setAttribute('href', href);
+               }, 50);
+               mistats.unbind(thisObj, 'click', arguments.callee)
+            });
+         }
+
+         if (!href || href.match(/^javascript:|^#/i)
+          || thisObj.href.toLowerCase().replace(/^https*:\/{2}/, '').split('/')[0] == location.hostname.toLowerCase()
+          || ((thisObj.getAttribute('target') || '').match(/_blank/i)))
             pending = false;
       }
 
@@ -1095,6 +1118,9 @@ mistats.GCSTracker = function ()
                clearInterval(pollPtr);
                pollPtr = null;
             }
+
+            if (!(signup && signup[0] && signup[0].contentWindow && signup[0].contentWindow.document))
+               return;
 
             submit = getElementLikeId(/Submit/i, signup[0].contentWindow.document);
             if (!submit)

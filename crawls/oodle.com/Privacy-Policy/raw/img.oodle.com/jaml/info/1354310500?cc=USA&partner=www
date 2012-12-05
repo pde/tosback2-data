@@ -1,0 +1,34 @@
+
+submitKB = function()
+{
+	var formName = 'kb';
+	var url = '/form/kb/post/';
+	var callback = function(o)
+	{
+		if (o.html)
+		{
+			jQ('#kbb-container').html(o.html);
+			window.scroll(0,0);
+		}
+	}
+	
+	
+	var ele = $('kb-send-element');
+	odl.form.startRequest(formName, url, callback, ele);
+}
+
+kbHelpful = function(helpful) 
+{
+	if (!helpful)
+	{
+		jQ('#kb-leaf_helpful').css('display', 'block');
+		jQ('#kb-type-element').val('KB-Unhelpful')
+	}
+	else
+	{
+		// What do i do?
+	}
+	
+	jQ('#kb-kb-helped-row').css('display', 'none');
+}
+

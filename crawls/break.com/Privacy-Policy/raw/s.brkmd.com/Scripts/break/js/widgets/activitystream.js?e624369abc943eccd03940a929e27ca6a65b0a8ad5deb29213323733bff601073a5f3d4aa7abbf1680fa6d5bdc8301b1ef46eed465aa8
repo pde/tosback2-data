@@ -1,0 +1,162 @@
+﻿function getActivityCommentTextFromActivityCommentSource(activityCommentSource){
+    if (activityCommentSource == "facebook") {
+        return "shared on facebook:";
+    }
+    else if (activityCommentSource == "twitter") {
+        return "tweeted:";
+    }
+    else if (activityCommentSource == "break") {
+        return "commented:";
+    }
+    else {
+        return "posted:";
+    }
+}
+function getPostedTimeAgoTextFromDateTimePosted(timePosted) {
+    var postedTimeAgoText = "";
+    var postedDate = new Date(timePosted * 1000);
+    var today = new Date();
+    var dateDifference = Math.ceil(today.getTime() - postedDate.getTime());
+    var one_day = 1000 * 60 * 60 * 24;
+    var one_hour = 1000 * 60 * 60;
+    var one_minute = 1000 * 60;
+    var one_second = 1000;
+
+    var daysAgo = Math.floor(dateDifference / one_day);
+    var hoursAgo = Math.floor(dateDifference / one_hour);
+    var minutesAgo = Math.floor(dateDifference / one_minute) - (hoursAgo * 60);
+    var secondsAgo = Math.floor(dateDifference / one_second) - (hoursAgo * 60 * 60) - (minutesAgo * 60);
+
+    if (daysAgo > 0) {
+        if (daysAgo == 1) {
+            postedTimeAgoText = "Posted " + daysAgo + " day ago on";
+        }
+        else {
+            postedTimeAgoText = "Posted " + daysAgo + " days ago on";
+        }
+    }
+    else if (hoursAgo > 0) {
+        //postedTimeAgoText = "Posted " + hoursAgo + " hours " + minutesAgo + " minutes " + secondsAgo + " seconds ago on";
+        if (hoursAgo == 1) {
+            postedTimeAgoText = "Posted " + hoursAgo + " hour ago on";
+        }
+        else {
+            postedTimeAgoText = "Posted " + hoursAgo + " hours ago on";
+        }            
+    }
+    else if (minutesAgo > 0) {
+        //postedTimeAgoText = "Posted " + minutesAgo + " minutes " + secondsAgo + " seconds ago on";
+        if (minutesAgo == 1) {
+            postedTimeAgoText = "Posted " + minutesAgo + " minute ago on";
+        }
+        else {
+            postedTimeAgoText = "Posted " + minutesAgo + " minutes ago on";
+        }
+                     
+    }
+    else {
+        postedTimeAgoText = "Just posted on";
+    }
+    return postedTimeAgoText;
+}
+function constructActivityArticle(activityStreamContent, index) {
+    var activityStreamInnerHtml = "";
+    var activityCommentText = getActivityCommentTextFromActivityCommentSource(activityStreamContent.comment.source);
+
+    var postedTimeAgoText = "";
+    if (activityStreamContent.comment.time) {
+        // calculate time ago activity was posted
+        postedTimeAgoText = getPostedTimeAgoTextFromDateTimePosted(activityStreamContent.comment.time);
+    }
+        
+    activityStreamInnerHtml += '<p><a class="scaling" href=""><img src="' + activityStreamContent.user.photo + '" alt="' + activityStreamContent.user.name + '"></a><cite><a href="">' + activityStreamContent.user.name + '</a></cite>' + activityCommentText + '</p>';
+    if (activityStreamContent.comment.text != "") {
+        activityStreamInnerHtml += '<blockquote>' + activityStreamContent.comment.text + '</blockquote>'
+    }
+    activityStreamInnerHtml += '<footer><b class="ir">Clock</b><span>' + postedTimeAgoText + ':</span>';
+    activityStreamInnerHtml += '<input type="hidden" value="'+activityStreamContent.comment.time+'" />';
+    activityStreamInnerHtml += '<a href="' + activityStreamContent.content.URL + '">';
+    var thumbnailUrl = getResizedThumbnailUrlFromImageSize(activityStreamContent.content.thumbnail,"_50x28");
+    activityStreamInnerHtml += '<img src="' + thumbnailUrl + '" alt="' + activityStreamContent.content.title + '" onerror="SwapImage(this,notfoundimage_50x28)">';
+    activityStreamInnerHtml += '<span class="ellipsis">' + activityStreamContent.content.title + '</span></a></footer>';
+
+    return activityStreamInnerHtml;
+}
+function updateActivityStream() {
+    $.getJSON("//actstm.break.com" + "/recentActivities?limit=20&sinceTime=" + latestActivityTime,
+    function (activityStreamContent) {
+        var activityStreamInnerHtml = "";
+        if (!activityStreamContent || activityStreamContent.length == 0) {
+            return;
+        }
+        // shift activity down based on amount of new activity found
+        for (var i = 19; i >= activityStreamContent.length; i--) {
+            var articleId = "activity_" + (i - activityStreamContent.length);
+            var articleIdToUpdate = "activity_" + i;
+
+            $("#" + articleIdToUpdate).html($("#" + articleId).html());
+            if ($("#" + articleId).hasClass("brk-user")) {
+                $("#" + articleIdToUpdate).addClass("brk-user");
+                $("#" + articleId).removeClass("brk-user");
+            }
+            else {
+                $("#" + articleIdToUpdate).removeClass("brk-user");
+            }
+            // update posted time
+            $("#" + articleIdToUpdate).find('span').first().html(getPostedTimeAgoTextFromDateTimePosted($("#" + articleIdToUpdate).find('input').val()));
+        }
+        // populate new activity
+        for (var i = 0; i < activityStreamContent.length; i++) {
+            var articleIdToUpdate = "activity_" + i;
+            $("#" + articleIdToUpdate).html(constructActivityArticle(activityStreamContent[i], i));
+            /*
+            if( activityStreamContent[i].comment.source == "break")
+            {
+            $("#" + articleIdToUpdate).addClass("brk-user");        
+            }
+            else
+            {
+            $("#" + articleIdToUpdate).removeClass("brk-user");
+            }
+            */
+        }
+        latestActivityTime = activityStreamContent[0].comment.time;
+
+        //activity stream ga tracking
+        $('#activity-scroll a').bind('click', function (event) {
+            var $target = $(event.target);
+
+            _gaq.push(['_trackEvent', 'Click', 'Homepage', 'ActivityStream']);
+        });
+    });
+    // refresh activity stream every 5 seconds
+    setTimeout("updateActivityStream()", 10000);
+}
+
+
+
+
+$(window).load(function () {
+    if (typeof FB !== 'undefined') {
+        FB.Event.subscribe('edge.create', function (response) {
+            var userSource = 'facebook';
+            if (isLoggedInLocal() == true) userSource = 'break';
+
+            if (BRK.api.session != null) {
+                $.post('/postActivity',
+                        {
+                            contentUrl: response,
+                            commentSource: 'break',
+                            userSource: userSource,
+                            userId: BRK.api.session.Id,
+                            userName: BRK.api.session.Username,
+                            userPhotoUrl: BRK.api.session.AvatarUrl
+                        },
+                        function (data) {
+                            alert(data);
+                        },
+                        'json');
+            }
+        });
+    }
+});

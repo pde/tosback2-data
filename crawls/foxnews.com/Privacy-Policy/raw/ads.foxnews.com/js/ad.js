@@ -523,33 +523,55 @@
 		},		
 		prsly: {
 			pre: function(d){	
-				
-				if (d.channel.split("/")[0].toLowerCase()!=="fbn" && d.channel.indexOf("fnc/scitech") == -1) { return; }
-				
-				if($('#parsely-root').size() > 0 ){return;}
+				//for now just target FNC - no FBC
+				if (d.channel.split("/")[0].toLowerCase()!=="fbn" && d.channel.indexOf("fnc/") === -1) { return; }
 			
 				var targetSections = "article|column|blog|video|slideshow";
 				
-				if (targetSections.indexOf(d.ctype.toLowerCase()) > -1 || targetSections.indexOf(d.ptype.toLowerCase()) > -1 ) {	this.insert(d);}
+				if(typeof d.ctype != "undefined" && targetSections.indexOf(d.ctype.toLowerCase()) > -1){
+					this.insert(d);
+				}
+				
+				if (typeof d.ptype != "undefined" && targetSections.indexOf(d.ptype.toLowerCase()) > -1){	
+					this.insert(d);
+				}
 			},
 			insert: function(d){
+				
+				var FN =  d.channel.indexOf("fnc") > -1 ? true : false;			
 
-				var dps =  d.channel.indexOf("fnc/scitech") > -1 ? "foxnews.com" : "foxbusiness.com";
-								
-				$("body").append('<div id="parsely-root" style="display: none"><a id="parsely-cfg" data-parsely-site="'+ dps +'" href="http://parsely.com">Powered by the Parse.ly Publisher Platform (P3).</a></div>');
+				(function(s, p, d) {
 
-				(function(){				
-				    var script = document.createElement('script'); 
-				    script.type = "text/javascript";
-				    script.async = true;
-				    script.id = "parsely-script";
+					if(FN){
+						$("body")
+							.append('<div id="parsely-root" style="display: none">'+
+								'<div id="parsely-cfg" data-parsely-site="foxnews.com"></div>'+
+								'</div>');
+						
+						var h=d.location.protocol, i=p+"-"+s,
+						   e=d.getElementById(i), r=d.getElementById(p+"-root"),
+						   u=h==="https:"?"d1z2jf7jlzjs58.cloudfront.net"
+						   :"static."+p+".com";
+						if (e) return;
+						e = d.createElement(s); e.id = i; e.async = true;
+						e.src = h+"//"+u+"/p.js"; r.appendChild(e);
+					}else{
+						
+						$("body")
+							.append('<div id="parsely-root" style="display: none">'+
+					    		'<a id="parsely-cfg" data-parsely-site="foxbusiness.com" href="http://parsely.com" rel="nofollow">Powered by the Parse.ly Publisher Platform (P3).</a>'+
+					    		'</div>');
 
-				    script.src = window.location.protocol +"//static.parsely.com/p.js";
-				    $("#parsely-root").get(0).appendChild(script);
-				}());				
+						var h=d.location.protocol, i=p+"-"+s,
+				        	e=d.getElementById(i), r=d.getElementById(p+"-root");
+				     	if (e) return;
+				     	e = d.createElement(s); e.id = i; e.async = true;
+				     	e.src = h+"//static.parsely.com/p.js"; r.appendChild(e);
+					}
+
+				})("script", "parsely", document);			
 			}
-			
-		},		
+		},	
 		niel: {
 			pre: function(d) {
 				var channel = typeof d != "undefined" ? d.raw.channel: $.ad._meta.raw.channel;
@@ -1152,21 +1174,22 @@
 		visrev:{
 			init: function(){
 				var root = this;	
-				if($.ad._meta.channel.indexOf("fbn") > -1 || $.ad._meta.channel.indexOf("fsb") > -1){
-					if($.ad._meta.raw.section == "root" && $.ad._meta.channel.indexOf("fbn") > -1 ){
+				//if($.ad._meta.channel.indexOf("fbn") > -1 || $.ad._meta.channel.indexOf("fsb") > -1){
+				if($.ad._meta.channel.indexOf("fbn") > -1){
+					if($.ad._meta.raw.section == "root"){
 						root.insertScript(67,true)
 					}else{
 						root.insertScript(67,false);
 					}
 					
-				}
+				}/*
 				if($.ad._meta.raw.channel.indexOf("fnc") > -1){
 					if($.ad._meta.raw.section == "root"){
 						root.insertScript(115,true); //currently only set for FN HP.
 					}else{
 						root.insertScript(115,false);
 					}
-				}
+				}*/
 			},
 			insertScript: function(id,automate){
 				
@@ -1181,7 +1204,7 @@
 					x.parentNode.insertBefore(s, x);
 				})(document, 'script');					
 			}
-		},			
+		},					
 		tynt: {
 			init: function(d) {
 				var ptype = d.ptype;
@@ -1627,7 +1650,7 @@
 				var d = $.ad.meta();
 
 				//parse.ly
-				//$.ad.prsly.pre(d);
+				$.ad.prsly.pre(d);
 
 				//comscore
 				$.ad.coms.pre(d);

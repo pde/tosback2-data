@@ -523,6 +523,8 @@ siNav.load({
 	],
 	"video" : [
 		{ "u": "/specials/futuregamechangers/?eref=sinav",			"l":"Future Game Changers" },
+		{ "u": "/basketball/ncaa/seth-davis/fresh-takes/?eref=sinav",			"l":"Fresh Takes" },
+		{ "u": "/specials/momentsofglory/?eref=sinav",			"l":"Moments of Glory" },
 		{ "u": "/2012_swimsuit/video/kate-upton-profile.html?eref=sinav",			"l":"Swimsuit" },
 		{ "u": "/specials/underdogs/?eref=sinav",			"l":"Underdogs" },
 		{ "u": "/theshow/?eref=sinav",			"l":"SI on NBC" }

@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "12/01/2012 08:10 AM",
+            DATE_IN_USE: "12/05/2012 08:12 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -6873,8 +6873,8 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/815/576/cn5815576.html -->
-<div id="contentItemContainer10000395" class="5815576" >
+    	<!-- BEGIN Content Item File: /content/0005/845/839/cn5845839.html -->
+<div id="contentItemContainer10000395" class="5845839" >
 
 <style type="text/css">
 #globalBanner {
@@ -6884,6 +6884,7 @@ Event.observe(window,"load",function(){
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
+	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6891,7 +6892,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000000;
+	color: #000745;
 	text-decoration: none;
 }
 
@@ -6907,22 +6908,14 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: black;
+	background-color: #000745;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
+#globalBannerText {
+	padding-top: 6px;
 }
 </style>
 
@@ -6930,147 +6923,18 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/815/576/assets/112912_ALL_BrightIdea_GB_US.png" alt="25% off all regular price items includes new arrivals. ends 12/2. online and in stores. enter GAP25." title="25% off all regular price items includes new arrivals. ends 12/2. online and in stores. enter GAP25." usemap="#gbMap">
-		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="246,16,377,60" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
-			<area class="noHideDisruptor" shape="rect" coords="-135,-11,478,98" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250">
-		</map>
+		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/845/839/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			SUPER! <span class="promoPercent">30% OFF</span> YOUR PURCHASE!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
 	</div><!-- /Global Banner Text -->
 
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/815/576/assets/112912_ALL_BrightIdea_DISR_US.png" alt="in stores & online 25% off all regular price items includes new arrivals. ends sunday, 12/2. online: enter GAP25 at checkout. in stores: discount taken at register." title="in stores & online 25% off all regular price items includes new arrivals. ends sunday, 12/2. online: enter GAP25 at checkout. in stores: discount taken at register." usemap="#disruptorMap">
-		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/815/576/assets/legal.html" data-jbox-width="350" data-jbox-height="250" alt="click for details">
-        </map>
-	</div><!-- /Global Banner Disruptor -->
-
 </div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('112912_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/815/576/cn5815576.html -->
+<!-- END Content Item File: /content/0005/845/839/cn5845839.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7299,87 +7163,6 @@ var globalBannerDisruptor = {
 	      
 	      
 	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2301"><a href="http://www.gap.com/customerService/info.do?cid=2301" class="category">Create Account</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2302"><a href="http://www.gap.com/customerService/info.do?cid=2302" class="category">Email Sign Up</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav41209"><a href="http://www.gap.com/customerService/info.do?cid=41209" class="category">Manage Account</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
 	            
 	            
 	              
@@ -7399,114 +7182,6 @@ var globalBannerDisruptor = {
 	        <li class="header" id="categoryNav41135">As You Shop</li>
 	        
 	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2307"><a href="http://www.gap.com/customerService/info.do?cid=2307" class="category">Shopping Bag</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2312"><a href="http://www.gap.com/customerService/info.do?cid=2312" class="category">Size Charts</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2328"><a href="http://www.gap.com/customerService/info.do?cid=2328" class="category">Gift Card Info</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav39233"><a href="http://www.gap.com/customerService/info.do?cid=39233" class="category">Important Safety Recall</a></li>
 	      
 	        
 	      
@@ -7548,87 +7223,6 @@ var globalBannerDisruptor = {
 	      
 	      
 	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2321"><a href="http://www.gap.com/customerService/info.do?cid=2321" class="category">Placing an Order</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav40958"><a href="http://www.gap.com/customerService/info.do?cid=40958" class="category">Payment</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav40959"><a href="http://www.gap.com/customerService/info.do?cid=40959" class="category">Prices, Limits and Taxes</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
 	            
 	            
 	              
@@ -7659,87 +7253,6 @@ var globalBannerDisruptor = {
 	      
 	      
 	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2324"><a href="http://www.gap.com/customerService/info.do?cid=2324" class="category">Shipping and Handling</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav2325"><a href="http://www.gap.com/customerService/info.do?cid=2325" class="category">Order Status and Tracking</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav57813"><a href="http://www.gap.com/customerService/info.do?cid=57813" class="category">Backorders</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
 	            
 	            
 	              
@@ -7759,60 +7272,6 @@ var globalBannerDisruptor = {
 	        <li class="header" id="categoryNav41144">Changes, Returns and Exchanges</li>
 	        
 	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav40965"><a href="http://www.gap.com/customerService/info.do?cid=40965" class="category">Gift and Gift Card Returns</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav40967"><a href="http://www.gap.com/customerService/info.do?cid=40967" class="category">Changes and Cancellations</a></li>
 	      
 	        
 	      
@@ -7923,33 +7382,6 @@ var globalBannerDisruptor = {
 	        
 	        
 	        
-	            <li class="category" id="categoryNav28795"><a href="http://www.gap.com/customerService/info.do?cid=28795" class="category">JavaScript</a></li>
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
 	            <li class="category" id="categoryNav6754"><a href="http://www.gap.com/customerService/info.do?cid=6754" class="category">Terms of Use</a></li>
 	      
 	        
@@ -8003,33 +7435,6 @@ var globalBannerDisruptor = {
 	        
 	        <li class="spacer" id="categoryNav41211"></li>
 	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	        
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        
-	        
-	        
-	            <li class="category" id="categoryNav7843"><a href="http://www.gap.com/customerService/info.do?cid=7843" class="category">Contact Us</a></li>
 	      
 	        
 	      
@@ -8392,21 +7797,7 @@ max-width: none;
 <div id="footer_BrandContainer">
 	<div id="footer_brand_region1"><!-- @TemplateContentLayout(templateRegionName:"gid.common.siteWide.brand.footers.region1") -->
 <div id="brandftr4_10000510">
-		<!-- BEGIN Content Item File: /content/0005/800/833/cn5800833.html -->
-<div id="contentItemContainer10000510" class="5800833" >
-
-<div id="sandybanner" style="width:988px;height:100px;background-color:white;overflow:hidden;display:block;margin-bottom:10px;"><img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/800/833/assets/hurricaneSandy_banner_988widthNEW.gif" usemap="#imapSandyRelief"/></div>
-
-<map name="imapSandyRelief">
-<area alt="GAP INC DONATIONS &gt;" coords="346,32,611,64" href="http://gapinc.com/content/gapinc/html/media/pressrelease/2012/med_pr_Gap_Inc_to_Aid_Recovery_Effort_Hurricane_Sandy110212.html" target="_new" />
-<area alt="RED CROSS &gt;" coords="643,56,734,87" href="http://www.redcross.org" target="_new"/>
-<area alt="RED CROSS &gt;" coords="826,13,982,88" href="http://www.redcross.org" target="_new"/>
-</map>
-
-
-</div>
-<!-- END Content Item File: /content/0005/800/833/cn5800833.html -->
-
+		
 </div>
 <div id="brandFooter_Region1" class="clearfix" style="width:990px;border-bottom: 1px solid #000000;margin-top:0px;padding:0px;">
 	<div id="brandftr2_10000514">
@@ -8622,21 +8013,7 @@ function validateFormGapFooter()
 
 		</div>	
 	<div id="brandftr3_10000513">
-		<!-- BEGIN Content Item File: /content/0005/828/521/cn5828521.html -->
-<div id="contentItemContainer10000513" class="5828521" >
-
-<div style="width:988px;overflow:hidden;border-top:1px solid black;display:block;padding:0;margin-bottom:-2px;" class="clearfix">
-	<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/521/assets/113012-Us_LDTS_Univ_footer.gif" alt="free shipping on all orders over $50. free returns on all orders." usemap="#edfsFooterMap" />
-	<map name="edfsFooterMap">
-<area alt="free shipping on all orders over $50. get it by christmas! order by 12/19 for 12/24 delivery. free returns on all orders. details." coords="2,2,518,76" href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:540});">
-<area coords="520,3,989,77" href="javascript:void(0);" alt="introducing international shipping to over 80 countries" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
-</map>
-</div>
-
-
-</div>
-<!-- END Content Item File: /content/0005/828/521/cn5828521.html -->
-
+		
 	</div>
 </div>
 <div id="brandftr5_10000511">
@@ -8877,7 +8254,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5815576,5754165,5800833,5746856,5828521,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5845839,5754165,5746856,5746857,5217025";
 	 </script>
 	
 	<noscript>
@@ -9819,8 +9196,8 @@ if (chatPageURL.indexOf("/checkout/order.do") != -1) {
 
 
 <!-- container 19 -->
-<!-- BEGIN Content Item File: /content/0005/771/654/cn5771654.html -->
-<div id="contentItemContainer212630" class="5771654" >
+<!-- BEGIN Content Item File: /content/0005/845/738/cn5845738.html -->
+<div id="contentItemContainer212630" class="5845738" >
 
 <script type="text/javascript">
 /*
@@ -9992,7 +9369,7 @@ var wcd_VV = function() {
 		var disruptorVal = gidLib.getCookieVar("mktGlobalSession","vvdisruptorvalue");
 		var value = 1;
 //console.info("VV Disruptor Value: '" + disruptorVal + "'");
-		if (location.href.indexOf("category.do") < 0) {// do not show disruptor if on a category page
+		if ( (location.href.indexOf("category.do") < 0) && (location.href.indexOf("account_rewards_summary.do") < 0) && (location.href.indexOf("account_summary.do") < 0) ){ // do not show disruptor if on a category page or account summary page
 			if (disruptorVal == "") {	// show disruptor only three times
 				gidLib.setCookieVar("mktGlobalSession","vvdisruptorvalue",value);
 				fireVVDisruptor();
@@ -10030,9 +9407,9 @@ var fireVVDisruptor = function() {
 	}
 	
 	$("inlineBagHeader").insert({
-		after: "<div id='vvParentContainer' style='position: relative; font-size:0px; z-index: 60; height: 0px; width: 212px; color:#FFFFFF; overflow: hidden;'><div id='vvDivDisContainer' style='position: absolute; font-size:0px; z-index: 60; height: 78px; width: 212px; color:#FFFFFF; background-image: url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/771/654/assets/VV-bar-violator.png); overflow:hidden;'><div id='vvamount' style='color:#f47529; margin-left:128px; margin-top:"+ vvmargintopvalue + "px; font-size:" + vvfontvalue + "px;'></div></div></div>"
+		after: "<div id='vvParentContainer' style='position: relative; font-size:0px; z-index: 60; height: 0px; width: 212px; color:#FFFFFF; overflow: hidden;'><a href='http://www.gap.com/profile/account_rewards_summary.do?locale=en_US'><div id='vvDivDisContainer' style='position: absolute; font-size:0px; z-index: 60; height: 78px; width: 212px; color:#FFFFFF; background-image: url(http://www.gap.com/Asset_Archive/GPWeb/content/0005/845/738/assets/VV-bar-violator.png); overflow:hidden;'><div id='vvamount' style='color:#f47529; margin-left:128px; margin-top:"+ vvmargintopvalue + "px; font-size:" + vvfontvalue + "px;'></div></div></a></div>"
 	});
-	$("vvamount").innerHTML = vvvalue;
+		$("vvamount").update(vvvalue);
 	new Effect.Morph("vvParentContainer", {
 		style: { height: "78px" },
 		duration: 0.8, // Core Effect properties
@@ -10042,8 +9419,10 @@ var fireVVDisruptor = function() {
 								$("vvParentContainer").style.height = "0px";
 							} 
 //console.info("Firing VV main code!");
-							Event.fire(document, "personalizationService:renderCustomerAttributes"); 
-							$("rewards").style.display = "block";
+							Event.fire(document, "personalizationService:renderCustomerAttributes");
+							if($("rewards")){ 
+								$("rewards").style.display = "block";
+							}
 //console.info("VV Main code complete!");							
 						}, 10000);
 
@@ -10051,6 +9430,31 @@ var fireVVDisruptor = function() {
 	});
 	
 //console.info("VV Disruptor Fired! Value = " + vvvalue);
+}
+// See if in seg "b"
+if (gidLib.getCookieVar("mktUniversalPersist", "VV") == "VVAB_10_22SegB") {
+	var thisBrowser = navigator.userAgent;
+	if (thisBrowser.indexOf("MSIE") != -1){ // if IE
+		if (thisBrowser.indexOf("MSIE 7") < 0) { // if not IE 7
+			if(document.documentMode != 7) { // if not IE 7 mode
+				document.observe('updateDomWithPersonalizationData:completed', wcd_VV); // show VV
+			} else {
+				document.observe('updateDomWithPersonalizationData:completed', function() { Event.fire(document, "personalizationService:renderCustomerAttributes"); 
+					if($("rewards")){ 
+						$("rewards").style.display = "block";
+					}
+				});
+			}	
+		} else {
+			document.observe('updateDomWithPersonalizationData:completed', function() { Event.fire(document, "personalizationService:renderCustomerAttributes"); 
+				if($("rewards")){ 
+					$("rewards").style.display = "block";
+				}
+			});
+		}
+	} else { // all other browsers
+		document.observe('updateDomWithPersonalizationData:completed', wcd_VV); // show VV
+	}
 }
 // See if in seg "b"
 if (gidLib.getCookieVar("mktUniversalPersist", "VV") == "VVAB_10_22SegB") {
@@ -10062,7 +9466,7 @@ if (gidLib.getCookieVar("mktUniversalPersist", "VV") == "VVAB_10_22SegB") {
 
 
 </div>
-<!-- END Content Item File: /content/0005/771/654/cn5771654.html -->
+<!-- END Content Item File: /content/0005/845/738/cn5845738.html -->
 
 
 <!-- container 20 -->

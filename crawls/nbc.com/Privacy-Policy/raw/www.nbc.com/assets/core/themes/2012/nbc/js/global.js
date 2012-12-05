@@ -161,7 +161,10 @@ function loadGlobalDropdown() {
             loadGlobalDropdownShop();
         });
     }
+
+    if (typeof bindNavLinkTracking == 'function') {
 	bindNavLinkTracking();
+    }
 }
 function loadGlobalDropdownShop() {
     var shopHeader = NBC('#dropdown-global-extras .shop'),
@@ -506,19 +509,20 @@ function loadGlobalFooterTrending() {
                     var node = data.topViewedVideo[i],
                         copy = node.videoDescription,
                         output = '';
+		    var videoId = node.contentSourceSystemUniqueKey.replace("VIDEO-","");
                     if (typeof(copy) != "undefined" && copy.length>maxDescLength) {
                         copy = unescape(copy.slice(0,maxDescLength) + "&#8230;");
                     }
                     if (isSite) {
                         output += '<li>';
-                        output += '<a href="/app/video/redirect_by_video_id.php?videoId=' + node.videoID + '" class="trending-footer-link">' + node.videoTitle + '</a>';
+                        output += '<a href="/vid/' + videoId + '" class="trending-footer-link">' + node.videoTitle + '</a>';
                         output += '</li>';
                         trendingFooter.append(output);
                     } else {
                         var id = node.campaignName.split('-')[1];
                         if(NBC.inArray(id, ids) == -1 && node.campaignTitle !== undefined) {
                             output += '<li>';
-                            output += '<a href="/app/video/redirect_by_video_id.php?videoId=' + node.videoID + '" class="trending-footer-link">' + node.campaignTitle + ': ' + node.videoTitle + '</a>';
+                            output += '<a href="/vid/' + videoId + '" class="trending-footer-link">' + node.campaignTitle + ': ' + node.videoTitle + '</a>';
                             output += '</li>';
                             trendingFooter.append(output);
 
@@ -746,7 +750,7 @@ initCompatibility();
 initAutoComplete();
 
 NBC('a.top').click(function(e){
-    e.preventDefault();                                                                                                                                                                                                                                 
+    e.preventDefault();
         NBC('body, html, document').animate({
             scrollTop : 0
         }, 500);

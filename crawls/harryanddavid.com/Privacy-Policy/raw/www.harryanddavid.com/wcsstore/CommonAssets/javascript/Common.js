@@ -31,7 +31,6 @@ dojo.require("bec.widget.PopupPanelContainer");
 dojo.require("bec.widget.PopupPanel");
 dojo.require("bec.espot.ClickInfo");
 dojo.require("bec.widget.iScroller");
-dojo.require("dojox.fx.scroll");
 dojo.require("bec.user.EmailSignUp");
 
 dojo.require("bec.widget.form.SelectDropDown"); //for overriding filtering select for tablets
@@ -237,31 +236,10 @@ function processTabletOverrides()
     }
 }
 
+//FIXME: change where this is used to call the new util function
 function scrollIntoView(id, smooth)
 {
-	var node = dojo.byId(id);
-	if (node)
-	{
-		if (smooth)
-		{
-			var scroll = new dojox.fx.smoothScroll({
-			      node: node,
-			      win: window,
-			      duration: 500
-			   });
-			scroll.play();
-			return scroll;
-		}
-		else
-		{
-			node.scrollIntoView(true);
-		}
-	}
-	else
-	{
-		// scroll to top if node not found
-		window.scrollTo(0,0);
-	}
+	return bec.util.browser.scrollIntoView(id, smooth);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////

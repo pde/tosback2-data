@@ -3,7 +3,7 @@ if(navigator.cookieEnabled === true){
 var sawPopup	= $.cookie("newSitePopup");
 
 if(sawPopup == null){
-	document.write('<img src="/images/images/newsite_popup.png" alt="" id="newfeature" usemap="#newsitepop" />\n');
+	document.write('<img src="http://cdn.thomasnet.com/images/images/newsite_popup.png" alt="" id="newfeature" usemap="#newsitepop" />\n');
 	document.write('<map name="newsitepop" id="newsitepopid">\n');
 	document.write('<area shape="rect" class="newfeatlink" coords="48,44,126,58" href="/about-thomasnet.html" ad="About_PopUp" alt="" />\n');
 	document.write('<area shape="rect" class="newfeatlink" coords="83,72,238,89" href="/productsearch/" ad="About_PopUp" alt="" />\n');

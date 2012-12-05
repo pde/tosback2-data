@@ -653,7 +653,7 @@ var bcom_cookie = {
 	//var the_cookie = escape(value) + ((expiration_days == null) ? '' : '; expires='+expiry_date.toUTCString()) + '; path=/';
 	// Not escaping cookie value lets login redirect work as intended
 	var the_cookie = value + ((expiration_days == null) ? '' : '; expires='+expiry_date.toUTCString()) + '; path=/';
-	document.cookie = cookie_name + '=' + the_cookie;
+	document.cookie = cookie_name + '=' + the_cookie + ';domain=.boston.com';
 	
     }
     

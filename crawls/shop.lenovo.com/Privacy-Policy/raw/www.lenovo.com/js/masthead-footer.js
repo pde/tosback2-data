@@ -222,9 +222,9 @@ var countrySettings = function(country,language) {
 			this.searchAction = "//shopap.lenovo.com/SEUILibrary/controller/e/aeweb/LenovoPortal/en_AE/site.workflow:SimpleSiteSearch";
 	}
 	else if (country.toUpperCase() == 'NL' && language.toLowerCase() == 'en')  {
-			this.menuXml= '/includes/menus/MenusExport_nlind_en_NL.xml';
+			this.menuXml= '/includes/menus/MenusExport_nlweb_en_NL.xml';
 			this.searchValue = "Search";
-			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/nlind/LenovoPortal/en_NL/site.workflow:SimpleSiteSearch";
+			this.searchAction = "//shop.lenovo.com/SEUILibrary/controller/e/nlweb/LenovoPortal/en_NL/site.workflow:SimpleSiteSearch";
 	}
 	else if (country.toUpperCase() == 'NL' && language.toLowerCase() == 'en')  {
 			this.menuXml= '/includes/menus/MenusExport_nlweb_en_NL.xml';

@@ -1,0 +1,53 @@
+//author : Faran Rashid
+//Description : This code needs to execute immedidately during page load to set the adfrequency test cookie adOn=0,1
+// jquery cookie needs to be available
+var adOn = $.cookie('adOn');
+var requestUrl = window.location.href.toString();
+//Target all referrers + direct traffic, leave out CPC
+if (adOn == null) {
+    adOn = Math.random() * 100 > 5 ? 1 : 0;
+    $.cookie('adOn', adOn, { expires: 1, path: '/', domain: 'break.com' });
+}
+if (adOn != null && adOn == 1) {
+    var _gaq = _gaq || [];
+    _gaq.push(['_setCustomVar', 3, 'UX TestUser', 'Standard', 2]);
+}
+else {
+    var _gaq = _gaq || [];
+    _gaq.push(['_setCustomVar', 3, 'UX TestUser', 'NoAdsTest', 2]);
+}
+//
+  
+//Gets the age from the dob cookie if set. If not returns -1
+function getAge ()
+{
+	function a_getCookie( name ) {
+		var start = document.cookie.indexOf( name + "=" );
+		var len = start + name.length + 1;
+		if ( ( !start ) && ( name != document.cookie.substring( 0, name.length ) ) ) {
+			return null;
+		}
+		if ( start == -1 ) return null;
+		var end = document.cookie.indexOf( ";", len );
+		if ( end == -1 ) end = document.cookie.length;
+		return unescape( document.cookie.substring( len, end ) );
+	}
+  var strDOB = a_getCookie('dob');
+  var age = -1;
+  if (strDOB != null)
+  {
+      var today = new Date();
+      //date is expected in this format   mm/dd/yyyy hh:mm:ss
+      var pattern = /\W+/;
+      var tempArray = strDOB.split (pattern);
+
+      var dob = new Date(tempArray[0] + '/' + tempArray[1] + '/' + tempArray[2]);
+      var minDiff =	1000 * 60 * 60 * 24 * 365.242199;
+      var diff = (today.getTime() - (dob.getTime()+1000*60*60*24))/minDiff; 
+      return diff;
+  }
+  else
+  {
+      return age;
+  }
+}

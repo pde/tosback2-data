@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2012,11,1,13,15,59,0);
+var tvgServerTimeUTC = new Date(2012,11,5,13,17,17,0);
 
-var dServerET = new Date(2012,11,1,8,15,59,0);
+var dServerET = new Date(2012,11,5,8,17,17,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2012,11,1);
-dSrvrTime.setUTCHours(13,15,59,0);
+dSrvrTime.setUTCFullYear(2012,11,5);
+dSrvrTime.setUTCHours(13,17,17,0);
 
-var dLocalTime = new Date(2012,11,1,8,15,59,0);
-var dGridStart = new Date(2012,11,1,8,0,0,0);
+var dLocalTime = new Date(2012,11,5,8,17,17,0);
+var dGridStart = new Date(2012,11,5,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= ab7b55734860055df4ca1c407084a8e95a4068e6 1354367759';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= e11e060ee0876c01edd64de34479598c69b0d43a 1354713437';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,9 +50,9 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 12/1/2012 1:00:00 PM GMT */
+/* TVGSVC02 12/5/2012 1:15:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2012-12-01)*/
+/* Listings: In-Grid and Close-Up Ads (2012-12-05)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
@@ -66,8 +66,8 @@ var magicLink = "http://ad.doubleclick.net/clk;264842138;90513525;h;pc=[TPAS_ID]
 var magicBkgnd = "#FFFFFF";
 var magicTextClr = "#FFFFFF";
 var magicLeftOffset = 635;
-var magicSources = [441];
-var magicIDtype = 0;
+var magicSources = [48];
+var magicIDtype = 1;
 var magicRepeat = true;
 var magicHpImage = "/listings/images/topchan/ABCF_25DOC_TVGuide_100x40_Correct.jpg";
 var magicHpBkgnd = "#409B32";
@@ -111,7 +111,7 @@ var bEnableWallpaperAds_LST = true;
 var bEnableRichmediaAds_LST = true;
 var slot_banner_top_LST = 0;
 var slot_banner_top_NT = 0;
-var slot_box_300x250_NT = 0;
+var slot_box_300x250_NT = 1;
 
 /* Delayed Ad Loading */
 var bEnableDelayedAds = false;

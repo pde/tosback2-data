@@ -1,17 +1,20 @@
-// 5.00 - 2012-08-31 - BUG: Fixed the reg bar not showing when adkill is activated
-// 5.01 - 2012-08-31 - Cleaned up code 
-// 5.02 - fix bug - Uncaught ReferenceError: $ is not defined - in Wordpress as it doesn;t like the $ jquery declaration
-//        added suppot for pfadx as well as adx calls
-// 5.03 - Added dc_ref= instead of the old dom value, removed dom= from urls 
-//        added geo=XX taken from tmgads.geo metatag, fixes bug with Ooyala HTNL5 video player
-//        added support for pfadx
-// 5.04 - Added fix for embeded videos hcih still call the adx method, changes this to pfadx if adtype = vid
+// 5.20 - Removed u-tag as no longer needed with DFP Premium
+//        Changed domain to point at ad.doubleclick.net rather than ad-emeea, increases speed for non-emea calls 
+// 5.21 - Added N6582 NetworkID to all tags. fixes inability to create new sites on DFP Premium without it.
+//        Removed test=; for empty values.
+// 5.22 - Removed the fucntion tmgAdsDebugShowWindow() used for debugging, as this is achievable through a bookmarklet see internal doc: http://bit.ly/UFAD0c       
+//      - Added margin:auto;paddibng0px to all container divs
+//      - Added div=xxxxxxxxxxxx to pass the container div id to the ad, which can help fix CSS/layout issues easier.
+// 5.23 - Re-Added tmgads.otherdata metadata, not currently being used but will be soon.
+// 5.24 - Amended site/zonename to max 100 chars not 64 as previous
+// 5.25 - Added the fix for sc=ec_frontpage -> sc=portal
+// 5.26 - Removed the addebug url param option
 // INITIALISE tmgAds object
 var tmgAds = new tmgAdsInitAdsData();
 ///////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 function tmgAdsInitAdsData(){
-  this.dfpjsver = 5.01;
+  this.dfpjsver = 5.26;
   this.ads      = new Array();
   this.renderTime = new Array();
   this.renderTime['total'] = 0;
@@ -22,18 +25,24 @@ function tmgAdsInitAdsData(){
   this.page['domain']   = window.location.hostname;
   this.page['search']   = window.location.search;
   this.protocol = window.location.protocol+"//";
-  this.adserver = "ad-emea.doubleclick.net";
+  this.adserver = "ad.doubleclick.net";
+  this.networkid= "N6582";
   this.site     = tmgAdsGetMetaTag("tmgads.channel");
-  this.sitename = "tmg.telegraph."+this.site;
   this.zonename = tmgAdsGetMetaTag("tmgads.zone");
-  this.sitezone = this.sitename+"/"+this.zonename;
-  // site/zone string can not exceed 64 chars, so truncate from the zone name if need be
-  this.sitezone = this.sitezone.substr(0,64);
   this.section  = tmgAdsGetMetaTag("tmgads.section");
   this.pagetype = tmgAdsGetMetaTag("tmgads.pagetype");
   this.level    = tmgAdsGetMetaTag("tmgads.level");
   this.articleid= tmgAdsGetMetaTag("tmgads.articleid");
+  this.otherdata= tmgAdsGetMetaTag("tmgads.otherdata");
   this.geo      = tmgAdsGetMetaTag("tmgads.geo");
+  this.sitename = "tmg.telegraph."+this.site;
+  this.sitezone = this.sitename+"/"+this.zonename;
+  // site/zone string can not exceed 100 chars (as of DFP Prem, 64 opn Legacy), so truncate from the zone name if need be
+  this.sitezone = this.sitezone.substr(0,100);
+  // fix some taxonomy issues
+  if(this.section=="ece_frontpage"){
+    this.section="portal";
+  }
   this.tile     = 0;
   if(document.all){
     this.biw = document.documentElement.offsetWidth;
@@ -123,15 +132,10 @@ function tmgAdsInitAdsData(){
   // Get any relevant url params and populate the array with them, this means jot having to look them up on every ad call.
   this.urlParams = new Array();
   this.urlParams['adtest']    = tmgAdsGetURLParam("adtest",window.location.href);
-  this.urlParams['addebug']   = tmgAdsGetURLParam("addebug",window.location.href);
   this.urlParams['adconsole'] = tmgAdsGetURLParam("adconsole",window.location.href);
   this.urlParams['adkill']    = tmgAdsGetURLParam("adkill",window.location.href);
-  this.urlParams['adstyle']   = tmgAdsGetURLParam("adstyle",window.location.href);
-  // Add adtest url param if present
-  //if(typeof this.URLparams['adtest'] != 'undefined'){
-  //  this.URLTestVar = ";test="+this.URLparams['adtest'];
-  //}
-  // add oreitnation if it exists
+  this.urlParams['adtype']    = tmgAdsGetURLParam("adtype",window.location.href);
+  // add oreintation if it exists
   if(typeof window.orientation=="number"){
     this.orientation = Math.abs(window.orientation);
   }
@@ -241,15 +245,15 @@ function tmgGetAdVisibility(i){
 }
 ///////////////////////////////////////////////////////////////////////////////////
 function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
-  // fix the issue with the old embedded videos still having adx calls
+  ++tmgAds.tile;
+  tmgAds.renderTime[tmgAds.tile]      = new Array(); // hold details of ad renderingtimes etc
+  // make all adx vid calls pfadx
   if(adType==="vid" && adScriptType==="adx"){
     adScriptType="pfadx";
   }
-  ++tmgAds.tile;
-  tmgAds.renderTime[tmgAds.tile]      = new Array(); // hold details of ad renderingtimes etc
   //force an ad invocation type, adi or adj only
-  if(tmgAds.urlParams['adstyle'].length >0){
-    adScriptType = tmgAds.urlParams['adstyle'];
+  if(tmgAds.urlParams['adtype'].length >0){
+    adScriptType = tmgAds.urlParams['adtype'];
   }
   tmgAds.ads[tmgAds.tile]             = new Array(); // create array for this tag
   tmgAds.ads[tmgAds.tile]['dfp']      = new Array(); // holds the DFP sepcific data for this tag
@@ -275,11 +279,9 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[tmgAds.tile]['id_div']    = "tmgAd_div_"+tmgAds.ads[tmgAds.tile]['id']+"_"+tmgAds.tile;
   // Adtypes can be >1, create all needed here.
   tmgAds.ads[tmgAds.tile]['dfp']['kvps']    = "";
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] = "at=";
   var adTypes = adType.split(",");
   for(var i=0;i<=adTypes.length-1;i++){
     tmgAds.ads[tmgAds.tile]['dfp']['kvps']       += ";at="+adTypes[i];
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += adTypes[i]+",";
   }
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";pos=" + tmgAds.tile;  
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sc="  + tmgAds.section;
@@ -297,7 +299,8 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   if(adExtraTags.length>0){
     tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += adExtraTags;
   }
-  if(typeof tmgAds.urlParams['adtest'] != 'undefined'){
+  //if(typeof tmgAds.urlParams['adtest'] != 'undefined'){
+  if(tmgAds.urlParams['adtest']){
     tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";test="+tmgAds.urlParams['adtest'];
   }
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.asCookies;
@@ -308,47 +311,15 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.keywords;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += tmgAds.ppCookies;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dc_ref=" + encodeURIComponent(tmgAds.page['url']);
-  //tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";dom=" + tmgAds.page['domain'];
-  // Add Yeidlex u= targeting here; NB: the adtype has already been ascertained at the top of this function
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] = tmgAds.ads[tmgAds.tile]['dfp']['logging'].substr(0,tmgAds.ads[tmgAds.tile]['dfp']['logging'].length-1);
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|sz="  + adSize;
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|sc="  + tmgAds.section;
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|pt="  + tmgAds.pagetype;
-  if(tmgAds.articleid != "null"){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|pg="  + tmgAds.articleid;
-  }
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|lvl=" + tmgAds.level;
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|biw=" + tmgAds.biw;
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|bih=" + tmgAds.bih;
-  if(typeof tmgAds.orientation === "number"){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|orn=" + tmgAds.orientation;
-  }
-  tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|fv="  + tmgAds.flash['versionMaj'];
-  if(tmgAds.asCookies.length>0){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|as="  + tmgAds.asCookies.substr(1).replace(/\;/g,",").replace(/as\=/g,"");
-  }
-  if(tmgAds.asoCookies.length>0){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|aso=" + tmgAds.asoCookies.substr(1).replace(/\;/g,",").replace(/aso\=/g,"");
-  }
-  if(tmgAds.asConnect.length>0){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|asc=" + tmgAds.asConnect.substr(1).replace(/\;/g,",").replace(/asc\=/g,"");
-  }
-  if(tmgAds.ppCookies.length>0){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|"     + tmgAds.ppCookies.replace(/\;/g,"");   
-  }
-  if(tmgAds.gsSegments.length>0){
-    tmgAds.ads[tmgAds.tile]['dfp']['logging'] += "|"     + tmgAds.gsSegments.replace(/\;/g,"");   
-  }
-  // add logging lien to adtag
-  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";u=" + tmgAds.ads[tmgAds.tile]['dfp']['logging'];  
-  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sz="  + adSize;
-  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";tile="+ tmgAds.tile;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";div="    + tmgAds.ads[tmgAds.tile]['id_div'];
   // sets the stringlength +19 for the ord=...
   tmgAds.ads[tmgAds.tile]['dfp']['urllen'] = tmgAds.ads[tmgAds.tile]['dfp']['kvps'].length+1;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sl="  + tmgAds.ads[tmgAds.tile]['dfp']['urllen'];
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";tile="+ tmgAds.tile;
+  tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";sz="  + adSize;
   tmgAds.ads[tmgAds.tile]['dfp']['kvps'] += ";ord=" + tmgAds.ord;
   // Add this to the window.tmgAds.tags array
-  tmgAds.ads[tmgAds.tile]['url'] = tmgAds.protocol + tmgAds.adserver + "/"+adScriptType+"/" + tmgAds.sitezone + tmgAds.ads[tmgAds.tile]['dfp']['kvps'] + "?";
+  tmgAds.ads[tmgAds.tile]['url'] = tmgAds.protocol + tmgAds.adserver + "/" + tmgAds.networkid + "/"+adScriptType+"/" + tmgAds.sitezone + tmgAds.ads[tmgAds.tile]['dfp']['kvps'] + "?";
   // GET MAX SIZE OF SZ VALUES TO CREATE IFRAME IF CALLED - calculate by getting area of the various sizes sent.
   var tmgAdSizes = adSize.split(",");
   var tmgAdArea=0;
@@ -391,7 +362,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
       tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['tag']; 
       break;
     case 2: // FULL FORMED TAG + DIV
-      tmgAds.ads[tmgAds.tile]['tag']  = "<div id=\""+tmgAds.ads[tmgAds.tile]['id_div']+"\" style=\"width:"+tmgAds.ads[tmgAds.tile]['szW']+"px\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>"; 
+      tmgAds.ads[tmgAds.tile]['tag']  = "<div id=\""+tmgAds.ads[tmgAds.tile]['id_div']+"\" style=\"margin:auto;padding:0px;width:"+tmgAds.ads[tmgAds.tile]['szW']+"px\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>"; 
       break;
     case 3: // v2.0 Ooyala player returns url without trailing ?
       tmgAds.ads[tmgAds.tile]['tag'] = "<div id=\"tmgAd_"+tmgAds.ads[tmgAds.tile]['id_div']+"\">"+tmgAds.ads[tmgAds.tile]['tag']+"</div>";
@@ -423,8 +394,7 @@ function tmgAdsBuildAdTag(adType,adSize,adScriptType,adExtraTags,adStyle){
   if(adScriptType==="adx" || adScriptType==="pfadx"){
     tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['url'];
   } else {
-    // Fix Fashion gallries, only return IFRAME tag, don't wrap with timer tags sc=fashion-galleries and iframe adi call
-    // this returns the normal unaltered/unwrapped tag IF fashion galleries using iframes by not wrappign the tag
+    // Fix Fashion galleries, only return IFRAME tag, don't wrap with timer tags sc=fashion-galleries and iframe adi call this returns the normal unaltered/unwrapped tag IF fashion galleries using iframes by not wrappign the tag
     if(tmgAds.section!="fashion-galleries" && adScriptType!="adi"){
       tmgAds.ads[tmgAds.tile]['tag'] = tmgAds.ads[tmgAds.tile]['tagPreScript'] + tmgAds.ads[tmgAds.tile]['tag'] + tmgAds.ads[tmgAds.tile]['tagPostScript'];
     }
@@ -452,21 +422,6 @@ function tmgAdsGetAdSlotInfo(i){
       tmgAds.renderTime[i]['end']    = "N/A";
       tmgAds.renderTime[i]['time']   = "N/A";
     }
-}
-///////////////////////////////////////////////////////////////////////////////////
-function tmgAdsDebugShowWindow(){
-  // easily add this as a bookmarklet: javascript:tmgAdsDebugShowWindow();
-  // if the url param has been set fire up the debugging console automatically
-  var tmgAdsDebugRequest = $.ajax({
-    type: "POST",
-    url: "http://adtools.telegraph.co.uk/tmg/debug/submit.php",
-    data: {tmgAds:tmgAdsSerializeArray(tmgAds)}
-  }).done(function(data){
-    // data is the url of the results window
-    tmgAdsDebugDisplay = window.open(data,'tmgAdsDebugWindow','location=1,status=1,scrollbars=1,resizable=1,width=800,height=600');
-    tmgAdsDebugDisplay.focus();
-    tmgAds['debugUrl'] = data;
-  });
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 // DEBUG ads, do these after page has loaded so add to the window.ready event.

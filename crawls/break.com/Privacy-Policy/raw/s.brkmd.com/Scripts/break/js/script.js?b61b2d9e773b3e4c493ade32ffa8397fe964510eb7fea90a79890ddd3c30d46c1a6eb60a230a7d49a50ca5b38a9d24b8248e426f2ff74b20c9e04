@@ -1,0 +1,391 @@
+/*
+	Author: 	Andy Gold
+	Version:	1.0
+	
+*/
+
+/* =========================================
+   Polyfills
+   ========================================= */
+   
+/* Polyfill for media query support, e.g. IE 8 */
+/* being loaded in markup for CDN issue
+if(!Modernizr.mq('(min-width: 0px)')) {
+	Modernizr.load('http://media1.break.com/break/2.0/js/respond.min.js');
+}*/
+
+/* =========================================
+   Demo Code
+   ========================================= */
+
+/* Temp: Takeover Ad Demo */
+var adQuery = getQueryVariable('ad');
+
+if(adQuery != null) {
+	adQuery === 'half' ? renderTakeover(adQuery) : renderTakeover();	
+}
+   
+function renderTakeover(adQuery) {
+	/* TODO:
+		- When the multiple BGs are installed to #wrap, set up a style as part of "pageStyles" when takeovers
+		  are active, which disables just the top gradient BG image, leaving the lower one in place.
+		  
+		  That way, the integrator can choose to constrain the height of the takeover tag to a fixed height,
+		  and we still see the original bottom 'bookend' BG image rendered.
+		  
+		  Check to make sure the min height on #container prevents them from overlapping, however.
+		  Might need to adjust that min height setting as part of the takeover styles when active.
+	*/
+
+	/* Notes:
+		- #wrap has two background images, with a conditionally rendered secondary dom element
+		  for old IE browsers that can't inhale multiple BGs. Waaaaa.
+		- The main takeover tag has an ID of "ads-takeover-abs" (position absolute, not your stomach, kids...).
+			- It has a default height of 100% of its containing element (#wrap), so the gutters are clickable
+			  through the entire height of the page by default. This is the old Break look.
+			- To constrain the takeover art to a limited vertical area (as designed, really...), set a fixed height
+			  on #ads-takeover-abs as part of the campaign-specific styles in adConfig.styles below.
+			  
+			  That will allow the original bottom-most "bookend" BG image to display it's glory to the world below your
+			  phugly ad artwork. Plus you can configure how much vertical gutter is clickable per campaign if desired.
+			  
+		Now get me my cookie, ploxx.
+	*/
+
+	var halfHeightAddition = (adQuery != null) ? 'height:500px;' : '';
+
+
+	var pageStyles = '#some-takeover-altered-obj {display:none;}'; // do not edit - page layout tweaks when takeover active
+	
+	var adConfig = { // extend this obj as needed for ad integrations: make your customizations here
+		styles: '#ads-takeover-abs {'+halfHeightAddition+'background:#e0c28c url(\'img/demo/takeover-example2.jpg\') 50% 0 no-repeat;} \
+			#ads-takeover-leader {height:65px;line-height:65px;cursor:pointer;font-weight:bold;color:#fff;text-transform:uppercase;background:orange;; \
+				-moz-transition-property: width, height, line-height;-moz-transition-duration:.2s, .75s, .75s;-moz-transition-timing-function: linear; \
+				-webkit-transition-property: width, height, line-height;-webkit-transition-duration:.2s, .75s, .75s;-webkit-transition-timing-function: linear; \
+				transition-property: width, height, line-height;transition-duration:.2s, .75s, .75s;transition-timing-function: linear;} \
+			#ads-takeover-leader.expanded {height:200px;line-height:210px;}',
+		clickTag:	'http://www.google.com',
+		markup:		'Page Takeover Leaderboard, Break-Style!'
+	};
+	
+	var styles = '<style>' + pageStyles + adConfig.styles + '</style>',
+		mainLink = '<a id="ads-takeover-abs" href="'+adConfig.clickTag+'">&nbsp;</a>',
+		leader = '<div id="ads-takeover-leader" class="container opa-50 txt-c">'+adConfig.markup+'</div>';
+	
+	$('#wrap').prepend(styles + mainLink + leader).delegate('#ads-takeover-leader', 'click', function(){
+		log('takeover leaderboard clicked');
+		$(this).toggleClass('expanded');
+	});
+}
+
+/* =========================================
+   Main DOM-Ready Wrapper
+   ========================================= */
+   
+/* Please avoid multiple DOM-ready wrappers and keep centralized, thanks! */
+   
+$(function(){
+	// Search
+	(function ($) {
+	 
+		// create wordfield if it doesn't exist
+		var wordFieldID = 'brk.topPicks';
+		var wordField = $('#' + wordFieldID);
+
+		function getTopPicksUrl(isTopPick, word) {
+			var baseURL = 'http://www.break.com/surfacevideo/';
+			return isTopPick ? baseURL + 'top-picks/' + escape(word) : baseURL + escape(word);
+		}
+		
+	   $(function() {
+
+			if (wordField.length == 0) {
+				wordField = $('<input type="hidden" id="' + wordFieldID +'" />').appendTo('body');
+			}
+			
+			$.getJSON('//service.break.com/content/toppicks?callback=?', function(data){
+				if (data == null || !data || data.length == 0) {
+					return;
+				}
+				
+				wordField.val(data.join(','));
+				
+				$('div#videodetails-moreinfo td.col2 a').each(function() {
+					var link = $(this);
+					var word = link.html().toLowerCase();
+					var isTopPick = $.inArray(word, data) > -1;
+					var w = word.replace(/ /gi,'-');
+					link.attr('href', getTopPicksUrl(isTopPick, w));
+				});
+			});	
+
+			var searchBox = $('#txt-search-val'); // new search box
+			
+			$('#search-main').bind('submit', function() {
+				if(searchBox[0].value == searchBox[0].defaultValue) {return false;}
+
+				var query = searchBox.val();
+				
+				// remove special characters and replace them with spaces
+				query = query.replace(/'/g, '').replace(/[^\d\w]+/g,' ');
+
+				// trim off excess spaces and replace with hyphens
+				query = $.trim(query).replace(/\s/g,'-').toLowerCase();
+				
+				if (query == '') {
+				    searchBox.blur();
+
+                    return false;
+                }
+
+				var words = !wordField || wordField.val() == '' ? [] : wordField.val().split(',');
+				var isTopPick = $.inArray(query, words) > -1;
+
+				//ga tracking
+				_gaq.push(['_set', 'hitCallback', function () { window.location.href = getTopPicksUrl(isTopPick, query); } ]);
+				_gaq.push(['_trackEvent', 'Click_Masthead', 'Search']);
+				
+				return false;
+			});
+		});
+		
+	/* Home page items 
+		$('.trigger-vi, #leaderboard .vignette, #homepage-worthy h1 a,#related-content h1 a,.popular-channels h1 a,.popular-channels .vignette,#also-watched .vignette,#also-watched article h1 a,#awesome-channels article h1 a,#awesome-channels article .vignette').hover(
+			function(){
+				setParentActive($(this));
+			},
+			function(){
+				setParentInactive($(this));
+			}
+		)
+		$('#leaderboard article').hover(
+			function(){
+				$(this).closest('.trigger-feat').addClass('active');
+			},
+			function(){
+				$(this).closest('.trigger-feat').removeClass('active');
+			}
+		)
+	*/
+
+	$("#leaderboard article").on({
+		mouseenter: function () {
+			$(this).closest('.trigger-feat').addClass('active');
+		},
+		mouseleave: function () {
+			$(this).closest('.trigger-feat').removeClass('active');
+		}
+	});
+
+
+})(jQuery);
+
+
+
+	var searchField = $('#txt-search-val'), defaultSearchText = searchField[0].defaultValue;
+	
+	searchField.bind('focus', function(){
+			$(this).parent().addClass('active').addClass('showtext');
+		})
+		.bind('blur', function() {
+			var parentElm = $(this).parent();
+			parentElm.removeClass('active');
+			
+			if(Modernizr.csstransitions) {
+				var t = setTimeout(function(){ // duration of CSS transition: prevents text showing up before it's off the icon
+					parentElm.removeClass('showtext');
+				}, 200);
+			}
+			else {
+				parentElm.removeClass('showtext');
+			}
+			
+		});
+	
+	$('#btn-search-main').bind('click', function(){
+		curSearchText = searchField.val();
+		if(curSearchText == defaultSearchText || curSearchText == "Keywords") {
+			return;
+    }
+    window.BUI.tracking.GA.track(this, 'Click');
+		$('#search-main').submit();
+	});
+
+	/*** "Thumb Rows" design type hovers ***/
+	$('.galleries .info > h1 a').hover(
+		function(){
+			setParentActive($(this));
+		},
+		function(){
+			setParentInactive($(this));
+		}
+	);
+	$('.yt-subscribe > button').bind('click', function(){
+		location.href="http://www.youtube.com/break";
+	});
+	$('.thumb-rows article, .thumb-rows-sm article').delegate('a', 'mouseenter', function(){
+			var $e = $(this);
+			if($e.attr('data-target') === 'external') {return};
+			setParentActive($e);
+		})
+		.delegate('a','mouseleave',function(){
+			setParentInactive($(this));
+		});
+	/*** End "Thumb Rows" design type hovers ***/
+	
+	// Truncation for resizing containers
+	var $truncElems = $('.dot3');
+	if($truncElems.length > 0) {
+		$truncElems.dotdotdot({
+			watch: 'window'
+		});
+	}
+	
+	// Disable Breaking News links for beta
+	//$('#breaking-news article a').bind('click', function(e) {
+		//e.preventDefault();
+	//});
+	
+	/*** using .delegate to re-initialize vignette effect after filtering ***/
+	$('.homepage-worthy-wrap,.galleries,.popular-channel-item')
+		.delegate('a.timestream-block-overlay', 'mouseenter', function(){			
+			setParentActive($(this));
+		})
+		.delegate('a.timestream-block-overlay', 'mouseleave' ,function(){
+			setParentInactive($(this));
+		});
+		
+	/*** ACTIVITY FEED: using $.on to re-initialize .active class after new activity refresh ***/
+	$('#community-activity')
+		.on('mouseenter', '.activity-stream footer a', function(){			
+			setParentActive($(this));
+		})
+		.on('mouseleave', '.activity-stream footer a', function(){
+			setParentInactive($(this));
+		});
+		
+	/*** AWESOME ACTION LIST: using $.on to re-initialize .active class after scrolling ***/
+	$('.sony-thumb-rows')
+		.on('mouseenter', 'article a', function(){			
+			setParentActive($(this));
+		})
+		.on('mouseleave', 'article a', function(){
+			setParentInactive($(this));
+		});
+		
+	// Image Lazy Loading
+	if($('img[data-image-src]').length > 0) {
+		
+		var imgLazyLoad = BUI.utils.imgLazyLoad;
+		
+		imgLazyLoad.showThumbsInViewport(); // fire once to catch any images in view on page load
+		
+		$(window).bind('scroll resize', function(){ // you jerkie mah window, I resetz!
+			clearTimeout(imgLazyLoad.timeout);
+			imgLazyLoad.timeout = setTimeout(imgLazyLoad.showThumbsInViewport, 50);	
+		});
+	}
+	
+}); // end main DOM-ready wrapper
+
+/* =========================================
+   Utils
+   ========================================= */
+function getRandomInteger(min,max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if (pair[0] == variable) {
+			return pair[1];
+		}
+	}
+	return null;
+}
+
+function serializeArrayToJson(serializedArray) {
+    var jsonObject = {};
+    $.each(serializedArray, function () {
+        var value;
+
+        if (this.value != null) {
+            value = this.value;
+        } else {
+            value = '';
+        }
+
+        if (jsonObject[this.name] != null) {
+            if (!jsonObject[this.name].push) {
+                jsonObject[this.name] = [jsonObject[this.name]];
+            }
+
+            jsonObject[this.name].push(value);
+        } else {
+            jsonObject[this.name] = value;
+        }
+    });
+
+    return jsonObject;
+}
+
+/* =========================================
+   Helpers
+   ========================================= */
+function searchOnFocus(e) {
+	if(e.value == e.defaultValue) {
+		e.value = '';
+	}
+	else {
+		e.select();
+	}
+}
+
+function searchOnBlur(e) {
+	if(e.value == '') {
+		e.value = e.defaultValue;
+	}
+}
+
+// Supports UI hover interactions
+function setParentActive($elm){ // later: maybe pass in the parent tag selector to make this more reusable
+	$elm.closest('article').addClass('active');
+}
+function setParentInactive($elm){
+	$elm.closest('article').removeClass('active');
+}
+
+function SwapImage(objImg, src) {
+	objImg.src = src;
+}
+
+function getResizedThumbnailUrlFromImageSize(thumbnailUrl, imageSize) {
+    if (!thumbnailUrl || thumbnailUrl == "") {
+        return thumbnailUrl;
+    }
+    if (thumbnailUrl.indexOf("http://media1.break.com") == -1) {
+        return thumbnailUrl;
+    }
+    if (thumbnailUrl.lastIndexOf('.') != -1) {
+        thumbnailUrl = thumbnailUrl.substr(0, thumbnailUrl.lastIndexOf('.')) + imageSize + thumbnailUrl.substr(thumbnailUrl.lastIndexOf('.'));
+    }
+    thumbnailUrl = thumbnailUrl.replace("media1.break.com", "media11.break.com");
+    return thumbnailUrl;
+}
+
+function guidGenerator() {
+    var S4 = function () {
+        return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+    };
+    return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+$(window).load(function() {
+	// Disable click-thrus for anchor tags with an empty href in Community Activity Module
+	$('.scrollwrap').delegate('a[href=""]', 'click', function() {
+		return false;
+	});
+});

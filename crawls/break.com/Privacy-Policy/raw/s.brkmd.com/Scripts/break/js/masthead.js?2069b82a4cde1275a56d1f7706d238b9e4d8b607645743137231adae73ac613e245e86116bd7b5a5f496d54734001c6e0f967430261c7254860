@@ -1,0 +1,76 @@
+﻿/*
+Breadcrumb.Init({
+    channelName     : 'Channel 1',
+    topicName       : 'Dogs',
+    categoryName    : 'Funny Videos',
+    contentName     : 'test content'
+});
+*/
+var BreadCrumb = {
+    channelName: "",
+    topicName: "",
+    categoryName: "",
+    contentName: "",
+    mostRecentlyVisited: "",
+    categoryUrl: "",
+    //categoryCrumbs = "",
+    Init: function (data) {
+        channelName = data.channelName;
+        topicName = data.topicName;
+        categoryName = data.categoryName;
+        contentName = data.contentName;
+        channelUri = data.channelUri;
+        //	categoryCrumbs = data.categoryCrumbs;
+        categoryUrl = data.categoryUrl;
+        mostRecentlyVisited = $.cookie('brkbreadcrumb');
+        this.Run();
+    },
+    Run: function () {
+        var link1, link2, link3, homeLink = '';
+
+        if (mostRecentlyVisited == 'Latest')
+            homeLink = "http://www.break.com/recent/";
+        else if (mostRecentlyVisited == 'Popular')
+            homeLink = "http://www.break.com/popular/";
+        else {
+            mostRecentlyVisited = "Home";
+            homeLink = "http://www.break.com/";
+        }
+
+        //link1 = '<a href="'+ homeLink + '">' + mostRecentlyVisited + '</a><b>&raquo;</b>';
+        link1 = '<h3><a href="http://www.break.com/pictures/">Funny Pictures</a></h3><b>|</b>';
+        //** link 2
+        if (categoryName) {
+            if (categoryUrl) {
+                link2 = '<a href="' + $.trim(categoryUrl).replace(/\s/g, '-').toLowerCase() + '"><span>' + categoryName + '</span></a><b>&raquo;</b>';
+            }
+            else {
+                link2 = '<a href="http://www.break.com/surfacevideo/' + $.trim(categoryName).replace(/\s/g, '-').toLowerCase() + '/"><span>' + categoryName + '</span></a><b>&raquo;</b>';
+            }
+        }
+        else if (channelName) {
+            link2 = '<a href="/' + $.trim(channelUri).replace(/\s/g, '-').toLowerCase() + '/"><span>' + channelName + '</span></a><b>&raquo;</b>';
+        }
+        else if (topicName) {
+            link2 = '<a href="/topics/' + $.trim(topicName).replace(/\s/g, '-').toLowerCase() + '"><span>' + topicName + '</span></a><b>&raquo;</b>';
+        }
+
+        //** link 3
+        link3 = "<span>" + contentName + "</span>";
+
+        $('#breadcrumb1').html(link1);
+        $('#breadcrumb2').html(link2);
+        $('#breadcrumb3').html(link3);
+
+        if (channelName == topicName && topicName == categoryName) {
+            $("#breadcrumb2").remove();
+        }
+    }
+}
+
+/*
+var Cookies = {
+    brkbreadcrumb : 'brkbreadcrumb',
+    brkcookie1
+}
+*/

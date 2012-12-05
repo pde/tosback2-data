@@ -15,11 +15,11 @@ if (shUserAgent.match('KTXN') == 'KTXN' || shUserAgent.match('AlertSite') == 'Al
 		if(typeof(cid) != 'undefined' || typeof(chId)!='undefined')
 		{
 		if (cid == '174' ||  chId=='174')
-		{$("#nav_theater > a.atest").addClass("highlight");}
+		{$("#nav_theater > a.atest").addClass("highlight");$("#nav_theater").attr('cat','Theater');}
 		else if (cid == '28' ||  chId=='28' )
-		{$("#nav_sports > a.atest").addClass("highlight");}
+		{$("#nav_sports > a.atest").addClass("highlight");$("#nav_sports").attr('cat','Sports');}
 		else if (cid == '1' ||  chId=='1')
-		{$("#nav_concerts > a.atest").addClass("highlight");}
+		{$("#nav_concerts > a.atest").addClass("highlight");$("#nav_concerts").attr('cat','Concerts');}
 		else if( highBtnCook == "2" || highBtnCook == "3" || highBtnCook == "4" || highBtnCook == "5" )
 		{$("#nav_upcoming > a.atest").addClass("highlight");}
 		}
@@ -564,6 +564,7 @@ function getGenreFeed(){
 							}
 							else
 							{	$('#cont'+cno3).append("<li style='color:#2075C2' ><a style='color:#2075C2' title='"+altDesc+"' href='"+url2+"'>" +desc2+ "</a></li>");
+								
 						    }
 						});
 						 $('#cont'+cno3).append('</ul>');
@@ -679,7 +680,6 @@ var descCheck="";
 	        
 	        	        
 }
-
 $(document).ready(function() {
 	getGenreFeed();
     $("#srchbtn").click(function(){
@@ -1322,7 +1322,13 @@ $(document).ready(function() {
                     $.writeCookielet("STUB_BROWSE_SESS", "hde",cookhde );
        		           }
        		    $.writeCookielet("STUB_BROWSE_SESS", "AvDateText","2");
-                   window.location = url; 
+					if(dmnchk=="US"){
+					var tVal='MegaMenu:Upcoming:This weekend';
+					var tTxt='This weekend';
+					trackMegaMenu(tVal,tTxt,url);
+					}else{
+						window.location = url; 
+					}
        		      }
        			});
     		 
@@ -1366,7 +1372,13 @@ $(document).ready(function() {
              $.writeCookielet("STUB_BROWSE_SESS", "hde",cookhde );
 		           } 
 		       $.writeCookielet("STUB_BROWSE_SESS", "AvDateText","3");
+				if(dmnchk=="US"){
+					var tVal='MegaMenu:Upcoming:Next 3 days';
+					var tTxt='Next 3 days';
+					trackMegaMenu(tVal,tTxt,url);
+				}else{
    		          window.location = url; 
+				 }
    		      }
    			});
     		
@@ -1410,7 +1422,13 @@ $(document).ready(function() {
              $.writeCookielet("STUB_BROWSE_SESS", "hde",cookhde );
 		           }
 		     $.writeCookielet("STUB_BROWSE_SESS", "AvDateText","4");
-   		          window.location = url; 
+					if(dmnchk=="US"){
+						var tVal='MegaMenu:Upcoming:Next 7 days';
+						var tTxt='Next 7 days';
+						trackMegaMenu(tVal,tTxt,url);
+					}else{						
+						window.location = url; 
+					}
    		      }
    			});
     		
@@ -1429,6 +1447,7 @@ $(document).ready(function() {
    		        var  endDate = new Date(q);
    		        var  startCentury = startDate.getFullYear() < 2E3 ? 100 : 0;
    		        var  endCentury = endDate.getFullYear() < 2E3 ? 100 : 0;
+
    		         var startMonth = startDate.getMonth() + 1 < 10 ? "0" + (startDate.getMonth() + 1) : startDate.getMonth() + 1;
    		         var endMonth = endDate.getMonth() + 1 < 10 ? "0" + (endDate.getMonth() + 1) : endDate.getMonth() + 1;
    		         var startDay = startDate.getDate() < 10 ? "0" + startDate.getDate() : startDate.getDate();
@@ -1453,7 +1472,13 @@ $(document).ready(function() {
              $.writeCookielet("STUB_BROWSE_SESS", "hde",cookhde );
 		           }
 		       $.writeCookielet("STUB_BROWSE_SESS", "AvDateText","4");
-   		          window.location = url; 
+				if(dmnchk=="US"){
+					var tVal='MegaMenu:Upcoming:Upcoming Hub';
+					var tTxt='Upcoming Hub';
+					trackMegaMenu(tVal,tTxt,url);
+				}else{
+					window.location = url; 
+				}
    		      }
    			});
     		 
@@ -1496,13 +1521,88 @@ $(document).ready(function() {
              $.writeCookielet("STUB_BROWSE_SESS", "hde",cookhde );
 		           }
 		       $.writeCookielet("STUB_BROWSE_SESS", "AvDateText","5");
-   		          window.location = url; 
+				if(dmnchk=="US"){
+					var tVal='MegaMenu:Upcoming:Next 30 days';
+					var tTxt='Next 30 days';
+					trackMegaMenu(tVal,tTxt,url);
+				}else{
+					window.location = url; 
+				}
    		      }
    			});
-
-});
-    
-	
+			if(dmnchk=="US"){
+				$("#nav_sports a,#nav_concerts a,#nav_theater a,#nav_fanservices a,#nav_myaccount a").each(function() {
+					var $t = $(this);	
+					if($t.attr('class')=='atest'){	
+						var hubName=$t.closest('li').attr('id');			
+						if(hubName.indexOf('sports')!=-1){
+							$t.closest('li').attr('cat','Sports');							
+						 }
+						 if(hubName.indexOf('concerts')!=-1){					
+							$t.closest('li').attr('cat','Concerts');						
+						 }
+						 if(hubName.indexOf('theater')!=-1){
+							$t.closest('li').attr('cat','Theater');						
+						 }
+						 if(hubName.indexOf('fanservices')!=-1){
+							$t.closest('li').attr('cat','Fan Services');						
+						 }
+						 if(hubName.indexOf('myaccount')!=-1){
+							$t.closest('li').attr('cat','My Account');							
+						 }
+						 var tName=$t.closest('li').attr('cat');				
+					}else{
+						var catName=$t.closest('div').closest('li').attr('cat');
+					}	
+					$t.click(function(e) {	
+							e.preventDefault();
+							 if($t.attr('class')=='atest'){	
+								 var tVal='MegaMenu:'+tName+':'+tName+' Hub';											 
+							 }else if($t.closest('ul').attr('id')==''){
+								 if($t.text()=='See more'){							
+									 var tVal='MegaMenu:'+catName+':'+$t.text();							  					 
+								 }else{							
+									 if(catName=='Fan Services' || catName=='My Account'){
+										var tVal='MegaMenu:'+catName+':'+$t.text();
+									}else{
+										var tVal='MegaMenu:'+catName+':Genre:'+$t.text();							 
+									}							 
+								 }
+							 }
+							 /*else{						 
+								 var tVal='MegaMenu:'+catName+':Popular:'+$t.text();					 
+							 }*/							
+							trackMegaMenu(tVal,$t.text(),$t.attr('href'),this);
+						});	
+									
+				});				
+				$("#cont1 a,#conc1 a,#cond1 a").live("click", function(e){
+					e.preventDefault();
+					var catName=$(this).closest('div').closest('li').attr('cat');
+					var tVal='MegaMenu:'+catName+':Popular:'+$(this).text();
+					tTxt=$(this).text();
+					tLink=$(this).attr('href');
+					trackMegaMenu(tVal,tTxt,tLink,this);
+				});				
+			}
+});    
+function trackMegaMenu(tVal,tTxt,tLink,tTarget){			
+	try {	
+			s.linkTrackVars = 'prop61,prop62,prop63';
+			s.prop61 = tVal; 
+			s.prop62 = 'MegaMenu:Menu Link Click';
+			s.prop63 = s.pageName;
+			s.tl(true,'o','MegaMenu');
+			if($(tTarget).attr("target")=="_blank"){
+				setTimeout(function(){window.open(tLink);}, 1000);
+				
+			}else{
+				setTimeout(function(){window.location.href = tLink;}, 1000);
+				
+			}
+		}
+		catch (e) { }			
+}
 	
 	function closepop(a) {
 	    if (window.location.href.indexOf("test") != -1) window.location = "http://www.stubhub.com/?sgeo=0&pgeo=" + a;

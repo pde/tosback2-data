@@ -3447,13 +3447,14 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 
 			//********************
 			var autoPlay = $(elm).attr('data-autoplay');
+			var endCapAutoPlay = $(elm).attr('data-endcapautoplay');
 			var configParams = escape("site=" + config.getMediaConfigParamSite());
 			if (config.getMediaFreewheelNID()) {
 				configParams += escape("&nid=" + config.getMediaFreewheelNID());	
 			} 
 			if (typeof(siteSectionId) == 'undefined') { siteSectionId = 'The_Daily_Show_Home'; }
 		
-			var flashvars = { sid:siteSectionId, autoPlay:autoPlay, configParams:configParams };
+			var flashvars = { sid:siteSectionId, autoPlay:autoPlay, endCapAutoPlay:endCapAutoPlay, configParams:configParams };
 		
 			var parobj = {
 				wmode:'opaque',
@@ -3668,6 +3669,7 @@ $(function () {
 
 
 		_cacheDOMElements: function() {
+			this.options.notSendAjax = false;
 			//here is the objects
 			this.module = $(this.elem);
 			this.ajaxSpinner = this.module.find('.ajax_spinner');
@@ -3704,8 +3706,8 @@ $(function () {
 				scroll: {
 					onBefore: function(oldItems, newItems) {
 						var $current = $(newItems[1]);
-						if (self.module.hasClass('notSendAjax')) {
-							self.module.removeClass('notSendAjax');
+						if (self.options.notSendAjax) {
+							self.options.notSendAjax = false;
 							self._replacePlayer($current.find(self.videoThumbnail));
 						} else {
 							self.ajaxSpinner.show();
@@ -3862,7 +3864,7 @@ $(function () {
 
 		getVideoById: function(videoId, url) {
 			this.ajaxSpinner.show();
-			this.module.addClass('notSendAjax');
+			this.options.notSendAjax = true;
 			this.options.History.pushState({
 				'videoId': videoId
 			}, null, this._makeFakeUrl(url));
@@ -3874,7 +3876,7 @@ $(function () {
 				isScroll = false;
 			this._storePlayers(jsonObj);
 			this.module.find(this.triangleArrow + '.'  + this.openArrowClass).click();
-			this._addItems(jsonObj, this.module.hasClass('notSendAjax'));
+			this._addItems(jsonObj, this.options.notSendAjax);
 		},
 
 		_addItems: function(jsonObj, isScroll) {
@@ -4085,9 +4087,6 @@ $(function () {
 					
 			if (overlay.data("redirect"))
 			{
-				//@todo here we could put the hook for binding "onended" in the audio object.
-				//For now I will leave this unimplemented but if it's required in the future
-				//it can be re-enabled and the following line of code can be forked.
 				setTimeout(function(){
 					if ($(".overlay_screen").css("display")=="block" && $(".overlay_holder").data("toggle")) 
 					{	

@@ -29,12 +29,12 @@
 	<script type="text/javascript">
 		$.noConflict();
 	</script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/jquery.scrollto.min.js%3Fv=1.2.34"></script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/jquery.tablesorter.min.js%3Fv=1.2.34"></script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.min.js%3Fv=1.2.34"></script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.autocomplete.min.js%3Fv=1.2.34"></script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.glossary.min.js%3Fv=1.2.34"></script>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.rapidfire.min.js%3Fv=1.2.34"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/jquery.scrollto.min.js%3Fv=1.2.36"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/jquery.tablesorter.min.js%3Fv=1.2.36"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.min.js%3Fv=1.2.36"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.autocomplete.min.js%3Fv=1.2.36"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.glossary.min.js%3Fv=1.2.36"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.rapidfire.min.js%3Fv=1.2.36"></script>
 	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/slimbox2.js"></script>
 	<!--testing flot on city page-->
 		<script type="text/javascript">
@@ -207,7 +207,7 @@
 		<li><a href="http://www.wunderground.com/blog/JeffMasters/article.html">Dr. Jeff Masters</a></li>
 		<li><a href="http://www.wunderground.com/blog/weatherhistorian/article.html">Weather Historian</a></li>
 		<li><a href="http://www.wunderground.com/blog/#met">Meteorology Blogs</a></li>
-		<li><a href="http://www.wunderground.com/blog/index.html?range=updated&amp;t=1354367267#mem">Member Blogs</a></li>
+		<li><a href="http://www.wunderground.com/blog/index.html?range=updated&amp;t=1354712977#mem">Member Blogs</a></li>
 		<li><a href="http://www.wunderground.com/blog/RickyRood/article.html">Climate Change Blog</a></li>
 		<li><a href="http://www.wunderground.com/community/chat.asp">Community Chat</a></li>
 		<li><a href="http://www.wunderground.com/blog/index.html?range=favs#mem">My Favorite Blogs</a></li>
@@ -405,7 +405,7 @@
 		<li class="b"><a href="http://www.wunderground.com/blog/">Blogs</a></li>
 		<li><a href="http://www.wunderground.com/blog/JeffMasters/article.html">Dr. Jeff Masters</a></li>
 		<li><a href="http://www.wunderground.com/blog/#met">Meteorology Blogs</a></li>
-		<li><a href="http://www.wunderground.com/blog/index.html?range=updated&amp;t=1354367267#mem">Member Blogs</a></li>
+		<li><a href="http://www.wunderground.com/blog/index.html?range=updated&amp;t=1354712977#mem">Member Blogs</a></li>
 		</ul>
 		<ul class="rb">
 		<li class="b"><a href="http://www.wunderground.com/travel/">Travel &amp; Activities</a></li>
@@ -514,7 +514,7 @@
 		</div>
 	</div>
 </div>
-	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.shrink.min.js%3Fv=1.2.34"></script>
+	<script type="text/javascript" src="../../icons-ak.wxug.com/scripts/wui.shrink.min.js%3Fv=1.2.36"></script>
 	<div id="iconspopcontainer"></div>
 	<script type="text/javascript">
 		(function($) {
@@ -533,26 +533,90 @@
 		});
 		})(jQuery);
 	</script>
-  <div class="none">
-  <!-- set pixels to track what pages users are looking at-->
-  </div>
-		<script type="text/javascript" src="../set.js"></script>
-<!-- Begin FB -->
-	<div id="fb-pixel" class="none"></div>
-<!-- End FB -->
 	<div class="none">
-		<!-- BEGIN Tacoda -->
-		<!-- removed dxf 4/27/2012 
-			<script LANGUAGE="JavaScript">var tcdacmd="dt";</script>
-		<script SRC="http://an.tacoda.net/an/11619/slf.js" LANGUAGE="JavaScript"></script>
-		-->
-		<!-- END Tacoda -->
+	</div>
+		<script type="text/javascript" src="../set.js"></script>
+<div id="fb-pixel" class="none"></div>
+<!-- Start Quantcast API -->
+	<script type="text/javascript">
+		function qc_results(result)
+		{
+		var expdate = new Date ();
+		var newcookie = "";
+		expdate.setTime (expdate.getTime() + (3 * 24 * 60 * 60 * 1000)); // 3 days from now
+		for (var i = 0; i < result.segments.length; i++)
+			{
+			var delim = "";
+	
+			if (i)
+				delim = "|";
+	
+			newcookie = newcookie + delim + result.segments[i].id ; 
+			}
+
+		document.cookie="qct2" + "=" + newcookie + "; expires=" + expdate.toGMTString() + "; path=/; domain=.wunderground.com";
+		}
+	</script>
+	<script type="text/javascript" src="../../pixel.quantserve.com/api/segments.json%3Fa=p-01lvMKu--eLQE&amp;callback=qc_results"></script>
+<!-- End Quantcast API -->
+<!-- Start Quantcast Measurement -->
+	<script type="text/javascript">
+		var _qevents = _qevents || [];
+		(function() {
+		var elem = document.createElement('script');
+		elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+		elem.async = true;
+		elem.type = "text/javascript";
+		var scpt = document.getElementsByTagName('script')[0];
+		scpt.parentNode.insertBefore(elem, scpt);
+		})();
+		_qevents.push({
+		qacct:"p-01lvMKu--eLQE"
+		});
+	</script>
+	<noscript>
+		<div style="display:none;">
+		<img src="../../pixel.quantserve.com/pixel/p-01lvMKu--eLQE.gif" border="0" height="1" width="1" alt="Quantcast" />
+		</div>
+	</noscript>
+<!-- End Quantcast Measurement -->
+	<div class="none">
+		<!-- Begin comScore Tag -->
+		<script type="text/javascript">
+		var _comscore = _comscore || [];
+		_comscore.push({ c1: "2", c2: "6164429" });
+		(function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+		el.parentNode.insertBefore(s, el);
+		})();
+		</script>
+		<noscript>
+		<img src="../../b.scorecardresearch.com/p%3Fc1=2&amp;c2=6164429&amp;cv=2.0&amp;cj=1" />
+		</noscript>
+		<!-- End comScore Tag -->
+		<!-- START Nielsen Online SiteCensus V6.0 -->
+		<!-- COPYRIGHT 2010 Nielsen Online -->
+		<script type="text/javascript">
+		(function () {
+		var d = new Image(1, 1);
+		d.onerror = d.onload = function () {
+		d.onerror = d.onload = null;
+		};
+		d.src = ["//secure-us.imrworldwide.com/cgi-bin/m?ci=us-203014h&cg=0&cc=1&si=", escape(window.location.href), "&rp=", escape(document.referrer), "&ts=compact&rnd=", (new Date()).getTime()].join('');
+		})();
+		</script>
+		<noscript>
+		<img src="../../secure-us.imrworldwide.com/cgi-bin/m%3Fci=us-203014h&amp;cg=0&amp;cc=1&amp;ts=noscript" width="1" height="1" alt="" style="display: none;" />
+		</noscript>
+		<!-- END Nielsen Online SiteCensus V6.0 -->
 		<!-- BEGIN Criteo -->
 		<!-- Added by DXF on 4/27/2012 for retail/product based retargeting ad network -->
 		<script type='text/javascript'>
 		var crtg_nid="1458";
 		var crtg_cookiename="cto_wunderus";
-		function crtg_getCookie(c_name){var i,x,y,ARRcookies=document.cookie.split(";");for(i=0;i<ARRcookies.length;i++){x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';} var crtg_content=crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);var crtg_url='http://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=crtg_content';var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script); </script>
+		function crtg_getCookie(c_name){var i,x,y,ARRcookies=document.cookie.split(";");for(i=0;i<ARRcookies.length;i++){x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);x=x.replace(/^\s+|\s+$/g,"");if(x==c_name){return unescape(y);}}return'';} var crtg_content=crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);var crtg_url='http://rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=crtg_content';var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);else if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+		</script>
 		<!-- END Criteo -->
 		<span id="admeld">
 		<script type="text/javascript">
@@ -573,4 +637,4 @@
 </body>
 </html>
 <!-- WUICATEGORY | Unknown | Terms of Conditions and Use -->
-<!-- SERVERHOSTNAME | 365-o2 | Nov 28 2012 16:55:07 -->
+<!-- SERVERHOSTNAME | 365-a10 | Dec  4 2012 20:23:47 -->

@@ -691,10 +691,11 @@ argos.classes = new (function() {
 		var $node = this.$node;
 		var tagName = this.node.tagName.toLowerCase();
 		var activatorId = this.$node.attr("id");
+		var isEmailLink = this.$node.hasClass("emailOutOfStock") || this.$node.hasClass("emailMe") ? true : false;
 		var params = "";
 		switch (tagName) {
 			case "a" : 
-				if (activatorId == "emailOutOfStock" || activatorId == "emailMe") {
+				if (isEmailLink) {
 					params = "&actionType=get&viewTaskName=ISALTMAjaxResponseView";
 				}
 				location = this.$node.attr("href");
@@ -2041,6 +2042,7 @@ argos.classes = new (function() {
 	QvpActivator.prototype.intent = function() {
 		var activatee = this.property("activatee");
 		var url = this.property("url");
+		activatee.property("activator", this);
 		activatee.property("ajax", $.ajax({
 			url : url,
 			success : function(html) {
@@ -2099,6 +2101,7 @@ argos.classes = new (function() {
 		// 3. Clip the full details.
 		$clippedInformation = _helpers.verticallyClipContent($information.children(), availableHeight);
 		$information.empty().append($clippedInformation);
+		argos.tracking.qvp.fireTags.call(this);
 	}
 	QvpActivatee.prototype.product = function() {
 		var more = $(".more", this.node);
@@ -2337,5 +2340,3 @@ argos.classes = new (function() {
 	ArgosConfigurationError.prototype.constructor = ArgosConfigurationError;
 	
 });
-	
-	

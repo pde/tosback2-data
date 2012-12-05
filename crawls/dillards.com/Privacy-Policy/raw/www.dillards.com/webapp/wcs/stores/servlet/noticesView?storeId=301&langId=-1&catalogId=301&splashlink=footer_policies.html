@@ -691,6 +691,26 @@ function getCookie(c_name)
 			}
 		});
 	});
+	
+	$(document).ready(function() {
+		var cookieValue = getCookie("WL_HEADER");
+		if (cookieValue != null){
+			var start = cookieValue.indexOf("NUM:") + 4;
+			var stop = cookieValue.indexOf("OPTION:");
+	
+			if ((stop-start) > 0){
+				$('#backToRegistry').show();
+			}
+		}
+		
+		var frameLogonCookie = getCookie("fromMyFrame");
+		//if logged on through My Dillards Bar, fromMyFrame cookie is set
+		if (frameLogonCookie != null){
+			$.cookie("fromMyFrame", null,{path: '/',domain: '.dillards.com', expires: -10 });
+			openMyDillardsFlyOut();
+		}
+		
+	});
 </script>
 <div id="theContainer"></div> 
 <div id="header-wrapper">
@@ -1504,6 +1524,7 @@ checkCookie();
 
 <div id="myDillardsContainer" style="display:none;">
 	<div id="myDillardsBar">
+		<a href="http://www.dillards.com/"><div id="myDillardsSmallLogo" style="display:none;color:#fff;position:absolute;top:7px;left:50%;margin-left:-470px;"><img src="../../../../images/smallDillardsLogo.png" style="width:60px;height:15px;"alt="Dillard's"/></div></a>
 		<div id="myDillardsBarText">
 			
 					<span class="openClose">My Dillard's</span>
@@ -4543,7 +4564,7 @@ More info available at http://www.omniture.com -->
 	s.server=document.domain;
 	s.prop7=document.domain;
 	
-	s.prop15="D7C033CA3BB8103B947DE95C2116A641";
+	s.prop15="BA1114343EDD103E3D3DADD095CA09AA";
 	s.campaign=s.getQueryParam('campaign');
 	s.eVar9=s.getQueryParam('Catalog');
 	s.eVar29=s.getQueryParam('ezine');
@@ -4722,51 +4743,6 @@ More info available at http://www.omniture.com -->
 		</div>
 				
 </div>
-<script>
-	var cookieName = "refererSEA";	
-	var cookieValue = getCookie(cookieName);
-	if (cookieValue==null || cookieValue=="" || cookieValue == undefined)
-	{ // if the refererSEA cookie is not found, make an AJAX call to DdsSearchEngineAcq command
-		var storeId = "301";
-		var langId = "-1";
-		var catalogId = "301";
-		var cmMmc = getUrlVars()["cm_mmc"];
-		var referer = document.referrer;
-		var ajaxOptions = 
-		{
-			type: "POST",
-			cache: false,
-	    	async: false,
-			url: "/webapp/wcs/stores/servlet/DdsSearchEngineAcq",
-			dataType: "json",
-			data: "storeId="+storeId+"&langId="+langId+"&catalogId="+catalogId+"&cm_mmc="+cmMmc+"&ref="+referer
-		};
-		$.ajax(ajaxOptions);
-	};
-	
-	function getUrlVars() {
-		var vars = {};
-		var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-			vars[key] = value;
-		});
-		return vars;
-	}
-	
-	function getCookie(c_name)
-	{
-		var i,x,y,ARRcookies=document.cookie.split(";");
-		for (i=0;i<ARRcookies.length;i++)
-		{
-		  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
-		  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
-		  x=x.replace(/^\s+|\s+$/g,"");
-		  if (x==c_name)
-		    {
-		    return unescape(y);
-		    }
-		  }
-		}						
-</script>
 
 
 <div id="footer-container">

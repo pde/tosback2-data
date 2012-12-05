@@ -50,6 +50,8 @@ dojo.addOnLoad(function () {
     { id: 'THANKS',         type: 'coupon' },
     { id: 'TWENTYOFF',      type: 'coupon' },
     { id: 'TWENTYOFF49',    type: 'coupon' },
+    { id: 'TWENTYOFF89',    type: 'coupon' },
+    { id: 'TWENTYOFF99',    type: 'coupon' },
     { id: 'TWENTYOFFNOMIN', type: 'coupon' },
     { id: 'WED',            type: 'coupon' },
     { id: 'EMAIL', title: 'Email Sign-up', callback: function () {

@@ -1,6 +1,6 @@
 //This js has all the front end logic for type ahead
 
-var typeAheadEnabled = false;
+var typeAheadEnabled = true;
 
 var lastSearch = "";
 //This method creates the typeahead popup

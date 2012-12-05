@@ -1,6 +1,6 @@
 @charset "utf-8";
 /*CSS Document:US style.css */
-/*Last Updated By:Scott Hine - 11/21/2012 11:00AM*/
+/*Last Updated By:Scott Hine - 12/04/2012 2:00PM*/
 /*Build 2.09 Release*/
 /* =Global
 --------------------------------------------------------------------- */
@@ -15,7 +15,7 @@ fieldset{border:0;padding:0;margin:0;width:100%;}
 legend{font-weight:bold;line-height:15px;padding:15px 0 5px 0;color:#333;}
 table{margin:0 0 10px 0;}
 th, td{padding:7px;vertical-align:top;text-align:left;}
-th{padding:0 7px 7px 7px;}
+th{padding:0 7px 7px;}
 tfoot td{font-weight:bold;}
 a{color:#333;text-decoration:none;}
 a:hover{text-decoration:underline;}
@@ -24,6 +24,7 @@ a:focus{-moz-outline-style:none;}
 img{border:0;}
 acronym{text-decoration:none;border-bottom:1px dotted;}
 .hidden, .hide{display:none;}
+.clearSpace{clear:both;}
 /* =Structural
 --------------------------------------------------------------------- */
 #divWrapper{margin:0 auto;width:917px;text-align:left;}
@@ -114,7 +115,6 @@ h1 span{padding:0;}
 .templateMajor1 #divTemplate #div2, .templateMajor3 #divTemplate #div2{display:inline;margin:0 0 10px 0;height:380px;}
 .templateMajor1 #divTemplate #div3, .templateMajor1 #divTemplate #div4, .templateMajor2 #divTemplate #div4, .templateMajor2 #divTemplate #div5, .templateMajor3 #divTemplate #div3, .templateMajor3 #divTemplate #div4, .templateMajor3 #divTemplate #div6, .templateMajor3 #divTemplate #div7, .templateMajor4 #divTemplate #div4, .templateMajor4 #divTemplate #div5, .templateMajor4 #divTemplate #div7, .templateMajor4 #divTemplate #div8{display:inline;}
 .templateMajor1 #divTemplate #div5, .templateMajor2 #divTemplate #div2, .templateMajor2 #divTemplate #div3, .templateMajor2 #divTemplate #div6, .templateMajor3 #divTemplate #div5, .templateMajor3 #divTemplate #div8, .templateMajor4 #divTemplate #div2, .templateMajor4 #divTemplate #div3, .templateMajor4 #divTemplate #div6, .templateMajor4 #divTemplate #div9{display:inline;margin:0 0 10px 0;}
-
 /*templateSixBlock:Six Block Family*/
 .templateSixBlock #divTemplate #div1{width:686px;height:380px;display:inline;margin:0 0 10px 0;}
 .templateSixBlock #div1 .paragraph, .templateSixBlock #div1 .heading, .templateSixBlock #div1 .links{position:absolute;left:20px;overflow:hidden;}
@@ -717,10 +717,10 @@ input.rb{
 	vertical-align:middle;
 }
 #divRadioGroupSelectAFont label.rbLabel{margin-top:1px;}
-input.text, input.password, select{
-	padding:0 0 1px 0;
-	margin:0 0 5px 0;
-	_margin:0 0 3px 0;
+input.text, input.password, select, .ws_email{
+	padding:0 0 1px;
+	margin:0 0 5px;
+	_margin:0 0 3px;
 	border:1px solid #b6b2a6;
 	font-size:13px;
 	color:#333;
@@ -728,6 +728,7 @@ input.text, input.password, select{
 	_vertical-align:middle;
 	line-height:14px;
 }
+.ws_email{width:216px;}
 input.rbAdjacentToText{margin:0 0 0 7px;}
 textarea{
 	padding:0;
@@ -782,15 +783,17 @@ span.inlineExampleImage img{
 .indent{margin-left:30px;}
 .indentedFields{margin:15px 0 15px 30px;}
 /* used for instructions that need to be indented like form fields and are associated with a particular form field */
-.indentedFieldInstructions{
-	clear:both;
-	margin:0 0 15px 179px;
-	*margin-top:5px;
-	_margin-top:0;
-}
+.indentedFieldInstructions{clear:both;margin:0 0 15px 179px;*margin-top:5px;_margin-top:0;}
 /* used for instructions that need to be indented like form fields, but are not associated with any particular form field */
 .indentedInstructions{margin:15px 0 15px 178px;}
 .indentedInstructionsSignIn{margin:15px 0 15px 265px;}
+.indentedFieldInstructions_1{float:left;width:180px;}
+.indentedFieldInstructions_2{float:left;width:400px;margin-bottom:5px;}
+.indentedFieldInstructions_input{float:left;width:15px;padding-top:2px;}
+.indentedFieldInstructions_lab{margin-bottom:5px;}
+.indentedInstructionsAD{margin:0 0 15px 213px !important;}
+.indentedInstructionsAD1{margin:20px 0 15px 213px !important;}
+.creditTermstxtReceipt{margin:0;padding:0;font-style:italic;}
 #divCardApplicationThankYou h2{margin-top:0;}
 #tblNewPaymentMethod #divBillMeLater label.access{display:none;}
 #tblNewPaymentMethod #divBillMeLater fieldset{margin:0 0 5px 0;}
@@ -1460,11 +1463,10 @@ a.pdfFile{background:url(../images/ico_pdf.gif) no-repeat left center;}
 .outline{padding:19px;margin:0 0 10px 0;}
 /* Defect 4550 */
 .nic_outline{padding:0;margin:0 0 10px 0;}
-.outlineNoTop{
-	border:1px solid #bebdbd;
-	border-top:none;
+.outlineNoTop{border:1px solid #bebdbd;border-top:0;}
+.outlineNoTop, .outlineNoTop1{
 	padding:19px;
-	margin:0 0 10px 0;
+	margin:0 0 10px;
 }
 .outlineNoTopOrBottom{/*used on product detail */
 	border-left:1px solid #bebdbd;
@@ -1475,13 +1477,13 @@ a.pdfFile{background:url(../images/ico_pdf.gif) no-repeat left center;}
 .outlineTopBottom{
 	border-top:1px solid #bebdbd;
 	border-bottom:1px solid #bebdbd;
-	padding:0 0 20px 0;
-	margin:0 0 15px 0;
+	padding:0 0 20px;
+	margin:0 0 15px;
 }
 .outlineNoBorder{
 	border:0;
 	padding:20px;
-	margin:0 0 10px 0;
+	margin:0 0 10px;
 }
 .tuneInPromo{
 	margin:0 0 24px 0;
@@ -1870,40 +1872,17 @@ h2.listDescription{display:none;}/*Removing header from Gallery*/
 	padding:15px 0 15px 0;
 }
 /* Compare view */
-.quickCompare .divProduct{
-	float:left;
-	width:184px;
-	height:400px;
-	margin:0;
-	padding:10px 0 10px 0;
-}
+.quickCompare .divProduct{width:184px;height:400px;padding:10px 0;}
+.quickCompare #trCompareDescription .divProduct, .quickCompare #trCompareDescription .divProductInfo{height:auto;padding:0;}
 .quickCompare .divProductImageAbove{margin-bottom:7px;}
-.quickCompare .divProductInfo{
-	margin:7px 0 0 10px;
-	padding:12px 0 0 0;
-	height:190px;
-	clear:both;
-}
-.quickCompare .divProductButtons{margin:0 0 0 10px;}
-.quickCompare #trCompareDescription .divProduct, .quickCompare #trCompareDescription .divProductInfo{
-	height:auto;
-	margin:0;
-	padding:0;
-}
-.quickCompare #trCompareButtons .divProductButtons{
-	display:block;
-	margin:0;
-	padding:0;
-}
+.quickCompare .divProductInfo{margin:7px 0 0 10px;padding:12px 0 0;height:190px;clear:both;}
+.quickCompare #trCompareButtons .divProductButtons{display:block;margin:0;}
 .quickCompare #trCompareButtons .divProduct{height:auto;}
-.quickCompare a.remove{
-	background:url(../images/x_12_pixel.gif) no-repeat left center;
-	text-decoration:none;
-	padding-left:18px;
-}
+.quickCompare a.remove{background:url(../images/x_12_pixel.gif) no-repeat 0 50%;padding-left:18px;}
 .quickCompare a:hover.remove{text-decoration:underline;}
 .quickCompare a.previous{margin:20px 0;}
-
+.compareAllign, .compareBorder{background:#EBEAE4 !important;border-bottom:0 !important;}
+.compareAllign{border-right:0 !important;}
 /* Wish List & Shared View */
 .wishList .divProductImageBottom, .wishListShared .divProductImageBottom{clear:both;padding:3px 0 0 0;}
 .wishList .divProductInfo, .wishListShared .divProductInfo{
@@ -2139,6 +2118,11 @@ span.spanShoppingCartEditPersonalization{
 	min-height:410px;
 	_height:410px;/* this could present an issue if there's more information than 395 high on the right */
 }
+/*Make A Selection Page*/
+.reviewSelection #divProductDetailDescriptionSelection{min-height:290px;height:auto;_height:290px;}
+.reviewSelection #divProductDetailViewArea{padding-bottom:0;height:auto;}
+.reviewSelection #divProductDetailViewArea img{margin:10px 0 0;}
+.reviewSelection #imgCaption{display:none;}
 /* =Ensembles
 --------------------------------------------------------------------- */
 #divEnsembleSideDescriptionImage, #divEnsembleSideDescriptionContainer, #divEnsembleShortDescriptionImage, #divEnsembleShortDescriptionContainer{display:none;}
@@ -2407,6 +2391,7 @@ div.BVSYDisplayContentSubtitle{width:144px;}/*Share Stories btn*/
 #frmProductDetail #divProductDetailSelectColor ul li, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li, #frmEnsemble .ensembleSelectColor ul li{
 	width:29px;
 	height:29px;
+	line-height:28px;
 	position:relative;
 	cursor:pointer;
 	overflow:hidden;
@@ -2415,7 +2400,7 @@ div.BVSYDisplayContentSubtitle{width:144px;}/*Share Stories btn*/
 	width:110px;
 	background-image:url(../images/size_active_lg.gif);
 }
-#frmProductDetail #divProductDetailSelectColor ul li img, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li img, #frmEnsemble .ensembleSelectColor ul li img{margin-top:3px;z-index:1;}
+#frmProductDetail #divProductDetailSelectColor ul li img, #frmProductDetailReviewSelection #divProductDetailSelectColor ul li img, #frmEnsemble .ensembleSelectColor ul li img{margin-top:3px;z-index:1;vertical-align:baseline;}
 .imgOverlay{
 	position:absolute;
 	top:1px;
@@ -3108,18 +3093,14 @@ span#spanTotalPurchaseAmount1{margin:0;padding:0;}
 	margin-left:12px;
 }
 #divQvcGiftCardEntry #parAddedQvcGiftCards{margin-bottom:0;}
-#divQvcGiftCardEntry ul{
-	margin-top:0;
-	padding-top:0;
-	line-height:normal;
-}
+#divQvcGiftCardEntry ul{margin-top:0;padding-top:0;line-height:normal;}
 #divEnterNewCard, #divADEnterNewCard, #divBillMeLater, .divExpiredCard{padding-left:17px;}
-#divEnterNewCard, #divADEnterNewCard{margin:8px 0 0 0;}
 #divADEnterNewCard, #divADCreditCardLogos{float:left;}
 #divCreditCardLogos{float:right;}
 #divCreditCardLogos img, #divADCreditCardLogos img{width:351px;height:24px;}
+.divEnterNewCard{margin:0 !important;float:left;}
+.dropDownWidth{width:150px;_width:158px;}
 .expiredCreditCard{color:#f00;}
-
 /* Order Detail */
 #divOrderDetailNote, #divOrderDetailOrderChanges, #frmOrderDetail .divOrderTotalButtons, #frmShippingOptions .divOrderTotalButtons{
 	clear:both;
@@ -3197,11 +3178,7 @@ span#spanTotalPurchaseAmount1{margin:0;padding:0;}
 	padding:7px 0 7px 7px;
 }
 #tblQuickCompare th{padding:7px;}
-#tblQuickCompare td.barDark{
-	background-color:#656565;
-	border:0;
-}
-
+#tblQuickCompare td.barDark{background-color:#656565;border:0;}
 /* =Program Guide
 --------------------------------------------------------------------- */
 /* Time Zone Selection, Week/Day Calendar Selector, Search */
@@ -3332,10 +3309,8 @@ a.hideDetails{background-image:url(../images/btnHideDet.gif) !important;}
 	display:block;
 	float:right;
 	background:#fff;
-	border-left:0;
 	border-right:1px solid #e4e3e3;
 	border-bottom:1px solid #fff;
-	border-right:1px solid #e4e3e3;
 	width:768px;
 	margin:0;
 	position:relative;
@@ -3366,6 +3341,9 @@ a.hideDetails{background-image:url(../images/btnHideDet.gif) !important;}
 .tblUpcomingShows{margin-top:15px;width:100%;}
 div.divProgramDetailsInformation table.tblUpcomingShows{width:100%;}
 .tblUpcomingShows td{padding:8px 0 8px 20px;}
+.tblUpcomingShows, #tblUpcomingShows{height:50px;}
+#tblUpcomingShows{margin-top:15px;width:75%;}	
+#tblUpcomingShows td{padding:0 0 0 20px;line-height:25px;}
 /* Program Guide Weekly */
 .weeklyVideoPlayer{height:173px;width:231px;overflow:hidden;}
 #tblProgramGuideWeekly{margin:0;padding:0;}		
@@ -3437,6 +3415,10 @@ div.divProgramDetailsInformation table.tblUpcomingShows{width:100%;}
 .cf_providers{width:50%;}
 .cf_standarddef, .cf_highdef{width:25%;}
 #ChannelProvider tr.bggrey{background:#EFEFF7;}
+/*Add Reminders*/
+.ReminderInfoData{float:left;width:65%;}
+.ReminderInfoImageContainer{width:35%;float:right;text-align:center;}
+#frmAddReminder .indentedFieldInstructions{width:600px;}
 /* =Watch QVC Live
 --------------------------------------------------------------------- */
 .watchQvcLive h1{
@@ -3705,6 +3687,10 @@ input.popupCb{
 	margin-top:-2px;
 }
 #divNavFaceted ul li a:hover, #divNavFaceted ul.noCheckBox li a.RefineLink:hover, #divNavFacetedPopup ul li a:hover, #divNavFaceted ul li label:hover, #divNavFacetedPopup ul li label:hover{text-decoration:underline;cursor:pointer;} 
+/* Defect 3756 */
+#divNavFaceted ul#ulSelectedFacetsForIE7 li a{padding-right:13px;text-decoration:none;_display:inline-block;}
+#divNavFaceted ul#ulSelectedFacetsForIE7 li a:hover{text-decoration:underline;}
+ul#ulSelectedFacetsForIE7 li a.RefineLink img{margin-left:7px;}
 /* Items Recently On Air Nav */
 #divNavItemsRecentlyOnAir{margin-bottom:11px;}
 #divNavItemsRecentlyOnAir .roundedBorderTop{margin:0;background-color:#e4e3e3;}
@@ -3863,15 +3849,47 @@ div.roundedBorderColorAll .outline{background-color:transparent;border:0;}
 	border-bottom-right-radius:6px;
 	border-bottom-left-radius:6px;
 }
-.footerRoundedBorderTop, .footerRoundedBorderBottom{
-	border-color:none;
-	background-color:#E4E3E3;
-}
+.footerRoundedBorderTop, .footerRoundedBorderBottom{border-color:none;background-color:#E4E3E3;}
 .roundedBorderTuneInPromo{background:#e4e3e3;border:1px solid #333;}
 .roundedBorderCardApplicationThankYou{background:#f8f0e3;border:1px solid #c59c80;}
 .roundedBorderPaymentOptions{background:#ddebba;border:1px solid #bebdbd;}
 .homeNavRoundedBorderAll{background:#d9d8d8;}
 .logonIncludeChekoutForm{margin-left:-3px;}
+/*PD Includes*/
+#pdIncludeHtml, #disclaimerHtml, #AdditionalHtml{background-color:#EFEFF7;margin:0 0 10px;overflow:auto;_overflow:hidden;}
+#pdIncludeHtml{_clear:both;}
+#pdIncludeHtml .outline{position:relative;}
+#pdIncludeHtml #timerDivFrame{position:absolute;overflow:hidden;top:26px;left:44px;z-index:100;} 
+#disclaimerHtml{padding:0;}
+.pdIncludeCopy h3, .disclaimerHtmlCopy h3, .AdditionalHtmlCopy h3{margin:0 0 10px 0;}
+.disclaimerHtmlCopy *{font-size:12px;}
+.pdIncludeSign, .disclaimerHtmlSign, .AdditionalHtmlSign{text-align:right;}
+div#pdIncludeHtml div.pdIncludeCopy ul, div#disclaimerHtml div.disclaimerHtmlCopy ul, div#AdditionalHtml div.AdditionalHtmlCopy ul{
+	margin:0 0 10px 220px !important;
+	*padding-left:20px !important;
+}
+div#pdIncludeHtml div.pdIncludeCopy ul li a, div#disclaimerHtml div.disclaimerHtmlCopy ul li a, div#AdditionalHtml div.AdditionalHtmlCopy ul li a, #pdIncludeHtml a, #disclaimerHtml a, #AdditionalHtml a{color:#333;text-decoration:underline;display:inline;}
+#pdIncludeHtml br{clear:right;}
+div.threeImgAcross div.pdIncludeCopy, div.threeImgAcross div.disclaimerHtmlCopy, div.threeImgAcross div.AdditionalHtmlCopy{clear:left;padding:10px 0 0;*padding:0;}
+div.threeImgAcross div.pdIncludeCopy p, div.singleImgAcross div.pdIncludeCopy p, div.threeImgAcross div.disclaimerHtmlCopy p, div.singleImgAcross div.disclaimerHtmlCopy p, div.threeImgAcross div.AdditionalHtmlCopy p, div.singleImgAcross div.AdditionalHtmlCopy p{margin:10px 0 0;*margin:10px 0;}
+div.singleImgAcross div.pdIncludeCopy, div.singleImgAcross div.disclaimerHtmlCopy, div.singleImgAcross div.AdditionalHtmlCopy{padding:10px 0 0;}
+/* Styles for Garment Measurements in Product Detail*/
+table.gradedspecs th, table.gradedspecs td{border-bottom:1px solid #666566;border-right:1px solid #666566;padding:2px 3px;text-align:center;}
+table.gradedspecs th{border-top:1px solid #666566;}
+table.gradedspecs th.end, table.gradedspecs td.end{border-left:1px solid #666566;text-align:left;}
+table.gradedspecs td.shaded{background:#E4E3E3;}
+p.garmentStyle{margin:10px 0 0 0;}
+.garmentMessage a, .garmentMessage a:hover{color:#000;}
+/* Custom HTML Pages */
+.centered{text-align:center;}
+.mobileColumn{height:100%;width:300px;float:left;}
+.downloadButtons{text-align:center;font-size:11px;}
+.mobileIndent{margin:0 0 30px 50px;}
+.featuresList li{margin-bottom:12px;}
+table.standardTable{border-top:1px solid #666566;border-left:1px solid #666566;border-collapse:collapse;width:100%;margin-bottom:30px;}
+table.standardTable td, table.standardTable th{border-bottom:1px solid #666566;border-right:1px solid #666566;padding:5px;vertical-align:top;}
+table.standardTable th{background-color:#E4E3E3;}
+td.keywordsFirstColumn{width:100px;}
 /* #5031--5033 */
 .labelalign{vertical-align:top;}		
 .spaces{padding-left:178px;}
@@ -3888,34 +3906,8 @@ div.roundedBorderColorAll .outline{background-color:transparent;border:0;}
 *:first-child+html .divPageView{margin-top:-2px;}
 /*Defect 5265   */
 .text{font-weight:normal;}
-/* Custom HTML Pages */
-.centered{text-align:center;}
-.mobileColumn{height:100%;width:300px;float:left;}
-.downloadButtons{text-align:center;font-size:11px;}
-.mobileIndent{margin:0 0 30px 50px;}
-.featuresList li{margin-bottom:12px;}
-table.standardTable{
-	border-top:1px solid #666566;
-	border-left:1px solid #666566;
-	border-collapse:collapse;
-	width:100%;
-	margin-bottom:30px;
-}
-table.standardTable td, table.standardTable th{
-	border-bottom:1px solid #666566;
-	border-right:1px solid #666566;
-	padding:5px;
-	vertical-align:top;
-}
-table.standardTable th{background-color:#E4E3E3;}
-td.keywordsFirstColumn{width:100px;}
 /*defect 3830*/
 .org_txt{color:#e97400 !important;}
-/* defect 4537 */
-.outlineNoTop1{
-	padding:19px;
-	margin:0 0 10px 0;
-}
 /* Defect 3930 */
 #divNavItemsRecentlyOnAir ul li.showCurrent1{
 	padding:7px 18px 7px 10px;
@@ -3946,14 +3938,7 @@ h2.selecttabInlineStyleCreateNew{
 /* defect 4600 */
 .totalAllign{text-align:left;}
 .allignTotal{padding-left:35px !important;}
-/* Defect 4580 */
-.outlineNoTop1{
-	padding:19px;
-	margin:0 0 10px 0;
-}
-/* Defect 5880, 5888, and 6216
-This class is used to work around a
-"duplicate character" bug that affects IE */
+/* Defect 5880, 5888, and 6216*/
 .ieDupCharFix{display:none;}
 /* Defect 5229 */
 #bullets ul{
@@ -3975,70 +3960,8 @@ This class is used to work around a
 	_width:768px !important;
 	_margin-right:-2px !important;
 }
-/* Defect 6019 */
-.required.instructions1{
-	color:#e97400;
-	margin-top:-16px;
-	margin-bottom:0;
-	padding-top:0;
-	padding-bottom:0;
-	display:block;
-	float:right;
-	font-weight:normal;
-	width:88px;
-}
 /* 3830 */
 .multiQuantityTextColor{color:#E97400;}
-/* Defect 6066 */
-.indentedFieldInstructions_1{
-	float:left;
-	width:180px;
-}
-.indentedFieldInstructions_2{
-	float:left;
-	width:400px;
-	margin-bottom:5px;
-}
-.indentedFieldInstructions_input{
-	float:left;
-	width:15px;
-	clear:both;
-	padding-top:2px;
-}
-.indentedFieldInstructions_lab{
-	float:left;
-	width:370px;
-	margin-bottom:5px;
-	padding:0;
-}
-.indentedFieldInstructions_lab label, .indentedFieldInstructions_input input{
-	padding:0 !important;
-	margin:0 !important;
-}
-.indentedFieldInstructions_input input{height:12px;width:12px;}
-/* Defect 6042 */
-#divCreditCardLogos1{
-	float:right;width:510px;
-	margin-top:-3px;
-	_position:absolute;
-	_margin-left:170px;
-}
-#divCreditCardLogos1 img{
-	width:341px;
-	height:24px;
-	padding-left:10px;
-}
-.divEnterNewCard{
-	margin:-8px 0 0 0 !important;
-	clear:both;
-	float:left;
-}
-.dropDownWidth{
-	width:150px;
-	_width:158px;
-	_margin:0 0 6px 0;
-	font:normal 12px arial;
-}
 /*Defect 6162,6039*/
 .trackNumber_decoration, a#trackNumber_decoration_new{text-decoration:underline;}
 /* Defect 6228 */
@@ -4051,19 +3974,6 @@ This class is used to work around a
 }
 /* Defect 5178 */
 .txt_color{color:#e97400;}
-/* Defect 6084 */
-.tblUpcomingShows, #tblUpcomingShows{
-	background:url(../images/weekly_guide_table.jpg) repeat left top;
-	height:50px;
-}
-#tblUpcomingShows{
-	margin-top:15px;
-	width:75%;
-}	
-#tblUpcomingShows td{
-	padding:0 0 0 20px;
-	line-height:25px;
-}
 /* Defect 5985 */
 .errConsoleForgotPin{
 	color:#000 !important;	
@@ -4080,21 +3990,12 @@ This class is used to work around a
 	padding:0 0 12px 0 !important;
 	background:none !important;
 }
-/* Defect 3756 */
-#divNavFaceted ul#ulSelectedFacetsForIE7 li a{
-	padding-right:13px;
-	text-decoration:none;
-	_display:inline-block;
-}
-#divNavFaceted ul#ulSelectedFacetsForIE7 li a:hover{text-decoration:underline;}
-ul#ulSelectedFacetsForIE7 li a.RefineLink img{margin-left:7px;}
 /* Defect 5041 */
 .ensembleItem1{margin-top:-15px;}
 .divEnsembleShortDescriptionWrapper1{margin-bottom:17px;}
 /* Defect 6206 */
 #divSignInMessage a:hover, #divSignInNote a:hover{text-decoration:none;}
-#divSignInNote a#SpeedBuyCreate{text-decoration:underline;}	
-/* End of Defect 6206 */
+#divSignInNote a#SpeedBuyCreate{text-decoration:underline;}
 /* Defect 6351 */
 .padding_0{padding-top:0 !important;}
 /* Defect 6382 */
@@ -4107,38 +4008,6 @@ ul#ulSelectedFacetsForIE7 li a.RefineLink img{margin-left:7px;}
 #EasyPayNoItemsTableHead th#col6{width:157px;}
 /* Defect 6350 */
 .margin_left{margin-left:-3px;}
-/* PD Includes */
-#pdIncludeHtml, #disclaimerHtml, #AdditionalHtml{
-	background-color:#EFEFF7;
-	margin:0 0 10px 0;
-	padding:20px 10px;
-	*padding:20px 10px 10px 10px;
-	overflow:auto;
-	_overflow:hidden;
-}
-#pdIncludeHtml{_clear:both;}
-#pdIncludeHtml .outline{position:relative;}
-#pdIncludeHtml #timerDivFrame{position:absolute;overflow:hidden;top:26px;left:44px;z-index:100;} 
-#disclaimerHtml{padding:0;}
-.pdIncludeCopy h3, .disclaimerHtmlCopy h3, .AdditionalHtmlCopy h3{margin:0 0 10px 0;}
-.disclaimerHtmlCopy *{font-size:12px;}
-.pdIncludeSign, .disclaimerHtmlSign, .AdditionalHtmlSign{text-align:right;}
-div#pdIncludeHtml div.pdIncludeCopy ul, div#disclaimerHtml div.disclaimerHtmlCopy ul, div#AdditionalHtml div.AdditionalHtmlCopy ul{
-	margin:0 0 10px 220px !important;
-	*padding-left:20px !important;
-}
-div#pdIncludeHtml div.pdIncludeCopy ul li a, div#disclaimerHtml div.disclaimerHtmlCopy ul li a, div#AdditionalHtml div.AdditionalHtmlCopy ul li a, #pdIncludeHtml a, #disclaimerHtml a, #AdditionalHtml a{color:#333;text-decoration:underline;display:inline;}
-#pdIncludeHtml br{clear:right;}
-div.threeImgAcross div.pdIncludeCopy, div.threeImgAcross div.disclaimerHtmlCopy, div.threeImgAcross div.AdditionalHtmlCopy{
-	clear:left;
-	padding:10px 0 0 0;
-	*padding:0;
-}
-div.threeImgAcross div.pdIncludeCopy p, div.singleImgAcross div.pdIncludeCopy p, div.threeImgAcross div.disclaimerHtmlCopy p, div.singleImgAcross div.disclaimerHtmlCopy p, div.threeImgAcross div.AdditionalHtmlCopy p, div.singleImgAcross div.AdditionalHtmlCopy p{
-	margin:10px 0 0 0;
-	*margin:10px 0;
-}
-div.singleImgAcross div.pdIncludeCopy, div.singleImgAcross div.disclaimerHtmlCopy, div.singleImgAcross div.AdditionalHtmlCopy{padding:10px 0 0 0;}
 /*Defect 6161,6162:underline for tracking number*/
 .numberPadding{padding-left:1px;text-decoration:underline;}
 /*Defect 6351*/
@@ -4146,20 +4015,8 @@ div.singleImgAcross div.pdIncludeCopy, div.singleImgAcross div.disclaimerHtmlCop
 /*Defect 6632*/
 input.text_new{width:225px;}
 /*Defect 6151*/
-.align-rgt{text-align:right;	}
+.align-rgt{text-align:right;}
 .faqImg{float:right;}
-/*Defect 6634*/
-.ws_email{
-	border:1px solid #B6B2A6;
-	color:#333333;
-	font-size:13px;
-	line-height:15px;
-	margin:0 0 5px;
-	padding:0;
-	vertical-align:baseline;
-	font-weight:normal;
-	width:216px;
-}
 /* Defect 5111 */
 .returnnote{
 	text-align:right;
@@ -4180,11 +4037,6 @@ div.divBorder .overflow_hidden{overflow:hidden;_overflow:visible;}
 }
 /* Defect 6917*/
 .align_margin{margin-left:7px;}
-/* Defect 6923*/
-.outlineNoTop_1{
-	padding:19px;
-	margin:0 0 10px 0;
-}
 /* Defect 6350 */
 #frmSignIn .divFormButtons1{margin-left:268px;}
 /*6350:alignment of emailtext field*/
@@ -4209,32 +4061,9 @@ div.divBorder .overflow_hidden{overflow:hidden;_overflow:visible;}
 .totalAllign strong{padding-left:45px;}
 input.inputError, select.inputError, textarea.inputError{border:1px solid #c00;}
 label.labelError{color:#c00;}
-/* Defect 6194:Positioning of show info under image */
-.ReminderInfo{
-	width:100%;
-	height:215px;
-}
-.ReminderInfoData{
-	clear:both;
-	float:left;
-	width:65%;
-}
-.ReminderInfoImageContainer{
-	margin-top:0;
-	width:35%;
-	clear:none !important;
-	clear:both;
-	float:right;
-}
-.ReminderInfoImage, .ReminderInfoText{
-	clear:both;
-	float:left;
-	width:99%;
-	text-align:center;
-}
 /* Defect 7228 */
 .blacknormal{
-	color:#000000 !important;
+	color:#000 !important;
 	font-weight:normal !important;
 }
 .space{
@@ -4249,12 +4078,6 @@ label.labelError{color:#c00;}
 	font-weight:normal !important;
 }
 .nopadding{padding-left:4px !important;}
-/* Defect 5999 */
-.reviewSelection #divProductDetailDescriptionSelection{min-height:290px;height:auto;}
-* html .reviewSelection #divProductDetailDescriptionSelection{height:290px;}
-.reviewSelection #divProductDetailViewArea{padding-bottom:0;height:auto;}
-.reviewSelection #divProductDetailViewArea img{margin-top:10px;}
-.reviewSelection #imgCaption{display:none;}
 /* Defect 7429 */
 #frmProductDetailNutrisystem a{color:#37569B;}
 /* Defect 6418*/
@@ -4281,12 +4104,6 @@ input.text_edit_rem, select.select_edit_rem{
 	line-height:14px;
 }
 .edit_rem_form_row_new{clear:both;padding-bottom:7px;	}
-/* 7524 */
-.sold_out #divFooter{
-	margin-top:0px !important;
-	_margin-top:-1px !important;
-	padding-top:30px;
-}
 /* Defect 7548 */
 .easypayerror{margin-top:8px !important;}
 .easypayitemlegend{padding-top:3px !important;}
@@ -4297,13 +4114,6 @@ input.text_edit_rem, select.select_edit_rem{
 .tdOrderNum_AD, .tdDate_AD{width:100px;}
 .tdOrderTotal_AD{width:75px;}
 #divButtonsAD{clear:none;float:left;}
-/* Defect 7546 */
-#frmAddReminder #lblComment{
-	*padding-top:4px;
-	_padding-top:0;
-}
-#frmAddReminder .indentedFieldInstructions{width:600px;}
-#frmAddReminder textarea{*margin:0;}
 /* Defect 7910 */
 .topspacer{margin-top:20px;}
 /* Defect 7956 */
@@ -4346,86 +4156,6 @@ input.rb_Order, #fsOrderStatusOptions input.rb{
 .emailAdrressFieldNew{width:160px;}
 /* defect 8122 */
 .reinItem, #tblAutoDeliveryPlanShipments .tdRein a{color:#b8b8b8;}
-/*Defect 6709*/
-.indentedInstructionsAD{margin:0px 0 15px 213px !important;}
-.indentedInstructionsAD1{margin:20px 0 15px 213px !important;}
-.creditTermstxtReceipt{margin:0;padding:0;font-style:italic;}
-/* Styles for Garment Measurements in Product Detail*/
-table.gradedspecs th, table.gradedspecs td{
-	border-bottom:1px solid #666566;
-	border-right:1px solid #666566;
-	padding:2px 3px;
-	text-align:center;
-}
-table.gradedspecs th{border-top:1px solid #666566;}
-table.gradedspecs th.end, table.gradedspecs td.end{border-left:1px solid #666566;text-align:left;}
-table.gradedspecs td.shaded{background:#E4E3E3;}
-p.garmentStyle{margin:10px 0 0 0;}
-.garmentMessage a, .garmentMessage a:hover{color:#000000;}
-.clearSpace{clear:both;}
-/* OnlineOpinion v4.1.7 */
-/* This product and other products of OpinionLab, Inc. are protected by U.S. Patent No. 6606581, 6421724, 6785717 B1 and other patents pending. */
-@media screen{
-/* [+] Floating Icon Elements */
-/* NOTE:To disable [+] Floating Icon rollover state in modern, non-IE browsers, comment out ".oo_feedback_float:hover .olUp" and ".oo_feedback_float:hover .olOver". For IE see the configuration file. */
-	#feedbackGutter{width:auto !important;}/*removes horizontal scroll*/
-	.oo_feedback_float{
-		visibility:hidden;
-		height:65px;width:120px;
-		padding:0 0 12px 0;
-		font:12px Arial, Helvetica, sans-serif;
-		text-align:center;
-		color:#000;
-		cursor:pointer;
-		z-index:1001;
-	}
-	.oo_feedback_float .olUp{position:relative;text-align:center;width:100px;padding:5px 10px;}
-	.oo_feedback_float .olUp *{z-index:1002;position:relative;}
-	.oo_feedback_float .olUp .oo_transparent{
-		display:block;
-		position:absolute;top:0;left:15px;z-index:1001;
-		-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);opacity:.5;
-		height:50px;width:90px;
-	}
-	.oo_feedback_float .olUp .oo_transparent, .oo_feedback_float .olOver{-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;background:#FFF;}
-	.oo_feedback_float:hover .olUp, .oo_feedback_float .olOver, #onlineopinion_cc_overlay, .onlineopinion_cc_div{display:none;}
-	.oo_feedback_float .fbText{display:block;padding:3px;}
-	.oo_feedback_float .olOver{border:1px solid #CCC;padding:10px;text-align:center;width:100px;}
-	.oo_feedback_float:hover .olOver, a.onlineopinion_cc_closelink{display:block;}
-	/* Static Icon Elements */
-	#oo_feedback_static{cursor:pointer;}
-	/* On Page Card Elements */
-	#onlineopinion_cc_overlay{
-		position:fixed;top:0;left:0;z-index:1004;
-		height:100%;width:100%;
-		margin:0;padding:0;
-		background:#000 50% 80px no-repeat;
-		opacity:.3;
-		filter:alpha(opacity=30);
-	}
-	.onlineopinion_cc_div{
-		position:fixed;top:25px;left:0;z-index:1005;
-		padding:0;
-		background:transparent !important;
-		font:12px Arial, Helvetica, sans-serif;
-	}
-	a.onlineopinion_cc_closelink{
-		position:absolute;top:-10px;right:-5px;z-index:1006;
-		height:24px;width:24px;
-		text-decoration:none;
-	}
-	.onlineopinion_cc_frame{
-		position:relative;
-		width:535px;
-		border:0;
-		background-color:#FFF;
-		opacity:1.0;filter:alpha(opacity:100);
-		-moz-box-shadow:rgba(0, 0, 0, .6) 0 0 15px;
-		-webkit-box-shadow:rgba(0, 0, 0, .6) 0 0 15px;
-		z-index:1005;
-	}
-}
-/*  OnlineOpinion v4.1.7, Copyright 2010 Opinionlab, Inc. */
 /* Defect 8451 */
 .overflowNeedHelp{overflow:hidden;*overflow:visible;height:30px;}
 .parItemNumber, #pdMoreViews, .hiddenFieldset{display:none;}
@@ -4446,9 +4176,8 @@ p.garmentStyle{margin:10px 0 0 0;}
 * html .over_hidden{overflow:visible !important;}
 /* Defect 9168 */
 #tuneInLink{text-decoration:underline;}
-/* merch zone styles */
+/*Merch Zones*/
 .BlankStyle{display:none;}
-/*Build 2.08 - Merch Zone Options Enhancement*/
 #merchZoneBox{margin:26px 0 10px 0;width:685px;}
 #merchZoneBox td, #merchZoneBox table{padding:0;margin:0;width:647px !important;}
 #merchZoneBox #merchHeader{background:url(../../../../../images-p.qvc.com/is/image/pic/hp/merchzone_header.gif) top left no-repeat;padding:6px 0 5px 25px;}
@@ -4465,7 +4194,6 @@ p.garmentStyle{margin:10px 0 0 0;}
 #prodHolder .Merch_Prod_Container_Image img{border:0 !important;}
 .Merch_Prod_Container_Image a{display:block;}
 .Merch_Prod_Container_Image .hasVideo{display:block;position:absolute;bottom:0;left:0;background:url(../images/video_icon_overlay.png) no-repeat 50% 50%;height:20px;width:127px;margin:0;cursor:pointer;}
-/*Merch Zone Options Enhancement*/
 #prodHolder .Merch_Prod_Container_Text a{text-decoration:none;}
 #prodHolder .Merch_Prod_specialprice{color:#F07226;}
 #prodHolder .Merch_Prod_shortDescTxt, #prodHolder .Merch_Prod_SellPrice{font-weight:bold;}
@@ -4487,42 +4215,6 @@ p.garmentStyle{margin:10px 0 0 0;}
 #BVQASummaryBoxID h1{margin:5px 10px 0 0 !important;}
 /* defect 10248 */
 .pdImgCaptionTextAlign{text-align:center;}
-/* defect 4117 */
-.compareAllign, .compareBorder{
-	background-color:#EBEAE4 !important;
-	border-bottom:none !important;           
-}
-.compareAllign{border-right:none !important;}
-/* Defect 9634 */
-.tbLoadingImage{
-      background:url(../../../images/PageLoading.gif) no-repeat right top;
-      *background:url(../../../images/PageLoading.gif) no-repeat top;
-      display:block !important;   
-}
-.tbLoadingImage label{color:#7B7A75;margin-top:35px !important;}
-/* Defect 10947 */
-.myoverlay{
-	position:absolute;
-	background-color:white;
-	z-index:1009;
-	-moz-opacity:0.01;
-	opacity:.001;
-	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=01)";
-	filter:alpha(opacity=01);
-}
-#divLoadingImage{
-	margin-top:20px;
-	clear:both;
-	background:url(../../../images/PageLoading.gif) no-repeat top;
-}
-#divLoadingImage .label{
-	text-align:center;
-	color:#7B7A75;
-	font-size:11px;
-	font-weight:bold;
-	padding-top:5px !important;
-}
-/* --end-- Defect 10947 */
 /*SpinBack Overrides*/
 div.sb_overlay{background:#fff;filter:alpha(opacity=60);-moz-opacity:0.6;opacity:0.6;}
 div#sb_popup{border:7px solid #e3e1d8;padding:0;margin:10px;}
@@ -4588,7 +4280,7 @@ border-right-width:2px;
 border-bottom-width:2px;
 color:#86b028;
 }
-.isMobile input.primaryButton,input.primaryButtonAlignVertical, .isMobile input.btnSpeedBuy, .isMobile #frmProductList input.btnSpeedBuy{
+.isMobile input.primaryButton, .isMobile input.primaryButtonAlignVertical, .isMobile input.btnSpeedBuy, .isMobile #frmProductList input.btnSpeedBuy{
 background:#86b028 url(../images/ipadbtnarrow.png) 10px 50% no-repeat;
 border:1px solid #5a771b;
 border-right-width:2px;
@@ -4599,19 +4291,8 @@ color:#FFFFFF;
 .isMobile #TB_ajaxContent .shoppingCart .btnSpeedBuy{background:#86b028 url(../images/tabletbtn_speedbuy.png) no-repeat 0 50% !important;}
 /*Product Detail*/
 .isMobile #frmProductDetail #divButtons input{margin:0 0 10px 0;}
-.isMobile #divProductDetailsWrapper .primaryButton, .isMobile #divProductDetailsWrapper .btnSpeedBuy{
-width:262px;
-padding:8px 0 8px 105px;
-font-size:13px;
-background-position:86px 50%;
-}
-.isMobile #divProductDetailsWrapper .btnAddToWishList{
-margin:10px 0 !important;
-width:155px;
-padding:8px 0 8px 26px;
-font-size:13px;
-background-position:11px 50%;
-}
+.isMobile #divProductDetailsWrapper .primaryButton, .isMobile #divProductDetailsWrapper .btnSpeedBuy{width:262px;padding:8px 0 8px 105px;font-size:13px;background-position:86px 50%;}
+.isMobile #divProductDetailsWrapper .btnAddToWishList{margin:10px 0 !important;width:155px;padding:8px 0 8px 26px;font-size:13px;background-position:11px 50%;}
 .isMobile #frmProductDetail #divProductDetailSelectSize ul li.selectSizeLarge, .isMobile #frmProductDetailReviewSelection #divProductDetailSelectSize ul li.selectSizeLarge, .isMobile #frmEnsemble .ensembleSelectSize ul li.selectSizeLarge{margin:5px 3px;}
 .isMobile #frmProductDetail #divProductDetailSelectColor ul li, .isMobile #frmProductDetailReviewSelection #divProductDetailSelectColor ul li, .isMobile #frmEnsemble .ensembleSelectColor ul li, .isMobile #frmProductDetail #divProductDetailSelectSize ul li.selectSize{padding:10px 9px;background-position:50% 50% !important; background-repeat:no-repeat !important;margin:1px;}
 .isMobile .increaseTextSize, .isMobile .decreaseTextSize, .isMobile .cantIncreaseTextSize, .isMobile .cantDecreaseTextSize{background-image:url(../images/tablet_APlus.png);height:25px;width:54px;}
@@ -4631,20 +4312,7 @@ background-position:11px 50%;
 .isMobile .divPageLinks span, .isMobile .divPageLinks a{padding:7px 4px;font-size:16px;}
 .isMobile .divPageLinks span.previous, .isMobile .divPageLinks span.next{color:#CCC;background:none;padding:0;}
 .isMobile .divPageLinks span{color:#999;}
-.isMobile a.next, .isMobile a.previous{
-display:inline-block;
-text-align:center;
-border:0;
-border-left:5px solid #E97400;
-padding:8px 12px 8px 10px;
-line-height:16px;
-background:url(../images/orgarrowbigright.png) 100% 50% no-repeat;
-text-transform:uppercase;
-border-radius:0;
-width:auto;
-font-size:14px;
-margin:0 2px;
-}
+.isMobile a.next, .isMobile a.previous{display:inline-block;text-align:center;border:0;border-left:5px solid #E97400;padding:8px 12px 8px 10px;line-height:16px;background:url(../images/orgarrowbigright.png) 100% 50% no-repeat;text-transform:uppercase;border-radius:0;width:auto;font-size:14px;margin:0 2px;}
 .isMobile a.previous{border:0;border-right:5px solid #E97400;padding:8px 10px 8px 12px;background:url(../images/orgarrowbigleft.png) 0% 50% no-repeat;}
 .isMobile .divVideo{display:none;}
 .isMobile .divCompareItems strong{display:inline-block;width:50px;}
@@ -4665,17 +4333,7 @@ padding:5px 35px 5px 5px !important;height:30px;
 -webkit-appearance:none;
 border-radius:6px;
 }
-.isMobile input[type=checkbox]{
--webkit-appearance:none;
--moz-appearance:none;
-height:20px;
-width:20px;
-border:1px solid #333;
-border-radius:6px;
-vertical-align:middle;
-background:none;
-outline:none;
-}
+.isMobile input[type=checkbox]{-webkit-appearance:none;-moz-appearance:none;height:20px;width:20px;border:1px solid #333;border-radius:6px;vertical-align:middle;background:none;outline:none;}
 .isMobile input[type='checkbox']:checked{background:url(../images/tabletcheckbox.png) 50% 50% no-repeat;border:1px solid #86b028;}
 .isMobile #divMastheadSearch #txtMastheadSearch:focus, .isMobile input.text:focus, .isMobile input.password:focus, .isMobile input.chinputbox:focus, .isMobile input.calpop:focus{font-size:24px;}
 .isMobile input.text, .isMobile input.chinputbox{width:150px;}

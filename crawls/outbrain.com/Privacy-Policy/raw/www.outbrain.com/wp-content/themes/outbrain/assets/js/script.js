@@ -45,14 +45,12 @@ $(function(){
     'overlayOpacity' : 0.8
   });
 
-    $("a.iframeContact").fancybox({
-    'hideOnContentClick' : true,
+  $("a.iframeContact").fancybox({
+    'hideOnContentClick' : false,
     'transitionIn' : 'elastic',
     'transitionOut' : 'elastic',
     'overlayColor' : '#000',
     'overlayOpacity' : 0.8,
-    // 'wdith' : 600,
-    'height' : 400,
     'autoDimensions' : true
   });
 
@@ -77,9 +75,9 @@ $(function(){
   $(".jobs.jobs-detail .col-sidebar.sanfrancisco, .jobs.jobs-detail .col-sidebar.singapore").css("height", height - 330 + "px");
   $(".jobs.jobs-detail .col-sidebar.sydney, .jobs.jobs-detail .col-sidebar.chicago, .jobs.jobs-detail .col-sidebar.madrid, .jobs.jobs-detail .col-sidebar.paris").css("height", height - 260 + "px");
 
-  height = $(".blog-main-page .blog-left").height();
-  mHeight = height - 260;
-  $(".blog-main-page .blog-sidebar").css("height", mHeight + "px");
+  // height = $(".blog-main-page .blog-left").height();
+  // mHeight = height - 260;
+  // $(".blog-main-page .blog-sidebar").css("height", mHeight + "px");
 
   height = $(".content-discovery .col-main-wrap").height();
   mHeight = height - 200;
@@ -178,7 +176,7 @@ $(function(){
     var $this = $(this),
         $span = $this.find('span.avatar-arrow');
 
-    $this.find('.blog-avatar > a , .number-of-posts > a').on('click', function(e){
+    $this.find('.blog-avatar > a , .number-of-posts > a, a.author-dropdown').on('click', function(e){
       e.preventDefault();
       $span.toggleClass('open');
       $this.find('.number-of-posts').toggleClass('open');

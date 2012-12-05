@@ -1,0 +1,878 @@
+(function () {
+
+    window.userLoginState = function () {
+
+        if ($.cookie('tsite') !== null || $.cookie('MemberActive') === 'true') {
+            return 1;
+        }
+
+        if ($.cookie('MemberID') !== null) {
+            return 2;
+        }
+
+        return 0;
+    };
+
+    //Returns true / false if page meets criteria for a videoCDP for ad display purposes
+    window.isVideoCdp = function () {
+        var url = window.location.toString().toLowerCase();
+        if (url.indexOf('/movies_nsfw/') < 0 &&
+			url.indexOf('/pictures/') < 0 &&
+			url.indexOf('/pictures_nsfw/') &&
+			url.indexOf('/games/') < 0 &&
+			url.indexOf('/tv-shows/') < 0 &&
+			url.indexOf('/music/') < 0 &&
+			((typeof sGlobalContentID != 'undefined' && parseInt(sGlobalContentID) > 0) ||
+             (typeof currentFeaturedContent != 'undefined' && parseInt(currentFeaturedContent) > 0))
+           ) {
+            //make sure the cdp is not an embed.
+            if (typeof isEmbed != 'undefined' && isEmbed) {
+                return false;
+            }
+            //make sure audience rating is not ma
+            if (typeof audienceRating != 'undefined' && audienceRating === 'MA') {
+                return false;
+            }
+
+            return true;
+        }
+        return false;
+    };
+
+    window.videoView = function () {
+
+        //Increment video counter here
+        if (isVideoCdp()) {
+            __BRK.onVideoView();
+        }
+    };
+
+
+    window.pictureView = function () {
+        var url = window.location.toString().toLowerCase();
+        if (url.indexOf('/pictures/') > 0 &&
+			typeof sGlobalContentID != 'undefined' &&
+			parseInt(sGlobalContentID) > 0) {
+            //make sure audience rating is not ma
+            if (typeof audienceRating != 'undefined' && audienceRating === 'MA') {
+                return;
+            }
+            //Increment picture counter here
+            __BRK.onPictureView();
+        }
+    }
+    /* ---------------------------------------------------------------
+    Handles persistence of user session
+    --------------------------------------------------------------- */
+    window.__BRK = {
+
+        name: '__brk_trkr',
+        sessionLength: 30,
+        ttl: 30, // number of days cookie will live
+
+        // Get user tracking info
+        get: function () {
+            var val, ca = document.cookie.split(';');
+
+            // get saved cookie value
+            for (var i = 0, len = ca.length; i < len; i++) {
+                var cookie = ca[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1, cookie.length);
+                }
+
+                if (cookie.indexOf(this.name) === 0) {
+                    val = cookie.substring(this.name.length + 1, cookie.length);
+                    break;
+                }
+            }
+
+            // deserialize the user obj or new one up
+            var obj = val && val !== '' ? eval('(' + unescape(val) + ')') : new User();
+
+            this.setSession(obj);
+
+            return obj;
+        },
+
+        setSession: function (obj) {
+
+            // set session length expire date
+            var cDate = new Date(), expDate = new Date(cDate);
+
+            expDate.setMinutes(cDate.getMinutes() - this.sessionLength);
+
+            // capture unique sessions and reset session counts
+            if (!obj.updatedAt || (expDate > obj.updatedAt)) {
+
+                // reset these values
+                obj.pageViews = obj.videoViews = obj.pictureViews = 0;
+                obj.brkref = obj.sourceUrl = obj.sourceDomain = '';
+
+                // set the user's very first session date
+                if (!obj.firstSessionAt) {
+                    obj.firstSessionAt = cDate;
+                }
+
+                // increment the session count and save last session start date
+                obj.lastSessionAt = cDate;
+                obj.userSessions++;
+            }
+
+            obj.updatedAt = cDate;
+        },
+
+        // Save user tracking info
+        set: function (obj) {
+            var data, expires;
+
+            // delete the cookie
+            if (obj === '') {
+                data = expires = obj;
+            } else {
+                data = this.serialize(obj);
+
+                // set expiration date 
+                var expDate = new Date(obj.firstSessionAt);
+                expDate.setTime(expDate.getTime() + (this.ttl * 24 * 60 * 60 * 1000));
+
+                expires = ';expires=' + expDate.toUTCString();
+            }
+
+            var url = window.location.toString().toLowerCase();
+            var site = url.match(/\.+[a-z]+\.(com)/);
+
+            if (site.length > 0) {
+                document.cookie = this.name + '=' + data + expires + ';path=/;domain=' + site[0] + ';';
+            }
+            else {
+                document.cookie = this.name + '=' + data + expires + ';path=/;';
+            }
+        },
+
+        // Serializes user obj
+        serialize: function (obj) {
+
+            var vals = [];
+
+            // walk properties (only goes one level down)
+            for (prop in obj) {
+
+                if (!obj.hasOwnProperty(prop)) {
+                    continue;
+                }
+
+                // get obj value, type and final value for serialization
+                var v = obj[prop], type = typeof (v);
+
+                if (type === 'undefined') {
+                    continue;
+                }
+
+                if (Object.prototype.toString.call(v) === '[object Date]' && !isNaN(v.getTime())) {
+                    vals.push(prop + ':new Date(' + v.valueOf() + ')');
+                } else if (type === 'string' && v !== '') {
+                    vals.push(prop + ':"' + escape(v.valueOf()) + '"');
+                } else if (type === 'number' || type === 'boolean') {
+                    vals.push(prop + ':' + v.valueOf());
+                }
+            }
+
+            return '{' + vals.join(',') + '}';
+        },
+
+        // gets domain and compares it against current host
+        // ensures we ignore current hose as referrer and only
+        // track third party referrers
+        getDomain: function (currentHost, sourceUrl) {
+
+            if (!sourceUrl || sourceUrl === '') {
+                return '';
+            }
+
+            var getHost = function (host) {
+                var a = document.createElement('a');
+                a.href = host.toLowerCase();
+                return a.hostname.replace('www.', '');
+            };
+
+            var current = getHost(currentHost), source = getHost(sourceUrl);
+            if (current === source) {
+                return '';
+            }
+
+            var currentSegs = current.split('.'), sourceSegs = source.split('.');
+            var found = [], i = sourceSegs.length;
+
+            while (i--) {
+                var sourceVal = sourceSegs[i];
+
+                var c = currentSegs.length, exists = false;
+
+                // indexOf doesn't exist in ie6/7 so we'll loop through current segments and see value exists
+                CurrentLoop:
+                while (c--) {
+                    if (currentSegs[c] === sourceVal) {
+                        exists = true;
+                        break CurrentLoop;
+                    }
+                }
+
+                if (exists) {
+                    found.push(sourceVal);
+                } else {
+                    break;
+                }
+            }
+
+            var endsWith = found.reverse().join('.');
+            if (found.length > 1 && current.substr(current.length - endsWith.length) === endsWith) {
+                return '';
+            }
+
+            return source;
+        },
+
+        // Tries to get keywords from the url
+        getKeywords: function (path) {
+
+            if (!path || path === '') {
+                return '';
+            }
+
+            return path.replace(/(.html|[-\/])/g, ',').replace(/^,+|,+$/g, '');
+        },
+
+        // Track user video viewing
+        onVideoView: function () {
+            var obj = this.get();
+            obj.videoViews++;
+            this.set(obj);
+        },
+
+        // Track user picture viewing.
+        onPictureView: function () {
+            var obj = this.get();
+            obj.pictureViews++;
+            this.set(obj);
+        },
+        //For new break redesign, used to update videoViews and pictureViews on dynamic page refreshes, timestream next / prev, gallery next, playlist next
+        updateViewCounts: function () {
+            //update video views
+            if (typeof window.videoView != 'undefined') {
+                videoView();
+            }
+            //update picture views
+            if (typeof window.pictureView != 'undefined') {
+                pictureView();
+            }
+
+        },
+        // Track user visit and returns user session obj.
+        track: function (channel, loginFn) {
+
+            var doc = document, obj = this.get();
+
+            var ref = doc.referrer;
+            if (ref && ref !== '') {
+                var sourceDomain = this.getDomain(doc.location.hostname, ref);
+
+                if (sourceDomain !== '') {
+                    obj.sourceUrl = ref;
+                    obj.sourceDomain = sourceDomain;
+                }
+            }
+
+
+            var bref = new Qp(doc.location.href).get('brkref');
+            if (bref && bref !== '') {
+                obj.brkref = bref;
+            }
+
+            obj.pageViews++;
+
+            // if a login function was supplied lets execute it
+            var fn = window[loginFn];
+            if (typeof fn === 'function') {
+                obj.userState = fn();
+            }
+
+            obj.pageVisitedKeywords = this.getKeywords(doc.location.pathname);
+
+            var channelId = parseInt(channel, 10);
+            obj.pageVisitedChannel = isNaN(channelId) ? undefined : channelId;
+
+            this.set(obj);
+
+            return obj;
+        },
+
+        trackExternalFunction: function (externalFunction) {
+
+            var fn = window[externalFunction];
+            if (typeof fn === 'function') {
+                fn();
+            }
+        },
+
+        getKeyVal: function () {
+
+            // get the obj and the keyval
+            var obj = this.get(), val = obj.keyVal;
+
+            // reset keyval
+            obj.keyVal = '';
+            obj.IsInterstitial = false;
+            // save the changes
+            this.set(obj);
+
+            // test for delimiter
+            if (val && val !== '') {
+                // append delimiter if one isn't found
+                return val.charAt(val.length - 1) !== ';' ? val + ';' : val;
+            }
+
+            return '';
+        }
+    };
+
+
+    /* ---------------------------------------------------------------
+    Session object
+    --------------------------------------------------------------- */
+    function User() {
+
+        // referrer url <string>
+        this.sourceUrl;
+
+        // domain from referrer url <string>
+        this.sourceDomain;
+
+        // <int>
+        this.pageViews = 0;
+
+        // <int>
+        this.videoViews = 0;
+
+        // <int>
+        this.pictureViews = 0;
+
+        // user login status <int>
+        this.userState = 0;
+
+        // <string> 
+        this.brkref;
+
+        // comma delimited list of keywords based <string>
+        this.pageVisitedKeywords;
+
+        // current page channel id (not every page will have this so it will be "undefined" for those pages) <string>
+        this.pageVisitedChannel;
+
+        // last time cookie was updated <date>
+        this.updatedAt;
+
+        // number of unique sessions <int>
+        this.userSessions = 0;
+
+        // user's very first session start date <date>
+        this.firstSessionAt;
+
+        // user's last session start date <date>
+        this.lastSessionAt;
+
+        // key/value pairs returned from apex <string>
+        this.keyVal;
+
+        //
+        this.IsInterstitial = false;
+    }
+
+
+    /* ---------------------------------------------------------------
+    Parses query string params.
+    --------------------------------------------------------------- */
+    function Qp(url) {
+
+        var pairs = [];
+
+        function init() {
+            var s = url.split('?');
+
+            if (s.length != 2) {
+                return;
+            }
+
+            pairs = s[1].split('&');
+        }
+
+        init();
+
+        this.get = function (key) {
+
+            var key = key.toLowerCase();
+
+            for (var i = 0, l = pairs.length; i < l; i++) {
+                var pair = pairs[i].split('=');
+
+                if (pair[0].toLowerCase() === key) {
+                    return pair[1];
+                }
+            }
+
+            return undefined;
+        };
+    }
+
+    function log(out) {
+        if (console) {
+            console.log(out);
+            return;
+        }
+
+        var d = document, console = d.getElementById('trk-console');
+
+        if (!console) {
+            console = d.createElement('div');
+            console.id = 'trk-console';
+            d.getElementsByTagName('body')[0].appendChild(console);
+        }
+
+        d.getElementById('trk-console').style.display = 'none'; //ENG-1148
+
+        var m = d.createElement('p')
+        m.innerHTML = out;
+        console.appendChild(m);
+    }
+
+
+
+    /* ---------------------------------------------------------------
+    GLOBAL VARS / BEGIN TRACKING
+    --------------------------------------------------------------- */
+    //set some settings variables
+    var trackChannel, fnVid, fnPic, fnUserState;
+    if (window.location.href.toLowerCase().indexOf("break.com") > -1) {
+        trackChannel = 1;
+        fnUserState = "userLoginState";
+        fnVid = "videoView";
+        fnPic = "pictureView";
+    }
+    else {
+        trackChannel = params.get('channel');
+        fnUserState = params.get('fn');
+        fnVid = params.get('fnVid');
+        fnPic = params.get('fnPic');
+    }
+    var d = document,
+        head = d.getElementsByTagName('head')[0],
+        scripts = d.getElementsByTagName('script'),
+        params = new Qp(scripts[scripts.length - 1].src),
+		user = __BRK.track(trackChannel, fnUserState),
+		debugMode = params.get('debug') || false;
+
+    // set debug mode
+    debugMode = debugMode == 'true' ? true : false; // track user and get obj
+    /*__BRK.trackExternalFunction(fnVid);
+    __BRK.trackExternalFunction(fnPic);*/
+    user = __BRK.get();
+
+    if (window.processingSAR) {
+        window.processingSAR(user);
+        __BRK.set(user);
+    }
+
+
+    /* ---------------------------------------------------------------
+    BEGIN BOOT STRAP AND INTERSTITIAL
+    --------------------------------------------------------------- */
+    if (!user.keyVal || user.keyVal === '' || !user.IsInterstitial) {
+        return;
+    }
+
+    function load(src, cb) {
+        var s = d.createElement('script');
+        s.src = src;
+        s.async = true;
+
+        s.onreadystatechange = s.onload = function () {
+
+            var r = s.readyState;
+
+            if (!r || /loaded|complete/.test(r)) {
+                cb();
+                s.onreadystatechange = s.onload = null;
+                head.removeChild(s);
+            }
+        };
+
+        head.appendChild(s);
+    };
+
+    function boot(cb) {
+
+        if (typeof jQuery === 'undefined') {
+            load('http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', function () {
+                cb(jQuery.noConflict(true));
+            });
+        }
+        else {
+            cb(jQuery);
+        }
+    }
+
+    boot(function ($) {
+
+
+        window.__BRK.modal = {
+
+            waits: [],
+            aborted: false,
+            showModal: true,
+
+            onReady: function (wrap, mask, doc) {
+
+                var _filler = false;
+
+                if (doc.getElementsByTagName('img')[0]) {
+                    if (doc.getElementsByTagName('img')[0].width == 1) {
+                        _filler = true;
+                    }
+                };
+
+                var w = doc.getElementById("iframebody").scrollWidth;
+                var h = doc.body.scrollHeight;
+
+
+                if (h == 0 || h >= doc.body.scrollHeight) {
+                    h = doc.body.scrollHeight;
+                }
+
+                if (debugMode) {
+                    var hi = [doc.height, doc.body.scrollHeight, doc.body.offsetHeight];
+                    var wi = [doc.width, doc.body.scrollWidth, doc.body.offsetWidth];
+                    log(hi);
+                    log(wi);
+                    log(h);
+                    log(w);
+                }
+
+                // set dimensions and hide the frame until centered
+                wrap.find('iframe').css({ width: w + 'px', height: h + 'px' }).end().hide();
+
+                if ($.isFunction(window.__trkBeforeShow)) {
+                    window.__trkBeforeShow();
+                } else {
+                    $('embed,object,select,canvas,iframe').css('visibility', 'hidden');
+                    $('#brk-inter-wrap > *').css('visibility', 'visible');
+                }
+
+
+
+                // center wrap
+                __BRK.modal.center(wrap, mask, function () {
+                    // now show
+                    mask.fadeIn(0);
+                    wrap.fadeIn(0);
+                });
+
+                // setup close button to come in after 5 secs
+                // var close = wrap.find('span'), closeId = close.attr('id');
+
+                // __BRK.modal.waits[closeId] = setTimeout(function(){
+                // close.css('visibility','visible');
+                // clearTimeout(__BRK.modal.waits[closeId]);
+                // }, 5500);
+            },
+
+            onResize: function (wrap, mask) {
+
+                var id = wrap.attr('id');
+                __BRK.modal.waits[id] = setTimeout(function () {
+                    clearTimeout(__BRK.modal.waits[id]);
+                    __BRK.modal.center(wrap, mask);
+                }, 50);
+            },
+
+            center: function (wrap, mask, cb) {
+
+                if (!__BRK.modal.showModal) {
+                    return;
+                }
+                if (debugMode) {
+                    log('centering');
+                }
+
+                var view = [
+                    $(window).width(),
+                    $(window).height(),
+                    $(document).scrollLeft(),
+                    $(document).scrollTop(),
+					$(document).height()
+                ];
+
+                if (wrap.width() > view[0] || wrap.height() > view[1]) {
+                    return;
+                }
+
+                mask.css('height', view[4]);
+
+                var frame = wrap.find('iframe');
+                wrap
+                    .stop()
+                    .animate({
+                        'top': parseInt(Math.max(view[3] - 20, view[3] + ((view[1] - frame.height() - 20) * 0.5))),
+                        'left': parseInt(Math.max(view[2] - 20, view[2] + ((view[0] - frame.width() - 20) * 0.5)))
+                    }, 0, function () {
+                        if ($.isFunction(cb)) {
+                            cb();
+                        }
+                    });
+                $(window).resize(function () {
+                    __BRK.modal.onResize(wrap, mask);
+                });
+            },
+
+            close: function (wrap, mask) {
+                if (debugMode) {
+                    log('closing modal');
+                }
+
+                if ($.isFunction(window.__trkBeforeHide)) {
+                    window.__trkBeforeHide();
+                }
+
+                mask.fadeOut(function () {
+                    $('embed,object,select,canvas,iframe').css('visibility', 'visible');
+                });
+                wrap.fadeOut();
+            },
+
+            init: function () {
+
+                var url = window.location.href;
+
+                if ($('#ads-takeover-abs').length != 0 || $('div#ad-wrapper').height() > 0) {
+
+                    window.showInterstitial = false;
+                    // Check if marketing takeover
+                    if ($('.marketingHPTO').length != 0) {
+                        window.showInterstitial = true;
+                    }
+
+                }
+
+                if (typeof window.showInterstitial != 'undefined' && window.showInterstitial == false) { //if host page wishes to disable interstitial.
+                    return;
+                }
+
+                if (typeof window.modalActive != 'undefined' && window.modalActive == true) { //if any modal is active do not show the interstitial
+                    return;
+                }
+
+                if (window.sponsored && window.sponsored == '1') {
+                    return;
+                }
+                /****DO NO USE EXPLICIT URL check to determine whether interstitial show display or not. Host page show define window.showInterstitial = true/false ***/
+                /***** END DEPRECATED SECTION *****/
+
+                if (url.indexOf("break.com") == -1) { // Load the insterstitial CSS file for Owned and Operated sites only
+                    var cssId = 'interstitialCss';
+                    if (!document.getElementById(cssId)) {
+                        var head = document.getElementsByTagName('head')[0];
+                        var link = document.createElement('link');
+                        link.id = cssId;
+                        link.rel = 'stylesheet';
+                        link.type = 'text/css';
+                        link.href = 'http://media1.break.com/break/css/interstitialCss.css';
+                        link.media = 'all';
+                        head.appendChild(link);
+                    }
+                }
+
+
+                var frameHtml = "";
+                var mar = user.keyVal + ';';
+
+                var adOn = $.cookie("adOn");
+                if (adOn != null && adOn == 0) {
+                    mar += "mar=adOff;";
+                }
+
+                var globalIds = '';
+
+                if (typeof sGlobalChannelID != 'undefined') {
+                    globalIds += 'channel=' + sGlobalChannelID + ';';
+                }
+
+                if (typeof sGlobalContentID != 'undefined' && parseInt(sGlobalContentID) > 0) {
+                    globalIds += 'cntid=' + sGlobalContentID + ';';
+                }
+
+                if (typeof audienceRating != 'undefined' && audienceRating != 'MA') {
+                    globalIds += 'mr=' + audienceRating + ';'
+                }
+
+                if (typeof user.pageVisitedKeywords != 'undefined') {
+                    globalIds += 'tags=' + user.pageVisitedKeywords + ';';
+                }
+
+
+
+                //ENG-1148 S
+                var dcpf_site = 'brk.brk';
+
+                if (url.indexOf("mademan.com/chickipedia") > -1) {
+                    dcpf_site = 'brk.chk'
+                } else if (url.indexOf("mademan.com") > -1) {
+                    dcpf_site = 'brk.mdmn'
+                } else if (url.indexOf("gamefront.com") > -1) {
+                    dcpf_site = 'brk.ff'
+                } else if (url.indexOf("screenjunkies.com") > -1) {
+                    dcpf_site = 'brk.sj'
+                } else if (url.indexOf("cagepotato.com") > -1) {
+                    dcpf_site = 'brk.cp'
+                } else if (url.indexOf("tuvez.com") > -1) {
+                    dcpf_site = 'brk.tuvez'
+                } else if (url.indexOf("holytaco.com") > -1) {
+                    dcpf_site = 'brk.ht'
+                } else if (url.indexOf("alleftturns.com") > -1) {
+                    dcpf_site = 'brk.alt'
+                } else if (url.indexOf("pophangover.com") > -1) {
+                    dcpf_site = 'brk.ph'
+                } else if (url.indexOf("damnyouautocorrect.com") > -1) {
+                    dcpf_site = 'brk.dyac'
+                } else if (url.indexOf("parentsshouldnttext.com") > -1) {
+                    dcpf_site = 'brk.pst'
+                }
+
+                var dcpf = '<script src="http://ad.doubleclick.net/adj/' + dcpf_site + '/inter_stitial_new;sz=1x1;' + globalIds + mar + 'ord=' + Math.random() + '"><\/script>';
+
+                //ENG-1148 End
+                if ($.browser.msie) {
+                    frameHtml = '<html><body style="margin:0;padding:0;min-width:160px;width:auto;float:left;background-color:#121212;text-align:center;width:100%;padding-bottom:5px" id="iframebody"><style>body,html{margin:0;padding:0;}</style><div id="ad-outer" style="text-align:center">' + dcpf + '</div></body></html>';
+                } else {
+                    frameHtml = '<body style="margin:0;padding:0;float:left;"><div style="width:auto;float:left;" id="iframebody">' + dcpf + '</div></body>';
+                }
+
+                if (debugMode) {
+                    log(mar);
+                }
+
+                // create the wrap, initially set left index to off screen
+                var wrap = $('<div id="brk-inter-wrap"><iframe id="brk-inter-stitial" frameborder="0" scrolling="no"></iframe><span id="bis-close">Click to close &raquo;</span></div>')
+                    .appendTo('body')
+                    .css({ position: 'absolute', zIndex: 999999, top: -540 });
+
+
+                // create and size the mask
+                var mask = $('#brk-inter-mask');
+
+                var oLevel = 0.5;
+
+                if (location.href.indexOf('/just-submitted/') > -1 || location.href.indexOf('/hot-girls/') > -1 || location.href.indexOf('/girls-videos/spicy/') > -1 || location.href.indexOf('/surfacevideo/') > -1 || location.href.indexOf('/findpix/') > -1 || location.href.indexOf('/gotd/') > -1 || location.href.indexOf('/gotm/') > -1) {
+
+                    oLevel = 1;
+
+                }
+
+                if (window.flashVars) {
+                    if (window.flashVars.bMaturityRating) {
+                        if (window.flashVars.bMaturityRating == 'XXX') {
+                            oLevel = 1;
+                        }
+                        if (window.flashVars.bMaturityRating == 'MA') {
+                            oLevel = 1;
+                        }
+                    }
+                }
+
+
+                if (mask.length == 0) {
+                    mask = $('<div id="brk-inter-mask"></div>').appendTo('body')
+                        .css({ opacity: oLevel, zIndex: 999998, width: '100%' })
+                        .hide();
+                }
+
+                // setup close button styling
+                wrap.find('span').css({ visibility: 'visible', cursor: 'pointer' }).click(function () {
+                    __BRK.modal.close(wrap, mask);
+                });
+
+                // open up iframe and insert html
+                var frame = wrap.find('iframe')[0],
+                    isIE = $.browser.msie,
+                    doc = frame.contentWindow.document ||
+                        frame.contentWindow.window.document ||
+                        frame.contentDocument;
+
+                if (!isIE && doc.open) {
+
+                    doc.open();
+                }
+
+                if (debugMode) {
+                    log(frameHtml);
+                }
+
+                doc.write(frameHtml);
+
+                if (!isIE && doc.close) {
+                    doc.close();
+                }
+
+                // setup page events
+                /*
+                $(window).resize(function () {
+                __BRK.modal.onResize(wrap, mask);
+                });
+                */
+                __BRK.modal.show = function (isMobileAd) {
+                    var uagent = navigator.userAgent.toLowerCase();
+                    var mobilePlatform = false;
+                    var mobileUAStrings = ['iphone', 'android', 'ipod', 'ipad'];
+                    for (var i = 0; i < mobileUAStrings.length; i++) {
+                        if (uagent.search(mobileUAStrings[i]) > -1) {
+                            mobilePlatform = true;
+                        }
+                    }
+
+
+                    if (isMobileAd == undefined && mobilePlatform) {
+                        $(wrap).remove();
+                        $(mask).remove();
+                        return;
+                    }
+                    try {
+                        __BRK.modal.onReady(wrap, mask, doc);
+                    } catch (e) {
+                    }
+                };
+
+
+
+
+            }
+        };
+
+
+        //Call to action for initializing interstitial.
+        $(window).load(function () {
+
+            if ($.browser.msie) {
+                setTimeout(function () {
+                    __BRK.modal.init();
+                }, 1000);
+            }
+            else {
+                __BRK.modal.init();
+            }
+        });
+
+    });
+})();
+
+//Update video / picture views
+$(function () {
+    __BRK.updateViewCounts();
+});

@@ -61,7 +61,36 @@
 </head>
 
 
-<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"><script type="text/javascript">
+            // <![CDATA[
+            if (document.cookie.length > 0)
+            {
+               var exp = new Date() ;
+               exp.setTime(exp.getTime() + (1000 * 60 * 60 * 24)) ;
+               var offSet = exp.getTimezoneOffset() ;
+               if (offSet <= 900 && offSet >= -900)
+               {
+                   document.cookie = "bmTzOff=" + exp.getTimezoneOffset() + "; expires=" + exp.toGMTString() + "; path=/" ;
+               }
+
+               if (screen.width && screen.height)
+               {
+                    document.cookie = "bmScrRes=" + screen.width + "x" + screen.height + "; expires=" + exp.toGMTString() + "; path=/" ;
+               }
+               if (screen.colorDepth)
+               {
+                    document.cookie = "bmClrDpt=" + screen.colorDepth  + "; expires=" + exp.toGMTString() + "; path=/" ;
+               }
+               var javaEnabled = 'No'
+               if (navigator.javaEnabled() == 1)
+               {
+                    javaEnabled = 'Yes' ;
+               }
+               document.cookie = "bmJava=" + javaEnabled  + "; expires=" + exp.toGMTString() + "; path=/" ;
+            }
+            // ]]>
+            </script>
+
 <!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>

@@ -251,11 +251,11 @@ function populateText(ctrlID,descEle)
     if(document.getElementById(ctrlID))
 	{
 		if (descEle == '3')
-			document.getElementById(ctrlID).innerHTML = '3 Mbps';
+			document.getElementById(ctrlID).innerHTML = 'up to 3 Mbps';
 		if (descEle == '6')
-			document.getElementById(ctrlID).innerHTML = '6 Mbps';
+			document.getElementById(ctrlID).innerHTML = 'up to 6 Mbps';
 		if (descEle == '12')
-			document.getElementById(ctrlID).innerHTML = '12 Mbps';
+			document.getElementById(ctrlID).innerHTML = 'up to 12 Mbps';
 		if (descEle == '120')
 			document.getElementById(ctrlID).innerHTML = 'America\'s Top 120'; 
 		if (descEle == '200')

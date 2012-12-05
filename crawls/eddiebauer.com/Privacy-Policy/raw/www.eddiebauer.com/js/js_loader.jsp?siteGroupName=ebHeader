@@ -1756,8 +1756,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		// UPDATE THE URL USED BY MAGICZOOM FOR THE LARGE IMAGE
 		var defaultImageUrl = jQuery('#itemZoom').attr('href');
 		if (defaultImageUrl != undefined){
-			var mainProductImageZoom = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');
-			jQuery('#itemZoom').attr('href',mainProductImageZoom);
+			//var mainProductImageZoom = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');
+			//jQuery('#itemZoom').attr('href',mainProductImageZoom);
 		}else{
 			defaultImageUrl = "";
 		}
@@ -1824,7 +1824,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 		);
 		// full screen zoom	
-		zoomFullScreen();						
+		//zoomFullScreen();						
 		// alt images
 		jQuery(targetPage+'#imageThumbs a').click(function (){
 			jQuery(targetPage+'#imageThumbs a').removeClass('selected');
@@ -2218,7 +2218,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		}
 			
 		zoomFullScreen = function(){
-			// full screen zoom		
+			// full screen zoom
 			jQuery(targetPage+'.zoomFullScreenAlt').click(function (event){	
 				if (jQuery(targetPage+'.mainImage').hasClass('Zoom')){// check to see if image zoomable
 					//get image info to pass to full screen html
@@ -4158,14 +4158,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				color: '#333333'
 			});
 		}
-		addHiddenInputField = function() {
-			if (jQuery('body.STANDALONE-PRODUCT-PAGE #dossier #dash').find('form#productForm').length) {
-				if (jQuery('.infoModule').find('.ppv_container').length) {
-					var videoId = jQuery('.ppv_container').attr('id').substring(14);
-				}
-				jQuery('#productForm').append('<input type="hidden" value="' + videoId + '" name="videoId" id="videoId">')
-			}
-		}
 		setCoreMetricsProductData = function () {
 			var isMPP = jQuery('#isMPP').val();
 			if (isMPP !== '1') {
@@ -4240,7 +4232,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
-                addHiddenInputField();
           } else {
                 selectedColorIdHash = jQuery.getUrlVar('colorId');
                 resetProductPage();// reset variables
@@ -4263,7 +4254,6 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
                 MagicScroll.init();
                 initProductModuleFlag = true;
                 faceBookButton();
-                addHiddenInputField();
           }
 		}
 					
@@ -6631,7 +6621,7 @@ var currentQtyForGiftBox = -1;
 var productId = -1;
 
 var ensembleName = '';
-var videoId = '';
+//var videoId = '';
 var productStyleName = '';
 var colorIdSelected = -1;
 var sizeIdSelected = -1;
@@ -7534,7 +7524,7 @@ YAHOO.ebauer.productUtils = function () {
                 ensembleId = productForm.ensembleId.value;
                 gEnsembleId = ensembleId;
                 ensembleName = productForm.ensembleName.value;
-                videoId = productForm.videoId.value;
+                //videoId = productForm.videoId.value;
                 catName = productForm.catName.value;
                 showSizes = productForm.showSizes.value;
                 //inseamFlag = isDisableDisplay($("inseamDetails")) ? "N" : isEnableDisplay($("inseamDetails")) ? "Y" : "N";
@@ -8078,8 +8068,8 @@ function prepareItemForm(isEOBProduct) {
     form.appendChild(input);
 	input = createDOM("input", {type:"hidden",name:"siteCss",value:"EB"});
     form.appendChild(input);
-    input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:""});
-    form.appendChild(input);
+    //input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:""});
+    //form.appendChild(input);
     input = createDOM("input", {type:"hidden",name:"primaryCategoryName",value:"EB",id:"primaryCategoryName"});
     form.appendChild(input);
 	var div2 = createDOM("div", {id:"prepareitemform"});
@@ -8119,7 +8109,7 @@ function addAnchorElement(href, title, parent) {
 var bag = "";
 var ensembleId = "";
 var gPromoContent = "";
-var video_id = "";
+//var video_id = "";
 
 function createShoppingBag(shoppingBag, siteCss) {
 	YAHOO.ebauer.productUtils.editProductModeType = "";
@@ -8388,7 +8378,7 @@ function createShoppingBag(shoppingBag, siteCss) {
 	}
 
 	dialogSlat = createDOM('div', {'class':'dialog-slat'});
-	var videoValue = itemform.videoId.value;
+	//var videoValue = itemform.videoId.value;
 	matte.appendChild(dialogSlat);
 	var form = createDOM('form', {'class':'clearfix', 'action':'' + bag.checkoutPage , 'method':'post'});
 	dialogSlat.appendChild(form);
@@ -8413,9 +8403,9 @@ function createShoppingBag(shoppingBag, siteCss) {
     //}
     fieldSet = createDOM('fieldset', {'id':'go_bag'});
 	form.appendChild(fieldSet);
-	video_id = document.itemform.elements['videoId'].value
-	input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:video_id});
-    form.appendChild(input);
+	//video_id = document.itemform.elements['videoId'].value
+	//input = createDOM("input", {type:"hidden",name:"videoId",id:"videoId",value:video_id});
+    //form.appendChild(input);
 	tag = createDOM('legend', {'class':'ignore'});
 	tag.appendChild(document.createTextNode('Checkout'));
 	fieldSet.appendChild(tag);

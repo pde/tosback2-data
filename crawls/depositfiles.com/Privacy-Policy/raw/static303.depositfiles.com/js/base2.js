@@ -229,6 +229,21 @@ jQuery.cookie = function(name, value, options) {
 // ----------------------------- new design -----------------------------
 window.recaptcha_public_key = '6LdRTL8SAAAAAE9UOdWZ4d0Ky-aeA7XfSqyWDM2m';
 
+function read_get_param(params_str, name) {
+	var result = '',
+		name_eq = name + '=',
+		params_arr = params_str.split('&'),
+		i, c;
+		
+	for (i = 0; i < params_arr.length; i++) {
+		c = params_arr[i];
+		if (c.indexOf(name_eq) != -1) {
+			result = c.substring(c.indexOf(name_eq) + name_eq.length, c.length);
+		}
+	}            
+	return result;
+};
+
 function login_toggle(evt) {
 	evt.preventDefault();
 	$(this).addClass('active').siblings().removeClass('active');
@@ -332,12 +347,18 @@ $(document).ready(function() {
 		},
 		submitHandler: function(form) {
 			$(form).find('div.error_message').empty();
+			
+			var ref_login = $(form).find('input[name=ref_login]').val();
+			if (ref_login == '') {
+				ref_login = read_get_param(decodeURIComponent(window.location.search), 'ref');
+			}
+			
 			var data = {
 				login: $(form).find('input[name=login]').val(),
 				password: $(form).find('input[name=password]').val(),
 				email: $(form).find('input[name=email]').val(),
 				alias: $(form).find('input[name=alias]').val(),
-				ref_login: $(form).find('input[name=ref_login]').val(),
+				ref_login: ref_login,
 				is_mail_send_enabled: $(form).find(':checkbox[name=is_mail_send_enabled]')[0].checked,
 				recaptcha_challenge_field: (window.Recaptcha ? Recaptcha.get_challenge() : null), 
 				recaptcha_response_field:  (window.Recaptcha ? Recaptcha.get_response() : null)
