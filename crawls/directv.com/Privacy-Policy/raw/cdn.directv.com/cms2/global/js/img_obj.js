@@ -232,3 +232,61 @@ var dmg_jsonpmify = {
 	});
 	
 })();
+(function($){
+	$(document).ready(function(){
+			try {
+			var _window_location = window.location.pathname.substring(1)
+				, current_tab_selector = $('.dmg-filter .ep-radio-toggle a[href*="' + _window_location + '"]');
+
+			if (current_tab_selector.length > 1)
+				current_tab_selector = $('.dmg-filter .ep-radio-toggle a.first');
+
+			current_tab_selector.addClass('active');
+
+			var class_switch = current_tab_selector.attr('href')
+				, filter_qstring = null
+				, is_movie_text = ( $('#ctl_tup').hasClass('movies_lp') ) ? 'Movies' : 'TV Shows'
+				, display_dd = 'Browse All ' + is_movie_text + ' <br />';
+
+			if (class_switch.indexOf('-online') > -1) {
+				add_query_string('&isstreaming=true');
+				display_dd+= 'to Watch Online';
+			}
+			else if (class_switch.indexOf('-on-tv') > -1) {
+				add_query_string('&islinear=true');
+				display_dd+= 'to Watch on TV';
+			}
+			else if (class_switch.indexOf('-on-demand') > -1) {
+				add_query_string('&isnonlinear=true');
+				display_dd+= 'On Demand';
+			}
+
+			$('.dmg-filter .dd-title span').html(display_dd);
+			$('.dmg-filter .dmg-browse-all-dropdown').show();
+
+			/*shows the big poster under all ep pages*/
+			$('.poster-resize').each(function(i){
+				var el = $(this);
+				el.addClass('show');
+			});
+		}
+		catch(err) {}
+		
+	});
+	function add_query_string(q_string_addition) {
+		var selector = $('.dmg-filter .dmg-browse-all-dropdown ul li a');
+		
+		selector.each(function(i){
+			var el = $(this)
+				, href = el.attr('href')
+				, question_add = '';
+
+			if (href.indexOf('?') == -1 ) 
+				question_add = '?';
+
+			el.attr('href', href + question_add + q_string_addition);
+
+		});
+
+	}
+})(jQuery);

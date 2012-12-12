@@ -1,0 +1,190 @@
+var $ng_adcode_config = (function() {
+this.rendered = 0;
+this.country_config = {"8":[31],"11":[31],"12":[31],"16":[31],"20":[31],"1":[37,38],"69":[37,38]};
+this.suitability = ["E","T","M","A"];
+this.iframe = 1;
+this.ufields = {"advertiser_id":0,"id":1,"size":2,"type":3,"suitability":4,"revenue_sharing":5,"rotation_mode":6,"rotation_weight":7,"embed_method":8,"expires":9,"start_date":10,"mode":11,"impressions_remaining":12,"end_date":13};
+this.cfields = {"size":0,"revenue_sharing":1,"ad_type":2,"advertiser_ids":3,"unit_ids":4};
+this.units = {"15":[1,15,"728x90",1,"ET",0,0,100,1],"23":[1,23,"728x90",1,"ET",0,2,100,1],"24":[1,24,"728x90",1,"MA",0,2,100,1],"26":[1,26,"728x90",1,"ET",0,1,90,1],"27":[1,27,"728x90",1,"ETM",1,2,100,1],"28":[1,28,"728x90",1,"ET",1,2,100,1],"29":[1,29,"300x250",1,"ETM",0,1,50,1],"30":[1,30,"300x250",1,"MA",0,2,100,1],"33":[1,33,"450x50",2,"ET",0,2,100,2],"34":[1,34,"450x50",2,"MA",0,2,100,2],"39":[1,39,"300x250",1,"ET",1,2,100,1],"46":[1,46,"300x250",1,"ETMA",0,0,100,2],"47":[1,47,"728x90",1,"ETMA",0,0,100,2],"21":[6,21,"212x90",1,"ETMA",0,0,100,2],"44":[6,44,"212x90",1,"ETMA",0,2,100,1],"48":[6,48,"300x250",1,"ET",0,2,100,1],"37":[10,37,"300x250",1,"ET",0,2,100,1],"38":[10,38,"728x90",1,"ET",0,2,100,1]};
+this.config = {"art-view":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",1,1,null,["39","30","29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",0,1,null,["28","24","23"]]},"audio-listen":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",1,1,null,["39","30","29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",0,1,null,["28","24","23"]]},"frontpage":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",0,1,null,["29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",0,1,null,["23"]],"left-rectangle-2":["300x250",0,0,null,["48"]]},"gamemovie-view":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",1,1,null,["39","30","29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",0,1,null,["28","24","23"]],"first-textad-under-gamemovie":["450x50",0,2,null,null],"second-textad-under-gamemovie":["450x50",0,2,null,null]},"general":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",1,1,null,["39","30","29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",1,1,null,["28","24","23"]],"first-textad-under-gamemovie":["450x50",0,1,null,null],"left-rectangle-2":["300x250",0,1,null,["48"]],"side-square-gamemovie-page":["300x250",0,1,["1"],null]},"green-arrow-campaign":{"top-superbanner":["728x90",0,1,null,["47"]],"left-rectangle":["300x250",0,1,null,["46"]],"first-textad-under-gamemovie":["450x50",0,2,null,null]},"userpages":{"top-superbanner":["728x90",0,1,null,["27","24","26","38","45"]],"top-storead":["212x90",0,1,null,["44"]],"left-rectangle":["300x250",1,1,null,["39","30","29","35","37"]],"bottom-storead":["212x90",0,1,null,null],"bottom-superbanner":["728x90",1,1,null,["28","24","23"]],"left-rectangle-2":["300x250",0,1,null,["48"]]}};
+this.store_products = [{"product":"NG Logo Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/ng-logo-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/3_3.jpg"],"force":null},{"product":"Penicorn","url":"http:\/\/www.newgrounds.com\/store\/product\/penicorn","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/x63_4.jpg"],"force":null},{"product":"NG Explosion Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/ng-explosion-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/74_2.jpg"],"force":null},{"product":"Tankmen Chase Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/tankmen-chase-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/75_4.jpg"],"force":null},{"product":"Angry Faic Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/angry-faic-stickers","price":"$0.75","images":["http:\/\/img.ngfiles.com\/store\/9_4.jpg"],"force":null},{"product":"Pico Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/pico-stickers","price":"$0.75","images":["http:\/\/img.ngfiles.com\/store\/71_4.jpg"],"force":null},{"product":"NG Logo Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/ng-logo-stickers","price":"$0.50","images":["http:\/\/img.ngfiles.com\/store\/8_4.jpg"],"force":null},{"product":"Tankmen Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/tankmen-stickers","price":"$0.75","images":["http:\/\/img.ngfiles.com\/store\/70_1.jpg"],"force":null},{"product":"R.A.B. DVD","url":"http:\/\/www.newgrounds.com\/store\/product\/r-a-b-dvd","price":"$12.00","images":["http:\/\/img.ngfiles.com\/store\/7_2.jpg"],"force":null},{"product":"Dr. Shroud DVD","url":"http:\/\/www.newgrounds.com\/store\/product\/dr-shroud-dvd","price":"$18.00","images":["http:\/\/img.ngfiles.com\/store\/73_2.jpg"],"force":null},{"product":"Tankmen Figurine","url":"http:\/\/www.newgrounds.com\/store\/product\/tankmen-figurine","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/TMFigure-4.jpg"],"force":null},{"product":"Ladies Classic Fit Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/ladies-classic-fit-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/NGgirlaa-3.jpg"],"force":null},{"product":"Ladies Tank-Top Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/ladies-tank-top-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/NGgirlhanes-5.jpg"],"force":null},{"product":"Badly Drawn Dog Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/badly-drawn-dog-shirt","price":"$8.00","images":["http:\/\/img.ngfiles.com\/store\/BDD-4.jpg"],"force":null},{"product":"Newgrounds Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/newgrounds-poster","price":"$10.00","images":["http:\/\/img.ngfiles.com\/store\/NGPoster_2.jpg"],"force":null},{"product":"Paladin DVD","url":"http:\/\/www.newgrounds.com\/store\/product\/paladin-dvd","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/Paladin-1.jpg"],"force":null},{"product":"Broken Saints DVD","url":"http:\/\/www.newgrounds.com\/store\/product\/broken-saints-dvd","price":"$25.00","images":["http:\/\/img.ngfiles.com\/store\/BrokenSaints-1.jpg"],"force":null},{"product":"Mastermind Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/mastermind-shirt","price":"$12.00","images":["http:\/\/img.ngfiles.com\/store\/Mastermind-2.jpg"],"force":null},{"product":"Dr. Fetus Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/dr-fetus-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/DrFetus-5.jpg"],"force":null},{"product":"Sketchbook Tour 2008","url":"http:\/\/www.newgrounds.com\/store\/product\/sketchbook-tour-2008","price":"$8.00","images":["http:\/\/img.ngfiles.com\/store\/SBTour-4.jpg"],"force":null},{"product":"One Shot Comic","url":"http:\/\/www.newgrounds.com\/store\/product\/one-shot-comic","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/OneShot-1.jpg"],"force":null},{"product":"Cuboy Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/cuboy-shirt","price":"$10.00","images":["http:\/\/img.ngfiles.com\/store\/CuboyShirt-4.jpg"],"force":null},{"product":"Meatboy Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/meatboy-stickers","price":"$0.75","images":["http:\/\/img.ngfiles.com\/store\/MeatBoySticker-4.jpg"],"force":null},{"product":"NG Poster 3-Pack","url":"http:\/\/www.newgrounds.com\/store\/product\/ng-poster-3-pack","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/NG3PackPosters-5.jpg"],"force":null},{"product":"Physeter Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/physeter-poster","price":"$5.00","images":["http:\/\/img.ngfiles.com\/store\/Physeter-4.jpg"],"force":null},{"product":"Beatles Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/beatles-poster","price":"$5.00","images":["http:\/\/img.ngfiles.com\/store\/beatles_3.jpg"],"force":null},{"product":"1976 Comic Issue #2","url":"http:\/\/www.newgrounds.com\/store\/product\/1976-comic-issue-2","price":"$7.00","images":["http:\/\/img.ngfiles.com\/store\/1976_v2_3.jpg"],"force":null},{"product":"Newave Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/newave-poster","price":"$5.00","images":["http:\/\/img.ngfiles.com\/store\/ttng_poster4.jpg"],"force":null},{"product":"Red Baron Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/red-baron-poster","price":"$5.00","images":["http:\/\/img.ngfiles.com\/store\/red-baron2.jpg"],"force":null},{"product":"Meat Boy Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/meat-boy-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/MeatBoy-2.jpg"],"force":null},{"product":"Larry and the Gnomes","url":"http:\/\/www.newgrounds.com\/store\/product\/larry-and-the-gnomes","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/LarryGnomesCD-2.jpg"],"force":null},{"product":"Madness Spatter Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/madness-spatter-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/MadnessSpatter-2.jpg"],"force":null},{"product":"Madness Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/madness-poster","price":"$10.00","images":["http:\/\/img.ngfiles.com\/store\/MadnessKamikaye-3.jpg"],"force":null},{"product":"Dr. Fetus Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/dr-fetus-stickers","price":"$0.75","images":["http:\/\/img.ngfiles.com\/store\/DrFetusSticker-4.jpg"],"force":null},{"product":"Hip-Hop 2010 CD","url":"http:\/\/www.newgrounds.com\/store\/product\/hip-hop-2010-cd","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/HipHop2010-4.jpg"],"force":null},{"product":"Super Meat Boy Game","url":"http:\/\/www.newgrounds.com\/store\/product\/super-meat-boy-game","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/MeatBoyGame-5.jpg"],"force":null},{"product":"Murshaq Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/murshaq-poster","price":"$5.00","images":["http:\/\/img.ngfiles.com\/store\/MurshaqPoster-5.jpg"],"force":null},{"product":"1976 Comic Issue #3","url":"http:\/\/www.newgrounds.com\/store\/product\/1976-comic-issue-3","price":"$7.00","images":["http:\/\/img.ngfiles.com\/store\/1976Comic3-4.jpg"],"force":null},{"product":"Falconry Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/falconry-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/VideoFalconry-1.jpg"],"force":null},{"product":"Anusboy Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/anusboy-shirt","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/AnusboyShirt-2b.jpg"],"force":null},{"product":"Bitey Leap Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/bitey-leap-shirt","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/BiteyJumping-2.jpg"],"force":null},{"product":"Bitey Portrait Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/bitey-portrait-shirt","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/BiteyPortrait-2.jpg"],"force":null},{"product":"Brackenwood Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/brackenwood-shirt","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/BiteyBrackenwood-2.jpg"],"force":null},{"product":"Ladies Bitey Shirt","url":"http:\/\/www.newgrounds.com\/store\/product\/ladies-bitey-shirt","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/BiteyWomens-2.jpg"],"force":null},{"product":"Hip-Hop 2011 CD","url":"http:\/\/www.newgrounds.com\/store\/product\/hip-hop-2011-cd","price":"$12.00","images":["http:\/\/img.ngfiles.com\/store\/HipHop2011-1.jpg"],"force":null},{"product":"2012 NG Calendar","url":"http:\/\/www.newgrounds.com\/store\/product\/2012-ng-calendar","price":"$15.00","images":["http:\/\/img.ngfiles.com\/store\/2012Calendar-1.jpg"],"force":null},{"product":"Newgrounds Writing Anthology","url":"http:\/\/www.newgrounds.com\/store\/product\/newgrounds-writing-anthology","price":"$20.00","images":["http:\/\/img.ngfiles.com\/store\/WritingAnthology1.jpg"],"force":null},{"product":"Supporter Upgrade","url":"http:\/\/www.newgrounds.com\/store\/product\/supporter-upgrade","price":"$25.00","images":["http:\/\/img.ngfiles.com\/store\/SupportNG-8.gif"],"force":null},{"product":"Saga of the Dead Poster","url":"http:\/\/www.newgrounds.com\/store\/product\/saga-of-the-dead-poster","price":"$10.00","images":["http:\/\/img.ngfiles.com\/store\/saga1.jpg"],"force":null},{"product":"E-mote Stickers","url":"http:\/\/www.newgrounds.com\/store\/product\/e-mote-stickers","price":"$1.00","images":["http:\/\/img.ngfiles.com\/store\/emotes_5.jpg"],"force":null}];
+this.getUnitField = function(unit, field) {
+ return unit[this.ufields[field]];
+}
+this.getConfigField = function(config, field) {
+ return config[this.cfields[field]];
+}
+this.compareUvC = function(unit,config,ufield,cfield) {
+ if (cfield===undefined) cfield = ufield;
+ return (this.getUnitField(unit, ufield) === this.getConfigField(config, cfield));
+}
+this.drawUnit = function(block, size) {
+ document.write(this.getUnit(block, size));
+}
+this.getUnit = function(block, size) {
+ this.rendered++;
+ var embed_id = "adcode_iframe_"+this.rendered;
+ var u = this.selectUnit(block, size);
+ if (!u) {
+ return("<!-- no ad unit could be found for this slot -->");
+ }
+ var inline = this.getUnitField(u,'embed_method') == 2;
+ var url = "http://ads.newgrounds.com/cache/unit_"+this.getUnitField(u,'id')+".html";
+ if (!inline && $ng_adcode_revsharing_id) url += "?gid="+$ng_adcode_revsharing_id;
+ var size = size.split('x');
+ var width = size[0];
+ var height = size[1];
+ if (inline) {
+return ('<!-- inline ads require a the 4th parameter of AdCode::draw/get to be set to true -->'); } else {
+var acode = ('<div id="'+embed_id+'" style="width:'+width+'px; height:'+height+'px; background-color:#000000">\n');
+acode += ('<iframe src="'+url+'" scrolling="no" frameborder="0" width="'+width+'" height="'+height+'"></iframe>\n');
+acode +=('</div>\n');
+return acode; }
+}
+this.drawStoreAd = function(width,height,image) {
+ document.write(this.drawStoreAd(width,height,image));
+}
+this.getStoreAd = function(width,height,image) {
+ this.rendered++;
+ var ad = this.store_products[Math.round(Math.random()*this.store_products.length)];
+ image = parseInt(image);
+ while (image >= ad.images.length && image > 0)
+ {
+ image = ad.images.length-1;
+ }
+ if (ad.force !== null) image = ad.force;
+ var embed_id = "adcode_iframe_"+this.rendered;
+ // var url = "http://ads.newgrounds.com/store.html" +
+ var url = "http://www.newgrounds.com/ads/ad-support.html" +
+ "?product=" + escape(ad.product) +
+ "&url=" + escape(ad.url) +
+ "&price=" + escape(ad.price) +
+ "&image=" + escape(ad.images[image]);
+ var acode = ('<div id="'+embed_id+'" style="width:'+width+'px; height:'+height+'px; background-color:#000000">\n');
+acode += ('<iframe src="'+url+'" scrolling="no" frameborder="0" width="'+width+'" height="'+height+'"></iframe>\n');
+acode +=('</div>\n');
+return acode; }
+this.selectUnit = function(block, size) {
+ var valid = [];
+ var fallbacks = [];
+ var fallback_force = null;
+ var weight = 0;
+ var fweight = 0;
+ var i;
+ var j;
+ var u;
+ if (this.config[$ng_adcode_page] && this.config[$ng_adcode_page][block]) {
+ var cf = this.config[$ng_adcode_page][block];
+ var vunits = {};
+ // if the page is strictly non-revshare, remove the overall revshare id
+ var ng_adcode_revsharing_id = (this.getConfigField(cf,'revenue_sharing')) ? $ng_adcode_revsharing_id : null;
+ // if the page/block is configured to use specific ids, we can make the search a lot quicker.
+ if (this.getConfigField(cf,'unit_ids')) {
+  var uids = this.getConfigField(cf,'unit_ids');
+  for (i in uids) {
+  u = this.units[uids[i]];
+  if (u) vunits[uids[i]] = u;
+  }
+ // grab only ads that are the right size , type and are in the rotation... etc
+ } else {
+  for (i in this.units) {
+  u = this.units[i];
+  // skip any ads not in the automated rotation
+  if (this.getUnitField(u,'rotation_mode') == 0) continue;
+  // verify size and ad type
+  if (!this.compareUvC(u,cf,'size')) continue;
+  if (this.getConfigField(cf,'ad_type') != 0 && !this.compareUvC(u,cf,'type','ad_type')) continue;
+  vunits[i] = u;
+  // look for specific advertisers this page should be using
+  var v = true;
+  if (this.getConfigField(cf,'advertiser_ids')) {
+   v = false;
+   var aid = this.getConfigField(cf,'advertiser_ids');
+   for(j in aid) {
+   if (aid[j] == this.getUnitField(u,'advertiser_id')) {
+    v = true;
+    break;
+   }
+   }
+  }
+  if (!v) continue;
+  }
+ }
+ // now we can do the more advanced checks
+ for(i in vunits) {
+  u = vunits[i];
+  // skip revshare units if we don't have a revshare id
+  if (!ng_adcode_revsharing_id && this.getUnitField(u,'revenue_sharing')) continue;
+  var v = true;
+  // check the user's country and see if they can only run specific ads
+  for (var c in this.country_config) {
+  var brk = false;
+  for (var cu in this.country_config[c]) {
+   var cuid = this.country_config[c][cu];
+   if (cuid == i) {
+   if (c != $ng_adcode_country) {
+    v = false;
+   } else { // stop the loop, we have a valid country match
+    v = true;
+    brk = true;
+    break;
+   }
+   }
+  }
+  if (brk) break;
+  }
+  if (!v) continue;
+  // if revsharing is enabled, we need to track non revshare candidates for blocks that have no sharing allowed
+  var fallback = false;
+  if (ng_adcode_revsharing_id && this.getConfigField(cf,'revenue_sharing')) {
+  fallback = this.getUnitField(u,'revenue_sharing') ? false : true;
+  }
+  // verify suitable rating of the page
+  var u_s = this.getUnitField(u,'suitability');
+  if (u_s && $ng_adcode_suitability && u_s.indexOf($ng_adcode_suitability) === -1) {
+  continue;
+  }
+  // check and see if this ad is set to always show when appropriate, and if it is, return it!
+  if (this.getUnitField(u,'rotation_mode') == 2) {
+  if (fallback) {
+   fallback_force = u;
+   continue;
+  } else {
+   valid = [u];
+   break;
+  }
+  }
+  // this ad passed all our checks so it qualifies
+  if (fallback) {
+  fallbacks.push(u);
+  fweight += parseInt(this.getUnitField(u,'rotation_weight'));
+  } else {
+  valid.push(u);
+  weight += parseInt(this.getUnitField(u,'rotation_weight'));
+  }
+ }
+ // if we didn't get any ads but we have fallbacks use those
+ // (this happens on revshare pages for blocks with no sharing enabled)
+ if (valid.length < 1) {
+  if (fallback_force) {
+  valid = [fallback_force];
+  } else {
+  valid = fallbacks;
+  weight = fweight;
+  }
+ }
+ // now that we've gotten here, we'll need to pick an ad to load
+ if (valid.length > 1) {
+  var zone = Math.round(Math.random()*weight);
+  for(i in valid) {
+  var w = parseInt(this.getUnitField(valid[i],'rotation_weight'));
+  zone -= w;
+  if ( zone <= 0 ) return valid[i];
+  }
+ }
+ // if we're still looking, just return the first (or only) ad
+ return valid[0];
+ }
+}
+return this;
+})();

@@ -274,9 +274,6 @@ GetPortfolioItemCount();
                 //set height value for #lpModalContent
                 modalContent.css({ "height": o.height + "px" });
 
-                //hide scrollbar
-                htmlBody.css("overflow", "hidden");
-
                 //fade in backdrop and modal popup
                 backdrop.fadeTo(500, 0.6, function () {
                     // iframe needs reload after fade in - IE8 for Flash and Firefox for full screen
@@ -301,10 +298,7 @@ GetPortfolioItemCount();
 
                     //fade out backdrop and modal popup
                     modal.fadeOut(300, function () {
-                        backdrop.fadeOut(200, function () {
-                            //remove overlay hidden from body
-                            htmlBody.css("overflow", "auto");
-                        });
+                        backdrop.fadeOut(200);
                     });
 
                     //using setTimeout so div removal happens AFTER popup fades out

@@ -21,7 +21,7 @@ input.button, #filemanager .button, #depositbox .button, .ui-dialog .button { bo
 input.button:hover, #filemanager .button:hover, #depositbox .button:hover, .ui-dialog .button:hover { border-left: 5px solid #f65d09; color: #f65d09; cursor: pointer; }
 *:first-child+html #filemanager .button {padding: 5px;}
 .button.disabled, .button.disabled:hover {color: #ccc !important; border-color: #ccc !important; cursor: default !important;}
-
+a.button {padding: 6px 10px !important; text-decoration: none; font-size: 13px;}
 
 fieldset {margin: 0 0 10px 0; padding: 5px 10px; border: 1px solid #ccc;}
 fieldset legend {padding: 0 5px;}
@@ -40,6 +40,13 @@ body.has_support #main { width: 990px; margin: 0 auto; position: relative; /*pad
 body.page_signup #main {background: url(../images/hamsters/hamster_info.jpg) no-repeat 647px 148px;}
 body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) no-repeat 687px 230px;}
 */
+
+.download_btn_block {margin: 15px 0; text-align: center;}
+.download_btn, .download_btn span {display: inline-block; height: 45px; background: url(../images/download_btn.gif) no-repeat;}
+.download_btn {color: #fff !important; font: bold 20px/45px Tahoma;}
+*:first-child+html .download_btn {text-decoration: none; cursor: pointer;}
+.download_btn span {padding: 0 30px; background-position: 100% -45px;}
+
 
 #browser_not_supported { margin: 50px }
 #browser_not_supported, #browser_not_supported a { font: normal 18px Tahoma; font-weight: bold }
@@ -105,7 +112,6 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .sprite.user_icon {display: inline-block; width: 24px; height: 24px; background-position: 0 -336px;}
 .sprite.user_icon.user_member {background-position: 0 -360px;}
 .sprite.user_icon.user_gold {background-position: 0 -384px;}
-
 
 .top_menu {position: absolute; top: 0; left: 0; right: 0; height: 79px; border-bottom: 1px solid #ccc;}
 *:first-child+html .top_menu {z-index: 1;}
@@ -815,8 +821,12 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 .icq { padding-left: 20px; background: url(../images/icq.gif) left center no-repeat }
 .msn { padding-left: 20px; background: url(../images/msn.gif) left center no-repeat }
 .mail { padding-left: 20px; background: url(../images/mail.png) left center no-repeat }
-.skype {padding-left: 20px; background: url(../images/skype.png) left center no-repeat;}
+.skype {padding-left: 20px; background: url(../images/skype.png) left center no-repeat}
+.phone {padding-left: 20px; background: url(../images/phone.png) left center no-repeat}
 
+.service18 {margin: 0 0 10px 0;}
+.service18 * {vertical-align: middle;}
+.service18 .icon18 {display: inline-block; width: 24px; height: 24px; background: url(../images/18.png) no-repeat;}
 
 #foobar {width: 990px; margin: 0 auto; font-size: 11px;}
 #foobar .foobar_line1, #foobar .foobar_line2 {line-height: 20px; background: #ccc;}
@@ -859,10 +869,9 @@ body.page_login #main {background: url(../images/hamsters/hamster_notebook.jpg) 
 
 /* foobar new */
 .foobar {border-top: 5px solid #cbcbcb;}
-.foobar .leftbar {float: left; width: 50%; padding: 10px 0;}
-.foobar .leftbar .inner {padding: 0 15px;}
+.foobar .leftbar {float: left; width: 330px; padding: 10px 0 10px 15px;}
+.foobar .rightbar {float: right; width: 630px; padding: 10px 0;}
 
-.foobar .rightbar {float: right; width: 50%; padding: 10px 0;}
 .foobar .rightbar dl {float: right; margin: 0 25px 0 0;}
 .foobar .rightbar dl.agreem_list {max-width: 195px; margin-right: 15px;}
 .foobar .rightbar dl dt {color: #f30;}
@@ -978,10 +987,7 @@ body.page_files .upload .progressWrapper .status { display:block; position: abso
 body.page_files .upload .progressWrapper .status a { display:block; color: #5a9d00; position: absolute; right: 0; top: 0; font-weight: bold }
 body.page_files .upload .progressWrapper .error .status { color: #ff3c3c; font-weight: bold }
 body.page_files .upload .linkbox {position: absolute; top: 15px; z-index: 999; right: -57px; width: 420px; background: #f2f2f2; border: 1px solid #666; padding: 7px;}
-/*
-body.page_files .upload .linkbox .item {height: 25px; position: relative;}
-body.page_files .upload .linkbox .item input {position: absolute; right: 0; top: 0; width: 350px;}
-*/
+
 body.page_files .upload .linkbox .item {float: left; width: 100%; margin: 0 0 5px 0;}
 body.page_files .upload .linkbox .item input {width: 350px; float: right;}
 body.page_files .upload .linkbox .item b {float: left; margin: 3px 5px 3px 0;}
@@ -1038,13 +1044,12 @@ body.page_links_checker .content_body table td.col_size { text-align:right }
 body.page_links_checker .content_body table td.col_upload, body.page_links_checker .content_body table td.col_download { text-align:center }
 body.page_links_checker .content_body table td.col_upload a, body.page_links_checker .content_body table td.col_download a { color:#ff2e00 !important }
 
-body.page_filemanager .content * { line-height: 120% !important }
-body.page_filemanager .header, body.page_filemanager .header * { font-size: 32px; padding: 0 0 20px 0; font-weight: bold }
-body.page_filemanager .header span { color: #f30 }
-body.page_filemanager .header em { font-style:normal; font-size:85%; }
+body.page_filemanager .header {padding: 0 0 15px 0; line-height: 120%; font-size: 32px; font-weight: bold;}
+body.page_filemanager .header span {color: #f30;}
+body.page_filemanager .header em {font-style: normal; font-size: 85%;}
 body.page_filemanager .subhead { font-size: 18px; padding: 0 0 30px 0; font-weight: bold }
 body.page_filemanager .advert {font-size: 14px; font-weight: bold;}
-body.page_filemanager ul.features {list-style: disc inside; margin: 0 20px 35px 0; padding: 9px 5px 5px 10px; background-color: #e7e7e7;}
+body.page_filemanager ul.features {margin: 0 20px 35px 0; padding: 10px; background-color: #e7e7e7;}
 body.page_filemanager ul.features li {padding: 0 0 5px 5px; font-size: 18px;}
 body.page_filemanager .descr {margin-bottom: 10px; font-size: 14px;}
 body.page_filemanager .descr ul {list-style: disc outside; margin: 15px 0 15px 20px;}
@@ -1052,7 +1057,7 @@ body.page_filemanager .descr ul li {padding: 0 40px 5px 0; font-size: 12px;}
 body.page_filemanager .free {font-size: 14px; color: #f30; text-align: center; font-weight: bold;}
 body.page_filemanager p.free {margin: 15px 0; font: bold 25px Tahoma;}
 body.page_filemanager a.download { display: block; width: 155px; margin: 15px auto; color: #f30; font: bold 22px Tahoma }
-body.page_filemanager .faq_note {font-size: 14px; padding: 10px 0 20px 0; text-align: center;}
+body.page_filemanager .faq_note {font-size: 14px; padding: 0 0 20px 0; text-align: center;}
 body.page_filemanager .disclaim { font-size: 11px; padding: 0 0 5px 0; text-align: center }
 body.page_filemanager .adv_leftside { float: left; padding: 0 0 40px 0; width: 650px }
 body.page_filemanager .adv_rightside { float: right; padding: 0 0 40px 0; width: 300px }
@@ -1060,12 +1065,15 @@ body.page_filemanager .adv_rightside a.download { width: auto; padding: 0 25px 2
 body.page_filemanager .rfaq { padding: 0px 0px 25px 25px }
 body.page_filemanager .rfaq a { font-size: 17px; color: #f30 }
 body.page_filemanager .adv_rightside .informer {text-align: center;}
-body.page_filemanager ul.features.right {margin: 0 0 40px 0; padding: 15px;}
+body.page_filemanager ul.features.right {margin: 0 0 40px 0; padding: 15px 15px 15px 25px;}
 body.page_filemanager ul.features.right li {padding: 0; font-size: 13px;}
 body.page_filemanager .features_head {font: bold 18px Tahoma;}
 
-.filemanager_faq {}
-.filemanager_faq .faq_head {margin: 0 0 25px 0; font-size: 18px; font-weight: bold;}
+body.page_filemanager .browser_support {margin: 20px 0; text-align: center;}
+body.page_filemanager .browser_support strong {display: block; margin: 0 0 10px 0; font-size: 14px; color: #f30;}
+body.page_filemanager .browser_support .browsers_bg {display: inline-block; width: 247px; height: 82px; background: url(../images/browser_support.jpg) no-repeat;}
+
+.filemanager_faq .headline {margin: 0 0 25px 0; font-size: 18px; font-weight: bold;}
 .filemanager_faq dl {margin: 0 0 40px 0;}
 .filemanager_faq dt {margin: 0 0 15px 0; font-size: 14px; font-weight: bold;}
 .filemanager_faq dd {margin: 0 0 25px 0;}
@@ -1074,10 +1082,7 @@ body.page_filemanager .features_head {font: bold 18px Tahoma;}
 body.page_advertise .content { clear: both }
 body.page_advertise #main { padding-bottom: 25px }
 body.page_signup .sidebar, body.page_login .sidebar {max-width: 218px; min-width: 198px; margin: 2em 0 0 0; padding: 1em 10px; border: 1px solid orange; color: #444; background: #fff !important;}
-/*
-body.page_signup .sidebar, body.page_login .sidebar {margin: 87px 0 0 0; display: none;}
-body.page_login .sidebar {display: none;}
-*/
+
 
 .aplace .adv_leftside {float: left; width: 320px; padding: 0 0 20px;}
 .aplace .adv_rightside {float: right; width: 630px; padding: 0 0 20px;}
@@ -1299,15 +1304,15 @@ body.page_filemanager_first_steps .static ol { margin:0 }
 body.page_filemanager_first_steps .static ol li hr { border:0; border-top:2px solid black; height:1px }
 */
 
-.fm_firststeps {} 
-.fm_firststeps .steps {margin: 0;}
-.fm_firststeps .steps li {}
+.fm_firststeps .steps {margin: 0 0 40px 0;}
 .fm_firststeps .steps li .subtitle {margin: 0 0 10px 0;}
+.fm_firststeps h2 {margin: 15px 0; font-size: 22px;}
 
 
 
-body.page_filemanager .dfmenu a { display: inline-block; padding: 0 5px 10px 5px }
-body.page_filemanager .dfmenu div { margin: 10px 0 }
+body.page_filemanager .dfmenu {margin: 0 0 20px 0;}
+body.page_filemanager .dfmenu a {display: inline-block; padding: 5px;}
+body.page_filemanager .dfmenu div {margin: 10px 0;}
 
 ol li.n0, ol li.n1, ol li.n2, ol li.n3, ol li.n4, ol li.n5, ol li.n6, ol li.n7, ol li.n8, ol li.n9, ol li.n10, ol li.n11 { list-style:none; background-repeat:no-repeat; min-height:75px; padding: 20px 0 2em 85px; border-top:1px solid #c0c0c0; background-position:0 10px }
 .static li.n1{background-image:url('../images/payment_help/digits/1.gif');}
@@ -1583,11 +1588,11 @@ body.page_payment .left { float: none }*/
 .goldpayment .systems .webmoney { background: url(../images/payment/webmoney2.png) center center no-repeat }
 .goldpayment .systems .phone { background: url(../images/payment/phone.jpg) center center no-repeat }
 
-.helpitems { width: 950px !important; margin: 25px 0; position: relative; background: #f2f2f2;  }
-.helpitems .item { width: 340px; float: left; clear: none; margin-right: 25px }
+.helpitems { width: 950px !important; position: relative;}
+.helpitems .item {width: 352px; float: left; clear: none; margin-right: 25px;}
 .helpitems .item * { text-align: left; display: block }
-.helpitems .item .title { display: block; border-bottom: 1px solid #ccc; font: normal 25px Tahoma; padding: 5px 0; background: #e6e6e6; position: relative; font: normal 14px Tahoma; height: 32px; vertical-align: center; text-align: center;}
-.helpitems .item .info { height: 240px; border: 1px solid #e6e6e6; border-top: 0; background: #f2f2f2; padding: 15px 0 15px 0; text-align: left }
+.helpitems .item .title {display: block; border-bottom: 1px solid #ccc; padding: 5px 0; background: #e6e6e6; position: relative; height: 32px; font: normal 14px/32px Tahoma; vertical-align: center; text-align: center;}
+.helpitems .item .info {min-height: 255px; border: 1px solid #e6e6e6; border-top: 0; background: #f2f2f2; padding: 15px 0; text-align: left;}
 .helpitems .item .info ul {padding: 0;}
 .helpitems .item .info ul li.main_item {margin: 0 0 20px 0;}
 .helpitems .item .info button { margin: 10px auto 2px; width: 125px; min-height: 28px; border: 0; border-left: 5px solid #777; border-bottom: 1px solid #999; background: #fff }
@@ -2128,7 +2133,7 @@ img.block{
 	top:15px;
 }
 .content_body{
-	overflow:hidden;
+	/*overflow:hidden;*/
 	clear:both;
 }
 

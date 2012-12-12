@@ -113,7 +113,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1354713464611 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1355319370808 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -452,6 +452,8 @@ pageTracker._trackPageview();
 
 
 
+
+
 	
 		
 	
@@ -475,6 +477,13 @@ pageTracker._trackPageview();
 
 
 
+	
+	
+		
+	
+
+
+
 <ul class="social-links horizontal">
 	
 		<li class="rss">
@@ -485,7 +494,7 @@ pageTracker._trackPageview();
 	
 		<li class="facebook-like">
 			<div id="fb-root"></div>
-			<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName:nav:header:facebook_button'}"></div>
+			<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="false" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName:nav:header:facebook_button'}"></div>
 			<script type="text/javascript">
 				// Custom eonline.com implementation of the FB Like DOM insertion code, since Facebook keeps breaking their like buttons.
 				window.fbAsyncInit = function() {
@@ -509,15 +518,7 @@ pageTracker._trackPageview();
 						document.getElementsByTagName('head')[0].appendChild(js);
 					}
 				}
-
-				// Binds the data to the Polls.
-				if ((typeof(eonline) !== 'undefined') && (typeof(eonline.polls) !== 'undefined')) {
-					// Don't use JSON here, as some properties are already setup in the eonline.polls object. See /resources/widgets/js/polls.js.
-					eonline.polls.strSharedUrl = 'http://www.facebook.com/eonline';
-					eonline.polls.strShowSend = '';
-					eonline.polls.strSocialTracking = 'nav:header';
-				}
-			</script>
+				</script>
 		</li>
 	
 	
@@ -525,7 +526,7 @@ pageTracker._trackPageview();
 	
 		
 		
-		<li class="twitter">
+		<li id="follow-button" class="twitter">
 			
 			<a href="http://twitter.com/eonline" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false" data-omniture="trackShares|{'linkName:nav:header:twitter_button'}">Follow @twitter</a>
 		</li>
@@ -540,19 +541,34 @@ pageTracker._trackPageview();
 
 
 
-
 <script type="text/javascript">
-	// Create a new <script type="text/javascript"> tag.
-	var js = document.createElement('script');
-		js.id = 'twitter-wjs';
-		js.src = '//platform.twitter.com/widgets.js';
+	if (typeof(eonline) === 'undefined') { eonline = {}; }
+	if (typeof(eonline.twitter) === 'undefined') { 
+		eonline.twitter = (function($) {
+			function initTwitterBttns() {
+				// Create a new <script type="text/javascript"> tag.
+				var js = document.createElement('script');
+					js.id = 'twitter-wjs';
+					js.src = '//platform.twitter.com/widgets.js';
 
-	// Get the 1st <script> tag on the page.
-	var fjs = document.getElementsByTagName('script')[0];
+				// Get the 1st <script> tag on the page.
+				var fjs = document.getElementsByTagName('script')[0];
 
-	// Append this new script, before that script tag.
-	fjs.parentNode.insertBefore(js,fjs);
+				// Append this new script, before that script tag.
+				fjs.parentNode.insertBefore(js,fjs);
+			};
+
+			return {
+				"initTwitterBttns": initTwitterBttns
+			}
+		})(jQuery);
+	}
+
+	// Auto-Initialize:
+	eonline.twitter.initTwitterBttns();
 </script>
+
+
 
 
 
@@ -887,7 +903,7 @@ The information learned from the Website's users, members and customers helps E!
 		<div id="Footer_SpotSection">
 			
 			<div class ="footerSpot">
-				<a href="http://www.eonline.com/shows/love_you_mean_it" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_1","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/20121027/300x150_LYMI_FDBrick.jpg" /></a>
+				<a href="http://www.eonline.com/shows/love_you_mean_it" data-omniture='trackWidgetClick|{"linkName":"nav:footer:spot_1","products":"eVar16=\"nav\""}'><img src="../../eol_images/Entire_Site/20121110/LYMI_FrontDoor_brick.jpg" /></a>
 			</div>
 			
 			<div class ="footerSpot">

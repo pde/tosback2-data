@@ -1,10 +1,12 @@
 /*
-Cardinal Path - Google Analytics Government Wide Site Usage Measurement
+Brian Katz, Cardinal Path - Google Analytics Government Wide Site Usage Measurement
 * v0.1 121011 : First Test Version
 * v1.0 121012 : Added Cookie Synchronizing and filtered out Outbound tracking of cross- and sub-domain links
 * v1.1 121015 : Changed cross-domain to use setAllowAnchor and fixed problem with some links
 * v1.2 121015-2 : Added incoming cross-domain tracking to default _gaq tracker by adding _setAllowLinker and _setAllowAnchor
 * v1.3 121015-3 : All Cross-domain Tracking removed
+* v1.4 121015-4 : Multiple Search parameters and XDT links tracked as events
+* v1.5 121122 : Change to sub-domain level visits (cookies). _DOMReady delays tracking so goes last. ECereto Review. JSHinted
 */
 
 var _gaq = _gaq || [];
@@ -12,202 +14,206 @@ var _gas = _gas || [];
 
 var GSA_CPwrapGA = (function () {
 
-	var oCONFIG = {
-		VERSION			: 'v1.3 121015-3 : All Cross-domain Tracking removed',
-		GAS_PATH		: '',
-		HOST_DOMAIN_OR	: '', // only required if tracking at a sub-domain level eg sub.example.gov and not at example.gov
-		LEADING_PERIOD	: '.',
-		GWT_UAID		: 'UA-33523145-1'
+  var oCONFIG = {
+    VERSION      : 'v1.5 121122:Change to sub-domain level visits. _DOMReady delays tracking to end',
+    GAS_PATH    : '',
+    SEARCH_PARAMS  : 'querytext|nasaInclude|k|QT', // ver 1.4 Normalize query params
+    HOST_DOMAIN_OR  : document.location.hostname, // only required if tracking at a sub-domain level eg sub.example.gov and not at example.gov
+    LEADING_PERIOD  : '.',
+    GWT_UAID    : 'UA-33523145-1'
+  };
+
+  var instance = this;
+
+  /**
+   *  Sets up _gas and configures accounts, domains, etc,
+   * In effect, ensures functions are compiled before being called
+   * @private
+   */
+  var _init = function () {
+
+      // Returns domain name, not sub-domains and with no leading period e.g.  returns usa.gov on http://xyz.usa.gov
+    if (!oCONFIG.HOST_DOMAIN_OR) oCONFIG.HOST_DOMAIN_OR  = getDomainNameGovMil();
+    oCONFIG.HOST_DOMAIN_OR = oCONFIG.HOST_DOMAIN_OR.replace(/^www\./i,'');
+    var ary = setHashAndPeriod(oCONFIG.HOST_DOMAIN_OR);
+    oCONFIG.LEADING_PERIOD = ary[1];
+
+    _gas.push(['GSA_CP._setAccount', oCONFIG.GWT_UAID]);
+    _gas.push(['GSA_CP._setDomainName', oCONFIG.LEADING_PERIOD + oCONFIG.HOST_DOMAIN_OR]);
+
+
+      // These 2 config lines will affect existing trackers owned by the Agencies - has been documented
+    // ver1.3 _gas.push(['_setAllowAnchor', true]);
+    // ver1.3 _gaq.push(['_setAllowLinker', true]);
+
+    if(ary[0]) {
+		_gas.push(['GSA_CP._setAllowHash', false]);
 	}
 
-    var instance = this;
+    _gas.push(['GSA_CP._gasTrackOutboundLinks']);
+    _gas.push(['GSA_CP._gasTrackDownloads']);
+    _gas.push(['GSA_CP._gasTrackMailto']);
 
-	/**
-	 *  Sets up _gas and configures accounts, domains, etc, 
-	 * In effect, ensures functions are compiled before being called
-	 * @private
-	 */
-	var _init = function () {
-	
-			// Returns domain name, not sub-domains and with no leading period e.g.  returns usa.gov on http://xyz.usa.gov
-		if (!oCONFIG.HOST_DOMAIN_OR) oCONFIG.HOST_DOMAIN_OR	= getDomainNameGovMil();
-		var ary = setHashAndPeriod(oCONFIG.HOST_DOMAIN_OR);
-		oCONFIG.LEADING_PERIOD = ary[1];
+    // ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "gov"]);
+    // ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "mil"]);
+    // ver1.3 _gas.push(['GSA_CP._gasMultiDomain', 'click']);
 
-		_gas.push(['GSA_CP._setAccount', oCONFIG.GWT_UAID]);
-		_gas.push(['GSA_CP._setDomainName', oCONFIG.LEADING_PERIOD + oCONFIG.HOST_DOMAIN_OR]);
-
-
-			// These 2 config lines will affect existing trackers owned by the Agencies - has been documented
-		// ver1.3 _gas.push(['_setAllowAnchor', true]);
-		// ver1.3 _gaq.push(['_setAllowLinker', true]);
-		 
-		// ver1.3 _gas.push(['GSA_CP._setAllowLinker', true]);
-		// ver1.3 _gas.push(['GSA_CP._setAllowAnchor', true]);
-		if(ary[0]) _gas.push(['GSA_CP._setAllowHash', true]);
-		
-
-		_gas.push(['GSA_CP._gasTrackOutboundLinks']);
-		_gas.push(['GSA_CP._gasTrackDownloads']);
-		_gas.push(['GSA_CP._gasTrackMailto']);
-
-		// ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "gov"]);
-		// ver1.3 _gas.push(['GSA_CP._addExternalDomainName', "mil"]);
-		// ver1.3 _gas.push(['GSA_CP._gasMultiDomain', 'click']);
-		
 /*
-			// In this implementation, we are placing gas,js into this file so no need to include it
-		(function() {
-			var ga = document.createElement('script');
-			ga.type = 'text/javascript';
-			ga.async = true;
-			ga.src = oCONFIG.GAS_PATH + '/misc/gas.js'; 
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(ga, s);
-		})();
+      // In this implementation, we are placing gas,js into this file so no need to include it
+    (function() {
+      var ga = document.createElement('script');
+      ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = oCONFIG.GAS_PATH + '/misc/gas.js';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(ga, s);
+    })();
 */
 
-			// Filter out cross & sub-domain Outbound links
-		_gas.push(['_addHook', '_trackEvent', function(cat, act){
-		  if (cat === 'Outbound' && typeof act === "string" && act.match(/\.(gov|mil)$/)){
-			return false;
-		  }
-		}]);
+      // Filter out cross & sub-domain Outbound links
+  /*
+  * Filter commented out in ver 1.4 since better to track XDT links as events if code not configured for XDT
+    _gas.push(['_addHook', '_trackEvent', function(cat, act){
+      if (cat === 'Outbound' && typeof act === "string" && act.match(/\.(gov|mil)$/)){
+      return false;
+      }
+    }]);
+  */
+      // Filter out sub-domain links tracked as Outbound
+    _gas.push(['_addHook', '_trackEvent', function(cat, act){
+      var linkDomain = act.match(/([^.]+\.(gov|mil)$)/);
+      if (cat === 'Outbound' && typeof act === "string" && linkDomain){
+        return (document.location.hostname.indexOf(linkDomain[1]) === -1);
+      }
+    }]);
+    // Add hook to _trackPageview to standardize search parameters
+  _gas.push(['_addHook', '_trackPageview', function(pageName){
+      var re = new RegExp('([?&])(' + oCONFIG.SEARCH_PARAMS + ')(=[^&]*)', 'i');
+      if (re.test(pageName)){
+        pageName = pageName.replace(re, '$1query$3');
+      }
+      return [pageName];
+    }]);
+
+  };
+
+  /**
+   *  Returns the domain and top-level domain  - eg example.com, example.ca example.co.uk, example.com.au or ipaddress
+   *
+   * @private
+   * @param {string} strURL a hostname or full url
+   */
+  var getDomainNameGovMil = function(strURL) {
+    strURL = strURL || document.location.hostname;
+
+      // extract the host name since full url may have been provided
+    strURL = strURL.match(/^(?:https?:\/\/)?([^\/:]+)/)[1];  // this cannot error unless running as file://
+
+    if(strURL.match(/(\d+\.){3}(\d+)/) || strURL.search(/\./) == -1) return strURL;  // ipaddress
 
 
-	}
+    try {
+      if (/\.(gov|mil)$/i.test(strURL)) {  // Customized for .gov and .mil
+        strURL = strURL.match(/\.([^.]+\.(gov|mil)$)/i)[1];
+      } else {
+        strURL = strURL.match(/(([^.\/]+\.[^.\/]{2,3}\.[^.\/]{2})|(([^.\/]+\.)[^.\/]{2,4}))(\/.*)?$/)[1];
+      }
 
-	/**
-	 *  Returns the domain and top-level domain  - eg example.com, example.ca example.co.uk, example.com.au or ipaddress
-	 *
-	 * @private
-	 * @param {string} strURL a hostname or full url
-	 */
-	var getDomainNameGovMil = function(strURL) {
-		strURL = strURL || document.location.hostname;
-		
-			// extract the host name since full url may have been provided
-		strURL = strURL.match(/^(?:https?:\/\/)?([^\/:]+)/)[1];	// this cannot error unless running as file://
-
-		if(strURL.match(/(\d+\.){3}(\d+)/) || strURL.search(/\./) == -1) return strURL;	// ipaddress
+    } catch (e) {}
+    return  strURL.toLowerCase() ;
+  };
 
 
-		try {
-			if (/\.(gov|mil)$/i.test(strURL)) {	// Customized for .gov and .mil 
-				strURL = strURL.match(/\.([^.]+\.(gov|mil)$)/i)[1];
-			} else {
-				strURL = strURL.match(/(([^.\/]+\.[^.\/]{2,3}\.[^.\/]{2})|(([^.\/]+\.)[^.\/]{2,4}))(\/.*)?$/)[1];
-			}
-		
-		} catch (e) {}
-		return  strURL.toLowerCase() ;
-	};
+  /**
+   *  Returns the GA hash for the Cookie domain passed
+   *
+   * @private
+   * @param {string} strCookieDomain -  the hostname used for the cookie domain
+   */
+  var getDomainHash = function(strCookieDomain) {
 
-	
-	/**
-	 *  Returns the GA hash for the Cookie domain passed 
-	 *
-	 * @private
-	 * @param {string} strCookieDomain -  the hostname used for the cookie domain 
-	 */
-	var getDomainHash = function(strCookieDomain) { 
-	
-		fromGaJs_h =  function (e) {
-			return undefined == e || "-" == e || "" == e
-		};
-		fromGaJs_s = 
-			function (e) {
-					var k = 1,
-					a = 0,
-					j, i;
-					if (!fromGaJs_h(e)) {
-						k = 0;
-						for (j = e.length - 1; j >= 0; j--) {
-							i = e.charCodeAt(j);
-							k = (k << 6 & 268435455) + i + (i << 14);
-							a = k & 266338304;
-							k = a != 0 ? k ^ a >> 21 : k
-						}
-					}
-					return k
-				};
-		return fromGaJs_s(strCookieDomain) ; 
-	}
-	
-	/**
-	 *  Returns an array [bool, str] where bool indicates value for setAllowHash and str is either blank or a leading period
-	 *
-	 * @private
-	 * @param {string} strCookieDomain -  the hostname used for the cookie domain WITHOUT  the leading period
-	 */
-	var setHashAndPeriod = function(strCookieDomain) {
-		var utmaCookies = document.cookie.match(/__utma=[^.]+/g);
-		var retVals = [false, ''];	// setAllowHash = false and leading period = ''
-		
-			// if no cookies found
-		if (!utmaCookies) return retVals;
-		
-		var domainHash = getDomainHash(strCookieDomain);
-		
-		for (var elm in utmaCookies) {
-			utmaCookies[elm] = utmaCookies[elm].substr(7);	// strip __utma= leaving only the hash
-			
-				// look for the cookie with the matching domain hash
-			var hashFound = (domainHash == utmaCookies[elm]);
-			if (!hashFound) {
-				hashFound =  (getDomainHash('.' + strCookieDomain) == utmaCookies[elm]);
-				retVals[1] = hashFound ? '.' : '' ;
-			}
-		
-				// if found, there's no hash and we're done
-			if (hashFound) {
-				retVals[0] = false;
-				return retVals;
-			}
-			
-				// if not found, check for hash
-			retVals[0] =  retVals[0] || ('1' == utmaCookies[elm]);	// true if hash == 1
-		}
-		
-		return retVals;
-	}
+    fromGaJs_h =  function (e) {
+      return undefined == e || "-" == e || "" == e;
+    };
+    fromGaJs_s =
+      function (e) {
+          var k = 1,
+          a = 0,
+          j, i;
+          if (!fromGaJs_h(e)) {
+            k = 0;
+            for (j = e.length - 1; j >= 0; j--) {
+              i = e.charCodeAt(j);
+              k = (k << 6 & 268435455) + i + (i << 14);
+              a = k & 266338304;
+              k = a !== 0 ? k ^ a >> 21 : k;
+            }
+          }
+          return k;
+        };
+    return fromGaJs_s(strCookieDomain) ;
+  };
 
-	
-	/**
-	 * Reports a page view and detects if page is a 404 Page not found
-	 * @public
-	 */
-	this.onEveryPage = function () {
+  /**
+   *  Returns an array [bool, str] where bool indicates value for setAllowHash and str is either blank or a leading period
+   *
+   * @private
+   * @param {string} strCookieDomain -  the hostname used for the cookie domain WITHOUT  the leading period
+   */
+  var setHashAndPeriod = function(strCookieDomain) {
+    var utmaCookies = document.cookie.match(/__utma=[^.]+/g);
+    var retVals = [false, ''];  // setAllowHash = false and leading period = ''
 
-		var pageName = document.location.pathname + document.location.search + document.location.hash;
-		
-			// ... Page Not Found
-			// Track as a pageview because we need to see if it's a landing page.
-		if (document.title.search(/404|not found/i) !== -1) {
-			var vpv404 = '/vpv404/' + pageName;
-			pageName = vpv404.replace(/\/\//g, '/') + '/' + document.referrer;
-		}
+      // if no cookies found
+    if (!utmaCookies) return retVals;
 
-		if (oCONFIG.VERSION) _gas.push(['GSA_CP._setCustomVar', 50, 'Code Ver', oCONFIG.VERSION, 3]);	// Record version in Page Level Custom Variable 50
-		_gas.push(['GSA_CP._trackPageview', pageName]);
-	};
+    var domainHash = getDomainHash(strCookieDomain);
 
-	_init();
+    for (var elm in utmaCookies) {
+      utmaCookies[elm] = utmaCookies[elm].substr(7);  // strip __utma= leaving only the hash
+
+        // look for the cookie with the matching domain hash
+      var hashFound = (domainHash == utmaCookies[elm]);
+        // if found, there's a hash and we're done
+      if (hashFound) {
+        retVals[0] = false;
+        return retVals;
+      }
+      else {  // check for period
+        hashFound =  (getDomainHash('.' + strCookieDomain) == utmaCookies[elm]);
+        retVals[1] = hashFound ? '.' : '' ;
+      }
+
+        // if not found, check for setAllowHashFalse - aka hash = 1
+      retVals[0] =  retVals[0] || ('1' == utmaCookies[elm]);  // true if hash == 1
+    }
+
+    return retVals;
+  };
+
+
+  /**
+   * Reports a page view and detects if page is a 404 Page not found
+   * @public
+   */
+  this.onEveryPage = function () {
+
+    var pageName = document.location.pathname + document.location.search + document.location.hash;
+
+      // ... Page Not Found
+      // Track as a pageview because we need to see if it's a landing page.
+    if (document.title.search(/404|not found/i) !== -1) {
+      var vpv404 = '/vpv404/' + pageName;
+      pageName = vpv404.replace(/\/\//g, '/') + '/' + document.referrer;
+    }
+
+    if (oCONFIG.VERSION) _gas.push(['GSA_CP._setCustomVar', 50, 'Code Ver', oCONFIG.VERSION, 3]);  // Record version in Page Level Custom Variable 50
+    _gas.push(['GSA_CP._trackPageview', pageName]);
+  };
+
+  _init();
 
 });
-
-
-try {
-	var oGSA_CPwrapGA = new GSA_CPwrapGA();
-
-	if (!document._gsaDelayGA)
-		oGSA_CPwrapGA.onEveryPage();
-} catch (e) {
-	try {
-		console.log(e.message);
-	} catch(e) {}
-
-}
 
 // --------------------------- End of federated-analytics.js -------------------------------------
 // To make the instructions and implementation as easy as possible for all agencies, gas.js has been appended to federated.js
@@ -283,12 +289,12 @@ GasHelper.prototype._sanitizeString = function (str, strict_opt) {
         .replace(/^\ +/, '')
         .replace(/\ +$/, '')
         .replace(/\s+/g, '_')
-        .replace(/[áàâãåäæª]/g, 'a')
-        .replace(/[éèêë?€]/g, 'e')
-        .replace(/[íìîï]/g, 'i')
-        .replace(/[óòôõöøº]/g, 'o')
-        .replace(/[úùûü]/g, 'u')
-        .replace(/[ç¢©]/g, 'c');
+        .replace(/[Ã¡Ã Ã¢Ã£Ã¥Ã¤Ã¦Âª]/g, 'a')
+        .replace(/[Ã©Ã¨ÃªÃ«?Â€]/g, 'e')
+        .replace(/[Ã­Ã¬Ã®Ã¯]/g, 'i')
+        .replace(/[Ã³Ã²Ã´ÃµÃ¶Ã¸Âº]/g, 'o')
+        .replace(/[ÃºÃ¹Ã»Ã¼]/g, 'u')
+        .replace(/[Ã§Â¢Â©]/g, 'c');
 
     if (strict_opt) {
         str = str.replace(/[^a-z0-9_-]/g, '_');
@@ -1072,29 +1078,29 @@ function _gasMeta() {
  * Listens to all clicks and looks for a tagged element on it.
  *
  * Events have the following params:
- *   x-ga-event-category (required) – The category of the event specified in
+ *   x-ga-event-category (required)  The category of the event specified in
  * the solution design document
- *   x-ga-event-action (required) – The action of the event specified in the
+ *   x-ga-event-action (required)  The action of the event specified in the
  * solution design document
- *   x-ga-event-label (optional) – The label of the event specified in the
+ *   x-ga-event-label (optional)  The label of the event specified in the
  * solution design document.  If no label is specified in the solution design
  * document, this attribute can be omitted
- *   x-ga-event-value (optional) – The value (integer) of the event specified
+ *   x-ga-event-value (optional)  The value (integer) of the event specified
  * in the solution design document.  If no value is specified in the solution
  * design document, this attribute can be omitted
- *   x-ga-event-noninteractive (optional) – Boolean (true/false) value
+ *   x-ga-event-noninteractive (optional)  Boolean (true/false) value
  * specified in the solution design document.  If the non-interactive value is
  * not specified, this attribute can be omitted
  *
  * Social Actions have the following params:
- *   x-ga-social-network (required) – The network of the social interaction
+ *   x-ga-social-network (required)  The network of the social interaction
  * specified in the solution design document
- *   x-ga-social-action (required) – The action of the social interaction
+ *   x-ga-social-action (required)  The action of the social interaction
  * specified in the solution design document
- *   x-ga-social-target (optional) – The target of the social interaction
+ *   x-ga-social-target (optional)  The target of the social interaction
  * specified in the solution design document.  If no target is specified, this
  * attribute can be omitted
- *   x-ga-social-pagepath (optional) – The page path of the social interaction
+ *   x-ga-social-pagepath (optional)  The page path of the social interaction
  * specified in the solution design document.  If no page path is specified,
  * this attribute can be omitted
  */
@@ -1974,3 +1980,21 @@ if (_gaq && _gaq.length >= 0) {
 }
 
 })(window);
+
+_gas.push(function(){
+  this._DOMReady(function () {
+    try {
+      var oGSA_CPwrapGA = new GSA_CPwrapGA();
+
+      if (!document._gsaDelayGA)
+    oGSA_CPwrapGA.onEveryPage();
+    } catch (e) {
+      try {
+        console.log(e.message);
+      } catch(e) {}
+
+    }
+  });
+});
+
+

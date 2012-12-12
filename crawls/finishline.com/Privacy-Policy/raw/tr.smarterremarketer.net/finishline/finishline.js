@@ -356,7 +356,7 @@
                         param.modalc = SmtrRmkr.getSmtrRmkrCookie();
                         param.utc = SmtrRmkr.getUTC();
                         param.gaid = SmtrRmkr.gaId;
-                        param.utm_campaign = SmtrRmkr.getFirstParam([SmtrRmkr.campaignKey, "utm_campaign", "cid"]);
+                        param.utm_campaign = SmtrRmkr.getFirstParam([SmtrRmkr.campaignKey, "utm_campaign", "cmp"]);
                         param.modalme = SmtrRmkr.getParam("modalme");
                         param.modalcte = SmtrRmkr.getParam("modalcte");
                         param.ctid = SmtrRmkr.getFirstParam(["smtrctid", "om_rid"]);
@@ -555,7 +555,13 @@
                     p.utm_medium = SmtrRmkr.getFirstParam([SmtrRmkr.mediumKey, "utm_medium"]);
                     p.utm_term = SmtrRmkr.getFirstParam([SmtrRmkr.termKey, "utm_term"]);
                     p.utm_content = SmtrRmkr.getFirstParam([SmtrRmkr.contentKey, "utm_content"]);
-                    p.utm_campaign = SmtrRmkr.getFirstParam([SmtrRmkr.campaignKey, "utm_campaign", "cid"]);
+                    p.utm_campaign = SmtrRmkr.getFirstParam([SmtrRmkr.campaignKey, "utm_campaign", "cmp"]);
+
+                    var oldCID = SmtrRmkr.getParam("cid").toLowerCase(); /* fix broken var links */
+                    if (oldCID == "r10_abandon_cart1" || oldCID == "em_r10_abandon_cart1") {
+                        p.utm_campaign = "EM_R10_Abandon_Cart1";
+                    }
+
 
                     p.ref = SmtrRmkr.getReferrer();
                     if (p.ref.length === 0) {

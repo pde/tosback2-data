@@ -373,10 +373,10 @@ function showCartSaved(divID) {
 		linkObj.addClassName("active");
 		// throw coremetrics element tag
 		if (divID == "cartContainer") {
-			cmCreatePageElementTag("CART HEADER","CART");
+			try {cmCreatePageElementTag("CART HEADER","CART");} catch(err) {}
 		} else {
 			// saved for later
-			cmCreatePageElementTag("SFL CART HEADER","CART");
+			try {cmCreatePageElementTag("SFL CART HEADER","CART");} catch(err) {}
 		}
 		// update curCartSaved
 		curCartSaved = divID;

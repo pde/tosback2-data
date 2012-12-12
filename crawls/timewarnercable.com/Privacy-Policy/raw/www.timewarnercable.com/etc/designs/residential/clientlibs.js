@@ -13570,146 +13570,172 @@ console.log("click");
 	}
 })(jQuery);
 /* ----------------------------------
- *	Plugin: multiPanelTabs 
+ *  Plugin: multiPanelTabs 
  *
- *	- Builds tab module
- *	- Adds hover event to
- *	- Adds 'hover' class to parent element
+ *  - Builds tab module
+ *  - Adds hover event to
+ *  - Adds 'hover' class to parent element
  * 
  *  UsedBy: 
  *
- *  Uses: 	jquery
+ *  Uses:   jquery
  *
- * --------------------------------- */	
+ * --------------------------------- */ 
 
 ;(function($) {
 
-	$.fn.multiPanelTabs = function (argDefaultTab) { 
+    $.fn.multiPanelTabs = function (argDefaultTab) { 
+        
+        /* Main function that Reveals the content */
+        function ShowPanel() {
+            var $this = $(this);
+            //tabs panel holds the main splash images.
+            var $tab_panels = $('.tabs-container:has(.multipanel)');
+            var goto_id = ($this.find('a').prop('hash') || '#').replace('#', '.multipanel-');
+            
+           
+            $this.addClass('active').siblings().removeClass('active');
+            $tab_panels
+                .find(goto_id)
+                // .stop(true, true)
+                .fadeIn('slow', function(){
+                       // $(this).addClass('active');
+                    })
+                .siblings()
+                .hide()
+                .removeClass('active');
+            var $focus = $(this).find('a');
+             //creates the ID of the target splash/slide from the href of the clicked link in the menu.
+            var panelID = ($focus.prop('hash') || '#').replace('#', '.multipanel-');
+            
+            var $multipanelParent = $(this).closest('.multipanel-tabs').children('.multipanel-container');
+            var $visiblePanel = $multipanelParent.children(panelID);
+            var $navItem = $visiblePanel.find('.slide-item:first');
+            $navItem.removeClass('active');
+            $navItem.trigger('click');
+        }
+        
+        /* Main function that Reveals the content */
+        function ShowPanelOrLinkDetails() {
+            var $this = $(this);
+            // see if this tab is active.  If so, go to the details url
+            if ($this.hasClass("active") && $(this).data('detailsurl')!=undefined){
+                var detailsUrl = $(this).data('detailsurl');
+                location.href=detailsUrl;
+            }
+            else
+            {
+                ShowPanel.call($this);
+            }
+        }
 
-		/* Main function that Reveals the content */
-		function ShowPanel() {
-			var $this = $(this);
-			var $tab_panels = $('.tabs-container:has(.multipanel)');
-			var goto_id = ($this.find('a').prop('hash') || '#').replace('#', '.multipanel-');				
-			$this.addClass('active').siblings().removeClass('active');
-			$tab_panels
-				.find(goto_id)
-				// .stop(true, true)
-				.fadeIn('slow', function(){
-						//$(this).addClass('active');
-					})
-				.siblings()
-				.hide()
-				.removeClass('active');
-			var $focus = $(this).find('a');
-			var panelID = ($focus.prop('hash') || '#').replace('#', '.multipanel-');
-			var $multipanelParent = $(this).closest('.multipanel-tabs').children('.multipanel-container');
-			var $visiblePanel = $multipanelParent.children(panelID);
-			var $navItem = $visiblePanel.find('.slide-item:first');
-			$navItem.removeClass('active');
-			$navItem.trigger('click');
-		}
-		
-		/* Main function that Reveals the content */
-		function ShowPanelOrLinkDetails() {
-			var $this = $(this);
-			// see if this tab is active.  If so, go to the details url
-			if ($this.hasClass("active") && $(this).data('detailsurl')!=undefined){
-				var detailsUrl = $(this).data('detailsurl');
-				location.href=detailsUrl;
-			}
-			else
-			{
-				ShowPanel.call($this);
-			}
-		}
+        /* Helper function to generated .class based IDs for the tab containers */
+        function generateContainerID(tabGroup) {
+            return (typeof tabGroup != undefined) ? ('multipanel-container-' + tabGroup) : ('');
+        }
+        
+        /* Helper function to generated .class based IDs for the navigation items */
+        function generatePanelID(tabGroup, panelID) {
+            return (typeof tabGroup != undefined && typeof panelID != undefined) ? ('multipanel-' + tabGroup + '-' + panelID) : ('');
+        }
 
-		/* Helper function to generated .class based IDs for the tab containers */
-		function generateContainerID(tabGroup) {
-			return (typeof tabGroup != undefined) ? ('multipanel-container-' + tabGroup) : ('');
-		}
-		
-		/* Helper function to generated .class based IDs for the navigation items */
-		function generatePanelID(tabGroup, panelID) {
-			return (typeof tabGroup != undefined && typeof panelID != undefined) ? ('multipanel-' + tabGroup + '-' + panelID) : ('');
-		}
+        function initClassID() {
 
-		function initClassID() {
+            /** Panels can exist anywere in the body,
+                so search outside of the scope of this **/
+            $('.multipanel-container').each(function(){
+                //top tabs in menu are in class tabs-nav inside multipanel-tabs
+                
+                /* 
+                ** $(this) refers to the multipanel-tab group thus all multipanel containers on the page are linked to
+                ** this menu on init.
+                */ 
+                var $tabGroup = $(this);
+                
+                //check to make sure we haven't already run multipanel tabs.
+                var isInit = Boolean($(this).data('multipanel.isInit')) || false;
 
-			/** Panels can exist anywere in the body,
-				so search outside of the scope of this **/
-			$('.multipanel-container').each(function(){
-				var $tabGroup = $(this);
-				var isInit = Boolean($(this).data('multipanel.isInit')) || false;
+                if (isInit) {
+                    /* abort if has been initialized */
+                    return;
+                }
+                else {
+                    $(this).data('multipanel.isInit', true);
+                }
+                
+                //Pull from HTML5 data element. typically 'feature' or 'premium
+                var tabGroupID = $(this).data('tabgroup');
+                //the $tabPanel is now the set of the larger buttons in the multipanel. It refers to the container element of those buttons.
+                var $tabPanel = $tabGroup.find('.multipanel');
+                
+                //Add class to the tabs container - typically multipanel-container-feature
+                $tabGroup.addClass(generateContainerID(tabGroupID));
+                
+                
+                $tabPanel.each(function(){
+                    var tabPanelID = $(this).data('tabid'); 
+                    //Add appropriate classes to each *panel*. j.e. multipanel-tabgroupID-tabPanelID
+                    //Note that the individual buttons inside each panel do not have added classes.
+                    $(this).addClass(generatePanelID(tabGroupID, tabPanelID));
 
-				if (isInit) {
-					/* abort if has been initialized */
-					return;
-				}
-				else {
-					$(this).data('multipanel.isInit', true);
-				}
+                    /* Restore proper visibility */
+                    $(this).css({'display': 'none', 'visibility': 'visible'});
+                })
+            })
+        };
+        //builds classes on the menu panels.
+        initClassID.call(this);
+        
+        return this.each(function() {
+            var $container = $(this);
+            var tabGroup = $container.data('tabgroup');
+            var $tab_nav = $container.find('.tabs-nav');
+            var $tab_ul = $tab_nav.not('.multipanel-tabs').find('ul');
+            var $tab_panels = $('.tabs-container:has(.multipanel)');
+            var DefaultTab = $container.data('tab-default') || argDefaultTab || '.active' || ':first';
+            //alert(DefaultTab);
+            /* Bind ShowPanel to click event  */
+            $tab_ul.find('li').each(function(){
+                var showTab = $.proxy(ShowPanel, $(this));
+                var showTabOrLinkDetails = $.proxy(ShowPanelOrLinkDetails, $(this));
+                $(this).unbind('click.multiPanelTabs').bind( 'click.multiPanelTabs', showTabOrLinkDetails);
+                //ensure that whenever a tab is clicked, the hash of that item's sub anchor is used.
+              
 
-				var tabGroupID = $(this).data('tabgroup');
-				var $tabPanel = $tabGroup.find('.multipanel');
+            });
 
-				$tabGroup.addClass(generateContainerID(tabGroupID));
+            /* On init find the button? that is active, if none are select first tab and display content */
+            $tab_ul.each(function(){
+                var goto_id;
+                var $tabs = $(this).children('li');
+                //on each li item add a click handler.
+                 
+                var $active = $tabs.filter('li.active');
 
-				$tabPanel.each(function(){
-					var tabPanelID = $(this).data('tabid');
-					$(this).addClass(generatePanelID(tabGroupID, tabPanelID));
+                if (0 == $active.length) {
+                    $active = $tabs.filter(DefaultTab)
+                }
+                
+                if ($active.is(':visible')) {
+                    //$active.triggerHandler('click');
+                   // alert($active.data('detailsurl'));
+                    ShowPanel.call($active);
+                }
+            });
 
-					/* Restore proper visibility */
-					$(this).css({'display': 'none', 'visibility': 'visible'});
-				})
-			})
-		}
+            // Tab module nav has no click functionality, 
+            // removing default function and event propagation for any clicks on the links
+            // This is to prevent confusion with hash tags in the URL not corresponding to the tab content that is
+            $tab_ul.find('li > a').click( function(e) {
+                e.preventDefault();
+               // window.location.hash = $(this).attr('href');
+                //TODO: consider the use of #!
+            });
+          
+        });
 
-		initClassID.call(this);
-		
-		return this.each(function() {
-			var $container = $(this);
-			var tabGroup = $container.data('tabgroup');
-			var $tab_nav = $container.find('.tabs-nav');
-			var $tab_ul = $tab_nav.not('.multipanel-tabs').find('ul');
-			var $tab_panels = $('.tabs-container:has(.multipanel)');
-			var DefaultTab = $container.data('tab-default') || argDefaultTab || ':first';
-			
-			/* Bind ShowPanel to click event  */
-			$tab_ul.find('li').each(function(){
-				var showTab = $.proxy(ShowPanel, $(this));
-				var showTabOrLinkDetails = $.proxy(ShowPanelOrLinkDetails, $(this));
-				$(this).unbind('click.multiPanelTabs').bind( 'click.multiPanelTabs', showTabOrLinkDetails);
-
-			});
-
-			/* On init find the tab that is active, if none are select first tab and display content */
-			$tab_ul.each(function(){
-				var goto_id;
-				var $tabs = $(this).children('li');
-				var $active = $tabs.filter('li.active');
-
-				if (0 == $active.length) {
-					$active = $tabs.filter(DefaultTab)
-				}
-
-				if ($active.is(':visible')) {
-					//$active.triggerHandler('click');
-					ShowPanel.call($active);
-				}
-			});
-
-			// Tab module nav has no click functionality, 
-			// removing default function and event propagation for any clicks on the links
-			// This is to prevent confusion with hash tags in the URL not corresponding to the tab content that is
-			$tab_ul.find('li > a').click( function(e) {
-				e.preventDefault();
-				//TODO: consider the use of #!
-			});
-		});
-
-		
-	} // end $.fn.productModuleTabs		
+        
+    } // end $.fn.productModuleTabs     
 })(jQuery);
 /* ----------------------------------
  *	Plugin: featureCarouselInit

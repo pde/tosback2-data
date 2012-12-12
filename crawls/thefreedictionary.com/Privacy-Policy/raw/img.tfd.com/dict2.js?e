@@ -196,6 +196,10 @@ function open_thes(l) {dw('<p class=brand_copy>'+(PageLang=='de'?'<a href="http:
 function DictCC(w){dw('<br><a href="/_/gr.aspx?url='+encodeURIComponent('http:/'+'/www.dict.cc/?s='+encodeURIComponent(w))+'" target=_blank>More translations</a> from Dict.cc<p class=brand_copy>© 2002 - 2009 <a href=http:/'+'/www.dict.cc>Paul Hemetsberger</a></p>');srp('DictCC')};
 function Chemnitz(){dw('<p class=brand_copy>Beolingus. © <a href="http:/'+'/dict.tu-chemnitz.de/">TU Chemnitz</a>, 2006-2009</p>');srp('Chemnitz')};
 function kdict(){dw('<p class=brand_copy>'+(PageLang=='en'?'Kernerman English Multilingual Dictionary © 2006-2010':'Copyright © 2009')+' <a href=http:/'+'/kdictionaries.com>K Dictionaries Ltd</a>.</p>');srp('kdict')};
+function wkEpo() {dw('<div class=brand_copy>Stedman\'s Medical Eponyms, 2 ed. © 2005 Lippincott Williams & Wilkins</div>');srp('wkEpo')};
+function wkDen() {dw('<div class=brand_copy>Stedman\'s Medical Dictionary for the Dental Professions, 2 ed. © 2012 Wolters Kluwer Health | Lippincott Williams & Wilkins</div>');srp('wkDen')};
+function wkHP() {dw('<div class=brand_copy>Stedman\'s Medical Dictionary for the Health Professions and Nursing, 7 ed. © 2012 Wolters Kluwer Health | Lippincott Williams & Wilkins</div>');srp('wkHP')};
+function wkMed() {dw('<div class=brand_copy>Stedman\'s Medical Dictionary, 28 ed. © 2006 Lippincott Williams & Wilkins | A Wolters Kluwer Health Company</div>');srp('wkMed')};
 var nsx;
 var nsy;
 if (!document.all){
@@ -345,19 +349,17 @@ function WriteRAd1(p){
 	dw('</td></tr></table></td></tr></table>');
 } 
 }
+function aml(target, info) {
+    target = (target == undefined) ? "free" : target;
+    info = (info == undefined) ? "tfdwebsite" : info;
+    return 'http:/'+'/up.thefreedictionary.com/trc.ashx?sender=farlex&target=' + target + '&info=' + info;
+}
 function MobileSelfPromo() {
 	var n=navigator.userAgent;
-	function aml() {
-		if (n.indexOf('NOOK')>0) return '/_/gr.aspx?url='+escape('http://www.barnesandnoble.com/w/dictionary-farlex-inc/1112166663');
-		if (n.indexOf('Silk-Accelerated')>0) return '/_/gr.aspx?url='+escape('http://www.amazon.com/Farlex-Dictionary/dp/B004I744AS');
-		return 'market://details?id=com.tfd.mobile.TfdSearch';
-	}
-	function a(u,t){return '<a href="'+u+'" style="font-weight:bold;color:darkred">'+t+'</a>'};
-	function mbad(l){dw('<div style="margin-bottom:14px;margin-top:3px">'+l+'</div>')}
+	function a(u, t) { return '<input type="button" onclick="window.location.href=\'' + u + '\'" style="font-weight:bold;color:darkred;width:95%;white-space:normal;" value="' + t + '" />' };
+	function mbad(l){dw('<div style="margin-bottom:14px;margin-top:3px;text-align:center;font-weight:bold">'+l+'</div>')}
 	if(n.indexOf('Android')>0) mbad(a(aml(),'Install TheFreeDictionary Android App. It\'s Free!'))
-	else if(n.indexOf('like Mac OS')>0) {
-		mbad(a('http:/'+'/up.thefreedictionary.com/trc.ashx?target=iOSFREE&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid379450383%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite','Install a FREE version of TheFreeDictionary Mobile App')+' <b>or</b> '+a('http:'+'//up.thefreedictionary.com/trc.ashx?target=iOSPRO&sender=farlex&info=tfdwebsite&url=http%3A%2F%2Fapp.appsflyer.com%2Fid492085918%2F%3Fpid%3Dfarlex%26c%3Dtfdwebsite&altURL=http%3A%2F%2Fitunes.apple.com%2Fus%2Fapp%2Fdictionary!!%2Fid492085918','an ad-free version for just $3.99'));
-	}
+	else if(n.indexOf('like Mac OS')>0) mbad(a(aml(), 'Install a FREE Mobile App') + '<br>or<br>' + a(aml('pro'), 'an ad-free version for just $3.99'));
 }
 function m_over(url){
 window.status=url;
@@ -721,6 +723,22 @@ if (wl && WordListHost && ById('word_list')) AsyncRequest('http://'+WordListHost
 if (!getCookie('track')) AsyncRequest('http:/' + '/www.thefreedictionary.com/_/misc/track.ashx?ref=' + encodeURIComponent(document.referrer) + '&loc=' + loc + '&r=' + Math.random());
 //dw('<s' + 'cript src="https:/'+'/apis.google.com/js/plusone.js">{"lang": "' + PageLang + '"}</s' + 'cript>');
 if (!IsMob) AsyncRequest('https:/' + '/apis.google.com/js/plusone.js', '{"lang": "' + PageLang + '"}');
+function getMobileType() {var ua = navigator.userAgent;var ret = "unknown";
+    if (/Windows.(NT|XP|ME|9)/i.test(ua) && !/Phone/i.test(ua) || /Win(9|.9|NT)/i.test(ua) || /Macintosh|PowerPC/i.test(ua) && !/Silk/i.test(ua) || /Linux/i.test(ua) && /X11/i.test(ua) || /Solaris|SunOS|BSD/i.test(ua)) {ret = "desktop";}
+    else if (/Bot|Crawler|Spider|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|TinEye/i.test(ua) && !/Mobile/i.test(ua)) {ret = "desktop";}
+    else if (/iP(a|ro)d/i.test(ua) || /tablet/i.test(ua) && !/RX-34/i.test(ua) || /FOLIO/i.test(ua) || /Linux/i.test(ua) && /Android/i.test(ua) && !/Fennec|mobi|HTC.Magic|HTCX06HT|Nexus.One|SC-02B|fone.945/i.test(ua) || /Kindle/i.test(ua) || /Mac.OS/i.test(ua) && /Silk/i.test(ua)) {ret = "tablet";}
+    else if (/GT-P10|SC-01C|SHW-M180S|SGH-T849|SCH-I800|SHW-M180L|SPH-P100|SGH-I987|zt180|HTC(.Flyer|_Flyer)|Sprint.ATP51|ViewPad7|pandigital(sprnova|nova)|Ideos.S7|Dell.Streak.7|Advent.Vega|A101IT|A70BHT|MID7015|Next2|nook/i.test(ua) || /MB511/i.test(ua) && /RUTEM/i.test(ua)) {ret = "tablet";}
+    else if (/BOLT|Fennec|Iris|Maemo|Minimo|Mobi|mowser|NetFront|Novarra|Prism|RX-34|Skyfire|Tear|XV6875|XV6975|Google.Wireless.Transcoder/i.test(ua) || /Opera/i.test(ua) && /Windows.NT.5/i.test(ua) && /HTC|Xda|Mini|Vario|SAMSUNG-GT-i8000|SAMSUNG-SGH-i9/i.test(ua)) {ret = "mobile";}
+    else if (/GoogleTV|SmartTV|Internet.TV|NetCast|NETTV|AppleTV|boxee|Kylo|Roku|DLNADOC|CE-HTML/i.test(ua) || /Xbox|PLAYSTATION.3|Wii/i.test(ua)) {ret = "tv";}
+    return ret;
+}
+if (!IsApp && !getCookie('tfd_popup')) {
+    var mobType = getMobileType();
+    if (mobType == 'tablet' || (mobType == 'mobile' && IsMob)) {
+        setCookie('tfd_popup', 1);
+        AsyncRequest('http:/'+'/img.tfd.com/popup.js');
+    }
+}
 }
 function flowSM(i) {var mn = ById('flow_main' + i), c=ById('flow_mid'+i); if (!mn || !c) return;mn.scrollTop=c.offsetTop+c.offsetParent.offsetTop-mn.offsetTop-mn.clientHeight/2+c.scrollHeight/2-(IE?-7:10)}
 function delayedads() {if(delayedads_req) clearTimeout(delayedads_req);setTimeout('delayedads2()', 10); }
@@ -1065,4 +1083,4 @@ function local_info(n, z) {
 	if (z && z.length == 5) {wthr_f_no+=1;dw('<div id="WTHR_LoadingContent'+wthr_f_no+'"><img width=16 height=16 src=http:/'+'/img.tfd.com/m/wait16.gif></div><iframe src="/_/hp/Controls/AsyncWeatherControl.aspx?location='+z+'&contentId=WTHR_LoadingContent'+wthr_f_no+'&NOD=5&Unit=F" id="wrifrm'+wthr_f_no+'" class="ifrm" style="display:'+(navigator.userAgent && navigator.userAgent.indexOf('Gecko')>0?'inline':'none')+'"></iframe><br>')};
 	if (n) {n=encodeURIComponent(n);dw('<img width=320 height=280 src="http:/'+'/maps.google.com/maps/api/staticmap?center='+n+'&zoom=5&size=320x280&maptype=map&markers=color:red|color:red|label:|'+n+'&sensor=false"><img style="margin-left:6pt" width=320 height=280 src="http:/'+'/maps.google.com/maps/api/staticmap?center='+n+'&&size=320x280&maptype=terrain&markers=color:red|color:red|label:|'+n+'&sensor=false">')};
 }
-function _CPD(destId, data) {var dest=ById(destId);if (dest) {dest.setAttribute("DataLoaded","1");dest.innerHTML=data;}}
+function _CPD(destId, data) { var dest = ById(destId); if (dest) { dest.setAttribute("DataLoaded", "1"); dest.innerHTML = data; } }

@@ -1167,7 +1167,8 @@ a.css("left",0);
 if(c.width()<c.find("ul").width()){b.removeClass("end")
 }else{b.addClass("end")
 }})
-}if(c.width()<c.find("ul").width()){b.removeClass("end")
+}$(window).resize();
+if(c.width()<c.find("ul").width()){b.removeClass("end")
 }else{b.addClass("end")
 }$(".ctrl, .cap").removeClass("hidden");
 d.click(function(){if($(this).hasClass("end")!==true){if(c.width()<c.find("ul").width()){b.removeClass("end")

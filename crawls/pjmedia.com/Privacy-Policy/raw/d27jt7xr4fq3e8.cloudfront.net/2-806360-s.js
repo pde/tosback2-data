@@ -27,8 +27,12 @@
 		var is_recent = /^s3.amazonaws.com\/sniffer/.test(s);
 		s = s.replace(/^[^#]+#/,'');
 
+				var is_initial = ! /#broken_by=.*/.test(s);
+		s = s.replace(/#broken_by=.*/,'');
+
 				var rubicon = s.replace(/^[^!]*!/,'');
 		s = s.replace(/!.*/,'');
+
 
 		s = s.split(';;');
 		for(var c = 0; c < s.length; c++){
@@ -38,18 +42,18 @@
 					('img'===p[1] ? '<img' : '<script')
 					+('img'===p[1] ? ' width="1" height="1" border="0" style="outline:none;"' : ' type="text/javascript"')
 					+' src="'+htmlescape(decodeURIComponent(p[2]))+'"'
-					+('img'===p[1] ? "\/>" : "\/><\/script>")
+					+('img'===p[1] ? "\/>" : "><\/script>")
 				);
 			}
 		}
 		return {
 			is_secure:is_secure
 			,is_recent:is_recent
+			,is_initial:is_initial
 			,rubicon:rubicon
 		};
 	})(htmlescape,scripts)
 	;
-
 	if(/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm|opera/i.test(navigator.userAgent)){return [-5,'blacklisted user agent']}
 
 	if(window.screen.width < 1280){return [-6,'window.screen.width < 1280']}

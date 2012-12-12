@@ -105,10 +105,15 @@ JY = {
                     data: 'did=' + pid,
                     dataType: 'json',
                     success: function(data) {
+                    console.log(data);
                         li.slideUp();
-                        $('ul#mini-cart-items li:last').css('border', 'none');
                         $('span#mini-cart-qty').text(data.cart.products.length);
-                        $('span#mini-cart-subtotal').text(data.cart.miniSubTotal);
+                        $('span#mini-cart-subtotal,span#mini-cart-subtotal-top').text(data.cart.miniSubTotal);
+                        UTILS.drawMiniCart(data.cart,false);
+//                        li.slideUp();
+//                        $('ul#mini-cart-items li:last').css('border', 'none');
+//                        $('span#mini-cart-qty').text(data.cart.products.length);
+//                        $('span#mini-cart-subtotal,span#mini-cart-subtotal-top').text(data.cart.miniSubTotal);
                     },
                     error: function(a, b, c) {
                         window.log('delete cart error', a, b, c);
@@ -1319,12 +1324,12 @@ UTILS = {
                 url: '/ajx/getstores.aspx',
                 data: 'p=' + UTILS.locator.stores + '&s=' + UTILS.locator.state + '&z=' + UTILS.locator.zip + '&r=' + parseInt(UTILS.locator.radius),
                 success: function(data) {
-                    if ((data.jy.length > 0) || (data.shi.length > 0) || (data.kz.length > 0) || (data.ugs.length > 0)) {
+                if ((data.jy.length > 0) || (data.shi.length > 0) || (data.kz.length > 0) || (data.ubj.length > 0)) {
                         UTILS.locator.headerPlace = data.header;
                         UTILS.locator.drawStores(data.jy, 'jy');
                         UTILS.locator.drawStores(data.shi, 'shi');
                         UTILS.locator.drawStores(data.kz, 'kids');
-                        UTILS.locator.drawStores(data.ugs, 'ugs');
+                        UTILS.locator.drawStores(data.ubj, 'ubj');
                     } else {
                         $('span#blurb-within').html('<span class="txtOrange">no stores found</span>');
                         if (JY.screenWidth > 767) {
@@ -1368,7 +1373,8 @@ UTILS = {
                     mapQ = stores[i].ADDR1 + ' ' + stores[i].ADDR2 + ' ' + stores[i].CITY + ' ' + stores[i].STATE + ' ' + stores[i].ZIP;
                     li += '\
 										<address class="addr-store" data-storeID="' + stores[i].OID + '">\
-											<strong class="store-loc"><a href="#">' + stores[i].ADDR1 + '</a></strong>\
+											<strong class="store-loc"><a href="#">' + stores[i].ADDR1 + '<br />\
+											STORE ' + stores[i].OID + '</a></strong><br />\
 											' + stores[i].ADDR2 + ' <br />\
 											' + stores[i].CITY + ', ' + stores[i].STATE + ' ' + stores[i].ZIP + '<br />\
 											' + stores[i].PHONE + '\
@@ -1426,7 +1432,7 @@ UTILS = {
             }
             $('#lnk-result-stores').text(crumbTxt);
             $('span#lct-store-name').text(storeJSON.ADDR1)
-            $('h4.store-title').text('journeys at ' + storeJSON.ADDR1);
+            $('h4.store-title').text(storeJSON.BRAND + ' at ' + storeJSON.ADDR1 + ': store ' + storeJSON.OID);
             $('div#find-it address.addr-store').html(html);
             if (storeJSON.HOURS) {
                 $('div#store-hours').html('<h4>store hours</h4>' + storeJSON.HOURS);
@@ -1565,20 +1571,35 @@ UTILS = {
     hideMiniCart: function() {
         $('div#mini-cart-wrap').slideUp();
     },
+    sortCart: function(a,b){
+        return (b.cartID - a.cartID);
+    },    
     drawMiniCart: function(minicart, slideIt) {
         var html = '';
-        var qty = 0;
+        var qty = 0, showingText='', items='items';
+        var cheatCart = minicart;
+        for (var i = 0; i < minicart.products.length; i++){
+            qty += parseInt(minicart.products[i].prodQty);
+        }
+        var sorted = minicart.products.sort(UTILS.sortCart);
+        cheatCart.products = sorted;
+        for (var i = 6; i < cheatCart.products.length ; i++){
+            cheatCart.products.splice([i], 1);
+        }
+        if ( cheatCart.products.length == 1 ){ items = 'item'; }
+        showingText = '<div class="mini-cart-info">Showing ' + cheatCart.products.length + ' of ' + qty + ' ' + items + '. </div>'
+        //console.log('length: ', minicart.products.length);
         $.ajax({
             url: '/assets/templates/mini-cart.html',
             cache: false,
             success: function(template) {
-                html = Mustache.to_html(template, minicart);
+                html = Mustache.to_html(template, cheatCart);
                 $('div#mini-cart-wrap').html(html);
                 $('ul#mini-cart-items li:last').css('border', 'none');
-                $('ul#mini-cart-items span.mc-qty-count').each(function() {
-                    qty += parseInt($(this).text());
-                });
                 $('span#mini-cart-qty').text(qty);
+                if ( qty > 6 ){
+                   $('ul#mini-cart-items').before(showingText); 
+                }
             },
             error: function(a, b, c) {
                 window.log('draw minicart error', a, b, c);

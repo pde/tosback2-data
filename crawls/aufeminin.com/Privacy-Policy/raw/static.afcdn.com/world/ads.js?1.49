@@ -241,14 +241,16 @@ afAdScripts = {
 };
 
 af_seealso = {
-	init: function(pageid,target) {
+	init: function(pageid,target,domain) {
 		var m = document.getElementById('afsa_VidMenu');
 		if (m) {
 			var l = m.getElementsByTagName('li');
 			if (l) {
 				af_seealso.onload_done=false;
-				af_seealso.pageid=pageid;
-				af_seealso.target=(af_seealso.target?af_seealso.target+';'+target:target);
+				af_seealso.pageid=(pageid ? pageid : afAd.pageid);
+				if (!target) target=afAd.target;
+				af_seealso.target=(af_seealso.target ? af_seealso.target+';'+target : target);
+				af_seealso.domain=domain;
 				af_seealso.prevItem=l[0];
 				for(var i=0, a=l.length; i<a; i++){
 					l[i].onclick = function(){
@@ -320,7 +322,7 @@ af_seealso = {
 			}
 		}
 		if (f && o && af_seealso.pageid && af_seealso.target)
-			f.setAttribute('src', '/world/semantic/ifr_video.asp?url='+o.getAttribute('url')
+			f.setAttribute('src', (af_seealso.domain ? af_seealso.domain : '')+'/world/semantic/ifr_video.asp?url='+o.getAttribute('url')
 									+'&w='+o.getAttribute('w')+'&h='+o.getAttribute('h')
 									+'&rid='+o.getAttribute('rid')
 									+'&pubp='+af_seealso.pageid

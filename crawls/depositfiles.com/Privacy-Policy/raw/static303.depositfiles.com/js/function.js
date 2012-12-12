@@ -114,7 +114,7 @@ function send_payoff(place)
 	}		
 	else if (info.match(/.+@.+\.[\w]+/)) {
 		if (!type || type=='webmoney') 
-			$('#pt_paypal').attr('checked', true);
+			$('#pt_payza').attr('checked', true);
 	}
 	else {
 		$('input[name=payoff_info]').focus();

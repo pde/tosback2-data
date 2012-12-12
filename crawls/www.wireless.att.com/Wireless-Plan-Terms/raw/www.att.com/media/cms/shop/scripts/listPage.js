@@ -30,6 +30,8 @@
 			queryString = "";
 			cartContents = ATT.globalVars.cartContents;
 			
+			if(!baseURL || baseURL == null){return false}
+			
 			if(cartContents){
 				urlParams["flowtype"] = cartContents.buyFlowType;
 				urlParams["zip"] = cartContents.userZip;
@@ -93,31 +95,33 @@
 			return  vInitValue;
 		}
 		this.getScrollPositionPref = function getScrollPositionPref(){
-			var scrollPositionPref, scrollPositionPrefPair;
+			var sessionId, scrollPositionPref, scrollPositionPrefPair;
 			
+			sessionId =  ATT.util.getCookie("SHOPSESSIONID")
 			scrollPositionPref =  window.localStorage.getItem(th.pageName() + "ScrollPositionPref");
 			
-			if(vSessionId && scrollPositionPref){
+			if(sessionId && scrollPositionPref){
 				scrollPositionPrefPair = scrollPositionPref.split(';');
-				if(vSessionId == scrollPositionPrefPair[0]){return scrollPositionPrefPair[1]}
+				if(sessionId == scrollPositionPrefPair[0]){return scrollPositionPrefPair[1]}
 			}
 			
 			return false
 		}
-		this.setScrollPositionPref = function setScrollPositionPref(){window.localStorage.setItem(th.pageName() + "ScrollPositionPref", vSessionId + ";" + jQuery(window).scrollTop())}
+		this.setScrollPositionPref = function setScrollPositionPref(){window.localStorage.setItem(th.pageName() + "ScrollPositionPref", ATT.util.getCookie("SHOPSESSIONID") + ";" + jQuery(window).scrollTop())}
 		this.getShowMorePref = function getShowMorePref(){
-			var sizePref, sizePrefPair;
+			var sessionId, sizePref, sizePrefPair;
 			
+			sessionId =  ATT.util.getCookie("SHOPSESSIONID")
 			sizePref =  window.localStorage.getItem(th.pageName() + "SizePref");
 			
-			if(vSessionId && sizePref){
+			if(sessionId && sizePref){
 				sizePrefPair = sizePref.split(';');
-				if(vSessionId == sizePrefPair[0]){return sizePrefPair[1]}
+				if(sessionId == sizePrefPair[0]){return sizePrefPair[1]}
 			}
 			return jQuery('input#showMore').attr('value');
 		}
 		this.setShowMorePref = function setShowMorePref(sizePref){
-			window.localStorage.setItem(th.pageName() + "SizePref", vSessionId + ";" + sizePref);
+			window.localStorage.setItem(th.pageName() + "SizePref", ATT.util.getCookie("SHOPSESSIONID") + ";" + sizePref);
 		}
 		this.showQuickView = function showQuickView(){
 			var quickViewLink = jQuery(this).attr('href').replace('.html', '.quickview.html');
@@ -371,19 +375,16 @@
 									ATT.modalSpinner.close();
 									th.generateFilterTokens();
 									th.onComplete();
-									
 								}
 								jQuery('#list-body .styled_forms input, #list-body .styled_forms textarea, #list-body .styled_forms select').filter(":visible").uniform();
-                                
 							}
 						);
 					}
 					ATT.ui.rtiListOOS.delay(4000).then(function() {
-			        	ATT.ui.rtiListOOS.init();
-			    	});
+						ATT.ui.rtiListOOS.init();
+					});
 					
 				}
-				
 			}
 		} // end of getItemInfo
 		

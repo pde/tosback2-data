@@ -183,24 +183,24 @@ var NADAjs = {
 
             var printParams = '?options=' + optList;
             var destination = document.location.href + printParams;
-//            if (optList != '') {
-//                $('#sharebutton').html('');
+            //            if (optList != '') {
+            //                $('#sharebutton').html('');
 
-//                stWidget.addEntry({
-//                    "service": "sharethis",
-//                    "element": document.getElementById('sharebutton'),
-//                    "url": destination,
-//                    "title": $('h2').html(),
-//                    "type": "chicklet",
-//                    "summary": $('title').html(),
-//                    "text": "share"
-//                });
+            //                stWidget.addEntry({
+            //                    "service": "sharethis",
+            //                    "element": document.getElementById('sharebutton'),
+            //                    "url": destination,
+            //                    "title": $('h2').html(),
+            //                    "type": "chicklet",
+            //                    "summary": $('title').html(),
+            //                    "text": "share"
+            //                });
 
-//                $('#sharebutton').children('span').first().css('padding-top', '2px');
-//                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
-//                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
-//                $('#emailFriend-dialog').css('padding-bottom', '2px');
-//            }
+            //                $('#sharebutton').children('span').first().css('padding-top', '2px');
+            //                $('#sharebutton').children('span').first().children('span').first().css('padding-top', '2px');
+            //                $('#sharebutton').children('span').first().children('span').first().css('font-size', '10px');
+            //                $('#emailFriend-dialog').css('padding-bottom', '2px');
+            //            }
 
             document.getElementById('optParams').value = optList;
         }
@@ -946,15 +946,21 @@ var NADAjs = {
             //onload tracking
             $("input[data-ga-category], a[data-ga-category]").each(function() {
                 _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load',
-                           buildGALabel($(this)), 0, true]);
+                            buildGALabel($(this)), 0, true]);
             });
-
+            /*
             //onclick tracking
             $("input[data-ga-category], a[data-ga-category]").click(function() {
-                //alert(buildGALabel($(this)));
-                _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
-                          buildGALabel($(this)), 1, false]);
+            _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Click',
+            buildGALabel($(this)), 1, false]);
             });
+            */
+        }
+
+        var gaTrackClick = function(element) {
+            //alert(buildGALabel(element));
+            _gaq.push(['_trackEvent', element.attr('data-ga-category'), element.attr('data-ga-action') + ' - Click',
+                            buildGALabel(element), 1, false]);
         }
 
         var buildGALabel = function(element) {
@@ -962,6 +968,7 @@ var NADAjs = {
         }
 
         this.Init = init;
+        this.GATrackClick = gaTrackClick;
     }, //PartnerBoxes
 
     AutoTraderWidget: new function() {
@@ -1225,16 +1232,16 @@ var NADAjs = {
 
             $("input[name='LeaseMileage']").imageTick({
                 tick_image_path: {
-                10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-10k.gif",
-                12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-12k.gif",
-                15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-15k.gif",
-                20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-20k.gif"
+                    10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-10k.gif",
+                    12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-12k.gif",
+                    15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-15k.gif",
+                    20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-20k.gif"
                 },
                 no_tick_image_path: {
-                10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-10k.gif",
-                12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-12k.gif",
-                15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-15k.gif",
-                20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-20k.gif"
+                    10000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-10k.gif",
+                    12000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-12k.gif",
+                    15000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-15k.gif",
+                    20000: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-20k.gif"
                 },
                 image_tick_class: "LeaseMileage"
             });
@@ -1244,16 +1251,16 @@ var NADAjs = {
 
             $("input[name='LeaseTerm']").imageTick({
                 tick_image_path: {
-                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
-                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
-                39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-39.gif",
-                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif"
+                    24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
+                    36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
+                    39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-39.gif",
+                    48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif"
                 },
                 no_tick_image_path: {
-                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
-                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
-                39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-39.gif",
-                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif"
+                    24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
+                    36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
+                    39: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-39.gif",
+                    48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif"
                 },
                 image_tick_class: "LeaseTerm"
             });
@@ -1264,20 +1271,20 @@ var NADAjs = {
 
             $("input[name='LoanTerm']").imageTick({
                 tick_image_path: {
-                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
-                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
-                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif",
-                60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-60.gif",
-                72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-72.gif",
-                84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-84.gif"
+                    24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-24.gif",
+                    36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-36.gif",
+                    48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-48.gif",
+                    60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-60.gif",
+                    72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-72.gif",
+                    84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-blue-84.gif"
                 },
                 no_tick_image_path: {
-                24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
-                36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
-                48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif",
-                60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-60.gif",
-                72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-72.gif",
-                84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-84.gif"
+                    24: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-24.gif",
+                    36: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-36.gif",
+                    48: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-48.gif",
+                    60: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-60.gif",
+                    72: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-72.gif",
+                    84: "http://images.nadaguides.com/redesign/vdp/vdp-payment-calc-grey-84.gif"
                 },
                 image_tick_class: "LoanTerm"
             });
@@ -1386,13 +1393,13 @@ var NADAjs = {
                         LoanPayment.html(data.MonthlyPayment + " <span style='font-weight:none; font-size:14px'>/mo<span><div style='font-weight:normal;font-size:10px;'>" + data.DueAtSigning + "</div>").addClass("nvdp-calc-pmt").fadeIn('fast');
                         if (data.PmtDetails != null && data.PmtDetails.length > 0) {
                             var pmtDetails = $.map(data.PmtDetails, function(detail, i) {
-                                if (i==0)
+                                if (i == 0)
                                     return "<div style='padding-top:20px;font-size:12px;'>" + detail + "</div>";
                                 else return "<div style='font-size:12px;'>" + detail + "</div>";
                             });
                             LoanDetails.html(pmtDetails.join("")).fadeIn('fast');
                         }
-                        $("#frmCalcLoan").find("#DownPayment").val(data.DownPayment);
+                        $("#frmCalcLoan").find("#DownPayment").val(data.DisplayDownPayment);
                     }
                 }
             })
@@ -1444,7 +1451,7 @@ var NADAjs = {
                         LeasePayment.html(data.MonthlyPayment + " <span style='font-weight:none; font-size:14px'>/mo</span><div style='font-weight:normal;font-size:10px;'>" + data.DueAtSigning + "</div>").addClass("nvdp-calc-pmt").fadeIn('fast');
                         if (data.PmtDetails != null && data.PmtDetails.length > 0) {
                             var pmtDetails = $.map(data.PmtDetails, function(detail, i) {
-                                if (i==0)
+                                if (i == 0)
                                     return "<div style='padding-top:20px;font-size:12px;'>" + detail + "</div>";
                                 else return "<div style='font-size:12px;'>" + detail + "</div>";
                             });
@@ -1477,7 +1484,7 @@ var NADAjs = {
             });
             $("#nvdp-years-select").change(function(e) { return $('#nvdp-years-select').blur(); });
             $("#nvdp-miles-select").change(function(e) { return $('#nvdp-miles-select').blur(); });
-            
+
         } //init
 
         var ctoSubmit = function() {
@@ -1605,6 +1612,201 @@ var NADAjs = {
         this.prev = prev;
         this.showImg = showImg;
         this.init = init;
+    },
+
+    NewVDPColors: new function() {
+        var config = {};
+        var init = function() {
+            config = {
+                selectedClass: 'selected',
+                hoverClass: 'hover',
+                thumbClass: 'color-thumb',
+                hexClass: 'colorbox-hex',
+                extColorWrap: $('#extcolor-colors'),
+                extColorTitle: $('.color-title-ext'),
+                thumbWrap: $('#color-thumbs-wrap'),
+                intColorWrap: $('.int-colorwrap'),
+                intColorTitle: $('.color-title-int'),
+                fullImg: $('#color-fullimg')
+            };
+            addListeners();
+        }; //init
+
+        var currSliderPage = 1;
+        var currExtColorIndex = 0;
+        var lastExtColorIndex = 0;
+        var extColorPixelSize = 370;
+
+        var moveSlider = function() {
+            if (currExtColorIndex > 1) {
+                if ((currExtColorIndex - 1) % 10 == 0 && currExtColorIndex > lastExtColorIndex) {
+                    var lMargin = extColorPixelSize * (currSliderPage) * -1;
+                    config.extColorWrap.animate({ 'margin-left': lMargin + 'px' }, 400);
+                    currSliderPage++;
+                } else if (currExtColorIndex % 10 == 0 && currExtColorIndex < lastExtColorIndex) {
+                    var rMargin = extColorPixelSize * (currSliderPage - 2) * -1;
+                    config.extColorWrap.animate({ 'margin-left': rMargin + 'px' }, 400);
+                    currSliderPage--;
+                }
+            }
+        };
+
+        var getExtSelected = function() {
+            return config.extColorWrap.find('.' + config.selectedClass);
+        };
+
+        var getIntSelected = function() {
+            return config.intColorWrap.find('.' + config.selectedClass);
+        };
+
+        var nextExtColor = function() {
+            var nextColor = getExtSelected().next();
+            if (nextColor.length > 0)
+                pickExtColor(nextColor);
+        };
+
+        var prevExtColor = function() {
+            var prevColor = getExtSelected().prev();
+            if (prevColor.length > 0)
+                pickExtColor(prevColor);
+        };
+
+        var setExtTitle = function(text) {
+            config.extColorTitle.text(' : ' + text);
+        };
+
+        var setIntTitle = function(text) {
+            config.intColorTitle.text(' : ' + text);
+        };
+
+        var pickExtColor = function(hexElem) {
+            //select new color hex
+            getExtSelected().removeClass(config.selectedClass);
+            $(hexElem).addClass(config.selectedClass);
+            setExtTitle(hexElem.attr('data-name'));
+
+            //set full img to new hex
+            config.fullImg.attr('src', hexElem.attr('data-file'));
+
+            //show interior hex
+            var intColorId = hexElem.attr('data-intcolors');
+            config.intColorWrap.hide();
+            $('#' + intColorId).show();
+            pickIntColor($('#' + intColorId).find('.' + config.hexClass).first());
+
+            //move slider
+            lastExtColorIndex = currExtColorIndex;
+            currExtColorIndex = hexElem.index();
+            moveSlider();
+
+            //hide last ext thumbs
+            config.thumbWrap.children().hide();
+
+            //get new thumbs
+            var myExtThumbs = $(hexElem).attr('data-extthumbs');
+            var thumbWrapElem = $('#' + myExtThumbs);
+            $(thumbWrapElem).show();
+
+            var thumbs = $(thumbWrapElem).children();
+            var first = true;
+            thumbs.each(function() {
+                var thumbSrc = $(this).attr('data-thumb');
+                $(this).attr('src', thumbSrc);
+                if (first) {
+                    //by default, set fullimg to first thumb
+                    config.fullImg.attr('src', $(this).attr('data-full'));
+                    $(this).addClass(config.selectedClass);
+                    first = false;
+                }
+                else {
+                    $(this).removeClass(config.selectedClass);
+                }
+            });
+        };
+
+        var pickExtImg = function(thumbElem) {
+            config.fullImg.attr('src', $(thumbElem).attr('data-full'));
+            config.thumbWrap.find('.' + config.selectedClass + ':visible').removeClass(config.selectedClass);
+            $(thumbElem).addClass(config.selectedClass);
+        };
+
+        var pickIntColor = function(hexElem) {
+            getIntSelected().removeClass(config.selectedClass);
+            $(hexElem).addClass(config.selectedClass);
+            setIntTitle($(hexElem).attr('data-name'));
+        };
+
+        var addListeners = function() {
+            $('.gallery-next').click(function(ev) {
+                ev.preventDefault();
+                nextExtColor();
+            });
+
+            $('.gallery-prev').click(function(ev) {
+                ev.preventDefault();
+                prevExtColor();
+            });
+
+            var extColors = config.extColorWrap.find('.' + config.hexClass);
+
+            extColors.click(function(ev) {
+                ev.preventDefault();
+                pickExtColor($(this));
+            });
+
+            extColors.hover(
+                function(ev) {
+                    setExtTitle($(this).attr('data-name'));
+                    $(this).addClass(config.hoverClass);
+                },
+                function(ev) {
+                    $(this).removeClass(config.hoverClass);
+                    setExtTitle(getExtSelected().attr('data-name'));
+                });
+
+            var thumbs = config.thumbWrap.find('.' + config.thumbClass);
+
+            thumbs.hover(
+                function(ev) {
+                    $(this).addClass(config.hoverClass);
+                },
+                function(ev) {
+                    $(this).removeClass(config.hoverClass);
+                });
+
+            thumbs.click(function() {
+                pickExtImg($(this));
+            });
+
+
+            var intColors = config.intColorWrap.find('.' + config.hexClass);
+
+            intColors.click(function(ev) {
+                ev.preventDefault();
+                pickIntColor($(this));
+            });
+
+            intColors.hover(
+                function(ev) {
+                    setIntTitle($(this).attr('data-name'));
+                    $(this).addClass('hover');
+                },
+                function(ev) {
+                    $(this).removeClass('hover');
+                    setIntTitle(getIntSelected().attr('data-name'));
+                });
+
+        };
+
+        this.init = init;
+        this.getExtSelected = getExtSelected;
+        this.getIntSelected = getIntSelected;
+        this.setExtTitle = setExtTitle;
+        this.setIntTitle = setIntTitle;
+        this.nextExtColor = nextExtColor;
+        this.prevExtColor = prevExtColor;
+        this.pickExtColor = pickExtColor;
+        this.pickIntColor = pickIntColor;
     }
 };
 

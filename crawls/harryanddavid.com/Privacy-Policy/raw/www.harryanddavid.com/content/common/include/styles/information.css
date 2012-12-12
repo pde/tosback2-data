@@ -31,8 +31,8 @@
 .dijitTextBox                  { background-color: #fff; }
 .dijitTextBox .dijitInputInner { padding: 1px 2px 1px 0; }
 
-.dijitTextBoxError                      { background-color: #F8d2d4 !important; border-color: #C00 !important; }
-.dijitTextBoxError .dijitValidationIcon { display: none; }
+.dijitTextBoxError                 { background-color: #F8d2d4 !important; border-color: #C00 !important; }
+.dijitTextBox .dijitValidationIcon { display: none; }
 
 .dijitTextBoxDisabled,
 .dijitTextBoxDisabled .dijitButtonNode { border-color: #d3d3d3; }
@@ -59,8 +59,8 @@
       .dijitComboBoxFocused .dijitArrowButtonInner { background-position:-70px 53%; border: 0 none; }
 .ie_7 .dijitComboBoxFocused .dijitButtonNode       { padding: 3px 1px; }
 
-.dijitComboBoxError                      { background-color: #F8d2d4 !important; border-color: #C00 !important; }
-.dijitComboBoxError .dijitValidationIcon { display: none; }
+.dijitComboBoxError                 { background-color: #F8d2d4 !important; border-color: #C00 !important; }
+.dijitComboBox .dijitValidationIcon { display: none; }
 
 div.dijitComboBoxDisabled .dijitArrowButtonInner { background-position:0px 50%; background-color:#f1f1f1; }
 
@@ -1149,9 +1149,6 @@ span.sprite-verisign-normal            { display: inline-block; }
 #selectAddOns.dijitDialog,
 #selectCyoItems.dijitDialog        { width: 925px; }
 
-/* position relative is needed so iscroll will show up in correct location - please leave. */
-#deliveryPopup .dijitDialogPaneContent .scroll { height: 500px !important; overflow: auto; position: relative;}
-
 #dialog-festive-wine-covers          { width: 550px; }
 #dialog-festive-wine-covers .group   { float: left; width: 144px; }
 #dialog-festive-wine-covers .group p { margin-top: 0; font-weight: bold; text-align: center; }
@@ -1220,6 +1217,11 @@ span.sprite-verisign-normal            { display: inline-block; }
 
 #productCompare.dijitDialog { width: 938px; }
 
+/* Shipping **********************************************************************************************************/
+
+/* position relative is needed so iscroll will show up in correct location - please leave. */
+#deliveryPopup .dijitDialogPaneContent .scroll { position: relative; height: 500px !important; overflow: auto; }
+
 /* Email Sign-Up *****************************************************************************************************/
 
 #emailSignUpDialog #email_signUp               { display: block; margin: 10px 0; }
@@ -1231,7 +1233,6 @@ span.sprite-verisign-normal            { display: inline-block; }
 /* Waste of file space ***********************************************************************************************/
 
 #signInChangePopup.dijitDialog { z-index: 10000; }
-
 
 /* Gift Card Balance *************************************************************************************************/
 
@@ -1352,6 +1353,7 @@ span.sprite-verisign-normal            { display: inline-block; }
 #wineConfirmPopup .notice       { font-weight: bold; }
 #wineConfirmPopup .buttons      { text-align: right; }
 
+.wineship { width: 655px; }
 .wineship .heading { font-size:18px; width:210px; }
 .wineship .leftColumn { float: left; padding-left: 5px; width: 320px; }
 .wineship .leftColumn .heading { color:#658528; }
@@ -1895,7 +1897,7 @@ input::-webkit-inner-spin-button {
 #resetPasswordFormBody .password,
 #resetPasswordFormBody .verify        { text-align: left; }
 #resetPasswordFormBody .label         { margin-bottom: 5px; }
-#resetPasswordFormBody input          { width: 245px; border: 1px solid #80923f; }
+#resetPasswordFormBody input          { width: 245px; border: 1px solid #80923f; font-family: Verdana; font-size: 11pt; }
 #resetPasswordFormBody .dijitTextBox  { border: 1px solid #80923f; }
 
 /* Remember Me Details Pane */
@@ -2138,19 +2140,21 @@ ie_7 #footer .partners .social div                 { display: inline; }
 #content dl          { margin: 10px 0 0 0; }
 #content dt          { font-weight: bold; }
 
-#content table                 { width: 100%; border-collapse: collapse; background-color: #fff; }
-#content table td,
-#content table th              { padding: 2px; border: 1px solid #000; }
-#content table thead tr        { color: #fff; background: #363; }
-#content table thead tr.sub    { color: #000; background-color: #ccc; }
+#content .table-wrap            { padding: 12px; background-color: #F6F6F6; }
+#content table                  { border-collapse: collapse; }
+#content table th               { padding: 4px 2px; }
+#content table td               { padding: 4px 2px; }
 #content table th.sub,
-#content table th .sub         { font-weight: normal; }
-#content table tbody tr.alt    { background: #eee; }
-#content table tbody th        { font-weight: bold; text-align: left; background: #ccc; }
-#content table tbody td        { text-align: center; }
-#content table tbody tr.alt th { background: #eee; }
+#content table th .sub          { font-size: 16px; font-weight: normal; }
+#content table thead th         { font-size: 20px; line-height: 1em; text-align: left; }
+#content table thead tr + tr th { font-size: 16px; }
+#content table thead th + th    { text-align: center; }
+#content table tbody th         { font-weight: bold; text-align: left; }
+#content table tbody td         { border: 1px solid #999; border-width: 1px 0; text-align: left; }
+#content table tbody th + td,
+#content table tbody td + td    { text-align: center; }
 #content table tfoot th,
-#content table tfoot td        { text-align: left; }
+#content table tfoot td         { text-align: left; }
 
 
 #content .side h3          { padding-bottom: 5px;
@@ -2302,22 +2306,29 @@ ie_7 #footer .partners .social div                 { display: inline; }
 #content #privacyTerms h3 { border-bottom: 1px solid #000; }
 
 /* Shipping Cut Offs */
-#content .cutoff-dates .holidays { width: 24%; }
-#content .cutoff-dates .dates    { width: 19%; }
+#content .cutoff-dates th      { font-size: 14px; text-align: center; vertical-align: bottom; }
+#content .cutoff-dates th,
+#content .cutoff-dates td      { width: 24%; }
+#content .cutoff-dates th + th,
+#content .cutoff-dates td + td { width: 19%; }
 
 /* Delivery and Processing */
-#content table.std-delivery th,
-#content table.std-delivery td,
-#content table.exp-delivery th,
-#content table.exp-delivery td,
-#content table.mis-delivery th,
-#content table.mis-delivery td  { text-align: center; }
-#content .std-delivery,
-#content .exp-delivery,
-#content .mis-delivery          { float: left; width: 240px; border-collapse: collapse; }
-#content .exp-delivery,
-#content .mis-delivery          { margin-left: 15px; }
+#content .file-handling .table-wrap { float: left; }
 
+#content .std-delivery              { margin: 18px 0 0 0; }
+#content .std-delivery table        { width: 277px; }
+#content .std-delivery td           { width: 50%; text-align: left; }
+#content .std-delivery td + td      { text-align: center; }
+
+#content .exp-delivery              { margin: 18px 0 0 18px; }
+#content .exp-delivery table        { width: 400px; }
+#content .exp-delivery td           { width: 65%; text-align: left; }
+#content .exp-delivery td + td      { width: 35%; text-align: center; }
+
+#content .mis-delivery              { margin: 18px 0 0 18px; }
+#content .mis-delivery table        { width: 400px; }
+#content .mis-delivery td           { width: 50%; text-align: left; }
+#content .mis-delivery td + td      { width: 50%; text-align: center; }
 
 /* Shopping Services */
 

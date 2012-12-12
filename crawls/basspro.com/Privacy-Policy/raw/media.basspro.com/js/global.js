@@ -45,6 +45,7 @@ $('#slideshow-content').cycle({
 
 
 
+
   $("#pop-back-pdp").click(function () {
     $("#pop-back-pdp").css({
             "display": "none"
@@ -607,4 +608,22 @@ $(document).ready(function () {
             return false;
       });
     });
+
+// ----------
+// Catch of the Week
+// ----------
+$(document).ready(function(){
+	$(".cotw a.legal").mouseenter(function() {
+    $(".cotw p.cotw-disclaimer").slideDown();
+  });
+	$("p.cotw-disclaimer").mouseleave(function() {
+    $(this).slideUp();
+  });
+	$("p.cotw-disclaimer-rotation").mouseenter(function() {
+    $(this).slideUp();
+  });
+	$(".cotw a.legal-rotation").mouseleave(function() {
+    $(".cotw.rotation p.cotw-disclaimer-rotation").slideDown();
+  });
+});
 

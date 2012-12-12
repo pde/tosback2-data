@@ -420,7 +420,7 @@ ATT.cqWebtrend = new function ($, doc) {
     $(doc).bind('cbox_complete', function () {
         var mname, wtargs1, modalinit, modalname, modaltitle, modaldcs, flag = true, wtSku, sku, skuPrice, clickid;
         //modalinit = $(".modalHeader").attr("title") || $(".modalHeader h1").attr('title') || $($(".modalHeader")[1]).attr("title");
-        modalinit = $('.modalHeader:isvisible').find('[title]').attr('title') ? $('.modalHeader:isvisible').find('[title]').attr('title') : $('.modalHeader:isvisible').attr('title') ? $('.modalHeader:isvisible').attr('title') : "" ;
+        modalinit = $('.modalHeader:isvisible').find('[title]').attr('title') ? $('.modalHeader:isvisible').find('[title]').attr('title') : $('.modalHeader:isvisible').attr('title') ? $('.modalHeader:isvisible').attr('title') : $('.modalHeader:isvisible').find('h1').text().replace(/,/g,'').replace(/ /g,'').toLowerCase();
         modalname = modalinit ? modalinit : "session";
         modaltitle = "HRock_" + modalname + "_Pg";
         modaldcs = "/wireless/virtual/" + modalname + ".html";
@@ -1275,8 +1275,7 @@ ATT.cqWebtrend = new function ($, doc) {
             var tmpwtargs = ['DCSext.wtCQClickId', "UNKNOWN", 'DCSext.wtBuyFlowCode', ATT.globalVars.flowcode, 'DCSext.wtNoHit', 1, "DCSext.wtZipCode",ATT.globalVars.zip()];
             window.dcsMultiTrack.apply(this, tmpwtargs);
     	});*/
-    
- 
+	
 }(jQuery, document);
 
 window.localStorage.setItem("orderStatus", 1);
@@ -1300,5 +1299,7 @@ if (ATT.globalVars.confirmationFlag && ~location.href.indexOf('/ordersummary')) 
       setTimeout(function(){t();}, 5000);
       window.localStorage.setItem("orderStatus", 0);
 }
+
+
             
             

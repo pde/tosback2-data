@@ -11,21 +11,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml" xml:lang="en" lang="en"  itemscope="itemscope" itemtype="http://schema.org/Article">
   <head>
   <title>Getting Started With Squidoo (The official overview, FAQ and TOS): Terms of Service</title>
-  <link rel="stylesheet" href="../../the.squidoocdn.com/styles/styles.v1321536861.css" />
-<link rel="stylesheet" href="../../the.squidoocdn.com/styles/style_modules.v1818580874.css" />
-    <!--[if ie 8]>
-      <link rel="stylesheet" type="text/css" href="/styles/ie8.css" />
-    <![endif]-->
-    <!--[if ie 7]>
-      <link rel="stylesheet" type="text/css" href="/styles/ie7.css" />
-    <![endif]-->
-    <!--[if ie 6]>
-      <link rel="stylesheet" type="text/css" href="/styles/ie6.css" />
-    <![endif]--> 
-        <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.squidoo.com/xml/syndicate_lens/squidoo" />
+  <link rel="stylesheet" href="../../the.squidoocdn.com/styles/min/bootstrap.v2976945505.css" />
+<link rel="stylesheet" href="../../the.squidoocdn.com/styles/themes/theme_squidgrid.css" />
+      <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.squidoo.com/xml/syndicate_lens/squidoo" />
       <link rel="canonical" href="65355501-Terms-of-Service.html" />
             <meta name="apple-mobile-web-app-capable" content="yes">
               <meta name="apple-mobile-web-app-status-bar-style" content="black">
+              <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
               <meta name="description" content="What's Squidoo? Squidoo is the free (yes, free), simple tool that makes it easy for you to publish your interests online. (You could even earn a royalty for yourself or for charity). From authors and astronauts to marketers and musicians, to cat lovers and...">
               <meta name="keywords" content="corey brown,gil hildebrand jr,history of squidoo,megan casey,megancasey,recommendation,seth godin,sethgodin,squidoo,squidoo top 100 website">
               <meta name="robots" content="noindex, nofollow">
@@ -59,7 +51,7 @@
   Squidoo = { 
     statichost: 'http://the.squidoocdn.com',
 
-    __generated__: '2012-12-05T06:39:26-05:00', 
+    __generated__: '2012-12-12T07:58:46-05:00', 
 
     host: document.location.protocol + '//' + document.location.hostname,
 
@@ -205,7 +197,7 @@
           };
       Squidoo.DEPS.FACEBOOK = {
               deps: [ Squidoo.DEPS.JQUERY ],
-            src: '/scripts/squidoo/lib/facebook.v4180727025.js',
+            src: '/scripts/squidoo/lib/facebook.v2829958143.js',
             isLoaded: function(callback) {
         
     callback(Squidoo.Facebook && Squidoo.Facebook.lib);
@@ -217,7 +209,7 @@
     
     sdkLoaded: false,
     
-    defaultPicture: 'http://i3.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
+    defaultPicture: 'http://i2.squidoocdn.com/resize_square/squidoo_images/50/lm_placeholder.jpg',
     
     // 
     // allows client to reload Facebook SDK on demand
@@ -279,7 +271,8 @@
   MIXPANEL_TOKEN_POSTCARDS = '1';
   CSRF = '';
   squidoo_embedded = '';
-</script><script src="../../the.squidoocdn.com/scripts/squidoo/core/squidoo.v2868014164.js"></script>
+</script><script src="../../the.squidoocdn.com/scripts/squidoo/core/squidoo.v3204997820.js"></script>
+<script src="../../the.squidoocdn.com/scripts/squidoo/lib/bootstrap.js"></script>
 <script src="../../the.squidoocdn.com/scripts/scriptaculous/prototype-1.6.1.0.js"></script>
 <script>
 // create queue for lazy-loading modules
@@ -313,6 +306,8 @@ onPageLoadHandler = function() {
   if (theLensOwner) {
     $J('.lens-owner').show();
   }
+  // TODO: this code should NOT be here
+  jQuery.getScript('//s7.addthis.com/js/300/addthis_widget.js#pubid=xa-50b922370ca13750');
 }
 function hasPageLoaded() {
   if (typeof(pageBottomLoaded) != 'undefined') {
@@ -346,31 +341,39 @@ function doSquidLike(button) {
         allButtons.addClass('disabled');
         var new_count;
 
-        if (__squid_like.member_likes) {
+        var dec = function() {
           new_count = __squid_like.like_count - 1;
           $J('.sl_count_rt').html(new_count.toString());
           $J('li.social_like').removeClass('social_liked');
 
           __squid_like.like_count = new_count;
           __squid_like.member_likes = false;
+        }
 
-        } else {
+        var inc = function() {
           new_count = __squid_like.like_count + 1;
           $J('.sl_count_rt').html(new_count.toString());
           $J('li.social_like').addClass('social_liked');
 
           __squid_like.like_count = new_count;
           __squid_like.member_likes = true;
-
         }
+
+        var previousState = __squid_like.member_likes;
+        __squid_like.member_likes ? dec() : inc();
 
         SquidgamingJS.post(
           '/utility/like_lens/' + theLensName,
           // this logic is opposite because the state class is applied above 
           { 'action': $J('li.social_like').hasClass('social_liked') ? 'like' : 'unlike' },
-          function (result) {
+          function (result) { // success
             allButtons.removeClass('disabled');
-          }
+          },
+          'text', 
+          function() { // error
+            previousState ? inc() : dec();
+            allButtons.removeClass('disabled');
+          } 
         );
       }
     } else {
@@ -412,22 +415,25 @@ registerPostsTestTier();
   <script type="text/javascript" src="../../partner.googleadservices.com/gampad/google_service.js">
   </script>
   <script type="text/javascript">
-    GS_googleAddAdSenseService("ca-pub-9879162776784828");
-    GS_googleEnableAllServices();
+    if ($J(window).width() >= 990 || !window.theLensName) {
+      GS_googleAddAdSenseService("ca-pub-9879162776784828");
+      GS_googleEnableAllServices();
+    }
   </script>
   <script>
-    GA_googleAddAttr("vis_type", "visitor");
+    if ($J(window).width() >= 990 || !window.theLensName) {
+        GA_googleAddAttr("vis_type", "visitor");
   GA_googleAddAttr("lens_rank", "25000");
   GA_googleAddAttr("topic_rank", "10001-25000");
   GA_googleAddAttr("cont_tag", "squidoo,corey brown,gil hildebrand jr,history of squidoo,megan casey,megancasey,recommendation,seth godin,sethgodin,squidoo,squidoo top 100 website");
+      GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_728x90_top");
+      GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_300x250_sidebartop");
+      GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_160x600_sidebarbottom");
+      GA_googleAddSlot("ca-pub-9879162776784828", "Chitika:Sidebar300x400");
+      GA_googleAddSlot("ca-pub-9879162776784828", "say_media_twig");
 
-    GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_728x90_top");
-    GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_300x250_sidebartop");
-    GA_googleAddSlot("ca-pub-9879162776784828", "squidoo_lenses_aboutme_160x600_sidebarbottom");
-    GA_googleAddSlot("ca-pub-9879162776784828", "Chitika:Sidebar300x400");
-    GA_googleAddSlot("ca-pub-9879162776784828", "say_media_twig");
-
-    GA_googleFetchAds();
+      GA_googleFetchAds();
+    }
   </script><!-- /adsense setup -->
   <script>
   var _gaq = _gaq || [];
@@ -455,11 +461,45 @@ registerPostsTestTier();
     })();
 
   
+  function createXhr() {
+    //Initializing our object
+    var xmlHttp = null;
+    //if XMLHttpRequest is available then creating and returning it
+    if (typeof(XMLHttpRequest) != undefined) {
+      xmlHttp = new XMLHttpRequest;
+      return xmlHttp;
+    //if window.ActiveXObject is available than the user is using IE...so we have to create the newest version XMLHttp object
+    } else if (window.ActiveXObject) {
+      var ieXMLHttpVersions = ['MSXML2.XMLHttp.5.0', 'MSXML2.XMLHttp.4.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp', 'Microsoft.XMLHttp'];
+      //In this array we are starting from the first element (newest version) and trying to create it. If there is an
+      //exception thrown we are handling it (and doing nothing ^^)
+      for (var i = 0; i < ieXMLHttpVersions.length; i++) {
+        try {
+          xmlHttp = new ActiveXObject(ieXMLHttpVersions[i]);
+          return xmlHttp;
+        } catch (e) {}
+      }
+    }
+  }
+
   var evTrack = function(category, action, opt_label, opt_value) {
     try {
               _gaq.push(['_trackEvent', category, action, opt_label, opt_value]);
           } catch (ex) {}
   };
+
+  function trackClick(link) {
+    if (theLensId) {
+      var xhr = createXhr();
+      var url = '/track/ajax_click?';
+      url += "&lens_id=" + theLensId;
+      url += "&url=" + encodeURIComponent(link.href);
+      xhr.open('get', url);
+      xhr.send(null);
+    }
+    
+          evTrack('clickout', link.hostname, link.href);
+      }
 
   var evSocial = function(network, socialAction, opt_target, opt_pagePath) {
     try {
@@ -509,6 +549,12 @@ registerPostsTestTier();
 
 <script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
   
+
+  <!-- IE Fix for HTML5 Tags -->
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
   
   
 </head>  <body  class="theme_squidgrid mpl_page" data-layout="global">
@@ -547,7 +593,27 @@ registerPostsTestTier();
   }();
 </script>    <div class="page_wrap clearfix">
       <!--INFOLINKS_OFF-->
-      <div id="squidnav_wrap" class="container">
+          <div id="mobile_ad_container" class="header_banner_mobile">
+    <script type="text/javascript">
+      if ($J(window).width() <= 480) {
+        google_ad_client = "ca-pub-9879162776784828";
+        /* Mobile banner - Header */
+        google_ad_slot = "9627477241";
+        google_ad_width = 320;
+        google_ad_height = 50;
+        !function() {
+          var src = 'http://pagead2.googlesyndication.com/pagead/show_ads.js';
+          document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        }();
+      }
+    </script>
+  </div><!-- .header_banner_mobile -->
+  <script>
+    if ($J(window).width() > 480) {
+      $J('.header_banner_mobile').hide();
+    }
+  </script>
+<div id="squidnav_wrap" class="container">
   <div id="squidnav" class="row">
     
     <div id="squidnav_left" class="float_left six columns">
@@ -567,199 +633,249 @@ registerPostsTestTier();
       </form>
     </div>
   </div>
-</div><div id="header_wrap">
-  <div id="header">
-    <h4 id="logo"><a href="http://www.squidoo.com/">Squidoo</a></h4>
-          <div id="header_banner">
+</div>
+
+
+<div class="squidnav_mobile_wrap clearfix">
+<a class="squidnav_toggle" href="65355501-Terms-of-Service.html#" onclick="jQuery('.squidnav_mobile').slideToggle(); return false;">Menu</a>
+
+  <div class="squidnav_mobile clearfix" style="display: none;">
+    <ul class="unstyled margin_bot_10" style="border-top: 1px solid #333; padding-top: 4px;">
+                        <li><a id="toolbar_login" href="https://www.squidoo.com/member/login/squidoo">Log In</a></li>
+                <li><a href="http://www.squidoo.com/topics">Explore Topics</a></li>
+        <li><a onclick="_gaq.push(['_trackEvent', 'Sign Up', 'Join Us']);" href="http://www.squidoo.com/member/registration">Join Us</a></li>
+          </ul>
+
+        <form id="header_search" method="get" action="http://www.squidoo.com/search/results" name="searchForm">
+            <input id="query" class="searchField" type="text" onfocus="this.value = '';" value="Search Squidoo" name="q"/>
+      <button id="btn_search_go" type="submit" value="Go">Go</button>
+    </form>
+  </div>
+</div><div id="header_wrap" class="clearfix">
+  <header id="header" class="clearfix">
+    <h4 class="logo">
+      <a href="http://www.squidoo.com/">Squidoo</a>
+    </h4>
+          <div class="header_banner">
           
 <script type="text/javascript">
-  if (!window.GA_googleFillSlot) {
-      } else {
-    GA_googleFillSlot('squidoo_lenses_aboutme_728x90_top');
+  if ($J(window).width() >= 990 || !window.theLensName) {
+    if (!window.GA_googleFillSlot) {
+          } else {
+      GA_googleFillSlot('squidoo_lenses_aboutme_728x90_top');
+    }
   }
-</script>      </div><!-- #header_banner -->
-  
-        <div class="mpl_nav_wrapper"><span class="mpl_tag">THIS LENS &raquo;</span>
-      <ul class="mpl_nav">
-                      <li >
-                <a href="http://www.squidoo.com/squidoo" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Home</a>
-                                                  <div><ul>
-                                                      <li>
-                                    <a href="http://www.squidoo.com/squidoo#module83406661" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What kinds of lenses can you make?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module8526759" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">A few fun facts</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module8526756" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What's this about money? A real world example.</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module1249865" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">A few handy links to get you started</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module26009532" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">The founding members of Squidoo</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module26009542" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">More SquidTeam members</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo#module26009552" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Other members or advisors or past interns behind the scenes (somewhere!) at Squidoo</a>
-                                  </li> 
-                                                  </ul></div>
-                              </li>
-                          <li  class="active_li">
-                <a href="65355501-Terms-of-Service.html" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Terms of Service</a>
-                                                  <div><ul>
-                                                      <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355511" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">1. YES, I AGREE!</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355741" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">2. The big picture: Description of Service</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355751" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. The rules</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355761" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">4. The content: who owns it?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355771" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">5. About royalties</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module82694401" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">6. Number six</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355781" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">7. Our privacy policy is your privacy policy</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355791" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">8. Resale of service</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355801" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">9. Squidoo can modify or discontinue the service</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="65355501-Terms-of-Service.html#module65355811" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">10. THERE IS NO SECTION 10.</a>
-                                  </li> 
-                                                          <li class="view_all"><a href="65355501-Terms-of-Service.html" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
-                                          </ul></div>
-                              </li>
-                          <li >
-                <a href="http://www.squidoo.com/squidoo/148722636-Originality-Pact" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Originality Pact</a>
-                                              </li>
-                          <li >
-                <a href="http://www.squidoo.com/squidoo/65359251-FAQ" onclick="evTrack('MPL', 'top-primary', 'squidoo');">FAQ</a>
-                                                  <div><ul>
-                                                      <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module127671041" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What's in our FAQ?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65426881" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">I. GETTING STARTED...</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361701" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">1. So, what is a lens?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361711" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">2. Why should I build a lens?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361721" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. Do I have to pay to build a lens?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361731" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">4. How do I build a lens?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361741" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">5. Who should build a lens?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361751" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">6. What is a module?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361761" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">7. Can there be lots of lenses on the same topic?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361771" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">8. Can I make lots of lenses?</a>
-                                  </li> 
-                                                          <li class="view_all"><a href="http://www.squidoo.com/squidoo/65359251-FAQ" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
-                                          </ul></div>
-                              </li>
-                          <li >
-                <a href="http://www.squidoo.com/squidoo/65430591-Our-Charities" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Our Charities</a>
-                                              </li>
-                          <li  class="mpl_right">
-                <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Payout FAQ</a>
-                                                  <div><ul>
-                                                      <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module149551615" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Write great, original pages</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433321" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">The TOP FIVE things you need to know about earning money here</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433431" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">It's payday, now what?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module149551614" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What if my lens was unpublished, or deleted?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433331" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Do I have to pay to use Squidoo?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433341" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How do I make money on Squidoo?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module125743801" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Straight from our Editor in Chief to you... </a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module87818001" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How do I get paid?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433441" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How does Squidoo use PayPal?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module87820011" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">My earnings went to the wrong PayPal address</a>
-                                  </li> 
-                                                          <li class="view_all"><a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
-                                          </ul></div>
-                              </li>
-                          <li  class="mpl_right">
-                <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Bugs & Feedback</a>
-                                                  <div><ul>
-                                                      <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645053" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">This page is designed for you to:</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module67861311" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 1) Read this before submitting a report</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module125463261" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 2) Check SquidooHQ for any news about recent widespread bugs</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module65437061" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 3) Check Twitter updates from @Squidoo</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257845" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Ready to submit a report?</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257772" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Click here to create a feedback or bug report</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257900" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Report Content Abuse</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645379" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Request to have a lens unlocked (republished)</a>
-                                  </li> 
-                                                                  <li>
-                                    <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645380" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Priority bug review for Giant Squids</a>
-                                  </li> 
-                                                  </ul></div>
-                              </li>
-                  </ul>
-    </div>
-    </div>
-</div><!-- #header_wrap -->
+</script>      </div><!-- .header_banner -->
+  </header>
+  </div><!-- #header_wrap -->
 
 <div id="sg_container"></div>
 
+
+<div class="mag_nav_wrap">
+  <div class="mag_nav">
+    <ul class="menu">
+                  <li >
+              <a href="http://www.squidoo.com/squidoo" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Home</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="http://www.squidoo.com/squidoo#module83406661" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What kinds of lenses can you make?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module8526759" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">A few fun facts</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module8526756" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What's this about money? A real world example.</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module1249865" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">A few handy links to get you started</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module26009532" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">The founding members of Squidoo</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module26009542" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">More SquidTeam members</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo#module26009552" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Other members or advisors or past interns behind the scenes (somewhere!) at Squidoo</a>
+                                </li> 
+                                              </ul></div>
+                          </li>
+                      <li  class="active_li">
+              <a href="65355501-Terms-of-Service.html" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Terms of Service</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355511" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">1. YES, I AGREE!</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355741" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">2. The big picture: Description of Service</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355751" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. The rules</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355761" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">4. The content: who owns it?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355771" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">5. About royalties</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module82694401" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">6. Number six</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355781" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">7. Our privacy policy is your privacy policy</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355791" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">8. Resale of service</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355801" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">9. Squidoo can modify or discontinue the service</a>
+                                </li> 
+                                                              <li>
+                                  <a href="65355501-Terms-of-Service.html#module65355811" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">10. External software</a>
+                                </li> 
+                                                      <li class="view_all"><a href="65355501-Terms-of-Service.html" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
+                                      </ul></div>
+                          </li>
+                      <li >
+              <a href="http://www.squidoo.com/squidoo/148722636-Originality-Pact" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Originality Pact</a>
+                                        </li>
+                      <li >
+              <a href="http://www.squidoo.com/squidoo/65359251-FAQ" onclick="evTrack('MPL', 'top-primary', 'squidoo');">FAQ</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module127671041" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What's in our FAQ?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65426881" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">I. GETTING STARTED...</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361701" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">1. So, what is a lens?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361711" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">2. Why should I build a lens?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361721" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">3. Do I have to pay to build a lens?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361731" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">4. How do I build a lens?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361741" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">5. Who should build a lens?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361751" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">6. What is a module?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361761" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">7. Can there be lots of lenses on the same topic?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65359251-FAQ#module65361771" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">8. Can I make lots of lenses?</a>
+                                </li> 
+                                                      <li class="view_all"><a href="http://www.squidoo.com/squidoo/65359251-FAQ" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
+                                      </ul></div>
+                          </li>
+                      <li >
+              <a href="http://www.squidoo.com/squidoo/65430591-Our-Charities" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Our Charities</a>
+                                        </li>
+                      <li  class="mpl_right">
+              <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Payout FAQ</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module149551615" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Write great, original pages</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433321" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">The TOP FIVE things you need to know about earning money here</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433431" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">It's payday, now what?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module149551614" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">What if my lens was unpublished, or deleted?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433331" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Do I have to pay to use Squidoo?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433341" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How do I make money on Squidoo?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module125743801" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Straight from our Editor in Chief to you... </a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module87818001" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How do I get paid?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module65433441" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How does Squidoo use PayPal?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ#module87820011" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">My earnings went to the wrong PayPal address</a>
+                                </li> 
+                                                      <li class="view_all"><a href="http://www.squidoo.com/squidoo/65431431-Payout-FAQ" onclick="evTrack('MPL', 'top-view-all', 'squidoo');">View All</a></li>
+                                      </ul></div>
+                          </li>
+                      <li  class="mpl_right">
+              <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Bugs & Feedback</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645053" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">This page is designed for you to:</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module67861311" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 1) Read this before submitting a report</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module125463261" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 2) Check SquidooHQ for any news about recent widespread bugs</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module65437061" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">STEP 3) Check Twitter updates from @Squidoo</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257845" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Ready to submit a report?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257772" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Click here to create a feedback or bug report</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module160257900" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Report Content Abuse</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645379" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Request to have a lens unlocked (republished)</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/65431441-Bugs---Feedback#module152645380" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Priority bug review for Giant Squids</a>
+                                </li> 
+                                              </ul></div>
+                          </li>
+                      <li  class="mpl_right">
+              <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy" onclick="evTrack('MPL', 'top-primary', 'squidoo');">Squidoo Privacy Policy</a>
+                                            <div><ul>
+                                                  <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794149" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Squidoo Privacy Policy</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794151" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Information collected</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794152" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Uses of information</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794154" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Do you have choices about this?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794155" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">How is your information shared?</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794156" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Children's Information</a>
+                                </li> 
+                                                              <li>
+                                  <a href="http://www.squidoo.com/squidoo/163794143-Squidoo-Privacy-Policy#module163794150" onclick="evTrack('MPL', 'top-secondary', 'squidoo');">Changes</a>
+                                </li> 
+                                              </ul></div>
+                          </li>
+              </ul>
+  </div>
+</div>
 
       <div id="content_wrap" class="container-fluid">
         <div id="content" class="row-fluid">
@@ -783,24 +899,23 @@ registerPostsTestTier();
 })(jQuery);
 </script>
 
-
-<!-- left_col_wrap -->
-<div id="left_col_wrap">
-  <!-- left_col -->
-  <div id="left_col">
+<div id="left_col_wrap" class="span12">
+  <div id="left_col" class="clearfix">
     <div id="errors" style="display:none">
   </div>
 <div id="info" style="display:none">
   <a href="65355501-Terms-of-Service.html#" class="hideLink" onclick="setDisplay('info', 'none'); return false;">Close</a>
   </div>
-        
-      <!-- lens_header -->
-<div id="lens_header">
+    
+      <article class="lens">
+    
+        <!-- lens_header -->
+<header class"lens_header">
   
     
     
           <!-- breadcrumbs -->
-    <div class="bread nopad" xmlns:v="http://rdf.data-vocabulary.org/#">
+    <div class="bread" xmlns:v="http://rdf.data-vocabulary.org/#">
                         <span typeof="v:Breadcrumb">
             <a target="" href="http://www.squidoo.com" rel="v:url" property="v:title" onclick="_gaq.push(['_trackEvent', 'Breadcrumb', 'lens', 'Home'])">Home</a> 
           </span>
@@ -815,31 +930,38 @@ registerPostsTestTier();
           </span>
                         </div><!-- /breadcrumbs -->
       
-  <h1 itemprop="name">
+  <h1 class="lens_title" itemprop="name">
     Getting Started With Squidoo (The official overview, FAQ and TOS)  </h1>
   
-      <div  class="byline">
-          
-      <ul class="byline_meta">
-              
-              </ul>
-    </div><!-- .byline media -->
-  
     
+  <div class="byline_header byline_header_mobile media">
+    <a class="img" href="http://www.squidoo.com/lensmasters/SquidTeam" onclick="evTrack('Lens', 'Lensmaster', 'SquidTeam');">
+      <img src="../../i3.squidoocdn.com/resize_square/squidoo_images/25/draft_lenslm1249530_1303154798lens_bio_logo.png" alt="SquidTeam">
+    </a>
+    <div class="bd">
+      by <a rel="author" href="http://www.squidoo.com/lensmasters/SquidTeam" onclick="evTrack('Lens', 'Lensmaster', 'SquidTeam');" itemprop="url"><span itemprop="name">SquidTeam</a>
+      <!-- <span itemprop="description">
+        We're the official SquidTeam! Together we built and run and are constantly growing Squidoo. Thanks for being here.      </span>
+       -->
+    </div><!-- .bd -->
+
+  </div><!-- .bio_mobile -->
+
+  
   <!-- ratings -->
 
-  <p class="clear"> 
-          <strong>Ranked #18,378</strong>
-      in <strong><a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a></strong>,
-      #1,738,508 overall
+  <p class="clear lt_gray font12 lens_ratings"> 
+          Ranked #18,376      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
+      #1,743,542 overall
     
      | Donates to Rhodesian Ridgeback Rescue of NorCal  </p>
 
 <!-- /ratings -->  
   
-</div><!-- /lens_header -->
-          
+</header><!-- .lens_header -->
+
               
+                  
 <!-- adsense_top -->
 <div class="adsense"> 
   <script type="text/javascript"> 
@@ -893,20 +1015,22 @@ registerPostsTestTier();
     google_hints = "squidoo,corey brown,gil hildebrand jr,history of squidoo,megan casey,megancasey,recommendation,seth godin,sethgodin,squidoo";  </script>
   <script type="text/javascript" src="../../pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 </div><!-- /adsense_top -->
+                  
               
-          
-       
-      
+           
+        
+
 
 
 <a name="module65355501"></a>
 <!-- module 65355501 -->
-<div class="novib module  pagebreak " id="module65355501">
+<section class="novib module  pagebreak " id="module65355501">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             Terms of Service          </h2>
-                      </div>
+                      </hgroup>
         
   
   <div id="imageDiv65355501"></div>What's Squidoo? Squidoo is the free (yes, free), simple tool that makes it easy for you to publish your interests online. (You could even earn a royalty for yourself or for charity). From authors and astronauts to marketers and musicians, to cat lovers and seahorse keepers and quiltmakers and video gamers and teachers and... well, everyone... anyone with something to say, share, promote and recommend is welcome on Squidoo. All you need to do is agree to the below Terms of Service, which, as you'll see, generally cover: 1) Our Zero Tolerance policy about Spamming and 2) An easy list of Do's and Don'ts and 3) Your usual legalese jibberjabber.<br />
@@ -915,18 +1039,20 @@ So, congratulations. You're participating in one of the realest, coolest, most p
 <br />
 The principals in these Terms do not change, though the specific enforcement of our content standards may change from time to time; you can always check in on the most current version here. By your continuing use of the service, you're agreeing to the terms that were in place when you joined the service. By continuing to use Squidoo, you're agreeing to the terms in place each time you create new content.<div class="break"></div>
    
-</div><!-- .module 65355501 -->
+</section><!-- .module 65355501 -->
+
 
 
 
 <a name="module65355511"></a>
 <!-- module 65355511 -->
-<div class="novib module  textmodule " id="module65355511">
+<section class="novib module  textmodule " id="module65355511">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             1. YES, I AGREE!          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -939,18 +1065,20 @@ We're in this together. The more you give, the more you get;and to protect our L
 <br />
 We aim to support high-quality, original and useful lifestyle content that real readers will be glad to land on. So, in addition to enforcing our TOS, we reserve the right to unpublish lenses that have shallow or lower-quality writing, as well as lenses that point to other sites that have been flagged as low quality or spam.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355511 -->
+</section><!-- .module 65355511 -->
+
 
 
 
 <a name="module65355741"></a>
 <!-- module 65355741 -->
-<div class="novib module  textmodule " id="module65355741">
+<section class="novib module  textmodule " id="module65355741">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             2. The big picture: Description of Service          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -969,18 +1097,20 @@ And, of course, Squidoo promises to never ever ever (did we mention ever?) rent 
 <br />
 When becoming a Lensmaster, you have the ability to turn ON a feature called &quot;contact the Lensmaster&quot;--this function allows people to send emails to you, without seeing your email address. The feature starts turned off, to protect you. You have the right to be contacted by readers with questions or comments. You also have the right not to. It's up to you to manage any email you get from your readers; Squidoo cannot mediate email disputes that happen in your personal inbox.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355741 -->
+</section><!-- .module 65355741 -->
+
 
 
 
 <a name="module65355751"></a>
 <!-- module 65355751 -->
-<div class="novib module  textmodule " id="module65355751">
+<section class="novib module  textmodule " id="module65355751">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             3. The rules          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1020,18 +1150,35 @@ increased our systematic intolerance of aggressively duplicated (unoriginal) con
 </li><li> If you make lots and lots of cookie cutter lenses, each one mirroring the next, we will probably delete them. See #1.<br />
 </li><li> Hosting content used without permission, copied and pasted articles, and/or uncredited images and language is against our TOS. For best results, just be you. Yup, we're more strict than the law states, and we also don't allow <a href="http://blogs.squidoo.com/squidblog/2010/06/08/looks-like-its-time-for-a-reminder/">PLRs, purchased articles, etc</a>. If you didn't write it, it isn't yours to use.</li></ol></li></ul><div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355751 -->
+</section><!-- .module 65355751 -->
 
+            <div class="inline_ad_mobile">
+              <script type="text/javascript">
+                if ($J(window).width() <= 480) {
+                  google_ad_client = "ca-pub-9879162776784828";
+                  /* Mobile banner - First */
+                  google_ad_slot = "7198290841";
+                  google_ad_width = 320;
+                  google_ad_height = 50;
+                  !function() {
+                    var src = 'http://pagead2.googlesyndication.com/pagead/show_ads.js';
+                    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+                  }();
+                }
+              </script>
+            </div>
+          
 
 
 <a name="module65355761"></a>
 <!-- module 65355761 -->
-<div class="novib module  textmodule " id="module65355761">
+<section class="novib module  textmodule " id="module65355761">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             4. The content: who owns it?          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1042,18 +1189,20 @@ The Lensmaster, and not Squidoo, will be fully responsible for all Content that 
 <br />
 Squidoo provides pre-built modules that make it easy for you to find and add links to various sites. However, just because we provide these modules does not mean we are responsible for their accuracy. The Lensmaster is still responsible for what links he or she elects to put in his or her Lens.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355761 -->
+</section><!-- .module 65355761 -->
+
 
 
 
 <a name="module65355771"></a>
 <!-- module 65355771 -->
-<div class="novib module  textmodule " id="module65355771">
+<section class="novib module  textmodule " id="module65355771">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             5. About royalties          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1091,37 +1240,56 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 <br />
 <b><a href="http://www.squidoo.com/squidoo/65431431-Payment-FAQ">Learn more at Payment FAQ</a></b><div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355771 -->
+</section><!-- .module 65355771 -->
+
 
 
 
 <a name="module82694401"></a>
 <!-- module 82694401 -->
-<div class="novib module  blackbox " id="module82694401">
+<section class="novib module  blackbox " id="module82694401">
   
-            <div class="module_header">
-                      </div>
+    
+            <hgroup class="module_header">
+                      </hgroup>
         
   
-    <div class="bb_wrap bb_wrap_black">
-    <div class="bb_body bb_body_black">
-      <h2>6. Number six</h2>
-      <p>You lucky dog...there is no #6.</p>
-    </div>
-  </div>
+  <div class="bb bb_black clearfix">
+	<div class="bb_inner">
+		<h2 class="font36">6. Number six</h2>
+  	<p class="font18">You lucky dog...there is no #6.</p>
+	</div><!-- .bb_inner -->
+</div><!-- .bb -->
    
-</div><!-- .module 82694401 -->
+</section><!-- .module 82694401 -->
 
+            <div class="inline_ad_mobile">
+              <script type="text/javascript">
+                if ($J(window).width() <= 480) {
+                  google_ad_client = "ca-pub-9879162776784828";
+                  /* Mobile banner - First */
+                  google_ad_slot = "4105223648";
+                  google_ad_width = 320;
+                  google_ad_height = 50;
+                  !function() {
+                    var src = 'http://pagead2.googlesyndication.com/pagead/show_ads.js';
+                    document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+                  }();
+                }
+              </script>
+            </div>
+          
 
 
 <a name="module65355781"></a>
 <!-- module 65355781 -->
-<div class="novib module  textmodule " id="module65355781">
+<section class="novib module  textmodule " id="module65355781">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             7. Our privacy policy is your privacy policy          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1130,18 +1298,20 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 <br />
 Like most sites, we do make surfer behavior available to ad serving services, so that the right ads can be served to the right people. We will NEVER, however, disclose personally identifying information, except as specifically authorized by you or in the good faith belief that such action is reasonably necessary to comply with the law, legal process, to enforce these Terms of Service, or under any of the other circumstances set forth in our privacy policy.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355781 -->
+</section><!-- .module 65355781 -->
+
 
 
 
 <a name="module65355791"></a>
 <!-- module 65355791 -->
-<div class="novib module  textmodule " id="module65355791">
+<section class="novib module  textmodule " id="module65355791">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             8. Resale of service          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1150,144 +1320,160 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 <br />
 <strong>Prohibited uses:</strong> Squidoo is designed to permit users to share information that is important to them. It's built around individuals and their passions. You're not permitted to spam Squidoo to create lenses for hire in order to generate web traffic and SEO rankings. It is fine to use Squidoo to create lenses about your business or even for your clients, but you may not cross the line and start creating pages in bulk.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355791 -->
+</section><!-- .module 65355791 -->
+
 
 
 
 <a name="module65355801"></a>
 <!-- module 65355801 -->
-<div class="novib module  textmodule " id="module65355801">
+<section class="novib module  textmodule " id="module65355801">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             9. Squidoo can modify or discontinue the service          </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355801"></div>Squidoo reserves the right at any time to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice, without liability to you or any third party.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355801 -->
+</section><!-- .module 65355801 -->
+
 
 
 
 <a name="module65355811"></a>
 <!-- module 65355811 -->
-<div class="novib module  textmodule " id="module65355811">
+<section class="novib module  textmodule " id="module65355811">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
-            10. THERE IS NO SECTION 10.          </h2>
-                      </div>
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
+            10. External software          </h2>
+                      </hgroup>
         
   
   
 <div class="write_module">
-<div id="imageDiv65355811"></div>Got that?<div class="break"></div>  <div style="clear:both;"></div></div>
+<div id="imageDiv65355811"></div>You may not use external services, software or networks to automatically create or to augment your creation of lenses.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355811 -->
+</section><!-- .module 65355811 -->
+
 
 
 
 <a name="module65355821"></a>
 <!-- module 65355821 -->
-<div class="novib module  textmodule " id="module65355821">
+<section class="novib module  textmodule " id="module65355821">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             11. Squidoo can terminate your use of the service          </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355821"></div>Oooo, scary. But true. Squidoo, in its sole discretion, may terminate your password, account or use of or access to the Service (including CO-OP Services), and remove and discard any Lens, for any reason. Some of the more likely reasons for termination are inaccurate information in the registration form, or harassment of other Lensmasters (this is a BIG no no), Citizen Squids, SquidooStaff, bloggers and other individuals online. More reasons include hacking Lenses or the Service, automatically redirecting lens traffic to another site, spamming people on and off the site, illegal transactions via Squidoo, and otherwise acting in violation of the terms or the spirit of these Terms of Service or other policies making a Lensmaster a fine, upstanding member of the Squidoo community. If Squidoo terminates your use of the Service, then your Lens may be immediately taken down, and your Squidoo Earnings Account may be closed (and donated to charity). In this event, Squidoo will not be responsible to you or any third party for any termination of your access to the Service. (So, if you sell your lens, make sure the buyer knows this stuff).<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355821 -->
+</section><!-- .module 65355821 -->
+
 
 
 
 <a name="module65355831"></a>
 <!-- module 65355831 -->
-<div class="novib module  textmodule " id="module65355831">
+<section class="novib module  textmodule " id="module65355831">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             12. Squidoo proprietary rights          </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355831"></div>You acknowledge and agree that the Service and any necessary software used in connection with the Service (&quot;Software&quot;) contain proprietary and confidential information that is protected by applicable intellectual property and other laws.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355831 -->
+</section><!-- .module 65355831 -->
+
 
 
 
 <a name="module65355841"></a>
 <!-- module 65355841 -->
-<div class="novib module  textmodule " id="module65355841">
+<section class="novib module  textmodule " id="module65355841">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             13. Disclaimer of waranties           </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355841"></div>The Service is provided on an &quot;as is&quot; and &quot;as available&quot; basis. We're not perfect, but we're getting better every day! You expressly understand and agree that your use of the Service is at your sole risk. Squidoo expressly disclaims all warranties of any kind, whether express or implied, including, but not limited to the implied warranties of merchantability, fitness for a particular purpose and non-infringement. Squidoo makes no warranty that the service will be uninterrupted, timely, secure, or error-free (gremlins happen!), or that the quality of any products, services, information, or other material purchased or obtained by you through the service will meet your expectations, or that any errors in the software will be corrected. If you've got a really big beef with a bug or a technicality, and you don't like the way Squidoo is being run, we hope you'll share your feedback with our team before quitting the service.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355841 -->
+</section><!-- .module 65355841 -->
+
 
 
 
 <a name="module65355851"></a>
 <!-- module 65355851 -->
-<div class="novib module  textmodule " id="module65355851">
+<section class="novib module  textmodule " id="module65355851">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             14. Limitation of liability          </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355851"></div>You expressly understand and agree that Squidoo will not be liable for any direct, indirect, incidental, special, consequential or exemplary damages, including but not limited to, damages for loss of profits, goodwill, use, data or other intangible losses (even if advised of the possibility of such damages), resulting from the use or the inability to use the Service, unauthorized access to or alteration of your transmissions or data, statements or conduct of any third party on the Service, or any other matter relating to the Service. Wow was that a long sentence.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355851 -->
+</section><!-- .module 65355851 -->
+
 
 
 
 <a name="module65355861"></a>
 <!-- module 65355861 -->
-<div class="novib module  textmodule " id="module65355861">
+<section class="novib module  textmodule " id="module65355861">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             15. Miscellaneous, but important, terms          </h2>
-                      </div>
+                      </hgroup>
         
   
   
 <div class="write_module">
 <div id="imageDiv65355861"></div>These Terms of Service and the relationship between you and Squidoo will be governed by the laws of the State of New York without regard to its conflict of law provisions. The failure of Squidoo to exercise or enforce any right or provision of the Terms of Service will not constitute a waiver of such right or provision. These Terms of Service, together with any other agreements incorporated by reference in these Terms of Service or entered into between you and Squidoo in connection with your registration as a Lensmaster, constitute the entire agreement between you and Squidoo and govern your use of the Service, superseding any prior agreements between you and Squidoo. You also may be subject to additional terms and conditions that may apply when you use affiliate or other Squidoo services (such as CO-OP Services), third-party content or third-party software. You agree that regardless of any statute or law to the contrary, any claim or cause of action arising out of or related to use of the Service or the Terms of Service must be filed within one (1) year after such claim or cause of action arose or be forever barred.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355861 -->
+</section><!-- .module 65355861 -->
+
 
 
 
 <a name="module65355871"></a>
 <!-- module 65355871 -->
-<div class="novib module  textmodule " id="module65355871">
+<section class="novib module  textmodule " id="module65355871">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             16. Dispute resolution          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1302,18 +1488,20 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 <br />
 Squidoo is one of many ways you can post information online, and if you find any of these conditions unacceptable, we will totally understand (though our feelings will be hurt) if you choose to use a different service.<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65355871 -->
+</section><!-- .module 65355871 -->
+
 
 
 
 <a name="module65358141"></a>
 <!-- module 65358141 -->
-<div class="novib module  textmodule " id="module65358141">
+<section class="novib module  textmodule " id="module65358141">
   
-            <div class="module_header">
-                  <h2 class="module_title ">
+    
+            <hgroup class="module_header">
+                  <h2 class="module_title">
             17. Trademarks          </h2>
-                      </div>
+                      </hgroup>
         
   
   
@@ -1331,28 +1519,30 @@ SquidWho<br />
 Squidaholic<br />
 SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
    
-</div><!-- .module 65358141 -->
+</section><!-- .module 65358141 -->
+
 
 
 
 <a name="module65358251"></a>
 <!-- module 65358251 -->
-<div class="novib module  blackbox " id="module65358251">
+<section class="novib module  blackbox " id="module65358251">
   
+    
           
   
-    <div class="bb_wrap bb_wrap_black">
-    <div class="bb_body bb_body_black">
-      <h2></h2>
-      <p>WHEW! You made it. You read the whole Squidoo Terms of Service. Please let us know <a href="http://www.squidoo.com/pages/feedback">how we can do better</a>. And thanks!</p>
-    </div>
-  </div>
+  <div class="bb bb_black clearfix">
+	<div class="bb_inner">
+		<h2 class="font36"></h2>
+  	<p class="font18">WHEW! You made it. You read the whole Squidoo Terms of Service. Please let us know <a href="http://www.squidoo.com/pages/feedback">how we can do better</a>. And thanks!</p>
+	</div><!-- .bb_inner -->
+</div><!-- .bb -->
    
-</div><!-- .module 65358251 -->
+</section><!-- .module 65358251 -->
 
-  
-      
-              
+    
+        
+                  
 <!-- adsense_bottom -->
 <div class="adsense adsense_bottom clear" style="padding-top:5px;">
   <script type='text/javascript'>
@@ -1390,43 +1580,43 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
   
     google_hints = "squidoo,corey brown,gil hildebrand jr,history of squidoo,megan casey,megancasey,recommendation,seth godin,sethgodin,squidoo";  </script>
   <script type="text/javascript" src="../../pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-</div><!-- /adsense_bottom -->          
-            
-      </div><!-- /left_col -->
-</div><!-- /left_col_wrap -->
+</div><!-- /adsense_bottom -->              
+        
+      </article><!-- .lens -->
+      
+      </div><!-- #left_col -->
+</div><!-- #left_col_wrap -->
   <div id="right_col_wrap">
     <div id="right_col">
-      <div id="lens_bio" class="sb_item no_border" itemscope itemtype="http://schema.org/Person">
-              <h4 class="font18 pad_bot_5">
+      <div class="sb_item no_border sb_bio hidden-phone" itemscope itemtype="http://schema.org/Person">
+              <h3 class="margin_bot_5">
           <span class="no_bold">by</span> <a rel="author" href="http://www.squidoo.com/lensmasters/SquidTeam" onclick="evTrack('Lens', 'Lensmaster', 'SquidTeam');" itemprop="url"><span itemprop="name">SquidTeam</span></a>
-        </h4>
-          <div id="lens_bio_inner" class="font12">
-      <span id="lens_bio_pic">
+        </h3>
+          <div class="bio_text">
+      <span class="bio_pic">
         <a href="http://www.squidoo.com/lensmasters/SquidTeam" onclick="evTrack('Lens', 'Lensmaster', 'SquidTeam');">
-          <img src="../../i3.squidoocdn.com/resize_square/squidoo_images/70/draft_lenslm1249530_1303154798lens_bio_logo.png" alt="SquidTeam" />
+          <img src="../../i1.squidoocdn.com/resize_square/squidoo_images/70/draft_lenslm1249530_1303154798lens_bio_logo.png" alt="SquidTeam" />
         </a>
       </span>
-      <p class="lm_bio_con">
+      <p class="font12">
         <span itemprop="description">We're the official SquidTeam! Together we built and run and are constantly growing Squidoo. Thanks for being here.</span>
               </p>
             
-      <ul class="bullet_list nopad">
-              
-                <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">60 featured lenses</a></li>
-      
-                      <li>Winner of <a href="http://www.squidoo.com/member/awards/SquidTeam">14 trophies</a>!</li>
-                  
-        <li>Top lens &raquo; <a href="http://www.squidoo.com/squidlevels">How Can I Level Up in Squidoo?</a></li>
+      <ul class="font12">
+                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">44 featured lenses</a></li>
+                  <li>Winner of <a href="http://www.squidoo.com/member/awards/SquidTeam">15 trophies</a>!</li>
+                <li>Top lens &raquo; <a href="http://www.squidoo.com/squidlevels">How Can I Level Up in Squidoo?</a></li>
               
                         <li itemprop="awards">This lens &raquo; <a href="http://www.squidoohq.com/lotd/">Selected as Lens of the Day</a></li>
                     </ul>
             
-    </div>
-        </div>
+    </div><!-- .bio_text -->
+          </div><!-- .sb_item -->
 
-  <div class="sb_item center" id="sb_create">
-    <span class="font12" style="padding-right: 6px;">Feeling creative?</span>
-    <a href="http://www.squidoo.com/lensmaster/referral/c06e45ca79bca06b6587aa0049ebd103" class="b b_inline" onclick="evTrack('Lens', 'CreateBtnSidebar', 'squidoo');">Create a Lens!</a>
+
+  <div class="sb_item center">
+    <span class="font12">Feeling creative?</span>
+    <a href="http://www.squidoo.com/lensmaster/referral/c06e45ca79bca06b6587aa0049ebd103" class="btn" onclick="evTrack('Lens', 'CreateBtnSidebar', 'squidoo');">Create a Lens!</a>
   </div>
 
 
@@ -1437,77 +1627,24 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
   
 <div class="sb_ad sb_item">
   <script type="text/javascript">
-    if (!window.GA_googleFillSlot) {
-          } else {
-      GA_googleFillSlot('squidoo_lenses_aboutme_300x250_sidebartop');
+    if ($J(window).width() >= 990 || !window.theLensName) {
+      if (!window.GA_googleFillSlot) {
+              } else {
+        GA_googleFillSlot('squidoo_lenses_aboutme_300x250_sidebartop');
+      }
     }
   </script>
 </div><!-- /sb_ad -->
 
-  <style>
-.linkUnitDiv {
-  width: 175px;
-}
-.linkUnitDiv h4 {
-  padding-bottom: 0 !important;
-}
-.linkAdUnit {
-  padding: 5px 0px 10px 0px;
-}
-.linkUnitTitle {
-  color: #555555 !important;
-  font-size: 15px;
-  text-decoration: none;
-}
-.linkUnitText {
-  text-decoration: none;
-  font-size: 13px;
-  color: #0F73AB;
-}
-.linkUnitText:hover {
-  text-decoration: underline;
-}
-</style>
-<div class="sb_item" id="google_adsense_test">
-  <script type="text/javascript">
-    function google_ad_request_done(ads) {}
 
-    function google_radlink_request_done(radlinks) {
-      if (radlinks.length < 1)
-        return;
-
-      document.write("<div class='linkUnitDiv'><div class='linkUnitTitleDiv'><h4><a class='linkUnitTitle' href='http://www.squidoo.com/squidoo/&quot;&#32;+&#32;google_info.feedback_url&#32;+&#32;&quot;'>Related Ads</a></h4></div>\n");
-      document.write("<div class='linkAdUnit'>")
-      for ( i = 0; i < radlinks.length; ++i) {
-        document.write("<a class='linkUnitText' target=\"_top\" href="http://www.squidoo.com/squidoo/\&quot;http://www.squidoo.com/squidoo/links?google_kw=&quot;" + 
-          radlinks[i].url_escaped_term + "&google_rt=" + 
-          radlinks[i].radlink_token + "&google_page_url=" + 
-          encodeURIComponent(window.location) + "\">" + 
-          radlinks[i].term + "</a><br> \n");
-      }
-
-      document.write("</div></div>");
-    }
-
-    // Required parameters
-    google_ad_client = 'ca-pub-9879162776784828';
-    google_ad_output = 'js';
-    google_num_radlinks = '4';
-
-    // Optional Parameters
-    google_max_radlink_len = '25';
-    google_num_radlinks_per_unit = '2,2';
-    google_ad_channel = '3578317423';
-    google_rl_filtering = 'high';
-  </script>
-  <script src='../../pagead2.googlesyndication.com/pagead/show_ads.js'></script>
-</div>
 
 
 <a name="module90503951"></a>
 <div class="novib module rssmodule widget " id="module90503951">
-      <h2 class="module_title ">Recent News from SquidooHQ&nbsp;</h2>
-        
+      <hgroup class="module_header">
+      <h2 class="module_title">Recent News from SquidooHQ&nbsp;</h2>
+          </hgroup>
+    
   
           <div id="module90503951_lazyload">
           <img src="../../the.squidoocdn.com/images/ajax-loader-spinner.gif" alt="Loading" />
@@ -1519,9 +1656,11 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
   </div><!--/module-->
 <a name="module90503961"></a>
 <div class="novib module rssmodule widget " id="module90503961">
-      <h2 class="module_title ">Did you see the Lens of the Day?&nbsp;</h2>
-          <h3 class="module_subtitle">Were you picked?</h3>
-        
+      <hgroup class="module_header">
+      <h2 class="module_title">Did you see the Lens of the Day?&nbsp;</h2>
+              <h3 class="module_subtitle">Were you picked?</h3>
+          </hgroup>
+    
   
           <div id="module90503961_lazyload">
           <img src="../../the.squidoocdn.com/images/ajax-loader-spinner.gif" alt="Loading" />
@@ -1533,9 +1672,11 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
   </div><!--/module-->
 <a name="module90886741"></a>
 <div class="novib module featuredlenses widget " id="module90886741">
-      <h2 class="module_title ">Who founded Squidoo?&nbsp;</h2>
-          <h3 class="module_subtitle">This guy</h3>
-        
+      <hgroup class="module_header">
+      <h2 class="module_title">Who founded Squidoo?&nbsp;</h2>
+              <h3 class="module_subtitle">This guy</h3>
+          </hgroup>
+    
   
           <div id="module90886741_lazyload">
           <img src="../../the.squidoocdn.com/images/ajax-loader-spinner.gif" alt="Loading" />
@@ -1575,20 +1716,38 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
   </script>
 
 
-<div class="sb_item">
+<div class="sb_item sb_ad">
   <script type='text/javascript'>
-    GA_googleFillSlot("Chitika:Sidebar300x400");
+    if ($J(window).width() >= 990) {
+      GA_googleFillSlot("Chitika:Sidebar300x400");
+    }
   </script>
 </div>
   
 <div class="sb_ad sb_item">
-  <script type="text/javascript"> 
-    if (!window.GA_googleFillSlot) {
-          } else {
-      GA_googleFillSlot('squidoo_lenses_aboutme_160x600_sidebarbottom');
+  <script type="text/javascript">
+    if ($J(window).width() >= 990 || !window.theLensName) { 
+      if (!window.GA_googleFillSlot) {
+              } else {
+        GA_googleFillSlot('squidoo_lenses_aboutme_160x600_sidebarbottom');
+      }
     }
   </script>
-</div><!-- /sb_ad -->    </div>
+</div><!-- /sb_ad -->  
+  <script type="text/javascript">
+    if ($J(window).width() <= 480) {
+      google_ad_client = "ca-pub-9879162776784828";
+      /* Mobile - Footer */
+      google_ad_slot = "8895350045";
+      google_ad_width = 300;
+      google_ad_height = 250;
+      !function() {
+        var src = 'http://pagead2.googlesyndication.com/pagead/show_ads.js';
+        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+      }();
+    }
+  </script>
+    </div>
   </div>
 
 <script>
@@ -1622,10 +1781,10 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
                             </div><!-- #content .row-fluid -->
       </div><!-- #content_wrap .container-fluid -->  
       <!-- INFOLINKS_OFF -->
-<div id="footer_wrap" class="container">
-  <div id="footer" class="row">
+<div id="footer_wrap" class="container-fluid">
+  <div id="footer" class="row-fluid">
     
-    <div class="footer_left eight columns">
+    <div class="footer_left span8">
       <ul class="footer_nav">
         <li class="first"><a href="65355501-Terms-of-Service.html">TOS</a></li>
         <li><a href="http://www.squidoo.com/originalitypact">Originality Pact</a></li>
@@ -1636,10 +1795,10 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
                 <li><a href="http://www.squidoo.com/squidoo/65431441-Help-Feedback#module83018671" onclick="$Sq.bug(); return false;">Feedback &amp; Bugs</a></li>
       </ul>
               <div class="news_sub clearfix" id="news_sub" >
-          <form action="65355501-Terms-of-Service.html#" onsubmit="Newsletter.subscribe(this); return false;">
-            <input type="text" class="italic nl_input" 
-              onfocus="this.value=''; jQuery(this.removeClass('italic'));"              id="footer_nl_input" name="email_address" value="enter your email address" />
-            <button class="b b24 float_left" type="submit" id="">Get our newsletter!</button>
+          <form class="form-inline" action="65355501-Terms-of-Service.html#" onsubmit="Newsletter.subscribe(this); return false;">
+            <input type="text" class="italic" 
+              onfocus="this.value=''; jQuery(this.removeClass('italic'));"              id="footer_nl_input" name="email_address" value="enter your email address">
+            <button class="btn btn-theme" type="submit" id="">Get our newsletter!</button>
           </form>
         </div>
             <!-- remove "#footer_copy" from stylesheet -->
@@ -1648,7 +1807,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
       <div class="font11 footer_copy">This page and all the pages on Squidoo generate income for lensmasters and charities based on affiliate relationships with our partners, including Amazon, Google, eBay and others. Have fun.</div>
     </div>
   
-    <div class="four columns footer_right">
+    <div class="footer_right span4">
               <div class="footer_ad">
           <script src="../../cdn.assets.totallyher.com/__usa/totallyher_bd_logo/branding.js%3FuseDarkLogo=false" type="text/javascript"></script>
         </div>
@@ -1709,7 +1868,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
           });
         }
       </script>
-    <script src="../../the.squidoocdn.com/scripts/custom/minifiedlens.v1971828106.js"></script>
+    <script src="../../the.squidoocdn.com/scripts/custom/minifiedlens.v3433122084.js"></script>
 <script src="../../assets.pinterest.com/js/pinit.js"></script>
 <script src="../../apis.google.com/js/plusone.js"></script>
 
@@ -1733,7 +1892,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
   </div>
 </noscript>
 
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,399,new Date().getTime(),"","","","",""]);</script>
+<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,308,new Date().getTime(),"","","","",""]);</script>
 
 
 <div id="default_onion" class="default_onion" style="display: none;"></div>
@@ -1749,63 +1908,69 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
 <div id="primary_comment_input" class="primary_comment_input" style="display: none;">
   <div class="comment_expand">
     <form onsubmit="return SquidooComments.save();">
-              <input type="hidden" name="type" value="visitor" />
+              <input type="hidden" name="type" value="visitor">
       
-      <div style="position:relative;">
-        <span class="gb_photo" style="position: absolute; top: 0; left; 0;">
-          <img src="../../i2.squidoocdn.com/resize_square/squidoo_images/50/placeholder_lm.png" width="50" height="50" />
+      <div class="media">
+        <span class="img">
+          <img src="../../i2.squidoocdn.com/resize_square/squidoo_images/50/placeholder_lm.png" alt="">
         </span>
-        <textarea name="comment_body" style="float:right; width:88%;"></textarea>
-        <div style="clear:both;"></div>
+        <div class="bd">
+          <textarea name="comment_body" class="textarea-full"></textarea>
+
+          <input type="hidden" name="comment_lmi" value="" />
+          <input type="hidden" name="comment_parent_id" value="0" />
+          <input type="hidden" name="comment_type" value="visitor" />
+          <input type="hidden" name="blurb_type" value="0" />
+          
+          <div class="gb_email_check">
+            <div class="pull-right" style="margin-right: 5px;">
+              <label class="checkbox" for="gb_el_follow_comments">
+                <input type="checkbox" name="follow_comments" id="gb_el_follow_comments" value="option1" onclick="SquidooComments.xableFollowerEmail(jQuery(this));">
+                Notify me by email when new comments are added.
+              </label>
+            </div>
+          </div><!-- .gb_email_check -->
+
+          <div class="gb_type_elements" style="padding-bottom: none;">
+            <div class="gb_elements_visitor" style="display: none;">
+              <p style="padding:0 0 3px;">
+                <label for="gb_el_visitor_name" class="inline" style="color:black; font-weight:bold; padding:0;">Enter Your Name</label>
+                to post as a vistor
+                or <a href="http://www.squidoo.com/member/login" class="guestbook_squidoo_login"><strong>Login</strong></a>
+              </p>
+              <input type="text" name="visitor_name" value="" id="gb_el_visitor_name">
+            </div><!-- .gb_elements_visitor -->
+            <script>
+              Squidoo.login('.guestbook_squidoo_login', function(logged_in, response) {
+                if (logged_in) {
+                  SquidooComments.switch_type('squidoo', response.member);
+                } else {
+                  SquidooComments.switch_type('visitor');
+                }
+              });
+            </script>
+
+            <div class="gb_follower_email_div" style="display: none;">
+              <label for="gb_el_follower_email">Email Address:</label>
+              <input type="text" name="follower_email" value="" id="gb_el_follower_email">
+            </div><!-- .gb_follower_email_div -->
+          </div><!-- .gb_type_elements -->
+
+                      <div class="gb_captcha"></div>
+            <div style="line-height:10px;">&nbsp;</div>
+          
+          <div id="comment_error_message" class="alert alert-error clear" style="display: none;"></div>
+          
+          <div class="btn-group pull-right clear">
+            <button class="btn btn-primary" type="submit">Post Comment</button>
+            <button class="btn" type="button" onclick="SquidooComments.cancel();">Cancel</button>
+          </div><!-- .btn-group -->
+          <input type="hidden" name="comment_nonce" value="a10ebf57f01531cd90009d52e1c0e910">
+
+
+        </div>
       </div>
       
-      <input type="hidden" name="comment_lmi" value="" />
-      <input type="hidden" name="comment_parent_id" value="0" />
-      <input type="hidden" name="comment_type" value="visitor" />
-      <input type="hidden" name="blurb_type" value="0" />
-      
-      <div class="gb_email_check">
-        <div style="text-align:right;">
-          <input type="checkbox" class="checkbox" name="follow_comments" id="gb_el_follow_comments" onclick="SquidooComments.xableFollowerEmail(jQuery(this));" />
-          <label style="padding-right:0;" class="inline plain" for="gb_el_follow_comments">Notify me by email when new comments are added.</label>
-        </div>
-              </div>
-
-      <div class="gb_type_elements" style="padding-bottom:none;">
-        <div class="gb_elements_visitor" style="display: none;">
-          <p style="padding:0 0 3px;">
-            <label for="gb_el_visitor_name" class="inline" style="color:black; font-weight:bold; padding:0;">Enter Your Name</label>
-            to post as a vistor
-            or <a href="http://www.squidoo.com/member/login" class="guestbook_squidoo_login"><b>Login</b></a>
-          </p>
-          <input type="text" name="visitor_name" value="" id="gb_el_visitor_name" />
-        </div>
-        <script>
-          Squidoo.login('.guestbook_squidoo_login', function(logged_in, response) {
-            if (logged_in) {
-              SquidooComments.switch_type('squidoo', response.member);
-            } else {
-              SquidooComments.switch_type('visitor');
-            }
-          });
-        </script>
-
-        <div class="gb_follower_email_div" style="display: none;">
-          <label for="gb_el_follower_email">E-mail Address:</label>
-          <input type="text" name="follower_email" value="" id="gb_el_follower_email" />
-        </div>
-      </div>
-
-              <div class="gb_captcha"></div>
-        <div style="line-height:10px;">&nbsp;</div>
-      
-      <div id="comment_error_message" class="gb_error" style="padding-left:10px; background-color:pink; color:black; display:none;"></div>
-      
-      <div class="btn_right" style="padding:10px 0 15px;">
-        <button type="submit" class="b b_14 gb_btn_post_comment">Post Comment</button>
-        <button type="button" class="b b_gray" onclick="SquidooComments.cancel();">Cancel</button>
-      </div>
-      <input type="hidden" name="comment_nonce" value="960f3f46d4e6667c405f0eb49a7ff995" />
     </form>
   </div>
 </div><!-- /single comment input form -->
@@ -1817,7 +1982,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
 
   <!-- say_media_twig -->
   <script type='text/javascript'>
-    if (!inPostsTestTier) {
+    if (!inPostsTestTier && $J(window).width() >= 990) {
       GA_googleFillSlot("say_media_twig");
     }
   </script><!-- /say_media_twig -->

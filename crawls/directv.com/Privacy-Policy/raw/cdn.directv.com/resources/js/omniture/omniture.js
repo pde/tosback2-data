@@ -46,6 +46,8 @@ function s_doPlugins(s) {
 		s.channel = document.location.hostname;
 		s.prop30=s.channel;
 	} 
+
+	s.prop28 = s.getPreviousValue(s.pageName,'gpv_pn');
 	
     if (typeof(s.prop7) === 'undefined' || s.prop7 == null || s.prop7 === '') {
         if (typeof(Reporting.PageData.userType) === 'undefined' || Reporting.PageData.userType == null || Reporting.PageData.userType === '') {
@@ -428,6 +430,17 @@ s.apl=new Function("l","v","d","u",""
 +"var s=this,m=0;if(!l)l='';if(u){var i,n,a=s.split(l,d);for(i=0;i<a."
 +"length;i++){n=a[i];m=m||(u==1?(n==v):(n.toLowerCase()==v.toLowerCas"
 +"e()));}}if(!m)l=l?l+d+v:v;return l");
+
+/*
+ * Plugin: getPreviousValue_v1.0 - return previous value of designated
+ * variable (requires split utility)
+ */
+s.getPreviousValue=new Function("v","c","el",""
++"var s=this,t=new Date,i,j,r='';t.setTime(t.getTime()+1800000);if(el"
++"){if(s.events){i=s.split(el,',');j=s.split(s.events,',');for(x in i"
++"){for(y in j){if(i[x]==j[y]){if(s.c_r(c)) r=s.c_r(c);v?s.c_w(c,v,t)"
++":s.c_w(c,'no value',t);return r}}}}}else{if(s.c_r(c)) r=s.c_r(c);v?"
++"s.c_w(c,v,t):s.c_w(c,'no value',t);return r}");
 
 /* Configure Modules and Plugins */
 

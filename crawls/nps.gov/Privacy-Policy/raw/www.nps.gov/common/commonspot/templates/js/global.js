@@ -1215,3 +1215,8 @@ jQuery(window).load(function(){
 	//need to wait to window has loaded so Webkit gets height correct for certain functions
 	NPS.utility.setMinContentHeight();
 });
+
+if ( location.href.indexOf( 'www' ) > -1 ) {
+     document.write("<script src='/common/commonspot/templates/js/federated-analytics.js'><\/script>");
+	 document.write("<script src='/common/commonspot/templates/js/nps-analytics.js'><\/script>");
+}

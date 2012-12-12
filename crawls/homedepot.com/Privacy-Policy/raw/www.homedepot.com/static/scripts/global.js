@@ -99,12 +99,12 @@ overlayConfigs.bopis = $.extend(true, {}, overlayConfigs.modal, {
 	}
 });
 
-// Quickview Overlay
+// DCTM Content Overlay
 overlayConfigs.content = $.extend(true, {}, overlayConfigs.modal, {
 	'autoDimensions':false,
 	'width' : 766,
+	'showCloseButton' : true,
 	"onComplete": function(currentArray, currentIndex, currentOpts) {
-		//alert('Complete!');
 
 		//To prevent the weirdness, show the preloader and hide the fancybox wrap until loaded. qc-14889
 		$.fancybox.showActivity();
@@ -227,7 +227,7 @@ function attachOverlays(context) {
 	});
 }
 
-//A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes 
+//A peformance hack for defect #15052 that takes the data-bopis attribute on the BOPIS button and makes
 //an href value so that bopis modal won't degrade if clicked prior to doc ready.
 
 
@@ -564,4 +564,23 @@ function f_makeUrlParamsFromObj(inObj) {
 		}
 	}
 	return retStr;
+}
+
+// This is for the EMAIL input in the footer, carried over form 5.6
+function popup() {
+    var url = 'https://' + getHostNameSecure() + '/webapp/wcs/stores/servlet/THDEmailSignUpAddCmd?langId=-1&storeId=10051&catalogId=10053&URL=EmailSignUpView&subscrType=' + document.emailsub.subscrType.value + '&emailInput=' + document.emailsub.emailInput.value + '&formName=emailsub';
+    var winWidth = 350;
+    var winHeight = 150;
+    var winY, winX = 0;
+    if (screen.width > winWidth && screen.height > winHeight) {
+        winX = (screen.width - winWidth) / 2;
+        winY = (screen.height - winHeight) / 2;
+    }
+    var winOptions = 'location=0,scrollbars=0,menubar=0,toolbar=0,status=0,resizable=1,directories=0,width=' + winWidth + ',height=' + winHeight + ',top=' + winY + ',left=' + winX;
+    var windowToOpen = window.open(url, "windowToOpen", winOptions);
+    window.top.name = 'opener';
+    if (windowToOpen) {
+        windowToOpen.focus();
+    }
+    document.emailsub.emailInput.value = '';
 }

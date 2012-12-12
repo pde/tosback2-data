@@ -211,6 +211,17 @@ mistats.audienceCounts =
 
    updateAll: function ()
    {
+      var date;
+      
+      date = new Date();
+      s.c_w('mi_vs', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_pc_m', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_sc_m', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_vc_m', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_pc_w', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_sc_w', '', new Date(date.getTime() - 86400000));
+      s.c_w('mi_vc_w', '', new Date(date.getTime() - 86400000));
+/*
       this.updateCount('PVs', 'mi_pc', true);
       this.updateCount('Stories', 'mi_sc', mistats.pagelevel && mistats.pagelevel.match(/story/i));
       this.updateCount('Visits', 'mi_vc', function ()
@@ -220,6 +231,7 @@ mistats.audienceCounts =
          s.c_w('mi_vs', '1', (new Date((new Date()).getTime() + 1200000)));
          return !r;
       }());
+*/
    }
 };
 

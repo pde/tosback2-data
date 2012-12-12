@@ -50,6 +50,7 @@
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
 </head> 
+<!-- Add author only code below --> 
 <body class="consumer"> 
 	<div class="clickstreamcloud"> 
 <script type="text/javascript" src="../shopcms/shopetc/clientlibs/foundation/shared.js"></script> 
@@ -992,7 +993,7 @@ Internet speeds up to 12Mbps.<br>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 74546734969091616410002685722755416296 --> 
+		 <!--X-Renderer: 271420413361945172448724135596873737173 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1001,25 +1002,6 @@ Internet speeds up to 12Mbps.<br>
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="246" /> 
-<meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="CA" /> 
-<meta name="DCSext.wt_aka_city" content="SANJOSE" /> 
-<meta name="DCSext.wt_aka_dma" content="807" /> 
-<meta name="DCSext.wt_aka_pmsa" content="7400" /> 
-<meta name="DCSext.wt_aka_msa" content="7362" /> 
-<meta name="DCSext.wt_aka_areacode" content="408" /> 
-<meta name="DCSext.wt_aka_county" content="SANTACLARA" /> 
-<meta name="DCSext.wt_aka_fips" content="06085" /> 
-<meta name="DCSext.wt_aka_lat" content="37.3353" /> 
-<meta name="DCSext.wt_aka_long" content="-121.8938" /> 
-<meta name="DCSext.wt_aka_timezone" content="PST" /> 
-<meta name="DCSext.wt_aka_zip" content="95101+95103+95106+95108-95113+95115-95136+95138-95139+95141+95148+95150-95161+95164+95170+95172-95173+95190-95194+95196" /> 
-<meta name="DCSext.wt_aka_continent" content="NA" /> 
-<meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
-<meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_asnum" content="36776" /> 
-<meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
 <script src="../media/cms/shop/scripts/wirelessCarousels.js" type="text/javascript"></script> 
@@ -1039,11 +1021,11 @@ jQuery(document).ready(function () {
 //<![CDATA[ 
 	ATT.globalVars.wtCartState =  'E';  
 ATT.globalVars.statuscode = ""; 
-ATT.globalVars.custType = ""; 
+ATT.globalVars.custType = "RESIDENTIAL"; 
 ATT.globalVars.ban = ""; 
 ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = "96827"; 
+ATT.globalVars.ckavailUserZip = "60712"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -1054,7 +1036,7 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip =""; 
+		wtzip ="60712"; 
 	} 
 	return wtzip; 
 }; 
@@ -1136,7 +1118,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = ""; 
+	    		wtCity = "LINCOLNWOOD"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -1145,7 +1127,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = ""; 
+	    		wtState = "IL"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1184,6 +1166,9 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
 	            jQuery("head")[0].appendChild(s); 
+				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+				if (window.JSAM) 
+				JSAM.Stat.reportReady(); 
         	}, 3000);     
         }); 
     }); 
@@ -1220,7 +1205,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","NhZtQ2VBqsrxGh3T1t8n63pC!1402696100!1354651105428"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","1Ls0QHxS2LX01CV2MJQ2FtfQ!-129063788!1355280882138"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1244,10 +1229,18 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
     <script src="http://www.att.com/media/cms/shop/scripts/ATT.c2c.js" type="text/javascript"></script> 
     <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/mtagconfig.js"></script> 
 </div> 
-	<!-- atlastag --> 
-	<div class="atlastag"> 
-    <iframe src="../../view.atdmt.com/iaction/cntcp9_WirelessLP_4.html" width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0"></iframe> 
-</div> 
+	<!-- atlastag -->	 
+<script> 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+    reporting.capture([ 
+       // {selector: '#submitButtonField .enabledButton', type: 'wtsubmit', name: 'HRock_Check_Avail_Submit', params: 'wtUserResp'}, 
+       // {selector: 'head:page(internet)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+        {selector: 'head:page(freewifidevice.html)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+		//{selector: 'a[href*=/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.html]', type: 'wtparam', name: 'dcsuri', value: '/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.htm'} 
+    ]); 
+}); 
+</script> 
 	<!-- OPTIMOST --> 
 </body> 
 </html> 

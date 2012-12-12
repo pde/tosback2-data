@@ -20,6 +20,13 @@ var BF_NO_QS = true;
 	}
 })();
 
+//Reddit Handler 
+(function(){
+	if(document.referrer.indexOf('reddit.com') >= 0 && !$.cookie('sl-reddit-referrer')){
+		$.cookie('sl-reddit-referrer', 'true', {path:'/'});
+	}
+})();
+
 //External visitor tracker 
 (function(){
 	if(document.referrer.length > 0 && document.referrer.match(/^https?:\/\/[a-zA-Z.]*\.slate.com\//) == null && !$.cookie('sl-ext-referrer')){

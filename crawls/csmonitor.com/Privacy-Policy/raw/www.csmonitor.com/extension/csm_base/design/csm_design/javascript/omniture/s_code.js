@@ -4,6 +4,22 @@ More info available at http://www.omniture.com */
 
 var s=s_gi(s_account);
 
+/***** click tracking ***********/
+var getQueryParamValue = new RegExp( '[\\?&]nav=([^&#]*)' )
+var queryParamValue = window.location.href.match( getQueryParamValue );
+
+if( queryParamValue )
+{
+	queryParamValue = queryParamValue[ 1 ];
+	queryParamValue = queryParamValue.split('-');
+	
+	s.prop31 = queryParamValue[0] + '-' + queryParamValue[2];
+	s.prop32 = queryParamValue[0];
+	s.prop33 = queryParamValue[2];
+	s.prop34 = queryParamValue[1] + '-' + queryParamValue[2];
+	s.prop35 = queryParamValue[1];
+}
+
 function linkCode(obj,title) {
 	s.linkTrackVars='None';
 	s.linkTrackEvents='None';
@@ -160,6 +176,7 @@ s.prop10=s.eVar27=s.getDaysSinceLastVisit('s_lv');
 s.prop16=s.eVar28=s.getVisitNumExpire(45);
 
 s.prop17=s.eVar29=s.getVisitNum('m','s_vmonthnum','s_monthinvisit');
+s.prop29=s.getCookieValue("s_depth");
 
 // Page URL excluding Query Strings
 	s.prop30=location.protocol + "//" + location.host + location.pathname	
@@ -295,6 +312,14 @@ s.getActionDepth=new Function("c",""
 + "var s=this,v=1,t=new Date;t.setTime(t.getTime()+1800000);"
 + "if(!s.c_r(c)){v=1}if(s.c_r(c)){v=s.c_r(c);v++}"
 + "if(!s.c_w(c,v,t)){s.c_w(c,v,0)}return v;");
+
+/*
+ * Plugin: getCookieValue: returns the value of a cookie, or 1 if there is no cookie
+ * Built specifically for CSM to get the value of the action depth
+ */
+s.getCookieValue=new Function("c",""
++ "var s=this,v=1;"
++ "if(!s.c_r(c)){v=1}if(s.c_r(c)){v=s.c_r(c);}return v;");
 
 /*
  * Plugin Utility: apl v1.1

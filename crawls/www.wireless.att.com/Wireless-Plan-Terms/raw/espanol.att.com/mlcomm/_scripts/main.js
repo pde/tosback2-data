@@ -133,7 +133,7 @@ function renderGlobalNav() {
 //	if(section == 'about_att') {
 //	document.write('_on');
 //	}
-//	document.write('.jpg"  alt="Olímpiadas" /></a>'); 
+//	document.write('.jpg"  alt="OlÃ­mpiadas" /></a>'); 
 //	document.write('</li>');
 	
 	
@@ -221,7 +221,7 @@ function renderGlobalNav() {
 	document.write('<li><a ');
 	if(directory == 'faqs') { document.write('  class="current" ');}
 	document.write(' href="/help/faqs/index.html?id=' + state + '" title="Preguntas frecuentes ">Preguntas frecuentes </a></li>');
-	document.write('<li><a href="/smartlimits/index.html" target="_blank" title="Controles parentales">Controles parentales</a></li>');
+	//document.write('<li><a href="/smartlimits/index.html" target="_blank" title="Controles parentales">Controles parentales</a></li>');
 	document.write('<li><a ');
 	if(directory == 'att_move' || directory == 'home_technology') { document.write('  class="current" ');}
 	document.write(' href="/help/att_move/index.html?id=' + state + '" title="AT&amp;T Facilita Toda Tu Mudanza">AT&amp;T Facilita Toda Tu Mudanza</a></li>'); 
@@ -564,6 +564,11 @@ document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
 document.write('<div class="rc-release-box">'); 
+document.write('<p>16 de noviembre de 2012<br />');
+document.write('<a href="/newsroom/news_releases/global_messaging_11_15_12.html" title="Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios">Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios</a></p>');
+document.write('</div>');
+
+document.write('<div class="rc-release-box">'); 
 document.write('<p>20 de septiembre de 2012<br />');
 document.write('<a href="/newsroom/news_releases/att_company_of_year_9-20-12.html?id=' + state + '" title="AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.">AT&amp;T es nombrada empresa del a&ntilde;o por la c&aacute;mara de comercio hispana de los EE. UU.</a></p>');
 document.write('</div>');
@@ -722,7 +727,7 @@ function renderFooter() {
 	document.write('    	<li><a href="/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
 	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de privacidad">Pol&iacute;tica de privacidad</a></li>');
 	document.write('    	<li><a href="/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
-	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
+	document.write('    	<li><a href="/about_att/net_neutrality.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
 	document.write('    <div class="clear"></div>');
 	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">&copy; 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
@@ -743,10 +748,10 @@ function renderFooterOrderForm() {
 	document.write('    	<li><a href="http://espanol.att.com/help/contact_us.html?id=' + state + '" title="Cont&aacute;ctanos">Cont&aacute;ctanos</a></li>');
 	document.write('    	<li><a href="/privacy_policy/index.html?id=' + state + '" title="Pol&iacute;tica de Privacidad">Pol&iacute;tica de Privacidad</a></li>');
 	document.write('    	<li><a href="/privacy_policy/privacy_terms_of_use.html?id=' + state + '" title="T&eacute;rminos de uso">T&eacute;rminos de uso</a></li>');
-	document.write('    	<li><a href="/residential_customers/att_internet/index.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
+	document.write('    	<li><a href="http://espanol.att.com/about_att/net_neutrality.html?id=' + state + '" class="nb" title="Broadband Management">Broadband Management</a></li>');
 	document.write('    </ul>');
 	document.write('    <div class="clear"></div>');
-	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">© 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
+	document.write('    <p><a href="http://www.att.com/gen/privacy-policy?pid=2587" class="nb" title="AT&amp;T Intellectual Property">Â© 2003-2012 AT&amp;T Intellectual Property.</a>  Todos los derechos reservados. <a href="http://www.yellowpages.com" class="nb">YELLOWPAGES.COM</a></p>');
 	document.write('</div>');	
 	document.write('<div id="pop"> </div>');
 	//added 10/11/2012 [KD]

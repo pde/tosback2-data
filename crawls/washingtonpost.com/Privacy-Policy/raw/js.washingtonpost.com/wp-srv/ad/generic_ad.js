@@ -731,30 +731,51 @@ var wpAd, placeAd2;
       },
       zoneBuilder: {
         contentType: {
-          AudioStory: "audio",
-          BlogStory: "blog",
-          front: "front",
-          GraphicStory: "graphic",
-          MediaGallery: "photo",
-          PanoStory: "pano",
-          UGCPhotoStory: "ugc",
-          VideoStory: "video"
+          audiostory: 'audio',
+          blogstory: 'blog',
+          front: 'front',
+          graphicstory: 'graphic',
+          mediagallery: 'photo',
+          panostory: 'pano',
+          ugcphotostory: 'ugc',
+          videostory: 'video'
         },
-        subsection: function(){
-          return win.wp_meta_data && wp_meta_data.subsection ? '/' + this.valid(wp_meta_data.subsection) : '';
+        zones: {
+          contentType: function(){
+            var self = wpAd.tools.zoneBuilder,
+              a = self.getString(wp_meta_data.contentType);
+            return a && commercialNode !== 'washingtonpost.com' && self.contentType[a.toLowerCase()] || '';
+          },
+          contentName: function(){
+            return wpAd.tools.zoneBuilder.getString(wp_meta_data.contentName);
+          },
+          subsection: function(){
+            return wpAd.tools.zoneBuilder.getString(wp_meta_data.subsection);
+          }
         },
-        name: function () {
-          return wp_meta_data.contentName ? '/' + this.valid(wp_meta_data.contentName) : '';
+        getString: function(a){
+          return a ? (typeof a === 'string' ? a : a[0]) : '';
         },
-        valid: function (a) {
-          a = typeof a === 'string' ? a : a[0];
-          a = a.replace(/[^0-9a-zA-Z_\-]/g, '');
-          return a.charAt(0).match(/[^a-z]/gi) ? 'c' + a : a;
+        validate: function(a){
+          if(!a){return false;}
+          a = a.replace(/\s/g, '').replace(/^\/*|\/*$/g, '').replace(/[^0-9a-zA-Z_\.\-\/]/g, '');
+          return (/^[^a-z]/i.test(a) ? 'c' : '') + a;
         },
-        exec: function () {
-          var a = wp_meta_data.contentType;
-          a = typeof this.contentType[a] !== 'undefined' && commercialNode !== 'washingtonpost.com' ? commercialNode + '/' + this.contentType[a] : typeof commercialNode !== 'undefined' ? commercialNode : '';
-          return (a + this.name() + this.subsection()).replace(/\s*/g,'');
+        exec: function(){
+          var self = wpAd.tools.zoneBuilder,
+            zones = self.zones,
+            cn = [self.validate(commercialNode)],
+            key, t;
+          for(key in zones){
+            if(zones.hasOwnProperty(key)){
+              t = self.validate(zones[key]());
+              if(t){
+                cn.push(t);
+              }
+            }
+          }
+          self.executed = true;
+          return cn.join('/').toLowerCase();
         }
       }
     },

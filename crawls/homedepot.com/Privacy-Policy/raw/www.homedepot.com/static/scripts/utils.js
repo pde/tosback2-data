@@ -6,6 +6,7 @@
 // Modified WCS 7Up Code Merge 4.6 on 07/22/2011
 	var cookieManager = null;
     var nbrOfItemsInCart;
+	var currentCookiedomain;
     
     // Onload methods BEGIN
     var HideThePrintLink = null;
@@ -95,6 +96,14 @@
                return currentDomain;
     }
 	
+	function getPopupCurrentCookieDomain(){
+            return currentCookiedomain;
+    }
+                
+    function setPopupCurrentCookieDomain(domain){
+          currentCookiedomain = domain;
+    }
+	
 	// Initialize the CookieManager
 	function initializeCookieManager(cookieDomain){
 		 	
@@ -148,8 +157,10 @@
 
 		document.write(xmlString);
 		cookieManager = new CookieManager();
-		cookieManager.setCookieDomain(getCurrentDomain(cookieDomain));
 		
+		cookieManager.setCookieDomain(getCurrentDomain(cookieDomain));
+		setPopupCurrentCookieDomain(cookieDomain);
+
 		// Initialize all the master cookies in config
 		cookieManager.initializeMasterCookie();
 	}
@@ -692,12 +703,9 @@
 				expiresValue = "; expires=" + date.toGMTString();
 			}
 			else {
-				if(parseInt(this.expiration) == -1){
-					expiresValue = "; expires=-1";
-				}
-				else{
+				
 					expiresValue = ";";
-				}			
+							
 			}
 			
 					
@@ -705,6 +713,7 @@
 				var pathValue = "; path=" + this.path;
 			}
 			else {
+	
 				var pathValue = ";";
 			}		
 			
@@ -1230,7 +1239,7 @@
 	function goToLinkFromJSForCatalog(nonRegisteredURL, registeredURL) {
 		var url = nonRegisteredURL;
 		// readCookie is located in utils.js file
-		var isLoggedOn = readCookie("THD_USERSTATUS") == '1';
+		var isLoggedOn = readCookie("THD_USERNAME") !== "";
 		if(isLoggedOn) {
 			url = registeredURL;
 		}

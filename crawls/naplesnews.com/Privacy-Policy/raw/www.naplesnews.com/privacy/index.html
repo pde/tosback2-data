@@ -114,96 +114,7 @@
 		
 		
 			<!-- ad_manager --><!-- target.obj_name = flatpage -->
-<script type="text/javascript"><!--
-
-            function ReadCookie(cookieName) {
-                var theCookie="" + document.cookie ;
-                var ind = theCookie.indexOf( cookieName ) ;
-                if( ind == -1 || cookieName == "" ) return "" ; 
-                var ind1 = theCookie.indexOf( ';', ind ) ;
-                if( ind1 == -1) ind1 = theCookie.length ; 
-                return unescape( theCookie.substring( ind + cookieName.length + 1, ind1 ) ) ;
-            }
-            function ReadZagi( zagiName) {
-                var zagi = ReadCookie( 'zagi' );
-                var ind = zagi.indexOf( zagiName );
-                if( ind == -1 || zagiName == "" ) return "" ;
-                var ind1 = zagi.indexOf( '&', ind ) ;
-                if( ind1 == -1 ) ind1 = zagi.length - 1;
-                return zagi.substring( ind + zagiName.length + 1, ind1 ) ;
-            }
-            // SITE-LEVEL PARAMETERS
-            yld_mgr = {};
-            yld_mgr.pub_id="21658464867";
-            yld_mgr.site_name="Naples News";
-            yld_mgr.container_type="js";//Hardcoded
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE TARGETED CONTENT 
-            // <class 'django.models.flatpages.FlatPage'>
-            /* /privacy/ - Privacy Policy */
-            yld_mgr.content_topic_id_list=[ "20276501"]; 
-            // [News / Local (NPC)]
-            // yld_mgr.site_section_name_list=[]; // this view is not mapped to yahoo's SiteSectionTaxonomy
-            yld_mgr.content_lang="en-US"; //Hardcoded
-
-
-            //OPTIONAL DISABLE CONTENT SEND 
-            yld_mgr.disable_content_send="0"; 
- 
-            //OPTIONAL PARAMETERS FOR GEOGRAPHIC TARGETING 
-            var zip = ReadZagi( 'zip_code' );
-            if( zip ) { yld_mgr.user_zip = zip ; }
-            var city = ReadZagi( 'city' ) ;
-            if( city ) { yld_mgr.user_city = city ; }
-            var state = ReadZagi( 'state' ) ;
-            if( state ) { yld_mgr.user_state = state ; }
-            
-            //OPTIONAL PARAMETERS FOR DEMOGRAPHIC TARGETING 
-            var age = ReadZagi( 'age' ) ;
-            function AgeToRange( years_old ) {
-                if( years_old < 13 ) { return "" ; }
-                else if( years_old < 18 ) { return "13-17" ; }
-                else if( years_old < 21 ) { return "18-20" ; }
-                else if( years_old < 25 ) { return "21-24" ; }
-                else if( years_old < 30 ) { return "25-29" ; }
-                else if( years_old < 35 ) { return "30-34" ; }
-                else if( years_old < 40 ) { return "35-39" ; }
-                else if( years_old < 45 ) { return "40-44" ; }
-                else if( years_old < 50 ) { return "45-49" ; }
-                else if( years_old < 55 ) { return "50-54" ; }
-                else if( years_old < 60 ) { return "55-59" ; }
-                else if( years_old < 65 ) { return "60-64" ; }
-                else if( years_old < 100 ){ return "65-100" ; }
-                return "100+" ;
-            }
-            var gender = ReadZagi( 'gender' )=='M'?'Male':ReadZagi('gender')=='F'?'Female':''
-            if( gender ) yld_mgr.user_gender = gender ;
-            if( age ) yld_mgr.user_age = AgeToRange( age ) ;
-            function IncToRange( inc ) {
-                var idx = 0 ;
-                var numstr = '' ;
-                for( idx = 0; idx < inc.length; idx ++ ) 
-                    if( ! isNaN( parseInt(inc[idx]) ) ) numstr += inc[idx] ;
-                inc = parseInt( numstr ) ;
-                if( isNaN( inc ) ) { return '' ; }
-                else if( inc <= 24999 ) { return '1-24999' ; }
-                else if( inc <= 34999 ) { return '25000-34999' ; }
-                else if( inc <= 49999 ) { return '35000-49999' ; }
-                else if( inc <= 74999 ) { return '50000-74999' ; }
-                else if( inc <= 99999 ) { return '75000-99999' ; }
-                else if( inc <=149999 ) { return '100000-149999' ; }
-                else if( inc <=249999 ) { return '150000-249999' ; }
-                else if( inc >=250000 ) { return '250000-' ; }
-            }
-            var inc_range = IncToRange( ReadZagi( 'income' ) ) ;
-            if( inc_range ) yld_mgr.user_income=inc_range ;
-
-
-            // define the slots
-            yld_mgr.slots = {} ;
-            
-//--> </script>
-<!-- End ad manager -->
+<!-- DC doesnt require an external library --><!-- End ad manager -->
 			
 			
 			
@@ -213,132 +124,30 @@
 	
 			
 			<!-- stage register_ad_pos -->
-			<script type="text/javascript"><!--
-            yld_mgr.slots.SUPERSTITIAL = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.SUPERSTITIAL.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.SUPERSTITIAL.ad_size_list=["720x300", "720x90"  ]; // SUPERSTITIAL
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.SUPERSTITIAL.ad_delivery_mode="ipatf"; // pos = above; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.SUPERSTITIAL.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.SUPERSTITIAL.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.SUPERSTITIAL.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=1;sz=720x300;ord=60196445;dcopt=ist;pos=above -->
-            
-			<script type="text/javascript"><!--
-            yld_mgr.slots.BIGBOX_1 = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.BIGBOX_1.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.BIGBOX_1.ad_size_list=["300x250"  ]; // BIGBOX
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.BIGBOX_1.ad_delivery_mode="ipatf"; // pos = above; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.BIGBOX_1.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.BIGBOX_1.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.BIGBOX_1.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=2;sz=300x250;ord=32334187;pos=above -->
-            
+			<!-- registered SUPERSTITIAL ad in position above, slot SUPERSTITIAL -->
+			<!-- registered BIGBOX ad in position above, slot BIGBOX_1 -->
 
 			
 	
 	
-				<script type="text/javascript"><!--
-            yld_mgr.slots.BIGBOX_2 = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.BIGBOX_2.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.BIGBOX_2.ad_size_list=["300x250"  ]; // BIGBOX
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.BIGBOX_2.ad_delivery_mode="ipbtf"; // pos = below; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.BIGBOX_2.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.BIGBOX_2.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.BIGBOX_2.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=3;sz=300x250;ord=11184327;pos=below -->
-            			
+				<!-- registered BIGBOX ad in position below, slot BIGBOX_2 -->			
 			
 
 
-			<script type="text/javascript"><!--
-            yld_mgr.slots.WEATHER_SPONSOR = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.WEATHER_SPONSOR.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.WEATHER_SPONSOR.ad_size_list=["120x30"  ]; // WEATHER_SPONSOR
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.WEATHER_SPONSOR.ad_delivery_mode="ipbtf"; // pos = below; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.WEATHER_SPONSOR.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.WEATHER_SPONSOR.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.WEATHER_SPONSOR.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=4;sz=120x30;ord=47503383;pos=below -->
-            
-			<script type="text/javascript"><!--
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1 = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.ad_size_list=["120x30"  ]; // SEARCH_RESULTS_SPONSOR
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.ad_delivery_mode="ipatf"; // pos = above; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.SEARCH_RESULTS_SPONSOR_1.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=5;sz=120x30;ord=81367981;pos=above -->
-            
+			<!-- registered WEATHER_SPONSOR ad in position below, slot WEATHER_SPONSOR -->
+			<!-- registered SEARCH_RESULTS_SPONSOR ad in position above, slot SEARCH_RESULTS_SPONSOR_1 -->
 			
 			<!-- End register_ad_pos -->
 		
 	
-	<script type="text/javascript"><!--
-            yld_mgr.slots.LEADERBOARD_1 = {};
-             
-            //REQUIRED PARAMETERS 
-            yld_mgr.slots.LEADERBOARD_1.request_type="ac"; // ac=ad call, bc=beacon call, fc=forecast call
-            yld_mgr.slots.LEADERBOARD_1.ad_size_list=["728x90"  ]; // LEADERBOARD
-
-            //OPTIONAL PARAMETERS THAT DESCRIBE THE AD 
-            yld_mgr.slots.LEADERBOARD_1.ad_delivery_mode="ipatf"; // pos = above; ipatf = above the fold, ipbtf = below the fold, ipstf = spans the fold
-            yld_mgr.slots.LEADERBOARD_1.clk_dest="_blank"; //Hardcoded
-            yld_mgr.slots.LEADERBOARD_1.ad_output_encoding="utf-8"; //Hardcoded
-            // no custom categories
-            // yld_mgr.slots.LEADERBOARD_1.content_type_list=[]; // this view not mapped to a yahoo content type
-
-        
-            //--> </script> 
-                <!-- dc_starget_str: http://ad.doubleclick.net/adj/np.NPDN/News/Local;pt=detail;tile=6;sz=728x90;ord=83377218;pos=above -->
-            
+	<!-- registered LEADERBOARD ad in position above, slot LEADERBOARD_1 -->
 
 
 		
 
 
 
-		<script type="text/javascript" src="../../e.yieldmanager.net/script.js"></script>
+		
 	
 	
 	
@@ -449,7 +258,7 @@
 	
 
 	
-	<div class="adtag" id="SUPERSTITIAL"><script>yld_mgr.place_ad_here("SUPERSTITIAL");</script> </div>
+	<div class="adtag" id="SUPERSTITIAL"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.npdn/News/Local%3Bpt=detail%3Btile=1%3Bsz=720x300%3Bord=82850257%3Bdcopt=ist%3Bpos=above" type="text/javascript"></script></div>
 
 
 <div id="advertising_wrapper" class="default ggnoads">
@@ -460,7 +269,7 @@
 			
 		
 			<div id="leaderboard">
-				<div class="adtag" id="LEADERBOARD_1"><script>yld_mgr.place_ad_here("LEADERBOARD_1");</script> </div>
+				<div class="adtag" id="LEADERBOARD_1"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.npdn/News/Local%3Bpt=detail%3Btile=6%3Bsz=728x90%3Bord=66390948%3Bpos=above" type="text/javascript"></script></div>
 			</div> <!-- end #leaderboard -->
 		
 		</div> <!-- end #advertising -->
@@ -1082,7 +891,7 @@
 					
 						<div class="bigbox_wrapper clear">
 	<div class="bigbox">
-		<div class="adtag" id="BIGBOX_1"><script>yld_mgr.place_ad_here("BIGBOX_1");</script> </div>
+		<div class="adtag" id="BIGBOX_1"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.npdn/News/Local%3Bpt=detail%3Btile=2%3Bsz=300x250%3Bord=64952751%3Bpos=above" type="text/javascript"></script></div>
 	</div> <!-- end .bigbox -->
 </div> <!-- end .bigbox_wrapper -->
 						
@@ -1134,28 +943,28 @@
 		<ul class="story_list sidebar_story_list">
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/03/man-to-serve-10-years-in-prison-for-sex-with/?partner=popular" title="After a brief consensual relationship, the victim became interested in a boy her own age, at which point David Huffman hacked into the victim&#146;s Facebook account and told the boy to back off, the report said.  " rel="nofollow">Man to serve 10 years in prison for sex with teen </a>
-					<span class="date">Published 12/3/2012 at 7:55 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/03/man-to-serve-10-years-in-prison-for-sex-with/?partner=popular#comments" class="comment_count" rel="nofollow">28 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular" title="The Sheriff's Office's two-and-a-half minute 'Gangnam Style' parody was part of its annual holiday safety video." rel="nofollow">Collier deputies perform 'gangnam style' holiday safety video - POLL</a>
+					<span class="date">Published 12/11/2012 at 5:25 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular#comments" class="comment_count" rel="nofollow">51 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/04/citizenship-117-from-22-countries-collier-county/?partner=popular" title="Monday, 117 Southwest Florida residents walked into a Hodges University meeting room as legal permanent residents and left an hour later as U.S. citizens, with white certificates of naturalization in hand." rel="nofollow">Citizenship: 117 people from 22 countries naturalized at Naples ceremony </a>
-					<span class="date">Published 12/4/2012 at 6:10 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/04/citizenship-117-from-22-countries-collier-county/?partner=popular#comments" class="comment_count" rel="nofollow">49 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/collier-commission-blog-nance-sworn/?partner=popular" title="Commissioner Georgia Hiller was named chairwoman of the commission Tuesday, after commissioners unanimously voted to remove Commissioner Fred Coyle has chair." rel="nofollow">Hiller time: Georgia takes over as Collier Commission chair</a>
+					<span class="date">Updated 12/11/2012 at 7:47 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/11/collier-commission-blog-nance-sworn/?partner=popular#comments" class="comment_count" rel="nofollow">44 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/03/former-marco-police-lieutenant-receives-final/?partner=popular" title="Pete Beucler retired from his lieutenant position immediately after being confronted about the photos, which officials learned about via an anonymous tip, according to Assistant Chief Dave Baer.  " rel="nofollow">Former Marco police lieutenant receives final warning after sending inappropriate photos </a>
-					<span class="date">Published 12/3/2012 at 7:50 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/03/former-marco-police-lieutenant-receives-final/?partner=popular#comments" class="comment_count" rel="nofollow">33 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/former-florida-police-officer-scheduled-execution/?partner=popular" title="A former Florida police officer is scheduled to be executed for the murder of nine people 26 years ago." rel="nofollow">Former Florida police officer scheduled for execution tonight</a>
+					<span class="date">Published 12/11/2012 at 6:13 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/11/former-florida-police-officer-scheduled-execution/?partner=popular#comments" class="comment_count" rel="nofollow">46 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/04/brent-batten-radel-strikes-conciliatory-opening/?partner=popular" title="The incoming freshman elected to represent Southwest Florida in the U.S. House doesn&#146;t sound like the fire-and-brimstone conservative you&#146;d expect to replace Connie Mack IV. " rel="nofollow">Brent Batten: Radel strikes conciliatory opening chord  </a>
-					<span class="date">Published 12/4/2012 at 5:10 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/04/brent-batten-radel-strikes-conciliatory-opening/?partner=popular#comments" class="comment_count" rel="nofollow">25 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/10/two-corrections-officers-filed-improper-conduct-bo/?partner=popular" title="One deputy is accused of touching his genitals and encouraging a female inmate to disrobe, while the other two are accused of having an inappropriate relationship that caused tension and discomfort for other jail employees. " rel="nofollow">Two corrections officers fired for improper conduct; both say they were targeted</a>
+					<span class="date">Published 12/10/2012 at 7:53 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/10/two-corrections-officers-filed-improper-conduct-bo/?partner=popular#comments" class="comment_count" rel="nofollow">18 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/04/60-minutes-report-points-to-larger-health-care/?partner=popular" title="A'60 Minutes' program Sunday about physicians admitting practices at hospitals owned by Health Management Associates prompted the Florida Hospital Association to point out a problem of an opposite nature." rel="nofollow">'60 Minutes' report points to larger health care issue, official says </a>
-					<span class="date">Published 12/4/2012 at 5:00 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/04/60-minutes-report-points-to-larger-health-care/?partner=popular#comments" class="comment_count" rel="nofollow">13 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/naples-christmas-parade-postponed-rescheduled-next/?partner=popular" title="Due to the inclement weather, the City of Naples Christmas Parade scheduled for 6:00 p.m. this evening is postponed.  The Christmas Parade will be held at 6:00 p.m. on Tuesday, December 18th." rel="nofollow">Naples Christmas Parade postponed; rescheduled for next Tuesday</a>
+					<span class="date">Published 12/11/2012 at 9:09 a.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/11/naples-christmas-parade-postponed-rescheduled-next/?partner=popular#comments" class="comment_count" rel="nofollow">10 comments</a>
 				</li>
 			
 		</ul>
@@ -1167,15 +976,15 @@
 			
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.naplesnews.com/photos/galleries/2012/dec/03/celebrities-bonita-art-olympians-golf-tournament/?partner=popular" title="Celebrities in Bonita for the Art of the Olympians golf tournament" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2012/12/03/1204_NCSP_KJ_art11_t90_70.jpg" width="90" alt="Celebrities in Bonita for the Art of the Olympians golf tournament" /> Celebrities in Bonita for the Art of&hellip;</a>
+					<a href="http://www.naplesnews.com/photos/galleries/2012/dec/11/nance-sworn-hiller-and-coyle-switch-seats/?partner=popular" title="Nance sworn in, Hiller and Coyle switch seats" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2012/12/11/1212_NCLO_WD_NANCE_25964_t90_70.JPG" width="90" alt="Nance sworn in, Hiller and Coyle switch seats" /> Nance sworn in, Hiller and Coyle&hellip;</a>
 				</div> <!-- end .bucket_media_item -->
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.naplesnews.com/photos/galleries/2012/dec/04/holiday-park-bonita-springs/?partner=popular" title="Holiday in the Park, Bonita Springs" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2012/12/04/1205_NCLO_DM_BONHOLIDAY_558_t90_70.JPG" width="90" alt="Holiday in the Park, Bonita Springs" /> Holiday in the Park, Bonita Springs</a>
+					<a href="http://www.naplesnews.com/photos/galleries/2012/jan/07/notable-deaths-2012/?partner=popular" title="Notable deaths of 2012" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2012/11/23/Larry_Hagman_t90_70.jpg" width="90" alt="Notable deaths of 2012" /> Notable deaths of 2012</a>
 				</div> <!-- end .bucket_media_item -->
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.naplesnews.com/photos/galleries/2012/dec/04/naples-golden-eagles-linebacker-brian-donnelly/?partner=popular" title="Golden Eagles linebacker Brian Donnelly" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2012/12/04/1205_NCSP_WD_NAPLESFB_24375(2)_t90_70.JPG" width="90" alt="Golden Eagles linebacker Brian Donnelly" /> Golden Eagles linebacker Brian Donnelly</a>
+					<a href="http://www.naplesnews.com/photos/galleries/2009/jul/31/pythons/?partner=popular" title="Pythons a growing menace" rel="nofollow"><img src="../../media.naplesnews.com/media/img/photos/2011/10/28/GiantPython_t90_70.jpg" width="90" alt="Pythons a growing menace" /> Pythons a growing menace</a>
 				</div> <!-- end .bucket_media_item -->
 			
 
@@ -1189,28 +998,28 @@
 		<ul class="story_list sidebar_story_list">
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/01/mitt-romneys-loss-creates-gop-leadership-vacuum/?partner=popular" title="The face of the GOP for much of the last year, Mitt Romney has been a virtual ghost since his defeat Nov. 6. He has quietly weathered the fallout of the campaign from the seclusion of his Southern California home, emerging only momentarily for a private lunch at the White House with President Barack Obama on Thursday." rel="nofollow">Mitt Romney's loss creates GOP leadership vacuum </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/01/mitt-romneys-loss-creates-gop-leadership-vacuum/?partner=popular#comments" class="comment_count" rel="nofollow">110 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/09/letter-of-the-day-change-for-the-better/?partner=popular" title="Arlene Rutstein, Bonita Springs " rel="nofollow">Letter of the Day: Change for the better </a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/09/letter-of-the-day-change-for-the-better/?partner=popular#comments" class="comment_count" rel="nofollow">55 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/nov/30/prep-football-naples-dominates-daytona-mainland/?partner=popular" title="With precious momentums slipping away, Jorge Friedrich had a message for his Naples High teammates late in Friday&#39;s regional championship game." rel="nofollow">Prep football: Naples dominates Daytona-Mainland for Class 6A regional title </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/nov/30/prep-football-naples-dominates-daytona-mainland/?partner=popular#comments" class="comment_count" rel="nofollow">51 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/09/wedding-crasher-arrested-after-disrupting-beach-we/?partner=popular" title="During a beachfront wedding on Marco Island, police said a drunken local disrupted a couple’s nuptials by running back and forth behind the altar, shouting obscenities and lobbing unopened beer cans, at one point hitting the best man in the back, police said. " rel="nofollow">Wedding crasher arrested after disrupting beach nuptials, police say</a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/09/wedding-crasher-arrested-after-disrupting-beach-we/?partner=popular#comments" class="comment_count" rel="nofollow">40 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/02/pig-collier-county-road-starts-chain-reaction-cras/?partner=popular" title="A car disabled from striking a pig on State Road 29 was hit by two other cars, resulting in three people seriously injured and eight other passengers injured Saturday night. " rel="nofollow">Pig on Collier County road starts chain reaction crash that injures 11 people</a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/02/pig-collier-county-road-starts-chain-reaction-cras/?partner=popular#comments" class="comment_count" rel="nofollow">32 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/10/downtown-debate-grand-central-station-convention/?partner=popular" title="A convention center doesn&#39;t belong just anywhere. Finding the right spot could be one of the biggest challenges if a local businessman&#39;s pitch for a convention center in the Naples area ever gains political and community support." rel="nofollow">Downtown debate: Former Grand Central Station suitable for convention center? </a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/10/downtown-debate-grand-central-station-convention/?partner=popular#comments" class="comment_count" rel="nofollow">52 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/04/citizenship-117-from-22-countries-collier-county/?partner=popular" title="Monday, 117 Southwest Florida residents walked into a Hodges University meeting room as legal permanent residents and left an hour later as U.S. citizens, with white certificates of naturalization in hand." rel="nofollow">Citizenship: 117 people from 22 countries naturalized at Naples ceremony </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/04/citizenship-117-from-22-countries-collier-county/?partner=popular#comments" class="comment_count" rel="nofollow">49 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular" title="The Sheriff's Office's two-and-a-half minute 'Gangnam Style' parody was part of its annual holiday safety video." rel="nofollow">Collier deputies perform 'gangnam style' holiday safety video - POLL</a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular#comments" class="comment_count" rel="nofollow">51 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/dec/03/obamacare-foes-vent-anger-fla-sen-committee/?partner=popular" title="Dozens of Tea Party activists and conservative religious leaders flooded a state Senate meeting on the Affordable Care Act on Monday, calling the law a gross overreach by the federal government and begging lawmakers not to implement it." rel="nofollow">'Obamacare' foes vent anger to Fla. Sen. committee </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/03/obamacare-foes-vent-anger-fla-sen-committee/?partner=popular#comments" class="comment_count" rel="nofollow">38 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/former-florida-police-officer-scheduled-execution/?partner=popular" title="A former Florida police officer is scheduled to be executed for the murder of nine people 26 years ago." rel="nofollow">Former Florida police officer scheduled for execution tonight</a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/11/former-florida-police-officer-scheduled-execution/?partner=popular#comments" class="comment_count" rel="nofollow">46 comments</a>
 				</li>
 			
 		</ul>
@@ -1223,29 +1032,27 @@
 			
 				<li>
 					<a href="http://www.naplesnews.com/news/2012/dec/02/HMA-60-minutes/?partner=popular" title="A Naples-based hospital operator landed on  &#34;60 Minutes&#34; on Sunday, with the lead segment focused on accusations by more than 100 of its current and former employees that it has pressured its doctors to admit patients &#34;regardless of medical need&#34; to boost company profits. " rel="nofollow">HMA | '60 Minutes'   Allegations of quotas, fraud denied by boss</a>
-					<span class="date">Updated 12/2/2012 at 11:36 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/02/HMA-60-minutes/?partner=popular#comments" class="comment_count" rel="nofollow">41 comments</a>
+					<span class="date">Updated 12/2/2012 at 11:36 p.m.</span> <a href="http://www.naplesnews.com/news/2012/dec/02/HMA-60-minutes/?partner=popular#comments" class="comment_count" rel="nofollow">44 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/nov/28/know-masa-opens-mercato-guanabanas-walks-away-napl/?partner=popular" title="The new local res­taurant that created the earliest buzz this season opened Tuesday in Mer­cato." rel="nofollow">In the Know: Masa opens in Mercato; Guanabanas walks away from Naples</a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/nov/28/know-masa-opens-mercato-guanabanas-walks-away-napl/?partner=popular#comments" class="comment_count" rel="nofollow">14 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/06/jump-on-express-to-move-customers-between-naples/?partner=popular" title="&#147;It&#146;s a way to not have to drive to all three hot spots in town,&#148; said JOE spokeswoman Nicole Angelo. &#147;Taxis can get very expensive, so they stay in that one little area and don&#146;t venture out where there&#146;s a " rel="nofollow">Jump on Express to move customers between downtown Naples, Mercato for free </a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/06/jump-on-express-to-move-customers-between-naples/?partner=popular#comments" class="comment_count" rel="nofollow">33 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/nov/30/naples-based-hma-runs-defense-ahead-60-minutes-seg/?partner=popular" title="Executives with a Naples-based hospital operator played defense on Friday, attempting to get ahead of a scrutinizing '60 Minutes' segment that will air Sunday. Health Management Associates Inc. organized a last-minute conference call from New York for investors and analysts heading into the weekend, after getting confirmation late Thursday that the segment will air Sunday.
-
-" rel="nofollow">Naples-based HMA runs defense ahead of '60 Minutes' segment</a>
-					<span class="date">Updated 11/30/2012 at 5:59 p.m.</span> <a href="http://www.naplesnews.com/news/2012/nov/30/naples-based-hma-runs-defense-ahead-60-minutes-seg/?partner=popular#comments" class="comment_count" rel="nofollow">30 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular" title="The Sheriff's Office's two-and-a-half minute 'Gangnam Style' parody was part of its annual holiday safety video." rel="nofollow">Collier deputies perform 'gangnam style' holiday safety video - POLL</a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/11/the-safety-dance-collier-deputies-sheriff-do-the/?partner=popular#comments" class="comment_count" rel="nofollow">51 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/nov/28/report-naples-marco-island-residents-among-the/?partner=popular" title="The average income for residents in the Naples and Marco Island metropolitan area was $59,264 last year, earning the region a sixth-place spot in a national ranking of personal income per capita, according to a report by the Bureau of Economic Analysis." rel="nofollow">Report: Naples-Marco Island residents among the nation's wealthiest </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/nov/28/report-naples-marco-island-residents-among-the/?partner=popular#comments" class="comment_count" rel="nofollow">34 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/09/state-contest-rewards-2013-python-hunt-everglades/?partner=popular" title="Florida is turning to cold hard cash to lure adventure seekers into the Everglades to bag a Burmese python, the state&#39;s slithering non-native enemy No. 1. " rel="nofollow">Money python: State contest offers rewards in 2013 python hunt in Everglades </a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/09/state-contest-rewards-2013-python-hunt-everglades/?partner=popular#comments" class="comment_count" rel="nofollow">27 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.naplesnews.com/news/2012/nov/27/prime-19-acre-vacant-tract-market-grand-central/?partner=popular" title="The former Grand Central Station site in downtown Naples is chugging along toward the final step of foreclosure. " rel="nofollow">Prime 19-acre vacant tract in Naples goes to foreclosure auction Wednesday  </a>
-					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/nov/27/prime-19-acre-vacant-tract-market-grand-central/?partner=popular#comments" class="comment_count" rel="nofollow">44 comments</a>
+					<a href="http://www.naplesnews.com/news/2012/dec/02/attorney-a-hit-after-representing-couple-who-to/?partner=popular" title="Some friends questioned whether it was a good idea to show up at a Bank of America branch with a repo van, demanding that the bank pay up. " rel="nofollow">Attorney a hit after representing couple who tried to collect from Bank of America </a>
+					<span class="date">Updated // at : </span> <a href="http://www.naplesnews.com/news/2012/dec/02/attorney-a-hit-after-representing-couple-who-to/?partner=popular#comments" class="comment_count" rel="nofollow">19 comments</a>
 				</li>
 			
 		</ul>
@@ -1286,20 +1093,20 @@
 		<div class="sidebar_current_weather clear">
 	
 			<div id="sidebar_current_icon">
-				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/1_170.png" width="120px" alt="Fair" />
+				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/2_170.png" width="120px" alt="Partly Cloudy" />
 			</div> <!-- end #radar -->
 	
 			<div id="sidebar_current_weather">
 				<span class="current_temp_label">Currently</span>
-				<span class="current_temp">60<span class="current_temp_degree">&deg;</span></span>
-				<span class="current_conditions">Fair</span>
-				<span class="current_wind">Wind: NE 4mph</span>
+				<span class="current_temp">75<span class="current_temp_degree">&deg;</span></span>
+				<span class="current_conditions">Partly Cloudy</span>
+				<span class="current_wind">Wind: S 10mph</span>
 			</div> <!-- end #current_conditions -->
 	
 			<div id="sidebar_hi_low">
 				<span class="today_temp_label">Today</span>
-				<span class="hi_temp">78<span class="current_temp_degree">&deg;</span></span>
-				<span class="lo_temp">62<span class="current_temp_degree">&deg;</span></span>
+				<span class="hi_temp">81<span class="current_temp_degree">&deg;</span></span>
+				<span class="lo_temp">66<span class="current_temp_degree">&deg;</span></span>
 			</div> <!-- end #hi_low -->
 			
 		</div> <!-- end #weather -->
@@ -1310,47 +1117,47 @@
 		<div id="sidebar_weather_forecast_3day" class="clear">
 			<div class="sidebar_forecast_day">
 				<div class="sidebar_weather_day">Wed</div><div class="sidebar_weather_day">08:00 PM</div>
-				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/40_100.png" alt="Mostly Cloudy Showers" />
-				<div class="sidebar_forecast_conditions">Mostly Cloudy Showers</div>
-				<div class="sidebar_forecast_hilo">Temp: <span class="temp">66&deg;</span></div>
-			</div>
-			<div class="sidebar_forecast_day">
-				<div class="sidebar_weather_day">Thu</div><div class="sidebar_weather_day">08:00 AM</div>
 				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/15_100.png" alt="Thunderstorms" />
 				<div class="sidebar_forecast_conditions">Thunderstorms</div>
 				<div class="sidebar_forecast_hilo">Temp: <span class="temp">72&deg;</span></div>
+			</div>
+			<div class="sidebar_forecast_day">
+				<div class="sidebar_weather_day">Thu</div><div class="sidebar_weather_day">08:00 AM</div>
+				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/13_100.png" alt="Mostly Cloudy Showers" />
+				<div class="sidebar_forecast_conditions">Mostly Cloudy Showers</div>
+				<div class="sidebar_forecast_hilo">Temp: <span class="temp">69&deg;</span></div>
 			</div><!-- End sidebar_forecast_day -->
 			<div class="sidebar_forecast_day">
 				<div class="sidebar_weather_day">Thu</div><div class="sidebar_weather_day">08:00 PM</div>
 				<img src="../../media.naplesnews.com/corp_assets/asphalt/img/weather/icons/34_100.png" alt="Mostly Clear" />
 				<div class="sidebar_forecast_conditions">Mostly Clear</div>
-				<div class="sidebar_forecast_hilo">Temp: <span class="temp">65&deg;</span></div>
+				<div class="sidebar_forecast_hilo">Temp: <span class="temp">67&deg;</span></div>
 			</div><!-- End sidebar_forecast_day -->
 			<div class="clear"></div>
 			<div class="sidebar_forecast_detail">
 				<div class="sidebar_forecast_details">
 					<div class="sidebar_forecast_rulepadding">
-						<p>Feels Like: 66&deg;</p>
-						<p>Humidity: 78%</p>
-						<p>Precip: 34%</p>
-					</div>
-				</div>
-			</div><!-- End sidebar_forecast_detail -->
-			<div class="sidebar_forecast_detail">
-				<div class="sidebar_forecast_details">
-					<div class="sidebar_forecast_rulepadding">
 						<p>Feels Like: 72&deg;</p>
-						<p>Humidity: 61%</p>
+						<p>Humidity: 94%</p>
 						<p>Precip: 40%</p>
 					</div>
 				</div>
 			</div><!-- End sidebar_forecast_detail -->
 			<div class="sidebar_forecast_detail">
 				<div class="sidebar_forecast_details">
+					<div class="sidebar_forecast_rulepadding">
+						<p>Feels Like: 69&deg;</p>
+						<p>Humidity: 88%</p>
+						<p>Precip: 18%</p>
+					</div>
+				</div>
+			</div><!-- End sidebar_forecast_detail -->
+			<div class="sidebar_forecast_detail">
+				<div class="sidebar_forecast_details">
 					<div class="sidebar_forecast_rulepadding last">
-						<p>Feels Like: 65&deg;</p>
+						<p>Feels Like: 67&deg;</p>
 						<p>Humidity: 81%</p>
-						<p>Precip: 10%</p>
+						<p>Precip: 5%</p>
 					</div>
 				</div>
 			</div><!-- End sidebar_forecast_detail -->
@@ -1364,50 +1171,50 @@
 			
 			
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2863111"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/d4594c16-1a95-4906-b935-d43672847566.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2863111" title="Sunrise Dec 5">Sunrise Dec 5 </a>
+	<a href="http://participate.naplesnews.com/Media/View/2880664"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/135579c2-f18c-4e57-965c-4f719218e861.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2880664" title="Sunrise Dec 12">Sunrise Dec 12 </a>
 	<div class="date ugc_sidebar">
-		12/5/12<br />
-		2:27 a.m.<br />
+		12/12/12<br />
+		8:26 a.m.<br />
 	</div>
 </div>
 
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2853451"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/f178ec05-0297-4df6-90b5-065722a21498.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2853451" title="Middleton Corner Dawn">Middleton Corner Dawn </a>
+	<a href="http://participate.naplesnews.com/Media/View/2877326"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/87f77616-a5ca-4457-9b0b-03ce91f8fc6d.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2877326" title="Scattered showers">Scattered showers </a>
 	<div class="date ugc_sidebar">
-		11/30/12<br />
-		10:22 a.m.<br />
+		12/11/12<br />
+		2:44 a.m.<br />
 	</div>
 </div>
 
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2850968"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/39a8dc3e-c9c6-435f-b127-79f8b952fdf0.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2850968" title="Dawn">Dawn </a>
+	<a href="http://participate.naplesnews.com/Media/View/2871230"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/cf697d85-dc74-4d46-bb7e-083b66366212.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2871230" title="Double Rainbow">Double Rainbow </a>
 	<div class="date ugc_sidebar">
-		11/29/12<br />
-		2:54 a.m.<br />
+		12/8/12<br />
+		5:31 p.m.<br />
 	</div>
 </div>
 
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2850092"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/9f7fe136-2f25-4892-bbc2-cd4924bb05d4.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2850092" title="Beaver Moon">Beaver Moon </a>
+	<a href="http://participate.naplesnews.com/Media/View/2871127"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/373c7c1d-c8f3-4000-8ab1-139db5cd7f02.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2871127" title="An evening at Naples Beach">An evening at Naples Beach </a>
 	<div class="date ugc_sidebar">
-		11/28/12<br />
-		8:45 p.m.<br />
+		12/8/12<br />
+		10:15 p.m.<br />
 	</div>
 </div>
 
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2850091"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/7d805c25-f108-4e0e-9e8f-ba039002c48d.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2850091" title="Beaver Moon">Beaver Moon </a>
+	<a href="http://participate.naplesnews.com/Media/View/2871126"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/009097ee-c0ad-4d2a-911c-9994afcb6756.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2871126" title="An evening at Naples Beach">An evening at Naples Beach </a>
 	<div class="date ugc_sidebar">
-		11/28/12<br />
-		8:45 p.m.<br />
+		12/8/12<br />
+		4:15 p.m.<br />
 	</div>
 </div>
 
 <div class="bucket_media_item sidebar_bucket_media_item">
-	<a href="http://participate.naplesnews.com/Media/View/2848373"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/d8f78080-52ef-4da0-b7a3-cb2d2676c7c1.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2848373" title="Sunrise Nov 28">Sunrise Nov 28 </a>
+	<a href="http://participate.naplesnews.com/Media/View/2871129"><img src="../../4ebe66006af765aa8730-6d1a3af6588f9762b97dc42cf7c97a58.r12.cf1.rackcdn.com/c51025db-3b1b-4e38-928b-8e2e5c80d0cc.jpg" /></a> <a href="http://participate.naplesnews.com/Media/View/2871129" title="An evening at Naples Beach">An evening at Naples Beach </a>
 	<div class="date ugc_sidebar">
-		11/28/12<br />
-		2:23 a.m.<br />
+		12/8/12<br />
+		4:15 p.m.<br />
 	</div>
 </div>
 
@@ -1422,7 +1229,7 @@
 	<div class="sidebar_more_link sidebar_more_link_weather">
 		<div class="sidebar_weather_ad_rule"></div>
 		<div id="sidebar_weather_ad">
-			<div class="adtag" id="WEATHER_SPONSOR"><script>yld_mgr.place_ad_here("WEATHER_SPONSOR");</script> </div>
+			<div class="adtag" id="WEATHER_SPONSOR"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.npdn/News/Local%3Bpt=detail%3Btile=4%3Bsz=120x30%3Bord=73394739%3Bpos=below" type="text/javascript"></script></div>
 		</div>
 		<a href="http://www.naplesnews.com/weather/" title="More Naples Weather">More Weather &raquo;</a>
 	</div>
@@ -1448,20 +1255,20 @@
 	<ul class="cal_tab_header clear">
 		
 			<li class="cal_tab_first ui-tabs-selected">
-				<a href="index.html#Dec5" value="2012-12-05">
-					<span class="cal_tab_day">Wednesday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">5</span>
+				<a href="index.html#Dec12" value="2012-12-12">
+					<span class="cal_tab_day">Wednesday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">12</span>
 				</a>
 			</li>
 		
 			<li >
-				<a href="index.html#Dec6" value="2012-12-06">
-					<span class="cal_tab_day">Thursday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">6</span>
+				<a href="index.html#Dec13" value="2012-12-13">
+					<span class="cal_tab_day">Thursday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">13</span>
 				</a>
 			</li>
 		
 			<li >
-				<a href="index.html#Dec7" value="2012-12-07">
-					<span class="cal_tab_day">Friday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">7</span>
+				<a href="index.html#Dec14" value="2012-12-14">
+					<span class="cal_tab_day">Friday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">14</span>
 				</a>
 			</li>
 		
@@ -1474,7 +1281,7 @@
 	</ul>
 	
 	
-		<div id="Dec5" class="bucket_secondary">
+		<div id="Dec12" class="bucket_secondary">
 			
 			<ul class="sidebar_list">
 				
@@ -1484,12 +1291,12 @@
 					</li>			
 				
 					<li class="even clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/20166/" class="browse_list_title" title="Yamuna Body Rolling Class">Yamuna Body Rolling Class</a> <a href="http://www.naplesnews.com/places/etudes_de_ballet/" class="browse_list_venue" title="Etudes de Ballet">Etudes de Ballet</a></h4>
-						<h5 class="browse_list_time">8:50 a.m.</h5>
+						<h4><a href="http://www.naplesnews.com/events/goto/20417/" class="browse_list_title" title="Walking Tour: Naples Historic District">Walking Tour: Naples Historic District</a> <a href="http://www.naplesnews.com/places/palm-cottage/" class="browse_list_venue" title="Palm Cottage - Naples Historical Society ">Palm Cottage - Naples Historical Society </a></h4>
+						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/24529/" class="browse_list_title" title="Sell on eBay the Right Way!">Sell on eBay the Right Way!</a> <a href="index.html" class="browse_list_venue" title="">Commons Club at the Brooks, 9930 Coconut Rd, Bonita Springs</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/24047/" class="browse_list_title" title="Baby boot camp">Baby boot camp</a> <a href="http://www.naplesnews.com/places/miromar_outlets/" class="browse_list_venue" title="Miromar Outlets">Miromar Outlets</a></h4>
 						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
@@ -1499,7 +1306,7 @@
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/20417/" class="browse_list_title" title="Walking Tour: Naples Historic District">Walking Tour: Naples Historic District</a> <a href="http://www.naplesnews.com/places/palm-cottage/" class="browse_list_venue" title="Palm Cottage - Naples Historical Society ">Palm Cottage - Naples Historical Society </a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/25522/" class="browse_list_title" title="CREW Guided Walks at Bird Rookery Swamp Trails">CREW Guided Walks at Bird Rookery Swamp Trails</a> <a href="index.html" class="browse_list_venue" title="">CREW Bird Rookery Swamp Trails, 1295 Shady Hollow Blvd W., Naples</a></h4>
 						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
@@ -1510,9 +1317,9 @@
 				<a href="http://www.naplesnews.com/events/" title="More Naples Events">More Events &raquo;</a>
 			</div>
 			
-		</div> <!-- end #Dec5 -->
+		</div> <!-- end #Dec12 -->
 	
-		<div id="Dec6" class="bucket_secondary preventFOUC">
+		<div id="Dec13" class="bucket_secondary preventFOUC">
 			
 			<ul class="sidebar_list">
 				
@@ -1522,7 +1329,7 @@
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/25891/" class="browse_list_title" title="Country Jam is Back In Naples Special One Day Advance TICKET SALE">Country Jam is Back In Naples Special One Day Advance TICKET SALE</a> <a href="http://www.naplesnews.com/places/collier_county_fairgrounds/" class="browse_list_venue" title="Collier County Fairgrounds">Collier County Fairgrounds</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/25857/" class="browse_list_title" title="Breakfast with Santa ">Breakfast with Santa </a> <a href="http://www.naplesnews.com/places/fleischmann_park/" class="browse_list_venue" title="Fleischmann Park">Fleischmann Park</a></h4>
 						<h5 class="browse_list_time">8 a.m.</h5>
 					</li>			
 				
@@ -1532,12 +1339,12 @@
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/25623/" class="browse_list_title" title="Mangrove Estuary Kayak with Up A Creek Kayak Tours">Mangrove Estuary Kayak with Up A Creek Kayak Tours</a> <a href="index.html" class="browse_list_venue" title="">Waters of Rookery Bay Reserve</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/25727/" class="browse_list_title" title="Clam Pass Nature Walk">Clam Pass Nature Walk</a> <a href="http://www.naplesnews.com/places/clam_pass/" class="browse_list_venue" title="Clam Pass">Clam Pass</a></h4>
 						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
 					<li class="even clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/25727/" class="browse_list_title" title="Clam Pass Nature Walk">Clam Pass Nature Walk</a> <a href="http://www.naplesnews.com/places/clam_pass/" class="browse_list_venue" title="Clam Pass">Clam Pass</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/25729/" class="browse_list_title" title="Briggs Boardwalk Nature Walk">Briggs Boardwalk Nature Walk</a> <a href="index.html" class="browse_list_venue" title="">Briggs Boardwalk, Shell Island Road</a></h4>
 						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
@@ -1548,24 +1355,24 @@
 				<a href="http://www.naplesnews.com/events/" title="More Naples Events">More Events &raquo;</a>
 			</div>
 			
-		</div> <!-- end #Dec6 -->
+		</div> <!-- end #Dec13 -->
 	
-		<div id="Dec7" class="bucket_secondary preventFOUC">
+		<div id="Dec14" class="bucket_secondary preventFOUC">
 			
 			<ul class="sidebar_list">
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/25828/" class="browse_list_title" title="SHELLING SEASON SPECIAL 2 FOR $75 IN THE TEN THOUSAND ISLANDS!">SHELLING SEASON SPECIAL 2 FOR $75 IN THE TEN THOUSAND ISLANDS!</a> <a href="index.html" class="browse_list_venue" title="">Goodland, Marco Area</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/25311/" class="browse_list_title" title="Wing It! A Beginning Birder Workshop">Wing It! A Beginning Birder Workshop</a> <a href="http://www.naplesnews.com/places/rookery_bay_environmental_learning_center/" class="browse_list_venue" title="Rookery Bay Environmental Learning Center">Rookery Bay Environmental Learning Center</a></h4>
 						<h5 class="browse_list_time">8 a.m.</h5>
 					</li>			
 				
 					<li class="even clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/24047/" class="browse_list_title" title="Baby boot camp">Baby boot camp</a> <a href="http://www.naplesnews.com/places/miromar_outlets/" class="browse_list_venue" title="Miromar Outlets">Miromar Outlets</a></h4>
-						<h5 class="browse_list_time">9 a.m.</h5>
+						<h4><a href="http://www.naplesnews.com/events/goto/25828/" class="browse_list_title" title="SHELLING SEASON SPECIAL 2 FOR $75 IN THE TEN THOUSAND ISLANDS!">SHELLING SEASON SPECIAL 2 FOR $75 IN THE TEN THOUSAND ISLANDS!</a> <a href="index.html" class="browse_list_venue" title="">Goodland, Marco Area</a></h4>
+						<h5 class="browse_list_time">8 a.m.</h5>
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.naplesnews.com/events/goto/25336/" class="browse_list_title" title="Isles of Capri Kayak with Up A Creek Kayak Tours">Isles of Capri Kayak with Up A Creek Kayak Tours</a> <a href="index.html" class="browse_list_venue" title="">Isles of Capri Paddle Craft Park</a></h4>
+						<h4><a href="http://www.naplesnews.com/events/goto/24047/" class="browse_list_title" title="Baby boot camp">Baby boot camp</a> <a href="http://www.naplesnews.com/places/miromar_outlets/" class="browse_list_venue" title="Miromar Outlets">Miromar Outlets</a></h4>
 						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
@@ -1586,7 +1393,7 @@
 				<a href="http://www.naplesnews.com/events/" title="More Naples Events">More Events &raquo;</a>
 			</div>
 			
-		</div> <!-- end #Dec7 -->
+		</div> <!-- end #Dec14 -->
 	
 	
 	<div class="ajax_loader"><img src="../../media.naplesnews.com/corp_assets/asphalt/img/ajax-loader.gif" alt="Loading content" /><p>Loading...</p></div>
@@ -1610,7 +1417,7 @@
 					
 						<div class="bigbox_wrapper clear">
 	<div class="bigbox">
-		<div class="adtag" id="BIGBOX_2"><script>yld_mgr.place_ad_here("BIGBOX_2");</script> </div>
+		<div class="adtag" id="BIGBOX_2"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.npdn/News/Local%3Bpt=detail%3Btile=3%3Bsz=300x250%3Bord=56430723%3Bpos=below" type="text/javascript"></script></div>
 	</div> <!-- end .bigbox -->
 </div> <!-- end .bigbox_wrapper -->
 
@@ -1684,21 +1491,19 @@
 				<li id="carousel_page1">
 					
 					<div class="skybox">
-						<a href="http://www.naplesnews.com/news/2012/dec/04/naples-immokalee-football-fans-were-looking-your-c/" title="2012 PrepZone"><img src="../../web.naplesnews.com/media/skybox/bucket-naplesfoot120412.jpg" width="120" height="107" alt="2012 PrepZone"/></a>
-<h4><a href="http://www.naplesnews.com/news/2012/dec/04/naples-immokalee-football-fans-were-looking-your-c/">Your Messages</a></h4>
-<p><a href="http://www.naplesnews.com/news/2012/dec/04/naples-immokalee-football-fans-were-looking-your-c/">Send a message of encouragement to a Naples or Immokalee football player.</a></p>
+						<a href="http://www.naplesnews.com/news/opinion/newsmakers/" title="Daily News NewsMakers"><img src="../../web.naplesnews.com/media/skybox/bucket-newsmakers121012.jpg" width="120" height="107" alt="Daily News NewsMakers"/></a>
+<h4><a href="http://www.naplesnews.com/news/opinion/newsmakers/">NewsMakers</a></h4>
+<p><a href="http://www.naplesnews.com/news/opinion/newsmakers/">Jeff Lytle talks to leaders from Collier and Lee counties in Daily News show.</a></p>
 					</div> <!-- end .skybox -->
 					
 					<div class="skybox">
-						<a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout"><img src="../../web.naplesnews.com/media/skybox/bucket-shootout120412.jpg" width="120" height="107" alt="Franklin Templeton Shootout"/></a>
-
-<h4><a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout">2012 Shootout</a></h4>
-
-<p><a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout">Franklin Templeton Shootout returns for 12th year to Tibur&#243;n Golf Club Dec. 5-9.</a></p>
+						<a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/" title="Hot Home Sales"><img src="../../web.naplesnews.com/media/skybox/bucket-hothomes121012.jpg" width="120" height="107" alt="Hot Home Sales"/></a>
+<h4><a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/">Hot Home Sales</a></h4>
+<p><a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/">Pictures, info about recently sold single-family homes in Collier and Lee.</a></p>
 					</div> <!-- end .skybox -->
 					
 					<div class="skybox">
-						<a href="http://www.naplesnews.com/christmas/" title="Holiday Events in Southwest Florida"><img src="../../web.naplesnews.com/media/skybox/bucket-xmas120412.jpg" width="120" height="107" alt="Holiday Events in Southwest Florida"/></a>
+						<a href="http://www.naplesnews.com/christmas/" title="Holiday Events in Southwest Florida"><img src="../../web.naplesnews.com/media/skybox/bucket-xmas121012.jpg" width="120" height="107" alt="Holiday Events in Southwest Florida"/></a>
 <h4><a href="http://www.naplesnews.com/christmas/">Holiday Events</a></h4>
 <p><a href="http://www.naplesnews.com/christmas/">This year's list of local holiday events from today through January 1, 2013.</a></p>
 					</div> <!-- end .skybox -->
@@ -1708,21 +1513,25 @@
 				<li id="carousel_page2">
 					
 					<div class="skybox">
+						<a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout"><img src="../../web.naplesnews.com/media/skybox/bucket-shootout121012.jpg" width="120" height="107" alt="Franklin Templeton Shootout"/></a>
+
+<h4><a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout">2012 Shootout</a></h4>
+
+<p><a href="http://www.naplesnews.com/news/sports/shootout/" title="Franklin Templeton Shootout">Kenny Perry and Sean O'Hair won the Franklin Templeton Shootout by a shot.</a></p>
+					</div> <!-- end .skybox -->
+					
+					<div class="skybox">
+						<a href="http://www.naplesnews.com/photos/galleries/sets/celebrity-sightings/" title="Celebrity Sightings"><img src="../../web.naplesnews.com/media/skybox/bucket-celeb121012.jpg" width="120" height="107" alt="Celebrity Sightings"/></a>
+
+<h4><a href="http://www.naplesnews.com/photos/galleries/sets/celebrity-sightings/" title="Celebrity Sightings">Celebrity Sightings</a></h4>
+
+<p><a href="http://www.naplesnews.com/photos/galleries/sets/celebrity-sightings/" title="Celebrity Sightings">They're hot and they're out and about. Check out our daily celebrity sightings galleries.</a></p>
+					</div> <!-- end .skybox -->
+					
+					<div class="skybox">
 						<a href="http://www.naplesnews.com/sportsbars/" title="Sports Bars in Southwest Florida"><img src="../../web.naplesnews.com/media/skybox/bucket-sportsbars100511.jpg" width="120" height="107" alt="Sports Bars in Southwest Florida" /></a>
 <h4><a href="http://www.naplesnews.com/sportsbars/" title="Sports Bars in Southwest Florida">Interactive Map</a></h4>
 <p><a href="http://www.naplesnews.com/sportsbars/" title="Sports Bars in Southwest Florida">Find local sports bars in Collier, Lee to watch the 2012 NFL games.</a></p>
-					</div> <!-- end .skybox -->
-					
-					<div class="skybox">
-						<a href="http://www.naplesnews.com/news/opinion/newsmakers/" title="Daily News NewsMakers"><img src="../../web.naplesnews.com/media/skybox/bucket-newsmakers120312.jpg" width="120" height="107" alt="Daily News NewsMakers"/></a>
-<h4><a href="http://www.naplesnews.com/news/opinion/newsmakers/">NewsMakers</a></h4>
-<p><a href="http://www.naplesnews.com/news/opinion/newsmakers/">Jeff Lytle talks to leaders from Collier and Lee counties in Daily News show.</a></p>
-					</div> <!-- end .skybox -->
-					
-					<div class="skybox">
-						<a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/" title="Hot Home Sales"><img src="../../web.naplesnews.com/media/skybox/bucket-hothomes120312.jpg" width="120" height="107" alt="Hot Home Sales"/></a>
-<h4><a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/">Hot Home Sales</a></h4>
-<p><a href="http://www.naplesnews.com/photos/galleries/sets/home-sales-sw-florida/">Pictures, info about recently sold single-family homes in Collier and Lee.</a></p>
 					</div> <!-- end .skybox -->
 					
 				</li><!-- End carousel_page2 -->
@@ -1730,34 +1539,28 @@
 				<li id="carousel_page3">
 					
 					<div class="skybox">
-						<a href="http://www.naplesnews.com/news/ourworld/" title="Our World"><img src="../../web.naplesnews.com/media/skybox/bucket-ourworld120112.jpg" width="120" height="107" alt="Our World"/></a>
-<h4><a href="http://www.naplesnews.com/news/ourworld/">Our World</a></h4>
-<p><a href="http://www.naplesnews.com/news/ourworld/">Column looks at SW Florida through eyes of Daily News photojournalists.</a></p>
-					</div> <!-- end .skybox -->
-					
-					<div class="skybox">
-						<a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/" title="Editorial Cartoons"><img src="../../web.naplesnews.com/media/skybox/bucket-edittoons113012.jpg" width="120" height="107" alt="Editorial Cartoons"/></a>
-<h4><a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/">Editorial Cartoons</a></h4>
-<p><a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/">Check out our galleries of editorial cartoons about current events or personalities.</a></p>
-					</div> <!-- end .skybox -->
-					
-					<div class="skybox">
-						<a href="http://www.naplesnews.com/photos/galleries/sets/catch-day/" title="Catch of the Day"><img src="../../web.naplesnews.com/media/skybox/bucket-catchfish113012.jpg" width="120" height="107" alt="Catch of the Day"/></a>
+						<a href="http://www.naplesnews.com/photos/galleries/sets/catch-day/" title="Catch of the Day"><img src="../../web.naplesnews.com/media/skybox/bucket-fish120612.jpg" width="120" height="107" alt="Catch of the Day"/></a>
 
 <h4><a href="http://www.naplesnews.com/photos/galleries/sets/catch-day/" title="Catch of the Day">Biggest Catch</a></h4>
 
 <p><a href="http://www.naplesnews.com/photos/galleries/sets/catch-day/" title="Catch of the Day">See photos from local anglers with their biggest catch of the day. Submit your photos.</a></p>f
 					</div> <!-- end .skybox -->
 					
-				</li><!-- End carousel_page3 -->
-			
-				<li id="carousel_page4">
+					<div class="skybox">
+						<a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/" title="Editorial Cartoons"><img src="../../web.naplesnews.com/media/skybox/bucket-edittoons120512.jpg" width="120" height="107" alt="Editorial Cartoons"/></a>
+<h4><a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/">Editorial Cartoons</a></h4>
+<p><a href="http://www.naplesnews.com/photos/galleries/sets/editorial-cartoons/">Check out our galleries of editorial cartoons about current events or personalities.</a></p>
+					</div> <!-- end .skybox -->
 					
 					<div class="skybox">
 						<a href="http://www.naplesnews.com/mugshots/" title="Mugshots"><img src="../../web.naplesnews.com/media/skybox/bucket-mugshots072012.jpg" width="120" height="107" alt="Mugshots"/></a>
 <h4><a href="http://www.naplesnews.com/mugshots/">Mugshots</a></h4>
 <p><a href="http://www.naplesnews.com/mugshots/">Looking for daily arrest mugshots? You can find them here in our special section.</a></p>
 					</div> <!-- end .skybox -->
+					
+				</li><!-- End carousel_page3 -->
+			
+				<li id="carousel_page4">
 					
 					<div class="skybox">
 						<a href="http://www.naplesnews.com/farmersmarkets/" title="Farmers Markets in SW Florida"><img src="../../web.naplesnews.com/media/skybox/bucket-farmersmarket101112.jpg" width="120" height="107" alt="Farmers Markets in SW Florida"/></a>
@@ -1771,6 +1574,12 @@
 						<a href="http://itunes.apple.com/us/app/naples-daily-news-for-ipad/id557571965?mt=8" target="_blank" title="Download iPad"><img src="../../web.naplesnews.com/media/skybox/bucket-ipad091112.jpg" width="120" height="107" alt="Download iPad"/></a>
 <h4><a href="http://itunes.apple.com/us/app/naples-daily-news-for-ipad/id557571965?mt=8" target="_blank">Download iPad</a></h4>
 <p><a href="http://itunes.apple.com/us/app/naples-daily-news-for-ipad/id557571965?mt=8" target="_blank">Experience the Naples Daily News -- reimagined for the iPad. Download now &raquo;</a></p>
+					</div> <!-- end .skybox -->
+					
+					<div class="skybox">
+						<a href="http://www.naplesnews.com/news/2012/dec/07/prep-football-live-chat-scores-videos-photos-story/?prepzone=1" title="Week 15 Preps"><img src="../../web.naplesnews.com/media/skybox/bucket-prepfoot120812.jpg" width="120" height="107" alt="Week 9 Preps" /></a>
+<h4><a href="http://www.naplesnews.com/news/2012/dec/07/prep-football-live-chat-scores-videos-photos-story/?prepzone=1" title="Week 15 Preps">Prep Football</a></h4>
+<p><a href="http://www.naplesnews.com/news/2012/dec/07/prep-football-live-chat-scores-videos-photos-story/?prepzone=1" title="Week 15 Preps">Indians  heading to Class 5A state championship game in Orlando.</a></p>
 					</div> <!-- end .skybox -->
 					
 				</li><!-- End carousel_page4 -->

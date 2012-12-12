@@ -103,31 +103,6 @@ var adweek = function(){
                 $(this).css("height", image_height + "px");
             }
         });
-
-        $(function() {
- /*           var element = $("left-share-bar-wrapper");
-            var offset = element.offset();
-            var header = $("#shell .inner .subheader").offset();
-            var footer = $(".article-footer").offset();
-
-
-            element.css("top", $(".subheader").height() - $(".subheader .meta").height() + "px");
-            
-            $(window).scroll(function() {
-                if ($(window).scrollTop() >= header.top + $("#shell .inner .subheader").height() - $("#shell .inner .subheader .meta").height() && $(window).scrollTop() < footer.top - element.height()) {
-                    element.css({
-                        position: "absolute",
-                        top: $(window).scrollTop() - offset.top
-                    });
-                } else if($(window).scrollTop() >= footer.top - element.height()) {
-                    element.css({
-                        position: "absolute",
-                        top: footer.top - header.top - element.height()
-                    });
-                }
-            });
-            */
-        });
     });
 
 	function init() {
@@ -770,7 +745,7 @@ var adweek = function(){
             img_src = img_src.replace('imagecache/node-detail/', '');
             img.attr('src', img_src);
             img.removeAttr('width');
-            img.removeAttr('height'); 
+            img.removeAttr('height');
 			if (img_src == undefined) {
 				img.attr('src', img.attr('rel'));
                 var img_rel = img.attr('src');
@@ -802,7 +777,7 @@ var adweek = function(){
    }
    /* end of navigation sanitize */
 			if (!hashchange)
-				window.location.hash = lb_pagenumber; 
+				window.location.hash = lb_pagenumber;
 		}
 
 		function updateCurrent(elem) {

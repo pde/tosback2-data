@@ -2215,7 +2215,7 @@ Echo.Item.prototype.renderers.body = function(element, dom) {
 				? this.data.object.permalink || this.data.target.id
 				: undefined;
 		if (url) {
-			content.text = content.text.replace(new RegExp(url, "g"), "");
+			content.text = content.text.replace(new RegExp(url + "(\\s|$)", "g"), "$1");
 			if (!/\S/.test(content.text)) {
 				output(this.label("sharedThisOn", {"service": source}));
 				return;

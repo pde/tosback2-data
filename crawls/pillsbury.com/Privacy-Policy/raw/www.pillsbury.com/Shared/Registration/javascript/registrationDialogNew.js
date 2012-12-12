@@ -47,11 +47,12 @@ var bc = bc || {};
                 //$(".ui-dialog-content").dialog("close");
                 modalUrl = jQuery("#hdnModalRegistrationUrl").val();
 				var iframe = jQuery('#registrationDialogDiv').find('iframe');
-			    
 			    if (window.location.protocol === "https:") {
-			        modalUrl = modalUrl.substring(0, modalUrl.indexOf("scheme=")) + "scheme=https";
+                    if (modalUrl.indexOf('scheme=https') < 0 ) {
+                        modalUrl = modalUrl.replace('scheme=http', 'scheme=https');
+                    }
 			    } else {
-			        modalUrl = modalUrl.substring(0, modalUrl.indexOf("scheme=")) + "scheme=http";
+			        modalUrl = modalUrl.replace('scheme=https', 'scheme=http');
 			    }
                 iframe.attr('src',modalUrl);                
 				iframe.attr('width', 0);

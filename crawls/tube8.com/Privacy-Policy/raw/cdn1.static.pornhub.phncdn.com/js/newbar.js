@@ -105,9 +105,9 @@ if (typeof jQuery != 'undefined') {
 				},
 				'#ph_net_pornmd'		: {
 					'position'			: 'relative',
-					'margin'			: '0 113px 0 153px',
-					'padding'			: '4px 5px',
-					'width'				: '679px',
+					'margin'			: '0 0 0 153px',
+					'padding'			: '4px 0 4px 24px',
+					'width'				: '708px',
 					'height'			: '18px',
 					'border-left'		: '1px solid #272727',
 					'border-right'		: '1px solid #272727',
@@ -135,11 +135,13 @@ if (typeof jQuery != 'undefined') {
 				},
 				'#ph_net_pornmd > button'	: {
 					'float'				: 'left',
-					'padding'			: '0 19px 2px',
+					'margin'			: '0',
+					'padding'			: '0 0 2px',
 					'height'			: '19px',
+					'width'				: '64px',
 					'border'			: '1px solid #8F8F8F',
 					'outline'			: '0',
-					'background-color'	: '#727272 ',
+					'background-color'	: '#727272',
 					'color'				: '#fff',
 					'text-align'		: 'center',
 					'textShadow'		: '1px 1px 1px #333',
@@ -149,6 +151,7 @@ if (typeof jQuery != 'undefined') {
 					'float'				: 'left',
 					'width'				: '180px',
 					'height'			: '18px',
+					'margin'			: '0',
 					'padding'			: '0 5px 0 25px',
 					'borderRadius'		: '5px 0 0 5px',
 					'border'			: '0',
@@ -158,6 +161,7 @@ if (typeof jQuery != 'undefined') {
 				},
 				'#ph_net_pornmd > form > input[type=submit]'	: {
 					'height'			: '18px',
+					'margin'			: '0',
 					'padding'			: '0 15px 4px',
 					'borderRadius'		: '0 5px 5px 0',
 					'border'			: '0',
@@ -191,7 +195,7 @@ if (typeof jQuery != 'undefined') {
 					'background-color'	: '#8F8F8F'
 				},
 				'searchbtn_blur'	: {
-					'background-color'	: '#727272 '
+					'background-color'	: '#727272'
 				}
 			},
 			sites		: {
@@ -383,7 +387,7 @@ if (typeof jQuery != 'undefined') {
 				$('#ph_net_logo').css('background-position','0 -54px');
 			},
 			toFixed			: function() {
-				$('#ph_net_bar, div#ph_net_menu, div#ph_net_pornmd').css("position","fixed");
+				$('#ph_net_bar, div#ph_net_menu').css("position","fixed");
 				$('body').prepend('<div id="ph_net_bar_spacer"></div>');
 				$('#ph_net_bar_spacer').css(settings.css['#ph_net_bar_spacer']);
 			},
@@ -485,7 +489,7 @@ if (typeof jQuery != 'undefined') {
 			},
 			net_search_click	: function() {
 				$('div#ph_net_pornmd').css('margin-left',$('div#ph_net_logo').width()+5).show().siblings(':not(#ph_net_logo)').hide();
-				$('#ph_net_pornmd > form > input:nth-of-type(1)').focus();
+				$('#ph_net_pornmd > form > input[type=text]').focus();
 			},
 			net_search_close	: function() {
 				$('div#ph_net_pornmd').hide().siblings(':not(#ph_net_logo)').show();

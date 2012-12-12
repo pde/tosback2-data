@@ -183,9 +183,12 @@ if( typeof jQuery != 'undefined' ){
 	                if(($(this).attr('href').indexOf('store.avast.co.jp') != -1 && $(this).attr('onclick') == undefined) || ($(this).attr('href').indexOf('dr-store.avast.com') != -1 && $(this).attr('onclick') == undefined)){
 	                    $(this).click(function(e){
 	                        var url = $(this).attr('href');
-	                        if(pageTracker !== undefined) pageTracker._link(url);
-	                        e.preventDefault();
-	                        return false;
+	                        if(pageTracker !== undefined){
+				    pageTracker._link(url);
+				    e.preventDefault();
+				    return false;
+				}
+	                        return true;
 	                    });
 	                }
 	            }
@@ -1490,3 +1493,5 @@ if( typeof jQuery != 'undefined' && typeof avast != 'undefined' ) {
 		}
 	};
 }
+
+//

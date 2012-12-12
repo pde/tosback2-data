@@ -31,8 +31,21 @@
 
 
 
-<script type="text/javascript"
-        src="../ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript">
+  $(function () {
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+      if (!$.cookie) return
+      var cookie = $.cookie('Login')
+      if (cookie) jqXHR.setRequestHeader("x-security", cookie);
+    })
+  })
+</script>
+
+
+
+
+
 
 
 
@@ -47,13 +60,16 @@
   }
 </script>
 
+
+
 <script type="text/javascript">
   Config.mainSiteUrlPath = 'http://www.4shared.com/'
   Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/'
   Config.isRTLLanguage = false
   Config.isReplaceSearchNameForSeo = false
-  Config.revisionNum = 26334
+  Config.revisionNum = 26882
   Config.syncDomain = 'https://www.4sync.com/'
+  Config.cdDomain = '//dc148.4shared.com/'
   Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$")
 </script>
 
@@ -123,7 +139,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=899408973"></script>
+<script type="text/javascript" src="../static.4shared.com/js/account/AccountFacade.js%3Fver=955738480"></script>
 
 
 
@@ -152,7 +168,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=2549194476.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/css/ui/elements.css%3Fver=3835207614.css"/>
 
 
   <!--[if lt IE 7]>
@@ -207,7 +223,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=131563801.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/js/bundles/includeNewHeaderStylesAndScripts.css%3Fver=2785095967.css"/>
 
 
 
@@ -519,7 +535,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=1151339602"></script>
+<script type="text/javascript" src="../static.4shared.com/js/dw_writedrag.js%3Fver=1721445306"></script>
 
 
 
@@ -689,7 +705,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=863018267"></script>
+<script type="text/javascript" src="../static.4shared.com/js/utils.js%3Fver=435378875"></script>
 
 
 
@@ -706,7 +722,7 @@
 
 
 
-<script type="text/javascript" src="../static.4shared.com/js/Events.js%3Fver=1206023135"></script>
+<script type="text/javascript" src="../static.4shared.com/js/Events.js%3Fver=1053394277"></script>
 
 
 
@@ -736,7 +752,7 @@
 
 
 
-<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=3946403428.css"/>
+<link rel="stylesheet" type="text/css" href="../static.4shared.com/auth-popup.css%3Fver=2403686003.css"/>
 
 
 
@@ -981,7 +997,7 @@
             
 
             
-            ,sId : 'b2fIPJ6iwalUmbEB'
+            ,sId : 'YOvEnT9x9yngwpLa'
             
           },
           function(){
@@ -1321,7 +1337,7 @@
   </div>
 </div>
 
-<!--script type="text/javascript" src="/js/header.js?ver=26334"></script-->
+<!--script type="text/javascript" src="/js/header.js?ver=26882"></script-->
 
 
 
@@ -1629,10 +1645,6 @@
   </div>
 </div>
 
-<form action="http://www.4shared.com/account/home.jsp" method="post" style="display:none;" id="subscribeForm" name="subscribeForm">
-  <input type="hidden" name="homemode" value="30"/>
-  <input type="hidden" name="userId" value="-1"/>
-</form>
 
 <script type="text/javascript">
   function getFakePass2(el) {
@@ -1653,7 +1665,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc329, rev=26334"
+    title : "Title = dc328, rev=26882"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -1699,11 +1711,16 @@
           for (var i=0; i<list.length; i++) {
             var event = list[i];
             var eventType = event.type;
+            var avatar = event.fromUserAvatarLink;
             if (eventType=="SHARE_FILE" || eventType=="SHARE_FOLDER") {
               eventType="tshare";
             }
             else if (eventType=="COMMENT") {
               eventType="tcomment";
+            } else if (eventType=="BACKGROUND_FILE_TASK") {
+              eventType="tbgtask";
+              avatar="http://static.4shared.com/images/icons/background-task-ava-icon.png?ver=3098857624"
+              event.fromUserName = "Your file is ready for download:"
             }
             var unread="";
             if (event.status=='NEW') {
@@ -1711,7 +1728,6 @@
               unreadCount++;
             }
 
-            var avatar = event.fromUserAvatarLink;
             if (avatar == "default")
               avatar = "http://static.4shared.com/images/user2.png";
             var info2Text = "";
@@ -2173,7 +2189,7 @@
 <div class="copy">
     <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc329, rev=26334'>&copy;</span> 2005-2012 4shared.com 
+             Copyright <span title='dc328, rev=26882'>&copy;</span> 2005-2012 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             <script type="text/javascript" src="../privacy-policy.truste.com/privacy-seal/New-It-Solutions-LTD-/asc%3Frid=0b69e881-c8aa-478c-a8ce-4f1fc3d88e75"></script>
@@ -2189,7 +2205,7 @@
 
 
 
-<!-- www.currDcID=329 -->
+<!-- www.currDcID=328 -->
 
 
 

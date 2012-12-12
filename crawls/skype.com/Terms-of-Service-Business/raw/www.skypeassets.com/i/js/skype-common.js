@@ -221,80 +221,106 @@ SKYPE.env.getVersion = function(name) {
 
 SKYPE.namespace("util", "user");
 
-SKYPE.util.Browser = function()
-{
-	// Partly from ExtJS lib
-	var ua = navigator.userAgent.toLowerCase();
-	var isStrict = document.compatMode == "CSS1Compat";
-	var isOpera = ua.indexOf("opera") > -1;
-	var isSafari = /webkit|khtml/.test(ua);
-	var isIE = ua.indexOf("msie") > -1;
-	var isIE7 = ua.indexOf("msie 7") > -1;
-	var ieVer = ua.match(/msie (\d+)/i) ? parseInt(ua.match(/msie (\d+)/i)[1]) : 0;
-	var isGecko = !isSafari && ua.indexOf("gecko") > -1;
-	var isBorderBox = isIE && !isStrict;
-	var isWindows = (ua.indexOf("windows") != -1 || ua.indexOf("win32") != -1);
-	var isMac = (ua.indexOf("macintosh") != -1 || ua.indexOf("mac os x") != -1);
-	var isLinux = /x11|linux|freebsd|netbsd/.test(ua);
-	var isHtmlVideo = function (){
-		var detect = document.createElement('video') || false;
-		var htmlVideo = detect && (typeof detect.canPlayType !== "undefined");
-		return (htmlVideo == true);
-	}();
-	var isHtmlVideoMp4 = function(){
-		var detect = document.createElement('video') || false;
-		if (isIE) {
-			return false;
-		}
-		var htmlVideoMp4 = detect && (typeof detect.canPlayType !== "undefined") && (detect.canPlayType("video/mp4") === "maybe" || detect.canPlayType("video/mp4") === "probably");
-		return (htmlVideoMp4 == true);
-	}();
-	var isMacOld = function() {
-		if (!isMac) {
-			return false;
-		}
-		var required = { major: 10, middle: 5, minor: 8 };
-		var osVersion = ua.match(/mac os x ([._0-9]+)/);
-		if (osVersion && osVersion[1]) {
-			var ver = osVersion[1].split('_');
-			if (ver.length == 1) {
-				ver = osVersion[1].split('.');
-			}
-			if (ver.length == 1) {
-				return true;
-			}
-			if (ver[0] < required.major || (ver[0] == required.major && ver[1] < required.middle)) {
-				return true;
-			}
-			if (ver[0] > required.major || (ver[0] == required.major && ver[1] > required.middle)) {
+SKYPE.util.Browser = function() {
+
+	var ua 			= navigator.userAgent.toLowerCase(),
+		isStrict 	= document.compatMode == "CSS1Compat",
+		isOpera 	= ua.indexOf("opera") > -1,
+		isSafari 	= /webkit|khtml/.test(ua),
+		isIE 		= ua.indexOf("msie") > -1,
+		isIE7 		= ua.indexOf("msie 7") > -1,
+		ieVer 		= ua.match(/msie (\d+)/i) ? parseInt(ua.match(/msie (\d+)/i)[1]) : 0,
+		isGecko 	= !isSafari && ua.indexOf("gecko") > -1,
+		isBorderBox = isIE && !isStrict,
+		isWindows 	= (ua.indexOf("windows") != -1 || ua.indexOf("win32") != -1),
+		isMac 		= (ua.indexOf("macintosh") != -1 || ua.indexOf("mac os x") != -1),
+		isLinux 	= /x11|linux|freebsd|netbsd/.test(ua);
+
+	var isHtmlVideo = function() {
+
+			var detect 		= document.createElement('video') || false,
+				htmlVideo 	= detect && (typeof detect.canPlayType !== "undefined");
+
+			return(htmlVideo == true);
+		}();
+
+	var isHtmlVideoMp4 = function() {
+
+			var detect = document.createElement('video') || false;
+
+			if(isIE) {
 				return false;
 			}
-			if (ver.length == 3) {
-				if (ver[1] == required.middle && ver[2] >= required.minor) {
+
+			var htmlVideoMp4 = detect && (typeof detect.canPlayType !== "undefined") && (detect.canPlayType("video/mp4") === "maybe" || detect.canPlayType("video/mp4") === "probably");
+
+			return(htmlVideoMp4 == true);
+		}();
+
+	var isMacOld = function() {
+
+			if(!isMac) {
+				return false;
+			}
+
+			var required = {
+				major: 10,
+				middle: 5,
+				minor: 8
+			};
+
+			var osVersion = ua.match(/mac os x ([._0-9]+)/);
+
+			if(osVersion && osVersion[1]) {
+
+				var ver = osVersion[1].split('_');
+
+				if(ver.length == 1) {
+					ver = osVersion[1].split('.');
+				}
+
+				if(ver.length == 1) {
+					return true;
+				}
+
+				if(ver[0] < required.major || (ver[0] == required.major && ver[1] < required.middle)) {
+					return true;
+				}
+
+				if(ver[0] > required.major || (ver[0] == required.major && ver[1] > required.middle)) {
 					return false;
 				}
+
+				if(ver.length == 3) {
+
+					if(ver[1] == required.middle && ver[2] >= required.minor) {
+						return false;
+					}
+				}
+				
+			} else if(ua.match(/(ipad|iphone)/)) {
+
+				return false;
 			}
-		} else if (ua.match(/(ipad|iphone)/)) {
-			return false;
-		}
-		return true;
-	}();
-	
+
+			return true;
+		}();
+
 	return {
-		isStrict: isStrict
-		,isOpera: isOpera
-		,isSafari: isSafari
-		,isIE: isIE
-		,isIE7: isIE7
-		,ieVer: ieVer
-		,isGecko: isGecko
-		,isBorderBox: isBorderBox
-		,isWindows: isWindows
-		,isMac: isMac
-		,isMacOld: isMacOld
-		,isLinux: isLinux
-		,isHtmlVideo: isHtmlVideo
-		,isHtmlVideoMp4: isHtmlVideoMp4
+		isStrict: isStrict,
+		isOpera: isOpera,
+		isSafari: isSafari,
+		isIE: isIE,
+		isIE7: isIE7,
+		ieVer: ieVer,
+		isGecko: isGecko,
+		isBorderBox: isBorderBox,
+		isWindows: isWindows,
+		isMac: isMac,
+		isMacOld: isMacOld,
+		isLinux: isLinux,
+		isHtmlVideo: isHtmlVideo,
+		isHtmlVideoMp4: isHtmlVideoMp4
 	};
 }();
 

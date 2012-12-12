@@ -125,10 +125,13 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 
 /* header */
 /* meta nav */
-.metaNav {border-top:1px solid #ccc;border-bottom:1px solid #ccc;width:100%;position:relative;z-index:2;background:#fff;}
+.metaNav {border-bottom:1px solid #E5E5E5;width:100%;position:relative;z-index:2;background:#fff; padding-top:5px;}
 .metaNav ul {list-style:none;float:left;}
 .metaNav li {padding:0 5px;float:left;}
 .metaNav li a {display:inline-block;font-size:11px;line-height:22px;color:#333 !important;} /* important to override the inline style on the app/digital links */
+#siteHeader .subcribeLink {position:absolute; top:7px; left:118px; list-style:none; text-transform:uppercase; z-index:4;}
+#siteHeader .subcribeLink a {font-size:11px;font-family: Georgia;color:#333 !important}
+.metaNav .firstList {margin-left:240px;}
 .shadedLinks {margin-right:35px;}
 .shadedLinks li {border-left:1px solid #ccc;background-color:#fff;padding:0 10px;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#cccccc), color-stop(20%,#ffffff));
@@ -150,7 +153,7 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 	box-shadow: 0 0 3px rgba(0,0,0,0.4);
 }
 /* header content - logo, search form, etc.. */
-#siteHeader .logo {display:block;margin:15px 60px 10px 15px;float:left;width:372px;height:92px;}
+#siteHeader .logo {display:block; width:189px; height:172px; position:absolute; top:0px; left: 45px; z-index: 3;}
 /* search form stuff for header and footer */
 .searchForm {font-family:Arial, Helvetica, sans-serif;}
 .searchForm form {margin:0 auto 10px;position:relative;height:33px;
@@ -163,19 +166,28 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 .searchForm p {color:#ed0677;font-size:15px;line-height:18px;background:#fff;}
 .searchForm p span {color:#00aac9;font-weight:bold;text-transform:uppercase;}
 .searchForm p a {font-size:13px;padding:0 2px;}
-#siteHeader .searchForm {float:left;width:330px;margin:35px 0 0;}
+#siteHeader .searchForm {float:left;width:359px;margin:43px 0 35px 355px;position:relative;}
 #siteFooter .searchForm {text-align:center;padding:10px 0 30px;margin:0 0 30px;background-color:#fdfdfd;
 	-webkit-box-shadow: 0 3px 3px #efefef; -moz-box-shadow: 0 3px 3px #efefef; box-shadow: 0 3px 3px #efefef;
 }
 .ie7 #siteFooter .searchForm {padding:30px 0;}
 .no-boxshadow #siteFooter .searchForm {border-bottom:1px solid #ccc;} /* gray border for shadow */
-#siteFooter .searchForm form[role=search] {text-align:left;width:330px;margin:0 auto 10px;}
-#siteFooter .searchForm > p {text-align:left;margin:0 auto;width:330px;}
+#siteFooter .searchForm form[role=search] {text-align:left;width:351px;margin:0 auto 10px;}
+#siteFooter .searchForm > p {text-align:left;margin:0 auto;width:440px;padding-left:83px;background-color:#FDFDFD;}
+#siteHeader .searchForm form, #siteFooter .searchForm form, #search #searchHed  .searchForm form, #search #bottomSearch  form{-webkit-border-radius: 9px; -moz-border-radius: 9px; border-radius: 9px; border: 4px solid #2EC1D5;box-shadow: none;}
+#siteHeader .searchForm button.ghkButton, #siteFooter .searchForm button.ghkButton, #search #searchHed .searchForm button.ghkButton, #search #bottomSearch  button.ghkButton {background: url(../site_images/button-sprite.png) no-repeat 3px -224px;
+	border:none; border-left:1px solid #cccccc; border-radius:0;
+}
+#siteHeader .searchForm p {position: absolute; top: 45px; width: 440px;}
+#siteHeader .searchForm p span, #siteFooter .searchForm p span {color:#000000;font-size:13px;background:#FFFF00;font-weight:normal;text-transform:none;}
+#siteHeader .searchForm form input, #siteFooter .searchForm form[role=search] input,.no-boxshadow #search #searchHed .searchForm  form input,.no-boxshadow #search #bottomSearch  form input {width: 300px;}
+#search #searchHed .searchForm  form input {width: 328px}
+#search #bottomSearch  form input {width: 279px;}
 /* search form fallback styles */
-.no-boxshadow #siteHeader .searchForm {width:333px;}
-.no-boxshadow #siteFooter .searchForm form {width:333px;}
 .no-boxshadow .searchForm form {width:333px;background:url(../site_images/no-css3-sprite.png) no-repeat 0 0;padding:2px 0;}
 .no-boxshadow .searchForm form button {top:2px;}
+.no-boxshadow #siteHeader .searchForm form, .no-boxshadow #siteFooter .searchForm form, .no-boxshadow #search #searchHed .searchForm  form, .no-boxshadow #search #bottomSearch  form{width:357px;background:url(../site_images/no-css3-sprite-header.png) no-repeat 0 0;padding:4px 0 4px 4px; border:none;}
+.no-boxshadow #siteHeader .searchForm button.ghkButton, .no-boxshadow  #siteFooter .searchForm button.ghkButton, .no-boxshadow #search #searchHed .searchForm  button.ghkButton, .no-boxshadow #search #bottomSearch  button.ghkButton{top:4px; right:4px;}
 /* ie9 differences in the box shadow */
 .ie9 .searchForm form {box-shadow:0 0 5px #666;}
 /* ie7 fix for paperclip disappearing */
@@ -185,14 +197,15 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 .headerSeal a {display:block;}
 .headerSeal a img {display:block;}
 /* navigation */
+#siteHeader .headerClear {clear:both; float:none; height:24px; font-size:0px;}
 .siteNavigation {clear:both;width:1012px;position:relative;left:-11px;background: #2EC1D5;
 	-webkit-box-shadow: 0 0 5px #999; -moz-box-shadow: 0 0 5px #999; box-shadow: 0 0 5px #999;
 }
 /* gray border for shadow */
 .no-boxshadow .siteNavigation {border-top:1px solid #ccc;border-bottom:1px solid #ccc;}
-.siteNavigation .navList {height:40px;}
+.siteNavigation .navList {height:50px;}
 .siteNavigation .item {float:left;text-align:center;position:relative;}
-.siteNavigation .item > a {position:relative;display:block;height:40px;font:bold 15px/40px Arial;color:#fff !important;border-right:1px dotted #fff;background:#2EC1D5;text-shadow:0 -1px 0 #00aac9;
+.siteNavigation .item > a {position:relative;display:block;height:50px;font:bold 15px/50px Arial;color:#fff !important;border-right:1px dotted #fff;background:#2EC1D5;text-shadow:0 -1px 0 #00aac9;
 	background:-webkit-gradient(linear, left top, left bottom, color-stop(40%,#2EC1D5), color-stop(65%,#00AAC9));
 	background:-webkit-linear-gradient(top, #2EC1D5 40%, #00AAC9 65%);
 	background:-moz-linear-gradient(top, #2EC1D5 40%, #00AAC9 65%);
@@ -210,9 +223,9 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 }
 .siteNavigation .channel7 > a { border-right:none; }
 /* fallback styles for the nav gradient */
-.no-cssgradients .siteNavigation .item > a { background:url(../site_images/no-css3-sprite.png) repeat-x 0 -40px; }
+.no-cssgradients .siteNavigation .item > a { background:url(../site_images/no-css3-sprite-header.png) repeat-x 0 -45px; }
 .no-cssgradients .siteNavigation .item:hover > a,
-.no-cssgradients .siteNavigation .item > a.active { background-position:0 -81px; }
+.no-cssgradients .siteNavigation .item > a.active { background-position:0 -103px; }
 .siteNavigation .corner {width:0px;height:0px;margin:0;border-right:11px solid #106f7c;border-bottom:12px solid transparent;position:absolute;left:0;bottom:-12px;}
 .siteNavigation .item:hover .corner, .siteNavigation .active .corner {border-right-color:#95094e;}
 /* The corner trick looks bad in IE 7,8.. lets use an image instead */
@@ -222,7 +235,7 @@ body {background-color:#FEF6E5 !important;font-family:Verdana, Geneva, sans-seri
 .siteNavigation .subnav {position:absolute;left:0;display:none;border:1px solid #ccc;background:#fff;padding:15px;width:310px;text-align:left;
 	-webkit-box-shadow: 0 0 3px #ccc; -moz-box-shadow: 0 0 3px #ccc; box-shadow: 0 0 3px #ccc;
 }
-.ie7 .siteNavigation .subnav { top:40px }
+.ie7 .siteNavigation .subnav { top:50px }
 .siteNavigation .item:hover .subnav {display:block;}
 .siteNavigation .subnav ul {width:160px;padding:0 15px 0 0;border-right:1px solid #ccc;}
 .siteNavigation .subnav li {margin:0 0 10px;font:13px/16px Verdana, Arial, sans-serif;background:url(../site_images/button-sprite.png) no-repeat -85px 2px;padding:0 0 0 15px;}
@@ -802,6 +815,5 @@ section.social  .social_layer{margin-top:20px;}
 
 article[role='main'] ul, article[role='main'] ol {font-size: 13px; line-height: 20px; margin-bottom: 15px; margin-left: 15px; list-style-position: inside;} 
 
-#privacyPolicy{text-align: center;margin-bottom: 10px;}
-#privacyPolicy p{font-size: 13px;margin-bottom: 5px;} 
-#privacyPolicy a{font-weight: bold;font-size: 13px;}
+#privacyPolicy { margin-bottom: 10px;position: absolute;top: 42px;font: normal 13px Arial, Helvetica, sans-serif;right: 328px;}
+#privacyPolicy a { font-weight: bold; font-size: 13px; display: inline-block; margin-left: 2px; }

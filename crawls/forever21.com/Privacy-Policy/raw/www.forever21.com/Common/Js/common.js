@@ -643,11 +643,14 @@ function searchClear() {
     document.getElementById("ihKeyword").focus();
 }
 
-function search_go() 
-{
+function search_go() {
+    var sCurrentUrl = location.href;
     var kyeValue = document.getElementById("ihKeyword").value;
     
-    if (ReplaceStr(kyeValue," ","") == "enterkeywordoritem#") {
+    if (kyeValue == 'SEARCH' && sCurrentUrl.indexOf("noresultsfound") != -1)
+        return false;
+
+    if (ReplaceStr(kyeValue, " ", "") == "SEARCH") {
         alert('please enter the keyword');
         document.getElementById("ihKeyword").focus();
         return false;
@@ -659,7 +662,7 @@ function search_go()
         return false;
     }
 
-    var sCurrentUrl = location.href;
+    
 
     if (sCurrentUrl.lastIndexOf("br=") != -1) {
 

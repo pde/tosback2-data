@@ -5363,11 +5363,11 @@ background: url(http://c.o0bg.com/rw/cache.boston.com/universal/regi/images/erro
 	font-size: 1.09090909090909090909em;
 }
 
-
 .article-stub .p-equal {
 	border: 1px solid #dbdbdb;
 	border-top: none;
 }
+
 .article-stub .highlight {
 	background-color: #fdfce7;
 	padding: 0 .5em;
@@ -5437,7 +5437,6 @@ background: url(http://c.o0bg.com/rw/cache.boston.com/universal/regi/images/erro
 	text-align: center;
 }
 
-
 /* New article stub form styles */
 .article-stub .promo-sub .stub-login {
 	padding:  0;
@@ -5478,8 +5477,6 @@ background: url(http://c.o0bg.com/rw/cache.boston.com/universal/regi/images/erro
 	font-size: .9em;
 	white-space: nowrap;
 }
-
-
 
 /* Comment signup stub*/
 .article-stub .comment-reg {
@@ -6992,7 +6989,7 @@ li.save button:focus {
 	margin: 1em 0;
 	font: 0.875em/1.5 Helvetica, Arial, sans-serif; /* 14px / 16px; 23px / 15px */
 	text-align: center;
-	color: #9B1518;
+	color: #000;
 	text-decoration:none;
 	z-index: 10000;
 	-moz-transition: none;
@@ -7003,7 +7000,6 @@ li.save button:focus {
 	clear:both;
 	background-color: #ffffe5;
 	border: 1px solid #e6e6dc;
-	font-weight: bold;
 }
 
 a.article-bar span{
@@ -7099,7 +7095,7 @@ a.article-bar span{
 }
 .article-body .ingredients li:before {
 	color: #ccc;
-	content: "??�� ";
+	content: "???� ";
 	padding: 0 .5em 0 0;
 }
 .article-body .instructions li {
@@ -8124,6 +8120,40 @@ p.score-blog span {
 }
 .listings .sold-out {
 	color: #464646;
+}
+
+/*
+	List Gallery
+*/
+.listing {
+	padding: 1.5em 0;
+	margin-bottom: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #DBDBDB;
+}
+.listing h3,
+.listing h4 {
+	font-size: 1.1em;
+}
+.listing-description {
+	margin-top: 1.5em;
+}
+.listing i {
+	margin-top: 1.5em;
+	display: block;
+}
+/* Prevent images from floating at smaller breakpoints */
+@media screen and (max-width: 480px) {
+	.article-body .listing .figure {
+		clear: both;
+		float: none;
+		width: 100%;			/* 300px / 736px */
+		margin-left: 0;		/* 20px / 736px */
+		margin-bottom: 2em;
+	}
+	.article-body .listing .figure img {
+		margin: 0 auto;
+	}	
 }
 
 /* Globe Insiders */
@@ -9596,7 +9626,7 @@ table.recipe td.left{
 		margin-bottom: -1px;
 	}
 	.story-parts a {
-		min-height: 5em;
+		min-height: 5.5em;
 		padding-right: 4%;
 		padding-left: 6%;
 		width: 90%;
@@ -9626,7 +9656,7 @@ table.recipe td.left{
 	}
 	.article-nav-series a {
 		width: 84%;
-		padding: .8em 8%;
+		padding: .8em 7.5%;
 	}
 	.article-nav-series li.active {
 		margin: -.5em 0 -1px 0; 
@@ -10322,41 +10352,42 @@ table.recipe td.left{
 	.story-styled .excerpt {
 		line-height: 1.3;
 	}
-	
-	/* New article stub form styles */
 	.promo-sub {
 		padding-bottom: 0;
 	}
-	.promo-sub .login-form {
-		/* float: left;
+	/* 
+	*	Stub Form Variation #1
+	*	Styles for Optmizely A/B Testing 
+	*/
+	.promo-sub .stub-login .login-form {
+		float: left;
 		zoom: 1;
 		width: 75%;
-		*/
 	}
 	.promo-sub .stub-login h2 {
-		/*float: left*/;
-		width: 100%;
+		float: left;
+		width: 25%;
 	}
 	.promo-sub .stub-login  p {
-		/*float: left*/;
+		float: left;
 		padding: 0 2%;
 		margin: 0;	
-		/*width: 34%*/;	
+		width: 34%;	
 	}
 	.ie7 .promo-sub .stub-login p input {
 		width: auto;
 	}
-	.promo-sub form p label {
+	.promo-sub .stub-login form p label {
 		margin-top: 0;
 		padding-top: 0;
 	}
-	.promo-sub  .stub-login .submit-group {
-		/*float: left*/;
-		/*width: 20%*/;
-		/*margin-left: 2%*/;
+	.promo-sub .stub-login .submit-group {
+		float: left;
+		width: 20%;
+		margin-left: 2%;
 		margin-bottom: 1em;
 	}
-	.ie7 .promo-sub .submit-group {
+	.ie7 .promo-sub .stub-login .submit-group {
 		position: relative;
 		top: -10px;
 	}
@@ -10368,13 +10399,14 @@ table.recipe td.left{
 		display: block;
 		clear: both;
 	}
-	.promo-sub .errorlist {
+	.promo-sub .stub-login .errorlist {
 		margin-left: 14em;
 		left: 3em;
 		top: -1em;
 	}
-	
-	
+	/*
+	* End Styles for Stub Form Variation #1
+	*/
 }
 @media screen and (min-width: 1200px) {
 	.live-scores p.score-blog {
@@ -10920,6 +10952,18 @@ tbody .pol2012-state { font-weight: normal }
 	font-size: 1.10em;
 }
 
+/* norlov: http://jira.boston.com/browse/REGI-834 
+   to highlight invalid inputs
+*/
+.form-fieldset-error,
+.form-fieldset-error label,
+.form-fieldset-error input,
+.form-fieldset-error-required,
+.form-fieldset-error-required label,
+.form-fieldset-error-required input {
+  color: #DD3333 !important;
+  border-color: #DD3333 !important;
+}
 
 
 /* media query */

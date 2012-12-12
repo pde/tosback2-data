@@ -1780,27 +1780,27 @@ jQuery(".menuSrchMenu ul li a.hasSubmenu").live("click", function (event) {
     }
 });
 /*added for badges*/
-jQuery(".popTrigger").live("mouseenter", function () {
-    alignHoverMesage();
-    jQuery(this).parent("a").next('span.badgesDesc').css("display", "block");
-});
-jQuery(".popTrigger").live("mouseleave", function () {
-    jQuery(this).parent("a").next('span.badgesDesc').css("display", "none");
-});
+//jQuery(".popTrigger").live("mouseenter", function () {
+//    alignHoverMesage();
+//    jQuery(this).parent("a").next('span.badgesDesc').css("display", "block");
+//});
+//jQuery(".popTrigger").live("mouseleave", function () {
+//    jQuery(this).parent("a").next('span.badgesDesc').css("display", "none");
+//});
 
-function alignHoverMesage() {
-    jQuery('span.badgesDesc').filter(function () {
-        return jQuery.trim(jQuery(this).text()) === ''
-    }).removeClass("badgesDesc");
-    jQuery(".badgeListSec li a img").addClass("popTrigger");
-    jQuery(".badgeListSec li").each(function () {
-        var listWdth = jQuery(this).find("img.popTrigger").width();
-        var listHeight = jQuery(this).find("img.popTrigger").height();
-        jQuery(this).find("div.holdPanl").css("width", listWdth);
-        jQuery(this).find("span.badgesDesc").css("left", ((listWdth / 2) - 37));
-        jQuery(this).find("span.badgesDesc").css("bottom", ((listHeight / 2) + 5));
-    });
-}
+//function alignHoverMesage() {
+//    jQuery('span.badgesDesc').filter(function () {
+//        return jQuery.trim(jQuery(this).text()) === ''
+//    }).removeClass("badgesDesc");
+//    jQuery(".badgeListSec li a img").addClass("popTrigger");
+//    jQuery(".badgeListSec li").each(function () {
+//        var listWdth = jQuery(this).find("img.popTrigger").width();
+//        var listHeight = jQuery(this).find("img.popTrigger").height();
+//        jQuery(this).find("div.holdPanl").css("width", listWdth);
+//        jQuery(this).find("span.badgesDesc").css("left", ((listWdth / 2) - 37));
+//        jQuery(this).find("span.badgesDesc").css("bottom", ((listHeight / 2) + 5));
+//    });
+//}
 
 jQuery().ready(function ($) {
     $.address.init(function (event) {

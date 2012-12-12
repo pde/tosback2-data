@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>  
+<html> 
+	<head> 
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">  
+		<base target="_parent"/>  
+		<script type="text/javascript" src="../scripts/jquery.min.js"></script>  
+		<script type="text/javascript" src="../media/cms/homepage/scripts/postmessage.js"></script>  
+		<script> 
+			function getCookie (name) { 
+				var nameEQ = name + '=', i, c,  
+					cookies = document.cookie.split(';'); 
+				for(i=0; i < cookies.length; i+=1) { 
+					c = cookies[i]; 
+					while (c.charAt(0)===' '){ 
+						c = c.substring(1,c.length); 
+					} 
+					if (c.indexOf(nameEQ) === 0){ 
+						return c.substring(nameEQ.length, c.length); 
+					} 
+				} 
+				return null; 
+			}; 
+			function getCookieValues() {  
+				var cookie = decodeURIComponent(getCookie("colam_ctn"));  
+				/*var message = {  
+					rme: findToken(cookie, "rme"),  
+					uid: findToken(cookie, "uid")  
+				};  
+				window.parent.postMessage(JSON.stringify(message),'*');*/  
+				jQuery.pm({  
+					target: window.parent,  
+					url: null,   
+					type:"*",  
+					data:{  
+						rme: findToken(cookie, "rme"),  
+						uid: findToken(cookie, "uid")  
+					}  
+				});  
+			} 
+			//Check colam_ctn cookie for Remember Me flag  
+			function findToken(cookie, key) {  
+				if(cookie != null){  
+					var tokenArr = cookie.split(";");  
+					for ( i = 0; i < tokenArr.length; i++ ) {  
+						if ( tokenArr[i].indexOf(key) > -1) {  
+							var token = tokenArr[i].split("=");  
+							return token;  
+						}  
+					}  
+				}  
+				return null;  
+			}  
+			//jQuery(getCookieValues); 
+		</script>  
+	</head>  
+	<body onload="getCookieValues();"></body> 
+</html> 

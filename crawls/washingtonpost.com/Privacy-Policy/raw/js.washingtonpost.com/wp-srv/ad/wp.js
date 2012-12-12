@@ -324,6 +324,11 @@
       tempcase.where += '/viewable';
       tempcase.keyvalues['!c'].push('media', 'intrusive');
     }
+    
+    //persistant_bb render when viewable
+    if(tempcase.defaults.what === 'persistent_bb' && /viewable_test/.test(location.search)){
+      tempcase.delivery = 'vi';
+    }
 
     //19882-criteo implementation
     if(win.crtg_content){

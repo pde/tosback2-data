@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "12/05/2012 08:12 AM",
+            DATE_IN_USE: "12/12/2012 08:30 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -6873,18 +6873,17 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/845/839/cn5845839.html -->
-<div id="contentItemContainer10000395" class="5845839" >
+    	<!-- BEGIN Content Item File: /content/0005/873/207/cn5873207.html -->
+<div id="contentItemContainer10000395" class="5873207" >
 
 <style type="text/css">
 #globalBanner {
-	width: 581px;
-	height: 62px;
+	width: 481px;
+	height: 64px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
-	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6892,7 +6891,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000745;
+	color: #000000;
 	text-decoration: none;
 }
 
@@ -6908,14 +6907,22 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: #000745;
+	background-color: black;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerText {
-	padding-top: 6px;
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
 }
 </style>
 
@@ -6923,18 +6930,147 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/845/839/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-			SUPER! <span class="promoPercent">30% OFF</span> YOUR PURCHASE!
-			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
-			<br /><span class="detailsLink">DETAILS</span>
-		</a>
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/873/207/assets/121212_ALL_BRONG_GB_US.png" alt="30% off at our 3 must shop brands. Online only. Ends 12/13. Enter HOLIDAY. Plus Details" title="30% off at our 3 must shop brands. Online only. Ends 12/13. Enter HOLIDAY. Plus Details" usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="247,9,453,64" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			<area class="noHideDisruptor" shape="rect" coords="3,0,453,64" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+		</map>
 	</div><!-- /Global Banner Text -->
 
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/873/207/assets/121212_ALL_BRONG_DISR_US.png" alt="Happy Gifting! 30% off at our 3 must-shop brands. Find last-minute gifts for everyone on your list-including you. Plus, take 20% off coveted shoes and apparel(from all your favorite brands!) at Piperlime.com. Enter HOLIDAY. Ends 12/13." title="Happy Gifting! 30% off at our 3 must-shop brands. Find last-minute gifts for everyone on your list-including you. Plus, take 20% off coveted shoes and apparel(from all your favorite brands!) at Piperlime.com. Enter HOLIDAY. Ends 12/13." usemap="#disruptorMap">
+		<map name="disruptorMap">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
 </div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('121212_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/845/839/cn5845839.html -->
+<!-- END Content Item File: /content/0005/873/207/cn5873207.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8013,7 +8149,21 @@ function validateFormGapFooter()
 
 		</div>	
 	<div id="brandftr3_10000513">
-		
+		<!-- BEGIN Content Item File: /content/0005/828/521/cn5828521.html -->
+<div id="contentItemContainer10000513" class="5828521" >
+
+<div style="width:988px;overflow:hidden;border-top:1px solid black;display:block;padding:0;margin-bottom:-2px;" class="clearfix">
+	<img src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/828/521/assets/113012-Us_LDTS_Univ_footer.gif" alt="free shipping on all orders over $50. free returns on all orders." usemap="#edfsFooterMap" />
+	<map name="edfsFooterMap">
+<area alt="free shipping on all orders over $50. get it by christmas! order by 12/19 for 12/24 delivery. free returns on all orders. details." coords="2,2,518,76" href="javascript:void(0);" onClick="return gidLib.layeredPopup.openLayeredPopup({str:'/browse/info.do?cid=47471',id:'edfsPopup',width:490,height:540});">
+<area coords="520,3,989,77" href="javascript:void(0);" alt="introducing international shipping to over 80 countries" onclick="window.scroll(0,0);return siteNavigation.showShippingOptInOverlay()">
+</map>
+</div>
+
+
+</div>
+<!-- END Content Item File: /content/0005/828/521/cn5828521.html -->
+
 	</div>
 </div>
 <div id="brandftr5_10000511">
@@ -8254,7 +8404,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5845839,5754165,5746856,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5873207,5754165,5746856,5828521,5746857,5217025";
 	 </script>
 	
 	<noscript>

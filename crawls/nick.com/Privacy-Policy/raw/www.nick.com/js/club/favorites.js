@@ -105,12 +105,14 @@ NICK.club.favorites.getAttribute = function(attribute, callback, attrGetUrl, use
 	if(!attrGetUrl) attrGetUrl = NICK.club.favorites.settingsGetUrl;
 	if(!user) user = NICK.login.getNickName();
 	
+	if(attribute == "fav_games" || attribute == "fav_videos"){
+		attribute = attribute +"_v2";
+	}
 	var requestParams = {
 		//sbauth:SBCOM.utils.getCookie('auth'), // if auth url
 		username:user,
 		attName:attribute
 	}
-	
 	NICK.request.doRequest({
 		dataType: "jsonp",
 		url: attrGetUrl,
@@ -278,6 +280,9 @@ NICK.club.favorites.setAttribute = function(attribute, attributeValue, callback,
 	if(!attributeValue) attributeValue="-1";
 	if(!attrSetUrl) attrSetUrl = NICK.club.favorites.settingsSetUrl;
 
+	if(attribute == "fav_games" || attribute == "fav_videos"){
+		attribute = attribute +"_v2";
+	}
 	var requestParams = {
 		//sbauth:SBCOM.utils.getCookie('auth'),
 		screenName:NICK.login.getNickName(),

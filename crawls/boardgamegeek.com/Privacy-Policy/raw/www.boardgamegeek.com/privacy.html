@@ -287,7 +287,7 @@ window.onload = start;
 					Database 
 									</div>
 				<ul>
-											<li><a href="http://www.boardgamegeek.com/browse/boardgame">Games (62109)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamefamily">Families (1749)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamecategory">Categories (81)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamemechanic">Mechanics (48)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgameartist">Artists (8857)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamedesigner">Designers (17525)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamepublisher">Publishers (12851)</a></li>										<li><a href="http://www.boardgamegeek.com/boardgame/random">Random Game</a></li>
+											<li><a href="http://www.boardgamegeek.com/browse/boardgame">Games (62235)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamefamily">Families (1752)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamecategory">Categories (81)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamemechanic">Mechanics (48)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgameartist">Artists (8869)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamedesigner">Designers (17546)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamepublisher">Publishers (12876)</a></li>										<li><a href="http://www.boardgamegeek.com/boardgame/random">Random Game</a></li>
 					<li><a href='http://www.boardgamegeek.com/gonecardboard'>Gone Cardboard</a></li>
 				</ul>
 				<div class='clear'></div>
@@ -448,6 +448,62 @@ window.onload = start;
 								
 								<div id='main_content'>
 
+																			
+
+
+
+<center>
+	<div 	id='appeal' 
+			style='text-align:center; width:800px; height:180px; border:solid 1px #b0b0b0; 
+				 	background: url(../geekdo-images.com/banners/aldie_appeal.png);
+				 	margin-bottom:5px;
+				   display: none;
+				   opacity: 0;'>
+		<a href="javascript://" onclick="DismissAppeal();">
+			<span style='float:right; width:16px; height:16px; position:relative; background:url(../geekdo-images.com/images/icons/silkicons/cross.png)'></span>
+		</a>
+		<a href="http://www.boardgamegeek.com/support/aldie" style='color:blue;' onmouseover="this.setStyle( 'color', 'red' );" onmouseout="this.setStyle( 'color', 'blue' );">
+			<span style='font-family:"helvetica",sans-serif; font-size:18pt; text-align:left; margin:50px 0 0 25px; width: 700px; float:left;'>
+				Please Read:<br>
+				A message from BoardGameGeek<br> 
+				co-founder, Scott Alden
+			</span>
+		</a>
+	</div>
+</center>
+
+
+
+
+
+
+
+<script>
+
+function DismissAppeal()
+{
+	var app = $('appeal');
+	app.fade('out').get('tween').chain( function() { app.destroy() } );
+	var myCookie = Cookie.write( 'dismissappeal_v3', 1, {duration: 7, path:'/', domain:'.boardgamegeek.com'} );
+}
+
+function updateplea()
+{
+	var myCookie = Cookie.read('dismissappeal_v3');
+
+	if ( !myCookie )
+	{
+		$('appeal').setStyle( 'display', 'block' );
+		var myFx = new Fx.Tween( $('appeal'), {duration:2000} );
+		myFx.start( 'opacity', 0, 1.0 );		
+	}
+}
+
+window.addEvent('domready', updateplea );
+
+</script>
+
+									
 																																			
 																			<center>
 <div class='thermometer'>
@@ -474,13 +530,13 @@ window.onload = start;
 								<span style='left: 800px;' class='tick_text'>10000</span>
 				</div>
 	
-	<div class='thermometer_fill' style='width:169.92px;'></div>
+	<div class='thermometer_fill' style='width:297.76px;'></div>
 	 
 	<div class='thermometer_text'>
-			<a href="http://www.boardgamegeek.com/thread/892326">Announcement</a> - 
-			2012 Support Drive - New Supporters: 2124
+			<a href="http://www.boardgamegeek.com/thread/892326">Announcement</a> &ndash;
+			2012 Support Drive &ndash; New Supporters: 3722
 			<br>
-			GeekGold Bonus For All 2012 Supporters: 21.24 &dash; Bonus doubles if 7500 is reached!
+			GeekGold Bonus For All 2012 Supporters: 37.22 &ndash; Bonus doubles if 7500 is reached!
 			
 	</div>
 	<div class='clear'></div>

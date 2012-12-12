@@ -111,8 +111,8 @@ $(window).resize(function() {
 if(a == 'popupSignIn'){ 
 	$("#email_id, .backgroundPopup #password").css('border','1px solid gray');
 	$(".signInError").css('display','none');
-	var checkLogin = $('.headerHorzMenuSecondary').html(); 
-	if(checkLogin.indexOf('Sign Out') < 0 ){
+	var checkLogin = $('.thdMyAccountRegister').text(); 
+	if(checkLogin != "Sign Out" ){
 		$('#email_id').val('');
 	}
 	if(emailPasswordChanged){
@@ -311,7 +311,7 @@ else
 );
 function validateEmail(emailValue) {
    var regex=/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return (regex.test(emailValue.trim())) ? true : false;
+    return (regex.test($.trim(emailValue))) ? true : false;
 }
 
 function validateMultipleEmailsCommaSeparated(emailValues) {

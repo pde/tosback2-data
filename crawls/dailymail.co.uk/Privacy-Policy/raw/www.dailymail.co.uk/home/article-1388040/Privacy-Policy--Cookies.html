@@ -139,10 +139,10 @@
 		
 		
 		
-		<link rel="stylesheet" type="text/css" media="screen" href="../../../scripts.dailymail.co.uk/static/bundles/all--73-build-318.css"/>
+		<link rel="stylesheet" type="text/css" media="screen" href="../../../scripts.dailymail.co.uk/static/bundles/all--74.1-build-330.css"/>
 
 
-		<link rel="stylesheet" type="text/css" media="screen" href="../../coloursCss/colours-73-build-318.css" />
+		<link rel="stylesheet" type="text/css" media="screen" href="../../coloursCss/colours-74.1-build-330.css" />
 
         
         
@@ -188,12 +188,12 @@
 		
 		
 		<!--[if lte IE 6]>
-			<link rel="stylesheet" type="text/css" media="screen" href="http://scripts.dailymail.co.uk/static/bundles/ie6--73-build-318.css"/>
+			<link rel="stylesheet" type="text/css" media="screen" href="http://scripts.dailymail.co.uk/static/bundles/ie6--74.1-build-330.css"/>
 
 		<![endif]-->
 
         
-		    <link rel="stylesheet" type="text/css" media="print" href="../../../scripts.dailymail.co.uk/static/bundles/print--73-build-318.css"/>
+		    <link rel="stylesheet" type="text/css" media="print" href="../../../scripts.dailymail.co.uk/static/bundles/print--74.1-build-330.css"/>
 
         
 	
@@ -305,7 +305,7 @@
 		
 		
 		
-      <script type="text/javascript" src="../../../scripts.dailymail.co.uk/static/bundles/dm1--73-build-318.js" ></script>
+      <script type="text/javascript" src="../../../scripts.dailymail.co.uk/static/bundles/dm1--74.1-build-330.js" ></script>
 
       
    
@@ -561,7 +561,7 @@ digg_skin = 'compact';
     s.prop24='04';
     s.prop25='';
     s.prop26='';
-    s.prop27='2012-12-05';
+    s.prop27='2012-12-12';
     s.prop28='13';
     s.prop44='D=g';
 
@@ -703,6 +703,8 @@ digg_skin = 'compact';
 			});
 		}
 		DM.ComScore.dm  = DM.ComScore.getDM();
+
+        DM.ComScore.vd  = '';
 		//]]>
 	</script>
 
@@ -714,7 +716,7 @@ digg_skin = 'compact';
 				if (d[f](b) + 1)for (o = 0, n = d.split(";"), p = n[h]; o < p; o++)m = n[o][f](b), m + 1 && (e = l + unescape(n[o][g](m + b[h])));
 				a += k + "_t=" + +(new Date) + k + "c=" + (c.characterSet || c.defaultCharset || "") + "&c8=" + r(c.title) + e + "&c7=" + r(c.URL) + "&c9=" + r(c.referrer), a[h] > i && a[f](l) > 0 && (j = a[g](0, i - 8).lastIndexOf(l), a = (a[g](0, j) + k + "cut=" + r(a[g](j + 1)))[g](0, i)), c.images ? (m = new Image, q.ns_p || (ns_p = m), m.src = a) : c.write("<", "p", "><", 'img src="', a, '" height="1" width="1" alt="*"', "><", "/p", ">")
 			}
-		udm_('http' + (document.location.href.charAt(4) == 's' ? 's://sb' : '://b') + '.scorecardresearch.com/b?c1=2&c2=' + '14366613' + '&name=' + 'home.article.1388040.privacy-policy-cookies.page' + '&mo_vs_pl=we&mo_vs_pr=dm&mo_vs_ct=ar&mo_tb=0&category=home&mo_article_id=1388040&mo_article_author=&mo_article_date=20120524&mo_article_title=privacy+policy+and+cookies&mo_article_pd=20110607&mo_article_vn=4540236&mo_site=dailymail' + ((DM.isLoggedIn && DM.userId) ? '&mo_logged_in=1&mo_user_id=' + DM.userId : '&mo_logged_in=0') + DM.ComScore.dm);
+		udm_('http' + (document.location.href.charAt(4) == 's' ? 's://sb' : '://b') + '.scorecardresearch.com/b?c1=2&c2=' + '14366613' + '&name=' + 'home.article.1388040.privacy-policy-cookies.page' + '&mo_vs_pl=we&mo_vs_pr=dm&mo_vs_ct=ar&mo_tb=0&category=home&mo_article_id=1388040&mo_article_author=&mo_article_date=20120524&mo_article_title=privacy+policy+and+cookies&mo_article_pd=20110607&mo_article_vn=4540236&mo_site=dailymail' + ((DM.isLoggedIn && DM.userId) ? '&mo_logged_in=1&mo_user_id=' + DM.userId : '&mo_logged_in=0') + DM.ComScore.dm + DM.ComScore.vd);
 		//]]>
 	</script>
 
@@ -787,33 +789,19 @@ digg_skin = 'compact';
 
 
     <script type="text/javascript">
-        var ted = {};
         (function(){
-            var r = document.referrer,
-                c = 'external';
-
-            if (r) {
-                var u = /^http[s]?:\/\/(.*)$/.exec(r)[1].split('/'),
-                    d = u.shift();
-                if (/.*(dailymail\.co\.uk|mailonline\.com|mailonline\.co\.uk|thisismoney\.co\.uk|mailonsunday\.co\.uk|dmgt\.net|localhost).*/.exec(d)) {
-                    var a = /\/article-(\d+)\//.exec(r);
-                    u.pop();
-                    if (a) u.pop();
-                    c = (a) ? 'article' : u.join('/');
-                }
-            }
-
-            ted.c = c;
-            ted.a = '1388040';
+        	DM.ted = {}
+        	DM.ted.a = '1388040';
+        	 
+             
+                 DM.ted.g = 'US';
+                 
             
-            
-                    ted.g = 'US';
-                
-            
-
-            AND.addScript('http://video.dailymail.co.uk/brightcove/tracking/ted.js', {});
+            AND.addScript('http://video.dailymail.co.uk/brightcove/tracking/ted2.js', {});
         })();
     </script>
+
+
 
 
    
@@ -1006,14 +994,14 @@ url: '/registration/p/lightbox_login.html?targetUrl='
 <a href="http://www.dailymail.co.uk/home/feedback.html" class='last'>Feedback</a>
 </div>
 <div class="weather">
-<strong>Wednesday, Dec 05 2012</strong>
+<strong>Wednesday, Dec 12 2012</strong>
 <a href="http://www.dailymail.co.uk/home/weather/index.html" >
 <span>12PM&nbsp;</span>
-<strong>57&deg;F</strong>
-<span class="icn-w cloudy" title="Overcast"></span>
-<span class="pl20">3PM</span>
-<strong>57&deg;F</strong>
+<strong>51&deg;F</strong>
 <span class="icn-w rain" title="Cloudy with outbreaks of Rain"></span>
+<span class="pl20">3PM</span>
+<strong>51&deg;F</strong>
+<span class="icn-w scshowers" title="Scattered Showers"></span>
 <span class="last pl20">5-Day Forecast</span>
 </a>
 </div>
@@ -1080,75 +1068,75 @@ url: '/registration/p/lightbox_login.html?targetUrl='
 </div>
 <ul class="rotator-panels">
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2243118/Gretchen-Molannen-debilitating-sexual-arousal-disorder-commits-suicide.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-0-165A468F000005DC-622_154x115.jpg" alt="Agony: Gretchen Molannen, 39, pictured on her Facebook page wearing a mask, committed suicide on December 1" />
-<span>Tragedy as woman with debilitating sexual arousal disorder...</span>
+<a href="http://www.dailymail.co.uk/news/article-2245881/Nurse-Jacintha-Saldanha-left-note-hanged-flat.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2245881-166C7E16000005DC-271_154x115.jpg" alt="Condolences: Flowers and personal messages (right) are pictured yesterday outside the King Edward VII Hospital apartments where Jacintha Saldanha (left) was found dead in central London last week" />
+<span>Kate hoax nurse was found 'hanged' in her flat and note to...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242963/Subway-death-Man-killed-pushed-New-York-train-Times-Square.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2242963-165B0F0E000005DC-966_154x115.jpg" alt="subway horror" />
-<span>Why did no one help him? Outrage as commuters stand back...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246293/Tennis-player-Caroline-Wozniacki-accused-racist-impersonation-Serena-Williams-stuffing-bra-pants.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246293-167539EF000005DC-59_154x115.jpg" alt="Danish tennis player Caroline Wozniacki impersonates Serena Williams " />
+<span>Tennis player Caroline Wozniacki accused of 'racist'...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242567/Terry-Achane-Married-fathers-horror-wife-places-baby-adopted-Frei-family-telling-him.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242567-1656775C000005DC-855_154x115.jpg" alt="Preview" />
-<span>US married father's horror after wife places his child with...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246513/Jenna-Bush-Hager-pregnant-Delight-President-George-W-Bush-wife-Laura.html?ICO=most_read_module">
+<img src="http://i.dailymail.co.uk//i/pix/2012/12/11/article-2246513-16774AE1000005DC-651_154x115.jpg" alt="jenna" />
+<span>EXCLUSIVE: A baby for former first daughter Jenna Bush...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2243090/Kate-Middleton-pregnant-Prince-Williams-smile-says-The-Duchess-Cambridge-feeling-better.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2243090-165A15FE000005DC-508_154x115.jpg" alt="High spirits all round" />
-<span>A smile that says Kate's feeling better: Relieved William...</span>
+<a href="http://www.dailymail.co.uk/news/article-2245074/Walmart-security-guard-shoots-shoplifting-mother-dead-parking-lot-tries-escape-young-children.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/08/article-2245074-16697C4D000005DC-607_154x115.jpg" alt="Shelly Frey (left and right) was shot in the neck and died after failing to stop for off-duty sheriff's deputy in Houston, Texas" />
+<span>Walmart security guard shoots 'shoplifting' mother dead in...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2243013/Mother-20-told-boyfriend-having-sex-dogs-13-fantasizes-incest.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2243013-16598910000005DC-384_154x115.jpg" alt=" Brittany Angelique Sonnier, 20 in Lake Havasu City, Ariz. " />
-<span>Mother, 20, 'told boyfriend she has been having sex with her...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246409/Singer-James-Blunt-plans-Swiss-loves-skiing-good-food-forgets-mention-millionaires-tax-haven.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246409-02DC882A00000578-452_154x115.jpg" alt="Singer, songwriter, skier: James Blunt wants to become a permanent citizen of tax-friendly Switzerland" />
+<span>Singer James Blunt plans to become Swiss because he 'loves...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242957/Millie-Martin-murder-Moment-paedophile-Barry-McCarney-rushed-15-month-old-girl-fatally-abused-hospital.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242957-1659C111000005DC-177_154x115.jpg" alt="Millie Martin" />
-<span>Kiss of life from the monster who killed her: Moment...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246730/Casey-Anthony-spotted-eating-Flanigans-steak-house-South-Florida.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246730-167818E1000005DC-856_154x115.jpg" alt="Is it her? A woman reported to be Casey Anthony was seen eating out at a steakhouse in Lake Worth, Florida, on Friday. Gossip Extra was the first to report the possible sighting" />
+<span>FIRST PICTURE: Casey Anthony spotted eating at South Florida...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242905/Anderson-Cooper-reveals-went-blind-36-hours-week.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242905-16598CCB000005DC-321_154x115.jpg" alt="Cooper explained on his talk show that he had spent two hours on the water in Portugal filming a story last week and, despite it being an 'overcast day', woke up that night to find he could not see." />
-<span>Anderson Cooper reveals he went blind for 36 hours last week...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246748/Oregon-mall-shooting-3-dead-gunman-opens-shooting-head.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246748-16785476000005DC-447_154x115.jpg" alt="Clackmas" />
+<span>'I am the shooter': Chilling words of gunman in white mask...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2241758/Hobbit-film-wizardy-left-feeling-sick--Cinema-goers-complain-camera-speeds-3D-effects-caused-headaches-queasiness.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/02/article-2241758-16509A89000005DC-894_154x115.jpg" alt="Some fans said they felt sick after watching the new Hobbit film" />
-<span>'Hobbit film wizardry left us feeling sick&#8217;:...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246711/Storage-Wars-star-David-Hester-sues-A-E-750k-claiming-RIGGED.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246711-1678223B000005DC-995_154x115.jpg" alt="h" />
+<span>Lawsuit claims 'Storage Wars' show is rigged </span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242350/Kate-Middleton-pregnant-Duke-Duchess-Cambridge-having-baby.html?ICO=most_read_module">
-<img src="http://i.dailymail.co.uk//i/pix/2012/12/04/article-2242350-1659DD3F000005DC-82_154x115.jpg" alt="Good spirits: Prince William looks much happier than he did earlier today as he leaves the King Edward VII hospital tonight after his wife was 'responding well to treatment' " />
-<span>Pregnant Kate is &#8216;getting better&#8217;: Wills smiles...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246419/Christian-Bottger-10-steals-NFL-cheerleaders-amazing-dance-moves-earns-nickname-Little-Fear.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246419-167685D8000005DC-451_154x115.jpg" alt="10-year-old cheerleading sensation Christian Bottger" />
+<span>Boy, 10, steals the show from NFL cheerleaders with his...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242692/German-nymphomaniac-Antje-Crapnik-dead-Munich-home.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242692-03A324F70000044D-605_154x115.jpg" alt="Antje Crapnik, 47, was found dead by her latest lover at her home in Munich" />
-<span>German nymphomaniac, 47, who imprisoned men for sex is found...</span>
+<a href="http://www.dailymail.co.uk/news/article-2245870/Courtney-Sue-Reschke-35-sex-4-underage-boys-met-teen-son.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/10/article-2245870-167235AC000005DC-459_154x115.jpg" alt="Mom: Courtney Sue Reschke, 35, appeared in fourth District Court on two counts each of felony injury to a child and felony lewd conduct with a child under 16" />
+<span>Mom, 35, 'had sex with four underage boys she met through...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242894/Kate-Middleton-pregnant-The-Duchess-make-history-William-expecting-babies.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2242894-16552F98000005DC-462_154x115.jpg" alt="Concern: The pregnant Duchess' care is being overseen by an elite team of medics " />
-<span>So what if she does have twins? Kate will make history if...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246382/Horrific-video-Syrian-rebels-forcing-boy-behead-captive-sword.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246382-1675E97D000005DC-387_154x115.jpg" alt="Video nasty: A young boy, apparently being egged on by Syrian rebel fighters, uses a sword to cut the head off man in this disturbing clip that has been uploaded onto the internet" />
+<span>Horrific footage shows 'Syrian rebels' forcing boy to behead...</span>
 </a>
 </li>
 <li class="link-bogr2 linkro-wocc">
-<a href="http://www.dailymail.co.uk/news/article-2242694/Is-royal-baby-look-like-Forensic-artist-creates-image-Kate-Middletons-child.html?ICO=most_read_module">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242694-1655395C000005DC-686_154x115.jpg" alt="Here is what royal couple Prince William and Kate Middleton's children could look like, according to a top forensic artist" />
-<span>Is this what royal baby could look like? US forensic artist...</span>
+<a href="http://www.dailymail.co.uk/news/article-2246098/Brandon-Woodard-Aspiring-rapper-victim-shot-head-New-York-victim-hit.html?ICO=most_read_module">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246098-16770B65000005DC-694_154x115.jpg" alt="gunman" />
+<span>Pictured: Manhattan killer seen pulling gun out of his...</span>
 </a>
 </li>
 </ul>
@@ -1256,10 +1244,12 @@ value: 'share 1388040'
 window.plusone_vote = function(obj) {
 DM.Omniture.connectCallback('plusone_vote', 'home', obj);
 DM.ComScore.connectCallback('plusone-vote', obj);
+DM.ted.tedEvent('social-event', {'social-event' :'plusone-vote'});
 };
 window.clickEventToAnalytics = function(intent_event) {
 DM.Omniture.connectCallback('twitter_click', 'home', intent_event);
 DM.ComScore.connectCallback('twitter-click', intent_event);
+DM.ted.tedEvent('social-event', {'social-event' :'twitter-tweet'});
 };
 window.fbAsyncInit = function() {
 FB.init({
@@ -1273,6 +1263,7 @@ xfbml : true
 FB.Event.subscribe('edge.create', function(response) {
 DM.Omniture.connectCallback('facebook_like', 'home', response);
 DM.ComScore.connectCallback('facebook-like', response);
+DM.ted.tedEvent('social-event', {'social-event' :'facebook-like'});
 });
 };
 /* google +1 button */
@@ -1368,682 +1359,581 @@ DM.has('rc2p0-bing', 'bingSearchBox');
 <h3 class="wocc">Femail Today</h3>
 <ul class="link-bogr2 linkro-wocc">
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243232/Harry-Styles-arrives-Taylor-Swifts-hotel-11pm-ahead-sleepover.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243232-165B358F000005DC-803_154x115.jpg" alt="Harry Styles " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246723/Katie-Holmes-comforts-tearful-Suri-holds-tight-youngsters-hand.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246723-1679039B000005DC-399_154x115.jpg" alt="Don't cry, darling! Katie Holmes comforts a tearful Suri and holds on tight to the youngster's hand" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Second night in a row! Harry Styles arrives at Taylor Swift's hotel ahead of ANOTHER sleepover... as Eminem's daughter hits out at their romance</strong>
+<strong>Don't cry, darling! Katie Holmes comforts a tearful Suri and holds on tight to the youngster's hand</strong>
+The pair were leaving a New York office together
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243216/Matt-Damon-overshadowed-ultra-glamorous-wife-Luciana-premiere-new-film-Promised-Land.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243216-165B0588000005DC-10_154x115.jpg" alt="Matt Damon is overshadowed by his ultra glamorous wife Luciana at premiere of his new film Promised Land " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246682/Hugh-Jackman-breaks-remembering-mother-abandoned-age-emotional-TV-interview.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246682-1677F1F2000005DC-91_154x115.jpg" alt="Hugh Jackman breaks down while remembering how his mother abandoned him aged eight during emotional TV interview" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Matt Damon is overshadowed by his ultra glamorous wife Luciana at premiere of his new film Promised Land</strong>
-She stole the show
+<strong>Hugh Jackman breaks down while remembering how his mother abandoned him at the age of eight during emotional TV interview</strong>
+Called his dad his rock
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243206/Justin-Bieber-ogled-Victorias-Secret-models-backstage-fashion-temporary-split-Selena.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243206-165B27C9000005DC-759_154x115.jpg" alt="Pictured: The moment Justin Bieber ogled Victoria's Secret models backstage at fashion show before his temporary split with Selena" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246703/Private-Practice-star-Kate-Walsh-45-shows-gorgeous-bikini-body-beach-Miami.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246703-167803F4000005DC-409_154x115.jpg" alt="Just what the doctor ordered! Private Practice star Kate Walsh, 45, shows off her gorgeous bikini body on the beach in Miami" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Pictured: The moment Justin Bieber ogled Victoria's Secret models backstage at fashion show before his temporary split with Selena</strong>
+<strong>Just what the doctor ordered! Private Practice star Kate Walsh, 45, shows off her gorgeous bikini body on the beach in Miami</strong>
+Cut a very youthful figure
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243306/One-Direction-cement-status-worlds-biggest-boyband-sell-Madison-Square-Garden-critical-acclaim.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243306-1659F7C1000005DC-476_154x115.jpg" alt="Stadium status: The boys from Britain have become serious pop idols to their fans not only in America but across the globe" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246982/Drew-Barrymore-introduces-daughter-Olive-world.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-167A8DE5000005DC-281_154x115.jpg" alt="Introducing baby Olive! Drew Barrymore poses with her daughter Olive on the cover of America's People magazine" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>It's official! One Direction cement their status as the world's biggest boyband as they sell out Madison Square Garden to critical acclaim</strong>
+<strong>'She's a little miracle!' Drew Barrymore introduces daughter Olive to the world</strong>
+Drew said she was not prepared for how much her life would change
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243199/Baseball-star-Ryan-Howards-cheerleader-wife-trashes-wedding-dress-beach-photo-shoot.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243199-165B2128000005DC-891_154x115.jpg" alt="Baseball star Ryan Howard's cheerleader wife trashes her wedding dress during beach photo shoot" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246848/Anne-Hathaway-wardrobe-malfunction-Les-Miserables-star-devastation-underwear-photos.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246848-167A0B70000005DC-970_154x115.jpg" alt=" Anne Hathaway" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Baseball star Ryan Howard's cheerleader wife Krystal Campbell trashes her wedding dress on the beach&nbsp;</strong>
-Post-wedding shoot in Maui
+<strong>'They saw everything!': Anne Hathaway talks about 'devastation' following her underwear-less wardrobe malfunction</strong>
+Latest star to get caught
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243151/Gwyneth-Paltrow-reveals-Id-love-baby-admits-all.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243151-165B55DB000005DC-180_154x115.jpg" alt="'I'd love to have another baby!' Gwyneth Paltrow reveals she dreams of adding to her brood... but admits 'you can't have it all'" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246919/Shahs-Of-Sunset-star-Mercedes-Javid-spills-tiny-bikini.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246919-167A4FDB000005DC-365_154x115.jpg" alt="'Dear Santa, for Christmas I would like... a bigger bikini!' Shahs Of Sunset star Mercedes Javid spills out of her tiny two-piece" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'I'd love to have another baby!' Gwyneth Paltrow reveals she dreams of adding to her brood... but actress and entrepreneur says 'you can't have it all'</strong>
+<strong>'Dear Santa, for Christmas I would like... a bigger bikini!' Shahs Of Sunset star Mercedes Javid spills out of her tiny two-piece</strong>
+In Santa Barbara
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243174/Miranda-Kerr-reveals-Grandmas-tips-keeping-husband-Orlando-Bloom-happy--little-make-sexy-underwear.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243174-165A81E0000005DC-739_154x115.jpg" alt="'Put on some nice underwear and you'll keep your husband': Miranda Kerr reveals her Grandma's tips for keeping a man happy " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246837/Catwoman-Jocelyn-Wildenstein-goes-subdued-look-date-night.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246837-167993B8000005DC-942_154x115.jpg" alt="Toning down her feline side: Catwoman Jocelyn Wildenstein goes for a more subdued look on date night " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Miranda Kerr reveals her Grandma's tips for keeping husband Orlando Bloom happy... a little make-up and some sexy underwear</strong>
-&nbsp; &nbsp;&nbsp;
+<strong>Toning down her feline side: Catwoman Jocelyn Wildenstein, 72, goes for a more subdued look</strong>
+Women dubbed 'Bride Of Wildenstein' out with boyfriend Lloyd Klein
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243193/Sarah-Jessica-Parker-steals-younger-peers-Dianna-Agron-Christina-Ricci-flashing-bra-NYC-screening.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243193-165AF5A8000005DC-280_154x115.jpg" alt="She won't be outdone! Sarah Jessica Parker makes sure to steal the show from younger peers Dianna Agron and Christina Ricci by flashing her bra " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246668/Crystal-Harris-flaunts-diamond-engagement-ring-fianc-Hugh-Hefner.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246668-1678149E000005DC-435_154x115.jpg" alt="Before the split: Playboy founder Hugh Hefner and his fiancee Crystal Harris celebrate his 85th birthday in Las Vegas on April 9, 2011 - two months before she ended their first engagement" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>She won't be outdone! Sarah Jessica Parker makes sure to steal the show from younger peers Dianna Agron and Christina Ricci by flashing her bra</strong>
+<strong>'My beautiful ring!' Crystal Harris flaunts her diamond engagement ring from fiancé Hugh Hefner... a year after she sold the first</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243320/Sarah-Michelle-Gellar-puts-post-baby-figure-display-runs-errands-Los-Angeles.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243320-165C066F000005DC-622_154x115.jpg" alt="Out and about: Sarah Michelle Gellar puts her post-baby figure on display as she runs errands in Los Angeles" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246838/Olivia-drives-men-Wilde-stuns-extremely-low-cut-waistcoat-Django-Unchained-premiere.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-16796780000005DC-946_154x115.jpg" alt="o" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Out and about: Sarah Michelle Gellar puts her post-baby figure on display as she runs errands in Los Angeles</strong>
-Gave birth to her second child in September&nbsp;
+<strong>Olivia dresses Wilde as she stuns in an extremely low-cut plunging waistcoat at the Django Unchained premiere</strong>
+Dressed for attention
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243198/Adriana-Lima-hits-streets-make-catwalk-extravaganza-airs-U-S-television.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243198-165A2279000005DC-119_154x115.jpg" alt="Victoria¿s Secret Angel unmasked: Adriana Lima hits the streets with no make-up as catwalk extravaganza hits U.S. television" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246783/Uma-Thurman-Liv-Tyler-Olivia-Wilde-steal-star-DiCaprio-Quentin-Tarantinos-Django-Unchained-premiere.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246783-167934B9000005DC-592_154x115.jpg" alt="Leo who? Uma Thurman, Olivia Wilde and Liv Tyler steal the show from star DiCaprio at Quentin Tarantino's Django Unchained premiere" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Victoria's Secret Angel unmasked: Adriana Lima hits the streets with no make-up as catwalk extravaganza airs on U.S. television</strong>
+<strong>Leo who? Uma Thurman, Liv Tyler and Olivia Wilde steal the show from star DiCaprio at Quentin Tarantino's Django Unchained premiere</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243211/Angus-T-Jones-Two-Half-Men-status-resolved.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243211-165ADB41000005DC-146_154x115.jpg" alt="'We have other plans': Network boss confirms that Angus T. Jones' 'status' is being 'resolved' with Two and a Half Men " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246860/Madonna-Justifies-Her-Love-puckers-toyboy-lover-Brahim-Zaibat-stage-Brazil.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246860-1673751E000005DC-261_154x115.jpg" alt="Raunchy: Madonna puckered up to her toyboy lover, Brahim Zaibat, on stage in Brazil " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'We have other plans': Network boss confirms that Angus T. Jones' 'status' is being 'resolved' with Two and a Half Men</strong>
-Going in a new direction
+<strong>For the love of God, Madge, get a room! Singer, 54, tries to choke toyboy lover Brahim Zaibat on stage in Brazil</strong>
+Treated her fans to a stomach-turning display
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243213/Katy-Perry-dazzles-green-gown-split-thigh-poses-legendary-songwriter-Carole-King.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243213-165AE5D8000005DC-171_154x115.jpg" alt="A definite hit! Katy Perry dazzles in green gown split to the thigh as she poses with legendary songwriter Carole King" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246852/Dakota-Johnson-steals-limelight-dad-Don-takes-Django-Unchained-premiere.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246852-1679ADFE000005DC-383_154x115.jpg" alt="Dakota" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>She's got a friend... in Katy! Ms Perry dazzles in green gown as she leads musical tribute to Carole King</strong>
-King wrote You've Got A Friend in 1971
+<strong>Daddy's girl! Dakota Johnson steals the limelight from dad Don as he takes her to Django Unchained</strong>
+No problem stepping out from father's shadow
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243257/Lea-Michele-bonds-famous-friends-Zoe-Saldana-Elizabeth-Olsen-Hollywood-dinner-party.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243257-165B62CF000005DC-449_154x115.jpg" alt="The Glee of schmoozing! Lea Michele bonds with famous friends Zoe Saldana and Elizabeth Olsen at Hollywood dinner party" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246893/Ashton-Kutcher-Mila-Kunis-joined-hip-step-Los-Angeles-meal.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-1679DEFB000005DC-719_154x115.jpg" alt="A lovers lunch! Ashton Kutcher and Mila Kunis are still joined at the hip as they step out in Los Angeles for a meal " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>The Glee of schmoozing! Lea Michele bonds with famous friends Zoe Saldana and Elizabeth Olsen at Hollywood dinner party</strong>
+<strong>A lovers lunch! Ashton Kutcher and Mila Kunis are still joined at the hip as they step out in LA</strong>
+Enjoyed a bite to eat together after Mila's return from Rome
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243007/Frankie-Muniz-stroke-Malcolm-Middle-star-suffers-mini-stroke-25.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2243007-1659CA72000005DC-623_154x115.jpg" alt="Health scare: Frankie Muniz has allegedly suffered a 'mini-stroke' Health scare: Frankie Muniz has allegedly suffered a 'mini-stroke' " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246951/Tom-Cruise-meets-mystery-brunette-woman-parties-Stockholm-Jack-Reacher-premiere.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246951-167A8DD5000005DC-918_154x115.jpg" alt="t" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Malcolm In The Middle star Frankie Muniz suffers 'mini-stroke' at 25</strong>
-Admitted to an Arizona hospital after 'acting really weird'
+<strong>Tom Cruise meets a mystery brunette woman as he parties in Stockholm after the Jack Reacher premiere</strong>
+Tom and his entourage were at The Rose Bar
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243239/Sandra-Bullocks-son-Louis-sports-punky-skeleton-hoodie-leaves-school.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243239-165B8BE6000005DC-655_154x115.jpg" alt="Sandra Bullock " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246781/Rosamund-Pike-lovely-lime-kiss-Tom-Cruise-red-carpet-Jack-Reacher-Stockholm-premiere.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246781-1678C50A000005DC-901_154x115.jpg" alt="His leading lady! Rosamund Pike is lovely in lime to get a kiss from Tom Cruise on red carpet at Jack Reacher Stockholm premiere" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Learning disguise tips already? Sandra Bullock's son Louis sports punky skeleton hoodie at preschool</strong>
-Blending in may come in handy later in life
+<strong>His leading lady! Rosamund Pike is lovely in lime to get a kiss from Tom Cruise on red carpet at Jack Reacher Stockholm premiere</strong>
+The actors got close
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243265/Ryan-Gosling-goes-incognito-enjoys-lunch-friend-sporting-novelty-jumper.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243265-165B7526000005DC-216_154x115.jpg" alt="Blending in with the crowd: Ryan Gosling goes incognito as he enjoys a lunch with a friend while sporting a novelty jumper " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246326/Charlie-Sheen-gives-75k-kid-Actor-donates-money-help-10-year-old-girl-fighting-cancer.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246326-167815C8000005DC-602_154x115.jpg" alt="Pictured: The 10-year-old cancer patient who inspired bad boy Charlie Sheen to donate $75,000 to help her fight for life " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Blending in with the crowd: Ryan Gosling goes incognito as he enjoys a lunch with a pal</strong>
-He could have done better without the novelty jumper&nbsp;
+<strong>Pictured: The 10-year-old cancer patient who inspired bad boy Charlie Sheen to donate $75,000 to help her fight for life&nbsp;</strong>
+She melted his heart
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/femail/article-2243121/Camilla-cheeky-laws-formidable-grannies.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243121-16593EA0000005DC-459_154x115.jpg" alt="March of the matriarchs: Carole and Camilla are pictured at William and Kate's wedding" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246778/Showing-Chad-Johnson-just-hes-missing-Evelyn-Lozada-strips-naked-PETA-anti-fur-campaign.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246778-167940D4000005DC-295_154x115.jpg" alt="Showing Chad Johnson just what he's missing! Evelyn Lozada strips down naked for PETA anti-fur campaign" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Camilla, her cheeky name for the in-laws and two very formidable grannies</strong>
-Few families are blessed with such indefatigable women
+<strong>Showing Chad Johnson just what he's missing! Evelyn Lozada strips down naked for PETA anti-fur campaign</strong>
+Evelyn unveiled the new campaign in LA
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/femail/article-2243142/Kate-Middleton-Queen-Yummy-Mummies-choice-pram-toys-set-global-trends.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243142-16598161000005DC-685_154x115.jpg" alt="Decisions, decisions: Kate pictured with a friend's pram in June" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246832/Cameron-Diaz-hits-Django-Unchained-party-working-sweat-gym.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246832-16794FD7000005DC-721_154x115.jpg" alt="Work hard, play harder: Cameron Diaz hits Django Unchained after-party after working up a sweat at the gym" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Queen of the Yummy Mummies and her tiny trendsetter - Kate's choice of pram, toys and name will set global trends</strong>
-What pram will she buy?
+<strong>Work hard, play hard: Cameron Diaz hits Django Unchained after-party after working up a sweat at the gym</strong>
+Actress joined the bash in New York
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/femail/food/article-2235268/Man-Vs-Food-Adam-Richman-teaches-Martha-Lacey-eat-5lb-burger-30-minutes.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2235268-165C2E4E000005DC-182_154x115.jpg" alt="You've seen Man Vs. Food, now it's time for FEMAIL Vs. Food: Adam Richman teaches one writer how to tackle the challenge of eating a 5lb burger and chips in 30 minutes" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/news/article-2246513/Jenna-Bush-Hager-pregnant-Delight-President-George-W-Bush-wife-Laura.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246513-16774AE1000005DC-651_154x115.jpg" alt="jenna" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>You've seen Man Vs Food, now it's time for FEMAIL Vs Food</strong>
-Adam Richman teaches one writer the gentle art of eating a 5lb hamburger in 30min
+<strong>EXCLUSIVE: A baby for former first daughter Jenna Bush Hager: Delight for former President George W and wife Laura who were desperate for grandkids</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/femail/article-2242909/How-eye-shadow-Karl-Lagerfeld-style.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-0-1658B675000005DC-438_154x115.jpg" alt="'It is ze art of ze make-up': How to do your eye shadow Karl Lagerfeld style" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246933/Owen-Wilson-shows-slightly-rotund-stomach-goes-shirtless-beach.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246933-167A49E5000005DC-94_154x115.jpg" alt="Owen Wilson" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'It is ze art of ze make-up': How to do your eye shadow Karl Lagerfeld style</strong>
-Eccentric designer has turned his attention to beauty with Mon Shu Girl
+<strong>Someone's packing a paunch: Owen Wilson shows off slightly rotund stomach as he goes shirtless on the beach</strong>
+The 44-year-old actor was in Miami Beach
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243284/Delilah-del-Toro-shows-mini-Ugg-boots-day-mother-Kimberly-Stewart.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243284-165BC19C000005DC-435_154x115.jpg" alt="Fashionista in the making: Delilah del Toro shows off her mini Ugg boots on a day out with her mother Kimberly Stewart" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246767/Lindsay-Lohan-bars-prosecutors-set-ask-judge-revoke-probation.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246767-1678BDB6000005DC-513_156x119.jpg" alt="Lindsay Lohan may face jail time as L.A. prosecutors prepare to ask judge to 'revoke her probation' " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Fashionista in the making: Delilah del Toro shows off her mini Ugg boots on a day out with her mother Kimberly Stewart</strong>
-Getting into fashion early
+<strong>Lindsay Lohan could face eight months in jail as LA prosecutors prepare to ask judge to 'revoke her probation'</strong>
+Prosecutors are allegedly 'out for blood'
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243256/Anna-Friel-brightens-carol-service-St-Pauls-sheer-fuchsia-blouse.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243256-165B763D000005DC-310_154x115.jpg" alt="Anna Friel looked pretty in pink at last night's St Paul's carol concert" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246833/Tamara-Ecclestone-hits-boot-camp-second-workout-day-revealing-gained-pounds.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246833-167955E9000005DC-95_154x115.jpg" alt="Tamara Ecclestone " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Picture perfect in pink: Anna Friel brightens up a traditional carol service in eye-catching sheer fuchsia blouse</strong>
-No doubt was a little distracting to singers&nbsp;
+<strong>Gym bunny! Tamara Ecclestone hits boot camp for second workout of the day after revealing she has gained a 'few pounds'</strong>
+Festive season is hard
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243289/Khloe-Kardashian-stuns-little-black-dress-Jay-Leno--childhood-clip-singing-released.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243289-165BB7F5000005DC-609_154x115.jpg" alt="Khloe Kardashian" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246678/Victorias-Secret-model-Maryna-Linchuk-shows-killer-figure-frolics-sea-St-Barts.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246678-167A2298000005DC-122_154x115.jpg" alt="Maryna Linchuk" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>She's definitely got the X Factor: Khloe Kardashian stuns in little black dress on Jay Leno... as childhood clip of her singing is released</strong>
+<strong>Just another day in the office: Victoria's Secret model Maryna Linchuk models several sexy bikinis in St Barts shoot</strong>
+Showing off her fabulous curves
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243279/Halle-Berry-puts-drama-goes-furniture-shopping---Gabriel-Aubry-avoids-prosecution-following-Thanksgiving-brawl.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-0-165B98A1000005DC-610_154x115.jpg" alt="Halle Berry puts drama behind her and goes furniture shopping ... as Gabriel Aubry avoids prosecution following Thanksgiving brawl" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246936/Portia-Rossi-takes-bite-apple-feeds-rest-beloved-horse-day-stables.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246936-1679B264000005DC-799_154x115.jpg" alt="Taking a bite: Portia de Rossi tucks into a shiny red apple as she visits her horse May" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Halle Berry puts drama behind her and goes furniture shopping ... as Gabriel Aubry avoids prosecution following Thanksgiving Day brawl with Olivier Martinez</strong>
+<strong>Sharing is caring! Portia de Rossi takes a bite from her apple and then feeds the rest to her beloved horse during day at the stables</strong>
+They both loved the fruit
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243180/Mad-Mens-Peggy-Don-reunited-Elisabeth-Moss-keeps-retro-lunch-date-Jon-Hamm.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243180-165BCBB9000005DC-444_154x115.jpg" alt="Mad Men's Peggy and Don... reunited! Elisabeth Moss keeps her retro 'do for lunch date with Jon Hamm " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246743/Emilia-Clarke-reveals-got-stuck-toilet-fake-blood-filming-Game-Thrones.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246743-16786298000005DC-513_154x115.jpg" alt="On the seat of power! Emilia Clarke reveals she got stuck on toilet while filming Game of Thrones" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Mad Men's Peggy and Don reunited! Elisabeth Moss keeps her retro hairdo for lunch date with Jon Hamm</strong>
-Shared a bite to eat at Le Figaro Cafe
+<strong>How embarrassing! Emilia Clarke reveals she got stuck to a toilet by fake blood while filming Game of Thrones</strong>
+That almost NEVER happens!
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243330/Elisabeth-Moss-dons-60s-costume-shoots-scenes-new-Mad-Men-series.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243330-165BFD75000005DC-708_154x115.jpg" alt="Retro chic! Elisabeth Moss dons 60s costume as she shoots scenes for new Mad Men series" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246900/The-Saturdays-au-naturel-venture-make-free.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246900-1679E8C8000005DC-769_154x115.jpg" alt="m" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>... Then it's back to work!</strong>
-Actress put the Sixties garb back on again and continued filming scenes for the latest season of Mad Men
+<strong>When the glamor goes: The Saturdays lose their gloss as they go make-up free</strong>
+they look more like the Saturday Mornings after a long-haul flight
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243243/Cat-Deeley-sports-newlywed-glow-stocks-groceries.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243243-165BD4D6000005DC-787_154x115.jpg" alt="Cat Deeley" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246760/Jennifer-Garner-takes-baby-Samuel-meal-Louisiana-husband-Ben-Affleck-dines-Los-Angeles.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246760-1678CCB8000005DC-298_154x115.jpg" alt="A tale of two breakfasts: Jennifer Garner takes baby Samuel out for a meal in Louisiana while husband Ben Affleck dines in Los Angeles " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>That newlywed glow isn't going anywhere: Ms Deeley looks like the Cat that got the cream as she stocks up on groceries</strong>
+<strong>A tale of two breakfasts: Jennifer Garner takes baby Samuel out for a meal in Louisiana while husband Ben Affleck dines in Los Angeles</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243314/Elsa-Hosk-struts-model-stuff-photo-shoot-Victorias-Secret.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243314-165BDB19000005DC-435_154x115.jpg" alt="Looking like an angel! Elsa Hosk struts her model stuff in beachwear on St Barts photo shoot for Victoria's Secret" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246979/Beyonce-steps-figure-hugging-paisley-dress-cheers-Solange-gig.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-167A78B0000005DC-944_154x115.jpg" alt="Supportive big sister! Beyonce steps out in figure-hugging paisley dress as she cheers on Solange at her gig" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Elsa Hosk struts her stuff in beachwear on St Barts photo shoot for Victoria's Secret</strong>
-She received the honour of being a Victoria's Secret Angel a year ago
+<strong>Supportive big sister! Beyonce steps out in figure-hugging paisley dress as she cheers on Solange at her gig</strong>
+Performed on Late Night with Jimmy Fallon in NY
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243255/The-World-Not-Enough-star-Sophie-Marceau-stuns-figure-hugging-red-dress.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243255-165B6189000005DC-692_154x115.jpg" alt="Sophie Marceau" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246803/Michelle-Dockery-leads-way-Downton-Abbey-stars-Vogue-treatment-high-fashion-shoot.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-1675EC16000005DC-804_154x115.jpg" alt="Michelle Dockery" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Still every inch the Bond girl! The World Is Not Enough star Sophie Marceau stuns in red</strong>
-Promoting new film Happiness Never Comes Alone
+<strong>What would the Dowager Countess say? Michelle Dockery leads the way as Downton Abbey stars get the Vogue treatment in a high-fashion shoot</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243301/Damien-Hirst-makes-red-carpet-debut-girlfriend-Roxie-Nafousi-Art-Basel-event.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243301-165BF654000005DC-923_154x115.jpg" alt="Damien Hirst" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/femail/article-2246895/If-erase-memory-ex-Our-sex-columnist-Tracey-Cox-explains-importance-bad-relationships.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246895-01E8B5D50000044D-302_154x115.jpg" alt="Kate Winslet and Jim Carrey in the 2004 film Eternal Sunshine of the Spotless Mind which dealt with the idea of erasing a past relationship from your memory" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Still going strong: Damien Hirst makes his red carpet debut with girlfriend Roxie Nafousi at Art Basel event</strong>
-Large age difference seems to be no problem
+<strong>Would YOU erase all memory of an ex? Sex columnist Tracey Cox poses a dilemma...</strong>
+Echoing the plot of Eternal Sunshine Of The Spotless Mind
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243171/Selena-Gomez-spring-step-struts-listening-iPod-spending-day-Justin-Bieber.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243171-165A81E8000005DC-866_154x115.jpg" alt="Beauty And A Beat! Selena Gomez has a spring in her step as she struts around listening to her iPod after spending the day with Justin Bieber" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246904/Shia-LaBeouf-shows-newly-shaved-head-gears-upcoming-Broadway-debut.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246904-167A3BB2000005DC-88_154x115.jpg" alt="Where's your hair? Shia LaBeouf shows off newly shaved head as he gears up for his upcoming Broadway debut" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Beauty And A Beat! Selena Gomez has a spring in her step as she struts around listening to her iPod after spending the day with Justin Bieber</strong>
+<strong>Where's your hair? Shia LaBeouf shows off newly shaved head as he gears up for his upcoming Broadway debut</strong>
+Taking his role seriously
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243194/Kristin-Cavallari-aunches-new-shoe-collection-Manhattan.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-0-165ADD35000005DC-24_154x115.jpg" alt="Red-dy, steady, go! Kristin Cavallari stuns in scarlet as she launches her new shoe collection in Manhattan " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246642/Brooke-Mueller-asks-Denise-Richards-look-twins-rehab-19th-time.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-0-16779871000005DC-257_154x115.jpg" alt="'Adderal addicted' Brooke Mueller has asked Denise Richards to look after her twins while in rehab for 19th time" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Red-dy, steady, go! Kristin Cavallari stuns in scarlet as she launches her new shoe collection in Manhattan</strong>
-Leaving The Hills behind
+<strong>'Adderall-addicted' Brooke Mueller asks Denise Richards to look after her twins while in rehab for 19th time</strong>
+They are both ex wives of Charlie Sheen
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243119/Kourtney-Kardashian-cuddles-baby-Penelope-dutiful-father-Scott-Disick-takes-charge-diaper-bag.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243119-165A573C000005DC-464_154x115.jpg" alt="Bundle of joy! Glowing Kourtney Kardashian cuddles baby Penelope while dutiful father Scott Disick takes care of the diaper bag " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246863/Rock-Roll-Hall-Fame-2012-Donna-Summer-Public-Enemy-Randy-Newman-inducted.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246863-0092938B00000514-969_154x115.jpg" alt="Posthumous honour: Donna Summer has received an induction into the Rock and Roll Hall of Fame" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Bundle of joy! Glowing Kourtney Kardashian cuddles baby Penelope while dutiful father Scott Disick takes charge of the diaper bag</strong>
-&nbsp; &nbsp; &nbsp;
+<strong>Posthumous honor: Donna Summer is inducted into the Rock and Roll Hall of Fame... alongside Public Enemy and Randy Newman</strong>
+Cemented her fame
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243226/Katherine-Jenkins-puts-best-foot-forward-polka-dot-dress-goes-busy-promotional-tour-New-York.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243226-165B0E01000005DC-699_154x115.jpg" alt="k" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246880/Ashley-Tisdale-shows-tiny-frame-wears-loose-fitting-leggings-studio-visit.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246880-1679F0CC000005DC-719_154x115.jpg" alt="Ashley Tisdale" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Katherine Jenkins puts her best foot forward in a polka dot dress as she goes on a busy promotional tour of New York</strong>
+<strong>They're not supposed to be baggy! Ashley Tisdale shows off her tiny frame as she wears loose-fitting leggings for studio visit</strong>
+Petite actress in LA
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243172/Naomi-Watts-says-playing-Princess-Diana-hardest-thing-Ive-glams-stunning-gowns-magazine-shoot.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243172-165A97EB000005DC-792_154x115.jpg" alt="'Playing Princess Diana was the hardest thing I¿ve done:' Naomi Watts discusses royal role as she glams up in array of stunning gowns for magazine shoot " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246670/Victoria-Beckham-finally-joins-Spice-Girl-band-mates-curtain-Viva-Forever.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246670-1677BEAC000005DC-494_154x115.jpg" alt="She does Wannabe part of the gang! Victoria Beckham finally joins her Spice Girl band mates at curtain call for Viva Forever!... but looks a little awkward " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'Playing Princess Diana was the hardest thing I've done:' Naomi Watts discusses royal role as she glams up in array of stunning gowns for magazine shoot</strong>
+<strong>She does Wannabe part of the gang! Victoria Beckham finally joins her Spice Girl band mates at curtain call for Viva Forever</strong>
+Hand-in-hand on stage&nbsp;
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243202/Hilary-Duff-stocks-wrapping-paper-festive-season-prepares-baby-Lucas-Christmas.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243202-165B1688000005DC-861_154x115.jpg" alt="It's a wrap! Hilary Duff stocks up on wrapping paper for the festive season as she prepares for baby Luca's first Christmas" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246875/Cher-melts-sunshine-steps-dressed-Michael-Jackson-lookalike.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246875-1679C28A000005DC-232_154x115.jpg" alt="c" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>It's a wrap! Hilary Duff stocks up on wrapping paper for the festive season as she prepares for baby Luca's first Christmas</strong>
+<strong>Who's bad? Cher melts into a Michael Jackson lookalike as she steps out in the heat dressed like the 'king of pop'</strong>
+Complete with hat, sunglasses and lipstick
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243227/Lea-Michele-giddy-Gleeful-leaves-casting-meeting.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243227-165B0BCF000005DC-524_154x115.jpg" alt="Looks like it's good news! Lea Michele is giddy and Gleeful as she leaves a casting meeting" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246881/Liev-Schreiber-puts-son-Samuel-seat-bike-ride-New-York-city.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-0-1679CB65000005DC-409_154x115.jpg" alt="I want to ride my bicycle! Liev Schreiber puts son Samuel in the front seat during a bike ride through New York city " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Looks like it's good news! Lea Michele is giddy and Gleeful as she leaves a casting meeting</strong>
-Catapulted to fame thanks to her Glee role
+<strong>I want to ride my bicycle! Liev Schreiber puts son Samuel in the front seat during yet another bike ride through New York city</strong>
+They're two-wheel crazy!
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243157/Diana-Ross-sports-cast-breaking-ankle-Naomi-Campbells-billionaire-boyfriends-birthday-bash.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243157-165B23EC000005DC-694_154x115.jpg" alt="EXCLUSIVE: Diana Ross sports cast after breaking ankle at Naomi Campbell's billionaire boyfriend's birthday bash" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246814/Brooke-Shields-emerges-continues-grieve-death-mother.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246814-16790EBB000005DC-628_154x115.jpg" alt="Brooke Shields emerges as she continues to grieve the death of her mother " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>EXCLUSIVE: Diana Ross sports cast after breaking ankle at Naomi Campbell's billionaire boyfriend's birthday bash</strong>
-Still looked glamorous
+<strong>Brooke Shields emerges as she continues to grieve the death of her mother</strong>
+The 47-year-old was left devastated by the loss of her mom
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/news/article-2242350/Kate-Middleton-pregnant-Duke-Duchess-Cambridge-having-baby.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242350-1659DD3F000005DC-82_154x115.jpg" alt="Good spirits: Prince William looks much happier than he did earlier today as he leaves the King Edward VII hospital tonight after his wife was 'responding well to treatment' " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246552/Courtney-Stodden-auditions-shirtless-men-star-new-music-video-husband-Doug-Hutchison-tags-too.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246552-1676AB73000005DC-390_154x115.jpg" alt="Mesmerized: Courtney poured through a long list of eligible male models, actors and dancers, and seemed thrilled with several of them" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Pregnant Kate is 'getting better': Wills smiles with relief as he and Duchess say they are 'immensely grateful' for good wishes</strong>
-Acute morning sickness
+<strong>Flirty Courtney Stodden auditions shirtless men to star in her new music video (and husband Doug Hutchison tags along too)</strong>
+Launching a pop career
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/femail/article-2243079/Duchess-Cambridge-pregnant-How-William-cope-Kates-got-new-No-1.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2243079-14F8D6C9000005DC-397_154x115.jpg" alt="Giving: Kate has selflessly acceded to William's every wish, from wearing Diana's engagement ring to making Kensington Palace their permanent London home" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246621/Hunger-Games-star-Jennifer-Lawrence-voted-worlds-desirable-woman.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/linkListItem-61962887-1677AB94000005DC-994_154x115.jpg" alt="Jennifer" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>How well will William cope now Kate's got a new No.1?</strong>
-Her life has revolved around William's from the moment they started dating&nbsp;
+<strong>Hunger Games star Jennifer Lawrence voted the 'world's most desirable woman'</strong>
+She has been awarded the title in a new international poll
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/news/article-2243224/Boy-George-slammed-Mexicans-Twitter-post-misunderstood-calling-president-tyrant.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243224-165B1A8F000005DC-588_154x115.jpg" alt="bb" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/femail/article-2246465/Georgia-May-Jagger-poses-Jerry-Hall-Sunglass-Hut.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246465-167691BD000005DC-487_154x115.jpg" alt="Jerry Hall and Georgia May Jagger" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Ay Caramba! Mexicans slam Boy George after a Twitter post is misconstrued as calling president a 'tyrant'</strong>
-Being slammed online
+<strong>Now THAT's specs appeal! Georgia May Jagger is a chip off the old block as she poses with mother Jerry Hall for Sunglass Hut</strong>
+Has her mom's looks
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243191/The-Voice-Adam-Levines-contestants-Melanie-Martinez-Amanda-Brown-BOTH-voted-off.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243191-165AD8BA000005DC-200_154x115.jpg" alt="It's all over for Adam Levine as his two contestants Melanie Martinez and Amanda Brown are BOTH voted off The Voice" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246825/Cindy-Crawford-looks-flawless-wears-minimal-make-spot-retail-therapy.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246825-16793CA4000005DC-645_154x115.jpg" alt="A true natural beauty! Cindy Crawford looks flawless as she wears minimal make-up for a spot of retail therapy" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>It's all over for Adam Levine as his two contestants Melanie Martinez and Amanda Brown are BOTH voted off The Voice</strong>
-Disappointment for star&nbsp;
+<strong>A true natural beauty! Cindy Crawford looks flawless as she wears minimal make-up for a spot of retail therapy</strong>
+The 46-year-old never has a bad day
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243240/Rosie-Huntington-Whiteley-dons-pair-favourite-skinny-jeans-jets-LA.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243240-165B81E9000005DC-204_154x115.jpg" alt="Supermodel chic! Rosie Huntington-Whiteley dons a pair of her favourite skinny jeans as she jets back to LA" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246826/Adele-Oscar-nomination-Skyfall-deemed-eligible-Academy-Award-nod.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246826-16795AF4000005DC-794_154x115.jpg" alt="Could an Oscar be next for Adele? Skyfall theme could break the Bond curse as it's deemed eligible for nomination" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Supermodel chic! Rosie Huntington-Whiteley strides through LAX in a pair of her favourite skinny jeans</strong>
-She loves to show off her model legs
+<strong>Could an Oscar be next for Adele? Skyfall theme could break the Bond curse as it's deemed eligible for nomination</strong>
+Well she's won everything else!
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243220/Alyson-Hannigan-showers-Satyana-affection-picture-perfect-family-outing.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243220-165B01D6000005DC-611_154x115.jpg" alt="A kiss for her mini-me! Alyson Hannigan showers Satyana with affection on a picture perfect family outing" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246795/Hilary-Duff-heads-right-regular-Pilates-class-proudly-slipping-size-26-jeans.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246795-1678E649000005DC-387_154x115.jpg" alt="Make-up free mummy: Hilary Duff takes time off from baby duties to work on her post-pregnancy body" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>A kiss for her mini-me! Alyson Hannigan showers Satyana with affection on a picture perfect family outing</strong>
-Heading to a hair salon&nbsp;
+<strong>There goes the baby weight! Hilary Duff heads right back to her regular Pilates class after proudly slipping into skinny jeans</strong>
+New mom back in shape
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243180/Mad-Mens-Peggy-Don-reunited-Elisabeth-Moss-keeps-retro-lunch-date-Jon-Hamm.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243180-165BCBB9000005DC-444_154x115.jpg" alt="Mad Men's Peggy and Don... reunited! Elisabeth Moss keeps her retro 'do for lunch date with Jon Hamm " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246813/Barbra-Streisand-Seth-Rogen-attend-Los-Angeles-premiere-The-Guilt-Trip.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246813-16791816000005DC-568_154x115.jpg" alt="On the red carpet: The Guilt Trip co-stars Seth Rogen and Barbara Streisand attend the film's Los Angeles premiere on Tuesday" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>A modern-day Peggy: Elisabeth Moss has her Mad Men 'do in place on lunch outing... but ditches period clothes for LBD</strong>
-Distinctive 60s-style bob
+<strong>Comedy's new duo: Seth Rogen teams up with Barbra Streisand on the red carpet as pair cut up at Los Angeles premiere of The Guilt Trip</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243181/Anne-Hathaway-sports-fetching-glasses-joins-star-Amanda-Seyfried-Les-Miserables-screening.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243181-165ACF65000005DC-814_154x115.jpg" alt="Specs appeal! Anne Hathaway sports fetching glasses and a winter coat as she joins co-star Amanda Seyfried for Les Miserables screening " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246780/Reese-Witherspoon-treats-shopping-spree-Rodeo-Drive.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246780-1678C7C7000005DC-652_154x115.jpg" alt="My what a big bag you have: Reese Witherspoon picks up something special from Beverly Hills' famous Rodeo Drive" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Specs appeal! Anne Hathaway sports fetching glasses and a winter coat as she joins co-star Amanda Seyfried for Les Miserables screening</strong>
+<strong>My what a big bag you have! Reese Witherspoon treats herself to a shopping spree on Rodeo Drive</strong>
+The mother and actress wanted a new wardrobe
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2242945/Anne-Hathaway-opens-weight-woes-Glamour-magazine.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242945-16596C02000005DC-863_154x115.jpg" alt="Anne Hathaway poses for Glamour magazine's January issue" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246800/Melanie-Griffith-parades-superslim-pins-black-leggings-shopping-spree.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246800-16792826000005DC-429_154x115.jpg" alt="It's a hard life! Melanie Griffith dons stunning black sweater for shopping spree " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'Am I thin enough? Am I too thin?' Anne Hathaway on her weight woes after shedding 25lbs for Les Misérables</strong>
-Body stress is 'ongoing source of shame'
+<strong>Skintight is alright for Melanie Griffith as she parades her superslim pins in black leggings&nbsp;</strong>
+The 55-year-old was in good spirits on a shopping spree
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243168/Shes-coming-roses-Ivanka-Trump-business-blue-white-floral-optical-illusion-pencil-skirt.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243168-165B0002000005DC-612_154x115.jpg" alt="She's coming up roses! Ivanka Trump is the business in a blue and white floral optical illusion pencil skirt " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246732/Modern-Family-star-Ariel-Winters-mother-sues-actor-abusive-monster-comment.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246732-16782427000005DC-454_154x115.jpg" alt="Modern Family star Ariel Winter's mother sues actor over 'abusive monster' comment" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>She's coming up roses! Ivanka Trump is the business in a blue and white floral optical illusion pencil skirt</strong>
-Clashing hue could have been disastrous
+<strong>Modern Family star Ariel Winter's mother sues actor over 'abusive monster' comment</strong>
+Chrisoula Workman filed a defamation lawsuit in Los Angeles
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243163/Rose-McGowan-debuts-new-blonde-hairdo-steps-Los-Angeles.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243163-165A8E8E000005DC-689_154x115.jpg" alt="Ready for the big reveal: Rose McGowan removes her hat to reveal new long blonde bob in all its glory" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246791/Anne-Hathaway-slips-sexy-sequin-slip-dress-honour-Les-Miserables-star-Hugh-Jackman.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246791-1678D9A1000005DC-986_154x115.jpg" alt="His sparkling sidekick! Anne Hathaway slips into a sexy sequin slip dress to honour Les Miserables co-star Hugh Jackman " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Ready for the big reveal: Rose McGowan removes her hat to reveal new long blonde bob in all its glory</strong>
-New do on full display&nbsp;
+<strong>His sparkling sidekick! Anne Hathaway slips into a sexy sequin slip dress to honor Les Mis co-star Hugh Jackman</strong>
+Shimmering spaghetti strap number
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243189/Amber-Heard-looks-stunning-newly-dark-hair-curlers-minimal-make-up.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243189-165ADFA3000005DC-289_154x115.jpg" alt="Roll up roll up! Amber Heard still looks stunning with her newly dark hair in curlers and minimal make-up" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246818/Olivia-Palermo-takes-super-skinny-leather-pants-day-night-Django-Unchained-premiere-wearing-day.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246818-16792E16000005DC-8_154x115.jpg" alt="Double take: Olivia Palermo takes her super skinny leather pants from day to night at the Django Unchained premiere after wearing them all day" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Roll up roll up! Amber Heard still looks stunning with her newly dark hair in curlers and minimal make-up</strong>
-On the set of&nbsp; Paranoia in the city of Philadelphia
+<strong>Double take: Olivia Palermo takes her super skinny leather pants from day to night at the Django Unchained premiere after wearing them all day</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243096/The-Hobbit-Early-reviews-An-Unexpected-Journey-good-great.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243096-165A6550000005DC-64_154x115.jpg" alt="'A bit of a slog', 'bloated', but 'visually astonishing': Early Hobbit reviews agree An Unexpected Journey is 'good but not great'" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246770/Mickey-Rourke-hides-surgically-altered-face-beanie-sunglasses-steps-younger-girlfriend.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246770-1678BDFF000005DC-64_154x115.jpg" alt="An Oz-some couple! Scarecrow lookalike Mickey Rourke hits the streets with much younger girlfriend" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'A bit of a slog', 'bloated', but 'visually astonishing': Early Hobbit reviews agree An Unexpected Journey is 'good but not great'</strong>
+<strong>Keeping underwraps: Mickey Rourke hides his surgically altered face with a beanie and sunglasses as he steps out with younger girlfriend</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243215/Sarah-Jessica-Parker-gets-feet-wet-jumping-puddles--twins-Tabitha-Marion-dry-sit-stand-pushchair.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-0-165AD495000005DC-454_154x115.jpg" alt="Afraid to get her feet wet! Sarah Jessica Parker jumps over water while twins balance on pram" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/femail/article-2246571/Facebook-founder-Sean-Parker-looks-like-doting-dad-seven-months-pregnant-fiancee.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246571-1674F272000005DC-46_154x115.jpg" alt="Technology heir: The Napster creator and Facebook founder Sean Parker was seen touching his fiancee's seven-months pregnant stomach in excited anticipation last night" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Sarah Jessica Parker gets her feet wet jumping puddles... while twins Tabitha and Marion keep dry on 'sit and stand' pushchair</strong>
-School run in New York&nbsp;
+<strong>Almost ready to be parents! Facebook co-founder Sean Parker already looks like a doting dad with seven-months-pregnant fiancée</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243185/Jennifer-Hudson-reveals-treats-shows-slim-figure-photo-shoot.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243185-165ACA11000005DC-667_154x115.jpg" alt="'I have chocolate everyday': Jennifer Hudson reveals she still treats herself as she shows off her slim figure in photo shoot" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246776/Anne-Hathaway-shows-Christmas-spirit-slips-festive-attire-sing-way-interview.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246776-16787ADB000005DC-400_154x115.jpg" alt="Jingle belle! Anne Hathaway shows her Christmas spirit as she slips on festive attire to sing her way through interview" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'I have chocolate everyday': Jennifer Hudson reveals she still treats herself as she shows off her slim figure in photo shoot</strong>
-Face of Weight Watchers
+<strong>Jingle belle! Anne Hathaway shows her Christmas spirit as she slips on festive attire to sing her way through interview</strong>
+On Jimmy Fallon
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243228/Dr-Phils-stolen-vintage-57-Chevy-convertible-recovered-police.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/08/28/article-2194421-14B6FA5A000005DC-916_154x115.jpg" alt="Dr Phil's vintage '57 Chevy convertible stolen from repair shop " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246747/Kourtney-Kardashian-gets-grips-alligator-takes-Mason-visit-swamp.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246747-1678348F000005DC-474_154x115.jpg" alt="Eyeing him up for your next handbag? Kourtney Kardashian gets to grips with an alligator as she takes Mason to visit swamp" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>'I'll hug a cop every chance I get this month!' Dr Phil's stolen vintage '57 Chevy convertible is recovered by police</strong>
-All is well&nbsp;
+<strong>Eying him up for your next handbag? Kourtney Kardashian gets to grips with an alligator as she takes Mason to visit swamp</strong>
+Family were in Florida
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243122/Elle-Macpherson-injects-splash-summer-St-Barbaras-Day-yellow-dress--Rumer-Willis-looks-angelic-white.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243122-165A5B4C000005DC-290_154x115.jpg" alt="Elle Macpherson injects a splash of summer to St Barbara's Day in a yellow dress... as Rumer Willis looks angelic in white" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246728/Pregnant-Claire-Danes-steps-husband-Hugh-Dancy.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246728-16781BD7000005DC-598_154x115.jpg" alt="Hello in there! Heavily pregnant Claire Danes tenderly places her hand on her growing tummy as she steps out with husband Hugh Dancy" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Elle Macpherson injects a splash of summer to St Barbara's Day in a yellow dress... as Rumer Willis looks angelic in white</strong>
-Joined a host of stars&nbsp;
+<strong>Hello in there! Heavily pregnant Claire Danes tenderly places her hand on her growing tummy as she steps out with husband Hugh Dancy</strong>
+Kept&nbsp; baby bump snug
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243140/Amber-Rose-displays-huge-belly-tight-Lycra-dress-forgoes-usual-heavily-look.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243140-165A7648000005DC-249_154x115.jpg" alt="Glowing in grey! Heavily pregnant Amber Rose displays her huge belly in a tight Lycra dress as she forgoes her usual heavily made-up look " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/news/article-2246596/Cheryl-Hines-spend-holidays-Bobby-Kennedy--engagement-happy-couple-yet.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246596-1677BD83000005DC-242_154x115.jpg" alt="Look of love: Robert Kennedy Jr and Cheryl Hines share a tender moment at the Deer Valley Celebrity Skifest in Utah at the weekend" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Glowing in grey! Heavily pregnant Amber Rose displays her huge belly in a tight Lycra dress as she forgoes her usual heavily made-up look</strong>
-Not a scrap of cosmetics
+<strong>Christmas with her Kennedy: Cheryl Hines to spend the holidays with Bobby Kennedy - but there is no engagement for the happy couple (yet!)</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243182/Russell-Crowe-tries-steal-kiss-Downton-Abbeys-Jessica-Brown-Findlay-set-Winters-Tale.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243182-165BE5CB000005DC-703_154x115.jpg" alt="What would Lady Sybil say? Russell Crowe steals a kiss from Downton Abbey's Jessica Brown Findlay as pair shoot Winter's Tale " width="154" height="115" />
+<a href="http://www.dailymail.co.uk/femail/article-2246532/Victorias-Secret-Angels-struggle-words-Deck-The-Halls-manage-look-gorgeous.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/11/article-2246532-1677781D000005DC-491_154x115.jpg" alt="Different traditions: Miranda Kerr says that Deck The Halls isn't a popular song in Australia " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>What would Lady Sybil say? Russell Crowe steals a kiss from Downton Abbey's Jessica Brown Findlay as pair shoot Winter's Tale</strong>
+<strong>'It's not fair to have models singing': Victoria's Secret Angels struggle with the words to Deck The Halls (but still manage to look gorgeous)</strong>
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2242875/Alessandra-Ambrosio-poses-completely-nude-beach-gets-Brazilian-roots.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242875-1658F4FE000005DC-687_154x115.jpg" alt="It doesn't take rubies and gold for Alessandra Ambrosio to look good - she's just as at ease in the nude" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246746/Teen-Mom-star-Farrah-Abraham-picture-confidence-strolls-New-York-showing-16k-nose-chin.html">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246746-16785493000005DC-631_154x115.jpg" alt="Teen Mom star Farrah Abraham is the picture of confidence as she strolls around New York showing off her new $16k nose and chin " width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Made In Brazil! Alessandra Ambrosio poses completely nude on the beach as she gets back to her roots</strong>
-Supermodel revealed star and moon tattoo
+<strong>Teen Mom star Farrah Abraham is the picture of confidence as she strolls around New York showing off her $16k nose and chin implant</strong>
+Had op in October
 </span>
 </a>
 </li>
 <li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243053/Megan-Fox-plays-alluring-bellhop--Leslie-Mann-strip-bikini-comedy-edition-Vanity-Fair.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2243053-1659F190000005DC-302_154x115.jpg" alt="Megan Fox plays an alluring bellhop... as Leslie Mann strip to her bikini in comedy edition of Vanity Fair" width="154" height="115" />
+<a href="http://www.dailymail.co.uk/tvshowbiz/article-2246752/Chic-shift-Leggy-Amanda-Seyfried-displays-slim-pins-Sixties-style-black-gold-mini-dress.html" class="bottom">
+<img src="../../../i.dailymail.co.uk/i/pix/2012/12/12/article-2246752-16781B52000005DC-621_154x115.jpg" alt="Chic shift: Leggy Amanda Seyfried displays her very slim pins in a Sixties-style black and gold mini dress" width="154" height="115" />
 <span class="pufftext">
 <span class="arrow-small-r"></span>
-<strong>Megan Fox plays an alluring bellhop... as Leslie Mann strip to her bikini in comedy edition of Vanity Fair</strong>
-Magazine was guest-edited by Judd Apatow
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/femail/article-2242953/Royal-Opera-House-London-Jennifer-Rowley-replaced-Patrizia-Ciofi-Laurent-Pellys-production-Giacomo-Meyerbeers-Robert-le-diable.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/04/article-2242953-1659CF7F000005DC-840_154x115.jpg" alt="The Royal Opera House production where the real drama is behind the scenes: Soprano beauty booted out of lead role just THREE DAYS before opening night" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>The Royal Opera House production where the real drama is behind the scenes: Soprano beauty booted out of lead role just THREE DAYSbefore opening night</strong>
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243156/Reese-Witherspoon-jets-LA-Michael-Buble-confirms-set-exciting-duet-new-album.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243156-165A8160000005DC-393_154x115.jpg" alt="Reese Witherspoon jets out of LA as Michael Buble confirms he is set for 'exciting' duet with her on new album" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>Reese Witherspoon jets out of LA as Michael Buble confirms he is set for 'exciting' duet with her on new album</strong>
-Casual in black leggings
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243179/Zooey-Deschanel-gets-famous-raven-locks-coiffed-films-scenes-hit-show.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243179-165A9A6E000005DC-430_154x115.jpg" alt="New curl! Zooey Deschanel gets her famous raven locks coiffed as she films scenes for her hit show " width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>New curl! Zooey Deschanel gets her famous raven locks coiffed as she films scenes for her hit show</strong>
-The 32-year-old was&nbsp; getting camera ready
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243145/Has-Keira-Knightley-towering-fashion-faux-pas-platform-heels.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243145-165A7D90000005DC-817_154x115.jpg" alt="Keira's chunky shoes were at odds with her floaty dress" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>Has Keira made a towering fashion faux pas? Actress opts for platform heels that clash with her flowing, floaty dress</strong>
-On Jimmy Fallon&nbsp;
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243150/Ready-lift-Beyonc-style-Singer-shares-fun-photos-strangest-backdrops-.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243150-165A71E9000005DC-379_154x115.jpg" alt="Rock out: Beyoncé shows off another pout " width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>Ready for lift off Beyoncé style! Singer shares fun photos with the strangest of backdrops...</strong>
-She can pose up a storm anywhere
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243162/Snooki-gives-pregnant-Kate-Middleton-baby-advice-yes-really.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243162-165A93F3000005DC-726_154x115.jpg" alt="'Enjoy your time at the castle!' Snooki offers Kate Middleton pregnancy advice (yes, really)" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>'Enjoy your time at the castle!' Snooki offers Kate Middleton pregnancy advice (yes, really)</strong>
-Little chance Duchess will be in touch
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243035/Kristin-Cavallari-fake-relationship-Justin-Bobby--distaste-Lauren-Conrad-real.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243035-165AAEB6000005DC-103_154x115.jpg" alt="'I was acting on The Hills': Kristin Cavallari reveals Justin Bobby romance was fake (but that feud with Lauren Conrad was real)" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>'I was acting on The Hills': Kristin Cavallari reveals Justin Bobby romance was fake (but that feud with Lauren Conrad was real)</strong>
-Reality show truths
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243164/Ali-Larter-transforms-ordinary-mom-super-hot-star-salon-trip.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243164-165A8AFE000005DC-485_154x115.jpg" alt="If you can't find a phonebox... Heroes star Ali Larter transforms herself from ordinary mom to super-hot star during salon trip " width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>If you can't find a phonebox... Heroes star Ali Larter transforms herself from ordinary mom to super-hot star during salon trip</strong>
-Make-over in LA
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243063/Kim-Kardashian-tucks-frozen-hot-chocolate-steps-fringed-white-vest.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243063-165A4992000005DC-78_154x115.jpg" alt="Don't spill it! Kim Kardashian tucks into a 'frozen hot chocolate' as she steps out in fringed white vest" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>Kanye not around? Kim Kardashian sports trendy white fringed top as she grabs a milkshake with male BFF Jonathan Cheban</strong>
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/tvshowbiz/article-2243139/The-Wanteds-Max-George-defends-Lindsay-Lohan-punched-psychic-trying-woo-him.html">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/05/article-2243139-165A549C000005DC-809_154x115.jpg" alt="'She's a good girl': The Wanted's Max George defends Lindsay Lohan after she 'punched' psychic while 'trying to woo him'" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>'She's a good girl': The Wanted's Max George defends Lindsay Lohan after she 'punched' psychic while 'trying to woo him'</strong>
-Night club brawl&nbsp;
-</span>
-</a>
-</li>
-<li>
-<a href="http://www.dailymail.co.uk/health/article-2242532/Can-spot-danger-drinker-Volunteers-kept-drinking-diaries-doctors-analyse-health-risks.html" class="bottom">
-<img src="../../../i.dailymail.co.uk/i/pix/2012/12/03/article-2242532-1656605C000005DC-742_154x115.jpg" alt="So are we drinking much more than we think? To find out, we asked a cross-section of drinkers of all ages to keep a drink diary for a week" width="154" height="115" />
-<span class="pufftext">
-<span class="arrow-small-r"></span>
-<strong>Can you spot the danger drinker? Brave volunteers kept diaries of a week's drinking so doctors could analyse the health risks. The results were startling</strong>
+<strong>Chic shift: Leggy Amanda Seyfried displays her very slim pins in a Sixties-style black and gold mini dress</strong>
+Alongside blonde locks
 </span>
 </a>
 </li>
@@ -2178,7 +2068,73 @@ mo_mod_pos: 'rcp'
  
 </div>	
 <div class="home item">
-
+<div id="iPhoneAdvert">
+<script type="text/javascript"> 
+(function(){
+var expireDate = new Date(),
+cName = null;
+if(navigator.userAgent.search("iPhone") > -1 || navigator.userAgent.search("iPod") > -1) {
+var cName = "iPhoneExpiry",
+link = "http://itunes.apple.com/app/mailonline/id384101264?mt=8&uo=4",
+productInitial = ";appad",
+productOk = ";okay",
+productCancel = ";cancel",
+message = 'An important message from MailOnline. '+
+'Dear iPhone user, '+
+'Have you downloaded our new iPhone app? '+
+'We think it is a much better way of viewing MailOnline on your iPhone '+
+'and it is totally free to try for 60 days. '+
+'Thank you for your patience, '+
+'you will not be shown this message again for 30 days.';
+expireDate.setMonth(expireDate.getMonth() + 1);
+} else if(navigator.userAgent.search("iPad") > -1) {
+var cName = "iPadExpiry",
+link = "http://itunes.apple.com/app/mailonline/id400442503?mt=8&ign-mpt=uo%3D4",
+productInitial = ";ipadappad",
+productOk = ";okayipad",
+productCancel = ";cancelipad",
+message = 'Try our FREE iPad app!, '+
+'Thank you for your patience, '+
+'you will not be shown this message again for 7 days.';
+expireDate.setDate(expireDate.getDate() + 7);
+}
+var log;
+function setCookie(){
+DM.setCookie(cName, cName, expireDate, "/");
+}
+function getCookie(){
+return DM.getCookie(cName);
+}
+if(cName && !getCookie()){
+log = s_gi(s_account);
+log.products=productInitial;
+log.events='event4';
+log.linkTrackVars='products,events';
+log.linkTrackEvents='event4';
+log.tl(this,'o','Ad Impression');
+var conf = confirm(message);
+if (conf){
+log = s_gi(s_account);
+log.products=productOk;
+log.events='event5';
+log.linkTrackVars='products,events';
+log.linkTrackEvents='event5';
+log.tl(this,'o','Ad Click');
+setCookie();
+window.location = link;
+} else {
+log = s_gi(s_account);
+log.products=productCancel;
+log.events='event5';
+log.linkTrackVars='products,events';
+log.linkTrackEvents='event5';
+log.tl(this,'o','Ad Click');
+setCookie();
+}
+}
+})();
+</script>
+</div>
 </div>	
 <div class="home item">
 
@@ -2297,7 +2253,7 @@ microsoft_adunit_height="600";
             <script type='text/javascript' src='../../dwr/engine.js'></script>
         
 
-		<script type="text/javascript" src="../../../scripts.dailymail.co.uk/static/bundles/dm2--73-build-318.js" ></script>
+		<script type="text/javascript" src="../../../scripts.dailymail.co.uk/static/bundles/dm2--74.1-build-330.js" ></script>
 
         
    
@@ -3006,6 +2962,6 @@ DM.Footer();
 
     
 
-<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-2.newrelic.com","b94e1c1896",294505,"ZARTYUcDCkJSVRBQDF1Oe2ZlTTN0cRstdyUcC0JFGgMWRVpVCFxMVwRXVEAOEG4DBlZdAkEVWFZZB0pbQEY=",0,184,new Date().getTime(),"","","","",""]);</script></body>
+<script type="text/javascript">if (!NREUMQ.f) { NREUMQ.f=function() {NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:") + "//" + "d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-2.newrelic.com","b94e1c1896",294505,"ZARTYUcDCkJSVRBQDF1Oe2ZlTTN0cRstdyUcC0JFGgMWRVpVCFxMVwRXVEAOEG4DBlZdAkEVWFZZB0pbQEY=",0,179,new Date().getTime(),"","","","",""]);</script></body>
 
 </html>

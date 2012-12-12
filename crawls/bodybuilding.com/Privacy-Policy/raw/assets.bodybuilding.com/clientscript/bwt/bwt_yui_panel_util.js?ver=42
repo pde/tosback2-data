@@ -1,0 +1,69 @@
+/**************************************************************************
+* Document	: bwt_yui_panel_util.js
+* Author	: Wayne J. Earl
+* Created	: 2007-05-18
+* Purpose	: JavaScript functions for YUI panel
+* Comments	: 
+*************************************************************************/
+/*************************************************************************
+* Revised by	: 
+* Revised date	: 
+* Description	: 
+*************************************************************************/
+
+PANEL_DIV = 'bwt_panel_container';
+f_panel_visible = false;
+
+function initPanel()
+{
+	var debug = 0;
+
+	var elem_container = document.getElementById(PANEL_DIV);
+	if (elem_container) {
+	
+		var retval;
+		if (typeof(YAHOO) == 'undefined') return false;
+		if (typeof(YAHOO.widget) == 'undefined') return false;
+		if (typeof(YAHOO.widget.Panel) == 'undefined') return false;
+			
+		var panel_cfg = {//constraintoviewport: true,
+						 underlay:"none",
+						 close:false,
+						 //modal:true,
+						 visible:false,
+						 fixedcenter:true,
+						 width:"auto",
+						 height:"auto",
+						 //width:"620px",
+						 //height:"420px",
+						 draggable:false};
+						  
+		elem_panel = new YAHOO.widget.Panel(PANEL_DIV, panel_cfg);
+		if (elem_panel) {
+			
+			//elem_panel.cfg.queueProperty("fixedcenter", true);
+			elem_panel.render();
+			//elem_panel.show();
+			//elem_panel.cfg.setProperty("width", 620);
+			//elem_panel.cfg.setProperty("height", 420);
+			elem_panel.cfg.setProperty("modal", true);
+		}
+	}
+}
+
+
+function showPanel()
+{
+	elem_panel.show();
+	f_panel_visible = true;
+}
+
+
+function hidePanel()
+{
+	elem_panel.hide();
+	f_panel_visible = false;
+}
+
+
+//window.onload = initPanel;

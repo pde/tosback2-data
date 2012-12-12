@@ -8,8 +8,11 @@ if($('#order-now').is('.lightboxon')) {
 	 currentLocation = '.att.com/Common/world/' + setLanguage + '/order_form.html';
 	 stateID = ' ';
 	 linkTitle = "Order Now";
-	  $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	  	  $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-order').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-order').show();
  }
 
 if($('#chinese-drop').is('.lightboxon') || $('#chinese-drop1').is('.lightboxon') || $('#chinese-drop2').is('.lightboxon')) {
@@ -108,29 +111,41 @@ if($('#help').is('.lightboxon')) {
 	 stateID = ' ';
 	 linkTitle = "Shop";
 	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-help').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-help').show();
  }
 if($('#news').is('.lightboxon')) {
 	 currentLocation = '.att.com/newsroom/index.html';
 	 stateID = ' ';
 	 linkTitle = "Shop";
 	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-news').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-news').show();
  }
 if($('#about').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/index.html';
 	 stateID = ' ';
 	 linkTitle = "Shop";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	  $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-about').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-about').show();
  }
  
  if($('#about2').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/index.html';
 	 stateID = ' ';
 	 linkTitle = "Shop";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	$('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-about').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-about').show();
  }
 if($('#advanced-tv').is('.lightboxon')) {
 	 currentLocation = '.att.com/residential_customers/att_advanced_tv/index.html';
@@ -158,14 +173,21 @@ if($('#contact').is('.lightboxon')) {
 	 stateID = ' ';
 	 linkTitle = "Advanced Television";
 	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-contact').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-contact').show();
+	 
  }
  if($('#contact2').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/contact_us.html';
 	 stateID = ' ';
 	 linkTitle = "Advanced Television";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	  $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-contact').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-contact').show();
  }
 if($('#promo-uverse').is('.lightboxon')) {
 	 currentLocation = '.att.com/residential_customers/att_uverse/index.html';
@@ -186,14 +208,20 @@ if($('#safety-seniors').is('.lightboxon')) {
 	 stateID = ' ';
 	 linkTitle = "Online Safety for Seniors";
 	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-news').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-senior').show();
  }
 if($('#newsroom').is('.lightboxon')) {
 	 currentLocation = '.att.com/newsroom/index.html';
 	 stateID = ' ';
 	 linkTitle = "AT&T News";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	 	 $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-news').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-news').show();
  }
 if($('#quickLang').is('.lightboxon')) {
 	 currentLocation = '.att.com/index.html';
@@ -220,15 +248,21 @@ if($('#quickContact').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/contact_us.html';
 	 stateID = ' ';
 	 linkTitle = "AT&T Promotions";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	   $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-contact').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-contact').show();
  }
  if($('#quickContact2').is('.lightboxon')) {
 	 currentLocation = '.att.com/about_att/contact_us.html';
 	 stateID = ' ';
 	 linkTitle = "AT&T Promotions";
-	 $('#lang-title h3').hide();
-	 $('#lang-title2 h3').show();
+	   $('#lang-title h3').hide();
+	 $('#lang-title2 h3').hide();
+	 $('#lang-title-contact').show();
+	  $('#lang-list').hide();
+	  $('#lang-list-contact').show();
  }
 if($('#quickHSI').is('.lightboxon')) {
 	 currentLocation = '.att.com/residential_customers/att_internet/high_speed_internet.html';
@@ -444,10 +478,11 @@ if($('#quickDTVProg').is('.lightboxon')) {
 									 $.each(allStatesKo, function(index, value) {   
 									 a = index.split('-');
 									 stateID = a[0];
-									  $('#koreanmenu li#' + index).html('<a href="http://korean' + currentLocation +  '?id=' + stateID + '" title="' + value + '" class="initCap">' + value + '</a>');
+									  $('#koreanmenu li#' + index).html('<a href="http://korean' + currentLocation +  '?id=' + stateID + '" title="' + linkTitle + '" class="initCap">' + value + '</a>');
 									}); 
 	 
 	}
+	
 	
 	
 	
@@ -526,7 +561,7 @@ if($('#quickDTVProg').is('.lightboxon')) {
 									'indiana-ru':'&#1048;&#1085;&#1076;&#1080;&#1072;&#1085;&#1072;', 
 									'michigan-ru':'&#1052;&#1080;&#1095;&#1080;&#1075;&#1072;&#1085;',
 									'ohio-ru':'&#1054;&#1075;&#1072;&#1081;&#1086;',
-									'wisconsin-ru':'&#1042;&#1080;&#1089;&#1082;&#1086;&#1085;&#1089;&#1080;&#1085;',
+									'wisconsin-ru':'&#1042;&#1080;&#1089;&#1082;&#1086;&#1085;&#1089;&#1080;&#1085;'
 									}	 										   
 									$.each(allStatesRu, function(index, value) {  
 									   if(($('#state-display').text() != index)) {$('#state-display').text('')}
@@ -553,11 +588,15 @@ if($('#quickDTVProg').is('.lightboxon')) {
 									'ohio-po':'Ohio',
 									'indiana-po':'Indiana',
 									'wisconsin-po':'Wisconsin',
-									//'texas-po':'Texas',
-//									'oklahoma-po':'Oklahoma',
-//									'arkansas-po':'Arkansas',
-//									'missouri-po':'Missouri',
-//									'kansas-po':'Kansas',
+									'florida-po':'Florida',
+									'georgia-po':'Georgia',
+									'alabama-po':'Alabama',
+									'kentucky-po':'Kentucky',
+									'louisiana-po':'Louisiana',
+									'mississippi-po':'Mississippi',
+									'northcarolina-po':'North Carolina',
+									'southcarolina-po':'South Carolina',
+									'tennessee-po':'Tennessee'
 									}										   
 									$.each(allStatesPo, function(index, value) {  
 									   if(($('#state-display').text() != index)) {$('#state-display').text('')}

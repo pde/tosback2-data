@@ -1,7 +1,9 @@
 var iOS = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/i) ? true : false );
 
-function fw_config(assetid,ssid)
+function fw_config(ssid_param,assetid_param)
 {
+var ssid = ssid_param;
+var assetid = assetid_param;
 if (iOS)
 {
 return { adManagerUrl:"http://adm.fwmrm.net/p/nbcu_jsbrightcove_live/AdManager.js", networkId: 169843, serverUrl:"http://29773.v.fwmrm.net", playerProfile:"169843:nbcu_jsbrightcove_live", videoAssetCustomId:assetid, videoAssetNetworkId: 169843, siteSectionNetworkId: 169843, siteSectionId:ssid };

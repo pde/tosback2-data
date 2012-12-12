@@ -1,0 +1,168 @@
+﻿Type.registerNamespace("Legacy");
+
+Legacy.TextBox = function(element)
+{
+    Legacy.TextBox.initializeBase(this, [element]);
+
+    // Fields
+    this._watermark = null;
+    this._watermarkCssClass = null;
+    this._focusCssClass = null;
+}
+
+Legacy.TextBox.prototype =
+{
+    initialize: function()
+    {
+        Legacy.TextBox.callBaseMethod(this, "initialize");
+        $addHandlers(this.get_element(), { "focus": Function.createDelegate(this, this._focusHandler), "blur": Function.createDelegate(this, this._blurHandler) }, this);
+        this._initUI();
+    },
+    dispose: function()
+    {
+        $clearHandlers(this.get_element());
+        Legacy.TextBox.callBaseMethod(this, "dispose");
+    },
+
+    // Properties
+    /// <summary>Gets the watermark string associated with this textbox.</summary>
+    get_watermark: function()
+    {
+        return (this._watermark != null) ? this._watermark : "";
+    },
+    /// <summary>Sets the watermark string associated with this textbox.</summary>
+    set_watermark: function(value)
+    {
+        var e = Function._validateParams(arguments, [{ name: "value", type: String, mayBeNull: false, optional: false}]);
+        if (e) throw e;
+
+        if (value.valueOf() != this.get_watermark())
+        {
+            this._watermark = value.valueOf();
+            this.raisePropertyChanged("watermark");
+        }
+    },
+    /// <summary>Gets the watermark CSS class associated with this textbox.</summary>
+    get_watermarkCssClass: function()
+    {
+        return (this._watermarkCssClass != null) ? this._watermarkCssClass : "";
+    },
+    /// <summary>Sets the watermark CSS class associated with this textbox.</summary>
+    set_watermarkCssClass: function(value)
+    {
+        var e = Function._validateParams(arguments, [{ name: "value", type: String, mayBeNull: false, optional: false}]);
+        if (e) throw e;
+
+        if (value.valueOf() != this.get_watermarkCssClass())
+        {
+            this._watermarkCssClass = value.valueOf();
+            this.raisePropertyChanged("watermarkCssClass");
+        }
+    },
+    /// <summary>Gets the focus CSS class associated with this textbox.</summary>
+    get_focusCssClass: function()
+    {
+        return (this._focusCssClass != null) ? this._focusCssClass : "";
+    },
+    /// <summary>Sets the focus CSS class associated with this textbox.</summary>
+    set_focusCssClass: function(value)
+    {
+        var e = Function._validateParams(arguments, [{ name: "value", type: String, mayBeNull: false, optional: false}]);
+        if (e) throw e;
+
+        if (value.valueOf() != this.get_focusCssClass())
+        {
+            this._focusCssClass = value.valueOf();
+            this.raisePropertyChanged("focusCssClass");
+        }
+    },
+
+    // Methods
+    reset: function()
+    {
+        this.get_element().value = this.get_watermark();
+        this._disable();
+        this._blur();
+    },
+
+    // Event Handlers
+    _focusHandler: function(event)
+    {
+        var element = this.get_element();
+
+        if (element.value == this.get_watermark())
+        {
+            element.value = "";
+        }
+        this._focus();
+    },
+    _blurHandler: function(event)
+    {
+        var element = this.get_element();
+
+        if (element.value == "")
+        {
+            element.value = this.get_watermark();
+            this._disable();
+        }
+        this._blur();
+    },
+
+    // Helper Methods
+    _initUI: function()
+    {
+        var element = this.get_element();
+        var watermark = this.get_watermark();
+        
+        if (element.value == "")
+        {
+            element.value = watermark;
+        }
+
+        if (element.value == watermark)
+        {
+            this._disable();
+        }
+        else
+        {
+            this._enable();
+        }
+    },
+    _enable: function()
+    {
+        Sys.UI.DomElement.removeCssClass(this.get_element(), this.get_watermarkCssClass());
+    },
+    _disable: function()
+    {
+        Sys.UI.DomElement.addCssClass(this.get_element(), this.get_watermarkCssClass());
+    },
+    _focus: function()
+    {
+        this._enable();
+        Sys.UI.DomElement.addCssClass(this.get_element(), this.get_focusCssClass());
+        this.get_element().select();
+    },
+    _blur: function()
+    {
+        Sys.UI.DomElement.removeCssClass(this.get_element(), this.get_focusCssClass());
+    }
+}
+
+
+
+Legacy.TextBox.descriptor =
+{
+    properties:
+    [
+        { name: "watermark", type: String },
+        { name: "watermarkCssClass", type: String },
+        { name: "focusCssClass", type: String}
+    ]
+}
+
+Legacy.TextBox.registerClass("Legacy.TextBox", Sys.UI.Control);
+
+if (typeof (Sys) !== "undefined")
+{
+    Sys.Application.notifyScriptLoaded();
+}

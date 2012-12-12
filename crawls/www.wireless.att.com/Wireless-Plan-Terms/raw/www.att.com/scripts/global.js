@@ -129,10 +129,10 @@ jQuery(function($){
 		$.getScript('/scripts/jquery.tabs.js', $.fn.ajaxtabs, true);
 	}
 	if($('.openModal, .modalHeader, .modalContent').length != 0){
-		$.getScript('/scripts/jquery.colorbox.js', $.fn.modals, true);
+		$.getScript('/scripts/jquery.colorbox.min.js', $.fn.modals, true);
 	}	
 	if($('form').length != 0){
-		$.getScript('/scripts/jquery.uniform.js', $.fn.morphForms, true);
+		$.getScript('/scripts/jquery.uniform.min.js', $.fn.morphForms, true);
 	}
 	if($('#usmModule').length != 0){
 		$.getScript('/scripts/jquery.usm.js', function(){}, true);

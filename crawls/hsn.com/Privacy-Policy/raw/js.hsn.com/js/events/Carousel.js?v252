@@ -1,0 +1,260 @@
+﻿// JScript File
+// for initializing the Carousel control
+// this file gets sent to the client only
+// if there is a Carousel control on the page
+var carouselImages = new Array();
+
+
+function RemoveItem(slideId, productId) 
+{
+    var stageScroll = $(slideId).parentNode;
+
+    var products = stageScroll.getElementsByTagName('div');
+    var numProducts = 0;
+    for (var i = 0; i < products.length; i++) 
+    {
+        if ( products[i].className.indexOf("productContainer") > -1 && products[i].style.display == "" ) 
+        {
+            numProducts++;
+
+            var images = products[i].getElementsByTagName('img');
+            if ( images[1].src == null || images[1].src == "" || images[1].src.indexOf("loading") > -1 ) 
+                images[1].src = images[1].getAttribute('tag');
+        }
+    }
+
+    $(slideId).remove();
+    numProducts--;
+
+    if (numProducts == 4 && $('leftCarrot').className == "leftCarrotOn")
+        new Effect.MoveBy(stageScroll, 0, 1000);
+    
+    
+    if (numProducts < 5) {
+        var stageStatus = $$('div.stageStatus');
+        stageStatus[0].hide();
+    }
+    var params = "WebPId=" + productId;
+    
+    new Ajax.Request( "/cnt/myhsn/RemoveRecentlyViewedItem.aspx", 
+                      { method: "get",
+                        parameters: params,
+                        asynchronous: true,
+                        onFailure: function(transport) { document.body.style.cursor = "default"; },
+                        onSuccess: function(transport) { document.body.style.cursor = "default"; } } );
+}
+
+
+
+
+function LoadSecondSet()
+{
+    for(var i = 0; i < carouselImages.length; i++)
+    {
+        var img = carouselImages[i];
+        var src = img.getAttribute("tag");
+        img.src = src;
+    }
+}
+
+HsnAddLoadEvent(LoadSecondSet);
+
+function carousel(dir, stageScroll, indicators, backButton, forwardButton, leftCarrot, rightCarrot) {
+	// if there's already an animation in the queue then exit
+	if(Effect.Queue.effects.length > 0)
+		return;
+
+	// setup variables
+	var products = stageScroll.getElementsByTagName('div');
+	var numProducts = 0;
+	for(var i = 0; i < products.length; i++){
+        if(products[i].className.indexOf("productContainer") > -1){
+            numProducts ++;
+        }
+	}
+	var prodWidth;
+	var slides;
+    if(stageScroll.getAttribute("SlidesPerPage") != null){
+        slides = stageScroll.getAttribute("SlidesPerPage");
+    }
+    prodWidth = stageScroll.getElementsByTagName('div')[0].offsetWidth;
+    var numScrolls = Math.ceil((numProducts / slides) - 1);
+
+    var curX = Position.positionedOffset(stageScroll)[0];  
+    var xMove = prodWidth * slides; //stageScroll.parentNode.offsetWidth;  
+    var xMoveBy = xMove * dir;
+    var xMoveTo = curX + xMoveBy;
+    var xMax = -((prodWidth) * numProducts);
+    var curScroll = Math.ceil(Math.abs(xMoveTo / xMove));
+  
+    var products = stageScroll.getElementsByTagName("div");
+    var thisProduct = -1;
+    var height;
+    var width;
+    for(var i = 0; i < products.length; i++){
+        var className = products[i].className;
+        if(className.indexOf("productContainer") > -1){
+            thisProduct ++;
+            if(thisProduct == 0){
+                var prod = products[i].getElementsByTagName('img');
+                height = prod[0].offsetHeight + "px";
+                width = prod[0].offsetWidth + "px";
+            }
+            if((thisProduct + 1) > slides){
+                var images = products[i].getElementsByTagName('img');
+                for(var j = 0; j < images.length; j++){
+                    var src = images[j].getAttribute('tag');
+                    if((src != null && src != "") && 
+                        (images[j].src == null || images[j].src == "" || images[j].src.indexOf("loading") > -1)){
+                        images[j].src = src;
+                    }
+                }
+            }
+        }
+    }
+  
+	// exit if conditions aren't perfect
+    if(curScroll > (numScrolls + 1))
+	    return;
+	if(!(xMoveTo <= 0 && xMoveTo >= xMax))
+		return;
+		
+	//make coremetrics call *****************************************************************************************************
+	var thisCarousel = stageScroll.parentNode.parentNode;
+	var pageID = thisCarousel.getAttribute("PID");
+	var type = thisCarousel.getAttribute("CarouselType");
+	var campaign = thisCarousel.getAttribute("Campaign");
+	var param1 = window.location.href + "?&cm_re=" + type + "*" + ((dir > 0) ? "LeftArrowImage*" : "RightArrowImage*") + campaign;
+	var param2 = (dir > 0) ? "prev_" + (curScroll + 2) + "_of_" + (numScrolls + 1) : "next_" + (curScroll) + "_of_" + (numScrolls + 1);
+	cmCreateManualLinkClickTag(param1, param2, pageID);
+	//***************************************************************************************************************************
+	
+	// setup left / right buttons  
+	leftCarrot.className = (curScroll > 1) ? "leftCarrotOn" : "leftCarrot";
+    backButton.className = (curScroll > 1) ? "stageBackButtonOn" : "stageBackButtonOff";
+    forwardButton.className = (curScroll > numScrolls) ? "stageForwardButtonOff" : "stageForwardButtonOn";
+    rightCarrot.className = (curScroll > numScrolls) ? "rightCarrot" : "rightCarrotOn";
+
+    // do the move
+	new Effect.MoveBy(stageScroll, 0, xMoveBy);
+	
+	// delete the old indicators
+	while (indicators.firstChild)
+		indicators.removeChild(indicators.firstChild);
+
+	// add them back in
+	var indicatorCount = -1;
+	while(indicatorCount++ < numScrolls) {
+	    indicators.appendChild(Builder.node('div', {className:((indicatorCount == curScroll) ? 'on' : 'off')},(indicatorCount + 1)));
+	}
+}
+
+function initCarousel(scrollElement, indicatorsElement) {
+
+//  var d = new Date();
+//  var start = d.getTime();
+  //initialize each carousel with the scroll width,
+    //indicators, and status visibility
+    var stageScroll = document.getElementById(scrollElement);
+    if (stageScroll) {
+        var indicators = document.getElementById(indicatorsElement);
+        var thisCarousel = stageScroll.parentNode.parentNode;
+        var type = thisCarousel.getAttribute("CarouselType");
+        var campaign = thisCarousel.getAttribute("Campaign");
+        var header = thisCarousel.getElementsByTagName('div')[0];
+        var stageBody = stageScroll.parentNode;
+
+        if (thisCarousel.parentNode.offsetWidth != 0)
+            $(thisCarousel).setStyle({ 'width': thisCarousel.parentNode.offsetWidth + 'px' });
+
+        var backButton;
+        var forwardButton;
+        var leftCarrot;
+        var rightCarrot;
+        var divs = header.getElementsByTagName('div');
+        var key;
+
+        for (var i = 0; i < divs.length; i++) {
+            if (divs[i].className == "stageBackButtonOff") {
+                backButton = divs[i];
+            }
+            if (divs[i].className == "leftCarrot") {
+                leftCarrot = divs[i];
+            }
+            if (divs[i].className == "stageForwardButtonOn") {
+                forwardButton = divs[i];
+            }
+            if (divs[i].className == "rightCarrotOn") {
+                rightCarrot = divs[i];
+            }
+        }
+
+        var products = stageScroll.getElementsByTagName('div');
+        var prodArray = new Array();
+        var numProducts = 0;
+        var prodWidth;
+        var prodHeight = 0;
+        var page;
+        var spot;
+        if ($(stageScroll).getAttribute("SlidesPerPage") != null) {
+            var slides = $(stageScroll).getAttribute("SlidesPerPage");
+            //        debugger;
+            if (thisCarousel.offsetWidth != 0) {
+                //set the product width to the number of slides minus the padding and the left margin
+                //of the scroll body div 
+                var carouselWidth = thisCarousel.offsetWidth;
+                prodWidth = Math.floor(carouselWidth / slides) - 28; // - (slides * offset));
+                var thisProduct = -1;
+                for (var i = 0; i < products.length; i++) {
+                    if (products[i].className.indexOf("productContainer") > -1) {
+                        prodArray[numProducts] = products[i];
+                        numProducts++;
+                        thisProduct = i;
+
+                        products[i].style.width = prodWidth.toString() + 'px';
+                        if (products[thisProduct].offsetHeight > prodHeight) {
+                            prodHeight = products[thisProduct].offsetHeight;
+                        }
+                    }
+                }
+            }
+        }
+        //    else{ alert("No Slides Per Page property set!"); }
+
+        for (var i = 0; i < prodArray.length; i++) {
+            prodArray[i].style['height'] = prodHeight.toString() + "px";
+            if (i < (slides * 2) && i >= slides) {
+                var img = prodArray[i].getElementsByTagName('img')[0];
+                var src = img.getAttribute("tag");
+                if ((src != null && src != "")
+                && (img.src == null || img.src == "" || img.src.indexOf("loading") > -1)) {
+                    carouselImages[carouselImages.length] = img;
+                }
+            }
+        }
+
+        var numScrolls = Math.ceil((numProducts / slides) - 1);
+        stageBody.style['height'] = (prodHeight + 15).toString() + "px";
+        if (numScrolls == 0) {
+            indicators.parentNode.style['display'] = 'none';
+        }
+        else {
+            //initialize the scroll events
+            Event.observe(backButton, 'click', function() { carousel(1, stageScroll, indicators, backButton, forwardButton, leftCarrot, rightCarrot); });
+            Event.observe(forwardButton, 'click', function() { carousel(-1, stageScroll, indicators, backButton, forwardButton, leftCarrot, rightCarrot); });
+        }
+
+        //set up the indicators
+        var indicatorCount = -1;
+        while (indicatorCount++ < numScrolls) {
+            indicators.appendChild(Builder.node('div', { className: ((indicatorCount == 0) ? 'on' : 'off') }, (indicatorCount + 1)));
+        }
+    }	
+//	d = new Date();
+//	var end = d.getTime();
+//	var elapsed = end - start;
+//	var message = "start = " + start.toString() + "\n  end = " + end.toString();
+//	message += "\n elapsed = " + elapsed.toString();
+//	alert(message);
+	
+}

@@ -73,6 +73,7 @@
 			} 
 		</script> 
 </head> 
+<!-- Add author only code below --> 
 <body class="consumer"> 
 	<div class="clickstreamcloud"> 
 <script type="text/javascript" src="../../shopcms/shopetc/clientlibs/foundation/shared.js"></script> 
@@ -1169,7 +1170,7 @@ Learn more
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 221802586461174849553086052070654860332 --> 
+		 <!--X-Renderer: 54500775397097522127911408900006783098 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1323,6 +1324,9 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
 	            jQuery("head")[0].appendChild(s); 
+				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+				if (window.JSAM) 
+				JSAM.Stat.reportReady(); 
         	}, 3000);     
         }); 
     }); 
@@ -1359,7 +1363,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","Q0bZQ1KQ8yLr7mvph4hztm0Q!-570879507!1354713600205"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","gQQVQH0LvN24rLKSyKVfTG5y!1791653587!1355281544304"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 
@@ -1383,9 +1387,18 @@ if(jQuery('meta[name*=wtUverseAvailResult]').attr('content') === 'green'){
     <script src="http://www.att.com/media/cms/shop/scripts/ATT.c2c.js" type="text/javascript"></script> 
     <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/mtagconfig.js"></script> 
 </div> 
-	<!-- atlastag --> 
-	<div class="atlastag"> 
-</div> 
+	<!-- atlastag -->	 
+<script> 
+var reporting_ready = window.reporting_ready || new jQuery.Deferred(); 
+jQuery.when(reporting_ready).then(function (reporting) { 
+    reporting.capture([ 
+       // {selector: '#submitButtonField .enabledButton', type: 'wtsubmit', name: 'HRock_Check_Avail_Submit', params: 'wtUserResp'}, 
+       // {selector: 'head:page(internet)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+        {selector: 'head:page(freewifidevice.html)', type: 'wtmeta', name: 'wtPN', value: 'ATT_InternetOffers_Landing_Pg'}, 
+		//{selector: 'a[href*=/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.html]', type: 'wtparam', name: 'dcsuri', value: '/shop/en/Upper_Funnel_Promo_Modals/internet_promo_modals/internet_wireless_uverse_offers_freewifidevices.htm'} 
+    ]); 
+}); 
+</script> 
 	<!-- OPTIMOST --> 
 </body> 
 </html> 

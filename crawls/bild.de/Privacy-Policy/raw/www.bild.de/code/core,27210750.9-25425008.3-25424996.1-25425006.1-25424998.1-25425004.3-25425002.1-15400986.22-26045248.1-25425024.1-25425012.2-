@@ -752,7 +752,7 @@ de.bild.env = {
 
 
 
-/*de.bild.settings:27210766.4*/
+/*de.bild.settings:27210766.5*/
 
 /*
  @ignore;
@@ -894,7 +894,7 @@ de.bild.settings = (function() {
         threadedCommentItem : '<li class="threaded-comment-area">%CONTENT%</li>',
         loadingLayer : '<div id="loadingLayer"><img src="%IMG%"/></div>',
         message : '<p class="%CLASS%">%CONTENT%</p>',
-        lbMessage : '<div class="section"><div class="header"><h2>%HEADING%</h2></div><form class="cform"><fieldset><p class="%CLASS%">%CONTENT%</p></fieldset></form></div>',
+        lbMessage : '<header><h2>%HEADING%</h2></header><p class="%CLASS%">%CONTENT%</p>',
         lbMessageWithButton : '<header><h2>%HEADING%</h2></header><section class="com-lightbox-body"><form method="post" action="#" class="com-form security block"><fieldset><legend class="hidden"></legend> <p>%CONTENT% </p></fieldset><div class="com-buttons"> <input type="submit" value="%BUTTON%" class="btn-def"  onclick="de.bild.community.closeLightBox(); return false;"></div></form><section>',
         spanEl : '<span>%CONTENT%</span>',
         profileSeparator : ' • ',
@@ -4379,18 +4379,16 @@ de.bild.globalSandBox = (function($) {
  
  
 })(jQuery);
-/*de.bild.community:27210474.3*/
+/*de.bild.community:27210474.5*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
-
 de.bild.community = (function($, SandBox) {
-    var initialised = false, settings, templates, variables, lang;
+    var initialised = false, settings, templates, variables, lang, notificationCookie = 'new_notification';;
     function setVars() {
         settings = de.bild.settings.community.options;
         templates = de.bild.settings.community.templates;
         lang = de.bild.settings.community.lang;
-
         //setable via de.bild.community.update
         if(!variables) {
             variables = {
@@ -4409,9 +4407,7 @@ de.bild.community = (function($, SandBox) {
             }
         }
     }
-
     var submitAjaxRequest = null;
-
     /* AJAX LINKS FOR THE FIST
     ///////////////////////////       */
     /**
@@ -4421,7 +4417,6 @@ de.bild.community = (function($, SandBox) {
      * @memberOf de.bild.community
      * @private
      */
-
     function setAjaxLinks() {
         /* Initialise the load elements
          Loading passes a url direct from the href attribute*/
@@ -4435,7 +4430,6 @@ de.bild.community = (function($, SandBox) {
                 '$target' : $target,
                 'callback' : function(response, $target) {
                     init();
-
                     /* set up only when needed onload*/
                     if($('div.comments').length) {
                         setTimeout(function() {
@@ -4446,7 +4440,6 @@ de.bild.community = (function($, SandBox) {
                             ugcid : 'ugc-' + variables.ugcid
                         });
                     }
-
                 },
                 'error' : function(xhr, textStatus, $target) {
                     if($target.length) {
@@ -4470,6 +4463,8 @@ de.bild.community = (function($, SandBox) {
                 }
             });
         });
+        
+        
         /* Content will replace the specified target via replaceWith
          global so that it works in lightboxes */
         de.lib.live($body, 'a.' + settings.ajaxClassReplace + ', input.' + settings.ajaxClassReplace, 'click', function(e) {
@@ -4490,7 +4485,8 @@ de.bild.community = (function($, SandBox) {
         /* Onchange event for select boxes */
         de.lib.live($contentWrapper, 'select.' + settings.ajaxClassReplace, 'change', function(e) {
             e.preventDefault();
-            var obj = this, $form = $(this).parents('form').eq(0); 
+            var obj = this, 
+            $form = $(this).parents('form').eq(0);
             $form.addClass('loading');
             SandBox.load({
                 'obj' : obj,
@@ -4518,7 +4514,6 @@ de.bild.community = (function($, SandBox) {
             }
         });
     };
-
     /**
      * handles the communication between server and form elements
      * @function
@@ -4538,7 +4533,11 @@ de.bild.community = (function($, SandBox) {
                 submitAjaxRequest.abort();
             }
             /* defaults */
-            var datatype = data.dataType ? data.dataType : 'html', method = data.method ? data.method : 'POST', timeout = data.timeout ? data.timeout : '15000', params = (data.params && method.toLowerCase() === 'post') ? data.params : false;
+            var datatype = data.dataType ? data.dataType : 'html', 
+            method = data.method ? data.method : 'POST', 
+            timeout = data.timeout ? data.timeout : '15000', 
+            params = (data.params && method.toLowerCase() === 'post') ? data.params : false;
+            
             submitAjaxRequest = $.ajax({
                 'url' : data.url,
                 'dataType' : datatype,
@@ -4559,14 +4558,12 @@ de.bild.community = (function($, SandBox) {
             });
         }
     };
-
     function loadingLayer($elem, cl) {
         if(!cl)
             $elem.toggleClass('active');
         else
             $elem.toggleClass(cl);
     }
-
     /**
      * update a static count in an element on the page (beitrag counts etc)
      * @function
@@ -4589,10 +4586,8 @@ de.bild.community = (function($, SandBox) {
             $elem.text(newCount);
             return newCount;
         }
-
         return null;
     };
-
     /**
      * helper function to launch lightbox
      * @function
@@ -4605,10 +4600,8 @@ de.bild.community = (function($, SandBox) {
         if(params) {
             params.wrapperClass = 'com-lightbox sso';
             return $body.bildLightbox(params);
-
         }
     };
-
     /**
      * closes window
      * @function
@@ -4627,7 +4620,6 @@ de.bild.community = (function($, SandBox) {
                 params.callback();
         }, delay);
     };
-
     /**
      * from R2 onwards: checks requests for the presence of a json object and failure param
      * @function
@@ -4643,7 +4635,6 @@ de.bild.community = (function($, SandBox) {
          so we have to attempt to parse the response as json -r.dodd
          */
         var respObj;
-
         try {
             // normal json?
             if(response.status.length) {
@@ -4651,11 +4642,9 @@ de.bild.community = (function($, SandBox) {
             } else {
                 respObj = $.parseJSON(response);
             }
-
         } catch(e) {
             respObj = null;
         }
-
         if(respObj !== null && respObj.status && respObj.status === 'failure') {
             var html = templates.lbMessageWithButton.replace('%CONTENT%', respObj.message).replace('%HEADING%', respObj.title).replace('%BUTTON%', lang.closeLightbox);
             closeLightBox({
@@ -4670,7 +4659,6 @@ de.bild.community = (function($, SandBox) {
             return false;
         }
     };
-
     /**
      * public function to update editable values in the variables object
      * the variables must already exist and be of the same type as the incoming data
@@ -4696,7 +4684,6 @@ de.bild.community = (function($, SandBox) {
         }
         return variables;
     };
-
     /**
      * this function returns logged in values stored in a cookie. it's used for webtrek tracking and called in the head of the page onload
      * @function
@@ -4739,7 +4726,6 @@ de.bild.community = (function($, SandBox) {
         }
         return result;
     };
-
     /**
      * updates the contentId of the page for webtracking
      * @function
@@ -4767,7 +4753,6 @@ de.bild.community = (function($, SandBox) {
         }
         return false;
     };
-
     /**
      * will loop through all elements with a class of .required
      * null values trigger the error
@@ -4793,25 +4778,96 @@ de.bild.community = (function($, SandBox) {
         }
         return okToSubmit;
     };
-
+    /**
+     * Setup lightbox trigger for security questions, eg: Profilephoto Lightbox trigger "do you want to delete this photo?"  OR "Do you want to delete this comment"
+     * @function
+     * @name setupSecurityQuestions
+     * @memberOf de.bild.community
+     * @private
+     */
+    function setupSecurityQuestions(){
+        
+        de.lib.live($contentWrapper, 'a.secquestion', 'click', function(e){
+            e.preventDefault();
+            SandBox.load({
+                'obj': this,
+                'callback': function(response, $target){
+                    showLightBox({
+                        'content': response,
+                        'onClose' : function(){                       
+                            /* if success window has class of refresh...refresh! */
+                            if($body.find('div.com-lightbox #success').length) {                           
+                                /* refresh on success so we can see result of change */
+                                window.location.reload();
+                            }
+                             else if($body.find('div.lightbox #com-logout').length) {                           
+                                /* refresh on success so we can see result of change */
+                                de.bild.sso.logout();
+                            }
+                            
+                            
+                        }                       
+                    });
+                },
+                'error' : function(){
+                    closeLightBox({
+                        'callback' : function(){
+                            showLightBox({
+                                'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', Community.lang().error)
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    };
+/* ================================================================================================================ START NOTIFICATION POPUP */
+   
+   
+    /**
+     * checks for cookie to see if new notification is there and triggers lightbox
+     * @function
+     * @name setupNotificationPopup
+     * @memberOf de.bild.community
+     * @private
+     */
+    function setupNotificationPopup() {
+        if($.cookie(notificationCookie) && parseInt($.cookie(notificationCookie)) === 1) {
+            var url = de.bild.settings.community.urls.newfeatureNotification;
+            url = '../dummies/notification.snip';
+            SandBox.load({
+                'url' : url,
+                'callback' : function(response) {
+                    showLightBox({
+                        'content' : response,
+                        'callback' : function() {
+                            $.cookie(notificationCookie, null);
+                        },
+                        'onClose' : function() {
+                        }
+                    });
+                }
+            })
+        }
+    }
+/* ================================================================================================================ END NOTIFICATION POPUP */
     function init($target) {
         //set only once
         if(!initialised) {
             //settings variables templates, in function on dom ready because of dependencies to sandbox
             setVars(); $contentWrapper = $('#innerWrapper'), $body = $('body'), $doc = $(document);
             //set up all the live events
-            setAjaxLinks();
+            setAjaxLinks();            
+            setupSecurityQuestions();
+            setupNotificationPopup();
             initialised = true;
         }
-
         if(de.bild.community.comments) {
             de.bild.community.comments.init();
         }
-
         if(de.bild.community.lightboxForms) {
             de.bild.community.lightboxForms.init();
         }
-
         if(de.bild.community.likeBtn) {
             de.bild.community.likeBtn.init();
         }
@@ -4821,12 +4877,8 @@ de.bild.community = (function($, SandBox) {
         if(de.bild.community.follow) {
             de.bild.community.follow.init();
         }
-        if(de.bild.community.profile) {
-            de.bild.community.profile.init();
-        }         
 
     }
-
     return {
         'init' : function() {
             init();
@@ -4875,7 +4927,7 @@ de.bild.community = (function($, SandBox) {
         'validateForm' : validateForm
     }
 })(jQuery, de.bild.globalSandBox)
-/*de.bild.community.comments:27210484.2*/
+/*de.bild.community.comments:27210484.3*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
@@ -4892,129 +4944,119 @@ de.bild.community = de.bild.community || {};
  * @namespace contains and initates all comments and forum related functions
  * @dependencies ['de.bild.community']
  */
-de.bild.community.comments = (function($,Community) {	
-	
-	var initialised=false;
-	var userCommentCount = 0;
-	
+de.bild.community.comments = (function($,Community) { 
+ 
+ var initialised=false;
+ var userCommentCount = 0;
+ 
 /* ================================================================================================================ START COMMENTS */
-	/**
-	 * Sets up all the live functionality of buttons and forms for UGC comment fields
-	 * @function
-	 * @name setupCommentEvents
-	 * @memberOf de.bild.community
-	 * @private
-	 */
-	function setupCommentEvents() {
-		/* General function for textareas. Default text is deleted and the colour of the text changes to black. When the doc is clicked, everything will be reset. It used to be onBlur.  */
-		de.lib.live($body, 'form.com-form textarea:not(#post-text-threaded), form.com-form input[type="text"], form.com-form input[type="email"], form.com-form input[type="tel"], div.comments input[type="text"]', {
-			focus : function() {
-				var $this = $(this);
-				setFormFieldState($this, true);
-				docClickHandler = function(e) {
-					var $target = $(e.target);
-					/* don't catch clicks on the form area */
-					if($target.parents('form.com-form').length === 0) {
-
-						setFormFieldState($this, false);
-						$doc.off('click', docClickHandler);
-					}
-				};
-				$doc.on('click', docClickHandler);
-			},
-			keyup : function() {
-				/*  Maximale Kommentarlaenge ueberpruefen */
-				var $this = $(this), comment = $this.val();
-				var value = comment.length <= Community.variables().maxCommentLength ? comment : comment.substring(0, Community.variables().maxCommentLength);
-				if(value.length == Community.variables().maxCommentLength) {
-					$this.val(value);
-				}
-			}
-		});
-
-
-		/* Bei Klick auf Kommentieren Kommentarformular einblenden */
-		de.lib.live($contentWrapper, 'ol.comment-list li a.comment-on', 'click', function(e) {
-			e.preventDefault();
-			getCommentbox(this);
-		});
-		
-		/* captcha events */
-		de.lib.live($contentWrapper, '.captcha a.reload', 'click', function(e) {
-			e.preventDefault();
-			//check reload checkbox
-			$('#captcha-reload').attr('checked', true);
-			$(this).closest('form').trigger('submit');
-		});
-		
-		/* Click on the send button in comments */
-		de.lib.live($contentWrapper, 'form.new-comment', 'submit', function(e) {
-			e.preventDefault();			
-			sendComment(this);			
-			return false;
-		});
-
-		/* Loading new comments for real-time comments and sub-comments*/
-		de.lib.live($contentWrapper, '.js-load', 'click', function(e) {
-			e.preventDefault();
-			var $this = $(this);
-			/*add Loadinglayer */
-			Community.loadingLayer($this);		
-			
-			//adding the new comments or loading the comment answers			
-			var $parent = $this.parent();
-			var subComments = $this.parents('.sub-comment-list');
-			var userList = $this.parents('.usrlist');
-			
-			Community.load({
-				'obj' : this,
-				'callback' : function(response) {
-					var $newComs = $(response);
-					$newComs.hide();
-					var $this = $(this),$elem;
-					/* Replace for new comments, append for children -- LIVE Commenting*/ 
-					if(subComments.length>0) {
-						//remove all comment except the last and append the new loaded
-						$elem = subComments;
-						$elem.children('li:gt(0)').remove();
-						$elem.append($newComs);						
-
-					} 
-					/* Exception for follower list*/
-					else if(userList.length>0){
-						$elem = userList;
-						$elem.append($newComs);
-						$this.parent('li').remove();
-					}
-					else {
-
-						$elem = $('ol.comment-list', $parent).eq(0);
-						$elem.html($newComs);
-
-						/* here we are setting the value of total comments loaded AFTER click*/
-						if($this.data('newComments') > Community.variables().totalComments) {
-							Community.variables().totalComments = $this.data('newComments');
-						}
-						
-						$this.hide();
-						/* reset the usercomment count after the new comment alert has been click*/
-						userCommentCount = 0;
-					}
-
-					/*fading new comments*/
-					Community.loadingLayer($this);
-					$('li:hidden', $elem).fadeIn(Community.settings().fadeSpeed);
-					//reinit Stuff
-					Community.init();					
-				},
-				'error' : function() {
-					Community.loadingLayer($this);
-				}
-			});
-		});
-	};
-
-
+ /**
+  * Sets up all the live functionality of buttons and forms for UGC comment fields
+  * @function
+  * @name setupCommentEvents
+  * @memberOf de.bild.community
+  * @private
+  */
+ function setupCommentEvents() {
+  /* General function for textareas. Default text is deleted and the colour of the text changes to black. When the doc is clicked, everything will be reset. It used to be onBlur.  */
+  de.lib.live($body, 'form.com-form textarea:not(#post-text-threaded), form.com-form input[type="text"], form.com-form input[type="email"], form.com-form input[type="tel"], div.comments input[type="text"]', {
+   focus : function() {
+    var $this = $(this);
+    setFormFieldState($this, true);
+    docClickHandler = function(e) {
+     var $target = $(e.target);
+     /* don't catch clicks on the form area */
+     if($target.parents('form.com-form').length === 0) {
+      setFormFieldState($this, false);
+      $doc.off('click', docClickHandler);
+     }
+    };
+    $doc.on('click', docClickHandler);
+   },
+   keyup : function() {
+    /*  Maximale Kommentarlaenge ueberpruefen */
+    var $this = $(this), comment = $this.val();
+    var value = comment.length <= Community.variables().maxCommentLength ? comment : comment.substring(0, Community.variables().maxCommentLength);
+    if(value.length == Community.variables().maxCommentLength) {
+     $this.val(value);
+    }
+   }
+  });
+  /* Bei Klick auf Kommentieren Kommentarformular einblenden */
+  de.lib.live($contentWrapper, 'ol.comment-list li a.comment-on', 'click', function(e) {
+   e.preventDefault();
+   getCommentbox(this);
+  });
+  
+  /* captcha events */
+  de.lib.live($contentWrapper, '.captcha a.reload', 'click', function(e) {
+   e.preventDefault();
+   //check reload checkbox
+   $('#captcha-reload').attr('checked', true);
+   $(this).closest('form').trigger('submit');
+  });
+  
+  /* Click on the send button in comments */
+  de.lib.live($contentWrapper, 'form.new-comment', 'submit', function(e) {
+   e.preventDefault();   
+   sendComment(this);   
+   return false;
+  });
+  /* Loading new comments for real-time comments and sub-comments*/
+  de.lib.live($contentWrapper, '.js-load', 'click', function(e) {
+   e.preventDefault();
+   var $this = $(this);
+   /*add Loadinglayer */
+   Community.loadingLayer($this);  
+   
+   //adding the new comments or loading the comment answers   
+   var $parent = $this.parent();
+   var subComments = $this.parents('.sub-comment-list');
+   var userList = $this.parents('.usrlist');
+   
+   Community.load({
+    'obj' : this,
+    'callback' : function(response) {
+     var $newComs = $(response);
+     $newComs.hide();
+     var $this = $(this),$elem;
+     /* Replace for new comments, append for children -- LIVE Commenting*/ 
+     if(subComments.length>0) {
+      //remove all comment except the last and append the new loaded
+      $elem = subComments;
+      $elem.children('li:gt(0)').remove();
+      $elem.append($newComs);      
+     } 
+     /* Exception for follower list*/
+     else if(userList.length>0){
+      $elem = userList;
+      $elem.append($newComs);
+      $this.parent('li').remove();
+     }
+     else {
+      $elem = $('ol.comment-list', $parent).eq(0);
+      $elem.html($newComs);
+      /* here we are setting the value of total comments loaded AFTER click*/
+      if($this.data('newComments') > Community.variables().totalComments) {
+       Community.variables().totalComments = $this.data('newComments');
+      }
+      
+      $this.hide();
+      /* reset the usercomment count after the new comment alert has been click*/
+      userCommentCount = 0;
+     }
+     /*fading new comments*/
+     Community.loadingLayer($this);
+     $('li:hidden', $elem).fadeIn(Community.settings().fadeSpeed);
+     //reinit Stuff
+     Community.init();     
+    },
+    'error' : function() {
+     Community.loadingLayer($this);
+    }
+   });
+  });
+ };
    /**
      * Called when the send button in the comment field is clicked. If the comment field is empty, it will be closed and lose focus. A loading layer is positioned over the textfield after a click
      * upon submission the update comments timeout will be reset.
@@ -5037,11 +5079,10 @@ de.bild.community.comments = (function($,Community) {
         // if we have a valid message send it off
         // trim the contents
         var commentFieldVal = de.bild.utils.trim($commentField.val());
-
         if (commentFieldVal !== '' && commentFieldVal !== $commentField.attr('placeholder')) {
-        	
-        	var subComment = $commentField.parents('.sub-comment-list').length>0?true:false;
-        	
+         
+         var subComment = $commentField.parents('.sub-comment-list').length>0?true:false;
+         
             // insert trimmed content in form
             $commentField.val(commentFieldVal);
             var dataType= 'json',
@@ -5058,17 +5099,15 @@ de.bild.community.comments = (function($,Community) {
                             $fieldset.remove();
                             $elem.prepend($(response.form));
                         }
-
                         if (response.status === 'error') {
                             if (response.message) {
                                 showLightBox({
-                                    'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', Community.lang().error)
+                                    'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'hint').replace('%HEADING%', Community.lang().error)
                                 });
                             }
                             return;
                         }
-
-						//Bei Threaderstellung gibt es bei Erfolg keine Textarea, nur eine Meldung
+      //Bei Threaderstellung gibt es bei Erfolg keine Textarea, nur eine Meldung
                         var $textArea = $elem.find('textarea').length>0?$elem.find('textarea'):$elem.find('.message');                        
                         
                         // successful message
@@ -5093,11 +5132,11 @@ de.bild.community.comments = (function($,Community) {
                             }                            
                             
                             if(!subComment){
-                            	$comments.prepend($newComs);
+                             $comments.prepend($newComs);
                             }
                             else{
-                            	$elem.parents('.threaded-comment-area').remove();                            	
-                            	$comments.append($newComs);
+                             $elem.parents('.threaded-comment-area').remove();                             
+                             $comments.append($newComs);
                             }
                             
                             //fading new comment
@@ -5107,23 +5146,20 @@ de.bild.community.comments = (function($,Community) {
                             // update the tab number
                             var commentTab = $elem.parents('section').find('.com-tabs .active a');
                             if(response.commentCount){
-                            	commentTab.text(response.commentCount);
+                             commentTab.text(response.commentCount);
                             }
                             
                             //Community.updateCount($('#ugc-comment-count'), 1);
                             
                             
-
                             // we check for new comments
                             checkforNewComments(true);
                        
                         // error
                         } else {
                            setFormFieldState($textArea,true);
-
                         }
                    
-
                         if (response.form) {                           
                             /* success? */       
                             if (response.status === 'success') {
@@ -5151,7 +5187,6 @@ de.bild.community.comments = (function($,Community) {
                     Community.init();    
                    
                 };
-
             /* premoderation, just show success message  */
             } else {
                 callback = function(response, type){                    
@@ -5161,11 +5196,10 @@ de.bild.community.comments = (function($,Community) {
                             $fieldset.remove();
                             $elem.prepend($(response.form));
                         }
-
                         if (response.status === 'error') {
                             if (response.message) {
                                 showLightBox({
-                                    'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', Community.lang().error)
+                                    'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'hint').replace('%HEADING%', Community.lang().error)
                                 });
                             }
                             return;
@@ -5177,8 +5211,8 @@ de.bild.community.comments = (function($,Community) {
                             if (response.status === 'success') {
                                 var $success = $elem.find('div.show-all, .message');
                                 if ($success.length) {
-                                	//submit verstecken
-                                	$success.siblings('.btn-emp').hide();
+                                 //submit verstecken
+                                 $success.siblings('.btn-emp').hide();
                                     delayToFade($success, Community.settings().fadeDelay, function(){
                                         $elem.removeClass('active').find('fieldset, .btn-emp,').show();
                                     });
@@ -5197,7 +5231,6 @@ de.bild.community.comments = (function($,Community) {
                                setFormFieldState($textArea,true);
                             }
                         } 
-
                     /* no response? network fail */   
                     } else {
                         /*PROCO-994*/
@@ -5226,11 +5259,10 @@ de.bild.community.comments = (function($,Community) {
             });
         /*Wenn Kommentarfeld leer ist, klappt das Kommentarfeld zu*/
         } else {
-            setFormFieldState($commentField, false);
+            setFormFieldState($commentField, true);
         }
         return false;
     };
-
 function getCommentbox(elem){
         var $elem = $(elem);
    
@@ -5262,11 +5294,9 @@ function getCommentbox(elem){
                     /* if threaded */
                     if ($post.find('ol').length) {
                         var $module = $post.find('ol:eq(0)').append(form);
-
                     /* this condition for profile pages*/   
                     } else if ($post.find('div.post-actions').length) {
                         $post.find('div.post-actions').after(form);
-
                     } else {
                         $post.append('<ol class="sub-comment-list">'+form+'</ol>');
                     }
@@ -5315,140 +5345,126 @@ function getCommentbox(elem){
        
         return false;
     };
-
-
-	/**
-	 * reduce length of comments to  250 characters
-	 * @function
-	 * @name shrinkComments
-	 * @memberOf de.bild.community
-	 * @private
-	 * @param {Object} $elem jQuery Object
-	 */
-	function shrinkComments($elem) {
-
-		var $comments = ($elem) ? $elem.find('p.comment-content, p.thread-description'):$contentWrapper.find('p.comment-content, p.thread-description');
-
-		//if there are no comments or comments should be expanded -> return
-		if(!$comments || $('ol.comment-list').hasClass('expanded')) {
-			return;
-		}
-
-		$comments.each(function(){
-            var $oneComment = $(this);		
-
-			/* PROCO-785 - long and short version of comment is stored in forum view to avoid shrinking jump effects */
-			/* var $commentMore = $oneComment.find('span.comment-more a.more');
-			if($commentMore.length > 0) {
-				$commentMore.click(function(e) {
-					e.preventDefault();
-					$oneComment.addClass('expanded-comment');
-				});
-				return true;
-			} */
-
-			if(!$oneComment.data('longTxt')) {
-				var text = $.trim($oneComment.find('a.more').remove().end().html());
-				$oneComment.data('longTxt', text);
-				/*
-				 Ab zeichen clength nach einem Leerzeichen suchen und dann das Kommentar abschneiden
-				 und wenn es kein Leerzeichen gibt
-				 replace <br>
-				 */
-				
-				var isForumComment = !$oneComment.parents('.latest').length==0;
-				
-				var clength = !isForumComment?Community.settings().shrinkCommentLength:Community.settings().shrinkCommentLengthForum;
-				
-				
-				text = text.replace(/<br>|<br\/>/g, '|');
-				if(text.length > clength) {
-					for(var i = clength - 30; i <= clength; i++) {
-						if(text.charAt(i) === ' ') {
-							text = text.substring(0, i);
-							break;
-						} else if(i == clength - 10) {
-							/* if there are many spaces we can cut off at the end */
-							if(text.split(' ').length > 10) {
-								text = text.substring(0, clength - 10) + ' ';
-								/* if there are many chars but not many line breaks */
-							} else {
-								text = text.substring(0, 50) + ' ';
-							}
-							break;
-						}
-					}
-				}
-				/* put the <br>s back */
-				text = text.replace(/\|/g, '<br/>');
-				/* Text einfuegen, mehr Button und shortText setzen */
-				$oneComment.html(text).data('shortTxt', $oneComment.html());
-				/* nur wenn ein mehr Button benoetigt wird
-				 if the character length is greater than 195, or number of line breaks (<br>) is more than 2 */
-				if($oneComment.data('longTxt').length > clength || $oneComment.data('longTxt').split('<br').length > 2) {
-					$oneComment.append(Community.templates().moreHTML);
-					$oneComment.data('expandable', true);
-				} else {
-					$oneComment.data('expandable', false);
-				}
-				/*Falls der Text nun doch zu lang sein sollte. */
-				
-				//2-lines in Forum 3-Lines in UGC Modules.
-				var lineheight = 45;
-				
-				if($oneComment.height() > lineheight) {
-					text = text.split(' ');
-					for(var j = text.length - 1; j > 0; j--) {
-						text.splice(j, 1);
-						var tmpText = text.join(' ');
-						$oneComment.html(tmpText + '... ' + Community.lang().more);
-						if($oneComment.height() <= lineheight) {
-							$oneComment.html(tmpText).data('shortTxt', $oneComment.html()).append(Community.templates().moreHTML);
-							break;
-						}
-					}
-				}
-			}
-
-			$('a.more', $oneComment).click(function(e) {
-				e.preventDefault();
-				expandComment($(this).parent());
-			});
-			
-			//after shrinking remove class collapsed
-			$oneComment.removeClass('collapsed');
-			
-		}); 
-		if($elem) {
-			return $elem;
-		}
-	};
-
-	/**
-	 * Expands and collapses comment text
-	 * @function
-	 * @name expandComment
-	 * @memberOf de.bild.community
-	 * @param {$Object} $elem jQuery Object = the clicked button (a.more)
-	 * @private
-	 */
-
-	function expandComment($elem) {
-		var $more = $elem.find('a.more');
-		if($more.length > 0) {
-			$more.remove();
-			$elem.hide().html($elem.data('longTxt')).fadeIn(Community.settings().fadeSpeed, function() {
-			});
-			//on forum page set the height of parent not in Forum description
-			if($elem.parents('.thread-item').length > 0 && !$elem.hasClass('thread-description')) {
-				$elem.parents('.thread-item').css('height', parseInt($elem.parents('.comment').height()) + 35)
-			}
-
-		}
-
-	};
-
-
+ /**
+  * reduce length of comments to  250 characters
+  * @function
+  * @name shrinkComments
+  * @memberOf de.bild.community
+  * @private
+  * @param {Object} $elem jQuery Object
+  */
+ function shrinkComments($elem) {
+  var $comments = ($elem) ? $elem.find('p.comment-content, p.thread-description'):$contentWrapper.find('p.comment-content, p.thread-description');
+  //if there are no comments or comments should be expanded -> return
+  if(!$comments || $('ol.comment-list').hasClass('expanded')) {
+   return;
+  }
+  $comments.each(function(){
+            var $oneComment = $(this);  
+   /* PROCO-785 - long and short version of comment is stored in forum view to avoid shrinking jump effects */
+   /* var $commentMore = $oneComment.find('span.comment-more a.more');
+   if($commentMore.length > 0) {
+    $commentMore.click(function(e) {
+     e.preventDefault();
+     $oneComment.addClass('expanded-comment');
+    });
+    return true;
+   } */
+   if(!$oneComment.data('longTxt')) {
+    var text = $.trim($oneComment.find('a.more').remove().end().html());
+    $oneComment.data('longTxt', text);
+    /*
+     Ab zeichen clength nach einem Leerzeichen suchen und dann das Kommentar abschneiden
+     und wenn es kein Leerzeichen gibt
+     replace <br>
+     */
+    
+    var isForumComment = !$oneComment.parents('.latest').length==0;
+    
+    var clength = !isForumComment?Community.settings().shrinkCommentLength:Community.settings().shrinkCommentLengthForum;
+    
+    
+    text = text.replace(/<br>|<br\/>/g, '|');
+    if(text.length > clength) {
+     for(var i = clength - 30; i <= clength; i++) {
+      if(text.charAt(i) === ' ') {
+       text = text.substring(0, i);
+       break;
+      } else if(i == clength - 10) {
+       /* if there are many spaces we can cut off at the end */
+       if(text.split(' ').length > 10) {
+        text = text.substring(0, clength - 10) + ' ';
+        /* if there are many chars but not many line breaks */
+       } else {
+        text = text.substring(0, 50) + ' ';
+       }
+       break;
+      }
+     }
+    }
+    /* put the <br>s back */
+    text = text.replace(/\|/g, '<br/>');
+    /* Text einfuegen, mehr Button und shortText setzen */
+    $oneComment.html(text).data('shortTxt', $oneComment.html());
+    /* nur wenn ein mehr Button benoetigt wird
+     if the character length is greater than 195, or number of line breaks (<br>) is more than 2 */
+    if($oneComment.data('longTxt').length > clength || $oneComment.data('longTxt').split('<br').length > 2) {
+     $oneComment.append(Community.templates().moreHTML);
+     $oneComment.data('expandable', true);
+    } else {
+     $oneComment.data('expandable', false);
+    }
+    /*Falls der Text nun doch zu lang sein sollte. */
+    
+    //2-lines in Forum 3-Lines in UGC Modules.
+    var lineheight = 45;
+    
+    if($oneComment.height() > lineheight) {
+     text = text.split(' ');
+     for(var j = text.length - 1; j > 0; j--) {
+      text.splice(j, 1);
+      var tmpText = text.join(' ');
+      $oneComment.html(tmpText + '... ' + Community.lang().more);
+      if($oneComment.height() <= lineheight) {
+       $oneComment.html(tmpText).data('shortTxt', $oneComment.html()).append(Community.templates().moreHTML);
+       break;
+      }
+     }
+    }
+   }
+   $('a.more', $oneComment).click(function(e) {
+    e.preventDefault();
+    expandComment($(this).parent());
+   });
+   
+   //after shrinking remove class collapsed
+   $oneComment.removeClass('collapsed');
+   
+  }); 
+  if($elem) {
+   return $elem;
+  }
+ };
+ /**
+  * Expands and collapses comment text
+  * @function
+  * @name expandComment
+  * @memberOf de.bild.community
+  * @param {$Object} $elem jQuery Object = the clicked button (a.more)
+  * @private
+  */
+ function expandComment($elem) {
+  var $more = $elem.find('a.more');
+  if($more.length > 0) {
+   $more.remove();
+   $elem.hide().html($elem.data('longTxt')).fadeIn(Community.settings().fadeSpeed, function() {
+   });
+   //on forum page set the height of parent not in Forum description
+   if($elem.parents('.thread-item').length > 0 && !$elem.hasClass('thread-description')) {
+    $elem.parents('.thread-item').css('height', parseInt($elem.parents('.comment').height()) + 35)
+   }
+  }
+ };
     /**
      * Handles form field states sets the default text and text colour when the feld gains and loses focus.
      * @function
@@ -5459,103 +5475,50 @@ function getCommentbox(elem){
      * @param {Bool} focus whether the element should be focussed or blurred
      * @returns {Bool} false
      */
-
-	function setFormFieldState($elem, focus) {
-
-		if($elem.length==0)return false;
-		var $form = $elem.parents('form.com-form'), nodeName = $elem[0].nodeName.toLowerCase();
-
-		/* is the field active? */
-		if(focus) {
-			/* in the CSS, this active class shows the corresponding buttons and checkboxes  */
-			if(!$form.hasClass('comment-nologin')) {
-				$form.addClass('active');
-			}
-
-			/* remove default text */
-			if($elem.attr('placeholder')) {
-				if($elem.val() == $elem.attr('placeholder')) {
-					$elem.val('');
-				}
-			}
-
-			if(nodeName === 'textarea') {
-				if($elem.attr('id') === 'post-text') {
-					$elem.TextAreaExpander('38');
-				} else {					
-					$elem.TextAreaExpander($elem.height());
-				}
-			}
-
-			/* else we are leaving the element */
-		} else {			
-				if($elem.length) {
-					var isEmpty = ($.trim($elem.val()) === '' && $elem.val()!=$elem.attr('placeholder')) ? true : false;
-					
-					if(isEmpty) {
-						/* set textarea */
-						if(nodeName === 'textarea') {
-							$elem.css('height', '');
-							/* this is for the anoym comment case. When a info message is shown don't remove the active class otherwise the message will be hidden */
-							if($form.find('.message:visible').length==0){
-								$form.removeClass('active');
-							}
-							
-						}
-					}
-				}
-			
-		}
-		return false;
-	};
+ function setFormFieldState($elem, focus) {
+  if($elem.length==0)return false;
+  var $form = $elem.parents('form.com-form'), nodeName = $elem[0].nodeName.toLowerCase();
+  /* is the field active? */
+  if(focus) {
+   /* in the CSS, this active class shows the corresponding buttons and checkboxes  */
+   if(!$form.hasClass('comment-nologin')) {
+    $form.addClass('active');
+   }
+   /* remove default text */
+   if($elem.attr('placeholder')) {
+    if($elem.val() == $elem.attr('placeholder')) {
+     $elem.val('');
+    }
+   }
+   if(nodeName === 'textarea') {
+    if($elem.attr('id') === 'post-text') {
+     $elem.TextAreaExpander('38');
+    } else {     
+     $elem.TextAreaExpander($elem.height());
+    }
+   }
+   /* else we are leaving the element */
+  } else {   
+    if($elem.length) {
+     var isEmpty = ($.trim($elem.val()) === '' && $elem.val()!=$elem.attr('placeholder')) ? true : false;
+     
+     if(isEmpty) {
+      /* set textarea */
+      if(nodeName === 'textarea') {
+       $elem.css('height', '');
+       /* this is for the anoym comment case. When a info message is shown don't remove the active class otherwise the message will be hidden */
+       if($form.find('.message:visible').length==0){
+        $form.removeClass('active');
+       }
+       
+      }
+     }
+    }
+   
+  }
+  return false;
+ };
 /* ================================================================================================================ END COMMENTS */
-
-
-
-    /**
-     * Setup lightbox trigger for security questions, eg: Profilephoto Lightbox trigger "do you want to delete this photo?"
-     * @function
-     * @name setupSecurityQuestions
-     * @memberOf de.bild.community
-     * @private
-     */
-    function setupSecurityQuestions(){
-        /* Profilephoto Lightbox trigger  */
-        de.lib.live($contentWrapper, 'a.secquestion', 'click', function(e){
-            e.preventDefault();
-            de.bild.httpFist.load({
-                'obj': this,
-                'callback': function(response, $target){
-                    showLightBox({
-                        'content': response,
-                        'onClose' : function(){                       
-                            /* if success window has class of refresh...refresh! */
-                            if($body.find('div.com-lightbox #success').length) {                           
-                                /* refresh on success so we can see result of change */
-                                window.location.reload();
-                            }
-                             else if($body.find('div.lightbox #com-logout').length) {                           
-                                /* refresh on success so we can see result of change */
-                                de.bild.sso.logout();
-                            }
-                            
-                            
-                        }                       
-                    });
-                },
-                'error' : function(){
-                    closeLightBox({
-                        'callback' : function(){
-                            showLightBox({
-                                'content' : Community.templates().lbMessage.replace('%CONTENT%', response.message).replace('%CLASS%', 'error').replace('%HEADING%', Community.lang().error)
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    };
-
     /* FORUM FORMS
     ///////////////////////////       */
     /**
@@ -5607,10 +5570,6 @@ function getCommentbox(elem){
             });
         }
     };
-
-
-
-
     /**
      * sets up the events to opensreport form in a lightbox
      * @function
@@ -5619,28 +5578,12 @@ function getCommentbox(elem){
      * @private
      */
      function setupReportFormEvents(){
-        /* Report Lightbox trigger  */
-        de.lib.live($contentWrapper, 'ol.comment-list ul.comment-actions a.report, ul.fnc a.report','click', function(e){
-            e.preventDefault();
-            if (de.bild.sso.isLoggedIn() === false ) {
-                de.bild.sso.login();
-            } else {
-                de.bild.httpFist.load({
-                    'obj': this,
-                    'callback': function(response, $target){
-                        showLightBox({
-                         'content': response
-                        });
-                    }
-                });
-            }
-        });
-     };
-
-	function checkforNewComments() {
-
-	}
-	
+        
+     }
+ function checkforNewComments() {
+        
+ }
+ 
     /**
      * fades object after settings.fadeDelay, then removes it from the DOM
      * @function
@@ -5677,227 +5620,274 @@ function getCommentbox(elem){
         }
     }; 
     
-	function init(callback) {
-		
-		//only once because of live bindings
-		if(!initialised) { $contentWrapper = $('#innerWrapper'), $body = $('body'), $doc = $(document);
-
-			/* community comments :) */
-			setupCommentEvents();
-			setupSecurityQuestions();
-			setupReportFormEvents();
-			setupThreadForm();
-			initialised = true;
-		}
-
-		shrinkComments();
-
-		/* are comments already in the page? */
-		if($('div.comments').length) {
-			checkforNewComments();
-		}
-
-		//execute Callback if set
-		if( typeof callback === 'function') {
-			callback();
-		}
-
-	}
-
-
-	return {
-		'init' : function(callback) {
-			init(callback);
-		},
-		'checkforNewComments':checkforNewComments
-	}
-
+ function init(callback) {
+  
+  //only once because of live bindings
+  if(!initialised) { $contentWrapper = $('#innerWrapper'), $body = $('body'), $doc = $(document);
+   /* community comments :) */
+   setupCommentEvents();
+   setupReportFormEvents();
+   setupThreadForm();
+   initialised = true;
+  }
+  shrinkComments();
+  /* are comments already in the page? */
+  if($('div.comments').length) {
+   checkforNewComments();
+  }
+  //execute Callback if set
+  if( typeof callback === 'function') {
+   callback();
+  }
+ }
+ return {
+  'init' : function(callback) {
+   init(callback);
+  },
+  'checkforNewComments':checkforNewComments
+ }
 })(jQuery, de.bild.community)
-
-/*de.bild.community.lightboxForms:27210488.2*/
+/*de.bild.community.lightboxForms:27210488.3*/
 
 var de = de || {}; 
 de.bild = de.bild || {};
 de.bild.community = de.bild.community || {};
-
 de.bild.community.lightboxForms = (function($,Community) {
-
-	/* 1414 var to be thrown around */
-	var uploadProgressBarInterval,initialised=false,anonUpload = '1414';    
-
-	/**
-	 * setups the ajax upload for upload forms
-	 * the event delays the submission until we've built in an iframe
-	 * @function
-	 * @name setupLightboxForms
-	 * @memberOf de.bild.community
-	 * @private
-	 */
-	function setupLightboxForms() {
-		/*  Lightbox Form  submit  - we capture upload forms here too ! :) */
-
-		/* Avoiding accidental submit by pressing return */
-		de.lib.live($body, 'div.lightbox form.com-form input[type!=submit]', 'keypress', function(e) {
-			var code = (e.keyCode ? e.keyCode : e.which);
-			if(code == 13) {
-				return false;
-			}
-		});		
-		
-		/* open lightboxes (usually upload forms)
-		 we disable the esc/body click close for these to prevent people losing data */
-		de.lib.live($contentWrapper, 'a.' + Community.settings().ajaxClassLightBox, 'click', function(e) {
-			e.preventDefault();
-			var $this = $(this), thisAction = $this.attr('data-ajax-href');
-			if(thisAction.length) {
-				Community.load({
-					'url' : thisAction,
-					'callback' : function(response) {
-						
-						var a =Community.showLightBox({
-							'closeOnEsc' : false,
-							'closeOnBodyClick' : false,
-							'content' : response
-						});
-					}
-				});
-			}
-		});
-		
-
-		de.lib.live($body, 'div.com-lightbox form.com-form', 'submit', function(e) {
-			e.preventDefault();
-			var $this = $(this);
-			if($this.attr('id') === 'blockinguser') {
-				handleBlockUser($this);
-			} else {
-				submitLightBoxForm($this);
-			}
-
-		});
-		/* Extra close button in lightbox form
-		 reset button in light box form - even though it's a reset button :) */
-		de.lib.live($body, 'div.com-lightbox form.com-form input.btn-close, div.com-lightbox form.com-form input.btn-reset', 'click', function(e) {
-			Community.closeLightBox();
-		});
-	};
-
-	/**
-	 * does what the name says
-	 * @function
-	 * @name submitLightBoxForm
-	 * @param {$Object} jQuery form object
-	 * @memberOf de.bild.community
-	 * @private
-	 */
-	function submitLightBoxForm($form) {
-		/*validate required fields */
-		if(!Community.validateForm($form))
-			return false;
-
-		/* crude - this should not really be done this way
-		 in upload forms
-		 remove default description text from textarea before submit */
-		clearTextareas($form);
-
-		/* don't submit upload forms via this method*/
-		if(!$('input:file', $form).length) {
-			/* check for fb box in multi upload */
-			if($form.find('#sn-fb:checked').length) {
-				var photoperm = de.bild.social.userPhotos(), streamperm = de.bild.social.publishStream();
-				if((photoperm === false) || (streamperm === false)) {
-					/* gather permissions in popup */
-					de.bild.social.loginToFB(function() {
-						/* delay upload until facebook response so weird stuff doesnt happen! */
-						Community.submitForm($form.find('fieldset'), {
-							'url' : $form.attr('action'),
-							'params' : $form.serialize(),
-							'timeout' : '15000', /* increase timeout here because we are uploading to FB in background */
-							'method' : $form.attr('method'),
-							'callback' : function(response, type) {
-								$form.css('opacity', 1).parents('section').replaceWith(response);
-							}
-						});
-					}, {
-						scope : 'publish_stream,user_photos'
-					});
-				} else {
-					/* checked box, but has permissions, so carry on. */
-					Community.submitForm($form.find('fieldset'), {
-						'url' : $form.attr('action'),
-						'params' : $form.serialize(),
-						'method' : $form.attr('method'),
-						'timeout' : '15000', // increase timeout here because we are uploading to FB in background
-						'callback' : function(response, type) {
-							$form.css('opacity', 1).parents('div.section').replaceWith(response);
-						}
-					});
-				}
-				/* there is no checked facebook thing, so just submit normally */
-			} else {
-				Community.submitForm($form.find('fieldset'), {
-					'url' : $form.attr('action'),
-					'params' : $form.serialize(),
-					'method' : $form.attr('method'),
-					'callback' : function(response, type) {
-						if(type === 'error') {
-							Community.closeLightBox({
-								'callback' : function() {
-									Community.showLightBox({
-										'content' : Community.templates().lbMessage.replace('%CONTENT%', de.bild.settings.community.lang.tryagain).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
-									});
-								}
-							});
-							return;
-						}
-						$form.css('opacity', 1).parents('section').replaceWith(response);
-					}
-				});
-			}
-			/* upload form! */
-		} else {
-			/* check for fb */
-			if($('input#fb-threaded:checked').length) {
-				/* check upload permissions */
-				var photoperm = de.bild.social.userPhotos(), streamperm = de.bild.social.publishStream();
-				/* videos only need one perm */
-				if($form.hasClass('videoUpload') == true && streamperm == false) {
-					de.bild.social.loginToFB(function() {
-						/* delay upload until facebook response! */
-						handleUpload($form, 'lightbox');
-					}, {
-						scope : 'publish_stream'
-					});
-					/* if either permission is false for a photo upload, get the permissions */
-				} else if((photoperm == false) || (streamperm == false)) {
-					de.bild.social.loginToFB(function() {						
-						//double check if user really has now access to fb	and and not closed fb window					
-						FB.api('/me/permissions',function(response){
-						    if(!response.error){
-						        handleUpload($form, 'lightbox');
-						    }
-						    else{
-						        return false;
-						    }
+ /* 1414 var to be thrown around */
+ var uploadProgressBarInterval,initialised=false,anonUpload = '1414';    
+ /**
+  * setups the ajax upload for upload forms
+  * the event delays the submission until we've built in an iframe
+  * @function
+  * @name setupLightboxForms
+  * @memberOf de.bild.community
+  * @private
+  */
+ function setupLightboxForms() {
+  /*  Lightbox Form  submit  - we capture upload forms here too ! :) */
+  /* Avoiding accidental submit by pressing return */
+  de.lib.live($body, 'div.lightbox form.com-form input[type!=submit]', 'keypress', function(e) {
+   var code = (e.keyCode ? e.keyCode : e.which);
+   if(code == 13) {
+    return false;
+   }
+  });  
+  
+  /* open lightboxes (usually upload forms)
+   we disable the esc/body click close for these to prevent people losing data */
+  de.lib.live($contentWrapper, 'a.' + Community.settings().ajaxClassLightBox, 'click', function(e) {
+   e.preventDefault();
+   var $this = $(this), thisAction = $this.attr('data-ajax-href');
+   if(thisAction.length) {
+    Community.load({
+     'url' : thisAction,
+     'callback' : function(response) {
+      
+      var a =Community.showLightBox({
+       'closeOnEsc' : false,
+       'closeOnBodyClick' : false,
+       'content' : response
+      });
+     }
+    });
+   }
+  });
+  
+        de.lib.live($body, 'div.com-lightbox form.com-form', 'submit', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            if($this.attr('id') === 'blockinguser') {
+                handleBlockUser($this);
+            }
+            //Tip/melden/korrektur formular
+            if($this.hasClass('socialform')) {
+                Community.submitForm($this, {
+                    'url' : $this.attr('action'),
+                    'params' : $this.serialize(),
+                    'method' : $this.attr('method'),
+                    'callback' : function(response, type) {
+                        $this.css('opacity', 1).parents('.innerBox').empty().html(response);
+                    }
+                });
+            } else {
+                submitLightBoxForm($this);
+            }
+        });
+        /* Extra close button in lightbox form
+         reset button in light box form - even though it's a reset button :) */
+        de.lib.live($body, 'div.com-lightbox form.com-form input.btn-close, div.com-lightbox form.com-form input.btn-reset', 'click', function(e) {
+            Community.closeLightBox();
+        });
+        };
+    /**
+     * this handles the case when the form in a lightbox is for a blocked user confirmation
+     * it is an exception to the general rule that all forms in lightboxes should submit an AJAX request via post and inject the contents into the lightbox
+     * see function setupLightboxForms()
+     * @function
+     * @name handleBlockUser
+     * @memberOf de.bild.community
+     * @param {$object} $form form in the lightbox
+     * @private
+     */
+    function handleBlockUser($form) {
+        Community.loadingLayer($form);
+        de.bild.httpFist.load({
+        'url': $form.attr('action'),
+        'method': $form.attr('method'),
+        'dataType' : 'json',
+        'callback': function(response, $target){
+                if (Community.screenForResponseErrors(response) === false) {
+                    Community.closeLightBox({
+                        'callback' : function(){
+                            var $pendingUserBlock = $('#communityPendingUserBlock'),
+                            countVal,
+                            $activeTab = $('div.tabs li.active > a').first(),
+                            $followButton = $pendingUserBlock.closest('ul.fnc').find('li:first > a.btn-follow');
+                            $pendingUserBlock.data('clicked', false).attr('id', '').parent('li').html(Community.templates().genericLink.replace('%URL%',response.button.link).replace('%CLASS%', 'unblock').replace('%CONTENT%', response.button.text));
+                            $followButton.parent('li').fadeOut(Community.settings().fadeSpeed, function(){
+                                $(this).remove();
+                            });
+                            /*Only if its your profile change the count */
+                            if($('.combox-profile #currentUser').val()==1)
+                             {
+                                /* if on folgen mir list*/
+                                if ($('#follower-list').length) {
+                                    countVal = updateCount($('em.count-followers'), -1);
+                                    if (countVal !== null) {
+                                        $activeTab.text(de.bild.settings.community.lang.followersNo.replace('%COUNT%', countVal));
+                                    }
+                                }
+    
+                                /* if on folge ich list*/
+                                if ($('#following-list').length) {
+                                    countVal = updateCount($('em.count-followed'), -1);
+                                    if (countVal !== null) {                                    
+                                        $activeTab.text(de.bild.settings.community.lang.followingNo.replace('%COUNT%', countVal));
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+        'error' : function(){
+            closeLightBox();
+        }   
+        });
+    };
+ /**
+  * does what the name says
+  * @function
+  * @name submitLightBoxForm
+  * @param {$Object} jQuery form object
+  * @memberOf de.bild.community
+  * @private
+  */
+ function submitLightBoxForm($form) {
+  /*validate required fields */
+  if(!Community.validateForm($form))
+   return false;
+  /* crude - this should not really be done this way
+   in upload forms
+   remove default description text from textarea before submit */
+  clearTextareas($form);
+  /* don't submit upload forms via this method*/
+  if(!$('input:file', $form).length) {
+   /* check for fb box in multi upload */
+   if($form.find('#sn-fb:checked').length) {
+    var photoperm = de.bild.social.userPhotos(), streamperm = de.bild.social.publishStream();
+    if((photoperm === false) || (streamperm === false)) {
+     /* gather permissions in popup */
+     de.bild.social.loginToFB(function() {
+      /* delay upload until facebook response so weird stuff doesnt happen! */
+      Community.submitForm($form.find('fieldset'), {
+       'url' : $form.attr('action'),
+       'params' : $form.serialize(),
+       'timeout' : '15000', /* increase timeout here because we are uploading to FB in background */
+       'method' : $form.attr('method'),
+       'callback' : function(response, type) {
+        $form.css('opacity', 1).parents('section').replaceWith(response);
+       }
+      });
+     }, {
+      scope : 'publish_stream,user_photos'
+     });
+    } else {
+     /* checked box, but has permissions, so carry on. */
+     Community.submitForm($form.find('fieldset'), {
+      'url' : $form.attr('action'),
+      'params' : $form.serialize(),
+      'method' : $form.attr('method'),
+      'timeout' : '15000', // increase timeout here because we are uploading to FB in background
+      'callback' : function(response, type) {
+       $form.css('opacity', 1).parents('section').replaceWith(response);
+      }
+     });
+    }
+    /* there is no checked facebook thing, so just submit normally */
+   } else {
+    Community.submitForm($form.find('fieldset'), {
+     'url' : $form.attr('action'),
+     'params' : $form.serialize(),
+     'method' : $form.attr('method'),
+     'callback' : function(response, type) {
+      if(type === 'error') {
+       Community.closeLightBox({
+        'callback' : function() {
+         Community.showLightBox({
+          'content' : Community.templates().lbMessage.replace('%CONTENT%', de.bild.settings.community.lang.tryagain).replace('%CLASS%', 'error').replace('%HEADING%', de.bild.settings.community.lang.error)
+         });
+        }        
+       });
+       return;
+      }      
+      $form.css('opacity', 1).parents('section').replaceWith(response);
+      
+     }
+    });
+   }
+   /* upload form! */
+  } else {
+   /* check for fb */
+   if($('input#fb-threaded:checked').length) {
+    /* check upload permissions */
+    var photoperm = de.bild.social.userPhotos(), streamperm = de.bild.social.publishStream();
+    /* videos only need one perm */
+    if($form.hasClass('videoUpload') == true && streamperm == false) {
+     de.bild.social.loginToFB(function() {
+      /* delay upload until facebook response! */
+      handleUpload($form, 'lightbox');
+     }, {
+      scope : 'publish_stream'
+     });
+     /* if either permission is false for a photo upload, get the permissions */
+    } else if((photoperm == false) || (streamperm == false)) {
+     de.bild.social.loginToFB(function() {      
+      //double check if user really has now access to fb and and not closed fb window     
+      FB.api('/me/permissions',function(response){
+          if(!response.error){
+              handleUpload($form, 'lightbox');
+          }
+          else{
+              return false;
+          }
                             
                         })
-						
-					}, {
-						scope : 'publish_stream,user_photos'
-					});
-
-					/* user had permissions, upload that thang */
-				} else {
-					handleUpload($form, 'lightbox');
-				}
-				/* FB not checked or not present, just do normal upload */
-			} else {
-				handleUpload($form, 'lightbox');
-			}
-		}
-		return false;
-	};
-
+      
+     }, {
+      scope : 'publish_stream,user_photos'
+     });
+     /* user had permissions, upload that thang */
+    } else {
+     handleUpload($form, 'lightbox');
+    }
+    /* FB not checked or not present, just do normal upload */
+   } else {
+    handleUpload($form, 'lightbox');
+   }
+  }
+  return false;
+ };
     /**
      * clears textareas in a form so that default text is not sent
      * @function
@@ -5916,8 +5906,6 @@ de.bild.community.lightboxForms = (function($,Community) {
         });
         return $formElem;
     };
-
-
      /**
      * does the decision making in upload forms
      * @function
@@ -5942,11 +5930,9 @@ de.bild.community.lightboxForms = (function($,Community) {
         if ($form.hasClass('videoUpload')) {
          uploadType = 'video';
         }    
-
         var $fileInput = $('input:file', $form),
         $fileInputLength = $fileInput.length,
         formElement = $form.get(0);
-
         if ($fileInputLength > 0 && $fileInput.val().length > 0) {
             /* onstart function here if needed
                 submit over an iframe */
@@ -5972,12 +5958,12 @@ de.bild.community.lightboxForms = (function($,Community) {
                 $form.hide();
             }
             else{
-            	$form.addClass('loading');
+             $form.addClass('loading');
             }            
             
             /*only show upload Message for Videos*/
            if(uploadType === 'video'){
-           	$uploadMsg.show();
+            $uploadMsg.show();
            }
             
             /* then start the progress.. */ 
@@ -5993,8 +5979,6 @@ de.bild.community.lightboxForms = (function($,Community) {
             }              
         }
     };  
-
-
     /**
      * This function launches an upload progress bar. It will poll the url every 1000ms and update the bar accordingly.
      * When 100% is reached it will trigger another ajax call to fetch the success/failure message. The url for this comes from the form action attribute.
@@ -6044,9 +6028,6 @@ de.bild.community.lightboxForms = (function($,Community) {
             }, delay);
         }
     };
-
-
-
     /**
      * handles the results of the upload handshake and publishes the output to the screen
      * @function
@@ -6073,12 +6054,12 @@ de.bild.community.lightboxForms = (function($,Community) {
             if (type === anonUpload) {
                 $('#upload-1414').replaceWith(d.body.innerHTML);
             } else {
-            	
-            	//Hiding
-            	$('div.com-lightbox .photoUpload').hide();
-            	
+             
+             //Hiding
+             $('div.com-lightbox .photoUpload').hide();
+             
                 $('div.com-lightbox section').replaceWith(d.body.innerHTML);
-                if($(d.body.innerHTML).find('#fotoUploadSuccess')){                	
+                if($(d.body.innerHTML).find('#fotoUploadSuccess')){                 
                     // success! check for FB and do upload if needed
                     var $fotoUploadSuccess = $('#fotoUploadSuccess');
                     if($fotoUploadSuccess.find('input[name=dofbupload]').val() === 'on'){
@@ -6094,28 +6075,23 @@ de.bild.community.lightboxForms = (function($,Community) {
             } 
         }, 500);
     };
-
-	function init() {
-		
-		if(!initialised) {
-			$contentWrapper=$('#innerWrapper'),$body = $('body'), $doc = $(document);	
-			initialised = true;
-			setupLightboxForms();
-		}
-		else{
-			
-		}
-
-	}
-
-	return {
-
-		'init' : function() {
-			init();
-		},
-		'showUploadResults':showUploadResults
-	}
-
+ function init() {
+  
+  if(!initialised) {
+   $contentWrapper=$('#innerWrapper'),$body = $('body'), $doc = $(document); 
+   initialised = true;
+   setupLightboxForms();
+  }
+  else{
+   
+  }
+ }
+ return {
+  'init' : function() {
+   init();
+  },
+  'showUploadResults':showUploadResults
+ }
 })(jQuery, de.bild.community)
 /*de.bild.community.likeBtn:27210480.1*/
 

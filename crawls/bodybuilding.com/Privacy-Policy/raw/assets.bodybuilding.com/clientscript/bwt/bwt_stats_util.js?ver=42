@@ -1,0 +1,131 @@
+/*************************************************************
+* Document	: bwt_stats_util.js
+* Author	: Wayne J. Earl
+* Created	: 2007-01-29
+* Purpose	: Common JavaScript functions for BWT 'stats' screen
+* Comment	: 
+*************************************************************/
+/*************************************************************
+* Revised by	: 
+* Revised date	: 
+* Description	: 
+*************************************************************/
+
+//var {$exer_stats_array|default:"a0 = 0;"}
+
+var exer_stats_names = ["exer_count",
+						"exer_sets",
+						"exer_reps",
+						"exer_volume_disp",
+						"exer_volume_date",
+						"exer_volume_high_disp",
+						"exer_volume_high_date",
+						"exer_volume_low_disp",
+						"exer_volume_low_date",
+						"exer_volume_last_disp",
+						"exer_volume_last_date",
+						"exer_one_rep_max_disp",
+						"exer_one_rep_max_date",
+						"exer_one_rep_max_low_disp",
+						"exer_one_rep_max_low_date",
+						"exer_one_rep_max_last_disp",
+						"exer_one_rep_max_last_date",
+						"exer_one_rep_max_link",
+						"exer_vol_link"];
+
+function updateExerStatsDisplay(sender)
+{
+	if (sender === undefined) return false;
+	
+	var exer_selected = sender.selectedIndex;
+	if (exer_selected > -1) { //value must be selected
+		//get exercise idx
+		var exer_idx = sender.value;
+
+		for (idx in exer_stats_names) {
+
+			var exer_stat_name = exer_stats_names[idx];
+			
+			if (exer_stat_name) {
+			
+				//get text element
+				var elem_text = document.getElementById(exer_stat_name);
+				if (elem_text) {
+
+					var exer_stat_value = exer_stats_array[exer_idx][exer_stat_name];
+					if (exer_stat_value) {
+					
+						elem_text.innerHTML = exer_stat_value;
+					}
+					//if best exists, update exer msg style
+					if (best_flag) {
+					
+						var exer_best = exer_stats_array[exer_idx]['exer_best'];
+						var elem_msg = document.getElementById('bwt_best_single_exer_msg');
+						if (elem_msg) {
+						
+							if (exer_best) {
+							
+								elem_msg.style.display = "";
+							}
+							else {
+							
+								elem_msg.style.display = "none";
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+function initStats()
+{
+	if (typeof(initEmbed) == "function") initEmbed();
+	if (typeof(initPanel) == "function") initPanel();
+	var elem_body = document.body;
+	if (elem_body) {
+	
+		elem_body.onkeypress = handleSpecialKeysEvt;
+	}
+	if (typeof(assignConditionalMouse) == "function") assignConditionalMouse();
+}
+
+
+function handleSpecialKeysEvt(e)
+{
+	if (f_panel_visible) {
+	
+		var evt = (e) ? e : ((window.event) ? window.event : "");
+		if (evt) {
+
+			if (evt.keyCode) {
+			
+				var key = evt.keyCode;
+			}
+			else if (evt.which) {
+			
+				var key = evt.which;
+			}
+			if (key) {
+			
+				handleSpecialKeys(key);
+			}
+		}
+	}
+}
+
+
+function handleSpecialKeys(key)
+{
+	//handle keys
+	if (key == 27) { //esc
+	
+		hidePanel();
+	}
+}
+
+
+//window.onload = initStats;

@@ -1756,7 +1756,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 		// UPDATE THE URL USED BY MAGICZOOM FOR THE LARGE IMAGE
 		var defaultImageUrl = jQuery('#itemZoom').attr('href');
 		if (defaultImageUrl != undefined){
-			//var mainProductImageZoom = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');
+			//var mainProductImageZoom = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=2000&op_sharpen=1');
 			//jQuery('#itemZoom').attr('href',mainProductImageZoom);
 		}else{
 			defaultImageUrl = "";
@@ -1824,7 +1824,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 		);
 		// full screen zoom	
-		//zoomFullScreen();						
+		zoomFullScreen();						
 		// alt images
 		jQuery(targetPage+'#imageThumbs a').click(function (){
 			jQuery(targetPage+'#imageThumbs a').removeClass('selected');
@@ -3023,7 +3023,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var product_id = jQuery(targetPage+"input[name=cut]:checked").val() || "-1";
 				}else{
 					var product_id = jQuery(targetPage+'input[name=productId]').val() || "-1";					
-				}				
+				}
 				var selectedSizeId= jQuery(targetPage+'#size').val() || jQuery(targetPage+'input[name=selectedSizeId]').val() || "-1";
 				var selectedColorId= jQuery(targetPage+'input[name=selectedColorId]').val() || "-1";
 				var clearanceFlag = jQuery(targetPage+'input[name=clearanceCategory]').val() || "-1";
@@ -3693,7 +3693,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				jQuery(targetPage+'.imageStatus').removeClass('loaded').addClass('loading');								
 				var zoomImage = swatchImageSrc;	
 				zoomImage = zoomImage.replace("&op_sharpen=0","&op_sharpen=1");
-				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?&wid=3000&op_sharpen=1";
+				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?&wid=2000&op_sharpen=1";
 				// set magic zoom attributes and show/hide zoomable here				
 				MagicZoomPlus.update('itemZoom', zoomImageLarge, zoomImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');							
 				jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
@@ -3997,10 +3997,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				if (defaultImageUrlDB != undefined){// no images
 					if (PPL){				
 						var mainProductImage = defaultImageUrlDB.replace('&wid=400&hei=496','&wid=332&hei=412&op_sharpen=1');
-						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');				
+						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=2000&op_sharpen=1');				
 					}else{				
 						var mainProductImage = defaultImageUrlDB;
-						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');				
+						var mainProductImageZoom = defaultImageUrlDB.replace('$mainImage$&wid=400&hei=496','&wid=2000&op_sharpen=1');				
 					}
 					jQuery(targetPage+'#itemZoom').attr('src',mainProductImageZoom);
 					//set main image with sharpened img	
@@ -4116,7 +4116,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var mainImageObj = jQuery('#itemZoom img');	
 					var mainImageSrc = mainImageObj.attr('src',defaultImageUrl);
 					var swatchImage = jQuery('#swatches #swatch'+colorid+' img');			
-					var mainImageSrcLarge = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=3000&op_sharpen=1');	
+					var mainImageSrcLarge = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&wid=2000&op_sharpen=1');	
 					jQuery('#itemZoom').attr('href',mainImageSrcLarge);
 					MagicZoomPlus.update('itemZoom', mainImageSrcLarge, mainImageSrc, 'disable-expand:true; show-title:false; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');
 					zoomImageCheckPP();
