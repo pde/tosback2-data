@@ -7,9 +7,9 @@ $(document).ready( function(){
 		}
 
 	});
-	
+
 	/* Dealer Locator 1 Result Only Fix */
-	
+
 	if ( $('#numberOfDealersFound') ) {
 		var count = $('#numberOfDealersFound').html();
 		if ( count == "1" ) {
@@ -19,13 +19,13 @@ $(document).ready( function(){
 			});
 		}
 	}
-	
+
 // set footer to page content bottom for subset of pages on ipad ver<5
 // ipad ver<5 footer set to static position in giPad.css (ver 5+ inherits global fixed)(jason.campbell)
 
 var locations=['aboutGM', 'article', 'toolbar', 'vision', 'article','vehicles', 'GM_Corporate_Officers', 'investors', 'historyAndHeritage']; //page groups that need the footer inserted after shadedContainer
-var exclusions=['design_technology.html','environment1.html', 'contactUsForm','designing_for_physically_challenged']; //sub-groups to exclude from locations groups 
-var inclusions=['article', 'corporate_citizenship', 'archive.display-']; //sub-groups of exclusions to include with locations 
+var exclusions=['design_technology.html','environment1.html', 'designing_for_physically_challenged']; //sub-groups to exclude from locations groups
+var inclusions=['article', 'corporate_citizenship', 'archive.display-']; //sub-groups of exclusions to include with locations
 
 var target=false;
 var url=window.location.href;
@@ -49,11 +49,16 @@ for(i in locations){
 
 	}
 }
-
 // override previous target value for certain body classes
 var includeClass=['peoplepage_summary'];
 for(i in includeClass){
 	if($('body').hasClass(includeClass[i]) && $('body').hasClass('ver4')){
+		target=true;
+	}
+}
+var includeID=['diversity', 'gm_foundation'];
+for(i in includeID){
+	if($('body').attr('id')===includeID[i] && $('body').hasClass('ver4')){
 		target=true;
 	}
 }
@@ -74,7 +79,12 @@ if($('body').hasClass('visionpage') && $('body').hasClass('ver4')){
 	target=false;
 }
 
-if($('body').hasClass('ver4') && target==true){
+
+$('body').hasClass('ver4')?target=target:target=false;
+
+
+
+if( target==true){
     $("#auxiliaryNavigation").insertAfter($("#content>.shadedContainer"));
 	$("#auxiliaryNavigation").css('position','relative !important');
 }

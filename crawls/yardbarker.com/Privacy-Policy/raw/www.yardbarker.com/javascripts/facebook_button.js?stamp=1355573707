@@ -1,0 +1,24 @@
+function replace_facebook_like_image(e){
+    e.writeAttribute('data-visible', 'false');
+    e.hide();
+
+    var facebook_button = new Element('div', {
+        'data-href':e.readAttribute('data-href'),
+        'data-send':"false",
+        'data-layout':"button_count",
+        'data-width':"40",
+        'data-show-faces':"true"
+    });
+
+    facebook_button.addClassName("fb-like");
+    e.insert({ after: facebook_button });
+    FB.XFBML.parse();
+    e.up().setStyle({background:""});
+}
+
+document.observe('dom:loaded', function(){
+ $$(".facebook_button_image").each(function(e){
+  e.observe('mouseover', function(){
+	  replace_facebook_like_image(e);
+  })});
+});

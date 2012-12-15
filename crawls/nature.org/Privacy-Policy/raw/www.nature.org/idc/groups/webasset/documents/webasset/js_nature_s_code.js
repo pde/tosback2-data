@@ -541,6 +541,8 @@ s_homepagePopup = function () {s_setEvent('lightbox open', 28);}
 s_popupClicks = function () {s_setEvent('lightbox click', 29);}
 s_earthdayRSVP = function () {s_setEvent('earthday rsvp', 32);}
 s_earthdayEmail = function () {s_setEvent('earthday email', 33);}
+/* Events 34-39 are used for the catalog */
+s_photoVote = function () {s_setEvent('photo contest vote', 40);}
 
 
 s_tabView = function(tab_name) {

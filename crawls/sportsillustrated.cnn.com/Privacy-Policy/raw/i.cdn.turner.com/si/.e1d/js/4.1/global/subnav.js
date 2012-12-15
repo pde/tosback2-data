@@ -487,7 +487,7 @@ siNav.load({
 	],
 	"boxmma" : [
 		{ "u": "/2011/mma/schedule.results/?eref=sinav",			"l":"MMA Schedules &amp; Results" },
-		{ "u": "/2010/mma/boxing/schedule/?eref=sinav",			"l":"Boxing Schedules &amp; Results" },
+		{ "u": "/2012/mma/boxing/schedule/?eref=sinav",			"l":"Boxing Schedules &amp; Results" },
 		{ "u": "/2011/mma/boxing/pound-for-pound-ratings/index.html",			"l":"Pound-for-Pound Ratings" }
 	],
 	"tennis" : [

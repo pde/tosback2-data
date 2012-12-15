@@ -1,0 +1,453 @@
+function AccountFacade() {
+  return this;
+}
+
+AccountFacade.RECYCLE_BIN_DIR_ID = 2147483645
+AccountFacade.SEARCH_RESULT_DIR_ID = 2147483639
+AccountFacade.INCOMPLETED_DIR_ID = 2147483647
+AccountFacade.SHARED_FOLDERS_DIR_ID = 2147483636
+AccountFacade.SHARED_TOOLS_DIR_ID = 2147483644
+AccountFacade.FRIENDS_DIR_ID = 2147483641
+AccountFacade.WEB_DOWNLOAD_DIR_ID = 2147483638
+
+AccountFacade.loadingHtml
+AccountFacade.loadingDiv
+AccountFacade.sId
+AccountFacade.setSid = function(sId) {
+  AccountFacade.sId = sId;
+  return false;
+}
+AccountFacade.showLoadingDiv = function(element) {
+  element = element || '#includeFileList'
+  if (!AccountFacade.loadingHtml) AccountFacade.loadingHtml = $('#accountLoadingDiv').html()
+
+  AccountFacade.loadingDiv = $(AccountFacade.loadingHtml)
+  $(element).append(AccountFacade.loadingDiv)
+  AccountFacade.loadingDiv.show()
+}
+
+AccountFacade.hideLoadingDiv = function() {
+  if (!AccountFacade.loadingDiv) return
+
+  AccountFacade.loadingDiv.hide()
+}
+
+AccountFacade.reloadCurrentDir = function() {
+  changeDirLeft(currentDirId)
+}
+
+AccountFacade.reloadFolderTree = function(callback) {
+  var sidValue = AccountFacade.sId ? AccountFacade.sId : -1;
+  callback = callback || function(){};
+  $.ajax({
+    url: '/account/homeAction.jsp',
+    sId: sidValue,
+    data: {sId: sidValue},
+    method: 'POST',
+    success: function(data) {
+      if (data.foldertreejs) {
+        initWebFXTreeHandler();
+        eval(data.foldertreejs);
+      }
+      callback();
+    }
+  })
+}
+
+// TODO Serger
+/*
+
+AccountFacade.reloadBreadCrumb = function() {
+  var curLink = $("div#foldertree").find($('#leftpanel a[href$="' + currentDirId + ')"]:first'))
+  var names = [], ids = []
+  ids.push(currentDirId)
+  names.push(getNameItem("folder", currentDirId))
+
+  var parent = $(curLink).parent().parent().parent()
+
+  while ($(parent).attr("id").indexOf("webfx-tree-object")==0 || $(parent).attr("id").indexOf("foldertree")==0) {
+    curLink = $(parent).children('div:first').children('a')
+    var href = $(curLink).attr("href")
+    var id = ~~href.substring(href.indexOf('(')+1, href.length-1)
+    ids.push(id)
+    names.push(getNameItem("folder", id))
+    parent = $(parent).parent()
+  }
+
+  AccountFacade.showFullPath(names, ids)
+}
+
+AccountFacade.breadCrumbsIds = []
+
+AccountFacade.showFullPath = function(names, ids) {
+  AccountFacade.breadCrumbsIds = ids
+  var len = names.length;
+
+  var html = '<div class="icon16 ftree"></div>'
+  for (var i=len-1; i>0; i--){
+    var fst = (i==len-1) ? "firstDir" : ""
+    html = html + '<a id="p'+i+'" href="javascript:changeDirLeft('+ids[i]+')" class="'+fst+' pathItem">'+names[i]+'</a>' +
+                  '<span id="s'+i+'" class="icon9 navArrow"></span>'
+  }
+
+  html = html + '<a href="javascript:changeDirLeft('+ids[0]+')" class="pathItem last">'+names[0]+'</a>'
+
+  if (AccountFacade.getCurrentRights().Rename)
+    html = html + '<a href="#" onclick="return renameItemFromMainMenu(this, event)"><span class="icon9 navEdit"></span></a>'
+
+  $("#pathString").html(html);
+
+  // fix string pass too long
+  var k=1;
+  var flag = false;
+  var maxPathWidth=$(".folderPath").width()-$("#backBtn").width()-$("#forwardBtn").width()-$("#rightPart").width()-50;
+  while ($("#pathString").width()>maxPathWidth && k<len-2) {
+    flag = true;
+    $("#p"+k).remove();
+    $("#s"+k).remove();
+    k++;
+  }
+  if (flag) {
+    $(".firstDir").after('<span class="icon9 navArrow"></span>...');
+  }
+}
+
+AccountFacade.updateNavButtons = function(hasBack, hasNext) {
+  var backAction = (hasBack)?'onclick="goBackAjax(); return false"':'onclick="return false"';
+  var backStyle  = (hasBack)?'class="icon16 navBackA"':'class="icon16 navBackNA"';
+  var nextAction = (hasNext)?'onclick="goForwardAjax(); return false"':'onclick="return false"';
+  var nextStyle  = (hasNext)?'class="icon16 navNextA"':'class="icon16 navNextNA"';
+  var html = '<div id="backBtn" class="navBtn pathBack" ' + backAction + '>' +
+    '<span id="backSpan" ' + backStyle + '></span>' +
+    '</div><%--NO SPACE HERE--%>' +
+    '<div id="forwardBtn" class="navBtn pathNext" ' +nextAction + '>' +
+    '<span id="forwardSpan" ' + nextStyle + '></span>' +
+    '</div>'
+  $('#navigationPanel').html(html);
+}
+
+*/
+
+//cgdcont=1
+AccountFacade.isSpecialDir = function(dir) {
+  return dir >= 2147483636
+}
+
+AccountFacade.isRecycleBin = function(dir) {
+  return dir == AccountFacade.RECYCLE_BIN_DIR_ID
+}
+
+AccountFacade.isSearchResult = function(dir) {
+  return dir == AccountFacade.SEARCH_RESULT_DIR_ID
+}
+
+AccountFacade.isIncompletedDir = function(dir) {
+  return dir == AccountFacade.INCOMPLETED_DIR_ID
+}
+
+AccountFacade.isSharedWithMeDir = function(dir) {
+  return dir == AccountFacade.SHARED_FOLDERS_DIR_ID
+}
+
+AccountFacade.isWebDownloadDir = function(dir) {
+  return dir == AccountFacade.WEB_DOWNLOAD_DIR_ID
+}
+
+AccountFacade.is4sharedToolsDir = function(dir) {
+  return dir == AccountFacade.SHARED_TOOLS_DIR_ID
+}
+
+AccountFacade.isFriendsDir = function(dir) {
+  return dir == AccountFacade.FRIENDS_DIR_ID
+}
+
+
+/*
+ onclick(e)
+
+ AccountFacade.userPromt({
+ event: e,
+ description: 'Edit folder name',
+ title: 'Edit folder name',
+ value: 'Current folder name',
+ offsetx: 100,
+ offsety: 100,
+ width: 300,
+ height: 500
+ }, function(value) {
+
+ })
+ */
+AccountFacade.userPromt = function(params, callback) {
+  if (!dragObj.supported || typeof document.body.innerHTML == "undefined") return false
+
+  var id = Math.random()
+  var content = '<div class="text"><form name="prompt" id="id' + id + '" style="padding: 5px">' +
+    params.description + '<br />' +
+    '<input type="text" name="promptText" value="' + params.value + '" style="width: 180px" class="xBox" /> ' +
+    '<input type="submit" value="Ok" style="width: 50px" /></form></div>';
+  $('#popupTitle').html(params.title);
+
+  writeDrag.set(params.event, content, params.width, params.offsetx, params.offsety, null, null);
+  document.prompt.promptText.focus();
+  document.prompt.promptText.select();
+
+  $('form[id="id' + id + '"]').submit(function() {
+    callback($('input[name=promptText]', this).val())
+    writeDrag.hide()
+    return false
+  })
+}
+
+AccountFacade.hidePopup = function() {
+  $('#p_window').remove()
+  $('#p_overlay').remove()
+}
+
+AccountFacade.alert = function (params) {
+  var content = $('#confirmPopup').clone()
+  if (params.iconClass) content.find(".confirmPopupBody").addClass(params.iconClass)
+  content.find('.jsConfirmOk').text(params.okButtonVal)
+  content.find('.jsConfirmCancel').hide()
+  content.find('.jsConfirmMsg').html(params.content)
+  AccountFacade.popup({title:params.title, content:content.html()})
+  $('.jsConfirmOk').click(function () {
+    AccountFacade.hidePopup()
+  })
+}
+
+AccountFacade.confirm = function (params, okCallback, cancelCallback) {
+  var content = $('#confirmPopup').clone()
+  if (params.iconClass) content.find(".confirmPopupBody").addClass(params.iconClass)
+  content.find('.jsConfirmOk').text(params.okButtonVal)
+  content.find('.jsConfirmCancel').text(params.cancelButtonVal)
+  content.find('.jsConfirmMsg').html(params.confirmMsg)
+  AccountFacade.popup({title:params.title, content:content.html()})
+  $('.jsConfirmOk').click(function () {
+    if (okCallback) okCallback()
+    AccountFacade.hidePopup()
+  })
+  $('.jsConfirmCancel').click(function () {
+    if (cancelCallback) cancelCallback()
+    AccountFacade.hidePopup()
+  })
+}
+
+AccountFacade.popup = function(params) {
+  var id = 'p_window'
+  $('#' + id).remove()
+
+  if (params.element) {
+    params.content = params.element.html()
+  }
+
+  params.afterClose = params.afterClose || function(){}
+
+  if (!!!params.title) {
+    params.title = 'Title';
+  }
+  this.overlayHeight = $(document).height()
+  $('.p_overlay').remove();
+  var closeText = params.closeButton !== false ? "<a class='close'></a>" : "";
+  var el = $('<div id="p_overlay" class="p_overlay"></div><div id="' + id + '"><div class="ii"><div class="hh"><span id="accountPopupTitle">' + params.title + '</span>' + closeText + "</div><div class='cc'>" + params.content + '<div class="clear"></div></div></div></div>')
+    .prependTo('body')
+
+  if ($.browser.msie) {
+    el.show()
+  } else {
+    el.fadeIn('fast')
+  }
+
+  /* Grab viewport height middle position */
+  var vph = $(window).height() / 2;
+
+  /* Grab viewport width middle position */
+  var vpw = $(window).width() / 2;
+
+  /* Grab overlay height middle position */
+  var vbh = $('#' + id).height() / 2 + (params.marginHeight || 0);
+  /* Grab overlay width middle position */
+  var vbw = $('#' + id).width() / 2;
+
+  /* Find overlay height middle on screen */
+  var hoffsetval = vph - vbh + $(window).scrollTop() - 15 + 'px';
+  /* Find overlay width middle on screen */
+  var woffsetval = vpw - vbw - 15 + 'px';
+
+  /* Assign top offset to overlay and make visible */
+  $('#' + id).css({'top' : "50%", 'left' : "50%", 'margin-left':"-"+vbw+"px", 'margin-top':"-"+vbh+"px", 'visibility': 'visible'});
+
+  if($.browser.msie && ($.browser.version == 7)) {
+    $('#' + id + ' .hh').width($('.ii').width());
+  }
+  $('#p_overlay').height(this.overlayHeight);
+  //$('#p_overlay').css({'position':'fixed'});
+
+  $('.close, .jsClose', '#' + id ).die('click');
+  $('#p_overlay').die('click');
+
+  $('.close, .jsClose', '#' + id ).live('click', function() {
+    if (!!params.onClose && !params.onClose()) {
+      return;
+    }
+    $('#' + id).fadeOut('fast', function() {
+      $('#' + id).remove()
+    });
+
+    $('#p_overlay').fadeOut('fast', function() {
+      $(this).remove()
+    })
+    params.afterClose();
+  });
+  var closeOnClick = params.closeOnClickOnOutsideArea != undefined? params.closeOnClickOnOutsideArea : true;
+  if (closeOnClick){
+    $('#p_overlay').live('click', function() {
+      if (!!params.onClose && !params.onClose()) {
+        return;
+      }
+      $('#' + id).fadeOut('fast', function() {
+        $('#' + id).remove();
+      });
+
+      $('#p_overlay').fadeOut('fast', function() {
+        $(this).remove()
+      })
+      params.afterClose();
+    });
+  }
+  if (params.loadingDiv != undefined){
+    $("#"+params.loadingDiv).show();
+  }
+  attachTips(true);
+  return {
+    isVisible : function(){
+      return $('#' + id).is(":visible");
+    },
+
+    hide: function() {
+      $('#' + id).remove();
+      $('#p_overlay').remove();
+      //document.getElementById("statFileDown").
+      params.afterClose();
+    },
+
+    setTitle: function(newTitle) {
+      $("#accountPopupTitle").text(newTitle);
+    },
+
+    hideLoading: function (){
+      $("#"+params.loadingDiv).hide()
+    }
+  }
+};
+
+
+AccountFacade.writeDragContent = ''
+AccountFacade.writeDrag = function(params) {
+  if (!AccountFacade.writeDragContent) {
+    AccountFacade.writeDragContent = $('#writeDragMain').html()
+    $('#writeDragMain').remove()
+  }
+  $('#wdMain').remove()
+
+  var main = $(AccountFacade.writeDragContent).appendTo($(document.body))
+
+  $('.dragDivTitle', main).html(params.title)
+  if (params.content) {
+    $('.dragDivContent', main).html(params.content)
+  } else if (params.element) {
+    $('.dragDivContent', main).html(params.element.html())
+  }
+
+  var dialog = new WriteDrag('wdMain')
+  dialog.doNotHideFlag = true
+  dialog.hideFlag = false
+  dialog.set({}, undefined, params.width ? params.width : 410, 'c', 'c', undefined, params.height ? params.height : undefined)
+
+  var onHide = function() {
+    Events.removeListener('WriteDrag.hide', onHide)
+    if (params.onClose) params.onClose()
+  }
+  Events.addListener('WriteDrag.hide', onHide)
+
+  $('.close', main).unbind('click').click(function() {
+    Events.removeListener('WriteDrag.hide', onHide)
+    dialog.hide()
+    if (params.onClose) params.onClose()
+    return false
+  })
+
+  return dialog
+}
+
+AccountFacade.saveButtonPressed = function(button, pressed) {
+  var value = $.cookie('pressed.buttons')
+
+  var buttons = []
+  var index = -1
+  if (value) {
+    value = value.replace(',,', ',')
+    buttons = value.split(',')
+    index = Utils.indexOf(buttons, button)
+  }
+
+  if (pressed && index < 0) {
+    buttons.push(button)
+  } else if (!pressed && index >= 0) {
+    buttons.splice(index, 1)
+  }
+
+  $.cookie('pressed.buttons', buttons.length > 0 ? buttons.join(',') : '', {path: '/'})
+}
+
+AccountFacade.isButtonPressed = function(button) {
+  var value = $.cookie('pressed.buttons')
+  if (value == null) {
+    value = 'folders'
+    $.cookie('pressed.buttons', value, {path: '/'})
+  }
+  if (!value) return false
+
+  return Utils.indexOf(value.split(','), button) >= 0
+}
+
+AccountFacade.goToMessagePage = function(body, title){
+  var form = $("<form action='/web/message' method='post'></form>")
+  form.append($("<input type='hidden' name='body'>").val(body))
+    .append("<input type='submit'/>")
+  if(title){
+    form.append($("<input type='hidden' name='title'>").val(title))
+  }
+  $("body").append(form)
+  form.submit()
+}
+
+
+var features = {}
+var dirRights = {}
+var currentDirRight = {}
+
+AccountFacade.setCurrentRights = function (right) {
+  currentDirRight = right.commands;
+}
+
+AccountFacade.getCurrentRights = function () {
+  return currentDirRight
+}
+
+AccountFacade.setRights = function (right) {
+  dirRights['rights' + right.dirId] = right.commands;
+}
+
+AccountFacade.getRights = function (id) {
+  if (dirRights['rights' + id]) return dirRights['rights' + id]
+  return {'OpenDir':true}
+}
+
+AccountFacade.hasFeatures = function (feature) {
+  return features[feature];
+}
+
+AccountFacade.setFeatures = function (featurez) {
+  features = featurez
+}

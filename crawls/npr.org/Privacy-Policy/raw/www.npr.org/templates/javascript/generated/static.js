@@ -16,7 +16,12 @@ if(NPR.PageInfo.getUrlParameter('device')=='tablet'){$('html').addClass('NPRtabl
 if(NPR.PageInfo.getUrlParameter('device')=='phone'){$('html').addClass('NPRphone');}
 NPR.Devices.isOnTablet=function(){if($('html').hasClass('NPRtablet')){return true;}
 else{return false;}};NPR.Devices.isOnPhone=function(){if($('html').hasClass('NPRphone')){return true;}
-else{return false;}};
+else{return false;}};NPR.BREAKPOINT={SMALL:{NAME:'small',MIN:0,MAX:767},MEDIUM:{NAME:'medium',MIN:768,MAX:1029},LARGE:{NAME:'large',MIN:1030,MAX:1197},LARGER:{NAME:'larger',MIN:1198,MAX:1613},LARGEST:{NAME:'largest',MIN:1614,MAX:10000}};NPR.Devices.isScreenSmallerOrEqual=function(breakpoint){if(typeof(breakpoint)=="object"){return Modernizr.mq('only screen and (max-width: '+breakpoint.MAX+'px)');}
+else if(typeof(breakpoint)=="number"){return Modernizr.mq('only screen and (max-width: '+breakpoint+'px)');}
+else{return false;}};NPR.Devices.isScreenLargerOrEqual=function(breakpoint){if(typeof(breakpoint)=="object"){return Modernizr.mq('only screen and (min-width: '+breakpoint.MIN+'px)');}
+else if(typeof(breakpoint)=="number"){return Modernizr.mq('only screen and (min-width: '+breakpoint+'px)');}
+else{return false;}};NPR.Devices.isScreenWithin=function(breakpoint){if(breakpoint){return Modernizr.mq('only screen and (min-width: '+breakpoint.MIN+'px) and (max-width: '+breakpoint.MAX+'px)');}
+return false;};
 $(document).ready(function(){if(NPR.Devices.isOnTablet()){bodyCssClasses=$('body').attr('class');if(bodyCssClasses.indexOf('Story')>0)
 {if(Modernizr.mq('only screen and (orientation:portrait)')){$("head").append('<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />');}}
 setTimeout(function(){$('div[data-portrait]').each(function(index){var newLocation=$(this).attr('data-portrait');$(this).children().not('script').clone().appendTo('#'+newLocation);});},500);}});

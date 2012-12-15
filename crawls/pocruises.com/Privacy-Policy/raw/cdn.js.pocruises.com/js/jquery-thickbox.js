@@ -31,19 +31,20 @@ function tb_init(domChunk) {
     }
 
     if (initTB == true) {
-        $(domChunk).unbind("click").bind("click", function() {
-             //alert("bound for the thickbox");
-            if ((navigator.userAgent.match(/iPad/i))) {
-                $(window).scrollTop(0);
-            }
-            var t = this.title || this.name || null;
-            var a = this.href || this.alt || $(this).attr("href");
-            var g = this.rel || false;
-            tb_show(t, a, g);
-           
-            this.blur();
-            return false;
-        });
+      $(domChunk).unbind("click").bind("click", function(ev) {
+        //alert("bound for the thickbox");
+        ev.preventDefault();
+        if ((navigator.userAgent.match(/iPad/i))) {
+          $(window).scrollTop(0);
+        }
+        var t = this.title || this.name || null;
+        var a = this.href || this.alt || $(this).attr("href");
+        var g = this.rel || false;
+        tb_show(t, a, g);
+
+        this.blur();
+        // return false;
+      });
     }
     else {
         $(domChunk).unbind('click').bind('click', function() {

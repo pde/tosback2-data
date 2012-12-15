@@ -50,6 +50,13 @@ $('document').ready(function(){
 	
 	// calls drop down menu when brand button is clicked
 	$('.brandTarget').live('click',function(){
+
+		if(navigator.platform=="iPad" && $('.menuHolder').css('display')=='block'){
+			$('.menuHolder').hide();
+			return;
+		}
+
+
 		$( '.menuHolder ul.brandDropOptions li' ).each( function(){
 			$( this ).show();
 			if( $( this ).find( 'a' ).text() == $( 'a.brandTarget' ).text() || ( $( this ).find( 'a' ).text() == 'GENERAL MOTORS' && $( 'a.brandTarget' ).text() == '--SELECT--' )){
@@ -57,6 +64,8 @@ $('document').ready(function(){
 			}
 		});
 		$('.menuHolder').show();
+
+
 	});
 
 	// click function for drop down menu links

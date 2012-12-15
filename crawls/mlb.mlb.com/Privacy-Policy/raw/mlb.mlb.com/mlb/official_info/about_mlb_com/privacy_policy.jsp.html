@@ -232,7 +232,7 @@ var club      = "mlb",
     pageid    = "privacy_policy",
     dc_keyVal = "",
     dc_lang   = "en",
-    sysdate	  = "201212120648";
+    sysdate	  = "201212150718";
 </script>
 
 <!--[if lte IE 7 ]>
@@ -309,7 +309,7 @@ var club      = "mlb",
   };
   bam.EASTERN_TIME = bam.getEasternDate();
   var flips = {
-    global: '12/12/2012 11:00 AM GMT-500'
+    global: '12/15/2012 11:00 AM GMT-500'
   };
 
   bam.getFlipDate = function (club) {
@@ -318,10 +318,11 @@ var club      = "mlb",
 
   bam.getFlipDisplayDate = function (club) {
     var flip = bam.getFlipDate(club);
-    if (new Date() < flip) {
-      flip.setDate(flip.getDate() - 1);
+    var flipDisplay = bam.EASTERN_TIME;
+    if (new Date("12/15/2012 07:18 AM GMT-500") < flip) {
+      flipDisplay.setDate(flipDisplay.getDate() - 1);
     }
-    return $.floorDate('day', flip);
+    return $.floorDate('day', flipDisplay);
   };
 
 })(jQuery, bam);

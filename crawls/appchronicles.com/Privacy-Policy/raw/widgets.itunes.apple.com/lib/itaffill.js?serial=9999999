@@ -1102,8 +1102,11 @@ itw.performSearch= function performSearch(e, appendmode ) {
    if (e.which>40) {
      c = String.fromCharCode(e.which);
    };
-   var v=$("#search_field").val()+c;
-
+    var v=escape($("#search_field").val());
+    v=v.replace("%28","").replace("%3D","").replace("%29","").replace("%3E","").replace("%22","")
+    v=unescape(v);
+    $("#search_field").val(v);
+    v=escape(v+c);
    if ((c=="") && (e.which!=8) && (e.which!=undefined)) {v=""};
 
    if ((v.length>1) && (!itw.searching)) {
@@ -1238,7 +1241,7 @@ itw.performSearch= function performSearch(e, appendmode ) {
                     if (sr.length<40 ) { sr="<li><div class=\"meta\"><h1>"+itw.strings['no_result']+"</h1></div></li>"};
 		    };
                     if (itw.album_artist_song ==2) {
-			sr=sr+"</tbody></table><div style=\"height: 25px;padding-top: 7px;\"><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></div></li>";
+			sr=sr+"</tbody></table><div style=\"height: 25px;padding-top: 7px;\"><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+escape($('#search_field').val())+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></div></li>";
 			
 
 	                $("#results_list").html(sr);
@@ -1247,16 +1250,16 @@ itw.performSearch= function performSearch(e, appendmode ) {
 		    } else {
 			if ((itw.widgettype==1) && (itw.all_iph_ipad==0)) {
 			    if (appendmode == 1) {
-				sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
+				sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+escape($('#search_field').val())+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
 				    $("#results_list").html($("#results_list").html()+sr);
 			    } else {
 				$("#results_list").html(sr);
 			    };
 			} else {
 			    if(itw.widgettype==14) {
-			        sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?mt=12&term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
+			        sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?mt=12&term="+escape($('#search_field').val())+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
 		        } else {
-			        sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+$('#search_field').val()+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
+			    sr=sr+"<li><a class=\"view_more\" href=\"#\" onClick=\"window.open('http://ax.search.itunes.apple.com/WebObjects/MZSearch.woa/wa/search?term="+escape($('#search_field').val())+entity+"','_new')\">"+itw.strings['view_more']+" <span class=\"view_more_arrow\"></span></a></li>"
 				
 		    }
 		    $("#results_list").html(sr);

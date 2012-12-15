@@ -1,9 +1,11 @@
 // these variables are used to pass user information to boldchat. 
-var userId = "HomesteadUserID";
-var userName = "FirstName";
-var userInfo = "VisitorInfo";
-var userEmail = "VisitorEmail";
-var userPhone = "VisitorPhone";
+var btUserInfo = {
+'btVisitorId': "HomesteadUserID",
+'btVisitorName': "FirstName",
+'btVisitorInfo': "VisitorInfo",
+'btVisitorEmail': "VisitorEmail",
+'btVisitorPhone': "VisitorPhone",
+};
 var btConfig = {
 'btAccountId': '506535311544236990',
 'btServer' : 'cbi.boldchat.com/aid/506535311544236990/bc.cbhs',
@@ -82,27 +84,27 @@ return this.btChatAvailable;
 btConfig.addVars = function(name, value) {
 value = trimSpaces(value.toString());
 switch(name){
-case userId:
+case btUserInfo.btVisitorId:
 {
 this.btVisitorId = value;
 break;
 }
-case userName: 
+case btUserInfo.btVisitorName: 
 {
 this.btVisitorName = value;
 break;	
 }
-case userInfo:
+case btUserInfo.btVisitorInfo:
 {
 this.btVisitorInfo = value;
 break;
 }
-case userEmail:
+case btUserInfo.btVisitorEmail:
 {
 this.btVisitorEmail = value;
 break;
 }
-case userPhone:
+case btUserInfo.btVisitorPhone:
 {
 this.btVisitorPhone = value;
 break;

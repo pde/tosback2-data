@@ -10,6 +10,12 @@
 
 
 
+	
+		
+
+
+
+
 
 
 
@@ -1137,6 +1143,7 @@
 
 	
 	
+
 
 
 
@@ -1411,17 +1418,18 @@
 
 
 	
+  
+  
 	
 	
 	
 	
-
 
 	
 	
 	
 		
-
+	
 
 
 
@@ -1584,7 +1592,7 @@
 		var forceFlashDebugMode = false;
 		var getTimeOffset = function() {
 			var offset = new Number();
-			var servertime = 1355319566541;
+			var servertime = 1355577649600;
 			var clientdateObj = new Date();
 			var clienttime = clientdateObj.getTime();
 			offset = clienttime - servertime;
@@ -1916,6 +1924,16 @@ function isDeviceSel(){
 	
 	return isDeviceSel;
 }
+function livepersonChatReporting(chatType,sourcePageName,chatPage) { 
+	var zipCode = '' ; 
+	var dcs_array = getDcsParameters(window.location.href);
+	var pageName = dcs_array[4] ; 
+	dcsMultiTrack('DCS.dcsref',window.location.href,'DCS.dcssip','sales.liveperson.net','DCS.dcsuri','/virtual/chatrequest','DCSext.wtPN',chatPage,'DCSext.wtEvent','Chat_Request_Submit',
+	'DCSext.wtChatVendor','LivePerson','DCSext.wtChatType',chatType,'DCSext.wtChatInitAppName','eSupport','DCSext.wtChatInitDomain',dcs_array[0],'DCSext.wtChatInitPN',sourcePageName,
+	'DCSext.wtChatInitUrl',dcs_array[3],'DCSext.wtChatInitUrlExt',dcs_array[2],'DCSext.wtZipCode',zipCode,'DCSext.wtNoHit','1','DCSext.wtSuccessFlag','1','DCSext.wtStatusCode','0');	
+}
+
+
 
 function teamSiteReporting(slotClick,destinationURI) { 
 	if(window.location.href.indexOf("devicetroubleshoot") >= 0){

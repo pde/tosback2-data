@@ -1,7 +1,7 @@
 /* Copyright 1996-2012 Adobe, Inc. All Rights Reserved
  More info available at http://www.omniture.com */
 
-var sc_code_ver="H.25.1|12.10.15" //SiteCatalyst code version
+var sc_code_ver="H.25.1|12.12.07" //SiteCatalyst code version
 var s=s_gi(s_account)
 /************************** CONFIG SECTION **************************/
 s.trackDownloadLinks=true
@@ -350,59 +350,59 @@ s.fage=new Function("e","a",""
  *         tracking in SiteCatalyst (requires s.split and s.apl)
  */
 s.setupLinkTrack=new Function("vl","c",""
-    +"var s=this;var l=s.d.links,cv,cva,vla,h,i,l,t,b,o,y,n,oc,d='';cv=s."
-    +"c_r(c);if(vl&&cv!=''){cva=s.split(cv,'^^');vla=s.split(vl,',');for("
-    +"x in vla)s._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}s.c_w(c,'',0);if(!s.e"
-    +"o&&!s.lnk)return '';o=s.eo?s.eo:s.lnk;y=s.ot(o);n=s.oid(o);if(s.eo&"
-    +"&o==s.eo){while(o&&!n&&y!='BODY'){o=o.parentElement?o.parentElement"
-    +":o.parentNode;if(!o)return '';y=s.ot(o);n=s.oid(o);}for(i=0;i<4;i++"
-    +")if(o.tagName)if(o.tagName.toLowerCase()!='a')if(o.tagName.toLowerC"
-    +"ase()!='area')o=o.parentElement;}b=s._LN(o);o.lid=b[0];o.lpos=b[1];"
-    +"if(s.hbx_lt&&s.hbx_lt!='manual'){if((o.tagName&&s._TL(o.tagName)=='"
-    +"area')){if(!s._IL(o.lid)){if(o.parentNode){if(o.parentNode.name)o.l"
-    +"id=o.parentNode.name;else o.lid=o.parentNode.id}}if(!s._IL(o.lpos))"
-    +"o.lpos=o.coords}else{if(s._IL(o.lid)<1)o.lid=s._LS(o.lid=o.text?o.t"
-    +"ext:o.innerText?o.innerText:'');if(!s._IL(o.lid)||s._II(s._TL(o.lid"
-    +"),'<img')>-1){h=''+o.innerHTML;bu=s._TL(h);i=s._II(bu,'<img');if(bu"
-    +"&&i>-1){eval(\"__f=/ src\s*=\s*[\'\\\"]?([^\'\\\" ]+)[\'\\\"]?/i\")"
-    +";__f.exec(h);if(RegExp.$1)h=RegExp.$1}o.lid=h}}}h=o.href?o.href:'';"
-    +"i=h.indexOf('?');h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);l"
-    +"=s.linkName?s.linkName:s._hbxln(h);t=s.linkType?s.linkType.toLowerC"
-    +"ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=s.pageName+'^^'+o.lid"
-    +"+'^^'+s.pageName+' | '+(o.lid=o.lid?o.lid:'no &lid')+'^^'+o.lpos;if"
-    +"(t&&(h||l)){cva=s.split(cv,'^^');vla=s.split(vl,',');for(x in vla)s"
-    +"._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}else if(!t&&oc.indexOf('.tl(')<"
-    +"0){s.c_w(c,cv,0);}else return ''");
++"var s=this;var l=s.d.links,cv,cva,vla,h,i,l,t,b,o,y,n,oc,d='';cv=s."
++"c_r(c);if(vl&&cv!=''){cva=s.split(cv,'^^');vla=s.split(vl,',');for("
++"x in vla)s._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}s.c_w(c,'',0);if(!s.e"
++"o&&!s.lnk)return '';o=s.eo?s.eo:s.lnk;y=s.ot(o);n=s.oid(o);if(s.eo&"
++"&o==s.eo){while(o&&!n&&y!='BODY'){o=o.parentElement?o.parentElement"
++":o.parentNode;if(!o)return '';y=s.ot(o);n=s.oid(o);}for(i=0;i<4;i++"
++")var ltp=setTimeout(function(){},10);if(o.tagName)if(o.tagName.toLowerCase()!='a')if(o.tagName.toLowerC"
++"ase()!='area')o=o.parentElement;}b=s._LN(o);o.lid=b[0];o.lpos=b[1];"
++"if(s.hbx_lt&&s.hbx_lt!='manual'){if((o.tagName&&s._TL(o.tagName)=='"
++"area')){if(!s._IL(o.lid)){if(o.parentNode){if(o.parentNode.name)o.l"
++"id=o.parentNode.name;else o.lid=o.parentNode.id}}if(!s._IL(o.lpos))"
++"o.lpos=o.coords}else{if(s._IL(o.lid)<1)o.lid=s._LS(o.lid=o.text?o.t"
++"ext:o.innerText?o.innerText:'');if(!s._IL(o.lid)||s._II(s._TL(o.lid"
++"),'<img')>-1){h=''+o.innerHTML;bu=s._TL(h);i=s._II(bu,'<img');if(bu"
++"&&i>-1){eval(\"__f=/ src\s*=\s*[\'\\\"]?([^\'\\\" ]+)[\'\\\"]?/i\")"
++";__f.exec(h);if(RegExp.$1)h=RegExp.$1}o.lid=h}}}h=o.href?o.href:'';"
++"i=h.indexOf('?');h=s.linkLeaveQueryString||i<0?h:h.substring(0,i);l"
++"=s.linkName?s.linkName:s._hbxln(h);t=s.linkType?s.linkType.toLowerC"
++"ase():s.lt(h);oc=o.onclick?''+o.onclick:'';cv=s.pageName+'^^'+o.lid"
++"+'^^'+s.pageName+' | '+(o.lid=o.lid?o.lid:'no &lid')+'^^'+o.lpos;if"
++"(t&&(h||l)){cva=s.split(cv,'^^');vla=s.split(vl,',');for(x in vla)s"
++"._hbxm(vla[x])?s[vla[x]]=cva[x]:'';}else if(!t&&oc.indexOf('.tl(')<"
++"0){s.c_w(c,cv,0);}else return ''");
 s._IL=new Function("a","var s=this;return a!='undefined'?a.length:0");
 s._II=new Function("a","b","c","var s=this;return a.indexOf(b,c?c:0)"
 );
 s._IS=new Function("a","b","c",""
-    +"var s=this;return b>s._IL(a)?'':a.substring(b,c!=null?c:s._IL(a))");
++"var s=this;return b>s._IL(a)?'':a.substring(b,c!=null?c:s._IL(a))");
 s._LN=new Function("a","b","c","d",""
-    +"var s=this;b=a.href;b+=a.name?a.name:'';c=s._LVP(b,'lid');d=s._LVP("
-    +"b,'lpos');r"
-    +"eturn[c,d]");
++"var s=this;b=a.href;b+=a.name?a.name:'';c=s._LVP(b,'lid');d=s._LVP("
++"b,'lpos');r"
++"eturn[c,d]");
 s._LVP=new Function("a","b","c","d","e",""
-    +"var s=this;c=s._II(a,'&'+b+'=');c=c<0?s._II(a,'?'+b+'='):c;if(c>-1)"
-    +"{d=s._II(a,'&',c+s._IL(b)+2);e=s._IS(a,c+s._IL(b)+2,d>-1?d:s._IL(a)"
-    +");return e}return ''");
++"var s=this;c=s._II(a,'&'+b+'=');c=c<0?s._II(a,'?'+b+'='):c;if(c>-1)"
++"{d=s._II(a,'&',c+s._IL(b)+2);e=s._IS(a,c+s._IL(b)+2,d>-1?d:s._IL(a)"
++");return e}return ''");
 s._LS=new Function("a",""
-    +"var s=this,b,c=100,d,e,f,g;b=(s._IL(a)>c)?escape(s._IS(a,0,c)):esca"
-    +"pe(a);b=s._LSP(b,'%0A','%20');b=s._LSP(b,'%0D','%20');b=s._LSP(b,'%"
-    +"09','%20');c=s._IP(b,'%20');d=s._NA();e=0;for(f=0;f<s._IL(c);f++){g"
-    +"=s._RP(c[f],'%20','');if(s._IL(g)>0){d[e++]=g}}b=d.join('%20');retu"
-    +"rn unescape(b)");
++"var s=this,b,c=100,d,e,f,g;b=(s._IL(a)>c)?escape(s._IS(a,0,c)):esca"
++"pe(a);b=s._LSP(b,'%0A','%20');b=s._LSP(b,'%0D','%20');b=s._LSP(b,'%"
++"09','%20');c=s._IP(b,'%20');d=s._NA();e=0;for(f=0;f<s._IL(c);f++){g"
++"=s._RP(c[f],'%20','');if(s._IL(g)>0){d[e++]=g}}b=d.join('%20');retu"
++"rn unescape(b)");
 s._LSP=new Function("a","b","c","d","var s=this;d=s._IP(a,b);return d"
-    +".join(c)");
++".join(c)");
 s._IP=new Function("a","b","var s=this;return a.split(b)");
 s._RP=new Function("a","b","c","d",""
-    +"var s=this;d=s._II(a,b);if(d>-1){a=s._RP(s._IS(a,0,d)+','+s._IS(a,d"
-    +"+s._IL(b),s._IL(a)),b,c)}return a");
++"var s=this;d=s._II(a,b);if(d>-1){a=s._RP(s._IS(a,0,d)+','+s._IS(a,d"
++"+s._IL(b),s._IL(a)),b,c)}return a");
 s._TL=new Function("a","var s=this;return a.toLowerCase()");
 s._NA=new Function("a","var s=this;return new Array(a?a:0)");
 s._hbxm=new Function("m","var s=this;return (''+m).indexOf('{')<0");
 s._hbxln=new Function("h","var s=this,n=s.linkNames;if(n)return s.pt("
-    +"n,',','lnf',h);return ''");
++"n,',','lnf',h);return ''");
 /*
  * s.join: 1.0 - Joins an array into a string
  */

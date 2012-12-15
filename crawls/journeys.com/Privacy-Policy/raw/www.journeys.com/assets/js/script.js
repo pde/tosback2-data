@@ -1366,6 +1366,7 @@ UTILS = {
         },
         drawStores: function(stores, brand) {
             //console.log(stores.length);
+            //console.log(stores);
             if ((stores !== undefined) && (stores.length > 0)) {
                 var li = '<li>';
                 var mapQ = '';
@@ -1374,7 +1375,7 @@ UTILS = {
                     li += '\
 										<address class="addr-store" data-storeID="' + stores[i].OID + '">\
 											<strong class="store-loc"><a href="#">' + stores[i].ADDR1 + '<br />\
-											STORE ' + stores[i].OID + '</a></strong><br />\
+											STORE ' + stores[i].NUMBER + '</a></strong><br />\
 											' + stores[i].ADDR2 + ' <br />\
 											' + stores[i].CITY + ', ' + stores[i].STATE + ' ' + stores[i].ZIP + '<br />\
 											' + stores[i].PHONE + '\
@@ -1432,7 +1433,7 @@ UTILS = {
             }
             $('#lnk-result-stores').text(crumbTxt);
             $('span#lct-store-name').text(storeJSON.ADDR1)
-            $('h4.store-title').text(storeJSON.BRAND + ' at ' + storeJSON.ADDR1 + ': store ' + storeJSON.OID);
+            $('h4.store-title').text(storeJSON.BRAND + ' at ' + storeJSON.ADDR1 + ': store ' + storeJSON.NUMBER);
             $('div#find-it address.addr-store').html(html);
             if (storeJSON.HOURS) {
                 $('div#store-hours').html('<h4>store hours</h4>' + storeJSON.HOURS);

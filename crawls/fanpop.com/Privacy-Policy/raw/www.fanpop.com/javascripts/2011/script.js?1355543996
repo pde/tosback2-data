@@ -1,0 +1,590 @@
+jQuery( function($) {
+	// This is just a general class I use. nc = no click. It's good for buttons that will also have javascript attached to them. I usually give the buttons a real href value so for browsers with javascript turned off, they still do something.
+	$('a.nc').live('click', function() {
+		return false;
+	});
+	
+	// These are the little tooltips on images in the My Gallery page. This makes sure they're centered.
+	$('.pop-over').each( function() {
+		$(this).css('margin-left', 0-($(this).outerWidth()/2) );
+	});
+	
+	// This makes for styling the custom select boxes.
+	$('select.replace').wrap('<span class="select-wrap" />').selectbox();
+	
+	// This makes the input appear at the bottom of wall posts.
+	$('.post-footer .controls .comment a').click( function() {
+		$(this).parent().parent().addClass('comment').siblings('form.comment').show().children('input').focus();
+		$(this).parent().hide();
+		$(this).parent().parent().siblings('div.report').hide();
+		return false;
+	});
+	
+	// This makes the reporting box appear at the bottom of wall posts.
+	$('#my-wall .post-footer .controls .report a, #wall .post-footer .controls .report a').click( function() {
+		$(this).parent().parent().removeClass('comment').siblings('form.comment').hide();
+		$(this).parent().siblings('li.comment').show();
+		$(this).parent().parent().siblings('div.report').show();
+		return false;
+	});
+	
+	// This makes the wall post form appear when dummy input form is clicked on 
+	$('#wallpostformd').click( function () {
+		$(this).hide();
+		$(this).parent().siblings('#wallpostforme').show();
+		$(this).siblings('#wallpostformr').show().children('#wf_message').focus();
+	});
+	
+	// This makes the wall post form invoke js checks and updates when typing occurs
+	$('#wf_message').keyup( function() {
+		expand_wall_mess();
+	});
+	
+	// This makes the reporting box appear at the bottom of forum replies / comments.
+	$('#replymodulebody .post-footer .controls .report a, #comments .post-footer .controls .report a').click( function() {
+		$(this).parent().parent().removeClass('comment').siblings('form.comment').hide(); //hide comment form if open
+		$(this).parent().siblings('li.comment').show(); // comment link show reappear
+		$(this).parent().parent().siblings('div.report').show(); // open report box
+		return false;
+	});
+	
+	// For link reporting - hides other control elements and displays report box
+	$('.link-footer .report').click( function() {
+		$(this).parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().siblings('.controlboxes').children(".report").show();
+		return false;
+	});
+		
+	// For generic report, delete buttons - this makes the other control elements hidden and correct box appear
+	$('.post-footer .controls .report a').click( function() {
+		$(this).parent().parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().parent().siblings('.controlboxes').children(".report").show();
+		return false;
+	});
+	$('.post-footer .controls .delete a').click( function() {
+		$(this).parent().parent().siblings('.controlboxes .confirm_box').children().hide();
+		$(this).parent().parent().siblings('.controlboxes').children(".delete").show();
+		return false;
+	});
+	//#this makes prop captions underline when mouse over prop image in wall form prop selector
+	$('.wf_prop_choice').hover( function() {
+		$(this).siblings('div').children('a').addClass('hover');
+		$(this).addClass('hover');
+	}, function() {
+		$(this).siblings('div').children('a').removeClass('hover');
+		$(this).removeClass('hover');
+	});
+	$('.wf_prop_choice').siblings('div').children('a').hover (function() {
+		$(this).parent().siblings('img').addClass('hover');
+	}, function() {
+		$(this).parent().siblings('img').removeClass('hover');
+	});	
+	
+	// On the search results page, this is the toggle ability.
+	$('#search-results .section-heading').click( function() {
+		$(this).parent().toggleClass('open').toggleClass('closed');
+		$(this).next().slideToggle();
+	}).parent().addClass('open');
+	
+	// The "Filter by Keyword" button on the photo gallery page.
+	$('div.keywords').hover( function(){}, function() {
+		$(this).removeClass('open');
+	}).children('span').hover( function() {
+		$(this).parent().addClass('open');
+	}, function() {});
+	
+	
+	// These two sections are for toggling between the image and video sections of that dropdown. It's flexible enough so you can build your own combo dropdowns if you'd like.
+	$('.input-dropdown .popup').each( function() {
+		if( $(this).children('div').length > 1 ) {
+			$(this).children('div').hide().first().show();
+			$ul = $('<ul class="controls list cf" />').prependTo( $(this) );
+			$(this).children('div').each( function() {
+				$('<a href="#" class="nc ir" />').appendTo( $ul ).wrap('<li />').addClass( $(this).attr('class') ).attr('rel', $(this).attr('class') );
+			});
+			
+			$ul.children().first().addClass('active');
+		}
+	});
+	
+	$('.input-dropdown .controls a', this).live('click', function() {
+		div = $(this).attr('rel');
+		$(this).parent().addClass('active').siblings().removeClass('active');
+		$(this).parent().parent().parent().children('div.'+div).show().siblings('div').hide();
+	});
+	
+	// This adds the styling for when a smiley is selected in the smiley dropdown.
+	$('.input-dropdown .smileys li').click( function() {
+		$(this).toggleClass('active').siblings('.active').removeClass('active');
+	});
+	
+	// This is for the link page. The input that says Copy this link's URL. If you click on it, the text gets selected for easy copying.
+	$('input.select').click( function() {
+		$(this).select();
+	});
+	
+	// This adds new inputs to the New Pick module.
+	$('#new-pick a.more-answers').click( function() {
+		$(this).siblings('div.input').last().clone()
+			.find('input[type=text],input[type=file]').val('').end()
+			.find('.input-dropdown').hoverIntent({
+				over: function() {
+						$(this).addClass('hover');
+					}, 
+				timeout: 250,
+				out: function() {
+					$(this).removeClass('hover');
+					}
+			}).end()
+			.insertBefore( this );
+	});
+	
+	// For the View Photo modal, if editable, this makes sure the text input adjusts to fit the width of the image.
+	$('.view-photo-module').each( function() {
+		$(this).parent().show();
+		
+		if( $.browser.msie && $.browser.version.substr(0,1) <= 7 ) {
+			$('input[type=text]', this).width( $('img',this).width() - 143 );
+		}else {
+			$('input[type=text]', this).width( $('img',this).width() - 124 );
+		}
+		
+		$(this).parent().width( $('img',this).width() ).hide();
+	});
+
+/*	
+	// For the search hints to show up.
+	$('#search input').keypress( function() {
+		$('#search ul').css('left', 0 ).hide().fadeIn('fast');
+	}).blur( function() {
+		$('#search ul').fadeOut('fast', function(){
+			$(this).css('left', "-999em" );
+		});
+	});
+*/
+
+	// Modal-alert is the little popup in the bottom right corner. In the PSD it was notifying the user that they received a new badge.
+	if( $('.modal-alert').length > 0 ) {
+		if( $('#lean_overlay').length == 0 ) {
+			$('body').append('<div id="lean_overlay"></div>');
+		}
+		$('#lean_overlay').fadeTo('fast','.5');
+		$('.modal-alert').fadeIn();
+		
+		$('.modal-alert .close, #lean_overlay').click( function() {
+			$('#lean_overlay, .modal-alert').fadeOut();
+		});
+	}
+	
+	// Adding functionality to the modals to close them.
+	$('.module-close').click( function() {
+		$('#lean_overlay').fadeOut();
+		$(this).parent().parent().fadeOut();
+	});
+	
+	// These two sections are for the little floating callout on the left side of the screen.
+	$('#popout .open').click( function() {
+		$(this).hide();
+		$('#popout').css('left', -$('#popout .module').show().width() ).animate({
+			'left': 0
+		});
+	});
+	
+	$('#popout .close').click( function() {
+		$('#popout').animate({
+			'left': -$('#popout .module').width()
+		}, function() {
+			$(this).css('left', 0)
+				.find('.module').hide().end()
+				.find('.open').show();
+		});
+	});
+	
+	// The read more buttons in the FAQ pages
+	$('.faq dt span').click( function() {
+		$target = $(this).parent().next();
+		if( $target.is('dd') ) {
+			$target.children().slideToggle('fast');
+			if( $(this).text() == "Read More" ) {
+				$(this).text('Read Less');
+			}else if ( $(this).text() == "Read Less") {
+				$(this).text('Read More');
+			}
+		}
+	});
+	
+	// To make sure all the bios are the same height.
+	$('#about ul.bio li').equalHeights();
+	
+	// On the homepage, this is the news slideshow. The slider is using a plugin and is in plugins.js. This bit is just for clicking on the thumbnails and the top image changing.
+	$('#home-content .controls a').click( function() {
+		finalIndex = ($(this).index() +1) + ( $(this).parent().index() * 5 ) - 1;
+		$('#home-content .main li').eq( finalIndex ).addClass('active').hide().fadeIn().siblings('.active').removeClass('active').show().fadeOut();
+		$('a.active', $(this).parent().parent() ).removeClass('active');
+		$(this).addClass('active');
+	});
+	
+	// This makes the wall post form appear when dummy input form is clicked on 
+	bindClickToRevealReplyForm();
+	
+	// When header of forum module is clicked, scroll down to text input form
+	bindClickToScrolldown();
+	
+	// This responds to when the reply edit link is clicked (this may need to be put into something like a bindReplyBehavior(); which only gets called when a brand new reply has been posted)
+	$('.post-header .title .edit a').click( function() {
+			//$(this).parent().css('display','none');
+			$(this).parent().css('visibility','hidden');
+			//$(this).parents('.title').siblings('.cmttddiv').children('.replybody').css('display','none');
+			//$(this).parents('.title').siblings('.cmttddiv').children('.loading').css('display','block');
+	});
+	// Bind reply functions that need to be loaded multiple times
+	bindReplyFormBehavior();
+	
+	// Script to hide ad-unit when nav dropdown is open
+	$('nav .dropdown').hover( function() {
+		$('#adunit_1').css('left', '-9999em').css('position', 'absolute');
+	}, function () {
+		$('#adunit_1').css('position', 'static').css('left', '');
+	});
+	
+	// Script to expand solve media when a username is added
+	$('#LoginBox input#user_email').keyup( function() {
+			if ($('#LoginBox #login_captcha').css('display')=='none' && $('#LoginBox #submissiontype').val()=="register") {
+				$('#LoginBox #login_captcha').slideToggle('slow');
+			}
+	});
+	
+	// The text gradient. It's buggy in IE7.
+	if( !$.browser.msie || $.browser.version.substr(0,1) > 7 ) {
+		rainbows.init({
+			selector: '.text-shadow',
+			highlight: true,
+			shadow: false,
+			from: '#ffffff',
+			to: '#999999'
+		});
+	}
+	
+	// Javascript to fix CSS browser support in IE
+	if( $.browser.msie ) {
+		if( $.browser.version.substr(0,1) <= 7 ) {
+			$('.club-controls td:last-child').addClass('last-child');
+		}
+		if( $.browser.version.substr(0,1) <= 8 ) {
+			$('div#my-updates .updates ul:even').addClass('even');
+		}
+	}
+});
+
+jQuery.fn.equalHeights = function(minHeight, maxHeight) {
+	tallest = (minHeight) ? minHeight : 0;
+	this.each(function() {
+		if($(this).height() > tallest) {
+			tallest = $(this).height();
+		}
+	});
+	if((maxHeight) && tallest > maxHeight) tallest = maxHeight;
+	return this.each(function() {
+		$(this).height(tallest+5);
+	});
+}
+
+function classExists(c) {
+    return typeof(c) == "function" && typeof(c.prototype) == "object" ? true : false;
+} 
+
+var bindClickToRevealReplyForm = function(scope) {
+	// This makes the wall post form appear when dummy input form is clicked on 
+	$('.replyform_d', scope).click( function () {
+		$(this).hide();
+		$(this).parent().siblings('.replyform_e').show();
+		$(this).siblings('.replyform_r').show().children('textarea').focus();
+	});
+}
+
+var bindClickToScrolldown = function() {
+	// When header of forum module is clicked, scroll down to text input form
+	$('#forum-view .module-header .clickscroll').click( function () {
+			reply_form = $('#forum-view .module-footer form.reply_form');
+			reply_form_top = reply_form.offset().top;
+			$('body,html').animate(
+				{
+					scrollTop: reply_form_top
+				}, 
+				function() {
+					reply_form.children('.replyform_d').click();
+				}
+			);
+	});
+}	
+var bindReplyFormBehavior = function(scope) {
+	/* auto-resize textarea box for comments and forum replies - run once on keypress for response prior to character display; run again on keyup for accuracy */
+	$('.reply_form .reply_ta', scope).keypress( function(e) {
+			key_pressed = (typeof e.which == "number") ? e.which : e.keyCode;
+			if (key_pressed != 13) {
+				form_value = $(this).val() + String.fromCharCode(key_pressed);
+			} else {
+				form_value = $(this).val() + "<br />";
+			}
+			form_value = form_value.replace(/[\n]/g, "<br />");
+			form_value = form_value.replace(/[\r]/g, "");
+			form_value = form_value.replace(/<br \/>$/, "<br /> ");
+			if (form_value == "") { form_value = " "; }
+			$(this).parent().parent().siblings('.reply_hta').html(form_value);
+			$(this).height($(this).parent().parent().siblings('.reply_hta').height());
+	});
+	$('.reply_form .reply_ta', scope).keyup( function() {
+			form_value = $(this).val();
+			form_value = form_value.replace(/[\n]/g, "<br />");
+			form_value = form_value.replace(/[\r]/g, "");
+			form_value = form_value.replace(/<br \/>$/, "<br /> ");
+			if (form_value == "") { form_value = " "; }
+			$(this).parent().parent().siblings('.reply_hta').html(form_value);
+			$(this).height($(this).parent().parent().siblings('.reply_hta').height());
+			if ($(this).val().replace(/[ \n\r]+/, "").length > 3) {
+				$(this).parent().parent().siblings('.replyform_e').children('.reply_post_button').removeAttr('disabled');
+			} else {
+				$(this).parent().parent().siblings('.replyform_e').children('.reply_post_button').attr('disabled', 'disabled');
+			}			
+	});
+	
+	// This runs after the reply edit form has been loaded
+	$('.editform', scope).bind('loaded', function(e, name, width, height) {
+			//$(this).siblings('.loading').css('display','none');
+			$(this).siblings('.replybody').css('display','none');
+			$(this).css('display','block');
+	});
+
+	$('.editform form.reply_form', scope).bind('loading', function() {
+			$(this).siblings('.replyform_e').children('.reply_post_button').prop('disabled',true);
+			$(this).parents('.editform').css('display', 'none');
+			$(this).parents('.editform').siblings('.loading').css('display','block');
+	});
+	
+	// This runs after the reply edit form has been submitted and saved
+	$('.replybody', scope).bind('edit_saved', function() {
+			//$(this).parents('.post-header').children('.title').children('.edit').css('display','inline');
+			$(this).parents('.post-header').children('.title').children('.edit').css('visible','');
+			$(this).siblings('.editform').css('display', 'none');
+			$(this).siblings('.loading').css('display', 'none');
+			$(this).css('display', 'block');
+	});
+	
+	// This makes the edit forum post form go away and reinstates the original post
+	$('.replyform_e .cancel', scope).click( function () {
+			//$(this).parents('.post-header').children('.title').children('.edit').css('display','inline');
+			$(this).parents('.post-header').children('.title').children('.edit').css('visibility','');
+			$(this).parents('.editform').css('display','none');
+			$(this).parents('.cmttddiv').children('.replybody').css('display','block');
+			return false;
+	});
+	
+	// This makes the forum post emoticon form appear/disappear when button 
+	$('.replyform_e .reply_emote_button', scope).click( function () {
+			if ($(this).parent().siblings('.reply_emote_menu').css("display")=="block") {
+				$(this).parent().siblings('.reply_emote_menu').css("display","none");
+				$(this).siblings('.options_error').html("");
+				$(this).siblings('.reply_emote_button').removeClass("selected");
+			} else {
+				$(this).parent().siblings('.reply_media_menu').css("display","none");
+				$(this).parent().siblings('.reply_emote_menu').css("display","block");
+				$(this).siblings('.options_error').html("");
+				$(this).siblings('.reply_photo_button').removeClass("selected");
+				$(this).siblings('.reply_emote_button').addClass("selected");
+				$(this).parent().siblings('.reply.photo_menu').css("display","none");
+			}
+			return false;
+	});
+	
+	// This makes the emoticon select/deselect when clicked 
+	$('.reply_emote_menu .emoticon_btn', scope).click( function () {
+			form_emoticon_value = $(this).parents('.reply_emote_menu').siblings(".reply_form").children("input[name=\"emoticon_type\"]").attr("value");
+			emoticon_number = $(this).attr("num");
+	
+			//reply_clear_emoticon equivalent
+			$(this).parents('.reply_emote_menu').find('img.emoticon_btn').removeClass("selected");
+			$(this).parents('.reply_emote_menu').siblings(".reply_form").children("input[name=\"emoticon_type\"]").attr("value", "0");
+			$(this).parents('.reply_emote_menu').siblings(".replyform_e").children(".reply_emote_button").attr("src", "http://images.fanpop.com/images/emoticons/gsmile.jpg");
+			//end reply_clear_emoticon
+			
+			if (form_emoticon_value != emoticon_number) {
+				$(this).addClass("selected");
+				$(this).parents('.reply_emote_menu').siblings(".reply_form").children("input[name=\"emoticon_type\"]").attr("value", emoticon_number);
+				$(this).parents('.reply_emote_menu').siblings(".replyform_e").children(".reply_emote_button").attr("src", $(this).attr("src"));
+			}
+			
+			return false;
+	});
+	
+	// This makes the forum post photo/video form appear/disappear when button 
+	$('.replyform_e .reply_photo_button', scope).click( function () {
+			if ($(this).parent().siblings('.reply_media_menu').css("display")=="block") {
+				$(this).parent().siblings('.reply_media_menu').css("display","none");
+				$(this).siblings('.options_error').html("");
+				$(this).siblings('.reply_photo_button').removeClass("selected");
+			} else {
+				$(this).parent().siblings('.reply_emote_menu').css("display","none");
+				$(this).parent().siblings('.reply_media_menu').css("display","block");
+				$(this).siblings('.options_error').html("");
+				$(this).siblings('.reply_emote_button').removeClass("selected");
+				$(this).siblings('.reply_photo_button').addClass("selected");
+				$(this).parent().siblings('.reply.emote_menu').css("display","none");
+			}
+			return false;
+	});
+
+	// This handles cancelling the media (photo / video) form on a reply
+	$('.reply_media_menu form .form_cancel', scope).click( function () {
+			$(this).parents('.reply_media_menu').css("display", "none");
+	});
+	
+	// This handles displaying the video form or image form after clicking the selector button
+	$('.replyform_e .selector .button', scope).click( function() {
+			if ($(this).hasClass('selected')) {
+				// If already selected, then hide the menu
+				$(this).removeClass('selected');
+				$(this).parents('.replyform_e').siblings('.reply_media_menu').css("display", "none");
+				$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_photo_menu').css("display","none");
+				$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_video_menu').css("display","none");
+			} else {
+				$(this).parents('.replyform_e').siblings('.reply_emote_menu').css('display', 'none');
+				$(this).siblings().removeClass('selected');
+				$(this).addClass('selected');
+				if ($(this).hasClass('video')) {
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').css("display", "block");
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_photo_menu').css("display","none");
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_video_menu').css("display","block");
+				} else {
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').css("display", "block");
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_video_menu').css("display","none");
+					$(this).parents('.replyform_e').siblings('.reply_media_menu').children('.reply_photo_menu').css("display","block");
+				}
+			}
+			return false;
+	});
+	
+	// Validate image upload selection in forum reply form and starts the upload if valid
+	$('.reply_media_menu form.image_upload input[type="file"][name="imagefile"]', scope).change( function() {
+			filename = $(this).val();
+			if (filename.match(/\.(jp[e]{0,1}g|bmp|png|gif)$/im)) {
+				$(this).siblings('.form_error').html("");
+				//$(this).siblings('input[type="submit"][value="Upload"]').prop("disabled",false);
+				$(this).parents('form.image_upload').submit();
+			} else if (filename == "") {
+				$(this).siblings('.form_error').html("Sorry, no file was selected.");
+				//$(this).siblings('input[type="submit"][value="Upload"]').prop("disabled",true);
+			} else {
+				$(this).siblings('.form_error').html("Sorry, we don't support that image type.");
+				//$(this).siblings('input[type="submit"][value="Upload"]').prop("disabled",true);
+			}
+	});
+	
+	// Sumbit image upload form
+	$('.reply_media_menu form.image_upload', scope).submit( function() {
+			$(this).children('input[type="submit"]').prop("disabled", true);
+			$(this).children('.loading').css("display", "inline");
+	});
+	
+	// After submission of image form and response from image server
+	$('.reply_media_menu .reply_photo_menu .iframe_response', scope).bind('addimage', function(e, name, width, height) {
+			image_upload_form = $(this).siblings('form.image_upload');
+			if (name && width && height) {
+				filename = name+"_"+width+"_"+height+".png";
+				image_upload_form.children('input[type="submit"][value="Cancel"]').prop('disabled',false);
+				form_url = image_upload_form.attr('action');
+				if (form_url.match(/^http:\/\//i))
+				{
+					prefix = form_url.match(/^.*?\/\/[^\/]+/i);
+				} else {
+					prefix = "";
+				}
+				$(this).parents('.reply_media_menu').siblings('.reply_form').children('input[name="media"]').val("IMG="+prefix+filename);
+				image_upload_form.children('.loading').css("display", "none");
+				$(this).parents('.reply_media_menu').siblings('.reply_media_preview').html("<span class='remove' style='margin-left:"+(width-0+4)+"px'>&times;</span><img src='"+prefix+filename+"' width='"+width+"' height='"+height+"' />");
+				bindReplyFormMediaRemovalBehavior($(this).parents('.reply_media_menu').parent());
+				$('input[type="file"][name="imagefile"]', $(this).parents('.reply_photo_menu')).val(null);
+				$(this).parents('.reply_media_menu').css('display','none');
+				$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.photo').removeClass("selected");
+				$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.video').removeClass("attached");
+				$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.photo').addClass("attached");
+				$(this).parents('.reply_media_menu').children('.reply_video_menu').children('form').children('.form_error').html("Embedding a video will remove the image you have already attached.");
+				$(this).children('.form_error').html("");
+			} else {
+				image_upload_form.children('.form_error').html("Sorry, something went wrong with the upload.");
+			}
+	});
+	
+	// Video embed form reaction (if form is filled in, enable embed button
+	$('.reply_media_menu form.video_embed input[type="text"][name="videourl"]', scope).bind('validate_url', function() {
+			if ($.trim($(this).val()).match(/^http:\/\/[a-zA-Z0-9].*/im)) {
+				$(this).siblings('.form_error').html("");
+				$(this).siblings('input[type="submit"][value="Embed"]').prop("disabled",false);
+			} else if ($.trim($(this).val())=="") {
+				$(this).siblings('.form_error').html("Sorry, no URL was provided.");
+				$(this).siblings('input[type="submit"][value="Embed"]').prop("disabled",true);
+			} else {
+				$(this).siblings('.form_error').html("Sorry, this doesn't appear to be a valid or complete URL.");
+				$(this).siblings('input[type="submit"][value="Embed"]').prop("disabled",true);
+			}
+	});
+	$('.reply_media_menu form.video_embed input[type="text"][name="videourl"]', scope).change( function() {
+			$(this).trigger('validate_url');
+	});
+	$('.reply_media_menu form.video_embed input[type="text"][name="videourl"]', scope).keyup( function() {
+			$(this).trigger('validate_url');
+	});
+
+	// Sumbit video embed form
+	$('.reply_media_menu form.video_embed', scope).submit( function() {
+			$(this).children('input[type="submit"]').prop("disabled", true);
+			$(this).children('.loading').css("display", "inline");
+	});
+
+	// After submission of video embed form and response from video embed
+	$('.reply_media_menu .reply_video_menu .mediaform_response', scope).bind('addvideo', function(e, name, embed_code) {
+		video_embed_form = $(this).siblings('form.image_upload');
+		if (name && embed_code) {
+			video_embed_form.children('input[type="submit"][value="Cancel"]').prop('disabled',false);
+			$(this).parents('.reply_media_menu').siblings('.reply_form').children('input[name="media"]').val(name);
+			$(this).siblings('form.video_embed').children('.loading').css("display", "none");
+			$(this).parents('.reply_media_menu').siblings('.reply_media_preview').html("<span class='remove' style='margin-left:350px'>&times;</span>"+embed_code);
+			bindReplyFormMediaRemovalBehavior($(this).parents('.reply_media_menu').parent());
+			$('input[type="text"][name="videourl"]', $(this).parents('.reply_video_menu')).val(null);
+			$(this).parents('.reply_media_menu').css('display','none');
+			$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.video').removeClass("selected");
+			$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.photo').removeClass("attached");
+			$(this).parents('.reply_media_menu').siblings('.replyform_e').children('.selector').children('.button.video').addClass("attached");
+			$(this).parents('.reply_media_menu').children('.reply_photo_menu').children('form').children('.form_error').html("Uploading a photo will remove the video you have already attached.");
+			$(this).children('.form_error').html("");
+		} else {
+			video_embed_form.children('.form_error').html("Sorry, something went wrong with the video embed.");
+		}
+	});
+	$('.reply_media_menu .reply_video_menu .mediaform_response', scope).bind('videoerror', function(e, error_message) {
+			$(this).siblings('form.video_embed').children('.loading').css("display", "none");
+			$(this).siblings('form.video_embed').children('.form_error').html(error_message);
+	});
+	bindReplyFormMediaRemovalBehavior(scope);
+}
+
+var bindReplyFormMediaRemovalBehavior = function(scope) {
+	// Removal of attached image / video during an edit or new post/reply
+	$('.reply_media_preview .remove', scope).click( function () {
+			reply_media_preview_elem = $(this).parents('.reply_media_preview');
+			reply_media_preview_elem.siblings('form.reply_form').children('input[name="media"]').val("REMOVE");
+			$('.button.photo', reply_media_preview_elem.siblings('.replyform_e')).removeClass("attached");
+			$('.button.video', reply_media_preview_elem.siblings('.replyform_e')).removeClass("attached");
+			reply_media_preview_elem.css("visibility","hidden");
+			$('.form_error', reply_media_preview_elem.siblings('.reply_media_menu')).html("");
+			reply_media_preview_elem.animate(
+				{
+					height: 0
+				}, 
+				function() {
+					reply_media_preview_elem.children().css("display","none");
+					reply_media_preview_elem.css("visibility","").css("height","").html("");
+				}
+			);
+	});
+}
+

@@ -384,4 +384,29 @@ $(document).ready(function(){
 		speed: 800
 	};
 })(jQuery);
-
+$(function() {		/* lazy images */
+    var b, e, lazyLoad;
+    b = $(window);
+    e = $('.lazyImage');		
+    lazyLoad = function () {
+        e = $('.lazyImage');		
+		$.each(e, function () {
+            var c = $(this),
+                a, d;
+            a = c.offset();
+            d = c.data();			
+            if (!d.loaded && a.top <= b.height() + b.scrollTop()) {
+                a = new Image, a._parent = c, a.onload = function () {					
+                    this._parent.prepend(this);
+                    $(this).fadeIn('slow');
+                    $(this).css('display', 'block');
+                    this._parent.removeClass('lazyImage')
+                }, $.extend(a, d), c.data('loaded', !0), e = $('.lazyImage');
+            }
+        });
+    };
+    lazyLoad();
+    b.scroll(lazyLoad);
+    b.resize(lazyLoad);
+    window.lazyLoad = lazyLoad;
+});

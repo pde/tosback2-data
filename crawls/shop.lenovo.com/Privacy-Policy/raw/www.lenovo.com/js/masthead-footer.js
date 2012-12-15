@@ -216,11 +216,6 @@ var countrySettings = function(country,language) {
 			this.searchValue = "Search";
 			this.searchAction = "//shopap.lenovo.com/SEUILibrary/controller/e/myweb/LenovoPortal/en_MY/site.workflow:SimpleSiteSearch";
 	}
-	else if (country.toUpperCase() == 'MP' && language.toLowerCase() == 'en')  {
-			this.menuXml= '/includes/menus/MenusExport_mpind_en_MP.xml';
-			this.searchValue = "Search";
-			this.searchAction = "//shopap.lenovo.com/SEUILibrary/controller/e/aeweb/LenovoPortal/en_AE/site.workflow:SimpleSiteSearch";
-	}
 	else if (country.toUpperCase() == 'NL' && language.toLowerCase() == 'en')  {
 			this.menuXml= '/includes/menus/MenusExport_nlweb_en_NL.xml';
 			this.searchValue = "Search";

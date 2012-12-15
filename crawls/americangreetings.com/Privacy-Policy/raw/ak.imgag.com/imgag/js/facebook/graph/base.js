@@ -1,5 +1,5 @@
 /*
-    $Rev: 173395 $
+    $Rev: 177074 $
     XXX: REQUIREMENTS
         -- OOP.js
 */
@@ -292,12 +292,6 @@ var CommonInterface = {
     },
 
     renderFriends: function (users, friendTemplate, numShow, numCols) {
-        if (this.completeFriendsList == ''){
-            this.completeFriendsList = users;
-        }
-        /* Set the reset friends list for search and only set it if it
-            has never been set before.
-        */
         this.numColsShow = numCols;
         /* Build HTML markup for a user's friends; display grid or list
 

@@ -48,9 +48,7 @@ function loadNextVideo() {
   if (nextVideo==all_new_this_week_videos.length) {
     nextVideo=0;
   }
-  if (!videoPlayer.loadVideo(all_new_this_week_videos[nextVideo])) {
-    loadNextVideo();
-  }
+  videoPlayer.loadVideo(all_new_this_week_videos[nextVideo]);  
 }
 
 // callback function for MENU_PAGE_OPEN event

@@ -1,0 +1,37 @@
+﻿var _ieNotify = {
+	Text: "<b>You are using a version of Internet Explorer that is no longer supported.</b> Please upgrade to " +
+				"the <a target='_blank' href='http://windows.microsoft.com/en-US/internet-explorer/downloads/ie'>" + 
+				"latest Internet Explorer</a> version to fully take advantage of Docstoc.",
+	Render: function()
+	{
+		var div = $j('<div id="ieNotify">' + this.Text + '</div>');
+		div.css('display', 'none');
+
+		//close button
+		var closeBtn = $j('<div class="close">X</div>').click(function () 
+																{ 
+																	$j(this).parent().hide(); 
+																	$j('body').css('background-position', '0 0');
+																});
+		div.append(closeBtn);
+
+		return div;
+	},
+	ShouldShow: function()
+	{
+		var show = ($j.browser.msie && ($j.browser.version && (parseInt($j.browser.version) < 8)) );
+		return (show || false);
+	}
+};
+
+
+$j(function() 
+{
+	//check ie version
+	if (_ieNotify.ShouldShow())
+	{
+		var div = _ieNotify.Render();
+		$j('body').prepend(div).css('background-position', '0 29px');
+		div.show();
+	}
+});

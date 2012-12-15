@@ -154,7 +154,8 @@
 		},
 
 		moveSlider : function( options, position ){
-			if( $( 'div#background img:last-child' ).queue().length <= 0 ){
+
+			if( $( 'div#background img' ).queue().length <= 0 ){
 				var $this = this;
 				var $newContent = this.children( ':eq(' + ( position - options.offset ) / options.step + ')').clone().css({ opacity: 0 });
 				//remove active state

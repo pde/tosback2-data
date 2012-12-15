@@ -73,7 +73,8 @@ $(document).ready(function(){
 	$("#pwcslider .feature").css("height", ($('#pwcslider').height()-27));
 	//$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'}).autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
 	//$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator().autoscroll({ autoplay: true, autopause: true, interval: 5000 }).handleSwipes();
-	$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'}).handleSwipes();
+	//$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'}).handleSwipes();
+	$("#pwcslider").scrollable({ circular: true, size: 1, speed: 400, easing: 'swing', touch: false }).navigator({navi: ".navi",naviItem: 'a'});
 
 	var contacttooltipoffset = 0
 	if (((BrowserDetect.browser)=="Explorer")&((BrowserDetect.version)==8)) { contacttooltipoffset = -225; }
@@ -122,13 +123,7 @@ $(document).ready(function(){
 $.fn.handleSwipes = function() {
 	return this.each(function() {
 		var api = $(this).data("scrollable");
-		api.getRoot().addSwipeEvents()
-		.bind('swipeleft', function() {
-				api.next();
-		})
-		.bind('swiperight', function() {
-				api.prev();
-		});
+		if(api) { api.getRoot().addSwipeEvents().bind('swipeleft', function() { api.next();	}).bind('swiperight', function() { api.prev(); }); }
 	});
 };
 /*

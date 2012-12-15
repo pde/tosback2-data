@@ -12,10 +12,12 @@ function locationWrapper( url ){
 	if ( $.browser.msie ) {
 		var referLink = document.createElement('a');
 		referLink.href = url;
+		referLink.setAttribute("target", "_blank");
 		document.body.appendChild(referLink);
 		referLink.click();
 	} else {
-		window.location = url;
+		//window.location = url;
+		window.open(url);
 	}
 }
 

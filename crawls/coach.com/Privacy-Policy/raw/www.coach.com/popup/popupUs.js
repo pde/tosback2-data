@@ -11,7 +11,7 @@ $(document).ready(function() {
 			'position':'absolute',
 			'top':'60px',
 			'right':'18px',
-			'width':'311px',
+			'width':'525px',
 			'height':'30px',
 			'border':'none'
 		});
@@ -37,7 +37,7 @@ function popWillis(){
 	COACH.willis.initWillis('popup');	
 }
 
-
+ 
 //DIV FROM TOP NAV
 //$(document).ready(function(){
 	if($("#ifm_divCon").parent('div').css('display')=="block"){
@@ -52,6 +52,7 @@ function closeMe()
 			$('#DivContainer').html('');
            	$('#divCon').html('');
 		   	$('#divCon').remove();
+			console.log("this closes all #divCon divs.");
 		}
 
 //URL
@@ -334,7 +335,7 @@ function closeFryeScroll() {
 
 //Men's Wallet Guide div
 function popMenWallets(){
-$('#DivContainer').prepend('<div id="MenWalletGuideDiv" style="visibility:visible; width:847px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeMenWalletGuide()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:847px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="MenWalletGuideFrame" id="MenWalletGuideFrame" src="/us/men_wallet/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
+$('#DivContainer').prepend('<div id="MenWalletGuideDiv" style="visibility:visible; width:847px; top: 60px; *top:-80px; height:557px; background-color:#FFFFFF; position:fixed; _position: absolute; z-index:2;border: 1px solid #000000;  background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeMenWalletGuide()" style="position: absolute; right: 0px; top:0px; _left:680px;" id="closing"><img border="0"  style="float:right;display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:847px; height:557px; margin-left:0px; margin-top:0px; z-index:80000; _hasLayout:true;" name="MenWalletGuideFrame" id="MenWalletGuideFrame" src="/us/modules/men_wallet_guide/201212/index.html" scrolling="no" frameborder="0" allowtransparency="true"></iframe></div>');
 	  
 	 // REPOSITION DIV
 	divname = 'MenWalletGuideDiv';
@@ -450,15 +451,22 @@ function closelegVid() {
 
 }	
 		
-//FATHER DAY SOCIAL
-//FB
-function popupFB(card){
-	var fbArr = new Array(0,228,229, 230, 231, 232, 233);
-	ecard = card +'?CID=Z_FBW'+fbArr[card];
-	var fburl = 'https://www.facebook.com/sharer.php?u=';
-	var url='http://www.coach.com/online/handbags/genWCM-10551-10051-en-/Coach_US/StaticPage/fathersday#';
-	var newfburl = fburl + escape(url+card);
+//pass the url to all share functions
+function setShare(url,twitter,pinterest,pinImg){
+	getFBurl(url);
+	getTWurl(url,twitter);
+	getPinUrl(url,pinterest,pinImg);
+}
 
+//FACEBOOK	
+//get FB URL
+function getFBurl(url){
+	fburl = 'https://www.facebook.com/sharer.php?u=';
+	newfburl = fburl + escape(url);
+	return newfburl;
+}
+//popup FB
+function popupFB(){
 	var width  = 450,
 		height = 380,
 		left   = ($(window).width()  - width)  / 2,
@@ -473,15 +481,16 @@ function popupFB(card){
 	window.open(newfburl, 'fb', opts);
 	return false;				
 }
-		
-//Twitter		
-function popupTW(card){
-	var twurl='https://twitter.com/share?url=';
-	var twurl2='Check out the Things Organized Neatly project for @Coach Men\'s \n';
-	var url='http://bit.ly/KGaFt3';
-	//var newtwurl = twurl + escape(url+card)+'&text='+escape(twurl2);
-	var newtwurl = twurl + escape(url)+'&text='+escape(twurl2);
 
+//TWITTER
+//get twitter URL	
+function getTWurl(url,twitter){
+	twurl='https://twitter.com/share?url=';
+	newtwurl = twurl + escape(url)+'&text='+escape(twitter);			
+	return newtwurl;
+}
+//popup Twitter
+function popupTW(){
 	var width  = 480,
 		height = 350,
 		left   = ($(window).width()  - width)  / 2,
@@ -498,18 +507,13 @@ function popupTW(card){
 }
 
 //Pinterest
-function getPinUrl(card){
+function getPinUrl(url,pinterest,pinImg){
 	var pturl = 'http://pinterest.com/pin/create/button/?url=';
-	var pturl2 = 'http://www.coach.com/online/handbags/MensLandingView?langId=-1&storeId=10551&catalogId=10051&contentName=/CompanyInformation/CoachNews/menslanding&LOC=WWCM';
-	var path= 'http://www.coach.com/us/201206/ecard/images/card_'+card+'.jpg';
-	var desc= 'My favorite portrait from the Things Organized Neatly project for Coach Men\'s';
-	var newpturl = pturl + escape(pturl2) + '&media=' + escape(path) + '&description=' + escape(desc);
-	console.log(newpturl);
+	newpturl = pturl + escape(url) + '&media=' + escape(pinImg) + '&description=' + escape(pinterest);
 	return newpturl;
 	
 }
-function popupPT(card){
-	var newpturl = getPinUrl(card);
+function popupPT(){
 	var width  = 600,
 		height = 350,
 		left   = ($(window).width()  - width)  / 2,
@@ -523,8 +527,7 @@ function popupPT(card){
 
 	window.open(newpturl, 'pinterest', opts);
 	return false;				
-}
-		
+}	
 		
 //dad ecard
 //function popupDadcard(card){
@@ -1854,7 +1857,7 @@ function closeLook() {
 
 function popupWallets() {
 
-	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/wallet_guide/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/modules/men_wallet_guide/201212/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
 	document.getElementById('DivWallet').style.visibility='visible';
 	document.getElementById('DivWallet').style.zIndex='9000';

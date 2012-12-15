@@ -60,6 +60,30 @@ else
   }
 
 }
+///////////////////////////////////////////////////////
+//eVar75 set up for QQ Pages///////
+if (pathnameSpec.indexOf('qq')!=-1)
+{
+  s_clven.eVar75="Step 1: QQ General Landing Page";
+} 
+
+if (pathnameSpec.indexOf('genincentives')!=-1)
+{
+  s_clven.eVar75="Step 1: QQ Incentive Landing Page";
+} 
+
+if (pathnameSpec.indexOf('incentives')!=-1 && pathnameSpec.indexOf('genincentives')==-1)
+{
+  s_clven.eVar75="Step 1: QQ Black Friday Landing Page";
+} 
+
+if (pathnameSpec.indexOf('yearendclearance')!=-1)
+{
+  s_clven.eVar75="Step 1: QQ Year-End Clearance Landing Page";
+} 
+
+///////////////////////////
+
 
 /************************** DFA VARIABLES **************************/
 var dfa_CSID='1518042'; // DFA Client Site ID
@@ -143,6 +167,11 @@ var seList="altavista.co,altavista.de,.aol.,suche.aolsvc.de,ask.jp,ask.co,www.ba
 function s_clven_doPlugins(s_clven) {
 	/* Add calls to plugins here */
 	/* Set pagename*/
+
+
+
+
+
 	if(!s_clven.pageType && !s_clven.pageName) { 	s_clven.pageName=s_clven.getPageName();	}
   /* External Campaign Tracking */
   if(!s_clven.campaign) {
@@ -164,7 +193,41 @@ function s_clven_doPlugins(s_clven) {
   /* Lowercase variables */
   if(s_clven.prop1) { s_clven.prop1=s_clven.prop1.toLowerCase() }
   /* Set Page View Event */
-  s_clven.events=s_clven.apl(s_clven.events,'event2',',',2)
+
+  //Function used to check url var in qq thank you page
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    return vars;
+  }
+
+  var paramqq = getUrlVars()["qq"];
+
+  if (pathnameSpec.indexOf('leadThanks')!=-1 && paramqq == 'true') //add events if on qq thank you page
+  {    
+     s_clven.events=s_clven.apl(s_clven.events,'event2,event7,event20',',',2)
+  }
+  else
+  {    
+     s_clven.events=s_clven.apl(s_clven.events,'event2',',',2)  
+  }
+
+  //Delete url path in the pageName var if running the script on QQ pages//
+  if (s_clven.pageName)
+  {
+     if ((pathnameSpec.indexOf('leadThanks')!=-1 && paramqq == 'true') || 
+         (pathnameSpec.indexOf('qq')!=-1) || 
+         (pathnameSpec.indexOf('genincentives')!=-1) || 
+         (pathnameSpec.indexOf('incentives')!=-1 && pathnameSpec.indexOf('genincentives')==-1) || 
+         (pathnameSpec.indexOf('yearendclearance')!=-1))
+     {
+        s_clven.pageName = s_clven.pageName.substring(s_clven.pageName.lastIndexOf('/')+1);
+     }    
+  }
+
+ 
   /* Set Time Parting Variables - SAMPLE EST */
   var currentDate = new Date()
   var year = currentDate.getFullYear()

@@ -66,7 +66,7 @@ div.subsection_image_link_container + div.subsection_image_link_container {
 
 div.subsection_image_link_container + div.subsection_image_link_container img {
 	position: relative;
-	margin: 12px 0 0 12px;	
+	margin: 15px 0 0 15px;	
 }
 
 div.subsection_image_link_container + div.subsection_image_link_container ul li {
@@ -1032,6 +1032,9 @@ div.relatedResources div.background ul.content li.headline h4 {
 	margin-left: 10px;
 }
 
+.ie8 div.relatedResources div.background ul.content li.headline h4,.gecko div.relatedResources div.background ul.content li.headline h4 {
+	padding-right: 10px;
+}
 div.relatedResources div.background ul.content li.dropdown select[name="quarter_year"] {
 	margin-left: 10px;
 }
@@ -1053,77 +1056,6 @@ padding: 25px 0 25px 50px;
 }
 
 
-
-/* Investors disclaimer */
-#content .parbase.disclaimer{
-  float:left;
-}
-#content .parbase.disclaimer #disclosureLinks{
-  margin:0 0 77px -118px;
-}
-#investors #content .parbase.disclaimer #disclosureLinks{
-  margin:0 0 77px 0;
-}
-
-#terms-container{
-  position:absolute;
-  display:none;
-/*  margin-bottom: 118px;
-*/  margin-left:154px;
-  cursor:pointer;
-  overflow:hidden;
-  height:600px;
-}
-#terms-bg{
-  height:545px;
-  overflow:hidden;
-}
-#terms-container{
-/*  margin-top:-600px;
-*/}
-#investors #terms-container{
-/*  top:120%;
-  margin:-186px 0 0 0;
-*/}
-#terms-scroll-box{
-  padding:10px 0 0 0; /**/
-  width:701px;
-  overflow:hidden;
-  position:relative;
-  top:20px;
-  height:490px !important;
-}
-#terms-scroll-btns{ /**/
-  position:absolute;
-  top:0;
-  width:100%;
-  height:500px;
-  margin-top:11px;
-}
-#terms-scroll-btns img{ /**/
-  position:absolute;
-  display:block;
-  right:0;
-  margin-right:7px;
-}
-#terms-scroll-btns img#terms-scroll-up{ /**/
-  top:0;
-}
-#terms-scroll-btns img#terms-scroll-down{ /**/
-  bottom:0;
-}
-#terms-content{ /**/
-  position:absolute;
-  padding:0 32px 0 20px;
-  overflow:hidden;
-}
-
-#terms-link{
-  margin-left: 121px;
-}
-#investors #terms-link{
-  margin-left:0;
-}
 
 /* Investors Corporate Governance */
 
@@ -1189,13 +1121,22 @@ html.ie8 body#fundamentals ul#topMenuNav > li + li + li a{
   width:333px !important;
 }		
 
-ul#topMenuNav li.active_top_link_menu a, ul#topMenuNav li a:hover {
-  background: none;
+ul#topMenuNav li.active_top_link_menu a,
+ul#topMenuNav li a.hover,
+html.gecko ul#topMenuNav li a:hover ,
+html.webkit ul#topMenuNav li a:hover ,
+html.ie9 ul#topMenuNav li a:hover ,
+html.ie7 ul#topMenuNav li a:hover {
+  background: transparent;
   color: #00b1e9;
   opacity: 1;
   filter: alpha(opacity=100);			
 }
-ul#topMenuNav li a:hover {
+
+html.gecko ul#topMenuNav li a:hover,
+html.webkit ul#topMenuNav li a:hover,
+html.ie9 ul#topMenuNav li a:hover ,
+html.ie7 ul#topMenuNav li a:hover {
   position:relative;z-index:9999;border-left:#848688 solid 1px;
 }
 
@@ -1622,3 +1563,6 @@ html.chrome body#fundamentals table.AnnualIncomeStatement.resultsTable thead th.
 html.ie7 body#fundamentals table.AnnualIncomeStatement.resultsTable thead th.tableSubTitleTextFull { padding-left: 290px;}
 html.ie9 body#fundamentals table.AnnualIncomeStatement.resultsTable thead th.tableSubTitleTextFull { padding-left: 170px;}
 
+html.ie body#corporate-strategy div.container div.flexLeftContent div.callToAction div.actionContainer a.button span.genBtn{
+	padding-top:2px !important;
+}

@@ -1,6 +1,6 @@
 var skaTools = {
 	GNSessionCookie: {},
-	domains: {"1": "www.att.com","2": "www.wireless.att.com","3": "www.uversecentral.att.com"},
+	domains: {"1": "www.att.com","2": "www.wireless.att.com","3": "www.uversecentral.att.com","4": "m.att.com"},
 	hitURL: function(url, callback){
 		var hitTest= document.createElement("script");
 		hitTest.style.display = "none";

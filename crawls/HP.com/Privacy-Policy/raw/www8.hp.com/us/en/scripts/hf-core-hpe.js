@@ -32,9 +32,7 @@ $$('.js_ftr_popup_trigger').addEvent('click',function(event){if(tempCSPopup.isOp
 $('header').addEvent('mouseenter',function(event){if(tempCSPopup.isOpen){event.stopPropagation();event.preventDefault();tempCSPopup.hide();}});if($defined($$('.community')[0])){$$('.community')[0].addEvent('mouseenter',function(event){if(tempCSPopup.isOpen){event.stopPropagation();event.preventDefault();tempCSPopup.hide();}});}
 if($defined($$('.connect')[0])){$$('.connect')[0].addEvent('mouseenter',function(event){if(tempCSPopup.isOpen){event.stopPropagation();event.preventDefault();tempCSPopup.hide();}});}
 if(openOnComplete){tempCSPopup.show();}else{tempCSPopup.hide();}
-hf_core.addFooterPopup(tempCSPopup);this.tempCSPopup=tempCSPopup;var tempTab=new CHKTabControl($$('.js_cselector')[0],{tabClass:'.js_cstab_trigger',tabTarget:'child',tabTargetSelector:'.js_cstab_target',tabSettings:{showEvent:['mouseenter','click'],hideEvent:'mouseleave',showDelay:300,hideDelay:00,useFx:true,fxOpenStyle:{opacity:1},fxCloseStyle:{opacity:1},fxDuration:300,fxTransition:Fx.Transitions.Sine.easeInOut}});$$('div.worldmap div.americas ul li a')[0].addEvent('keydown',function(e){if(e.shift)
-tempTab.hideAllTabs();});$$('div.worldmap div.emea ul li a')[0].addEvent('keydown',function(e){if(e.shift)
-tempTab.hideAllTabs();});$$('div.worldmap div.asia ul li a')[0].addEvent('keydown',function(e){if(e.shift)
+hf_core.addFooterPopup(tempCSPopup);this.tempCSPopup=tempCSPopup;var tempTab=new CHKTabControl($$('.js_cselector')[0],{tabClass:'.js_cstab_trigger',tabTarget:'child',tabTargetSelector:'.js_cstab_target',tabSettings:{showEvent:['mouseenter','click'],hideEvent:'mouseleave',showDelay:300,hideDelay:00,useFx:true,fxOpenStyle:{opacity:1},fxCloseStyle:{opacity:1},fxDuration:300,fxTransition:Fx.Transitions.Sine.easeInOut}});$$('div.worldmap div.worldwide ul li a')[0].addEvent('keydown',function(e){if(e.shift)
 tempTab.hideAllTabs();});tempTab.hideAllTabs();hf_core.addFooterTabControls(tempTab);},showLoadingSplash:function(){this.preloder.removeClass('hidden');this.preloder.set('tween',{duration:300}).tween('opacity',0,1);},hideLoadingSplash:function(func){var me=this;var onCompleteFunc=function(){if($defined(func)){func();}
 me.preloder.addClass('hidden');};this.preloder.set('tween',{onComplete:onCompleteFunc}).tween('opacity',1,0);},requestCountrySelector:function(){var me=this;if(typeof hfws==='undefined'){var req=new Request.HTML({method:'get',url:this.options.worldmapURL,onRequest:function(){me.showLoadingSplash();},onFailure:function(){me.hideLoadingSplash();},onException:function(){me.hideLoadingSplash();},onSuccess:function(responseTree,responseElements,responseHTML){$$('.js_worldmap_wrapper')[0].set('html',responseHTML);me.worldmapCreated=true;var func=function(){me.initCountrySelector(true);};me.hideLoadingSplash(func);}});}
 else{var req=new Request.JSONP({url:cselector_jsp,callbackKey:'jsoncallback',onRequest:function(url){me.showLoadingSplash();},onFailure:function(){me.hideLoadingSplash();},onException:function(){me.hideLoadingSplash();},onComplete:function(response){$$('.js_worldmap_wrapper')[0].set('html',response.country_selector);me.worldmapCreated=true;var func=function(){me.initCountrySelector(true);};me.hideLoadingSplash(func);}});}
@@ -64,11 +62,13 @@ function loadPrintLogo(){if(isIE){window.onbeforeprint=function(){setPrintLogo()
 else{$$('.everything')[0].addEvent('mouseleave',function(){setPrintLogo();});window.addEvent('keydown',function(event){if((event.control&&event.key=='p')||(event.control&&event.key=='P')||event.alt){setPrintLogo();}});}}
 window.addEvent('domready',function(){hf_core=new CHKCoreEngine_Base();initIE6Widgets();var popupManager=new PopupManager();initCommunityWidgets(popupManager);initConnectWidgets(popupManager);initFooter();initHFMetrics('.link_metrics');initHFSearchBox();if(!$defined($('carousel'))&&!$defined($('promo_area'))){initMainNav($('js_main_nav'),false,0);}
 if($defined($$('.js_cselector_trigger')[0])){initAjaxCountrySelector();}
+if(!$defined($$('div.seo_birdseed')[0])){addEmptyBirdSeed();}
 loadPrintLogo();});function loadScript(url,callback){var script=document.createElement("script");script.type="text/javascript";if(script.readyState){script.onreadystatechange=function(){if(script.readyState=="loaded"||script.readyState=="complete"){script.onreadystatechange=null;callback();}};}else{script.onload=function(){callback();};}
 script.src=url;document.getElementsByTagName("head")[0].appendChild(script);}
+function addEmptyBirdSeed(){var emptyBirdSeed=new Element('div',{'class':'seo_birdseed'});emptyBirdSeed.inject($('content'),'after');}
 
 /*
-Date: 9/11/2012 10:00:13 AM
+Date: 12/12/2012 4:57:45 PM
 Non-published images:
 /webdav/17%20United%20States-English%20Web/Building%20Blocks/System/00%20Shared/Content/CSS/i/"',''
 */

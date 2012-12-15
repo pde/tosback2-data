@@ -120,6 +120,7 @@ function renderXp1PrimaryNav(ebcUrl, primaryNavDivId) {
 				if (navContent && navContent != '' && navContent.indexOf("DoNotShow") == -1) {
 					$('#' + primaryNavDivId).css("visibility", "hidden");
 					$('#' + primaryNavDivId).html(navContent);
+					Cof.Header.Zipcode.init();
 				}
 				
 				//Rearrange super nav

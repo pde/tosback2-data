@@ -94,10 +94,10 @@ btg.config={
 };
 	
 
-System.out.println('CODA');
+//System.out.println('CODA');
 //System.out.println(location.pathname);
 if(location.pathname.indexOf('/shows/events/divas')> -1){
-	System.out.println('DIVAS');
+	//System.out.println('DIVAS');
 	// make dart site override
 	btg.config.DoubleClick.dartSite = 'vh1.divas';
 }

@@ -108,7 +108,75 @@
 		
 		
 			<!-- ad_manager --><!-- target.obj_name = flatpage -->
-<!-- DC doesnt require an external library --><!-- End ad manager -->
+<script type="text/javascript"><!--
+
+            function ReadCookie(cookieName) {
+                var theCookie="" + document.cookie ;
+                var ind = theCookie.indexOf( cookieName ) ;
+                if( ind == -1 || cookieName == "" ) return "" ; 
+                var ind1 = theCookie.indexOf( ';', ind ) ;
+                if( ind1 == -1) ind1 = theCookie.length ; 
+                return unescape( theCookie.substring( ind + cookieName.length + 1, ind1 ) ) ;
+            }
+            function ReadZagi( zagiName) {
+                var zagi = ReadCookie( 'zagi' );
+                var ind = zagi.indexOf( zagiName );
+                if( ind == -1 || zagiName == "" ) return "" ;
+                var ind1 = zagi.indexOf( '&', ind ) ;
+                if( ind1 == -1 ) ind1 = zagi.length - 1;
+                return zagi.substring( ind + zagiName.length + 1, ind1 ) ;
+            }
+            //OPTIONAL PARAMETERS FOR GEOGRAPHIC TARGETING 
+            var zip = ReadZagi( 'zip_code' );
+            var city = ReadZagi( 'city' ) ;
+            var state = ReadZagi( 'state' ) ;
+            
+            //OPTIONAL PARAMETERS FOR DEMOGRAPHIC TARGETING 
+            var gender = ReadZagi( 'gender' )=='M'?'m':ReadZagi('gender')=='F'?'f':''
+
+            function AgeToRange( years_old ) {
+                if( isNaN( years_old ) ) { return '' ; }
+                if( years_old < 13 ) { return "" ; }
+                else if( years_old < 18 ) { return "13-17" ; }
+                else if( years_old < 21 ) { return "18-20" ; }
+                else if( years_old < 25 ) { return "21-24" ; }
+                else if( years_old < 30 ) { return "25-29" ; }
+                else if( years_old < 35 ) { return "30-34" ; }
+                else if( years_old < 40 ) { return "35-39" ; }
+                else if( years_old < 45 ) { return "40-44" ; }
+                else if( years_old < 50 ) { return "45-49" ; }
+                else if( years_old < 55 ) { return "50-54" ; }
+                else if( years_old < 60 ) { return "55-59" ; }
+                else if( years_old < 65 ) { return "60-64" ; }
+                return "65plus" ;
+            }
+            var age_range = AgeToRange( ReadZagi( 'age' ) ) ;
+
+            function IncToRange( inc ) {
+                var idx = 0 ;
+                var numstr = '' ;
+                for( idx = 0; idx < inc.length && inc[idx]!='+'; idx ++ ) 
+                    if( ! isNaN( parseInt(inc[idx]) ) ) numstr += inc[idx] ;
+                inc = parseInt( numstr ) ;
+                if( isNaN( inc ) ) { return '' ; }
+                else if( inc <= 24999 ) { return 'less25000' ; }
+                else if( inc <= 34999 ) { return '25000-34999' ; }
+                else if( inc <= 49999 ) { return '35000-49999' ; }
+                else if( inc <= 74999 ) { return '50000-74999' ; }
+                else if( inc <= 99999 ) { return '75000-99999' ; }
+                else if( inc <=149999 ) { return '100000-149999' ; }
+                else if( inc <=249999 ) { return '150000-249999' ; }
+                else if( inc >=250000 ) { return '250000plus' ; }
+            }
+            var inc_range = IncToRange( ReadZagi( 'income' ) ) ;
+
+            var _demo_params = '' ;
+            if( age_range ) _demo_params +=';age=' + age_range ;
+            if( gender ) _demo_params += ';gender=' + gender ;
+            if( inc_range ) _demo_params += ';income=' + inc_range ;
+            
+//--> </script>
+<!-- End ad manager -->
 			
 			
 			
@@ -289,7 +357,10 @@
 	
 
 	
-	<div class="adtag" id="SUPERSTITIAL"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.redd/News%3Bpt=detail%3Btile=1%3Bsz=720x300%3Bord=3473690%3Bdcopt=ist%3Bpos=above" type="text/javascript"></script></div>
+	<div class="adtag" id="SUPERSTITIAL"><script language="JavaScript">
+        // slotname: SUPERSTITIAL
+        document.write('<scr' + 'ipt language="JavaScript" src="' + 'http://ad.doubleclick.net/adj/np.redd/News;pt=detail;tile=1;sz=720x300;ord=50676360;dcopt=ist;pos=above' + _demo_params + '" type="text/javascript"></scr' + 'ipt>');
+        </script></div>
 
 
 <div id="advertising_wrapper" class="default ggnoads">
@@ -300,7 +371,10 @@
 			
 		
 			<div id="leaderboard">
-				<div class="adtag" id="LEADERBOARD_1"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.redd/News%3Bpt=detail%3Btile=6%3Bsz=728x90%3Bord=70251037%3Bpos=above" type="text/javascript"></script></div>
+				<div class="adtag" id="LEADERBOARD_1"><script language="JavaScript">
+        // slotname: LEADERBOARD_1
+        document.write('<scr' + 'ipt language="JavaScript" src="' + 'http://ad.doubleclick.net/adj/np.redd/News;pt=detail;tile=6;sz=728x90;ord=91734190;pos=above' + _demo_params + '" type="text/javascript"></scr' + 'ipt>');
+        </script></div>
 			</div> <!-- end #leaderboard -->
 		
 		</div> <!-- end #advertising -->
@@ -884,7 +958,10 @@
 					
 						<div class="bigbox_wrapper clear">
 	<div class="bigbox">
-		<div class="adtag" id="BIGBOX_1"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.redd/News%3Bpt=detail%3Btile=2%3Bsz=300x250%3Bord=26598959%3Bpos=above" type="text/javascript"></script></div>
+		<div class="adtag" id="BIGBOX_1"><script language="JavaScript">
+        // slotname: BIGBOX_1
+        document.write('<scr' + 'ipt language="JavaScript" src="' + 'http://ad.doubleclick.net/adj/np.redd/News;pt=detail;tile=2;sz=300x250;ord=59444641;pos=above' + _demo_params + '" type="text/javascript"></scr' + 'ipt>');
+        </script></div>
 	</div> <!-- end .bigbox -->
 </div> <!-- end .bigbox_wrapper -->
 						
@@ -939,28 +1016,28 @@
 		<ul class="story_list sidebar_story_list">
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/10/international-team-of-bethel-volunteers-battle/?partner=popular" title="Every Friday a small army of about 60 workers converges on a patch of undeveloped land along the Sacramento River in Redding. " rel="nofollow">Bethel volunteers clean up Redding riverfront  </a>
-					<span class="date">Published 12/10/2012 at 11:28 p.m.</span> <a href="http://www.redding.com/news/2012/dec/10/international-team-of-bethel-volunteers-battle/?partner=popular#comments" class="comment_count" rel="nofollow">101 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/gunman-killed-connecticut-elementary-school-shooti/?partner=popular" title="NEWTOWN, Conn. (AP) — A man killed his mother at their home and then opened fire Friday inside an elementary school, massacring 26 people, including 20 children, as youngsters cowered in fear to the sound of gunshots reverberating through the building and screams echoing over the intercom." rel="nofollow">UPDATED: Gunman kills 26, including 20 children, at Conn. school, commits suicide </a>
+					<span class="date">Updated 12/14/2012 at 7:43 p.m.</span> <a href="http://www.redding.com/news/2012/dec/14/gunman-killed-connecticut-elementary-school-shooti/?partner=popular#comments" class="comment_count" rel="nofollow">178 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/11/redding-police-investigating-reported-home-invasio/?partner=popular" title="Redding police are looking today for four people who allegedly robbed two men at gunpoint Monday night and stole a car." rel="nofollow">Redding police investigating reported home invasion robbery</a>
-					<span class="date">Updated 12/11/2012 at 5:59 a.m.</span> <a href="http://www.redding.com/news/2012/dec/11/redding-police-investigating-reported-home-invasio/?partner=popular#comments" class="comment_count" rel="nofollow">21 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/broken-gas-main-forces-evacuation/?partner=popular" title="Redding police are looking for a dark-colored 2005 Ford Mustang they say crashed into a house and collided with a gas main, forcing the evacuation of homes on Partridge Drive early this morning." rel="nofollow">UPDATED: Car identified that hit gas main, forcing evacuation of Redding neighborhood</a>
+					<span class="date">Updated 12/14/2012 at 7:51 a.m.</span> <a href="http://www.redding.com/news/2012/dec/14/broken-gas-main-forces-evacuation/?partner=popular#comments" class="comment_count" rel="nofollow">17 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/11/editorial-councilors-dont-forget-backing-of-open/?partner=popular" title="As an independent citizen but close student of local government, Gary Cadd has long been a vocal advocate of steps to make the business of the city of Redding and Shasta County more accessible to the public. " rel="nofollow">Editorial: Councilors, don't forget backing of open government </a>
-					<span class="date">Published 12/11/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/11/editorial-councilors-dont-forget-backing-of-open/?partner=popular#comments" class="comment_count" rel="nofollow">53 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/charles-krauthammer-the-right-to-work-dilemma/?partner=popular" title="For all the fury and fistfights outside the Lansing Capitol, what happened in Michigan this week was a simple accommodation to reality. The most famously unionized state, birthplace of the United Auto Workers, royalty of the American working class, became right-to-work. " rel="nofollow">Charles Krauthammer: The right-to-work dilemma </a>
+					<span class="date">Published 12/14/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/14/charles-krauthammer-the-right-to-work-dilemma/?partner=popular#comments" class="comment_count" rel="nofollow">121 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/11/two-vehicle-collision-reported-benton-drive/?partner=popular" title="Paramedics today are headed to reports of a two vehicle wreck in which one vehicle crashed through a tree. " rel="nofollow">UPDATE: One injured in two-vehicle crash </a>
-					<span class="date">Updated 12/11/2012 at 5:07 p.m.</span> <a href="http://www.redding.com/news/2012/dec/11/two-vehicle-collision-reported-benton-drive/?partner=popular#comments" class="comment_count" rel="nofollow">3 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/12/new-wic-office-attracts-hundreds-more-than/?partner=popular" title="When the Shasta County Health and Human Services Agency moved a program to serve mothers of young children to an office on Churn Creek last year, they expected to serve 1,100 families monthly." rel="nofollow">New WIC office in Redding attracts hundreds more than expected </a>
+					<span class="date">Published 12/12/2012 at 11:21 p.m.</span> <a href="http://www.redding.com/news/2012/dec/12/new-wic-office-attracts-hundreds-more-than/?partner=popular#comments" class="comment_count" rel="nofollow">196 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/11/dignity-health-will-lay-roughly-50-north-state-emp/?partner=popular" title="Mercy Medical Center parent Dignity Health plans to lay off roughly 40 employees by early next year, the company said today." rel="nofollow">UPDATED: Dignity Health will lay off roughly 40 North state employees</a>
-					<span class="date">Updated 12/11/2012 at 5:57 p.m.</span> <a href="http://www.redding.com/news/2012/dec/11/dignity-health-will-lay-roughly-50-north-state-emp/?partner=popular#comments" class="comment_count" rel="nofollow">36 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/minor-injury-collision-slowing-traffic-hwy-273/?partner=popular" title="Police say a 25-year-old drunken driver caused a three-vehicle wreck that left one man suffering from moderate injuries on Highway 273 this morning.  " rel="nofollow">UPDATE: Police say drunken driver caused moderate-injury crash</a>
+					<span class="date">Updated 12/14/2012 at 5:35 p.m.</span> <a href="http://www.redding.com/news/2012/dec/14/minor-injury-collision-slowing-traffic-hwy-273/?partner=popular#comments" class="comment_count" rel="nofollow">11 comments</a>
 				</li>
 			
 		</ul>
@@ -972,15 +1049,15 @@
 			
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.redding.com/photos/galleries/2012/dec/10/clear-creek-kayak-drowning/?partner=popular" title="Clear Creek kayak drowning" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/12/10/1211_RCLO_kayakdrown1w_t90_70.jpg" width="90" alt="Clear Creek kayak drowning" /> Clear Creek kayak drowning</a>
+					<a href="http://www.redding.com/photos/galleries/2012/dec/14/connecticut-elementary-school-shooting/?partner=popular" title="Connecticut Elementary School Shooting" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/12/14/Connecticut_School_Sh_John_22_t90_70.jpg" width="90" alt="Connecticut Elementary School Shooting" /> Connecticut Elementary School Shooting</a>
 				</div> <!-- end .bucket_media_item -->
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.redding.com/photos/galleries/2012/oct/17/clarizios-deli/?partner=popular" title="Clarizio's Deli" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/10/17/Clarizio-01_t90_70.jpg" width="90" alt="Clarizio's Deli" /> Clarizio's Deli</a>
+					<a href="http://www.redding.com/photos/galleries/2012/oct/24/hearth-cafe-drive-thru/?partner=popular" title="From the Hearth Cafe drive-thru" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/10/24/From_The_Hearth_-_Main_t90_70.jpg" width="90" alt="From the Hearth Cafe drive-thru" /> From the Hearth Cafe drive-thru</a>
 				</div> <!-- end .bucket_media_item -->
 			
 				<div class="bucket_media_item sidebar_bucket_media_item">
-					<a href="http://www.redding.com/photos/galleries/2012/nov/25/enterprise-wins-championship/?partner=popular" title="Enterprise wins championship" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/11/25/1125_RCSP_hornets19_w_t90_70.jpg" width="90" alt="Enterprise wins championship" /> Enterprise wins championship</a>
+					<a href="http://www.redding.com/photos/galleries/2012/dec/12/nutcracker/?partner=popular" title="The Nutcracker" rel="nofollow"><img src="../../media.redding.com/media/img/photos/2012/12/12/Nutcracker_I_t90_70.jpg" width="90" alt="The Nutcracker" /> The Nutcracker</a>
 				</div> <!-- end .bucket_media_item -->
 			
 
@@ -994,29 +1071,28 @@
 		<ul class="story_list sidebar_story_list">
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/10/international-team-of-bethel-volunteers-battle/?partner=popular" title="Every Friday a small army of about 60 workers converges on a patch of undeveloped land along the Sacramento River in Redding. " rel="nofollow">Bethel volunteers clean up Redding riverfront  </a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/10/international-team-of-bethel-volunteers-battle/?partner=popular#comments" class="comment_count" rel="nofollow">101 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/12/thomas-sowell-skip-the-shopping-maul-buy-books/?partner=popular" title="During the holidays, a shopping mall can be more like a shopping maul. One way to avoid that scene is to give books as Christmas gifts, since books can be bought online, painlessly. " rel="nofollow">Thomas Sowell: Skip the shopping maul; buy books</a>
+					<span class="date">Published 12/12/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/12/thomas-sowell-skip-the-shopping-maul-buy-books/?partner=popular#comments" class="comment_count" rel="nofollow">235 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/09/charles-menoher-did-new-councilor-break-brown/?partner=popular" title="Having attended my first Redding City Council meeting in some time on Tuesday night, I came away thinking it was possible that just-seated City Council member Gary Cadd may have violated the Brown Act in his first official action." rel="nofollow">Charles Menoher: Did new councilor break Brown Act? </a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/09/charles-menoher-did-new-councilor-break-brown/?partner=popular#comments" class="comment_count" rel="nofollow">87 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/12/new-wic-office-attracts-hundreds-more-than/?partner=popular" title="When the Shasta County Health and Human Services Agency moved a program to serve mothers of young children to an office on Churn Creek last year, they expected to serve 1,100 families monthly." rel="nofollow">New WIC office in Redding attracts hundreds more than expected </a>
+					<span class="date">Published 12/12/2012 at 11:21 p.m.</span> <a href="http://www.redding.com/news/2012/dec/12/new-wic-office-attracts-hundreds-more-than/?partner=popular#comments" class="comment_count" rel="nofollow">196 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/10/man-standing-naked-alongside-highway-44-slows-morn/?partner=popular" title="A man standing naked alongside Highway 44 in Redding this morning slowed the morning commute.
-The man was reported on the side of eastbound 44 on the Sacramento River Bridge just after 7 a.m. " rel="nofollow">Man standing naked alongside Highway 44 slows morning commute in Redding</a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/10/man-standing-naked-alongside-highway-44-slows-morn/?partner=popular#comments" class="comment_count" rel="nofollow">81 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/gunman-killed-connecticut-elementary-school-shooti/?partner=popular" title="NEWTOWN, Conn. (AP) — A man killed his mother at their home and then opened fire Friday inside an elementary school, massacring 26 people, including 20 children, as youngsters cowered in fear to the sound of gunshots reverberating through the building and screams echoing over the intercom." rel="nofollow">UPDATED: Gunman kills 26, including 20 children, at Conn. school, commits suicide </a>
+					<span class="date">Published 12/14/2012 at 9:28 a.m.</span> <a href="http://www.redding.com/news/2012/dec/14/gunman-killed-connecticut-elementary-school-shooti/?partner=popular#comments" class="comment_count" rel="nofollow">178 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/10/dickerson-reflects-on-his-time-on-the-council/?partner=popular" title="Despite his loss in the Redding City Council election, Dick Dickerson knows he&#39;ll stay visible in the community. " rel="nofollow">Former Redding councilman reflects on his time with the city and his future </a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/10/dickerson-reflects-on-his-time-on-the-council/?partner=popular#comments" class="comment_count" rel="nofollow">66 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/12/larry-kay-republicans-need-to-tune-out-the-heads/?partner=popular" title="When a leader recognizes the ever-growing disparity between wealthy individuals and the middle class, those who aspire to join the middle class and of course the poor and then advocates for policies that might narrow that disparity, well I say bravo." rel="nofollow">Larry Kay: Republicans need to tune out the talking heads </a>
+					<span class="date">Published 12/12/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/12/larry-kay-republicans-need-to-tune-out-the-heads/?partner=popular#comments" class="comment_count" rel="nofollow">121 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/09/ann-yarbrough-the-bible-makes-gods-view-clear/?partner=popular" title="There was a recent article about a federal judge blocking a law that bars licensed psychotherapists from trying to change the sexual orientations of gay minors. This brought out a debate in the online comment section as to whether homosexuality was acceptable or not, even in God&#39;s eyes." rel="nofollow">Ann Yarbrough: The Bible makes God's view clear </a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/09/ann-yarbrough-the-bible-makes-gods-view-clear/?partner=popular#comments" class="comment_count" rel="nofollow">65 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/14/charles-krauthammer-the-right-to-work-dilemma/?partner=popular" title="For all the fury and fistfights outside the Lansing Capitol, what happened in Michigan this week was a simple accommodation to reality. The most famously unionized state, birthplace of the United Auto Workers, royalty of the American working class, became right-to-work. " rel="nofollow">Charles Krauthammer: The right-to-work dilemma </a>
+					<span class="date">Published 12/14/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/14/charles-krauthammer-the-right-to-work-dilemma/?partner=popular#comments" class="comment_count" rel="nofollow">121 comments</a>
 				</li>
 			
 		</ul>
@@ -1028,29 +1104,29 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 		<ul class="story_list sidebar_story_list">
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/04/shooting-reported-near-west-valley-high-school/?partner=popular" title="A chase that started this morning in Cottonwood ended with at least two people shot by California Highway Patrol officers." rel="nofollow">UPDATED: Man, pregnant woman shot after chase</a>
-					<span class="date">Updated 12/4/2012 at 5:21 p.m.</span> <a href="http://www.redding.com/news/2012/dec/04/shooting-reported-near-west-valley-high-school/?partner=popular#comments" class="comment_count" rel="nofollow">135 comments</a>
-				</li>
-			
-				<li>
 					<a href="http://www.redding.com/news/2012/dec/06/state-fire-board-makes-rural-fire-fee-permanent/?partner=popular" title="A $150 fire fee that has drawn sharp criticism from rural officials statewide as an illegal tax was made permanent  Wednesday. " rel="nofollow">State fire board makes rural fire "fee" permanent</a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/06/state-fire-board-makes-rural-fire-fee-permanent/?partner=popular#comments" class="comment_count" rel="nofollow">123 comments</a>
+					<span class="date">Published 12/6/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/06/state-fire-board-makes-rural-fire-fee-permanent/?partner=popular#comments" class="comment_count" rel="nofollow">123 comments</a>
 				</li>
 			
 				<li>
 					<a href="http://www.redding.com/news/2012/dec/10/man-standing-naked-alongside-highway-44-slows-morn/?partner=popular" title="A man standing naked alongside Highway 44 in Redding this morning slowed the morning commute.
 The man was reported on the side of eastbound 44 on the Sacramento River Bridge just after 7 a.m. " rel="nofollow">Man standing naked alongside Highway 44 slows morning commute in Redding</a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/10/man-standing-naked-alongside-highway-44-slows-morn/?partner=popular#comments" class="comment_count" rel="nofollow">81 comments</a>
+					<span class="date">Published 12/10/2012 at 8:01 a.m.</span> <a href="http://www.redding.com/news/2012/dec/10/man-standing-naked-alongside-highway-44-slows-morn/?partner=popular#comments" class="comment_count" rel="nofollow">80 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/02/aspergers-dropped-revised-diagnosis-manual-mental/?partner=popular" title="CHICAGO (AP) — The now familiar term 'Asperger's disorder' is being dropped. And abnormally bad and frequent temper tantrums will be given a scientific-sounding diagnosis called DMDD. But 'dyslexia' and other learning disorders remain." rel="nofollow">Asperger's dropped from revised diagnosis manual for mental disorders</a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/02/aspergers-dropped-revised-diagnosis-manual-mental/?partner=popular#comments" class="comment_count" rel="nofollow">26 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/11/socal-water-district-wants-shasta-dam-raised/?partner=popular" title="The Metropolitan Water District voted Tuesday to make raising Shasta Dam one of its legislative priorities for 2013, a move some state water watchers said is another step by the Southern California agency to go after more north state water." rel="nofollow">SoCal water district supports raising of Shasta Dam</a>
+					<span class="date">Published 12/11/2012 at 11:24 p.m.</span> <a href="http://www.redding.com/news/2012/dec/11/socal-water-district-wants-shasta-dam-raised/?partner=popular#comments" class="comment_count" rel="nofollow">34 comments</a>
 				</li>
 			
 				<li>
-					<a href="http://www.redding.com/news/2012/dec/02/mystery-bird-spotted-nm-national-refuge/?partner=popular" title="Wildlife managers at one of the nation's premiere bird-watching spots have a mystery on their hands." rel="nofollow">Mystery bird spotted at NM national refuge </a>
-					<span class="date">Updated // at : </span> <a href="http://www.redding.com/news/2012/dec/02/mystery-bird-spotted-nm-national-refuge/?partner=popular#comments" class="comment_count" rel="nofollow">2 comments</a>
+					<a href="http://www.redding.com/news/2012/dec/06/controversy-surrounds-redding-tattoo-artist-exit/?partner=popular" title="Redding tattoo artist Jamie Davies&#39; run on &#34;Ink Master&#34; ended with controversy Tuesday night." rel="nofollow">Controversy surrounds Redding tattoo artist Davies' exit from 'Ink Master' </a>
+					<span class="date">Published 12/6/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/06/controversy-surrounds-redding-tattoo-artist-exit/?partner=popular#comments" class="comment_count" rel="nofollow">51 comments</a>
+				</li>
+			
+				<li>
+					<a href="http://www.redding.com/news/2012/dec/08/marc-beauchamp-ex-cop-we-left-redding-after-35/?partner=popular" title="Last week&#39;s column about burglary, crime and the parolee problem in Redding generated a good bit of comment, both online and addressed to my personal e-mail box. Among the e-mails was one from retired Redding police captain Gary Dirks. " rel="nofollow">Marc Beauchamp: Ex cop: 'We left Redding after 35 years'</a>
+					<span class="date">Published 12/8/2012 at 12:00 a.m.</span> <a href="http://www.redding.com/news/2012/dec/08/marc-beauchamp-ex-cop-we-left-redding-after-35/?partner=popular#comments" class="comment_count" rel="nofollow">90 comments</a>
 				</li>
 			
 		</ul>
@@ -1091,20 +1167,20 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 		<div class="sidebar_current_weather clear">
 	
 			<div id="sidebar_current_icon">
-				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/7_170.png" width="120px" alt="Overcast" />
+				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/48_170.png" width="120px" alt="Fog/Mist" />
 			</div> <!-- end #radar -->
 	
 			<div id="sidebar_current_weather">
 				<span class="current_temp_label">Currently</span>
-				<span class="current_temp">45<span class="current_temp_degree">&deg;</span></span>
-				<span class="current_conditions">Overcast</span>
-				<span class="current_wind">Wind: N 4mph</span>
+				<span class="current_temp">28<span class="current_temp_degree">&deg;</span></span>
+				<span class="current_conditions">Fog/Mist</span>
+				<span class="current_wind">Wind: Calm</span>
 			</div> <!-- end #current_conditions -->
 	
 			<div id="sidebar_hi_low">
 				<span class="today_temp_label">Today</span>
-				<span class="hi_temp">51<span class="current_temp_degree">&deg;</span></span>
-				<span class="lo_temp">34<span class="current_temp_degree">&deg;</span></span>
+				<span class="hi_temp">44<span class="current_temp_degree">&deg;</span></span>
+				<span class="lo_temp">33<span class="current_temp_degree">&deg;</span></span>
 			</div> <!-- end #hi_low -->
 			
 		</div> <!-- end #weather -->
@@ -1114,48 +1190,48 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	<div id="sidebar_weather_3day" class="bucket_secondary preventFOUC">
 		<div id="sidebar_weather_forecast_3day" class="clear">
 			<div class="sidebar_forecast_day">
-				<div class="sidebar_weather_day">Wed</div><div class="sidebar_weather_day">06:00 PM</div>
+				<div class="sidebar_weather_day">Sat</div><div class="sidebar_weather_day">05:00 PM</div>
 				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/40_100.png" alt="Mostly Cloudy Showers" />
 				<div class="sidebar_forecast_conditions">Mostly Cloudy Showers</div>
-				<div class="sidebar_forecast_hilo">Temp: <span class="temp">43&deg;</span></div>
+				<div class="sidebar_forecast_hilo">Temp: <span class="temp">39&deg;</span></div>
 			</div>
 			<div class="sidebar_forecast_day">
-				<div class="sidebar_weather_day">Thu</div><div class="sidebar_weather_day">06:00 AM</div>
-				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/35_100.png" alt="Partly Cloudy" />
-				<div class="sidebar_forecast_conditions">Partly Cloudy</div>
+				<div class="sidebar_weather_day">Sun</div><div class="sidebar_weather_day">05:00 AM</div>
+				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/40_100.png" alt="Mostly Cloudy Showers" />
+				<div class="sidebar_forecast_conditions">Mostly Cloudy Showers</div>
 				<div class="sidebar_forecast_hilo">Temp: <span class="temp">34&deg;</span></div>
 			</div><!-- End sidebar_forecast_day -->
 			<div class="sidebar_forecast_day">
-				<div class="sidebar_weather_day">Thu</div><div class="sidebar_weather_day">06:00 PM</div>
-				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/35_100.png" alt="Partly Cloudy" />
-				<div class="sidebar_forecast_conditions">Partly Cloudy</div>
-				<div class="sidebar_forecast_hilo">Temp: <span class="temp">41&deg;</span></div>
+				<div class="sidebar_weather_day">Sun</div><div class="sidebar_weather_day">05:00 PM</div>
+				<img src="../../media.redding.com/corp_assets/asphalt/img/weather/icons/40_100.png" alt="Mostly Cloudy Showers" />
+				<div class="sidebar_forecast_conditions">Mostly Cloudy Showers</div>
+				<div class="sidebar_forecast_hilo">Temp: <span class="temp">43&deg;</span></div>
 			</div><!-- End sidebar_forecast_day -->
 			<div class="clear"></div>
 			<div class="sidebar_forecast_detail">
 				<div class="sidebar_forecast_details">
 					<div class="sidebar_forecast_rulepadding">
-						<p>Feels Like: 40&deg;</p>
-						<p>Humidity: 76%</p>
-						<p>Precip: 21%</p>
+						<p>Feels Like: 35&deg;</p>
+						<p>Humidity: 82%</p>
+						<p>Precip: 62%</p>
 					</div>
 				</div>
 			</div><!-- End sidebar_forecast_detail -->
 			<div class="sidebar_forecast_detail">
 				<div class="sidebar_forecast_details">
 					<div class="sidebar_forecast_rulepadding">
-						<p>Feels Like: 31&deg;</p>
-						<p>Humidity: 86%</p>
-						<p>Precip: 3%</p>
+						<p>Feels Like: 30&deg;</p>
+						<p>Humidity: 89%</p>
+						<p>Precip: 53%</p>
 					</div>
 				</div>
 			</div><!-- End sidebar_forecast_detail -->
 			<div class="sidebar_forecast_detail">
 				<div class="sidebar_forecast_details">
 					<div class="sidebar_forecast_rulepadding last">
-						<p>Feels Like: 39&deg;</p>
-						<p>Humidity: 76%</p>
-						<p>Precip: 13%</p>
+						<p>Feels Like: 41&deg;</p>
+						<p>Humidity: 89%</p>
+						<p>Precip: 56%</p>
 					</div>
 				</div>
 			</div><!-- End sidebar_forecast_detail -->
@@ -1172,7 +1248,7 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	<a href="http://infocus.redding.com/Media/View/2869971"><img src="../../6f7110da3729641904fd-6f8cbe8a047a13a27865091945a9af86.r78.cf1.rackcdn.com/da2bd23d-85fb-4e2e-9ebe-0574525a07a4.jpg" /></a> <a href="http://infocus.redding.com/Media/View/2869971" title="Lenticular Spaceship Cloud">Lenticular Spaceship Cloud </a>
 	<div class="date ugc_sidebar">
 		12/7/12<br />
-		2:39 p.m.<br />
+		8:39 p.m.<br />
 	</div>
 </div>
 
@@ -1180,7 +1256,7 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	<a href="http://infocus.redding.com/Media/View/2862801"><img src="../../6f7110da3729641904fd-6f8cbe8a047a13a27865091945a9af86.r78.cf1.rackcdn.com/2c8a6dec-8699-4f01-9c1e-e57b82fad91e.jpg" /></a> <a href="http://infocus.redding.com/Media/View/2862801" title="muddy water">muddy water </a>
 	<div class="date ugc_sidebar">
 		12/4/12<br />
-		2:39 p.m.<br />
+		8:39 p.m.<br />
 	</div>
 </div>
 
@@ -1227,7 +1303,10 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	<div class="sidebar_more_link sidebar_more_link_weather">
 		<div class="sidebar_weather_ad_rule"></div>
 		<div id="sidebar_weather_ad">
-			<div class="adtag" id="WEATHER_SPONSOR"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.redd/News%3Bpt=detail%3Btile=4%3Bsz=120x30%3Bord=85444833%3Bpos=below" type="text/javascript"></script></div>
+			<div class="adtag" id="WEATHER_SPONSOR"><script language="JavaScript">
+        // slotname: WEATHER_SPONSOR
+        document.write('<scr' + 'ipt language="JavaScript" src="' + 'http://ad.doubleclick.net/adj/np.redd/News;pt=detail;tile=4;sz=120x30;ord=90199381;pos=below' + _demo_params + '" type="text/javascript"></scr' + 'ipt>');
+        </script></div>
 		</div>
 		<a href="http://www.redding.com/weather/" title="More Redding Weather">More Weather &raquo;</a>
 	</div>
@@ -1253,20 +1332,20 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	<ul class="cal_tab_header clear">
 		
 			<li class="cal_tab_first ui-tabs-selected">
-				<a href="index.html#Dec12" value="2012-12-12">
-					<span class="cal_tab_day">Wednesday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">12</span>
+				<a href="index.html#Dec15" value="2012-12-15">
+					<span class="cal_tab_day">Saturday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">15</span>
 				</a>
 			</li>
 		
 			<li >
-				<a href="index.html#Dec13" value="2012-12-13">
-					<span class="cal_tab_day">Thursday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">13</span>
+				<a href="index.html#Dec16" value="2012-12-16">
+					<span class="cal_tab_day">Sunday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">16</span>
 				</a>
 			</li>
 		
 			<li >
-				<a href="index.html#Dec14" value="2012-12-14">
-					<span class="cal_tab_day">Friday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">14</span>
+				<a href="index.html#Dec17" value="2012-12-17">
+					<span class="cal_tab_day">Monday</span> <span class="cal_tab_month">Dec</span> <span class="cal_tab_date">17</span>
 				</a>
 			</li>
 		
@@ -1279,109 +1358,33 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 	</ul>
 	
 	
-		<div id="Dec12" class="bucket_secondary">
+		<div id="Dec15" class="bucket_secondary">
 			
 			<ul class="sidebar_list">
 				
 					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/11106/" class="browse_list_title" title="Clutter Support Group">Clutter Support Group</a> <a href="http://www.redding.com/places/redding-library/" class="browse_list_venue" title="Redding Library">Redding Library</a></h4>
-						<h5 class="browse_list_time">6 p.m.</h5>
-					</li>			
-				
-					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/11826/" class="browse_list_title" title="33rd Annual Madrigal Dinner">33rd Annual Madrigal Dinner</a> <a href="http://www.redding.com/places/pilgrim-congregational-church/" class="browse_list_venue" title="Pilgrim Congregational Church">Pilgrim Congregational Church</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
-					</li>			
-				
-					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/11978/" class="browse_list_title" title="Enterprise High School's 25th annual Victorian Christmas Celebration">Enterprise High School's 25th annual Victorian Christmas Celebration</a> <a href="http://www.redding.com/places/enterprise-high-school/" class="browse_list_venue" title="Enterprise High School">Enterprise High School</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
-					</li>			
-				
-					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/11999/" class="browse_list_title" title="Military Order Purple Heart meeting">Military Order Purple Heart meeting</a> <a href="http://www.redding.com/places/redding-veterans-memorial-hall/" class="browse_list_venue" title="Redding Veterans Memorial Hall">Redding Veterans Memorial Hall</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
-					</li>			
-				
-					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/573/" class="browse_list_title" title="Genealogy Assistance">Genealogy Assistance</a> <a href="http://www.redding.com/places/redding-library/" class="browse_list_venue" title="Redding Library">Redding Library</a></h4>
-						<h5 class="browse_list_time">1 p.m.</h5>
-					</li>			
-				
-			
-			</ul>
-			
-			<div class="sidebar_more_link sidebar_more_link_events">
-				<a href="http://www.redding.com/events/" title="More Redding Events">More Events &raquo;</a>
-			</div>
-			
-		</div> <!-- end #Dec12 -->
-	
-		<div id="Dec13" class="bucket_secondary preventFOUC">
-			
-			<ul class="sidebar_list">
-				
-					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/12091/" class="browse_list_title" title="California Retired Teachers Association Luncheon">California Retired Teachers Association Luncheon</a> <a href="http://www.redding.com/places/shasta-senior-nutrition/" class="browse_list_venue" title="Shasta Senior Nutrition">Shasta Senior Nutrition</a></h4>
-						<h5 class="browse_list_time">11 a.m.</h5>
-					</li>			
-				
-					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/12032/" class="browse_list_title" title="AARP Driver Safety Refresher Course">AARP Driver Safety Refresher Course</a> <a href="http://www.redding.com/places/redding-library/" class="browse_list_venue" title="Redding Library">Redding Library</a></h4>
-						<h5 class="browse_list_time">1 p.m.</h5>
-					</li>			
-				
-					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/12033/" class="browse_list_title" title="AARP Driver Safety Refresher Course">AARP Driver Safety Refresher Course</a> <a href="http://www.redding.com/places/redding-library/" class="browse_list_venue" title="Redding Library">Redding Library</a></h4>
-						<h5 class="browse_list_time">1 p.m.</h5>
-					</li>			
-				
-					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/11824/" class="browse_list_title" title="33rd Annual Madrigal Dinner">33rd Annual Madrigal Dinner</a> <a href="http://www.redding.com/places/pilgrim-congregational-church/" class="browse_list_venue" title="Pilgrim Congregational Church">Pilgrim Congregational Church</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
-					</li>			
-				
-					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/11978/" class="browse_list_title" title="Enterprise High School's 25th annual Victorian Christmas Celebration">Enterprise High School's 25th annual Victorian Christmas Celebration</a> <a href="http://www.redding.com/places/enterprise-high-school/" class="browse_list_venue" title="Enterprise High School">Enterprise High School</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
-					</li>			
-				
-			
-			</ul>
-			
-			<div class="sidebar_more_link sidebar_more_link_events">
-				<a href="http://www.redding.com/events/" title="More Redding Events">More Events &raquo;</a>
-			</div>
-			
-		</div> <!-- end #Dec13 -->
-	
-		<div id="Dec14" class="bucket_secondary preventFOUC">
-			
-			<ul class="sidebar_list">
-				
-					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/9638/" class="browse_list_title" title="Catalyst Breakfast of Champions - Young Professionals Breakfast">Catalyst Breakfast of Champions - Young Professionals Breakfast</a> <a href="http://www.redding.com/places/c-r-gibbs-american-grille2300-hilltop-dr/" class="browse_list_venue" title="C R Gibbs American Grille">C R Gibbs American Grille</a></h4>
+						<h4><a href="http://www.redding.com/events/goto/12011/" class="browse_list_title" title="Fall River Christmas Bird Count">Fall River Christmas Bird Count</a> <a href="http://www.redding.com/places/shasta-county-area/" class="browse_list_venue" title="See Description">See Description</a></h4>
 						<h5 class="browse_list_time">7 a.m.</h5>
 					</li>			
 				
 					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/11867/" class="browse_list_title" title="Tour de-Lights!">Tour de-Lights!</a> <a href="http://www.redding.com/places/call-location-information/" class="browse_list_venue" title="Contact for Location Information">Contact for Location Information</a></h4>
-						<h5 class="browse_list_time">6 p.m.</h5>
+						<h4><a href="http://www.redding.com/events/goto/12109/" class="browse_list_title" title="Targets for Tots">Targets for Tots</a> <a href="http://www.redding.com/places/ClearCreekSportsClub/" class="browse_list_venue" title="Clear Creek Sports Club">Clear Creek Sports Club</a></h4>
+						<h5 class="browse_list_time">8 a.m.</h5>
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/12075/" class="browse_list_title" title="Silent Night, Holy Night concert">Silent Night, Holy Night concert</a> <a href="http://www.redding.com/places/Seventh-dayAdventistChurchAnderson/" class="browse_list_venue" title="Seventh-day Adventist Church, Anderson">Seventh-day Adventist Church, Anderson</a></h4>
-						<h5 class="browse_list_time">6 p.m.</h5>
+						<h4><a href="http://www.redding.com/events/goto/11710/" class="browse_list_title" title="Clear Creek Day Hike">Clear Creek Day Hike</a> <a href="http://www.redding.com/places/shasta-county-area/" class="browse_list_venue" title="See Description">See Description</a></h4>
+						<h5 class="browse_list_time">9 a.m.</h5>
 					</li>			
 				
 					<li class="even clear">
-						<h4><a href="http://www.redding.com/events/goto/11823/" class="browse_list_title" title="33rd Annual Madrigal Dinner">33rd Annual Madrigal Dinner</a> <a href="http://www.redding.com/places/pilgrim-congregational-church/" class="browse_list_venue" title="Pilgrim Congregational Church">Pilgrim Congregational Church</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
+						<h4><a href="http://www.redding.com/events/goto/12107/" class="browse_list_title" title=" Local Womens Ministy Pajama/slipper drive"> Local Womens Ministy Pajama/slipper drive</a> <a href="http://www.redding.com/places/applebees-neighborhood-grill-220-antelope/" class="browse_list_venue" title="Applebee's Neighborhood Grill">Applebee's Neighborhood Grill</a></h4>
+						<h5 class="browse_list_time">10 a.m.</h5>
 					</li>			
 				
 					<li class="odd clear">
-						<h4><a href="http://www.redding.com/events/goto/11978/" class="browse_list_title" title="Enterprise High School's 25th annual Victorian Christmas Celebration">Enterprise High School's 25th annual Victorian Christmas Celebration</a> <a href="http://www.redding.com/places/enterprise-high-school/" class="browse_list_venue" title="Enterprise High School">Enterprise High School</a></h4>
-						<h5 class="browse_list_time">7 p.m.</h5>
+						<h4><a href="http://www.redding.com/events/goto/11845/" class="browse_list_title" title="Science Saturday: The Physics of Toys">Science Saturday: The Physics of Toys</a> <a href="http://www.redding.com/places/turtle-bay-museum/" class="browse_list_venue" title="Turtle Bay Exploration Park">Turtle Bay Exploration Park</a></h4>
+						<h5 class="browse_list_time">11 a.m.</h5>
 					</li>			
 				
 			
@@ -1391,7 +1394,83 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 				<a href="http://www.redding.com/events/" title="More Redding Events">More Events &raquo;</a>
 			</div>
 			
-		</div> <!-- end #Dec14 -->
+		</div> <!-- end #Dec15 -->
+	
+		<div id="Dec16" class="bucket_secondary preventFOUC">
+			
+			<ul class="sidebar_list">
+				
+					<li class="even clear">
+						<h4><a href="http://www.redding.com/events/goto/11921/" class="browse_list_title" title="United Bikers of Northern California "Save Christmas Ride"">United Bikers of Northern California "Save Christmas Ride"</a> <a href="http://www.redding.com/places/kmart---redding/" class="browse_list_venue" title="KMart - Redding">KMart - Redding</a></h4>
+						<h5 class="browse_list_time">11 a.m.</h5>
+					</li>			
+				
+					<li class="odd clear">
+						<h4><a href="http://www.redding.com/events/goto/11811/" class="browse_list_title" title="Yarns at the Redding Library">Yarns at the Redding Library</a> <a href="http://www.redding.com/places/redding-library/" class="browse_list_venue" title="Redding Library">Redding Library</a></h4>
+						<h5 class="browse_list_time">1 p.m.</h5>
+					</li>			
+				
+					<li class="even clear">
+						<h4><a href="http://www.redding.com/events/goto/12048/" class="browse_list_title" title="Rivercity Jazz Society Concert, Straight Ahead Jazz Combo">Rivercity Jazz Society Concert, Straight Ahead Jazz Combo</a> <a href="http://www.redding.com/places/redding-elks-lodge/" class="browse_list_venue" title="Redding Elks Lodge">Redding Elks Lodge</a></h4>
+						<h5 class="browse_list_time">1 p.m.</h5>
+					</li>			
+				
+					<li class="odd clear">
+						<h4><a href="http://www.redding.com/events/goto/12086/" class="browse_list_title" title="California Grapettes Fastpitch Softball Team Tryouts">California Grapettes Fastpitch Softball Team Tryouts</a> <a href="http://www.redding.com/places/anderson-river-park/" class="browse_list_venue" title="Anderson River Park">Anderson River Park</a></h4>
+						<h5 class="browse_list_time">1 p.m.</h5>
+					</li>			
+				
+					<li class="even clear">
+						<h4><a href="http://www.redding.com/events/goto/10020/" class="browse_list_title" title="Jefferson State Blues Society Jam">Jefferson State Blues Society Jam</a> <a href="http://www.redding.com/places/eddys/" class="browse_list_venue" title="Eddy's">Eddy's</a></h4>
+						<h5 class="browse_list_time">5 p.m.</h5>
+					</li>			
+				
+			
+			</ul>
+			
+			<div class="sidebar_more_link sidebar_more_link_events">
+				<a href="http://www.redding.com/events/" title="More Redding Events">More Events &raquo;</a>
+			</div>
+			
+		</div> <!-- end #Dec16 -->
+	
+		<div id="Dec17" class="bucket_secondary preventFOUC">
+			
+			<ul class="sidebar_list">
+				
+					<li class="odd clear">
+						<h4><a href="http://www.redding.com/events/goto/11973/" class="browse_list_title" title="Rock the Vault fundraiser">Rock the Vault fundraiser</a> <a href="http://www.redding.com/places/david-marr-auditorium-shasta-learning-center/" class="browse_list_venue" title="David Marr Auditorium (Shasta Learning Center) ">David Marr Auditorium (Shasta Learning Center) </a></h4>
+						<h5 class="browse_list_time">7:15 p.m.</h5>
+					</li>			
+				
+					<li class="even clear">
+						<h4><a href="http://www.redding.com/events/goto/2675/" class="browse_list_title" title="Free classes for seniors">Free classes for seniors</a> <a href="http://www.redding.com/places/senior-citizens-hall/" class="browse_list_venue" title="Senior Citizens Hall">Senior Citizens Hall</a></h4>
+						<h5 class="browse_list_time"></h5>
+					</li>			
+				
+					<li class="odd clear">
+						<h4><a href="http://www.redding.com/events/goto/5515/" class="browse_list_title" title="Zumba Classes">Zumba Classes</a> <a href="http://www.redding.com/places/caldwell-park/" class="browse_list_venue" title="Caldwell Park">Teen Center</a></h4>
+						<h5 class="browse_list_time">6 p.m.</h5>
+					</li>			
+				
+					<li class="even clear">
+						<h4><a href="http://www.redding.com/events/goto/6516/" class="browse_list_title" title="Redding Chess Club ">Redding Chess Club </a> <a href="http://www.redding.com/places/shasta-county-area/" class="browse_list_venue" title="See Description">See Description</a></h4>
+						<h5 class="browse_list_time">5 p.m.</h5>
+					</li>			
+				
+					<li class="odd clear">
+						<h4><a href="http://www.redding.com/events/goto/6654/" class="browse_list_title" title="Redding Duplicate Bridge Club meetings">Redding Duplicate Bridge Club meetings</a> <a href="http://www.redding.com/places/senior-citizens-hall/" class="browse_list_venue" title="Senior Citizens Hall">Senior Citizens Hall</a></h4>
+						<h5 class="browse_list_time">noon</h5>
+					</li>			
+				
+			
+			</ul>
+			
+			<div class="sidebar_more_link sidebar_more_link_events">
+				<a href="http://www.redding.com/events/" title="More Redding Events">More Events &raquo;</a>
+			</div>
+			
+		</div> <!-- end #Dec17 -->
 	
 	
 	<div class="ajax_loader"><img src="../../media.redding.com/corp_assets/asphalt/img/ajax-loader.gif" alt="Loading content" /><p>Loading...</p></div>
@@ -1415,7 +1494,10 @@ The man was reported on the side of eastbound 44 on the Sacramento River Bridge 
 					
 						<div class="bigbox_wrapper clear">
 	<div class="bigbox">
-		<div class="adtag" id="BIGBOX_2"><script language="JavaScript" src="../../ad.doubleclick.net/adj/np.redd/News%3Bpt=detail%3Btile=3%3Bsz=300x250%3Bord=91997533%3Bpos=below" type="text/javascript"></script></div>
+		<div class="adtag" id="BIGBOX_2"><script language="JavaScript">
+        // slotname: BIGBOX_2
+        document.write('<scr' + 'ipt language="JavaScript" src="' + 'http://ad.doubleclick.net/adj/np.redd/News;pt=detail;tile=3;sz=300x250;ord=13925269;pos=below' + _demo_params + '" type="text/javascript"></scr' + 'ipt>');
+        </script></div>
 	</div> <!-- end .bigbox -->
 </div> <!-- end .bigbox_wrapper -->
 
@@ -1834,7 +1916,7 @@ var endTimeRound = Math.round(endTime/1000); // For use as a DateTime Object in 
 var startTime = Math.round((endTime - 604800000) / 1000); // One week before endTime for use as as This Week's Nitro calls
 var token = "token"; // Hack to bridge the gap between JB's Ellington tag and Nitro's API calls as each call needs a token, but we don't really care what that token is
 //var nitroResponse = $.parseJSON(""); // creates a var that's a JSON object and not a string from the Django vars set above
-var leadersResponseJSON = $.parseJSON("{\"Nitro\": {\"leaders\": {\"Leader\": [{\"lastName\": \"Anderson\", \"UserPreferences\": true, \"points\": \"760\", \"userId\": \"Lead_me_follow_me_or_get_out_of_my_way\", \"firstName\": \"Terri\"}, {\"lastName\": \"Patchett\", \"UserPreferences\": true, \"points\": \"600\", \"userId\": \"Redding_Is_My_Universe\", \"firstName\": \"Jan\"}, {\"lastName\": \"Wippich\", \"UserPreferences\": true, \"points\": \"290\", \"userId\": \"KimW\", \"firstName\": \"Kim\"}, {\"lastName\": \"Mahone\", \"UserPreferences\": true, \"points\": \"270\", \"userId\": \"Pogue_Mahone\", \"firstName\": \"Pogue\"}, {\"lastName\": \"jones\", \"UserPreferences\": true, \"points\": \"250\", \"userId\": \"mrw\", \"firstName\": \"joe\"}]}, \"res\": \"ok\", \"method\": \"site.getPointsLeaders\", \"server\": \"prnitro01.prod.bunchball.net/nitro4.4.0\"}}"); // creates a var that's a JSON object and not a string from the Django vars set above
+var leadersResponseJSON = $.parseJSON("{\"Nitro\": {\"leaders\": {\"Leader\": [{\"lastName\": \"WILSON\", \"UserPreferences\": true, \"points\": \"460\", \"userId\": \"TheSkeptic\", \"firstName\": \"WAYNE\"}, {\"lastName\": \"for dog\", \"UserPreferences\": true, \"points\": \"330\", \"userId\": \"suku\", \"firstName\": \"Wintu word\"}, {\"lastName\": \"Anderson\", \"UserPreferences\": true, \"points\": \"270\", \"userId\": \"Lead_me_follow_me_or_get_out_of_my_way\", \"firstName\": \"Terri\"}, {\"lastName\": \"Exley\", \"UserPreferences\": true, \"points\": \"260\", \"userId\": \"srexley\", \"firstName\": \"Scott\"}, {\"lastName\": \"Patchett\", \"UserPreferences\": true, \"points\": \"250\", \"userId\": \"Pure_As_Driven_Snow\", \"firstName\": \"Jan\"}]}, \"res\": \"ok\", \"method\": \"site.getPointsLeaders\", \"server\": \"prnitro03.prod.bunchball.net/nitro4.4.0\"}}"); // creates a var that's a JSON object and not a string from the Django vars set above
 var processNotesJson = $.parseJSON(""); // creates a var that's a JSON object and not a string from the Django vars set above
 
 var pointsAPI = "method=user.getPointsBalance&sessionKey=NHwzNzY0MnwxMDYyMzM5MjY1MHwxMzU2MDM2NjM1fDc0NjIzYWFjMTlmZmVmYzZiNWRjYjU3YzdhNzc4NWIzNjE2ZmM0Njh8MA==&userId=&start=" + startTime; // Creates a method call for a Nitro Points Balance request for a user for the past 7 days

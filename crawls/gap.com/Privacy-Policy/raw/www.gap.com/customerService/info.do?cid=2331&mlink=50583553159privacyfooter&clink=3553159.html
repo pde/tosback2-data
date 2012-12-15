@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "12/12/2012 08:30 AM",
+            DATE_IN_USE: "12/15/2012 08:12 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -5098,35 +5098,62 @@ if( window['siteNavigation'] ) {
 
 
 <!-- container 7 -->
-<!-- BEGIN Content Item File: /content/0005/802/967/cn5802967.html -->
+<!-- BEGIN Content Item File: /content/0005/867/076/cn5867076.html -->
 
-<!-- begin contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
+
+<!-- begin contentOverride72 - Everyday Free Ship EDFS code - v4 - 2012 holiday adjustments  -->
 <script type="text/javascript">
 
 	// Everyday Free Ship EDFS code - v3 11.04 adjustments
 	// BH 2/3/12 update
-	// 2012 - 7-10 - FREE option (over $50, etc)
-	// 2101 - 3-5 - $7
-	// 2109 - 2 day - $17
-	// 2111 - 1 day $22	
-	
 	// Shopping bag code - updates display of ship option text adding the $50 min or FREE with Piperlime text
 	var isPiperlimeInBagForEDFS = false;
 	var shoppingBagSubTotalForEDFS = 0;
 	var productArray = pixelManagementService.model.metricsLibrary.shoppingBag.productList;
 	var shoppingBagUrls = ['/buy/shopping_bag.do','/buy/shopping_bag_delete_item.do','/buy/shopping_bag_save_item.do','/buy/shopping_bag_move_item.do','/buy/edit_shipping_method_bag.do'];
-	var shipOption1_7To9Day = "2012";
-	var shipOption2_3To5Day = "2101";
-	var shipOption3_2Day = "2109";
-	var shipOption4_1Day = "2111";
-
+	var shipOption1_7To9Day = '';
+	var shipOption1_7To9DayArr = ["2100","2012"];
+	var shipOption2_3To5Day = '';
+	var shipOption2_3To5DayArr = ["2101","2102","2107","2108","2105","2106","2103","2104"];
+	var shipOption3_2Day = '';
+	var shipOption3_2DayArr = ["2109","2110","201","1307","2016","2017"];
+	var shipOption4_1Day = '';
+	var shipOption4_1DayArr = ["2111","2112","1368","1326","2014","2015","2020","2021"];
+	
 	// Update function
 	var ShipWindowShopBagExecuteCheck = function() {
+		// Determine WHICH ship options are active on the site
+		shipOption1_7To9DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption1_7To9Day = opt;
+			}
+		});		
+		shipOption2_3To5DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption2_3To5Day = opt;
+			}
+		});		
+		shipOption3_2DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption3_2Day = opt;
+			}
+		});		
+		shipOption4_1DayArr.each( function( opt, i ) {
+			if( $('selectedShippingMethod' + opt ) ) {
+				shipOption4_1Day = opt;
+			}
+		});
+		
+		// Adjust basic messaging
+		var basicShipMessage = ' Every Day ($50 min)';		
 		var optionToUpdate_7To9 = 'shippingOptionsRadioText' + shipOption1_7To9Day;
-		var optionToUdpate_3To5 = 'shippingOptionsRadioText' + shipOption2_3To5Day;
 		if( $( optionToUpdate_7To9 ) ) {
-			$( optionToUpdate_7To9 ).insert({bottom: " Every Day ($50 min)"});
+			$( optionToUpdate_7To9 ).insert({bottom: basicShipMessage});
 		}
+
+		// Adjust standard messaging
+		var standardShipMessage = 'FREE (on orders over $50) or $7 (on orders under $50)';
+		var optionToUdpate_3To5 = 'shippingOptionsRadioText' + shipOption2_3To5Day;
 		if( $("shoppingBagSummaryContainer") ) {
 			var ShipMessageContainer = $("shoppingBagSummaryContainer").select("div.shippingOptionLearnMoreLink");
 			var currentBagMessage = ShipMessageContainer[0].innerHTML;
@@ -5134,8 +5161,60 @@ if( window['siteNavigation'] ) {
 			ShipMessageContainer[0].update(newBagMessage);
 			isPiperlimeInBagForEDFS = checkForPiperlimeInBag();
 			if( $( optionToUdpate_3To5 ) && isPiperlimeInBagForEDFS ) {
-				$( optionToUdpate_3To5 ).update("3-5 business days - FREE with Piperlime");
+				$( optionToUdpate_3To5 ).insert({bottom: " - FREE with Piperlime"});
 			}
+			else {
+				// For options that need the standard text, cut off the price first and adjust layout
+				if( shipOption2_3To5Day != '' && shipOption2_3To5Day != '2101' && shipOption2_3To5Day != '2102' ) {
+					var shipStr = $( optionToUdpate_3To5 ).innerHTML;
+					var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') + 3 );
+					newShipStr = newShipStr + standardShipMessage;
+					$( optionToUdpate_3To5 ).update( newShipStr );
+
+					if( $('selectedShippingMethod' + shipOption2_3To5Day ) ) {
+						$('selectedShippingMethod' + shipOption2_3To5Day ).setStyle({ float:'left' });
+					}
+
+					$( optionToUdpate_3To5 ).setStyle({ width:'227px', float:'right' });
+
+					if( ( navigator.appName == 'Microsoft Internet Explorer' ) && ( navigator.appVersion.indexOf('MSIE 7.0') > -1 || navigator.appVersion.indexOf('MSIE 6.0') > -1 ) ) {
+						$( optionToUdpate_3To5 ).setStyle({ width:'220px' });
+					}
+		
+					var clearDiv = new Element('div', { style:'clear:both' });
+					$( optionToUdpate_3To5 ).insert({ after: clearDiv });
+				}
+			}
+		}
+
+		// Adjust express messaging wheere applicable
+		if( shipOption3_2Day != '' && ( shipOption3_2Day == '201' || shipOption3_2Day == '1307' ) ) {
+			var optionToUdpate_express = 'shippingOptionsRadioText' + shipOption3_2Day;
+			var shipStr = $( optionToUdpate_express ).innerHTML;
+			var messageToInsert = '(2 business days)'
+			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
+			
+			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
+			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
+			$( optionToUdpate_express ).update( newShipStr );
+			$( optionToUdpate_express ).setStyle({ width:'227px', float:'right', '*margin-top':'-13px', '*width':'220px' });
+			var clearDiv = new Element('div', { style:'clear:both' });
+			$( optionToUdpate_express ).insert({ after: clearDiv });
+		}
+
+		// Adjust next day messaging wheere applicable
+		if( shipOption4_1Day != '' && ( shipOption4_1Day == '1368' || shipOption4_1Day == '1326' ) ) {
+			var optionToUdpate_nextDay = 'shippingOptionsRadioText' + shipOption4_1Day;
+			var shipStr = $( optionToUdpate_nextDay ).innerHTML;
+			var messageToInsert = '(1 business day)'
+			var priceStr = shipStr.substr( shipStr.indexOf(' - ') );
+			
+			var newShipStr = shipStr.substr( 0, shipStr.indexOf(' - ') );
+			newShipStr = newShipStr + ' ' + messageToInsert + priceStr;
+			$( optionToUdpate_nextDay ).update( newShipStr );
+			$( optionToUdpate_nextDay ).setStyle({ width:'227px', float:'right', '*margin-top':'-13px', '*width':'220px' });
+			var clearDiv = new Element('div', { style:'clear:both' });
+			$( optionToUdpate_nextDay ).insert({ after: clearDiv });
 		}
 	}
 	// Function to check whether PL items in bag
@@ -5242,6 +5321,29 @@ if( window['siteNavigation'] ) {
 		
 		// Check for applied promo and shipping option selected and display popup appropriately
 		var setPromotionAppliedDataToPageWrapper = function( originalMethod ) {
+			
+			// Determine WHICH ship options are active on the site
+			shipOption1_7To9DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption1_7To9Day = opt;
+				}
+			});		
+			shipOption2_3To5DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption2_3To5Day = opt;
+				}
+			});		
+			shipOption3_2DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption3_2Day = opt;
+				}
+			});		
+			shipOption4_1DayArr.each( function( opt, i ) {
+				if( $('selectedShippingMethod' + opt ) ) {
+					shipOption4_1Day = opt;
+				}
+			});		
+			
 			if (checkout.model.data.modules.shipping.selectedShippingOptionDTLId == shipOption1_7To9Day ) {
 				isEverydayFreeShipChecked = true;
 			}
@@ -5306,7 +5408,7 @@ if( window['siteNavigation'] ) {
 </script>
 <!-- end contentOverride72 - Everyday Free Ship EDFS code - v3 11.04 adjustments  -->
 
-<!-- END Content Item File: /content/0005/802/967/cn5802967.html -->
+<!-- END Content Item File: /content/0005/867/076/cn5867076.html -->
 
 
 
@@ -6873,17 +6975,18 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/873/207/cn5873207.html -->
-<div id="contentItemContainer10000395" class="5873207" >
+    	<!-- BEGIN Content Item File: /content/0005/908/883/cn5908883.html -->
+<div id="contentItemContainer10000395" class="5908883" >
 
 <style type="text/css">
 #globalBanner {
-	width: 481px;
-	height: 64px;
+	width: 581px;
+	height: 62px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
+	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6891,7 +6994,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000000;
+	color: #000745;
 	text-decoration: none;
 }
 
@@ -6907,22 +7010,14 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: black;
+	background-color: #000745;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerDisruptor {
-	position: absolute;
-	z-index: 999;
-	top: 0;
-	left: 0;
-}
-
-#globalBannerText.passive {
-	opacity: 0.25;
-	filter: alpha(opacity = 25);
+#globalBannerText {
+	padding-top: 6px;
 }
 </style>
 
@@ -6930,147 +7025,18 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/873/207/assets/121212_ALL_BRONG_GB_US.png" alt="30% off at our 3 must shop brands. Online only. Ends 12/13. Enter HOLIDAY. Plus Details" title="30% off at our 3 must shop brands. Online only. Ends 12/13. Enter HOLIDAY. Plus Details" usemap="#gbMap">
-		<map name="gbMap">
-      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="247,9,453,64" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-			<area class="noHideDisruptor" shape="rect" coords="3,0,453,64" href="javascript:void(0);" alt="click for details" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-		</map>
+		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/908/883/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			SUPER! <span class="promoPercent">30% OFF</span> YOUR PURCHASE!
+			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
+			<br /><span class="detailsLink">DETAILS</span>
+		</a>
 	</div><!-- /Global Banner Text -->
 
-	<!-- Global Banner Disruptor -->
-	<div id="globalBannerDisruptor" style="display:none;">
-		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/873/207/assets/121212_ALL_BRONG_DISR_US.png" alt="Happy Gifting! 30% off at our 3 must-shop brands. Find last-minute gifts for everyone on your list-including you. Plus, take 20% off coveted shoes and apparel(from all your favorite brands!) at Piperlime.com. Enter HOLIDAY. Ends 12/13." title="Happy Gifting! 30% off at our 3 must-shop brands. Find last-minute gifts for everyone on your list-including you. Plus, take 20% off coveted shoes and apparel(from all your favorite brands!) at Piperlime.com. Enter HOLIDAY. Ends 12/13." usemap="#disruptorMap">
-		<map name="disruptorMap">
-        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/873/207/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
-        </map>
-	</div><!-- /Global Banner Disruptor -->
-
 </div>
-<script type="text/javascript">
-Event.observe(window, 'load', function() {
-	// Initiliaze disruptor object
-	globalBannerDisruptor.init('121212_GB');
-});
-
-// Hide disruptor when out of activation area
-Event.observe(document.body, 'mouseover', function(event) 
-{
-	var element = Event.findElement(event);
-	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-	//var hasSeenDisruptor = 1;
-
-	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
-	{
-		globalBannerDisruptor.hide();
-	}
-});
-
-// globalBannerDisruptor object
-var globalBannerDisruptor = {
-	
-	disruptorID: 'globalBannerDisruptor',
-	activatorID: 'globalBannerActivator',
-	containerID: 'globalBannerText',
-	cookieName: '',
-	
-	init: function(cookieName) {
-	
-		globalBannerDisruptor.cookieName = cookieName;
-		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
-		//var hasSeenDisruptor = 1;
-
-		if(hasSeenDisruptor != "1")
-		{
-			globalBannerDisruptor.autoDisrupt();
-		}
-
-		globalBannerDisruptor.addDisruptBehaviour();
-		
-	},
-	
-	/* auto hides itself */
-	autoDisrupt: function() {
-
-		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
-		
-		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
-
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.hide();
-		}, 8000);
-
-	},
-	
-	hide: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display != "none") {
-			new Effect.SlideUp(targetID,{
-				duration:.5, 
-				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).removeClassName('passive');
-				}
-			});
-			return false;
-		}
-		
-	},
-	
-	/* disrupts but does NOT auto hide iteself */
-	disrupt: function() {
-		
-		var targetID = globalBannerDisruptor.disruptorID;
-		var target = $(targetID);
-
-		if(target.style.display == "none") {
-			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
-				duration:.5,
-				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
-				beforeFinish: function() {
-					$(globalBannerDisruptor.containerID).addClassName('passive');
-				}
-			});
-			return false;
-		}
-
-		return true;
-	},
-
-	/* closes disruptor and prevents disrupt from firing prematurely */
-	close: function() {
-
-		globalBannerDisruptor.hide();
-		globalBannerDisruptor.removeDisruptBehaviour();
-
-		// Set a timer so disruptor doesn't get activated right away
-		var timerID = setTimeout(function() {
-			globalBannerDisruptor.addDisruptBehaviour();
-		}, 1000);
-
-	},
-
-	addDisruptBehaviour: function() {
-		// Show disruptor when mouseover #globalBannerActivator
-		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
-		{
-			globalBannerDisruptor.disrupt();
-		});
-	},
-
-	// Stop observing mouseover
-	removeDisruptBehaviour: function() {
-		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
-	}
-	
-};
-</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/873/207/cn5873207.html -->
+<!-- END Content Item File: /content/0005/908/883/cn5908883.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -7285,157 +7251,7 @@ var globalBannerDisruptor = {
 	        
 	      
 	      
-	        <li class="header firstHeader" id="categoryNav41023">Your Account</li>
-	        
-	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	            
-	            
-	              
-	          
-	          
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        <li class="header" id="categoryNav41135">As You Shop</li>
-	        
-	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	            
-	            
-	              
-	          
-	          
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        <li class="header" id="categoryNav41137">Purchasing and Ordering</li>
-	        
-	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	            
-	            
-	              
-	          
-	          
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        <li class="header" id="categoryNav41024">Order Status, Shipping and Delivery, Backorders</li>
-	        
-	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	            
-	            
-	              
-	          
-	          
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        <li class="header" id="categoryNav41144">Changes, Returns and Exchanges</li>
-	        
-	        
-	      
-	        
-	      
-	    
-	  
-	      
-	          
-	          
-	      
-	      
-	        
-	            
-	            
-	              
-	          
-	          
-	        
-	        
-	        
-	      
-          
-	        
-	        
-	            
-	        
-	      
-	      
-	        <li class="header" id="categoryNav41145">Privacy, Security and Web Info</li>
+	        <li class="header firstHeader" id="categoryNav41145">Privacy, Security and Web Info</li>
 	        
 	        
 	      
@@ -8404,7 +8220,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5873207,5754165,5746856,5828521,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5908883,5754165,5746856,5828521,5746857,5217025";
 	 </script>
 	
 	<noscript>

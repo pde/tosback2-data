@@ -45,14 +45,11 @@
 	
 	setDebugMode(document.location.search.substr(1)) 
 
-
-
 	var createConf = function() {
 		if (w.MTVN && w.MTVN.conf && w.MTVN.conf.sm4) {
 			conf = $.extend({}, w.MTVN.conf.sm4);
 			configured = true;
-		}
-		
+		}		
 	}
 	
 	var loadCore = function() {
@@ -79,18 +76,32 @@
 		stub.setAttribute('widgets4Debug', "true");
 		document.body.appendChild(stub)
 
-		yepnope({
-			load: core,
-			complete: function () {
-				loading = false;
-				if (w.Flux4) {
-					waiting.trigger("sm4.coreLoad", [true]);
-				} else {
-					waiting.trigger("sm4.coreLoad", [false]);
+		var retries = 3;
+		
+		var load = function() {
+			yepnope({
+				load: core,
+				complete: function () {
+					if (w.Flux4) {
+						waiting.trigger("sm4.coreLoad", [true]);
+						loading = false;
+						waiting = $();
+					} else {
+						if (retries > 0) {
+							retries--;
+							load();
+						} else {
+							waiting.trigger("sm4.coreLoad", [false]);
+							loading = false;
+							waiting = $();
+						}
+					}
 				}
-				waiting = $();
-			}
-		});
+			});		
+		}
+		
+		load();
+
 
 	}
 

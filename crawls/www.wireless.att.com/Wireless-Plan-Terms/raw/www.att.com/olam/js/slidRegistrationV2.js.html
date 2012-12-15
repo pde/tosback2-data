@@ -301,8 +301,10 @@ function accountTypeSelectionChange( selectObj, onPageLoad ) {
 		eWirelessCTNLinkingNote.style.display="none";
 	}
 	
-	document.getElementById("UverseMemberIDLinkedToATTAID").style.display = "none";
-	document.getElementById("LinkAccountsToManageUsingOneID").style.display = "block";
+	var UverseMemberIDLinkedToATTAID = document.getElementById("UverseMemberIDLinkedToATTAID");
+	if ( UverseMemberIDLinkedToATTAID ) {
+		UverseMemberIDLinkedToATTAID.style.display="none";
+	}
 	
 	if(document.getElementById("acctZip")!=null)
 		document.getElementById("acctZip").style.display = "none";
@@ -316,9 +318,18 @@ function accountTypeSelectionChange( selectObj, onPageLoad ) {
 			errBackendDiv.style.display = "none";
 	}
 	
-	document.getElementById("wirelessExample").style.display = "none";
-	document.getElementById("wirelineExample").style.display = "none";
-	document.getElementById("uverseExample").style.display = "none";
+	var wirelessExample = document.getElementById("wirelessExample");
+	if( wirelessExample ){
+		document.getElementById("wirelessExample").style.display = "none";
+	}
+	var wirelineExample = document.getElementById("wirelineExample");
+	if( wirelineExample ){
+		document.getElementById("wirelineExample").style.display = "none";
+	}
+	var uverseExample = document.getElementById("uverseExample").style.display = "none";
+	if( uverseExample ){
+		document.getElementById("uverseExample").style.display = "none";
+	}
 	
 	if ( !onPageLoad ) {
 		document.getElementById("selectedAccountId").value = "";
@@ -352,7 +363,6 @@ function accountTypeSelectionChange( selectObj, onPageLoad ) {
 //		document.getElementById("inputText").className = "float-left w180";
 		document.getElementById("acctZip").style.display = "block";
 		document.getElementById("uverseExample").style.display = "block";
-//		document.getElementById("LinkAccountsToManageUsingOneID").style.display = "none";
 //		document.getElementById("UverseMemberIDLinkedToATTAID").style.display = "block";
 //	}else if (selected == "attemail"){
 //		document.getElementById("email").style.display = "inline";

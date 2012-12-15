@@ -1,4 +1,4 @@
-$( document ).ready( function(){
+$( document ).ready( function(){  
 	/* Column Resizing */
 	if( $( 'body' ).hasClass( 'peoplepage' )){
 		$( 'body.peoplepage > div#content > div.shadedContainer' ).contentFit({ leftColumn : 'flexLeftContent' });

@@ -2650,3 +2650,113 @@ function removeClass(id){
 	});
 }
 
+$(document).ready(function(){
+	
+	//Scrollable code for jquery scrollable
+	$(".cvsScrollable").scrollable({});                                    
+	//End scrollable
+	
+	
+	/*Tool tip code*/
+	$('.cvs-tooltip .close').click(function() {
+		$(this).parent().hide();
+	});
+	
+	$('.tt-red-right-trig').tooltip({relative:true,position: 'center right',tipClass: 'tt-red-right',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-red-top-trig').tooltip({position: 'top center',tipClass: 'tt-red-top',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-red-bottom-trig').tooltip({position: 'bottom center',tipClass: 'tt-red-bottom',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-red-left-trig').tooltip({position: 'center left',tipClass: 'tt-red-left',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	
+	$('.tt-blue-right-trig').tooltip({relative:true,position: 'center right',tipClass: 'tt-blue-right',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-blue-top-trig').tooltip({relative:true,position: 'top center',tipClass: 'tt-blue-top',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-blue-bottom-trig').tooltip({relative:true,position: 'bottom center',tipClass: 'tt-blue-bottom',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	$('.tt-blue-left-trig').tooltip({relative:true,position: 'center left',tipClass: 'tt-blue-left',	events: {def: 'click,""',tooltip: '"","mouseout"'},	onShow: function(){ var tip = this.getTip(); tip.show();}});
+	
+	$('.tt-red-right-trig,.tt-red-top-trig,.tt-red-bottom-trig,.tt-red-left-trig,.tt-blue-right-trig,.tt-blue-top-trig,.tt-blue-bottom-trig,.tt-blue-left-trig').click(function() {
+		$(this).next().toggle();
+	});
+
+});
+
+function removeClass(id){
+	$(document).ready(function(){
+		var idToRemoveClass = "#"+id;
+		$(idToRemoveClass).removeClass("overlay");
+		//alert($(idToRemoveClass));
+	});
+}
+
+(function( $ ){
+		var sort_order = 1;
+		var sorting_type = '';
+		var column_index = '';
+		var methods = {
+			sort_rows : function( a, b ) { 
+				a_val = $(a).children("td").eq(column_index).html();
+				b_val = $(b).children("td").eq(column_index).html();
+				 switch (sorting_type){
+					case "sort-integer":
+					  a_val = parseInt(a_val);
+					  b_val = parseInt(b_val);			 
+					  break;
+					case "sort-float":
+					  a_val = parseFloat(a_val);
+					  b_val = parseFloat(b_val);			 		   
+					  break;
+					case "sort-date":
+					  a_val = new Date(a_val);
+					  b_val = new Date(b_val);
+					  break;	   
+				 }
+				 return (a_val > b_val) ? sort_order :(a_val < b_val)? -sort_order : 0;
+			}
+		}
+		
+		$.fn.sortTable = function( options ) {
+			
+			
+			element_id = this.attr("id");
+			$("#"+element_id+" th.sort-integer, th.sort-date, th.sort-float, th.sort-string").bind("click", function() {
+					sort_order = 1;
+					column_index = $("#"+element_id+" th").index($(this));
+					//tracing the type of sorting
+					if( $(this).hasClass("sort-integer") ) sorting_type = "sort-integer";
+					if( $(this).hasClass("sort-date") ) sorting_type = "sort-date";
+					if( $(this).hasClass("sort-float") ) sorting_type = "sort-float";
+					if( $(this).hasClass("sort-string") ) sorting_type = "sort-string";
+					
+					if( $(this).hasClass("asc") ) {
+						sort_order = -1; //for decending order
+						$(this).removeClass("asc");
+						$(this).addClass("dsc");
+					} else {
+						sort_order = 1;  //for ascending order
+						$(this).removeClass("dsc");
+						$(this).addClass("asc");
+					}
+					
+					var unsorted_rows = new Array();
+					rows_counter = 0;
+					$("#"+element_id+" tr").each( function( index ) {
+						if( index > 0 ) {
+							unsorted_rows[rows_counter] = $(this).clone();
+							rows_counter++;
+						}
+					});
+					
+					//apply sorting
+					unsorted_rows.sort( methods[ 'sort_rows' ] );
+					
+					rows_counter = 0;
+					$("#"+element_id+" tr").each( function( index ) {
+						   if( index > 0 ) {
+							   $(this).replaceWith(unsorted_rows[rows_counter]);
+							   rows_counter++;
+						   }
+					});
+			});
+			
+			
+			
+		}
+})( jQuery );

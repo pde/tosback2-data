@@ -55,7 +55,7 @@
 //configuration
 OAS_url = 'http://oascentral.adage.com/RealMedia/ads/';
 OAS_sitepage = 'www.adage.com/homepage/';
-OAS_listpos = ',x32';
+OAS_listpos = '';
 
 OAS_query = '';
 OAS_target = '_top';
@@ -157,12 +157,12 @@ function OAS_AD(pos) {
 	<ul class="sf-menu">
 		<li><a href="http://adage.com/events">Events</a><ul>
 	<li class="home_menu">
-		<a  href="http://adage.com/article/ad-age-events/media-mavens-luncheon-2012/231694/">Media Mavens Luncheon 2012</a>
+		<a  href="http://events.adage.com/digital2013/">Digital Conference</a><a  href="http://adage.com/article/ad-age-events/ad-age-agency-a-list-cocktail-party/238538/">Agency A-List Cocktail Party</a>
 	</li>
 </ul>
 </li><li><a href="http://adage.com/webcasts/">Webcasts</a><ul>
 	<li class="home_menu">
-		<a  href="http://event.on24.com/r.htm?e=546856&s=1&k=8E506994C478CC40522F745A9F5944D4&partnerref=AAweb">How Social Media Has Revolutionized the Customer Lifecycle Model</a><a  href="http://event.on24.com/r.htm?e=530022&s=1&k=0A1FA45D14DEB9B03A4BE7786783E95B&partnerref=AAweb">The Business of Social</a><a  href="http://event.on24.com/r.htm?e=526995&s=1&k=DF27ADD40E98C046F626C59697B9611F&partnerref=AAweb">Using Social Business Technology to Improve Knowledge Sharing, Collaboration and Business Results</a><a  href="http://event.on24.com/r.htm?e=515727&s=1&k=1101C1626F0950D0793E60ACAB021193&partnerref=AAweb">Video Screen Equality - Are All Screens Created Equal?</a><a  href="http://event.on24.com/r.htm?e=511627&s=1&k=40E662E61E156BD7B5B321EDC91D8956&partnerref=AAweb">Optimizing Your Digital Content for Global, Mobile and Social Users</a><a  href="http://event.on24.com/r.htm?e=503699&s=1&k=02F3E958B8A3BBDA2D14952600C01D54&partnerref=AAweb">Targeting the Dynamic Customer: Understanding the Next Phase of Enterprise Brand Marketing</a>
+		<a  href="http://event.on24.com/r.htm?e=555078&s=1&k=656F13EC8B826332B8BC9DD8390E2386&partnerref=AAweb">10 Tips and Tools to Manage Data Privacy and Increase Your Marketing ROI</a><a  href="http://event.on24.com/r.htm?e=546856&s=1&k=8E506994C478CC40522F745A9F5944D4&partnerref=AAweb">How Social Media Has Revolutionized the Customer Lifecycle Model</a><a  href="http://event.on24.com/r.htm?e=530022&s=1&k=0A1FA45D14DEB9B03A4BE7786783E95B&partnerref=AAweb">The Business of Social</a><a  href="http://event.on24.com/r.htm?e=526995&s=1&k=DF27ADD40E98C046F626C59697B9611F&partnerref=AAweb">Using Social Business Technology to Improve Knowledge Sharing, Collaboration and Business Results</a><a  href="http://event.on24.com/r.htm?e=515727&s=1&k=1101C1626F0950D0793E60ACAB021193&partnerref=AAweb">Video Screen Equality - Are All Screens Created Equal?</a><a  href="http://event.on24.com/r.htm?e=511627&s=1&k=40E662E61E156BD7B5B321EDC91D8956&partnerref=AAweb">Optimizing Your Digital Content for Global, Mobile and Social Users</a><a  href="http://event.on24.com/r.htm?e=503699&s=1&k=02F3E958B8A3BBDA2D14952600C01D54&partnerref=AAweb">Targeting the Dynamic Customer: Understanding the Next Phase of Enterprise Brand Marketing</a>
 	</li>
 </ul>
 </li><li><a href="http://brandedcontent.adage.com/">Branded Content</a><ul>
@@ -281,84 +281,6 @@ menu item
 
 
 		
-<script type="text/javascript">
-Interstitial = {
-	parentId:'home',
-	id:'interstitial',
-	ad_id:'interstitial-ad',
-	timer:null,
-
-	setOpacity:function(id, opacity) {
-    	el=document.getElementById(id);
-		el.style.opacity=(opacity / 100);
-		el.style.MozOpacity=(opacity / 100);
-		el.style.KhtmlOpacity=(opacity / 100);
-		el.style.filter="alpha(opacity=" + opacity + ")";
-	},
-
-	fade:function(id, start, end, time) {
-		var speed=Math.round(time / 100);
-		var timer=0;
-
-		if(start > end) {
-			for(var i=start; i>=end; i--) {
-				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
-				timer++;
-
-				if(end == i) {
-					setTimeout("Interstitial.destroy()", time);
-				}
-			}
-			clearTimeout(this.timer);
-		}
-		else if(start < end) {
-			for(var i=start; i <= end; i++) {
-				this.timer = setTimeout("Interstitial.setOpacity('" + id + "', " + i + ")",(timer * speed));
-				timer++;
-			}
-			clearTimeout(this.timer);
-		}
-	},
-
-	hide:function() {
-		if(document.getElementById(this.id)) {
-			// this.fade(this.id, 100, 0, 300);
-			this.destroy();
-		}
-	},
-
-	destroy:function() {
-		var hpto = document.getElementById(this.id);
-		hpto.removeChild(document.getElementById(this.ad_id));
-		hpto.style.visibility='hidden';
-		hpto.style.display='none';
-	}
-}
-
-Interstitial.timer = setTimeout('Interstitial.hide()', 11*1000);
-
-</script>
-
-<link rel="stylesheet" type="text/css" media="screen" href="css/interstitial_dhtml.css" />
-
-<div id="interstitial">
-	<div id="interstitial-head">
-		<div id="interstitial-logo">
-			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top1.gif" width="331" height="41" alt="" /></a>
-		</div>
-		<div id="interstitial-skip">
-			<a href="javascript: Interstitial.hide()"><img src="images/interstitial_top2.gif" width="158" height="41" alt="" /></a>
-		</div>
-	</div>
-
-	<div id="interstitial-ad">
-		<!-- OAS Interstitial AD POSITION -->
-		<script language="JavaScript">
-			OAS_AD('x32');
-		</script>
-	</div>
-</div>
-
 	</div>
 </div>
 
@@ -505,23 +427,23 @@ height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
     <div class="rss_col">
 	<div class="logo_auto"></div>
     <ul><li>
-<a href="http://www.autonews.com/article/20121210/RETAIL03/312109966/making-mazda-stand-out" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Making Mazda stand out', 'http://www.autonews.com/article/20121210/RETAIL03/312109966/making-mazda-stand-out']);" target="_new">
-Making Mazda stand out
+<a href="http://www.autonews.com/article/20121215/BLOG06/121219904/let-the-pickup-smack-down-begin" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Let the pickup smack-down begin', 'http://www.autonews.com/article/20121215/BLOG06/121219904/let-the-pickup-smack-down-begin']);" target="_new">
+Let the pickup smack-down begin
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20121210/OEM06/312109948/2-fords-fall-short-on-mpg-magazine-says" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', '2 Fords fall  short on mpg, magazine says', 'http://www.autonews.com/article/20121210/OEM06/312109948/2-fords-fall-short-on-mpg-magazine-says']);" target="_new">
-2 Fords fall  short on mpg, magazine says
+<a href="http://www.autonews.com/article/20121214/OEM05/121219913/ford-says-it-s-talking-to-epa-about-hybrid-mileage-tests" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Ford says it\&#039;s talking to EPA about hybrid mileage tests', 'http://www.autonews.com/article/20121214/OEM05/121219913/ford-says-it-s-talking-to-epa-about-hybrid-mileage-tests']);" target="_new">
+Ford says it's talking to EPA about hybrid mileage tests
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20121210/RETAIL03/312109943/decades-long-honda-rpa-link-hits-the-skids" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Decades-long Honda-RPA link hits the skids', 'http://www.autonews.com/article/20121210/RETAIL03/312109943/decades-long-honda-rpa-link-hits-the-skids']);" target="_new">
-Decades-long Honda-RPA link hits the skids
+<a href="http://www.autonews.com/article/20121213/BLOG06/121219933/mini-gets-a-doggone-good-plug-with-canine-cars" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Mini gets a doggone good plug with canine cars', 'http://www.autonews.com/article/20121213/BLOG06/121219933/mini-gets-a-doggone-good-plug-with-canine-cars']);" target="_new">
+Mini gets a doggone good plug with canine cars
 </a>
 </li>
 <li>
-<a href="http://www.autonews.com/article/20121210/RETAIL03/312109994/nissan-fights-fuzzy-image-with-tech-ads" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Nissan fights fuzzy image with tech ads', 'http://www.autonews.com/article/20121210/RETAIL03/312109994/nissan-fights-fuzzy-image-with-tech-ads']);" target="_new">
-Nissan fights fuzzy image with tech ads
+<a href="http://www.autonews.com/article/20121213/RETAIL03/121219921/porsche-puts-u-s-creative-ad-business-under-review" onClick="_gaq.push(['_trackPageview', 'Content-Partners-autonews', 'Porsche puts U.S. creative ad business under review', 'http://www.autonews.com/article/20121213/RETAIL03/121219921/porsche-puts-u-s-creative-ad-business-under-review']);" target="_new">
+Porsche puts U.S. creative ad business under review
 </a>
 </li>
   <ul>
@@ -530,6 +452,16 @@ Nissan fights fuzzy image with tech ads
     <div class="rss_col">
 	<div class="logo_b2b"></div>
     <ul><li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121212/STRATEGY020202/121219994/1450/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', '&quot;In what ways is marketing integration impacting lead-gen, social media, display and other channels?&quot;', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121212/STRATEGY020202/121219994/1450/rss998&rssfeed=rss998']);" target="_new">
+"In what ways is marketing integration impacting lead-gen, social media, display and other channels?"
+</a>
+</li>
+<li>
+<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121212/STRATEGY03/121219993/1517/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'CMO Close-Up with Mark Tullio, VP-worldwide marketing, Lantronix Inc.', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121212/STRATEGY03/121219993/1517/rss998&rssfeed=rss998']);" target="_new">
+CMO Close-Up with Mark Tullio, VP-worldwide marketing, Lantronix Inc.
+</a>
+</li>
+<li>
 <a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121211/SOCIAL0103/312109990/1429/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'LinkedIn survey finds most tech buyers engage socially with IT vendors', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121211/SOCIAL0103/312109990/1429/rss998&rssfeed=rss998']);" target="_new">
 LinkedIn survey finds most tech buyers engage socially with IT vendors
 </a>
@@ -539,39 +471,29 @@ LinkedIn survey finds most tech buyers engage socially with IT vendors
 Will privacy laws hurt b-to-b marketing?
 </a>
 </li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121210/STRATEGY0402/312109999/1091/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'CRM: The \&#039;holy grail\&#039; or a process fail?', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121210/STRATEGY0402/312109999/1091/rss998&rssfeed=rss998']);" target="_new">
-CRM: The 'holy grail' or a process fail?
-</a>
-</li>
-<li>
-<a href="http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121206/EMAIL/312059991/1084/rss998&rssfeed=rss998" onClick="_gaq.push(['_trackPageview', 'Content-Partners-btob', 'What\&#039;s the right amount of content for b-to-b emails?', 'http://www.btobonline.com/apps/pbcs.dll/article?AID=/20121206/EMAIL/312059991/1084/rss998&rssfeed=rss998']);" target="_new">
-What's the right amount of content for b-to-b emails?
-</a>
-</li>
   <ul>
   </div>
   <!-- close rss column -->
     <div class="rss_col">
 	<div class="logo_cnn"></div>
     <ul><li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/k9d1LYqA8ew/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Earning $221,000 and paying two tuition bills', 'http://rss.cnn.com/~r/rss/money_latest/~3/k9d1LYqA8ew/index.html']);" target="_new">
-Earning $221,000 and paying two tuition bills
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/osLwxJQ9DNI/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Wal-Mart slashes prices on iPhone and iPad', 'http://rss.cnn.com/~r/rss/money_latest/~3/osLwxJQ9DNI/index.html']);" target="_new">
+Wal-Mart slashes prices on iPhone and iPad
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/6OATdHFBCH8/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Apple: A hedge fund liability?', 'http://rss.cnn.com/~r/rss/money_latest/~3/6OATdHFBCH8/index.html']);" target="_new">
-Apple: A hedge fund liability?
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/gxci7HQbS6A/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Jaguar drops plan for hybrid supercar', 'http://rss.cnn.com/~r/rss/money_latest/~3/gxci7HQbS6A/index.html']);" target="_new">
+Jaguar drops plan for hybrid supercar
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/639QCjwEgnw/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Stocks: Waiting on the Fed', 'http://rss.cnn.com/~r/rss/money_latest/~3/639QCjwEgnw/index.html']);" target="_new">
-Stocks: Waiting on the Fed
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/dBdkr2WSnXk/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Fiscal cliff indecision leaves paychecks up in the air', 'http://rss.cnn.com/~r/rss/money_latest/~3/dBdkr2WSnXk/index.html']);" target="_new">
+Fiscal cliff indecision leaves paychecks up in the air
 </a>
 </li>
 <li>
-<a href="http://rss.cnn.com/~r/rss/money_latest/~3/PF0tVZJcZ7E/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Chinese firms go on U.S. spending spree', 'http://rss.cnn.com/~r/rss/money_latest/~3/PF0tVZJcZ7E/index.html']);" target="_new">
-Chinese firms go on U.S. spending spree
+<a href="http://rss.cnn.com/~r/rss/money_latest/~3/xNKla24M2ck/index.html" onClick="_gaq.push(['_trackPageview', 'Content-Partners-cnnmoney', 'Best Buy stock gets slammed by buyout bid delay', 'http://rss.cnn.com/~r/rss/money_latest/~3/xNKla24M2ck/index.html']);" target="_new">
+Best Buy stock gets slammed by buyout bid delay
 </a>
 </li>
   <ul>
@@ -580,6 +502,11 @@ Chinese firms go on U.S. spending spree
     <div class="rss_col">
 	<div class="logo_crain"></div>
     <ul><li>
+<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/-MHzy0l_i3E/121219962" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'TV\&#039;s Nielsen backs new VC firm', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/-MHzy0l_i3E/121219962']);" target="_new">
+TV's Nielsen backs new VC firm
+</a>
+</li>
+<li>
 <a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/IUoM3xGOKFU/121219981" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'WebMD to eliminate 250 jobs in cost-cutting push', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/IUoM3xGOKFU/121219981']);" target="_new">
 WebMD to eliminate 250 jobs in cost-cutting push
 </a>
@@ -594,34 +521,29 @@ Morning shows locked in ad-dollar battle
 Magazines ramp up publishing in 2012
 </a>
 </li>
-<li>
-<a href="http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/53fAUT3bhB0/312099978" onClick="_gaq.push(['_trackPageview', 'Content-Partners-crainsny', 'Dressing down Ralph Lauren', 'http://feeds.crainsnewyork.com/~r/crainsnewyork/advertising/~3/53fAUT3bhB0/312099978']);" target="_new">
-Dressing down Ralph Lauren
-</a>
-</li>
   <ul>
   </div>
   <!-- close rss column -->
     <div class="rss_col">
 	<div class="logo_msn"></div>
     <ul><li>
-<a href="http://www.nbcnews.com/business/too-big-fail-means-too-big-jail-1C7555748" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Too big to fail often means too big for jail', 'http://www.nbcnews.com/business/too-big-fail-means-too-big-jail-1C7555748']);" target="_new">
-Too big to fail often means too big for jail
+<a href="http://www.nbcnews.com/business/economywatch/consumer-prices-drop-first-time-six-months-1C7608706" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Consumer prices drop for first time in six months', 'http://www.nbcnews.com/business/economywatch/consumer-prices-drop-first-time-six-months-1C7608706']);" target="_new">
+Consumer prices drop for first time in six months
 </a>
 </li>
 <li>
-<a href="http://www.nbcnews.com/business/women-slow-make-gains-boardrooms-1C7562530" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Women slow to make gains in boardrooms', 'http://www.nbcnews.com/business/women-slow-make-gains-boardrooms-1C7562530']);" target="_new">
-Women slow to make gains in boardrooms
+<a href="http://lifeinc.today.com/_news/2012/12/14/15889969-why-we-buy-those-crazy-ugly-holiday-sweaters?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Why we buy those crazy, ugly holiday sweaters', 'http://lifeinc.today.com/_news/2012/12/14/15889969-why-we-buy-those-crazy-ugly-holiday-sweaters?lite']);" target="_new">
+Why we buy those crazy, ugly holiday sweaters
 </a>
 </li>
 <li>
-<a href="http://usnews.nbcnews.com/_news/2012/12/11/15842456-snyder-signs-michigan-anti-union-right-to-work-measures-over-protests-of-thousands?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Michigan passes anti-union measures amid protests', 'http://usnews.nbcnews.com/_news/2012/12/11/15842456-snyder-signs-michigan-anti-union-right-to-work-measures-over-protests-of-thousands?lite']);" target="_new">
-Michigan passes anti-union measures amid protests
+<a href="http://www.nbcnews.com/business/twinkies-again-spring-it-could-happen-1C7615012" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Twinkies again by spring? It could happen', 'http://www.nbcnews.com/business/twinkies-again-spring-it-could-happen-1C7615012']);" target="_new">
+Twinkies again by spring? It could happen
 </a>
 </li>
 <li>
-<a href="http://worldnews.nbcnews.com/_news/2012/12/12/15845485-as-its-universities-turn-out-engineering-grads-poland-attracts-us-tech-giants?lite" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Is Poland Europe\&#039;s next economic powerhouse?', 'http://worldnews.nbcnews.com/_news/2012/12/12/15845485-as-its-universities-turn-out-engineering-grads-poland-attracts-us-tech-giants?lite']);" target="_new">
-Is Poland Europe's next economic powerhouse?
+<a href="http://www.nbcnews.com/business/wall-street-succumbs-fiscal-cliff-uncertainty-1C7619522" onClick="_gaq.push(['_trackPageview', 'Content-Partners-msnbc', 'Wall Street succumbs to fiscal cliff uncertainty', 'http://www.nbcnews.com/business/wall-street-succumbs-fiscal-cliff-uncertainty-1C7619522']);" target="_new">
+Wall Street succumbs to fiscal cliff uncertainty
 </a>
 </li>
   <ul>
@@ -691,7 +613,7 @@ Is Poland Europe's next economic powerhouse?
 		<a href="http://www.crain.com/">Crain Communications</a> | <a href="privacy.html">Privacy Statement</a> | <a href="http://adage.com/terms/">Terms of Use</a> | <a href="http://adage.com/help/faq#contactus">Contact Us</a>
 	</div>
 </div>
-<!-- Total time: 2.50639605522 -->
+<!-- Total time: 2.64877986908 -->
 
 	</div><!-- end .row -->
 </div><!-- end .container -->

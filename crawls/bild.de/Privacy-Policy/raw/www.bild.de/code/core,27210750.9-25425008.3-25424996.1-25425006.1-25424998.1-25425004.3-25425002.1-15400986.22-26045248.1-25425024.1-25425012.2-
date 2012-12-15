@@ -2495,7 +2495,7 @@ de.bild.sso = (function($){
     }
 
 })(jQuery);
-/*de.bild.social:27524114.1*/
+/*de.bild.social:27524114.8*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -2510,7 +2510,31 @@ de.bild = de.bild || {};
 * @dependencies ['jQuery', 'de.bild.sso', de.bild.settings']
 */
 de.bild.social = (function($){
-
+    
+    
+    
+    
+    var storage = de.bild.utils.storage;
+    
+    var SOCIAL_PREFERENCES_STORAGE_KEY = 'de.bild.social';
+    var PERSIST_DAYS = 30;
+    var currentDateTime = new Date().getTime();
+    
+    var clientSMButtonPreferences = {
+        'facebook' : false,
+        'twitter' : false,
+        'gplus' : false,
+        'validTill': currentDateTime
+    };
+    
+    var widgetsLoaded = {
+        'facebook': false,
+        'twitter' : false,
+        'gplus' : false
+    };
+    
+    var socialButtonInfoText = "<h4>Jetzt soziale Netzwerke aktivieren!</h4><br /><p>Ihre Privatsphäre ist uns sehr wichtig – mit zwei Klicks haben Sie Ihre Daten im Griff!</p><p>Für eine komfortable Nutzung, wird Ihre Auswahl für vier Wochen gespeichert.</p><br /><a href='http://www.bild.de/bild-community/2012/community/2klick-loesung-27650500.bild.html'>Mehr erfahren</a>";
+    
     var bodyTag = null,
     $body,
     insertScript = function(id,url){
@@ -2518,7 +2542,6 @@ de.bild.social = (function($){
         s = 'script',
         js,
         fjs=d.getElementsByTagName(s)[0];
-
         if(!d.getElementById(id)) {
             js=d.createElement(s);
             js.id=id;
@@ -2526,6 +2549,11 @@ de.bild.social = (function($){
             fjs.parentNode.insertBefore(js,fjs);
         }
     },
+    
+    
+    /******** Social Button Constructors  **********/
+    
+    
     facebook = {
         like: 'like',
         recommend: 'recommend',
@@ -2543,7 +2571,7 @@ de.bild.social = (function($){
             return '<iframe  class="'+cssClass+'" src="' + document.location.protocol + '//www.facebook.com/plugins/like.php?href=' + url + '&amp;layout=' + layout + '&amp;show_faces=false&amp;width=450&amp;height=21&amp;action=' + type + '&amp;font&amp;colorscheme=light" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>';
         },
         */
-        buttonHTML: '<iframe class="%CLASS%" src="' + document.location.protocol + '//www.facebook.com/plugins/like.php?href=%URL%&amp;layout=button_count&amp;show_faces=false&amp;width=%WIDTH%&amp;height=%HEIGHT%&amp;action=%ACTION%&amp;colorscheme=light&amp;font=arial&amp;locale=%LANG%" scrolling="no" frameborder="0" allowTransparency="true" seamless="seamless"></iframe>',
+        buttonHTML: '<iframe class="%CLASS%" src="' + document.location.protocol + '//www.facebook.com/plugins/like.php?href=%URL%&amp;layout=%LAYOUT%&amp;show_faces=false&amp;width=%WIDTH%&amp;height=%HEIGHT%&amp;action=%ACTION%&amp;colorscheme=light&amp;font=arial&amp;locale=%LANG%" scrolling="no" frameborder="0" allowTransparency="true" seamless="seamless"></iframe>',
         likeXFBML: '',
         sendXFBML: '',
         loginXFBML : '<fb:login-button max-rows="1" width="%WIDTH%" show-faces="false"></fb:login-button>',
@@ -2572,8 +2600,9 @@ de.bild.social = (function($){
         getLikeButton: function(data){
             var url = data.url ? data.url : getEncodedURL(),
             w = data.width ? data.width : '450',
-            h = data.height ? data.height : '21';
-            return facebook.buttonHTML.replace('%ACTION%', facebook.like).replace('%URL%', url).replace('%CLASS%', facebook.likeButtonClass).replace('%HEIGHT%', h).replace('%WIDTH%', w).replace('%LANG%', facebook.lang());
+            h = data.height ? data.height : '21',
+            layout = data.layout ? data.layout : 'button_count';
+            return facebook.buttonHTML.replace('%ACTION%', facebook.like).replace('%URL%', url).replace('%CLASS%', facebook.likeButtonClass).replace('%HEIGHT%', h).replace('%WIDTH%', w).replace('%LAYOUT%', layout).replace('%LANG%', facebook.lang());
         },
          /**
          * getKlubUrlId - parses the doc id out of the url string (Expect: http://www.bild.de/sport/fussball/michael-rensing/fc-zahlt-200000-euro-an-leverkusen-25914172.bild.html)
@@ -2601,8 +2630,9 @@ de.bild.social = (function($){
         getRecommendButton: function(data){
             var url = data.url ? data.url : getEncodedURL(),
             w = data.width ? data.width : '450',
-            h = data.height ? data.height : '21';
-            return facebook.buttonHTML.replace('%ACTION%', facebook.recommend).replace('%URL%', url).replace('%CLASS%', facebook.likeButtonClass).replace('%HEIGHT%', h).replace('%WIDTH%', w).replace('%LANG%', facebook.lang());
+            h = data.height ? data.height : '21',
+            layout = data.layout ? data.layout : 'button_count';
+            return facebook.buttonHTML.replace('%ACTION%', facebook.recommend).replace('%URL%', url).replace('%CLASS%', facebook.likeButtonClass).replace('%HEIGHT%', h).replace('%WIDTH%', w).replace('%LAYOUT%', layout).replace('%LANG%', facebook.lang());
         },
      /**
      * getLoginButton
@@ -2631,7 +2661,6 @@ de.bild.social = (function($){
                el.innerHTML = facebook.getLoginButton(); 
             }
         },
-
         /**
      * postCommentToFeed - tests permissions in order to post a comment to facebook
      * @function
@@ -2643,7 +2672,6 @@ de.bild.social = (function($){
         postCommentToFeed: function(params){
             if(facebook.publishStream !== true){
                 facebook.initLogin(function(){
-
                 }, {
                     scope: 'publish_stream'
                 } );
@@ -2696,7 +2724,6 @@ de.bild.social = (function($){
             });
             return true;
         },
-
         /**
      * loadSDK - Facebook JavascriptSDK anfuegen
      * @function
@@ -2707,7 +2734,6 @@ de.bild.social = (function($){
      */
         loadSDK : function(callback){
             window.fbAsyncInit = function(){
-
                 FB.init({
                     appId: de.bild.settings.facebookAppId,
                     /*status: true,*/
@@ -2715,9 +2741,6 @@ de.bild.social = (function($){
                     xfbml: true,
                     oauth : true 
                 });
-
-
-
                 /*overwrite getLoginStatus*/
                 facebook.getLoginStatus = function(){
                     FB.getLoginStatus(function(response){
@@ -2729,9 +2752,6 @@ de.bild.social = (function($){
                     });
                     return facebook.isLoggedIn;
                 };
-
-
-
                 /*check status right away*/
                 FB.getLoginStatus(function(response){
                    
@@ -2750,9 +2770,7 @@ de.bild.social = (function($){
                         //$body.append('<iframe id="'+facebookLoginId+'" src="'+de.bild.settings.community.urls.ssoFBIframe+'" style="position:absolute;height:0;width:0;border:0;left:-9999px;" frameborder="0" />');
                     }
          
-
                     if (!response.authResponse) {
-
                     } else {
                         FB.api('/me/permissions', function(response) {
                             if(response.data && response.data[0]['publish_stream'] != 1){
@@ -2760,26 +2778,20 @@ de.bild.social = (function($){
                             }else{
                                 facebook.publishStream = true;
                             }
-
                             if(response.data && response.data[0]['user_photos'] != 1){
                                 facebook.userPhotos = false;
                             }else{
                                 facebook.userPhotos = true;
                             }
-
                         });
                         /* we check if the user if logged into facebook
                         and then trigger an event attached to the body (in de.bild.social.init())*/
                         $body.trigger('facebookLoginStatus');
                     }
-
                 });
-
-
                 facebook.initLogin = function(cb,opts){
                     FB.login(cb,opts);
                 };
-
                 FB.Event.subscribe('auth.login', function(response) {
                     if (!response.authResponse) {
                         facebook.isLoggedIn = false;
@@ -2787,10 +2799,7 @@ de.bild.social = (function($){
                         facebook.isLoggedIn = true;
                     }
                 });
-
-
             };
-
             /* FB Javaskript einbinden*/
             var container = document.createElement('div');
             container.setAttribute('id', 'fb-root');
@@ -2800,14 +2809,12 @@ de.bild.social = (function($){
             container.appendChild(e);
             if (bodyTag)  bodyTag.appendChild(container);
             if (typeof callback === 'function')  callback();
-
         }
     },
-
     google = {
-        'widgetURL' : 'https://apis.google.com/js/plusone.js',
-         'buttonHTML' : '<g:plusone size="%SIZE%" annotation="%ANNOTATION%"></g:plusone>',
-         'badgeHTML' : '<g:plus href="https://plus.google.com/%PROFILEID%" rel="publisher" height="%HEIGHT%" width="%WIDTH%"  theme="light"></g:plus>',
+         'widgetURL' : 'https://apis.google.com/js/plusone.js',
+         'buttonHTML' : '<div class="g-plusone" data-size="%SIZE%"></div>',
+         'badgeHTML' : '<div class="g-plus" data-height="%HEIGHT%" data-width="%WIDTH%" data-href="https://plus.google.com/%PROFILEID%?rel=publisher" data-theme="light"></div>',
          gbuttonFrame : '<iframe src="https://plusone.google.com/u/0/_/+1/fastbutton?url=%URL%&amp;size=%SIZE%&amp;count=true&amp;lang=de" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:20px;" align="left"></iframe>',
          
          loadGoogleScript : function(){  
@@ -2821,66 +2828,64 @@ de.bild.social = (function($){
            href: URL to +1
         */
          getPlusOneButton : function(data){
-            var url = data.url ? data.url : getEncodedURL(),
+            var url = data.url || getEncodedURL(),
             size = data.size ? data.size : 'medium',
             annotation = data.annotation ? data.annotation : 'bubble';
-            return google.gbuttonFrame.replace('%URL%', url).replace('%SIZE%', size);
-
-         }
+            return google.buttonHTML.replace('%URL%', url).replace('%SIZE%', size);
+         },
+         
+         getbadgeHTML: function(data) {
+             
+             var profile_id = data.profile_id || '114953790992839012570';
+             var height = data.height || 69;
+             var width = data.width || 170;
+             
+             return google.badgeHTML.replace('%PROFILEID%', profile_id).replace('%HEIGHT%', height).replace('%WIDTH%', width);
+         },
+         reloadWidget : function(){
+            gapi.plusone.go();
+            gapi.plus.go();
+        }
+         
     },
-
-
     twitter = {
-        'widgetURL' : '//platform.twitter.com/widgets.js',
-        'buttonHTML' : '<a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-via="BILD" data-related="%RELATED%">Tweet</a>',
+        'widgetURL' : 'https://platform.twitter.com/widgets.js',
+        'buttonHTML' : '<a href="https://twitter.com/share" class="twitter-share-button" data-url="%URL%" data-count="%COUNTPOS%" data-show-count="true" data-lang="de">Twittern</a>',
+        'iframe' : '<iframe allowtransparency="true" frameborder="0" scrolling="no" src="http://platform.twitter.com/widgets/tweet_button.html?url=%URL%&amp;count=%COUNTPOS%&amp;related=%RELATED%"></iframe>',
+        'iframe_follow': '<iframe allowtransparency="true" frameborder="0" scrolling="no" src="//platform.twitter.com/widgets/follow_button.html?screen_name=twitterapi"></iframe>',
         'buttonFollowHTML' : '<a href="https://twitter.com/%USER%" class="twitter-follow-button" data-show-count="true" data-lang="de">@%USER% folgen</a>',
-
         'getTwitterFollowButton' : function(user){
             return twitter.buttonFollowHTML.replace(/%USER%/g, user);
         },
-        'renderButton' : function(id, related){
-            related = (!related || related === '') ? 'bild' : related;
-            var $elem = $('#'+id);
-            if ($elem.length) {
-                $elem.append(twitter.buttonHTML.replace('%RELATED%', related));
-                
-            }
-
+        'renderButton' : function(data){
+            var url = data.url || "http://www.bild.de";
+            var related = data.related || 'bild';
+            var countpos = data.countpos || 'horizontal';
+            return twitter.buttonHTML.replace('%URL%', url).replace('%RELATED%', related).replace('%COUNTPOS%', countpos);
+            //return twitter.iframe.replace('%URL%', url).replace('%RELATED%', related).replace('%COUNTPOS%', countpos);
+        },
+        reloadWidget : function(){
+            twttr.widgets.load();
         }
     };
-
-
-    /*
-        The social block is under the article in the left col and the channel block is in the right hand column.
-        Buttons are loaded on window.load.
-        Social block appears under the article
-        Channel in the side bar
-    */ 
-
-    function setupSocialBlock(){
-
-        var $socialBlock = $('div.socialBlock');
+    /*************  Social Button Constructors END  ************/
+    /**
+     * Set up the Social Media Buttons
+     * 
+     * */
+    function setupSMButtons(){
+        
+        
+        var $socialBlock = $('.socialBlock');
+        var $socialSharingBlock = $('.social-sharing');        
         var $channelBlock = $('#smbChannelBlock');
         var $recommendBlock = $('.recommend');
-
-
-        if ($socialBlock.length) {
-            
-            // bind only once
-            $body.one('commentEventsSetup', function(e, data){
-                if (data.ugcid) {
-                    /*
-                        this is the html we expect
-                       <li><a href="#" class="add-comment">Kommentar</a></li>
-                    */
-                    $socialBlock.find('a.add-comment').attr('href', '#' + data.ugcid).parent('li').removeClass('hidden');
-                }
-            });
-
-        }
+        
+        /* Client Einstellung fuer die Sichtbarkeit von Social Buttons */
+        clientSMButtonPreferences = loadClientSBVisiblity();
         
         
-        
+        /* Recommend FB-Link am Ende eines Artikels  */
         if($recommendBlock) {
             
             var $fb_shareArticle = $recommendBlock.find('.fb-share-article');
@@ -2891,78 +2896,469 @@ de.bild.social = (function($){
             
         }
         
-            
-        if ($channelBlock.length || $socialBlock.length) {
-
-       
-            $(window).load( function() {
-
-                setTimeout(function(){
-
-                    if ($socialBlock.length) {   
-                        
-                        /*$('#socialBlockGPlus').append(google.getPlusOneButton({'size' : 'medium'}));*/
-
-                        google.loadGoogleScript();
-
-                        twitter.renderButton('socialBlockTwitter');
-
-                        var $fb = $('#socialBlockFb'),
-                        url = ($fb.hasClass('meinklub')) ? facebook.getKlubUrlId() : getEncodedURL();
-
-
-
-                        if ($fb.length && $fb.hasClass('smb-recommend')) {
-                            $fb.append(facebook.getRecommendButton({
-                                'url' : url,
-                                'width' : '145',
-                                'height' : '24'
-                            }));  
-                        } else {
-                            $fb.append(facebook.getLikeButton({
-                                'url' : url,
-                                'width' : '145',
-                                'height' : '24'
-                            }));    
-                        }      
-
-                        
-                    }     
-                    if ($channelBlock.length) {
-
-                        var $fbc_a = $('#smbChannelFbCont a'),
-                        fbc_a_link = $fbc_a.attr('href');
-
-                        $fbc_a.replaceWith(facebook.getLikeButton({'url':fbc_a_link})); 
-                        
-                        var $twc_a = $('#smbChannelTwCont a'),
-                        twc_a_link = $twc_a.attr('href').split('#!/')[1];
-
-                        $('#smbChannelTwCont a').replaceWith(twitter.getTwitterFollowButton(twc_a_link));
-                        
-                        google.loadGoogleScript();
-             
-                    }
-
-                    insertScript('twitter-wjs',twitter.widgetURL);
-
-                },500);
-            });
         
-
+        /* ChannelBlock auf Buehnen */
+        if($channelBlock) {
+           //modifyOldChannelBlock($channelBlock);
+            setupChannelBlock();
         }
-
-
-
-
-    };
-  
-
-
+        
+        
+        if ($socialBlock.length) {
+            $body.one('commentEventsSetup', function(e, data){
+                if (data.ugcid) {                    
+                    $socialBlock.find('a.add-comment').attr('href', '#' + data.ugcid).parent('li').removeClass('hidden');
+                }
+            });
+        }
+       
+       
+        /* Social Media Buttons inkl. Zwei-Click-Loesung */
+       
+        $(window).load( function() {
+            setTimeout(function(){
+                initAndBindSocialMediaBlocks();
+                
+            }, 500);
+        });
+    }
     
-
-
+    
+    
+    /**
+     * Triggers all three social media buttons. Markup is deprecated.
+     * */
+    var socialMediaButtons = {
+        
+        'channelHtmlTemplate': '<li>'
+                            + '<em>%FB_CHANNELNAME%</em> auf Facebook<br />'
+                            + '<div class="social-button fblike">'
+                            + '    <span class="sb-info-popup" data-pos="bottom"></span>'
+                            + '    <a href="#" class="sb-placeholder" data-sb-type="facebook" data-href="%FB_CHANNEL_URL%" data-action="like" data-layout="button_count">Bild</a>'
+                            + '    <div class="sb-to-fill">'
+                            + '    <button class="social-lever" data-target-sb="fblike"></button>'
+                            + '</div>'
+                        + '</li>'
+                        + '<li class="tw-abo">'
+                           + ' <em>%TWITTER_CHANNELNAME%</em> auf Twitter<br />'
+                            + '<div class="social-button twitter">'
+                            + '    <span class="sb-info-popup" data-pos="right"></span>'
+                            + '    <a href="#" class="sb-placeholder" data-sb-type="twitter" data-href="%TWITTER_CHANNEL_URL%" data-class="twitter-follow-button" data-show-count="true">BILD</a>'
+                            + '    <div class="sb-to-fill">'
+                            + '   <button class="social-lever" data-target-sb="twitter"></button>'
+                           + ' </div>'
+                       + ' </li>'
+                       + ' <li class="gp-abo">'
+                         + '   <em>%GPLUS_CHANNELNAME%</em> auf Google+<br />'
+                          + '  <div class="social-button gplus">'
+                            + '     <span class="sb-info-popup" data-popup-pos="right"></span>'
+                            + '    <a href="#" class="sb-placeholder" data-sb-type="gplus" data-href="%GPLUS_CHANNEL_URL%" data-class="g-plus" data-annotation="inline">Folgen</a>'
+                            + '    <div class="sb-to-fill">'
+                            + '    <button class="social-lever" data-target-sb="gplus"></button>'
+                          + '  </div>'
+                       + ' </li>'
+                     + '   <li class="nl-abo"><em>BILD.de-Newsletter</em> abonnieren<br /><a href="http://email.bild.de/host/h.php?AID=34661">Abonnieren</a></li>',
+          
+        
+        'getTemplate': function(fbData, twitterData, gplusData){
+            var _html = socialMediaButtons.channelHtmlTemplate;
+            _html = _html.replace('%FB_CHANNELNAME%', fbData.channelName).replace('%FB_CHANNEL_URL%', fbData.channelUrl);
+            _html = _html.replace('%TWITTER_CHANNELNAME%', twitterData.channelName).replace('%TWITTER_CHANNEL_URL%', twitterData.channelUrl);
+            _html = _html.replace('%GPLUS_CHANNELNAME%', gplusData.channelName).replace('%GPLUS_CHANNEL_URL%', gplusData.channelUrl);
+            return _html;
+        }
+        
+    }
+    
+    
+    
+    
+    
+    function setupChannelBlock() {
+                
+        var $fbc_a = $('#smbChannelFbCont a'),
+        fbc_a_link = $fbc_a.attr('href');
+        $fbc_a.replaceWith(facebook.getLikeButton({'url':fbc_a_link})); 
+        
+        var $twc_a = $('#smbChannelTwCont a');
+        
+        if($twc_a.length) {
+            twc_a_link = $twc_a.attr('href').split('#!/')[1];
+            $('#smbChannelTwCont a').replaceWith(twitter.getTwitterFollowButton(twc_a_link));
+            if(!widgetsLoaded.twitter) {
+                insertScript('twitter-wjs',twitter.widgetURL);
+                widgetsLoaded.twitter = true;
+            } else if(insertingButton) {
+                twitter.reloadWidget();
+            }
+        }
+        
+        //google.loadGoogleScript();
+        
+    }
+    
+    
+    
+    
+    /**
+     * Replaces the inner html of old channel blocks with the new two-click-markup.
+     * */
+    function modifyOldChannelBlock($channelBlock) {
+        
+        var $fbBlock = $channelBlock.find('#smbChannelFbCont');
+        var fbData = {
+            channelName :  $fbBlock.find('em').html(),
+            channelUrl :  $fbBlock.find('a').attr('href')
+        }
+        
+        var $twitterBlock = $channelBlock.find('#smbChannelTwCont');
+        var twitterData = {
+            channelName :  $twitterBlock.find('em').html(),
+            channelUrl :  $twitterBlock.find('a').attr('href')
+        }
+                        
+        var $gplusBlock = $channelBlock.find('#smbChannelGpCont');
+        var gplusData = {
+            channelName :  $gplusBlock.find('em').html(),
+            channelUrl :  $gplusBlock.find('a').attr('href')
+        }
+        
+        $channelBlock.html(socialMediaButtons.getTemplate(fbData, twitterData, gplusData));
+        
+    }
+    
+    
+  
+  
+    /**
+     * Initializes the two-click-social media buttons.
+     * */
+    function initAndBindSocialMediaBlocks() {
+        
+        var $socialButtonBlock = $('.social-button');
+        
+        $socialButtonBlock.each(function(){
+            
+            var $socialBlock = $(this);
+            
+            var $lever = $socialBlock.find('.social-lever');
+            
+            var $infoPopup = $socialBlock.find('.sb-info-popup');
+            $infoPopup.html(socialButtonInfoText);
+            var popupPos = $infoPopup.attr('data-popup-pos');
+                        
+            if(popupPos === 'right') {
+                $infoPopup.css('left', '105px');
+            }
+            if(popupPos === 'bottom') {
+                $infoPopup.css('left', '-50px');
+            }           
+            
+            $socialBlock.hover(
+                function(){
+                    if($lever.hasClass('active')) {
+                        return false;    
+                    }
+                    $infoPopup.show();
+                },
+                function(){
+                    $infoPopup.hide();
+                }
+            );
+            
+        });
+        
+        bindSBLeverEvents();
+        
+        triggerSocialMediaButtons();
+        
+        
+    }  
+    
+    
+    
+    
+    /**
+     * Binds social media lever events, to (de)-active a particular type of social buttons.
+     * */
+    function bindSBLeverEvents() {
+        
+        
+        $(document).on('click', '.sb-placeholder', function(e){
+            e.preventDefault();
+            $(this).siblings('.social-lever').trigger('click');
+        });
+        
+        
+        $(document).on('click', '.social-lever', function(e){
+                                
+            e.preventDefault();
+                        
+            var $lever = $(this);
+            var type = $lever.attr('data-target-sb');
+            var visibility = false;            
+            
+            if($lever.hasClass('active')) {
+                $('.social-button.'+type).find('.social-lever').removeClass('active');
+            } else {
+                $('.social-button.'+type).find('.social-lever').addClass('active');
+                visibility = true;                    
+            }  
+                            
+            if(type === "fblike") {
+                clientSMButtonPreferences.facebook = visibility; 
+                triggerFbButtons(clientSMButtonPreferences.facebook);                                      
+            }
+            if(type === "twitter") {
+                clientSMButtonPreferences.twitter = visibility; 
+                triggerTwitterButtons(clientSMButtonPreferences.twitter);
+            }
+            if(type === "gplus") {
+                clientSMButtonPreferences.gplus = visibility; 
+                triggerGPlusButtons(clientSMButtonPreferences.gplus);
+            }
+            
+            saveClientSBVisiblity();
+            
+        });
+        
+    }
+    
+    
+    
+    
+    
+    
+    /**
+     * Triggers all three social media buttons.
+     * */
+    function triggerSocialMediaButtons() {
+        
+        triggerFbButtons(clientSMButtonPreferences.facebook);
+        
+        triggerTwitterButtons(clientSMButtonPreferences.twitter);
+        
+        triggerGPlusButtons(clientSMButtonPreferences.gplus);
+    }
+    
+    
+    
+    
+    /**
+     * Triggers Goole+ social buttons. Either initializes the Goole+ buttons or removes them.
+     * If Goole+ widget-script has already been loaded, only re-initialize the widgets.
+     * @param {boolean} visible - flag for de-/activattion
+     * */
+    function triggerGPlusButtons(visible) {
+        
+        var $buttonContainer = $('.social-button.gplus');
+        
+        var insertingButton = false;
+                
+        $buttonContainer.each(function(){
+            
+            var $this = $(this);
+            var $placeHolder = $this.find('.sb-placeholder'); 
+            
+            if(!visible) {
+                
+                $this.find('iframe').remove();
+                $this.find('.sb-to-fill').empty().hide();
+                $placeHolder.show();
+                $this.find('.social-lever').removeClass('active');
+                return true;
+            }
+            
+            $placeHolder.hide();
+            $this.find('.social-lever').addClass('active');
+            
+            if($placeHolder.attr('data-class') === "g-plus") {
+                
+                var gplusCode = google.getbadgeHTML({
+                    'profile_id' : $placeHolder.attr('data-href')
+                });
+                
+            } else {
+                
+                 var gplusCode = google.getPlusOneButton({
+                    'url' : getEncodedURL(),
+                    'size' : $placeHolder.attr('data-size'),
+                    'annotation' : $placeHolder.attr('data-annotation')
+                });
+            }
+            $this.find('.sb-to-fill').append(gplusCode).show();
+            insertingButton = true;
+            
+        });
+        
+                
+        if(insertingButton && !widgetsLoaded.gplus) {            
+            google.loadGoogleScript();
+            widgetsLoaded.gplus = true;
+        } else if(insertingButton) {
+            google.reloadWidget();
+        }
+        
+    }
+    
+    
+    
+    /**
+     * Triggers Twitter social buttons. Either initializes the twitter buttons or removes them.
+     * If twitter widget-script has already been loaded, only re-initialize the widgets.
+     * @param {boolean} visible - flag for de-/activattion
+     * */
+    function triggerTwitterButtons(visible) {
+        
+        var $buttonContainer = $('.social-button.twitter');
+        
+        var insertingButton = false;
+                
+        $buttonContainer.each(function(){
+            
+            var $this = $(this);
+            var $placeHolder = $this.find('.sb-placeholder'); 
+            
+            if(!visible) {
+                
+                $this.find('iframe').remove();
+                $placeHolder.show();
+                $this.find('.social-lever').removeClass('active');
+                return true;
+            }
+            
+            $placeHolder.hide();
+            $this.find('.social-lever').addClass('active');                
+            var layout = $placeHolder.attr('data-show-count');
+            
+            if($placeHolder.attr('data-class') === "twitter-follow-button") {
+                
+                var twitterCode = twitter.getTwitterFollowButton( $placeHolder.attr('data-href') ); 
+                
+            } else {
+                var twitterCode = twitter.renderButton({
+ 'url': $placeHolder.attr('data-href'),
+                    'countpos': $placeHolder.attr('data-count')
+                }); 
+            }    
+                       
+            $this.find('.sb-to-fill').append(twitterCode).show();              
+                
+            insertingButton = true;
+            
+        });
+                
+        if(insertingButton && !widgetsLoaded.twitter) {
+            insertScript('twitter-wjs',twitter.widgetURL);
+            widgetsLoaded.twitter = true;
+        } else if(insertingButton) {
+            twitter.reloadWidget();
+        }
+        
+    }
+    
+    
+    
+    
+    /**
+     * Triggers Facebook social buttons. Either initializes the facebook buttons or removes them.
+     * @param {boolean} visible - flag for de-/activattion
+     * */
+    function triggerFbButtons(visible) {
+        
+        var $buttonContainer = $('.social-button.fblike');
+                
+        $buttonContainer.each(function(){
+            
+            var $this = $(this);
+            var $placeHolder = $this.find('.sb-placeholder'); 
+            
+            if(visible) {
+            
+                $placeHolder.hide();
+                $this.find('.social-lever').addClass('active');                
+                var layout = $placeHolder.attr('data-layout');
+                                
+                if($placeHolder.attr('data-action') === "recommend") {
+                    var fbCode = facebook.getRecommendButton({
+                        'url' : encodeURIComponent($placeHolder.attr('data-href')),
+                        //'width' : '145',
+                        'layout' : layout
+                    });
+                } else {
+                    var fbCode = facebook.getLikeButton({
+                        'url' : encodeURIComponent($placeHolder.attr('data-href')),
+                        //'width' : '145',
+                        'layout' : layout
+                    });
+                }                
+                $this.find('.sb-to-fill').append(fbCode).show();                
+                
+            } else {
+                                
+                 $this.find('.sb-to-fill').empty().hide();
+                $placeHolder.show();
+                $this.find('.social-lever').removeClass('active');
+                
+            }
+            
+        });
+        
+        
+    }
+    
+    
+    
    
+    
+    
+    
+    /**
+     * Loads client preferences for social buttons from localstorage. If these preferences do not exist or if they are older than {PERSIST_DAYS}, uses the default values from {clientSMButtonPreferences}.
+     * 
+     * */
+    function loadClientSBVisiblity() {
+        
+        var clientPreferences = {};
+               
+        try {
+            clientPreferences = JSON.parse(storage.get(SOCIAL_PREFERENCES_STORAGE_KEY));
+        } catch(err) {
+            console.warn('SocialJS: Could not read user preferences from localStorage.');
+        }        
+        
+        if(clientPreferences && parseInt(clientPreferences.validTill) > currentDateTime) {
+            clientPreferences = $.extend(clientSMButtonPreferences, clientPreferences);
+        } else {
+            clientPreferences = clientSMButtonPreferences;
+            saveClientSBVisiblity();
+        }        
+        
+        return clientPreferences;
+        
+    }
+    
+    
+    
+    /**
+     * Saves client preferences for social buttons. The preferences are saved in the localstorage and are valid for the next {PERSIST_DAYS} days.
+     * 
+     * */
+    function saveClientSBVisiblity() {
+        
+        clientSMButtonPreferences.validTill = new Date().setDate( new Date(currentDateTime).getDate() + PERSIST_DAYS );
+                
+        try {
+            storage.set(SOCIAL_PREFERENCES_STORAGE_KEY, JSON.stringify(clientSMButtonPreferences), true);
+        } catch(err) {
+            console.warn('SocialJS: Could not save user preferences to localStorage.');
+        }
+        
+        
+    }
+  
+    
+    
     function init(){
         bodyTag = document.getElementsByTagName('body')[0];
         $body = $(bodyTag);
@@ -2971,9 +3367,14 @@ de.bild.social = (function($){
             de.bild.sso.renderUserBar();
         });
         facebook.loadSDK();
-        setupSocialBlock();
+                
+        setupSMButtons();
+                
         return true;
-    };
+    }
+    
+    
+    
     /**
      * getEncodedURL
      * @function
@@ -2984,8 +3385,10 @@ de.bild.social = (function($){
      */
     function getEncodedURL(){
         return encodeURIComponent(document.location.href);
-    };
-
+    }
+    
+    
+    
     /* oeffentliches Interface*/
     return {
         /* facebook*/
@@ -3008,7 +3411,6 @@ de.bild.social = (function($){
         'getActivityFeed' : function() {
             return facebook.getActivityFeed();
         },
-
         'loginToFB' : function(cb,opts){
             cb = cb || function(){};
             opts = opts || {};
@@ -3036,16 +3438,11 @@ de.bild.social = (function($){
         'publishStream' : function(){
             return facebook.publishStream;
         },
-        'setupSocialBlock' : function(){
-            return setupSocialBlock();
-        },
-
         /*  google */
         'getPlusOneButton' : function(data){
             data = data || {};
             return google.getPlusOneButton(data);
         },
-
         /*twitter*/
         'renderTwitterButton' : function(id, related){
             if (id) {
@@ -3053,7 +3450,6 @@ de.bild.social = (function($){
                 twitter.renderButton(id, related);
             }
         },
-
         'getTwitterFollowButton' : function(user){
             if (user) {
                return twitter.getTwitterFollowButton(user);
@@ -3063,9 +3459,7 @@ de.bild.social = (function($){
             return init();
         }
     };
-
 }(jQuery));
-
 /*de.bild.conf:25425026.3*/
 
 

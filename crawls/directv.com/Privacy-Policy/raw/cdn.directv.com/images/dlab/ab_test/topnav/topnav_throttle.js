@@ -5,12 +5,16 @@
 	
 	// if cookie already set, stop now
 	var navCookie = readCookie('dtvtopnav');
-	if (navCookie != null) {
+	if (navCookie == "old-hp") {
+		// continue
+		callTnT = true;
+	} else if (navCookie != null) {
+		callTnT = false;
 		return false;
 	}
 
-	// throttle cookie
 	/*
+	// throttle cookie
 	if (!$('body').hasClass('home-page')) {
 		mboxCreate("topnav_throttle","entry=other");
 	} else {
@@ -18,11 +22,13 @@
 	}
 	*/
 	
+	/*
 	// if user not on home-page, set cookie to OLD
 	if (!$('body').hasClass('home-page')) {
 		setTopnavCookie('old-hp');
 		callTnT = false;
 	}
+	*/
 	
 	if (callTnT) {
 		// generating random number from 0-99.
@@ -55,7 +61,10 @@ function makeTnTCall() {
 function setTopnavCookie(v){
 	createCookie('dtvtopnav', v, 30);
 	if (v == "new"){
-		location.reload();
+		document.write('<link rel="stylesheet" type="text/css" href="/images/dlab/ab_test/topnav/topnav_throttle_redirect.css" media="all" />');
+		Event.observe(window, 'load', function(){
+			setTimeout(function(){location.reload();},500);
+		});
 	}
 }
 
@@ -84,4 +93,3 @@ function readCookie(name) {
 function eraseCookie(name) {
 	createCookie(name,"",-1);
 }
-

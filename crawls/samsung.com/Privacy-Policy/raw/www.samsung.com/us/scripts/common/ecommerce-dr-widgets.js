@@ -7,7 +7,7 @@ $(document).ready (function () {
 
 	$(function() {
 		var jversion = jQuery.fn.jquery;
-		if (jversion < '1.5.2') {
+		if (jversion < '1.5.2' || window.location.pathname.indexOf('support') > 0) {
 			// var $jquery132 = $('head').find('script[src="/us/scripts/jquery-1.3.2.js"]').remove();
 			$('head').append('<script type="text/javascript" src="/us/scripts/jquery-1.7.2.min.js"></script>');
 		}

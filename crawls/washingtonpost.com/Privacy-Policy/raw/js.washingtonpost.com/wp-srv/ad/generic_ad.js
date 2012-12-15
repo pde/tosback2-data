@@ -344,9 +344,15 @@ var wpAd, placeAd2;
               delete wpAd.templates[ad];
             }
           } else {
-            //This becomes an empty object because it needs to have the ability to have a 'hardcode' property be attached to it if need be
+            //temp object created for each "what" value
+            var temp = {};
+            if(/\*$/.test(what)){
+              what = what.split(/\*/)[0];
+              temp.openAll = true;
+            }
             wpAd.templates[what] = wpAd.templates[what] || {};
             wpAd.templates[what].id = obj.id;
+            wpAd.templates[what].openAll = temp.openAll || false;
             if(obj.hardcode && !obj.preempt) {
               wpAd.templates[what].hardcode = obj.hardcode;
             }
@@ -578,10 +584,10 @@ var wpAd, placeAd2;
         if(typeof arry === 'object') {
           len = arry.length;
           while(len--) {
-            regex += arry[len] + '(|s|es|ed|ing)' + (len !== 0 ? '\\b|' : '') + '\\b';
+            regex += arry[len] + '(|s|es|ed|ing|er)' + (len !== 0 ? '\\b|' : '') + '\\b';
           }
         } else {
-          regex += arry + '(|s|es|ed|ing)' + '\\b';
+          regex += arry + '(|s|es|ed|ing|er)' + '\\b';
         }
 
         if(wpAd.cache.keywords.search(new RegExp(regex)) !== -1) {
@@ -696,15 +702,18 @@ var wpAd, placeAd2;
         if(!wpAd.templates) {
           wpAd.tools.generateTemplate();
         }
-        if(wpAd.templates[wpAd.briefcase.pos] || wpAd.flags.allAds) {
+        if(wpAd.templates[wpAd.briefcase.pos] || (wpAd.templates[wpAd.briefcase.what] && wpAd.templates[wpAd.briefcase.what].openAll) || wpAd.flags.allAds) {
           wpAd.templates[wpAd.briefcase.pos] = wpAd.templates[wpAd.briefcase.pos] || {};
           if(wpAd.templates[wpAd.briefcase.pos].hardcode) {
-            //this is a bit strange, but we have to store all hardcodes before the ad call is built, when we initially generate template
             wpAd.briefcase.hardcode = wpAd.templates[wpAd.briefcase.pos].hardcode;
           }
-          if(wpAd.templates[wpAd.briefcase.pos].id){
-            wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id;
-          }
+          
+          wpAd.briefcase.id = wpAd.templates[wpAd.briefcase.pos].id || 
+            (wpAd.templates[wpAd.briefcase.what] &&
+            wpAd.templates[wpAd.briefcase.what].openAll &&
+            wpAd.templates[wpAd.briefcase.what].id ||
+            false);
+          
           // hack to fix double ad calls - add current ad type to array:
           if(wpAd.flags.IE) {
             wpAd.tools.adsToBeCleaned.push(wpAd.briefcase.what);
@@ -961,7 +970,7 @@ var wpAd, placeAd2;
           var rv = [],
             obj = {
                 natural_disaster : ['shell', 'exxon', 'citgo', 'bp', 'chevron', 'hess', 'sunoco', 'disaster', 'fire', 'explosion', 'oil', 'coal', 'death', 'dead', 'quake', 'earthquake', 'tsunami', 'tornado', 'hurricane', 'flood','bed bug','infestation'],
-                human_disaster : ['vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11'],
+                human_disaster : ['shoot', 'vatican', 'spanair', 'aground', 'rescue', 'attack', 'disaster', 'explosion', 'war', 'hostage', 'terror', 'terrorist', 'bomb', 'blast', 'mining', 'miner', 'violence', 'riot', 'crash', '9/11', 'sept. 11', 'september 11'],
                 financial_crisis : ['corrupt', 'goldman', 'aig', 'foreclosure', 'enron', 'sec', 'mortgage', 'Insurance', 'health', 'bank', 'wall street', 'protest', 'labor strike', 'union strike', 'labor issue', 'union issue', 'teacher strike', 'teachers strike', 'election'],
                 inappropriate : ['gambling','sex','alcohol','pornography']
             },

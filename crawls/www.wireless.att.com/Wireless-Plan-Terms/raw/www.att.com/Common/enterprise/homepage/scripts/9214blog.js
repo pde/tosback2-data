@@ -73,7 +73,7 @@ function displayfeed(result,topic,feedurl,feedlimit, isProductPage,pageID){
                                                 var author = entry.author;                                                                                               
                                                 var content = entry.content;                                           
                                                 var thumbnailImg = parseThumbnailImg(content);            
-                                                var img="<img width='90' class='newimgclass' src='"+thumbnailImg+"'>";
+                                                var img="<img width='75' class='newimgclass' src='"+thumbnailImg+"'>";
 				
 				var post_image= document.createElement('div'); 
 				post_image.setAttribute("class","post-image");

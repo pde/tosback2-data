@@ -3,7 +3,7 @@ var openDelayTimer = null;
 	var tOut=null;
 $(document).ready(function(){
 	
-	$( '.addthis_toolbox' ).css({ opacity: 0, zIndex:9999 }).hide();
+	$( '.addthis_toolbox' ).css({ opacity: 0, zIndex:9999,'margin-top':'1px' }).hide();
 	$( '.contentpage .add_this .addthis_toolbox, .contentpagetwocolumn .add_this .addthis_toolbox' ).css({left:82,top:-65});
 	
 	$( '.videoCaptionWrap .addthis_toolbox' ).css({ top: -63, left: -16});
@@ -31,7 +31,7 @@ $(document).ready(function(){
 			if($('html').hasClass('ie8') || $('html').hasClass('ie9'))
 				$this.next().css({ top:-22, left:-36 });
 			else
-				$this.next().css({ top:-66, left:-36 });
+				$this.next().css({ left:-36 });
 		}
 			
 		$this.next().show().animate({ opacity: 1 }, 'fast' );	

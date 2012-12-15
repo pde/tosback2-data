@@ -116,6 +116,7 @@ $(document).ready (function() {
 			if( $( this ).hasClass( 'twitterBtn'  )) fireMetrics( 'HOME_SOCIAL_TWITTER_GM' );
 			if( $( this ).hasClass( 'facebookBtn' )) fireMetrics( 'HOME_SOCIAL_FACEBOOK_GM' );
 			if( $( this ).hasClass( 'youtubeBtn'  )) fireMetrics( 'HOME_SOCIAL_YOUTUBE_GM' );
+			if( $( this ).hasClass( 'googleplusBtn'  )) fireMetrics( 'HOME_SOCIAL_GOOGLEPLUS_GM' );
 		});
 	}
 
@@ -127,6 +128,12 @@ $(document).ready (function() {
 	$( 'body.brandpage div#thumbSwitchBckgndImage div.bottom ul.textLinks li.textItems a' ).click( function(){
 		fireMetrics( 'BRAND_SEE_MORE_' + $( 'body' ).attr( 'id' ).toUpperCase(), { 'link_name' : $( this ).text()});
 	});
+	$('body.brandpage div#thumbSwitchBckgndImage ul.socialIconsList li a img').click( function(){
+		//alert($(this).attr('alt'));
+		//alert('BRAND_SOCIAL_' + $(this).attr('alt').toUpperCase() + '_' + $( 'body' ).attr( 'id' ).toUpperCase());
+		fireMetrics('BRAND_SOCIAL_' + $(this).attr('alt').toUpperCase() + '_' + $( 'body' ).attr( 'id' ).toUpperCase());
+	});
+	
 	//-------------------------------------------------------------
 	//browse by
 	if( uri == '/content/gmcom/home/vehicles/browseByBrand' ||
@@ -544,15 +551,17 @@ $(document).ready (function() {
 			fireMetrics('contact_us_exit', { 'destination_name' : result[1] });
 		});
 		$( 'body#contactUs div.cq-colctrl-lt1-c0 div.cta_shaded_container a' ).live('click', function(){
-			var href = $( this ).attr( 'href' ),
-				pat = /www\.(\w*)\./,
-				result = pat.exec( href );
-			if( result && result[1].length > 0 ){
-				fireMetrics('contact_us_exit', { 'destination_name' : result[1] });
-			}else{
-				var txt = $(this).text();
-				txt = txt.replace(/\s+/g, " ");
-				fireMetrics('contact_us_exit', { 'destination_name' : txt });
+			if(!($(this).attr('id') =='liveChat')){
+				var href = $( this ).attr( 'href' ),
+					pat = /www\.(\w*)\./,
+					result = pat.exec( href );
+				if( result && result[1].length > 0 ){
+					fireMetrics('contact_us_exit', { 'destination_name' : result[1] });
+				}else{
+					var txt = $(this).text();
+					txt = txt.replace(/\s+/g, " ");
+					fireMetrics('contact_us_exit', { 'destination_name' : txt });
+				}
 			}
 		});
 		$( '#liveChat').live( 'click', function(){
@@ -987,6 +996,9 @@ $(document).ready (function() {
 		});
 		$( 'a[href*="www.youtube.com/user/gmblogs"]' ).click( function(){
 			fireMetrics('BRAND_SOCIAL_YOUTUBE');
+		});
+		$( 'a[href*="plus.google"]' ).click( function(){
+			fireMetrics('BRAND_SOCIAL_GOOGLEPLUS');
 		});
 		//articles under earning releases
 		$( 'li p.articleTitleBlurb a[href*="/investors/earning-releases"]' ).click( function(){
@@ -1679,6 +1691,83 @@ $(document).ready (function() {
 		$( 'div#promoTileMedium a' ).live( 'click', function(){
 			fireMetrics( 'promotile', { 'destination_name' : $( this ).find( 'img' ).attr( 'alt' ) });
 		});
+		
+		$('div#promoTileLarge a').live('click', function(){
+			//alert($( this ).find( 'img' ).attr( 'alt' ));
+			fireMetrics('promotileLarge', {'destination_name' : $( this ).find( 'img' ).attr( 'alt' )});
+		});
+		/*$('div.doubleWide a.button').live('click', function(){
+			alert($(this).text());
+		});*/
+		$('div.doubleWide li a').live('click', function(){
+			//alert($(this).text());
+			var destination_name = $( this ).text();
+			var href = $( this ).attr( 'href' ),
+			pat = /http:\/\/(www)?\.?(\w*)\./,
+			test = pat.test( href ),
+			result = pat.exec( href );
+			if( test ){
+				fireMetrics( 'exit', { 'destination_name' : destination_name });
+			} else {
+				fireMetrics( 'internal', { 'destination_name' : destination_name });
+			}
+		});
+		
+		$('div.doubleWide p a').live('click', function(){
+			//alert($(this).text());
+			var destination_name = $( this ).text();
+			var href = $( this ).attr( 'href' ),
+			pat = /http:\/\/(www)?\.?(\w*)\./,
+			test = pat.test( href ),
+			result = pat.exec( href );
+			if( test ){
+				fireMetrics( 'exit', { 'destination_name' : destination_name });
+			} else {
+				fireMetrics( 'internal', { 'destination_name' : destination_name });
+			}
+		});
+		
+		$('div.doubleWide a.btnNonCTA').live('click', function(){
+			//alert($(this).text());
+			var destination_name = $( this ).text().replace(/\s+/g, " ") + " / " + $(this).parents('.doubleWide').find('h1').text();
+			var href = $( this ).attr( 'href' ),
+			pat = /http:\/\/(www)?\.?(\w*)\./,
+			test = pat.test( href ),
+			result = pat.exec( href );
+			if( test ){
+				fireMetrics( 'exit', { 'destination_name' : destination_name });
+			} else {
+				fireMetrics( 'internal', { 'destination_name' : destination_name });
+			}
+		});
+		$('div#rotatingMasthead div.text a').live('click', function(){
+			//alert($(this).text());
+			var destination_name = $( this ).text();
+			var href = $( this ).attr( 'href' ),
+			pat = /http:\/\/(www)?\.?(\w*)\./,
+			test = pat.test( href ),
+			result = pat.exec( href );
+			if( test ){
+				fireMetrics( 'exit', { 'destination_name' : destination_name });
+			} else {
+				fireMetrics( 'internal', { 'destination_name' : destination_name });
+			}
+		});
+		//code for the click event of the dots and arrows in the 
+		//masthead is in jquery.rotatingMasthead.js
+		
+		$('div.subsection_image_link a').live('click',function(){
+			if ($(this).children('img').length){
+				//alert('has img ');
+				//alert($(this).find('img').attr('alt'));
+				fireMetrics('subsection_image', { 'sub_name' : $(this).find('img').attr('alt')});
+			}else{
+				//alert($(this).text());
+				fireMetrics('subsection_image', { 'sub_name' : $(this).text()});
+			}
+		});
+		
+				
 		$( 'div.flexLeftContent div.text a' ).live( 'click', function(){
 			var $this = $( this ),
 				destination_name = $( this ).text(),
@@ -1703,24 +1792,67 @@ $(document).ready (function() {
 		});
 		$( 'a.button' ).live( 'click', function(){
 			//alert( '->' + $( this ).text() + '<-' );
-			switch( true ){
-				case $( this ).parents( '.wrapActionContainer' ).length > 0:
-					fireMetrics( 'video_close_button' );
-					break;
-				default:
-					var destination_name = $( this ).text();
-					var href = $( this ).attr( 'href' ),
+			if (!($(this).hasClass( 'playVideo' ))){
+				switch( true ){
+					case $( this ).parents( '.wrapActionContainer' ).length > 0:
+						fireMetrics( 'video_close_button' );
+						break;
+					case $(this).parents('.singleWide').length>0:
+						var destination_name = $( this ).text().replace(/\s+/g, " ") + " / " + $(this).parents('.singleWide').find('h1').text();
+						var href = $( this ).attr( 'href' ),
 						pat = /http:\/\/(www)?\.?(\w*)\./,
 						test = pat.test( href ),
 						result = pat.exec( href );
-					if( test ){
-						fireMetrics( 'exit', { 'destination_name' : destination_name });
-					} else {
-						fireMetrics( 'internal', { 'destination_name' : destination_name });
-					}
-					//fireMetrics( 'exit', { destination_name : $( this ).text()});
-					break;
-			}
+						if( test ){
+							fireMetrics( 'exit', { 'destination_name' : destination_name });
+						} else {
+							fireMetrics( 'internal', { 'destination_name' : destination_name });
+						}
+						
+						break;
+					case $(this).parents('.doubleWide').length>0:
+						var destination_name = $( this ).text().replace(/\s+/g, " ") + " / " + $(this).parents('.doubleWide').find('h1').text();
+						var href = $( this ).attr( 'href' ),
+						pat = /http:\/\/(www)?\.?(\w*)\./,
+						test = pat.test( href ),
+						result = pat.exec( href );
+						if( test ){
+							fireMetrics( 'exit', { 'destination_name' : destination_name });
+						} else {
+							fireMetrics( 'internal', { 'destination_name' : destination_name });
+						}
+						
+						break;
+					case $(this).parents('div#rotatingMasthead').length>0:
+						var destination_name = $( this ).text().replace(/\s+/g, " ") + " / " + $(this).parents('div.mh_item').find('img').attr('alt').replace(/\s+/g, " ");
+						var href = $( this ).attr( 'href' ),
+						pat = /http:\/\/(www)?\.?(\w*)\./,
+						test = pat.test( href ),
+						result = pat.exec( href );
+						if( test ){
+							fireMetrics( 'exit', { 'destination_name' : destination_name });
+						} else {
+							fireMetrics( 'internal', { 'destination_name' : destination_name });
+						}
+						
+						break;
+					default:
+						var destination_name = $( this ).text().replace(/\s+/g, " ");
+						var href = $( this ).attr( 'href' ),
+						pat = /http:\/\/(www)?\.?(\w*)\./,
+						test = pat.test( href ),
+						result = pat.exec( href );
+						if( test ){
+							fireMetrics( 'exit', { 'destination_name' : destination_name });
+						} else {
+							fireMetrics( 'internal', { 'destination_name' : destination_name });
+						}
+						//fireMetrics( 'exit', { destination_name : $( this ).text()});
+						break;
+				}
+		}else{
+			//alert('has playvideo');
+		}
 		});
 		//related resources
 		$( 'div.relatedResources a' ).live( 'click', function(){
@@ -1736,26 +1868,50 @@ $(document).ready (function() {
 		});
 		if( $( 'ul.slideshow').length > 0 ){
 			//fire the up gallery initaly
-			$( 'ul.slideshow li.active' ).each( function(){
-				fireMetrics( 'gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' )});
-			});
+			/*$( 'ul.slideshow li.active' ).each( function(){
+				if ($(this).parents('div').hasClass('mediaFeedImages')){
+					//alert($(this).parents('div').attr('class') + 'has media images');
+				}else{
+					if(!($(this).find('a[rel*=video]').length)){
+						//alert("contains video");
+						//var text = "video";
+						//fireMetrics( 'gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' ), number_clicked :text});
+					
+						var text = $(this).parents('.galleryWraper').find( 'a.active').text();
+						if(text ===""){
+							alert("empty");
+						}else{
+							alert("not empty");
+							fireMetrics( 'gallery_image', { image_name : $( this ).find( 'img' ).attr( 'alt' ), number_clicked :text});
+						}
+						
+					}
+				}
+			});*/
 			//prev click
 			$( 'div.galleryPrev' ).live( 'click', function(){
-				fireMetrics( 'gallery_prev_arrow' );
-				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				//fireMetrics( 'gallery_prev_arrow' );
+				//fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' ), number_clicked : 'gallery_prev_arrow'});
 			});
 			//next click
 			$( 'div.galleryNext' ).live( 'click', function(){
-				fireMetrics( 'gallery_next_arrow' );
-				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				//fireMetrics( 'gallery_next_arrow' );
+				//fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' ), number_clicked :'gallery_next_arrow'});
 			});
 			//number click
 			$( 'div.controlNav a' ).live( 'click', function(){
 				var text = $( this ).text();
 				text = $( this ).index() == 0 ? "left-arrow" : text;
 				text = $( this ).index() == $( this ).parent().children().length - 1 ? "right-arrow" : text;
-				fireMetrics( 'gallery_number', { number_clicked : text });
-				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				//fireMetrics( 'gallery_number', { number_clicked : text });
+				//fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' )});
+				
+				//alert('altText' + altTextForTracking);
+				fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' ), number_clicked : text});
+							
+				//fireMetrics( 'gallery_image', { image_name : $( this ).parents( '.galleryWraper' ).find( 'ul.slideshow li.active' ).next().find( 'img' ).attr( 'alt' ), number_clicked : text});
 			});
 		}
 	}
