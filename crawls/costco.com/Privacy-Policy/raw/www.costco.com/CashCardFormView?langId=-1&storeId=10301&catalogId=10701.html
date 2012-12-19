@@ -1,0 +1,113 @@
+
+
+<!DOCTYPE html>
+<!-- BEGIN CashCardBalanceForm.jsp -->
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Apply Costco Cash Card</title>
+	
+	<script type="text/javascript" src="dtagent_416.js" data-dtconfig="rid=RID_1215794166|rpid=1042403161|domain=costco.com|tp=500,50,3"></script><link rel="stylesheet" href="dynamic_css%3FlangId=-1&amp;storeId=10301&amp;catalogId=10701.css" type="text/css"/>
+	<script type="text/javascript" src="wcsstore/CostcoGLOBALSAS/javascript/jquery/jquery-1.6.1.min.js"></script>	
+	<script type="text/javascript">	
+		
+		
+		var messages = {};
+		
+			messages.JS_VALID_REQUIRED="This field is required";
+		
+			messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH="You have entered an invalid Costco Cash Card number. Please check your entry for accuracy and try again.";
+		
+			messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH_PIN="You have entered an invalid pin number. Please check your entry for accuracy and try again.";
+		
+			messages.ERR_CHECKOUT_PAYMENT_EMPTY_COSTCOCASH="Costco Cash Card number cannot be empty. Please check your entry for accuracy and try again.";
+		
+			messages.ERR_CHECKOUT_PAYMENT_EMPTY_COSTCOCASH_PIN="Costco Cash Card pin number cannot be empty. Please check your entry for accuracy and try again.";
+		
+		
+		$(window).load(function(){
+			
+			// custom validation rule for cash card pins
+			$.validator.addMethod("cashcardpin", function( value, element ) {
+					// costco pins are 12 digits
+					return this.optional(element) || /^\d{4,8}$/.test(value);
+				}, messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH_PIN);
+				
+			$.validator.addMethod("cashcard", function( value, element ) {
+					// costco membership numbers are 12 digits
+					return this.optional(element) || /^\d{16}(\d{3})?$/.test(value);
+				}, messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH);				
+		
+			var cashCardForm = $('#CashCardBalanceCheckForm');
+			cashCardForm.validate({
+				onfocusout:false,
+				rules : { 
+					cash_pin: { required:true, cashcardpin:true },
+					cash_account: { required:true, cashcard:true }
+				},
+				messages: {
+					cash_pin:{required:messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH_PIN, cashcardpin:messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH_PIN},
+					cash_account: {required:messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH, cashcard:messages.ERR_CHECKOUT_PAYMENT_INVALID_COSTCOCASH}
+				},
+				showErrors: function(){
+					$('.CashCardBalanceCheck label.success').remove();
+					$('.CashCardBalanceCheck label.error').remove();
+					this.defaultShowErrors();
+				},
+				errorPlacement: function(error, element){
+					if ($('.CashCardBalanceCheck label.error').length == 0){
+						error.appendTo('.CashCardBalanceCheck .messages');
+					}
+				}
+			});
+			
+			cashCardForm.submit(function(){
+				if(cashCardForm.valid()){
+					$('.CashCardBalanceCheck .messages').toggle();
+					$('.spinner').toggle();
+				}
+			});
+		
+		});	
+	</script>
+	<script type="text/javascript" src="wcsstore/CostcoGLOBALSAS/javascript/jquery.validate.js"></script>	
+
+</head>
+<body style="background-color:transparent;">
+
+	
+	
+	<div class="CashCardBalanceCheck" >
+		<ul id="header_links">
+			<li>
+				<form id="CashCardBalanceCheckForm" action="https://www.costco.com/CashCardBalanceInquiry" method="post" class="validate">
+					<input type="hidden" name="langId" value="-1"/>
+					<input type="hidden" name="catalogId" value="10701"/>
+					<input type="hidden" name="storeId" value="10301"/>
+					<div class="form-item">
+						<label for="header_cashCardNumber">Card Number</label>
+						<input id="header_cashCardNumber" name="cash_account" type="text" maxlength="19" value="" autocomplete="off"/>
+					</div>
+    				<div class="form-item">
+						<label for="header_cashCardPin">PIN</label>
+						<input id="header_cashCardPin" name="cash_pin" type="password" maxlength="8" autocomplete="off"/>
+					</div>
+					<div class="form-item information">
+						<label> Both fields are required.</label>
+					</div>
+					<div class="form-item">
+	 					<button class="button submit costco-button" type="submit"><span class="s1"><span class="s2">Check balance</span></span></button>
+					</div>
+				</form>
+	
+				<div class="messages">
+					
+				</div>
+				
+				<img class="spinner" src="wcsstore/CostcoGLOBALSAS/images/spinner.gif">
+			</li>
+		</ul>
+	</div>
+				    
+</body>
+</html>

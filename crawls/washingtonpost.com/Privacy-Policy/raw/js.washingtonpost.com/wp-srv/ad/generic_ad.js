@@ -451,7 +451,12 @@ var wpAd, placeAd2;
           l = demoAds.length,
           obj = {};
         while(l--) {
-          obj[wpAd.tools.convertOldPosValue(demoAds[l])] = {};
+          if(demoAds[l] === 'tiffanytile'){
+            obj.tiffany_tile = {};
+            obj.tiffany_tile_2 = {};
+          } else {
+            obj[wpAd.tools.convertOldPosValue(demoAds[l])] = {};
+          }
         }
         return obj;
       },
@@ -473,9 +478,19 @@ var wpAd, placeAd2;
         win.estNowWithYear = d.toString();
         return win.estNowWithYear;
       })(),
+      extendTemplates: function(flights){
+        for(var key in flights){
+          if(flights.hasOwnProperty(key) && !wpAd.config.templates.hasOwnProperty(key)){
+            wpAd.config.templates[key] = flights[key];
+          }
+        }
+      },
       generateTemplate: function () {
         if(!wpAd.flags.demoAds) {
           wpAd.templates = {};
+          if(wpAd.config.tiffanyTiles){
+            wpAd.tools.extendTemplates(wpAd.config.tiffanyTiles);
+          }
           for(var key in wpAd.config.templates) {
             if(wpAd.config.templates.hasOwnProperty(key)){
               wpAd.config.templates[key].id = key;
@@ -899,7 +914,7 @@ var wpAd, placeAd2;
         }
         
         //this needs to be before the dcopt check in keyvalues:
-        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && !/^homepage|^washingtonpost\.com/.test(commercialNode) && wpAd.tools.interstitial()) {
+        if(!wpAd.cache.dcopt && (wpAd.briefcase.delivery === 'adj' || wpAd.briefcase.delivery === 'fif') && wpAd.flags.is_homepage && wpAd.tools.interstitial()) {
           keys.push('interstitial');
         }
         
@@ -1141,7 +1156,7 @@ var wpAd, placeAd2;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
 
     //a bit hacky but temporary, until we phase out tile flight manager for opening/closing tiffany tiles:
-    if(wpAd.briefcase.pos === 'tiffany_tile' && wpAd.constants && wpAd.constants.site === 'wpni' && !/js_tiff/.test(location.search)) {
+    if(wpAd.briefcase.pos === 'tiffany_tile' && !wpAd.flags.is_homepage && wpAd.constants && wpAd.constants.site === 'wpni' && !/js_tiff/.test(location.search)) {
       wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', function(){
         wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
       });
@@ -1194,6 +1209,7 @@ var wpAd, placeAd2;
     test_fif: !!/test_fif/i.test(location.search),
     debugAds: !!/debugAds/i.test(location.search),
     hpRefresh: !!wpAd.tools.urlCheck('reload=true'),
+    is_homepage: !!(win.commercialNode && /^homepage|^washingtonpost\.com/i.test(commercialNode)),
     is_local: wpAd.tools.checkCookieVal('WPATC', 'C=1:'),
     network_id: wpAd.tools.urlCheck('network_id', {type: 'variable'}) || (wpAd.tools.urlCheck('network_id') ? 'N328291' : false)
   };

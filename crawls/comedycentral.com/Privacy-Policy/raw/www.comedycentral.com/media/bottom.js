@@ -7125,7 +7125,208 @@ $(function () {
 	$Crabapple('.fan_activity .module_tabs').tabs('.fan_activity .activities');
 
 	$CC('.fan_activity .twitter').tweetriver();
-});/* follow.js */
+});/* flux4.js */
+;(function($, w) {
+	
+	var configured, conf, stub, loading, extant = {}, _guid = 0; waiting = $();
+	var version = "0.1";
+
+	var createConf = function() {
+
+		if (w.MTVN && w.MTVN.conf && w.MTVN.conf.flux4) {
+			$.extend(conf, w.MTVN.conf.flux4);
+			configured = true;
+		}
+		
+	}
+	
+	var loadScript = function(url, callback) {
+	 
+		 var script = document.createElement("script"),
+			  body = document.body;
+		 script.type = "text/javascript";
+	 
+		 if ( script.readyState ) {     //IE <= 8
+			  script.onreadystatechange = function() {
+				   if ( script.readyState == "loaded" || script.readyState == "complete" ) {
+						script.onreadystatechange = null;
+						
+						w.setTimeout(function() {
+							callback();
+						}, 100);						
+				   }
+			  };
+		 }
+		 else {     //Others
+			  script.onload = function() {
+				   callback();
+			  };
+		 }
+	 
+		 body.insertBefore(script, body.firstChild);
+		 script.src = url;
+	 
+	}
+	
+	var loadCore = function() {
+		var core =  (MTVN.conf.flux4.staging) ? 
+					"http://widgets4.flux-staging.com/Core?includeJquery=false":
+					"http://widgets4.flux.com/Core?includeJquery=false";
+					
+		loading = true;
+		
+
+
+		// flux needs an id on a script tag to figure out the UCID, so we add an empty one to the document
+		stub = document.createElement("script");
+		stub.setAttribute('id', conf.ucid);
+		stub.setAttribute('widgets4Debug', "true");
+		document.body.appendChild(stub)
+
+		loadScript(core, function () {
+				loading = false;
+				if (w.Flux4) {
+					waiting.trigger("Flux4.coreLoad", [true]);
+				} else {
+					waiting.trigger("Flux4.coreLoad", [false]);
+				}
+			});
+
+
+	}
+
+	var loadElement = function(element) {
+
+		var el = $(element);
+		
+		if (!el.data("_guid")) {
+			el.data("_guid", _guid++)
+		}
+		
+		var wGuid = el.data("_guid");
+		var wName = el.data("widget")
+		var wContentUri = el.data("contenturi");
+		
+		if (conf.widgets[wName]) {
+
+			var opts = $.extend({"container": element}, conf.widgets[wName].opts)
+
+			if (wContentUri) {
+				opts.contentUri = wContentUri;
+				opts.contentId = wContentUri;
+			}
+			
+			if (extant[wGuid] != wName + "|" + wContentUri) {
+				extant[wGuid] = wName + "|" + wContentUri;
+				
+				el.empty();
+
+				var isFlux = setInterval(function(){ // fix for IE
+					if(w.Flux4){
+				
+						w.Flux4.createWidget(conf.widgets[wName]["name"], opts, function(widget) {
+
+							if  (conf.widgets[wName]["onLoad"]) {
+									conf.widgets[wName]["onLoad"](widget);				
+							}
+							el.trigger("Flux4.widget.load", [widget, true, conf.widgets[wName]["name"], opts]);
+
+						});
+						clearInterval(isFlux);
+					}
+				},200);
+
+			} else {		
+				el.trigger("Flux4.widget.load", [undefined, false, conf.widgets[wName]["name"], opts]);
+			}
+		} 
+	}
+
+	
+	var init = function() {
+	
+		configured = false;
+		loading = false;
+		extant = {};
+		waiting = $();
+		
+		conf = {}		
+
+		if (stub) {
+			stub.parentNode.removeChild(stub);
+			stub = undefined;
+		}
+	}
+
+	init();
+
+	$.fn.flux4 = function(cmd) {
+		var filtered;	
+
+		if (cmd == "init") {
+		
+			init();
+			return this;
+		
+		} else if (cmd == "debug") {
+		
+			return {
+				configured: configured,
+				extant: extant,
+				waiting: waiting
+			}
+			
+		} else {
+	
+			if (configured !== true) {
+				createConf();
+			}
+		
+			if (!conf.ucid) {
+				return this
+			}
+			
+			
+			filtered = this.filter(function() {
+				if (conf.widgets[$(this).data("widget")]) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+			
+			waiting = waiting.add(filtered);
+
+			if (filtered.length) {
+			
+				if (!window.Flux4) {
+					
+					if (!loading) {
+						loadCore(filtered);
+					}
+
+					filtered.bind("Flux4.coreLoad", function(){
+
+						loadElement(this);
+					});
+	
+				} else {
+	
+					filtered.each(function() {
+						loadElement(this);
+					});
+	
+				}
+			} 
+		}
+		
+		return filtered;
+	
+	};
+
+	
+})(jQuery, window);
+/* follow.js */
 $(function () {
 	$CC('.follow .tweetriver').tweetriver({feedUrl: $CC('.follow .tweetriver').data('feed')});
 });/* hpcarousel.js */
@@ -8871,198 +9072,4 @@ provide("dom/textsize",function(a){function c(a,b,c){return a+b+c}var b={};a(fun
 provide("tfw/widget/tweetbase",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri",function(b,c,d,e){function h(a){if(!a)return;var b;c.Base.apply(this,[a]),b=this.params(),this.text=b.text||this.dataAttr("text"),this.align=b.align||this.dataAttr("align")||"",this.via=b.via||this.dataAttr("via"),this.placeid=b.placeid||this.dataAttr("placeid"),this.hashtags=b.hashtags||this.dataAttr("hashtags"),this.screen_name=b.screen_name||this.dataAttr("button-screen-name"),this.url=b.url||this.dataAttr("url")}var f=document.title,g=encodeURI(location.href);h.prototype=new c.Base,b.aug(h.prototype,{parameters:function(){var a={text:this.text,url:this.url,related:this.related,lang:this.lang,placeid:this.placeid,original_referer:location.href,id:this.id,screen_name:this.screen_name,hashtags:this.hashtags,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)}}),a({TweetBase:h})})});
 provide("tfw/widget/tweetbutton",function(a){using("util/util","tfw/widget/tweetbase","util/querystring","util/uri","dom/textsize",function(b,c,d,e,f){var g=document.title,h=encodeURI(location.href),i=["vertical","horizontal","none"],j=function(a){c.TweetBase.apply(this,[a]);var d=this.params(),f=d.count||this.dataAttr("count"),j=d.size||this.dataAttr("size"),k=e.getScreenNameFromPage();~b.indexOf(this.classAttr,"twitter-hashtag-button")?this.type="hashtag":~b.indexOf(this.classAttr,"twitter-mention-button")&&(this.type="mention"),this.text=d.text||this.dataAttr("text"),this.align=d.align||this.dataAttr("align")||"",this.via=d.via||this.dataAttr("via"),this.related=d.related||this.dataAttr("related"),this.counturl=d.counturl||this.dataAttr("counturl"),this.searchlink=d.searchlink||this.dataAttr("searchlink"),this.placeid=d.placeid||this.dataAttr("placeid"),this.hashtags=d.hashtags||this.dataAttr("hashtags"),this.screen_name=d.screen_name||this.dataAttr("button-screen-name"),this.button_hashtag=d.button_hashtag||this.dataAttr("button-hashtag"),this.url=d.url||this.dataAttr("url"),this.size=j=="large"?"l":"m",this.dnt=d.dnt||this.dataAttr("dnt")||"",this.type?(this.count="none",k&&(this.related=this.related?k+","+this.related:k)):(this.text=this.text||g,this.url=this.url||e.getCanonicalURL()||h,this.count=~b.indexOf(i,f)?f:"horizontal",this.count=this.count=="vertical"&&this.size=="l"?"none":this.count,this.via=this.via||k)};j.prototype=new c.TweetBase,b.aug(j.prototype,{parameters:function(){var a={text:this.text,url:this.url,via:this.via,related:this.related,count:this.count,lang:this.lang,counturl:this.counturl,searchlink:this.searchlink,placeid:this.placeid,original_referer:location.href,id:this.id,size:this.size,type:this.type,screen_name:this.screen_name,button_hashtag:this.button_hashtag,hashtags:this.hashtags,align:this.align,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},height:function(){return this.count=="vertical"?62:this.size=="m"?20:28},width:function(){var a={ver:8,cnt:14,btn:24,xlcnt:18,xlbtn:38},c=this.count=="vertical",d=this.type=="hashtag"?"Tweet %{hashtag}":this.type=="mention"?"Tweet to %{name}":"Tweet",e=this._(d,{name:"@"+this.screen_name,hashtag:"#"+this.button_hashtag}),g=this._("K"),h=this._("100K+"),i=(c?"8888":"88888")+g,j=0,k=0,l=0,m=0,n=this.styles.base,o=n;return~b.indexOf(["ja","ko"],this.lang)?i+=this._("10k unit"):i=i.length>h.length?i:h,c?(o=n+this.styles.vbubble,m=a.ver,l=a.btn):this.size=="l"?(n=o=n+this.styles.large,l=a.xlbtn,m=a.xlcnt):(l=a.btn,m=a.cnt),this.count!="none"&&(k=f(i,"",o).width+m),j=f(e,"",n+this.styles.button).width+l,c?j>k?j:k:this.calculatedWidth=j+k},render:function(){var a=twttr.widgets.config.assetUrl()+"/widgets/tweet_button.1355514129.html#"+this.parameters();this.count&&(this.srcEl.className+=" twitter-count-"+this.count),this.element=this.create(a,this.srcEl.className,this.dimensions(),{title:this._("Twitter Tweet Button")})}}),a({Embeddable:j})})});
 provide("tfw/widget/follow",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri","util/twitter","dom/textsize",function(b,c,d,e,f,g){function h(a){if(!a)return;var b,d,e,g;c.Base.apply(this,[a]),b=this.params(),d=b.size||this.dataAttr("size"),e=b.show_screen_name||this.dataAttr("show-screen-name"),g=b.show_count||this.dataAttr("show-count"),this.showScreenName=e!="false",this.showCount=g!="false",this.explicitWidth=b.width||this.dataAttr("width")||"",this.screenName=b.screenName||f.screenName(this.attr("href")),this.preview=b.preview||this.dataAttr("preview")||"",this.align=b.align||this.dataAttr("align")||"",this.size=d=="large"?"l":"m"}h.prototype=new c.Base,b.aug(h.prototype,{parameters:function(){var a={screen_name:this.screenName,lang:this.lang,show_count:this.showCount,show_screen_name:this.showScreenName,align:this.align,id:this.id,preview:this.preview,size:this.size,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},render:function(){if(!this.screenName)return;var a=twttr.widgets.config.assetUrl()+"/widgets/follow_button.1355514129.html#"+this.parameters();this.element=this.create(a,"twitter-follow-button",this.dimensions(),{title:this._("Twitter Follow Button")})},width:function(){if(this.calculatedWidth)return this.calculatedWidth;if(this.explicitWidth)return this.explicitWidth;var a={cnt:13,btn:24,xlcnt:22,xlbtn:38},c=this.showScreenName?"Follow %{screen_name}":"Follow",d=this._(c,{screen_name:"@"+this.screenName}),e=~b.indexOf(["ja","ko"],this.lang)?this._("10k unit"):this._("M"),f=this._("%{followers_count} followers",{followers_count:"88888"+e}),h=0,i=0,j,k,l=this.styles.base;return this.size=="l"?(l+=this.styles.large,j=a.xlbtn,k=a.xlcnt):(j=a.btn,k=a.cnt),this.showCount&&(i=g(f,"",l).width+k),h=g(d,"",l+this.styles.button).width+j,this.calculatedWidth=h+i}}),a({Embeddable:h})})});
-!function(){function a(a){return(a||!/^http\:$/.test(window.location.protocol))&&!twttr.ignoreSSL?"https":"http"}window.twttr=window.twttr||{},twttr.host=twttr.host||"platform.twitter.com";if(twttr.widgets&&twttr.widgets.loaded)return twttr.widgets.load(),!1;if(twttr.init)return!1;twttr.init=!0,twttr._e=twttr._e||[],twttr.ready=twttr.ready||function(a){twttr.widgets&&twttr.widgets.loaded?a(twttr):twttr._e.push(a)},using.path.length||(using.path=a()+"://"+twttr.host+"/js"),twttr.ignoreSSL=twttr.ignoreSSL||!1;var b=[];twttr.events={bind:function(a,c){return b.push([a,c])}},using("util/domready",function(c){c(function(){using("util/util","tfw/widget/follow","tfw/widget/tweetbutton","tfw/widget/tweetembed","tfw/widget/timeline","tfw/widget/intent","util/events","tfw/widget/base",function(c,d,e,f,g,h,i,j){function p(b){var c=twttr.host;return a(b)=="https"&&twttr.secureHost&&(c=twttr.secureHost),a(b)+"://"+c}function q(){using("tfw/widget/hubclient",function(a){twttr.events.hub=a.init(m),a.init(m,!0)})}var k,l,m={widgets:{"a.twitter-share-button":e.Embeddable,"a.twitter-mention-button":e.Embeddable,"a.twitter-hashtag-button":e.Embeddable,"a.twitter-follow-button":d.Embeddable,"blockquote.twitter-tweet":f.Embeddable,"a.twitter-timeline":g.Embeddable,body:h.Listener}},n=twttr.events&&twttr.events.hub?twttr.events:{},o;m.assetUrl=p,c.aug(twttr.events,n,i.Emitter),o=twttr.events.bind,twttr.events.bind=function(a,b){q(),this.bind=o,this.bind(a,b)};for(k=0;l=b[k];k++)twttr.events.bind(l[0],l[1]);for(k=0;l=twttr._e[k];k++)l(twttr);twttr.ready=function(a){a(twttr)},twttr.widgets=twttr.widgets||{},c.aug(twttr.widgets,{config:{assetUrl:p},load:function(a){j.init(m),j.embed(a),twttr.widgets.loaded=!0}}),/twitter\.com(\:\d+)?$/.test(document.location.host)&&(twttr.widgets.createTimelinePreview=function(a,b,c){(new g.Embeddable({previewParams:a,targetEl:b,linkColor:a.link_color,theme:a.theme,height:a.height})).render(m,c)}),twttr.widgets.load()})})})}()});/* http://btg.mtvnservices.com/mtvn/jquery-flux4/0.11/flux4.js */
-;(function($, w) {
-	
-	var configured, conf, stub, loading, extant = {}, _guid = 0; waiting = $();
-	var version = "0.1";
-
-	var createConf = function() {
-
-		if (w.MTVN && w.MTVN.conf && w.MTVN.conf.flux4) {
-			$.extend(conf, w.MTVN.conf.flux4);
-			configured = true;
-		}
-		
-	}
-	
-	var loadScript = function(url, callback) {
-	 
-		 var script = document.createElement("script"),
-			  body = document.body;
-		 script.type = "text/javascript";
-	 
-		 if ( script.readyState ) {     //IE <= 8
-			  script.onreadystatechange = function() {
-				   if ( script.readyState == "loaded" || script.readyState == "complete" ) {
-						script.onreadystatechange = null;
-						
-						w.setTimeout(function() {
-							callback();
-						}, 100);						
-				   }
-			  };
-		 }
-		 else {     //Others
-			  script.onload = function() {
-				   callback();
-			  };
-		 }
-	 
-		 body.insertBefore(script, body.firstChild);
-		 script.src = url;
-	 
-	}
-	
-	var loadCore = function() {
-		var core =  (MTVN.conf.flux4.staging) ? 
-					"http://widgets4.flux-staging.com/Core?includeJquery=false":
-					"http://widgets4.flux.com/Core?includeJquery=false";
-					
-		loading = true;
-		
-
-
-		// flux needs an id on a script tag to figure out the UCID, so we add an empty one to the document
-		stub = document.createElement("script");
-		stub.setAttribute('id', conf.ucid);
-		stub.setAttribute('widgets4Debug', "true");
-		document.body.appendChild(stub)
-
-		loadScript(core, function () {
-				loading = false;
-				if (w.Flux4) {
-					waiting.trigger("Flux4.coreLoad", [true]);
-				} else {
-					waiting.trigger("Flux4.coreLoad", [false]);
-				}
-			});
-
-
-	}
-
-	var loadElement = function(element) {
-
-		var el = $(element);
-		
-		if (!el.data("_guid")) {
-			el.data("_guid", _guid++)
-		}
-		
-		var wGuid = el.data("_guid");
-		var wName = el.data("widget")
-		var wContentUri = el.data("contenturi");
-		
-		if (conf.widgets[wName]) {
-
-			var opts = $.extend({"container": element}, conf.widgets[wName].opts)
-
-			if (wContentUri) {
-				opts.contentUri = wContentUri;
-				opts.contentId = wContentUri;
-			}
-			
-			if (extant[wGuid] != wName + "|" + wContentUri) {
-				extant[wGuid] = wName + "|" + wContentUri;
-				
-				el.empty();
-				
-				w.Flux4.createWidget(conf.widgets[wName]["name"], opts, function(widget) {
-
-					if  (conf.widgets[wName]["onLoad"]) {
-							conf.widgets[wName]["onLoad"](widget);				
-					}
-					el.trigger("Flux4.widget.load", [widget, true, conf.widgets[wName]["name"], opts]);
-
-				});
-			} else {		
-				el.trigger("Flux4.widget.load", [undefined, false, conf.widgets[wName]["name"], opts]);
-			}
-		} 
-	}
-
-	
-	var init = function() {
-	
-		configured = false;
-		loading = false;
-		extant = {};
-		waiting = $();
-		
-		conf = {}		
-
-		if (stub) {
-			stub.parentNode.removeChild(stub);
-			stub = undefined;
-		}
-	}
-
-	init();
-
-	$.fn.flux4 = function(cmd) {
-		var filtered;	
-
-		if (cmd == "init") {
-		
-			init();
-			return this;
-		
-		} else if (cmd == "debug") {
-		
-			return {
-				configured: configured,
-				extant: extant,
-				waiting: waiting
-			}
-			
-		} else {
-	
-			if (configured !== true) {
-				createConf();
-			}
-		
-			if (!conf.ucid) {
-				return this
-			}
-			
-			
-			filtered = this.filter(function() {
-				if (conf.widgets[$(this).data("widget")]) {
-					return true;
-				} else {
-					return false;
-				}
-			});
-			
-			waiting = waiting.add(filtered);
-
-			if (filtered.length) {
-			
-				if (!window.Flux4) {
-					
-					if (!loading) {
-						loadCore(filtered);
-					}
-
-					filtered.bind("Flux4.coreLoad", function(){
-
-						loadElement(this);
-					});
-	
-				} else {
-	
-					filtered.each(function() {
-						loadElement(this);
-					});
-	
-				}
-			} 
-		}
-		
-		return filtered;
-	
-	};
-
-	
-})(jQuery, window);
-
+!function(){function a(a){return(a||!/^http\:$/.test(window.location.protocol))&&!twttr.ignoreSSL?"https":"http"}window.twttr=window.twttr||{},twttr.host=twttr.host||"platform.twitter.com";if(twttr.widgets&&twttr.widgets.loaded)return twttr.widgets.load(),!1;if(twttr.init)return!1;twttr.init=!0,twttr._e=twttr._e||[],twttr.ready=twttr.ready||function(a){twttr.widgets&&twttr.widgets.loaded?a(twttr):twttr._e.push(a)},using.path.length||(using.path=a()+"://"+twttr.host+"/js"),twttr.ignoreSSL=twttr.ignoreSSL||!1;var b=[];twttr.events={bind:function(a,c){return b.push([a,c])}},using("util/domready",function(c){c(function(){using("util/util","tfw/widget/follow","tfw/widget/tweetbutton","tfw/widget/tweetembed","tfw/widget/timeline","tfw/widget/intent","util/events","tfw/widget/base",function(c,d,e,f,g,h,i,j){function p(b){var c=twttr.host;return a(b)=="https"&&twttr.secureHost&&(c=twttr.secureHost),a(b)+"://"+c}function q(){using("tfw/widget/hubclient",function(a){twttr.events.hub=a.init(m),a.init(m,!0)})}var k,l,m={widgets:{"a.twitter-share-button":e.Embeddable,"a.twitter-mention-button":e.Embeddable,"a.twitter-hashtag-button":e.Embeddable,"a.twitter-follow-button":d.Embeddable,"blockquote.twitter-tweet":f.Embeddable,"a.twitter-timeline":g.Embeddable,body:h.Listener}},n=twttr.events&&twttr.events.hub?twttr.events:{},o;m.assetUrl=p,c.aug(twttr.events,n,i.Emitter),o=twttr.events.bind,twttr.events.bind=function(a,b){q(),this.bind=o,this.bind(a,b)};for(k=0;l=b[k];k++)twttr.events.bind(l[0],l[1]);for(k=0;l=twttr._e[k];k++)l(twttr);twttr.ready=function(a){a(twttr)},twttr.widgets=twttr.widgets||{},c.aug(twttr.widgets,{config:{assetUrl:p},load:function(a){j.init(m),j.embed(a),twttr.widgets.loaded=!0}}),/twitter\.com(\:\d+)?$/.test(document.location.host)&&(twttr.widgets.createTimelinePreview=function(a,b,c){(new g.Embeddable({previewParams:a,targetEl:b,linkColor:a.link_color,theme:a.theme,height:a.height})).render(m,c)}),twttr.widgets.load()})})})}()});

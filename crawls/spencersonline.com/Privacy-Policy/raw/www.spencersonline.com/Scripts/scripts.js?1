@@ -321,6 +321,64 @@ function hideFloatingEmailSignUp() {
     $("#floatingEmailSignUp1").slideUp(1000);
 }
 
+function EmailSignup(emailID, hostUrl, omnitureServer, source) {
+    var email = $('#' + emailID).val();
+    if (email.length > 0) {
+        var reg = /([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if (reg.test(email) == false) {
+            alert('Please enter a valid email address');
+        } else {
+
+            if (source == undefined || source.length < 1) {
+                $('.BoxForm').hide('fast');
+                $("#ajaxloaderEmailSignUp").show('fast');
+            } else {
+                $("#floatingEmailSignUp_ajaxloaderEmailSignUp").show('fast');
+            }
+            var url = hostUrl + 'Controls/EmailSignup/?email=' + email;
+            if (source == undefined || source.length < 1) {
+                source = "";
+            }
+            url += '&source=' + source;
+            $.getJSON(url + '&callback=?', function (json) {
+                if (json != null && json != undefined) {
+                    //alert(json);
+                    if (json == 'OK') {
+                        alert("We knew you were ready. \r\nWelcome to the universe of awesome!");
+                        //hideFloatingEmailSignUp();
+                        if (source == undefined || source.length < 1) {
+                            $('.BoxForm').show('fast');
+                            $("#ajaxloaderEmailSignUp").hide('fast');
+
+                            // Omniture
+                            var s = s_gi(String(omnitureServer)); //Your organization's report suite ID
+                            s.linkTrackVars = 'events';
+                            s.linkTrackEvents = 'event1';
+                            s.events = 'event1';
+                            s.tl(this, 'o', 'Newsletter Sign-up');
+                        }
+                    }
+                    else {
+                        alert('Please enter a valid email address');
+                    }
+                } else {
+                    if (source == undefined || source.length < 1) {
+                        $('.BoxForm').show('fast');
+                        $("#ajaxloaderEmailSignUp").hide('fast');
+                    } else {
+                        $("#floatingEmailSignUp_ajaxloaderEmailSignUp").hide('fast');
+                    }
+                }
+                if (source != undefined || source.length > 0) {
+                    hideFloatingEmailSignUp();
+                }
+            });
+        }
+    } else {
+        alert('Please enter a valid email address');
+    }
+}
+
 //function EmailSignup(email, hostUrl, omnitureServer) {
 //    $('.BoxForm').hide('fast');
 //    $("#ajaxloaderEmailSignUp").show('fast');

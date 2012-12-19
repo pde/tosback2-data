@@ -30,7 +30,7 @@ btg.config={
 		account: 'viashockwave',
 		charSet: 'ISO-8859-1',
 		dynamicAccountSelection: 'true',
-		dynamicAccountList: 'viashockwavedev=dev,qa,stage,relaunch-d,relaunch-q,localhost,sandbox',
+		dynamicAccountList: 'viashockwavedev=dev,qa,stage,relaunch-d,relaunch-q,localhost,sandbox,spicy,shiva,adam,grognard',
 		linkInternalFilters: 'javascript:,shockwave.com,facebook.com,digg.com',
 		videoViewEventDisable: false,
 		enableTimeParting: true,

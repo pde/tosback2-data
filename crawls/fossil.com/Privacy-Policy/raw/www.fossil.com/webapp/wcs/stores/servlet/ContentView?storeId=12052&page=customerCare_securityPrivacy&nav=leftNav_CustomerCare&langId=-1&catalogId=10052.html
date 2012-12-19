@@ -27,29 +27,130 @@
 
 
 <link rel="image_src" href="http://www.fossil.com/wcsstore/Fossil/images/en_US/shell/fossil_logo.gif"/>
-<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/shell.20121213152601.css"/>
-<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie6.20121213152601.css"/><![endif]-->
-<!--[if IE 7]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie7.20121213152601.css"/><![endif]-->
-<!--[if IE 8]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie8.20121213152601.css"/><![endif]-->
-<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/seasonal.20121213152601.css"/>
-<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/fonts.20121213152601.css"/>
-<!--[if lte IE 7]><script type="text/javascript" src="/wcsstore/CommonFossil/javascript/plugins/json2.20121213152601.js"></script><![endif]-->
-<script type="text/javascript" src="../../../../wcsstore/CommonFossil/javascript/app/store/US/env-built.20121213152601.js"></script>
-<script type="text/javascript" data-main="bootstrap" src="../../../../wcsstore/CommonFossil/javascript/app/require-built.20121213152601.js"></script>
+<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/shell.20121218174433.css"/>
+<!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie6.20121218174433.css"/><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie7.20121218174433.css"/><![endif]-->
+<!--[if IE 8]><link rel="stylesheet" type="text/css" href="/wcsstore/CommonFossil/css/shell/ie8.20121218174433.css"/><![endif]-->
+<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/seasonal.20121218174433.css"/>
+<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/fonts.20121218174433.css"/>
+<!--[if lte IE 7]><script type="text/javascript" src="/wcsstore/CommonFossil/javascript/plugins/json2.20121218174433.js"></script><![endif]-->
+<script type="text/javascript" src="../../../../wcsstore/CommonFossil/javascript/app/store/US/env-built.20121218174433.js"></script>
+<script type="text/javascript" data-main="bootstrap" src="../../../../wcsstore/CommonFossil/javascript/app/require-built.20121218174433.js"></script>
 
 
 <script type="text/javascript">
 var router = 'homepage';
 	routeReady.resolve();
 </script>
-<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/home.20121213152601.css"/>
+<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/shell/home.20121218174433.css"/>
 
 
 
 
-<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/en_US/localization.20121213152601.css"/>
+<link rel="stylesheet" type="text/css" href="../../../../wcsstore/CommonFossil/css/en_US/localization.20121218174433.css"/>
 
 
+<script type="text/javascript">
+(function (w) {
+	w.tm2BootPosition = 0;
+	w.tm2BootAsync = true;
+	w.tmPageId = 76
+	
+	var skuAttributes = window.skuAttributes || []
+	var orderObj = window.orderObj || []
+	
+	var categoryIdArray = new Array();	   	
+    var nameArray = new Array();
+    var skuArray = new Array();	   	
+    var qtyArray = new Array();
+    var priceArray = new Array();	   	
+    var catNameArray = new Array();
+    
+    for (i in skuAttributes)
+        {	    
+            categoryIdArray.push(skuAttributes[i].categoryId.value);
+            nameArray.push(skuAttributes[i].name.value); 
+            skuArray.push(skuAttributes[i].sku.value); 
+            qtyArray.push(skuAttributes[i].qty.value); 
+            priceArray.push(skuAttributes[i].price.value); 
+            catNameArray.push(skuAttributes[i].catName.value);    
+        }
+    
+    var categoryId = categoryIdArray.join("|");
+    var name = nameArray.join("|");
+    var sku = skuArray.join("|");
+    var qty = qtyArray.join("|");
+    var price = priceArray.join("|");
+    var catName = catNameArray.join("|");
+    
+    w.tmParam = 
+    	{
+    		product_category_id: categoryId,
+    		product_name: name,
+    		product_sku: sku,
+    		product_quantity: qty,
+    		product_price: price,
+    		product_category: catName,	
+    		levordref: orderObj.ordId,
+        	customer_county: orderObj.state,
+        	customer_id: orderObj.memId,
+        	product_quantity_total: orderObj.totQuantity,	
+        	discount_amount: orderObj.discount,
+        	customer_postcode: orderObj.billingPostalCode,
+        	shipping_cost: orderObj.shippingCost,
+        	tax_amount: orderObj.orderTax,
+        	customer_country: orderObj.country,
+        	levrev: orderObj.ordTotal,
+        	product_amount_total: orderObj.ordSubTotal,
+        	page_type: window.router
+    	}
+		
+	var conf = { host: 'pfna.levexis.com',
+		account: 'fossil',
+		version: '3',
+		async: true,
+		cdn: (location.protocol === 'https:') ? 'sec.levexis.com' : 'res.levexis.com',
+		waitService: 'wt.tagman.com',
+		waitTest: false,
+		bootstrap: true,
+		param: w.tmParam || {} };
+	// do not change values below this line
+	function ap(sr , ol) {
+	     var e = document.createElement('script'); 
+	     e.src = sr;
+	     e.async = true;
+	     if (ol) {
+	    	e.onload = e.onerror = function() { if (!this.loaded) { ol(); this.loaded = true; } };
+		e.onreadystatechange = function() { if (this.readyState === 'complete' || this.readyState === 'loaded') { this.onload(); } };
+	     }
+	     var s = document.getElementsByTagName('script')[0];
+	     s.parentNode.insertBefore( e , s);
+	}	
+	w.TMAN = w.TMAN || {};	
+     	w.TMAN.startTime = +new Date();
+	w.TMAN.asyncLoader = function() {
+	      TMAN.addContainer( new TMAN.Container(conf.account, w.tmPageId, conf) );
+	};
+	var tm = '//' + conf.cdn + '/clientfiles/v' + conf.version + '/' + conf.account + '.js'; 
+	if (conf.waitService && conf.waitTest) ap ( '//' + conf.waitService + '/wait/0/' + Math.random() , function() { TMAN.waitLatency=new Date() - TMAN.startTime; } );
+	if (conf.async) {
+	     w.TMAN.position = {};
+	     w.TMAN.doTags = function(p) { TMAN.currentPosition = p; };
+	     w.TMAN.addParam = function(n,v) {
+		w.tmParam[n]=v;
+	     };
+             w.TMAN.addParams = function(c,p) {
+               for (var n in p) {
+                 w.tmParam[n] = p[n];
+               }
+             };
+	     ap(tm);	
+	} else {
+	     document.write('<script src="'&#32;+&#32;tm&#32;+&#32;'.html"><\/script>');
+	}
+})(window);
+TMAN.doTags(TMAN.position.BOTTOM_HEAD); 
+</script>
 
 
 	</head>
@@ -197,7 +298,7 @@ var router = 'homepage';
     		<div id="secondaryContent">
 				
 		 		<div id="leftNavContainer" class="clearfix">
-		 			<!-- Begin:Left Nav Fragment --><div class="logo clearfix"><a href="http://www.fossil.com/"><img src="../../../../wcsstore/CommonFossil/images/shell/fossilLogo.20121213152601.png" alt="Fossil"></a></div>
+		 			<!-- Begin:Left Nav Fragment --><div class="logo clearfix"><a href="http://www.fossil.com/"><img src="../../../../wcsstore/CommonFossil/images/shell/fossilLogo.20121218174433.png" alt="Fossil"></a></div>
  
 
 <div class="nav clearfix" id="leftNav">
@@ -1007,16 +1108,16 @@ var router = 'homepage';
 		
 	</li>
 	
-	<li id="FSSCWomensShopLookbook">
+	<li id="FSSCWomensShopPreview">
 		
-		<a href="http://www.fossil.com/WomensLookbook">Look Book</a>
+		<a href="http://www.fossil.com/en_US/shop/women/features/spring_preview.html?parent_category_rn=331182&departmentCategoryId=331097">Spring Preview</a>
 				
 		
 	</li>
 	
-	<li id="FSSCWomensShopWatchBar">
+	<li id="FSSCWomensShopLookbook">
 		
-		<a href="http://www.fossil.com/webapp/wcs/stores/servlet/ContentView?N=0&page=wb&storeId=12052&catalogId=25005&langId=-1">Watch Bar</a>
+		<a href="http://www.fossil.com/WomensLookbook">Look Book</a>
 				
 		
 	</li>
@@ -1028,9 +1129,9 @@ var router = 'homepage';
 		
 	</li>
 	
-	<li id="FSSCWomensShopPreview">
+	<li id="FSSCWomensShopWatchBar">
 		
-		<a href="http://www.fossil.com/en_US/shop/women/features/spring_preview.html?parent_category_rn=331182&departmentCategoryId=331097">Spring Preview</a>
+		<a href="http://www.fossil.com/webapp/wcs/stores/servlet/ContentView?N=0&page=wb&storeId=12052&catalogId=25005&langId=-1">Watch Bar</a>
 				
 		
 	</li>
@@ -1733,15 +1834,14 @@ var router = 'homepage';
 </li>
 </ul>
 <div id="secondaryFooterEspot" class="scout" style="clear: left;">
-<a href="http://www.fossil.com/webapp/wcs/stores/servlet/ContentView?storeId=12052&amp;page=customerCare_shippingPolicy&amp;catalogId=25005&amp;langId=-1" class="noHover"><span class="freeShip">Free Shipping<br>On all orders</span><br/>
-or free overnight<br>over $150</a>
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/ContentView?storeId=12052&amp;page=customerCare_shippingPolicy&amp;catalogId=25005&amp;langId=-1" class="noHover"><span class="freeOvernight">Free<br>Shipping</span><br/>on all orders<br><br><span class="freeShip">FREE OVERNIGHT</span> <br>on orders over $150<br/><br/><span class="freeShip">GET GIFTS BY </span><span class="shipDate">12/24</span></a>
 <div class="subMenu eSub">
 <div>
-<h4 class="paddingL10">Free Shipping Information</h4>
+<h4 class="paddingL10">GET GIFTS BY 12/24</h4>
 <p class="marginL30">
-Free overnight shipping arrives in 1-2<br>
-business days. Standard shipping<br>
-arrives in 3-5 business days.<br>
+To get your gifts on 12/24, order<br/>
+by midnight CST on 12/21. Select<br/>
+overnight shipping (free over $150).<br/>
 <a href="http://www.fossil.com/webapp/wcs/stores/servlet/ContentView?storeId=12052&amp;page=customerCare_shippingPolicy&amp;catalogId=25005&amp;langId=-1">Shipping Policy &gt;</a>
 </p>
 </div>
@@ -1790,11 +1890,11 @@ Email Signup
 </div>
 </div>
 <ul class="clearfix">
-<li class="facebook"><a href="http://www.facebook.com/Fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121213152601.png" alt="Fossil on Facebook"/></a></li>
-<li class="twitter"><a href="http://twitter.com/#!/fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121213152601.png" alt="Twitter"/></a></li>
-<li class="youtube"><a href="http://www.youtube.com/FossilTV" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121213152601.png" alt="Fossil on YouTube"/></a></li>
-<li class="blog"><a href="http://pinterest.com/fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121213152601.png" alt="Fossil on Pintrest"/></a></li>
-<li class="tumblr"><a href="http://fossil.tumblr.com" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121213152601.png" alt="Fossil on Tumblr."/></a></li>
+<li class="facebook"><a href="http://www.facebook.com/Fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121218174433.png" alt="Fossil on Facebook"/></a></li>
+<li class="twitter"><a href="http://twitter.com/#!/fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121218174433.png" alt="Twitter"/></a></li>
+<li class="youtube"><a href="http://www.youtube.com/FossilTV" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121218174433.png" alt="Fossil on YouTube"/></a></li>
+<li class="blog"><a href="http://pinterest.com/fossil" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121218174433.png" alt="Fossil on Pintrest"/></a></li>
+<li class="tumblr"><a href="http://fossil.tumblr.com" rel="external"><img src="../../../../wcsstore/CommonFossil/images/shell/icons/socialFooter.20121218174433.png" alt="Fossil on Tumblr."/></a></li>
 </ul>
 </div>
 <script type="text/javascript">
@@ -1872,10 +1972,77 @@ var pageTest = "watches"
 				</div>				
 			</div>
 			<div id="homeContentWrapper"> 
-				<!-- Start homeFillslot --><link href="../../../../wcsstore/CommonFossil/css/common/home.20121213152601.css" type="text/css" rel="stylesheet">
+				<!-- Start homeFillslot --><link href="../../../../wcsstore/CommonFossil/css/common/fls_modal.20121218174433.css" type="text/css" rel="stylesheet">
+<script type="text/javascript">
+	require(['FSwrapper', '/wcsstore/CommonFossil/javascript/content/common/fls_modal.js'], function (FSwrapper) {
+		FSwrapper.execute(function(){});
+	});
+</script>
+<link href="../../../../wcsstore/CommonFossil/css/common/home.20121218174433.css" type="text/css" rel="stylesheet">
 <!--[if IE]><style type="text/css">#rightArrow{right:-35px}#leftArrow{left:-35px}</style><![endif]-->
 <div class="home_container">
-<img class="spacer" src="../../../../wcsstore/CommonFossil/images/common/home/5x3_spacer.20121213152601.gif">
+<img class="spacer" src="../../../../wcsstore/CommonFossil/images/common/home/5x3_spacer.20121218174433.gif">
+
+<div style="position:absolute;left:-3000px;">
+<div id="slide_controls">
+<div class="clicker click_0" data-slide="0"><span class="number">01</span> GET YOUR GIFTS<span class="bar"></span></div>
+<div class="clicker click_1 active" data-slide="1"><span class="number">02</span> READY FOR WRAPPING<span class="bar"></span></div>
+<div class="clicker click_2" data-slide="2"><span class="number">03</span> THE TOP OF THE LIST<span class="bar"></span></div>
+</div>
+<div class="slide93" id="home_0" style="opacity: 0; z-index: 2; display: block;">
+<div class="slideRelWrap">
+<a data-tag="12.17HP_GiftsSlideLeftSide_WFavoriteGIfts" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=368583">
+<img id="box" src="../../../../wcsstore/CommonFossil/images/common/home/large/gifts.20121218174433.jpg" data-original="/wcsstore/CommonFossil/images/common/home/gifts.jpg" usemap="#giftsMap">
+</a>
+<div class="textBlock gifts">
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=368583" data-tag="false"><h1 class="fit" min="16px" style="font-size: 32.48571428571429px;"><span class="fit" min="16px" style="font-size: 45.48px;">GO AHEAD,</span> get your gifts!</h1></a>
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=368583"><p class="fit" min="10px" style="font-size: 11.37px;">From darling charms to colorful tech cases (and beyond),<br>look no further for a great gift.</p></a>
+</div>
+<a class="genderCTA" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=368584" data-tag="12.17HP_GiftsSlideShopHim_MFavoriteGifts">
+<div id="mens_hp_cta" class="abs_cta">
+<h3 class="fit" min="16px" style="font-size: 20.303571428571427px;">men's<br><span class="fit" min="16px" style="font-size: 45.48px;">GIFTS</span></h3>
+<div class="shop_gender fit" min="16px" style="font-size: 16.47826086956522px;">SHOP NOW</div>
+</div>
+</a>
+<a class="genderCTA" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=368583" data-tag="12.17HP_GiftsSlideShopHer_WFavoriteGifts">
+<div id="womens_hp_cta" class="abs_cta">
+<h3 class="fit" min="16px" style="font-size: 20.303571428571427px;">women's<br><span class="fit" min="16px" style="font-size: 45.48px;">GIFTS</span></h3>
+<div class="shop_gender fit" min="16px" style="font-size: 16.47826086956522px;">SHOP NOW</div>
+</div>
+</a>
+<a href="ContentView%3FstoreId=12052&amp;page=customerCare_securityPrivacy&amp;nav=leftNav_CustomerCare&amp;langId=-1&amp;catalogId=10052.html#" data-tag="12.17HP_View_The_Gifts_Video">
+<div id="giftVideo2012" class="fit" style="display: block; font-size: 19.5px;">
+VIEW THE GIFTS VIDEO
+</div>
+</a>
+</div>
+</div>
+<div class="slide93" id="home_1" style="display: block; opacity: 1; z-index: 3;">
+<div class="slideRelWrap">
+<a data-tag="12.17HP_WWatchSlideBackground_RoseBTQ" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=331194">
+<img id="box" src="../../../../wcsstore/CommonFossil/images/common/home/large/wrapping.20121218174433.jpg" data-original="/wcsstore/CommonFossil/images/common/home/wrapping.jpg" usemap="#wrapMap">
+</a>
+<div class="textBlock wrapping">
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=331194" data-tag="false"><h1 class="fit" min="16px" style="font-size: 26.441860465116278px;">ready for <span class="fit" style="font-size: 31.5px;">WRAPPING</span></h1></a>
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=331194"><p class="fit" min="10px" style="font-size: 11.37px;">It's time for the perfect present. As lovely as<br>it gets: our rose watches, in every style.</p></a>
+<a class="slide_cta fit" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=331194" min="16px" data-tag="12.17HP_WWatchSlideShopRose_RoseBTQ" style="font-size: 16px;"><h1>SHOP A TOUCH OF ROSE</h1></a>
+<a class="slide_cta fit" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=331106" min="16px" data-tag="12.17HP_WWatchSlideShopWatches_WWatchStyles" style="font-size: 16px;"><h1>SHOP ALL WOMEN'S WATCHES</h1></a>
+</div>
+</div>
+</div>
+<div class="slide93" id="home_2" style="display: block; opacity: 0; z-index: 2;">
+<div class="slideRelWrap">
+<a data-tag="12.17HP_MWatchSlideBackground_MWatchStyles" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=357584">
+<img id="box" src="../../../../wcsstore/CommonFossil/images/common/home/large/list.20121218174433.jpg" data-original="/wcsstore/CommonFossil/images/common/home/list.jpg" usemap="#listMap">
+</a>
+<div class="textBlock list">
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=357584" data-tag="false"><h1 class="fit" min="16px" style="font-size: 26.441860465116278px;"><span class="fit" style="font-size: 31.5px;">THE TOP</span> of the list</h1></a>
+<a href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=357584"><p class="fit" min="10px" style="font-size: 11.37px;">For the guy who's got it all: A black and silver watch<br>with refined materials and sleek and stylish details.</p></a>
+<a class="slide_cta fit" href="http://www.fossil.com/webapp/wcs/stores/servlet/CategoryView?catalogId=25005&amp;storeId=12052&amp;langId=-1&amp;categoryId=357584" min="16px" data-tag="12.17HP_MWatchSlideShopWatches_MWatchStyles" style="font-size: 16px;"><h1>SHOP MEN’S WATCHES</h1></a>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 <!--  End: homeFillslot -->						

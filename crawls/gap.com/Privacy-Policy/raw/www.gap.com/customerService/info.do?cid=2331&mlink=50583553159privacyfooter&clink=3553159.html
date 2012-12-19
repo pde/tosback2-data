@@ -958,7 +958,7 @@
             DIVISION_2_ACTION: "division.do",
             SUBDIVISION_2_ACTION: "subdivision.do",
             HOME_2_ACTION: "home.do",
-            DATE_IN_USE: "12/15/2012 08:12 AM",
+            DATE_IN_USE: "12/19/2012 08:13 AM",
             PREVIOUS_LOCALE : "en_US",
             
             IS_NAV2_ENABLED: 'false',
@@ -5161,7 +5161,7 @@ if( window['siteNavigation'] ) {
 			ShipMessageContainer[0].update(newBagMessage);
 			isPiperlimeInBagForEDFS = checkForPiperlimeInBag();
 			if( $( optionToUdpate_3To5 ) && isPiperlimeInBagForEDFS ) {
-				$( optionToUdpate_3To5 ).insert({bottom: " - FREE with Piperlime"});
+				$( optionToUdpate_3To5 ).insert({bottom: " with Piperlime"});
 			}
 			else {
 				// For options that need the standard text, cut off the price first and adjust layout
@@ -6975,18 +6975,17 @@ Event.observe(window,"load",function(){
       	</div>
     </div>  
 	<div id="topNavBannerContainer" class="floatLeft">		
-    	<!-- BEGIN Content Item File: /content/0005/908/883/cn5908883.html -->
-<div id="contentItemContainer10000395" class="5908883" >
+    	<!-- BEGIN Content Item File: /content/0005/934/924/cn5934924.html -->
+<div id="contentItemContainer10000395" class="5934924" >
 
 <style type="text/css">
 #globalBanner {
-	width: 581px;
+	width: 496px;
 	height: 62px;
 	position: relative;
 	display: block;
 	font-size: 10pt;
 	z-index: 50;
-	color: #000745;
 }
 
 #globalBanner a:link, 
@@ -6994,7 +6993,7 @@ Event.observe(window,"load",function(){
 #globalBanner a:visited, 
 #globalBanner a:active
 {
-	color: #000745;
+	color: #000000;
 	text-decoration: none;
 }
 
@@ -7010,14 +7009,22 @@ Event.observe(window,"load",function(){
 }
 
 .promoCode {
-	background-color: #000745;
+	background-color: black;
 	color: white;
 	padding: 2px 6px;
 	font-size: 11px;
 }
 
-#globalBannerText {
-	padding-top: 6px;
+#globalBannerDisruptor {
+	position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;
+}
+
+#globalBannerText.passive {
+	opacity: 0.25;
+	filter: alpha(opacity = 25);
 }
 </style>
 
@@ -7025,18 +7032,147 @@ Event.observe(window,"load",function(){
 
 	<!-- Global Banner Text -->
 	<div id="globalBannerText">
-		<a href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/908/883/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
-			SUPER! <span class="promoPercent">30% OFF</span> YOUR PURCHASE!
-			<br />LIMITED TIME. ONLINE ONLY. ENTER <span class="promoCode" title="GAPGIFT">GAPGIFT</span>.
-			<br /><span class="detailsLink">DETAILS</span>
-		</a>
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/934/924/assets/121912_ALL_lastday30_GB_US.png" alt="30% off your purchase. Ends 12/19. Online only. Enter GAPGIVE. P.S. Today is the last day for free delivery by 12/24!" title="30% off your purchase. Ends 12/19. Online only. Enter GAPGIVE. P.S. Today is the last day for free delivery by 12/24!" usemap="#gbMap">
+		<map name="gbMap">
+      		<area class="noHideDisruptor" id="globalBannerActivator" shape="rect" coords="0,0,496,62" href="javascript:void(0);" alt="hover for more info" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/934/924/assets/legal.html" data-jbox-width="300" data-jbox-height="250">
+			
+		</map>
 	</div><!-- /Global Banner Text -->
 
+	<!-- Global Banner Disruptor -->
+	<div id="globalBannerDisruptor" style="display:none;">
+		<img class="noHideDisruptor" src="http://www.gap.com/Asset_Archive/GPWeb/content/0005/934/924/assets/121912_ALL_lastday30_DISR_US.jpg" alt="30% off your purchase. Ends 12/19. Online only. Enter GAPGIVE. P.S. Today is the last day for free delivery by 12/24!" title="30% off your purchase. Ends 12/19. Online only. Enter GAPGIVE. P.S. Today is the last day for free delivery by 12/24!" usemap="#disruptorMap">
+		<map name="disruptorMap">
+        	<area shape="rect" class="noHideDisruptor" coords="-7,-6,475,470" href="javascript:void(0);" rel="jbox" data-jbox-url="/Asset_Archive/GPWeb/content/0005/934/924/assets/legal.html" data-jbox-width="300" data-jbox-height="250" alt="click for details">
+        </map>
+	</div><!-- /Global Banner Disruptor -->
+
 </div>
+<script type="text/javascript">
+Event.observe(window, 'load', function() {
+	// Initiliaze disruptor object
+	globalBannerDisruptor.init('121912_GB');
+});
+
+// Hide disruptor when out of activation area
+Event.observe(document.body, 'mouseover', function(event) 
+{
+	var element = Event.findElement(event);
+	var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+	//var hasSeenDisruptor = 1;
+
+	if(element.className != "noHideDisruptor" && hasSeenDisruptor == 1)
+	{
+		globalBannerDisruptor.hide();
+	}
+});
+
+// globalBannerDisruptor object
+var globalBannerDisruptor = {
+	
+	disruptorID: 'globalBannerDisruptor',
+	activatorID: 'globalBannerActivator',
+	containerID: 'globalBannerText',
+	cookieName: '',
+	
+	init: function(cookieName) {
+	
+		globalBannerDisruptor.cookieName = cookieName;
+		var hasSeenDisruptor = gidLib.getCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName);
+		//var hasSeenDisruptor = 1;
+
+		if(hasSeenDisruptor != "1")
+		{
+			globalBannerDisruptor.autoDisrupt();
+		}
+
+		globalBannerDisruptor.addDisruptBehaviour();
+		
+	},
+	
+	/* auto hides itself */
+	autoDisrupt: function() {
+
+		new Effect.SlideDown(globalBannerDisruptor.disruptorID,{duration:.5, queue: {position: 'front', scope: 'gbDisruptor', limit: 1} });
+		
+		gidLib.setCookieVar("mktGlobalSession", globalBannerDisruptor.cookieName, "1");
+
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.hide();
+		}, 8000);
+
+	},
+	
+	hide: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display != "none") {
+			new Effect.SlideUp(targetID,{
+				duration:.5, 
+				queue: {position: 'end', scope: 'gbDisruptor', limit: 1}, 
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).removeClassName('passive');
+				}
+			});
+			return false;
+		}
+		
+	},
+	
+	/* disrupts but does NOT auto hide iteself */
+	disrupt: function() {
+		
+		var targetID = globalBannerDisruptor.disruptorID;
+		var target = $(targetID);
+
+		if(target.style.display == "none") {
+			new Effect.SlideDown(globalBannerDisruptor.disruptorID,{
+				duration:.5,
+				queue: {position: 'front', scope: 'gbDisruptor', limit: 1},
+				beforeFinish: function() {
+					$(globalBannerDisruptor.containerID).addClassName('passive');
+				}
+			});
+			return false;
+		}
+
+		return true;
+	},
+
+	/* closes disruptor and prevents disrupt from firing prematurely */
+	close: function() {
+
+		globalBannerDisruptor.hide();
+		globalBannerDisruptor.removeDisruptBehaviour();
+
+		// Set a timer so disruptor doesn't get activated right away
+		var timerID = setTimeout(function() {
+			globalBannerDisruptor.addDisruptBehaviour();
+		}, 1000);
+
+	},
+
+	addDisruptBehaviour: function() {
+		// Show disruptor when mouseover #globalBannerActivator
+		$(globalBannerDisruptor.activatorID).observe('mouseover', function()
+		{
+			globalBannerDisruptor.disrupt();
+		});
+	},
+
+	// Stop observing mouseover
+	removeDisruptBehaviour: function() {
+		$(globalBannerDisruptor.activatorID).stopObserving('mouseover');
+	}
+	
+};
+</script>
 
 
 </div>
-<!-- END Content Item File: /content/0005/908/883/cn5908883.html -->
+<!-- END Content Item File: /content/0005/934/924/cn5934924.html -->
 
     </div>	
     <div id="topNavRightSideWrapper" class="clearfix floatRight">
@@ -8220,7 +8356,7 @@ function validateFormGapFooter()
 	
 	<script type="text/javascript" src="http://www.gap.com/gid/js/common/layouts/en/reporting/sCode-H.2.2.1.js"></script>
 	 <script type="text/javascript">
-	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5908883,5754165,5746856,5828521,5746857,5217025";
+	   reportingService.controller.viewManagers.commonViewManager.model.contentItemIdListReport = "5828520,5746824,5934924,5754165,5746856,5828521,5746857,5217025";
 	 </script>
 	
 	<noscript>

@@ -58,30 +58,44 @@ function s_doPlugins(s) {
     s.partnerDFACheck('dfa_cookie', 'dfaid');
 
     //only populate tracking code when it is NOT a DFA ad
-    if (!myDfaFlag || (myDfaFlag=='')){
-	    // External Campaigns
-	    if(s.getQueryParam('site_refer')){
-		    s.campaign=s.getQueryParam('site_refer');
-		    if(s.getQueryParam('kw_refer')){
-			    s.campaign=s.campaign+' '+s.getQueryParam('kw_refer');
-		    }
-			if(s.getQueryParam('siteID') && s.campaign.indexOf("AFF001") > -1 ){
+	if (!myDfaFlag || (myDfaFlag == '')) {
+		// External Campaigns
+		if (s.getQueryParam('site_refer')) {
+
+			s.campaign = s.getQueryParam('site_refer');
+
+			if (s.getQueryParam('kw_refer')) {
+				s.campaign = s.campaign + ' ' + s.getQueryParam('kw_refer');
+			}
+			
+			if (s.getQueryParam('siteID') && s.campaign.indexOf("AFF001") > -1 ) {
+				
 				// grab siteID parameter from URL
 				var mySiteIdFlag = s.getQueryParam('siteID');
+				
 				// split dash-delimited data
 				var data = mySiteIdFlag.match(/^([^\-]+)-(.+)$/i);
+				
 				// if any, register data values.
 				if (data) {
 					// append data before the dash to campaign field
-				    s.campaign = s.campaign + ' ' + data[1];
-				    // pass remaining data to new variables
-				    s.eVar47 = s.prop47 = data[2];
+					s.campaign = s.campaign + ' ' + data[1];
+					// pass remaining data to new variables
+					s.eVar47 = s.prop47 = data[2];
+
+					//>> #1031 | Track International Affiliate Demand by Network
+					if (s.getQueryParam('mid')) {
+						s.eVar58 = s.getQueryParam('mid');
+					}
+					//<< #1031
 				}
-		    }
-		    s.eVar12=s.campaign;
-	        s.eVar27=s.campaign;
-	    }
-	    s.campaign=s.getValOnce(s.campaign,'cmpgn',0);
+			}
+
+			s.eVar12=s.campaign;
+			s.eVar27=s.campaign;
+		}
+
+		s.campaign = s.getValOnce(s.campaign, 'cmpgn', 0);
     }
     
 

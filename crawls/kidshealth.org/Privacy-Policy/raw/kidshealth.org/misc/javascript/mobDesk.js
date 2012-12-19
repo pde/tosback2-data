@@ -212,8 +212,13 @@ function runOnLoad() {
 
 //~~~~~~~~~~~~~ link to classroom ~~~~~~~~~~~~~~~//
 function classroomAlert() {
+	/* 	Confirmation popup removed but kept the function here so as to not need a repub 
+		And just in case we wanted to re-add... 
+	
 	if(confirm('Please note that our Classroom site is not yet mobile optimized. Do you still wish to continue?')) {
 		window.open('http://classroom.kidshealth.org/');
 	}
 	else stop;
+	*/
+	window.open('http://classroom.kidshealth.org/');
 }

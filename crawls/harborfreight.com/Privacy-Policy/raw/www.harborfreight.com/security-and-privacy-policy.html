@@ -341,20 +341,246 @@ padding-left: 5px;background-repeat: no-repeat;">
     </div>
     <div class="nav-top">
         <style type="text/css">
+    .background {
+    border-style: none;
+    width: 40px;
+    height: 35px;
+}
+.numbers {
+    border-style: none;
+    background-color: #292929;
+    padding: 0px;
+    width: 40px;
+    height: 21px;
+	padding-top:5px;
+    text-align: center; 
+    font-family: Arial; 
+    font-size: 20px;
+    font-weight: normal;    /* options are normal, bold, bolder, lighter */
+    color: #FFFFFF;     /* change color using the hexadecimal color codes for HTML */
+}
+.clocktitle {    /* the styles below will affect the title under the numbers, i.e., "Days", "Hours", etc. */
+    border: none;    
+    padding: 0px;
+  /*  margin: 0px 3px;*/
+    width: 50px;
+    text-align: center; 
+    font-family: Arial; 
+    font-size: 10px; 
+    font-weight: normal;    /* options are normal, bold, bolder, lighter */
+    color: #999999;    /* change color using the hexadecimal color codes for HTML */
+    background-color: #000000;  
+}
+#form {    /* the styles below will affect the outer border of the countdown timer */
+    width: 210px;
+    height: 44px;
+    border-style: ridge;    /* options are none, dotted, dashed, solid, double, groove, ridge, inset, outset */
+	border-color: #666666;  /* change color using the hexadecimal color codes for HTML */ 
+    background-color: #000000;
+   /* padding: 5px;
+	border-width: 2px;*/
+}
+.line {
+    width: 40px; 
+    height: 2px;
+    z-index: 15;
+}
+</style>
+
+<table width="960" border="0" cellpadding="0" cellspacing="0" height="50">
+    <tr>
+        <td width="210">
+
+
+        <div id="form">
+<div class="numbers" id="count2" style="position: absolute; top: 2px; background-color: #000000; z-index: 20;"></div>
+
+
+
+<!--<img src="http://www.harborfreight.com/media//timer_sq.png" class="background" style="position: absolute; left: 20px; top: 15px;"/>-->
+<img src="media/line.png" class="line" style="position: absolute; left: 12px; top: 18px;"/> 
+<div class="numbers" id="dday" style="position: absolute; left: 12px; top: 5px;" ></div>
+
+<!--<img src="http://www.harborfreight.com/media//timer_sq.png" class="background" style="position: absolute; left: 70px; top:15px;"/>-->
+<img src="media/line.png" class="line" style="position: absolute; left: 62px; top: 18px;"/>
+<div class="numbers" id="dhour" style="position: absolute; left: 62px; top: 5px;" ></div>
+
+<!--<img src="http://www.harborfreight.com/media//timer_sq.png" class="background" style="position: absolute; left: 120px; top: 15px;"/>-->
+<img src="media/line.png" class="line" style="position: absolute; left: 110px; top: 18px;"/>
+<div class="numbers" id="dmin" style="position: absolute; left: 110px; top: 5px;" ></div>
+
+<!--<img src="http://www.harborfreight.com/media//timer_sq.png" class="background" style="position: absolute; left: 170px; top: 15px;"/>-->
+<img src="media/line.png" class="line" style="position: absolute; left: 160px; top: 18px;"/>
+<div class="numbers" id="dsec" style="position: absolute; left: 160px; top: 5px;" ></div>
+
+<div class="clocktitle" id="days" style="position: absolute; left: 9px; top: 28px;" >Days</div>
+<div class="clocktitle" id="hours" style="position: absolute; left: 59px; top: 28px;" >Hours</div>
+<div class="clocktitle" id="minutes" style="position: absolute; left: 105px; top: 28px;" >Minutes</div>
+<div class="clocktitle" id="seconds" style="position: absolute; left: 155px; top: 28px;" >Seconds</div>
+</div>
+
+            <script type="text/javascript">
+
+                /*
+            Count down until any date script-
+            By JavaScript Kit (www.javascriptkit.com)
+            Over 200+ free scripts here!
+            Modified by Robert M. Kuhnhenn, D.O.
+            on 5/30/2006 to count down to a specific date AND time,
+            and on 1/10/2010 to include time zone offset.
+                 */
+
+                /*  Change the items below to create your countdown target date and announcement once the target date and time are reached.  */
+                var current="Christmas is here!";        //‚Äî>enter what you want the script to display when the target date and time are reached, limit to 20 characters
+                var year=2012;        //‚Äî>Enter the count down target date YEAR
+                var month=12;          //‚Äî>Enter the count down target date MONTH
+                var day=25;           //‚Äî>Enter the count down target date DAY
+                var hour=0;          //‚Äî>Enter the count down target date HOUR (24 hour clock)
+                var minute=1;        //‚Äî>Enter the count down target date MINUTE
+                var tz=-8;            //‚Äî>Offset for your timezone in hours from UTC (see http://wwp.greenwichmeantime.com/index.htm to find the timezone offset for your location)
+
+                //‚Äî>    DO NOT CHANGE THE CODE BELOW!    <‚Äî
+                var montharray=new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+
+                function countdown(yr,m,d,hr,min){
+                    theyear=yr;themonth=m;theday=d;thehour=hr;theminute=min;
+                    var today=new Date();
+                    var todayy=today.getYear();
+                    if (todayy < 1000) {
+                        todayy+=1900; }
+                    var todaym=today.getMonth();
+                    var todayd=today.getDate();
+                    var todayh=today.getHours();
+                    var todaymin=today.getMinutes();
+                    var todaysec=today.getSeconds();
+                    var todaystring1=montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec;
+                    var todaystring=Date.parse(todaystring1)+(tz*1000*60*60);
+                    var futurestring1=(montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min);
+                    var futurestring=Date.parse(futurestring1)-(today.getTimezoneOffset()*(1000*60));
+                    var dd=futurestring-todaystring;
+                    var dday=Math.floor(dd/(60*60*1000*24)*1);
+                    var dhour=Math.floor((dd%(60*60*1000*24))/(60*60*1000)*1);
+                    var dmin=Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
+                    var dsec=Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+                    if(dday<=0&&dhour<=0&&dmin<=0&&dsec<=0){
+                        document.getElementById('count2').innerHTML=current;
+                        document.getElementById('count2').style.display="inline";
+                        document.getElementById('count2').style.width="390px";
+                        document.getElementById('dday').style.display="none";
+                        document.getElementById('dhour').style.display="none";
+                        document.getElementById('dmin').style.display="none";
+                        document.getElementById('dsec').style.display="none";
+                        document.getElementById('days').style.display="none";
+                        document.getElementById('hours').style.display="none";
+                        document.getElementById('minutes').style.display="none";
+                        document.getElementById('seconds').style.display="none";
+                        return;
+                    }
+                    else {
+                        document.getElementById('count2').style.display="none";
+                        document.getElementById('dday').innerHTML=dday;
+                        document.getElementById('dhour').innerHTML=dhour;
+                        document.getElementById('dmin').innerHTML=dmin;
+                        document.getElementById('dsec').innerHTML=dsec;
+                        setTimeout("countdown(theyear,themonth,theday,thehour,theminute)",1000);
+                    }
+                }
+
+                countdown(year,month,day,hour,minute);
+
+            </script>
+
+        </td>
+        <td width="745"><a href="http://www.harborfreight.com/shipping-info"><img src="media/top_bnr_fedex5.png" alt="" /></a></td>
+    </tr>
+
+</table>
+
+<script type="text/javascript">
+
+/*
+Count down until any date script-
+By JavaScript Kit (www.javascriptkit.com)
+Over 200+ free scripts here!
+Modified by Robert M. Kuhnhenn, D.O.
+on 5/30/2006 to count down to a specific date AND time,
+and on 1/10/2010 to include time zone offset.
+*/
+
+/*  Change the items below to create your countdown target date and announcement once the target date and time are reached.  */
+var current="Christmas is here!";        //‚Äî>enter what you want the script to display when the target date and time are reached, limit to 20 characters
+var year=2012;        //‚Äî>Enter the count down target date YEAR
+var month=12;          //‚Äî>Enter the count down target date MONTH
+var day=25;           //‚Äî>Enter the count down target date DAY
+var hour=0;          //‚Äî>Enter the count down target date HOUR (24 hour clock)
+var minute=1;        //‚Äî>Enter the count down target date MINUTE
+var tz=-8;            //‚Äî>Offset for your timezone in hours from UTC (see http://wwp.greenwichmeantime.com/index.htm to find the timezone offset for your location)
+
+//‚Äî>    DO NOT CHANGE THE CODE BELOW!    <‚Äî
+var montharray=new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+
+function countdown(yr,m,d,hr,min){
+theyear=yr;themonth=m;theday=d;thehour=hr;theminute=min;
+var today=new Date();
+var todayy=today.getYear();
+if (todayy < 1000) {
+todayy+=1900; }
+var todaym=today.getMonth();
+var todayd=today.getDate();
+var todayh=today.getHours();
+var todaymin=today.getMinutes();
+var todaysec=today.getSeconds();
+var todaystring1=montharray[todaym]+" "+todayd+", "+todayy+" "+todayh+":"+todaymin+":"+todaysec;
+var todaystring=Date.parse(todaystring1)+(tz*1000*60*60);
+var futurestring1=(montharray[m-1]+" "+d+", "+yr+" "+hr+":"+min);
+var futurestring=Date.parse(futurestring1)-(today.getTimezoneOffset()*(1000*60));
+var dd=futurestring-todaystring;
+var dday=Math.floor(dd/(60*60*1000*24)*1);
+var dhour=Math.floor((dd%(60*60*1000*24))/(60*60*1000)*1);
+var dmin=Math.floor(((dd%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
+var dsec=Math.floor((((dd%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+if(dday<=0&&dhour<=0&&dmin<=0&&dsec<=0){
+document.getElementById('count2').innerHTML=current;
+document.getElementById('count2').style.display="inline";
+document.getElementById('count2').style.width="390px";
+document.getElementById('dday').style.display="none";
+document.getElementById('dhour').style.display="none";
+document.getElementById('dmin').style.display="none";
+document.getElementById('dsec').style.display="none";
+document.getElementById('days').style.display="none";
+document.getElementById('hours').style.display="none";
+document.getElementById('minutes').style.display="none";
+document.getElementById('seconds').style.display="none";
+return;
+}
+else {
+document.getElementById('count2').style.display="none";
+document.getElementById('dday').innerHTML=dday;
+document.getElementById('dhour').innerHTML=dhour;
+document.getElementById('dmin').innerHTML=dmin;
+document.getElementById('dsec').innerHTML=dsec;
+setTimeout("countdown(theyear,themonth,theday,thehour,theminute)",1000);
+}
+}
+
+countdown(year,month,day,hour,minute);
+
+</script>
+
+<style type="text/css">
     ul#topnav li a {font-size:14px;}
     .nav-top { height:131px !important;}
     #topnav {background: url(skin/frontend/enterprise/hft/images/top_sales_nav.jpg) repeat-x;}
     #topnav .first a.newmenu {color: #e31e03 !important;}
-    ul#topnav li.first ul.children a {color: #FFF !important;}
+    ul#topnav li.first ul.children a {color: #FFF !important;}	
 </style>
 
-<div style="border-bottom:2px solid #fff;"><a href="http://www.harborfreight.com/shipping-info"><img src="media/deliver-shipping-bnr1212.png" alt="" /></a></div>
+<!--TOP NAV-->
 
 <ul id="topnav">
 <li class="topnav-li first" style="background:none; width: 198px;"><a class="newmenu" href="http://www.harborfreight.com/clearance">Sale &amp; Clearance</a> 
 <ul class="children">
 <li><a href="http://www.harborfreight.com/clearance">Clearance</a></li>
-<li><a href="http://www.harborfreight.com//50off-sale.html?limit=60">50% Off Sale</a></li>
 <li><a href="http://www.harborfreight.com//99cent-sale.html?limit=60">99 Cents Sale</a></li>
 </ul>
 </li>
@@ -623,8 +849,7 @@ We thank you for your business.</div>
 <div class="HFTInformationSubpage">
       <div class="HFTInformationSubpageTopBlock">
         <div class="HFTInformationSubpageTop"> <img src="skin/frontend/enterprise/hft/images/harbor.jpg" alt="" width="214" height="15" title="" /></div>
-        <div class="HFTInformationSubpageTopContent"><img src="media/35year-sm.jpg" alt="" />
-          <div class="logo_content">of delivering quality tools at affordable prices.</div>
+          <div class="logo_content">Quality Tools at Ridiculously Low Prices.</div>
         </div>      </div>
       <div class="HFTInformationSubpageBottom">
         <div class="HFTInformationSubpageBottomBlock1">

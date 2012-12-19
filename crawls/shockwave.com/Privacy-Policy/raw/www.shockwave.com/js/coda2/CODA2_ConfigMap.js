@@ -14,6 +14,16 @@ if(!/mobile/.test(self.location.href)){
     btg.config.DoubleClick['keyValues'] = sw.adSettings.DoubleClickKeyValues;
     btg.config.DoubleClick['autoDcopt'] = sw.adSettings.DoubleClickAutoDcopt;
 }
+
+// Coda config overrides
+btg.config.Omniture["dynamicAccountList"] += ",spicy,shiva,adam,grognard";
+btg.config.Omniture["trackExternalLinks"] = true;
+btg.config.Omniture.percentPageViewedVarMap = {
+	previousPage:"prop21",
+	percentage:"prop24"
+};
+
+
 // omniCookie is used for temporary storage and next page tracking of Omniture variables
 var omniCookie =  btg.Cookie.read( "swOmni" );
 if( omniCookie ){
@@ -28,36 +38,35 @@ if( omniCookie ){
 	// copy omni cookie into Omniture Page Variables Object
 	btg.Object.copyProperties(omniCookie, pageOmniVars, true);
 }
-btg.config.Omniture["dynamicAccountList"] += ",spicy,shiva,adam,grognard,cmillsga";
-btg.config.Omniture["trackExternalLinks"] = true;
+
 var hierarchy=gameType+"/"+primaryCategory+"/"+gameID;
-btg.config.Omniture["pageName"] = location.pathname;
-btg.config.Omniture["hier1"] = hierarchy;
-btg.config.Omniture["channel"] = primaryCategory;
-btg.config.Omniture["prop1"] = gameID;
-btg.config.Omniture["prop2"] = isFacebookConnected ? loginState + '_facebook' :  loginState;
+pageOmniVars.pageName = location.pathname;
+pageOmniVars.hier1 = hierarchy;
+pageOmniVars.channel = primaryCategory;
+pageOmniVars.prop1 = gameID;
+pageOmniVars.prop2 = isFacebookConnected ? loginState + '_facebook' :  loginState;
 if (gameType=="club"){
-	btg.config.Omniture["prop4"] = gameID;
+	pageOmniVars.prop4 = gameID;
 }else if (gameType=="non-club"){
-	btg.config.Omniture["prop5"] = gameID;
+	pageOmniVars.prop5 = gameID;
 }
-btg.config.Omniture["prop6"] = categoryList;
-btg.config.Omniture["prop7"] = queryString("q");
+pageOmniVars.prop6 = categoryList;
+pageOmniVars.prop7 = queryString("q");
 if (tokenType=="token"){
-	btg.config.Omniture["prop8"] = gameID;
+	pageOmniVars.prop8 = gameID;
 }else if (tokenType=="non-token"){
-	btg.config.Omniture["prop9"] = gameID;
+	pageOmniVars.prop9 = gameID;
 }
 if (trophyType=="trophy"){
-	btg.config.Omniture["prop10"] = gameID;
+	pageOmniVars.prop10 = gameID;
 }else if (trophyType=="non-trophy"){
-	btg.config.Omniture["prop11"] = gameID;
+	pageOmniVars.prop11 = gameID;
 }
-btg.config.Omniture["prop13"] = userInfo.creationDateInDays;
-btg.config.Omniture["prop14"] = userInfo.gender;
-btg.config.Omniture["prop15"] = userInfo.daysSinceLastLogin;
-btg.config.Omniture["prop16"] = userInfo.memberId;
-btg.config.Omniture["prop18"] = userInfo.birthDateInDays;
+pageOmniVars.prop13 = userInfo.creationDateInDays;
+pageOmniVars.prop14 = userInfo.gender;
+pageOmniVars.prop15 = userInfo.daysSinceLastLogin;
+pageOmniVars.prop16 = userInfo.memberId;
+pageOmniVars.prop18 = userInfo.birthDateInDays;
 
 var sw_gameRecs = function(){
 	var csGameReco = choicestreamRecs.getGroup() == 'choicestream';
@@ -78,18 +87,13 @@ var sw_gameRecs = function(){
 		}
 	}
 }
-btg.config.Omniture["pageType"] = pageType;
-btg.config.Omniture["campaign"] = queryString("extcmp");
+pageOmniVars.pageType = pageType;
+pageOmniVars.campaign = queryString("extcmp");
 //if the campaign variable isn't alredy set by extcmp then check for fb_ref and set
-if ( !btg.config.Omniture["campaign"] ){
-	btg.config.Omniture["campaign"] = queryString("fb_ref");
+if ( !pageOmniVars.campaign ){
+	pageOmniVars.campaign = queryString("fb_ref");
 }
-btg.config.Omniture["eVar17"] = btg.config.Omniture["campaign"];
-
-btg.config.Omniture.percentPageViewedVarMap = {
-	previousPage:"prop21",
-	percentage:"prop24"
-};
+pageOmniVars.eVar17 = pageOmniVars.campaign;
 
 //Tracking autoLoginSuccess with a cookie because the session variable was getting lost with SWU login redirect --%>
 var autoLoginSuccess = false;
@@ -154,10 +158,8 @@ function queryString(parameter) {
 	}
 }
 function gameDownload(gameID){
-	btg.config.Omniture["pageName"] = location.pathname+"-download";
-	btg.config.Omniture["prop25"] = gameID;
 	btg.Controller.init();
-	btg.Controller.sendPageCall( { events: 'event2' });
+	btg.Controller.sendPageCall( { pageName: location.pathname+"-download",prop25: gameID, events: 'event2' });
 }
 function sendLinkEvent(lnkname){
 	sendAnalyticsEvent(null,lnkname);

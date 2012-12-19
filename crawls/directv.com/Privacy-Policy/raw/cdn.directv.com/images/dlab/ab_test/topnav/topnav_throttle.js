@@ -1,12 +1,11 @@
 
 !function($){
-	var navTestGroup = 15;  // percent of users to include in test
+	var navTestGroup = 30;  // percent of users to include in test
 	var callTnT = true;
 	
-	// if cookie already set, stop now
 	var navCookie = readCookie('dtvtopnav');
-	if (navCookie == "old-hp") {
-		// continue
+
+	if (navCookie == "old-hp" || navCookie == "old-dtv") {
 		callTnT = true;
 	} else if (navCookie != null) {
 		callTnT = false;
@@ -43,7 +42,7 @@
 		if (iRandom <= navTestGroup) {
 			makeTnTCall();
 		} else {
-			setTopnavCookie('old-dtv');
+			setTopnavCookie('old-dtv-30');
 		}
 	}
 	

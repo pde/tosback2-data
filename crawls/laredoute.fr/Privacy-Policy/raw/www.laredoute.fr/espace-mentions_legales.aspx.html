@@ -319,7 +319,7 @@ div.price-information a.AlsoSoldBy {    display: block;}
 </div>
 <script type="text/javascript" src="../media.laredoute.fr/1024/projets/header2012/redoute/js/generate_layer_v03.js%3Fv121212.110055"></script>
 <script type="text/javascript">
-var layerVersion = 201212114;
+var layerVersion = 201212182;
 var IsRenfort = false;
 var navpf = navigator.platform;
 var navcn = navigator.appCodeName;
@@ -747,6 +747,7 @@ a.fb .elt2{background-position:-36px 0;padding:20px 0 0 66px;width:71px;height:2
 a.gg .elt1{background-position:-173px 0;width:32px;height:20px}
 a.gg .elt2{text-indent:0 !important;background-position:-173px -20px;width:39px;height:17px;padding:3px 0 0 8px}
 a.fb:hover span,a.gg:hover span{opacity:.8;filter:alpha(opacity=80)}
+
 /* Style Mes articles vus */
 div#wrapper form#aspnetForm div.ST2 div#FR_fr_Footer_evo_TopZone {float:left}
 #lastSeenArticles {width:982px; float:left; height:155px; border-bottom:1px solid #D4D4D4; display:none}
@@ -765,7 +766,7 @@ div#wrapper form#aspnetForm div.ST2 div#FR_fr_Footer_evo_TopZone {float:left}
 <div class="bloc-title">
 <span class="title">DEVENIR <span class="title-bold">FAN !</span></span>
 </div>
-<a class="fb" href="https://www.facebook.com/laredoute" target="_blank" rel="nofollow"><span class="elt1"></span><span class="elt2">939 000 et +</span></a>
+<a class="fb" href="https://www.facebook.com/laredoute" target="_blank" rel="nofollow"><span class="elt1"></span><span class="elt2">890 000 et +</span></a>
 </div>
 <div class="top_column">
 <div class="bloc-title">
@@ -883,128 +884,147 @@ div#wrapper form#aspnetForm div.ST2 div#FR_fr_Footer_evo_TopZone {float:left}
 </div>
 </div>
 <script type="text/javascript">
-	$j(document).ready(function(){
-		$j('div#LastSeenStickyLayer.LastSeenStickyLayer').remove();
+$j(document).ready(function(){	
+	// Script mes articles vus
+	$j('div#LastSeenStickyLayer.LastSeenStickyLayer').remove();
+	init_lastSeen();	
+	// Si click sur MPDP, on active l'affichage
+	$j('div.miniPdpBox a.close').live("click",function(){
 		init_lastSeen();
-		$j('div.miniPdpBox a.close').live("click",function(){init_lastSeen()});
-		if(document.location.href.indexOf('/Finaref/RExpressOffer.aspx') != -1){
-			var isGetAccountLayerStatus=null;
-			var scriptPDP=document.createElement("script");
-			scriptPDP.type="text/javascript";
-			scriptPDP.src="/StaticContent.ashx?cacheFR=080612.140536&act=cmb&ctp=js&ltp=local&fls=,scripts,jquery,jquery.validate.js;,scripts,jquery,jquery.metadata.js;,scripts,jquery,jquery.profile.js;,scripts,account,validationrules.js;,scripts,account,accountenhancement.js;";
-			document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP);
-			var scriptPDP2=document.createElement("script");
-			scriptPDP2.type="text/javascript";
-			scriptPDP2.src="/v113012.154301/rtv/msg/fr/fr/MiniPDP,FDS,ForgotPassword,IdentifyAccount/StaticContent.ashx";
-			document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP2);
-			var scriptPDP3=document.createElement("script");
-			scriptPDP3.type="text/javascript";
-			scriptPDP3.src="//p-media.laredoute.fr/1024/projets/finaref/2012/js_finaref_correctif.js?v121212.110055";
-			document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP3);
-		}
-		$j("#NewsletterFootEmail").bind('keypress', function(e) { if(e.keyCode==13){ TestNewsletterSend('#NewsletterFootEmailBtn'); } });
-		$j("#NumTelFooter").bind('keypress', function(e) { if(e.keyCode==13){ TestNumTelSend('#NumTelFooterBtn'); } });
-		$j('div.ST:last').each(function () { $j(this).addClass("ST2"); $j(this).removeClass("ST"); $j(this).css('background-color','transparent'); });
-	});
-	function laredoute_newsletter_ReturnCode(val){if(window.location.href.split("=")[1] == "newsletter_desabonnement&email"){if(val == 'ko'){ $j("#dialog_ko").jqm({overlay: 1}).jqmShow();} if(val == 'ok'){ document.location.href= '//www.laredoute.fr/page-newsletter_confirm.aspx'; }}else{$j("#dialog_" + val).jqm({overlay: 1}).jqmShow();$j("#return_email").empty().append(current_email);}}
-	function init_lastSeen(){
-		var value_PVPR = GetCookieOrCachePermanentInfo("PVPR");
-		var checkImg = new RegExp(".jpg");
-		var myArticles = "<div id='lastSeenArticles'><div class='bloc-title'><span class='title'>Mes derniers articles vus</span></div><ul class='lastProducts tab_content'>";
-		var imgProducts = new Array();
-		var linkProducts = new Array();
-		var cidProduct = new Array();
-		if(value_PVPR != undefined && value_PVPR != ""){
-			if($j('div#wrapper form#aspnetForm div#lastSeenArticles')) $j('div#wrapper form#aspnetForm div#lastSeenArticles').remove();
-			if(value_PVPR.charAt(eval(value_PVPR.length - 1)) != "#") value_PVPR += "#";
-			produits = value_PVPR.split("#");
-			for(var i=0;i<eval(produits.length - 1) && i<10;i++){
-				var infoProduits = produits[i].split(":");
-				for(var j=0;j<infoProduits.length;j++)
-					cidProduct[i]=infoProduits[0];
-					if(checkImg.test(infoProduits[j]) == true)	imgProducts[i] = infoProduits[j];
-					if(infoProduits[j].length > 8 && checkImg.test(infoProduits[j])==false ) linkProducts[i] = infoProduits[j];
-				}
-			}
-			for(var k=0;k<imgProducts.length;k++){
-				if(imgProducts[k].split("-")[0] == cidProduct[k]) var Img = generateMillenaPictureURL(imgProducts[k]);
-				else var Img = generateMarketPlacePictureURL(imgProducts[k]);
-				(k == 9) ? myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"' id='lastProduct'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>"	: myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>";
-			}
-			myArticles += "</ul><span class='btnDelete'><a href='javascript:removeLastSeenProducts();'>Effacer mes articles vus</a></span></div>";
-			if($j('div#search_ff #Fr_fr_FooterSearch_PageListe_ContentZone1 div#adcontainer1').html() == null) $j('div#wrapper form#aspnetForm div#evo-content').after(myArticles);
-			else $j('div#wrapper form#aspnetForm div#evo-content div#EndecaTemplate div#search_ff').before(myArticles);
-			$j('div#wrapper form#aspnetForm div#lastSeenArticles').css({'display':'block', 'background-color':'#FFF'});
+	});	
+	// Fin Script mes articles vus
+	if(document.location.href.indexOf('/Finaref/RExpressOffer.aspx') != -1)
+	{	
+		var isGetAccountLayerStatus = null;
+		var scriptPDP = document.createElement("script");
+		scriptPDP.type = "text/javascript";
+		scriptPDP.src = "/StaticContent.ashx?cacheFR=080612.140536&act=cmb&ctp=js&ltp=local&fls=,scripts,jquery,jquery.validate.js;,scripts,jquery,jquery.metadata.js;,scripts,jquery,jquery.profile.js;,scripts,account,validationrules.js;,scripts,account,accountenhancement.js;";
+		document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP);
+		var scriptPDP2 = document.createElement("script");
+		scriptPDP2.type = "text/javascript";
+		scriptPDP2.src = "/Scripts/MessageHandler.ashx?SiteSection=MiniPDP,FDS,ForgotPassword,IdentifyAccount&amp;SiteID=fr&amp;LanguageCode=fr";
+		document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP2);
+		var scriptPDP3 = document.createElement("script");
+		scriptPDP3.type = "text/javascript";
+		scriptPDP3.src = "//p-media.laredoute.fr/1024/projets/finaref/2012/js_finaref_correctif.js?v121212.110055";
+		document.getElementById('Studio_JavaScript_zone').appendChild(scriptPDP3);
+	}
+	
+	
+$j("#NewsletterFootEmail").bind('keypress', function(e) { if(e.keyCode==13){ TestNewsletterSend('#NewsletterFootEmailBtn'); } });
+$j("#NumTelFooter").bind('keypress', function(e) { if(e.keyCode==13){ TestNumTelSend('#NumTelFooterBtn'); } });
+$j('div.ST:last').each(function () { $j(this).addClass("ST2"); $j(this).removeClass("ST"); $j(this).css('background-color','transparent'); });
+});
+function laredoute_newsletter_ReturnCode(val){if(window.location.href.split("=")[1] == "newsletter_desabonnement&email"){if(val == 'ko'){ $j("#dialog_ko").jqm({overlay: 1}).jqmShow();} if(val == 'ok'){ document.location.href= '//www.laredoute.fr/page-newsletter_confirm.aspx'; }}else{$j("#dialog_" + val).jqm({overlay: 1}).jqmShow();$j("#return_email").empty().append(current_email);}}
 
+// Fonctions mes articles vus
+function init_lastSeen(){
+	var value_PVPR = GetCookieOrCachePermanentInfo("PVPR");
+	var checkImg = new RegExp(".jpg");
+	var myArticles = "<div id='lastSeenArticles'><div class='bloc-title'><span class='title'>Mes derniers articles vus</span></div><ul class='lastProducts tab_content'>";
+	var imgProducts = new Array();
+	var linkProducts = new Array();
+	var cidProduct = new Array();
+	
+	if(value_PVPR != undefined && value_PVPR != "") 
+	{
+		if($j('div#wrapper form#aspnetForm div#lastSeenArticles')) $j('div#wrapper form#aspnetForm div#lastSeenArticles').remove();
+		if(value_PVPR.charAt(eval(value_PVPR.length - 1)) != "#") value_PVPR += "#";
+		produits = value_PVPR.split("#");		
+	
+		for(var i=0;i<eval(produits.length - 1) && i<10;i++)
+		{
+			var infoProduits = produits[i].split(":");
+			for(var j=0;j<infoProduits.length;j++)
+			{
+				cidProduct[i]=infoProduits[0];
+				if(checkImg.test(infoProduits[j]) == true)	imgProducts[i] = infoProduits[j];
+				if(infoProduits[j].length > 8 && checkImg.test(infoProduits[j])==false ) linkProducts[i] = infoProduits[j];
+			}
 		}
+		for(var k=0;k<imgProducts.length;k++)
+		{
+			if(imgProducts[k].split("-")[0] == cidProduct[k]) var Img = generateMillenaPictureURL(imgProducts[k]);
+			else var Img = generateMarketPlacePictureURL(imgProducts[k]);
+			(k == 9) ? myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"' id='lastProduct'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>"	: myArticles += "<li onmouseover='liProductOn(this)' onmouseout='liProductOff(this)' class='"+imgProducts[k]+"'><img src='http://www.laredoute.fr/&quot;+Img+&quot;' alt='Derni&amp;egrave;rement vu' /><div class='quick_view_overlay' style='display: none;'></div><a href='javascript:open_MPDP_Derniers_Vus(\""+linkProducts[k]+"\");' class='quick_view_overlay_button' style='display: none;'></a></li>";
+		}
+		myArticles += "</ul><span class='btnDelete'><a href='javascript:removeLastSeenProducts();'>Effacer mes articles vus</a></span></div>";
+		if(document.location.href.indexOf('categoryid=22890817') != -1) $j('div#wrapper form#aspnetForm div#EndecaTemplate').after(myArticles);
+		else $j('div#wrapper form#aspnetForm div#evo-content').after(myArticles);
+		$j('div#wrapper form#aspnetForm div#lastSeenArticles').css('display','block');
+		
 	}
-	function liProductOn(liOn){$j("a.quick_view_overlay_button", liOn).css('display','block');}
-	function liProductOff(liOff){$j("a.quick_view_overlay_button", liOff).css('display','none');}
-	function generateMillenaPictureURL(millenaName){return "http://media.laredoute.fr/Product/EUPICTURES/" + millenaName.substring(6,7) + "/" + millenaName.substring(7,8) + "/" + millenaName.substring(8,9) + "/" + millenaName;}
-	function generateMarketPlacePictureURL(millenaName){return "http://media.laredoute.fr/Product/EUPICTURES/" + millenaName.substring(0,1) + "/" + millenaName;}
-	function open_MPDP_Derniers_Vus(CID){setSubCookieAndCookie('M.R.Omniture', 'ST', "Derniers articles vus hors sticky");$j(this).openMiniPDP(CID,'999999','0');}
-	function removeLastSeenProducts(){
-		$j('div#lastSeenArticles').fadeOut();
-		$j('div#lastSeenArticles ul').remove();
-		var today=new Date(addMonth(1));
-		today.setTime(today.getTime());
-		SetCookieOrCachePermanentInfo("PVPR","",today);
-	}
+	//checkImages();
+}
+function liProductOn(liOn)
+{
+	$j("a.quick_view_overlay_button", liOn).css('display','block');
+}
+function liProductOff(liOff)
+{
+	$j("a.quick_view_overlay_button", liOff).css('display','none');
+}
+
+function generateMillenaPictureURL(millenaName){
+	return "http://media.laredoute.fr/Product/EUPICTURES/" + millenaName.substring(6,7) + "/" + millenaName.substring(7,8) + "/" + millenaName.substring(8,9) + "/" + millenaName;
+}
+
+function generateMarketPlacePictureURL(millenaName){
+	return "http://media.laredoute.fr/Product/EUPICTURES/" + millenaName.substring(0,1) + "/" + millenaName;
+}
+
+function open_MPDP_Derniers_Vus(CID)
+{
+	setSubCookieAndCookie('M.R.Omniture', 'ST', "Derniers articles vus hors sticky");
+	$j(this).openMiniPDP(CID,'999999','0');	
+}
+
+function removeLastSeenProducts()
+{
+	$j('div#lastSeenArticles').fadeOut();
+	$j('div#lastSeenArticles ul').remove();
+	var today=new Date(addMonth(1));
+	today.setTime(today.getTime());
+	SetCookieOrCachePermanentInfo("PVPR","",today);
+}
+// Fin Fonctions mes articles vus
 </script>
 <div id="dialog_return" style=" display: none; width:1px; height:1px; position:absolute; z-index:9999; top:0px; left:0px"></div>
-<div id="dialog_ko" class="jqmWindow">
-	<a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
-	<img src="../p-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ko.gif" alt="Une erreur technique est survenue !" />
-	<br />
-	<br />
-	Ce service est momentan&eacute;ment indisponible.<br />
-	Nos &eacute;quipes techniques mettent tout en oeuvre pour le r&eacute;tablir au plus vite.<br /><br />
-	Merci de r&eacute;essayer dans quelques instants.
+<div id="dialog_ko" class="jqmWindow"><a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
+<img src="../p-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ko.gif" alt="Une erreur technique est survenue !" /><br /><br />
+
+Ce service est momentan&eacute;ment indisponible.<br />
+Nos &eacute;quipes techniques mettent tout en oeuvre pour le r&eacute;tablir au plus vite.<br /><br />        
+Merci de r&eacute;essayer dans quelques instants.
 </div>
-<div id="dialog_ok" class="jqmWindow">
-	<a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
-	<img src="../s-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ok.gif" alt="Votre inscription est bien enregistr&eacute;e !" />
-	<br/>
-	<br/>
-	Un e-mail automatique de confirmation vient d'&ecirc;tre envoy&eacute; &agrave; l'adresse e-mail : <strong id="return_email" class="green"></strong><br /><br />
-	L'adresse est incorrecte ? Corrigez-la en fermant cette fen&ecirc;tre et en saisissant une nouvelle adresse.
-	<br/>
-	<br/>
-	Vous ne retrouvez pas notre e-mail de confirmation ?
-	<br/>
-	Merci de v&eacute;rifier si vous ne l'avez pas reçu parmi vos « courriers ind&eacute;sirables ou spam ».
-	<br/>
-	<br/>
-	Astuce : pour bien recevoir nos offres nous vous invitons &agrave; ajouter <strong class="grey">laredoute@fr.redoute.com</strong>
-	<br/> &agrave; votre carnet d'adresses !
-	<br/>
-	<br/>
-	<strong class="grey">Merci de votre confiance !</strong>
+<div id="dialog_ok" class="jqmWindow"><a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
+<img src="../s-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ok.gif" alt="Votre inscription est bien enregistr&eacute;e !" /><br /><br />
+Un e-mail automatique de confirmation vient d'&ecirc;tre envoy&eacute; &agrave; l'adresse e-mail : <strong id="return_email" class="green"></strong><br /><br />
+L'adresse est incorrecte ? Corrigez-la en fermant cette fen&ecirc;tre et en saisissant une nouvelle adresse.<br /><br />
+Vous ne retrouvez pas notre e-mail de confirmation ? <br />
+Merci de v&eacute;rifier si vous ne l'avez pas reçu parmi vos « courriers ind&eacute;sirables ou spam » .<br /><br />
+Astuce : pour bien recevoir nos offres nous vous invitons &agrave; ajouter <strong class="grey">laredoute@fr.redoute.com</strong><br/> &agrave; votre carnet d'adresses !<br /><br />
+<strong class="grey">Merci de votre confiance !</strong>
 </div>
-<div id="dialog_error" class="jqmWindow">
-	<a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
-	<img src="../p-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ko.gif" alt="Une erreur technique est survenue !" />
-	<br/>
-	<br/>
-	Ce service est momentan&eacute;ment indisponible.<br />
-	Nos &eacute;quipes techniques mettent tout en oeuvre pour le r&eacute;tablir au plus vite.
-	<br/><br/>
-	Merci de r&eacute;essayer dans quelques instants.
+<div id="dialog_error" class="jqmWindow"><a href="espace-mentions_legales.aspx.html#" class="jqmClose" title=""></a>
+<img src="../p-media.laredoute.fr/1024/projets/newsletter/newsletter_inscrip_ko.gif" alt="Une erreur technique est survenue !" /><br /><br />
+Ce service est momentan&eacute;ment indisponible.<br />
+Nos &eacute;quipes techniques mettent tout en oeuvre pour le r&eacute;tablir au plus vite.<br /><br />Merci de r&eacute;essayer dans quelques instants.
 </div>
 <script type="text/javascript" src="../media.laredoute.fr/1024/projets/footer/2012/js/NewFooter2012.js%3Fv121212.110055"></script>
 <script type="text/javascript" src="../media.laredoute.fr/1024/projets/NumTelProject/cookie.js%3Fv121212.110055"></script>
 <script type="text/javascript" src="../media.laredoute.fr/1024/projets/mobile/NeolaneMobileTel2.js%3Fv121212.110055"></script>
-<!--
-	script type="text/javascript">
-	(function(w, d){var a=function(){var a=d.createElement('script');a.type='text/javascript';
-	a.async = 'async'; a.src = '//' + ((w.location.protocol === 'https:') ? 's3.amazonaws.com/cdx-radar/' :
-	'radar.cedexis.com/')+'01-10878-radar10.min.js';d.body.appendChild(a)}
-	if(w.addEventListener){w.addEventListener('load',a,false)}
-	else if(w.attachEvent){w.attachEvent('onload',a)}
-	}(window,document));
-	</script
--->
-<style type="text/css">#pubiframe_sky{position:absolute !important}</style><!-- MAXCHME FR_fr_Footer_evo_BottomZone_NotHP  --></div>
+<!--script type="text/javascript">
+(function(w, d){var a=function(){var a=d.createElement('script');a.type='text/javascript';
+a.async = 'async'; a.src = '//' + ((w.location.protocol === 'https:') ? 's3.amazonaws.com/cdx-radar/' :
+'radar.cedexis.com/')+'01-10878-radar10.min.js';d.body.appendChild(a)}
+if(w.addEventListener){w.addEventListener('load',a,false)}
+else if(w.attachEvent){w.attachEvent('onload',a)}
+}(window,document));
+</script-->
+<style type="text/css">
+#pubiframe_sky{position:absolute !important}
+</style><!-- MAXCHME FR_fr_Footer_evo_BottomZone_NotHP  --></div>
 
 
 <!-- *****************	END OF FOOTER  ***************** -->
@@ -1610,7 +1630,7 @@ s.prop56 = Omniture_FP_sprop56;
 }
 s.pageName="FR:RE:AUTRE:staticpages/Content-Page_new.aspx?pagename=mentions_legales"
 s.channel="AUTRE"
-s.server="MISDC2WEBPR21"
+s.server="MISDC2WEBPR26"
 
 var Omniture_CustNmbr_sprop10 =GetSubCookieValue('M.R.User','CustNmbr')
 if(Omniture_CustNmbr_sprop10!=null && Omniture_CustNmbr_sprop10!='null' && Omniture_CustNmbr_sprop10!='' ) { 

@@ -1864,7 +1864,7 @@ Echo.Item.prototype.renderers.container = function(element, dom) {
 	element.addClass('echo-item-depth-' + this.depth);
 	var switchClasses = function(action) {
 		$.map(self.controlsOrder, function(name) {
-			if (!self.controls[name].element) return;
+			if (!self.controls[name].element || !self.controls[name].clickableElements) return;
 			self.controls[name].clickableElements[action + "Class"]("echo-linkColor");
 		});
 	};
@@ -1964,6 +1964,8 @@ Echo.Item.prototype.renderers.control = function(element, dom, extra) {
 		"name": extra.name
 	};
 	var control = $(this.substitute(template, data));
+	if (!extra.clickable) return control;
+
 	var clickables = $('.echo-clickable', control);
 	if (!clickables.length) {
 		clickables = control;
@@ -1995,9 +1997,11 @@ Echo.Item.prototype.renderers.controls = function(element) {
 		var control = data.dom || self.render("control", undefined, undefined, data);
 		if (control) {
 			self.controls[name].element = control;
-			self.controls[name].clickableElements = $('.echo-clickable', control);
-			if (!self.controls[name].clickableElements.length) {
-				self.controls[name].clickableElements = control;
+			if (data.clickable) {
+				self.controls[name].clickableElements = $('.echo-clickable', control);
+				if (!self.controls[name].clickableElements.length) {
+					self.controls[name].clickableElements = control;
+				}
 			}
 			container.append(delimiter.clone(true)).append(control);
 		}
@@ -2419,6 +2423,9 @@ Echo.Item.prototype.assembleControls = function() {
 			};
 			data.label = data.label || data.name;
 			data.plugin = plugin;
+			if (typeof data.clickable == "undefined") {
+				data.clickable = true;
+			}
 			if (typeof data.visible == "undefined") {
 				data.visible = true;
 			}
@@ -2968,7 +2975,7 @@ Echo.Stream.prototype.refresh = function() {
 };
 
 Echo.Stream.prototype.extractPresentationConfig = function(data) {
-	return $.foldl({}, ["sortOrder", "itemsPerPage", "safeHTML"], function(key, acc) {
+	return $.foldl({}, ["sortOrder", "itemsPerPage", "safeHTML", "showFlags"], function(key, acc) {
 		if (typeof data[key] != "undefined") {
 			acc[key] = data[key];
 		}
@@ -3007,7 +3014,7 @@ Echo.Stream.prototype.assembleConfigNormalizer = function() {
 	var self = this;
 	var ensurePositiveValue = function(v) { return v < 0 ? 0 : v; };
 	var normalizer = {
-		"contentTransformations" : function(object) {
+		"contentTransformations": function(object) {
 			$.each(object, function(contentType, options) {
 				object[contentType] = $.foldl({}, options || [],
 					function(option, acc) {
@@ -3016,7 +3023,10 @@ Echo.Stream.prototype.assembleConfigNormalizer = function() {
 			});
 			return object;
 		},
-		"safeHTML" : function(value) {
+		"safeHTML": function(value) {
+			return "off" != value;
+		},
+		"showFlags": function(value) {
 			return "off" != value;
 		},
 		"streamStateToggleBy": function(value) {

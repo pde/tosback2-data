@@ -57,15 +57,7 @@ $(function(){$('.ad-now').width('auto').height('auto');$('.ad-load').each(functi
 s.width('auto').height('auto')
 .get(0).appendChild(this);});var a=$('#ad-mpu1-spot');var c=$('#right-col').get(0);if(a.length&&a.height()>500&&typeof RegArticle!='undefined'&&!RegArticle.bms){if(c){c.insertBefore(a.get(0),c.firstChild);var f=$('#forums-nav');if(f.length)c.insertBefore(f.get(0),c.firstChild);}}
 if(a.length&&a.height()<2)a.css('margin-top',0);if(typeof RegWpTl!='undefined')
-$('.wptl').html(RegWpTl[Math.floor(Math.random()*RegWpTl.length)]);});function google_ad_request_done(G){var N=G.length;$(function(){var wp=$('#whitepapers');var A=wp.length?wp:$('#article');if(A.length){if(!N)
-A.after('<img src="http://go.theregister.com/k/google_ua_na" width=1 height=1 alt="">');else if(G[0].type=='text'){G=$.map(G,function(_,i){var v=_.visible_url;var e=N==1?'p':'li';var c=i%2==0?' class=row-start':'';var h=' href="'+_.url+
-'" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to '+
-v+'\';return true">';return'<'+e+c+'><a class=l1'+h+_.line1+'</a><br>'+
-_.line2+' '+_.line3+'<br><a'+h+v+'</a></'+
-e+'>';}).join('');if(N>1)
-G='<ul>'+G+'</ul>';A.after('<div id=google><h3><a href="'+google_info.feedback_url+
-'">Ads by Google</a></h3>'+G+'</div>');$('#article .crumb').css('right','-1px');}}});}
-var RegTLRotate=(function(){var R={};$(function(){for(var k in R){var li=$('#tl-'+k);if(li.length){var r=R[k][Math.floor(Math.random()*R[k].length)];if(!r);else if(r.match(/^<li/i))
+$('.wptl').html(RegWpTl[Math.floor(Math.random()*RegWpTl.length)]);});var RegTLRotate=(function(){var R={};$(function(){for(var k in R){var li=$('#tl-'+k);if(li.length){var r=R[k][Math.floor(Math.random()*R[k].length)];if(!r);else if(r.match(/^<li/i))
 li.replaceWith(r);else if(r.match(/<a/i))
 li.html(r);else if(r.match(/^https?:/))
 li.find('a').attr('href',r);else{li.find('a').get(0).innerHTML=r;}}}});return function(r){$.extend(R,r)}})();$.fn.flash=function(u,m,w,h,v,a){if(!this.length)return this;var N=navigator,V=0,S='ShockwaveFlash';var NN=N.plugins&&N.mimeTypes&&N.mimeTypes.length;if(NN){var p=N.plugins['Shockwave Flash'];if(p&&p.description){var m=p.description.match(/[0-9]+/);if(m)V=parseInt(m[0]);}}

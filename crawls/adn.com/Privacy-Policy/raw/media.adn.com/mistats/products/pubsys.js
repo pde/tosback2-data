@@ -130,54 +130,64 @@ mistats.date = new mistats.Date();
 mistats.audienceCounts =
 {
    event: 'event17',
-
-   nextWeek: function (pDate)
+   session: function ()
    {
-      var d;
-      var t;
+      var vs;
 
-      d = 0;
-      t = pDate.getDay();
+      vs = parseInt(s.c_r('mi_vs1'));
+      if (!isNaN(vs) && (new Date()).getTime() - vs < 43200000)
+         return vs;
 
-      while (t)
+      return null;
+   }(),
+
+   hasCookies: function ()
+   {
+      if (navigator.cookieEnabled && !s.c_r('mi_act'))
       {
-         if (++t === 7)
-            t = 0;
-         d++;
+         s.c_w('mi_act', '1', new Date((new Date()).getTime() + 1000));
+         if (s.c_r('mi_act') == '1')
+            return true;
       }
 
-      t = pDate;
-      t.setTime(t.getTime() + (d * 86400000));
+      return false;
+   },
 
-      return new Date((new Date(t.getFullYear(), t.getMonth(), t.getDate())).getTime() - mistats.date.getOffset());
+   nextWeek: function ()
+   {
+      var date;
+
+      date = new Date();
+      date.setTime(date.getTime() + (Math.abs(7 - date.getDay()) * 86400000));
+      date.setHours(0);
+      date.setMinutes(0);
+      date.setSeconds(0);
+      date.setMilliseconds(0);
+
+      return new Date(date.getTime() - mistats.date.getOffset());
    },
 
    nextMonth: function (pDate)
    {
-      var m;
-      var y;
+      var date;
 
-      m = pDate.getMonth() + 1;
-      y = pDate.getFullYear();
+      date = new Date();
 
-      if (m === 12)
-      {
-         m = 0;
-         y++;
-      }
-
-      return new Date((new Date(y, m, 1)).getTime() - mistats.date.getOffset());
+      return new Date((new Date(date.getFullYear(), (date.getMonth() + 1), 1)).getTime() - mistats.date.getOffset());
    },
 
-   updateProducts: function (pName, pCount)
+   updateProducts: function (pName, pInc, pDec)
    {
+      if (!pInc)
+         return;
+
       s.products = (s.products) ? s.products.replace(new RegExp(',*;' + pName + ' \d+;;;' + this.event + '=-*\d+', 'g'), '').split(',') : [];
-      if (pCount > 1)
-         s.products[s.products.length] = ';' + pName + ' ' + (pCount - 1) + ';;;' + this.event + '=-1';
-      s.products[s.products.length] = ';' + pName + ' ' + pCount + ';;;' + this.event + '=1';
+      if (pDec && pDec < pInc)
+         s.products[s.products.length] = ';' + pName + ' ' + pDec + ';;;' + this.event + '=-1';
+      s.products[s.products.length] = ';' + pName + ' ' + pInc + ';;;' + this.event + '=1';
       s.products = s.products.join(',');
 
-      s.events = (s.events) ? s.events.replace(new RegExp(',*' + this.event, 'g'), '').split(',') : [];
+      s.events = (s.events) ? s.events.replace(new RegExp(',*' + this.event + '[^,]*', 'g'), '').split(',') : [];
       s.events[s.events.length] = this.event;
       s.events = s.events.join(',');
    },
@@ -187,32 +197,35 @@ mistats.audienceCounts =
       var c;
       var cm;
       var cw;
-      var d;
+      var i;
+      var o;
 
-      if (!pValidate)
-         return;
-
-      d = new Date();
       cm = pCookie + '_m';
       cw = pCookie + '_w';
 
-      c = s.c_r(cw).match(/\d+/);
-      c = (c) ? parseInt(c[0]) : 0;
-      c++;
-      s.c_w(cw, c, (new Date(this.nextWeek(d))));
-      this.updateProducts('Weekly ' + pLabel, c);
+      c = s.c_r(cw).match(/\d+/g);
+      i = c ? parseInt(c[1] || 0) : 0;
+      if (pValidate)
+         i++;
+      o = c ? parseInt(c[0] || 0) : i;
+      if (!this.session)
+         this.updateProducts('Weekly ' + pLabel, i, o);
+      s.c_w(cw, [this.session ? o : i, i].join('|'), (new Date(this.nextWeek())));
 
-      c = s.c_r(cm).match(/\d+/);
-      c = (c) ? parseInt(c[0]) : 0;
-      c++;
-      s.c_w(cm, c, (new Date(this.nextMonth(d))));
-      this.updateProducts('Monthly ' + pLabel, c);
+      c = s.c_r(cm).match(/\d+/g);
+      i = c ? parseInt(c[1] || 0) : 0;
+      if (pValidate)
+         i++;
+      o = c ? parseInt(c[0] || 0) : i;
+      if (!this.session)
+         this.updateProducts('Monthly ' + pLabel, i, o);
+      s.c_w(cm, [this.session ? o : i, i].join('|'), (new Date(this.nextMonth())));
    },
 
    updateAll: function ()
    {
       var date;
-      
+
       date = new Date();
       s.c_w('mi_vs', '', new Date(date.getTime() - 86400000));
       s.c_w('mi_pc_m', '', new Date(date.getTime() - 86400000));
@@ -221,17 +234,15 @@ mistats.audienceCounts =
       s.c_w('mi_pc_w', '', new Date(date.getTime() - 86400000));
       s.c_w('mi_sc_w', '', new Date(date.getTime() - 86400000));
       s.c_w('mi_vc_w', '', new Date(date.getTime() - 86400000));
-/*
-      this.updateCount('PVs', 'mi_pc', true);
-      this.updateCount('Stories', 'mi_sc', mistats.pagelevel && mistats.pagelevel.match(/story/i));
-      this.updateCount('Visits', 'mi_vc', function ()
-      {
-         var r;
-         r = s.c_r('mi_vs');
-         s.c_w('mi_vs', '1', (new Date((new Date()).getTime() + 1200000)));
-         return !r;
-      }());
-*/
+
+      if (!this.hasCookies())
+         return;
+
+      this.updateCount('PVs', 'mi_pc1', true);
+      this.updateCount('Stories', 'mi_sc1', mistats.pagelevel && mistats.pagelevel.match(/story/i));
+      this.updateCount('Visits', 'mi_vc1', !this.session);
+
+      s.c_w('mi_vs1', this.session || (new Date()).getTime(), (new Date((new Date()).getTime() + 1800000)));
    }
 };
 

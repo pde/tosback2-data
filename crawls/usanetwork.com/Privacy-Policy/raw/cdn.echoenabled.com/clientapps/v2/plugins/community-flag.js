@@ -36,6 +36,7 @@ var plugin = Echo.createPlugin({
 plugin.template = '<div class="echo-item-flags"></div>';
 
 plugin.addLabels({
+	"flagged": "Flagged",
 	"flaggedThis": " flagged this.",
 	"flagControl": "Flag",
 	"unflagControl": "Unflag",
@@ -65,6 +66,10 @@ plugin.assembleControl = function(name, application) {
 					"target": item.dom.content
 				}
 			}));
+			if (name === "Flag" && !item.config.get("showFlags")) {
+				plugin.set(item, "flagged", true);
+				item.rerender("controls");
+			}
 			application.startLiveUpdates(true);
 		}, "jsonp");
 	};
@@ -75,14 +80,22 @@ plugin.assembleControl = function(name, application) {
 			($.map(item.data.object.flags, function(entry) {
 				if (item.user.hasIdentity(entry.actor.id)) return entry;
 			})).length > 0 ? "Unflag" : "Flag";
-		return {
+		var flagged = name === "Flag" && !item.config.get("showFlags") && plugin.get(item, "flagged");
+		var data = {
 			"name": name,
-			"label": '<span class="echo-clickable">' + plugin.label(name.toLowerCase() + "Control") + '</span>' +
-				(item.user.isAdmin() && count ? " (" + count + ")" : ""),
+			"label": !flagged
+				? '<span class="echo-clickable">' + plugin.label(name.toLowerCase() + "Control") + '</span>' +
+					(item.user.isAdmin() && count ? " (" + count + ")" : "")
+				: plugin.label("flagged"),
 			"visible": item.user.logged() && action == name,
+			"clickable": !flagged,
 			"onetime": true,
 			"callback": callback
 		};
+		if (flagged) {
+			data.template = '<span>{Data:label}</span>';
+		}
+		return data;
 	};
 };
 

@@ -16,6 +16,8 @@ if (!window.bam) {
 		requireVariableRegExp = /^function([\s]+)?\(([\s]+)?([\w]+)/,
 		commentRegExp = /(\/\*([\s\S]*?)\*\/|([^:]|^)\/\/(.*)$)/mg;
 
+	/* Modules path - home path for all the modules */
+	var moduleHome = "shared/scripts/bam/";
 
 	/**
 	 * Custom error types
@@ -54,17 +56,24 @@ if (!window.bam) {
 		};
 	})();
 
-	function getDependenciesFromFunction(fn, modulePathAndName) {
-		var fnString = fn.toString().replace(commentRegExp, '');
-		var requireVariable = requireVariableRegExp.exec(fnString)[3];
-		if (requireVariable) {
-			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
-			var dependencies = fnString.match(requireRegex) || [];
-			for ( var i = 0, dependency; dependency = dependencies[i]; i++ ) {
-				dependencies[i] = dependency.substring(requireVariable.length+3, dependency.length-2);
-			}
+	function fillRelativePath( path, relativeTo ) {
+		if (typeof relativeTo === 'string') {
+			relativeTo = relativeTo.split('/');
+		} else {
+			relativeTo = relativeTo.slice();
 		}
+		var pathArray = path.split('/');
+		while (pathArray[0] === '.') {
+			pathArray.shift();
+		}
+		while (pathArray[0] === '..') {
+			pathArray.shift();
+			relativeTo.pop();
+		}
+		return relativeTo.concat(pathArray).join('/');
+	}
 
+	function convertArrayOfStringsToRequirementObjects( dependencies, modulePathAndName ) {
 		var modulePathArray;
 		var lastSlash = modulePathAndName.lastIndexOf('/');
 		if (lastSlash !== -1) {
@@ -80,37 +89,60 @@ if (!window.bam) {
 					window.console && console.warn && console.warn('Please remove leading slashes from require() calls.\nModule: '+modulePathAndName+'\nrequire('+dependency+')');
 					dependency = dependency.substr(1);
 				}
-				var name = everythingAfterLastSlash.exec(dependency)[1];
-				
 				if (dependency.charAt(0) === '.') {
-					var dependencyArray = dependency.split('/');
-					var depModulePath = modulePathArray.slice();
-					while (dependencyArray[0] === '.') {
-						dependencyArray.shift();
-					}
-					while (dependencyArray[0] === '..') {
-						dependencyArray.shift();
-						depModulePath.pop();
-					}
-					dependency = depModulePath.concat(dependencyArray).join('/');
+					dependency = fillRelativePath( dependency, modulePathArray );
 				}
+
+				var nameAndVersion = getNameAndVersionFromPath( dependency );
+				var name = nameAndVersion.name;
+				
 				dependency = '/'+dependency;
 
 				dependencies[i] = {};
 				dependencies[i][name] = dependency;
+				dependencies[i].version = nameAndVersion.version;
 			}
 		};
 		return dependencies;
 	}
 
+	function getDependenciesFromFunction(fn, modulePathAndName) {
+		var fnString = fn.toString().replace(commentRegExp, '');
+		var requireVariable = requireVariableRegExp.exec(fnString)[3];
+		if (requireVariable) {
+			var requireRegex = new RegExp("[^\\w\\.]"+requireVariable+"\\(['\"]([^'\"]+)['\"]\\)", 'gm');
+			var dependencies = fnString.match(requireRegex) || [];
+			for ( var i = 0, dependency; dependency = dependencies[i]; i++ ) {
+				dependencies[i] = dependency.substring(requireVariable.length+3, dependency.length-2);
+			}
+		}
+		return convertArrayOfStringsToRequirementObjects( dependencies, modulePathAndName );
+	}
 
-	/* Modules path - home path for all the modules */
-	var moduleHome = "/shared/scripts/bam/",
+	var versionRegex = /\d\.\d/;
+	var justASlash = /\//g;
+	function getNameAndVersionFromPath( path ) {
+		var version = +path.match(versionRegex);
+		var name;
+		if (version) {
+			if (path.substr(0, moduleHome.length) === moduleHome) {
+				name = path.split(versionRegex)[0];
+				name = name.substring(moduleHome.length, name.length-1).replace(justASlash, '.');
+			} else {
+				name = path.split(versionRegex)[1].substr(1);
+			}
+		} else {
+			version = 1;
+			name = path.substr(path.lastIndexOf('/')+1);
+		}
+		return {name: name, version: version};
+	}
+
 		/*
 		 * Bam modules manifest. Used by "requires" pattern.
 		 * WARNING: Use caution when modifying manifest declarations, these changes affect module selection in your code
 		 */
-		manifest = {
+	var manifest = {
 			actionMessages: {
 				atbat: 1.0
 			},
@@ -191,7 +223,10 @@ if (!window.bam) {
 			};
 			this.context = function ctx(lib){ 
 				if (lib.indexOf('/') !== -1) {
-					lib = everythingAfterLastSlash.exec(lib)[1];
+					if (lib.charAt(0) === '.') {
+						lib = fillRelativePath( lib, that.context.path );
+					}
+					lib = getNameAndVersionFromPath(lib).name;
 				}
 				if (lib.indexOf('-')) {
 					lib = lib.split('-')[0];
@@ -246,7 +281,7 @@ if (!window.bam) {
 				//If current version listed in manifest is greater than the version used
 				if (manifestEntry) {
 					if (manifestEntry.atbat + '' > version) {
-						window.console && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
+						window.console && console.warn && console.warn("The version of [" + module + "] used is deprecated. Current version is " + manifestEntry.atbat);
 						bam.trackDeprecated({
 							module: module,
 							version: version,
@@ -254,7 +289,7 @@ if (!window.bam) {
 						});
 						//Else, check if a possible upgrade version is available
 					} else if ((onDeck in manifestEntry) && version < manifestEntry.ondeck + '') {
-						window.console && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
+						window.console && console.warn && console.warn("Updated version of [" + module + "] is available. Please try to update to version " + manifestEntry.ondeck);
 					}
 				}
 				version = IS_NUMERIC.test(version) ? parseFloat(version) : version;
@@ -263,14 +298,15 @@ if (!window.bam) {
 				out = {
 					name: moduleName,
 					version: version,
-					path: moduleHome + modulePath + ".js"
+					path: '/' + moduleHome + modulePath + ".js"
 				};
 			} else if (typeof(module) === OBJECT) {
 				//If you want to specify a custom module in custom location
 				out = {};
+
 				$.each(module, function(name, path) {
 					out.name = name;
-					out.version = 1;
+					out.version = getNameAndVersionFromPath(path).version;
 					out.path = path;
 					return false;
 				});
@@ -458,11 +494,16 @@ if (!window.bam) {
 		if (typeof identifier !== 'string') {
 			throw new TypeError('Module identifiers must be a string');
 		}
+		var isCommonJS = false, isAMD = false;
 
 		if (typeof dependencies === 'function') {
 			// get dependencies from constructor.toString();
 			constructor = dependencies;
 			dependencies = getDependenciesFromFunction(constructor, identifier);
+			isCommonJS = true;
+		} else if ($.isArray( dependencies ) && typeof constructor === 'function') {
+			dependencies = convertArrayOfStringsToRequirementObjects( dependencies, identifier );
+			isAMD = true;
 		} else if (constructor === undefined) {
 			// dependencies was not passed in
 			// the constructor is not a function
@@ -471,28 +512,38 @@ if (!window.bam) {
 			dependencies = [];
 		}
 
-		var lastSlash = identifier.lastIndexOf('/');
-		if (lastSlash !== -1) {
-			identifier = identifier.substr(lastSlash+1);
-		}
-		
-
 		// get the version from the identifier so it can be declared
-		var splitId = identifier.split('-');
-		identifier = splitId[0];
-		var version = +splitId[1] || null;
-				
+		var lastSlash = identifier.lastIndexOf('/');
+		var version, path;
+		if (lastSlash !== -1) {
+			path = identifier.substr(0, lastSlash);
+			var nameAndVersion = getNameAndVersionFromPath( identifier );
+			version = nameAndVersion.version;
+			identifier = nameAndVersion.name;
+		} else {
+			path = '';
+			var splitId = identifier.split('-');
+			identifier = splitId[0];
+			version = +splitId[1] || null;
+		}
 		// require and register the new module
-		bam.require(dependencies).done(function(ctx) {
+		bam.require(dependencies, {useArguments:true}).done(function() {
 			if (typeof constructor === 'function') {
-				var moduleRequire = function moduleRequire(lib){ return ctx(lib); };
-				var moduleExports = {};
-				var moduleModule = {
-					id: identifier,
-					exports: moduleExports
-				};
 				// if the constructor returns something, that shall be the exports
-				moduleExports = constructor(moduleRequire, moduleExports, moduleModule) || moduleExports;
+				var moduleExports = {};
+				if (isCommonJS) {
+					var ctx = this;
+					ctx.path = path || identifier;
+					var moduleRequire = function moduleRequire(lib){ return ctx(lib); };
+					moduleExports = {}
+					var moduleModule = {
+						id: path + identifier,
+						exports: moduleExports
+					};
+					moduleExports = constructor(moduleRequire, moduleExports, moduleModule) || moduleModule.exports;
+				} else { // isAMD
+					moduleExports = constructor.apply(window, arguments);
+				}
 				bam.register(identifier, version, moduleExports);
 			} else {
 				bam.register(identifier, version, constructor);
@@ -502,4 +553,9 @@ if (!window.bam) {
 	}
 
 	window.define = bam.define;
+
+	window.requirejs = function( requirements, callback ) {
+		requirements = convertArrayOfStringsToRequirementObjects( requirements, 'requirejs statement' );
+		bam.require(requirements, {useArguments:true}).done(callback);
+	};
 })(jQuery, bam);

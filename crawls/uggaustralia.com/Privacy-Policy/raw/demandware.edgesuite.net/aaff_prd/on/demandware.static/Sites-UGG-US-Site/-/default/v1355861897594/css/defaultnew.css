@@ -1,0 +1,3681 @@
+/* CSS Table of Contents (In Order):
+	- Global Resets
+	- Page Structure (Layout Divs)
+	- Default CSS
+	- jQuery Default CSS
+	- Header/Footer Elements
+	- Homepage
+	- Account Pages  
+*/ 
+/*
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lato Regular'), local('Lato-Regular'), url('http://themes.googleusercontent.com/static/fonts/lato/v6/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff') format('woff');
+}
+*/
+.standardprice .originalprice{text-decoration:line-through;}
+.price > .on {color:#AC1A13;}
+.price > .salesprice {color:#181713;}
+.discountprice .salesprice, .price .on{color:#E3170D;}
+.pt_storefront #main{height:auto;width:940px;}
+.pt_storefront #mainHomeSlide{float:left;width:610px; height:620px;overflow:hidden;}
+.pt_storefront #mainHomeSlide li{width:609px; height:630px;}
+.pt_storefront #leftHomeSlide{float:left;width:330px;}
+.pt_storefront #leftHomeSlide li{margin:0 0 10px 10px; line-height:0;}	
+	
+.curlyuc{display:none;}
+.nobold, .normal{font-weight:normal;}
+.bold{font-weight:bold;}
+.livechatonoff{display:none;} 
+* { outline:none; }
+.hidden{display:none}
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {border: 0;margin: 0;padding: 0;outline: 0; list-style:none}
+html {font-size:100.01%; /* 100.01% value is to compensates for several browser font sizing differences */ }
+body { background-color: #fff;font-size:11px;  /* 62.5% Set to default 1em at 10px/8pt */font-family:/*Lato,*/ Verdana, Arial, Helvetica, sans-serif; /* Sets default font family  */ }
+.normalfont{font-weight:normal;}
+/* ------------------- Typography ------------------------*/
+p, li, ul, h1, h2, h3, h4, h5, h6, a, ol
+{
+	
+	text-align: left;
+	text-decoration: none;
+}
+.font-9{font-size:9px;}
+h1,h2,h3,h4,h5,h6
+{ 
+	text-transform: uppercase; 
+	color: #2f2f2f;
+	margin-bottom: 10px;
+	margin-top: 5px;
+}
+
+h1,h2 {letter-spacing: .059em;	font-weight: normal; }
+h3, h4, h5, h6 {font-weight: bolder; }
+h1 {font-size: 1.7em;}
+h2{font-size: 1.3em;}
+h3{font-size: 1em;}
+h4{font-size: 0.875em;}
+h5{font-size: .75em;}
+h6{font-size: .625em;}
+p {font-size: 1em; line-height: 18px; color: #232323; margin-bottom: 20px;}
+ul li {list-style: none; font-size: 1em; line-height: 24px; margin-left: 0;}
+
+a{color:#2f2f2f; text-decoration:underline;}
+a:hover {color: #a2a2a2;}
+.bold {font-weight: bolder;}
+.listItemBulleted {list-style: disc !important;}
+.listItemBulleted li{list-style: disc !important; text-indent: 5px; margin-left: 15px;}
+.spacer {margin-bottom: 40px;}
+
+/* ------------------- Typography ------------------------*/
+body 
+{
+	background: #faf9f7 url(../images/bg/bgbody.jpg) repeat-y center center;
+	height: 100%;
+	text-align:center;
+	
+	word-spacing: normal;
+	text-decoration: none;
+	color:#181713;
+}
+#container 
+{
+	width: 950px;
+	padding: 5px 0px 60px;
+	margin: 0px auto; 
+	height: 100%;
+} 
+.innerContainer
+{
+	padding-left: 75px;
+	padding-right: 75px; 
+	
+}
+
+.innerContainer strong
+{
+	font-weight:bold;
+}
+.innerContainer ul
+{
+	margin-left: 15px; 
+}
+.innerContainer p
+{
+	margin-bottom: 15px;
+}
+.innerContainer li 
+{
+	margin-bottom: 10px;
+	list-style-type: disc;
+}
+.ulSpacer {margin-bottom: 20px; }
+
+/* -------------- form fields ---------------------- */
+
+label {clear:left;display:inline;font-size: .875em;font-weight:normal;text-align:right;vertical-align: top;}
+label.errormessage {font-size:10px;font-weight:normal;text-align:left;}
+input, select, textarea {margin:0;padding:0;}
+input, input[type=text], input[type="password"] {background-color: white;border:1px solid #CCCCCC;font-size: 11px;  color: #828282; padding:1px;vertical-align:top;z-index:-1;}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus, select:focus {background-color: #f8f8f8 !important;}
+input[type="checkbox"],input.checkbox {background:transparent;border:0;z-index:-1;vertical-align: baseline;}
+input[type="radio"] {border:0px;z-index:-1;}
+input[type="image"] {border:0px;z-index:-1;}
+input.textinput, input.textinputpw {width:200px;}
+input.quantityinput, .quantity input {margin-bottom:4px;width: 25px;}
+input.errormessage {border-color: red;}
+input.disabled {background:#e1e1e1;cursor:default;}
+select {border:1px solid #CCCCCC;font-size: 11px;z-index:-1;}
+select.selectbox {width:auto;color:#000; margin-top: 5px;}
+textarea, textarea.textbox {background-color: white;border:1px solid #CCCCCC;padding:1px;vertical-align:middle;z-index:-1;}
+/* Form/Form Fields/Labels Containers */
+.formfields {margin: 15px 0px;}
+.formfield {margin: 0px 0px 2px 0px; text-align:left; }
+.formfield .label {margin-top: 3px;}
+.country .label, .state .label {margin-top: 0px;}
+.cardtype {margin-bottom: 0px;}
+/* this is for the pop up when someone is in the UK and land on the US site */
+#countrypop .logo, 
+#countrypop .copy{display:none;}
+#countrypop .logo img{ width:115px; }
+#countrypop .logo{ float:left; height:150px; width:158px; text-align:center;}
+#countrypop .copy {float: left;padding: 15px;text-align: left;width: 300px;}
+#countrypop p {margin-top:15px;}
+.country, .state {margin-top:6px;text-align:left;}
+/* END this is for the pop up when someone is in the UK and land on the US site */
+#editprofile .country, #editprofile  .state {margin-top:18px;text-align:left;}
+form .label {color: #181713; font-weight: bold;float:left;margin: 0px 3px 0px 0px; width: 160px;}
+.pt_account form .label{width:auto} 
+
+
+/* -------------- form fields ---------------------- */
+
+
+
+/* HEADER/FOOTER COMPONENTS (Logo, Search, User Info, Mini Cart, Links, Category Menu)
+--------------------------------------------------------------------------------------- */
+/***** Header Logo *****/	
+div.logo{
+	overflow:hidden;
+	width: 130px;
+	height: 72px;
+	float:left;
+	margin-top:45px;
+	}
+#header {
+	position: relative; 
+	z-index: 999;heght:136px;
+	}
+.headercustomerinfo {
+    float: left;
+    font-size: 1em;
+    letter-spacing: 0.099em;
+    width: 570px;
+ }
+.headercustomerinfo span{padding-top:2px; position: relative; }
+#minicartinterior .link2cart span {padding-top:0;}
+div.logo a {    
+	background: url("../images/logo.gif") no-repeat scroll 100% 0 transparent;
+    display: block;
+    height: 72px;
+    outline: medium none;
+    position: relative;
+    text-decoration: none;
+    text-indent: -2000px; 
+    width: 130px;
+}
+.parn{display:none;}
+#accountFooter .parn{display:inline;}
+.headerbanner {width:950px; margin:0 auto;}
+.freeShip_message {margin: auto; position: relative; z-index: 9999;}
+.freeShip_message_prodDetails { width:365px; position: relative;}
+.freeShip_pop {background: url("../images/icons/dropArrow.gif") no-repeat scroll right top; padding-top: 16px; position:absolute; right: 0; }
+.freeShip_pop_prodDetails {background: url("../images/icons/dropArrow.gif") no-repeat scroll right top; padding-top: 16px; position:absolute; z-index: 999999; left: 0; }
+.freeShip_interior { background:#FFF; width: 295px; border: 8px solid #F8F7F5; clear:both;}
+.freeShip_interior p { text-transform: uppercase; padding: 20px 20px 0 20px;} 
+#footertall {margin-top:15px; width:950px; float:left;} 
+
+/***** Search Bar *****/
+.sitesearch {border:0; margin:0; padding:0; }
+.sitesearch label { display: none; }
+.sitesearch form.simplesearch { margin:0; padding:0; }
+.sitesearch form.simplesearch FIELDSET { margin:0; padding:0; vertical-align:baseline; line-height:16px; border:0; }
+.sitesearch form.simplesearch input.simplesearchinput {  width: 132px; }
+.sitesearch button {  
+    padding: 0 9px;
+    float:right;
+    clear:none;      }
+.sitesearch button:hover {   }
+
+/* ------------------- Page Layout--------------------------*/
+
+.generalnav, #global-navigtion{
+	
+	float:right;
+
+	text-align:right;  
+}
+
+#global-navigtion{
+	width:810px;
+	
+	}
+
+/* ------------------- Main Menu--------------------------*/
+.generalnav { color: #9A9A9C;
+    float: right;
+    font-size: 0.875em;
+    height: 50px;
+    line-height: 17px;
+    text-transform: uppercase;
+    margin-top:26px;
+    width: 815px;
+   }
+
+.generalnav a {color:#9a9a9c;text-decoration:none; }
+.divider{margin:0 9px; color: #CCCCCC;}	
+.generalnav .divider{margin:0 5px;}	
+
+.categorymenu ul { margin:0; list-style:none; padding:0; z-index:99999; }
+.categorymenu li { padding:0; display: inline; }
+.categorymenu .level2 li { padding:0; display: block;  }
+.categorymenu .level1 {text-align:left; font-size: 1em;white-space: nowrap; }
+.categorymenu .level1 li, .categorymenu .woulevel1 li  {text-transform:uppercase; position:relative; }
+
+.categorymenu .level1 a{text-decoration:none; letter-spacing: 0.1em;font-size:.99em;  }
+.categorymenu .level1 a:hover {color:#77787b; }
+.categorymenu .level2, .categorymenu .level3, .woulevel2 {display:none; position:absolute; top:25px; left:-10px; background: url("../images/bg/trans_85_white.png") repeat center center transparent; z-index: 99999; }
+#StoreLocator_nav .level2  {left:11px; }
+.categorymenu .level3 { top:0px; left:233px; margin-left:3px;}
+.categorymenu .level2 a, woulevel2 a { padding-left:12px; display:block; font-size:.9em; color:#979797; }
+.categorymenu .level2 a:hover,.woulevel2 a:hover, .categorymenu .level2 .active_item a  { color:#181713; }
+.categorymenu .active_item .level3 a {  }
+.categorymenu .level2 ul {   }
+.categorymenu .level2 li a, .woulevel2 li a {color:#979797; font-size: 0.85em; padding: 5px 10px; clear:both;  white-space: pre-wrap; border-bottom:1px solid #c2c2c3;  width:215px; display:block; letter-spacing:.3px;  }
+#StoreLocator_nav .level2 li a{width:150px; display:block;  }
+.categorymenu .level3 a:hover { color:#181713;   }
+.categorymenu .active_item .level3 a {  }
+.categorymenu .active_item .level2, 
+.categorymenu .level2 .active_item .level3 {  }
+.categorymenu .level3 .active_item a {   }
+.categorymenu .level1 .sf-sub-indicator {display:none;}
+.categorymenu .level2 .sf-sub-indicator,  li a .sf-sub-indicator {display:inline-block; float:right; margin-right:5px; font-size:1.1em;}
+#global-navigtion{margin-bottom:10px; 	margin-top:25px; position:relative; z-index:500;}
+.categorymenu{	margin: 0 auto; text-align: left; padding-left: 64px;zoom: 1;}
+#content .categorymenu{padding-left: 0px;}
+#searchli{float:right;width:245px;padding:0;}	
+
+
+/* CATEGORY LANDING
+--------------------------------------------------------------------------------------- */
+.categorylanding .main-bottom { margin:0; padding:0; list-style:none; overflow:hidden; width:950px;  }
+.categorylanding .main-bottom li { float:left; }
+.categorylanding .main-center{height:10px;}
+.pixel10divider{width:10px;	display:block;}
+
+
+/* FOOTER STYLES
+--------------------------------------------------------------------------------------- */
+#footer{clear:both;	height:40px; padding-top: 8px;}
+#footerLeft{float: left; margin-top: 8px;}
+#footerRight{ font-size: .875em; float: right; width: 704px; margin-top: 8px;}
+#footerRight ul{ margin: 0px; padding:0; float:right;}
+.footerDivider {padding: 6px;}
+#footerRight li{float: left; text-decoration: none; color: #939598;}
+#footerRight a {text-decoration: none;  text-transform: uppercase; color: #939598; font-size: 0.95em;letter-spacing: 0.035em;}
+#footerRight a:hover {color: #222;}
+.copyright {clear:both; float:right;text-align: right; color: #939598; margin-top: 0px; margin-right: 2px; width:300px; }
+.emailsignupfooter {color: #24150c; text-transform: uppercase; text-decoration: none; font-weight: normal;}
+ 
+#fbLikeButton {margin-left: -1px; margin-top: 4px;}
+.footericons li{display:inline; margin-top:10px;}
+.footericons {margin-top:8px;}
+#facebook {text-align:left !important; border:1px;}
+ 
+/*-----------New Footer---------------------*/
+#footertall #latestNews{text-align:center;}
+#footertall #latestNews ul{border-top:1px solid #eaeaea;}
+#footertall #latestNews h3.header {
+    background-color: #FFFFFF;
+    display: inline-block;
+    font-weight: normal;
+    letter-spacing: 0.8px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    top: 8px;
+font-size: 11px;
+}
+#footertall #latestNews h2 {margin-bottom:2px;font-size:14px;}
+#footertall #latestNews p {
+    color: #B0B0B0;
+    font-size: 1em;
+    line-height: 18px;
+    margin-bottom: 0;
+}
+#footertall #latestNews a {
+    color: #181713;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+#latestNews  ul li{float:left;width:310px;margin-top:30px;height: 345px; line-height:18px;}
+#latestNews  ul li.middle{margin-left:10px;margin-right:10px;}
+#footerLinksUL {
+    border-top: 1px solid #EAEAEA;
+    margin-top: 15px;
+    padding: 25px 0;
+    float:left;
+    width: 950px;
+
+}
+#footerLinksUL UL {
+    float:left;
+    width:160px;
+
+}
+#emailButton{
+	 /*background-color: #979797;
+    border: 0 none;
+    color: #FFFFFF;
+    float: left;
+    font-size: 12px;
+    height: 22px;
+    margin-left: 5px;
+
+    padding-bottom: 3px; */
+
+	background-color: #979797;
+    border: 1px solid #979797;
+	display: inline-block;
+  	*display: inline;
+  	padding: 0px 3px 0px;
+  	margin-bottom: 0;
+  	*margin-left: .3em;
+  	font-size: 12px;
+  	line-height: 20px;
+  	*line-height: 20px;
+	float: left;
+	color: white;
+	margin-left:1px;
+	margin-top: 1px;
+}
+#emailsignupfooter .interests li{float:left;padding-right:5px;white-space: nowrap;}
+#emailsignupfooter .checkbox label{font-size:10px;}
+#emailsignupfooter .checkbox{padding-top:3px;}
+#emailsignupfooter{float: right;
+    margin-top: 43px;
+    width: 256px;}
+#emailsignupfooter label {
+    font-size: 12px;
+    font-weight: normal;
+    margin: 3px 0 0;
+    padding-top:4px;
+    text-transform: uppercase;
+}
+#emailsignupfooter input.textinput{background-color: #EAEAE8;
+    margin:0;
+     border: 0 none;
+    color: #868684;
+    height: 22px;
+    padding-left: 5px;
+    text-align: left;
+    width: 195px;
+    border: 1px solid white;
+}
+#footerLinksUL UL li{ line-height:20px;}
+#footerLinksUL h3{font-weight:normal;margin-bottom:5px;}
+#footertall a{text-decoration:none; color:#a3a3a3;}
+#footertall a:hover{color: #232323;}
+#footer-bottom {
+    border-top: 1px solid #EAEAEA;
+    clear: both;
+    margin-top: 5px;
+    padding: 5px 0;
+}
+ul#accountFooter {width:150px;}
+#changeCountry{clear:both;padding-bottom:5px;}
+#changeCountry li{float:left;padding:0 20px 0 0;}
+#changeCountry .title{text-transform:uppercase;}
+.productdetail .addtocart button{margin: 20px 20px 0 0; float:left }
+#footer-bottom #copyRight{float:right;text-transform:uppercase;color:#a3a3a3;}
+#footerSocial{float:left;}
+#copyRight{float:right;padding-top:6px;}
+.productdetail .addtocart .cartcontinue button{margin: 0px 0; float:left; }
+.productdetail a#viewcart{
+	display:block;
+	margin: 0 0 10px 0; float:left;
+background: url("../images/cart.gif") no-repeat scroll left top transparent;
+    padding: 2px 0 2px 25px;
+    text-decoration: none;
+    text-transform: uppercase;
+    width:100px;
+    white-space:nowrap;
+}
+.productdetail a#viewcart:hover{background-position: bottom left; color:#A2A2A2;}
+.productdetail .addedtocart{clear: both;
+    padding: 10px 0;
+    text-align: left;
+    text-transform: uppercase;
+    color: #ed1c24; }
+.productdetail #itemsInCart{
+	display:none;
+    float: left;
+    margin: 20px 0;
+    font-weight:bold;
+}
+.productdetail #itemsInCart a{
+	line-height:24px;
+}
+.productdetail #viewcart{margin: 0 0 0 20px; text-transform:uppercase;}
+.productdetail .addtocartbar .addtocart button.addtocartbutton:hover.disabled{background-position: center bottom; }
+.productdetail .addtocartbar .addtocart button.addtocartbutton.disabled { opacity:0.3;filter:alpha(opacity=30);   cursor:default;  }
+.pt_productdetails .freeShippingProduct .htmlslotcontainer{text-align: center; width:100%; background-color:#fff; color:#fff; margin-bottom:15px; }
+.freeShippingProduct .htmlslotcontainer img{ }
+
+/** Care product **/
+.productdetail #careproduct{display:none;}
+.product_care{padding: 15px 15px 15px 30px;text-align:center;}
+.product_care .pproducttile .name{height:35px;}
+#careproduct h3{font-size:12px;font-weight:normal;text-align:center;}
+.productdetail .addCare{text-align:left;}
+.product_care .thumbnail img {width: 150px;}
+.product_care  .producttile {clear: none;display: inline;float: left;height: 280px;margin: 15px;overflow: hidden;width: 150px;}
+.product_care  p {margin-bottom:0;}
+.product_care .button{margin: 15px auto;float:none;}
+
+/**Formaction button**/
+.contenthits .formactions button{cursor: pointer;margin:0 !important; padding:0 !important; width:163px; height:24px; border:0; text-align:center; background: url(../images/buttonBg163.gif) no-repeat 0 0; position:relative; zoom:1}
+.contenthits .formactions button:hover{background-position: 0 bottom;}
+.contenthits .formactions button span{font-weight: bold; font-size: 12px; color:#fff; text-transform:uppercase; line-height:28px; position:relative; top:-1px; height:24px; display:block}
+.contenthits .formactions button span, x:-moz-any-link, x:default {display:inline-block; line-height:24px;}
+
+/**Apply Gift Cart**/
+.cart .couponcode button.apply{cursor: pointer; color:#181713; float:left; margin:2px -8px 10px 0;  background:none; border:none; font-size:10px;  }
+.cart .couponcode button.apply span{color:#181713;text-decoration:underline; text-transform:uppercase; }
+.cart .couponcode button.apply:hover{background-position:0 bottom}
+.cart .couponcode .label{width:auto;}
+.cart .couponcode button.apply span, x:-moz-any-link, x:default {display:inline-block; line-height:20px;}
+
+ .button210x26,.addtocartbutton, .button163x26,.button105x26,.button, .button145x23, #giftcard-billing-box #giftcardform .giftcard-actions button {    
+	background: url("../images/buttonBg206.gif") repeat scroll center top transparent;
+    border: 0 none;
+    clear: left;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: block;
+    height: 24px;
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+	-webkit-box-shadow: 2px 2px 2px #ccc;
+	box-shadow: 2px 2px 2px #ccc;
+	font-size:1.1em;
+	font-family:Verdana; 
+	
+ }
+ .buttonReverse {    
+	background-position: center bottom; color:#fff;}
+    
+ .button, button{
+	white-space: nowrap;
+	text-transform:uppercase;
+	 }
+	 
+ .button210x26:hover, .button163x26:hover, .button105x26:hover,.button:hover, .button145x23:hover{background-position: center bottom; color:#fff;}
+ .buttonReverse:hover{background-position: center top; color:#fff;}
+ .button210x26 span, .button163x26 span, .button105x26 span,.button span, .button145x23 span{ font-weight:bold; text-transform: uppercase;color:#fff; text-transform:uppercase; text-decoration: none !important; border: 0 none; line-height:22px;  height:24px; display:block; }
+button.update-cart{font-size:11px;float:right; text-align:right; text-transform: uppercase;margin:0 0 10px 0; background:none; border:none; float:right; text-decoration:underline; padding:0; }
+button.update-cart:hover{color:#ccc; }
+
+.cancelbutton{ border:none; background:none; cursor:default; font-style:normal; text-decoration:underline; }
+
+.findretailbutton span{cursor: pointer; font-size:11px !important}
+.retailStoreRegionLinks a {
+    font-size:21px !important;
+}
+.storlist li {
+    float: left;
+    font-size: 11px;
+    letter-spacing: 0.059em;
+    margin-right: 20px;
+    width: 215px;
+}
+#PasswordResetForm .formfield .label { 
+
+    font-weight: normal;
+    text-transform:uppercase;
+	text-align:left;
+    width:300px;
+}
+.passwordreset{
+	margin-left:50px;
+}
+#PasswordResetForm  #sendBtn{clear:none;}
+/* counterfeit section */
+
+.lookupinputplcae {
+	text-align:left;
+	font-weight:bold;
+	width:230px;
+	
+}
+
+.cwcountefeitWarrning {
+	display:none;
+	background-color: #FFFFFF;
+    border: 8px solid #F8F7F5;
+	margin-bottom:30px;
+	padding:15px;
+}
+.cwcountefeitWarrning p span,.cwcountefeitWarrning p span a{color:#727272; font-size:20px;}
+.cwcountefeitWarrning p span{display: block;
+    float: left;
+    line-height: 32px;
+    width: 500px;}
+h1.cwlookuptitle {
+	
+	font-size: 0.875em;
+	font-weight: bold;
+	
+	}
+.cwcountefeitWarrning p img{float: left;
+    margin: 15px 25px;}
+.cwlookuphttp {
+	text-transform:uppercase;
+	padding-top:4px;
+	vertical-align:middle;
+}
+
+.cwlookupinput {
+	float:left;
+}
+
+.cwenterLookup {
+	float:left;
+}
+
+.cwlookupinputbox {
+	width:auto;
+	margin-bottom:70px;
+	}
+	
+.cwclosediv {
+	float:right;
+
+}
+
+#cwcounterWebsite { 
+	padding:4px;
+	float:right;
+	width: 145px;
+	margin:0;
+
+}
+
+
+.cwlookupinput div a {
+	
+	text-decoration:none;
+	
+	}
+
+.errorsearch {width: 400px} 
+
+
+#ProductVideoDialogHolder {width: 950px !important; height: 534px !important; margin: auto !important;}
+#ProductVideoDialog {width: 950px !important; height: 560px !important; margin: auto !important;}
+.videoShare {float:right;}
+.videoShare h3 {float:left; margin-right: 5px;}	
+.videoShare a img.videoShareLogos {margin-left:5px; margin-top:2px; float:left;}	
+	
+	
+	
+
+/***** PRODUCT TILE *****/
+#loader{clear:both;}
+.productloader {display:block; margin:25px 0; padding:25px 0px; height:25px; text-align:center; width:950px;}
+.producttile { display:inline;clear:both; float:left; overflow:hidden; width:305px; height:425px; text-align: center; }
+.producttile .image { position:relative;   margin:0 auto 10px auto; }
+/* remove this once images are made*/
+.thumbnail img{ width:305px;}
+.producttile .image .quickviewbutton a { background: url("../images/bg/trans_75_white.png") repeat scroll center center transparent;
+    bottom: 0px;
+    display: block;
+    height: 17px;
+    left: 0;
+    padding: 5px 0;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 308px;
+}
+.producttile a.productswatchesall { float:left; }
+.producttile .swatches .collapsed .invisible{display:none}
+.producttile .swatches .expanded {   position:absolute;}
+.producttile .swatches .expanded .invisible{display:block}
+.producttile .swatches { width:auto; padding:3px 0; text-align:center;  clear:both; position: relative; } /* relative positioning makes contents width fit .swatches width */
+.producttile .swatches .palette {width:100%;
+	text-align:center;}
+.producttile .swatches ul.innerpalette {display:inline;}
+.producttile .swatches ul.innerpalette li{display:inline-block; margin:0px; padding:0; width:15px;  }
+.producttile .swatches a.swatch {  height:15px; width:15px; display:inline-block; border:1px solid #fff; padding-top:1px;  border-top: 1px solid #fff;}
+.producttile .swatches a.swatch img { height:15px; width:15px;   margin:0; padding:0; }
+.producttile .swatches a:hover.swatch, .producttile .swatches a.selected { border-top: 1px solid #181713; padding-top:1px;  }
+.producttile .swatches a:hover.swatch, .producttile .swatches a:hover.selected { border-top: none; padding-top:1px;  }
+.producttile .swatches a.swatch img.hiddenthumbnail {display: none;}
+.producttile .name { text-transform:uppercase;   }
+.producttile .name a { text-decoration:none;   }
+.producttile .name a:hover {  }
+.producttile .pricing { white-space:nowrap;   }
+.producttile .promo { }
+.productresultarea .middle{margin: 0 17px 0 18px; clear:none; }
+.productresultarea .last{clear:none; float:left; }
+.categoryLifestyle img,.categoryLifestyleLeft img,.categoryLifestyleRight img, .dropshadow{
+
+	
+	}
+h1.breadcrumb{
+	font-size:1em;
+	margin:0 0 2px 0;
+	}
+h1.breadcrumb a{
+	text-decoration:none;
+	}
+/* PRODUCT IMAGE DISPLAY */
+.image p.productimage{margin:0; height:340px; }
+.productImage img{}
+.image .productimage a {text-decoration: none;}
+.image .thumbnail {display: block;}
+.image .thumbnail img {border: 0;overflow:hidden;z-index:9999999;}
+.image .thumbnail .productimage a:hover  {text-decoration: none;color: #999999;}
+.image .thumbnail .productimage img a {border: 0;text-decoration: none;}
+#productImage{
+
+	min-height:620px;
+}
+#QuickViewDialog #productImage{
+	
+	height:450px;
+	height:auto !important;
+	min-height:450px;
+}
+.productresultarea .categoryLifestyle, .productresultarea .categoryLifestyleRight{
+	float: left;
+    height: 425px;
+    margin-left: 17px;
+    width: 628px;
+}
+.productresultarea .categoryLifestyleLeft{
+	float: left;
+    height: 415px;
+    margin-right: 17px;
+    width: 628px;
+    clear:both;
+}
+.productresultarea{
+	margin-bottom:25px;
+	clear:both;
+}
+/*reviews */
+.producttile .review {text-align:center}
+
+.compare_review_wrapper {}
+.producttile .review a {}
+.producttile .review .product_rating {background-image: url("../images/icons/reviews.png"); width:83px; height:15px; margin:0 auto;}
+.producttile .review .stars-1 {background-position:0 -18px;}
+.producttile .review .stars-2 {background-position:0 -36px;}
+.producttile .review .stars-3 {background-position:0 -54px;}
+.producttile .review .stars-4 {background-position:0 -72px;}
+.producttile .review .stars-5 {background-position:0 -90px;}
+.producttile .review .stars-6 {background-position:0 -108px;}
+.producttile .review .stars-7 {background-position:0 -126px;}
+.producttile .review .stars-8 {background-position:0 -144px;}
+.producttile .review .stars-9 {background-position:0 -162px;}
+.producttile .review .stars-10 {background-position:0 -180px;}
+
+/* RESULTS REFINEMENT (Left Column Navigation)
+--------------------------------------------------------------------------------------- */
+.searchrefine { height:19px; z-index:100; position:relative; padding-bottom:20px;  }
+.refinedby, .refinementname, .valuedivider{ text-transform:none; font-size:.8em;letter-spacing: 1px;}
+ .refinementvalue{   font-size: 0.8em;
+    
+    letter-spacing: 0.05em;
+    text-transform: capitalize;}
+
+
+.searchrefine p.searchheader { float:left; z-index:-1; margin:0 15px 0 0; padding:0; line-height:20px;}
+.searchrefine .searchrefinemessage { padding:2px 2px 3px 4px;text-transform: uppercase;}
+.searchrefinements .refinedclear { float:right; margin-top:-17px; display:none; }
+.searchrefinements .resultcount { }
+.searchrefinements .refineattributes { padding:35px 15px 15px; width:130px; display:none; clear:both; position:absolute; top:-10px; left:10px;   z-index:110; }
+.searchrefinements .refineattributes fieldset {padding: 0px 0px 0px 15px;}
+.searchrefinements ul {list-style: none;margin: 0;}
+.searchrefinements li { padding: 0;margin: 0px;}
+.searchrefinements li a { text-decoration: none;letter-spacing: 0.059em;}
+.searchrefinements li a:hover { }
+/* Refinements No Results */
+.noresults { margin: 50px;text-align:center;}
+/* Category Navigation Rendering */
+.searchrefinements .searchcategories {padding:0px 0px 15px 10px;}
+.searchrefinements .divider{line-height:22px;}
+.searchrefinements .searchcategory span { text-transform: uppercase;}
+.searchrefinements .searchcategory span a { padding:2px 2px 3px 0px;text-decoration: none;text-transform: uppercase;}
+.searchrefinements .searchcategory a.searchcategories:hover {text-decoration: underline;}
+.searchrefinements ul.refinementcategory {margin: 0px 0px 0px 3px;}
+.searchrefinements ul.refinementcategory li {background: transparent url(../images/nav_line.gif) no-repeat 0 2px;line-height: 14px;padding: 0px 0px 0px 14px;}
+.searchrefinements ul.refinementcategory li a.active {font-weight:bold;}
+.searchrefinements ul.refinementcategory li.expandable.active {background: transparent url(../images/navarrow.gif) no-repeat 0 -35px;}
+.searchrefinements ul.refinementcategory li.expandable:hover {background-position:0 -35px;}
+.searchrefinements ul.refinementcategory li.expandable {background: transparent url(../images/navarrow.gif) no-repeat 0 2px;}
+.searchrefinements ul.refinementcategory li.top {background: none;padding: 0px;text-transform: uppercase;}
+.searchrefinements ul.refinementcategory li.top:hover {background: none;}
+/* Default Refinement Rendering */
+.searchrefinements { float:left; }
+.searchrefinements .refineattributes ul {list-style: none;margin: 0 0 0 -25px;padding: 0px;}
+.searchrefinements .refineattributes ul li { margin:0; padding:0; overflow:hidden;   }
+.searchrefinements .refineattributes li a { padding:3px 0 1px 25px; font-size:12px;   margin:0 0 3px; display:block; }
+.searchrefinements .refineattributes li a:hover {  }
+.searchrefinements .refineattributes li.selected a {background:url(../images/bullet-sel.gif) right center no-repeat;}
+.searchrefinements .refineattributes li.selected a:hover {color:#25150b}
+
+.searchrefinements .refineattributes .refined {display:inline;float:left;font-weight:bold;}
+.searchrefinements .refineattributes .refined a.refinedclear {display:inline;float:right;text-align:right;}
+.searchrefinements .refineattributes li.unselectable a {cursor: default;}
+.searchrefinements .scrollable {/* this is the style for the <div> containing a large, scrollable list of refinement values */border: 1px solid #cccccc;height: 75px;overflow: auto;}
+.searchrefinements .refineattributes .resultcount {color: #999999;display:inline;}
+.searchrefinements .refinement { float:left; position:relative; padding:0 0 0 0; z-index:90; line-height: 24px; }
+.searchrefinements .refinement a { text-transform:uppercase; text-decoration:none;font-size:.9em; }
+.searchrefinements .refinement a.selected { background:url(../images/bullet-sel.gif) right center no-repeat; padding-right: 25px; line-height:22px;   }
+.searchrefinements .act { float:left; position:relative; padding:0; z-index:100; }
+.navgroup a.h3 { font-weight:normal; font-size:.9em; padding:0; margin:0; margin-bottom:0; text-transform:uppercase;   text-decoration:none; float:left; cursor:pointer; position:relative; z-index:111; line-height:24px; }
+.navgroup a.h3.collapsed { text-decoration:none; z-index:100;font-size:.9em; margin:0; }
+.navgroup ul {list-style:none;padding: 0px 0px 0px 20px;}	
+.navgroup .resultcount { }
+
+/* Custom Refinement Rendering */
+.navgroup .refineattributes {margin:0 0 0 -20px; width:135px;}
+.navgroup .refineattributes li { clear:both; margin:0; padding:0; border-bottom:1px solid #77787b;  background: url("../images/bg/trans_75_white.png") repeat center center transparent; }
+.navgroup .refineattributes li a { color: #77787B;font-size:.9em;
+    display: block;
+    line-height: 22px;
+    overflow: hidden;
+    padding: 0 20px;
+    text-align: left; text-transform: uppercase; }
+.navgroup .refineattributes li a:hover { color: #ccc; }
+.navgroup .refineattributes .swatches li a:hover {   text-decoration:none; }
+.navgroup .refineattributes .swatches li.selected a {  }
+.navgroup .refineattributes li.unselectable a {   text-decoration:none; cursor:default; }
+.navgroup .refineattributes li.unselectable a:hover {  }
+
+/* Boolean Refinement Rendering */
+.navgroup.boolean h3 {background: none;}
+.navgroup.boolean h3 a {background:url(../images/bullet-unsel.gif) right 50% no-repeat; text-decoration:underline; padding:0 18px 0 0; color:#FFF;}
+.navgroup.boolean h3.selected a {background:url(../images/bullet-sel.gif) right 50% no-repeat;}
+
+/* Color Refinement Rendering */
+.navgroup .refineattributes .Color li {   }
+.navgroup .refineattributes .Color li a { }
+.navgroup .refineattributes .Color li a:hover {  }
+.navgroup .refineattributes .Color li.selected a { }
+.navgroup .refineattributes .Color li.selected a:hover { border:none;   }
+.navgroup .refineattributes .Color li.unselectable a { }
+.navgroup .refineattributes .Color li.unselectable a:hover { }
+.navgroup .refineattributes .Color li a#swatch-miscellaneous { }
+.navgroup .refineattributes .Color li a:hover#swatch-miscellaneous { }
+.navgroup .refineattributes .Color li.unselectable a#swatch-miscellaneous {  }
+.navgroup .refineattributes .Color li.unselectable a#swatch-miscellaneous:hover {  }
+.navgroup .refineattributes .Color li.selected a#swatch-miscellaneous { }
+
+.searchresultsheader .sortby{ float:left; position: relative; line-height: 24px; z-index: 999999;}
+.searchresultsheader .sortby a{ text-transform:uppercase;font-size:.9em;} 
+.searchresultsheader .sortby li{ float:left;}
+
+/* QUICKVIEW
+--------------------------------------------------------------------------------------- */
+.quickview .bundle,.quickview .productset {height: 300px;overflow:auto;}
+.ui-widget.quickview {font-size:inherit;/*Corrects jQuery Font Magnifying*/}
+.quickview .productdetail .addtocartbar {background:transparent none; }
+.quickview .productdetail .addtocartbar .addtocart {position:static;}
+.quickview .productset .addtocartbar .addtocart {position:static;}
+
+/* PRODUCT DETAILS
+--------------------------------------------------------------------------------------- */
+.productloader {display:block; margin:25px 0; padding:25px 0px; text-align:center; width:100%; }
+.productdetail {margin:0; padding:0 0 12px 0; width:950px;}
+.productdetail .productdetailcolumn {float:left; margin-bottom:20px; }
+.productdetail .productimages { width:550px;   }
+.productdetail .productinfo { 
+	background: url(../images/bg/bg_fade_down_pdp2.jpg) repeat  top center #FCFBF9;
+    float: right;
+     margin-left: 15px;
+    width: 385px;
+    overflow:hidden;
+   
+}
+
+.productdetail .maininfo {   padding: 0 15px 0 25px;    }
+.productdetail .maininfo .short-description {   margin:8px 0 10px; text-align:justify; }
+.standardprice{text-decoration: line-through;}
+.promotionalMessage{clear: both; display: block; width:100%;}
+.productdetail .maininfo .pricing, .productdetail .maininfo .price, .productdetail .maininfo .salesprice { display:inline !important;   }
+.productdetail .maininfo .props { margin: 0 0 10px 0; padding:0; list-style:none; text-transform:uppercase;  }
+.productdetail .maininfo .props li { clear:both;}
+.productdetail .maininfo .props li b {  display:inline !important;  }
+.productdetail .maininfo .props li div {  display:inline !important;  }
+.productdetail .attributes {  padding:10px 25px; }
+.productdetail .attributes label {   }
+.productdetail .attributes .productactions {text-align:left; clear:both; padding-top:20px; }
+.props span {float:left;}
+.caTax {line-height:24px; margin-bottom:0px; margin-left:5px; float:left; display:none;}
+.attFreeCA {float:left;}
+.minicartTaxCA {float:right; margin-right:20px; font-weight:bold;}
+.productdetail .attributes div#pdpATCDivpdpMain.addtocartbar div.addtocart {padding-right:25px;}
+
+/* PRODUCT DETAILS - A/B Test! (10-2-12)
+--------------------------------------------------------------------------------------- */
+.productdetail .holiday12Test .maininfo h1 {margin-bottom:0;}
+.productdetail .holiday12Test .maininfo .props li { clear:none; float:left; margin-right:35px; margin-bottom:10px; }
+.productdetail .holiday12Test .maininfo .variationattributes {border-top:1px solid #d9d9d9; padding-top:5px;}
+.productdetail .holiday12Test .maininfo .variationattributes .color li {margin-top:0;}
+.productdetail .holiday12Test .maininfo .variationattributes .size li {margin-top:-10px;}
+.productdetail .holiday12Test .maininfo .attributecontentlink {float: right; width: 90px; margin-right:40px;}
+.productdetail .holiday12Test .addtocartbar .addtocart { margin: 10px 0 0; }
+.productdetail .holiday12Test .addtocartbar .addtocart button { margin: 20px 0; margin-right:20px; }
+.productdetail .holiday12Test #itemsInCart { margin: 20px 0;}
+.productdetail .holiday12Test .productreview{margin-top: 5px;}
+.productdetail .holiday12Test .productactions a { float:left; clear:both;}
+.productdetail .holiday12Test .productactions .emailafriend {margin-top:0px;}
+.productdetail .holiday12Test .productactions .emailafriend a{ margin:8px 0 12px 0;}
+.productdetail .holiday12Test .productactions .emailafriend a:hover{cursor:pointer;}
+.productdetail .holiday12Test #socialPDP { float:left; margin-bottom: 10px;}
+.productdetail .holiday12Test .pr-snippet-wrapper {margin-bottom:5px;}
+.productdetail .holiday12Test p.short-description { margin: 0px;}
+.productdetail .holiday12Test .product_fit { margin-top:20px;}
+
+/* PRODUCT DETAILS - A/B Test! - END */
+
+.productdetail .productnam, .productnameQA a {    font-weight: bold;
+     letter-spacing: 0.059em;
+    margin-bottom: 5px;
+    margin-top: -4px;
+    padding: 0;
+    font-size: 1.39em; text-decoration:none; }
+.productnameQA a {    font-weight: bold; font-size: 14px;}
+.productdetail .label { font-weight:bold; text-transform:uppercase; }
+.productdetail .productimage{   }
+.productdetail .productimage + img { }
+.productdetail .productthumbnails {margin: 15px auto; text-align: center; cursor:pointer;}
+.productthumbnails span span{display:none;}
+.productdetail .productthumbnails img { margin:0 6px 0 0 ; width:85px; }
+.productdetail .numberofviews_7 img { margin:0 5px 0 0 ; width:73px !important;}
+.productdetail .numberofviews_8 img { margin:0 5px 0 0 ; width:63px !important;}
+.productdetail .numberofviews_9 img { margin:0 6px 0 0 ; width:49px !important;}
+#QuickViewDialog .productdetail .productthumbnails img { margin:0 6px 0 0 ; width:60px; }
+#QuickViewDialog .productdetail .numberofviews_7 img { margin:0 5px 0 0 ; width:51px !important;}
+#QuickViewDialog .productdetail .numberofviews_8 img { margin:0 5px 0 0 ; width:41px !important;}
+#QuickViewDialog .productdetail .numberofviews_9 img { margin:0 6px 0 0 ; width:31px !important;}
+
+#ui-dialog-title-QuickViewDialog{display:none;}
+#pdpBundleDiv .productdetail .productthumbnails img:hover {cursor:pointer;}
+.productdetail .showincolor {   padding-bottom:4px}
+.productdetail .showincolor .selectedcolor {  }
+.productdetail .productID {float: right;}
+.productdetail .price { }
+.productdetail .price .standardprice { margin-right:5px;padding-right:5px;}
+.productdetail .tieredprice {color: red;margin: 8px 0 12px 0;}
+.productdetail .tieredprice .label { }
+.productdetail .tieredprice .tieredpricevalues { }
+.productdetail .promotion { padding:10px 0 0 0; text-align: left;text-transform: uppercase; clear:both;}
+.productdetail .promotion .label {font-weight:bold;}
+.productdetail .promotion a.tooltip {text-decoration:underline;}
+.tooltipviewdetails { width:400px;}
+.tooltipviewdetails ul {list-style: inside;}
+.productdetail .availability {   clear:both;   margin:10px 0 0 0; padding:0; width:100%; text-align:left;}
+.productdetail .availability .value { display: block;font-weight: normal;margin-bottom: 9px;text-align: left; }
+.productdetail .availability .value .red{ }
+.productdetail .availability .value .normal{ }
+.productdetail .availability .value .boldred{ }
+.productdetail .product_fit { text-align:left; padding:0 0 5px 0; }
+.productdetail .product_fit b{ text-transform:uppercase; }
+.addtowishlist a{background: transparent url(../images/plus.gif) no-repeat top left; text-decoration:none; padding:2px 0 2px 25px;  text-transform:uppercase;}
+.addtowishlist a:hover{background: transparent url(../images/plus_over.gif) no-repeat top left; color:#A2A2A2;}
+.addtowishlist disabled {height:20px;}
+.pt_productdetails .productactions .emailafriend{margin-top:10px; }	
+.emailafriend a{background: transparent url(../images/envelope.gif) no-repeat top left; text-decoration:none; padding:2px 0 2px 25px; text-transform:uppercase;}
+.emailafriend a:hover{background: transparent url(../images/envelope_over.gif) no-repeat top left; color:#A2A2A2;}	
+.productdetail .addtocartbar { clear: both;margin: 0;text-align: left;width: 100%; }
+.pt_productdetails span.erroralert {margin-top: -2px;}
+.productdetail .addtocartbar .addtocart { margin:20px 0 0px 0;  }
+.productdetail .addtocartbar .addtocart .quanity .label { text-transform:uppercase; font-weight:bold;   }
+.productdetail .addtocartbar .addtocart .quanity {  }
+.productdetail .addtocartbar .addtocart .quanity .quantityinput {   }
+
+#pwrwritediv .productimages{width:305px;float:left;}
+#pwrwritediv .askquestion{float:right;width:575px;}
+
+.productdetail .productactions { }
+.productdetail .productreview {  padding:0; text-align:left; }
+.productdetail .productreview .prSnippetNumberOfRatingsText {display:none;}
+.productdetail .productreview .prSnippetTitle {float:left;}
+.productdetail .productreview .prSnippetRatingUnclickable {float:left;}
+.productdetail .productreview .prStarsSmall {background-image:url(../images/stars_small.gif) !important;}
+.productdetail .productreview .reviewlinks {padding: 0 0 0 5px;}
+.productdetail .productreview .prSnippetReadReviews {display:none;}
+.productdetail .productreview .averagerating { margin: 0 0 10px 0; text-transform:uppercase; font-weight:bold;  }
+
+.productdetail .printpage {background:transparent url(../images/icon_print.png) no-repeat left center;padding:0 0 0 20px;float:right;text-decoration:underline;}
+.productdetail .unselectable a {text-transform:uppercase; text-decoration:none;  opacity:0.4;filter:alpha(opacity=40);  }
+ #addgiftwrap .product_options{float: right;}
+.quickview  #addgiftwrap{margin: 0;}
+ #labelwrap{text-transform:uppercase;}
+.productdetail .itemNo {float: right;} /* Do not remove it otherwise it would cause scrolling in the quickview for bundles/sets */
+.productdetail .unselectable a:hover {cursor:default;background-position: top left; color:#181713;}
+
+.care {margin-left: 60px; margin-top: 15px; width: 750px;}
+.warranty {margin-left: 60px; width:750px}
+
+.addtowishlist.disabled a:link{background: transparent url(../images/plus_over.gif) no-repeat top left; color:#A2A2A2;}
+
+
+/****** Attribute Rendering ******/
+.attribute { }
+.productinfo .mainattributes { }
+
+.attributes .variationattributes .infolinks { float:right; width:120px; margin:0; }
+.attributecontentlink {   text-decoration:underline; display:block; margin-bottom:5px; }
+.attributecontentlink:hover {  text-decoration:underline; }
+
+.productdetail .productsattributes h3 {background-color:transparent; padding:7px 0px 5px;}
+.productdetail .productsattributes .attribute {padding:0 0 0 10px;}
+
+/****** Sizing Chart ******/
+
+#sizeChartDialog {position:relative;  }/* IE dialog scrolling fix */
+#sizeChartDialog h4 {   }
+.sizinginformation {position:static;}/* IE dialog scrolling fix */
+.sizechart { }
+.mensSizingDiv { border-collapse:collapse; }
+.mensSizingDiv th { border:none; }
+.sizechart td, .mensSizingDiv td { text-align:center; }
+
+/****** Product Variation Attribute Swatch Rendering ******/
+
+.variationattributes {clear:both; margin:0; text-align:left; text-transform:uppercase; }
+.variationattributes .swatches {clear:both; margin:0 0 12px; position:relative;}
+
+.variationattributes .swatches .label { font-weight:bold;  }
+
+.variationattributes .swatches ul.swatchesdisplay {clear:both; padding: 0px; list-style: none; margin:12px 0;  margin-left:-7px;   }
+.variationattributes .swatches.color ul.swatchesdisplay { width:100%; margin:10px 0;}
+.variationattributes .swatches li {float:left;   margin: 0 2px ; padding:0px; text-align:center; }/*.variationattributes .swatches li a {background: transparent url(../images/refinement_background.gif) no-repeat 0 0;color:#000;display:block;font-size:.8em;line-height:2.8em;overflow: hidden;width: 25px;height: 25px;padding: 0px;}*/
+.variationattributes .swatches li a { text-decoration:none;    width:22px; height:22px; padding:2px 5px;  }
+.variationattributes .swatches li a:hover {  background: #ddd9d8; cursor:pointer; color:#323031;  }
+.variationattributes .swatches li.selected a { background: #ddd9d8;  }
+.variationattributes .swatches li.selected a:hover {  }
+.variationattributes .swatches li.unselectable a { text-decoration: line-through;  }
+.variationattributes .swatches li.unselectable a:hover { border:none; background:none; cursor:default;  font-style:normal; }
+
+.variationattributes .color li { float:left; margin:0 4px 6px 0px; padding:0; width:22px; height:22px; text-align:center; }
+.variationattributes .color li a { background:none;  border:1px solid #fcfbf9;    height:22px; width:22px; display:block;  margin:0px; padding:0; text-indent:-500em; }
+.variationattributes .color li a:hover { background:none;  border:1px solid #25150B; color:#181713;    }
+.variationattributes .color li.selected a { background:none;  border:1px solid #25150B;   text-transform:normal;}
+.variationattributes .color li.selected a:hover {background:none;  border:1px solid #fcfbf9;  }
+.variationattributes .color li.unselectable a { cursor:default; z-index:25; border:none; margin:3px; background:none; }
+.variationattributes .color li.unselectable a:hover { border:none; margin:3px; background:none; }
+.variationattributes .color li a#swatch-Miscellaneous {background-position: 0 -75px;}
+.variationattributes .color li a#swatch-Miscellaneous:hover {background-position: 0 -150px;}
+.variationattributes .color li.selected a#swatch-Miscellaneous {background-position: 0 -125px;}
+
+/****** Product Set Rendering ******/
+.productset { width: auto;}
+.productsetdetails .attributes {  padding:0px !important; }
+.productsetdetails .maininfo { padding-left:15px !important;}
+.productsetdetails .attribute{text-align:left; clear:both; margin-bottom:10px; }
+.productsetdetails {margin: 10px;}
+.productsetdetails .productinfo { }
+.productsetdetails .productimages {width:120px; float:left;}
+.productsetdetails .subinfo {margin-top:0;width:210px; float:right;}
+.productsetdetails .productname { padding: 0px;}
+.productsetdetails .productname a { text-decoration:none; }
+.productsetdetails .price { }
+.productsetdetails .promotion { margin:5px 0;padding:2px 7px;}
+.productsetdetails .variationattributes { margin:0px;}
+.productsetdetails .availability { }
+.productsetdetails .addtocartbar {margin: 0 0px}
+.productsetdetails .addtocartbar .addtocart .quanity .label { text-transform:uppercase;}
+.productsetdetails .addtocartbar .addtocart {margin-top: -2px;position:static;}
+.productsetdetails .addtocartbar .addtocart .quanity input.quantityinput { margin-left:10px;}
+.productsetdetails .addtocartbar .addtocart button.addtocartbutton span { }
+.productsetdetails .productthumbnails img { margin:0 3px; width:120px;height: 133px; display:none; }
+.productsetdetails .productthumbnails img:first-child { display:block; }
+.productsetdetails .priceset{clear:both; text-align:left;text-transform:uppercase;}
+.productsetdetails .priceset .pricing{display:inline-block;}
+.productsetdetails .productthumbnails {
+    margin: 0 auto;
+    text-align: center;
+    position:relative;
+}
+.productsetdetails  .prodsetattributes{
+	margin:10px;
+	}
+.productsetdetails .subprodproduct{border-top:8px solid #fff; padding:15px;  background-color: #FCFBF9;}
+.productsetdetails  .itemNo {
+    float: left;
+    text-transform:uppercase;
+    margin-bottom:5px;
+}
+.productsetdetails .productreview {
+    padding: 15px 15px 25px 15px;
+    text-align: left;
+}
+.productsetdetails .attributes .productactions {
+   padding: 0px 0px 0px 15px;
+   clear:both;
+}
+.productsetdetails .addtocartbar .addtocart button.addtocartbutton {
+    float:right;
+    margin-right:25px;
+}
+.productsetdetails .addtocartbar .addtocart .quanity { width:120px; float:left;}
+.productsetdetails .productaddtocartall{float:left;}
+/***** Product Next/Previous on Product Detail Page (productnav.isml) *****/
+.productdetail .productnav {margin:0 0 5px 0; text-align:right; width:550px;   }
+.productdetail .productnav #pdpContShopLink {float:left; font-size: 0.85em; letter-spacing: 0.099em; text-transform:uppercase; text-decoration:none; }
+.productdetail .productnavigation {float:right;}
+.productdetail .productnavigation .productprevious {float:left;text-transform:uppercase; font-size: 0.85em; letter-spacing: 0.099em; /*background: transparent url(../images/previous.gif) no-repeat 0 20px; */  float:left;}
+.productdetail .productnavigation .productnext {text-transform:uppercase; font-size: 0.85em; letter-spacing: 0.099em;/*background: transparent url(../images/next.gif) no-repeat right 20px; */ float:left;}
+.productdetail .productnavigation .divider { text-transform:uppercase; font-size: 0.85em;float:left;  margin: 0 1px;}
+.productdetail .productnavigation a {display:block; text-decoration: none;}
+
+#findRetailButton{margin:15px 0;}
+ 
+ /* Back in stock Notification bisn 
+--------------------------------------------------------------------------------------- */
+ 
+#bisn-form {padding-bottom:12px;}
+#bisn-form h3 {margin-bottom:1px;}
+#bisn-form p {margin-bottom:5px;}
+#bisnButton {display:inline;}
+#bisn-form #bisnemail {width: 210px; height: 20px; font-size:14px;}
+#bisn-form span.errordone {display:none !important;}
+#bisn-form span.erroralert {display:none !important;}
+
+.outofstocklink { text-align:left;}
+
+ /* Janrain social login and cart layout 
+--------------------------------------------------------------------------------------- */
+
+.accountlogin .social-login-container {padding-top: 16px;float:left;width:300px;}
+.cartlogin .social-login-container {padding-top: 16px;float:left;width:230px;margin-bottom: 25px;}
+.social-title {}
+.linked-accounts {width:48%;text-align:center;margin-left:auto;margin-right:auto;}
+.accountlogin .social-login-container  h3 {font-size: 14px;font-weight: normal;letter-spacing: 0.08em;text-transform: uppercase;}
+
+.checkoutlogin .social-login-container {margin: 30px 30px 20px;}
+.checkoutlogin .social-login-container .htmlslotcontainer {width:280px;}
+.checkoutlogin .social-login-container  h3 span {font-size: 18px;font-weight: normal;padding: 3px 0 0 0;}
+
+/* SEND TO A FRIEND 
+--------------------------------------------------------------------------------------- */
+.sendtofriendstyle form#SendToFriendForm fieldset div#sendToFriend.formfields div.checkbox {float:left; margin-right: 7px;}
+.sendtofriendstyle h2 {text-align: left; padding-bottom: 20px;}
+.sendtofriendstyle .emailform {padding:0; margin:0;}
+.sendtofriendstyle form .label { float:left; text-align:left; text-align: left; width:300px; margin-bottom:8px; }
+.sendtofriendstyle form .label .requiredindicator {    }
+.sendtofriendstyle form .value { margin-bottom:10px; }
+.sendtofriendstyle form .value INPUT { width:330px; height:25px; line-height:25px; }
+.sendtofriendstyle form .value TEXTAREA { width:300px; height:95px; margin-bottom:5px; }
+.sendtofriendstyle form .sendwishRight .value INPUT:focus {width:325px; height:130px; margin-bottom:5px;}
+.sendtofriendstyle form#SendToFriendForm fieldset #sendToFriend.formfields .sendtofriendRight fieldset button#sendBtn.button105x26 {clear: both; float: left; margin: 20px 0 15px 0;}
+.sendtofriendstyle form .sendwishRight .value INPUT:focus,
+.sendtofriendstyle form .value INPUT:hover,
+.sendtofriendstyle form .value TEXTAREA:focus,
+.sendtofriendstyle form .value TEXTAREA:hover { background:#f9f9f9;}
+.sendtofriendstyle .stfyourname a { margin: 0 0 0 5px;text-decoration:underline;}
+.sendtofriendmessage {text-align: center;padding: 8px 20px 20px 20px;}	
+.sendtofriendstyle .sendtofriendlogo {margin: 16px 0 24px 0;text-align: center;}
+.sendtofriendstyle .stfmessage .count {padding: 0 2px 0 0;}
+.sendtofriendstyle form#SendToFriendForm div.actions fieldset a.sendWLcancel {margin-left:15px; font-size:.8em; }
+
+.stfpreviewmessage .previewmessage{color: red;font-weight: normal;text-align: center;}
+.sendtofriendstyle {padding-top:20px}
+.sendtofriendstyle .emailsignupcheckbox{float:left;margin: 0 4px 0 154px;}
+.sendtofriendstyle .emailsignup{width:300px; float: left;}
+.sendtofriendstyle .emailsignup a {text-decoration:underline;}
+.sendtofriendstyle .stfmessage textarea {width:365px;height:75px;}
+.sendtofriendstyle .stfmessage textarea.error {border:1px solid red;}
+.sendtofriendstyle .actions {margin: 0px;padding: 15px 28px 0 0;text-align:left;}
+
+.sendtofriendstyle .label { width:230px !important; font-size: 0.95em; text-align:left !important; margin-right:8px; line-height:18px; margin-bottom:5px !important; margin-top: 10px;  font-weight: normal; text-transform: uppercase; }
+.sendtofriendstyle .value {float:left; width:auto; margin-bottom:0 !important}
+.sendtofriendstyle .value input.textinput{width:230px !important; padding:3px 5px !important; line-height:15px !important; height:auto !important; color:#333;  float:left; margin: 0 0 9px 0}
+.sendtofriendstyle .value input.error{ }
+
+.sendtofriendstyle .checkbox {float:left; margin-top:5px}
+.sendtofriendstyle .input-descr { margin-top:3px; width:320px; margin-bottom:15px; text-align: left; font-size:.85em; line-height: 1.6em;}
+.sendtofriendstyle .input-link {clear:both; text-decoration: none; margin-bottom:15px !important; float: left; font-size: 0.8em; width: 235px; }
+.sendtofriendstyle .stfmessage {padding:10px 10px 0 0; text-align:left;}
+.sendtofriendstyle .stfmessage .value{ width:auto !important; float:none !important}
+.sendtofriendstyle .caption {  text-align:left; display:block !important;}
+.sendtofriendstyle .caption .count { color:red;  }
+.sendtofriendstyle .textbox{  overflow:auto}
+.sendtofriendstyle .requiredcaption {text-align:left !important; padding-right:22px; font-size:12px !important;  }
+
+.sendtofriendstyle .previewpanel .stfpreviewmessage	{ margin-bottom:25px !important; text-transform: uppercase; font-weight:bold; text-align: left;}
+.sendtofriendstyle .previewpanel .previewfield {padding: 0 0 8px 0;}
+.sendtofriendstyle .previewpanel .previewfield .label{ display:block !important; text-align:left !important; padding:0 !important; margin:0 !important}
+.sendtofriendstyle .previewpanel .previewfield .value{float:none !important; display:block !important; text-align:left !important; clear: both;}
+.sendtofriendstyle .previewpanel .previewfield .action{ text-align:left !important }
+.sendtofriendstyle .previewpanel .previewfield .action fieldset{ text-align:left !important }
+.sendtofriendstyle form#SendToFriendForm div.actions fieldset button#sendBtn.button105x26 {float: right; margin-right: 222px; margin-top: -15px;}
+.ui-state-default, .ui-widget-content .ui-state-default {
+    background: url("../images/bg/product_detail_tab_bg.jpg") no-repeat scroll top left;
+     color: #555555;
+}
+.ui-widget-content {
+    border: none;
+   background:none;
+    height: auto;
+}
+.ui-state-active, .ui-widget-content .ui-state-active {
+	 background:  #fcfaf9 url(../images/bg/product_detail_tab_bg.jpg) repeat-x left bottom !important;
+  
+    border: none;
+     color: #fff;
+    outline: medium none;
+}
+.ui-state-active a, .ui-widget-content .ui-state-active a {
+   
+    color: #555555;
+    font-weight: normal;
+ 
+}
+.ui-tabs .ui-tabs-nav li {
+    border: none;
+    float: left;
+    margin: 0 5px -1px 0;
+    padding: 0;
+    position: relative;
+    height:24px;
+}
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected{
+background: url("../images/bg/product_detail_tab_bg.jpg") no-repeat scroll bottom ;
+ padding-bottom: 0;
+ 
+}
+.ui-tabs .ui-tabs-nav li a {
+    float: left;
+    padding: 2px 15px 5px;
+    text-decoration: none;
+    font-size:.9em;
+    line-height: 20px;
+}
+.ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+    
+    color:#fff;
+}
+.ui-tabs .ui-tabs-panel, .prwrapper .prfieldwrap {
+    background:url(../images/review_bg.jpg) repeat-x !important;
+    border-width: 0;
+    display: block;
+    padding: 20px 18px;
+    min-height:200px;
+}
+
+.pr-snapshot-no-ratings a:link, .pr-snapshot-no-ratings a {
+    font-weight: bold;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+.pr-snapshot-no-ratings {
+    font-weight: normal;
+    text-align: center;
+}
+.detailed-specs{text-align:left;}
+.sendtofriendLeft {float: left; width: 270px; padding-left:0px;}
+.sendtofriendRight {float: left; padding-top: 70px; margin-left: 15px;}
+.sendwishRight {margin-top:15px; width: 339px; float:right;}
+.sendtofriendstyle form#SendToFriendForm .actions fieldset a.sendWLcancel {display:none;}
+.previewpanel {width: 350px; margin: 0;}
+.sendwishRight button#sendBtn.button105x26 {margin: 20px 0;}
+h2#wishTitle {margin:0px;}
+
+/***** PRODUCT PROMOTIONS (Recommendations/Lasted Visited/Etc...) *****/ 
+.productcarousel .producttile {float: none;margin:0 auto;width:160px;}
+.productcarousel .producttile .image .quickviewbutton a {display: none;}
+/* Product Cross Sell */
+.productdetail .maywerecommend { margin-top:30px; float:left; }
+.productdetail .maywerecommend h2{ text-align:center; font-size:.9em;  letter-spacing: 1px;  }
+.detailed-specs li{font-size: 1em;list-style-type: disc; margin-left: 30px;line-height: 28px;margin-bottom:10px; }
+.maywerecommend {text-align:center; width:350px;}
+.maywerecommend .recommendation_image img { width:105px;}
+.maywerecommend .recommendations_cross-sell {  margin:0 auto; }
+.maywerecommend  li { text-align:center; float:left; width:105px; margin:0 5px;  font-size: 0.9em;  }
+.maywerecommend  .gender, 
+.maywerecommend  .name,
+.maywerecommend .price,
+.maywerecommend .salesprice { text-transform:uppercase; text-decoration:none; line-height:15px; text-align: center;   }
+.maywerecommend .name a { text-decoration:none;  }
+.maywerecommend .name a:hover {   }
+.maywerecommend .pricing {  }
+.prodvideo{padding:10px;}
+ .sku_details .title{text-transform:uppercase;text-decoration:none;}
+ .accessories_inside .block{line-height:14px;}
+ 
+.recommendationdetail {background-color:white; overflow: hidden;width: 550px;}
+.recommendationdetail li {list-style-position:inside;list-style-type:disc;}
+.recommendationdetail .recommendationheader {}
+.recommendationdetail .productname { padding: 5px 3px 3px;white-space:nowrap;}
+.recommendationdetail .price { ont-style:normal;padding: 5px 3px 3px;} 
+.recommendationdetail .price .salesprice {color:red;}
+.recommendationdetail .productshortdescription {padding: 5px 3px 3px;}
+.recommendationdetail .productmainattributes {padding: 5px 3px 3px;}
+.recommendationdetail .productmainattributes .attribute {}
+
+/* TOOL TIPS
+--------------------------------------------------------------------------------------- */
+
+#tooltip.tooltipshadow {width: 400px;	border: none; background-color: transparent; opacity: 0.99 !important;}
+.tooltipcontainer {background-color: #FFFFFF;border: 8px solid #F8F7F5;display: block;margin: 0;padding: 5px;}
+.tooltipcontainer h4{padding:0; margin:0 0 10px 0; color:#666 }
+
+/* Quick View
+--------------------------------------------------------------------------------------- */
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes #pdpATCDivpdpMain.addtocartbar .addtocart .quanity span.label {float: left; margin-top: 2px;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .maininfo #pdpFullDetailsLink a {float: left; font-size: 0.8em; font-weight: bold; margin-bottom: 5px; text-decoration: none; text-transform: uppercase; width: 100%;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .maininfo p.short-description {display:none;} 
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .maininfo {border-bottom:none; }
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes div#pdpATCDivpdpMain.addtocartbar .addtocart .quanity select.quantityinput {clear:none; margin-left: 5px;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes #pdpATCDivpdpMain.addtocartbar .addtocart button.addtocartbutton {clear:both;   }
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail #itemsInCart {
+    display: none;
+    float: right;
+    margin: 20px 0;
+}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes .productactions .addtowishlist {    clear: both; float: right;margin: 20px 0;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes {}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn .attributes .productactions .emailafriend {display:none;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn #productImage.productimage img {float:left; height: 450px; width: 400px; cursor:default;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail .productdetailcolumn {width: 400px; margin-left: 5px;}
+#QuickViewDialog.ui-dialog-content #pdpMain.productdetail {width: 820px;}
+#QuickViewDialog .productdetail {padding:5px;}
+#QuickViewDialog .productdetail .productdetailcolumn {float: left;margin-bottom: 2px 0 0 0;}
+
+ /* GIFTCARD
+--------------------------------------------------------------------------------------- */
+
+.giftcarddetail .productinfo { 
+	float: none;
+    background: url(../images/bg/contentBG.gif) repeat  top center #FCFBF9;
+    padding: 0 200px;
+    width: 560px; 
+}
+
+.giftcarddetail .maininfo {
+	padding:20px 25px 5px 13px;
+	border-bottom:none;
+}
+.giftcarddetail h1.productname {
+	font-size:22px;
+	font-weight:normal;
+	letter-spacing:2px;
+}
+
+.giftcarddetail #giftcard-description-box {
+	margin:30px 0px 0px 0px;
+	text-align:left;
+	font-size:11px;
+	line-height:16px;
+}
+
+.giftcarddetail #giftcard-description-box div.giftcard-description-header {
+	margin:25px 0px 10px;
+	font-size:12px;
+	text-transform:uppercase;
+}
+
+.giftcarddetail .attributes {
+    float:left;
+    width: 560px;
+    padding:0px 5px 25px 13px;
+   
+}
+
+.giftcarddetail ul.props,
+.giftcarddetail .availability,
+.giftcarddetail .quanity,
+.giftcarddetail #addgiftwrap,
+.giftcarddetail .productactions,
+.giftcarddetail .productreview,
+.giftcarddetail .mainattributes {
+	display:none;
+}
+
+.giftcarddetail #pdpOptionsDiv {
+	display:none;	
+}
+
+#giftcard-form { text-align:left; float:left; width:300px;}
+
+#giftcard-form div.label {
+    float: none;
+    margin-top: 7px;
+    overflow: hidden;
+    text-align: left;
+    text-transform: uppercase;
+    width: auto;
+}
+
+#giftcard-form div.label span {
+	text-align:left;
+	float:none;
+}
+
+#giftcard-form div.label span.labeltext {
+	font-weight:normal;
+}
+
+#giftcard-form div.label span.requiredindicator {
+	float:left;
+	color:black;
+}
+
+#giftcard-form span.errormessage {
+	height:auto;	
+}
+
+#giftcard-form div.value {
+	float:none;
+	width:auto;
+}
+
+#giftcard-form div.value input.textinput,
+#giftcard-form div.value input.textinputpw,
+#giftcard-form div.value select,
+#giftcard-form div.value textarea {
+    margin:5px 0px;
+    width:240px;
+    border:1px solid #cccccc;
+}
+
+#giftcard-form div.value input.textinput,
+#giftcard-form div.value input.textinputpw,
+#giftcard-form div.value select {
+	height:19px;
+	vertical-align: middle;
+}
+
+#giftcard-form div.value textarea {
+	height:145px;
+}
+
+#giftcard-form div.value select {
+    width:244px;
+}
+
+#giftcard-form .giftcardamount div.value input.textinput {
+	width:55px;	
+}
+
+#giftcard-form div.value span.erroralert {
+	display:none;
+}
+#giftcard-form div.value span.caption {
+    display: inline;
+    font-size: 11px;
+    height: 33px;
+    line-height: 33px;
+    margin-left: 8px;
+    clear:none;
+}
+
+.giftcarddetail .addtocartbar .addtocart {
+	margin:5px 0px;	
+}
+
+.giftcarddetail #giftcard-form .giftcardamount div.value {
+	width:100px;
+	float:left;	
+}
+
+.giftcarddetail .addtocartbar {
+	width:100%;
+	float:left;	
+	clear:none;
+	 
+}
+	
+.giftcarddetail .addtocartbar .addtocart button.addtocartbutton {
+	background: url("../images/buttonBg163.gif") no-repeat scroll 0 0 transparent;
+	margin:0px;
+	cursor: pointer;
+    border:0px none;
+
+}
+
+.giftcarddetail .addtocartbar .addtocart button.addtocartbutton:hover {
+	background: url("../images/buttonBg163.gif") no-repeat scroll 0 bottom transparent;
+}
+
+.giftcarddetail .addtocartbar .addtocart button.addtocartbutton.disabled {
+	opacity:0.4;
+	filter:alpha(opacity=40);
+	cursor:default;
+}
+
+.giftcarddetail .addtocartbar .addtocart button.addtocartbutton.disabled:hover {
+	background: url("../images/buttonBg163.gif") no-repeat scroll 0 0 transparent;
+}
+
+.giftcarddetail .addtocartbar .addtocart button.addtocartbutton span {
+    color:#FFFFFF;
+    display:block;
+    font:bold 12px/22px;
+    height: 22px;
+    position: relative;
+    text-transform: uppercase;
+    top:-1px;
+    display:inline-block;
+    line-height:22px;
+}
+
+.giftcarddetail #balance-container {
+	float:left;
+	width: 180px;
+	padding:15px 10px;	
+}
+
+.giftcarddetail #balance-container h5 {
+	font-size:11px;
+	font-weight:normal;
+	font-style:normal;
+}
+
+.giftcarddetail #balance-container .checkbalancebox { text-align:left; }
+
+.giftcarddetail #balance-container #checkbalanceform input#GiftCardNumber {
+    margin:0px 0px 15px 0;
+    width:170px;
+    height:20px;
+    border:1px solid #cccccc;
+
+}
+
+.giftcarddetail #balance-container #checkbalanceform button#CheckBalanceBtn {
+    background: url("../images/buttonBg163.gif") no-repeat scroll 0 0 transparent;
+    border: 0 none;
+    cursor: pointer;
+    margin:15px 0px 0px;
+    position: relative;
+    text-align: center;
+	width:128px;
+	height:24px;
+
+}
+
+.giftcarddetail #balance-container #checkbalanceform button#CheckBalanceBtn:hover {
+	background: url(../images/buttonBg163.gif) no-repeat 0 bottom;
+}
+
+.giftcarddetail #balance-container #checkbalanceform button#CheckBalanceBtn span {
+    color:#FFFFFF;
+    display:block;
+    font:bold 12px/28px;
+    height: 24px;
+    position: relative;
+    text-transform: uppercase;
+    top:-1px;
+    display:inline-block;
+    line-height:24px;
+}
+
+.giftcarddetail #balance-container #checkbalanceform #balanceresult {
+	margin:20px 0px 0px;
+}
+
+#giftCardLanding {
+    margin: 0;
+    padding: 12px 0;
+    width: 950px;
+}
+
+#giftCardLanding .giftcardlandingcolumn {
+    float: none;
+    margin-left: 200px;
+    width: 503px;
+    background: url("../images/bg/bg_fade_down_pdp.jpg") repeat-x scroll center bottom #FCFBF9;
+    margin-bottom: 20px;
+    padding: 40px 25px 5px 60px;
+}
+
+#giftCardLanding h1 {
+	margin-bottom:30px;
+	font-size:22px;
+}
+
+#giftCardLanding .giftcardlanding-actions {
+	margin:10px 0px;	
+	text-align:left;
+}
+
+#giftCardLanding button.giftcardlanding-actionbutton {
+    box-shadow:3px 3px 3px #999999;
+    margin:0px 36px 20px 0px;
+    float:left;
+    width:145px;
+    background:url("../images/buttonBg163.gif") no-repeat scroll 0 0 transparent;
+    border:0 none;
+    cursor:pointer;
+    height:24px;
+    position: relative;
+    text-align: center;
+}
+
+#giftCardLanding button.giftcardlanding-actionbutton:hover {
+	background: url(../images/buttonBg163.gif) no-repeat 0 bottom;
+}
+
+#giftCardLanding button.giftcardlanding-actionbutton:hover.disabled {
+	background: url(../images/buttonBg163.gif) no-repeat 0 0;
+}
+
+#giftCardLanding button.giftcardlanding-actionbutton.disabled {
+	opacity:0.4;
+	filter:alpha(opacity=40);
+	cursor:default;
+}
+
+#giftCardLanding button.giftcardlanding-actionbutton span {
+    display:inline-block;
+    line-height:24px;
+    color:#ffffff;
+    font:bold 11px/24px ;
+    height:24px;
+    position:relative;
+    text-transform:uppercase;
+    top:-1px;
+}
+
+#giftCardLanding .giftcardlanding-actions label {
+	font-size:11px;
+	font-weight:normal;
+	
+	color:#000000;
+	text-transform:uppercase;
+	padding-left:8px;
+}
+
+#giftCardLanding .giftcardlanding-actions span.bold {
+	font-weight:bold;
+}
+
+#giftCardLanding .giftcardlanding-actions .checkbalancebox {
+	margin-top:20px;
+}
+
+#giftCardLanding .giftcardlanding-actions .checkbalancebox input#GiftCardNumber {
+	display:block;
+	height:19px;
+	vertical-align:middle;
+	margin:10px 0px;
+    width:240px;
+    border:1px solid #cccccc;
+	-moz-box-shadow: 3px 3px 3px #999;
+	-webkit-box-shadow: 3px 3px 3px #999;
+	box-shadow: 3px 3px 3px #999;
+	/* For IE 8 */
+	-ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999')";
+	/* For IE 5.5 - 7 */
+	filter: progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#999999');
+}
+
+#giftCardLanding .giftcardlanding-actions .checkbalancebox #balanceresult {
+	margin-top:20px;
+}
+ 
+.addtocart .button #giftbalanceButton {margin-top: 10px;}
+.giftcarddetail .maininfo {padding-top:30px;}
+.giftcarddetail #balance-container {padding:30px 0 0 10px;}
+.productdetail .productdetailcolumn {margin-bottom:0;}
+#addgiftcardButton {*margin:0; *width:125px; margin: 0;}
+#PaymentMethod_Deckers_Gift_Card .deckers-giftcard-csv{width:35px;}
+#giftcard-form div.label span.requiredindicator {*float:none}
+.giftcarddetail .productinfo {
+	width:950px;
+	padding:0;
+}
+#giftHeader {
+	width:550px;
+	height:60px;
+        float:right;
+margin-top:15px;
+}
+#giftHeader img{
+	float:left;
+}
+#leftGift {
+	width:320px;
+	float:left;
+	margin-right:30px;
+	margin-bottom: 80px;
+}
+#leftGift ul {
+	width:265px;
+	text-align:center;
+	border-top:1px solid #e4e3e2;
+	margin: 15px auto;
+}
+#leftGift li {
+	text-align:center;
+	border-bottom:1px solid #e4e3e2;
+	padding: 5px 0;
+}
+#leftGift li a {
+	text-decoration:none;
+	font-weight:bold;
+}
+#rightGift {
+	float: left;
+	text-align: left;
+	width: 450px;
+	position:relative;
+height: 275px;
+}
+#rightGift .textDetails {
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+}
+#rightGift .textDetails .active {
+	display:none;
+	position:absolute;
+	top:0;
+	left:0;
+}
+#rightGift .active {
+	display:block;
+}
+#rightGift strong {
+	font-weight:bold;
+}
+#giftLinks .linkActive {
+	background:url(http://demandware.edgesuite.net/aaff_prd/on/demandware.static/Sites-UGG-US-Site/-/default/v1355861897594/css/images/skin/giftArrow.png?$staticlink$) left center ;
+	background-repeat: no-repeat; 
+	padding-left:15px;
+	
+}
+/****Alert****/
+
+span.erroralert {width:23px; height:26px; float:left; background:url(../images/email-validate-error.png) no-repeat 0 0; margin-left:1px;  }
+.returningcustomers span.erroralert {margin-top:4px;}
+span.errordone {width:23px; height:23px; float:left; background:url(../images/email-validate-error.png) no-repeat 0 100%; margin-left:1px; margin-top: -2px;}
+input.error{border:1px solid #f11a2a !important; color:#333 !important}
+input.done{border:1px solid #8cce39 !important; color:#333 !important}
+span.errormessage {clear:both; float:left; color:#f11a2a; margin-bottom:0; }
+
+
+ 
+
+#dwfrm_profile_emailpreferences_birthdaymonth { margin-right:800px; margin-bottom:15px; }
+
+.contenterror{text-align:left;}
+.errornew{color:red; padding-bottom: 15px;}
+
+/* CREATE AN ACCOUNT
+--------------------------------------------------------------------------------------- */
+/***** User Registration (/account/user/) *****/
+.registration { margin:60px 0 40px 130px; }
+.registration .storelocator input.textinput, .registration .storelocator input.textinputpw {width:90px;} 
+.formfield .formfieldNewEmail {flaot:left;}
+.pt_account #content{background:url(../images/bg/contentBG.gif)center center repeat-y; overflow:auto; }
+.req {float:left; text-transform:uppercase; font-size:.8em;color:red;}
+.requiredindicator {color: red;
+    font-size: 0.75em;
+    vertical-align: top;}
+.formfieldNewEmail {clear: both; float: left; text-align: left; width:600px;  }
+.topul li {display:inline;}
+.topul {margin: 0 0 0 20px;}
+
+#emailsignupprivacy {float:left; margin-bottom:20px;margin-left: 0px; margin-top:0px; font-size:.9em; }
+#emailsignupprivacy {}
+#privacy{clear:both;}
+form .value {float:none; margin-bottom:15px;}
+input.textinput, input.textinputpw {float:left; margin-bottom:5px; margin-right:0; margin-top: 5px;}
+
+#registrationformaction {clear:both;}
+#RegistrationForm fieldset.email-block div.formfields div.formactions button.imagebutton {float: left; margin:0; padding:0;}
+#RegistrationForm fieldset.name-block p.req {margin:-10px 0 10px 0;}
+/***** PROFILE EDIT: registration.isml *****/
+
+.registration .registration-title h1 { float:none;font-size:1.9em; padding-top: 40px; }
+
+.registration .registrationform { margin-top:20px;width:700px; }
+.registration .registrationform .name-block { float:left; width:350px; padding:0; margin:0;}
+.registration .registrationform .name-block h4,
+.registration .registrationform .email-block h4 { margin-bottom:15px; padding:0; }
+.registration .registrationform .name-block .label { text-align:left; margin-bottom:4px; float:none; text-transform:uppercase; font-weight:normal;}
+.registration .registrationform .name-block .value input {clear:both; padding:3px 0; color:#828280; text-align:left; margin:0 0 0 0; width:286px !important;   }
+.registration .registrationform .email-block { }
+.registration .registrationform .email-block .label { text-align:left; margin-bottom:4px; float:none; text-transform:uppercase; font-weight:normal;}
+.registration .registrationform .email-block .value input { clear:both;padding:3px 0; color:#828280; text-align:left; margin:0 0 0 0; width:285px !important; float:left }
+.registration .registrationform .email-block .value select { width:145px; margin:0 0 4px 0; padding:1px 0px 1px 0px }
+.registration .registrationform .email-block .value .caption { display:none; }
+.registration .registrationform .email-block .value select.selectbox { padding:3px 0; color:#828280; text-align:left; margin:0 0 4px 0; width:285px !important; float:left;  }
+.registration .registrationform .formactions { padding:10px 0; text-align:left }
+.registration span.erroralert{margin-top:0;}
+.emailsignupcheckbox { float:left; margin:5px 5px 0 0; }
+.pt_checkout .formfieldNewEmail {float: right;width: 302px; padding-right:15px;}
+.emailsignupcheckbox .checkbox {height:45px}
+.registration .registrationform .emailsignup {  }
+.registration .registrationform .emailsignup h4 {margin-left: 20px;font-size:11px;margin-bottom:0;
+    margin-top: -1px;  }
+.registration .registrationform .emailsignup ul { margin:0 15px 10px; list-style:circle; }
+.registration #emailoptin { margin-left:20px; color:#828282; margin-bottom:20px; }
+.registration #emailoptin .topul { list-style:circle; margin:0 18px 10px 16px; }
+.registration #emailoptin #emailspan { display:block; }
+.registration #emailoptin h3,
+.registration #emailoptin .label { float:none; display:block; text-align:left; margin:10px 0 3px; padding:0; }
+.registration #emailoptin .value { float:none; }
+.registration #emailoptin #email,
+.registration #emailoptin #mobilePhone { width:235px; }
+.registration #emailoptin #mobilePhoneLabel { margin-top:3px; }
+.registration #emailoptin #zipCode { width:100px; }
+.registration #emailoptin .interests li { padding:3px 0; }
+
+
+/***** Account Login (accountlogin.isml) *****/
+.accountlogin { margin:0 27px 0px; }
+#container.pt_login #main {background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent;padding-top:65px;padding-left:80px;}
+.pt_login .pageTitle{margin-left:25px;font-size:21px;}
+.accountlogin .logincustomers h3, .accountlogin .logincreate h3 {font-size: 14px;font-weight: normal;letter-spacing: 0.08em;text-transform: uppercase;}
+.accountlogin .logincustomers h3 span, .accountlogin .logincreate h3 span { }
+.accountlogin .returningcustomers, .accountlogin .createaccount {  padding:0; margin:0px 0px 0px; width:340px; float: left; }
+.accountlogin .returningcustomers p { margin:0; padding:0 0 7px 0; }
+.accountlogin .returningcustomers .label { text-align:left; margin-bottom:4px; float:left; text-transform:uppercase; font-weight:normal;}
+.accountlogin .returningcustomers .value { width:auto; float:none; }
+.accountlogin .returningcustomers .value input{ padding:3px 0; color:#828280; text-align:left; margin:0; width:285px !important; float:left }
+.accountlogin .accountlogin_h2 {font-size: 1em;font-weight: bold;letter-spacing: 0;margin-bottom: 40px;padding: 15px 0;text-align: left;text-transform: none;width: 100%;}
+
+.accountlogin .returningcustomers button {float:left; margin:10px 0 10px; clear: both; } 
+.accountlogin .returningcustomers .rememberme { text-align:left; }
+.accountlogin .returningcustomers .rememberme label { vertical-align:bottom; }
+.accountlogin .returningcustomers .forgotpassword { margin:15px 0 6px; text-align:left; width:285px; float: left;}
+.accountlogin .returningcustomers .formactions {margin:5px 0;}
+
+.accountlogin .logincreate { width:401px; float:right; }
+.accountlogin .logincustomers { width:333px; margin-bottom:27px;}
+.accountlogin .logingeneral { width:400px; }
+.accountlogin .logingeneral h3 { margin-top:18px; width:400px;  font-size:14px; float:left; margin-bottom:15px; text-transform:uppercase;  font-weight:normal; letter-spacing:.08em; }
+ 
+.createaccount h4 { margin:0 0 15px; background:none; padding:0;font-size: 0.95em; } 
+.createaccount p {clear: both; margin:0 0 15px; }
+.createaccount p b { width:350px;}
+.createaccount p a { }
+.createaccount .createaccountbutton {margin:0px 0 35px; text-align:center; float:left;}
+
+.accountlogin .logincustomers form#dwfrm_login fieldset {float:left;}
+.returningcustomers .formfield .checkbox {float:left;}
+
+.checkorder { padding-bottom:130px;}
+.checkorder input.textinput, .checkorder input.textinputpw {clear: both; padding:3px 5px; float:left; margin:0 0 0 0}
+.checkorder p { text-align:left;margin-bottom:0; width: 350px;}
+.checkorder .ordernumber {margin:5px 75px 0px 25px;text-align:right;}
+.checkorder .formactions  {text-align:right; }
+.checkorder .label{text-align:left; margin-bottom:4px; float:left; text-transform:uppercase; font-weight:normal;}
+.checkorder .errorform { text-align: left; width: 350px; margin:5px auto;color: red;} 
+.checkorder .button163x26 {float:left; margin-top:10px;}
+
+/***** Checkout Login (checkoutlogin.isml) *****/
+.checkoutlogin {  
+	margin: 100px 0 40px 130px;
+    width: 700px;
+    }
+.checkoutlogin .logincreate, .checkoutlogin .logincustomers, .checkoutlogin .logingeneral {  }
+.checkoutlogin .logincustomers h3, .checkoutlogin .logincreate h3 { position:relative; top:-17px; left:18px; float:left; }
+.checkoutlogin .logincustomers h3 span, .checkoutlogin .logincreate h3 span { 
+  font-size: 18px;
+    font-weight: normal;
+    padding: 3px 0 0 12px;
+     }
+.checkoutlogin .returningcustomers, .checkoutlogin .createaccount { clear:both; padding:0; margin:30px 30px 20px; }
+.checkoutlogin .returningcustomers p { margin:0; padding:0; }
+.checkoutlogin .returningcustomers .label { text-align:left; margin-bottom:4px; float:none;}
+.checkoutlogin .returningcustomers .value { width:auto; float:none; }
+.checkoutlogin .returningcustomers .value input { padding:3px 3px; text-align:left; margin-bottom:4px; width:240px; float:left }
+.checkoutlogin .returningcustomers .rememberme { text-align:left; }
+.checkoutlogin .returningcustomers .rememberme label { vertical-align:bottom; }
+.checkoutlogin .returningcustomers .forgotpassword { margin:0 0 6px; text-align:left; }
+.checkoutlogin .returningcustomers .forgotpassword a {  }
+.checkoutlogin .returningcustomers .formactions {margin:5px 0;}
+.checkoutlogin .returningcustomers button {  float:left; margin-top: 10px;}
+
+.checkoutlogin .logincreate { float: right; width: 350px; }
+.checkoutlogin .logincustomers { width:343px; margin-bottom:27px;  }
+.checkoutlogin .logingeneral { width:343px; }
+.checkoutlogin .logingeneral h3 {   font-size: 18px;
+    font-weight: normal;
+    margin: 10px 0 15px 25px;}
+
+
+.guestcontinue { margin:10px 5px 25px;}
+.guestcontinue p { margin:10px 30px 20px 20px;}
+.guestcontinue .continuecheckoutbutton { margin:0px 20px 0px; } 
+.guestcontinue .continuecheckoutbutton button { float:left; }
+
+
+/***** Account Login (wishlistlanding.isml) *****/  
+
+.wishlistlogin { margin:0 22px 40px; }
+.wishlistlogin .logincreate, .wishlistlogin .logincustomers, .wishlistlogin .logingeneral { }
+.wishlistlogin .logincustomers h3, .wishlistlogin .logincreate h3 { position:relative; top:-17px; left:18px; float:left; }
+.wishlistlogin .logincustomers h3 span, .wishlistlogin .logincreate h3 span { padding:3px; }
+.wishlistlogin .returningcustomers, .wishlistlogin .createaccount { clear:both; padding:0; margin:0px 27px 20px; }
+.wishlistlogin .returningcustomers p { margin:0 0 8px 0; padding:0; }
+.wishlistlogin .returningcustomers .label { text-align:left; margin-bottom:4px; float:none; }
+.wishlistlogin .returningcustomers .value { width:auto; float:none; }
+.wishlistlogin .returningcustomers .value input{ padding:3px 0; text-align:left; margin-bottom:4px; width:245px;float:left }
+.wishlistlogin .returningcustomers .rememberme { text-align:left; margin-bottom:15px }
+.wishlistlogin .returningcustomers .rememberme label { vertical-align:bottom; }
+.wishlistlogin .returningcustomers .forgotpassword { margin:0 0 6px; text-align:left; }
+.wishlistlogin .returningcustomers .forgotpassword a { }
+.wishlistlogin .returningcustomers .formactions {margin:5px 0;}
+.wishlistlogin .wishlistpromo { float:right; margin:-50px 400px 0 0; }
+
+.wishlistlogin .createbutton {margin:20px 0 20px; text-align:center;}
+.wishlistlogin .logincreate{min-height:100px !important; margin-bottom:30px !important}
+
+
+/***** Account Overview (accountoverview.isml) *****/
+.accountoverview { }
+.accountwelcome .welcomemessage { float: left; font-size: 2.1em; font-weight: normal; letter-spacing: 0.2em; position: relative; text-transform: uppercase; margin-top:15px; margin-bottom:12px; width: 700px;}
+.accountwelcome button { margin-top:25px !important; margin-right:500px; clear:both;}
+.accountwelcome .not_user {font-size:1.1em;}
+.accountlanding { margin:0 22px 30px; }
+.accountlanding .accountgroup { width:220px; float:left; margin:0 90px 20px 0; height:56px; }
+.accountlanding .accountgroup h2 { margin-bottom:4px; }
+.accountlanding .accountgroup a { }
+.accountlanding .accountgroup a:hover { }
+
+.accountwelcome .welcomemessage{display:block; font-weight:normal; padding: 25px 0 15px 130px;}
+.accountwelcome .not_user {display:block;clear:both; font-weight:normal; padding: 0px 0 15px 130px;}
+.username a {font-weight: bold;}
+/***** Account Add Address (editaddress.isml) *****/
+.accounteditaddress {  margin: 0 0 0 130px; width:750px; }
+.accounteditaddress .accounteditaddress-title { margin:0 0 15px; padding:18px 0; } 
+.accounteditaddress .accounteditaddress-title h1 { float:none; margin:0; font-size:2em; margin-bottom: 7px; }
+.accounteditaddress .createaddress { float:left; margin:-20px 0 20px; }
+.accounteditaddress .address_list { margin:0 0 35px; }
+.accountaddress {float:left; min-height:210px; _height:210px; margin:35px 25px 15px 0; width:220px; }
+
+.accountaddress .defaultselection { }
+.accountaddress .defaultselection input { margin-top:1px; margin-right: 2px; }
+.accountaddress .actions { margin:15px 0 0; text-align:left; padding-left:19px;}
+.accountaddress .actions  a { text-decoration:underline;}
+.editButton { text-decoration:underline !important;}
+.logouttext { font-weight:bold;}
+/* Safari 3.0 and Chrome only */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.accountaddress .actions button {margin-left:0 !important}
+}
+
+
+.accountaddress .actions button { margin: 0 0 0 -3px; _margin: 0 0 0 -14px; margin-left:0; background:none; border:none; padding:0; text-transform: uppercase; text-decoration:underline !important;}
+.accountaddress .actions button:hover {  }
+.accountaddress .actions button span { margin:0; padding:0; text-decoration:underline; }
+.accountaddress .actions button:hover span { margin:0; padding:0; }
+.clear {clear:both;}
+.accountaddress .actions a.deletelink { margin:0; text-transform: uppercase;}
+.accountaddress .actions a.deletelink:hover { }
+.account_addresses {float: left; text-align: left;  }
+.defaultselection {text-transform: uppercase; font-weight: bold; margin-bottom:13px; font-size:.95em;}
+.miniaddress { line-height:1.8em; font-size:.95em; padding-left:19px;}
+
+/***** Create Account Right Column *****/
+
+.rightCreateAccountBlock {float:left; width:230px !important; margin-left:20px }
+.rightCreateAccount {width:230px !important;  }
+.rightCreateAccount h3 { }
+.rightCreateAccount .createaccount { margin:0; width:220px;  }
+.rightCreateAccount .createaccount p { width:220px; padding:0}
+.rightCreateAccount .label {margin-bottom:2px}
+.rightCreateAccount .value { padding-bottom:5px !important}
+.rightCreateAccount .labeltext { }
+.rightCreateAccount input.textinput, .rightCreateAccount input.textinputpw { padding:3px 5px; width:197px !important}
+.rightCreateAccount .selectbox {width:208px !important; }
+.rightCreateAccount .actions button {  margin-right:10px }
+
+/***** Registered Account *****/
+
+.whiteSpacer {height: 5px; background-color: #FFFFFF; margin-top: 40px;}
+#accountMenu {margin-left: 130px;
+    overflow: visible;
+    padding: 50px 0;}
+ 
+.accountoverview div.accountlanding {margin:0 0 150px 130px; padding:0; float: left;}
+#welcomeInfo {width:545px; margin:0;}
+#leftInfo {float:left; padding:0; clear: both;}
+#leftInfo h3 {margin:10px 0 5px 0; font-size: 1.1em;}
+#leftInfo a.acctNavLinks {padding:0; margin:0 0 10px 0; float:left; text-decoration: none;}
+#rightInfo {float:right; padding:0; width:200px;}
+#rightInfo h3 {margin:10px 0 5px 0; font-size: 1.1em;} 
+#rightInfo a.acctNavLinks {padding:0; margin:0 0 10px 0; float:left; text-decoration: none;} 
+
+#RegistrationForm fieldset.name-block div.formfields div.formfield div.value input#dwfrm_profile_customer_email.textinput {clear:both;}
+#content div.acct-nav {margin: 0;}
+
+/***** New Address Pop up *****/ 
+
+div.ui-dialog { text-align: left;display: block; border: 15px solid #F8F7F5/*{borderColorContent}*/; background: #ffffff/*{bgColorContent}*/  /*{bgImgUrlContent}*/ 0/*{bgContentXPos}*/ 0/*{bgContentYPos}*/ repeat-x/*{bgContentRepeat}*/; color: #222222/*{fcContent}*/; float: left; margin-top:15px; }
+.requiredcaption {  float: left;
+    padding-bottom: 10px;
+ 
+    text-align: right;
+    width: 380px;}
+
+.formfield div.label span.labeltext {padding-bottom:0px; margin: 2px 0; font-weight: normal;text-transform: uppercase;font-size:.95em;letter-spacing:.07em; text-align: left;}
+
+.wishlistsearchform .warning {padding-bottom:0px; margin: 2px 0; font-weight: normal;text-transform: uppercase;font-size:.95em;letter-spacing:.07em; text-align: left;}
+.wishlistsearchform input {width:245px; font-size:13px; margin-bottom:8px; padding:3px 0; float:none; margin-top:10px;}
+.wishlistsearchform {padding-left:80px; width:300px; text-align:left; margin: 0 27px 20px;}
+.wishlistsearchform .divider {font-style:italic; margin-bottom:10px;}
+.wishlistsearchform .email {margin-top:10px;}
+.wishlistsearchform .formactions button {margin-top:13px;}
+.wishlistsearchform h3 {font-weight:normal; margin-bottom:30px; font-size:14px;}
+.wishlistsearchresult .wishlistsearchform {width:250px; margin-left:100px;}
+.wishlistsearchresult .wishlistsearchform h3 {display:none;}
+.pt_account .formfield select {float:left; clear:both; margin-bottom: 5px; width: 205px;}
+.formfield span.formfieldtooltip a.tooltip {font-size:.8em; float:left; margin-left:15px; margin-top: 7px;}
+.formfield div.value input#dwfrm_profile_address_states_state.textinput {float: left;}
+.formfield div.value span.caption {display: none; font-size:.8em; clear: both;}
+#dwfrm_giftcard_purchase .caption {float:none;}
+fieldset div#editprofile.editaddress div#leftAddress{float:left; margin-left: 50px; width:240px;}
+fieldset div#editprofile.editaddress div#rightAddress{ float: right; margin-left: 0;  width:240px;}
+#AddressForm.edit_address_form form#EditAddressForm fieldset {width:580px;}
+#rightAddress div.actions button {margin-top: 10px ;} 
+
+#AddressForm .formfield {text-align:left;}
+
+#AddressForm.edit_address_form form#EditAddressForm { }
+#rightAddress div.actions button#deleteBtn {clear:none;background: none repeat scroll 0 0 transparent; border: medium none; float: left; margin-right:0;  text-decoration: underline; font-size:.8em;}
+#rightAddress div.actions button#cancelBtn {clear:both;background: none repeat scroll 0 0 transparent; border: medium none; float: left; text-decoration: underline; font-size:.8em;}
+
+/***** Payment Pop up *****/
+#PaymentMethod_PayPal{text-align:left;}
+.accountpaymentinstruments button#AddCreditCard.addcreditcard {float: left;} 
+.accountpaymentinstruments { margin: 0 0 0 130px; 
+min-height:500px;
+height:auto !important;
+height:500px;}
+div.ui-dialog div#dialogcontainer.ui-dialog-content {padding-left:25px; overflow:auto; height:auto !important;}
+#CreditCardForm fieldset div.formfields div.formfield div.value .textinput {clear:both; margin: 0 auto;}
+#CreditCardForm fieldset div.formfields div.formfield div.label {float: left; text-align: left; width: auto; text-transform:uppercase; font-weight: normal; font-size: .9em; }
+#CreditCardForm fieldset div.formfields div.formfield div.label {margin: 5px 0 5px 0;}
+#CreditCardForm fieldset div.formfields div.formfield span.month div.value select#dwfrm_paymentinstruments_creditcards_newcreditcard_month.selectbox {width:100px; }
+#CreditCardForm fieldset div.formfields div.formfield span.year div.value select#dwfrm_paymentinstruments_creditcards_newcreditcard_year.selectbox {width: 100px; clear: none; margin-left:6px;}
+#CreditCardForm fieldset div.formfields div.formfield span.year div.label {display:none;}
+#CreditCardForm fieldset div.formfields div.formfield span.month div.label {display:none;}
+#CreditCardForm fieldset div.actions button#cancelBtn {margin-top: 10px; background: none repeat scroll 0 0 transparent; border: medium none; float: right; text-decoration: underline; font-size:.8em;}
+#CreditCardForm fieldset div.actions {float:left;}
+#CreditCardForm fieldset div.formfields div.formfield {margin-top:5px;}
+#CreditCardForm fieldset div.formfields div.requiredcaption {font-size: .8em; margin-bottom: 0;}
+
+.paymentinstruments {text-align: left; float: left; margin-top: 40px;}
+.paymentinstruments div.creditcard div.minicreditcard div.expirationdate {margin-bottom: 10px;}
+ 
+/***** Order History *****/
+.pt_order #main #content .orders {border-top: 5px solid white;  margin-top: 25px;
+    padding-top: 20px; width:700px;  margin: 5px 0 180px 130px;}
+.orders form#dwfrm_orders div.order div.orderheader div.orderData 
+{
+    text-align: left;
+    text-transform: uppercase;
+    width: 250px;
+    line-height: 18px;
+}
+.orders form#dwfrm_orders div.order div.orderheader div.orderData .value, .order_processed {width: 130px;}
+.orders form#dwfrm_orders div.order div.orderheader div.orderData div.orderdate 
+{
+    margin-bottom: 0px;
+    margin-top: 25px;
+    padding-top: 25px;
+}
+.orders form#dwfrm_orders div.order div.orderheader 
+{
+
+    margin-top: 10px;
+    padding-top: 0;
+}
+
+.order .orderinfo table.orderinfotable tbody tr {vertical-align: top;}
+.order .orderinfo table.orderinfotable thead tr th.ordertotalprice span.value {float:none;}
+.order .orderinfo table.orderinfotable {border-bottom:1px solid #ccc; padding-bottom: 20px;}
+.order .orderheader .orderData span.label {width:auto; font-weight: normal;}
+.order .orderinfo table.orderinfotable thead tr {text-transform:uppercase; border-bottom: 1px solid #ccc;}
+.order .orderinfo table.orderinfotable thead tr td .value {}
+.order .orderheader .orderData div.ordernumber {margin-bottom:15px;}
+ 
+.orders form#dwfrm_orders .order div.orderheader button.orderDetails {float: right; margin-top: 20px;}
+.orders form#dwfrm_orders .order {margin: 20px 0 0 20px; clear: both;}
+.pt_order div#main {background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent;}
+tr td span.value {float:left; width: auto;}
+.orderinfo table.orderinfotable thead tr th.ordertotalprice {font-weight:bold; padding-top: 10px; text-align: right;}
+.orderinfo table.orderinfotable tbody tr td.ordertotalprice span.value {font-weight:bold;}
+ 
+.orderinfo table.orderinfotable thead tr th.ordershippedto {padding:0; margin:0; text-align:left;}
+.orderinfo table.orderinfotable thead tr th.orderitems {text-align:left;} 
+
+.pt_order .checkorder { border-top: 5px solid #FFFFFF;
+    margin: 25px auto 130px;
+    padding-top: 25px;
+    width: 700px;}
+.pt_order .checkorder p, .checkorder fieldset, .checkorder h3 {width: 350px; margin: 0; float: left;}
+.pt_order .checkorder h3 {font-size: 2em; font-weight:normal; letter-spacing: 3px; margin-bottom: 20px;}
+.pt_order .checkorder p {margin-bottom: 20px;}
+.pt_order .checkorder form#dwfrm_ordertrack fieldset div.formfield div.value input {float: left; clear: both;}
+
+.orders form#dwfrm_orders .pagination ul li {float:left; margin-left: 20px;}
+.orders form#dwfrm_orders .pagination {float:right; margin-bottom: 20px; padding-top: 20px;}
+
+/***** Order Details *****/  
+.orderdetails .orderheader {float:left; text-align:left; width:100%; margin-bottom: 25px; line-height: 1.5em; margin-top:10px;}
+.orderdetails .orderpayment {border-bottom:1px solid #999; margin-bottom: 20px; padding-bottom: 20px;}
+.orderdetails .orderheader span.label {font-weight:bold;}
+div.orderdetails div.orderpayment h5{font-size:1em;}
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable {margin-top: 10px;} 
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling {float:left; text-align:left; margin-right: 85px;}
+
+.orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling .miniaddress {padding:0; margin:0;}
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentinstruments {float:left; text-align:left; margin-right: 60px; width: 150px;}
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product .productattributes .productid .label, .attribute .label {float:left; text-align:left; margin-right: 5px;}
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable { width: 700px; float:left; text-align: left; margin-top: 20px; }
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable thead tr th {font-weight:bold; text-transform:uppercase; padding-bottom: 10px; }
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentinstruments .paymentamount span.label {font-weight:normal;}
+.orderdetails .ordershipments .rightCreateAccountBlock .shippingaddress {text-align: left; margin-left: 10px; margin-top: 22px; line-height: 1.5em; }
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td {margin-bottom:20px; border-top:1px solid #999; padding-top: 15px; } 
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary {border-bottom:none; margin:0; padding:0; font-weight:bold; text-transform:uppercase; text-align: left; vertical-align: top;}
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling .label {font-weight:bold; text-transform:uppercase; text-align: left;}
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals table.ordertotalstable {font-weight:normal; text-transform:none;}
+.orderdetails .orderdetails-title button.backToOrderHistory {float:right; display:none;}
+.orderdetails .formactions button.backToOrderHistory {float: left;}
+.orderdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals {border-top:none; margin:0; padding:0;}
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product .name {text-transform:uppercase; margin-bottom: 10px;}
+.orderdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product {margin-bottom:25px;}
+
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .statusth span {display:none;}
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .trackingth span {display:none;}
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .status span {display:none;}
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .tracking span {display:none;}
+
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .status {border-top:none;}
+.pt_orderconfirmation .ordershipments .ordershipment table.ordershipmenttable .tracking {border-top:none;}
+
+
+/*My Account Section******/
+
+
+#giftcard-billing-box {
+	min-height:120px;
+	margin-bottom:15px;
+}
+
+#giftcard-billing-box #giftcardform #giftCardLoader {
+ background-color: #FFFFFF;
+ background-position: center center;
+    background-repeat: no-repeat;
+    height: 0;
+    left: 0;
+    opacity: 0.8;
+    padding: 50px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 313px;
+    z-index: 10;
+}
+
+#giftcard-billing-box #giftcardform .formfield {
+	position:relative;
+}
+
+#giftcard-billing-box #giftcardform .formfield .label {
+	margin-top:7px;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions {
+	margin:15px 70px 10px 0px;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions button {
+    margin:0px 10px 0px 0px;
+    float:right;
+    width:125px;
+    cursor:pointer;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions button.disabled {
+	cursor: default;
+	opacity: 0.4;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions button:hover {
+	background: url(../images/buttonBg163.gif) no-repeat 0 bottom;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions button:hover.disabled {
+	background: url(../images/buttonBg163.gif) no-repeat 0 0;
+}
+
+#giftcard-billing-box #giftcardform .giftcard-actions button span {
+    color:#ffffff;
+    font:bold 11px/24px ;
+    height:24px;
+    position:relative;
+    text-transform:uppercase;
+    top:-1px;
+    display:inline-block;
+    line-height:24px;
+}
+
+#giftcard-billing-box #giftcardform #giftcard-applied-box .giftcard-apply {
+    margin-bottom: 10px;
+    padding: 8px;
+    text-align: left;
+    width: 315px;
+    border:1px solid #cccccc;
+
+}
+	
+/***** Analytics collection markup *****/
+.analytics {display:none} 
+
+/***** Email Programm Signup Dialog Styling *****/
+
+.emailPreferences #emailspan { display:block; }
+.emailPreferences h3,
+.emailPreferences .label,.emailPreferences  .formfield div.label span.labeltext { font-weight:bold; width:400px; float:none; display:block; text-align:left; background:none;font-size:11px; margin:0 0 3px; padding:0; clear:both; text-transform:uppercase; }
+.emailPreferences  .formfield div.label span.labeltext {text-transform: none;}
+#emailoptin .zipCode .labeltext  {text-transform:uppercase !important;}
+.emailPreferences .value { width:320px; float:left;  margin: 3px 0 0px 0; clear: both;}
+.value select#dwfrm_profile_emailpreferences_birthdaymonth.selectbox {float:left;}
+
+.emailPreferences .value input { width:285px; float:left; padding:4px 4px; margin:0 0 4px 0 }
+#emailoptin .mobilePhoneLabel .labeltext{font-weight:normal !important;}
+.ui-dialog .ui-dialog-title {
+    float: left;
+    font-size: 11px;
+    font-weight: normal;
+    margin: 30px 28px 0.1em;
+    text-align: left;
+    display: none;
+}
+.emailPreferences input[type="checkbox"],.emailPreferences input.checkbox {margin-top:4px;}
+.emailPreferences .mobilePhoneLabel { margin-top:3px; font-size:10px; text-transform:none; font-weight:normal;}
+.emailPreferences .zipCode input { width:100px; }
+.emailPreferences .interests li { padding:3px 0; }
+.emailPreferences .interests li label { font-size:11px; font-weight:normal; margin-left:5px;}
+.emailPreferences #emailButton {  margin:0 0 10px 0;  }
+form#EmailPreferencesForm.emailPreferences p {clear:both;font-size: 0.9em;}
+
+.ui-dialog-content .serviceunavailable {font:bold 13px ; padding:40px; text-align:center}
+
+.emailPreferences .formfield, .emailPreferences .interests{margin-bottom:25px !important}
+*+html .emailPreferences .formfield{margin-bottom:8px !important}
+*+html .emailPreferences .interests{margin-bottom:8px !important}
+
+.emailPreferences .emailformaction {display:none}
+
+#CreditCardDialog .labeltext, #CreditCardDialog .requiredindicator{float:right !important}
+#CreditCardDialog .requiredindicator {margin-right:4px}
+#CreditCardDialog .requiredcaption .requiredindicator, #CreditCardDialog .expires span {float:none !important }
+.emailPreferences #emailoptin .formfield .value input#dwfrm_profile_emailpreferences_postalcode.textinput {clear:both;}
+.emailoptin .formfield div.label span.labeltext{text-transform:normal;}
+
+/* MINI-CART
+--------------------------------------------------------------------------------------- */	
+.minicart {z-index:999;}	
+.minicart .minicarttotal {position:relative; color:#23150c; }
+.minicart .minicarttotal .cartlabel small {background: url("../images/bg/cart_pop.gif") no-repeat scroll center top transparent;
+    color: #FFFFFF;
+    font-size: 9px;
+    height: 30px;
+    left: -2px;
+    letter-spacing: -1px;
+    padding-top: 6px;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    top: 17px;
+    width: 100%; }
+.minicart .minicarttotal .emptycart {font-size: 10px;}
+.minicart .minicarttotal .welcomedivider {margin:0px 3px;}
+.minicartcontent { padding-top: 16px;
+    position: absolute;
+    right: -15px;
+    top: 6px;}
+.minicartcontent #minicartinterior {  background-color:#fff; display: block; right:0px; margin:0px; width: 330px; z-index:999; border:8px solid #f8f7f5;}
+.minicartcontent .minicartclose { background:transparent url(../images/icon_close.gif) no-repeat center right; cursor:pointer; float:right; padding:0 15px 0 0; white-space:nowrap; width:auto; text-transform: uppercase; display:none; }
+.minicartcontent .minicartcontainer .minicarttotal {clear:both;padding:1px 3px;text-align:right;}
+.minicartcontent .checkoutminicart .summaryproduct {border-bottom: 1px solid #a9a19e;  text-transform: uppercase; padding-top:15px; padding-bottom:15px;}
+.minicartcontent .minicarttotals {  margin:-1px -4px 4px; padding:5px 0; }
+.minicartcontent .minicarttotals table.ordertotalstable {float:right;width:auto; font-size:11px;}
+.minicartcontent .minicarttotals tr {display:none;}
+.minicartcontent .minicarttotals tr.ordersubtotal {display:block;}
+.minicartcontent .minicarttotals td {color:white;text-align:right;}
+.minicarttotals .ordertotals .ordertotalstable { font-size:12px; }
+.minicarttotals .ordersubtotal .label, .minicarttotals .ordersubtotal .value {font-weight:bold; color:#23150c; text-transform: uppercase; padding: 15px 15px 5px 0;}
+.minicartcontent .minicartslot {background-color:#ededed;border: 1px solid #CCC;font-size:12px;font-weight:bold;margin:4px auto;padding:4px;text-align:center;}
+.minicartcontent .link2cart {clear: both; margin: 0 15px 30px 0;float: right; }
+.imagecollapsed img {width: 82px;}
+.minicartcontent .onorder, .minicartcontent .notavailable{font-size:.7em; margin:0 10px 10px 0; line-height:12px;}
+.minicartcontent .notavailable{color:red;}
+
+/* Mini Cart Product Display */  
+.checkoutminicart { overflow:auto; color:#23150c; font-size:12px;padding-right: 10px; }
+.checkoutminicart .summaryproduct { border-bottom: 1px solid  #23150c; padding: 3px 0px; padding-left:110px; position:relative; line-height:1.4; }
+.checkoutminicart .image { position:relative; left:-110px; margin-right:-120px; float:left; }
+/*.checkoutminicart .imageexpanded {background: transparent url(../images/nav_arrow.gif) no-repeat 0 0;float:left;height: 15px;width: 15px;}
+.checkoutminicart .imagecollapsed {background: transparent url(../images/nav_arrow_expand.gif) no-repeat 0 0;float:left;}*/
+.checkoutminicart .imagecollapsed img { margin: 5px 20px 0 15px; }
+.checkoutminicart .name {font-size:10px; font-weight:bold; margin-top:2px;}
+.checkoutminicart .attributes { overflow:hidden; padding-bottom:18px; }
+.checkoutminicart .attribute { margin:0 3px 0 0; font-size:10px; }
+.checkoutminicart .attribute .label { font-weight:normal; float: none; text-align: right;}
+.checkoutminicart .attribute .clear { clear:none; }
+.checkoutminicart .pricing { display: block; text-align: right;margin:10px 10px 10px 0px; font-size:10px;}
+.checkoutminicart .pricing .divider { margin:0 12px; }
+
+.minicartcontent #minicartinterior .minicartempty {height: 60px;
+    padding:40px 30px 0 30px;
+    text-align: center;
+    text-transform: uppercase;} 
+.minicartcontent .ordertotals {margin:0; border:0; width:100%;}
+
+/*Error Page Styles*/ 
+
+.pt_error #main {text-align: center; background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent; padding: 60px 60px 160px 75px;}
+.generalerror {width:400px; margin: 0px auto;}
+.generalerror p {padding:0; margin-bottom:10px;}
+.generalerror img {float:left; padding-right:15px;}
+.generalerror h3 {margin-top: 20px;}
+.errorpage .errorsearch button {clear:none; width:160px; margin:4px 20px 15px 0px; padding:0; float:right; }
+.errorpage #mybuyszone404 .mblegend {visibility: hidden;}
+.errorpage #mybuyszone404 h3 {margin-top: 0;line-height: 1.2em;padding-top: 10px;margin-bottom: 0;}
+.errorsearch label {float:left; }
+.errorsearch form fieldset input.textinput {float:left; clear: both; height: 20px; margin-top: 5px; width: 200px;}
+.notfound {width:420px; }
+.errorpage .erroraftersearchmessage .contentasset p {padding:0; margin-bottom: 10px;}
+.ui-dialog-titlebar a.ui-dialog-titlebar-close span.ui-icon {background: url(../images/close.gif); background-repeat:no-repeat;  }
+
+.ui-dialog .ui-dialog-titlebar-close  {margin: -25px 0 0; padding: 0; position: absolute; right: 0.3em; top: -20%; width: 7px;}
+.pt_error .noresults-help-block {width:300px;}
+.pt_error .notfound { 
+    float: left;
+    padding: 20px 0 0 30px; }
+.pt_error div#main div#content div.static-page div.noresults-help-block div.contentasset div#csnaigation.navgroup { float: left; }
+
+/*Search Error Page Styles*/
+
+.pt_productsearchresult #content {width: 100%;   margin: 0px auto; }
+.pt_productsearchresult #content .nohitscontainer { overflow:hidden; padding-bottom:50px;   background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent; } 
+
+.pt_productsearchresult .noresults-help-block{
+	float:left;
+	width:320px;
+}
+
+.nohitscontainer{padding-top:25px;}
+.nohits {text-align:left; width:340px; float:left; padding: 50px 0; margin-left:10px; }
+.nohits div.nohitssearch form fieldset {margin-top:10px; margin-bottom: 5px;}
+.nohits div.nohitssearch form fieldset label {float:left; font-weight:bold; font-size:11px; text-transform:uppercase;margin-top:30px;}
+.nohits div.nohitssearch form fieldset input.textinput {float:left; clear: both; height: 20px; margin-top: 5px; width: 200px;}
+.nohits div.nohitssearch form fieldset button.button163x26 {border: medium none;clear: none;float: left;margin-top:5px; margin-left:8px;padding: 0 15px;}
+.nohitsmessage {margin-bottom:10px;}
+.nohitssearch {width:340px;}
+.nohits h3{ font-size:1.1em; border-bottom:1px solid #cfceca; font-weight:normal;}
+.nohits h2{ font-size:1.6em; margin-bottom:30px; }
+.nohits div.nohitstips {font-weight: bold;}
+.nohits div.nohitstips ul {margin:5px 0 0 5px; font-weight: normal;}
+.nohits .erroraftersearchmessage p {padding:0; margin-bottom: 10px;}
+.nohits div.nohitsmessage span.nohitssearchterm {font-weight:bold; color: #c60000;}
+.nohits #mybuyszone404 {margin:20px 0px 0px 0; width: 351px;}
+.nohits #mybuyszone404 .mblegend {visibility: hidden;}
+.nohits #mybuyszone404 h3 {margin-top: 0;line-height: 1.2em;padding-top: 10px;margin-bottom: 0; border:none;font-weight:bold;}
+.nothis #mybuyszone404 .mbzone {width: 100%;}
+.didyoumean {margin-top: 30px;}
+.didyoumean h3{margin-bottom:0; text-transform:capitalize;}
+.didyoumean a {  display: block; font-weight: bold; margin-bottom: 30px;}
+.clearform {display: none;}
+.popularterms {width:210px; float:right; margin-top:150px; border-left:1px solid #CFCECA; padding-left:10px;}
+.popularterms ul li{line-height:18px;}
+
+
+/*Search Pop Styles*/
+#searchpop{background: #fff url(../images/icons/dropArrow.gif) no-repeat top right; padding-top:16px;}
+#searchcontainer input#searchinput.simplesearchinput { height: 20px; width: 182px; padding-left:5px; text-align: left; border:0;background-color:#eaeae8;color:#868684;}
+
+#header-below-search{color: #2A2A2A;font-size: 10px;}
+.simplesearch fieldset div#searchcontainer button {padding-top: 5px;}
+#SimpleSearchForm #searchcontainer label {display:none;}
+.buttonSearch{
+	background:#fff url(../images/icons/search.gif) center center no-repeat;
+	 border: 0 none;
+	 height:20px;
+	 overflow:auto;
+	 width:15px;text-indent:-500px;
+	 margin-right: 4px;
+}
+	
+.searchresultsfooter {clear:both;}
+
+.search .search_result_breadcrump_caption {display:inline;}
+
+.search .search_result_breadcrump_caption a {font-weight:bold;}
+
+.searchinformation a {text-transform: uppercase;}
+
+#container.pt_productsearchresult .contenthits {
+	
+	background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent;
+    padding-left: 75px;
+    padding-top: 25px;
+    padding-bottom: 40px;
+    
+    }
+    
+#container.pt_contentsearchresult .contenthits {
+	
+	background: url("../images/bg/contentBG.gif") repeat-y scroll center center transparent;
+    padding-left: 75px;
+   
+    
+    }
+    
+#container.pt_contentsearchresult #content .breadcrumb {text-align:left;}
+
+#container.pt_contentsearchresult .contenthits .viewAllArticles {float:right;padding-top:15px;padding-right:70px;padding-bottom:30px;clear: both;}
+
+.contenthits {width:800px}   
+
+.contenthits h2.relatedmessage {font-size:12px;}  
+
+#container.pt_contentsearchresult .contenthits .backToArticle {} 
+
+#container.pt_contentsearchresult .contenthits .pagingheadline {clear:both;}
+
+
+.contenthits form.viewform {clear:both;text-align:right;padding-top:30px;padding-bottom:15px;padding-right: 80px;}
+
+/* .contenthits .viewallarticles {float:right;} */
+
+.contenthits .article {float:left;width:260px;}
+
+.contenthits .article .articlename {float:left;}
+.contenthits .article div.description {clear:both;}
+
+.contenthits .description {text-align:left;}
+
+ /* SEARCH SUGGESTION
+--------------------------------------------------------------------------------------- */
+.suggestions {
+    background-color: #FFFFFF;
+
+    cursor: pointer;
+    display: none;
+    padding: 0;
+    position: absolute;
+    width: 245px !important;
+    z-index: 99999;
+}
+.suggestions div {clear: both; height:17px; padding: 5px; overflow: hidden; white-space:nowrap; border-bottom:1px solid #c6c4c5; width: 250px !impotrant; color:#312a24}
+.suggestions div div{border:none; padding:0;}
+.suggestions div.selected {background-color: #a9a19e; color: #ffffff !important; width:235px;}
+.suggestions div.selected  div.suggestionterm, .suggestions div.selected   span.hits { color: #ffffff !important;}
+.suggestions div div.suggestionterm {float:left; overflow: hidden; width: 250px !impotrant;  }
+.suggestions div span.hits {float:right; line-height: 18px; text-align: right;   }
+.suggestions div.unselected{width:235px;}
+ /*Product Details Sizing Charts*/
+.prodDetails_sizingChart .sizingHeader {background-color: #181713;}
+.prodDetails_sizingChart th {color: #FFFFFF; font-weight: bold; text-align: center; padding: 5px 0;}
+.prodDetails_sizingChart tr td {padding: 5px 0; text-align: center;}
+.prodDetails_sizingChart tr.rowIndicator {background-color: #f8f7f5;}  
+.prodDetails_sizingChart a {font-size: 0.9em; text-align: center;}
+.prodDetails_sizingChart table {padding-bottom: 15px;}
+/***** Account Login (wishlistlanding.isml) *****/
+.pt_wishlist div#main div#content {  padding-bottom: 80px; background:url(../images/bg/contentBG.gif)center center repeat-y;}
+.pt_wishlist #main div#content h1 {padding:40px 0 25px 126px; }
+.pt_wishlist #main div#content h1.pageTitle {padding:0; }
+.pt_wishlist div#main div#content div.acct-nav { }
+.wishlistlogin { font-size:12px; margin:0 22px 40px; }
+.wishlistlogin .logincreate, .wishlistlogin .logincustomers, .wishlistlogin .logingeneral { padding-left: 80px; }
+.wishlistlogin .logincustomers h3, .wishlistlogin .logincreate h3 { position:relative; top:-17px; left:24px; float:left; font-weight:normal; font-size:14px; }
+.wishlistlogin .logincustomers h3 span, .wishlistlogin .logincreate h3 span { padding:3px; }
+
+.wishlistlogin .returningcustomers, .wishlistlogin .createaccount { clear:both; padding:0; margin:0px 27px 50px; width: 300px; }
+.wishlistlogin .returningcustomers p { margin:0 0 8px 0; padding:0; } 
+
+.wishlistlogin .returningcustomers .value span.erroralert { margin-top: 5px; }
+.wishlistlogin .returningcustomers .value input{ clear: both; font-size:13px; padding:3px 0; text-align:left; margin-bottom:4px; width:245px;float:left }
+.wishlistlogin .returningcustomers .rememberme { text-align:left; margin-bottom:15px }
+.wishlistlogin .returningcustomers .rememberme label {font-weight:normal; font-size:10px; vertical-align:bottom; }
+.wishlistlogin .returningcustomers .forgotpassword { margin:0 0 6px; text-align:left; }
+.wishlistlogin .returningcustomers .forgotpassword a { font-size:11px; text-decoration:underline; }
+.wishlistlogin .returningcustomers .formactions {margin:40px 0;}
+
+.wishlistlogin .createbutton {margin:20px 0 20px; text-align:center;}
+.wishlistlogin .logincreate {min-height:100px !important; margin-bottom:30px !important; margin-right: 50px; width: 400px; float:right; }
+.wishlistlogin .logincreate .createaccount form#dwfrm_login_register fieldset .createbutton button {margin-bottom:20px !important;}
+.wishlistlogin .logincustomers form#dwfrm_login fieldset .returningcustomers .formfield .label {font-weight:normal; text-transform: uppercase;}
+.wishlistlogin .logincreate .createaccount form#dwfrm_login_register fieldset p b {text-transform: uppercase;}
+
+
+/* Safari 3.0 and Chrome only */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.wishlistlogin .returningcustomers, .wishlistlogin .createaccount {width: 270px !important;}
+}
+
+/* Safari 3.0 and Chrome only */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+.wishlistlogin .logincreate {width: 370px !important;}
+}
+
+
+
+
+/* WISHLIST
+--------------------------------------------------------------------------------------- */
+/***** WISHLIST: wishlist.isml *****/
+.wishlist { }
+.wishlist form#dwfrm_wishlist_shipping .wishlistshippingaddress select#editAddress.selectbox {float: left;margin: 0 0 55px 115px;}
+.wishlist .wishlist-title { margin:0 22px 15px;} 
+.wishlist .wishlist-title h1 { float:none; margin:0; } 
+.wishlist .wishlistsearchform {padding:0 0 10px 0;}
+.wishlist .wishlistsearchform .lastname {display: inline;}
+.wishlist .wishlistsearchform .firstname {display: inline;}
+.wishlist .wishlistsearchform .email {display: inline;}
+.wishlist .wishlistsearchform .formactions, .wishlistsearchresult .wishlistsearchform .formactions {display: inline;}
+.wishlist .wishlistsearchform .wishlistsubmit button {font-size:8px;padding:0 5px;}
+.wishlist .wishlistaddgiftcert {margin: 12px 22px;}
+.wishlist .wishlistaddgiftcert button {float:left;margin:4px 5px 0px 0px;}
+
+.wishlist .wishlistshippingaddress { font-size:12px; margin:15px 22px 0px; overflow:auto; border-top: 5px solid white;  }
+.wishlistemptymessage {text-transform:uppercase; font-weight:bold; font-size:13px; margin:5px}
+
+.wishlist .wishlistshippingaddress .label {display:block; float:none; text-align:left; width:auto; margin-bottom:4px;margin: 30px 0 5px 115px;}
+.wishlist div.wishlist-title h1.pageTitle {margin-left: 110px;}
+.wishlistitems { margin:-5px 22px 30px;border-top: 5px solid white; }
+.wishlistitems .wishlistempty {padding:120px 0px 150px 0px; text-align: center;}
+.wishlistitems .wishlistempty a {font-size:11px}
+.wishlistitems .wishlistempty a:hover {text-decoration:underline}
+.wishlistitems .wishlistempty .wishlistemptymessage {}
+
+
+.wishlistitems .wishlistsharing { padding:30px 18px;}
+.wishlistitems .wishlistsharing .productlistshare {display:inline; float:right;}
+.wishlistitems .wishlistsharing .productlisturl {text-align:right; clear:both; padding-top:35px; }
+.wishlistitems .wishlistsharing .productlisturl a, .wishlistitems .wishlistsharing .productlisturl a:hover { }
+.wishlistitems form#dwfrm_wishlist_share div.wishlistsharing div.wishlistsendlist { width: 750px;}
+.wishlistitems .wishlistprivatepublic {float: left; margin: 0 0 0 300px}
+.wishlistproducts table.productlisttable tbody tr.tablerow td.iteminfo b {font-weight: normal;}
+
+
+.wishlistproducts { padding: 0 20px 20px 130px; width: 640px;}
+.wishlistproducts .productlisttable { margin:20px 0 0 0 !important; border-bottom: 1px solid #c9c9c9; padding-bottom: 20px;} 
+.wishlistproducts .productlisttable td { padding:10px 0; vertical-align:top; }
+.wishlistproducts .productlisttable td.imagecolumn { width:auto; padding-right:10px; }
+.wishlistproducts .productlisttable td.imagecolumn img { width:85px; margin-right: 20px; }
+.wishlistproducts .productlisttable .product { line-height:1.6; }
+.wishlistproducts .productlisttable .name a { border-bottom: 1px solid black; font-weight: bold; text-decoration: none; }
+#wishlistproducts.wishlistproducts table.productlisttable tbody tr.tablerow td.availability ul {clear:both;}
+.wishlistproducts td.detailscolumn { width:250px; text-align: left; text-transform: uppercase; }
+.wishlistproducts td.availability { width:160px; }
+.wishlistproducts td.iteminfo { width:180px; text-transform: uppercase; font-weight: normal;}
+.wishlistproducts td.iteminfo .label {font-weight:normal;margin: 0 4px 0 0;width:auto; float:right}
+.wishlistproducts td.iteminfo .wishlistpriority .label {float: none;margin: 0 4px 0 0;width: auto;}
+.wishlistproducts .attribute {font-size: 10px;}
+.wishlistproducts .wishlistlineitem .label {font-weight: normal; text-align: left; width:auto; margin-right:8px;}
+.wishlistproducts .wishlistdateadded {margin:0 0 5px; text-align:right;}
+.wishlistproducts .wishlistdateadded .label {float: none;width: auto;}
+.wishlistproducts .wishlistdateadded .value {float: none;}
+.wishlistproducts .wishlistqty, .wishlistproducts .wishlistqtyguestview {float: left; margin: 0 0 2px 0; text-transform: uppercase;}
+.wishlistproducts .wishlistqtyguestview {display:none;}
+.wishlistproducts table.productlisttable tbody tr.tablerow td.availability ul li.isinstock {float:left; clear: both;}
+.wishlistproducts .wishlistqty .label {padding: 0 0 0 0;width: auto;}
+.wishlistproducts .wishlistpriority {margin:0 0 3px; text-align:right; padding-bottom:15px; }	
+.wishlistproducts .wishlistpriority .value {float: none; display: inline;}
+.wishlistproducts .wishlistmakeprivate {float:right;}
+.wishlistproducts .wishlistmakeprivate .checkbox {float:left; margin: 0px 4px;}
+.wishlistproducts .wishlistmakeprivate .label {width:auto;}
+.wishlistproducts table.productlisttable tbody tr.tablerow td.detailscolumn div.wishlistlineitem div.product div.name a {width:600px;}
+.wishlistremove, .wishlistupdate { float:right; padding: 0 0 5px 0; margin-top: 10px; }	
+.wishlistremove a, .wishlistupdate a { text-decoration:underline; font-weight:bold; padding-left:10px;  }	
+.wishlistaddtocart {float:right; text-align:right; margin-top:4px;}
+.wishlistaddtocart .label {float: none;margin: 0 4px 0 0; width: auto;}
+.wishlistaddtocart input.quantityinput {margin: 0 0 5px 0; display:none;}
+.wishlistaddtocart span.label {display:none;}
+.wishlistproducts table.productlisttable tbody tr.tablerow td.iteminfo .wishlistmakeprivate .checkbox input#dwfrm_wishlist_items_i1_public.checkinput {float:left;}
+
+
+/***** WISHLIST: searchresult.isml *****/
+.wishlistsearchresult {margin: 5px 0px 0px 20px; width:740px;}
+.wishlistsearchresult .wishlistsearchform .lastname {display: inline;}
+.wishlistsearchresult .wishlistsearchform .firstname {display: inline;}
+.wishlistsearchresult .wishlistsearchform .email {display: inline;}
+.wishlistsearchresult .wishlistsearchform .wishlistsubmit {display: inline;}
+.wishlistsearchresult .wishlistsearchform .wishlistsubmit button {font-size:8px; padding:0 5px;}
+.wishlistresults {margin-top: 10px;}
+.wishlistresults .wishlistresultsempty { padding:75px 0px 150px 0px; text-align: center;}
+.wishlistresults .wishlistresultsempty .wishlistemptymessage {font-size:13px;font-weight: bold;}
+.wishlistresults .wishlistresultsempty .wishlistemptymessage .value {color: gray;font-style: italic;}
+.wishlistresults table.wishlistresultstable {width: 100%; margin-left:125;}
+.wishlistresults table.wishlistresultstable th {padding:2px 5px; text-align:left; background-color:#d9d0cb;}
+.wishlistresults table.wishlistresultstable td {margin:1px; padding:2px 5px; text-align:left; background-color:#e1e1e1;}
+.wishlistresults table.wishlistresultstable td.view {width: 55px; text-align:center;}
+
+/***** WISHLIST: landing.isml *****/
+.wishlistsearch {height:125px;margin:10px 0px 25px 0px;}
+.wishlistsearch .wishlistsearchform {margin:5px 75px 25px 25px;text-align:right;}
+.wishlistsearch .wishlistsearchform .firstname {margin-top:5px;}
+.wishlistsearch .wishlistsearchform .divider {margin-right: 125px;}
+.wishlistsearch .wishlistsearchform .formactions {margin:5px 0 0 0;}
+
+/**WL buttons**/ 
+
+.wishlistitems .wishlistprivatepublic button.private, 
+.wishlistitems .wishlistprivatepublic button.public{margin:0 !important; padding:0 !important; width:210px; height:24px; border:0; text-align:center; background: url(../images/buttonBg210.gif) no-repeat 0 0; position:relative; zoom:1}
+.wishlistitems .wishlistprivatepublic button.private:hover,
+.wishlistitems .wishlistprivatepublic button.public:hover{background-position: 0 bottom;} 
+.wishlistitems .wishlistprivatepublic button.private span,
+.wishlistitems .wishlistprivatepublic button.public span{ text-transform:uppercase; line-height:28px; position:relative; top:-1px; height:26px; display:block}
+.wishlistitems .wishlistprivatepublic button.private span, x:-moz-any-link, x:default {display:inline-block; line-height:24px;}
+.wishlistitems .wishlistprivatepublic button.public span, x:-moz-any-link, x:default {display:inline-block; line-height:24px;}
+
+
+
+/**WL Add to Basket button**/
+.wishlistaddtocart .addToCart{margin:15px 0 0 0 !important; padding:0 !important; width:150px; }
+
+
+	#tabs 
+	{    
+		padding-bottom: 18px;
+	    padding-top: 11px;
+	    width: 210px;
+		float: left; 
+		position: absolute; 
+		margin-top: 209px; 
+		z-index: 100;
+	}
+	
+	#tabs h2, #tabs p
+	{
+	     margin:0 0 0 16px;
+	}
+	
+	#tabs h2{padding-top: 0; white-space: nowrap;margin-top:-2px;}
+	
+	#tabs p 
+	{
+		text-transform: capitalize; 
+		font-size: .95em; 
+		line-height: 12px; 
+		margin-top: 0;
+	}
+	
+	
+	div#feature_list 
+	{
+		width: 950px;
+		height: 672px;
+		overflow: hidden;
+		position: relative;
+	}
+
+	div#feature_list ul 
+	{
+		position: absolute;
+	}
+
+	ul#tabs 
+	{
+		left: 0;
+		z-index: 2;
+		width: 250px;
+	}
+
+	ul#tabs li 
+	{
+
+	}
+	
+	ul#tabs li img 
+	{
+		padding: 5px;
+		border: none;
+		float: left;
+		margin: 10px 10px 0 0;
+	}
+
+	ul#tabs li a 
+	{	
+		text-decoration: none;	
+		display: block;
+		padding: 15px 10px;
+		width:220px;
+		outline: none;
+		background:  url('../images/global/notActive.png');
+		margin-bottom:2px;
+	}
+	
+	
+	ul#tabs li a p 
+	{
+		
+	}
+	
+	ul#tabs li a:hover 
+	{
+		background:  url('../images/global/notActive.png');
+		
+	}
+
+	.current h2
+	{
+		color: #fff;
+	}
+	
+	.current p
+	{
+		color: #fff;
+	}
+
+	ul#tabs li a.current 
+	{
+		background:  url('../images/global/active.jpg');
+		color: #FFF;
+		width: 100%;
+		padding-right: 0;
+	}
+
+	ul#tabs li a.current:hover 
+	{
+		text-decoration: none;
+		cursor: default;
+	}
+
+	ul#output 
+	{
+		right: 0;
+		width: 950px;
+		height: 672px;
+		position: relative;
+	}
+
+	ul#output li 
+	{
+		position: absolute;
+		width: 950px;
+		height: 672px;
+	}
+
+	ul#output li a 
+	{
+		position: absolute;
+		text-decoration: none;
+		color: #FFF;
+		background: #fff;
+	}
+	
+	ul#output li a:hover 
+	{
+		background: #fff;
+	}
+	
+
+
+
+
+/* Find Address popup (findaddress.isml)
+--------------------------------------------------------------------------------------- */
+#findaddress {  width:400px; text-align:left; }
+#selectshipmentaddress { margin:15px 0;  }
+#selectshipmentaddress div { padding:5px 2px;  }
+#selectshipmentaddress .selected  { background:#316ac4; color:#fff; }
+#selectshipmentaddress .selected a { color:#fff; text-decoration:none; }
+#findaddress .findmanualy { border-top:1px dotted #9a9a9a; padding:12px 0; margin-top:8px; }
+
+
+#findaddress .findaddressselectOut {background: url(../images/dottes-for-search.png) repeat-x 0 100%;   height:33px; padding:0 0 0 0; float:right}
+#findaddress .findaddresmanualyOut .txt{line-height:40px; float:left}
+
+#findaddress .findaddressselect {float:right; }
+#findaddress .findaddresmanualy {float:right; margin:10px 0 0 0}
+
+/* CHECKOUT
+
+--------------------------------------------------------------------------------------- */	
+.pt_checkout .breadcrumb {display: none;}
+.pt_checkout #footertall #latestNews {display: none;}
+.pt_checkout .formfield {
+    clear:both;
+ 
+}
+.pt_checkout span.erroralert {margin-top: 3px;}
+
+.pt_checkout #content{	background: url('../images/bg/bgbodyCheckout.jpg') repeat-y;  padding: 55px 60px 180px 30px;}
+.pt_checkout #rightcolumn {width: 285px; margin-top: 57px; float:right; margin-left:15px;margin-left: 15px;}
+.checkout { width:485px; float:left; margin:0 0px;  }
+.checkout.wide { width:455px; margin:0 15px 40px 0px; }
+.pt_checkout #rightcolumn .checkoutminisummary {
+    float: right;
+    margin-right: 0;
+    width: 285px;
+   /* background: url('../images/global/cartRightBG.gif') repeat-y !important;*/
+}
+
+.checkoutsummaryheader {
+    font-weight: bold;
+    padding: 2px 0 2px 10px;
+}
+
+.checkoutsummaryheader a{
+    font-weight: normal;
+    padding: 2px 0 2px 10px;
+}
+.giftcard-balance{
+	
+	}
+.giftcard-output{
+	
+	}
+.checkoutplaceorder table.placeordertable {padding: 0;width: 540px;}
+.checkout h5 {padding:10px 15px; margin-bottom:15px; }
+.checkoutbilling, .checkoutshipping, .checkoutmultishipping, .checkoutplaceorder, .orderconfirmation {  }
+.checkout .continuecheckout {margin-right:80px; float: right;}
+.checkout .addressform { margin:0; padding:15px 0; }
+.checkout .addressform .formfield.required .value { float:right;padding: 0 0 0 0;margin-right: 80px;text-align: right;}
+.pt_checkout form .value {float: left;}
+#shippingmethodform { margin-bottom:25px; text-align: left;}
+#shippingmethodform .shippingmethod .label { width:28px; }
+#shippingmethodform .shippingmethod .value { float: none;margin-bottom: 8px;margin-top: 15px;padding-left: 25px; width: auto;}
+#shippingmethodform .shippingmethod .value input { margin:-5px 0 0 -15px; vertical-align: middle; }
+#shippingmethodform .shippingmethod .value label {}
+#shippingmethodform .shippingmethod .formfieldtooltip {white-space:nowrap; }
+#shippingmethodform .shippingmethod .shippingdescription { padding-left:0; }
+#shippingmethodform .shippingmethod{margin-bottom:15px;margin-left:-17px;}
+.error{color:#fff; background-color:red; padding:5px;}
+.passwordreset .error {background-color:none; padding:0;}
+.checkout .addressform {}
+.checkout .addressform h5 {display:none}
+.checkout .addressform .label {   margin-right: 15px;
+    padding: 0 0;
+    text-align: left;
+    width: 153px;font-weight:normal;}		
+.checkout .addressform .value {text-align:left; }
+.checkout .addressform .value .textinput {width:217px; float:left; padding:2px 5px; margin-bottom:4px;border:1px solid #ccc; }
+
+.checkout .addressform .required, .checkout .formactions {}
+input[type="hidden"]{
+    width:1px;
+    display:none;
+}
+.summaryproduct .onorder{font-size: 9px;
+    font-weight: bold;
+    line-height: 12px;}
+.checkout .addresslist 
+{ 
+	margin-left:0px; 
+}
+.checkout .selectaddress 
+{ 
+	margin-bottom: 4px;
+    margin-left: 3px;
+    text-align: left;
+}
+.checkout .findAddressLink {
+    clear: both;
+    padding-top: 15px;
+    text-align: right;
+    margin-right: 80px;
+}
+.checkout .findAddressLink #entermanuallylink {
+ white-space: nowrap;
+}  
+.checkout .addresslist select { float: left;
+    margin: 16px 0; }
+.checkout .selectaddress .selectaddressstar {  }
+.checkout .selectaddress .selectaddressmessage { }
+.checkout .requiredcaption {width: 405px; margin-top:10px; margin-bottom:20px; clear:both;} 
+.checkout .requiredcaption .value { float: right; 
+    margin: 0;
+    text-align: right; 
+    width: 420px;}
+
+.checkout .outsideuk .checkbox { float:left; margin-right:6px; }
+.checkout .outsideuk .outsideukmessage { }
+
+.checkout .emailsignup{ margin-top:16px; }
+.checkout .emailsignup label {
+    float: left;
+    clear:none;
+    font-weight: bold;
+    margin: 0px 0 10px 5px;
+    text-align: left;
+    width: 171px;
+}
+.checkout .emailsignup input.checkinput {float:left;}
+.checkout .emailsignup .value a { display:block; margin: 0 0 0 18px; }
+
+#findaddressbutton {margin-right:80px}
+.pleaseselect{display:none; color:red;}
+/***** Shipping *****/
+.checkout .addressoptions {margin: 0px; text-align: left;}
+.checkout .addressoptions .value {margin-bottom: 0;}
+.checkout .addressoptions .checkbox { margin:5px 30px 0 0;}
+.checkout .addressoptions .checkbox input {  margin-top:2px;   }
+.checkout .addressoptions .checkbox label { overflow:hidden; vertical-align: middle; }
+.checkout .giftmessage label {}
+.checkout .giftmessagetext textarea {height: 85px;width: 300px;}
+.checkout .shippingmethods label { }
+.checkout .shippingmethods .shippingdescription { padding-left:22px; }
+.checkout .shippingmethods .shippingpromos {padding-left: 18px;}
+.checkout .shippingmethods .standardshipping {}
+.checkout .shippingmethods .discountshipping {}
+.checkout .shippingmethods .shippingsurcharge {}
+
+/* shipping method details link tooltip */ 
+.shippingdetails {margin-right:250px;  width: 250px;} 
+.shippingdetails .label {float:left;width:200px;}
+.shippingdetails .value {float:none;}
+.shippingdetails .surchargeproduct {padding-bottom:3px;}
+.shippingdetails .surchargeqty {margin-right:3px;}
+.shippingdetails .shippingmethodcost {padding-bottom:3px;}
+.shippingdetails .promo {padding-bottom:3px;}
+.shippingdetails .shippingtotal {padding:3px 0 0;}
+
+.checkout .shiptomultiple {margin: 5px 0px 5px 12px;}
+.checkout .continuecheckout button.shiptomultiplebutton span {}
+.checkout .shippingpromotions {margin:10px 0px;position:relative;}
+
+/***** Multiple Shipping Addresses *****/
+.checkout table.multishipaddressestable {margin-bottom:50px;width: 100%;}
+.checkoutmultishipping td {padding:2px 4px 2px 16px;vertical-align:top;}
+.checkoutmultishipping td.detailscolumn .name {}
+.checkoutmultishipping td.quantitycolumn {padding-top:4px;}
+.checkoutmultishipping td.shippingaddress select.selectbox {width:250px;}
+.checkoutmultishipping td.shippingaddress .editaddress {}
+.checkoutmultishipping td.shippingaddress .editaddress a {}
+.checkoutmultishipping tr.rowgiftcert {}
+.checkoutmultishipping tr.rowgiftcert td {padding:2px 4px 8px 16px;}
+
+/***** Billing/Payment Methods *****/
+.checkout .paymentmethodform {  }
+.checkout .paymentmethodform .creditcardlist select { width:304px; }
+.checkout .paymentmethodform .label {font-weight: normal; margin-right: 0px;  text-align: left;width:180px;}
+
+.checkout .paymentmethodform .value input.textinput { width:212px;padding:2px 5px; float:left; margin-bottom:4px }
+.checkout .paymentmethodform .value select.selectbox {  height:21px; padding:1px; }
+.checkout .paymentmethodform .month .erroralert, .checkout .paymentmethodform .year .erroralert{display:none !important}
+.checkout .paymentmethodform select{margin-bottom:2px}
+
+.checkout .paymentmethodform .cardtype .value select.selectbox { width:224px; }
+.checkout .paymentmethodform .month .value select.selectbox,
+.checkout .paymentmethodform .year .value select.selectbox { width:107px; }
+.checkout .paymentmethodform .year .value select.selectbox { margin-left:10px; }
+.checkout .paymentmethodform .cardnumber .caption { display:none; }
+.checkout .paymentmethodform .cardcvn .value input.textinput { width:75px; }
+.checkout .paymentmethodform .cardcvn .formfieldtooltip a { }
+.checkout .paymentmethodform .savecard .checkbox label { }
+
+
+
+
+.checkout .creditcardlist {margin: 5px 0px 10px 28px;}
+.checkout .selectcreditcard .selectcreditcardstar {}
+.checkout .selectcreditcard .selectcreditcardmessage {}
+.checkout .creditcardlist select {width:400px;}
+.checkout .paymentmethods {margin: 10px 0 15px;vertical-align: middle;width: 85%; text-align: left;}
+
+.checkout .paymentmethods #label_Visa{background:url(../images/creditcards/Visa.gif) center center no-repeat;}
+.checkout .uk .paymentmethods #label_Visa{background:url(../images/creditcards/Visa-uk.png) center center no-repeat; width:136px;}
+.checkout .paymentmethods #label_Master{background:url(../images/creditcards/Master.gif) center center no-repeat;}
+.checkout .paymentmethods #label_Amex{background:url(../images/creditcards/Amex.gif) center center no-repeat;}
+.checkout .paymentmethods #label_PayPal{background:url(../images/creditcards/PayPal.gif) center center no-repeat;}
+.checkout .paymentmethods #label_ideal{background:url(../images/creditcards/ideal.gif) center center no-repeat;}
+.checkout .paymentmethods #label_dotpay{background:url(../images/creditcards/dotpay.gif) center center no-repeat;width:65px;}
+.checkout .paymentmethods #label_giropay{background:url(../images/creditcards/giropay.gif) center center no-repeat;}
+.checkout .paymentmethods #label_directEbanking{background:url(../images/creditcards/sofort.png) center center no-repeat;}
+.checkout .paymentmethods #label_safetypay{background:url(../images/creditcards/safetypay.gif) center center no-repeat; }
+.checkout .paymentmethods #label_Deckers_Gift_Card{background:url(../images/creditcards/giftcard_icon.gif) center center no-repeat;}
+.checkout .paymentmethods #label_Carte_Bleue{background:url(../images/creditcards/blue.gif) center center no-repeat;}
+.checkout .paymentmethods #label_Discover{background:url(../images/creditcards/discover.gif) center center no-repeat;}
+.checkout .paymentmethods .icons{float:left;}
+.checkout .paymentmethods #label_ideal span, .checkout .paymentmethods #label_dotpay span, .checkout .paymentmethods #label_directEbanking span, .checkout .paymentmethods #label_giropay span, .checkout .paymentmethods #label_safetypay span, .checkout .paymentmethods #label_Discover span, .checkout .paymentmethods #label_Carte_Bleue span, .checkout .paymentmethods #label_Deckers_Gift_Card span,.checkout .paymentmethods #label_Visa span, .checkout .paymentmethods #label_Master span, .checkout .paymentmethods #label_Amex span, .checkout .paymentmethods #label_PayPal span{display: none;}
+
+.checkout .paymentmethods h2{margin-bottom: 20px; margin-left: 0px;}
+.checkout .paymentmethods label {display: inline-block; height: 32px;margin-right: 5px;width:42px;vertical-align: middle;white-space: nowrap;}
+.checkout .paymentmethods label.text-radio {display: inline; margin-right:10px;}
+.checkout .paymentmethods input {vertical-align: middle;}
+.checkout .paymentmethods input[type="radio"] {margin-right:13px;margin-left: 2px;}
+.checkout .paymentmethods input.text-radio {margin-right:3px;}
+.checkout .paymentmethods label span.text {display: none;}
+.checkout .paymentmethods label span{display: block; padding-top:10px; padding-right:5px;}
+
+div#pop-up { background:none repeat scroll 0 0 #EEEEEE; border:1px solid #1A1A1A; color:#000000; display:none; font-size:90%; padding:10px; position:absolute; width:280px; }
+
+.checkout .paymentform {display: none;}
+
+.checkoutplaceorder .formactions {
+    float: right;
+    margin-right: 3px;
+    padding-right: 0;
+}
+
+.cardnumber, .cardname, .cardcvn {margin-bottom: 10px;}
+
+.cardcvn span.errormessage {
+  clear:none;
+}
+.cardcvn span.erroralert {
+  display:none;
+}
+
+
+
+/* Coupons (Billing) */
+.couponform .redemption {margin-left:154px;}
+.couponform .redemption .success {}
+
+/* Gift Certificate */
+.checkout .giftcertcouponform { margin-bottom:20px;}
+.checkout .giftcertcouponform h2 {}
+.checkout .giftcertcouponform .requiredindicator { display:none; }
+.checkout .giftcertcouponform .couponform .formfield { margin-bottom:10px; }
+.checkout .giftcertcouponform .couponform .formfield .label {  }
+.checkout .giftcertcouponform .couponform .formfield .value .textinput { width:180px; }
+.checkout .giftcertcouponform .couponform button.apply {background: none repeat scroll 0 0 transparent;
+    border: medium none;
+    float: left;
+    margin-top: 5px;
+    text-decoration: underline;}
+
+
+.checkout .giftcertform .helptext {}
+.checkout .giftcertform { margin:15px 0 25px; }
+.checkout .giftcertfield .balance,.giftcertfield .redemption {margin: 0 0 0 153px;}
+.checkout .giftcertfield .redemption a {}
+.checkout .giftcertfield .redemption a span {margin: 0 0 0 3px;}
+.checkout .helptext {margin: auto;width: 95%;}
+.checkout .helptext p {margin: 5px 0px 5px 0px;}
+
+/***** Checkout Summary *****/
+.checkoutminisummary h2 {}
+.checkoutsummaryheader {padding:2px 0 2px 0px; text-align: left;}
+.checkoutsummaryheader a.orderedit {text-decoration: underline;float: right; margin-top: 3px; text-transform: uppercase; }
+.checkoutminisummary .checkoutordertotals, .checkoutminisummary .minishipment, .checkoutminisummary .minibillingaddress, .checkoutminisummary .minipaymentinstrument {margin: 0px 0px 10px 0px;}
+.checkoutminisummary .header {margin: 0px 0px 5px 0px; font-weight: bold;}
+.checkoutminisummary .header a{font-weight: normal;}
+.checkoutminisummary .header a { }
+.checkoutminisummary .header a:hover {}
+
+#rightcolumn .header {margin-top:13px;}
+/* Checkout Summary Order Totals */
+.checkoutordertotals { margin-bottom:15px !important; width: 265px;}
+.checkoutordertotals .ordertotals {}
+.checkoutordertotals .ordertotals table.ordertotalstable {
+    float: none;
+    margin-left: -4px;
+}
+
+.checkoutordertotals .ordertotals table.ordertotalstable tr {
+	text-align: right;
+	float: none;
+	width: 285px;
+}
+
+.pt_checkout #rightcolumn .checkoutminicart .image {
+    left: -125px;
+}
+
+.checkoutordertotals .ordertotals table.ordertotalstable .label a {
+	clear: both;
+}
+
+.checkoutordertotals .ordertotals table.ordertotalstable .label {float:right;}
+.checkoutordertotals .ordertotals table.ordertotalstable .ordertotal .label {font-weight: bold;}
+.checkoutordertotals .ordertotals table.ordertotalstable .label .shippingname { }
+.checkoutordertotals .ordertotals .ordertotal .label {}
+.checkoutordertotals .ordertotals .ordertotal .value {padding-left:5px;}	
+.checkoutordertotals .ordertotal {margin-top: 0px;padding: 0px 0px 10px 0px;}
+.checkoutplaceorder .editcart {margin:10px 15px 0 0; float:left; }
+.submitorder {    clear: none;
+    float: left;
+    margin-left: 10px !important;}
+
+/* Checkout Summary Right column blocks (shipping address, billing address, payment method) */
+.minishipment .header, .minibillingaddress .header, .minipaymentinstrument .header 
+{
+	clear:both;
+	float: left;
+    margin-top: 20px;
+    text-align: left;
+    text-transform: uppercase; 
+    /*width: 180px; */
+}
+.minishipment .header a, .minibillingaddress .header a, .minipaymentinstrument .header a {margin-left: 15px; text-decoration: none; float: right; padding-left: 10px; border-left: 1px solid black;}
+.minishipment .details, .minibillingaddress .details, .minipaymentinstrument .details 
+{
+	line-height:18px;
+    text-align: left;
+    clear:both;
+}
+.placeordertable .orderdiscount{float:right;}
+.placeordertable .orderdiscount span{float:left;}
+.placeordertable .orderdiscount .value{margin-left:10px;}
+.placeordertable .orderdiscount .label{font-weight:bold;}
+.placeordertable  .rowcoupons{margin-top:15px;}
+.pt_checkout .checkoutminisummary .summaryproduct {
+   	border-bottom: none;
+    line-height: 1.4;
+    padding: 13px 0 3px 110px;
+    position: relative;
+    text-align: right;
+/*    height: 90px;    */
+    margin-right: 30px;
+} 
+
+.pt_checkout .checkoutminicart .name {
+    font-size: .9em;
+    font-weight: bold;
+    text-align:left;
+    text-transform:uppercase;
+}
+
+.pt_checkout .checkoutminicart .attribute {
+    font-size: .8em;
+    margin: 3px 1px 0 0;
+}
+
+.pt_checkout #rightcolumn .checkoutminicart .pricing {
+    
+    display: block;
+    margin-right: 0px;
+    text-align: right;
+	font-size: .8em;
+}
+
+/***** Place Order *****/	
+.checkoutplaceorder { margin:20px 0 0; }
+.checkoutplaceorder table.placeordertable { padding:0; width:100%; }
+.checkoutplaceorder table.placeordertable thead th 
+{
+	font-weight: bold;
+    padding: 4px 10px 4px 0; 
+    text-transform: uppercase;
+}
+.checkoutplaceorder table.placeordertable tfoot {  }
+.checkoutplaceorder tr.tablerow { }
+.checkoutplaceorder tr.tablerow td { padding:15px 0; }
+.checkoutplaceorder tr.tablerow td.imagecolumn img { padding-right:10px; width:85px; }
+.checkoutplaceorder tr.tablerow td.detailscolumn { width:185px; text-align:left; }
+.checkoutplaceorder .detailscolumn { width:185px; text-align:left; }
+.checkoutplaceorder td.detailscolumn .product { width:175px; margin-right:10px; text-align: left; }
+.checkoutplaceorder td.detailscolumn .label,
+.checkoutplaceorder td.detailscolumn .value,
+.checkoutplaceorder td.detailscolumn .attribute {float:none;}
+.checkoutplaceorder td.detailscolumn .name { text-transform:uppercase;  padding-bottom:3px; margin-bottom:10px; }
+.checkoutplaceorder td.detailscolumn .name a { margin-bottom:10px; }
+.checkoutplaceorder tr.tablerow td.quantitycolumn { width:20px; vertical-align:top; padding:45px 0 20px;  }
+.checkoutplaceorder tr.tablerow td.quantitycolumn .quanity { }
+.checkoutplaceorder tr.tablerow td.quantitycolumndetails { width:80px; vertical-align:top; padding:45px 10px 20px 0;  }
+.checkoutplaceorder tr.tablerow td.itemtotalcolumn { text-align:right; vertical-align:top; padding:45px 0 20px; width: 55px; }
+
+.checkoutplaceorder .placeorder_footer {padding-top:34px;   }
+.checkoutplaceorder .placeordertotals { float:right; width:355px; margin-bottom:30px; }
+.checkoutplaceorder .placeordertotals .ordertotals { float:right;  margin-right: 0;width:auto;}
+
+/***** ORDER CONFIRMATION (confirmation.isml) *****/ 
+.orderconfirmation { padding:20px 26px; }
+.orderconfirmation .orderheader { background:none; padding:10px 10px; font-size:12px; text-align: left; }
+.orderconfirmation .orderheader .orderdate { margin-bottom:8px; }
+.orderconfirmation .thankyoumessage { text-align:left; margin:0 10px; }
+.orderconfirmation .thankyoumessage h1 { float:none; margin-left:-3px; clear:both; } 
+.orderconfirmation .thankyoumessage p {clear:both;margin-bottom:10px;}
+.orderconfirmation .thankyoumessage a {} 
+.orderconfirmation .thankyoumessage a:hover {}
+.orderconfirmation .actions { margin:50px 260px 30px 0; }  
+ 
+.orderconfirmationdetails .orderpayment { padding:0 10px; margin: 20px 0;}
+.orderconfirmationdetails .orderpayment h5 { display:none;}
+.orderconfirmationdetails .orderpaymentdetailstable { border:none; border-collapse:collapse; width: 800px; margin: 10px 0;} 
+
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling {float: left; text-align: left; }
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentinstruments {float: right; text-align: left; line-height: 1.8em; vertical-align: top; width:230px; }
+.orderconfirmation .orderconfirmationdetails .ordershipments .rightCreateAccountBlock .shippingaddress { width: 220px;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary {text-align:left; }
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody {width:450px; }
+.orderconfirmation .orderconfirmationdetails .ordershipments .rightCreateAccountBlock {float: left; text-align: left; width: 230px !important; line-height: 1.5em;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary {text-align:left; padding-left: 0px; width: 330px; vertical-align: top;} 
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable {width:640px; text-align:left; float:left; padding-left: 10px; margin: 0;}
+.orderconfirmationdetails .orderpaymentdetailstable tbody tr td.orderbilling .label, td.orderpaymentinstruments .label, td.orderpaymentsummary label paymenttotal .label {float:left; text-transform:uppercase; font-weight: bold; padding-right: 5px; } 
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentinstruments div.paymentamount span.label {font-weight:normal;} 
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .label {text-transform:uppercase; font-weight: bold;}
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product {margin-bottom: 10px;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling .miniaddress {padding: 0; margin:0; font-size: 0.95em;}
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product{margin-bottom: 30px;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals {padding: 5px 0 0 0; margin: 0; border-top:none; line-height: 1.8em;}
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable thead tr, .rightCreateAccountBlock .shippingaddress .ordershipmentaddress .label {text-transform:uppercase; font-weight: bold; padding-bottom: 5px; }
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable thead tr th {font-weight: bold; padding-bottom:20px;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals table.ordertotalstable .label {font-weight: normal; text-decoration: none;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals table.ordertotalstable tbody tr.ordertotal {font-weight:bold; text-decoration: uppercase;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentsummary .orderdetailsummary .ordertotals table.ordertotalstable tbody tr.ordertotal td span.label {font-weight:bold; text-decoration: uppercase;}
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product .productattributes .label {float:left; padding-right: 5px;}
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product div.name {padding-bottom:10px; text-transform: uppercase;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderbilling .miniaddress .name {clear:both; padding-top: 5px;}
+.orderconfirmation .orderconfirmationdetails .orderpayment .orderpaymentdetails table.orderpaymentdetailstable tbody tr td.orderpaymentinstruments .minicreditcard .owner {clear:both;}
+.orderconfirmation .orderconfirmationdetails .ordershipments { border-top: 1px solid #C9C9C9; padding-top: 30px; }
+.orderconfirmation .orderconfirmationdetails .ordershipments { border-top: 1px solid #C9C9C9; padding-top: 30px; }
+.orderconfirmation .orderconfirmationdetails .ordershipments .ordershipment table.ordershipmenttable tbody tr td .product .name a:hover {color:#a2a2a2 !important;}
+.orderconfirmation div.orderconfirmationdetails div.orderpayment div.orderpaymentdetails .orderpaymentinstruments .orderpaymentinstrumentsgc > .label {width:100%;}
+/* Order Confirmation Create Account */
+
+.pt_orderconfirmation .createaccount {margin:0 0 20px}
+.pt_orderconfirmation .createaccount p {margin:0px;} 
+.pt_orderconfirmation .createaccount .formfield{margin:3px 0 0 0;}
+.pt_orderconfirmation .createaccount .firstname{display:none;}
+.pt_orderconfirmation .createaccount .lastname{display:none;}
+.pt_orderconfirmation .createaccount .caption{display:none;}
+.pt_orderconfirmation .createaccount .label {float:none;text-align:left;}
+.pt_orderconfirmation .createaccount .actions {margin:15px 0 15px 0;}
+.pt_orderconfirmation .createaccount input.textinput, .pt_orderconfirmation .createaccount input.textinputpw {margin:0;width: 170px;}
+
+/***** Checkout Progress Indicator *****/
+.checkoutprogressindicator { padding:0 0 40px; font-size: 1.3em; }
+.wide .checkoutprogressindicator { padding-left:0px;}
+.checkoutprogressindicator .label,.checkoutprogressindicator .value {text-decoration: none;}
+.checkoutprogressindicator .label, .checkoutprogressindicator .value a {text-decoration: none !important;}
+.checkoutprogressindicator .active { float:left; margin-right:18px; text-decoration: none !important;font-weight: bolder;}
+.checkoutprogressindicator .inactive {float:left; margin-right:18px; text-decoration: none !important;}
+.checkoutprogressindicator a .active {text-decoration: none !important;}
+.checkoutprogressindicator a .inactive {text-decoration: none !important;}
+.checkoutprogressindicator .active a{text-decoration: none !important;}
+.checkoutprogressindicator .inactive a{text-decoration: none !important;}
+
+/* ORDER TOTALS - Cost and Discount Details (used in Mini Cart, Cart, Checkout, Order Details)
+--------------------------------------------------------------------------------------- */
+.ordertotals {border-top: 1px solid #CCCCCC;
+    margin-right: -20px;
+    margin-top: 30px;
+    padding-top: 10px; width: 290px;}
+.ordertotals .label {float:left;margin: 0 3px 0 0; text-align:right;}
+.ordertotals .value {float:right;text-align:right; white-space: nowrap;width:auto; margin: 0 0 0 5px;}
+.ordertotals .shippingname {}
+
+.pt_checkout #paymentmethods form .value {
+    float: left;
+   
+    margin-bottom: 0;
+    width: auto;
+}
+.editdetails {text-align: left;}
+
+.pt_checkout .checkoutminisummary .checkoutminicart {
+    color: #23150C;
+    font-size: 12px;
+    width: 315px;
+}
+.orderpaymentdetailstable .ordertotals .label {
+    float: none;
+    margin: 0 3px 0 0;
+    text-align: right;
+    white-space: inherit;
+}
+.pt_checkout .formfield select {float:left; margin-bottom: 5px; width: 230px;}
+.checkoutSpacer {width: 400px; border-top: 1px solid #ccc; padding-top: 23px;}
+.requiredmessage {color: red;}
+.minishipment .header a {margin-left: 15px; text-decoration: underline; float: right; padding-left: 10px; border-left: 1px solid black;}
+
+
+/* OTHER PAYMENT METHODS
+--------------------------------------------------------------------------------------- */
+/***** Bill Me Later *****/
+.checkout .billmelater .bmlform {margin: auto;width: 95%;}
+.checkout .bmlbirthday {float:left;width:65%;white-space:nowrap;}
+.checkout .bmlssn {float:left;width:35%;white-space:nowrap;}
+.checkout .billmelater .bmlbirthday .label, .bmlssn .label {text-align:left;width:auto;}
+.checkout .billmelater .bmlbirthday select {margin-right:2px;}
+.checkout .billmelater .day {width: 53px;}
+.checkout .billmelater .month {width: 70px;}
+.checkout .billmelater .year {width: 60px;}						
+.checkout .billmelater .ssn {width: 60px;}	
+.checkout .bmltermsandconditions {overflow: scroll;clear: both;height: 440px;width: 640px;}
+.checkout .bmliagree {margin: 0px 0px 25px 0px;text-align:right;}
+.checkout .bmliagree input.checkinput {vertical-align: top;}
+.checkout .giftcertused {margin:25px 75px;text-align:center;}
+ #validatedialogcontainer input{
+ clear:right;
+ float:none;
+ margin:5px 0 0 0;
+ }
+ #updateAddressButton, #dialogCancelBtn{
+ float:left;
+ margin:25px 5px;
+  clear:right;
+ }
+#dialogCancelBtn{margin-left:0;}
+
+
+.pt_returns #content{background:url(../images/bg/contentBG.gif) center center repeat-y; padding-top:15px;}
+.pt_customerservice #content {background:url(../images/bg/contentBG.gif) center center repeat-y; padding-top:15px;}
+.pt_customerservice .contact-block{width:350px;float:left;}
+.pt_customerservice  .customerserviceBlock{width:600px; float:right; margin-top: 50px;}
+ #csnaigation .csnav{float: left; width:285px;    }
+ #csnaigation .csnav a,  #csnaigation  #callUs {   display: block;
+   
+    padding: 15px 40px 20px 65px;
+    text-align: left;
+    text-decoration: none;
+    width: 140px; }
+#csnaigation.navgroup #callUs.csnav span {*border:none; *float:left; *margin:0; padding:0;}
+#csnaigation .csnav a{ border-top:solid 1px #23160e; border-bottom:solid 1px #23160e; margin-left:50px; }
+#csnaigation #liveChat a{background:transparent url(../images/bg/Chat.png) left top no-repeat; }
+#csnaigation #callUs {background:transparent url(../images/bg/callus.png) 52px top no-repeat; }
+#csnaigation #emailUs a{background:transparent url(../images/bg/emailus.png) left top no-repeat;}
+#csnaigation #liveChat a:hover{background:#23160e url(../images/bg/Chat.png) 190px  -124px no-repeat; color:#fff;margin-left: -140px;
+    padding-left: 255px;
+    width: 140px; }
+#csnaigation #emailUs a:hover{background:#23160e url(../images/bg/emailus_over.png) 190px top no-repeat; color:#fff;margin-left: -140px;
+    padding-left: 255px;
+    width: 140px;   }
+#csnaigation #emailUs a:hover h2, #csnaigation #liveChat a:hover h2, #csnaigation #emailUs a:hover span, #csnaigation #liveChat a:hover span{color:#fff;}
+#csnaigation  #callUs {padding: 20px 0 30px 115px;
+    width: 220px;}
+    #csnaigation .csnav a span{width:180px;display:inline-block;}
+ #csnaigation .csnav a span.helplink{display:block;text-decoration:underline;}
+ 
+#countcontainer img { margin-bottom: 0px !important;}
+
+.pt_customerservice h2, .pt_customerservice  a span.csnavHeaders {
+    color: #23160E;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.pt_customerservice h1 {
+    color: #23160E;
+    font-size: 14px;
+    text-transform:uppercase;
+}
+
+.pt_customerservice .navgroup, .nohitscontainer .navgroup {float:left; width:300px; float:left; margin-right:45px; text-align:left;}
+.pt_customerservice .navgroup h5 ,.nohitscontainer .navgroup h5 {color:#23160e; font-size:1.1em; }
+.pt_customerservice .navgroup a, .nohitscontainer .navgroup a {color:#23160e;} 
+.helplink {color:#23160e; text-transform:uppercase; margin:10px 0 0 0;}
+.leftcs {float:left; width:240px; padding-left:10px;}
+.rightcs {float:right; text-align:left; margin-right:0; width:260px;}
+.customerservicegroup {margin-bottom:25px;}
+
+.pt_customerservice .navgroup, .nohitscontainer .navgroup {margin-bottom:15px; margin-top: 60px;}
+.pt_customerservice .pageTitle {display:none;}
+
+.welcomeMessage {margin-bottom:35px;}
+
+.pt_customerservice .navgroup img, .nohitscontainer .navgroup img {float:left; margin-right:15px; margin-bottom:25px; margin-top:10px;}
+
+#hoursOfOperation {
+border-bottom: 1px solid #23160E;
+    float: left;
+    margin-left: 50px;
+    padding: 25px 0 15px;
+    text-align: left;
+    width: 245px;
+}
+.contactus {width:500px; text-align:left; float: right;}
+.contact-counterfeit {width:500px;}
+
+
+.contactus .formactions .button163x26 
+{
+	float: right;
+    margin-right: 14px;
+    margin-top: 10px;
+}
+
+#requiredMessage {float: right; margin-right: 14px; margin-top: 5px;}
+
+	
+	
+/* CART
+--------------------------------------------------------------------------------------- */
+
+.pt_cart #content
+{
+	background: url('../images/bg/bg_cart.jpg') repeat-y center center; 
+ 
+	padding-bottom: 50px;
+}
+
+.pt_cart form .label { text-align:left;}
+#rightcolumn.cart-rightcolumn { width:210px;padding: 0px 40px 0px; float:right;}
+#shoppingCart{padding-top:15px;}
+.cart { margin:0 0 0 26px; padding:0; width:600px; }
+.cart .cartempty {text-align: right;height: 300px;padding: 60px 30px 0 0;}
+.errorform {margin-left:0; color:red;text-align:left;}
+.cart .errormessage {white-space: normal; padding:0 20px 0 20px; }
+.cart .odd { }
+.cart table.carttable { padding:0;   }
+.cart table.carttable thead th {
+    font-weight: bold;
+    padding: 4px 0;
+    text-transform: uppercase;
+    font-size:1em;
+    text-align:left;
+}
+.cart table.carttable thead th.productth{width:227px;}
+.textright {text-align: right !important;}
+.cart table.carttable tfoot { }
+.cart tr.tablerow { }
+.cart tr.tablerowspace{height:15px;}
+.cart tr.tablerow td { }
+.cart tr.tablerow td.imagecolumn { padding-right:25px; width:85px; }
+.cart tr.tablerow td.detailscolumn { width:350px; text-align: left;  }
+/*.cart td.detailscolumn .product { width:100%;  }*/
+
+.cart td.detailscolumn .label,
+.cart td.detailscolumn .value,
+.cart td.detailscolumn .attribute {float:none; text-align: left; font-weight: normal;}
+.cart td .name { border-bottom: 1px solid #CCCCCC; height: 3px; margin-bottom: 8px; margin-top: 0; padding-bottom: 30px; text-align: left; text-transform: uppercase; }
+.cart .discount{text-align:left;}
+.cart td.itemtotalcolumn .name {margin-left:-3px; padding-right:3px;}
+.cart td.quantitycolumn .name, .cart .quantitycolumndetails .name {margin-left:-2px;padding-right:2px;}
+
+.cart td.detailscolumn .name a {   text-decoration:none; margin-bottom:10px; }
+#shoppingCartTable .imagecolumn img {width:112px;}
+.cart tr.tablerow td.quantitycolumn {float: right;
+    text-align: left;
+    vertical-align: top;
+    width: 150px; }
+    .textbutton { text-transform:capitalize !important;;}
+.cart tr.tablerow td.quantitycolumn .inputbox {float: left; display:block; text-align:center; margin-right: 5px; line-height:19px;   }
+.cart tr.tablerow td.quantitycolumn button.textbutton { border: medium none;cursor: pointer;margin-top: -9px;}
+.cart tr.tablerow td.quantitycolumn button.textbutton span {   padding:0; }
+.cart td.quantitycolumndetails {  vertical-align: top;}
+.cart td.quantitycolumndetails a { }	
+.cart td.quantitycolumndetails button.textbutton {margin: 0 0 0 -3px;}
+.cart .itemtotals {float:right; margin-top:35px; white-space:nowrap; }
+.cart .itemtotals .label {float:none;text-align:right;width:auto;font-weight:normal;}
+.cart .itemtotals .value {float:none;text-align:right;}
+.cart .itemtotals .promo { width:140px;}
+.cart .itemtotals .standardprice .value {text-decoration:line-through;}
+.cart .itemtotals .salesprice {color:red;}
+.cart .itemtotals .promoprice {color:red;}
+.cart .itemtotal, .cart .itemtotal .label {font-weight:bold;}
+.cart .itemtotals .itemtotal { padding:10px 0 0;}
+.cart td.itemtotalcolumn { text-align:right; vertical-align:top; width:230px;}
+.cart tr.rowcoupon { border-top: 1px solid #ccc;   padding:4px 10px; }	
+.cart tr.rowbundlespacer td {padding: 0 0 20px 0;}
+.cart tr.rowgiftcert td.detailscolumn p {color: red;}
+.cart .imagecolumnbundle {float:left;text-align: center;width: 60px;vertical-align: middle;}
+.cart .imagecolumnbundle img {width: 90%;height: 90%;}
+.cart tr.rowbundle .stockstate {display:none;}
+.cart td.detailscolumn {padding-bottom:10px;text-align: left;vertical-align:top;}
+.cart td .promo {color:red; font-weight:bold;}
+.cart tr.rowcoupons td.detailscolumn .name {text-decoration:underline;}
+.cart tr.rowcoupons td.detailscolumn .label { text-align:left;width:auto;}
+.cart tr.rowcoupons td.detailscolumn .value {color:red; }
+.cart td.applycoupon {padding:0;text-align:right}
+.cart .productlistitem {color: Green;display: block;font-weight: bold;}
+.stockstate li{list-style: none;}
+.stockstate .onorder {color: #cc0000;display: block; line-height:15px;}
+.stockstate .notavailable {margin-top:4px;color: #cc0000; display: block;}
+.stockstate ul{clear:both;}
+.cart .couponcode { border-top: 1px solid #CCCCCC;float: right;margin:10px 0 0 0;padding:20px 0 10px 0; }
+.cartfooterslot{text-align:right; float:right;}
+.cartfooterslot .htmlslotcontainer{border-top: 1px solid #CCCCCC;width:398px; padding-top:10px;}
+.cart .couponcode .label { color:#3b3b3b; font-weight:normal; font-size:10px;  margin-top:5px; text-transform: uppercase;  }
+.cart .couponcode input.couponinput {margin:4px 12px 0; float:left;}
+.cart .couponcode .errormessage {text-align: right;padding: 2px 0 4px 0;width:auto;color:red;}
+.cart .couponcode .errormessage .couponcode{margin: 25px 0 0;}
+.cart .priceadjustment {color: red;}
+.cart .actions form {float: right;}
+.cart .actions form.formupdatecart {float: none;}
+.cart .actions button.textbutton { margin:3px 35px 0 0;  }
+.paypalcheckout button.textbutton { margin: 15px -12px 0 0 !important;}
+.cart .actions button.textbutton span {      }
+.cartfooter { margin:0px 0 45px; }
+.cartfooter .cartfooterslot { float:left; margin-top:15px; }
+.cartfooter .ordertotals { float:right; width:365px; margin:0px 0 45px; clear:both; }
+.cartfooter .ordertotals table { width:100%; }
+.cartfooter .ordertotals td {padding: 0 0 5px 0;}
+.cartfooter .ordertotal span {line-height: 18px;}
+.cartfooter .ordertotal .label {font-weight: bold;}
+
+/***** Cart Login *****/
+.cartloginpanel{margin-bottom:25px;}
+.cartlogin { padding:0; }
+.cartlogin .logincustomers { border:none; float:none; width:100%;  }
+.cartlogin .logincustomers fieldset {  }
+.cartlogin .logincustomers h3 { font-size:1.1em;   }
+.cartlogin .logincustomers h3 span {   }
+.cartlogin .accountwelcome {margin:0px; color:#6F6F6F}
+
+.cartlogin .returningcustomers { text-align:left; }
+.cartlogin .returningcustomers p { display:block; margin:0; text-align:left; font-weight: bold; font-size: .85em;}
+.cartlogin .returningcustomers a { text-decoration:underline;}
+.cartlogin .returningcustomers .label { font-weight:normal; line-height:10px; margin:0; width:auto; text-align:left;   }
+.cartlogin .returningcustomers .label .requiredindicator {display:none;}
+.cartlogin .returningcustomers .rememberme {float: left;margin: 10px 0 15px 0;}
+.cartlogin .returningcustomers .formactions {margin: 2px 0 4px 0;text-align:left;}
+.cartlogin .returningcustomers .forgotpassword { }
+.cartlogin .returningcustomers .erroralert{ }
+.cartlogin .returningcustomers input.textinput, .cartlogin .returningcustomers input.textinputpw {clear:both; width: 153px; padding:3px;  }					
+.cartlogin .cartnewcustomer, .cartlogin .cartguest {margin-bottom:25px; }
+.cartlogin h3{margin-bottom:5px; }
+.cartlogin .cartguest p, .cartlogin .cartnewcustomer p{margin-bottom:10px; }
+.cartlogin h4 {   margin: 0 0 10px;}
+#PasswordReset{margin-bottom:15px;}
+#paypalLink {background: url('http://demandware.edgesuite.net/aaff_prd/on/demandware.static/Sites-UGG-US-Site/-/default/v1355861897594/images/global/paypalLink.gif') no-repeat;width: 72px; height: 23px;}
+#verisignLink {width: 92px; height: 50px;background: url('http://demandware.edgesuite.net/aaff_prd/on/demandware.static/Sites-UGG-US-Site/-/default/v1355861897594/images/global/verisign.jpg') no-repeat;}
+.pt_cart .accountwelcome .welcomemessage {padding:0;float: left;font-size: 1em;font-weight: normal;letter-spacing: 0.2em; margin-bottom: 12px; margin-top: 15px;position: relative;text-transform: uppercase;width: 250px; text-align:left;}
+#PasswordResetForm form .label {
+
+    font-weight: normal;
+    text-transform:uppercase;
+
+    width:300px;
+}
+.pt_cart .button163x26{float: left;}
+#notSoAndSo {text-align: left; margin-bottom: 15px;}
+.pt_cart .thumbnail img {width: 60px;height: 72px;}
+/** Care product cart **/
+.pt_cart .product_care{
+	clear:both;
+	padding:0;
+	}
+.pt_cart .product_care .thumbnail img {
+    width: 125px;
+    height:auto;
+}
+.pt_cart  .product_care .button {
+  
+    padding:0 5px;
+}
+.pt_cart  .product_care  .producttile {
+   
+    clear: none;
+    display: inline;
+    float: left;
+    height: 280px;
+    margin: 0 30px 0 0;
+    overflow: hidden;
+    width: 125px;
+}
+.pt_cart .producttile .image .quickviewbutton a {
+ 
+    display:none;
+}
+.pt_cart #carecart{
+	
+	clear:both;
+	
+	}
+
+.lastvisited {margin-top: 20px; }
+.lastvisited .jcarousel-clip {margin-top: 5px !important;}
+#continueShoppingStyle{height: 24px; margin-right: 50px;}
+.textbutton{background:none; border: none;}
+.customerserviceTable {float:left;	width:160px; margin-left:15px;}
+.sitediv1, .sitediv2, .sitediv3, .sitediv4, .sitediv5 {margin-bottom:30px;float:left;width:200px;}
+.first {width: 250px; float:left;}
+.sitegroup {float:left;}
+.group1, .group2  {float:left;width:200px;}
+.ptwishlist .onorder {float:left;}
+
+/***** breadcrumb search refinement *****/
+
+.breadcrumb .refinementvalue img { position:relative; top:2px; }
+
+/*Videos*/
+
+       #videoScroller {height: 132px; width: 950px; background-color: #000; margin-top: -3px;}
+       .videoItem{height: 100px; width: 175px; background-color: red !important; margin-top: 16px; margin-right: 15px; float: left;}
+		div.sc_menu {
+		  /* Set it so we could calculate the offsetLeft */
+		  position: relative;height: 115px; background-color: #000;
+		  width: 950px; margin-top: -3px;
+		  /* Add scroll-bars */
+		  overflow: auto;}
+		ul.sc_menu {
+		  display: block;
+		  height: 102px;
+		  /* Max width here, for users without Javascript */
+		  width: 1500px;
+		  padding: 11px 0 10px 4px;
+		  /* Remove default margin */
+		  margin: 0;
+ 
+		  list-style: none;
+		}
+		.sc_menu li {
+		  display: block;
+		  float: left;
+		  padding: 0 4px;
+		}
+		.sc_menu a {
+		  display: block;
+		  text-decoration: none;
+		}
+		#videoholder{
+			width:950px;
+			height:534px;
+		}
+		.sc_menu a.active img {
+			opacity: 1; filter: alpha(opacity=100) !important; 
+			}
+		#mediaVideo{
+		display:none;
+		}
+		.sc_menu span {
+		  /* We want a caption to display on the next line */
+		  display: block;
+		  margin-top: 3px;
+		  text-align: center;
+		  font-size: 12px;
+          margin-top: -70px;
+          width: 172px;
+          height: 20px;
+          background-color: #000 !important;
+		  color: #fff;
+		}
+	.sc_menu img {  width: 172px;}
+	.sc_menu img.plate {display:none;} 
+	.sc_menu span { display: none;margin-top: 3px; text-align: center;font-size: 12px;color: #fff;margin-top: -70px;width: 172px;height: 20px;background-color: #000 !important;}
+	.sc_menu a:hover span {display: block;}
+	#mediaContent {margin-bottom: 20px;padding-top:5px;}
+	#mediaContent img{padding-bottom: 8px;}
+	#mediaLeft {width: 310px;float: left;margin-right: 10px;}
+	#mediaLeft #topleft,#mediaLeft #bottomleft, #mediaMiddle #middletop, #mediaMiddle #middlecenter, #mediaMiddle #middlebottom,#mediaRight #topright ,#mediaRight #bottomright  {display:block;background-repeat:no-repeat;}
+	#mediaMiddle {width: 310px;float: left;margin-right: 10px;}
+	#videoholder{position:relative;background-color:#000; /* z-index:-20; */}
+	.videoImage, #videoid{position:absolute;left:0;}
+	.videoImage{z-index:25;cursor:pointer}
+	#videoid{/*z-index:20;*/}
+	#mediaRight {width: 310px;float: left;}
+	
+
+/***** Mens Category *****/
+body.grey-strip {background-color:#949599;}
+ 
+ 
+.bottomleft img {width: 396px;} 
+ 
+ .disabledmessage {
+ 	float: left;
+ 	padding-top:60px;
+ 	background-image: url("../images/bg/javascript_bg.gif"); 
+    height: 97px;
+    text-align: center;
+    width: 949px;
+ }
+ 
+.disabledmessage p {
+	background-image: url("../images/bg/js_alert.png");
+	background-repeat:no-repeat;
+	width:400px;
+	color:#870000;
+	font-weight:bold;
+	padding-left:60px;
+	margin-left:auto;
+	margin-right:auto;
+	height:45px;
+}
+/*-----------------COUNTERFEIT SITE STYLE---------------------*/
+.generalnavcount{height:50px;}
+#mybuyszone404{background-color: #FFFFFF;
+    margin:15px 0px;
+    padding-left: 10px;
+    width: 341px;}
+    
+/*----------------Content Images with light Green hover bar and text---------------------*/
+.pt_customerservice #content {padding-top: 0px; margin-top:0;}
+#topMain {margin-bottom:10px;}
+#middleMain {margin-bottom:10px;}
+#middleMain .hovertext {float:left; margin-bottom:10px;}
+#bottomMain .hovertext {float:left} 
+.hovertext {left: 0;left: 0;position: relative;}
+.hovertextcontent {position: relative; top:0; left:0;}
+.hovertextdiv {background: #FFFFFF no-repeat scroll 0 0 ; font-size: 1em; text-align:center; position: absolute; display:none; bottom:0; width: 100%; opacity:0.8; padding-top:10px; padding-bottom:15px; z-index: 9999; left: 0; text-align: center; }
+.hovertextdiv p {margin: 10px auto; color: #777; text-align: center; }
+.hovertextdiv a {text-decoration: none;}
+.hovertextdiv a span { color: #777; text-align: center; text-transform: uppercase; text-decoration: none;}
+.hovertextdiv a span:hover { color: #999; text-decoration: none;}
+a.imageInfoLink img {float:left;}
+#leftImage {margin-right:10px;}
+#sup {font-size: 6px; text-align: top;}
+
+
+/*----------------Top Sellers---------------------*/
+.topseller{clear:both;padding-top: 30px;}
+.topseller .level1{float:right;position:relative;}
+.topseller li{float:left;}
+.topseller .level2 { left: auto;position: absolute;right: 0;top: 22px;}
+.topseller .line {border-bottom: 1px solid #CCCCCC;float: left;height: 12px;width: 470px;}
+.topseller .level2 li{float:none;}
+.topseller .categorymenu{clear:both;height:50px;}
+.lifstyletop {float:right;height: 425px;clear: both;width:630px;}
+.topseller .producttile {clear:none;}
+.prodtile {float:left;margin-right:15px; width:305px;}
+.prodtile.last {margin-right:0px}
+.topseller h2{font-weight:bold;float:left; border-right:1px solid #ccc; width: 305px;line-height:15px;}
+.categorylanding{clear:both;}
+.categorylanding .categorymenu {clear: none;padding-left: 0;}
+.sitemap{width:200px; float:left; padding-bottom: 25px;}
+.produl{overflow:auto;}
+.allul ul {float: left;min-height: 200px;padding-bottom: 25px;width: 200px;}
+.gry_header{font-size:12px; text-transform:uppercase;padding-bottom:4px;}
+/*Estimated Delivery time*/
+.estResults {text-align: left;padding-bottom: 10px;}
+#estimatedArival{float: left;overflow: auto;padding: 5px 0px 15px 15px;background-color: #EAEAE8;margin-top: 15px;width:100%;}
+#estDelivZipInput{float:left; height: 20px;}
+#estDeliverybtn{clear: none;float: left;}
+.pt_cart #estimatedArival{ float:right;width:330px}
+.cart .actions form.paypalcheckout {
+    text-align: right;
+    width: 100%;
+}
+.loadingest{background: transparent url(../images/loader.gif)  no-repeat 50px center; height:25px;}
+.estimatedDates{display: block;font-size: 10px;padding-left: 33px;} 
+
+/* FIRST TIME VISITOR POPUP */
+.first-visit-dialog {background: #58595B url('../images/first-time-visitor-popup-bkg.png') no-repeat -5px -30px !important; height: 337px !important;}
+.first-visit-dialog #dialogcontainer {padding:5px !important;}
+.first-visit-dialog .ui-dialog-titlebar {}
+.first-visit-dialog label, .first-visit-dialog p, .first-visit-dialog h3, .first-visit-dialog span, .first-visit-dialog .label {color: white !important;}
+.first-visit-dialog .formfield, .first-visit-dialog .msg-rates, .first-visit-dialog .emailpromo, .first-visit-dialog .email-input .label, .first-visit-dialog .email-input .erroralert, .first-visit-dialog .email-input .clear, .first-visit-dialog .email-input .errordone {display: none;}
+.first-visit-dialog #emaildialogcontainer {position: relative;}
+.first-visit-dialog .email-input {display: block; margin-bottom: 0px !important; float: left;}
+.first-visit-dialog .email-input .value {width:auto; float:none;clear:none;}
+.first-visit-dialog .email-input input {width: 240px;}
+.first-visit-dialog .emailPreferences {width:300px; margin:225px auto 0;}
+.first-visit-dialog .button105x26  {display: none !important;}
+.first-visit-dialog .first-visit-btn { cursor: pointer; display:block !important; background-color: #fdb913 !important;border: 1px solid #fdb913 !important; clear:none !important; margin-top: 3px !important; line-height: 21px !important; margin-left: 1px !important;}
+.first-visit-dialog .first-visit-btn:hover {background-color: #979797 !important; border-color: #979797 !important;}
+.first-visit-dialog .first-visit-nothanks-btn {display: block !important;text-align: right;font-size: 9px;color: #F1F1F1;text-decoration: none;}
+.thankyou-dialog {background: #58595B url('../images/first-time-visitor-popup-thankyou.png') no-repeat center center !important; height: 337px !important;}
+.thankyou-dialog #emaildialogcontainer h2 {color: white !important;}
+.thankyou-dialog .email-thankyou {display:none;}
+.thankyou-dialog .first-visit-thankyou {display: block !important;width: 230px;margin: 170px auto 0;text-align: center;}
+.thankyou-dialog .first-visit-thankyou a {font-weight: normal; color: white; text-decoration: none; cursor: pointer;}
+.thankyou-dialog .first-visit-thankyou a:hover {text-decoration: underline;}
+
+/*Gift Wrap*/
+.addGiftWrap .button {display: inline-block;height: 14px;padding: 5px 15px; margin-top:15px;}
+.GiftMessHold{display:none;}
+.GiftMessHold textarea{margin-top: 10px;}
+.GiftMessHold .caption{display:block; font-size:9px}
+.GiftMessHold .erroralert{display:none;}

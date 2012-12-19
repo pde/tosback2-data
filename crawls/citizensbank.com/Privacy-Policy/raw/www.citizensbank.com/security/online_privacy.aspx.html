@@ -9,9 +9,10 @@
 <title>Online Privacy Policy | Citizens Bank</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
-<meta name="CmsTimeStamp" content="12/15/2012 8:11:21 AM" />
+<meta name="CmsTimeStamp" content="12/19/2012 8:12:16 AM" />
 <link href="../styles/v2/main.css" type="text/css" media="screen" rel="stylesheet" />
 <link href="../styles/v2/ValidatingControls.css" type="text/css" media="screen" rel="stylesheet" />
+<!--[if IE 10]> <link href="/styles/v2/ie10.css" rel="stylesheet" media="screen" type="text/css" /> <![endif]-->
 <!--[if IE 9]> <link href="/styles/v2/ie9.css" rel="stylesheet" media="screen" type="text/css" /> <![endif]-->
 <!--[if IE 8]> <link href="/styles/v2/ie8.css" rel="stylesheet" media="screen" type="text/css" /> <![endif]-->
 <!--[if IE 7]> <link href="/styles/v2/ie7.css" rel="stylesheet" media="screen" type="text/css" /> <![endif]-->
@@ -50,9 +51,22 @@
       
 </head>
 <body bgcolor="#ffffff" topmargin="10" bottommargin="10" onload="globalInit();">
+    
+<script language="javascript" src="../scripts/v2/browserDetect.js" type="text/javascript"></script>
+<div id="dropDownMsg">
+	<div id="leftDiv"><p>A message from<br/>Citizens Bank</p></div>
+	<div id="midDiv">
+    	<p class="infoColor">A newer version of your browser is available. Older versions may limit your ability to access some of this site's
+        functionality. Citizens Bank recommends upgrading your browser. <a href="http://www.citizensbank.com/customer-service/siterequirements.aspx" class="infoColor">Learn More ></a></p>
+        <p id="browserLinks">
+        	<a href="online_privacy.aspx.html" id="downLink"></a>
+        </p>
+    </div>
+    <div id="rightDiv"><a href="javascript:void(0);">Close X</a></div>
+</div>
 	<form method="post" action="online_privacy.aspx.html" id="frmMain">
 <div class="aspNetHidden">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUENTM4MQ9kFgJmD2QWAgIHD2QWBgIJDw8WAh4HVmlzaWJsZWhkZAIRDw8WAh8AaGRkAhUPFgIfAGhkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYBBRljdGwwMCRUb3BOYXYkU2VhcmNoQnV0dG9uX4MQvCMwbdtfbYcfXuSNM1juL5o=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="Bp9b6i45sd6fPC0j59KHiEqhCWlFcO3Qwk/n1DHnvStliDhnwjLNeLrMoa3ps7ICUAn/h6/19otXLfg3cOokRhLdiSu/Um27hdUizVDeUZmXqoSfZFVRnCkjuSuNJ8UZ5VnEI62RSpSgIazXGSQRaNdEYfbpWh7e0TfVWX+gINcsfxHz863xMTdQRyNKxsWXND/DyNYKfKWJcsLCofnpUKRV6DfiUZIWBGY17NktKF1htF8CVVOaszrJMrZ1UIdzGnowYg==" />
 </div>
 
 <script type="text/javascript" src="../ajax/common.ashx"></script><script type="text/javascript" src="../ajax/Citizens.CmsSite.Web.Cms.Templates.v2.Common.CommonHeader,Citizens.CmsSite.Web.ashx"></script>
@@ -289,7 +303,7 @@ Some of the advertisements that click-through to our Website and/or may be on ou
             <li id="liRegionalize" class="last">
                 <a id="ctlFooter_btnRegionChange" href="http://www.citizensbank.com/tools/regionalgateway.aspx?url=%2fsecurity%2fonline_privacy.aspx">Change your zip code</a></li>
             <li id="footerRegionalizer">
-                Your current zip code:  <span id="ctlFooter_lbZip" class="lbZipCode"></span></li>            
+                Your current zip code:   <span class="lbZipCode"></span></li>            
         </ul>
     </div>
 
@@ -298,6 +312,7 @@ Some of the advertisements that click-through to our Website and/or may be on ou
         var liRegionalize = document.getElementById("liRegionalize");
         var navRegionalizer = document.getElementById("navRegionalizer");
         var zipCode = Library.Utils.GetZipFromCookie();
+        
         if (navRegionalizer != null) {
         	if (zipCode != null && zipCode != '')
         	{
@@ -305,7 +320,7 @@ Some of the advertisements that click-through to our Website and/or may be on ou
                     footerRegionalizer.style.display = "block";
                     liRegionalize.style.display = "block";
                     navRegionalizer.style.display = "none";
-                    $(".lbZipCode").html(zipCode);
+                    //$(".lbZipCode").html(zipCode);
                 }
             }
         }
@@ -324,6 +339,15 @@ Some of the advertisements that click-through to our Website and/or may be on ou
                 if (liLocator != null) {
                     liLocator.className = "last";
                 }
+            }
+        }
+
+        if (zipCode != null && zipCode != '') {
+            if (footerRegionalizer != null && liRegionalize != null) {
+                //footerRegionalizer.style.display = "block";
+                //liRegionalize.style.display = "block";
+                //navRegionalizer.style.display = "none";
+                $(".lbZipCode").html(zipCode);
             }
         }
     </script>    
@@ -348,14 +372,13 @@ Some of the advertisements that click-through to our Website and/or may be on ou
             </noscript>  
         </li>    
     </ul>
-    <p>
-        &copy; Copyright 2012 RBS Citizens Financial Group, Inc. All rights reserved.<br>Citizens Bank is a brand name of RBS Citizens, N.A. and Citizens Bank of Pennsylvania. Deposit accounts held at RBS Citizens, N.A. and Citizens Bank of Pennsylvania are separately insured.<br></p>
+    <p>&copy; Copyright 2012 RBS Citizens Financial Group, Inc. All rights reserved.<br>Citizens Bank is a brand name of RBS Citizens, N.A. and Citizens Bank of Pennsylvania. Deposit accounts held at RBS Citizens, N.A. and Citizens Bank of Pennsylvania are separately insured.<br></p>
     <div class="links">
         <img src="../images/v2/content/veriSign.gif" alt="VeriSign" />
         <a href="http://www.citizensbank.com/security/equal-housing-lender.aspx">
-            <img src="../images/v2/content/elh.gif" alt="Equal Housing Lender" /></a> 
+        <img src="../images/v2/content/elh.gif" alt="Equal Housing Lender" /></a> 
         <a href="http://www.citizensbank.com/tools/leaving.aspx?url=http://www.fdic.gov">
-            <img src="../images/v2/content/fdicFooter.gif" alt="FDIC" /></a> 
+        <img src="../images/v2/content/fdicFooter.gif" alt="FDIC" /></a> 
     </div>
 </div>
 
@@ -427,7 +450,7 @@ else {
 
 	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
 	<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
-	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBAKV8emICwKwityFDgLnstwfAtStyr0GS3E5rPjHQ1vj1iMDOM59mx+1OL8=" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="ahJ3rKi9TVF93eOnvu47ewEs2KmDbRM9FZoAHWiX8LHUPR1gpw/KkabkSBKMaySB10S/yhSbhuHWM7UxDB1Jvl+R/rlSmB10LJB4VkKmT2aMiXTlfEKvQEy8kCcLwHRrzFTHfQ==" />
 </div>
 <script type="text/javascript">
 //<![CDATA[

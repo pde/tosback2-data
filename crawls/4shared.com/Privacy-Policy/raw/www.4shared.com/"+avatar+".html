@@ -87,9 +87,9 @@
   Config.mainSiteUrlHttpsPath  = 'https://www.4shared.com/'
   Config.isRTLLanguage = false
   Config.isReplaceSearchNameForSeo = false
-  Config.revisionNum = 27135
+  Config.revisionNum = 27338
   Config.syncDomain = 'https://www.4sync.com/'
-  Config.cdDomain = '//dc111.4shared.com/'
+  Config.cdDomain = '//dc309.4shared.com/'
   Config.mailPatterrn = new RegExp("^[_A-Za-z0-9-]+(?:\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)+$")
 </script>
 
@@ -1098,7 +1098,7 @@
             
 
             
-            ,sId : 'kVHHggLIftQO1oNu'
+            ,sId : 'uSSF9IB5euZaC3Ns'
             
           },
           function(){
@@ -1438,7 +1438,7 @@
   </div>
 </div>
 
-<!--script type="text/javascript" src="/js/header.js?ver=27135"></script-->
+<!--script type="text/javascript" src="/js/header.js?ver=27338"></script-->
 
 
 
@@ -1766,7 +1766,7 @@
     usrName  : "Login = null",
     accountType : "AccType = null",
     winSize : "Window.W = " + screen.availWidth + "\nWindow.H = " + screen.availHeight,
-    title : "Title = dc322, rev=27135"
+    title : "Title = dc332, rev=27338"
   }
   var userInfo = debugInfo.loc + "<br>" + debugInfo.usrAgent + "<br>" + debugInfo.usrName + "<br>" + debugInfo.accountType + "<br>" + debugInfo.winSize + "<br>" + debugInfo.title;
 </script>
@@ -2129,14 +2129,94 @@ function showTbTip() {
 
 
 
-
-
-<a href="http://dc593.4shared.com/download/us2hKvkR/4shared_Desktop-400.exe" onclick="return rotatorRegisterClick(1, true);"
+<a href="javascript:downloadDesktop()" onclick="return rotatorRegisterClick(1, true);"
    class="gaClick" data-element="12.2" id="download-desktop"
         data-download-stats="desktop.d1.1"><img
         src="http://static.4shared.com/images/butDesktop2.gif?ver=1302502176" alt="Download 4shared Desktop" title="Download 4shared Desktop"
         width="139" height="52"/></a>
 
+
+
+<div id="toolbar-dialog" class="d1mainButtons lucida dark-gray marginB10">
+  <div class="inline alignCenter" style="vertical-align:top;width:133px">
+    <a href="javascript:downloadDesktop()" onclick="return rotatorRegisterClick(1, true);"
+        class="gaClick" data-element="12.2.1"
+        data-download-stats="desktop.d1.1"><img src="http://static.4shared.com/images/butDesktop4.png?ver=1886417709" alt="Download 4shared Desktop"
+        width="133" height="51" /></a>
+    <div class="marginT10">
+    <img src="http://static.4shared.com/images/4shared_desktop.png?ver=639601929" alt="4shared Desktop" title="4shared Desktop"
+        width="68" height="94" />
+    </div>
+  </div>
+  <div class="inline marginL15" style="vertical-align:top;width:470px">
+    <div class="f13 marginB15">As part of the installation you can also get the official 4shared Community Toolbar for Internet Explorer®, Firefox® and Chrome™</div>
+    <div style="line-height:2em">
+      <input type="checkbox" checked id="tb-inst" />
+      <label for="tb-inst">Install the 4shared Toolbar for my browsers</label><br />
+      <div class="1marginL20" id="tb-subcheck">
+        <input type="checkbox" checked="checked" id="tb-def" />
+        <label for="tb-def">Set the 4shared web search as my default search</label><br />
+        <input type="checkbox" checked="checked" id="tb-home" />
+        <label for="tb-home">Set the 4shared web search as my home page</label><br />
+        <input type="checkbox" checked="checked" id="tb-notf" />
+        <label for="tb-notf">Show a search page when web page is not found</label><br />
+      </div>
+    </div>
+    <div class="imgShadow marginT15 inline">
+      <img src="http://static.4shared.com/images/toolbar.png?ver=4247186110" alt="4shared Toolbar" title="4shared Toolbar" width="461" height="20" />
+    </div>
+  </div>
+  <script type="text/javascript">
+    $('#download-desktop').hover(
+        function () {
+          $('#toolbar-dialog').show();
+        }
+        );
+    $('#toolbar-dialog').hover(
+        function () {
+        },
+        function () {
+          $(this).hide();
+        }
+        );
+
+    $('#tb-inst').change(function () {
+      if ( $('#tb-inst:checked').length > 0 ) {
+        $('#tb-subcheck>input').removeAttr('disabled');
+      } else {
+        $('#tb-subcheck>input').attr('disabled','disabled')
+      }
+        });
+    function downloadDesktop(){
+      var url = "/downloadDesktop";
+      if(checked('tb-inst')){
+        url+='?tb-inst=true';
+        if(checked('tb-def')){
+          url+='&tb-def=true';
+        }
+        if(checked('tb-home')){
+          url+='&tb-home=true';
+        }
+        if(checked('tb-notf')){
+          url+='&tb-notf=true';
+        }
+        url+='&def-link=javascript%3AdownloadDesktop%28%29';
+      }else {
+        url+='?def-link=javascript%3AdownloadDesktop%28%29';
+      }
+      top.location.href=url;
+    }
+    function checked(elId){
+      return document.getElementById(elId)!=null && !document.getElementById(elId).disabled && document.getElementById(elId).checked
+    }
+  </script>
+  <div class="clear"></div>
+  <div class="f9 light-gray marginT20 marginLR10">
+      By downloading, you agree to the <a target="_blank" class="light-gray" href="http://4sharedcom.ourtoolbar.com/eula/">End User License Agreement</a> and <a target="_blank" class="light-gray" href="http://4sharedcom.ourtoolbar.com/privacy/">Toolbar Privacy Policy</a>.
+      You may access content or features that require use of your personal information.
+      See the <a target="_blank" class="light-gray" href="http://4sharedcom.ourtoolbar.com/contentpolicy/">Content Policy</a>.
+  </div>
+</div>
 
 
 
@@ -2411,7 +2491,7 @@ function showTbTip() {
     function anonUploadDone(aFileId){
         
             
-            top.location.href='http://www.4shared.com/enter.jsp?sId=gs0GKZnwEOv4XeCT&&fau=1&ausk=gs0GKZnwEOv4XeCT&au=1';
+            top.location.href='http://www.4shared.com/enter.jsp?sId=ZmS6MCv5ELGBomFH&&fau=1&ausk=ZmS6MCv5ELGBomFH&au=1';
         
     }
     
@@ -2448,8 +2528,8 @@ function showTbTip() {
 
 <div id="upload">
 <div id="uploadTR" class="changeDir hideLong 11">
-<form action="http://dc222.4shared.com/main/upload.jsp?sId=gs0GKZnwEOv4XeCT&amp;fau=1&amp;ausk=gs0GKZnwEOv4XeCT" name="uploadForm" enctype="multipart/form-data" target="uploadframe1" method="POST">
-<input type="hidden" name="mainDC" value="322">
+<form action="http://dc232.4shared.com/main/upload.jsp?sId=ZmS6MCv5ELGBomFH&amp;fau=1&amp;ausk=ZmS6MCv5ELGBomFH" name="uploadForm" enctype="multipart/form-data" target="uploadframe1" method="POST">
+<input type="hidden" name="mainDC" value="332">
     <table cellpadding="0" cellspacing="2">
         <tr>
             <td>
@@ -2600,19 +2680,19 @@ function showTbTip() {
   UploadModule.build = function(options) {
     var defaultSettings = {
       
-      url: 'http://dc222.4shared.com/main/upload.jsp?sId=gs0GKZnwEOv4XeCT&fau=1&ausk=gs0GKZnwEOv4XeCT',
+      url: 'http://dc232.4shared.com/main/upload.jsp?sId=ZmS6MCv5ELGBomFH&fau=1&ausk=ZmS6MCv5ELGBomFH',
       
       uploadHandler: UploadModule.getAnonUploadHandler(),
       
       progressMeter: UploadModule.ProgressMeterJsonp,
-      progress_meter_url : 'http://dc222.4shared.com/servlet/ProgressStatus2?dcID=222&sId=gs0GKZnwEOv4XeCT&fau=1&ausk=gs0GKZnwEOv4XeCT',
+      progress_meter_url : 'http://dc232.4shared.com/servlet/ProgressStatus2?dcID=232&sId=ZmS6MCv5ELGBomFH&fau=1&ausk=ZmS6MCv5ELGBomFH',
       static_resources_root: 'http://static.4shared.com',
       max_file_size: 209715200,
       max_change_dc_attempts: 0,
       plupload_version: '',
       upload_form_handler:{
         max_threads: 1,
-        file_size_url: 'http://dc222.4shared.com/rest/file/size?sId=gs0GKZnwEOv4XeCT&&fau=1&ausk=gs0GKZnwEOv4XeCT&httpSessId=UnavailableHttpSession'
+        file_size_url: 'http://dc232.4shared.com/rest/file/size?sId=ZmS6MCv5ELGBomFH&&fau=1&ausk=ZmS6MCv5ELGBomFH&httpSessId=UnavailableHttpSession'
       },
       i18n: {
         file_size_exceeded: "File is too large. You can\'t upload files larger than [maxFileSize] .",
@@ -2972,7 +3052,7 @@ function showTbTip() {
 <div class="copy">
    <div class="centered">
         <div class="floatLeft alignRight">
-             Copyright <span title='dc322, rev=27135'>&copy;</span> 2005-2012 4shared.com 
+             Copyright <span title='dc332, rev=27338'>&copy;</span> 2005-2012 4shared.com 
         </div>
         <div class="floatRight truste" id="0b69e881-c8aa-478c-a8ce-4f1fc3d88e75">
             <script type="text/javascript" src="../privacy-policy.truste.com/privacy-seal/New-It-Solutions-LTD-/asc%3Frid=0b69e881-c8aa-478c-a8ce-4f1fc3d88e75"></script>
@@ -2983,7 +3063,7 @@ function showTbTip() {
 </div>
 
 </div>
-<!-- www.currDcID=322 -->
+<!-- www.currDcID=332 -->
 
 
 

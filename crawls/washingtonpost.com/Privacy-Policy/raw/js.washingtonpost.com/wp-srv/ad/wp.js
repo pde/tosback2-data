@@ -54,6 +54,11 @@
   if(!wpAd.flags.no_ads) {
     //ADD THE TEMPLATES - generated via flight manager tool:
     wpAd.tools.writeScript(wpAd.constants.ad_config_url);
+    
+      
+    if(wpAd.flags.is_homepage && !/js_tiff/.test(location.search)){
+      wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
+    }
 
     //sponsored advertiser (quigo) links:
     if(typeof wpAds === 'undefined' || !win.wpAds.textlinks) {

@@ -94,7 +94,7 @@
 jQuery(document).ready(function() {
 	GeoLoc.initialize();
 	jQuery('a[href*=".pdf"]').click(function(e) { 
-	dcsMultiTrack('DCS.dcsuri',this.href, 'DCS.dcsref',window.location.href, 
-					'DCSext.wtEvent','File_Download','DCSext.wtNoHit','1','DCSext.wtStatusMsg','SUCCESS');
+	dcsMultiTrack('DCS.dcsuri',this.pathname, 'DCS.dcsref',window.location.pathname, 
+					'DCSext.wtEvent','File_Download','DCSext.wtNoHit','1','DCSext.wtStatusMsg','SUCCESS','WT.dl','20');
 	});	
 });

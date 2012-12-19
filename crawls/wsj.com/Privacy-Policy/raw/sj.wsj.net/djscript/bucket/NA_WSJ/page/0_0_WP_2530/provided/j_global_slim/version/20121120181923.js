@@ -820,7 +820,167 @@ dojo.style(this.ele,"display","none");return;}
 var targetPos=dojo.position(node,true);if(!this.ele){this.createDrop();dojo.connect(this.ele,"onmouseleave",dojo.hitch(this,function(ev){if(ev.relatedTarget&&(ev.relatedTarget.id.indexOf("Menu")>-1||ev.relatedTarget.id.indexOf("previewMaskEdit")>-1)){return;}else{this.placeMask();}}));}
 if(!dojo.hasClass(node,"filteredNode")){dojo.byId("maskText").innerHTML="Name: "+node.getAttribute("data-module-name")+", Rank: "+node.getAttribute("data-module-rank")||"???";}else{dojo.byId("maskText").innerHTML="";}
 if(button){button.closeDropDown();}
-dijit.byId("previewMaskEdit").maskedElementId="M"+dojo.attr(node,"data-module-id");dojo.style(this.ele,"display","");dojo.style(this.ele,"top",targetPos.y+"px");dojo.style(this.ele,"left",targetPos.x+"px");dojo.style(this.ele,"width",targetPos.w+"px");dojo.style(this.ele,"height",targetPos.h+"px");},toggleMask:function(){this.showMasks=this.showMasks?false:true;}};/*global console,dj,dojo,Error,TypeError,parseInt */
+dijit.byId("previewMaskEdit").maskedElementId="M"+dojo.attr(node,"data-module-id");dojo.style(this.ele,"display","");dojo.style(this.ele,"top",targetPos.y+"px");dojo.style(this.ele,"left",targetPos.x+"px");dojo.style(this.ele,"width",targetPos.w+"px");dojo.style(this.ele,"height",targetPos.h+"px");},toggleMask:function(){this.showMasks=this.showMasks?false:true;}};dojo.provide("dj.widget.geotargeting.moduleShow");
+dojo.require("dj.util.Cookie");
+
+dojo.declare("dj.widget.geotargeting.moduleShow", [], {
+  constructor: function (conf) {
+    // Default cfx
+    this.cfx = {
+    //   at : Austria, de: Germany, ch: Switzerland
+      countries : ["at", "de", "ch"],
+      country : "",
+      moduleIds : ["gmHeadlines", "gmSingleHeadline"]
+    };
+
+    this.findCountry();
+    this.moduleVisibleMaker();    
+  },
+
+  findCountry : function() {
+    this.cfx.country = dj.util.Cookie.getGroupCookie('DJSESSION','country');
+  },
+
+  isInTargetCountries : function() {
+    var countries = this.cfx.countries;
+    for (var i=0; i<countries.length; i++)
+    {
+      if(countries[i] == this.cfx.country) {
+        return true;
+      }
+    }
+    return false;
+  },
+
+  moduleVisibleMaker : function() {
+   
+    var moduleIds = this.cfx.moduleIds;
+    if (this.isInTargetCountries()){
+      for (var i=0; i<moduleIds.length; i++)
+      {
+        if(dojo.query(moduleIds[i])) {
+          classname = '.' + moduleIds[i];
+          dojo.query(classname).forEach(function(node, index, arr){
+            dojo.style(node, "display", "");
+            dojo.style(node, "cursor", "pointer");
+            dojo.connect(node, "onclick", function() {
+              window.location.href = "http://www.wallstreetjournal.de";
+             });
+          });
+        }
+      }
+    }
+  }
+  
+});
+dojo.provide("dj.module.geotargeting.germanyScrim");
+dojo.require("dj.lang");
+dojo.require("dj.util.Cookie");
+
+dj.module.geotargeting.germanyScrim = {
+
+  init : function(conf) {
+    this.cfx = {
+      browserLanguage : "en",
+      isClickedDESCrimNoThanks : 0,
+      isClickedDESCrimNoThanksCookie : 0
+    };
+    dj.lang.mixin(this.cfx, conf);
+    this.findLanguage();
+    
+    //Get session count
+    if(!dj.util.Cookie.getGroupCookie('DJSESSION', 'isClickedDESCrimNoThanks')){
+      dj.util.Cookie.setGroupCookie('DJSESSION', 'isClickedDESCrimNoThanks', 0);
+      this.cfx.isClickedDESCrimNoThanks = 0;
+    } else {
+      this.cfx.isClickedDESCrimNoThanks = dj.util.Cookie.getGroupCookie('DJSESSION', 'isClickedDESCrimNoThanks');
+    }
+    
+    //Get lifetime count
+    if(!dj.util.Cookie.getGroupCookie('DJCOOKIE', 'isClickedDESCrimNoThanksCookie')){
+      dj.util.Cookie.setGroupCookie('DJCOOKIE', 'isClickedDESCrimNoThanksCookie', 0);
+      this.cfx.isClickedDESCrimNoThanksCookie = 0;
+    } else {
+      this.cfx.isClickedDESCrimNoThanksCookie = dj.util.Cookie.getGroupCookie('DJCOOKIE', 'isClickedDESCrimNoThanksCookie');
+    }
+    
+    //Show scrim only once per session and only thrice per lifetime if the browser language is germany
+    if(this.cfx.browserLanguage == 'de' || this.cfx.browserLanguage == 'de-at' || this.cfx.browserLanguage == 'de-de' || this.cfx.browserLanguage == 'de-li' || this.cfx.browserLanguage == 'de-lu' || this.cfx.browserLanguage == 'de-ch') {
+      if(this.cfx.isClickedDESCrimNoThanks == 0 && this.cfx.isClickedDESCrimNoThanksCookie <= 2){
+        this.onLoadHomePage();
+        this.onWSJDEClick();
+        this.onNoThanksClick();
+        this.onCloseButtonClick();
+      }
+    }
+  },
+
+  findLanguage : function() {
+    //Get the browser language
+    this.cfx.browserLanguage = (window.navigator.userLanguage || navigator.language || navigator.browserLanguage).toLowerCase();
+  },
+
+  onLoadHomePage : function() {
+    var aUrl = window.location.href;
+    
+    //Show Germany scrim if the user is not in germany site
+    if(aUrl.indexOf('wallstreetjournal.de')) {
+      this.showScrim();
+    }
+  },
+
+  showScrim : function() {
+    dojo.query(".scrimWSJ_overlay").forEach(function(node, index, arr) {
+      dojo.style(node, "display", "");
+    });
+  },
+
+  onWSJDEClick : function() {
+    dojo.query(".gmDeviceScrimBtn").forEach(function(node, index, arr) {
+      dojo.connect(node, "onclick", function(evt) {
+        window.location.href = "http://www.wallstreetjournal.de";
+      });
+    });
+  },
+
+  onNoThanksClick : function() {
+    var that = this;
+    dojo.query(".gmDeviceScrimReadMore").forEach(function(node, index, arr) {
+      dojo.connect(node, "onclick", function(evt) {
+        that.hideScrim();
+      });
+    });
+  },
+  
+  onCloseButtonClick : function() {
+      var that = this;
+      dojo.query(".gmDeviceScrimCloseBtn").forEach(function(node, index, arr) {
+        dojo.connect(node, "onclick", function(evt) {
+          that.hideScrim();
+        });
+      });
+  },
+
+  hideScrim : function() {
+    this.cfx.isClickedDESCrimNoThanks = parseInt(this.cfx.isClickedDESCrimNoThanks) + 1;
+    this.cfx.isClickedDESCrimNoThanksCookie = parseInt(this.cfx.isClickedDESCrimNoThanksCookie) + 1;
+    dj.util.Cookie.setGroupCookie('DJSESSION', 'isClickedDESCrimNoThanks', this.cfx.isClickedDESCrimNoThanks);
+    dj.util.Cookie.setGroupCookie('DJCOOKIE', 'isClickedDESCrimNoThanksCookie', this.cfx.isClickedDESCrimNoThanksCookie, 730);
+    dojo.query(".scrimWSJ_overlay").forEach(function(node, index, arr) {
+      dojo.style(node, "display", "none");
+    });
+  }
+
+};
+dojo.provide("dj.module.geotargeting.moduleShow");
+dojo.require("dj.widget.geotargeting.moduleShow");
+
+dj.module.geotargeting.moduleShow = {
+  init: function() {
+    this.moduleShow = new dj.widget.geotargeting.moduleShow();     
+  }
+};
+/*global console,dj,dojo,Error,TypeError,parseInt */
 dojo.provide("dj.widget.autocomplete.AutoCompleteView");
 
 dojo.require("dj.lang");

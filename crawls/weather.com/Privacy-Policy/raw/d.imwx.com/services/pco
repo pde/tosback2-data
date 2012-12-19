@@ -630,9 +630,26 @@ TWC.initpco = function($,pcoObject,pageId,mode,siteId,currlocId){
 		
 		prvlgd.set("page.fv", fv);
 		var partner=$.cookie("partner");
-		if (partner!=null && typeof(partner)!="undefined"){
+		
+		if (partner == null || typeof(partner) =="undefined"){
+			// MFW Changes for partner cookie
+			try {
+				if(document && document.referrer && document.referrer.indexOf("//www.facebook.com/") > 0) {
+					$.cookie("partner", "MFWShare", {
+						domain  : '.weather.com',
+						path    : '/'
+					});
+				}
+			}
+			catch(err) {
+				// Ignore any errors related to partner cookie as this should not stop pco processing.
+			}
+		}
+		
+		if (partner!=null && typeof(partner)!="undefined") {
 			prvlgd.setUser("cobrand", partner);
 		}
+		
 		
 		//Set page environment
 		var serverEnv = "";
@@ -1311,9 +1328,9 @@ try{console.log()}catch(e){}
 				buildkw("lot_gender",user.gender);
 				var lotame=user.lotame;
 				if (user.lotame!=null && typeof (user.lotame) !="undefined") {				
-					buildkw("lot_tpid",lotame.tpid);
-					buildkw("lot_id",lotame.id);
-					buildkw("lot_abbr",lotame.abbr);
+					buildkw("lot_tpid",lotame.lot_tpid);
+					buildkw("lot_id",lotame.lot_id);
+					buildkw("lot_abbr",lotame.lot_abbr);
                 }				
 			} else {
 				 buildkw("lot_age","nl"); 

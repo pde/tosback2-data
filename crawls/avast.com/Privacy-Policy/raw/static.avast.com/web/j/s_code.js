@@ -41,6 +41,7 @@ More info available at http://www.omniture.com */
  *21/9/12 added store.avast.ru (Milan)
  *10/10/12 update s_code to version vH.25 (Ales)
  *20/11/12 added escape(c_ot); in Tracking ID section (Jarda)
+ *14/12/12 added cid and tid into c_ot in tracking ID section(Milan)
  **/
 
 /************************** STD VAR SECTION **************************/
@@ -466,32 +467,51 @@ function s_doPlugins(s) {
 		/* Initialize variables */
 		var c_ot="";
 		var lob="";
-		var sc="";
+		//var sc="";
 		var ele="";
-		var vr="";
-		/* Encode LOB, Source Channel, Element, and Variation values */
+		//var vr="";
+		
+    var cid = "";
+    var tid = "";
+    
+    /* Encode LOB, Source Channel, Element, and Variation values */
 		if(s.eVar27.indexOf("|") != -1)
 			lob=s.eVar27.substr(0,1)+s.eVar27.substr(s.eVar27.indexOf("|")+2,1);
 		else
 			lob="un";
-		if(s.eVar13.indexOf("|") != -1)
+		
+    /*if(s.eVar13.indexOf("|") != -1)
 			sc=s.eVar13.substr(0,1)+s.eVar13.substr(s.eVar13.indexOf("|")+2,1);
 		else
-			sc="un";
+			sc="un";*/
+			
 		if(s.eVar14.indexOf("|") != -1 && (s.eVar14.length-s.eVar14.lastIndexOf("|") > 1))
 			ele=s.eVar14.substr(s.eVar14.lastIndexOf("|")+2, 3);
 		else
 			ele="un";
-		if(s.eVar15.indexOf("|") != -1 && (s.eVar15.length-s.eVar15.lastIndexOf("|") > 1)) {
+			
+		/*if(s.eVar15.indexOf("|") != -1 && (s.eVar15.length-s.eVar15.lastIndexOf("|") > 1)) {
 			if(s.eVar15.length-s.eVar15.lastIndexOf("|") > 41)
 				vr=s.eVar15.substr(s.eVar15.lastIndexOf("|")+2, 11)+"..."+ s.eVar15.slice(-26);
 			else
 				vr=s.eVar15.substr(s.eVar15.lastIndexOf("|")+2)
 		}
 		else
-			vr="un";
+			vr="un";*/
+			
+		if(typeof s.eVar30 != "undefined")
+      cid = s.eVar30;
+    else
+      cid = "un";
+		
+    if(typeof s.eVar6 != "undefined")
+      tid = s.eVar6;
+    else
+      tid = "un";
+    	
 		/* Create concatenated tracking ID value (max 50 characters) */
-		c_ot=lob+">"+sc+">"+ele+">"+vr;
+		//c_ot=lob+">"+sc+">"+ele+">"+vr;
+		c_ot=lob+">"+ele+">"+cid+">"+tid;
 		c_ot=c_ot.toLowerCase();
         c_ot=escape(c_ot);
         

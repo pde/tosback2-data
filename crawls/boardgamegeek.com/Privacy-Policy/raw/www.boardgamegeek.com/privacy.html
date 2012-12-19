@@ -94,7 +94,7 @@
 
 
 	
-			<script type='text/javascript' src='../static.geekdo-images.com/static/js_master_50801da513828.js'></script>
+			<script type='text/javascript' src='../static.geekdo-images.com/static/js_master_50d10ec86a126.js'></script>
 				
 		
 	
@@ -287,7 +287,7 @@ window.onload = start;
 					Database 
 									</div>
 				<ul>
-											<li><a href="http://www.boardgamegeek.com/browse/boardgame">Games (62262)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamefamily">Families (1753)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamecategory">Categories (81)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamemechanic">Mechanics (48)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgameartist">Artists (8898)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamedesigner">Designers (17549)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamepublisher">Publishers (12880)</a></li>										<li><a href="http://www.boardgamegeek.com/boardgame/random">Random Game</a></li>
+											<li><a href="http://www.boardgamegeek.com/browse/boardgame">Games (62293)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamefamily">Families (1756)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamecategory">Categories (81)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamemechanic">Mechanics (48)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgameartist">Artists (8914)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamedesigner">Designers (17556)</a></li>											<li><a href="http://www.boardgamegeek.com/browse/boardgamepublisher">Publishers (12891)</a></li>										<li><a href="http://www.boardgamegeek.com/boardgame/random">Random Game</a></li>
 					<li><a href='http://www.boardgamegeek.com/gonecardboard'>Gone Cardboard</a></li>
 				</ul>
 				<div class='clear'></div>
@@ -455,18 +455,15 @@ window.onload = start;
 <center>
 	<div 	id='appeal' 
 			style='text-align:center; width:800px; height:180px; border:solid 1px #b0b0b0; 
-				 	background: url(../geekdo-images.com/banners/aldie_appeal.png);
+				 	background: url(../geekdo-images.com/banners/mayans_appeal.png);
 				 	margin-bottom:5px;
 				   display: none;
 				   opacity: 0;'>
 		<a href="javascript://" onclick="DismissAppeal();">
 			<span style='float:right; width:16px; height:16px; position:relative; background:url(../geekdo-images.com/images/icons/silkicons/cross.png)'></span>
 		</a>
-		<a href="http://www.boardgamegeek.com/support/aldie" style='color:blue;' onmouseover="this.setStyle( 'color', 'red' );" onmouseout="this.setStyle( 'color', 'blue' );">
-			<span style='font-family:"helvetica",sans-serif; font-size:18pt; text-align:left; margin:50px 0 0 25px; width: 700px; float:left;'>
-				Please Read:<br>
-				A message from BoardGameGeek<br> 
-				co-founder, Scott Alden
+		<a href="http://www.boardgamegeek.com/support/mayans" style='color:blue;' onmouseover="this.setStyle( 'color', 'red' );" onmouseout="this.setStyle( 'color', 'blue' );">
+			<span id='countdown' style='font-family:"helvetica",sans-serif; font-size:22pt; text-align:left; margin:75px 0 0 75px; width: 700px; float:left;'>
 			</span>
 		</a>
 	</div>
@@ -480,16 +477,45 @@ window.onload = start;
 
 <script>
 
+function updateCountdown() {
+	var countdown = $('countdown');
+	if ( !countdown ) 
+		return;
+		
+	var now     = new Date();
+	var kickoff = Date.parse("December 21, 2012 00:00:00");
+	var diff    = kickoff - now;
+
+	var days    = Math.floor( diff / (1000*60*60*24) );
+	var hours   = Math.floor( diff / (1000*60*60) );
+	var mins    = Math.floor( diff / (1000*60) );
+	var secs    = Math.floor( diff / 1000 );
+
+	var dd      = days;
+	var hh      = hours - days  * 24;
+	var mm      = mins  - hours * 60;
+	var ss      = secs  - mins  * 60;
+
+	var daystr  = dd == 1 ? ' day ' : ' days ';
+	var hourstr = hh == 1 ? ' hour ' : ' hours ';
+	var minstr  = mm == 1 ? ' minute ' : ' minutes ';
+	var secstr  = ss == 1 ? ' second ' : ' seconds ';
+	
+	countdown.set( 'html', dd + daystr + hh + hourstr + mm + minstr  + ss + secstr );
+}
+
+setInterval( 'updateCountdown()', 1000 );
+
 function DismissAppeal()
 {
 	var app = $('appeal');
 	app.fade('out').get('tween').chain( function() { app.destroy() } );
-	var myCookie = Cookie.write( 'dismissappeal_v3', 1, {duration: 7, path:'/', domain:'.boardgamegeek.com'} );
+	var myCookie = Cookie.write( 'dismissappeal_v4', 1, {duration: 7, path:'/', domain:'.boardgamegeek.com'} );
 }
 
 function updateplea()
 {
-	var myCookie = Cookie.read('dismissappeal_v3');
+	var myCookie = Cookie.read('dismissappeal_v4');
 
 	if ( !myCookie )
 	{
@@ -530,13 +556,13 @@ window.addEvent('domready', updateplea );
 								<span style='left: 800px;' class='tick_text'>10000</span>
 				</div>
 	
-	<div class='thermometer_fill' style='width:333.52px;'></div>
+	<div class='thermometer_fill' style='width:389.84px;'></div>
 	 
 	<div class='thermometer_text'>
 			<a href="http://www.boardgamegeek.com/thread/892326">Announcement</a> &ndash;
-			2012 Support Drive &ndash; New Supporters: 4169
+			2012 Support Drive &ndash; New Supporters: 4873
 			<br>
-			GeekGold Bonus For All 2012 Supporters: 41.69 &ndash; Bonus doubles if 7500 is reached!
+			GeekGold Bonus For All 2012 Supporters: 48.73 &ndash; Bonus doubles if 7500 is reached!
 			
 	</div>
 	<div class='clear'></div>

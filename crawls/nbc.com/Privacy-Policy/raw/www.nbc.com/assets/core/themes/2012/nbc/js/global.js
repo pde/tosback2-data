@@ -183,14 +183,13 @@ function loadGlobalDropdownShop() {
         success : function (data) {
             if (data.products.length > 0) {
                 var output = '';
-
                 for (var i in data.products) {
                     var node = data.products[i];
 
                     output += '<div class="featured row">';
-                    output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" width="107" height="107" alt="' + node.name + '" /></a>';
+                    output += '<a href="' + node.url +'ecid=PRF-NBC-102769&pa=PRF-NBC-102769" target="_blank"><img src="' + node.thumbnailImg + '" width="107" height="107" alt="' + node.name + '" /></a>';
                     output += '<h5>' + node.name + '</h5>';
-                    output += '<p>$' + node.salePrice + '<br /><a href="' + node.url + '" target="_blank">Buy &raquo;</a></p>';
+                    output += '<p>$' + node.salePrice + '<br /><a href="' + node.url +'ecid=PRF-NBC-102769&pa=PRF-NBC-102769" target="_blank">Buy &raquo;</a></p>';
                     output += '</div>';
 
                     if (i == 2) {
@@ -347,7 +346,7 @@ function slideContentChange(args) {
     if (args.currentSlideNumber === 0) {
         NBC('header.site .logo').fadeOut(240);
     } else {
-        if (SITE.id != "10211") {
+        if (SITE.id != "10211" && SITE.id != "441") {
             NBC('header.site .logo').fadeIn(300);
         }
     }
@@ -453,13 +452,19 @@ function loadGlobalFooterShop() {
         },
         success : function (data) {
             if (data.products.length > 0) {
-                var output = '';
-
+                var output = '', refCode;
+		if (s.prop10 === "Front Door") {
+                refCode = "&ecid=PRF-NBC-102873&pa=PRF-NBC-102873";
+                } else if (s.prop10 === "Global") {
+                refCode = "&ecid=PRF-NBC-102770&pa=PRF-NBC-102770";
+                } else {
+		refCode = '';
+		}
                 for (var i in data.products) {
                     var node = data.products[i];
                     output += '<li class="shop">';
-                    output += '<a href="' + node.url + '" target="_blank"><img src="' + node.thumbnailImg + '" target="_blank" width="77" height="77" alt="' + node.name + '" /></a>';
-                    output += '<p>' + node.name + ' <a href="' + node.url + '" target="_blank">Buy&nbsp;&raquo;</a></p>';
+                    output += '<a href="' + node.url + refCode + '" target="_blank"><img src="' + node.thumbnailImg + '" target="_blank" width="77" height="77" alt="' + node.name + '" /></a>';
+                    output += '<p>' + node.name + ' <a href="' + node.url + refCode +'" target="_blank">Buy&nbsp;&raquo;</a></p>';
                     output += '</li>';
 
                     if (i == 2) {

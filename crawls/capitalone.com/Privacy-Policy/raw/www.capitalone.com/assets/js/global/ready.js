@@ -494,7 +494,7 @@ Cof.Header.Zipcode = (function() {
 
     // Indicator for when the zip has been successfully accepted and submitted
     var hasSubmitZip = false;
-
+	
     var modalOpen = function(dialog) {
         dialog.overlay.show();
         dialog.container.show();
@@ -519,7 +519,6 @@ Cof.Header.Zipcode = (function() {
 
         init: function() {
             jQuery(document).ready(function() {
-
                 if (!Cof.Header.Zipcode.validZip()                                          && // only run if the ZIP is not valid
                     !Cof.Header.Zipcode.validRegion()                                       && // only run if the region is not valid
                     window.location.hostname.indexOf('capitalone.com') != -1                && // only run if the hostname contains "capitalone.com"
@@ -530,15 +529,18 @@ Cof.Header.Zipcode = (function() {
 					zipOptOutFlag == false                                                     // only if they have not opted out
                 ) {
                     jQuery('a').click(function() {
-						if( $(this).hasClass('zip-prompt-flag') ) {
-							Cof.Header.Zipcode.askForZip(this.href);
-							return false;
-						} 
+					if( $(this).hasClass('zip-prompt-flag') ) {
+						Cof.Header.Zipcode.askForZip(this.href);
+						return false;
+					} 
                     });
                 }
 
                 jQuery('form[name=change-zip], form[name=zipcode-overlay-form]').submit(function() {
+	if($(this).attr('processed') == null) {
+			$(this).attr('processed', 'true');
                     return Cof.Header.Zipcode.submitZip(jQuery(this).attr('id'));
+}
                 });
             });
 

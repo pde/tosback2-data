@@ -177,8 +177,7 @@ window.A21 = window.A21 || {};
 	};
 
 	A21.googleLib = A21.googleLib || "gpt.js";
-
-
+	
 	function getAds(){
 
 
@@ -313,7 +312,7 @@ window.A21 = window.A21 || {};
 	googletag.cmd.push(function() {
 		getAds();
 	});
-
+	
 
 
 

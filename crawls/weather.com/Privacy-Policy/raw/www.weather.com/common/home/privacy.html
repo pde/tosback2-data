@@ -521,51 +521,48 @@ wx.config.user.savedLocs= ""; // ***************************** Replaced by wx.co
 	wx.config.page.pageURL = ts_pagename;
 </script>
 
-        <!-- externals static version 07.27.2012 @ 09:02AM -->
+        <!-- externals dynamic version 07.27.2012 @ 09:02AM -->
 
 
 <script type="text/javascript">
-/* For older IE browsers - removed for WWW-10920
-if(!Array.indexOf){
-  Array.prototype.indexOf = function(obj){
-   for(var i=0; i<this.length; i++){
-    if(this[i]==obj){
-     return i;
-    }
-   }
-   return -1;
-  }
-}
-*/
 var OAS_query = '';
 var gnSiteMode='';
 	// Global Cache busting section
-			// Global Cache busting section
-	// 
-	// <% /**
-		var remoteAddr="172.16.24.23";
-		 
-		var cssSpot = '/v.20110421.1';
-		var extdivtoolsVAR = '/v.20120502.0';
-		var triggerParamsstdLauncherVAR = '/v.20100929.6';
-		var bust_hat='/v.20100727.0';
-		var bust_hpCSS='/v.20100304.2';
-		var bust_globalNav='/v.20100727.0';
-		var bust_headerNavYUITypeAhead='/v.20100727.0';
-		var bust_recentSearch='/v.20100621.1';
-		var bust_s_code='/v.20111129.0';
-		var bust_typeAhead='/v.20100621.1';
-		var bust_swfObject='/v.20100621.1';
-		var bust_flCheckFlookie='/v.20100621.1';
-		var bust_eventBroadcaster='/v.20100727.0';
-	// **/ %>
-
-	 var css='style_sheet.css';if(typeof(pageType)!="undefined"&&(pageType=="920" || pageType=="980")){css="global.css";}
-	 if(typeof(pagetype)!="undefined"&&(pagetype=="980")){css="global.css";}
-	if(typeof(usingGrids)!="undefined"&&usingGrids=="yes"){css="global_grids.css";}
-	document.write('<LI'+'NK REL="style'+'sheet" TYPE="text/css"  HREF="http://s.imwx.com'+cssSpot+'/css/legacy/'+css+'">');// Test to see if ext-divtools.js is already on page. If not, load it.
+		var remoteAddr="<%= request.getRemoteAddr() %>";
+		<%@include file="/common/tools/mcbs/mcbs.jsp" %>
+		<% if(global_css != null) { %>
+			var cssSpot = '<%=global_css%>';
+			var extdivtoolsVAR = '<%=extdivtools%>';
+			var triggerParamsstdLauncherVAR = '<%=triggerParamsstdLauncher%>';
+			var bust_hat = '<%=hat%>';
+			var bust_globalNav='<%=globalnav%>';
+			var bust_headerNavYUITypeAhead='<%=headerNavYUITypeAhead%>';
+			var bust_recentSearch='<%=recentSearch%>';
+			var bust_s_code = '<%=s_code%>';
+			var bust_typeAhead = '<%=typeahead%>';
+			var bust_swfObject='<%=swfObject%>';
+			var bust_flCheckFlookie='<%=flCheckFlookie%>';
+			var bust_eventBroadcaster='<%=eventBroadcaster%>';
+		<% } else {%>
+			var cssSpot="";
+			var extdivtoolsVAR="";
+			var triggerParamsstdLauncherVAR="";
+			var bust_hat="";var bust_globalNav="";
+			var bust_headerNavYUITypeAhead="";
+			var bust_recentSearch="";
+			var bust_s_code="";
+			var bust_typeAhead="";
+			var bust_swfObject="";
+			var bust_flCheckFlookie="";
+			var bust_eventBroadcaster="";
+		<% } %>
+//	if(typeof(pageType)!="undefined"&&(pageType=="920" || pageType=="980")) {
+		document.write('<LI'+'NK REL="style'+'sheet" TYPE="text/css"  HREF="http://s.imwx.com'+cssSpot+'/css/legacy/global_grids.css">');
+                var css = "style_sheet.css"; 
+		document.write('<LI'+'NK REL="style'+'sheet" TYPE="text/css"  HREF="http://s.imwx.com'+cssSpot+'/css/legacy/'+css+'">');
+//	}// Test to see if ext-divtools.js is already on page. If not, load it.
 if(!(window.YAHOO && YAHOO.yuiLoadEvents && YAHOO.yuiLoadEvents.popService)){
-  document.write('<scr'+'ipt type="text/javascript" src="http://s.imwx.com' + extdivtoolsVar + '/js/legacy/ext-divtools.js" ></scr'+'ipt>');
+  document.write('<scr'+'ipt type="text/javascript" src="http://s.imwx.com' + extdivtoolsVAR + '/js/legacy/ext-divtools.js" ></scr'+'ipt>');
 }
 	document.write('<scr'+'ipt type="text/javascript" src="http://d.imwx.com/js/wx-survey.js" ></scr'+'ipt>');
 </script>
@@ -576,7 +573,7 @@ img.transparent{behavior: url(/common/scripts/pngTransparent.htc);}
 <![endif]-->
 
 
-
+<link rel="stylesheet" type="text/css" href="../../../s.imwx.com/css/legacy/global.css" />
 <LINK REL="alternate" TYPE="application/rss+xml" TITLE="The Weather Channel:  National Weather Outlook [RSS]"  HREF="http://www.weather.com/rss/national/rss_nwf_rss.xml">
 <LINK REL="alternate" TYPE="application/rss+xml" TITLE="The Weather Channel Blog [RSS]" HREF="http://blogs.weather.com/blog/weather/index.xml?from=autodiscovery">
 <META HTTP-EQUIV="MSThemeCompatible" Content="Yes">
@@ -605,7 +602,6 @@ function initialize_ad_array(adS)
   adS['adstest.climate.weather.com'] = new Array('adstest.weather.com','http://adstest.weather.com/RealMedia/a'+'ds/');
   adS['adstest.epic.weather.com'] = new Array('adstest.weather.com','http://adstest.weather.com/RealMedia/a'+'ds/');
 }
-
 
 
 
@@ -701,14 +697,14 @@ function getImapDec(state) {
 
 
 
-if(typeof(OAS_query)=='undefined' && OAS_query!=""){}else{var partnerCookie=GetCookie("partner");if(partnerCookie == 'google') {if(GetCookie("pCounter")!= 1) {SetCookie ("pCounter", "1", "", "/", ".weather.com");}}var idType=searchTermType();
+if(typeof(OAS_query)=='undefined' && OAS_query!=""){}else{var partnerCookie=YAHOO.util.Cookie.get("partner");if(partnerCookie == 'google') {if(YAHOO.util.Cookie.get("pCounter")!= 1) {SetCookie ("pCounter", "1", "", "/", ".weather.com");}}var idType=searchTermType();
 
-var tempFromCookie = GetCookie('fromStr');
+var tempFromCookie = YAHOO.util.Cookie.get('fromStr') || "";
 var paramFromVal = paramValue('from');
 var fromParam ="";
 if(paramFromVal!="" && paramFromVal != null && paramFromVal !="undefined") {
 	fromParam=paramValue('from');
-} else if(tempFromCookie.length>0 && tempFromCookie!="undefined") {
+} else if(tempFromCookie && tempFromCookie.length>0) {
 	fromParam=tempFromCookie; 
 } else {
 	fromParam = "";
@@ -716,14 +712,14 @@ if(paramFromVal!="" && paramFromVal != null && paramFromVal !="undefined") {
 
 var dwcobrand=paramValue('dwcobrand');var byear=getUserPreferences("13");var age=0;var gender=getUserPreferences("14");if(byear.length>0&&gender.length>0){var oq=OAS_query;var now=new Date();var thisYear=now.getFullYear();age=thisYear-Number(byear);if(oq==""){oq="age="+age+"&gender="+gender.toLowerCase();}else{oq=oq+"&age="+age+"&gender="+gender.toLowerCase();}if(partnerCookie!=''){oq=oq+"&cobrand="+partnerCookie;}if(partnerCookie==''&&dwcobrand!='undefined'){oq=oq+"&cobrand="+dwcobrand;}if(idType!=''){oq=oq+"&idtype="+idType;}if(fromParam == 'homedepot'){oq=oq+"&vanity=homedepot";}if(gnSiteMode=='severe'){/*oq=oq+"&mode=severe"*/}else if(gnSiteMode=='alert'){/*oq=oq+"&mode=alert"*/}else{/*oq=oq+"&mode=normal"*/}OAS_query=oq;}}
 
-function updAdsTwoOASQuery() {if(typeof(OAS_query)=='undefined' && OAS_query!=""){}else{var partnerCookie=GetCookie("partner");if(partnerCookie == 'google') {if(GetCookie("pCounter")!= 1) {SetCookie ("pCounter", "1", "", "/", ".weather.com");}}var idType=searchTermType();
+function updAdsTwoOASQuery() {if(typeof(OAS_query)=='undefined' && OAS_query!=""){}else{var partnerCookie=YAHOO.util.Cookie.get("partner");if(partnerCookie == 'google') {if(YAHOO.util.Cookie.get("pCounter")!= 1) {SetCookie ("pCounter", "1", "", "/", ".weather.com");}}var idType=searchTermType();
 
-var tempFromCookie = GetCookie('fromStr');
+var tempFromCookie = YAHOO.util.Cookie.get('fromStr') || "";
 var paramFromVal = paramValue('from');
 var fromParam ="";
 if(paramFromVal!="" && paramFromVal != null && paramFromVal !="undefined") {
 	fromParam=paramValue('from');
-} else if(tempFromCookie.length>0 && tempFromCookie!="undefined") {
+} else if(tempFromCookie && tempFromCookie.length>0) {
 	fromParam=tempFromCookie; 
 } else {
 	fromParam = "";
@@ -733,10 +729,10 @@ var dwcobrand=paramValue('dwcobrand');var byear=getUserPreferences("13");var age
 if(idType!=''){oq=oq+"&idtype="+idType;}if(fromParam == 'homedepot'){oq=oq+"&vanity=homedepot";}if(gnSiteMode=='severe'){/*oq=oq+"&mode=severe"*/}else if(gnSiteMode=='alert'){/*oq=oq+"&mode=alert"*/}else{/*oq=oq+"&mode=normal"*/}OAS_query=oq;}}}
 	
 var vsearch=paramValue('search');
-var upcookie=GetCookie("UserPreferences");if(upcookie>0&&vsearch!="search"){updateCookieExpDate("UserPreferences");updateCookieExpDate("RMID");}
+var upcookie=YAHOO.util.Cookie.get("UserPreferences");if(upcookie>0&&vsearch!="search"){updateCookieExpDate("UserPreferences");updateCookieExpDate("RMID");}
 
 var customization_pathname = (window.location.pathname.indexOf("/weather/my")>=0)?1:0;
-if(customization_pathname==0){var myPrefsCookie=GetCookie("MyPrefs");if(myPrefsCookie.length>1){updateCookieUnescape("MyPrefs");}}
+if(customization_pathname==0){var myPrefsCookie=YAHOO.util.Cookie.get("MyPrefs");if(myPrefsCookie.length>1){updateCookieUnescape("MyPrefs");}}
 //-->
 </script>
 <SCRIPT type="text/javascript">
@@ -800,7 +796,7 @@ switch(state) {
 	default:				return "undcl";
 	}
 }
-var trans_dec=getDeclaration(getUserPreferences("16"));var rsi_segs=GetCookie("rsi_segs");var rsi_array=new Array();var rsi_clean_array=new Array();var ad_itemsArray=new Array();rsi_array=rsi_segs.split("|");for(var i=0;i<rsi_array.length;i++){rsi_clean_array.push(rsi_array[i].slice(7));}
+var trans_dec=getDeclaration(getUserPreferences("16"));var rsi_segs=YAHOO.util.Cookie.get("rsi_segs");var rsi_array=new Array();var rsi_clean_array=new Array();var ad_itemsArray=new Array();rsi_array=rsi_segs.split("|");for(var i=0;i<rsi_array.length;i++){rsi_clean_array.push(rsi_array[i].slice(7));}
 rsi=rsi_clean_array.join('&rsi=');function filterNum(str){var temp=str;temp=temp.replace(/[^a-zA-Z 0-9]+/g,'_');temp=temp.replace(/\s/g,'_');temp=temp.toLowerCase();return temp;}
 if(trans_dec!=""){ad_itemsArray.push("dec="+trans_dec);}
 if(getUserPreferences("28")!=""){ad_itemsArray.push("cc="+filterNum(getUserPreferences("28")));}
@@ -846,17 +842,17 @@ var pageName = new String(window.location.pathname);
 </script>
 <script type="text/javascript">
 var mx_hash=new Object();
-mx_hash["cobrand"]=partnerCookie;if(typeof(ts_pagename)!='undefined'){mx_hash["pagename"]=ts_pagename;}else{mx_hash["pagename"]="";}if(typeof(ts_level1)!='undefined'){mx_hash["level1"]=ts_level1;}else{mx_hash["level1"]="UNCATEGORIZED";}if(typeof(ts_level2)!='undefined'){mx_hash["level2"]=ts_level2;}else{mx_hash["level2"]="";}if(typeof(ts_level3)!='undefined'){mx_hash["level3"]=ts_level3;}else{mx_hash["level3"]="";}if(typeof(ts_level4)!='undefined'){mx_hash["level4"]=ts_level4;}else{mx_hash["level4"]="";}if(typeof(ts_level5)!='undefined'){mx_hash["level5"]=ts_level5;}else{mx_hash["level5"]="";}if(typeof(ts_level6)!='undefined'){mx_hash["level6"]=ts_level6;}else{mx_hash["level6"]="";}if(typeof(ts_detail)!='undefined'){mx_hash["detail"]=ts_detail;}else{mx_hash["detail"]="";}if(typeof(ts_adCategory)!='undefined'){mx_hash["ad_category"]=ts_adCategory;}else{mx_hash["adCategory"]="";}if(typeof(ts_contentType)!='undefined'){mx_hash["content_type"]=ts_contentType;}else{mx_hash["content_type"]="";}if(typeof(ts_adFamily)!='undefined'){mx_hash["ad_family"]=ts_adFamily;}else{mx_hash["ad_family"]="";}if(typeof(ts_adChannel)!='undefined'){mx_hash["ad_channel"]=ts_adChannel;}else{mx_hash["ad_channel"]="";}mx_hash["declaration_state"]=getUserPreferences("16");mx_hash["urg"]=getUserPreferences("14");mx_hash["ura"]=getUserPreferences("13");mx_hash["urz"]=getUserPreferences("23");if(typeof(OAS_query)!='undefined'){var matchCondition=new RegExp(/cond=\w*/gi);condition=OAS_query.match(matchCondition);if(condition!=null){mx_hash["wxcond"]=condition[0].replace(/cond=/,"");}}if(typeof(OAS_query)!='undefined'){var matchContext=new RegExp(/context=\w*/gi);context=OAS_query.match(matchContext);if(context!=null){mx_hash["oas_context"]=context[0].replace(/context=/,"");}}if(typeof(OAS_query)!='undefined'){var matchSevere=new RegExp(/severe=\w*/gi);severeCondition=OAS_query.match(matchSevere);if(severeCondition!=null){mx_hash["severe"]=severeCondition[0].replace(/severe=/,"");}}if(typeof(omn_locid)!='undefined'){mx_hash["locid"]=omn_locid;}else{mx_hash["locid"]="";}if(typeof(omn_locytpe)!='undefined'){mx_hash["loctype"]=omn_locytpe;}else{mx_hash["loctype"]="";}if(typeof(omn_locname)!='undefined'){mx_hash["locname"]=omn_locname;}else{mx_hash["locname"]="";}if(typeof(omn_cityName)!='undefined'){mx_hash["city"]=omn_cityName;}else{mx_hash["city"]="";}if(typeof(omn_locstate)!='undefined'){mx_hash["state"]=omn_locstate;}else{mx_hash["state"]="";}if(typeof(omn_zipcode)!='undefined'){mx_hash["zipcode"]=omn_zipcode;}else{mx_hash["zipcode"]="";}if(typeof(omn_loccountry)!='undefined'){mx_hash["country"]=omn_loccountry;}else{mx_hash["country"]="";}if(typeof(omn_dmaCode)!='undefined'){mx_hash["dma"]=omn_dmaCode;}else{mx_hash["dma"]="";}var categoryID="";if(typeof(ts_level1)!=""){categoryID=mx_hash["level1"];}if(typeof(ts_level2)!=""){categoryID=categoryID+"-"+mx_hash["level2"];}if(typeof(ts_level3)!=""){categoryID=categoryID+"-"+mx_hash["level3"];}if(typeof(ts_level4)!=""){categoryID=categoryID+"-"+mx_hash["level4"];}mx_hash["category_id"]=categoryID;mx_hash["refurl"]=document.referrer;mx_hash["desturl"]=document.URL;mx_hash["rm_id"]=GetCookie("RMID");mx_hash["urs_id"]=getUserPreferences("2");if(typeof(gnSiteMode)!=""){mx_hash["sitemode"]=gnSiteMode;}else{mx_hash["sitemode"]="";}if(typeof(OAS_spoof)!='undefined'){mx_hash["oas_spoof"]=OAS_spoof;}else{mx_hash["oas_spoof"]="";}mx_hash["qstring_hash"]=queryString;if(GetCookie("partner")=="beta2"){mx_hash["beta_flag"]="beta";}else{mx_hash["beta_flag"]="prod";}
+mx_hash["cobrand"]=partnerCookie;if(typeof(ts_pagename)!='undefined'){mx_hash["pagename"]=ts_pagename;}else{mx_hash["pagename"]="";}if(typeof(ts_level1)!='undefined'){mx_hash["level1"]=ts_level1;}else{mx_hash["level1"]="UNCATEGORIZED";}if(typeof(ts_level2)!='undefined'){mx_hash["level2"]=ts_level2;}else{mx_hash["level2"]="";}if(typeof(ts_level3)!='undefined'){mx_hash["level3"]=ts_level3;}else{mx_hash["level3"]="";}if(typeof(ts_level4)!='undefined'){mx_hash["level4"]=ts_level4;}else{mx_hash["level4"]="";}if(typeof(ts_level5)!='undefined'){mx_hash["level5"]=ts_level5;}else{mx_hash["level5"]="";}if(typeof(ts_level6)!='undefined'){mx_hash["level6"]=ts_level6;}else{mx_hash["level6"]="";}if(typeof(ts_detail)!='undefined'){mx_hash["detail"]=ts_detail;}else{mx_hash["detail"]="";}if(typeof(ts_adCategory)!='undefined'){mx_hash["ad_category"]=ts_adCategory;}else{mx_hash["adCategory"]="";}if(typeof(ts_contentType)!='undefined'){mx_hash["content_type"]=ts_contentType;}else{mx_hash["content_type"]="";}if(typeof(ts_adFamily)!='undefined'){mx_hash["ad_family"]=ts_adFamily;}else{mx_hash["ad_family"]="";}if(typeof(ts_adChannel)!='undefined'){mx_hash["ad_channel"]=ts_adChannel;}else{mx_hash["ad_channel"]="";}mx_hash["declaration_state"]=getUserPreferences("16");mx_hash["urg"]=getUserPreferences("14");mx_hash["ura"]=getUserPreferences("13");mx_hash["urz"]=getUserPreferences("23");if(typeof(OAS_query)!='undefined'){var matchCondition=new RegExp(/cond=\w*/gi);condition=OAS_query.match(matchCondition);if(condition!=null){mx_hash["wxcond"]=condition[0].replace(/cond=/,"");}}if(typeof(OAS_query)!='undefined'){var matchContext=new RegExp(/context=\w*/gi);context=OAS_query.match(matchContext);if(context!=null){mx_hash["oas_context"]=context[0].replace(/context=/,"");}}if(typeof(OAS_query)!='undefined'){var matchSevere=new RegExp(/severe=\w*/gi);severeCondition=OAS_query.match(matchSevere);if(severeCondition!=null){mx_hash["severe"]=severeCondition[0].replace(/severe=/,"");}}if(typeof(omn_locid)!='undefined'){mx_hash["locid"]=omn_locid;}else{mx_hash["locid"]="";}if(typeof(omn_locytpe)!='undefined'){mx_hash["loctype"]=omn_locytpe;}else{mx_hash["loctype"]="";}if(typeof(omn_locname)!='undefined'){mx_hash["locname"]=omn_locname;}else{mx_hash["locname"]="";}if(typeof(omn_cityName)!='undefined'){mx_hash["city"]=omn_cityName;}else{mx_hash["city"]="";}if(typeof(omn_locstate)!='undefined'){mx_hash["state"]=omn_locstate;}else{mx_hash["state"]="";}if(typeof(omn_zipcode)!='undefined'){mx_hash["zipcode"]=omn_zipcode;}else{mx_hash["zipcode"]="";}if(typeof(omn_loccountry)!='undefined'){mx_hash["country"]=omn_loccountry;}else{mx_hash["country"]="";}if(typeof(omn_dmaCode)!='undefined'){mx_hash["dma"]=omn_dmaCode;}else{mx_hash["dma"]="";}var categoryID="";if(typeof(ts_level1)!=""){categoryID=mx_hash["level1"];}if(typeof(ts_level2)!=""){categoryID=categoryID+"-"+mx_hash["level2"];}if(typeof(ts_level3)!=""){categoryID=categoryID+"-"+mx_hash["level3"];}if(typeof(ts_level4)!=""){categoryID=categoryID+"-"+mx_hash["level4"];}mx_hash["category_id"]=categoryID;mx_hash["refurl"]=document.referrer;mx_hash["desturl"]=document.URL;mx_hash["rm_id"]=YAHOO.util.Cookie.get("RMID");mx_hash["urs_id"]=getUserPreferences("2");if(typeof(gnSiteMode)!=""){mx_hash["sitemode"]=gnSiteMode;}else{mx_hash["sitemode"]="";}if(typeof(OAS_spoof)!='undefined'){mx_hash["oas_spoof"]=OAS_spoof;}else{mx_hash["oas_spoof"]="";}mx_hash["qstring_hash"]=queryString;if(YAHOO.util.Cookie.get("partner")=="beta2"){mx_hash["beta_flag"]="beta";}else{mx_hash["beta_flag"]="prod";}
 if(typeof(pif_timeframe)!='undefined' && typeof(wx)!='undefined' && typeof(wx.config)!='undefined'){mx_hash["pif_timeframe"]=wx.config.page.pif_timeframe;}
 if(typeof(fromParam)!='undefined') {
 	mx_hash["from"]=fromParam;
 } else {
-	mx_hash["from"]=GetCookie("fromStr");/*fromParam;*/
+	mx_hash["from"]=YAHOO.util.Cookie.get("fromStr");/*fromParam;*/
 }
 
 mx_hash["pagination"]="";if(typeof(page_keywords)!='undefined'){mx_hash["page_kw"]=page_keywords;}else{mx_hash["page_kw"]="";}if(typeof(page_params)!='undefined'){mx_hash["page_prms"]=page_params;}else{mx_hash["page_prms"]="";}if(typeof(ad_size)!='undefined'){mx_hash["page_adsize"]=ad_size;}else{mx_hash["page_adsize"]="";}
 
-mx_hash["current_rsi"] = GetCookie("rsi_segs");mx_hash["current_cc"] = getUserPreferences("28");mx_hash["current_st"] = getUserPreferences("29");mx_hash["current_dma"] = getUserPreferences("30");mx_hash["current_ct"] = getUserPreferences("31");mx_hash["current_zip"] = getUserPreferences("32");mx_hash["current_cid"] = getUserPreferences("33");mx_hash["current_dec"] = trans_dec;
+mx_hash["current_rsi"] = YAHOO.util.Cookie.get("rsi_segs");mx_hash["current_cc"] = getUserPreferences("28");mx_hash["current_st"] = getUserPreferences("29");mx_hash["current_dma"] = getUserPreferences("30");mx_hash["current_ct"] = getUserPreferences("31");mx_hash["current_zip"] = getUserPreferences("32");mx_hash["current_cid"] = getUserPreferences("33");mx_hash["current_dec"] = trans_dec;
 
 
 if(!window.YAHOO){
@@ -869,29 +865,20 @@ if(!window.YAHOO){
 
 
 
-//////////////////////////////////////////////////////////////////////////////////
-////////////// M U S T    B E    S E T    F A L S E    B E F O R E    L A U N C H////////////
-var devTest = false
-//////////////////////////////////////////////////////////////////////////////////
-
-if(window.location.hostname.match(/preview/) || devTest){
-	document.write('<scr' + 'ipt src="http://j.imwx.com/v.20120426.0/common/header/javascript/yui_modules_header_startup_LSR.js"></scr' + 'ipt>');
-}else{
-	document.write('<scr' + 'ipt src="http://j.imwx.com/v.20120508.0/common/header/javascript/yui_modules_header_startup.js"></scr' + 'ipt>');
-}
 </script>
 
 <!-- Adding jQuery and PCO3 and NEW DFPP ad controller-->
 <script src="../../../d.imwx.com/managedfe/js/jquery/jquery-1.7.1-IE7-twccore.min.js"></script>
+<script src="../../../j.imwx.com/v.20120508.0/common/header/javascript/yui_modules_header_startup.js"></script>
 <script src="../../../d.imwx.com/services/pco"></script>
-</script>
+<script src="../../weather/mpdwcr/hugmedata"></script>
 
 <script>
 'TWC' in window || (window.TWC = {});
 var pageId = (window.wx && wx.config && wx.config.page && wx.config.page.pageId);
 var mode = (window.wx && wx.config && wx.config.ad && wx.config.ad.mode);
 var locid = (window.wx && wx.config && wx.config.loc && wx.config.loc.locid) ||
-                 (window.wx && wx.config && wx.config.loc && wx.config.loc.zip);
+                 (window.wx && wx.config && wx.config.loc && wx.config.loc.zip) || "";
 locid = locid.replace("\$",":");
 
 
@@ -908,20 +895,23 @@ TWC.pco = TWC.initpco(jQuery,null, pageId, mode, "53", locid);
 
 <script>
 var appsInfo;
-var user = yStorage.get("user");
+var user = jQuery.jStorage.get("user");
 var hardDeclarationsList = user && user.hardDeclarations || [];
 if (hardDeclarationsList.length > 0)
 {
     if (hardDeclarationsList instanceof Array)
     {
 		appsInfo = hardDeclarationsList;
+		window.wx = window.wx || {};
+		wx.config = wx.config || {};
+		wx.config.user = wx.config.user || {};
 		wx.config.user.apps = hardDeclarationsList;
 	}
 }
 else
 {
 	// Retrieve user declaration information from "a" cookie and delete
-	var oldDeclarations=Cookie.get("a");
+	var oldDeclarations=YAHOO.util.Cookie.get("a");
 	var oldDeclareArray = [];
 	
 	if(null != oldDeclarations && "null" != oldDeclarations)
@@ -935,7 +925,7 @@ else
 	}
 	else
 	{ //get value from UP16
-		oldDeclarations = Cookie.get("UserPreferences");
+		oldDeclarations = YAHOO.util.Cookie.get("UserPreferences");
 		if(null != oldDeclarations)
 		{
 			oldDeclSlots = oldDeclarations.split("|");
@@ -1004,7 +994,7 @@ if (('undefined' !== typeof softDeclarationsList) && (softDeclarationsList.lengt
 	}
 }
 user.preferredDeclaration = preferredDeclaration;
-yStorage.set("user",user);
+jQuery.jStorage.set("user",user);
 
  //END SET up local storage for hard Declarations
 </script>
@@ -1235,6 +1225,11 @@ A21.notifyRegistered(newAdStyle);
 			<li class="twc-separator wx-signin-myprofile twc-hide"><a href="https://registration.weather.com/ursa/profile" Title="My Profile">My Profile</a></li>
 			<li class="twc-separator wx-signin-signout twc-hide"><a href="https://registration.weather.com/ursa/logout?iswebsignout=true" Title="Sign Out">Sign Out</a></li>
 		</ul><!-- wx-header-tools -->
+	<div class="wx-desktop-weather-btn">
+		<div class="wx-desktop-weather-bg"></div>
+		<span class="wx-icon wx-desktop-weather"></span>
+		<a href="http://www.weather.com/services/winapp.html">Desktop Weather</a>
+	</div>
 <!--NAVIGATION links STARTS-->
 
 		<div id="wx-Strip">
@@ -1260,7 +1255,6 @@ A21.notifyRegistered(newAdStyle);
 <ul class="twc-subNav">
 <li pageid="null"><a href="http://www.weather.com/travel/main" from="nav_sec_Travel">Travel</a></li>
 <li pageid="null"><a href="http://www.weather.com/health/main" from="nav_sec_Health">Health</a></li>
-<li pageid="null"><a href="http://www.weather.com/weather/health/beauty/" from="nav_sec_Fashion &amp; Beauty">Fashion &amp; Beauty</a></li>
 <li pageid="null"><a href="http://www.weather.com/outlook/home-family/lawn-garden/articles/welcome-home-and-family_2011-12-20" from="nav_sec_Family">Family</a></li>
 <li pageid="null"><a href="http://www.weather.com/sports-rec/main" from="nav_sec_Sports &amp; Recreation">Sports &amp; Recreation</a></li>
 <li pageid="null"><a href="http://www.weather.com/home-garden/main" from="nav_sec_Home &amp; Garden">Home &amp; Garden</a></li></ul></li><li id="wx-primeNav3" pageid="62979">
@@ -1822,6 +1816,23 @@ The Weather Channel, and all associated Services and systems, including registra
         </div><!-- wx-footer -->
 	</div><!-- wx-page-inner -->
     </div><!-- wx-page -->
+
+<!-- Google Code for Weather.com -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1069483923;
+var google_conversion_label = "y3bYCMfJgQIQk4_8_QM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="../../../www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="../../../googleads.g.doubleclick.net/pagead/viewthroughconversion/1069483923/index.html%3Fvalue=0&amp;label=y3bYCMfJgQIQk4_8_QM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>	
 
 <script>
 (function(){

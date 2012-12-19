@@ -903,18 +903,23 @@ spinOptions.small = $.extend({}, spinOptions, {radius: 4, length: 4});
 		var init = function() {
 			plugin.settings = $.extend({}, defaults, options);
 
-			if (!plugin.settings.groupId)
-				throw new Error("Partner Work -- No GroupID provided.");
-			else
+			if (!plugin.settings.groupId) {
+				console.log("Partner Work No GroupID");
+			}
+			else {
 				console.log("Partner Work GroupID: " + plugin.settings.groupId);
+			}
 
 			addSpinners();
 			//$(plugin.spinners.main.el).parent().show();
 			GlobalSpinner.show();
 			plugin.data.filtered = null;
 
-			load(plugin.settings.urls.groups + '?group_id=' + plugin.settings.groupId, initFilters);
-			load(plugin.settings.urls.programs += '?group_id=' + plugin.settings.groupId, initCases);
+			var groupsUrl = !plugin.settings.groupId ? plugin.settings.urls.groups : plugin.settings.urls.groups + '?group_id=' + plugin.settings.groupId;
+			var programsUrl = !plugin.settings.groupId ? plugin.settings.urls.programs : plugin.settings.urls.programs += '?group_id=' + plugin.settings.groupId;
+
+			load(groupsUrl, initFilters);
+			load(programsUrl, initCases);
 
 			bindEvents();
 		}
@@ -3275,8 +3280,13 @@ $(document).ready(function() {
 			var miniFeatures = new $.miniFeatures($('#careers #slideshow '), {maskWidth:736, itemWidth: 736, rolloverHide: false});
 		}
 
-		if ($("body.media-partners-company-our-work").length > 0)
-			var work = new $.partnerWork({groupId: $("#group_id").val()});
+		if ($("body.media-partners-company-our-work").length > 0) {
+			var opts = {};
+			if ($("#group_id").length > 0) {
+				opts.groupId = $("#group_id").val();
+			}
+			var work = new $.partnerWork(opts);
+		}
 
 		if ($("body.press-room-press-releases-contac").length > 0)
 			var pressReleases = new $.ajaxContent({spinOptions: spinOptions, isFFM: $('body').hasClass('fairchild')});

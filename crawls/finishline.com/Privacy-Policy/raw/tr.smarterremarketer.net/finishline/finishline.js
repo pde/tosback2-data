@@ -663,6 +663,7 @@
 
                     if (SmtrRmkr.isHomePage()) {
                         cn = 'Homepage';
+                        cid = 'homepage';
                     } else if (SmtrRmkr.isPage('/college-hooded-sweatshirt')) {
                         cid = 'colhoodswt';
                         cn = 'college-hooded-sweatshirt';

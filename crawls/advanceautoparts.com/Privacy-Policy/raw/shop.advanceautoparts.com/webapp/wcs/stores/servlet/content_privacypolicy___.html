@@ -104,10 +104,30 @@ height: 34px;
 margin-bottom: 0px;
 text-align: center;
 }
+#global_top_banner2 a, #global_inner_banner2 a { float:left; display:block}
 </style>
 <div id="global_inner_banner">
-<a manual_cm_sp="Promotions-_-SiteWideBanner-_-PromoCode" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_sitewide-20-percent-off-everything-121214___" name="20% off nearly everything!*|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/a_global_banner_121214.png" border="0" /></a><a manual_cm_sp="Promotions-_-SiteWideBanner-_-FreeShipping" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_freeshipping___" name="Free Shipping|global banner|Image"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/310_globalbanner_right-3.gif" border="0" /></a>
-</div></div>
+<a manual_cm_sp="Promotions-_-SiteWideBanner-_-FreeShipping" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_freeshipping___" name="Free Shipping|global banner|Image"><img 
+src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/310_globalbanner_right-3.gif" border="0" style="float:right;" /></a>
+</div>
+<script type="text/javascript">
+var ABTestSegment;
+var ABTestCookie = j.cookie("AAP_Test_12_17");
+if (ABTestCookie) {
+ABTestSegment = ABTestCookie=="B" ? "B" : "A"
+}
+else {
+var ABTestRandom = Math.random();
+ABTestSegment = ABTestRandom < 0.9 ? "A" : "B";
+j.cookie("AAP_Test_12_17", ABTestSegment, {expires: 7, path: '/'});
+}
+if (ABTestSegment=="B") {
+j('#global_inner_banner').prepend('<a manual_cm_sp="Promotions-_-SiteWideBanner-_-PromoCode" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_storeservices___" name=""><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/evergreen-global.png" border="0"></a>');
+}
+else {
+j('#global_inner_banner').prepend('<a manual_cm_sp="Promotions-_-SiteWideBanner-_-PromoCode" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_sitewide-15-percent-off-100-121217A___" name="15% off orders over $100* + a $50 coupon"><img src="../../../../wcsstore/CVWEB/Attachment/staticbusinesscontent/image/a_global_banner_121217A.png" border="0"></a>');
+}
+</script></div>
 <!-- End - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
 </div>
 </div>
@@ -1816,14 +1836,21 @@ pageViewAttr[2] = ymm[2];
 pageViewAttr[3] = engine;
 }
 }
-pageViewAttr[11] = "";
-productViewAttr[2] = "";
-shop5Attr[7] = "";
-shop9Attr[7] = "";
-orderViewAttr[2] = "";
-registerAttr[0] = "";
-srchEvtAttr[0] = "";
-ecomEvtAttr[0] = "";
+var priceZone = "";
+var validZone = validateInput(getAAPPriceZoneCookieRegex(), '');
+if(!validZone){
+priceZone = invalidatePriceZoneCookie();
+}else{
+priceZone = "";
+}
+pageViewAttr[11] = priceZone;
+productViewAttr[2] = priceZone;
+shop5Attr[7] = priceZone;
+shop9Attr[7] = priceZone;
+orderViewAttr[2] = priceZone;
+registerAttr[0] = priceZone;
+srchEvtAttr[0] = priceZone;
+ecomEvtAttr[0] = priceZone;
 srchEvtAttr[1] = escapeQuote('');
 function cmVCCatId(defaultCatId, oiid, vcString)
 {
@@ -1934,46 +1961,8 @@ Latest Flyer
 <div id="footer-area">
 <!-- BEGIN Cached-->	
 <!-- Start - JSP File Name: WebServiceeMarketingSpotDisplay.jsp -->
-<style type="text/css">
-#footer-area {margin-top:0px;}
-#footer-block {width:200px;}
-#footer-block .h3, #footer-block-col2 .h3 {
-color: #333;
-font-size: 13px;
-font-style: normal;
-margin: 0;
-padding: 0 0 3px;
-font-weight:bold;
-display:block;
-}
-#footer-area-box2 .h3 {
-color: #333;
-display: block;
-font-size: 13px;
-font-style: normal;
-margin: 0;
-padding: 6px 0;
-font-weight:bold;
-}
-#footer-right-block .h5 {
-color: #333;
-font-size: 12px;
-margin: 0 0 4px;
-padding: 0;
-display: block;
-font-weight:bold;
-}
-#footer-block-col2 .h4 {
-background: none;
-color: #333;
-font-size: 12px;
-font-style: normal;
-font-weight: bold;
-display: block;
-}
-</style>
 <div id="footer-area-box1">
-<div id="footer-block"> 
+<div id="footer-block">
 <span class="h3">Shop Advance Auto Parts</span>
 <ul>
 <li><a manual_cm_sp="Footer-_-Col1-_-Accessories+Body+Wipers" class="main" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_browse-accessories-body-wipers">Accessories Body &amp; Wipers</a></li>
@@ -1990,7 +1979,7 @@ display: block;
 <li><a manual_cm_sp="Footer-_-Col1-_-Replacement+Parts" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_replacement-parts">Replacement Parts</a></li>
 </ul>
 </div>
-<div id="footer-block-col2"> 
+<div id="footer-block-col2">
 <span class="h3">Customer Care</span>
 <ul>
 <li id="footer_red_link"><a manual_cm_sp="Footer-_-Col2-_-Recalls" name="IMPORTANT:Recall Information|Customer Care|Footer" href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/content_recalls___">IMPORTANT: Recall Information</a></li>
@@ -2007,7 +1996,7 @@ display: block;
 </ul>
 <span class="h4">Call us at <span class="promoNumber">1-877-ADVANCE (238-2623)</span></span>
 </div>
-<div style="border:0;" id="footer-block"> 
+<div style="border:0;" id="footer-block">
 <span class="h3">Corporate Information</span>
 <ul>
 <li><a manual_cm_sp="Footer-_-Col3-_-Corp+About" target="_blank" href="http://corp.advanceautoparts.com/about/general.asp">About Us</a></li>
@@ -2026,30 +2015,28 @@ display: block;
 </div>
 </div>
 <div id="footer-area-box2">
-<div id="footer-right-block"> 
-<span class="h3">We accept</span>
+<div id="footer-right-block"> <span class="h3">We accept</span>
 <ul id="list2a">
 <li>
 <div class="creditCardImgs">&nbsp;</div>
-<a class="trusteLink" target="_blank" title="TRUSTe online privacy certification" href="http://privacy-policy.truste.com/click-with-confidence/wps/en/www.advanceautoparts.com/seal_m">&nbsp;</a>
-</li>
+<a class="trusteLink" target="_blank" title="TRUSTe online privacy certification" href="http://privacy-policy.truste.com/click-with-confidence/wps/en/www.advanceautoparts.com/seal_m">&nbsp;</a> </li>
 </ul>
 <ul id="list2b">
-<li>
-<span class="h5">Check out Advance Auto Parts on:</span>
-<a class="facebookIcon" target="new" href="http://www.facebook.com/advanceautoparts">&nbsp;</a>
-<a class="twitterIcon" target="new" href="http://twitter.com/aapdeals">&nbsp;</a>
+<li> 
+<span class="h5">Check out Advance Auto Parts on:</span> 
+<a class="facebookIcon" target="new" href="http://www.facebook.com/advanceautoparts">&nbsp;</a> <a class="twitterIcon" target="new" href="http://twitter.com/aapdeals">&nbsp;</a>
+<div class="clear">&nbsp;</div>
 </li>
 </ul>
 <div id="google_translate_element"></div>
 <div id="copyright">
-<div id="copyright_left"> 
-<strong>&copy; 2012 Advance 
+<div id="copyright_left">
+<strong>&copy; 2012 Advance
 <a href="http://shop.advanceautoparts.com/webapp/wcs/stores/servlet/home___">Auto Parts</a>
 </strong>
 <div id="price_zone_code"></div>
 </div>
-<div id="copyright_right"> 
+<div id="copyright_right">
 <a title="WebSphere Commerce Powered by CrossView" target="_blank" href="http://www.crossview.com">Powered by CrossView&trade;</a>
 </div>
 </div>
@@ -2066,28 +2053,14 @@ var isZonePricingEnabled = false;
 if(isZPEnabled != 'false'){
 isZonePricingEnabled = true;
 }
-var priceZoneCode = '';
-var priceZoneAttribute = '';
-var user_Id='-1002';
-var userZone = priceZoneAttribute;
-//price zone can be set via attribute or cookie. attribute takes precedence
-if (userZone == '' )
-userZone = j.cookie('AAP_PRICE_ZONE_ID');
-j("#currZoneId").html(userZone);	
-j(document).ready(function(){	
-if ( isZonePricingEnabled && (userZone != null && userZone != "") )	
-{	
-//if copyright id exists, enter it here, otherwise, append in footer
-if (j("#copyright_left").length)
-{
-var footerblock = j("#copyright_left").append("<div id=\"price_zone_code\">"+priceZoneCode+"</div>");
-} 
-else
-{
-var footerblock = j("#footer-right-block").append("<div id=\"price_zone_code\">"+priceZoneCode+"</div>");
+var priceZone = "";
+var validZone = validateInput(getAAPPriceZoneCookieRegex(), '');
+if(!validZone){
+priceZone = invalidatePriceZoneCookie();
+}else{
+priceZone = "";
 }
-}
-});
+j("#currZoneId").html(priceZone);	
 </script>
 <!-- Start LivePerson Tag Library -->
 <!-- Start LivePersonTagConfig.jspf -->
