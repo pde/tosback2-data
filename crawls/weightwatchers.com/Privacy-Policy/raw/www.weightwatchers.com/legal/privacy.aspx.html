@@ -131,7 +131,7 @@ effect:  'fade'
 <input name="ucTopnav:uctr_tn_tabs:tab_bgcolor_on" type="hidden" id="ucTopnav_uctr_tn_tabs_tab_bgcolor_on" value="#FFFEE9" /> <input name="ucTopnav:uctr_tn_tabs:tab_bgcolor_off" type="hidden" id="ucTopnav_uctr_tn_tabs_tab_bgcolor_off" value="#73AEDA" />
 <input name="ucTopnav:uctr_tn_tabs:hdn_jnl_lang" type="hidden" id="ucTopnav_uctr_tn_tabs_hdn_jnl_lang" value="Journal" /> <input name="ucTopnav:uctr_tn_tabs:hdn_fav_lang" type="hidden" id="ucTopnav_uctr_tn_tabs_hdn_fav_lang" value="My Favorites" />
 <input name="ucTopnav:uctr_tn_tabs:hdn_mplan_lang" type="hidden" id="ucTopnav_uctr_tn_tabs_hdn_mplan_lang" value="Meal Plans" />
-<input name="ucTopnav:uctr_tn_tabs:hdnParamVals" type="hidden" id="ucTopnav_uctr_tn_tabs_hdnParamVals" value="/legal/privacy.aspx;;;12/19/2012 8:10:41 AM" />
+<input name="ucTopnav:uctr_tn_tabs:hdnParamVals" type="hidden" id="ucTopnav_uctr_tn_tabs_hdnParamVals" value="/legal/privacy.aspx;;;12/22/2012 8:09:32 AM" />
 
 <!-- END FAST TOPNAV REMOVAL -->
 <script type='text/javascript'>
@@ -140,8 +140,7 @@ effect:  'fade'
     SetFacebookLikeEnabled(true);
     LoadFBJSSdk();
 </script>
-
-	<script type='text/javascript'>
+<script type='text/javascript'>
 var googletag = googletag || {};
 googletag.cmd = googletag.cmd || [];
 (function() {
@@ -154,8 +153,22 @@ gads.src = (useSSL ? 'https:' : 'http:') +
 var node = document.getElementsByTagName('script')[0];
 node.parentNode.insertBefore(gads, node);
 })();
-</script>
 
+$(window).load(function () {
+    $("[id^=div-googletag]").each(function (index, element) {
+        if ($(element).is(":hidden")) {
+            $(element).parent().parent().parent().hide();
+        }
+    });
+
+    $("table tbody tr td:contains('ADVERTISEMENT')").each(function (index, element) {
+        var parentDiv = $(element).parent().parent().parent().parent().parent();
+        if ($(parentDiv).height() <= 50) {
+            $(parentDiv).hide();
+        }
+    });
+});
+</script>
     <div class="grid_ww_wrapper">
         <div id="grid_gateway_content" class="container_16 clearfix container_top" role="main">
             <div class="gateway_content_bg_top">
@@ -338,7 +351,7 @@ var s_account="wwatchcomusa"
 s.eVar17="visitor";
 s.account="wwatchcomusa";
 s.prop11="visitor";
-s.server="NYAPUSWEB15";
+s.server="NYAPUSWEB17";
 s.prop25="";
 s.cookieDomainPeriods="2";
 
@@ -394,7 +407,7 @@ var vMemberID = "";
 var vAge = "";
 var vHeight = "";
 var vWeight = "";
-var vPageURLPrefx = vPageURL.substring(0, vPageURL.indexOf(":") +1);
+var vPageURLPrefx = "https:"; 
 var imgWWAllPagesTag = document.getElementById("imgWWAllPagesTag");
 if(s.pageName != undefined && s.pageName != null){vDescriptionPage = s.pageName;}
 if(s.prop11 != undefined && s.prop11 != null){vSubscriberType = s.prop11;}
@@ -403,8 +416,8 @@ if(s.prop25 != undefined && s.prop25 != null){vMemberID = s.prop25;}
 if(s.eVar14 != undefined && s.eVar14 != null){vAge = s.eVar14;}
 if(s.eVar15 != undefined && s.eVar15 != null){vHeight = s.eVar15;}
 if(s.eVar16 != undefined && s.eVar16 != null){vWeight = s.eVar16;}
-var vImageSource = vPageURLPrefx + "//view.atdmt.com/action/WW_AllPages_Tag/v3/atc1."+ vDescriptionPage + "/atc2." + vSubscriberType + "/atc3." + vGender + "/atc4." + vAge + "/atc5." + vHeight + "/atc6." + vWeight + "/atc7." + vMemberID + "/atc8." + vPageURL;
-imgWWAllPagesTag.src = vImageSource;
+var vImageSource = vPageURLPrefx + "//view.atdmt.com/action/WW_AllPages_Tag/v3/pageName."+ vDescriptionPage + "/subType." + vSubscriberType + "/gender." + vGender + "/age." + vAge + "/height." + vHeight + "/weight." + vWeight + "/memberID." + vMemberID + "/url." + vPageURL;
+if(imgWWAllPagesTag ) {imgWWAllPagesTag.src = vImageSource;}
 });
  </script>
 
@@ -412,8 +425,8 @@ imgWWAllPagesTag.src = vImageSource;
 
  
 <link type="image/x-icon" href="../../aka.weightwatchers.com/images/1033/favicon/favicon.ico" rel="shortcut icon" />
-<input name="ucFooter:hdnWWSERVERNAME" type="hidden" id="ucFooter_hdnWWSERVERNAME" value="nyapusweb15" />
-<input name="ucFooter:hdnWWVersion" type="hidden" id="ucFooter_hdnWWVersion" value="12.8.16.1" />
+<input name="ucFooter:hdnWWSERVERNAME" type="hidden" id="ucFooter_hdnWWSERVERNAME" value="nyapusweb17" />
+<input name="ucFooter:hdnWWVersion" type="hidden" id="ucFooter_hdnWWVersion" value="12.8.35.1" />
 <img id="imgWWAllPagesTag" height="1" width="1" src="privacy.aspx.html"/>
 <!--  END FAST REMOVAL  -->
             <!-- End grid_footer -->

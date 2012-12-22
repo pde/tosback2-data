@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/wireless/services.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -542,12 +645,70 @@
 <div class="page-title-container"> 
 	    <div class="page-title"> 
 	        <h1>Wireless Services</h1> 
-	    </div><div class="marquee tile base"><script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script><div id="marqueeHolder" style="width:974px;height:280px;position:relative;"></div> 
+	    </div><div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-	JSAM.createMarquee('/shop/marquees/landing_pages/services_lander.xml',{height:'280', width:'974'}); 
-	var parentNode = document.getElementById("marqueeHolder").parentNode; 
-	parentNode.style.height = "280px"; 
-</script></div> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/services_lander", 
+	"panel": [{ 
+		"alt": "A perfect fit.", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/974x280/mrq_HRII_services_fit_974x280_BG.jpg", 
+		"contentID": "/content/att/shop/en/panels/landers/services/services_fit", 
+		"description": "Data plans at $20/mo.", 
+		"name": "services_fit", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb_services_fit_human3-orange_44x44.png", 
+		"asset": [{ 
+			"antiAlias": "1", 
+			"cssClass": "size18,customcolor_333333,arial", 
+			"name": "copy", 
+			"type": "Text", 
+			"x": "72", 
+			"y": "141", 
+			"label": [{ "Text": "Pick a plan that's right for you. Data plans starting at $20 a month." }] 
+		}, 
+		{ 
+			"cssClass": "size11,customcolor_1F87BB,arial", 
+			"name": "shop_link", 
+			"type": "Link", 
+			"x": "90", 
+			"y": "174", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/smartphones.html", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Shop Smartphones" }] 
+		}, 
+		{ 
+			"name": "view_button", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "72", 
+			"y": "207", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/en/wireless/data-plans.html", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "View Data Plans" }] 
+		}, 
+		{ 
+			"name": "link_icon", 
+			"source": "/shopcms/media/att/2012/global/JSAM-assets/icons/btn_arrow_box_white_AA0009SJ.png", 
+			"type": "Media", 
+			"x": "70", 
+			"y": "174" 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"974", height:"280"}); 
+   parentNode.style.height = "280px"; 
+</script> 
+</div> 
 </div></div> 
 <div class="bg-top-shadow"></div>  
     <div class="bg-mid-shadow">  
@@ -1170,7 +1331,7 @@ Learn more
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 252124173011127401389651978712511494638 --> 
+		 <!--X-Renderer: 244152449579765262669487912009977062730 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1363,7 +1524,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","zLLGQRKLXsJT03PSmkQdFFqg!-1259821280!1355893352838"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","t6pJQVHBbmh6QGnjJvRv4Mby!572542769!1356154785415"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

@@ -4124,7 +4124,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}
 				
 				// Set main image check for defaultImageUrl not null
-				if(defaultImageUrl !== "" && defaultImageUrl !== undefined ){		
+				if(defaultImageUrl !== "" && defaultImageUrl !== undefined )
+				{		
 					jQuery('.imageStatus').removeClass('loaded').addClass('loading');		
 					var mainImageObj = jQuery('#itemZoom img');	
 					var mainImageSrc = mainImageObj.attr('src',defaultImageUrl);
@@ -4137,7 +4138,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}
 				MagicZoomPlus.refresh();
 				MagicScroll.init();				
-			}else if (eob){
+			} else if (eob) {
 				if (clearanceFlag == "Y") {
 					getColorsSizesPage();
 				} else {
@@ -4375,7 +4376,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	
 	jQuery.fn.onYouTubePlayerReady = function(youtubeVideo) {
 		if (youtubeVideo) {
-		
+			
 			jQuery(youtubeVideo)
 				.each(
 						function (index, value) {
@@ -4385,12 +4386,18 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									"data-image-static");
 							var youtubeValue = jQuery(this).attr(
 									"data-youtube-value");
-
+							var objectWrapper = 'youtube_'+youtubeValue;
+							var getVideo;
+							
+							
+							sessionStorage.setItem("background", videoSrc);
+							sessionStorage.setItem("wrapper", objectWrapper);
+							
 							var videoLinkHTML = '<div class="product_page_link_'
 									+ youtubeValue
-									+ '" style="clear:both;height:10px;"><a name="static:image:videomodal" title="Watch Video" class="floatbox" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="clear:both;height:10px;" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
-									+ '" style="text-decoration: none !important; display: inline-block;"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a id="video" style="font-size:12px !important;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" class="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="text-decoration: none !important; display: inline-block;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' + index + '" onclick="javascript:getVideo('+ youtubeValue +')" style="font-size:12px !important;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
 									+ '">'
 									+ data_link_name
@@ -4409,12 +4416,20 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									+ '"></div></div></div></div></div></div>';
 							
 							
-							if (jQuery(this).find('div.product_page_link_'+youtubeValue).length) {
-							} else {
-								jQuery(this).append(videoLinkHTML);
-							}
 							if (jQuery('#dossier.PPL .Column2 .infoModule').length) {
+								if (jQuery(this).find('div.product_page_link_'+youtubeValue).length > 0) {
+								} else {
+									jQuery(this).append(videoLinkHTML);
+									
+									//thisVideo = '<script>function getVideo("'+id+'") {var id = "";sessionStorage.setItem("videoId", "'+id+'");jQuery(".floatbox").bind("click", function() {fb.start("/assets/html/modalContent/videoDiv.html","type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();");});}</script>'; 
+									//jQuery(this).append(thisVideo);
+								}
+								
 							} else {
+								if (jQuery(this).find('div.product_page_link_'+youtubeValue).length) {
+								} else {
+									jQuery(this).append(videoLinkHTML);
+								}
 								if (jQuery('.infoModule').find('div#ppv_container_'+youtubeValue).length) {
 								} else {
 									jQuery('.infoModule').append(videoContainerHTML);
@@ -4441,6 +4456,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				
 				jQuery('.'+objectWrapper).addClass('selected').css(
 						'display', 'block');
+				
 				var params = {
 					allowScriptAccess: "always",
 					wmode: "transparent"
@@ -4448,6 +4464,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				var atts = {
 				    id: playerObjId
 				};
+				
 				function onYouTubePlayerReady(playerObjId) {
 					var ytplayer = document.getElementById(playerObjId);
 					ytplayer.addEventListener("onStateChange",
@@ -4457,11 +4474,17 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				        ytplayer.playVideo();
 				    }
 				}
+				
 				triggerStopVideo = function() {
 					var ytplayer = document.getElementById(playerObjId);
 					ytplayer.stopVideo();
 					jQuery('.'+objectWrapper).removeClass('selected').css(
 							'display', 'none');
+				}
+				returnCloseButton = function() {
+					jQuery('head')
+					.append(
+							'<style>#fbBox #fbtrPanel{right:-16px !important}</style>');
 				}
 				swfobject
 						.embedSWF(
@@ -4476,6 +4499,38 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 						.append(
 								'<style>#fbBox #fbtrPanel{right:-34px !important}</style>');
 			}
+			/*if (jQuery('#dossier.PPL .Column2 .infoModule').length) {
+				if (jQuery('.floatbox').hasClass('video0')) {
+					
+					alert('video0 = ' +youtubeValue);
+					sessionStorage.setItem("videoId", youtubeValue);
+					//alert(sessionStorage.getItem("videoId"));
+					
+					jQuery('.floatbox').bind('click', function() {
+						fb.start('/assets/html/modalContent/videoDiv.html','type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();');
+					});
+				}
+				
+				if (jQuery('.floatbox').hasClass('video1')) {
+					
+					alert('video1 = ' +youtubeValue);
+					sessionStorage.setItem("videoId", youtubeValue);
+					//alert(sessionStorage.getItem("videoId"));
+					
+					jQuery('.floatbox').bind('click', function() {
+						fb.start('/assets/html/modalContent/videoDiv.html','type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();');
+					});
+				};
+				
+				jQuery('#fbBox #fbClose').bind('click', function() { 
+					jQuery('#layerContentWrap').nextAll().remove();
+					fb.end();
+				});
+			}*/
+			jQuery('#fbBox #fbClose').bind('click', function() {
+				jQuery('#layerContentWrap').nextAll().remove();
+				fb.end();
+			});
 		}	
 	}
 })(jQuery);
@@ -5705,7 +5760,7 @@ function isDefined(obj) {
 function updateColors(currentColor) {
 	var selectColor = $("color");
 	var selectSize = $("size");
-
+	
 	if (selectSize.selectedIndex > 0) {
 		colorIndex = selectColor.selectedIndex;
 		colorValue = selectColor.value;
@@ -5769,6 +5824,7 @@ function updateSizes() {
 		var selectSize = $("size");
 		sizeIndex = selectSize.selectedIndex;
 		sizeValue = selectSize.value;
+		alert(sizeValue);
 		if (sizeIndex == -1)
 			sizeIndex = 0;
 		selectSize.options.length = 0;
@@ -7872,7 +7928,7 @@ YAHOO.ebauer.productUtils = function () {
             MagicZoomPlus.refresh();
             jQuery('.infoModule .content .tabs').tabs();
         },
-
+        
         getInfoTabs: function () {
             jQuery('.infoModule .content .tabs').tabs();
             jQuery('#fbBox #fbContentWrapper').css({
@@ -8621,6 +8677,7 @@ inseamString=hemStyleStr;addAbbrTag(item.hemStyle,inseamString,ddElement);}
 var brElement=createDOM('br',null);ddElement.appendChild(brElement);addAbbrTag(item.colorName,'Color: '+item.colorName,ddElement);brElement=createDOM('br',null);ddElement.appendChild(brElement);var dispQty=null;var priceDisp=null;dispQty=item.itemQuantity+' ';var abbrElement=addAbbrTag('Quantity','Qty: '+dispQty,ddElement);if(item.mgmDisplayStr!=undefined){ddMgmInfoElement=createDOM('dd',{'id':'mgm_info','class':'clearfix'});column1.appendChild(ddMgmInfoElement);dlMgmNameElement=createDOM('dl',{'id':'mgm_name'});ddMgmInfoElement.appendChild(dlMgmNameElement);dtSectionElement=createDOM('dt',{'class':'mgmSectionLabel'});dtSectionElement.innerHTML=item.mgmDisplayStr+item.mgmSectionLabel;dlMgmNameElement.appendChild(dtSectionElement);dtElement=createDOM('dt',{'class':'mgmDisplayLabel'});dtElement.innerHTML=item.mgmNameLabel;dlMgmNameElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'mgmDisplayText'});ddElement.innerHTML=item.mgmNameText;dlMgmNameElement.appendChild(ddElement);dlMgmColorElement=createDOM('dl',{'id':'mgm_color'});ddMgmInfoElement.appendChild(dlMgmColorElement);dtElement=createDOM('dt',{'class':'mgmDisplayLabel'});dtElement.innerHTML=item.mgmColorLabel;dlMgmColorElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'mgmDisplayText'});ddElement.innerHTML=item.mgmColorText;dlMgmColorElement.appendChild(ddElement);dlMgmStyleElement=createDOM('dl',{'id':'mgm_style'});ddMgmInfoElement.appendChild(dlMgmStyleElement);dtElement=createDOM('dt',{'class':'mgmDisplayLabel'});dtElement.innerHTML=item.mgmStyleLabel;dlMgmStyleElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'mgmDisplayText'});ddElement.innerHTML=item.mgmStyleText;dlMgmStyleElement.appendChild(ddElement);dlMgmPriceElement=createDOM('dl',{'id':'mgmDisplayPrice'});ddMgmInfoElement.appendChild(dlMgmPriceElement);mgmPriceDisp=createTextTag('dd',item.mgmDisplayPrice);mgmPriceDisp.className='mgmDisplayText';dlMgmPriceElement.appendChild(mgmPriceDisp);}
 if(item.giftBoxDisplayStr!=undefined){ddGboxInfoElement=createDOM('dd',{'id':'gbox_info','class':'clearfix'});column1.appendChild(ddGboxInfoElement);dlGboxToElement=createDOM('dl',{'id':'gbox_to'});ddGboxInfoElement.appendChild(dlGboxToElement);dtSectionElement=createDOM('dt',{'class':'gboxSectionlabel'});dtSectionElement.innerHTML=item.giftBoxDisplayStr+item.gboxSectionLabel;dlGboxToElement.appendChild(dtSectionElement);dtElement=createDOM('dt',{'class':'gboxDisplayLabel'});dtElement.innerHTML=item.gboxToLabel;dlGboxToElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'gboxDisplayText'});ddElement.innerHTML=item.gboxToText;dlGboxToElement.appendChild(ddElement);dlGboxFromElement=createDOM('dl',{'id':'gbox_from'});ddGboxInfoElement.appendChild(dlGboxFromElement);dtElement=createDOM('dt',{'class':'gboxDisplayLabel'});dtElement.innerHTML=item.gboxFromLabel;dlGboxFromElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'gboxDisplayText'});ddElement.innerHTML=item.gboxFromText;dlGboxFromElement.appendChild(ddElement);dlGboxMsgElement=createDOM('dl',{'id':'gbox_msg'});ddGboxInfoElement.appendChild(dlGboxMsgElement);dtElement=createDOM('dt',{'class':'gboxDisplayLabel'});dtElement.innerHTML=item.gboxMsgLabel;dlGboxMsgElement.appendChild(dtElement);ddElement=createDOM('dd',{'class':'gboxDisplayText'});ddElement.innerHTML=item.gboxMsgText;dlGboxMsgElement.appendChild(ddElement);}
 ensembleId=item.ensembleId;gUUID=item.uuid;dialogSlat=createDOM('div',{'class':'dialog-slat'});matte.appendChild(dialogSlat);}}
+if(bag.checkoutPage.indexOf('?')>=0){bag.checkoutPage=bag.checkoutPage+'&ensembleId='+ensembleId;}else{bag.checkoutPage=bag.checkoutPage+'?ensembleId='+ensembleId;}
 dialogSlat=createDOM('div',{'class':'dialog-slat'});matte.appendChild(dialogSlat);var form=createDOM('form',{'class':'clearfix','action':''+bag.checkoutPage,'method':'post'});dialogSlat.appendChild(form);var fieldSet=createDOM('fieldset',{'id':'go_shop'});form.appendChild(fieldSet);var tag=createDOM('legend',{'class':'ignore'});tag.appendChild(document.createTextNode('Back to Shopping'));fieldSet.appendChild(tag);fieldSet.innerHTML="<input type='button' class='button' value='Back to: "+gBackToCat+"' id='goBackFromRemoved' onclick='goBackToCat()'>";fieldSet.appendChild(tag);fieldSet=createDOM('fieldset',{'id':'go_bag'});form.appendChild(fieldSet);tag=createDOM('legend',{'class':'ignore'});tag.appendChild(document.createTextNode('Checkout'));fieldSet.appendChild(tag);var itemLebel='item';if(shoppingBag.totalBagItems>1||shoppingBag.totalBagItems==0){itemLebel='items';}
 if(isWishList==true){var buttonName='View WishList ('+shoppingBag.totalBagItems+' '+itemLebel+')';var buttonClickAction='location.href='+'\''+shoppingBag.checkoutPage+'\'';var inputButton=createDOM('input',{'class':'button','id':'checkoutButton','onclick':'showNextPage()','type':'submit','name':'checkout','value':''+buttonName});tag=createDOM('a',{'href':''+shoppingBag.checkoutPage});tag.appendChild(document.createTextNode('View Wish List'));}else{var buttonName='Checkout('+shoppingBag.totalBagItems+' '+itemLebel+')';var buttonClickAction='location.href='+'\''+shoppingBag.checkoutPage+'\'';var inputButton=createDOM('input',{'class':'button','id':'checkoutButton','onclick':'showNextPage()','type':'submit','name':'checkout','value':''+buttonName});tag=createDOM('a',{'href':''+shoppingBag.checkoutPage});tag.appendChild(document.createTextNode('View Shopping Bag'));}
 fieldSet.appendChild(inputButton);fieldSet.appendChild(tag);var dialogPanel=createDOM('div',{'class':'dialog-panel clearfix'});matte.appendChild(dialogPanel);var promoDiv=createDOM('div',{'class':'promoContent'});dialogPanel.appendChild(promoDiv);getInterstitialContent("interstitial_removed","promoContent");if(eobFlag!='true'){var innerDtEle=createTag('dt','tabs',null,createTag('br',null,null,null));var innerDdEle=createTag('dd','thumbs',null,createTag('br',null,null,null));var innerDlEle=createTag('dl','alsoModule',null,null);innerDlEle.appendChild(innerDtEle);innerDlEle.appendChild(innerDdEle);dialogPanel.appendChild(innerDlEle);var link=document.createTextNode("Get this entire look");var anchor=createDOM('a');anchor.appendChild(link);var div=createDOM('div',{'id':'outfit_link'});div.appendChild(anchor);dialogPanel.appendChild(div);if(parentEnsembleId==-1){parentEnsembleId=ensembleId;}

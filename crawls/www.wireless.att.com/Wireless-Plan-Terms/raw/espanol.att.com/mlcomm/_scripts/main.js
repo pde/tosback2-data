@@ -563,6 +563,11 @@ function renderLatestReleases() {
 document.write('<div class="section nbb">');
 document.write('<h6>Titulares</h6>');
 
+document.write('<div class="rc-release-box">');
+document.write('<p>19 de diciembre del 2012<br />');
+document.write('<a href="/newsroom/news_releases/business_traveler_12_19_12.html?id=' + state + '" title="Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial">Lectores de Business Traveler nombran a AT&amp;T el mejor proveedor de telefonia movil y cobertura de datos a nivel mundial</a></p>');
+document.write('</div>');
+
 document.write('<div class="rc-release-box">'); 
 document.write('<p>16 de noviembre de 2012<br />');
 document.write('<a href="/newsroom/news_releases/global_messaging_11_15_12.html" title="Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios">Con los nuevos paquetes internacionales de AT&T, los viajeros pueden llamar, enviar mensajes de texto, publicar mensajes en Twitter y actualizaciones de estado desde el exterior a mejores precios</a></p>');
@@ -593,10 +598,7 @@ document.write('<p>15 de agosto	 de 2012<br />');
 document.write('<a href="/newsroom/news_releases/twd_8-15-12.html?id=' + state + '" title="Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir">Llamado de AT&amp;T a los conductores: comprom&eacute;tanse a no textear al conducir</a></p>');
 document.write('</div>');
 
-document.write('<div class="rc-release-box">');
-document.write('<p>27 de julio de 2012<br />');
-document.write('<a href="/newsroom/news_releases/dallas_olympics_mj_7_30_12.html?id=' + state + '" title="AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres">AT&#38;T apoya a Team USA y a los deportistas Ol&#237;mpicos patrocinados&#44; como la legendaria familia L&#243;pez&#44; en su trayecto de Beijing a Londres</a></p>');
-document.write('</div>');
+
 
 
 

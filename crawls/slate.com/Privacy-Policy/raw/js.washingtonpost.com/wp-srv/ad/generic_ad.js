@@ -451,7 +451,7 @@ var wpAd, placeAd2;
           l = demoAds.length,
           obj = {};
         while(l--) {
-          if(demoAds[l] === 'tiffanytile'){
+          if(demoAds[l] === 'tiffanytile' && wpAd.constants && wpAd.constants.site === 'wpni'){
             obj.tiffany_tile = {};
             obj.tiffany_tile_2 = {};
           } else {

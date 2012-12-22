@@ -3,6 +3,9 @@
 //Hide Back buttons if there is no goback parameter in the url string
 //(if the user did not get to this page from it's parent page)
 
+ window.location='http://publicpolicy.att.com/';
+
+
 if (String(window.location).indexOf("goback", 0) == -1) {
     document.write('<style>a.back {display:none;}</style>');
 }

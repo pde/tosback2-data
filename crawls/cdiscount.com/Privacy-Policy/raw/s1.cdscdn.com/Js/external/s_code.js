@@ -1,13 +1,11 @@
 /* SiteCatalyst code version:	H.243Enc
-Cdiscount code version:			CD.30
+Cdiscount code version:			CD.29
 Copyright 1996-2010 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com */
 /************************ ADDITIONAL FEATURES ************************
-//Modif crea panier moteur L493
-//Modif Webmail L214
-//Gestion cid="ref" L172
-//Ajout limonetik L31
-//Ajout Integration TNT>>SC L511&L537
+//Correction affectation Google Image
+//Ajout Plugin XFA (delay 2500) + s.Integrate
+//Correction setuplinkTrackPlugin
 */
 
 var s = s_gi(s_account);
@@ -27,7 +25,7 @@ s.trackDownloadLinks = true
 s.trackExternalLinks = true
 s.trackInlineStats = true
 s.linkDownloadFileTypes = "exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters = "javascript:,1euro.com,cdiscount.com,paypal.com,sips-atos.com,banque-casino.fr,cdscdn.com,richrelevance.com,limonetik.com"
+s.linkInternalFilters = "javascript:,1euro.com,cdiscount.com,paypal.com,sips-atos.com,banque-casino.fr,cdscdn.com,richrelevance.com"
 s.linkLeaveQueryString = false
 s.linkTrackVars = "eVar40"
 s.linkTrackEvents = "None"
@@ -168,7 +166,6 @@ function s_doPlugins(s) {
         if (cid == "comp") { s._channel = "Comparateur"; }
         if (cid == "email") { s._channel = "E-mailing"; }
         if (cid == "search") { s._channel = "Paid Search"; }
-        if (cid == "ref") { s._channel = "Site Referant"; }
 
     }
 
@@ -176,6 +173,17 @@ function s_doPlugins(s) {
     //Renomme les mots clés inconnus CM2.55
     if (s._keywords == "Keyword Unavailable") { s._keywords = "Mot Cle Inconnu"; StackDirect = s._channel = refinc; }
 
+
+    if (s._channel == 'Referrers') {
+        /*Webmail Exlusion*/
+        if (s._referringDomain.indexOf("mail", 0) > -1) {
+
+            for (var i in o)
+                if (typeof o[i] == 'string') {
+                    o[i] = ''; StackDirect = "Direct";
+                }
+        }
+    }
 
     if (s._channel == 'Other Natural Referrers') {
         /*Site Referant Search sans mot clé*/
@@ -205,11 +213,8 @@ function s_doPlugins(s) {
     if (s._channel == 'Paid Search') { s._channel = 'Referencement Payant'; }
     if (s._channel == 'Unknown Paid Channel') { s._channel = 'NO CID'; }
 
-    if (s._channel == 'Site Referant') {
-        s.mailRef = s._referringDomain.indexOf('mail');
-        if (s.mailRef > -1)
-        { s._referrer = s._campaign = s._keywords = s._channel = ""; StackDirect = "Direct"; }
-    }
+
+
 
     s.eVar17 = s._channel;
     s.eVar19 = s._keywords;
@@ -480,10 +485,7 @@ function s_doPlugins(s) {
 
     //Crea panier par magasin
     if (s.events && s.events.indexOf("scAdd", 0) > -1) {
-        var mgvo;
-
-        if (s.prop7 == "Recherche" && s.prop3) { mgvo = s.multigetValOnce(s.prop3, 'ev49'); }
-        else { mgvo = s.multigetValOnce(s.prop2, 'ev49'); }
+        var mgvo = s.multigetValOnce(s.prop2, 'ev49');
 
         if (mgvo && mgvo != '') {
             s.linkTrackEvents = s.events = s.apl(s.events, 'event49', ',');
@@ -499,9 +501,6 @@ function s_doPlugins(s) {
     // disable or enable tracking based on disableTracking variable
     if (s.mr_o) { s.mr = s.mr_o }
     if (s.disableTracking) { s.mr_o = s.mr; s.mr = new Function("return ''"); }
-
-    s.tnt = s.trackTNT();
-
 
 }
 s.doPlugins = s_doPlugins
@@ -525,14 +524,6 @@ s.doPlugins = s_doPlugins
 */
 s.vpr = new Function("vs", "v",
 "if(typeof(v)!='undefined'){var s=this; eval('s.'+vs+'=\"'+v+'\"')}");
-
-/*
-* TNT Integration Plugin v1.0
-*/
-s.trackTNT = new Function("v", "p", "b", ""
-+ "var s=this,n='s_tnt',p=p?p:n,v=v?v:n,r='',pm=false,b=b?b:true;if(s."
-+ "getQueryParam){pm=s.getQueryParam(p);}if(pm){r+=(pm+',');}if(s.wd[v"
-+ "]!=undefined){r+=s.wd[v];}if(b){s.wd[v]='';}return r;");
 
 
 

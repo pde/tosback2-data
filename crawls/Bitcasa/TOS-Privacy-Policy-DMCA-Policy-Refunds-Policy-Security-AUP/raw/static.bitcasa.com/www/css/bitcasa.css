@@ -1,3 +1,21 @@
+
+@font-face {
+  font-family: 'Maven Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Maven Pro Regular'), local('MavenProRegular'), url(../../../themes.googleusercontent.com/static/fonts/mavenpro/v4/MG9KbUZFchDs94Tbv9U-pbO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Maven Pro';
+    text-rendering: none;
+}
+
 .center { text-align: center;}
 .left { text-decorationext-align: left;}
 .right { text-align: right;}
@@ -52,6 +70,7 @@
   padding-left: 10px;
   margin-top: 90px;
   padding: 20px;
+  text-align: left;
 }
 
 #home-howitworks, #home-howitworks a {
@@ -64,15 +83,26 @@
   font-size: 16px;
 }
 
+#banner-content .headline p {
+  font-size: 26px;
+  font-weight: 110;
+  letter-spacing: 4px;
+  text-align: left;
+}
+
 #banner-content ul {
   margin-left: 0;
   list-style: none;
+  text-align:left;
+  font-weight:100;
+  letter-spacing: 1px;
 }
 
 #home-download {
+  margin-top: 30px;
   padding: 20px 65px;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: 400;
 }
 
 #banner-content ul li {
@@ -119,9 +149,66 @@
 
 #bitcasa-subnav ul.nav {
   margin-bottom: 0;
-  font-weight: bold;
   display: none;
 }
+
+/* Video Page Stuff */
+
+#tabHolder.videoTabHolder {
+    width: 840px;
+    margin: 30px 60px;
+}
+
+#tabHolder.videoTabHolder div {
+    padding: 0 40px 10px;
+}
+
+#videoBody a {
+    width: 281px;
+    height: 170px;
+    background-size: 100%;
+    display: block;
+}
+
+#storageVideo a {
+    background-image: url('../images/video_infinite.png');
+}
+
+#syncVideo a {
+    background-image: url('../images/video_sync.png');
+}
+
+#sendVideo a {
+    background-image: url('../images/video_send.png');
+}
+
+#backupVideo a {
+    background-image: url('../images/video_backup.png');
+}
+
+#revealVideo a {
+    background-image: url('../images/video_reveal.png');
+}
+
+#chromeVideo a {
+    background-image: url('../images/video_chrome.png');
+}
+
+#videoBody h3 {
+    margin: 8px 0 40px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.videoOuter {
+    display: inline-block;
+}
+
+.videoInner {
+    border: 1px solid #ccc;
+    padding: 8px;
+}
+/* End Video Page Stuff */
 
 /* How It Works Stuff */
 #device-row {
@@ -357,8 +444,26 @@ p#download-other-versions {
   padding: 20px 0;
 }
 
+#footer .nav {
+  text-transform: uppercase;
+  text-shadow: 0px 0px;
+}
+
+#footer .nav-header, .nav-link {
+  font-size: 12px;
+  font-weight: 100;
+  letter-spacing: 1px;
+}
+
 #bitcasa-subnav a, #footer a {
   color: #efefef;
+}
+
+#bitcasa-subnav a {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 #bitcasa-subnav a:hover, #footer a:hover {
@@ -650,51 +755,66 @@ body {
 
   /* CSS Active State triangle for main menu */
   #main-nav{
-    overflow:hidden; /* To clear floats */
-    background:#fff;
-    margin:0;
-    padding:0;
-    list-style:none;
+    overflow: hidden; /* To clear floats */
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
+  
   #main-nav li{
-    float:left;
+    float: left;
     z-index: 98;
     padding-bottom: .05em;
   }
 
   #main-nav li a {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 6px;
     z-index: 99
   }
 
   #main-nav{
-    display:block;
+    display: block;
     /* padding:1em <-- This is our magic number, this defines how large our notch can be! */ 1em;
-    text-decoration:none;
+    text-decoration: none;
+    text-transform: uppercase;
   }
+
+  #main-nav .btn {
+    margin-top: 10px;
+  }
+
   #main-nav:hover{
   }
+
   #main-nav .active{
-    position:relative;
+    position: relative;
   }
+
   #main-nav .active:before,
-  #main-nav .active:after{
-    content:"";
-    display:block;
-    width:1em; /* Must match our magic number... */
-    height:1em; /* ...our notch will end up being half this size. We define it in ems to scale it up with the text size. */
-    position:absolute;
-    bottom:0;
-    left:50%;
-    margin-left:-.5em; /* Half of our magic number. */
+
+  #main-nav .active:after {
+    content: "";
+    display: block;
+    width: 1em; /* Must match our magic number... */
+    height: 1em; /* ...our notch will end up being half this size. We define it in ems to scale it up with the text size. */
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -.5em; /* Half of our magic number. */
   }
-  #main-nav .active:before{
+
+  #main-nav .active:before {
     background: #66A938; /* Apply to the notch and the relevant container (this case, body). */
   }
-  #main-nav .active:after{
-    width:0;
-    height:0;
-    border:.5em solid white; /* Half of our magic number and same colours as our nav's background. */
-    border-bottom-color:transparent;
+
+  #main-nav .active:after {
+    width: 0;
+    height: 0;
+    border: .5em solid white; /* Half of our magic number and same colours as our nav's background. */
+    border-bottom-color: transparent;
   }
 }
 
@@ -837,6 +957,10 @@ body {
   background-position: -568px 29px;
 }
 
+#bitcasa-subnav .nav-link {
+  font-weight: normal;
+}
+
 .disrupt-video {
   margin-left: 0 !important;
 }
@@ -892,7 +1016,7 @@ body {
 }
 
 .nav-pills > li > a {
-  border-radius: 25px !important;
+  border-radius: 20px !important;
   text-shadow: none !important;
 }
 
@@ -930,4 +1054,8 @@ body {
 
 #little-nav {
   display: none;
+}
+
+.copyright {
+  font-size: 11px;
 }

@@ -1378,7 +1378,7 @@ var NADAjs = {
                     $("#loan-wait").hide();
                     $("#nvdp-pmt-loan").css("background-color", "#dbdbdd");
                     //alert(xhr.responseText);
-                    alert("Sorry, an error occurred while processing your request.");
+                    alert("Based on the information you have selected, lender rates and information is not available.");
                 },
                 success: function(data) {
 
@@ -1438,7 +1438,7 @@ var NADAjs = {
                     $("#lease-wait").hide();
                     $("#nvdp-pmt-lease").css("background-color", "#dbdbdd");
                     //alert(xhr.responseText);
-                    alert("Sorry, an error occurred while processing your request.");
+                    alert("Based on the information you have selected, lender rates and information is not available.");
                 },
                 success: function(data) {
                     $("#lease-wait").hide();
@@ -1705,7 +1705,6 @@ var NADAjs = {
             //get new thumbs
             var myExtThumbs = $(hexElem).attr('data-extthumbs');
             var thumbWrapElem = $('#' + myExtThumbs);
-            $(thumbWrapElem).show();
 
             var thumbs = $(thumbWrapElem).children();
             var first = true;
@@ -1722,6 +1721,7 @@ var NADAjs = {
                     $(this).removeClass(config.selectedClass);
                 }
             });
+            $(thumbWrapElem).show();
         };
 
         var pickExtImg = function(thumbElem) {

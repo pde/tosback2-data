@@ -130,7 +130,8 @@ function targetingOnlyObj() {
     }
 }
 
-var reporting_ready = window.reporting_ready || new jQuery.Deferred();
+//TODO: finish updating deferred promise to use ATT.ready;
+var reporting_ready = window.reporting_ready || ATT.ready('Reporting') || new jQuery.Deferred();
 jQuery.when(reporting_ready).then(function (reporting) {
     var targetingOnly = new targetingOnlyObj();
 

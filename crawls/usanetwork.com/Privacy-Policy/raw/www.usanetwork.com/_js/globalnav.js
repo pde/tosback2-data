@@ -442,31 +442,31 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "Burn Notice",
-							"url" : usa_baseUrlDomain + "/series/burnnotice/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_bn.png",
-							"tuneIn" : "THURSDAYS 10/9C"
-						},
-						/* Featured Slot 2 */
-						{
 							"title" : "WWE RAW",
 							"url" : usa_baseUrlDomain + "/series/wwe/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wwe.png",
 							"tuneIn" : "MONDAYS 8/7C"
 						},
-						/* Featured Slot 3 */
+						/* Featured Slot 2 */
 						{
 							"title" : "Suits",
 							"url" : usa_baseUrlDomain + "/series/suits/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_suits.png",
 							"tuneIn" : "RETURNS JAN 17 10/9C"
 						},
-						/* Featured Slot  - LAST */
+						/* Featured Slot 3 */
 						{
 							"title" : "White Collar",
 							"url" : usa_baseUrlDomain + "/series/whitecollar/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_wc.png",
 							"tuneIn" : "RETURNS JAN 22 10/9C"
+						},
+						/* Featured Slot  - LAST */
+						{
+							"title" : "NECESSARY ROUGHNESS",
+							"url" : usa_baseUrlDomain + "/series/necessaryroughness/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/shows_3.png",
+							"tuneIn" : "RETURNS JAN 23 10/9C"
 						}
 
 					]

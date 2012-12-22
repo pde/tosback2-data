@@ -734,6 +734,10 @@ return true;
 			{
 				planManagerUrl = baseURL + planManagerUrl;
 			}
+			else if(typeof(Control_Domain) != 'undefined' && Control_Domain != null)
+			{
+				planManagerUrl = Control_Domain + planManagerUrl;
+			}
 			else if (location.protocol != 'http:')
 			{
 				planManagerUrl = 'http://'+ location.host + planManagerUrl;

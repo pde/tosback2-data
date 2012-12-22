@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/wireless/devices.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -528,12 +631,245 @@
 	        <h1>Cell Phones & Mobile Devices</h1> 
 	    </div> 
 		<div id="marquee" class="w650"> 
-		    <div class="marquee tile base"><script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script><div id="marqueeHolder" style="width:650px;height:280px;position:relative;"></div> 
+		    <div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-	JSAM.createMarquee('/shop/marquees/landing_pages/devices_lander.xml',{height:'280', width:'650'}); 
-	var parentNode = document.getElementById("marqueeHolder").parentNode; 
-	parentNode.style.height = "280px"; 
-</script></div> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/devices_lander", 
+	"panel": [{ 
+		"alt": "Refurbished Samsung Galaxy Tab&#8482; 8.9 now only $179.99", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq_143214_GalTab-CyberMonday_bg_650x280.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/wireless/wireless_Samsung_Galaxy_Refurb8-9_new", 
+		"description": "Galaxy Tab&#8482; 8.9 sale", 
+		"name": "wireless_Samsung_Galaxy_Refurb8-9_new", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb-refurb_AA001KEV.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"align": "center", 
+			"html": "1", 
+			"name": "CTA_button", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "48", 
+			"y": "206", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/samsung/galaxy-tab-8-9-black.html?source=IC01K1004SG00000O", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Shop Now" }] 
+		}, 
+		{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size10,customcolor_666666,arial", 
+			"html": "1", 
+			"letterSpacing": "-0.2", 
+			"name": "legal", 
+			"type": "Text", 
+			"x": "192", 
+			"y": "211", 
+			"label": [{ "Text": "2-yr agreement with qualifying\r\ndata or Mobile Share plan req'd.\r\nOther charges and restrictions apply." }] 
+		}] 
+	}, 
+	{ 
+		"alt": "AT&amp;T Mobile Hotspot MiFi&#174; Liberate", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq_142116_650x280-MiFi-MRQ-bg.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_mifi_liberate", 
+		"description": "AT&amp;T Mobile Hotspot MiFi&#174; Liberate", 
+		"name": "devices_mifi_liberate", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb_142116_thumb-44x44.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"antiAlias": "1", 
+			"cssClass": "size13,custcomcolor_333333,arial", 
+			"html": "1", 
+			"name": "subhead", 
+			"type": "Text", 
+			"x": "48", 
+			"y": "143", 
+			"label": [{ "Text": "Up to 11 hours battery life and a 2.8” touchscreen make it\r\neasy to connect up to 10 Wi-Fi–enabled devices." }] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size34,customcolor_f17e04,clearviewbook", 
+			"html": "1", 
+			"name": "price_point", 
+			"type": "Text", 
+			"x": "46", 
+			"y": "211", 
+			"label": [{ "Text": "$49.99" }] 
+		}, 
+		{ 
+			"alt": "pipe", 
+			"name": "PIPE", 
+			"preload": "1", 
+			"source": "/shopcms/media/att/2012/global/JSAM-assets/overlays/img_price_pipe_1x42_AA000S1W.png", 
+			"type": "Media", 
+			"x": "155", 
+			"y": "206" 
+		}, 
+		{ 
+			"html": "1", 
+			"name": "cta_btn", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "168", 
+			"y": "206", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "http://www.att.com/shop/wireless/devices/novatelwireless/mobile-hotspot-mifi-liberate-graphite.html?Source=IC0144067gj0631uO", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Buy Yours" }] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size9,custcomcolor_666666,arial", 
+			"html": "1", 
+			"name": "legal", 
+			"type": "Text", 
+			"x": "305", 
+			"y": "215", 
+			"label": [{ "Text": "Requires new activation with 2-yr. \r\ncontract including minimum DataConnect\r\n5GB or Mobile Share plan. Activation fee applies." }] 
+		}] 
+	}, 
+	{ 
+		"alt": "Samsung Rugby&#174; III", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/mrq-142137-Samsung-Rugby3-bg_650x280_en2.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_Samsung_Rugby_3_Launch", 
+		"description": "Samsung Rugby&#174; III", 
+		"name": "devices_Samsung_Rugby_3_Launch", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/thumb-142137-Samsung-Rubgy3_HoverIcons-44x44n.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size13,customcolor_333333,arial", 
+			"html": "1", 
+			"name": "copy", 
+			"type": "Text", 
+			"width": "400", 
+			"x": "50", 
+			"y": "150", 
+			"label": [{ "Text": "Dustproof, shock & water resistant,\r\nwith enhanced Push-To-Talk service." }] 
+		}, 
+		{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size34,customcolor_f17e04,arial", 
+			"html": "1", 
+			"name": "price", 
+			"type": "Text", 
+			"x": "50", 
+			"y": "206", 
+			"label": [{ "Text": "$99.99" }] 
+		}, 
+		{ 
+			"name": "line", 
+			"preload": "1", 
+			"source": "/shopcms/media/att/2012/global/JSAM-assets/overlays/img_price_pipe_1x42_AA000S1W.png", 
+			"type": "Media", 
+			"x": "159", 
+			"y": "205" 
+		}, 
+		{ 
+			"align": "center", 
+			"horizontalPlacement": "center", 
+			"html": "1", 
+			"name": "button", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "170", 
+			"y": "206", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/samsung/rugby-iii-gray.html?Source=IC011i041ml0351QO", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Buy Yours" }] 
+		}, 
+		{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size10,Text,arial", 
+			"html": "1", 
+			"name": "legal", 
+			"type": "Text", 
+			"width": "500", 
+			"x": "51", 
+			"y": "252", 
+			"label": [{ "Text": "New 2-yr. contract with qualifying voice and data plans required. Meets U.S. Mil-STD \r\n810G for dust, humidity, rain, and shock. Waterproof based on IP67 rating." }] 
+		}] 
+	}, 
+	{ 
+		"alt": "Windows deal", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/HTC-8x-Holiday-MRQ-650x280-BG.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/Devices-Lander/devices_HTC_Holiday_Offer_launch", 
+		"description": "Windows deal", 
+		"name": "devices_HTC_Holiday_Offer_launch", 
+		"thumbnail": "/shopcms/media/att/2012/global/JSAM-assets/thumbs/HTC-8x-Holiday-MRQ-44x44-ICON.png", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size13,customcolor_333333,arial", 
+			"html": "1", 
+			"name": "copy", 
+			"type": "Text", 
+			"width": "400", 
+			"x": "46", 
+			"y": "124", 
+			"label": [{ "Text": "Pick up this holiday’s merry must-have gifts! Buy a \r\nWindows® Phone 8X by HTC® for $99.99 and \r\nreceive up to $100 off any HTC phone." }] 
+		}, 
+		{ 
+			"align": "center", 
+			"horizontalPlacement": "center", 
+			"html": "1", 
+			"name": "button", 
+			"styleLib": "Default", 
+			"type": "Button", 
+			"x": "44", 
+			"y": "206", 
+			"cta": [{ 
+				"action": "Browse", 
+				"trigger": "click", 
+				"url": "/shop/wireless/devices/htc.html?source=IC01AN0bmuk1002qO", 
+				"webtrendsType": "clickThrough" 
+			}], 
+			"label": [{ "Text": "Buy Yours" }] 
+		}, 
+		{ 
+			"align": "left", 
+			"antiAlias": "1", 
+			"cssClass": "size10,Text,arial", 
+			"html": "1", 
+			"name": "legal", 
+			"type": "Text", 
+			"width": "400", 
+			"x": "180", 
+			"y": "209", 
+			"label": [{ "Text": "Offer ends Jan. 10, 2013. New 2-yr contract with \r\nvoice & data plans or Mobile Share plan req’d on \r\neach smartphone. Other charges and restr. apply." }] 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"650", height:"280"}); 
+   parentNode.style.height = "280px"; 
+</script> 
+</div> 
 		</div> 
 		<div class="w295" style="float:right;"> 
 		    <div class="marqueeTile border-bottom-dotted top"> 
@@ -1329,7 +1665,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 52069124999125148756233765525885982500 --> 
+		 <!--X-Renderer: 308265004354675989572328622882472398158 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1522,7 +1858,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","Xb2sQRGHC1F4vKcFTVpdg1F7!647688038!1355892455872"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","yrtFQV9HTDzNsFb1L3vTrFQn!-25268319!1356152135827"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

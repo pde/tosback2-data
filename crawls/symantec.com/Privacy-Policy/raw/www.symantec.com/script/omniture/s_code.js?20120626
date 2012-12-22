@@ -28,6 +28,7 @@ also removed om_sem_copy prop28 due conflict with demand base setup.
 Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
 Changes 2012-11-14: Combined audience and audience_segment in demandbase and added .rpm to the list of linkDownloadFileTypes
 Changes 2012-11-28: Demandbase fixes.
+Changes 2012-11-28: tracking every user in demandbase no matter where they land.
 */
 
 var s_account=metaData['repsuite']
@@ -672,7 +673,7 @@ if (!demandbasePlugin.dataIsStored()){
 	demandbasePlugin.setDataObject();
 }
 
-trackDemandBase = function(){
+doTracking = function(){
 		var dbTracked=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('dbtracked');
 		if(dbTracked.indexOf('db')==-1){
 			try{
@@ -694,6 +695,7 @@ trackDemandBase = function(){
 	}
 }
 
+/*
 fireDemandBaseTracking = function(){
 	if(typeof(metaData['page_name'])!= "undefined"){
 		var myPageName = metaData['page_name'];
@@ -728,12 +730,13 @@ fireDemandBaseTracking = function(){
 	return false; //no conditions met? Return false and do not invoke demandbase.
 }
 
+
 function doTracking(){
 	if(fireDemandBaseTracking()){
 		trackDemandBase();
 	}
 }
-
+*/
 /* end demandbase code */
 
 /****************************** MODULES *****************************/

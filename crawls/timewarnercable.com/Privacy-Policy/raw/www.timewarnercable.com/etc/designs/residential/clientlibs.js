@@ -11842,6 +11842,9 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 		//Clear input fields on focus
 		$("input[type=text]").focus(clearTextHandler);
 		$("input[type=text]").blur(clearTextHandler);
+		//Clear input fields on focus
+		$("input[type=password]").focus(clearTextHandler);
+		$("input[type=password]").blur(clearTextHandler);
 		
 		$('ul.stripped-list li:nth-child(odd)').addClass('alt');
 

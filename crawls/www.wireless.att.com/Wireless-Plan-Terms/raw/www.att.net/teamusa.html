@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 	<head>
-				<!-- Version: 4.10.21.1 -->
+				<!-- Version: 4.11.15.1 -->
 
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -21,18 +21,18 @@
 		<title>TeamUSA - AT&amp;T U-verse</title>
 
 			<!--[if lte IE 7]>
-				<link rel="stylesheet" type="text/css" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie7.css?v=4.10.21.1" />
+				<link rel="stylesheet" type="text/css" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie7.css?v=4.11.15.1" />
 			<![endif]-->
 			<!--[if IE 8]>
-				<link rel="stylesheet" type="text/css" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?v=4.10.21.1" />
+				<link rel="stylesheet" type="text/css" href="/web_files/NEXTGEN/web_files/nes/styles/css/master-ie8.css?v=4.11.15.1" />
 			<![endif]-->
 			<!--[if gte IE 9]><!-->
-				<link rel="stylesheet" type="text/css" href="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fv=4.10.21.1.css" />
+				<link rel="stylesheet" type="text/css" href="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/css/master.css%3Fv=4.11.15.1.css" />
 			<!--<![endif]-->
 
 			
-			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-core-1.4.5.js%3Fv=4.10.21.1"></script>
-			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-more-1.4.0.1.js%3Fv=4.10.21.1"></script>
+			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-core-1.4.5.js"></script>
+			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/mootools/mootools-more-1.4.0.1.js"></script>
 
 <script type="text/javascript">
 		(function() {
@@ -109,9 +109,16 @@
 		}
 	};
 
+	Uverse.config.personalization = {
+		urls: {
+			saveUserSetting: '/personalisationSetting.json'
+		}
+	};
+
 	Uverse.config.favorite = {
 		urls: {
 			save: '/favorites.addItem'
+			,remove: '/favorites.removeItem'
 		}
 	};
 	
@@ -142,8 +149,8 @@
 
 	Uverse.config.unsupportedBrowsers = {
 		
-			'MSIE [1-7].*Trident/4': { browserIsSupported: true, name: 'Internet Explorer 8 Compatibility Mode' },
-			'MSIE [1-7]': {name: 'Internet Explorer', src: 'unsupported-browser.png', url: 'http://windows.microsoft.com/en-IE/windows-vista/Update-Internet-Explorer'},
+			'MSIE [1-7]\\..*Trident/4': { browserIsSupported: true, name: 'Internet Explorer 8 Compatibility Mode' },
+			'MSIE [1-7]\\.': {name: 'Internet Explorer', src: 'unsupported-browser.png', url: 'http://windows.microsoft.com/en-IE/windows-vista/Update-Internet-Explorer'},
 			'Firefox\\/[0-6]\\.': {name: 'firefox', src: 'unsupported-browser.png', url: 'http://getfirefox.com'},
 			'iPad': {name: 'iPad', src: 'ipad-banner.png', url: 'http://itunes.apple.com/us/app/at-t-u-verse/id410354613?mt=8#'},
 			'Safari(.*)Version\\/4': {'name': 'Safari', src: 'unsupported-browser.png', url: 'http://www.apple.com/safari/'},
@@ -208,7 +215,7 @@
 	
 	
 </script>
-			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.js%3Fv=4.10.21.1"></script>
+			<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/combined/Uverse.combined.js%3Fv=4.11.15.1"></script>
 
 		
 		
@@ -220,7 +227,7 @@
 	
 
 
-		<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/modernizr/modernizr-2.5.3.min.js%3Fv=4.10.21.1"></script>
+		<script type="text/javascript" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/js/lib/modernizr/modernizr-2.5.3.min.js"></script>
 	</head>
 
 	<body>
@@ -249,22 +256,42 @@
 			</div>
 
 			<div class="main-links-wrapper track-hasSubcategory" data-clicktrack-subcategory="Main">
-				<ul class="main-links">
+				<ul id="main-links" class="main-links">
 
 						<li class="main-link  current ">
-							<a href="http://uverseonline.att.net/" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksWatchNow.png)" class="track"  data-clicktrack-action="Watch Now"  data-trk-cat="Top navigation" data-trk-act="Watch Now">Watch Now</a>
+							<a href="http://uverseonline.att.net/" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksWatchNow.png)" class="track"  data-clicktrack-action="Watch Now"  data-trk-cat="Top navigation" data-trk-act="Watch Now">Watch Now
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
 						</li>
 
 						<li class="main-link ">
-							<a href="http://uverseonline.att.net/uverse" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksAboutUverse.png)" class="track"  data-clicktrack-action="About U-verse"  data-trk-cat="Top navigation" data-trk-act="About U-verse">About U-verse</a>
+							<a href="http://uverseonline.att.net/uverse" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksAboutUverse.png)" class="track"  data-clicktrack-action="About U-verse"  data-trk-cat="Top navigation" data-trk-act="About U-verse">About U-verse
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
 						</li>
 
 						<li class="main-link ">
-							<a href="http://uverseonline.att.net/guide" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksChannelGuide.png)" class="track"  data-clicktrack-action="Channel Guide"  data-trk-cat="Top navigation" data-trk-act="Channel Guide">Channel Guide</a>
+							<a href="http://uverseonline.att.net/guide" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksChannelGuide.png)" class="track"  data-clicktrack-action="Channel Guide"  data-trk-cat="Top navigation" data-trk-act="Channel Guide">Channel Guide
+									<div class="badge  hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
 						</li>
 
 						<li class="main-link ">
-							<a href="http://uverseonline.att.net/settings/online" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksMyAccount.png)" class="track"  data-clicktrack-action="My Account"  data-trk-cat="Top navigation" data-trk-act="My Account">My Account</a>
+							<a href="http://uverseonline.att.net/favorites" style="background-image: url(../uverseonline.att.net/web_files/NEXTGEN/web_files/images/navigation/masthead/mainLinksMyAccount.png)" class="track"  data-clicktrack-action="My Account"  data-trk-cat="Top navigation" data-trk-act="My Account">My Account
+									<div class="badge favoritesCount hidden">
+										<span class="slice-one"><span class="badge-icon"></span><span class="badge-text"></span></span>
+										<span class="slice-two"></span>
+									</div>
+							</a>
 						</li>
 				</ul>
 			</div>
@@ -335,7 +362,8 @@ placeholder="Search U-verse"
 										<ul class="main-nav-menu menu">
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/popular" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Most Popular" data-trk-cat="Top navigation" data-trk-act="Music - Most Popular">Most Popular</a></li>
 													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/new" class="main-nav-menu-item-label track" data-clicktrack-action="Music - Recently Added" data-trk-cat="Top navigation" data-trk-act="Music - Recently Added">Recently Added</a></li>
-													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/music/all" class="main-nav-menu-item-label track" data-clicktrack-action="Music - All Artists" data-trk-cat="Top navigation" data-trk-act="Music - All Artists">All Artists</a></li>
+													<li class="main-nav-menu-item "><a href="http://uverseonline.att.net/music/all" class="main-nav-menu-item-label track" data-clicktrack-action="Music - All Artists" data-trk-cat="Top navigation" data-trk-act="Music - All Artists">All Artists</a></li>
+													<li class="main-nav-menu-item  last "><a href="http://uverseonline.att.net/music/es" class="main-nav-menu-item-label track" data-clicktrack-action="Music - En Español" data-trk-cat="Top navigation" data-trk-act="Music - En Español">En Español</a></li>
 										</ul>
 									</li>
 									<li class="main-nav-item  with-dropdown  current">
@@ -370,12 +398,18 @@ placeholder="Search U-verse"
 		, id: 'mainNavigation'
 		, options: { }
 	});
+	
+	Uverse.load({
+		moduleName: 'Uverse.widgets.MainLinks'
+		, id: 'main-links'
+		, options: { }
+	});
 
 	Uverse.load({
 		moduleName: 'Uverse.widgets.QuickSearch'
 		,id: 'quickSearch'
 		, options: {
-			searchUrl: '/search.quickSearch'
+			searchUrl: '/search/quickSearch.html'
 			,searchKey: 'letters'
 			,minCharacters: 1
 		}
@@ -397,8 +431,8 @@ placeholder="Search U-verse"
 
 
 <div id="hiddenTemplates" class="hidden">
-	<section id="recordingOptions" class="hidden">
-	<div class="recording record">
+	<section id="recordingOptionsTemplate" class="hidden">
+	<div class="drawer-recording record">
 		<form class="recording-issue">
 			<p class="description"></p>
 			<p class="options"></p>
@@ -412,39 +446,39 @@ data-clicktrack-action="Record to DVR">
 <span class="slice-one"><span class="U-control-button-icon"></span>Record to DVR</span><span class="slice-two">&nbsp;</span>
 </span> </button>		</form>
 	</div>
-	<div class="recording setToRecord hidden">
+	<div class="drawer-recording setToRecord hidden">
 		<form class="recording-issue">
-			<p class="description success"></p>
+			<p class="description successful"></p>
 			<p class="time"></p>
 			<p class="channel"><span class="number"></span> <span class="name"></span></p>
 			<p class="manage"><a href="http://uverseonline.att.net/guide/recorded-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
 		</form>
 	</div>
-	<div class="recording recorded">
+	<div class="drawer-recording recorded">
 		<form class="recording-issue">
-			<p class="description success"></p>
+			<p class="description successful"></p>
 			<p class="time"></p>
 			<p class="channel"><span class="number"></span> <span class="name"></span></p>
 			<p class="manage"><a href="http://uverseonline.att.net/guide/recorded-shows" class="track" data-clicktrack-action="Drawer - Record - Manage My Recordings">Manage My Recordings</a></p>
 		</form>
 	</div>
-	<div class="recording cannotBeRecorded">
+	<div class="drawer-recording cannotBeRecorded">
 		<p class="description recording-issue">Sorry, you cannot record this because it is no longer available in the channel guide.</p>
 	</div>
-	<div class="recording cannotBeRecorded-local">
+	<div class="drawer-recording cannotBeRecorded-local">
 		<p class="description recording-issue">Sorry, this recording is not available in your area.</p>
 	</div>
-	<div class="recording genericError">
+	<div class="drawer-recording genericError">
 		<p class="description recording-issue">Sorry, this recording is not available.</p>
 	</div>
-	<div class="recording labels">
+	<div class="drawer-recording labels">
 		<div class="record">
 			<div class="tv">
 				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
 				<span class="options">
-<label class="U-control U-control-checkbox " tabIndex="0">
+<label class="U-control U-control-checkbox control-recordings" tabIndex="0">
 <span class="U-control-checkbox-check-wrapper shiny">
-<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns"></span>
+<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns" data-clicktrack-label=""></span>
 <input type="checkbox" name="includeReruns" value="true" />
 </span>
 Include Reruns
@@ -458,9 +492,9 @@ Include Reruns
 			<div class="sports">
 				<span class="description">Record new episodes to your DVR as soon as they are available.</span>
 				<span class="options">
-<label class="U-control U-control-checkbox " tabIndex="0">
+<label class="U-control U-control-checkbox control-recordings" tabIndex="0">
 <span class="U-control-checkbox-check-wrapper shiny">
-<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns"></span>
+<span class="U-control-checkbox-check track" data-clicktrack-action="Include Reruns" data-clicktrack-label=""></span>
 <input type="checkbox" name="includeReruns" value="true" />
 </span>
 Include Reruns
@@ -486,17 +520,17 @@ Include Reruns
 		</div>
 		<div class="recorded">
 			<div class="tv">
-				<span class="description">Your DVR recorded this series on: </span>
+				<span class="description">Your DVR recorded this series on:</span>
 				<p class="time"></p>
 				<p class="channel"><span class="number"></span> <span class="name"></span></p>
 			</div>
 			<div class="movies">
-				<span class="description">Your DVR recorded this movie on: </span>
+				<span class="description">Your DVR recorded this movie on:</span>
 				<p class="time"></p>
 				<p class="channel"><span class="number"></span> <span class="name"></span></p>
 			</div>
 			<div class="sports">
-				<span class="description">Your DVR recorded this series on: </span>
+				<span class="description">Your DVR recorded this series on:</span>
 				<p class="time"></p>
 				<p class="channel"><span class="number"></span> <span class="name"></span></p>
 			</div>
@@ -532,11 +566,21 @@ Include Reruns
 	</div>
 </section>
 
-<section id="favoriteOptions" class="hidden">
-	<div class="favorites save hidden">
-		<form>
-			<p class="description">Quickly access all your best-loved videos on Uverse.com by adding them to your favorites.</p>
-			<div class="button">
+
+<section id="favoriteOptionsTemplate" class="hidden">
+	<div class="drawer-favorites favorite-add hidden">
+		<form class="save">
+			<p class="description">
+Access all your best-loved videos by adding them to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="options">
+<label class="U-control U-control-checkbox control-favorites" tabIndex="0">
+<span class="U-control-checkbox-check-wrapper shiny">
+<span class="U-control-checkbox-check track" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On"></span>
+<input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
+</span>
+<span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
+</label>			</p>
+			<div class="button-container">
 <button type="submit" class="U-control U-control-button shiny control-drawer control-favorites track"
 name=""
 value=""
@@ -546,14 +590,57 @@ data-clicktrack-action="Add to Favorites">
 </span> </button>			</div>
 		</form>
 	</div>
-	<div class="favorites saved hidden">
+	<div class="drawer-favorites favorite-remove hidden">
 		<form>
-		<p class="description success">This video has been added to your Favorites.</p>
-		<p class="manage"><a href="http://uverseonline.att.net/settings/online/p/tab/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">Manage My Favorites</a></p>
+			<p class="description successful video">
+This video has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful show">
+This show has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful movie">
+This movie has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+			<p class="description successful artist">
+This artist has been added to <a href="http://uverseonline.att.net/uv/favorites" class="track" data-clicktrack-action="Drawer - Favorites - Manage My Favorites">your favorites.</a>			</p>
+
+			<p class="options">
+<label class="U-control U-control-checkbox control-favorites" tabIndex="0">
+<span class="U-control-checkbox-check-wrapper shiny">
+<span class="U-control-checkbox-check track" data-clicktrack-action="One-Click-Favorites Toggle" data-clicktrack-label="On"></span>
+<input type="checkbox" name="oneClickFavorites" value="true" checked="checked" />
+</span>
+<span class='is-checked'>ON</span><span class='not-checked'>OFF</span> | One-click favoriting
+</label>			</p>
+			<div class="button">
+<button type="submit" class="U-control U-control-button shiny control-drawer control-favorites track"
+name=""
+value=""
+data-clicktrack-action="Remove from Favorites">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Remove from Favorites</span><span class="slice-two">&nbsp;</span>
+</span> </button>			</div>
 		</form>
 	</div>
-</section><section id="notificationOptions" class="hidden">
-	<div class="notifications set">
+	<div class="drawer-favorites favorite-remove-confirmation drawer-overlay-contents hidden">
+		<form>
+			<span class="drawer-overlay-message">
+Are you sure you want to remove this from favorites?			</span>
+			<div class="drawer-overlay-buttons">
+<button type="submit" class="U-control U-control-button shiny drawer-overlay-button control-drawer control-cancel "
+name="result"
+value="cancel"
+data-clicktrack-action="">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Cancel</span><span class="slice-two">&nbsp;</span>
+</span> </button><button type="submit" class="U-control U-control-button shiny drawer-overlay-button control-drawer control-confirm control-favorites "
+name="result"
+value="confirm"
+data-clicktrack-action="">
+<span class="U-control-button-wrapper">
+<span class="slice-one"><span class="U-control-button-icon"></span>Remove</span><span class="slice-two">&nbsp;</span>
+</span> </button>			</div>
+		</form>
+	</div>
+</section><section id="notificationOptionsTemplate" class="hidden">
+	<div class="drawer-notifications set">
 		<form>
 			<p class="description">Receive email notifications for all episodes when available.</p>
 			<p><a href="../www.att.com/privacy/index.html" target="_blank" class="track" data-clicktrack-action="Drawer - Notify - Privacy Policy">Privacy Policy</a></p>
@@ -575,7 +662,7 @@ data-clicktrack-action="Set">
 	</div>
 	<div class="hasBeenSet hidden">
 		<form>
-			<p class="description success">Notifications will be sent to <span class="email"></span></p>
+			<p class="description successful">Notifications will be sent to <span class="email"></span></p>
 			<p class="manage"><a href="http://uverseonline.att.net/settings/online/p/tab/notifications" class="track" data-clicktrack-action="Drawer - Notify - Manage My Notifications">Manage My Notifications</a></p>
 		</form>
 	</div>
@@ -610,18 +697,20 @@ data-clicktrack-action="Set">
 <span class="slice-one"><span class="U-control-button-icon"></span>Upgrade</span><span class="slice-two">&nbsp;</span>
 </span> </a>	</form>
 </div>
-<div id="entitlementUpgradeItems">
+<div id="entitlementUpgradeItemsTemplate">
 	<form>
 		<p class="recording">to record to your DVR.</p>
 	</form>
 </div><div id="tileDrawerLoadingTemplate" class="drawer-overlay loading">
-	<span>
-		<img src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/images/icons/loadingBlack.gif" alt="Loading..." />
+	<span class="drawer-overlay-contents">
+		<img class="loading-image hidden" src="../uverseonline.att.net/web_files/NEXTGEN/web_files/nes/styles/images/icons/loading.gif" alt="Loading..." />
 	</span>
 </div><div id="tileDrawerMessageTemplate" class="drawer-overlay message">
-	<span class="messageContent"></span>
+	<span class="drawer-overlay-contents drawer-overlay-message errorMessage"></span>
 </div><div id="tileDrawerHeadersTemplate">
-	<div class="header"><div class="close"></div></div>
+	<div class="drawer-header"><div class="drawer-close" data-clicktrack-action="Drawer Close"></div></div>
+</div><div id="tileDrawerGenericTemplate" class="drawer-overlay generic">
+
 </div><script id="bannersTemplate-default" type="text/html">
 	<img src="../uverseonline.att.net/sports/network/{src}.html" alt="{alt}" />
 </script>
@@ -780,14 +869,14 @@ AT&amp;T U-verse Support page				</a>
 						<div class='secondary-filter left'>
 Sort By						</div>
 							<div class='secondary-filter left'>
-<span class="U-control U-control-dropdown control-filter-bar" tabIndex="0">
+<span class="U-control U-control-dropdown control-filter-bar " tabIndex="0">
 <span class="U-control-dropdown-selection control-dropdown-selection-default">
 <span class="slice-one contents-go-here">Most Popular</span>
 <span class="slice-two">&nbsp;</span>
 <span class="U-control-dropdown-selection-arrow">&nbsp;</span>
 </span>
 <div class="U-control-dropdown-container">
-<span class="U-control-list control-filter-bar">
+<span class="U-control-list control-filter-bar ">
 <span class='slice-one'>
 <select name="drop_down_list4">
 <option
@@ -830,17 +919,17 @@ data-clicktrack-label="Alphabetical"
 </span>							</div>
 
 								<div class='secondary-filter right'>
-<label class="U-control U-control-checkbox control-filter-bar" tabIndex="0">
+<label class="U-control U-control-checkbox control-filter-bar " tabIndex="0">
 <span class="U-control-checkbox-check-wrapper shiny">
-<span class="U-control-checkbox-check track" data-clicktrack-action="CC"></span>
+<span class="U-control-checkbox-check track" data-clicktrack-action="CC" data-clicktrack-label=""></span>
 <input type="checkbox" name="checkbox3" value="checkbox3" />
 </span>
 CC
 </label>								</div>
 								<div class='secondary-filter right'>
-<label class="U-control U-control-checkbox control-filter-bar" tabIndex="0">
+<label class="U-control U-control-checkbox control-filter-bar " tabIndex="0">
 <span class="U-control-checkbox-check-wrapper shiny">
-<span class="U-control-checkbox-check track" data-clicktrack-action="HD"></span>
+<span class="U-control-checkbox-check track" data-clicktrack-action="HD" data-clicktrack-label=""></span>
 <input type="checkbox" name="checkbox2" value="checkbox2" />
 </span>
 HD
@@ -1187,14 +1276,14 @@ data-clicktrack-label="Z"
 </div>
 </span>								</div>
 								<div class='secondary-filter right'>
-<span class="U-control U-control-dropdown control-filter-bar" tabIndex="0">
+<span class="U-control U-control-dropdown control-filter-bar " tabIndex="0">
 <span class="U-control-dropdown-selection control-dropdown-selection-default">
 <span class="slice-one contents-go-here">All Sports</span>
 <span class="slice-two">&nbsp;</span>
 <span class="U-control-dropdown-selection-arrow">&nbsp;</span>
 </span>
 <div class="U-control-dropdown-container">
-<span class="U-control-list control-filter-bar">
+<span class="U-control-list control-filter-bar ">
 <span class='slice-one'>
 <select name="drop_down_list0">
 <option
@@ -1398,10 +1487,12 @@ Filter By						</div>
 
 <section 
 	id="category_/ng/sports/show/usa-gymnastics-behind-the-team" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usa-gymnastics-behind-the-team" 
+	data-favorite-id="/ng/sports/show/usa-gymnastics-behind-the-team" 
 	data-content-type="sports" 
 	data-program-title="usa-gymnastics-behind-the-team" 
 	data-episode-title="" 
@@ -1447,7 +1538,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1465,10 +1563,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/usa-swimming-outside-the-pool" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usa-swimming-outside-the-pool" 
+	data-favorite-id="/ng/sports/show/usa-swimming-outside-the-pool" 
 	data-content-type="sports" 
 	data-program-title="usa-swimming-outside-the-pool" 
 	data-episode-title="" 
@@ -1481,7 +1581,7 @@ Play Latest Episode				</span></p>
 	<div class="tileWrapper">
 				<header>
 	<div class="imageWrapper thumbnail">
-		<img src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/fanzone/images/111312_ep29_140x80.jpg" alt="USA Swimming: Outside the Pool" width="210" />
+		<img src="../wpc.792a.att-acdn.net/00792A/7325/entertainment/prod/fanzone/images/12191212_ep30_140x80.jpg" alt="USA Swimming: Outside the Pool" width="210" />
 	<div class="image-overlay">
 		<div class="standard">
 			<a href="http://uverseonline.att.net/sports/show/usa-swimming-outside-the-pool?play=latest" class="action track video-play-link" data-clicktrack-action="Image - Play">
@@ -1497,13 +1597,11 @@ Play Latest Episode				</span></p>
 	<h1 class="tile-header-title videoInfo-title ellipsis singleLine">
 		<a href="http://uverseonline.att.net/sports/show/usa-swimming-outside-the-pool" class="track" data-clicktrack-action="Title">USA Swimming: Outside the Pool</a>
 	</h1>
-	<h2 class="tile-header-subtitle ellipsis singleLine">29 Episodes &nbsp;</h2>
+	<h2 class="tile-header-subtitle ellipsis singleLine">30 Episodes &nbsp;</h2>
 		</header>
 
 		<article>
-				<p class="description">10-time Olympic medalist Gary Hall Jr. discusses his courageous battle with type 1
-diabetes, his difficulties competing and training with the disease, and some advice he got
-from another swimming legend about retirement.</p>
+				<p class="description">Gary Hall Jr. discusses a famous moment of Olympics history when he wore an American flag cape behind the blocks of the 50m freestyle, seconds before his Olympic gold medal performance. The flag cape is now featured at the International Swimming Hall of Fame.</p>
 		<p class="meta ellipsis singleLine">
 				<a href="teamusa.html"  class="track" data-clicktrack-action="Network" data-clicktrack-label="TeamUSA">TeamUSA</a>
 			<span class="light">|</span> NR 
@@ -1516,7 +1614,14 @@ from another swimming legend about retirement.</p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1534,10 +1639,12 @@ from another swimming legend about retirement.</p>
 
 <section 
 	id="category_/ng/sports/show/us-figure-skating-when-the-skates-come-off" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/us-figure-skating-when-the-skates-come-off" 
+	data-favorite-id="/ng/sports/show/us-figure-skating-when-the-skates-come-off" 
 	data-content-type="sports" 
 	data-program-title="u-s-figure-skating-when-the-skates-come-off" 
 	data-episode-title="" 
@@ -1583,7 +1690,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1601,10 +1715,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/going-for-the-gold" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/going-for-the-gold" 
+	data-favorite-id="/ng/sports/show/going-for-the-gold" 
 	data-content-type="sports" 
 	data-program-title="going-for-the-gold" 
 	data-episode-title="" 
@@ -1650,7 +1766,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1668,10 +1791,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/meet-the-team-vancouver" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/meet-the-team-vancouver" 
+	data-favorite-id="/ng/sports/show/meet-the-team-vancouver" 
 	data-content-type="sports" 
 	data-program-title="meet-the-team-vancouver" 
 	data-episode-title="" 
@@ -1717,7 +1842,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1735,10 +1867,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/usa-diving-beyond-the-board" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usa-diving-beyond-the-board" 
+	data-favorite-id="/ng/sports/show/usa-diving-beyond-the-board" 
 	data-content-type="sports" 
 	data-program-title="usa-diving-beyond-the-board" 
 	data-episode-title="" 
@@ -1784,7 +1918,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1802,10 +1943,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/around-the-gym" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/around-the-gym" 
+	data-favorite-id="/ng/sports/show/around-the-gym" 
 	data-content-type="sports" 
 	data-program-title="around-the-gym" 
 	data-episode-title="" 
@@ -1851,7 +1994,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1869,10 +2019,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/london-2012" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/london-2012" 
+	data-favorite-id="/ng/sports/show/london-2012" 
 	data-content-type="sports" 
 	data-program-title="london-2012" 
 	data-episode-title="" 
@@ -1918,7 +2070,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -1936,10 +2095,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/usa-gymnastics-behind-the-team-inside-the-visa-championships" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usa-gymnastics-behind-the-team-inside-the-visa-championships" 
+	data-favorite-id="/ng/sports/show/usa-gymnastics-behind-the-team-inside-the-visa-championships" 
 	data-content-type="sports" 
 	data-program-title="usa-gymnastics-behind-the-team-inside-the-visa-championships" 
 	data-episode-title="" 
@@ -1985,7 +2146,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -2003,10 +2171,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/usa-swimming-golden-goggles" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usa-swimming-golden-goggles" 
+	data-favorite-id="/ng/sports/show/usa-swimming-golden-goggles" 
 	data-content-type="sports" 
 	data-program-title="usa-swimming-golden-goggles" 
 	data-episode-title="" 
@@ -2052,7 +2222,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -2070,10 +2247,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/skate-america" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/skate-america" 
+	data-favorite-id="/ng/sports/show/skate-america" 
 	data-content-type="sports" 
 	data-program-title="skate-america" 
 	data-episode-title="" 
@@ -2119,7 +2298,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -2137,10 +2323,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/usg-behind-the-team-2010-2012" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/usg-behind-the-team-2010-2012" 
+	data-favorite-id="/ng/sports/show/usg-behind-the-team-2010-2012" 
 	data-content-type="sports" 
 	data-program-title="usg-behind-the-team-2010-2012" 
 	data-episode-title="" 
@@ -2186,7 +2374,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -2204,10 +2399,12 @@ Play Latest Episode				</span></p>
 
 <section 
 	id="category_/ng/sports/show/united-states-olympic-committee" 
-	class="tile  category sports   track-hasCategory track-hasSubcategory track-hasLabel" 
+	class="tile category
+sports track-hasCategory track-hasSubcategory track-hasLabel" 
 	data-tile-class="Category" 
 	data-video-id="" 
 	data-category-path="/ng/sports/show/united-states-olympic-committee" 
+	data-favorite-id="/ng/sports/show/united-states-olympic-committee" 
 	data-content-type="sports" 
 	data-program-title="united-states-olympic-committee" 
 	data-episode-title="" 
@@ -2253,7 +2450,14 @@ Play Latest Episode				</span></p>
 	<div class="bottomBar clearfix">
 				<p class="tag free">Free</p>
 		<div class="actions clearfix">
-			<div class="dvr hidden"><div class="selected hidden"></div><span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span></div>
+			<div class="dvr hidden">
+				<span class="icon-arrow"></span>
+				<span class="icon dvr hidden track" data-clicktrack-action="Drawer - Record - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
+			<div class="favorite">
+				<span class="icon-arrow"></span>
+				<span class="icon favorite track" data-clicktrack-action="Drawer - Favorites - Button" data-clicktrack-label="Open">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 </footer>
@@ -2265,6 +2469,7 @@ Play Latest Episode				</span></p>
 
 	</div>
 
+
 	<script type="text/javascript">
 		Uverse.load({
 			moduleName: 'Uverse.widgets.TileManager'
@@ -2273,12 +2478,10 @@ Play Latest Episode				</span></p>
 				initialTilesId: 'initial-tiles'
 				, initialFilter: 'tabs2=/ng/sports/show&drop_down_list4=Most Popular'
 				, tileLoaderOptions: {
-					tilesUrl: '/tiles.html'
-					, pageKey: 'page'
-					, nextPage: 2
-					, siteArea: ''
+					siteArea: ''
 				}
 				, filterBarId: 'myFilterBar1'
+				, tileExtensions: [    ]
 			}
 		});
 	</script>
@@ -2319,8 +2522,8 @@ Play Latest Episode				</span></p>
 						</a>
 					</li>
 					<li>
-						<a href="http://uverse.com" class="track" data-clicktrack-action="uverse.com" data-trk-cat="Footer" data-trk-act="uverse.com">
-							<strong>uverse.com</strong>
+						<a href="http://www.att.com/u-verse/shop/index.jsp?source=ECSFU90000000000L&wtExtndSource=ftr_get_uvtv" target="_blank" class="track" data-clicktrack-action="Shop Uverse" data-trk-cat="Footer" data-trk-act="Shop Uverse">
+							<strong>Get U-verse TV</strong>
 							<span>Over 250,000 Free Videos</span>
 						</a>
 					</li>

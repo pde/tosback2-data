@@ -1,0 +1,80 @@
+
+
+/* 8uz8uakfps856ei0ckoxxe1px */
+
+LI.define("RUM.activeTimers");
+LI.define("RUM.finishedTimers");
+LI.define("RUM.timeMarks");
+LI.RUM.startTimer=function(a,c){var b=LI.RUM.activeTimers;
+b[a]=b[a]||[];
+b[a].push(c||+new Date())
+};
+LI.RUM.markTime=function(a,c){var b=LI.RUM.timeMarks;
+b[a+"ClientTimestampMs"]=c||+new Date()
+};
+LI.RUM.stopTimer=function(c,d){var b=d||+new Date(),a=LI.RUM.activeTimers,f=LI.RUM.finishedTimers;
+f[c]=f[c]||[];
+if(a[c]===undefined){return
+}var e=a[c].pop();
+f[c].push(b-e)
+};
+LI.RUM.monkeyTimer=function(c,a,b){return function(){LI.RUM.startTimer(a);
+var d=c.apply(b||this,arguments);
+LI.RUM.stopTimer(a);
+return d
+}
+};
+LI.RUM.monkeyTimeByName=function(b,a,c){var f=b.split("."),e,d=window;
+for(e=0;
+e<f.length-1;
+e++){d=d[f[e]];
+if(typeof d!="object"){return
+}}if(typeof d[f[e]]!=="function"){return
+}d[f[e]]=LI.RUM.monkeyTimer(d[f[e]],a,c)
+};
+LI.RUM.monkeyTimeList=function(b){for(var a in b){if(b.hasOwnProperty(a)){LI.RUM.monkeyTimeByName(a,b[a])
+}}};
+LI.RUM.getNumTimes=function(a){var b=LI.RUM.finishedTimers;
+if(b[a]===undefined){return undefined
+}return b[a].length
+};
+LI.RUM.getTotalTimes=function(){var c=LI.RUM.finishedTimers,b={};
+for(var a in c){if(c.hasOwnProperty(a)){b[a]=LI.RUM.getTotalTime(a)
+}}return b
+};
+LI.RUM.getTotalTime=function(b){var c,a,e=LI.RUM.finishedTimers,d=0;
+if(e[b]===undefined){return undefined
+}for(c=0,a=e[b].length;
+c<a;
+c++){d+=e[b][c]
+}return d
+};
+(function(){var a=0;
+LI.RUM.defer=function(b){a+=1;
+return function(){a-=1;
+if(a==0&&LI.RUM.fire){LI.RUM.fire()
+}}
+};
+LI.RUM.canFire=function(){return a==0
+}
+})();
+LI.RUM.trackEmbeds=function(d){if(typeof fs=="undefined"){return
+}if(typeof d=="string"){d=arguments
+}var c,a,b;
+var e=LI.RUM.finishedTimers;
+for(c=0;
+c<d.length;
+c++){(function(f,g){fs.after(d[c],function(){LI.RUM.markTime("embedsReady");
+f()
+});
+g&&fs.timing(d[c],function(i){for(var j in i){if(i.hasOwnProperty(j)){var h="fizzy"+j.substr(0,1).toUpperCase()+j.substr(1)+"DurationMs";
+e[h]=e[h]||[];
+e[h].push(i[j])
+}}g()
+})
+})(LI.RUM.defer(),fs.timing&&LI.RUM.defer())
+}};
+
+/* c61ck8yq8xgf9ji3h55bmaux8 */
+
+LI.RUM.monkeyTimeList({"fs.embed":"totalFizzyTime","dust.render":"totalDustRenderTime","dust.register":"totalDustTemplateParseTime"});

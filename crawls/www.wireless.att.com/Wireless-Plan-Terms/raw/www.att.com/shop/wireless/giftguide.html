@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = 'http://giftguide.attmobilephones.mobi'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -25,9 +128,9 @@
 })(); 
 </script> 
 	<title> 
-            Cell Phone & Smartphone Gift Center - AT&T Wireless Holiday Gift Center 
+            AT&T Gift Guide 
 	</title> 
-    <meta name="description" content="Need cell phone and smartphone holiday gift ideas? Let the AT&amp;T Holiday Gift Center help you shop for the latest phones and wireless devices, including iPhone 5, Android phones, Windows Phones, and accessories." >	 
+    <meta name="description" content="" >	 
 	<meta name="keywords" content="" > 
     <meta name="robots" content="INDEX,FOLLOW" /> 
 	<link rel="canonical" href="giftguide.html"/>  
@@ -49,36 +152,6 @@
 			<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/jquery.noconflict.js"></script> 
 	<script type="text/javascript" src="http://1.ecom.attccc.com/media/gvp/gvpUtils_HR.js"></script> 
 	<!-- what is it: check for page url that includes plan, package or service --> 
-<script type="text/javascript"> 
-//<![CDATA[  
-ATT.namespace('mobileRedirect');                       
- //start mobile detection 
-ATT.mobileRedirect = function (){ 
-	//Get user-agent 
-	var uagent = navigator.userAgent.toLowerCase(),  
-		mRedirectURL = "http://giftguide.attmobilephones.mobi"; 
-	if (uagent.search("mobile") > -1){   
-			//iPad Check 
-			if (uagent.search("ipad") > -1){ 
-				return; //Fullsite View 
-			} 
-			// Tablet Check 
-			if (uagent.search("tablet") > -1){ 
-				return; // Fullsite View 
-			} 
-			//Galaxy Tab 7 inch Check 
-			else if (uagent.search("gt-p10") > -1){ 
-				return; // FullSite View 
-			} 
-			else{ 
-			// Device is not a tablet,ridirect to mobile site 
-				window.location =  mRedirectURL; 
-			} 
-	} 
-} 
-ATT.mobileRedirect(); 
-//]]> 
-</script> 
 </head> 
 <!-- Add author only code below --> 
 <body class="consumer"> 
@@ -586,7 +659,7 @@ ATT.mobileRedirect();
 	<div id="undernav-right"> 
 	    <div id="lpButtonDiv" style="display:inline;"></div> 
 	    <div id="mini-cart-link-container" style="display:inline;"> 
-	        <a id="minicart-link" href="giftguide.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content;2012352">My Wireless Cart  
+	        <a id="minicart-link" href="giftguide.html#" onclick="javascript:ATT.CartSummary.showCartPreview();return false;" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content;2012356">My Wireless Cart  
 	            <img src="http://1.ecom.attccc.com/media/att/2011/shop/checkout/img_cart_breadcrumb.gif" alt="Cart Icon"/> 
 	            <span id="minicart-count"></span> 
 	        </a><br/> 
@@ -629,12 +702,58 @@ ATT.mobileRedirect();
 				</div> 
                 <div class="base admgr marqueePromo"> 
 <div class="page-title-container"> 
-	    <div class="marquee tile base"><script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script><div id="marqueeHolder" style="width:974px;height:615px;position:relative;"></div> 
+	    <div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-	JSAM.createMarquee('/shop/marquees/landing_pages/Holiday-Hub-2012.xml',{height:'615', width:'974'}); 
-	var parentNode = document.getElementById("marqueeHolder").parentNode; 
-	parentNode.style.height = "475px"; 
-</script></div> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/Holiday-Hub-2012", 
+	"panel": [{ 
+		"alt": "Wishes do come true", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/other/mrq_142845_holiday-hub-bkd-phase3.jpg", 
+		"backgroundHorizontalPlacement": "left", 
+		"backgroundVerticalPlacement": "top", 
+		"contentID": "/content/att/shop/en/panels/landers/holiday_hub_phase1", 
+		"name": "holiday_hub_phase1", 
+		"useJSAM": "1", 
+		"asset": [{ 
+			"alt": "animations", 
+			"isVideo": "1", 
+			"loop": "1", 
+			"name": "animation", 
+			"preload": "1", 
+			"source": "http://www.wireless.att.com/home/video_progressive/video_marquees/holiday-hub-bkd-phase3.flv", 
+			"type": "Media", 
+			"x": "0", 
+			"y": "0" 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size16,customcolor_666666,arial", 
+			"html": "1", 
+			"name": "subhead", 
+			"type": "Text", 
+			"x": "68", 
+			"y": "246", 
+			"label": [{ "Text": "Find great phones, tablets, and accessory\r\ngifts for friends and family at the \r\nHoliday Gift Center." }] 
+		}, 
+		{ 
+			"antiAlias": "1", 
+			"cssClass": "size16,customcolor_ff7200,arial", 
+			"html": "1", 
+			"name": "shipping", 
+			"type": "Text", 
+			"x": "69", 
+			"y": "331", 
+			"label": [{ "Text": "<b>Free shipping. Free returns.</b>" }] 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"974", height:"615"}); 
+   parentNode.style.height = "475px"; 
+</script> 
+</div> 
 </div></div> 
                 <div class="row-seamless"> 
                     <div class="FlexibleWidthLoBT LoBT"> 
@@ -2134,7 +2253,7 @@ IPAD® MINI<br>
         	<div class="left-text"> 
 				<div class="PriceNote price"> 
 <p class="priceNote"></p> 
-<p class="price orange">$79.99</p> 
+<p class="price orange">$59.25</p> 
 <p class="detail"></p> 
 <div class="clear"></div> 
 </div> 
@@ -2420,34 +2539,34 @@ smartphones.&nbsp;</p>
         <br /> 
     </div> 
     <div class="device-container-with-border"> 
-                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6060283.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"> 
+                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6060283.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"> 
             <img src="../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Accessories/gaming/foam-fighters-160x160.png" alt="" title="APPGEAR™ FOAM FIGHTERS"/> 
             </a> 
         <br /> 
         <div class="eyebrow">APPGEAR™ FOAM FIGHTERS</div> 
         <p>Play with WWII fighter planes using a free gaming app.</p> 
         <div class="price orange">$7.50</div> 
-        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6060283.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6060283.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
     </div> 
     <div class="device-container-with-border"> 
-                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6230326.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"> 
+                <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6230326.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"> 
             <img src="../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Accessories/gaming/ion-mobile-controller-160x160.png" alt="" title="ION MOBILE CONTROLLER"/> 
             </a> 
         <br /> 
         <div class="eyebrow">ION MOBILE CONTROLLER</div> 
         <p>Play games the way<br> they were meant<br> to be played.</p> 
-        <div class="price orange">$69.00</div> 
-        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6230326.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+        <div class="price orange">$51.75</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/specialty-items/sku6230326.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
     </div> 
     <div class="device-container-no-border last"> 
-                <a href="http://www.att.com/shop/wireless/devices/sony/playstation-vita-black.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"> 
-            <img src="../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Accessories/gaming/playstation-vita-specialOffer-160x160.png" alt="" title="PLAYSTATION® VITA"/> 
+                <a href="http://www.att.com/shop/wireless/accessories/appcessories/sku6300289.html" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"> 
+            <img src="../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Accessories/gaming/moga-controller-160x160.png" alt="" title="MOGA GAME CONTROLLER"/> 
             </a> 
         <br /> 
-        <div class="eyebrow">PLAYSTATION® VITA</div> 
-        <p>Console-like gaming with a brilliant 5” multi-touch screen.</p> 
-        <div class="price orange">$199.99</div> 
-        <a href="http://www.att.com/shop/wireless/devices/sony/playstation-vita-black.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012345"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
+        <div class="eyebrow">MOGA GAME CONTROLLER</div> 
+        <p>Play games on Bluetooth®-enabled Android™ phones and tablets.</p> 
+        <div class="price orange">$49.00</div> 
+        <a href="http://www.att.com/shop/wireless/accessories/appcessories/sku6300289.html" class="CTA" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab3/optionalfiveup_1;2012356"><img src="../../shopcms/media/att/2012/global/btn/btn-en-ViewDetails-blu24.gif"/></a> 
     </div> 
     <br class="clear" /> 
 </div></div> 
@@ -3134,56 +3253,6 @@ Shop for GoPhone prepaid phones >
 	   <div class="pageLevel">  
             <h2>Seasonal savings</h2> 
        </div>  
-<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Holiday-Deals/rugbysmart-99cents-948x546-left.jpg') no-repeat scroll left center transparent;"> 
-	<div class="h480"> 
-		<div class="titleAndCopy "> 
-			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
-	<div class="eyebrow"> 
-	   <p>SAMSUNG RUGBY® SMART</p> 
-<p></p> 
-	</div> 
-<div class="clear"></div></div> 
-<div class="text parbase titleplustext section"> 
-    <h4 >An impressive combination of capabilities</h4>  
-    <p><p>Samsung Rugby Smart is a rugged Android™ device with a 3.7-inch WVGA Super AMOLED™ touchscreen display and a 5MP camera with HD video recording. Waterproof and dustproof, Rugby Smart is designed to handle the elements.</p> 
-</p> 
-<div class="clear"></div>                  
-</div> 
-<div class="pricewithcta section"> 
-<div class="price-and-button"> 
-        	<div class="left-text"> 
-				<div class="PriceNote price"> 
-<p class="priceNote"></p> 
-<p class="price orange">99¢*</p> 
-<p class="detail"></p> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-            <div> 
-            	 <div class="CTA cta"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab5/oneup_6/one-up/TallPromo1/pricewithcta/CTA;2012349"> 
-<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu40.gif" alt="View Details"/> 
-</a> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-</div> 
-<div class="clear"></div></div> 
-</div> 
-			<div class="fullwidthlegal"><div class="legal text parbase"> 
-<div class="clear"></div></div> 
-</div> 
-		</div> 
-	</div> 
-</div> 
-</div> 
-<div class="clear"></div> 
-</div> 
-    <div class="legal text parbase"> 
-<div class="clear"></div></div> 
-<div class="clear"></div></div> 
-<div class="oneup parbase section"> 
-<div class="one-up parbase fullwidthoneup"> 
 <div class="fullWidthTile contentLeftDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Holiday-Deals/htc8x-948x546-right.jpg') no-repeat scroll right bottom transparent;"> 
 	<div class="h480"> 
 		<div class="titleAndCopy "> 
@@ -3220,104 +3289,6 @@ Shop for GoPhone prepaid phones >
 		</div> 
 	</div> 
 </div> 
-<div class="clear"></div> 
-</div> 
-    <div class="legal text parbase"> 
-<div class="clear"></div></div> 
-<div class="clear"></div></div> 
-<div class="oneup parbase section"> 
-<div class="one-up parbase fullwidthoneup"> 
-<div class="fullWidthTile contentRightDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Holiday-Deals/htctitan2-freeship-948x546-left.jpg') no-repeat scroll left center transparent;"> 
-	<div class="h480"> 
-		<div class="titleAndCopy "> 
-			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
-	<div class="eyebrow"> 
-	   HTC TITAN™ II 
-	</div> 
-<div class="clear"></div></div> 
-<div class="text parbase titleplustext section"> 
-    <h4 >Maximize your productivity </h4>  
-    <p><p>Immerse yourself in a vivid viewing experience when surfing the Web, browsing photos and video, or reading email on the 4.7-inch Super LCD touchscreen display. See the detail in the images you capture with the 16MP rear-facing camera. And with its ultra-slim, contoured profile, the feature-packed HTC TITAN II fits comfortably in your hand or&amp;nbsp;pocket.<br> 
-</p> 
-</p> 
-<div class="clear"></div>                  
-</div> 
-<div class="pricewithcta section"> 
-<div class="price-and-button"> 
-        	<div class="left-text"> 
-				<div class="PriceNote price"> 
-<p class="priceNote"></p> 
-<p class="price orange">99¢*</p> 
-<p class="detail"></p> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-            <div> 
-            	 <div class="CTA cta"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab5/oneup_3/one-up/TallPromo1/pricewithcta/CTA;2012349"> 
-<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu40.gif" alt="View Details"/> 
-</a> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-</div> 
-<div class="clear"></div></div> 
-</div> 
-			<div class="fullwidthlegal"><div class="legal text parbase"> 
-<div class="clear"></div></div> 
-</div> 
-		</div> 
-	</div> 
-</div> 
-<div class="clear"></div> 
-</div> 
-    <div class="legal text parbase"> 
-<div class="clear"></div></div> 
-<div class="clear"></div></div> 
-<div class="parbase textimage section"><div class="image"><img title="divider-horiz-948x6" alt="divider-horiz-948x6" class="cq-dd-image" src="giftguide/_jcr_content/LoBT/teasertab5/textimage_1/image.img.gif/1352747625394.gif"><br></div><div class="clear"></div></div> 
-<div class="oneup parbase section"> 
-<div class="one-up parbase fullwidthoneup"> 
-<div class="fullWidthTile contentLeftDefault" style="background: url('../../shopcms/media/att/2012/shop/wireless/promotions/Holiday-Gift-Center-2012/Holiday-Deals/img_galexhilirate_948x535-new.jpg') no-repeat scroll right bottom transparent;"> 
-	<div class="h480"> 
-		<div class="titleAndCopy "> 
-			<div class="TallPromo1 parsys"><div class="text parbase eyebrow section"> 
-	<div class="eyebrow"> 
-	   SAMSUNG GALAXY EXHILARATE™<br> 
-	</div> 
-<div class="clear"></div></div> 
-<div class="text parbase titleplustext section"> 
-    <h4 >Your new partner</h4>  
-    <p><p>The Samsung Galaxy Exhilarate™ combines AT&amp;T 4G LTE speeds, a crisp  Super AMOLED™ 4” display, the latest Android™ OS, fast 1.2GHz  processing, and affordability. Packed with performance power and  offering the smooth Galaxy user experience, it’s the perfect choice if  you’re looking to upgrade to 4G LTE without breaking the bank.<br> 
-</p> 
-</p> 
-<div class="clear"></div>                  
-</div> 
-<div class="pricewithcta section"> 
-<div class="price-and-button"> 
-        	<div class="left-text"> 
-				<div class="PriceNote price"> 
-<p class="priceNote"></p> 
-<p class="price orange">99¢*</p> 
-<p class="detail"></p> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-            <div> 
-            	 <div class="CTA cta"> 
-		<a class="cta" href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html" target="_self" data-cqpath="/content/att/shop/en/wireless/giftguide/jcr:content/LoBT/teasertab5/oneup_0/one-up/TallPromo1/pricewithcta/CTA;2012313"> 
-<img src="../../shopcms/media/att/2012/global/btn/btn-en-viewdetails-blu40.gif" alt=""/> 
-</a> 
-<div class="clear"></div> 
-</div> 
-            </div> 
-</div> 
-<div class="clear"></div></div> 
-</div> 
-			<div class="fullwidthlegal"><div class="legal text parbase"> 
-<div class="clear"></div></div> 
-</div> 
-		</div> 
-	</div> 
 </div> 
 <div class="clear"></div> 
 </div> 
@@ -3871,7 +3842,7 @@ to win a daily gift from AT&amp;T!</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 120288962367549620504072820946511815154 --> 
+		 <!--X-Renderer: 181897963915809645832817906444564719391 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -4078,7 +4049,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","2VtsQRHGnW8JJTyJP2pLhQvM!-1197421318!1355892518067"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","Mp0LQV9HrrTvn086mb7TDfWQ!-208126995!1356152135143"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

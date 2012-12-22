@@ -351,9 +351,9 @@ function setDefaultSearch() {
 
 function setDefaultSearchNews(iQuestionLength) {
     if(document.getElementById) {
-        var iItem = 16;
+        var iItem = 15;
         var sSection = "search";
-        var sSearchBoundriesValue = "www.honda.com";
+        var sSearchBoundriesValue = "newsandviews";
         var oTD1 = document.getElementById(sSection + "td1_" + iItem);
         var oTD2 = document.getElementById(sSection + "td2_" + iItem);
         var oImage = document.getElementById(sSection + "image_" + iItem);

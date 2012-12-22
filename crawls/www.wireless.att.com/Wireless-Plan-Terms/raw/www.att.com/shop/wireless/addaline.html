@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/login/login.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  
 <script type="text/javascript"> 
@@ -572,7 +675,7 @@
 	</div> 
 	<div class="w274 row-seamless">  
 		<p>Enter your login information to manage your AT&T products and services.</p> 
-		<form id="tguardLoginForm" class="styled_forms" method="post" action="https://cprodmasx.att.com/commonLogin/igate_wam/multiLogin.do?source=HROCK" data-expirecookieslist="__utma|__utmb|__utmc|__utmz|__unam|bn_ec|DLOM-tGuard|GNSESS|TLTHID|TLTUID|SessionPersistence|meteor_referrer_cache|uverse_webtrend|AgentLaunchIndex|bn_u|stickySite|DL3K|PD-ID "> 
+		<form id="tguardLoginForm" class="styled_forms" method="post" action="https://cprodmasx.att.com/commonLogin/igate_wam/multiLogin.do?source=HROCK" data-expirecookieslist="__utma|__utmb|__utmc|__utmz|__unam|bn_ec|DLOM-tGuard|GNSESS|TLTHID|TLTUID|SessionPersistence|meteor_referrer_cache|uverse_webtrend|AgentLaunchIndex|bn_u|stickySite|DL3K|PD-ID"> 
 			<div class="formErrorMessage"></div> 
 			<div class="userid rel"> 
 				<input id="userid" type="text" class="text" name="userid" size="35" maxlength="50" title="Enter User ID" /> 
@@ -769,7 +872,7 @@ jQuery(document).ready(function(){
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="../../../1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="../../media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 122776526919335096400756408465035239578 --> 
+		 <!--X-Renderer: 19509077611054676789754914722821691995 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -945,7 +1048,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","lQ8qQR1TPT32w4QrdhW9TLBb!-1645686631!1355923278763"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","htJnQVzHHyGg9G5G2QQHgzYT!1448530225!1356182439587"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

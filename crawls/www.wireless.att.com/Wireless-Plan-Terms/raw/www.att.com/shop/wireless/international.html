@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = ''; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -521,12 +624,33 @@
 	        <h1>Wireless International Services</h1> 
 	    </div> 
 		<div id="marquee" class="w650"> 
-		    <div class="marquee tile base"><script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script><div id="marqueeHolder" style="width:650px;height:280px;position:relative;"></div> 
+		    <div class="marquee tile base"><div id="marqueeHolder"></div> 
+<script src="../../media/en_US/scripts/JSAM/JSAM_min.js" type="text/javascript"></script> 
 <script type="text/javascript"> 
-	JSAM.createMarquee('/shop/marquees/landing_pages/international-experience.xml',{height:'280', width:'650'}); 
-	var parentNode = document.getElementById("marqueeHolder").parentNode; 
-	parentNode.style.height = "280px"; 
-</script></div> 
+   JSAM_JSON =  
+{ 
+	"RootName": "AdManager", 
+	"contentID": "/content/att/shop/en/marquees/landing_pages/international-experience", 
+	"panel": [{ 
+		"alt": "Putting the world in your pocket", 
+		"background": "/shopcms/media/att/2012/global/JSAM-assets/background/650x280/marq_b2c-112405.png", 
+		"contentID": "/content/att/shop/en/panels/landers/international-experience", 
+		"name": "international-experience", 
+		"asset": [{ 
+			"antiAlias": "1", 
+			"cssClass": "size13,customcolor_333333,arial", 
+			"name": "copy", 
+			"type": "Text", 
+			"x": "14", 
+			"y": "138", 
+			"label": [{ "Text": "Get great rates and the convenience of using \r\nyour AT&T wireless phone, whether calling\r\ninternationally from the U.S. or abroad." }] 
+		}] 
+	}] 
+}; 
+   JSAM.create({json:JSAM_JSON, width:"650", height:"280"}); 
+   parentNode.style.height = "280px"; 
+</script> 
+</div> 
 		</div> 
 		<div class="w295" style="float:right;"> 
 		    <div class="marqueeTile border-bottom-dotted top"> 
@@ -1153,7 +1277,7 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 250422362810079826899885105605683928292 --> 
+		 <!--X-Renderer: 294357157520686540069644593770052475142 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1179,7 +1303,9 @@ Traveling to Japan or South Korea?</a><a href="http://www.wireless.att.com/learn
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
 <meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_asnum" content="14618" /> 
+<meta name="DCSext.wt_aka_network" content="verizon" /> 
+<meta name="DCSext.wt_aka_asnum" content="19262" /> 
+<meta name="DCSext.wt_aka_network_type" content="fios" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1384,7 +1510,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","1fVWQRGcJw412TvqR8yG5rbb!-52483299!1355892380046"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","ZCG3QV9d47BG2GQzfRZKGYrq!864499224!1356152285336"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

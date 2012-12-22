@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/wireless.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -1442,7 +1545,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 23699451509762528414004711561052837019 --> 
+		 <!--X-Renderer: 307946713323806284908173262446837922649 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1451,25 +1554,25 @@ Messaging &amp; Data Charges</a>|
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="274" /> 
+	<meta name="DCSext.wt_aka_georegion" content="285" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="NY" /> 
-<meta name="DCSext.wt_aka_city" content="BROOKLYN" /> 
-<meta name="DCSext.wt_aka_dma" content="501" /> 
-<meta name="DCSext.wt_aka_pmsa" content="5600" /> 
-<meta name="DCSext.wt_aka_msa" content="5602" /> 
-<meta name="DCSext.wt_aka_areacode" content="718" /> 
-<meta name="DCSext.wt_aka_county" content="KINGS" /> 
-<meta name="DCSext.wt_aka_fips" content="36047" /> 
-<meta name="DCSext.wt_aka_lat" content="40.6949" /> 
-<meta name="DCSext.wt_aka_long" content="-73.9884" /> 
-<meta name="DCSext.wt_aka_timezone" content="EST" /> 
-<meta name="DCSext.wt_aka_zip" content="11201-11226+11228-11245+11247-11249+11251-11252+11254-11256" /> 
+<meta name="DCSext.wt_aka_region_code" content="TX" /> 
+<meta name="DCSext.wt_aka_city" content="DALLAS" /> 
+<meta name="DCSext.wt_aka_dma" content="623" /> 
+<meta name="DCSext.wt_aka_pmsa" content="1920" /> 
+<meta name="DCSext.wt_aka_msa" content="1922" /> 
+<meta name="DCSext.wt_aka_areacode" content="214+972" /> 
+<meta name="DCSext.wt_aka_county" content="DALLAS" /> 
+<meta name="DCSext.wt_aka_fips" content="48113" /> 
+<meta name="DCSext.wt_aka_lat" content="32.8367" /> 
+<meta name="DCSext.wt_aka_long" content="-96.796" /> 
+<meta name="DCSext.wt_aka_timezone" content="CST" /> 
+<meta name="DCSext.wt_aka_zip" content="75201-75212+75214-75238+75240-75254+75258+75260-75267+75270+75275+75277+75283-75287+75301+75303+75310+75312-75313+75315+75320+75323+75326+75336+75339+75342+75353-75357+75359-75360+75363-75364+75367-75368+75370-75374+75376+75378-75382+75386-75398" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
 <meta name="DCSext.wt_aka_bw" content="5000" /> 
-<meta name="DCSext.wt_aka_network" content="cablevision" /> 
-<meta name="DCSext.wt_aka_asnum" content="6128" /> 
+<meta name="DCSext.wt_aka_network" content="att" /> 
+<meta name="DCSext.wt_aka_asnum" content="797" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1674,7 +1777,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","mHVTQRGd5jxsg5rNyLGP1c85!1158414502!1355892381291"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","n65sQV8d6CnsTc4vYLm3PpVV!379564533!1356152061685"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

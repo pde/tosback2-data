@@ -193,7 +193,7 @@ mboxCreate('bc_globalMbox','mboxPageValue=1','pageType=Generic Page','path='+loc
   <div id="now-playing-header">
     <div class="scrollMeAway">
       <script>var radioType = 'none'</script>
-      <!--passthru--><span class="np-song-title">Orange Crush</span> | <span class="np-song-artist">R.E.M.</span>
+      <!--passthru--><span class="np-song-title">Not Your Fault</span> | <span class="np-song-artist">Awolnation</span>
 
       <a class="listen-live imageLink"
 	 href="http://www.boston.com/ae/radio/player/"
@@ -531,11 +531,13 @@ OAS_AD('SPONSOR6');
        stylesheet.href = "http://www.boston.com/css/ugc-comments.css?v=1"
        stylesheet.rel = "stylesheet";
        document.body.appendChild(stylesheet);
-       var script   = document.createElement("script");
-       script.type  = "text/javascript";
-       script.src   = "http://www.boston.com/js/ugc-comments.js?v=6";
-       document.body.appendChild(script);
-    }
+	$.getScript('http://www.boston.com/js/lib/tiny_mce/tiny_mce.js', function(data, textStatus, jqxhr) {
+           var script   = document.createElement("script");
+           script.type  = "text/javascript";
+           script.src   = "http://www.boston.com/js/ugc-comments.js?v=6";
+           document.body.appendChild(script);
+        });   
+}
   else if(pluckEntries.length>0){
     var script = document.createElement('script');
     script.type = "text/javascript";

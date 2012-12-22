@@ -250,6 +250,7 @@ mistats.AdTracker = function ()
 {
    var cEvent = 'event18';
 
+   var adZone;
    var allAds;
    var pl;
 
@@ -313,9 +314,17 @@ mistats.AdTracker = function ()
          pos = pos[0].replace(/pos=/, '');
          ad = ((pObj != top) ? 'I' : '') + size + ((pos > 1) ? ('P' + pos) : '');
 
-         def = scripts[i].nextSibling || null;
-         while (def && def.nodeName.match(/^#/))
-            def = def.nextSibling || null;
+         if (!adZone)
+         {
+            adZone = src.match(/\/mi\.\w{3}[^;]+/);
+            if (adZone)
+               adZone = adZone[0].replace(/\/[^\/]+/, '');
+         }
+
+         do
+            def = (def || scripts[i]).nextSibling || null;
+         while (def && def.nodeName.match(/^#/));
+
          if (def
           && def.nodeName === 'A'
           && (def.href || '').match(/^https*:\/\/ad\.doubleclick\.net\/click\;/i)
@@ -417,13 +426,16 @@ mistats.AdTracker = function ()
    function track(pProd)
    {
       fillAdArray();
-      s.prop38 = '';
+//      s.prop38 = '';
+      s.eVar15 = '';
 
       if (!allAds.length)
          return;
          
-      s.prop38 = pl + '|' + allAds.join(',') + ',';
-      if (pProd)
+//      s.prop38 = pl + '|' + allAds.join(',') + ',';
+      s.eVar15 = adZone || 'Unknown';
+
+ //     if (pProd)
          updateProducts();
    };
 

@@ -1,0 +1,3235 @@
+﻿﻿/**
+author: frashid
+//For new break redesign, used to update pageViews on dynamic page refreshes, timestream next / prev, gallery next, playlist next
+//Will be placed in the same locations as trackPageView for gaq
+**/
+function UpdateInterstitialPageViews() {
+    if (typeof __BRK != 'undefined' && typeof __BRK.updateViewCounts != 'undefined') {
+        __BRK.updateViewCounts();
+    }
+}
+
+var apexTagKeyVals = '';
+function GetApexTagKeyVals() {
+    if (apexTagKeyVals.length > 0) {
+        return apexTagKeyVals;
+    }
+    if (typeof __BRK != 'undefined' && typeof __BRK.getKeyVal != 'undefined') {
+        apexTagKeyVals = __BRK.getKeyVal();
+        //Adon cookie.
+        var adOn = $.cookie("adOn");
+        if (adOn != null && adOn == 0) {
+            apexTagKeyVals += "mar=adOff;";
+        }
+
+    }
+
+    return apexTagKeyVals;
+}
+
+/***************************** AJAX BASE *****************************************/
+
+    // Cookie helper function to create/modify/delete cookie
+    var Cookie = {
+
+        get: function (key) {
+            var cKey = key + '=', ca = document.cookie.split(';');
+
+            for (var i = 0, l = ca.length; i < l; i++) {
+                var c = ca[i];
+
+                while (c.charAt(0) === ' ') {
+                    c = c.substring(1, c.length);
+                }
+
+                if (c.indexOf(cKey) === 0) {
+                    return c.substring(cKey.length, c.length);
+                }
+            }
+
+            return undefined;
+        },
+
+        set: function (key, val, days) {
+            var expires = '';
+
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = '; expires=' + date.toGMTString();
+            }
+
+            document.cookie = key + "=" + val + expires + "; path=/;domain=.break.com";
+        },
+
+        remove: function (key) {
+            this.set(key, '', -1);
+        }
+    };
+
+// The Ajax object is the basis of cross-browser AJAX support.(csanz)
+function Ajax() {
+	this.xmlHttp = null;
+	this.initialize();
+}
+
+/* pseudo public methods */
+Ajax.prototype.cancel = function() {
+	this.xmlHttp.abort();
+};
+
+Ajax.prototype.isInitialized = function(){
+	return this.xmlHttp != null;
+};
+
+Ajax.prototype.send = function(method, url, headerName, headerValue, username, password, content, callback) {
+	this.buildRequest(method, url, headerName, headerValue, username, password, callback);
+	try {
+		this.xmlHttp.send(content);
+	}
+	catch(e) {
+    
+	}
+};
+
+/* pseudo private methods */
+Ajax.prototype.buildRequest = function(method, url, headerName, headerValue, username, password, callback) {
+	if(this.isInitialized()) {
+		//this.xmlHttp.onreadystatechange = callback;
+		
+		try {
+			this.xmlHttp.open(method, url, true, username, password);
+			this.xmlHttp.onreadystatechange = callback;
+		}
+		catch(e) {
+
+		}
+	    	this.xmlHttp.setRequestHeader(headerName, headerValue);
+	}
+};
+
+Ajax.prototype.initialize = function(){
+	
+	if (this.xmlHttp != null && this.xmlHttp.readyState != 0 && this.xmlHttp.readyState != 4)
+		this.xmlHttp.abort();
+    
+	if(window.ActiveXObject)
+		this.xmlHttp = new ActiveXObject("Msxml2.XMLHTTP");
+	else if(window.XMLHttpRequest) 	
+		this.xmlHttp = new XMLHttpRequest();
+};
+
+/*****************************************************************************************************/
+
+function BreakJSON(){
+   this.noCacheIE = '&noCacheIE=' + (new Date()).getTime();
+   this.head = document.getElementsByTagName("head").item(0);
+   this.scriptId = 'JscriptId' + BreakJSON.counter++;
+}
+
+BreakJSON.counter = 1;
+
+BreakJSON.prototype.sendBegin = function(url, callback){      
+   url += (url.indexOf("?") == -1) ? "?callback=" : "&callback=";
+   url += callback;
+   url += this.noCacheIE;
+   this.script = document.createElement("script");
+   this.script.setAttribute("type", "text/javascript");
+   this.script.setAttribute("charset", "utf-8");
+   this.script.setAttribute("src", url);
+   this.script.setAttribute("id", this.scriptId);
+   this.head.appendChild(this.script);
+};
+
+BreakJSON.prototype.sendEnd = function(){
+   //this.head.removeChild(this.script);
+};
+
+var apiReload = false;
+var isRegVerify = false;
+
+function SwapImage(objImg, src)
+{
+  objImg.src=src;
+}
+
+
+/**
+ * @author gsandrigo
+ * This code was copied from http://www.quirksmode.org/js/detect.html
+ * 
+ * In the client page or script call
+ * BrowserDetect.init();
+ * to initialize the value
+ */
+
+var BrowserDetect = {
+	init: function () {
+		this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
+		this.version = this.searchVersion(navigator.userAgent)
+			|| this.searchVersion(navigator.appVersion)
+			|| "an unknown version";
+		this.OS = this.searchString(this.dataOS) || "an unknown OS";
+	},
+	searchString: function (data) {
+		for (var i=0;i<data.length;i++)	{
+			var dataString = data[i].string;
+			var dataProp = data[i].prop;
+			this.versionSearchString = data[i].versionSearch || data[i].identity;
+			if (dataString) {
+				if (dataString.indexOf(data[i].subString) != -1)
+					return data[i].identity;
+			}
+			else if (dataProp)
+				return data[i].identity;
+		}
+	},
+	searchVersion: function (dataString) {
+		var index = dataString.indexOf(this.versionSearchString);
+		if (index == -1) return;
+		return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+	},
+	dataBrowser: [
+		{ 	string: navigator.userAgent,
+			subString: "OmniWeb",
+			versionSearch: "OmniWeb/",
+			identity: "OmniWeb"
+		},
+		{
+			string: navigator.vendor,
+			subString: "Apple",
+			identity: "Safari"
+		},
+		{
+			prop: window.opera,
+			identity: "Opera"
+		},
+		{
+			string: navigator.vendor,
+			subString: "iCab",
+			identity: "iCab"
+		},
+		{
+			string: navigator.vendor,
+			subString: "KDE",
+			identity: "Konqueror"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "Firefox",
+			identity: "Firefox"
+		},
+		{
+			string: navigator.vendor,
+			subString: "Camino",
+			identity: "Camino"
+		},
+		{		// for newer Netscapes (6+)
+			string: navigator.userAgent,
+			subString: "Netscape",
+			identity: "Netscape"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "MSIE",
+			identity: "Explorer",
+			versionSearch: "MSIE"
+		},
+		{
+			string: navigator.userAgent,
+			subString: "Gecko",
+			identity: "Mozilla",
+			versionSearch: "rv"
+		},
+		{ 		// for older Netscapes (4-)
+			string: navigator.userAgent,
+			subString: "Mozilla",
+			identity: "Netscape",
+			versionSearch: "Mozilla"
+		}
+	],
+	dataOS : [
+		{
+			string: navigator.platform,
+			subString: "Win",
+			identity: "Windows"
+		},
+		{
+			string: navigator.platform,
+			subString: "Mac",
+			identity: "Mac"
+		},
+		{
+			string: navigator.platform,
+			subString: "Linux",
+			identity: "Linux"
+		}
+	]
+
+};
+
+//Gets the query variable
+//Borrowed from http://www.idealog.us/2006/06/javascript_to_p.html
+function getQueryVariable(variable) {
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	for (var i=0;i<vars.length;i++) {
+		var pair = vars[i].split("=");
+		if (pair[0] == variable) {
+			return pair[1];
+		}
+	}
+	return null;
+} 
+
+function getCookie( name ) {
+	var start = document.cookie.indexOf( name + "=" );
+	var len = start + name.length + 1;
+	if ( ( !start ) && ( name != document.cookie.substring( 0, name.length ) ) ) {
+		return null;
+	}
+	if ( start == -1 ) return null;
+	var end = document.cookie.indexOf( ";", len );
+	if ( end == -1 ) end = document.cookie.length;
+	return unescape( document.cookie.substring( len, end ) );
+}
+
+////////////////////////////////////
+// Is Logged In
+////////////////////////////////////
+function IsLoggedIn()
+{       
+  var memberCookie = getCookie("MemberActive");
+  var memberRememberCookie = getCookie("MemberAuthentication");   
+  var memberIdCookie = getCookie("MemberID");
+  return (((memberCookie || memberRememberCookie) != null)&&(memberIdCookie != null))? true:false;               
+}
+
+// Custom Tab (ad-served) - version 2 used with the 8/2010 Header Redesign
+function writeCustomTab2(isPresent)
+{				
+	if(isPresent == '1')
+	{
+		var adzone = "custom_tab2";
+		if (typeof ord=='undefined') {ord=Math.random()*10000000000000000;}
+		if (getQueryVariable('swapAdZone')){
+			adzone = getQueryVariable('swapAdZone');
+		}
+		document.write('<script language="JavaScript" src="http://ad.doubleclick.net/pfadj/brk.brk/' + adzone + ';sz=195x44;ord=' + ord + '?" type="text/javascript"></scr' + 'ipt>');
+	}
+}
+
+// Logic needed by CDP 2.0
+var sendingURL = document.referrer;
+var googleRefTest = sendingURL.match(/google.com/i);
+var diggRefTest = sendingURL.match(/digg.com/i);
+var facebookTest = sendingURL.match (/facebook.com/i);
+var whichReferrer;
+
+if (googleRefTest) {
+	whichReferrer = 'google';
+}
+else if (diggRefTest) {
+	whichReferrer = 'digg';
+}
+else if (facebookTest) {
+	whichReferrer = 'facebook';
+}
+else {
+	whichReferrer = 'none';
+}
+
+
+//seting up the member variables...
+//BEGIN Global vars for new player
+var npCookie ={
+	sliver : "brkNewPlayerSliver",
+	sliverOptions : { path:'/', expires:1 }
+};
+//END Global vars for new player
+
+var versionFlash = 8;
+var versionWMV = 9;
+var agt = navigator.userAgent.toLowerCase();
+var ie  = (agt.indexOf("msie") != -1);
+var ns  = (navigator.appName.indexOf("Netscape") != -1);
+var win = ((agt.indexOf("win")!=-1) || (agt.indexOf("32bit")!=-1));
+var mac = (agt.indexOf("mac")!=-1);
+var opera = (agt.indexOf("Opera")!= -1);
+
+//the list that will contain a comma seperated 
+var pluginlist ="";
+
+//checkin to see what browser we are working with and building a list of string.  
+if (ie)
+{	
+    //alert("ie");    
+    if(detectIEFlash("ShockwaveFlash.ShockwaveFlash") )
+    {
+        pluginlist += "Flash";
+    }
+    
+    /*
+    if(detectIEWMV("WMPlayer.OCX"))
+    {
+        pluginlist += "WindowsMediaPlayer";
+    }
+    */
+    
+    //alert(pluginlist);
+}
+else if (ns) 
+{   
+   //alert("ns");
+   if(detectNSFlash("Shockwave Flash"))
+	{
+	    pluginlist += "Flash";
+	}
+	
+	/*
+	if(detectNSWMV("Windows Media Player Plug-in Dynamic Link Library"))
+	{
+	    pluginlist += "WindowsMediaPlayer";
+	}
+	*/
+	
+	//alert(pluginlist);
+}
+else
+{
+    //alert("other");
+    nse = ""; 
+	for (var i=0;i<navigator.mimeTypes.length;i++) 
+	{
+	    nse += navigator.mimeTypes[i].type.toLowerCase();
+	}   
+	pluginlist = otherDetect("application/x-shockwave-flash","Flash"); /*+ otherDetect("application/x-mplayer2","WindowsMediaPlayer");*/
+	
+	pluginlist = pluginlist.substring(0,pluginlist.length-1);
+	
+	//alert(pluginlist); 
+}
+
+//helper function for I.E that detects false player.. returns true or false. checking for versions
+function detectIEFlash(ClassID) 
+{ 
+    result = false; 
+    var fullVersion;
+   
+    try 
+    {
+		// version will be set for 9.X or greater players
+		var axo = new ActiveXObject(ClassID);
+		fullVersion = axo.GetVariable("$version");
+	} 
+	catch (e) {}
+    if(fullVersion)
+    {
+        version = fullVersion.substring(3,fullVersion.length-7);
+        
+        var tempArray = fullVersion.split(' ');
+        
+        if(tempArray.length>1)
+        	version = tempArray[1];
+        	
+        tempArray = version.split(',');
+        if(tempArray.length>0)
+        	version = tempArray[0];
+        	
+        if(!isNaN(version))
+        {
+            if(version >= versionFlash)
+            {   //alert(version +" " + versionFlash);
+                result = true;
+            }
+        }
+    }
+	return result;   
+}
+
+//helper function for I.E that detects WMV player.. returns true or false. checks the version.
+function detectIEWMV(ClassID) 
+{ 
+    v_mediaplayer = 0;
+    result = false; 
+    
+    document.write('<SCR' + 'IPT LANGUAGE=VBScript\> \n'); //FS hide this from IE4.5 Mac by splitting the tag
+	document.write('on error resume next \n');
+	document.write('set myObject = CreateObject("' + ClassID + '")\n');
+	document.write('result = ( IsObject(myObject))\n');
+	document.write('v_mediaplayer = myObject.versionInfo\n');
+	document.write('</SCR' + 'IPT\> \n');
+	//alert(v_mediaplayer);
+	if(v_mediaplayer >= 9)
+	    result = true;
+    
+    return false;
+}
+
+//helper function for detection other for moz returns true or false depending on flash/version.
+function detectNSFlash(ClassID) 
+{ 
+    result = false;
+    var flashVersion = 0;
+    var thePlugin = navigator.plugins[ClassID]; 
+    if(thePlugin)
+    {
+        if(thePlugin.description)
+        {
+            flashVersion = parseInt( thePlugin.description.replace( /^[^\d]*/,'')); 
+            //alert(flashVersion);
+        }
+    }
+    if(flashVersion >= versionFlash)
+    {
+        result = true;
+    }
+    return result;
+ }
+
+//helper function for detection for wmp in mozilla no version check??
+function detectNSWMV(ClassID)
+{
+    result = false;
+    var wmpPlugin = navigator.plugins[ClassID]; 
+    if(wmpPlugin)
+    {
+         if(wmpPlugin.description)
+         {
+            result = true;
+         }
+     }
+     return false;
+}
+
+
+//used for other broswers no version check here just sees if the plugin is avalible.
+function otherDetect(ClassID,name)
+{
+    n = ""; 
+    if (nse.indexOf(ClassID) != -1)
+    {
+        if (navigator.mimeTypes[ClassID].enabledPlugin != null) 
+        {
+            n = name+","; 
+        }
+        return n;
+    }
+}
+
+
+//function checks which plug in is installed and acts accordingly.
+function cookieDetect()
+{
+	if(navigator.userAgent.toLowerCase().indexOf("iphone") != -1)
+	{
+	/*
+			  var obj = document.getElementById('playerwrap');
+
+			  obj.innerHTML = '<div> <br> <a HREF=\"'+sGlobalFileName+'.mp4\"><img SRC=\"http://media1.break.com/dnet/media/2010/6/16/italian-player-goes-down.jpg\" width="608" height="460"><br/><br/></div>';
+	*/
+
+var markup = '<div id="brk-iphone-pic"><img SRC="'+sGlobalThumbnailURL+'" width="608" style="width:608px;height:'+sGlobalPlayerHeight+'px;">';                                                                                                                                                                
+markup += '<a class="iphone-overlay" HREF="' +sGlobalFileName+ '.mp4?' +sGlobalToken+ '" style="width:608px;height:'+sGlobalPlayerHeight+'px;">';                                                                                                                                                                markup += '&nbsp;</a></div>';
+var obj = document.getElementById('playerwrap');
+obj.innerHTML = markup;
+	}
+	else
+	{
+	    if(pluginlist)//making sure the pluginlist var is valid
+	    {
+	        if((pluginlist.indexOf("Flash")!=-1))
+			{
+				if (typeof flashOutPut === 'function')
+				{
+					flashOutPut();
+				}
+		        hideVideoSettingDiv();   
+			}
+	        else
+	        {
+	            nothingActivate();
+	        }
+	    }
+	    else
+	    {
+			if (typeof flashOutput === 'function')
+			{
+				flashOutPut();
+			}
+	    }
+	}
+}
+
+function nothingActivate()
+{
+    obj = document.getElementById('video-player-content');
+  obj.innerHTML = '<div style="float;left;width:464px;"><a href="http://www.adobe.com/products/flashplayer/" target="_blank" style="text-decoration:none;"><img src="http://media1.break.com/static/live/v1/img/getflash/flash_icon_lrg.gif" border="0"/><br/>Get Flash</a><br/><br/><br/><br/></div>';
+  hideVideoSettingDiv();
+}
+
+function hideVideoSettingDiv()
+{
+	var vsettingsDiv = document.getElementById('videoSettingDiv');
+	if(vsettingsDiv != null)
+	{
+		vsettingsDiv.style.display="none";
+	}
+}
+
+function loadScript(url, callback){
+
+	var script = document.createElement("script"), cb = (callback != 'undefined' && typeof callback === 'function');
+	script.type = "text/javascript";
+	
+	if (script.readyState){  //IE
+		script.onreadystatechange = function(){
+			if (script.readyState == "loaded" || script.readyState == "complete"){
+				script.onreadystatechange = null;
+				if (cb) {
+					callback();
+				}
+			}
+		};
+	} else {  //Others
+		script.onload = function(){
+			if (cb) {
+				callback();
+			}
+		};
+	}
+
+	script.src = url;
+	document.body.appendChild(script);
+}
+
+//cdp2.0 functionality
+function searchOnFocus(e) {
+	if(e.value == e.defaultValue) {
+		e.value = '';
+	}
+	else {
+		e.select();
+	}
+}
+
+function searchOnBlur(e) {
+	if(e.value == '') {
+		e.value = e.defaultValue;
+	}
+}
+
+// Hadoop tracking test
+window.TrackerTest = { // for Hadoop tracking
+	getQueryString: function(userID) {
+		var t = TrackerTest.params,
+			str = '?pe=' + t.pe + '&pi=' + t.pi + '&u=' + userID + '&r=' + encodeURIComponent(document.referrer);
+		
+		return str;
+	},
+	
+	params: undefined // defined in HTML to pull in page-specific values
+};
+
+function callApexTrackerTest(response) {
+	if(typeof TrackerTest.params !== 'object') {
+		return;
+	}
+	
+	var userID = (response) ? response.Id : 0;
+	_brkPVO = TrackerTest.getQueryString(userID);
+		 
+	jQuery(function(){
+		var brkpv = document.createElement('script');
+		brkpv.type = 'text/javascript';brkpv.async = true;brkpv.src = 'http://media1.break.com/break/js/lamp/pageview.min.js?ver=3.1.2';
+		document.body.appendChild(brkpv);
+	});
+}
+
+
+       function brknetMenuLoggedInTriangleDown() {
+            return '<div style="border:1px solid black;display:;"> \
+            <ul> \
+            <li style="display:block;">My Stuff</li> \
+            <li style="display:block;">Settings</li> \
+            <li style="display:block;">Upload Video</li> \
+            <li style="display:block;"><a href="" id="signout">Sign Out</a></li> \
+            </ul> \
+            </div>';
+        }
+		
+		// ---------
+		// Auth code
+		// ---------
+
+        function checkLogin($) {
+            $('.checkLogin').unbind('click');
+            $('.checkLogin').bind('click', function () {
+                var sessionInfo = BRK.api.session, userLoggedIn = false, postAuthValue = $(this).attr('href');
+
+                if (postAuthValue) { // define for postAuth() (navigation )
+                    postAuthURI = postAuthValue;
+                }
+				//FSR: Keep login check specific to local cookies being set, all actions require local cookies to be set.
+                /*if (sessionInfo != 'undefined') { // login from Himalaya has returned, use that
+                    if (sessionInfo != null) {
+                        userLoggedIn = true;
+                    }
+                }*/
+                //else { // call hasn't come back yet
+                    if (isLoggedInLocal()) {
+                        userLoggedIn = true;
+                    }
+                //}
+                if (!userLoggedIn) {
+                    // @@ToDo: AG: handle the case where the Himalaya call has hung and modal method's not available yet.
+                    if (sessionInfo != "undefined") {
+                        BRK.hat.showLoginModal();
+                        return false;
+                    }
+                }
+            });
+        }
+
+        function signIn(id, himSess) {
+			jQuery.post('/user/newsession', { id: id }, function (data) {
+                postAuth(himSess);
+            });
+        }
+
+        function postAuth(user) {
+            if (isRegVerify) {
+                BRK.hat.showConfirmedModal();
+            }
+            else if (typeof postAuthURI != 'undefined') { // defined in event registration from UI elem generating the login sequence
+                window.location = postAuthURI;
+            }
+            else if (apiReload) {
+                BRK.api.reload();
+            }
+            apiReload = false;
+            isRegVerify = false;
+
+            if (jQuery.isFunction(window.BUI.controls.user.renderAccountUI)) {
+                BUI.controls.user.renderAccountUI(user);
+            }
+        }
+
+        // This method is duplicated from common2.0.js
+        function isLoggedInLocal() {
+            var memActive = getCookie('MemberActive'),
+        memAuth = getCookie('MemberAuthentication'),
+        memId = getCookie('MemberID');
+
+            return memActive != null && memAuth != null && memId != null;
+        }
+
+        function brknetPostSession(response) {
+            //regCallToAction(response.User != null);
+        }
+
+        function brknetClearSession(himSess) {
+            if (isLoggedInLocal()) {
+                jQuery.post('/user/endsession', function () {
+                });
+            }
+        }
+
+        // Himalaya callbacks
+
+        // ** fires on successful login
+        function brknetLoginExecuted(himSess) {
+            $.cookie('brkAgeGate', null, { path: '/', domain: 'break.com' });
+            brknetPostLogin(himSess);
+            LoadAgeGate(himSess);
+        }
+
+        //** fires on facebook login
+        function brknetPostFbLogon(himSess) {
+			BRK.overlay.hide();
+
+			// ** set login cookie
+			BRK.api.setSession(himSess);
+			brknetPostLogin(himSess);
+			FBActivitySharingInit();
+			if (typeof UpdateProfilePagesAfterFBConnect != "undefined") {
+			    UpdateProfilePagesAfterFBConnect();
+			}
+			LoadAgeGate(himSess);
+			if (window.location.toString().indexOf('www.break.com/user/register') != -1 && !himSess.NewsLetterOptInOffered)
+			    {
+			      window.location = 'http://www.break.com/';
+			    }
+      }
+
+        // ** fires on page refresh, user logged in
+        function brknetIsLoggedIn(himSess) {
+            brknetPostLogin(himSess);
+            FBActivitySharingInit();
+        }
+
+		function brknetFBReady ()
+		{
+		    FBActivitySharingInit();
+		    setTimeout(function () {
+		        if (typeof FBShareSettingsStatus != "undefined") {
+		            FBShareSettingsStatus();
+		        }
+		    }, 1000);
+
+		    //Fix for FB Like expanding and showing white box before collapsing
+		    var ieFbLike = '.no-textshadow #content-main #sharebar .fb-like span iframe';
+		    FB.Event.subscribe('xfbml.render', function (response) {
+		        $(ieFbLike).css({ 'visibility': 'visible', 'overflow': 'visible' });
+		    });
+
+		    FB.Event.subscribe('edge.create', function (response) {
+		        //Do something when an user click on Like Button (to "Like" something).
+		        _gaq.push( // for Google Analytics
+			        ['_trackEvent', 'user', 'fb_like', window.location.toString()]
+		        );
+		    });
+		}
+		
+        // ** fires on page refresh, user not logged in
+        function brknetNotLoggedIn() {
+            if (typeof window.BUI !== 'undefined' && typeof window.BUI.controls.user.renderLoginUI === 'function') {
+                //COMMENTED OUT since the renderLoginUI is happening within the page on new break.
+				//window.BUI.controls.user.renderLoginUI();
+            }
+        }
+
+		function brknetPostVerify(himSess) {
+			isRegVerify = true;
+			brknetPostLogin(himSess);
+		}
+
+		function brknetPostLogout() {
+			jQuery.post('/user/endsession', function () {
+				window.location = 'http://www.break.com/';
+			});
+		}
+
+		function brknetPostLogin(himSess) {
+			try {
+				if (isLoggedInLocal()) {
+					BUI.controls.user.renderAccountUI(himSess);
+					CreateForBreak(true);
+
+					return;
+				}
+
+				// check if user exists in database; if they do, sign them in and return
+				jQuery.post('/user/userfromhimalayaexists', { id: himSess.Id }, function (data) {
+					if (data) {
+						signIn(himSess.Id, himSess);
+						return;
+					}
+
+				// if user does not exist, create a user
+					var member = {
+						NickName: himSess.Username,
+						FirstName: himSess.FirstName,
+						LastName: himSess.LastName,
+						Email: himSess.Email
+						//Dob: new Date(parseInt(himSess.BornDate.replace("/Date(", "").replace(")/",""), 10))
+					};
+
+					jQuery.post('/user/createuserfromhimalaya', { id: himSess.Id,
+						user: JSON.stringify(member),
+						avatarUrl: himSess.AvatarUrl
+					}, function (crtRep) {
+						if (crtRep) {
+							signIn(himSess.Id, himSess);
+						} else {
+							jQuery.getJSON('http://auth.breakmedia.com/auth/log?callback=?&type=brknetPostLogin-createuserfromhimalaya-fail&url=' + window.location);
+						}
+
+					}, 'json');
+
+				}, 'json');
+				}
+					catch (err) {
+						jQuery.getJSON('http://auth.breakmedia.com/auth/log?callback=?&type=brknetPostLogin-EXCEPTION&url=' + window.location);
+						jQuery.getJSON('http://auth.breakmedia.com/auth/log?callback=?&type=brknetPostLogin-EXCEPTION&url=' + err.description);
+						postAuth();
+					}
+		}
+
+		/* end Himalaya callbacks */
+
+		// ---------------------
+		// end Auth code section
+		// ---------------------
+
+		var BREAK = {
+		    RandomSort: function (a, b) {
+		        return (parseInt(Math.random() * 10) % 2);
+		    },
+
+		    Share: function (shareType, contentId, memberId) {
+		        var fbQuery = "https://api.facebook.com/method/fql.query?format=json&callback=?&query=select url, like_count, total_count, share_count, click_count from link_stat where url ='" + encodeURIComponent(window.location.toString()) + "'";
+		        //fbQuery = encodeURIComponent(fbQuery);
+		        if (shareType == "fblikes") {
+		            jQuery.getJSON(fbQuery, function (data) {
+		                if (data != 'undefined' && data != null && ((parseInt(data["like_count"]) > 0) || parseInt(data[0]["like_count"]) > 0)) {
+		                    var count = (typeof (data["like_count"]) === "undefined") ? data[0]["like_count"] : data["like_count"];
+		                    var query = 'http://www.break.com/content/shares/post?contentId=' + contentId + '&memberId=' + memberId + '&shareType=1&shareValue=' + count;
+		                    jQuery.getJSON(query);
+		                }
+		            });
+		        }
+		        else if (shareType == "fbshares") {
+		            jQuery.getJSON(fbQuery, function (data) {
+		                if (data != 'undefined' && data != null && (parseInt(data["share_count"]) > 0 || parseInt(data[0]["share_count"]) > 0)) {
+		                    var count = (typeof (data["share_count"]) === "undefined") ? data[0]["share_count"] : data["share_count"];
+		                    var query = 'http://www.break.com/content/shares/post?contentId=' + contentId + '&memberId=' + memberId + '&shareType=2&shareValue=' + count;
+		                    jQuery.getJSON(query);
+		                }
+		            });
+		        }
+		        else if (shareType == "tweets") {
+		            var tweetQuery = "http://urls.api.twitter.com/1/urls/count.json?callback=?&url=" + encodeURIComponent(window.location.toString());
+		            jQuery.getJSON(tweetQuery, function (data) {
+		                if (data != 'undefined' && data != null && parseInt(data["count"]) > 0) {
+		                    var query = 'http://www.break.com/content/shares/post?contentId=' + contentId + '&memberId=' + memberId + '&shareType=3&shareValue=' + data["count"];
+		                    jQuery.getJSON(query);
+		                }
+		            });
+		        }
+		    }
+		};
+
+/** Global UI object **/
+		window.BUI = {
+		    /*
+		    "Break User Interface" top-level obj
+		    */
+		    masthead: {
+		        randomizedChannelList: [],
+		        channelDataJson: [],
+		        featuredChannel: {},
+		        Init: function (data) {
+		            var that = this, channelOrder = $.cookie('masthead_channel_order');
+
+		            that.channelDataJson = data.channelDataJson;
+		            that.featuredChannel = data.featuredChannel;
+
+		            //initialize randomized channel list based on cookie
+		            if (channelOrder)
+		                that.randomizedChannelList = channelOrder.split(',');
+		            else {
+		                //if cookie is not present, generate randomized channel list
+		                for (var i = 0; i < data.channelDataJson.length; i++) {
+		                    that.randomizedChannelList[i] = i + 1;
+		                }
+
+		                that.randomizedChannelList = that.randomizedChannelList.sort(function () { return 0.5 - Math.random() });
+		            }
+
+		            //run
+
+		            //set channel order cookie if it's not set
+		            if (!channelOrder)
+		                $.cookie('masthead_channel_order', that.randomizedChannelList.toString(), { path: '/' });
+
+		            that.RenderChannelFlyout();
+		        },
+
+		        RenderChannelFlyout: function () {
+		            var that = this, channelHtml = '', curIndex, curChannel, cssClass = ' class="first"', isFirst = true, channelLinkAltText = '';
+
+		            for (var i = 0, j = that.randomizedChannelList.length; i < j; i++) {
+		                curIndex = that.randomizedChannelList[i] - 1;
+		                curChannel = that.channelDataJson[curIndex];
+
+		                //don't show featured channel in flyout
+		                if (typeof curChannel === 'undefined')
+		                    continue;
+		                if (curChannel.title == that.featuredChannel.title || curChannel.title == 'Action Unlimited')
+		                    continue;
+
+		                if (curChannel.channelLinkAltText)
+		                    channelLinkAltText = curChannel.channelLinkAltText;
+
+		                channelHtml += '<li' + (isFirst ? cssClass : '') + '>\
+				                    <a href="' + curChannel.channelUri + '" title="' + channelLinkAltText + '" data-ga="' + curChannel.gaTrackingKey + '"> \
+					                    <img src="' + curChannel.thumbnailUrl + '" alt="' + curChannel.title + '"> \
+					                    ' + curChannel.title + ' \
+                                    </a> \
+                                </li>';
+
+		                isFirst = !isFirst;
+		            }
+
+		            $('#nav-main div.flyout > ul').append(channelHtml);
+
+		            that.RenderFeaturedChannel();
+		        },
+
+		        RenderFeaturedChannel: function () {
+		            var that = this, channel = that.featuredChannel;
+
+		            var html = '<a href="' + channel.uri + '"> \
+								    ' + channel.heading + '\
+								    <strong>' + channel.title + '</strong> \
+								    <em>' + channel.description + '</em> \
+								    <img src="' + channel.thumbnailUrl + '" alt="' + channel.title + '"> \
+    							</a>';
+
+		            $('#nav-main div.flyout li.featured').html(html);
+		        }
+		    },
+
+		    timestream: {
+		        pageType: '',
+		        pageNum: 0,
+		        prevNum: 0,
+		        currentPageNum: 0,
+		        maxRecords: 0,
+		        totalPages: 0,
+		        maxItems: 0,
+		        maxPageNum: 0,
+		        breakUri: '',
+		        channelId: 0,
+		        categoryId: 0,
+		        animation: '',
+		        interactedWithTimeStream: true,
+		        isIE9AndBelow: navigator.userAgent.toLowerCase().indexOf('msie') > -1 && parseInt(jQuery.browser.version) < 10,
+		        filterControl: true,
+		        ajaxKey: 'all',
+		        $ajaxLoadBg: $('<div id="homepage-worthy-bg" class="homepage-worthy-bg"></div>'),
+		        disableScrollTop: false,
+		        pageSize: 10,
+		        paginationPageTitle: '',
+		        paginationPageMetaDescription: '',
+		        paginationPageDataString: '',
+		        defaultPageTitle: '',
+		        defaultPageMetaDescription: '',
+		        Init: function (data) {
+		            var that = this;
+
+		            that.pageType = data.pageType;
+		            that.pageNum = 1;
+		            that.prevNum = 1;
+		            that.currentPageNum = data.currentPageNum;
+		            that.maxRecords = data.maxRecords;
+		            that.totalPages = data.totalPages;
+		            that.maxItems = data.maxItems;
+		            that.breakUri = data.breakUri;
+		            that.channelId = data.channelId;
+		            that.categoryId = data.categoryId;
+		            if (typeof data.pageSize !== 'undefined') {
+		                that.pageSize = data.pageSize;
+		            }
+		            if (typeof data.paginationPageTitle !== 'undefined') {
+		                that.paginationPageTitle = data.paginationPageTitle;
+		            }
+		            if (typeof data.paginationPageMetaDescription !== 'undefined') {
+		                that.paginationPageMetaDescription = data.paginationPageMetaDescription;
+		            }
+		            if (typeof data.paginationPageDataString !== 'undefined') {
+		                that.paginationPageDataString = data.paginationPageDataString;
+		            }
+		            if (typeof data.defaultPageTitle !== 'undefined') {
+		                that.defaultPageTitle = data.defaultPageTitle;
+		            }
+		            if (typeof data.defaultPageMetaDescription !== 'undefined') {
+		                that.defaultPageMetaDescription = data.defaultPageMetaDescription;
+		            }
+		            if (that.pageNum == 0)
+		                that.pageNum = that.currentPageNum;
+
+		            if (that.pageType == "Home" || that.pageType == "Latest" || that.pageType == "Channel" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel")
+		                that.maxItems = that.maxRecords;
+		            else
+		                that.maxItems = 0;
+
+		            if (that.pageType == "Latest" || that.pageType == "Categories" || that.pageType == "Pictures" || that.pageType == "JustSubmitted")
+		                that.maxPageNum = that.totalPages;
+		            else
+		                that.maxPageNum = Math.ceil(that.maxItems / that.pageSize);
+
+		            var regPatt = /\/[0-9]+/gi;
+		            var cUri = location.href;
+		            var pageFrag = cUri.match(regPatt);
+
+		            if (!pageFrag) {
+		                $('#homepage-worthy-ctrl .next').addClass('nopage');
+		            }
+
+		            //fix for IE navigation
+		            if (!that.isIE9AndBelow) {
+		                if (location.href.indexOf("#") != -1 && location.href.indexOf("utm_source") == -1)
+		                    location.href = location.href.replace("#", "");
+
+		                if (pageFrag != null) {
+		                    pageFrag = pageFrag.toString();
+		                    that.pageNum = parseInt(pageFrag.substr(1, pageFrag.length - 1));
+		                    that.PageNaviSet();
+		                }
+		            }
+		            else {
+		                if (location.href.indexOf("#") == -1 && location.href.indexOf("utm_source") == -1) {
+
+		                    if (pageFrag != null) {
+		                        pageFrag = pageFrag.toString();
+		                        var pageNum = pageFrag.substr(1, pageFrag.length - 1);
+		                        location.href = location.href.replace(pageFrag, "/#" + pageNum);
+		                    }
+		                }
+
+		                //$(document).ready(function () { that.UpdatePageNumber(); });
+		            }
+
+		            // initialize pop state event handler
+		            if (!window.addEventListener) {
+		                window.onpopstate = function () {
+		                    //that.UpdatePageNumber();
+		                };
+		            }
+		            else {
+		                window.addEventListener('popstate', function () {
+		                    //that.UpdatePageNumber();
+		                }, false);
+		            }
+
+		            //initialize ajax load background
+		            $('#homepage-worthy').append(that.$ajaxLoadBg);
+
+		            if ($.browser.version == '8.0' || $.browser.version == '7.0') {
+		                $('#homepage-worthy-wrap article:odd').addClass('even');
+		            }
+
+		            //initialize ga tracking
+		            $('#content-timestream a.clearfix').bind('click', function () {
+		                _gaq.push(['_trackEvent', 'Click', 'Homepage', 'Timestream']);
+		            });
+
+		            //initialize page event handlers
+		            $('#homepage-worthy-filter-button').hover(function () {
+		                $('#homepage-worthy-filter-wrap').show();
+		            }, function () {
+		                $('#homepage-worthy-filter-wrap').hide();
+		            });
+
+		            $('#homepage-worthy-filter-wrap').bind("mouseover", function () {
+		                $(this).show();
+		            });
+
+		            $('#homepage-worthy-filter-wrap').bind("mouseleave", function () {
+		                $(this).hide();
+		            });
+
+		            if (that.pageType == "Latest" || that.pageType == "Home" || that.pageType == "Channel" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel") {
+		                $('#homepage-worthy-filter-wrap span').click(function (e) {
+		                    if (that.filterControl) {
+
+		                        if ($(this).hasClass('active')) // already there, no update needed
+		                            return;
+
+		                        var elem = $(this), newText = elem.text();
+		                        var tsFilter = $('#homepage-worthy .filter-ctrl');
+		                        tsFilter.find('.filter i').text(newText);
+		                        that.ajaxKey = $(this).attr('rel');
+		                        that.pageNum = 1;
+		                        that.disableScrollTop = true;
+
+		                        if (that.pageType == "Latest")
+		                            that.GetCarouselContent(true);
+		                        else
+		                            that.GetCarouselContent(false);
+
+		                        //ga tracking
+		                        //$('#content-timestream a.clearfix').bind('click', function () { /// commented during brkr-1326
+		                            _gaq.push(['_trackEvent', 'Click_Homepage', 'Timestream', 'Filter']);
+		                        //});
+		                    }
+		                    e.preventDefault();
+		                });
+		            }
+
+		            if (that.pageType == "Home" || that.pageType == "Channel" || that.pageType == "Latest" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel") {
+		                $('#timestream-navi .num-val').click(function () {
+		                    return false;
+		                });
+		                $('#timestream-navi').one("click", function () {
+		                    $this = $(this)
+		                    $this.find('.show').fadeOut(250, function () {
+		                        $this.find('.hide').fadeIn(250);
+		                    });
+		                });
+		            }
+
+		            $('#homepage-worthy-ctrl .num-val input').keydown(function (event) {
+		                that.interactedWithTimeStream = true;
+
+		                if (event.which == 13 || event.which == 9) {
+		                    var pageNum = parseInt($(this).val());
+
+		                    if (that.pageNum < pageNum)
+		                        that.animation = 'next';
+		                    else
+		                        that.animation = 'prev';
+
+		                    that.pageNum = pageNum;
+
+		                    if (/^(\-?)(\d+)$/.test(that.pageNum) == false) {
+		                        alert('Please enter a number.');
+		                        return false;
+		                    }
+
+		                    if (that.pageNum >= that.maxPageNum)
+		                        that.pageNum = that.maxPageNum;
+		                    if (that.pageNum <= 1)
+		                        that.pageNum = 1;
+
+		                    that.PageNaviSet();
+		                    that.GetCarouselContent(false);
+		                    event.preventDefault();
+		                }
+		            });
+
+		            $('#homepage-worthy-ctrl a').bind('click', function (e) {
+		                that.interactedWithTimeStream = true;
+		                e.preventDefault();
+		                $this = $(this);
+
+		                if (!$this.hasClass('nopage') && !$this.hasClass('current')) {
+		                    if ($this.hasClass('prev') && that.pageNum != that.maxPageNum || $this.text() == 'Next >') {
+		                        that.pageNum++;
+		                        that.animation = 'next';
+		                    }
+		                    else if ($this.hasClass('next') && that.pageNum != 1 || $this.text() == '< Prev') {
+		                        that.pageNum--;
+		                        that.animation = 'prev';
+		                    }
+		                    else if ($this.hasClass('firstpage')) {
+		                        that.pageNum = 1;
+		                        that.animation = 'prev';
+		                    }
+		                    else if ($this.hasClass('lastpage')) {
+		                        that.pageNum = that.maxPageNum;
+		                        that.animation = 'prev';
+		                    }
+		                    else {
+		                        _thisPageNum = parseInt($this.text());
+
+		                        if (that.pageNum < _thisPageNum)
+		                            that.animation = 'next';
+		                        else
+		                            that.animation = 'prev';
+
+		                        that.pageNum = _thisPageNum;
+		                    }
+
+		                    // ga tracking
+		                    if (that.pageType == "Home" || that.pageType == "Latest" || that.pageType == "Channel" || that.pageType == "Categories")
+		                        that.GATracking();
+
+		                    that.PageNaviSet();
+		                    that.GetCarouselContent(false);
+		                }
+		            });
+		            if (that.pageType == 'Categories') {
+		                that.PageNaviSet();
+		            }
+		            ///Timestream page and index tracking. brkr-1326
+		            /// Following line enables the GA handling during init, SEE ALSO similar code in GetCarouselContent(), 
+		            // which handles the GA after the timestream up/down clicks.
+		            if (that.pageType == "Home") { ///brkr-1490 - Do the timestream tracking only for homepage. None other.
+		                window.BUI.tracking.GA.clickTracking('#homepage-worthy-wrap a');
+		            }
+
+		        },
+		        PageNaviSet: function () {
+		            var that = this;
+
+		            $('#timestream-navi .current').removeClass('current');
+		            $items = $('#timestream-navi .pagenavi .page');
+		            /*if (that.pageType == 'Categories') {*/
+		            $nextButton = $('#homepage-worthy-ctrl .next');
+		            $prevButton = $('#homepage-worthy-ctrl .prev');
+		            $firstPage = $('#homepage-worthy-ctrl .firstpage');
+		            $lastPage = $('#homepage-worthy-ctrl .lastpage');
+		            if (that.pageNum == 1) {
+		                $nextButton.addClass('nopage');
+		                $firstPage.hide();
+		            } else {
+		                $nextButton.removeClass('nopage');
+		                $firstPage.show();
+		            }
+		            if (that.pageNum >= that.maxPageNum) {
+		                $prevButton.addClass('nopage');
+		                $lastPage.hide();
+		            } else {
+		                $prevButton.removeClass('nopage');
+		                $lastPage.show();
+		            }
+		            _itemsNum = $items.length;
+		            for (i = 0; i < _itemsNum; i++) {
+		                $items.eq(i).show();
+		            }
+		            if (that.maxPageNum <= _itemsNum && that.pageNum == 1) {
+		                for (i = 0; i < _itemsNum; i++) {
+		                    if (i + 1 == 1) {
+		                        $items.eq(i).text(i + 1).attr('href', that.breakUri);
+		                    }
+		                    else {
+		                        $items.eq(i).text(i + 1).attr('href', that.breakUri + (i + 1) + '/'); ;
+		                    }
+
+		                    if (i == (that.pageNum - 1)) {
+		                        $items.eq(i).addClass('current');
+		                    }
+		                    if (i > (that.maxPageNum - 1)) {
+		                        $items.eq(i).hide();
+		                    }
+		                }
+		            } else {
+		                var _offset;
+		                if (that.pageNum == 1) {
+		                    _offset = 1;
+		                } else if (that.pageNum <= parseInt(_itemsNum / 2)) {
+		                    _offset = 0;
+		                } else if (that.pageNum >= that.maxPageNum - parseInt(_itemsNum / 2) + 2) {
+		                    _offset = (that.maxPageNum - parseInt(_itemsNum / 2)) - (_itemsNum - parseInt(_itemsNum / 2) - 2);
+		                } else {
+		                    _offset = that.pageNum - parseInt(_itemsNum / 2);
+		                }
+		                if (that.pageNum == that.maxPageNum) {
+		                    _offset = (that.maxPageNum - parseInt(_itemsNum / 2)) - (_itemsNum - parseInt(_itemsNum / 2) - 1);
+		                }
+		                for (i = 0; i < _itemsNum; i++) {
+		                    if (i + _offset == 1) {
+		                        $items.eq(i).text(i + _offset).attr('href', that.breakUri);
+		                    }
+		                    else {
+		                        $items.eq(i).text(i + _offset).attr('href', that.breakUri + (i + _offset) + '/');
+		                    }
+		                    if (i == (that.pageNum - _offset)) {
+		                        $items.eq(i).addClass('current').removeAttr('href');
+		                    }
+		                    if (i + _offset <= 0) {
+		                        $items.eq(i).hide();
+		                    }
+		                }
+		                if (that.pageNum > 1) {
+		                    $items.eq(0).text('< Prev').attr('href', that.breakUri + (that.pageNum - 1) + '/');
+		                    $("#homepage-worthy-ctrl a.next").attr("href", that.breakUri + (that.pageNum - 1) + '/');
+		                }
+		                if (that.pageNum < that.maxPageNum) {
+		                    $items.eq(_itemsNum - 1).text('Next >').attr('href', that.breakUri + (that.pageNum + 1) + '/');
+		                    $("#homepage-worthy-ctrl a.prev").attr('href', that.breakUri + (that.pageNum + 1) + '/');
+		                }
+
+		            }
+		            // set href for first and last
+		            $firstPage.attr('href', that.breakUri);
+		            $lastPage.attr('href', that.breakUri + that.maxPageNum + '/');
+		            $('#homepage-worthy-ctrl .num-val input').val(that.pageNum);
+		        },
+		        GetCarouselContent: function (updateFeaturedContent) {
+		            var that = this, ajaxUrl = '', qs = '';
+
+		            switch (that.pageType) {
+		                case 'Categories':
+		                    ajaxUrl = '/content/GetCategoryPageTimeStream';
+		                    qs = 'categoryId=' + that.categoryId + '&pageNum=' + that.pageNum;
+		                    break;
+		                case 'Pictures':
+		                    ajaxUrl = '/content/GetGalleryPageTimeStream';
+		                    qs = 'pageNum=' + that.pageNum;
+		                    break;
+		                case 'JustSubmitted':
+		                    ajaxUrl = '/content/GetJustSubmittedPageTimeStream';
+		                    qs = 'pageNum=' + that.pageNum;
+		                    break;
+		                case 'Home':
+		                    ajaxUrl = '/content/GetContentTimeStreamByChannelIdAndFilterBy';
+		                    qs = 'channelId=1&filterBy=' + that.ajaxKey + '&pageNum=' + that.pageNum;
+		                    break;
+		                case 'Latest':
+		                    ajaxUrl = '/content/GetLatestContentTimeStream';
+		                    qs = 'pageNum=' + that.pageNum + '&filterBy=' + that.ajaxKey;
+		                    break;
+		                case 'Channel':
+		                    ajaxUrl = '/content/GetContentTimeStreamByChannelIdAndFilterBy';
+		                    qs = 'channelId=' + that.channelId + '&filterBy=' + that.ajaxKey + '&pageNum=' + that.pageNum;
+		                    break;
+		                case 'ActionUnleashedCDP':
+		                case 'ActionUnleashedChannel':
+		                    ajaxUrl = '/content/GetActionUnleashedTimeStream';
+		                    qs = 'pageNum=' + that.pageNum + '&filterBy=' + that.ajaxKey;
+		                    break;
+		            }
+
+		            $.ajax({
+		                url: ajaxUrl,
+		                data: qs,
+		                type: "get",
+		                error: function (request) {
+		                    //alert('ajax error');
+		                },
+		                beforeSend: function () {
+		                    that.filterControl = false;
+		                    that.$ajaxLoadBg.fadeIn(100);
+		                },
+		                complete: function () {
+		                    that.filterControl = true;
+
+		                    if (that.animation != 'fade') {
+		                        that.$ajaxLoadBg.fadeOut(100, function () {
+		                            if (that.animation == 'next') {
+		                                $("#homepage-worthy-wrap").trigger("next", function (oldItems, newItems, newSizes) {
+		                                    newItems.next('.caroufredsel-item').remove()
+		                                });
+		                            } else {
+		                                $("#homepage-worthy-wrap").trigger("prev", function (oldItems, newItems, newSizes) {
+		                                    newItems.next('.caroufredsel-item').remove()
+		                                });
+		                            }
+		                        });
+		                    } else {
+		                        that.$ajaxLoadBg.fadeOut(100);
+		                    }
+		                    if (!that.disableScrollTop) {
+		                        //$('body,html').animate({ scrollTop: '300px' }, 300, function () { });
+		                        $('body,html').animate({ scrollTop: $("#homepage-worthy").offset().top }, 300);
+		                    }
+		                    that.disableScrollTop = false;
+		                    if (that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel" || that.pageType == "Home") {
+		                        // update active filter if filter was applied
+		                        $('#homepage-worthy-filter-wrap').find('span.active').removeClass('active');
+		                        $('#homepage-worthy-filter-wrap').find('span[rel=' + that.ajaxKey + ']').addClass('active');
+		                    }
+		                    adRefresh();
+
+		                    //ga tracking
+//		                    $('#content-timestream a.clearfix').bind('click', function () {
+//		                        _gaq.push(['_trackEvent', 'Click', 'Homepage', 'Timestream']);
+//		                    });
+		                },
+		                success: function (newContentTimestreamHtml) {
+		                    if (that.animation == 'fade' || that.pageType == 'Categories' || that.pageType == 'Pictures' || that.pageType == 'JustSubmitted') {
+		                        $("#homepage-worthy-wrap").hide().html(newContentTimestreamHtml.TimestreamView).fadeIn(500);
+		                    }
+		                    else
+		                        $("#homepage-worthy-wrap").trigger("insertItem", newContentTimestreamHtml.TimestreamView);
+
+		                    if (that.pageType == 'Latest') {
+		                        if (updateFeaturedContent) {
+		                            var featuredContentBlock = $(newContentTimestreamHtml.LatestContentBlockTimestreamView).html();
+		                            $("#content-timestream .featured").hide().html(featuredContentBlock).fadeIn(500);
+		                        }
+		                    }
+
+		                    if (that.pageType == "Home" || that.pageType == "Latest" || that.pageType == "Channel" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel") {
+		                        // set _maxItems and _maxPageNum
+		                        that.maxItems = newContentTimestreamHtml.MaxRecords;
+		                    }
+
+		                    if (that.pageType == "Latest")
+		                        that.maxPageNum = newContentTimestreamHtml.TotalPages;
+
+		                    if (that.pageType == "Home" || that.pageType == "Channel" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel")
+		                        that.maxPageNum = Math.ceil(that.maxItems / that.pageSize);
+
+		                    if (that.pageType == "Home" || that.pageType == "Latest" || that.pageType == "Channel" || that.pageType == "ActionUnleashedCDP" || that.pageType == "ActionUnleashedChannel") {
+		                        that.PageNaviSet();
+		                        $('#homepage-worthy-ctrl .max-page').text(that.maxPageNum);
+		                        $('#homepage-worthy-ctrl .max-items').text(that.maxItems);
+		                        stButtons.locateElements(); // Re-initialize ShareThis buttons
+		                    }
+
+		                    // fix hover binding
+		                    $('#homepage-worthy h1 a').hover(
+        						function () {
+        						    setParentActive($(this));
+        						},
+						        function () {
+						            setParentInactive($(this));
+						        }
+				        	);
+
+		                    if (that.pageNum != 1) {
+		                        var finalUrl = that.breakUri + that.pageNum + "/";
+		                        History.pushState(null, null, finalUrl);
+		                        that.UpdateSEOMetaTitleAndDescription();
+		                        _gaq.push(['_trackPageview', finalUrl]);  //track page view when url state is pushed.
+		                        //that.pageType
+		                    }
+		                    else {
+		                        History.pushState(null, null, that.breakUri);
+
+		                        if (that.defaultPageTitle != null && that.defaultPageTitle != '') {
+		                            document.title = that.defaultPageTitle.replace(/&amp;/g, 'and');
+		                        }
+		                        if (that.defaultPageMetaDescription != null && that.defaultPageMetaDescription != '') {
+		                            $('meta[name="description"]').attr('content', that.defaultPageMetaDescription.replace(/&amp;/g, '&'));
+		                        }
+		                        _gaq.push(['_trackPageview', that.breakUri]);  //track page view when url state is pushed.
+		                    }
+		                    window.BUI.tracking.HADOOP.trackView();
+		                    if (that.pageType == "Home") {
+		                        _gaq.push(['_trackEvent', 'views', 'homepage_views', that.breakUri + that.pageNum]); ///
+		                    }
+		                    if (that.pageType == "Home") { ///brkr-1490 - Do the timestream tracking only for homepage. None other.
+		                        window.BUI.tracking.GA.clickTracking('#homepage-worthy-wrap a'); ///Timestream page and index tracking. SEE ALSO - Init() above. brkr-1326
+		                    }
+		                }
+		            });
+		        },
+		        UpdateSEOMetaTitleAndDescription: function () {
+		            var that = this;
+		            var pageNumRegExp = new RegExp("{pageNum}", "g");
+		            var dataStringRegExp = new RegExp("{dataString}", "g");
+		            var newPaginationPageTitle = that.paginationPageTitle;
+		            var newPaginationPageMetaDescription = that.paginationPageMetaDescription;
+		            if (newPaginationPageTitle != null && newPaginationPageTitle != '') {
+		                newPaginationPageTitle = newPaginationPageTitle.replace(pageNumRegExp, that.pageNum);
+		                if (that.paginationPageDataString != null && that.paginationPageDataString != "") {
+		                    newPaginationPageTitle = newPaginationPageTitle.replace(dataStringRegExp, that.paginationPageDataString);
+		                    newPaginationPageTitle = newPaginationPageTitle.replace(/&amp;/g, 'and');
+		                }
+		                document.title = newPaginationPageTitle;
+		            }
+		            if (newPaginationPageMetaDescription != null && newPaginationPageMetaDescription != '') {
+		                newPaginationPageMetaDescription = newPaginationPageMetaDescription.replace(pageNumRegExp, that.pageNum);
+		                if (that.paginationPageDataString != null && that.paginationPageDataString != "") {
+		                    newPaginationPageMetaDescription = newPaginationPageMetaDescription.replace(dataStringRegExp, that.paginationPageDataString);
+		                    newPaginationPageMetaDescription = newPaginationPageMetaDescription.replace(/&amp;/g, '&');
+		                }
+		                $('meta[name="description"]').attr('content', newPaginationPageMetaDescription);
+		            }
+		        },
+		        UpdatePageNumber: function () {
+		            var that = this, regPatt = /\/[0-9]+$/gi, cUri = location.href;
+
+		            if (that.isIE9AndBelow)
+		                regPatt = /\/#[0-9]+$/gi;
+
+		            var pageFrag = ((cUri.substr(0, cUri.length - 1)).match(regPatt));
+
+		            var pageNum = 1;
+		            if (pageFrag != null) {
+		                pageFrag = pageFrag.toString();
+		                pageNum = (!that.isIE9AndBelow) ? pageFrag.substr(1, pageFrag.length - 1) : pageFrag.substr(2, pageFrag.length - 1); //without the /
+		            }
+
+		            that.prevNum = (cUri.indexOf("#.") != -1) ? 1 : that.pageNum;
+		            that.pageNum = (cUri.indexOf("#/") != -1 || cUri.indexOf("#.") != -1 || isNaN(parseInt(pageNum))) ? 1 : parseInt(pageNum);
+
+		            if (that.isIE9AndBelow) {
+		                if (that.interactedWithTimeStream)
+		                    that.interactedWithTimeStream = false;
+		                else {
+		                    that.AnimateTimeStream();
+		                    if (parseInt(jQuery.browser.version) < 9) {
+		                        setTimeout(function () {
+		                            if (location.hash) {
+		                                var elem = $("#homepage-worthy");
+		                                $(document).scrollTop(elem.offset().top);
+		                            }
+		                        }, 1);
+		                    }
+		                }
+		            }
+		            else
+		                that.AnimateTimeStream();
+		        },
+		        AnimateTimeStream: function () {
+		            var that = this;
+
+		            if (that.prevNum <= that.pageNum)
+		                that.animation = 'next';
+		            else
+		                that.animation = 'prev';
+
+		            that.PageNaviSet();
+		            that.disableScrollTop = true;
+		            that.GetCarouselContent(false);
+		        },
+		        GATracking: function () {
+		            var that = this, trackedPage = '';
+
+		            switch (that.pageType) {
+		                case 'Home':
+		                    trackedPage = window.location.toString().substr(20);
+		                    break;
+		                case 'Latest':
+		                    trackedPage = '/recent';
+		                    break;
+		                case 'Channel':
+		                case 'Categories':
+		                    trackedPage = window.location.toString().substr(20);
+		                    break;
+		            }
+		            var downHref = $("#homepage-worthy-ctrl .prev").attr("href") ? $("#homepage-worthy-ctrl .prev").attr("href") : "http://www.break.com/";
+		            var upHref = $("#homepage-worthy-ctrl .next").attr("href") ? $("#homepage-worthy-ctrl .next").attr("href") : "http://www.break.com/";
+		            if (that.animation == 'prev') {
+
+		                if (that.pageType == 'Home') {
+		                    _gaq.push(['_trackEvent', 'Click_Homepage', 'Timestream', 'Timestream_Up']); ///brkr-1326 - changed from Timestream_up to Timestream, 1; 1=up, 2=down.
+		                    COMSCORE.beacon({ c1: "2", c2: "4000003", c3: "4000003", c4: upHref, c5: "timeStreamUp" });
+		                }
+		            }
+		            else if (that.animation == 'next') {
+
+
+		                if (that.pageType == 'Home') {
+		                    _gaq.push(['_trackEvent', 'Click_Homepage', 'Timestream', 'Timestream_Down']); ///brkr-1326 (see above), 1=up, 2=down.
+		                    COMSCORE.beacon({ c1: "2", c2: "4000003", c3: "4000003", c4: downHref, c5: "timeStreamDown" });
+		                }
+		            }
+		        },
+		        InitializeCarousel: function () {
+		            /*** Homepageworthy Carousel ***/
+		            if (navigator.userAgent.toLowerCase().indexOf('msie') > -1 && parseInt(jQuery.browser.version) < 9) {
+		                setTimeout(function () {
+		                    $("#homepage-worthy-wrap").carouFredSel({
+		                        responsive: true,
+		                        direction: "up",
+		                        padding: 0,
+		                        auto: {
+		                            play: false
+		                        },
+		                        items: {
+		                            visible: 2,
+		                            start: 0
+		                        }
+		                    })
+		                }, 1000);
+		            }
+		            else {
+		                $("#homepage-worthy-wrap").carouFredSel({
+		                    responsive: true,
+		                    direction: "up",
+		                    padding: 0,
+		                    auto: {
+		                        play: false
+		                    },
+		                    items: {
+		                        visible: 2,
+		                        start: 0
+		                    }
+		                });
+		            }
+		        }
+		    },
+		    FeaturedContentCarousel: {
+		        num: 0,
+		        items: 0,
+		        showItemNum: 0,
+		        interval: 5000,
+		        autoplay: true,
+		        isAnimate: true,
+		        featuredContentVars: [{}],
+		        Init: function (options) {
+		            var that = this,
+						$items = $('#channel-landing-featured-cg > *');
+		            that.items = $items.length - 1;
+
+		            if (typeof (options) != "undefined") {
+		                if (typeof (options.interval) != "undefined") {
+		                    that.interval = options.interval
+		                }
+		                if (typeof (options.autoplay) != "undefined") {
+		                    that.autoplay = options.autoplay
+		                }
+		                if (typeof (options.featuredContentVars) != "undefined") {
+		                    that.featuredContentVars = options.featuredContentVars;
+		                }
+		            }
+		            for (i = 0; i < (that.items + 1); i++) {
+		                $('#channel-landing-featured-navi li').eq(i).attr('index', i)
+		            }
+		            that.Resize(that.items);
+
+		            if (that.autoplay) {
+		                that.AutoPlay = setInterval(function () { that.Auto(); }, that.interval);
+		            }
+		            $('#channel-landing-featured-navi li').on("click", function () {
+		                if (!$(this).hasClass('active')) {
+		                    that.To($(this).attr('index'));
+		                    that.Control('next', Number($(this).index()));
+		                    that.Stop();
+		                    that.autoplay = false;
+		                }
+		                return false;
+		            })
+		            $('#channel-landing-featured-ctrl span').on("click", function () {
+		                var _direction;
+		                if ($(this).hasClass('next')) {
+		                    _direction = 'prev';
+		                }
+		                else if ($(this).hasClass('prev')) {
+		                    _direction = 'next';
+		                }
+		                that.Control(_direction, 2);
+		                that.Stop();
+		                that.autoplay = false;
+		                return false;
+		            })
+		            $('#channel-landing-featured').on({
+		                mouseenter: function () {
+		                    that.Stop();
+		                },
+		                mouseleave: function () {
+		                    if (that.autoplay) {
+		                        that.AutoPlay = setInterval(function () { that.Auto(); }, that.interval);
+		                    }
+		                }
+		            });
+		            that.adRefreshChannel(0);
+		        },
+		        To: function (pos) {
+		            var that = this,
+						$items = $('#channel-landing-featured-cg > *'),
+						$navi = $('#channel-landing-featured-navi > li');
+		            if (pos != that.num) {
+		                if (!Modernizr.csstransitions) {
+		                    $items.eq(that.num).fadeOut(500);
+		                    $items.eq(pos).fadeIn(500);
+		                } else {
+		                    $items.eq(that.num).removeClass('show');
+		                    $items.eq(pos).addClass('show');
+		                }
+
+		                $('#channel-landing-featured-navi').find('.active').removeClass('active');
+		                $("#channel-landing-featured-navi li[index='" + pos + "']").addClass('active');
+		                that.num = pos;
+		            }
+		            that.adRefreshChannel(pos);
+		        },
+		        adRefreshChannel: function (pos) {
+
+		        },
+		        Control: function (_direction, _amount) {
+		            var that = this,
+		        		$nav = $('#channel-landing-featured-navi'),
+		        		$items = $nav.find('li'),
+		        		_itemHeight = $items.outerHeight();
+
+		            if (typeof (_amount) == "undefined") {
+		                _amount = 1;
+		            }
+		            if (that.isAnimate) {
+		                that.isAnimate = false;
+		                if (_direction == 'next') {
+		                    $nav.animate({ 'top': '-' + (_itemHeight * _amount) + 'px' }, 600, function () {
+		                        $nav.css('top', '0');
+		                        for (i = 0; i < _amount; i++) {
+		                            $nav.append($items.eq(i));
+		                        }
+		                        that.isAnimate = true;
+		                    });
+		                }
+		                else if (_direction == 'prev') {
+		                    $nav.css({ 'top': '-' + (_itemHeight * _amount) + 'px' });
+		                    for (i = 0; i < _amount; i++) {
+		                        $nav.prepend($items.eq(that.items - i));
+		                    }
+		                    $nav.animate({ 'top': '0' }, 600, function () {
+		                        that.isAnimate = true;
+		                    });
+		                }
+		            }
+
+		        },
+		        Auto: function () {
+		            if (this.num == this.items) {
+		                pos = 0;
+		            } else {
+		                pos = this.num + 1
+		            }
+		            this.To(pos);
+		            this.Control('next', 1);
+		        },
+		        Stop: function () {
+		            if (typeof (this.AutoPlay) != "undefined") {
+		                clearInterval(this.AutoPlay)
+		            }
+		        },
+		        Resize: function (items) {
+		            var $cg = $('#channel-landing-featured-cg'),
+		        		that = this,
+		        		_i;
+		            function re() {
+		                if ($cg.width() < 500) {
+		                    _i = 2;
+		                    that.showItemNum = 2;
+		                } else {
+		                    _i = 3;
+		                    that.showItemNum = 3;
+		                }
+		                if (_i >= items) {
+		                    $('#channel-landing-featured-ctrl').hide();
+		                    $('.channel-landing-featured-navi .navi-wrapper').css("paddingBottom", "1px")
+		                    that.isAnimate = false;
+		                } else {
+		                    $('#channel-landing-featured-ctrl').fadeIn(500);
+		                    $('.channel-landing-featured-navi .navi-wrapper').css("paddingBottom", "0")
+		                    that.isAnimate = true;
+		                }
+		            }
+		            re();
+		            $cg.on('resize', function () {
+		                re();
+		            });
+		        }
+		    }
+
+		};
+
+		BUI.controls = {
+
+		    user: { // login/account related controls
+
+		        renderLoginUI: function () {
+		            var markup = '<div class="btn-wrap"> \
+                				    <button id="auth-fb" class="ir" data-ga="Click_Masthead:ProfileArea">F</button> \
+				                  </div> \
+				                <a id="sign-in" class="gradient" data-ga="Click_Masthead:ProfileArea">Log In</a>';
+
+		            $('#masthead-edge div.menu')
+        				.html(markup)
+		        		.delegate('#sign-in', 'click', function (event) {
+		        		    BRK.hat.showLoginModal();
+
+		        		    //ga tracking
+		        		    var $target = $(event.target);
+
+		        		    if ($target.attr('data-ga')) {
+		        		        var gaKeys = $target.attr('data-ga').split(':');
+		        		        _gaq.push(['_trackEvent', 'Click', gaKeys[0], gaKeys[1]]);
+		        		    }
+		        		})
+				    .delegate('#auth-fb', 'click', function (event) {
+				        BRK.hat.showRegModal();
+
+				        //ga tracking
+				        var $target = $(event.target);
+
+				        if ($target.attr('data-ga')) {
+				            var gaKeys = $target.attr('data-ga').split(':');
+				            _gaq.push(['_trackEvent', 'Click', gaKeys[0], gaKeys[1]]);
+				        }
+				    });
+		        },
+
+		        renderAccountUI: function (himSess) {
+		            var userName = '', markup = '', avatarUrl = '', settingsPage = '';
+
+		            // initialize userName
+		            if ('FirstName' in himSess && 'LastName' in himSess)
+		                userName = himSess.FirstName + ' ' + himSess.LastName;
+		            //Always get FirstName / LastName to display. Fall back to Username if no FirstName / LastName available.
+		            if ($.trim(userName) === '' && 'Username' in himSess)
+		                userName = himSess.Username;
+
+
+		            if (userName.length > 20) {
+		                userName = userName.substr(0, 17) + "...";
+		            }
+
+		            avatarUrl = himSess.AvatarUrl;
+		            if (avatarUrl == "") {
+		                avatarUrl = "http://media1.break.com/break/img/himalaya/hml-avatar-neutral62.png";
+		            }
+
+		            settingsPage = himSess.SettingsPage
+		            $('#masthead-edge div.menu').delegate('#auth-logout', 'click', function (e) {
+		                //expire login cookie
+		                $.cookie('brk_net_13', null, { expires: -1, path: '/', secure: false, domain: 'break.com' });
+		                // delete brkAgeGate cookie
+		                $.cookie('brkAgeGate', null, { path: '/', domain: 'break.com' });
+		                e.preventDefault();
+		                toggleFBActivitySharingSwitchOff();
+		                CreateForBreak(false);
+		                BRK.api.logout();
+		            });
+		            //$loggedDOM = '<div class="logged-box clearfix"><a href="http://www.break.com/user/profile" data-ga="Click_Masthead:Profile" onclick="window.BUI.tracking.GA.track(this, \'Click\');"><img id="userAvatarImg" src="' + avatarUrl + '"><div id="user-name">' + userName + '</div></a><span><a href="#sign-out" id="auth-logout">Sign Out</a></span></div>';
+		            $loggedDOM = '<div class="logged-box clearfix"><a href="http://www.break.com/user/profile" data-ga="Click_Masthead:Profile" onclick="window.BUI.tracking.GA.track(this);"><img id="userAvatarImg" src="' + avatarUrl + '"><div id="user-name">' + userName + '</div></a><span><a href="#sign-out" id="auth-logout">Sign Out</a></span></div>';
+		            $('#xxl').addClass('logged').html($loggedDOM);
+		            CreateForBreak(true);
+		        },
+		        monthName: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		        isLeapYear: function (y) {
+		            return (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+		        },
+		        daysInMonth: function (y, m) {
+		            return [31, (this.isLeapYear(y) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][m];
+		        },
+		        renderAgegateUI: function (ageGateLoggedIn) {
+		            var _this = this;
+		            var $galleryPlayer = $('#gallery-player');
+
+		            var ageGateMarkup = '<div id="cdp-agegate" class="form-select-wrap">\
+                                        <p>This gallery is intended for mature audiences.\
+										<span>Please confirm your age';
+		            if (!ageGateLoggedIn) {
+
+		                ageGateMarkup += ' or <a id="select-signup">sign up</a> / <a id="select-login">log in</a>';
+		            }
+		            ageGateMarkup += ':</span></p>\
+										<div class="form-select clearfix">\
+										<label class="form-item-select form-item-select-month" for="bmn-agegate-birthday-month">\
+                                            <select id="bmn-agegate-birthday-month" name="bmn-agegate-birthday-month">\
+                                                <option>Month</option>\
+                                            </select>\
+                                        </label>\
+                                        <label class="form-item-select form-item-select-day" for="bmn-agegate-birthday-day">\
+                                            <select id="bmn-agegate-birthday-day" name="bmn-agegate-birthday-day">\
+                                                <option>Day</option>\
+                                            </select>\
+                                        </label>\
+                                        <label class="form-item-select form-item-select-year" for="bmn-agegate-birthday-year">\
+                                            <select id="bmn-agegate-birthday-year" name="bmn-agegate-birthday-year">\
+                                                <option>Year</option>\
+                                            </select>\
+                                        </label>\
+										</div>\
+										<span class="err hidden">Please select your month, day, <br/>and year of birth</span>\
+										<button class="btn-gate">Submit</button>\
+                                    </div>';
+		            var $markup = $(ageGateMarkup);
+
+		            var $yearSelect = $markup.find('#bmn-agegate-birthday-year'),
+					    $monthSelect = $markup.find('#bmn-agegate-birthday-month'),
+						$daySelect = $markup.find('#bmn-agegate-birthday-day');
+
+		            $("#select-signup", $markup).click(function () {
+		                $("#auth-fb").trigger("click");
+		            });
+		            $("#select-login", $markup).click(function () {
+		                $("#sign-in").trigger("click");
+		            });
+		            $(".btn-gate", $markup).click(function () {
+		                var y = parseInt($yearSelect.val()),
+							m = parseInt($monthSelect.val()),
+							d = parseInt($daySelect.val());
+
+		                //
+		                if (isNaN(y) || isNaN(m) || isNaN(d)) {
+		                    $(".err", $markup).removeClass("hidden");
+		                }
+		                else {
+		                    $markup.remove();
+		                    birthDate = new Date(y, m, d);
+		                    _this.renderBlockGallery(birthDate);
+		                }
+
+
+		            });
+
+
+		            _this.resetYear($yearSelect, 1930, (new Date).getFullYear());
+		            _this.resetMonth($monthSelect, '', '');
+		            _this.resetDay($daySelect, (new Date).getFullYear(), 0);
+
+
+		            $markup.appendTo($galleryPlayer);
+
+
+		            var fixDaySelect = function () {
+		                var y = parseInt($yearSelect.val()),
+						    m = parseInt($monthSelect.val()),
+							d = parseInt($daySelect.val()),
+							daysToShow = 31;
+		                if (!(isNaN(y) || isNaN(m))) {
+		                    daysToShow = _this.daysInMonth(y, m);
+		                }
+		                else if (isNaN(y) && m == 1) {
+		                    daysToShow = 29;
+		                }
+		                var $daySelectParent = $daySelect.parent();
+		                if (d > daysToShow) {
+		                    $daySelect.val(1);
+		                    $daySelectParent.find('.dk_label').html('1');
+		                    $daySelectParent.find('.dk_option_current').removeClass('dk_option_current');
+		                    $daySelectParent.find('li').eq(2).addClass('dk_option_current');
+		                }
+		                for (i = 29; i < 32; i++) {
+		                    if (i > daysToShow) {
+		                        $daySelectParent.find('li').eq(i).hide();
+		                    }
+		                    else {
+		                        $daySelectParent.find('li').eq(i).show();
+		                    }
+		                }
+		            };
+
+		            $.getScript('http://s.brkmd.com/scripts/break/js/libs/jquery.dropkick-1.0.0.js').done(function () {
+		                $daySelect.dropkick();
+		                $yearSelect.dropkick({
+		                    change: function () {
+		                        fixDaySelect();
+		                    }
+		                });
+		                $monthSelect.dropkick({
+		                    change: function () {
+		                        fixDaySelect();
+		                    }
+		                });
+
+		            });
+		        },
+		        resetYear: function ($obj, start_y, end_y) {
+		            for (i = end_y; i >= start_y; i--) {
+		                var o = new Option(i, i);
+		                $(o).html(i);
+		                $obj.append(o);
+		            }
+		        },
+		        resetMonth: function ($obj, y, m) {
+		            for (i = 0; i < 12; i++) {
+		                var o = new Option(this.monthName[i], i);
+		                $(o).html(this.monthName[i]);
+		                $obj.append(o);
+		            }
+		        },
+		        resetDay: function ($obj, y, m) {
+		            $obj.empty();
+		            var o = new Option('Day', -1);
+		            $(o).html('Day');
+		            $obj.append(o);
+		            days = 31;
+		            for (i = 1; i <= days; i++) {
+		                var o = new Option(i, i);
+		                $(o).html(i);
+		                $obj.append(o);
+		            }
+		        },
+
+		        renderBlockGallery: function (birthDate) {
+		            var _this = this;
+		            var $galleryPlayer = $('#gallery-player');
+		            var today = new Date();
+		            var brknet_13 = jQuery.cookie('brk_net_13');
+		            if (today >= new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate())) {
+		                $galleryPlayer.find('#gallery-player-ctrl').removeClass('hidden');
+		                $galleryPlayer.find('#gallery-player-cg').removeClass('hidden');
+		                $galleryPlayer.find('.gallery-buttons').removeClass('hidden');
+		                if (brknet_13) {
+		                    // call api to save dob and write dob into brk_net_13 cookie
+		                    BRK.comm.submit({ method: 'post', payload: { authToken: jQuery.cookie('brk_auth'), month: parseInt(birthDate.getMonth()) + 1, day: birthDate.getDate(), year: birthDate.getFullYear() }, action: BRK.AuthServer + '/auth/SaveDateOfBirth' }, function (response) {
+		                    });
+		                }
+		                // save agegate into session cookie
+		                jQuery.cookie('brkAgeGate', 'true', { path: '/', domain: 'break.com' });
+		            } else {
+		                if (brknet_13) {
+		                    // call api to save dob and write dob into brk_net_13 cookie
+		                    BRK.comm.submit({ method: 'post', payload: { authToken: jQuery.cookie('brk_auth'), month: parseInt(birthDate.getMonth()) + 1, day: birthDate.getDate(), year: birthDate.getFullYear() }, action: BRK.AuthServer + '/auth/SaveDateOfBirth' }, function (response) {
+		                    });
+		                }
+		                jQuery.cookie('brkAgeGate', 'false', { path: '/', domain: 'break.com' });
+		                _this.renderBlockGalleryMessage();
+		            }
+		        },
+		        renderBlockGalleryMessage: function () {
+
+		            var $galleryPlayer = $('#gallery-player');
+		            var $markup = $('<div class="form-select-wrap">\
+										<p>We\'re sorry. This content is not available to <br/> you at this time. Please try another gallery</p>\
+										<button class="btn-goto-other">Go to other galleries</button>\
+										</div>');
+		            $(".btn-goto-other", $markup).click(function () {
+		                window.location.href = "http://www.break.com/pictures/";
+		            });
+		            $markup.appendTo($galleryPlayer);
+		        },
+		        removeLoginCTA: function () {
+		            jQuery('#cta').remove();
+		            jQuery.cookie('regCTA', 'true', { expires: 365, path: '/' });
+		        },
+
+		        renderBetaSliver: function () {
+			        var oldCookie /** String */ = $.cookie('visitedOld'),
+				        markupMsg /** String */;
+		            // I know, I know, doc.write FTL. Low on time, avoiding potential timing/rendering issues vs. ad takeovers.
+		            if ($.cookie('bbSliverClosed')) {
+			            return;
+			        }
+
+			        // If the cookie exists and it's value is 1 then show the messaging in the sliver
+			        if (oldCookie && oldCookie === '1') {
+				        markupMsg = '<div id="msg-beta-sliver" class="clearfix"><span class="ir">Close</span><div><h3>Wow, Break looks different!</h3>' +
+					        '<p>Redesign shmeedesign, you may say, but we are really excited to welcome you to the new Break. Check out your daily dose of ' +
+					        'awesomeness in an all new look and feel. <a id="js-lrn-more" href="#">Learn more</a> about the new design, or go back to' +
+					        ' <a href="#" id="js-trigger-old-break">Old Break</a> for a limited time. </p></div></div>';
+			        } else {
+				        markupMsg = '<div id="msg-beta-sliver" class="clearfix"><span class="ir">Close</span>' +
+					        '<div><h3>Yikes, Break looks different!</h3><button id="js-lrn-more" class="lrn-more">Learn More &raquo;</button>' +
+					        '<p>Redesign shmeedesign, you may say, but we are really excited to welcome you to the new Break. Check out your ' +
+					        'daily dose of awesomeness in an all new look and feel.</p></div></div>';
+
+			        }
+
+		            document.write(markupMsg);
+
+		            jQuery(function () {
+		                // beta messaging event bindings
+		                var sliver = $('#msg-beta-sliver');
+
+		                // back to old break functions go here
+		                //sliver.delegate('#oldsite-back', 'click', function () {
+		                // $.cookie('isBB', '0', { expires: 30, path: '/', domain: 'break.com' });
+		                // location.href = 'http://www.break.com';
+		                //})
+
+			            sliver.on('click', '#js-trigger-old-break', function (ev) {
+				            ev.preventDefault();
+				            $("#ghetto-button").trigger('click'); // Trigger the back to break link click
+			            });
+
+		                sliver.delegate('#js-lrn-more', 'click', function () { // learn more button
+
+		                    var BBModalmarkup = '<div id="bb-modal" class="clearfix"> \
+                                    <h1>Welcome to new Break</h1> \
+                                    <p>We&apos;ve completely redesigned the site and are still refining things to make it even more kick ass. Give it a whirl and send us your comments by clicking on the Feedback tab on the left of each page.</p> \
+                                    <span>Some improvements we think you&apos;ll dig:</span> \
+                                    <ul> \
+                                        <li>Sleek, new homepage, video and gallery page</li> \
+		                                <li>More ways to discover awesome videos and pictures</li> \
+		                                <li>Bigger videos and galleries for those of you using a bigger monitor</li> \
+		                                <li>Smarter recommendations</li> \
+		                                <li>Easier ways to share to your networks</li> \
+                                    </ul> \
+                                    <button id="close-bbmodal">Close</button> \
+                                </div>';
+
+		                    BRK.overlay.show(BBModalmarkup);
+
+		                    // close button in modal
+		                    jQuery('#bb-modal').delegate('#close-bbmodal', 'click', function () {
+		                        BRK.overlay.hide(BBModalmarkup);
+		                    });
+		                })
+                            .delegate('.ir', 'click', function () { // close button in sliver
+                                sliver.slideUp('slow', function () {
+                                    $(this).remove();
+                                    $.cookie('bbSliverClosed', '1', { expires: 180, path: '/', domain: 'break.com' });
+                                });
+                            });
+		            });
+		        }
+		    },
+		    contentRowLinkReplacement: function () {
+		        $(".ct-block *[data-href]").on("click", function (event) {
+		            var _url = $(this).attr('data-href');
+		            if (_url) {
+		                window.location.href = _url;
+		            }
+		            event.preventDefault();
+		        });
+		    }
+
+		};
+
+		BUI.utils = {
+		    openPixel: function (trackViewSrc) {
+
+		        if (jQuery("#__brk_tracking").length == 0) {
+		            var trackingDiv = document.createElement('div');
+		            trackingDiv.id = '__brk_tracking';
+		            trackingDiv.width = 0;
+		            trackingDiv.height = 0;
+		            trackingDiv.style.display = "none";
+		            document.body.appendChild(trackingDiv);
+		        }
+
+		        var trackPage = document.createElement('img');
+		        trackPage.id = 'brk_track_' + Math.random() * 111;
+		        trackPage.src = trackViewSrc + '&rndmn=' + Math.random() * 111;
+		        trackPage.width = 0;
+		        trackPage.height = 0;
+		        trackPage.style.display = "none";
+		        document.getElementById('__brk_tracking').appendChild(trackPage);
+		    },
+
+		    imgLazyLoad: {
+
+		        showThumbsInViewport: function () {
+		            var w = jQuery(window);
+
+		            jQuery('img[data-image-src]').each(function (i, elm) {
+		                var e = jQuery(elm), elmTop = e.offset().top, elmBottom = (elmTop + e.height()),
+					wTop = w.scrollTop(), wBottom = (wTop + w.height());
+
+		                if ((elmTop >= wTop && elmTop <= wBottom) || (elmBottom >= wTop && elmBottom <= wBottom)) {
+		                    e.closest('.vignette').css('background', '#dadada');
+		                    e.css('opacity', 0)
+						.attr('src', e.attr('data-image-src'))
+						.fadeTo(750, 1)
+						.removeAttr('data-image-src');
+		                }
+		            });
+		        },
+
+		        timeout: undefined
+
+		    },
+		    isScrolledIntoView: function (elem) {
+		        var win = jQuery(window), winTop = win.scrollTop(), winBtm = winTop + win.height(),
+			el = jQuery(elem), elemTop = el.offset().top, elemBtm = elemTop + el.height();
+
+		        return ((elemBtm >= winTop) && (elemTop <= winBtm));
+		    },
+
+			/**
+			 * This is a method that is used to apply placeholder functionality to browsers that
+			 * do not support it
+			 *
+			 * Example markup
+			 * <input type="text" placerholder="enter email">
+			 *
+ 			 * @param {DOM} elem Parent element in which to look for children with the placeholder attribute
+			 * @param {Boolean} addShim Add or remove the functionality
+			 */
+			placeholderShim : function (elem, addShim) {
+				var formInputs,
+					l;
+				// Use Modernizr to determine if the browser supports placeholder
+				if (!Modernizr.input.placeholder) {
+					if (addShim) {
+						$(elem).on('focus', '[placeholder]', function () {
+							// If the input is empty and the user has focus, make sure the place holder is hidden
+							var input = $(this);
+							if (input.val().length == 0) {
+								input.next('i').addClass('hidden');
+							}
+						})
+							.on('blur', '[placeholder]', function () {
+								// When the user leaves the input, if the input is empty, show the place holder text
+								var input = $(this);
+								if (input.val().length < 1) {
+									input.next('i').removeClass('hidden');
+								}
+							}).blur();
+
+						// Find all the element with place holder text then insert an element with that text
+						formInputs = $(elem).find('[placeholder]');
+						l = formInputs.length;
+						while (l--) {
+							$(formInputs[l]).after('<i>' + $(formInputs[l]).attr('placeholder') +'</i>');
+						}
+					} else {
+						// Remove all listeners
+						$(elem).off('focus');
+					}
+				}
+			},
+		    zoomOutToFullViewOnIphone: function () {
+		    
+            }
+		};
+		BUI.tracking = {
+		    HADOOP: {
+		        pageView: undefined,
+		        init: function () {
+		            if (typeof BrkPageView != 'undefined') {
+		                window.BUI.tracking.HADOOP.pageView = new BrkPageView();
+		            }
+		        },
+		        trackView: function () {
+		            if (typeof window.BUI.tracking.HADOOP.pageView === 'undefined') {
+		                window.BUI.tracking.HADOOP.init();
+		            }
+		            if (typeof window.BUI.tracking.HADOOP.pageView != 'undefined') {
+		                window.BUI.tracking.HADOOP.pageView.addView();
+		            }
+		        }
+		    },
+		    GA: {
+		        init: function () {
+		            ///(Try to) Place all GA tracking code in here. 
+                    ///ga tracking brkr-1326
+                    window.BUI.tracking.GA.clickTracking('#Masthead-Logo');
+                    window.BUI.tracking.GA.clickTracking('#Masthead-Home');
+                    window.BUI.tracking.GA.clickTracking('#Masthead-Popular');
+                    window.BUI.tracking.GA.clickTracking('#Masthead-Channels'); 
+                    //window.BUI.tracking.GA.clickTracking('#Masthead-Channel-9', 'Click_Masthead', 'ChannelDrop', 'Sony_9');
+                    window.BUI.tracking.GA.clickTracking('#Channels-flyout-menu-standard'); /// ChannelDrop
+                    window.BUI.tracking.GA.clickTracking('#Channels-flyout-menu-active'); /// ChannelDrop
+                    window.BUI.tracking.GA.clickTracking('#Channels-flyout-featured'); /// Featured (Sony) somehow does not work with above 2 lines.
+                    window.BUI.tracking.GA.clickTracking('#trending'); //trending
+                    window.BUI.tracking.GA.clickTracking('#break-presents a');
+                    window.BUI.tracking.GA.clickTracking('#footer-page-inner a', 'Click_Footer', ' '); //footer tracking
+                    window.BUI.tracking.GA.clickTracking('#most-popular');
+                    window.BUI.tracking.GA.clickTracking('#leaderboard a', 'Click', ' '); ///featured content ga tracking
+                    //window.BUI.tracking.GA.clickTracking('#most-popular-filter span');
+                    window.BUI.tracking.GA.clickTracking('#latest-galleries'); //Popular Gallaries  
+		            //window.BUI.tracking.GA.clickTracking('#homepage-channel-guide a');                    
+
+		            // Timestream tracking is done in BUI.timestream in more than one place.
+                    // Cdp Blog Article Gallery tracking in ArticleControl.cshtml
+                },
+
+		        clickTracking: function (selector, category, action, label, value, noninteraction) {
+		            ///This is hardcoded to track click events, to keep the handling portable and lite. brkr-1326
+		            // Most of the cases of following nature can be handled by calling window.BUI.tracking.GA.clickTracking('#myId') here.
+		            // E.g.<div id=myId>    
+		            //     <a data-ga="catagory:action:lable:value"> Link1 </a>
+		            //     <a data-ga="catagory:action:lable:value"> Link2 </a>
+		            //     ...
+		            //   </div>
+		            // If you do not have the data-ga attribute set on individual <a/> link, 
+		            //     then call window.BUI.tracking.GA.clickTracking('#parentId a', category, action, label, value)
+		            // E.g.<div id=myId>    
+		            //     <a> Link1 </a>
+		            //     <a> Link2 </a>
+		            //     ...
+		            //   </div>
+		            $(selector).bind('click', function (event) {
+		                var targ = $(event.target); ///events bubble up. Get the target, so you know where it came from.
+//		                var anchor = $(targ).attr('href');
+//		                if (typeof anchor !== 'undefined' && anchor !== false) event.preventDefault();
+		                BUI.tracking.GA.track(targ, category, action, label, value, noninteraction);
+		            });
+		        },
+		        track: function (selector, category, action, label, value, noninteraction) {
+		            // If the element to be tracked has data-ga attribute, it should specify a ':' separated catagory:action:label:value.
+		            //  else the input parameters (..action, label, value) are used.
+		            //  e.g. window.BUI.tracking.GA.clickTracking('.flyout.menu.gradient ul li a', 'Click');
+
+		            var $this = $(selector);
+//		            var anchor = $this.attr('href');
+//		            var launchExternal = $this.is('[data-link-target="external"]');
+//		            if (typeof anchor !== 'undefined' && anchor !== false) {
+//		                var winRef = null;
+//		                if (launchExternal) {
+//		                    winRef = window.open("", "_blank");
+//		                }
+//		                _gaq.push(['_set', 'hitCallback', function () {
+//		                    if (launchExternal) {
+//		                        winRef.location = anchor;
+//		                        if (winRef == null || typeof (winRef) == 'undefined') {
+//		                            window.open(anchor);
+//		                        }
+//		                    }
+//		                    else {
+//		                        document.location = anchor;
+//		                    }
+//		                } ]);
+//		            }
+
+		            var attr = $this.attr('data-ga');
+		            // For some browsers, `attr` is undefined; for others,
+		            // `attr` is false.  Check for both.
+		            if (typeof attr !== 'undefined' && attr !== false) {
+		                var gaParams = attr.split(':');
+		                if (gaParams.length == 1) {
+		                    _gaq.push(['_trackEvent', gaParams[0], ' ']);
+		                }
+		                else if (gaParams.length == 2) {
+		                    _gaq.push(['_trackEvent', gaParams[0], gaParams[1]]);
+		                }
+		                else if (gaParams.length == 3) {
+		                    _gaq.push(['_trackEvent', gaParams[0], gaParams[1], gaParams[2]]);
+		                }
+		                else if (gaParams.length == 4) {
+		                    _gaq.push(['_trackEvent', gaParams[0], gaParams[1], gaParams[2], new Number(gaParams[3])]);
+		                }
+		            }
+		            else {
+		                if (typeof category === 'undefined') {
+		                    _gaq.push(['_trackEvent', 'ERROR-UNSPECIFIED-catagory', 'ERROR-UNSPECIFIED-action', label, value]);
+		                }
+		                else if (typeof action === 'undefined') {
+		                    _gaq.push(['_trackEvent', category, 'ERROR-UNSPECIFIED-action', label, value]);
+		                }
+		                else {
+		                    _gaq.push(['_trackEvent', category, action, label, value]);
+		                }
+
+		            }
+
+		        }
+		    }
+		};
+
+		/// BUI.api -
+		/// Use to execute cross-domain requests (uses easyXDM)
+        /// E.g. To invoke a cross domain call, do the following -
+        /// $('#myButton').click(function(){
+		///     var data = { contentId: 123 }
+		///     var message = { method: (navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? "get" : "post";, 
+		///                     payload: data, 
+		///                     action: 'api.break.com/article/get }
+		///     BUI.api.submit(message, 
+		///                     function (data) {
+		///                    returnedJsonObj = JSON.parse(data.data)
+        ///                   });
+        /// )};
+		BUI.api = {
+		    _init: undefined,
+		    response: function (response) {
+		        if ($.isFunction(this._cb)) {
+		            this._cb(JSON.parse(response));
+		        }
+		    },
+		    _cb: undefined,
+		    submit: function (message, cb) {
+		        if (BUI.api._init === undefined) alert('BUI.api.init() should be called.');
+		        this._cb = cb;
+		        //if ('payload' in message) {
+		        if(message.hasOwnProperty('payload')){
+		            var payload = message.payload;
+		            payload.token = $.cookie('brk_auth');
+                    message.payload = payload
+                    this.socket.postMessage(JSON.stringify(message));
+		        }
+		        else {
+		            alert('In order to comply with the Api standard, message object should have a property named payload.\n submit aborted.');
+		        }
+		        
+		    },
+		    socket: undefined,
+		    init: function () {
+		        ///Upload Page somehow has easyXDM as undefined. The easyXDM.js was not loaded, so we load it explicitly here.
+		        if (typeof easyXDM === 'undefined') { 
+		            loadScript('//media1.break.com/break/js/api/easyXDM/easyXDM.min.js', function () {
+		                if (BUI.api._init === undefined) {/// init only once. 
+		                    this.socket = new easyXDM.Socket({
+		                        remote: "http://api.breakmedia.com/provider.html",
+		                        onMessage: function (message, origin) {
+		                            BUI.api.response(message);
+		                        }
+		                    });
+		                    BUI.api._init = true;
+		                }
+		            });
+		        }
+		        else {//even with the above explicit load, easyXDM was not available in Article cdp., so loading it here.
+		            this.socket = new easyXDM.Socket({
+		                remote: "http://api.breakmedia.com/provider.html",
+		                onMessage: function (message, origin) {
+		                    BUI.api.response(message);
+		                }
+		            });
+		            BUI.api._init = true;
+		        }
+		    }
+		};
+        BUI.session = {
+            uiState: {
+                commentsInteracted: false
+		        ,commentsFocused  : false
+            }
+        };
+/** Global UI object **/
+
+
+/** Implanted from CDP 2.1.js **/
+function IsMeaningless(str) {
+    var tempStr = str.split(" ");
+    for (i = 0; i < tempStr.length; i++) {
+        if (tempStr[i] != "") {
+            return false;
+        }
+    }
+    return true;
+}
+
+function renderDefultComments() {
+    var html = "";
+    html += "No Comments.";
+    return html;
+}
+
+function renderViews(stats) {
+    var html = "";
+    html += placeCommasInNumber(stats.Views);
+    return html;
+}
+
+function renderCommentCount(stats) {
+    var html = "";
+    html += stats.Comments;
+    return html;
+}
+
+function renderLowerCommentCount(stats) {
+    if (parseInt(stats.Comments) == 0)
+        return "0 Comments";
+
+    if (parseInt(stats.Comments) < 11)
+        return "1 - " + parseInt(stats.Comments) + " of " + parseInt(stats.Comments) + " Comments";
+    else
+        return "1 - 10 of " + parseInt(stats.Comments) + " Comments";
+}
+
+function renderPosted(stats) {
+    var html = "";
+    html += stats.Posted;
+    return html;
+}
+
+function renderDefaultLinkbacks() {
+    //backwards compatibility - Movie Trailers, Showcase CDP
+    if (document.getElementById("linkback_box_nocontent")) {
+        document.getElementById("linkback_box_nocontent").style.display = "block";
+    }
+    else {
+        document.getElementById("whoslinking-module-wrap").style.display = "block";
+        document.getElementById("whoslinking-nocontent").style.display = "block";
+    }
+}
+
+function renderLinkbacks(linkbacks) {
+
+    //backwards compatibility - Movie Trailers, Showcase CDP
+    if (document.getElementById("linkback_box_nocontent")) {
+        document.getElementById("linkback_box_content").style.display = "block";
+    }
+    else {
+        document.getElementById("whoslinking-module-wrap").style.display = "block";
+        document.getElementById("whoslinking-linkback-content").style.display = "block";
+    }
+
+
+    //backwards compatibility - Movie Trailers, Showcase CDP
+    if (document.getElementById("linkback_box_content_div")) {
+        var linkbackContent = document.getElementById("linkback_box_content_div");
+        linkbackContent.innerHTML = "";
+    }
+    else {
+        linkbackContent = document.getElementById("linkbacks-content-wrap");
+        linkbackContent.innerHTML = "";
+    }
+
+    var linkbackArr = new Array();
+
+    if (typeof (linkbacks.length) == "undefined")
+        linkbackArr[0] = linkbacks;
+    else
+        linkbackArr = linkbacks;
+
+    if (linkbackArr.length > 0) {
+        for (i = 0; i < linkbackArr.length; i++) {
+            var text = linkbackArr[i].ReferrerURL;
+            if (text.length > 55)
+                text = text.substring(0, 55) + "...";
+
+            linkbackContent.innerHTML += "<div><span>" + linkbackArr[i].Views + "</span> views via <a class=\"break-link\" href=\"" + linkbackArr[i].ReferrerURL + "\">" + text + "</a></div>";
+        }
+    }
+}
+
+
+function GetSpamLink(commentId) {
+    var link = "";
+
+    if (canPost != "") {
+        link = "[ " + "<a href='javascript:SentSpam(" + commentId + ");'>spam</a>" + " ] ";
+    }
+
+    return link;
+}
+
+
+
+function updateCommentSpam(jsonData) {
+    alert("Thank you for Marking as Spam.");
+}
+
+function closeOpenReplies(commentId) {
+    if (openReplies > -1 && openReplies != commentId) {
+        toggleBox("newPopup_post_reply" + openReplies, 0);
+    }
+    openReplies = commentId;
+}
+
+/* function onMissingAvatar(img){
+img.src = "http://media1.break.com/break/img/site/avatar_mini.gif";
+} */
+
+
+function submitReplyComment(commentReplyId, isTopRated) {
+    var subject = "";
+    var comment = "";
+    var isInError = false;
+    var fromId = getEncodedMemberID();
+
+    var postTextId = "post_text" + commentReplyId;
+
+    if (isTopRated == true) {
+        postTextId = "toprated_" + postTextId;
+    }
+
+    comment = document.getElementById(postTextId).value;
+
+    if (comment == "" || IsMeaningless(comment)) {
+        displayMessage("commentReplyBodyError" + commentReplyId, "You must specify a comment.");
+        isInError = true;
+    }
+
+    if (isInError)
+        return;
+
+    hideReplyMessage(commentReplyId, isTopRated);
+    var toggleBoxId = "newPopup_post_reply" + commentReplyId;
+
+    if (isTopRated == true) {
+        toggleBoxId = "toprated_" + toggleBoxId;
+    }
+
+    toggleBox(toggleBoxId, 0);
+    mcs.postContentComment(siteId, fromId, sGlobalContentID, commentReplyId, subject, comment, postContentCommentCallback);
+    _gaq.push( // for Google Analytics
+    ['_trackEvent', 'user', 'post_reply', thisURL]
+  );
+    lastcomment = comment;
+    lastcommentreplyid = commentReplyId;
+    lastsubject = subject;
+
+    /* Check if they are with a third party and send comment to that site if they allow you to */
+    //   if (thirdPartyIsLoggedIntoBreak()) {        
+    //       ThirdPartyMember.checkPermissions(submitCommentToThirdPartySite, "publish_stream");
+    //   }
+}
+
+function submitComment(comment, parentElem) {
+
+    var subject = "";
+    var isInError = false;
+    var fromId = getEncodedMemberID();
+
+    if (comment == "Write your comment...") { // default val is unchanged, reacting only if they've entered something
+        return;
+    }
+
+    if (comment == "" || IsMeaningless(comment)) {
+        renderCommentsError('You must specify a comment', parentElem);
+        isInError = true;
+    }
+
+    _gaq.push( // for Google Analytics
+    ['_trackEvent', 'user', 'post_comment', thisURL]
+  );
+
+    //mcs.postContentComment(siteId, fromId, sGlobalContentID, 0, subject, comment, postContentCommentCallback);
+    mcs.postContentComment(siteId, fromId, sGlobalContentID, 0, subject, comment, function () {
+        postContentCommentCallback(parentElem);
+    });
+    /* lastcomment = comment;
+    lastcommentreplyid = 0;
+    lastsubject = subject; */
+}
+
+function postContentCommentCallback(xmlDoc, isOk, parentElem) {
+    // @ToDo: test against parentElem for where to return results
+    //console.log('postContentCommentCallback() called');
+    //console.log(xmlDoc);
+    //console.log(isOk);
+    //console.log(parentElem);
+    if (!isOk) {
+        //displayMessage("genericError", "Error saving comment.");
+        renderCommentsError('Error saving comment', parentElem);
+        return;
+    }
+
+    try {
+        var responseNode = xmlDoc.documentElement;
+
+        if (responseNode.getAttribute("Code") < 0) {
+            if (responseNode.getAttribute("Code") < -2) {
+                displayMessage("genericError", responseNode.getAttribute("Message"));
+            }
+        }
+        else {
+            //document.getElementById("iReplySubject").value = "";
+            document.getElementById("taReplyComments").value = "";
+            document.getElementById("taReplyCommentsVideoDetails").value = "";
+
+            var avatar;
+            var nickName;
+            var node = xmlDoc.documentElement;
+
+            for (i = 0; i < node.childNodes.length; i++) {
+                if (node.childNodes[i].nodeName == "avatarURL") {
+                    avatar = node.childNodes[i].firstChild.nodeValue;
+                }
+                else if (node.childNodes[i].nodeName == "memberNickname") {
+                    nickName = node.childNodes[i].firstChild.nodeValue;
+                }
+            }
+            clearDefaultComment();
+            insertComment(lastcommentreplyid, lastsubject, lastcomment, avatar, nickName);
+        }
+        return;
+    }
+    catch (e) {
+        document.getElementById("taReplyComments").value = "";
+        document.getElementById("taReplyCommentsVideoDetails").value = "";
+    }
+}
+
+function submitCommentToThirdPartySite(result) {
+    if (result !== null) {
+        if (result.toString() === "0" || result.toString() === "false") { return; } /* The user didn't allow us to post to Facebook */
+        /* The user accepted the request to post this comment to the 3rd party site, so make a call to the service to send this comment */
+        ThirdPartyMember.getName(function (result) {
+
+            var userInfo = result[0];
+            var comment = lastcomment;
+            if (comment === "" || comment === null) {
+                return;
+            }
+            var postTitle = userInfo.first_name + " commented on the " + getMetaDataByName('embed_video_title') + " video";
+            var attachments = { "name": postTitle, "href": window.location.href, "description": getMetaDataByName('embed_video_description'), "media": [{ "type": "video", "video_src": getMetaDataByName('embed_video_url'), "preview_img": getMetaDataByName('embed_video_thumb_url'), "video_title": getMetaDataByName('embed_video_title')}] };
+
+            var actionLinks = [{ "text": "Watch Video", "href": window.location.href}];
+            //FB.Connect.streamPublish(comment, attachments, actionLinks, null, null, function(result) { }, true);            
+            mcs.postCommentToThirdParty(postTitle, "", ThirdPartyMember.getThirdPartyName(), comment, window.location.href, getMetaDataByName('embed_video_description'), getMetaDataByName('embed_video_url'), getMetaDataByName('embed_video_thumb_url'), getMetaDataByName('embed_video_title'), thirdPartyCommentSent);
+
+        });
+    }
+}
+
+function getEncodedMemberID() {
+    var memberIdCookie = getCookie("MemberID");
+    if (memberIdCookie != null)
+        return memberIdCookie;
+    else
+        return null;
+}
+
+
+/***** Utils *****/
+function placeCommasInNumber(number) {
+    number = '' + number;
+    if (number.length > 3) {
+        var mod = number.length % 3;
+        var output = (mod > 0 ? (number.substring(0, mod)) : '');
+        for (i = 0; i < Math.floor(number.length / 3); i++) {
+            if ((mod == 0) && (i == 0))
+                output += number.substring(mod + 3 * i, mod + 3 * i + 3);
+            else
+                output += ',' + number.substring(mod + 3 * i, mod + 3 * i + 3);
+        }
+        return (output);
+    }
+    else return number;
+}
+
+function CreateForBreak(isLoggedIn) {
+        $('.create-for-break').unbind('click');
+        if (isLoggedIn) {
+            $('.step-one').addClass("no-active");
+            $('.step-two').removeClass("no-active");
+            $('.create-for-break').bind('click', function () {
+                location.replace('http://upload.break.com');
+            });   
+        }
+        else {
+            $('.step-two').addClass("no-active");
+            $('.step-one').removeClass("no-active");
+            $('.create-for-break').bind('click', function (event) {
+                if (event.target.id == 'create-for-break-reg') {
+                    BRK.hat.showRegModal();
+                }
+                else {
+                    BRK.hat.showLoginModal();
+                }
+            });
+        }
+    }
+
+    var Social = {
+
+        OpenGraph: {
+
+            Publish: function (data) {
+                if (FB.getUserID() == 0 || undefined || null)
+                    return;
+
+                if (!sharingOn())
+                    return;
+
+                $.ajax({
+                    url: '/social/facebookopengraph/publish/videowatch',
+                    data: { fbUserId: data.fbUserId, videoUrl: data.videoUrl },
+                    type: 'post',
+                    error: function (request) {
+                        //alert('ajax error');
+                    },
+                    success: function (data) {
+                    }
+                });
+            },
+            Delete: function (postId) {
+                var ids = [];
+                ids[0] = postId;
+
+                $.ajax({
+                    url: '/social/facebookopengraph/delete',
+                    data: { ids: JSON.stringify(ids) },
+                    type: 'POST'
+                });
+            }
+        }
+    };
+
+	// activity sharing helper variables and functions
+    var asON = 'ON';
+    var asOFF = 'OFF';
+    var asSliverCookieName = 'brkFBActivitySharingSliver',
+	activitySharingONCopy = 'You are currently sharing your activity to <span class="fb-txt">Facebook</span>. Toggle to turn it off.',
+	activitySharingOFFCopy = 'You are not currently sharing your activity to <span class="fb-txt">Facebook</span>. Toggle to turn it on.',
+	activitySharingSUSPENDEDCopy = 'Video is too edgy for Facebook auto sharing.',
+	activitySharingSharebarCopy = 'FB activity is off <div id="fb-activity-sharing-status-copy">Video is too edgy for Facebook auto sharing.</div>',
+	activitySharingSliverCopy = 'You can now share the videos you watch with your Facebook friends easier than ever. As a Facebook user, your activity sharing has been set to "on".';
+
+    function isFBActivitySharingOn() {
+        if (typeof BRK.api != 'undefined' && typeof BRK.api.session != 'undefined' ) {
+            return BRK.api.session.FbActivityShare;
+        }
+        else {
+            // attempt to get FbActivityShare from brk_net_13 cookie
+            if (jQuery.cookie("brk_net_13") != null) {
+                var json = JSON.parse(jQuery.cookie("brk_net_13"));
+                return json.FbActivityShare;
+            }
+            return false;
+        }
+    }
+
+	function isCDP() {
+		var _ic = false;
+
+		if (typeof contentId != 'undefined')
+			_ic = true;
+
+		return _ic;
+	}
+		
+	function sharingOn(){
+		var _so = false;
+
+		if (isFBActivitySharingOn() && safeContent())
+			_so = true;
+
+		return _so;
+	}
+
+	function safeContent() {
+		var _sc = true;
+
+		if (typeof audienceRating != 'undefined')
+		    if (audienceRating != 'G' && audienceRating != 'PG' && audienceRating != '14')
+			    _sc = false;
+
+		return _sc;
+	}
+
+	function switchPos(state) {
+		if(state == asOFF) {
+			if(safeContent())
+				jQuery('#activity-sharing-copy').html(activitySharingOFFCopy);
+        	else
+				jQuery('#activity-sharing-copy').html(activitySharingSUSPENDEDCopy);
+
+            jQuery('.activity-sharing-btn').css('margin-left', '24px');
+        }
+
+        else {
+			jQuery('#activity-sharing-copy').html(activitySharingONCopy);
+			jQuery('.activity-sharing-btn').css('margin-left','1px');
+		}
+    }
+
+	function showFASDisabledIcon() {
+	    jQuery('#fb-activity-sharing-status').html(activitySharingSharebarCopy);
+		jQuery('#fb-activity-sharing-status').css('display', 'block');
+	}
+
+	function showFASSliver() {
+		var sliverMarkup = '';
+		if (!jQuery.cookie(asSliverCookieName)) {
+			sliverMarkup += '<span id="fb-as-sliver-click-close"></span>';
+			sliverMarkup += '<span id="fb-as-sliver-txt">';
+			sliverMarkup += '<p class="fb-as-sliver-title" style="color:#000000;"><span style="color:red;">NEW FEATURE:</span> SHARING BREAK WITH FRIENDS</p>';
+			sliverMarkup += '<p class="fb-as-sliver-body" style="color:#000000;">' + activitySharingSliverCopy + '</p>';
+			sliverMarkup += '</span>';
+			sliverMarkup += '<span id="fb-as-sliver-click"></span>';
+			if (!isCDP()) {
+			    jQuery('#fb-activity-sharing-sliver').css('marginTop', '15px'); //Adjustment for homepage
+			}
+			jQuery('#fb-activity-sharing-sliver').html(sliverMarkup);
+			jQuery(window).load(function () {
+			    setTimeout(function () {
+			        jQuery('#fb-activity-sharing-sliver').slideDown(600, 'linear');
+			    }, 1000);
+			});
+		}
+		jQuery('#fb-as-sliver-click').click(function () {
+			showFASLightbox();
+		});
+		jQuery('#fb-as-sliver-click-close').click(function () {
+			closeFASSliver();
+			jQuery.cookie(asSliverCookieName, 'x', { expires: 365, path: '/', domain: 'break.com' });
+		});
+	}
+
+	function closeFASSliver() {
+		jQuery('#fb-activity-sharing-sliver').slideUp(300, 'linear');
+	}
+
+	function showFASLightbox() {
+		var lightboxMarkup = '';
+		lightboxMarkup = '<div style="background:url(http://media1.break.com/break/img/site/fb-as-lb-bg.jpg) 0 4px #E0E4E7 no-repeat;display:block;width:792px;height:530px;">';
+		lightboxMarkup += '<h2 style="margin:0;padding-top:14px;padding-left:13px;font-size:20px;">Sharing Break With Friends</h2><br />';
+		lightboxMarkup += '<div style="width:410px;padding-left:13px;font-size:14px;padding-top:10px;">'
+		lightboxMarkup += '<p style="margin:0;">At Break, we are constantly sharing our favorite videos we find with our friends, and know you like to do that, too. So, we made sharing the best of Break even easier. If you log into Break using Facebook, you can seamlessly share the videos you watch with your friends. Here are some more details:</p><br />';
+		lightboxMarkup += '<ul style="list-style-type:none;margin:0;padding:0;">';
+		lightboxMarkup += '<li style="padding-left:28px;background:url(http://media1.break.com/break/img/site/fb-as-lb-ul-1.png) no-repeat top left;margin-bottom:10px;">You can adjust your Activity Sharing at any time.  There is a slider on the upper right of every page on Break; just toggle the slider at any time if you want to adjust your sharing activity.  If you are at work and need to have a lower profile Break session, we get it, toggle it OFF!</li>';
+		lightboxMarkup += '<li style="padding-left:28px;background:url(http://media1.break.com/break/img/site/fb-as-lb-ul-2.png) no-repeat top left;margin-bottom:10px;">We recognize that some of the videos on Break are a bit too edgy for the general Facebook population, so we\'ll only be sharing videos rated G and PG. You\'ll know if we aren\'t sharing it by the note under the video player.</li>';
+		lightboxMarkup += '<li style="padding-left:28px;background:url(http://media1.break.com/break/img/site/fb-as-lb-ul-3.png) no-repeat top left;margin-bottom:10px;">You can adjust who you share your activity with within the app on Facebook. Choose your friends only, friends of friends, or everyone.</li>';
+		lightboxMarkup += '</ul>';
+		lightboxMarkup += '<p>This new feature will help you to discover all the best content on Break faster and easier than ever before, and impress your friends with your good taste in funny videos.  If you have more questions about what it does, or how to adjust settings, <a style="color:#255D96;text-decoration:none;" href="http://info.break.com/break/html/fb/activity-sharing/faq.html" target="_blank">click here</a>. You can also send us feedback at <a style="color:#255D96;text-decoration:none;" href="mailto:fbshare@break.com">fbshare@break.com</a>.</p>';
+		lightboxMarkup += '</div>';
+		lightboxMarkup += '</div>';
+
+		BRK.overlay.show(lightboxMarkup, function () {
+			jQuery('#bmn-overlay').css('width', '695px');
+			jQuery('#bmn-overlay').css('margin-left', '0');
+			jQuery('#bmn-overlay-inner').css('background-color', '#E0E4E7');
+			jQuery('.bmn-cr-account-form').css('padding', '15px');
+		});
+		var lightboxLeftPos = Math.round((jQuery(window).width() - 822) / 2); //Adjust centering
+		jQuery('#bmn-overlay').css('left', lightboxLeftPos + 'px');
+		jQuery('#bmn-overlay').css('width', '793px');
+		jQuery('#bmn-overlay-inner').css('background-color', '#EBEDF0');
+		jQuery('.bmn-cr-account-form').css('padding', '0');
+	}
+	function LoadAgeGate(himSess) {
+	    if (himSess.BornDate != null) {
+	        // set age gate cookie upon login
+	        var today = new Date();
+	        var birthDate = eval('new ' + himSess.BornDate.replace('/', '').replace('/', ''));
+
+	        if (today >= new Date(birthDate.getFullYear() + 18, birthDate.getMonth(), birthDate.getDate())) {
+	            jQuery.cookie('brkAgeGate', 'true', { path: '/', domain: 'break.com' });
+	        }
+	        else {
+	            jQuery.cookie('brkAgeGate', 'false', { path: '/', domain: 'break.com' });
+	        }
+
+	        if ($("#cdp-agegate").length > 0) {
+	            $('#cdp-agegate').remove();
+	            window.BUI.controls.user.renderBlockGallery(birthDate);
+	        }
+	    }
+	}
+	function FBActivitySharingInit() {
+        // BRKR-1202 comment out activity sharing for now
+        /*
+		if (typeof FB !== 'undefined') {
+		    FB.getLoginStatus(function (response) {
+		        if (response.status === 'connected') { //User is logged onto FB and has Break app enabled
+		            if (isFBActivitySharingOn()) {
+		                toggleFBActivitySharingSwitchOn();
+		            }
+		            else {
+		                toggleFBActivitySharingSwitchOff();
+		            }
+
+		            if (sharingOn()) {
+		                switchPos(asON);
+		            }
+		            else
+		                switchPos(asOFF);
+
+		            if ((isCDP() && safeContent()) || (!isCDP() && jQuery('#fb-activity-sharing-sliver').length))
+		                showFASSliver(); //Show sliver message on safe CDP content or homepage
+		            else if (isCDP() && !safeContent())
+		                showFASDisabledIcon(); //Show disabled "icon" below player for non-PG/G CDP
+
+		        }
+		        else if (response.status === 'not_authorized') { //User is logged onto FB but does not have Break app enabled OR permission is not enabled
+		            jQuery('#fb-activity-sharing').addClass('not-auth');
+		            switchPos(asOFF);
+
+		            if ((isCDP() && safeContent()) || (!isCDP() && jQuery('#fb-activity-sharing-sliver').length))
+		                showFASSliver(); //Show sliver message on safe CDP content or homepage
+		        }
+		        else { //User is not logged onto FB
+		            //alert('not logged in');
+		            jQuery('#fb-activity-sharing').addClass('not-auth');
+		            switchPos(asOFF);
+		        }
+		    });
+
+			FB.api('/me/permissions',function(r){
+				if(r.data) {
+					if(!r.data[0].publish_actions) { //Break app is installed but permission is not granted
+						jQuery('#fb-activity-sharing').addClass('not-auth');
+						switchPos(asOFF);
+
+						if(isCDP() && safeContent())
+							showFASSliver();
+                    }
+                    else
+                        jQuery('#fb-activity-sharing').removeClass('not-auth');
+				}
+			});
+		}
+		else {
+			switchPos(asOFF);
+		}
+        */
+	}
+
+	$(document).ready(function () {
+	    checkLogin($);
+	    myActivitySharing();
+
+	    //auth menu hover - here because of IE8 bug
+	    $('#masthead-edge > .menu').delegate('#auth-gear > a', 'mouseenter', function () {
+	        $(this).parent().addClass('active');
+	    })
+		.delegate('#auth-gear.active', 'mouseleave', function () {
+		    $(this).removeClass('active');
+		});
+
+	    // Ghetto button hotness for back to old Break
+		var backToBreakFlow = function (ev) {
+			var backToBreakModal /** DOM */,
+				formSubmission /** Func */,
+				takeUserToOldBreak /** Func*/;
+
+			// On form submit
+			formSubmission = function (ev) {
+				var emailElem /** DOM */,
+					emailValue /** String*/,
+					errMsg /** String */,
+					feedbackTxt /** String */,
+					emailElSelector = '#js-b2b-email-cntr',
+					feedElSelector = '#js-b2b-feedback-cntr';
+
+				ev.preventDefault();
+
+				// If the user has already submited the form, exit function
+				if ($('.mod-back-to-brk-cntr').hasClass('is-disabled')) {
+					return;
+				}
+
+				// Validate email entry
+				emailElem = document.getElementById('js-b2b-email');
+				// trim whitespace at beginning and end
+				emailValue = emailElem.value.replace(/^\s+|\s+$/g, '');
+				// Validate feedback
+				feedbackTxt = document.getElementById('js-b2b-feedback').value;
+
+				// If the trimmed value is empty or not a valid email address
+				if (emailValue.length < 0 || (!BRK.hat.emailRegEx.test(emailValue))) {
+					errMsg = '<strong>Email is invalid</strong>Please check the Email format';
+					BRK.hat.valMsg(emailElSelector, errMsg, true);
+					return;
+				} else {
+					BRK.hat.valMsg(emailElSelector, '', false); // Clean up error messaging
+				}
+
+				// If the feed back is empty, trow validation error
+				if (feedbackTxt.length < 1) {
+					errMsg = '<strong>Empty!</strong>Please provide feedback';
+					BRK.hat.valMsg(feedElSelector, errMsg, true);
+					return;
+				} else {
+					BRK.hat.valMsg(feedElSelector, '', false); // Clean up error messaging
+				}
+
+				// This class will make the form "look" disabled and will not allow the user to submit multiple times
+				$('.mod-back-to-brk-cntr').addClass('is-disabled');
+
+				// Use the "complete" callback here so that regardless of an error, we will allow the user to move on
+				$.ajax({
+					data : {
+						'username' : emailValue,
+						'feedback' : feedbackTxt
+					},
+					type : 'POST',
+					url : '//www.break.com/api/ET_BreakBetaFeedback',
+					complete : takeUserToOldBreak
+				});
+
+			}; // formSubmission
+
+			takeUserToOldBreak = function () {
+				var loc = "Other";
+
+				// Change the user's cooke to show they should see old break
+				$.cookie('isBB', '0', {
+					expires : 30,
+					path : '/',
+					domain : 'break.com'
+				});
+
+				// GA Tracking code
+				/*
+				 TODO: This is NOT a reliable way to determine the page type
+				 */
+				if ($('#cdp').length) {
+					loc = 'VideoCDP';
+				} else if ($('#cdp-gallery').length) {
+					loc = 'Gallery';
+				} else if ($('#cdp-playlist').length) {
+					loc = 'Playlist';
+				} else if ($('#home').length) {
+					loc = 'Homepage';
+				}
+
+				_gaq.push(['_set', 'hitCallback', function () {
+					location.href = 'http://www.break.com';
+				}]);
+				_gaq.push(['_trackEvent', 'BackToOldBreak', 'ClickBack', loc]);
+			}; //takeUserToOldBreak
+
+			// User must fill out feedback form to continue, so stop default event
+			ev.preventDefault();
+
+			// Get form template pass contents to modal method. Also pass the clean up function for an close to remove the event listeners
+			BRK.overlay.show(document.getElementById('tmpl-back-to-old-break').innerHTML, function () {
+				backToBreakModal.overlay.off();
+			});
+
+			backToBreakModal = BRK.overlay.modal();
+
+			// In case the browser does not support placeholder
+			BUI.utils.placeholderShim(backToBreakModal.overlay, true);
+
+			// Submission event
+			$(backToBreakModal.overlay).on('click', '#js-back-to-break-submit', formSubmission);
+
+		}; // backToBreakFlow
+
+		$("#ghetto-button").bind('click', backToBreakFlow);
+
+		window.BUI.tracking.GA.init();
+		window.BUI.tracking.HADOOP.init();
+	    window.BUI.api.init();
+
+	});
+
+    var $fbActivityMarkup = '';
+    $fbActivityMarkup += '<div><strong>Activity Sharing</strong>';
+    $fbActivityMarkup += '<label title="Turn sharing on to share videos you\'ve watched on your Facebook Timeline." class="on"><b class="ir input radio">&nbsp;</b><span>ON</span></label>';
+    $fbActivityMarkup += '<label title="Turn sharing off to keep the videos that you\'ve watched to yourself. " class="off"><b class="ir input radio">&nbsp;</b><span>OFF</span></label></div>';
+    $fbActivityMarkup = jQuery($fbActivityMarkup);
+
+    function toggleFBActivitySharingSwitchOn() {
+        $fbActivityMarkup.find('.on').addClass('active');
+        $fbActivityMarkup.find('.off').removeClass('active');
+        //Add event trackers to On activity sharing toggle switch
+        if (typeof _gaq !== "undefined")
+            if (typeof _gaq.push !== "undefined")
+                _gaq.push(['_trackEvent', 'click', 'Activity_Sharing_ON']);
+            $('#tab-sharesettings-videos-you-watch-on').parent("span").addClass('checked');
+            $('#tab-sharesettings-videos-you-watch-off').parent("span").removeClass('checked');
+    }
+
+    function toggleFBActivitySharingSwitchOff() {
+        $fbActivityMarkup.find('.on').removeClass('active');
+        $fbActivityMarkup.find('.off').addClass('active');
+        //Add event trackers to Off activity sharing toggle switch
+        if (typeof _gaq !== "undefined")
+            if (typeof _gaq.push !== "undefined")
+                _gaq.push(['_trackEvent', 'click', 'Activity_Sharing_OFF']);
+            $('#tab-sharesettings-videos-you-watch-on').parent("span").removeClass('checked');
+            $('#tab-sharesettings-videos-you-watch-off').parent("span").addClass('checked');
+    }
+
+    function UpdateUserShareSetting(shareSettingType, newValue) {
+        BRK.comm.submit({ method: 'get', payload: { userId: BRK.api.session.Id, shareSettingType: shareSettingType, newValue: newValue, appId: 13 }, action: BRK.AuthServer + '/Profile/UpdateUserShareSetting' }, function (response) {
+            if (response.success && response.message == '') {
+                if (newValue)
+                    toggleFBActivitySharingSwitchOn();
+                else
+                    toggleFBActivitySharingSwitchOff();
+                return;
+            }
+        });
+    }
+
+	function myActivitySharing() {
+
+		var fullLaunch = true; //Set this to true when test phase is over
+
+		if(getQueryVariable('fb')) {
+			jQuery.cookie('brkFBTest',getQueryVariable('fb'),{ expires: 365, path: '/' });
+		}
+
+		if(jQuery.cookie('brkFBTest') == 'true') {
+			fullLaunch = true;
+		}
+			
+		if((navigator.userAgent.indexOf("iPad") != -1) || (navigator.userAgent.indexOf("iPhone") != -1)) {
+			fullLaunch = false;
+		}
+
+        if (fullLaunch) {
+            // BRKR-1202 comment out activity sharing for now
+            /*
+		    if (isFBActivitySharingOn()) {
+		        toggleFBActivitySharingSwitchOn();
+		    }
+		    else {
+		        toggleFBActivitySharingSwitchOff();
+		    }
+
+			jQuery('#fb-activity-sharing').html($fbActivityMarkup);
+			jQuery(window).load(function() {
+				setTimeout(function() {
+					jQuery("#fb-activity-sharing").fadeIn(1500);
+				},1000);
+			});
+
+			$fbActivityMarkup.find('label').click(function(){
+				if(!jQuery('#fb-activity-sharing').hasClass('not-auth') && safeContent())
+					myToggleSwitch(jQuery(this)); //Toggles switch ON/OFF, replace hover copy, and sets cookie value
+                else if(jQuery('#fb-activity-sharing').hasClass('not-auth')) {
+					BRK.api.fbLogon(); //Bring up FB App authorization window
+				}
+            });
+
+            FBActivitySharingInit();
+            */
+        }
+
+        // BRKR-1202 comment out activity sharing for now 
+        /*
+		$('#fb-activity-sharing label').qtip({
+			position: {
+				my: 'top center',
+				adjust:	{
+					x:-35,
+					y:0
+				}
+			},
+			style: {
+				classes: 'tooltip-activity-sharing',
+				tip: {
+					corner: true,
+					width: 11,
+					height: 5
+				}
+			}
+		});*/
+
+		function myToggleSwitch($this) {
+			if($this.hasClass('on')) {
+			    UpdateUserShareSetting('FbActivityShare', true);
+					
+			} else {
+			    UpdateUserShareSetting('FbActivityShare', false);
+			}
+		}
+	}
+
+
+/*
+
+	*/

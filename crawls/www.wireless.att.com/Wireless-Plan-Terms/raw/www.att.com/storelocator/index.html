@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = ''; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  
 <script type="text/javascript"> 
@@ -83,7 +186,7 @@
 //#oneMapSearchBar .floatl .searchBtn{background:url(http://www.att.com/media/cms/shop/images/map/map/searchButton.jpg) no-repeat; height:50px; width:300px; display:inline-block;}  
 div.selector span{text-align:left; background:none;}  
 #oneMapSearchBar .floatl .selector{background:url(http://www.att.com/media/cms/shop/images/map/map/searchBox.jpg) no-repeat; padding-top:6px; padding-bottom:8px;}  
-.oneMapTabG{width:90px; float:left;}  
+.oneMapTabG{width:90px; float:left; position:relative; z-index:1;} 
 .oneMapTabG a { 
     background: url("../shopcms/media/att/2012/shop/landing/map-icons/Sprite_One-Map.png") no-repeat scroll center top transparent; 
     display: inline-block; 
@@ -127,6 +230,8 @@ div.selector span{text-align:left; background:none;}
     border-right:0; 
     border-bottom:0; 
     overflow:hidden; 
+    position:relative; 
+    z-index:0; 
 } 
 .oneMapTabBox .zoomViewDesc{position:absolute;} 
 .zoomImage{background:url("../shopcms/media/att/2012/shop/landing/map-icons/Sprite_One-Map.png") no-repeat scroll -297px -150px transparent;} 
@@ -1831,7 +1936,7 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 23699451509762528414004711561052837019 --> 
+		 <!--X-Renderer: 66265288686066691254473397905942086549 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	</div> 
@@ -2030,6 +2135,9 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
             }else{ 
                 if(window.navigator){ 
                     if((window.navigator.userAgent.match(/iPhone/i)) || (window.navigator.userAgent.match(/iPad/i)) || (window.navigator.userAgent.match(/android/i)) || (window.navigator.userAgent.match(/Windows Phone/i))) { 
+                    	 if(window.location.pathname.match(/\/wifi/)){ 
+                    		window.location="//attwifi.know-where.com/attwifiw"; 
+                    	} 
                         thisOneMap.getZipForSearchfield =  true; 
                         if (window.navigator.geolocation) { 
                             window.navigator.geolocation.getCurrentPosition(thisOneMap.zoomToLocation, thisOneMap.locationError); 
@@ -2481,7 +2589,7 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 var arrCorStore = new Array(); 
                 var arrOtherStore = new Array(); 
                 for (i=0; i < results.length; i++) { 
-                   if(results[i].channel == 1 && totalCorStoreAdded < totalCorStoreToAdd ){ 
+                   if((results[i].channel == 1 || results[i].channel == 8) && totalCorStoreAdded < totalCorStoreToAdd ){ 
                        totalCorStoreAdded ++; 
                        arrCorStore.push(results[i]); 
                    }else{ 
@@ -2759,9 +2867,9 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 if(i >= iStartIndex && i < iEndIndex){ 
                     //do nothing 
                 }else{ 
-                    if(storeArr[i].channel == 1){ 
+                    if(storeArr[i].channel == 1 || storeArr[i].channel == 8){ 
                         currPushPinOption = thisOneMap.paths.pushPinOptions["dot_orange_white"]; 
-                    }else if(storeArr[i].channel == 2 || storeArr[i].channel == 8){ 
+                    }else if(storeArr[i].channel == 2 ){ 
                         currPushPinOption = thisOneMap.paths.pushPinOptions["dot_orange"]; 
                     }else{ 
                         currPushPinOption = thisOneMap.paths.pushPinOptions["dot_blue"]; 
@@ -2776,15 +2884,18 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
             var iTempIndexForPin = (iEndIndex-1) - iStartIndex; 
             for(var j = (iEndIndex-1); j >= iStartIndex; j--){ 
                 var strTitle = ""; 
-            	if(storeArr[j].channel == 1){ 
+            	if(storeArr[j].channel == 1 || storeArr[j].channel == 8){ 
                     currPushPinOption = thisOneMap.paths.pushPinOptions["blank_orange_white"]; 
-                    strTitle = ATT.OneMap.labels.att_store; 
-                }else if(storeArr[j].channel == 2 || storeArr[j].channel == 8){ 
+                    //strTitle = ATT.OneMap.labels.att_store; 
+                    strTitle = storeArr[j].name; 
+                }else if(storeArr[j].channel == 2){ 
                     currPushPinOption = thisOneMap.paths.pushPinOptions["blank_orange"]; 
-                    strTitle = ATT.OneMap.labels.att_auth_retail; 
+                    //strTitle = ATT.OneMap.labels.att_auth_retail; 
+                    strTitle = storeArr[j].name; 
                 }else{ 
                     currPushPinOption = thisOneMap.paths.pushPinOptions["blank_blue"]; 
-                    strTitle = ATT.OneMap.labels.other_stores; 
+                    //strTitle = ATT.OneMap.labels.other_stores; 
+                    strTitle = storeArr[j].name; 
                 }  
                 currPushPinOption.text = alphaArray[iTempIndexForPin]; 
                 iTempIndexForPin--; 
@@ -2801,6 +2912,7 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 pushpin.Sat_open = storeArr[j].sat_open; 
                 pushpin.Sat_close = storeArr[j].sat_close; 
                 pushpin.id = storeArr[j].id; 
+                pushpin.ras = storeArr[j].ras; 
                 Microsoft.Maps.Events.addHandler(pushpin, 'click', thisOneMap.displayInfobox); 
                 Microsoft.Maps.Events.addHandler(thisOneMap.map, 'viewchange', thisOneMap.hideInfobox); 
                 thisOneMap.map.entities.push(pushpin); 
@@ -2818,6 +2930,7 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 //thisOneMap.defaultInfobox.setOptions({ visible: true, title: e.target.Title, description: e.target.Description }); 
                 thisOneMap.defaultInfobox.setOptions({ visible:true }); 
                 var satOpen =""; 
+                e.target.id == undefined ? e.target.id='' : 0; 
                 e.target.Title == undefined ? e.target.Title='' : 0; 
                 e.target.Address1 == undefined ? e.target.Address1='' : 0; 
                 e.target.City == undefined ? e.target.City='' : 0; 
@@ -2869,7 +2982,10 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                      if( ATT.OneMap.labels.lbl_appointment_check == true || ATT.OneMap.labels.lbl_appointment_check == "true"){ 
                         infoinnerhtml=infoinnerhtml+' |'; 
                      } 
-                    infoinnerhtml=infoinnerhtml+'<a href="http://www.att.com/maps/'+&#32;ATT.OneMap.labels.lbl_appointment_url+'" selector= ' +ATT.OneMap.labels.lbl_appointment + '  storeOwnerCode=' +e.target.Title + ' class="oneMapStoreInteractClick"> '+ ATT.OneMap.labels.lbl_appointment +' </a></p> <p><a href="javascript:ATT.OneMap.printSingleStore(\''+e.target.id+'\')"> ' 
+                     if(e.target.ras == 'Y'){ 
+                    	 infoinnerhtml=infoinnerhtml+'<a href="http://www.att.com/maps/'+&#32;ATT.OneMap.labels.lbl_appointment_url+e.target.id+'" selector= ' +ATT.OneMap.labels.lbl_appointment + '  storeOwnerCode=' +e.target.Title + ' class="oneMapStoreInteractClick"> '+ ATT.OneMap.labels.lbl_appointment +' </a></p>'; 
+                     } 
+                    infoinnerhtml=infoinnerhtml+'<p><a href="javascript:ATT.OneMap.printSingleStore(\''+e.target.id+'\')"> ' 
                      +ATT.OneMap.labels.lbl_storedetails+' <span>></span></a></p></div></div></div></td></tr><tr> <td colspan="2" class="tip-bottom tip-bg-image"' 
                      +' style="background-image: url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);"> <span></span></td></tr></tbody></table>' 
                      +'<div class="tip-arrow tip-arrow-bottom" style="visibility: inherit;"></div></div>'; 
@@ -3014,18 +3130,21 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 var address=item.name+"|"+item.address1; 
                 var currPushPin, currPushPinClass; 
                 if(thisOneMap.currentSelectedTab == "storeLocation"){ 
-                    if(item.channel == 1){ 
+                    if(item.channel == 1 || item.channel == 8){ 
                         currPushPin = thisOneMap.paths["blank_orange_white_small"]; 
                         currPushPinClass = 'blank_orange_white_small'; 
-                        currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.att_store; 
-                    }else if(item.channel == 2 || item.channel == 8){ 
+                        //currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.att_store; 
+                        currName = "<p class='searchResult_companyName'>" + item.name; 
+                    }else if(item.channel == 2){ 
                         currPushPin = thisOneMap.paths["blank_orange_small"]; 
                         currPushPinClass  = 'blank_orange_small'; 
-                        currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.att_auth_retail; 
+                       // currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.att_auth_retail; 
+                        currName = "<p class='searchResult_companyName'>" + item.name; 
                     }else{ 
                         currPushPin = thisOneMap.paths["blank_blue_small"]; 
                         currPushPinClass  = 'blank_blue_small'; 
-                        currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.other_stores + "</p><p class='searchResult_companyName'>" + item.name; 
+                       // currName = "<p class='searchResult_companyName'>" + ATT.OneMap.labels.other_stores + "</p><p class='searchResult_companyName'>" + item.name; 
+                        currName = "<p class='searchResult_companyName'>" +item.name; 
                     } 
                 }else{ 
                     var currStoreName = storeArr[i].name; 
@@ -3132,10 +3251,12 @@ Recycle your wireless phones, smartphones, batteries & accessories and get rewar
                 var wifiTip_part2 = '</div></td></tr><tr> <td style="background-image: url(http://0.ecom.attccc.com/images/global/tooltip/tip-white/tip-white.png);" class="tip-bottom tip-bg-image" colspan="2"> <span></span></td></tr></tbody></table>'; 
                 if(thisOneMap.currentSelectedTab == "storeLocation"){ 
                      if(thisOneMap.labels.lbl_appointment_check == true || thisOneMap.labels.lbl_appointment_check == "true"){ 
-                         innerHtml = innerHtml+" |"; 
+                    	 if(item.ras == "Y"){ 
+                    		 innerHtml = innerHtml+" |";  
+                    		 innerHtml=innerHtml+"<a href='http://www.att.com/maps/&quot;+thisOneMap.labels.lbl_appointment_url+item.id+&quot;' selector=Appointment storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" class='oneMapStoreInteractClick'> " + txtAppointment + "</a></p>"; 
+                    	 }   
                     } 
-                    innerHtml=innerHtml+"<a href='http://www.att.com/maps/&quot;+thisOneMap.labels.lbl_appointment_url+&quot;' selector=Appointment storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" class='oneMapStoreInteractClick'> " + txtAppointment + "</a></p>" 
-                    +"<p><a storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+ item.id+"\""+" onclick='wtOneMapStoreDetailsClick(this);' href='javascript:ATT.OneMap.printSingleStore(" + item.id + ")'>"+ txtStoreDetails + "<span>></span></a></p><div class='storeDetailOverylayInfo'>" + storeDetailOverylayInfo +  "</div></div></div>"; 
+                    innerHtml=innerHtml+"<p><a storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+ item.id+"\""+" onclick='wtOneMapStoreDetailsClick(this);' href='javascript:ATT.OneMap.printSingleStore(" + item.id + ")'>"+ txtStoreDetails + "<span>></span></a></p><div class='storeDetailOverylayInfo'>" + storeDetailOverylayInfo +  "</div></div></div>"; 
                 }else if(thisOneMap.currentSelectedTab == "wi-fi"){ 
                     innerHtml=innerHtml+" |<a href='javascript:ATT.OneMap.printSingleStore(\"" + escape(item.id) + "\")' selector="+"\""+thisOneMap.labels.lbl_hotspotdetails +"\""+" storeOwnerCode="+"\""+item.channel+"\""+"  storeId="+"\""+item.id+"\""+" class=''> " + thisOneMap.labels.lbl_hotspotdetails  + "</a></p>" 
                     +"<p class='networkId'>"+thisOneMap.labels.lbl_networkid+item.ssid+"<span></span></p><div class='networkIdTip tip-white'>" + wifiTip_part1 + ATT.OneMap.labels.network_ssid + wifiTip_part2 + "</div>" 
@@ -4682,7 +4803,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","8GYtQRGGnthvScz4nGxzdvTJ!1158414502!1355892390205"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","1C9DQV8YQvMSg88PdBqvtpMJ!-114040770!1356152056321"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

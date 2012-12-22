@@ -1,0 +1,9 @@
+function Set_CPO_Cookie(name,value,expires)
+{var today=new Date();today.setTime(today.getTime());if(expires)
+{expires=expires*1000*60*60*24;}
+var expires_date=new Date(today.getTime()+(expires));var path='/';document.cookie=name+"="+escape(value)+";path="+path+((expires)?";expires="+expires_date.toGMTString():"");}
+$(function(){CookieName=false;if(getCookie('cpo')=='true'){CookieName='cpo';}else{if(getCookie('bongo_cc')=='true')
+CookieName='bongo_cc';}
+if(CookieName!=false){$("#intl-shipping").show();if('cpo'==CookieName){$("#div_cpo").show();}else{$("#div_bongo_cc").show();}
+$("#intl-shipping > div.intl-close").click(function(){$("#intl-shipping").slideUp(100);Set_CPO_Cookie(CookieName,false);return true;});}
+$(".new-c").hover(function(){$(".new-c-tx").addClass("new-c-ul");},function(){$(".new-c-tx").removeClass("new-c-ul");});})

@@ -16,6 +16,7 @@ dojo.addOnLoad(function () {
     { id: 'ENTERTAINMENT',       title: 'Take 10% Off Your Entire Product Purchase'                        },
     { id: 'festive-wine-covers', title: 'Festive Wine Covers', name: 'FestiveWineCovers'                   },
     { id: 'FBFSD',               title: 'Offer Details'                                                    },
+    { id: 'FLATRATE',            title: 'Offer Details'                                                    },
     { id: 'FOMCFRUITS',          title: 'Fruit of the Month Club&reg;'                                     },
     { id: 'FOMCLIST',            title: 'Fruit of the Month Club&reg; Collection'                          },
     { id: 'FOREIGN',             title: 'Foreign Countries We Ship To'                                     },

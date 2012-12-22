@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/wireless/accessories.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -532,7 +635,7 @@
 		<div class="w295" style="float:right;"> 
 		    <div class="marqueeTile border-bottom-dotted top"> 
 		       <div class="parbase teaser tile1"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/iFrogz_Boost_Plus_Speaker","name":"iFrogz_Boost_Plus_Speaker","campainName":"campaign","id":"campaign_iFrogz_Boost_Plus_Speaker","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/wireless-shop-tile1-existingWireless","name":"wireless-shop-tile1-existingWireless","campainName":"campaign","id":"campaign_wireless-shop-tile1-existingWireless","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-mobility"],"tags":[]}], "first", "_content_att_shop_en_wireless_accessories_jcr_content_admgr_tile1", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/Lightning_Car_Charger","name":"Lightning_Car_Charger","campainName":"campaign","id":"campaign_Lightning_Car_Charger","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/default","name":"default","campainName":"campaign","id":"campaign_default","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/wireless-shop-tile1-existingWireless","name":"wireless-shop-tile1-existingWireless","campainName":"campaign","id":"campaign_wireless-shop-tile1-existingWireless","segments":["/shopcms/shopetc/segmentation/UF/segmnts/current-mobility"],"tags":[]}], "first", "_content_att_shop_en_wireless_accessories_jcr_content_admgr_tile1", "false", null);  }</script> 
          <div id="_content_att_shop_en_wireless_accessories_jcr_content_admgr_tile1" class="campaign campaign-campaign"> 
                 <div class="page teaserpage"> 
 <div data-teaserId="/content/campaigns/att/en/accessoriescategory/Marqueepromotop/campaign/default/jcr:content;2012229" style="visibility:hidden;"> 
@@ -1273,7 +1376,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 285052100317956593944066715664595947418 --> 
+		 <!--X-Renderer: 50803162341029174829800864807157313221 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1466,7 +1569,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","rLQvQRJTCNjDWL4hLhsK6cWT!1091512834!1355893011558"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","nWX0QV1Qdh1HgwH9lXX1Bvhf!-712710834!1356152640724"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

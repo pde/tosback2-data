@@ -243,7 +243,8 @@ B=window.event
 B=D
 }if(B){A(B,C)
 }}
-},loadElement:function(A,B){CQ_Analytics.Utils.load(A,function(E,C,D){$CQ("#"+B).html(D.responseText)
+},loadElement:function(A,B){CQ_Analytics.Utils.load(A,function(E,C,D){$CQ("#"+B).html(D.responseText);
+jQuery("#"+B).trigger("teaserLoaded")
 })
 },clearElement:function(A){if(A){$CQ("#"+A).html("")
 }},indexOf:function(D,C){for(var B=0,A=D.length;

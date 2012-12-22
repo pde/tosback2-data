@@ -86,7 +86,7 @@
 			<div id="lead_form">
 				<a href="http://www.curves.com/get-started/" id="lead_link">&nbsp;</a>
 				<span class="lead_number">1.800.722.9935</span>
-								<form action="http://www.curves.com/get-started/" method="post" target="_blank">
+								<form action="http://www.curves.com/get-started/" method="post" target="_blank" id="get_started_form">
 				<button  id="get_started" class="use_sprite"></button>
 			</form>
 			</div>
@@ -105,8 +105,8 @@
 		<img src="images/footer_promos/success_stories.jpg" />
 	</div>
 	<div id="promo4" class="use_sprite parent_click">
-		<h3><a href="http://www.shopcurves.com/" target="_blank">Products</a></h3>
-		<img src="images/footer_promos/products.jpg" />
+		<h3>		<a href="http://www.shopcurves.com/" target="_blank">Products</a></h3>
+				<img src="images/footer_promos/products.jpg" />
 	</div>
 </section>
 <div class="disclaimer">
@@ -166,9 +166,10 @@
 					$(window).load(function(){
 						$('.flexslider').flexslider({
 							animation: "slide",
+							pauseOnAction: false,
 							itemWidth:960,
 							itemMargin: 0,
-							initDelay: 5000,
+							slideshowSpeed: 5000,
 							start: function(slider){
 								$('body').removeClass('loading');
 							}
@@ -259,5 +260,12 @@
 		</noscript>
 	</div>
 </div>
+<!--[if IE 7]>
+	<script>
+		$('#get_started').click(function() {
+			$('#get_started_form').submit();
+		});
+	</script>
+<![endif]-->
 </body>
 </html>

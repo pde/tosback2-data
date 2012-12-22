@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/wireless/devices/smartphones.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  
 <script type="text/javascript"> 
@@ -1238,9 +1341,9 @@ Phones Group</div>
 		}); 
 	</script> 
 							<script type="text/javascript"> 
-								wirelessDeviceFilterSize  = 40; 
+								wirelessDeviceFilterSize  = 41; 
 								jQuery('div#count .countInfo span.deviceCount').html('?'); 
-								jQuery('div#count .countInfo span.deviceSize').html('40'); 
+								jQuery('div#count .countInfo span.deviceSize').html('41'); 
 								jQuery('div#count .countInfo span.deviceTextOf').html('of'); 
 								jQuery.when(ATT.globalVars.cartPromise).done(updateCompatibilityMessage); 
 							</script> 
@@ -1254,10 +1357,10 @@ Phones Group</div>
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
-						<div class="reviewStars s4_6"> 
+						<div class="reviewStars s4_5"> 
 							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-920-matte-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6210393" title="Reviews for Nokia Lumia 920" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(94)</span> 
+								<span class="numOfReviews">(102)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1310,9 +1413,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1376,9 +1479,9 @@ Phones Group</div>
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1408,156 +1511,15 @@ Phones Group</div>
 	</div> 
 								</div> 
 							</div> 
-							<div id="device_prod5670223" class="listGrid-devicePanel" > 
-								<div id="item_sku5760250" class="listGrid-item"> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-titleInfo"> 
-		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html" class="clickStreamSingleItem" data-pid="prod5670223" data-sku="sku5760250" title="Details for Samsung Rugby® Smart" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-				Samsung Rugby® Smart 
-			</a> 
-		</div> 
-		<div class="listGrid-rating"> 
-						<div class="reviewStars s3_8"> 
-							<a href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod5670223" title="Reviews for Samsung Rugby® Smart" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(77)</span> 
-							</a> 
-						</div> 
-			<div class="clear" ></div> 
-		</div> 
-				<div class="listGrid-speed"><img alt="4G" title="4G" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-30px.png"/></div> 
-	</div> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-imagePrice"> 
-		<div class="listGrid-image"> 
-			<a href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html" class="quickViewLink" data-skuid="sku5760250" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-					<a href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html" class="clickStreamSingleItem" data-pid="prod5670223" title="Details for Samsung Rugby® Smart" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-						<img id="image-sku5760250" class="inStockOpacity" alt="Details for Samsung Rugby® Smart" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-rugby&#32;smart-gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-					</a> 
-		</div> 
-		<div class="listGrid-priceInfo"> 
-				<div class="listGrid-price"> 
-									$0.99 
-				</div> 
-			<!-- 
-					<div class="commitmentTerm">2-year contract & new activation required.</div> 
-						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
-			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Holiday Deal" title="Holiday Deal" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-holiday-deal-en.jpg" height="50"/> 
-                                </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
-		</div> 
-	</div> 
-	<div class="listGrid-barSection"> 
-			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
-				<div class="listGrid-activationShippingBar hidden">					 
-					<div class="clear listGrid-barGap hidden"></div> 
-				</div> 
-	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku5760250');" onmouseout="contractFinePrint('#item_sku5760250');" > 
-		<div class="gridFinePrint"> 
-		</div> 
-		<div class="listGrid-qtyView" > 
-			<div class="listGrid-compare "> 
-						<input type="checkbox" value="sku5760250" name="skuId" id="sku5760250" class="clickStreamGroupItem" data-pid="prod5670223" title="Compare Samsung Rugby® Smart" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5760250','check');" /> 
-				<label class="deviceCompare" for="sku5760250"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5760250:not(:checked)').click();jQuery.uniform.update('input#sku5760250');checkCompareSelectionCount('sku5760250','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-						Compare 
-					</a> 
-				</label> 
-			</div> 
-			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/samsung/rugby-smart-gray.html" class="clickStreamSingleItem" data-pid="prod5670223" title="Details for Samsung Rugby® Smart" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-							<img alt="Details for Samsung Rugby® Smart" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-						</a> 
-			</div> 
-		</div> 
-	</div> 
-								</div> 
-							</div> 
-							<div id="device_prod5800229" class="listGrid-devicePanel" > 
-								<div id="item_sku5920251" class="listGrid-item"> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-titleInfo"> 
-		<div class="listGrid-title">  
-			<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" data-sku="sku5920251" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-				HTC TITAN&trade; II 
-			</a> 
-		</div> 
-		<div class="listGrid-rating"> 
-						<div class="listGrid-review"> 
-							<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod5800229" title="Reviews for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-								Write a review 
-							</a> 
-						</div> 
-			<div class="clear" ></div> 
-		</div> 
-				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
-	</div> 
-	<div class="listGrid-noHeight-clear" ></div> 
-	<div class="listGrid-imagePrice"> 
-		<div class="listGrid-image"> 
-			<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="quickViewLink" data-skuid="sku5920251" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-					<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-						<img id="image-sku5920251" class="inStockOpacity" alt="Details for HTC TITAN&trade; II" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/htc-titan&#32;ii-blue&#32;gray-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
-					</a> 
-		</div> 
-		<div class="listGrid-priceInfo"> 
-				<div class="listGrid-price"> 
-									$0.99 
-				</div> 
-			<!-- 
-					<div class="commitmentTerm">2-year contract & new activation required.</div> 
-						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
-			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Holiday Deal" title="Holiday Deal" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-holiday-deal-en.jpg" height="50"/> 
-                                </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
-		</div> 
-	</div> 
-	<div class="listGrid-barSection"> 
-			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
-				<div class="listGrid-activationShippingBar hidden">					 
-					<div class="clear listGrid-barGap hidden"></div> 
-				</div> 
-	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku5920251');" onmouseout="contractFinePrint('#item_sku5920251');" > 
-		<div class="gridFinePrint"> 
-		</div> 
-		<div class="listGrid-qtyView" > 
-			<div class="listGrid-compare "> 
-						<input type="checkbox" value="sku5920251" name="skuId" id="sku5920251" class="clickStreamGroupItem" data-pid="prod5800229" title="Compare HTC TITAN&trade; II" label="Compare" onclick="javascript:checkCompareSelectionCount('sku5920251','check');" /> 
-				<label class="deviceCompare" for="sku5920251"> 
-					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku5920251:not(:checked)').click();jQuery.uniform.update('input#sku5920251');checkCompareSelectionCount('sku5920251','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-						Compare 
-					</a> 
-				</label> 
-			</div> 
-			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/htc/titan-ii-blue-gray.html" class="clickStreamSingleItem" data-pid="prod5800229" title="Details for HTC TITAN&trade; II" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-							<img alt="Details for HTC TITAN&trade; II" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
-						</a> 
-			</div> 
-		</div> 
-	</div> 
-								</div> 
-							</div> 
-							<div id="device_prod6230234R" class="listGrid-devicePanel" > 
-								<div id="item_sku6320259" class="listGrid-item"> 
+							<div id="device_prod6230237R" class="listGrid-devicePanel" > 
+								<div id="item_sku6320260" class="listGrid-item"> 
 		<div class="listGrid-webOnly"> 
 			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
 		</div> 
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-titleInfo"> 
 		<div class="listGrid-titleWithBanner">  
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230234" data-sku="sku6320259" title="Details for Apple iPhone 5 - 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230237" data-sku="sku6320260" title="Details for Apple iPhone 5 - 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 				Apple iPhone 5 (Refurbished) 
 			</a> 
 		</div> 
@@ -1569,15 +1531,15 @@ Phones Group</div>
 	<div class="listGrid-noHeight-clear" ></div> 
 	<div class="listGrid-imagePrice"> 
 		<div class="listGrid-image"> 
-			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black-refurb.html" class="quickViewLink" data-skuid="sku6320259" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
-					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230234" title="Details for Apple iPhone 5 - 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-						<img id="image-sku6320259" class="inStockOpacity" alt="Details for Apple iPhone 5 - 16GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;5&#32;-&#32;16gb&#32;refurb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+			<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-32gb-black-refurb.html" class="quickViewLink" data-skuid="sku6320260" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+					<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230237" title="Details for Apple iPhone 5 - 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+						<img id="image-sku6320260" class="inStockOpacity" alt="Details for Apple iPhone 5 - 32GB (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/apple-iphone&#32;5&#32;-&#32;32gb&#32;refurb-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
 					</a> 
 		</div> 
 		<div class="listGrid-priceInfo"> 
 				<div class="listGrid-price"> 
-									<div class="gridPrice">$149.99 <span class='multiDevicePrice-to'>to</span> $349.99</div> 
-									<div class="gridMultiDevicePrice">16 to 64 GB</div> 
+									<div class="gridPrice">$249.99 <span class='multiDevicePrice-to'>to</span> $349.99</div> 
+									<div class="gridMultiDevicePrice">32 to 64 GB</div> 
 				</div> 
 			<!-- 
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
@@ -1595,9 +1557,9 @@ Phones Group</div>
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1606,13 +1568,13 @@ Phones Group</div>
 					<div class="clear listGrid-barGap hidden"></div> 
 				</div> 
 	</div> 
-	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6320259');" onmouseout="contractFinePrint('#item_sku6320259');" > 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6320260');" onmouseout="contractFinePrint('#item_sku6320260');" > 
 		<div class="gridFinePrint"> 
 		</div> 
 		<div class="listGrid-qtyView" > 
 			<div class="listGrid-view"> 
-						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-16gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230234" title="Details for Apple iPhone 5 - 16GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
-							<img alt="Details for Apple iPhone 5 - 16GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						<a href="http://www.att.com/shop/wireless/devices/apple/iphone/5-32gb-black-refurb.html" class="clickStreamSingleItem" data-pid="prod6230237" title="Details for Apple iPhone 5 - 32GB (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+							<img alt="Details for Apple iPhone 5 - 32GB (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -1629,10 +1591,10 @@ Phones Group</div>
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
-						<div class="reviewStars s4_7"> 
+						<div class="reviewStars s4_6"> 
 							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-note-ii-titanium-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod6190465" title="Reviews for Samsung Galaxy Note® II" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(55)</span> 
+								<span class="numOfReviews">(60)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1670,9 +1632,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1715,7 +1677,7 @@ Phones Group</div>
 						<div class="reviewStars s4_6"> 
 							<a href="http://www.att.com/shop/wireless/devices/htc/one-xplus-carbon-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6230221" title="Reviews for HTC One&trade; X+" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(34)</span> 
+								<span class="numOfReviews">(37)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1738,9 +1700,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1780,10 +1742,10 @@ Phones Group</div>
 			</a> 
 		</div> 
 		<div class="listGrid-rating"> 
-						<div class="reviewStars s5_0"> 
+						<div class="reviewStars s4_0"> 
 							<a href="http://www.att.com/shop/wireless/devices/htc/one-vx-white.html#tab4" class="clickStreamSingleItem" data-pid="prod6230384" title="Reviews for HTC One&trade; VX" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(1)</span> 
+								<span class="numOfReviews">(2)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1806,9 +1768,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1851,7 +1813,7 @@ Phones Group</div>
 						<div class="reviewStars s4_4"> 
 							<a href="http://www.att.com/shop/wireless/devices/nokia/lumia-820-matte-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6210575" title="Reviews for Nokia Lumia 820" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(9)</span> 
+								<span class="numOfReviews">(10)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1874,9 +1836,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -1919,7 +1881,7 @@ Phones Group</div>
 						<div class="reviewStars s5_0"> 
 							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-express-titan-gray.html#tab4" class="clickStreamSingleItem" data-pid="prod6230382" title="Reviews for Samsung Galaxy Express&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(5)</span> 
+								<span class="numOfReviews">(7)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -1942,9 +1904,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2024,9 +1986,9 @@ Phones Group</div>
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2085,9 +2047,9 @@ Phones Group</div>
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2166,9 +2128,9 @@ Phones Group</div>
                                  <div class="listGrid-activationShippingBar hidden"> 
                                     <div class="clear listGrid-barGap hidden"></div> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2203,7 +2165,7 @@ Phones Group</div>
 						<div class="reviewStars s4_1"> 
 							<a href="http://www.att.com/shop/wireless/devices/htc/vivid-black.html#tab4" class="clickStreamSingleItem" data-pid="prod5310286" title="Reviews for HTC Vivid&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
-								<span class="numOfReviews">(219)</span> 
+								<span class="numOfReviews">(224)</span> 
 							</a> 
 						</div> 
 			<div class="clear" ></div> 
@@ -2229,9 +2191,9 @@ Phones Group</div>
                                 <div style="margin-top:40px;">                                        
                                             <img alt="Perfect Gift" title="Perfect Gift" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-perfect-gift-en.jpg" height="50"/> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2297,9 +2259,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2368,9 +2330,9 @@ Phones Group</div>
                                 <div style="margin-top:40px;">                                        
                                             <img alt="Best Deal" title="Best Deal" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-best-deal-en.jpg" height="50"/> 
                                 </div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2465,9 +2427,9 @@ Phones Group</div>
 					<div class="viewPackages"> 
 						<a href="http://www.att.com/shop/wireless/packages/nokia-lumia-900-package-sku5910224.html" title="Packages for Nokia Lumia 900 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322">View packages</a> 
 					</div> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2533,9 +2495,9 @@ Phones Group</div>
 					<div class="commitmentTerm">2-year contract & new activation required.</div> 
 						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
 			--> 
-                                <div style="margin-top:40px;">                                        
-                                            <img alt="Free Overnight Shipping" title="Free Overnight Shipping" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/promotions/common/flag-waived-activation-en.jpg" height="50"/> 
-                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
 		</div> 
 	</div> 
 	<div class="listGrid-barSection"> 
@@ -2559,6 +2521,169 @@ Phones Group</div>
 			<div class="listGrid-view"> 
 						<a href="http://www.att.com/shop/wireless/devices/samsung/focus-2-glossy-pure-white-refurb.html" class="clickStreamSingleItem" data-pid="prod5980223" title="Details for Samsung Focus® 2 (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
 							<img alt="Details for Samsung Focus® 2 (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div> 
+		</div> 
+	</div> 
+								</div> 
+							</div> 
+							<div id="device_prod5500252R" class="listGrid-devicePanel" > 
+								<div id="item_sku6000238" class="listGrid-item"> 
+		<div class="listGrid-webOnly"> 
+			<img src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/wireless/common/ribbon-web-only-en.png" title="Web Only" border="0" alt="Web Only"/> 
+		</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-titleInfo"> 
+		<div class="listGrid-titleWithBanner">  
+			<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" data-sku="sku6000238" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+				Pantech Burst&trade; (Refurbished) 
+			</a> 
+		</div> 
+		<div class="listGrid-rating"> 
+						<div class="reviewStars s3_8"> 
+							<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html#tab4" class="clickStreamSingleItem" data-pid="prod5500252" title="Reviews for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(7)</span> 
+							</a> 
+						</div> 
+			<div class="clear" ></div> 
+		</div> 
+				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-imagePrice"> 
+		<div class="listGrid-image"> 
+			<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="quickViewLink" data-skuid="sku6000238" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+					<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+						<img id="image-sku6000238" class="inStockOpacity" alt="Details for Pantech Burst&trade; (Refurbished)" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/pantech-burst-titanium-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+				<div class="listGrid-colorSelector"> 
+					<div class="colorsAvailable"> 
+						Available colors: 
+					</div> 
+					<div class="colorSwatches"> 
+								<div class="swatch" style="background-image:url('../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/colorSwatch_highlight.gif');background-repeat:no-repeat;" > 
+													<div class="specific_color"  id="sku6000238_swatch" style="background-color:#242426;" name="useBubbleToolTip" title="Titanium" onmouseover="this.style.borderColor='#000';" onmouseout="this.style.borderColor='#ccc';" ></div> 
+								</div> 
+								<div class="swatch" style="" > 
+													<a href="http://www.att.com/shop/wireless/devices/pantech/burst-ruby-red-refurb.html" onclick="javascript:jQuery('#device_prod5500252R').load('/shop/en/wireless/devices/cellphones.deviceListView.html?prodId=prod5500252&skuId=sku6000235&viewType=grid&panelDivId=device_prod5500252R&existingSkuId=sku6000238&commitmentTerm=24');return false" onfocus="this.style.borderColor='#000';" onblur="this.style.borderColor='#ccc';" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst (TM) - Ruby Red (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+														<div class="specific_color"  id="sku6000235_swatch" style="background-color:#7C2627; cursor:pointer;" name="useBubbleToolTip" title="Ruby Red"  ></div> 
+													</a> 
+								</div> 
+					</div> 
+				</div> 
+		</div> 
+		<div class="listGrid-priceInfo"> 
+				<div class="listGrid-price"> 
+									$0.01 
+				</div> 
+			<!-- 
+					<div class="commitmentTerm">2-year contract & new activation required.</div> 
+						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
+			--> 
+                                 <div class="listGrid-activationShippingBar hidden"> 
+                                    <div class="clear listGrid-barGap hidden"></div> 
+                                </div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
+		</div> 
+	</div> 
+	<div class="listGrid-barSection"> 
+			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
+				<div class="listGrid-activationShippingBar hidden">					 
+					<div class="clear listGrid-barGap hidden"></div> 
+				</div> 
+	</div> 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6000238');" onmouseout="contractFinePrint('#item_sku6000238');" > 
+		<div class="gridFinePrint"> 
+		</div> 
+		<div class="listGrid-qtyView" > 
+			<div class="listGrid-compare "> 
+						<input type="checkbox" value="sku6000238" name="skuId" id="sku6000238" class="clickStreamGroupItem" data-pid="prod5500252" title="Compare Pantech Burst&trade; (Refurbished)" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6000238','check');" /> 
+				<label class="deviceCompare" for="sku6000238"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6000238:not(:checked)').click();jQuery.uniform.update('input#sku6000238');checkCompareSelectionCount('sku6000238','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+						Compare 
+					</a> 
+				</label> 
+			</div> 
+			<div class="listGrid-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/pantech/burst-titanium-refurb.html" class="clickStreamSingleItem" data-pid="prod5500252" title="Details for Pantech Burst&trade; (Refurbished)" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+							<img alt="Details for Pantech Burst&trade; (Refurbished)" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
+						</a> 
+			</div> 
+		</div> 
+	</div> 
+								</div> 
+							</div> 
+							<div id="device_prod6020223" class="listGrid-devicePanel" > 
+								<div id="item_sku6120237" class="listGrid-item"> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-titleInfo"> 
+		<div class="listGrid-title">  
+			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html" class="clickStreamSingleItem" data-pid="prod6020223" data-sku="sku6120237" title="Details for Samsung Galaxy Exhilarate&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+				Samsung Galaxy Exhilarate&trade; 
+			</a> 
+		</div> 
+		<div class="listGrid-rating"> 
+						<div class="reviewStars s4_6"> 
+							<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html#tab4" class="clickStreamSingleItem" data-pid="prod6020223" title="Reviews for Samsung Galaxy Exhilarate&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+								<div class="starBlock"><div class="numOfStars">&nbsp;</div></div> 
+								<span class="numOfReviews">(31)</span> 
+							</a> 
+						</div> 
+			<div class="clear" ></div> 
+		</div> 
+				<div class="listGrid-speed"><img alt="4G LTE" title="4G LTE" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/global/ico/ico-att-4g-LTE-30px.png"/></div> 
+	</div> 
+	<div class="listGrid-noHeight-clear" ></div> 
+	<div class="listGrid-imagePrice"> 
+		<div class="listGrid-image"> 
+			<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html" class="quickViewLink" data-skuid="sku6120237" data-pagetype="deviceDetails" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../shopcms/media/att/2012/global/btn/btn-en-quick-whi26.png" alt="Quick view"/></a> 
+					<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html" class="clickStreamSingleItem" data-pid="prod6020223" title="Details for Samsung Galaxy Exhilarate&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+						<img id="image-sku6120237" class="inStockOpacity" alt="Details for Samsung Galaxy Exhilarate&trade;" src="../../../../2.ecom.attccc.com/catalog/en/skus/images/samsung-galaxy&#32;exhilarate-black-100x160.jpg" width="100" border="0" onerror="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onerror='';" onabort="this.src='http://3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/prod-noImage-100x160.png';this.onabort='';"/>  
+					</a> 
+		</div> 
+		<div class="listGrid-priceInfo"> 
+				<div class="listGrid-price"> 
+									$0.99 
+				</div> 
+			<!-- 
+					<div class="commitmentTerm">2-year contract & new activation required.</div> 
+						<div class="commitmentTerm">Qualifying monthly data plan required.</div> 
+			--> 
+				<div class="dottedLineDivider"> 
+					<span></span> 
+				</div> 
+					<div class="viewPackages"> 
+						<a href="http://www.att.com/shop/wireless/packages/samsung-galaxy-exhilarate-package-sku6280712.html" title="Packages for Samsung Galaxy Exhilarate&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322">View packages</a> 
+					</div> 
+                <div class="listGrid-activationShippingBar hidden"> 
+                    <div class="clear listGrid-barGap hidden"></div> 
+                </div> 
+		</div> 
+	</div> 
+	<div class="listGrid-barSection"> 
+			<div class="listGrid-noHeight-clear listGrid-barGap hidden"></div> 
+				<div class="listGrid-activationShippingBar hidden">					 
+					<div class="clear listGrid-barGap hidden"></div> 
+				</div> 
+	</div> 
+	<div class="gridActionDiv" onmouseover="expandFinePrint('#item_sku6120237');" onmouseout="contractFinePrint('#item_sku6120237');" > 
+		<div class="gridFinePrint"> 
+		</div> 
+		<div class="listGrid-qtyView" > 
+			<div class="listGrid-compare "> 
+						<input type="checkbox" value="sku6120237" name="skuId" id="sku6120237" class="clickStreamGroupItem" data-pid="prod6020223" title="Compare Samsung Galaxy Exhilarate&trade;" label="Compare" onclick="javascript:checkCompareSelectionCount('sku6120237','check');" /> 
+				<label class="deviceCompare" for="sku6120237"> 
+					<a href="javascript:void(0);" onclick="javascript:jQuery('input#sku6120237:not(:checked)').click();jQuery.uniform.update('input#sku6120237');checkCompareSelectionCount('sku6120237','process');" class="compareDevicesAction" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+						Compare 
+					</a> 
+				</label> 
+			</div> 
+			<div class="listGrid-view"> 
+						<a href="http://www.att.com/shop/wireless/devices/samsung/galaxy-exhilarate-black.html" class="clickStreamSingleItem" data-pid="prod6020223" title="Details for Samsung Galaxy Exhilarate&trade;" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"> 
+							<img alt="Details for Samsung Galaxy Exhilarate&trade;" src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/global/btn/btn-en-view-blu29.gif" height="29"/> 
 						</a> 
 			</div> 
 		</div> 
@@ -2591,8 +2716,8 @@ Phones Group</div>
 										</div> 
 										<div class="viewDivider"><img title="|" height="35" alt="|" width="1" src="../../../../3.ecom.attccc.com/shopcms/media/att/2011/shop/common/divider.gif"></img></div> 
 										<div class="showAllGroup"> 
-											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(40);jQuery('input#showMore').attr('value',40);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322">SHOW ALL CELL PHONES</a></span> 
-											<span id="showAllDevicesImage"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(40);jQuery('input#showMore').attr('value','40');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show All Devices"/></a></span> 
+											<span id="showAllDevicesText"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(41);jQuery('input#showMore').attr('value',41);ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322">SHOW ALL CELL PHONES</a></span> 
+											<span id="showAllDevicesImage"><a href="javascript:void(0);" title="SHOW ALL CELL PHONES" onclick="ATT.listPage.setShowMorePref(41);jQuery('input#showMore').attr('value','41');ATT.listPage.getItemInfo();" data-cqpath="/content/att/shop/en/wireless/devices/smartphones/jcr:content;2012322"><img src="../../../../3.ecom.attccc.com/shopcms/media/att/2012/shop/wireless/common/img-blu-arrown-down-9x13.gif" width="13" height="9" alt="Show All Devices"/></a></span> 
 										</div> 
 									</div> 
 								</div> 
@@ -2820,7 +2945,7 @@ jQuery(document).ready(function(){
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 181897963915809645832817906444564719391 --> 
+		 <!--X-Renderer: 23699451509762528414004711561052837019 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -2996,7 +3121,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","vdspQRGFmGHtBQGjCpLQBRG2!-2124068011!1355892421096"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","qdfdQV9Qfxylpw7p710Q5GBT!-677078510!1356152064093"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 

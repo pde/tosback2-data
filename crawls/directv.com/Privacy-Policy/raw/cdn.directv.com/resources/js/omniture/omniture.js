@@ -22,7 +22,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
-s.linkInternalFilters="javascript:,directv.com"
+s.linkInternalFilters="javascript:,directv.com,directvbusiness.com"
 s.linkLeaveQueryString=false
 
 //changed props for link tracking

@@ -1,0 +1,1447 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/how-to-prepare-for-december-21-2012-preppers-weigh-in.html",' +
+                '"title": "How to Prepare for December 21, 2012? Preppers Weigh In",' +
+                '"rubric": "Ready to Go?",' +
+                '"topic": "World",' +
+                '"urlHashCode": "5b55d8e07910024e2d0c605fc85033e0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/adam-lanza-destroyed-his-hard-drive-before-attack.html",' +
+                '"title": "Adam Lanza Destroyed His Hard Drive Before Attack",' +
+                '"rubric": "Newtown",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "61193ec9c1b1b8c646f30d9413ac3488"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/tipping-point-for-syria-s-assad.html",' +
+                '"title": "Tipping Point for Syria&rsquo;s Assad",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "55e39ddf9ca0cd1020cd90447dca0383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/14/what-we-know-so-far-about-connecticut-school-shooter-adam-lanza.html",' +
+                '"title": "What We Know So Far About Connecticut School Shooter Adam Lanza",' +
+                '"rubric": "Newtown Killer",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b7e86952660ef1f5ec90778d8c801724"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/heinous-bus-gang-rape-outrages-india.html",' +
+                '"title": "Heinous Bus Gang-Rape Outrages India",' +
+                '"rubric": "JUSTICE",' +
+                '"topic": "World",' +
+                '"urlHashCode": "329b6651862d58e7da95302af5d0c372"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/16/details-emerge-of-adam-lanza-s-life-at-school-and-home.html",' +
+                '"title": "Details Emerge of Adam Lanza&rsquo;s Life at School and Home",' +
+                '"rubric": "Snapped",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "a25d5d8d9130c8029e2a1075c950f176"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/annie-get-your-gun-school-shooting-sparks-run-on-firearms-sales.html",' +
+                '"title": "Annie, Get Your Gun! School Shooting Sparks Run on Firearms Sales",' +
+                '"rubric": "Spending Spree",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f068b22ff18c87c013709520881414a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/gun-rights-advocates-should-fear-history-of-second-amendment.html",' +
+                '"title": "Gun-Rights Advocates Should Fear History of Second Amendment",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5d8e8d426ad9ca9381be8c4cfdc9fa37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/best-buy-exec-suddenly-resigns.html",' +
+                '"title": "Best Buy Exec Suddenly Resigns",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c53dc0232632d7bd3ecff162d21e1dd2"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/downton-abbey-my-tea-with-mrs-patmore-lesley-nicol.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: My Tea With Mrs. Patmore, Lesley Nicol",' +
+                '"rubric": "Character Study",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1d3ba65ff62c6061d31a0d92f2a2cbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/boehner-comments-cause-market-and-analysts-to-freak-out-over-fiscal-cliff.html",' +
+                '"title": "Boehner Comments Cause Market and Analysts to Freak Out Over Fiscal Cliff",' +
+                '"rubric": "Oh No!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c5bc1753ff22c5ab7ca14cb34d25f045"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/president-obama-needs-to-defend-chuck-hagel-if-he-is-nominated-for-secretary-of-defense.html",' +
+                '"title": "President Obama Needs to Defend Chuck Hagel If He Is Nominated for Secretary of Defense",' +
+                '"rubric": "DO THE RIGHT THING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0b30064789378601db47441e125d3a98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/tipping-point-for-syria-s-assad.html",' +
+                '"title": "Tipping Point for Syria&rsquo;s Assad",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "55e39ddf9ca0cd1020cd90447dca0383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/best-buy-exec-suddenly-resigns.html",' +
+                '"title": "Best Buy Exec Suddenly Resigns",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c53dc0232632d7bd3ecff162d21e1dd2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/the-nra-from-awful-to-even-worse.html",' +
+                '"title": "The NRA: From Awful to Even Worse",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6738a99c2b4b93d70f3fce5e5c1e4ff7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/another-massacre-s-gun-law-lesson-from-stockton-calif-survivors.html",' +
+                '"title": "Another Massacre&rsquo;s Gun Law Lesson, From Stockton, Calif., Survivors",' +
+                '"rubric": "Newtown Shooting Aftermath",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4fa458fbde45b8dfe48302db1dd683ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/speed-read-best-bits-from-robert-bork-s-slouching-towards-gomorrah.html",' +
+                '"title": "Speed Read: Best Bits From Robert Bork&rsquo;s &lsquo;Slouching Towards Gomorrah&rsquo;",' +
+                '"rubric": "Speed Reread",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "0ce419bada34e6cbee0a68fbec980f8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/daily-beast-debate-should-the-media-leave-grieving-newtown-alone.html",' +
+                '"title": "Daily Beast Debate: Should the Media Leave Grieving Newtown Alone?",' +
+                '"rubric": "Newtown Grief",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f6e8783980f7ea48b4f72cccefc3e763"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/how-housing-is-driving-economic-growth-dek-the-latest-data-show-more-people-are-buying-more-homes-at-higher-prices-than-they-have-in-years-so-why-isn-t-the-supply-of-homes-for-sale-rising.html",' +
+                '"title": "How Housing Is Driving Economic Growth",' +
+                '"rubric": "Oh Yeah!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "9a729782273f0828c434c6f76e1d9cb0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/tipping-point-for-syria-s-assad.html",' +
+                '"title": "Tipping Point for Syria&rsquo;s Assad",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "55e39ddf9ca0cd1020cd90447dca0383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/benghazi-resignations-begin.html",' +
+                '"title": "Benghazi Resignations Begin",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "838515a6f6a360d70e7d9fc1aaf6c580"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/best-buy-exec-suddenly-resigns.html",' +
+                '"title": "Best Buy Exec Suddenly Resigns",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c53dc0232632d7bd3ecff162d21e1dd2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/speed-read-best-bits-from-robert-bork-s-slouching-towards-gomorrah.html",' +
+                '"title": "Speed Read: Best Bits From Robert Bork&rsquo;s &lsquo;Slouching Towards Gomorrah&rsquo;",' +
+                '"rubric": "Speed Reread",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "0ce419bada34e6cbee0a68fbec980f8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/another-massacre-s-gun-law-lesson-from-stockton-calif-survivors.html",' +
+                '"title": "Another Massacre&rsquo;s Gun Law Lesson, From Stockton, Calif., Survivors",' +
+                '"rubric": "Newtown Shooting Aftermath",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4fa458fbde45b8dfe48302db1dd683ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/downton-abbey-my-tea-with-mrs-patmore-lesley-nicol.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: My Tea With Mrs. Patmore, Lesley Nicol",' +
+                '"rubric": "Character Study",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1d3ba65ff62c6061d31a0d92f2a2cbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/daily-beast-debate-should-the-media-leave-grieving-newtown-alone.html",' +
+                '"title": "Daily Beast Debate: Should the Media Leave Grieving Newtown Alone?",' +
+                '"rubric": "Newtown Grief",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f6e8783980f7ea48b4f72cccefc3e763"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/boehner-comments-cause-market-and-analysts-to-freak-out-over-fiscal-cliff.html",' +
+                '"title": "Boehner Comments Cause Market and Analysts to Freak Out Over Fiscal Cliff",' +
+                '"rubric": "Oh No!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c5bc1753ff22c5ab7ca14cb34d25f045"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/how-housing-is-driving-economic-growth-dek-the-latest-data-show-more-people-are-buying-more-homes-at-higher-prices-than-they-have-in-years-so-why-isn-t-the-supply-of-homes-for-sale-rising.html",' +
+                '"title": "How Housing Is Driving Economic Growth",' +
+                '"rubric": "Oh Yeah!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "9a729782273f0828c434c6f76e1d9cb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2012/12/20/miss-venezuela-s-baffling-response.html",' +
+                '"title": "Miss Venezuela\'s Baffling Response",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "27fa21cdaf425a35e39d5309897cfa85"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/20/waste-of-time-s-person-of-the-year.html",' +
+                '"title": "\'Waste\' Of Time\'s Person Of The Year",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "9b254b7b1de88a2302429d7089bfc442"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/20/madonna-s-cigarette-tantrum.html",' +
+                '"title": "Madonna\'s Cigarette Tantrum",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7b67e6b1caabf76718e29acb49778294"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/15/the-porn-star-next-door.html",' +
+                '"title": "The Porn Star Next Door",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "44699764d428dacf4c7c24ca8e61bd63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/downton-abbey-my-tea-with-mrs-patmore-lesley-nicol.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: My Tea With Mrs. Patmore, Lesley Nicol",' +
+                '"rubric": "Character Study",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1d3ba65ff62c6061d31a0d92f2a2cbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/20/38-end-of-the-world-movies.html",' +
+                '"title": "38 End of the World Movies",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "7f12d9d2a8a14bd42cb0a0e8725b1463"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/21/seinfeld-and-crystal-reprise-who-s-on-first.html",' +
+                '"title": "Seinfeld And Crystal Reprise \'Who\'s On First\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5baf8289e1056d3953228be42fbcbb91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/21/celebrities-say-enough-gun-violence.html",' +
+                '"title": "Celebrities Say \'Enough\' Gun Violence",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6170d9794663a3d1c4e96c6468355dad"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/videos/2012/12/20/palin-obama-not-person-of-the-year.html",' +
+                '"title": "Palin Disses Time\'s \'Person of the Year\'",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "69af55d7cf9e42cbd87a4c60ff3813dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/19/piers-morgan-s-angry-interview.html",' +
+                '"title": "Piers Morgan\'s Angry Interview",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "07533bd6680362390fb4cb1cd63ae6eb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/number-of-veterans-who-die-waiting-for-benefits-claims-skyrockets.html",' +
+                '"title": "Number of Veterans Who Die Waiting for Benefits Claims Skyrockets",' +
+                '"rubric": "TAKE A NUMBER",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e10a7a54ded67918bd42af87a49d2f09"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/gun-rights-advocates-should-fear-history-of-second-amendment.html",' +
+                '"title": "Gun-Rights Advocates Should Fear History of Second Amendment",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5d8e8d426ad9ca9381be8c4cfdc9fa37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/borgen-girls-parenthood-mad-men-more-ten-best-tv-shows-of-2012.html",' +
+                '"title": "&lsquo;Borgen,&rsquo; &lsquo;Girls,&rsquo; &lsquo;Parenthood,&rsquo; &lsquo;Mad Men&rsquo; &amp; More: Ten Best TV Shows of 2012",' +
+                '"rubric": "Must-See",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "36d61e951297beb912cef86708b5cf78"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/15/the-porn-star-next-door.html",' +
+                '"title": "The Porn Star Next Door",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "44699764d428dacf4c7c24ca8e61bd63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/don-t-arm-america-a-soldier-s-reply-to-connecticut-shooting.html",' +
+                '"title": "Don&rsquo;t Arm America: A Soldier&rsquo;s Reply to Connecticut Shooting",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "572988d34d3fbdafb6ef4a84b41606b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/02/03/david-choe-facebook-s-millionaire-graffiti-artist.html",' +
+                '"title": "David Choe, Facebook&rsquo;s Millionaire Graffiti Artist",' +
+                '"rubric": "CHA-CHING",' +
+                '"topic": "Science and Technology",' +
+                '"urlHashCode": "ce474bd698b289c9854e37eeaeebdf90"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/heinous-bus-gang-rape-outrages-india.html",' +
+                '"title": "Heinous Bus Gang-Rape Outrages India",' +
+                '"rubric": "JUSTICE",' +
+                '"topic": "World",' +
+                '"urlHashCode": "329b6651862d58e7da95302af5d0c372"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/annie-get-your-gun-school-shooting-sparks-run-on-firearms-sales.html",' +
+                '"title": "Annie, Get Your Gun! School Shooting Sparks Run on Firearms Sales",' +
+                '"rubric": "Spending Spree",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f068b22ff18c87c013709520881414a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/adam-lanza-destroyed-his-hard-drive-before-attack.html",' +
+                '"title": "Adam Lanza Destroyed His Hard Drive Before Attack",' +
+                '"rubric": "Newtown",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "61193ec9c1b1b8c646f30d9413ac3488"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/videos/2012/12/18/schieffer-calls-out-double-standard.html",' +
+                '"title": "Schieffer Calls Out Double Standard",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5d9c090cd3e8c97096eabe8a81fefc5d"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/boehner-comments-cause-market-and-analysts-to-freak-out-over-fiscal-cliff.html",' +
+                '"title": "Boehner Comments Cause Market and Analysts to Freak Out Over Fiscal Cliff",' +
+                '"rubric": "Oh No!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c5bc1753ff22c5ab7ca14cb34d25f045"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/best-buy-exec-suddenly-resigns.html",' +
+                '"title": "Best Buy Exec Suddenly Resigns",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c53dc0232632d7bd3ecff162d21e1dd2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/downton-abbey-my-tea-with-mrs-patmore-lesley-nicol.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo;: My Tea With Mrs. Patmore, Lesley Nicol",' +
+                '"rubric": "Character Study",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "1d3ba65ff62c6061d31a0d92f2a2cbbd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/the-nra-from-awful-to-even-worse.html",' +
+                '"title": "The NRA: From Awful to Even Worse",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6738a99c2b4b93d70f3fce5e5c1e4ff7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/speed-read-best-bits-from-robert-bork-s-slouching-towards-gomorrah.html",' +
+                '"title": "Speed Read: Best Bits From Robert Bork&rsquo;s &lsquo;Slouching Towards Gomorrah&rsquo;",' +
+                '"rubric": "Speed Reread",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "0ce419bada34e6cbee0a68fbec980f8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/another-massacre-s-gun-law-lesson-from-stockton-calif-survivors.html",' +
+                '"title": "Another Massacre&rsquo;s Gun Law Lesson, From Stockton, Calif., Survivors",' +
+                '"rubric": "Newtown Shooting Aftermath",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4fa458fbde45b8dfe48302db1dd683ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/president-obama-needs-to-defend-chuck-hagel-if-he-is-nominated-for-secretary-of-defense.html",' +
+                '"title": "President Obama Needs to Defend Chuck Hagel If He Is Nominated for Secretary of Defense",' +
+                '"rubric": "DO THE RIGHT THING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0b30064789378601db47441e125d3a98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/tipping-point-for-syria-s-assad.html",' +
+                '"title": "Tipping Point for Syria&rsquo;s Assad",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "55e39ddf9ca0cd1020cd90447dca0383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/14/what-we-know-so-far-about-connecticut-school-shooter-adam-lanza.html",' +
+                '"title": "What We Know So Far About Connecticut School Shooter Adam Lanza",' +
+                '"rubric": "Newtown Killer",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "b7e86952660ef1f5ec90778d8c801724"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/how-housing-is-driving-economic-growth-dek-the-latest-data-show-more-people-are-buying-more-homes-at-higher-prices-than-they-have-in-years-so-why-isn-t-the-supply-of-homes-for-sale-rising.html",' +
+                '"title": "How Housing Is Driving Economic Growth",' +
+                '"rubric": "Oh Yeah!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "9a729782273f0828c434c6f76e1d9cb0"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/18/right-wing-needs-to-stop-crazy-explanations-for-newtown-slaughter.html",' +
+                '"title": "Right Wing Needs to Stop Crazy Explanations for Newtown Slaughter",' +
+                '"rubric": "Newtown Slaughter",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "0ef27d4ec29ed2529853f77e8e967e0d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/12/19/benghazi-resignations-begin.html",' +
+                '"title": "Benghazi Resignations Begin",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "838515a6f6a360d70e7d9fc1aaf6c580"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/tipping-point-for-syria-s-assad.html",' +
+                '"title": "Tipping Point for Syria&rsquo;s Assad",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "55e39ddf9ca0cd1020cd90447dca0383"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-plan-b-fails-gop-imperils-fiscal-cliff-deal-boehner-s-speakership.html",' +
+                '"title": "As Plan B Fails, GOP Imperils Fiscal Cliff Deal, Boehner&rsquo;s Speakership",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "24dacbce564c608e3844184a5e5bc7dd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/in-robert-bork-s-death-a-reminder-of-scalia-s-inconsistency.html",' +
+                '"title": "In Robert Bork&rsquo;s Death, a Reminder of Scalia&rsquo;s Inconsistency",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d90f5f73b884449463634fc5fed50a42"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/when-your-child-kills-the-parents-of-criminals.html",' +
+                '"title": "When Your Child Kills: the Parents of Criminals",' +
+                '"rubric": "\'Far From the Tree\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "bb9b3c10ebe2c92f5574c88bcdf1832c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/ben-affleck-for-senate-actor-could-be-formidable-massachusetts-candidate.html",' +
+                '"title": "Ben Affleck for Senate? Actor Could Be Formidable Massachusetts Candidate",' +
+                '"rubric": "Obama Cabinet Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8533036855ce6d6ab6934aa5b90edde1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/boehner-comments-cause-market-and-analysts-to-freak-out-over-fiscal-cliff.html",' +
+                '"title": "Boehner Comments Cause Market and Analysts to Freak Out Over Fiscal Cliff",' +
+                '"rubric": "Oh No!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c5bc1753ff22c5ab7ca14cb34d25f045"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/50-ways-fifty-shades-of-grey-has-changed-the-world.html",' +
+                '"title": "50 Ways &lsquo;Fifty Shades of Grey&rsquo; Has Changed the World",' +
+                '"rubric": "Bondage &amp; Mommy Porn",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7f0deadabc1e87675d074b10bbba01f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/best-buy-exec-suddenly-resigns.html",' +
+                '"title": "Best Buy Exec Suddenly Resigns",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "c53dc0232632d7bd3ecff162d21e1dd2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/president-obama-needs-to-defend-chuck-hagel-if-he-is-nominated-for-secretary-of-defense.html",' +
+                '"title": "President Obama Needs to Defend Chuck Hagel If He Is Nominated for Secretary of Defense",' +
+                '"rubric": "DO THE RIGHT THING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "0b30064789378601db47441e125d3a98"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/speed-read-best-bits-from-robert-bork-s-slouching-towards-gomorrah.html",' +
+                '"title": "Speed Read: Best Bits From Robert Bork&rsquo;s &lsquo;Slouching Towards Gomorrah&rsquo;",' +
+                '"rubric": "Speed Reread",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "0ce419bada34e6cbee0a68fbec980f8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/nyse-s-sale-to-ice-sign-of-the-times.html",' +
+                '"title": "NYSE&rsquo;s Sale to ICE: Sign of the Times",' +
+                '"rubric": "End of an Era",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d6d4c9dfbdadbc7f65ca25c16acc1ed6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/nancy-lanza-was-deluded-to-keep-guns-at-home-with-troubled-adam.html",' +
+                '"title": "Nancy Lanza Was Deluded to Keep Guns at Home With Troubled Adam",' +
+                '"rubric": "Nancy&rsquo;s Guns",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "3f81035ac83b3abcc4d85ba21fc2f47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/pro-gun-advocates-push-back-against-gun-control-after-newtown.html",' +
+                '"title": "Pro-Gun Advocates Push Back Against Gun Control After Newtown",' +
+                '"rubric": "Newtown Fallout",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c0e0cc85395a368fb453244d47d4a043"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/readers-weigh-in-after-newtown-shooting-why-own-a-gun.html",' +
+                '"title": "Readers Weigh In After Newtown Shooting: Why Own a Gun?",' +
+                '"rubric": "Straight Talk",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "c2eb9eb4e4b5b0768e6fa44d0acf18db"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/19/rich-make-out-like-bandits-in-fiscal-cliff-negotiations.html",' +
+                '"title": "Rich Make Out Like Bandits in Fiscal-Cliff Negotiations",' +
+                '"rubric": "Bandits",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "56a1d6feba52f55737ac846474f8729e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/curse-the-media-in-newtown-for-doing-too-little-too-late-on-guns.html",' +
+                '"title": "Curse the Media in Newtown for Doing Too Little, Too Late on Guns",' +
+                '"rubric": "Dereliction of Duty",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d40de2ef3f1f1a23bb058955777dbd4d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/how-housing-is-driving-economic-growth-dek-the-latest-data-show-more-people-are-buying-more-homes-at-higher-prices-than-they-have-in-years-so-why-isn-t-the-supply-of-homes-for-sale-rising.html",' +
+                '"title": "How Housing Is Driving Economic Growth",' +
+                '"rubric": "Oh Yeah!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "9a729782273f0828c434c6f76e1d9cb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/the-nra-from-awful-to-even-worse.html",' +
+                '"title": "The NRA: From Awful to Even Worse",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "6738a99c2b4b93d70f3fce5e5c1e4ff7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/another-massacre-s-gun-law-lesson-from-stockton-calif-survivors.html",' +
+                '"title": "Another Massacre&rsquo;s Gun Law Lesson, From Stockton, Calif., Survivors",' +
+                '"rubric": "Newtown Shooting Aftermath",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4fa458fbde45b8dfe48302db1dd683ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/the-impossible-star-tom-holland-on-his-award-worthy-film-debut.html",' +
+                '"title": "&lsquo;The Impossible&rsquo; Star Tom Holland On His Award-Worthy Film Debut",' +
+                '"rubric": "&lsquo;Impossible&rsquo; Debut",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "3e8d75b2e483da97e6ec442f73aa71ec"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2012/12/19/suicide-spotlights-persistent-genital-arousal-disorder.html",' +
+                '"title": "Suicide Spotlights Persistent Genital Arousal Disorder",' +
+                '"rubric": "The Dangerous O",' +
+                '"topic": "Lifestyle",' +
+                '"urlHashCode": "908ab9faea553cfcef01ba1f4914bb5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/john-boehner-s-selfish-gambit-may-send-us-over-the-fiscal-cliff.html",' +
+                '"title": "John Boehner&rsquo;s Selfish Gambit May Send Us Over the Fiscal Cliff",' +
+                '"rubric": "OVERREACH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2b44964b288ccb123104cb02768d6f9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/21/as-gop-sinks-plan-b-obama-should-tune-out-his-own-party-s-doubters.html",' +
+                '"title": "As GOP Sinks Plan B, Obama Should Tune Out His Own Party&rsquo;s Doubters",' +
+                '"rubric": "Fiscal Cliff",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "a753619b5f6291b066ba48b5529ff0a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/20/fiscal-cliff-vote-fails-due-to-republican-theology-on-taxes.html",' +
+                '"title": "Fiscal Cliff Vote Fails Due to Republican Theology on Taxes",' +
+                '"rubric": "SELL",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8367987d1bb1842c0fe1187a4311459"' +
+            '}' +
+        ']' +
+    '}'
+);

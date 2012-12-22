@@ -319,6 +319,10 @@
       }              
     }
     
+    if(wpAd.flags.is_homepage && /^tiffany_tile/i.test(tempcase.what)){
+      tempcase.keyvalues.sz = ['184x90'];
+    }
+
     //20074-CD
     if(tempcase.what === 'flex_ss_bb_hp' && (tempcase.where === 'lifestyle/home' || tempcase.where === 'lifestyle/home/front' || tempcase.where === 'lifestyle/home-garden')){
       tempcase.where += '/flex';

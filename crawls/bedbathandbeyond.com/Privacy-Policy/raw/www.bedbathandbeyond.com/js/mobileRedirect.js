@@ -24,8 +24,8 @@ if ( isMobile() && !bStopMobileRedirect )
 		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/foot/trackorder.do";
 	else if ( sPage == "giftcardhome.asp" || sPage == "rdgiftcardhome.asp" )
 		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/catalog.do?cid=1489872";
-	else if ( sPage == "rdstoreloc.asp" || sPage == "storeLocator.asp" )
-		window.location = "https://m.bedbathandbeyond.com/bedbathbeyond/store/locator.do";
+	else if ( sPage == "rdstoreloc.asp" || sPage == "storelocator.asp" )
+		window.location = "http://m.bedbathandbeyond.com/bedbathbeyond/store/locator.do";
 	else if ( sPage== "policyprivacy.asp" || sPage == "rdpolicyprivacy.asp" )
 		window.location = "https://m.bedbathandbeyond.com:443/bedbathbeyond/foot/footPrivacy.do";
 	else if ( sPage== "contactus.asp" || sPage == "rdcontactus.asp" )

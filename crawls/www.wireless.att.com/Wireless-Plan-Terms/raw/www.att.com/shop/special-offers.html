@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = ''; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -1039,7 +1142,7 @@ selection of phones.<br>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 50695451477218931199987296646265669512 --> 
+		 <!--X-Renderer: 77773304124678529543510994478718841089 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Page Level JS files --> 
@@ -1048,26 +1151,26 @@ selection of phones.<br>
 <script src="../media/cms/shop/scripts/check-availability.js" type="text/javascript"></script> 
 <script src="../media/cms/shop/scripts/targetingOnly.js" type="text/javascript"></script> 
 <!-- commented out untill code merge happends and onl tags are available in 1.5   
-	<meta name="DCSext.wt_aka_georegion" content="255" /> 
+	<meta name="DCSext.wt_aka_georegion" content="262" /> 
 <meta name="DCSext.wt_aka_country_code" content="US" /> 
-<meta name="DCSext.wt_aka_region_code" content="IL" /> 
-<meta name="DCSext.wt_aka_city" content="CICERO" /> 
-<meta name="DCSext.wt_aka_dma" content="602" /> 
-<meta name="DCSext.wt_aka_pmsa" content="1600" /> 
-<meta name="DCSext.wt_aka_msa" content="1602" /> 
-<meta name="DCSext.wt_aka_areacode" content="708" /> 
-<meta name="DCSext.wt_aka_county" content="COOK" /> 
-<meta name="DCSext.wt_aka_fips" content="17031" /> 
-<meta name="DCSext.wt_aka_lat" content="41.8443" /> 
-<meta name="DCSext.wt_aka_long" content="-87.7585" /> 
-<meta name="DCSext.wt_aka_timezone" content="CST" /> 
-<meta name="DCSext.wt_aka_zip" content="60804" /> 
+<meta name="DCSext.wt_aka_region_code" content="MD" /> 
+<meta name="DCSext.wt_aka_city" content="DAMASCUS" /> 
+<meta name="DCSext.wt_aka_dma" content="511" /> 
+<meta name="DCSext.wt_aka_pmsa" content="8840" /> 
+<meta name="DCSext.wt_aka_msa" content="8872" /> 
+<meta name="DCSext.wt_aka_areacode" content="301" /> 
+<meta name="DCSext.wt_aka_county" content="MONTGOMERY" /> 
+<meta name="DCSext.wt_aka_fips" content="24031" /> 
+<meta name="DCSext.wt_aka_lat" content="39.2916" /> 
+<meta name="DCSext.wt_aka_long" content="-77.2137" /> 
+<meta name="DCSext.wt_aka_timezone" content="EST" /> 
+<meta name="DCSext.wt_aka_zip" content="20872" /> 
 <meta name="DCSext.wt_aka_continent" content="NA" /> 
 <meta name="DCSext.wt_aka_throughput" content="vhigh" /> 
-<meta name="DCSext.wt_aka_bw" content="2000" /> 
-<meta name="DCSext.wt_aka_network" content="att" /> 
-<meta name="DCSext.wt_aka_asnum" content="7132" /> 
-<meta name="DCSext.wt_aka_network_type" content="uverse" /> 
+<meta name="DCSext.wt_aka_bw" content="5000" /> 
+<meta name="DCSext.wt_aka_network" content="comcast" /> 
+<meta name="DCSext.wt_aka_asnum" content="33657" /> 
+<meta name="DCSext.wt_aka_network_type" content="cable" /> 
 <meta name="DCSext.wt_aka_location_id" content="0" /> 
 --> 
 <!--  this is the extended js for the carousel to work in cq : removed part of plugin.js --> 
@@ -1086,13 +1189,16 @@ jQuery(document).ready(function () {
 	<!-- Webtrend global --> 
 <script> 
 //<![CDATA[ 
-	ATT.globalVars.wtCartState =  'E';  
+  ATT.globalVars.wtCartState = 'I'; 
+  if(~location.href.indexOf('cartsummary')){ 
+  	jQuery('<meta/>', {name: 'DCSext.wtPN', content:'HRock Cart Summary-Incomplete Cart'}).appendTo('head'); 
+  } 
 ATT.globalVars.statuscode = ""; 
 ATT.globalVars.custType = ""; 
 ATT.globalVars.ban = ""; 
 ATT.globalVars.flowIndicator = ""; 
 ATT.globalVars.buyflow = "NEW"; 
-ATT.globalVars.ckavailUserZip = "60649"; 
+ATT.globalVars.ckavailUserZip = "20871"; 
 ATT.globalVars.zip = function (){ 
 	var wtzip; 
 	if (ATT.globalVars.cartContents && ATT.globalVars.cartContents.userZip){ 
@@ -1103,7 +1209,7 @@ ATT.globalVars.zip = function (){
 	   wtzip = ATT.globalVars.ckavailUserZip; 
 	} 
 	else { 
-		wtzip ="60649"; 
+		wtzip ="20871"; 
 	} 
 	return wtzip; 
 }; 
@@ -1185,7 +1291,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*city=(\w*)/)){ 
 	    		wtCity = (document.cookie.match(/attPersistantLocalization.*city=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtCity = "CHICAGO"; 
+	    		wtCity = "CLARKSBURG"; 
 	    	} 
 	    	return wtCity; 
 	    }}, 
@@ -1194,7 +1300,7 @@ jQuery.when(reporting_ready).then(function (reporting) {
 	    	if(document.cookie.match(/attPersistantLocalization.*state=(\w*)/)){ 
 	    		wtState = (document.cookie.match(/attPersistantLocalization.*state=((\w|\s)*)/)||[])[1]; 
 	    	} else { 
-	    		wtState = "IL"; 
+	    		wtState = "MD"; 
 	    	} 
 	    	return wtState; 
 	    }}	    
@@ -1272,7 +1378,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","Jm31QRBfVxpyYHnG1jd2xLcD!1819449232!1355891135875"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","9tCQQV7BRBk9TlZKYgQPqDLH!2001007801!1356151617633"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

@@ -7,7 +7,7 @@ Contributors: http://rafael.adm.br/css_browser_selector#contributors
 */
 function css_browser_selector(u){var ua=u.toLowerCase(),is=function(t){return ua.indexOf(t)>-1},g='gecko',w='webkit',s='safari',o='opera',m='mobile',h=document.documentElement,b=[(!(/opera|webtv/i.test(ua))&&/msie\s(\d)/.test(ua))?('ie ie'+RegExp.$1):is('firefox/2')?g+' ff2':is('firefox/3.5')?g+' ff3 ff3_5':is('firefox/3.6')?g+' ff3 ff3_6':is('firefox/3')?g+' ff3':is('gecko/')?g:is('opera')?o+(/version\/(\d+)/.test(ua)?' '+o+RegExp.$1:(/opera(\s|\/)(\d+)/.test(ua)?' '+o+RegExp.$2:'')):is('konqueror')?'konqueror':is('blackberry')?m+' blackberry':is('android')?m+' android':is('chrome')?w+' chrome':is('iron')?w+' iron':is('applewebkit/')?w+' '+s+(/version\/(\d+)/.test(ua)?' '+s+RegExp.$1:''):is('mozilla/')?g:'',is('j2me')?m+' j2me':is('iphone')?m+' iphone':is('ipod')?m+' ipod':is('ipad')?m+' ipad':is('mac')?'mac':is('darwin')?'mac':is('webtv')?'webtv':is('win')?'win'+(is('windows nt 6.0')?' vista':''):is('freebsd')?'freebsd':(is('x11')||is('linux'))?'linux':'','js']; c = b.join(' '); h.className += ' '+c; return c;}; css_browser_selector(navigator.userAgent);
 var UPX_userDefaultValue=function(){var d=0;
-var a={postalCode:"",state:"",city:"",country:"",orga:"",usMilitary:false};
+var a={postalCode:"",state:"",city:"",country:"",orga:"",usMilitary:false,ip:""};
 var c=[];
 var b=function(){for(i=0;
 i<c.length;
@@ -27,6 +27,8 @@ if(e){a.city=e
 if(e){a.country=e
 }e=CQ_Analytics.UpxDataMgr.getProperty("usMilitary");
 if(e){a.usMilitary=e
+}e=CQ_Analytics.UpxDataMgr.getProperty("ip");
+if(e){a.ip=e
 }d=1
 }else{$.getJSON("/public/bin/servlet/altcloud/UserServlet.location.json?",{},function(g){if(g){if(g.orga){a.orga=g.orga;
 if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setProperty("orga",g.orga)
@@ -40,6 +42,8 @@ if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setPropert
 if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setProperty("country",g.country)
 }}if(g.us_military.toString()!=null){a.usMilitary=g.us_military;
 if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setProperty("usMilitary",g.us_military)
+}}if(g.ip){a.ip=g.ip;
+if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setProperty("ip",g.ip)
 }}}if(CQ_Analytics.hasOwnProperty("UpxDataMgr")){CQ_Analytics.UpxDataMgr.setProperty("userValueInit","true")
 }d=1;
 b()
@@ -57,6 +61,7 @@ b()
 if(e.test(f)){return f
 }else{return""
 }},isUsMilitary:function(){return a.usMilitary
+},getIP:function(){return a.ip
 }}
 }();
 COMMON_moduleInitializer.registerOverlay("COMMON_tabs_display",{functionName:"UPX_tabsDisplay",jsLocation:"/etc/designs/ac/js/component_tabsDisplay.js",runInit:true});

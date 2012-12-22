@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = "false"; //getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = '/shopmobile/homepage/index.html'; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false" && mRedirectURL.substring(0,4).toLowerCase() != "http") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
 <script type="text/javascript"> 
@@ -87,90 +190,6 @@ ul.LoginModalFirstUL li {
 <script type="text/javascript">var IS_HOMEPAGE = true;</script> 
                 <script type="text/javascript" src="media/cms/homepage/scripts/combined-top.min.js"></script> 
                 <script type="text/javascript" src="olam/js/dotComPrefetch.js.html"></script> 
-                    <script> 
-                    //<![CDATA[ 
-                        //***Start Mobile Detection Steps*** 
-                            //1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
-                            function getURLParam(pName) 
-                            { 
-                                var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
-                            if (pName) 
-                            { 
-                            if (queryString.indexOf(pName) != -1) 
-                            { 
-                            startPos = queryString.indexOf(pName) + pName.length + 1; 
-                            stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
-                            pValue = queryString.substring(startPos, stopPos); 
-                            pValue = unescape(pValue); 
-                            } 
-                            } 
-                            return pValue; 
-                            } 
-                            var mobile = getURLParam('mobile'); 
-                            var mobileView; 
-                            var fullSiteView; 
-                            var mRedirectURL = 'http://m.att.com'; 
-                            //Check URL for mobile=false. Set FulSiteView=True if found. 
-                                if (mobile =="false") 
-                                { 
-                                    sessionStorage.setItem('storageFullSiteView', "True");   
-                                } 
-                                else 
-                                { 
-                                    //Check for HTML5 storage support 
-                                    if(typeof(Storage)!=="") 
-                                    { 
-                                    // Yes! localStorage and sessionStorage support! 
-                                    // Test for FullSiteView=True 
-                                        fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
-                                        if (fullSiteView == "True") 
-                                        { 
-                                        //do nothing 
-                                        } 
-                                    else 
-                                        { 
-                                        DetectMobile(); //start mobile detection 
-                                        } 
-                                    } 
-                                    else 
-                                    { 
-                                    // Sorry! No web storage support.. 
-                                        DetectMobile(); 
-                                    } 
-                                } 
-                                //***Start Mobile Detection Steps*** 
-                                //2. Detect Mobile 
-                                function DetectMobile() 
-                                { 
-                                    //Get user-agent 
-                                    var uagent = navigator.userAgent.toLowerCase(); 
-                                    //Check if device is mobile 
-                                    if (uagent.search("mobile") > -1) 
-                                    {    
-                                        // Verify device is not ipad or tablet 
-                                            //iPad Check 
-                                            if (uagent.search("ipad") > -1) 
-                                            { 
-                                                return //Fullsite View 
-                                            } 
-                                            // Tablet Check 
-                                            if (uagent.search("tablet") > -1) 
-                                            { 
-                                                return // Fullsite View 
-                                            } 
-                                            //Galaxy Tab 7 inch Check 
-                                            else if (uagent.search("gt-p10") > -1) 
-                                            { 
-                                                return // FullSite View 
-                                            } 
-                                            else 
-                                            // Device is not a tablet,ridirect to m.att.com 
-                                                window.location =  mRedirectURL; 
-                                    } 
-                                } 
-                            //***End Mobile Detection Steps***        
-                    //]]> 
-                    </script> 
         <script type="text/javascript"> 
             jQuery.noConflict(); 
         </script> 
@@ -685,7 +704,7 @@ commenting this out and rework so it wont make any ajax calls to reload the jque
 	<div id="marquee"> 
 		<div class="homepageMarqueePromo base"> 
 <div class="marquee parbase teaser"> 
-    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_Sam_Rugby_121712_CC","name":"HP_UG_DMA_Sam_Rugby_121712_CC","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_Sam_Rugby_121712_CC","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA","name":"HP_UG_DMA","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR_Sam_Rugby_121712_CC","name":"HP_Default_OOR_Sam_Rugby_121712_CC","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR_Sam_Rugby_121712_CC","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR","name":"HP_Default_OOR","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR","segments":[],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
+    <script type="text/javascript">{ 	initializeTeaserLoader([{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_122212","name":"HP_UG_DMA_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_122212","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR_122212","name":"HP_Default_OOR_122212","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR_122212","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_Sam_Rugby_122012_NCC","name":"HP_UG_DMA_Sam_Rugby_122012_NCC","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_Sam_Rugby_122012_NCC","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR2","name":"HP_Default_OOR2","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR2","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR_Sam_Rugby_121712_CC","name":"HP_Default_OOR_Sam_Rugby_121712_CC","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR_Sam_Rugby_121712_CC","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_Default_OOR","name":"HP_Default_OOR","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_Default_OOR","segments":[],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA_Sam_Rugby_121712_CC","name":"HP_UG_DMA_Sam_Rugby_121712_CC","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA_Sam_Rugby_121712_CC","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]},{"path":"/shopcms/campaigns/att/en/home/admanager-marquee1/HP_UG_DMA","name":"HP_UG_DMA","campainName":"admanager-marquee1","id":"admanager-marquee1_HP_UG_DMA","segments":["/shopcms/shopetc/segmentation/UF/segmnts/uverse-dmas"],"tags":[]}], "first", "_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee", "false", null);  }</script> 
          <div id="_content_att_homepage_en_index_jcr_content_homepageMarqueePromo_marquee" class="campaign campaign-admanager-marquee1"> 
          </div><div class="clear"></div> 
 </div> 
@@ -1339,7 +1358,7 @@ plan&nbsp;and get a FREE phone.</p>
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 269243378593126048654280938575194128447 --> 
+		 <!--X-Renderer: 208748337863140873888190134620128977364 --> 
 		<!-- /FOOTER -->  
 		</div> 
 	<!-- Webtrend global --> 
@@ -1531,7 +1550,7 @@ if(~location.href.indexOf('/u-verse')){
 	lpMTagConfig.vars.push(["page","unit","supern22"]); 
 } 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","kvX2QRGfzQ2yC4shsKpGm1wL!-975029542!1355892383517"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","xbgLQV8Z8h1QL3Q44Z6hty41!-1830195407!1356152057663"]); 
 lpMTagConfig.vars.push(["visitor","customerType","NEW"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
 lpMTagConfig.vars.push(["visitor","customerZip",""]); 

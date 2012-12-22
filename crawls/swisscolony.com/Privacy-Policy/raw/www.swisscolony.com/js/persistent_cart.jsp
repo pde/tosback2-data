@@ -266,7 +266,7 @@ function addPersonalizationToCart(prefix, container, action) {
                 "&warningDisplayed=" +  $("input[type=hidden][name=warningDisplayed]", scope).val() +
                 "&from=" + $("input[type=hidden][name=from]", scope).val();
 
-                $('[name^="persValue1_"]').each(function() {
+                $('[name^="persValue"]').each(function() {
                      params = params + "&" + $(this).attr("name") + "=" + $(this).val();
                 });
                 $('[name^="persCheckbox"]').each(function() {

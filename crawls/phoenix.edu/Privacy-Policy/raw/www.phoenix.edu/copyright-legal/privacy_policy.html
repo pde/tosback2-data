@@ -59,7 +59,7 @@
     <link rel="shortcut icon" href="../etc/designs/ac/img/favicon.ico" type="image/x-icon">
     <!-- BEGIN: VERSION INFO -->
     <script type="text/javascript">
-        var acVersion = "4.27.4";
+        var acVersion = "4.29.8";
     </script>                  
     <!-- END: VERSION INFO -->
     
@@ -2262,6 +2262,20 @@ try{
 		}
 	}
 }catch(e){}
+
+try{
+	$('form[name="request_information"]').submit(function(e){
+		for(name in ttMETA){ 
+			if(ttMETA[name].mbox == "MiniRFI"){
+				if(ttMETA[name].experience == "Control") setCookieValue("ac_prepop","v8=rfi_control");
+				if(ttMETA[name].experience == "MiniRFI")  setCookieValue("ac_prepop","v8=rfi_mini");
+				if(ttMETA[name].experience == "MiniRFI w/Program")  setCookieValue("ac_prepop","v8=rfi_mini2");
+			}
+		}
+	});
+}catch(e){}
+
+
 </script>
 </div>
 </div>
@@ -2315,10 +2329,132 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
     });
   </script>
   
-  
+
   
   
 
+
+  <script type="text/javascript" src="../etc/designs/common/js/s_code.js"></script>
+  <script type="text/javascript">
+
+    if(typeof(sc) != 'object') var sc = {}
+      sc.init = function(){
+        s.channel = 'mktg';
+        s.server='cq02.dc3.aptimus.net';
+
+        s.pageName='mktg:' + (document.title.indexOf(" - University")>-1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase());
+        if(document.location.pathname == "/") s.pageName = "mktg:home page";
+        if(s.pageName.indexOf('page not found') != -1){//error page
+          s.pageType = "errorPage";
+          s.pageName=document.location.href;
+        } 
+
+        //sProps
+        path = 'mktg'+window.location.pathname;
+        path =  path.indexOf('.') != -1 ? path.substring(0,path.indexOf('.')).split('/') : path.split('/');
+        if(path[1] == '') path[1] = 'home-page';
+        if(typeof(path[1]) != 'undefined'){} s.prop1 = path.slice(0,2).join(':');
+        if(typeof(path[2]) != 'undefined') s.prop2 = path.slice(0,3).join(':');
+        try{
+          var sDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+          var sDay = sDays[new Date().getDay()];
+          var sMins = 15*Math.floor(new Date().getMinutes()/15);
+          if(sMins.toString().length == 1) sMins = '0'+sMins;
+          var sHours = new Date().getMinutes() > 45 ? new Date().getHours()+1 : (new Date().getHours().toString().length == 1 ? '0'+new Date().getHours() : new Date().getHours());
+          var sOffset = new Date().getTimezoneOffset();
+          s.prop3 = sDay + '|' + sHours + ':' + sMins + '|' + sOffset;
+        }catch(e){}
+        s.prop6 = 'contentpage';
+        s.prop7 = '1.12';
+        s.prop8 = 'phoenix.edu';
+        s.prop9 = window.location.protocol + '//' + window.location.hostname + window.location.pathname + window.location.hash;
+        s.prop10 = 'uop';
+        s.prop11 = s_account.indexOf(',') != -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
+        s.prop12 = path[path.length-1];
+        s.prop13 = typeof(name) == "string" ? name : '';//cms identifier
+        s.prop14 =  document.location.pathname + window.location.hash;
+        s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( path[path.length-1] ), document.location.pathname.length) + window.location.hash;
+        s.prop16 = (typeof(sc.prop16) == 'string') ? sc.prop16 : '';
+        s.prop17 = (typeof(sc.prop17) == 'string') ? sc.prop17 : '';
+        s.prop18 = (typeof(sc.prop18) == 'string') ? sc.prop18 : '';
+        s.prop19 = (typeof(sc.prop19) == 'string') ? sc.prop19 : '';
+        s.prop20 = (typeof(sc.prop20) == 'string') ? sc.prop20 : '';
+        //s.prop36 = typeof(UPX_userDefaultValue.getIP) == "function" ? UPX_userDefaultValue.getIP() : "";
+        //try{ s.prop36 = typeof(CQ_Analytics.UpxDataMgr.data.ip) == "string" ? CQ_Analytics.UpxDataMgr.data.ip : (typeof(UPX_userDefaultValue.getIP) == "function" ? UPX_userDefaultValue.getIP() : ""); }catch(e){}
+
+        //eVars
+        s.eVar1 = "D=c1";
+        s.eVar2 = "D=c2";
+        s.eVar3 = "D=c3";
+        s.eVar6 = "D=c6"
+        s.eVar7 = "D=c7";
+        s.eVar8 = s.prop10 + ':' + s.channel + ':' + s.prop8 + ':' + s.prop11;
+        s.eVar9 = "D=c9";
+        s.eVar12 = s.pageName.toLowerCase();
+        try{ s.eVar13 = ProfileService.profile.analyticsId } catch(e){}
+        try{ if( isNaN(parseInt(s.getQueryParam('orderID'))) === false ) s.eVar14 = s.getQueryParam('orderID') }catch(e){}
+        s.eVar15 = "D=c13";
+        s.eVar18 = "D=c14";
+        s.eVar19 = "D=c15";
+        s.eVar20 = "D=c12";
+        sc.eVar21 = "D=c16";
+        sc.eVar22 = "D=c17";
+        
+        //Events
+        if(typeof(s.eVar14) != 'undefined') s.events="event3:"+s.eVar14;
+        if(typeof(sc.events) != 'undefined') s.events = sc.events;
+  }
+
+  if(document.location.pathname.indexOf('search.html') != -1){
+    //delay pageview tracking until search results ajaxrequest returns with search results
+    //component_search_results.js contains the s.init() and s.t() function calls
+    sc.delay = true;
+  }
+  if(sc.delay != true){
+     sc.init();
+     var s_code=s.t();if(s_code)document.write(s_code)//-->
+  }
+
+</script>
+
+
+<noscript><img src="../../apollo.d1.sc.omtrdc.net/b/ss/apollodev/1/H.25--NS/0%3F[AQB]&amp;cdp=4&amp;[AQE]" height="1" width="1" border="0" alt=""/></noscript><!--/DO NOT REMOVE/-->
+
+
+  <script type="text/javascript">
+    /*Live Chat Tracking*/
+    try{
+      if(window.parent.location.pathname.indexOf('/chat/') !== -1){
+        $('#login-button-anchor',window.parent.document).click(function(e){
+          if($('#first-name',window.parent.document).val() != $('#login-form',window.parent.document).data('first-name')){
+            if(window.parent.sessionName == "" && window.parent.app.sessionEnded == false){//chat opened
+              var s=s_gi(s_account);
+              s.linkTrackVars='events';
+              s.linkTrackEvents='event22';
+              s.events='event22';
+              s.tl(this,'o','Action/Link Name');
+            }
+            $('#message',window.parent.document).bind('focus.chatStart',function(){
+              var s=s_gi(s_account);
+              s.linkTrackVars='eVar28,events';
+              s.linkTrackEvents='event23';
+              s.eVar28 = window.parent.sessionName;
+              s.events ='event23';
+              s.tl(this,'o','Action/Link Name');
+              $('#message',window.parent.document).unbind('focus.chatStart');
+            });
+          }
+        });
+      }
+    }catch(e){}
+  </script>
+
+<script type="text/javascript">
+
+
+</script>  
+
+  
   <!-- Google -->
   <script type="text/javascript">
     var pageTracker;
@@ -2343,20 +2479,21 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
                 pageTracker._setDomainName("phoenix.edu");
                 pageTracker._initData();
                 pageTracker._trackPageview();
-        pageTracker._trackPageLoadTime();
+                pageTracker._trackPageLoadTime();
             }
         }catch(e){}
     },1000);
   </script>
   
   
+    
     <script src="../../s.btstatic.com/tag.js">{ site: "HAPDeO0" }</script>
     <noscript><iframe src="../../s.thebrighttag.com/iframe%3Fc=HAPDeO0.html" width="1" height="1"></iframe></noscript>
-  
-  
-  
-  <div class="analytics">
+
+    <div class="analytics">
 </div>
+  
+
   
   
   
@@ -2368,67 +2505,9 @@ COMMON_moduleInitializer.runOverlayModule({functionName: 'UPX_socialLinks'});
       
   
   
-
-
-
-
-  <script type="text/javascript" src="../etc/designs/common/js/s_code.js"></script>
-  <script type="text/javascript">
-  s.pageName='mktg:' + (document.title.indexOf(" - University")>-1 ? (document.title.slice(0,document.title.indexOf(" - University"))).toLowerCase() : document.title.toLowerCase());
-  if(document.location.pathname == "/") s.pageName = "mktg:home page";
-  if(s.pageName.indexOf('page not found') != -1) s.pageType = "errorPage";
-  s.channel = 'mktg';
-  s.server='cq01.dc3.aptimus.net';
-
-  //sProps
-  path = 'mktg'+window.location.pathname;
-  path =  path.indexOf('.') != -1 ? path.substring(0,path.indexOf('.')).split('/') : path.split('/');
-  if(path[1] == '') path[1] = 'home-page';
-  if(typeof(path[1]) != 'undefined'){} s.prop1 = path.slice(0,2).join(':');
-  if(typeof(path[2]) != 'undefined') s.prop2 = path.slice(0,3).join(':');
-  try{
-    var sDays = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    var sDay = sDays[new Date().getDay()];
-    var sMins = 15*Math.floor(new Date().getMinutes()/15);
-    if(sMins.toString().length == 1) sMins = '0'+sMins;
-    var sHours = new Date().getMinutes() > 45 ? new Date().getHours()+1 : (new Date().getHours().toString().length == 1 ? '0'+new Date().getHours() : new Date().getHours());
-    var sOffset = new Date().getTimezoneOffset();
-    s.prop3 = sDay + '|' + sHours + ':' + sMins + '|' + sOffset;
-  }catch(e){}
-  s.prop7 = '1.12';
-  s.prop8 = 'phoenix.edu';
-  s.prop9 = window.location.protocol + '//' + window.location.hostname + window.location.pathname;
-  s.prop10 = 'uop';
-  s.prop11 = s_account.indexOf(',') != -1 ? s_account.slice(0,s_account.indexOf(',')) : s_account;
-  s.prop12 = path[path.length-1];
-  s.prop14 =  document.location.pathname;
-  s.prop15 =  document.location.pathname.slice( document.location.pathname.indexOf( path[path.length-1] ), document.location.pathname.length);
-  
-
-  //eVars
-  s.eVar1 = s.prop1;
-  s.eVar2 = s.prop2;
-  s.eVar3 = s.prop3;
-  s.eVar7 = s.prop7;
-  s.eVar8 = s.prop10 + ':' + s.channel + ':' + s.prop8 + ':' + s.prop11;
-  s.eVar9 = s.prop9;
-  s.eVar12 = s.pageName.toLowerCase();
-  try{ s.eVar13 = ProfileService.profile.analyticsId } catch(e){}
-  try{ if( isNaN(parseInt(s.getQueryParam('orderID'))) === false ) s.eVar14 = s.getQueryParam('orderID') }catch(e){}
-  s.eVar18 = s.prop14;
-  s.eVar19 = s.prop15;
-  s.eVar20 = s.prop12;
-  
-  //Events
-  if(typeof(s.eVar14) != 'undefined') s.events="event3:"+s.eVar14;
-
-  var s_code=s.t();if(s_code)document.write(s_code)//--></script>
-
-
-<noscript><img src="../../apollo.d1.sc.omtrdc.net/b/ss/apollodev/1/H.25--NS/0%3F[AQB]&amp;cdp=4&amp;[AQE]" height="1" width="1" border="0" alt=""/></noscript><!--/DO NOT REMOVE/-->  
   </body>
 <!--
-[Instance=cq01.dc3.aptimus.net; Elapsed=1 ms; Last Generated=Wed Dec 19 00:44:23 GMT+00:00 2012; ]
+[Instance=cq02.dc3.aptimus.net; Elapsed=0 ms; Last Generated=Sat Dec 22 06:27:56 GMT+00:00 2012; ]
 -->
 
 

@@ -33,7 +33,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/content/women-wedding-bridal-shop?cm_sp=womens-_-ddf-_-wedding+shop+1+112912">Wedding Shop</a></li>');
 	document.writeln('<li><a href="/shop/Women-Dresses-Cocktail-Dresses/_/N-ydnr/Rpp-1?cm_sp=womens-_-ddf-_-cocktail+dressess+2+102812">Cocktail Dresses</a></li>');
 	document.writeln('<li><a href="/shop/Catherine-Malandrino/Women/_/N-174waZlfx6/Rpp-1?cm_sp=womens-_-ddf-_-catherine+malandrino+3+121912">NEW: Catherine Malandrino</a></li>');
-	document.writeln('<li><a href="/content/women-bridge-lifestyle?cm_sp=womens-_-ddf-_-bridge+week+4+121612">Bridge Lifestyle Week</a></li>');
+	document.writeln('<li><a href="/shop/Women-Leggings/_/N-zpzq/Rpp-1?cm_sp=womens-_-ddf-_-leggings+4+122112">Leggings</a></li>');
 	document.writeln('<li><a href="/content/women-style-guide?cm_sp=womens-_-ddf-_-nye+style+5+121812">New Year\'s Eve Style Guide</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<div class="promo"><a href="/shop/Gianni-Bini/Women-Dresses/_/N-17302Zlgam/Rpp-1?cm_sp=womens-_-ddpromo-_-bini+121812" >Put on the Glitz With GIanni Bini Dresses></a></div>');
@@ -82,7 +82,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-popular+picks/Nty-1?cm_sp=juniors-_-ddf-_-popular+picks+4+101912">Popular Picks</a></li>');
 	document.writeln('<li><a href="/shop/Juniors-Dresses-Sweater-Dresses/_/N-z82c/Ns-p_best_sellers_rank%7C1/Rpp-2?cm_sp=juniors-_-ddf-_-sweater+dresses+5+120712">Sweater Dresses</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Juniors-Gift-Ideas/_/N-zq0i/Rpp-1?cm_sp=juniors-_-ddpromo-_-holiday+gifts+112212" >Shop Holiday Gifts for Juniors></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Juniors/_/N-lfxqZ1jl/Ntk-all/Ntt-juniors+new+year+looks/Nty-1?cm_sp=juniors-_-ddpromo-_-dress+pics+nye+122112" >Top Dress Picks For New Years Eve></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
 	document.writeln('<a href="/shop/Juniors-Dresses-Party-Dresses/_/N-ybwm/Ns-p_best_sellers_rank%7C1/Rpp-2?cm_sp=juniors-_-ddimage-_-party+dresses+121912"><img src="/images/dropDownImages/121812dropdown_juniors.jpg"></a>');
@@ -177,7 +177,7 @@ function buildDropdown() {
 	document.writeln('<div class="promo"><a href="/shop/Handbags/_/N-lfyuZ1jl/Ntk-all/Ntt-Iconic+Classics/Nty-1?cm_sp=handbags-_-ddpromo-_-iconic+classics+121112" >Shop Timeless Style With Iconic Classics ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/MICHAEL-Michael-Kors/Handbags/_/N-1738nZlfyu?cm_sp=handbags-_-ddimage-_-michael+kors+shopall+121512"><img src="/images/dropDownImages/121212dd_hb_kors.jpg"></a>');
+	document.writeln('<a href="/shop/Coach-Catalog/_/N-lg47?cm_sp=handbags-_-ddimage-_-coach+shopall+122012"><img src="/images/dropDownImages/122012dd_coach.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -294,7 +294,7 @@ function buildDropdown() {
 	document.writeln('<li><a href="/shop/Beauty-Gifts-Sets/_/N-zpsd?cm_sp=beauty-_-ddtc-_-gifts+and+sets+2+102012">Gifts & Sets</a></li>');
 	document.writeln('<li><a href="/shop/Beauty-Fragrance/_/N-yi4i?cm_sp=beauty-_-ddtc-_-fragrance+3+062411">Fragrance</a></li>');
 	document.writeln('<li><a href="/shop/Beauty-Skincare/_/N-y36e?cm_sp=beauty-_-ddtc-_-skincare+4+062411">Skincare</a></li>');
-	document.writeln('<li><a href="/shop/Beauty-Mens/_/N-lgbf/Ntk-all/Nty-1?cm_sp=beauty-_-ddtc-_-mens+fragrances+5+062411">Men\'s Fragrance</a></li>');
+	document.writeln('<li><a href="/shop/Beauty-Makeup/_/N-lgas/Rpp-1?cm_sp=beauty-_-ddtc-_-makeup+5+122112">Makeup</a></li>');
 	document.writeln('<li class="all"><a href="/content/beautycategories?cm_sp=beauty-_-ddtc-_-vac+080511">VIEW ALL BEAUTY CATEGORIES</a></li>');
 	document.writeln('</ul>');
 	document.writeln('<ul>');
@@ -307,15 +307,15 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/The-Edge-Shop/_/N-lg88?cm_sp=beauty-_-ddf-_-edge+beauty+1+1121512">EDGE Contemporary Beauty</a></li>');
-	document.writeln('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg/Rpp-1?cm_sp=beauty-_-ddf-_-beauty+perfect+gift+clarisonic+2+121112">The Perfect Gift - Clarisonic</a></li>');
-	document.writeln('<li><a href="/shop/Lancome/_/N-lg41?cm_sp=beauty-_-ddf-_-lancome+last+10+days+bonus+3+121112">Lancome Last 10 Days Bonus</a></li>');
-	document.writeln('<li><a href="/product/Bobbi-Brown-Creamy-Matte-Lip-Color_301_-1_301_503449774?cm_sp=beauty-_-ddf-_-bobbi+brown+holiday+lip+4+121212">Bobbi Brown Holiday Lip Look</a></li>');
-	document.writeln('<li><a href="/shop/Value-Sets-Gifts/_/N-yxp5/Rpp-1?cm_sp=beauty-_-ddf-_-clinique+hoilday+gifts+5+121112">Clinique Holiday Gifts</a></li>');
+	document.writeln('<li><a href="/shop/Clarisonic/Beauty/_/N-173tkZlfxg/Rpp-1?cm_sp=beauty-_-ddf-_-clarisonic+perfect+skin+2+122112">Healthy Skin begins with CLARISONIC</a></li>');
+	document.writeln('<li><a href="/product/Lancome-La-vie-est-belle-Eau-de-Parfum-Spray_301_-1_301_503322795?cm_sp=beauty-_-ddf-_-lancome+la+vie+est+belle+3+122112">Lancome La vie est belle Fragrance for Her</a></li>');
+	document.writeln('<li><a href="/shop/Beauty/_/N-lfxgZ1jl/Ntk-all/Ntt-dior+capture+totale+multi+perfection/Nty-1?cm_sp=beauty-_-ddf-_-dior+capture+totale+4+122112">Discover Dior Capture Totale Multi Perfection Products</a></li>');
+	document.writeln('<li><a href="/product/Clinique-Repairwear-Laser-Focus-Wrinkle-Correcting-Eye-Cream_301_-1_301_503615433?cm_sp=beauty-_-ddf-_-clinique+repairwear+laser+focus+5+122112">New Clinique Repairwear Laser Focus Eye Cream</a></li>');
 	document.writeln('</ul>');
-	document.writeln('<div class="promo"><a href="/shop/Beauty-Gifts-Sets/_/N-zpsd?cm_sp=beauty-_-ddpromo-_-give+your+best++120812" >Give Your Best - Shop Beauty & Fragrance Gifts  ></a></div>');
+	document.writeln('<div class="promo"><a href="/shop/Beauty-Skincare/_/N-y36e?cm_sp=beauty-_-ddpromo-_-new+year+skincare+122212" >FRESH NEW FACE TO START THE NEW YEAR - SHOP SKINCARE  ></a></div>');
 	document.writeln('</div>');
 	document.writeln('<div class="bottom-marketing">');
-	document.writeln('<a href="/shop/Lancome/_/N-lg41?cm_sp=beauty-_-ddimage-_-beauty+lancome+gift+last+10dayss+121712"><img src="/images/dropDownImages/121712_ddimage_lancome_gwp.jpg"></a>');
+	document.writeln('<a href="/product/Lancome-Hypnose-Star-Mascara_301_-1_301_503556032?cm_sp=beauty-_-ddimage-_-lancome+hypnose+star+mascara+122212"><img src="/images/dropDownImages/122112_ddimage_lancome_hypnose_star_mascara.jpg"></a>');
 	document.writeln('</div>');
 	document.writeln('</div>');
 	document.writeln('</li>');
@@ -353,7 +353,7 @@ function buildDropdown() {
 	document.writeln('</ul>');
 	document.writeln('<ul>');
 	document.writeln('<li><a href="/shop/Men-Gift-Ideas/_/N-y2za/Rpp-1?cm_sp=mens-_-ddf-_-gift+ideas+him+1+111712">Gift Ideas for Him</a></li>');
-	document.writeln('<li><a href="/shop/Hugo-Boss/Men-Underwear-Socks-Sleepwear/_/N-173dsZyyme/Rpp-1?cm_sp=mens-_-ddf-_-hugo+boss+basics+event+2+121912">Hugo Boss Basics 25% off Event</a></li>');
+	document.writeln('<li><a href="/shop/Hugo-Boss/Men-Underwear-Socks-Sleepwear/_/N-173dsZyyme/Rpp-1?cm_sp=mens-_-ddf-_-hugo+boss+basics+event+2+121912">Hugo Boss Basics 30% off Event</a></li>');
 	document.writeln('<li><a href="/content/mensaccessories?cm_sp=mens-_-ddf-_-watches+bags+accessories+3+111712">Watches, Sunglasses, Bags & Accessories</a></li>');
 	document.writeln('<li><a href="/shop/Men-Polos-Tees-Sportshirts-Tees/_/N-yetlZ1jl/Ns-p_best_sellers_rank%7C1/Ntk-all/Ntt-long-sleeve/Nty-1/Rpp-1?cm_sp=mens-_-ddf-_-great+tees+layering+4+111712">GREAT TEES for Layering</a></li>');
 	document.writeln('<li><a href="/shop/Under-Armour/Men/_/N-174hdZlfy5/Ns-p_best_sellers_rank%7C1/Ntk-all/Nty-1/Rpp-1?cm_sp=mens-_-ddf-_-under+armour+all+5+120512">UNDER ARMOUR Best-Sellers</a></li>');
