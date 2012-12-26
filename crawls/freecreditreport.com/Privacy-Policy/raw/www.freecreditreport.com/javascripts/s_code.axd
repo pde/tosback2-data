@@ -47,9 +47,9 @@ s.eVar17=s.prop17="";
 s.prop30=s.eVar30="";
 
 // Set page name
-s.pageName="100133:1038:privacy";
+s.pageName="100133:1030:privacy";
 s.eVar38=s.Section="100133";
-s.eVar2=s.prop2="1038";
+s.eVar2=s.prop2="1030";
 s.eVar20=s.prop33="";
 s.eVar3=s.prop3="";
 s.eVar43=s.prop29="privacy";

@@ -5,14 +5,13 @@ var endDate = "01/01/2020 00:00 ";
 //minal length 2: "01/01/2010 00:00 ","01/01/2020 00:00 "
 //add one more day for public
 var dateTimeList = new Array(  startDate,							 
-							  "12/24/2012 22:00",
 							   endDate);
 
-var heroImgList = new Array(  "banner/home/01_WK47_BonusCash.gif;banner/home/02_WK47_Tempur_4Years.gif",
-							  "banner/home/01_WK47_Dec24_499.gif;banner/home/02_WK47_Dec24_Ship.gif"
+var heroImgList = new Array(  
+							  "banner/home/01_WK47_Dec24_499.gif;banner/home/02_WK47_Tempur_5Years.gif"
 							);
-var heroLinkList = new Array(   "Mattresses-0-C1.aspx?ref=Home&tag=01_WK47_BonusCash;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK47_Tempur_4Years;",
-								"Montgomery-11-5-Firm-Pillow-Top-P299.aspx?ref=Home&tag=01_WK47_Dec24_499;Mattresses-0-C1.aspx?ref=Home&tag=02_WK47_Dec24_Ship;"
+var heroLinkList = new Array(   
+								"Montgomery-11-5-Firm-Pillow-Top-P299.aspx?ref=Home&tag=01_WK47_Dec24_499;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK47_Tempur_5Years;"
 							);
 
 //specify images

@@ -525,16 +525,16 @@ var usa_globalMenu = {
 					"items" : [
 						/* Featured Slot 1 */
 						{
-							"title" : "Covert Affairs",
-							"url" : usa_baseUrlDomain + "/videos/Covert%20Affairs/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ca.png",*/
+							"title" : "Burn Notice",
+							"url" : usa_baseUrlDomain + "/videos/Burn%20Notice/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_fl.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
 						/* Featured Slot 2 */
 						{
-							"title" : "Fairly Legal",
-							"url" : usa_baseUrlDomain + "/videos/Fairly%20Legal/Full%20Episodes"
-							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_fl.png",*/
+							"title" : "Covert Affairs",
+							"url" : usa_baseUrlDomain + "/videos/Covert%20Affairs/Full%20Episodes"
+							/*"img" : usa_baseUrlDomain + "/_img/globalheader/videos_ca.png",*/
 							/*"tuneIn" : "Tune In Time"*/
 						},
 						/* Featured Slot 3 */
@@ -694,28 +694,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "THE GAME PLAN",
-							"subtitle" : "FRI DEC 21 8:30/7:30C",
-							"url" : usa_baseUrlDomain + "/movies/thegameplan/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gameplan.png"
+							"title" : "G.I. JOE: RISE OF THE COBRA",
+							"subtitle" : "TUES DEC 25 8/7C",
+							"url" : usa_baseUrlDomain + "/movies/gijoe/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
 						},
-												{
-							"title" : "THE BACK-UP PLAN",
-							"subtitle" : "SAT DEC 22 8:30/7:30C",
+						{
+							"title" : "RAIDERS OF THE LOST ARK",
+							"subtitle" : "TUES DEC 25 9:52/8:52C",
+							"url" : usa_baseUrlDomain + "/movies/indianajones/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaLostArk.png"
+						},
+						{
+							"title" : "COUPLES RETREAT",
+							"subtitle" : "THURS DEC 27 7:30/6:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
 						},
 						{
 							"title" : "THE UGLY TRUTH",
-							"subtitle" : "SAT DEC 22 11/10C",
+							"subtitle" : "THURS DEC 27 3/2C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
-						},
-						{
-							"title" : "G.I. JOE: RISE OF COBRA",
-							"subtitle" : "TUES DEC 25 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
 						}
 					]
 				}

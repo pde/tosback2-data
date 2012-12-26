@@ -1,0 +1,80 @@
+function connect_login() {
+	// disable all forms
+	$('connect').down('form').getInputs('submit').invoke('disable');
+	
+	// start pinwheel
+	Effect.Appear($('indicator'), {duration: 0.5});
+}
+
+function enable_connect_form() {
+	// enable all forms
+	$('connect').down('form').getInputs().each(
+		function(input) {
+			input.enable();
+		}
+	);
+	
+	// stop pinwheel
+	Effect.Fade($('indicator'), { duration: 0.5 });
+}
+
+function startIndicator(idname) {
+	if(idname){
+		Effect.Appear($('indicator_' + idname), {duration: 0.5})
+	}
+	else {
+		Effect.Appear($('indicator'), {duration: 0.5})
+	}
+		
+}
+function stopIndicator(idname) {
+	Effect.Fade($('indicator_' + idname), {duration: 0.5})
+}
+function disableSubmit(idname) {
+	// $(idname).up('form').getInputs('submit').invoke('disable');
+}
+
+function select_service(service) {
+	
+	$$('.signup_service').each(
+		function(s) {
+			
+			if(!s.hasClassName('revealed')) {
+				s.addClassName('revealed');
+			}
+			
+			var link = s.down('a');
+			if( link.hasClassName('selected') && !link.hasClassName(service)){
+				link.removeClassName('selected');
+				s.removeClassName('selected');
+			}
+			else if( link.hasClassName(service) ){
+				link.addClassName('selected');
+				s.addClassName('selected');
+			}
+		}
+	);
+	
+}
+
+function select_all(table) {
+	$('connect_'+table+'_table').up('form').getInputs('checkbox').each(
+		function(input) {			
+			input.checked = 1;
+		}
+	);
+}
+
+function deselect_all(table) {
+	$('connect_'+table+'_table').up('form').getInputs('checkbox').each(
+		function(input) {
+			input.checked = 0;
+		}
+	);
+	// $('connect_'+table+'_table').up('form').getInputs('checkbox').each(
+	// 	function(input) {
+	// 		if($(input).up('table').hasClassName('connect_'+table))
+	// 			input.clear();
+	// 	}
+	// );
+}
