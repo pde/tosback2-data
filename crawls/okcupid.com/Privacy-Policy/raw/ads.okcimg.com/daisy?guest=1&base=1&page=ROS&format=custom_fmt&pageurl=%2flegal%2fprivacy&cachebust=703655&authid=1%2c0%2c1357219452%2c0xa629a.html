@@ -1,0 +1,163 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title></title>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Pragma-directive" content="no-cache" />
+<meta http-equiv="cache-directive" content="no-cache" />
+<style type="text/css">
+	iframe {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	body {
+		margin: 0px;
+		padding: 0px;
+		background: #FFF;
+	}
+	img.okcimg {
+		top: -1px;
+		position: fixed;
+	}
+	img.okccdn {
+		top: -1px;
+		position: fixed;
+	}
+</style>
+
+			<!--[if (gt IE 7)|!(IE)]><!-->
+			<script>
+				var DAISY_DATA = {"format" : "custom_fmt", "prev" : "none", "fromAdUnit" : true, "next" : "criteo", "daisyid" : "custom_fmt@1357133053"};
+
+			</script>
+			<!--<![endif]-->
+		
+
+
+		<script src="../ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+		<script>
+			/*jshint browser:true prototypejs:true */
+/*global _StatHat, DAISY_DATA */
+
+//=============================================================================
+
+var DaisyFrame = (function () {
+	'use strict';
+	var me = {};
+
+	me.initialize = function () {
+		Event.observe(window, 'message', respondToOrigin);
+		window.top.postMessage(
+			JSON.stringify({fromAdUnit: true, type: 'getorigin'}), '*');
+
+		if (String(window.location).toQueryParams().hasOwnProperty('base')) {
+			DaisyBase.initialize();
+		} else {
+			DaisyChild.initialize();
+		}
+	};
+
+	function respondToOrigin (originMsg) {
+		var message_data = JSON.parse(JSON.stringify(DAISY_DATA));
+		if (originMsg.source !== top) return null;
+		if (originMsg.origin === 'http://www.okcupid.com' ||
+				originMsg.origin === window.location.origin) {
+			window.daisyid = message_data.daisyid;
+			message_data.type = 'begin';
+
+			top.postMessage(JSON.stringify(message_data), originMsg.origin);
+
+			window.onload = function () {
+				message_data.type = 'load';
+				top.postMessage(JSON.stringify(message_data), originMsg.origin);
+			};
+		}
+		else {
+			location.href =
+				location.href.replace(location.origin, originMsg.origin);
+		}
+	}
+
+	return me;
+})();
+
+
+var DaisyBase = (function () {
+	'use strict';
+	var me = {};
+
+	me.initialize = function () {
+		Event.observe(window, 'message', receiveMessage);
+	};
+
+	function receiveMessage(e) {
+		var msgdata = e.data;
+		// TODO
+	}
+
+	return me;
+})();
+
+
+var DaisyChild = (function () {
+	'use strict';
+	var me = {};
+
+	me.initialize = function () {
+	};
+
+	return me;
+})();
+
+			DaisyFrame.initialize();
+		</script>
+	
+
+
+
+
+
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+
+
+
+		<script type='text/javascript'>
+			var crtg_nid = "1385";
+			var crtg_cookiename = "cto_okc";
+			function crtg_getCookie(c_name) {
+					var i, x, y, ARRcookies = document.cookie.split(";");
+					for (i = 0; i < ARRcookies.length; i++) {
+							x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+							y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+							x = x.replace(/^\s+|\s+$/g, "");
+							if (x == c_name) {
+									return unescape(y);
+							}
+					}
+					return "";
+			}
+			var crtg_content = crtg_getCookie(crtg_cookiename);
+			var crtg_rnd = Math.floor(Math.random() * 99999999999);
+			var crtg_url = 'http://rtax.criteo.com/delivery/rta/rta.js?netId=' + escape(crtg_nid);
+			crtg_url += '&cookieName=' + escape(crtg_cookiename);
+			crtg_url += '&rnd=' + crtg_rnd;
+			crtg_url += '&varName=crtg_content';
+			var crtg_script = document.createElement('script');
+			crtg_script.type = 'text/javascript';
+			crtg_script.src = crtg_url;
+			crtg_script.async = true;
+			if (document.getElementsByTagName("head").length > 0) document.getElementsByTagName("head")[0].appendChild(crtg_script);
+			else if (document.getElementsByTagName("body").length > 0) document.getElementsByTagName("body")[0].appendChild(crtg_script);
+		</script>
+	
+
+</body>
+</html>
+
+

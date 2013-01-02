@@ -50,7 +50,28 @@
     </script>
 
 <div id="mist" class="mist"></div>
-<!-- Start Google Analytics -->
+<div id="fb-root"></div>
+<script>
+    // Additional JS functions here
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '124304810915979', // App ID
+            channelUrl : '//www.imageshack.us/channel.html', // Channel File
+            status     : true, // check login status
+            cookie     : true, // enable cookies to allow the server to access the session
+            xfbml      : true  // parse XFBML
+        });
+    };
+
+    // Load the SDK Asynchronously
+    (function(d){
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {return;}
+            js = d.createElement('script'); js.id = id; js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+</script><!-- Start Google Analytics -->
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -85,8 +106,8 @@
     <div id="top">       
          <div class="top_form right">
                         <div id="signOut" class="signOut">
-               <a href="http://register.imageshack.us/" onClick="pageTracker._trackEvent('new-header-click','header-register');">Sign Up</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="btnlogin" onClick="pageTracker._trackEvent('new-header-click','header-signin');">Login</a>  
-            </div>            
+                <a href="http://register.imageshack.us/" onClick="pageTracker._trackEvent('new-header-click','header-register');">Sign Up</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:;" id="btnlogin" onClick="pageTracker._trackEvent('new-header-click','header-signin');">Login</a>
+                <a id="global-facebook-login"></a>            </div>
             <!-- Search -->            
             <div class="search-box right" style="cursor:nohand; background:transparent;">
                 <form id="searchform" >
@@ -284,7 +305,7 @@ trademark laws. </p>
 	             </div>    
      </div>           
      <div id="copyright">
-         &copy; 2003-2012 ImageShack Corp. All rights reserved.     </div>
+         &copy; 2003-2013 ImageShack Corp. All rights reserved.     </div>
      
 
                  
@@ -345,6 +366,9 @@ trademark laws. </p>
 <script type='text/javascript' src='scripts/jquery/jquery-1.8.2.min.js'></script>
 <script type="text/javascript" src="scripts/jquery/jquery-ui-1.8.24.custom.min.js"></script>
 <script type="text/javascript" src="scripts/common/core.js%3Fv=4"></script>
+<script type="text/javascript">
+    FacebookLogin.setAPIKey('5SQW7ZT1dec0922325c83383377e7e557d97fe7a');
+</script>
 
 
 

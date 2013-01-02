@@ -37,7 +37,7 @@ var READ_ONLY = false; var RAILS_ENV = "production";
   <![endif]-->
   
   <script src="../static.huluim.com/system/hulu_c9839cb5_base_1.js" type="text/javascript"></script>
-<script src="../static.huluim.com/system/hulu_4bc100dd_1.js" type="text/javascript"></script>
+<script src="../static.huluim.com/system/hulu_1ef2ac71_1.js" type="text/javascript"></script>
   
   <link class="mbf-only" href="http://www.hulu.com/feed/recent/videos" rel="alternate" title="Recently added videos (RSS)" type="application/rss+xml" />
   <link rel="home" href="http://www.hulu.com" />
@@ -445,7 +445,7 @@ Behaviors.showIE6();
                     <table>
                       <tr>
                         <td>
-                          <a href="http://www.hulu.com/plus?src=top-nav">Try Hulu Plus</a>
+                          <a href="http://www.hulu.com/plus?src=top-nav" beaconregion="top-nav-plus">Try Hulu Plus</a>
                         </td>
                       </tr>
                     </table>
@@ -592,6 +592,9 @@ Behaviors.showIE6();
         else {
           sendAutocompleteTrackData('"content": "' + term + '", "type": "showpage"');
         }
+        if (link.match("/plus")) {
+          Plus.Tracking.trackDriverClick(Plus.Tracking.DRIVER_TYPES.NAV_ELEMENT, Beacon.REGIONS.SEARCH);
+        }
       },
       paramName: 'term',
       widthExpand : 43,
@@ -624,10 +627,11 @@ Behaviors.showIE6();
     SERPTracking.SERPSendTrackInfo(data);
   }
   
+  
     document.observe("dom:loaded", function(){
       $('top-nav-plus').observe('click', function() {
         // click beacon
-        Beacon.trackStandardBeacon(Beacon.TYPE_SITE, Beacon.EVENT_THUMBNAIL_CLICK, {zone: -8, type: "link", clickid: "/plus?src=top-nav", regionname: "top-nav-plus", layout: "l-/plus?src=top-nav"}, true);
+        Beacon.trackStandardBeacon(Beacon.TYPE_SITE, Beacon.EVENT_THUMBNAIL_CLICK, {zone: -8, type: "link", clickid: "/plus?src=top-nav", regionname: Beacon.REGIONS.TOP_NAV_PLUS, layout: "l-/plus?src=top-nav"}, true);
       });
     });
   
@@ -1101,14 +1105,14 @@ Behaviors.showIE6();
     <div class="login-form" style="float:left">
       <form action="https://secure.hulu.com/account/authenticate" method="get" name="login-form" onsubmit="Login.submit(this); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginhulu']); return false;" style="float:left; width:590px">
   <div class='login-form-header' style="float:right">
-    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135652806663183" onclick="Login.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
+    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135713273188292" onclick="Login.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
   </div>
   <div class='login-form-body' style="clear:both">
     <div class='login-form-column'>
       <h3 class="cufonable">Log in instantly with Facebook</h3>
       <div style="color:#8cbc4c; font-size:11px">(Recommended)</div>
       <div class="form-fb-container" style='float:left'>
-        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135652806663231" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
+        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135713273188362" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
       </div>
       <ul style="clear:both;">
         <li><span>Share what you watch with your friends</span></li>
@@ -1134,7 +1138,7 @@ Behaviors.showIE6();
       </div>
       <div class="login-status" style="color: red; display: none; clear:both; float:left"></div>
       <div class="login-button">
-        <input alt="Login" border="0" class="login-submit hover-me" id="btn-login.jpg135652806663348" src="../static.huluim.com/images/btn-login.jpg%3F1084014414" style="width: 88px; height: 28px; clear:both; float:right; margin-top:10px" title="Login" type="image" />
+        <input alt="Login" border="0" class="login-submit hover-me" id="btn-login.jpg135713273188526" src="../static.huluim.com/images/btn-login.jpg%3F1084014414" style="width: 88px; height: 28px; clear:both; float:right; margin-top:10px" title="Login" type="image" />
         <div class="login-status-img" style="float: right; margin: 10px 5px 0px 0px; display: none;">
           <img alt="Loading-animated-circle" border="0" class="login-status-loading" height="16" src="../static.huluim.com/images/loading-animated-circle.gif%3F1309922598" style="position: relative; top: 4px;" width="16" />
         </div>
@@ -1157,14 +1161,14 @@ Behaviors.showIE6();
     <div class="login-form" style="float:left">
       <form action="https://secure.hulu.com/account/authenticate" method="get" name="login-form" onsubmit="Login.submit(this); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginhulu']); return false;" style="float:left; width:590px">
   <div class='login-form-header' style="float:right">
-    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135652806663562" onclick="Login.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
+    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135713273188804" onclick="Login.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
   </div>
   <div class='login-form-body' style="clear:both">
     <div class='login-form-column'>
       <h3 class="cufonable">Log in instantly with Facebook</h3>
       <div style="color:#8cbc4c; font-size:11px">(Recommended)</div>
       <div class="form-fb-container" style='float:left'>
-        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135652806663608" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
+        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135713273188874" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'loginmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
       </div>
       <ul style="clear:both;">
         <li><span>Share what you watch with your friends</span></li>
@@ -1190,7 +1194,7 @@ Behaviors.showIE6();
       </div>
       <div class="login-status" style="color: red; display: none; clear:both; float:left"></div>
       <div class="login-button">
-        <input alt="Login" border="0" class="login-submit hover-me" id="btn-login.jpg13565280666372" src="../static.huluim.com/images/btn-login.jpg%3F1084014414" style="width: 88px; height: 28px; clear:both; float:right; margin-top:10px" title="Login" type="image" />
+        <input alt="Login" border="0" class="login-submit hover-me" id="btn-login.jpg135713273189036" src="../static.huluim.com/images/btn-login.jpg%3F1084014414" style="width: 88px; height: 28px; clear:both; float:right; margin-top:10px" title="Login" type="image" />
         <div class="login-status-img" style="float: right; margin: 10px 5px 0px 0px; display: none;">
           <img alt="Loading-animated-circle" border="0" class="login-status-loading" height="16" src="../static.huluim.com/images/loading-animated-circle.gif%3F1309922598" style="position: relative; top: 4px;" width="16" />
         </div>
@@ -1224,7 +1228,7 @@ Behaviors.showIE6();
   <div class='headline'>
     <h3 class="cufonable">Sign Up Instantly with Facebook <span class='green'>(Recommended)</span></h3>
     <div class='login-form-header' style="float:right">
-      <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg13565280666393" onclick="FloatingSignUpForm.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
+      <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135713273189335" onclick="FloatingSignUpForm.cancel();return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
     </div>
   </div>
   <div class='body-block' style='clear:both;'>
@@ -1239,7 +1243,7 @@ Behaviors.showIE6();
         <li><span>Improve your recommendations</span></li>
       </ul>
       <div>
-        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135652806664006" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'signupmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
+        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135713273189446" onclick="Social.Facebook.connect(); _gaq.push(['_trackEvent','fbconnect', 'signupmodal', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
       </div>
       <div class="fsf-fb-btn" style="max-height:70px; height: 70px;">
       	<fb:facepile width="300" max_rows="1" ></fb:facepile>
@@ -1252,7 +1256,7 @@ Behaviors.showIE6();
 </div>
 
   <div class="new-modal-popup" id="new-modal-popup" style="display:none;">
-  <a href="privacy.html#" onclick="NewModalPopup.cancel('close-btn');; return false;" style="float:right; margin: 10px;"><img alt="" border="0" class="hover-me" id="btn-close-circle.jpg135652806664118" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" /></a>
+  <a href="privacy.html#" onclick="NewModalPopup.cancel('close-btn');; return false;" style="float:right; margin: 10px;"><img alt="" border="0" class="hover-me" id="btn-close-circle.jpg135713273189609" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" /></a>
   <div id="new-modal-popup-content"></div>
   <div class="shw-top-right"></div>
   <div class="shw-right"></div>
@@ -1269,7 +1273,7 @@ Behaviors.showIE6();
   </div>
   <div class="int-thanks" style="display: none">
     <p>Thanks for your interest.</p>
-    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close.gif135652806664218" onclick="IntWarning.cancel();return false" src="../static.huluim.com/images/btn-close.gif%3F1138336199" title="Cancel" width="65" /></a>
+    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close.gif135713273189757" onclick="IntWarning.cancel();return false" src="../static.huluim.com/images/btn-close.gif%3F1138336199" title="Cancel" width="65" /></a>
   </div>
 
   <div class="int-form popup-content">
@@ -1302,8 +1306,8 @@ Behaviors.showIE6();
         </tr>
         <tr>
           <td class="last" colspan="2">
-            <a href="privacy.html#"><img alt="Submit" border="0" class="hover-me" height="20" id="btn-submit-small.gif135652806664385" onclick="IntWarning.submit(); return false" src="../static.huluim.com/images/btn-submit-small.gif%3F1099109130" title="Submit" width="65" /></a>
-            <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close.gif135652806664434" onclick="IntWarning.cancel(); return false" src="../static.huluim.com/images/btn-close.gif%3F1138336199" title="Cancel" width="65" /></a>
+            <a href="privacy.html#"><img alt="Submit" border="0" class="hover-me" height="20" id="btn-submit-small.gif135713273189994" onclick="IntWarning.submit(); return false" src="../static.huluim.com/images/btn-submit-small.gif%3F1099109130" title="Submit" width="65" /></a>
+            <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close.gif135713273190064" onclick="IntWarning.cancel(); return false" src="../static.huluim.com/images/btn-close.gif%3F1138336199" title="Cancel" width="65" /></a>
           </td>
         </tr>
       </table>
@@ -1328,7 +1332,7 @@ Behaviors.showIE6();
 
       <p>Hulu is now officially available in Japan. Please continue onto <a href="http://www.hulu.jp?from=hulu_us" class="blue-link">Hulu.jp</a> to enjoy great videos in Japan.</p>
 
-      <a href="http://www.hulu.jp?from=hulu_us"><img alt="Go to Hulu Japan" border="0" class="hover-me" height="20" id="btn-plus-continue.gif135652806664571" src="../static.huluim.com/images/btn-plus-continue.gif%3F1207633618" style="float: right;" title="Go to Hulu Japan" width="87" /></a>
+      <a href="http://www.hulu.jp?from=hulu_us"><img alt="Go to Hulu Japan" border="0" class="hover-me" height="20" id="btn-plus-continue.gif135713273190265" src="../static.huluim.com/images/btn-plus-continue.gif%3F1207633618" style="float: right;" title="Go to Hulu Japan" width="87" /></a>
       <br class='shim' />
 
     </div>
@@ -1531,7 +1535,7 @@ MobileDevice.handleWarning()
 
   <div class="relative container">
     <div style="float:right; margin-right: 7px; margin-top: 7px;">
-      <a href="privacy.html#" onclick="Social.Facebook.closePopup('remind-me-later'); return false;"><img alt="" border="0" class="hover-me" id="btn-x-round.gif135652806665692" src="../static.huluim.com/images/btn-x-round.gif%3F1181198444" /></a>
+      <a href="privacy.html#" onclick="Social.Facebook.closePopup('remind-me-later'); return false;"><img alt="" border="0" class="hover-me" id="btn-x-round.gif135713273191765" src="../static.huluim.com/images/btn-x-round.gif%3F1181198444" /></a>
     </div>
     <div class="standard tidy">
       <div class="content-container">
@@ -1571,7 +1575,7 @@ MobileDevice.handleWarning()
   <div class='fbtt popup' style='display:none;'>
   <div class='headline'>
     <div class='login-form-header' style="float:right">
-      <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="7" id="btn-close.png135652806665913" onclick="Social.Facebook.hideTooltip(true);Social.Facebook.showTopBanner(true);return false" src="../static.huluim.com/images/btn-close.png%3F1062294887" title="Cancel" width="8" /></a>
+      <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="7" id="btn-close.png135713273191987" onclick="Social.Facebook.hideTooltip(true);Social.Facebook.showTopBanner(true);return false" src="../static.huluim.com/images/btn-close.png%3F1062294887" title="Cancel" width="8" /></a>
     </div>
   </div>
   <div class='body-block' style='clear:both;'>
@@ -1586,7 +1590,7 @@ MobileDevice.handleWarning()
         <li><span>Improve your recommendations</span></li>
       </ul>
       <div class='fbtt-btn'>
-        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135652806665992" onclick="Social.Facebook.connect();return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
+        <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" height="32" id="btn-facebook-login-big.jpg135713273192068" onclick="Social.Facebook.connect();return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" width="241" /></a>
       </div>
       <div class='fbtt-facepile'>
        	<fb:facepile max_rows="1" data-width="250px"></fb:facepile>
@@ -1600,7 +1604,7 @@ MobileDevice.handleWarning()
 
   <div class="fbrb popup" style="display:none;">
   <div class="login-form-header" style="float:right" id="close-circle">
-    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135652806666086" onclick="Social.Facebook.hidePageRoadBlock(); Social.Facebook.updateSocialSetting(false, true, 'page_roadblock'); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'sharex']); return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
+    <a href="privacy.html#"><img alt="Cancel" border="0" class="hover-me" height="20" id="btn-close-circle.jpg135713273192163" onclick="Social.Facebook.hidePageRoadBlock(); Social.Facebook.updateSocialSetting(false, true, 'page_roadblock'); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'sharex']); return false" src="../static.huluim.com/images/btn-close-circle.jpg%3F1274750449" title="Cancel" width="20" /></a>
   </div>
   <div class="body-block">
     <h2 class="cufonable new-feature">New Feature</h2>
@@ -1622,10 +1626,10 @@ MobileDevice.handleWarning()
     </div>
     <div class="bottom-block" style="clear:both;">
       <div style="float: left">
-        <a href="privacy.html#"><img alt="Don't Share My Activity" border="0" class="hover-me" height="32" id="btn-dont-share.jpg135652806666161" onclick="Social.Facebook.updateSocialSetting(false,false,'page_roadblock'); Social.Facebook.hidePageRoadBlock(); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'shareoff']); return false" src="../static.huluim.com/images/btn-dont-share.jpg%3F1198180317" title="Don't Share My Activity" width="307" /></a>
+        <a href="privacy.html#"><img alt="Don't Share My Activity" border="0" class="hover-me" height="32" id="btn-dont-share.jpg13571327319224" onclick="Social.Facebook.updateSocialSetting(false,false,'page_roadblock'); Social.Facebook.hidePageRoadBlock(); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'shareoff']); return false" src="../static.huluim.com/images/btn-dont-share.jpg%3F1198180317" title="Don't Share My Activity" width="307" /></a>
       </div>
       <div style="float:right">
-        <a href="privacy.html#"><img alt="Share My Activity" border="0" class="hover-me" height="32" id="btn-share.jpg135652806666242" onclick="Social.Facebook.updateSocialSetting(true,false,'page_roadblock'); Social.Facebook.hidePageRoadBlock(); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'shareon']); return false" src="../static.huluim.com/images/btn-share.jpg%3F1028671869" title="Share My Activity" width="307" /></a>
+        <a href="privacy.html#"><img alt="Share My Activity" border="0" class="hover-me" height="32" id="btn-share.jpg135713273192321" onclick="Social.Facebook.updateSocialSetting(true,false,'page_roadblock'); Social.Facebook.hidePageRoadBlock(); _gaq.push(['_trackEvent', 'fbconnect', 'modalroadblock', 'shareon']); return false" src="../static.huluim.com/images/btn-share.jpg%3F1028671869" title="Share My Activity" width="307" /></a>
       </div>
       <div style="clear:both;"></div>
     </div>
@@ -1688,7 +1692,7 @@ MobileDevice.handleWarning()
       </div>
     </div>
     <div class="facebook-login-btn hide-fb-connected">
-      <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" id="btn-facebook-login-big.jpg135652806666456" onclick="Social.TopNavControl.hide(); Social.Facebook.connect(); _gaq.push(['_trackEvent', 'socialshare', 'socialcontrollerloggedout', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" /></a>
+      <a href="privacy.html#"><img alt="Log in with Facebook" border="0" class="hover-me" id="btn-facebook-login-big.jpg135713273192541" onclick="Social.TopNavControl.hide(); Social.Facebook.connect(); _gaq.push(['_trackEvent', 'socialshare', 'socialcontrollerloggedout', 'loginfb']); return false" src="../static.huluim.com/images/btn-facebook-login-big.jpg%3F1009358602" title="Log in with Facebook" /></a>
     </div>
   </div>
 </div>
@@ -1720,12 +1724,12 @@ MobileDevice.handleWarning()
   <div class="shadow"></div>
   <div class="page-width">
     <div class="left footer-font">
-      <a href="http://www.hulu.com/plus?src=footer" class="footer-font">Hulu Plus</a>
+      <a href="http://www.hulu.com/plus?src=footer" beaconregion="footer" class="footer-font">Hulu Plus</a>
       <a href="http://blog.hulu.com" class="footer-font">Blog</a>
       <a href="http://www.hulu.com/labs/ie9" class="footer-font" id="ie-pin-footer-link" style="display:none;">IE Pinning</a>
       <a href="http://www.hulu.com/jobs" class="footer-font">Jobs</a>
       <a href="http://www.hulu.com/help" class="footer-font">Help</a>
-      <a href="http://www.hulu.com/about" class="footer-font">More</a>
+      <a href="http://www.hulu.com/about" class="footer-font">About Us</a>
     </div>
     <div class="right footer-font">
       <a href="http://www.hulu.com/terms" class="footer-font">Terms of Use</a>
@@ -1742,6 +1746,7 @@ MobileDevice.handleWarning()
     }
   });
 //]]></script>
+
   
   </div>
 
@@ -1813,7 +1818,7 @@ MobileDevice.handleWarning()
           <div></div>
         </div>
         <div class="subsection bottom">
-          <img alt="" border="0" class="hover-me" id="btn-create-new-playlist.gif135652806666884" onclick="SuperPlus.showCreatePlaylist();" src="../static.huluim.com/images/btn-create-new-playlist.gif%3F1110603016" />
+          <img alt="" border="0" class="hover-me" id="btn-create-new-playlist.gif135713273192982" onclick="SuperPlus.showCreatePlaylist();" src="../static.huluim.com/images/btn-create-new-playlist.gif%3F1110603016" />
         </div>
         <div class='playlist-add-error' style="display:none;">
           <div class='playlist-add-error-content'></div>
@@ -1878,7 +1883,7 @@ var privacy_level = new ComboBox("privacy_level", {"onchange":""});
         <div class='playlist-create-success' style='display: none;'>
           <ul id='playlist-create-success-text'>
           </ul>
-          <img alt="" border="0" class="hover-me" id="btn-done.gif135652806667039" onclick="FloatingDiv.hide();" src="../static.huluim.com/images/btn-done.gif%3F1023849742" />
+          <img alt="" border="0" class="hover-me" id="btn-done.gif135713273193141" onclick="FloatingDiv.hide();" src="../static.huluim.com/images/btn-done.gif%3F1023849742" />
         </div>
       </form>
     </div>
@@ -1946,3 +1951,29 @@ overrideDocumentWrite();
 </body>
 </html>
 
+
+<script type="text/javascript">//<![CDATA[
+  document.observe("dom:loaded", function(){
+    var plusPageMatcher = /\/plus(-|_)?(\/|\?|$)/;
+    var thanksPageMatcher = /\/plus\/thanks/;
+    if(plusPageMatcher.match(window.location.href) && !thanksPageMatcher.match(window.location.href)) {
+      var landingPage = /\/plus(-|_)?(\?|$)/.match(window.location.href) ? 1 : 0;
+      Plus.Tracking.trackFlowBeacon(landingPage);
+    }
+    var item_selectors = [
+      'a:[href*="/plus?"]',
+      'a:[href*="/plus/latino-en?"]',
+      'a:[href*="/plus/latino?"]',
+      'a:[href$="/plus"]',
+      'a:[href$="/plus/latino"]',
+      'a:[href$="/plus/latino-en"]'
+    ];
+    var plusNavs = $$(item_selectors.join(", "));
+    for(var i = 0; i < plusNavs.length; i++) {
+      Beacon.trackNavPlusLoad(plusNavs[i]);
+      plusNavs[i].observe('click', function() {
+        Beacon.trackNavPlusClick(this);
+      });
+    }
+  });
+//]]></script>

@@ -54,7 +54,7 @@
 <link href="assets/mobile-0d1fdb5a0d9e32d04f669a965112333f.css" media="screen" rel="stylesheet" type="text/css" />
 
 <meta content="authenticity_token" name="csrf-param" />
-<meta content="eagjGkSFX8lCTshP/L3BElh4RXVGt4nF7edtBzD7qjc=" name="csrf-token" />
+<meta content="ye0rtpI0ue8F6X1DHNLQqVldZTD/UURHgglqLFYf2a4=" name="csrf-token" />
 <script>
   //<![CDATA[
     var addthis_config = {ui_click: true}
@@ -326,7 +326,7 @@ if(NREUMQ.a)NREUMQ.a();
 };
 NREUMQ.a=window.onload;window.onload=NREUMQ.f;
 };
-NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9dRB8PXgcLWVEaUVcMTUJvElACB0YbRlhaFA==",3,24,new Date().getTime(),"","","","",""]);</script></body>
+NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9dRB8PXgcLWVEaUVcMTUJvElACB0YbRlhaFA==",3,28,new Date().getTime(),"","","","",""]);</script></body>
 
 <div id="fb-root"></div>
 <script>
@@ -361,9 +361,41 @@ NREUMQ.push(["nrfj","beacon-3.newrelic.com","58d487535b","1072431","Jg1bQEdfWQ9d
         _gaq.push(['_trackPageview']);
         _gaq.push(['_setCustomVar', 1, 'Page Type', 'mobile-about_pages-show']);
         
-        _gaq.push(['_trackEvent', 'General', 'Pageload', 'true']);
+        _gaq.push(['_trackEvent', 'General', 'Pageload', null, null, true]);
 
-        $('.preview p a').bind('click', function () {_gaq.push(['_trackEvent', 'Stories', 'Read', 'Read at Source']);});
+        $('.preview p a').bind('click', function () { _gaq.push(['_trackEvent', 'Stories', 'Read', 'Read at Source']); });
+
+        function postEngagementEvent(action) { _gaq.push(['_trackEvent', 'Engagement', action, '', '1']); }
+
+        var onSave = function(event) { postEngagementEvent('Save Story'); $(event.target.parentElement).one('click', onUnsave); };
+        var onUnsave = function(event) { postEngagementEvent('Unsave Story'); $(event.target.parentElement).one('click', onSave); };
+        $('.reading_actions .save a.nightstand:not(.active)').one('click', onSave);
+        $('.reading_actions .save a.nightstand.active').one('click', onUnsave);
+
+        var onLike = function(event) { postEngagementEvent('Like Story'); $(event.target.parentElement).one('click', onUnlike); };
+        var onUnlike = function(event) { postEngagementEvent('Unlike Story'); $(event.target.parentElement).one('click', onLike); };
+        $('.reading_actions .like a.like:not(.active)').one('click', onLike);
+        $('.reading_actions .like a.like.active').one('click', onUnlike);
+
+        var onFollow = function(event) { postEngagementEvent('Follow Writer'); $(event.target.parentElement).one('click', onUnfollow); };
+        var onUnfollow = function(event) { postEngagementEvent('Unfollow Writer'); $(event.target.parentElement).one('click', onFollow); };
+        $('li.writer a.follow-link:not(.active)').one('click', onFollow);
+        $('li.writer a.follow-link.active').one('click', onUnfollow);
+        $('.user--details a.follow-link:not(.active)').one('click', onFollow);
+        $('.user--details a.follow-link.active').one('click', onUnfollow);
+        $('.user--sidebar-listing.writer a.follow-link:not(.active)').one('click', onFollow);
+        $('.user--sidebar-listing.writer a.follow-link.active').one('click', onUnfollow);
+
+        var onSaveAll = function(event) {
+          for (var i = 0; i < Number($(event.target.parentElement).attr('count')); i ++) { postEngagementEvent('Save Story'); }
+        };
+        $('.anthologies--list .reading_actions a.save_all:not(.active)').one('click', onSaveAll);
+
+        var onFollowAll = function(event) {
+          for (var i = 0; i < Number($(event.target.parentElement).attr('count')); i ++) { postEngagementEvent('Follow Writer'); }
+        };
+        $('.users--sidebar-list a.follow_all:not(.active)').one('click', onFollowAll);
+        $('.users--list.featured a.follow_all:not(.active)').one('click', onFollowAll);
 
         (function() {
           var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

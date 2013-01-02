@@ -175,10 +175,10 @@
 			strategy = learned[whence_i_came]['preferred'];
 			switch(strategy){
 				case 'sk':
-					write_script("http://s3.amazonaws.com/sniffer/2-806360-b.js");
+					write_script("http://cdn1.skinected.com/2-806360-b.js");
 					return [1,'breaking an iframe','skinected breaker'];
 				case 'mm':
-					write_script("http://s3.amazonaws.com/sniffer/2-806360-bmm.js");
+					write_script("http://cdn1.skinected.com/2-806360-bmm.js");
 					return [2,'breaking an iframe','media mind breaker'];
 				default:
 					return [-16,'aborting for an iframe','unrecognized preferred breaker'];
@@ -207,10 +207,12 @@
 						if( divs[c].id.substring(0,5) === 'a4gss' ) {return [-13,'conflicting skin','ad4games']}
 						if( /skin-container/.test(divs[c].className) ) {return [-14,'conflicting skin','pointroll']}
 						if( divs[c].id.substring(0,6) === 've_ce_' ) {return [-19,'conflicting skin','ve ce']}
+						if( /^scr_/.test(divs[c].id) ) {return [-21,'conflicting skin','scr']}
 		}
 
 		if( typeof(top.window.cpmstar_str) != 'undefined' ) {return [-18,'conflicting skin','cpmstar']}
 		if( typeof(top.window.cpmstar_pid) != 'undefined' ) {return [-18,'conflicting skin','cpmstar']}
+
 
 		if(Math.random() < ( 0.005 / 1)  ){
 			if(introspection.is_initial){

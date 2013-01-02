@@ -22,7 +22,9 @@ function get_scaled_size(width, height, max_width, max_height, crop)
 
 $(document).ready(function() {
 
-    $('ul.sf-menu').superfish(); 
+    FacebookLogin.initialize();
+
+    $('ul.sf-menu').superfish();
     $('#language').bind('change', function() {
         $.cookie('lang', $(this).val(), {expires:365, path:'/', domain:'.imageshack.us'});
         location.reload();
@@ -481,3 +483,66 @@ jQuery.cookie = function(name, value, options) {
         return cookieValue;
     }
 };
+
+var FacebookLogin = (function() {
+    var button = $('#global-facebook-login').add('#register-facebook-login'),
+        api_key = '';
+
+    function init() {
+        button.on('click', function(e) {
+            e.stopPropagation();
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    login();
+                } else if (response.status === 'not_authorized') {
+                    login();
+                } else {
+                    login();
+                }
+            });
+        });
+    }
+
+    function send(data) {
+        return $.ajax({
+            url:        '/rest_api/v1/user/facebook_login.json',
+            type:       'POST',
+            data:       data
+        });
+    }
+
+    function login() {
+        FB.login(function(response) {
+            if (response.authResponse) {
+                FB.api('/me', function(r) {
+                    var data = {
+                        'email':        r.email,
+                        'first_name':   r.first_name,
+                        'gender':       r.gender || '',
+                        'user_id':      r['id'],
+                        'last_name':    r.last_name,
+                        'access_token': response.authResponse.accessToken,
+                        'set_cookies':  true,
+                        'username':     r.username,
+                        'api_key':      api_key
+                    };
+                    $.when(send(data))
+                        .then(function(o) {
+                            if (o && o.success && !o.error) {
+                                window.location = window.location;
+                            }
+                        });
+                });
+            } else {}
+        }, {scope: 'email'});
+    }
+
+    function setKey(candid) {
+        api_key = candid;
+    }
+
+    return {
+        initialize: init,
+        setAPIKey:  setKey
+    };
+})();

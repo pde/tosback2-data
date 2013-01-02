@@ -1,0 +1,1465 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/here-s-why-apple-and-samsung-are-breaking-up.html",' +
+                '"title": "Here&rsquo;s Why Apple and Samsung Are Breaking Up",' +
+                '"rubric": "DIVORCE!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "95febfa94e17ef964eb8c6c50cf403ed"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/the-dummies-guide-to-college-football-bowl-games.html",' +
+                '"title": "The Dummies&rsquo; Guide to College Football Bowl Games",' +
+                '"rubric": "COLLEGE FOOTBALL",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25427844ee2826d87a2c69772d3032cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/05/04/speed-read-12-naughty-bits-from-50-shades-darker.html",' +
+                '"title": "Speed Read: 12 Naughty Bits From &lsquo;50 Shades Darker&rsquo;",' +
+                '"rubric": "Book 2",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a7204298f06e42b9befdbf761c07462e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/11-funny-twitter-reactions-to-the-kimye-baby.html",' +
+                '"title": "11 Funny Twitter Reactions to the Kimye Baby",' +
+                '"rubric": "#Expecting",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "759add79520b16909e6a618a5ca029ee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/24/the-french-revolution-for-dummies-and-les-mis-rables-watchers.html",' +
+                '"title": "The French Revolution for Dummies (and &lsquo;Les Mis&eacute;rables&rsquo; Watchers)",' +
+                '"rubric": "CHEAT SHEET",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "222314d690c0dbed627400ac8b41f6a8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/11/13/how-xxx-porn-s-domain-name-made-hundreds-of-millions.html",' +
+                '"title": "How &ldquo;.XXX,&rdquo; Porn&rsquo;s Domain Name, Made Hundreds of Millions",' +
+                '"rubric": "Sexy!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "d8fe8f1e65f85c9360f4b584514c885c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/autism-had-nothing-to-do-with-adam-lanza-s-rampage.html",' +
+                '"title": "Autism Had Nothing to Do With Adam Lanza&rsquo;s Rampage",' +
+                '"rubric": "Misleading News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "711f4ff0fcbbabd34130ccbb291f0e06"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/22/a-peek-at-olympian-suzy-favor-hamilton-s-escort-service.html",' +
+                '"title": "A Peek at Olympian Suzy Favor Hamilton&rsquo;s Escort Service",' +
+                '"rubric": "ON THE STRIP",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "61abd92411723476a941b13ede5d4e1b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/washington-may-have-a-deal-on-taxes-but-the-toughest-problems-remain.html",' +
+                '"title": "Washington May Have a Deal on Taxes, but the Toughest Problems Remain",' +
+                '"rubric": "Salvage Job",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45a30c9817aab77a1898eb39648d1dbc"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/the-republicans-moment-of-truth.html",' +
+                '"title": "The Republicans&rsquo; Moment of Truth",' +
+                '"rubric": "GAME OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bec06c83472f4f9bacdd8f03613049ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/washington-may-have-a-deal-on-taxes-but-the-toughest-problems-remain.html",' +
+                '"title": "Washington May Have a Deal on Taxes, but the Toughest Problems Remain",' +
+                '"rubric": "Salvage Job",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45a30c9817aab77a1898eb39648d1dbc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/john-avlon-s-picks-for-12-best-opinion-columns-of-2012.html",' +
+                '"title": "John Avlon&rsquo;s Picks for 12 Best Opinion Columns of 2012",' +
+                '"rubric": "OPINION WRITING",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "32d52439c5f610e7173946281664cd95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2010/12/30/20-worst-hangover-drinks-from-white-russians-to-whiskey-sours.html",' +
+                '"title": "20 Worst Hangover Drinks",' +
+                '"rubric": "Food",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "639eb466dee9f611836bd4c8d548bddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/the-dummies-guide-to-college-football-bowl-games.html",' +
+                '"title": "The Dummies&rsquo; Guide to College Football Bowl Games",' +
+                '"rubric": "COLLEGE FOOTBALL",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25427844ee2826d87a2c69772d3032cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/here-s-why-apple-and-samsung-are-breaking-up.html",' +
+                '"title": "Here&rsquo;s Why Apple and Samsung Are Breaking Up",' +
+                '"rubric": "DIVORCE!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "95febfa94e17ef964eb8c6c50cf403ed"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/our-pathetic-congress.html",' +
+                '"title": "Our Pathetic Congress",' +
+                '"rubric": "Cliff Jumpers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7dec6970f4193ddac2c538cc61975f94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/with-u-s-adoption-ban-a-mother-fears-for-russia-s-abandoned-kids.html",' +
+                '"title": "With U.S. Adoption Ban, a Mother Fears for Russia&rsquo;s Abandoned Kids",' +
+                '"rubric": "Russian Adoption Ban",' +
+                '"topic": "World",' +
+                '"urlHashCode": "77c25c94992a68117d4d9e05f46e4da9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/10-best-hot-reads-of-2012-you-might-have-missed.html",' +
+                '"title": "10 Best Hot Reads of 2012",' +
+                '"rubric": "Don\'t Miss",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "32003ce714c969595db89a828852740f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/01/01/a-mighty-act-the-150th-anniversary-of-the-emancipation-proclamation.html",' +
+                '"title": "A Mighty Act: The 150th Anniversary of the Emancipation Proclamation",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7331fe65176ccd52e457ef0b8f3d2a80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/how-bullying-creates-suicide-bombers.html",' +
+                '"title": "How Bullying Creates Suicide Bombers",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "f90ea7d6f0bd6400483977213c75f99a"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/bernard-henri-levy-my-wish-for-america.html",' +
+                '"title": "Bernard-Henri L&eacute;vy: My Wish for America",' +
+                '"rubric": "Dear Uncle Sam",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9bb523b72ae957ebba9666c850936539"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/the-dummies-guide-to-college-football-bowl-games.html",' +
+                '"title": "The Dummies&rsquo; Guide to College Football Bowl Games",' +
+                '"rubric": "COLLEGE FOOTBALL",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25427844ee2826d87a2c69772d3032cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2010/12/30/20-worst-hangover-drinks-from-white-russians-to-whiskey-sours.html",' +
+                '"title": "20 Worst Hangover Drinks",' +
+                '"rubric": "Food",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "639eb466dee9f611836bd4c8d548bddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/with-u-s-adoption-ban-a-mother-fears-for-russia-s-abandoned-kids.html",' +
+                '"title": "With U.S. Adoption Ban, a Mother Fears for Russia&rsquo;s Abandoned Kids",' +
+                '"rubric": "Russian Adoption Ban",' +
+                '"topic": "World",' +
+                '"urlHashCode": "77c25c94992a68117d4d9e05f46e4da9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/john-avlon-s-picks-for-12-best-opinion-columns-of-2012.html",' +
+                '"title": "John Avlon&rsquo;s Picks for 12 Best Opinion Columns of 2012",' +
+                '"rubric": "OPINION WRITING",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "32d52439c5f610e7173946281664cd95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/washington-may-have-a-deal-on-taxes-but-the-toughest-problems-remain.html",' +
+                '"title": "Washington May Have a Deal on Taxes, but the Toughest Problems Remain",' +
+                '"rubric": "Salvage Job",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45a30c9817aab77a1898eb39648d1dbc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/should-people-be-forced-to-buy-liability-insurance-for-their-guns.html",' +
+                '"title": "Should People Be Forced to Buy Liability Insurance for their Guns?",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "0f356b593cb05b7d9d959f806f302937"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/an-obsessive-s-search-for-a-lost-jungle-city.html",' +
+                '"title": "An Obsessive&rsquo;s Search for a Lost Jungle City",' +
+                '"rubric": "Jungleland",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "cdebc11dc087d478a033ed455a90e3ef"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/here-s-why-apple-and-samsung-are-breaking-up.html",' +
+                '"title": "Here&rsquo;s Why Apple and Samsung Are Breaking Up",' +
+                '"rubric": "DIVORCE!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "95febfa94e17ef964eb8c6c50cf403ed"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/10-best-hot-reads-of-2012-you-might-have-missed.html",' +
+                '"title": "10 Best Hot Reads of 2012",' +
+                '"rubric": "Don\'t Miss",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "32003ce714c969595db89a828852740f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2012/12/31/the-worst-movies-of-2012.html",' +
+                '"title": "The Worst Movies Of 2012",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "296c17d63c2ac6b1dc128c24a3db70e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/31/funniest-youtube-comments-of-2012.html",' +
+                '"title": "Funniest YouTube Comments of 2012",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f8f67a3678a1f783e9af1ade10ea810e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/11-funny-twitter-reactions-to-the-kimye-baby.html",' +
+                '"title": "11 Funny Twitter Reactions to the Kimye Baby",' +
+                '"rubric": "#Expecting",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "759add79520b16909e6a618a5ca029ee"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/01/the-last-gangnam-style-performance-ever0.html",' +
+                '"title": "Psy\'s Last Gangnam?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "81cc8f3a122015203ebf0044be25fdd2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/31/kanye-s-going-to-be-a-baby-daddy.html",' +
+                '"title": "Kanye\'s Going to Be a Baby Daddy",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b8d5566fc1e13e6c245b13f02e66551"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/21/the-number-looking-ahead-to-2013.html",' +
+                '"title": "2013 Wall Street Predictions",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "7118efb5f550ba527f0b50acb40886f6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/31/the-worst-movies-of-2012.html",' +
+                '"title": "The Worst Movies Of 2012",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "296c17d63c2ac6b1dc128c24a3db70e7"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/sovereign-citizens-are-a-sometimes-violent-fringe-group-rejecting-all-government.html",' +
+                '"title": "Sovereign Citizens Are a Sometimes Violent Fringe Group Rejecting All Government",' +
+                '"rubric": "Fringe",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5f1e15166adb145310177c2265c9ae9a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/a-mighty-act-the-150th-anniversary-of-the-emancipation-proclamation.html",' +
+                '"title": "A Mighty Act: The 150th Anniversary of the Emancipation Proclamation",' +
+                '"rubric": "Books",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "7331fe65176ccd52e457ef0b8f3d2a80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/31/hillary-s-blood-clot-in-head.html",' +
+                '"title": "Hillary\'s Blood Clot In Head",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "02f4c53588e945fecc99cd5aa9044d34"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/the-republicans-moment-of-truth.html",' +
+                '"title": "The Republicans&rsquo; Moment of Truth",' +
+                '"rubric": "GAME OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bec06c83472f4f9bacdd8f03613049ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2012/12/31/we-re-going-over-the-cliff.html",' +
+                '"title": "We\'re Going Over the Cliff",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "10f32be5953e27cc41f2b8f0e1fd9fca"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2010/12/30/20-worst-hangover-drinks-from-white-russians-to-whiskey-sours.html",' +
+                '"title": "20 Worst Hangover Drinks",' +
+                '"rubric": "Food",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "639eb466dee9f611836bd4c8d548bddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/autism-had-nothing-to-do-with-adam-lanza-s-rampage.html",' +
+                '"title": "Autism Had Nothing to Do With Adam Lanza&rsquo;s Rampage",' +
+                '"rubric": "Misleading News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "711f4ff0fcbbabd34130ccbb291f0e06"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/our-pathetic-congress.html",' +
+                '"title": "Our Pathetic Congress",' +
+                '"rubric": "Cliff Jumpers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7dec6970f4193ddac2c538cc61975f94"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2012/12/30/sovereign-citizens-are-a-sometimes-violent-fringe-group-rejecting-all-government.html",' +
+                '"title": "Sovereign Citizens Are a Sometimes Violent Fringe Group Rejecting All Government",' +
+                '"rubric": "Fringe",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5f1e15166adb145310177c2265c9ae9a"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/the-year-of-bad-fear-and-how-to-end-it-in-2013.html",' +
+                '"title": "The Year of Bad Fear&mdash;and How to End It in 2013",' +
+                '"rubric": "Boo",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a6eba320b947184b3028d83f655dcd9f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/the-republicans-moment-of-truth.html",' +
+                '"title": "The Republicans&rsquo; Moment of Truth",' +
+                '"rubric": "GAME OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bec06c83472f4f9bacdd8f03613049ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/the-dummies-guide-to-college-football-bowl-games.html",' +
+                '"title": "The Dummies&rsquo; Guide to College Football Bowl Games",' +
+                '"rubric": "COLLEGE FOOTBALL",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25427844ee2826d87a2c69772d3032cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/john-avlon-s-picks-for-12-best-opinion-columns-of-2012.html",' +
+                '"title": "John Avlon&rsquo;s Picks for 12 Best Opinion Columns of 2012",' +
+                '"rubric": "OPINION WRITING",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "32d52439c5f610e7173946281664cd95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/washington-may-have-a-deal-on-taxes-but-the-toughest-problems-remain.html",' +
+                '"title": "Washington May Have a Deal on Taxes, but the Toughest Problems Remain",' +
+                '"rubric": "Salvage Job",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45a30c9817aab77a1898eb39648d1dbc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/with-u-s-adoption-ban-a-mother-fears-for-russia-s-abandoned-kids.html",' +
+                '"title": "With U.S. Adoption Ban, a Mother Fears for Russia&rsquo;s Abandoned Kids",' +
+                '"rubric": "Russian Adoption Ban",' +
+                '"topic": "World",' +
+                '"urlHashCode": "77c25c94992a68117d4d9e05f46e4da9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2010/12/30/20-worst-hangover-drinks-from-white-russians-to-whiskey-sours.html",' +
+                '"title": "20 Worst Hangover Drinks",' +
+                '"rubric": "Food",' +
+                '"topic": "Food",' +
+                '"urlHashCode": "639eb466dee9f611836bd4c8d548bddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/2012-s-best-onscreen-kisses-silver-linings-playbook-more-video.html",' +
+                '"title": "2012&rsquo;s Best Onscreen Kisses: &lsquo;Silver Linings Playbook&rsquo; &amp; More (VIDEO)",' +
+                '"rubric": "Under the Mistletoe",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fee28a4b600432990d0b63ad775096e3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/here-s-why-apple-and-samsung-are-breaking-up.html",' +
+                '"title": "Here&rsquo;s Why Apple and Samsung Are Breaking Up",' +
+                '"rubric": "DIVORCE!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "95febfa94e17ef964eb8c6c50cf403ed"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/11/why-the-fiscal-cliff-is-causing-a-nervous-breakdown-on-the-right.html",' +
+                '"title": "Why the Fiscal Cliff Is Causing a Nervous Breakdown on the Right",' +
+                '"rubric": "&lsquo;DEEP DISARRAY&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "56fd59635fb42fcf90942e173eea1e9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/our-pathetic-congress.html",' +
+                '"title": "Our Pathetic Congress",' +
+                '"rubric": "Cliff Jumpers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7dec6970f4193ddac2c538cc61975f94"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/01/gop-rep-says-yes-to-fiscal-cliff-deal.html",' +
+                '"title": "GOP Rep. Says Yes To Fiscal Cliff Deal",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e88aad3c296d35dfab1ca87c67746c3b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/our-pathetic-congress.html",' +
+                '"title": "Our Pathetic Congress",' +
+                '"rubric": "Cliff Jumpers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7dec6970f4193ddac2c538cc61975f94"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/the-republicans-moment-of-truth.html",' +
+                '"title": "The Republicans&rsquo; Moment of Truth",' +
+                '"rubric": "GAME OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bec06c83472f4f9bacdd8f03613049ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/u-s-plunging-over-fiscal-cliff-as-obama-republicans-again-fail-to-reach-a-compromise.html",' +
+                '"title": "Senate Vote Could Avert Cliff Plunge",' +
+                '"rubric": "WHEE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5bf05b62b0bcbc04991a05a2cc0aca8b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/obama-has-learned-his-lesson-about-compromise-with-republicans.html",' +
+                '"title": "Obama Has Learned His Lesson About Compromise With Republicans",' +
+                '"rubric": "HANGING TOUGH",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "085dcc50075754320ab41165870c3fc9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/last-gasp-fiscal-cliff-deal-fails-as-obama-congress-deadlock-again.html",' +
+                '"title": "Biden, McConnell Race to Avoid Fiscal Cliff",' +
+                '"rubric": "PARTISAN GRIDLOCK",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8263bba9fe0690053234b99742b9871b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/good-news-for-hillary-clinton-s-health.html",' +
+                '"title": "Good News for Hillary Clinton&rsquo;s Health",' +
+                '"rubric": "CHECKUP",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "1de7249a04cd76f4037f0e8f9b29f821"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/downton-abbey-star-elizabeth-mcgovern-on-season-3-cheerful-weather-for-the-wedding-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Star Elizabeth McGovern on Season 3, &lsquo;Cheerful Weather for the Wedding,&rsquo; and More",' +
+                '"rubric": "Period Drama",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "02c35f1764f93df8f5a9e42dbac0e4e8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/joe-biden-actually-a-pretty-good-dealmaker.html",' +
+                '"title": "Joe Biden: Actually a Pretty Good Dealmaker",' +
+                '"rubric": "VPOTUS",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbfc01fed97e36dc9e0dcf34f737e9f1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/23-tech-predictions-for-2013.html",' +
+                '"title": "23 Tech Predictions for 2013",' +
+                '"rubric": "Future Perfect",' +
+                '"topic": "Technology",' +
+                '"urlHashCode": "4312a063584b3c1f55690318b69c473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/washington-may-have-a-deal-on-taxes-but-the-toughest-problems-remain.html",' +
+                '"title": "Washington May Have a Deal on Taxes, but the Toughest Problems Remain",' +
+                '"rubric": "Salvage Job",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "45a30c9817aab77a1898eb39648d1dbc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/john-avlon-s-picks-for-12-best-opinion-columns-of-2012.html",' +
+                '"title": "John Avlon&rsquo;s Picks for 12 Best Opinion Columns of 2012",' +
+                '"rubric": "OPINION WRITING",' +
+                '"topic": "Media",' +
+                '"urlHashCode": "32d52439c5f610e7173946281664cd95"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/confessions-of-an-extreme-yogi.html",' +
+                '"title": "Confessions of an Extreme Yogi",' +
+                '"rubric": "Bend it Like Bikram",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f714169ba53f6e9b8e59075c315f0b0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/inside-the-prison-journal-of-west-memphis-three-s-damien-echols.html",' +
+                '"title": "Inside the Prison Journal of West Memphis Three&rsquo;s Damien Echols",' +
+                '"rubric": "Exclusive",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e71e4ba66c1efd31a5157855d7345e4b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/11/why-the-fiscal-cliff-is-causing-a-nervous-breakdown-on-the-right.html",' +
+                '"title": "Why the Fiscal Cliff Is Causing a Nervous Breakdown on the Right",' +
+                '"rubric": "&lsquo;DEEP DISARRAY&rsquo;",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "56fd59635fb42fcf90942e173eea1e9b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/scarsdale-doctor-killer-jean-harris-found-redemption-in-prison.html",' +
+                '"title": "Scarsdale Doctor Killer Jean Harris Found Redemption in Prison",' +
+                '"rubric": "Jean Harris Dies",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e414c57ddbb70ce4aa345344f55068f8"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/the-dummies-guide-to-college-football-bowl-games.html",' +
+                '"title": "The Dummies&rsquo; Guide to College Football Bowl Games",' +
+                '"rubric": "COLLEGE FOOTBALL",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25427844ee2826d87a2c69772d3032cd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/should-people-be-forced-to-buy-liability-insurance-for-their-guns.html",' +
+                '"title": "Should People Be Forced to Buy Liability Insurance for their Guns?",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "0f356b593cb05b7d9d959f806f302937"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/bernard-henri-levy-my-wish-for-america.html",' +
+                '"title": "Bernard-Henri L&eacute;vy: My Wish for America",' +
+                '"rubric": "Dear Uncle Sam",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "9bb523b72ae957ebba9666c850936539"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/ny-couple-not-terrorists-say-cops-just-rich-kids-with-drug-habits.html",' +
+                '"title": "NY Couple Not Terrorists, Say Cops, Just Rich Kids With Drug Habits",' +
+                '"rubric": "BUSTED",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "8f85d77547938250cf2d2eac9a2e6dbf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/08/05/kathryn-bolkovac-the-real-whistleblower-on-human-trafficking-in-bosnia.html",' +
+                '"title": "The Real-Life &lsquo;Whistleblower&rsquo;",' +
+                '"rubric": "Human Trafficking",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d9d5a9e4569fbf882588f0dadc6e3869"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/what-argo-gets-wrong-about-iran.html",' +
+                '"title": "What &lsquo;Argo&rsquo; Gets Wrong About Iran",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a8db60cf277d405304ae92f0e77cc2d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/sovereign-citizens-are-a-sometimes-violent-fringe-group-rejecting-all-government.html",' +
+                '"title": "Sovereign Citizens Are a Sometimes Violent Fringe Group Rejecting All Government",' +
+                '"rubric": "Fringe",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5f1e15166adb145310177c2265c9ae9a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/how-serious-is-hillary-clinton-s-blood-clot-and-hospitalization.html",' +
+                '"title": "How Serious Is Hillary Clinton&rsquo;s Blood Clot and Hospitalization?",' +
+                '"rubric": "CLINTON HOSPITALIZED",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "ef60e162b18ae734190294eca3edff91"' +
+            '}' +
+        ']' +
+    '}'
+);

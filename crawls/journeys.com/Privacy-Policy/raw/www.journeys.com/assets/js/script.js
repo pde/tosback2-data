@@ -948,6 +948,9 @@ JY = {
                 if ($('select#selShi option:selected').val() != '' && errors < 1) {
                     cards += $('select#selShi option:selected').val() + ',';
                 }
+                if ($('select#selUBJ option:selected').val() != '' && errors < 1) {
+                    cards += $('select#selUBJ option:selected').val() + ',';
+                }
                 if (cards.charAt(cards.length - 1) == ',') { cards = cards.slice(0, -1) }
                 JY.jy_gift_cards.addToCart(cards);
             });

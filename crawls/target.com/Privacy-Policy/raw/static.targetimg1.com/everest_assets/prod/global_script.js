@@ -2,16 +2,15 @@
 
 //Reset the Target.globals for the Third Party Global Nav to static js file on Akamai.
 
-
-if((Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=false") && document.domain == "weeklyad.target.com"){
-	Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
+ if ((Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=false") && document.domain == "weeklyad.target.com") {
+    Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
+    
 }
-
-if((Target.globals.AjaxGlobalNavPath == "https://www.target.com/AjaxGlobalNavView?isThirdParty=false") && document.domain == "weeklyad.target.com"){
-	Target.globals.AjaxGlobalNavPath = "https://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
+ if ((Target.globals.AjaxGlobalNavPath == "https://www.target.com/AjaxGlobalNavView?isThirdParty=false") && document.domain == "weeklyad.target.com") {
+    Target.globals.AjaxGlobalNavPath = "https://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
+    
 }
-
-if (Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=true") {
+ if (Target.globals.AjaxGlobalNavPath == "http://www.target.com/AjaxGlobalNavView?isThirdParty=true") {
     Target.globals.AjaxGlobalNavPath = "http://static.targetimg1.com/globalnav/prod/AjaxGlobalNavViewFullPaths.js";
     
 }
@@ -34,7 +33,6 @@ $(document).ready(function() {
         }
     }
     catch (e) {}
-    
     
      if (!Target.support.isTouch) {
         
@@ -146,60 +144,83 @@ $(document).ready(function() {
         
     }
     //global nav location redirect
-	
-	var domain = document.domain,
-	timeOut = {"coupons":4000, "weeklyad":5000, "fallingforyou":6000, "lenmar":6000, "prefs":7000 }, 
-	current;
-	for(i in timeOut ){
-		if(domain.search(i) != -1){current=i}		
-	}
-	(current!=null)&& domainRedirect(current);
-	function domainRedirect(cur){
-		$("body").delegate("#mini-cart-icon","mouseover",function(){
-			var t=setTimeout(function(){
-				$("body").find(".link").delegate("a" , "click" , function(e){
-					e.preventDefault();
-					var self=$(this),
-					href= self.attr("href");
-					if($.browser.msie && $.browser.version =="7.0" ){
-						if(cur!="lenmar"){
-							href = href.split(".target.com");
-						}else{
-							href = href.split(".lenmar.com");}
-						href=href[1];
-					}
-					if(href.search(".target.com")== -1){
-						  newLocation = window.location.protocol + "//" + Target.globals.hostName + href;
-					}else{
-						 newLocation = href;
-					}
-					window.location = newLocation;
-					self.attr("href", newLocation);
-				}); 
-			},timeOut[current]);
-		});
-	
-		$("body").delegate("#ShopMenu .hover a" , "click" , function(e){
-			e.preventDefault();
-			var self=$(this),
-			href= self.attr("href");
-			if(href.search(".target.com")== -1)
-				newLocation = window.location.protocol + "//" + Target.globals.hostName + href;
-			else 
-				newLocation = href;
-			if(self.attr("class") == "grdaLink"){
-				self.ajaxComplete(function(event,request,settings){
-				  window.location.href = newLocation;
-				  self.attr("href", newLocation);
-				});
-			} else {
-				window.location.href = newLocation;
-				self.attr("href", newLocation);
-			}
-		});
-	}
-    var $body = $('body'),
-    ishubPage = $('#Other_Cmas_102812_HEROCON_C');
+    
+    var domain = document.domain,
+    timeOut = {
+        "coupons": 4000,
+        "weeklyad": 5000,
+        "fallingforyou": 6000,
+        "lenmar": 6000,
+        "prefs": 7000
+    },
+    current;
+     for (i in timeOut) {
+         if (domain.search(i) != -1) {
+            current = i
+        }
+    }
+    (current != null) && domainRedirect(current);
+    function domainRedirect(cur) {
+        $("body").delegate("#mini-cart-icon", "mouseover", function() {
+            var t = setTimeout(function() {
+                $("body").find(".link").delegate("a", "click", function(e) {
+                    e.preventDefault();
+                    var self = $(this),
+                    href = self.attr("href");
+                     if ($.browser.msie && $.browser.version == "7.0") {
+                         if (cur != "lenmar") {
+                            href = href.split(".target.com");
+                            
+                        }
+                        else {
+                            href = href.split(".lenmar.com");
+                        }
+                        href = href[1];
+                        
+                    }
+                    if (href.search(".target.com") == -1) {
+                        newLocation = window.location.protocol + "//" + Target.globals.hostName + href;
+                        
+                    }
+                    else {
+                        newLocation = href;
+                        
+                    }
+                    window.location = newLocation;
+                    self.attr("href", newLocation);
+                    
+                });
+                
+            },
+            timeOut[current]);
+            
+        });
+        
+        $("body").delegate("#ShopMenu .hover a", "click", function(e) {
+            e.preventDefault();
+            var self = $(this),
+            href = self.attr("href");
+             if (href.search(".target.com") == -1)
+                newLocation = window.location.protocol + "//" + Target.globals.hostName + href;
+             else
+                newLocation = href;
+             if (self.attr("class") == "grdaLink") {
+                self.ajaxComplete(function(event, request, settings) {
+                    window.location.href = newLocation;
+                    self.attr("href", newLocation);
+                    
+                });
+                
+            }
+            else {
+                window.location.href = newLocation;
+                self.attr("href", newLocation);
+                
+            }
+        });
+        
+    }
+    var $body = $('body');
     
     if ($body.hasClass("components-testnewLayout")) {
         
@@ -208,30 +229,8 @@ $(document).ready(function() {
         $body.addClass("newLayout");
         
     }
-     if (!$body.hasClass("home-underlay") && !$body.hasClass("checkout") && (ishubPage.length === 0)) {
-        $body.addClass('holidayhub');
-        
-    }
-    else if ($body.hasClass("home-underlay")) {
-        
-        if (typeof gomez !== "undefined" && gomez.pgId == "Home Page") {
-            
-            /**
-			$('head').append('<link rel="stylesheet" type="text/css" href="//static.targetimg1.com/2012/holidaystyleguide/css/holiday_style_2012_static_minified.css" />');
-			$('head').append('<link rel="stylesheet" type="text/css" href="//static.targetimg1.com/2012/holidaystyleguide/css/holiday_style_2012_logo_minified.css" />');
-			Target.util.loadScript({
-				src: '//static.targetimg1.com/2012/holidaystyleguide/js/holiday_bootstrap_logo_minified.js', 
-				delayLoad: true,
-				cache : true
-			});
-			*/
-            
-        }
-        else {
-            $body.addClass('holidayhub');
-            
-        }
-    }
+	
+    
     if ($('.hp_hz_slots-8').length !== 0 && $.browser.webkit && !Target.support.isTouch) {
         $body.addClass('position-fixed');
         setTimeout(function() {

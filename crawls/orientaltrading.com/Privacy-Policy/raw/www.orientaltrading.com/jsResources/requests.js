@@ -24,10 +24,17 @@
 		url: "/ui/order/processRequest.do?requestURI=shoppingBagQuickView",
 		cache: false
 	});
+	
 	amplify.request.define( "otc.catalogmodal", "ajax", {
 		dataType: "html",
 		url: "/{catalog}.html",
-		cache: 86400000 // 1 day
+		cache: false
+	});
+	
+	amplify.request.define( "otc.pznmodal", "ajax", {
+		dataType: "html",
+		url: "/{filename}.html",
+		cache: false
 	});
 	
 })(jQuery);

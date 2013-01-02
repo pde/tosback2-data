@@ -116,6 +116,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/earrings-10007
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/bracelets-100071--1/1000710000/100063/1/0/0/0/100063.100064.100071">Bracelets</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/charms---beads-100072--1/1000720000/100063/1/0/0/0/100063.100064.100072">Charms &amp; Beads</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/anklets-100073--1/1000730000/100063/1/0/0/0/100063.100064.100073">Anklets</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/pins-100074--1/1000740000/100063/1/0/0/0/100063.100064.100074">Pins</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/accessories-100075--1/1000750000/100063/1/0/0/0/100063.100064.100075">Accessories</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100064|1000640000|1|0|||100063|100063.100064">View All</a></li>');
 writeMegaMenu('</ul>');
@@ -126,7 +127,6 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/open-hearts-by
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100084--1/1000840000/100063/1/0/0/0/100063.100066.100084">Triton</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/scott-kay-100085--1/1000850000/100063/1/0/0/0/100063.100066.100085">Scott Kay</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/black-hills-gold/1000870000/100063/1/0/0/0/100063.100066.100087">Black Hills Gold</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/golden-finishes%C2%99/1000890000/100063/1/0/0/0/100063.100066.100089">Golden Finishes&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/music-rocks%C2%99-by-lyric-culture%C2%99-100316--1/1003160000/100063/1/0/0/0/100063.100066.100316">Music Rocks&#153; by Lyric Culture&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100066|1000660000|1|0|||100063|100063.100066">View All</a></li>');
 writeMegaMenu('</ul>');
@@ -175,6 +175,7 @@ writeMegaMenu('<li class="megamenu-submenu-header">Gifts</li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/top-10-gifts/1001080000/100101/1/0/0/0/100101.100102.100108">Top 10 Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/for-her/1001040000/100101/1/0/0/0/100101.100102.100104">For Her</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/for-him/1001030000/100101/1/0/0/0/100101.100102.100103">For Him</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/valentines-day-gifts/1003640000/100101/1/0/0/0/100101.100102.100364">Valentine\'s Day Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/anniversary-gifts/1001060000/100101/1/0/0/0/100101.100102.100106">Anniversary Gifts</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/engravable-jewelry-100107--1/1001070000/100101/1/0/0/0/100101.100102.100107">Engravable Jewelry</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/for-couples/1001050000/100101/1/0/0/0/100101.100102.100105">For Couples</a></li>');
@@ -216,6 +217,7 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/name-and-initi
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/baby-and-childrens-jewelry-100128--1/1001280000/100112/1/0/0/0/100112.100114.100128">Baby and Children\'s Jewelry</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/ambigrams/1001290000/100112/1/0/0/0/100112.100114.100129">Ambigrams</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/diamond-jewelry-100328--1/1003280000/100112/1/0/0/0/100112.100114.100328">Diamond Jewelry</a></li>');
+writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/stackable-rings-100363/1003630000/100112/1/0/0/0/100112.100114.100363">Stackable Rings</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'categoryProductsAll|10101|10001|-1|100114|1001140000|1|0|||100112|100112.100114">View All</a></li>');
 writeMegaMenu('</ul>');
 writeMegaMenu('<ul class="submenu-list submenu-list-right"><li><a href="/ContentView?catalogId=10001&langId=-1&storeId=10101&cmsId=ring_size_help" target="_top"> Ring Size Help </a></li></ul>');

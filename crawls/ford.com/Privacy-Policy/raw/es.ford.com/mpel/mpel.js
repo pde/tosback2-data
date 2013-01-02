@@ -1,4 +1,4 @@
-MpElDs={'es.ford.com':'es','www.ford.com':'en'};
+MpElDs={'es.ford.com':'es','www.ford.com':'en','www.warriorsinpink.ford.com':'en','warriorsinpink.ford.com':'en','www.support.ford.com':'en','support.ford.com':'en'};
 if(!new RegExp('MP_LANG='+MpElDs[location.host]).test(document.cookie)){
     MpElD='//es.ford.com';
 	MpL=navigator.browserLanguage;

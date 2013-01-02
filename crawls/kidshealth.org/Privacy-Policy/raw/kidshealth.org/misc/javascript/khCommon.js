@@ -1,7 +1,7 @@
 // KidsHealth common Javascript
 
 // Copyright date
-var KHcopyDate=2012;
+var KHcopyDate=2013;
 
 function MM_openBrWindow(theURL,winName,features)
 {

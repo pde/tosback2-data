@@ -694,28 +694,28 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "G.I. JOE: RISE OF THE COBRA",
-							"subtitle" : "TUES DEC 25 8/7C",
-							"url" : usa_baseUrlDomain + "/movies/gijoe/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
-						},
-						{
-							"title" : "RAIDERS OF THE LOST ARK",
-							"subtitle" : "TUES DEC 25 9:52/8:52C",
-							"url" : usa_baseUrlDomain + "/movies/indianajones/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_indianaLostArk.png"
-						},
-						{
 							"title" : "COUPLES RETREAT",
-							"subtitle" : "THURS DEC 27 7:30/6:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
+							"subtitle" : "THURSDAY DEC 31 11:05/10:05C",
+							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
 						},
 						{
-							"title" : "THE UGLY TRUTH",
-							"subtitle" : "THURS DEC 27 3/2C",
+							"title" : "THE BACK-UP PLAN",
+							"subtitle" : "SATURDAY  JANUARY 5 12:30/11:30C",
 							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
+						},
+						{
+							"title" : "DAN IN REAL LIFE",
+							"subtitle" : "FRIDAY JANUARY 11 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_daninreallife.png"
+						},
+						{
+							"title" : "THE GAME PLAN",
+							"subtitle" : "SUNDAY JANUARY 13 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/thegameplan",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thegameplan.png"
 						}
 					]
 				}

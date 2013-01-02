@@ -7,12 +7,8 @@ var endDate = "01/01/2020 00:00 ";
 var dateTimeList = new Array(  startDate,							 
 							   endDate);
 
-var heroImgList = new Array(  
-							  "banner/home/01_WK47_Dec24_499.gif;banner/home/02_WK47_Tempur_5Years.gif"
-							);
-var heroLinkList = new Array(   
-								"Montgomery-11-5-Firm-Pillow-Top-P299.aspx?ref=Home&tag=01_WK47_Dec24_499;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK47_Tempur_5Years;"
-							);
+var heroImgList = new Array("banner/home/01_WK49_PillowTop_299.gif;banner/home/02_WK49_Tempur_4Years.gif");
+var heroLinkList = new Array("H-R-8-5-Firm-Pillow-Top-P293.aspx?ref=Home&tag=01_WK49_PillowTop_299;Tempur-Pedic-0-C20.aspx?ref=Home&tag=02_WK49_Tempur_4Years");
 
 //specify images
 //current data if no chnage needed

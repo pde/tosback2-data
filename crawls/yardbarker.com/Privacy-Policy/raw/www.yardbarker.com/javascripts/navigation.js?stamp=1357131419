@@ -1,0 +1,44 @@
+function resetNav() {
+	$$('.subnav_menu').each(function(d) {
+		d.hide();
+	});
+	$$('#nav .selected').each(function(d) {
+		d.removeClassName('selected');
+	});
+}
+
+Event.observe(document, 'dom:loaded', function() {
+	var searchDefault = '';
+	
+	$$('.search').each(function(s) {
+		s.value = searchDefault;
+		s.style.color = '#888';
+	});
+	
+	$$('.search').each(function(s) {
+		Event.observe(s, 'click', function(e) {
+			s.value = '';
+			s.style.color = '#000';
+		});
+	});
+	
+	Event.observe(document, 'click', function(e) {
+		resetNav();
+	});
+	
+	$$('.nav > ul > li').each(function(d) {
+		Event.observe(d, 'mouseover', function(e) {
+			Event.stop(e);
+			resetNav();
+			if ($(d.id + '-drop') != null) {
+				$(d.id + '-drop').show();
+			}
+
+			d.addClassName('selected');
+		});
+		Event.observe(d, 'mouseout', function(e) {
+			Event.stop(e);
+			resetNav();
+		});
+	});
+});

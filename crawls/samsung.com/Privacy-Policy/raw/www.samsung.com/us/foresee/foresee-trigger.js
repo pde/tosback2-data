@@ -1,36 +1,31 @@
 var $$FSR = {
-   'timestamp': 'November 12, 2012 @ 2:53 PM',
-   'version': '15.2.3',
-   'enabled': true,
-   'frames' : false,
-   'sessionreplay': true,
-   'auto' : true,
-   'encode' : false,
-   'files': '//www.samsung.com/us/foresee/',
-   // needs to be set when foresee-transport.swf is not located at 'files'
-   //'swf_files': '__swf_files_'
-   'id': 'AcRE0pZxNdRRdRZNABNtcg==',
-   'definition': 'foresee-surveydef.js',
-   'embedded': false,
-   'replay_id': 'samsung.com',
-   'renderer':'W3C',	// or "ASRECORDED"
-   'layout':'CENTERFIXED',	// or "LEFTFIXED" or "LEFTSTRETCH" or "CENTERSTRETCH"
-   'pools' : [
-      {
-         path: '.',
-         sp: 100  // CHANGE ONLY WHEN INCLUDING SESSION REPLAY
-      }
-   ],
-   'sites': [
-      {
-         path: /\w+-?\w+\.(com|org|edu|gov|net|co\.uk)/
-      },
-      {
-         path: '.',
-         domain: 'default'
-      }
-   ],
-   storageOption: 'cookie'
+    'timestamp': 'December 21, 2012 @ 11:43 AM',
+    'version': '15.2.3',
+    'enabled': true,
+    'frames': false,
+    'sessionreplay': true,
+    'auto': true,
+    'encode': false,
+    'files': '//www.samsung.com/us/foresee/',
+    // needs to be set when foresee-transport.swf is not located at 'files'
+    //'swf_files': '__swf_files_'
+    'id': 'AcRE0pZxNdRRdRZNABNtcg==',
+    'definition': 'foresee-surveydef.js',
+    'embedded': false,
+    'replay_id': 'samsung.com',
+    'renderer': 'W3C', // or "ASRECORDED"
+    'layout': 'CENTERFIXED', // or "LEFTFIXED" or "LEFTSTRETCH" or "CENTERSTRETCH"
+    'pools': [{
+        path: '.',
+        sp: 100 // CHANGE ONLY WHEN INCLUDING SESSION REPLAY
+    }],
+    'sites': [{
+        path: /\w+-?\w+\.(com|org|edu|gov|net|co\.uk)/
+    }, {
+        path: '.',
+        domain: 'default'
+    }],
+    storageOption: 'cookie'
 };
 
 var FSRCONFIG = {};
@@ -71,8 +66,8 @@ var z=l.Jb;l.q={};l.q.ra={};l.q.$a=function(a,b,d,e){var f=l.q.ra;if(a){f[b]||(f
 a&&(e||f[g].Ha==d))return H}l.q.$a(a,b,d)};l.q.Pc=function(a,b,d){l.q.$a(a,b,d,n)};l.q.Mb=function(a,b,d){try{"propertychange"!=b&&a.removeEventListener?a.removeEventListener(b,d):a.detachEvent&&a.detachEvent("on"+b,d)}catch(c){}};var fa=l.q.$a,M=l.q.Pc,W=l.q.Mb;l.q.Rc=function(){for(var a=c.Ba.length-1;0<=a;a--)try{c.Ba[a].call()}catch(b){}c.Ic(c.Ba);l.q.Wc();c.ac()};fa(j,"unload",l.q.Rc);l.q.Wc=function(){if(c){var a=l.q,b;for(b in a.ra){for(var d=a.ra[b],e={};e=d.pop();)a.Mb(e.ob,b,e.Ha),c.Ic(e);
 delete a.ra[b]}}};l.q.ab=function(){this.Aa=[]};l.q.ab.prototype.Xa=function(a){this.Aa[this.Aa.length]={Rd:H,Ha:a}};l.q.ab.prototype.A=function(){for(var a=0;a<this.Aa.length;a++){var b=this.Aa[a];b.Ha.apply(this,arguments);b.Rd&&(this.Aa.splice(a,1),a--)}};var G=l.q.ab;s.Vc={cd:{}};try{Array.prototype.slice.call(document.getElementsByTagName("html")),makeArray=function(a){return Array.prototype.slice.call(a)}}catch(Aa){}s.L={};s.L.Da=function(a){var b=0,d=0,c=a.document,f=c.documentElement;if("number"==
 typeof a.innerWidth)b=a.innerWidth,d=a.innerHeight;else if(f&&(f.clientWidth||f.clientHeight))b=f.clientWidth,d=f.clientHeight;else if(c.body&&(c.body.clientWidth||c.body.clientHeight))b=c.body.clientWidth,d=c.body.clientHeight;return{w:b,h:d}};s.L.bb=function(a){var b=0,d=0,c=a.document,f=c.documentElement;if("number"==typeof a.pageYOffset)d=a.pageYOffset,b=a.pageXOffset;else if(c.body&&(c.body.scrollLeft||c.body.scrollTop))d=c.body.scrollTop,b=c.body.scrollLeft;else if(f&&(f.scrollLeft||f.scrollTop))d=
-f.scrollTop,b=f.scrollLeft;return{x:b,y:d}};s.L.Xc=function(a,b){a.scrollTo(0,b);qa.document.body.scrollTop=b;qa.document.body.scrollLeft=0};i.eb={};i.eb.za=function(a,b){if(a){var d=h.g("m");if(d&&(d=(new Date).getTime()-d,d<1E3*b)){var c=function(){var a=i.z.Od;a.Ra={rid:g.rid,cid:g.id};(new v.F(a)).na()};c();var f=setInterval(c,1E3*a);setTimeout(function(){clearInterval(f)},1E3*b-d)}}};i.z={};i.z.se={host:"www.foreseeresults.com",path:"/survey",url:"/display"};i.z.Pd={host:"i.4see.mobi",path:"/e",
-url:"/initialize"};i.z.Od={host:"i.4see.mobi",path:"/e",url:"/recordHeartbeat"};i.z.r={host:"controller.4seeresults.com",path:"/fsrSurvey",url:"/OTCImg",Ya:3};i.z.event={host:"events.foreseeresults.com",path:"/rec",url:"/process"};i.z.domain={host:"www.foreseeresults.com",path:"/survey",url:"/FSRImg",Ya:3};i.z.me={host:"replaycontroller.4seeresults.com",path:"/images",enabled:n};i.X=function(a,b){this.options=a;this.fa=b;this.Qb=new G;this.nb=new G;this.Cc=new G;this.wa=this.Na=H;-1<"iphone,ipad,ipod,android,winphone,blackberry,mobile".indexOf(z.m.toLowerCase())&&
+f.scrollTop,b=f.scrollLeft;return{x:b,y:d}};s.L.Xc=function(a,b){a.scrollTo(0,b);qa.document.body.scrollTop=b;qa.document.body.scrollLeft=0};i.eb={};i.eb.za=function(a,b){if(a){var d=h.g("m");if(d&&(d=(new Date).getTime()-d,d<1E3*b)){var c=function(){var a=i.z.Od;a.Ra={rid:g.rid,cid:g.id};(new v.F(a)).na()};c();var f=setInterval(c,1E3*a);setTimeout(function(){clearInterval(f)},1E3*b-d)}}};i.z={};i.z.se={host:"survey.foreseeresults.com",path:"/survey",url:"/display"};i.z.Pd={host:"i.4see.mobi",path:"/e",
+url:"/initialize"};i.z.Od={host:"i.4see.mobi",path:"/e",url:"/recordHeartbeat"};i.z.r={host:"controller.4seeresults.com",path:"/fsrSurvey",url:"/OTCImg",Ya:3};i.z.event={host:"events.foreseeresults.com",path:"/rec",url:"/process"};i.z.domain={host:"survey.foreseeresults.com",path:"/survey",url:"/FSRImg",Ya:3};i.z.me={host:"replaycontroller.4seeresults.com",path:"/images",enabled:n};i.X=function(a,b){this.options=a;this.fa=b;this.Qb=new G;this.nb=new G;this.Cc=new G;this.wa=this.Na=H;-1<"iphone,ipad,ipod,android,winphone,blackberry,mobile".indexOf(z.m.toLowerCase())&&
 (this.Na=n);-1<"winphone".indexOf(z.m.toLowerCase())&&(this.wa=n);"IE"==z.B&&7>z.version&&(this.Id=n)};i.X.prototype.show=function(a,b,d){this.Td=b;this.ld=d;if(!this.Fb){this.$b=this.Rb=H;var e=this.fa.invite,f=e.isMDOT,i=e.isZoomable||H,V=l.la(g.site,"image_files"),aa=this.Na,D=h.g("l"),B=this.pc=u('<div class="fsrC"></div>');f&&s.Y(B,"fsrM");var P=u('<div class="fsrFloatingContainer"></div>'),E=u('<div class="fsrFloatingMid"></div>'),C=u('<div class="fsrInvite"></div>'),R=u('<div class="fsrLogos"></div>');
 e.siteLogo&&(e=e.siteLogo,"object"===typeof e&&(e=e.hasOwnProperty(D)?e[D]:e["default"]),e=u('<img src="'+V+e+'" class="fsrSiteLogo">'),R.appendChild(e));e=u('<img src="'+V+'fsrlogo.gif" class="fsrCorpLogo">');R.appendChild(e);for(var e=u('<div class="fsrDialogs"></div>'),ia=[],q=0,o="",r=0;r<a.length;r++){var w=a[r],t=H;d&&(w.locale&&d!=w.locale)&&(t=n);if(!t){if((t=w.locales)&&t[D])w=c.n(w,t[D]),c.k(w.locale)||(w.locale=D);if(w.skipThisInvite){a.splice(r--,1);continue}var v=w.closeInviteButtonText;
 v&&(0<o.length&&(o+=" / "),o+=v);f&&17<w.acceptButton.length&&(w.acceptButton=w.acceptButton.substr(0,15)+"...");t=u('<div class="fsrDialog '+(1<a.length?" fsrMultiDialog":"")+'"><h1>'+w.headline+"</h1></div>");t.appendChild(u('<p class="fsrBlurb">'+w.blurb+"</p>"));var G;w.noticeAboutSurvey&&(G=u('<p class="fsrSubBlurb">'+w.noticeAboutSurvey+"</p>"),t.appendChild(G));w.attribution&&t.appendChild(u('<p class="fsrAttribution">'+w.attribution+"</p>"));if(v=w.mobileExitDialog){var y=u('<div class="mobileExit"></div>');

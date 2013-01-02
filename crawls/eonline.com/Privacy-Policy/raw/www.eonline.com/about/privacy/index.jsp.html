@@ -114,7 +114,7 @@
         }
 		eol.page.dartInit({ "keywords": "", "site" : "about" || "home", "zone" : "privacy" || "home", "zone2" : "" }); 
 		
-        eol.page.time( new Date( ( eol.uattr("date") || 1356527981539 ) ) );
+        eol.page.time( new Date( ( eol.uattr("date") || 1357132626902 ) ) );
     })(jQuery);
 </script>
 	</head>
@@ -490,265 +490,40 @@ pageTracker._trackPageview();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-		
-		
-	
-
-
-
- 
-
-	
-		 
-	
-	
-
-
-	
-	
-		
-	
-
-
-	
-	
-		
-	
-
-
-	
-	
-		
-	
-
-
-	
-	
-		
-	
-
-
-	
-	
-		
-	
-
-
-	
-		 
-	
-	
-
-
-
-
 	
 		
 	
 	
 
 
-	
-		
-	
-	
+<style type="text/css">
+	.social-links{min-width:205px;}
+	.social-links ul li{display:block;}
+	.horizontal li{float:left}
+	.horizontal .rss{margin-right:5px;margin-top:-2px}
+	.vertical li{}
+
+	.social-links .twitter {margin-left: 5px;}
+	.social-links .email { cursor:pointer;background-image: url('../../resources/images/misc/EOL_VIDEO_Detail_EMAIL.png'); display: block; width: 56px; height: 20px;  }
+	.social-Send-Email{padding:10px;visibility:hidden;margin-top:20px;width:387px;height:349px;background-color: #fff;border: 1px solid #000;margin-left: 300px;position: absolute;z-index: 10000;display:block;}
+
+	.social-links .embed a {display: block; width: 64px; height: 20px; }
+</style>
 
 
-	
-	
-		
-	
 
 
+<ul class="social-links horizontal">
 	
-	
-		
-	
-
-
-	
-	
-		
-	
-
-
-	
-	
-		
+		<li class="rss">
+			<a id="" href="http://www.eonline.com/everywhere/rss/index.jsp" class="" title="RSS Feeds" ><img src="../../resources/images/header_footer/black-rss.png" alt="Mobile" /></a>
+		</li>
 	
 
-
 	
-		
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-		
-		
-	
-
-
-
-
-
-
-	
-		
-	
-	
-
-
-
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-	
-	
-		
-	
-
-
-
-
-
-
-	
-		<ul class="social-links horizontal">
-			
-				
-				<li class="rss">
-					<a id="" href="http://www.eonline.com/everywhere/rss/index.jsp" class="" title="RSS Feeds" ><img src="../../resources/images/header_footer/black-rss.png" alt="Mobile" /></a>
-				</li>
-			
-			
-				
-				<li class="facebook-like ">
-					<div id="fb-root"></div>
-					<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="false" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName':'nav:header:facebook_like_button'}"></div>
-				</li>
-			
-			
-				
-				
-				
-					
-				
-				<li id="follow-button" class="twitter">
-					
-					<a href="http://twitter.com/eonline" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false" data-omniture="trackShares|{'linkName':'nav:header:twitter_button'}">Follow @twitter</a>
-				</li>
-			
-			
-			
-			
-			
-		</ul>
-
-		
-		
-
-		
-
-		
-		
+		<li class="facebook-like">
+			<div id="fb-root"></div>
+			<div class="fb-like" data-href="http://www.facebook.com/eonline" data-send="" data-layout="button_count" data-width="90" data-show-faces="false" data-font="arial" data-omniture="trackShares|{'linkName:nav:header:facebook_button'}"></div>
 			<script type="text/javascript">
 				// Custom eonline.com implementation of the FB Like DOM insertion code, since Facebook keeps breaking their like buttons.
 				window.fbAsyncInit = function() {
@@ -772,52 +547,87 @@ pageTracker._trackPageview();
 						document.getElementsByTagName('head')[0].appendChild(js);
 					}
 				}
-			</script>
-		
 
-		
-		
-			
-			
-			<script type="text/javascript">
-				if (typeof(eonline) === 'undefined') { eonline = {}; }
-				if (typeof(eonline.twitter) === 'undefined') { 
-					eonline.twitter = (function($) {
-						function initTwitterBttns() {
-							// Create a new <script type="text/javascript"> tag.
-							var js = document.createElement('script');
-								js.id = 'twitter-wjs';
-								js.src = '//platform.twitter.com/widgets.js';
-
-							// Get the 1st <script> tag on the page.
-							var fjs = document.getElementsByTagName('script')[0];
-
-							// Append this new script, before that script tag.
-							fjs.parentNode.insertBefore(js,fjs);
-						};
-
-						return {
-							"initTwitterBttns": initTwitterBttns
-						}
-					})(jQuery);
+				// Binds the data to the Polls.
+				if ((typeof(eonline) !== 'undefined') && (typeof(eonline.polls) !== 'undefined')) {
+					// Don't use JSON here, as some properties are already setup in the eonline.polls object. See /resources/widgets/js/polls.js.
+					eonline.polls.strSharedUrl = 'http://www.facebook.com/eonline';
+					eonline.polls.strShowSend = '';
+					eonline.polls.strSocialTracking = 'nav:header';
 				}
-
-				// Auto-Initialize:
-				eonline.twitter.initTwitterBttns();
 			</script>
-		
-
-		
-		
-
-		
-		
-
-		
-		
+		</li>
 	
-
 	
+	
+		
+		
+		<li class="twitter">
+			
+			<a href="http://twitter.com/eonline" class="twitter-follow-button" data-show-count="false" data-show-screen-name="false" data-omniture="trackShares|{'linkName:nav:header:twitter_button'}">Follow @twitter</a>
+		</li>
+	
+	
+	
+</ul>
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+	// Create a new <script type="text/javascript"> tag.
+	var js = document.createElement('script');
+		js.id = 'twitter-wjs';
+		js.src = '//platform.twitter.com/widgets.js';
+
+	// Get the 1st <script> tag on the page.
+	var fjs = document.getElementsByTagName('script')[0];
+
+	// Append this new script, before that script tag.
+	fjs.parentNode.insertBefore(js,fjs);
+</script>
+
+
+
+
+
+
+<script>
+(function($){
+	$(document).ready(function() {
+		$(".email").bind("click", function(e){
+			var pageURL ="noURL";
+			var newsURL = '';
+			if(newsURL != null && pageURL != ''){
+				newsURL = '/news/'+newsURL;
+				pageURL = newsURL;
+			}
+			var videoURL = '';
+			if(videoURL != null && videoURL != ''){
+				videoURL ='/videos'+videoURL;
+				pageURL = videoURL;
+			}
+			var emailSubj = 'EOnline Video/Article Suggestion For You';
+			$(".social-Send-Email").css("visibility","visible");
+			$(".social-Send-Email").load(encodeURI('/services/send_friend.jsp?emailSubject='+emailSubj+'&contentURL='+pageURL));
+			$("#overlay").show();
+							
+		});
+		$('.emailOverlay').live("click", function() {
+			$(".social-Send-Email").css("visibility","hidden");
+			$(".emailOverlay").hide();
+		});
+		$(".emailClose").live("click", function(){
+			$(".social-Send-Email").css("visibility","hidden");
+			$(".emailOverlay").hide();
+		});
+	});
+})(jQuery.noConflict());  
+</script>
 
 		</div>
 		

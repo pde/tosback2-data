@@ -82,6 +82,7 @@ $(function() {
                            'iPhone': 'iOS',
                            'iPad': 'iOS',
                            'iPod': 'iOS',
+			   'Linux armv7l': 'Android',
                            'Android': 'Android'}
         return platformMapping[navigator.platform];
     }
@@ -103,6 +104,11 @@ $(function() {
             var platformLower = platform.toLowerCase();
             var downloadLink = '#';
             var overlayDownloadLink = '/download/';
+        } else if (platform == 'Android') {
+            var platformMessage = platform;
+            var platformLower = platform.toLowerCase();
+            var downloadLink = 'http://play.google.com/store/apps/details?id=com.bitcasa.android';
+            $('.download-button').css('margin', '20px auto');
         } else {
             var platformMessage = platform + ' coming soon';
             var downloadLink = '#';
@@ -115,6 +121,10 @@ $(function() {
             $('.download-button').after('<div style="margin-top: 10px;">In the meantime, <a href="/download/mac">download the legacy Mac client</a></div>');
         } else if (platform == 'Windows') {
             $('.download-button').after('<div style="margin-top: 10px;">Or, <a href="/download/windowslegacy">download the legacy Windows client</a></div>');
+        } else if (platform == 'Android') {
+            $('.download-button').text('Get the Android App');
+        } else if (platform == 'iOS') {
+            $('.download-button').text('iOS app coming soon.');
         } else {
             $('.download-button').text('Download for ' + platformMessage);
         }

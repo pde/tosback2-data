@@ -194,15 +194,15 @@ function loadTopNavigation() {
     }
         // NYI (not yet implemented)
         else if (tabval=="tab4-nav"){
-      $("#sublevel-bar").css("background-color","#354b1a");
+      $("#sublevel-bar").css("background-color","#240805");
     }
         // NYI (not yet implemented)
         else if (tabval=="tab4-nav"){
-      $("#sublevel-bar").css("background-color","#354b1a");
+      $("#sublevel-bar").css("background-color","#240805");
     }
         // NYI (not yet implemented)
         else if (tabval=="tab5-nav"){
-      $("#sublevel-bar").css("background-color","#990000");
+      $("#sublevel-bar").css("background-color","#240805");
     }
         // NYI (not yet implemented)
         else if (tabval=="tab6-nav"){
