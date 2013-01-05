@@ -116,68 +116,72 @@ var searchBox = {
 	
 	rollingMessage: function(){
 		var source = $("#source").val();
-		var msgStrg = $("#rollingMessages").val();
-		var aMsgs = msgStrg.split('~');
-		/*
-			aMsgs[0]'Live Prices',
-			aMsgs[1]'Live Availability',
-			aMsgs[2]'Book Online',
-			aMsgs[3]'Unbiased',			
-			aMsgs[4]'Real People',
-			aMsgs[5]'Real Reviews',
-			aMsgs[6]'Unedited',
-			aMsgs[7]'Impart Your Knowledge',
-			aMsgs[8]'Passenger Photos',
-			aMsgs[9]'All Lines &amp; All Ships',			
-			aMsgs[10]'Upload Videos',
-			aMsgs[11]'Amazing Videos Online'			
-		*/
-        switch(source){
-			case 'DEALS':
-				if( $("#rolling_message_1").html() == aMsgs[0] || $("#rolling_message_1").html() == '' ){
-					$("#rolling_message_1").html(aMsgs[1]);
-				}else if($("#rolling_message_1").html() == aMsgs[1]){
-					$("#rolling_message_1").html(aMsgs[2]);
-				}else if($("#rolling_message_1").html() == aMsgs[2]){
-					$("#rolling_message_1").html(aMsgs[0]);
-				}
-			break;
-			case 'REVIEWS':
-				if( $("#rolling_message_1").html() == aMsgs[3] || $("#rolling_message_1").html() == '' ){
-					$("#rolling_message_1").html(aMsgs[4]);
-				}else if($("#rolling_message_1").html() == aMsgs[4]){
-					$("#rolling_message_1").html(aMsgs[5]);
-				}else if($("#rolling_message_1").html() == aMsgs[5]){
-					$("#rolling_message_1").html(aMsgs[3]);
-				}
-			break;
-			case 'QUESTIONS':
-				if($("#rolling_message_1").html() == aMsgs[3] || $("#rolling_message_1").html() == '' ){
-					$("#rolling_message_1").html(aMsgs[6]);
-				}else if($("#rolling_message_1").html() == aMsgs[6]){
-					$("#rolling_message_1").html(aMsgs[7]);
-				}else if($("#rolling_message_1").html() == aMsgs[7]){
-					$("#rolling_message_1").html(aMsgs[3]);
-				}
-			break;
-			case 'PHOTOS':
-				if($("#rolling_message_1").html() == aMsgs[8] || $("#rolling_message_1").html() == '' ){
-					$("#rolling_message_1").html(aMsgs[6]);
-				}else if($("#rolling_message_1").html() == aMsgs[6]){
-					$("#rolling_message_1").html(aMsgs[9]);
-				}else if($("#rolling_message_1").html() == aMsgs[9]){
-					$("#rolling_message_1").html(aMsgs[8]);
-				}
-			break;
-			case 'VIDEOS':
-				if($("#rolling_message_1").html() == aMsgs[10] || $("#rolling_message_1").html() == '' ){
-					$("#rolling_message_1").html(aMsgs[6]);
-				}else if($("#rolling_message_1").html() == aMsgs[6]){
-					$("#rolling_message_1").html(aMsgs[11]);
-				}else if($("#rolling_message_1").html() == aMsgs[11]){
-					$("#rolling_message_1").html(aMsgs[10]);
-				}
-			break;
+		var msgId = document.getElementById('rollingMessages');
+		if(msgId){
+			var msgStrg = $("#rollingMessages").val();
+		
+			var aMsgs = msgStrg.split('~');
+			/*
+				aMsgs[0]'Live Prices',
+				aMsgs[1]'Live Availability',
+				aMsgs[2]'Book Online',
+				aMsgs[3]'Unbiased',			
+				aMsgs[4]'Real People',
+				aMsgs[5]'Real Reviews',
+				aMsgs[6]'Unedited',
+				aMsgs[7]'Impart Your Knowledge',
+				aMsgs[8]'Passenger Photos',
+				aMsgs[9]'All Lines &amp; All Ships',			
+				aMsgs[10]'Upload Videos',
+				aMsgs[11]'Amazing Videos Online'			
+			*/
+			switch(source){
+				case 'DEALS':
+					if( $("#rolling_message_1").html() == aMsgs[0] || $("#rolling_message_1").html() == '' ){
+						$("#rolling_message_1").html(aMsgs[1]);
+					}else if($("#rolling_message_1").html() == aMsgs[1]){
+						$("#rolling_message_1").html(aMsgs[2]);
+					}else if($("#rolling_message_1").html() == aMsgs[2]){
+						$("#rolling_message_1").html(aMsgs[0]);
+					}
+				break;
+				case 'REVIEWS':
+					if( $("#rolling_message_1").html() == aMsgs[3] || $("#rolling_message_1").html() == '' ){
+						$("#rolling_message_1").html(aMsgs[4]);
+					}else if($("#rolling_message_1").html() == aMsgs[4]){
+						$("#rolling_message_1").html(aMsgs[5]);
+					}else if($("#rolling_message_1").html() == aMsgs[5]){
+						$("#rolling_message_1").html(aMsgs[3]);
+					}
+				break;
+				case 'QUESTIONS':
+					if($("#rolling_message_1").html() == aMsgs[3] || $("#rolling_message_1").html() == '' ){
+						$("#rolling_message_1").html(aMsgs[6]);
+					}else if($("#rolling_message_1").html() == aMsgs[6]){
+						$("#rolling_message_1").html(aMsgs[7]);
+					}else if($("#rolling_message_1").html() == aMsgs[7]){
+						$("#rolling_message_1").html(aMsgs[3]);
+					}
+				break;
+				case 'PHOTOS':
+					if($("#rolling_message_1").html() == aMsgs[8] || $("#rolling_message_1").html() == '' ){
+						$("#rolling_message_1").html(aMsgs[6]);
+					}else if($("#rolling_message_1").html() == aMsgs[6]){
+						$("#rolling_message_1").html(aMsgs[9]);
+					}else if($("#rolling_message_1").html() == aMsgs[9]){
+						$("#rolling_message_1").html(aMsgs[8]);
+					}
+				break;
+				case 'VIDEOS':
+					if($("#rolling_message_1").html() == aMsgs[10] || $("#rolling_message_1").html() == '' ){
+						$("#rolling_message_1").html(aMsgs[6]);
+					}else if($("#rolling_message_1").html() == aMsgs[6]){
+						$("#rolling_message_1").html(aMsgs[11]);
+					}else if($("#rolling_message_1").html() == aMsgs[11]){
+						$("#rolling_message_1").html(aMsgs[10]);
+					}
+				break;
+			}
 		}
 	},
 	

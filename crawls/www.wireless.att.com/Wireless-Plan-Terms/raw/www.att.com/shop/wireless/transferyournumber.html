@@ -1,5 +1,108 @@
 <!DOCTYPE HTML> 
 <html lang="en"> 
+<script> 
+          //<![CDATA[ 
+              //***Start Mobile Detection Steps*** 
+//1. Check to see if full site view has been set to True in the URL (mobile=false)from mobile view. 
+function getURLParam(pName) 
+{ 
+	var queryString = location.search; var startPos = 0; var stopPos = 0; var tempPos = 0; var pValue = ""; 
+	if (pName) 
+	{ 
+		if (queryString.indexOf(pName) != -1) 
+		{ 
+			startPos = queryString.indexOf(pName) + pName.length + 1; 
+			stopPos = ((tempPos = (queryString.indexOf("&", startPos))) == -1) ? queryString.length : tempPos; 
+			pValue = queryString.substring(startPos, stopPos); 
+			pValue = unescape(pValue); 
+		} 
+	} 
+	return pValue; 
+} 
+function setOrderSourceABSplit(){ 
+	var referrer =  document.referrer; 
+	if(referrer.indexOf("/shopmobile/")!=-1){ 
+		var ajaxUrl = location.pathname.replace('.html', '.setOrderSourceABSplit.xhr.html'); 
+		var request = new XMLHttpRequest(); 
+		request.open("GET",ajaxUrl,true); 
+		request.send(); 
+	} 
+} 
+var mobile = getURLParam('mobile'); 
+var mobileView; 
+var fullSiteView; 
+var mRedirectURL = ''; 
+//Check URL for mobile=false. Set FulSiteView=True if found. 
+//commenting below if condition . 
+//As Mobile HardRock footer jsp setting the value 
+	if (mobile =="false") 
+	{ 
+		sessionStorage.setItem('storageFullSiteView', "True");	 
+		setOrderSourceABSplit(); 
+	} 
+	else 
+	{ 
+		if (mRedirectURL != "") { 
+			//Check for HTML5 storage support 
+			if(typeof(Storage)!=="") 
+			{ 
+			// Yes! localStorage and sessionStorage support! 
+			// Test for FullSiteView=True 
+				fullSiteView = sessionStorage.getItem('storageFullSiteView'); 
+				if (fullSiteView == "True") 
+				{ 
+				//do nothing 
+				} 
+			else 
+				{ 
+				DetectMobile(); //start mobile detection 
+				} 
+			} 
+			else 
+			{ 
+			// Sorry! No web storage support.. 
+				DetectMobile(); 
+			} 
+		} 
+	} 
+	//***Start Mobile Detection Steps*** 
+	//2. Detect Mobile 
+	function DetectMobile() 
+	{	 
+		//Get user-agent 
+		var uagent = navigator.userAgent.toLowerCase(); 
+		//Check if device is mobile 
+		if (uagent.search("mobile") > -1) 
+		{    
+			// Verify device is not ipad or tablet 
+				//iPad Check 
+				if (uagent.search("ipad") > -1) 
+				{ 
+					return //Fullsite View 
+				} 
+				// Tablet Check 
+				if (uagent.search("tablet") > -1) 
+				{ 
+					return // Fullsite View 
+				} 
+				//Galaxy Tab 7 inch Check 
+				else if (uagent.search("gt-p10") > -1) 
+				{ 
+					return // FullSite View 
+				} 
+				else{ 
+					var ajaxUrl = location.pathname.replace('.html', '.sessioninvalidate.html'); 
+					var request = new XMLHttpRequest(); 
+					request.open("GET",ajaxUrl,true); 
+					request.send(); 
+				// Device is not a tablet,ridirect to m.att.com 
+					window.location =  mRedirectURL; 
+				} 
+		} 
+	} 
+	//***End Mobile Detection Steps***        
+    //]]> 
+</script> 
 <head> 
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />  
 <script type="text/javascript"> 
@@ -109,6 +212,7 @@ ul.circle {
 </style> 
 <link rel="stylesheet" href="../../../1.ecom.attccc.com/media/cms/shop/styles/wireless-global.css" type="text/css"/>	 
 </head> 
+<!-- Add author only code below --> 
 <body id="top"> 
 	<!-- cqlibs.jsp- file require to add include for targeted content. --> 
 	<!-- Global Nav header --> 
@@ -159,6 +263,7 @@ ul.circle {
 						<li class="rightMost"><a id="segMenuItemAboutATT" class="segMenuItem" href="../../gen/landing-pages%3Fpid=3309.html"><span>About AT&amp;T</span></a></li> 
 					</ul> 
 					<ul class="segMenu" id="rightSegMenu"> 
+						<li><a id="segMenuItemCoverageMap" class="segMenuItem" href="../../../www.wireless.att.com/coverageviewer/index.html" target="_new"><span style="color:#fff;">Wireless Coverage Maps</span></a></li> 
 						<li><a id="segMenuItemFindAStore" class="segMenuItem" href="../../storelocator/index.html"><span>Find a Store</span></a></li> 
 						<li class="rightMost"><a id="segMenuItemInternational" class="segMenuItem" href="transferyournumber.html#"><span> 
 									Language 
@@ -187,7 +292,7 @@ ul.circle {
 								<li class=" selected"><a href="../index.html" id="primary_Shop" name="Shop" class="primaryMenuItem">Shop<span></span></a> 
 										<ul id="secondaryMenu_Shop" class="secondaryMenu"> 
 												<li> 
-													<a class="secondaryMenuItem" href="../wireless.html" name="Shop_Wireless" >Wireless</a> 
+													<a class="secondaryMenuItem" href="apps.html" name="Shop_Wireless" >Wireless</a> 
 														<div class="trayContentItem trayFiveCol"> 
 															<div class="firstColumn"> 
 																<div class="columnContent"> 
@@ -208,25 +313,25 @@ ul.circle {
 																</div> 
 																<div class="secondColumn "> 
 																	<div class="columnContent"> 
-																			<h3>Plans</h3> 
+																			<h3>Plans &amp; Services</h3> 
 																		<ul class="trayNoBullet"> 
+																				<li><a href="plans.html" name="Shop_Wireless_Voice, Data &amp; Messaging Plans" >Voice, Data &amp; Messaging Plans</a></li> 
 																				<li><a href="data-plans.html#tab2" name="Shop_Wireless_Mobile Share Plans" >Mobile Share Plans</a></li> 
-																				<li><a href="plans/individualplans.html" name="Shop_Wireless_Individual Plans" >Individual Plans</a></li> 
-																				<li><a href="plans/familyplans.html" name="Shop_Wireless_Family Plans" >Family Plans</a></li> 
 																				<li><a href="data-plans.html" name="Shop_Wireless_Data Plans" >Data Plans</a></li> 
 																				<li><a href="international.html" name="Shop_Wireless_International Plans" >International Plans</a></li> 
+																				<li><a href="services.html" name="Shop_Wireless_Services" >Services</a></li> 
 																		</ul> 
 																	</div> 
 																</div> 
 																<div class="secondColumn "> 
 																	<div class="columnContent"> 
-																			<h3>Extras</h3> 
+																			<h3>More...</h3> 
 																		<ul class="trayNoBullet"> 
 																				<li><a href="accessories.html" name="Shop_Wireless_Accessories" >Accessories</a></li> 
-																				<li><a href="services.html" name="Shop_Wireless_Messaging, Data &amp; More" >Messaging, Data &amp; More</a></li> 
-																				<li><a href="../apps.html" name="Shop_Wireless_Ringtones &amp; Apps" >Ringtones &amp; Apps</a></li> 
+																				<li><a href="apps.html" name="Shop_Wireless_Apps &amp; Ringtones" >Apps &amp; Ringtones</a></li> 
 																				<li><a href="transferyournumber.html" name="Shop_Wireless_Transfer My Number" >Transfer My Number</a></li> 
 																				<li><a href="../../../www.wireless.att.com/coverageviewer/index.html#?type=voice" name="Shop_Wireless_Coverage Maps" >Coverage Maps</a></li> 
+																				<li><a href="../../network/index.html" name="Shop_Wireless_Network" >Network</a></li> 
 																		</ul> 
 																	</div> 
 																</div> 
@@ -297,7 +402,7 @@ ul.circle {
 																		<ul class="trayNoBullet"> 
 																				<li><a href="../tv/index.html" name="Shop_Digital TV_U-verse TV" >U-verse TV</a></li> 
 																				<li><a href="../../u-verse/shop/channel-lineup.jsp.html" name="Shop_Digital TV_U-verse Channel Line-up" >U-verse Channel Line-up</a></li> 
-																				<li><a href="../../gen/general%3Fpid=7901.html" name="Shop_Digital TV_DIRECTV&reg; Programming Packages" >DIRECTV&reg; Programming Packages</a></li> 
+																				<li><a href="../tv/directv.html" name="Shop_Digital TV_DIRECTV&reg; Programming Packages" >DIRECTV&reg; Programming Packages</a></li> 
 																				<li><a href="../../Common/PDF/DIRECTV_English_Channel_Lineup.pdf" name="Shop_Digital TV_DIRECTV&reg; Channel Line-up (PDF)" >DIRECTV&reg; Channel Line-up (PDF)</a></li> 
 																		</ul> 
 																	</div> 
@@ -495,7 +600,7 @@ ul.circle {
 					</div> 
 								<ul id="secondaryMenu_Shop" class="secondaryMenu selected" style="display:block;clear:left;"> 
 										<li class=""> 
-											<a class="secondaryMenuItem" href="../wireless.html" name="Shop_Wireless" >Wireless</a> 
+											<a class="secondaryMenuItem" href="apps.html" name="Shop_Wireless" >Wireless</a> 
 										</li> 
 										<li class=""> 
 											<a class="secondaryMenuItem" href="../bundles.html" name="Shop_Bundles" >Bundles</a> 
@@ -1065,7 +1170,7 @@ Messaging &amp; Data Charges</a>|
 <div class="fauxH1 authExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
 <div class="fauxH1 unauthExpire scenarioContent" title="sessionExpire">Session Timeout</div> 
 <a onclick="ATT.sessionExpire.refreshSession();jQuery.colorbox.close();" class="closeModal authWarn unauthWarn scenarioContent" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire">Close</a> 
-<a href="../wireless.html" class="closeModal unauthExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire">Close</a> 
+<a href="apps.html" class="closeModal unauthExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire">Close</a> 
 <a href="../../accounts/index.html%3Fsource=IC4425j4900s2000.html" class="closeModal authExpire scenarioContent" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire">Close</a> 
 	</div> 
 	<div class="inlineModalContent"> 
@@ -1083,7 +1188,7 @@ Messaging &amp; Data Charges</a>|
 	<a href="https://cprodx.att.com/apiserver/igate_web_dlom/logOut.do?style=relogin&returnurl=http://www.att.com/shopservlets/landing?redirectUrl=/olam/logout.olamexecute" class="floatr" id="btn_session_authExpire_continue" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="unauthExpire scenarioContent modalButtons clear floatr" style="top:10px;"> 
-	<a href="../wireless.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
+	<a href="apps.html" class="floatr" id="btn_session_unauthExpire_continue" data-cqpath="/content/att/shop/en/wireless/transferyournumber/jcr:content/globalfooter/sessionexpire"><img src="http://1.ecom.attccc.com/media/att/2011/global/btn/btn-en-continue-blu29.gif" alt="continue"></a> 
 </div> 
 <div class="clear"></div> 
 	</div> 
@@ -1150,7 +1255,7 @@ Messaging &amp; Data Charges</a>|
 		<!-- Webtrend global params --> 
 		<script type="text/javascript" src="http://1.ecom.attccc.com/scripts/foresee_global/foresee-trigger-global.js"></script> 
 	        <script type="text/javascript" src="http://www.att.com/media/cms/shop/scripts/baynote.js"></script> 
-		 <!--X-Renderer: 45807733277201226010609402114033448848 --> 
+		 <!--X-Renderer: 41870088551271207587553015424129721858 --> 
 		<!-- /FOOTER -->  
 		</div> 
 <script> 
@@ -1302,6 +1407,9 @@ if (window.webTrendTag_unprototype) webTrendTag_unprototype();
 	            s.onreadystatechange = (function(){ if (s.readyState === 'loaded') s.onload(); }); 
 	            // Use any selector 
 	            jQuery("head")[0].appendChild(s); 
+				//PROD12-3312 PROD_RPT_WT Rotating Marquees are not passing log for 1st rotation consistently	 
+				if (window.JSAM) 
+				JSAM.Stat.reportReady(); 
         	}, 3000);     
         }); 
     }); 
@@ -1323,7 +1431,7 @@ lpMTagConfig.lpNumber = "76226072";
 lpMTagConfig.deploymentID = "att"; 
 lpMTagConfig.vars.push(["page","unit","wireless"]); 
 lpMTagConfig.vars.push(["session","language","english"]); 
-lpMTagConfig.vars.push(["visitor","visitorId","1zPmQXLR1LhyTpJzs88N0R7p!1332847419!1352124433455"]); 
+lpMTagConfig.vars.push(["visitor","visitorId","DBTGQyyMhJZhhc62cSkp74BT!91317116!1357392076803"]); 
 lpMTagConfig.vars.push(["page","visitorType",ATT.globalVars.buyflowCheck() || ""]); 
 lpMTagConfig.vars.push(["visitor","customerType","consumer"]); 
 lpMTagConfig.vars.push(["visitor","customerName",ATT.globalVars.custName]); 
@@ -1348,33 +1456,13 @@ lpMTagConfig.vars.push(["page","modalFlag","off"]);
 	<div class="atlastag"> 
 </div> 
 	<!--  To create CLT cookies in existing customer flow --> 
+	<!-- OPTIMOST --> 
+	<!-- B2C-120711 Place Optimost Code on att.com pages -->   
+	<!--- 
+	Cell Phones Page, http://www.att.com/shop/wireless/devices/cellphones.html  
+	Individual Plans Page, http://www.att.com/shop/wireless/plans/individualplans.html  
+	Data Plans Page, http://www.att.com/shop/wireless/data-plans.html  
+	Device page, http://www.att.com/shop/wireless/devices.html  
+	--> 
 </body> 
-	<script type="text/javascript">  
-		jQuery(window).load(function(){  
-			var element = document.createElement('script');   
-			element.type='text/javascript';   
-			element.async = true;   
-			element.src='https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10';   
-			document.body.appendChild(element);  
-		});  
-	</script>  
-	<noscript style="display:none">  
-		<iframe src="http://www.att.com/shop/wireless/'https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10"   
-			width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
-		</iframe>  
-	</noscript> 
-	<script type="text/javascript">  
-		jQuery(window).load(function(){  
-			var element = document.createElement('script');   
-			element.type='text/javascript';   
-			element.async = true;   
-			element.src='https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10';   
-			document.body.appendChild(element);  
-		});  
-	</script>  
-	<noscript style="display:none">  
-		<iframe src="http://www.att.com/shop/wireless/'https://view.atdmt.com/jaction/cntcin_GeneralVisitorsUAT_10"   
-			width="1" height="1" frameborder="0" scrolling="No" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">  
-		</iframe>  
-	</noscript> 
 </html> 

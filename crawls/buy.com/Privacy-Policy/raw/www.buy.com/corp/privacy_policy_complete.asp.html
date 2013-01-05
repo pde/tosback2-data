@@ -4,31 +4,34 @@
 
 <script language="Javascript" type="text/javascript">
 //<![CDATA[
-	if ((/[?&]ic=1/i).test(window.location.search))
-		document.cookie = "classicsticky=1; path=/; domain=buy.com;";
+    if ((/[?&]ic=1/i).test(window.location.search))
+        document.cookie = "classicsticky=1; path=/; domain=buy.com;";
 
-	if (!(/classicsticky=1/).test(document.cookie)) {
-		var uaCheck = navigator.userAgent.toLowerCase();
-		var pgCheck = location.href.toLowerCase();
+    if (!(/classicsticky=1/).test(document.cookie)) {
+        var uaCheck = navigator.userAgent.toLowerCase();
+        var pgCheck = window.location.pathname.toLowerCase();
 
-		if ((uaCheck.indexOf("iphone") > -1) || (uaCheck.indexOf("ipod") > -1) || (uaCheck.indexOf("android") > -1 && uaCheck.indexOf("mobile") > -1) || (uaCheck.indexOf("blackberry") > -1) || (uaCheck.indexOf("midp") > -1) || (uaCheck.indexOf("cldc") > -1) || (uaCheck.indexOf("windows ce") > -1)) {
-			if (pgCheck.indexOf("usersearchresults") > -1 || pgCheck.indexOf("/umerch/") > -1) {
-				if (pgCheck.indexOf("qu=") > -1) {
-					window.location = 'http://mobile.buy.com/ibuy/SearchProducts.aspx?pg=0&s=';
-				} else {
-					window.location = 'http://mobile.buy.com/ibuy/';
-				}
-			} else if (pgCheck.indexOf("/prod/") > -1 || pgCheck.indexOf("product.asp") > -1) {
-				window.location = 'http://mobile.buy.com/ibuy/ProductDetail.aspx?';
-			} else if (pgCheck.indexOf("/todaysdeals/") > -1) {
-				window.location = 'http://mobile.buy.com/ibuy/TodaysDeals.aspx?loc=14982&pg=0';
-			} else if (pgCheck.indexOf("/weekly_deals/") > -1) {
-				window.location = 'http://mobile.buy.com/ibuy/Specials.aspx?loc=62329&pg=0';
-			} else if (pgCheck.indexOf("/shakin/") > -1) {
-				window.location = 'http://mobile.buy.com/ibuy/WhatsShakin.aspx';
-			}
-		}
-	}
+        if ((uaCheck.indexOf("iphone") > -1) || (uaCheck.indexOf("ipod") > -1) || (uaCheck.indexOf("android") > -1 && uaCheck.indexOf("mobile") > -1) || (uaCheck.indexOf("blackberry") > -1) || (uaCheck.indexOf("midp") > -1) || (uaCheck.indexOf("cldc") > -1) || (uaCheck.indexOf("windows ce") > -1) || (uaCheck.indexOf("windows phone") > -1))
+        {
+            if (pgCheck.indexOf("usersearchresults") > -1 || pgCheck.indexOf("/umerch/") > -1 || pgCheck.indexOf("/sr/") > -1)
+            {
+                if (location.search.indexOf("qu=") > -1)
+                    window.location = 'http://m.buy.com/search/run/?term=';
+                else
+                    window.location = 'http://m.buy.com';
+            }
+            else if (pgCheck.indexOf("/prod/") > -1 || pgCheck.indexOf("/pr/") > -1 || pgCheck.indexOf("product.asp") > -1)
+                window.location = 'http://m.buy.com/product/details/';
+            else if (pgCheck.indexOf("/todaysdeals/") > -1)
+                window.location = 'http://m.buy.com/deals/today';
+            else if (pgCheck.indexOf("/weekly_deals/") > -1)
+                window.location = 'http://m.buy.com/deals/weekly';
+            else if (pgCheck.indexOf("/shakin/") > -1)
+                window.location = 'http://m.buy.com/deals/shakin';
+            else if (location.href.toLowerCase() == 'http://www.buy.com/' || location.href.toLowerCase() == 'http://www.buy.com/ct/default.aspx' || location.href.toLowerCase() == 'http://www.buy.com/ct/default2.aspx')
+                window.location = 'http://m.buy.com';
+        }
+    }
 	//]]>
 </script>
 
@@ -107,10 +110,10 @@ if ((GetCookie("Household") != "") && (GetCookie("Household") != "null")) {
 		
 		<meta name="description" content="Find, shop for and buy Privacy Policy at buy.com" />
 	
-	<meta name="time" content="1/2/2013 4:45:55 AM" />
-	<meta name="web" content="70" />
+	<meta name="time" content="1/5/2013 5:20:00 AM" />
+	<meta name="web" content="65" />
 	<meta name="client" content="" />
-	<meta name="cache" content="69.22.162.197" />
+	<meta name="cache" content="69.22.162.204" />
 
 
 
@@ -187,6 +190,22 @@ if ((GetCookie("Household") != "") && (GetCookie("Household") != "null")) {
 document.domain = "buy.com";
 </script>
 
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+    _gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+    _gaq.push(['_setAccount', 'UA-37143517-1']);
+    _gaq.push(['_setDomainName', 'buy.com']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
 
  
 <script src='../../connect.facebook.net/en_US/all.js'></script>
@@ -206,14 +225,6 @@ document.domain = "buy.com";
 <body bgcolor="#ffffff">
 
 <div id="fb-root"></div>
-
-
-
-    <!-- header style overrides -->
-    <style type="text/css">
-        #header .header-background {background: url("../../ak.buy.com/buy_assets/v10/header/holiday_header-final.jpg") no-repeat;}
-        #header .user-menu .user-menu-holder1 .top-menu li {background:transparent;}
-    </style>
 
 
 
@@ -853,7 +864,7 @@ document.domain = "buy.com";
 			}
 			
 		    //alert(BUY.ShippingPrice.enabled);
-			document.write("<img src=\"http://traffic.buyservices.com/traffic.asmx/InsertEvent4?EventType=CL&EID=10000&ShopperId=" + sid + "&IP=70&referrer=" + pid + "&Url=%2Fcorp%2Fprivacy%5Fpolicy%5Fcomplete%2Easp%3F%26partitionID%3D%26category%3D" + shippingTestQSParam + gsaParam + "\" width=\"1\" height=\"1\" border=\"0\">");
+			document.write("<img src=\"http://traffic.buyservices.com/traffic.asmx/InsertEvent4?EventType=CL&EID=10000&ShopperId=" + sid + "&IP=65&referrer=" + pid + "&Url=%2Fcorp%2Fprivacy%5Fpolicy%5Fcomplete%2Easp%3F%26partitionID%3D%26category%3D" + shippingTestQSParam + gsaParam + "\" width=\"1\" height=\"1\" border=\"0\">");
 			
 			function GetRefererWebAddress()
 			{
@@ -1660,22 +1671,7 @@ if(navigator.appVersion.indexOf('MSIE')>=0)document.write(unescape('%3C')+'\!-'+
 height="1" width="1" border="0" alt="" /></noscript><!--/DO NOT REMOVE/-->
 <!-- End SiteCatalyst code version: H.22.1. -->
 
-<!-- strCurrentPage=http://www.buy.com/corp/privacy_policy_complete.asp --><!-- executedUrl=http://www.buy.com/corp/privacy_policy_complete.asp -->
 
-<script language="javascript" type="text/javascript" src="../../ak.buy.com/buy_assets/ShopTogether/ShopTogetherEnvLoader.js">
-</script>
-<script language='javascript' type="text/javascript">
-	ShopTogether.id = '305';
-	ShopTogether.type = '1';
-	ShopTogether.category = '283';
-	ShopTogether.subcategory = 'Privacy Policy';
-	ShopTogether.URL = 'http://www.buy.com/corp/privacy_policy_complete.asp';
-	ShopTogether.name = 'Privacy Policy';
-	ShopTogether.description = '';
-	ShopTogether.imageThumbnailURL = 'http://ak.buy.com/buy_assets/shoptogether/store_icons/category/large/buycom.gif';
-	ShopTogether.imageLargeURL = 'http://ak.buy.com/buy_assets/shoptogether/store_icons/category/large/buycom.gif';
-	ShopTogether.Initialize(); //Load the toolbar'
-</script>
 
 
 

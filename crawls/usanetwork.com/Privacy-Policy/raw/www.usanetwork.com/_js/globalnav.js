@@ -694,18 +694,6 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "COUPLES RETREAT",
-							"subtitle" : "THURSDAY DEC 31 11:05/10:05C",
-							"url" : usa_baseUrlDomain + "/movies/couplesretreat/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_couplesretreat.png"
-						},
-						{
-							"title" : "THE BACK-UP PLAN",
-							"subtitle" : "SATURDAY  JANUARY 5 12:30/11:30C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_backupplan.png"
-						},
-						{
 							"title" : "DAN IN REAL LIFE",
 							"subtitle" : "FRIDAY JANUARY 11 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
@@ -716,6 +704,18 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY JANUARY 13 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/thegameplan",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thegameplan.png"
+						},
+						{
+							"title" : "CRANK",
+							"subtitle" : "SATURDAY JANUARY 19 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/crank",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_crank.png"
+						},
+						{
+							"title" : "THE UGLY TRUTH",
+							"subtitle" : "SUNDAY JANUARY 20 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
 						}
 					]
 				}

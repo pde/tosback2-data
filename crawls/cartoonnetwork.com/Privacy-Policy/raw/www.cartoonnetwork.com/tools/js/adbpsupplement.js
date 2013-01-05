@@ -186,6 +186,7 @@ var page_template_type = adbpTemplateObj["full"];
 if (page_template_type == "adbp:other") page_template_type = "adbp:misc";	//according to new sdr
 
 /* channel */
+/* new file */
 var path_array = pathname.replace(/([^\/]+\.[^\/]+$)/,"").split("/"), path1 = path_array[1], path2 = path_array[2]||"";
 if (page_template_type && page_template_type == "adbp:index") path1 = "home";
 if (domain.indexOf("fusionfall") != -1) {
@@ -200,6 +201,12 @@ if (domain.indexOf("fusionfall") != -1) {
 	path1 = "batmangamecreator";
 } else if (domain.indexOf("starwarsgamecreator") != -1) {
 	if (path1) path2 = path1;
+	path1 = "starwarsgamecreator", path2 = "starwarsgamecreator";
+} else if (pathname.match(/^\/gamecreator\//)) {
+	path1 = "ben10gamecreator", path2 = "ben10gamecreator";
+} else if (pathname.match(/^\/gamecreatorbm\//)) {
+	path1 = "batmangamecreator", path2 = "batmangamecreator";
+} else if (pathname.match(/^\/gamecreatorsw\//)) {
 	path1 = "starwarsgamecreator";
 } else if (domain.indexOf("mixit") != -1) {
 	if (path1) path2 = path1;
@@ -229,6 +236,8 @@ if (domain.indexOf("fusionfall") != -1) {
 	path1 = "formula-cartoon", path2 = "games";
 } else if (pathname.match(/\/wild-skies\//)) {
 	path1 = "dragons wild skies", path2 = "games";
+} else if (pathname.match(/\/finn-and-jakes-epic-quest\//)) {
+	path1 = "adventure time epic quest", path2 = "games";
 } else if (pathname.match(/^\/video\/problemsolverz/) || pathname.match(/^\/video\/tvmadness/)) {
 	path1 = "list";
 } else if (pathname.match(/^\/accounts\//)) {

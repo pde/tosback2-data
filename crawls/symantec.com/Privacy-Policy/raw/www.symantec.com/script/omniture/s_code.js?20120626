@@ -1,34 +1,20 @@
-/* ###qa###release date###20120712### */
+/* ###qa###release date###201301### */
 /* SiteCatalyst code version: H.24.1.
 Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 More info available at http://www.omniture.com
 
 
-By:      KumKum Kumar
-Changes 2011-04-01: Added Survey tool
-Changes 2011-10-31: Added ges.symantec.com domain, Dynamic variable, new plug in getPreviousValue_v1.0,
-					manageVars plug in, Previous Page Feature,
-					took out event41 tracking,set eVar68 to page name and to visit,
-					default value "n/a" to standard variables,set prop33 to null.
-Changes 2011-12-13: Added new version in comments at top,
-					Assigned s.getQueryParam('aid') for prop56/eVar2,
-					Added new h-code at bottom (Version 15)
-					Added s.evar4 for crossVisitParticipation
+Changes 2011-04-01: Added Survey tool; Changes 2011-10-31: Added ges.symantec.com domain, Dynamic variable, new plug in getPreviousValue_v1.0, - manageVars plug in, Previous Page Feature,- took out event41 tracking,set eVar68 to page name and to visit, - default value "n/a" to standard variables,set prop33 to null;
+Changes 2011-12-13: Added new h-code at bottom (Version 15)
 Changes 2012-2-1: Update to Dynamic variables,
-					prop66 'wizardid' for business support knowledge base search
 Changes 2012-3-1: prop59/evar59 page name without lg/ct
-					evar72 site section stacking corrected to handle dynamic variables.
-					s.eVar61 = s.prop22 For new Last value expire beyond visit
 Changes 2012-4-10: Removing Norton,verisign domains from internalfilters. Needed for reporting.
-					Connect Community Stacking prop61; Connect Utility Stacking prop62
-Changes 2012-4-24: Connect Utility Stacking prop62 - remove connect_utility: to reduce image size
-Changes 2012-6-19: Updated prop59/evar59 to not set page name to None when missing meta data.
-Changes 2012-7-12: evar15 changed to evar63  prop51 to prop65 for Demandbase. comment out prop61&62, enough data to analyze.
-also removed om_sem_copy prop28 due conflict with demand base setup.
+Changes 2012-7-12: evar15 changed to evar63
 Changes 2012-10-15: Added Demandbase tracking plugin and conditional tracking code. Used to live in om_code.js
 Changes 2012-11-14: Combined audience and audience_segment in demandbase and added .rpm to the list of linkDownloadFileTypes
 Changes 2012-11-28: Demandbase fixes.
-Changes 2012-11-28: tracking every user in demandbase no matter where they land.
+Changes 2012-12-23: tracking every user in demandbase no matter where they land.
+Changes 2013-01-02: Re-instating check for en/us for demandbase tracking
 */
 
 var s_account=metaData['repsuite']
@@ -43,7 +29,7 @@ s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
 s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,gz,gg,iso,kmz,xml,mp4,m4a,air,ppt,pptx,docx,xlsx,m4v,tar,txt,jpg,jpeg,png,gif,tiff,bmp,rar,msi,rpm"
-s.linkInternalFilters="javascript:,symantec.com,symantecstore.com,symantecstore.jp,symantec.co,digitalriver.com,veritas.com,altiris.com,enterprisevault.com,brightmail.com,backup.com,symantecvision2011.com,itindustrytrends.com,symanteccloud.com,messagelabs.com,pctools.com,verite.com,backupexec.com,messagelabs.co.uk,messagelabs.com.au,messagelabs.co.jp,messagelabs.com.sg,messagelabs.co.nz,messagelabs.in,messagelabs.it,de.messagelabs.com,messagelabs.de,messagelabs.com.hk,messagelabs.se,messagelabs.no,messagelabs.nl,messagelabs.fr,messagelabs.dk,messagelabs.be,messagelabs.tw,messagelabs.es,messagelabs.org,messagelabs.ch,betterbackupforall.com,techcenter.symantec.com,symantecpartners.vportal.net,symantec-corporation.com,symantec.partnermarketing.com,symantecenterprise.rsys3.net,symantec1.secure"
+s.linkInternalFilters="javascript:,symantec.com,symantecstore.com,symantecstore.jp,symantec.co,digitalriver.com,veritas.com,altiris.com,enterprisevault.com,brightmail.com,backup.com,symantecvision2011.com,itindustrytrends.com,symanteccloud.com,messagelabs.com,pctools.com,verite.com,backupexec.com,messagelabs.co.uk,messagelabs.com.au,messagelabs.co.jp,messagelabs.com.sg,messagelabs.co.nz,messagelabs.in,messagelabs.it,de.messagelabs.com,messagelabs.de,messagelabs.com.hk,messagelabs.se,messagelabs.no,messagelabs.nl,messagelabs.fr,messagelabs.dk,messagelabs.be,messagelabs.tw,messagelabs.es,messagelabs.org,messagelabs.ch,betterbackupforall.com,techcenter.symantec.com,symantecpartners.vportal.net,symantec-corporation.com,symantec.partnermarketing.com,symantecenterprise.rsys3.net,symantec1.secure,symantecvision2013.com"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"
 s.linkTrackEvents="None"
@@ -104,7 +90,7 @@ function s_doPlugins(s) {
 
 	// Prop 33 page URL VISTA Rule
 	s.prop33 = "";
-
+	
 	// Internal Tracking Parameter
 	s.prop21 = s.getQueryParam('inid');
 	s.eVar21 = s.prop21;
@@ -176,10 +162,6 @@ function s_doPlugins(s) {
 	s.prop27=((s.prop27 == "none") || (s.prop27 == "") || (s.prop27 == undefined)) ? "n/a" : s.prop27;
 	s.prop30=((s.prop30 == "none") || (s.prop30 == "") || (s.prop30 == undefined)) ? "n/a" : s.prop30;
 	s.prop41=((s.prop41 == "none") || (s.prop41 == "") || (s.prop41 == undefined)) ? "n/a" : s.prop41;
-	s.prop54=((s.prop54 == "none") || (s.prop54 == "") || (s.prop54 == undefined)) ? "n/a" : s.prop54;
-	s.prop42=((s.prop42 == "none") || (s.prop42 == "") || (s.prop42 == undefined)) ? "n/a" : s.prop42;
-	s.prop43=((s.prop43 == "none") || (s.prop43 == "") || (s.prop43 == undefined)) ? "n/a" : s.prop43;
-	s.prop47=((s.prop47 == "none") || (s.prop47 == "") || (s.prop47 == undefined)) ? "n/a" : s.prop47;
 	s.prop48=((s.prop48 == "none") || (s.prop48 == "") || (s.prop48 == undefined)) ? "n/a" : s.prop48;
 	s.prop49=((s.prop49 == "none") || (s.prop49 == "") || (s.prop49 == undefined)) ? "n/a" : s.prop49;
 	s.prop58=((s.prop58 == "none") || (s.prop58 == '') || (s.prop58 == undefined)) ? "n/a" : s.prop58;
@@ -195,11 +177,6 @@ function s_doPlugins(s) {
 	if(s.prop27 != "n/a") s.eVar50 = "D=c27" ;
 	if(s.prop30 != "n/a") s.eVar32 = "D=c30" ;
 	if(s.prop41 != "n/a") s.eVar41 = "D=c41" ;
-	if(s.prop41 != "n/a") s.eVar71 = "D=c41" ;
-	if(s.prop54 != "n/a") s.eVar54 = "D=c54" ;
-	if(s.prop42 != "n/a") s.eVar42 = "D=c42" ;
-	if(s.prop43 != "n/a") s.eVar43 = "D=c43" ;
-	if(s.prop47 != "n/a") s.eVar57 = "D=c47" ;
 	if(s.prop48 != "n/a") s.eVar49 = "D=c48" ;
 	if(s.prop49 != "n/a") s.eVar48 = "D=c49" ;
 	if(s.prop58 != "n/a") s.eVar58 = "D=c58" ;
@@ -217,7 +194,7 @@ function s_doPlugins(s) {
 	// Campaign stacking - 0712 - moved from evar15 to evar63
 	s.eVar63=s.crossVisitParticipation(s.campaign,'s_eVar15','90','10',',','purchase',0);
 
-    // Site Section Stacking
+    /* Site Section Stacking - 012013 Removed
 	if(s.prop41 != "n/a") s.eVar72=s.crossVisitParticipation(s.prop41,'s_eVar72','1','20',',','purchase',0);
 
 	/*Connect Community Stacking - 07-12 commented out 61&62, have enough data to analyze
@@ -230,8 +207,9 @@ function s_doPlugins(s) {
 	*/
 
 
-	// Internal Parameter Stacking
+	/* Internal Parameter Stacking
 	s.eVar4=s.crossVisitParticipation(s.eVar21,'s_eVar4','90', '10',',','purchase',0);
+	*/
 
 	/***** KK added for repeat visitor *****/
 	 /* First Time Visitor  */
@@ -673,7 +651,7 @@ if (!demandbasePlugin.dataIsStored()){
 	demandbasePlugin.setDataObject();
 }
 
-doTracking = function(){
+trackDemandBase = function(){
 		var dbTracked=(function(n){return(v=new RegExp('^'+n+'=.*|;\\s*'+n+'=.*').exec(document.cookie))?v[0].split(n+'=')[1].split(';')[0]:''})('dbtracked');
 		if(dbTracked.indexOf('db')==-1){
 			try{
@@ -695,48 +673,31 @@ doTracking = function(){
 	}
 }
 
-/*
+
 fireDemandBaseTracking = function(){
+	var myUrl = document.domain;
+	var tempUrl = myUrl.toLocaleLowerCase();
+	var validUrl = tempUrl.indexOf("symantec.com") > -1 ? true : false;
 	if(typeof(metaData['page_name'])!= "undefined"){
 		var myPageName = metaData['page_name'];
-	// if we're not en/us, we're done.
-		if(myPageName.indexOf('en/us')<0){
+	// if we're not en/us and not specifically on symantec.com, we're done
+		if(myPageName.indexOf('en/us')<0 && validUrl === true){
 			return false;
 		}
-		else{	// we are en/us. Test return true if any conditions are met
-			if(myPageName == "en/us: biz: symantec"){ // homepage
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: products:')>-1){ //product pages
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: solutions:')>-1){ //solutions pages
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: theme:')>-1){ //theme pages
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: cmp:')>-1){ //campaign pages
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: resources:')>-1){ //resources pages
-				return true;
-			}
-			if(myPageName.indexOf('en/us: biz: services:')>-1){ //services pages
-				return true;
-			}
+		else{
+			return true;
 		}
 	}
-	return false; //no conditions met? Return false and do not invoke demandbase.
 }
 
 
 function doTracking(){
 	if(fireDemandBaseTracking()){
+		//console.log("tracking");
 		trackDemandBase();
 	}
 }
-*/
+
 /* end demandbase code */
 
 /****************************** MODULES *****************************/

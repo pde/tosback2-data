@@ -71,9 +71,17 @@ try{
 				
 				try{
 				
-				$(	'DIV#cnnT1Holder'		).attr('data-vr-zone', 'T1');		//T1
+				var testmode = location.search.indexOf('VRTEST=y') > 0;
+				//$(	'DIV#cnnT1Holder'		).attr('data-vr-zone', 'T1');		//T1 
 				$(	'DIV.cnnT2s'			).attr('data-vr-zone', 'T2');		//T2
+				
+				if( cnnPage.isHomepage ){
+					$(	'DIV.cnnT2Blogs'		).attr('data-vr-zone', 'Blogs Tab');		//Blogs Tab zone
+					$('DIV.cnnT2Blogs ul li a').attr('data-vr-contentbox', '');				//Blogs Tab content box
+				}
+				
 				$(	'DIV.cnnBoxWritersRow5'	).attr('data-vr-zone', 'Writers');	//Writers
+				
 				$( $(	'DIV.cnnBoxSiVideo'		).get(1) ).attr('data-vr-zone', 'Video');	//Video
 				
 				$(	'DIV.cnnBoxEM'			).attr('data-vr-zone', 'Extra Mustard');	//Extra Mustard
@@ -135,11 +143,18 @@ try{
 						case 'cnnT1Pane t1_4': contentbox = 'T1D'; break;
 						case 'default': break;
 					}
-					//var nextElAfterTabs = $(this).find('DIV.cnnTabs').next().get(0);
-					var nextElAfterTabs = $(this).find('DIV.cnnT1Tabs').next().get(0);
+					
+					//set the zone
+					$( this ).attr('data-vr-zone', contentbox);
+					
+					//set the headline content box
+					var nextElAfterTabs = $(this).find('DIV.cnnT1Tabs').next().get(0) || {};
 					if( typeof nextElAfterTabs.tagName !== 'undefined' && nextElAfterTabs.tagName == 'A'){
 						$(nextElAfterTabs).attr('data-vr-contentbox', contentbox);
 					}
+					
+					//set the image content box
+					$('DIV#cnnT1Holder DIV.cnnT1Pane').find('.cnnT1Underlay').find('a').attr('data-vr-contentbox', '');
 				});
 				$('DIV#cnnT1Holder DIV.cnnT1Pane DIV.cnnT1Bullets').attr('data-vr-contentbox', '');  //T1 Bullets
 								
@@ -482,13 +497,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle" style="border-top: 0px none;">Latest News</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/college-football/news/20130102/florida-state-northern-illinois-orange-bowl/?eref=sircrc">This Orange Lacked Juice</a>
+<a href="http://sportsillustrated.cnn.com/college-football/news/20130105/cotton-texas-am-johnny-manziel-dominates-oklahoma/?eref=sircrc">The Legend Grows</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/football/ncaa/gameflash/2013/01/01/52328/index.html#?eref=sircrc">Stanford wins 1st Rose in 40 years</a>
+<a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2013/01/04/31914/#recap?eref=sircrc">Paul, Clippers thwart Lakers</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2013/01/01/32207/#?eref=sircrc">Clips' win streak ends at 17 with loss to Nuggets</a>
+<a href="http://sportsillustrated.cnn.com/nfl/news/20130104/chiefs-reid.ap/?eref=sircrc">Reid reaches deal with Chiefs</a>
 </li>
 
 		</ul>
@@ -497,14 +512,14 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">Video</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 		<tr>
-		<td><a href="http://sportsillustrated.cnn.com/video/nfl/20121231/pauline-draft-watch-fiesta-bowl-correct.sportsillustrated/">
+		<td><a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-peter-king-last-word-colts-ravens-redskins-seahawks.sportsillustrated/">
 <div>
-<img src="../../i2.cdn.turner.com/si/dam/assets/121231160721-pauline-draft-watch-fiesta-bowl-00022308-video-carousel.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Tony Pauline's Draft Watch: The Fiesta Bowl</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/20121231/peter-king-black-monday-coaches-fired.sportsillustrated/">
+<img src="../../i2.cdn.turner.com/si/dam/assets/130104181745-20111201-tjg-al2-309-video-carousel.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Peter King's Last Word</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-don-banks-andy-reid-kansas-city-chiefs.sportsillustrated/">
 <div>
-<img src="../../i2.cdn.turner.com/si/dam/assets/121231213535-norv-turner-500-video-carousel.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Peter King: Breaking down Black Monday</div>
+<img src="../../i2.cdn.turner.com/si/dam/assets/130104151850-20130104-dlp-cjm-001-video-carousel.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Banks: Reid not a good fit for the Chiefs</div>
 </a></td>
 
 		</tr>
@@ -514,13 +529,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Writers</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/college-football/news/20130102/florida-state-northern-illinois-orange-bowl/index.html?eref=sircrc"><strong>Pete Thamel:</strong> Florida St. gives lukewarm Orange Bowl performance in besting N. Illinois</a>
+<a href="http://sportsillustrated.cnn.com/college-football/news/20130104/bbva-compass-bowl-preview/index.html?eref=sircrc"><strong>R.J. Rico:</strong> Pittsburgh vs. Ole Miss BBVA Compass Bowl preview</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/nba/news/20130102/knicks-amare-stoudemire-return-blazers/index.html?eref=sircrc"><strong>Chris Mannix:</strong> Stoudemire leaves much to be desired in rusty return</a>
+<a href="http://nhl-red-light.si.com/2013/01/04/toxic-atmosphere-engulfs-cba-talks/?eref=sircrc">Toxic atmosphere engulfs CBA talks</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/college-football/news/20130101/stanford-wisconsin-rose-bowl/index.html?eref=sircrc"><strong>Stewart Mandel:</strong> Stanford wears down Wisconsin to win long-awaited Rose Bowl</a>
+<a href="http://sportsillustrated.cnn.com/racing/news/20130104/ryan-villopoto-supercross/index.html?eref=sircrc"><strong>Tim Tuttle:</strong> Ryan Villopoto preparing to charge towards third straight supercross championship</a>
 </li>
 
 		</ul>
@@ -529,18 +544,18 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Photos</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 			<tr>
-<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1005/nascar.indycar.wags/content.1.html?eref=sircrc">
+<td><a href="http://sportsillustrated.cnn.com/nba/photos/1301/celebrities-at-nba-games-2012-13/?eref=sircrc">
 <div>
-<img title="NASCAR Wives And Girlfriends" alt="NASCAR Wives And Girlfriends" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1005/nascar.indycar.wags/images/Jeff-Gordon-100.jpg"></div>
-<div>NASCAR Wives And Girlfriends</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/0911/nfl.season.winning.streaks.by.franchise/content.1.html?eref=sircrc">
+<img title="Celebrities at NBA Games" alt="Celebrities at NBA Games" src="../../i2.cdn.turner.com/si/dam/assets/130104130140-00-justin-bieber-thumb-gallery---thumbnail.jpg"></div>
+<div>Celebrities at NBA Games</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1301/did-you-see-that-011413/content.1.html?eref=sircrc">
 <div>
-<img title="Best Single-Season Win Streak by Team" alt="Best Single-Season Win Streak by Team" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/0911/nfl.season.winning.streaks.by.franchise/images/00-brady-welker-moss-thumb.jpg"></div>
-<div>Best Single-Season Win Streak by Team</div>
-</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1210/nfl-top-selling-jerseys-04-09/content.1.html?eref=sircrc">
+<img title="Did You See That?" alt="Did You See That?" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1301/did-you-see-that-011413/images/thumb.6150677.jpg"></div>
+<div>Did You See That?</div>
+</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1301/polar-bear-plunge/content.1.html?eref=sircrc">
 <div>
-<img title="Top-Selling NFL Player Jerseys" alt="Top-Selling NFL Player Jerseys" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1210/nfl-top-selling-jerseys-04-09/images/00-peyton-manning-fan-thumb.jpg"></div>
-<div>Top-Selling NFL Player Jerseys</div>
+<img title="Polar Bear Plunges of 2013" alt="Polar Bear Plunges of 2013" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1301/polar-bear-plunge/images/thumb.polarbear65558.jpg"></div>
+<div>Polar Bear Plunges of 2013</div>
 </a></td>
 
 			</tr>
@@ -564,7 +579,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 			<dl>
 				<dt><a href="http://sportsillustrated.cnn.com/"><img src="../../i.cdn.turner.com/si/.element/img/4.1/global/footer_logo.jpg" alt="SI.com" title="SI.com"/></a></dt>
 				<dd>
-<span>Hot Topics:</span> <a href="http://sportsillustrated.cnn.com/college-football/news/20130101/stanford-wisconsin-rose-bowl/" title="Rose Bowl" class="cnnFirst">Rose Bowl</a> <a href="http://sportsillustrated.cnn.com/college-football/news/20130102/florida-state-northern-illinois-orange-bowl/" title="Orange Bowl" >Orange Bowl</a> <a href="http://sportsillustrated.cnn.com/college-football/" title="Bowl Games" >Bowl Games</a> <a href="http://sportsillustrated.cnn.com/nhl/news/20121231/nhl-labor-talks-expected-to-resume/" title="NHL Lockout" >NHL Lockout</a> <a href="http://sportsillustrated.cnn.com/nba/news/20130102/knicks-amare-stoudemire-return-blazers/" title="Amar'e Stoudemire" >Amar'e Stoudemire</a> <a href="http://nfl.si.com/2012/12/30/an-early-look-at-wild-card-weekend/" title="NFL Playoffs" >NFL Playoffs</a> <a href="http://sportsillustrated.cnn.com/swimsuit/" title="SI Swimsuit" >SI Swimsuit</a>
+<span>Hot Topics:</span> <a href="http://sportsillustrated.cnn.com/college-football/news/20130105/cotton-texas-am-johnny-manziel-dominates-oklahoma/" title="Johnny Manziel" class="cnnFirst">Johnny Manziel</a> <a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-peter-king-last-word-colts-ravens-redskins-seahawks.sportsillustrated/" title="NFL Playoffs" >NFL Playoffs</a> <a href="http://nhl-red-light.si.com/2013/01/04/toxic-atmosphere-engulfs-cba-talks/" title="NHL Labor Talks" >NHL Labor Talks</a> <a href="http://sportsillustrated.cnn.com/nfl/news/20130104/russell-wilson/" title="Russell Wilson" >Russell Wilson</a> <a href="http://sportsillustrated.cnn.com/nba/news/20130104/nba-draft-ben-mclemore-nerlens-noel-shabazz-muhammad/" title="NBA Draft" >NBA Draft</a> <a href="http://sportsillustrated.cnn.com/swimsuit/" title="SI Swimsuit" >SI Swimsuit</a>
 </dd>
 			</dl>
 			<div class="cnnClear"></div>
@@ -597,7 +612,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 				<br/> <a href="http://sportsillustrated.cnn.com/interactive_legal.html" rel="nofollow">Terms</a> under which this service is provided to you. Read our <a href="http://sportsillustrated.cnn.com/privacy/" rel="nofollow">privacy guidelines</a>, <a href="https://subscription.timeinc.com/storefront/privacy/si/generic_privacy_new.html?dnp-source=E#california" rel="nofollow">your California privacy rights</a>, and <a href="http://subscription-assets.timeinc.com/prod/assets/themes/magazines/default/template-resources/html/legal/ti-corp-behavioral.html">ad choices<img src="../../i.cdn.turner.com/si/.element/img/4.1/global/logo_adchoices.gif" id="cnnFooterAdOpt"/></a>.
 			</div>
 		</div>
-		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11955/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/1224_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href="http://www.sicovers.com/ils.aspx?p=SPR20121224Pics&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
+		<div class="cnnLeft"><a href="http://sportsillustrated.cnn.com/vault/cover/featured/11974/index.htm?xid=sivcoverhome"><img style="vertical-align:bottom;" title="SI Cover" alt="SI Cover" src="../../i.cdn.turner.com/si/si_online/covers/images/2012/1231_thumb.jpg"></a><a href="http://www.sportsillustratedeverywhere.com/?xid=sivcoverhome"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/read_all_articles_96x12.gif" alt="Read All Articles" border="0" width="96" height="12"></a><a href="http://www.sicovers.com/ils.aspx?p=SPR20121231Phel&utm_source=sivault&utm_medium=inet&utm_campain=icrefer&xid=sivcoverhome" target="_blank"><img style="vertical-align:bottom;" src="../../i.cdn.turner.com/sivault/.element/img/1.0/buy_cover_reprint.gif" alt="Buy Cover Reprint" border="0" width="96" height="12"></a>
 </div>
 	</div>
 </div>

@@ -68,6 +68,11 @@ $(document).ready(function(){
 		$("#hidelocalbutton").hide();
 		return false;
 	});
+	$('.shareprint').click(function() {
+		window.print();
+		return false;
+	});
+	
 	
 	$("#pwcslider .feature").css("width", ($('#pwcslider').width()-40));
 	$("#pwcslider .feature").css("height", ($('#pwcslider').height()-27));

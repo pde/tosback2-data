@@ -255,7 +255,11 @@
   win.TWP.hpRefreshTests.adRefreshFunction = function() {
     return wpAd.flags.test_ads ? false : true;
   };
-
+  
+  //20699-CW
+  if(commercialNode === 'sports/front'){
+    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-adv/wp-plus/nationals/nationals.js');
+  }
   
   //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
   wpAd.config.hackBin = function () {

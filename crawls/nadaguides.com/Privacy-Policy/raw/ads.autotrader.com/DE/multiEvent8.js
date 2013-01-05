@@ -8,6 +8,7 @@ function multi8(swf,fbclickurl,fbimg,width,height,target1,clicktag,flashclickurl
 	if(clicktag4) {
 		var swf_click4 = flashclickurl4;
 		var dcswf_click4 = escape(swf_click4);
+		var ShockMode = 0;
 	}
 	var plugin = (navigator.mimeTypes && navigator.mimeTypes["application/x-shockwave-flash"]) ? navigator.mimeTypes["application/x-shockwave-flash"].enabledPlugin : 0;
 	

@@ -7,7 +7,7 @@
  * implied, including fitness for a particular purpose. In no event shall
  * the author be liable for any damages arising in any way out of the use
  * of this software, even if advised of the possibility of such damage.
- *
+ * Version: v2.6.31
  */
 
 (function($) {
@@ -3179,7 +3179,9 @@ Echo.Stream.prototype.handleInitialResponse = function(data, visualizer) {
 	});
 
 	this.hasInitialData = true;
-	this.isViewComplete = roots.length != this.config.get("itemsPerPage");
+	this.isViewComplete = "hasMoreChildren" in data
+		? data.hasMoreChildren === "false"
+		: roots.length != this.config.get("itemsPerPage");
 	visualizer(roots);
 	this.startLiveUpdates();
 };

@@ -504,7 +504,48 @@
 					$('#qu_story_1').append(ifr);
 				}
 			}
-		},	    
+		},
+		optimizely: {
+			init : function(d){	
+				var self = this;
+				if(d && d.channel && d.raw.type === "Text.Article" &&  d.channel.indexOf("fnc/") > -1){
+					self.main();
+				}
+			},
+			main: function(){
+				(function() { 
+				   var projectId = 125900362; 
+				   var protocol = ('https:' == document.location.protocol ? 'https://' : 'http://'); 
+				   var scriptTag = document.createElement('script'); 
+				   scriptTag.type = 'text/javascript'; 
+				   scriptTag.async = true; 
+				   scriptTag.src = protocol + 'cdn.optimizely.com/js/' + projectId + '.js'; 
+				   var head = document.getElementsByTagName('head')[0]; 
+				   head.parentNode.insertBefore(scriptTag, head); 
+				 })(); 
+				
+				window.optimizelyTimeout = function(){ 
+				 	window.optimizely = window.optimizely || []; 
+				 	if (!window.optimizely.data) { 
+				 		window.optimizely.push("disable"); 
+				 	} 
+				} 
+				setTimeout(function(){ if(window.disableOptimizely){window.disableOptimizely()}}, 200);				
+			}	
+		},			
+		badgeville: {
+			init: function(){
+	
+				(function(){				
+				    var script = document.createElement('script'); 
+				    script.type = "text/javascript";
+				    script.async = true;
+				    script.id = "badgeville";
+					script.src = document.location.protocol +'//sandbox.v2.badgeville.com/v3/badgeville-current.js'; 
+					document.getElementsByTagName("body")[0].appendChild(script)
+				}());					
+			}
+		},		
 		buzzFeed: {
 			init: function(d){
 				if(d.channel.indexOf("fnc/politics") > -1){
@@ -1687,6 +1728,8 @@
 			$.ad.visrev.init();
 												
 			$.ad.adBlade.init();
+			
+			$.ad.optimizely.init(d);
 			
 			var col = "";
 			if (d.ptype==="column"||d.ctype==="column") { var col = "-" + d.channel.split('/').slice(-1)[0]; }

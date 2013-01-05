@@ -15,7 +15,7 @@
 
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=177.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=179.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=044" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -36,7 +36,7 @@
 <![endif]-->
 
 <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=023"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=024"></script>
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 	var $j = jQuery.noConflict();
@@ -44,8 +44,10 @@
 
 	var cats = '';
 	var category = "";
+	var segment = "0";
 	var changing_thumbs = new Object();
 	var first_thumbs = new Object();
+	var pagekeyStat = '';
 
 	var loggedin = 0;
 	var username = "none";
@@ -132,12 +134,31 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					}
 				});
 				if (TJ_missing.length > 0 && statTracker) {
-
 					statTracker()._setSiteID(13);
 					// Assume all ads on the page are hidden the same way
 					statTracker()._event('adblock', 'enabled', TJ_missing[0], TJ_missing.length);
 				}
 			}, 1500);
+
+			function statTrackerEvent(event, position, id, page){
+				statTracker()._setSiteID(21);
+				statTracker()._event(segment, id+"_"+position+"_"+event, page, 1);
+			}
+			$(".box-thumbnail-friends").each(function(index){
+					if (pagekeyStat == "html-home_new_") {
+						var adPage = "home";
+					} else if (pagekeyStat == "html-categories_new_") {
+						var adPage = "category";
+					}
+					if ($(this).hasClass("youporn")) {
+						statTrackerEvent("view", index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+						$(this).find("img.videoThumbs").mouseover(function(e){
+							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+						}).click(function(e){
+							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+						});
+					}
+			});
 			//**********************************************
 
 			//************************************* Search Auto Complete Feature *************************************************************
@@ -1416,7 +1437,7 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 			for (var id in deferred_external_scripts)
 			{
 				load(deferred_external_scripts[id], id);
-				if (id == 'twitter-wjs') {
+				if (id == 'twitter"-wjs') {
 					window.twttr = window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
 				}
 			}

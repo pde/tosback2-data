@@ -298,6 +298,10 @@ ajaxCustomerForm = function(){
 			var results = jQuery.parseJSON( data );
 			if( results.status == "error" ){
 				$.each(results.errors, function(key, value) {
+					if (key=='csrf') {
+						formElement.html('<p class="nowPrice">'+value+'</p>');
+						return false; // breaks out of the $.each();
+					}
 					var $theEle = $("#"+key),
 					errorHolder = $theEle.parent().find('p.nowPrice');
 					if (errorHolder.length==0) {

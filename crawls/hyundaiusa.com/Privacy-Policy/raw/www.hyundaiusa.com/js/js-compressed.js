@@ -5281,8 +5281,8 @@ HN.ExternalInterface.BYO = new function() {
             $(".global_disclaimer").show()
         }
         var b = ($(".global_disclaimer").length) ? $(".global_disclaimer").outerHeight() : 0;
-        $("#mainContent").height(a);
-        $(".global_disclaimer").css("top", (a - b) + "px")
+        $("#mainContent").height(a+12);
+        $(".global_disclaimer").css("top", (a - b+19) + "px")
     };
     this.openReceiveModal = function() {
         $("a[name=modal]").click();

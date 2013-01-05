@@ -12,6 +12,15 @@ DWRRequestManager.getServiceAddress = function(callback) {
 DWRRequestManager.addItemsToOrder = function(p0, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'addItemsToOrder', p0, callback);
 }
+DWRRequestManager.setPhonyOptionSelected = function(p0, callback) {
+  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'setPhonyOptionSelected', p0, callback);
+}
+DWRRequestManager.getPreviousURL = function(callback) {
+  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'getPreviousURL', callback);
+}
+DWRRequestManager.setPreviousURL = function(p0, callback) {
+  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'setPreviousURL', p0, callback);
+}
 DWRRequestManager.getErrorMessagesByCodes = function(p0, callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'getErrorMessagesByCodes', p0, callback);
 }
@@ -23,13 +32,4 @@ DWRRequestManager.getServiceQualificationEligibilityByPhone = function(p0, callb
 }
 DWRRequestManager.resetShowAAFlag = function(callback) {
   dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'resetShowAAFlag', callback);
-}
-DWRRequestManager.setPhonyOptionSelected = function(p0, callback) {
-  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'setPhonyOptionSelected', p0, callback);
-}
-DWRRequestManager.setPreviousURL = function(p0, callback) {
-  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'setPreviousURL', p0, callback);
-}
-DWRRequestManager.getPreviousURL = function(callback) {
-  dwr.engine._execute(DWRRequestManager._path, 'DWRRequestManager', 'getPreviousURL', callback);
 }

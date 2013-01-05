@@ -34,6 +34,37 @@
     z-index:0;
 }
 
+    #outServiceAddressForm, #inServiceAddressForm {
+        width: 350px;
+        padding: 30px;
+        background: #fff;
+        border: 1px solid #f2f4f8;
+        display: none; 
+    }
+    #outServiceAddressForm p, #inServiceAddressForm p {
+        font: lighter 14px Arial,Sans-Serif;
+        color: #222;
+        text-align: center;
+    }
+    #outServiceAddressForm form, #inServiceAddressForm form {
+        margin: 30px auto 0;
+        text-align: center;
+    }
+    #outServiceAddressForm input[type="text"], #inServiceAddressForm input[type="text"] {
+        width: 125px;
+        height: 18px;
+        border: 1px solid #222;
+    }
+    #outServiceAddressForm .enter-button, #inServiceAddressForm .enter-button {
+        padding: 2px 10px;
+        background: #0076bc;
+        border: 1px solid #222;
+        color: #fff;
+    }
+    #outServiceAddressForm .form_error, #inServiceAddressForm .form_error{
+        padding-left: 70px;
+        display: none; 
+    }
 @CHARSET "UTF-8";
 .alerts .display-alerts {
     margin: 2em 4em;
@@ -735,8 +766,7 @@ height:1200px;
     padding: 5px 20px;
 }
 
-.faq-navigator h2.padding {
-    font-size: 1.3em;
+.faq-navigator .padding {
     margin: 0 0 10px;
 }
 
@@ -747,8 +777,8 @@ height:1200px;
 }
 
 .faq-navigator .selector .select{
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     overflow: hidden;
     width: 250px;
 }
@@ -784,7 +814,7 @@ height:1200px;
     height: 37px;
 }
 
-.faq-navigator .categories li.selected {
+.faq-navigator .categories .selected {
     background-image: url(clientlibs/images/background-selected-arrow.png);
     background-position: right center;
 }
@@ -13614,8 +13644,8 @@ div.section {
 background:transparent;
 }
 
-/* using the old tooltip image for the arrow 
-   checkboxtable not using the new tooltip method 
+/* using the old tooltip image for the arrow
+   checkboxtable not using the new tooltip method
    yet - CKH 091112 */
 .checklist-table .tooltip .wrap {
   background: url("clientlibs/images/tooltip-top-old.png") no-repeat scroll 0 0 transparent;
@@ -13755,7 +13785,7 @@ a.verizon {
 
 /* WEBCMS-1465 Text on snapshot component was too wide, bleeding into picture if only one promo is displayed */
 .tabs-module.vertical .tabs-container .tab .vert-center .content {
-    width: 235px;   
+    width: 235px;
 }
 /* END WEBCMS-1465 */
 
@@ -13781,10 +13811,133 @@ a.verizon {
     float: left;
     font-family: "TWC Round Light",Arial,Sans-Serif;
     font-size: 36px;
-    padding: 30px 20px 0;
     max-width: 100%;
 }
 /* END WEBCMS-2386 */
+
+/* WEBCMS-2604 These multiple margin and padding overrides are to reduce the whitespace in order to get more important information above the fold on the Learn Pages, Premium Overview, and Premium Details Page. */
+
+/*****Learn Pages (Overview,Features, Equipment)*****/
+.feature-splash-learn-overview{
+    height:350px;
+}
+
+.social-share-learn-overview{
+    float: right;
+    min-width: 210px;
+    height: 5px;
+}
+
+.social-share-learn-overview, .social-share-internet-overview .social-share .share-module{
+    margin: 0;
+}
+/******* End of Learn *******/
+
+
+/****** Premium Overview ************/
+.premium-overview-teaser .premium-overview-masterTeaser .feature-splash{
+    padding-bottom: 0px;
+}
+
+.premium-overview-social-share .social-share{
+    margin-bottom:0px;
+}
+
+.premium-overview-social-share .social-share .share-module{
+    margin-bottom:0px;
+    height:5px;
+}
+
+/******* End of Premium Overview ****/
+
+
+/****** Premium Detail ********/
+.premium-details-teaser .premium-banner-details .feature-splash{
+    margin-bottom: -160px;
+}
+
+.social-share-premium-detail .social-share .share-module{
+    margin: 0 0 9px;
+}
+
+.premium-details-parsys .module {
+    margin-bottom:40px;
+}
+
+.premium-details-parsys .module h2 {
+    margin:0 0 15px;
+}
+
+/****** End of Premium Detail ******/
+
+/******* Internet Overview **********/
+.social-share-internet-overview .social-share .share-module{
+    margin: 0;
+    height: 5px;
+}
+
+.internet-overview-teaser .overview-splash{
+    margin-bottom:-170px;
+}
+/******* End of Internet Overview *************/
+
+/****** IntelligentHome ********/
+.intelligent-home-teaser .learnBanner .feature-splash{
+    margin-bottom: -160px;
+}
+
+.intelligent-home-social-share .social-share .share-module{
+    margin: 0;
+    height: 5px;
+}
+/****** End of IntelligentHome ***********/
+
+/******* Packages ***********/
+.package-teaser .feature-splash{
+    padding-bottom: 160px;
+}
+
+/***************************/
+
+/* END WEBCMS-2604 */
+
+/* WEBCMS-2561 */
+.filter-packages .bottom {
+  position: absolute;
+  bottom: 0;
+  width: 250px;
+}
+.filter-packages .bundleMoneyText {
+    margin: 1.5em auto;
+    text-align: center;
+}
+.filter-packages .bundleMoneyText strong {
+    font-size: 33px;
+    font-weight: bold;
+}
+.filter-packages .bundleMoneyText sup {
+    font-size: 14px;
+    top: -13px;
+}
+.filter-packages .bundleMoneyText span {
+    padding-left: 1em;
+    font-size: 11px;
+    font-style: italic;
+}
+.filter-packages .pkg-actions .toggle-content {
+    float: left;
+    padding: 9px 13px 9px 0;
+    font-size: 13px;
+    font-weight: bold;
+    background: url("clientlibs/images/arrow-down-blue.png") no-repeat 100% 13px transparent;
+}
+.filter-packages .pkg-actions .toggle-content.active {
+    background: url("clientlibs/images/arrow-up-blue.png") no-repeat 100% 13px transparent;
+}
+.filter-packages .pkg-actions .cta {
+    float: right;
+}
+
 .content h2 .end, .content h2 .end sup{
   display: block;
   float: right;
@@ -13847,7 +14000,7 @@ div.image.bannerImage{
     position: absolute;
     top: 10px;
     left: 15px;
-    visibility: visible; 
+    visibility: visible;
 }
 .compare .compare-table .details-row .details-module .content-module h3 .details-text {
   color: #000;
@@ -13894,17 +14047,8 @@ float:left;
   width: 254px;
 }
 
-.filter-packages .wrap .item .details .wrap .fixed .bundleMoneyText {
-  float: left;
-
-}
-
 .package-boxes .clear{
   display: none;
-}
-
-.filter-packages .wrap .item .block .bundleBlockText p {
-  color: #446110;
 }
 
 /* column control layouts */
@@ -14057,7 +14201,7 @@ margin-top:0px;
     width:16px;
 }
 
-/* the following are for the iHome pages 
+/* the following are for the iHome pages
    start the iHome styles */
 
 .ihome-module-wrap.packages-info .desc p {
@@ -14225,11 +14369,15 @@ margin-top:0px;
   font-size:11px !important;
 }
 
-
-
 /*** Signature Home Styles ***/
 
 /*** Signature Home Filter Packages Styles ***/
+.filter-packages .wrap .item .details .wrap .fixed .bundleMoneyText {
+  float: left;
+}
+.filter-packages .wrap .item .block .bundleBlockText p {
+  color: #446110;
+}
 
 .filter-packages .wrap .item{
     background: url("clientlibs/images/gradient-white-details.png") repeat-x scroll 0 0% #eff2f6; /* BStreet WEBCMS-1948: resolve 404 error on grad*.png */
@@ -14462,7 +14610,7 @@ margin-top:0px;
 }
 
 .channelLinks > ul > li > span > a:hover {
-  
+
   background: #3e4951;
   color: #fff;
 }
@@ -14675,8 +14823,8 @@ div.modal .modal-box {
   display: block;
 }
 
-/* fixed a bug in the app-slider nav buttons 
-   for some reason swx could not handle more than 
+/* fixed a bug in the app-slider nav buttons
+   for some reason swx could not handle more than
    4 rows of sliders, z-index needs to be larger */
 .apps-slider a.prev, .apps-slider a.next {
     top: 200px;
@@ -14694,7 +14842,7 @@ div.modal .modal-box {
 
 /* error page styles */
 
-.error-page-content .feature-splash .overlay .wrap {    
+.error-page-content .feature-splash .overlay .wrap {
     overflow: hidden;
 }
 
@@ -14762,7 +14910,7 @@ padding:10px 0px;
     background-color: #000;
     background-position: 100% 50%;
     background-repeat: no-repeat no-repeat;
-    
+
 }
 /*End error page styles*/
 
@@ -14783,18 +14931,18 @@ padding:10px 0px;
 /*** End Top Questions Buttons Styles ***/
 
 /* overwrite current SWX heights on the package-filter
-   the content authors want the heights larger 
+   the content authors want the heights larger
    SWX will delivery a dynamic fix at some point */
 .filter-packages .wrap .item {
-  
+
 }
 
 .filter-packages .wrap .item .details .wrap {
-  
+
 }
 
 .filter-packages .details-modules .wrap {
- 
+
 }
 /* done with SWX package filter heights */
 /* force word wrap to prevent horizontal scrolling*/
@@ -14839,9 +14987,9 @@ overflow:visible;
 
 
  /*End Snapshot Style enhancements*/
- 
 
-/*WEBCMS-1724 Adding a class to handle CTA case for buttons with no arrows*/ 
+
+/*WEBCMS-1724 Adding a class to handle CTA case for buttons with no arrows*/
 .no-arrow {
   background: none;
 }
@@ -14901,7 +15049,7 @@ span:hover.addtooltip {
 }
 /* End WEBCMS-1319 styles to support price term in sliders*/
 
-/* placeholder styles for the myservices login placeholder values */ 
+/* placeholder styles for the myservices login placeholder values */
 .placeholder {
     color: #aaa;
 }
@@ -18192,6 +18340,20 @@ button {width: auto; overflow: visible;}
 /* ie9 (.ie9) */
 .ie9 .support-center .left-side {
     filter: none;
+}
+/* Float a single list to allow it to split into two columns.*/
+.epc-compare-table .two-column-text ul{
+    width:475px;
+    margin-bottom:20px;
+    overflow:hidden;
+
+}
+.epc-compare-table .two-column-text li{
+    float: left;
+    line-height: 20px;
+    list-style: disc inside none;
+    margin: 0 0 10px 0;
+    width: 50%;
 }
 /* ==========================================================================
    Base: $Defaults

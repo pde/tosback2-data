@@ -29,19 +29,21 @@ $(document).ready(function () {
 
     // safari has weird versioning in the lower versions
     if (isNaN(safariVer) && isSafari) { safariVer = 2; }
+    
+    if (typeof (console) != "undefined") {
+        if (console.log) {
+            console.log(
+                "chromeVer:" + chromeVer +
+                ", firefoxVer:" + firefoxVer +
+                ", safariVer:" + safariVer +
+                ", ieVer:" + ieVer +
 
-    if (console.log) {
-        console.log(
-			"chromeVer:" + chromeVer +
-			", firefoxVer:" + firefoxVer +
-			", safariVer:" + safariVer +
-			", ieVer:" + ieVer +
-
-			"\nisChrome:" + isChrome +
-			", isFirefox:" + isFirefox +
-			", isSafari:" + isSafari +
-			", isIE:" + isIE
-			)
+                "\nisChrome:" + isChrome +
+                ", isFirefox:" + isFirefox +
+                ", isSafari:" + isSafari +
+                ", isIE:" + isIE
+                )
+        }
     }
     //Create Image element 
     function createImg(src, alt) {
@@ -55,19 +57,19 @@ $(document).ready(function () {
     // itemized list in case a browser needs special treatment
     if (isChrome && (chromeVer < 13)) {
         isDropDown = true;
-        if (console.log) { console.log("browser is chrome") }
+        if (typeof (console) != "undefined") if (console.log) { console.log("browser is chrome") }
     }
     else if (isFirefox && (firefoxVer < 3.6)) {
         isDropDown = true;
-        if (console.log) { console.log("browser is FF") }
+        if (typeof (console) != "undefined") if (console.log) { console.log("browser is FF") }
     }
     else if (isSafari && (safariVer < 5)) {
         isDropDown = true;
-        if (console.log) { console.log("browser is safari") }
+        if (typeof (console) != "undefined") if (console.log) { console.log("browser is safari") }
     }
     else if (isIE && (ieVer < 7)) {
         isDropDown = true;
-        if (console.log) { console.log("browser is ie") }
+        if (typeof (console) != "undefined") if (console.log) { console.log("browser is ie") }
     }
 
     //If true create Icon and Link

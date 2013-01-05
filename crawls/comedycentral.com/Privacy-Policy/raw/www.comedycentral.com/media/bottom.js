@@ -6390,27 +6390,6 @@ function autoLinkTrackEventFootyPlayer(promoName, destinationUrl){
 	}
 }
 
-
-(function($) {
-	
-	$(".super_footy .promo_1").click(function(){
-		autoLinkTrackEvent('super_footy_1', $(this).attr('href'));
-	});
-	
-	$(".super_footy .promo_2").click(function(){
-		autoLinkTrackEvent('super_footy_2', $(this).attr('href'));
-	});
-	
-	$(".super_footy .video_player_holder").click(function(){
-		autoLinkTrackEventFootyPlayer('super_footy_video', $(this).attr('href'));
-	});
-	
-	$(".super_footy .button_holder").click(function(){
-		autoLinkTrackEvent('super_footy_exit', $(this).attr('href'));
-	});
-	
-}) (jQuery);
-
 function shareBarLinkTracking (shareService, uniqueID) {
 	var shareService = 'share_'+shareService;
 
@@ -6583,8 +6562,7 @@ function handleTweetFeedEvent(destinationUrl){
 	}
 }
 
-
-$(function() {
+$(document).ready(function() {
 	// Top nav links	
 	$('ul.top_nav a').click(function (){
 		var destinationUrl = $(this).attr('href');
@@ -6742,6 +6720,17 @@ $(function() {
 		var shareService = ( $(this).hasClass("fb")) ? ("fb") : ("twitter");
 		shareBarLinkTracking(shareService, uniqueId);
 	});
+	$(".video-web_video_carousel .ccstudio_sharing li a").live('click', function() {
+		var link = $(this);
+		var uniqueId = link.parents("ul").attr("data-mediaid");
+		var shareService = "fb";
+		if (link.hasClass("twitter")) shareService = "twitter";
+		if (link.hasClass("tumblr")) shareService = "tumblr";
+		if (link.hasClass("reddit")) shareService = "reddit";
+		if (link.hasClass("digg")) shareService = "digg";
+		if (link.hasClass("googleplus")) shareService = "google1";
+		shareBarLinkTracking(shareService, uniqueId);
+	});
 	
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////// END CC STUDIOS & STAND-UP CLICK TRACKING /////////////////
@@ -6780,7 +6769,7 @@ $(function() {
 //////////////////////////////////////////////////////////////////////////////////////    
     
     // Required 3rd Party Tracking Pixels per Vendor
-    if ($('body').attr('id').toLowerCase() == ('axe_hair_presents_splitting_hairs').toLowerCase()) {
+    if ($('body')[0].id.toLowerCase() == ('axe_hair_presents_splitting_hairs').toLowerCase()) {
     	var axePagePixelName = 'axePagePixel'; //Unique identifier for the page call
     	var $axeTrackDiv = $('body').append('<div id="axeTrack" style="display:none" width="1px" height="1px">&nbsp</div>');
     	var axeTrackDiv = document.getElementById('axeTrack');
@@ -6818,10 +6807,64 @@ $(function() {
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////// END AXE SPLITTING HAIRS CLICK TRACKING Oct 2012 //////////
 //////////////////////////////////////////////////////////////////////////////////////    
-    
-    
 
-	// All other auto link tracking
+/////////////////////////// Tumbler Posts Promo  /////////////////////////////////////
+	
+    ///// share strip /////
+    // Share to Facebook and twitter
+    $(document).delegate("div.show_tumblr.module .share_button_container li>a.share", "click", function(){ 
+		var uniqueId = $(this).attr('href');
+		var shareService = 'unknown_service'; // Should never have this
+		
+		if ( $(this).hasClass('fb') ) {
+			shareService = 'fb';
+		} else if ( $(this).hasClass('twitter') ){
+			shareService = 'twitter';
+		}
+
+		shareBarLinkTracking(shareService, uniqueId);
+	});
+	
+	// Tumblr share button is embedded in the template
+    
+    ///// Follow Button /////
+	$('div.show_tumblr.module a.follow').click(function() {
+		var destinationUrl = $(this).attr('href');
+		autoLinkTrackEvent('tumblr_follow', destinationUrl);
+	});
+	
+	// Footer & Posts Content - gets regular link tracking - must eliminate share bar links
+    $(document).delegate("div.show_tumblr.module .footer a, div.show_tumblr.module .tumblr_post a", "click", function(){
+    	
+    	if ( $(this).parents('.share_bar_wrapper_v2').length == false ) {
+    		var destinationUrl = $(this).attr('href');
+    		autoLinkTrackEvent('show_tumblr', destinationUrl);
+    	}
+	});
+    
+    
+/////////////////////////// Super Footy Calls ////////////////////////////////////////
+	$(".super_footy .promo_1").click(function(){
+		autoLinkTrackEvent('super_footy_1', $(this).attr('href'));
+	});
+	
+	$(".super_footy .promo_2").click(function(){
+		autoLinkTrackEvent('super_footy_2', $(this).attr('href'));
+	});
+	
+	$(".super_footy .video_player_holder").click(function(){
+		autoLinkTrackEventFootyPlayer('super_footy_video', $(this).attr('href'));
+	});
+	
+	$(".super_footy .button_holder").click(function(){
+		autoLinkTrackEvent('super_footy_exit', $(this).attr('href'));
+	});    
+
+//////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////// ALL OTHER AUTO MODULE TRACKING ///////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////	
+	
+	
 	skipTheseClasses = /(noAutoLinkTracking|ad_|visible_header|video_player_module|hpcarousel|video-web_video_carousel)/; // div classes to skip autolink tracking
 	skipTheseAClasses = /\s*mute\s*/i; //a tag Classes to skip
 	
@@ -8877,6 +8920,446 @@ $(function() {
 	if ($(".module.tag_results").length)
 		tagResults.init();
 });
+/* tumblr.js */
+/*
+ * Tumblr Feed Object
+ */
+var tumblr_feed = {
+
+	templates: null,
+	feed_error_msg: '<div class="blog_entry">Tumblr is experiencing technical difficulties. Please stay tuned.</div>',
+	resultsObject: null,
+	feed_url: null,
+	blog_url: '',
+	_images_total: 0,
+	_images_loaded: 0,
+	_show_more_enable: true,
+	maxPostHeight: 710,
+	
+	init: function(moduleClass, showId, promotionId) {
+		
+		this.resultsObject = $('.' + moduleClass);
+		var display_type = this._getDisplayType();
+
+		if (this.resultsObject.length == 0)
+		{
+			console.log("Can't find item ."+moduleClass+" for inserting tumblr data");
+			return;
+		}
+
+		var d = Math.round(new Date().getTime() / 1000);
+		this.feed_url = '/feeds/series_tumblr_promo/' + d + '/' + showId + '/' + promotionId;
+		
+		if (display_type != null)
+		{
+			this.feed_url += '?tumblr_type=' + display_type;
+		}
+		
+		this._determineTemplates();
+		this.query();
+		
+	},
+
+	_determineTemplates: function() {
+		var shar_bar = ''
+			+ '<div id="mod_{post_id}" class="module share_bar_wrapper_v2 noAutoLinkTracking tumblr_sharing">'
+				+ '<ul class="share_bar clearfix">'
+					+ '<li class="reblog">'
+						+ '<a class="share_button clickShare" href="http://tumblr.com/reblog/{post_id}/{reblog_key}?redirect_to=%2Ftagged%2Freblog-button" onclick="mosiacShareBarTracking(\'tumblr\', \'\', \'http://tumblr.com/reblog/{post_id}/{reblog_key}?redirect_to=%2Ftagged%2Freblog-button\');" target="_blank">Reblog</a>'
+					+ '</li>'
+					+ '<li class="share_button_container">'
+						+ '<a class="share_button" href="#" data-mediaid="{post_id}">Share<span class="arrow"><!-- arrow --></span></a>'
+						+ '<ul class="share_button_dropdown big" data-mediaid="{post_id}">'
+							+ '<li>'
+								+ '<a class="share fb clickShare" href="http://www.facebook.com/sharer.php?u={post_url}?xrs=share_fb&amp;t={post_title}" target="_blank"><!----></a>'
+							+ '</li>'
+							+ '<li>'
+								+ '<a class="share twitter clickShare" href="https://twitter.com/share?url={post_url}?xrs=share_twitter&amp;text={post_title}" target="_blank"><!----></a>'
+							+ '</li>'
+						+ '</ul>'
+					+ '</li>'
+				+ '</ul>'
+			+ '</div>';
+		
+		var common = ''
+			+ '<div class="posted bggray">'
+				+ '{date_string}'
+				+ '<a class="notes" href="{post_url}" target="_blank">{note_count} notes</a>'
+			+ '</div>'
+			+ '<div class="buttons">' + shar_bar + '</div>'			
+			+ '<div class="tags bggray">'
+				+ 'Tagged: {post_tags}' 
+			+ '</div>';
+			
+		this.templates = {
+			text: '<div class="tumblr_post">'
+					+ '<div class="max-height">'
+						+ '<div class="real-height">'
+							+ '<div class="title">{post_title}</div>'
+							+ '<div class="text">'
+								+ '{post_text}'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+					+ common
+				+ '</div>',
+
+			video: '<div class="tumblr_post">'
+					+ '<div class="max-height">'
+						+ '<div class="real-height">'
+							+ '<div class="promo">{post_video}</div>'
+							+ '<div class="text">'
+								+ '{caption}'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+					+ common
+				+ '</div>',
+				
+			photo: '<div class="tumblr_post">'
+					+ '<div class="max-height">'
+						+ '<div class="real-height">'
+							+ '<div class="promo">'
+								+ '{post_photos}'
+							+ '</div>'
+							+ '<div class="text">'
+								+ '{caption}'
+							+ '</div>'
+						+ '</div>'
+					+ '</div>'
+					+ common
+				+ '</div>'
+					
+									
+		}
+	},
+
+	query: function() {
+
+		jQuery.ajax({
+			type: "GET",
+			url: this.feed_url,
+			dataType: 'json',
+			cache: false,
+			success: function(data) {
+				if (data != null && data.posts != "underfind" && data.posts != "") {
+					tumblr_feed.blog_url = data.blog.url;
+					tumblr_feed.querySuccess(data.posts);
+				}
+				else
+				{
+					tumblr_feed.queryError();
+				}
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				tumblr_feed.queryError();
+			}
+		});
+		
+	},
+
+	queryError: function() {
+		this.resultsObject.remove();
+	},
+
+	querySuccess: function(posts) {
+
+		var html = '';
+		var display_type = this._getDisplayType();
+		
+		// loop through each post obj
+		$.each(posts, function(i, val) {
+			
+			if ((!display_type || display_type == 'photo') && posts[i].type == "photo") {
+				html += tumblr_feed.processPhotoTemplate(posts[i]);
+			}
+
+			if ((!display_type || display_type == 'text') && posts[i].type == "text") {
+				html += tumblr_feed.processTextTemplate(posts[i]);
+			}
+
+			if ((!display_type || display_type == 'video') && posts[i].type == "video") {
+				html += tumblr_feed.processVideoTemplate(posts[i]);
+			}
+			
+		});
+
+		if (html == '')
+		{
+			this.queryError();
+			return;
+		}
+		
+		this.resultsObject.find('.middle').append(html).find('.tumblr_post:last').addClass('last');	
+		
+		// hide "Tagged" string if there are no tags
+//		this.resultsObject.find('.tumblr_post').each(function(){
+//			if ($(this).find('.tags').find('a').length == 0)
+//			{
+//				$(this).find('.tags').hide();
+//			}
+//		});
+		
+		this._initShare();
+		
+		this._checkForShowMore();
+	},
+
+	processPhotoTemplate: function(post) {
+
+		var replace_map = {};
+		var template = this.templates.photo;
+		var photo;
+		var photos = new Array();
+		var i;
+		
+		var width_optimal = 500;
+		if (post.photos.length > 1)
+		{
+			width_optimal = 250;
+		}
+		
+		for (i = 0; i < post.photos.length; i++)
+		{
+			photo = post.photos[i];
+			photos[i] = {};
+			
+			$.each(photo.alt_sizes, function(alt_sizes_i, alt_sizes_val) {
+
+				if ( photos[i].img_url == undefined && parseInt(photo.alt_sizes[alt_sizes_i].width) <= width_optimal )
+				{
+					photos[i].img_width = photo.alt_sizes[alt_sizes_i].width;
+					photos[i].img_height = photo.alt_sizes[alt_sizes_i].height;
+					photos[i].img_url = photo.alt_sizes[alt_sizes_i].url;
+				}
+
+			});
+
+			if (photos[i].img_url == undefined)
+			{
+				photos[i].img_width = photo.original_size.width;
+				photos[i].img_height = photo.original_size.height;
+				photos[i].img_url = photo.original_size.url;
+			}
+			
+			if (i == 0)
+			{
+				var width = photos[i].img_width;
+				var height = photos[i].img_height;
+			}
+			
+			photos[i].width = width;
+			photos[i].height = height;
+		}
+		
+		replace_map.post_title = '';
+		replace_map.post_url = post.post_url;				
+		replace_map.caption = post.caption;
+		
+		replace_map.date_string = this._dateToString(post);
+		replace_map.note_count = post.note_count;
+		replace_map.post_tags = this._tagsToString(post);
+		replace_map.reblog_key = post.reblog_key;
+		replace_map.post_slug = post.slug;
+		replace_map.post_id = post.id;
+		
+		var photos_str = '';
+		for (i = 0; i < photos.length; i++)
+		{
+			photos_str += '<img src="'+photos[i].img_url+'" alt="" width="'+photos[i].width+'" height="'+photos[i].height+'" />';
+		}
+		
+		replace_map.post_photos = photos_str;
+
+		return this._doReplace(template, replace_map);
+	},
+
+	processTextTemplate: function(post) {
+
+		var replace_map = {};
+		var template = this.templates.text;
+
+		replace_map.post_title = post.title;
+		replace_map.post_text = post.body;
+		replace_map.post_url = post.post_url;
+		replace_map.date_string = this._dateToString(post);
+		replace_map.note_count = post.note_count;
+		replace_map.post_tags = this._tagsToString(post);
+		replace_map.reblog_key = post.reblog_key;
+		replace_map.post_slug = post.slug;
+		replace_map.post_id = post.id;
+
+		this._images_total = $(replace_map.post_text).find('img').length;
+		
+		if (this._images_total > 0)
+		{
+			var tmp = $('<div>').append(replace_map.post_text);
+			tmp.find('img').each(function(index) {
+				if (index < 1)
+				{
+					$(this).load(function(){
+						tumblr_feed._imageLoaded();
+					});
+				}
+				else
+				{
+					$(this).remove();
+				}
+			});
+			
+			replace_map.post_text = tmp.html();
+			replace_map.post_text = replace_map.post_text.replace(new RegExp('<p></p>', 'gi'), '');
+			replace_map.post_text = replace_map.post_text.replace(new RegExp('<p>&nbsp;</p>', 'gi'), '');
+
+		}
+		
+		return this._doReplace(template, replace_map);
+	},
+
+	processVideoTemplate: function(post) {
+
+		var replace_map = {};
+		var template = this.templates.video;
+		
+		$.each(post.player, function(player_i, player_val) {
+
+			if (post.player[player_i].width == "500") {
+				replace_map.post_video = post.player[player_i].embed_code;
+			}
+
+		});
+
+		replace_map.post_url = post.post_url;
+		replace_map.post_title = '';
+		replace_map.caption = post.caption;
+		replace_map.date_string = this._dateToString(post);
+		replace_map.note_count = post.note_count;
+		replace_map.post_tags = this._tagsToString(post);
+		replace_map.reblog_key = post.reblog_key;
+		replace_map.post_slug = post.slug;
+		replace_map.post_id = post.id;
+		
+		return this._doReplace(template, replace_map);
+	},
+	
+	_doReplace: function(template, replace_map) {
+
+		var item = null;
+		for (item in replace_map)
+		{
+			template = template.replace(new RegExp('{'+item+'}', 'g'), replace_map[item]);
+		}
+
+		return template;
+	},
+
+	_getDisplayType: function() {
+
+		var url_string = window.location.href.toLowerCase();
+		var display_type = null;
+
+		if (url_string.indexOf('tumblr_type=text') > 0)
+		{
+			display_type = 'text';
+		}
+		else if (url_string.indexOf('tumblr_type=video') > 0)
+		{
+			display_type = 'video';
+		}
+		else if (url_string.indexOf('tumblr_type=photo') > 0)
+		{
+			display_type = 'photo';
+		}
+		
+		return display_type;
+	},
+	
+	_imageLoaded: function() {
+		
+		this._images_loaded++;
+		this._cutText();
+		
+	},
+	
+	_checkForShowMore: function() {
+
+		this.resultsObject.find('.show_more').remove();
+
+		if (this._show_more_enable == true)
+		{
+			this.resultsObject.find('.tumblr_post').each(function() {
+				
+				if ($(this).height() > tumblr_feed.maxPostHeight)
+				{
+					var maxHeight = tumblr_feed.maxPostHeight 
+									- $(this).find('.posted').height();
+									- $(this).find('.tags').height();
+
+					$(this).find('.max-height').css({'max-height': maxHeight+'px', 'overflow': 'hidden', 'position': 'relative'});
+
+					var showMore = $('<a href="javascript:void();" class="show_more">Show more <span /></a>');
+					showMore.click(function(){
+						var realHeight = $(this).parent().find('.real-height').height() + 40;
+						$(this).parent().animate({ 'max-height': realHeight }, function(){ $(this).removeAttr('style'); }).find('.show_more').remove();
+						return false;
+					});
+					
+					$(this).find('.max-height').append(showMore);
+				}
+			});
+		}
+		
+	},
+	
+	_tagsToString: function(post) {
+		
+		var tags = '';
+		var tag;
+		var i;
+		
+		for (i = 0; i < post.tags.length; i++)
+		{
+			if (tags != '')
+			{
+				tags += ', ';
+			}
+			
+			tag = encodeURI(post.tags[i].replace(new RegExp(' ', 'g'), '-'));
+			tags += '<a href="'+this.blog_url+'tagged/'+tag+'" target="_blank">' + post.tags[i] + '</a>';
+		}
+		
+		return tags;
+	},
+	
+	_dateToString: function(post) {
+
+		var date = post.date_string;
+
+		if (post.reblogged_from_id != undefined && post.reblogged_from_id != '')
+		{
+			date = 'Reblogged ' + date + ' from ' + post.reblogged_from_name;
+		}
+		else
+		{
+			date = 'Posted ' + date;
+		}
+		
+		return date;
+	},
+	
+	_initShare: function() {
+		tumblr_feed.resultsObject.find('.middle').find('.share_button_container .share_button'). click(function(){
+			$(this).toggleClass('open').parent().find('.share_button_dropdown').slideToggle();
+			return false;
+		});		
+	}
+		
+}
+
+$('.show_tumblr').find('.show_more').click(function(){
+	$(this).parent().animate({ 'max-height': $(this).parent().find('.real-height').height() }).find('.show_more').remove(); 
+	return false;
+});
 /* tv_listings.js */
 $(function () {
 	$Crabapple('.tv_schedule_listings select.custom_dd').selectboxx({
@@ -9077,7 +9560,7 @@ provide("util/util",function(a){function b(a){var b=1,c,d;for(;c=arguments[b];b+
 provide("dom/get",function(a){using("util/util",function(b){function c(a,c,d,e){var f,g,h=[],i,j,k,l,m,n;c=c||document;if(b.isNative(c.getElementsByClassName))return h=b.filter(c.getElementsByClassName(a),function(a){return!d||a.tagName.toLowerCase()==d.toLowerCase()}),[].slice.call(h,0,e||h.length);i=a.split(" "),l=i.length,f=c.getElementsByTagName(d||"*"),n=f.length;for(k=0;k<l&&n>0;k++){h=[],j=i[k];for(m=0;m<n;m++){g=f[m],~b.indexOf(g.className.split(" "),j)&&h.push(g);if(k+1==l&&h.length===e)break}f=h,n=f.length}return h}function d(a,b,d){return c(a,b,d,1)[0]}function e(a,c,d){var f=c&&c.parentNode,g;if(!f||f===d)return;return f.tagName==a?f:(g=f.className.split(" "),0===a.indexOf(".")&&~b.indexOf(g,a.slice(1))?f:e(a,f,d))}a({all:c,one:d,ancestor:e})})});
 provide("$vendor/domready/ready.js", function(exports) {!function(a){function k(){b=1;for(var a=0,d=c.length;a<d;a++)c[a]()}var b=0,c=[],d,e,f=!1,g=a.createElement("a"),h="DOMContentLoaded",i="addEventListener",j="onreadystatechange";/^loade|c/.test(a.readyState)&&(b=1),a[i]&&a[i](h,e=function(){a.removeEventListener(h,e,f),k()},f),g.doScroll&&a.attachEvent(j,d=function(){/^c/.test(a.readyState)&&(a.detachEvent(j,d),k())});var l=g.doScroll?function(a){self!=top?b?a():c.push(a):!function(){try{g.doScroll("left")}catch(b){return setTimeout(function(){l(a)},50)}a()}()}:function(a){b?a():c.push(a)};typeof module!="undefined"&&module.exports?module.exports={domReady:l}:window.domReady=l}(document);exports();loadrunner.Script.loaded.push("$vendor/domready/ready.js")});
 provide("util/domready",function(a){using("$vendor/domready/ready.js",function(){a(domReady)})});
-provide("tfw/widget/base",function(a){using("util/util","util/domready","dom/get","util/querystring","util/iframe",function(b,c,d,e,f){function l(a){var b;if(!a)return;a.ownerDocument?(this.srcEl=a,this.classAttr=a.className.split(" ")):(this.srcOb=a,this.classAttr=[]),b=this.params(),this.id=o(),this.setLanguage(),this.related=b.related||this.dataAttr("related"),this.partner=b.partner||this.dataAttr("partner"),this.dnt=b.dnt||this.dataAttr("dnt")||"",this.styleAttr=[]}function m(a){if(!a)return;return a.lang?a.lang:m(a.parentNode)}function n(a){var b=i.widgets,c,e,f,g,h,k;a=a||document;for(f in b){f.match(/\./)?(g=f.split("."),c=d.all(g[1],a,g[0])):c=a.getElementsByTagName(f);for(h=0;k=c[h];h++){if(k.getAttribute("data-twttr-rendered"))continue;k.setAttribute("data-twttr-rendered","true"),e=new b[f](k),j.list.push(e),j.byId[e.id]=e,e.render(i)}}}function o(){return this.srcEl&&this.srcEl.id||"twitter-widget-"+g++}function p(a){i=a}function q(a){return a&&j.byId[a]?j.byId[a].element:null}var g=0,h,i,j={list:[],byId:{}},k={"zh-cn":{"%{followers_count} followers":"%{followers_count} 关注者","100K+":"10万+","10k unit":"1万单元",Follow:"关注","Follow %{screen_name}":"关注 %{screen_name}",K:"千",M:"百万",Tweet:"发推","Tweet %{hashtag}":"以 %{hashtag} 发推","Tweet to %{name}":"发推给 %{name}","Twitter Stream":"Twitter 信息流"},hi:{"%{followers_count} followers":"%{followers_count} फ़ॉलोअर्स","100K+":"१०० हजार+","10k unit":"१० हजार इकाईयां",Follow:"फ़ॉलो","Follow %{screen_name}":"%{screen_name} को फ़ॉलो करें",K:"हजार",M:"मिलियन",Tweet:"ट्वीट","Tweet %{hashtag}":"ट्वीट %{hashtag}","Tweet to %{name}":"%{name} को ट्वीट करें","Twitter Stream":"ट्विटर स्ट्रीम"},fr:{"%{followers_count} followers":"%{followers_count} abonnés","100K+":"100K+","10k unit":"unité de 10k",Follow:"Suivre","Follow %{screen_name}":"Suivre %{screen_name}",K:"K",M:"M",Tweet:"Tweeter","Tweet %{hashtag}":"Tweeter %{hashtag}","Tweet to %{name}":"Tweeter à %{name}","Twitter Stream":"Flux Twitter"},"zh-tw":{"%{followers_count} followers":"%{followers_count} 位跟隨者","100K+":"超過十萬","10k unit":"1萬 單位",Follow:"跟隨","Follow %{screen_name}":"跟隨 %{screen_name}",K:"千",M:"百萬",Tweet:"推文","Tweet %{hashtag}":"推文%{hashtag}","Tweet to %{name}":"推文給%{name}"},msa:{"%{followers_count} followers":"%{followers_count} pengikut","100K+":"100 ribu+","10k unit":"10 ribu unit",Follow:"Ikut","Follow %{screen_name}":"Ikut %{screen_name}",K:"ribu",M:"juta",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet kepada %{name}","Twitter Stream":"Strim Twitter"},fil:{"%{followers_count} followers":"%{followers_count} mga tagasunod","100K+":"100K+","10k unit":"10k yunit",Follow:"Sundan","Follow %{screen_name}":"Sundan si %{screen_name}",K:"K",M:"M",Tweet:"I-tweet","Tweet %{hashtag}":"I-tweet ang %{hashtag}","Tweet to %{name}":"Mag-Tweet kay %{name}","Twitter Stream":"Stream ng Twitter"},fi:{"%{followers_count} followers":"%{followers_count} seuraajaa","100K+":"100 000+","10k unit":"10 000 yksikköä",Follow:"Seuraa","Follow %{screen_name}":"Seuraa käyttäjää %{screen_name}",K:"tuhatta",M:"milj.",Tweet:"Twiittaa","Tweet %{hashtag}":"Twiittaa %{hashtag}","Tweet to %{name}":"Twiittaa käyttäjälle %{name}","Twitter Stream":"Twitter-virta"},sv:{"%{followers_count} followers":"%{followers_count} följare","100K+":"100K+","10k unit":"10k",Follow:"Följ","Follow %{screen_name}":"Följ %{screen_name}",K:"K",M:"M",Tweet:"Tweeta","Tweet %{hashtag}":"Tweeta %{hashtag}","Tweet to %{name}":"Tweeta till %{name}","Twitter Stream":"Twitterflöde"},pl:{"%{followers_count} followers":"%{followers_count} obserwujących","100K+":"100 tys.+","10k unit":"10 tys.",Follow:"Obserwuj","Follow %{screen_name}":"Obserwuj %{screen_name}",K:"tys.",M:"mln",Tweet:"Tweetnij","Tweet %{hashtag}":"Tweetnij %{hashtag}","Tweet to %{name}":"Tweetnij do %{name}","Twitter Stream":"Strumień Twittera"},ja:{"%{followers_count} followers":"%{followers_count}人のフォロワー","100K+":"100K以上","10k unit":"万",Follow:"フォローする","Follow %{screen_name}":"%{screen_name}さんをフォロー",K:"K",M:"M",Tweet:"ツイート","Tweet %{hashtag}":"%{hashtag} をツイートする","Tweet to %{name}":"%{name}さんへツイートする","Twitter Stream":"Twitterストリーム"},ko:{"%{followers_count} followers":"%{followers_count}명의 팔로워","100K+":"100만 이상","10k unit":"만 단위",Follow:"팔로우","Follow %{screen_name}":"%{screen_name} 팔로우하기",K:"천",M:"백만",Tweet:"트윗","Tweet %{hashtag}":"%{hashtag} 관련 트윗하기","Tweet to %{name}":"%{name}님에게 트윗하기","Twitter Stream":"트위터 스트림"},it:{"%{followers_count} followers":"%{followers_count} follower","100K+":"100K+","10k unit":"10k unità",Follow:"Segui","Follow %{screen_name}":"Segui %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Twitta %{hashtag}","Tweet to %{name}":"Twitta a %{name}","Twitter Stream":"Twitter Stream"},pt:{"%{followers_count} followers":"%{followers_count} seguidores","100K+":"+100 mil","10k unit":"10 mil unidades",Follow:"Seguir","Follow %{screen_name}":"Seguir %{screen_name}",K:"Mil",M:"M",Tweet:"Tweetar","Tweet %{hashtag}":"Tweetar %{hashtag}","Tweet to %{name}":"Tweetar para %{name}","Twitter Stream":"Transmissões do Twitter"},de:{"%{followers_count} followers":"%{followers_count} Follower","100K+":"100Tsd+","10k unit":"10tsd-Einheit",Follow:"Folgen","Follow %{screen_name}":"%{screen_name} folgen",K:"Tsd",M:"M",Tweet:"Twittern","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet an %{name}","Twitter Stream":"Twitter Stream"},es:{"%{followers_count} followers":"%{followers_count} seguidores","100K+":"100K+","10k unit":"10k unidad",Follow:"Seguir","Follow %{screen_name}":"Seguir a %{screen_name}",K:"K",M:"M",Tweet:"Twittear","Tweet %{hashtag}":"Twittear %{hashtag}","Tweet to %{name}":"Twittear a %{name}","Twitter Stream":"Cronología de Twitter"},ru:{"%{followers_count} followers":"Читатели: %{followers_count} ","100K+":"100 тыс.+","10k unit":"блок 10k",Follow:"Читать","Follow %{screen_name}":"Читать %{screen_name}",K:"тыс.",M:"млн.",Tweet:"Твитнуть","Tweet %{hashtag}":"Твитнуть %{hashtag}","Tweet to %{name}":"Твитнуть %{name}","Twitter Stream":"Поток в Твиттере"},id:{"%{followers_count} followers":"%{followers_count} pengikut","100K+":"100 ribu+","10k unit":"10 ribu unit",Follow:"Ikuti","Follow %{screen_name}":"Ikuti %{screen_name}",K:"&nbsp;ribu",M:"&nbsp;juta",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet ke %{name}","Twitter Stream":"Aliran Twitter"},da:{"%{followers_count} followers":"%{followers_count} følgere","100K+":"100K+","10k unit":"10k enhed",Follow:"Følg","Follow %{screen_name}":"Følg %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet til %{name}","Twitter Stream":"Twitter-strøm"},tr:{"%{followers_count} followers":"%{followers_count} takipçi","100K+":"+100 bin","10k unit":"10 bin birim",Follow:"Takip et","Follow %{screen_name}":"Takip et: %{screen_name}",K:"bin",M:"milyon",Tweet:"Tweetle","Tweet %{hashtag}":"Tweetle: %{hashtag}","Tweet to %{name}":"Tweetle: %{name}","Twitter Stream":"Twitter Akışı"},nl:{"%{followers_count} followers":"%{followers_count} volgers","100K+":"100k+","10k unit":"10k-eenheid",Follow:"Volgen","Follow %{screen_name}":"%{screen_name} volgen",K:"k",M:" mln.",Tweet:"Tweeten","Tweet %{hashtag}":"%{hashtag} tweeten","Tweet to %{name}":"Tweeten naar %{name}","Twitter Stream":"Twitter Stream"},no:{"%{followers_count} followers":"%{followers_count} følgere","100K+":"100K+","10k unit":"10k ",Follow:"Følg","Follow %{screen_name}":"Følg %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Send tweet til %{name}","Twitter Stream":"Twitter-strøm"},hu:{"%{followers_count} followers":"%{followers_count} követő","100K+":"100E+","10k unit":"10E+",Follow:"Követés","Follow %{screen_name}":"%{screen_name} követése",K:"E",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"%{hashtag} tweetelése","Tweet to %{name}":"Tweet küldése neki: %{name}","Twitter Stream":"Twitter Hírfolyam"},fa:{"%{followers_count} followers":"%{followers_count} دنبال‌کننده","100K+":">۱۰۰هزار","10k unit":"۱۰هزار واحد",Follow:"دنبال کردن","Follow %{screen_name}":"دنبال کردن %{screen_name}",K:"هزار",M:"میلیون",Tweet:"توییت","Tweet %{hashtag}":"توییت کردن %{hashtag}","Tweet to %{name}":"به %{name} توییت کنید","Twitter Stream":"جریان توییت‌ها"},ar:{"%{followers_count} followers":"عدد المتابعين %{followers_count}","100K+":"+100 ألف","10k unit":"10 آلاف وحدة",Follow:"تابِع","Follow %{screen_name}":"تابِع %{screen_name}",K:"ألف",M:"مليون",Tweet:"غرِّد","Tweet %{hashtag}":"غرِّد %{hashtag}","Tweet to %{name}":"غرِّد لـ %{name}","Twitter Stream":"خطّ تويتر الزمنيّ"},ur:{"%{followers_count} followers":"%{followers_count} فالورز","100K+":"1 لاکھ+","10k unit":"دس ہزار یونٹ",Follow:"فالو کریں","Follow %{screen_name}":"%{screen_name} کو فالو کریں",K:"ہزار",M:"ملین",Tweet:"ٹویٹ کریں","Tweet %{hashtag}":"ٹویٹ کریں %{hashtag}","Tweet to %{name}":"%{name} کو ٹویٹ کریں","Twitter Stream":"ٹوئٹر سٹریم"},he:{"%{followers_count} followers":"%{followers_count} עוקבים","100K+":"מאות אלפים","10k unit":"עשרות אלפים",Follow:"מעקב","Follow %{screen_name}":"לעקוב אחר %{screen_name}",K:"אלף",M:"מיליון",Tweet:"ציוץ","Tweet %{hashtag}":"צייצו %{hashtag}","Tweet to %{name}":"ציוץ אל %{name}","Twitter Stream":"התזרים של טוויטר"},th:{"%{followers_count} followers":"%{followers_count} ผู้ติดตาม","100K+":"100พัน+","10k unit":"หน่วย 10พัน",Follow:"ติดตาม","Follow %{screen_name}":"ติดตาม %{screen_name}",K:"พัน",M:"ล้าน",Tweet:"ทวีต","Tweet %{hashtag}":"ทวีต %{hashtag}","Tweet to %{name}":"ทวีตถึง %{name}"}};b.aug(l.prototype,{setLanguage:function(a){var b;a||(a=this.params().lang||this.dataAttr("lang")||m(this.srcEl)),a=a&&a.toLowerCase();if(!a)return this.lang="en";if(k[a])return this.lang=a;b=a.replace(/[\-_].*/,"");if(k[b])return this.lang=b;this.lang="en"},_:function(a,b){var c=this.lang;b=b||{};if(!c||!k.hasOwnProperty(c))c=this.lang="en";return a=k[c]&&k[c][a]||a,this.ringo(a,b,/%\{([\w_]+)\}/g)},ringo:function(a,b,c){return c=c||/\{\{([\w_]+)\}\}/g,a.replace(c,function(a,c){return b[c]!==undefined?b[c]:a})},add:function(a){j.list.push(this),j.byId[this.id]=a},create:function(a,b,c,d){return d["data-twttr-rendered"]=!0,f({url:a,css:c,className:b,id:this.id,attributes:d,replace:this.srcEl})},params:function(){var a,b;return this.srcOb?b=this.srcOb:(a=this.srcEl&&this.srcEl.href&&this.srcEl.href.split("?")[1],b=a?e.decode(a):{}),this.params=function(){return b},b},dataAttr:function(a){return this.srcEl&&this.srcEl.getAttribute("data-"+a)},attr:function(a){return this.srcEl&&this.srcEl.getAttribute(a)},styles:{base:"font: normal normal normal 11px/18px 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; white-space: nowrap;",button:"font-weight: bold; text-shadow: 0 1px 0 rgba(255,255,255,.5);",large:"font-size: 13px; line-height: 26px;",vbubble:"font-size: 16px;"},width:function(){throw new Error(name+" not implemented")},height:function(){return this.size=="m"?20:28},minWidth:function(){},maxWidth:function(){},minHeight:function(){},maxHeight:function(){},dimensions:function(){function a(a){switch(typeof a){case"string":return a;case"undefined":return;default:return a+"px"}}var b,c={width:this.width(),height:this.height()};this.minWidth()&&(c["min-width"]=this.minWidth()),this.maxWidth()&&(c["max-width"]=this.maxWidth()),this.minHeight()&&(c["min-height"]=this.minHeight()),this.maxHeight()&&(c["max-height"]=this.maxHeight());for(b in c)c[b]=a(c[b]);return c},generateId:o}),a({Base:l,init:p,embed:n,find:q})})});
+provide("tfw/widget/base",function(a){using("util/util","util/domready","dom/get","util/querystring","util/iframe",function(b,c,d,e,f){function l(a){var b;if(!a)return;a.ownerDocument?(this.srcEl=a,this.classAttr=a.className.split(" ")):(this.srcOb=a,this.classAttr=[]),b=this.params(),this.id=o(),this.setLanguage(),this.related=b.related||this.dataAttr("related"),this.partner=b.partner||this.dataAttr("partner"),this.dnt=b.dnt||this.dataAttr("dnt")||"",this.styleAttr=[]}function m(a){if(!a)return;return a.lang?a.lang:m(a.parentNode)}function n(a){var b=i.widgets,c,e,f,g,h,k;a=a||document;for(f in b){f.match(/\./)?(g=f.split("."),c=d.all(g[1],a,g[0])):c=a.getElementsByTagName(f);for(h=0;k=c[h];h++){if(k.getAttribute("data-twttr-rendered"))continue;k.setAttribute("data-twttr-rendered","true"),e=new b[f](k),j.list.push(e),j.byId[e.id]=e,e.render(i)}}}function o(){return this.srcEl&&this.srcEl.id||"twitter-widget-"+g++}function p(a){i=a}function q(a){return a&&j.byId[a]?j.byId[a].element:null}var g=0,h,i,j={list:[],byId:{}},k={hi:{"%{followers_count} followers":"%{followers_count} फ़ॉलोअर्स","100K+":"1 लाख+","10k unit":"10 हजार इकाईयां",Follow:"फ़ॉलो","Follow %{screen_name}":"%{screen_name} को फ़ॉलो करें",K:"हजार",M:"मिलियन",Tweet:"ट्वीट","Tweet %{hashtag}":"ट्वीट %{hashtag}","Tweet to %{name}":"%{name} को ट्वीट करें","Twitter Stream":"ट्विटर स्ट्रीम"},"zh-cn":{"%{followers_count} followers":"%{followers_count} 关注者","100K+":"10万+","10k unit":"1万单元",Follow:"关注","Follow %{screen_name}":"关注 %{screen_name}",K:"千",M:"百万",Tweet:"发推","Tweet %{hashtag}":"以 %{hashtag} 发推","Tweet to %{name}":"发推给 %{name}","Twitter Stream":"Twitter 信息流"},fr:{"%{followers_count} followers":"%{followers_count} abonnés","100K+":"100K+","10k unit":"unité de 10k",Follow:"Suivre","Follow %{screen_name}":"Suivre %{screen_name}",K:"K",M:"M",Tweet:"Tweeter","Tweet %{hashtag}":"Tweeter %{hashtag}","Tweet to %{name}":"Tweeter à %{name}","Twitter Stream":"Flux Twitter"},"zh-tw":{"%{followers_count} followers":"%{followers_count} 位跟隨者","100K+":"超過十萬","10k unit":"1萬 單位",Follow:"跟隨","Follow %{screen_name}":"跟隨 %{screen_name}",K:"千",M:"百萬",Tweet:"推文","Tweet %{hashtag}":"推文%{hashtag}","Tweet to %{name}":"推文給%{name}"},msa:{"%{followers_count} followers":"%{followers_count} pengikut","100K+":"100 ribu+","10k unit":"10 ribu unit",Follow:"Ikut","Follow %{screen_name}":"Ikut %{screen_name}",K:"ribu",M:"juta",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet kepada %{name}","Twitter Stream":"Strim Twitter"},fil:{"%{followers_count} followers":"%{followers_count} mga tagasunod","100K+":"100K+","10k unit":"10k yunit",Follow:"Sundan","Follow %{screen_name}":"Sundan si %{screen_name}",K:"K",M:"M",Tweet:"I-tweet","Tweet %{hashtag}":"I-tweet ang %{hashtag}","Tweet to %{name}":"Mag-Tweet kay %{name}","Twitter Stream":"Stream ng Twitter"},sv:{"%{followers_count} followers":"%{followers_count} följare","100K+":"100K+","10k unit":"10k",Follow:"Följ","Follow %{screen_name}":"Följ %{screen_name}",K:"K",M:"M",Tweet:"Tweeta","Tweet %{hashtag}":"Tweeta %{hashtag}","Tweet to %{name}":"Tweeta till %{name}","Twitter Stream":"Twitterflöde"},fi:{"%{followers_count} followers":"%{followers_count} seuraajaa","100K+":"100 000+","10k unit":"10 000 yksikköä",Follow:"Seuraa","Follow %{screen_name}":"Seuraa käyttäjää %{screen_name}",K:"tuhatta",M:"milj.",Tweet:"Twiittaa","Tweet %{hashtag}":"Twiittaa %{hashtag}","Tweet to %{name}":"Twiittaa käyttäjälle %{name}","Twitter Stream":"Twitter-virta"},pl:{"%{followers_count} followers":"%{followers_count} obserwujących","100K+":"100 tys.+","10k unit":"10 tys.",Follow:"Obserwuj","Follow %{screen_name}":"Obserwuj %{screen_name}",K:"tys.",M:"mln",Tweet:"Tweetnij","Tweet %{hashtag}":"Tweetnij %{hashtag}","Tweet to %{name}":"Tweetnij do %{name}","Twitter Stream":"Strumień Twittera"},ja:{"%{followers_count} followers":"%{followers_count}人のフォロワー","100K+":"100K以上","10k unit":"万",Follow:"フォローする","Follow %{screen_name}":"%{screen_name}さんをフォロー",K:"K",M:"M",Tweet:"ツイート","Tweet %{hashtag}":"%{hashtag} をツイートする","Tweet to %{name}":"%{name}さんへツイートする","Twitter Stream":"Twitterストリーム"},ko:{"%{followers_count} followers":"%{followers_count}명의 팔로워","100K+":"100만 이상","10k unit":"만 단위",Follow:"팔로우","Follow %{screen_name}":"%{screen_name} 팔로우하기",K:"천",M:"백만",Tweet:"트윗","Tweet %{hashtag}":"%{hashtag} 관련 트윗하기","Tweet to %{name}":"%{name}님에게 트윗하기","Twitter Stream":"트위터 스트림"},de:{"%{followers_count} followers":"%{followers_count} Follower","100K+":"100Tsd+","10k unit":"10tsd-Einheit",Follow:"Folgen","Follow %{screen_name}":"%{screen_name} folgen",K:"Tsd",M:"M",Tweet:"Twittern","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet an %{name}","Twitter Stream":"Twitter Stream"},it:{"%{followers_count} followers":"%{followers_count} follower","100K+":"100K+","10k unit":"10k unità",Follow:"Segui","Follow %{screen_name}":"Segui %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Twitta %{hashtag}","Tweet to %{name}":"Twitta a %{name}","Twitter Stream":"Twitter Stream"},ru:{"%{followers_count} followers":"Читатели: %{followers_count} ","100K+":"100 тыс.+","10k unit":"блок 10k",Follow:"Читать","Follow %{screen_name}":"Читать %{screen_name}",K:"тыс.",M:"млн.",Tweet:"Твитнуть","Tweet %{hashtag}":"Твитнуть %{hashtag}","Tweet to %{name}":"Твитнуть %{name}","Twitter Stream":"Поток в Твиттере"},pt:{"%{followers_count} followers":"%{followers_count} seguidores","100K+":"+100 mil","10k unit":"10 mil unidades",Follow:"Seguir","Follow %{screen_name}":"Seguir %{screen_name}",K:"Mil",M:"M",Tweet:"Tweetar","Tweet %{hashtag}":"Tweetar %{hashtag}","Tweet to %{name}":"Tweetar para %{name}","Twitter Stream":"Transmissões do Twitter"},es:{"%{followers_count} followers":"%{followers_count} seguidores","100K+":"100K+","10k unit":"10k unidad",Follow:"Seguir","Follow %{screen_name}":"Seguir a %{screen_name}",K:"K",M:"M",Tweet:"Twittear","Tweet %{hashtag}":"Twittear %{hashtag}","Tweet to %{name}":"Twittear a %{name}","Twitter Stream":"Cronología de Twitter"},id:{"%{followers_count} followers":"%{followers_count} pengikut","100K+":"100 ribu+","10k unit":"10 ribu unit",Follow:"Ikuti","Follow %{screen_name}":"Ikuti %{screen_name}",K:"&nbsp;ribu",M:"&nbsp;juta",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet ke %{name}","Twitter Stream":"Aliran Twitter"},tr:{"%{followers_count} followers":"%{followers_count} takipçi","100K+":"+100 bin","10k unit":"10 bin birim",Follow:"Takip et","Follow %{screen_name}":"Takip et: %{screen_name}",K:"bin",M:"milyon",Tweet:"Tweetle","Tweet %{hashtag}":"Tweetle: %{hashtag}","Tweet to %{name}":"Tweetle: %{name}","Twitter Stream":"Twitter Akışı"},no:{"%{followers_count} followers":"%{followers_count} følgere","100K+":"100K+","10k unit":"10k ",Follow:"Følg","Follow %{screen_name}":"Følg %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Send tweet til %{name}","Twitter Stream":"Twitter-strøm"},nl:{"%{followers_count} followers":"%{followers_count} volgers","100K+":"100k+","10k unit":"10k-eenheid",Follow:"Volgen","Follow %{screen_name}":"%{screen_name} volgen",K:"k",M:" mln.",Tweet:"Tweeten","Tweet %{hashtag}":"%{hashtag} tweeten","Tweet to %{name}":"Tweeten naar %{name}","Twitter Stream":"Twitter Stream"},da:{"%{followers_count} followers":"%{followers_count} følgere","100K+":"100K+","10k unit":"10k enhed",Follow:"Følg","Follow %{screen_name}":"Følg %{screen_name}",K:"K",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"Tweet %{hashtag}","Tweet to %{name}":"Tweet til %{name}","Twitter Stream":"Twitter-strøm"},hu:{"%{followers_count} followers":"%{followers_count} követő","100K+":"100E+","10k unit":"10E+",Follow:"Követés","Follow %{screen_name}":"%{screen_name} követése",K:"E",M:"M",Tweet:"Tweet","Tweet %{hashtag}":"%{hashtag} tweetelése","Tweet to %{name}":"Tweet küldése neki: %{name}","Twitter Stream":"Twitter Hírfolyam"},ar:{"%{followers_count} followers":"عدد المتابعين %{followers_count}","100K+":"+100 ألف","10k unit":"10 آلاف وحدة",Follow:"تابِع","Follow %{screen_name}":"تابِع %{screen_name}",K:"ألف",M:"مليون",Tweet:"غرِّد","Tweet %{hashtag}":"غرِّد %{hashtag}","Tweet to %{name}":"غرِّد لـ %{name}","Twitter Stream":"خطّ تويتر الزمنيّ"},fa:{"%{followers_count} followers":"%{followers_count} دنبال‌کننده","100K+":">۱۰۰هزار","10k unit":"۱۰هزار واحد",Follow:"دنبال کردن","Follow %{screen_name}":"دنبال کردن %{screen_name}",K:"هزار",M:"میلیون",Tweet:"توییت","Tweet %{hashtag}":"توییت کردن %{hashtag}","Tweet to %{name}":"به %{name} توییت کنید","Twitter Stream":"جریان توییت‌ها"},ur:{"%{followers_count} followers":"%{followers_count} فالورز","100K+":"1 لاکھ+","10k unit":"دس ہزار یونٹ",Follow:"فالو کریں","Follow %{screen_name}":"%{screen_name} کو فالو کریں",K:"ہزار",M:"ملین",Tweet:"ٹویٹ کریں","Tweet %{hashtag}":"ٹویٹ کریں %{hashtag}","Tweet to %{name}":"%{name} کو ٹویٹ کریں","Twitter Stream":"ٹوئٹر سٹریم"},th:{"%{followers_count} followers":"%{followers_count} ผู้ติดตาม","100K+":"100พัน+","10k unit":"หน่วย 10พัน",Follow:"ติดตาม","Follow %{screen_name}":"ติดตาม %{screen_name}",K:"พัน",M:"ล้าน",Tweet:"ทวีต","Tweet %{hashtag}":"ทวีต %{hashtag}","Tweet to %{name}":"ทวีตถึง %{name}"},he:{"%{followers_count} followers":"%{followers_count} עוקבים","100K+":"מאות אלפים","10k unit":"עשרות אלפים",Follow:"מעקב","Follow %{screen_name}":"לעקוב אחר %{screen_name}",K:"אלף",M:"מיליון",Tweet:"ציוץ","Tweet %{hashtag}":"צייצו %{hashtag}","Tweet to %{name}":"ציוץ אל %{name}","Twitter Stream":"התזרים של טוויטר"}};b.aug(l.prototype,{setLanguage:function(a){var b;a||(a=this.params().lang||this.dataAttr("lang")||m(this.srcEl)),a=a&&a.toLowerCase();if(!a)return this.lang="en";if(k[a])return this.lang=a;b=a.replace(/[\-_].*/,"");if(k[b])return this.lang=b;this.lang="en"},_:function(a,b){var c=this.lang;b=b||{};if(!c||!k.hasOwnProperty(c))c=this.lang="en";return a=k[c]&&k[c][a]||a,this.ringo(a,b,/%\{([\w_]+)\}/g)},ringo:function(a,b,c){return c=c||/\{\{([\w_]+)\}\}/g,a.replace(c,function(a,c){return b[c]!==undefined?b[c]:a})},add:function(a){j.list.push(this),j.byId[this.id]=a},create:function(a,b,c,d){return d["data-twttr-rendered"]=!0,f({url:a,css:c,className:b,id:this.id,attributes:d,replace:this.srcEl})},params:function(){var a,b;return this.srcOb?b=this.srcOb:(a=this.srcEl&&this.srcEl.href&&this.srcEl.href.split("?")[1],b=a?e.decode(a):{}),this.params=function(){return b},b},dataAttr:function(a){return this.srcEl&&this.srcEl.getAttribute("data-"+a)},attr:function(a){return this.srcEl&&this.srcEl.getAttribute(a)},styles:{base:"font: normal normal normal 11px/18px 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; white-space: nowrap;",button:"font-weight: bold; text-shadow: 0 1px 0 rgba(255,255,255,.5);",large:"font-size: 13px; line-height: 26px;",vbubble:"font-size: 16px;"},width:function(){throw new Error(name+" not implemented")},height:function(){return this.size=="m"?20:28},minWidth:function(){},maxWidth:function(){},minHeight:function(){},maxHeight:function(){},dimensions:function(){function a(a){switch(typeof a){case"string":return a;case"undefined":return;default:return a+"px"}}var b,c={width:this.width(),height:this.height()};this.minWidth()&&(c["min-width"]=this.minWidth()),this.maxWidth()&&(c["max-width"]=this.maxWidth()),this.minHeight()&&(c["min-height"]=this.minHeight()),this.maxHeight()&&(c["max-height"]=this.maxHeight());for(b in c)c[b]=a(c[b]);return c},generateId:o}),a({Base:l,init:p,embed:n,find:q})})});
 provide("util/events",function(a){using("util/util",function(b){function d(){this.completed=!1,this.callbacks=[]}var c={bind:function(a,b){return this._handlers=this._handlers||{},this._handlers[a]=this._handlers[a]||[],this._handlers[a].push(b)},unbind:function(a,c){if(!this._handlers[a])return;if(c){var d=b.indexOf(this._handlers[a],c);d>=0&&this._handlers[a].splice(d,1)}else this._handlers[a]=[]},trigger:function(a,b){var c=this._handlers&&this._handlers[a];b.type=a;if(c)for(var d=0,e;e=c[d];d++)e.call(this,b)}};d.prototype.addCallback=function(a){this.completed?a.apply(this,this.results):this.callbacks.push(a)},d.prototype.complete=function(){this.results=makeArray(arguments),this.completed=!0;for(var a=0,b;b=this.callbacks[a];a++)b.apply(this,this.results)},a({Emitter:c,Promise:d})})});
 provide("util/uri",function(a){using("util/querystring","util/util",function(b,c){function d(a){var b;return a.match(/^https?:\/\//)?a:(b=location.host,location.port.length>0&&(b+=":"+location.port),[location.protocol,"//",b,a].join(""))}function e(){var a=document.getElementsByTagName("link");for(var b=0,c;c=a[b];b++)if(c.getAttribute("rel")=="canonical")return d(c.getAttribute("href"));return null}function f(){var a=document.getElementsByTagName("a"),b=document.getElementsByTagName("link"),d=/\bme\b/,e=/^https?\:\/\/(www\.)?twitter.com\/([a-zA-Z0-9_]+)$/,f=c.array(a).concat(c.array(b)),g,h,i;for(var j=0,k;k=f[j];j++){h=k.getAttribute("rel"),i=k.getAttribute("href");if(h&&i&&h.match(d)&&(g=i.match(e)))return g[2]}}a({absolutize:d,getCanonicalURL:e,getScreenNameFromPage:f})})});
 provide("tfw/widget/intent",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri",function(b,c,d,e){function m(a){var b=Math.round(k/2-h/2),c=0;j>i&&(c=Math.round(j/2-i/2)),window.open(a,"intent",g+",width="+h+",height="+i+",left="+b+",top="+c)}function n(a,b){using("tfw/widget/hubclient",function(c){c.openIntent(a,b)})}function o(a){var b="original_referer="+location.href;return[a,b].join(a.indexOf("?")==-1?"?":"&")}function p(a,b){this.id=a,this.element=this.srcEl=b}function q(a){a=a||window.event;var b=a.target||a.srcElement,c,d,e;while(b&&b.nodeName.toLowerCase()!=="a")b=b.parentNode;b&&b.nodeName.toLowerCase()==="a"&&b.href&&(c=b.href.match(f),c&&(e=o(b.href),e=e.replace(/^http[:]/,"https:"),e=e.replace(/^\/\//,"https://"),r(e,b),a.returnValue=!1,a.preventDefault&&a.preventDefault()))}function r(a,b){if(twttr.events.hub&&b){var c=new p(l.generateId(),b);l.add(c),n(a,b),twttr.events.trigger("click",{target:b,region:"intent",type:"click",data:{}})}else m(a)}function s(a){this.srcEl=[],this.element=a}var f=/twitter\.com(\:\d{2,4})?\/intent\/(\w+)/,g="scrollbars=yes,resizable=yes,toolbar=no,location=yes",h=550,i=520,j=screen.height,k=screen.width,l;s.prototype=new c.Base,b.aug(s.prototype,{render:function(a){l=this,window.__twitterIntentHandler||(document.addEventListener?document.addEventListener("click",q,!1):document.attachEvent&&document.attachEvent("onclick",q),window.__twitterIntentHandler=!0)}}),a({Listener:s,open:r})})});
@@ -9098,7 +9581,7 @@ provide("dom/cookie",function(a){using("util/util",function(b){a(function(a,c,d)
 provide("util/donottrack",function(a){using("dom/cookie",function(b){a(function(a){var c=/\.(gov|mil)(:\d+)?$/i,d=/https?:\/\/([^\/]+).*/i;return a=a||document.referrer,a=d.test(a)&&d.exec(a)[1],b("dnt")?!0:c.test(document.location.host)?!0:a&&c.test(a)?!0:document.navigator?document.navigator["doNotTrack"]==1:navigator?navigator["doNotTrack"]==1||navigator["msDoNotTrack"]==1:!1})})});
 provide("tfw/widget/guest_cookie",function(a){using("dom/cookie","util/donottrack","util/decider",function(b,c,d){function f(){var a=b(e)||!1;if(!a)return;a.match(/^v3\:/)||g()}function g(){b(e)&&b(e,null,{domain:".twitter.com",path:"/"})}function h(){c()&&g()}var e="pid";a({set:h,destroy:g,forceNewCookie:f,guest_id_cookie:e})})});
 provide("tfw/widget/tracking",function(a){using("dom/cookie","dom/sandbox","util/donottrack","tfw/widget/guest_cookie","tfw/widget/env","util/util","$xd/json2.js",function(b,c,d,e,f,g,h){function u(){function a(a){s=a.frame,r=a.doc,q=a.doc.body,m=F(),n=G();while(o[0])z.apply(this,o.shift());p&&A()}s=document.getElementById("rufous-sandbox"),s?(r=s.contentWindow.document,q=r.body):c(a,{id:"rufous-sandbox"},{display:"none"})}function v(a,b,c,d){var e=!g.isObject(a),f=b?!g.isObject(b):!1,h,i;if(e||f)return;if(/Firefox/.test(navigator.userAgent))return;h=C(a),i=D(b,!!c,!!d),y(h,i,!0)}function w(a,c,h,i){var k=j[c],l,m,n=e.guest_id_cookie;if(!k)return;a=a||{},i=!!i,h=!!h,m=a.original_redirect_referrer||document.referrer,i=i||d(m),l=g.aug({},a),h||(x(l,"referrer",m),x(l,"widget",+f.isDynamicWidget()),x(l,"hask",+!!b("k")),x(l,"li",+!!b("twid")),x(l,n,b(n)||"")),i&&(x(l,"dnt",1),I(l)),H(k+"?"+E(l))}function x(a,b,c){var d=i+b;if(!a)return;return a[d]=c,a}function y(a,b,c){var d,e,f,h,i,j="https://twitter.com/i/jot?";if(!g.isObject(a)||!g.isObject(b))return;if(Math.random()>t)return;f=g.aug({},b,{event_namespace:a}),c?(j+=E({l:J(f)}),H(j)):(d=m.firstChild,d.value=+d.value||+f.dnt,h=J(f),e=r.createElement("input"),e.type="hidden",e.name="l",e.value=h,m.appendChild(e))}function z(a,b,c,d){var e=!g.isObject(a),f=b?!g.isObject(b):!1,h,i;if(e||f)return;if(!q){o.push([a,b,c,d]);return}h=C(a),i=D(b,!!c,!!d),y(h,i)}function A(){if(!m){p=!0;return}if(m.children.length<=1)return;q.appendChild(m),q.appendChild(n),m.submit(),window.setTimeout(B(m,n),6e4),m=F(),n=G()}function B(a,b){return function(){var c=a.parentNode;c.removeChild(a),c.removeChild(b)}}function C(a){var b={client:"tfw"},c,d;return c=g.aug(b,a||{}),c}function D(a,b,c){var e={_category_:"tfw_client_event"},f,h,i;return b=!!b,c=!!c,f=g.aug(e,a||{}),h=f.widget_origin||document.referrer,f.format_version=1,f.dnt=c=c||d(h),f.triggered_on=f.triggered_on||+(new Date),b||(f.widget_origin=h),c&&I(f),f}function E(a){var b=[],c,d,e;for(c in a)a.hasOwnProperty(c)&&(d=encodeURIComponent(c),e=encodeURIComponent(a[c]),e=e.replace(/'/g,"%27"),b.push(d+"="+e));return b.join("&")}function F(){var a=r.createElement("form"),b=r.createElement("input");return l++,a.action="https://twitter.com/i/jot",a.method="POST",a.target="rufous-frame-"+l,a.id="rufous-form-"+l,b.type="hidden",b.name="dnt",b.value=0,a.appendChild(b),a}function G(){var a,b="rufous-frame-"+l,c=0;try{a=r.createElement("<iframe name="+b+">")}catch(d){a=r.createElement("iframe"),a.name=b}return a.id=b,a.style.display="none",a.width=0,a.height=0,a.border=0,a}function H(a){var b=document.createElement("img");b.src=a,b.alt="",b.style.position="absolute",b.style.height="1px",b.style.width="1px",b.style.top="-9999px",b.style.left="-9999px",document.body.appendChild(b)}function I(a){var b;for(b in a)~g.indexOf(k,b)&&delete a[b]}function J(a){var b=Array.prototype.toJSON,c;return delete Array.prototype.toJSON,c=JSON.stringify(a),Array.prototype.toJSON=b,c}var i="twttr_",j={tweetbutton:"//p.twitter.com/t.gif",followbutton:"//p.twitter.com/f.gif",tweetembed:"//p.twitter.com/e.gif"},k=["hask","li","logged_in","pid","user_id",e.guest_id_cookie,i+"hask",i+"li",i+e.guest_id_cookie],l=0,m,n,o=[],p,q,r,s,t=.25;e.forceNewCookie(),a({enqueue:z,flush:A,initPostLogging:u,addPixel:v,addLegacyPixel:w,addVar:x})})});
-provide("tfw/assets",function(a){using("util/env",function(b){function d(a,d){var e=c[a],f;return b.retina()?f="2x":b.ie6()||b.ie7()?f="gif":f="default",d&&(f+=".rtl"),e[f]}var c={"embed/timeline.css":{"default":"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.default.css","2x":"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.2x.css",gif:"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.gif.css","default.rtl":"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.default.rtl.css","2x.rtl":"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.2x.rtl.css","gif.rtl":"embed/timeline.c91d7e034992ae7bf108ce7f3cbd9a1d.gif.rtl.css"},"embed/embed.ff268cb1fe83dd17c1ba606826968a3a.css":{"default":"embed/embed.default.css","2x":"embed/embed.2x.css",gif:"embed/embed.gif.css","default.rtl":"embed/embed.default.rtl.css","2x.rtl":"embed/embed.2x.rtl.css","gif.rtl":"embed/embed.gif.rtl.css"}};a(d)})});
+provide("tfw/assets",function(a){using("util/env",function(b){function d(a,d){var e=c[a],f;return b.retina()?f="2x":b.ie6()||b.ie7()?f="gif":f="default",d&&(f+=".rtl"),e[f]}var c={"embed/timeline.css":{"default":"embed/timeline.5eb08074ccff40735cf576352c81c1e1.default.css","2x":"embed/timeline.5eb08074ccff40735cf576352c81c1e1.2x.css",gif:"embed/timeline.5eb08074ccff40735cf576352c81c1e1.gif.css","default.rtl":"embed/timeline.5eb08074ccff40735cf576352c81c1e1.default.rtl.css","2x.rtl":"embed/timeline.5eb08074ccff40735cf576352c81c1e1.2x.rtl.css","gif.rtl":"embed/timeline.5eb08074ccff40735cf576352c81c1e1.gif.rtl.css"},"embed/embed.ff268cb1fe83dd17c1ba606826968a3a.css":{"default":"embed/embed.default.css","2x":"embed/embed.2x.css",gif:"embed/embed.gif.css","default.rtl":"embed/embed.default.rtl.css","2x.rtl":"embed/embed.2x.rtl.css","gif.rtl":"embed/embed.gif.rtl.css"}};a(d)})});
 provide("util/logger",function(a){function c(a){window[b]&&window[b].log&&window[b].log(a)}function d(a){window[b]&&window[b].warn&&window[b].warn(a)}function e(a){window[b]&&window[b].error&&window[b].error(a)}var b=["con","sole"].join("");a({info:c,warn:d,error:e})});
 provide("tfw/data",function(a){using("util/logger","util/util","util/querystring",function(b,c,d){function l(a,b){return a=={}.toString.call(b).match(/\s([a-zA-Z]+)/)[1].toLowerCase()}function m(a){return function(c){c.error?a.error&&a.error(c):c.headers&&c.headers.status!=200?(a.error&&a.error(c),b.warn(c.headers.message)):a.success&&a.success(c),a.complete&&a.complete(c),n(a)}}function n(a){var b=a.script;b&&(b.onload=b.onreadystatechange=null,b.parentNode&&b.parentNode.removeChild(b),a.script=undefined,b=undefined),a.callbackName&&twttr.tfw.callbacks[a.callbackName]&&delete twttr.tfw.callbacks[a.callbackName]}function o(a){var b={};return a.success&&l("function",a.success)&&(b.success=a.success),a.error&&l("function",a.error)&&(b.error=a.error),a.complete&&l("function",a.complete)&&(b.complete=a.complete),b}function p(a,b,c){var d=a.length,e=[],f={},g=0;return function(e){var h,i=[],j=[],k=[],l,m;h=c(e),f[h]=e;if(++g===d){for(l=0;l<d;l++)m=f[a[l]],i.push(m),m.error?k.push(m):j.push(m);b.error&&k.length>0&&b.error(k),b.success&&j.length>0&&b.success(j),b.complete&&b.complete(i)}}}twttr=twttr||{},twttr.tfw=twttr.tfw||{},twttr.tfw.callbacks=twttr.tfw.callbacks||{};var e="twttr.tfw.callbacks",f=twttr.tfw.callbacks,g="cb",h=0,i=!1,j={},k={userLookup:"//api.twitter.com/1/users/lookup.json",userShow:"//cdn.api.twitter.com/1/users/show.json",status:"//cdn.api.twitter.com/1/statuses/show.json",count:"//cdn.api.twitter.com/1/urls/count.json",friendship:"//cdn.api.twitter.com/1/friendships/exists.json",timeline:"//cdn.syndication.twimg.com/widgets/timelines/",timelinePoll:"//syndication.twimg.com/widgets/timelines/paged/",timelinePreview:"//syndication.twimg.com/widgets/timelines/preview/"};twttr.widgets&&twttr.widgets.endpoints&&c.aug(k,twttr.widgets.endpoints),j.jsonp=function(a,b,c){var j=c||g+h,k=e+"."+j,l=document.createElement("script"),n={callback:k,suppress_response_codes:!0};f[j]=m(b);if(i||!/^https?\:$/.test(window.location.protocol))a=a.replace(/^\/\//,"https://");l.src=d.url(a,n),l.async="async",document.body.appendChild(l),b.script=l,b.callbackName=j,c||h++},j.config=function(a){if(a.forceSSL===!0||a.forceSSL===!1)i=a.forceSSL},j.user=function(){var a,b={},c,e,f;arguments.length===1?(a=arguments[0].screenName,b=o(arguments[0])):(a=arguments[0],b.success=arguments[1]),c=l("array",a)?k.userLookup:k.userShow,a=l("array",a)?a.join(","):a,e={screen_name:a},f=d.url(c,e),this.jsonp(f,b)},j.userById=function(a){var b,c={},e,f,g;arguments.length===1?(b=arguments[0].ids,c=o(arguments[0])):(b=arguments[0],c.success=arguments[1]),e=l("array",b)?k.userLookup:k.userShow,b=l("array",b)?b.join(","):b,f={user_id:b},g=d.url(e,f),this.jsonp(g,c)},j.status=function(){var a,b={},c,e,f,g;arguments.length===1?(a=arguments[0].id,b=o(arguments[0])):(a=arguments[0],b.success=arguments[1]);if(!l("array",a))c={id:a,include_entities:!0},e=d.url(k.status,c),this.jsonp(e,b);else{f=p(a,b,function(a){return a.error?a.request.split("id=")[1].split("&")[0]:a.id_str});for(g=0;g<a.length;g++)c={id:a[g],include_entities:!0},e=d.url(k.status,c),this.jsonp(e,{success:f,error:f})}},j.tweet=j.status,j.count=function(){var a="",b,c,e={};arguments.length===1?(a=arguments[0].url,e=o(arguments[0])):arguments.length===2&&(a=arguments[0],e.success=arguments[1]),c={url:a},b=d.url(k.count,c),this.jsonp(b,e)},j.friendshipExists=function(a){var b=arguments[0],c=o(arguments[0]),e={screen_name_a:a.screenNameA,screen_name_b:a.screenNameB},f=d.url(k.friendship,e);this.jsonp(f,c)},j.timeline=function(a){var b=arguments[0],c=o(b),e,f=9e5,g=Math.floor(+(new Date)/f),h={lang:a.lang,t:g,domain:window.location.host};a.dnt&&(h.dnt=a.dnt),a.screenName&&(h.screen_name=a.screenName),a.userId&&(h.user_id=a.userId),a.withReplies&&(h.with_replies=a.withReplies),e=d.url(k.timeline+a.id,h),this.jsonp(e,c,"tl_"+a.id)},j.timelinePoll=function(a){var b=arguments[0],c=o(b),e={lang:a.lang,since_id:a.sinceId,max_id:a.maxId,domain:window.location.host},f;a.dnt&&(e.dnt=a.dnt),a.screenName&&(e.screen_name=a.screenName),a.userId&&(e.user_id=a.userId),a.withReplies&&(e.with_replies=a.withReplies),f=d.url(k.timelinePoll+a.id,e),this.jsonp(f,c,"tlPoll_"+a.id+"_"+(a.sinceId||a.maxId))},j.timelinePreview=function(a){var b=arguments[0],c=o(b),e=a.params,f=d.url(k.timelinePreview,e);this.jsonp(f,c)},a(j)})});
 provide("anim/transition",function(a){function b(a,b){var c;return b=b||window,c=b.requestAnimationFrame||b.webkitRequestAnimationFrame||b.mozRequestAnimationFrame||b.msRequestAnimationFrame||b.oRequestAnimationFrame||function(c){b.setTimeout(function(){a(+(new Date))},1e3/60)},c(a)}function c(a,b){return Math.sin(Math.PI/2*b)*a}function d(a,c,d,e,f){function i(h){var j=h-g,k=Math.min(j/d,1),l=e?e(c,k):c*k;a(l);if(k==1)return;b(i,f)}var g=+(new Date),h;b(i)}a({animate:d,requestAnimationFrame:b,easeOut:c})});
@@ -9109,6 +9592,6 @@ provide("i18n/i18n",function(a){function b(){twttr.i18n_missing_interval||(twttr
 provide("tfw/widget/tweetembed",function(a){using("util/util","tfw/widget/base","tfw/assets","util/uri","util/insert","tfw/data","i18n/i18n","util/tweetparser","tfw/widget/tracking",function(b,c,d,e,f,g,h,i,j){function p(a){var b=document.createElement("link");b.rel="stylesheet",b.type="text/css",b.href=twttr.widgets.config.assetUrl()+"/"+a,document.getElementsByTagName("head")[0].appendChild(b)}function q(){if(l)return;p("embed/embed.ff268cb1fe83dd17c1ba606826968a3a.css"),l=!0}function r(a,b){var c={status_id:a.id_str,tweet_ids:[a.id_str],context:n},d={},e={},f={TWEET:0};j.addVar(c,"variant",k),j.addVar(c,"referrer",document.location.href),j.addLegacyPixel(c,"tweetembed",!0),d[a.id_str]={item_type:f.TWEET},j.addPixel({page:"tweet",section:"subject",component:"tweet",action:"results"},{client_version:k,widget_origin:document.location.href,message:this.partner,item_ids:[a.id_str],item_details:d},!0),b&&a._wjs_reply&&(c.status_id=a._wjs_reply.id_str,c.tweet_ids=[a._wjs_reply.id_str],c.context=o,j.addLegacyPixel(c,"tweetembed",!0),e[a._wjs_reply.id_str]={item_type:f.TWEET},j.addPixel({page:"tweet",section:"conversation",component:"tweet",action:"results"},{client_version:k,widget_origin:document.location.href,message:this.partner,item_ids:[a._wjs_reply.id_str],item_details:e},!0))}function s(a){if(!a)return;var d,e;c.Base.apply(this,[a]),d=this.params(),e=d.width||this.attr("width"),this.classNames=b.filter(this.classAttr,function(a){return a!="twitter-tweet"}),this.classNames.push("twitter-tweet-rendered"),this.styleAttr=[],this.styleAttr.push(this.attr("style")||"");if(m.test(e))this.explicitWidth=RegExp.$1;else if(~b.indexOf(this.classNames,"tw-align-l")||~b.indexOf(this.classNames,"tw-align-r"))this.explicitWidth="350";this.explicitWidth&&this.styleAttr.push("width:"+this.explicitWidth+"px!important"),this.showThread=d.hideThread!==!0&&!~b.indexOf(this.classNames,"tw-hide-thread"),this.showMedia=d.hideMedia!==!0&&!~b.indexOf(this.classNames,"tw-hide-media"),this.data=i.parseTweet(this.srcEl),this.inReplyTo=d.inReplyTo||this.dataAttr("data-in-reply-to")||""}var k="1.0",l,m=/^([0-9]+)( ?px)?$/,n="subject",o="thread";s.prototype=new c.Base,b.aug(s.prototype,{create:function(a,b){var c=this,d,e=!!a._wjs_stub_data;return!e&&r(a,c.showThread),using("lib/twt",function(g){g(c.lang,function(g){var h=document.createElement("div"),i=g.autoFormat(c.explicitWidth||c.element),j=g(a,{format:i,popupWebIntents:!1,tweetElement:"blockquote",showMedia:c.showMedia,showErrors:!1,showFollowButton:!e,renderActions:!e,product:"tweetembed",partner:c.partner,related:c.related}),k='<div id="{{id}}" class="{{classNames}}" lang="{{lang}}" style="{{style}}">{{twt}}</div>',l={id:c.id,classNames:b||"",style:c.styleAttr.join(";"),lang:c.lang,twt:c.data._wjs_reply?j.inReplyTo(a._wjs_reply).html():j.html()};h.innerHTML=c.ringo(k,l),d=f(h.firstChild,c.element)})}),d},render:function(a){var b=this,c,d;if(!b.data)return;q(),using("lib/twt",function(a){a(b.lang,function(){c=b.classNames.join(" "),b.data._wjs_stub_data=!0,b.element=b.srcEl,b.element=b.create(b.data,c),d=[b.data.id_str],b.inReplyTo&&b.showThread&&d.push(b.inReplyTo),g.status({id:d,complete:function(a){var d=a[0],e=a[1];if(d.error)return;b.data=d;if(b.showThread&&d.in_reply_to_status_id_str&&(!e||d.in_reply_to_status_id_str!=e.id_str)){g.status({id:d.in_reply_to_status_id_str,complete:function(a){a&&!a.error&&(b.data._wjs_reply=a),b.element=b.create(b.data,c)}});return}d.in_reply_to_status_id_str&&e&&!e.error&&(b.data._wjs_reply=e),b.element=b.create(b.data,c)}})})})}}),a({Embeddable:s})})});
 provide("dom/textsize",function(a){function c(a,b,c){return a+b+c}var b={};a(function(a,d,e){var f=document.createElement("span"),g={},h;return e=e||"",d=d||"",h=c(a,d,e),b[h]?b[h]:(f.className=d+" twitter-measurement",f.setAttribute("style",e),f.innerHTML=a,document.body.appendChild(f),g.width=f.clientWidth||f.offsetWidth,g.height=f.clientHeight||f.offsetHeight,document.body.removeChild(f),delete f,b[h]=g)})});
 provide("tfw/widget/tweetbase",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri",function(b,c,d,e){function h(a){if(!a)return;var b;c.Base.apply(this,[a]),b=this.params(),this.text=b.text||this.dataAttr("text"),this.align=b.align||this.dataAttr("align")||"",this.via=b.via||this.dataAttr("via"),this.placeid=b.placeid||this.dataAttr("placeid"),this.hashtags=b.hashtags||this.dataAttr("hashtags"),this.screen_name=b.screen_name||this.dataAttr("button-screen-name"),this.url=b.url||this.dataAttr("url")}var f=document.title,g=encodeURI(location.href);h.prototype=new c.Base,b.aug(h.prototype,{parameters:function(){var a={text:this.text,url:this.url,related:this.related,lang:this.lang,placeid:this.placeid,original_referer:location.href,id:this.id,screen_name:this.screen_name,hashtags:this.hashtags,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)}}),a({TweetBase:h})})});
-provide("tfw/widget/tweetbutton",function(a){using("util/util","tfw/widget/tweetbase","util/querystring","util/uri","dom/textsize",function(b,c,d,e,f){var g=document.title,h=encodeURI(location.href),i=["vertical","horizontal","none"],j=function(a){c.TweetBase.apply(this,[a]);var d=this.params(),f=d.count||this.dataAttr("count"),j=d.size||this.dataAttr("size"),k=e.getScreenNameFromPage();~b.indexOf(this.classAttr,"twitter-hashtag-button")?this.type="hashtag":~b.indexOf(this.classAttr,"twitter-mention-button")&&(this.type="mention"),this.text=d.text||this.dataAttr("text"),this.align=d.align||this.dataAttr("align")||"",this.via=d.via||this.dataAttr("via"),this.related=d.related||this.dataAttr("related"),this.counturl=d.counturl||this.dataAttr("counturl"),this.searchlink=d.searchlink||this.dataAttr("searchlink"),this.placeid=d.placeid||this.dataAttr("placeid"),this.hashtags=d.hashtags||this.dataAttr("hashtags"),this.screen_name=d.screen_name||this.dataAttr("button-screen-name"),this.button_hashtag=d.button_hashtag||this.dataAttr("button-hashtag"),this.url=d.url||this.dataAttr("url"),this.size=j=="large"?"l":"m",this.dnt=d.dnt||this.dataAttr("dnt")||"",this.type?(this.count="none",k&&(this.related=this.related?k+","+this.related:k)):(this.text=this.text||g,this.url=this.url||e.getCanonicalURL()||h,this.count=~b.indexOf(i,f)?f:"horizontal",this.count=this.count=="vertical"&&this.size=="l"?"none":this.count,this.via=this.via||k)};j.prototype=new c.TweetBase,b.aug(j.prototype,{parameters:function(){var a={text:this.text,url:this.url,via:this.via,related:this.related,count:this.count,lang:this.lang,counturl:this.counturl,searchlink:this.searchlink,placeid:this.placeid,original_referer:location.href,id:this.id,size:this.size,type:this.type,screen_name:this.screen_name,button_hashtag:this.button_hashtag,hashtags:this.hashtags,align:this.align,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},height:function(){return this.count=="vertical"?62:this.size=="m"?20:28},width:function(){var a={ver:8,cnt:14,btn:24,xlcnt:18,xlbtn:38},c=this.count=="vertical",d=this.type=="hashtag"?"Tweet %{hashtag}":this.type=="mention"?"Tweet to %{name}":"Tweet",e=this._(d,{name:"@"+this.screen_name,hashtag:"#"+this.button_hashtag}),g=this._("K"),h=this._("100K+"),i=(c?"8888":"88888")+g,j=0,k=0,l=0,m=0,n=this.styles.base,o=n;return~b.indexOf(["ja","ko"],this.lang)?i+=this._("10k unit"):i=i.length>h.length?i:h,c?(o=n+this.styles.vbubble,m=a.ver,l=a.btn):this.size=="l"?(n=o=n+this.styles.large,l=a.xlbtn,m=a.xlcnt):(l=a.btn,m=a.cnt),this.count!="none"&&(k=f(i,"",o).width+m),j=f(e,"",n+this.styles.button).width+l,c?j>k?j:k:this.calculatedWidth=j+k},render:function(){var a=twttr.widgets.config.assetUrl()+"/widgets/tweet_button.1355514129.html#"+this.parameters();this.count&&(this.srcEl.className+=" twitter-count-"+this.count),this.element=this.create(a,this.srcEl.className,this.dimensions(),{title:this._("Twitter Tweet Button")})}}),a({Embeddable:j})})});
-provide("tfw/widget/follow",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri","util/twitter","dom/textsize",function(b,c,d,e,f,g){function h(a){if(!a)return;var b,d,e,g;c.Base.apply(this,[a]),b=this.params(),d=b.size||this.dataAttr("size"),e=b.show_screen_name||this.dataAttr("show-screen-name"),g=b.show_count||this.dataAttr("show-count"),this.showScreenName=e!="false",this.showCount=g!="false",this.explicitWidth=b.width||this.dataAttr("width")||"",this.screenName=b.screenName||f.screenName(this.attr("href")),this.preview=b.preview||this.dataAttr("preview")||"",this.align=b.align||this.dataAttr("align")||"",this.size=d=="large"?"l":"m"}h.prototype=new c.Base,b.aug(h.prototype,{parameters:function(){var a={screen_name:this.screenName,lang:this.lang,show_count:this.showCount,show_screen_name:this.showScreenName,align:this.align,id:this.id,preview:this.preview,size:this.size,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},render:function(){if(!this.screenName)return;var a=twttr.widgets.config.assetUrl()+"/widgets/follow_button.1355514129.html#"+this.parameters();this.element=this.create(a,"twitter-follow-button",this.dimensions(),{title:this._("Twitter Follow Button")})},width:function(){if(this.calculatedWidth)return this.calculatedWidth;if(this.explicitWidth)return this.explicitWidth;var a={cnt:13,btn:24,xlcnt:22,xlbtn:38},c=this.showScreenName?"Follow %{screen_name}":"Follow",d=this._(c,{screen_name:"@"+this.screenName}),e=~b.indexOf(["ja","ko"],this.lang)?this._("10k unit"):this._("M"),f=this._("%{followers_count} followers",{followers_count:"88888"+e}),h=0,i=0,j,k,l=this.styles.base;return this.size=="l"?(l+=this.styles.large,j=a.xlbtn,k=a.xlcnt):(j=a.btn,k=a.cnt),this.showCount&&(i=g(f,"",l).width+k),h=g(d,"",l+this.styles.button).width+j,this.calculatedWidth=h+i}}),a({Embeddable:h})})});
+provide("tfw/widget/tweetbutton",function(a){using("util/util","tfw/widget/tweetbase","util/querystring","util/uri","dom/textsize",function(b,c,d,e,f){var g=document.title,h=encodeURI(location.href),i=["vertical","horizontal","none"],j=function(a){c.TweetBase.apply(this,[a]);var d=this.params(),f=d.count||this.dataAttr("count"),j=d.size||this.dataAttr("size"),k=e.getScreenNameFromPage();~b.indexOf(this.classAttr,"twitter-hashtag-button")?this.type="hashtag":~b.indexOf(this.classAttr,"twitter-mention-button")&&(this.type="mention"),this.text=d.text||this.dataAttr("text"),this.align=d.align||this.dataAttr("align")||"",this.via=d.via||this.dataAttr("via"),this.related=d.related||this.dataAttr("related"),this.counturl=d.counturl||this.dataAttr("counturl"),this.searchlink=d.searchlink||this.dataAttr("searchlink"),this.placeid=d.placeid||this.dataAttr("placeid"),this.hashtags=d.hashtags||this.dataAttr("hashtags"),this.screen_name=d.screen_name||this.dataAttr("button-screen-name"),this.button_hashtag=d.button_hashtag||this.dataAttr("button-hashtag"),this.url=d.url||this.dataAttr("url"),this.size=j=="large"?"l":"m",this.dnt=d.dnt||this.dataAttr("dnt")||"",this.type?(this.count="none",k&&(this.related=this.related?k+","+this.related:k)):(this.text=this.text||g,this.url=this.url||e.getCanonicalURL()||h,this.count=~b.indexOf(i,f)?f:"horizontal",this.count=this.count=="vertical"&&this.size=="l"?"none":this.count,this.via=this.via||k)};j.prototype=new c.TweetBase,b.aug(j.prototype,{parameters:function(){var a={text:this.text,url:this.url,via:this.via,related:this.related,count:this.count,lang:this.lang,counturl:this.counturl,searchlink:this.searchlink,placeid:this.placeid,original_referer:location.href,id:this.id,size:this.size,type:this.type,screen_name:this.screen_name,button_hashtag:this.button_hashtag,hashtags:this.hashtags,align:this.align,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},height:function(){return this.count=="vertical"?62:this.size=="m"?20:28},width:function(){var a={ver:8,cnt:14,btn:24,xlcnt:18,xlbtn:38},c=this.count=="vertical",d=this.type=="hashtag"?"Tweet %{hashtag}":this.type=="mention"?"Tweet to %{name}":"Tweet",e=this._(d,{name:"@"+this.screen_name,hashtag:"#"+this.button_hashtag}),g=this._("K"),h=this._("100K+"),i=(c?"8888":"88888")+g,j=0,k=0,l=0,m=0,n=this.styles.base,o=n;return~b.indexOf(["ja","ko"],this.lang)?i+=this._("10k unit"):i=i.length>h.length?i:h,c?(o=n+this.styles.vbubble,m=a.ver,l=a.btn):this.size=="l"?(n=o=n+this.styles.large,l=a.xlbtn,m=a.xlcnt):(l=a.btn,m=a.cnt),this.count!="none"&&(k=f(i,"",o).width+m),j=f(e,"",n+this.styles.button).width+l,c?j>k?j:k:this.calculatedWidth=j+k},render:function(){var a=twttr.widgets.config.assetUrl()+"/widgets/tweet_button.1357323348.html#"+this.parameters();this.count&&(this.srcEl.className+=" twitter-count-"+this.count),this.element=this.create(a,this.srcEl.className,this.dimensions(),{title:this._("Twitter Tweet Button")})}}),a({Embeddable:j})})});
+provide("tfw/widget/follow",function(a){using("util/util","tfw/widget/base","util/querystring","util/uri","util/twitter","dom/textsize",function(b,c,d,e,f,g){function h(a){if(!a)return;var b,d,e,g;c.Base.apply(this,[a]),b=this.params(),d=b.size||this.dataAttr("size"),e=b.show_screen_name||this.dataAttr("show-screen-name"),g=b.show_count||this.dataAttr("show-count"),this.showScreenName=e!="false",this.showCount=g!="false",this.explicitWidth=b.width||this.dataAttr("width")||"",this.screenName=b.screenName||f.screenName(this.attr("href")),this.preview=b.preview||this.dataAttr("preview")||"",this.align=b.align||this.dataAttr("align")||"",this.size=d=="large"?"l":"m"}h.prototype=new c.Base,b.aug(h.prototype,{parameters:function(){var a={screen_name:this.screenName,lang:this.lang,show_count:this.showCount,show_screen_name:this.showScreenName,align:this.align,id:this.id,preview:this.preview,size:this.size,dnt:this.dnt,_:+(new Date)};return b.compact(a),d.encode(a)},render:function(){if(!this.screenName)return;var a=twttr.widgets.config.assetUrl()+"/widgets/follow_button.1357323348.html#"+this.parameters();this.element=this.create(a,"twitter-follow-button",this.dimensions(),{title:this._("Twitter Follow Button")})},width:function(){if(this.calculatedWidth)return this.calculatedWidth;if(this.explicitWidth)return this.explicitWidth;var a={cnt:13,btn:24,xlcnt:22,xlbtn:38},c=this.showScreenName?"Follow %{screen_name}":"Follow",d=this._(c,{screen_name:"@"+this.screenName}),e=~b.indexOf(["ja","ko"],this.lang)?this._("10k unit"):this._("M"),f=this._("%{followers_count} followers",{followers_count:"88888"+e}),h=0,i=0,j,k,l=this.styles.base;return this.size=="l"?(l+=this.styles.large,j=a.xlbtn,k=a.xlcnt):(j=a.btn,k=a.cnt),this.showCount&&(i=g(f,"",l).width+k),h=g(d,"",l+this.styles.button).width+j,this.calculatedWidth=h+i}}),a({Embeddable:h})})});
 !function(){function a(a){return(a||!/^http\:$/.test(window.location.protocol))&&!twttr.ignoreSSL?"https":"http"}window.twttr=window.twttr||{},twttr.host=twttr.host||"platform.twitter.com";if(twttr.widgets&&twttr.widgets.loaded)return twttr.widgets.load(),!1;if(twttr.init)return!1;twttr.init=!0,twttr._e=twttr._e||[],twttr.ready=twttr.ready||function(a){twttr.widgets&&twttr.widgets.loaded?a(twttr):twttr._e.push(a)},using.path.length||(using.path=a()+"://"+twttr.host+"/js"),twttr.ignoreSSL=twttr.ignoreSSL||!1;var b=[];twttr.events={bind:function(a,c){return b.push([a,c])}},using("util/domready",function(c){c(function(){using("util/util","tfw/widget/follow","tfw/widget/tweetbutton","tfw/widget/tweetembed","tfw/widget/timeline","tfw/widget/intent","util/events","tfw/widget/base",function(c,d,e,f,g,h,i,j){function p(b){var c=twttr.host;return a(b)=="https"&&twttr.secureHost&&(c=twttr.secureHost),a(b)+"://"+c}function q(){using("tfw/widget/hubclient",function(a){twttr.events.hub=a.init(m),a.init(m,!0)})}var k,l,m={widgets:{"a.twitter-share-button":e.Embeddable,"a.twitter-mention-button":e.Embeddable,"a.twitter-hashtag-button":e.Embeddable,"a.twitter-follow-button":d.Embeddable,"blockquote.twitter-tweet":f.Embeddable,"a.twitter-timeline":g.Embeddable,body:h.Listener}},n=twttr.events&&twttr.events.hub?twttr.events:{},o;m.assetUrl=p,c.aug(twttr.events,n,i.Emitter),o=twttr.events.bind,twttr.events.bind=function(a,b){q(),this.bind=o,this.bind(a,b)};for(k=0;l=b[k];k++)twttr.events.bind(l[0],l[1]);for(k=0;l=twttr._e[k];k++)l(twttr);twttr.ready=function(a){a(twttr)},twttr.widgets=twttr.widgets||{},c.aug(twttr.widgets,{config:{assetUrl:p},load:function(a){j.init(m),j.embed(a),twttr.widgets.loaded=!0}}),/twitter\.com(\:\d+)?$/.test(document.location.host)&&(twttr.widgets.createTimelinePreview=function(a,b,c){(new g.Embeddable({previewParams:a,targetEl:b,linkColor:a.link_color,theme:a.theme,height:a.height})).render(m,c)}),twttr.widgets.load()})})})}()});

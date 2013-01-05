@@ -1,7 +1,7 @@
 function CLog(message) {
     var panel = $('#globalLogPanel');
     if (panel.length == 0) {
-        panel = $('<div id="globalLogPanel" style="overflow:scroll;background:#ffffff;z-index:9999;position:absolute;width:185px;height:200px;border:1px solid red;top:0;left:0px;"></div>');
+        panel = $('<div id="globalLogPanel" style="overflow:scroll;background:#ffffff;z-index:999999999;position:absolute;width:185px;height:200px;border:1px solid red;top:0;left:0px;"></div>');
 
         $('body').append(panel);
         panel.bind('dblclick', function () {
@@ -155,6 +155,51 @@ var navMenu = {
         }
 
     },
+    highlightDefaultItem: function ($mainMenu) {
+        var $dockedSectionIn = $("#dockedSectionIn", $mainMenu);
+        var $currentPageIn = $("#currentPageIn", $mainMenu);
+        var $subVehicleIDIn = $("#subVehicleIDIn", $mainMenu);
+
+        var $targetUl = $("#" + $subVehicleIDIn.val());
+
+        if ($dockedSectionIn.val() == 'vehicles') {
+            vehicleSuvMenu = true;
+        }
+
+        if ($targetUl.length == 0) {
+            $targetUl = $("#" + $dockedSectionIn.val() + 'TopSecondNav', $mainMenu);
+        }
+
+        if ($targetUl.length > 0) {
+
+            var $parentItem = $targetUl.parent();
+
+            var index = $currentPageIn.val();
+            if (index == '') {
+                index = -1;
+                $currentPageIn.val('-1');
+            }
+            else {
+                if (index > 0 && vehicleSuvMenu)
+                    index++;
+            }
+
+            if (!$targetUl.hasClass('docked')) {
+                $targetUl.addClass('docked');
+            }
+
+
+            if (index >= 0) {
+                var $defaultSubMenuItem = $targetUl.children("li:eq(" + index + ")");
+                if ($defaultSubMenuItem.length > 0)
+                    navMenu.highlightMenuItem($defaultSubMenuItem, true);
+            }
+            navMenu.highlightMenuItem($parentItem);
+
+
+        }
+    },
+
     showDockedSection: function ($mainMenu, $secondNavMenu) {
 
 
@@ -163,7 +208,7 @@ var navMenu = {
             $secondNavMenu.css({ 'top': '33px' });
             $stickyNav.show();
             //$('#topNavContainer #hyundaiLogo').find('> a').hide();
-            return;
+            return false;
         }
 
         var $dockedSectionIn = $("#dockedSectionIn", $mainMenu);
@@ -232,15 +277,18 @@ var navMenu = {
                 //navMenu.alignVehiclePanel($targetUl, 2);
                 if (index >= 0) {
                     var $defaultSubMenuItem = $targetUl.children("li:eq(" + index + ")");
-                    navMenu.highlightMenuItem($defaultSubMenuItem, true);
+                    if ($defaultSubMenuItem.length > 0)
+                        navMenu.highlightMenuItem($defaultSubMenuItem, true);
                 }
                 //if(!vehicleSuvMenu)
                 navMenu.highlightMenuItem($parentItem);
             });
 
-
+            return true;
 
         }
+
+        return false;
 
 
 
@@ -331,7 +379,7 @@ var navMenu = {
         if (menuHoverOutInterval != null)
             return;
 
-
+        //CLog('start menuHoverOutInterval');
         menuHoverOutInterval = window.setInterval(function () {
 
             var onShow = false;
@@ -347,17 +395,17 @@ var navMenu = {
                     }
                 } else {
 
-                    if ($subULOfTopNavItem.css('display') != 'none' || $subULOfTopNavItem.data('onShow')) {
+                    if ($subULOfTopNavItem.css('display') != 'none') {
                         onShow = true;
                         break;
                     }
 
                 }
 
-
             }
 
             if (subNavIsEmpty) {
+
                 //if ($secondNavMenu.position().top == 74) {
                 if ($secondNavMenu.position().top >= 73 && $secondNavMenu.position().top <= 74) {
                     $secondNavMenu.animate({ height: '41px', 'top': '33px' }, navMenu.animateDuration.out, 'swing', function () {
@@ -368,6 +416,7 @@ var navMenu = {
                 }
                 return;
             }
+
 
             if (onShow) {
 
@@ -381,14 +430,17 @@ var navMenu = {
 
 
             } else {
+                //CLog('clear menuHoverOutInterval');
                 window.clearInterval(menuHoverOutInterval);
                 $mainMenu.data('menuHoverOutInterval', null);
 
-
+                var show = false;
                 if ($dockedSectionIn.val() != '' || $('#sticky_top_nav_Container').length > 0) {
-                    navMenu.showDockedSection($mainMenu, $secondNavMenu);
-                } else {
-                    // $secondNavMenu.position().top >= 73 ==> fix chrome when we zoom in/out view of browser
+                    show = navMenu.showDockedSection($mainMenu, $secondNavMenu);
+                }
+
+                if (!show) {
+
                     if ($secondNavMenu.position().top >= 73 && $secondNavMenu.position().top <= 74) {
 
                         if (HN.Home != undefined) {
@@ -403,6 +455,8 @@ var navMenu = {
                     }
 
                 }
+
+
 
 
             }
@@ -570,8 +624,8 @@ var navMenu = {
                                 HN.Home.stopAutoSlide();
                         }, 0);
                     }
+                    //CLog('start menuHoverOut');
                     navMenu.menuHoverOut($mainMenu, $secondNavMenu, $thirdNavMenu);
-
 
                     return navMenu.prevent(event);
 
@@ -580,6 +634,13 @@ var navMenu = {
 
 
                     var $topNavItemOut = $(this);
+                    var id = $topNavItemOut.attr('id');
+                    id = id.replace('Top', '');
+
+                    if ($dockedSectionIn.val() == id) {
+                        navMenu.highlightDefaultItem($mainMenu);
+                        return navMenu.prevent(event);
+                    }
 
                     /*
                     var itemID = $topNavItemOut.attr('id');
@@ -602,6 +663,7 @@ var navMenu = {
 
 
                     //navMenu.showDockedSection($mainMenu, $secondNavMenu);
+
                     return navMenu.prevent(event);
 
                 });
@@ -697,6 +759,9 @@ var navMenu = {
                     if ($parent.hasClass('docked')) {
                         return navMenu.prevent(event);
                     }
+
+
+
 
                     //return navMenu.prevent(event);
 
@@ -799,6 +864,8 @@ var navMenu = {
                             navMenu.unhighlightMenuItem($vehicleNavItem);
                             //$vehicleInfo.hide();
                             //caches['THIRD_MENU_ITEM'] = navMenu.removeItemFromArray(vehicleItemId, caches['THIRD_MENU_ITEM']);
+                        } else {
+                            //$vehicleInfo.hide();
                         }
 
 

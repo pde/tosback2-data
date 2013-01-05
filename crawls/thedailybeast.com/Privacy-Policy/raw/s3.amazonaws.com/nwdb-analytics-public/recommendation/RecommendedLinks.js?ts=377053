@@ -1,0 +1,1525 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/galleries/2012/12/28/25-drunkest-cities-2012-from-milwaukee-to-burlington-vermont.html",' +
+                '"title": "25 Drunkest Cities 2012, From Milwaukee to Burlington, Vermont",' +
+                '"rubric": "Rankings",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "fdb382ee34523893b247434f993e8811"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kim-kardashian-s-motherhood-guide.html",' +
+                '"title": "Kim Kardashian&rsquo;s Motherhood Guide",' +
+                '"rubric": "Klassy With a K",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2ea0f402a6163db8bca82cbd1ca70707"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/a-twist-in-the-benghazi-saga.html",' +
+                '"title": "A Twist in the Benghazi Saga",' +
+                '"rubric": "FOREIGN AID",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3b47883c6554a7178cb30235e2be156"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/india-s-fatal-rape-was-typical-in-a-country-that-degrades-women.html",' +
+                '"title": "India&rsquo;s Fatal Rape Was Typical in a Country That Degrades Women",' +
+                '"rubric": "Rotten System",' +
+                '"topic": "World",' +
+                '"urlHashCode": "105b372cc9a538a3ea03f35f56b9e5e6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-keeps-the-speakership-for-two-more-years.html",' +
+                '"title": "John Boehner Keeps the Speakership for Two More Years",' +
+                '"rubric": "Survivor",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4b534b3fc0f858b5b4b31fa4d827579"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/after-the-fiscal-cliff-what-do-democrats-want.html",' +
+                '"title": "After the Fiscal Cliff:  What do Democrats Want?",' +
+                '"rubric": "Now What",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "05079e4c6116d6809786cfb35287aeb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/05/04/speed-read-12-naughty-bits-from-50-shades-darker.html",' +
+                '"title": "Speed Read: 12 Naughty Bits From &lsquo;50 Shades Darker&rsquo;",' +
+                '"rubric": "Book 2",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "a7204298f06e42b9befdbf761c07462e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/113th-congress-actually-may-get-something-done.html",' +
+                '"title": "113th Congress Actually May Get Something Done",' +
+                '"rubric": "CLASS OF 2013",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bd16b5ae8b1f50663579ca83b332d7cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/why-the-112th-congress-was-the-worst-and-the-next-one-won-t-be-much-better.html",' +
+                '"title": "Why the 112th Congress Was The Worst, and the Next One Won&rsquo;t Be Much Better",' +
+                '"rubric": "Good Riddance!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b0e2d803c839b9be73dbd51680618952"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/why-the-112th-congress-was-the-worst-and-the-next-one-won-t-be-much-better.html",' +
+                '"title": "Why the 112th Congress Was The Worst, and the Next One Won&rsquo;t Be Much Better",' +
+                '"rubric": "Good Riddance!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b0e2d803c839b9be73dbd51680618952"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-keeps-the-speakership-for-two-more-years.html",' +
+                '"title": "John Boehner Keeps the Speakership for Two More Years",' +
+                '"rubric": "Survivor",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4b534b3fc0f858b5b4b31fa4d827579"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/113th-congress-actually-may-get-something-done.html",' +
+                '"title": "113th Congress Actually May Get Something Done",' +
+                '"rubric": "CLASS OF 2013",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bd16b5ae8b1f50663579ca83b332d7cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/odd-ideas-short-tempers-great-abs.html",' +
+                '"title": "Odd Ideas, Short Tempers, Great Abs",' +
+                '"rubric": "FAREWELL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbb239773937cba4021fe1090b472aea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/interactive-readers-share-their-views-on-and-stories-about-abortion.html",' +
+                '"title": "Interactive: Readers Share Their Views on, and Stories About, Abortion",' +
+                '"rubric": "Readers Weigh In",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "03cd5e84e015435431c069b7540e5537"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/the-daily-beast-s-oscar-nominees-leonardo-dicaprio-anne-hathaway-more.html",' +
+                '"title": "The Daily Beast&rsquo;s Oscar Nominees: Leonardo DiCaprio, Anne Hathaway &amp; More",' +
+                '"rubric": "FOR YOUR CONSIDERATION",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ebecf451346cae367323250552b0bc68"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/shaheen-amendment-expands-female-service-members-access-to-abortion.html",' +
+                '"title": "Shaheen Amendment Expands Female Service Members Access To Abortion",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "2ac3aca4e82543a53881a7a4a0dd59d9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/a-twist-in-the-benghazi-saga.html",' +
+                '"title": "A Twist in the Benghazi Saga",' +
+                '"rubric": "FOREIGN AID",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3b47883c6554a7178cb30235e2be156"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/indian-inspired-bindis-a-hot-trend-in-winter-bling.html",' +
+                '"title": "Indian-Inspired Bindis a Hot Trend in Winter Bling",' +
+                '"rubric": "A Touch of India",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "c144aaaabb86c2b1f456576a29c145c6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/american-journalist-james-foley-missing-for-months-in-syria.html",' +
+                '"title": "American Journalist James Foley Missing for Months in Syria",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "edf505a53cc5c55b15e84d253bb2ed9f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/outlandish-work-training-videos-alabama-s-mass-shooting-film-more.html",' +
+                '"title": "Outlandish Work Training Videos: Alabama&rsquo;s Mass Shooting Film &amp; More",' +
+                '"rubric": "WTF Alert!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "049efa8d0b477b6a12b98c62c5e59b5c"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/a-twist-in-the-benghazi-saga.html",' +
+                '"title": "A Twist in the Benghazi Saga",' +
+                '"rubric": "FOREIGN AID",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3b47883c6554a7178cb30235e2be156"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/after-the-fiscal-cliff-what-do-democrats-want.html",' +
+                '"title": "After the Fiscal Cliff:  What do Democrats Want?",' +
+                '"rubric": "Now What",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "05079e4c6116d6809786cfb35287aeb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/buzz-bissinger-on-the-nfl-s-no-good-very-bad-season.html",' +
+                '"title": "Buzz Bissinger on the NFL&rsquo;s No Good, Very Bad Season",' +
+                '"rubric": "NFL WASHOUT",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "d5e5226f09b8382d4c8a3a99dee1e188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-keeps-the-speakership-for-two-more-years.html",' +
+                '"title": "John Boehner Keeps the Speakership for Two More Years",' +
+                '"rubric": "Survivor",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4b534b3fc0f858b5b4b31fa4d827579"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/oscar-wilde-s-american-tour.html",' +
+                '"title": "Wilde Ride",' +
+                '"rubric": "Travel for Art&rsquo;s Sake",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "62fdf3c78ee873eacedb6a9bb1da42ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/why-the-112th-congress-was-the-worst-and-the-next-one-won-t-be-much-better.html",' +
+                '"title": "Why the 112th Congress Was The Worst, and the Next One Won&rsquo;t Be Much Better",' +
+                '"rubric": "Good Riddance!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b0e2d803c839b9be73dbd51680618952"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/22/a-peek-at-olympian-suzy-favor-hamilton-s-escort-service.html",' +
+                '"title": "A Peek at Olympian Suzy Favor Hamilton&rsquo;s Escort Service",' +
+                '"rubric": "ON THE STRIP",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "61abd92411723476a941b13ede5d4e1b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/odd-ideas-short-tempers-great-abs.html",' +
+                '"title": "Odd Ideas, Short Tempers, Great Abs",' +
+                '"rubric": "FAREWELL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbb239773937cba4021fe1090b472aea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/22/the-best-of-our-gun-debate-readers-weigh-in-on-owning-firearms.html",' +
+                '"title": "The Best of Our Gun Debate: Readers Weigh In on Owning Firearms",' +
+                '"rubric": "INTERACTIVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "163499cb2d84030b6c3a39d978e4e906"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/videos/2013/01/04/schwarzenegger-calls-leno-an-idiot.html",' +
+                '"title": "Schwarzenegger Calls Leno An \'Idiot\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "0c5488c213fc131ee403b94fb93489b5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/the-daily-beast-s-oscar-nominees-leonardo-dicaprio-anne-hathaway-more.html",' +
+                '"title": "The Daily Beast&rsquo;s Oscar Nominees: Leonardo DiCaprio, Anne Hathaway &amp; More",' +
+                '"rubric": "FOR YOUR CONSIDERATION",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "ebecf451346cae367323250552b0bc68"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/09/12/downton-abbey-season-3-julian-fellowes-hugh-bonneville-michelle-dockery-and-more.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3: Julian Fellowes, Hugh Bonneville, Michelle Dockery, and More",' +
+                '"rubric": "Spoilers!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "dcafe3a2f439e30f9e4650e09ddcee84"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/a-capella-anyone.html",' +
+                '"title": "Awesome A Capella Cover Of T-Swift",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d8d65335452328755a19ca4ec7209589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kim-kardashian-s-motherhood-guide.html",' +
+                '"title": "Kim Kardashian&rsquo;s Motherhood Guide",' +
+                '"rubric": "Klassy With a K",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2ea0f402a6163db8bca82cbd1ca70707"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/boehner-cries-us-a-river.html",' +
+                '"title": "Boehner Cries us a River",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "21c6ec67b447e85409d2b63fb0c57037"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/02/taylor-swift-s-new-years-kiss.html",' +
+                '"title": "Taylor Swift\'s New Years Kiss!",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "e3d751e67a259c76d2bf3951199ef724"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/wow-fred-armisen-is-quite-good-at-drums.html",' +
+                '"title": "Wow, Fred Armisen Is Quite Good At Drums",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "398e034e05f2f0804234289ed73364bf"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/113th-congress-actually-may-get-something-done.html",' +
+                '"title": "113th Congress Actually May Get Something Done",' +
+                '"rubric": "CLASS OF 2013",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bd16b5ae8b1f50663579ca83b332d7cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/boomshakalaka.html",' +
+                '"title": "Boomshakalaka!",' +
+                '"rubric": "Sports",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "25c6353d422ce3d32678a87c171537f3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/high-school-teens-joke-about-rape.html",' +
+                '"title": "High School Teens Joke About Rape",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "cf8ce8c1140584fe4a0509746602d1a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kim-kardashian-s-motherhood-guide.html",' +
+                '"title": "Kim Kardashian&rsquo;s Motherhood Guide",' +
+                '"rubric": "Klassy With a K",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2ea0f402a6163db8bca82cbd1ca70707"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/indian-inspired-bindis-a-hot-trend-in-winter-bling.html",' +
+                '"title": "Indian-Inspired Bindis a Hot Trend in Winter Bling",' +
+                '"rubric": "A Touch of India",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "c144aaaabb86c2b1f456576a29c145c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/a-capella-anyone.html",' +
+                '"title": "Awesome A Capella Cover Of T-Swift",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d8d65335452328755a19ca4ec7209589"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/02/the-best-fireworks-ever-period.html",' +
+                '"title": "The Best Fireworks Ever. Period.",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f75d1c4728ea577ffb1c844432c41931"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/odd-ideas-short-tempers-great-abs.html",' +
+                '"title": "Odd Ideas, Short Tempers, Great Abs",' +
+                '"rubric": "FAREWELL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbb239773937cba4021fe1090b472aea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/interactive-readers-share-their-views-on-and-stories-about-abortion.html",' +
+                '"title": "Interactive: Readers Share Their Views on, and Stories About, Abortion",' +
+                '"rubric": "Readers Weigh In",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "03cd5e84e015435431c069b7540e5537"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-keeps-the-speakership-for-two-more-years.html",' +
+                '"title": "John Boehner Keeps the Speakership for Two More Years",' +
+                '"rubric": "Survivor",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4b534b3fc0f858b5b4b31fa4d827579"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/why-the-112th-congress-was-the-worst-and-the-next-one-won-t-be-much-better.html",' +
+                '"title": "Why the 112th Congress Was The Worst, and the Next One Won&rsquo;t Be Much Better",' +
+                '"rubric": "Good Riddance!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b0e2d803c839b9be73dbd51680618952"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/113th-congress-actually-may-get-something-done.html",' +
+                '"title": "113th Congress Actually May Get Something Done",' +
+                '"rubric": "CLASS OF 2013",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bd16b5ae8b1f50663579ca83b332d7cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/31/here-s-why-apple-and-samsung-are-breaking-up.html",' +
+                '"title": "Here&rsquo;s Why Apple and Samsung Are Breaking Up",' +
+                '"rubric": "DIVORCE!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "95febfa94e17ef964eb8c6c50cf403ed"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/odd-ideas-short-tempers-great-abs.html",' +
+                '"title": "Odd Ideas, Short Tempers, Great Abs",' +
+                '"rubric": "FAREWELL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbb239773937cba4021fe1090b472aea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/22/the-best-of-our-gun-debate-readers-weigh-in-on-owning-firearms.html",' +
+                '"title": "The Best of Our Gun Debate: Readers Weigh In on Owning Firearms",' +
+                '"rubric": "INTERACTIVE",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "163499cb2d84030b6c3a39d978e4e906"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/a-twist-in-the-benghazi-saga.html",' +
+                '"title": "A Twist in the Benghazi Saga",' +
+                '"rubric": "FOREIGN AID",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3b47883c6554a7178cb30235e2be156"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/28/the-republicans-moment-of-truth.html",' +
+                '"title": "The Republicans&rsquo; Moment of Truth",' +
+                '"rubric": "GAME OVER",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bec06c83472f4f9bacdd8f03613049ac"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/kansas-s-new-cat-law-and-the-craziest-crazy-cat-lady-stories.html",' +
+                '"title": "Kansas&rsquo;s New Cat Law and the Craziest Crazy Cat Lady Stories",' +
+                '"rubric": "Pussies Galore!",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "d88b58d2fcd55a22a2239c97a25bc86e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/indian-inspired-bindis-a-hot-trend-in-winter-bling.html",' +
+                '"title": "Indian-Inspired Bindis a Hot Trend in Winter Bling",' +
+                '"rubric": "A Touch of India",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "c144aaaabb86c2b1f456576a29c145c6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2012/12/11/how-a-platinum-coin-could-solve-the-debt-ceiling-problem.html",' +
+                '"title": "How a Platinum Coin Could Solve the Debt-Ceiling Problem",' +
+                '"rubric": "DEBT CEILING",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "3eaaeeabcb315e4b3950e05710292ca6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/03/biden-spread-your-legs-you-re-gonna-be-frisked.html",' +
+                '"title": "Biden: \'Spread Your Legs, You\'re Gonna Be Frisked\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "85b2bee62ce73b00f0911d67307a704e"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/01/03/a-twist-in-the-benghazi-saga.html",' +
+                '"title": "A Twist in the Benghazi Saga",' +
+                '"rubric": "FOREIGN AID",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d3b47883c6554a7178cb30235e2be156"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/lessons-from-the-fiscal-cliff-the-political-fallout.html",' +
+                '"title": "Lessons From the Fiscal Cliff: the Political Fallout",' +
+                '"rubric": "Winners &amp; Losers",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "da2bd8733243cafa4f03e739699f8bcc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-angst.html",' +
+                '"title": "Hillary Angst",' +
+                '"rubric": "Get Well Soon",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "e818d05b9da9c463a0cd6cf0fe8ae8bd"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-keeps-the-speakership-for-two-more-years.html",' +
+                '"title": "John Boehner Keeps the Speakership for Two More Years",' +
+                '"rubric": "Survivor",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "d4b534b3fc0f858b5b4b31fa4d827579"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/after-the-fiscal-cliff-what-do-democrats-want.html",' +
+                '"title": "After the Fiscal Cliff:  What do Democrats Want?",' +
+                '"rubric": "Now What",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "05079e4c6116d6809786cfb35287aeb0"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/obama-s-fiscal-cliff-sanity-proves-he-s-no-secret-agent-of-destruction.html",' +
+                '"title": "Obama&rsquo;s Fiscal Cliff Sanity Proves He&rsquo;s No Secret Agent of Destruction",' +
+                '"rubric": "Stop the Paranoia",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "94c1c1ea7c4bbdd3f69d6d6320d8a0a2"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/obama-fiscal-cliff-victory-could-invite-years-of-warfare-with-the-gop.html",' +
+                '"title": "Obama Fiscal Cliff Victory Could Invite Years of Warfare With the GOP",' +
+                '"rubric": "Down to the Wire",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "86af42bb0e9a1f2e4051df44c5bf8266"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/buzz-bissinger-on-the-nfl-s-no-good-very-bad-season.html",' +
+                '"title": "Buzz Bissinger on the NFL&rsquo;s No Good, Very Bad Season",' +
+                '"rubric": "NFL WASHOUT",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "d5e5226f09b8382d4c8a3a99dee1e188"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/pennsylvania-gov-tom-corbett-s-shameful-lawsuit-over-penn-state.html",' +
+                '"title": "Pennsylvania Gov. Tom Corbett&rsquo;s Shameful Lawsuit Over Penn State",' +
+                '"rubric": "Hogwash",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "5458602e6ebb66cc696444d994eb8882"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/downton-abbey-season-3-review-a-return-to-form.html",' +
+                '"title": "&lsquo;Downton Abbey&rsquo; Season 3 Review: A Return to Form",' +
+                '"rubric": "Dear &lsquo;Abbey&rsquo;",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "d59be56390b8090d4ca9079067aca5c3"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/sources-obama-to-pick-chuck-hagel-for-secretary-of-defense.html",' +
+                '"title": "Sources: Obama to Pick Chuck Hagel for Secretary of Defense",' +
+                '"rubric": "NOMINATIONS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44a3ef4317e74542f86b86e01602cf36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/why-the-112th-congress-was-the-worst-and-the-next-one-won-t-be-much-better.html",' +
+                '"title": "Why the 112th Congress Was The Worst, and the Next One Won&rsquo;t Be Much Better",' +
+                '"rubric": "Good Riddance!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "b0e2d803c839b9be73dbd51680618952"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/cdc-researchers-find-lower-mortality-rates-among-overweight-people.html",' +
+                '"title": "CDC Researchers Find Lower Mortality Rates Among Overweight People",' +
+                '"rubric": "Longer Lives?",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "79a8d895d5c12f13fe07698eaefb3439"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/113th-congress-actually-may-get-something-done.html",' +
+                '"title": "113th Congress Actually May Get Something Done",' +
+                '"rubric": "CLASS OF 2013",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "bd16b5ae8b1f50663579ca83b332d7cb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/my-mother-s-rape.html",' +
+                '"title": "My Mother&rsquo;s Rape",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "578993476b0ebd0694208f2e26fed47f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/odd-ideas-short-tempers-great-abs.html",' +
+                '"title": "Odd Ideas, Short Tempers, Great Abs",' +
+                '"rubric": "FAREWELL",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cbb239773937cba4021fe1090b472aea"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/hobby-lobby-risks-fines-to-defy-obamacare.html",' +
+                '"title": "Hobby Lobby Risks Fines to Defy Obamacare",' +
+                '"rubric": "Religious Liberty",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "5359f7aa0b25d95b493fa5888d1bb2e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/01/on-the-fiscal-cliff-obama-does-what-he-can-against-200-years-of-bad-faith.html",' +
+                '"title": "On the Fiscal Cliff, Obama Does What He Can Against 200 Years of Bad Faith",' +
+                '"rubric": "PAST AS PROLOGUE",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "cb27d4bb91d3ceb657d3bedcd314cddc"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/11/how-a-platinum-coin-could-solve-the-debt-ceiling-problem.html",' +
+                '"title": "How a Platinum Coin Could Solve the Debt-Ceiling Problem",' +
+                '"rubric": "DEBT CEILING",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "3eaaeeabcb315e4b3950e05710292ca6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/01/02/hillary-clinton-haters-hammered-for-mocking-her-illness.html",' +
+                '"title": "Hillary Clinton Haters Hammered for Mocking Her Illness",' +
+                '"rubric": "Hillary Haters",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3261d38febb1be1e6d194d8d02865203"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/spike-lee-s-dissing-of-django-unchained-earns-both-ire-and-indifference.html",' +
+                '"title": "Spike Lee&rsquo;s Dissing of &lsquo;Django Unchained&rsquo; Earns Both Ire and Indifference",' +
+                '"rubric": "&lsquo;Django&rsquo; Fallout",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "cb8a9aea29d887979db3df1c2577f034"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/30/sovereign-citizens-are-a-sometimes-violent-fringe-group-rejecting-all-government.html",' +
+                '"title": "Sovereign Citizens Are a Sometimes Violent Fringe Group Rejecting All Government",' +
+                '"rubric": "Fringe",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "5f1e15166adb145310177c2265c9ae9a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/pokemon-hits-high-fashion.html",' +
+                '"title": "Pok&eacute;mon Hits High Fashion",' +
+                '"rubric": "Pikachu Chic",' +
+                '"topic": "Fashion",' +
+                '"urlHashCode": "2b8b5e74c514afdc5a111d954d74c54b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/john-boehner-s-f-bomb-at-harry-reid-plunges-d-c-incivility-to-new-low.html",' +
+                '"title": "John Boehner&rsquo;s F-Bomb at Harry Reid Plunges D.C. Civility to New Low",' +
+                '"rubric": "F-Bomb Shocker",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "895562dcfa95425e2dfb18630baafa7b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/anger-over-fiscal-cliff-deal-fires-up-tea-party.html",' +
+                '"title": "Anger Over Fiscal-Cliff Deal Fires Up Tea Party",' +
+                '"rubric": "FIRED UP!",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5e45d1176bd73f6cb8c128af9d824a23"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/01/29/she-dialed-911-the-cop-who-came-to-help-raped-her.html",' +
+                '"title": "She Dialed 911. The Cop Who Came to Help Raped Her.",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "81abab84696f35448b7d10dc4d29c6d1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/03/dear-liberals-stop-complaining.html",' +
+                '"title": "Dear Liberals: Stop Complaining",' +
+                '"rubric": "COMMANDER IN CHIEF",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c5a51c97e5a73fe7c3ebeeaf0a8db1e1"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/04/good-news-for-republicans.html",' +
+                '"title": "Good News for Republicans",' +
+                '"rubric": "SILVER LINING",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "7b86dc8cdbe5856693df5143aaeb6b0b"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/02/is-suicide-still-shocking.html",' +
+                '"title": "Is Suicide Still Shocking?",' +
+                '"rubric": "Self-Destruction",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "d97202e1088d24aef1684263fd659057"' +
+            '}' +
+        ']' +
+    '}'
+);

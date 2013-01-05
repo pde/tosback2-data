@@ -1,0 +1,1 @@
+var Vox=Vox||{};Vox.Config=Vox.Config||(function(){var a={};return{set:function(b,c){a[b]=c},get:function(c){var b=a[c];if(b===null||b===undefined){throw"Attempting to retrieve a configuration that has not been set :"+c}return b}}})();

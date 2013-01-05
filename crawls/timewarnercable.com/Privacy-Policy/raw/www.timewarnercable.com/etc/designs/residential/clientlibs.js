@@ -202,6 +202,101 @@ $(document).ready(function(){
         locationEl.geolocation();
     }
 });
+function isValidZipCode(elementValue) {
+    var zipCodePattern = /^\d{5}$|^\d{5}-\d{4}$/;
+    return zipCodePattern.test(elementValue);
+}
+function getGeoLocationFromCookie() {
+    var geoData;
+    if($.cookie('twc-user-profile')) {
+        geoData = jQuery.parseJSON($.cookie('twc-user-profile'));
+    }
+    return(geoData);
+}
+function updateZip(zipCode, divID) {
+    if (isValidZipCode(zipCode)) {
+    	var options = {
+    	        path: '/'
+    	        };
+    	$.cookie("zipPromptCookie","zipPrompt",options);
+    	var locationEl = $(document).find('#twc-location-popup input');
+    	var locationElButton = $(document).find('#twc-location-popup button');
+    	locationEl.val(zipCode);
+    	locationElButton.trigger('click');   	
+    } else {
+        // Missing required elements, display error
+        $('.form_error').show();
+        return false;
+    }
+    $.fancybox.close(true);
+}
+// Handle click submitting address data
+$('#inServiceAddressForm input[type=button]').click(function() {
+    var zipCode = $('#inServiceZIP').val();
+    var divID = '#inServiceAddressForm';
+    updateZip(zipCode,divID);
+});
+
+$('#outServiceAddressForm input[type=button]').click(function() {
+    var zipCode = $('#outServiceZIP').val();
+    var divID = '#outServiceAddressForm';
+    updateZip(zipCode,divID);
+});
+jQuery(document).ready(function () {            
+    if(! $.cookie('zipPromptCookie')) {
+        var configText = $('.serviceText').html();
+        if(!configText){//Author need to configure the component.
+            return;
+        }
+        var divID = '';
+        var geoLocation = getGeoLocationFromCookie();
+        if(geoLocation) {
+            if(geoLocation && geoLocation.region && geoLocation.region.length > 0){
+                divID = '#inServiceAddressForm';
+            }else{
+                divID = '#outServiceAddressForm';
+            }
+        }else{
+            divID = '#inServiceAddressForm';
+        }
+        
+       // fancybox API: http://fancyapps.com/fancybox/ and http://fancybox.net/api
+         $.fancybox({
+                'href'   : divID,
+                padding: 0,
+                margin: 0,
+                maxHeight:700,
+                makWidth:600,
+                width:'auto',
+                height:'auto',
+                autoSize:false,
+                scrolling: 'no'
+            })
+    } 
+  //onfocus of zip field if someone hits return trigger ZIP code validation
+    $('#outServiceZIP').keypress(function(e) {
+    	var zipCode = $('#outServiceZIP').val();
+        var divID = '#outServiceAddressForm';
+        var code =null;
+        code= (e.keyCode ? e.keyCode : e.which);
+
+        if (code==13) {//keycode - Enter.
+            updateZip(zipCode,divID);
+        	return false;
+        }
+    })
+    $('#inServiceZIP').keypress(function(e) {
+        var zipCode = $('#inServiceZIP').val();
+        var divID = '#inServiceAddressForm';
+        var code =null;
+        code= (e.keyCode ? e.keyCode : e.which);
+
+        if (code==13) {//keycode - Enter.
+            updateZip(zipCode,divID);
+        	return false;
+        }
+    })
+})
 ;
 jQuery(document).ready(function() {
     var ALL_PAGES = '/etc/tags/twc/lob';
@@ -12716,6 +12811,12 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 
     $.fn.promoSlider = function (argOptions) {
         var me = this;
+        if($(me).hasClass('promoSlider-enabled')) {
+            return;
+        }
+        else {
+            $(me).addClass('promoSlider-enabled');
+        }
         var settings = $.extend( {
           'dynamicWidth': 'false' },
            argOptions);
@@ -12840,75 +12941,85 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 
 })(jQuery);
 /* ----------------------------------
- *	Plugin: SliderDetailToggle
+ *  Plugin: SliderDetailToggle
  *
- *	- Toggles(hides/shows) details block
+ *  - Toggles(hides/shows) details block
  * 
  *  UsedBy: 
  *
- *  Uses: 	jquery
- * 			jquery.easing.1.3.js
+ *  Uses:   jquery
+ *          jquery.easing.1.3.js
  *
- * --------------------------------- */	
+ * --------------------------------- */ 
 
-;(function($) {	   
-	$.fn.sliderDetailToggle = function(argAutoClose) {
-		
-		var $context = this; //div.feature-details-slider
-		var bAutoClose = false; // if argAutoClose is true then details don't auto close
+;(function($) {    
+    $.fn.sliderDetailToggle = function(argAutoClose) {
+        
+        var $context = $(this); //div.feature-details-slider
 
-		if (typeof argAllowManyOpen != 'undefined') {
-			bAutoClose = Boolean(argAutoClose);
-		}
+        //add class to determine if we have already run this plugin on the slider, if so quit.
+        if($context.hasClass("sliderDetailToggleEnabled")) {
+            return true;
+        }
+        else {
+            $context.addClass("sliderDetailToggleEnabled");
+        }
+        var bAutoClose = false; // if argAutoClose is true then details don't auto close
 
-		//Generate close button.  Note: This places a close button in each .details pane.  
-		//This is done in the event that they want multiple panes open.
-		
-		//$context.find('.details').prepend($('<div class="close-button"><a href="#"><span class="arrow">Close</span></a></div>'));
-		$context.find('.details').prepend($('<div class="close-button"><a href="#close"><span class="arrow">Close</span></a></div>'));
+        if (typeof argAllowManyOpen != 'undefined') {
+            bAutoClose = Boolean(argAutoClose);
+        }
 
-		//Bind CLICK to links to show details
-		$context.find('.toggleID').bind('click.sliderDetailToggle', function(e) {
+        //Generate close button.  Note: This places a close button in each .details pane.
+        //This is done in the event that they want multiple panes open.
 
-			e.preventDefault();
 
-			var $this = $(this);
-			var $details = $(this.hash);
-			var $clicked_module = $this.closest('.feature-details-slider');
+        //$context.find('.details').prepend($('<div class="close-button"><a href="#"><span class="arrow">Close</span></a></div>'));
+        $('.details', $context).prepend($('<div class="close-button"><a href="#close"><span class="arrow">Close</span></a></div>'));
 
-			if ('#'+$clicked_module.find('.details.active').attr('id')!=this.hash) {
-				// Hide (slide up) details block
-				var $active = $clicked_module.find('.details.active');
+        //Bind CLICK to links to show details
+        $('.toggleID', $context).bind('click.sliderDetailToggle', function(e) {
 
-				if (!bAutoClose && $active.length > 0) { //if there are active slides trigger the slidedown in the callback
-					$active.stop(true, true).slideUp('fast', 'easeOutExpo', function() {
-						$(this).removeClass('active');
-						// Show (slide down) details block
-						$details.stop(true,true).delay(100).slideDown('fast', 'easeInExpo', function() {
-							$(this).addClass('active');
-						});
-					});
-				}
-				else {
-					// Show (slide down) details block
-					$details.stop(true,true).slideDown('fast', 'easeInExpo', function() {
-						$(this).addClass('active');
-					});
-				}
-			}
-		});
 
-		$context.find('.close-button a').bind('click.sliderDetailClose', function(e) {
-			e.preventDefault();
+            e.preventDefault();
 
-			var $this = $(this);
-			var $details = $this.closest('.details.active').slideUp('fast', 'easeOutExpo', function() {
-				$(this).removeClass('active');
-			});
-		});
-	
+            var $this = $(this);
+            // alert($this.parents('.campaign').attr('id'));
+            var $details = $(this.hash, $context);
 
-	}; // $.fn.SliderDetailToggle
+            var $clicked_module = $('.feature-details-slider', $this);
+
+            if ('#'+$context.find('.details.active').attr('id')!=this.hash) {
+                // Hide (slide up) details block
+                var $active = $context.find('.details.active');
+                if (!bAutoClose && $active.length > 0) { //if there are active slides trigger the slidedown in the callback
+                    $active.stop(true, true).slideUp('fast', 'easeOutExpo', function() {
+                        $(this).removeClass('active');
+                        // Show (slide down) details block
+                        $details.stop(true,true).delay(100).slideDown('fast', 'easeInExpo', function() {
+                            $(this).addClass('active');
+                        });
+                    });
+                }
+                else {
+                    // Show (slide down) details block
+                    $details.stop(true,true).slideDown('fast', 'easeInExpo', function() {
+                        $(this).addClass('active');
+                    });
+                }
+            }
+        });
+
+        $context.find('.close-button a').bind('click.sliderDetailClose', function(e) {
+            e.preventDefault();
+
+            var $this = $(this);
+            var $details = $this.closest('.details.active').slideUp('fast', 'easeOutExpo', function() {
+                $(this).removeClass('active');
+            });
+        });
+
+    }; // $.fn.SliderDetailToggle
 
 })(jQuery);
 /* ----------------------------------
@@ -12948,56 +13059,68 @@ a+' xmlns="urn:schemas-microsoft.com:vml" class="rvml">')}}}())})(jQuery);
 	};
 })(jQuery);
 /* ----------------------------------
- *	Plugin: tableRowToggle
+ *  Plugin: tableRowToggle
  *
- *	- Toggles(hides/shows) details row
+ *  - Toggles(hides/shows) details row
  * 
  *  UsedBy: 
  *
- *  Uses: 	jquery-1.7.1
- * 			jquery.easing.1.3.js
- *			jquery.vAlign.js
+ *  Uses:   jquery-1.7.1
+ *          jquery.easing.1.3.js
+ *          jquery.vAlign.js
  *
- * --------------------------------- */	
-;(function($) {	   
+ * --------------------------------- */ 
+;(function($) {    
 
-	$.fn.tableRowToggle = function() {
-			
-		var $table = this; //table.compare
-		
-		// Click event for showing/hiding the details row
-		$table.find('.details-trigger').click( function() {
-		
-			var $clicked = $(this);
-			var $clicked_tr = $clicked.parents('tr');
-			var $details_cell_link = $clicked_tr.find('td.details a') || $();
-			var $goto = $(this.hash);
-			var $media = $goto.closest('tr').find('.media') || $();
+    $.fn.tableRowToggle = function() {
+            
+        var $table = $(this); //table.compare
+        if($table.hasClass('toggle-enabled')) {
+            return;
+        }
+        else {
+            $table.addClass('toggle-enabled');
+        }
+        // Click event for showing/hiding the details row
+        // the .details-trigger class is placed inside all the <td> tags on an <a> tag.  This does not detect a click anywhere inside the row.
+        $table.find('.details-trigger').click( function() {
+            var $clicked = $(this);
+            var $clicked_tr = $clicked.parents('tr');
+            var $details_cell_link = $clicked_tr.find('td.details a') || $();
+                //edit 3 col row has a '<span>' tag inside the <a> tag.  Need to account for it
+                if($('span', $details_cell_link).length>0) {
+                    alert($('span', $details_cell_link).length);
+                    $details_cell_link = $('span', $details_cell_link);
+                }
+             //This is part of the problem, multiple compare tables will share this hash. Need to specify this.
+             //Edit: added the $clicked_tr to the selector otherwise if there are multiple compare tables they will share this hash and it will find all of them and open those details panels.
+            var $goto = $(this.hash, $clicked.parents('.compare-table'));
+            var $media = $goto.closest('tr').find('.media') || $();
 
-			$goto.find('.wrap').stop(true, true).slideToggle('normal', 'easeInOutQuart', function() {
-				$clicked_tr.toggleClass('active'); 
-				$details_cell_link.html(('details' == $.trim($details_cell_link.html().toLowerCase())) ? 'Close' : 'Details');
-				//($details_cell_link.text() == 'Details') ? $details_cell_link.text('Close') : $details_cell_link.text('Details');
-				if ($media.css('margin-top') == '0px') {  //only center if hasn't been done so already (manual or auto)
-					$media.vAlign();	//vertically align the media image (img is set to visible:hidden by default to reduce fouc)
-				}
-				$media.find('img').css('visibility', 'visible');	//reveal hidden image
-			});	
+            $goto.find('.wrap').stop(true, true).slideToggle('normal', 'easeInOutQuart', function() {
+                $clicked_tr.toggleClass('active');
+                $details_cell_link.html(('details' == $.trim($details_cell_link.html().toLowerCase())) ? 'Close' : 'Details');
+                //($details_cell_link.text() == 'Details') ? $details_cell_link.text('Close') : $details_cell_link.text('Details');
+                if ($media.css('margin-top') == '0px') {  //only center if hasn't been done so already (manual or auto)
+                    $media.vAlign();    //vertically align the media image (img is set to visible:hidden by default to reduce fouc)
+                }
+                $media.find('img').css('visibility', 'visible');    //reveal hidden image
+            });
 
-			return false;
+            return false;
 
-		}); // click
+        }); // click
 
-		$table.find('tr').hover(
-			function() { // hover in
-				$(this).addClass('hover');
-			},
-			function() { // hover out
-				$(this).removeClass('hover');
-			}
-		);
+        $table.find('tr').hover(
+            function() { // hover in
+                $(this).addClass('hover');
+            },
+            function() { // hover out
+                $(this).removeClass('hover');
+            }
+        );
 
-	}; // $.fn.tableRowToggle
+    }; // $.fn.tableRowToggle
 
 })(jQuery);
 /* ----------------------------------

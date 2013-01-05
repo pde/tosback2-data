@@ -208,7 +208,7 @@ var upTime = 300,
 function closeDropdown() {
     setInactiveNav();
     NBC('video').attr('controls', 'controls');
-    NBC('#dropdowns-global .collapsible, #dropdowns-site .collapsible').slideUp(upTime, 'easeOutExpo', function () {
+    NBC('#dropdowns-global .collapsible, #dropdowns-site .collapsible, #dropdowns-exclusives .collapsible').slideUp(upTime, 'easeOutExpo', function () {
         NBC(this).removeClass('open');
         NBC(clickedNav).focus();
     });
@@ -247,7 +247,7 @@ function setActiveNav(value) {
     }
 }
 function setInactiveNav() {
-    NBC('header.global .navbar .dropdown-global-link, header.site .navbar .dropdown-site-link').parent().removeClass('active');
+    NBC('header.global .navbar .dropdown-global-link, header.site .navbar .dropdown-site-link, .dropdown-exclusive-link').parent().removeClass('active');
 }
 /* INIT */
 function initGlobalDropdown() {
@@ -341,23 +341,30 @@ function initSiteDropdown() {
 /* Slider */
 
 var sliderTimeout;
-
+var slideNumber = 0;
 function slideContentChange(args) {
-    if (args.currentSlideNumber === 0) {
-        NBC('header.site .logo').fadeOut(240);
-    } else {
+    if (NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-legacy') && args.currentSlideNumber > 0) {
         if (SITE.id != "10211" && SITE.id != "441") {
             NBC('header.site .logo').fadeIn(300);
         }
+    } else if (!NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-1') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-2') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-3') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-legacy') && args.currentSlideNumber > 0) {
+        if (SITE.id != "10211" && SITE.id != "441") {
+            NBC('header.site .logo').fadeIn(300);
+        }
+    } else {
+        NBC('header.site .logo').fadeOut(300);
     }
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button').removeClass('selected');
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button:eq(' + args.currentSlideNumber + ')').addClass('selected');
+slideNumber = args.currentSlideNumber;
 }
 function slideContentLoaded(args) {
-    if (args.currentSlideNumber === 0) {
-        NBC('header.site .logo').fadeOut(300);
-    } else {
+    if (NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-legacy') && args.currentSlideNumber > 0) {
         NBC('header.site .logo').fadeIn(300);
+    } else if (!NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-1') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-2') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-3') && !NBC('.slider-container .slider .slide:eq(' + args.currentSlideNumber + ')').hasClass('slider-type-legacy') && args.currentSlideNumber > 0) {
+        NBC('header.site .logo').fadeIn(300);
+    } else {
+        NBC('header.site .logo').fadeOut(300);
     }
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button').removeClass('selected');
     NBC(args.sliderObject).parent().parent().find('.slider-buttons .button:eq(' + args.currentSlideNumber + ')').addClass('selected');
@@ -738,6 +745,16 @@ function initShowsMainVideo() {
 function initAutoComplete() {
     ezAutocompleteSearchUrl = "/search?";
     myAC = queryExpansion_init("#search-global", "#search-auto", "/autocomplete/?callbackName=myAC&q=");
+    NBC("#search-auto").css('display','none');
+}
+
+function isTouch() {
+    return 'ontouchstart' in window;
+}
+function initTouch() {
+    if ('ontouchstart' in window) {
+        NBC('body').addClass('has-touch');
+    }
 }
 /* -------------------------------------------------------------------------*/
 /* INIT */
@@ -753,6 +770,7 @@ initFeatured();
 initFooter();
 initCompatibility();
 initAutoComplete();
+initTouch();
 
 NBC('a.top').click(function(e){
     e.preventDefault();
@@ -761,3 +779,7 @@ NBC('a.top').click(function(e){
         }, 500);
         return false;
 });
+
+
+
+

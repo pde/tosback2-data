@@ -4520,6 +4520,176 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the onYouTubePlayerReady.js(232) ~~~~~~~~~~~~~~~~~~~~ */
 
+/* ~~~~~~~~~~~~~~~~~~~~ Starting the module.parseRSS.js(254) ~~~~~~~~~~~~~~~~~~~~ */
+(function(jQuery) {
+	/* parseRSS by Rob Barnett 10/31/2012 */
+	jQuery.fn.parseRSS = function(url, callback) {
+		var MaxCount = 3;
+
+		jQuery
+				.ajax({
+					url : document.location.protocol
+							+ '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num='
+							+ MaxCount + '&output=json&q='
+							+ encodeURIComponent(url) + '&callback=?',
+					crossDomain : true,
+					dataType : 'json',
+					success : function(data) {
+						feedList = '';
+						feedList += '<ul id="rssEntries">';
+						jQuery(data.responseData.feed.entries)
+								.each(
+
+										function(i, entries) {
+											feedList += '<li id="rssEntry'
+													+ (i + 1) + '">';
+											feedList += '<span class="rssEntry_title"><a href="'
+													+ entries.link
+													+ '">'
+													+ entries.title
+													+ '</a></span><br />';
+											switch (i) {
+											case 0:
+												var imagestr = entries.content;
+												var imgpos = imagestr
+														.indexOf('src');
+												var altpos = imagestr
+														.indexOf('alt');
+												var altContent = imagestr
+														.substring(altpos);
+												var newAltContent = altContent
+														.match(/"([^"]+)"/)[1];
+												var newimglink = imagestr
+														.substring(imgpos);
+												var imgLink = newimglink
+														.match(/"([^"]+)"/)[1];
+												feedList += '<div id="rssThumbnail" title="'
+														+ newAltContent
+														+ '"><img src="'
+														+ imgLink
+														+ '" width="150" height="90" alt="'
+														+ newAltContent
+														+ '" /></div>';
+												feedList += '<span class="rssEntry_publishedDate">'
+														+ _dateFormat(
+																new Date(
+																		entries.publishedDate),
+																"MM/DD/YYYY")
+														+ '</span><br />';
+												var str = entries.content;
+												var pos = str.indexOf("<br>");
+												pos = pos + 4
+												var newContent = str
+														.substring(pos);
+												feedList += '<span class="rssEntry_description">'
+														+ _truncateString(newContent)
+														+ '</span>';
+												break;
+											case 1:
+												var imagestr = entries.content;
+												var imgpos = imagestr
+														.indexOf('src');
+												var altpos = imagestr
+														.indexOf('alt');
+												var altContent = imagestr
+														.substring(altpos);
+												var newAltContent = altContent
+														.match(/"([^"]+)"/)[1];
+												var newimglink = imagestr
+														.substring(imgpos);
+												var imgLink = newimglink
+														.match(/"([^"]+)"/)[1];
+												feedList += '<div id="rssThumbnail" title="'
+														+ newAltContent
+														+ '"><img src="'
+														+ imgLink
+														+ '" width="150" height="90" alt="'
+														+ newAltContent
+														+ '" /></div>';
+												feedList += '<span class="rssEntry_publishedDate">'
+														+ _dateFormat(
+																new Date(
+																		entries.publishedDate),
+																"MM/DD/YYYY")
+														+ '</span><br />';
+												var str = entries.content;
+												var pos = str.indexOf("<br>");
+												pos = pos + 4
+												var newContent = str
+														.substring(pos);
+												feedList += '<span class="rssEntry_description">'
+														+ _truncateString(newContent)
+														+ '</span>';
+												break;
+											case 2:
+												var imagestr = entries.content;
+												var imgpos = imagestr
+														.indexOf('src');
+												var altpos = imagestr
+														.indexOf('alt');
+												var altContent = imagestr
+														.substring(altpos);
+												var newAltContent = altContent
+														.match(/"([^"]+)"/)[1];
+												var newimglink = imagestr
+														.substring(imgpos);
+												var imgLink = newimglink
+														.match(/"([^"]+)"/)[1];
+												feedList += '<div id="rssThumbnail" title="'
+														+ newAltContent
+														+ '"><img src="'
+														+ imgLink
+														+ '" width="150" height="90" alt="'
+														+ newAltContent
+														+ '" /></div>';
+												feedList += '<span class="rssEntry_publishedDate">'
+														+ _dateFormat(
+																new Date(
+																		entries.publishedDate),
+																"MM/DD/YYYY")
+														+ '</span><br />';
+												var str = entries.content;
+												var pos = str.indexOf("<br>");
+												pos = pos + 4
+												var newContent = str
+														.substring(pos);
+												feedList += '<span class="rssEntry_description">'
+														+ _truncateString(newContent)
+														+ '</span>';
+												break;
+											}
+											feedList += '<dd><input type="button" value="" id="rssReadMore'
+													+ i
+													+ '" class="button" onclick="readMore(\''
+													+ entries.link
+													+ '\')"></dd>';
+											feedList += '</li>'
+						});
+						feedList += '</ul>';
+						jQuery('#rssFeed').append(feedList);
+					}
+				});
+
+		var _dateFormat = function(date, format) {
+			format = format.replace("MM", (date.getMonth() < 9 ? '0' : '')
+					+ (date.getMonth() + 1));
+			format = format.replace("DD", (date.getDate() < 10 ? '0' : '')
+					+ date.getDate());
+			format = format.replace("YYYY", date.getFullYear());
+			return format;
+		};
+
+		var _truncateString = function(strng, $truncateDesc) {
+			var $length = 140;
+			var $description = strng;
+			var $truncateDesc = $description.substring(0, $length) + '&#8230;';
+			return $truncateDesc;
+		};
+	}
+})(jQuery)
+
+/* ~~~~~~~~~~~~~~~~~~~~ Ending the module.parseRSS.js(254) ~~~~~~~~~~~~~~~~~~~~ */
+
 var $j=jQuery.noConflict();window.name="eb";function are_cookies_enabled()
 {var cookieEnabled=(navigator.cookieEnabled)?true:false;if(typeof navigator.cookieEnabled=="undefined"&&!cookieEnabled)
 {document.cookie="testcookie";cookieEnabled=(document.cookie.indexOf("testcookie")!=-1)?true:false;}

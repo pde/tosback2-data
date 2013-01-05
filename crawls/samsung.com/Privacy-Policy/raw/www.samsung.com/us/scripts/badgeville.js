@@ -25,8 +25,8 @@ function BVinit(){
 	Badgeville.Settings.autoReward = [];
 
 	// API keys for FB and Twitter - this allows for sharing
-	Badgeville.Settings.FB='226153277431602';
-	Badgeville.Settings.twitter='oQYqWBpP2udteN5A86dCag';  // production key for twitter
+	//Badgeville.Settings.FB='226153277431602';
+	//Badgeville.Settings.twitter='oQYqWBpP2udteN5A86dCag';  // production key for twitter
 
 	var urlValue = String(window.location.href);
 	var urlValueSplit = urlValue.split('/');
@@ -454,6 +454,15 @@ function onloadBadgevilleInit() {
 
 			badgev_params.category = 'gsii';
 		}
+
+		// 2013 New Year Resolution
+		if (typeof(badgev_isNewyear) != 'undefined' && badgev_isNewyear){
+			badgev_params.category = 'newyear';
+			console.log('newyear');
+			badgev_timer = setTimeout('giveBadgevilleCredit("pageread")',15000);
+
+		}
+
 		// CES 2012 tagging
 		if (typeof(badgev_isCes2012) != 'undefined' && badgev_isCes2012){
 			badgev_params.event = 'ces2012';

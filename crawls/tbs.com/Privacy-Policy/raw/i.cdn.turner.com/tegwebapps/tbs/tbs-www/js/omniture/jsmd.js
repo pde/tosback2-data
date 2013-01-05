@@ -1,6 +1,6 @@
 var _w=window;// Shorthand notation for window reference
 var _jsmd_default={
-	version: "tbs.193.1870.20121024",
+	version: "tbs.198.1870.20121204",
 	release: "0",
 	dictionary: {
 		init: {
@@ -217,9 +217,9 @@ var _jsmd_default={
 					name: 			                		"Nielsen Hybrid Light Code",
 					account:		                		"standard_nielsen",
 					dynamic_actions: {
-						"video":                        	{ ignore: true },
-						"social-click":						{ ignore: true },
-						"game-click":						{ ignore: true }
+						"video":		{ ignore: true },
+						"social-click":	{ ignore: true },
+						"game":			{ ignore: true }
 					}
 				}
 			],
@@ -266,7 +266,8 @@ var _jsmd_default={
 					"trackExternalLinks":		        	true,
 					"trackInlineStats":						true,
 					"linkDownloadFileTypes":	        	"exe,zip,wav,mp3,mov,mpg,avi,wmv,doc,pdf,xls,jpg",
-					"linkInternalFilters":		        	"javascript:,tbs.com,comedyfestival.com,justforlaughschicago.com,lopeztonight.com,lopeztonightshop.com,pauseandlaugh.com,yolandastubetopshop.com,lesliesturkeybowling.com,tbshumorstudy.com,theconanblimp.com,tbscomedycruise.com,teamcoco.com,conanobriencantstop.com,tbstntallaccess.com,tnttbsp1devapp1.turner.com,cocop1dev1.turner.com,veryfunnynews.com,trendswithbenefits,theconanblimp",
+					/* IP Address in linkInternalFilters refers to a Cougar Town promotional iFrame */
+					"linkInternalFilters":		        	"javascript:,tbs.com,comedyfestival.com,justforlaughschicago.com,lopeztonight.com,lopeztonightshop.com,pauseandlaugh.com,yolandastubetopshop.com,lesliesturkeybowling.com,tbshumorstudy.com,theconanblimp.com,tbscomedycruise.com,teamcoco.com,conanobriencantstop.com,tbstntallaccess.com,tnttbsp1devapp1.turner.com,cocop1dev1.turner.com,veryfunnynews.com,trendswithbenefits,theconanblimp,198.61.150.233",
 					"linkLeaveQueryString":		        	false,
 					"trackingServer":						"analytics.tbs.com",
 					"trackingServerSecure":		        	"sanalytics.tbs.com",
@@ -289,7 +290,8 @@ var _jsmd_default={
 					"business.tbs.game_activity":			["prop14","eVar14"]
 				},
 				eventmap: {
-					"social.interaction":					["event1"]
+					"social.interaction":					["event1"],
+					"game.start":							["event2"]
 				},
 				premap: function() { },
 				postmap: function() {
@@ -354,6 +356,8 @@ var _jsmd_default={
 							this.v.linkTrackVars = "events,prop10,eVar10";
 						} else if(this.config.map.isDynamic.indexOf("game-click") > -1){
 							this.v.linkTrackVars = "prop13,prop14,eVar13,eVar14";
+						} else if(this.config.map.isDynamic.indexOf("game-activity") > -1){
+							this.v.linkTrackVars = "events,prop13,prop14,prop35,prop46,prop47,eVar13,eVar14,eVar35,eVar46,eVar47";
 						}
 					}
 
@@ -417,12 +421,12 @@ var _jsmd_default={
 			},
 			adbp: {
 				filters: {
-					"dynamic-link":						{ include: ["nothing"] },
-					"game-click":						{ include: ["code.version"] }
+					"dynamic-link":	{ include: ["nothing"] },
+					"game-click":	{ include: ["code.version"] }
 				},
 				settings: {
-					"trackInlineStats":						true,
-					"linkLeaveQueryString":		        	false
+					"trackInlineStats":		true,
+					"linkLeaveQueryString":	false
 				},
 				variablemap: {
 					"m:page.name":							["pageName","eVar26"],
@@ -437,7 +441,7 @@ var _jsmd_default={
 					"m:page.template_type":					["prop32","eVar32"],
 					"m:page.content_type":					["prop33","eVar33"],
 					"m:user.authenticated":					["prop34","eVar34"],
-					"m:code.version":						["prop35"],
+					"m:code.version":						["prop35","eVar35"],
 					"m:user.segment":						["prop36","eVar36"],
 					"m:search.internal.keyword":			["prop39","eVar39"],
 					"m:page.url_section[0]":				["prop41","eVar44"],
@@ -474,15 +478,15 @@ var _jsmd_default={
 			},
 			"tve":{
 				filters: {
-					"tve-C3_video-start": 	{ include: ["tve.page.name","tve.video.c3.","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
-					"tve-C4_video-start": 	{ include: ["tve.page.name","tve.video.c4.","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
-					"tve-C4_video-complete": 			{ include: ["tve.page.name","tve.video.c4.","tve.products","tve.video.c4.video_complete"] },
-					"tve-C3_video-complete": 			{ include: ["tve.page.name","tve.video.c3.","tve.products","tve.video.c3.video_complete"] },
-					"tve-C4_video-progress": 			{ include: ["tve.page.name","tve.products","tve.video.c4.video_progress"] },
-					"tve-C3_video-progress": 			{ include: ["tve.page.name","tve.products","tve.video.c3.video_progress"] },
-					"tve-C3A_video-start": 	{ include: ["tve.page.name","tve.video.c3a.video_start","tve.video.c3.marker","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
-					"tve-C3A_video-progress": 			{ include: ["tve.page.name","tve.products","tve.video.c3a.video_progress"] },
-					"tve-C3A_video-complete": 			{ include: ["tve.page.name","tve.products","tve.video.c3a.video_complete"] }
+					"tve-C3_video-start": 		{ include: ["tve.page.name","tve.video.c3.","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
+					"tve-C4_video-start": 		{ include: ["tve.page.name","tve.video.c4.","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
+					"tve-C4_video-complete": 	{ include: ["tve.page.name","tve.video.c4.","tve.products","tve.video.c4.video_complete"] },
+					"tve-C3_video-complete": 	{ include: ["tve.page.name","tve.video.c3.","tve.products","tve.video.c3.video_complete"] },
+					"tve-C4_video-progress": 	{ include: ["tve.page.name","tve.products","tve.video.c4.video_progress"] },
+					"tve-C3_video-progress": 	{ include: ["tve.page.name","tve.products","tve.video.c3.video_progress"] },
+					"tve-C3A_video-start": 		{ include: ["tve.page.name","tve.video.c3a.video_start","tve.video.c3.marker","tve.products","tve.full_episode_length","tve.video_title","tve.brand","tve.host_location","tve.content_id","tve.publication_date","tve.days_since_publication","tve.mode","tve.franchise","tve.user_id","tve.player_location", "tve.syndication_channel"] },
+					"tve-C3A_video-progress": 	{ include: ["tve.page.name","tve.products","tve.video.c3a.video_progress"] },
+					"tve-C3A_video-complete":	{ include: ["tve.page.name","tve.products","tve.video.c3a.video_complete"] }
 				},
 				variablemap: {
 					"tve.page.name":				["pageName","eVar18"],
@@ -506,17 +510,17 @@ var _jsmd_default={
 					"tve.page.full_url":			["prop21"],
 					"tve.player_location":			["prop11","eVar11"],
 					"tve.promo.external.id":		["campaign"],
-					"delimiter":						"|"
+					"delimiter":					"|"
 				},
 				eventmap: {
 					"tve.page.view":					["event15"],
-					"tve.video.c3.video_start":	["event8,event13,event15,event21"],
-					"tve.video.c4.video_start":	["event13,event15,event23"],
+					"tve.video.c3.video_start":			["event8,event13,event15,event21"],
+					"tve.video.c4.video_start":			["event13,event15,event23"],
 					"tve.video.c4.video_complete":		["event7,event14,event20,event22"],
 					"tve.video.c3.video_complete":		["event6,event14,event20,event22"],
 					"tve.video.c4.video_progress":		["event7,event20,event22"],
 					"tve.video.c3.video_progress":		["event6,event20,event22"],
-					"tve.video.c3a.video_start":	["event9,event13,event15,event21"],
+					"tve.video.c3a.video_start":		["event9,event13,event15,event21"],
 					"tve.video.c3a.video_progress":		["event5,event20,event22"],
 					"tve.video.c3a.video_complete":		["event5,event14,event20,event22"],
 					"tve.video.live.video_start":		["event13,event27"],
@@ -531,36 +535,36 @@ var _jsmd_default={
 			},
 			"adbp-video": {
 				filters: {
-					"video-preroll":                    	{ include: ["video.title","video.franchise","page.domain","video.id","business.friendly_name","video.preroll"] },
-					"video-complete":                   	{ include: ["business.tbs.vid_type","business.tbs.microsite","business.tnt.research_cat","business.tbs.full_ep","business.tbs.vid_segment","video.franchise","page.section[0]","page.domain","page.template_type","page.content_type","video.title","video.id","business.friendly_name","video.duration_watched","video.complete"] }
+					"video-preroll":	{ include: ["video.title","video.franchise","page.domain","video.id","business.friendly_name","video.preroll"] },
+					"video-complete":	{ include: ["business.tbs.vid_type","business.tbs.microsite","business.tnt.research_cat","business.tbs.full_ep","business.tbs.vid_segment","video.franchise","page.section[0]","page.domain","page.template_type","page.content_type","video.title","video.id","business.friendly_name","video.duration_watched","video.complete"] }
 				},
 				variablemap: {
-					"business.tbs.vid_type":                ["prop1","eVar1"],
-					"business.tbs.microsite":               ["prop2","eVar2"],
-					"business.tnt.research_cat":			["prop5","eVar5"],
-					"business.tbs.full_ep":                 ["prop6","eVar6"],
-					"business.tbs.vid_segment":				["prop8","eVar8"],
-					"m:page.section[0]":					["eVar27"],
-					"m:page.section[1]":					["eVar28"],
-					"m:page.domain":						["eVar29"],
-					"m:video.title":						["prop29","eVar41"],
-					"m:video.id":							["eVar42"],
-					"m:business.friendly_name":				["eVar30"],
-					"m:video.franchise":					["prop31","eVar31"],
-					"m:page.template_type":					["eVar32"],
-					"m:page.content_type":					["prop33","eVar33"],
-					"m:code.version":						["prop35"],
-					"m:promo.internal.id":					["eVar43"],
-					"m:promo.internal.implied":				["eVar48"],				//Campaign Stacking (SEO Driven)
-					"m:promo.external.id":					["campaign"],			//Marketing/External Campaigns
-					"delimiter":							"|"
+					"business.tbs.vid_type":        ["prop1","eVar1"],
+					"business.tbs.microsite":       ["prop2","eVar2"],
+					"business.tnt.research_cat":	["prop5","eVar5"],
+					"business.tbs.full_ep":         ["prop6","eVar6"],
+					"business.tbs.vid_segment":		["prop8","eVar8"],
+					"m:page.section[0]":			["eVar27"],
+					"m:page.section[1]":			["eVar28"],
+					"m:page.domain":				["eVar29"],
+					"m:video.title":				["prop29","eVar41"],
+					"m:video.id":					["eVar42"],
+					"m:business.friendly_name":		["eVar30"],
+					"m:video.franchise":			["prop31","eVar31"],
+					"m:page.template_type":			["eVar32"],
+					"m:page.content_type":			["prop33","eVar33"],
+					"m:code.version":				["prop35"],
+					"m:promo.internal.id":			["eVar43"],
+					"m:promo.internal.implied":		["eVar48"],				//Campaign Stacking (SEO Driven)
+					"m:promo.external.id":			["campaign"],			//Marketing/External Campaigns
+					"delimiter":					"|"
 				},
 				eventmap: {
-					"video.start":							["event32"],
-					"video.complete":						["event33"],
-					"video.autostart":						["event34"],
-					"video.preroll":						["event35"],
-					"m:video.duration_watched":	        	["event36"]
+					"video.start":				["event32"],
+					"video.complete":			["event33"],
+					"video.autostart":			["event34"],
+					"video.preroll":			["event35"],
+					"m:video.duration_watched":	["event36"]
 				},
 				premap: function() { },
 				postmap: function() {
@@ -1754,6 +1758,20 @@ var _jsmd_default={
 				this.set("business.tbs.game_activity",data.game_activity);	//prop14,eVar14
 				this.set("action","link");
 				this.set("link",{name: "game-click: " + data.game_title, type: "o"});
+				this.send();
+			},
+			"game-activity": function(data,map) {
+				var gameInfo = data.item||{};
+				var events = this.get("page.events");
+				events.length = 0;
+				this.set("page.name","");
+				this.set("business.tbs.game_title",gameInfo.title);
+				this.set("business.tbs.game_activity",gameInfo.activity);
+				if(gameInfo.activity.indexOf("start") > -1){
+					this.push("page.events","game.start");
+				}
+				this.set("action","link");
+				this.set("link",{name: "game-activity: " + gameInfo.title + "|" + gameInfo.activity, type: "o"});
 				this.send();
 			},
 			/* TVE Dyanmic Actions */
@@ -3624,21 +3642,18 @@ function sendSocialClick(namespace,site,action,target){
 	}
 }
 
-/*
-function sendGameEvent(gameData, event){
-    try {
-            var gameObj = _w.JSON.parse(gameData);
-            trackMetrics(
-            {
-                    type: event,
-                    data:
-                    {
-                    	game : gameObj
-                    }
-            });
-    } catch(e){}
+function sendInteractionEvent(info,event){
+	try {
+		trackMetrics(
+			{
+				type: event,
+				data: {
+					item: info
+				}
+			}
+		);
+	} catch(e){}
 }
-*/
 
 function sendComscoreVideoMetrixBeacon(videoId, contentFlag) {
 	if(window.location.hostname.indexOf("teamcoco") > -1){

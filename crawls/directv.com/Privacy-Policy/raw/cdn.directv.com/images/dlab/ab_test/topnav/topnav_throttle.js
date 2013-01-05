@@ -1,11 +1,11 @@
 
 !function($){
-	var navTestGroup = 30;  // percent of users to include in test
+	var navTestGroup = 75;  // percent of users to include in test
 	var callTnT = true;
 	
 	var navCookie = readCookie('dtvtopnav');
 
-	if (navCookie == "old-hp" || navCookie == "old-dtv") {
+	if (navCookie == "old-hp" || navCookie == "old-dtv" || navCookie == "old-dtv-30") {
 		callTnT = true;
 	} else if (navCookie != null) {
 		callTnT = false;
@@ -19,9 +19,7 @@
 	} else {
 		mboxCreate("topnav_throttle","entry=home");
 	}
-	*/
-	
-	/*
+
 	// if user not on home-page, set cookie to OLD
 	if (!$('body').hasClass('home-page')) {
 		setTopnavCookie('old-hp');
@@ -42,7 +40,7 @@
 		if (iRandom <= navTestGroup) {
 			makeTnTCall();
 		} else {
-			setTopnavCookie('old-dtv-30');
+			setTopnavCookie('old-dtv-75');
 		}
 	}
 	
