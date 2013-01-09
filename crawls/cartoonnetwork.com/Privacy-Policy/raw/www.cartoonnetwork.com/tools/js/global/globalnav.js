@@ -1,78 +1,24 @@
+
 jQuery.noConflict();
-var gnStPt = 0;
-var gnLength;
-// MANAGE COOKIES
-var COOKIE_NAME = "my_carousel_position";
-var cookiedomain = "cartoonnetwork.com";
 
-function getGNStartPoint() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
-    startVal = 0;
-    var cookieVal = readCookie(COOKIE_NAME);
-    if ((cookieVal != null) && (cookieVal != '')) {
-        startVal = parseInt(cookieVal);
-		deleteCookie(COOKIE_NAME);
-    }
-	if ((startVal >= gnLength) || startVal == "NaN") {
-		startVal = 0;
-	}
-    gnStPt = startVal;
-}
-
-function resetGNStartPoint() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
-    var cookieVal = readCookie(COOKIE_NAME);
-    if(cookieVal != null){
-       deleteCookie(COOKIE_NAME);
-    }
-	setCookie(COOKIE_NAME, gnStPt);
-}
-
-var navArray = new Array();
-
-function doTrayNav() {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
-	navArray.sort(function(a,b){
-		var show1 = a.linktext.toLowerCase();
-		var show2 = b.linktext.toLowerCase();
-		if (show1 < show2) {
-			return -1;
-		}
-		if (show1 > show2) {
-			return 1;
-		}
-		return 0;
-	});
-
-	var linksPerColumn = Math.ceil(navArray.length / 4);
-	for (i = 1; i <= navArray.length; i++) {
-		if (i <= linksPerColumn) {
-			parentDiv = 1;
-		} else if (i > linksPerColumn && i <= (linksPerColumn * 2)) {
-			parentDiv = 2;
-		} else if (i > (linksPerColumn * 2) && i <= (linksPerColumn * 3)) {
-			parentDiv = 3;
-		} else {
-			parentDiv = 4;
-		}
-		jQuery('<div></div>').appendTo('div.traycolumn:nth-child(' + parentDiv + ')');
-		jQuery('<a></a>').attr('href',navArray[i-1].linkurl).html(navArray[i-1].linktext).appendTo('div.gntray .traycolumn div:last');
-	}
-}
+var _gn = new GlobalNav();
 
 jQuery(document).ready(function() {
 
 	//////////////////////////////////////////////////////////////////////////
 	// Mobile check
 	
-			var uaCheck = navigator.userAgent.toLowerCase();
-			var isAndroid = uaCheck.indexOf("android") > -1;
-			var isATab = uaCheck.indexOf("mobile") > -1;
-			
-			if (isAndroid == true && isATab == true) {
-				var isAndroidCheck = true;	
-			}
+		var uaCheck = navigator.userAgent.toLowerCase();
+		var isAndroid = uaCheck.indexOf("android") > -1;
+		var isATab = uaCheck.indexOf("mobile") > -1;
+		
+		if (isAndroid == true && isATab == true) {
+			var isAndroidCheck = true;	
+		}
 			
 //		if ((navigator.userAgent.match(/iPhone/i)) || isAndroidCheck ){
 
-/****** Disable mobile web  (rknopf:10/19/2012)
+/****** Disable mobile web  (rknopf:10/19/2012) NOTE: Let Jake know when reenabled for testing with SMAMP!
 
 
 		if ((navigator.userAgent.match(/iPhone/i)) ) {
@@ -99,7 +45,7 @@ jQuery(document).ready(function() {
 		var d				= new Date();
 		var legalcopy		= jQuery("#legalWrapper .legalSub").html() + " ";
 		if(legalcopy != "" && legalcopy.length > 10){
-			var newlegalcopy		= legalcopy.replace(/2011+/g, d.getFullYear());
+			var newlegalcopy		= legalcopy.replace(/2011+/g, d.getFullYear()).replace(/2012+/g, d.getFullYear());
 			jQuery("#legalWrapper .legalSub").html(newlegalcopy);
 		}
 		
@@ -107,18 +53,19 @@ jQuery(document).ready(function() {
 
 	
 	/////////////////////////////////////////////////////////////////////////
-	// move the alllshows tray to the footer after page load
+	// move the allshows tray to the footer after page load
 	
 		if (jQuery('.footer_rule').length > 0) {
-			jQuery('.footer_rule').before(jQuery('div.gnbutton'));
+			jQuery('.footer_rule').before(jQuery('div.gnbutton').removeClass("hiddenbox"));
 			jQuery('.footer_rule').before(jQuery('#gnallshows'));
 			jQuery('.footer_rule').css('display', 'none');
 	
 		} else if (jQuery('.footerBox').length > 0) {
-			jQuery('.footerBox').prepend(jQuery('div.gnbutton'));
+			jQuery('.footerBox').prepend(jQuery('div.gnbutton').removeClass("hiddenbox"));
 			jQuery('.footerBox').prepend(jQuery('#gnallshows'));
 	
 		}
+
 		var docWidth = jQuery(document).width();
 		var footerWidth = jQuery('div.footer').width();
 		var containerWidth = jQuery('#container').width();
@@ -133,14 +80,51 @@ jQuery(document).ready(function() {
 		}
 
 
-//		jQuery('#gnallshows').prependTo("div.footer");
-//		jQuery('div.gnbutton').prependTo("div.footer");
-	
 	/////////////////////////////////////////////////////////////////////////
+	// adjust the global nav is there's no ad served on the page
 
+		if (jQuery(".ad728Wrapper").length == 0) {
+			jQuery("#navWrapper").css("margin-top", "0px");
+		}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// rollover animation for the four main nav buttons
+	// only apply if the user is not on a mobile device
+
+		if(!isATab) {
+
+			/*  easing functions used for the rollovers  */
+			jQuery.extend( jQuery.easing, {
+				def: 'easeOutQuad',
+				easeOutQuad: function (x, t, b, c, d) {
+					return -c *(t/=d)*(t-2) + b;
+				},
+				easeInOutQuad: function (x, t, b, c, d) {
+					if ((t/=d/2) < 1) return c/2*t*t + b;
+					return -c/2 * ((--t)*(t-2) - 1) + b;
+				}
+			});
+
+			/*  add the hover listeners for the main nav icons  */
+			jQuery('.gn_wrapper')
+				.mouseenter(function(){
+					var thisIcon = jQuery(".gn_icon", this);								// grab a reference to the icon
+					jQuery(".active", this).stop(true, true).fadeIn(150, 'easeOutQuad');	// fade in the grey background
+					thisIcon.stop(true).animate({top:"-7px"}, 150, 'easeOutQuad');			// animate the icon up
+					thisIcon.animate({top: "1px"}, 200, 'easeInOutQuad');					// and then back down
+				})
+				.mouseleave(function(){
+					jQuery(".active", this).fadeOut(200, 'easeOutQuad');					// fade out the grey background
+				})
+		}
+
+
+	/////////////////////////////////////////////////////////////////////////
+	// nav slider functionality
 	
 	
-
+	// grab the URL for the icons XML file
 	if (window.location.hostname.indexOf('staging') > -1) {
 		navdataUrl = "/cnservice/cartoonsvc/content/xml/getContentById.do?contentId=111880&depth=5&filterContentId=112446" + previewFormat;
 	} else if (window.location.hostname.indexOf('fusionfall') > -1) {
@@ -151,21 +135,25 @@ jQuery(document).ready(function() {
 		navdataUrl = "http://www.cartoonnetwork.com/tools/includes/cmagen/navigation.xml";
 	}
 	
-	
-	getGNStartPoint();
+	// load the icons XML
 	jQuery.ajax({
-		// get the collections XML
 		type: "GET",
 		url: navdataUrl,
 		dataType: "xml",
 		error: function (request, error) {
-			// do this on AJAX error
+			if (window.location.hostname.indexOf('blog') > -1) {
+				jQuery(".navhide").find('li').each(function(){
+					_gn.hiddenIcons.push(jQuery(this).html());
+				});
+
+				_gn.setInitialIcons();
+			}
 		},
 		success: function(data) {
-			var i = 1;
-			jQuery('<div></div>').addClass('navhide').appendTo('body');
-			gnLength = jQuery(data).find('PropertyMaster').length;
-			jQuery(data).find('PropertyMaster').each(function() {
+
+	
+			jQuery(data).find('PropertyMaster').each(function() {		// go through each node and grab the pieces we need
+
 				var gnLinkText = jQuery(this).find('Title').text();
 				var clickMapName = gnLinkText.replace(/\s/g,'_');
 				clickMapName = "?atclk_gn=picker_" + clickMapName.replace('\'','');
@@ -173,50 +161,132 @@ jQuery(document).ready(function() {
 				if (window.location.hostname.indexOf('staging') > -1) {
 					gnLinkURL = gnLinkURL.replace(/www/,'staging');
 				}
-//				var gnLinkURL = jQuery(this).find('brandPickerImage:first').find('srcUrl').text();
 				var gnIcon = jQuery(this).find('brandPickerImage:first').find('srcUrl').text();
-				// populate sortable array that will be used to generate the all shows tray menu
-				navArray[i-1] = {linktext:gnLinkText,linkurl:gnLinkURL};
 
-				// add the new carousel icon to the carousel 
-				var clickString = clickMapName;
-//				htmlString = '<a href="' + gnLinkURL + '"><img src="http://i.cdn.turner.com/v5cache/CARTOON/site/' + gnIcon + '" width="65" height="50" alt="' + gnLinkText + '" title="' + gnLinkText + '" border="0"></a>';
-				var htmlString = '<a href="' + gnLinkURL + clickString + '"><img src="http://i.cdn.turner.com/v5cache/CARTOON/site/' + gnIcon + '" width="65" height="50" alt="' + gnLinkText + '" title="' + gnLinkText + '" border="0"></a>';
-				jQuery('<li></li>').html(htmlString).appendTo('div.navhide');
-
-				if (i == jQuery(data).find('PropertyMaster').length) {
-					//doTrayNav();
-					jQuery('img[title]').tooltip({position:'bottom right', offset:[-8,-33], tipClass:'tooltip'});
-					jQuery('.navWrapper .floater .navcarousel .outer .inner').css('width',690);
-				}
-				i++;
+				// build the html string and add it to the array of icons
+				var htmlString = '<a href="' + gnLinkURL + clickMapName + '"><img src="http://i.cdn.turner.com/v5cache/CARTOON/site/' + gnIcon + '" width="65" height="50" alt="' + gnLinkText + '" border="0"></a>';
+				_gn.hiddenIcons.push(htmlString);
 			});
-			for (i = 0; i < 10; i++) {
-				var poppedOn = 	jQuery('.navhide li:first').detach();
-				poppedOn.appendTo('.navWrapper .floater .navcarousel .outer .inner ul');
-			}
+
+			_gn.setInitialIcons();
+
 		}
 	});
 
-
-	// init hovers and buttons
-	jQuery('#gnSearchBtn').hover(
-		function(){
-			jQuery(this).attr({src:'http://www.cartoonnetwork.com/tools/img/globalnav/go_on.gif'});
-		},
-		function(){
-			jQuery(this).attr({src:'http://www.cartoonnetwork.com/tools/img/globalnav/go_off.gif'});
-		}
-	);
-
-    jQuery('#deleteCookie').click(function(){     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
-		delCookie(COOKIE_NAME);
-		return false;
-    });
-
 });
 
-function switchClass(targetElement,className) {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
+function GlobalNav() {
+
+	var self = this;
+	self.icons_shown = 12;
+	self.loadedIcons = [];
+	self.hiddenIcons = [];
+
+	// deactivate the button listeners so that you can't click the arrows repeatedly
+	this.removeButtonListeners = function() {
+		jQuery("#sliderPrev").unbind("click", self.gnPrevClick);
+		jQuery("#sliderNext").unbind("click", self.gnNextClick);
+	}
+
+	this.addButtonListeners = function() {
+		jQuery("#sliderPrev").bind("click", self.gnPrevClick);
+		jQuery("#sliderNext").bind("click", self.gnNextClick);
+	}
+
+
+	// when the page first loads, set the initial icons for the slider
+	this.setInitialIcons = function() {
+		for (var i = 0; i < self.icons_shown*2; i++) {		// add the first 24 icons to the end of the slider
+			var currentIcon = self.hiddenIcons.shift();
+			self.loadedIcons.push(currentIcon);
+		}
+		for (var i = 0; i < self.icons_shown; i++) {			// add the last 12 icons to the front of the slider
+			var currentIcon = self.hiddenIcons.pop();
+			self.loadedIcons.unshift(currentIcon);
+		}
+
+		self.updateSliderHTML();
+	}
+
+	// update the HTML inside of the div that contains the sliding icons
+	this.updateSliderHTML = function () {
+		jQuery('#navSlider_iconContainer ul').empty();		// empty the container
+
+		for (var i = 0; i < self.loadedIcons.length; i++) {
+			jQuery('<li></li>').html(self.loadedIcons[i]).appendTo('#navSlider_iconContainer ul');  // add each loaded icon
+		}
+
+		//////////  tooltip functionality  //////////
+
+			if(!(navigator.userAgent.toLowerCase().indexOf("mobile") > -1)){		// don't apply if it's a mobile device
+				var tooltip = jQuery("#tooltip");
+				var containerWidth = jQuery("body").width();
+				var viewPortWidth = jQuery("#navSlider_viewPort").width();
+				if (containerWidth < viewPortWidth) containerWidth = viewPortWidth;
+				var tooltipWidth;
+				var viewPortBottom;
+
+				jQuery("#navSlider ul li").mouseenter(function(e){
+						viewPortBottom = jQuery("#navSlider_viewPort").offset().top + jQuery("#navSlider_viewPort").height();  // get the page coordinates of the viewport
+						tooltip.css("top", (viewPortBottom-4)+"px");
+						tooltip.html(jQuery("img", this).attr("alt")).stop(true, true).delay(100).fadeTo(200, 1);  // change the tooltip's text and fade it in
+						tooltipWidth = tooltip.outerWidth();
+					}).mousemove(function(e){
+						if (e.pageX > containerWidth/2) {
+							tooltip.css("left", (e.pageX-tooltipWidth+10)+"px");		// follow the mouse, position the tooltip to the right
+						} else {														// for the left half and to the left for the right half
+							tooltip.css("left", (e.pageX-10)+"px");
+						};
+					}).mouseleave(function(e){
+						tooltip.stop(true, true).fadeTo(200, 0.01);
+					});
+			}
+			
+		////////// end of tooltip functionality  //////////
+
+		jQuery('#navSlider_iconContainer').css('left', "-853px");		// set the position back to its original point
+		self.addButtonListeners();
+	}
+
+
+	this.gnPrevClick = function() {
+		self.removeButtonListeners();
+		jQuery('#navSlider_iconContainer').animate({ left: '+=853' }, 550, self.updatePrev );  // slide the icon container to the right
+	}
+
+	this.gnNextClick = function() {
+		self.removeButtonListeners();
+		jQuery('#navSlider_iconContainer').animate({ left: '-=853' }, 550, self.updateNext );  // slide the icon container to the left
+	}
+
+
+	this.updatePrev = function() {
+		for (var i = 0; i < self.icons_shown; i++) {	
+			var sendToHidden = self.loadedIcons.pop();  		// grab 12 icons from end of loadedIcons and add to front of hiddenIcons
+			self.hiddenIcons.unshift(sendToHidden);
+			var sendToLoaded = self.hiddenIcons.pop();  		// then grab 12 icons from end of hiddenIcons and add to front of loadedIcons
+			self.loadedIcons.unshift(sendToLoaded);
+		}
+		self.updateSliderHTML();
+	}
+
+	this.updateNext = function() {
+		for (var i = 0; i < self.icons_shown; i++) {	
+			var sendToHidden = self.loadedIcons.shift();  		// grab 12 icons from front of loadedIcons and add to end of hiddenIcons
+			self.hiddenIcons.push(sendToHidden);
+			var sendToLoaded = self.hiddenIcons.shift();  		// then grab 12 icons from front of hiddenIcons and add to end of loadedIcons
+			self.loadedIcons.push(sendToLoaded);
+		}
+		self.updateSliderHTML();
+	}
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+// global switch class function
+
+function switchClass(targetElement,className) {
 	if (className.indexOf('.') <= -1) {
 		dotClass = "." + className;
 	}
@@ -224,102 +294,5 @@ function switchClass(targetElement,className) {     // I don't believe this need
 		jQuery(targetElement).removeClass(className);
 	} else {
 		jQuery(targetElement).addClass(className);
-	}
-}
-
-
-
-var prevMngr = 0;
-var prevLmt = 0;
-var nextMngr = 0;
-var nextLmt = 0;
-function popPrev() {
-	clearInterval (nextMngr);
-	if (prevLmt < 10) {
-		var poppedOff = jQuery('.navWrapper .floater .navcarousel .outer .inner ul li:last').detach();
-		var poppedOn = 	jQuery('.navhide li:last').detach();
-		poppedOff.prependTo('.navhide');
-		poppedOn.prependTo('.navWrapper .floater .navcarousel .outer .inner ul');
-		prevLmt += 1;
-	} else {
-		clearInterval (prevMngr);
-		prevLmt = 0;
-	}
-}
-function popNext() {
-	clearInterval (prevMngr);
-	if (nextLmt < 10) {
-		var poppedOff = jQuery('.navWrapper .floater .navcarousel .outer .inner ul li:first').detach();
-		var poppedOn = 	jQuery('.navhide li:first').detach();
-		poppedOff.appendTo('.navhide');
-		poppedOn.appendTo('.navWrapper .floater .navcarousel .outer .inner ul');
-		nextLmt += 1;
-	} else {
-		clearInterval (nextMngr);
-		nextLmt = 0;
-	}
-}
-function gnPrev() {
-	clearInterval (nextMngr);
-	clearInterval (prevMngr);
-	prevMngr = setInterval("popPrev()",50);
-}
-
-function gnNext() {
-	clearInterval (nextMngr);
-	clearInterval (prevMngr);
-	nextMngr = setInterval("popNext()",50);
-}
-
-/******* Disabled by Brendellya 1/17/2012
-jQuery(document).ready(function() {
-		jQuery.ajax({
-		// get the collections XML
-		type: "GET",
-		url: "/tools/includes/navigation_topsearch.xml",
-		dataType: "xml",
-		error: function (request, error) {
-			// do this on AJAX error
-		},
-		success: function(data) {
-			var count = 0;
-			jQuery(data).find('ListItem').each(function() {
-				if (count < 6) {
-					if (count < 3) {
-					jQuery('#mn_topsearches_listL').append('<li><a href="'+ jQuery(this).find('url').text()+'">'+ jQuery(this).find('text').text() +'</a></li>')
-					} else {
-					jQuery('#mn_topsearches_listR').append('<li><a href="'+ jQuery(this).find('url').text()+'">'+ jQuery(this).find('text').text() +'</a></li>')
-					}
-				}
-				count++;
-			});
-	
-		}
-		});
-});
-****************/
-
-
-function mnShowSearch() {
-		jQuery('#mn_searchbox').show();
-}
-
-function mnHideSearch() {
-		jQuery('#mn_searchbox').hide();
-}
-
-
-function smartBuffer(bufUrl, bufTime) {     // I don't believe this needs to be here any more.  - Brian Shrader 10/18/12
-  var bufferC = readCookie("CNSBuf");
-	 if ((bufferC != null) && (bufferC != '')) {
-		deleteCookie("CNSBuf");
-    }
-	
-	setCookie("CNSBuf", bufUrl);
-	
-	if (bufTime == null ){
-	window.location.href = "/redirects/index.html?time=8";
-	} else {
-	window.location.href = "/redirects/index.html?time=" + bufTime;
 	}
 }

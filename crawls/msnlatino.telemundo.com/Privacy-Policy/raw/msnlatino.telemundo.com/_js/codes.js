@@ -217,7 +217,7 @@ dartAds.prototype.refreshAds = function(val) {
         }
     }
     // always reset the auto refresh timer
-    this.resetRefreshTimer('AUTOREFRESH');
+    //this.resetRefreshTimer('AUTOREFRESH');
 };
 /**
  * Stops an auto refresh timer.

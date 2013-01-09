@@ -100,6 +100,8 @@ if (typeof(WCMMode) == "undefined" || WCMMode != "EDIT") {
 		        		}]
 		        	}]
 				},
+				{"name": "ItemPermalink", "format": $("meta[property=\"og:url\"]").attr("content") + "?commentId=[ID]"},
+				{"name": "ItemSanitization"},
 				{"name": "Like"},
 				{"name": "CommunityFlag"},
 				{"name": "Curation"},

@@ -1,5 +1,5 @@
 /* SiteCatalyst code version: H.25.2.
-Copyright 1997-2008 Omniture, Inc. More info available at
+Copyright 1997-2012 Omniture, Inc. More info available at
 http://www.omniture.com */
 /************************ ADDITIONAL FEATURES ************************
      Plugins
@@ -15,7 +15,7 @@ s.currencyCode="USD"
 s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
-s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx"
+s.linkDownloadFileTypes="exe,zip,wav,mp3,mov,mpg,avi,wmv,pdf,doc,docx,xls,xlsx,ppt,pptx,pkpass"
 //[BShoe Change: Now Set in Config file for Multi-Site]s.linkInternalFilters="javascript:, shoes.com"
 s.linkLeaveQueryString=false
 s.linkTrackVars="None"

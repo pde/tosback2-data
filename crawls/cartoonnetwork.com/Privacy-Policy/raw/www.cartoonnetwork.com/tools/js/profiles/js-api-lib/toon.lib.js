@@ -254,13 +254,13 @@ function toon_lib(){
 	this.manageapi = function(params,callback){
 		
 		// Default values
-		var values 				= [];
+		var values 				= {};
 		values.url				= (params.url != undefined) 			? params.url : this.base_url+this.profile_url+'/profilemanager';
 		values.action 			= (params.action != undefined) 			? params.action : 'PLAYER_UPDATE';
 		values.msib_id 			= (params.msib_id != undefined) 		? params.msib_id : '';
 		values.player_id 		= (params.player_id != undefined) 		? params.player_id : '';
 		values.dna 				= (params.dna != undefined) 			? params.dna : '';
-		values.avatar_url 		= (params.avatar_url != undefined) 		? params.avatar_url : '';
+		values.avatar_url 		= (params.avatar_url != undefined) 		? params.avatar_url : '';		
 		
 		// Ajax call 
 		jQuery.getJSON2( values.url,
@@ -447,10 +447,632 @@ function toon_lib(){
 		);
 	
 	} 
+
+	//ALERT API
+	this.alert_api = function(params,callback){  
+	
+		// Default values
+		var values 				= [];		
+
+		//values.url				=  this.base_url+'/alerts/'; //test data url
+		if(this.base_url == 'http://staging.cartoonnetwork.com'){		
+			values.url				=  this.base_url+'/alerts-3.0/'; 
+		} else {
+			values.url				=  this.base_url+'/alerts/';
+		}	
+		values.ext		 		= (params.ext != undefined) 			? params.ext : ''; 
+		values.url				+= values.ext; 	
+		values.content 			= params.content;			
+				
+		// Ajax call
+		if(params.type != undefined && params.type == 'post'){			
+			jQuery.ajax({
+			    contentType: 'application/json',
+			    data: values.content ,
+			    dataType: 'json',
+                success:function (xhr){
+					callback({	
+							'status_code':xhr.status
+						});
+                },                 
+                error:function (xhr){
+					callback({	
+							'status_code':xhr.status
+						});
+                },			    
+			    type: 'POST',
+			    url: values.url
+			});																	
+		} else if(params.type != undefined && params.type == 'delete'){
+			jQuery.deletePost( values.url,
+				function(data){
+					callback(data);
+				},'json'
+			);
+		} else {
+			jQuery.getJSON2( values.url,
+				function(data){
+					callback(data);
+				}
+			);
+		}
+		
+	}	
+	
+	this.level_api = function(paramsLevel,callback){
+		var	params = paramsLevel;		
+		// Default values
+		var values 				= [];
+		values.url				= (params.url != undefined) ? params.url : this.base_url+'/social/user/user_data';
+		//values.url 				+= params.ext;
+		// Ajax call
+		
+		var passes				= [];
+		if(params.passes != undefined){
+			passes 				= params.passes;
+		}
+		if(params.type != undefined && params.type == 'post'){
+			jQuery.ajax({
+			    contentType: 'application/json',
+			    data: params.msib_ids,
+			    dataType: 'json',
+                success:function (data){
+	                callback(data);
+                },                 
+                error:function (data){
+                },			    
+			    type: 'POST',
+			    url: values.url
+			});									
+		} else {
+			jQuery.getJSON2( values.url,passes,
+				function(data){
+					callback(data);
+				}
+			);
+		}		
+	} 
+	
+	this.msibid_level_multi = function(params,callback){ 				
+		if (params.msibs_csv != undefined){
+			params.msib_ids = params.msibs_csv;
+		}	
+		params.passes			= { msib_ids:params.msib_ids };
+		params.type 			= 'post'; 
+		params.content 			= params.alertrequestbody;
+
+		gthat.level_api(params,function(data){
+			
+			//add level images to JSON
+			if (typeof data != undefined){						
+				for (var x in data){
+					if(parseInt(x) == x){
+						if (typeof data[x].data.level != undefined){
+							data[x].data.levelImage = {};
+							data[x].data.levelImage.sml 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data[x].data.level + '_sml.png'
+							data[x].data.levelImage.med 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data[x].data.level + '_med.png'
+							data[x].data.levelImage.lrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data[x].data.level + '_lrg.png'
+							data[x].data.levelImage.xlrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data[x].data.level + '_xlrg.png'						
+						}
+					}
+				}
+			}
+			callback(data);
+		});
+	}	
+	
+
+	
 	
 	/*
 	FUNCTIONS
 	*/	
+	
+
+	//Level + Friends
+	this.msibid_level = function(params, callback){
+		// Default values
+		var values 				= [];		
+		values.url				=  this.base_url+'/social/user/user_data/' + params.msib_id + '/@all';	
+		jQuery.getJSON2(values.url,
+			function(data){
+				callback(data);
+			}		
+		);						
+	}
+
+	//may not be used commented out for now
+	//MSIBID SEARCH with LEVELS and POINTS
+	/*
+	this.msibid_level_search = function(params,callback){ 
+		params.ext 				= 'tegids/post'; 
+		
+		// Only in staging
+		if(params.with_dna != undefined && params.with_dna == true){
+			params.ext 			+= '/include-dna/true';
+		}else{
+			params.ext 			+= '/include-dna/false';
+		}
+		
+		params.passes			= { tegids:params.teg_ids };
+		params.type 			= 'post'; 
+		var s_key 				= 'msibid_level_search_'+params.teg_ids; 
+ 			
+			gthat.rest_api(params,function(data){
+				//callback(data);
+
+				var msibForLevelCall = [];
+				var levelUsers = data;
+				
+				for (var x in data){
+					if(parseInt(x) == x){
+						msibForLevelCall[x] = {};					
+						msibForLevelCall[x].msibID = data[x].msibID;
+					}	
+				}
+				var usersLevelArray = [];
+				var usersLevelArrayCount = 0;
+				for (var y in msibForLevelCall){
+					if(parseInt(y) == y){
+						gthat.user_points_level(msibForLevelCall[y].msibID, function(data) {
+							usersLevelArray.push(data);							
+							usersLevelArrayCount++;
+							if (msibForLevelCall.length == usersLevelArrayCount){
+								combineMsibLevel(data);
+							}
+						});
+					}				
+				}
+
+				function combineMsibLevel(callback){
+					for (var x in levelUsers){
+						if(parseInt(x) == x){						
+							for (var y in usersLevelArray){
+								if(parseInt(y) == y){								
+									if(levelUsers[x].msibID === usersLevelArray[y].msib_id){
+										levelUsers[x].complete		= usersLevelArray[y].complete;
+										levelUsers[x].cur_lvl_pts	= usersLevelArray[y].cur_lvl_pts;
+										levelUsers[x].level			= usersLevelArray[y].level;
+										levelUsers[x].nxt_lvl_pts	= usersLevelArray[y].nxt_lvl_pts;
+										levelUsers[x].points		= usersLevelArray[y].points;
+									}																
+								}
+							}
+						}
+					}
+					returnMsibLevel(levelUsers);
+				}
+				
+				function returnMsibLevel(levelUsers){
+					if (levelUsers.length > 1){
+						var data = levelUsers.reverse();					
+						callback(data);
+					} else {
+						var data = levelUsers;
+						callback(data);		
+					}
+
+				}				
+				
+			});
+	}
+	*/	
+	/**
+	 * user_points_level
+	 *
+	 * Delivers the user's current points, current level, points needed to 
+	 * achieve next level, points needed to achieve current level, percentage 
+	 * completed in their current level, message regarding the success or 
+	 * failure of the calls and whether the complete trip was a success or not.
+	 * 
+	 * @param msib_id string A valid member services ID
+	 * @param callback function A function that will be called with the results of the calls passed in as a data object
+	 */
+	this.user_points_level = function(msib_id, callback) {
+		// Setup our results object with defaults
+		var result = {error: true, message: 'no progress'},
+			// The URL for the points service
+			points_url = '{url}/social/user/user_data/{user_id}'.replace(/{url}/, this.base_url).replace(/{user_id}/, msib_id),
+			// The URL for the level service
+			level_url = '{url}/social/level/value/{level}'.replace(/{url}/, this.base_url),
+			// Success callback for the points service call
+			pointsComplete = function(data, status, xhr) {
+				if (data.data.level !== undefined && data.data.gamer_score.badge_points !== undefined) {				
+					// Update the URL for the next call
+					var nxt_lvl		= data.data.level,
+						my_lvl_url	= level_url.replace(/{level}/, nxt_lvl)
+					
+					// Populate our result object
+					result.points	= data.data.gamer_score.badge_points;
+					result.level  	= data.data.level;
+					result.msib_id	= msib_id;
+					result.message	= status;
+					result.error	= false;					
+					result.levelImage = {};
+					result.levelImage.sml 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_sml.png'
+					result.levelImage.med 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_med.png'
+					result.levelImage.lrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_lrg.png'
+					result.levelImage.xlrg 	= 'http://i.cdn.turner.com/toon/tools/img/social/social30/level/levels_' + data.data.level + '_xlrg.png'						
+					
+					// Ping the level service
+					jQuery.ajax({
+						url: 		my_lvl_url,
+						dataType:	'json',
+						success:	currLevelComplete,
+						error:		currLevelError
+					});
+				}
+				else {
+					// There was an error with the object being returned from the service
+					result.error 	= true;
+					result.message	= "points service:";
+					result.message	+= data.data.level === undefined ? " level undefined" : "";
+					result.message	+= data.data.gamer_score.badge_points ? " points undefined" : "";
+					
+					callback(result);
+				}
+			},
+			// Error callback for the points service call
+			pointsError = function(xhr, status, error) {
+				// Ran into an error, update the results object
+				result.error 	= true;
+				result.message	= "points service: " + status;
+				
+				// Make the callback with the error 
+				callback(result);
+			},
+			// Success callback for the level service call
+			currLevelComplete = function(data, status, xhr) {
+				if (data.min_points !== undefined) {
+					var nxt_lvl		= data.value + 1,
+						my_lvl_url	= level_url.replace(/{level}/, nxt_lvl);
+				
+					// Update the result object
+					result.cur_lvl_pts		= data.min_points;
+					result.nxt_lvl_pts		= Number(data.max_points) + 1;
+					result.pts_remaining 	= result.nxt_lvl_pts - result.points; 
+					result.complete			= getPercentComplete(result);
+					result.message			= status;
+					result.error			= false;
+				}
+				else {
+					// Ran into an error with the object being returned
+					result.error	= true;
+					result.message	= "current level service: min_points undefined";
+				}
+				// Return the completed result object
+				callback(result);
+			},
+			// Error callback for the level service call
+			currLevelError = function(xhr, status, error) {
+				// Ran into an error, update the results object
+				result.error 	= true;
+				result.message 	= "current level service: " + status;
+				
+				// Make the callback with the error
+				callback(result);
+			},
+			getPercentComplete = function(data) {
+				// This determines what percent the user has completed of their current level
+				return (data.cur_lvl_pts - data.points) / (data.nxt_lvl_pts - data.cur_lvl_pts);
+			};
+			
+		// Start the chain, ping the points service
+		jQuery.ajax({
+			url: points_url,
+			dataType: 'json',
+			success: pointsComplete,
+			error: pointsError
+		});
+	}
+	
+	//ALERT FRIENDS
+	this.alert_friends = function(params,callback){	
+		params.ext 		= 'friend/';	
+		params.ext		+= params.alerttegid;	
+		
+		params.type 	= 'get';   						
+		
+		gthat.alert_api(params,function(data){
+			//data is empty - fire friend requests awaiting response
+			if (data.length == 0){
+				gthat.friend_requests({ 
+				    msib_id : params.alerttegid, 
+				    authid : params.authid
+				},function(data){ 
+					callback(data);
+				});			
+			//or if data exists - get friend alerts	
+			} else {
+				
+				var friendRequestArr = [];
+				var friendAcceptArr = [];
+				var requestCount = 0;									
+				var acceptCount = 0;
+				var ajaxCount = 0;
+				var ajaxCalls = 0, returnedCalls = 0, data1, data2;
+										
+				for (var x in data){
+					//jsmd dosequential fix
+					if(parseInt(x) == x){
+						if (typeof data[x].content.type != 'undefined'){
+							if (data[x].content.type == 'request'){
+								friendRequestArr[requestCount] = data[x]
+								//if first five records collect msibid
+								if (requestCount < 5) {
+									//if first record no pipe
+									if (requestCount == 0){
+										var requestMsibConcat = data[x].content.friendId;	
+									} else {
+										requestMsibConcat += '|' + data[x].content.friendId;									
+									}
+								}
+								requestCount++;			
+							}
+							
+							else if (data[x].content.type == 'accept'){
+								friendAcceptArr[acceptCount] = data[x];
+								//if first five records collect msibid
+								if (acceptCount < 5) {
+									//if first record no pipe
+									if (acceptCount == 0){
+										var acceptMsibConcat = data[x].content.friendId;	
+									} else {
+										acceptMsibConcat += '|' + data[x].content.friendId;									
+									}
+								}
+								acceptCount++;								
+							}	
+						}
+					}	
+				}				
+				
+				function returnedAjaxCall (data,dataName){
+					if (dataName == 'friendRequest'){
+						data1 = data;
+					} else if (dataName == 'friendAccept') {
+						data2 = data;
+					}						
+					returnedCalls++;
+					// Both have came back
+					if(returnedCalls >= ajaxCalls){
+						callback( data1 , data2 );
+					}
+				}					
+				
+				
+				function requestMsibSearch(requestMsibConcat){
+					gthat.msibid_search({
+						teg_ids: requestMsibConcat,
+						with_dna:false,
+						exact:true
+					},function(msibdata){			
+						for (var x in friendRequestArr){
+							//jsmd dosequential fix
+							if(parseInt(x) == x){								
+								for (var i in msibdata){
+									if (friendRequestArr[x].content.friendId != '' || msibdata[i].msibID != ''){
+										if (friendRequestArr[x].content.friendId == msibdata[i].msibID){			
+											friendRequestArr[x].content.avatar		= msibdata[i].avatar;
+											friendRequestArr[x].content.playerID 	= msibdata[i].playerID;
+											friendRequestArr[x].content.msibID 		= msibdata[i].msibID;	
+											friendRequestArr[x].content.levelInfo 	= msibdata[i].levelInfo;																							
+										}
+									}
+								}
+							}
+						}																								
+					var dataName = 'friendRequest';					
+					returnedAjaxCall(friendRequestArr,dataName);													
+					});								
+				}	
+								
+				function acceptMsibSearch(acceptMsibConcat){						
+					gthat.msibid_search({
+						teg_ids: acceptMsibConcat,
+						with_dna:false,
+						exact:true
+					},function(msibdata){					
+						for (var x in friendAcceptArr){
+							//jsmd dosequential fix
+							if(parseInt(x) == x){						
+								for (var i in msibdata){
+									if (friendAcceptArr[x].content.friendId != '' || msibdata[i].msibID != ''){
+										if (friendAcceptArr[x].content.friendId 	== msibdata[i].msibID){									
+											friendAcceptArr[x].content.avatar 		= msibdata[i].avatar;
+											friendAcceptArr[x].content.playerID 	= msibdata[i].playerID;
+											friendAcceptArr[x].content.msibID 		= msibdata[i].msibID;
+											friendAcceptArr[x].content.levelInfo	= msibdata[i].levelInfo;
+										}
+									}
+								}
+							}	
+						}														
+					var dataName = 'friendAccept';					
+					returnedAjaxCall(friendAcceptArr,dataName);		
+					});								
+						
+				}
+				
+				// check to see if any friend request data to do msibid_search call with
+				if (typeof requestMsibConcat != 'undefined'){
+					requestMsibSearch(requestMsibConcat);
+					ajaxCalls++;
+				}
+
+				// check to see if any friend accept data to do msibid_search call with				
+				if (typeof acceptMsibConcat != 'undefined'){					
+					acceptMsibSearch(acceptMsibConcat);								
+					ajaxCalls++;
+				}					
+			}
+		});				
+	}	
+		
+
+	//FRIEND ALERT CREATE
+	this.friend_alert_create = function(params,callback){	
+
+		params.ext 		= 'friend/';				
+		params.ext		+= params.alerttegid;
+		params.content 	= params.alertrequestbody;
+		
+		params.type 	= 'post';  
+ 			
+		gthat.alert_api(params,callback); 
+						
+	}		
+	
+	
+	//ALERT CREATE
+	this.alert_create = function(params,callback){	
+
+		params.ext 		= 'user/';				
+		params.ext		+= params.alerttegid;
+		params.content 	= params.alertrequestbody;
+		
+		params.type 	= 'post';  
+ 			
+		gthat.alert_api(params,callback); 
+						
+	}		
+
+	//ALERT DELETE
+	this.alert_delete = function(params,callback){	
+
+		params.ext 		= 'user/';	
+		params.ext		+= params.alerttegid;
+		params.ext		+= '/' + params.alertid;
+				
+		params.type 	= 'delete';  
+ 			
+		gthat.alert_api(params,callback); 
+						
+	}
+
+	//ALERT COMBINED - gets alerts new and old except friends
+	this.alert = function(params,callback){	
+
+		params.ext 		= 'combined/';	
+		params.ext		+= params.alerttegid;
+		
+		if (params.alertlimit != ""){
+			params.ext	+= '/' + params.alertlimit;
+		} else {
+			params.ext	+= '/5';
+		}		
+		
+		params.type 	= 'get';  
+ 		
+ 		isCalled = false;
+ 			
+		gthat.msibid_search({
+			teg_ids: params.alerttegid,
+			with_dna:false,
+			exact:true
+		},function(data_msibid_search){
+			//if user returns no data (bad data)
+			if (data_msibid_search.length == 0 && isCalled == false){
+				isCalled = true;
+				//use cartoon network profile as default
+				gthat.name_search({ name:'cartoon network',exact:'true' },function(data_msibid_search){
+				    runAlertApi(data_msibid_search); 
+				});														
+			} else {
+				runAlertApi(data_msibid_search)									
+			}
+		});	
+			
+		function runAlertApi(data_msibid_search){	
+			//gthat.alert_api(params,callback); 
+			gthat.alert_api(params,function(data){				
+				/*
+				var gameIdArray = [];
+				
+				for (var i = 0; i < data.length; i++){
+					if (typeof data[i].content.type != 'undefined'){
+						if (data[i].content.type == 'leaderboard'){
+							gameIdArray.push(data[i].content.gameId);
+						}						
+					}								
+				}								
+				*/
+
+				var alert_badges = []; 
+				//create URL var
+				var userName = data_msibid_search[0].playerID;
+				var userNameMod = userName.split(' ').join('-');				
+								
+				for (var i = 0; i < data.length; i++){
+					if (typeof data[i].content.type != 'undefined'){						
+						if (data[i].content.type == 'badge'){							
+							data[i].content.userName = userName;			
+							data[i].content.pageUrl = '/my-games/' + userNameMod + '/' + data[i].content.gameId;									
+						}
+					}								
+				}								
+				callback(data);			
+			});	
+		}					
+	}	
+	
+	
+	//ALERT HISTORY
+	this.alert_history = function(params,callback){	
+	
+		params.ext 		= 'history/';
+		params.ext		+= params.alerttegid;
+					
+		if (params.alertlimit != ""){
+			params.ext	+= '/' + params.alertlimit;
+		} 
+				
+		params.type 	= 'get';  
+ 			
+		gthat.msibid_search({
+			teg_ids: params.alerttegid,
+			with_dna:false,
+			exact:true
+		},function(data_msibid_search){
+			if (data_msibid_search.length > 0){
+				runAlertApi(data_msibid_search)
+			}									
+		});	
+			
+		function runAlertApi(data_msibid_search){	
+			//gthat.alert_api(params,callback); 
+			gthat.alert_api(params,function(data){				
+				var alert_badges = []; 
+				//create URL var
+				var userName = data_msibid_search[0].playerID;
+				var userNameMod = userName.split(' ').join('-');				
+								
+				for (var i = 0; i < data.length; i++){
+					if (typeof data[i].content.type != 'undefined'){
+						if (data[i].content.type == 'badge'){							
+							data[i].content.userName = userName;			
+							data[i].content.pageUrl = '/my-games/' + userNameMod + '/' + data[i].content.gameId;									
+						}
+					}								
+				}								
+				callback(data);			
+			});	
+		}
+			
+						
+	}	
+
+	//ALERT STATE - number of alerts per user
+	this.alert_state = function(params,callback){
+			
+		params.ext 		= 'state/';
+		params.ext		+= params.alerttegid;
+				
+		params.type 	= 'get';  
+ 			
+		gthat.alert_api(params,callback); 						
+	}		
+	
 	
 	var user_friends_badges_data 			= {}; 
 	user_friends_badges_data.sent_off 		= 0;
@@ -472,90 +1094,70 @@ function toon_lib(){
 		}
 		if(params.game_id == undefined){
 			params.game_id = 0;
+		}		
+		if(params.msib_id == undefined){ 
+			callback({error:'no MSIBID sent.'});
+		} else {			
+			// Start getting my data:
+			gthat.msibid_search({
+				teg_ids: params.msib_id,
+				with_dna:false,
+				exact:true
+			},function(data){						
+				user_friends_badges_data.friends[0] = {};
+				user_friends_badges_data.friends[0].user_data = data[0]; 						
+				// Get User Friends
+				gthat.relations({ 
+				    tid 		: params.msib_id, 
+				    authid 		: params.authid,
+				    with_data	: 'true'
+				},function(data){
+				    if(data.relations != undefined){ 
+				    	for(var x in data.relations){ 
+				    		if(data.relations[x].status == 'related'){ 
+				    			user_friends_badges_data.friends[count] = {};
+				    			user_friends_badges_data.friends[count] = data.relations[x];
+				    			count++;
+				    		} 
+				    	}   
+				    	gthat.rest_product_managerapi({pids:params.game_id},function(data){						    	
+				    		if(params.badge_type == 'game'){
+								user_friends_badges_data.product = data[0];  
+							}																		
+							var tcount = 0;  									
+							for(var x in user_friends_badges_data.friends){
+								user_friends_badges_data.sent_off++;
+							}									
+							if(params.badge_type == 'game'){
+								for(var x in user_friends_badges_data.friends){
+									gthat.msibid_singlegame_badges({
+										msib_id:user_friends_badges_data.friends[x].user_data.msibID, 
+										game_id:params.game_id
+									},function(data){ 
+										user_friends_badges_data.data[tcount] = {};
+										user_friends_badges_data.data[tcount] = data; 
+										gthat.user_friends_badges_process(data,params,callback); 
+										tcount++;
+									}); 
+								} 
+							}else{ 									
+								gthat.me_and_my_friends_badges({
+									msib_id:params.msib_id
+								},function(data){ 
+									gthat.user_friend_badges_process_allbadges(data,params,callback);
+								}); 
+									
+							}
+						});  
+				    }else{
+				    	user_friends_badges_data.sent_off 		= 0;
+						user_friends_badges_data.came_back		= 0;
+						user_friends_badges_data.data 			= {};
+				    	callback({});
+				    } 
+				}); 			
+			});
 		}
-		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.user_friends_badges },function(data){
- 			if(data.success == true){ callback(data.data); }else{ 
- 			
- 				if(params.msib_id == undefined){ 
- 					callback({error:'no MSIBID sent.'});
- 				}else{
- 				
-					// Start getting my data:
-					gthat.msibid_search({
-						teg_ids: params.msib_id,
-						with_dna:false,
-						exact:true
-					},function(data){
-						
-						user_friends_badges_data.friends[0] = {};
-						user_friends_badges_data.friends[0].user_data = data[0]; 
-						
-						// Get User Friends
-						gthat.relations({ 
-						    tid 		: params.msib_id, 
-						    authid 		: params.authid,
-						    with_data	: 'true'
-						},function(data){
-						    if(data.relations != undefined){ 
-						    	for(var x in data.relations){ 
-						    		if(data.relations[x].status == 'related'){ 
-						    			user_friends_badges_data.friends[count] = {};
-						    			user_friends_badges_data.friends[count] = data.relations[x];
-						    			count++;
-						    		} 
-						    	}   
-						    	gthat.rest_product_managerapi({pids:params.game_id},function(data){
-						    	
-						    		if(params.badge_type == 'game'){
-										user_friends_badges_data.product = data[0];  
-									}
-									
-									
-									var tcount = 0;  
-									
-									for(var x in user_friends_badges_data.friends){
-										user_friends_badges_data.sent_off++;
-									}
-									
-									if(params.badge_type == 'game'){
-										for(var x in user_friends_badges_data.friends){
-											gthat.msibid_singlegame_badges({
-												msib_id:user_friends_badges_data.friends[x].user_data.msibID, 
-												game_id:params.game_id
-											},function(data){ 
-												user_friends_badges_data.data[tcount] = {};
-												user_friends_badges_data.data[tcount] = data; 
-												gthat.user_friends_badges_process(data,params,callback); 
-												tcount++;
-											}); 
-										} 
-									}else{ 
-									
-										gthat.me_and_my_friends_badges({
-											msib_id:params.msib_id
-										},function(data){ 
-											gthat.user_friend_badges_process_allbadges(data,params,callback);
-										}); 
-											
-									}
-								});  
-						    }else{
-						    	user_friends_badges_data.sent_off 		= 0;
-								user_friends_badges_data.came_back		= 0;
-								user_friends_badges_data.data 			= {};
-						    	callback({});
-						    } 
-						}); 
-					
-					});
-				
-				}
-		
-			}
-		});
-		
-		
 	} 
 	
 	// This function is called if its for ALL BADGES
@@ -576,19 +1178,23 @@ function toon_lib(){
 		if(params.sorter != undefined){
 			var friends_data = user_friends_badges_data.friends;  
 			var new_array = []; 
-			for(var x in friends_data){ 
+			for(var x in friends_data){ 	
 				var new_obj = {};
 				new_obj.key = x;
 				new_obj.name = friends_data[x].user_data.playerID;
 				new_obj.badge_count = friends_data[x].badge_count;
+				new_obj.gamer_score = friends_data[x].user_data.levelInfo.gamer_score.badge_points;				
 				new_obj.received = friends_data[x].received;
 				new_array.push(new_obj); 
 			}  
+			
 			if(params.sorter == 'name'){
 				new_array.sort(gthat.sortBy(params.sorter,true)); 
 				new_array.reverse();
 			}else if(params.sorter == 'friended'){
 				new_array.sort(gthat.sortBy('received',true));
+			}else if(params.sorter == 'gamer_score'){
+				new_array.sort(gthat.sortBy('gamer_score',true));				
 			}else{
 				new_array.sort(gthat.sortBy(params.sorter,true,parseInt)); 
 			} 
@@ -635,6 +1241,7 @@ function toon_lib(){
 					new_obj.key = x;
 					new_obj.name = friends_data[x].user_data.playerID;
 					new_obj.badge_count = friends_data[x].badge_count;
+					new_obj.gamer_score = friends_data[x].user_data.levelInfo.gamer_score.badge_points;						
 					new_obj.received = friends_data[x].received;
 					new_array.push(new_obj); 
 				}  
@@ -643,6 +1250,8 @@ function toon_lib(){
 					new_array.reverse();
 				}else if(params.sorter == 'friended'){
 					new_array.sort(gthat.sortBy('received',true,parseInt));
+				}else if(params.sorter == 'gamer_score'){
+					new_array.sort(gthat.sortBy('gamer_score',true));									
 				}else{
 					new_array.sort(gthat.sortBy(params.sorter,true,parseInt)); 
 				} 
@@ -696,7 +1305,6 @@ function toon_lib(){
 	
 	
 	this.msib_id_activity_stream = function(params,callback){
-	
 		var activity 		= ''; 
 		var that 			= this; 
 		params.ext 			= 'activities/' + params.msib_id;
@@ -707,40 +1315,32 @@ function toon_lib(){
 		params.ext 			+= '?filter[app_id]=2,11,43804,44321,45812';
 		
 		var s_key 			= 'msib_id_activity_stream_'+params.ext; 
-		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.msib_id_activity_stream },function(data){
- 			if(data.success == true){ callback(data.data); }else{
  			
-				gthat.social_api(params,function(activity){ 			
-					that.filterActivity(s_key,activity,callback);
-				});
-		
-			}
-		});
+		gthat.social_api(params,function(activity){ 			
+			that.filterActivity(s_key,activity,callback);
+		});		
 	} 
+	
+
+	
 	
 	this.all_activity_stream = function(params,callback){
 		var activity 		= ''; 
 		var that 			= this;
 		if(this.base_url == 'http://staging.cartoonnetwork.com'){
-			params.staticUrl	= this.base_url + '/social/toon_activity_stream_fetcher.json';	
+			//params.staticUrl	= this.base_url + '/social/toon_activity_stream_fetcher.json';	
+			params.ext 			= 'activities'; 
+			params.count 		= (params.count != undefined) 		? params.count : 10;
+			params.ext 			+= '?filter[app_id]=2,11,43804,44321,45812&count='+params.count;
+			
 		} else {
 			params.staticUrl	= this.base_url+'/social/toon_activity_stream_fetcher.json';   			
 		}
-		params.ext 			= 'activities'; 
-		params.count 		= (params.count != undefined) 		? params.count : 10;
-		params.ext 			+= '?filter[app_id]=2,11,43804,44321,45812&count='+params.count;
 		
 		var s_key 			= 'all_activity_stream_'+params.ext; 
-		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.all_activity_stream },function(data){
- 			if(data.success == true){ callback(data.data); }else{
- 			
-				gthat.social_api(params,function(activity){ 			
-					that.filterActivity(s_key,activity,callback,params.count);
-				});
-		
-			}
+		 			
+		gthat.social_api(params,function(activity){ 			
+			that.filterActivity(s_key,activity,callback,params.count);
 		});
 	}	
 	
@@ -925,15 +1525,19 @@ function toon_lib(){
 	
 	// To be used for fallback data:
 	this.fallback_json = function(params,callback){ 
-		$.getJSON2(params.url,function(data){ 
+		jQuery.getJSON2(params.url,function(data){ 
 			callback(data); 
 		}); 
 	} 
 	
 	this.msibid_search = function(params,callback){ 
+						
+		var that = this;				
+		var paramsLevel = {};
+			paramsLevel.msibs_csv = params.teg_ids.split('|').join(',');
+			
 		params.ext 				= 'tegids/post'; 
 		
-		// Only in staging
 		if(params.with_dna != undefined && params.with_dna == true){
 			params.ext 			+= '/include-dna/true';
 		}else{
@@ -943,28 +1547,40 @@ function toon_lib(){
 		params.passes			= { tegids:params.teg_ids };
 		params.type 			= 'post'; 
 		var s_key 				= 'msibid_search_'+params.teg_ids; 
-		/*
-		if(params.timer != undefined){
-			var timer = params.timer;
-		}else{
-			var timer = ;
-		}*/
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.msibid_search },function(data){
- 			if(data.success == true){ callback(data.data); }else{
+
+
+
  			
-				gthat.rest_api(params,function(data){
-					if(data.length <= 20){
-						gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-					}
-					callback(data);
-				});
-		
-			}
+		gthat.rest_api(params,function(avatarData){		
+
+			gthat.msibid_level_multi(paramsLevel,function(levelData){					
+				combineAvatarLevel(avatarData,levelData);			
+			});
+
 		});
+		
+		
+		function combineAvatarLevel (avatarData,levelData){							
+				if (typeof avatarData != undefined && typeof levelData != undefined){				
+					for (var x in avatarData){
+						for (var y in levelData){
+							if(parseInt(y) == y){
+								if(avatarData[x].msibID === levelData[y].user_id){
+									avatarData[x].levelInfo = levelData[y].data;
+								}	
+							}
+						}
+					}
+				}															
+				var data = avatarData;							
+				callback(data);			
+		}
+		
 		
 	}
 	
 	this.product_players = function(params,callback){ 
+		
 		params.ext 				= 'product-players/post/'+params.products;
 		if(params.max != undefined){
 			params.ext 			+= '/max/'+params.max;
@@ -980,8 +1596,7 @@ function toon_lib(){
 		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.product_players },function(data){
  			if(data.success == true){ callback(data.data); }else{
  			
-				gthat.relations(rel_params,function(data){
-				
+				gthat.relations(rel_params,function(data){				
 					var tegids 		= '';
 					for (x in data.relations){
 						tegids 		+= x+'|';
@@ -1005,7 +1620,6 @@ function toon_lib(){
 							if(count >= 1){
 								id_string_final = id_string.substring(0, id_string.length-1);
 								that.msibid_search({teg_ids:id_string_final},function(friends){
-									
 									var new_data = {}; 
 									for (i in data){ 
 										new_data[i] = {};
@@ -1019,7 +1633,7 @@ function toon_lib(){
 												} 
 											}  
 										}
-									}  
+									}  									
 									gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(new_data)});
 									callback(new_data); 
 									
@@ -1052,7 +1666,31 @@ function toon_lib(){
  			
 				gthat.rest_api(params,function(data){ 
 					gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-					callback(data);
+					/***original code***callback(data);***original code***/
+					
+					/*** tsl code: adding level info for each returned players ***/
+					var paramsLevel = {};
+					paramsLevel.msibs_csv = '';
+					for (var i=0; i<data.length; i++){
+						paramsLevel.msibs_csv += data[i].msibID + ',';
+					};
+					paramsLevel.msibs_csv = paramsLevel.msibs_csv.slice(0, -1);
+					/*next line is for test only*/
+					/*paramsLevel.msibs_csv = 'aa4b768-479265911-1349708670718-1,aa4b768-479265911-1349372463679-1'*/
+					
+					gthat.msibid_level_multi(paramsLevel,function(levelData){
+						if (data && levelData){
+							var ldArray = [];
+							var varUndefined;
+							for (var i=0; i<levelData.length; i++){ldArray.push(levelData[i].user_id)};
+							for (var i=0; i<data.length; i++){
+								var ldIndex = ldArray.indexOf(data[i].msibID);
+								if (ldIndex > -1) {data[i].levelInfo = levelData[ldIndex].data};
+							};
+							callback(data);
+						};
+					});
+					/*** tsl code: adding level info for each returned players ***/
 				});
 				
 			}
@@ -1085,18 +1723,38 @@ function toon_lib(){
 		} 
 		  
 		params.type 			= 'get';
- 		var s_key 				= 'name_search_'+params.name+'_'+params.exclude+'_'+params.with_dna+'_'+params.max_results; 
 		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.name_search },function(data){
- 			if(data.success == true){ callback(data.data); }else{ 
- 			
-				gthat.rest_api(params,function(data){ 
-					gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-					callback(data); 
-				}); 
-				
+		gthat.rest_api(params,function(data){ 
+			paramsLevel = {};
+			paramsLevel.msibs_csv = '';
+			if (typeof data != undefined && data.length > 0){
+				if (data.length > 1){
+					for (var x in data){				
+						paramsLevel.msibs_csv += data[x].msibID + ','; 
+					}
+					paramsLevel.msibs_csv = paramsLevel.msibs_csv.substring(0, paramsLevel.msibs_csv.length - 1);
+				} else {
+					paramsLevel.msibs_csv = data[0].msibID;
+				}
 			}
-		});
+			gthat.msibid_level_multi(paramsLevel,function(levelData){
+				if (typeof data != undefined && typeof levelData != undefined){
+					for (var x in data){
+						for (var y in levelData){
+							if(parseInt(y) == y){
+								if(data[x].msibID === levelData[y].user_id){
+									data[x].levelInfo = levelData[y].data;
+								}	
+							}
+						}
+					}
+				}	
+				callback(data); 
+			});		
+
+			
+		}); 
+			
 	}
 	this.update_avatar = function(params,callback){ 
 		params.action			= 'AVATAR_UPDATE';
@@ -1196,45 +1854,37 @@ function toon_lib(){
 		var that				= this;
 		
 		var s_key = 'relations_'+params.tid+'_'+params.with_data;
-		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.relations },function(data){
- 			if(data.success == true){ callback(data.data); }else{
- 			
- 			
-				gthat.relationsapi(params,function(data){
-					if(params.with_data != undefined && params.with_data == 'true'){
-					
-						var id_string 		= '';
-						var id_string_final = '';
-						var count 			= 0;
-						for (x in data.relations){
-							count++;
-							id_string += x+'|';
+
+		gthat.relationsapi(params,function(data){		
+			if(params.with_data != undefined && params.with_data == 'true'){
+			
+				var id_string 		= '';
+				var id_string_final = '';
+				var count 			= 0;
+				for (x in data.relations){
+					count++;
+					id_string += x+'|';
+				} 
+				if(count >= 1){
+					id_string_final = id_string.substring(0, id_string.length-1);
+					gthat.msibid_search({teg_ids:id_string_final},function(friends){
+						
+						for (i in data.relations){ 
+							for(c in friends){ 
+								if(friends[c].msibID == i){
+									data.relations[i].user_data = friends[c];
+								}
+							}
 						} 
-						if(count >= 1){
-							id_string_final = id_string.substring(0, id_string.length-1);
-							gthat.msibid_search({teg_ids:id_string_final},function(friends){
-								
-								for (i in data.relations){ 
-									for(c in friends){ 
-										if(friends[c].msibID == i){
-											data.relations[i].user_data = friends[c];
-										}
-									}
-								} 
-								//gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-								callback(data);
-							}); 
-						}else{ 
-							callback(data);
-						} 
-					}else{ 
 						callback(data);
-					}  
-				}); 
-		
-		}});
-		
+					}); 
+				}else{ 
+					callback(data);
+				} 
+			}else{ 
+				callback(data);
+			}  
+		}); 
 		
 	}
 
@@ -1270,71 +1920,58 @@ function toon_lib(){
 		params.tid				= params.msib_id;
 		params.with_data 		= (params.with_data != undefined) 		? params.with_data : 'false';
 		var that				= this; 
-		
-		var s_key 		= 'friend_requests_'+params.msib_id+'_'+params.with_data;
-		gthat.storage_api({ key	: s_key, timer : 5 },function(data){
- 			if(data.success == true){ callback(data.data); }else{
  			
-				gthat.relationsapi(params,function(data){ 
-				
-				
-					/* SORT FUCNTIONALITY :  */
-					
-					var relations = data.relations;  
-					var new_array = []; 
-					for(var x in relations){ 
-						var new_obj = {};
-						new_obj.key = x; 
-						new_obj.received = relations[x].received;
-						new_array.push(new_obj);
-					}  
-					new_array.sort(gthat.sortBy('received',true,parseInt)); 
-					var insert_sorted = {};
-					for(var x in new_array){ 
-						if(parseInt(x) == x){
-							insert_sorted[ new_array[x].key ] = relations[new_array[x].key]; 
-						}
-					} 
-					data.relations = insert_sorted;
-					
-				
-					if(params.with_data != undefined && params.with_data == 'true'){ 
-						var id_string 		= '';
-						var id_string_final = '';
-						var count 			= 0;
-						for (x in data.relations){
-							count++;
-							id_string 		+= x+'|';
-						}
-						
-						if(count >= 1){
-							id_string_final = id_string.substring(0, id_string.length-1);
-							gthat.msibid_search({teg_ids:id_string_final},function(friends){
-							
-								for (i in data.relations){ 
-									for(c in friends){
-										if(friends[c].msibID == i){
-											data.relations[i].user_data = friends[c];
-										}
-									}
-								} 
-								
-								gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-								callback(data);
-							}); 
-						}else{
-							gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
-							callback(data);
-						} 
-					}else{
-						gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(data)});
+		gthat.relationsapi(params,function(data){ 
+		
+			/* SORT FUCNTIONALITY :  */
+			
+			var relations = data.relations;  
+			var new_array = []; 
+			for(var x in relations){ 
+				var new_obj = {};
+				new_obj.key = x; 
+				new_obj.received = relations[x].received;
+				new_array.push(new_obj);
+			}  
+			new_array.sort(gthat.sortBy('received',true,parseInt)); 
+			var insert_sorted = {};
+			for(var x in new_array){ 
+				if(parseInt(x) == x){
+					insert_sorted[ new_array[x].key ] = relations[new_array[x].key]; 
+				}
+			} 
+			data.relations = insert_sorted;
+			
+			if(params.with_data != undefined && params.with_data == 'true'){ 			
+				var id_string 		= '';
+				var id_string_final = '';
+				var count 			= 0;
+				for (x in data.relations){
+					count++;
+					id_string 		+= x+'|';
+				}			
+				 
+				if(count >= 1){
+					id_string_final = id_string.substring(0, id_string.length-1);
+					gthat.msibid_search({teg_ids:id_string_final},function(friendreqs){					
+						for (i in data.relations){ 		
+							for(c in friendreqs){							
+								if(friendreqs[c].msibID == i){
+									data.relations[i].user_data = friendreqs[c];
+								}
+							}
+						} 				
 						callback(data);
-					} 
-					
-				});
-				
-			}
+					}); 
+				}else{				
+					callback(data);
+				} 
+			}else{
+				callback(data);
+			} 
+			
 		});
+				
 	} 
 	this.sent_friend_requests = function(params,callback){ 
 		params.ext 				= 'sent';
@@ -1378,12 +2015,11 @@ function toon_lib(){
 						}
 						if(count >= 1){
 							id_string_final = id_string.substring(0, id_string.length-1);
-							gthat.msibid_search({teg_ids:id_string_final},function(friends){
-							
+							gthat.msibid_search({teg_ids:id_string_final},function(friendsent){							
 								for (i in data.relations){ 
-									for(c in friends){
-										if(friends[c].msibID == i){
-											data.relations[i].user_data = friends[c];
+									for(c in friendsent){
+										if(friendsent[c].msibID == i){
+											data.relations[i].user_data = friendsent[c];
 										}
 									}
 								} 
@@ -1518,18 +2154,12 @@ function toon_lib(){
 //		params.ext 		= 'client/badges/'+params.msib_id+'/@self';
 		params.ext 		= 'client/badges/'+params.msib_id;
 		var that 		= this;
-		var s_key 		= 'user_badges_'+params.msib_id;
 		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.user_badges },function(data){
- 			if(data.success == true){ callback(data.data); }else{
- 			
-				gthat.social_api(params,function(data){
-					//gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(gthat.badge_filter(data))});
-					callback(gthat.badge_filter(data));
-				});
-		
-			}
+		gthat.social_api(params,function(data){
+
+			callback(gthat.badge_filter(data));
 		});
+		
 	}
 	
 	this.profile_w_badges = function(params,callback){
@@ -1543,48 +2173,39 @@ function toon_lib(){
 		var with_data		 		= (params.with_data != undefined) 	? params.with_data : 'false';
 		complete_data.with_data		= with_data; 
 		var s_key 					= 'profile_w_badges_'+params.msib_id+'_'+params.with_data; 
-		
-		gthat.storage_api({ key	: s_key, timer : gthat.timeouts.profile_w_badges },function(data){
- 			if(data.success == true){ callback(data.data); }else{
- 			
-				gthat.rest_badges_count({ ext: 'total', msib_id: params.msib_id },function(data){
-					badges_possible 		= true;
-					complete_data.poss		= data;
-					if(badges_complete == true && msib_complete == true && badges_possible == true){
-						gthat.profile_w_badges_compile(complete_data,callback,s_key);
-					}
-				});
-				gthat.user_badges({ msib_id:params.msib_id },function(data){
-					badges_complete			= true;
-					complete_data.badges	= data;
-					if(badges_complete == true && msib_complete == true && badges_possible == true){
-						gthat.profile_w_badges_compile(complete_data,callback,s_key);
-					}  
-				});
-				gthat.msibid_search({ teg_ids:params.msib_id },function(data){
-					msib_complete			= true;
-					complete_data.msibid	= data;
-					if(badges_complete == true && msib_complete == true && badges_possible == true){
-						gthat.profile_w_badges_compile(complete_data,callback,s_key);
-					}  
-				});
-				
+
+		gthat.rest_badges_count({ ext: 'total', msib_id: params.msib_id },function(data){
+			badges_possible 		= true;
+			complete_data.poss		= data;
+			if(badges_complete == true && msib_complete == true && badges_possible == true){
+				gthat.profile_w_badges_compile(complete_data,callback,s_key);
 			}
 		});
+		gthat.user_badges({ msib_id:params.msib_id },function(data){
+			badges_complete			= true;
+			complete_data.badges	= data;
+			if(badges_complete == true && msib_complete == true && badges_possible == true){
+				gthat.profile_w_badges_compile(complete_data,callback,s_key);
+			}  
+		});
+		gthat.msibid_search({ teg_ids:params.msib_id },function(data){
+			msib_complete			= true;
+			complete_data.msibid	= data;
+			if(badges_complete == true && msib_complete == true && badges_possible == true){
+				gthat.profile_w_badges_compile(complete_data,callback,s_key);
+			}  
+		});			
 	}
 	
 	this.profile_w_badges_compile = function(data,callback,s_key){ 
-	 
 		var done_data 				= {};
 		done_data.profile			= data.msibid[0];
 		if(data.with_data == 'true'){
 			done_data.badges		= data.badges;
-		}
+		}		
 		done_data.total_badges		= 0;
 		done_data.total_badges		= data.badges.length; 
-		done_data.badges_possible	= data.poss.count;  
-		
-		gthat.storage_api({ go:'set',key:s_key,value:JSON.stringify(done_data)});
+		done_data.badges_possible	= data.poss.count;  		
 		callback(done_data);
 	}
 	
@@ -1871,7 +2492,9 @@ function toon_lib(){
 					
 					for(var i in this.gameids){
 						if(this.gameids[i].leaderboard_id == this.badge_data_last_badged[x].leaderboards[0].id){
-							this.badge_data_last_badged[x].high_score = this.gameids[i].plays[0].score;
+							if (this.gameids[i].plays[0] != undefined){
+								this.badge_data_last_badged[x].high_score = this.gameids[i].plays[0].score;
+							}
 							this.badge_data_last_badged[x].leaderboards_data = this.gameids[i]; 
 						}
 					}
@@ -2150,11 +2773,13 @@ function _ajax_request(url, data, callback, type, method, errors) {
         url: 		url,
         data: 		data,
         success: 	callback,
+        /*
         error:function (xhr, a, t){
 			callback({	
 				'server_error':true
 			});
         },
+        */
         dataType: 	type
     });
 }

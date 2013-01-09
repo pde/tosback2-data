@@ -1,6 +1,6 @@
 // JavaScript Document
 //note that these items should be copied to /Common/about_us/flash/network/TickerItems.xml but no longer used in Teamsite - Send to Requestor	
-//Last updated 1-2-2013 by Tammy Ritterskamp//
+//Last updated 12-5-2012 by Keith Davis //
 function networkNewsTicker() {
 		
 document.write('<ul><li class="first"><h6>Recent Network Enhancements:</h6></li></ul>');
@@ -37,7 +37,37 @@ document.write('<div id="scrollup">'
 + '<div class="headline"><a href="http://www.att.com/gen/press-room?pid=23626&cdvn=news&newsarticleid=35843&mapcode=mk-att-wireless-networks|wireless" title="Dec. 18 - Announced 4G LTE network expansion in Los Angeles, CA">Dec. 18 - Announced 4G LTE network expansion in Los Angeles, CA</a></div>'
 + '<div class="headline"><a href="http://www.att.com/gen/press-room?pid=23620&cdvn=news&newsarticleid=35837&mapcode=mk-att-wireless-networks|wireless" title="Dec. 18 - Announced 4G LTE availability in Springfield, MA">Dec. 18 - Announced 4G LTE availability in Springfield, MA</a></div>'
 + '<div class="headline"><a href="http://www.att.com/gen/press-room?pid=23622&cdvn=news&newsarticleid=35839&mapcode=mk-att-wireless-networks|wireless" title="Dec. 18 - Announced 4G LTE availability in Green Bay, WI">Dec. 18 - Announced 4G LTE availability in Green Bay, WI</a></div>'
-
++ '<div class="headline"><a href="http://www.att.com/gen/press-room?pid=23618&cdvn=news&newsarticleid=35835&mapcode=mk-att-wireless-networks|wireless" title="Dec. 18 - Announced 4G LTE network expansion in Phoenix, AZ">Dec. 18 - Announced 4G LTE network expansion in Phoenix, AZ</a></div>'
++ '<div class="headline"><a href="http://www.att.com/gen/press-room?pid=23619&cdvn=news&newsarticleid=35836&mapcode=mk-att-wireless-networks|wireless" title="Dec. 18 - Announced 4G LTE availability in Melbourne, FL">Dec. 18 - Announced 4G LTE availability in Melbourne, FL</a></div>'
++ '<div class="headline">Dec. 18 - Announced 4G LTE network expansion in Middlesex County, NJ</div>'
++ '<div class="headline">Dec. 18 - Announced 4G LTE availability in Oxford, MS</div>'
++ '<div class="headline">Dec. 18 - Announced 4G LTE availability in Tucson, AZ</div>'
++ '<div class="headline">Dec. 17 - Announced a new cell site in Skokie, IL</div>'
++ '<div class="headline">Dec. 17 - Announced a new cell site in Cicero, IL</div>'
++ '<div class="headline">Dec. 14 - Announced enhanced wireless coverage at LP Field and Bridgestone Arena, TN</div>'
++ '<div class="headline">Dec. 14 - Announced mobile Internet network availability in Pittstown, NJ</div>'
++ '<div class="headline">Dec. 14 - Announced a new cell site in Mendham, NJ</div>'
++ '<div class="headline">Dec. 14 - Announced mobile Internet network availability in Winfield, WV</div>'
++ '<div class="headline">Dec. 14 - Announced mobile Internet network availability in Patrick County, VA</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE availability in Starkville, MS</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE availability in Allentown and Bethlehem, PA</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE availability in Pullman, Washington, and Moscow, WA</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE availability in Hattiesburg, MS</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE availability in Reno, NV</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE network expansion in Richmond, VA</div>'
++ '<div class="headline">Dec. 13 - Announced 4G LTE network expansion in Little Rock area, AR</div>'
++ '<div class="headline">Dec. 12 - Announced mobile Internet capacity expansion in Southwest Colorado, CO</div>'
++ '<div class="headline">Dec. 12 - Announced mobile Internet capacity expansion in San Gabriel, CA</div>'
++ '<div class="headline">Dec. 12 - Announced upgrades to 13 cell sites in Northeast Kansas, KS</div>'
++ '<div class="headline">Dec. 11 - Announced upgrades to three mobile Internet cell sites in Buena Park, CA</div>'
++ '<div class="headline">Dec. 10 - Announced mobile Internet network availability in Eastern Oregon, OR</div>'
++ '<div class="headline">Dec. 10 - Announce 4G LTE availability in Grand Rapids, MI</div>'
++ '<div class="headline">Dec. 10  - Announced 4G LTE availability in Nashua, NH</div>'
++ '<div class="headline">Dec. 10 - Announced 4G LTE availability in Wilkes-Barre and Scranton, PA</div>'
++ '<div class="headline">Dec. 10 - Announced 4G LTE availability in Auburn-Opelika, AL</div>'
++ '<div class="headline">Dec. 6 - Announced a new cell site in Orange County along Highway 150 between Paoli and Hardinsburg, IN</div>'
++ '<div class="headline">Dec. 5 - Announced mobile Internet capacity expansion in Corona, CA</div>'
++ '<div class="headline">Dec. 5 - Announced enhanced mobile Internet capacity in the Merchandise Mart in Chicago, IL</div>'
 
 //List of network updates End//							
 								

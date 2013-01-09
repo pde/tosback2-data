@@ -102,6 +102,7 @@ LoginModule.checkLogin = function (){
 LoginModule.doCartoonLogIn = function (){
 
 	if(CartoonMSIB.isLoggedIn()){
+
 		LoginModule.isLoggedIn = true;
 		
 		LoginModule.userDisplayName = CartoonMSIB.displayName;
@@ -115,11 +116,11 @@ LoginModule.doCartoonLogIn = function (){
 			window.location.href = "http://www.cartoonnetwork.com/forums" + unescape(LoginModule.params._dest);
 		}else if(LoginModule.doReload()){
 			window.location.reload();
-		} 
-		
-		LoginModule.onCartoonLogIn_Complete();
-		LoginModule.onReady();
-		LoginModule.checkForFriendRequests()
+		}else{ 
+			LoginModule.onCartoonLogIn_Complete();
+			LoginModule.onReady();
+			LoginModule.checkForFriendRequests();
+		}
 	}else{
 		LoginModule.onCartoonMSIBCancel();
 		LoginModule.onCartoonLoggedOut();
@@ -220,27 +221,27 @@ LoginModule.reloadURL = function (){
 }
 
 LoginModule.doWriteLoggedInGreeting = function (){
-	var formatted_dname			= LoginModule.formatPlayerName(CartoonMSIB.displayName);
+	// var formatted_dname			= LoginModule.formatPlayerName(CartoonMSIB.displayName);
 	
-	if(document.getElementById("cnLogInUI")){
-		if (window.location.hostname.indexOf('blog') < 0) {
-			document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';"><img src="http://i.cdn.turner.com/toon/tools/img/pixel.gif" width="50" height="50" alt="" border="0" /></a></div><div class="uname"><a href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';">' + formatted_dname.toUpperCase() + '</a></div><div class="btns"><div class="wrapper"><div class="friendicator" onclick="adbpGnav(\'friendrequest\'); location.href=\'http://' + LoginModule.loginModuleEnvironment + '.cartoonnetwork.com/my-requests\';"><span></span></div></div><div class="log"><span>( </span><a href="javascript:LoginModule.onCartoonLogOut(); adbpGnav(\'logout\');">Log out</a><span> )</span></div></div><div class="clr"></div></div><div class="lmbtm"><div class="img"><img src="http://i.cdn.turner.com/toon/tools/img/global/nav/login/badges.png" width="33" height="31" alt="" /></div><div class="bar"><div class="fill">&nbsp;</div><div class="text"><span class="white"></span><span class="grey"> of </span><span class="white"></span></div></div><div class="clr"></div></div>';
-		} else {
-			document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';"><img src="http://i.cdn.turner.com/toon/tools/img/pixel.gif" width="50" height="50" alt="" border="0" /></a></div><div class="uname"><a href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';">' + formatted_dname.toUpperCase() + '</a></div><div class="btns"><div class="wrapper"><div class="friendicator" onclick="adbpGnav(\'friendrequest\'); location.href=\'http://' + LoginModule.loginModuleEnvironment + '.cartoonnetwork.com/my-requests\';"><span></span></div></div><div class="log"><span>( </span><a href="javascript:LoginModule.onCartoonLogOut(); adbpGnav(\'logout\');">Log out</a><span> )</span></div></div>';
-		}
-		LoginModule.doWriteAvatar();
+	// if(document.getElementById("cnLogInUI")){
+	// 	if (window.location.hostname.indexOf('blog') < 0) {
+	// 		document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';"><img src="http://i.cdn.turner.com/toon/tools/img/pixel.gif" width="50" height="50" alt="" border="0" /></a></div><div class="uname"><a href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';">' + formatted_dname.toUpperCase() + '</a></div><div class="btns"><div class="wrapper"><div class="friendicator" onclick="adbpGnav(\'friendrequest\'); location.href=\'http://' + LoginModule.loginModuleEnvironment + '.cartoonnetwork.com/my-requests\';"><span></span></div></div><div class="log"><span>( </span><a href="javascript:LoginModule.onCartoonLogOut(); adbpGnav(\'logout\');">Log out</a><span> )</span></div></div><div class="clr"></div></div><div class="lmbtm"><div class="img"><img src="http://i.cdn.turner.com/toon/tools/img/global/nav/login/badges.png" width="33" height="31" alt="" /></div><div class="bar"><div class="fill">&nbsp;</div><div class="text"><span class="white"></span><span class="grey"> of </span><span class="white"></span></div></div><div class="clr"></div></div>';
+	// 	} else {
+	// 		document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';"><img src="http://i.cdn.turner.com/toon/tools/img/pixel.gif" width="50" height="50" alt="" border="0" /></a></div><div class="uname"><a href="javascript:adbpGnav(\'screenname\'); location.href=\'' + LoginModule.getProfileURL(CartoonMSIB.displayName) + '\';">' + formatted_dname.toUpperCase() + '</a></div><div class="btns"><div class="wrapper"><div class="friendicator" onclick="adbpGnav(\'friendrequest\'); location.href=\'http://' + LoginModule.loginModuleEnvironment + '.cartoonnetwork.com/my-requests\';"><span></span></div></div><div class="log"><span>( </span><a href="javascript:LoginModule.onCartoonLogOut(); adbpGnav(\'logout\');">Log out</a><span> )</span></div></div>';
+	// 	}
+	// 	LoginModule.doWriteAvatar();
 		
 
-	}
+	// }
 		
-	if(document.getElementById("loggedInOut")){ 	
-		if (window.location.hostname.indexOf('blog') < 0) {
-			document.getElementById("loggedInOut").innerHTML = "<a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'><div id='myAvatar' style='margin-right: 5px;'><img src='http://i.cdn.turner.com/v5cache/CARTOON/site/Images/i2/pixel.gif' border='0' width='40' height='40'></div></a><span class='loggedInText'>" + formatted_dname.toUpperCase() + "<br /><a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'>YOUR PROFILE</a> <span class='gnPipe'>|</span> <a href='javascript:LoginModule.onCartoonLogOut();'>LOG OUT</a></span>";
-		} else {
-			document.getElementById("loggedInOut").innerHTML = "<a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'><div id='myAvatar' style='margin-right: 5px;'><img src='http://i.cdn.turner.com/v5cache/CARTOON/site/Images/i2/pixel.gif' border='0' width='40' height='40'></div></a><span class='loggedInText'>" + formatted_dname.toUpperCase() + "<br /><a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'>YOUR PROFILE</a> <span class='gnPipe'>|</span> <a href='javascript:LoginModule.onCartoonLogOut();'>LOG OUT</a></span>";
-		}
-		LoginModule.doWriteAvatar();
-	}
+	// if(document.getElementById("loggedInOut")){ 	
+	// 	if (window.location.hostname.indexOf('blog') < 0) {
+	// 		document.getElementById("loggedInOut").innerHTML = "<a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'><div id='myAvatar' style='margin-right: 5px;'><img src='http://i.cdn.turner.com/v5cache/CARTOON/site/Images/i2/pixel.gif' border='0' width='40' height='40'></div></a><span class='loggedInText'>" + formatted_dname.toUpperCase() + "<br /><a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'>YOUR PROFILE</a> <span class='gnPipe'>|</span> <a href='javascript:LoginModule.onCartoonLogOut();'>LOG OUT</a></span>";
+	// 	} else {
+	// 		document.getElementById("loggedInOut").innerHTML = "<a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'><div id='myAvatar' style='margin-right: 5px;'><img src='http://i.cdn.turner.com/v5cache/CARTOON/site/Images/i2/pixel.gif' border='0' width='40' height='40'></div></a><span class='loggedInText'>" + formatted_dname.toUpperCase() + "<br /><a href='" + LoginModule.getProfileURL(CartoonMSIB.displayName) + "'>YOUR PROFILE</a> <span class='gnPipe'>|</span> <a href='javascript:LoginModule.onCartoonLogOut();'>LOG OUT</a></span>";
+	// 	}
+	// 	LoginModule.doWriteAvatar();
+	// }
 	
 }
 
@@ -263,14 +264,14 @@ LoginModule.onCartoonLoggedOut = function (p_imgURL){
 	
 	LoginModule.isLoggedIn = false;
 	
-	if(document.getElementById("cnLogInUI")){ 
-		document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\'); adbpGnav(\'login\');"><img width="50" height="50" border="0" src="http://www.cartoonnetwork.com/tools/img/global/profile_generic.jpg" class="navatar"></a></div><div class="logintext"><span>JOIN NOW IT\'S FREE!</span><br /><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'reg\'); adbpGnav(\'signup\');">SIGN UP</a><span class="gnPipe">&nbsp;|&nbsp;</span><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\'); adbpGnav(\'login\');">LOG IN</a></div><div class="clr"></div></div><div class="lmbtm"><div class="img"><img src="http://i.cdn.turner.com/toon/tools/img/global/nav/login/badges.png" width="33" height="31" alt="" /></div><div class="bar"><span class="white">0</span><span class="grey"> of </span><span class="white">???</span></div></div>';
-		LoginModule.getTotalBadges();
-	}
+	// if(document.getElementById("cnLogInUI")){ 
+	// 	document.getElementById("cnLogInUI").innerHTML = '<div class="lmtop"><div class="img"><a id="myAvatar" href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\'); adbpGnav(\'login\');"><img width="50" height="50" border="0" src="http://www.cartoonnetwork.com/tools/img/global/profile_generic.jpg" class="navatar"></a></div><div class="logintext"><span>JOIN NOW IT\'S FREE!</span><br /><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'reg\'); adbpGnav(\'signup\');">SIGN UP</a><span class="gnPipe">&nbsp;|&nbsp;</span><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\'); adbpGnav(\'login\');">LOG IN</a></div><div class="clr"></div></div><div class="lmbtm"><div class="img"><img src="http://i.cdn.turner.com/toon/tools/img/global/nav/login/badges.png" width="33" height="31" alt="" /></div><div class="bar"><span class="white">0</span><span class="grey"> of </span><span class="white">???</span></div></div>';
+	// 	LoginModule.getTotalBadges();
+	// }
 	
-	if(document.getElementById("loggedInOut")){ 
-		document.getElementById("loggedInOut").innerHTML = '<div style="text-align: center; padding-top: 5px; padding-left: 33px;"><span class="loggedInText">Join now -- it\'s FREE!</span><br /><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'reg\');">SIGN UP</a></span><span class="gnPipe">&nbsp;|&nbsp;</span><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\');">LOG IN</a></div>';
-	}
+	// if(document.getElementById("loggedInOut")){ 
+	// 	document.getElementById("loggedInOut").innerHTML = '<div style="text-align: center; padding-top: 5px; padding-left: 33px;"><span class="loggedInText">Join now -- it\'s FREE!</span><br /><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'reg\');">SIGN UP</a></span><span class="gnPipe">&nbsp;|&nbsp;</span><a href="javascript:LoginModule.showLoginWindow({visible: true}, \'login\');">LOG IN</a></div>';
+	// }
 
 	LoginModule.onReady();
 }

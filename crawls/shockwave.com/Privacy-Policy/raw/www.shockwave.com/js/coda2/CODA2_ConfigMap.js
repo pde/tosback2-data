@@ -16,13 +16,12 @@ if(!/mobile/.test(self.location.href)){
 }
 
 // Coda config overrides
-btg.config.Omniture["dynamicAccountList"] += ",spicy,shiva,adam,grognard";
-btg.config.Omniture["trackExternalLinks"] = true;
+btg.config.Omniture.dynamicAccountList += ",spicy,shiva,adam,grognard";
+btg.config.Omniture.trackExternalLinks = true;
 btg.config.Omniture.percentPageViewedVarMap = {
 	previousPage:"prop21",
 	percentage:"prop24"
 };
-
 
 // omniCookie is used for temporary storage and next page tracking of Omniture variables
 var omniCookie =  btg.Cookie.read( "swOmni" );

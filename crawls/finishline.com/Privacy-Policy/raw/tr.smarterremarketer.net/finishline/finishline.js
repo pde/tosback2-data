@@ -652,6 +652,13 @@
                     SmtrRmkr.processPage({ found: true, cn: 'Back To School: ' + id, cid: 'b2s_' + id, scn: null, brand: null });
                 } catch (err) { SmtrRmkr.logError("onBTSCategoryView", err); }
             },
+            eossWired: false,
+            onEOSSCategoryView: function (id) {
+                try {
+                    SmtrRmkr.pageProcessed = false;
+                    SmtrRmkr.processPage({ found: true, cn: 'End of Season Sale: ' + id, cid: 'eoss_' + id, scn: null, brand: null });
+                } catch (err) { SmtrRmkr.logError("onEOSSCategoryView", err); }
+            },
             lastCatName: null,
             lastSubCatName: null,
             lastCatBrand: null,
@@ -667,6 +674,56 @@
                     } else if (SmtrRmkr.isPage('/college-hooded-sweatshirt')) {
                         cid = 'colhoodswt';
                         cn = 'college-hooded-sweatshirt';
+                    } else if (SmtrRmkr.isPage('/end-of-season-sale') && SmtrRmkr.eossWired == false) {
+                    	SmtrRmkr.eossWired = true;
+                    	try {
+                            SmtrRmkr.onEOSSCategoryView("main");
+                        } catch (derr) { SmtrRmkr.logError("EOSS Main", derr); }
+                    } else if ((SmtrRmkr.getParam("lp") === "eoss") && SmtrRmkr.eossWired == false) {
+                    	SmtrRmkr.eossWired = true;
+                    	var cat = SmtrRmkr.getParam("icid");
+                    	switch (cat) {
+	                    	case "202492" : SmtrRmkr.onEOSSCategoryView("mensfootwear");
+	                    		break;
+	                    	case "202493" : SmtrRmkr.onEOSSCategoryView("womensfootwear");
+	                    		break;
+	                    	case "202491" : SmtrRmkr.onEOSSCategoryView("running");
+	                    		break;
+	                    	case "202496" : SmtrRmkr.onEOSSCategoryView("bball");
+	                    		break;
+	                    	case "202494" : SmtrRmkr.onEOSSCategoryView("kidsfootwear");
+	                    		break;
+	                    	case "202495" : SmtrRmkr.onEOSSCategoryView("boots");
+	                    		break;
+	                    	case "202483" : SmtrRmkr.onEOSSCategoryView("mensfleece");
+	                    		break;
+	                    	case "202486" : SmtrRmkr.onEOSSCategoryView("womenstees");
+	                    		break;
+	                    	case "202487" : SmtrRmkr.onEOSSCategoryView("youthapparel");
+	                    		break;
+	                    	case "202484" : SmtrRmkr.onEOSSCategoryView("menstees");
+	                    		break;
+	                    	case "202485" : SmtrRmkr.onEOSSCategoryView("womensfleece");
+	                    		break;
+	                    	case "202482" : SmtrRmkr.onEOSSCategoryView("mlbfleece");
+	                    		break;
+	                    	case "202481" : SmtrRmkr.onEOSSCategoryView("ncaafleece");
+	                    		break;
+	                    	case "202488" : SmtrRmkr.onEOSSCategoryView("socks");
+	                    		break;
+	                    	case "202490" : SmtrRmkr.onEOSSCategoryView("nikebags");
+	                    		break;
+	                    	case "202500" : SmtrRmkr.onEOSSCategoryView("footwear");
+	                    		break;
+	                    	case "202498" : SmtrRmkr.onEOSSCategoryView("apparel");
+	                    		break;
+	                    	case "202499" : SmtrRmkr.onEOSSCategoryView("accessories");
+	                    		break;
+	                    	case "202480" : SmtrRmkr.onEOSSCategoryView("alldeals");
+	                    		break;
+	                    	default : SmtrRmkr.onEOSSCategoryView("other");
+	                    		break;
+                    	}
                     } else if (SmtrRmkr.isPage('/back-to-school')) {
                         var h = SmtrRmkr.wl.hash.replace('#', '');
                         if (h.length == 0 || h.length > 32) {

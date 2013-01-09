@@ -94,13 +94,10 @@ function ai_getQueryTracking(){var results=new RegExp('[\\?&]__avail_tc=([^&#]*)
 return results[1]||'';}
 function ai_getSynchronousCallUrl(method,argnames,argvalues,response_type){var url=ai_getStaticURL(response_type);var d=new _AI_Dic({});for(var i=0;i<argnames.length;i++){d.add(argnames[i],new _AI_String(ai_jesc(argvalues[i])));}
 url+=("&q={\"ret0\":[\""+method+"\","+d+"]}");return url;}
-function ai_getProtocol(){var proto="";try{proto=parent.location.protocol+"//";}catch(e){ai_log("Could not use parent.location.protocol")
-proto="";}
-if(proto==""){try{proto=window.location.protocol+"//";}catch(e){ai_log("Could not use window.location.protocol")
-proto="";}}
-if(proto=="file://"||proto==""){ai_log("Using fallback protocol http")
-proto="http://";}
-return proto;}
+function ai_getProtocol(){var proto="";try{proto=parent.location.protocol;}catch(e){ai_log("Could not use parent.location.protocol");proto="";}
+if(!proto||proto==""){try{proto=window.location.protocol;}catch(e){ai_log("Could not use window.location.protocol");proto="";}}
+if(!proto||proto=="file:"||proto==""){ai_log("Using fallback protocol http");proto="http:";}
+return proto+"//";}
 function ai_log(msg){if(AI_DEBUG){var elem_id='__avail_log__';var elem=document.getElementById(elem_id);if(elem){elem.innerHTML+="<br>"+msg+"<br>";}else{var m="--- Could not get eMark Log output element ---\nPlease create a 'DIV' element with id='"+elem_id+"' somewhere on the page to enable log output.\n\n";m+="Also, make sure that the BODY is loaded before calls to eMark script, while in debug mode. \n";m+="Else the script can not get hold of the DIV log tag.\n\n";m+="Log message:\n"+msg;alert(m);return;}}}
 function ai_set_lock(state){ai_load_lock=state;}
 function ai_get_lock(){return ai_load_lock;}

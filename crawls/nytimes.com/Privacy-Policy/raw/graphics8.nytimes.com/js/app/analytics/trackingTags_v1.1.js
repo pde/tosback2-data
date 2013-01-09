@@ -1,5 +1,5 @@
 /*
-* $Id: trackingTags_v1.1.js 116817 2012-11-29 17:22:07Z konige $
+* $Id: trackingTags_v1.1.js 118405 2012-12-20 16:47:35Z reed.emmons $
 */
 
 //  CONFIGURE HOST BASED ON ENVIRONMENT
@@ -411,6 +411,7 @@ if (window.addEventListener) {
 
 NYTD.EventTracker = (function () {
     'use strict';
+    var etHost; 
     var lastEventTime = 0;
     var nextCallbackNum = 0;
     var wtMetaExcludes = {
@@ -420,6 +421,14 @@ NYTD.EventTracker = (function () {
         'wt.z_rmid': 1
     };
 
+    if (NYTD.env === "production") {
+      etHost = "et.nytimes.com";
+    } else if (NYTD.env === "staging") {
+      etHost = "et.stg.use1.nytimes.com";
+    } else {
+      etHost = "et.dev.use1.nytimes.com";   
+    }
+    
     var buildUrl = function (url, params) {
         var key;
         var qs = '';
@@ -514,7 +523,7 @@ NYTD.EventTracker = (function () {
 
             scriptElem = document.createElement('script');
             scriptElem.src = buildUrl((document.location.protocol || 'http:') +
-                '//et.nytimes.com/', evt);
+                '//'+etHost+'/', evt);
             document.body.appendChild(scriptElem);
 
             scripts.push(scriptElem);

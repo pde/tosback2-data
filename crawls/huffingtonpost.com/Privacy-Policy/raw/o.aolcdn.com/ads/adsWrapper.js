@@ -581,7 +581,7 @@ adsAddOn=2;
  }
 }
 if (adsExcV=='blank')inc='artexc=all;'
-s+=inc+adsATOth+adsSrAT+adsATWM+adsVal+"kvmn="+m+";extmirroring=0;target=_blank;"+adsTzAT+"grp="+adsScr
+s+=inc+adsATOth+adsSrAT+adsATWM+adsVal+"kvmn="+m+";kvgrp="+adsScr+";extmirroring=0;target=_blank;"+adsTzAT+"grp="+adsScr
 }
 }
 if (t=='text'){

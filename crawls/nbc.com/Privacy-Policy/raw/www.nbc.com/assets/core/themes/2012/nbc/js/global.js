@@ -445,9 +445,55 @@ function loadGlobalFooterShop() {
         url;
 
     if (document.domain == "www.nbc.com") {
-        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=77&format=json" + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
+        url = "/api/shop/products.php?cnt=3&thumbnailImgsize=77&format=json&v=nbc&fbst=30" + ((SITE.id != '69') ? "&keywords=" + SITE.id : "");
     } else {
-        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D77%26format%3Djson" + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
+        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailImgsize%3D77%26format%3Djson%26v%3Dnbc%26fbst%3D30" + ((SITE.id != '69') ? "%26keywords%3D" + SITE.id : "");
+    }
+
+    NBC.ajax({
+        url: url,
+        contentType : "application/json",
+        dataType : "json",
+        error: function (xhr, ajaxOptions, thrownError) {
+            shopFooter.hide(0);
+        },
+        success : function (data) {
+            if (data.products.length > 0) {
+                var output = '', refCode;
+		if (s.prop10 === "Front Door") {
+                refCode = "&ecid=PRF-NBC-102873&pa=PRF-NBC-102873";
+                } else if (s.prop10 === "Global") {
+                refCode = "&ecid=PRF-NBC-102770&pa=PRF-NBC-102770";
+                } else {
+		refCode = '';
+		}
+                for (var i in data.products) {
+                    var node = data.products[i];
+                    output += '<li class="shop">';
+                    output += '<a href="' + node.url + refCode + '" target="_blank"><img src="' + node.thumbnailImg + '" target="_blank" width="77" height="77" alt="' + node.name + '" /></a>';
+                    output += '<p>' + node.name + ' <a href="' + node.url + refCode +'" target="_blank">Buy&nbsp;&raquo;</a></p>';
+                    output += '</li>';
+
+                    if (i == 2) {
+                        break;
+                    }
+                }
+
+                shopFooter.append(output);
+            } else {
+		returnDefaultShopItems();
+            }
+        }
+    });
+}
+function returnDefaultShopItems(){
+    var shopFooter = NBC('footer.global #shop-footer'),
+        url;
+
+    if (document.domain == "www.nbc.com") {
+        url = "/api/shop/products.php?cnt=3&thumbnailimgsize=77&format=json";
+    } else {
+        url = "/assets/esp/utility/proxy/cache/?uri=http%3A%2F%2Fwww.nbcuniversalstore.com%2Fproducts.php%3Fcnt%3D3%26thumbnailimgsize%3D77%26format%3Djson";
     }
 
     NBC.ajax({
@@ -482,6 +528,7 @@ function loadGlobalFooterShop() {
                 shopFooter.append(output);
             } else {
                 shopFooter.hide(0);
+		console.log('no items available and data.products.length is ' + data.products.length);
             }
         }
     });

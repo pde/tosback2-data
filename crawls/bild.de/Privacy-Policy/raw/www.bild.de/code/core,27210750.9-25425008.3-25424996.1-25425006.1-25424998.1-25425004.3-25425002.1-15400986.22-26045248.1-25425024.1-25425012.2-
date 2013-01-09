@@ -2495,7 +2495,7 @@ de.bild.sso = (function($){
     }
 
 })(jQuery);
-/*de.bild.social:27524114.8*/
+/*de.bild.social:27524114.9*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -2533,8 +2533,7 @@ de.bild.social = (function($){
         'gplus' : false
     };
     
-    var socialButtonInfoText = "<h4>Jetzt soziale Netzwerke aktivieren!</h4><br /><p>Ihre Privatsphäre ist uns sehr wichtig – mit zwei Klicks haben Sie Ihre Daten im Griff!</p><p>Für eine komfortable Nutzung, wird Ihre Auswahl für vier Wochen gespeichert.</p><br /><a href='http://www.bild.de/bild-community/2012/community/2klick-loesung-27650500.bild.html'>Mehr erfahren</a>";
-    
+    var socialButtonInfoText = "<h4>Jetzt soziale Netzwerke aktivieren!</h4><br /><p>Ihre Privatsphäre ist uns sehr wichtig – mit zwei Klicks haben Sie Ihre Daten im Griff!</p><p>Für eine komfortable Nutzung, wird Ihre Auswahl für vier Wochen gespeichert.</p><br /><a href='http://www.bild.de/bild-community/2012/community/2klick-loesung-27650500.bild.html' target='_blank'>Mehr erfahren</a>";
     var bodyTag = null,
     $body,
     insertScript = function(id,url){
@@ -2815,7 +2814,8 @@ de.bild.social = (function($){
          'widgetURL' : 'https://apis.google.com/js/plusone.js',
          'buttonHTML' : '<div class="g-plusone" data-size="%SIZE%"></div>',
          'badgeHTML' : '<div class="g-plus" data-height="%HEIGHT%" data-width="%WIDTH%" data-href="https://plus.google.com/%PROFILEID%?rel=publisher" data-theme="light"></div>',
-         gbuttonFrame : '<iframe src="https://plusone.google.com/u/0/_/+1/fastbutton?url=%URL%&amp;size=%SIZE%&amp;count=true&amp;lang=de" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:20px;" align="left"></iframe>',
+         'shareButton' : '<div class="g-plus" data-action="share" data-href="%URL%" data-width="%WIDTH%"></div>',
+         'gbuttonFrame' : '<iframe src="https://plusone.google.com/u/0/_/+1/fastbutton?url=%URL%&amp;size=%SIZE%&amp;count=true&amp;lang=de" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:20px;" align="left"></iframe>',
          
          loadGoogleScript : function(){  
             window.___gcfg = {lang: 'de'};
@@ -2833,6 +2833,12 @@ de.bild.social = (function($){
             annotation = data.annotation ? data.annotation : 'bubble';
             return google.buttonHTML.replace('%URL%', url).replace('%SIZE%', size);
          },
+         
+         getShareButton: function(data){
+             var url = data.url || getEncodedURL();
+             var width = data.width || 180;
+             return google.shareButton.replace('%URL%', url).replace('%WIDTH%', width);
+         }, 
          
          getbadgeHTML: function(data) {
              
@@ -3172,10 +3178,10 @@ de.bild.social = (function($){
             $placeHolder.hide();
             $this.find('.social-lever').addClass('active');
             
-            if($placeHolder.attr('data-class') === "g-plus") {
+            if($placeHolder.attr('data-class') === "g-share") {
                 
-                var gplusCode = google.getbadgeHTML({
-                    'profile_id' : $placeHolder.attr('data-href')
+                var gplusCode = google.getShareButton({
+                    'url' : $placeHolder.attr('data-href')
                 });
                 
             } else {
@@ -3231,19 +3237,16 @@ de.bild.social = (function($){
             $this.find('.social-lever').addClass('active');                
             var layout = $placeHolder.attr('data-show-count');
             
-            if($placeHolder.attr('data-class') === "twitter-follow-button") {
-                
-                var twitterCode = twitter.getTwitterFollowButton( $placeHolder.attr('data-href') ); 
-                
+            if($placeHolder.attr('data-class') === "twitter-follow-button") {                
+                var twitterCode = twitter.getTwitterFollowButton( $placeHolder.attr('data-href') );                
             } else {
                 var twitterCode = twitter.renderButton({
- 'url': $placeHolder.attr('data-href'),
+                    'url': $placeHolder.attr('data-href'),
                     'countpos': $placeHolder.attr('data-count')
                 }); 
             }    
                        
-            $this.find('.sb-to-fill').append(twitterCode).show();              
-                
+            $this.find('.sb-to-fill').append(twitterCode).show();
             insertingButton = true;
             
         });
@@ -4163,7 +4166,7 @@ google.load('ads.search', '2');
 /*adcode.core:26045252.1*/
 
 
-/*de.bild.video:25425042.4*/
+/*de.bild.video:25425042.6*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -7286,7 +7289,7 @@ de.bild.user = (function($, SandBox){
 
 
 
-/*de.bild.common:27524118.2*/
+/*de.bild.common:27524118.3*/
 
 var de = de || {};
 de.bild = de.bild || {};
@@ -7295,6 +7298,20 @@ de.bild.common = (function($, SandBox) {
  if (typeof $ === 'undefined'  || $ !== window.jQuery){
         throw(new Error({'name' : 'Fehlende Bibliothek', 'message':'jQuery nicht uebergeben oder vorhanden'}));
     }
+    
+    
+    
+    /** Global Listeners */  
+    $.subscribe('de.bild.modifyHeadline', function(){
+        
+        var $headline = $('#cover');
+        var objKicker = $(document.createElement('span')).addClass('kicker').html($headline.attr('data-kicker'));
+        var objHeadline = $(document.createElement('span')).addClass('headline').html($headline.attr('data-headline'));
+    
+        $headline.empty().append(objKicker).append(objHeadline);
+    });
+    
+    
          
  function initLightboxes($context) {
      
@@ -7356,11 +7373,17 @@ de.bild.common = (function($, SandBox) {
     
     function initTabModules( $context ) {
         /** Common tabs */
-  $context.on(SandBox.getActionEvents('tabs').click, '.tabs a', function(e) {
-   e.preventDefault();  
+  $context.on(SandBox.getActionEvents('tabs').click, '.tabs a', function(e) {    
  
    var $tab = $(this);   
    var $tabsElem = $tab.closest('.tabs');
+   
+   /* Ignore old tabs */
+   if($tabsElem.eq(0).prop('tagName') === 'DIV') {
+       return;
+   }
+   
+   e.preventDefault();
    
    /* set active class for clicked element */
    $tabsElem.find('li').removeClass('active');

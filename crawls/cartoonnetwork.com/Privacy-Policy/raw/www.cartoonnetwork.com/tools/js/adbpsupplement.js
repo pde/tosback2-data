@@ -202,12 +202,17 @@ if (domain.indexOf("fusionfall") != -1) {
 } else if (domain.indexOf("starwarsgamecreator") != -1) {
 	if (path1) path2 = path1;
 	path1 = "starwarsgamecreator", path2 = "starwarsgamecreator";
-} else if (pathname.match(/^\/gamecreator\//)) {
+} else if (pathname.indexOf('/gamecreator/')) {
 	path1 = "ben10gamecreator", path2 = "ben10gamecreator";
-} else if (pathname.match(/^\/gamecreatorbm\//)) {
+	if (!(isIE)) {
+		console.log("PATHS:");
+		console.log(path1);
+		console.log(path2);
+	}
+} else if (pathname.indexOf('/gamecreatorbm/')) {
 	path1 = "batmangamecreator", path2 = "batmangamecreator";
-} else if (pathname.match(/^\/gamecreatorsw\//)) {
-	path1 = "starwarsgamecreator";
+} else if (pathname.indexOf('/gamecreatorsw/')) {
+	path1 = "starwarsgamecreator", path2 = "starwarsgamecreator";
 } else if (domain.indexOf("mixit") != -1) {
 	if (path1) path2 = path1;
 	path1 = "mixit";

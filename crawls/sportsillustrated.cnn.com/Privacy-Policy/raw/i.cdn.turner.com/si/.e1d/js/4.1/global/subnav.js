@@ -370,7 +370,7 @@ siNav.load({
 		{ "u": "http://www.golf.com/equipment",			"l":"Equipment",
 			"s": [
 				{ "u":"http://www.golf.com/equipment/see-try-buy?eref=sinav",			"l":"See-Try-Buy" },
-				{ "u":"http://www.golf.com/clubtest?eref=sinav",			"l":"Club Test" },
+				{ "u":"http://www.golf.com/equipment/club-test?eref=sinav",			"l":"Club Test" },
 				{ "u":"http://shop.golf.com?eref=sinav",			"l":"Shop.GOLF.com" },
 				{ "u":"#",			"l":"&#160;" }
 			]

@@ -15,6 +15,15 @@
         $(this).find('> div').hide();
     });
 
+    // If IPAD,the menu dropdown click event is triggered 
+    var isiPad = navigator.userAgent.match(/iPad/i) != null;
+    if (isiPad) {
+        subheader.find('li').click(function (e) {
+            $(this).find('> div > ul').show();
+            $(this).find('> div').slideDown('fast');
+        });
+    }
+
     $("#subheader-search-container input[type=\"text\"]").focus(function () {
         $(this).closest('form').toggleClass('focus');
     }).blur(function () {

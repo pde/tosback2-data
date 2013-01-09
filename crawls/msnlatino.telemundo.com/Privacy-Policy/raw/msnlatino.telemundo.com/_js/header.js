@@ -133,12 +133,12 @@ $(document).ready(function() {
             }
         }
         if (valid) {
-            DARTad.startRefreshTimer('AUTOREFRESH', 120, 'AUTO');
+            //DARTad.startRefreshTimer('AUTOREFRESH', 120, 'AUTO');
         }
     } else if((document.title != 'Mainsite | Telemundo' )
         && (document.title != 'videos | Telemundo') 
         && (location.indexOf('/tras_el_lente') == -1)) //WO 14320
     {
-        DARTad.startRefreshTimer('AUTOREFRESH', 60, 'AUTO');
+        //DARTad.startRefreshTimer('AUTOREFRESH', 60, 'AUTO');
     }
 });

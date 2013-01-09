@@ -111,7 +111,7 @@ function showMsgModal(popupDivID,closeID,titleID,title, pwidth, closeButton, sho
 	}
 }
 
-function showPopupByStr(str,  title, blockBG, closeButton, buttonStr, pWidth, pHeight, pBorder, url) {
+function showPopupByStr(str,  title, blockBG, closeButton, buttonStr, pWidth, pHeight, pBorder, url, videoId) {
 	try {
 		var overLayDiv_id, popupDiv, popupBody, id, v_width = "700px", v_height = '500px'; 
 		if ((pWidth != undefined) && (pWidth != '')) v_width = pWidth + "px";
@@ -165,6 +165,32 @@ function showPopupByStr(str,  title, blockBG, closeButton, buttonStr, pWidth, pH
 		if (IE6) {
 			hideSelectOption(true);
 		}
+		if ((videoId != undefined) || (videoId != null)) {
+			var channelLogo = '/media/U-verse/Shop/HBO_logo.jpg';
+				
+			//this method callback gets the data
+			gvp.getMetaData(videoId, function(gvpData){ 
+			
+				var videoObject = gvpData.gvpResponse.videoData[0];
+
+				if((videoObject.title != undefined) || (videoObject.title != null) || (videoObject.title != '')){
+					//build div with video data & append to target div
+					var string = '<div id="gvpVideoButton" style="cursor:pointer;float:left;width:106px;"><img src="http:'+videoObject.thumbFilePath+'" width="'+videoObject.thumbWidth+'" height="'+videoObject.thumbHeight+'" style="float:left;padding-top:20px;"/><img src="/media/U-verse/Shop/Play+Button+GVP+thumbnail.png" style="position:relative;top:-62px;"></div><div style="float:left;padding-left:10px;padding-right:10px;width:509px;margin-top:-10px"><p style="font-size:16px; color:#067AB4">'+videoObject.title+'</p><p style="margin-top:-7px;">'+videoObject.description+'</p></div><div style="float:left;width:160px;height:140px;background-color:#FFF;margin-top:-15px;border-left:1px solid #A9ABAB;"><img src="'+channelLogo+'" style="padding-left:10px;padding-top:20px;"></div>';
+					commonFunc.getElementObj("gvpHolder").setAttribute("class", "box");
+					commonFunc.getElementObj("gvpHolder").style.height  = '120px';
+					commonFunc.getElementObj("gvpHolder").style.padding  = '15px 0 5px 20px';
+					commonFunc.getElementObj("gvpHolder").style.margin  = '10px 0 10px 10px';
+					commonFunc.getElementObj("gvpHolder").style.background  = '#F5F5F5';
+					jQuery('#gvpHolder').append(string);//GVPmainPopupBody is the id of the modal body
+					jQuery('#gvpVideoButton').click(function(){
+						new GVP({videoId: videoObject.id, target:'gvp_embed_target', view:"UVerseDemo"});
+						commonFunc.getElementObj("gvp_embed_target").style.display  = 'block';
+						commonFunc.getElementObj("mainPopupBody").style.position = 'relative';
+					});
+				}				
+			});
+		}
+
 		if (v_mainPopupDiv2 == '2') v_mainPopupDivObj.style.zIndex = '45';
 		commonFunc.divPopUp('mainPopupDiv' + v_mainPopupDiv2,true); 
 		//popUpDivName[popUpDivName.length - 1] = 'mainPopupDiv';
@@ -174,13 +200,13 @@ function showPopupByStr(str,  title, blockBG, closeButton, buttonStr, pWidth, pH
 	}
 } // end of showPopupByStr
 
-function showPopupByUrl(url,  title, blockBG, width, height, pBorder) {
+function showPopupByUrl(url,  title, blockBG, width, height, pBorder, videoId) {
 	try {
 		var strUrl = ShoppingCart.AjaxRequest(url);
 		if (pBorder) {
-			showPopupByStr(strUrl,  title, blockBG, true, null, width, height, true, url);
+			showPopupByStr(strUrl,  title, blockBG, true, null, width, height, true, url, videoId);
 		} else {
-			showPopupByStr(strUrl,  title, blockBG, true, null, width, height, false, url);
+			showPopupByStr(strUrl,  title, blockBG, true, null, width, height, false, url, videoId);
 		}
 	} catch(e) {
 		// do nothing

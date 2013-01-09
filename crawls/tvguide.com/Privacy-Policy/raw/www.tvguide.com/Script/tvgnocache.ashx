@@ -2,16 +2,16 @@ var commentingOffline = false;
 
 /* cookie: ServiceID=80001.0 srvid=80001 */
 
-var tvgServerTimeUTC = new Date(2013,0,5,13,18,29,0);
+var tvgServerTimeUTC = new Date(2013,0,9,13,18,26,0);
 
-var dServerET = new Date(2013,0,5,8,18,29,0);
+var dServerET = new Date(2013,0,9,8,18,26,0);
 var dSrvrTime = new Date();
 
-dSrvrTime.setUTCFullYear(2013,0,5);
-dSrvrTime.setUTCHours(13,18,29,0);
+dSrvrTime.setUTCFullYear(2013,0,9);
+dSrvrTime.setUTCHours(13,18,26,0);
 
-var dLocalTime = new Date(2013,0,5,8,18,29,0);
-var dGridStart = new Date(2013,0,5,8,0,0,0);
+var dLocalTime = new Date(2013,0,9,8,18,26,0);
+var dGridStart = new Date(2013,0,9,8,0,0,0);
 
 var snapUserID = "";
 
@@ -40,7 +40,7 @@ var loggedinUserId = "";
 var loggedinFirstName = "";
 var gigyaApiKey = "2_66INm61ZxQ6_ZyaSsRyTSVO_OSKZqZY2HHXdLti4YhkTsDj2k4j1EMMMvqVgO_kE";
 var gigyaCommentCat = "25069624";
-var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= 4e406388722a6fa71810894970d7054ef8493ff7 1357391909';
+var disqus_config = function() { this.page.remote_auth_s3 = 'eyJhdmF0YXIiOm51bGwsImVtYWlsIjpudWxsLCJpZCI6MCwidXJsIjpudWxsLCJ1c2VybmFtZSI6bnVsbH0= e256ea15ce6bcf1aa25fdfef91dd5710b69f8fa0 1357737506';
 this.page.api_key = '7q9PYxT0Zrp3AGAihrE22VtKgB9g8UBy6lXSNFSgyvPkZw48znCpTNtkmk5lP7e4';
  }
 var disqus_shortname = 'tvguide';
@@ -50,16 +50,16 @@ var SportsBaseUrl = "http://www.tvguide.com";
 var OvgBaseUrl = "http://video.tvguide.com";
 var tvg_s_account = "tvgproduction";
 var prestitial_active = false;
-/* TVGSVC02 1/5/2013 1:15:00 PM GMT */
+/* TVGSVC02 1/9/2013 1:00:00 PM GMT */
 
-/* Listings: In-Grid and Close-Up Ads (2013-01-05)*/
+/* Listings: In-Grid and Close-Up Ads (2013-01-09)*/
 var GridAds = true;
 var MaxGridAds = 8;
 var bTopRowGridAd = false;
 var bCloseupAd = false;
 
 /* Listings: Top Channel Promo */
-var magicTopImage = "/listings/images/topchan/GGFW_Top_v2.jpg";
+var magicTopImage = "/listings/images/topchan/GGFW_Top_nw.jpg";
 var magicBotImage = "/listings/images/topchan/GGFW_Bottom_PREM_MON_v2.jpg";
 var magicLogo = "/listings/images/topchan/GGFW_Middle_v2.jpg";
 var magicLink = "https://www.facebook.com/TVGuideNetwork/app_442173232497007";

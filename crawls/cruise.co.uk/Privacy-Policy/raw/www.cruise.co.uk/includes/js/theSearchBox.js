@@ -86,8 +86,17 @@ var searchBox = {
 	toggleDropdown: function(elem){
 		var cruiselinesDropdown = document.getElementById('hidden' + elem + 'Lines').innerHTML;
 		var destinationsDropdown = document.getElementById('hidden' + elem + 'Destinations').innerHTML;		
-		document.getElementById('cruiselineid_deals').innerHTML = cruiselinesDropdown;
-		document.getElementById('destinationid_deals').innerHTML = destinationsDropdown;
+		$('#cruiselineid_deals').empty().append(cruiselinesDropdown);
+		$('#cruiselineid_reviews').empty().append(cruiselinesDropdown);
+		$('#cruiselineid_questions').empty().append(cruiselinesDropdown);
+		$('#cruiselineid_photos').empty().append(cruiselinesDropdown);
+		$('#cruiselineid_videos').empty().append(cruiselinesDropdown);	
+		
+		$('#destinationid_deals').empty().append(destinationsDropdown);
+		$('#destinationid_reviews').empty().append(destinationsDropdown);
+		$('#destinationid_questions').empty().append(destinationsDropdown);
+		$('#destinationid_photos').empty().append(destinationsDropdown);		
+		
 	},
 	
 	repopulateShips: function(elemLine,elemShip){

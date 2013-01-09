@@ -872,7 +872,8 @@
 					"post": "",
 					"slideshow": "",
 					"story": "",
-					"transcript": ""
+					"transcript": "",
+					"list":""
 				};
 				if (d.ptype in omniture_c_map) {
 					var def = "N/A";
@@ -1826,6 +1827,7 @@
 				if (t=="Text.Archive"&&g=="chronology") { return "archive"; }
 				if (t=="Text.Article"&&g=="")  { return a=="column"?"column":"article"; }
 				if (t=="Text.Article"&&g=="column")  { return "column"; }
+				if (t=="Text.Article"&&g=="list")  { return "list"; }				
 				if (t=="Text"&&g=="biography") { return "bio"; }
 				if (t=="Collection"&&g=="homePage") { if (a=="topic") { return a; } return "channel"; }// return a;
 				if (t=="InteractiveResource"&&g=="interactiveContent") { return "interactive"; }

@@ -1794,6 +1794,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			function() {
 				this.contentHref = jQuery(this).attr("href");
 				jQuery(this).addClass('over');
+				var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 				var contentOffset = jQuery(this).position();
 				var contentXpos = contentOffset.left;
 				var contentYpos = contentOffset.top;		
@@ -1812,7 +1813,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					jQuery('.toolTipWrapper').fadeIn(300);
 				} else {
 					jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
-					jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});		
+					if (isChrome) {
+						if (contentXpos > 100) {
+						jQuery('#ToolTipOverlay').css({left: contentXpos-120, top: contentYpos+15});
+						} else {
+							jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
+						}
+					} else {
+						jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
+					}
 					jQuery('.toolTipWrapper').fadeIn(300);
 					jQuery('div#ToolTipOverlay').next().remove();
 				}
@@ -2508,9 +2517,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 
 			if (siteId != ""){
-				params = params + "&CMSSiteId=" + siteId;
+				params = params + "&siteId=" + siteId;
 			}else{
-				params = params + "&CMSSiteId=1";
+				params = params + "&siteId=1";
 			}
 			
 			if (PPL) {
@@ -2773,9 +2782,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 
 			if (siteId != ""){
-				params = params + "&CMSSiteId=" + siteId;
+				params = params + "&siteId=" + siteId;
 			}else{
-				params = params + "&CMSSiteId=1";
+				params = params + "&siteId=1";
 			}
 			
 			if(eob){				
@@ -3071,9 +3080,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 
 			if (siteId != ""){
-				params = params + "&CMSSiteId=" + siteId;
+				params = params + "&siteId=" + siteId;
 			}else{
-				params = params + "&CMSSiteId=1";
+				params = params + "&siteId=1";
 			}
 			
 			if(eob){				
@@ -3337,9 +3346,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			}
 
 			if (siteId != ""){
-				params = params + "&CMSSiteId=" + siteId;
+				params = params + "&siteId=" + siteId;
 			}else{
-				params = params + "&CMSSiteId=1";
+				params = params + "&siteId=1";
 			}
 			if(eob){
 				
@@ -4397,8 +4406,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 								case 0: sessionStorage.setItem("videoId0", youtubeValue);
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="clear:both;height:10px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
-											+ '" style="text-decoration: none !important; display: inline-block;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
+											+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="text-decoration:none !important; display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
 											+ '</a></div>';
@@ -4406,8 +4415,8 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 								case 1: sessionStorage.setItem("videoId1", youtubeValue);
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="clear:both;height:10px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
-											+ '" style="text-decoration: none !important; display: inline-block;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
+											+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
 											+ '</a></div>';
@@ -4416,9 +4425,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							
 							var videoLinkHTML = '<div class="product_page_link_'
 									+ youtubeValue
-									+ '" style="clear:both;height:10px;" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
-									+ '" style="text-decoration: none !important; display: inline-block;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
 									+ '">'
 									+ data_link_name
@@ -4520,7 +4529,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the onYouTubePlayerReady.js(232) ~~~~~~~~~~~~~~~~~~~~ */
 
-/* ~~~~~~~~~~~~~~~~~~~~ Starting the module.parseRSS.js(254) ~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~ Starting the module.parseRSS.js(242) ~~~~~~~~~~~~~~~~~~~~ */
 (function(jQuery) {
 	/* parseRSS by Rob Barnett 10/31/2012 */
 	jQuery.fn.parseRSS = function(url, callback) {
@@ -4688,7 +4697,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	}
 })(jQuery)
 
-/* ~~~~~~~~~~~~~~~~~~~~ Ending the module.parseRSS.js(254) ~~~~~~~~~~~~~~~~~~~~ */
+/* ~~~~~~~~~~~~~~~~~~~~ Ending the module.parseRSS.js(242) ~~~~~~~~~~~~~~~~~~~~ */
 
 var $j=jQuery.noConflict();window.name="eb";function are_cookies_enabled()
 {var cookieEnabled=(navigator.cookieEnabled)?true:false;if(typeof navigator.cookieEnabled=="undefined"&&!cookieEnabled)

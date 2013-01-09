@@ -26,9 +26,11 @@ window.location = "https://subscription.timeinc.com/storefront/privacy/si/generi
 <script type='text/javascript'>var _sf_startpt=(new Date()).getTime()</script>
 <!-- Visual Revenue Reader Response Tracking Script (v6) -->
 <script type="text/javascript">
+	var vrq_eligible = ( cnnPage.isHomepage || location.pathname.startsWith("/nfl") || location.pathname.startsWith("/college-football") || location.pathname.startsWith("/mlb") || location.pathname.startsWith("/nba") || location.pathname.startsWith("/mma") || location.pathname.startsWith("/extramustard")   );
+	
 	var automate_vrq = false;
 	try{
-		automate_vrq = cnnPage.isHomepage;
+		automate_vrq = vrq_eligible;//cnnPage.isHomepage;
 	}catch(e){}
 	
 	var _vrq = _vrq || [];
@@ -49,10 +51,9 @@ window.location = "https://subscription.timeinc.com/storefront/privacy/si/generi
 <script type="text/javascript">
 try{
 	
-	if( cnnPage.isHomepage ){
+	if( vrq_eligible ){
 				
 		$(document).ready(function(){
-			
 			
 			jQuery.fn.setVRTitle = function(){
 				var title = $(this[0]).find('DIV.cnnTitle').text();
@@ -67,119 +68,146 @@ try{
 				 *
 				 *	Set the zones by adding the Visual Revenue attribute : data-vr-zone
 				 *
+				 *	AND
+				 *
+				 *	Set the content boxes by adding the Visual Revenue attribute : data-vr-contentbox
+				 *		
 				 */
-				
+				 
 				try{
 				
-				var testmode = location.search.indexOf('VRTEST=y') > 0;
-				//$(	'DIV#cnnT1Holder'		).attr('data-vr-zone', 'T1');		//T1 
-				$(	'DIV.cnnT2s'			).attr('data-vr-zone', 'T2');		//T2
-				
-				if( cnnPage.isHomepage ){
-					$(	'DIV.cnnT2Blogs'		).attr('data-vr-zone', 'Blogs Tab');		//Blogs Tab zone
-					$('DIV.cnnT2Blogs ul li a').attr('data-vr-contentbox', '');				//Blogs Tab content box
-				}
-				
-				$(	'DIV.cnnBoxWritersRow5'	).attr('data-vr-zone', 'Writers');	//Writers
-				
-				$( $(	'DIV.cnnBoxSiVideo'		).get(1) ).attr('data-vr-zone', 'Video');	//Video
-				
-				$(	'DIV.cnnBoxEM'			).attr('data-vr-zone', 'Extra Mustard');	//Extra Mustard
-				
-				$(	'DIV.cnnBoxTR'			).attr('data-vr-zone', 'Truth & Rumors');	//Truth & Rumors
+					var testmode = location.search.indexOf('VRTEST=y') > 0;
 					
-				//cnnRow2, cnnCol1 is always SI Photos
-				$(	'DIV.cnnBoxPhotos'		).attr('data-vr-zone', 'SI Photos');		//SI Photos
-				
-				//Generic Boxes				
-				var el,title;
-				var generic_boxes = {
-					'a': 'DIV.cnnRow2 DIV.cnnCol0',
-					'b': 'DIV.cnnRow3 DIV.cnnCol0',
-					'c': 'DIV.cnnRow3 DIV.cnnCol1'
-				};
-				
-				$.each(generic_boxes, function(key, box){
-					title = $( box ).setVRTitle();
-					$(box).attr('data-vr-zone', title);
+					if( !(location.pathname.startsWith('/extramustard')) ){
 					
-					//since we are already in the Generic Boxes, go ahead and set the contentbox
-					$(box).find('DIV.cnnBoxDefault DT').attr('data-vr-contentbox', title + ': Featured Link - Image');	//Generic Box Featured Link Image
-					$(box).find('DIV.cnnBoxDefault DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
-					$( $(box).find('DIV.cnnBoxDefault DD UL LI A').get(0) ).attr('data-vr-contentbox', title + ': Featured Link');	//Generic Box Featured Link
-				});
-				
-				/*
-				for ( box in generic_boxes ){
-					el = generic_boxes[ box ];
-					title = $( el ).setVRTitle();
-					$(el).attr('data-vr-zone', title);
+						//Breaking News
+						$('DIV.cnnBreakingNews DIV.cnnBreakingNewsHolder DIV').attr('data-vr-contentbox', '');	
+						
+						//T1 Zone and Content Boxes
+						$('DIV#cnnT1Holder DIV.cnnT1Pane').each(function(){
+							var contentbox = 'T1A';
+							switch( $(this).attr('class') ){
+								case 'cnnT1Pane t1_1': contentbox = 'T1A'; break;
+								case 'cnnT1Pane t1_2': contentbox = 'T1B'; break;
+								case 'cnnT1Pane t1_3': contentbox = 'T1C'; break;
+								case 'cnnT1Pane t1_4': contentbox = 'T1D'; break;
+								case 'default': break;
+							}
+							
+							//set the zone
+							$( this ).attr('data-vr-zone', contentbox);
+							
+							//set the headline content box
+							var nextElAfterTabs = $(this).find('DIV.cnnT1Tabs').next().get(0) || {};
+							if( typeof nextElAfterTabs.tagName !== 'undefined' && nextElAfterTabs.tagName == 'A'){
+								$(nextElAfterTabs).attr('data-vr-contentbox', contentbox);
+							}
+							
+							//set the image content box
+							$('DIV#cnnT1Holder DIV.cnnT1Pane').find('.cnnT1Underlay').find('a').attr('data-vr-contentbox', '');
+						});
+						$('DIV#cnnT1Holder DIV.cnnT1Pane DIV.cnnT1Bullets').attr('data-vr-contentbox', '');  //T1 Bullets
+						
+						//T2 Zone and Content Boxes
+						$(	'DIV.cnnT2s'			).attr('data-vr-zone', 'T2');		//T2
+						$('DIV.cnnT2s ul li a').attr('data-vr-contentbox', '');			//T2
+						
+						if( cnnPage.isHomepage ){	//homepage specific tagging
+							
+							//Blogs Tab Zone and Content Box
+							$(	'DIV.cnnT2Blogs'	).attr('data-vr-zone', 'Blogs Tab');		//Blogs Tab zone
+							$('DIV.cnnT2Blogs ul li a').attr('data-vr-contentbox', '');			//Blogs Tab content box
+							
+							//SI Photos Zone and Content Box
+							$(	'DIV.cnnBoxPhotos'		).attr('data-vr-zone', 'SI Photos');	//SI Photos
+							$('DIV.cnnBoxPhotos A').attr('data-vr-contentbox', '');				//SI Photos
+							
+							//Writers Zone and Content Boxes
+							$(	'DIV.cnnBoxWritersRow5'	).attr('data-vr-zone', 'Writers');	//Writers Zone
+							$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersFeature').attr('data-vr-contentbox', '');	//Writer Feature
+							$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersMain li').attr('data-vr-contentbox', ''); //Writer Generic
+							
+							//Homepage Video Box and Content Boxes
+							$( $(	'DIV.cnnBoxSiVideo'		).get(1) ).attr('data-vr-zone', 'Video');	//Video Zone
+							$('DIV.cnnBoxSiVideo DIV#si-hp-carousel-video-player').attr('data-vr-contentbox', '');					//Featured Video
+							$('DIV.cnnBoxSiVideo DIV.jcarousel-skin-home_video LI.jcarousel-item').attr('data-vr-contentbox', '');	//Video Carousel
+							
+							//Extra Mustard Zone and Content Boxes
+							$(	'DIV.cnnBoxEM'			).attr('data-vr-zone', 'Extra Mustard');	//Extra Mustard
+							$('DIV.cnnBoxEM A').attr('data-vr-contentbox', '');						//Extra Mustard
+							
+							//Truth and Rumors Zone and Content Boxes
+							$(	'DIV.cnnBoxTR'			).attr('data-vr-zone', 'Truth & Rumors');	//Truth & Rumors
+							$('DIV.cnnBoxTR DT').attr('data-vr-contentbox', 'Truth and Rumors: Featured Link - Image');	//Truth and Rumors Feature
+							$('DIV.cnnBoxTR DD UL LI A').attr('data-vr-contentbox', '');		//Truth and Rumors Link
+							$( $('DIV.cnnBoxTR DD UL LI A').get(0) ).attr('data-vr-contentbox', 'Truth and Rumors: Featured Link');	//Truth and Rumors Feature
+							
+						}
+						
+						//Below the Fold Boxes				
+						var el,title;
+						var below_fold_boxes = (cnnPage.isHomepage) ? {
+							'a': 'DIV.cnnRow2 DIV.cnnCol0',
+							'b': 'DIV.cnnRow3 DIV.cnnCol0',
+							'c': 'DIV.cnnRow3 DIV.cnnCol1'
+						} : {
+							'a': 'DIV.cnnRow0 DIV.cnnCol1',
+							'b': 'DIV.cnnRow1 DIV.cnnCol0',
+							'c': 'DIV.cnnRow1 DIV.cnnCol1',
+							'd': 'DIV.cnnRow2 DIV.cnnCol0',
+							'e': 'DIV.cnnRow2 DIV.cnnCol1',
+							'f': 'DIV.cnnRow3 DIV.cnnCol0',
+							'g': 'DIV.cnnRow3 DIV.cnnCol1'
+						};
+						
+						//Below the Fold Box Zone and Content Box
+						$.each(below_fold_boxes, function(key, box){
+							
+							//Zone
+							title = $( box ).setVRTitle();
+							$(box).attr('data-vr-zone', title);
+							
+							//Content Box
+							$(box).find('DT').attr('data-vr-contentbox', title + ': Featured Link - Image');	//Generic Box Featured Link Image
+							$(box).find('DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
+							$( $(box).find('DD UL LI A').get(0) ).attr('data-vr-contentbox', title + ': Featured Link');	//Generic Box Featured Link
+						});
+						
+						//Content Box for thumbnail links
+						$('DIV.cnnBoxDefaultThumbs DIV').attr('data-vr-contentbox', '');	//Generic Box Link
+						
+						//Content Box for Photo Links
+						$('DIV.cnnBoxPhotos A').attr('data-vr-contentbox', '');				//SI Photos
 					
-					//since we are already in the Generic Boxes, go ahead and set the contentbox
-					$(el).find('DIV.cnnBoxDefault DT').attr('data-vr-contentbox', title + ': Featured Link - Image');	//Generic Box Featured Link Image
-					$(el).find('DIV.cnnBoxDefault DD UL LI A').attr('data-vr-contentbox', '');	//Generic Box Link
-					$( $(el).find('DIV.cnnBoxDefault DD UL LI A').get(0) ).attr('data-vr-contentbox', title + ': Featured Link');	//Generic Box Featured Link
-				}
-				*/
-				
-				 /*
-				  *
-				  *	Set the content boxes by adding the Visual Revenue attribute : data-vr-contentbox
-				  *		Since many of the boxes below the fold can change positions and type,
-				  *		set the content box using the generic classes/ids/elements. Other boxes,
-				  *		namely the T1, T2, Writers, and Video Box, are fixed on the page and have
-				  *		specific class names or ids to classify a content box.
-				  */
-				
-				$('DIV.cnnBreakingNews DIV.cnnBreakingNewsHolder DIV').attr('data-vr-contentbox', '');	//Breaking News
-				
-				//$('DIV#cnnT1Holder DIV.cnnT1Pane').attr('data-vr-contentbox', '');  //T1
-				$('DIV#cnnT1Holder DIV.cnnT1Pane').each(function(){
-					var contentbox = 'T1A';
-					switch( $(this).attr('class') ){
-						case 'cnnT1Pane t1_1': contentbox = 'T1A'; break;
-						case 'cnnT1Pane t1_2': contentbox = 'T1B'; break;
-						case 'cnnT1Pane t1_3': contentbox = 'T1C'; break;
-						case 'cnnT1Pane t1_4': contentbox = 'T1D'; break;
-						case 'default': break;
+					} else {
+					
+						//T1 Zone and Content Boxes
+						$('DIV.cnnT1box').attr('data-vr-zone', 'T1');
+						$('DIV.cnnT1box A').attr('data-vr-contentbox', '');
+						
+						//T2 Zone and Content Boxes
+						$('DIV.cnnRow0').attr('data-vr-zone', 'T2');
+						$('DIV.cnnRow0 A').attr('data-vr-contentbox', '');
+					
+						//T3 Zone and Content Boxes
+						var T3Row = 1;
+						$('DIV.cnnRow1').each(function(){
+							$(this).attr('data-vr-zone', 'T3 - Row ' + (T3Row++) );
+						});
+						$('DIV.cnnRow1 A').attr('data-vr-contentbox', '');
+					
 					}
 					
-					//set the zone
-					$( this ).attr('data-vr-zone', contentbox);
-					
-					//set the headline content box
-					var nextElAfterTabs = $(this).find('DIV.cnnT1Tabs').next().get(0) || {};
-					if( typeof nextElAfterTabs.tagName !== 'undefined' && nextElAfterTabs.tagName == 'A'){
-						$(nextElAfterTabs).attr('data-vr-contentbox', contentbox);
-					}
-					
-					//set the image content box
-					$('DIV#cnnT1Holder DIV.cnnT1Pane').find('.cnnT1Underlay').find('a').attr('data-vr-contentbox', '');
-				});
-				$('DIV#cnnT1Holder DIV.cnnT1Pane DIV.cnnT1Bullets').attr('data-vr-contentbox', '');  //T1 Bullets
-								
-				$('DIV.cnnT2s ul li a').attr('data-vr-contentbox', '');				//T2
-				
-				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersFeature').attr('data-vr-contentbox', '');	//Writer Feature
-				$('DIV.cnnBoxWritersRow5 DIV.cnnBoxWritersMain li').attr('data-vr-contentbox', ''); //Writer Generic
-				
-				$('DIV.cnnBoxSiVideo DIV#si-hp-carousel-video-player').attr('data-vr-contentbox', '');					//Featured Video
-				$('DIV.cnnBoxSiVideo DIV.jcarousel-skin-home_video LI.jcarousel-item').attr('data-vr-contentbox', '');	//Video Carousel
-				
-				$('DIV.cnnBoxEM A').attr('data-vr-contentbox', '');				//Extra Mustard
-				
-				$('DIV.cnnBoxTR DT').attr('data-vr-contentbox', 'Truth and Rumors: Featured Link - Image');	//Truth and Rumors Feature
-				$('DIV.cnnBoxTR DD UL LI A').attr('data-vr-contentbox', '');		//Truth and Rumors Link
-				$( $('DIV.cnnBoxTR DD UL LI A').get(0) ).attr('data-vr-contentbox', 'Truth and Rumors: Featured Link');	//Truth and Rumors Feature
-				
-				$('DIV.cnnBoxPhotos A').attr('data-vr-contentbox', '');				//SI Photos
-				
-				$('DIV.cnnBoxDefaultThumbs DIV').attr('data-vr-contentbox', '');	//Generic Box Link
-				
 				}catch(e){
 					siLog.group('visual revenue');
 					siLog.error(e);
 					siLog.groupEnd();
+				}
+				
+				//Non-homepage Writer Box Zone and Content Boxes
+				if( !(cnnPage.isHomepage) ){
+					$(	'DIV.cnnBoxWriters'	).attr('data-vr-zone', 'Writers');	//Writers Zone
+					$('DIV.cnnBoxWriters li').attr('data-vr-contentbox', '');	//Writer Generic
 				}
 				
 		});
@@ -497,13 +525,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle" style="border-top: 0px none;">Latest News</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/college-football/news/20130105/cotton-texas-am-johnny-manziel-dominates-oklahoma/?eref=sircrc">The Legend Grows</a>
+<a href="http://sportsillustrated.cnn.com/college-basketball/news/20130108/bubble-watch/?eref=sircrc">Contenders Or Pretenders?</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2013/01/04/31914/#recap?eref=sircrc">Paul, Clippers thwart Lakers</a>
+<a href="http://sportsillustrated.cnn.com/nfl/news/20130108/r-g-3/?eref=sircrc">RGIII set for LCL surgery; no word yet on ACL</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/nfl/news/20130104/chiefs-reid.ap/?eref=sircrc">Reid reaches deal with Chiefs</a>
+<a href="http://sportsillustrated.cnn.com/basketball/nba/gameflash/2013/01/08/32500/index.html#?eref=sircrc">Pacers hand Heat fourth defeat in seven games</a>
 </li>
 
 		</ul>
@@ -512,14 +540,14 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">Video</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 		<tr>
-		<td><a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-peter-king-last-word-colts-ravens-redskins-seahawks.sportsillustrated/">
+		<td><a href="http://sportsillustrated.cnn.com/video/ncaaf-video/20130108/roundtable-look-ahead-2013.sportsillustrated/">
 <div>
-<img src="../../i2.cdn.turner.com/si/dam/assets/130104181745-20111201-tjg-al2-309-video-carousel.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Peter King's Last Word</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-don-banks-andy-reid-kansas-city-chiefs.sportsillustrated/">
+<img src="../../i2.cdn.turner.com/si/dam/assets/130108035920-roundtable-look-ahead-2013-00005628-video-carousel.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">2012 Year in Review</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/video/ncaaf-video/20130108/alabama-notre-dame-reality.sportsillustrated/">
 <div>
-<img src="../../i2.cdn.turner.com/si/dam/assets/130104151850-20130104-dlp-cjm-001-video-carousel.jpg" class="cnnEmVidImg"></div>
-<div class="cnnVideoText">Banks: Reid not a good fit for the Chiefs</div>
+<img src="../../i2.cdn.turner.com/si/dam/assets/130108034327-alabama-notre-dame-reality-00010520-video-carousel.jpg" class="cnnEmVidImg"></div>
+<div class="cnnVideoText">Gray: Reality spoils dream matchup</div>
 </a></td>
 
 		</tr>
@@ -529,13 +557,13 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Writers</div>
 		<ul>
 <li>
-<a href="http://sportsillustrated.cnn.com/college-football/news/20130104/bbva-compass-bowl-preview/index.html?eref=sircrc"><strong>R.J. Rico:</strong> Pittsburgh vs. Ole Miss BBVA Compass Bowl preview</a>
+<a href="http://sportsillustrated.cnn.com/nfl/news/20130109/harbaugh-kaepernick/index.html?eref=sircrc">Harbaugh smart to make Kaepernick his starter</a>
 </li>
 <li>
-<a href="http://nhl-red-light.si.com/2013/01/04/toxic-atmosphere-engulfs-cba-talks/?eref=sircrc">Toxic atmosphere engulfs CBA talks</a>
+<a href="http://nhl-red-light.si.com/2013/01/08/is-gary-bettman-in-trouble/?eref=sircrc">Will Gary Bettman be fired by NHL owners?</a>
 </li>
 <li>
-<a href="http://sportsillustrated.cnn.com/racing/news/20130104/ryan-villopoto-supercross/index.html?eref=sircrc"><strong>Tim Tuttle:</strong> Ryan Villopoto preparing to charge towards third straight supercross championship</a>
+<a href="http://sportsillustrated.cnn.com/more/news/20130108/rob-parker-let-go-by-espn/index.html?eref=sircrc"><strong>Richard Deitsch:</strong> ESPN cuts Rob Parker over RGIII commentary</a>
 </li>
 
 		</ul>
@@ -544,18 +572,18 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 		<div class="cnn_subtitle">SI Photos</div>
 		<table border="0" cellpadding="0" cellspacing="0"><tbody>
 			<tr>
-<td><a href="http://sportsillustrated.cnn.com/nba/photos/1301/celebrities-at-nba-games-2012-13/?eref=sircrc">
+<td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1301/leading-off-010713/content.1.html?eref=sircrc">
 <div>
-<img title="Celebrities at NBA Games" alt="Celebrities at NBA Games" src="../../i2.cdn.turner.com/si/dam/assets/130104130140-00-justin-bieber-thumb-gallery---thumbnail.jpg"></div>
-<div>Celebrities at NBA Games</div>
-</a></td><td><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1301/did-you-see-that-011413/content.1.html?eref=sircrc">
+<img title="Leading Off: Pictures of the Week" alt="Leading Off: Pictures of the Week" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1301/leading-off-010713/images/thumb.op5x-19455-mid.jpg"></div>
+<div>Leading Off: Pictures of the Week</div>
+</a></td><td><a href="http://sportsillustrated.cnn.com/extra-mustard/photos/1301/tweets-of-the-week-010813/?eref=sircrc">
 <div>
-<img title="Did You See That?" alt="Did You See That?" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1301/did-you-see-that-011413/images/thumb.6150677.jpg"></div>
-<div>Did You See That?</div>
-</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/multimedia/photo_gallery/1301/polar-bear-plunge/content.1.html?eref=sircrc">
+<img title="Tweets of the Week" alt="Tweets of the Week" src="../../i2.cdn.turner.com/si/dam/assets/130108173307-00-world-cup-mascot-fuleco-thumb-gallery---thumbnail.jpg"></div>
+<div>Tweets of the Week</div>
+</a></td><td id="cnnAdOpaWideShowP"><a href="http://sportsillustrated.cnn.com/nfl/photos/1301/nfl-peter-king-all-pro-team/?eref=sircrc">
 <div>
-<img title="Polar Bear Plunges of 2013" alt="Polar Bear Plunges of 2013" src="../../i.cdn.turner.com/si/multimedia/photo_gallery/1301/polar-bear-plunge/images/thumb.polarbear65558.jpg"></div>
-<div>Polar Bear Plunges of 2013</div>
+<img title="Peter King's All-Pro Team" alt="Peter King's All-Pro Team" src="../../i2.cdn.turner.com/si/dam/assets/130108141429-00-cameron-wake-thumb-gallery---thumbnail.jpg"></div>
+<div>Peter King's All-Pro Team</div>
 </a></td>
 
 			</tr>
@@ -579,7 +607,7 @@ email: <a href="mailto:privacy.SI@turner.com">privacy.SI@turner.com</a><br/>
 			<dl>
 				<dt><a href="http://sportsillustrated.cnn.com/"><img src="../../i.cdn.turner.com/si/.element/img/4.1/global/footer_logo.jpg" alt="SI.com" title="SI.com"/></a></dt>
 				<dd>
-<span>Hot Topics:</span> <a href="http://sportsillustrated.cnn.com/college-football/news/20130105/cotton-texas-am-johnny-manziel-dominates-oklahoma/" title="Johnny Manziel" class="cnnFirst">Johnny Manziel</a> <a href="http://sportsillustrated.cnn.com/video/nfl/20130104/nfl-peter-king-last-word-colts-ravens-redskins-seahawks.sportsillustrated/" title="NFL Playoffs" >NFL Playoffs</a> <a href="http://nhl-red-light.si.com/2013/01/04/toxic-atmosphere-engulfs-cba-talks/" title="NHL Labor Talks" >NHL Labor Talks</a> <a href="http://sportsillustrated.cnn.com/nfl/news/20130104/russell-wilson/" title="Russell Wilson" >Russell Wilson</a> <a href="http://sportsillustrated.cnn.com/nba/news/20130104/nba-draft-ben-mclemore-nerlens-noel-shabazz-muhammad/" title="NBA Draft" >NBA Draft</a> <a href="http://sportsillustrated.cnn.com/swimsuit/" title="SI Swimsuit" >SI Swimsuit</a>
+<span>Hot Topics:</span> <a href="http://sportsillustrated.cnn.com/college-basketball/news/20130108/bubble-watch/" title="Robert Griffin III" class="cnnFirst">Robert Griffin III</a> <a href="http://nba.si.com/2013/01/08/three-pointers-pacers-claim-seasons-best-win-thanks-to-georges-star-effort/" title="Indiana Pacers" >Indiana Pacers</a> <a href="http://sportsillustrated.cnn.com/college-football/news/20130108/nick-saba-alabama.ap/" title="Nick Saban" >Nick Saban</a> <a href="http://sportsillustrated.cnn.com/nfl/news/20130106/nfl-playoffs-wild-card-snap-judgments/" title="NFL Playoffs" >NFL Playoffs</a> <a href="http://sportsillustrated.cnn.com/nhl/news/20130107/nhl-labor.ap/" title="NHL Season" >NHL Season</a> <a href="http://www.nationalfootballpost.com/NFPS-Top-200-Draft-Prospects-Version-30.html" title="NFL Draft" >NFL Draft</a> <a href="http://sportsillustrated.cnn.com/swimsuit/" title="SI Swimsuit" >SI Swimsuit</a>
 </dd>
 			</dl>
 			<div class="cnnClear"></div>

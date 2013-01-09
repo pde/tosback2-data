@@ -9405,76 +9405,30 @@ $(function () {
 			.removeClass('active');
 		});
 });/* video_showcase.js */
-/**
- * Tag Results Module
- * @author agaudry
- */
- /*
-var videoShowcase = {
-	
-	workingAreaClassName : '.video_showcase .content',
-	api                  : null,
-	curPane              : null,
-	
-	/**
-	 * init module elements: pagination
-	 */
-	 /*
-	init : function () {
-
-		this.curPane = '.video_showcase .content'
-		
-		console.log(this.curPane);
-		
-		var parameters = {};
-		
-
-		this.initPagination(parameters);
-		
-	},
-	/**
-	 * init pagination plagin
-	 */
-	 /*
-	initPagination : function (parameters) {
-
-		alert("foo!");
-
-		if (parameters.selectedTabIndex != null) { 
-			parameters.selectedTabIndex = parameters.selectedTabIndex;
-		} else { 
-			parameters.selectedTabIndex = 0;
-		}	
-		
-		alert(videoShowcaseLink);
-		console.log(this.curPane);
-
-		$Crabapple(this.workingAreaClassName+' .pagination_wrap').pagination({
-			reloadArea              : this.curPane,
-			fragmentLlink           : videoShowcaseLink,
-			pequestParams           : parameters,
-			//afterLoadHandler        : this.initSorting,
-			afterLoadHandlerContext : this
-		});
-		
-		alert("dumb...");
-		
-	},
-	/**
-	 * show spinner
-	 */
-	 /*
-	showLoader : function () {
-		
-		$(this.curPane).empty();
-		$(this.curPane).html("<div align='center'><img src='/sitewide/images/modules/ajax_busy.gif' width='32' height='32' alt='' border='0' /></div>");
-		
-	}
-};
-
 $(function() {
-	if ($(".module.video_showcase").length)
-		videoShowcase.init();
+	if ($(".module.video_showcase").length) {
+		
+		$Crabapple('select[name=seasons]').selectboxx({
+			init:function(){},
+			onChange: function (val, inst) {
+				var seasonId = val;
+				if ($(this).attr("data-selected")) 
+					var pattern = $(this).attr("data-selected");
+				else
+					var pattern = "all";
+				
+				$(this).attr("data-selected", seasonId);
+				
+				$(".module.video_showcase .pagination_wrap a").each(function() {
+					var href = $(this).attr("href");
+					href = href.replace(pattern + "?", seasonId + "?");
+					$(this).attr("href", href);
+				});
+				
+				$(".module.video_showcase .pagination_wrap ul li:first a").trigger("click");
+			}
+		});
+	}
 });
 /* visible_header.js */
 $(function () {

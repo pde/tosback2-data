@@ -15,7 +15,7 @@
 
 <link rel="icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="../cdn1.static.tube8.phncdn.com/images/favicon.ico" type="image/x-icon" />
-<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=179.css" rel="stylesheet" type="text/css" />
+<link href="../cdn1.static.tube8.phncdn.com/style/style.css%3Fcache=181.css" rel="stylesheet" type="text/css" />
 <!--[if lte IE 7]>
 	<link href="http://cdn1.static.tube8.phncdn.com/style/ie-style.css?cache=044" rel="stylesheet" type="text/css" />
 <![endif]-->
@@ -36,7 +36,7 @@
 <![endif]-->
 
 <script type="text/javascript" src="../ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=024"></script>
+<script type="text/javascript" src="../cdn1.static.tube8.phncdn.com/js/common_jq.js%3Fcache=025"></script>
 <script language="javascript" type="text/javascript">
 //<![CDATA[
 	var $j = jQuery.noConflict();
@@ -140,22 +140,45 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 				}
 			}, 1500);
 
+			function getUrlVars() {
+				var vars = {};
+				var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+					vars[key] = value;
+				});
+				return vars;
+			}
 			function statTrackerEvent(event, position, id, page){
 				statTracker()._setSiteID(21);
-				statTracker()._event(segment, id+"_"+position+"_"+event, page, 1);
+				// set orientation
+				var adOrientation = "shemale";
+				if (segment == 1) {
+					adOrientation = "gay";
+				} else if (segment == 0) {
+					adOrientation = "straight";
+				}
+				// set label
+				if (getUrlVars()['q']) {
+					var label = "search_"+getUrlVars()['q'];
+				} else {
+					var label = page;
+				}
+
+				statTracker()._event("tube8_"+adOrientation, id+"_"+position+event, label, 1);
 			}
+
 			$(".box-thumbnail-friends").each(function(index){
 					if (pagekeyStat == "html-home_new_") {
 						var adPage = "home";
-					} else if (pagekeyStat == "html-categories_new_") {
+					} else {
 						var adPage = "category";
 					}
+
 					if ($(this).hasClass("youporn")) {
-						statTrackerEvent("view", index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+						statTrackerEvent("view", "tube8_", $(this).find(".friendsAdWrapper").attr("id"), adPage+"_"+category);
 						$(this).find("img.videoThumbs").mouseover(function(e){
-							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+category);
 						}).click(function(e){
-							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+"Teen");
+							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+category);
 						});
 					}
 			});
@@ -274,15 +297,15 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 	//]]>
 
 	</script>
-							<script type="text/javascript">
-		(function(s,o,l,v,e,d){if(s[o]==null&&s[l+e]){s[o]="loading";s[l+e](d,l=function(){s[o]="complete";s[v+e](d,l,!1)},!1)}})(document,"readyState","add","remove","EventListener","DOMContentLoaded");
-		(function() {
-		var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
-		s.src = "http://cdn.engine.phn.doublepimp.com/Scripts/infinity.js.aspx";
-		s.id = "infinity"; s.setAttribute("data-guid", "b170c29d-8fd6-4237-bba5-ccbdf691c081"); s.setAttribute("data-version", "async");
-		var e = document.getElementsByTagName('script')[0]; e.parentNode.insertBefore(s, e);
-		})();
-		</script>
+				<script type="text/javascript">
+			(function(s,o,l,v,e,d){if(s[o]==null&&s[l+e]){s[o]="loading";s[l+e](d,l=function(){s[o]="complete";s[v+e](d,l,!1)},!1)}})(document,"readyState","add","remove","EventListener","DOMContentLoaded");
+			(function() {
+			var s = document.createElement("script"); s.type = "text/javascript"; s.async = true;
+			s.src = "http://cdn.engine.phn.doublepimp.com/Scripts/infinity.js.aspx";
+			s.id = "infinity"; s.setAttribute("data-guid", "b170c29d-8fd6-4237-bba5-ccbdf691c081"); s.setAttribute("data-version", "async");
+			var e = document.getElementsByTagName('script')[0]; e.parentNode.insertBefore(s, e);
+			})();
+			</script>
 			</head>
 	<body id="body_bkg" class="relative" style="z-index:1">
 			<script type="text/javascript" language="JavaScript" src="../cdn1.static.pornhub.phncdn.com/js/newbar.js"></script>

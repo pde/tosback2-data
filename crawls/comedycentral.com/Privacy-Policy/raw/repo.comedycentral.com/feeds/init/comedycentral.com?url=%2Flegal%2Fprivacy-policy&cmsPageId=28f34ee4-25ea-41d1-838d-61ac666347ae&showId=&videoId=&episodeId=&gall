@@ -42,14 +42,23 @@ mtvn.btg.config.AdSettings.FreeWheel = { enabled:false, type:"MRM" };
 mtvn.btg.Controller.init();
 
 
-//Send Reporting call
-mtvn.btg.Controller.sendPageCall( {  pageName:"legal/privacy-policy",channel:"cc|legal",prop21:"ALLTRAFFIC:ComedyCentral",prop35:"legal/privacy-policy",prop8:"no-show",hier1:"legal/privacy-policy",eVar9:"legal/privacy-policy",eVar10:"ALLTRAFFIC:ComedyCentral",eVar6:"no-show"  } );
-
-var repCallObject = { pageName:"legal/privacy-policy",channel:"cc|legal",prop21:"ALLTRAFFIC:ComedyCentral",prop35:"legal/privacy-policy",prop8:"no-show",hier1:"legal/privacy-policy",eVar9:"legal/privacy-policy",eVar10:"ALLTRAFFIC:ComedyCentral",eVar6:"no-show" };
+var repCallObject = { 
+	pageName:"legal/privacy-policy",
+	channel:"cc|legal",
+	prop21:"ALLTRAFFIC:ComedyCentral",
+	prop35:"legal/privacy-policy",
+	prop8:"no-show",
+	hier1:"legal/privacy-policy",
+	eVar9:"legal/privacy-policy",
+	eVar10:"ALLTRAFFIC:ComedyCentral",
+	eVar6:"no-show" };
 
 if (typeof repCallObject.events == 'undefined' || repCallObject.events == '') {
 	repCallObject.events = 'event16';
 } 
+
+//Send Reporting call
+mtvn.btg.Controller.sendPageCall( repCallObject );
 
 
 // Vars used for ad calls, reporting and, site section Id

@@ -313,7 +313,7 @@
         
         
         
-        /*JANA*/
+        /*DARIO*/
 s.usePlugins=true; //do not modify
 
 /**Note: add your custom JS plugins inside the s_doPlugins function below**/

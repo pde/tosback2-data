@@ -98,7 +98,7 @@ function s_doPlugins(s)
 		if (dme.indexOf("boatingsavings") != -1) 
 			s.prop17 = 'boatingsavings';
 		else if (dme.indexOf("workwearsavings") != -1) 
-			s.prop17 = 'workwearsavings';      
+			s.prop17 = 'workwearsavings';
 		else if (dme.indexOf("truckmonkey") != -1)
 		    s.prop17 = 'truckmonkey';
 		else if (dme.indexOf("bargainoutfitters") != -1) 

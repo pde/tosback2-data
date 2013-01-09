@@ -31,7 +31,7 @@ function chatActive(dateStamp) {
 	var propertyValues = new Object;
 	propertyValues = ( {
 	
-	timeStamp: 1357376401890,
+	timeStamp: 1357722001818,
 	
 
 	DEF_LANG_ID: '-1',
@@ -109,7 +109,7 @@ function chatActive(dateStamp) {
 		checkoutExclusionPages: 'yourorder,shippinginfo,paymentinfo,revieworder,orderconf,orderconfprnt,kioskexpresscheckout,kioskrevieworder,checkoutenteraddress,checkoutreviewandpay',
 		
 		
-	isChatOpen: chatActive('Jan 05, 2013 08:21:30'),
+	isChatOpen: chatActive('Jan 09, 2013 08:23:19'),
 		masterChatSwitch: 'ON',
 		showChatOnSku: 'ON',
 		showChatOnHome: 'ON',

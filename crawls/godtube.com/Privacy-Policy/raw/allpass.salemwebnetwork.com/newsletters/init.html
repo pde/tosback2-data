@@ -12,8 +12,6 @@ var InitialEndpointParam = "nlie";
 var InitialEndpointValueThankYou = "1";
 var InitialEndpointValueThankYouMessage = "2";
 var DebugRefValue  = "99";
-var ignoreImpressionCountLimitPaths = [];
-var ignoreShownToday = false;
 
 
 function readCookie(name) {
@@ -91,21 +89,11 @@ $(function () {
     var protocol = window.siteProtocol || location.protocol + "//";
     var domain = window.domain || location.host;
     var siteRef =  location.href.replace(protocol + domain,"");
-    var path = window.path || encodeURIComponent(siteRef);;
+    var path = window.path || encodeURIComponent(siteRef);
     var receiveFromUrl = window.receiveFromUrl || 'http://allpass.salemwebnetwork.com';
+    var debugMode = getQuerystring(EmailLinkParam) === DebugRefValue;
 
-    
-    if(readCookie(ShownTodayCookieName))
-    {
-        for (var i = 0; i < ignoreImpressionCountLimitPaths.length; i++) {
-            if(include(path, ignoreImpressionCountLimitPaths[i]))
-            {
-               ignoreShownToday = true;
-            }
-        }
-    } 
-    
-    if(readCookie(ShownTodayCookieName) || readCookie(BlockCookieName))
+    if(!debugMode && (readCookie(ShownTodayCookieName) || readCookie(BlockCookieName)))
     {
         return;
     }
@@ -135,7 +123,7 @@ $(function () {
             }
         }
     }
-    else if ((!readCookie(ShownTodayCookieName) && !readCookie(BlockCookieName)) || getQuerystring(EmailLinkParam)=== DebugRefValue || ignoreShownToday) {
+    else if ((!readCookie(ShownTodayCookieName) && !readCookie(BlockCookieName)) || debugMode) {
     
         
         var userId = window.userId || readCookie(UniversalAllPassCookieName) || ""; 
