@@ -2,8 +2,8 @@
 csAccountID=8002709;
 _csAccountID=8002709;
 
-_csTrackURL='https://dsa.csdata1.com/data2/sample.jpeg?';
-csTrackURL='https://dsa.csdata1.com/data2/sample.jpeg?';
+_csTrackURL='https://dsa.csdata1.com/data18/sample.jpeg?';
+csTrackURL='https://dsa.csdata1.com/data18/sample.jpeg?';
 
 csUseAkDownloadReceipts =true;
 

@@ -155,10 +155,11 @@ $(function () {
     $("#txtUpdateStoreNumber").click(function () {
         var objStoreNumberTextBox = $("#txtStoreNumber");
         var strKioskStoreNumber = "";
+        var redirectUrl;
         if (objStoreNumberTextBox != null) {
             strKioskStoreNumber = objStoreNumberTextBox.val();
             strKioskStoreNumber = strKioskStoreNumber.trim();
-            window.location = "http://" + location.host + "/SECURE/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + encodeURIComponent(document.URL);
+            window.location = "https://secure.lampsplus.com/secure/account/update-store-number.aspx?storenumber=" + strKioskStoreNumber + "&ReturnUrl=" + encodeURIComponent(document.location.href);
         } else {
             return;
         }
@@ -227,7 +228,7 @@ LP.isLocal = function () {
 };
 
 LP.keepAlive = function () {
-    var aliveUrl = LP.isLocal() ? "/keep-me-alive.ashx" : 'https://secure.lampsplus.com/secure/keep-me-alive.ashx';
+    var aliveUrl = LP.isLocal() ? "/secure/keep-me-alive.ashx" : 'https://secure.lampsplus.com/secure/keep-me-alive.ashx';
     var interval = 60 * 1000 * 10;
     var that = {};
     var alive = false;

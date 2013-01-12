@@ -317,7 +317,21 @@ function toggle() {
 		text.innerHTML = "Hide Information";
 	}
 } 
+// ************* Techinfo ************* //
+function expandBlock() {
+	var expandControlLink = document.getElementById("expandControlLink");
+	var expand1 = document.getElementById("expand1");
+	var expand2 = document.getElementById("expand2");
 
+	if(expand1.style.display == "block") {
+		expand1.style.display = expand2.style.display = "none";
+		expandControlLink.innerHTML = "&#8595; Learn More &#8595;";
+	}
+	else {
+		expand1.style.display = expand2.style.display = "block";
+		expandControlLink.innerHTML = "&#8593; Show Less &#8593;";
+	}
+} 
 
 // *************QUICK TIPS TOGGLE VISIBILITY ************* //
 //  <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>

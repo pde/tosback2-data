@@ -427,17 +427,19 @@ AccountFacade.fillFileListDetails = function(data) {
       clone.attr("id", id)
       content.append(clone)
     }
-    max = fileI + delta
-    for (var i = fileI; i < max; i++) {
-      if (fileI == AccountFacade.info.files.length) break
-      fileI++
-      endFlag = false
-      var f = AccountFacade.info.files[i];
-      var clone = tmp.clone()
-      var id = 'ml_file_' + f.id
-      $(".checkFiles", clone).attr("value", f.id)
-      clone.attr("id", id)
-      content.append(clone)
+    if(folderI==AccountFacade.info.dirs.length){
+      max = fileI + delta
+      for (var i = fileI; i < max; i++) {
+        if (fileI == AccountFacade.info.files.length) break
+        fileI++
+        endFlag = false
+        var f = AccountFacade.info.files[i];
+        var clone = tmp.clone()
+        var id = 'ml_file_' + f.id
+        $(".checkFiles", clone).attr("value", f.id)
+        clone.attr("id", id)
+        content.append(clone)
+      }
     }
     if (endFlag) {
       $('#files').append(content)
@@ -531,17 +533,19 @@ AccountFacade.fillFileListThumbnails = function(data) {
       clone.attr("id", id)
       content.append(clone)
     }
-    max = fileI + delta
-    for (var i = fileI; i < max; i++) {
-      if (fileI == AccountFacade.info.files.length) break
-      fileI++
-      endFlag = false
-      var f = AccountFacade.info.files[i];
-      var clone = tmp.clone()
-      var id = 'ml_file_' + f.id
-      $(".thumbFilenameCheckbox", clone).attr("value", f.id)
-      clone.attr("id", id)
-      content.append(clone)
+    if(folderI==AccountFacade.info.dirs.length){
+      max = fileI + delta
+      for (var i = fileI; i < max; i++) {
+        if (fileI == AccountFacade.info.files.length) break
+        fileI++
+        endFlag = false
+        var f = AccountFacade.info.files[i];
+        var clone = tmp.clone()
+        var id = 'ml_file_' + f.id
+        $(".thumbFilenameCheckbox", clone).attr("value", f.id)
+        clone.attr("id", id)
+        content.append(clone)
+      }
     }
     if (endFlag) {
       $('#files').append(content)

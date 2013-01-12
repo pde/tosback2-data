@@ -5,7 +5,7 @@ String.prototype.ltrim = function() {
 ch_ad_url = '';
 ch_oeh = window.onerror;
 ch_chitika_loaded = true;
-ch_amm_version = "1.13.3";
+ch_amm_version = "1.13.4";
 
 function dq(s) { return (s != null) ? '"' + s + '"' : '""'; }
 function ch_au(p,v) { if (v) { window.ch_ad_url += '&' + p + '=' + v; } }
@@ -241,7 +241,7 @@ function ch_write_iframe(f, thehtml, r, width, height) {
                 fdoc.open();
                 fdoc.write(thehtml);
                 // setTimeout for a bug fix; for some reason the document's onload event doesn't fire if the containing element has position set, unless I add a delay...
-                setTimeout(function() { fdoc.close(); window.ch_pending_requests--; }, 16);
+                setTimeout(function() { fdoc.close(); }, 16);
                 if(typeof(fobj.ch_resize) != "undefined") {
                     fobj.ch_resize();
                 }
@@ -304,7 +304,6 @@ function ch_decision(response, render) {
     if (thehtml && render) {
         ch_write_iframe(f, thehtml, r, null, null);
     } else {
-        w.ch_pending_requests--;
         f.style.display = "none";
         ch_chitika_loaded = false;
 
@@ -339,14 +338,15 @@ function ch_mm() {
         return;
     }
 
-    if (w.ch_pending_requests === undefined) {
-        w.ch_pending_requests = 0;
+    if (w.ch_unit_id === undefined) {
+        w.ch_unit_id = 0;
     }
-    w.ch_pending_requests++;
+    else {
+        w.ch_unit_id++;
+    }
 
     w.ch_host = ch_def(w.ch_host, 'mm.chitika.net');
     w.ch_ad_url = 'http://' + w.ch_host + '/minimall?';
-    w.ch_cid = ch_def(ch_def(w.ch_cid, w.ch_sid), 'default');
     w.ch_impsrc = ch_def(w.ch_impsrc, 'amm');
 
     w.ch_referrer = document.referrer;
@@ -386,6 +386,17 @@ function ch_mm() {
             ch_canvas = document.body.clientWidth + "x" + document.body.clientHeight;
         }
     }catch(e){}
+
+    // Get Configuration ID; default to unit-N or SID, if unavailable
+    if (!w.ch_cid) {
+        if (!w.ch_sid ||
+            w.ch_sid == 'Chitika Default') {
+            w.ch_cid = 'unit-'+w.ch_unit_id;
+        }
+        else {
+            w.ch_cid = w.ch_sid;
+        }
+    }
 
     ch_aue('w', w.ch_width);
     ch_aue('h', w.ch_height);

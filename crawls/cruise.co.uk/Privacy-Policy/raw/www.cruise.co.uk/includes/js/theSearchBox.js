@@ -26,7 +26,7 @@ var searchBox = {
 	submitSearch: function(elem){
 		switch(elem){
 			case 'DEALS':
-				location.href = 'http://' + location.host + '/search/?date=' + ($('#date').selectedValues())[0] + '&date2=' + ($('#date2').selectedValues())[0] + '&operatorid=' + $.trim( ($('#cruiselineid_deals').selectedValues())[0] ) + '&destinationid=' + $.trim( ($('#destinationid_deals').selectedValues())[0] ) + '&shipid=' + $.trim( ($('#cruiseshipid_deals').selectedValues())[0] ) + '&chkuk=' + ($('#chkuk').attr('checked')) + '&chkitaly=' + ($('#chkitaly').attr('checked')) + '&chkspain=' + ($('#chkspain').attr('checked')) + '&chkcaribbean=' + ($('#chkcaribbean').attr('checked'))  + '&chkusa=' + ($('#chkusa').attr('checked')) + '&chkocean=' + ($('#chkocean').attr('checked')) + '&chkriver=' + ($('#chkriver').attr('checked')) + '&chkallsailings=' + ($('#chkallsailings').attr('checked'))  + '&chkall=' + ($('#chkall').attr('checked'))  + '&searchtype=' + ($('#searchtype').selectedValues())[0] + '&cruisetypeid=' + ($('#cruisetypeid').selectedValues())[0] + '&chksouthampton=' + ($('#chksouthampton').attr('checked')) + '&chkbarcelona=' + ($('#chkbarcelona').attr('checked')) + '&chkrome=' + ($('#chkrome').attr('checked')) + '&chkvenice=' + ($('#chkvenice').attr('checked')) + '&chkeurope=' + ($('#chkeurope').attr('checked')) ;
+				location.href = 'http://' + location.host + '/search/?date=' + $('#date').val() + '&date2=' + $('#date2').val() + '&operatorid=' + $.trim( ($('#cruiselineid_deals').selectedValues())[0] ) + '&destinationid=' + $.trim( ($('#destinationid_deals').selectedValues())[0] ) + '&shipid=' + $.trim( ($('#cruiseshipid_deals').selectedValues())[0] ) + '&chkuk=' + ($('#chkuk').attr('checked')) + '&chkitaly=' + ($('#chkitaly').attr('checked')) + '&chkspain=' + ($('#chkspain').attr('checked')) + '&chkcaribbean=' + ($('#chkcaribbean').attr('checked'))  + '&chkusa=' + ($('#chkusa').attr('checked')) + '&chkocean=' + ($('#chkocean').attr('checked')) + '&chkriver=' + ($('#chkriver').attr('checked')) + '&chkallsailings=' + ($('#chkallsailings').attr('checked'))  + '&chkall=' + ($('#chkall').attr('checked'))  + '&searchtype=' + ($('#searchtype').selectedValues())[0] + '&cruisetypeid=' + ($('#cruisetypeid').selectedValues())[0] + '&chksouthampton=' + ($('#chksouthampton').attr('checked')) + '&chkbarcelona=' + ($('#chkbarcelona').attr('checked')) + '&chkrome=' + ($('#chkrome').attr('checked')) + '&chkvenice=' + ($('#chkvenice').attr('checked')) + '&chkeurope=' + ($('#chkeurope').attr('checked')) ;
 			break;
 			case 'REVIEWS':
 				location.href = 'http://' + location.host + '/cruise-reviews/search/?reviewcruiselineid=' + ($('#cruiselineid_reviews').selectedValues())[0] + '&reviewcruiseshipid=' + ($('#cruiseshipid_reviews').selectedValues())[0] + '&reviewdestinationid=' + ($('#destinationid_reviews').selectedValues())[0]  + '&searchtype=' + ($('#searchtype').selectedValues())[0] + '&chkocean=' + ($('#chkocean').attr('checked')) + '&chkriver=' + ($('#chkriver').attr('checked'));
@@ -45,7 +45,7 @@ var searchBox = {
 				location.href = 'http://' + location.host + '/cruise-news/search/?articlecruiselineid=' + ($('#cruiselineid').selectedValues())[0] + '&articlecruiseshipid=' + ($('#cruiseshipid').selectedValues())[0] + '&articledestinationid=' + ($('#destinationid').selectedValues())[0] + '&searchtype=' + ($('#searchtype').selectedValues())[0];
 			break;
 			default:
-				location.href = 'http://' + location.host + '/search/?date=' + ($('#date').selectedValues())[0] + '&date2=' + ($('#date2').selectedValues())[0] + '&operatorid=' + $.trim( ($('#cruiselineid').selectedValues())[0] ) + '&destinationid=' + $.trim( ($('#destinationid').selectedValues())[0] ) + '&shipid=' + $.trim( ($('#cruiseshipid').selectedValues())[0] ) + '&chkuk=' + ($('#chkuk').attr('checked')) + '&chkitaly=' + ($('#chkitaly').attr('checked')) + '&chkspain=' + ($('#chkspain').attr('checked')) + '&chkcaribbean=' + ($('#chkcaribbean').attr('checked'))  + '&chkusa=' + ($('#chkusa').attr('checked')) + '&chkocean=' + ($('#chkocean').attr('checked')) + '&chkriver=' + ($('#chkriver').attr('checked')) + '&chkallsailings=' + ($('#chkallsailings').attr('checked'))  + '&chkall=' + ($('#chkall').attr('checked'))  + '&searchtype=' + ($('#searchtype').selectedValues())[0] + '&cruisetypeid=' + ($('#cruisetypeid').selectedValues())[0] + '&chksouthampton=' + ($('#chksouthampton').attr('checked')) + '&chkbarcelona=' + ($('#chkbarcelona').attr('checked')) + '&chkrome=' + ($('#chkrome').attr('checked')) + '&chkvenice=' + ($('#chkvenice').attr('checked')) + '&chkeurope=' + ($('#chkeurope').attr('checked')) ;
+				location.href = 'http://' + location.host + '/search/?date=' + $('#date').val() + '&date2=' + $('#date2').val() + '&operatorid=' + $.trim( ($('#cruiselineid').selectedValues())[0] ) + '&destinationid=' + $.trim( ($('#destinationid').selectedValues())[0] ) + '&shipid=' + $.trim( ($('#cruiseshipid').selectedValues())[0] ) + '&chkuk=' + ($('#chkuk').attr('checked')) + '&chkitaly=' + ($('#chkitaly').attr('checked')) + '&chkspain=' + ($('#chkspain').attr('checked')) + '&chkcaribbean=' + ($('#chkcaribbean').attr('checked'))  + '&chkusa=' + ($('#chkusa').attr('checked')) + '&chkocean=' + ($('#chkocean').attr('checked')) + '&chkriver=' + ($('#chkriver').attr('checked')) + '&chkallsailings=' + ($('#chkallsailings').attr('checked'))  + '&chkall=' + ($('#chkall').attr('checked'))  + '&searchtype=' + ($('#searchtype').selectedValues())[0] + '&cruisetypeid=' + ($('#cruisetypeid').selectedValues())[0] + '&chksouthampton=' + ($('#chksouthampton').attr('checked')) + '&chkbarcelona=' + ($('#chkbarcelona').attr('checked')) + '&chkrome=' + ($('#chkrome').attr('checked')) + '&chkvenice=' + ($('#chkvenice').attr('checked')) + '&chkeurope=' + ($('#chkeurope').attr('checked')) ;
 			break;			
 		}
 	},
@@ -267,8 +267,31 @@ var searchBox = {
 		}
 		$("#date2 option[value="+defaultdate+"]").attr("selected","selected") ;
 	}
+	
 }/*<--end searchBox*/
 
 window.setInterval(function() {
     searchBox.rollingMessage();
 }, 2000);
+
+
+$(document).ready(function(){
+	$(".datepicker").datepicker({
+		dateFormat: "d M yy",
+		changeMonth: true,
+		changeYear: true,
+		onSelect: function(date, instance) {
+				if(instance.id=='date'){
+					var date1 = new Date(date)
+					var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+					var Y    = date1.getUTCFullYear();
+					var M   = months[( date1.getMonth( ) + 2 )];
+					var D     = date1.getDate();
+					var date2 = D + ' ' + M + ' ' + Y
+					$('input[name="date2"]').val(date2);
+				}
+			}
+	});
+
+});
+

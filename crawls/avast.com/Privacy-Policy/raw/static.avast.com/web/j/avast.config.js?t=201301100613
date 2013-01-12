@@ -1,0 +1,94 @@
+$.expr[':'].external = function(obj){
+    return (obj.hostname != location.hostname);
+};
+
+
+avast.navContent = "";
+$(document).ready(function(){
+  var tooltip = avast.tooltip;
+  if(!avast.disableTooltip && typeof tooltip.init != 'undefined') tooltip.init();
+  
+  var tabs = avast.tabs;
+  if(!avast.disableTabs  && typeof tabs.init != 'undefined') tabs.init("#tabs");
+  
+  var languageSelector = avast.languageSelector;
+  if(!avast.disableLanguageSelector && typeof languageSelector.init != 'undefined') languageSelector.init();
+  
+  var navigation = avast.navigation;
+  if(!avast.disableNavigation && typeof navigation.init != 'undefined') navigation.init({navContent:avast.navContent});
+  
+  var gaTracking = avast.gaTracking;
+  if(!avast.disableGaTracking && typeof gaTracking.init != 'undefined') gaTracking.init();
+  
+  var avastCounter = avast.counter;
+  if(!avast.disableCounter && typeof avastCounter.init != 'undefined') avastCounter.init();
+  
+  var avastHadd = avast.hadd;
+  if(!avast.disableHadd && typeof avastHadd.init != 'undefined') avastHadd.init();
+  
+	/*
+	 * Bind sharebox events
+	 */
+	$('#btnShareboxFooter').bind('mouseover click', function(){
+		if( $('#blockShareboxFooter').length > 0 ){
+			avast.sharebox.add( 
+				$(this),
+				'#blockShareboxFooter',
+				{
+					title : $('body').find('h1').text(),
+					ref : document.location.href,
+					msg : $('body').find('h2').text(),
+					effect : 'fade',
+					xPos : 'left',
+					yPos : 'top',
+					yFix : 10,
+					xFix : 0
+				}
+			);
+			return false;
+		}
+	});
+    
+    /*
+    * change nav url on Mac
+    */
+    var os = avast.getOS();
+    if (os === 'MacOS'){
+        var navItem = $('.navlevel-0 li').eq(1).find('a');
+        var itemHref = navItem.attr('href');
+        var newUrl = (itemHref) ? itemHref.replace(/free-antivirus-download/, "free-antivirus-mac") : '';
+        if(newUrl) {
+            navItem.attr('href', newUrl);
+        }
+    }
+
+/* External tracking */
+	$("body").on('mousedown','a:external',function(){
+		textProp23 = "External link";
+		
+		if( typeof(s) !== "undefined" ){
+
+			//social
+			if( $(this).is("#footer .share a") ){// footer
+				textProp23 = "Social - footer - " + $(this).attr("title");
+			}
+
+			if( $(this).is("#socialTrack > a") ){//LP virus update
+				textProp23 = "Social - lpVirusUpdate - " + $(this).attr("title");
+			}
+
+			if( $(this).is("#community-bottom .links > a") ){//community hp
+				textProp23 = "Social - community - " + $(this).attr("title");
+			}
+
+			if( $(this).is("#community-right #share > a,#community-right #b-links > a") ){//community other
+				textProp23 = "Social - community - " + $(this).attr("title");
+			}
+			
+			s.prop23 = textProp23;
+
+		}
+  });
+
+
+});

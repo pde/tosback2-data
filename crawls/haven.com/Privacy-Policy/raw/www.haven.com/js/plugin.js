@@ -2352,10 +2352,10 @@ $.fn.easy_Slider = function(a) { var b = $.extend({}, $.fn.easy_Slider.defaults,
  */
 
 /* Server that data will be sent to, e.g. "http://tag1.webabacus.com" */
-var server = "http://www.haven.com";
+var server = "http://" + document.domain;
 
 /* Server that secure requests will be sent to, e.g. "https://tag1.webabacus.com" */
-var secureserver = "https://www.haven.com";
+var secureserver = "https://" + document.domain;
 
 /* Site Name*/
 var site = "BH_Haven_2009";

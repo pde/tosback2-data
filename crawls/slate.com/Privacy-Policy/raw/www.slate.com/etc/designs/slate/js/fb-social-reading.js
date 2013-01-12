@@ -11,7 +11,8 @@ var SG = SG || {
 };
 var clog = function(msg) {
     if (typeof console == "object") {
-        console.info(msg);
+        //Comment it for now
+    	//console.info(msg);
     }
 };
 SG.config = {

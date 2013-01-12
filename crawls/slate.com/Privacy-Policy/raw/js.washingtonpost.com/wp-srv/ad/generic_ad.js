@@ -1155,14 +1155,6 @@ var wpAd, placeAd2;
     wpAd.briefcase.onTheFly = onTheFly;
     wpAd.briefcase.pos = wpAd.briefcase.what + (wpAd.briefcase.pos_override ? '_' + wpAd.briefcase.pos_override : '');
 
-    //a bit hacky but temporary, until we phase out tile flight manager for opening/closing tiffany tiles:
-    if(wpAd.briefcase.pos === 'tiffany_tile' && !wpAd.flags.is_homepage && wpAd.constants && wpAd.constants.site === 'wpni' && !/js_tiff/.test(location.search)) {
-      wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tiffany_manager.js', function(){
-        wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/tile_flights.js');
-      });
-      return false;
-    }
-
     if(wpAd.tools.templatecheck()) {
       if(!wpAd.briefcase.hardcode) {
         wpAd.keyvalues.exec();

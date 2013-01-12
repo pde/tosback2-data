@@ -1794,32 +1794,35 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			function() {
 				this.contentHref = jQuery(this).attr("href");
 				jQuery(this).addClass('over');
-				var isChrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 				var contentOffset = jQuery(this).position();
 				var contentXpos = contentOffset.left;
-				var contentYpos = contentOffset.top;		
+				var contentYpos = contentOffset.top;
 				this.contentOverlay = '#overlay_' + this.contentHref.replace('#','');		
-				jQuery(this).append(
-					'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;width:250px">'		
-					+'</div>'
-				);
-				if (jQuery(this).attr('id') == "DropShip") {
+				if (jQuery(this).attr('href') == "#DropShip") {
+					jQuery(this).append(
+							'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;position:relative;">'		
+							+'</div>'
+						);
+				} else {
+					jQuery(this).append(
+						'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;width:250px">'		
+						+'</div>'
+					);
+				}
+				if (jQuery(this).attr('href') == "#DropShip") {
 					jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
 					if (PPL) {
-						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-40, marginTop: contentYpos-268, width: 350, position: "relative"});
+						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-40, marginTop: contentYpos-268, width: 320});
 					} else {
-						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos, marginTop: contentYpos-330, width: 350, position: "relative"});		
+						jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-60, marginTop: contentYpos-290, width: 320});
+						jQuery('#footer .footer_content_spacer').css('display', 'none');
 					}
 					jQuery('.toolTipWrapper').fadeIn(300);
 				} else {
 					jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
-					if (isChrome) {
-						if (contentXpos > 100) {
-						jQuery('#ToolTipOverlay').css({left: contentXpos-120, top: contentYpos+15});
-						} else {
-							jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
-						}
-					} else {
+					if (contentXpos > 100) {
+						jQuery('#ToolTipOverlay').css({left: contentXpos-130, top: contentYpos+15});
+					} else{
 						jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
 					}
 					jQuery('.toolTipWrapper').fadeIn(300);
@@ -1830,6 +1833,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				jQuery('.toolTipWrapper').fadeOut(100);
 				jQuery(this).removeClass('over');
 				jQuery(this).children().remove();
+				jQuery('#footer .footer_content_spacer').css('display', 'block');
 			}
 		);
 		// full screen zoom	
@@ -2839,10 +2843,58 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}				
 				
 			}
-			
+
 			if (PPL) {
 				params = params + "&ppl=y";
 			}
+			
+			//LHP start bug2047:  Check if there is only one size.  If so, populate inventory status data for color.  get_colors.jsp picks up the variable
+			//"the_only_size_id" and uses it as the selected size.  This causes SiteProductManager to populate the inventory status data for the color.
+			myCompleteColorHandler2 = function(responseBody, XMLHttpRequest)  {	
+	        if( params.indexOf( "the_only_size_id" ) != -1 ) {
+				   //Need to get Inventory status for the color using the one and only size.
+				   jQuery.ajax ( {
+				      type: "GET",
+				      timeout: 30000,
+				      url: "/ajax/get_colors.jsp?" + params,       	
+				      success: function(responseBody, textStatus, XMLHttpRequest) {
+				             mySuccessColorHandler(responseBody, XMLHttpRequest);
+				      }, 			        
+				      error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
+				             myErrorColorHandler("An error has occurred making the request in myCompleteColorHandler2: " + errorThrown, errorThrown);
+				      }
+			      });
+			   }
+			}
+			//LHP end bug2047		
+			
+			//LHP start bug2047:  Check if there is only one color.  If so, populate inventory status data for size.
+			//get_sizes.jsp picks up the variable "the_only_color_id" and uses it as the selected color.  This causes
+			//SiteProductManager to populate the inventory status data for the size(s)
+			myCompleteColorHandler = function(responseBody, XMLHttpRequest) {	
+			   if( params.indexOf( "the_only_color_id" ) != -1 ) {
+			
+					//"the_only_color_id" was found.  Need to get Inventory status for the size(s) using the one and only color.
+					jQuery.ajax({
+				        type: "GET",
+				        timeout: 30000,
+				        url: "/ajax/get_sizes.jsp?" + params,       	
+				        success: function(responseBody, textStatus, XMLHttpRequest) {
+				                mySuccessSizeHandler(responseBody, XMLHttpRequest);
+				        },
+				        
+				        //there is only one size and one color
+				        complete: function(responseBody, textStatus, XMLHttpRequest) {
+			                myCompleteColorHandler2(responseBody, XMLHttpRequest);
+			            },
+				      				        
+				        error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
+				                myErrorSizeHandler("An error has occurred making the request in myCompleteColorHandler: " + errorThrown, errorThrown);
+				        }
+				    });
+				}
+			}
+			//LHP end bug2047
 			
 			mySuccessColorHandler = function(responseBody, XMLHttpRequest){	
 				// update color dropdown
@@ -2895,7 +2947,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				if (parseInt(colorsDB.length) == 1){
 					//set as default value selected if only one Color avaiable
 					jQuery(targetPage+'#color>option:eq(1)').attr('selected', true);
-					jQuery(targetPage+'input[name=selectedColorId]').val(jQuery(targetPage+'#color').val()); 
+					jQuery(targetPage+'input[name=selectedColorId]').val(jQuery(targetPage+'#color').val());
+					//LHP 2012-11-20 start bug2047 there is only one color, use it
+					params = params + "&the_only_color_id=" + jQuery(targetPage+'input[name=selectedColorId]').val();
+					//LHP 2012-11-20 end
 				}else if(selectedColorId !=""){
 					jQuery(targetPage+'#color').val(selectedColorId);
 					jQuery(targetPage+'input[name=selectedColorId]').val(selectedColorId);
@@ -3003,6 +3058,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			        success: function(responseBody, textStatus, XMLHttpRequest) {
 			                mySuccessColorHandler(responseBody, XMLHttpRequest);
 			        },
+			        //LHP BUG2047 start - only one color and one color, show inventory status
+			        complete: function(responseBody, textStatus, XMLHttpRequest) {
+			        	myCompleteColorHandler(responseBody, XMLHttpRequest);
+		            },
 			        error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
 			                myErrorColorHandler("An error has occurred making the request: " + errorThrown, errorThrown);
 			        }
@@ -3040,7 +3099,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					var product_id = jQuery(targetPage+"input[name=cut]:checked").val() || "-1";
 				}else{
 					var product_id = jQuery(targetPage+'input[name=productId]').val() || "-1";					
-				}
+				}				
 				var selectedSizeId= jQuery(targetPage+'#size').val() || jQuery(targetPage+'input[name=selectedSizeId]').val() || "-1";
 				var selectedColorId= jQuery(targetPage+'input[name=selectedColorId]').val() || "-1";
 				var clearanceFlag = jQuery(targetPage+'input[name=clearanceCategory]').val() || "-1";
@@ -3091,7 +3150,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				var itemType = jQuery(targetPage+'input[name=itemType]').val() || "-1";
 				var effort = jQuery(targetPage+'input[name=effort]').val() || "-1";
 				var pageType = jQuery(targetPage+'input[name=pageType]').val() || "-1";
-				var item = jQuery(targetPage+'input[name=itemNumber]').val() || "-1";				
+				var item = jQuery(targetPage+'input[name=itemNumber]').val() || "-1";
+				//LHP 2012-11-28 - web_ensemble_id was not available in HTTP request in the case where a callback to get_colors.jsp occurred in myCompleteSizeHandler JQUERY call.
+				var web_ensemble_id = jQuery(targetPage+'input[name=webEnsembleId]').val() || "-1";
+				//LHP 2012-11-28
 				
 				if (eobFlag != ""){
 					params = params + "&eob=" + eobFlag;
@@ -3127,8 +3189,14 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					params = params + "&pageType=" + pageType;
 				}else{
 					params = params + "&pageType=1";
-				}				
-								
+				}
+				//LHP 2012-11-28 - web_ensemble_id was not available in HTTP request in the case where a callback to get_colors.jsp occurred in myCompleteSizeHandler JQUERY call.
+				if (web_ensemble_id != ""){
+					params = params + "&web_ensemble_id=" + web_ensemble_id;
+				}else{
+					params = params + "&web_ensemble_id=1";
+				}
+				//LHP 2012-11-28
 			}
 			
 			mySuccessSizeHandler = function(responseBody, XMLHttpRequest){	
@@ -3170,7 +3238,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					//set as default value selected if only one size avaiable
 					jQuery(targetPage+'#size>option:eq(1)').attr('selected', true);
 					//jQuery('.selectSize .sizeChart').hide();
-					jQuery(targetPage+'input[name=selectedSizeId]').val(jQuery(targetPage+'#size').val()); 
+					jQuery(targetPage+'input[name=selectedSizeId]').val(jQuery(targetPage+'#size').val());
+					//LHP 2012-11-20 start
+					params = params + "&the_only_size_id=" + jQuery(targetPage+'input[name=selectedSizeId]').val();
+					//LHP 2012-11-20 end
 				}else if(selectedSizeId !=""){
 					jQuery(targetPage+'#size').val(selectedSizeId);
 					jQuery(targetPage+'input[name=selectedSizeId]').val(selectedSizeId);
@@ -3185,6 +3256,54 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 					alert(errorThrown);
 				}
 			}
+			//LHP start bug2047:  Check if there is only one color.  If so, populate inventory status data for size.
+			//get_sizes.jsp picks up the variable "the_only_color_id" and uses it as the selected color.  This causes
+			//SiteProductManager to populate the inventory status data for the size(s)
+			myCompleteSizeHandler2 = function(responseBody, XMLHttpRequest) {	
+			   if( params.indexOf( "the_only_color_id" ) != -1 ) {
+			
+					//"the_only_color_id" was found.  Need to get Inventory status for the size(s) using the one and only color.
+					jQuery.ajax({
+				        type: "GET",
+				        timeout: 30000,
+				        url: "/ajax/get_sizes.jsp?" + params,       	
+				        success: function(responseBody, textStatus, XMLHttpRequest) {
+				                mySuccessSizeHandler(responseBody, XMLHttpRequest);
+				        },
+				        
+				        error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
+				                myErrorSizeHandler("An error has occurred making the request in myCompleteColorHandler: " + errorThrown, errorThrown);
+				        }
+				    });
+				}
+			}
+			//LHP end bug2047			
+			
+			//LHP start bug2047 check if there is only one size
+			myCompleteSizeHandler = function(responseBody, XMLHttpRequest){	
+			   if( params.indexOf( "the_only_size_id" ) != -1 ) {
+			
+					//the_only_size_id found.  Need to get Inventory status for the color(s) using the one and only size.
+					jQuery.ajax({
+				        type: "GET",
+				        timeout: 30000,
+				        url: "/ajax/get_colors.jsp?" + params,       	
+				        success: function(responseBody, textStatus, XMLHttpRequest) {
+				                mySuccessColorHandler(responseBody, XMLHttpRequest);
+				        },
+				        //LHP start bug2047 need to populate Inventory if there is only one size, there may be only 1 color
+				        complete: function(responseBody, textStatus, XMLHttpRequest) {
+			                    myCompleteSizeHandler2(responseBody, XMLHttpRequest);
+			            },
+			            //LHP end bug2047
+				        
+				        error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
+				                myErrorColorHandler("An error has occurred making the request: " + errorThrown, errorThrown);
+				        }
+				});
+				}
+			}
+			//LHP end bug2047
 			//alert('get_sizes params = '+params);
 			jQuery.ajax({
 			        type: "GET",
@@ -3193,6 +3312,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			        success: function(responseBody, textStatus, XMLHttpRequest) {
 			                mySuccessSizeHandler(responseBody, XMLHttpRequest);
 			        },
+			        //LHP start bug2047 need to populate Inventory if there is only one size
+			        complete: function(responseBody, textStatus, XMLHttpRequest) {
+		                     myCompleteSizeHandler(responseBody, XMLHttpRequest);
+		            },
 			        error: function(XMLHttpRequest, textStatus, errorThrown) {			        		
 			                myErrorSizeHandler("An error has occurred making the request: " + errorThrown, errorThrown);
 			        }
@@ -3219,10 +3342,10 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
     			color: '#0072CF !important',
 	    	    fontFamily: 'Lucida Sans Unicode,Lucida Grande,Verdana,Arial,Helvetica,sans-serif',
 	    	    fontSize: '11px',
-	    	    left: '2px',
-	    	    position: 'relative',
+	    	    left: '490px',
+	    	    position: 'absolute',
 	    	    textDecoration: 'none !important',
-	    	    marginTop: '2px'
+	    	    top: '50px'
     		});
     		jQuery('dd.rating_reviews .BV_Seperator').css({
     			left: '592px',
@@ -3234,12 +3357,9 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	    	    fontFamily: 'Lucida Sans Unicode,Lucida Grande,Verdana,Arial,Helvetica,sans-serif',
 	    	    fontSize: '11px',
 	    	    fontWeight: 'normal',
-	    	    marginLeft: '6px',
-	    	    position: 'relative',
-    	    	marginTop: '2px'
-    		});
-    		jQuery('#dossier dd.rating_reviews').css({
-    			padding: '4px 0 4px 0'
+	    	    left: '108px',
+	    	    position: 'absolute',
+    	    	top: '-4px'
     		});
 		}
 		setTipToolStyle = function() {
@@ -3713,7 +3833,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				jQuery(targetPage+'.imageStatus').removeClass('loaded').addClass('loading');								
 				var zoomImage = swatchImageSrc;	
 				zoomImage = zoomImage.replace("&op_sharpen=0","&op_sharpen=1");
-				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?rgn=0,0,0,0&op_sharpen=1";
+				var zoomImageLarge = jQuery(targetPage+'.swatches dd.hot a img').attr('data-large-image')+"?&wid=3000&op_sharpen=1";
 				// set magic zoom attributes and show/hide zoomable here				
 				MagicZoomPlus.update('itemZoom', zoomImageLarge, zoomImage, 'click-to-deactivate: true; show-title:false; disable-expand:true; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');							
 				jQuery(targetPage+'.imageStatus').removeClass('loading').addClass('loaded');
@@ -4136,13 +4256,15 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}
 				
 				// Set main image check for defaultImageUrl not null
-				if(defaultImageUrl !== "" && defaultImageUrl !== undefined )
-				{		
+				if(defaultImageUrl !== "" && defaultImageUrl !== undefined ){		
 					jQuery('.imageStatus').removeClass('loaded').addClass('loading');		
 					var mainImageObj = jQuery('#itemZoom img');	
 					var mainImageSrc = mainImageObj.attr('src',defaultImageUrl);
 					var swatchImage = jQuery('#swatches #swatch'+colorid+' img');			
 					var mainImageSrcLarge = defaultImageUrl.replace('$mainImage$&wid=400&hei=496','&op_sharpen=1');	
+					if (PPL) {
+						mainImageSrcLarge = defaultImageUrl.replace('$pplMainImage$&wid=332&hei=412','&rgn=0,0,0,0&op_sharpen=1');
+					}
 					jQuery('#itemZoom').attr('href',mainImageSrcLarge);
 					MagicZoomPlus.update('itemZoom', mainImageSrcLarge, mainImageSrc, 'disable-expand:true; show-title:false; zoom-position: inner; initialize-on: hover; selectors-class : Active; click-to-activate: false');
 					zoomImageCheckPP();
@@ -4150,7 +4272,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 				}
 				MagicZoomPlus.refresh();
 				MagicScroll.init();				
-			} else if (eob) {
+			}else if (eob){
 				if (clearanceFlag == "Y") {
 					getColorsSizesPage();
 				} else {
@@ -4205,7 +4327,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	            }
 	
 	            var tempURL = GetCookie("REFERRAL_URL");
-	            
+	
 	            if (tempURL == '' || tempURL == null) {
 	                tempURL = GetCookie('PREVIOUS');
 	            }
@@ -4223,7 +4345,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 	            }
 			}
         }
-		faceBookButton = function() {
+		faceBookButton = function(){
 			var facebookURL = "//www.facebook.com/plugins/like.php?href=";
 			var facebookPageURL = window.location;
 			var facebookParams = "&amp;send=false&amp;layout=button_count&amp;width=90&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21";
@@ -4231,6 +4353,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 			var facebookIframe = '<iframe src="'+facebookURL+facebookPageURL+facebookParams+facebookAPIID+'" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:90px; height:21px;" allowTransparency="true"></iframe>';
 			jQuery('.social .like').html(facebookIframe);	
 		}
+		
 		// init section
 		init = function(){	
 			clearanceFlag = jQuery(targetPage+'#clearanceCategory').val();
@@ -4400,22 +4523,26 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 									"data-youtube-value");
 							var objectWrapper = 'youtube_'+youtubeValue;
 							
+							sessionStorage.setItem("name", data_link_name);
 							sessionStorage.setItem("background", videoSrc);
 							sessionStorage.setItem("wrapper", objectWrapper);
 							switch (index) {
 								case 0: sessionStorage.setItem("videoId0", youtubeValue);
+										if (data_link_name.length > 34) {$height = 30;}else {$height = 20;}
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
 											+ '" style="text-decoration:none !important; display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivOne.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
 											+ '</a></div>';
 									break;
 								case 1: sessionStorage.setItem("videoId1", youtubeValue);
+										if (data_link_name.length > 34) {$height = 30;}else {$height = 20;}
+										console.log($height);
 										var videoLinkHTML_PPL = '<div class="product_page_link_'
 											+ youtubeValue
-											+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
+											+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" title="Watch Video" class="floatbox camera" rel="floatbox" href="javascript:void(0);'
 											+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a onclick="fb.start(&quot;/assets/html/modalContent/videoDivTwo.html&quot;,&quot;type:ajax height:448 width:632 autoFitHTML:true scrolling:no outerClose:true controlsPos:tr beforeItemEnd:triggerStopVideo(); afterItemEnd:returnCloseButton();&quot;);" class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" href="javascript:void(0);'
 											+ '">'
 											+ data_link_name
@@ -4425,7 +4552,7 @@ eval(function(m,a,g,i,c,k){c=function(e){return(e<a?'':c(parseInt(e/a)))+((e=e%a
 							
 							var videoLinkHTML = '<div class="product_page_link_'
 									+ youtubeValue
-									+ '" style="clear:both;height:25px;width:305px;" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
+									+ '" style="position:absolute;left:0;top:0;width:305px;" height="'+$height+'" id="' + index + '"><a name="static:image:videomodal" title="Watch Video" class="floatbox camera" rel="floatbox" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
 									+ '" style="text-decoration:none !important;display:inline;float:left;width:19px !important;text-align:left !important;" id="' + index + '"><img src="/assets/ocp/product_page/video/video_camera_icon.gif" class="camera" border="0" alt="Watch Video" style="margin-top: 3px; margin-right: 5px; vertical-align: bottom;"></a><a class="floatbox video' + index + '" style="font-size:12px !important;font-weight:bold;display:inline;float:left;width:250px !important;text-align:left !important;" name="static:link:videomodal" title="Watch Video" rel="floatbox" id="' + index + '" rev="type:ajax centerOnResize:true autoFitHTML:true width:640 height:385 scrolling:no outerClose:true hideObjects:false controlsPos:tr beforeItemEnd:triggerStopVideo();" href="#product_page_video_'
 									+ youtubeValue
@@ -4736,15 +4863,205 @@ else
 {$j(this).addClass("hot");}
 var ID=$j(this).attr('id');var divID=ID.replace("tab","#returnWaysText");$j("div[id^='returnWaysText']").removeClass("show").addClass("hidden");$j(divID).removeClass("hidden").addClass("show");return false;});$j("ul.tabWrap").mouseenter(function(event){if($j(this).hasClass("hot")){}
 else
-{$j(this).addClass("hoverTab");}}).mouseleave(function(event){$j(this).removeClass("hoverTab");}).mouseup(function(event){$j(this).removeClass("hoverTab");});}});global.jquery.utils.search=new Object({rowStackManager:function(contextContainer,ignoreList){var container,elmntsToIgnore,elmntsToIgnoreStr="";elmntsToIgnore={'top':'','right':'','bottom':'','left':'','outsideTop':'','outsideBottom':''};var contextContainer=contextContainer||"#billboard_wrapper";container=$j(contextContainer);if(ignoreList){for(item in ignoreList){elmntsToIgnore[item]=ignoreList[item];}}
-else{elmntsToIgnore={'top':'div.first_subcategory','right':'','bottom':'div.billboard_34','left':'#subcat','outsideTop':'div.paginator,div.billboard_19','outsideBottom':'div.paginator'};}
-for(el in elmntsToIgnore){if(elmntsToIgnore[el]!="")
-elmntsToIgnoreStr+=elmntsToIgnore[el]+' ';}
-elmntsToIgnoreStr=elmntsToIgnoreStr.replace(/\s$/,"").replace(/\s+/g,', ');var elementList=container.children(":visible").not(elmntsToIgnoreStr);var leftElHeight=$j(elmntsToIgnore.left).outerHeight();var topIgElHeight=$j(elmntsToIgnore.top).outerHeight();if(leftElHeight==0){$j('<dl class="rowSeparator"></dl>').insertAfter(elmntsToIgnore.top);}
-if(leftElHeight>topIgElHeight){var prodCellWidth=elementList.filter('.cell:eq(0)').outerWidth(true);var MAXWIDTH=container.outerWidth();var prodCellsPerRow=Math.floor(MAXWIDTH/prodCellWidth);var tallestItem=global.jquery.utils.search.getSizeOfTallest(elementList.not('input').filter(':lt('+prodCellsPerRow+')'));var numRowsToContain=Math.ceil(leftElHeight/tallestItem);var maxAllowableWidth=764;subCntnrElements=global.jquery.utils.search.findSubCntnr(numRowsToContain,maxAllowableWidth,elementList,elmntsToIgnore.left);var rowStackSubCntnr1=$j('<div id="rowStackSubContainer_1" class="rowStackSubContainer"></div>');$j(elementList).wrapAll(rowStackSubCntnr1);global.jquery.utils.search.rowStack(rowStackSubCntnr1);}else{var elmntCntr=$j('<div id="rowStackContainer" class="rowStackSubContainer"></div>');elementList.not(elmntsToIgnore.top).wrapAll(elmntCntr);$j('<dl class="rowSeparator"></dl>').insertBefore(elmntCntr);global.jquery.utils.products.rowStack(elmntCntr);}
-var hash=global.jquery.utils.common.parseHash();if(hash.pid){var y=$j("#cell_"+hash.pid).offset().top;$j(window).scrollTop(y);}},getSizeOfTallest:function(eleList){var sizeOfTallest=0;$j(eleList).each(function(){var currHeight=$j(this).outerHeight();if(currHeight>sizeOfTallest){sizeOfTallest=currHeight;}});return sizeOfTallest;},findSubCntnr:function(rows,maxWidth,elements,elToIgnoreString){var currWidth=0;var indexOfLastItem;elements.not(elToIgnoreString).each(function(index){var el=$j(this);currWidth+=el.outerWidth();if(currWidth>maxWidth){rows--;currWidth=el.outerWidth();if(rows==0){indexOfLastItem=index;return false;}}});return elements.filter(':lt('+indexOfLastItem+')');},rowStack:function(container){var container=$j("#"+container.attr('id'));var MAXWIDTH=container.outerWidth();var width=0;container.children().each(function(){var el=$j(this);var currItmWidth=parseInt(el.width());if(!el.is("div.cell")&&el.children("div.nonflash").length){var divChild=el.children("div.nonflash").eq(0);var tempCurrWidth;try{tempCurrWidth=parseInt(divChild.attr('style').replace(/width:(\d+).*/,'$1'));}catch(err){tempCurrWidth=parseInt(divChild.find('img').outerWidth(true));}
-if(!isNaN(tempCurrWidth))
-currItmWidth=tempCurrWidth;};width+=currItmWidth;if(width>MAXWIDTH){width=currItmWidth;$j('<dl class="rowSeparator"></dl>').insertBefore(el);};});},init:function(){if(global.jquery.utils.common.isSearchPage()){var elmntsToIgnore={'top':'.searchPagination','right':'','bottom':'.searchPagination','left':'#searchNav','outsideTop':'','outsideBottom':''};global.jquery.utils.search.rowStackManager('#productSelectForm',elmntsToIgnore);}}});global.jquery.utils.tooltips=new Object({init:function(){if(fb){fb.activateElements();}
+{$j(this).addClass("hoverTab");}}).mouseleave(function(event){$j(this).removeClass("hoverTab");}).mouseup(function(event){$j(this).removeClass("hoverTab");});}});
+/* ~~~~~~~~~~~~~~~~~~~~ Starting the global.jquery.utils.search.js(164) ~~~~~~~~~~~~~~~~~~~~ */
+/* Search Module */
+global.jquery.utils.search = new Object({	
+	rowStackManager : function(contextContainer, ignoreList) {
+		var container, elmntsToIgnore , elmntsToIgnoreStr ="";
+		
+		// serves as a template of element positions to be ignored
+		// comma delimited CSS selectors
+		elmntsToIgnore = {
+			'top'	: '',
+			'right'	: '',
+			'bottom': '',
+			'left'	: '',
+			'outsideTop' : '',
+			'outsideBottom' : ''
+		};
+
+		var contextContainer = contextContainer || "#billboard_wrapper";
+		container = $j(contextContainer);
+			
+		if(ignoreList) {
+			// merging customized ignore list into ignore list template			
+			for(item in ignoreList) {
+				elmntsToIgnore[item] = ignoreList[item];
+			}
+		}
+		else {
+			elmntsToIgnore = {
+				'top'	: 'div.first_subcategory',
+				'right'	: '',
+				'bottom': 'div.billboard_34',
+				'left'	: '#subcat',
+				'outsideTop' : 'div.paginator,div.billboard_19',
+				'outsideBottom' : 'div.paginator'
+			};
+		}
+		
+		// constructing string of elements to remove from flow
+		for(el in elmntsToIgnore) {
+			if(elmntsToIgnore[el] != "")
+			elmntsToIgnoreStr += elmntsToIgnore[el] + ' ';
+		}
+		elmntsToIgnoreStr = elmntsToIgnoreStr.replace(/\s$/,"").replace(/\s+/g, ', ');
+				
+		var elementList = container.children(":visible").not(elmntsToIgnoreStr);
+		var leftElHeight = $j(elmntsToIgnore.left).outerHeight();
+		var topIgElHeight = $j(elmntsToIgnore.top).outerHeight();
+			
+		// making sure that there aren't any 'flowing' issues before rowStacking			
+		if (leftElHeight == 0) {
+			$j('<dl class="rowSeparator"></dl>').insertAfter(elmntsToIgnore.top);
+		}
+		
+		if(leftElHeight > topIgElHeight) {			
+			// using the first dl.cell to set as the width of all cells on the page
+			var prodCellWidth = elementList.filter('.cell:eq(0)').outerWidth(true);
+			
+			// this is the maximum width of the container
+			var MAXWIDTH = container.outerWidth();
+			
+			// important to know because it will help figure out the container width of the first set of elements
+			var prodCellsPerRow = Math.floor(MAXWIDTH / prodCellWidth);
+			
+			// getting tallest item of the first rowStackSubContainer 
+			var tallestItem = global.jquery.utils.search.getSizeOfTallest(elementList.not('input').filter(':lt('+ prodCellsPerRow +')'));
+			
+			// let's see how tall the subcat really is so we can know approx. how many rows of products should be in the first rowStackSubContainer
+			var numRowsToContain = Math.ceil(leftElHeight/tallestItem);
+			
+			var maxAllowableWidth = 764;
+				// calculating the maximum allowable width for the first rowStackSubContainer
+//			if (leftElHeight == 0) {
+//				maxAllowableWidth = MAXWIDTH - $j(elmntsToIgnore.left).outerWidth(true);
+//			} else {
+				// the width of a full row of product cells less the width including margin of the #subcat 
+//				maxAllowableWidth = (prodCellsPerRow * prodCellWidth) - $j(elmntsToIgnore.left).outerWidth(true);
+//			}
+			
+			// how many elements will fit inside of the also passing in elements to ignore at top of container
+			subCntnrElements = global.jquery.utils.search.findSubCntnr(numRowsToContain, maxAllowableWidth, elementList, elmntsToIgnore.left);
+			
+			// wrap sub container elements
+			var rowStackSubCntnr1 = $j('<div id="rowStackSubContainer_1" class="rowStackSubContainer"></div>');
+
+			// setting width on container
+			//rowStackSubCntnr1.css('cssText', 'width:' + maxAllowableWidth + 'px !important');
+			
+			// wrapping elements in a subcontainer
+			$j(elementList).wrapAll(rowStackSubCntnr1);
+			
+			// call rowStack on elements in subcontainer
+			global.jquery.utils.search.rowStack(rowStackSubCntnr1);
+			
+			// wrap rest of elements in a sub container
+			//rowStackSubCntnr2 = $j('<div id="rowStackSubContainer_2" class="rowStackSubContainer"></div>');
+			
+			// setting width on sub container
+			//rowStackSubCntnr2.css('cssText', 'width:' + maxAllowableWidth + 'px !important; margin-left:'+prodCellWidth+'px');
+			
+			//elementList.not(subCntnrElements).wrapAll(rowStackSubCntnr2);
+			
+			// rowStack these newly wrapped elements
+			//global.jquery.utils.search.rowStack(rowStackSubCntnr2);
+			
+		} else {
+			// wrapping other elements in a new container that will get rowStacked			
+			var elmntCntr  = $j('<div id="rowStackContainer" class="rowStackSubContainer"></div>');  
+			elementList.not(elmntsToIgnore.top).wrapAll(elmntCntr);
+				
+			// so #subcatHeight <= #firstSubcatHeight so we need to insert a rowSeparator before the to clear things
+			$j('<dl class="rowSeparator"></dl>').insertBefore(elmntCntr);
+			
+			// call rowStack on elements
+			global.jquery.utils.products.rowStack(elmntCntr);
+		}
+		var hash = global.jquery.utils.common.parseHash();
+		if ( hash.pid ) {
+			var y = $j("#cell_"+hash.pid ).offset().top;
+			$j(window).scrollTop(y);
+		}
+	},
+	getSizeOfTallest : function(eleList) {
+		var sizeOfTallest = 0;
+		$j(eleList).each(function() {
+			var currHeight = $j(this).outerHeight();
+			if(currHeight > sizeOfTallest) {
+				sizeOfTallest = currHeight;
+			}
+		});
+		return sizeOfTallest;
+	},
+	findSubCntnr : function(rows, maxWidth, elements, elToIgnoreString) {
+		var currWidth = 0;
+		var indexOfLastItem;
+		// finding out how many elements will be in this sub container
+		elements.not(elToIgnoreString).each(function(index) { 
+			var el = $j(this);
+			currWidth += el.outerWidth();
+			if( currWidth > maxWidth ) {
+				rows--;
+				currWidth = el.outerWidth();
+				if( rows == 0 ) {
+					indexOfLastItem = index; 
+					return false;
+				}
+			}
+		});
+		// now returning elements
+		return elements.filter(':lt('+ indexOfLastItem +')');
+	},
+	rowStack : function(container) {
+		var container = $j("#"+container.attr('id'));
+		var MAXWIDTH = container.outerWidth();
+		var width = 0;
+		container.children().each(function() {
+			var el = $j(this);
+			// only adding widths of elements that are visible... not hidden
+			var currItmWidth = parseInt( el.width() );
+			// special case for flash replaced divs
+			if ( !el.is("div.cell") && el.children("div.nonflash").length ) {
+				// using css style width if present storing in temp var
+				var divChild = el.children("div.nonflash").eq(0);
+				var tempCurrWidth;
+				try {
+					tempCurrWidth = parseInt( divChild.attr('style').replace(/width:(\d+).*/, '$1'));
+				} catch (err) {
+					// if no css styling then use actual width of element on page
+					tempCurrWidth = parseInt( divChild.find('img').outerWidth(true) );
+				}
+				// if any of the above are valid widths then use them
+				if (!isNaN(tempCurrWidth)) 
+					currItmWidth = tempCurrWidth;
+			};
+			width += currItmWidth;
+			if( width > MAXWIDTH ) {
+				width = currItmWidth;
+				$j('<dl class="rowSeparator"></dl>').insertBefore(el);
+			};
+		});
+	},
+	init : function() {		
+		if(global.jquery.utils.common.isSearchPage()) {			
+			var elmntsToIgnore = {
+					'top'	: '.searchPagination',
+					'right'	: '',
+					'bottom': '.searchPagination',
+					'left'	: '#searchNav',
+					'outsideTop' : '',
+					'outsideBottom' : ''
+				};
+			global.jquery.utils.search.rowStackManager('#productSelectForm', elmntsToIgnore);
+		}		
+	}
+});
+
+/* ~~~~~~~~~~~~~~~~~~~~ Ending the global.jquery.utils.search.js(164) ~~~~~~~~~~~~~~~~~~~~ */
+
+global.jquery.utils.tooltips=new Object({init:function(){if(fb){fb.activateElements();}
 $j('.toolTip').live("click",function(event){event.preventDefault();});$j('.toolTip').hover(function(){this.contentHref=$j(this).attr("name");$j(this).addClass('over');var contentOffset=$j(this).position();var contentXpos=contentOffset.left;var contentYpos=contentOffset.top;this.contentOverlay='#overlay_'+this.contentHref;$j(this).append('<div id="ToolTipOverlay" class="toolTipWrapper">'
 +'</div>');var toolTipHTML=$j(this.contentOverlay).html();$j('#ToolTipOverlay').html(toolTipHTML);$j('#ToolTipOverlay').css({left:contentXpos,top:contentYpos+15});$j('.toolTipWrapper').fadeIn(300);},function(){$j('.toolTipWrapper').fadeOut(100);$j(this).removeClass('over');$j(this).children().remove();});}});global.jquery.utils.zoomImage=new Object({init:function(){if(jQuery.browser.msie&&parseInt(jQuery.browser.version,10)===7){IE7Flag=true;}else{IE7Flag=false;}
 if(!IE7Flag){jQuery(".zoomIcon").mouseenter(function(){var eleTrigger=jQuery(this);eleTrigger.zoomFlag='false';if(eleTrigger.zoomFlag=='false'){eleTrigger.zoomFlag='true';var zoomImage=jQuery(this);var position=zoomImage.offset();imageTagert=jQuery(this).closest('div.item').find('.imageProduct');imageSrc=jQuery(imageTagert).attr('rel');imagePosX=jQuery(imageTagert).offset().left-11;imagePosY=jQuery(imageTagert).offset().top-11;imageWidth=jQuery(imageTagert).width();imageHeight=jQuery(imageTagert).height();jQuery('.zoomImageProduct').detach();var zoomImageProduct=jQuery("<div class='zoomImageProduct'><img name='ZoomProduct' src='"+imageSrc+"'/></div>");zoomImage.append(zoomImageProduct);zoomImageHeight=zoomImageProduct.height();zoomImageWidth=zoomImageProduct.width();jQuery('.zoomImageProduct').css({height:0+'px',width:0+'px',border:'1px solid #ccc'});jQuery('.zoomImageProduct').animate({height:zoomImageHeight+'px',width:zoomImageWidth+'px',border:'1px solid #ccc',opacity:1},500,function(){eleTrigger.zoomFlag='false';});}}).mouseleave(function(){jQuery('.zoomImageProduct').dequeue().stop().animate({height:"toggle",width:"toggle",border:'1px solid #ccc',opacity:0},500,function(){jQuery('.zoomImageProduct').detach();});});}else{jQuery(".zoomIcon").mouseenter(function(){var eleTrigger=jQuery(this);eleTrigger.zoomFlag='false';if(eleTrigger.zoomFlag=='false'){eleTrigger.zoomFlag='true';var zoomImage=jQuery(this);var position=zoomImage.offset();imageTagert=jQuery(this).closest('div.item').find('.imageProduct');imageSrc=jQuery(imageTagert).attr('rel');imagePosX=jQuery(imageTagert).offset().left-11;imagePosY=jQuery(imageTagert).offset().top-11;imageWidth=jQuery(imageTagert).width();imageHeight=jQuery(imageTagert).height();jQuery('.zoomImageProduct').detach();var zoomImageProduct=jQuery("<div class='zoomImageProduct'><img name='ZoomProduct' src='"+imageSrc+"'/></div>");jQuery('#content_wrapper').append(zoomImageProduct);zoomImageHeight=zoomImageProduct.height();zoomImageWidth=zoomImageProduct.width();jQuery('.zoomImageProduct').css({height:0+'px',width:0+'px',border:'1px solid #ccc',left:imagePosX+'px',top:imagePosY+'px',position:'absolute'});jQuery('.zoomImageProduct').animate({height:zoomImageHeight+'px',width:zoomImageWidth+'px',border:'1px solid #ccc'},500,function(){eleTrigger.zoomFlag='false';});}}).mouseleave(function(){jQuery(".zoomImageProduct").mouseenter(function(){}).mouseleave(function(){jQuery('.zoomImageProduct').dequeue().stop().animate({height:"toggle",width:"toggle",border:'1px solid #ccc'},500,function(){jQuery('.zoomImageProduct').detach();});});});}}});
@@ -8976,7 +9293,7 @@ document.getElementById('searchresults').innerHTML=searchresults;document.getEle
 /* ~~~~~~~~~~~~~~~~~~~~ Starting the dropShip.js(205) ~~~~~~~~~~~~~~~~~~~~ */
 // Drop Ship
 
-function displayDropShipDetails(triggerEle) {
+/*function displayDropShipDetails(triggerEle) {
 	var moveLeft = -40;
 	var moveDown = 10;
 	var $trigger = jQuery(triggerEle);
@@ -9008,7 +9325,65 @@ function hideDropShipDetails() {
 	} else {
 		jQuery('div#drop_ship_item_restricted_shipping_details').hide();
 	}
-}
+}*/
+
+/*	*********************************************************************************************************
+ * 
+ * 	01/11/2013 - OLD CODE FOR DROPSHIP ON CHECKOUT IS ABOVE.
+ * 	NEW JQUERY FOR BAG.JS (CHECKOUT) PAGE IS BELOW.
+ * 	USED WITH PAGE CONTENT IN CATALOG OF ALL PLACES. HERE'S HOW TO GET THERE TO EDIT IF NEED BE.
+ * 	SITE SECTIONS :CATALOG :PRODUCT PAGE :DROP SHIP ITEM - RESTRICTED SHIPPING MESSAGE :CONTENT (02/08/2012):
+ * 
+ * 	*********************************************************************************************************/
+
+jQuery(document).ready(function () {
+	
+	if (jQuery('body#cat27411.EB').length > 0) {
+		jQuery('.toolTip').hover(function() {
+			this.contentHref = jQuery(this).attr("href");
+			jQuery(this).addClass('over');
+			var contentOffset = jQuery(this).position();
+			var contentXpos = contentOffset.left;
+			var contentYpos = contentOffset.top;
+			this.contentOverlay = '#overlay_' + this.contentHref.replace('#','');
+			if (jQuery(this).attr('href') == "#DropShip") {
+				jQuery(this).append(
+						'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;position:relative;">'		
+						+'</div>'
+					);
+			} else {
+				jQuery(this).append(
+					'<div id="ToolTipOverlay" class="toolTipWrapper" style="z-index:9999;width:250px">'		
+					+'</div>'
+				);
+			}
+			if (jQuery(this).attr('href') == "#DropShip") {
+				jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
+				if (PPL) {
+					jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-40, marginTop: contentYpos-268, width: 320});
+				} else {
+					jQuery('#ToolTipOverlay').css({marginLeft: contentXpos-120, marginTop: contentYpos-124, width: 320});
+					jQuery('#footer .footer_content_spacer').css('display', 'none');
+				}
+				jQuery('.toolTipWrapper').fadeIn(300);
+			} else {
+				jQuery('#ToolTipOverlay').html( jQuery(this.contentOverlay).html() );
+				if (contentXpos > 100) {
+					jQuery('#ToolTipOverlay').css({left: contentXpos-100, top: contentYpos+15});
+				} else{
+					jQuery('#ToolTipOverlay').css({left: contentXpos, top: contentYpos+15});
+				}
+				jQuery('.toolTipWrapper').fadeIn(300);
+				jQuery('div#ToolTipOverlay').next().remove();
+			}
+		},function() {
+			jQuery('.toolTipWrapper').fadeOut(100);
+			jQuery(this).removeClass('over');
+			jQuery(this).children().remove();
+			jQuery('#footer .footer_content_spacer').css('display', 'block');
+		});
+	}
+});
 
 /* ~~~~~~~~~~~~~~~~~~~~ Ending the dropShip.js(205) ~~~~~~~~~~~~~~~~~~~~ */
 

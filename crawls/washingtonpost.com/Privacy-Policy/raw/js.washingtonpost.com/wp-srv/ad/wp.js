@@ -54,12 +54,10 @@
   if(!wpAd.flags.no_ads) {
     //ADD THE TEMPLATES - generated via flight manager tool:
     wpAd.tools.writeScript(wpAd.constants.ad_config_url);
-    
-      
-    if(wpAd.flags.is_homepage && !/js_tiff/.test(location.search)){
-      wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
-    }
 
+    //add the tiffany tiles
+    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/tiffanyTiles.js');
+    
     //sponsored advertiser (quigo) links:
     if(typeof wpAds === 'undefined' || !win.wpAds.textlinks) {
       wpAd.tools.addScript("http://js.washingtonpost.com/wp-srv/ad/textlink_driver.js");
@@ -258,7 +256,7 @@
   
   //20699-CW
   if(commercialNode === 'sports/front'){
-    wpAd.tools.loadScript('http://js.washingtonpost.com/wp-srv/ad/pixels.js');
+    wpAd.tools.writeScript('http://js.washingtonpost.com/wp-srv/ad/pixels.min.js');
   }
   
   //last chance to overwrite/add/modify keyvalues for specific or non-standard purposes:
@@ -323,8 +321,13 @@
       }              
     }
     
-    if(wpAd.flags.is_homepage && /^tiffany_tile/i.test(tempcase.what)){
-      tempcase.keyvalues.sz = ['184x90'];
+    //
+    if(/^tiffany_tile/i.test(tempcase.what)){
+      if(wpAd.flags.is_homepage){
+        tempcase.keyvalues.sz = ['184x90'];
+      }
+      //important to disable carousel
+      wpTiles.hasTiff = true;
     }
 
     //20074-CD

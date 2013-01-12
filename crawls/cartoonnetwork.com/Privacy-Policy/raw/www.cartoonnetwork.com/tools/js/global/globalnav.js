@@ -83,7 +83,8 @@ jQuery(document).ready(function() {
 	/////////////////////////////////////////////////////////////////////////
 	// adjust the global nav is there's no ad served on the page
 
-		if (jQuery(".ad728Wrapper").length == 0) {
+		if (jQuery(".ad728Wrapper .ad728").length == 0) {
+			jQuery(".ad728Wrapper").css("display", "none");
 			jQuery("#navWrapper").css("margin-top", "0px");
 		}
 

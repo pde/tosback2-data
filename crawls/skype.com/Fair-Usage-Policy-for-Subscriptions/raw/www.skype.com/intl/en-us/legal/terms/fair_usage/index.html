@@ -16,6 +16,12 @@
 	<link rel="stylesheet" href="../../../../../../beta.skypeassets.com/i/scom/combined/css/skype.min.css" type="text/css" media="screen"/>
 	<script type="text/javascript" src="../../../../../../beta.skypeassets.com/i/scom/combined/js/skype.min.js"></script>
 	
+	<script type="text/javascript">
+    SKYPE.settings = {};
+	SKYPE.settings.api = {
+		    sessionApiUrl: ""
+    }
+    </script>
 
 	
 </head>
@@ -197,9 +203,12 @@
 </header>
 
 </div>
-<div class="section"><section class="">
+<div class="section">
+
     
-    <div class="parsys"><div class="text section"><div class=" textComponent component section" >
+    	<section class="">
+		    
+		    <div class="parsys"><div class="text section"><div class=" textComponent component section" >
 	<div class="alignLeft">
 		
 			
@@ -225,7 +234,9 @@
 </div>
 </div>
 
-</section></div>
+		</section>
+    
+</div>
 </div>
 
 	
@@ -450,19 +461,39 @@ Skype is not a replacement for your telephone and can't be used for emergency ca
 
 
 	<!-- TRACKING -->
-<script type="text/javascript" src="../../../../../../beta.skypeassets.com/i/tracking/js/s_code_20121003.js"></script>
+<script type="text/javascript" src="../../../../../../beta.skypeassets.com/i/tracking/js/s_code_20121127.js"></script>
 <noscript><img src="../../../../../../metrics.skype.com/b/ss/skypeglobalprod/1/H.25--NS/0" height="1" width="1" style="border: 0" alt=""/></noscript>
 <script type="text/javascript">
-	var _t      = {};
-	_t.pageName = "static/legal/fair-usage";
-	_t.channel  = "";
-	_t.prop5    = _t.eVar5 = "en";
-	SKYPE.ResponsiveState.init();
-	_t.eVar54   =  SKYPE.CurrentResponsiveState;
-	_t.eVar71 = "";
-	_t.prop36   = "";
-	s.trackPage(_t);
-	$(function(){$(document).on('click.sc','a[data-sc]:not(select)',function(e){s.el.track(this);})});
+    var _t      = {};
+    _t.pageName = "static/legal/fair-usage";
+    _t.channel  = "";
+    _t.prop5    = _t.eVar5 = "en";
+    SKYPE.ResponsiveState.init();
+    _t.eVar54   =  SKYPE.CurrentResponsiveState;
+    _t.eVar71 = "";
+    _t.prop36   = "";
+    s.trackPage(_t);
+    
+    $(function() {
+        $(document).on('click.sc', 'a[data-sc]:not(select)', function(e) {
+        	
+        	if (typeof s_el[$(this).attr('data-sc')] == 'undefined')
+        		return;
+        	
+            var tracking_obj = s_el[$(this).attr('data-sc')].click;
+            
+            if (typeof tracking_obj === 'function'){
+                tracking_obj = tracking_obj.call(); 
+            }
+            
+            if (tracking_obj.asPage === true) {
+                s.trackPage(tracking_obj);
+            } else {
+                s.trackAction(tracking_obj);
+            }
+            
+        })
+    });
 </script>
 
 	

@@ -43,6 +43,10 @@ cookie_hours = 1,
 // Check if the UA is a mobile or tablet with width lessthan 1000
 //isUAMobile = ((screen.width < 1000) && (navigator.userAgent.match(/iPad/i) == null))?"true":"false";
 isUAMobile = navigator.userAgent.match(/(iPhone)|(iPod)|(android)|(webOS)/i) ? true: false;
+//redirect nook users to full site.
+if (isUAMobile){
+    isUAMobile = navigator.userAgent.match(/(nook)/i) ? false: true;
+}
 
 // Check if the referrer was a mobile page (probably the user clicked "Go to full site") or in the
 // querystring there is a parameter to avoid the redirection such as "?mobile_redirect=false"

@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title></title>
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Pragma-directive" content="no-cache" />
+<meta http-equiv="cache-directive" content="no-cache" />
+<style type="text/css">
+	iframe {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+	body {
+		margin: 0px;
+		padding: 0px;
+		background: #FFF;
+	}
+	img.okcimg {
+		top: -1px;
+		position: fixed;
+	}
+	img.okccdn {
+		top: -1px;
+		position: fixed;
+	}
+</style>
+
+<script>
+	function isMobileBrowser() {
+		var i, devices = ['Android', 'BlackBerry', 'iPhone', 'iPod', 'iPad'];
+		for (i=0; i<devices.length; i++) {
+			if (navigator.userAgent.indexOf(devices[i]) > -1) {
+				return true;
+			}
+		}
+		return false;
+	}
+	function checkAnchorTags () {
+		var search_count = 0,
+			anchors = document.getElementsByTagName('a');
+		if (anchors.length) {
+			for (var i = 0; i < anchors.length; i++) {
+				if (anchors[i].getAttribute('target') != '_top') {
+					anchors[i].setAttribute('target', '_top');	
+				}
+			}
+		} else if (search_count < 5) {
+			search_count++;
+			setTimeout(checkAnchorTags, 200);
+		}
+	}
+	if (isMobileBrowser()) {
+		checkAnchorTags();
+	}
+</script>
+
+
+			<!--[if lt IE 9]>
+				<script type="text/javascript" src="http://includes.okccdn.com/json2.js"></script>
+			<![endif]-->			
+			<!--[if (gt IE 7)|!(IE)]><!-->
+			<script src="../ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+			<script>
+				var DAISY = {"prev" : "none", "width" : 1, "next" : "criteo", "fromAdUnit" : true, "format" : "custom_fmt", "daisyid" : "custom_fmt@1357997103", "height" : 1};
+				/*jshint browser:true prototypejs:true */
+/*global _StatHat, DAISY*/
+
+//=============================================================================
+
+var DaisyFrame = (function () {
+	'use strict';
+	var me = {};
+
+	me.initialize = function () {
+		var msg = {fromAdUnit: true, type: 'getorigin'};
+		Event.observe(window, 'message', respondToOrigin);
+		window.top.postMessage(JSON.stringify(msg), '*');
+	};
+
+	function getBaseWindow() {
+		var w = window;
+		while (w.parent !== top) { w = w.parent; }
+		return w;
+	}
+
+	function respondToOrigin (originMsg) {
+		var message_data = JSON.parse(JSON.stringify(DAISY));
+		if (originMsg.source !== top) return null;
+		if (originMsg.origin === 'http://www.okcupid.com' ||
+				originMsg.origin === window.location.origin) {
+			window.daisyid = message_data.daisyid;
+			message_data.type = 'begin';
+
+			top.postMessage(JSON.stringify(message_data), originMsg.origin);
+
+			window.onload = function () {
+				message_data.type = 'load';
+				top.postMessage(JSON.stringify(message_data), originMsg.origin);
+			};
+		}
+		else {
+			location.href =
+				location.href.replace(location.origin, originMsg.origin);
+		}
+	}
+
+	return me;
+})();
+
+var ModernDaisy = (function() {
+	'use strict';
+	// This module should only ever be initialized when running in a modern
+	// (not IE7) browser. It sets up the base-level DOM of an ad unit with a
+	// blank IFrame whose contents can be populated client-side with ad tags.
+
+	// When running in "modern" mode, a passback is a JS snippet using
+	// postMessage to tell the ad unit base (here) base to flip to the next tag.
+
+	var me = {};
+
+	me.initialize = function () {
+		$(document.body).insert(
+			'<iframe id="tagframe" scrolling="no" frameborder="0" marginwidth="0" ' +
+			'marginheight="0" width="' + DAISY.width + '" height="' + DAISY.height +
+			'" allowtransparency="true"></iframe>');
+		// DEBUG:
+		$('tagframe').contentDocument.write(
+			$('template_pubmatic_rtb').innerHTML.unescapeHTML());
+	};
+
+	return me;
+})();
+
+				DaisyFrame.initialize();
+			</script>
+			<!--<![endif]-->
+		
+
+
+
+
+
+</head>
+<body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+
+
+
+		<script type='text/javascript'>
+			var crtg_nid = "1385";
+			var crtg_cookiename = "cto_okc";
+			function crtg_getCookie(c_name) {
+					var i, x, y, ARRcookies = document.cookie.split(";");
+					for (i = 0; i < ARRcookies.length; i++) {
+							x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
+							y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
+							x = x.replace(/^\s+|\s+$/g, "");
+							if (x == c_name) {
+									return unescape(y);
+							}
+					}
+					return "";
+			}
+			var crtg_content = crtg_getCookie(crtg_cookiename);
+			var crtg_rnd = Math.floor(Math.random() * 99999999999);
+			var crtg_url = 'http://rtax.criteo.com/delivery/rta/rta.js?netId=' + escape(crtg_nid);
+			crtg_url += '&cookieName=' + escape(crtg_cookiename);
+			crtg_url += '&rnd=' + crtg_rnd;
+			crtg_url += '&varName=crtg_content';
+			var crtg_script = document.createElement('script');
+			crtg_script.type = 'text/javascript';
+			crtg_script.src = crtg_url;
+			crtg_script.async = true;
+			if (document.getElementsByTagName("head").length > 0) document.getElementsByTagName("head")[0].appendChild(crtg_script);
+			else if (document.getElementsByTagName("body").length > 0) document.getElementsByTagName("body")[0].appendChild(crtg_script);
+		</script>
+	
+
+</body>
+</html>
+
+

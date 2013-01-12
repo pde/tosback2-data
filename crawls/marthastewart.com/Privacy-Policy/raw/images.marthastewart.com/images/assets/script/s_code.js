@@ -34,9 +34,9 @@ s.usePlugins=true
 s.trackingServer="metric.marthastewart.com"
 s.trackingServerSecure="securemetrics.marthastewart.com"
 // timeparting config variables
-s.dstStart="03/11/2012";
-s.dstEnd="11/04/2012";
-s.currentYear="2012";
+s.dstStart="03/11/2013";
+s.dstEnd="11/04/2013";
+s.currentYear="2013";
 
 
 

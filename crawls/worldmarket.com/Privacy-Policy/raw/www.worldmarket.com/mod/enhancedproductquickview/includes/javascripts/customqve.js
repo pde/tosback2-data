@@ -35,8 +35,8 @@ function processQVE(classId){
 		
 		// Sending the Ajax call to get the data of content thumbnails of entrire page at once
 		jQuery.ajax({
-			type: "GET",
-			url: "/wmcustomthumbnail.do?",
+			type: "POST",
+			url: "/wmcustomthumbnail.do",
 			data: {"data":data},
 			async: true,
 			success: function(responseHTML){

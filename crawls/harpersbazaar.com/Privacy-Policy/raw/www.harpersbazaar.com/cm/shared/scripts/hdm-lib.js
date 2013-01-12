@@ -419,9 +419,11 @@ HDM.ads = {
 	//array of regular expressions that will match our ads.. i could have made one big one, but this is more readable (and easier to add to)
 	refreshablePositions: [
 		/^ams_\w+_top$/i, //banner ad
+		/^ams_\w+_banner$/i, //banner ad - alternative title since most are labeled _top instead of _banner
 		/^ams_\w+_tower$/i, //tower ad
 		/^ams_\w+_skyscraper$/i, //tower ad
 		/^ams_\w+_bottom$/i, //bottom banner
+		/^ams_\w+_bot$/i, //bot banner
 		/^ams_\w+_gallery$/i, //gallery ad
 		/^ams_\w+_gallery_bottom$/i, //bottom gallery ad
 		/^ams_\w+_wild$/i, //wild card ad
@@ -433,7 +435,7 @@ HDM.ads = {
 	init: function(pageAdsParams,refreshInterval,flipbookAdInterval){
 		var self = HDM.ads,
 			positionList, //this will hold our position list after filtering it through the white list
-			$allPositions = $('[id^=ams_]'); //this collection will contain all ams elements on the page
+			$allPositions = $('[id^=ams_]'); //this collection will contain all ams elements on the page		
 		self.pageAdsParams = pageAdsParams || {};
 		self.pageAdsParams.position_list = self.getPositionList($allPositions);
 		self.refreshInterval = refreshInterval || 4;
@@ -468,7 +470,7 @@ HDM.ads = {
         } catch(e) {}
         try { _vrtrack(); } catch(e) {}
     },
-	refreshAds: function(forceRefresh, pageName){
+	refreshAds: function(forceRefresh, pageName){		
 		ord = Math.floor(Math.random()*10e12);
 		var self = HDM.ads,
 			//check to see if the dapMgr object exists and we're on delish.. if so we're gonna call a different function
@@ -517,9 +519,26 @@ HDM.ads = {
 	//all this really does it take a string and wrap it in jQuery then append it to the container
 	//need to look for the document.write doubleclick stuff and handle that appropriately
 	renderAdJSON: function(adjson,$target,parentWidth,parentHeight){
-		$.each(adjson,function(i,val){
+		// sorting by tile!
+		var tileorder = [];
+		for (var key in adjson){
+			var adObj = {
+				"positionName" : key,
+				"creative" : adjson[key],
+				"order" : /\;tile\=(\d*)\;/.test(adjson[key]) ? parseInt(/\;tile\=(\d*)\;/.exec(adjson[key])[1]) : 999
+			}
+			tileorder.push(adObj);
+		}
+		
+		tileorder.sort(function(a,b){return (a.order-b.order)})
+		
+		for (var i = 0; i < tileorder.length; i++){
+			var val = tileorder[i].creative;
+			var adPositionName = tileorder[i].positionName;
+			console.warn("AD RENDER CHECK",adPositionName,"############",val);
+			
 			//if there's a target passed, that's out container.. otherwise get the element with the id of our ad object
-			var $container = (typeof $target === 'undefined') ? $(document.getElementById(i)) : $target,
+			var $container = (typeof $target === 'undefined') ? $(document.getElementById(adPositionName)) : $target,
 				$adHTML, //this will hold out ad html
 				randomColor, //random color we'll give to preview ad backgrounds for lols
 				isAdDebug = val.match('FOR PREVIEW ONLY - Ad Ops Debug'), //look for preview ads for testing the refresh
@@ -533,7 +552,7 @@ HDM.ads = {
 				$adHTML.filter('div').css({'background-color':randomColor}); //set the divs background-color to our random color
 			}
 			$container.html($adHTML); //insert the ad html into the container
-		});
+		};
 	},
 	handleDoubleclickAd: function(adCode,parentWidth,parentHeight){
 		//finds the document.write line in the doubleclick ad

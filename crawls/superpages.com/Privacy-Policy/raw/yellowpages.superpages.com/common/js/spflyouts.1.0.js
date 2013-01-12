@@ -22,12 +22,16 @@ return this;
 var spEnvironment = {
 prodDomains : ["www.superpages.com","yellowpages.superpages.com","cars.superpages.com","mapserver.superpages.com","maps.superpages.com","shopping.superpages.com","coupons.superpages.com","www.superguarantee.com","blackfriday.superpages.com","cybermonday.superpages.com"],
 testDomains : ["spdev.superpages.com","sptest.superpages.com","gypsyhome.superpages.com","gypsy-test.superpages.com","gypsy-test2.superpages.com","jt1.superpages.com","jt2.superpages.com","jt3.superpages.com","jt4.superpages.com","jt5.superpages.com","labsjt02.superpages.com","spyptst01-zone1.superpages.com","spyptst02-zone1.superpages.com","swbdtst01.superpages.com","yptest3.superpages.com","sys-csg.supermedia.com","victor.superpages.com","shopping.localhost","cars-test.superpages.com","shopping-dev.superpages.com","shopping-test.superpages.com","blackfriday-dev.superpages.com","blackfriday-test,superpages.com","cybermonday-dev.superpages.com","cybermonday-test.superpages.com"],
+cfitDomains : ["gypsy-cfit1.superpages.com","gypsy-cfit2.superpages.com","jt6.superpages.com","jt8.superpages.com","jt10.superpages.com","sptest2.superpages.com","sptest3.superpages.com"],
+pmDomains : ["gypsy-pm1.superpages.com","gypsy-pm2.superpages.com","jt2.superpages.com","jt7.superpages.com","jt9.superpages.com","gypsy-test3.superpages.com","jt3.superpages.com","sptest5.superpages.com","sptest6.superpages.com","sptest4.superpages.com"],
 devDomains : ["utpalsmac.supermedia.com"],
 //mapsApp : ["mapserver.superpages.com","yptest3.superpages.com","maps.superpages.com","victor.superpages.com"],
 mapsApp : ["disabled."],
 checkEnvironment : function() {
 if ($.inArray(document.domain,this.prodDomains) > -1) {return "prod";}
 else if ($.inArray(document.domain,this.testDomains) > -1) {return "test";}
+else if ($.inArray(document.domain,this.cfitDomains) > -1) {return "cfit";}
+else if ($.inArray(document.domain,this.pmDomains) > -1) {return "pm";}
 else {return "dev";}
 },
 resolveUrl : function(urlType) {
@@ -57,6 +61,14 @@ returnUrl = "http://yellowpages.superpages.com";
 break;
 case 'test':
 returnUrl = "http://gypsy-test.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
+break;
+case 'cfit':
+returnUrl = "http://gypsy-cfit1.superpages.com";
+//returnUrl = "http://jt0.superpages.com:9080";
+break;
+case 'pm':
+returnUrl = "http://gypsy-pm1.superpages.com";
 //returnUrl = "http://jt0.superpages.com:9080";
 break;
 case 'dev':

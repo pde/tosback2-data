@@ -163,22 +163,22 @@ if (document.getElementById('cat_3').checked) {pageTracker._trackEvent('Filter',
 					var label = page;
 				}
 
-				statTracker()._event("tube8_"+adOrientation, id+"_"+position+event, label, 1);
+				statTracker()._event("tube8_"+adOrientation, id+"_"+position+"_"+event, label, 1);
 			}
 
 			$(".box-thumbnail-friends").each(function(index){
 					if (pagekeyStat == "html-home_new_") {
 						var adPage = "home";
 					} else {
-						var adPage = "category";
+						var adPage = "category_";
 					}
 
 					if ($(this).hasClass("youporn")) {
-						statTrackerEvent("view", "tube8_", $(this).find(".friendsAdWrapper").attr("id"), adPage+"_"+category);
+						statTrackerEvent("view", index+1, $(this).find(".friendsAdWrapper").attr("id"), adPage+category);
 						$(this).find("img.videoThumbs").mouseover(function(e){
-							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+category);
+							statTrackerEvent(e.type, index+1, $(this).parent().parent().attr("id"), adPage+category);
 						}).click(function(e){
-							statTrackerEvent(e.type, index, $(this).parent().parent().attr("id"), adPage+"_"+category);
+							statTrackerEvent(e.type, index+1, $(this).parent().parent().attr("id"), adPage+category);
 						});
 					}
 			});

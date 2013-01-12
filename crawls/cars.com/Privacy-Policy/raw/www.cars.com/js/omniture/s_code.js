@@ -39,7 +39,7 @@ s_clven.linkInternalFilters="javascript:,cars.kbb.com,auto.com,compare.newcars.c
 
 //s_clven.linkInternalFilters="."
 s_clven.linkLeaveQueryString=false;
-s_clven.linkTrackVars="prop50,prop49,prop48";
+s_clven.linkTrackVars="prop50,prop49,prop48,eVar63"; //48,49,50: link tracking; eVar63: Optimizely Variation Name
 s_clven.linkTrackEvents="None";
 /* Plugin Config */
 s_clven.usePlugins=true;
@@ -65,22 +65,22 @@ else
 if (pathnameSpec.indexOf('qq')!=-1)
 {
   s_clven.eVar75="Step 1: QQ General Landing Page";
-} 
+}
 
 if (pathnameSpec.indexOf('genincentives')!=-1)
 {
   s_clven.eVar75="Step 1: QQ Incentive Landing Page";
-} 
+}
 
 if (pathnameSpec.indexOf('incentives')!=-1 && pathnameSpec.indexOf('genincentives')==-1)
 {
   s_clven.eVar75="Step 1: QQ Black Friday Landing Page";
-} 
+}
 
 if (pathnameSpec.indexOf('yearendclearance')!=-1)
 {
   s_clven.eVar75="Step 1: QQ Year-End Clearance Landing Page";
-} 
+}
 
 ///////////////////////////
 
@@ -206,28 +206,28 @@ function s_clven_doPlugins(s_clven) {
   var paramqq = getUrlVars()["qq"];
 
   if (pathnameSpec.indexOf('leadThanks')!=-1 && paramqq == 'true') //add events if on qq thank you page
-  {    
+  {
      s_clven.events=s_clven.apl(s_clven.events,'event2,event7,event20',',',2)
   }
   else
-  {    
-     s_clven.events=s_clven.apl(s_clven.events,'event2',',',2)  
+  {
+     s_clven.events=s_clven.apl(s_clven.events,'event2',',',2)
   }
 
   //Delete url path in the pageName var if running the script on QQ pages//
   if (s_clven.pageName)
   {
-     if ((pathnameSpec.indexOf('leadThanks')!=-1 && paramqq == 'true') || 
-         (pathnameSpec.indexOf('qq')!=-1) || 
-         (pathnameSpec.indexOf('genincentives')!=-1) || 
-         (pathnameSpec.indexOf('incentives')!=-1 && pathnameSpec.indexOf('genincentives')==-1) || 
+     if ((pathnameSpec.indexOf('leadThanks')!=-1 && paramqq == 'true') ||
+         (pathnameSpec.indexOf('qq')!=-1) ||
+         (pathnameSpec.indexOf('genincentives')!=-1) ||
+         (pathnameSpec.indexOf('incentives')!=-1 && pathnameSpec.indexOf('genincentives')==-1) ||
          (pathnameSpec.indexOf('yearendclearance')!=-1))
      {
         s_clven.pageName = s_clven.pageName.substring(s_clven.pageName.lastIndexOf('/')+1);
-     }    
+     }
   }
 
- 
+
   /* Set Time Parting Variables - SAMPLE EST */
   var currentDate = new Date()
   var year = currentDate.getFullYear()
@@ -262,29 +262,29 @@ function s_clven_doPlugins(s_clven) {
   // NEW ENGAGEMENT CODE_HBX PLUGIN
   s_clven.hbx_lt = "auto"; // manual, auto
   s_clven.setupLinkTrack("prop50,prop49,prop48","SC_LINKS");
-  
+
 	//Unified Sources Logic
 	var dls = document.location.search.toLowerCase()
 	if(s_clven.ActionDepthTest){
 		s_clven.pdvalue=s_clven.getActionDepth('s_depth');
 		s_clven.ActionDepthTest=false;
 	}
-	if(s_clven.pdvalue=='1'){		
+	if(s_clven.pdvalue=='1'){
 		if(s_clven.getQueryParam('EMC'))s_clven.uniSource = 'Email'
 		else if(document.referrer){
-			if(dls.indexOf('knc=')>-1&&dls.indexOf('knc-')==-1&&dls.indexOf('bac=')==-1&&!s_clven.splstMtch(dncList,s_clven.getQueryParam('knc'),0)) s_clven.uniSource = 'Paid Search'				
+			if(dls.indexOf('knc=')>-1&&dls.indexOf('knc-')==-1&&dls.indexOf('bac=')==-1&&!s_clven.splstMtch(dncList,s_clven.getQueryParam('knc'),0)) s_clven.uniSource = 'Paid Search'
 			else if(dls.indexOf('bac=')>-1&&!s_clven.splstMtch(dncList,s_clven.getQueryParam('bac'),0))s_clven.uniSource = 'Display'
 			else if(s_clven.splstMtch(prtList,s_clven.getQueryParam('aff'),0))s_clven.uniSource = 'Partner'
 			else if(dls.indexOf('aff=')>-1&&dls.indexOf('bac=')==-1&&dls.indexOf('knc=')==-1&&dls.indexOf('aff=national')==-1)s_clven.uniSource = 'Affiliate'
 			else if(s_clven.splstMtch(smList,document.referrer,1))s_clven.uniSource = 'Social Networks'
 			else if(s_clven.splstMtch(seList,document.referrer,1))s_clven.uniSource = 'Natural Search'
 			else if(!s_clven.splstMtch(s_clven.linkInternalFilters,document.referrer,1))s_clven.uniSource = 'Other Websites'
-			else s_clven.uniSource = 'Session Refresh';					
+			else s_clven.uniSource = 'Session Refresh';
 		}
 		else s_clven.uniSource = 'Typed/Bookmarked'
 		s_clven.eVar65=s_clven.crossVisitParticipation(s_clven.uniSource,'s_uniSource','60','5','>','')
 		s_clven.eVar35=s_clven.uniSource;
-	}		
+	}
 }
 s_clven.doPlugins=s_clven_doPlugins
 

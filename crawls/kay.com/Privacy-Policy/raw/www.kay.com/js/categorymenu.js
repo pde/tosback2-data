@@ -90,7 +90,6 @@ writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/family-and-mot
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/color-obsession-made-with-swarovski-elements%C2%99/1000600000/100020/1/0/0/0/100020.100023.100060">COLOR OBSESSION MADE WITH SWAROVSKI ELEMENTS&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/black---white-diamond-collection/1003420000/100020/1/0/0/0/100020.100023.100342">Artistry Black Diamonds&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/blue-diamond-fashion-100301--1/1003010000/100020/1/0/0/0/100020.100023.100301">Artistry Blue Diamonds&#153;</a></li>');
-writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/artistry-yellow-diamonds%C2%99/1003570000/100020/1/0/0/0/100020.100023.100357">Artistry Yellow Diamonds&#153;</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/diamond-revelations-100062--1/1000620000/100020/1/0/0/0/100020.100023.100062">Diamond Revelations</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/triton-100304--1/1003040000/100020/1/0/0/0/100020.100023.100304">Triton</a></li>');
 writeMegaMenu('<li><a href="http://www.kay.com'+path+'en/kaystore/music-rocks%C2%99-by-lyric-culture%C2%99-100315--1/1003150000/100020/1/0/0/0/100020.100023.100315">Music Rocks&#153; by Lyric Culture&#153;</a></li>');

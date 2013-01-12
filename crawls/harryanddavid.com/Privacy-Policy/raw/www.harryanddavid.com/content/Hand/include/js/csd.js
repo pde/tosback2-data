@@ -48,6 +48,7 @@ dojo.addOnLoad(function () {
     { id: 'JOY',            type: 'coupon' },
     { id: 'JOYFUL',         type: 'coupon' },
     { id: 'JOYOUS',         type: 'coupon' },
+    { id: 'SHIP99',         type: 'coupon' },
     { id: 'SHIPJOY',        type: 'coupon' },
     { id: 'SHIPPING',       type: 'coupon' },
     { id: 'SHIPPING49',     type: 'coupon' },

@@ -49,9 +49,8 @@ $('#ir-shipping-returns-flydown').hover(function(){mouse_is_inside=true;},functi
 function open_popReturnsLink(){var parentUrl=PageParameters.secureUrl+"ReturnsAndExchange.aspx?origin=flydown";window.parent.location=parentUrl;}
 function openPrivacyPolicy()
 {window.name="popup";var feature=window.open(getContentURL()+"popup/shopwithconfidence/protect-main.asp","feature",'toolbar=no,status=no,width=636,height=430,resize=no,scrollbars=yes,menubar=no');}
-var scriptCacheDate='';function setScriptCache(){var date=new Date();var day=date.getDay();if(day===4){scriptCacheDate=date.toString().replace(/\s/g,"").substring(3,12);}}
-setScriptCache();if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){$.ajax({type:"GET",url:'//media.richrelevance.com/rrserver/js/1.0/p13n.js?ts='+scriptCacheDate,success:rrListener,dataType:"script",cache:true})}
-function rrListener(){if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){window.R3_COMMON=new r3_common();R3_COMMON.setClickthruServer(window.location.protocol+'//'+window.location.host);if(PageParameters.hasOwnProperty('RRAPIKey')){R3_COMMON.setApiKey(PageParameters.RRAPIKey);}
+if(((PageParameters.rr_ListeningEnabled===true)||(PageParameters.rr_RecommendationEnabled===true))&&(PageParameters.hasOwnProperty('PageType'))){(function($){"use strict";function rrListener(){if(typeof r3_common!=="function"){return false;}
+window.R3_COMMON=new r3_common();R3_COMMON.setClickthruServer(window.location.protocol+'//'+window.location.host);if(PageParameters.hasOwnProperty('RRAPIKey')){R3_COMMON.setApiKey(PageParameters.RRAPIKey);}
 if(PageParameters.hasOwnProperty('RREnvironment')){R3_COMMON.setBaseUrl(window.location.protocol+'//'+PageParameters.RREnvironment+'.richrelevance.com/rrserver/');}
 if(PageParameters.hasOwnProperty('SessionId')){R3_COMMON.setSessionId(PageParameters.SessionId);}
 if(PageParameters.hasOwnProperty('shopperId')){R3_COMMON.setUserId(PageParameters.shopperId);}
@@ -63,7 +62,8 @@ break;case'SearchPage':window.R3_SEARCH=new r3_search();var keyword=(PageParamet
 break;case'ShoppingBagPage':window.R3_CART=new r3_cart();var items=PageParameters.orderInfo.items,len=Math.min(items.length,15),i=0;for(i;i<len;i++){R3_CART.addItemId(items[i].styleNumber);}
 break;case'OrderConfirmationPage':window.R3_PURCHASED=new r3_purchased();R3_PURCHASED.setOrderNumber(PageParameters.orderInfo.orderId);var items=PageParameters.orderInfo.items,len=Math.min(items.length,15),i=0;for(i;i<len;i++){R3_PURCHASED.addItemIdPriceQuantity(items[i].styleNumber,items[i].orderItemsPrice,items[i].orderItemsQuantity);}
 break;case'ErrorPage':window.R3_ERROR=new r3_error();break;}
-if(PageParameters.hasOwnProperty('IsRRRecsVisible')===false){r3();}}}
+if(typeof r3==="function"&&PageParameters.hasOwnProperty('IsRRRecsVisible')===false){r3();}}
+$.getScript('//media.richrelevance.com/rrserver/js/1.0/p13n.js',rrListener);})(jQuery);}
 function modifyCurrentSortStyle(){var currentClassRemoved=false;var $container=$('.results-sort-dropdown');var $lis=$container.find('li');$container.find('li:eq(0)').live('mouseout',function(){if(currentClassRemoved===false){$lis.removeClass('current');currentClassRemoved=true;}});}
 $(document).ready(function(){if(PageParameters.LeftNavigationFlyoutEnabled==true){function cmTagOnHover(){if(PageParameters.parentCategoryName==='Department'){cmCreatePageElementTag(PageParameters.categoryName+'s Brands','Left Nav Flyout');}
 else{cmCreatePageElementTag(PageParameters.parentCategoryName+'s '+PageParameters.categoryName+' Brands','Left Nav Flyout');}}

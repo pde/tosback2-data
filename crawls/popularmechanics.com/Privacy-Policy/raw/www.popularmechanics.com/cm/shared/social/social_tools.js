@@ -7,6 +7,7 @@ var hsocial_tool = {
 		getNumber : function(){
 			$.getJSON("/api_static/twitter.json",function(json){
 				// just adding  a "," in our 4+ digit numbers..
+				console.log(json);
 				nStr = json.followers_count || json[0].user.followers_count;
 				nStr += '';
 				x = nStr.split('.');
@@ -127,6 +128,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.twitter_modal.hide();
 				hsocial_tool.pointer.pinterest_modal.hide();
 				hsocial_tool.pointer.tumblr_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();	
 			} else if (jqo.attr("hsocial") === "twitter"){
@@ -135,6 +137,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.twitter_modal.show();
 				hsocial_tool.pointer.pinterest_modal.hide();
 				hsocial_tool.pointer.tumblr_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();	
 			} else if (jqo.attr('hsocial') == 'pinterest'){
@@ -142,6 +145,7 @@ var hsocial_tool = {
 				hsocial_tool.pointer.twitter_modal.hide();
 				hsocial_tool.pointer.pinterest_modal.show();
 				hsocial_tool.pointer.tumblr_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
 			} else if (jqo.attr('hsocial') == 'tumblr') {
@@ -151,11 +155,19 @@ var hsocial_tool = {
 				hsocial_tool.pointer.tumblr_modal.show();
 				hsocial_tool.pointer.googlep_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.hide();
+			} else if (jqo.attr('hsocial') == 'linkedin') {
+				hsocial_tool.pointer.facebook_modal.hide();
+				hsocial_tool.pointer.twitter_modal.hide();
+				hsocial_tool.pointer.pinterest_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.show();
+				hsocial_tool.pointer.googlep_modal.hide();
+				hsocial_tool.pointer.newsltr_modal.hide();
 			} else if (jqo.attr('hsocial') == 'googlep'){
 				hsocial_tool.pointer.facebook_modal.hide();
 				hsocial_tool.pointer.twitter_modal.hide();
 				hsocial_tool.pointer.pinterest_modal.hide();
 				hsocial_tool.pointer.tumblr_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.googlep_modal.show();
 				hsocial_tool.pointer.newsltr_modal.hide();			
 				
@@ -165,12 +177,14 @@ var hsocial_tool = {
 				hsocial_tool.pointer.twitter_modal.hide();
 				hsocial_tool.pointer.pinterest_modal.hide();
 				hsocial_tool.pointer.googlep_modal.hide();
+				hsocial_tool.pointer.linkedin_modal.hide();
 				hsocial_tool.pointer.newsltr_modal.show();	
 			}
 			hsocial_tool.pointer.facebook_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.pinterest_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.tumblr_modal.find("."+jqo.attr("tooltipShow")).show();
+			hsocial_tool.pointer.linkedin_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipShow")).show();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipShow")).show();
 	
@@ -178,6 +192,7 @@ var hsocial_tool = {
 			hsocial_tool.pointer.twitter_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.pinterest_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.tumblr_modal.find("."+jqo.attr("tooltipHide")).hide();
+			hsocial_tool.pointer.linkedin_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.googlep_modal.find("."+jqo.attr("tooltipHide")).hide();
 			hsocial_tool.pointer.newsltr_modal.find("."+jqo.attr("tooltipHide")).hide();
 			
@@ -203,6 +218,7 @@ var hsocial_tool = {
 		twitter: null,
 		pinterest: null,
 		tumblr:null,
+		linkedin:null,
 		googlep: null,
 		newsletter: null,
 		modal: null,
@@ -210,6 +226,7 @@ var hsocial_tool = {
 		twitter_modal: null,
 		pinterest_modal: null,
 		tumblr_modal: null,
+		linkedin_modal: null,
 		googlep_modal: null,
 		newsltr_modal: null
 	},
@@ -217,7 +234,7 @@ var hsocial_tool = {
 	popup_hide : function(){},
 	queue_hide : function(){
 		// this throws down a timeout event for 1.5 seconds to queue the hide
-		hsocial_tool.timer = setTimeout(function(){$("#rr_social_tooltip").hide();hsocial_tool.lastspot = null;},150);
+		hsocial_tool.timer = setTimeout(function(){$('#rr_social_tooltip,[hsocial="modal"]').hide();hsocial_tool.lastspot = null;},150);
 	},
 	animate : {
 		setOpacity : function(opa){
@@ -275,24 +292,34 @@ var vtemail = {
 $(document).ready(function(){
 	$("body").append($("[hsocial='modal']"));
 	//$("#rr_soc_fb_cont,#rr_soc_tw_cont,#rr_soc_em_cont,#rr_social_tooltip").hover(function(){hoverin($(this));},function(){hoverout($(this));});
-	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal'],[hsocial=pinterest],[hsocial=tumblr],[hsocial=googlep]").hover(function(){hsocial_tool.hoverin($(this));},function(){hsocial_tool.hoverout($(this));});
+	$("[hsocial='facebook'],[hsocial='twitter'],[hsocial='newsltr'],[hsocial='modal'],[hsocial=pinterest],[hsocial=tumblr], [hsocial=linkedin],[hsocial=googlep]").live({
+		  mouseenter: 
+		  	function(){
+				hsocial_tool.hoverin($(this));
+				}, 
+			mouseleave: 
+				function(){
+					hsocial_tool.hoverout($(this));
+				}
+		  });
 	// setting up pointers so we don't have to make new references every time
 	hsocial_tool.pointer.facebook = $("[hsocial='facebook']");
 	hsocial_tool.pointer.twitter = $("[hsocial='twitter']");
 	hsocial_tool.pointer.newsletter = $("[hsocial='newsltr']");
 	hsocial_tool.pointer.pinterest = $('[hsocial=pinterest]');
 	hsocial_tool.pointer.tumblr = $('[hsocial=tumblr]');
+	hsocial_tool.pointer.linkedin = $('[hsocial=linkedin]');
 	hsocial_tool.pointer.googlep = $('[hsocial=googlep]');
 	hsocial_tool.pointer.modal = $("[hsocial='modal']");
 	hsocial_tool.pointer.facebook_modal = $("[hsocial='facebook_modal']");
 	hsocial_tool.pointer.twitter_modal = $("[hsocial='twitter_modal']");
 	hsocial_tool.pointer.pinterest_modal = $('[hsocial=pinterest_modal]');
 	hsocial_tool.pointer.tumblr_modal = $('[hsocial=tumblr_modal]');
+	hsocial_tool.pointer.linkedin_modal = $('[hsocial=linkedin_modal]');
 	hsocial_tool.pointer.googlep_modal = $('[hsocial=googlep_modal]');
 	hsocial_tool.pointer.newsltr_modal = $("[hsocial='newsltr_modal']");
 	vtemail.origEmailValue = $("#vt_nl_emailfield").attr("value");
 	$("#vt_nl_emailfield").mouseenter(function(){hsocial_tool.hoverin($("#rr_soc_em_cont, #lr_soc_em_cont"));}); // hack for chrome hover issue
-	
 	hsocial_tool.tracking.init();
 	hsocial_tool.twitter.getNumber();
 	

@@ -311,7 +311,11 @@ function prepareChatLink() {
 			  }
 			var popup_options = 'menubar=no,toolbar=no,scrollbars=no,resizable=no,width=472,height=350';
 			var newWin = window.open(url, "attchat", popup_options);
-			newWin.focus();
+			try{
+				if (!jQuery.browser.msie) {
+						newWin.focus();
+				}
+			}catch(e){}
 			return false;
 		}
 		

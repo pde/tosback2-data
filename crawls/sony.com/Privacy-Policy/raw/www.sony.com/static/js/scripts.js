@@ -600,10 +600,12 @@ var search = (function() {
         },
         open: function() {
             c.removeClass("closed").addClass("open");
+            a.removeClass("hidden-phone");
             a.addClass("show")
         },
         close: function() {
             c.removeClass("open").addClass("closed");
+            a.addClass("hidden-phone");
             a.removeClass("show")
         }
     };

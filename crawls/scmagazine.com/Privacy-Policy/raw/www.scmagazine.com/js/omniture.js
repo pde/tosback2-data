@@ -181,6 +181,10 @@ function s_doPlugins(s) {
     if (s.prop27) { s.eVar27 = s.prop27.toLowerCase(); }
 
 
+    //CPN values    
+
+    if (s.prop28) { s.eVar28 = s.prop28.toLowerCase(); }
+    
     //credit type
 
     if (s.prop31) { s.eVar31 = s.prop31.toLowerCase(); }

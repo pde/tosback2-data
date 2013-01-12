@@ -1,16 +1,12 @@
 (function(){
-var pfs={ "http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
+var pfs={ "http://www.usmagazine.com/celebrity-moms":{"nid":31068,"tr":1},
+"http://www.usmagazine.com/style":{"nid":21490,"tr":1},
+"http://www.usmagazine.com/":{"nid":21487,"tr":1} },d=document,w=window,u=(w.gm_fake_href)?w.gm_fake_href:w.location.href;
 
 function z(n){
 var s,u;
 
 if (Math.random()>=n['tr']) {
-	return;
-}
-
-var ar_nodes = ":31068:";
-if (ar_nodes.indexOf(":"+n['nid']+":") >= 0) {	// adradar only
-	(new Image).src="//amch.questionmarket.com/adscgen/adrad.php?survey_num=0&aicode=0&site="+n['nid'];
 	return;
 }
 

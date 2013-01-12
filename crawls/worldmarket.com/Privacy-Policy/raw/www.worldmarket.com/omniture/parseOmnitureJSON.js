@@ -360,7 +360,8 @@
 		}
 						
 		sTrackEvents=",events";	
-		s.linkTrackVars="products" +sTrackEvents;
+		s.linkTrackVars="prop24,products" +sTrackEvents;
+		s.prop24="s.getPreviousValue";
 		s.tl(true,'o','Social Media');
 	}
     /**

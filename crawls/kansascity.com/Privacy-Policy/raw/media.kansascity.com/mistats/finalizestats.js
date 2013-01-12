@@ -206,6 +206,10 @@ s.prop39 = mistats.querystring;
 s.prop47 = mistats.widgets;
 s.hier1  = mistats.bizunit + "|" + mistats.sitename + "|" + mistats.taxonomy + "|" + mistats.channel;
 
+// Report in-app browser activity
+if (mistats.pagename.match(/^vendor:/i) && navigator.userAgent.match(/(ipad|iphone|ipod).+applewebkit.+mobile\/\S+$/i))
+   s.prop2 = mistats.sitename + ': ' + mistats.pagename.replace(/^vendor: {0,1}/i, '').replace(/:.*/, '') + ': in-app Browser';
+
 // Pagename as a conversion variable - Added 3/31/10 - JJ - Ticket# 727-8314208
 s.events = "event7";
 s.eVar4 = s.pageName;

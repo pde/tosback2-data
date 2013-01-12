@@ -3,7 +3,7 @@ var isIE6=navigator.userAgent.toUpperCase().indexOf("MSIE 6.0")!=-1;var isIE7=na
 {this.overrides=$H(this.options.overrides);if(($defined(this.overrides))&&(this.overrides.getLength()>0))
 {this.overrides.each(function(value,key){if($type(value)==='function')
 {this[key]=value;}}.bind(this));}}}});var CHKClassName=new Class({getClassName:function(){var w=$H(window);return w.keyOf(this.constructor);}});var CHKControl_Base=new Class({Implements:[Events,Options,CHKOverrides,CHKClassName],options:{name:null,showClass:null,hideClass:null,selectedClass:null,deselectedClass:null,enabledClass:null,disabledClass:null,stopPropagation:true,preventDefault:false,useFx:false,fxOpenStylePre:null,fxOpenStyle:null,fxOpenStylePost:null,fxCloseStylePre:null,fxCloseStyle:null,fxCloseStylePost:null,fxSelectedStylePre:null,fxSelectedStyle:null,fxSelectedStylePost:null,fxDeselectedStylePre:null,fxDeselectedStyle:null,fxDeselectedStylePost:null,fxEnabledStylePre:null,fxEnabledStyle:null,fxEnabledStylePost:null,fxDisabledStylePre:null,fxDisabledStyle:null,fxDisabledStylePost:null,fxWait:false,fxDuration:500,fxTransition:Fx.Transitions.Sine.easeInOut},controlEl:null,timer:null,uid:null,isOpen:true,isSelected:false,isEnabled:true,inTransition:false,fx:null,initialize:function(control,options){this.controlEl=$(control);this.setOptions(options);this.setOverrides();var tempHash,keys,styles,count;tempHash=$H({});if($defined(this.controlEl))
-{this.uid=this.controlEl.uid;if((!$defined(this.options.name))&&(this.controlEl.className.contains('js_name_')))
+{this.uid=this.controlEl.uniqueNumber|this.controlEl.uid;if((!$defined(this.options.name))&&(this.controlEl.className.contains('js_name_')))
 {this.controlEl.className.split(' ').each(function(item,index){if(item.contains('js_name_'))
 {this.options.name=item.replace('js_name_','');}}.bind(this));}
 if(($defined(this.options.useFx))&&(this.options.useFx))
@@ -202,7 +202,7 @@ return null;},getByName:function(name){if(($defined(name)))
 {if($defined(this.options.name)&&name===this.options.name)
 {return this;}}
 return null;}});var CHKCustomPopUp=new Class({Implements:[Events,Options,CHKOverrides,CHKClassName],options:{name:null,showEvent:'mouseenter',hideEvent:'mouseleave',enableTriggerToggle:false,enableTargetToggle:false,showTriggerClass:null,hideTriggerClass:null,showTargetClass:null,hideTargetClass:null,showDelay:null,hideDelay:null,alignment:null,stopPropagation:true,preventDefault:false,enableKeypress:true,useFx:false,fxOpenStylePre:null,fxOpenStyle:null,fxOpenStylePost:null,fxCloseStylePre:null,fxCloseStyle:null,fxCloseStylePost:null,fxWait:false,fxDuration:500,fxTransition:Fx.Transitions.Back.easeOut},triggerEl:null,targetEl:null,showEls:[],hideEls:[],triggerSize:null,popupSize:null,alignmentSet:false,isOpen:false,inTransition:false,timer:null,fx:null,uid:null,initialize:function(trigger,target,options){var tempHash,keys,styles,count;this.triggerEl=$(trigger);this.targetEl=$(target);this.setOptions(options);this.setOverrides();tempHash=$H({});if($defined(this.triggerEl))
-{this.uid=this.triggerEl.uid;if((!$defined(this.options.name))&&(this.triggerEl.className.contains('js_name_')))
+{this.uid=this.triggerEl.uniqueNumber|this.triggerEl.uid;if((!$defined(this.options.name))&&(this.triggerEl.className.contains('js_name_')))
 {this.triggerEl.className.split(' ').each(function(item,index){if(item.contains('js_name_')){this.options.name=item.replace('js_name_','');}}.bind(this));}
 this.triggerSize=this.triggerEl.getSize();if(this.triggerSize.x===0&&this.triggerSize.y===0)
 {this.triggerSize.x=this.triggerEl.getStyle('width').toInt();this.triggerSize.y=this.triggerEl.getStyle('height').toInt();}
@@ -224,7 +224,7 @@ break;case'object':tempHash=$H(this.options.hideTriggerClass);keys=tempHash.getK
 break;}}}
 if($defined(this.targetEl))
 {if(!$defined(this.uid))
-{this.uid=this.targetEl.uid;}
+{this.uid=this.targetEl.uniqueNumber|this.targetEl.uid;}
 if((!$defined(this.options.name))&&(this.targetEl.className.contains('js_name_')))
 {this.targetEl.className.split(' ').each(function(item,index){if(item.contains('js_name_'))
 {this.options.name=item.replace('js_name_','');}}.bind(this));}
@@ -261,14 +261,14 @@ break;}}}}
 this.fx=new Fx.Morph(this.targetEl,{wait:this.options.fxWait,duration:this.options.fxDuration,transition:this.options.fxTransition});this.fx.addEvent('onComplete',this.transitionCompleteHandler.bind(this));this.fx.addEvent('onStart',this.transitionStartHandler.bind(this));if($defined(this.triggerEl))
 {if($defined(this.options.showEvent))
 {$splat(this.options.showEvent).each(function(event){this.triggerEl.addEvent(event,this.showHandlerTrigger.bind(this));}.bind(this));}
-if($defined(this.options.hideEvent))
+if($defined(this.options.hideEvent)&&this.options.hideEvent!='')
 {$splat(this.options.hideEvent).each(function(event){this.triggerEl.addEvent(event,this.hideHandlerTrigger.bind(this));}.bind(this));}
 if(this.options.enableKeypress)
 {this.triggerEl.addEvent('keypress',this.keypressHandlerTrigger.bind(this));}}
 if($defined(this.targetEl)&&(this.targetEl!==this.triggerEl))
 {if($defined(this.options.showEvent))
 {$splat(this.options.showEvent).each(function(event){this.targetEl.addEvent(event,this.showHandler.bind(this));}.bind(this));}
-if($defined(this.options.hideEvent))
+if($defined(this.options.hideEvent)&&this.options.hideEvent!='')
 {$splat(this.options.hideEvent).each(function(event){this.targetEl.addEvent(event,this.hideHandler.bind(this));}.bind(this));}
 if(this.options.enableKeypress)
 {this.targetEl.addEvent('keypress',this.keypressHandler.bind(this));}}
@@ -594,6 +594,6 @@ script.type="text/javascript";if(script.readyState){script.onreadystatechange=fu
 script.src=url;document.getElementsByTagName("head")[0].appendChild(script);};if(!hpeuck_loaded){euckLoadScript(euck_jsScript,function(){});}
 
 /*
-Date: 12/17/2012 3:57:38 PM
+Date: 1/10/2013 11:24:04 PM
 All images published
 */

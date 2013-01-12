@@ -619,53 +619,6 @@ function loop(x){
   });
 });
 
-// ----------
-// Navigation Delay: Added 01/08/13
-// ----------
-/*$(document).ready(function(){
-var bar=0;
-		$(".corral").mouseenter(function() {
-			bar=1;
-		});
-		$(".corral").mouseleave(function() {
-			bar=0;
-		});
-		
-		$(".sublevel-navigation li").mouseenter(function() {
-			if ( bar==1 ) {
-				$(this).children(".dropdown").fadeIn(10);
-			} else { 
-				$(this).children(".dropdown").delay(500).fadeIn(100);
-			}
-		});
-
-		$(".sublevel-navigation li").mouseleave(function() {
-			if ( bar==1 ) {
-			$(this).children(".dropdown").stop(true, true).fadeOut(50);
-			} else { 
-			$(this).children(".dropdown").stop(true, true).delay(500).fadeOut(50);
-			}
-		});
-//		$(".sublevel-navigation li .dropdown").mouseenter(function() {
-//			if ( bar==1 ) {
-//			$(this).stop(true, true).show();
-//			}
-//		});
-});
-*/
-$(document).ready(function(){	
-		$(".sublevel-navigation li").mouseenter(function() {
-			if ($(".sublevel-navigation li .dropdown").is(':visible')) {			
-				$(this).children(".dropdown").stop(true, true).fadeIn(10);
-			} else { 
-				$(this).children(".dropdown").stop(true, true).delay(350).fadeIn(100);
-			}
-		});
-
-		$(".sublevel-navigation li").mouseleave(function() {
-			$(this).children(".dropdown").stop(true, true).fadeOut(50);
-		});
-});
 
 
 

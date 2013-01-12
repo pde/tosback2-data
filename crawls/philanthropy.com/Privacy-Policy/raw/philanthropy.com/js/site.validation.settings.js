@@ -106,7 +106,7 @@ $.validator.setDefaults({
                 height += $('ul.modal-tabs').height();
             }
             var width = $('#modalFrame').width();
-            $('#modal-iframe', window.parent.document).attr({'style': 'height:auto; min-height:'+height+'px; width:'+width+'px;'});
+            $('[id^=modal-iframe]', window.parent.document).attr({'style': 'height:auto; min-height:'+height+'px; width:'+width+'px;'});
         }
         if ( $('#premiumFrame').length && ( window.location !== top.location.href) )
         {

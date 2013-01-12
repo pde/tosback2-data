@@ -202,17 +202,36 @@ if (domain.indexOf("fusionfall") != -1) {
 } else if (domain.indexOf("starwarsgamecreator") != -1) {
 	if (path1) path2 = path1;
 	path1 = "starwarsgamecreator", path2 = "starwarsgamecreator";
-} else if (pathname.indexOf('/gamecreator/')) {
+} else if (pathname.match(/\/gamecreator\//)) {
 	path1 = "ben10gamecreator", path2 = "ben10gamecreator";
+	var logit1 = "pathname: " + pathname;
+	var logit2 = "path1: " + path1;
+	var logit3 = "path2: " + path2;
 	if (!(isIE)) {
-		console.log("PATHS:");
-		console.log(path1);
-		console.log(path2);
+		console.log(logit1);
+		console.log(logit2);
+		console.log(logit3);
 	}
-} else if (pathname.indexOf('/gamecreatorbm/')) {
+} else if (pathname.match(/\/gamecreatorbm\//)) {
 	path1 = "batmangamecreator", path2 = "batmangamecreator";
-} else if (pathname.indexOf('/gamecreatorsw/')) {
+	var logit1 = "pathname: " + pathname;
+	var logit2 = "path1: " + path1;
+	var logit3 = "path2: " + path2;
+	if (!(isIE)) {
+		console.log(logit1);
+		console.log(logit2);
+		console.log(logit3);
+	}
+} else if (pathname.match(/\/gamecreatorsw\//)) {
 	path1 = "starwarsgamecreator", path2 = "starwarsgamecreator";
+	var logit1 = "pathname: " + pathname;
+	var logit2 = "path1: " + path1;
+	var logit3 = "path2: " + path2;
+	if (!(isIE)) {
+		console.log(logit1);
+		console.log(logit2);
+		console.log(logit3);
+	}
 } else if (domain.indexOf("mixit") != -1) {
 	if (path1) path2 = path1;
 	path1 = "mixit";
@@ -336,6 +355,7 @@ var pattern1 = {
 	"hall of game":						[(/\/(games|tv_shows)\/hallofgame/)],
 	"hero 108":							[(/\/(games|tv_shows)\/hero108/)],
 	"hole in the wall":					[(/\/(games|tv_shows)\/hole/),(/\/(games|tv_shows)\/hole\-in\-the\-wall/)],
+	"incredible crew":					[(/\/(games|tv_shows)\/incredible\-crew/)],
 	"johnny test":						[(/\/(games|tv_shows)\/johnnytest/)],
 	"codename: kids next door":			[(/\/(games|tv_shows)\/knd/)],
 	"the looney tunes show":			[(/\/(games|tv_shows)\/looneytunesshow/)],

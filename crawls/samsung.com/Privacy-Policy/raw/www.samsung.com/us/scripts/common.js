@@ -1448,6 +1448,7 @@ if (uriString.match( 'samsung.com/us/appstore' + '$' ) == 'samsung.com/us/appsto
 	} /* ëª¨ë“ˆ í…œí”Œë¦¿ ë¼ì¸ ì œê±° */
 	if ($('.product_module .module_template').length > 0) {
 		$('.product_module .module_template').eq(0).addClass('no_border');
+		$('.product_module_line').addClass('module_add_border');
 	} /* gnb - Recently Viewed */
 	if ($('.subtype .module_template').length > 0) {
 		$('.subtype .module_template').eq(0).addClass('no_border');
@@ -2120,6 +2121,18 @@ $(document).ready(function(){
 
 	}
 });
+
+//add tracking to buy clikcs on printers business page
+$(document).ready(function(){
+	$('#SEMI_PRO_M38_10311 .ecom-sm-btn, #SEMI_PRO_M38_10311 .reg-btn').click(function(){
+		var path = location.pathname;
+		if( path.indexOf("/business/printers") !== -1){
+			$('body').append('<img src="https://134.xg4ken.com/media/redir.php?track=1&token=ef922a6c-0c16-4c08-b7d5-c763b524b1ad&type=Shop_Printers&val=0.0&orderId=&promoCode=&valueCurrency=USD&GCID=&kw=&product=" width="1" height="1">');
+		}
+	});
+});
+
+
 
 //features link fix
 function product_link_open(url, typeCode)

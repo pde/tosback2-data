@@ -14,14 +14,17 @@ function MarqueeSlideshow($element){
 		jQuery(this.aSlides[0]).stop();
 		jQuery(this.aSlides[1]).stop();
 		jQuery(this.aSlides[2]).stop();
+		jQuery(this.aSlides[3]).stop();
 
-		jQuery(this.aSlides[0]).css("z-index", 2);
-		jQuery(this.aSlides[1]).css("z-index", 1);
-		jQuery(this.aSlides[2]).css("z-index", 0);
+		jQuery(this.aSlides[0]).css("z-index", 3);
+		jQuery(this.aSlides[1]).css("z-index", 2);
+		jQuery(this.aSlides[2]).css("z-index", 1);
+		jQuery(this.aSlides[3]).css("z-index", 0);
 
 		jQuery(this.aSlides[0]).css("opacity", 1);
 		jQuery(this.aSlides[1]).css("opacity", 1);
 		jQuery(this.aSlides[2]).css("opacity", 1);
+		jQuery(this.aSlides[3]).css("opacity", 1);
 
 		this.slideInterval = setInterval(this.showSlide.bind(this), this.nDelay);
 	}
@@ -30,17 +33,21 @@ function MarqueeSlideshow($element){
 	// 
 	this.showSlide = function(){
 		var slide = jQuery(this.aSlides[this.nCurr]);
-		slide.css("z-index",2);
+		slide.css("z-index",3); 
 
 		if(this.nCurr == this.aSlides.length-1)
 		{
 			//clearInterval(this.slideInterval);
 			this.nCurr = 0;
 			
-			jQuery(this.aSlides[0]).css("z-index", 1);
+			jQuery(this.aSlides[0]).css("z-index", 3); 
 			jQuery(this.aSlides[0]).css("opacity", 1);
-			jQuery(this.aSlides[1]).css("z-index", 0);
+			jQuery(this.aSlides[1]).css("z-index", 2);
 			jQuery(this.aSlides[1]).css("opacity", 1);
+			jQuery(this.aSlides[2]).css("z-index", 1);
+			jQuery(this.aSlides[2]).css("opacity", 1);
+			jQuery(this.aSlides[3]).css("z-index", 0);
+			jQuery(this.aSlides[3]).css("opacity", 1);
 
 			slide.animate({"opacity": 0}, this.nDur, "", function(){
 			jQuery(this).css("z-index", -1);

@@ -1,0 +1,194 @@
+// Slideshow Refresh for Ads and Omniture
+// js/hdn/slideshow/refresh.js
+
+if (!HDN) {
+	var HDN={};
+}
+
+var _comscore = _comscore || []; // setup comScore object in global scope
+
+HDN.dfpTimer = 0; // placeholder for the timer for DFP ad refreshes
+HDN.iframeurl = "/tmpl/slideshow_iframe.php";
+HDN.refresh = function(type,value,refreshAds,refreshAnalytics) {
+	
+	if (typeof refreshAds == "undefined") {
+		refreshAds = true;
+	}
+	
+	if (typeof refreshAnalytics == "undefined") {
+		refreshAnalytics = true;
+	}	
+	
+	if (HDN.doRefresh == 1) {
+
+		// Ad Refreshing
+		if(refreshAds) {
+			if (window.hearstRefreshAds) {
+                // Clear dfpTimer if it exists:
+                if (this.dfpTimer)
+                    clearTimeout(this.dfpTimer);
+
+                // set the new dfpTimer
+                this.dfpTimer = setTimeout(function() {
+                    // if hearstRefreshAds returns false
+                    if (!hearstRefreshAds()) {
+                        // reload the iframe for ads
+                        var riframe = document.getElementById('galleryrefresher');
+                        riframe.setAttribute("src",HDN.iframeurl);
+                    }
+                }, 3000); // 3 second timeout
+			} else {
+				// reload the iframe for ads
+				var riframe = document.getElementById('galleryrefresher');
+				riframe.setAttribute("src",HDN.iframeurl);
+			}
+			//ysm ads
+			var ysmFrame=jQuery("div.hst-ysm iframe:first").get(0);
+			if (typeof ysmFrame != "undefined") {
+				//force refresh
+				ysmFrame.src = ysmFrame.src;
+			}
+		}
+
+		if(refreshAnalytics) {			
+
+			// Omniture tracking for slideshows and article pages
+			try {
+				if ( type=='photo' ){
+				    track_slideshow(value);
+				} else if ( type=='page' ){
+				    track_article_pages(value);
+				}
+			} catch(err) { // if there is a console (like in Firefox), note the error
+			    if ( window.console!=undefined ){
+				console.log(err);
+			    }
+			}
+			//Visual Revenue, only ctpost at time of writing
+			//if (HDN.visualRevenue){
+			if ( typeof _vrtrack=='function' ) {
+				_vrtrack();
+			}
+			// Google Analytics
+			if ( typeof _gaq=='object' ) {
+				if ( typeof _gaq.push=='function' ) {
+					_gaq.push(['_trackPageview']);
+				}
+			}
+			// Nielsen track event (defined below)
+			nielsenEvent();
+			// comScore track event (defined below)
+			comScoreEvent();
+			// Jump Time beacon (defined in analyticswcm.js)
+			if ( typeof sendJumpTimeBeacon=='function' ) {
+				sendJumpTimeBeacon();
+			}
+		}
+	}
+}
+
+/*
+  Created to support refreshing specific positions on demand
+  type ( right now is slideshow )
+  value ( position )
+
+*/
+HDN.position_iframeurl = "/tmpl/";
+HDN.refreshAdPosition = function(type,value,elementID) {
+	
+	//get a reference to the target element
+	var targetElement=jQuery('#'+elementID);
+	
+	//empty it
+	targetElement.empty();
+	
+	//append the ad container
+	targetElement.append('<div id="'+value+'"></div>')
+
+	//place the ad	
+	hearstPlaceAd(value);
+}
+
+/*
+  Created to support refreshing specific positions on demand
+  When done with a dynamic ad position we should dispose of it.  This prevents full page refresh
+  from trying to use an old ad position.
+  
+  type ( right now is slideshow )
+  value ( position )
+
+*/
+HDN.disposeAdPosition = function(type,value,elementID) {
+	//get a reference to the target element
+	var targetElement=jQuery('#'+elementID);
+	
+	//empty it
+	targetElement.empty();	
+}
+
+// monkey patch showid to hook in ad/omniture refresh
+hstrot.prototype.origshowid = hstrot.prototype.showid;
+hstrot.prototype.showid = function(id) {
+	HDN.refresh('photo',id);
+	return this.origshowid(id);
+};
+
+
+function track_slideshow(photoNumber){
+    objectClass = omni_className;
+    objectID = omni_bizObjectId;
+    objectName = omni_title;
+    if ( s_account=='hearstconnecticutglobal' || s_account=='hearstadvocate' ||s_account=='hearstctgreenwichtime' ||s_account=='hearstconnpost' ||s_account=='hearstnewstimeslivecomnew' ||s_account=='hearstctweeklies'){
+        if (objectClass=="article") {
+            s_hdn.prop24="article slideshow";
+            s_hdn.prop33="article slideshow photo:" + photoNumber;
+        }
+    } else {
+        if (objectClass=="article") {
+            s_hdn.prop24="article slideshow";
+            s_hdn.eVar24="article slideshow";
+            s_hdn.prop33="article slideshow photo:" + photoNumber;
+            // omni_channelPath and omni_categorize may be defined in strange places 
+            if(typeof(omni_channelPath)!="undefined"){
+                // They will likely try to use "s", so make sure it's the object we expect
+                if (s!==s_hdn){ s = s_hdn; }
+                omni_categorize(omni_channelPath+' slideshow');
+            }
+        }	
+    }
+    if (objectClass=="slideshow") {
+        s_hdn.prop33="slideshow photo:" + photoNumber;
+    }
+    var s_code = s_hdn.t();
+    if (s_code) document.write(s_code);
+    //alert('s.prop33: '+s.prop33+"\ns.prop24: "+s.prop24+"\nomni_channelPath: "+omni_channelPath);
+}
+
+function track_article_pages(pageN){
+	objectClass = omni_className;
+	if (objectClass=="article") {
+		s_hdn.prop24="article";
+		s_hdn.eVar24="article";
+	}
+	s.prop33="article page:" + pageN;
+	var s_code = s_hdn.t();
+	if (s_code) document.write(s_code);
+	//alert('s.prop33: '+s.prop33+"\ns.prop24: "+s.prop24);
+}
+
+function nielsenEvent(){
+	var d = new Image(1, 1);
+	d.src = ["//secure-us.imrworldwide.com/cgi-bin/m?ci=us-202808h&cg=0&cc=1&si=",escape(window.location.href), "&rp=", escape(document.referrer),"&c0=usergen,1&rnd=", (new Date()).getTime()].join('');
+}
+
+function comScoreEvent(){
+	//var _comscore = _comscore || [];
+	_comscore.push({ c1: "2", c2: "6036097", c3: "", c4: "" }); // reset global object
+	(function() {
+		var s = document.createElement("script"), el = document.getElementsByTagName("script")[0]; s.async = true;
+		s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+		el.parentNode.insertBefore(s, el);
+	})();
+}
+
+// end js/hdn/slideshow/refresh.js

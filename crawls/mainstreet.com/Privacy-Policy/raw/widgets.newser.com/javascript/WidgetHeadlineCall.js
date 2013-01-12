@@ -28,6 +28,7 @@ if (typeof numGridRows == 'undefined' || !numGridRows) var numGridRows = 2;
 if (typeof numGridCols == 'undefined' || !numGridCols) var numGridCols = 2;
 if (typeof squareWidth == 'undefined' || !squareWidth) var squareWidth = 240;
 if (typeof showLinks == 'undefined' || !showLinks) var showLinks = 'n';
+if (typeof showHeader == 'undefined' || !showHeader) var showHeader = 'y';
 if (widgetType == 'square') {
     if (typeof width == 'undefined' || !width) width = 300;
     if (typeof height == 'undefined' || !height) height = 250;
@@ -75,5 +76,5 @@ else if (widgetType == 'carousel' || widgetType == 'grid' || widgetType == 'thum
         hostName = tempString.substring(7);
         hostName = hostName.substring(0, hostName.indexOf('/'));
     }
-    document.write('<iframe src="http://' + hostName + '/widgetsite/' + widgetType + '.aspx?sectionid=' + sectionId + '&channelid=' + channelId + '&taggroupid=' + tagGroupId + '&popular=' + popular + '&newwindow=' + newwindow + '&label=' + label + '&squarewidth=' + squareWidth + '&numheadlines=' + numHeadlines + '&utm_source=' + utm_source + '&utm_medium=' + utm_medium + '&utm_campaign=' + utm_campaign + '&showlinks=' + showLinks + '&font=' + font + '&linkcolor=' + linkColor + '" ' + 'width="' + width + '" scrolling="no" height="' + height + '" marginwidth="0" marginheight="0" frameborder="0"></iframe>');
+    document.write('<iframe src="http://' + hostName + '/widgetsite/' + widgetType + '.aspx?sectionid=' + sectionId + '&channelid=' + channelId + '&taggroupid=' + tagGroupId + '&popular=' + popular + '&newwindow=' + newwindow + '&label=' + label + '&squarewidth=' + squareWidth + '&numheadlines=' + numHeadlines + '&utm_source=' + utm_source + '&utm_medium=' + utm_medium + '&utm_campaign=' + utm_campaign + '&showlinks=' + showLinks + '&showHeader=' + showHeader + '&font=' + font + '&linkcolor=' + linkColor + '" ' + 'width="' + width + '" scrolling="no" height="' + height + '" marginwidth="0" marginheight="0" frameborder="0"></iframe>');
 }
