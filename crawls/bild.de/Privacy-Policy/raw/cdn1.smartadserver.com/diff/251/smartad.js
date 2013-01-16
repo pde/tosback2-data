@@ -1,7 +1,7 @@
 var bild_smart_test=1; // var fuer bild.de
 var adakey = ''; // important... has to be outside if clause... for AdTag call
 
-if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
+//if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
    // Adprobe
    var wlCus = "13115,13118,13116,13123,13122";
    var wlOrd = new Date().getTime();
@@ -9,7 +9,7 @@ if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
    catch(err) { }
    // Gateway
    document.write('<scr'+'ipt src="http://js.revsci.net/gateway/gw.js?csid=F12351&auto=t"></scr'+'ipt>');
-}
+//}
 
 // SAS ASMI GENERIC FUNCTION
 sas_tmstp=Math.round(Math.random()*10000000000);
@@ -19,7 +19,7 @@ sas_skyexcluded = 0;
 
 function SmartAdServer(sas_pageid,sas_formatid,sas_target) {
    // Ad Audience
-   if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
+   //if (window.location.toString().toLowerCase().indexOf(".bild.de") == -1 ){
       if (sas_formatid == 3648 && wl13115camp >0) {
          adakey = ';ada3648sb';
       }
@@ -49,7 +49,7 @@ function SmartAdServer(sas_pageid,sas_formatid,sas_target) {
       } else {
          //
       }
-   }
+   //}
    if (SmartAdServer.efid && SmartAdServer.efid.indexOf('#'+ sas_formatid +'#')>=0) return;
    if (sas_masterflag==1) {sas_masterflag=0;sas_master='M';} else {sas_master='S';};
    document.write('<scr'+'ipt src="http://ww251.smartadserver.com/call/pubj/' + sas_pageid + '/' + sas_formatid + '/' + sas_master + '/' + sas_tmstp + '/' + escape(sas_target) + escape(adakey) + '?"></scr'+'ipt>');

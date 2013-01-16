@@ -25,6 +25,7 @@ else if ( window.location.host == "p15stgweb.samsung.com" ) s_account = "sssamsu
 else if ( window.location.host == "p15prod.samsung.com" ) s_account = "sssamsungnewusdev";
 else if ( window.location.host == "appstore.samsung.com" ) s_account = "sssamsungnewusdev";
 else if ( window.location.host == "cho.samsung.com:8480" ) s_account = "sssamsungnewusdev";
+else if ( window.location.host == "local.samsung.com:8080" ) s_account = "sssamsungnewusdev";
 else s_account = "sssamsungnewusdev"; 
 
 
@@ -204,7 +205,6 @@ if(typeof(omn_ss_division) != 'undefined' && omn_ss_division.length > 0)
 
 if(typeof(omn_ss_pagetype) != 'undefined' && omn_ss_pagetype.length > 0){
 
-	
 	s.prop22 = s.eVar52 = omn_ss_pagetype.toLowerCase();
 }
 
@@ -332,6 +332,15 @@ if(typeof(omn_ss_db_vista_alt) != 'undefined' && omn_ss_db_vista_alt.length > 0)
     s.prop62 = omn_ss_db_vista_alt.toLowerCase();
 }
 
+if(typeof(omn_ss_categoryview) != 'undefined' && omn_ss_categoryview.length > 0)
+	s.prop26 = s.eVar53 = omn_ss_categoryview.toLowerCase();
+
+if(typeof(omn_ss_pageresults) != 'undefined' && omn_ss_pageresults.toString().length > 0)
+	s.prop49 = omn_ss_pageresults.toLowerCase();
+/* provisional variable for category landing page 11_20_12ß
+if(typeof(omn_ss_catlandingtab) != 'undefined' && omn_ss_catlandingtab.length > 0)
+	ss.prop33 = omn_ss_catlandingtab.toLowerCase();
+*/
 //End Section to pull data from Page Injected Code
 
 
@@ -614,7 +623,7 @@ function ss_link_click_track_2(vLinkTrackVars, vLinkTrackEvents, vLinkTrackProdu
 
     if(typeof(s.pageName) == "undefined" || s.pageName == "null" || s.pageName == "undefined")
 	s.pageName = document.URL.toLowerCase();
-
+	
     s.prop15=s.eVar9= vTypeName.toLowerCase();
     s.prop16=s.eVar10= s.pageName + ">" + vTypeName.toLowerCase();
     s.prop17=s.eVar11= s.pageName + ">" + vLinkLocation.toLowerCase() + ">" + vTypeName.toLowerCase();
@@ -1104,7 +1113,7 @@ s.repl=new Function("x","o","n",""
 changes to how your visitor data is collected.  Changes should only be
 made when instructed to do so by your account manager.*/
 s.visitorNamespace="samsung"
-s.trackingServer="nmetrics.samsung.com"
+s.trackingServer="nmetrics.samsung.com";
 s.trackingServerSecure="smetrics.samsung.com";
 
 /****************************** MODULES *****************************/
@@ -1860,4 +1869,124 @@ function do_mouseover_cart(productID)
 	did_mouseover = false;
 	}
 }		
+	
+	/* filter solution 12/7/12 */
+function ss_filterSolution(){
+	if(window.location.href.indexOf('all-products') > -1){
+$(window).ready(function() {
+/*!
+ * jQuery Cookie Plugin v1.3
+ * https://github.com/carhartl/jquery-cookie
+ *
+ * Copyright 2011, Klaus Hartl
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.opensource.org/licenses/GPL-2.0
+ */
+(function ($, document, undefined) {
+
+	var pluses = /\+/g;
+
+	function raw(s) {
+		return s;
+	}
+
+	function decoded(s) {
+		return decodeURIComponent(s.replace(pluses, ' '));
+	}
+
+	var config = $.cookie = function (key, value, options) {
+
+		// write
+		if (value !== undefined) {
+			options = $.extend({}, config.defaults, options);
+
+			if (value === null) {
+				options.expires = -1;
+			}
+
+			if (typeof options.expires === 'number') {
+				var days = options.expires, t = options.expires = new Date();
+				t.setDate(t.getDate() + days);
+			}
+
+			value = config.json ? JSON.stringify(value) : String(value);
+
+			return (document.cookie = [
+				encodeURIComponent(key), '=', config.raw ? value : encodeURIComponent(value),
+				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+				options.path    ? '; path=' + options.path : '',
+				options.domain  ? '; domain=' + options.domain : '',
+				options.secure  ? '; secure' : ''
+			].join(''));
+		}
+
+		// read
+		var decode = config.raw ? raw : decoded;
+		var cookies = document.cookie.split('; ');
+		for (var i = 0, parts; (parts = cookies[i] && cookies[i].split('=')); i++) {
+			if (decode(parts.shift()) === key) {
+				var cookie = decode(parts.join('='));
+				return config.json ? JSON.parse(cookie) : cookie;
+			}
+		}
+
+		return null;
+	};
+
+	config.defaults = {};
+
+	$.removeCookie = function (key, options) {
+		if ($.cookie(key) !== null) {
+			$.cookie(key, null, options);
+			return true;
+		}
+		return false;
+	};
+
+})(jQuery, document);
+
+var ss_check = $.cookie('ss_check');
+if(ss_check == null){
+	var s_checkboxes = new Array;
+}
+else{
+	var s_checkboxes = ss_check.split('|'); 
+	
+	
+}
+	
+$("input:checkbox[name=filter_option]:not(:checked)").each(function() {
+	       var inputObj = this;
+           var labelObj = $(this).next();
+       if(jQuery.inArray($(labelObj).text(), s_checkboxes) > -1){
+		   s_checkboxes.splice($.inArray($(labelObj).text(),  s_checkboxes), 1 );
+	   }
+  });//unchecked	
+	
+  $("input:checkbox[name=filter_option]:checked").each(function() {
+	  	   var inputObj = this;
+           var labelObj = $(this).next();
+       if(jQuery.inArray($(labelObj).text(), s_checkboxes) == -1){
+		   s_checkboxes.push($(labelObj).text());
+		   
+		   s.linkTrackVars='eVar9,prop15,eVar10,prop16,eVar11,prop17,eVar20,eVar55,events';
+		   s.linkTrackEvents='event73';
+		   s.eVar9 = s.prop15 = 'category_filter_check';
+		   s.eVar10 = s.prop16 = s.pageName + ">category_filter_check";
+           s.eVar11 = s.prop17 = s.pageName + ">left_cat_filter>category_filter_check";
+           s.eVar20 = '+1';
+		   s.events = 'event73';
+           s.eVar55 = "check_type:" + $(labelObj).text();
+		   
+		   s.tl(this,'o','category_filter_check');
+	   }
+  });//checked
+
+  ss_check = s_checkboxes.join("|");
+  $.cookie('ss_check', ss_check);
+});			
+	}
+}//close ss_filterSolution
+ss_filterSolution();
 		

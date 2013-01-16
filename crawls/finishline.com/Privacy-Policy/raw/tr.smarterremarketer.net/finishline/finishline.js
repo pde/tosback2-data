@@ -841,7 +841,11 @@
                                 }
                             }
                         }
-                        SmtrRmkr.submitPageView(smtrRmkrParam);
+                        if (prod && (typeof prod.pid === 'undefined' || typeof prod.pid !== 'string')) {
+	                        SmtrRmkr.logError("No Product ID", err);
+                        } else {
+	                        SmtrRmkr.submitPageView(smtrRmkrParam);
+                        }
                     }
                 } catch (err) { SmtrRmkr.logError("processPage", err); }
             },

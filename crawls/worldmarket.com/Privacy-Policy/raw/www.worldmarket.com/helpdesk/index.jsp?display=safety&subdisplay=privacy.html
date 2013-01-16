@@ -137,7 +137,7 @@ setTimeout(function(){switchToMobile();},3000);
 
 <script type="text/javascript" src="../20120927-1/text/inc/foresee/15.1.8/foresee-alive.js"></script>
 
-<script type="text/javascript" src="../20130110-3/text/pixels/checkout.js"></script>
+<script type="text/javascript" src="../20130115-1/text/pixels/checkout.js"></script>
 
 <style>
 </style>
@@ -424,19 +424,47 @@ function adjustGlobalCartLayout() {
 			<li>Become a WM Explorer</li>
 		</ul -->
 	<div class="promoSection2">
-		<div style="margin-top:-11px">
-		<img src="../text/homepage/wk48/part2/promo2bnew.gif" height="44" width="354" border="0">
-		<a href="javascript:openDialogInfo('freeshippingpopuppromo','Free Shipping on Orders over $150')" style="position:absolute; right:75px; top:1px; width:95px; height:43px; background:url(../text/homepage/wk44/part2/promo2.gif) no-repeat -1000px -1000px"></a>
+		<div class="promoSection2">
+	<div style="text-align:center; margin-top:-11px; width:354px; margin-left:65px; position:relative" class="hoverpopup2">
+		<img src="../text/homepage/wk51/part1/promo2withhover.gif" width="354" height="44" alt="">
+		<div class="megapopup" style="position:absolute; left:0px; top:0; z-index:1000; display:none;">
+			<img src="../text/homepage/wk51/part1/promo2hover.gif" width="354" height="380" alt="">
+			<div class="closemegapopup" style="cursor:pointer; position:absolute; right:10px; top:5px;"><img src="../text/homepage/wk51/part1/close-promo.png" width="58" height="20" alt="Close">
+			<div class="closemegapopup" style="cursor:pointer; position:absolute; right:115px; top:310px;"><img src="../text/homepage/wk51/part1/shopnow-promo.gif" width="119" height="28" alt="Shop Now"></div>
 </div>
+		</div>
+	</div>
+<script type="text/javascript">
+		jQuery(document).ready(function(){
 
+			if (jQuery('.homeslider').size() > 0){
+				jQuery('.megapopup').slideDown(function(){jQuery('.megapopup').show()}).delay(3000).hide();	
+			}
+			setTimeout(function() {
+				jQuery('.hoverpopup2').attr('class','hoverpopup');
+				jQuery('.hoverpopup').hover(
+					function () {
+    						jQuery('.megapopup').slideDown(function(){jQuery('.megapopup').show()});
+  					},
+  					function () {jQuery('.megapopup').slideUp(function(){jQuery('.megapopup').hide()});}
+				);
+			}, 2500);
+			jQuery('.megapopup').delay(2500).fadeOut(800);
+			var swapPromo = function () {
+				jQuery('.promo2b').delay(5000).slideUp(800);
+				jQuery('.promo2b').delay(5000).slideDown(800);
+			};
 
-<div id="freeshippingpopuppromo" style="display: none;">
-<p><strong>Limited Time Only!</strong></p>
-<p>Free shipping offer applies to ground shipping on the purchase of select items at worldmarket.com.</p>
-<p> Minimum purchase of $150 (before tax, shipping and handling) required to qualify for offer. </p>
-<p>Not valid on previously purchased items. Cannot be combined with other offers.</p>
-<p><b>2-day and overnight shipping charges and surcharges still apply. Offer excludes Alaska and Hawaii.</b></p>
-<p> To redeem, enter promotion code at checkout.</p>
+			setInterval(swapPromo, 5000);
+			swapPromo();
+			
+			jQuery('.closemegapopup').click(function(){
+				jQuery('.megapopup').hide();
+				
+			});
+			
+		});
+</script>
 </div>
 
 	</div>
@@ -1106,7 +1134,7 @@ function getId() {
   return "mlcpwmproduction"
 }
 function getSerializationID() {
-  return "1512467"
+  return "320123"
 }
 </script>
 <script language="JavaScript" type="text/javascript" src="../omniture/s_code.js"></script>

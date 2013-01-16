@@ -1,0 +1,1573 @@
+var dailybeast =  dailybeast || {};
+dailybeast.flyout = dailybeast.flyout || {};
+dailybeast.flyout.recommendation = dailybeast.flyout.recommendation || {};
+dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic || {};
+RecommendedLinksFlyoutStatic = dailybeast.flyout.recommendation.RecommendedLinksFlyoutStatic;
+
+RecommendedLinksFlyoutStatic.recommendedLinksMap = $.parseJSON(
+    '{' +
+        '"gnr": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/under-pressure-oxygen-cancels-its-new-show-all-my-babies-mamas-starring-shawnty-lo.html",' +
+                '"title": "Sources: Oxygen to Cancel New Show &lsquo;All My Babies&rsquo; Mamas,&rsquo; Starring Shawty Lo",' +
+                '"rubric": "Mama&rsquo;s Bad Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8ff3983b962a07b3980bc83448be77d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/jodie-foster.html",' +
+                '"title": "Jodie Foster Brings Down The House",' +
+                '"rubric": "WATCH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c59c6d20164f3ae91830c5809150dd19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/04/16/50-shades-of-grey-speed-read-14-naughtiest-bits.html",' +
+                '"title": "&lsquo;50 Shades of Grey&rsquo; Speed Read: 14 Naughtiest Bits",' +
+                '"rubric": "NSFW",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "c551f66142970590627594640bdff262"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/aaron-swartz-26-programmer-outspoken-advocate-of-free-information.html",' +
+                '"title": "Aaron Swartz, 26, Programmer, Outspoken Advocate of Free Information",' +
+                '"rubric": "TROUBLED GENIUS",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "89d6af200f4c03b18637c386f6e467ad"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/12/27/newtown-conspiracy-theories-obama-iran-and-other-culprits.html",' +
+                '"title": "Newtown Conspiracy Theories: Obama, Iran, and Other Culprits",' +
+                '"rubric": "Lunatic Fringe",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "ebb283f75b579bfe21e71e7fe8d2f097"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/flu-fears-the-race-between-pandemic-viruses-and-a-universal-vaccine.html",' +
+                '"title": "Flu Fears: The Race Between Pandemic Viruses and a Universal Vaccine",' +
+                '"rubric": "Health",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "fd642a1cce7028899a7f1c6453d4a106"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/al-qaeda-s-dangerous-play-in-mali.html",' +
+                '"title": "Al Qaeda&rsquo;s Dangerous Play in Mali",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4bf0ea5e7f6a98ab3d2af260de495774"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/who-doesn-t-get-paid-if-we-cross-the-debt-ceiling.html",' +
+                '"title": "Who Doesn\'t Get Paid if We Cross the Debt Ceiling?",' +
+                '"rubric": "New Frontier",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "087a3563f6f264f8b03a37fedab78402"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-carrie-diaries-annasophia-robb-on-the-sex-and-the-city-prequel.html",' +
+                '"title": "&lsquo;The Carrie Diaries&rsquo;: AnnaSophia Robb on the &lsquo;Sex and the City&rsquo; Prequel",' +
+                '"rubric": "Sex and the Suburbs",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5c8a7a149f8e38630013c441f8914e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/nightmare-in-saudi-arabia-the-plight-of-foreign-migrant-workers.html",' +
+                '"title": "Nightmare in Saudi Arabia: The Plight of Foreign Migrant Workers",' +
+                '"rubric": "DESPERATE WORKERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "577afe818c880c90ebf1ff97b6167b29"' +
+            '}' +
+        ']' +
+        ',' +
+        '"ads": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-gun-control-debate-may-be-a-circus-but-at-least-it-s-not-fading.html",' +
+                '"title": "The Gun-Control Debate May Be a Circus, but at Least It&rsquo;s Not Fading",' +
+                '"rubric": "USEFUL SIDESHOW",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5a73823615710618da2bda309fd7bd17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/who-doesn-t-get-paid-if-we-cross-the-debt-ceiling.html",' +
+                '"title": "Who Doesn\'t Get Paid if We Cross the Debt Ceiling?",' +
+                '"rubric": "New Frontier",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "087a3563f6f264f8b03a37fedab78402"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/12/glenn-beck-attempts-a-laughable-make-over-as-a-libertarian.html",' +
+                '"title": "Glenn Beck Attempts a Laughable Makeover as a Libertarian",' +
+                '"rubric": "Rodeo Clown Remake",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ea2307d197fd8ee421e8962107f12b36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/obama-could-ease-d-c-gridlock-if-he-socialized-more-critics-say.html",' +
+                '"title": "Obama Could Ease D.C. Gridlock If He Socialized More, Critics Say",' +
+                '"rubric": "Schmoozing to Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3aaf3f54f4adc3b8cd1f0e1aa2e3f11d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/obama-talks-tough-on-budget-guns.html",' +
+                '"title": "Obama Talks Tough on Budget, Guns",' +
+                '"rubric": "Presser",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8d41736b5d7eb84ff3e8d8af530a1fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/flu-fears-the-race-between-pandemic-viruses-and-a-universal-vaccine.html",' +
+                '"title": "Flu Fears: The Race Between Pandemic Viruses and a Universal Vaccine",' +
+                '"rubric": "Health",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "fd642a1cce7028899a7f1c6453d4a106"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/facebook-takes-on-google-in-search.html",' +
+                '"title": "Graph What? Why Facebook Is Moving Big Into Search",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "567472ed335a9f5ec991f05b64e7956e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/nightmare-in-saudi-arabia-the-plight-of-foreign-migrant-workers.html",' +
+                '"title": "Nightmare in Saudi Arabia: The Plight of Foreign Migrant Workers",' +
+                '"rubric": "DESPERATE WORKERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "577afe818c880c90ebf1ff97b6167b29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/struggling-pc-maker-dell-might-be-candidate-for-private-equity-buyout.html",' +
+                '"title": "Struggling PC Maker Dell Might Be Candidate for Private-Equity Buyout",' +
+                '"rubric": "Dude!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "6acc262ae01ccd690b13802d83c537e9"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/a-ghastly-waste-of-time-considering-the-constitution.html",' +
+                '"title": "&lsquo;A Ghastly Waste of Time?&rsquo; Considering the Constitution",' +
+                '"rubric": "TRADITION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "46c394f9293f98a2ecba55b82a8a5cc5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+        ']' +
+        ',' +
+        '"akm": [' +
+            '{' +
+                '"url": "/articles/2013/01/15/can-coke-make-you-skinny-check-out-their-new-ad.html",' +
+                '"title": "Can Coke Make You Skinny? Check Out Their New Ad",' +
+                '"rubric": "Pop Science",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "f4857385a5a44da29bc69e43af936e6f"' +
+            '}' +
+        ']' +
+        ',' +
+        '"dig": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"drr": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/al-qaeda-s-dangerous-play-in-mali.html",' +
+                '"title": "Al Qaeda&rsquo;s Dangerous Play in Mali",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4bf0ea5e7f6a98ab3d2af260de495774"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/12/glenn-beck-attempts-a-laughable-make-over-as-a-libertarian.html",' +
+                '"title": "Glenn Beck Attempts a Laughable Makeover as a Libertarian",' +
+                '"rubric": "Rodeo Clown Remake",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ea2307d197fd8ee421e8962107f12b36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-gun-control-debate-may-be-a-circus-but-at-least-it-s-not-fading.html",' +
+                '"title": "The Gun-Control Debate May Be a Circus, but at Least It&rsquo;s Not Fading",' +
+                '"rubric": "USEFUL SIDESHOW",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5a73823615710618da2bda309fd7bd17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/who-doesn-t-get-paid-if-we-cross-the-debt-ceiling.html",' +
+                '"title": "Who Doesn\'t Get Paid if We Cross the Debt Ceiling?",' +
+                '"rubric": "New Frontier",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "087a3563f6f264f8b03a37fedab78402"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/07/did-nancy-lanza-handle-her-guns-responsibly-you-ll-be-surprised-police-spokesman-says.html",' +
+                '"title": "Did Nancy Lanza Handle Her Guns Responsibly? &lsquo;You&rsquo;ll Be Surprised,&rsquo; Police Spokesman Says",' +
+                '"rubric": "Post-Morten",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "c2d93e4628785202b6deb17bbf67ac14"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/nightmare-in-saudi-arabia-the-plight-of-foreign-migrant-workers.html",' +
+                '"title": "Nightmare in Saudi Arabia: The Plight of Foreign Migrant Workers",' +
+                '"rubric": "DESPERATE WORKERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "577afe818c880c90ebf1ff97b6167b29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/obama-could-ease-d-c-gridlock-if-he-socialized-more-critics-say.html",' +
+                '"title": "Obama Could Ease D.C. Gridlock If He Socialized More, Critics Say",' +
+                '"rubric": "Schmoozing to Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3aaf3f54f4adc3b8cd1f0e1aa2e3f11d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/under-pressure-oxygen-cancels-its-new-show-all-my-babies-mamas-starring-shawnty-lo.html",' +
+                '"title": "Sources: Oxygen to Cancel New Show &lsquo;All My Babies&rsquo; Mamas,&rsquo; Starring Shawty Lo",' +
+                '"rubric": "Mama&rsquo;s Bad Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8ff3983b962a07b3980bc83448be77d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/a-ghastly-waste-of-time-considering-the-constitution.html",' +
+                '"title": "&lsquo;A Ghastly Waste of Time?&rsquo; Considering the Constitution",' +
+                '"rubric": "TRADITION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "46c394f9293f98a2ecba55b82a8a5cc5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/aaron-swartz-26-programmer-outspoken-advocate-of-free-information.html",' +
+                '"title": "Aaron Swartz, 26, Programmer, Outspoken Advocate of Free Information",' +
+                '"rubric": "TROUBLED GENIUS",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "89d6af200f4c03b18637c386f6e467ad"' +
+            '}' +
+        ']' +
+        ',' +
+        '"etw": [' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/under-pressure-oxygen-cancels-its-new-show-all-my-babies-mamas-starring-shawnty-lo.html",' +
+                '"title": "Sources: Oxygen to Cancel New Show &lsquo;All My Babies&rsquo; Mamas,&rsquo; Starring Shawty Lo",' +
+                '"rubric": "Mama&rsquo;s Bad Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8ff3983b962a07b3980bc83448be77d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/14/are-the-oscars-punishing-pro-american-movies.html",' +
+                '"title": "Are The Oscars Punishing \'Pro-American Movies?\'",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "95aa9b66345cf79ce547a795940f33a5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/ben-affleck-is-redeemed.html",' +
+                '"title": "Ben Affleck Is Redeemed",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5d9bd602cc41bb59f74ea35fa388f771"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/jodie-foster.html",' +
+                '"title": "Jodie Foster Brings Down The House",' +
+                '"rubric": "WATCH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c59c6d20164f3ae91830c5809150dd19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/15/colbert-to-piers-you-know-the-constitution.html",' +
+                '"title": "Colbert To Piers: You Know The Constitution?",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "fac3f204730c480209c249773265974d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-carrie-diaries-annasophia-robb-on-the-sex-and-the-city-prequel.html",' +
+                '"title": "&lsquo;The Carrie Diaries&rsquo;: AnnaSophia Robb on the &lsquo;Sex and the City&rsquo; Prequel",' +
+                '"rubric": "Sex and the Suburbs",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5c8a7a149f8e38630013c441f8914e81"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/jt-just-brought-sexy-back.html",' +
+                '"title": "JT Just Brought Sexy Back",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2fb0915d47250957a6f9a502716f0b8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/fey-and-poehler-s-hilarious-open.html",' +
+                '"title": "Fey and Poehler\'s Hilarious Open",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "4229b2fb0f8ce5f979b77c1989a5ef63"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-possibilities-of-deception-meagan-good-on-her-new-nbc-show.html",' +
+                '"title": "The Possibilities of &lsquo;Deception&rsquo;: Meagan Good on Her New NBC Show",' +
+                '"rubric": "Network Newcomer",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f6655022a5216758cf2786c25aa035c6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/mama-adele-makes-her-debut.html",' +
+                '"title": "Mama Adele Makes Her Debut",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "24bd34beb27b1bb84e4d7d2060f28914"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+        ']' +
+        ',' +
+        '"fbk": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/under-pressure-oxygen-cancels-its-new-show-all-my-babies-mamas-starring-shawnty-lo.html",' +
+                '"title": "Sources: Oxygen to Cancel New Show &lsquo;All My Babies&rsquo; Mamas,&rsquo; Starring Shawty Lo",' +
+                '"rubric": "Mama&rsquo;s Bad Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8ff3983b962a07b3980bc83448be77d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/jodie-foster.html",' +
+                '"title": "Jodie Foster Brings Down The House",' +
+                '"rubric": "WATCH",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c59c6d20164f3ae91830c5809150dd19"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/13/jt-just-brought-sexy-back.html",' +
+                '"title": "JT Just Brought Sexy Back",' +
+                '"rubric": "Entertainment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "2fb0915d47250957a6f9a502716f0b8f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/taylor-swift-s-love-life-by-the-numbers.html",' +
+                '"title": "Taylor Swift&rsquo;s Love Life by the Numbers",' +
+                '"rubric": "By the Numbers",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "658671cea6c62eb1df345313a098aa4e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/14/we-are-not-a-deadbeat-nation.html",' +
+                '"title": "\'We Are Not A Deadbeat Nation\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "60fbbdac5a4abcc6bb9359590cf832da"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/ruby-the-heartstealer-in-court-for-berlusconi-trial.html",' +
+                '"title": "Ruby the Heart Stealer in Court for Berlusconi Trial",' +
+                '"rubric": "Italy",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4a74be2a44de3cf2c78e763eeb72a064"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/autism-breast-cancer-and-the-changing-miss-america-pageant.html",' +
+                '"title": "Autism, Breast Cancer, and the Changing Miss America Pageant",' +
+                '"rubric": "MISS AMERICA",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "debfb69976ed81e7973a7404a7689990"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/14/obama-we-gotta-pay-our-bills.html",' +
+                '"title": "Obama: \'We Gotta Pay Our Bills\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8aacc79e6596a91e06c2cc148949c594"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/aaron-swartz-s-thought-crime-was-tragically-treated-like-real-crime.html",' +
+                '"title": "Aaron Swartz&rsquo;s Thought Crime Was Tragically Treated Like Real Crime",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "f7e4e65e4c4585f459993bacfe93d55f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/obama-talks-tough-on-budget-guns.html",' +
+                '"title": "Obama Talks Tough on Budget, Guns",' +
+                '"rubric": "Presser",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8d41736b5d7eb84ff3e8d8af530a1fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+        ']' +
+        ',' +
+        '"frk": [' +
+            '{' +
+                '"url": "/articles/2012/10/12/busting-a-cyberstalker-how-carla-franklin-fought-back.html",' +
+                '"title": "Busting a Cyberstalker: How Carla Franklin Fought Back&mdash;and Triumphed",' +
+                '"rubric": "NEW LEGAL FRONTIER",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "7b09c2ad3beaf7e131be5bcc62d546df"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2011/02/26/meet-the-woman-behind-indias-pink-vigilantes.html",' +
+                '"title": "India\'s Pink Vigilantes",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "b9fc47a855260b222454e81b833e64df"' +
+            '}' +
+        ']' +
+        ',' +
+        '"gkr": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+        ']' +
+        ',' +
+        '"hfp": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/who-doesn-t-get-paid-if-we-cross-the-debt-ceiling.html",' +
+                '"title": "Who Doesn\'t Get Paid if We Cross the Debt Ceiling?",' +
+                '"rubric": "New Frontier",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "087a3563f6f264f8b03a37fedab78402"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/12/glenn-beck-attempts-a-laughable-make-over-as-a-libertarian.html",' +
+                '"title": "Glenn Beck Attempts a Laughable Makeover as a Libertarian",' +
+                '"rubric": "Rodeo Clown Remake",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ea2307d197fd8ee421e8962107f12b36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/obama-could-ease-d-c-gridlock-if-he-socialized-more-critics-say.html",' +
+                '"title": "Obama Could Ease D.C. Gridlock If He Socialized More, Critics Say",' +
+                '"rubric": "Schmoozing to Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3aaf3f54f4adc3b8cd1f0e1aa2e3f11d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-gun-control-debate-may-be-a-circus-but-at-least-it-s-not-fading.html",' +
+                '"title": "The Gun-Control Debate May Be a Circus, but at Least It&rsquo;s Not Fading",' +
+                '"rubric": "USEFUL SIDESHOW",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5a73823615710618da2bda309fd7bd17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/nightmare-in-saudi-arabia-the-plight-of-foreign-migrant-workers.html",' +
+                '"title": "Nightmare in Saudi Arabia: The Plight of Foreign Migrant Workers",' +
+                '"rubric": "DESPERATE WORKERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "577afe818c880c90ebf1ff97b6167b29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/under-pressure-oxygen-cancels-its-new-show-all-my-babies-mamas-starring-shawnty-lo.html",' +
+                '"title": "Sources: Oxygen to Cancel New Show &lsquo;All My Babies&rsquo; Mamas,&rsquo; Starring Shawty Lo",' +
+                '"rubric": "Mama&rsquo;s Bad Day",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "8ff3983b962a07b3980bc83448be77d6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/obama-talks-tough-on-budget-guns.html",' +
+                '"title": "Obama Talks Tough on Budget, Guns",' +
+                '"rubric": "Presser",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8d41736b5d7eb84ff3e8d8af530a1fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/a-ghastly-waste-of-time-considering-the-constitution.html",' +
+                '"title": "&lsquo;A Ghastly Waste of Time?&rsquo; Considering the Constitution",' +
+                '"rubric": "TRADITION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "46c394f9293f98a2ecba55b82a8a5cc5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/flu-fears-the-race-between-pandemic-viruses-and-a-universal-vaccine.html",' +
+                '"title": "Flu Fears: The Race Between Pandemic Viruses and a Universal Vaccine",' +
+                '"rubric": "Health",' +
+                '"topic": "Health",' +
+                '"urlHashCode": "fd642a1cce7028899a7f1c6453d4a106"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/struggling-pc-maker-dell-might-be-candidate-for-private-equity-buyout.html",' +
+                '"title": "Struggling PC Maker Dell Might Be Candidate for Private-Equity Buyout",' +
+                '"rubric": "Dude!",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "6acc262ae01ccd690b13802d83c537e9"' +
+            '}' +
+        ']' +
+        ',' +
+        '"jzl": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+        ']' +
+        ',' +
+        '"plw": [' +
+            '{' +
+                '"url": "/articles/2013/01/09/guns-are-killing-the-republican-party.html",' +
+                '"title": "Guns Are Killing The Republican Party",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "9672b32732b9184c4fad42cffae246da"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/videos/2013/01/14/sotomayor-is-one-tough-bitch.html",' +
+                '"title": "Sotomayor Is \'One Tough Bitch\'",' +
+                '"rubric": "Politics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "03d819269e3ae12a0c99b16093c3938f"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rcp": [' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/chuck-hagel-accusers-who-allege-anti-semitism-getting-pushback.html",' +
+                '"title": "Chuck Hagel Accusers Who Allege Anti-Semitism Getting Pushback",' +
+                '"rubric": "Failed Tactics",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "6e55e58ae58706e6190ee9e3ea5cee5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/al-qaeda-s-dangerous-play-in-mali.html",' +
+                '"title": "Al Qaeda&rsquo;s Dangerous Play in Mali",' +
+                '"rubric": "World",' +
+                '"topic": "World",' +
+                '"urlHashCode": "4bf0ea5e7f6a98ab3d2af260de495774"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/jerry-brown-creates-california-surplus-miracle-but-can-it-last.html",' +
+                '"title": "Jerry Brown Creates California Surplus Miracle, But Can It Last?",' +
+                '"rubric": "Reversal of Fortune",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4917f00ef50ab7d345295915202d9982"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/who-doesn-t-get-paid-if-we-cross-the-debt-ceiling.html",' +
+                '"title": "Who Doesn\'t Get Paid if We Cross the Debt Ceiling?",' +
+                '"rubric": "New Frontier",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "087a3563f6f264f8b03a37fedab78402"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-gun-control-debate-may-be-a-circus-but-at-least-it-s-not-fading.html",' +
+                '"title": "The Gun-Control Debate May Be a Circus, but at Least It&rsquo;s Not Fading",' +
+                '"rubric": "USEFUL SIDESHOW",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "5a73823615710618da2bda309fd7bd17"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/12/glenn-beck-attempts-a-laughable-make-over-as-a-libertarian.html",' +
+                '"title": "Glenn Beck Attempts a Laughable Makeover as a Libertarian",' +
+                '"rubric": "Rodeo Clown Remake",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ea2307d197fd8ee421e8962107f12b36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/vladimir-putin-s-wife-lyudmila-has-all-but-vanished-and-russians-don-t-seem-to-care.html",' +
+                '"title": "Vladimir Putin&rsquo;s Wife, Lyudmila, Has All but Vanished, and Russians Don&rsquo;t Seem to Care",' +
+                '"rubric": "MRS. PUTIN MIA",' +
+                '"topic": "World",' +
+                '"urlHashCode": "44959b56c1286dfd87f2854ba7ee473e"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/my-night-at-the-golden-globe-awards.html",' +
+                '"title": "My Night at the Golden Globe Awards",' +
+                '"rubric": "OMG",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "c7ae9da54f900aa5d3d9d37e95fe03bf"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/enough-about-lena-dunham-s-ass.html",' +
+                '"title": "Enough About Lena Dunham\'s Ass!",' +
+                '"rubric": "Big Fat Story",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "64a8f696b2861a09cecf37044e5ccacb"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/obama-could-ease-d-c-gridlock-if-he-socialized-more-critics-say.html",' +
+                '"title": "Obama Could Ease D.C. Gridlock If He Socialized More, Critics Say",' +
+                '"rubric": "Schmoozing to Win",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "3aaf3f54f4adc3b8cd1f0e1aa2e3f11d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/natalie-wood-findings-was-the-actress-bruised-before-she-drowned.html",' +
+                '"title": "Natalie Wood Findings: Was the Actress Bruised Before She Drowned?",' +
+                '"rubric": "Findings",' +
+                '"topic": "Crime",' +
+                '"urlHashCode": "b81bbaa749f421a2387e98c91c7d4d37"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/why-apple-s-stock-is-down.html",' +
+                '"title": "Why Apple&rsquo;s Stock Is Down",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "a036647324cc7f859827fe2ac82f3e5d"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/obama-talks-tough-on-budget-guns.html",' +
+                '"title": "Obama Talks Tough on Budget, Guns",' +
+                '"rubric": "Presser",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "8d41736b5d7eb84ff3e8d8af530a1fd5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/a-ghastly-waste-of-time-considering-the-constitution.html",' +
+                '"title": "&lsquo;A Ghastly Waste of Time?&rsquo; Considering the Constitution",' +
+                '"rubric": "TRADITION",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "46c394f9293f98a2ecba55b82a8a5cc5"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/nightmare-in-saudi-arabia-the-plight-of-foreign-migrant-workers.html",' +
+                '"title": "Nightmare in Saudi Arabia: The Plight of Foreign Migrant Workers",' +
+                '"rubric": "DESPERATE WORKERS",' +
+                '"topic": "World",' +
+                '"urlHashCode": "577afe818c880c90ebf1ff97b6167b29"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/the-four-most-important-things-you-need-to-know-about-the-new-mortgage-rules.html",' +
+                '"title": "The Four Most Important Things You Need to Know About the New Mortgage Rules",' +
+                '"rubric": "Business",' +
+                '"topic": "Business",' +
+                '"urlHashCode": "fe9b60f40810b030aee1fac747710b4a"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/11/piers-morgan-s-gun-control-freak-show-rounds-up-the-crazies.html",' +
+                '"title": "Piers Morgan&rsquo;s Gun-Control Freak Show Rounds Up the Crazies",' +
+                '"rubric": "CNN Circus",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "f75e67203a15b36de5507daba272b3e9"' +
+            '}' +
+        ']' +
+        ',' +
+        '"rdt": [' +
+            '{' +
+                '"url": "/articles/2013/01/15/government-shutdown-insanity.html",' +
+                '"title": "Government Shutdown Insanity",' +
+                '"rubric": "FULL STOP",' +
+                '"topic": "Politics",' +
+                '"urlHashCode": "c21c7532b63f5e130a7f6bfd65aa35a6"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/aaron-swartz-s-unbending-prosecutors-insisted-on-prison-time.html",' +
+                '"title": "Aaron Swartz&rsquo;s Unbending Prosecutors Insisted on Prison Time",' +
+                '"rubric": "No Compromise",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "86ddcf5f3e4d9c198e0c1ace805f0634"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/12/glenn-beck-attempts-a-laughable-make-over-as-a-libertarian.html",' +
+                '"title": "Glenn Beck Attempts a Laughable Makeover as a Libertarian",' +
+                '"rubric": "Rodeo Clown Remake",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "ea2307d197fd8ee421e8962107f12b36"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/buzz-bissinger-i-was-deluded-to-believe-lance-armstrong-when-he-denied-doping.html",' +
+                '"title": "I Was Deluded to Believe Lance Armstrong When He Denied Doping",' +
+                '"rubric": "MEA CULPA",' +
+                '"topic": "Sports",' +
+                '"urlHashCode": "3ba2f0ef9bbbe020572441c301574395"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/09/katherine-webb-model-girlfriend-of-alabama-qb-aj-mccarron-steals-show.html",' +
+                '"title": "Katherine Webb, Model Girlfriend of Alabama QB A.J. McCarron, Steals Show",' +
+                '"rubric": "NO. 1 STUNNER",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "5b76b06b7843c7759bf6254f2f1bb4be"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/mourning-aaron-swartz-internet-activist-and-free-information-advocate.html",' +
+                '"title": "Mourning Aaron Swartz, Internet Activist and Free Information Advocate",' +
+                '"rubric": "U.S. News",' +
+                '"topic": "U.S. News",' +
+                '"urlHashCode": "4e47aa8fc103bd8444b789df34dcf806"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/14/read-the-full-transcript-of-jodie-foster-s-golden-globes-speech.html",' +
+                '"title": "Read the Full Transcript of Jodie Foster&rsquo;s Golden Globes Speech",' +
+                '"rubric": "Globes&rsquo; Best Moment",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "83e6895c4808b53568d9b337b9f50b5c"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/15/inside-scientology-s-secret-world-going-clear-by-lawrence-wright.html",' +
+                '"title": "Inside Scientology&rsquo;s Secret World: &ldquo;Going Clear&rdquo; by Lawrence Wright",' +
+                '"rubric": "\'Going Clear\'",' +
+                '"topic": "Books",' +
+                '"urlHashCode": "b9714bbda4c344f0b69a882f7cbc4d80"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2013/01/13/golden-globes-2013-amy-poehler-tina-fey-more-best-moments-video.html",' +
+                '"title": "Golden Globes 2013: Amy Poehler, Tina Fey &amp; More Best Moments (VIDEO)",' +
+                '"rubric": "Watch This!",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "63a8fb6d55245144459f55560e5ad804"' +
+            '}' +
+            ',' +
+            '{' +
+                '"url": "/articles/2012/08/15/jodie-foster-blasts-kristen-stewart-robert-pattinson-break-up-spectacle.html",' +
+                '"title": "Jodie Foster Blasts Kristen Stewart&ndash;Robert Pattinson Break-Up Spectacle",' +
+                '"rubric": "The Accused",' +
+                '"topic": "Entertainment",' +
+                '"urlHashCode": "6a73ea9d045ba4b2d797986a5c34ea28"' +
+            '}' +
+        ']' +
+    '}'
+);

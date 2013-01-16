@@ -156,7 +156,7 @@
 		$.ajax({
 			url : options.dataUrl,
 			dataType: "application/x-www-form-urlencoded",
-			data: options.queryParams + "&sstr=" + text_sstr + "&grid=" + sipp_value,
+			data: options.queryParams + "&sstr=" + text_sstr + "&grid=" + sipp_value + "&" + getURLArgs().replace("?",""),
 			success : function (data) 
 			{
 				if( data != "" )

@@ -1048,7 +1048,7 @@ var menuTimeout=500;
 var tickerScrollSpeed=7000;
 var popTitle;
 var popDesc;
-var str,bN,bM,bV,OS;
+var str,bN,bM,bV,OS,uA;
 $(function(){setNavClassFromCookie();
 str=navigator.appVersion.toLowerCase().replace(/[^a-zA-Z 0-9 . / _]+/g,"").split(" ");
 OS=str[1].substr(0,3);
@@ -1058,6 +1058,8 @@ bV=$.browser.version;
 slideTimer=0;
 bM=document.documentMode;
 if(bV=="8.0"&&bM=="7"){bV="7.0"
+}uA=navigator.userAgent;
+if(uA.indexOf("Trident/4.0")>-1&&bV=="7.0"&&bM=="8"){bV="8.0"
 }}if($.browser.opera){bN="opera";
 bV=$.browser.version.substr(0,4)
 }if($.browser.mozilla){var H=navigator.userAgent.toLowerCase();

@@ -1,9 +1,15 @@
 $(function() {
     $(document).ready(function(){
         resizeHomeBanner();
+
         if (window.location.hash) {
             hashJump();
         }
+
+        $("a[href='#']").bind('click', function() {
+            event.preventDefault();
+        });
+
         window.onhashchange = hashJump;
         var path = window.location.pathname;
         setActiveMenuItems(path, false);
@@ -28,6 +34,7 @@ $(function() {
     });
 
     var device_platform = platformDetect();
+    //var device_platform = 'Android';
     platformDownload(device_platform);
 
     function setActiveMenuItems(path, highlight_subnav_link) {
@@ -57,6 +64,17 @@ $(function() {
         $(menu_active[path]+', '+active_subnav_link).parent().addClass('active');
     }
 
+    function getQueryString() {
+    var result = {}, queryString = location.search.substring(1),
+        re = /([^&=]+)=([^&]*)/g, m;
+
+    while (m = re.exec(queryString)) {
+        result[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+    }
+
+    return result;
+    }
+
     function hashJump() {
         var hash = window.location.hash;
         var target;
@@ -74,6 +92,10 @@ $(function() {
     }*/
 
     function platformDetect(){
+        var qplatform = getQueryString()["platform"];
+        if (qplatform) {
+            return qplatform;
+        }
         var platformMapping = {'Win32': 'Windows',
                            'Win64': 'Windows',
                            'Linux i686': 'Linux',
@@ -82,33 +104,39 @@ $(function() {
                            'iPhone': 'iOS',
                            'iPad': 'iOS',
                            'iPod': 'iOS',
-			   'Linux armv7l': 'Android',
+                           'Linux armv7l': 'Android',
                            'Android': 'Android'}
         return platformMapping[navigator.platform];
     }
 
     function platformDownload(platform){
-        var otherVersions = removeByValue(['Mac', 'Windows', 'Linux'], platform);
+        var platformLower = platform.toLowerCase();
+        var otherVersions = removeByValue(['Mac', 'Windows', 'Linux', 'Android', 'Windows Store'], platform);
+        var otherDesktopVersionHTML = 'Other versions: ';
+        var otherMobileVersionHTML = 'Also available for ';
+        var otherVersionHTML = 'Other versions: ';
+        if ($.inArray(platform, ['Android', 'iOS']) > -1) {
+            $('.mobile-show').show();
+            $('.email-link').css('display', 'block');
+            $('#'+platformLower+'-download-container').show();
+            $('.mobile-hide').hide();
+            otherVersions = removeByValue(['Android', 'Windows Store'], platform);
+        }
         if (platform == 'Windows' || platform == 'Mac') {
             var platformMessage = platform;
-            var platformLower = platform.toLowerCase();
             var downloadLink = '/download/' + platformLower;
             var overlayDownloadLink = downloadLink;
         } else if (platform == 'Linux') {
             var platformMessage = platform;
-            var platformLower = platform.toLowerCase();
-            var downloadLink = '/download-' + platformLower;
+            var downloadLink = '#';
             var overlayDownloadLink = downloadLink;
         } else if (platform == 'Mac') {
             var platformMessage = platform + ' coming soon';
-            var platformLower = platform.toLowerCase();
             var downloadLink = '#';
             var overlayDownloadLink = '/download/';
         } else if (platform == 'Android') {
             var platformMessage = platform;
-            var platformLower = platform.toLowerCase();
-            var downloadLink = 'http://play.google.com/store/apps/details?id=com.bitcasa.android';
-            $('.download-button').css('margin', '20px auto');
+            var downloadLink = '/download/' + platformLower;;
         } else {
             var platformMessage = platform + ' coming soon';
             var downloadLink = '#';
@@ -116,33 +144,55 @@ $(function() {
         }
 
         $('.download-button').attr('href', downloadLink);
+        if (window.location.pathname != '/') {
+            var titleCasePath = window.location.pathname.substring(1);
+            titleCasePath = titleCasePath[0].toUpperCase() + titleCasePath.substring(1).replace(/-/g, ' ');
+        } else {
+            var titleCasePath = 'Homepage';
+        }
+        $('.download-button').attr('onClick', "_gaq.push(['_trackEvent', 'Download', '" + platform + "', '" + titleCasePath + "']);");
         if (platform == 'Mac') {
-            $('.download-button').text('New Mac Coming Soon');
-            $('.download-button').after('<div style="margin-top: 10px;">In the meantime, <a href="/download/mac">download the legacy Mac client</a></div>');
+            $('.download-button').text('New Mac App Coming Soon');
+            $('.download-button').attr('href', '#');
+            $('.download-button').after('<div style="margin-top: 10px;">In the meantime, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Mac Legacy\', \'Download\']);" href="/download/mac">download the legacy Mac client</a></div>');
         } else if (platform == 'Windows') {
-            $('.download-button').after('<div style="margin-top: 10px;">Or, <a href="/download/windowslegacy">download the legacy Windows client</a></div>');
+            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Win Legacy\', \'' + titleCasePath + '\']);" href="/download/windowslegacy">download the legacy Windows client</a></div>');
+        } else if (platform == 'Linux') {
+            $('.download-button').text('New Linux Client Coming Soon');
+            $('.download-button').after('<div style="margin-top: 10px;">Or, <a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'Linux\', \'' + titleCasePath + '\']);" href="/download-linux">try the legacy alpha version</a></div>');
         } else if (platform == 'Android') {
-            $('.download-button').text('Get the Android App');
+            $('.download-button').attr('id', 'android-download-button');
+            $('.download-button').addClass('mobile-download-button');
+            $('.download-button').html('<span>Android App on</span>Google Play');
         } else if (platform == 'iOS') {
-            $('.download-button').text('iOS app coming soon.');
+            $('.download-button').attr('id', 'ios-download-button');
+            $('.download-button').addClass('mobile-download-button');
+            $('.download-button').html('<span>Coming to the</span>App Store');
+
         } else {
             $('.download-button').text('Download for ' + platformMessage);
         }
         $('#platform-download').attr('class', platformLower + '-download-image');
         //$('.overlayDownload').attr('href', overlayDownloadLink);
-        var otherVersionHTML = 'Other versions: ';
         $.each(otherVersions, function(index, value){
             if (value == 'Linux') {
                 otherLink = '/download-' + value.toLowerCase();
+            } else if (value == 'Windows Store') {
+                otherLink = '/download/metro';
             } else {
                 otherLink = '/download/' + value.toLowerCase();
             }
-            otherVersionHTML += '<a class="download otherDownload" href="' + otherLink  + '">' + value + '</a>';
-            if (index != otherVersions.length - 1) {
-                otherVersionHTML += ', ';
+            var linkText = '<a onclick="_gaq.push([\'_trackEvent\', \'Download\', \'' + value + '\', \'' + titleCasePath + '\']);" class="download otherDownload" href="' + otherLink  + '">' + value + '</a>, ';
+            if ($.inArray(value, ['Android', 'Windows Store', 'iOS']) > -1) {
+                otherMobileVersionHTML += linkText;
+            } else if ($.inArray(value, ['Linux', 'Mac', 'Windows']) > -1) {
+                otherDesktopVersionHTML += linkText;
             }
+            otherVersionHTML += linkText;
         });
-        $('#download-other-versions').html(otherVersionHTML);
+        $('.download-otherdesktop-versions').html(otherDesktopVersionHTML.slice(0, otherDesktopVersionHTML.length-2));
+        $('.download-othermobile-versions').html(otherMobileVersionHTML.slice(0, otherMobileVersionHTML.length-2));
+        $('.download-other-versions').html(otherVersionHTML.slice(0, otherVersionHTML.length-2));
     }
 
     function removeByValue(array, val){
@@ -156,27 +206,18 @@ $(function() {
     });
 
     function resizeHomeBanner() {
-        var footerHeight = $('#footer').height();
-        var availHeight = $(document).height() - footerHeight;
-        var availWidth = $(document).width();
-        if (!availHeight) {
-            availHeight = window.outerHeight;
-            availWidth = window.outerWidth;
+        var heightToWidthRatio = .797962649;
+        var homePageImageElem = $('#home-page-image');
+        var width = parseInt(homePageImageElem.css('width'));
+        var calculatedHeight = width * heightToWidthRatio * .9;
+        var minHeight = 240;
+        var newCalculatedHeight = (calculatedHeight >= minHeight) ? calculatedHeight : minHeight;
+        if (width == 280) {
+            newCalculatedHeight = calculatedHeight + 40;
+        } else if (width > 280 && width < 447) {
+            newCalculatedHeight += 30;
         }
-
-        var originalImageHeight = 888;
-        var originalImageWidth = 1785;
-        var heightRatio = availHeight / originalImageHeight;
-        var widthRatio = availWidth / originalImageWidth;
-
-        var adjustedHeight = originalImageHeight * heightRatio;
-        var adjustedWidth = originalImageWidth * heightRatio;
-
-        if (adjustedWidth < availWidth) {
-            adjustedHeight = originalImageHeight * widthRatio;
-            adjustedWidth = originalImageWidth * widthRatio;
-        }
-        $('#home-body').css({'background-size': adjustedWidth+'px '+ adjustedHeight+ 'px'});
+        homePageImageElem.css('height', newCalculatedHeight);
     }
 
     $('#devSignupSubmit').click(function(){

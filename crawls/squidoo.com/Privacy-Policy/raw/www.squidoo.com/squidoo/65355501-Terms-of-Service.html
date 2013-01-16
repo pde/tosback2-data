@@ -52,7 +52,7 @@
   Squidoo = { 
     statichost: 'http://the.squidoocdn.com',
 
-    __generated__: '2013-01-12T07:16:05-05:00', 
+    __generated__: '2013-01-16T07:43:57-05:00', 
 
     host: document.location.protocol + '//' + document.location.hostname,
 
@@ -276,7 +276,27 @@ if (!window.Squidoo) {
 }
 
 var flagged = false;
-
+var inAmazonTestSample = false;
+var amazonClickoutsMixPanelToken = '3514f7f9c49ea53135ecc00d4878153d';
+var lensrankTier = function() {
+  var lensrank = parseInt('1');
+  if (lensrank > 1 && lensrank <= 10000) {
+    return '1-10k';
+  } else if (lensrank > 10000 && lensrank <= 20000) {
+    return '10,001-20k';
+  } else if (lensrank > 20000 && lensrank <= 80000) {
+    return '20,001-80k';
+  } else {
+    return '>80k';
+  }
+}();
+if (inAmazonTestSample) {
+  $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+    tracker.push(['track', 'Lens Visit', {
+      'lensrank-tier': lensrankTier
+    }]);
+  });
+}
 var url = '/track/ajax_beacon?';
 url += "lens_id=" + theLensId;
 url += "&referrer=" + escape(document.referrer);
@@ -490,9 +510,43 @@ registerPostsTestTier();
       xhr.open('get', url);
       xhr.send(null);
     }
+
+    if (inAmazonTestSample && !isWorkshop && link.hostname.match(/amazon/)) {
+      trackAmazonClick(link);
+    }
     
           evTrack('clickout', link.hostname, link.href);
       }
+
+  function trackAmazonClick(link) {
+    var $ = jQuery, sH = $(window).height(), $link = $(link), at = $link.position().top;
+    var $module = $link.closest('[data-mod-type]'), type = $module.data('mod-type');
+    var hasItemDes = 'n/a', displayMode = 'n/a', itemDensity = 'n/a';
+    if (type === 'amazon') {
+      var $item = $link.closest('.commerce_media');
+      if ($item.length) {
+        displayMode = 'commerce-media';
+        hasItemDes = $item.find('[data-has="item-des"]').text().trim().length ? 'yes' : 'no';
+        itemDensity = $module.find('.commerce_media').length;
+      } else {
+        displayMode = 'commerce-thumb';
+        itemDensity = $module.find('.commerce_thumb').length;
+      }
+    }
+    $Sq.withTracker(amazonClickoutsMixPanelToken, function(tracker) {
+      tracker.push(['track', 'Amazon Clickout', {
+        'official': $link.data('official') == 'yes',
+        'scrolls': Math.ceil(at/sH),
+        'module-type': type,
+        'module-density': $('[data-mod-type]').length,
+        'has-item-des': hasItemDes,
+        'item-density': itemDensity,
+        'column': $module.closest('#left_col_wrap').length ? 'body' : 'sidebar',
+        'display-mode': displayMode,
+        'lensrank-tier': lensrankTier // established in lens.php
+      }]);
+    });
+  }
 
   var evSocial = function(network, socialAction, opt_target, opt_pagePath) {
     try {
@@ -540,7 +594,6 @@ registerPostsTestTier();
     // var mpq=[];mpq.push(["init","688c8f775abde7c1135d8fe8aeeb8201"]);(function(){var b,a,e,d,c;b=document.createElement("script");b.type="text/javascript";b.async=true;b.src=(document.location.protocol==="https:"?"https:":"http:")+"//api.mixpanel.com/site_media/js/api/mixpanel.js";a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(b,a);e=function(f){return function(){mpq.push([f].concat(Array.prototype.slice.call(arguments,0)))}};d=["init","track","track_links","track_forms","register","register_once","identify","name_tag","set_config"];for(c=0;c<d.length;c++){mpq[d[c]]=e(d[c])}})();
       </script>
 
-<script type="text/javascript">var NREUMQ=NREUMQ||[];NREUMQ.push(["mark","firstbyte",new Date().getTime()]);</script>
   
 
   <!-- IE Fix for HTML5 Tags -->
@@ -945,7 +998,7 @@ registerPostsTestTier();
 
   <p class="clear lt_gray font12 lens_ratings"> 
           Ranked #18,420      in <a href="http://www.squidoo.com/topics/squidoo-community">Squidoo Community</a>,
-      #1,764,981 overall
+      #1,767,951 overall
     
      | Donates to Rhodesian Ridgeback Rescue of NorCal  </p>
 
@@ -1017,7 +1070,7 @@ registerPostsTestTier();
 
 <a name="module65355501"></a>
 <!-- module 65355501 -->
-<section class="novib module  pagebreak " id="module65355501">
+<section data-mod-type="pagebreak" class="novib module  pagebreak " id="module65355501">
   
     
             <hgroup class="module_header">
@@ -1039,7 +1092,7 @@ The principals in these Terms do not change, though the specific enforcement of 
 
 <a name="module65355511"></a>
 <!-- module 65355511 -->
-<section class="novib module  textmodule " id="module65355511">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355511">
   
     
             <hgroup class="module_header">
@@ -1065,7 +1118,7 @@ We aim to support high-quality, original and useful lifestyle content that real 
 
 <a name="module65355741"></a>
 <!-- module 65355741 -->
-<section class="novib module  textmodule " id="module65355741">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355741">
   
     
             <hgroup class="module_header">
@@ -1097,7 +1150,7 @@ When becoming a Lensmaster, you have the ability to turn ON a feature called &qu
 
 <a name="module65355751"></a>
 <!-- module 65355751 -->
-<section class="novib module  textmodule " id="module65355751">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355751">
   
     
             <hgroup class="module_header">
@@ -1165,7 +1218,7 @@ increased our systematic intolerance of aggressively duplicated (unoriginal) con
 
 <a name="module65355761"></a>
 <!-- module 65355761 -->
-<section class="novib module  textmodule " id="module65355761">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355761">
   
     
             <hgroup class="module_header">
@@ -1189,7 +1242,7 @@ Squidoo provides pre-built modules that make it easy for you to find and add lin
 
 <a name="module65355771"></a>
 <!-- module 65355771 -->
-<section class="novib module  textmodule " id="module65355771">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355771">
   
     
             <hgroup class="module_header">
@@ -1240,7 +1293,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 <a name="module82694401"></a>
 <!-- module 82694401 -->
-<section class="novib module  blackbox " id="module82694401">
+<section data-mod-type="blackbox" class="novib module  blackbox " id="module82694401">
   
     
             <hgroup class="module_header">
@@ -1276,7 +1329,7 @@ Royalties are paid only via PayPal at this time. If you're unable to use PayPal 
 
 <a name="module65355781"></a>
 <!-- module 65355781 -->
-<section class="novib module  textmodule " id="module65355781">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355781">
   
     
             <hgroup class="module_header">
@@ -1298,7 +1351,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355791"></a>
 <!-- module 65355791 -->
-<section class="novib module  textmodule " id="module65355791">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355791">
   
     
             <hgroup class="module_header">
@@ -1320,7 +1373,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355801"></a>
 <!-- module 65355801 -->
-<section class="novib module  textmodule " id="module65355801">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355801">
   
     
             <hgroup class="module_header">
@@ -1340,7 +1393,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355811"></a>
 <!-- module 65355811 -->
-<section class="novib module  textmodule " id="module65355811">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355811">
   
     
             <hgroup class="module_header">
@@ -1360,7 +1413,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355821"></a>
 <!-- module 65355821 -->
-<section class="novib module  textmodule " id="module65355821">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355821">
   
     
             <hgroup class="module_header">
@@ -1380,7 +1433,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355831"></a>
 <!-- module 65355831 -->
-<section class="novib module  textmodule " id="module65355831">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355831">
   
     
             <hgroup class="module_header">
@@ -1400,7 +1453,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355841"></a>
 <!-- module 65355841 -->
-<section class="novib module  textmodule " id="module65355841">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355841">
   
     
             <hgroup class="module_header">
@@ -1420,7 +1473,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355851"></a>
 <!-- module 65355851 -->
-<section class="novib module  textmodule " id="module65355851">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355851">
   
     
             <hgroup class="module_header">
@@ -1440,7 +1493,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355861"></a>
 <!-- module 65355861 -->
-<section class="novib module  textmodule " id="module65355861">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355861">
   
     
             <hgroup class="module_header">
@@ -1460,7 +1513,7 @@ Like most sites, we do make surfer behavior available to ad serving services, so
 
 <a name="module65355871"></a>
 <!-- module 65355871 -->
-<section class="novib module  textmodule " id="module65355871">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65355871">
   
     
             <hgroup class="module_header">
@@ -1488,7 +1541,7 @@ Squidoo is one of many ways you can post information online, and if you find any
 
 <a name="module65358141"></a>
 <!-- module 65358141 -->
-<section class="novib module  textmodule " id="module65358141">
+<section data-mod-type="textmodule" class="novib module  textmodule " id="module65358141">
   
     
             <hgroup class="module_header">
@@ -1519,7 +1572,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
 
 <a name="module65358251"></a>
 <!-- module 65358251 -->
-<section class="novib module  blackbox " id="module65358251">
+<section data-mod-type="blackbox" class="novib module  blackbox " id="module65358251">
   
     
           
@@ -1597,7 +1650,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
               </p>
             
       <ul class="font12">
-                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">41 featured lenses</a></li>
+                        <li><a href="http://www.squidoo.com/lensmasters/SquidTeam?q=all">40 featured lenses</a></li>
                   <li>Winner of <a href="http://www.squidoo.com/member/awards/SquidTeam">15 trophies</a>!</li>
                 <li>Top lens &raquo; <a href="http://www.squidoo.com/squidlevels">How Can I Level Up in Squidoo?</a></li>
               
@@ -1634,7 +1687,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
 
 
 <a name="module90503951"></a>
-<div class="novib module rssmodule widget " id="module90503951">
+<div data-mod-type="rssmodule" class="novib module rssmodule widget " id="module90503951">
       <hgroup class="module_header">
       <h2 class="module_title">Recent News from SquidooHQ&nbsp;</h2>
           </hgroup>
@@ -1649,7 +1702,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
       
   </div><!--/module-->
 <a name="module90503961"></a>
-<div class="novib module rssmodule widget " id="module90503961">
+<div data-mod-type="rssmodule" class="novib module rssmodule widget " id="module90503961">
       <hgroup class="module_header">
       <h2 class="module_title">Did you see the Lens of the Day?&nbsp;</h2>
               <h3 class="module_subtitle">Were you picked?</h3>
@@ -1665,7 +1718,7 @@ SquidU<div class="break"></div>  <div style="clear:both;"></div></div>
       
   </div><!--/module-->
 <a name="module90886741"></a>
-<div class="novib module featuredlenses widget " id="module90886741">
+<div data-mod-type="featuredlenses" class="novib module featuredlenses widget " id="module90886741">
       <hgroup class="module_header">
       <h2 class="module_title">Who founded Squidoo?&nbsp;</h2>
               <h3 class="module_subtitle">This guy</h3>
@@ -1886,7 +1939,6 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
   </div>
 </noscript>
 
-<script type="text/javascript">if(!NREUMQ.f){NREUMQ.f=function(){NREUMQ.push(["load",new Date().getTime()]);var e=document.createElement("script");e.type="text/javascript";e.src=(("http:"===document.location.protocol)?"http:":"https:")+"//"+"d1ros97qkrwjf5.cloudfront.net/42/eum/rum.js";document.body.appendChild(e);if(NREUMQ.a)NREUMQ.a();};NREUMQ.a=window.onload;window.onload=NREUMQ.f;};NREUMQ.push(["nrfj","beacon-1.newrelic.com","3cd3786cd7","657144","MQdQbBEHCEJYARdcCQhNcU0QEglcFg4GWxVJEVpXFA==",0,528,new Date().getTime(),"","","","",""]);</script>
 
 
 <div id="default_onion" class="default_onion" style="display: none;"></div>
@@ -1959,7 +2011,7 @@ _comscore.push({ c1: "2", c2: "6036161", c3: "",
             <button class="btn btn-primary" type="submit">Post Comment</button>
             <button class="btn" type="button" onclick="SquidooComments.cancel();">Cancel</button>
           </div><!-- .btn-group -->
-          <input type="hidden" name="comment_nonce" value="fc38621a8fad9782e71e62f6083e0a57">
+          <input type="hidden" name="comment_nonce" value="469d891dd46efa40932fb749602288eb">
 
 
         </div>

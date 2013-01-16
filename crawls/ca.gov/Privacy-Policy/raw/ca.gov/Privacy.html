@@ -73,20 +73,18 @@ Based on 320 and Up boilerplate extension
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <![endif]-->
 
-
-<script src="javascript/scripts.js"></script>
-
-<noscript>
 <style>
 header {
-	background: #000 url(images/template2012/header_day_yosemite.jpg) no-repeat 40% 40%;
+	background: #000 url(images/template2012/header_sunrise_hiker.jpg) no-repeat 50% 30%;
 	background-size: cover;
 }
 .home header {
 	background-position:40% 40%;
 }
 </style>
-</noscript>
+
+
+<script src="javascript/scripts.js"></script>
 
 
 <script type="text/javascript" src="../www.google.com/jsapi"></script>
@@ -115,19 +113,9 @@ google.setOnLoadCallback(function() {
   _gaq.push(['_setDomainName', '.ca.gov']);
   _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-3419582-14']);
-  _gaq.push(['_setDomainName', '.ca.gov']);
-  _gaq.push(['_trackPageview']);
+  _gaq.push(['b._setAccount', 'UA-3419582-14']);
+  _gaq.push(['b._setDomainName', '.ca.gov']);
+  _gaq.push(['b._trackPageview']);
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
@@ -143,12 +131,12 @@ google.setOnLoadCallback(function() {
 	<div class="head_poppies"><img src="images/template2012/header_poppies.png" alt="" /></div>
 	<div class="phone_hdr">
 		<div class="phone_hd_left">
-			<a onclick="toggle_menu();"><img src="images/template2012/phone_nav_menu.png" alt="Menu" /></a>
-			<a id="mobile_gallery_button" href="http://ca.gov/Mobile/"><img src="images/template2012/clear.gif" alt="Mobile Gallery" /></a>
+			<a class="p_h_button p_h_menu" onclick="toggle_menu();"><img src="images/template2012/clear.gif" alt="Menu" /></a>
+			<a class="p_h_button p_h_mobile_gallery" href="http://ca.gov/Mobile/"><img src="images/template2012/clear.gif" alt="Mobile Gallery" /></a>
 		</div>
 		<div class="phone_hd_right">
-			<a href="http://ca.gov/Contact.html"><img src="images/template2012/phone_nav_contactus.png" alt="Contact Us" /></a>
-			<a onclick="toggle_search();"><img src="images/template2012/phone_nav_search.png" alt="Search" /></a>
+			<a class="p_h_button p_h_contact" href="http://ca.gov/Contact.html"><img src="images/template2012/clear.gif" alt="Contact Us" /></a>
+			<a class="p_h_button p_h_search" onclick="toggle_search();"><img src="images/template2012/clear.gif" alt="Search" /></a>
 		</div>
 		<div class="logo_and_banner">
 			<div class="head_cagov_logo"><a href="http://ca.gov/"><img src="images/template2012/header_ca.gov.png" alt="CA.gov" /></a></div>
@@ -207,6 +195,7 @@ google.setOnLoadCallback(function() {
 						<li><a href="http://ca.gov/Education/Libraries.html" class="nav_p_heading">Libraries</a> 
 						<div class="nav_p_description">Libraries, archives, museums, catalogs, services</div></li>
 					</ul>
+					<div class="nav_d_arrow_container"></div>
 				</div>
 			</li>
 			<li><a href="http://ca.gov/Work/index.html" class="nav_level1_link">Work</a>
@@ -231,13 +220,12 @@ google.setOnLoadCallback(function() {
 					<ul>
 						<li><a href="http://ca.gov/Work/WorkplaceIssues.html" class="nav_p_heading">In the Workplace</a> 
 						<div class="nav_p_description">Worker rights, labor laws, discrimination, safety</div></li>
-
 						<li><a href="http://ca.gov/Work/Retirement.html" class="nav_p_heading">Retirement</a>
 						<div class="nav_p_description">Retirement plans, benefits, savings</div></li>
-
 						<li><a href="http://ca.gov/HomeFamily/Taxes.html" class="nav_p_heading">Taxes <span class="hidden">(Home &amp; Family)</span></a>
 						<div class="nav_p_description">Sales, property, and income tax, Credits, Selecting a CPA</div></li>
 					</ul>
+					<div class="nav_d_arrow_container"></div>
 				</div>
 			</li>
 			<li><a href="http://ca.gov/HealthSafety/index.html" class="nav_level1_link">Health &amp; Safety</a>
@@ -267,6 +255,7 @@ google.setOnLoadCallback(function() {
 						<li><a href="http://ca.gov/HealthSafety/WorkplaceSafety.html" class="nav_p_heading">Workplace Safety</a> 
 						<div class="nav_p_description">Workers' compensation, benefits, regulations</div></li>
 					</ul>
+					<div class="nav_d_arrow_container"></div>
 				</div>
 			</li>
 			<li><a href="http://ca.gov/HomeFamily/index.html" class="nav_level1_link">Home &amp; Family</a>
@@ -295,6 +284,7 @@ google.setOnLoadCallback(function() {
 						<li><a href="http://ca.gov/HomeFamily/Seniors.html" class="nav_p_heading">Seniors</a> 
 							<div class="nav_p_description">Social Security, Medicare, health plans, nursing homes </div></li>
 					</ul>
+					<div class="nav_d_arrow_container"></div>
 				</div>
 			</li>
 			<li class="last_nav_item"><a href="http://ca.gov/VisitPlay/index.html" class="nav_level1_link">Visit &amp; Play</a>
@@ -315,6 +305,7 @@ google.setOnLoadCallback(function() {
 						<li><a href="http://ca.gov/VisitPlay/GreatOutdoors/" class="nav_p_heading">Great Outdoors</a> 
 						<div class="nav_p_description">Camping, hiking, highway conditions, hunting and fishing, sports, recreation, weather</div></li>
 					</ul>
+					<div class="nav_d_arrow_container"></div>
 				</div>
 			</li>
 		</ul>

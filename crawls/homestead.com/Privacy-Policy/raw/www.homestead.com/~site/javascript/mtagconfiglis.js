@@ -36,7 +36,7 @@ var btJSElement = document.createElement('script');
 btJSElement.setAttribute('type', 'text/javascript');
 btJSElement.setAttribute('charset', 'iso-8859-1');
 btJSElement.setAttribute('src', btUrl);
-btJSElement.onload = function(){
+btJSElement.onload = btJSElement.onreadystatechange = function(){
 // bt_chatAvailable is in scope from boldchat js is loaded.
 btConfig.setupChat(bt_chatAvailable);
 }

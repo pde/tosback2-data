@@ -694,21 +694,9 @@ var usa_globalMenu = {
 					"title" : "Movies &amp; Specials",
 					"items" : [											
 						{
-							"title" : "DAN IN REAL LIFE",
-							"subtitle" : "FRIDAY JANUARY 11 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_daninreallife.png"
-						},
-						{
-							"title" : "THE GAME PLAN",
-							"subtitle" : "SUNDAY JANUARY 13 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/thegameplan",
-							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_thegameplan.png"
-						},
-						{
 							"title" : "CRANK",
 							"subtitle" : "SATURDAY JANUARY 19 11/10C",
-							"url" : usa_baseUrlDomain + "/movies/crank",
+							"url" : usa_baseUrlDomain + "/movies/crank/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_crank.png"
 						},
 						{
@@ -716,6 +704,18 @@ var usa_globalMenu = {
 							"subtitle" : "SUNDAY JANUARY 20 11/10C",
 							"url" : usa_baseUrlDomain + "/movies/",
 							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_uglytruth.png"
+						},
+						{
+							"title" : "G.I. JOE: THE RISE OF COBRA",
+							"subtitle" : "SAT JAN 26 8:30/7:30C",
+							"url" : usa_baseUrlDomain + "/movies/gijoe/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_gijoe2_riseofcobra.png"
+						},
+						{
+							"title" : "HE’S JUST NOT THAT INTO YOU",
+							"subtitle" : "SUNDAY JAN 27 11/10C",
+							"url" : usa_baseUrlDomain + "/movies/",
+							"img" : usa_baseUrlDomain + "/_img/globalheader/movies_hejustnotthat.png"
 						}
 					]
 				}

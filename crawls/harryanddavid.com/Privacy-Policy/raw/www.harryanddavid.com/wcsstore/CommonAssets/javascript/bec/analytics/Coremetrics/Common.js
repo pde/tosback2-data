@@ -194,5 +194,12 @@ dojo.declare("bec.analytics.Coremetrics.Common", null,
 		}
 		
 		return strTemp;
+	},
+	
+	clearHTMLTags: function(strHTML)
+	{
+		var strMarkedUp = strHTML.replace(/&lt;([^&]*)&gt;/g,"<$1>");
+		
+		return strMarkedUp.replace(/<[^>]*>/g, "");   
 	}
 });

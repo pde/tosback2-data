@@ -285,12 +285,13 @@ header {
 	width:100%;
 }
 .phone_hdr {
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: #494439; /* for non-rgba browsers */
 	height:69px;
 	margin-bottom:2px;
 }
-
-
+.rgba .phone_hdr {
+	background-color: rgba(0, 0, 0, 0.5);
+}
 
 #weather_container {
 	color:#fff;
@@ -317,13 +318,6 @@ header {
 }
 .weather_set_location {
 	text-shadow: 0.1em 0.1em 0.2em black;
-}
-.oldie .weather_temp_city .doesntwork {
-	zoom: 1;
-	background-color: #cccccc;
-	-ms-filter: "progid:DXImageTransform.Microsoft.Chroma(Color=#cccccc) progid:DXImageTransform.Microsoft.DropShadow(Color=#99cc99, OffX=3, OffY=3)";
-	filter: progid:DXImageTransform.Microsoft.Chroma(Color=#cccccc)
-	        progid:DXImageTransform.Microsoft.DropShadow(OffX=3, OffY=3, Color=#99cc99);
 }
 
 #loc_container {
@@ -498,17 +492,7 @@ header #navigation #nav_list li:hover a.nav_level1_link #nav_home_container {
 	background-position:0 -40px;
 }
 .oldie .highlighted_nav_item a.nav_level1_link, .oldie #navigation #nav_list li:hover a.nav_level1_link {
-	filter: progid:DXImageTransform.Microsoft.Chroma(Color=#888888)
-	progid:DXImageTransform.Microsoft.Glow(Strength=3, Color=#8b4e07);
-	position: relative;
-	top: -3px;
-	left: -3px;
-	width:96%; /* last item needs width correction */
-	margin:0 auto;
-}
-.ie7 .highlighted_nav_item a.nav_level1_link, .ie7 #navigation #nav_list li:hover a.nav_level1_link {
-	left:-1px;
-	padding-bottom:7px;
+	color:#e1d7c3; /* IE 7-9 text-shadow causes text to shift, so just change text color instead */
 }
 
 #nav_home_container {
@@ -524,156 +508,13 @@ header #navigation #nav_list li:hover a.nav_level1_link #nav_home_container {
 	width:40px;
 	height:1px;
 }
-.oldie .highlighted_nav_item a.nav_level1_link #nav_home_container, .oldie #navigation #nav_list li:hover a.nav_level1_link #nav_home_container {
-	top:5px;
-	margin-left:-17px;
-}
-
-/*
-Navigation - Mega Drop-Down
-*/
-
-/* Nav panel */
-
 .nav_panel {
 	display:none;
-	position:absolute;
-	width:90%;
-	min-height:199px;
-	left:0px;
-	background:transparent url(../images/template2012/megadropdown_ribbon.png) no-repeat 70.3125% 100%;
-	background: url(../images/template2012/nav_shadow.png) repeat-x 0 0, url(../images/template2012/megadropdown_ribbon.png) no-repeat 70.3125% 100%;
-	padding:16px 5% 51px 5%;
-	overflow:visible;
-}
-.nav_panel a {
-	color:#000;
-}
-.nav_panel a:hover {
-	color:#3d3d3d;
 }
 
-.nav_panel ul {
-	width:50%;
-	float:left;
-}
-#navigation .nav_panel li {
-	float:none;
-	background-color:transparent;
-	padding:0 10px 20px 0px;
-}
-
-.no-js #navigation li:hover .nav_panel, .ie7 #navigation li:hover .nav_panel {
-	display:block;
-	opacity:1;
-	z-index:2;
-}
-#navigation li .nav_panel {
-	opacity:0.01;
-	-webkit-transition: opacity .3s ease-in-out;
-	-moz-transition: opacity .3s ease-in-out;
-	-o-transition: opacity .3s ease-in-out;
-	-ms-transition: opacity .3s ease-in-out;	
-	transition: opacity .3s ease-in-out;
-}
-.oldie #navigation li .nav_panel {
-	opacity:1; /* IE 9 and older does not support opacity transition */
-}
-#navigation #nav_list li .mo_opacity {
-	opacity:1;
-	z-index:2;
-}
-#navigation #nav_list li .mo_display {
-	display:block;
-}
-
-
-.nav_p_heading {
-	color:#003366;
-	font-size:14px;
-	font-weight:bold;
-	background-color:#e1d7c3; /* Needed when images are turned off */
-}
-.nav_p_description {
-	font-size:11px;
-	padding-top:4px;
-	background-color:#e1d7c3; /* Needed when images are turned off */
-}
-
-.nav_d_arrow_container {
-	display:none;
-	background:transparent url(../images/template2012/nav_down_arrow.png) no-repeat;
-	width:44px;
-	height:16px;
-	position:absolute;
-	top:0px;
-	margin-left:-22px;
-}
 
 
 /* phone nav update */
-
-#phone_nav {
-	background-color: #494439; /* for non-rgba browsers */
-	padding:0;
-	margin-bottom:2px;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	cursor: pointer;
-	min-height:47px;
-}
-.rgba #phone_nav {
-	background-color: rgba(0, 0, 0, 0.5);
-}
-.ie7 #phone_nav {
-	display:none;
-}
-#phone_nav ul {
-	padding: 0;
-	margin: 0;
-	list-style: none;
-}
-#phone_nav li {
-	padding: 0;
-	margin: 0;
-	float: left;
-	width:50%;
-	position:relative;
-}
-.ie7 #phone_nav li {
-	width:49.9%;
-}
-#phone_nav a {
-	display: block;
-	padding:13px 0;
-	color: #fff;
-	font-size: 1.21em;
-	font-weight:bold;
-	white-space:nowrap; /* fix IE8 comp mode issue where nav text wraps */
-	text-align:center;
-	text-decoration:none;
-}
-#phone_nav a span {
-	position:absolute;
-	top:2px;
-	left:50%;
-	margin-left:-20px;
-	height:40px;
-	width:40px;
-}
-#phone_nav:hover span {
-	text-shadow: 0 0 0.2em #ce770e;
-}
-.phone_home {
-	background: transparent url(../images/template2012/nav_home.png) no-repeat 0 0;
-}
-.phone_menu {
-	background: transparent url(../images/template2012/nav_menu.png) no-repeat 0 0;
-}
-#phone_nav li:hover span {
-	background-position:0 -40px;
-}
 
 #navigation {
 	height:0px;
@@ -715,23 +556,43 @@ Navigation - Mega Drop-Down
 	right:0;
 	position:absolute;
 	z-index:10;
+	width:118px; /* 6+47+6+6+47+6 = 118 */
 }
 .phone_hd_left img, .phone_hd_right img {
-	padding:16px 6px 8px 6px;
+}
+.phone_hd_left a, .phone_hd_right a {
+	float:left;
 	cursor:pointer;
 }
-.phone_hd_left a {
-	float:left;
-}
-#mobile_gallery_button {
+.p_h_button {
 	display:block;
-	width:41px;
-	height:33px;
-	background:transparent url(../images/mobile/mobileappgallery_home_gallery.png) no-repeat 0 0;
-	margin:16px 6px 8px 6px;
+	width:47px;
+	height:41px;
+	margin:12px 6px 12px 6px;
 }
-#mobile_gallery_button:hover {
-	/* background:transparent url(/images/mobile/mobileappgallery_home_gallery.png) no-repeat 0 -50px; */
+.p_h_menu {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat 0 0;
+}
+zzz.p_h_menu:hover {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat 0 -50px;
+}
+.p_h_mobile_gallery {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -50px 0;
+}
+zzz.p_h_mobile_gallery:hover {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -50px -50px;
+}
+.p_h_contact {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -100px 0;
+}
+zzz.p_h_contact:hover {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -100px -50px;
+}
+.p_h_search {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -150px 0;
+}
+zzz.p_h_search:hover {
+	background:transparent url(../images/template2012/phone_nav.png) no-repeat -150px -50px;
 }
 
 #head_search {
@@ -770,7 +631,7 @@ Navigation - Mega Drop-Down
 	padding:1px 0 20px 0;
 }
 .content_right_column {
-	background:#f1ede4;
+	/* background:#f1ede4; */
 	min-height:150px;
 	padding-bottom:20px;
 }

@@ -1857,7 +1857,7 @@ function closeLook() {
 
 function popupWallets() {
 
-	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/modules/women_wallet_guide/201212/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
+	$('#DivContainer').prepend('<div id="DivWallet" style="width:844px; height:559px; border: 1px solid #000000; background:#ffffff; visibility:hidden; position:fixed; top: 60px; *top:-80px;background-image:url(\'/popup/loader.gif\'); background-position: center center; background-repeat: no-repeat;"><a href="javascript:closeWallets()" style="position: absolute; right: 0px;_left:835;px;z-index:85000;" id="closing"><img border="0"  style="display:block;" src="/wcsstore/Coach_US/images/btn_detail_close.gif"/></a><iframe style="width:844px; height:559px;margin-left: 0px; margin-top: 0px; _hasLayout:true; border: 0px solid black;" src="/us/modules/women_wallet_guide/201301/11/index.html" name="walletFrame" id="walletFrame" frameborder="0px" scrolling="no"></iframe></div>');
 	
 	document.getElementById('DivWallet').style.visibility='visible';
 	document.getElementById('DivWallet').style.zIndex='9000';

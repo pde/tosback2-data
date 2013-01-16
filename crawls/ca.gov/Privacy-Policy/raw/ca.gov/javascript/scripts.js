@@ -68,8 +68,6 @@ initNavigation = function() {
 		if (typeof defaultMainList!="undefined")
 			reMainNav = new RegExp("^" + defaultMainList + "$", "i"); // Regex for finding the index of the default main list item
 		
-		var navItemWidths = new Array();
-		var navTotalWidth = 0;
 
 		for (var i=0; i<arrayNavLI.length; i++) { // Loop over main list items
 			var node = arrayNavLI[i];
@@ -85,17 +83,6 @@ initNavigation = function() {
 					node.className += " highlighted_nav_item"; // add class to this li
 				}
 			}
-
-			// Insert new span container to find nav widths
-			levelOneLink = node.querySelector(".nav_level1_link");
-			newSpanNode = document.createElement('span');
-			newSpanNode.className = "find_width";
-			tempContent = levelOneLink.innerHTML;
-			levelOneLink.innerHTML = "";
-			newSpanNode.innerHTML = tempContent;
-			levelOneLink.appendChild(newSpanNode);
-			navItemWidths[i] = node.querySelector(".find_width").offsetWidth;
-			navTotalWidth += navItemWidths[i];
 
 
 			if (Modernizr.touch) {
@@ -132,8 +119,8 @@ initNavigation = function() {
 								if (navigPanel.outTimerID) // are we fading after a mouseout?
 									clearTimeout(navigPanel.outTimerID); // cancel it
 								
-								navigPanel.className += " mo_display";
-								navigPanel.overOTimerID = setTimeout(function(){navigPanel.className += " mo_opacity";},10);
+								navigPanel.className += " mo_display"; // display:block
+								navigPanel.overOTimerID = setTimeout(function(){navigPanel.className += " mo_opacity";},10); // set opacity:1
 								
 							} else {
 								navigPanel.style.display = "block";
@@ -167,6 +154,11 @@ initNavigation = function() {
 							
 						} else {
 							arrayNavPanel[0].style.display = "block";
+						}
+						// set position of down arrow
+						var arrayDownArrow = getElementsByClass("nav_d_arrow_container",this);
+						if (arrayDownArrow.length == 1) {
+							arrayDownArrow[0].style.left = this.offsetLeft + this.offsetWidth / 2 + "px";
 						}
 					}
 				}
@@ -208,47 +200,16 @@ initNavigation = function() {
 
 		}
 
-		// Calculate widths of each main nav item and insert stylesheet
-		var dynStylesheet = document.createElement('style');
-		dynStylesheet.type="text/css";
-		dynStylesheet.media="only screen and (min-width: 600px)";
-		var dynSSRules = "";
-
-		tallyPreviousWidths = 0;
-		for (var i=0; i<arrayNavLI.length; i++) { // Loop over main list items
-			node = arrayNavLI[i];
-
-			dynSSRules += " #nav_list > li:nth-child(" + (i+1) + ") {width:" + (navItemWidths[i] / navTotalWidth * 100) + "%}";
-
-			// Add down-arrow image
-			nodeNavPanel = node.querySelector(".nav_panel");
-			if (nodeNavPanel) {
-				newDivNode = document.createElement('div');
-				newDivNode.setAttribute('class','nav_d_arrow_container');
-				newDivNode.setAttribute('style','left:' + ((tallyPreviousWidths + navItemWidths[i]/2) / navTotalWidth * 100) + '%');
-				nodeNavPanel.appendChild(newDivNode);
-			}
-			tallyPreviousWidths += navItemWidths[i];
-
-		}
-
-		document.getElementsByTagName('head')[0].appendChild(dynStylesheet);
-		if (dynStylesheet.styleSheet) { // IE
-			dynStylesheet.styleSheet.cssText = dynSSRules;
-		} else { // proper browsers
-			var dynSSTextNode = document.createTextNode(dynSSRules);
-			dynStylesheet.appendChild(dynSSTextNode);
-		}
 
 		// Create styles for phone nav
-		dynStylesheet = document.createElement('style');
+		var dynStylesheet = document.createElement('style');
 		dynStylesheet.type="text/css";
 		dynStylesheet.media="";
 		dynSSRules = "#navigation.phone_show_nav {	height:" + (arrayNavLI[0].offsetHeight + 2) * (arrayNavLI.length-1) + "px;}";
 
-		if (navigator.userAgent.toLowerCase().indexOf('chrome') > 0) {
-			dynSSRules += " #navigation {-webkit-transition: height 1s;}"; // works in chrome but not safari
-		}
+		//if (navigator.userAgent.toLowerCase().indexOf('chrome') > 0) {
+		//	dynSSRules += " #navigation {-webkit-transition: height 1s;}"; // works in chrome but not safari
+		//}
 
 		document.getElementsByTagName('head')[0].appendChild(dynStylesheet);
 		if (dynStylesheet.styleSheet) { // IE
@@ -690,16 +651,21 @@ function toggle_menu() {
 	var searchContainer = document.getElementById("head_search");
 	var navContainer = document.getElementById("navigation");
 	var weatherContainer = document.getElementById("weather_container");
+	var menuButton = getElementsByClass("p_h_menu");
+	var searchButton = getElementsByClass("p_h_search");
 
 	if (navContainer.className == "") {
 		// apply class "phone_show_nav" to nav
 		navContainer.className = "phone_show_nav";
 		weatherContainer.style.display = "none";
 		searchContainer.className = "";
+		if (menuButton.length == 1) menuButton[0].style.backgroundPosition = "0 -50px";
+		if (searchButton.length == 1) searchButton[0].style.backgroundPosition = "-150px 0";
 	} else {
 		// remove class
 		navContainer.className = "";
 		weatherContainer.style.display = "block";
+		if (menuButton.length == 1) menuButton[0].style.backgroundPosition = "0 0";
 	}
 }
 
@@ -707,6 +673,8 @@ function toggle_search() {
 	var searchContainer = document.getElementById("head_search");
 	var navContainer = document.getElementById("navigation");
 	var weatherContainer = document.getElementById("weather_container");
+	var menuButton = getElementsByClass("p_h_menu");
+	var searchButton = getElementsByClass("p_h_search");
 
 	if (searchContainer.className == "") {
 		// apply class "phone_show_search" to nav
@@ -714,61 +682,23 @@ function toggle_search() {
 		document.getElementById("search_local_textfield").focus();
 		weatherContainer.style.display = "none";
 		navContainer.className = "";
+		if (searchButton.length == 1) searchButton[0].style.backgroundPosition = "-150px -50px";
+		if (menuButton.length == 1) menuButton[0].style.backgroundPosition = "0 0";
 	} else {
 		// remove class
 		searchContainer.className = "";
 		weatherContainer.style.display = "block";
+		if (searchButton.length == 1) searchButton[0].style.backgroundPosition = "-150px 0";
 	}
 }
 
 function initPage() {
 	initNavigation();
-	headerPhoto();
+	//headerPhoto();
 	CAGOVLocation.initLocation();
 	//CAGOVWeather.initWeather();
 	displayLocation();
 	breadcrumbs();
 }
 addLoadEvent(initPage);
-
-
-
-/*
-(C) www.dhtmlgoodies.com, September 2005
-
-This is a script from www.dhtmlgoodies.com. You will find this and a lot of other scripts at our website.	
-
-Terms of use:
-You are free to use this script as long as the copyright message is kept intact. However, you may not
-redistribute, sell or repost it without our permission.
-
-Thank you!
-
-www.dhtmlgoodies.com
-Alf Magne Kalleland
-
-*/	
-function showHideAnswer()
-{
-	var numericID = this.id.replace(/[^\d]/g,'');
-	var obj = document.getElementById('a' + numericID);
-	if(obj.style.display=='block'){
-		obj.style.display='none';
-	}else{
-		obj.style.display='block';
-	}		
-}
-
-function initShowHideContent()
-{
-	var divs = document.getElementsByTagName('DIV');
-	for(var no=0;no<divs.length;no++){
-		if(divs[no].className=='exec'){
-			divs[no].onclick = showHideAnswer;
-		}	
-		
-	}	
-}
-
-addLoadEvent(initShowHideContent);
 

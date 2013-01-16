@@ -1676,42 +1676,28 @@ function showBlockElementById(boxId){ /* Use this method to toggle the display o
 	}
 }
 
-var mfrPopupCreated = false;
+function getNLAData(popupId, url, thiz) {
+    if (thiz.popUpCreated) {
+        return;
+    }
+    var nlaMfrPopup = document.getElementById('nlaPopDiv_' + popupId);
+    nlaMfrPopup.innerHTML = '<div class="nla-pop-main" style="height:184px;width:402px;">' +
+            '<div class="nla-pop-container" align="center" style="border:none; padding-top:90px;">' +
+            '<table class="nla-pop-table"><tr><td>' +
+            '<div align="center"><img src="/images/loading.gif"></div>' +
+            '</td></tr></table></div></div>';
 
-function getMfrNLA(popupId, searchStr,visibleMfrCnt, nodeid, nodeBoostStr, channel, market, styleType) {
-	if(mfrPopupCreated) {
-		return;
-	}
-	var nlaMfrPopup = document.getElementById('nlaPopDiv_'+popupId);
-	var baseUrl = "/seo/t1/buyer/outpdir1/AjaxNLAManager.jsp";
-	var url = baseUrl + "?search=" + searchStr;
-	url = url + "&visibleCnt=" + visibleMfrCnt;
-	url = url + "&node=" + nodeid;
-	url = url + "&broadMatchCanonicalKeyword=" + searchStr;
-	url = url + "&nodeBoostStr="+nodeBoostStr;
-	url = url + "&channel="+channel;
-	url = url + "&market="+market;
-	url = url + "&lt="+styleType;
-	nlaMfrPopup.innerHTML = '<div class="nla-pop-main" style="height:184px;width:402px;">'+
-	'<div class="nla-pop-container" align="center" style="border:none; padding-top:90px;">'+
-	'<table class="nla-pop-table"><tr><td>'+
-	'<div align="center"><img src="/images/loading.gif"></div>'+
-	'</td></tr></table></div></div>';
-	
-	var functionPtr = function(responseStr) {
-		var htmlContent = getOnlyNextagHtmlContent(responseStr);
-		nlaMfrPopup.innerHTML = htmlContent;
-		mfrPopupCreated = true;
-		nlaMfrPopup.style.top = nlaMfrPopup.style.top - nlaMfrPopup.getSize().y + 18; 
-	}
-	
-	invokeAjaxCall(url, functionPtr, false);
+    invokeAjaxCall(url, function(responseStr) {
+        nlaMfrPopup.innerHTML = getOnlyNextagHtmlContent(responseStr);
+        nlaMfrPopup.style.top = nlaMfrPopup.style.top - nlaMfrPopup.getSize().y + 18;
+        thiz.popUpCreated = true;
+    }, false);
 }
 
 /*
 Code to fetch content for coupons and deals using ajax
 */
-function getAjaxDealsAndCoupons(rowId, left, top, url, thiz) {
+function getAjaxDealsAndCoupons(event, rowId, left, top, url, thiz) {
     if (thiz.promoPopUp) {
         if (thiz.hasPromoPopUp) {
             if (thiz.promoPopUp.style.visibility == "visible") {
@@ -1723,6 +1709,7 @@ function getAjaxDealsAndCoupons(rowId, left, top, url, thiz) {
         } else
             closePromo();
     } else {
+        bindWindowClickEvent();
         closePromo();
         var popupId = 'promoPopup_' + rowId;
         var popUp = document.getElementById(popupId);
@@ -1738,6 +1725,9 @@ function getAjaxDealsAndCoupons(rowId, left, top, url, thiz) {
             popUp.style.visibility = "visible";
             invokeAjaxCall(url, function(responseStr) {
                 popUp.innerHTML = getOnlyNextagHtmlContent(responseStr);
+                popUp.onclick = function(event){
+                    event._dontClosePopUp = true;
+                };
                 showPromo(popUp, rowId);
             }, false);
         }else
@@ -1755,7 +1745,17 @@ function getAjaxDealsAndCoupons(rowId, left, top, url, thiz) {
         visiblePromoPopup.style.visibility = "visible";
         toggleContent("promo", rowId);
     }
-
+    function bindWindowClickEvent(){
+        if(!window._dealsNCouponsBinded){
+            window._dealsNCouponsBinded = true;
+            window.onclick = function(event){
+                if(!event._dontClosePopUp)
+                    closePromo();
+            }
+        }
+    }
+    NextagUtils.stopEvent(event);
+    return false;
 }var NextagUtils = new Object();
 NextagUtils.sVisibleDiv = null;
 NextagUtils.sVisibleDivToggleFlag = 0;
@@ -6007,4 +6007,121 @@ var SRadar = function() {
 		}
 	};
 }();
+
+var SearchHeadRadar = new (function(){
+    var popUp;
+    var radarContent;
+    var txtEle,thiz=this;
+
+    this.initPopUp = function(){
+        if (!thiz._initialized) {
+            popUp = document.createElement("div");
+            radarContent = document.createElement("div");
+            popUp.className = "radar-lb-background";
+            radarContent.className = "radar-lb-content";
+            radarContent.innerHTML = '<div class="radar-wait-content">' +
+                    '   <div class="radar-logo-medium radar-lb-logo"></div>' +
+                    '   <div class="radar-wait-text">Processing...</div>' +
+                    '</div>';
+
+            popUp.style.display = "none";
+            radarContent.style.display = "none";
+            document.body.appendChild(popUp);
+            document.body.appendChild(radarContent);
+            txtEle = radarContent.children[0].children[1];
+            txtEle.innerHTML = "Processing...";
+        }
+        thiz._initialized = true;
+    };
+
+    this.submit = function(email, searchHeadParams, searchField) {
+        thiz.hideEmailError(email);
+        if (thiz.checkEmail(email)) {
+            thiz.showPopUp();
+            txtEle.innerHTML = "Processing...";
+            new Request({
+                url: '/radar/search/create',
+                method: 'get',
+                data: searchHeadParams + "&email=" + email.value,
+                onSuccess: function(response) {
+                    var responseJson = JSON.parse(response);
+                    if (responseJson.error) {
+                        thiz.failure();
+                    } else {
+                        txtEle.innerHTML = "Your Radar for '<b>" + searchField + "</b>' has been set!!";
+                        thiz.hidePopUp();
+                    }
+                },
+                onFailure: thiz.failure
+            }).send();
+        }
+    };
+    this.showEmailError = function(email) {
+        if (email) {
+            var errorSpan = email._errorSpan;
+            if (!errorSpan) {
+                var pos = $(email).getPosition();
+                email._errorSpan = errorSpan = document.createElement("div");
+                errorSpan.className = "searchHeadRadarError";
+                errorSpan.style.cssText = "top:" + (pos.y - 12) + "px;left:" + (pos.x + $(email).getSize().x) + "px";
+                errorSpan.innerHTML = '<div class="tipTopBeak"></div>' +
+                        '<div class="searchHeadRadarErrorMessage">Invalid Email.</div>';
+                email.parentNode.appendChild(errorSpan);
+            }
+//            $(email).morph({'background-color': '#ff3333'});
+            $(email._errorSpan).set("opacity",0);
+            $(email._errorSpan).morph({opacity:1});
+            email._timeOut = setTimeout(function(){
+                thiz.hideEmailError(email);
+            },2500);
+        }
+    };
+    this.hideEmailError = function(email) {
+        if (email) {
+            clearTimeout(email._timeOut);
+            if (email._errorSpan)
+                $(email._errorSpan).morph({opacity:0});
+//            $(email).morph({'background-color': '#ffffff'});
+        }
+    };
+    this.checkDefaultText = function(ele, event, defaultTxt) {
+        if (event.type === "focus") {
+            if (ele.className.indexOf("defaultText") != -1) {
+                ele.value = "";
+                $(ele).removeClass("defaultText");
+            }
+        } else if (event.type === "blur") {
+            thiz.hideEmailError(ele);
+            if (ele.value.length == 0) {
+                $(ele).addClass("defaultText");
+                ele.value = defaultTxt ? defaultTxt : "";
+            } else
+                thiz.checkEmail(ele);
+        }
+    };
+    this.checkEmail = function(email) {
+        if (email && Form.Validator.getValidator('required').test($(email)) && Form.Validator.getValidator('validate-email').test($(email)))
+            return true;
+        thiz.showEmailError(email);
+        return false;
+    };
+    this.failure = function() {
+        if (txtEle) {
+            txtEle.innerHTML = "<label style='color:red'>Sorry, we ran into an error processing your request</label>";
+            thiz.hidePopUp();
+        }
+    };
+    this.hidePopUp = function(){
+        setTimeout(function() {
+            thiz.initPopUp();
+            popUp.style.display = "none";
+            radarContent.style.display = "none";
+        }, 2000);
+    };
+    this.showPopUp = function(){
+        thiz.initPopUp();
+        popUp.style.display = "block";
+        radarContent.style.display = "block";
+    }
+})();
 

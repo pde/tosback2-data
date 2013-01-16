@@ -942,7 +942,6 @@ var NADAjs = {
         var _routeID;
         var init = function(routeID) {
             _routeID = routeID;
-
             //onload tracking
             $("input[data-ga-category], a[data-ga-category]").each(function() {
                 _gaq.push(['_trackEvent', $(this).attr('data-ga-category'), $(this).attr('data-ga-action') + ' - Load',
@@ -1516,6 +1515,215 @@ var NADAjs = {
         this.Init = init;
         this.CtoSubmit = ctoSubmit;
     }, //NewVDPCostToOwn
+
+    GenericPayment: new function() {
+        var isIE = document.all;
+        var isNN = !document.all && document.getElementById;
+        var isN4 = document.layers;
+
+        var init = function() {
+            initRates();
+            $('#monthlypayment :input[type=text]').live("keyup", function() {
+                hideLoanPmt();
+            });
+            $('#canAfford :input[type=text]').live("keyup", function() {
+                hideLoan();
+            });
+        } //init
+
+        var setInterestRate = function(rate) {
+            $('#interestRate2').val(rate);
+            $('#interestRate').val(rate);
+        }
+        var initRates = function() {
+            var interestRates = $('#interestRate').val();
+            var interestRates2 = $('#interestRate2').val();
+
+            if (interestRates.length <= 1) {
+                $('#interestRate').val(4);
+            }
+            if (interestRates2.length <= 1) {
+                $('#interestRate2').val(4);
+            }
+        }
+
+        var calculatePmt = function() {
+            if (validatePayment()) {
+                var rate = $('#interestRate2').val() / 100 / 12;
+                var nPer = document.getElementById('loanTerm2')[document.getElementById("loanTerm2").selectedIndex].value;
+                var purchasePrice = $('#purchasePrice').val();
+                var downPayment = $('#downPayment2').val();
+                if (downPayment == "") downPayment = 0;
+                var loanAmt = purchasePrice - downPayment;
+                var loanPmt = 0;
+                if (rate > 0) {
+                    var pow = 1;
+                    for (var j = 0; j < nPer; j++)
+                        pow = pow * (1 + rate);
+
+                    loanPmt = (loanAmt * pow * rate) / (pow - 1);
+                }
+                else
+                    loanPmt = (purchasePrice - downPayment) / nPer;
+
+                loanPmt = Math.round(loanPmt * 100) / 100;
+                var totalCost = (loanPmt * nPer) + parseFloat(downPayment);
+
+                //$('#LoanPmt').html(Currency(loanPmt));
+                // $('#TotalCost2').html(Currency(totalCost));
+                document.getElementById("LoanPmt").innerHTML = currency(loanPmt);
+                document.getElementById("TotalCost2").innerHTML = currency(totalCost);
+            }
+        }
+        var calculateLoan = function() {
+            if (validateAfford()) {
+                var rate = $('#interestRate').val() / 100 / 12;
+                var nPer = document.getElementById("loanTerm")[document.getElementById("loanTerm").selectedIndex].value;
+                var pmt = $('#mnPayment').val();
+                var amt = 0;
+
+                if (rate > 0)
+                    amt = pmt * (1 - Math.pow(1 / (1 + rate), nPer)) / rate;
+                else
+                    amt = pmt * nPer;
+
+                var dnPmt = $('#downPayment').val();
+                if (dnPmt == "") dnPmt = 0;
+                var totalCost = amt + parseFloat(dnPmt);
+                //  $("#LoanAmt").html(Currency(amt));
+                //  $("#TotalCost").html(Currency(totalCost));
+                document.getElementById("LoanAmt").innerHTML = currency(amt);
+                document.getElementById("TotalCost").innerHTML = currency(totalCost);
+            }
+        }
+
+        var hideLoanPmt = function() {
+            $('#LoanPmt').html("");
+            $('#TotalCost2').html("");
+        }
+        var hideLoan = function() {
+            $('#LoanAmt').html("");
+            $('#TotalCost').html("");
+        }
+
+        var validatePayment = function() {
+            var downPayment2 = $("#downPayment2").val();
+            if (!isEmpty(downPayment2, "")) {
+                if (!validCurrency(downPayment2, "Please enter a valid number."))
+                    return false;
+            }
+
+            var purchasePrice = $('#purchasePrice').val();
+
+            if (isEmpty(purchasePrice, "Please enter purchase price."))
+                return false;
+            if (!validCurrency(purchasePrice, "Please enter a valid number."))
+                return false;
+            var interestRate2 = $("#interestRate2").val();
+            if (isEmpty(interestRate2, "Please enter interest rate."))
+                return false;
+            if (!validRate(interestRate2, "Please enter a valid interest rate."))
+                return false;
+
+            return true;
+        }
+        var validateAfford = function() {
+            var mnPayment = $("#mnPayment").val();
+            if (isEmpty(mnPayment, "Please enter monthly payment."))
+                return false;
+            if (!validCurrency($("#mnPayment").val(), "Please enter a valid number."))
+                return false;
+            var downPayment = $("#downPayment").val();
+            if (!isEmpty(downPayment, "")) {
+                if (!validCurrency(downPayment, "Pleasae enter a valid number."))
+                    return false;
+            }
+            var interestRate = $("#interestRate").val();
+            if (isEmpty(interestRate, "Please enter interest rate."))
+                return false;
+            if (!validRate(interestRate, "Please enter a valid interest rate."))
+                return false;
+            return true;
+        }
+
+        var isEmpty = function(fld, Desc) {
+            var f = fld.value;
+            if (fld == null || fld == "") {
+                fld.value = "";
+                if (Desc.length > 0) {
+                    alert(Desc);
+                    fld.focus();
+                }
+                return true;
+            }
+            return false;
+        }
+        var validCurrency = function(fld, msg) {
+            var decimalexp = /(^\d+$)|(^\d+\.\d+$)/
+            if (!decimalexp.test(fld)) {
+                alertSetFocus(fld, msg);
+                return false;
+            }
+            return true;
+        }
+        var alertSetFocus = function(fld, msg) {
+            alert(msg);
+            fld.focus();
+            fld.select();
+        }
+
+        var toDecimal = function(n) {
+            var s = "" + Math.round(n * 10) / 10
+            var i = s.indexOf('.')
+            if (i < 0) return s + ".0"
+            var t = s.substring(0, i + 1) + s.substring(i + 1, i + 2)
+            if (i + 1 == s.length) t += "0"
+            return t
+        }
+        var validRate = function(fld, msg) {
+            var decimalexp = /(^\d+$)|(^\d+\.\d+$)|(^\.\d+$)/
+            if (!decimalexp.test(fld)) {
+                alertSetFocus(fld, msg);
+                return false;
+            }
+            return true;
+        }
+        var currency = function(amt) {
+            anynum = eval(amt)
+            workNum = Math.abs((Math.round(amt * 100) / 100)); workStr = "" + workNum
+            if (workStr.indexOf(".") == -1) { workStr += ".00" }
+            dStr = workStr.substr(0, workStr.indexOf(".")); dNum = dStr - 0
+            pStr = workStr.substr(workStr.indexOf("."))
+            while (pStr.length < 3) { pStr += "0" }
+            if (dNum >= 1000) {
+                dLen = dStr.length
+                dStr = parseInt("" + (dNum / 1000)) + "," + dStr.substring(dLen - 3, dLen)
+            }
+
+            if (dNum >= 1000000) {
+                dLen = dStr.length
+                dStr = parseInt("" + (dNum / 1000000)) + "," + dStr.substring(dLen - 7, dLen)
+            }
+            retval = dStr + pStr
+            if (anynum < 0) { retval = "(" + retval + ")" }
+            return "$" + retval
+        }
+        this.Init = init;
+        this.Currency = currency;
+        this.ValidRate = validRate;
+        this.ToDecimal = toDecimal;
+        this.AlertSetFocus = alertSetFocus;
+        this.ValidCurrency = validCurrency;
+        this.IsEmpty = isEmpty;
+        this.ValidateAfford = validateAfford;
+        this.AlidatePayment = validatePayment;
+        this.HideLoan = hideLoan;
+        this.HideLoanPmt = hideLoanPmt;
+        this.CalculateLoan = calculateLoan;
+        this.CalculatePmt = calculatePmt;
+        this.InitRates = initRates;
+        this.SetInterestRate = setInterestRate;
+    }, //GenericPayment
 
     NewVDPPictures: new function() {
         var config = {

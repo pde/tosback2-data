@@ -11,7 +11,7 @@
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://opengraphprotocol.org/schema/">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://ogp.me/ns/fb#" xmlns:og="http://opengraphprotocol.org/schema/"  itemscope itemtype="http://schema.org/Product">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
@@ -565,6 +565,10 @@
 
 
 
+    <!-- Add the following three tags inside head. -->
+    <meta itemprop="image" content="http://static.sfdict.com/sh/i/dict/social_logo.jpg">
+    <meta property="og:image" content="http://static.sfdict.com/sh/i/dict/social_logo.jpg" />
+
 
     
     
@@ -937,8 +941,8 @@
     
     var DaisyInfo = window.DaisyInfo || {};
     DaisyInfo.clickURL = "app.reference.com";
-    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=B6B46989FE3AC77013288844DF266149&clkpage=dictionaryproxy&clkimpr=UPFh5ULreXw8rfgW&clkld=0&clkorgn=0&clkref=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
-    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=B6B46989FE3AC77013288844DF266149&pageName=dictionaryproxy&impressionId=UPFh5ULreXw8rfgW&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
+    DaisyInfo.pickObjConversion = function(po) { return ""+h(po.lk)+"?clksite=dict&clkquery=81646FA12B6D4301162E662EE3F56FBA&clkpage=dictionaryproxy&clkimpr=UPaoOULreVw9d/k/&clkld=0&clkorgn=0&clken="+h(po.en)+"&clkord="+h(po.io)+"&clkblk="+h(po.b)+"&clktemp="+h(po.tp)+"&clkmod="+h(po.m)+"&clkitem="+enc(h(po.pt))+"&clkdest="+h(po.u);}; 
+    DaisyInfo.nonRedirectPickObjConversion =    function(po) { return "?site=dict&queryId=81646FA12B6D4301162E662EE3F56FBA&pageName=dictionaryproxy&impressionId=UPaoOULreVw9d/k/&ldid=0&clkorgn=0&referrer=http%3A%2F%2Fdictionary.reference.com%2Fhelp%2Fprivacy.html&engine="+h(po.en)+"&ordinal="+h(po.io)+"&block="+h(po.b)+"&template="+h(po.tp)+"&module="+h(po.m)+"&item="+enc(h(po.pt))+"&linkId="+h(po.lk);};   
 </script>
 
 
@@ -995,7 +999,7 @@
 
 
     
-        <script src="../inc/js/dictionary/v4/dicMainNew_c.r90098.js" type="text/javascript"></script>
+        <script src="../inc/js/dictionary/v4/dicMainNew_c.r90133.js" type="text/javascript"></script>
         <script type="text/javascript">if(typeof($.noConflict) == 'function'){$.noConflict();}var $j=jQuery;</script>
     
 
@@ -1047,82 +1051,7 @@ fancybox_init = function() {};
 if(_limitedDeployID !='' && window.location.host.indexOf('dictionary')!=-1){
    $j("#seasonHdr").addClass('importantRule');
 }
-function stickyFooterAd(adtag) {
-    var tag = adtag ;
-	var stickcachebuster= Math.round(Math.random()*1000000000);
-	tag=tag.replace('@@cachebuster@@',stickcachebuster);
-    var shown = 'false';
-    if (tag!=null) {
-        if ($j('#rightRail').length !== 0 && $j('#rightRail')[0] !== 'undefined') {
-            $j("div#rightRail:last").css('margin-bottom', '15px');
-            $j(".ftsp").css({
-                position: 'relative',
-                top: '-250px',
-                display: 'block',
-                left: '15px',
-                height: '250px'
-            });
-            $j(".ftsp").html("<div id=\"adclose\" onmousedown=\"closead('ad');\" style=\"z-index:1;display:none;float: right;top:-10px; position: absolute;right: 45px;\"></div><div id=\"slider\" style=\"height:300px;display:block;\"></div>");
-            $j(".ftsp").append("<div id=\"stickad\" style=\"position:relative;display:block;\"></div>");
-            (function ($) {
-                $.fn.rightrailad = function () {
-                    ghostwriter("stickad", {
-                        insertType: "append",
-                        script: {
-                            text: "document.write('<scr" + "ipt id=\"rrad\" src=\""+tag+"\"><\/scr" + "ipt>');"
-                        },
-                        done:function(){
-                           // $j("#adclose").css('display', 'block');
-                        }
-                    });
-                }
-            })(jQuery);
-            $j(window).scroll(function () {
-                var scrollht = ($j('html').scrollTop() > ($j('#rightRail').height() - 100)) ? true : false;
-                var scrollup = ($j('html').scrollTop() < ($j('#rightRail').height() - 100)) ? true : false;
-                var footModuleShow=(($j('#nfotr').position().top- $j(window).height() )+210) < ($j(window).scrollTop()) ? true:false;
-                if ($j.browser.safari) {
-                    scrollht = ($j(window).scrollTop() > ($j('#rightRail').height() - 100)) ? true : false;
-                    scrollup = ($j(window).scrollTop() < $j('#rightRail').height()) ? true : false;
-                    footModuleShow=(($j('#nfotr').position().top- $j(window).height() )+210) < ($j(window).scrollTop()) ? true :false;
-                }
-
-                if (shown == 'false' && scrollht) {
-				if ($j("#fanimation").length > 0){
-				$j("#fanimation").css("display","block");
-				$j("#fanimation").animate({left: '+=800'},2000, function() {$j("#fanimation").css("display","none");});
-				}
-                    $j(".ftsp").rightrailad();
-                    setTimeout(function () {
-                        $j('#slider').slideUp('slow');
-                    }, 2000);
-                    setTimeout(function () {
-                        $j("#adclose").css('display', 'block');
-
-                    }, 5000);
-                    shown = 'true';
-                } else {
-                    if(footModuleShow && shown == 'true'){
-                      $j("#stickad").css('display', 'none');
-                       $j("#adclose").css('display', 'none');
-                        $j(".ftsp").css('display', 'none');
-                    } else if (scrollht && shown == 'true') {
-                        $j(".ftsp").css('display', 'block');
-                        $j("#stickad").css('display', 'block');
-                        if($j("#slider").is(':hidden')){
-                         $j("#adclose").css('display', 'block');
-                        }
-                        $j(".ftsp").css('display', 'block');
-                    } else if (scrollup && shown == 'true') {
-                        $j("#stickad").css('display', 'none');
-                        $j("#adclose").css('display', 'none');
-                        $j(".ftsp").css('display', 'none');
-                    }
-                }
-            });
-        }
-    }
-} 	
+	
 </script>
     
     
@@ -1364,6 +1293,7 @@ function stickyFooterAd(adtag) {
             
             
                 <a id="loginHeaderLink" rel="nofollow" href="http://app.dictionary.com/login/core?source=header_dict&logindest=">Log In</a>
+                <span class="bar"></span>
                 <a id="regLink" rel="nofollow" href="http://app.dictionary.com/signup/core?source=header_dict&logindest=">Sign Up</a>
                 
 
@@ -1476,7 +1406,7 @@ function stickyFooterAd(adtag) {
 
 
 <script type="text/javascript">
-var _todaysDate= "January 12, 2013";
+var _todaysDate= "January 16, 2013";
 
 ask.dict.loggedIn=false;
 
@@ -1752,7 +1682,7 @@ var takeOverEnabled = false;
     <div id="suggestWord"></div>
 
 
-	
+    
     
         
     

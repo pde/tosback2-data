@@ -63,29 +63,106 @@ Move weather to upper right corner
 	top:106px;
 }
 #navigation li {
-	float: left;
-	width:16.666666%;
 	margin:0;
 	background-color:transparent;
 }
 
 .ie7 #navigation li {
+	float: left;
 	width:16.6%; /* fix IE7 issue where nav intermittently wraps */
 }
 .ie7 #navigation li li {
 	width:100%; /* fix IE7 */
 }
 
+/*
+Navigation - Mega Drop-Down
+*/
+
+/* Nav panel */
+
+.nav_panel {
+	position:absolute;
+	width:90%;
+	min-height:199px;
+	left:0px;
+	background:transparent url(../images/template2012/megadropdown_ribbon.png) no-repeat 70.3125% 100%;
+	background: url(../images/template2012/nav_shadow.png) repeat-x 0 0, url(../images/template2012/megadropdown_ribbon.png) no-repeat 70.3125% 100%;
+	padding:16px 5% 51px 5%;
+	overflow:visible;
+}
+.nav_panel a {
+	color:#000;
+}
+.nav_panel a:hover {
+	color:#3d3d3d;
+}
+
+.nav_panel ul {
+	width:50%;
+	float:left;
+}
+#navigation .nav_panel li {
+	float:none;
+	background-color:transparent;
+	padding:0 10px 20px 0px;
+}
+
+.no-js #navigation li:hover .nav_panel, .ie7 #navigation li:hover .nav_panel {
+	display:block;
+	opacity:1;
+	z-index:2;
+}
+#navigation li .nav_panel {
+	opacity:0.01;
+	-webkit-transition: opacity .3s ease-in-out;
+	-moz-transition: opacity .3s ease-in-out;
+	-o-transition: opacity .3s ease-in-out;
+	-ms-transition: opacity .3s ease-in-out;	
+	transition: opacity .3s ease-in-out;
+}
+.oldie #navigation li .nav_panel {
+	opacity:1; /* IE 9 and older does not support opacity transition */
+}
+#navigation #nav_list li .mo_opacity {
+	opacity:1;
+	z-index:2;
+}
+#navigation #nav_list li .mo_display {
+	display:block;
+}
+
+
+.nav_p_heading {
+	color:#003366;
+	font-size:14px;
+	font-weight:bold;
+	background-color:#e1d7c3; /* Needed when images are turned off */
+}
+.nav_p_description {
+	font-size:11px;
+	padding-top:4px;
+	background-color:#e1d7c3; /* Needed when images are turned off */
+}
+
+.nav_d_arrow_container {
+	background:transparent url(../images/template2012/nav_down_arrow.png) no-repeat;
+	width:44px;
+	height:16px;
+	position:absolute;
+	top:0px;
+	margin-left:-22px;
+	left:50%;
+}
+
+.ie7 .nav_d_arrow_container, .ie8 .nav_d_arrow_container {
+	display:none; /* Arrows won't be positioned correctly, so don't bother showing them */
+}
+
 .nav_panel ul {
 	width:33%;
 }
 
-.nav_d_arrow_container {
-	display:block;
-}
-.ie8 .nav_d_arrow_container {
-	display:none; /* Arrows won't be positioned correctly, so don't bother showing them */
-}
 
 .home #img_ribbon {
 	position:absolute;
@@ -95,9 +172,6 @@ Move weather to upper right corner
 
 /* phone nav update */
 
-#phone_nav {
-	display:none;
-}
 #navigation {
 	height:auto;
 	overflow:visible;
@@ -105,9 +179,19 @@ Move weather to upper right corner
 }
 #nav_list {
 	position:static;
-	width:100%;
 	bottom:0;
+
+	width:100%;
+	display:table;
 }
+#nav_list li {
+	display:table-cell;
+	list-style:none;
+}
+#nav_list li li {
+	display:list-item;
+}
+
 header #navigation.phone_show_nav {
 	height:auto;
 }
@@ -145,7 +229,7 @@ header {
 	top:25px;
 }
 
-.phone_hdr {
+.phone_hdr, .rgba .phone_hdr, .ie7 .phone_hdr {
 	background-color: transparent;
 }
 
@@ -208,3 +292,4 @@ span.hide_from_phones {
 }
 
 /* end phone nav update */
+

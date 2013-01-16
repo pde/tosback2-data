@@ -512,7 +512,7 @@ if (fn==''||(adsUA.indexOf('opera')>-1)){adsTp='J';t=''}
 if (w=='LB'||w=='lb'){
 w=728,h=90;
 if (f)ds='r'
-sz='728x90,948x250,970x66,970x90,950x252,970x250,101x1'
+sz='728x90,948x250,970x66,970x90,950x252,970x250,940x230,101x1'
 }
 if (adsCp){
 var cl=adsCF.length;

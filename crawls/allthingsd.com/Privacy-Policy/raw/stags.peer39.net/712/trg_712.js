@@ -1,4 +1,4 @@
-//version '2.3';
+//version '2.4';
 var p39_cc_712 = '/7QnkE80XLKzILiqpjgeKxf/yYqPe70zfdO7mPRtaGk=';
 var p39_pu_712 = null;
 var p39_finished_712 = '0';
@@ -13,6 +13,10 @@ var p39_aid = '0712';
 //Update cleaning function
 //Last Update 28/02/12 - v2.3
 //Update cleaning function , adding refresh to clean
+//14/01/13
+//update cleaning function
+//16/01/013
+//decodding change
 /////////////////////////
 
 //<Tags_Functions>
@@ -23,7 +27,7 @@ function p39_KVP(key_value,delimiter) {
        var idList = '';
        var arrayResults = p39_resultsArray('','id',false);
        for (var i in arrayResults) {
-  
+
           idList += (key_value +'=' + arrayResults[i] + delimiter);
        }
 	return(idList)
@@ -137,7 +141,7 @@ function p39_bau(u) {
 
         var au = d1 + '/' + d2 + '/' + uh;
         au = au + p39_aid;
-        
+
         return au;
     }
 
@@ -208,7 +212,7 @@ function p39_exec_712(ct, useDOM) {
     if (p39_akamai_v_712 == '1') {
 
         //here comes the magic :-)
-        su = p39_au_v_712 + p39_bau("pu=" + decodeURIComponent(p39_pu_712) + "&cc=" + p39_cc_v_712);
+        su = p39_au_v_712 + p39_bau("pu=" + decodeURIComponent(p39_pu_712.replace(/\+/g," ")) + "&cc=" + p39_cc_v_712);
         su = su + "?aid=" + p39_zp(p39_aid_v_712, 5);
         if (p39_sid_v_712) {
             su = su + "&sid=" + p39_zp(p39_sid_v_712, 5);
@@ -227,7 +231,7 @@ function p39_exec_712(ct, useDOM) {
 	su = p39_ae(su, "ct", w.ct);
   	su = p39_ae(su, "sd", p39_sd_v_712);
   	su = p39_ae(su, "et", w.p39_extrk_712);
-    
+
 
 
     su = su.substring(0, 1000);
@@ -249,7 +253,7 @@ function p39_exec_712(ct, useDOM) {
 function p39_clean_url_712(u) {
 
 //global cleans
-	u = u.replace(/\?(mod|ru|sms_ss|mg|hat_input|dlbk|reflink|KEYWORDS|fbresult|fb_ref|grcc|q|siteid|imgurl|refresh).*/g, "");
+	u = u.replace(/\?(mod|sid|sort|as\[|mg|auto_complete_term|cmd|_nocache|ru|sms_ss|mg|hat_input|dlbk|link|Link|reflink|KEYWORDS|fbresult|fb_ref|grcc|q|siteid|imgurl|refresh).*/g, "");
 	u = u.replace(/#.*/g, "");
     return u;
 }

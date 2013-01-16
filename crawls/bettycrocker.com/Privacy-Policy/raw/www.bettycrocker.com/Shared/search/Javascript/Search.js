@@ -298,6 +298,7 @@ var resultsGridEngine = {
 
                 var srchResults = data.d;
 
+
                 if (srchResults.AllResultsCount > 0) {
 
                     if (getContentTypeCount(srchResults, ContentTypeEnum.RecipeListView) > 0 || getContentTypeCount(srchResults, ContentTypeEnum.RecipeGridView) > 0) {
@@ -538,33 +539,6 @@ var resultsGridEngine = {
             jQuery(this).hide();
 
         });
-        //Setup recipe detail links
-        jQuery('.recipeLink').live('click', function () {
-            var urlParams = decodeURI(window.location.search.substring(1));
-            var recipeUrl = jQuery(this).attr('href');
-            recipeUrl += "#?";
-            if (urlParams == false | urlParams == '') {
-                jQuery(this).attr('href', recipeUrl);
-                return;
-            }
-
-            var pageSize = getUrlVars()["ps"];
-            if (pageSize != null) {
-                urlParams += "&ps=" + pageSize;
-            }
-            var pageIndex = getUrlVars()["pi"];
-            if (pageIndex != null) {
-                urlParams += "&pi=" + pageSize;
-            }
-
-            var facetValue = getUrlVars()["fv"];
-            if (facetValue != null) {
-                urlParams += "&fv=" + facetValue;
-            }
-            recipeUrl += urlParams;
-            jQuery(this).attr('href', recipeUrl);
-        });
-
 
         //Setup more results click
         jQuery('.moreResultsButton').live("click", function (e) {
@@ -1070,28 +1044,6 @@ var allSearchResultListEngine = {
                 jQuery('#searchingMessage').hide();
             }
         });
-
-
-
-
-        //Setup recipe detail links
-        jQuery('.recipeLink').live('click', function () {
-            var urlParams = decodeURI(window.location.search.substring(1));
-            var recipeUrl = jQuery(this).attr('href');
-            recipeUrl += "#?";
-            if (urlParams == false | urlParams == '') {
-                jQuery(this).attr('href', recipeUrl);
-                return;
-            }
-            var facetValue = getUrlVars()["fv"];
-            if (facetValue != null) {
-                urlParams += "&fv=" + facetValue;
-            }
-            recipeUrl += urlParams;
-            jQuery(this).attr('href', recipeUrl);
-        });
-
-
     },
 
     updateFilterUI: function () {
@@ -1302,7 +1254,7 @@ var searchFactesFilter = {
         if (orValues.length > 0)
             filterValue += "OR(" + orValues.substring(0, orValues.length - 1) + "),";
         if (notValues.length > 0)
-            filterValue += "NOT(" + notValues.substring(0, notValues.length - 1) + "),";
+            filterValue += "NOT(OR(" + notValues.substring(0, notValues.length - 1) + ")),";
 
         if (filterValue.length > 0)
             filterValue = "AND(" + filterValue.substring(0, filterValue.length - 1) + ")";

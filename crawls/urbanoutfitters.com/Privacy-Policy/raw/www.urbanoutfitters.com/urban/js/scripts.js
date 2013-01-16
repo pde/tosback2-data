@@ -1263,7 +1263,7 @@ function captureGoogleClickId() {
 		// contract to set cookie for 15 days or at time of checkout
 		var days = 1;
 		// expires N days from now
-		exdate.setDate(exdate.getDate() + days);
+		exdate.setDate(exdate.getUTCDate() + days);
 		// expiration date format: Fri, 3 Aug 2001 20:47:11 UTC
 		var expiration = exdate.toUTCString();
 		// set cookie
